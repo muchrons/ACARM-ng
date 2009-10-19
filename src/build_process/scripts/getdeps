@@ -1,0 +1,113 @@
+#!/bin/bash
+
+THIS_SCRIPT="$0"
+BN="`basename $0`"
+if [ $# -lt 4 ]
+then
+  echo "$BN <out_gen_path> <deps_path> <gen_libs_path> <component>" >&2
+  echo "(note: $BN must be run from project root)"  >&2
+  exit 1
+fi
+
+# remember output dir
+OUTPUT_DIR="$1"
+shift
+DEPS_PATH="$1"
+shift
+GEN_LIBS_PATH="$1"
+shift
+
+# finder <component>
+function finder
+{
+  for src in "$1/common" "$1/$DEPS_PATH"
+  do
+    test -f "$src" || continue
+    echo -n "$src "            # mark dependency from this file
+    for dep in $(cat "$src")
+    do
+      finder $dep              # recurse with dependencies
+    done # for deps
+  done # for deps src files
+}
+
+# short name for component - it will be used many times
+C="$1"
+
+# find dependencies and build dependencies file
+out="$OUTPUT_DIR/$C.mk"
+DEPS_FILES="`finder $C | xargs echo`"
+test -z "$DEPS_FILES" || DEPS="`cat $DEPS_FILES | xargs echo`"
+
+# compute dynamic deps
+for f in $DEPS_FILES
+do
+  dynamic="${f}_dynamic"
+  if test -x "$dynamic"
+  then
+    DEPS_FILES="$DEPS_FILES $dynamic"
+    DEPS="$DEPS $($dynamic)"
+  fi
+done
+
+# compute dynamic compilation flags
+for f in $DEPS_FILES
+do
+  dynamic_compile="${f}_dynamic_compile"
+  if test -x "$dynamic_compile"
+  then
+    DEPS_FILES="$DEPS_FILES $dynamic_compile"
+    COMPILE_FLAGS="$COMPILE_FLAGS $($dynamic_compile)"
+  fi
+done
+
+# compute dynamic linkage flags
+for f in $DEPS_FILES
+do
+  dynamic_link="${f}_dynamic_link"
+  if test -x "$dynamic_link"
+  then
+    DEPS_FILES="$DEPS_FILES $dynamic_link"
+    LINK_FLAGS="$LINK_FLAGS $($dynamic_link)"
+  fi
+done
+
+# check which libs are local
+LOCAL_LIBS=""
+for el in $DEPS
+do
+  test -d "$el" && LOCAL_LIBS="$LOCAL_LIBS $el"
+done
+
+# convert deps to libs and libs_deps (libraries
+# this component depends on)
+if [ "`sed 's:^ *$::' <<<"$DEPS"`" ]
+then
+  LINK_LIBS="`sed -e 's:^ *:-l:' -e 's: \+$::' -e 's: \+: -l:g'<<<"$DEPS"`"
+  DEP_LIBS_WC="`sed -e "s:^ *: :" \
+                    -e "s: *$: :" \
+                    -e "s: \+\([^ ]\+\): $GEN_LIBS_PATH/lib\1*:g" \
+						<<<"$LOCAL_LIBS"`"
+fi
+
+# write to file
+cat<<EOF > "$out"
+.PHONY: $C
+$C:: LINK_LIBS:=$LINK_FLAGS $LINK_LIBS
+$C:: DEP_LIBS_WC:=$DEP_LIBS_WC
+$C:: CXXFLAGS+=$COMPILE_FLAGS
+$C:: CFLAGS+=$COMPILE_FLAGS
+ifeq (,\$(WITHOUT_DEPS))
+$C::$LOCAL_LIBS
+else
+$C::
+endif
+	@\$(build-this-component)
+
+# update this dependency file if needed
+$out:: $DEPS_FILES
+	@$THIS_SCRIPT "$OUTPUT_DIR" "$DEPS_PATH" "$GEN_LIBS_PATH" "$C"
+EOF
+
+exit 0
+
