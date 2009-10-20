@@ -17,3 +17,4 @@ ID-26 python support for:
   ID-26.2 triggers.
 ID-27 generic shell script support for:
   ID-27.1 triggers.
+ID-28 common alert formatters (with API) to make reportign via triggers easier.
