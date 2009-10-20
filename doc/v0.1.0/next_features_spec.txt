@@ -6,3 +6,9 @@ ID-17 adaptive system for gathering administrator's feedback to system, which al
 ID-18 agents installed on monitored hosts to perform inside audit in case of doubt / more information were needed.
 ID-22 system configuration via web-interface.
 ID-23 extend IDS to be IPS via triggers (ID-2.2).
+ID-25 C support for:
+  ID-25.1 plugins.
+  ID-25.2 triggers.
+ID-26 python support for:
+  ID-26.1 plugins.
+  ID-26.2 triggers.
