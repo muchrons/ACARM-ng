@@ -1,0 +1,10 @@
+#!/bin/bash
+
+DB="acarm_ng_test"
+
+for s in `ls *.sql`
+do
+  psql -d "$DB" -f $s
+done
+
+exit $?
