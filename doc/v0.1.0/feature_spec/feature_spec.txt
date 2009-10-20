@@ -1,16 +1,16 @@
 ID-1 all data is preserved in data base.
-ID-2 system has a base framework where user-plugins can be provided:
-  ID-2.1 filter plugins.
-  ID-2.2 trigger plugins.
-  ID-2.3 data input plugins.
+ID-2 system has a base framework where user-plug-ins can be provided:
+  ID-2.1 filter plug-ins.
+  ID-2.2 trigger plug-ins.
+  ID-2.3 data input plug-ins.
 ID-3 set-based alerts processing - alerts are never removed from input, only changed or newly correlated are added.
-ID-4 each correlation makes alert life-time longer by a given time (filter plugins decide how long).
+ID-4 each correlation makes alert life-time longer by a given time (filter plug-ins decide how long).
 ID-5 set of correlated alerts creates forest structure.
 ID-6 system must provide unified way of reading/setting configuration.
-ID-7 each trigger has its own treshold - when reached it is run.
-ID-8 alerts can be reported to admin any time (asynchronous) and still be correlated afterwards (still in system set).
-ID-9 unified way of handling triggers/filters states (FSM?), keept in data base.
+ID-7 each trigger has its own threshold - when reached it is run.
+ID-8 alerts can be reported to admin any time (asynchronous) and still be correlated afterwords (still in system set).
+ID-9 unified way of handling triggers/filters states (FSM?), kept in data base.
 ID-12 data input from prelude-manager.
 ID-13 hierarchical alerts - reporting high-level alerts prevents reporting of low-level alerts, included in it (prevents alarm flooding).
-ID-14 ability to clean-up od data base entries (user-defined time threshold).
+ID-14 ability to clean-up old data base entries (user-defined time threshold).
 ID-24 generic API for creating new filters, triggers and data inputs.
