@@ -1,5 +1,5 @@
 --
--- 12_create_alerts.sql
+-- create_alerts.sql
 --
 
 -- TODO

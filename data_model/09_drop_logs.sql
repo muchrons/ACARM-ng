@@ -1,5 +1,5 @@
 --
--- 00_drop_logs.sql
+-- drop_logs.sql
 --
 
 DROP TABLE    logger_logs;

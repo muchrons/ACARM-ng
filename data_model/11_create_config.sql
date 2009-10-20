@@ -1,5 +1,5 @@
 --
--- 11_create_config.sql
+-- create_config.sql
 --
 
 -- config_rdonly

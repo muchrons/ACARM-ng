@@ -1,5 +1,5 @@
 --
--- 01_drop_config.sql
+-- drop_config.sql
 --
 
 DROP TABLE config;

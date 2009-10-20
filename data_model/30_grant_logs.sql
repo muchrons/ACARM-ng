@@ -1,5 +1,15 @@
 --
--- 30_grant.sql
+-- grant_logs.sql
 --
 
--- TODO
+-- ui/daemon may add new logs and cleanup old ones
+GRANT INSERT,
+      DELETE
+  ON TABLE logger_logs
+  TO "acarm-ng-ui",
+     "acarm-ng-daemon";
+
+-- ui may show logs
+GRANT SELECT
+  ON TABLE logger_logs
+  TO "acarm-ng-ui";

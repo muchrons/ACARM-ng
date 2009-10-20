@@ -1,5 +1,5 @@
 --
--- 10_create_logs.sql
+-- create_logs.sql
 --
 
 -- logger_nodes
