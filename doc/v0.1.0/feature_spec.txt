@@ -13,7 +13,4 @@ ID-9 unified way of handling triggers/filters states (FSM?), keept in data base.
 ID-12 data input from prelude-manager.
 ID-13 hierarchical alerts - reporting high-level alerts prevents reporting of low-level alerts, included in it (prevents alarm flooding).
 ID-14 ability to clean-up od data base entries (user-defined time threshold).
-ID-19 common framework for adaptive parameters for plugins and triggers.
-ID-20 automatic priority assignment for alerts (i.e. via filters: ID-2.1).
-ID-21 wizualization of system work effects based on web technologies.
 ID-24 generic API for creating new filters, triggers and data inputs.
