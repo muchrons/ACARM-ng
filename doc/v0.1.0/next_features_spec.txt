@@ -12,3 +12,5 @@ ID-25 C support for:
 ID-26 python support for:
   ID-26.1 plugins.
   ID-26.2 triggers.
+ID-27 generic shell script support for:
+  ID-27.1 triggers.
