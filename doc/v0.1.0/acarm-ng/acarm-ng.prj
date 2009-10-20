@@ -1,0 +1,168 @@
+format 66
+"acarm-ng"
+  revision 1
+  modified_by 42 "basz"
+
+
+  
+  // class settings
+  default_attribute_visibility private default_relation_visibility private default_operation_visibility public
+  //class diagram settings
+  draw_all_relations yes hide_attributes no hide_operations no show_members_full_definition no show_members_visibility no show_members_stereotype no show_members_multiplicity no show_members_initialization no show_attribute_modifiers no member_max_width 127 show_parameter_dir yes show_parameter_name yes package_name_in_tab no class_drawing_mode natural drawing_language uml show_context_mode no auto_label_position yes show_relation_modifiers no show_infonote no shadow yes show_stereotype_properties no
+  //use case diagram settings
+  package_name_in_tab no show_context no auto_label_position yes draw_all_relations yes class_drawing_mode actor shadow yes show_stereotype_properties no
+  //sequence diagram settings
+  show_full_operations_definition no write_horizontally yes class_drawing_mode natural drawing_language uml draw_all_relations yes shadow yes show_stereotype_properties no
+  //collaboration diagram settings
+  show_full_operations_definition no show_hierarchical_rank no write_horizontally yes drawing_language uml package_name_in_tab no show_context no draw_all_relations yes shadow yes show_stereotype_properties no
+  //object diagram settings
+   write_horizontally yes package_name_in_tab no show_context no auto_label_position yes draw_all_relations yes shadow yes show_stereotype_properties no
+  //component diagram settings
+  package_name_in_tab no show_context no auto_label_position yes draw_all_relations yes shadow yes
+  draw_component_as_icon no show_component_req_prov no show_component_rea no show_stereotype_properties no
+  //deployment diagram settings
+  package_name_in_tab no show_context no write_horizontally yes auto_label_position yes draw_all_relations yes shadow yes
+  draw_component_as_icon no show_component_req_prov no show_component_rea no show_stereotype_properties no
+  //state diagram settings
+  package_name_in_tab no show_context no auto_label_position yes write_trans_label_horizontally yes show_trans_definition no draw_all_relations yes shadow yes
+  show_activities yes region_horizontally yes drawing_language uml show_stereotype_properties no
+  //activity diagram settings
+  package_name_in_tab no show_context no show_opaque_action_definition no auto_label_position yes write_flow_label_horizontally no draw_all_relations yes shadow yes
+  show_infonote yes drawing_language uml show_stereotype_properties no
+  
+  class_color yellow duration_color transparent continuation_color gray note_color blue fragment_color transparent subject_color transparent usecase_color yellow package_color transparent component_color green artifact_color green deploymentnode_color gray state_color yellow stateaction_color transparent activity_color transparent activityregion_color transparent activitypartition_color transparent activityaction_color transparent parameterpin_color white 
+  font_size 10
+  diagram_format A4-Landscape
+
+  mark_for_import
+  
+  componentview 128042 "General"
+    //component diagram settings
+    package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    componentdiagram 128042 "TLD"
+      package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+      draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+      size A4-Landscape
+    end
+
+    component 128042 "Core"
+      comment "Core component that initializes environment and passes event torwards other components creating logic data flow."
+      simplerelation 128042
+	-_->
+	  on component_ref 128554 // Persistency
+      end
+
+      simplerelation 128170
+	-_->
+	  on component_ref 128682 // Logger
+      end
+
+      simplerelation 128298
+	-_->
+	  on component_ref 128426 // ConfigIO
+      end
+
+      simplerelation 128426
+	-_->
+	  on component_ref 128170 // InputDataSet
+      end
+
+      simplerelation 128554
+	-_->
+	  on component_ref 128298 // CorrelationSet
+      end
+
+      simplerelation 128938
+	-_->
+	  on component_ref 129066 // Input
+      end
+
+      simplerelation 129066
+	-_->
+	  on component_ref 128810 // Filter
+      end
+
+      simplerelation 129194
+	-_->
+	  on component_ref 128938 // Trigger
+      end
+    end
+
+    component 128170 "InputDataSet"
+      comment "Set holding all alerts that have arrived to the system. This is read-only set, that elements are not allowed to be modified. Elements themselfes can be added and removed though."
+    end
+
+    component 128298 "CorrelationSet"
+      comment "Set of correlated alerts. Set can be expanded, truncated and edited according to filter plugins rules.
+
+Note that each single alert in input set is a correlated alert too, though consisting only of 1 entry."
+      simplerelation 128682
+	-_->
+	  on component_ref 128170 // InputDataSet
+      end
+    end
+  end
+
+  componentview 128170 "IO"
+    //component diagram settings
+    package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    component 128426 "ConfigIO"
+      comment "Configuration module. allows to read and write configuration parameters."
+    end
+
+    component 128554 "Persistency"
+      comment "Module providing persistency, i.e. data base.
+
+In general each operation must happen in data base to ensure fail-safe and recovery after any crash or power outage."
+    end
+
+    component 129066 "Input"
+      comment "Interface for specifing input sources (i.e. reads messages arriving to the system)."
+      simplerelation 128810
+	-_->
+	  on component_ref 128042 // Core
+      end
+    end
+
+    component 128938 "Trigger"
+      comment "Interface for defining triggers when given action occures (ex. some threshold is reached)."
+      simplerelation 129450
+	-_->
+	  on component_ref 129322 // FiniteStateMachine
+      end
+
+      simplerelation 129578
+	-_->
+	  on component_ref 129194 // AlertFormatter
+      end
+    end
+
+    component 128810 "Filter"
+      comment "Interface for defining filter plugins for system. Each operation state transition of filter must be done with FSM to ensure secure recovery after fail-over."
+      simplerelation 129322
+	-_->
+	  on component_ref 129322 // FiniteStateMachine
+      end
+    end
+  end
+
+  componentview 128298 "Common"
+    //component diagram settings
+    package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default
+    draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+    component 128682 "Logger"
+      comment "System logging module. Common entry point for all logs."
+    end
+
+    component 129194 "AlertFormatter"
+      comment "Interface for defining output alert formatters. This allows usage of common formatters in different triggers."
+    end
+
+    component 129322 "FiniteStateMachine"
+      comment "FSM - Finite State Machine. Component for defining states and transitions between them and allows persistent state holding in case of system crash."
+    end
+  end
+
+end

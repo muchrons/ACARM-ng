@@ -1,0 +1,86 @@
+format 66
+
+componentcanvas 128042 component_ref 128042 // Core
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  xyzwh 321 138 2000 155 57
+end
+componentcanvas 128170 component_ref 128170 // InputDataSet
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  xyzwh 43 34 2000 155 57
+end
+componentcanvas 128298 component_ref 128298 // CorrelationSet
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  xyzwh 42 138 2000 155 57
+end
+componentcanvas 128426 component_ref 128554 // Persistency
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  xyzwh 321 34 2000 155 57
+end
+componentcanvas 128554 component_ref 128426 // ConfigIO
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  xyzwh 592 138 2000 155 57
+end
+componentcanvas 128682 component_ref 129066 // Input
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  xyzwh 124 376 2000 155 57
+end
+componentcanvas 128810 component_ref 128938 // Trigger
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  xyzwh 509 376 2000 155 57
+end
+componentcanvas 128938 component_ref 128810 // Filter
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  xyzwh 321 376 2005 155 57
+end
+componentcanvas 129066 component_ref 128682 // Logger
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  xyzwh 592 33 2000 155 57
+end
+componentcanvas 129194 component_ref 129194 // AlertFormatter
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  xyzwh 509 506 2000 155 57
+end
+componentcanvas 129322 component_ref 129322 // FiniteStateMachine
+  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
+  xyzwh 319 508 2000 155 57
+end
+simplerelationcanvas 129450 simplerelation_ref 128042
+  from ref 128042 z 2001 to ref 128426
+end
+simplerelationcanvas 129578 simplerelation_ref 128170
+  from ref 128042 z 2001 to ref 129066
+end
+simplerelationcanvas 129834 simplerelation_ref 128298
+  from ref 128042 z 2001 to ref 128554
+end
+simplerelationcanvas 129962 simplerelation_ref 128426
+  from ref 128042 z 2001 to ref 128170
+end
+simplerelationcanvas 130090 simplerelation_ref 128554
+  from ref 128042 z 2001 to ref 128298
+end
+simplerelationcanvas 130218 simplerelation_ref 128682
+  from ref 128298 z 2001 to ref 128170
+end
+simplerelationcanvas 130602 simplerelation_ref 128938
+  from ref 128042 z 2001 to ref 128682
+end
+simplerelationcanvas 130730 simplerelation_ref 129066
+  from ref 128042 z 2006 to ref 128938
+end
+simplerelationcanvas 130858 simplerelation_ref 129194
+  from ref 128042 z 2001 to ref 128810
+end
+simplerelationcanvas 130986 simplerelation_ref 129322
+  from ref 128938 z 2006 to ref 129322
+end
+simplerelationcanvas 131114 simplerelation_ref 129450
+  from ref 128810 z 2001 to ref 129322
+end
+simplerelationcanvas 131242 simplerelation_ref 129578
+  from ref 128810 z 2001 to ref 129194
+end
+simplerelationcanvas 131370 simplerelation_ref 128810
+  from ref 128682 z 2001 to ref 128042
+end
+end
