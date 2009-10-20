@@ -7,22 +7,13 @@ ID-3 set-based alerts processing - alerts are never removed from input, only cha
 ID-4 each correlation makes alert life-time longer by a given time (plugins decide how long).
 ID-5 set of correlated alerts creates forest structure.
 ID-6 system must provide unified way of reading/setting configuration.
-ID-7 each trigger has its own run-after treshold.
-ID-8 alerts can be reported any time and still be correlated afterwards.
+ID-7 each trigger has its own treshold - when reached it is run.
+ID-8 alerts can be reported to admin any time (asynchronous) and still be correlated afterwards (still in system set).
 ID-9 unified way of handling triggers/filters states (FSM?), keept in data base.
-ID-10 possibility to run triggers in separate processes.
-ID-11 possibility to run filters in separate processes.
 ID-12 data input from prelude-manager.
 ID-13 hierarchical alerts - reporting high-level alerts prevents reporting of low-level alerts, included in it (prevents alarm flooding).
 ID-14 ability to clean-up od data base entries (user-defined time threshold).
 ID-19 common framework for adaptive parameters for plugins and triggers.
-ID-20 automatic prioritazation of alerts (i.e. via filters: ID-2.1).
+ID-20 automatic priority assignment for alerts (i.e. via filters: ID-2.1).
 ID-21 wizualization of system work effects based on web technologies.
-
-
-ID-15 alerts and corelation results are available to user via fuse: dates in directories, files for time. IDMEF format is to be used.
-ID-16 AI module for correlating events that may indicate some new system activity.
-ID-17 adaptive system for gathering administrator's feedback to system, which alerts are important and which are not.
-ID-18 agents installed on monitored hosts to perform inside audit in case of doubt / more information were needed.
-ID-22 system configuration via web-interface.
-ID-23 extend IDS to be IPS via triggers (ID-2.2).
+ID-24 generic API for creating new filters, triggers and data inputs.
