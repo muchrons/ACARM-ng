@@ -125,16 +125,16 @@ CREATE TABLE    reported_services
 CREATE SEQUENCE reported_procs_id_seq;
 CREATE TABLE    reported_procs
 (
-  id                int          PRIMARY KEY
-                                 DEFAULT nextval('reported_procs_id_seq'),
-  id_reported_hosts int          NOT NULL
-                                 REFERENCES reported_hosts(id),
-  id_proc           int          NOT NULL
-                                 REFERENCES procs(id),
-  pid               int          NULL,
-  uid               int          NULL,
-  username          varchar(128) NULL,
-  arguments         text         NULL,
-  id_ref            int          NULL
-                                 REFERENCES reference_urls(id)
+  id               int          PRIMARY KEY
+                                DEFAULT nextval('reported_procs_id_seq'),
+  id_reported_host int          NOT NULL
+                                REFERENCES reported_hosts(id),
+  id_proc          int          NOT NULL
+                                REFERENCES procs(id),
+  pid              int          NULL,
+  uid              int          NULL,
+  username         varchar(128) NULL,
+  arguments        text         NULL,
+  id_ref           int          NULL
+                                REFERENCES reference_urls(id)
 );
