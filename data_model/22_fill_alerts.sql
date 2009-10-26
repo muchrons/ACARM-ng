@@ -11,5 +11,3 @@ INSERT INTO severities VALUES
   (5, 5, 'error'),
   (6, 6, 'critical')
 ;
-
--- TODO

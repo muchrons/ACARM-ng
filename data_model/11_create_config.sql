@@ -15,5 +15,3 @@ CREATE TABLE config
   key   varchar(64)  NOT NULL UNIQUE,
   value varchar(256) NOT NULL
 );
-
--- TODO

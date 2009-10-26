@@ -4,6 +4,5 @@
 
 INSERT INTO config_rdonly VALUES
   ('version',       'v0.0.0'),
-  ('creation_time', now() );
-
--- TODO
+  ('creation_time', now() )
+;
