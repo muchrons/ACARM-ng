@@ -80,7 +80,8 @@ CREATE TABLE    alerts
   id_analizer int          NOT NULL
                            REFERENCES analizers(id),
   detect_time timestamp    NULL,
-  create_time timestamp    NOT NULL,
+  create_time timestamp    NOT NULL
+                           DEFAULT now(),
   id_severity int          NOT NULL
                            REFERENCES severities(id),
   certanity   int          NOT NULL,
