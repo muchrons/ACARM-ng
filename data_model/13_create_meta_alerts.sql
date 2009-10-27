@@ -36,6 +36,48 @@ CREATE TABLE alert_to_meta_alert_map
 );
 
 
+--
+-- meta-alerts tree is in fact acircular graph. 'tree' name is used, since
+-- most of the time this graph is just a set of trees. the exceptions are:
+--   1) in general few trees may have common subtrie
+--   2) multiple parent nodes may have the same child
+--   3) it does not gave one, single root (using graph terminology, it is
+--      "not consistent")
+--
+-- structure representation from logical point of view looks like this:
+--   <parent1; {children set 1}>
+--   <parent2; {children set 2}>
+--   ...
+-- in SQL it is implemented as a relation set, i.e. if parent is in relation with
+-- a given child (aka: has a child), it is reflected as a single entry in 'tree'
+-- table, like this:
+--   <parent1; child1_of_parent1>
+--   <parent1; child2_of_parent1>
+--   <parent1; child3_of_parent1>
+--   ...
+--   <parent2; child1_of_parent2>
+--   <parent2; child2_of_parent2>
+--   ...
+-- though such a structure perfectly fits this system needs in general it
+-- permits entering data inconsistent with the model, like pairs:
+--   <1; 2>
+--   <2; 1>
+-- that would produce a cycle. in order to prevent such a situations and
+-- to make adding new connections between nodes as simple as possible set of
+-- PL/pgSQL functions and triggers has been provided.
+-- in general data base checks itself if given connection is allowed or not,
+-- before commiting data. user can use following functions to make her life
+-- easier:
+--   - get_parents(id) - returns set of IDs representing all parents above
+--                       given node ('id' param).
+--   - get_children(id) - returns set of IDs representing all children below
+--                        given node ('id' param).
+--   - link_meta_alerts(id_from, id_to) - creates link from 'id_from' node to
+--                                        to 'id_to' node or raises exception
+--                                        if such a link would create circular
+--                                        dependency in graph.
+--
+
 -- meta alerts tree
 CREATE TABLE meta_alerts_tree
 (
