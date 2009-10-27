@@ -2,4 +2,4 @@
 -- drop_states.sql
 --
 
--- TODO
+DROP TABLE meta_alerts_in_use;
