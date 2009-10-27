@@ -31,7 +31,7 @@ GRANT INSERT
   TO "acarm-ng-daemon";
 
 -- daemon may update pieces of information gathered by sensors
-GRANT UPDATE
+GRANT UPDATE(name)
   ON TABLE hosts
   TO "acarm-ng-daemon";
 

@@ -23,6 +23,8 @@ CREATE TABLE    meta_alerts
                                 DEFAULT now()
 );
 
+-- TODO: add table with list of still referenced meta-alerts
+
 
 -- alert to meta-alert mapping table
 CREATE TABLE alert_to_meta_alert_map
