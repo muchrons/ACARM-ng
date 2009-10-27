@@ -13,6 +13,7 @@ CREATE TABLE    procs
   md5  char(32)     NULL
 );
 
+
 -- services
 CREATE SEQUENCE services_id_seq;
 CREATE TABLE    services
@@ -26,6 +27,7 @@ CREATE TABLE    services
   CONSTRAINT port_check CHECK ( 0<port AND port<65536 )
 );
 
+
 -- reference urls
 CREATE SEQUENCE reference_urls_id_seq;
 CREATE TABLE    reference_urls
@@ -35,6 +37,7 @@ CREATE TABLE    reference_urls
   name varchar(128) NOT NULL,
   url  varchar(256) NOT NULL
 );
+
 
 -- hosts
 CREATE SEQUENCE hosts_id_seq;
@@ -48,6 +51,7 @@ CREATE TABLE    hosts
   name char(64) NULL        -- DNS host's name
 );
 
+
 -- analizers
 CREATE SEQUENCE analizers_id_seq;
 CREATE TABLE    analizers
@@ -59,6 +63,7 @@ CREATE TABLE    analizers
                       REFERENCES hosts(id)  -- host analizers runs on
 );
 
+
 -- severities
 -- CREATE SEQUENCE severities_id_seq;
 CREATE TABLE    severities
@@ -69,6 +74,7 @@ CREATE TABLE    severities
 
   CONSTRAINT level_check CHECK ( 0<=level AND level<=6 )
 );
+
 
 -- alerts
 CREATE SEQUENCE alerts_id_seq;
@@ -93,6 +99,7 @@ CREATE TABLE    alerts
   CONSTRAINT dates_relation_check CHECK ( detect_time<=create_time )
 );
 
+
 -- reported hosts
 CREATE SEQUENCE reported_hosts_id_seq;
 CREATE TABLE    reported_hosts
@@ -110,6 +117,7 @@ CREATE TABLE    reported_hosts
   CONSTRAINT role_check CHECK (role IN ('src', 'dst'))
 );
 
+
 -- reported services
 --CREATE SEQUENCE reported_services_id_seq;
 CREATE TABLE    reported_services
@@ -123,6 +131,7 @@ CREATE TABLE    reported_services
 
   UNIQUE(id_reported_host, id_service)
 );
+
 
 -- reported processes
 CREATE SEQUENCE reported_procs_id_seq;

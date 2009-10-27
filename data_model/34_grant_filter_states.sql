@@ -8,6 +8,7 @@ GRANT SELECT
   TO "acarm-ng-ui",
      "acarm-ng-daemon";
 
+
 -- daemon may add and delete data to set
 GRANT INSERT,
       DELETE

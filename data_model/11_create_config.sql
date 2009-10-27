@@ -9,6 +9,7 @@ CREATE TABLE config_rdonly
   value varchar(256) NOT NULL
 );
 
+
 -- config
 CREATE TABLE config
 (

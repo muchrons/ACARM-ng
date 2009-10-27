@@ -11,6 +11,7 @@ CREATE TABLE    logger_nodes
   name varchar(128) NOT NULL UNIQUE
 );
 
+
 -- logger_logs
 --CREATE SEQUENCE logger_logs_id_seq;
 CREATE TABLE    logger_logs

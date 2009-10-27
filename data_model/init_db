@@ -1,10 +1,8 @@
 #!/bin/bash
-
 DB="acarm_ng_test"
 
+# note: 'ls' is needed here to preserve proper order of execution
 for s in `ls *.sql`
 do
   psql -d "$DB" -f $s || exit $?
 done
-
-exit $?

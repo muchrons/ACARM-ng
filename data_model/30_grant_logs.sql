@@ -9,6 +9,7 @@ GRANT INSERT,
   TO "acarm-ng-ui",
      "acarm-ng-daemon";
 
+
 -- ui may show logs
 GRANT SELECT
   ON TABLE logger_logs
