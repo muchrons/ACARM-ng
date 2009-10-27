@@ -19,7 +19,8 @@ CREATE TABLE    logger_logs
 --                       DEFAULT nextval('logger_logs_id_seq'),
   id_node int          REFERENCES logger_nodes(id),
   prio    char(5)      NOT NULL,
-  ctime   timestamp    NOT NULL
+  ctime   timestamp with time zone
+                       NOT NULL
                        DEFAULT now(),
   msg     varchar(256) NOT NULL
 
