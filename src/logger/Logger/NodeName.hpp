@@ -29,15 +29,26 @@ struct ExceptionInvalidNodeName: public Exception
 }; // struct ExceptionInvalidNodeName
 
 
-// TODO: comment
-// TODO: test
-
+/* \brief repreesnts name of a node.
+ */
 class NodeName
 {
 public:
+  /** \brief creates node name from a given stirng.
+   *  \param name name to create node name from.
+   *  \note notice that this c-tor is not explicit to make it behave more
+   *        intuitive when passing as a call parameter.
+   */
   NodeName(const char *name);
+  /** \brief creates child node for a given parent.
+   *  \param parentNode parent node for this one.
+   *  \param surifx     name surfix to be used.
+   */
   NodeName(const NodeName &parentNode, const char *surfix);
 
+  /** \brief returns node name.
+   *  \return node name.
+   */
   const std::string get() const
   {
     return name_;

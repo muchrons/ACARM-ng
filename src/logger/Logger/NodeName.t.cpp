@@ -134,4 +134,13 @@ void testObj::test<9>(void)
   }
 }
 
+// test copy-c-tor of an object
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  const NodeName n1("abc.def");
+  const NodeName n2(n1);
+}
+
 } // namespace tut
