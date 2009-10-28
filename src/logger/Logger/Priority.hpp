@@ -5,6 +5,8 @@
 #ifndef INCLUDE_LOGGER_PRIORITY_HPP_FILE
 #define INCLUDE_LOGGER_PRIORITY_HPP_FILE
 
+/* public header */
+
 #include "System/IterableEnum.hpp"
 
 namespace Logger
