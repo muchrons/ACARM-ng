@@ -45,8 +45,7 @@ void Formatter::format(std::stringstream &ssOut,
        <<file<<":"
        <<call<<":"
        <<line<<": "
-       <<msg
-       <<endl;
+       <<msg;
 }
 
 const char *Formatter::pri2str(Priority pri) const

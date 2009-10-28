@@ -12,7 +12,6 @@
 #include "Logger/Priority.hpp"
 
 // TODO: comment
-// TODO: test
 
 namespace Logger
 {

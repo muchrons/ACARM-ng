@@ -9,6 +9,6 @@ using namespace Logger::Appenders;
 int main(void)
 {
   scoped_ptr<Base> app( new Console );
-  app->append("if you can read this it is ok :)\n");
+  app->append("if you can read this it is ok :)");
   return 0;
 }

@@ -22,7 +22,7 @@ class Console: public Base
 private:
   virtual void appendImpl(const std::string &str)
   {
-    std::cout<<str;
+    std::cout<<str<<std::endl;
   }
 }; // class Console
 
