@@ -31,10 +31,10 @@
 
 #include "LibPrelude/config.h"
 
-#include "LibPrelude/ftw_.h"
-#include "LibPrelude/getpass.h"
-#include "LibPrelude/minmax.h"
-#include "LibPrelude/pathmax.h"
+#include "LibPrelude/libmissing/ftw_.h"
+#include "LibPrelude/libmissing/getpass.h"
+#include "LibPrelude/libmissing/minmax.h"
+#include "LibPrelude/libmissing/pathmax.h"
 
 #endif /* _LIBPRELUDE_LIBMISSING_H */
 /* public header */

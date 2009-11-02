@@ -29,9 +29,9 @@ or obtained by writing to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "LibPrelude/lt__private.h"
-#include "LibPrelude/lt_system.h"
-#include "LibPrelude/lt_dlloader.h"
+#include "LibPrelude/libltdl/lt__private.h"
+#include "LibPrelude/libltdl/lt_system.h"
+#include "LibPrelude/libltdl/lt_dlloader.h"
 
 
 /* --- MANIFEST CONSTANTS --- */

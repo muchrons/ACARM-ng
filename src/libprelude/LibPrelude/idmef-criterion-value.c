@@ -30,13 +30,13 @@
 #include <string.h>
 #include <ctype.h>
 #include <sys/types.h>
-#include <regex.h>
+#include "LibPrelude/libmissing/regex.h"
 #include <stdarg.h>
 #include <errno.h>
 
 #include "LibPrelude/common.h"
 #include "LibPrelude/prelude-log.h"
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 #include "LibPrelude/prelude-inttypes.h"
 
 #include "LibPrelude/idmef.h"

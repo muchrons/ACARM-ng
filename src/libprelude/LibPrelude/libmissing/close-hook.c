@@ -15,10 +15,10 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 /* Specification.  */
-#include "LibPrelude/close-hook.h"
+#include "LibPrelude/libmissing/close-hook.h"
 
 #include <stdlib.h>
 #include <unistd.h>

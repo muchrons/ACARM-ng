@@ -17,7 +17,7 @@
 
 /* written by Jim Meyering and Bruno Haible */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 /* Only the AC_FUNC_REALLOC macro defines 'realloc' already in config.h.  */
 #ifdef realloc

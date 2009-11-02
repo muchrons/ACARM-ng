@@ -17,14 +17,14 @@
 
 /* Written by Paolo Bonzini */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 #define WIN32_LEAN_AND_MEAN
 /* Get winsock2.h. */
 #include <sys/socket.h>
 
 /* Get set_winsock_errno, FD_TO_SOCKET etc. */
-#include "LibPrelude/w32sock.h"
+#include "LibPrelude/libmissing/w32sock.h"
 
 int
 rpl_socket (int domain, int type, int protocol)

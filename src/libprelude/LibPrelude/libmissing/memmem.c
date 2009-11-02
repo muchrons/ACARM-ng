@@ -31,7 +31,7 @@
 
 #define RETURN_TYPE void *
 #define AVAILABLE(h, h_l, j, n_l) ((j) <= (h_l) - (n_l))
-#include "LibPrelude/str-two-way.h"
+#include "LibPrelude/libmissing/str-two-way.h"
 
 /* Return the first occurrence of NEEDLE in HAYSTACK.  Return HAYSTACK
    if NEEDLE_LEN is 0, otherwise NULL if NEEDLE is not found in

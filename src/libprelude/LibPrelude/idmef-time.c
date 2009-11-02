@@ -53,7 +53,7 @@
 
 #include "LibPrelude/prelude-inttypes.h"
 #include "LibPrelude/prelude-string.h"
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 #include "LibPrelude/ntp.h"
 #include "LibPrelude/prelude-log.h"
 #include "LibPrelude/common.h"

@@ -30,7 +30,7 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 #include "LibPrelude/prelude-log.h"
 #include "LibPrelude/prelude-extract.h"
 #include "LibPrelude/prelude-io.h"

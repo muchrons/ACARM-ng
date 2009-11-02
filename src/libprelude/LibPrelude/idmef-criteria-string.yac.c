@@ -129,10 +129,10 @@
 #include <stdarg.h>
 #include <ctype.h>
 
-#include "LibPrelude/glthread/lock.h"
+#include "LibPrelude/libmissing/glthread/lock.h"
 
 #include "LibPrelude/prelude-log.h"
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 #include "LibPrelude/prelude-inttypes.h"
 
 #include "LibPrelude/idmef.h"

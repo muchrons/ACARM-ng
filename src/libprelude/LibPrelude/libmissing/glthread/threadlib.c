@@ -17,7 +17,7 @@
 
 /* Written by Bruno Haible <bruno@clisp.org>, 2005.  */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 /* ========================================================================= */
 

@@ -43,7 +43,7 @@
 #include "LibPrelude/config-engine.h"
 #include "LibPrelude/prelude-option.h"
 #include "LibPrelude/prelude-client.h"
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 #include "LibPrelude/common.h"
 
 

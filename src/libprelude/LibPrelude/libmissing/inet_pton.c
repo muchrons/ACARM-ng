@@ -32,12 +32,12 @@
  * SOFTWARE.
  */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 /* Specification.  */
 #include <arpa/inet.h>
 
-#include <c-ctype.h>
+#include "LibPrelude/libmissing/c-ctype.h"
 #include <string.h>
 #include <errno.h>
 

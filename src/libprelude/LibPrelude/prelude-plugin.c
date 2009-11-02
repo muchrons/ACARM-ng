@@ -45,7 +45,7 @@
 # endif
 #endif
 
-#include <ltdl.h>
+#include "LibPrelude/libltdl/ltdl.h"
 
 #include "LibPrelude/prelude-log.h"
 #include "LibPrelude/variable.h"
@@ -54,7 +54,7 @@
 #include "LibPrelude/prelude-option.h"
 #include "LibPrelude/prelude-linked-object.h"
 #include "LibPrelude/prelude-plugin.h"
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 #include "LibPrelude/config-engine.h"
 
 

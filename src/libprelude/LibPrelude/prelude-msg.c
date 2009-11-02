@@ -44,7 +44,7 @@
 #endif
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_MESSAGE
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 
 #include "LibPrelude/common.h"
 #include "LibPrelude/prelude-log.h"

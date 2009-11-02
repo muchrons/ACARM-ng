@@ -16,7 +16,7 @@
    with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 /* Specification.  */
 #include <stdio.h>
@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "LibPrelude/vasnprintf.h"
+#include "LibPrelude/libmissing/vasnprintf.h"
 
 /* Print formatted output to string STR.  Similar to sprintf, but
    additional length SIZE limit how much is written into STR.  Returns

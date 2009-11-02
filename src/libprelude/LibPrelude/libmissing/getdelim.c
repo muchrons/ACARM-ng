@@ -19,7 +19,7 @@
 
 /* Ported from glibc by Simon Josefsson. */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 #include <stdio.h>
 

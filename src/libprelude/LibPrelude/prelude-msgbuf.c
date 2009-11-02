@@ -35,7 +35,7 @@
 #include "LibPrelude/prelude-io.h"
 #include "LibPrelude/prelude-msg.h"
 #include "LibPrelude/prelude-msgbuf.h"
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 
 
 struct prelude_msgbuf {

@@ -28,7 +28,7 @@
 
 #include "LibPrelude/prelude-log.h"
 #include "LibPrelude/prelude-list.h"
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 #include "LibPrelude/prelude-hash.h"
 
 

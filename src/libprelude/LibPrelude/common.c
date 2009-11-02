@@ -38,7 +38,7 @@
 # include <sys/mman.h>
 #endif
 
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 #include "LibPrelude/idmef.h"
 #include "LibPrelude/prelude-log.h"
 #include "LibPrelude/common.h"

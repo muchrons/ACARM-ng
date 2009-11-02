@@ -31,12 +31,12 @@
 
 #include <gnutls/gnutls.h>
 
-#include "LibPrelude/relocatable.h"
-#include "LibPrelude/glthread/lock.h"
+#include "LibPrelude/libmissing/relocatable.h"
+#include "LibPrelude/libmissing/glthread/lock.h"
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_CLIENT_PROFILE
 
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 #include "LibPrelude/prelude-client-profile.h"
 #include "LibPrelude/tls-auth.h"
 #include "LibPrelude/common.h"

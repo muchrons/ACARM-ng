@@ -37,7 +37,7 @@
 #include "LibPrelude/prelude-string.h"
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_IDMEF_TYPE
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 
 #include "LibPrelude/idmef-time.h"
 #include "LibPrelude/idmef-data.h"

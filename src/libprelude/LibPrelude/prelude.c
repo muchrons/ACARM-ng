@@ -30,8 +30,8 @@
 #include <gnutls/gnutls.h>
 #include <gcrypt.h>
 
-#include "LibPrelude/glthread/thread.h"
-#include "LibPrelude/glthread/lock.h"
+#include "LibPrelude/libmissing/glthread/thread.h"
+#include "LibPrelude/libmissing/glthread/lock.h"
 
 #include "LibPrelude/prelude.h"
 #include "LibPrelude/idmef-path.h"

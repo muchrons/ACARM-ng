@@ -18,10 +18,10 @@
 
 /* Written by Bruno Haible <bruno@clisp.org>.  */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 /* Specification.  */
-#include "LibPrelude/localcharset.h"
+#include "LibPrelude/libmissing/localcharset.h"
 
 #include <stddef.h>
 #include <stdio.h>

@@ -78,7 +78,7 @@ extern "C" {
 # define slist_box	lt__slist_box
 # define slist_unbox	lt__slist_unbox
 
-#include <slist.h>
+#include "LibPrelude/libltdl/slist.h"
 
 #endif /*!defined(LT__GLIBC_H)*/
 /* public header */

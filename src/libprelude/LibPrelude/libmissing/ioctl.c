@@ -17,7 +17,7 @@
 
 /* Written by Paolo Bonzini */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 #include <sys/ioctl.h>
 
@@ -28,7 +28,7 @@
 #include <sys/socket.h>
 
 /* Get set_winsock_errno, FD_TO_SOCKET etc. */
-#include "LibPrelude/w32sock.h"
+#include "LibPrelude/libmissing/w32sock.h"
 
 int
 rpl_ioctl (int fd, int req, ...)

@@ -23,7 +23,7 @@
 #endif
 
 /* Specification.  */
-#include "LibPrelude/uname.h"
+#include "LibPrelude/libmissing/uname.h"
 
 
 #include <windows.h>

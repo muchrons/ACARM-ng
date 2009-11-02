@@ -14,12 +14,12 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 /* Specification.  */
 #include <unistd.h>
 
-#include "LibPrelude/close-hook.h"
+#include "LibPrelude/libmissing/close-hook.h"
 
 /* Override close() to call into other gnulib modules.  */
 

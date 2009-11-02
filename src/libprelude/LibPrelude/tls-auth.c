@@ -34,10 +34,10 @@
 #include <gnutls/gnutls.h>
 #include <gnutls/x509.h>
 
-#include "LibPrelude/glthread/lock.h"
+#include "LibPrelude/libmissing/glthread/lock.h"
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_CONNECTION
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 
 #include "LibPrelude/common.h"
 #include "LibPrelude/prelude-log.h"

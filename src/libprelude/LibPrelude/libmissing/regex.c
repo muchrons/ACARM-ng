@@ -17,7 +17,7 @@
    with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA. */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 /* Make sure noone compiles this code with a C++ compiler.  */
 #if defined __cplusplus && defined _LIBC
@@ -54,12 +54,12 @@
    #undefs RE_DUP_MAX and sets it to the right value.  */
 #include <limits.h>
 
-#include <regex.h>
-#include "LibPrelude/regex_internal.h"
+#include "LibPrelude/libmissing/regex.h"
+#include "LibPrelude/libmissing/regex_internal.h"
 
-#include "LibPrelude/regex_internal.c"
-#include "LibPrelude/regcomp.c"
-#include "LibPrelude/regexec.c"
+#include "LibPrelude/libmissing/regex_internal.c"
+#include "LibPrelude/libmissing/regcomp.c"
+#include "LibPrelude/libmissing/regexec.c"
 
 /* Binary backward compatibility.  */
 #if _LIBC

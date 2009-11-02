@@ -31,7 +31,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #if defined(LTDL) && defined LT_CONFIG_H
 #  include LT_CONFIG_H
 #else
-#  include <config.h>
+#  include "LibPrelude/config.h"
 #endif
 
 #include <argz.h>

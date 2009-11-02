@@ -18,7 +18,7 @@
 
 /* Written by Simon Josefsson. */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 #include <stdio.h>
 

@@ -35,7 +35,7 @@
 #include <errno.h>
 #include <assert.h>
 
-#include "LibPrelude/glthread/lock.h"
+#include "LibPrelude/libmissing/glthread/lock.h"
 
 #include "LibPrelude/common.h"
 #include "LibPrelude/prelude-timer.h"
@@ -53,7 +53,7 @@
 #endif
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_CONNECTION_POOL
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 
 #define INITIAL_EXPIRATION_TIME 10
 #define MAXIMUM_EXPIRATION_TIME 3600

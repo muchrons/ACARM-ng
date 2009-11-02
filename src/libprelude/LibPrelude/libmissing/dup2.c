@@ -17,7 +17,7 @@
 
 /* written by Paul Eggert */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 /* Specification.  */
 #include <unistd.h>

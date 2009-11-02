@@ -35,7 +35,7 @@
 #include <gnutls/x509.h>
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_CLIENT
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 
 #include "LibPrelude/common.h"
 #include "LibPrelude/prelude-log.h"

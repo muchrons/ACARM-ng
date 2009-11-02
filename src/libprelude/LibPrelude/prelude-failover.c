@@ -39,7 +39,7 @@
 #include <assert.h>
 #include <gcrypt.h>
 
-#include "LibPrelude/glthread/thread.h"
+#include "LibPrelude/libmissing/glthread/thread.h"
 
 #include "LibPrelude/common.h"
 #include "LibPrelude/prelude-log.h"
@@ -48,7 +48,7 @@
 #include "LibPrelude/prelude-failover.h"
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_FAILOVER
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 
 
 #define FAILOVER_CHECKSUM_SIZE       4

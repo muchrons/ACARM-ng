@@ -3,12 +3,12 @@
 #include <stdio.h>
 #include <stdarg.h>
 #include <string.h>
-#include <gettext.h>
+#include "LibPrelude/libmissing/gettext.h"
 #include <errno.h>
 
 #include "LibPrelude/prelude.h"
 #include "LibPrelude/prelude-log.h"
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 
 #include "LibPrelude/code-to-errno.h"
 #include "LibPrelude/code-from-errno.h"

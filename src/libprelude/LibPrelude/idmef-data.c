@@ -28,7 +28,7 @@
 #include <string.h>
 #include <sys/types.h>
 
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 #include "LibPrelude/prelude-inttypes.h"
 #include "LibPrelude/prelude-string.h"
 #include "LibPrelude/common.h"

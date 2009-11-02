@@ -82,6 +82,8 @@
 #include <errno.h>
 #include <stdlib.h>
 
+#include "LibPrelude/config.h"
+
 /* ========================================================================= */
 
 #if USE_POSIX_THREADS

@@ -30,7 +30,7 @@
 #include <unistd.h>
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_IDMEF_MESSAGE_READ
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 #include "LibPrelude/prelude-inttypes.h"
 #include "LibPrelude/prelude-list.h"
 #include "LibPrelude/prelude-extract.h"

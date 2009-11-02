@@ -28,8 +28,8 @@
 #include <stdlib.h>
 #include <signal.h>
 
-#include "LibPrelude/glthread/tls.h"
-#include "LibPrelude/glthread/lock.h"
+#include "LibPrelude/libmissing/glthread/tls.h"
+#include "LibPrelude/libmissing/glthread/lock.h"
 
 #include "LibPrelude/prelude.h"
 #include "LibPrelude/prelude-inttypes.h"

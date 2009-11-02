@@ -32,7 +32,7 @@
 #include <limits.h>
 #include <assert.h>
 
-#include "LibPrelude/glthread/lock.h"
+#include "LibPrelude/libmissing/glthread/lock.h"
 
 #include "LibPrelude/prelude-hash.h"
 #include "LibPrelude/prelude-log.h"
@@ -40,7 +40,7 @@
 #include "LibPrelude/prelude-string.h"
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_IDMEF_PATH
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 
 #include "LibPrelude/idmef-time.h"
 #include "LibPrelude/idmef-data.h"

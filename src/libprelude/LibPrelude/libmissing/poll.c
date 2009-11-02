@@ -24,7 +24,7 @@
 # pragma GCC diagnostic ignored "-Wtype-limits"
 #endif
 
-#include <config.h>
+#include "LibPrelude/config.h"
 #include <alloca.h>
 
 #include <sys/types.h>

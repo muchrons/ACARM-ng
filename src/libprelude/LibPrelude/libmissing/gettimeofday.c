@@ -19,7 +19,7 @@
 
 /* written by Jim Meyering */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 /* Specification.  */
 #include <sys/time.h>

@@ -17,7 +17,7 @@
    along with this program; if not, write to the Free Software Foundation,
    Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 #include <netdb.h>
 
@@ -39,7 +39,7 @@
 
 #include <stdbool.h>
 
-#include "LibPrelude/gettext.h"
+#include "LibPrelude/libmissing/gettext.h"
 #define _(String) gettext (String)
 #define N_(String) String
 

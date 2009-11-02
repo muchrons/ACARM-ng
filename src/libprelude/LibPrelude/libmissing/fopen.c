@@ -16,7 +16,7 @@
 
 /* Written by Bruno Haible <bruno@clisp.org>, 2007.  */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 /* Get the original definition of fopen.  It might be defined as a macro.  */
 #define __need_FILE

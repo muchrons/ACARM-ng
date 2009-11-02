@@ -18,7 +18,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
- #include <config.h>
+ #include "LibPrelude/config.h"
 #endif
 
 #include <stdio.h>
@@ -27,8 +27,8 @@
 #include <dirent.h>
 #include <errno.h>
 
-#include "LibPrelude/ftw_.h"
-#include "LibPrelude/pathmax.h"
+#include "LibPrelude/libmissing/ftw_.h"
+#include "LibPrelude/libmissing/pathmax.h"
 
 
 static int get_path_infos(const char *path, struct stat *st, int *flag)

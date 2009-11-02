@@ -29,7 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "LibPrelude/vasnprintf.h"
+#include "LibPrelude/libmissing/vasnprintf.h"
 
 /* Print formatted output to string STR.  Similar to vsprintf, but
    additional length SIZE limit how much is written into STR.  Returns

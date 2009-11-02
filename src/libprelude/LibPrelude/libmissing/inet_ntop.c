@@ -33,7 +33,7 @@
  * SOFTWARE.
  */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 /* Specification.  */
 #include <arpa/inet.h>

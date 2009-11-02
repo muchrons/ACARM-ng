@@ -28,11 +28,11 @@ or obtained by writing to the Free Software Foundation, Inc.,
 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
 */
 
-#include "LibPrelude/lt__private.h"
+#include "LibPrelude/libltdl/lt__private.h"
 
 #include <stdio.h>
 
-#include "LibPrelude/lt__alloc.h"
+#include "LibPrelude/libltdl/lt__alloc.h"
 
 static void alloc_die_default (void);
 

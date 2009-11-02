@@ -1,3 +1,4 @@
+#include <string.h>
 
 #line 3 "idmef-criteria-string.lex.c"
 

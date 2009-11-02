@@ -25,10 +25,10 @@
 # define _GNU_SOURCE	1
 #endif
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 /* Specification.  */
-#include "LibPrelude/relocatable.h"
+#include "LibPrelude/libmissing/relocatable.h"
 
 #if ENABLE_RELOCATABLE
 

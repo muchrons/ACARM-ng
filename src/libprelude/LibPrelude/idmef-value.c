@@ -35,7 +35,7 @@
 #include "LibPrelude/prelude-log.h"
 #include "LibPrelude/prelude-inttypes.h"
 #include "LibPrelude/prelude-string.h"
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 #include "LibPrelude/common.h"
 
 #include "LibPrelude/idmef.h"

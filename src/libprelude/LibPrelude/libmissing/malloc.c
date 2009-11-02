@@ -18,7 +18,7 @@
 
 /* written by Jim Meyering and Bruno Haible */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 /* Only the AC_FUNC_MALLOC macro defines 'malloc' already in config.h.  */
 #ifdef malloc
 # define NEED_MALLOC_GNU

@@ -86,7 +86,7 @@
 #endif
 
 /* Checked size_t computations.  */
-#include "LibPrelude/xsize.h"
+#include "LibPrelude/libmissing/xsize.h"
 
 #if (NEED_PRINTF_DOUBLE || NEED_PRINTF_LONG_DOUBLE) && !defined IN_LIBINTL
 # include <math.h>

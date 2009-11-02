@@ -21,7 +21,7 @@
 # include <config.h>
 #endif
 
-#include "LibPrelude/getpass.h"
+#include "LibPrelude/libmissing/getpass.h"
 
 #include <stdio.h>
 

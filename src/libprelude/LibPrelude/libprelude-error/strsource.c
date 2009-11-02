@@ -21,9 +21,9 @@
 
 #include "LibPrelude/config.h"
 
-#include "LibPrelude/prelude-error.h"
-#include "LibPrelude/gettext.h"
-#include "LibPrelude/err-sources.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
+#include "LibPrelude/libmissing/gettext.h"
+#include "LibPrelude/libprelude-error/err-sources.h"
 
 /* Return a pointer to a string containing a description of the error
    source in the error value ERR.  */

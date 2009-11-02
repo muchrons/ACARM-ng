@@ -19,13 +19,13 @@
    Based on GCC's gthr-posix.h, gthr-posix95.h, gthr-solaris.h,
    gthr-win32.h.  */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
 /* Specification.  */
-#include "LibPrelude/glthread/thread.h"
+#include "LibPrelude/libmissing/glthread/thread.h"
 
 #include <stdlib.h>
-#include "LibPrelude/glthread/lock.h"
+#include "LibPrelude/libmissing/glthread/lock.h"
 
 /* ========================================================================= */
 

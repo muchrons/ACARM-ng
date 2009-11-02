@@ -18,9 +18,9 @@
 /* Written by Yoann Vandoorselaere <yoann@prelude-ids.org>, 2008,
    and Bruno Haible <bruno@clisp.org>, 2008.  */
 
-#include <config.h>
+#include "LibPrelude/config.h"
 
-#include "LibPrelude/glthread/cond.h"
+#include "LibPrelude/libmissing/glthread/cond.h"
 
 /* ========================================================================= */
 

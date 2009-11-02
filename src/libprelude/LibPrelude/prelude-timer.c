@@ -28,15 +28,15 @@
 #include <time.h>
 #include <assert.h>
 
-#include "LibPrelude/glthread/thread.h"
-#include "LibPrelude/glthread/lock.h"
-#include "LibPrelude/glthread/cond.h"
+#include "LibPrelude/libmissing/glthread/thread.h"
+#include "LibPrelude/libmissing/glthread/lock.h"
+#include "LibPrelude/libmissing/glthread/cond.h"
 
 #include "LibPrelude/prelude-log.h"
 #include "LibPrelude/prelude-list.h"
 #include "LibPrelude/prelude-linked-object.h"
 #include "LibPrelude/prelude-async.h"
-#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/libprelude-error/prelude-error.h"
 
 #include "LibPrelude/prelude-timer.h"
 

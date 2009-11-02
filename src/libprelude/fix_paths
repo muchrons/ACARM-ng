@@ -1,5 +1,10 @@
 #!/bin/bash
+#
+# script fixes paths by finding where given include is in the tree and then
+# substituting original path with the one find in a tree.
+#
 
+# process single header in single file
 function process_header()
 {
   local f="$1"
@@ -9,7 +14,7 @@ function process_header()
   [ -z "$h_loc" ] || sed -i "s:#include *[<\"].*$h[\">] *:#include \"$h_loc\":" $f
 }
 
-
+# process single file
 function process_file()
 {
   local f="$1"
@@ -20,8 +25,8 @@ function process_file()
     done
 }
 
-
-find LibPrelude -type f | grep -v '/libmissing/' | \
+# process all files found
+find LibPrelude -type f | \
   while read f
   do
     echo "$f"

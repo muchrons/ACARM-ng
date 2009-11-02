@@ -31,7 +31,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #if !defined(LT_DLLOADER_H)
 #define LT_DLLOADER_H 1
 
-#include <libltdl/lt_system.h>
+#include "LibPrelude/libltdl/lt_system.h"
 
 LT_BEGIN_C_DECLS
 

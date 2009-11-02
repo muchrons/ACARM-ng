@@ -38,7 +38,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #endif
 
 #include <string.h>
-#include "LibPrelude/lt_system.h"
+#include "LibPrelude/libltdl/lt_system.h"
 
 #if !defined(HAVE_STRLCAT)
 #  define strlcat(dst,src,dstsize) lt_strlcat(dst,src,dstsize)
