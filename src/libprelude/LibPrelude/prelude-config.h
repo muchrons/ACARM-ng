@@ -12,3 +12,5 @@
 #ifndef HAVE_GID_T
 #define HAVE_GID_T 1
 #endif
+
+/* public header */

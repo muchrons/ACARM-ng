@@ -212,3 +212,5 @@ typedef enum {
 #endif
 
 #endif /* _LIBPRELUDE_INTTYPES_H */
+
+/* public header */
