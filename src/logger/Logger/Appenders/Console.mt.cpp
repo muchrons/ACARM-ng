@@ -1,3 +1,4 @@
+#include <iostream>
 #include <boost/scoped_ptr.hpp>
 
 #include "Logger/Appenders/Console.hpp"
