@@ -24,7 +24,7 @@
 #include <string>
 #include <iostream>
 
-#include "prelude-error.hxx"
+#include "PreludePP/prelude-error.hpp"
 #include <prelude.h>
 
 

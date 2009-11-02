@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "prelude-error.hxx"
-#include "idmef-time.hxx"
+#include "PreludePP/prelude-error.hpp"
+#include "PreludePP/idmef-time.hpp"
 
 using namespace Prelude;
 

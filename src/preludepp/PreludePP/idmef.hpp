@@ -3,8 +3,8 @@
 
 #include <string>
 #include <iostream>
-#include "idmef-value.hxx"
-#include "idmef-time.hxx"
+#include "PreludePP/idmef-value.hpp"
+#include "PreludePP/idmef-time.hpp"
 
 namespace Prelude
 {

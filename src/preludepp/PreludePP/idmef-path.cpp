@@ -21,9 +21,9 @@
 *
 *****/
 
-#include "idmef.hxx"
-#include "idmef-path.hxx"
-#include "prelude-error.hxx"
+#include "PreludePP/idmef.hpp"
+#include "PreludePP/idmef-path.hpp"
+#include "PreludePP/prelude-error.hpp"
 
 using namespace Prelude;
 

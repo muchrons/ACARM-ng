@@ -1,9 +1,9 @@
 #ifndef _LIBPRELUDE_PRELUDE_CLIENT_HXX
 #define _LIBPRELUDE_PRELUDE_CLIENT_HXX
 
-#include "idmef.hxx"
-#include "prelude-connection-pool.hxx"
-#include "prelude-client-profile.hxx"
+#include "PreludePP/idmef.hpp"
+#include "PreludePP/prelude-connection-pool.hpp"
+#include "PreludePP/prelude-client-profile.hpp"
 
 
 namespace Prelude {

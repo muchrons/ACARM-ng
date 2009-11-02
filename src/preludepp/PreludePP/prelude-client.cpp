@@ -1,7 +1,7 @@
-#include "idmef.hxx"
-#include "prelude-error.hxx"
-#include "prelude-client.hxx"
-#include "prelude-client-profile.hxx"
+#include "PreludePP/idmef.hpp"
+#include "PreludePP/prelude-error.hpp"
+#include "PreludePP/prelude-client.hpp"
+#include "PreludePP/prelude-client-profile.hpp"
 
 
 using namespace Prelude;

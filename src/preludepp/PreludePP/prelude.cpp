@@ -22,7 +22,7 @@
 *****/
 
 #include <prelude.h>
-#include "prelude.hxx"
+#include "PreludePP/prelude.hpp"
 
 const char *CheckVersion(const char *version)
 {
