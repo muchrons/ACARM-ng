@@ -18,7 +18,7 @@ void Console::appendImpl(const std::string &str)
 
 const char *Console::getTypeNameImpl(void) const
 {
-  return "Appender::Console";
+  return Console::getThisTypeName();
 }
 
 } // namespace Appenders

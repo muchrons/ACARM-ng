@@ -9,7 +9,6 @@
 #include "Logger/NodeConf.hpp"
 
 // TODO: test
-// TODO: implement
 // TODO: comment
 
 namespace Logger

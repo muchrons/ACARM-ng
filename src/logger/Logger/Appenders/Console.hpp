@@ -17,6 +17,15 @@ namespace Appenders
  */
 class Console: public Base
 {
+public:
+  /** \brief static method for getting type name.
+   *  \return compile-time pointer to type name.
+   */
+  static const char *getThisTypeName(void)
+  {
+    return "Console";
+  }
+
 private:
   virtual void appendImpl(const std::string &str);
   virtual const char *getTypeNameImpl(void) const;
