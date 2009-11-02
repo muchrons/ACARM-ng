@@ -33,21 +33,21 @@
  */
 #define LIBPRELUDE_VERSION "0.9.24.1"
 
-#include "LibPrelude/prelude-inttypes.h"
-#include "LibPrelude/common.h"
-#include "LibPrelude/prelude-client.h"
-#include "LibPrelude/prelude-connection.h"
-#include "LibPrelude/prelude-connection-pool.h"
-#include "LibPrelude/prelude-error.h"
-#include "LibPrelude/prelude-io.h"
-#include "LibPrelude/prelude-option.h"
-#include "LibPrelude/prelude-async.h"
-#include "LibPrelude/prelude-error.h"
-#include "LibPrelude/prelude-plugin.h"
-#include "LibPrelude/prelude-msg.h"
-#include "LibPrelude/prelude-msgbuf.h"
-#include "LibPrelude/prelude-timer.h"
-#include "LibPrelude/idmef.h"
+#include "prelude-inttypes.h"
+#include "common.h"
+#include "prelude-client.h"
+#include "prelude-connection.h"
+#include "prelude-connection-pool.h"
+#include "prelude-error.h"
+#include "prelude-io.h"
+#include "prelude-option.h"
+#include "prelude-async.h"
+#include "prelude-error.h"
+#include "prelude-plugin.h"
+#include "prelude-msg.h"
+#include "prelude-msgbuf.h"
+#include "prelude-timer.h"
+#include "idmef.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -73,4 +73,3 @@ void prelude_fork_child(void);
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_H */
-/* public header */
