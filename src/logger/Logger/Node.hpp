@@ -13,6 +13,7 @@
 // TODO: comment
 // TODO: test
 // TODO: implement
+// TODO: add '...' interface for logging
 
 namespace Logger
 {
