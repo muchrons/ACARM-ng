@@ -11,14 +11,9 @@ namespace Logger
 namespace Appenders
 {
 
-void Console::appendImpl(const std::string &str)
+Console::Console(void):
+  Stream<Console>( std::cout )
 {
-  std::cout<<str<<std::endl;
-}
-
-const char *Console::getTypeNameImpl(void) const
-{
-  return Console::getThisTypeName();
 }
 
 } // namespace Appenders
