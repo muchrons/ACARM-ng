@@ -8,8 +8,9 @@ using namespace Logger::Appenders;
 
 int main(void)
 {
-  std::cout<<"you should see message below"<<std::endl;
   scoped_ptr<Base> app( new Console );
+  std::cout<<"you should see message below from "<<app->getTypeName()
+           <<" appender"<<std::endl;
   app->append("if you can read this it is ok :)");
   return 0;
 }

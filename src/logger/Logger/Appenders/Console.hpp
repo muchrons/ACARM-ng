@@ -19,6 +19,7 @@ class Console: public Base
 {
 private:
   virtual void appendImpl(const std::string &str);
+  virtual const char *getTypeNameImpl(void) const;
 }; // class Console
 
 } // namespace Appenders

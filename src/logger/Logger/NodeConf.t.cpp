@@ -17,6 +17,10 @@ struct TestAppender: public Appenders::Base
   {
     // nothing is needed to be done here.
   }
+  virtual const char *getTypeNameImpl(void) const
+  {
+    return "TestAppender";
+  }
 }; // struct TestAppender
 
 

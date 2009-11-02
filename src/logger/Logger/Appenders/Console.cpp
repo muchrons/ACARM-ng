@@ -16,5 +16,10 @@ void Console::appendImpl(const std::string &str)
   std::cout<<str<<std::endl;
 }
 
+const char *Console::getTypeNameImpl(void) const
+{
+  return "Appender::Console";
+}
+
 } // namespace Appenders
 } // namespace Logger
