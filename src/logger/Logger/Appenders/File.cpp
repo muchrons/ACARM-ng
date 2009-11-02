@@ -21,7 +21,11 @@ File::File(const std::string &path):
   // though strange it is fine, since object is not used in a c-tor of base
   // class and reference will not change anyway (object is part of a class).
 
+  // open file and check if it succedded.
   out_.open(path.c_str(), ios_base::out | ios_base::app | ios_base::binary);
+  if( !out_.is_open() )
+    throw ExceptionFileAccessError("File::File()", path.c_str() );
+
   assert( out_.is_open() );
 }
 

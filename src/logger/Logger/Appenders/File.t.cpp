@@ -3,6 +3,7 @@
  *
  */
 #include <tut.h>
+#include <cstdlib>
 
 #include "Logger/Appenders/File.hpp"
 #include "Logger/Appenders/FileUnlinker.t.hpp"
@@ -68,39 +69,40 @@ void testObj::test<3>(void)
          b.getTypeName()==File::getThisTypeName() );
 }
 
-// try openeing some test file
+// test c-tor on file without access to
 template<>
 template<>
 void testObj::test<4>(void)
 {
+  const string cmd="chmod 400 " + path_;
+  const int    ret=system( cmd.c_str() );
+  ensure_equals("unable to change file permission", ret, 0);
+
+  try
+  {
+    File file(path_);
+    fail("File() didn't throw on openning file without write permission");
+  }
+  catch(const ExceptionFileAccessError &)
+  {
+    // this is expected
+  }
 }
 
-// 
+// test c-tor on non-exisitng file that cannot be accessed
 template<>
 template<>
 void testObj::test<5>(void)
 {
-}
-
-// 
-template<>
-template<>
-void testObj::test<6>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<7>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<8>(void)
-{
+  try
+  {
+    File file("/this/path/does/not/exist/and/so/do/file.txt");
+    fail("File() didn't throw on non-existing file");
+  }
+  catch(const ExceptionFileAccessError &)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut

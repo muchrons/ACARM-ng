@@ -9,6 +9,7 @@
 #include <fstream>
 
 #include "Logger/Appenders/Stream.hpp"
+#include "Logger/ExceptionFileAccessError.hpp"
 
 
 namespace Logger
