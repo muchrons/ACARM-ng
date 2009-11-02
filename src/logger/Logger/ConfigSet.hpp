@@ -8,14 +8,17 @@
 #include "Logger/NodeName.hpp"
 #include "Logger/NodeConf.hpp"
 
-// TODO: test
-// TODO: comment
-
 namespace Logger
 {
 
+/** \brief singleton's frontend for getting configuration.
+ */
 struct ConfigSet
 {
+  /** \brief returns configuration for a given node.
+   *  \param nn node to return configration for.
+   *  \return configration for node given as a paramter.
+   */
   static NodeConfPtr getConfig(const NodeName &nn);
 }; // struct ConfigSet
 

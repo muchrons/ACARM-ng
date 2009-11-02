@@ -12,17 +12,22 @@
 #include "Logger/NodeConf.hpp"
 #include "Logger/Appenders/Base.hpp"
 
-// TODO: test
-// TODO: comment
-
 namespace Logger
 {
 namespace detail
 {
 
+/** \brief implenentation of configuration singleton.
+ */
 class ConfigSetImpl: private boost::noncopyable
 {
 public:
+  /** \brief returns configariotn for a gienve node.
+   *  \param nn node to return configuration for.
+   *  \return given node's configuration.
+   *  \note if configurations are pre-cached so that asking twice for the same
+   *        node's config, will return exactly the same structure.
+   */
   NodeConfPtr getNodeConfiguration(const NodeName &nn);
 
 private:
@@ -32,6 +37,14 @@ private:
   //
   ConfigSetImpl();
   friend class System::Singleton<detail::ConfigSetImpl>;
+
+  //
+  // NOTE: solution with configration maps and returning pointer to
+  //       configurations looks strang at the first sight, but it is done
+  //       that way for a very specific reason. this allows thread-safe update
+  //       of loggers' configration on a fly. this feature is planned to be
+  //       used later on to allow dynamic (runtime) change of configuration.
+  //
 
   typedef std::map<std::string, NodeConfPtr>        ConfigMap;
   typedef std::map<const char*, Appenders::BasePtr> AppendersMap;
