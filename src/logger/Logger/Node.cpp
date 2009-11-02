@@ -4,9 +4,10 @@
  */
 #include <sstream>
 #include <sys/timeb.h>
-#include <iostream> // TODO: remove it                                                                                  
+#include <cassert>
 
 #include "Logger/Node.hpp"
+#include "Logger/ConfigSet.hpp"
 #include "Logger/Formatter.hpp"
 
 using namespace std;
@@ -14,6 +15,19 @@ using namespace std;
 
 namespace Logger
 {
+
+Node::Node(const NodeName &nn):
+  nn_(nn),
+  nc_( ConfigSet::getConfig(nn_) )
+{
+  assert( nc_.get()!=NULL );
+}
+
+Node::~Node(void)
+{
+  // thought this looks strange it allows proper generation of NodeConfPtr
+  // destructor, that calls NodeConf's one, via 'delete' from share_ptr<>.
+}
 
 void Node::log(Priority      pri,
                const char   *file,
@@ -26,12 +40,10 @@ void Node::log(Priority      pri,
   ftime(&ts);
 
   // format string
-  stringstream    ss;
-  const Formatter fmt=Formatter();
-  fmt.format(ss, ts, nn_, pri, file, call, line, msg);
-
-  // TODO: make this real logging
-  cout<<ss.str();
+  stringstream ss;
+  nc_->getFormatter().format(ss, ts, nn_, pri, file, call, line, msg);
+  // append it to configured appender
+  nc_->getAppender()->append( ss.str() );
 }
 
 } // namespace Logger

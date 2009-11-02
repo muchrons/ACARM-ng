@@ -5,14 +5,12 @@
 #ifndef INCLUDE_LOGGER_NODECONF_HPP_FILE
 #define INCLUDE_LOGGER_NODECONF_HPP_FILE
 
-/* public header */
-
 #include <boost/noncopyable.hpp>
-#include <boost/shared_ptr.hpp>
 
 #include "Logger/Appenders/Base.hpp"
 #include "Logger/Formatter.hpp"
 #include "Logger/Synchro.hpp"
+#include "Logger/NodeConfPtr.hpp"
 
 namespace Logger
 {
@@ -54,11 +52,7 @@ private:
                                     //       at this moment it has just one
                                     //       possible instance and is not planned
                                     //       to expand like appenders' case.
-};
-
-/** \brief shared pointer to configuration.
- */
-typedef boost::shared_ptr<NodeConf> NodeConfPtr;
+}; // class NodeConf
 
 } // namespace Logger
 

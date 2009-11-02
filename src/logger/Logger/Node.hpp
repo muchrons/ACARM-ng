@@ -9,10 +9,10 @@
 
 #include "Logger/NodeName.hpp"
 #include "Logger/Priority.hpp"
+#include "Logger/NodeConfPtr.hpp"
 
 // TODO: comment
 // TODO: test
-// TODO: implement
 // TODO: add '...' interface for logging
 
 namespace Logger
@@ -21,10 +21,8 @@ namespace Logger
 class Node
 {
 public:
-  Node(const NodeName &nn):
-    nn_(nn)
-  {
-  }
+  explicit Node(const NodeName &nn);
+  ~Node(void);
 
   const NodeName &getName(void) const
   {
@@ -78,7 +76,8 @@ private:
            unsigned int  line,
            const char   *msg) const;
 
-  NodeName nn_;
+  NodeName    nn_;
+  NodeConfPtr nc_;
 }; // class Node
 
 } // namespace Logger
