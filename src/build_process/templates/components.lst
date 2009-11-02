@@ -1,2 +1,6 @@
-app app2
-lib1 lib2 lib3
+app
+app2
+
+lib3
+lib2
+lib1

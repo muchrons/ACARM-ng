@@ -39,15 +39,8 @@ ifneq (,$(MEM_DEBUG))
 END_LINK_LIBS+=-lefence
 endif
 
-# compiler flags
-OPT_FLAGS:=-O3 -DNDEBUG -Werror
-DBG_FLAGS:=-g3 -rdynamic
-PRF_FLAGS:=$(DBG_FLAGS) $(OPT_FLAGS) -pg
-
-# linker flags
-PRF_LDFLAGS:=-pg
-DBG_LDFLAGS:=
-OPT_LDFLAGS:=
+# include toolchain-specific flags
+include $(MAKEFILES_TOOLCHAINS_BASE_DIR)/$(TC)-flags.mk
 
 # include profiles from extrnal files
 include $(wildcard $(MAKEFILES_PROFILES_BASE_DIR)/*.mk)
