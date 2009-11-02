@@ -28,10 +28,10 @@
 # include "config.h"
 #endif
 
-#include "idmef.h"
-#include "prelude-msg.h"
-#include "prelude-inttypes.h"
-#include "prelude-log.h"
+#include "LibPrelude/idmef.h"
+#include "LibPrelude/prelude-msg.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-log.h"
 #include <sys/types.h>
 
 #ifdef WIN32

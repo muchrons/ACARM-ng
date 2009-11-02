@@ -1,4 +1,4 @@
-#include "config.h"
+#include "LibPrelude/config.h"
 
 #include <stdio.h>
 #include <stdarg.h>
@@ -6,12 +6,12 @@
 #include <gettext.h>
 #include <errno.h>
 
-#include "prelude.h"
-#include "prelude-log.h"
-#include "prelude-error.h"
+#include "LibPrelude/prelude.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-error.h"
 
-#include "code-to-errno.h"
-#include "code-from-errno.h"
+#include "LibPrelude/code-to-errno.h"
+#include "LibPrelude/code-from-errno.h"
 
 
 #define PRELUDE_ERROR_CODE_DIM     65536

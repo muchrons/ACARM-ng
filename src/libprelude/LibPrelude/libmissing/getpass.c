@@ -21,7 +21,7 @@
 # include <config.h>
 #endif
 
-#include "getpass.h"
+#include "LibPrelude/getpass.h"
 
 #include <stdio.h>
 

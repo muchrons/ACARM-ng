@@ -37,7 +37,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #  include <config.h>
 #endif
 
-#include "lt_system.h"
+#include "LibPrelude/lt_system.h"
 
 #ifdef HAVE_DIRENT_H
 /* We have a fully operational dirent subsystem.  */

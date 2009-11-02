@@ -27,8 +27,8 @@
 #include <dirent.h>
 #include <errno.h>
 
-#include "ftw_.h"
-#include "pathmax.h"
+#include "LibPrelude/ftw_.h"
+#include "LibPrelude/pathmax.h"
 
 
 static int get_path_infos(const char *path, struct stat *st, int *flag)

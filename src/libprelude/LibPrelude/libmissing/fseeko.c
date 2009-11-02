@@ -23,7 +23,7 @@
 /* Get off_t and lseek.  */
 #include <unistd.h>
 
-#include "stdio-impl.h"
+#include "LibPrelude/stdio-impl.h"
 
 #undef fseeko
 #if !HAVE_FSEEKO

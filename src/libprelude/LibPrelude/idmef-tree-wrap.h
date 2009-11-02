@@ -29,11 +29,11 @@
 #define _LIBPRELUDE_IDMEF_TREE_WRAP_H
 
 #include <limits.h>
-#include "idmef-class.h"
-#include "idmef-value.h"
-#include "prelude-inttypes.h"
-#include "prelude-string.h"
-#include "prelude-msg.h"
+#include "LibPrelude/idmef-class.h"
+#include "LibPrelude/idmef-value.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-string.h"
+#include "LibPrelude/prelude-msg.h"
 
 #ifdef __cplusplus
   extern "C" {

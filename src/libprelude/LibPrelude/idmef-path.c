@@ -22,7 +22,7 @@
 *
 *****/
 
-#include "libmissing.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,26 +32,26 @@
 #include <limits.h>
 #include <assert.h>
 
-#include "glthread/lock.h"
+#include "LibPrelude/glthread/lock.h"
 
-#include "prelude-hash.h"
-#include "prelude-log.h"
-#include "prelude-inttypes.h"
-#include "prelude-string.h"
+#include "LibPrelude/prelude-hash.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-string.h"
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_IDMEF_PATH
-#include "prelude-error.h"
+#include "LibPrelude/prelude-error.h"
 
-#include "idmef-time.h"
-#include "idmef-data.h"
-#include "idmef-class.h"
-#include "idmef-value.h"
+#include "LibPrelude/idmef-time.h"
+#include "LibPrelude/idmef-data.h"
+#include "LibPrelude/idmef-class.h"
+#include "LibPrelude/idmef-value.h"
 
-#include "idmef-tree-wrap.h"
-#include "idmef-path.h"
-#include "prelude-string.h"
-#include "prelude-linked-object.h"
-#include "common.h"
+#include "LibPrelude/idmef-tree-wrap.h"
+#include "LibPrelude/idmef-path.h"
+#include "LibPrelude/prelude-string.h"
+#include "LibPrelude/prelude-linked-object.h"
+#include "LibPrelude/common.h"
 
 
 #define MAX_DEPTH                16

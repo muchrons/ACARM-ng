@@ -24,7 +24,7 @@
 #ifndef _LIBPRELUDE_IDMEF_DATA_H
 #define _LIBPRELUDE_IDMEF_DATA_H
 
-#include "prelude-list.h"
+#include "LibPrelude/prelude-list.h"
 
 #ifdef __cplusplus
  extern "C" {

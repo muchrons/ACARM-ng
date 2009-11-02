@@ -24,7 +24,7 @@
 #ifndef _LIBPRELUDE_IDMEF_TIME_HXX
 #define _LIBPRELUDE_IDMEF_TIME_HXX
 
-#include "prelude.h"
+#include "LibPrelude/prelude.h"
 
 namespace Prelude {
         class IDMEFTime {

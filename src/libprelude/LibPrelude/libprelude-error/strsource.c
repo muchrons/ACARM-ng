@@ -19,11 +19,11 @@
    02111-1307, USA.  */
 
 
-#include "config.h"
+#include "LibPrelude/config.h"
 
-#include "prelude-error.h"
-#include "gettext.h"
-#include "err-sources.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/gettext.h"
+#include "LibPrelude/err-sources.h"
 
 /* Return a pointer to a string containing a description of the error
    source in the error value ERR.  */

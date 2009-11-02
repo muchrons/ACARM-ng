@@ -28,8 +28,8 @@
 #ifndef _LIBPRELUDE_IDMEF_MESSAGE_READ_H
 #define _LIBPRELUDE_IDMEF_MESSAGE_READ_H
 
-#include "prelude-inttypes.h"
-#include "prelude-msgbuf.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-msgbuf.h"
 
 #ifdef __cplusplus
  extern "C" {

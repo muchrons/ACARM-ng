@@ -46,11 +46,11 @@ typedef enum {
 typedef struct prelude_client prelude_client_t;
 
 
-#include "prelude-client-profile.h"
-#include "prelude-ident.h"
-#include "prelude-connection.h"
-#include "prelude-connection-pool.h"
-#include "idmef.h"
+#include "LibPrelude/prelude-client-profile.h"
+#include "LibPrelude/prelude-ident.h"
+#include "LibPrelude/prelude-connection.h"
+#include "LibPrelude/prelude-connection-pool.h"
+#include "LibPrelude/idmef.h"
 
 
 prelude_ident_t *prelude_client_get_unique_ident(prelude_client_t *client);

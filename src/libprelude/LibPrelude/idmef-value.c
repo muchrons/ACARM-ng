@@ -22,7 +22,7 @@
 *
 *****/
 
-#include "config.h"
+#include "LibPrelude/config.h"
 
 #include <sys/types.h>
 #include <stdlib.h>
@@ -31,15 +31,15 @@
 #include <ctype.h>
 #include <assert.h>
 
-#include "prelude-list.h"
-#include "prelude-log.h"
-#include "prelude-inttypes.h"
-#include "prelude-string.h"
-#include "prelude-error.h"
-#include "common.h"
+#include "LibPrelude/prelude-list.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-string.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/common.h"
 
-#include "idmef.h"
-#include "idmef-value-type.h"
+#include "LibPrelude/idmef.h"
+#include "LibPrelude/idmef-value-type.h"
 
 #define CHUNK_SIZE 16
 #define FLOAT_TOLERANCE 0.0001

@@ -24,12 +24,12 @@
 #ifndef _LIBPRELUDE_IDMEF_PATH_HXX
 #define _LIBPRELUDE_IDMEF_PATH_HXX
 
-#include "prelude.h"
-#include "idmef-path.h"
+#include "LibPrelude/prelude.h"
+#include "LibPrelude/idmef-path.h"
 
-#include "idmef.hpp"
-#include "prelude-error.hpp"
-#include "idmef-value.hpp"
+#include "LibPrelude/CppBind/idmef.hpp"
+#include "LibPrelude/CppBind/prelude-error.hpp"
+#include "LibPrelude/CppBind/idmef-value.hpp"
 
 
 namespace Prelude {

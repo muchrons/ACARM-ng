@@ -35,7 +35,7 @@
 # include "config.h"
 #endif
 
-#include "prelude-inttypes.h"
+#include "LibPrelude/prelude-inttypes.h"
 
 #ifdef __cplusplus
   extern "C" {

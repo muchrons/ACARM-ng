@@ -21,7 +21,7 @@
 #include <config.h>
 
 /* Specification.  */
-#include "localcharset.h"
+#include "LibPrelude/localcharset.h"
 
 #include <stddef.h>
 #include <stdio.h>

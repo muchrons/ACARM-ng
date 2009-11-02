@@ -21,13 +21,13 @@
 *                                                                     *
 ***********************************************************************/
 
-#include "config.h"
+#include "LibPrelude/config.h"
 
 #include <stdio.h>
 #include <sys/types.h>
 
-#include "prelude-inttypes.h"
-#include "ntp.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/ntp.h"
 
 
 /*

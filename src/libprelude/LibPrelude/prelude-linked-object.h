@@ -25,7 +25,7 @@
 #define _LIBPRELUDE_PRELUDE_LINKED_OBJECT_H
 
 
-#include "prelude-list.h"
+#include "LibPrelude/prelude-list.h"
 
 
 #define PRELUDE_LINKED_OBJECT   \

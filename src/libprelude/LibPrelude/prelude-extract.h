@@ -24,7 +24,7 @@
 #ifndef _LIBPRELUDE_EXTRACT_H
 #define _LIBPRELUDE_EXTRACT_H
 
-#include "prelude-config.h"
+#include "LibPrelude/prelude-config.h"
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"
@@ -36,7 +36,7 @@
 # include <winsock2.h>
 #endif
 
-#include "prelude-inttypes.h"
+#include "LibPrelude/prelude-inttypes.h"
 
 
 #ifdef PRELUDE_ALIGNED_ACCESS
@@ -109,9 +109,9 @@ static inline float prelude_align_float(const void *buf)
 
 #endif
 
-#include "prelude-string.h"
-#include "idmef-time.h"
-#include "idmef-data.h"
+#include "LibPrelude/prelude-string.h"
+#include "LibPrelude/idmef-time.h"
+#include "LibPrelude/idmef-data.h"
 
 
 static inline uint16_t prelude_extract_uint16(const void *buf)

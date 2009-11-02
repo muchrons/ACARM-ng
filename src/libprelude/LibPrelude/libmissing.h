@@ -29,12 +29,12 @@
 #ifndef _LIBPRELUDE_LIBMISSING_H
 #define _LIBPRELUDE_LIBMISSING_H
 
-#include "config.h"
+#include "LibPrelude/config.h"
 
-#include "ftw_.h"
-#include "getpass.h"
-#include "minmax.h"
-#include "pathmax.h"
+#include "LibPrelude/ftw_.h"
+#include "LibPrelude/getpass.h"
+#include "LibPrelude/minmax.h"
+#include "LibPrelude/pathmax.h"
 
 #endif /* _LIBPRELUDE_LIBMISSING_H */
 /* public header */

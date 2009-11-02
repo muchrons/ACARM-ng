@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "prelude-error.hpp"
-#include "idmef-time.hpp"
+#include "LibPrelude/CppBind/prelude-error.hpp"
+#include "LibPrelude/CppBind/idmef-time.hpp"
 
 using namespace Prelude;
 

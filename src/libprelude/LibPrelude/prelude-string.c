@@ -26,8 +26,8 @@
  * API made by Krzysztof Zaraska, that is now part of prelude-string.
  */
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,14 +35,14 @@
 #include <sys/types.h>
 #include <assert.h>
 
-#include "common.h"
-#include "prelude-log.h"
-#include "prelude-inttypes.h"
-#include "prelude-string.h"
+#include "LibPrelude/common.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-string.h"
 
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_STRING
-#include "prelude-error.h"
+#include "LibPrelude/prelude-error.h"
 
 
 #define CHUNK_SIZE 1024

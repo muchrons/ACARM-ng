@@ -18,16 +18,16 @@
    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
    02111-1307, USA.  */
 
-#include "config.h"
+#include "LibPrelude/config.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
 
-#include "prelude-error.h"
-#include "gettext.h"
-#include "err-codes.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/gettext.h"
+#include "LibPrelude/err-codes.h"
 
 /* Return a pointer to a string containing a description of the error
    code in the error value ERR.  This function is not thread-safe.  */

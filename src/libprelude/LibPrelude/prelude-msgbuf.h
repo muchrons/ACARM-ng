@@ -35,8 +35,8 @@ typedef enum {
 } prelude_msgbuf_flags_t;
 
 
-#include "prelude-client.h"
-#include "prelude-msg.h"
+#include "LibPrelude/prelude-client.h"
+#include "LibPrelude/prelude-msg.h"
 
 
 int prelude_msgbuf_new(prelude_msgbuf_t **msgbuf);

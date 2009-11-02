@@ -31,7 +31,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #include <assert.h>
 #include <string.h>
 
-#include "lt__strl.h"
+#include "LibPrelude/lt__strl.h"
 
 /*
  lt_strlcat appends the NULL-terminated string src to the end of dst.

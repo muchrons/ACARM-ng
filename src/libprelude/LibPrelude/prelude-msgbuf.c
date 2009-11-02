@@ -21,21 +21,21 @@
 *
 *****/
 
-#include "config.h"
+#include "LibPrelude/config.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 
-#include "prelude-log.h"
-#include "prelude-list.h"
-#include "prelude-inttypes.h"
-#include "prelude-linked-object.h"
-#include "prelude-async.h"
-#include "prelude-io.h"
-#include "prelude-msg.h"
-#include "prelude-msgbuf.h"
-#include "prelude-error.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-list.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-linked-object.h"
+#include "LibPrelude/prelude-async.h"
+#include "LibPrelude/prelude-io.h"
+#include "LibPrelude/prelude-msg.h"
+#include "LibPrelude/prelude-msgbuf.h"
+#include "LibPrelude/prelude-error.h"
 
 
 struct prelude_msgbuf {

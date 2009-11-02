@@ -27,7 +27,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "vasnprintf.h"
+#include "LibPrelude/vasnprintf.h"
 
 /* Print formatted output to string STR.  Similar to sprintf, but
    additional length SIZE limit how much is written into STR.  Returns

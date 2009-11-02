@@ -35,7 +35,7 @@
 #define CANON_ELEMENT(c) TOLOWER (c)
 #define CMP_FUNC(p1, p2, l)				\
   strncasecmp ((const char *) (p1), (const char *) (p2), l)
-#include "str-two-way.h"
+#include "LibPrelude/str-two-way.h"
 
 /* Find the first occurrence of NEEDLE in HAYSTACK, using
    case-insensitive comparison.  This function gives unspecified

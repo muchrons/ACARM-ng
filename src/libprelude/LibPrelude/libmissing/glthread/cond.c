@@ -20,7 +20,7 @@
 
 #include <config.h>
 
-#include "glthread/cond.h"
+#include "LibPrelude/glthread/cond.h"
 
 /* ========================================================================= */
 

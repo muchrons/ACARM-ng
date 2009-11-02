@@ -24,8 +24,8 @@
 #ifndef _LIBPRELUDE_PRELUDE_IDENT_H
 #define _LIBPRELUDE_PRELUDE_IDENT_H
 
-#include "prelude-inttypes.h"
-#include "prelude-string.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-string.h"
 
 #ifdef __cplusplus
  extern "C" {

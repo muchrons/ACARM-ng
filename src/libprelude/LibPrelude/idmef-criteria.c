@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,8 +31,8 @@
 #include <stdarg.h>
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_IDMEF_CRITERIA
-#include "prelude.h"
-#include "idmef-criteria.h"
+#include "LibPrelude/prelude.h"
+#include "LibPrelude/idmef-criteria.h"
 
 
 struct idmef_criterion {

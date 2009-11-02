@@ -18,7 +18,7 @@
 #include <config.h>
 
 /* Specification.  */
-#include "close-hook.h"
+#include "LibPrelude/close-hook.h"
 
 #include <stdlib.h>
 #include <unistd.h>

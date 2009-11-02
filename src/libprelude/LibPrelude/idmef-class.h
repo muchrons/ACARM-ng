@@ -32,7 +32,7 @@
 typedef int idmef_class_id_t;
 typedef int idmef_class_child_id_t;
 
-#include "idmef-value.h"
+#include "LibPrelude/idmef-value.h"
 
 /*
  *

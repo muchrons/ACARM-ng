@@ -50,8 +50,8 @@
 typedef struct idmef_path idmef_path_t;
 
 #include <stdarg.h>
-#include "idmef-value.h"
-#include "idmef-tree-wrap.h"
+#include "LibPrelude/idmef-value.h"
+#include "LibPrelude/idmef-tree-wrap.h"
 
 int idmef_path_get(const idmef_path_t *path, idmef_message_t *message, idmef_value_t **ret);
 

@@ -18,7 +18,7 @@
 
 #include <config.h>
 
-#include "glthread/tls.h"
+#include "LibPrelude/glthread/tls.h"
 
 /* ========================================================================= */
 

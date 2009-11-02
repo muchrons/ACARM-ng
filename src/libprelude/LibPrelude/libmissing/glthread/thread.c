@@ -22,10 +22,10 @@
 #include <config.h>
 
 /* Specification.  */
-#include "glthread/thread.h"
+#include "LibPrelude/glthread/thread.h"
 
 #include <stdlib.h>
-#include "glthread/lock.h"
+#include "LibPrelude/glthread/lock.h"
 
 /* ========================================================================= */
 

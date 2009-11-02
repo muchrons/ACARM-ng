@@ -38,8 +38,8 @@ typedef enum {
 } idmef_criterion_value_type_t;
 
          
-#include "idmef-criteria.h"
-#include "idmef-value.h"
+#include "LibPrelude/idmef-criteria.h"
+#include "LibPrelude/idmef-value.h"
  
 
 int idmef_criterion_value_new(idmef_criterion_value_t **cv);

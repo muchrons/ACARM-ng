@@ -28,7 +28,7 @@
 #include <alloca.h>
 
 #include <sys/types.h>
-#include "poll.h"
+#include "LibPrelude/poll.h"
 #include <errno.h>
 #include <limits.h>
 #include <assert.h>

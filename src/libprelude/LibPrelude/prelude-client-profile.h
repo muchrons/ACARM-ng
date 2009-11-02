@@ -32,8 +32,8 @@
 #include <unistd.h>
 #include <sys/types.h>
 
-#include "prelude-config.h"
-#include "prelude-inttypes.h"
+#include "LibPrelude/prelude-config.h"
+#include "LibPrelude/prelude-inttypes.h"
 
 #ifdef __cplusplus
  extern "C" {

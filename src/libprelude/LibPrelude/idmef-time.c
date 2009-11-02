@@ -27,8 +27,8 @@
  */
 #define _STRPTIME_DONTZERO
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -51,13 +51,13 @@
 # endif
 #endif
 
-#include "prelude-inttypes.h"
-#include "prelude-string.h"
-#include "prelude-error.h"
-#include "ntp.h"
-#include "prelude-log.h"
-#include "common.h"
-#include "idmef-time.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-string.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/ntp.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/common.h"
+#include "LibPrelude/idmef-time.h"
 
 
 static char *parse_time_ymd(struct tm *tm, const char *buf)

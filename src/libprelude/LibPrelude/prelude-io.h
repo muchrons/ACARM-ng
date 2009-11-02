@@ -34,7 +34,7 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include "prelude-inttypes.h"
+#include "LibPrelude/prelude-inttypes.h"
 
 
 typedef struct prelude_io prelude_io_t;

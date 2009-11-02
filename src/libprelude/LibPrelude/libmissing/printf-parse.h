@@ -22,7 +22,7 @@
      ENABLE_UNISTDIO    Set to 1 to enable the unistdio extensions.
      STATIC             Set to 'static' to declare the function static.  */
 
-#include "printf-args.h"
+#include "LibPrelude/printf-args.h"
 
 
 /* Flags */

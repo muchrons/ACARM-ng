@@ -24,7 +24,7 @@
 #ifndef _LIBPRELUDE_PRELUDE_LOG_H
 #define _LIBPRELUDE_PRELUDE_LOG_H
 
-#include "prelude-config.h"
+#include "LibPrelude/prelude-config.h"
 
 #ifdef HAVE_CONFIG_H
 # include "config.h"

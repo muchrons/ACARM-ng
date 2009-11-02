@@ -20,7 +20,7 @@ Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
 
 /* Specification.  */
 #define NO_C_CTYPE_MACROS
-#include "c-ctype.h"
+#include "LibPrelude/c-ctype.h"
 
 /* The function isascii is not locale dependent. Its use in EBCDIC is
    questionable. */

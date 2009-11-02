@@ -29,11 +29,11 @@
 
 typedef struct idmef_value idmef_value_t;
 
-#include "prelude-io.h"
-#include "idmef-value-type.h"
-#include "prelude-string.h"
-#include "idmef-class.h"
-#include "idmef-path.h"
+#include "LibPrelude/prelude-io.h"
+#include "LibPrelude/idmef-value-type.h"
+#include "LibPrelude/prelude-string.h"
+#include "LibPrelude/idmef-class.h"
+#include "LibPrelude/idmef-path.h"
 
 #ifdef __cplusplus
  extern "C" {

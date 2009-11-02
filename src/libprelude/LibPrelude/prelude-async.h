@@ -25,7 +25,7 @@
 #define _LIBPRELUDE_PRELUDE_ASYNC_H
 
 
-#include "prelude-linked-object.h"
+#include "LibPrelude/prelude-linked-object.h"
 
 #ifdef __cplusplus
  extern "C" {

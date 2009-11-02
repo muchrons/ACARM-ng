@@ -36,8 +36,8 @@
 #include <errno.h>
 
 
-#include "prelude-thread.h"
-#include "prelude-string.h"
+#include "LibPrelude/prelude-thread.h"
+#include "LibPrelude/prelude-string.h"
 
 #ifdef __cplusplus
  extern "C" {

@@ -31,7 +31,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #if !defined(LT__ALLOC_H)
 #define LT__ALLOC_H 1
 
-#include "lt_system.h"
+#include "LibPrelude/lt_system.h"
 
 LT_BEGIN_C_DECLS
 

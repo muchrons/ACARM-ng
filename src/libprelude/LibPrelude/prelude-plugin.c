@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <ctype.h>
@@ -47,15 +47,15 @@
 
 #include <ltdl.h>
 
-#include "prelude-log.h"
-#include "variable.h"
-#include "prelude-inttypes.h"
-#include "prelude-io.h"
-#include "prelude-option.h"
-#include "prelude-linked-object.h"
-#include "prelude-plugin.h"
-#include "prelude-error.h"
-#include "config-engine.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/variable.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-io.h"
+#include "LibPrelude/prelude-option.h"
+#include "LibPrelude/prelude-linked-object.h"
+#include "LibPrelude/prelude-plugin.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/config-engine.h"
 
 
 #define DEFAULT_INSTANCE_NAME "default"

@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -31,15 +31,15 @@
 
 #include <gnutls/gnutls.h>
 
-#include "relocatable.h"
-#include "glthread/lock.h"
+#include "LibPrelude/relocatable.h"
+#include "LibPrelude/glthread/lock.h"
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_CLIENT_PROFILE
 
-#include "prelude-error.h"
-#include "prelude-client-profile.h"
-#include "tls-auth.h"
-#include "common.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/prelude-client-profile.h"
+#include "LibPrelude/tls-auth.h"
+#include "LibPrelude/common.h"
 
 #if (defined _WIN32 || defined __WIN32__) && !defined __CYGWIN__
 # define geteuid(x) (0)

@@ -24,8 +24,8 @@
 #include <string>
 #include <iostream>
 
-#include "prelude-error.hpp"
-#include <prelude.h>
+#include "LibPrelude/CppBind/prelude-error.hpp"
+#include "LibPrelude/prelude.h"
 
 
 using namespace Prelude;

@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <ctype.h>
@@ -38,10 +38,10 @@
 # include <sys/mman.h>
 #endif
 
-#include "prelude-error.h"
-#include "idmef.h"
-#include "prelude-log.h"
-#include "common.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/idmef.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/common.h"
 
 
 

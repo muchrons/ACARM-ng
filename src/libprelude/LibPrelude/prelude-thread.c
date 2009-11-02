@@ -21,20 +21,20 @@
 *
 *****/
 
-#include "config.h"
+#include "LibPrelude/config.h"
 
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <signal.h>
 
-#include "glthread/tls.h"
-#include "glthread/lock.h"
+#include "LibPrelude/glthread/tls.h"
+#include "LibPrelude/glthread/lock.h"
 
-#include "prelude.h"
-#include "prelude-inttypes.h"
-#include "prelude-thread.h"
-#include "prelude-log.h"
+#include "LibPrelude/prelude.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-thread.h"
+#include "LibPrelude/prelude-log.h"
 
 
 gl_once_define(static, init_once);

@@ -48,13 +48,13 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #endif
 
 /* Import internal interfaces...  */
-#include "lt__alloc.h"
-#include "lt__dirent.h"
-#include "lt__strl.h"
-#include "lt__glibc.h"
+#include "LibPrelude/lt__alloc.h"
+#include "LibPrelude/lt__dirent.h"
+#include "LibPrelude/lt__strl.h"
+#include "LibPrelude/lt__glibc.h"
 
 /* ...and all exported interfaces.  */
-#include "ltdl.h"
+#include "LibPrelude/ltdl.h"
 
 #if defined(WITH_DMALLOC)
 #  include <dmalloc.h>

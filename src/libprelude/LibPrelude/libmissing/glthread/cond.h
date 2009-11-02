@@ -54,7 +54,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "glthread/lock.h"
+#include "LibPrelude/glthread/lock.h"
 
 /* ========================================================================= */
 

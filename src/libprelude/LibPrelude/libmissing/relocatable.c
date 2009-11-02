@@ -28,7 +28,7 @@
 #include <config.h>
 
 /* Specification.  */
-#include "relocatable.h"
+#include "LibPrelude/relocatable.h"
 
 #if ENABLE_RELOCATABLE
 

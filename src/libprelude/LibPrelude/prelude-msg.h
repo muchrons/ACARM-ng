@@ -24,7 +24,7 @@
 #ifndef _LIBPRELUDE_PRELUDE_MESSAGE_H
 #define _LIBPRELUDE_PRELUDE_MESSAGE_H
 
-#include "prelude-io.h"
+#include "LibPrelude/prelude-io.h"
 
 
 #ifdef __cplusplus

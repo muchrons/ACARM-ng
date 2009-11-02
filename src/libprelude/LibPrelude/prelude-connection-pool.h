@@ -24,8 +24,8 @@
 #ifndef _LIBPRELUDE_PRELUDE_CONNECTION_POOL_H
 #define _LIBPRELUDE_PRELUDE_CONNECTION_POOL_H
 
-#include "prelude-list.h"
-#include "prelude-connection.h"
+#include "LibPrelude/prelude-list.h"
+#include "LibPrelude/prelude-connection.h"
 
 #ifdef __cplusplus
  extern "C" {

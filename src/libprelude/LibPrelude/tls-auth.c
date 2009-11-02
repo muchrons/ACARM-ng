@@ -21,7 +21,7 @@
 *
 *****/
 
-#include "config.h"
+#include "LibPrelude/config.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -34,19 +34,19 @@
 #include <gnutls/gnutls.h>
 #include <gnutls/x509.h>
 
-#include "glthread/lock.h"
+#include "LibPrelude/glthread/lock.h"
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_CONNECTION
-#include "prelude-error.h"
+#include "LibPrelude/prelude-error.h"
 
-#include "common.h"
-#include "prelude-log.h"
-#include "prelude-client.h"
-#include "prelude-message-id.h"
-#include "prelude-extract.h"
+#include "LibPrelude/common.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-client.h"
+#include "LibPrelude/prelude-message-id.h"
+#include "LibPrelude/prelude-extract.h"
 
-#include "tls-util.h"
-#include "tls-auth.h"
+#include "LibPrelude/tls-util.h"
+#include "LibPrelude/tls-auth.h"
 
 
 

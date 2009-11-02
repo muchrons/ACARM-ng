@@ -18,7 +18,7 @@
 #include <config.h>
 
 /* Specification.  */
-#include "vasnprintf.h"
+#include "LibPrelude/vasnprintf.h"
 
 #include <stdarg.h>
 

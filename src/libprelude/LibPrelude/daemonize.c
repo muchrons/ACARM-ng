@@ -21,7 +21,7 @@
 *
 *****/
 
-#include "libmissing.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,9 +33,9 @@
 #include <fcntl.h>
 #include <errno.h>
 
-#include "daemonize.h"
-#include "prelude-log.h"
-#include "prelude-error.h"
+#include "LibPrelude/daemonize.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-error.h"
 
 
 

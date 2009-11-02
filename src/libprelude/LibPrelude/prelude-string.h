@@ -30,8 +30,8 @@
 
 #include <stdarg.h>
 
-#include "prelude-list.h"
-#include "prelude-inttypes.h"
+#include "LibPrelude/prelude-list.h"
+#include "LibPrelude/prelude-inttypes.h"
 
 #ifdef __cplusplus
  extern "C" {

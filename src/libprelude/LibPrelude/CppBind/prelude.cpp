@@ -21,8 +21,8 @@
 *
 *****/
 
-#include <prelude.h>
-#include "prelude.hpp"
+#include "LibPrelude/prelude.h"
+#include "LibPrelude/CppBind/prelude.hpp"
 
 const char *CheckVersion(const char *version)
 {

@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -39,16 +39,16 @@
 #include <assert.h>
 #include <gcrypt.h>
 
-#include "glthread/thread.h"
+#include "LibPrelude/glthread/thread.h"
 
-#include "common.h"
-#include "prelude-log.h"
-#include "prelude-io.h"
-#include "prelude-msg.h"
-#include "prelude-failover.h"
+#include "LibPrelude/common.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-io.h"
+#include "LibPrelude/prelude-msg.h"
+#include "LibPrelude/prelude-failover.h"
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_FAILOVER
-#include "prelude-error.h"
+#include "LibPrelude/prelude-error.h"
 
 
 #define FAILOVER_CHECKSUM_SIZE       4

@@ -22,8 +22,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,13 +34,13 @@
 #include <stdarg.h>
 #include <errno.h>
 
-#include "common.h"
-#include "prelude-log.h"
-#include "prelude-error.h"
-#include "prelude-inttypes.h"
+#include "LibPrelude/common.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/prelude-inttypes.h"
 
-#include "idmef.h"
-#include "idmef-criterion-value.h"
+#include "LibPrelude/idmef.h"
+#include "LibPrelude/idmef-criterion-value.h"
 
 
 

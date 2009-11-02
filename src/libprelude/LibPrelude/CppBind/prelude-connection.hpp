@@ -24,9 +24,9 @@
 #ifndef _LIBPRELUDE_PRELUDE_CONNECTION_HXX
 #define _LIBPRELUDE_PRELUDE_CONNECTION_HXX
 
-#include "prelude-connection.h"
-#include "prelude-client-profile.hpp"
-#include "idmef.hpp"
+#include "LibPrelude/prelude-connection.h"
+#include "LibPrelude/CppBind/prelude-client-profile.hpp"
+#include "LibPrelude/CppBind/idmef.hpp"
 
 namespace Prelude {
         class IDMEF;

@@ -19,7 +19,7 @@
 /* Specification.  */
 #include <unistd.h>
 
-#include "close-hook.h"
+#include "LibPrelude/close-hook.h"
 
 /* Override close() to call into other gnulib modules.  */
 

@@ -20,7 +20,7 @@
 /* Specification.  */
 #include <wchar.h>
 
-#include "verify.h"
+#include "LibPrelude/verify.h"
 
 /* Platforms that lack mbsinit() also lack mbrlen(), mbrtowc(), mbsrtowcs()
    and wcrtomb(), wcsrtombs().

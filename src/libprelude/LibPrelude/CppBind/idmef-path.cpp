@@ -21,9 +21,9 @@
 *
 *****/
 
-#include "idmef.hpp"
-#include "idmef-path.hpp"
-#include "prelude-error.hpp"
+#include "LibPrelude/CppBind/idmef.hpp"
+#include "LibPrelude/CppBind/idmef-path.hpp"
+#include "LibPrelude/CppBind/prelude-error.hpp"
 
 using namespace Prelude;
 

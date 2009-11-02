@@ -55,11 +55,11 @@
 #include <limits.h>
 
 #include <regex.h>
-#include "regex_internal.h"
+#include "LibPrelude/regex_internal.h"
 
-#include "regex_internal.c"
-#include "regcomp.c"
-#include "regexec.c"
+#include "LibPrelude/regex_internal.c"
+#include "LibPrelude/regcomp.c"
+#include "LibPrelude/regexec.c"
 
 /* Binary backward compatibility.  */
 #if _LIBC

@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -53,21 +53,21 @@
 #endif
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_CONNECTION
-#include "prelude-error.h"
+#include "LibPrelude/prelude-error.h"
 
-#include "common.h"
-#include "prelude-inttypes.h"
-#include "prelude-client.h"
-#include "prelude-log.h"
-#include "prelude-io.h"
-#include "prelude-msg.h"
-#include "prelude-message-id.h"
-#include "prelude-client.h"
-#include "prelude-option.h"
-#include "prelude-list.h"
-#include "prelude-linked-object.h"
+#include "LibPrelude/common.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-client.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-io.h"
+#include "LibPrelude/prelude-msg.h"
+#include "LibPrelude/prelude-message-id.h"
+#include "LibPrelude/prelude-client.h"
+#include "LibPrelude/prelude-option.h"
+#include "LibPrelude/prelude-list.h"
+#include "LibPrelude/prelude-linked-object.h"
 
-#include "tls-auth.h"
+#include "LibPrelude/tls-auth.h"
 
 
 #define PRELUDE_CONNECTION_OWN_FD 0x02

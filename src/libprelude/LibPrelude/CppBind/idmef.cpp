@@ -1,13 +1,13 @@
 #include <iostream>
 
 #include <string.h>
-#include <prelude.h>
-#include <idmef-path.h>
-#include <idmef-message-print.h>
+#include "LibPrelude/prelude.h"
+#include "LibPrelude/idmef-path.h"
+#include "LibPrelude/idmef-message-print.h"
 
-#include "prelude-error.hpp"
-#include "idmef-path.hpp"
-#include "idmef.hpp"
+#include "LibPrelude/CppBind/prelude-error.hpp"
+#include "LibPrelude/CppBind/idmef-path.hpp"
+#include "LibPrelude/CppBind/idmef.hpp"
 
 
 using namespace Prelude;

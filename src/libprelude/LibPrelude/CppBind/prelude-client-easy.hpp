@@ -1,9 +1,9 @@
 #ifndef _LIBPRELUDE_PRELUDE_CLIENT_EASY_HXX
 #define _LIBPRELUDE_PRELUDE_CLIENT_EASY_HXX
 
-#include "prelude.h"
-#include "idmef.hpp"
-#include "prelude-client.hpp"
+#include "LibPrelude/prelude.h"
+#include "LibPrelude/CppBind/idmef.hpp"
+#include "LibPrelude/CppBind/prelude-client.hpp"
 
 
 namespace Prelude {

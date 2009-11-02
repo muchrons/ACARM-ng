@@ -30,7 +30,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 #include <assert.h>
 
-#include "slist.h"
+#include "LibPrelude/slist.h"
 #include <stddef.h>
 
 static SList *	slist_sort_merge    (SList *left, SList *right,

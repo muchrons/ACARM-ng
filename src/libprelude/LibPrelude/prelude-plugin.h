@@ -28,8 +28,8 @@
 # include "config.h"
 #endif
 
-#include "prelude-list.h"
-#include "prelude-option.h"
+#include "LibPrelude/prelude-list.h"
+#include "LibPrelude/prelude-option.h"
 
 #ifdef __cplusplus
 extern "C" {

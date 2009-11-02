@@ -61,8 +61,8 @@ typedef enum {
 typedef struct idmef_criteria idmef_criteria_t;
 typedef struct idmef_criterion idmef_criterion_t;
 
-#include "idmef-path.h"
-#include "idmef-criterion-value.h"
+#include "LibPrelude/idmef-path.h"
+#include "LibPrelude/idmef-criterion-value.h"
 
 const char *idmef_criterion_operator_to_string(idmef_criterion_operator_t op);
 
