@@ -7,8 +7,6 @@
 
 /* public header */
 
-// TODO: test
-
 namespace Logger
 {
 
