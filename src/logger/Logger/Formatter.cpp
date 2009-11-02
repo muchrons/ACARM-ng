@@ -43,8 +43,8 @@ void Formatter::format(std::stringstream &ssOut,
        <<ts.time<<"."<<tmp<<"/"
        <<nn.get()<<" "
        <<file<<":"
-       <<call<<":"
-       <<line<<": "
+       <<line<<" "
+       <<call<<": "
        <<msg;
 }
 
