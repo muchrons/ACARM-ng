@@ -77,4 +77,14 @@ void testObj::test<3>(void)
   // note: formatter cannot be checked at the moment since it does nothing.
 }
 
+// test presence of copyable pointer
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  NodeConfPtr ncp( new NodeConf(app_) );
+  NodeConfPtr tmp;
+  tmp=ncp;
+}
+
 } // namespace tut

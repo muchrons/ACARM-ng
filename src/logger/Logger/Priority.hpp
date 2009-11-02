@@ -14,7 +14,7 @@ namespace Logger
 {
 namespace detail
 {
-/** \biref helper class for System::IterableEnum<> template
+/** \brief helper class for System::IterableEnum<> template
  */
 struct PriorityEnum
 {
