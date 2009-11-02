@@ -1,6 +1,6 @@
 #include "LibPrelude/prelude.h"
 
-#include "LibPrelude/prelude-log.hpp"
+#include "LibPrelude/CppBind/prelude-log.hpp"
 
 
 using namespace Prelude;
