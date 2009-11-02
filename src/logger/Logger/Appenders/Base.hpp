@@ -9,16 +9,21 @@
 
 #include "Logger/Synchro.hpp"
 
-// TODO: comment
 
 namespace Logger
 {
 namespace Appenders
 {
 
+/** \brief common interface for all appenders.
+ */
 class Base
 {
 public:
+  /** \brief appends given string (calls appender) implenetation.
+   *  \param str message to be appended.
+   *  \note call is thread-safe.
+   */
   void append(const std::string &str)
   {
     Lock lock(mutex_);
@@ -26,12 +31,17 @@ public:
   }
 
 private:
+  /** \brief template-method pattern - user implements this call.
+   *  \param str message to be appended.
+   */
   virtual void appendImpl(const std::string &str) = 0;
 
   Mutex mutex_;
 }; // class Base
 
 
+/** \brief shared pointer for base class.
+ */
 typedef boost::shared_ptr<Base> BasePtr;
 
 } // namespace Appenders
