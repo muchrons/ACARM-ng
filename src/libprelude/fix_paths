@@ -1,0 +1,29 @@
+#!/bin/bash
+
+function process_header()
+{
+  local f="$1"
+  local h="$2"
+  local h_loc="`find "LibPrelude" -name "$h" | head -1`"
+  # if file has been found, fix the include
+  [ -z "$h_loc" ] || sed -i "s:#include *[<\"].*$h[\">] *:#include \"$h_loc\":" $f
+}
+
+
+function process_file()
+{
+  local f="$1"
+  grep '#include [<"]' "$f" | awk '{ print $2 }' | sed -e 's:^.::' -e 's:.$::' | xargs -n 1 basename 2>/dev/null | \
+    while read hdr
+    do
+      process_header "$f" "$hdr"
+    done
+}
+
+
+find LibPrelude -type f | grep -v '/libmissing/' | \
+  while read f
+  do
+    echo "$f"
+    process_file "$f"
+  done
