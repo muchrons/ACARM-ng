@@ -44,14 +44,14 @@
 #endif
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+# include "LibPrelude/config.h"
 #endif
 
 typedef struct idmef_path idmef_path_t;
 
 #include <stdarg.h>
-#include "idmef-value.h"
-#include "idmef-tree-wrap.h"
+#include "LibPrelude/idmef-value.h"
+#include "LibPrelude/idmef-tree-wrap.h"
 
 int idmef_path_get(const idmef_path_t *path, idmef_message_t *message, idmef_value_t **ret);
 
@@ -118,3 +118,4 @@ void _idmef_path_cache_destroy(void);
 #endif
 
 #endif /* _LIBPRELUDE_IDMEF_PATH_H */
+/* public header */

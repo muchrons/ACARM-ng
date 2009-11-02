@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -44,16 +44,16 @@
 #endif
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_MESSAGE
-#include "prelude-error.h"
+#include "LibPrelude/prelude-error.h"
 
-#include "common.h"
-#include "prelude-log.h"
-#include "prelude-inttypes.h"
-#include "prelude-extract.h"
-#include "prelude-io.h"
-#include "prelude-linked-object.h"
-#include "prelude-async.h"
-#include "prelude-msg.h"
+#include "LibPrelude/common.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-extract.h"
+#include "LibPrelude/prelude-io.h"
+#include "LibPrelude/prelude-linked-object.h"
+#include "LibPrelude/prelude-async.h"
+#include "LibPrelude/prelude-msg.h"
 
 
 #define MSGBUF_SIZE 8192

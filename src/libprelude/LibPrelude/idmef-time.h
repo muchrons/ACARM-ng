@@ -24,10 +24,10 @@
 #ifndef _LIBPRELUDE_IDMEF_TIME_H
 #define _LIBPRELUDE_IDMEF_TIME_H
 
-#include "prelude-config.h"
+#include "LibPrelude/prelude-config.h"
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+# include "LibPrelude/config.h"
 #endif
 
 #if TIME_WITH_SYS_TIME
@@ -94,3 +94,4 @@ int idmef_time_compare(const idmef_time_t *time1, const idmef_time_t *time2);
 #endif
          
 #endif /* _LIBPRELUDE_IDMEF_TIME_H */
+/* public header */

@@ -26,3 +26,4 @@
 #  define GL_LINK_WARNING(message) ((void) 0)
 # endif
 #endif
+/* public header */

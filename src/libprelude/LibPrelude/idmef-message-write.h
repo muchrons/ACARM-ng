@@ -27,10 +27,10 @@
 #ifndef _LIBPRELUDE_IDMEF_MESSAGE_WRITE_H
 #define _LIBPRELUDE_IDMEF_MESSAGE_WRITE_H
 
-#include "prelude-inttypes.h"
-#include "idmef-time.h"
-#include "prelude-string.h"
-#include "prelude-msgbuf.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/idmef-time.h"
+#include "LibPrelude/prelude-string.h"
+#include "LibPrelude/prelude-msgbuf.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -73,3 +73,4 @@ int idmef_message_write(idmef_message_t *message, prelude_msgbuf_t *msg);
 #endif
 
 #endif /* _LIBPRELUDE_IDMEF_MESSAGE_WRITE_H */
+/* public header */

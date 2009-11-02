@@ -24,8 +24,8 @@
 #ifndef _LIBPRELUDE_PRELUDE_IDENT_H
 #define _LIBPRELUDE_PRELUDE_IDENT_H
 
-#include "prelude-inttypes.h"
-#include "prelude-string.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-string.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -46,3 +46,4 @@ int prelude_ident_new(prelude_ident_t **ret);
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_IDENT_H */
+/* public header */

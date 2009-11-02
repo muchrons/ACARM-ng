@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,17 +30,17 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 
-#include "prelude-error.h"
-#include "prelude-log.h"
-#include "prelude-extract.h"
-#include "prelude-io.h"
-#include "prelude-msgbuf.h"
-#include "prelude-client.h"
-#include "prelude-message-id.h"
-#include "prelude-option.h"
-#include "prelude-option-wide.h"
-#include "common.h"
-#include "config-engine.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-extract.h"
+#include "LibPrelude/prelude-io.h"
+#include "LibPrelude/prelude-msgbuf.h"
+#include "LibPrelude/prelude-client.h"
+#include "LibPrelude/prelude-message-id.h"
+#include "LibPrelude/prelude-option.h"
+#include "LibPrelude/prelude-option-wide.h"
+#include "LibPrelude/common.h"
+#include "LibPrelude/config-engine.h"
 
 
 

@@ -24,7 +24,7 @@
 #ifndef _LIBPRELUDE_PRELUDE_GETOPT_H
 #define _LIBPRELUDE_PRELUDE_GETOPT_H
 
-#include "prelude-msgbuf.h"
+#include "LibPrelude/prelude-msgbuf.h"
 
 
 #ifdef __cplusplus
@@ -206,3 +206,4 @@ prelude_option_context_t *prelude_option_search_context(prelude_option_t *opt, c
 #endif
          
 #endif /* _LIBPRELUDE_PRELUDE_GETOPT_H */
+/* public header */

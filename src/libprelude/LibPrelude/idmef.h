@@ -26,25 +26,26 @@
 #define _LIBPRELUDE_IDMEF_H
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+# include "LibPrelude/config.h"
 #endif
 
 #include <sys/types.h>
 
-#include "prelude-inttypes.h"
-#include "prelude-list.h"
-#include "prelude-string.h"
-#include "idmef-time.h"
-#include "idmef-data.h"
-#include "idmef-class.h"
-#include "idmef-value.h"
-#include "idmef-tree-wrap.h"
-#include "idmef-path.h"
-#include "idmef-criterion-value.h"
-#include "idmef-criteria.h"
-#include "idmef-message-helpers.h"
-#include "idmef-message-read.h"
-#include "idmef-message-write.h"
-#include "idmef-additional-data.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-list.h"
+#include "LibPrelude/prelude-string.h"
+#include "LibPrelude/idmef-time.h"
+#include "LibPrelude/idmef-data.h"
+#include "LibPrelude/idmef-class.h"
+#include "LibPrelude/idmef-value.h"
+#include "LibPrelude/idmef-tree-wrap.h"
+#include "LibPrelude/idmef-path.h"
+#include "LibPrelude/idmef-criterion-value.h"
+#include "LibPrelude/idmef-criteria.h"
+#include "LibPrelude/idmef-message-helpers.h"
+#include "LibPrelude/idmef-message-read.h"
+#include "LibPrelude/idmef-message-write.h"
+#include "LibPrelude/idmef-additional-data.h"
 
 #endif /* _LIBPRELUDE_IDMEF_H */
+/* public header */

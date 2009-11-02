@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <unistd.h>
@@ -41,27 +41,27 @@
 #include <gnutls/gnutls.h>
 #include <gnutls/x509.h>
 
-#include "uname.h"
-#include "glthread/lock.h"
+#include "LibPrelude/uname.h"
+#include "LibPrelude/glthread/lock.h"
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_CLIENT
-#include "prelude-error.h"
+#include "LibPrelude/prelude-error.h"
 
-#include "idmef.h"
-#include "common.h"
-#include "prelude-log.h"
-#include "prelude-ident.h"
-#include "prelude-async.h"
-#include "prelude-option.h"
-#include "prelude-connection-pool.h"
-#include "prelude-client.h"
-#include "prelude-timer.h"
-#include "prelude-message-id.h"
-#include "prelude-option-wide.h"
-#include "idmef-message-write.h"
-#include "idmef-additional-data.h"
-#include "config-engine.h"
-#include "tls-auth.h"
+#include "LibPrelude/idmef.h"
+#include "LibPrelude/common.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-ident.h"
+#include "LibPrelude/prelude-async.h"
+#include "LibPrelude/prelude-option.h"
+#include "LibPrelude/prelude-connection-pool.h"
+#include "LibPrelude/prelude-client.h"
+#include "LibPrelude/prelude-timer.h"
+#include "LibPrelude/prelude-message-id.h"
+#include "LibPrelude/prelude-option-wide.h"
+#include "LibPrelude/idmef-message-write.h"
+#include "LibPrelude/idmef-additional-data.h"
+#include "LibPrelude/config-engine.h"
+#include "LibPrelude/tls-auth.h"
 
 
 #define CLIENT_STATUS_NEED_INIT 0

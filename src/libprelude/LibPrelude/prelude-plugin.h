@@ -25,11 +25,11 @@
 #define _LIBPRELUDE_PLUGIN_H
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+# include "LibPrelude/config.h"
 #endif
 
-#include "prelude-list.h"
-#include "prelude-option.h"
+#include "LibPrelude/prelude-list.h"
+#include "LibPrelude/prelude-option.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -209,3 +209,4 @@ void prelude_plugin_unload(prelude_plugin_generic_t *plugin);
 #endif
 
 #endif /* _LIBPRELUDE_PLUGIN_H */
+/* public header */

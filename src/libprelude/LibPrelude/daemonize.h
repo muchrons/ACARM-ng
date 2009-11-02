@@ -27,3 +27,4 @@
 int prelude_daemonize(const char *lockfile);
 
 #endif /* _LIBPRELUDE_DAEMONIZE_H */
+/* public header */

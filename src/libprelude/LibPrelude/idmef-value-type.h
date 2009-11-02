@@ -24,8 +24,8 @@
 #ifndef _IDMEF_VALUE_TYPE_H
 #define _IDMEF_VALUE_TYPE_H
 
-#include "idmef-time.h"
-#include "prelude-string.h"
+#include "LibPrelude/idmef-time.h"
+#include "LibPrelude/prelude-string.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -90,7 +90,7 @@ typedef struct {
 } idmef_value_type_t;
 
 
-#include "idmef-criteria.h"
+#include "LibPrelude/idmef-criteria.h"
 
 int idmef_value_type_ref(const idmef_value_type_t *src);
 
@@ -118,3 +118,4 @@ const char *idmef_value_type_to_string(idmef_value_type_id_t type);
 #endif
 
 #endif
+/* public header */

@@ -21,7 +21,7 @@
 *
 *****/
 
-#include "libmissing.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,10 +36,10 @@
 # include <windows.h>
 #endif
 
-#include "common.h"
-#include "prelude-log.h"
-#include "prelude-error.h"
-#include "prelude-inttypes.h"
+#include "LibPrelude/common.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/prelude-inttypes.h"
 
 
 #if ! defined (PRELUDE_VA_COPY)

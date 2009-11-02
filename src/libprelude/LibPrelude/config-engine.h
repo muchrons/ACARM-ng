@@ -43,3 +43,4 @@ int _config_del(config_t *cfg, const char *section, const char *entry);
 
 #endif /* _LIBPRELUDE_CONFIG_ENGINE_H */
 
+/* public header */

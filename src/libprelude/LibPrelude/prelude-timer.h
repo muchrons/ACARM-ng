@@ -24,7 +24,7 @@
 #ifndef _LIBPRELUDE_PRELUDE_TIMER_H
 #define _LIBPRELUDE_PRELUDE_TIMER_H
 
-#include "prelude-config.h"
+#include "LibPrelude/prelude-config.h"
 
 #if TIME_WITH_SYS_TIME
 # include <sys/time.h>
@@ -37,7 +37,7 @@
 # endif
 #endif
 
-#include "prelude-list.h"
+#include "LibPrelude/prelude-list.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -125,3 +125,4 @@ void _prelude_timer_fork_child(void);
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_TIMER_H */
+/* public header */

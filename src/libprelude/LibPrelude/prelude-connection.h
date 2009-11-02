@@ -43,11 +43,11 @@ typedef enum {
 typedef struct prelude_connection prelude_connection_t;
 
 
-#include "prelude-msg.h"
-#include "prelude-msgbuf.h"
-#include "prelude-string.h"
-#include "prelude-client-profile.h"
-#include "idmef.h"
+#include "LibPrelude/prelude-msg.h"
+#include "LibPrelude/prelude-msgbuf.h"
+#include "LibPrelude/prelude-string.h"
+#include "LibPrelude/prelude-client-profile.h"
+#include "LibPrelude/idmef.h"
 
 
 void prelude_connection_destroy(prelude_connection_t *conn);
@@ -100,7 +100,7 @@ uint64_t prelude_connection_get_peer_analyzerid(prelude_connection_t *cnx);
 
 void prelude_connection_set_peer_analyzerid(prelude_connection_t *cnx, uint64_t analyzerid);
 
-#include "prelude-client.h"
+#include "LibPrelude/prelude-client.h"
 
 int prelude_connection_new(prelude_connection_t **ret, const char *addr);
 
@@ -117,3 +117,4 @@ prelude_connection_t *prelude_connection_ref(prelude_connection_t *conn);
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_CONNECTION_H */
+/* public header */

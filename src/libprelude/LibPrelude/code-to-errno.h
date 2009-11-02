@@ -731,3 +731,4 @@ static const int err_code_to_errno [] = {
   0,
 #endif
 };
+/* public header */

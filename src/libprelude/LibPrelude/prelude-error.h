@@ -27,7 +27,7 @@
 #define _LIBPRELUDE_PRELUDE_ERROR_H
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+# include "LibPrelude/config.h"
 #endif
 
 #include <stdio.h>
@@ -36,8 +36,8 @@
 #include <errno.h>
 
 
-#include "prelude-thread.h"
-#include "prelude-string.h"
+#include "LibPrelude/prelude-thread.h"
+#include "LibPrelude/prelude-string.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -361,3 +361,4 @@ static inline prelude_error_t prelude_error_from_errno(int err)
 
 
 #endif
+/* public header */

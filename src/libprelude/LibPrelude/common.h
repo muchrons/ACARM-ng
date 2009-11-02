@@ -25,13 +25,13 @@
 #define _LIBPRELUDE_COMMON_H
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+# include "LibPrelude/config.h"
 #endif
 
-#include "idmef.h"
-#include "prelude-msg.h"
-#include "prelude-inttypes.h"
-#include "prelude-log.h"
+#include "LibPrelude/idmef.h"
+#include "LibPrelude/prelude-msg.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-log.h"
 #include <sys/types.h>
 
 #ifdef WIN32
@@ -100,3 +100,4 @@ void _prelude_unload_file(unsigned char *fdata, size_t size);
 #endif
 
 #endif /* _LIBPRELUDE_COMMON_H */
+/* public header */

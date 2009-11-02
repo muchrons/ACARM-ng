@@ -32,3 +32,4 @@ char *variable_get(const char *variable);
 void variable_unset_all(void);
 
 #endif /* _LIBPRELUDE_RULES_VARIABLE_H */
+/* public header */

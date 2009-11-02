@@ -313,3 +313,4 @@
 
 
 #endif /* _LIBPRELUDE_IDMEF_MESSAGE_ID_H */
+/* public header */

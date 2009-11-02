@@ -156,3 +156,4 @@ static const int err_code_from_index[] = {
   : ((code >= 59) && (code <= 95)) ? (code - 1) \
   : ((code >= 95) && (code <= 125)) ? (code - 0) \
   : -1)
+/* public header */

@@ -556,9 +556,9 @@ char *yytext;
 #include <stdlib.h>
 #include <string.h>
 
-#include "idmef.h"
-#include "common.h"
-#include "idmef-criteria-string.yac.h"
+#include "LibPrelude/idmef.h"
+#include "LibPrelude/common.h"
+#include "LibPrelude/idmef-criteria-string.yac.h"
 
 #define YY_NO_UNPUT
 #define YY_NO_TOP_STATE

@@ -21,15 +21,15 @@
 *
 *****/
 
-#include "config.h"
+#include "LibPrelude/config.h"
 
 #include <string.h>
 #include <stdlib.h>
 
-#include "prelude-log.h"
-#include "prelude-list.h"
-#include "prelude-error.h"
-#include "prelude-hash.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-list.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/prelude-hash.h"
 
 
 #define	HASH_DEFAULT_SIZE	128

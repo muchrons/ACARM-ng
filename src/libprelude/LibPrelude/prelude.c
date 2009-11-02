@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,16 +30,16 @@
 #include <gnutls/gnutls.h>
 #include <gcrypt.h>
 
-#include "glthread/thread.h"
-#include "glthread/lock.h"
+#include "LibPrelude/glthread/thread.h"
+#include "LibPrelude/glthread/lock.h"
 
-#include "prelude.h"
-#include "idmef-path.h"
-#include "prelude-option.h"
-#include "prelude-log.h"
-#include "prelude-timer.h"
-#include "variable.h"
-#include "tls-auth.h"
+#include "LibPrelude/prelude.h"
+#include "LibPrelude/idmef-path.h"
+#include "LibPrelude/prelude-option.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-timer.h"
+#include "LibPrelude/variable.h"
+#include "LibPrelude/tls-auth.h"
 
 
 int _prelude_internal_argc = 0;

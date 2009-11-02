@@ -25,7 +25,7 @@
 #define _LIBPRELUDE_THREAD_H
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+# include "LibPrelude/config.h"
 #endif
 
 #ifdef __cplusplus
@@ -48,3 +48,4 @@ void _prelude_thread_deinit(void);
 #endif
 
 #endif
+/* public header */

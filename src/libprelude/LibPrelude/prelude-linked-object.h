@@ -25,7 +25,7 @@
 #define _LIBPRELUDE_PRELUDE_LINKED_OBJECT_H
 
 
-#include "prelude-list.h"
+#include "LibPrelude/prelude-list.h"
 
 
 #define PRELUDE_LINKED_OBJECT   \
@@ -85,3 +85,4 @@ static inline unsigned int prelude_linked_object_get_id(prelude_linked_object_t 
 
 
 #endif /* _LIBPRELUDE_PRELUDE_LINKED_OBJECT_H */
+/* public header */

@@ -22,7 +22,7 @@
 *
 *****/
 
-#include "config.h"
+#include "LibPrelude/config.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,23 +30,23 @@
 #include <sys/types.h>
 #include <stdarg.h>
 
-#include "libmissing.h"
-#include "prelude-list.h"
-#include "prelude-log.h"
-#include "prelude-inttypes.h"
-#include "prelude-string.h"
+#include "LibPrelude/libmissing.h"
+#include "LibPrelude/prelude-list.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-string.h"
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_IDMEF_TYPE
-#include "prelude-error.h"
+#include "LibPrelude/prelude-error.h"
 
-#include "idmef-time.h"
-#include "idmef-data.h"
-#include "idmef-value.h"
-#include "idmef-class.h"
+#include "LibPrelude/idmef-time.h"
+#include "LibPrelude/idmef-data.h"
+#include "LibPrelude/idmef-value.h"
+#include "LibPrelude/idmef-class.h"
 
-#include "idmef-tree-wrap.h"
-#include "idmef-tree-data.h"
-#include "idmef-path.h"
+#include "LibPrelude/idmef-tree-wrap.h"
+#include "LibPrelude/idmef-tree-data.h"
+#include "LibPrelude/idmef-path.h"
 
 
 

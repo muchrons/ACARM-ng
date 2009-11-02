@@ -26,14 +26,14 @@
 #define _LIBPRELUDE_CLIENT_PROFILE_H
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+# include "LibPrelude/config.h"
 #endif
 
 #include <unistd.h>
 #include <sys/types.h>
 
-#include "prelude-config.h"
-#include "prelude-inttypes.h"
+#include "LibPrelude/prelude-config.h"
+#include "LibPrelude/prelude-inttypes.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -114,3 +114,4 @@ void prelude_client_profile_get_prefix(const prelude_client_profile_t *cp, char 
 #endif
 
 #endif
+/* public header */

@@ -81,3 +81,4 @@
 #define PRELUDE_MSG_OPTION_TARGET_INSTANCE_ID 21
 
 #endif /* _LIBPRELUDE_PRELUDE_MESSAGE_ID_H */
+/* public header */

@@ -23,7 +23,7 @@
 
 #include <stdio.h>
 
-#include "mkerrcodes.h"
+#include "LibPrelude/mkerrcodes.h"
 
 static const char header[] =
 "/* errnos.h - List of system error values.\n"

@@ -149,3 +149,4 @@ static const int msgidx[] =
   : ((code >= 55) && (code <= 62)) ? (code - 9) \
   : ((code >= 16382) && (code <= 16382)) ? (code - 16328) \
   : 16383 - 16328)
+/* public header */

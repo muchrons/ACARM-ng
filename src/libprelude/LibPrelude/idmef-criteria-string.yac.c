@@ -129,15 +129,15 @@
 #include <stdarg.h>
 #include <ctype.h>
 
-#include "glthread/lock.h"
+#include "LibPrelude/glthread/lock.h"
 
-#include "prelude-log.h"
-#include "prelude-error.h"
-#include "prelude-inttypes.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/prelude-inttypes.h"
 
-#include "idmef.h"
-#include "idmef-criteria.h"
-#include "common.h"
+#include "LibPrelude/idmef.h"
+#include "LibPrelude/idmef-criteria.h"
+#include "LibPrelude/common.h"
 
 static int path_count = 0;
 static int real_ret = 0;

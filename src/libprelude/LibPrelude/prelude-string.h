@@ -25,13 +25,13 @@
 #define _LIBPRELUDE_PRELUDE_STRING_H
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+# include "LibPrelude/config.h"
 #endif
 
 #include <stdarg.h>
 
-#include "prelude-list.h"
-#include "prelude-inttypes.h"
+#include "LibPrelude/prelude-list.h"
+#include "LibPrelude/prelude-inttypes.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -146,3 +146,4 @@ int prelude_string_compare(const prelude_string_t *str1, const prelude_string_t 
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_STRING_H */
+/* public header */

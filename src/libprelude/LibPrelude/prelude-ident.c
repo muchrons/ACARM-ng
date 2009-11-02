@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,10 +42,10 @@
 
 #include <gcrypt.h>
 
-#include "prelude-log.h"
-#include "prelude-error.h"
-#include "prelude-inttypes.h"
-#include "prelude-ident.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-ident.h"
 
 
 /*

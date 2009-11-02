@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,17 +43,17 @@
 # endif
 #endif
 
-#include "glthread/thread.h"
-#include "glthread/lock.h"
-#include "glthread/cond.h"
+#include "LibPrelude/glthread/thread.h"
+#include "LibPrelude/glthread/lock.h"
+#include "LibPrelude/glthread/cond.h"
 
-#include "prelude-list.h"
-#include "prelude-inttypes.h"
-#include "prelude-linked-object.h"
-#include "prelude-timer.h"
-#include "prelude-log.h"
-#include "prelude-io.h"
-#include "prelude-async.h"
+#include "LibPrelude/prelude-list.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-linked-object.h"
+#include "LibPrelude/prelude-timer.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-io.h"
+#include "LibPrelude/prelude-async.h"
 
 
 static PRELUDE_LIST(joblist);

@@ -21,18 +21,18 @@
 *
 *****/
 
-#include "libmissing.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/types.h>
 
-#include "prelude-error.h"
-#include "prelude-inttypes.h"
-#include "prelude-string.h"
-#include "common.h"
-#include "idmef-data.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-string.h"
+#include "LibPrelude/common.h"
+#include "LibPrelude/idmef-data.h"
 
 
 /*

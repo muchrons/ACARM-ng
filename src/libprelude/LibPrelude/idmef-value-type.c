@@ -21,23 +21,23 @@
 *
 *****/
 
-#include "libmissing.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 
-#include "prelude-inttypes.h"
-#include "prelude-string.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/prelude-string.h"
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_IDMEF_VALUE_TYPE
-#include "prelude-error.h"
-#include "prelude-inttypes.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/prelude-inttypes.h"
 
-#include "idmef-time.h"
-#include "idmef-data.h"
-#include "idmef-value-type.h"
+#include "LibPrelude/idmef-time.h"
+#include "LibPrelude/idmef-data.h"
+#include "LibPrelude/idmef-value-type.h"
 
 
 #define CLASS_OPERATOR  IDMEF_CRITERION_OPERATOR_NULL|IDMEF_CRITERION_OPERATOR_NOT| \

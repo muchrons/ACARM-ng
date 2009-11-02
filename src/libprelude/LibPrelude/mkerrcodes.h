@@ -133,3 +133,4 @@ static struct
   { 18, "PRELUDE_ERROR_EXDEV" },
   { 54, "PRELUDE_ERROR_EXFULL" },
 };
+/* public header */

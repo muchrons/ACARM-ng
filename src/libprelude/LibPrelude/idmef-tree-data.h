@@ -329,3 +329,4 @@ const object_data_t object_data[] = {
         { "checksum_algorithm", 0, NULL, NULL, NULL, NULL, (void *) idmef_checksum_algorithm_to_numeric, (void *) idmef_checksum_algorithm_to_string, NULL, NULL, NULL, NULL  }, /* ID: 53 */
         { NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL }
 };
+/* public header */

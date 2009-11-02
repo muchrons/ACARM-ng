@@ -317,3 +317,4 @@ static const int errnos_msgidx[] =
 #define errnos_msgidxof(code) (0 ? -1 \
   : ((code >= 0) && (code <= 140)) ? (code - 0) \
   : -1)
+/* public header */

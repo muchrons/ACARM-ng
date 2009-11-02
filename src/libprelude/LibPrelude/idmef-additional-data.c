@@ -21,7 +21,7 @@
 *
 *****/
 
-#include "libmissing.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,13 +29,13 @@
 #include <sys/types.h>
 #include <netinet/in.h>
 
-#include "prelude-log.h"
-#include "prelude-string.h"
-#include "prelude-inttypes.h"
-#include "idmef.h"
-#include "idmef-tree-wrap.h"
-#include "idmef-additional-data.h"
-#include "idmef-message-id.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-string.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/idmef.h"
+#include "LibPrelude/idmef-tree-wrap.h"
+#include "LibPrelude/idmef-additional-data.h"
+#include "LibPrelude/idmef-message-id.h"
 
 
 

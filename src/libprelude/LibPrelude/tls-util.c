@@ -21,7 +21,7 @@
 *
 *****/
 
-#include "config.h"
+#include "LibPrelude/config.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,12 +35,12 @@
 #include <gnutls/x509.h>
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_CLIENT
-#include "prelude-error.h"
+#include "LibPrelude/prelude-error.h"
 
-#include "common.h"
-#include "prelude-log.h"
-#include "prelude-client.h"
-#include "tls-util.h"
+#include "LibPrelude/common.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-client.h"
+#include "LibPrelude/tls-util.h"
 
 
 #ifndef HAVE_GNUTLS_X509_CRT_LIST_IMPORT

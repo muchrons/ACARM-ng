@@ -24,7 +24,7 @@
 #ifndef _LIBPRELUDE_IDMEF_DATA_H
 #define _LIBPRELUDE_IDMEF_DATA_H
 
-#include "prelude-list.h"
+#include "LibPrelude/prelude-list.h"
 
 #ifdef __cplusplus
  extern "C" {
@@ -168,3 +168,4 @@ int idmef_data_compare(const idmef_data_t *data1, const idmef_data_t *data2);
 #endif
          
 #endif /* _LIBPRELUDE_IDMEF_DATA_H */
+/* public header */

@@ -21,16 +21,16 @@
 *
 *****/
 
-#include "config.h"
+#include "LibPrelude/config.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "libmissing.h"
-#include "prelude-list.h"
-#include "prelude-error.h"
-#include "variable.h"
+#include "LibPrelude/libmissing.h"
+#include "LibPrelude/prelude-list.h"
+#include "LibPrelude/prelude-error.h"
+#include "LibPrelude/variable.h"
 
 
 typedef struct {

@@ -24,10 +24,10 @@
 #ifndef _LIBPRELUDE_PRELUDE_LOG_H
 #define _LIBPRELUDE_PRELUDE_LOG_H
 
-#include "prelude-config.h"
+#include "LibPrelude/prelude-config.h"
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+# include "LibPrelude/config.h"
 #endif
 
 #include <stdarg.h>
@@ -126,3 +126,4 @@ int _prelude_log_set_abort_level_from_string(const char *level);
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_LOG_H */
+/* public header */

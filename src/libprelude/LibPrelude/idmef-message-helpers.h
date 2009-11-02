@@ -37,3 +37,4 @@ int idmef_message_get_number(idmef_message_t *message, const char *path, double 
 int idmef_message_set_data(idmef_message_t *message, const char *path, const unsigned char *data, size_t size);
 
 int idmef_message_get_data(idmef_message_t *message, const char *path, unsigned char **data, size_t *size);
+/* public header */

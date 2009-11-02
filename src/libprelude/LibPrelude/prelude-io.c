@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -34,20 +34,20 @@
 #include <sys/ioctl.h>
 #include <gnutls/gnutls.h>
 
-#include "prelude-inttypes.h"
+#include "LibPrelude/prelude-inttypes.h"
 
 #ifdef HAVE_SYS_FILIO_H
 # include <sys/filio.h>
 #endif
 
 
-#include "prelude-log.h"
-#include "prelude-io.h"
-#include "common.h"
+#include "LibPrelude/prelude-log.h"
+#include "LibPrelude/prelude-io.h"
+#include "LibPrelude/common.h"
 
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_IO
-#include "prelude-error.h"
+#include "LibPrelude/prelude-error.h"
 
 
 #define CHUNK_SIZE 1024

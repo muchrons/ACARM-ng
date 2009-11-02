@@ -23,8 +23,8 @@
 
 #include <string.h>
 
-#include "prelude.h"
-#include "idmef-message-helpers.h"
+#include "LibPrelude/prelude.h"
+#include "LibPrelude/idmef-message-helpers.h"
 
 
 /**

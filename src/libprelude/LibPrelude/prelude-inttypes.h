@@ -49,7 +49,7 @@
 #endif
 
 #ifdef HAVE_CONFIG_H
-# include "config.h"
+# include "LibPrelude/config.h"
 #endif
 
 #ifdef __PRELUDE_HAVE_STDINT_H
@@ -212,3 +212,4 @@ typedef enum {
 #endif
 
 #endif /* _LIBPRELUDE_INTTYPES_H */
+/* public header */

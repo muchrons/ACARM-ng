@@ -32,7 +32,7 @@
 typedef int idmef_class_id_t;
 typedef int idmef_class_child_id_t;
 
-#include "idmef-value.h"
+#include "LibPrelude/idmef-value.h"
 
 /*
  *
@@ -95,3 +95,4 @@ int idmef_class_destroy(idmef_class_id_t classid, void *obj);
 #endif
 
 #endif /* _LIBPRELUDE_IDMEF_CLASS_H */
+/* public header */

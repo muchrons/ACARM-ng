@@ -21,8 +21,8 @@
 *
 *****/
 
-#include "config.h"
-#include "libmissing.h"
+#include "LibPrelude/config.h"
+#include "LibPrelude/libmissing.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,14 +31,14 @@
 #include <assert.h>
 #include <sys/types.h>
 
-#include "prelude-inttypes.h"
-#include "common.h"
-#include "config-engine.h"
-#include "variable.h"
-#include "prelude-log.h"
+#include "LibPrelude/prelude-inttypes.h"
+#include "LibPrelude/common.h"
+#include "LibPrelude/config-engine.h"
+#include "LibPrelude/variable.h"
+#include "LibPrelude/prelude-log.h"
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_CONFIG_ENGINE
-#include "prelude-error.h"
+#include "LibPrelude/prelude-error.h"
 
 
 struct config {

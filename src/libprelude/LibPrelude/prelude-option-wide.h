@@ -41,3 +41,4 @@ int prelude_option_recv_reply(prelude_msg_t *msg, uint64_t *source_id, uint32_t 
 
 #endif /* _LIBPRELUDE_PRELUDE_GETOPT_WIDE_H */
 
+/* public header */
