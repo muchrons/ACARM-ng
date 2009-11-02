@@ -13,8 +13,12 @@ namespace Logger
 {
 namespace detail
 {
+/** \biref helper class for System::IterableEnum<> template
+ */
 struct PriorityEnum
 {
+  /** \brief priorityies to be used.
+   */
   typedef enum
   {
     DEBUG,
@@ -23,11 +27,18 @@ struct PriorityEnum
     ERROR,
     FATAL
   } Type;
+  /** \brief first element.
+   */
   enum { Min=DEBUG };
+  /** \brief last element.
+   */
   enum { Max=FATAL };
 }; // struct PriorityEnum
 } // namespace detail
 
+
+/** \brief Priority class to be used.
+ */
 typedef System::IterableEnum<detail::PriorityEnum> Priority;
 
 } // namespace Logger
