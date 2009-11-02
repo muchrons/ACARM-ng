@@ -673,3 +673,4 @@ extern void regfree (regex_t *__preg);
 #endif	/* C++ */
 
 #endif /* regex.h */
+/* public header */

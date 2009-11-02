@@ -160,3 +160,4 @@ LT_SCOPE int	    lt_dlisresident	(lt_dlhandle handle);
 LT_END_C_DECLS
 
 #endif /*!defined(LTDL_H)*/
+/* public header */

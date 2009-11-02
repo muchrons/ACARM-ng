@@ -92,3 +92,4 @@ LT_SCOPE void *	slist_unbox	(SList *item);
 #endif
 
 #endif /*!defined(SLIST_H)*/
+/* public header */

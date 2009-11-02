@@ -34,3 +34,4 @@
 extern int ftw(const  char *dir, int (*fn)(const char *file, const struct stat *sb, int flag), int nopenfd);
 
 #endif
+/* public header */

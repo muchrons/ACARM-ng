@@ -29,3 +29,4 @@
    in config.h.  */
 
 #endif /* GNULIB_SIZE_MAX_H */
+/* public header */

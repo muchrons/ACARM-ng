@@ -100,3 +100,4 @@ void _prelude_unload_file(unsigned char *fdata, size_t size);
 #endif
 
 #endif /* _LIBPRELUDE_COMMON_H */
+/* public header */

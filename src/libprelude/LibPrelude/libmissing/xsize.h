@@ -106,3 +106,4 @@ xmax (size_t size1, size_t size2)
   ((SIZE) != SIZE_MAX)
 
 #endif /* _XSIZE_H */
+/* public header */

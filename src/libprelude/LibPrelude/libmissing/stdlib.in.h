@@ -381,3 +381,4 @@ extern unsigned long long strtoull (const char *string, char **endptr, int base)
 #endif /* _GL_STDLIB_H */
 #endif /* _GL_STDLIB_H */
 #endif
+/* public header */

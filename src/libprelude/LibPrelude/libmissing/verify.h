@@ -138,3 +138,4 @@ template <int w>
 # define verify(R) extern int (* verify_function__ (void)) [verify_true (R)]
 
 #endif
+/* public header */

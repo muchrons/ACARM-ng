@@ -103,3 +103,4 @@ prelude_msg_t *prelude_msg_ref(prelude_msg_t *msg);
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_MESSAGE_H */
+/* public header */

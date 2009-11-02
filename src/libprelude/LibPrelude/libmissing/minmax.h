@@ -58,3 +58,4 @@
 #endif
 
 #endif /* _MINMAX_H */
+/* public header */

@@ -308,3 +308,4 @@ extern int wcwidth (int /* actually wchar_t */);
 #endif /* _GL_WCHAR_H */
 #endif /* _GL_WCHAR_H */
 #endif
+/* public header */

@@ -88,3 +88,4 @@ extern int inet_pton (int af, const char *restrict src, void *restrict dst);
 
 #endif /* _GL_ARPA_INET_H */
 #endif /* _GL_ARPA_INET_H */
+/* public header */

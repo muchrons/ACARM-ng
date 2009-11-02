@@ -75,3 +75,4 @@
 /* Bound on buffer size needed to represent an integer type or expression T,
    including the terminating null.  */
 #define INT_BUFSIZE_BOUND(t) (INT_STRLEN_BOUND (t) + 1)
+/* public header */

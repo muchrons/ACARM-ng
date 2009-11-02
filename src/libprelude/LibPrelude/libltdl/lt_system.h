@@ -152,3 +152,4 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #endif
 
 #endif /*!defined(LT_SYSTEM_H)*/
+/* public header */

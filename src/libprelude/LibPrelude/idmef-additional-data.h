@@ -100,3 +100,4 @@ int idmef_additional_data_data_to_string(idmef_additional_data_t *ad, prelude_st
 #endif
          
 #endif /* _LIBPRELUDE_IDMEF_DATA_H */
+/* public header */

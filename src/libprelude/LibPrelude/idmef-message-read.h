@@ -102,3 +102,4 @@ int idmef_message_read(idmef_message_t *message, prelude_msg_t *msg);
 #endif
 
 #endif /* _LIBPRELUDE_IDMEF_MESSAGE_READ_H */
+/* public header */

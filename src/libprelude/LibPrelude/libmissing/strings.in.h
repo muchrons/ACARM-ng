@@ -88,3 +88,4 @@ extern int strncasecmp (char const *s1, char const *s2, size_t n);
 
 #endif /* _GL_STRING_H */
 #endif /* _GL_STRING_H */
+/* public header */

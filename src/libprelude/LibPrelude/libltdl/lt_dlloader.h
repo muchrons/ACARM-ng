@@ -88,3 +88,4 @@ LT_SCOPE void		lt_dlloader_dump	(void);
 LT_END_C_DECLS
 
 #endif /*!defined(LT_DLLOADER_H)*/
+/* public header */

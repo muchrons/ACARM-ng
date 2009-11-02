@@ -406,3 +406,4 @@ gl_cond_timedwait_func (gl_cond_t *cond, gl_lock_t *lock, struct timespec *absti
 #endif
 
 #endif /* _GLTHREAD_COND_H */
+/* public header */

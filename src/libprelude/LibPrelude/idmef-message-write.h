@@ -73,3 +73,4 @@ int idmef_message_write(idmef_message_t *message, prelude_msgbuf_t *msg);
 #endif
 
 #endif /* _LIBPRELUDE_IDMEF_MESSAGE_WRITE_H */
+/* public header */

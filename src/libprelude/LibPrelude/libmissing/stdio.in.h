@@ -540,3 +540,4 @@ extern void perror (const char *string);
 #endif /* _GL_STDIO_H */
 #endif /* _GL_STDIO_H */
 #endif
+/* public header */

@@ -116,3 +116,4 @@ time_t timegm (struct tm *__tm);
 # endif
 
 #endif
+/* public header */

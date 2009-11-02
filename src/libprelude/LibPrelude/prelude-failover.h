@@ -57,3 +57,4 @@ int prelude_failover_rollback(prelude_failover_t *failover, prelude_msg_t *msg);
 #endif
 
 #endif
+/* public header */

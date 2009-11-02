@@ -45,3 +45,4 @@
 
 #endif /* _GL_NETINET_IN_H */
 #endif /* _GL_NETINET_IN_H */
+/* public header */

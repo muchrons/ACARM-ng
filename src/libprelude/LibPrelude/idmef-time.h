@@ -94,3 +94,4 @@ int idmef_time_compare(const idmef_time_t *time1, const idmef_time_t *time2);
 #endif
          
 #endif /* _LIBPRELUDE_IDMEF_TIME_H */
+/* public header */

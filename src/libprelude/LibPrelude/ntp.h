@@ -127,3 +127,4 @@ extern const long tstoushi[];
 
 
 #endif /* _LIBPRELUDE_NTP_H */
+/* public header */

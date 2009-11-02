@@ -260,3 +260,4 @@ static inline int prelude_extract_characters_safe(const char **out, char *buf, s
 #endif
 
 #endif /* _LIBPRELUDE_EXTRACT_H */
+/* public header */

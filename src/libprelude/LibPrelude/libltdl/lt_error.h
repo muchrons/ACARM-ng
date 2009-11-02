@@ -83,3 +83,4 @@ LT_SCOPE int	lt_dlseterror	(int errorcode);
 LT_END_C_DECLS
 
 #endif /*!defined(LT_ERROR_H)*/
+/* public header */

@@ -81,3 +81,4 @@ extern "C" {
 #include <slist.h>
 
 #endif /*!defined(LT__GLIBC_H)*/
+/* public header */

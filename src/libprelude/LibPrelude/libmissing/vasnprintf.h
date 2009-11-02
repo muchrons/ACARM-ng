@@ -79,3 +79,4 @@ extern char * vasnprintf (char *resultbuf, size_t *lengthp, const char *format, 
 #endif
 
 #endif /* _VASNPRINTF_H */
+/* public header */

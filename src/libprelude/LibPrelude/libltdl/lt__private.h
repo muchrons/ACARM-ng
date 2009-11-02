@@ -147,3 +147,4 @@ LT_SCOPE const char *lt__set_last_error	(const char *errormsg);
 LT_END_C_DECLS
 
 #endif /*!defined(LT__PRIVATE_H)*/
+/* public header */

@@ -152,3 +152,4 @@ extern
 int PRINTF_FETCHARGS (va_list args, arguments *a);
 
 #endif /* _PRINTF_ARGS_H */
+/* public header */

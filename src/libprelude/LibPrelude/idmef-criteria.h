@@ -109,3 +109,4 @@ prelude_bool_t idmef_criteria_get_negation(const idmef_criteria_t *criteria);
 #endif
 
 #endif /* _LIBPRELUDE_IDMEF_CRITERIA_H */
+/* public header */

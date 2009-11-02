@@ -68,3 +68,4 @@ extern int ioctl (int fd, int request, ... /* {void *,char *} arg */);
 
 #endif /* _GL_SYS_IOCTL_H */
 #endif /* _GL_SYS_IOCTL_H */
+/* public header */

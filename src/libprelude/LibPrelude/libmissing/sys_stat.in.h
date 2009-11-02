@@ -359,3 +359,4 @@ extern int lchmod (const char *filename, mode_t mode);
 #endif /* _GL_SYS_STAT_H */
 #endif /* _GL_SYS_STAT_H */
 #endif
+/* public header */

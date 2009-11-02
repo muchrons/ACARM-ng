@@ -68,3 +68,4 @@ void idmef_message_print(idmef_message_t *ptr, prelude_io_t *fd);
 #endif
 
 #endif /* _LIBPRELUDE_IDMEF_MESSAGE_PRINT_H */
+/* public header */

@@ -168,3 +168,4 @@ int idmef_data_compare(const idmef_data_t *data1, const idmef_data_t *data2);
 #endif
          
 #endif /* _LIBPRELUDE_IDMEF_DATA_H */
+/* public header */

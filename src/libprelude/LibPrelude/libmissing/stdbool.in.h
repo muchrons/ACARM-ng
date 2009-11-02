@@ -117,3 +117,4 @@ typedef enum { _Bool_must_promote_to_int = -1, false = 0, true = 1 } _Bool;
 #define __bool_true_false_are_defined 1
 
 #endif /* _GL_STDBOOL_H */
+/* public header */

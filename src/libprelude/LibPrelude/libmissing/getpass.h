@@ -29,3 +29,4 @@ char *getpass (const char *prompt);
 # endif
 
 #endif /* GETPASS_H */
+/* public header */

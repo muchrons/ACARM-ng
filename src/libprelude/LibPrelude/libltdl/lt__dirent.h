@@ -85,3 +85,4 @@ ERROR - cannot find dirent
 #endif /*!defined(__WINDOWS__)*/
 
 #endif /*!defined(LT__DIRENT_H)*/
+/* public header */

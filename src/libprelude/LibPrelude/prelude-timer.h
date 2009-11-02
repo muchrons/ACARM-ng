@@ -125,3 +125,4 @@ void _prelude_timer_fork_child(void);
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_TIMER_H */
+/* public header */

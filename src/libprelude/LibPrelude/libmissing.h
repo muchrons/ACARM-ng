@@ -37,3 +37,4 @@
 #include "pathmax.h"
 
 #endif /* _LIBPRELUDE_LIBMISSING_H */
+/* public header */

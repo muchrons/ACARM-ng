@@ -146,3 +146,4 @@ int prelude_string_compare(const prelude_string_t *str1, const prelude_string_t 
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_STRING_H */
+/* public header */

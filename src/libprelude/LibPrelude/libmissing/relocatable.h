@@ -81,3 +81,4 @@ extern char * compute_curr_prefix (const char *orig_installprefix,
 #endif
 
 #endif /* _RELOCATABLE_H */
+/* public header */

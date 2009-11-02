@@ -177,3 +177,4 @@ int printf_parse (const char *format, char_directives *d, arguments *a);
 #endif
 
 #endif /* _PRINTF_PARSE_H */
+/* public header */

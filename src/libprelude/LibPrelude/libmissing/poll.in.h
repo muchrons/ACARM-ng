@@ -51,3 +51,4 @@ extern int poll (struct pollfd *pfd, nfds_t nfd, int timeout);
 #endif
 
 #endif /* _GL_POLL_H */
+/* public header */

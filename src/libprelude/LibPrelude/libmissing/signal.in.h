@@ -200,3 +200,4 @@ extern int sigaction (int, const struct sigaction *restrict,
 #endif /* _GL_SIGNAL_H */
 #endif /* _GL_SIGNAL_H */
 #endif
+/* public header */

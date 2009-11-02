@@ -115,3 +115,4 @@ void prelude_client_print_setup_error(prelude_client_t *client);
 #endif
 
 #endif
+/* public header */

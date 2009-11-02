@@ -98,3 +98,4 @@ void _prelude_async_fork_child(void);
 
 #endif /* _LIBPRELUDE_PRELUDE_ASYNC_H */
 
+/* public header */

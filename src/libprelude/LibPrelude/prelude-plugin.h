@@ -209,3 +209,4 @@ void prelude_plugin_unload(prelude_plugin_generic_t *plugin);
 #endif
 
 #endif /* _LIBPRELUDE_PLUGIN_H */
+/* public header */

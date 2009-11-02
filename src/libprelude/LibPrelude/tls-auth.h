@@ -38,3 +38,4 @@ int tls_auth_init_priority(const char *tlsopts);
 void tls_auth_deinit(void);
 
 #endif
+/* public header */

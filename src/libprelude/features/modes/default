@@ -1,1 +1,7 @@
-LibPrelude/*.?pp
+LibPrelude/*.[ch]*
+LibPrelude/libltdl/*.[ch]*
+LibPrelude/libltdl/loaders/*.[ch]*
+LibPrelude/CppBind/*.[ch]*
+LibPrelude/libprelude-error/*.[ch]*
+LibPrelude/libmissing/*.[ch]*
+LibPrelude/libmissing/glthread/*.[ch]*

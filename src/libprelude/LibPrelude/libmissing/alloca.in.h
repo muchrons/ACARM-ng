@@ -54,3 +54,4 @@ void *alloca (size_t);
 #endif
 
 #endif /* _GL_ALLOCA_H */
+/* public header */

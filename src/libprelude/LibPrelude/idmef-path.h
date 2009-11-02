@@ -118,3 +118,4 @@ void _idmef_path_cache_destroy(void);
 #endif
 
 #endif /* _LIBPRELUDE_IDMEF_PATH_H */
+/* public header */

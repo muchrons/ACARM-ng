@@ -374,3 +374,4 @@ gl_thread_create (void *(*func) (void *arg), void *arg)
 #endif
 
 #endif /* _GLTHREAD_THREAD_H */
+/* public header */

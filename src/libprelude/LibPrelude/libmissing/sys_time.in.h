@@ -62,3 +62,4 @@ int gettimeofday (struct timeval *restrict, void *restrict);
 #endif
 
 #endif /* _GL_SYS_TIME_H */
+/* public header */

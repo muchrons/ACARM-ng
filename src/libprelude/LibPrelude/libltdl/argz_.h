@@ -66,3 +66,4 @@ LT_SCOPE void	 argz_stringify	(char *argz, size_t argz_len, int sep);
 #endif
 
 #endif /*!defined(LT__ARGZ_H)*/
+/* public header */

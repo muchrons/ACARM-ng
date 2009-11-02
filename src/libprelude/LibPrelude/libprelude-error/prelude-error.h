@@ -361,3 +361,4 @@ static inline prelude_error_t prelude_error_from_errno(int err)
 
 
 #endif
+/* public header */

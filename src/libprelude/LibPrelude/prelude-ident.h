@@ -46,3 +46,4 @@ int prelude_ident_new(prelude_ident_t **ret);
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_IDENT_H */
+/* public header */

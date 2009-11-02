@@ -39,3 +39,4 @@ int _prelude_tls_crt_list_import(gnutls_x509_crt *certs, unsigned int *cmax,
                                  const gnutls_datum *data, gnutls_x509_crt_fmt format);
 
 #endif
+/* public header */

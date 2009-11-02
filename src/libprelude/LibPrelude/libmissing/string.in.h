@@ -618,3 +618,4 @@ extern int strverscmp (const char *, const char *);
 
 #endif /* _GL_STRING_H */
 #endif /* _GL_STRING_H */
+/* public header */

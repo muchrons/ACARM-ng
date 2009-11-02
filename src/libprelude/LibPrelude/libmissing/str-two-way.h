@@ -427,3 +427,4 @@ two_way_long_needle (const unsigned char *haystack, size_t haystack_len,
 #undef CMP_FUNC
 #undef MAX
 #undef RETURN_TYPE
+/* public header */

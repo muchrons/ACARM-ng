@@ -147,3 +147,4 @@ int _idmef_value_cast(idmef_value_t *val, idmef_value_type_id_t target_type, idm
 #endif
 
 #endif /* _LIBPRELUDE_IDMEF_VALUE_H */
+/* public header */

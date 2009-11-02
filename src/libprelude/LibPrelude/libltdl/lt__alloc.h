@@ -56,3 +56,4 @@ LT_SCOPE char *lt__strdup (const char *string);
 LT_END_C_DECLS
 
 #endif /*!defined(LT__ALLOC_H)*/
+/* public header */

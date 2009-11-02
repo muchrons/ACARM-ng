@@ -60,3 +60,4 @@ set_winsock_errno (void)
       break;
     }
 }
+/* public header */

@@ -576,3 +576,4 @@ extern void _gl_unregister_fd (int fd);
 
 #endif /* _GL_UNISTD_H */
 #endif /* _GL_UNISTD_H */
+/* public header */

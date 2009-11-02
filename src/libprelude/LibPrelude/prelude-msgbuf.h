@@ -64,3 +64,4 @@ prelude_msgbuf_flags_t prelude_msgbuf_get_flags(prelude_msgbuf_t *msgbuf);
 #endif
          
 #endif /* _LIBPRELUDE_PRELUDE_MSGBUF_H */
+/* public header */

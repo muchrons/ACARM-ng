@@ -146,3 +146,4 @@ typedef int verify_sizeof_dbl[2 * (SIZEOF_DBL <= sizeof (double)) - 1];
 typedef int verify_sizeof_ldbl[2 * (SIZEOF_LDBL <= sizeof (long double)) - 1];
 
 #endif /* _FLOATPLUS_H */
+/* public header */

@@ -45,3 +45,4 @@
 # endif
 
 #endif /* _PATHMAX_H */
+/* public header */

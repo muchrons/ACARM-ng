@@ -853,3 +853,4 @@ re_string_elem_size_at (const re_string_t *pstr, Idx idx)
 #endif /* RE_ENABLE_I18N */
 
 #endif /*  _REGEX_INTERNAL_H */
+/* public header */

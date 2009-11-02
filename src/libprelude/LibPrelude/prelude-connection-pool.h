@@ -106,3 +106,4 @@ void prelude_connection_pool_set_event_handler(prelude_connection_pool_t *pool,
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_CONNECTION_POOL_H */
+/* public header */

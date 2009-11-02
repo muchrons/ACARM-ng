@@ -73,3 +73,4 @@ void prelude_fork_child(void);
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_H */
+/* public header */

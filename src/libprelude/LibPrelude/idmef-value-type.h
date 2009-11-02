@@ -118,3 +118,4 @@ const char *idmef_value_type_to_string(idmef_value_type_id_t type);
 #endif
 
 #endif
+/* public header */

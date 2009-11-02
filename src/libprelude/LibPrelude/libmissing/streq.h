@@ -174,3 +174,4 @@ streq0 (const char *s1, const char *s2, char s20, char s21, char s22, char s23, 
 #endif
 
 #endif /* _GL_STREQ_H */
+/* public header */

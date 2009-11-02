@@ -180,3 +180,4 @@ extern int getnameinfo(const struct sockaddr *restrict sa, socklen_t salen,
 
 #endif /* _GL_NETDB_H */
 #endif /* _GL_NETDB_H */
+/* public header */

@@ -277,3 +277,4 @@ dcnpgettext_expr (const char *domain,
 }
 
 #endif /* _LIBGETTEXT_H */
+/* public header */

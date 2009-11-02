@@ -39,3 +39,4 @@ extern const char * locale_charset (void);
 
 
 #endif /* _LOCALCHARSET_H */
+/* public header */

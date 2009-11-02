@@ -565,3 +565,4 @@ typedef int _verify_intmax_size[2 * (sizeof (intmax_t) == sizeof (uintmax_t)) - 
 
 #endif /* _GL_STDINT_H */
 #endif /* !defined _GL_STDINT_H && !defined _GL_JUST_INCLUDE_SYSTEM_STDINT_H */
+/* public header */

@@ -91,3 +91,4 @@ extern int rpl_select (int, fd_set *, fd_set *, fd_set *, struct timeval *);
 #endif /* _GL_SYS_SELECT_H */
 #endif /* _GL_SYS_SELECT_H */
 #endif /* OSF/1 */
+/* public header */

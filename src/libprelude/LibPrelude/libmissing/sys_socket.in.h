@@ -425,3 +425,4 @@ extern int rpl_shutdown (int, int);
 
 #endif /* _GL_SYS_SOCKET_H */
 #endif /* _GL_SYS_SOCKET_H */
+/* public header */

@@ -182,3 +182,4 @@ iswxdigit (wint_t wc)
 
 #endif /* _GL_WCTYPE_H */
 #endif /* _GL_WCTYPE_H */
+/* public header */

@@ -2000,3 +2000,4 @@ prelude_msg_t *idmef_message_get_pmsg(idmef_message_t *message);
 #define IDMEF_CLASS_ID_MESSAGE 49
 
 #endif /* _LIBPRELUDE_IDMEF_TREE_WRAP */
+/* public header */

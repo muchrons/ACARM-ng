@@ -78,3 +78,4 @@ idmef_criterion_value_type_t idmef_criterion_value_get_type(idmef_criterion_valu
 
          
 #endif /* _LIBPRELUDE_IDMEF_CRITERION_VALUE_H */
+/* public header */

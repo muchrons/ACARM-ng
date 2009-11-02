@@ -96,3 +96,4 @@ prelude_bool_t prelude_io_is_error_fatal(prelude_io_t *pio, int error);
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_IO_H */
+/* public header */

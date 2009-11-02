@@ -70,3 +70,4 @@ extern void unregister_close_hook (struct close_hook *link);
 #endif
 
 #endif /* CLOSE_HOOK_H */
+/* public header */

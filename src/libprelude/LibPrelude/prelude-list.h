@@ -273,3 +273,4 @@ static inline void prelude_list_del_init(prelude_list_t *item)
 #endif
 
 #endif
+/* public header */

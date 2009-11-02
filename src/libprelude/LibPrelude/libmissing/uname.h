@@ -49,3 +49,4 @@ int
 uname (struct utsname *uts);
 
 #endif
+/* public header */

@@ -51,3 +51,4 @@ LT_SCOPE size_t lt_strlcpy(char *dst, const char *src, const size_t dstsize);
 #endif /* !defined(HAVE_STRLCPY) */
 
 #endif /*!defined(LT__STRL_H)*/
+/* public header */

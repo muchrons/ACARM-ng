@@ -51,3 +51,4 @@
 #define alignof alignof_slot
 
 #endif /* _ALIGNOF_H */
+/* public header */

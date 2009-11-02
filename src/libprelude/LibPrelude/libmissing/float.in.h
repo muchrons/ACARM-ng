@@ -60,3 +60,4 @@
 
 #endif /* _GL_FLOAT_H */
 #endif /* _GL_FLOAT_H */
+/* public header */

@@ -158,3 +158,4 @@
 
 #endif /* _GL_ERRNO_H */
 #endif /* _GL_ERRNO_H */
+/* public header */

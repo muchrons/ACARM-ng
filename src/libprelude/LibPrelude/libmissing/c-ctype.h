@@ -293,3 +293,4 @@ extern int c_toupper (int c);
 #endif
 
 #endif /* C_CTYPE_H */
+/* public header */

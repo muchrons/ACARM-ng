@@ -48,3 +48,4 @@
 #include "idmef-additional-data.h"
 
 #endif /* _LIBPRELUDE_IDMEF_H */
+/* public header */

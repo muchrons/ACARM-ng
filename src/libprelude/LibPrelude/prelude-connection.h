@@ -117,3 +117,4 @@ prelude_connection_t *prelude_connection_ref(prelude_connection_t *conn);
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_CONNECTION_H */
+/* public header */

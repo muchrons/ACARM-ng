@@ -57,3 +57,4 @@ void prelude_hash_iterate(prelude_hash_t *hash, void (*cb)(void *data));
 #endif
          
 #endif /* _LIBPRELUDE_HASH_H */
+/* public header */

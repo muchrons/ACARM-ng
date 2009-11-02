@@ -126,3 +126,4 @@ int _prelude_log_set_abort_level_from_string(const char *level);
 #endif
 
 #endif /* _LIBPRELUDE_PRELUDE_LOG_H */
+/* public header */
