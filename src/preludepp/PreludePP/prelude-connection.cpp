@@ -62,7 +62,8 @@ Connection::Connection(const char *addr)
 }
 
 
-Connection::Connection(prelude_connection_t *con, bool own_data)
+// NOTE: code updated by BaSz to suppress compiler warning.
+Connection::Connection(prelude_connection_t *con, bool /*own_data*/)
 {
         _con = con;
 }

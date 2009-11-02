@@ -21,7 +21,10 @@ Client::Client(const char *profile)
 }
 
 
-Client::Client(const Client &client)
+// NOTE: explicit initialization of base class when copy c-tor is called has been
+//       added by BaSz to suppress compiler warning.
+Client::Client(const Client &client):
+  ClientProfile(client)
 {
         _client = (client._client) ? prelude_client_ref(client._client) : NULL;
 }
