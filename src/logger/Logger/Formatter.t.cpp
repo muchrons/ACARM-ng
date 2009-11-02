@@ -92,4 +92,15 @@ void testObj::test<6>(void)
                        "DEBUG@4.002/node.1 NULL:NULL:123: NULL");
 }
 
+// smoke test for swap()
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  Formatter f1;
+  Formatter f2;
+
+  f1.swap(f2);
+}
+
 } // namespace tut

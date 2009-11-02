@@ -24,15 +24,9 @@ public:
    *  \param param parameter name that was null
    */
   explicit ExceptionNullParameter(const char *where, const char *param):
-    Exception( std::string( check(where) ) + ": NULL parameter: " + check(param) )
+    Exception( std::string( ensureValidString(where) ) + ": NULL parameter: " +
+               ensureValidString(param) )
   {
-  }
-
-private:
-  const char *check(const char *str)
-  {
-    assert(str!=NULL);
-    return str;
   }
 }; // class Exception
 

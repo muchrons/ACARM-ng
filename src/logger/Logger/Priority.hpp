@@ -9,6 +9,7 @@
 
 #include "System/IterableEnum.hpp"
 
+
 namespace Logger
 {
 namespace detail

@@ -5,6 +5,8 @@
 #ifndef INCLUDE_LOGGER_APPENDERS_BASE_HPP_FILE
 #define INCLUDE_LOGGER_APPENDERS_BASE_HPP_FILE
 
+#include <boost/shared_ptr.hpp>
+
 #include "Logger/Synchro.hpp"
 
 // TODO: comment
@@ -28,6 +30,9 @@ private:
 
   Mutex mutex_;
 }; // class Base
+
+
+typedef boost::shared_ptr<Base> BasePtr;
 
 } // namespace Appenders
 } // namespace Logger

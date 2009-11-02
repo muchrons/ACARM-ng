@@ -23,13 +23,14 @@ struct ExceptionInvalidNodeName: public Exception
    *  \param nodeName invlaid node name that has been given.
    */
   explicit ExceptionInvalidNodeName(const char *nodeName):
-    Exception( std::string("invalid node name: ") + nodeName )
+    Exception( std::string("invalid node name: ") +
+               ensureValidString(nodeName) )
   {
   }
 }; // struct ExceptionInvalidNodeName
 
 
-/* \brief repreesnts name of a node.
+/** \brief repreesnts name of a node.
  */
 class NodeName
 {
@@ -42,7 +43,7 @@ public:
   NodeName(const char *name);
   /** \brief creates child node for a given parent.
    *  \param parentNode parent node for this one.
-   *  \param surifx     name surfix to be used.
+   *  \param surfix     name surfix to be used.
    */
   NodeName(const NodeName &parentNode, const char *surfix);
 
