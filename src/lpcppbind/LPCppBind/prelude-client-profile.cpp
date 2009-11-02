@@ -1,6 +1,6 @@
-#include "prelude-error.hxx"
-#include "prelude-client-profile.h"
-#include "prelude-client-profile.hxx"
+#include "LPCppBind/prelude-error.hpp"
+#include "LPCppBind/prelude-client-profile.h"
+#include "LPCppBind/prelude-client-profile.hpp"
 
 
 using namespace Prelude;

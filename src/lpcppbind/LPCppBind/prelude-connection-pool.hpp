@@ -24,9 +24,9 @@
 #ifndef _LIBPRELUDE_PRELUDE_CONNECTION_POOL_HXX
 #define _LIBPRELUDE_PRELUDE_CONNECTION_POOL_HXX
 
-#include "prelude.h"
-#include "prelude-client-profile.hxx"
-#include "prelude-connection.hxx"
+#include "LPCppBind/prelude.h"
+#include "LPCppBind/prelude-client-profile.hpp"
+#include "LPCppBind/prelude-connection.hpp"
 
 namespace Prelude {
         class ConnectionPool {
@@ -65,3 +65,4 @@ namespace Prelude {
 };
 
 #endif /* __PRELUDE_CONNECTION_POOL__ */
+/* public header */

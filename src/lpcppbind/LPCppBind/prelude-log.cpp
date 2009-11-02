@@ -1,6 +1,6 @@
 #include <prelude.h>
 
-#include <prelude-log.hxx>
+#include <prelude-log.hpp>
 
 
 using namespace Prelude;

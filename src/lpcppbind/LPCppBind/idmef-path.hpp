@@ -24,12 +24,12 @@
 #ifndef _LIBPRELUDE_IDMEF_PATH_HXX
 #define _LIBPRELUDE_IDMEF_PATH_HXX
 
-#include "prelude.h"
-#include "idmef-path.h"
+#include "LPCppBind/prelude.h"
+#include "LPCppBind/idmef-path.h"
 
-#include "idmef.hxx"
-#include "prelude-error.hxx"
-#include "idmef-value.hxx"
+#include "LPCppBind/idmef.hpp"
+#include "LPCppBind/prelude-error.hpp"
+#include "LPCppBind/idmef-value.hpp"
 
 
 namespace Prelude {
@@ -85,3 +85,4 @@ namespace Prelude {
 };
 
 #endif
+/* public header */

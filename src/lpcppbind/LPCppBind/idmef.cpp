@@ -5,9 +5,9 @@
 #include <idmef-path.h>
 #include <idmef-message-print.h>
 
-#include "prelude-error.hxx"
-#include "idmef-path.hxx"
-#include "idmef.hxx"
+#include "LPCppBind/prelude-error.hpp"
+#include "LPCppBind/idmef-path.hpp"
+#include "LPCppBind/idmef.hpp"
 
 
 using namespace Prelude;

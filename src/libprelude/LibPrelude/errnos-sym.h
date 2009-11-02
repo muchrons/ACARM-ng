@@ -1,0 +1,319 @@
+/* Output of mkstrtable.awk.  DO NOT EDIT.  */
+
+/* errnos.h - List of system error values.
+   Copyright (C) 2003, 2004 g10 Code GmbH
+
+   This file is part of libgpg-error.
+
+   libgpg-error is free software; you can redistribute it and/or
+   modify it under the terms of the GNU Lesser General Public License
+   as published by the Free Software Foundation; either version 2.1 of
+   the License, or (at your option) any later version.
+ 
+   libgpg-error is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   Lesser General Public License for more details.
+ 
+   You should have received a copy of the GNU Lesser General Public
+   License along with libgpg-error; if not, write to the Free
+   Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+   02111-1307, USA.  */
+
+
+
+/* The purpose of this complex string table is to produce
+   optimal code with a minimum of relocations.  */
+
+static const char errnos_msgstr[] = 
+  "PRELUDE_ERROR_E2BIG" "\0"
+  "PRELUDE_ERROR_EACCES" "\0"
+  "PRELUDE_ERROR_EADDRINUSE" "\0"
+  "PRELUDE_ERROR_EADDRNOTAVAIL" "\0"
+  "PRELUDE_ERROR_EADV" "\0"
+  "PRELUDE_ERROR_EAFNOSUPPORT" "\0"
+  "PRELUDE_ERROR_EAGAIN" "\0"
+  "PRELUDE_ERROR_EALREADY" "\0"
+  "PRELUDE_ERROR_EAUTH" "\0"
+  "PRELUDE_ERROR_EBACKGROUND" "\0"
+  "PRELUDE_ERROR_EBADE" "\0"
+  "PRELUDE_ERROR_EBADF" "\0"
+  "PRELUDE_ERROR_EBADFD" "\0"
+  "PRELUDE_ERROR_EBADMSG" "\0"
+  "PRELUDE_ERROR_EBADR" "\0"
+  "PRELUDE_ERROR_EBADRPC" "\0"
+  "PRELUDE_ERROR_EBADRQC" "\0"
+  "PRELUDE_ERROR_EBADSLT" "\0"
+  "PRELUDE_ERROR_EBFONT" "\0"
+  "PRELUDE_ERROR_EBUSY" "\0"
+  "PRELUDE_ERROR_ECANCELED" "\0"
+  "PRELUDE_ERROR_ECHILD" "\0"
+  "PRELUDE_ERROR_ECHRNG" "\0"
+  "PRELUDE_ERROR_ECOMM" "\0"
+  "PRELUDE_ERROR_ECONNABORTED" "\0"
+  "PRELUDE_ERROR_ECONNREFUSED" "\0"
+  "PRELUDE_ERROR_ECONNRESET" "\0"
+  "PRELUDE_ERROR_ED" "\0"
+  "PRELUDE_ERROR_EDEADLK" "\0"
+  "PRELUDE_ERROR_EDEADLOCK" "\0"
+  "PRELUDE_ERROR_EDESTADDRREQ" "\0"
+  "PRELUDE_ERROR_EDIED" "\0"
+  "PRELUDE_ERROR_EDOM" "\0"
+  "PRELUDE_ERROR_EDOTDOT" "\0"
+  "PRELUDE_ERROR_EDQUOT" "\0"
+  "PRELUDE_ERROR_EEXIST" "\0"
+  "PRELUDE_ERROR_EFAULT" "\0"
+  "PRELUDE_ERROR_EFBIG" "\0"
+  "PRELUDE_ERROR_EFTYPE" "\0"
+  "PRELUDE_ERROR_EGRATUITOUS" "\0"
+  "PRELUDE_ERROR_EGREGIOUS" "\0"
+  "PRELUDE_ERROR_EHOSTDOWN" "\0"
+  "PRELUDE_ERROR_EHOSTUNREACH" "\0"
+  "PRELUDE_ERROR_EIDRM" "\0"
+  "PRELUDE_ERROR_EIEIO" "\0"
+  "PRELUDE_ERROR_EILSEQ" "\0"
+  "PRELUDE_ERROR_EINPROGRESS" "\0"
+  "PRELUDE_ERROR_EINTR" "\0"
+  "PRELUDE_ERROR_EINVAL" "\0"
+  "PRELUDE_ERROR_EIO" "\0"
+  "PRELUDE_ERROR_EISCONN" "\0"
+  "PRELUDE_ERROR_EISDIR" "\0"
+  "PRELUDE_ERROR_EISNAM" "\0"
+  "PRELUDE_ERROR_EL2HLT" "\0"
+  "PRELUDE_ERROR_EL2NSYNC" "\0"
+  "PRELUDE_ERROR_EL3HLT" "\0"
+  "PRELUDE_ERROR_EL3RST" "\0"
+  "PRELUDE_ERROR_ELIBACC" "\0"
+  "PRELUDE_ERROR_ELIBBAD" "\0"
+  "PRELUDE_ERROR_ELIBEXEC" "\0"
+  "PRELUDE_ERROR_ELIBMAX" "\0"
+  "PRELUDE_ERROR_ELIBSCN" "\0"
+  "PRELUDE_ERROR_ELNRNG" "\0"
+  "PRELUDE_ERROR_ELOOP" "\0"
+  "PRELUDE_ERROR_EMEDIUMTYPE" "\0"
+  "PRELUDE_ERROR_EMFILE" "\0"
+  "PRELUDE_ERROR_EMLINK" "\0"
+  "PRELUDE_ERROR_EMSGSIZE" "\0"
+  "PRELUDE_ERROR_EMULTIHOP" "\0"
+  "PRELUDE_ERROR_ENAMETOOLONG" "\0"
+  "PRELUDE_ERROR_ENAVAIL" "\0"
+  "PRELUDE_ERROR_ENEEDAUTH" "\0"
+  "PRELUDE_ERROR_ENETDOWN" "\0"
+  "PRELUDE_ERROR_ENETRESET" "\0"
+  "PRELUDE_ERROR_ENETUNREACH" "\0"
+  "PRELUDE_ERROR_ENFILE" "\0"
+  "PRELUDE_ERROR_ENOANO" "\0"
+  "PRELUDE_ERROR_ENOBUFS" "\0"
+  "PRELUDE_ERROR_ENOCSI" "\0"
+  "PRELUDE_ERROR_ENODATA" "\0"
+  "PRELUDE_ERROR_ENODEV" "\0"
+  "PRELUDE_ERROR_ENOENT" "\0"
+  "PRELUDE_ERROR_ENOEXEC" "\0"
+  "PRELUDE_ERROR_ENOLCK" "\0"
+  "PRELUDE_ERROR_ENOLINK" "\0"
+  "PRELUDE_ERROR_ENOMEDIUM" "\0"
+  "PRELUDE_ERROR_ENOMEM" "\0"
+  "PRELUDE_ERROR_ENOMSG" "\0"
+  "PRELUDE_ERROR_ENONET" "\0"
+  "PRELUDE_ERROR_ENOPKG" "\0"
+  "PRELUDE_ERROR_ENOPROTOOPT" "\0"
+  "PRELUDE_ERROR_ENOSPC" "\0"
+  "PRELUDE_ERROR_ENOSR" "\0"
+  "PRELUDE_ERROR_ENOSTR" "\0"
+  "PRELUDE_ERROR_ENOSYS" "\0"
+  "PRELUDE_ERROR_ENOTBLK" "\0"
+  "PRELUDE_ERROR_ENOTCONN" "\0"
+  "PRELUDE_ERROR_ENOTDIR" "\0"
+  "PRELUDE_ERROR_ENOTEMPTY" "\0"
+  "PRELUDE_ERROR_ENOTNAM" "\0"
+  "PRELUDE_ERROR_ENOTSOCK" "\0"
+  "PRELUDE_ERROR_ENOTSUP" "\0"
+  "PRELUDE_ERROR_ENOTTY" "\0"
+  "PRELUDE_ERROR_ENOTUNIQ" "\0"
+  "PRELUDE_ERROR_ENXIO" "\0"
+  "PRELUDE_ERROR_EOPNOTSUPP" "\0"
+  "PRELUDE_ERROR_EOVERFLOW" "\0"
+  "PRELUDE_ERROR_EPERM" "\0"
+  "PRELUDE_ERROR_EPFNOSUPPORT" "\0"
+  "PRELUDE_ERROR_EPIPE" "\0"
+  "PRELUDE_ERROR_EPROCLIM" "\0"
+  "PRELUDE_ERROR_EPROCUNAVAIL" "\0"
+  "PRELUDE_ERROR_EPROGMISMATCH" "\0"
+  "PRELUDE_ERROR_EPROGUNAVAIL" "\0"
+  "PRELUDE_ERROR_EPROTO" "\0"
+  "PRELUDE_ERROR_EPROTONOSUPPORT" "\0"
+  "PRELUDE_ERROR_EPROTOTYPE" "\0"
+  "PRELUDE_ERROR_ERANGE" "\0"
+  "PRELUDE_ERROR_EREMCHG" "\0"
+  "PRELUDE_ERROR_EREMOTE" "\0"
+  "PRELUDE_ERROR_EREMOTEIO" "\0"
+  "PRELUDE_ERROR_ERESTART" "\0"
+  "PRELUDE_ERROR_EROFS" "\0"
+  "PRELUDE_ERROR_ERPCMISMATCH" "\0"
+  "PRELUDE_ERROR_ESHUTDOWN" "\0"
+  "PRELUDE_ERROR_ESOCKTNOSUPPORT" "\0"
+  "PRELUDE_ERROR_ESPIPE" "\0"
+  "PRELUDE_ERROR_ESRCH" "\0"
+  "PRELUDE_ERROR_ESRMNT" "\0"
+  "PRELUDE_ERROR_ESTALE" "\0"
+  "PRELUDE_ERROR_ESTRPIPE" "\0"
+  "PRELUDE_ERROR_ETIME" "\0"
+  "PRELUDE_ERROR_ETIMEDOUT" "\0"
+  "PRELUDE_ERROR_ETOOMANYREFS" "\0"
+  "PRELUDE_ERROR_ETXTBSY" "\0"
+  "PRELUDE_ERROR_EUCLEAN" "\0"
+  "PRELUDE_ERROR_EUNATCH" "\0"
+  "PRELUDE_ERROR_EUSERS" "\0"
+  "PRELUDE_ERROR_EWOULDBLOCK" "\0"
+  "PRELUDE_ERROR_EXDEV" "\0"
+  "PRELUDE_ERROR_PRELUDE_ERROR_EXFULL";
+
+static const int errnos_msgidx[] =
+  {
+    0,
+    20,
+    41,
+    66,
+    94,
+    113,
+    140,
+    161,
+    184,
+    204,
+    230,
+    250,
+    270,
+    291,
+    313,
+    333,
+    355,
+    377,
+    399,
+    420,
+    440,
+    464,
+    485,
+    506,
+    526,
+    553,
+    580,
+    605,
+    622,
+    644,
+    668,
+    695,
+    715,
+    734,
+    756,
+    777,
+    798,
+    819,
+    839,
+    860,
+    886,
+    910,
+    934,
+    961,
+    981,
+    1001,
+    1022,
+    1048,
+    1068,
+    1089,
+    1107,
+    1129,
+    1150,
+    1171,
+    1192,
+    1215,
+    1236,
+    1257,
+    1279,
+    1301,
+    1324,
+    1346,
+    1368,
+    1389,
+    1409,
+    1435,
+    1456,
+    1477,
+    1500,
+    1524,
+    1551,
+    1573,
+    1597,
+    1620,
+    1644,
+    1670,
+    1691,
+    1712,
+    1734,
+    1755,
+    1777,
+    1798,
+    1819,
+    1841,
+    1862,
+    1884,
+    1908,
+    1929,
+    1950,
+    1971,
+    1992,
+    2018,
+    2039,
+    2059,
+    2080,
+    2101,
+    2123,
+    2146,
+    2168,
+    2192,
+    2214,
+    2237,
+    2259,
+    2280,
+    2303,
+    2323,
+    2348,
+    2372,
+    2392,
+    2419,
+    2439,
+    2462,
+    2489,
+    2517,
+    2544,
+    2565,
+    2595,
+    2620,
+    2641,
+    2663,
+    2685,
+    2709,
+    2732,
+    2752,
+    2779,
+    2803,
+    2833,
+    2854,
+    2874,
+    2895,
+    2916,
+    2939,
+    2959,
+    2983,
+    3010,
+    3032,
+    3054,
+    3076,
+    3097,
+    3123,
+    3143,
+    
+  };
+
+#define errnos_msgidxof(code) (0 ? -1 \
+  : ((code >= 0) && (code <= 140)) ? (code - 0) \
+  : -1)

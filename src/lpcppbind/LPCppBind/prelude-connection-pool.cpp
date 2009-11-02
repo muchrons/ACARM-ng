@@ -23,12 +23,12 @@
 
 #include <vector>
 
-#include "prelude.h"
-#include "prelude-connection-pool.h"
+#include "LPCppBind/prelude.h"
+#include "LPCppBind/prelude-connection-pool.h"
 
-#include "prelude-connection-pool.hxx"
-#include "prelude-client.hxx"
-#include "prelude-error.hxx"
+#include "LPCppBind/prelude-connection-pool.hpp"
+#include "LPCppBind/prelude-client.hpp"
+#include "LPCppBind/prelude-error.hpp"
 
 using namespace Prelude;
 

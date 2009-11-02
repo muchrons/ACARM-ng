@@ -26,16 +26,17 @@
 #ifndef _LIBPRELUDE_PRELUDE_HXX
 #define _LIBPRELUDE_PRELUDE_HXX
 
-#include "prelude-client.hxx"
-#include "prelude-client-easy.hxx"
-#include "prelude-connection.hxx"
-#include "prelude-connection-pool.hxx"
+#include "LPCppBind/prelude-client.hpp"
+#include "LPCppBind/prelude-client-easy.hpp"
+#include "LPCppBind/prelude-connection.hpp"
+#include "LPCppBind/prelude-connection-pool.hpp"
 
-#include "idmef.hxx"
-#include "idmef-path.hxx"
-#include "idmef-value.hxx"
-#include "idmef-criteria.hxx"
+#include "LPCppBind/idmef.hpp"
+#include "LPCppBind/idmef-path.hpp"
+#include "LPCppBind/idmef-value.hpp"
+#include "LPCppBind/idmef-criteria.hpp"
 
 const char *CheckVersion(const char *version = NULL);
 
 #endif
+/* public header */

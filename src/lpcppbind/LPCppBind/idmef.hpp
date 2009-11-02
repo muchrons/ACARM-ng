@@ -3,8 +3,8 @@
 
 #include <string>
 #include <iostream>
-#include "idmef-value.hxx"
-#include "idmef-time.hxx"
+#include "LPCppBind/idmef-value.hpp"
+#include "LPCppBind/idmef-time.hpp"
 
 namespace Prelude
 {
@@ -62,3 +62,4 @@ namespace Prelude {
 };
 
 #endif /* __LIBPRELUDE_IDMEF_HXX */
+/* public header */

@@ -24,8 +24,8 @@
 #ifndef _LIBPRELUDE_PRELUDE_LOG_HXX
 #define _LIBPRELUDE_PRELUDE_LOG_HXX
 
-#include "prelude.h"
-#include "idmef-path.h"
+#include "LPCppBind/prelude.h"
+#include "LPCppBind/idmef-path.h"
 
 
 namespace Prelude {
@@ -54,3 +54,4 @@ namespace Prelude {
 };
 
 #endif
+/* public header */

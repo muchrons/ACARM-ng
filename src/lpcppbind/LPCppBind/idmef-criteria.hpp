@@ -25,8 +25,8 @@
 #define _LIBPRELUDE_IDMEF_CRITERIA_HXX
 
 #include <string>
-#include "prelude.h"
-#include "idmef.hxx"
+#include "LPCppBind/prelude.h"
+#include "LPCppBind/idmef.hpp"
 
 namespace Prelude {
         class IDMEFCriterion {
@@ -85,3 +85,4 @@ namespace Prelude {
 };
 
 #endif
+/* public header */
