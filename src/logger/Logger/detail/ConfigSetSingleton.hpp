@@ -8,6 +8,7 @@
 #include "System/Singleton.hpp"
 #include "Logger/NodeName.hpp"
 #include "Logger/NodeConf.hpp"
+#include "Logger/Appenders/Base.hpp"
 
 // TODO: test
 // TODO: implement
@@ -24,9 +25,16 @@ public:
   NodeConfPtr getNodeConfiguration(const NodeName &nn);
 
 private:
-  ConfigSetImpl();
+  ConfigSetImpl()
+  {
+  }
 
   friend class System::Singleton<detail::ConfigSetImpl>;
+
+  typedef std::map<std::string, NodeConfPtr> ConfigMap;
+  ConfigMap cfgMap_;
+
+  typedef std::
 }; // class ConfigSet
 
 

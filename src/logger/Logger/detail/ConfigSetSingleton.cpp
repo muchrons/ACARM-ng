@@ -16,10 +16,5 @@ NodeConfPtr ConfigSetImpl::getNodeConfiguration(const NodeName &nn)
   return NodeConfPtr();
 }
 
-ConfigSetImpl::ConfigSetImpl()
-{
-  // TODO
-}
-
 } // namespace detail
 } // namespace Logger
