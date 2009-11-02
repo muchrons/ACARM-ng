@@ -25,7 +25,7 @@
 #define _LIBPRELUDE_IDMEF_VALUE_HXX
 
 #include <vector>
-#include "idmef-time.hxx"
+#include "idmef-time.hpp"
 
 namespace Prelude {
         class IDMEFValue {

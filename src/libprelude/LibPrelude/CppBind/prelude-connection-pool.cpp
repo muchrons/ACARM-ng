@@ -26,9 +26,9 @@
 #include "prelude.h"
 #include "prelude-connection-pool.h"
 
-#include "prelude-connection-pool.hxx"
-#include "prelude-client.hxx"
-#include "prelude-error.hxx"
+#include "prelude-connection-pool.hpp"
+#include "prelude-client.hpp"
+#include "prelude-error.hpp"
 
 using namespace Prelude;
 

@@ -26,7 +26,7 @@
 
 #include <string>
 #include "prelude.h"
-#include "idmef.hxx"
+#include "idmef.hpp"
 
 namespace Prelude {
         class IDMEFCriterion {

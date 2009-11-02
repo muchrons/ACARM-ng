@@ -23,9 +23,9 @@
 
 #include <sstream>
 
-#include "prelude-error.hxx"
-#include "idmef.hxx"
-#include "idmef-value.hxx"
+#include "prelude-error.hpp"
+#include "idmef.hpp"
+#include "idmef-value.hpp"
 
 using namespace Prelude;
 

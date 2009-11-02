@@ -25,8 +25,8 @@
 #define _LIBPRELUDE_PRELUDE_CONNECTION_POOL_HXX
 
 #include "prelude.h"
-#include "prelude-client-profile.hxx"
-#include "prelude-connection.hxx"
+#include "prelude-client-profile.hpp"
+#include "prelude-connection.hpp"
 
 namespace Prelude {
         class ConnectionPool {

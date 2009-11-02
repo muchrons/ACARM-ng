@@ -27,9 +27,9 @@
 #include "prelude.h"
 #include "idmef-path.h"
 
-#include "idmef.hxx"
-#include "prelude-error.hxx"
-#include "idmef-value.hxx"
+#include "idmef.hpp"
+#include "prelude-error.hpp"
+#include "idmef-value.hpp"
 
 
 namespace Prelude {
