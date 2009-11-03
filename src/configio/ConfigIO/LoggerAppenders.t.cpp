@@ -90,4 +90,35 @@ void testObj::test<3>(void)
   }
 }
 
+// test searching for appender
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  apps_.push_back( mkAppCfg("some name 1") );
+  apps_.push_back( mkAppCfg("some name 2") );
+  const LoggerAppenders       la(apps_);
+  const LoggerAppenderConfig &lac=la["some name 1"];
+  ensure_equals("invlid cofnig returned", lac.getName(), "some name 1");
+}
+
+// test throw on non-existing appender name
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  apps_.push_back( mkAppCfg("some name 1") );
+  apps_.push_back( mkAppCfg("some name 2") );
+  const LoggerAppenders la(apps_);
+  try
+  {
+    la["non-existing name"];
+    fail("LoggerAppenders::opeartor[]() didn't throw on unknown appender");
+  }
+  catch(const ExceptionInvalidAppenderName&)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut

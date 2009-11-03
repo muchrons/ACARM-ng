@@ -84,6 +84,12 @@ public:
     return apps_.end();
   }
 
+  /** \brief gets appender of a given name.
+   *  \param name name of appender to be returned.
+   *  \return appender with a given name.
+   */
+  const LoggerAppenderConfig &operator[](const std::string &name) const;
+
 private:
   Appenders apps_;
 }; // class LoggerAppenders

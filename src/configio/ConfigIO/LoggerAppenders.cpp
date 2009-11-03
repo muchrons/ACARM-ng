@@ -33,4 +33,15 @@ LoggerAppenders::LoggerAppenders(const Appenders &apps):
   }
 }
 
+const LoggerAppenderConfig &LoggerAppenders::operator[](const std::string &name) const
+{
+  // search for appender
+  for(const_iterator it=begin(); it!=end(); ++it)
+    if(it->getName()==name)
+      return *it;
+
+  // no appender found....
+  throw ExceptionInvalidAppenderName("LoggerAppenders::operator[]()", name);
+}
+
 } // namespace ConfigIO
