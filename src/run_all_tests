@@ -1,0 +1,21 @@
+#!/bin/sh
+
+RET=0
+cd gen/test_local_/ || exit $?
+
+# iterata through all build components
+for d in *
+do
+  # skip build process' direcotires that are not components
+  if [ "$d" = "components_deps" ] || \
+     [ "$d" = "includes"        ] || \
+     [ "$d" = "libs"            ]
+  then
+    continue
+  fi
+
+  # run tests
+  ( cd $d && ./$d.t ) || RET=1
+done
+
+exit $RET
