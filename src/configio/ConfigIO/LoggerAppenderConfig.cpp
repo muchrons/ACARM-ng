@@ -15,7 +15,8 @@ LoggerAppenderConfig::LoggerAppenderConfig(const std::string &type,
   name_(name),
   opts_(opts)
 {
-  // TODO - test specific options for given type
+  // note: no validation is performed on this level. it is up to logger library
+  //       to interpret values provided as options.
 }
 
 const std::string &LoggerAppenderConfig::operator[](const std::string &name) const
