@@ -13,9 +13,14 @@
 namespace ConfigIO
 {
 
+/** \brief config file parser.
+ */
 class Parser
 {
 public:
+  /** \brief creates parset for a given file.
+   *  \param path file to be parsed.
+   */
   explicit Parser(const std::string &path);
 
   // TODO

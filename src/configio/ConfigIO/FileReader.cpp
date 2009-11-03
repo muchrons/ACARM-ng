@@ -15,7 +15,7 @@ using namespace System;
 namespace ConfigIO
 {
 
-FileReader::FileReader(const string &path)
+FileReader::FileReader(const std::string &path)
 {
   DiskFile df(path);
 
