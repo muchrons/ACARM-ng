@@ -16,6 +16,22 @@
 namespace ConfigIO
 {
 
+/** \brief exception informing about non-existing appender
+ */
+struct ExceptionInvalidAppenderName: public Exception
+{
+  /** \brief create exception of invalid appender name
+   *  \param where place where problem has been detected.
+   *  \param name  name that does not exist
+   */
+  ExceptionInvalidAppenderName(const char        *where,
+                               const std::string &name):
+    Exception( std::string( ensureValidString(where) ) +
+               ": appender name does not exist: " + name )
+  {
+  }
+}; // struct ExceptionInvalidAppenderName
+
 /** \brief exception informing about duplicated entries
  */
 struct ExceptionInvalidDuplicatedAppenderName: public Exception
