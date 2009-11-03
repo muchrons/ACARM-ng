@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <acarm_ng>
-  <data_base>
+  <persistency>
     <type>PostgreSQL</type>
     <postgresql>
       <user>john</user>
@@ -8,5 +8,5 @@
       <host>db.server.my.domain.org</host>
       <port>5432</port>
     </postgresql>
-  </data_base>
+  </persistency>
 </acarm_ng>

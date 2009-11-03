@@ -7,9 +7,9 @@ example may look like this:
 
 <?xml version="1.0" encoding="UTF-8"?>
 <acarm_ng>
-  <data_base>
-    <!-- data base specific options -->
-  </data_base>
+  <persistency>
+    <!-- persistency specific options -->
+  </persistency>
 
   <logger>
     <!-- logger specific options -->
@@ -22,26 +22,26 @@ in the following sections only subtrees specific for given components will
 be shown in the example, for sake of document's simplicity.
 
 
-data base configuration
-=======================
+persistency configuration
+=========================
 
-configuration of data base requires only giving data base type and options
+configuration of persistenyc requires only giving its type to use and options
 specyfic for given type.
 example:
 
-<data_base>
+<persistency>
   <type>PostgreSQL</type>
-  <dbtype>
+  <persistenyctype>
     <!-- db-scecific -->
-  </dbtype>
+  </persistencytype>
 </data_base>
 
-where dbtype can be one of the following:
+where persistencytype can be one of the following:
   * postgresql
 
 postgresql data base configuration template looks like this:
 
-<data_base>
+<persistency>
   <type>PostgreSQL</type>
   <postgresql>
     <user>john</user>
@@ -49,7 +49,7 @@ postgresql data base configuration template looks like this:
     <host>db.server.my.domain.org</host>
     <port>5432</port>
   </postgresql>
-</data_base>
+</persistency>
 
 
 logger configuration
