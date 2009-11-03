@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+  <data_base>
+    <type>UnknownDBType</type>
+    <postgresql>
+      <user>john</user>
+      <pass>$3cr3t</pass>
+      <host>db.server.my.domain.org</host>
+      <port>5432</port>
+    </postgresql>
+  </data_base>
+</acarm_ng>
