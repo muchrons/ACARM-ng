@@ -34,7 +34,7 @@ example:
   <persistenyctype>
     <!-- db-scecific -->
   </persistencytype>
-</data_base>
+</persistency>
 
 where persistencytype can be one of the following:
   * postgresql
@@ -55,5 +55,29 @@ postgresql data base configuration template looks like this:
 logger configuration
 ====================
 
-TBD (TODO)
+logger's configuration consists of two parts: appenders configuration and
+logger nodes configuration.
+at this moment only appenders can be assigned to a particullar nodes.
+example configuration may look like this:
 
+<logger>
+  <appenders>
+    <file name="file_app1">
+      <output>myoutputfile.log</output>
+    </file>
+
+    <console name="stdout"/>
+
+    <multi name="everywhere">
+      <appender>file_app1</appender>
+      <appender>stdout</appender>
+    </multi>
+  </appenders>
+
+  <nodes appender="everywhere">
+    <someChild appender="console"/>
+    <otherChild>
+      <subChild1 appender="file"/>
+    </otherChild>
+  </nodes>
+</logger>
