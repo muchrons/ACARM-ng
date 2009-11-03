@@ -30,7 +30,7 @@ struct ExceptionInvalidOptionName: public Exception
                ": invalid option requested: " + option )
   {
   }
-}; // struct ExceptionInvalidPortNumber
+}; // struct ExceptionInvalidOptionName
 
 
 /** \brief class representing configuration of single appender.
