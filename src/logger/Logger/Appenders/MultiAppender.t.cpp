@@ -118,4 +118,22 @@ void testObj::test<5>(void)
   multiApp.append("hej Butt-head");
 }
 
+// test passing NULL to c-tor
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  MultiAppender::AppVec out;
+  out.push_back( BasePtr() );
+  try
+  {
+    MultiAppender multiApp(out);
+    fail("MultiAppender::MultiAppender() didn't throw on null appedner");
+  }
+  catch(const ExceptionNullParameter &)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut
