@@ -8,6 +8,7 @@
 #include <string>
 #include <boost/scoped_array.hpp>
 
+#include "System/Exception.hpp"
 #include "ConfigIO/ExceptionFileAccessError.hpp"
 
 
