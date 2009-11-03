@@ -3,6 +3,7 @@ dataapi
 persistency
 input
 preludepp
+xml
 configio
 logger
 system
