@@ -3,5 +3,6 @@ dataapi
 persistency
 input
 preludepp
+configio
 logger
 system
