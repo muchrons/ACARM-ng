@@ -75,7 +75,7 @@ void ParseLoggerNodes::addParsed(LoggerNodes::Nodes &out,
     }
 
     //
-    // dive into subtree
+    // dive into subtree(s)
     //
     addParsed(out, path, *it, ".");
   }
