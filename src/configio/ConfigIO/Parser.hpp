@@ -8,7 +8,14 @@
 /* public header */
 
 #include <string>
+#include <boost/scoped_ptr.hpp>
 
+#include "ConfigIO/LoggerConfig.hpp"
+#include "ConfigIO/PersistencyConfig.hpp"
+
+// TODO: implement
+// TODO: test
+// TODO: comment
 
 namespace ConfigIO
 {
@@ -23,7 +30,17 @@ public:
    */
   explicit Parser(const std::string &path);
 
-  // TODO
+  ~Parser(void);
+
+  const LoggerConfig &getLoggerConfig(void) const;
+
+  const PersistencyConfig &getPersistencyConfig(void) const;
+
+private:
+  // forward declaraion
+  class ParserImpl;
+
+  boost::scoped_ptr<ParserImpl> pimpl_;
 }; // class Parser
 
 } // namespace ConfigIO

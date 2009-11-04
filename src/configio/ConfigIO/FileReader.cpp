@@ -17,7 +17,7 @@ namespace ConfigIO
 
 FileReader::FileReader(const std::string &path)
 {
-  DiskFile df(path);
+  DiskFile df(path, O_RDONLY|O_LARGEFILE);
 
   // get file size
   {

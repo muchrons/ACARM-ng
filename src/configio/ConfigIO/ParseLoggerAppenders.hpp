@@ -5,8 +5,6 @@
 #ifndef INCLUDE_CONFIGIO_PARSELOGGERAPPENDERS_HPP_FILE
 #define INCLUDE_CONFIGIO_PARSELOGGERAPPENDERS_HPP_FILE
 
-/* pulic header */
-
 #include "XML/Node.hpp"
 #include "ConfigIO/LoggerAppenders.hpp"
 #include "ConfigIO/Exception.hpp"

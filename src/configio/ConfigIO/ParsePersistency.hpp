@@ -5,8 +5,6 @@
 #ifndef INCLUDE_CONFIGIO_PARSEPERSISTENCY_HPP_FILE
 #define INCLUDE_CONFIGIO_PARSEPERSISTENCY_HPP_FILE
 
-/* public header */
-
 #include <string>
 
 #include "XML/Node.hpp"

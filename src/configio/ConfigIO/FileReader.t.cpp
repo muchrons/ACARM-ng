@@ -85,4 +85,38 @@ void testObj::test<5>(void)
   }
 }
 
+// check for exception when file does not exist
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  try
+  {
+    FileReader fr("/file/that/does/not/exist.txt");
+    fail("opening non-exisitng file didn't caused an error");
+  }
+  catch(const System::Exception&)
+  {
+    // this is expected
+  }
+}
+
+// check for exception when file does not exist, but can be created
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  try
+  {
+    const char *path="_file_that_does_not_exist_but_can_be_created.txt";
+    unlink(path);           // just in case
+    FileReader  fr(path);
+    fail("opening non-exisitng file didn't caused an error");
+  }
+  catch(const System::Exception&)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut

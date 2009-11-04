@@ -26,30 +26,20 @@ persistency configuration
 =========================
 
 configuration of persistenyc requires only giving its type to use and options
-specyfic for given type.
+for it.
 example:
 
 <persistency>
   <type>PostgreSQL</type>
-  <persistenyctype>
-    <!-- db-scecific -->
+  <user>john</user>
+  <pass>$3cr3t</pass>
+  <host>db.server.my.domain.org</host>
+  <port>5432</port>
   </persistencytype>
 </persistency>
 
 where persistencytype can be one of the following:
-  * postgresql
-
-postgresql data base configuration template looks like this:
-
-<persistency>
-  <type>PostgreSQL</type>
-  <postgresql>
-    <user>john</user>
-    <pass>$3cr3t</pass>
-    <host>db.server.my.domain.org</host>
-    <port>5432</port>
-  </postgresql>
-</persistency>
+  * PostgreSQL
 
 
 logger configuration
