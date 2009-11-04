@@ -12,8 +12,6 @@
 #include "XML/Node.hpp"
 #include "ConfigIO/PersistencyConfig.hpp"
 
-// TODO: test
-// TODO: comment
 
 namespace ConfigIO
 {
@@ -35,12 +33,19 @@ struct ExceptionPortNumberConversionFailed: public Exception
 }; // struct ExceptionPortNumberConversionFailed
 
 
-
+/** \brief parser for persistency configuration.
+ */
 class ParsePersistency
 {
 public:
+  /** \brief parses persistency configuration and saves it internally.
+   *  \param node node to start parsing from.
+   */
   explicit ParsePersistency(const XML::Node &node);
 
+  /** \brief gets persistency configuration.
+   *  \return persistency configuration.
+   */
   const PersistencyConfig &getConfig(void) const
   {
     return cfg_;
