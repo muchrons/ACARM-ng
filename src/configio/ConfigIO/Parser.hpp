@@ -10,11 +10,10 @@
 #include <string>
 #include <boost/scoped_ptr.hpp>
 
+#include "System/Exception.hpp" // may be thrown by PIMPLed implementation
 #include "ConfigIO/LoggerConfig.hpp"
 #include "ConfigIO/PersistencyConfig.hpp"
 
-// TODO: implement
-// TODO: test
 // TODO: comment
 
 namespace ConfigIO

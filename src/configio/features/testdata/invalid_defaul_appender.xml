@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+
+  <persistency>
+    <type>PostgreSQL</type>
+    <user>john</user>
+    <pass>$3cr3t</pass>
+    <host>db.server.my.domain.org</host>
+    <port>5432</port>
+  </persistency>
+
+  <logger>
+    <appenders>
+      <file name="default">
+        <output>loggerfile.log</output>
+      </file>
+    </appenders>
+
+    <nodes appender="invalid_name_of_default_appender">
+    </nodes>
+  </logger>
+
+</acarm_ng>
