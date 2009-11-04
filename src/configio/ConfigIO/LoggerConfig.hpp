@@ -10,7 +10,6 @@
 #include "ConfigIO/LoggerAppenders.hpp"
 #include "ConfigIO/LoggerNodes.hpp"
 
-// TODO: comment
 
 namespace ConfigIO
 {

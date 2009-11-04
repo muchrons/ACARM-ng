@@ -20,9 +20,9 @@ namespace ConfigIO
  */
 struct ExceptionNoAppenderAssigned: public Exception
 {
-  /** \brief create exception of invalid appender name
-   *  \param where place where problem has been detected.
-   *  \param name  name that does not exist
+  /** \brief create exception of invalid appender name.
+   *  \param where    place where problem has been detected.
+   *  \param nodeName name that does not exist.
    */
   ExceptionNoAppenderAssigned(const char        *where,
                               const std::string &nodeName):
