@@ -14,7 +14,6 @@
 #include "ConfigIO/LoggerConfig.hpp"
 #include "ConfigIO/PersistencyConfig.hpp"
 
-// TODO: comment
 
 namespace ConfigIO
 {
@@ -29,10 +28,18 @@ public:
    */
   explicit Parser(const std::string &path);
 
+  /** \brief deallocates internal data.
+   */
   ~Parser(void);
 
+  /** \brief gets logger's configuration, read from file.
+   *  \return logger's configuration.
+   */
   const LoggerConfig &getLoggerConfig(void) const;
 
+  /** \brief gets persistency configuration, read from file.
+   *  \return persistency configuration.
+   */
   const PersistencyConfig &getPersistencyConfig(void) const;
 
 private:

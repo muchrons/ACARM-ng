@@ -20,10 +20,18 @@ using namespace XML;
 namespace ConfigIO
 {
 
+/** \brief real Parser's implementation
+ *
+ * PIMPL pattern is used here, to hide lots of includes that are not
+ * recommended to be made publicly available.
+ */
 class Parser::ParserImpl
 {
 public:
-  ParserImpl(const string &path):
+  /** \brief parses given file and saves the results.
+   *  \param path path to file to be parsed.
+   */
+  explicit ParserImpl(const string &path):
     tree_( getParsedTree(path) ),
     parseNodes_(       tree_.getRoot().getChild("logger").getChild("nodes") ),
     parseAppenders_(   tree_.getRoot().getChild("logger").getChild("appenders") ),
@@ -34,11 +42,17 @@ public:
   {
   }
 
+  /** \brief gets logger configuration.
+   *  \return logger configuration.
+   */
   const LoggerConfig &getLoggerConfig(void) const
   {
     return loggerCfg_;
   }
 
+  /** \brief gets persistency configuration.
+   *  \return persistency configuration.
+   */
   const PersistencyConfig &getPersistencyConfig(void) const
   {
     return parsePersistency_.getConfig();
