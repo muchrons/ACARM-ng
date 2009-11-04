@@ -20,9 +20,9 @@ namespace ConfigIO
  */
 struct ExceptionInvalidAppenderName: public Exception
 {
-  /** \brief create exception of invalid appender name
+  /** \brief create exception of duplicated appender name
    *  \param where place where problem has been detected.
-   *  \param name  name that does not exist
+   *  \param name  name that is duplicated.
    */
   ExceptionInvalidAppenderName(const char        *where,
                                const std::string &name):
@@ -34,19 +34,19 @@ struct ExceptionInvalidAppenderName: public Exception
 
 /** \brief exception informing about duplicated entries
  */
-struct ExceptionInvalidDuplicatedAppenderName: public Exception
+struct ExceptionDuplicatedAppenderName: public Exception
 {
   /** \brief create exception of invalid appender name
    *  \param where place where problem has been detected.
    *  \param name  name that does not exist
    */
-  ExceptionInvalidDuplicatedAppenderName(const char        *where,
-                                         const std::string &name):
+  ExceptionDuplicatedAppenderName(const char        *where,
+                                  const std::string &name):
     Exception( std::string( ensureValidString(where) ) +
                ": duplicated appender name: " + name )
   {
   }
-}; // struct ExceptionInvalidDuplicatedAppenderName
+}; // struct ExceptionDuplicatedAppenderName
 
 
 /** \brief collection of appenders configurations.

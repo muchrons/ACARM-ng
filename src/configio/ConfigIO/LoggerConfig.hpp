@@ -7,6 +7,9 @@
 
 /* public header */
 
+#include "ConfigIO/LoggerAppenders.hpp"
+//#include "ConfigIO/LoggerNodes.hpp"
+
 // TODO: implement
 // TODO: test
 // TODO: comment
@@ -18,6 +21,7 @@ namespace ConfigIO
  */
 class LoggerConfig
 {
+//  TODO
 }; // class LoggerConfig
 
 } // namespace ConfigIO

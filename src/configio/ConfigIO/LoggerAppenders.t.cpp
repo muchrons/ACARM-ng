@@ -84,7 +84,7 @@ void testObj::test<3>(void)
     LoggerAppenders la(apps_);
     fail("LoggerAppenders() didn't throw on duplicated entries");
   }
-  catch(const ExceptionInvalidDuplicatedAppenderName&)
+  catch(const ExceptionDuplicatedAppenderName&)
   {
     // this is expected
   }

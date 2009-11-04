@@ -2,7 +2,6 @@
  * LoggerAppenders.cpp
  *
  */
-#include <map>
 #include <cassert>
 
 #include "ConfigIO/LoggerAppenders.hpp"
@@ -27,7 +26,7 @@ LoggerAppenders::LoggerAppenders(const Appenders &apps):
     // raise exception when entries are not unique
     assert(cnt!=0);
     if(cnt!=1)
-      throw ExceptionInvalidDuplicatedAppenderName(
+      throw ExceptionDuplicatedAppenderName(
                     "LoggerAppenders::LoggerAppenders()",
                     it1->getName() );
   }
