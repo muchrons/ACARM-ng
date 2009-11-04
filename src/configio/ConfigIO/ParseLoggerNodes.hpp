@@ -11,22 +11,31 @@
 #include "ConfigIO/LoggerNodes.hpp"
 #include "ConfigIO/Exception.hpp"
 
-// TODO: test
-// TODO: comment
 
 namespace ConfigIO
 {
 
+/** \brief class for parsing nodes configuration part of logger config.
+ */
 class ParseLoggerNodes
 {
 public:
+  /** \brief creates class and saves parsing results.
+   *  \param node node to start parsing from.
+   */
   explicit ParseLoggerNodes(const XML::Node &node);
 
+  /** \brief gets configuration of default (top most) node.
+   *  \return configuration of default node.
+   */
   const LoggerNodeConfig &getDefaultNodeConfig(void) const
   {
     return defaultNode_;
   }
 
+  /** \brief gets configuration of definied nodes.
+   *  \return nodes' configuration.
+   */
   const LoggerNodes &getNodes(void) const
   {
     return nodes_;
