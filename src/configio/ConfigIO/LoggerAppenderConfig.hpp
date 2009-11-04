@@ -39,8 +39,11 @@ struct ExceptionInvalidOptionName: public Exception
 class LoggerAppenderConfig
 {
 public:
+  /** \brief values vector for given option.
+   */
   typedef std::vector<std::string>               ParameterValues;
-  /** \brief parameters map (name => value).
+
+  /** \brief parameters map (name => values).
    */
   typedef std::map<std::string, ParameterValues> Options;
 

@@ -11,10 +11,6 @@
 #include "ConfigIO/LoggerAppenders.hpp"
 #include "ConfigIO/Exception.hpp"
 
-// TODO: implement
-// TODO: test
-// TODO: comment
-
 namespace ConfigIO
 {
 
@@ -33,12 +29,22 @@ struct ExceptionNoAppendersDefined: public Exception
 }; // struct ExceptionNoAppendersDefined
 
 
-
+/** \brief parser of XML subtree corresponding to logger
+ *         appenders' configuration.
+ */
 class ParseLoggerAppenders
 {
 public:
-  ParseLoggerAppenders(const XML::Node &node);
+  /** \brief parse subtree and save results in class.
+   *  \param node root node to start parsing from.
+   *  \note this is internal implementation and therefore assumes that
+   *        given subtree is valid in logger's configuration XML tree.
+   */
+  explicit ParseLoggerAppenders(const XML::Node &node);
 
+  /** \brief gets appenders' configuration that has been parsed.
+   *  \return appenders' configuration.
+   */
   const LoggerAppenders &getAppenders(void) const
   {
     return appenders_;
