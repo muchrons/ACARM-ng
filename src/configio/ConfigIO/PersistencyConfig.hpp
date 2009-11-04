@@ -12,7 +12,6 @@
 
 #include "ConfigIO/Exception.hpp"
 
-// TODO: comment
 
 namespace ConfigIO
 {
