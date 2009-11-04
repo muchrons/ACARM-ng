@@ -57,6 +57,16 @@ const char *xmlErr1=
   "</acarm_ng>"
   "";
 
+const char *xmlErr2=
+  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+  "<acarm_ng>"
+  "  <logger>"
+  "    <appenders>"
+  ""                        // <-- no appenders defined (at least one required)
+  "    </appenders>"
+  "  </logger>"
+  "</acarm_ng>"
+  "";
 
 
 
@@ -160,6 +170,22 @@ void testObj::test<3>(void)
     fail("parsing XML didn't failed for appender without name");
   }
   catch(const XML::Exception&)
+  {
+    // this is expected
+  }
+}
+
+// test throw on no appenders defined
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  try
+  {
+    getAppsConfs(xmlErr2);
+    fail("parsing XML didn't failed when no appenders have been defined");
+  }
+  catch(const ExceptionNoAppendersDefined&)
   {
     // this is expected
   }

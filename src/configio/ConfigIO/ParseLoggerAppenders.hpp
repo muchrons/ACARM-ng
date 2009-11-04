@@ -9,6 +9,7 @@
 
 #include "XML/Node.hpp"
 #include "ConfigIO/LoggerAppenders.hpp"
+#include "ConfigIO/Exception.hpp"
 
 // TODO: implement
 // TODO: test
@@ -16,6 +17,22 @@
 
 namespace ConfigIO
 {
+
+/** \brief exception informing about no appenders registered.
+ */
+struct ExceptionNoAppendersDefined: public Exception
+{
+  /** \brief create exception of no appenders defined
+   *  \param where  place where problem has been detected.
+   */
+  ExceptionNoAppendersDefined(const char *where):
+    Exception( std::string( ensureValidString(where) ) +
+               ": at least one appender must be defined" )
+  {
+  }
+}; // struct ExceptionNoAppendersDefined
+
+
 
 class ParseLoggerAppenders
 {

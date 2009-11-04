@@ -23,10 +23,14 @@ LoggerAppenders ParseLoggerAppenders::parse(const XML::Node &node) const
   // this in fact will be already checked before this call happens
   assert(node.getName()=="appenders");
 
-  LoggerAppenders::Appenders apps;
+  LoggerAppenders::Appenders  apps;
+  const Node::TNodesList     &children=node.getChildrenList();
+
+  // at least one appender is required (default appender must be defined)
+  if( children.begin()==children.end() )
+    throw ExceptionNoAppendersDefined("ParseLoggerAppenders::parse()");
 
   // iterate through all appenders
-  const Node::TNodesList &children=node.getChildrenList();
   for(Node::TNodesList::const_iterator it=children.begin();
       it!=children.end(); ++it)
   {
