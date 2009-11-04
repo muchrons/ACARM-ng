@@ -42,6 +42,25 @@ const char *xmlOK1=
   "</acarm_ng>"
   "";
 
+const char *xmlErr1=
+  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+  "<acarm_ng>"
+  "  <logger>"
+  "    <appenders>"
+  ""
+  "      <file>"            // <-- appender's name is missing here
+  "        <output>somefile.log</output>"
+  "      </file>"
+  ""
+  "    </appenders>"
+  "  </logger>"
+  "</acarm_ng>"
+  "";
+
+
+
+
+
 struct ParseLoggerAppendersTestClass
 {
   // return copyied, parsed subtree
@@ -83,7 +102,7 @@ void testObj::test<1>(void)
   ensure_equals("invalid node returned by helper", n.getName(), "appenders");
 }
 
-// try parsing and see if all appenders are present
+// try parsing and see if all appenders and options are present
 template<>
 template<>
 void testObj::test<2>(void)
@@ -97,6 +116,8 @@ void testObj::test<2>(void)
   ensure_equals("invalid type of appender 1", it->getType(), "file");
   ensure_equals("'output' option is missing for appender 1",
                 (*it)["output"].at(0), "somefile.log");
+  ensure_equals("invalid options count in appender 1",
+                (*it)["output"].size(), 1);
   ++it;
 
   // check second
@@ -105,6 +126,8 @@ void testObj::test<2>(void)
   ensure_equals("invalid type of appender 2", it->getType(), "file");
   ensure_equals("'output' option is missing for appender 2",
                 (*it)["output"].at(0), "some_other_file.log");
+  ensure_equals("invalid options count in appender 2",
+                (*it)["output"].size(), 1);
   ++it;
 
   // check third
@@ -121,14 +144,25 @@ void testObj::test<2>(void)
                 (*it)["appender"].at(0), "fileApp1");
   ensure_equals("appender option 2 is invalid for appender 4",
                 (*it)["appender"].at(1), "stdout");
+  ensure_equals("invalid options count in appender 4",
+                (*it)["appender"].size(), 2);
   ++it;
 }
 
-// 
+// test appender without name
 template<>
 template<>
 void testObj::test<3>(void)
 {
+  try
+  {
+    getAppsConfs(xmlErr1);
+    fail("parsing XML didn't failed for appender without name");
+  }
+  catch(const XML::Exception&)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut
