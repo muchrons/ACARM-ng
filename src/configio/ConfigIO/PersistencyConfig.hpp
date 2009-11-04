@@ -26,15 +26,25 @@ public:
   typedef uint16_t PortNumber;
 
   /** \brief creates persistency configuration.
+   *  \param type persistency type.
    *  \param user user name to lgoin with.
    *  \param pass password to use for user.
    *  \param host host name/address to connect to.
    *  \param port port number to use when connecting.
    */
-  PersistencyConfig(const std::string &user,
+  PersistencyConfig(const std::string &type,
+                    const std::string &user,
                     const std::string &pass,
                     const std::string &host,
                     PortNumber         port);
+
+  /** \brief gets persistency storage type.
+   *  \return persitency type name.
+   */
+  const std::string getType(void) const
+  {
+    return type_;
+  }
 
   /** \brief gets user name (login).
    *  \return user name to login with.
@@ -69,6 +79,7 @@ public:
   }
 
 private:
+  std::string type_;
   std::string user_;
   std::string pass_;
   std::string host_;

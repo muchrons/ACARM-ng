@@ -19,6 +19,7 @@ const char *xmlOK1=
   "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   "<acarm_ng>"
   "  <persistency>"
+  "    <type>PostgreSQL</type>"
   "    <user>login</user>"
   "    <pass>s3cr3t</pass>"
   "    <host>my.domain.pl</host>"
@@ -31,6 +32,7 @@ const char *xmlErr1=
   "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   "<acarm_ng>"
   "  <persistency>"
+  "    <type>PostgreSQL</type>"
   ""                            // <-- no 'user' field
   "    <pass>s3cr3t</pass>"
   "    <host>my.domain.pl</host>"
@@ -43,6 +45,7 @@ const char *xmlErr2=
   "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   "<acarm_ng>"
   "  <persistency>"
+  "    <type>PostgreSQL</type>"
   "    <user>login</user>"
   ""                            // <-- no 'pass' filed
   "    <host>my.domain.pl</host>"
@@ -55,6 +58,7 @@ const char *xmlErr3=
   "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   "<acarm_ng>"
   "  <persistency>"
+  "    <type>PostgreSQL</type>"
   "    <user>login</user>"
   "    <pass>s3cr3t</pass>"
   ""                            // <-- no 'host' field
@@ -67,6 +71,7 @@ const char *xmlErr4=
   "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   "<acarm_ng>"
   "  <persistency>"
+  "    <type>PostgreSQL</type>"
   "    <user>login</user>"
   "    <pass>s3cr3t</pass>"
   "    <host>my.domain.pl</host>"
@@ -75,6 +80,18 @@ const char *xmlErr4=
   "</acarm_ng>"
   "";
 
+const char *xmlErr5=
+  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+  "<acarm_ng>"
+  "  <persistency>"
+  ""                            // <-- no 'type' field
+  "    <user>login</user>"
+  "    <pass>s3cr3t</pass>"
+  "    <host>my.domain.pl</host>"
+  "    <port>666</port>"
+  "  </persistency>"
+  "</acarm_ng>"
+  "";
 
 
 struct ParsePersistencyTestClass
@@ -184,6 +201,14 @@ template<>
 void testObj::test<7>(void)
 {
   ensureFails(xmlErr4);
+}
+
+// test missing 'type' field
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  ensureFails(xmlErr5);
 }
 
 } // namespace tut

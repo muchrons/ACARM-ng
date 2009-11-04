@@ -13,10 +13,12 @@ using namespace std;
 namespace ConfigIO
 {
 
-PersistencyConfig::PersistencyConfig(const std::string &user,
+PersistencyConfig::PersistencyConfig(const std::string &type,
+                                     const std::string &user,
                                      const std::string &pass,
                                      const std::string &host,
                                      PortNumber         port):
+  type_(type),
   user_(user),
   pass_(pass),
   host_(host),

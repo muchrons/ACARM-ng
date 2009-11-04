@@ -27,6 +27,7 @@ inline PersistencyConfig ParsePersistency::parse(const XML::Node &node) const
   assert( node.getName()=="persistency" );
 
   // get direct values values
+  const string &type=node.getChild("type").getValuesString();
   const string &user=node.getChild("user").getValuesString();
   const string &pass=node.getChild("pass").getValuesString();
   const string &host=node.getChild("host").getValuesString();
@@ -35,7 +36,7 @@ inline PersistencyConfig ParsePersistency::parse(const XML::Node &node) const
   // compute value
   const PersistencyConfig::PortNumber portNumber=parsePort(port);
 
-  return PersistencyConfig(user, pass, host, portNumber);
+  return PersistencyConfig(type, user, pass, host, portNumber);
 }
 
 inline PersistencyConfig::PortNumber ParsePersistency::parsePort(

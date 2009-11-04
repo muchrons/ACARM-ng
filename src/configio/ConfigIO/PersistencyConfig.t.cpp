@@ -31,11 +31,12 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const PersistencyConfig pc("user", "pass", "host", 42);
-  ensure_equals("invalid user name",   pc.getUser(),       "user");
-  ensure_equals("invalid password",    pc.getPassword(),   "pass");
-  ensure_equals("invalid host name",   pc.getHost(),       "host");
-  ensure_equals("invalid port number", pc.getPortNumber(), 42    );
+  const PersistencyConfig pc("mytype", "user", "pass", "host", 42);
+  ensure_equals("invalid type",        pc.getType(),       "mytype");
+  ensure_equals("invalid user name",   pc.getUser(),       "user"  );
+  ensure_equals("invalid password",    pc.getPassword(),   "pass"  );
+  ensure_equals("invalid host name",   pc.getHost(),       "host"  );
+  ensure_equals("invalid port number", pc.getPortNumber(), 42      );
 }
 
 // test throwing on invalid port number
@@ -45,7 +46,7 @@ void testObj::test<2>(void)
 {
   try
   {
-    PersistencyConfig pc("user", "pass", "host", 0);
+    PersistencyConfig pc("type", "user", "pass", "host", 0);
     fail("PersistencyCOnfig didn't throw on onvali port number");
   }
   catch(const ExceptionInvalidPortNumber&)
@@ -59,11 +60,12 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const PersistencyConfig pc1("user", "pass", "host", 42);
+  const PersistencyConfig pc1("type", "user", "pass", "host", 42);
   PersistencyConfig       pc2=pc1;
   pc2=pc1;
 
   // check if all fields equals
+  ensure_equals("invalid type",        pc1.getType(),       pc2.getType()       );
   ensure_equals("invalid user name",   pc1.getUser(),       pc2.getUser()       );
   ensure_equals("invalid password",    pc1.getPassword(),   pc2.getPassword()   );
   ensure_equals("invalid host name",   pc1.getHost(),       pc2.getHost()       );
