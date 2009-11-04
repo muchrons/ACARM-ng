@@ -7,7 +7,6 @@
 
 #include "XML/XMLpp/SaxParser.hpp"
 #include "ConfigIO/ParseLoggerAppenders.hpp"
-#include "ConfigIO/FileReader.hpp"
 
 using namespace std;
 using namespace XML;
