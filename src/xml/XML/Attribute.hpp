@@ -33,7 +33,7 @@ public:
    * returns attribute name.
    * \return name of attribute.
    */
-  const std::string getName(void) const
+  const std::string &getName(void) const
   {
     return name_;
   }
@@ -41,7 +41,7 @@ public:
    * gets attribute value.
    * \return value of attribute.
    */
-  const std::string getValue(void) const
+  const std::string &getValue(void) const
   {
     return value_;
   }

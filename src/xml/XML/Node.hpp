@@ -46,7 +46,7 @@ public:
    * gets name of the node element.
    * \return name of a node.
    */
-  const std::string getName(void) const
+  const std::string &getName(void) const
   {
     return name_;
   }

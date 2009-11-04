@@ -4,7 +4,6 @@
  */
 #include <algorithm>
 #include <sstream>
-#include <iostream>                         
 
 #include "XML/Node.hpp"
 
