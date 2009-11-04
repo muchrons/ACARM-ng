@@ -10,8 +10,6 @@
 #include "ConfigIO/LoggerAppenders.hpp"
 #include "ConfigIO/LoggerNodes.hpp"
 
-// TODO: implement
-// TODO: test
 // TODO: comment
 
 namespace ConfigIO
@@ -42,20 +40,35 @@ struct ExceptionBadOrMissingDefaultNodeSetting: public Exception
 class LoggerConfig
 {
 public:
+  /** \brief create logger's configuration.
+   *  \param defaultNode configuration for default node.
+   *  \param nodes       nodes' configuration.
+   *  \param appenders   appenders/ configuration.
+   *  \note if nodes reflect to non-existing appenders, c-tor will throw.
+   */
   LoggerConfig(const LoggerNodeConfig &defaultNode,
                const LoggerNodes      &nodes,
                const LoggerAppenders  &appenders);
 
+  /** \brief gets configuration of default node.
+   *  \return default node's configuration.
+   */
   const LoggerNodeConfig getDefaultNodeConfig(void) const
   {
     return defaultNode_;
   }
 
+  /** \brief gets nodes' configuration.
+   *  \return configuration for nodes.
+   */
   const LoggerNodes &getNodes(void) const
   {
     return nodes_;
   }
 
+  /** \brief gets appenders' configuration.
+   *  \return configuration for appenders.
+   */
   const LoggerAppenders &getAppenders(void) const
   {
     return appenders_;
