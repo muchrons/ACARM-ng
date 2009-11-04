@@ -19,7 +19,8 @@ LoggerAppenderConfig::LoggerAppenderConfig(const std::string &type,
   //       to interpret values provided as options.
 }
 
-const std::string &LoggerAppenderConfig::operator[](const std::string &name) const
+const LoggerAppenderConfig::ParameterValues &
+            LoggerAppenderConfig::operator[](const std::string &name) const
 {
   const Options::const_iterator it=opts_.find(name);
   if( it==opts_.end() )

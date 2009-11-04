@@ -17,8 +17,10 @@ struct LoggerAppenderConfigTestClass
 {
   LoggerAppenderConfigTestClass(void)
   {
-    opts_.insert( make_pair( string("name1"), string("value1") ) );
-    opts_.insert( make_pair( string("xyz"),   string("narf") )   );
+    opts_["name1"].push_back("value1");
+    opts_["xyz"].push_back("narf");
+    opts_["abc"].push_back("alice");
+    opts_["abc"].push_back("cat");
   }
 
   LoggerAppenderConfig::Options opts_;
@@ -67,8 +69,10 @@ template<>
 void testObj::test<4>(void)
 {
   const LoggerAppenderConfig lac("type", "name", opts_);
-  ensure_equals("option 'name1' has invalid value", lac["name1"], "value1");
-  ensure_equals("option 'xyz' has invalid value",   lac["xyz"],   "narf");
+  ensure_equals("option 'name1' has invalid value", lac["name1"].at(0), "value1");
+  ensure_equals("option 'xyz' has invalid value",   lac["xyz"].at(0),   "narf"  );
+  ensure_equals("option 'abc' has invalid value 1", lac["abc"].at(0),   "alice" );
+  ensure_equals("option 'abc' has invalid value 2", lac["abc"].at(1),   "cat"   );
 }
 
 // test getting non-exisitng option

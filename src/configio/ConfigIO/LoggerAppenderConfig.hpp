@@ -8,6 +8,7 @@
 /* public header */
 
 #include <map>
+#include <vector>
 #include <string>
 
 #include "ConfigIO/Exception.hpp"
@@ -38,9 +39,10 @@ struct ExceptionInvalidOptionName: public Exception
 class LoggerAppenderConfig
 {
 public:
+  typedef std::vector<std::string>               ParameterValues;
   /** \brief parameters map (name => value).
    */
-  typedef std::map<std::string, std::string> Options;
+  typedef std::map<std::string, ParameterValues> Options;
 
   /** \brief creates configuration for given appender.
    *  \param type name of appender's type.
@@ -71,7 +73,7 @@ public:
    *  \param name name of parameter to get value of.
    *  \return parameter's value.
    */
-  const std::string &operator[](const std::string &name) const;
+  const ParameterValues &operator[](const std::string &name) const;
 
 private:
   std::string type_;
