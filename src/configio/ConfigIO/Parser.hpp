@@ -26,7 +26,7 @@ public:
   /** \brief creates parset for a given file.
    *  \param path file to be parsed.
    */
-  explicit Parser(const std::string &path);
+  explicit Parser(const std::string &path="acarm_ng_config.xml");
 
   /** \brief deallocates internal data.
    */

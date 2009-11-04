@@ -3,6 +3,9 @@
  *
  */
 #include <tut.h>
+#include <sstream>
+#include <unistd.h>
+#include <stdlib.h>
 
 #include "ConfigIO/Parser.hpp"
 
@@ -11,8 +14,28 @@ using namespace ConfigIO;
 
 namespace
 {
+const char *defaultFile="acarm_ng_config.xml";
+
 struct ParserTestClass
 {
+  ParserTestClass(void)
+  {
+    unlink(defaultFile);
+  }
+
+  ~ParserTestClass(void)
+  {
+    unlink(defaultFile);
+  }
+
+  void copyAsDefaultConfig(const char *path) const
+  {
+    assert(path!=NULL);
+    stringstream ss;
+    ss<<"cp '"<<path<<"' '"<<defaultFile<<"'";
+    tut::ensure_equals("copying file as default config failed",
+                       system( ss.str().c_str() ), 0);
+  }
 };
 
 typedef ParserTestClass TestClass;
@@ -82,6 +105,35 @@ void testObj::test<4>(void)
   {
     // this is not expected.
   }
+}
+
+// test throw when default file does not exist
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  try
+  {
+    Parser p;
+    fail("Parser() didn't throw on nonexisting default file");
+  }
+  catch(const System::Exception&)
+  {
+    // this is not expected.
+  }
+}
+
+// test throw when default file does not exist
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  copyAsDefaultConfig("testdata/sample_config.xml");
+  const Parser        p;
+  const LoggerConfig &lc=p.getLoggerConfig();
+  // check random field
+  ensure_equals("invalid default appender",
+                lc.getDefaultNodeConfig().getAppenderName(), "default");
 }
 
 } // namespace tut
