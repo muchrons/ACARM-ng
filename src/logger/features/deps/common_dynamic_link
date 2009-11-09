@@ -1,2 +1,2 @@
 #!/bin/sh
-echo "-lboost_thread"
+echo "-lboost_thread-mt"
