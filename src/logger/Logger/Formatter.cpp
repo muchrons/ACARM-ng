@@ -43,10 +43,18 @@ void Formatter::format(std::stringstream &ssOut,
        <<ts.time<<"."<<tmp<<"/"
        <<nn.get()<<" "
        <<file<<":"
-       <<call<<":"
-       <<line<<": "
+       <<line<<" "
+       <<call<<": "
        <<msg;
 }
+
+
+void Formatter::swap(Formatter &)
+{
+  // note: implementation is empty, since format does not have any
+  //       fields as for now.
+}
+
 
 const char *Formatter::pri2str(Priority pri) const
 {

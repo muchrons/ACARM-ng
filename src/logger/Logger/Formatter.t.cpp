@@ -21,7 +21,7 @@ struct FormatterTestClass
     timeb             ts={4,2,0,0};
     fmt_.format(ss, ts, "node.1", pri, "file", "call", 123, "hello log!");
     tut::ensure_equals("invalid format", ss.str(),
-                       priStr + "@4.002/node.1 file:call:123: hello log!");
+                       priStr + "@4.002/node.1 file:123 call: hello log!");
   }
 
   const Logger::Formatter fmt_;
@@ -89,7 +89,18 @@ void testObj::test<6>(void)
     timeb             ts={4,2,0,0};
     fmt_.format(ss, ts, "node.1", Priority::DEBUG, NULL, NULL, 123, NULL);
     tut::ensure_equals("invalid format", ss.str(),
-                       "DEBUG@4.002/node.1 NULL:NULL:123: NULL");
+                       "DEBUG@4.002/node.1 NULL:123 NULL: NULL");
+}
+
+// smoke test for swap()
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  Formatter f1;
+  Formatter f2;
+
+  f1.swap(f2);
 }
 
 } // namespace tut

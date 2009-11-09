@@ -25,6 +25,18 @@ public:
     System::Exceptions::Base<Exception, std::exception>(msg)
   {
   }
+
+protected:
+  /** \brief method that always returns valid string.
+   *  \param str string to be checked.
+   *  \return original string, if it is not NULL and "<?>" otherwise.
+   */
+  const char *ensureValidString(const char *str)
+  {
+    if(str==NULL)
+      return "<?>";
+    return str;
+  }
 }; // class Exception
 
 }; // namespace Logger
