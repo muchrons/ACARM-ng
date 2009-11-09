@@ -62,3 +62,4 @@ namespace Prelude {
 };
 
 #endif /* __LIBPRELUDE_IDMEF_HXX */
+/* public header */
