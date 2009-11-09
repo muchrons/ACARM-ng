@@ -16,9 +16,6 @@
 #include "Commons/Factory/ExceptionBuilderAlreadyRegistered.hpp"
 #include "Commons/Factory/ExceptionNullBuilder.hpp"
 
-// TODO: implement
-// TODO: test
-// TODO: comment
 // TODO: this functionality must be available as a singleton<TFactory>
 
 namespace Commons
@@ -28,18 +25,35 @@ namespace Factory
 namespace detail
 {
 
+/** \brief abstract factory of factories of a given type.
+ */
 template<typename TFactory>
 class AbstractFactory
 {
 public:
+  /** \brief template paramter forward.
+   */
   typedef TFactory                                      FactoryType;
+  /** \brief base builder type for a given factory type.
+   */
   typedef FactoryBuilderBase<TFactory>                  TFactoryBuilderBase;
+  /** \brief auto pointer to factor builder's base type.
+   */
   typedef std::auto_ptr<TFactoryBuilderBase>            FactoryBuilderBaseAutoPtr;
+  /** \brief forward factory anme type parameter.
+   */
   typedef typename TFactoryBuilderBase::FactoryTypeName FactoryTypeName;
+  /** \brief forward factory pointer paramter.
+   */
   typedef typename TFactoryBuilderBase::FactoryPtr      FactoryPtr;
-
+  /** \brief forward parameter type.
+   */
   typedef typename TFactoryBuilderBase::Parameter       Parameter;
+  /** \brief forward value type.
+   */
   typedef typename TFactoryBuilderBase::Value           Value;
+  /** \brief forward options type declaration.
+   */
   typedef typename TFactoryBuilderBase::Options         Options;
 
 private:
@@ -47,8 +61,11 @@ private:
   typedef std::map<FactoryTypeName, FactoryBuilderBasePtr> BuildersMap;
 
 public:
-
-
+  /** \brief creates factory with a proper builder, and with proper options.
+   *  \param name    parameter that decides which builder is to be used.
+   *  \param options paramters to be builder.
+   *  \return factory created.
+   */
   FactoryPtr create(const FactoryTypeName &name, const Options &options) const
   {
     // check if proper builders exist
@@ -63,6 +80,9 @@ public:
     return ptr;
   }
 
+  /** \brief registers new builder.
+   *  \param fb builder to be registered.
+   */
   void registerBuilder(FactoryBuilderBaseAutoPtr fb)
   {
     FactoryBuilderBasePtr ptr( fb.release() );  // transform auto_ptr<> to shared_ptr<>
@@ -80,6 +100,9 @@ public:
     builders_[ptr->getTypeName()]=ptr;
   }
 
+  /** \brief unregisters given builder.
+   *  \param name name of a builder to unregister.
+   */
   void unregisterBuilder(const FactoryTypeName &name)
   {
     // check if it is registered - if not, we're done

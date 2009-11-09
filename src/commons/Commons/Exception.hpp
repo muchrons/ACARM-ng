@@ -32,6 +32,11 @@ public:
   }
 
 protected:
+  /** \brief ensures string is valid - if paramter is NULL, it returnes
+   *         predefined string instead.
+   *  \param str string to be checked.
+   *  \return non-null string.
+   */
   const char *ensureString(const char *str) const
   {
     if(str==NULL)

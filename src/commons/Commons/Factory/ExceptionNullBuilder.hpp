@@ -20,7 +20,7 @@ class ExceptionNullBuilder: public Commons::Factory::Exception
 {
 public:
   /** \brief create execption with given message.
-   *  \param msg message to represent.
+   *  \param where message to represent.
    */
   explicit ExceptionNullBuilder(const char *where):
     Commons::Factory::Exception(where, "builder is NULL")
