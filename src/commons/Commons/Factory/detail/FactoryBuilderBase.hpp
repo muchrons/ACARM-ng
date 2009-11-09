@@ -13,8 +13,6 @@
 
 #include "Commons/Factory/Exception.hpp"
 
-// TODO: implement
-// TODO: test
 // TODO: comment
 
 namespace Commons
@@ -34,6 +32,10 @@ public:
   typedef std::string                 Parameter;
   typedef std::string                 Value;
   typedef std::map<Parameter, Value>  Options;
+
+  virtual ~FactoryBuilderBase(void)
+  {
+  }
 
   virtual FactoryPtr build(const Options &options) const = 0;
 

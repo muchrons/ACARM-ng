@@ -13,12 +13,13 @@
 
 #include "Commons/Factory/detail/FactoryBuilderBase.hpp"
 #include "Commons/Factory/ExceptionBuilderDoesNotExist.hpp"
+#include "Commons/Factory/ExceptionBuilderAlreadyRegistered.hpp"
 #include "Commons/Factory/ExceptionNullBuilder.hpp"
 
 // TODO: implement
 // TODO: test
 // TODO: comment
-// TODO: this code must be available as a singleton
+// TODO: this functionality must be available as a singleton<TFactory>
 
 namespace Commons
 {
@@ -31,54 +32,61 @@ template<typename TFactory>
 class AbstractFactory
 {
 public:
-  typedef TFactory                     TFactory;
-  typedef FactoryBuilderBase<TFactory> TFactoryBuilderBase;
+  typedef TFactory                                      FactoryType;
+  typedef FactoryBuilderBase<TFactory>                  TFactoryBuilderBase;
+  typedef std::auto_ptr<TFactoryBuilderBase>            FactoryBuilderBaseAutoPtr;
+  typedef typename TFactoryBuilderBase::FactoryTypeName FactoryTypeName;
+  typedef typename TFactoryBuilderBase::FactoryPtr      FactoryPtr;
+
+  typedef typename TFactoryBuilderBase::Parameter       Parameter;
+  typedef typename TFactoryBuilderBase::Value           Value;
+  typedef typename TFactoryBuilderBase::Options         Options;
 
 private:
   typedef boost::shared_ptr<TFactoryBuilderBase>           FactoryBuilderBasePtr;
   typedef std::map<FactoryTypeName, FactoryBuilderBasePtr> BuildersMap;
 
 public:
-  typedef std::auto_ptr<TFactoryBuilderBase>   TFactoryBuilderBaseAutoPtr;
-  typedef TFactoryBuilderBase::FactoryTypeName FactoryTypeName;
-  typedef TFactoryBuilderBase::FactoryPtr      FactoryPtr;
 
-  typedef TFactoryBuilderBase::Parameter       Parameter;
-  typedef TFactoryBuilderBase::Value           Value;
-  typedef TFactoryBuilderBase::Options         Options;
 
   FactoryPtr create(const FactoryTypeName &name, const Options &options) const
   {
-    BuildersMap::const_iterator cit=builders_.find(name);
+    // check if proper builders exist
+    typename BuildersMap::const_iterator cit=builders_.find(name);
     if( cit==builders_.end() )
       throw ExceptionBuilderDoesNotExist(CALLNAME, name.c_str() );
 
-    assert( cit->get()!=NULL );
-    const FactoryPtr ptr=(*cit)->build(options);
+    // use available builder
+    assert( cit->second.get()!=NULL );
+    const FactoryPtr ptr=cit->second->build(options);
     assert( ptr.get()!=NULL );
     return ptr;
   }
 
-  void registerFactory(FactoryBuilderBaseAutoPtr fb)
+  void registerBuilder(FactoryBuilderBaseAutoPtr fb)
   {
-    FactoryBuilderBasePtr ptr( rb.release() );  // transform auto_ptr<> to shared_ptr<>
+    FactoryBuilderBasePtr ptr( fb.release() );  // transform auto_ptr<> to shared_ptr<>
     // check if pointer is valid
     if( ptr.get()==NULL )
       throw ExceptionNullBuilder(CALLNAME);
+
     // ensure entry does not already exist
-    BuildersMap::const_iterator cit=builders_.find( ptr->getTypeName() );
-    if( cit==builders_.end() )
-      throw ExceptionBuilderAlreadyRegistered(CALLNAME, ptr->getTypeName() );
+    typename BuildersMap::const_iterator cit=builders_.find( ptr->getTypeName() );
+    if( cit!=builders_.end() )
+      throw ExceptionBuilderAlreadyRegistered(CALLNAME,
+                                              ptr->getTypeName().c_str() );
+
     // ok - we can register it
     builders_[ptr->getTypeName()]=ptr;
   }
 
-  void unregisterFactory(const FactoryTypeName &name)
+  void unregisterBuilder(const FactoryTypeName &name)
   {
     // check if it is registered - if not, we're done
-    BuildersMap::iterator it=builders_.find(name);
+    typename BuildersMap::iterator it=builders_.find(name);
     if( it==builders_.end() )
       return;
+
     // unregister entry
     builders_.erase(it);
     assert( builders_.find(name)==builders_.end() );
