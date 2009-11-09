@@ -51,7 +51,6 @@ LINK_FLAGS=""
 for dc in $C $DEPS
 do
   ROOT="$dc/$BASE_PATH_DIR"
-echo $ROOT
 
   #
   # dependent files
@@ -68,6 +67,11 @@ echo $ROOT
   test -x "$ROOT/${PROFILE}_dynamic_link"    && DEPS_FILES="$DEPS_FILES $ROOT/${PROFILE}_dynamic_link"
 
   #
+  # this link flags/libs
+  #
+  [ "$dc" != "$C" ] && LINK_FLAGS="$LINK_FLAGS -l$dc"
+
+  #
   # dynamic dependencies
   #
 
@@ -80,9 +84,9 @@ echo $ROOT
 done
 
 # convert deps to libs and libs_deps (libraries this component depends on)
-if [ "`sed 's:^ *$::' <<<"$DEPS"`" ]
+if [ "`sed 's:^ *$::' <<< "$DEPS"`" ]
 then
-  LINK_LIBS="`sed -e 's:^ *:-l:' -e 's: \+$::' -e 's: \+: -l:g'<<<"$DEPS"`"
+#  LINK_LIBS="`sed -e 's:^ *:-l:' -e 's: \+$::' -e 's: \+: -l:g'<<<"$DEPS"`"
   DEP_LIBS_WC="`sed -e "s:^ *: :" \
                     -e "s: *$: :" \
                     -e "s: \+\([^ ]\+\): $GEN_LIBS_PATH/lib\1*:g" \
@@ -92,7 +96,7 @@ fi
 # write to file
 cat<<EOF > "$out"
 .PHONY: $C
-$C:: LINK_LIBS:=$LINK_LIBS $LINK_FLAGS
+$C:: LINK_LIBS:=$LINK_FLAGS
 $C:: DEP_LIBS_WC:=$DEP_LIBS_WC
 $C:: CXXFLAGS+=$COMPILE_FLAGS
 $C:: CFLAGS+=$COMPILE_FLAGS
