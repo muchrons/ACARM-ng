@@ -35,9 +35,9 @@ public:
   typedef std::string                 Value;
   typedef std::map<Parameter, Value>  Options;
 
-  FactoryPtr build(Options) const = 0;
+  virtual FactoryPtr build(const Options &options) const = 0;
 
-  const FactoryTypeName &getTypeName(void) const = 0;
+  virtual const FactoryTypeName &getTypeName(void) const = 0;
 }; // public AbstractFactory
 
 } // namespace detail
