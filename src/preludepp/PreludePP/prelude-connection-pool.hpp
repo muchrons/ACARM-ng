@@ -65,3 +65,4 @@ namespace Prelude {
 };
 
 #endif /* __PRELUDE_CONNECTION_POOL__ */
+/* public header */

@@ -39,3 +39,4 @@
 const char *CheckVersion(const char *version = NULL);
 
 #endif
+/* public header */
