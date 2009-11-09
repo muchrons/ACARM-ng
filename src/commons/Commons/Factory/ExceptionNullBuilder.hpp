@@ -22,12 +22,13 @@ public:
   /** \brief create execption with given message.
    *  \param msg message to represent.
    */
-  explicit Exception(const char *where)
+  explicit ExceptionNullBuilder(const char *where):
     Commons::Factory::Exception(where, "builder is NULL")
   {
   }
 }; // class ExceptionNullBuilder
 
-}; // namespace Commons
+} // namespace Factory
+} // namespace Commons
 
 #endif

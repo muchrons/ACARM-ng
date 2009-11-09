@@ -30,6 +30,7 @@ public:
   }
 }; // class Exception
 
-}; // namespace Commons
+} // namespace Factory
+} // namespace Commons
 
 #endif

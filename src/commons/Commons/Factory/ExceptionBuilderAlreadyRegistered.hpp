@@ -23,7 +23,7 @@ public:
    *  \param where place where exception has been rised.
    *  \param name  name of builder that is already registered.
    */
-  explicit Exception(const char *where, const char *name)
+  ExceptionBuilderAlreadyExist(const char *where, const char *name):
     Commons::Factory::Exception( where,
                                  std::string("builder already registered: ") +
                                     ensureString(name) )
@@ -31,6 +31,7 @@ public:
   }
 }; // class ExceptionBuilderAlreadyExist
 
-}; // namespace Commons
+} // namespace Factory
+} // namespace Commons
 
 #endif
