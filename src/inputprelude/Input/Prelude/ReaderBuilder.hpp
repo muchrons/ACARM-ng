@@ -9,6 +9,7 @@
 
 #include <string>
 
+#include "Logger/Logger.hpp"
 #include "Input/ReadersFactory.hpp"
 
 namespace Input
@@ -22,18 +23,13 @@ public:
   /** \brief creates builder of a readers for Input::Prelude
    */
   ReaderBuilder(void);
-  /** \brief builds required factory, with a given options.
-   *  \param options options to be passed to the new instance.
-   *  \return new factory instance.
-   */
-  virtual FactoryPtr build(const Options &options) const;
-  /** \brief gets name of type it can build.
-   *  \return name of factory it can build.
-   */
-  virtual const FactoryTypeName &getTypeName(void) const;
 
 private:
-  const std::string name_;
+  virtual FactoryPtr buildImpl(const Options &options) const;
+  virtual const FactoryTypeName &getTypeNameImpl(void) const;
+
+  const std::string  name_;
+  const Logger::Node log_;
 }; // class ReaderBuilder
 
 } // namespace Prelude
