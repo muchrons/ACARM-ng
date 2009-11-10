@@ -14,13 +14,19 @@ namespace Persistency
 namespace Postgres
 {
 
+/** \brief transaction operations on PostgreSQL DB.
+ */
 class TransactionAPI: public Persistency::TransactionAPI
 {
 public:
+  /** \brief begins transaction.
+   */
   TransactionAPI(void);
-
+  /** \brief commit transaction.
+   */
   virtual void commit(void);
-
+  /** \brief rollback transaction.
+   */
   virtual void rollback(void);
 }; // class TransactionAPI
 

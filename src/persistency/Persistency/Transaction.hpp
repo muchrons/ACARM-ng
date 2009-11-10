@@ -15,17 +15,29 @@
 namespace Persistency
 {
 
+/** \brief transaction logic implementation.
+ */
 class Transaction
 {
 public:
+  /** \brief transaction part, dependent on actual persistency backend.
+   */
   typedef std::auto_ptr<TransactionAPI> TAPI;
-
+  /** \brief creates transaction algorith for a given persistency transaction
+   *         implementation.
+   *  \param transaction base object to be used for implementing transaction
+   *                     or NULL, if no transaction is required.
+   */
   explicit Transaction(TAPI transaction);
-
+  /** \brief ends transaction.
+   *  \note if transaction was not commited it is automatically rollbacked.
+   */
   ~Transaction(void);
-
+  /** \brief performs commit, if operation not done already.
+   */
   void commit(void);
-
+  /** \brief rollbacks changes since transaction start.
+   */
   void rollback(void);
 
 private:
