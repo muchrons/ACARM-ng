@@ -14,7 +14,6 @@
 
 using namespace std;
 
-// TODO: add automatic registration to the factory
 
 namespace Input
 {
@@ -23,6 +22,8 @@ namespace Prelude
 
 namespace
 {
+// this code registers builder to readers factory, making it available for
+// further usage, by generic interface.
 const Commons::Factory::RegistratorHelper<ReadersFactory, ReaderBuilder> g_rh;
 } // unnamed namespace
 
