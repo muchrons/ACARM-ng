@@ -5,6 +5,8 @@
 #ifndef INCLUDE_COMMONS_FACTORY_REGISTRATORHELPER_HPP_FILE
 #define INCLUDE_COMMONS_FACTORY_REGISTRATORHELPER_HPP_FILE
 
+/* public header */
+
 #include <sstream>
 
 #include "Logger/Logger.hpp"

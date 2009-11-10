@@ -99,14 +99,15 @@ public:
    */
   void registerBuilder(FactoryBuilderBaseAutoPtr fb)
   {
-    {
-      const std::string tmp="registering factory type: '" + fb->getTypeName() + "'";
-      LOGMSG_INFO(log_, tmp.c_str() );
-    }
     FactoryBuilderBasePtr ptr( fb.release() );  // transform auto_ptr<> to shared_ptr<>
     // check if pointer is valid
     if( ptr.get()==NULL )
       throw ExceptionNullBuilder(CALLNAME);
+
+    {
+      const std::string tmp="registering factory type: '" + ptr->getTypeName() + "'";
+      LOGMSG_INFO(log_, tmp.c_str() );
+    }
 
     // ensure entry does not already exist
     typename BuildersMap::const_iterator cit=builders_.find( ptr->getTypeName() );

@@ -17,6 +17,8 @@ namespace Input
 namespace Prelude
 {
 
+/** \brief builder for reader of prelude format.
+ */
 class ReaderBuilder: public ReadersFactory::TFactoryBuilderBase
 {
 public:
