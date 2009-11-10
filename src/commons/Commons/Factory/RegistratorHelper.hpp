@@ -87,6 +87,13 @@ private:
     return true;
   }
 
+  // notice that making instance of this object a global object takes adventage
+  // of C/C++ feature, that each global, before initialized is zeroerd. in
+  // practice this means that registered_ will be '0' (i.e. 'false') and
+  // so isRegistered(), when not registered, will return proper value, even
+  // though object has not been created yet. memory access is valid too, since
+  // it uses part of memeory assigned by the compiler during build time, to
+  // be exclusive for that particular instance.
   bool registered_;
 }; // class RegistratorHelper
 
