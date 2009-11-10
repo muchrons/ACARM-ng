@@ -18,6 +18,7 @@ namespace Persistency
  */
 class ObjectFactory
 {
+public:
   /** \brief auto pointer to transaction.
    */
   typedef std::auto_ptr<Transaction> TransactionAutoPtr;
