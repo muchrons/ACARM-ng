@@ -20,12 +20,9 @@ namespace Input
 class Reader: private boost::noncopyable
 {
 public:
-  // TODO: this declaration should use polymorphic type from Persistency,
-  //       instead of 'double' (it is just for tests).
-
   /** \brief smart pointer to data returned from read() call.
    */
-  typedef std::auto_ptr<Alert> DataPtr;
+  typedef std::auto_ptr<Persistency::Alert> DataPtr;
 
   /** \brief start virtual d-tor hierarchy.
    */
