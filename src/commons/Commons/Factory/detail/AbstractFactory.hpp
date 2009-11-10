@@ -11,7 +11,7 @@
 #include <boost/shared_ptr.hpp>
 #include <cassert>
 
-#include "Commons/Factory/detail/FactoryBuilderBase.hpp"
+#include "Commons/Factory/FactoryBuilderBase.hpp"
 #include "Commons/Factory/ExceptionBuilderDoesNotExist.hpp"
 #include "Commons/Factory/ExceptionBuilderAlreadyRegistered.hpp"
 #include "Commons/Factory/ExceptionNullBuilder.hpp"

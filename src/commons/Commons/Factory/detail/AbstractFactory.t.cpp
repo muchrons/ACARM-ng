@@ -60,9 +60,9 @@ struct TestBuilder: public TestBuilderBase
 typedef AbstractFactory<TestFactory> TestAbstractFactory;
 
 
-struct AbstractFactoryBaseTestClass
+struct AbstractFactoryTestClass
 {
-  AbstractFactoryBaseTestClass(void):
+  AbstractFactoryTestClass(void):
     auto1_(new TestBuilder<1>),
     auto2_(new TestBuilder<2>)
   {
@@ -78,7 +78,7 @@ struct AbstractFactoryBaseTestClass
   TestAbstractFactory                            fac_;
 };
 
-typedef AbstractFactoryBaseTestClass TestClass;
+typedef AbstractFactoryTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

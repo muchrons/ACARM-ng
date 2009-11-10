@@ -4,9 +4,9 @@
  */
 #include <tut.h>
 
-#include "Commons/Factory/detail/FactoryBuilderBase.hpp"
+#include "Commons/Factory/FactoryBuilderBase.hpp"
 
-using namespace Commons::Factory::detail;
+using namespace Commons::Factory;
 
 
 namespace
@@ -60,7 +60,7 @@ typedef FactoryBuilderBaseTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Commons/Factory/detail/FactoryBuilderBase");
+factory tf("Commons/Factory/FactoryBuilderBase");
 } // unnamed namespace
 
 

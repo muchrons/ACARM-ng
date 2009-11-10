@@ -2,8 +2,8 @@
  * FactoryBuilderBase.hpp
  *
  */
-#ifndef INCLUDE_COMMONS_FACTORY_DETAIL_FACTORYBUILDERBASE_HPP_FILE
-#define INCLUDE_COMMONS_FACTORY_DETAIL_FACTORYBUILDERBASE_HPP_FILE
+#ifndef INCLUDE_COMMONS_FACTORY_FACTORYBUILDERBASE_HPP_FILE
+#define INCLUDE_COMMONS_FACTORY_FACTORYBUILDERBASE_HPP_FILE
 
 /* public header */
 
@@ -17,8 +17,6 @@
 namespace Commons
 {
 namespace Factory
-{
-namespace detail
 {
 
 /** \brief builder creating requested factories.
@@ -59,7 +57,6 @@ public:
   virtual const FactoryTypeName &getTypeName(void) const = 0;
 }; // public AbstractFactory
 
-} // namespace detail
 } // namespace Factory
 } // namespace Commons
 
