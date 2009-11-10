@@ -9,6 +9,7 @@
 
 #include <map>
 #include <boost/shared_ptr.hpp>
+#include <boost/noncopyable.hpp>
 #include <cassert>
 
 #include "Commons/Factory/FactoryBuilderBase.hpp"
@@ -28,7 +29,7 @@ namespace detail
 /** \brief abstract factory of factories of a given type.
  */
 template<typename TFactory>
-class AbstractFactory
+class AbstractFactory: private boost::noncopyable
 {
 public:
   /** \brief template paramter forward.

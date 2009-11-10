@@ -13,7 +13,6 @@
 #include "System/Singleton.hpp"
 #include "Commons/Factory/detail/AbstractFactory.hpp"
 
-// TODO: this functionality must be available as a singleton<TFactory>
 
 namespace Commons
 {
@@ -23,12 +22,13 @@ namespace Factory
 /** \brief abstract factory of factories of a given type.
  */
 template<typename TFactory>
-class AbstractFactorySingletonImpl: private boost::noncopyable
+class AbstractFactorySingleton: private boost::noncopyable
 {
 private:
-  /** \brief implementation short name.
-   */
+  // implementaiton's short name
   typedef detail::AbstractFactory<TFactory>                    TAbstractFactory;
+  // singleton's short name
+  typedef System::Singleton<TAbstractFactory>                  SingletonImpl;
 
 public:
   /** \brief template paramter forward.
@@ -62,47 +62,34 @@ public:
    *  \param options paramters to be builder.
    *  \return factory created.
    */
-  FactoryPtr create(const FactoryTypeName &name, const Options &options) const
+  static FactoryPtr create(const FactoryTypeName &name, const Options &options)
   {
-    return factory_.create(name, options);
+    assert( SingletonImpl::get()!=NULL );
+    return SingletonImpl::get()->create(name, options);
   }
 
   /** \brief registers new builder.
    *  \param fb builder to be registered.
    */
-  void registerBuilder(FactoryBuilderBaseAutoPtr fb)
+  static void registerBuilder(FactoryBuilderBaseAutoPtr fb)
   {
-    factory_.registerBuilder(fb);
+    assert( SingletonImpl::get()!=NULL );
+    SingletonImpl::get()->registerBuilder(fb);
   }
 
   /** \brief unregisters given builder.
    *  \param name name of a builder to unregister.
    */
-  void unregisterBuilder(const FactoryTypeName &name)
+  static void unregisterBuilder(const FactoryTypeName &name)
   {
-    factory_.unregisterBuilder(name);
+    assert( SingletonImpl::get()!=NULL );
+    SingletonImpl::get()->unregisterBuilder(name);
   }
 
 private:
-  // this prevents user from creating instances
-  friend class System::Singleton< AbstractFactorySingletonImpl<TFactory> >;
-  AbstractFactorySingletonImpl(void)
-  {
-  }
-
-  detail::AbstractFactory<TFactory> factory_;
-}; // public AbstractFactorySingletonImpl
-
-
-/** \brief singleton giving access to AbstractFactory instance, for a given
- *         factory type.
- */
-template<typename TFactory>
-struct AbstractFactorySingleton:
-  public System::Singleton< AbstractFactorySingletonImpl<TFactory> >
-{
-  typedef AbstractFactorySingletonImpl<TFactory> IMPL;
-}; // struct AbstractFactorySingleton
+  // no instances allowed
+  AbstractFactorySingleton(void);
+}; // public AbstractFactorySingleton
 
 } // namespace Factory
 } // namespace Commons

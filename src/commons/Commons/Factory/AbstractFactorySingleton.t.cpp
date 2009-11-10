@@ -73,8 +73,8 @@ struct AbstractFactorySingletonTestClass
   ~AbstractFactorySingletonTestClass(void)
   {
     // unregister factories, just in case
-    TAFS::get()->unregisterBuilder("factory-1");
-    TAFS::get()->unregisterBuilder("factory-2");
+    TAFS::unregisterBuilder("factory-1");
+    TAFS::unregisterBuilder("factory-2");
   }
 
   TAFS::FactoryBuilderBaseAutoPtr auto1_;
@@ -98,7 +98,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  TAFS::get()->unregisterBuilder("narf");   // should nto do anything
+  TAFS::unregisterBuilder("narf");   // should nto do anything
 }
 
 // test registering two builders and building something
@@ -108,12 +108,28 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  TAFS::get()->registerBuilder(auto1_);
-  TAFS::get()->registerBuilder(auto2_);
+  // register
+  TAFS::registerBuilder(auto1_);
+  TAFS::registerBuilder(auto2_);
+
+  // build
   {
-    TAFS::FactoryPtr ptr=TAFS::get()->create("factory-1", options_);
+    TAFS::FactoryPtr ptr=TAFS::create("factory-1", options_);
     ensure("NULL factory-1 returned", ptr.get()!=NULL);
     ensure_equals("invalid factory-1 retuurned", ptr->n_, 1);
+  }
+
+  // unregister (and check)
+  TAFS::unregisterBuilder("factory-1");
+  try
+  {
+    TAFS::FactoryPtr ptr=TAFS::create("factory-1", options_);
+    fail("Singleton::create() didn't throw on unregistered factory, or "
+         "unregistration failed (i.e. factory stil present in singleton)");
+  }
+  catch(const ExceptionBuilderDoesNotExist&)
+  {
+    // this is expected
   }
 }
 
