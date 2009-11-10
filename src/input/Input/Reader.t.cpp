@@ -52,7 +52,7 @@ typedef ReaderTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Commons/Reader");
+factory tf("Input/Reader");
 } // unnamed namespace
 
 
