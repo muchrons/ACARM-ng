@@ -14,6 +14,10 @@ using namespace Input;
 namespace
 {
 
+struct TestAlert: public Persistency::Alert
+{
+};
+
 struct TestReader: public Reader
 {
   typedef Reader::DataPtr DataPtr;
@@ -30,7 +34,7 @@ struct TestReader: public Reader
 
   virtual DataPtr read(unsigned int)
   {
-    return DataPtr( new double(42) );
+    return DataPtr(new TestAlert);
   }
 
   bool &i_;
@@ -74,9 +78,9 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Reader::DataPtr tmp=r_->read();
-  ensure("NULL pointer returned", tmp.get()!=NULL);
-  ensure_equals("invalid value returned", *tmp, 42);
+  Reader::DataPtr     tmp  =r_->read();
+  Persistency::Alert *alert=tmp.get();
+  ensure("NULL pointer returned", alert!=NULL);
 }
 
 } // namespace tut

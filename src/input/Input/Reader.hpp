@@ -10,6 +10,8 @@
 #include <memory>
 #include <boost/noncopyable.hpp>
 
+#include "Persistency/Alert.hpp"
+
 namespace Input
 {
 
@@ -23,7 +25,7 @@ public:
 
   /** \brief smart pointer to data returned from read() call.
    */
-  typedef std::auto_ptr<double> DataPtr;
+  typedef std::auto_ptr<Alert> DataPtr;
 
   /** \brief start virtual d-tor hierarchy.
    */
