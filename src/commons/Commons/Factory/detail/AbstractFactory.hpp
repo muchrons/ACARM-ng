@@ -12,6 +12,7 @@
 #include <boost/noncopyable.hpp>
 #include <cassert>
 
+#include "Logger/Logger.hpp"
 #include "Commons/Factory/FactoryBuilderBase.hpp"
 #include "Commons/Factory/ExceptionBuilderDoesNotExist.hpp"
 #include "Commons/Factory/ExceptionBuilderAlreadyRegistered.hpp"
@@ -62,6 +63,14 @@ private:
   typedef std::map<FactoryTypeName, FactoryBuilderBasePtr> BuildersMap;
 
 public:
+  /** \brief creates abstract factory.
+   */
+  AbstractFactory(void):
+    log_("commons.factory.detail")
+  {
+    LOGMSG_INFO(log_, "created abstract factory");
+  }
+
   /** \brief creates factory with a proper builder, and with proper options.
    *  \param name    parameter that decides which builder is to be used.
    *  \param options paramters to be builder.
@@ -69,6 +78,10 @@ public:
    */
   FactoryPtr create(const FactoryTypeName &name, const Options &options) const
   {
+    {
+      const std::string tmp="building factory type: '" + name + "'";
+      LOGMSG_INFO(log_, tmp.c_str() );
+    }
     // check if proper builders exist
     typename BuildersMap::const_iterator cit=builders_.find(name);
     if( cit==builders_.end() )
@@ -86,6 +99,10 @@ public:
    */
   void registerBuilder(FactoryBuilderBaseAutoPtr fb)
   {
+    {
+      const std::string tmp="registering factory type: '" + fb->getTypeName() + "'";
+      LOGMSG_INFO(log_, tmp.c_str() );
+    }
     FactoryBuilderBasePtr ptr( fb.release() );  // transform auto_ptr<> to shared_ptr<>
     // check if pointer is valid
     if( ptr.get()==NULL )
@@ -106,6 +123,10 @@ public:
    */
   void unregisterBuilder(const FactoryTypeName &name)
   {
+    {
+      const std::string tmp="unregistering factory type: '" + name + "'";
+      LOGMSG_INFO(log_, tmp.c_str() );
+    }
     // check if it is registered - if not, we're done
     typename BuildersMap::iterator it=builders_.find(name);
     if( it==builders_.end() )
@@ -117,7 +138,8 @@ public:
   }
 
 private:
-  BuildersMap builders_;
+  Logger::Node log_;
+  BuildersMap  builders_;
 }; // public AbstractFactory
 
 } // namespace detail

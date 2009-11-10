@@ -10,6 +10,7 @@
 #include <string>
 
 #include "System/Exceptions/Base.hpp"
+#include "Logger/Logger.hpp"
 #include "Commons/CallName.h"
 
 namespace Commons
@@ -27,7 +28,13 @@ public:
   template<typename T>
   explicit Exception(const char *where, const T &msg):
     System::Exceptions::Base<Exception, std::exception>(
-        std::string( ensureString(where) ) + msg )
+        std::string( ensureString(where) ) + msg ),
+    log_("commons.exception")
+  {
+    LOGMSG_ERROR(log_, ( std::string("exception rised: ") + what() ).c_str() );
+  }
+
+  virtual ~Exception(void) throw()
   {
   }
 
@@ -43,6 +50,9 @@ protected:
       return "<NULL>";
     return str;
   }
+
+private:
+  Logger::Node log_;
 }; // class Exception
 
 }; // namespace Commons

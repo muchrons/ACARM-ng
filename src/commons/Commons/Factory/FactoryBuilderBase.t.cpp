@@ -32,12 +32,13 @@ struct TestBuilder: public TestBuilderBase
   {
   }
 
-  virtual Base::FactoryPtr build(const Base::Options &options) const
+private:
+  virtual Base::FactoryPtr buildImpl(const Base::Options &options) const
   {
     return Base::FactoryPtr( new TestFactory(options) );
   }
 
-  virtual const Base::FactoryTypeName &getTypeName(void) const
+  virtual const Base::FactoryTypeName &getTypeNameImpl(void) const
   {
     return name_;
   }

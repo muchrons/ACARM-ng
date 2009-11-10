@@ -10,7 +10,9 @@
 #include <string>
 #include <map>
 #include <boost/shared_ptr.hpp>
+#include <cassert>
 
+#include "Logger/Logger.hpp"
 #include "Commons/Factory/Exception.hpp"
 
 
@@ -41,20 +43,44 @@ public:
    */
   typedef std::map<Parameter, Value>  Options;
 
+  /** \brief creates factory builder base.
+   */
+  FactoryBuilderBase(void):
+    log_("commons.factory")
+  {
+  }
+
   /** \brief declare virtual d-tor in base class.
    */
   virtual ~FactoryBuilderBase(void)
   {
   }
+
   /** \brief builds required factory, with a given options.
    *  \param options options to be passed to the new instance.
    *  \return new factory instance.
    */
-  virtual FactoryPtr build(const Options &options) const = 0;
+  FactoryPtr build(const Options &options) const
+  {
+    LOGMSG_INFO(log_, ("building: " + getTypeNameImpl() ).c_str() );
+    const FactoryPtr ptr=buildImpl(options);
+    assert(ptr!=NULL);
+    return ptr;
+  }
+
   /** \brief gets name of type it can build.
    *  \return name of factory it can build.
    */
-  virtual const FactoryTypeName &getTypeName(void) const = 0;
+  const FactoryTypeName &getTypeName(void) const
+  {
+    return getTypeNameImpl();
+  }
+
+private:
+  virtual FactoryPtr buildImpl(const Options &options) const = 0;
+  virtual const FactoryTypeName &getTypeNameImpl(void) const = 0;
+
+  Logger::Node log_;
 }; // public AbstractFactory
 
 } // namespace Factory

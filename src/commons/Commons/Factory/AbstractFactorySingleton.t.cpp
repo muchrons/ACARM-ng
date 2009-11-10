@@ -40,12 +40,13 @@ struct TestBuilder: public TestBuilderBase
     name_=ss.str();
   }
 
-  virtual Base::FactoryPtr build(const Base::Options &options) const
+private:
+  virtual Base::FactoryPtr buildImpl(const Base::Options &options) const
   {
     return Base::FactoryPtr( new TestFactory(options, N) );
   }
 
-  virtual const Base::FactoryTypeName &getTypeName(void) const
+  virtual const Base::FactoryTypeName &getTypeNameImpl(void) const
   {
     return name_;
   }
