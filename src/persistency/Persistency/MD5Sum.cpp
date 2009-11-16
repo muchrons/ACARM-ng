@@ -11,24 +11,19 @@
 namespace Persistency
 {
 
-MD5Sum::MD5Sum(const char *str)
+MD5Sum::MD5Sum(const char *str):
+  str_(str)
 {
-  // sanity check
-  if(str==NULL)
-    throw ExceptionNULLParameter("MD5Sum::MD5Sum", "str");
-
-  // string must be of a given length
-  if( strlen(str)!=MD5_STR_LEN )
-    throw ExceptionInvalidMD5String("MD5Sum::MD5Sum", str);
+  // if str==NULL str_(str) should throw
+  assert(str!=NULL);
+  // strings should be binary equal
+  assert( strcmp(str_.get(), str)==0 );
 
   // check all chars
   for(int i=0; i<MD5_STR_LEN; ++i)
-    if( !isdigit(str[i]) && !islower(str[i]) )
-      throw ExceptionInvalidMD5String("MD5Sum::MD5Sum", str);
+    if( !isdigit(str_[i]) && !islower(str_[i]) )
+      throw ExceptionInvalidMD5String(CALLNAME, str_.get() );
 
-  // save data
-  memcpy(str_, str, MD5_STR_LEN+1);
-  assert( strcmp(str_, str)==0 );
 }
 
 } // namespace Persistency

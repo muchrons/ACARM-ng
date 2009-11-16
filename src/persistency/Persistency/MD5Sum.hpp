@@ -8,7 +8,7 @@
 /* public hedaer */
 
 #include "Persistency/Exception.hpp"
-#include "Persistency/ExceptionNULLParamter.hpp"
+#include "Persistency/detail/LimitedString.hpp"
 
 namespace Persistency
 {
@@ -48,14 +48,14 @@ public:
    */
   const char *get(void) const
   {
-    return str_;
+    return str_.get();
   }
 
 private:
   explicit MD5Sum(const char *str);
 
   enum { MD5_STR_LEN=32 };
-  char str_[MD5_STR_LEN+1];
+  detail::LimitedString<MD5_STR_LEN> str_;
 }; // class MD5Sum
 
 } // namespace Persistency
