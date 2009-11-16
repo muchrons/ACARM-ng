@@ -29,7 +29,7 @@ int main(int argc, char * argv[])
 
   std::cout << "Got" << std::endl;
 
-  std::cout << idmef << std::endl;
+  std::cout << idmef.ToString() << std::endl;
 
 
 
