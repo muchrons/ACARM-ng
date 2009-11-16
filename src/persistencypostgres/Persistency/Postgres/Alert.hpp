@@ -5,8 +5,6 @@
 #ifndef INCLUDE_PERSISTENCY_POSTGRES_ALERT_HPP_FILE
 #define INCLUDE_PERSISTENCY_POSTGRES_ALERT_HPP_FILE
 
-/* public header */
-
 #include "Persistency/Alert.hpp"
 
 // TODO: implement

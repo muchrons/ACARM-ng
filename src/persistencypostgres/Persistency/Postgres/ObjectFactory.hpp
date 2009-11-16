@@ -5,8 +5,6 @@
 #ifndef INCLUDE_PERSISTENCY_POSTGRES__OBJECTFACTORY_HPP_FILE
 #define INCLUDE_PERSISTENCY_POSTGRES_OBJECTFACTORY_HPP_FILE
 
-/* public header */
-
 #include "Persistency/ObjectFactory.hpp"
 
 

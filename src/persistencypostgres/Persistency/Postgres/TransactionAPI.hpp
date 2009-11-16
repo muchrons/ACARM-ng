@@ -5,8 +5,6 @@
 #ifndef INCLUDE_PERSISTENCY_POSTGRES_TRANSACTIONAPI_HPP_FILE
 #define INCLUDE_PERSISTENCY_POSTGRES_TRANSACTIONAPI_HPP_FILE
 
-/* public header */
-
 #include "Persistency/TransactionAPI.hpp"
 
 namespace Persistency
