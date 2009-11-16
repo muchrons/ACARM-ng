@@ -72,6 +72,17 @@ public:
     return str_;
   }
 
+  /** \brief gets char from a given position.
+   *  \param p position to get char from.
+   *  \return char.
+   *  \note call does NOT check ranges.
+   */
+  char operator[](const uint16_t p) const
+  {
+    assert(p<=N && "index out of bound");
+    return str_[p];
+  }
+
 private:
   BOOST_STATIC_ASSERT(N<=512 && "string is unreasonably large");
 

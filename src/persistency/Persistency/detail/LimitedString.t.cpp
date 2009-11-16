@@ -78,4 +78,15 @@ void testObj::test<4>(void)
   ensure_equals("string has been truncated", strlen( ls.get() ), 10);
 }
 
+// test operator[]
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const LimitedString<10> ls("abcdef");
+  ensure_equals("invalid char read at[0]", ls[0],  'a');
+  ensure_equals("invalid char read at[5]", ls[5],  'f');
+  ensure_equals("invalid char read at[6]", ls[6], '\0');
+}
+
 } // namespace tut

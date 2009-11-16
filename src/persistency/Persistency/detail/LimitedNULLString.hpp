@@ -39,6 +39,16 @@ public:
     return ptr_;
   }
 
+  /** \brief gets char from a given position.
+   *  \param p position to get char from.
+   *  \return char.
+   *  \note call does NOT check ranges.
+   */
+  char operator[](const uint16_t p) const
+  {
+    return str_[p];
+  }
+
 private:
   LimitedString<N>  str_;
   const char       *ptr_;

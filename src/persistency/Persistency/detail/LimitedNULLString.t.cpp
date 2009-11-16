@@ -71,4 +71,14 @@ void testObj::test<4>(void)
   ensure_equals("string has been truncated", strlen( ls.get() ), 10);
 }
 
+// test operator[]
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const LimitedNULLString<10> ls("narf");
+  ensure_equals("invalid char read at[0]", ls[0],  'n');
+  ensure_equals("invalid char read at[4]", ls[4], '\0');
+}
+
 } // namespace tut
