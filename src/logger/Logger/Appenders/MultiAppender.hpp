@@ -10,7 +10,6 @@
 #include "Logger/Appenders/Base.hpp"
 #include "Logger/ExceptionNullParameter.hpp"
 
-// TODO: comment
 
 namespace Logger
 {

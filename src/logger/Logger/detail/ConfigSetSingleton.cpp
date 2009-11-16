@@ -5,7 +5,7 @@
 #include <cassert>
 
 #include "Logger/detail/ConfigSetSingleton.hpp"
-#include "Logger/Appenders/Console.hpp"             // TODO: this is temporary
+#include "Logger/Appenders/File.hpp"             // TODO: this is temporary
 
 using namespace std;
 
@@ -21,8 +21,8 @@ ConfigSetImpl::ConfigSetImpl(void)
   // TODO: hardcoded console output is temporaray. it is to be replaced
   //       with file configuration that can be parsed and changed in runtime.
   //
-  Appenders::BasePtr console(new Appenders::Console);
-  appMap_.insert( make_pair(console->getTypeName(), console) );
+  Appenders::BasePtr app( new Appenders::File("acarm-ng.log") );
+  appMap_.insert( make_pair(app->getTypeName(), app) );
 }
 
 

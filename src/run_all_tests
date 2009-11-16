@@ -8,4 +8,12 @@ do
   ( cd gen/test_local_/$d && ./$d.t ) || RET=1
 done
 
+echo "\n"
+if [ "$RET" -ne "0" ]
+then
+  echo "$0: some of the tests failed..."
+else
+  echo "$0: all tests passed"
+fi
+
 exit $RET

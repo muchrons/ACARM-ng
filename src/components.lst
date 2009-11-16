@@ -3,6 +3,7 @@ input
 preludepp
 xml
 configio
+commons
 logger
 system
 
