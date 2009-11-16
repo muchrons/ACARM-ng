@@ -30,14 +30,22 @@ public:
 }; // class ExceptionInvalidMD5String
 
 
+/** \brief class holding MD5 sum.
+ */
 class MD5Sum
 {
 public:
+  /** \brief named c-tor creating MD5Sum.
+   *  \param md5 string to hold.
+   *  \return already build object.
+   */
   static MD5Sum createFromString(const char *md5)
   {
     return MD5Sum(md5);
   }
-
+  /** \brief gets md5 string.
+   *  \return pointer to md5 string.
+   */
   const char *get(void) const
   {
     return str_;
