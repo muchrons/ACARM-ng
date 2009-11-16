@@ -89,7 +89,7 @@ then
 #  LINK_LIBS="`sed -e 's:^ *:-l:' -e 's: \+$::' -e 's: \+: -l:g'<<<"$DEPS"`"
   DEP_LIBS_WC="`sed -e "s:^ *: :" \
                     -e "s: *$: :" \
-                    -e "s: \+\([^ ]\+\): $GEN_LIBS_PATH/lib\1.{so,a}:g" \
+                    -e "s: \+\([^ ]\+\): $GEN_LIBS_PATH/lib\1.*:g" \
 						<<<"$DEPS"`"
 fi
 
