@@ -47,6 +47,7 @@ public:
    */
   char operator[](const uint16_t p) const
   {
+    assert( ptr_==NULL || str_.get()==ptr_ );
     return str_[p];
   }
 
@@ -71,6 +72,7 @@ public:
       str_=o.str_;
       ptr_=(o.ptr_!=NULL)?str_.get():NULL;
     }
+    assert( ptr_==NULL || str_.get()==ptr_ );
     return *this;
   }
 
