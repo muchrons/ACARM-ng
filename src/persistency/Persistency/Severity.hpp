@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <boost/noncopyable.hpp>
+
 #include "Persistency/SeverityLevel.hpp"
 
 namespace Persistency
@@ -14,7 +16,7 @@ namespace Persistency
 
 /** \brief severity representation.
  */
-class Severity
+class Severity: private boost::noncopyable
 {
 public:
   /** \brief d-tor is virtual, since this class is intended to be used as a

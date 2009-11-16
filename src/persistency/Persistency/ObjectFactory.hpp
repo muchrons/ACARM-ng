@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <boost/noncopyable.hpp>
+
 #include "Persistency/Transaction.hpp"
 #include "Persistency/Alert.hpp"
 
@@ -16,7 +18,7 @@ namespace Persistency
 
 /** \brief factory of persistent objects used in program.
  */
-class ObjectFactory
+class ObjectFactory: private boost::noncopyable
 {
 public:
   /** \brief auto pointer to transaction.

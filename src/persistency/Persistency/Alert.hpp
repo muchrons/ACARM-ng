@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <boost/noncopyable.hpp>
+
 // TODO: implement
 // TODO: test
 // TODO: comment
@@ -16,7 +18,7 @@ namespace Persistency
 
 /** \brief represents alert report got from input.
  */
-class Alert
+class Alert: private boost::noncopyable
 {
 public:
   /** \brief starts virtual d-tors from the begining of the hierarchy.
