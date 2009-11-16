@@ -81,4 +81,61 @@ void testObj::test<5>(void)
   ensure_equals("invalid char read at[4]", ls[4], '\0');
 }
 
+// test copy c-tor from string
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const LimitedNULLString<10> ls1("narf");
+  const LimitedNULLString<10> ls2(ls1);
+  ensure("pointers are invalid", ls1.get()!=ls2.get() );
+  ensure_equals("invalid string", ls2.get(), string( ls1.get() ) );
+}
+
+// test copy c-tor from NULL
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const LimitedNULLString<10> ls1(NULL);
+  const LimitedNULLString<10> ls2(ls1);
+  ensure("pointers are invalid", ls1.get()==ls2.get() );
+  ensure("invalid string", ls2.get()==NULL);
+}
+
+// test assignment operator from string
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const LimitedNULLString<10> ls1("narf");
+  LimitedNULLString<10>       ls2("aaa");
+  ls2=ls1;
+  ensure("pointers are invalid", ls1.get()!=ls2.get() );
+  ensure_equals("invalid string", ls2.get(), string( ls1.get() ) );
+}
+
+// test assignemtn operator from NULL
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const LimitedNULLString<10> ls1(NULL);
+  LimitedNULLString<10>       ls2(ls1);
+  ls2=ls1;
+  ensure("pointers are invalid", ls1.get()==ls2.get() );
+  ensure("invalid string", ls2.get()==NULL);
+}
+
+// test self copy
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  LimitedNULLString<10> ls("abc");
+  ls=ls;
+  ensure("got NULL pointer", ls.get()!=NULL);
+  ensure_equals("invalid string", ls.get(), string("abc") );
+}
+
 } // namespace tut

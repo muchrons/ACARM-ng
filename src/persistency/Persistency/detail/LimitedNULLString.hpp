@@ -25,9 +25,10 @@ public:
    *  \note this c-tor is not explicit to allow easier argument passing.
    */
   LimitedNULLString(const char *str):
-    str_( (str!=NULL)?str       :"" ),
-    ptr_( (str!=NULL)?str_.get():NULL)
+    str_( (str!=NULL)?str       :""   ),
+    ptr_( (str!=NULL)?str_.get():NULL )
   {
+    assert( ptr_==NULL || str_.get()==ptr_ );
   }
 
   /** \brief gets pointer to data.
@@ -47,6 +48,30 @@ public:
   char operator[](const uint16_t p) const
   {
     return str_[p];
+  }
+
+  /** \brief copy c-tor.
+   *  \param o object ot copy from.
+   */
+  LimitedNULLString(const LimitedNULLString &o):
+    str_(o.str_),
+    ptr_( (o.ptr_!=NULL)?str_.get():NULL )
+  {
+    assert( ptr_==NULL || str_.get()==ptr_ );
+  }
+
+  /** \brief assignment operator.
+   *  \param o object to copy from.
+   *  \return reterence to this object.
+   */
+  const LimitedNULLString<N> &operator=(const LimitedNULLString &o)
+  {
+    if(this!=&o)
+    {
+      str_=o.str_;
+      ptr_=(o.ptr_!=NULL)?str_.get():NULL;
+    }
+    return *this;
   }
 
 private:
