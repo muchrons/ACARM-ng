@@ -51,12 +51,12 @@ public:
   {
     // sanity check
     if(str==NULL)
-      throw ExceptionNULLParameter("LimitedString::LimitedString()", "str");
+      throw ExceptionNULLParameter(CALLNAME, "str");
 
     // check length
     const size_t len=strlen(str);
     if(len>N)
-      throw ExceptionStringTooLong("LimitedString::LimitedString()", str);
+      throw ExceptionStringTooLong(CALLNAME, str);
 
     // save data
     assert(len+1<=sizeof(str_));
