@@ -13,8 +13,12 @@ namespace Persistency
 {
 namespace detail
 {
+/** \brief helper type, implementation detail.
+ */
 struct SeverityLevelEnum
 {
+  /** \brief enum values.
+   */
   typedef enum
   {
     DEBUG   =0,
@@ -25,12 +29,18 @@ struct SeverityLevelEnum
     ERROR   =5,
     CRITICAL=6
   } Type;
+  /** \brief minimum value.
+   */
   enum { Min=DEBUG    };
+  /** \brief maximum value.
+   */
   enum { Max=CRITICAL };
 }; // struct SeverityLevelEnum
 } // namespace detail
 
 
+/** \brief severity level interface (API).
+ */
 typedef System::IterableEnum<detail::SeverityLevelEnum> SeverityLevel;
 
 } // namespace Persistency
