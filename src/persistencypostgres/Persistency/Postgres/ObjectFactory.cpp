@@ -13,15 +13,15 @@ namespace Persistency
 namespace Postgres
 {
 
-TransactionAutoPtr ObjectFactory::createTransaction(void) const
+TransactionPtr ObjectFactory::createTransaction(void) const
 {
   Persistency::Transaction::TAPI tapi(new TransactionAPI);
-  return TransactionAutoPtr( new Transaction(tapi) );
+  return TransactionPtr( new Transaction(tapi) );
 }
 
-AlertAutoPtr ObjectFactory::createAlert(/*TODO: parameters to create it from*/) const
+AlertPtr ObjectFactory::createAlert(/*TODO: parameters to create it from*/) const
 {
-  return AlertAutoPtr(new Persistency::Postgres::Alert);
+  return AlertPtr(new Persistency::Postgres::Alert);
 }
 
 } // namespace Postgres

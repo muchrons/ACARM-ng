@@ -7,7 +7,7 @@
 
 /* public header */
 
-#include <memory>
+#include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
 #include "Persistency/SeverityLevel.hpp"
@@ -46,9 +46,9 @@ private:
 }; // class Severity
 
 
-/** \brief auto pointer to severity level.
+/** \brief smart pointer to severity level.
  */
-typedef std::auto_ptr<Severity> SeverityAutoPtr;
+typedef boost::shared_ptr<Severity> SeverityPtr;
 
 } // namespace Persistency
 

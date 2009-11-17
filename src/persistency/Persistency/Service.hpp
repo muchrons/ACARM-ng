@@ -7,8 +7,8 @@
 
 /* public header */
 
-#include <memory>
 #include <stdint.h>
+#include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
 #include "Persistency/detail/LimitedString.hpp"
@@ -64,9 +64,9 @@ private:
 }; // class Service
 
 
-/** \brief auto pointer to service type.
+/** \brief smart pointer to service type.
  */
-typedef std::auto_ptr<Service> ServiceAutoPtr;
+typedef boost::shared_ptr<Service> ServicePtr;
 
 } // namespace Persistency
 

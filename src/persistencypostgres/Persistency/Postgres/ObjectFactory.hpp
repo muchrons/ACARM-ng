@@ -21,12 +21,12 @@ public:
   /** \brief creates new transaction.
    *  \return transaction object.
    */
-  virtual TransactionAutoPtr createTransaction(void) const;
+  virtual TransactionPtr createTransaction(void) const;
 
   /** \brief creates new alert.
    *  \return aler's interface
    */
-  virtual AlertAutoPtr createAlert(/*TODO: parameters to create it from*/) const;
+  virtual AlertPtr createAlert(/*TODO: parameters to create it from*/) const;
 
   //
   // TODO: implement creator methods

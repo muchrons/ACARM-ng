@@ -7,7 +7,7 @@
 
 /* public header */
 
-#include <memory>
+#include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 
 #include "Persistency/TransactionAPI.hpp"
@@ -45,9 +45,9 @@ private:
 }; // class Transaction
 
 
-/** \brief auto pointer to transaction.
+/** \brief smart pointer to transaction.
  */
-typedef std::auto_ptr<Transaction> TransactionAutoPtr;
+typedef boost::shared_ptr<Transaction> TransactionPtr;
 
 } // namespace Persistency
 

@@ -7,7 +7,7 @@
 
 /* public header */
 
-#include <memory>
+#include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <asio/ip/address.hpp>
 
@@ -97,9 +97,9 @@ private:
 }; // class Host
 
 
-/** \brief auto pointer to host name.
+/** \brief smart pointer to host name.
  */
-typedef std::auto_ptr<Host> HostAutoPtr;
+typedef boost::shared_ptr<Host> HostPtr;
 
 } // namespace Persistency
 

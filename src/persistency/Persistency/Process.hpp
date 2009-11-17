@@ -7,8 +7,8 @@
 
 /* public header */
 
-#include <memory>
 #include <boost/noncopyable.hpp>
+#include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 
 #include "Persistency/MD5Sum.hpp"
@@ -62,9 +62,9 @@ private:
 }; // class Process
 
 
-/** \brief auto pointer to process type.
+/** \brief smart pointer to process type.
  */
-typedef std::auto_ptr<Process> ProcessAutoPtr;
+typedef boost::shared_ptr<Process> ProcessPtr;
 
 } // namespace Persistency
 

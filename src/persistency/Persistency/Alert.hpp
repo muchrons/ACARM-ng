@@ -7,7 +7,7 @@
 
 /* public header */
 
-#include <memory>
+#include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
 // TODO: implement
@@ -30,9 +30,9 @@ public:
 }; // class Alert
 
 
-/** \brief auto pointer to Alert type.
+/** \brief smart pointer to Alert type.
  */
-typedef std::auto_ptr<Alert> AlertAutoPtr;
+typedef boost::shared_ptr<Alert> AlertPtr;
 
 } // namespace Persistency
 
