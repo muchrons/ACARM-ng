@@ -7,14 +7,14 @@
 
 #include "Persistency/ReferenceURL.hpp"
 
-using namespace std;
-using namespace Persistency;
-
 namespace
 {
 
-struct ReferenceURLTestImpl: public ReferenceURL
+struct ReferenceURLTestImpl: public Persistency::ReferenceURL
 {
+  typedef Persistency::ReferenceURL    ReferenceURL;
+  typedef Persistency::ReferenceURLPtr ReferenceURLPtr;
+
   ReferenceURLTestImpl(const char *name, const char *url):
     ReferenceURL(name, url)
   {

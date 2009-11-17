@@ -14,7 +14,8 @@ namespace
 struct HostTestImpl: public Persistency::Host
 {
 private:
-  typedef Persistency::Host Host;
+  typedef Persistency::Host            Host;
+  typedef Persistency::ReferenceURLPtr ReferenceURLPtr;
 public:
 
   HostTestImpl(const char *ip, const Host::Netmask_v4 *mask, const char *os, bool nullRef=false):

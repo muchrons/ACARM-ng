@@ -11,8 +11,11 @@
 namespace
 {
 
-struct ServiceTestImpl: public Service
+struct ServiceTestImpl: public Persistency::Service
 {
+  typedef Persistency::Service         Service;
+  typedef Persistency::ReferenceURLPtr ReferenceURLPtr;
+
   ServiceTestImpl(const char      *name,
                   const uint16_t   port,
                   const char      *protocol,

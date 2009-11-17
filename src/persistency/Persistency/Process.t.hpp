@@ -6,20 +6,43 @@
 #define INCLUDE_PERSISTENCY_PROCESS_T_HPP_FILE
 
 #include "Persistency/Process.hpp"
-
-using namespace std;
-using namespace Persistency;
+#include "Persistency/ReferenceURL.t.hpp"
 
 namespace
 {
 
-struct ProcessTestImpl: public Process
+struct ProcessTestImpl: public Persistency::Process
 {
-  ProcessTestImpl(const char *path, const char *name, const MD5Sum *md5):
-    Process(path, name, md5)
+  typedef Persistency::Process         Process;
+  typedef Persistency::ProcessPtr      ProcessPtr;
+  typedef Persistency::ReferenceURLPtr ReferenceURLPtr;
+  typedef Persistency::MD5Sum          MD5Sum;
+
+  ProcessTestImpl(const char              *path,
+                  const char              *name,
+                  const MD5Sum            *md5,
+                  const pid_t             *pid,
+                  const int               *uid,
+                  const Process::Username  username,
+                  const std::string       *arguments,
+                  ReferenceURLPtr          url):
+    Process(path, name, md5, pid, uid, username, arguments, url)
   {
   }
-}; // struct TestImpl
+
+  static ProcessPtr makeNew(const char *name="process name")
+  {
+    ProcessPtr ptr( new ProcessTestImpl( "/path/to/bin",
+                                         name,
+                                         NULL,
+                                         NULL,
+                                         NULL,
+                                         NULL,
+                                         NULL,
+                                         ReferenceURLPtr() ) );
+    return ptr;
+  }
+}; // struct ProcessTestImpl
 
 } // unnamed namespace
 
