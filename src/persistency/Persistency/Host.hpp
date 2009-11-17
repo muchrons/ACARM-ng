@@ -11,6 +11,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <asio/ip/address.hpp>
 
+#include "Persistency/ReferenceURL.hpp"
 #include "Persistency/detail/LimitedNULLString.hpp"
 
 namespace Persistency
@@ -71,29 +72,38 @@ public:
    *  \param name DNS name of a host to be set.
    */
   virtual void setName(const Name &name) = 0;
+  /** \brief gets reference url for this host.
+   *  \return reference url to get more info.
+   */
+  const ReferenceURL *getReferenceURL(void) const;
 
 protected:
   /** \brief create host entry of IPv4 address.
    *  \param ip   ip address.
    *  \param mask network maks of a given host.
    *  \param os   operating system name.
+   *  \param url  reference url for report (optional - can be NULL).
    */
   Host(const IPv4            &ip,
        const Netmask_v4      *mask,
-       const OperatingSystem  os);
+       const OperatingSystem  os,
+       ReferenceURLPtr        url);
   /** \brief create host entry of IPv6 address.
    *  \param ip   ip address.
    *  \param mask network maks of a given host.
    *  \param os   operating system name.
+   *  \param url  reference url for report (optional - cen be NULL).
    */
   Host(const IPv6            &ip,
        const Netmask_v6      *mask,
-       const OperatingSystem  os);
+       const OperatingSystem  os,
+       ReferenceURLPtr        url);
 
 private:
   IP                         ip_;
   boost::scoped_ptr<Netmask> mask_;
   OperatingSystem            os_;
+  ReferenceURLPtr            url_;
 }; // class Host
 
 

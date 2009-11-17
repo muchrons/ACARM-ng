@@ -27,21 +27,30 @@ const Host::OperatingSystem &Host::getOperatingSystem(void) const
   return os_;
 }
 
+const ReferenceURL *Host::getReferenceURL(void) const
+{
+  return url_.get();
+}
+
 Host::Host(const IPv4            &ip,
            const Netmask_v4      *mask,
-           const OperatingSystem  os):
+           const OperatingSystem  os,
+           ReferenceURLPtr        url):
   ip_(ip),
   mask_( (mask!=NULL)?( new Netmask(*mask) ):NULL ),
-  os_(os)
+  os_(os),
+  url_(url)
 {
 }
 
 Host::Host(const IPv6            &ip,
            const Netmask_v6      *mask,
-           const OperatingSystem  os):
+           const OperatingSystem  os,
+           ReferenceURLPtr        url):
   ip_(ip),
   mask_( (mask!=NULL)?( new Netmask(*mask) ):NULL ),
-  os_(os)
+  os_(os),
+  url_(url)
 {
 }
 

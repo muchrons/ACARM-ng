@@ -5,20 +5,13 @@
 #include <tut.h>
 
 #include "Persistency/ReferenceURL.hpp"
+#include "Persistency/ReferenceURL.t.hpp"
 
 using namespace std;
 using namespace Persistency;
 
 namespace
 {
-
-struct TestImpl: public ReferenceURL
-{
-  TestImpl(const char *name, const char *url):
-    ReferenceURL(name, url)
-  {
-  }
-}; // struct TestImpl
 
 struct ReferenceURLTestClass
 {
@@ -40,8 +33,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const char     *url="http://www.bugs.org/123/456";
-  const TestImpl  ti("some bug", url);
+  const char                 *url="http://www.bugs.org/123/456";
+  const ReferenceURLTestImpl  ti("some bug", url);
   ensure_equals("invalid name", ti.getName().get(), string("some bug") );
   ensure_equals("invalid URL",  ti.getURL().get(),  string(url)        );
 }

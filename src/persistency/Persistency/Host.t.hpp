@@ -6,6 +6,7 @@
 #define INCLUDE_PERSISTENCY_HOST_T_HPP_FILE
 
 #include "Persistency/Host.hpp"
+#include "Persistency/ReferenceURL.t.hpp"
 
 namespace
 {
@@ -19,14 +20,16 @@ public:
   HostTestImpl(const char *ip, const Host::Netmask_v4 *mask, const char *os):
     Host( Host::IPv4::from_string(ip),
           mask,
-          os )
+          os,
+          ReferenceURLTestImpl::makeNew() )
   {
   }
 
   HostTestImpl(const char *ip, const Host::Netmask_v6 *mask, const char *os):
     Host( Host::IPv6::from_string(ip),
           mask,
-          os )
+          os,
+          ReferenceURLTestImpl::makeNew() )
   {
   }
 
