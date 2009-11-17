@@ -57,6 +57,7 @@ protected:
    *  \param name     service name.
    *  \param port     port number.
    *  \param protocol communication protocol.
+   *  \param url      reference url of thie service.
    */
   Service(const Name      &name,
           const Port      &port,

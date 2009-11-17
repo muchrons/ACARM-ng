@@ -50,7 +50,7 @@ public:
    */
   const MD5Sum *getMD5(void) const;
   /** \brief get process ID.
-   *  \retrurn pid.
+   *  \return pid.
    */
   const pid_t *getPID(void) const;
   /** \brief gets UID.
