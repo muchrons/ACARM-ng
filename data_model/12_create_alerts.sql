@@ -46,7 +46,7 @@ CREATE TABLE    hosts
   id   int      PRIMARY KEY
                 DEFAULT nextval('hosts_id_seq'),
   ip   inet     NOT NULL,
-  mask char(15) NULL,
+  mask inet     NULL,
   os   char(32) NULL,
   name char(64) NULL        -- DNS host's name
 );
