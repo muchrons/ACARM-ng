@@ -92,11 +92,14 @@ CREATE TABLE    alerts
                            DEFAULT now(),
   id_severity int          NOT NULL
                            REFERENCES severities(id),
-  certanity   int          NOT NULL,
+  certanity   int          NOT NULL
+                           DEFAULT 100,
   description text         NULL,
 
   CONSTRAINT certanity_check      CHECK ( 0<certanity AND certanity<=100 ),
-  CONSTRAINT dates_relation_check CHECK ( detect_time<=create_time )
+  CONSTRAINT dates_relation_check CHECK ( detect_time IS NULL OR
+                                          detect_time<=create_time ),
+  CONSTRAINT in_past_event_check  CHECK ( create_time<=now() )
 );
 
 
@@ -137,16 +140,16 @@ CREATE TABLE    reported_services
 CREATE SEQUENCE reported_procs_id_seq;
 CREATE TABLE    reported_procs
 (
-  id               int          PRIMARY KEY
-                                DEFAULT nextval('reported_procs_id_seq'),
-  id_reported_host int          NOT NULL
-                                REFERENCES reported_hosts(id),
-  id_proc          int          NOT NULL
-                                REFERENCES procs(id),
-  pid              int          NULL,
-  uid              int          NULL,
-  username         varchar(128) NULL,
-  arguments        text         NULL,
-  id_ref           int          NULL
-                                REFERENCES reference_urls(id)
+  id               int         PRIMARY KEY
+                               DEFAULT nextval('reported_procs_id_seq'),
+  id_reported_host int         NOT NULL
+                               REFERENCES reported_hosts(id),
+  id_proc          int         NOT NULL
+                               REFERENCES procs(id),
+  pid              int         NULL,
+  uid              int         NULL,
+  username         varchar(32) NULL,
+  arguments        text        NULL,
+  id_ref           int         NULL
+                               REFERENCES reference_urls(id)
 );
