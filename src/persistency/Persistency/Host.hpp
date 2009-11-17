@@ -7,11 +7,14 @@
 
 /* public header */
 
+#include <vector>
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <asio/ip/address.hpp>
 
 #include "Persistency/ReferenceURL.hpp"
+#include "Persistency/Service.hpp"
+#include "Persistency/Process.hpp"
 #include "Persistency/detail/LimitedNULLString.hpp"
 
 namespace Persistency
@@ -45,6 +48,12 @@ public:
   /** \brief host name (DNS entry).
    */
   typedef detail::LimitedNULLString<64> Name;
+  /** \brief services assigned to host.
+   */
+  typedef std::vector<ServicePtr>       ReportedServices;
+  /** \brief processes assigned to host.
+   */
+  typedef std::vector<ProcessPtr>       ReportedProcesses;
 
   /** \brief ensure proper destruction when inherited.
    */
@@ -76,6 +85,14 @@ public:
    *  \return reference url to get more info.
    */
   const ReferenceURL *getReferenceURL(void) const;
+  /** \brief gets reported services list.
+   *  \return vector of reported services.
+   */
+  const ReportedServices &getReportedServices(void) const;
+  /** \brief gets reported processes list.
+   *  \return vector of reported processes.
+   */
+  const ReportedProcesses &getReportedProcesses(void) const;
 
 protected:
   /** \brief create host entry of IPv4 address.
@@ -84,26 +101,32 @@ protected:
    *  \param os   operating system name.
    *  \param url  reference url for report (optional - can be NULL).
    */
-  Host(const IPv4            &ip,
-       const Netmask_v4      *mask,
-       const OperatingSystem  os,
-       ReferenceURLPtr        url);
+  Host(const IPv4              &ip,
+       const Netmask_v4        *mask,
+       const OperatingSystem    os,
+       ReferenceURLPtr          url,
+       const ReportedServices  &services,
+       const ReportedProcesses &processes);
   /** \brief create host entry of IPv6 address.
    *  \param ip   ip address.
    *  \param mask network maks of a given host.
    *  \param os   operating system name.
    *  \param url  reference url for report (optional - cen be NULL).
    */
-  Host(const IPv6            &ip,
-       const Netmask_v6      *mask,
-       const OperatingSystem  os,
-       ReferenceURLPtr        url);
+  Host(const IPv6              &ip,
+       const Netmask_v6        *mask,
+       const OperatingSystem    os,
+       ReferenceURLPtr          url,
+       const ReportedServices  &services,
+       const ReportedProcesses &processes);
 
 private:
   IP                         ip_;
   boost::scoped_ptr<Netmask> mask_;
   OperatingSystem            os_;
   ReferenceURLPtr            url_;
+  ReportedServices           services_;
+  ReportedProcesses          processes_;
 }; // class Host
 
 

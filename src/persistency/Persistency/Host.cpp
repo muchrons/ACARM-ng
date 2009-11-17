@@ -32,25 +32,43 @@ const ReferenceURL *Host::getReferenceURL(void) const
   return url_.get();
 }
 
-Host::Host(const IPv4            &ip,
-           const Netmask_v4      *mask,
-           const OperatingSystem  os,
-           ReferenceURLPtr        url):
+const Host::ReportedServices &Host::getReportedServices(void) const
+{
+  return services_;
+}
+
+const Host::ReportedProcesses &Host::getReportedProcesses(void) const
+{
+  return processes_;
+}
+
+Host::Host(const IPv4              &ip,
+           const Netmask_v4        *mask,
+           const OperatingSystem    os,
+           ReferenceURLPtr          url,
+           const ReportedServices  &services,
+           const ReportedProcesses &processes):
   ip_(ip),
   mask_( (mask!=NULL)?( new Netmask(*mask) ):NULL ),
   os_(os),
-  url_(url)
+  url_(url),
+  services_(services),
+  processes_(processes)
 {
 }
 
-Host::Host(const IPv6            &ip,
-           const Netmask_v6      *mask,
-           const OperatingSystem  os,
-           ReferenceURLPtr        url):
+Host::Host(const IPv6              &ip,
+           const Netmask_v6        *mask,
+           const OperatingSystem    os,
+           ReferenceURLPtr          url,
+           const ReportedServices  &services,
+           const ReportedProcesses &processes):
   ip_(ip),
   mask_( (mask!=NULL)?( new Netmask(*mask) ):NULL ),
   os_(os),
-  url_(url)
+  url_(url),
+  services_(services),
+  processes_(processes)
 {
 }
 

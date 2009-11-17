@@ -22,7 +22,9 @@ public:
     Host( Host::IPv4::from_string(ip),
           mask,
           os,
-          (nullRef)?(ReferenceURLPtr()):(ReferenceURLTestImpl::makeNew()) )
+          (nullRef)?(ReferenceURLPtr()):(ReferenceURLTestImpl::makeNew()),
+          ReportedServices(),
+          ReportedProcesses() )
   {
   }
 
@@ -30,7 +32,9 @@ public:
     Host( Host::IPv6::from_string(ip),
           mask,
           os,
-          (nullRef)?(ReferenceURLPtr()):(ReferenceURLTestImpl::makeNew()) )
+          (nullRef)?(ReferenceURLPtr()):(ReferenceURLTestImpl::makeNew()),
+          ReportedServices(),
+          ReportedProcesses() )
   {
   }
 
