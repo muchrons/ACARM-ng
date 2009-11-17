@@ -60,7 +60,7 @@ CREATE TABLE    analyzers
                       DEFAULT nextval('analyzers_id_seq'),
   name    varchar(64) NOT NULL,
   id_host int         NULL
-                      REFERENCES hosts(id)  -- host analyzers runs on
+                      REFERENCES hosts(id)  -- host analyzer runs on
 );
 
 
