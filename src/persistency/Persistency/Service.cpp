@@ -27,12 +27,19 @@ const Service::Protocol Service::getProtocol(void) const
   return protocol_;
 }
 
-Service::Service(const Name     &name,
-                 const Port     &port,
-                 const Protocol &protocol):
+const ReferenceURL *Service::getReferenceURL(void) const
+{
+  return url_.get();
+}
+
+Service::Service(const Name      &name,
+                 const Port      &port,
+                 const Protocol  &protocol,
+                 ReferenceURLPtr  url):
   name_(name),
   port_(port),
-  protocol_(protocol)
+  protocol_(protocol),
+  url_(url)
 {
 }
 

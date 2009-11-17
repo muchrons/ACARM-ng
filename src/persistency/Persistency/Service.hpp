@@ -11,6 +11,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
+#include "Persistency/ReferenceURL.hpp"
 #include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/detail/LimitedNULLString.hpp"
 
@@ -46,6 +47,10 @@ public:
    *  \return prorocol name.
    */
   const Protocol getProtocol(void) const;
+  /** \brief gets reference url, if present.
+   *  \return reference url to given service.
+   */
+  const ReferenceURL *getReferenceURL(void) const;
 
 protected:
   /** \brief creates object from given data.
@@ -53,14 +58,16 @@ protected:
    *  \param port     port number.
    *  \param protocol communication protocol.
    */
-  Service(const Name     &name,
-          const Port     &port,
-          const Protocol &protocol);
+  Service(const Name      &name,
+          const Port      &port,
+          const Protocol  &protocol,
+          ReferenceURLPtr  url);
 
 private:
-  Name     name_;
-  Port     port_;
-  Protocol protocol_;
+  Name            name_;
+  Port            port_;
+  Protocol        protocol_;
+  ReferenceURLPtr url_;
 }; // class Service
 
 
