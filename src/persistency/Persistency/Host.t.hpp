@@ -1,5 +1,5 @@
 /*
- * Host.t.cpp
+ * Host.t.hpp
  *
  */
 #ifndef INCLUDE_PERSISTENCY_HOST_T_HPP_FILE
@@ -10,20 +10,20 @@
 namespace
 {
 
-struct TestImpl: public Persistency::Host
+struct HostTestImpl: public Persistency::Host
 {
 private:
   typedef Persistency::Host Host;
 public:
 
-  TestImpl(const char *ip, const Host::Netmask_v4 *mask, const char *os):
+  HostTestImpl(const char *ip, const Host::Netmask_v4 *mask, const char *os):
     Host( Host::IPv4::from_string(ip),
           mask,
           os )
   {
   }
 
-  TestImpl(const char *ip, const Host::Netmask_v6 *mask, const char *os):
+  HostTestImpl(const char *ip, const Host::Netmask_v6 *mask, const char *os):
     Host( Host::IPv6::from_string(ip),
           mask,
           os )
@@ -42,7 +42,7 @@ public:
   static Persistency::HostPtr makeNew(const char *os="linux")
   {
     const Host::Netmask_v4 *null=NULL;
-    return Persistency::HostPtr( new TestImpl("1.2.3.4", null, os) );
+    return Persistency::HostPtr( new HostTestImpl("1.2.3.4", null, os) );
   }
 }; // struct TestImpl
 

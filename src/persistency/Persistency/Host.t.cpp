@@ -49,7 +49,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const TestImpl ti("1.2.3.4", &mask4_, "myOS");
+  const HostTestImpl ti("1.2.3.4", &mask4_, "myOS");
   ensure_equals("invalid IP",   ti.getIP().to_string(),        "1.2.3.4"      );
   ensure_equals("invalid mask", ti.getNetmask()->to_string(),  "255.255.0.0"  );
   ensure_equals("invalid OS",   ti.getOperatingSystem().get(), string("myOS") );
@@ -60,7 +60,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const TestImpl ti("::1.2.3.4", &mask6_, "myOS");
+  const HostTestImpl ti("::1.2.3.4", &mask6_, "myOS");
   ensure_equals("invalid IP",   ti.getIP().to_string(),        "::1.2.3.4"             );
   ensure_equals("invalid mask", ti.getNetmask()->to_string(),  "ffff:ffff:ffff:ff00::" );
   ensure_equals("invalid OS",   ti.getOperatingSystem().get(), string("myOS")          );
@@ -71,7 +71,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const TestImpl ti("1.2.3.4", static_cast<Host::Netmask_v4*>(NULL), "myOS");
+  const HostTestImpl ti("1.2.3.4", static_cast<Host::Netmask_v4*>(NULL), "myOS");
   ensure("invalid mask", ti.getNetmask()==NULL);
 }
 
@@ -80,7 +80,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const TestImpl ti("::1.2.3.4", static_cast<Host::Netmask_v6*>(NULL), "myOS");
+  const HostTestImpl ti("::1.2.3.4", static_cast<Host::Netmask_v6*>(NULL), "myOS");
   ensure("invalid mask", ti.getNetmask()==NULL);
 }
 
