@@ -114,7 +114,7 @@ CREATE TABLE    reported_hosts
   id_host  int     NOT NULL
                    REFERENCES hosts(id),
   role     char(3) NOT NULL,
-  id_ref   int     NOT NULL
+  id_ref   int     NULL
                    REFERENCES reference_urls(id),
 
   CONSTRAINT role_check CHECK (role IN ('src', 'dst'))
