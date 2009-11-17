@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <memory>
 #include <stdint.h>
 #include <boost/noncopyable.hpp>
 
@@ -61,6 +62,11 @@ private:
   Port     port_;
   Protocol protocol_;
 }; // class Service
+
+
+/** \brief auto pointer to service type.
+ */
+typedef std::auto_ptr<Service> ServiceAutoPtr;
 
 } // namespace Persistency
 

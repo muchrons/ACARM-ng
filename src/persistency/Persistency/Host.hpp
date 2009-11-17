@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <memory>
 #include <boost/scoped_ptr.hpp>
 #include <asio/ip/address.hpp>
 
@@ -94,6 +95,11 @@ private:
   boost::scoped_ptr<Netmask> mask_;
   OperatingSystem            os_;
 }; // class Host
+
+
+/** \brief auto pointer to host name.
+ */
+typedef std::auto_ptr<Host> HostAutoPtr;
 
 } // namespace Persistency
 

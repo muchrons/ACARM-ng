@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <memory>
 #include <boost/noncopyable.hpp>
 #include <boost/scoped_ptr.hpp>
 
@@ -59,6 +60,11 @@ private:
   Name                      name_;
   boost::scoped_ptr<MD5Sum> md5_;
 }; // class Process
+
+
+/** \brief auto pointer to process type.
+ */
+typedef std::auto_ptr<Process> ProcessAutoPtr;
 
 } // namespace Persistency
 

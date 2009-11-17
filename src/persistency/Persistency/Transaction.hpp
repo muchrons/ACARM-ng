@@ -44,6 +44,11 @@ private:
   boost::scoped_ptr<TransactionAPI> transaction_;
 }; // class Transaction
 
+
+/** \brief auto pointer to transaction.
+ */
+typedef std::auto_ptr<Transaction> TransactionAutoPtr;
+
 } // namespace Persistency
 
 #endif

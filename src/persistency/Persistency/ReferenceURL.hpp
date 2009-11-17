@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <memory>
 #include <boost/noncopyable.hpp>
 
 #include "Persistency/detail/LimitedString.hpp"
@@ -49,6 +50,11 @@ private:
   Name name_;
   URL  url_;
 }; // class ReferenceURL
+
+
+/** \brief auto pointer to reference url type.
+ */
+typedef std::auto_ptr<ReferenceURL> ReferenceURLAutoPtr;
 
 } // namespace Persistency
 

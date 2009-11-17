@@ -21,17 +21,10 @@ namespace Persistency
 class ObjectFactory: private boost::noncopyable
 {
 public:
-  /** \brief auto pointer to transaction.
-   */
-  typedef std::auto_ptr<Transaction> TransactionAutoPtr;
   /** \brief creates new transaction.
    *  \return transaction object.
    */
   virtual TransactionAutoPtr createTransaction(void) const = 0;
-
-  /** \brief auto pointer to Alert base class.
-   */
-  typedef std::auto_ptr<Alert> AlertAutoPtr;
   /** \brief creates new alert.
    *  \return aler's interface
    */

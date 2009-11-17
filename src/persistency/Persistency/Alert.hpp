@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <memory>
 #include <boost/noncopyable.hpp>
 
 // TODO: implement
@@ -27,6 +28,11 @@ public:
   {
   }
 }; // class Alert
+
+
+/** \brief auto pointer to Alert type.
+ */
+typedef std::auto_ptr<Alert> AlertAutoPtr;
 
 } // namespace Persistency
 
