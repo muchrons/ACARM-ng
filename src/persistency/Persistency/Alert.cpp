@@ -52,20 +52,27 @@ const std::string *Alert::getDescription(void) const
   return description_.get();
 }
 
-Alert::Alert(const Name        &name,
-             AnalyzerPtr       &analyzer,
-             const Timestamp   *detected,
-             const Timestamp   &created,
-             SeverityPtr        severity,
-             Certanity          certanity,
-             const std::string *description):
+const Alert::ReportedHosts &Alert::getReportedHosts(void) const
+{
+  return hosts_;
+}
+
+Alert::Alert(const Name          &name,
+             AnalyzerPtr         &analyzer,
+             const Timestamp     *detected,
+             const Timestamp     &created,
+             SeverityPtr          severity,
+             Certanity            certanity,
+             const std::string   *description,
+             const ReportedHosts &hosts):
   name_(name),
   analyzer_(analyzer),
   detected_( (detected!=NULL)?( new Timestamp(*detected) ):NULL ),
   created_(created),
   severity_(severity),
   certanity_(certanity),
-  description_( (description!=NULL)?( new string(*description) ):NULL )
+  description_( (description!=NULL)?( new string(*description) ):NULL ),
+  hosts_(hosts)
 {
   // check if required pointer paramters are NOT NULLs, as they should
 

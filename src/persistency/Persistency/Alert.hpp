@@ -8,6 +8,7 @@
 /* public header */
 
 #include <string>
+#include <vector>
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
@@ -16,6 +17,7 @@
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/Severity.hpp"
 #include "Persistency/Certanity.hpp"
+#include "Persistency/Host.hpp"
 #include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/ExceptionNULLParameter.hpp"
 
@@ -33,6 +35,7 @@ class Alert: private boost::noncopyable
 public:
   typedef detail::LimitedString<256> Name;
   typedef boost::gregorian::date     Timestamp;
+  typedef std::vector<HostPtr>       ReportedHosts;
 
   /** \brief starts virtual d-tors from the begining of the hierarchy.
    */
@@ -52,14 +55,17 @@ public:
 
   const std::string *getDescription(void) const;
 
+  const ReportedHosts &getReportedHosts(void) const;
+
 protected:
-  Alert(const Name        &name,
-        AnalyzerPtr       &analyzer,
-        const Timestamp   *detected,
-        const Timestamp   &created,
-        SeverityPtr        severity,
-        Certanity          certanity,
-        const std::string *description);
+  Alert(const Name          &name,
+        AnalyzerPtr         &analyzer,
+        const Timestamp     *detected,
+        const Timestamp     &created,
+        SeverityPtr          severity,
+        Certanity            certanity,
+        const std::string   *description,
+        const ReportedHosts &hosts);
 
 private:
   Name                           name_;
@@ -69,6 +75,7 @@ private:
   SeverityPtr                    severity_;
   Certanity                      certanity_;
   boost::scoped_ptr<std::string> description_;
+  ReportedHosts                  hosts_;
 }; // class Alert
 
 
