@@ -17,19 +17,19 @@ private:
   typedef Persistency::Host Host;
 public:
 
-  HostTestImpl(const char *ip, const Host::Netmask_v4 *mask, const char *os):
+  HostTestImpl(const char *ip, const Host::Netmask_v4 *mask, const char *os, bool nullRef=false):
     Host( Host::IPv4::from_string(ip),
           mask,
           os,
-          ReferenceURLTestImpl::makeNew() )
+          (nullRef)?(ReferenceURLPtr()):(ReferenceURLTestImpl::makeNew()) )
   {
   }
 
-  HostTestImpl(const char *ip, const Host::Netmask_v6 *mask, const char *os):
+  HostTestImpl(const char *ip, const Host::Netmask_v6 *mask, const char *os, bool nullRef=false):
     Host( Host::IPv6::from_string(ip),
           mask,
           os,
-          ReferenceURLTestImpl::makeNew() )
+          (nullRef)?(ReferenceURLPtr()):(ReferenceURLTestImpl::makeNew()) )
   {
   }
 

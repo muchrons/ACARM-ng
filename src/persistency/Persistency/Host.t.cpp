@@ -53,6 +53,7 @@ void testObj::test<1>(void)
   ensure_equals("invalid IP",   ti.getIP().to_string(),        "1.2.3.4"      );
   ensure_equals("invalid mask", ti.getNetmask()->to_string(),  "255.255.0.0"  );
   ensure_equals("invalid OS",   ti.getOperatingSystem().get(), string("myOS") );
+  ensure("invalid URL", ti.getReferenceURL()!=NULL);
 }
 
 // test creating IPv6
@@ -64,6 +65,7 @@ void testObj::test<2>(void)
   ensure_equals("invalid IP",   ti.getIP().to_string(),        "::1.2.3.4"             );
   ensure_equals("invalid mask", ti.getNetmask()->to_string(),  "ffff:ffff:ffff:ff00::" );
   ensure_equals("invalid OS",   ti.getOperatingSystem().get(), string("myOS")          );
+  ensure("invalid URL", ti.getReferenceURL()!=NULL);
 }
 
 // test NULL mask for IPv4
@@ -82,6 +84,24 @@ void testObj::test<4>(void)
 {
   const HostTestImpl ti("::1.2.3.4", static_cast<Host::Netmask_v6*>(NULL), "myOS");
   ensure("invalid mask", ti.getNetmask()==NULL);
+}
+
+// test NULL URL for IPv4
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const HostTestImpl ti("1.2.3.4", &mask4_, "myOS", true);
+  ensure("invalid URL", ti.getReferenceURL()==NULL);
+}
+
+// test NULL mask for IPv6
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const HostTestImpl ti("::1.2.3.4", &mask6_, "myOS", true);
+  ensure("invalid URL", ti.getReferenceURL()==NULL);
 }
 
 } // namespace tut
