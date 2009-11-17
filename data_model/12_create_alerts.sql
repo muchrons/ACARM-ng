@@ -52,15 +52,15 @@ CREATE TABLE    hosts
 );
 
 
--- analizers
-CREATE SEQUENCE analizers_id_seq;
-CREATE TABLE    analizers
+-- analyzers
+CREATE SEQUENCE analyzers_id_seq;
+CREATE TABLE    analyzers
 (
   id      int         PRIMARY KEY
-                      DEFAULT nextval('analizers_id_seq'),
+                      DEFAULT nextval('analyzers_id_seq'),
   name    varchar(64) NOT NULL,
   id_host int         NULL
-                      REFERENCES hosts(id)  -- host analizers runs on
+                      REFERENCES hosts(id)  -- host analyzers runs on
 );
 
 
@@ -83,8 +83,8 @@ CREATE TABLE    alerts
   id          int          PRIMARY KEY
                            DEFAULT nextval('alerts_id_seq'),
   name        varchar(256) NOT NULL,
-  id_analizer int          NOT NULL
-                           REFERENCES analizers(id),
+  id_analyzer int          NOT NULL
+                           REFERENCES analyzers(id),
   detect_time timestamp with time zone
                            NULL,
   create_time timestamp with time zone
