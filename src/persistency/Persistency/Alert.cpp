@@ -52,9 +52,14 @@ const std::string *Alert::getDescription(void) const
   return description_.get();
 }
 
-const Alert::ReportedHosts &Alert::getReportedHosts(void) const
+const Alert::ReportedHosts &Alert::getReportedSourceHosts(void) const
 {
-  return hosts_;
+  return sourceHosts_;
+}
+
+const Alert::ReportedHosts &Alert::getReportedTargetHosts(void) const
+{
+  return targetHosts_;
 }
 
 Alert::Alert(const Name          &name,
@@ -64,7 +69,8 @@ Alert::Alert(const Name          &name,
              SeverityPtr          severity,
              Certanity            certanity,
              const std::string   *description,
-             const ReportedHosts &hosts):
+             const ReportedHosts &sourceHosts,
+             const ReportedHosts &targetHosts):
   name_(name),
   analyzer_(analyzer),
   detected_( (detected!=NULL)?( new Timestamp(*detected) ):NULL ),
@@ -72,7 +78,8 @@ Alert::Alert(const Name          &name,
   severity_(severity),
   certanity_(certanity),
   description_( (description!=NULL)?( new string(*description) ):NULL ),
-  hosts_(hosts)
+  sourceHosts_(sourceHosts),
+  targetHosts_(targetHosts)
 {
   // check if required pointer paramters are NOT NULLs, as they should
 

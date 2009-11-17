@@ -96,10 +96,12 @@ public:
 
 protected:
   /** \brief create host entry of IPv4 address.
-   *  \param ip   ip address.
-   *  \param mask network maks of a given host.
-   *  \param os   operating system name.
-   *  \param url  reference url for report (optional - can be NULL).
+   *  \param ip        ip address.
+   *  \param mask      network maks of a given host.
+   *  \param os        operating system name.
+   *  \param url       reference url for report (optional - can be NULL).
+   *  \param services  service reported on a host.
+   *  \param processes processes reported on host.
    */
   Host(const IPv4              &ip,
        const Netmask_v4        *mask,
@@ -108,10 +110,12 @@ protected:
        const ReportedServices  &services,
        const ReportedProcesses &processes);
   /** \brief create host entry of IPv6 address.
-   *  \param ip   ip address.
-   *  \param mask network maks of a given host.
-   *  \param os   operating system name.
-   *  \param url  reference url for report (optional - cen be NULL).
+   *  \param ip        ip address.
+   *  \param mask      network maks of a given host.
+   *  \param os        operating system name.
+   *  \param url       reference url for report (optional - cen be NULL).
+   *  \param services  service reported on a host.
+   *  \param processes processes reported on host.
    */
   Host(const IPv6              &ip,
        const Netmask_v6        *mask,
