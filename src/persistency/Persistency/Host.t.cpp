@@ -5,39 +5,13 @@
 #include <tut.h>
 
 #include "Persistency/Host.hpp"
+#include "Persistency/Host.t.hpp"
 
 using namespace std;
 using namespace Persistency;
 
 namespace
 {
-
-struct TestImpl: public Host
-{
-  TestImpl(const char *ip, const Host::Netmask_v4 *mask, const char *os):
-    Host( Host::IPv4::from_string(ip),
-          mask,
-          os )
-  {
-  }
-
-  TestImpl(const char *ip, const Host::Netmask_v6 *mask, const char *os):
-    Host( Host::IPv6::from_string(ip),
-          mask,
-          os )
-  {
-  }
-
-  virtual Name getName(void) const
-  {
-    return Name("some name");
-  }
-
-  virtual void setName(const Name &/*name*/)
-  {
-  }
-}; // struct TestImpl
-
 
 const Host::Netmask_v4::bytes_type mask4_bytes={ {0xFF, 0xFF, 0x00, 0x00} };
 const Host::Netmask_v6::bytes_type mask6_bytes={ {
