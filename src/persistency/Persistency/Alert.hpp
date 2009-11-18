@@ -21,9 +21,6 @@
 #include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/ExceptionNULLParameter.hpp"
 
-// TODO: implement
-// TODO: test
-// TODO: comment
 
 namespace Persistency
 {
