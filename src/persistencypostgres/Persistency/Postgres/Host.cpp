@@ -37,7 +37,7 @@ Host::Name Host::getName(void) const
   return NULL;
 }
 
-void Host::setName(const Host::Name &/*name*/)
+void Host::setName(const Name &/*name*/)
 {
   // TODO
 }
