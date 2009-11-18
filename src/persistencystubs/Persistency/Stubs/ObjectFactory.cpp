@@ -19,15 +19,16 @@ TransactionPtr ObjectFactory::createTransaction(void) const
   return TransactionPtr( new Transaction(tapi) );
 }
 
-AlertPtr ObjectFactory::createAlert(const Name          &name,
-                                    AnalyzerPtr          analyzer,
-                                    const Timestamp     *detected,
-                                    const Timestamp     &created,
-                                    SeverityPtr          severity,
-                                    Certanity            certanity,
-                                    const std::string   *description,
-                                    const ReportedHosts &sourceHosts,
-                                    const ReportedHosts &targetHosts) const
+
+AlertPtr ObjectFactory::createAlert(const AlertAPI::Name          &name,
+                                    AnalyzerPtr                              analyzer,
+                                    const AlertAPI::Timestamp     *detected,
+                                    const AlertAPI::Timestamp     &created,
+                                    SeverityPtr                              severity,
+                                    Certanity                                certanity,
+                                    const std::string                       *description,
+                                    const AlertAPI::ReportedHosts &sourceHosts,
+                                    const AlertAPI::ReportedHosts &targetHosts) const
 {
   return AlertPtr( new Persistency::Stubs::Alert(name,
                                                  analyzer,

@@ -17,6 +17,8 @@ namespace Stubs
  */
 class ObjectFactory: public Persistency::ObjectFactory
 {
+private:
+  typedef Persistency::Alert AlertAPI;
 public:
   /** \brief creates new transaction.
    *  \return transaction object.
@@ -34,15 +36,15 @@ public:
    *  \param sourceHosts source hosts (attack came from them).
    *  \param targetHosts targeted hosts.
    */
-  virtual AlertPtr createAlert(const Name          &name,
-                               AnalyzerPtr          analyzer,
-                               const Timestamp     *detected,
-                               const Timestamp     &created,
-                               SeverityPtr          severity,
-                               Certanity            certanity,
-                               const std::string   *description,
-                               const ReportedHosts &sourceHosts,
-                               const ReportedHosts &targetHosts) const;
+  virtual AlertPtr createAlert(const AlertAPI::Name          &name,
+                               AnalyzerPtr                             analyzer,
+                               const AlertAPI::Timestamp     *detected,
+                               const AlertAPI::Timestamp     &created,
+                               SeverityPtr                             severity,
+                               Certanity                               certanity,
+                               const std::string                      *description,
+                               const AlertAPI::ReportedHosts &sourceHosts,
+                               const AlertAPI::ReportedHosts &targetHosts) const;
 
   //
   // TODO: implement creator methods
