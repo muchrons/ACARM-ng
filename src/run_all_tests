@@ -5,6 +5,8 @@ RET=0
 # iterata through all build components
 for d in `cat components.lst`
 do
+  echo "----------------------------"
+  echo "testing $d:"
   ( cd gen/test_local_/$d && ./$d.t ) || RET=1
 done
 
