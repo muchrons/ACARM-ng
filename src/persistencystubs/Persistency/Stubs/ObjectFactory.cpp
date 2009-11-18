@@ -6,6 +6,7 @@
 #include "Persistency/Stubs/ObjectFactory.hpp"
 #include "Persistency/Stubs/TransactionAPI.hpp"
 #include "Persistency/Stubs/Alert.hpp"
+#include "Persistency/Stubs/Analyzer.hpp"
 
 
 namespace Persistency
@@ -39,6 +40,12 @@ AlertPtr ObjectFactory::createAlert(const AlertAPI::Name          &name,
                                                  description,
                                                  sourceHosts,
                                                  targetHosts) );
+}
+
+AnalyzerPtr ObjectFactory::createAnalyzer(const Analyzer::Name &name,
+                                          HostPtr               host) const
+{
+  return AnalyzerPtr( new Stubs::Analyzer(name, host) );
 }
 
 } // namespace Stubs

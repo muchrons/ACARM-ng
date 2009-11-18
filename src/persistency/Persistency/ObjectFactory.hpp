@@ -11,6 +11,7 @@
 
 #include "Persistency/Transaction.hpp"
 #include "Persistency/Alert.hpp"
+#include "Persistency/Analyzer.hpp"
 
 
 namespace Persistency
@@ -50,6 +51,12 @@ public:
                                const std::string          *description,
                                const Alert::ReportedHosts &sourceHosts,
                                const Alert::ReportedHosts &targetHosts) const = 0;
+  /** \brief create analyzer entry.
+   *  \param name analyzer's name.
+   *  \param host host analyzer's running on.
+   */
+  virtual AnalyzerPtr createAnalyzer(const Analyzer::Name &name,
+                                     HostPtr               host) const = 0;
 
 
   //

@@ -45,6 +45,12 @@ public:
                                const std::string                      *description,
                                const AlertAPI::ReportedHosts &sourceHosts,
                                const AlertAPI::ReportedHosts &targetHosts) const;
+  /** \brief create analyzer entry.
+   *  \param name analyzer's name.
+   *  \param host host analyzer's running on.
+   */
+  virtual AnalyzerPtr createAnalyzer(const Analyzer::Name &name,
+                                     HostPtr               host) const;
 
   //
   // TODO: implement creator methods

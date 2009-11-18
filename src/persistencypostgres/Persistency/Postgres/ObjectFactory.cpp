@@ -6,6 +6,7 @@
 #include "Persistency/Postgres/ObjectFactory.hpp"
 #include "Persistency/Postgres/TransactionAPI.hpp"
 #include "Persistency/Postgres/Alert.hpp"
+#include "Persistency/Postgres/Analyzer.hpp"
 
 
 namespace Persistency
@@ -38,6 +39,12 @@ AlertPtr ObjectFactory::createAlert(const Alert::Name          &name,
                                                     description,
                                                     sourceHosts,
                                                     targetHosts) );
+}
+
+AnalyzerPtr ObjectFactory::createAnalyzer(const Analyzer::Name &name,
+                                          HostPtr               host) const
+{
+  return AnalyzerPtr( new Persistency::Postgres::Analyzer(name, host) );
 }
 
 } // namespace Postgres
