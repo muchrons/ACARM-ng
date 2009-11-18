@@ -16,6 +16,7 @@ Service::Service(const Name      &name,
                  ReferenceURLPtr  url):
   Persistency::Service(name, port, protocol, url)
 {
+  // TODO DB I/O
 }
 
 } // namespace Postgres
