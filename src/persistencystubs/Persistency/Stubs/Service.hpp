@@ -18,6 +18,7 @@ namespace Stubs
  */
 class Service: public Persistency::Service
 {
+public:
   /** \brief creates object from given data.
    *  \param name     service name.
    *  \param port     port number.
