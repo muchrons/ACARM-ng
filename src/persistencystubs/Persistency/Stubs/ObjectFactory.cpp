@@ -11,6 +11,7 @@
 #include "Persistency/Stubs/Process.hpp"
 #include "Persistency/Stubs/ReferenceURL.hpp"
 #include "Persistency/Stubs/Service.hpp"
+#include "Persistency/Stubs/Severity.hpp"
 
 
 namespace Persistency
@@ -103,6 +104,11 @@ ServicePtr ObjectFactory::createService(const Service::Name     &name,
                                         ReferenceURLPtr          url) const
 {
   return ServicePtr( new Stubs::Service(name, port, protocol, url) );
+}
+
+SeverityPtr ObjectFactory::createSeverity(SeverityLevel sl) const
+{
+  return SeverityPtr( new Stubs::Severity(sl) );
 }
 
 } // namespace Stubs

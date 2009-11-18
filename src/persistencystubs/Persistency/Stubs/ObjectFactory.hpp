@@ -113,7 +113,10 @@ public:
                                    const Service::Port     &port,
                                    const Service::Protocol &protocol,
                                    ReferenceURLPtr          url) const;
-
+  /** \brief crates class with a given severity.
+   *  \param sl level to assign to this instance.
+   */
+  virtual SeverityPtr createSeverity(SeverityLevel sl) const;
 
   //
   // TODO: implement creator methods

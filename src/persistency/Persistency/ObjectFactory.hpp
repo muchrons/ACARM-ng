@@ -13,7 +13,10 @@
 #include "Persistency/Alert.hpp"
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/Host.hpp"
+#include "Persistency/ReferenceURL.hpp"
 #include "Persistency/Process.hpp"
+#include "Persistency/Service.hpp"
+#include "Persistency/Severity.hpp"
 
 
 namespace Persistency
@@ -121,7 +124,10 @@ public:
                                    const Service::Port     &port,
                                    const Service::Protocol &protocol,
                                    ReferenceURLPtr          url) const = 0;
-
+  /** \brief crates class with a given severity.
+   *  \param sl level to assign to this instance.
+   */
+  virtual SeverityPtr createSeverity(SeverityLevel sl) const = 0;
 
   //
   // TODO: implement creator methods

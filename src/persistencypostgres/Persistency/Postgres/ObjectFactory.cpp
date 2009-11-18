@@ -11,8 +11,8 @@
 #include "Persistency/Postgres/Process.hpp"
 #include "Persistency/Postgres/ReferenceURL.hpp"
 #include "Persistency/Postgres/Service.hpp"
+#include "Persistency/Postgres/Severity.hpp"
 
-// TODO: add data base handling here
 
 namespace Persistency
 {
@@ -104,6 +104,11 @@ ServicePtr ObjectFactory::createService(const Service::Name     &name,
                                         ReferenceURLPtr          url) const
 {
   return ServicePtr( new Postgres::Service(name, port, protocol, url) );
+}
+
+SeverityPtr ObjectFactory::createSeverity(SeverityLevel sl) const
+{
+  return SeverityPtr( new Postgres::Severity(sl) );
 }
 
 } // namespace Postgres
