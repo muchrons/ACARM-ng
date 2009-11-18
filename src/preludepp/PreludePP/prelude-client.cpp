@@ -69,25 +69,25 @@ prelude_client_t *Client::GetClient()
 
 void Client::SendIDMEF(const IDMEF &message)
 {
-        prelude_client_send_idmef(_client, message);
+  prelude_client_send_idmef(_client, message);
 }
 
 
 int Client::RecvIDMEF(Prelude::IDMEF &idmef, int timeout)
 {
-        int ret;
-        idmef_message_t *idmef_p;
+  int ret;
+  idmef_message_t *idmef_p;
 
-        ret = prelude_client_recv_idmef(_client, timeout, &idmef_p);
-        if ( ret < 0 )
-                throw PreludeError(ret);
+  ret = prelude_client_recv_idmef(_client, timeout, &idmef_p);
+  if ( ret < 0 )
+    throw PreludeError(ret);
 
-        else if ( ret == 0 )
-                return 0;
+  else if ( ret == 0 )
+    return 0;
 
-        idmef = IDMEF(idmef_p);
+  idmef = IDMEF(idmef_p);
 
-        return 1;
+  return 1;
 }
 
 
@@ -143,27 +143,27 @@ ConnectionPool &Client::GetConnectionPool()
 
 void Client::SetConnectionPool(ConnectionPool pool)
 {
-        _pool = pool;
-        prelude_client_set_connection_pool(_client, prelude_connection_pool_ref(pool));
+  _pool = pool;
+  prelude_client_set_connection_pool(_client, prelude_connection_pool_ref(pool));
 }
 
 
 Client &Client::operator << (IDMEF &idmef)
 {
-        SendIDMEF(idmef);
-        return *this;
+  SendIDMEF(idmef);
+  return *this;
 }
 
 
 Client &Client::operator >> (IDMEF &idmef)
 {
-        int ret;
+  int ret;
 
-        ret = RecvIDMEF(idmef, _recv_timeout);
-        if ( ret <= 0 )
-                throw PreludeError(ret);
+  ret = RecvIDMEF(idmef, _recv_timeout);
+  if ( ret <= 0 )
+    throw PreludeError(ret);
 
-        return *this;
+  return *this;
 }
 
 Client &Client::SetRecvTimeout(Client &c, int timeout)
@@ -175,12 +175,12 @@ Client &Client::SetRecvTimeout(Client &c, int timeout)
 
 Client &Client::operator=(const Client &c)
 {
-        if ( this != &c && _client != c._client ) {
-                if ( _client )
-                        prelude_client_destroy(_client, PRELUDE_CLIENT_EXIT_STATUS_SUCCESS);
+  if ( this != &c && _client != c._client ) {
+    if ( _client )
+      prelude_client_destroy(_client, PRELUDE_CLIENT_EXIT_STATUS_SUCCESS);
 
-                _client = (c._client) ? prelude_client_ref(c._client) : NULL;
-        }
+    _client = (c._client) ? prelude_client_ref(c._client) : NULL;
+  }
 
-        return *this;
+  return *this;
 }
