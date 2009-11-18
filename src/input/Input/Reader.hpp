@@ -7,7 +7,6 @@
 
 /* public header */
 
-#include <memory>
 #include <boost/noncopyable.hpp>
 
 #include "Persistency/Alert.hpp"
@@ -22,7 +21,7 @@ class Reader: private boost::noncopyable
 public:
   /** \brief smart pointer to data returned from read() call.
    */
-  typedef std::auto_ptr<Persistency::Alert> DataPtr;
+  typedef Persistency::AlertPtr DataPtr;
 
   /** \brief start virtual d-tor hierarchy.
    */
@@ -38,7 +37,6 @@ public:
    *        doing actual reading in separate thread.
    */
   virtual DataPtr read(unsigned int timeout=0) = 0;
-
 }; // class Reader
 
 } // namespace Input

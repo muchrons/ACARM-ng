@@ -25,16 +25,11 @@ namespace Prelude
 class Reader: public Input::Reader
 {
 public:
-  /** \brief smart pointer helper typedef
-   */
-  typedef Input::Reader::DataPtr DataPtr;
-
   /** \brief reads data from input from prelude-manager.
    *  \param timeout milliseconds to wait before timeout occures.
    *  \return pointer to newly allocated strucutre or NULL on timeout.
    */
   virtual DataPtr read(unsigned int timeout);
-
 }; // class Reader
 
 } // namespace Prelude

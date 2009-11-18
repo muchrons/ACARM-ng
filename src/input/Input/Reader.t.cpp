@@ -3,7 +3,6 @@
  *
  */
 #include <tut.h>
-#include <cstring>
 #include <memory>
 
 #include "Input/Reader.hpp"
