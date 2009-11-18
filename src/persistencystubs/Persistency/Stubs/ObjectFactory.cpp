@@ -48,22 +48,22 @@ AnalyzerPtr ObjectFactory::createAnalyzer(const Analyzer::Name &name,
   return AnalyzerPtr( new Stubs::Analyzer(name, host) );
 }
 
-HostPtr ObjectFactory::Host(const Host::IPv4              &ip,
-                            const Host::Netmask_v4        *mask,
-                            const Host::OperatingSystem    os,
-                            ReferenceURLPtr                url,
-                            const Host::ReportedServices  &services,
-                            const Host::ReportedProcesses &processes) const
+HostPtr ObjectFactory::createHost(const Host::IPv4              &ip,
+                                  const Host::Netmask_v4        *mask,
+                                  const Host::OperatingSystem    os,
+                                  ReferenceURLPtr                url,
+                                  const Host::ReportedServices  &services,
+                                  const Host::ReportedProcesses &processes) const
 {
   return HostPtr( new Stubs::Host(ip, mask, os, url, services, processes) );
 }
 
-HostPtr ObjectFactory::Host(const Host::IPv6              &ip,
-                            const Host::Netmask_v6        *mask,
-                            const Host::OperatingSystem    os,
-                            ReferenceURLPtr                url,
-                            const Host::ReportedServices  &services,
-                            const Host::ReportedProcesses &processes) const
+HostPtr ObjectFactory::createHost(const Host::IPv6              &ip,
+                                  const Host::Netmask_v6        *mask,
+                                  const Host::OperatingSystem    os,
+                                  ReferenceURLPtr                url,
+                                  const Host::ReportedServices  &services,
+                                  const Host::ReportedProcesses &processes) const
 {
   return HostPtr( new Stubs::Host(ip, mask, os, url, services, processes) );
 }

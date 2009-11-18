@@ -66,12 +66,12 @@ public:
    *  \param services  service reported on a host.
    *  \param processes processes reported on host.
    */
-  virtual HostPtr Host(const Host::IPv4              &ip,
-                       const Host::Netmask_v4        *mask,
-                       const Host::OperatingSystem    os,
-                       ReferenceURLPtr                url,
-                       const Host::ReportedServices  &services,
-                       const Host::ReportedProcesses &processes) const = 0;
+  virtual HostPtr createHost(const Host::IPv4              &ip,
+                             const Host::Netmask_v4        *mask,
+                             const Host::OperatingSystem    os,
+                             ReferenceURLPtr                url,
+                             const Host::ReportedServices  &services,
+                             const Host::ReportedProcesses &processes) const = 0;
   /** \brief create host entry of IPv6 address.
    *  \param ip        ip address.
    *  \param mask      network maks of a given host.
@@ -80,12 +80,33 @@ public:
    *  \param services  service reported on a host.
    *  \param processes processes reported on host.
    */
-  virtual HostPtr Host(const Host::IPv6              &ip,
-                       const Host::Netmask_v6        *mask,
-                       const Host::OperatingSystem    os,
-                       ReferenceURLPtr                url,
-                       const Host::ReportedServices  &services,
-                       const Host::ReportedProcesses &processes) const = 0;
+  virtual HostPtr createHost(const Host::IPv6              &ip,
+                             const Host::Netmask_v6        *mask,
+                             const Host::OperatingSystem    os,
+                             ReferenceURLPtr                url,
+                             const Host::ReportedServices  &services,
+                             const Host::ReportedProcesses &processes) const = 0;
+  /** \brief creates object from given data.
+   *  \param path      path to executable
+   *  \param name      process name.
+   *  \param md5       hash for given binary, if available.
+   *  \param pid       proces number (ID).
+   *  \param uid       user ID.
+   *  \param username  name of user that called process.
+   *  \param arguments arguments to the application when running.
+   *  \param url       reference URL.
+   */
+  /*
+  virtual ProcessPtr createProcess(const Path        &path,
+                                   const Name        &name,
+                                   const MD5Sum      *md5,
+                                   const pid_t       *pid,
+                                   const int         *uid,
+                                   const Username    &username,
+                                   const std::string *arguments,
+                                   ReferenceURLPtr    url) const = 0;
+  */
+
 
 
   //

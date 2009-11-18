@@ -59,12 +59,12 @@ public:
    *  \param services  service reported on a host.
    *  \param processes processes reported on host.
    */
-  virtual HostPtr Host(const Host::IPv4              &ip,
-                       const Host::Netmask_v4        *mask,
-                       const Host::OperatingSystem    os,
-                       ReferenceURLPtr                url,
-                       const Host::ReportedServices  &services,
-                       const Host::ReportedProcesses &processes) const;
+  virtual HostPtr createHost(const Host::IPv4              &ip,
+                             const Host::Netmask_v4        *mask,
+                             const Host::OperatingSystem    os,
+                             ReferenceURLPtr                url,
+                             const Host::ReportedServices  &services,
+                             const Host::ReportedProcesses &processes) const;
   /** \brief create host entry of IPv6 address.
    *  \param ip        ip address.
    *  \param mask      network maks of a given host.
@@ -73,12 +73,12 @@ public:
    *  \param services  service reported on a host.
    *  \param processes processes reported on host.
    */
-  virtual HostPtr Host(const Host::IPv6              &ip,
-                       const Host::Netmask_v6        *mask,
-                       const Host::OperatingSystem    os,
-                       ReferenceURLPtr                url,
-                       const Host::ReportedServices  &services,
-                       const Host::ReportedProcesses &processes) const;
+  virtual HostPtr createHost(const Host::IPv6              &ip,
+                             const Host::Netmask_v6        *mask,
+                             const Host::OperatingSystem    os,
+                             ReferenceURLPtr                url,
+                             const Host::ReportedServices  &services,
+                             const Host::ReportedProcesses &processes) const;
 
   //
   // TODO: implement creator methods
