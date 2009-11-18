@@ -9,6 +9,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <boost/noncopyable.hpp>
 
 #include "Persistency/TransactionAPI.hpp"
 
@@ -17,7 +18,7 @@ namespace Persistency
 
 /** \brief transaction logic implementation.
  */
-class Transaction
+class Transaction: private boost::noncopyable
 {
 public:
   /** \brief transaction part, dependent on actual persistency backend.

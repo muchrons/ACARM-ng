@@ -10,6 +10,7 @@
 #include <vector>
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <boost/noncopyable.hpp>
 #include <asio/ip/address.hpp>
 
 #include "Persistency/ReferenceURL.hpp"
@@ -21,7 +22,7 @@ namespace Persistency
 {
 /** \brief host information representation.
  */
-class Host
+class Host: private boost::noncopyable
 {
 public:
   /** \brief any IP address type.
