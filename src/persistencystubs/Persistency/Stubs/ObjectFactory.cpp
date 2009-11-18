@@ -9,6 +9,8 @@
 #include "Persistency/Stubs/Analyzer.hpp"
 #include "Persistency/Stubs/Host.hpp"
 #include "Persistency/Stubs/Process.hpp"
+#include "Persistency/Stubs/ReferenceURL.hpp"
+#include "Persistency/Stubs/Service.hpp"
 
 
 namespace Persistency
@@ -92,7 +94,15 @@ ProcessPtr ObjectFactory::createProcess(const Process::Path     &path,
 ReferenceURLPtr ObjectFactory::createReferenceURL(const ReferenceURL::Name &name,
                                                   const ReferenceURL::URL  &url) const
 {
-  return ReferenceURLPtr( new ReferenceURL(name, url) );
+  return ReferenceURLPtr( new Stubs::ReferenceURL(name, url) );
+}
+
+ServicePtr ObjectFactory::createService(const Service::Name     &name,
+                                        const Service::Port     &port,
+                                        const Service::Protocol &protocol,
+                                        ReferenceURLPtr          url) const
+{
+  return ServicePtr( new Stubs::Service(name, port, protocol, url) );
 }
 
 } // namespace Stubs

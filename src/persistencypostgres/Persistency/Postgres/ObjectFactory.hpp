@@ -101,6 +101,16 @@ public:
    */
   virtual ReferenceURLPtr createReferenceURL(const ReferenceURL::Name &name,
                                              const ReferenceURL::URL  &url) const;
+  /** \brief creates object from given data.
+   *  \param name     service name.
+   *  \param port     port number.
+   *  \param protocol communication protocol.
+   *  \param url      reference url of thie service.
+   */
+  virtual ServicePtr createService(const Service::Name     &name,
+                                   const Service::Port     &port,
+                                   const Service::Protocol &protocol,
+                                   ReferenceURLPtr          url) const;
 
   //
   // TODO: implement creator methods

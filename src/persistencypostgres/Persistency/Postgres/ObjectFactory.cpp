@@ -10,6 +10,7 @@
 #include "Persistency/Postgres/Host.hpp"
 #include "Persistency/Postgres/Process.hpp"
 #include "Persistency/Postgres/ReferenceURL.hpp"
+#include "Persistency/Postgres/Service.hpp"
 
 // TODO: add data base handling here
 
@@ -94,7 +95,15 @@ ReferenceURLPtr ObjectFactory::createReferenceURL(
                                         const ReferenceURL::Name &name,
                                         const ReferenceURL::URL  &url) const
 {
-  return ReferenceURLPtr( new ReferenceURL(name, url) );
+  return ReferenceURLPtr( new Postgres::ReferenceURL(name, url) );
+}
+
+ServicePtr ObjectFactory::createService(const Service::Name     &name,
+                                        const Service::Port     &port,
+                                        const Service::Protocol &protocol,
+                                        ReferenceURLPtr          url) const
+{
+  return ServicePtr( new Postgres::Service(name, port, protocol, url) );
 }
 
 } // namespace Postgres
