@@ -7,16 +7,13 @@
 #include <memory>
 
 #include "Input/Reader.hpp"
+#include "Persistency/Stubs/Alert.hpp"
 
 using namespace std;
 using namespace Input;
 
 namespace
 {
-
-struct TestAlert: public Persistency::Alert
-{
-};
 
 struct TestReader: public Reader
 {
@@ -34,7 +31,7 @@ struct TestReader: public Reader
 
   virtual DataPtr read(unsigned int)
   {
-    return DataPtr(new TestAlert);
+    return DataPtr(new Persistency::Stubs::Alert);
   }
 
   bool &i_;

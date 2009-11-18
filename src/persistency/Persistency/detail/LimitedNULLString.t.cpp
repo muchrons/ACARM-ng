@@ -1,0 +1,141 @@
+/*
+ * LimitedNULLString.t.cpp
+ *
+ */
+#include <tut.h>
+
+#include "Persistency/detail/LimitedNULLString.hpp"
+
+using namespace std;
+using namespace Persistency;
+using namespace Persistency::detail;
+
+namespace
+{
+
+struct LimitedNULLStringTestClass
+{
+};
+
+typedef LimitedNULLStringTestClass TestClass;
+typedef tut::test_group<TestClass> factory;
+typedef factory::object testObj;
+
+factory tf("Persistency/detail/LimitedNULLString");
+} // unnamed namespace
+
+
+namespace tut
+{
+
+// check normal configuration
+template<>
+template<>
+void testObj::test<1>(void)
+{
+  const LimitedNULLString<10> ls("Alice");
+  ensure_equals("invaid string saved", ls.get(), string("Alice") );
+}
+
+// test NULL
+template<>
+template<>
+void testObj::test<2>(void)
+{
+  const LimitedNULLString<10> ls(NULL);
+  ensure("unable to stroe NULL", ls.get()==NULL);
+}
+
+// test too large string
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  try
+  {
+    LimitedNULLString<10> ls("0123456789-");
+    fail("LimitedString() didn't throw on too logn string");
+  }
+  catch(const ExceptionStringTooLong&)
+  {
+    // this is expected
+  }
+}
+
+// test equaly long string
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  const LimitedNULLString<10> ls("0123456789");
+  ensure_equals("string has been truncated", strlen( ls.get() ), 10);
+}
+
+// test operator[]
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const LimitedNULLString<10> ls("narf");
+  ensure_equals("invalid char read at[0]", ls[0],  'n');
+  ensure_equals("invalid char read at[4]", ls[4], '\0');
+}
+
+// test copy c-tor from string
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const LimitedNULLString<10> ls1("narf");
+  const LimitedNULLString<10> ls2(ls1);
+  ensure("pointers are invalid", ls1.get()!=ls2.get() );
+  ensure_equals("invalid string", ls2.get(), string( ls1.get() ) );
+}
+
+// test copy c-tor from NULL
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const LimitedNULLString<10> ls1(NULL);
+  const LimitedNULLString<10> ls2(ls1);
+  ensure("pointers are invalid", ls1.get()==ls2.get() );
+  ensure("invalid string", ls2.get()==NULL);
+}
+
+// test assignment operator from string
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const LimitedNULLString<10> ls1("narf");
+  LimitedNULLString<10>       ls2("aaa");
+  ls2=ls1;
+  ensure("pointers are invalid", ls1.get()!=ls2.get() );
+  ensure_equals("invalid string", ls2.get(), string( ls1.get() ) );
+}
+
+// test assignemtn operator from NULL
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const LimitedNULLString<10> ls1(NULL);
+  LimitedNULLString<10>       ls2(ls1);
+  ls2=ls1;
+  ensure("pointers are invalid", ls1.get()==ls2.get() );
+  ensure("invalid string", ls2.get()==NULL);
+}
+
+// test self copy
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  LimitedNULLString<10> ls("abc");
+  ls=ls;
+  ensure("got NULL pointer", ls.get()!=NULL);
+  ensure_equals("invalid string", ls.get(), string("abc") );
+}
+
+} // namespace tut

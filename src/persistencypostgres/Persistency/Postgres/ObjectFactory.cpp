@@ -13,15 +13,31 @@ namespace Persistency
 namespace Postgres
 {
 
-ObjectFactory::TransactionAutoPtr ObjectFactory::createTransaction(void) const
+TransactionPtr ObjectFactory::createTransaction(void) const
 {
   Persistency::Transaction::TAPI tapi(new TransactionAPI);
-  return TransactionAutoPtr( new Transaction(tapi) );
+  return TransactionPtr( new Transaction(tapi) );
 }
 
-ObjectFactory::AlertAutoPtr ObjectFactory::createAlert(/*TODO: parameters to create it from*/) const
+AlertPtr ObjectFactory::createAlert(const Alert::Name          &name,
+                                    AnalyzerPtr                 analyzer,
+                                    const Alert::Timestamp     *detected,
+                                    const Alert::Timestamp     &created,
+                                    SeverityPtr                 severity,
+                                    Certanity                   certanity,
+                                    const std::string          *description,
+                                    const Alert::ReportedHosts &sourceHosts,
+                                    const Alert::ReportedHosts &targetHosts) const
 {
-  return AlertAutoPtr(new Persistency::Postgres::Alert);
+  return AlertPtr( new Persistency::Postgres::Alert(name,
+                                                    analyzer,
+                                                    detected,
+                                                    created,
+                                                    severity,
+                                                    certanity,
+                                                    description,
+                                                    sourceHosts,
+                                                    targetHosts) );
 }
 
 } // namespace Postgres

@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <boost/noncopyable.hpp>
+
 #include "Persistency/Transaction.hpp"
 #include "Persistency/Alert.hpp"
 
@@ -16,24 +18,39 @@ namespace Persistency
 
 /** \brief factory of persistent objects used in program.
  */
-class ObjectFactory
+class ObjectFactory: private boost::noncopyable
 {
 public:
-  /** \brief auto pointer to transaction.
+  /** \brief ensure proper destruction.
    */
-  typedef std::auto_ptr<Transaction> TransactionAutoPtr;
+  virtual ~ObjectFactory(void);
+
+  // TODO: add transaction's name (good for logging)
   /** \brief creates new transaction.
    *  \return transaction object.
    */
-  virtual TransactionAutoPtr createTransaction(void) const = 0;
+  virtual TransactionPtr createTransaction(void) const = 0;
+  /** \brief creates alert.
+   *  \param name        name of an alert (~title).
+   *  \param analyzer    analyzer that reported an issue.
+   *  \param detected    time when alert has been detected.
+   *  \param created     time of creation of this alert.
+   *  \param severity    severity of alert reported.
+   *  \param certanity   certanity about given report.
+   *  \param description textual description, if needed.
+   *  \param sourceHosts source hosts (attack came from them).
+   *  \param targetHosts targeted hosts.
+   */
+  virtual AlertPtr createAlert(const Alert::Name          &name,
+                               AnalyzerPtr                 analyzer,
+                               const Alert::Timestamp     *detected,
+                               const Alert::Timestamp     &created,
+                               SeverityPtr                 severity,
+                               Certanity                   certanity,
+                               const std::string          *description,
+                               const Alert::ReportedHosts &sourceHosts,
+                               const Alert::ReportedHosts &targetHosts) const = 0;
 
-  /** \brief auto pointer to Alert base class.
-   */
-  typedef std::auto_ptr<Alert> AlertAutoPtr;
-  /** \brief creates new alert.
-   *  \return aler's interface
-   */
-  virtual AlertAutoPtr createAlert(/*TODO: parameters to create it from*/) const = 0;
 
   //
   // TODO: implement creator methods

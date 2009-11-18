@@ -46,21 +46,21 @@ CREATE TABLE    hosts
   id   int      PRIMARY KEY
                 DEFAULT nextval('hosts_id_seq'),
   ip   inet     NOT NULL,
-  mask char(15) NULL,
+  mask inet     NULL,
   os   char(32) NULL,
   name char(64) NULL        -- DNS host's name
 );
 
 
--- analizers
-CREATE SEQUENCE analizers_id_seq;
-CREATE TABLE    analizers
+-- analyzers
+CREATE SEQUENCE analyzers_id_seq;
+CREATE TABLE    analyzers
 (
   id      int         PRIMARY KEY
-                      DEFAULT nextval('analizers_id_seq'),
+                      DEFAULT nextval('analyzers_id_seq'),
   name    varchar(64) NOT NULL,
   id_host int         NULL
-                      REFERENCES hosts(id)  -- host analizers runs on
+                      REFERENCES hosts(id)  -- host analyzer runs on
 );
 
 
@@ -83,8 +83,8 @@ CREATE TABLE    alerts
   id          int          PRIMARY KEY
                            DEFAULT nextval('alerts_id_seq'),
   name        varchar(256) NOT NULL,
-  id_analizer int          NOT NULL
-                           REFERENCES analizers(id),
+  id_analyzer int          NOT NULL
+                           REFERENCES analyzers(id),
   detect_time timestamp with time zone
                            NULL,
   create_time timestamp with time zone
@@ -92,11 +92,14 @@ CREATE TABLE    alerts
                            DEFAULT now(),
   id_severity int          NOT NULL
                            REFERENCES severities(id),
-  certanity   int          NOT NULL,
+  certanity   int          NOT NULL
+                           DEFAULT 100,
   description text         NULL,
 
   CONSTRAINT certanity_check      CHECK ( 0<certanity AND certanity<=100 ),
-  CONSTRAINT dates_relation_check CHECK ( detect_time<=create_time )
+  CONSTRAINT dates_relation_check CHECK ( detect_time IS NULL OR
+                                          detect_time<=create_time ),
+  CONSTRAINT in_past_event_check  CHECK ( create_time<=now() )
 );
 
 
@@ -111,7 +114,7 @@ CREATE TABLE    reported_hosts
   id_host  int     NOT NULL
                    REFERENCES hosts(id),
   role     char(3) NOT NULL,
-  id_ref   int     NOT NULL
+  id_ref   int     NULL
                    REFERENCES reference_urls(id),
 
   CONSTRAINT role_check CHECK (role IN ('src', 'dst'))
@@ -137,16 +140,16 @@ CREATE TABLE    reported_services
 CREATE SEQUENCE reported_procs_id_seq;
 CREATE TABLE    reported_procs
 (
-  id               int          PRIMARY KEY
-                                DEFAULT nextval('reported_procs_id_seq'),
-  id_reported_host int          NOT NULL
-                                REFERENCES reported_hosts(id),
-  id_proc          int          NOT NULL
-                                REFERENCES procs(id),
-  pid              int          NULL,
-  uid              int          NULL,
-  username         varchar(128) NULL,
-  arguments        text         NULL,
-  id_ref           int          NULL
-                                REFERENCES reference_urls(id)
+  id               int         PRIMARY KEY
+                               DEFAULT nextval('reported_procs_id_seq'),
+  id_reported_host int         NOT NULL
+                               REFERENCES reported_hosts(id),
+  id_proc          int         NOT NULL
+                               REFERENCES procs(id),
+  pid              int         NULL,
+  uid              int         NULL,
+  username         varchar(32) NULL,
+  arguments        text        NULL,
+  id_ref           int         NULL
+                               REFERENCES reference_urls(id)
 );

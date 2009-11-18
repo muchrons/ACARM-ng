@@ -7,13 +7,16 @@
 
 /* public header */
 
+#include <boost/noncopyable.hpp>
+
+
 namespace Persistency
 {
 
 /** \brief transaction calls that are persistency-type-dependent.
  *  \note transaction must begin in derived object's c-tor.
  */
-class TransactionAPI
+class TransactionAPI: private boost::noncopyable
 {
 public:
   /** \brief start virtual d-tors on the base class.

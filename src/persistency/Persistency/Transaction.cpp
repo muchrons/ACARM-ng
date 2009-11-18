@@ -5,6 +5,8 @@
 
 #include "Persistency/Transaction.hpp"
 
+// TODO: add logging
+// TODO: add transaction name
 
 namespace Persistency
 {

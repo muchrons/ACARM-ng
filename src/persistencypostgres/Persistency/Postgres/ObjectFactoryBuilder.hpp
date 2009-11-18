@@ -5,8 +5,6 @@
 #ifndef INCLUDE_PERSISTENCY_POSTGRES_OBJECTFACTORYBUILDER_HPP_FILE
 #define INCLUDE_PERSISTENCY_POSTGRES_OBJECTFACTORYBUILDER_HPP_FILE
 
-/* public header */
-
 #include <string>
 
 #include "Logger/Logger.hpp"
