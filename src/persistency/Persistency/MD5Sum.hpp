@@ -5,7 +5,7 @@
 #ifndef INCLUDE_PERSISTENCY_MD5SUM_HPP_FILE
 #define INCLUDE_PERSISTENCY_MD5SUM_HPP_FILE
 
-/* public hedaer */
+/* public header */
 
 #include "Persistency/Exception.hpp"
 #include "Persistency/detail/LimitedString.hpp"
