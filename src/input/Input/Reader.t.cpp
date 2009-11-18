@@ -16,6 +16,11 @@ namespace
 
 struct TestAlert: public Persistency::Alert
 {
+  TestAlert(void):
+    Alert("name",
+          AnalyzerPtr( new Analyzer) )
+  {
+  }
 };
 
 struct TestReader: public Reader

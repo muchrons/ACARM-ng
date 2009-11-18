@@ -63,7 +63,7 @@ const Alert::ReportedHosts &Alert::getReportedTargetHosts(void) const
 }
 
 Alert::Alert(const Name          &name,
-             AnalyzerPtr         &analyzer,
+             AnalyzerPtr          analyzer,
              const Timestamp     *detected,
              const Timestamp     &created,
              SeverityPtr          severity,

@@ -98,7 +98,7 @@ protected:
    *  \param targetHosts targeted hosts.
    */
   Alert(const Name          &name,
-        AnalyzerPtr         &analyzer,
+        AnalyzerPtr          analyzer,
         const Timestamp     *detected,
         const Timestamp     &created,
         SeverityPtr          severity,
