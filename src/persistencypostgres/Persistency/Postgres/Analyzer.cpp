@@ -15,6 +15,7 @@ Analyzer::Analyzer(const AnalyzerAPI::Name &name,
                    HostPtr                  host):
   Persistency::Analyzer(name, host)
 {
+  // TODO DB I/O
 }
 
 } // namespace Postgres

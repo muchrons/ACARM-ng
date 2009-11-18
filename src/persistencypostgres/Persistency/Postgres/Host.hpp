@@ -5,8 +5,6 @@
 #ifndef INCLUDE_PERSISTENCY_POSTGRES_HOST_HPP_FILE
 #define INCLUDE_PERSISTENCY_POSTGRES_HOST_HPP_FILE
 
-/* public header */
-
 #include "Persistency/Host.hpp"
 
 namespace Persistency

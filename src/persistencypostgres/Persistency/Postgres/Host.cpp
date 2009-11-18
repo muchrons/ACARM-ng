@@ -17,6 +17,7 @@ Host::Host(const IPv4              &ip,
            const ReportedProcesses &processes):
   Persistency::Host(ip, mask, os, url, services, processes)
 {
+  // TODO DB I/O
 }
 
 Host::Host(const IPv6              &ip,
@@ -27,6 +28,7 @@ Host::Host(const IPv6              &ip,
            const ReportedProcesses &processes):
   Persistency::Host(ip, mask, os, url, services, processes)
 {
+  // TODO DB I/O
 }
 
 Host::Name Host::getName(void) const
