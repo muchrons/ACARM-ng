@@ -97,6 +97,13 @@ public:
                                    const Process::Username &username,
                                    const std::string       *arguments,
                                    ReferenceURLPtr          url) const;
+  /** \brief creates an object.
+   *  \param name name of url (~description).
+   *  \param url  url address itself.
+   */
+  virtual ReferenceURLPtr createReferenceURL(const ReferenceURL::Name &name,
+                                             const ReferenceURL::URL  &url) const;
+
 
   //
   // TODO: implement creator methods

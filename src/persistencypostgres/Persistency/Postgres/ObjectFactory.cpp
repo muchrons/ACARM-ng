@@ -9,6 +9,7 @@
 #include "Persistency/Postgres/Analyzer.hpp"
 #include "Persistency/Postgres/Host.hpp"
 #include "Persistency/Postgres/Process.hpp"
+#include "Persistency/Postgres/ReferenceURL.hpp"
 
 // TODO: add data base handling here
 
@@ -87,6 +88,13 @@ ProcessPtr ObjectFactory::createProcess(const Process::Path     &path,
                                            username,
                                            arguments,
                                            url) );
+}
+
+ReferenceURLPtr ObjectFactory::createReferenceURL(
+                                        const ReferenceURL::Name &name,
+                                        const ReferenceURL::URL  &url) const
+{
+  return ReferenceURLPtr( new ReferenceURL(name, url) );
 }
 
 } // namespace Postgres
