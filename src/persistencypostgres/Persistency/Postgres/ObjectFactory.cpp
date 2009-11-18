@@ -8,6 +8,7 @@
 #include "Persistency/Postgres/Alert.hpp"
 #include "Persistency/Postgres/Analyzer.hpp"
 #include "Persistency/Postgres/Host.hpp"
+#include "Persistency/Postgres/Process.hpp"
 
 // TODO: add data base handling here
 
@@ -67,6 +68,25 @@ HostPtr ObjectFactory::createHost(const Host::IPv6              &ip,
                                   const Host::ReportedProcesses &processes) const
 {
   return HostPtr( new Postgres::Host(ip, mask, os, url, services, processes) );
+}
+
+ProcessPtr ObjectFactory::createProcess(const Process::Path     &path,
+                                        const Process::Name     &name,
+                                        const MD5Sum            *md5,
+                                        const pid_t             *pid,
+                                        const int               *uid,
+                                        const Process::Username &username,
+                                        const std::string       *arguments,
+                                        ReferenceURLPtr          url) const
+{
+  return ProcessPtr( new Postgres::Process(path,
+                                           name,
+                                           md5,
+                                           pid,
+                                           uid,
+                                           username,
+                                           arguments,
+                                           url) );
 }
 
 } // namespace Postgres

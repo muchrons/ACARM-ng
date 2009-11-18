@@ -13,6 +13,7 @@
 #include "Persistency/Alert.hpp"
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/Host.hpp"
+#include "Persistency/Process.hpp"
 
 
 namespace Persistency
@@ -86,7 +87,7 @@ public:
                              ReferenceURLPtr                url,
                              const Host::ReportedServices  &services,
                              const Host::ReportedProcesses &processes) const = 0;
-  /** \brief creates object from given data.
+  /** \brief creates process info from given data.
    *  \param path      path to executable
    *  \param name      process name.
    *  \param md5       hash for given binary, if available.
@@ -96,18 +97,14 @@ public:
    *  \param arguments arguments to the application when running.
    *  \param url       reference URL.
    */
-  /*
-  virtual ProcessPtr createProcess(const Path        &path,
-                                   const Name        &name,
-                                   const MD5Sum      *md5,
-                                   const pid_t       *pid,
-                                   const int         *uid,
-                                   const Username    &username,
-                                   const std::string *arguments,
-                                   ReferenceURLPtr    url) const = 0;
-  */
-
-
+  virtual ProcessPtr createProcess(const Process::Path        &path,
+                                   const Process::Name        &name,
+                                   const MD5Sum               *md5,
+                                   const pid_t                *pid,
+                                   const int                  *uid,
+                                   const Process::Username    &username,
+                                   const std::string          *arguments,
+                                   ReferenceURLPtr             url) const = 0;
 
   //
   // TODO: implement creator methods

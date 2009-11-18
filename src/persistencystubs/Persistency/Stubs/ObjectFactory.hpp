@@ -79,6 +79,24 @@ public:
                              ReferenceURLPtr                url,
                              const Host::ReportedServices  &services,
                              const Host::ReportedProcesses &processes) const;
+  /** \brief creates process info from given data.
+   *  \param path      path to executable
+   *  \param name      process name.
+   *  \param md5       hash for given binary, if available.
+   *  \param pid       proces number (ID).
+   *  \param uid       user ID.
+   *  \param username  name of user that called process.
+   *  \param arguments arguments to the application when running.
+   *  \param url       reference URL.
+   */
+  virtual ProcessPtr createProcess(const Process::Path     &path,
+                                   const Process::Name     &name,
+                                   const MD5Sum            *md5,
+                                   const pid_t             *pid,
+                                   const int               *uid,
+                                   const Process::Username &username,
+                                   const std::string       *arguments,
+                                   ReferenceURLPtr          url) const;
 
   //
   // TODO: implement creator methods

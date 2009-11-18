@@ -7,6 +7,8 @@
 #include "Persistency/Stubs/TransactionAPI.hpp"
 #include "Persistency/Stubs/Alert.hpp"
 #include "Persistency/Stubs/Analyzer.hpp"
+#include "Persistency/Stubs/Host.hpp"
+#include "Persistency/Stubs/Process.hpp"
 
 
 namespace Persistency
@@ -66,6 +68,25 @@ HostPtr ObjectFactory::createHost(const Host::IPv6              &ip,
                                   const Host::ReportedProcesses &processes) const
 {
   return HostPtr( new Stubs::Host(ip, mask, os, url, services, processes) );
+}
+
+ProcessPtr ObjectFactory::createProcess(const Process::Path     &path,
+                                        const Process::Name     &name,
+                                        const MD5Sum            *md5,
+                                        const pid_t             *pid,
+                                        const int               *uid,
+                                        const Process::Username &username,
+                                        const std::string       *arguments,
+                                        ReferenceURLPtr          url) const
+{
+  return ProcessPtr( new Stubs::Process(path,
+                                        name,
+                                        md5,
+                                        pid,
+                                        uid,
+                                        username,
+                                        arguments,
+                                        url) );
 }
 
 } // namespace Stubs
