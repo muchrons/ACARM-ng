@@ -12,6 +12,7 @@
 #include "Persistency/Transaction.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/Analyzer.hpp"
+#include "Persistency/Host.hpp"
 
 
 namespace Persistency
@@ -57,6 +58,34 @@ public:
    */
   virtual AnalyzerPtr createAnalyzer(const Analyzer::Name &name,
                                      HostPtr               host) const = 0;
+  /** \brief create host entry of IPv4 address.
+   *  \param ip        ip address.
+   *  \param mask      network maks of a given host.
+   *  \param os        operating system name.
+   *  \param url       reference url for report (optional - can be NULL).
+   *  \param services  service reported on a host.
+   *  \param processes processes reported on host.
+   */
+  virtual HostPtr Host(const Host::IPv4              &ip,
+                       const Host::Netmask_v4        *mask,
+                       const Host::OperatingSystem    os,
+                       ReferenceURLPtr                url,
+                       const Host::ReportedServices  &services,
+                       const Host::ReportedProcesses &processes) const = 0;
+  /** \brief create host entry of IPv6 address.
+   *  \param ip        ip address.
+   *  \param mask      network maks of a given host.
+   *  \param os        operating system name.
+   *  \param url       reference url for report (optional - cen be NULL).
+   *  \param services  service reported on a host.
+   *  \param processes processes reported on host.
+   */
+  virtual HostPtr Host(const Host::IPv6              &ip,
+                       const Host::Netmask_v6        *mask,
+                       const Host::OperatingSystem    os,
+                       ReferenceURLPtr                url,
+                       const Host::ReportedServices  &services,
+                       const Host::ReportedProcesses &processes) const = 0;
 
 
   //

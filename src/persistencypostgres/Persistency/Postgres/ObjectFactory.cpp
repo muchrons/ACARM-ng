@@ -7,7 +7,9 @@
 #include "Persistency/Postgres/TransactionAPI.hpp"
 #include "Persistency/Postgres/Alert.hpp"
 #include "Persistency/Postgres/Analyzer.hpp"
+#include "Persistency/Postgres/Host.hpp"
 
+// TODO: add data base handling here
 
 namespace Persistency
 {
@@ -30,21 +32,41 @@ AlertPtr ObjectFactory::createAlert(const Alert::Name          &name,
                                     const Alert::ReportedHosts &sourceHosts,
                                     const Alert::ReportedHosts &targetHosts) const
 {
-  return AlertPtr( new Persistency::Postgres::Alert(name,
-                                                    analyzer,
-                                                    detected,
-                                                    created,
-                                                    severity,
-                                                    certanity,
-                                                    description,
-                                                    sourceHosts,
-                                                    targetHosts) );
+  return AlertPtr( new Postgres::Alert(name,
+                                       analyzer,
+                                       detected,
+                                       created,
+                                       severity,
+                                       certanity,
+                                       description,
+                                       sourceHosts,
+                                       targetHosts) );
 }
 
 AnalyzerPtr ObjectFactory::createAnalyzer(const Analyzer::Name &name,
                                           HostPtr               host) const
 {
-  return AnalyzerPtr( new Persistency::Postgres::Analyzer(name, host) );
+  return AnalyzerPtr( new Postgres::Analyzer(name, host) );
+}
+
+HostPtr ObjectFactory::Host(const Host::IPv4              &ip,
+                            const Host::Netmask_v4        *mask,
+                            const Host::OperatingSystem    os,
+                            ReferenceURLPtr                url,
+                            const Host::ReportedServices  &services,
+                            const Host::ReportedProcesses &processes) const
+{
+  return HostPtr( new Postgres::Host(ip, mask, os, url, services, processes) );
+}
+
+HostPtr ObjectFactory::Host(const Host::IPv6              &ip,
+                            const Host::Netmask_v6        *mask,
+                            const Host::OperatingSystem    os,
+                            ReferenceURLPtr                url,
+                            const Host::ReportedServices  &services,
+                            const Host::ReportedProcesses &processes) const
+{
+  return HostPtr( new Postgres::Host(ip, mask, os, url, services, processes) );
 }
 
 } // namespace Postgres
