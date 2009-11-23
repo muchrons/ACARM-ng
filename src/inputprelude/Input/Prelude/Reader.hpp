@@ -9,7 +9,6 @@
 
 #include <memory>
 #include <boost/noncopyable.hpp>
-
 #include "Input/Reader.hpp"
 
 // TODO: implement
