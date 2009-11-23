@@ -9,9 +9,6 @@ DROP TABLE    alert_to_meta_alert_map;
 DROP TRIGGER  ensure_leafs_are_unique_trigger ON meta_alerts_tree;
 DROP TABLE    meta_alerts_tree;
 
-DROP TRIGGER  setup_environemnt_for_new_alert_trigger ON alerts;
-DROP FUNCTION setup_environemnt_for_new_alert();
-
 DROP FUNCTION ensure_leafs_are_unique();
 
 DROP FUNCTION link_meta_alerts(int, int);

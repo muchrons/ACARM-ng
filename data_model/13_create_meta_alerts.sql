@@ -8,7 +8,7 @@ CREATE TABLE    meta_alerts
 (
   id               int          PRIMARY KEY
                                 DEFAULT nextval('meta_alerts_id_seq'),
-  name             varchar(128) NOT NULL,
+  name             varchar(256) NOT NULL,
   severity_delta   real         NOT NULL
                                 DEFAULT 0,
   certanity_delta  real         NOT NULL
@@ -16,7 +16,7 @@ CREATE TABLE    meta_alerts
   id_ref           int          NULL
                                 REFERENCES reference_urls(id)
                                 DEFAULT NULL,
-  creat_time       timestamp with time zone
+  create_time      timestamp with time zone
                                 NOT NULL,
   last_update_time timestamp with time zone
                                 NOT NULL
@@ -186,22 +186,3 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER ensure_leafs_are_unique_trigger
 BEFORE INSERT ON meta_alerts_tree
   FOR EACH ROW EXECUTE PROCEDURE ensure_leafs_are_unique();
-
-
--- setup_environemnt_for_new_alert()
-CREATE FUNCTION setup_environemnt_for_new_alert() RETURNS TRIGGER AS
-$$
-DECLARE
-  tmp int;
-BEGIN
-  -- creates new meta-alert for any newly inserted alert
-  INSERT INTO meta_alerts VALUES (DEFAULT, NEW.name, DEFAULT, DEFAULT, DEFAULT, NEW.create_time, DEFAULT) RETURNING id INTO tmp;
-  -- adds proper mapping between alerts and meta-alerts
-  INSERT INTO alert_to_meta_alert_map VALUES (NEW.id, tmp);
-  RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
--- register it as a trigger
-CREATE TRIGGER setup_environemnt_for_new_alert_trigger
-AFTER INSERT ON alerts
-  FOR EACH ROW EXECUTE PROCEDURE setup_environemnt_for_new_alert();

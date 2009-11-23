@@ -37,12 +37,12 @@ public:
    *  \param targetHosts targeted hosts.
    */
   virtual AlertPtr createAlert(const AlertAPI::Name          &name,
-                               AnalyzerPtr                             analyzer,
-                               const AlertAPI::Timestamp     *detected,
-                               const AlertAPI::Timestamp     &created,
-                               SeverityPtr                             severity,
-                               Certanity                               certanity,
-                               const std::string                      *description,
+                               AnalyzerPtr                    analyzer,
+                               const Timestamp               *detected,
+                               const Timestamp               &created,
+                               SeverityPtr                    severity,
+                               Certanity                      certanity,
+                               const std::string             *description,
                                const AlertAPI::ReportedHosts &sourceHosts,
                                const AlertAPI::ReportedHosts &targetHosts) const;
   /** \brief create analyzer entry.
