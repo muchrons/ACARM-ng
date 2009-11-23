@@ -27,8 +27,8 @@ TransactionPtr ObjectFactory::createTransaction(void) const
 
 AlertPtr ObjectFactory::createAlert(const Alert::Name          &name,
                                     AnalyzerPtr                 analyzer,
-                                    const Alert::Timestamp     *detected,
-                                    const Alert::Timestamp     &created,
+                                    const Timestamp            *detected,
+                                    const Timestamp            &created,
                                     SeverityPtr                 severity,
                                     Certanity                   certanity,
                                     const std::string          *description,

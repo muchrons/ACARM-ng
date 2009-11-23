@@ -13,9 +13,7 @@ done
 echo "\n"
 if [ "$RET" -ne "0" ]
 then
-  echo "$0: some of the tests failed..."
-else
-  echo "$0: all tests passed"
+  echo "$0: some of the tests FAILED..."
 fi
 
 exit $RET

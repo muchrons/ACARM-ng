@@ -12,8 +12,8 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/date_time/gregorian/gregorian.hpp>
 
+#include "Persistency/Timestamp.hpp"
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/Severity.hpp"
 #include "Persistency/Certanity.hpp"
@@ -33,9 +33,6 @@ public:
   /** \brief name of the alert (aka: title).
    */
   typedef detail::LimitedString<256> Name;
-  /** \brief timestamp representation.
-   */
-  typedef boost::gregorian::date     Timestamp;
   /** \brief vector of reported hosts.
    */
   typedef std::vector<HostPtr>       ReportedHosts;

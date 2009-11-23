@@ -26,12 +26,12 @@ const Analyzer &Alert::getAnalyzer(void) const
   return *analyzer_;
 }
 
-const Alert::Timestamp *Alert::getDetectionTime(void) const
+const Timestamp *Alert::getDetectionTime(void) const
 {
   return detected_.get();
 }
 
-const Alert::Timestamp &Alert::getCreationTime(void) const
+const Timestamp &Alert::getCreationTime(void) const
 {
   return created_;
 }
