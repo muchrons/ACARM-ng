@@ -9,6 +9,7 @@
 
 #include <string>
 #include <cstring>
+#include <stdint.h>
 #include <cassert>
 #include <boost/static_assert.hpp>
 

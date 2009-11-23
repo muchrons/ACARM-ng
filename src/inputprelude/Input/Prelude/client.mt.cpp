@@ -41,13 +41,17 @@ int main(int argc, char * argv[])
   id=idmef.Get("alert.analyzer");
 
   head=(prelude_list_t*)(&id);
-
-  prelude_list_for_each(head, tmp) {
-    id2=(IDMEFValue*)tmp;
-    std::cout << id2->GetType() << std::endl;
-    std::cout << (std::string)*id2 << std::endl;    
-  }
-
+  if(head)
+    prelude_list_for_each(head, tmp) 
+      {
+	id2=(IDMEFValue*)tmp;
+	if(id2)
+	  {
+	    std::cout << id2->GetType() << std::endl;
+	    std::cout << (std::string)*id2 << std::endl;    
+	  }
+      }
+  
 
 
   id=idmef.Get("alert.analyzer");
