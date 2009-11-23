@@ -2,6 +2,7 @@
  * Reader.cpp
  *
  */
+#include <cassert>
 
 #include "Input/Prelude/Reader.hpp"
 
@@ -13,7 +14,9 @@ namespace Prelude
 Reader::DataPtr Reader::read(const unsigned int /*timeout*/)
 {
   // TODO: implement
-  return DataPtr(NULL);
+  DataPtr tmp;
+  assert(tmp.get()==NULL);
+  return tmp;
 }
 
 } // namespace Prelude

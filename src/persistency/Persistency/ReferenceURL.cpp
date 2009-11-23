@@ -22,7 +22,7 @@ const ReferenceURL::URL &ReferenceURL::getURL(void) const
   return url_;
 }
 
-ReferenceURL::ReferenceURL(const Name &name, const URL url):
+ReferenceURL::ReferenceURL(const Name &name, const URL &url):
   name_(name),
   url_(url)
 {

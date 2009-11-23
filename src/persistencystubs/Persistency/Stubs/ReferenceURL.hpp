@@ -22,7 +22,7 @@ public:
    *  \param name name of url (~description).
    *  \param url  url address itself.
    */
-  ReferenceURL(const Name &name, const URL url):
+  ReferenceURL(const Name &name, const URL &url):
     Persistency::ReferenceURL(name, url)
   {
   }
