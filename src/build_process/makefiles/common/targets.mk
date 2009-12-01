@@ -6,13 +6,9 @@ define run-in-gen
 	GEN_NOW="$(GEN_BASE_DIR)/$@_$(TC)_$(MEM_CHECK)/`basename $(CURDIR)`" && \
 		mkdir -p "$$GEN_NOW" && cd "$$GEN_NOW" && \
 		mkdir -p $(SOURCE_DIRS)
-	# make includes/ dir structure for global includes files
-	mkdir -p $(GEN_INCLUDES_DIR)
-	cp -pu --parent `find . -type f -iname '*.h*' \
-		-exec grep -l '^/\* public header \*/$$' {} \; | grep -v '/.svn'` \
-		$(GEN_INCLUDES_DIR) \
-		2>/dev/null ; true
+	# make gen dir
 	mkdir -p "$(GEN_LIBS_DIR)"
+	# run
 	+$(MAKE) $(MFLAGS) -C "$(GEN_BASE_DIR)/$@_$(TC)_$(MEM_CHECK)/`basename $(CURDIR)`" \
 		-f "$(CURDIR)/Makefile" TARGET=$@ $(TARGET) \
 		STRIP_BINARY=$(STRIP_BINARY) \
@@ -41,6 +37,10 @@ endif
 
 # include toolchain-specific flags
 include $(MAKEFILES_TOOLCHAINS_BASE_DIR)/$(TC)-flags.mk
+# add project-specific flags
+OPT_FLAGS+=$(USER_OPT_FLAGS)
+DBG_FLAGS+=$(USER_DBG_FLAGS)
+PRF_FLAGS+=$(USER_PRF_FLAGS)
 
 # include profiles from extrnal files
 include $(wildcard $(MAKEFILES_PROFILES_BASE_DIR)/*.mk)

@@ -21,6 +21,13 @@ export ALL_SOURCES \
        ALL_SOURCES_C \
        ALL_SOURCES_CXX
 
+ALL_HEADERS_C   :=$(filter %.h,   $(ALL_MODE_SOURCES))
+ALL_HEADERS_CXX :=$(filter %.hpp, $(ALL_MODE_SOURCES))
+ALL_HEADERS     :=$(ALL_HEADERS_C) $(ALL_HEADERS_CXX)
+export ALL_HEADERS \
+       ALL_HEADERS_C \
+       ALL_HEADERS_CXX
+
 CSRCS_TEST  :=$(filter %.t.c,   $(ALL_SOURCES_C)  )
 CXXSRCS_TEST:=$(filter %.t.cpp, $(ALL_SOURCES_CXX))
 export CSRCS_TEST \

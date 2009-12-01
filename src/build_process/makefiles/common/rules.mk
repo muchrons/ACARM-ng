@@ -10,4 +10,3 @@
 %.o:: %.c
 	@echo "CC    $*.c"
 	$(CC) $(CFLAGS)    -MMD -c "$(THIS_SRC_BASE_DIR)/$*.c"   -o "$@"
-

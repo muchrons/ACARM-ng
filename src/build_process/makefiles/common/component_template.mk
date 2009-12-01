@@ -2,8 +2,8 @@ ifeq (,$(filter $(GEN_BASE_DIR)/%,$(basename $(CURDIR))))
 # part invoked in source dir
 
 # this will be application
-COMPONENT_NAME=$(shell basename $(CURDIR))
-TEST_PROGRAM_NAME=$(COMPONENT_NAME).t
+COMPONENT_NAME:=$(shell basename $(CURDIR))
+TEST_PROGRAM_NAME:=$(COMPONENT_NAME).t
 export COMPONENT_NAME \
        TEST_PROGRAM_NAME
 

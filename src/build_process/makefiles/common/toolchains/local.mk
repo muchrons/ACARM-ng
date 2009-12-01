@@ -1,7 +1,8 @@
-CC=gcc
-CXX=g++
-AR=ar
-RANLIB=ranlib
-LD=ld
-STRIP=strip
-DOXYGEN=doxygen
+CC:=gcc
+CXX:=g++
+AR:=ar
+RANLIB:=ranlib
+#LD:=ld
+LD:=$(CXX)
+STRIP:=strip
+DOXYGEN:=doxygen
