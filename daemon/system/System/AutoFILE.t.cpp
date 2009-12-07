@@ -108,7 +108,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  const int maxDescs=64*1024;   // assumption... :(
+  const int maxDescs=128;  // assumption... :(
   for(int i=0; i<maxDescs; ++i)
   {
     FILE *tmp=fopen("/dev/null", "w");     // should always work
