@@ -16,6 +16,6 @@ export TC=local
 export WITH_CCACHE=1
 
 # project-specific flags
-export USER_OPT_FLAGS:=
+export USER_OPT_FLAGS:=-m=core2
 export USER_DBG_FLAGS:=
-export USER_PRF_FLAGS:=
+export USER_PRF_FLAGS:=$(USER_OPT_FLAGS)

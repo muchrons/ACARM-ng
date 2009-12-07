@@ -7,9 +7,10 @@
 #include <cassert>
 #include <unistd.h>
 
-#include "Commons/Threads/Lock.hpp"
+#include "Base/Threads/Mutex.hpp"
+#include "Base/Threads/Lock.hpp"
 
-using namespace Commons::Threads;
+using namespace Base::Threads;
 
 namespace
 {
@@ -21,7 +22,7 @@ typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Commons/Threads/Lock");
+factory tf("Base/Threads/Lock");
 } // unnamed namespace
 
 
