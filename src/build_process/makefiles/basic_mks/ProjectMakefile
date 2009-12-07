@@ -33,7 +33,7 @@ include $(GEN_COMPONENTS_DEPS_DIR)/_default_target_.mk
 
 
 # include all generated component-dependencies
-include $(wildcard $(GEN_COMPONENTS_DEPS_DIR)/*.mk)
+include $(wildcard $(GEN_COMPONENTS_DEPS_DIR)/[^_]*.mk)
 
 
 # clean specific profile

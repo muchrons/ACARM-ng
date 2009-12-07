@@ -8,10 +8,11 @@
 
 #include "UserNamespace/Some.hpp"
 
+using namespace UserNamespace;
 
 namespace
 {
-struct SomeTestClass
+struct TestClass
 {
   bool isZero(int v) const
   {
@@ -19,7 +20,7 @@ struct SomeTestClass
   }
 };
 
-typedef SomeTestClass TestClass;
+typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

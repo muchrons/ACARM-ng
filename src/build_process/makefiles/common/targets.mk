@@ -30,11 +30,6 @@ all:
 	@echo
 	@exit 1
 
-# memory debugging is on?
-ifneq (,$(MEM_DEBUG))
-END_LINK_LIBS+=-lefence
-endif
-
 # include toolchain-specific flags
 include $(MAKEFILES_TOOLCHAINS_BASE_DIR)/$(TC)-flags.mk
 # add project-specific flags
