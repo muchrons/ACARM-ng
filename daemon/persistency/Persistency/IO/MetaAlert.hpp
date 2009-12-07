@@ -25,6 +25,10 @@ public:
 
   virtual void save(const Persistency::MetaAlert &ma) = 0;
 
+  virtual void used(const Persistency::MetaAlert &ma) = 0;
+
+  virtual void unused(const Persistency::MetaAlert &ma) = 0;
+
   virtual void updateSeverityDelta(const Persistency::MetaAlert &ma, double delta) = 0;
 
   virtual void updateCertanityDelta(const Persistency::MetaAlert &ma, double delta) = 0;
