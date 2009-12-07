@@ -38,7 +38,8 @@ public:
   MetaAlertAutoPtr metaAlert(MetaAlertPtr, const Transaction &t);
 
 private:
-  virtual TransactionAPIAutoPtr createNewTransactionImpl(const std::string &name) = 0;
+  virtual TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
+                                                         const std::string    &name) = 0;
   virtual AlertAutoPtr alertImpl(AlertPtr alert, const Transaction &t) = 0;
   virtual GraphAutoPtr graphImpl(const Transaction &t) = 0;
   virtual HostAutoPtr hostImpl(HostPtr host, const Transaction &t) = 0;

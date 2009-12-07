@@ -17,7 +17,7 @@ namespace
 struct TestTransactionAPI: public Persistency::IO::TransactionAPI
 {
   TestTransactionAPI(Base::Threads::Mutex &mutex, int *commits, int *rollbacks):
-    Persistency::IO::TransactionAPI(mutex),
+    Persistency::IO::TransactionAPI(mutex, "test_transaction"),
     commited_(commits),
     rollbacked_(rollbacks)
   {

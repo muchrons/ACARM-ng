@@ -7,7 +7,6 @@
 #include "Persistency/IO/Transaction.hpp"
 
 // TODO: add logging
-// TODO: add transaction name
 
 namespace Persistency
 {
@@ -18,7 +17,7 @@ Transaction::Transaction(TransactionAPIAutoPtr transaction):
   transaction_( transaction.release() )
 {
   if( transaction_.get()==NULL )
-    throw ExceptionNULLParameter(__FILE__, "transaction is NULL");
+    throw ExceptionNULLParameter(__FILE__, "NULL transaction's API");
   assert( transaction_.get()!=NULL );
 }
 

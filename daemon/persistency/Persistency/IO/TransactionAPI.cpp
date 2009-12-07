@@ -14,8 +14,10 @@ TransactionAPI::~TransactionAPI(void)
 {
 }
 
-TransactionAPI::TransactionAPI(Base::Threads::Mutex &mutex):
-  lock_(mutex)
+TransactionAPI::TransactionAPI(Base::Threads::Mutex &mutex,
+                               const std::string    &name):
+  lock_(mutex),
+  name_(name)
 {
 }
 

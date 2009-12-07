@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <string>
 #include <memory>
 #include <boost/noncopyable.hpp>
 
@@ -40,10 +41,11 @@ protected:
   /** \brief open transaction.
    *  \param mutex mutex that data base connection is protected with.
    */
-  explicit TransactionAPI(Base::Threads::Mutex &mutex);
+  TransactionAPI(Base::Threads::Mutex &mutex, const std::string &name);
 
 private:
   Base::Threads::Lock lock_;
+  const std::string   name_;
 }; // class TransactionAPI
 
 
