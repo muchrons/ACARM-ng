@@ -22,6 +22,8 @@ class Alert: private boost::noncopyable
 {
 public:
   virtual ~Alert(void);
+
+  virtual void save(const Persistency::Alert &alert) = 0;
   // TODO
 }; // class Alert
 

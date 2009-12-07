@@ -12,6 +12,8 @@
 #include <boost/scoped_ptr.hpp>
 
 #include "Persistency/IO/Alert.hpp"
+#include "Persistency/IO/Host.hpp"
+#include "Persistency/IO/MetaAlert.hpp"
 
 namespace Persistency
 {
@@ -24,8 +26,11 @@ class Connection: private boost::noncopyable
 {
 public:
   virtual ~Connection(void);
+
 private:
-  boost::scoped_ptr<IO::Alert> alertIOptr_;
+  boost::scoped_ptr<IO::Alert>     alertIOptr_;
+  boost::scoped_ptr<IO::Host>      hostIOptr_;
+  boost::scoped_ptr<IO::MetaAlert> metaAlertIOptr_;
 }; // class Connection
 
 

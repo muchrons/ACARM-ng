@@ -22,6 +22,9 @@ class Host: private boost::noncopyable
 {
 public:
   virtual ~Host(void);
+
+  virtual void setName(Persistency::Host             &host,
+                       const Persistency::Host::Name &name) = 0;
   // TODO
 }; // class Host
 

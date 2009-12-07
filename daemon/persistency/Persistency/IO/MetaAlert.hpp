@@ -9,7 +9,7 @@
 
 #include <boost/noncopyable.hpp>
 
-#include "Persistency/Alert.hpp"
+#include "Persistency/MetaAlert.hpp"
 
 namespace Persistency
 {
@@ -22,6 +22,13 @@ class MetaAlert: private boost::noncopyable
 {
 public:
   virtual ~MetaAlert(void);
+
+  virtual void save(const Persistency::MetaAlert &ma) = 0;
+
+  virtual void updateSeverityDelta(const Persistency::MetaAlert &ma, double delta) = 0;
+
+  virtual void updateCertanityDelta(const Persistency::MetaAlert &ma, double delta) = 0;
+
   // TODO
 }; // class MetaAlert
 

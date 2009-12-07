@@ -1,2 +1,3 @@
 Persistency/*.?pp
+Persistency/IO/*.?pp
 Persistency/detail/*.?pp
