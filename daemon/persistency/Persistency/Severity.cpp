@@ -9,10 +9,6 @@
 namespace Persistency
 {
 
-Severity::~Severity(void)
-{
-}
-
 SeverityLevel Severity::getLevel(void) const
 {
   return sl_;

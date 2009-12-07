@@ -5,7 +5,7 @@
 #include <tut.h>
 
 #include "Persistency/Service.hpp"
-#include "Persistency/Service.t.hpp"
+#include "Persistency/TestHelpers.t.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -13,11 +13,11 @@ using namespace Persistency;
 namespace
 {
 
-struct ServiceTestClass
+struct TestClass
 {
 };
 
-typedef ServiceTestClass TestClass;
+typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -33,7 +33,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const ServiceTestImpl ti("mail daemon", 25, "smtp", ReferenceURLTestImpl::makeNew() );
+  const Service ti("mail daemon", 25, "smtp", makeNewReferenceURL() );
   ensure_equals("invalid name",    ti.getName().get(),     string("mail daemon") );
   ensure_equals("invalid port",    ti.getPort(),           25                    );
   ensure_equals("invalid service", ti.getProtocol().get(), string("smtp")        );
@@ -45,7 +45,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const ServiceTestImpl ti("mail daemon", 25, NULL, ReferenceURLTestImpl::makeNew() );
+  const Service ti("mail daemon", 25, NULL, makeNewReferenceURL() );
   ensure_equals("invalid name",    ti.getName().get(),     string("mail daemon") );
   ensure_equals("invalid port",    ti.getPort(),           25                    );
   ensure("invalid service",        ti.getProtocol().get()==NULL                  );
@@ -57,7 +57,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const ServiceTestImpl ti("mail daemon", 25, "smtp", ReferenceURLPtr() );
+  const Service ti("mail daemon", 25, "smtp", ReferenceURLPtr() );
   ensure_equals("invalid name",    ti.getName().get(),     string("mail daemon") );
   ensure_equals("invalid port",    ti.getPort(),           25                    );
   ensure_equals("invalid service", ti.getProtocol().get(), string("smtp")        );

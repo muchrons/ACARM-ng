@@ -8,10 +8,6 @@
 namespace Persistency
 {
 
-ReferenceURL::~ReferenceURL(void)
-{
-}
-
 const ReferenceURL::Name &ReferenceURL::getName(void) const
 {
   return name_;

@@ -20,10 +20,11 @@ namespace Persistency
 class Severity: private boost::noncopyable
 {
 public:
-  /** \brief d-tor is virtual, since this class is intended to be used as a
-   *         base for particular implementation.
+  /** \brief crates class with a given severity.
+   *  \param sl level to assign to this instance.
    */
-  virtual ~Severity(void);
+  explicit Severity(SeverityLevel sl);
+
   /** \brief gets severity level.
    *  \return severity level.
    */
@@ -34,12 +35,6 @@ public:
    *        deallocated nor used after class instance is destroyed.
    */
   const char *getName(void) const;
-
-protected:
-  /** \brief crates class with a given severity.
-   *  \param sl level to assign to this instance.
-   */
-  explicit Severity(SeverityLevel sl);
 
 private:
   SeverityLevel sl_;

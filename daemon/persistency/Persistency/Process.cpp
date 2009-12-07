@@ -11,10 +11,6 @@ using namespace std;
 namespace Persistency
 {
 
-Process::~Process(void)
-{
-}
-
 const Process::Path &Process::getPath(void) const
 {
   return path_;

@@ -11,10 +11,6 @@ using namespace std;
 namespace Persistency
 {
 
-Alert::~Alert(void)
-{
-}
-
 const Alert::Name &Alert::getName(void) const
 {
   return name_;

@@ -12,7 +12,7 @@ using namespace Persistency;
 namespace
 {
 
-struct MD5SumTestClass
+struct TestClass
 {
   void ensureThrow(const char *md5)
   {
@@ -28,7 +28,7 @@ struct MD5SumTestClass
   }
 };
 
-typedef MD5SumTestClass TestClass;
+typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

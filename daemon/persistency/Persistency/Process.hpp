@@ -34,9 +34,26 @@ public:
   /** \brief user name type.
    */
   typedef detail::LimitedNULLString<32>  Username;
-  /** \brief ensure proper destruction when inherited.
+
+  /** \brief creates object from given data.
+   *  \param path      path to executable
+   *  \param name      process name.
+   *  \param md5       hash for given binary, if available.
+   *  \param pid       proces number (ID).
+   *  \param uid       user ID.
+   *  \param username  name of user that called process.
+   *  \param arguments arguments to the application when running.
+   *  \param url       reference URL.
    */
-  virtual ~Process(void);
+  Process(const Path        &path,
+          const Name        &name,
+          const MD5Sum      *md5,
+          const pid_t       *pid,
+          const int         *uid,
+          const Username    &username,
+          const std::string *arguments,
+          ReferenceURLPtr    url);
+
   /** \brief gets path to executable.
    *  \return path to executable process has been run from.
    */
@@ -69,26 +86,6 @@ public:
    *  \return referenceu url for a given process.
    */
   const ReferenceURL *getReferenceURL(void) const;
-
-protected:
-  /** \brief creates object from given data.
-   *  \param path      path to executable
-   *  \param name      process name.
-   *  \param md5       hash for given binary, if available.
-   *  \param pid       proces number (ID).
-   *  \param uid       user ID.
-   *  \param username  name of user that called process.
-   *  \param arguments arguments to the application when running.
-   *  \param url       reference URL.
-   */
-  Process(const Path        &path,
-          const Name        &name,
-          const MD5Sum      *md5,
-          const pid_t       *pid,
-          const int         *uid,
-          const Username    &username,
-          const std::string *arguments,
-          ReferenceURLPtr    url);
 
 private:
   Path                           path_;

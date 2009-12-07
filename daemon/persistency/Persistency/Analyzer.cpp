@@ -9,10 +9,6 @@
 namespace Persistency
 {
 
-Analyzer::~Analyzer(void)
-{
-}
-
 const Analyzer::Name &Analyzer::getName(void) const
 {
   return name_;

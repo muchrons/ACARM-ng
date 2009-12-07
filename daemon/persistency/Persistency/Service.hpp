@@ -32,9 +32,18 @@ public:
   /** \brief protocol used by sevice.
    */
   typedef detail::LimitedNULLString<32> Protocol;
-  /** \brief ensure proper destruction when inherited.
+
+  /** \brief creates object from given data.
+   *  \param name     service name.
+   *  \param port     port number.
+   *  \param protocol communication protocol.
+   *  \param url      reference url of thie service.
    */
-  virtual ~Service(void);
+  Service(const Name      &name,
+          const Port      &port,
+          const Protocol  &protocol,
+          ReferenceURLPtr  url);
+
   /** \brief gets service name.
    *  \return name of the service.
    */
@@ -51,18 +60,6 @@ public:
    *  \return reference url to given service.
    */
   const ReferenceURL *getReferenceURL(void) const;
-
-protected:
-  /** \brief creates object from given data.
-   *  \param name     service name.
-   *  \param port     port number.
-   *  \param protocol communication protocol.
-   *  \param url      reference url of thie service.
-   */
-  Service(const Name      &name,
-          const Port      &port,
-          const Protocol  &protocol,
-          ReferenceURLPtr  url);
 
 private:
   Name            name_;

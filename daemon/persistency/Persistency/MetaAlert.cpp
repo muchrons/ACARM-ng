@@ -8,10 +8,6 @@
 namespace Persistency
 {
 
-MetaAlert::~MetaAlert(void)
-{
-}
-
 const MetaAlert::Name &MetaAlert::getName(void) const
 {
   return name_;

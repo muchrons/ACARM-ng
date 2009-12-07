@@ -7,7 +7,7 @@
 #include <memory>
 
 #include "Persistency/Analyzer.hpp"
-#include "Persistency/Analyzer.t.hpp"
+#include "Persistency/TestHelpers.t.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -15,11 +15,11 @@ using namespace Persistency;
 namespace
 {
 
-struct AnalyzerTestClass
+struct TestClass
 {
 };
 
-typedef AnalyzerTestClass TestClass;
+typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -35,10 +35,10 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  HostPtr host=HostTestImpl::makeNew();
-  const AnalyzerTestImpl a("analyzer1", host);
-  ensure_equals("invalid name", a.getName().get(), string("analyzer1") );
-  ensure("invalid host", a.getHost()==host.get() );
+  HostPtr host=makeNewHost();
+  const AnalyzerPtr a=makeNewAnalyzer("analyzer1", host);
+  ensure_equals("invalid name", a->getName().get(), string("analyzer1") );
+  ensure("invalid host", a->getHost()==host.get() );
 }
 
 // test creating with NULL host
@@ -47,9 +47,9 @@ template<>
 void testObj::test<2>(void)
 {
   HostPtr host;
-  const AnalyzerTestImpl a("analyzer1", host);
-  ensure_equals("invalid name", a.getName().get(), string("analyzer1") );
-  ensure("invalid host", a.getHost()==NULL);
+  const AnalyzerPtr a=makeNewAnalyzer("analyzer1", host);
+  ensure_equals("invalid name", a->getName().get(), string("analyzer1") );
+  ensure("invalid host", a->getHost()==NULL);
 }
 
 } // namespace tut

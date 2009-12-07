@@ -5,7 +5,7 @@
 #include <tut.h>
 
 #include "Persistency/Process.hpp"
-#include "Persistency/Process.t.hpp"
+#include "Persistency/TestHelpers.t.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -13,16 +13,16 @@ using namespace Persistency;
 namespace
 {
 
-struct ProcessTestClass
+struct TestClass
 {
-  ProcessTestClass(void):
+  TestClass(void):
     md5Str_("01234567890123456789012345678901"),
     md5_( MD5Sum::createFromString(md5Str_) ),
     pid_(42),
     uid_(13),
     user_("john"),
     args_("-a -b -c"),
-    url_( ReferenceURLTestImpl::makeNew() )
+    url_( makeNewReferenceURL() )
   {
   }
 
@@ -35,7 +35,7 @@ struct ProcessTestClass
   ReferenceURLPtr          url_;
 };
 
-typedef ProcessTestClass TestClass;
+typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -51,18 +51,20 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const ProcessTestImpl ti("/path/to/file",
-                           "file",
-                           &md5_,
-                           &pid_,
-                           &uid_,
-                           user_,
-                           &args_,
-                           url_);
+  const Process ti("/path/to/file",
+                   "file",
+                   &md5_,
+                   &pid_,
+                   &uid_,
+                   user_,
+                   &args_,
+                   url_);
   ensure_equals("invalid path", ti.getPath().get(), string("/path/to/file") );
   ensure_equals("invalid name", ti.getName().get(), string("file")          );
   ensure_equals("invalid md5",  ti.getMD5()->get(), string(md5Str_)         );
 }
+
+// TODO: take a look at this code - fix it, or remove it.
 /*
 // test NULL path
 template<>

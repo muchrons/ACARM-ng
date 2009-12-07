@@ -27,9 +27,13 @@ public:
   typedef detail::LimitedString<256> URL;
   // TODO: consider making URL a separate clas with syntax validation
 
-  /** \brief ensure proper destruction when inherited.
+  /** \brief creates an object.
+   *  \param name name of url (~description).
+   *  \param url  url address itself.
    */
-  virtual ~ReferenceURL(void);
+  ReferenceURL(const Name &name, const URL &url);
+
+
   /** \brief gets reference url's name.
    *  \return name of reference URL.
    */
@@ -38,13 +42,6 @@ public:
    *  \return URL address.
    */
   const URL &getURL(void) const;
-
-protected:
-  /** \brief creates an object.
-   *  \param name name of url (~description).
-   *  \param url  url address itself.
-   */
-  ReferenceURL(const Name &name, const URL &url);
 
 private:
   Name name_;

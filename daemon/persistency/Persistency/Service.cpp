@@ -8,10 +8,6 @@
 namespace Persistency
 {
 
-Service::~Service(void)
-{
-}
-
 const Service::Name &Service::getName(void) const
 {
   return name_;

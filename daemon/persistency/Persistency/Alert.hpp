@@ -37,9 +37,27 @@ public:
    */
   typedef std::vector<HostPtr>       ReportedHosts;
 
-  /** \brief starts virtual d-tors from the begining of the hierarchy.
+  /** \brief creates alert.
+   *  \param name        name of an alert (~title).
+   *  \param analyzer    analyzer that reported an issue.
+   *  \param detected    time when alert has been detected.
+   *  \param created     time of creation of this alert.
+   *  \param severity    severity of alert reported.
+   *  \param certanity   certanity about given report.
+   *  \param description textual description, if needed.
+   *  \param sourceHosts source hosts (attack came from them).
+   *  \param targetHosts targeted hosts.
    */
-  virtual ~Alert(void);
+  Alert(const Name          &name,
+        AnalyzerPtr          analyzer,
+        const Timestamp     *detected,
+        const Timestamp     &created,
+        SeverityPtr          severity,
+        Certanity            certanity,
+        const std::string   *description,
+        const ReportedHosts &sourceHosts,
+        const ReportedHosts &targetHosts);
+
   /** \brief gets name of alert.
    *  \return name of alert.
    */
@@ -78,28 +96,6 @@ public:
    *  \return vector of reported target hosts.
    */
   const ReportedHosts &getReportedTargetHosts(void) const;
-
-protected:
-  /** \brief creates alert.
-   *  \param name        name of an alert (~title).
-   *  \param analyzer    analyzer that reported an issue.
-   *  \param detected    time when alert has been detected.
-   *  \param created     time of creation of this alert.
-   *  \param severity    severity of alert reported.
-   *  \param certanity   certanity about given report.
-   *  \param description textual description, if needed.
-   *  \param sourceHosts source hosts (attack came from them).
-   *  \param targetHosts targeted hosts.
-   */
-  Alert(const Name          &name,
-        AnalyzerPtr          analyzer,
-        const Timestamp     *detected,
-        const Timestamp     &created,
-        SeverityPtr          severity,
-        Certanity            certanity,
-        const std::string   *description,
-        const ReportedHosts &sourceHosts,
-        const ReportedHosts &targetHosts);
 
 private:
   Name                           name_;

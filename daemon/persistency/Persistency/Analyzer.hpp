@@ -23,9 +23,14 @@ public:
   /** \brief name of an analyzer.
    */
   typedef detail::LimitedString<64> Name;
-  /** \brief ensure proper deallocation after inheritance.
+
+  /** \brief creates analyzer.
+   *  \param name name of an analyzer.
+   *  \param host host analyzer runs on or NULL if not known.
    */
-  virtual ~Analyzer(void);
+  Analyzer(const Name &name,
+           HostPtr     host);
+
   /** \brief get name of an analizer.
    *  \return analizer's name.
    */
@@ -35,20 +40,14 @@ public:
    */
   const Host *getHost(void) const;
 
-protected:
-  /** \brief creates analyzer.
-   *  \param name name of an analyzer.
-   *  \param host host analyzer runs on or NULL if not known.
-   */
-  Analyzer(const Name &name,
-           HostPtr     host);
-
 private:
   Name    name_;
   HostPtr host_;
 }; // class Analyzer
 
 
+/** \brief smarth pointer to analyzer class.
+ */
 typedef boost::shared_ptr<Analyzer> AnalyzerPtr;
 
 } // namespace Persistency

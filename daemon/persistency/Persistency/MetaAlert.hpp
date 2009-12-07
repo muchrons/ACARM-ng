@@ -33,23 +33,6 @@ public:
   typedef double                     SeverityDelta;
   typedef double                     CertanityDelta;
 
-  virtual ~MetaAlert(void);
-
-  const Name &getName(void) const;
-
-  virtual SeverityDelta getSeverityDelta(void) const = 0;
-  virtual void updateSeverityDelta(double delta) = 0;
-
-  virtual CertanityDelta getCertanityDelta(void) const = 0;
-  virtual void updateCertanityDelta(double delta) = 0;
-
-  const ReferenceURL *getReferenceURL(void) const;
-
-  Timestamp getCreateTime(void) const;
-
-  virtual Timestamp getLastUpdateTime(void) const = 0;
-
-protected:
   /** \brief creates meta alert based on exisitng alert.
    *  \param alert to corelate meta-alert with.
    */
@@ -59,8 +42,25 @@ protected:
             ReferenceURLPtr  url,
             Timestamp        created);
 
+  const Name &getName(void) const;
+
+  SeverityDelta getSeverityDelta(void) const;
+
+  CertanityDelta getCertanityDelta(void) const;
+
+  const ReferenceURL *getReferenceURL(void) const;
+
+  Timestamp getCreateTime(void) const;
+
+  virtual Timestamp getLastUpdateTime(void) const = 0;
+
 private:
+  void updateSeverityDelta(double delta);
+  void updateCertanityDelta(double delta);
+
   Name            name_;
+  SeverityDelta   severityDelta_;
+  CertanityDelta  certanityDelta_;
   ReferenceURLPtr url_;
   Timestamp       created_;
 }; // class MetaAlert

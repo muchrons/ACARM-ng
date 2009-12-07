@@ -13,6 +13,7 @@
 #include <boost/noncopyable.hpp>
 #include <asio/ip/address.hpp>
 
+#include "Base/Threads/Mutex.hpp"
 #include "Persistency/ReferenceURL.hpp"
 #include "Persistency/Service.hpp"
 #include "Persistency/Process.hpp"
@@ -20,6 +21,13 @@
 
 namespace Persistency
 {
+namespace IO
+{
+// forward declaration for friend
+class Host;
+} // namespace IO
+
+
 /** \brief host information representation.
  */
 class Host: private boost::noncopyable
@@ -56,46 +64,6 @@ public:
    */
   typedef std::vector<ProcessPtr>       ReportedProcesses;
 
-  /** \brief ensure proper destruction when inherited.
-   */
-  virtual ~Host(void);
-  /** \brief gets IP address.
-   *  \return IP address of host.
-   */
-  const IP &getIP(void) const;
-  /** \brief gets network mask of a given hosts's address.
-   *  \return network maks of a given host or NULL if not known.
-   */
-  const Netmask *getNetmask(void) const;
-  /** \brief operating system name of a given host.
-   *  \return name of an operating system.
-   */
-  const OperatingSystem &getOperatingSystem(void) const;
-  /** \brief gets DNS name of a given host.
-   *  \return host name.
-   *  \note value instead of const reference is returned here intentionaly.
-   *        value can be set in runtime, therefor it should be always read
-   *        from destination storage.
-   */
-  virtual Name getName(void) const = 0;
-  /** \brief sets name of a given host.
-   *  \param name DNS name of a host to be set.
-   */
-  virtual void setName(const Name &name) = 0;
-  /** \brief gets reference url for this host.
-   *  \return reference url to get more info.
-   */
-  const ReferenceURL *getReferenceURL(void) const;
-  /** \brief gets reported services list.
-   *  \return vector of reported services.
-   */
-  const ReportedServices &getReportedServices(void) const;
-  /** \brief gets reported processes list.
-   *  \return vector of reported processes.
-   */
-  const ReportedProcesses &getReportedProcesses(void) const;
-
-protected:
   /** \brief create host entry of IPv4 address.
    *  \param ip        ip address.
    *  \param mask      network maks of a given host.
@@ -125,13 +93,48 @@ protected:
        const ReportedServices  &services,
        const ReportedProcesses &processes);
 
+  /** \brief gets IP address.
+   *  \return IP address of host.
+   */
+  const IP &getIP(void) const;
+  /** \brief gets network mask of a given hosts's address.
+   *  \return network maks of a given host or NULL if not known.
+   */
+  const Netmask *getNetmask(void) const;
+  /** \brief operating system name of a given host.
+   *  \return name of an operating system.
+   */
+  const OperatingSystem &getOperatingSystem(void) const;
+  /** \brief gets DNS name of a given host.
+   *  \return host name.
+   *  \note pointer may be NULL, if name has not been set.
+   */
+  const Name *getName(void) const;
+  /** \brief gets reference url for this host.
+   *  \return reference url to get more info.
+   */
+  const ReferenceURL *getReferenceURL(void) const;
+  /** \brief gets reported services list.
+   *  \return vector of reported services.
+   */
+  const ReportedServices &getReportedServices(void) const;
+  /** \brief gets reported processes list.
+   *  \return vector of reported processes.
+   */
+  const ReportedProcesses &getReportedProcesses(void) const;
+
 private:
-  IP                         ip_;
-  boost::scoped_ptr<Netmask> mask_;
-  OperatingSystem            os_;
-  ReferenceURLPtr            url_;
-  ReportedServices           services_;
-  ReportedProcesses          processes_;
+  friend class ::Persistency::IO::Host;
+  void setName(const Name &name);
+
+  IP                           ip_;
+  boost::scoped_ptr<Netmask>   mask_;
+  OperatingSystem              os_;
+  boost::scoped_ptr<Name>      name_;
+  ReferenceURLPtr              url_;
+  ReportedServices             services_;
+  ReportedProcesses            processes_;
+  mutable Base::Threads::Mutex mutex_;
 }; // class Host
 
 

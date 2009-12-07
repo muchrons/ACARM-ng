@@ -16,14 +16,11 @@ using namespace Persistency;
 namespace
 {
 
-struct AlertTestClass
+struct TestClass
 {
-  AlertTestClass(void)
-  {
-  }
 };
 
-typedef AlertTestClass TestClass;
+typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

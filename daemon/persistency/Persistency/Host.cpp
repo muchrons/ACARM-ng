@@ -2,15 +2,13 @@
  * Host.cpp
  *
  */
+#include <cassert>
 
 #include "Persistency/Host.hpp"
+#include "Base/Threads/Lock.hpp"
 
 namespace Persistency
 {
-
-Host::~Host(void)
-{
-}
 
 const Host::IP &Host::getIP(void) const
 {
@@ -25,6 +23,12 @@ const Host::Netmask *Host::getNetmask(void) const
 const Host::OperatingSystem &Host::getOperatingSystem(void) const
 {
   return os_;
+}
+
+const Host::Name *Host::getName(void) const
+{
+  Base::Threads::Lock lock(mutex_);
+  return name_.get();
 }
 
 const ReferenceURL *Host::getReferenceURL(void) const
@@ -70,6 +74,19 @@ Host::Host(const IPv6              &ip,
   services_(services),
   processes_(processes)
 {
+}
+
+void Host::setName(const Name &name)
+{
+  // TODO: add logging of name resolved event
+
+  Base::Threads::Lock lock(mutex_);
+  if( name_.get()!=NULL )
+    throw Exception(__FILE__, "host's name already resolved");
+
+  // add new host entry
+  name_.reset( new Name(name) );
+  assert( name_.get()!=NULL );
 }
 
 } // namespace Persistency
