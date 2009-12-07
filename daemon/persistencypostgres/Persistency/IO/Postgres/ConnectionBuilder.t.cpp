@@ -6,25 +6,25 @@
 #include <cstring>
 #include <memory>
 
-#include "Persistency/Postgres/ObjectFactoryBuilder.hpp"
+#include "Persistency/IO/Postgres/ConnectionBuilder.hpp"
 
 using namespace std;
-using namespace Persistency::Postgres;
+using namespace Persistency::IO::Postgres;
 
 namespace
 {
 
-struct ObjectFactoryBuilderTestClass
+struct TestClass
 {
-  ObjectFactoryBuilder          ofb_;
-  ObjectFactoryBuilder::Options opts_;
+  ConnectionBuilder          ofb_;
+  ConnectionBuilder::Options opts_;
 };
 
-typedef ObjectFactoryBuilderTestClass TestClass;
+typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Postgres/ObjectFactoryBuilder");
+factory tf("Persistency/IO/Postgres/ConnectionBuilder");
 } // unnamed namespace
 
 
@@ -44,7 +44,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ObjectFactoryBuilder::FactoryPtr ptr=ofb_.build(opts_);
+  ConnectionBuilder::FactoryPtr ptr=ofb_.build(opts_);
   ensure("NULL pointere returned", ptr!=NULL);
 }
 

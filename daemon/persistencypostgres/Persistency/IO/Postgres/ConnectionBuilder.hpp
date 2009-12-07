@@ -1,28 +1,30 @@
 /*
- * ObjectFactoryBuilder.hpp
+ * ConnectionBuilder.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_POSTGRES_OBJECTFACTORYBUILDER_HPP_FILE
-#define INCLUDE_PERSISTENCY_POSTGRES_OBJECTFACTORYBUILDER_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_CONNECTIONBUILDER_HPP_FILE
+#define INCLUDE_PERSISTENCY_IO_POSTGRES_CONNECTIONBUILDER_HPP_FILE
 
 #include <string>
 
 #include "Logger/Logger.hpp"
-#include "Persistency/BackendFactory.hpp"
+#include "Persistency/IO/BackendFactory.hpp"
 
 namespace Persistency
+{
+namespace IO
 {
 namespace Postgres
 {
 
 /** \brief builder for reader of prelude format.
  */
-class ObjectFactoryBuilder: public BackendFactory::TFactoryBuilderBase
+class ConnectionBuilder: public BackendFactory::TFactoryBuilderBase
 {
 public:
   /** \brief creates builder of a object's facotry for Persistency::Postgres.
    */
-  ObjectFactoryBuilder(void);
+  ConnectionBuilder(void);
 
 private:
   virtual FactoryPtr buildImpl(const Options &options) const;
@@ -30,9 +32,10 @@ private:
 
   const std::string  name_;
   const Logger::Node log_;
-}; // class ObjectFactoryBuilder
+}; // class ConnectionBuilder
 
 } // namespace Postgres
+} // namespace IO
 } // namespace Persistency
 
 #endif

@@ -6,12 +6,12 @@
 #include <cstring>
 #include <memory>
 
-#include "Persistency/Postgres/TransactionAPI.hpp"
+#include "Persistency/IO/Postgres/TransactionAPI.hpp"
 
 // TODO: tests
 
 using namespace std;
-using namespace Persistency::Postgres;
+using namespace Persistency::IO::Postgres;
 
 namespace
 {
@@ -24,7 +24,7 @@ typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Postgres/TransactionAPI");
+factory tf("Persistency/IO/Postgres/TransactionAPI");
 } // unnamed namespace
 
 
