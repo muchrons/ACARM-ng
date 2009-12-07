@@ -14,7 +14,7 @@ using namespace Persistency::IO;
 namespace
 {
 
-struct TestTransactionAPI: public Persistency::TransactionAPI
+struct TestTransactionAPI: public Persistency::IO::TransactionAPI
 {
   TestTransactionAPI(int *commits, int *rollbacks):
     commited_(commits),
