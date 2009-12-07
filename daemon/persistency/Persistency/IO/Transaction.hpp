@@ -2,8 +2,8 @@
  * Transaction.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_TRANSACTION_HPP_FILE
-#define INCLUDE_PERSISTENCY_TRANSACTION_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_IO_TRANSACTION_HPP_FILE
+#define INCLUDE_PERSISTENCY_IO_TRANSACTION_HPP_FILE
 
 /* public header */
 
@@ -11,9 +11,11 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
-#include "Persistency/TransactionAPI.hpp"
+#include "Persistency/IO/TransactionAPI.hpp"
 
 namespace Persistency
+{
+namespace IO
 {
 
 /** \brief transaction logic implementation.
@@ -50,6 +52,7 @@ private:
  */
 typedef boost::shared_ptr<Transaction> TransactionPtr;
 
+} // namespace IO
 } // namespace Persistency
 
 #endif

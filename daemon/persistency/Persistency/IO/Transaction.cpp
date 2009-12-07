@@ -3,12 +3,14 @@
  *
  */
 
-#include "Persistency/Transaction.hpp"
+#include "Persistency/IO/Transaction.hpp"
 
 // TODO: add logging
 // TODO: add transaction name
 
 namespace Persistency
+{
+namespace IO
 {
 
 Transaction::Transaction(TAPI transaction):
@@ -39,4 +41,5 @@ void Transaction::rollback(void)
   transaction_.reset(NULL);
 }
 
+} // namespace IO
 } // namespace Persistency

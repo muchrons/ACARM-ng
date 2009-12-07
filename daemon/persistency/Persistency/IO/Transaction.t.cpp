@@ -6,10 +6,10 @@
 #include <cstring>
 #include <memory>
 
-#include "Persistency/Transaction.hpp"
+#include "Persistency/IO/Transaction.hpp"
 
 using namespace std;
-using namespace Persistency;
+using namespace Persistency::IO;
 
 namespace
 {
@@ -34,9 +34,9 @@ struct TestTransactionAPI: public Persistency::TransactionAPI
   int *rollbacked_;
 };
 
-struct TransactionTestClass
+struct TestClass
 {
-  TransactionTestClass(void):
+  TestClass(void):
     commits_(0),
     rollbacks_(0),
     tapi_( new TestTransactionAPI(&commits_, &rollbacks_) ),
@@ -51,11 +51,11 @@ struct TransactionTestClass
   std::auto_ptr<Transaction> t_;
 };
 
-typedef TransactionTestClass TestClass;
+typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Transaction");
+factory tf("Persistency/IO/Transaction");
 } // unnamed namespace
 
 

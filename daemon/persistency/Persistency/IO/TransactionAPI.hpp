@@ -2,8 +2,8 @@
  * TransactionAPI.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_TRANSACTIONAPI_HPP_FILE
-#define INCLUDE_PERSISTENCY_TRANSACTIONAPI_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_IO_TRANSACTIONAPI_HPP_FILE
+#define INCLUDE_PERSISTENCY_IO_TRANSACTIONAPI_HPP_FILE
 
 /* public header */
 
@@ -11,6 +11,8 @@
 
 
 namespace Persistency
+{
+namespace IO
 {
 
 /** \brief transaction calls that are persistency-type-dependent.
@@ -32,6 +34,7 @@ public:
   virtual void rollback(void) = 0;
 }; // class TransactionAPI
 
+} // namespace IO
 } // namespace Persistency
 
 #endif
