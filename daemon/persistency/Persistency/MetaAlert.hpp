@@ -22,6 +22,11 @@
 
 namespace Persistency
 {
+namespace IO
+{
+// forward declaration for friend declaration.
+class MetaAlert;
+} // namespace IO
 
 /** \brief meta-alert representation
  */
@@ -39,6 +44,8 @@ public:
   //explicit MetaAlert(AlertPtr alert);
 
   MetaAlert(const Name      &name,
+            SeverityDelta    severityDelta,
+            CertanityDelta   certanityDelta,
             ReferenceURLPtr  url,
             Timestamp        created);
 
@@ -55,6 +62,7 @@ public:
   virtual Timestamp getLastUpdateTime(void) const = 0;
 
 private:
+  friend class IO::MetaAlert;
   void updateSeverityDelta(double delta);
   void updateCertanityDelta(double delta);
 

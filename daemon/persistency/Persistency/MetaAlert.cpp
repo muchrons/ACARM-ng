@@ -30,9 +30,13 @@ MetaAlert::MetaAlert(AlertPtr alert)
 */
 
 MetaAlert::MetaAlert(const Name      &name,
+                     SeverityDelta    severityDelta,
+                     CertanityDelta   certanityDelta,
                      ReferenceURLPtr  url,
                      Timestamp        created):
   name_(name),
+  severityDelta_(severityDelta),
+  certanityDelta_(certanityDelta),
   url_(url),
   created_(created)
 {
