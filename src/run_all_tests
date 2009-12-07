@@ -2,12 +2,15 @@
 
 RET=0
 
+MEM_MODE="normal"
+[ "$#" -gt 0 ] && MEM_MODE="$1"
+
 # iterata through all build components
 for d in `cat components.lst`
 do
   echo "----------------------------"
   echo "testing $d:"
-  ( cd gen/test_local_/$d && ./$d.t ) || RET=1
+  ( cd gen/test_local_$MEM_MODE/$d && ./$d.t ) || RET=1
 done
 
 echo "\n"
