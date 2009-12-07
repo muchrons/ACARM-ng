@@ -1,5 +1,5 @@
 /*
- * Synchro.t.cpp
+ * Lock.t.cpp
  *
  */
 #include <tut.h>
@@ -7,39 +7,31 @@
 #include <cassert>
 #include <unistd.h>
 
-#include "Logger/Synchro.hpp"
+#include "Commons/Threads/Lock.hpp"
+
+using namespace Commons::Threads;
 
 namespace
 {
-struct SynchroTestClass
+struct TestClass
 {
 };
 
-typedef SynchroTestClass TestClass;
+typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Logger/Synchro");
+factory tf("Commons/Threads/Lock");
 } // unnamed namespace
 
 
 namespace tut
 {
 
-using namespace Logger;
-
 // creating mutex type
 template<>
 template<>
 void testObj::test<1>(void)
-{
-  Mutex m;
-}
-
-// simple locking
-template<>
-template<>
-void testObj::test<2>(void)
 {
   Mutex m;
   Lock  lock(m);
@@ -48,7 +40,7 @@ void testObj::test<2>(void)
 // re-locking
 template<>
 template<>
-void testObj::test<3>(void)
+void testObj::test<2>(void)
 {
   Mutex m;
   {
@@ -95,7 +87,7 @@ private:
 // test if locking works (i.e. check for races)
 template<>
 template<>
-void testObj::test<4>(void)
+void testObj::test<3>(void)
 {
   double     data[2]={1, 2};
   Mutex      mutex;
