@@ -2,6 +2,7 @@
  * Transaction.cpp
  *
  */
+#include <cassert>
 
 #include "Persistency/IO/Transaction.hpp"
 
@@ -13,9 +14,12 @@ namespace Persistency
 namespace IO
 {
 
-Transaction::Transaction(TAPI transaction):
+Transaction::Transaction(TransactionAPIAutoPtr transaction):
   transaction_( transaction.release() )
 {
+  if( transaction_.get()==NULL )
+    throw ExceptionNULLParameter(__FILE__, "transaction is NULL");
+  assert( transaction_.get()!=NULL );
 }
 
 Transaction::~Transaction(void)

@@ -12,6 +12,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "Persistency/IO/TransactionAPI.hpp"
+#include "Persistency/ExceptionNULLParameter.hpp"
 
 namespace Persistency
 {
@@ -23,15 +24,12 @@ namespace IO
 class Transaction: private boost::noncopyable
 {
 public:
-  /** \brief transaction part, dependent on actual persistency backend.
-   */
-  typedef std::auto_ptr<TransactionAPI> TAPI;
   /** \brief creates transaction algorith for a given persistency transaction
    *         implementation.
    *  \param transaction base object to be used for implementing transaction
    *                     or NULL, if no transaction is required.
    */
-  explicit Transaction(TAPI transaction);
+  explicit Transaction(TransactionAPIAutoPtr transaction);
   /** \brief ends transaction.
    *  \note if transaction was not commited it is automatically rollbacked.
    */
@@ -46,11 +44,6 @@ public:
 private:
   boost::scoped_ptr<TransactionAPI> transaction_;
 }; // class Transaction
-
-
-/** \brief smart pointer to transaction.
- */
-typedef boost::shared_ptr<Transaction> TransactionPtr;
 
 } // namespace IO
 } // namespace Persistency

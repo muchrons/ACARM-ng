@@ -16,7 +16,8 @@ namespace
 
 struct TestTransactionAPI: public Persistency::IO::TransactionAPI
 {
-  TestTransactionAPI(int *commits, int *rollbacks):
+  TestTransactionAPI(Base::Threads::Mutex &mutex, int *commits, int *rollbacks):
+    Persistency::IO::TransactionAPI(mutex),
     commited_(commits),
     rollbacked_(rollbacks)
   {
@@ -39,7 +40,7 @@ struct TestClass
   TestClass(void):
     commits_(0),
     rollbacks_(0),
-    tapi_( new TestTransactionAPI(&commits_, &rollbacks_) ),
+    tapi_( new TestTransactionAPI(mutex_, &commits_, &rollbacks_) ),
     t_( new Transaction(tapi_) )
   {
     tut::ensure("API ownership not taken", tapi_.get()==NULL);
@@ -47,7 +48,8 @@ struct TestClass
 
   int                        commits_;
   int                        rollbacks_;
-  Transaction::TAPI          tapi_;
+  Base::Threads::Mutex       mutex_;
+  TransactionAPIAutoPtr      tapi_;
   std::auto_ptr<Transaction> t_;
 };
 
@@ -133,10 +135,15 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  std::auto_ptr<Transaction> t( new Transaction( Transaction::TAPI(NULL) ) );
-  t->rollback();
-  t->commit();
-  // nothing should happen
+  try
+  {
+    Transaction t( TransactionAPIAutoPtr(NULL) );
+    fail("Transaction(NULL) didn't throw");
+  }
+  catch(const Persistency::ExceptionNULLParameter&)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut

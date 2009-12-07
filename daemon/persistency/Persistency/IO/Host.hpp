@@ -7,9 +7,11 @@
 
 /* public header */
 
+#include <memory>
 #include <boost/noncopyable.hpp>
 
 #include "Persistency/Host.hpp"
+#include "Persistency/IO/Transaction.hpp"
 
 namespace Persistency
 {
@@ -21,12 +23,24 @@ namespace IO
 class Host: private boost::noncopyable
 {
 public:
+  Host(Persistency::HostPtr  host,
+       const Transaction    &t);
+
   virtual ~Host(void);
 
-  virtual void setName(Persistency::Host             &host,
-                       const Persistency::Host::Name &name) = 0;
+  virtual void setName(const Persistency::Host::Name &name) = 0;
   // TODO
+
+protected:
+  Persistency::Host &get(void);
+
+private:
+  Persistency::HostPtr  host_;
+  const Transaction    &t_;
 }; // class Host
+
+
+typedef std::auto_ptr<Host> HostAutoPtr;
 
 } // namespace IO
 } // namespace Persistency

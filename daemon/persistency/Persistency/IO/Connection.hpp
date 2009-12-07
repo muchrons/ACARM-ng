@@ -11,9 +11,13 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 
+#include "Base/Threads/Mutex.hpp"
 #include "Persistency/IO/Alert.hpp"
+#include "Persistency/IO/Graph.hpp"
 #include "Persistency/IO/Host.hpp"
 #include "Persistency/IO/MetaAlert.hpp"
+#include "Persistency/IO/Transaction.hpp"
+#include "Persistency/IO/TransactionAPI.hpp"
 
 namespace Persistency
 {
@@ -27,10 +31,20 @@ class Connection: private boost::noncopyable
 public:
   virtual ~Connection(void);
 
+  TransactionAPIAutoPtr createNewTransaction(const std::string &name);
+  AlertAutoPtr alert(AlertPtr alert, const Transaction &t);
+  GraphAutoPtr graph(const Transaction &t);
+  HostAutoPtr host(HostPtr host, const Transaction &t);
+  MetaAlertAutoPtr metaAlert(MetaAlertPtr, const Transaction &t);
+
 private:
-  boost::scoped_ptr<IO::Alert>     alertIOptr_;
-  boost::scoped_ptr<IO::Host>      hostIOptr_;
-  boost::scoped_ptr<IO::MetaAlert> metaAlertIOptr_;
+  virtual TransactionAPIAutoPtr createNewTransactionImpl(const std::string &name) = 0;
+  virtual AlertAutoPtr alertImpl(AlertPtr alert, const Transaction &t) = 0;
+  virtual GraphAutoPtr graphImpl(const Transaction &t) = 0;
+  virtual HostAutoPtr hostImpl(HostPtr host, const Transaction &t) = 0;
+  virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtr, const Transaction &t) = 0;
+
+  Base::Threads::Mutex mutex_;
 }; // class Connection
 
 

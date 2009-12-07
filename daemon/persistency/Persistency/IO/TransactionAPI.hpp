@@ -7,7 +7,11 @@
 
 /* public header */
 
+#include <memory>
 #include <boost/noncopyable.hpp>
+
+#include "Base/Threads/Mutex.hpp"
+#include "Base/Threads/Lock.hpp"
 
 
 namespace Persistency
@@ -21,18 +25,29 @@ namespace IO
 class TransactionAPI: private boost::noncopyable
 {
 public:
-  /** \brief start virtual d-tors on the base class.
+  /** \brief unlocks connection's mutex.
    */
-  virtual ~TransactionAPI(void)
-  {
-  }
+  virtual ~TransactionAPI(void);
+
   /** \brief transaction acceptance opration's interface.
    */
   virtual void commit(void) = 0;
   /** \brief transaction abort interface.
    */
   virtual void rollback(void) = 0;
+
+protected:
+  /** \brief open transaction.
+   *  \param mutex mutex that data base connection is protected with.
+   */
+  explicit TransactionAPI(Base::Threads::Mutex &mutex);
+
+private:
+  Base::Threads::Lock lock_;
 }; // class TransactionAPI
+
+
+typedef std::auto_ptr<TransactionAPI> TransactionAPIAutoPtr;
 
 } // namespace IO
 } // namespace Persistency

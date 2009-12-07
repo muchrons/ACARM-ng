@@ -7,9 +7,11 @@
 
 /* public header */
 
+#include <memory>
 #include <boost/noncopyable.hpp>
 
 #include "Persistency/MetaAlert.hpp"
+#include "Persistency/IO/Transaction.hpp"
 
 namespace Persistency
 {
@@ -21,20 +23,31 @@ namespace IO
 class MetaAlert: private boost::noncopyable
 {
 public:
+  MetaAlert(Persistency::MetaAlertPtr  ma,
+            const Transaction         &t);
+
   virtual ~MetaAlert(void);
 
-  virtual void save(const Persistency::MetaAlert &ma) = 0;
+  virtual void save() = 0;
 
-  virtual void used(const Persistency::MetaAlert &ma) = 0;
+  virtual void markAsUsed() = 0;
 
-  virtual void unused(const Persistency::MetaAlert &ma) = 0;
+  virtual void markAsUnused() = 0;
 
-  virtual void updateSeverityDelta(const Persistency::MetaAlert &ma, double delta) = 0;
+  virtual void updateSeverityDelta(double delta) = 0;
 
-  virtual void updateCertanityDelta(const Persistency::MetaAlert &ma, double delta) = 0;
+  virtual void updateCertanityDelta(double delta) = 0;
 
   // TODO
+protected:
+  Persistency::MetaAlert &get(void);
+
+private:
+  Persistency::MetaAlertPtr ma_;
 }; // class MetaAlert
+
+
+typedef std::auto_ptr<MetaAlert> MetaAlertAutoPtr;
 
 } // namespace IO
 } // namespace Persistency

@@ -1,15 +1,17 @@
 /*
- * GraphOperations.hpp
+ * Graph.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_IO_GRAPHOPERATIONS_HPP_FILE
-#define INCLUDE_PERSISTENCY_IO_GRAPHOPERATIONS_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_IO_GRAPH_HPP_FILE
+#define INCLUDE_PERSISTENCY_IO_GRAPH_HPP_FILE
 
 /* public header */
 
+#include <memory>
 #include <boost/noncopyable.hpp>
 
 //#include "Persistency/Alert.hpp"
+#include "Persistency/IO/Transaction.hpp"
 
 namespace Persistency
 {
@@ -21,9 +23,14 @@ namespace IO
 class Graph: private boost::noncopyable
 {
 public:
+  explicit Graph(const Transaction &t);
+
   virtual ~Graph(void);
   // TODO
 }; // class Graph
+
+
+typedef std::auto_ptr<Graph> GraphAutoPtr;
 
 } // namespace IO
 } // namespace Persistency
