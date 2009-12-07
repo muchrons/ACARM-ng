@@ -35,7 +35,7 @@ public:
   AlertAutoPtr alert(AlertPtr alert, const Transaction &t);
   GraphAutoPtr graph(const Transaction &t);
   HostAutoPtr host(HostPtr host, const Transaction &t);
-  MetaAlertAutoPtr metaAlert(MetaAlertPtr, const Transaction &t);
+  MetaAlertAutoPtr metaAlert(MetaAlertPtr ma, const Transaction &t);
 
 private:
   virtual TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
@@ -43,7 +43,7 @@ private:
   virtual AlertAutoPtr alertImpl(AlertPtr alert, const Transaction &t) = 0;
   virtual GraphAutoPtr graphImpl(const Transaction &t) = 0;
   virtual HostAutoPtr hostImpl(HostPtr host, const Transaction &t) = 0;
-  virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtr, const Transaction &t) = 0;
+  virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtr ma, const Transaction &t) = 0;
 
   Base::Threads::Mutex mutex_;
 }; // class Connection
