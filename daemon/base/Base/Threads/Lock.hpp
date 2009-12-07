@@ -5,6 +5,8 @@
 #ifndef INCLUDE_BASE_THREADS_LOCK_HPP_FILE
 #define INCLUDE_BASE_THREADS_LOCK_HPP_FILE
 
+/* public header */
+
 #include <boost/thread/locks.hpp>
 
 namespace Base
