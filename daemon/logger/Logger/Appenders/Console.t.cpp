@@ -42,8 +42,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Console     capp;
-  const Base &b=capp;
+  Console                capp;
+  const Appenders::Base &b=capp;
   ensure_equals("strings are not identical",
                 b.getTypeName(), string( Console::getThisTypeName() ) );
 }
@@ -53,8 +53,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  Console     capp;
-  const Base &b=capp;
+  Console                capp;
+  const Appenders::Base &b=capp;
   ensure("pointers are not identical",
          b.getTypeName()==Console::getThisTypeName() );
 }

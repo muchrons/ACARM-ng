@@ -8,7 +8,8 @@
 #include <boost/shared_ptr.hpp>
 #include <cassert>
 
-#include "Logger/Synchro.hpp"
+#include "Base/Threads/Mutex.hpp"
+#include "Base/Threads/Lock.hpp"
 
 
 namespace Logger
@@ -27,7 +28,7 @@ public:
    */
   void append(const std::string &str)
   {
-    Lock lock(mutex_);
+    ::Base::Threads::Lock lock(mutex_);
     appendImpl(str);
   }
 
@@ -54,7 +55,7 @@ private:
    */
   virtual const char *getTypeNameImpl(void) const = 0;
 
-  Mutex mutex_;
+  ::Base::Threads::Mutex mutex_;
 }; // class Base
 
 

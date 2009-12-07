@@ -15,7 +15,7 @@ NodeConf::NodeConf(Appenders::BasePtr appender):
 
 void NodeConf::swap(NodeConf &other)
 {
-  Lock lock(mutex_);
+  Base::Threads::Lock lock(mutex_);
   appender_.swap(other.appender_);
   formatter_.swap(other.formatter_);
 }

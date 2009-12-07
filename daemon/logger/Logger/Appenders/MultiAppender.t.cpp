@@ -83,7 +83,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Base &b=multiApp_;
+  const Appenders::Base &b=multiApp_;
   ensure_equals("strings are not identical",
                 b.getTypeName(), string( MultiAppender::getThisTypeName() ) );
 }
@@ -93,7 +93,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const Base &b=multiApp_;
+  const Appenders::Base &b=multiApp_;
   ensure("pointers are not identical",
          b.getTypeName()==MultiAppender::getThisTypeName() );
 }

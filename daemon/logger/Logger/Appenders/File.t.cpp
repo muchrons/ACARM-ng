@@ -54,7 +54,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Base &b=file_;
+  const Appenders::Base &b=file_;
   ensure_equals("strings are not identical",
                 b.getTypeName(), string( File::getThisTypeName() ) );
 }
@@ -64,7 +64,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const Base &b=file_;
+  const Appenders::Base &b=file_;
   ensure("pointers are not identical",
          b.getTypeName()==File::getThisTypeName() );
 }

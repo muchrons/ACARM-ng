@@ -7,9 +7,10 @@
 
 #include <boost/noncopyable.hpp>
 
+#include "Base/Threads/Mutex.hpp"
+#include "Base/Threads/Lock.hpp"
 #include "Logger/Appenders/Base.hpp"
 #include "Logger/Formatter.hpp"
-#include "Logger/Synchro.hpp"
 #include "Logger/NodeConfPtr.hpp"
 
 namespace Logger
@@ -33,7 +34,7 @@ public:
    */
   Appenders::BasePtr getAppender() const
   {
-    Lock lock(mutex_);
+    Base::Threads::Lock lock(mutex_);
     return appender_;
   }
   /** \brief gives access to formatter.
@@ -41,17 +42,17 @@ public:
    */
   Formatter getFormatter() const
   {
-    Lock lock(mutex_);
+    Base::Threads::Lock lock(mutex_);
     return formatter_;
   }
 
 private:
-  mutable Mutex      mutex_;
-  Appenders::BasePtr appender_;
-  Formatter          formatter_;    // note: formatter is held by value since
-                                    //       at this moment it has just one
-                                    //       possible instance and is not planned
-                                    //       to expand like appenders' case.
+  mutable Base::Threads::Mutex mutex_;
+  Appenders::BasePtr           appender_;
+  Formatter                    formatter_;  // note: formatter is held by value since
+                                            //       at this moment it has just one
+                                            //       possible instance and is not planned
+                                            //       to expand like appenders' case.
 }; // class NodeConf
 
 } // namespace Logger
