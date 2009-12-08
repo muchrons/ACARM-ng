@@ -53,7 +53,7 @@ void GraphNode::addChild(GraphNodePtr child, IO::MetaAlertAutoPtr maIO)
 {
   // TODO: ensure there is not cycle here
   assert( maIO.get()!=NULL );
-  maIO->addChild( child->get() );
+  maIO->addChild( child->getMetaAlert() );
   // if persistency succeded, save in internal collection too
   children_.push(child);
 }
@@ -68,24 +68,27 @@ bool GraphNode::isLeaf(void) const
   return false;
 }
 
-bool GraphNode::isNode(void) const
-{
-  return !isLeaf();
-}
-
-MetaAlertPtr GraphNode::get(void)
+MetaAlertPtr GraphNode::getMetaAlert(void)
 {
   assert(self_.get()!=NULL);
   return self_;
 }
 
+AlertPtr GraphNode::getAlert(void)
+{
+  assert( self_.get()!=NULL );
+  if( !isLeaf() )
+    throw ExceptionNotLeaf(__FILE__, self_->getName().get() );
+
+  assert( leaf_.get()!=NULL );
+  return leaf_;
+}
+
 void GraphNode::ensureIsNode(void) const
 {
   assert( self_.get()!=NULL );
-  if( !isNode() )
-  {
+  if( isLeaf() )
     throw ExceptionNotNode(__FILE__, self_->getName().get() );
-  }
 }
 
 } // namespace Persistency
