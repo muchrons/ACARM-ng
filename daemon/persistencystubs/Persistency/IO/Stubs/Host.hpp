@@ -19,6 +19,11 @@ namespace Stubs
 class Host: public IO::Host
 {
 public:
+  /** \brief create hosts's persistency IO.
+   *  \param host    host object to handle.
+   *  \param t       active transaction.
+   *  \param handler persistency handler.
+   */
   Host(Persistency::HostPtr  host,
        const Transaction    &t,
        int                   handler);

@@ -25,27 +25,45 @@ namespace IO
 class MetaAlert: private boost::noncopyable
 {
 public:
+  /** \brief create meta-alert persistency proxy.
+   *  \param ma meta alert to work on.
+   *  \param t  active transaction.
+   */
   MetaAlert(Persistency::MetaAlertPtr  ma,
             const Transaction         &t);
-
+  /** \brief virtual d-tor for polymorphic base class.
+   */
   virtual ~MetaAlert(void);
 
+  /** \brief saves meta alert to persistency storage.
+   */
   void save();
-
+  /** \brief save information that this obejct is in use now.
+   */
   void markAsUsed();
-
+  /** \brief mark object as not used anymore.
+   */
   void markAsUnused();
-
+  /** \brief update severity delta.
+   *  \param delta how much update seveirty's value.
+   */
   void updateSeverityDelta(double delta);
-
+  /** \brief update certanity delta.
+   *  \param delta how much update certanity's value.
+   */
   void updateCertanityDelta(double delta);
-
+  /** \brief save information that this meta-alert has another child.
+   *  \param child meta-alert to be added as a child.
+   */
   void addChild(Persistency::MetaAlertPtr child);
-
+  /** \brief mark this meta-alert as associated with given alert.
+   *  \param alert alter to be used as a leaf-node.
+   */
   void associateWithAlert(Persistency::AlertPtr alert);
 
-  // TODO
 protected:
+  /** \brief gets read-only access to meta-alert.
+   */
   const Persistency::MetaAlert &get(void) const;
 
 private:

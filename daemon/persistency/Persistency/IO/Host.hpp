@@ -24,15 +24,24 @@ namespace IO
 class Host: private boost::noncopyable
 {
 public:
+  /** \brief create host persistency proxy object for given host.
+   *  \param host host to work on.
+   *  \param t    active transaction.
+   */
   Host(Persistency::HostPtr  host,
        const Transaction    &t);
-
+  /** \brief virtual d-tor for polymorphic base class.
+   */
   virtual ~Host(void);
-
+  /** \brief sets name of given host.
+   *  \param name name to be set.
+   */
   void setName(const Persistency::Host::Name &name);
-  // TODO
 
 protected:
+  /** \brief gets read-only host object access.
+   *  \return host object's working on.
+   */
   const Persistency::Host &get(void) const;
 
 private:

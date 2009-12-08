@@ -2,4 +2,6 @@
 2  write tests for Persistency::IO.
 3  use Base::*Ptrs instead of other implementation, to remove extra checks.
 4  implement Base::Threads::GrowingVector.
-5
+5  reorganize Transaction object, so that commit/rollback will be performed when object is being destroyed only.
+6  rework Host/MetaAlert locks to be in multiple-readers/single-writer.
+7

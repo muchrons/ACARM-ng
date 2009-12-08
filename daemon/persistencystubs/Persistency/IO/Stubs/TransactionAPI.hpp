@@ -21,7 +21,9 @@ class TransactionAPI: public IO::TransactionAPI
 {
 public:
   /** \brief open transaction.
-   *  \param mutex mutex that data base connection is protected with.
+   *  \param mutex              mutex that data base connection is protected with.
+   *  \param name               name of transaction.
+   *  \param persistencyHandler persistency handler.
    */
   TransactionAPI(Base::Threads::Mutex &mutex,
                  const std::string    &name,

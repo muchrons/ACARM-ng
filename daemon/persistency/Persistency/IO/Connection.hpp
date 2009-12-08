@@ -28,11 +28,35 @@ namespace IO
 class Connection: private boost::noncopyable
 {
 public:
+  /** \brief virtual d-tor for plymorphic base class.
+   */
   virtual ~Connection(void);
 
+  /** \brief creates new transaction, of a given name.
+   *  \param name name for new transaction.
+   *  \return transaction API object for given persistency type.
+   *  \note opening transaction locks communication object so that only
+   *        one transaction can be created at a time. if more call will
+   *        appear, they will be waiting for it to finish.
+   */
   TransactionAPIAutoPtr createNewTransaction(const std::string &name);
+  /** \brief create alert's persistency proxy.
+   *  \param alert alert to work on.
+   *  \param t     active transaction.
+   *  \return alert's persistency proxy object.
+   */
   AlertAutoPtr alert(AlertPtr alert, const Transaction &t);
+  /** \brief create host's persistency proxy.
+   *  \param host host to work on.
+   *  \param t    active transaction.
+   *  \return host's persistency proxy.
+   */
   HostAutoPtr host(HostPtr host, const Transaction &t);
+  /** \brief creates meta-alert proxy object.
+   *  \param ma meta alert to work on.
+   *  \param t  active transaction.
+   *  \return meta-alert persistency proxy.
+   */
   MetaAlertAutoPtr metaAlert(MetaAlertPtr ma, const Transaction &t);
 
 private:

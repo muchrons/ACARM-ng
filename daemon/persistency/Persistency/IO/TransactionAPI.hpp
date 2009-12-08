@@ -40,6 +40,7 @@ public:
 protected:
   /** \brief open transaction.
    *  \param mutex mutex that data base connection is protected with.
+   *  \param name  name of the transaction.
    */
   TransactionAPI(Base::Threads::Mutex &mutex, const std::string &name);
 

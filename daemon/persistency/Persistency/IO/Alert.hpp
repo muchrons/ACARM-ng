@@ -24,15 +24,23 @@ namespace IO
 class Alert: private boost::noncopyable
 {
 public:
+  /** \brief create alert persistency object for given alert.
+   *  \param alert alert to create object for.
+   *  \param t     associated transaction.
+   */
   Alert(Persistency::AlertPtr  alert,
         const Transaction     &t);
-
+  /** \brief virtual d-tor for polymorphic base class.
+   */
   virtual ~Alert(void);
-
+  /** \brief save alert to persistent storage.
+   */
   void save(void);
-  // TODO
 
 protected:
+  /** \brief gets read-only acces to alert.
+   *  \return alert to operate on.
+   */
   const Persistency::Alert &get(void) const;
 
 private:

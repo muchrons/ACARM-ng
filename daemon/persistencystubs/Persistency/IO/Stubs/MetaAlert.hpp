@@ -19,6 +19,11 @@ namespace Stubs
 class MetaAlert: public IO::MetaAlert
 {
 public:
+  /** \brief meta alert persistency IO.
+   *  \param ma      meta alert to work on.
+   *  \param t       active transaction.
+   *  \param handler persistency handler.
+   */
   MetaAlert(Persistency::MetaAlertPtr  ma,
             const Transaction         &t,
             int                        handler);

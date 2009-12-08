@@ -19,6 +19,11 @@ namespace Stubs
 class Alert: public IO::Alert
 {
 public:
+  /** \brief create stub.
+   *  \param alert   alert to create IO for.
+   *  \param t       active transaction.
+   *  \param handler persistency handler.
+   */
   Alert(Persistency::AlertPtr  alert,
         const Transaction     &t,
         int                    handler);

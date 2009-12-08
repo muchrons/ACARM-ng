@@ -34,9 +34,14 @@ class MetaAlert;
 class MetaAlert: private boost::noncopyable
 {
 public:
+  /** \brief name for meta alert.
+   */
   typedef detail::LimitedString<256> Name;
-  typedef boost::gregorian::date     Timestamp;
+  /** \brief severity difference type.
+   */
   typedef double                     SeverityDelta;
+  /** \brief certanity difference type.
+   */
   typedef double                     CertanityDelta;
 
   /** \brief creates meta alert based on exisitng alert.
@@ -44,20 +49,38 @@ public:
    */
   explicit MetaAlert(AlertPtr alert);
 
+  /** \brief create new meta-alert.
+   *  \param name           name for meta alert.
+   *  \param severityDelta  initial severity difference.
+   *  \param certanityDelta initial certanity difference.
+   *  \param url            reference URL, if present.
+   *  \param created        creation time.
+   */
   MetaAlert(const Name      &name,
             SeverityDelta    severityDelta,
             CertanityDelta   certanityDelta,
             ReferenceURLPtr  url,
             Timestamp        created);
 
+  /** \brief gets meta-alert's name.
+   *  \return name of meta alert.
+   */
   const Name &getName(void) const;
-
+  /** \brief gets severity delta.
+   *  \return severity delta.
+   */
   SeverityDelta getSeverityDelta(void) const;
-
+  /** \brief gets certanity delta.
+   *  \return certanity delta.
+   */
   CertanityDelta getCertanityDelta(void) const;
-
+  /** \brief gets reference url.
+   *  \return reference url.
+   */
   const ReferenceURL *getReferenceURL(void) const;
-
+  /** \brief gets creation time of this meta alert.
+   *  \return time of creation of this meta alert.
+   */
   Timestamp getCreateTime(void) const;
 
 private:
