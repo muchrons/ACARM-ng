@@ -29,14 +29,14 @@ public:
 
   virtual ~Alert(void);
 
-  void save(const Persistency::Alert &alert);
+  void save(void);
   // TODO
 
 protected:
   const Persistency::Alert &get(void) const;
 
 private:
-  virtual void saveImpl(const Persistency::Alert &alert) = 0;
+  virtual void saveImpl(void) = 0;
 
   Persistency::AlertPtr alert_;
 }; // class Alert

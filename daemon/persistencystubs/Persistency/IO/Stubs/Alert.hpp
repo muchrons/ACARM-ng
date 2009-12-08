@@ -24,7 +24,7 @@ public:
         int                    handler);
 
 private:
-  virtual void saveImpl(const Persistency::Alert &alert);
+  virtual void saveImpl(void);
 }; // class Alert
 
 } // namespace Stubs

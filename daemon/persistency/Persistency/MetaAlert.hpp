@@ -42,7 +42,7 @@ public:
   /** \brief creates meta alert based on exisitng alert.
    *  \param alert to corelate meta-alert with.
    */
-  //explicit MetaAlert(AlertPtr alert);
+  explicit MetaAlert(AlertPtr alert);
 
   MetaAlert(const Name      &name,
             SeverityDelta    severityDelta,

@@ -11,13 +11,15 @@
 #include <boost/noncopyable.hpp>
 
 #include "Base/Threads/GrowingVector.hpp"
+#include "Persistency/ExceptionNotNode.hpp"
+#include "Persistency/Alert.hpp"
+#include "Persistency/MetaAlert.hpp"
+#include "Persistency/IO/Connection.hpp"
 
 // TODO
 
 namespace Persistency
 {
-
-class Graph;
 
 class GraphNode;
 
@@ -33,7 +35,9 @@ public:
   typedef GraphNodesList::iterator       iterator;
   typedef GraphNodesList::const_iterator const_iterator;
 
-  GraphNode(MetAlertPtr metaAlert, Graph &graph);
+  GraphNode(AlertPtr               alert,
+            IO::ConnectionPtr      connection,
+            const IO::Transaction &t);
 
   iterator begin(void);
   iterator end(void);
@@ -41,12 +45,16 @@ public:
   const_iterator begin(void) const;
   const_iterator end(void) const;
 
-  void addChild(GraphNodePtr child);
+  void addChild(GraphNodePtr child, IO::MetaAlertAutoPtr maIO);
 
   bool isLeaf(void) const;
   bool isNode(void) const;
 
+  MetaAlertPtr get(void);
+
 private:
+  void ensureIsNode(void) const;
+
   MetaAlertPtr    self_;
   GraphNodesList  children_;
   AlertPtr        leaf_;

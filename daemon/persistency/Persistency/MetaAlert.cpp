@@ -10,6 +10,28 @@ using Base::Threads::Lock;
 namespace Persistency
 {
 
+MetaAlert::MetaAlert(AlertPtr alert):
+  name_( alert->getName() ),
+  severityDelta_(0),
+  certanityDelta_(0),
+  url_(),
+  created_( alert->getCreationTime() )
+{
+}
+
+MetaAlert::MetaAlert(const Name      &name,
+                     SeverityDelta    severityDelta,
+                     CertanityDelta   certanityDelta,
+                     ReferenceURLPtr  url,
+                     Timestamp        created):
+  name_(name),
+  severityDelta_(severityDelta),
+  certanityDelta_(certanityDelta),
+  url_(url),
+  created_(created)
+{
+}
+
 const MetaAlert::Name &MetaAlert::getName(void) const
 {
   return name_;
@@ -36,25 +58,6 @@ const ReferenceURL *MetaAlert::getReferenceURL(void) const
 Timestamp MetaAlert::getCreateTime(void) const
 {
   return created_;
-}
-
-/*
-MetaAlert::MetaAlert(AlertPtr alert)
-{
-}
-*/
-
-MetaAlert::MetaAlert(const Name      &name,
-                     SeverityDelta    severityDelta,
-                     CertanityDelta   certanityDelta,
-                     ReferenceURLPtr  url,
-                     Timestamp        created):
-  name_(name),
-  severityDelta_(severityDelta),
-  certanityDelta_(certanityDelta),
-  url_(url),
-  created_(created)
-{
 }
 
 void MetaAlert::updateSeverityDelta(double delta)

@@ -1,3 +1,4 @@
 1  add abstract factory for inputs, so that they'd could be configure on configuration file level.
 2  write tests for Persistency::IO.
-3
+3  use Base::*Ptrs instead of other implementation, to remove extra checks.
+4

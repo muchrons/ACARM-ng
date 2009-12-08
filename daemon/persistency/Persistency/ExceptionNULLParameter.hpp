@@ -14,7 +14,7 @@ namespace Persistency
 
 /** \brief exception thrown on NULL paramter
  */
-class ExceptionNULLParameter: public Commons::Exception
+class ExceptionNULLParameter: public Exception
 {
 public:
   /** \brief create execption with given message.

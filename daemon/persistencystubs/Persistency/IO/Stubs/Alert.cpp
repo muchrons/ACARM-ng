@@ -21,7 +21,7 @@ Alert::Alert(Persistency::AlertPtr  alert,
   assert(handler==42);
 }
 
-void Alert::saveImpl(const Persistency::Alert &/*alert*/)
+void Alert::saveImpl(void)
 {
 }
 

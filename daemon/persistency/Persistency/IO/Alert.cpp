@@ -23,9 +23,9 @@ Alert::~Alert(void)
 {
 }
 
-void Alert::save(const Persistency::Alert &alert)
+void Alert::save(void)
 {
-  saveImpl(alert);
+  saveImpl();
 }
 
 const Persistency::Alert &Alert::get(void) const
