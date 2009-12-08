@@ -11,6 +11,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "Persistency/Host.hpp"
+#include "Persistency/ExceptionNULLParameter.hpp"
 #include "Persistency/IO/Transaction.hpp"
 
 namespace Persistency
@@ -35,8 +36,7 @@ protected:
   Persistency::Host &get(void);
 
 private:
-  Persistency::HostPtr  host_;
-  const Transaction    &t_;
+  Persistency::HostPtr host_;
 }; // class Host
 
 
