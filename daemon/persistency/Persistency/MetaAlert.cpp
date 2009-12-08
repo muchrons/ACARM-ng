@@ -42,4 +42,14 @@ MetaAlert::MetaAlert(const Name      &name,
 {
 }
 
+void MetaAlert::updateSeverityDelta(double delta)
+{
+  severityDelta_+=delta;
+}
+
+void MetaAlert::updateCertanityDelta(double delta)
+{
+  certanityDelta_+=delta;
+}
+
 } // namespace Persistency
