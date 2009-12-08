@@ -54,6 +54,16 @@ void MetaAlert::updateCertanityDelta(double delta)
   ma_->updateCertanityDelta(delta);
 }
 
+void MetaAlert::addChild(Persistency::MetaAlertPtr child)
+{
+  addChildImpl(child);
+}
+
+void MetaAlert::associateWithAlert(Persistency::AlertPtr alert)
+{
+  associateWithAlert(alert);
+}
+
 const Persistency::MetaAlert &MetaAlert::get(void) const
 {
   assert(ma_.get()!=NULL);

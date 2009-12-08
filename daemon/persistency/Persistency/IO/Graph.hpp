@@ -11,6 +11,7 @@
 #include <boost/noncopyable.hpp>
 
 //#include "Persistency/Alert.hpp"
+#include "Persistency/MetaAlert.hpp"
 #include "Persistency/IO/Transaction.hpp"
 
 namespace Persistency
@@ -26,7 +27,10 @@ public:
   explicit Graph(const Transaction &t);
 
   virtual ~Graph(void);
+
+  void markAsChild(MetaAlertPtr parent, MetaAlertPtr child);
   // TODO
+private:
 }; // class Graph
 
 

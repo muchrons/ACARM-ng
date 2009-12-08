@@ -10,6 +10,7 @@
 #include <memory>
 #include <boost/noncopyable.hpp>
 
+#include "Persistency/Alert.hpp"
 #include "Persistency/MetaAlert.hpp"
 #include "Persistency/ExceptionNULLParameter.hpp"
 #include "Persistency/IO/Transaction.hpp"
@@ -39,6 +40,10 @@ public:
 
   void updateCertanityDelta(double delta);
 
+  void addChild(Persistency::MetaAlertPtr child);
+
+  void associateWithAlert(Persistency::AlertPtr alert);
+
   // TODO
 protected:
   const Persistency::MetaAlert &get(void) const;
@@ -49,6 +54,8 @@ private:
   virtual void markAsUnusedImpl() = 0;
   virtual void updateSeverityDeltaImpl(double delta) = 0;
   virtual void updateCertanityDeltaImpl(double delta) = 0;
+  virtual void addChildImpl(Persistency::MetaAlertPtr child) = 0;
+  virtual void associateWithAlertImpl(Persistency::AlertPtr alert) = 0;
 
   Persistency::MetaAlertPtr ma_;
 }; // class MetaAlert
