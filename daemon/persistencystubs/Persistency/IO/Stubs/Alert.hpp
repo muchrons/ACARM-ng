@@ -20,7 +20,8 @@ class Alert: public IO::Alert
 {
 public:
   Alert(Persistency::AlertPtr  alert,
-        const Transaction     &t);
+        const Transaction     &t,
+        int                    handler);
 
 private:
   virtual void saveImpl(const Persistency::Alert &alert);

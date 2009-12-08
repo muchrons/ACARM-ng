@@ -19,7 +19,7 @@ namespace Stubs
 class Graph: public IO::Graph
 {
 public:
-  explicit Graph(const Transaction &t);
+  explicit Graph(const Transaction &t, int handler);
   // TODO
 }; // class Graph
 

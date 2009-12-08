@@ -14,9 +14,11 @@ namespace Stubs
 {
 
 Host::Host(Persistency::HostPtr  host,
-           const Transaction    &t):
+           const Transaction    &t,
+           int                   handler):
   IO::Host(host, t)
 {
+  assert(handler==42);
 }
 
 void Host::setNameImpl(const Persistency::Host::Name &/*name*/)

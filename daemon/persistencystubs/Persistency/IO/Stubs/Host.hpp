@@ -20,7 +20,8 @@ class Host: public IO::Host
 {
 public:
   Host(Persistency::HostPtr  host,
-       const Transaction    &t);
+       const Transaction    &t,
+       int                   handler);
 
 private:
   virtual void setNameImpl(const Persistency::Host::Name &name);

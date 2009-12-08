@@ -2,6 +2,8 @@
  * MetaAlert.cpp
  *
  */
+#include <cassert>
+
 #include "Persistency/IO/Stubs/MetaAlert.hpp"
 
 namespace Persistency
@@ -12,9 +14,11 @@ namespace Stubs
 {
 
 MetaAlert::MetaAlert(Persistency::MetaAlertPtr  ma,
-                     const Transaction         &t):
+                     const Transaction         &t,
+                     int                        handler):
   IO::MetaAlert(ma, t)
 {
+  assert(handler==42);
 }
 
 void MetaAlert::saveImpl()

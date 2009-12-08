@@ -20,7 +20,8 @@ class MetaAlert: public IO::MetaAlert
 {
 public:
   MetaAlert(Persistency::MetaAlertPtr  ma,
-            const Transaction         &t);
+            const Transaction         &t,
+            int                        handler);
 
 private:
   virtual void saveImpl();
