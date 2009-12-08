@@ -20,6 +20,7 @@ TransactionAPI::TransactionAPI(Base::Threads::Mutex &mutex,
   IO::TransactionAPI(mutex, name)
 {
   assert(persistencyHandler==42 && "invalid handler value received");
+  persistencyHandler=0;
 }
 
 void TransactionAPI::commitImpl(void)

@@ -19,6 +19,7 @@ MetaAlert::MetaAlert(Persistency::MetaAlertPtr  ma,
   IO::MetaAlert(ma, t)
 {
   assert(handler==42);
+  handler=0;
 }
 
 void MetaAlert::saveImpl()

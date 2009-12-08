@@ -19,6 +19,7 @@ Alert::Alert(Persistency::AlertPtr  alert,
   IO::Alert(alert, t)
 {
   assert(handler==42);
+  handler=0;
 }
 
 void Alert::saveImpl(void)

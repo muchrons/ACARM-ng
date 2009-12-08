@@ -19,6 +19,7 @@ Host::Host(Persistency::HostPtr  host,
   IO::Host(host, t)
 {
   assert(handler==42);
+  handler=0;
 }
 
 void Host::setNameImpl(const Persistency::Host::Name &/*name*/)
