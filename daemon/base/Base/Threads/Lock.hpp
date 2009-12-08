@@ -9,6 +9,8 @@
 
 #include <boost/thread/locks.hpp>
 
+#include "Base/Threads/Mutex.hpp"
+
 namespace Base
 {
 namespace Threads
