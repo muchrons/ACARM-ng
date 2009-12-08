@@ -52,7 +52,7 @@ public:
         AnalyzerPtr          analyzer,
         const Timestamp     *detected,
         const Timestamp     &created,
-        SeverityPtr          severity,
+        Severity             severity,
         Certanity            certanity,
         const std::string   *description,
         const ReportedHosts &sourceHosts,
@@ -102,7 +102,7 @@ private:
   AnalyzerPtr                    analyzer_;
   boost::scoped_ptr<Timestamp>   detected_;
   Timestamp                      created_;
-  SeverityPtr                    severity_;
+  Severity                       severity_;
   Certanity                      certanity_;
   boost::scoped_ptr<std::string> description_;
   ReportedHosts                  sourceHosts_;

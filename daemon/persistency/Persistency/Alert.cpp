@@ -34,8 +34,7 @@ const Timestamp &Alert::getCreationTime(void) const
 
 const Severity &Alert::getSeverity(void) const
 {
-  assert( severity_.get()!=NULL );
-  return *severity_;
+  return severity_;
 }
 
 Certanity Alert::getCertanity(void) const
@@ -62,7 +61,7 @@ Alert::Alert(const Name          &name,
              AnalyzerPtr          analyzer,
              const Timestamp     *detected,
              const Timestamp     &created,
-             SeverityPtr          severity,
+             Severity             severity,
              Certanity            certanity,
              const std::string   *description,
              const ReportedHosts &sourceHosts,
@@ -78,12 +77,8 @@ Alert::Alert(const Name          &name,
   targetHosts_(targetHosts)
 {
   // check if required pointer paramters are NOT NULLs, as they should
-
   if(analyzer_.get()==NULL)
     throw ExceptionNULLParameter(CALLNAME, "analyzer");
-
-  if(severity_.get()==NULL)
-    throw ExceptionNULLParameter(CALLNAME, "severity");
 }
 
 } // namespace Persistency

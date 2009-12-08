@@ -7,9 +7,6 @@
 
 /* public header */
 
-#include <boost/shared_ptr.hpp>
-#include <boost/noncopyable.hpp>
-
 #include "Persistency/SeverityLevel.hpp"
 
 namespace Persistency
@@ -17,7 +14,7 @@ namespace Persistency
 
 /** \brief severity representation.
  */
-class Severity: private boost::noncopyable
+class Severity
 {
 public:
   /** \brief crates class with a given severity.
@@ -39,11 +36,6 @@ public:
 private:
   SeverityLevel sl_;
 }; // class Severity
-
-
-/** \brief smart pointer to severity level.
- */
-typedef boost::shared_ptr<Severity> SeverityPtr;
 
 } // namespace Persistency
 
