@@ -23,7 +23,9 @@ public:
   /** \brief open transaction.
    *  \param mutex mutex that data base connection is protected with.
    */
-  TransactionAPI(Base::Threads::Mutex &mutex, const std::string &name);
+  TransactionAPI(Base::Threads::Mutex &mutex,
+                 const std::string    &name,
+                 int                   persistencyHandler);
 
 private:
   virtual void commitImpl(void);

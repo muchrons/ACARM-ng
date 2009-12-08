@@ -37,13 +37,7 @@ ConnectionBuilder::FactoryPtr ConnectionBuilder::buildImpl(const Options &/*opti
   LOGMSG_INFO(log_, "building Persistency::IO::Stubs");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  // TODO: implement this
-  const string server="TODO";
-  const string dbname="TODO";
-  const string user  ="TODO";
-  const string pass  ="TODO";
-
-  return ConnectionBuilder::FactoryPtr( new Connection(server, dbname, user, pass) );
+  return ConnectionBuilder::FactoryPtr(new Connection);
 }
 
 const ConnectionBuilder::FactoryTypeName &ConnectionBuilder::getTypeNameImpl(void) const

@@ -5,7 +5,12 @@
 #ifndef INCLUDE_PERSISTENCY_IO_STUBS_CONNECTION_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_STUBS_CONNECTION_HPP_FILE
 
-#include "Persistency/IO/Connection.hpp"
+#include "Persistency/IO/ConnectionHelper.hpp"
+#include "Persistency/IO/Stubs/TransactionAPI.hpp"
+#include "Persistency/IO/Stubs/Alert.hpp"
+#include "Persistency/IO/Stubs/Graph.hpp"
+#include "Persistency/IO/Stubs/Host.hpp"
+#include "Persistency/IO/Stubs/MetaAlert.hpp"
 
 namespace Persistency
 {
@@ -13,36 +18,26 @@ namespace IO
 {
 namespace Stubs
 {
-
-/** \brief Connection to the postgresql data base
+namespace detail
+{
+/** \brief helper typedef to make names shorter.
  */
-class Connection: public IO::Connection
+typedef IO::ConnectionHelper<int,   // connection handler - anything...
+                             Stubs::TransactionAPI,
+                             Stubs::Alert,
+                             Stubs::Graph,
+                             Stubs::Host,
+                             Stubs::MetaAlert> ConnectionBase;
+} // namespace detail
+
+/** \brief stub of connection element
+ */
+class Connection: public detail::ConnectionBase
 {
 public:
-  /** \brief create new connection to data base.
-   *  \param server server name/address.
-   *  \param dbname name of data base to connect to.
-   *  \param user   user name to login with.
-   *  \param pass   password for user.
+  /** \brief create new connection to nowhere.
    */
-  Connection(const std::string &server,
-             const std::string &dbname,
-             const std::string &user,
-             const std::string &pass);
-
-private:
-  virtual TransactionAPIAutoPtr createNewTransactionImpl(
-                                                  Base::Threads::Mutex &mutex,
-                                                  const std::string    &name);
-  virtual AlertAutoPtr alertImpl(AlertPtr           alert,
-                                 const Transaction &t);
-  virtual GraphAutoPtr graphImpl(const Transaction &t);
-  virtual HostAutoPtr hostImpl(HostPtr            host,
-                               const Transaction &t);
-  virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtr       ma,
-                                         const Transaction &t);
-
-  Base::Threads::Mutex mutex_;
+  Connection(void);
 }; // class Connection
 
 } // namespace Stubs
