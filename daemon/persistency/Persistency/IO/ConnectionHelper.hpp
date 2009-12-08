@@ -25,7 +25,14 @@ template<typename TPersistencyHandler,
 class ConnectionHelper: public Connection
 {
 public:
-  explicit ConnectionHelper(TPersistencyHandler ph):
+  /** \brief create connection helper with a given persistency handler.
+   *
+   *  creates persistency connection creator, with given arguments that
+   *  will be passed to each execution of transaction creation.
+   *
+   *  \param ph user-defined persistency handler.
+   */
+  explicit ConnectionHelper(const TPersistencyHandler &ph):
     ph_(ph)
   {
   }
