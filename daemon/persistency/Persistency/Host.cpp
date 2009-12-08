@@ -27,6 +27,11 @@ const Host::OperatingSystem &Host::getOperatingSystem(void) const
 
 const Host::Name *Host::getName(void) const
 {
+  // although it looks as returing pointer to non-thread safe code, it is fine, since
+  // this pointer may ge ither NULL (always thread-correct) or exact value, that
+  // is set just once. trying to set olready-set value will always throw. so in fact
+  // this pointer may transit NULL->0xC0DE only once and will have the same value
+  // until this object lives.
   Base::Threads::Lock lock(mutex_);
   return name_.get();
 }
@@ -81,6 +86,9 @@ void Host::setName(const Name &name)
   // TODO: add logging of name resolved event
 
   Base::Threads::Lock lock(mutex_);
+  // NOTE: checking for not-setting multiple times is crutial here, since
+  //       getName() returns pointer to local variable and therefor it must
+  //       be asured it never changes.
   if( name_.get()!=NULL )
     throw Exception(__FILE__, "host's name already resolved");
 

@@ -11,6 +11,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/date_time/gregorian/gregorian.hpp>
 
+#include "Base/Threads/Mutex.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/ReferenceURL.hpp"
@@ -59,18 +60,17 @@ public:
 
   Timestamp getCreateTime(void) const;
 
-  virtual Timestamp getLastUpdateTime(void) const = 0;
-
 private:
   friend class IO::MetaAlert;
   void updateSeverityDelta(double delta);
   void updateCertanityDelta(double delta);
 
-  Name            name_;
-  SeverityDelta   severityDelta_;
-  CertanityDelta  certanityDelta_;
-  ReferenceURLPtr url_;
-  Timestamp       created_;
+  mutable Base::Threads::Mutex mutex_;
+  Name                         name_;
+  SeverityDelta                severityDelta_;
+  CertanityDelta               certanityDelta_;
+  ReferenceURLPtr              url_;
+  Timestamp                    created_;
 }; // class MetaAlert
 
 
