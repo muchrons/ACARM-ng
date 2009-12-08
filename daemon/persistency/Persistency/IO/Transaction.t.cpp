@@ -22,11 +22,11 @@ struct TestTransactionAPI: public Persistency::IO::TransactionAPI
     rollbacked_(rollbacks)
   {
   }
-  virtual void commit(void)
+  virtual void commitImpl(void)
   {
     ++*commited_;
   }
-  virtual void rollback(void)
+  virtual void rollbackImpl(void)
   {
     ++*rollbacked_;
   }

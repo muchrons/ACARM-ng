@@ -32,10 +32,10 @@ public:
 
   /** \brief transaction acceptance opration's interface.
    */
-  virtual void commit(void) = 0;
+  void commit(void);
   /** \brief transaction abort interface.
    */
-  virtual void rollback(void) = 0;
+  void rollback(void);
 
 protected:
   /** \brief open transaction.
@@ -44,6 +44,9 @@ protected:
   TransactionAPI(Base::Threads::Mutex &mutex, const std::string &name);
 
 private:
+  virtual void commitImpl(void) = 0;
+  virtual void rollbackImpl(void) = 0;
+
   Base::Threads::Lock lock_;
   const std::string   name_;
 }; // class TransactionAPI

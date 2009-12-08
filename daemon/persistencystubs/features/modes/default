@@ -1,1 +1,3 @@
+Persistency/*.?pp
 Persistency/Stubs/*.?pp
+Persistency/IO/Stubs/*.?pp
