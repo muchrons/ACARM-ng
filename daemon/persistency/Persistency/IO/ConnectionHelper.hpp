@@ -46,22 +46,22 @@ private:
 
   virtual AlertAutoPtr alertImpl(AlertPtr alert, const Transaction &t)
   {
-    return AlertAutoPtr( new TAlertIO(alert, t) );
+    return AlertAutoPtr( new TAlertIO(alert, t, ph_) );
   }
 
   virtual GraphAutoPtr graphImpl(const Transaction &t)
   {
-    return GraphAutoPtr( new TGraphIO(t) );
+    return GraphAutoPtr( new TGraphIO(t, ph_) );
   }
 
   virtual HostAutoPtr hostImpl(HostPtr host, const Transaction &t)
   {
-    return HostAutoPtr( new THostIO(host, t) );
+    return HostAutoPtr( new THostIO(host, t, ph_) );
   }
 
   virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtr ma, const Transaction &t)
   {
-    return MetaAlertAutoPtr( new TMetaAlertIO(ma, t) );
+    return MetaAlertAutoPtr( new TMetaAlertIO(ma, t, ph_) );
   }
 
   TPersistencyHandler ph_;
