@@ -19,6 +19,12 @@ namespace Postgres
 class Connection: public IO::Connection
 {
 public:
+  /** \brief create new connection to data base.
+   *  \param server server name/address.
+   *  \param dbname name of data base to connect to.
+   *  \param user   user name to login with.
+   *  \param pass   password for user.
+   */
   Connection(const std::string &server,
              const std::string &dbname,
              const std::string &user,
