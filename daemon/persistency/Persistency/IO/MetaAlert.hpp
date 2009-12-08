@@ -11,6 +11,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "Persistency/MetaAlert.hpp"
+#include "Persistency/ExceptionNULLParameter.hpp"
 #include "Persistency/IO/Transaction.hpp"
 
 namespace Persistency
