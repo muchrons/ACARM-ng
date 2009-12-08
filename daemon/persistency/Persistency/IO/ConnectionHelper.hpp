@@ -19,7 +19,6 @@ namespace IO
 template<typename TPersistencyHandler,
          typename TTransactionAPIIO,
          typename TAlertIO,
-         typename TGraphIO,
          typename THostIO,
          typename TMetaAlertIO>
 class ConnectionHelper: public Connection
@@ -47,11 +46,6 @@ private:
   virtual AlertAutoPtr alertImpl(AlertPtr alert, const Transaction &t)
   {
     return AlertAutoPtr( new TAlertIO(alert, t, ph_) );
-  }
-
-  virtual GraphAutoPtr graphImpl(const Transaction &t)
-  {
-    return GraphAutoPtr( new TGraphIO(t, ph_) );
   }
 
   virtual HostAutoPtr hostImpl(HostPtr host, const Transaction &t)

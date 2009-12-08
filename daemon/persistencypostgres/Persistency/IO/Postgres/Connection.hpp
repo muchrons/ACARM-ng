@@ -14,6 +14,8 @@ namespace IO
 namespace Postgres
 {
 
+// TODO: derive this class from IO::ConnectionHelper
+
 /** \brief Connection to the postgresql data base
  */
 class Connection: public IO::Connection
@@ -36,7 +38,6 @@ private:
                                                   const std::string    &name);
   virtual AlertAutoPtr alertImpl(AlertPtr           alert,
                                  const Transaction &t);
-  virtual GraphAutoPtr graphImpl(const Transaction &t);
   virtual HostAutoPtr hostImpl(HostPtr            host,
                                const Transaction &t);
   virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtr       ma,

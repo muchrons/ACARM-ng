@@ -23,11 +23,6 @@ AlertAutoPtr Connection::alert(AlertPtr alert, const Transaction &t)
   return alertImpl(alert, t);
 }
 
-GraphAutoPtr Connection::graph(const Transaction &t)
-{
-  return graphImpl(t);
-}
-
 HostAutoPtr Connection::host(HostPtr host, const Transaction &t)
 {
   return hostImpl(host, t);

@@ -41,6 +41,14 @@ void MetaAlert::updateCertanityDeltaImpl(double /*delta*/)
 {
 }
 
+void MetaAlert::addChildImpl(Persistency::MetaAlertPtr /*child*/)
+{
+}
+
+void MetaAlert::associateWithAlertImpl(Persistency::AlertPtr /*alert*/)
+{
+}
+
 } // namespace Stubs
 } // namespace IO
 } // namespace Persistency

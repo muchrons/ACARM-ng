@@ -8,7 +8,6 @@
 #include "Persistency/IO/ConnectionHelper.hpp"
 #include "Persistency/IO/Stubs/TransactionAPI.hpp"
 #include "Persistency/IO/Stubs/Alert.hpp"
-#include "Persistency/IO/Stubs/Graph.hpp"
 #include "Persistency/IO/Stubs/Host.hpp"
 #include "Persistency/IO/Stubs/MetaAlert.hpp"
 
@@ -25,7 +24,6 @@ namespace detail
 typedef IO::ConnectionHelper<int,   // connection handler - anything...
                              Stubs::TransactionAPI,
                              Stubs::Alert,
-                             Stubs::Graph,
                              Stubs::Host,
                              Stubs::MetaAlert> ConnectionBase;
 } // namespace detail

@@ -37,12 +37,6 @@ AlertAutoPtr Connection::alertImpl(AlertPtr           /*alert*/,
   return Persistency::IO::AlertAutoPtr();
 }
 
-GraphAutoPtr Connection::graphImpl(const Transaction &/*t*/)
-{
-  // TODO
-  return Persistency::IO::GraphAutoPtr();
-}
-
 HostAutoPtr Connection::hostImpl(HostPtr            /*host*/,
                                  const Transaction &/*t*/)
 {

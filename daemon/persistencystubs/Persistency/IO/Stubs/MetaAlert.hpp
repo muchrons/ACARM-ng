@@ -29,6 +29,8 @@ private:
   virtual void markAsUnusedImpl();
   virtual void updateSeverityDeltaImpl(double delta);
   virtual void updateCertanityDeltaImpl(double delta);
+  virtual void addChildImpl(Persistency::MetaAlertPtr child);
+  virtual void associateWithAlertImpl(Persistency::AlertPtr alert);
 }; // class MetaAlert
 
 } // namespace Stubs
