@@ -18,11 +18,11 @@ TransactionAPI::TransactionAPI(Base::Threads::Mutex &mutex,
 {
 }
 
-void commitImpl(void)
+void TransactionAPI::commitImpl(void)
 {
 }
 
-void rollbackImpl(void)
+void TransactionAPI::rollbackImpl(void)
 {
 }
 
