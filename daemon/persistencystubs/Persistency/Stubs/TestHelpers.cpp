@@ -9,6 +9,19 @@ namespace Persistency
 namespace Stubs
 {
 
+AlertPtr makeNewAlert(const char *name)
+{
+  return AlertPtr( new Alert(name,
+                             makeNewAnalyzer(),
+                             NULL,
+                             Timestamp(),
+                             Severity(SeverityLevel::INFO),
+                             Certanity(4.2),
+                             NULL,
+                             Alert::ReportedHosts(),
+                             Alert::ReportedHosts() ) );
+}
+
 AnalyzerPtr makeNewAnalyzer(const char *name)
 {
   return AnalyzerPtr( new Analyzer(name, makeNewHost() ) );

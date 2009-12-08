@@ -26,6 +26,11 @@ namespace Persistency
 namespace Stubs
 {
 
+AlertPtr makeNewAlert(const char *name="some alert");
+
+AnalyzerPtr makeNewAnalyzer(const char *name="some analyzer");
+AnalyzerPtr makeNewAnalyzer(const char *name, HostPtr host);
+
 const Host::Netmask_v4::bytes_type mask4_bytes={ {0xFF, 0xFF, 0x00, 0x00} };
 const Host::Netmask_v6::bytes_type mask6_bytes={ {
                                                   0xFF, 0xFF, 0xFF, 0xFF,
@@ -33,10 +38,6 @@ const Host::Netmask_v6::bytes_type mask6_bytes={ {
                                                   0x00, 0x00, 0x00, 0x00,
                                                   0x00, 0x00, 0x00, 0x00,
                                                  } };
-
-AnalyzerPtr makeNewAnalyzer(const char *name="some analyzer");
-AnalyzerPtr makeNewAnalyzer(const char *name, HostPtr host);
-
 HostPtr makeNewHost(void);
 HostPtr makeNewHost4(const char             *ip,
                      const Host::Netmask_v4 *mask,
