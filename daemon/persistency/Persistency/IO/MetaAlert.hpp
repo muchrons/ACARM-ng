@@ -29,21 +29,27 @@ public:
 
   virtual ~MetaAlert(void);
 
-  virtual void save() = 0;
+  void save();
 
-  virtual void markAsUsed() = 0;
+  void markAsUsed();
 
-  virtual void markAsUnused() = 0;
+  void markAsUnused();
 
-  virtual void updateSeverityDelta(double delta) = 0;
+  void updateSeverityDelta(double delta);
 
-  virtual void updateCertanityDelta(double delta) = 0;
+  void updateCertanityDelta(double delta);
 
   // TODO
 protected:
-  Persistency::MetaAlert &get(void);
+  const Persistency::MetaAlert &get(void) const;
 
 private:
+  virtual void saveImpl() = 0;
+  virtual void markAsUsedImpl() = 0;
+  virtual void markAsUnusedImpl() = 0;
+  virtual void updateSeverityDeltaImpl(double delta) = 0;
+  virtual void updateCertanityDeltaImpl(double delta) = 0;
+
   Persistency::MetaAlertPtr ma_;
 }; // class MetaAlert
 

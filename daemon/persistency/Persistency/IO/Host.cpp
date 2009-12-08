@@ -23,7 +23,15 @@ Host::~Host(void)
 {
 }
 
-Persistency::Host &Host::get(void)
+void Host::setName(const Persistency::Host::Name &name)
+{
+  setNameImpl(name);
+
+  assert(host_.get()!=NULL);
+  host_->setName(name);
+}
+
+const Persistency::Host &Host::get(void) const
 {
   assert(host_.get()!=NULL);
   return *host_;

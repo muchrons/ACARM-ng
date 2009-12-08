@@ -23,7 +23,12 @@ Alert::~Alert(void)
 {
 }
 
-Persistency::Alert &Alert::get(void)
+void Alert::save(const Persistency::Alert &alert)
+{
+  saveImpl(alert);
+}
+
+const Persistency::Alert &Alert::get(void) const
 {
   assert(alert_.get()!=NULL);
   return *alert_;

@@ -29,13 +29,15 @@ public:
 
   virtual ~Host(void);
 
-  virtual void setName(const Persistency::Host::Name &name) = 0;
+  void setName(const Persistency::Host::Name &name);
   // TODO
 
 protected:
-  Persistency::Host &get(void);
+  const Persistency::Host &get(void) const;
 
 private:
+  virtual void setNameImpl(const Persistency::Host::Name &name) = 0;
+
   Persistency::HostPtr host_;
 }; // class Host
 

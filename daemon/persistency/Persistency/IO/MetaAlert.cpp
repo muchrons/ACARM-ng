@@ -23,7 +23,38 @@ MetaAlert::~MetaAlert(void)
 {
 }
 
-Persistency::MetaAlert &MetaAlert::get(void)
+void MetaAlert::save()
+{
+  saveImpl();
+}
+
+void MetaAlert::markAsUsed()
+{
+  markAsUsedImpl();
+}
+
+void MetaAlert::markAsUnused()
+{
+  markAsUnusedImpl();
+}
+
+void MetaAlert::updateSeverityDelta(double delta)
+{
+  updateSeverityDeltaImpl(delta);
+
+  assert(ma_.get()!=NULL);
+  ma_->updateSeverityDelta(delta);
+}
+
+void MetaAlert::updateCertanityDelta(double delta)
+{
+  updateCertanityDeltaImpl(delta);
+
+  assert(ma_.get()!=NULL);
+  ma_->updateCertanityDelta(delta);
+}
+
+const Persistency::MetaAlert &MetaAlert::get(void) const
 {
   assert(ma_.get()!=NULL);
   return *ma_;
