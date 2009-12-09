@@ -7,8 +7,6 @@
 
 /* public header */
 
-#include <string>
-
 #include "Commons/Exception.hpp"
 
 namespace Commons
@@ -21,11 +19,9 @@ class ExceptionUnexpectedNULL: public Exception
 public:
   /** \brief create execption with given message.
    *  \param where place where exception has been rised.
+   *  \note this c-tor saves callstack.
    */
-  ExceptionUnexpectedNULL(const char *where):
-    Exception(where, std::string("unexpected NULL pointer received") )
-  {
-  }
+  ExceptionUnexpectedNULL(const char *where);
 }; // class ExceptionUnexpectedNULL
 
 }; // namespace Commons
