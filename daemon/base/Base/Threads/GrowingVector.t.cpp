@@ -58,4 +58,16 @@ void testObj::test<2>(void)
   ensure("iterators are invalid",       gv_.begin() !=gv_.end()  );
 }
 
+// test iterating thought collection
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  gv_.push("hello world");
+  ensure_equals("invalid size after adding one element", cgv_.size(), 1);
+  GV::const_iterator it =cgv_.begin();
+  GV::const_iterator end=cgv_.end();
+  ensure("const-iterators are invalid", it!=end);
+}
+
 } // namespace tut

@@ -60,7 +60,12 @@ public:
 private:
   // this friend declaration is required for boost::iterators to work.
   friend class boost::iterator_core_access;
-  //template <class> friend class GrowingVectorIterator;
+  // this one is required for interoperatability
+  template <class> friend class GrowingVectorIterator;
+
+  // this blocks copying from const to non-const iterators
+  template<class OtherValue>
+  GrowingVectorIterator(GrowingVectorIterator<const OtherValue> const&);
 
   template<class OtherValue>
   bool equal(GrowingVectorIterator<OtherValue> const& other) const

@@ -220,4 +220,45 @@ void testObj::test<12>(void)
   testPostDecrementingIterator<ConstIter>();
 }
 
+// try converting iterator to const-iterator via c-tor
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  Iter      it(data2_);
+  ConstIter cit(it);
+  ensure_equals("iterators point ot different places", *it, *cit);
+}
+
+// try converting iterator to const-iterator via assignment
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  data1_->vec_.push_back("narf");   // add some element, so collection!=empty
+  Iter      it(data2_);
+  ConstIter cit(data1_);
+  ensure("pre-condition failed", *it!=*cit);
+  cit=it;
+  ensure_equals("iterators point ot different places", *it, *cit);
+}
+
+// test copying iterators of the same type
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  Iter it1(data1_);
+  Iter it2=it1;
+}
+
+// test copying iterators of the same type - const
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  ConstIter it1(data1_);
+  ConstIter it2=it1;
+}
+
 } // namespace tut
