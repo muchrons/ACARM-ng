@@ -34,6 +34,7 @@ namespace Threads
  */
 class SequencedLock
 {
+public:
   /** \brief locks mutexes in proper order.
    *  \param m1 mutex 1 to be locked.
    *  \param m2 mutex 2 to be locked.
