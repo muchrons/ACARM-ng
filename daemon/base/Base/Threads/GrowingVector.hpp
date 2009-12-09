@@ -46,11 +46,13 @@ private:
   typedef detail::GrowingVectorData<T> Data;
   typedef boost::shared_ptr<Data>      DataPtr;
   typedef typename Data::V             V;
+
 public:
   /** \brief non-const iterator on elements. */
-  typedef typename V::iterator       iterator;
+  typedef GrowingVectorIterator<T>       iterator;
   /** \brief const iterator on elements. */
-  typedef typename V::const_iterator const_iterator;
+  typedef GrowingVectorIterator<T const> const_iterator;
+
 
   /** \brief create new object's instance.
    */
@@ -66,7 +68,7 @@ public:
   iterator begin(void)
   {
     Lock lock(data_->mutex_);
-    return data_->vec_.begin();
+    return iterator(data_);
   }
   /** \brief gets end iterator to collection.
    *  \return non-const end interator.
@@ -74,7 +76,7 @@ public:
   iterator end(void)
   {
     Lock lock(data_->mutex_);
-    return data_->vec_.end();
+    return iterator( data_, data_->vec_.size() );
   }
 
   /** \brief gets begin iterator to collection.
@@ -83,7 +85,7 @@ public:
   const_iterator begin(void) const
   {
     Lock lock(data_->mutex_);
-    return data_->vec_.begin();
+    return const_iterator(data_);
   }
   /** \brief gets end iterator to collection.
    *  \return const end interator.
@@ -91,7 +93,7 @@ public:
   const_iterator end(void) const
   {
     Lock lock(data_->mutex_);
-    return data_->vec_.end();
+    return const_iterator( data_, data_->vec_.size() );
   }
 
   /** \brief adds new element to collection.
@@ -103,6 +105,8 @@ public:
     data_->vec_.push_back(t);
   }
 
+#if 0
+  // NOTE: this is not needed at this time.
   /** \brief random-access operator.
    *  \param pos position to take element from.
    *  \return reference to the element on a given posiotion.
@@ -123,6 +127,7 @@ public:
     Lock lock(data_->mutex_);
     return data_->vec_.at(pos);
   }
+#endif
 
   /** \brief gets collection's total size.
    *  \return size of collection, in number of elements.
