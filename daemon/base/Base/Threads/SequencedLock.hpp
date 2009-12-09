@@ -31,6 +31,7 @@ namespace Threads
  *  {
  *    SequencedLock lock(m2, m1);
  *  }
+ *  </code>
  */
 class SequencedLock
 {
