@@ -5,7 +5,7 @@
 #include <tut.h>
 #include <memory>
 
-#include "Commons/SmartPtrNotNULL.hpp"
+#include "Commons/SharedPtrNotNULL.hpp"
 
 using namespace Commons;
 
@@ -14,15 +14,15 @@ namespace
 
 struct TestClass
 {
-  typedef std::auto_ptr<int>   Ptr;
-  typedef SmartPtrNotNULL<Ptr> PtrNN;
+  typedef boost::shared_ptr<int> BoostPtr;
+  typedef SharedPtrNotNULL<int>  PtrNN;
 };
 
 typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Commons/SmartPtrNotNULL");
+factory tf("Commons/SharedPtrNotNULL");
 } // unnamed namespace
 
 
