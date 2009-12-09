@@ -1,0 +1,22 @@
+#!/bin/sh
+
+RET=0
+
+MEM_MODE="normal"
+[ "$#" -gt 0 ] && MEM_MODE="$1"
+
+# iterata through all build components
+for d in `cat components.lst`
+do
+  echo "----------------------------"
+  echo "testing $d:"
+  ( cd gen/test_local_$MEM_MODE/$d && ./$d.t ) || RET=1
+done
+
+echo "\n"
+if [ "$RET" -ne "0" ]
+then
+  echo "$0: some of the tests FAILED..."
+fi
+
+exit $RET
