@@ -10,6 +10,8 @@
 #include <vector>
 
 #include "Base/Threads/Mutex.hpp"
+#include "Base/Threads/Lock.hpp"
+#include "Base/Threads/SequencedLock.hpp"
 
 namespace Base
 {
@@ -25,6 +27,37 @@ struct GrowingVectorData
 {
   /** \brief short name for type. */
   typedef std::vector<T> V;
+
+  /** \brief allow default c-tor.
+   */
+  GrowingVectorData(void)
+  {
+  }
+
+  /** \brief allows copying.
+   *  \param other object to copy from.
+   */
+  GrowingVectorData(const GrowingVectorData<T> &other)
+  {
+    Lock lock(other.mutex_);
+    V tmp(other.vec_);
+    vec_.swap(tmp);
+  }
+
+  /** \brief allow assignment.
+   *  \param other object to assign from.
+   *  \return const-reference to this.
+   */
+  const GrowingVectorData<T> &operator=(const GrowingVectorData<T> &other)
+  {
+    if(&other!=this)    // copy only on non-self assignment
+    {
+      SequencedLock slock(other.mutex_, mutex_);
+      V tmp(other.vec_);
+      vec_.swap(tmp);
+    }
+    return *this;
+  }
 
   /** \brief mutex to guard access to vector. */
   mutable Mutex mutex_;
