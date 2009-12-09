@@ -40,8 +40,7 @@ struct GrowingVectorData
   GrowingVectorData(const GrowingVectorData<T> &other)
   {
     Lock lock(other.mutex_);
-    V tmp(other.vec_);
-    vec_.swap(tmp);
+    vec_=other.vec_;
   }
 
   /** \brief allow assignment.

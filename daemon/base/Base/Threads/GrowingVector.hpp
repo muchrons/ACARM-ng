@@ -51,13 +51,12 @@ public:
   GrowingVector(void):
     data_(new Data)
   {
-    assert( data_.get()!=NULL );
   }
   /** \brief allow copy-creating.
    *  \param other object to copy from.
    */
   GrowingVector(const GrowingVector<T> &other):
-    data_( new Data(*other.data_) )
+    data_( new Data( *other.get() ) )
   {
   }
   /** \brief allow copy from assignment.
@@ -67,9 +66,10 @@ public:
   {
     if(&other!=this)
     {
-      DataPtr tmp( new Data(*other.data_) );
+      DataPtr tmp( new Data( *other.get() ) );
       assert( tmp.get()!=NULL );
-      Lock lock(data_->mutex_);
+      Lock lock(mutex_);
+      Lock lock2(data_->mutex_);
       data_.swap(tmp);
     }
     return *this;
@@ -80,16 +80,18 @@ public:
    */
   iterator begin(void)
   {
-    Lock lock(data_->mutex_);
-    return iterator(data_);
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    return iterator(d);
   }
   /** \brief gets end iterator to collection.
    *  \return non-const end interator.
    */
   iterator end(void)
   {
-    Lock lock(data_->mutex_);
-    return iterator( data_, data_->vec_.size() );
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    return iterator( d, d->vec_.size() );
   }
 
   /** \brief gets begin iterator to collection.
@@ -97,16 +99,18 @@ public:
    */
   const_iterator begin(void) const
   {
-    Lock lock(data_->mutex_);
-    return const_iterator(data_);
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    return const_iterator(d);
   }
   /** \brief gets end iterator to collection.
    *  \return const end interator.
    */
   const_iterator end(void) const
   {
-    Lock lock(data_->mutex_);
-    return const_iterator( data_, data_->vec_.size() );
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    return const_iterator( d, d->vec_.size() );
   }
 
   /** \brief adds new element to collection.
@@ -114,8 +118,9 @@ public:
    */
   void push(const T &t)
   {
-    Lock lock(data_->mutex_);
-    data_->vec_.push_back(t);
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    d->vec_.push_back(t);
   }
 
 #if 0
@@ -127,8 +132,9 @@ public:
    */
   T &operator[](unsigned int pos)
   {
-    Lock lock(data_->mutex_);
-    return data_->vec_.at(pos);
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    return d->vec_.at(pos);
   }
   /** \brief random-access operator - const version.
    *  \param pos position to take element from.
@@ -137,8 +143,9 @@ public:
    */
   const T &operator[](unsigned int pos) const
   {
-    Lock lock(data_->mutex_);
-    return data_->vec_.at(pos);
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    return d->vec_.at(pos);
   }
 #endif
 
@@ -149,12 +156,20 @@ public:
    */
   unsigned int size(void) const
   {
-    Lock lock(data_->mutex_);
-    return data_->vec_.size();
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    return d->vec_.size();
   }
 
 private:
-  DataPtr data_;
+  DataPtr get(void) const
+  {
+    Lock lock(mutex_);
+    return data_;
+  }
+
+  mutable Mutex mutex_; // this mutex protects swap() operation
+  DataPtr       data_;
 }; // class GrowingVector
 
 } // namespace Threads
