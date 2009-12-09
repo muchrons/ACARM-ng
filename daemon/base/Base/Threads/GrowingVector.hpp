@@ -18,12 +18,6 @@ namespace Base
 namespace Threads
 {
 
-//
-// TODO: THIS CONTAINER IS INTENDED TO BE THREAD SAFE, BUT NOW IT IS JUST A
-//       QUICK STUB FOR THE API WHICH DOES NOT GUARANTEE ANY THREAD-SAFETY
-//       AT ALL! IMPLEMENT IT BEFORE USING IN MULTI-THREADED CODE!
-//
-
 // TODO: make object copying bahave the same way of normal vector's copying.
 
 /** \brief template container for multi-threaded usage.
