@@ -7,7 +7,11 @@
 
 /* public header */
 
-#include <vector>
+#include <cassert>
+
+#include "Base/Threads/detail/GrowingVectorData.hpp"
+#include "Base/Threads/GrowingVectorIterator.hpp"
+#include "Base/Threads/Lock.hpp"
 
 namespace Base
 {
@@ -19,6 +23,8 @@ namespace Threads
 //       QUICK STUB FOR THE API WHICH DOES NOT GUARANTEE ANY THREAD-SAFETY
 //       AT ALL! IMPLEMENT IT BEFORE USING IN MULTI-THREADED CODE!
 //
+
+// TODO: make object copying bahave the same way of normal vector's copying.
 
 /** \brief template container for multi-threaded usage.
  *
@@ -37,28 +43,38 @@ template<typename T>
 class GrowingVector
 {
 private:
-  typedef std::vector<T> V;
+  typedef detail::GrowingVectorData<T> Data;
+  typedef boost::shared_ptr<Data>      DataPtr;
+  typedef typename Data::V             V;
 public:
-  /** \brief non-const iterator on elements.
-   */
+  /** \brief non-const iterator on elements. */
   typedef typename V::iterator       iterator;
-  /** \brief const iterator on elements.
-   */
+  /** \brief const iterator on elements. */
   typedef typename V::const_iterator const_iterator;
+
+  /** \brief create new object's instance.
+   */
+  GrowingVector(void):
+    data_(new Data)
+  {
+    assert( data_.get()!=NULL );
+  }
 
   /** \brief gets begin iterator to collection.
    *  \return non-const being interator.
    */
   iterator begin(void)
   {
-    return vec_.begin();
+    Lock lock(data_->mutex_);
+    return data_->vec_.begin();
   }
   /** \brief gets end iterator to collection.
    *  \return non-const end interator.
    */
   iterator end(void)
   {
-    return vec_.end();
+    Lock lock(data_->mutex_);
+    return data_->vec_.end();
   }
 
   /** \brief gets begin iterator to collection.
@@ -66,14 +82,16 @@ public:
    */
   const_iterator begin(void) const
   {
-    return vec_.begin();
+    Lock lock(data_->mutex_);
+    return data_->vec_.begin();
   }
   /** \brief gets end iterator to collection.
    *  \return const end interator.
    */
   const_iterator end(void) const
   {
-    return vec_.end();
+    Lock lock(data_->mutex_);
+    return data_->vec_.end();
   }
 
   /** \brief adds new element to collection.
@@ -81,7 +99,8 @@ public:
    */
   void push(const T &t)
   {
-    vec_.push_back(t);
+    Lock lock(data_->mutex_);
+    data_->vec_.push_back(t);
   }
 
   /** \brief random-access operator.
@@ -91,7 +110,8 @@ public:
    */
   T &operator[](unsigned int pos)
   {
-    return vec_.at(pos);
+    Lock lock(data_->mutex_);
+    return data_->vec_.at(pos);
   }
   /** \brief random-access operator - const version.
    *  \param pos position to take element from.
@@ -100,7 +120,8 @@ public:
    */
   const T &operator[](unsigned int pos) const
   {
-    return vec_.at(pos);
+    Lock lock(data_->mutex_);
+    return data_->vec_.at(pos);
   }
 
   /** \brief gets collection's total size.
@@ -110,11 +131,12 @@ public:
    */
   unsigned int size(void) const
   {
-    return vec_.size();
+    Lock lock(data_->mutex_);
+    return data_->vec_.size();
   }
 
 private:
-  V vec_;
+  DataPtr data_;
 }; // class GrowingVector
 
 } // namespace Threads
