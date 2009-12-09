@@ -18,8 +18,6 @@ namespace Base
 namespace Threads
 {
 
-// TODO: make object copying bahave the same way of normal vector's copying.
-
 /** \brief template container for multi-threaded usage.
  *
  * this is growing-only container that can hold any number of elements inside.
@@ -54,6 +52,27 @@ public:
     data_(new Data)
   {
     assert( data_.get()!=NULL );
+  }
+  /** \brief allow copy-creating.
+   *  \param other object to copy from.
+   */
+  GrowingVector(const GrowingVector<T> &other):
+    data_( new Data(*other.data_) )
+  {
+  }
+  /** \brief allow copy from assignment.
+   *  \param other object to copy from.
+   */
+  const GrowingVector<T> &operator=(const GrowingVector<T> &other)
+  {
+    if(&other!=this)
+    {
+      DataPtr tmp( new Data(*other.data_) );
+      assert( tmp.get()!=NULL );
+      Lock lock(data_->mutex_);
+      data_.swap(tmp);
+    }
+    return *this;
   }
 
   /** \brief gets begin iterator to collection.

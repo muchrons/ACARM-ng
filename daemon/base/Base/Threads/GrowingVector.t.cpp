@@ -172,7 +172,76 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  // TODO
+  GV c1;
+  c1.push("xyz");
+  // make copy
+  const GV c2(c1);
+  // add new elements
+  c1.push("abc");
+
+  // ensure proper sizes
+  ensure_equals("invlaid size for collection 1", c1.size(), 2);
+  ensure_equals("invlaid size for collection 2", c2.size(), 1);
+}
+
+// test assignment operator
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  GV c1;
+  c1.push("xyz");
+  // make copy
+  GV c2;
+  c2=c1;
+  // add new elements
+  c1.push("abc");
+
+  // ensure proper sizes
+  ensure_equals("invlaid size for collection 1", c1.size(), 2);
+  ensure_equals("invlaid size for collection 2", c2.size(), 1);
+}
+
+// test self assignment
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  gv_.push("xyz");
+  gv_.push("aaaa");
+  gv_=gv_;
+
+  // ensure proper sizes
+  ensure_equals("invlaid size for collection", gv_.size(), 2);
+}
+
+// iterators should remain valid and non-changing after assignment
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  GV col;
+  col.push("hello");
+  GV::const_iterator it =col.begin();
+  GV::const_iterator end=col.end();
+  ensure_equals("invalid element", *it, "hello");
+  // make some temporary collection
+  {
+    GV other;
+    other.push("AAAA");
+    other.push("BBBB");
+    col=other;
+  }
+
+  // check assignment results
+  ensure_equals("invlaid collection size", col.size(), 2);
+
+  // this is smoke test - if objects have been reallocated and this iterator
+  // points to nowhere, it will probably crash.
+  ensure_equals("invalid element after assignment", *it, "hello");
+  // check the end of collection
+  ++it;
+  ensure("now we should be at collection's end", it==end);
 }
 
 } // namespace tut

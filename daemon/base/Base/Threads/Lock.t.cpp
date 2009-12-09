@@ -63,8 +63,8 @@ public:
     mutex_(mutex),
     data_(data)
   {
-    assert(mutex!=NULL);
-    assert(data!=NULL);
+    assert(mutex_!=NULL);
+    assert(data_!=NULL);
   }
   void operator()(void)
   {
@@ -74,7 +74,7 @@ public:
       Lock lock(*mutex_);
       ensure_equals("data is invalid", data_[1], data_[0]+1);
       data_[0]=10.5+seed;
-      usleep(2*1000);       // wait 2[ms] (i.e. switch context)
+      boost::thread::yield();  // switch context
       data_[1]=data_[0]+1;
     }
   }

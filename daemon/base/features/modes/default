@@ -1,2 +1,3 @@
 Base/*.[ch]pp
 Base/Threads/*.[ch]pp
+Base/Threads/detail/*.[ch]pp

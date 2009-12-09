@@ -52,7 +52,7 @@ struct GrowingVectorData
   {
     if(&other!=this)    // copy only on non-self assignment
     {
-      SequencedLock slock(other.mutex_, mutex_);
+      SequencedLock slock(mutex_, other.mutex_);
       V tmp(other.vec_);
       vec_.swap(tmp);
     }
