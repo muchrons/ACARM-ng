@@ -16,7 +16,8 @@ namespace Stubs
 Alert::Alert(Persistency::AlertPtr  alert,
              const Transaction     &t,
              int                    handler):
-  IO::Alert(alert, t)
+  IO::Alert(alert, t),
+  saveCalls_(0)
 {
   assert(handler==42);
   handler=0;
@@ -24,6 +25,7 @@ Alert::Alert(Persistency::AlertPtr  alert,
 
 void Alert::saveImpl(void)
 {
+  ++saveCalls_;
 }
 
 } // namespace Stubs

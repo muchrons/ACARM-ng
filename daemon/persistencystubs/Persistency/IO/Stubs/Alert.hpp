@@ -28,6 +28,9 @@ public:
         const Transaction     &t,
         int                    handler);
 
+  /** number of times 'saveImpl()' has been called. */
+  size_t saveCalls_;
+
 private:
   virtual void saveImpl(void);
 }; // class Alert

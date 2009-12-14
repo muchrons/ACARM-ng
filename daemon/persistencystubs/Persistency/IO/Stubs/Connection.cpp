@@ -12,9 +12,36 @@ namespace IO
 namespace Stubs
 {
 
+typedef IO::Connection BaseC;
+
 Connection::Connection(void):
-  detail::ConnectionBase(42)
+  impl_(42)
 {
+}
+
+TransactionAPIAutoPtr Connection::createNewTransactionImpl(Base::Threads::Mutex &mutex,
+                                                           const std::string    &name)
+{
+  ++createTransactionCalls_;
+  return impl_.createNewTransaction(mutex, name);
+}
+
+AlertAutoPtr Connection::alertImpl(AlertPtr alert, const Transaction &t)
+{
+  ++alertCalls_;
+  return impl_.alert(alert, t);
+}
+
+HostAutoPtr Connection::hostImpl(HostPtr host, const Transaction &t)
+{
+  ++hostCalls_;
+  return impl_.host(host, t);
+}
+
+MetaAlertAutoPtr Connection::metaAlertImpl(MetaAlertPtr ma, const Transaction &t)
+{
+  ++metaAlertCalls_;
+  return impl_.metaAlert(ma, t);
 }
 
 } // namespace Stubs
