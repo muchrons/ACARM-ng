@@ -11,6 +11,30 @@ using namespace std;
 namespace Persistency
 {
 
+Alert::Alert(const Name          &name,
+             AnalyzerPtr          analyzer,
+             const Timestamp     *detected,
+             const Timestamp     &created,
+             Severity             severity,
+             Certanity            certanity,
+             const std::string   *description,
+             const ReportedHosts &sourceHosts,
+             const ReportedHosts &targetHosts):
+  name_(name),
+  analyzer_(analyzer),
+  detected_( (detected!=NULL)?( new Timestamp(*detected) ):NULL ),
+  created_(created),
+  severity_(severity),
+  certanity_(certanity),
+  description_( (description!=NULL)?( new string(*description) ):NULL ),
+  sourceHosts_(sourceHosts),
+  targetHosts_(targetHosts)
+{
+  // check if required pointer paramters are NOT NULLs, as they should
+  if(analyzer_.get()==NULL)
+    throw ExceptionNULLParameter(CALLNAME, "analyzer");
+}
+
 const Alert::Name &Alert::getName(void) const
 {
   return name_;
@@ -55,30 +79,6 @@ const Alert::ReportedHosts &Alert::getReportedSourceHosts(void) const
 const Alert::ReportedHosts &Alert::getReportedTargetHosts(void) const
 {
   return targetHosts_;
-}
-
-Alert::Alert(const Name          &name,
-             AnalyzerPtr          analyzer,
-             const Timestamp     *detected,
-             const Timestamp     &created,
-             Severity             severity,
-             Certanity            certanity,
-             const std::string   *description,
-             const ReportedHosts &sourceHosts,
-             const ReportedHosts &targetHosts):
-  name_(name),
-  analyzer_(analyzer),
-  detected_( (detected!=NULL)?( new Timestamp(*detected) ):NULL ),
-  created_(created),
-  severity_(severity),
-  certanity_(certanity),
-  description_( (description!=NULL)?( new string(*description) ):NULL ),
-  sourceHosts_(sourceHosts),
-  targetHosts_(targetHosts)
-{
-  // check if required pointer paramters are NOT NULLs, as they should
-  if(analyzer_.get()==NULL)
-    throw ExceptionNULLParameter(CALLNAME, "analyzer");
 }
 
 } // namespace Persistency
