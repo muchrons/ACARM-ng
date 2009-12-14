@@ -7,18 +7,16 @@
 
 /* public header */
 
-#include <vector>
+#include <cassert>
+
+#include "Base/Threads/detail/GrowingVectorData.hpp"
+#include "Base/Threads/GrowingVectorIterator.hpp"
+#include "Base/Threads/Lock.hpp"
 
 namespace Base
 {
 namespace Threads
 {
-
-//
-// TODO: THIS CONTAINER IS INTENDED TO BE THREAD SAFE, BUT NOW IT IS JUST A
-//       QUICK STUB FOR THE API WHICH DOES NOT GUARANTEE ANY THREAD-SAFETY
-//       AT ALL! IMPLEMENT IT BEFORE USING IN MULTI-THREADED CODE!
-//
 
 /** \brief template container for multi-threaded usage.
  *
@@ -37,28 +35,63 @@ template<typename T>
 class GrowingVector
 {
 private:
-  typedef std::vector<T> V;
+  typedef detail::GrowingVectorData<T> Data;
+  typedef boost::shared_ptr<Data>      DataPtr;
+  typedef typename Data::V             V;
+
 public:
-  /** \brief non-const iterator on elements.
+  /** \brief non-const iterator on elements. */
+  typedef GrowingVectorIterator<T>       iterator;
+  /** \brief const iterator on elements. */
+  typedef GrowingVectorIterator<T const> const_iterator;
+
+
+  /** \brief create new object's instance.
    */
-  typedef typename V::iterator       iterator;
-  /** \brief const iterator on elements.
+  GrowingVector(void):
+    data_(new Data)
+  {
+  }
+  /** \brief allow copy-creating.
+   *  \param other object to copy from.
    */
-  typedef typename V::const_iterator const_iterator;
+  GrowingVector(const GrowingVector<T> &other):
+    data_( new Data( *other.get() ) )
+  {
+  }
+  /** \brief allow copy from assignment.
+   *  \param other object to copy from.
+   */
+  const GrowingVector<T> &operator=(const GrowingVector<T> &other)
+  {
+    if(&other!=this)
+    {
+      DataPtr tmp( new Data( *other.get() ) );
+      assert( tmp.get()!=NULL );
+      Lock lock(mutex_);
+      Lock lock2(data_->mutex_);
+      data_.swap(tmp);
+    }
+    return *this;
+  }
 
   /** \brief gets begin iterator to collection.
    *  \return non-const being interator.
    */
   iterator begin(void)
   {
-    return vec_.begin();
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    return iterator(d);
   }
   /** \brief gets end iterator to collection.
    *  \return non-const end interator.
    */
   iterator end(void)
   {
-    return vec_.end();
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    return iterator( d, d->vec_.size() );
   }
 
   /** \brief gets begin iterator to collection.
@@ -66,14 +99,18 @@ public:
    */
   const_iterator begin(void) const
   {
-    return vec_.begin();
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    return const_iterator(d);
   }
   /** \brief gets end iterator to collection.
    *  \return const end interator.
    */
   const_iterator end(void) const
   {
-    return vec_.end();
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    return const_iterator( d, d->vec_.size() );
   }
 
   /** \brief adds new element to collection.
@@ -81,9 +118,13 @@ public:
    */
   void push(const T &t)
   {
-    vec_.push_back(t);
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    d->vec_.push_back(t);
   }
 
+#if 0
+  // NOTE: this is not needed at this time.
   /** \brief random-access operator.
    *  \param pos position to take element from.
    *  \return reference to the element on a given posiotion.
@@ -91,7 +132,9 @@ public:
    */
   T &operator[](unsigned int pos)
   {
-    return vec_.at(pos);
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    return d->vec_.at(pos);
   }
   /** \brief random-access operator - const version.
    *  \param pos position to take element from.
@@ -100,8 +143,11 @@ public:
    */
   const T &operator[](unsigned int pos) const
   {
-    return vec_.at(pos);
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    return d->vec_.at(pos);
   }
+#endif
 
   /** \brief gets collection's total size.
    *  \return size of collection, in number of elements.
@@ -110,11 +156,20 @@ public:
    */
   unsigned int size(void) const
   {
-    return vec_.size();
+    DataPtr d=get();
+    Lock lock(d->mutex_);
+    return d->vec_.size();
   }
 
 private:
-  V vec_;
+  DataPtr get(void) const
+  {
+    Lock lock(mutex_);
+    return data_;
+  }
+
+  mutable Mutex mutex_; // this mutex protects swap() operation
+  DataPtr       data_;
 }; // class GrowingVector
 
 } // namespace Threads
