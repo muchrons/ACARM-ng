@@ -13,6 +13,10 @@ namespace Stubs
 {
 
 Connection::Connection(void):
+  createTransactionCalls_(0),
+  alertCalls_(0),
+  hostCalls_(0),
+  metaAlertCalls_(0),
   impl_(42)
 {
 }

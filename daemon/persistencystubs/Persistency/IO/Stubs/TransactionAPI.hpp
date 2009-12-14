@@ -29,6 +29,9 @@ public:
                  const std::string    &name,
                  int                   persistencyHandler);
 
+  size_t commitCalls_;      ///< number of times commit was called.
+  size_t rollbackCalls_;    ///< number of times rollback was called.
+
 private:
   virtual void commitImpl(void);
   virtual void rollbackImpl(void);

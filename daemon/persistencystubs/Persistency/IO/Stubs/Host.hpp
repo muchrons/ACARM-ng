@@ -28,6 +28,9 @@ public:
        const Transaction    &t,
        int                   handler);
 
+  /** number of times setting name has been called. */
+  size_t setNameCalls_;
+
 private:
   virtual void setNameImpl(const Persistency::Host::Name &name);
 }; // class Host
