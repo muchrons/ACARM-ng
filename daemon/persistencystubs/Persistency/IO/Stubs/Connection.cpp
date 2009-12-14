@@ -12,18 +12,16 @@ namespace IO
 namespace Stubs
 {
 
-typedef IO::Connection BaseC;
-
 Connection::Connection(void):
   impl_(42)
 {
 }
 
-TransactionAPIAutoPtr Connection::createNewTransactionImpl(Base::Threads::Mutex &mutex,
+TransactionAPIAutoPtr Connection::createNewTransactionImpl(Base::Threads::Mutex &/*mutex*/,
                                                            const std::string    &name)
 {
   ++createTransactionCalls_;
-  return impl_.createNewTransaction(mutex, name);
+  return impl_.createNewTransaction(name);
 }
 
 AlertAutoPtr Connection::alertImpl(AlertPtr alert, const Transaction &t)

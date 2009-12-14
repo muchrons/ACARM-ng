@@ -11,7 +11,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
-#include <asio/ip/address.hpp>
+#include <boost/asio/ip/address.hpp>
 
 #include "Base/Threads/Mutex.hpp"
 #include "Persistency/ReferenceURL.hpp"
@@ -35,13 +35,13 @@ class Host: private boost::noncopyable
 public:
   /** \brief any IP address type.
    */
-  typedef asio::ip::address             IP;
+  typedef boost::asio::ip::address      IP;
   /** \brief IPv4 address.
    */
-  typedef asio::ip::address_v4          IPv4;
+  typedef boost::asio::ip::address_v4   IPv4;
   /** \brief IPv6 address.
    */
-  typedef asio::ip::address_v6          IPv6;
+  typedef boost::asio::ip::address_v6   IPv6;
   /** \brief any network mask.
    */
   typedef IP                            Netmask;
