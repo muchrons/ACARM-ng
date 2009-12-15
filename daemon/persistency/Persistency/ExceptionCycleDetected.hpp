@@ -1,9 +1,9 @@
 /*
- * ExceptionAdditionCausesCycle.hpp
+ * ExceptionCycleDetected.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_EXCEPTIONADDITIONCAUSESCYCLE_HPP_FILE
-#define INCLUDE_PERSISTENCY_EXCEPTIONADDITIONCAUSESCYCLE_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_EXCEPTIONCYCLEDETECTED_HPP_FILE
+#define INCLUDE_PERSISTENCY_EXCEPTIONCYCLEDETECTED_HPP_FILE
 
 /* public header */
 
@@ -15,7 +15,7 @@ namespace Persistency
 /** \brief exception thorw when addition of a given element to a given node
  *         would have create a cycle in graph.
  */
-class ExceptionAdditionCausesCycle: public Exception
+class ExceptionCycleDetected: public Exception
 {
 public:
   /** \brief create execption with given message.
@@ -23,16 +23,16 @@ public:
    *  \param parentName name of a paretnt child was being tried to be attached to.
    *  \param childName  name of child that was ot be attached.
    */
-  ExceptionAdditionCausesCycle(const char *where,
-                               const char *parentName,
-                               const char *childName):
+  ExceptionCycleDetected(const char *where,
+                         const char *parentName,
+                         const char *childName):
     Exception(where,
               std::string("addition node '") + ensureString(childName) +
               "' as a child of node '"       + ensureString(parentName) +
               "' would cause a cycle")
   {
   }
-}; // class ExceptionAdditionCausesCycle
+}; // class ExceptionCycleDetected
 
 }; // namespace Persistency
 

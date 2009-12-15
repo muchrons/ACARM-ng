@@ -25,6 +25,8 @@ GraphNode::GraphNode(AlertPtrNN             alert,
   IO::MetaAlertAutoPtr maIO=connection->metaAlert( getMetaAlert(), t);
   maIO->save();
   maIO->associateWithAlert(leaf_);
+
+  assert( isLeaf() && "invalid initialization");
 }
 
 GraphNode::GraphNode(MetaAlertPtrNN         ma,
@@ -42,12 +44,15 @@ GraphNode::GraphNode(MetaAlertPtrNN         ma,
 
   // save data to DB along with adding elements to graph
   IO::MetaAlertAutoPtr maIO=connection->metaAlert( getMetaAlert(), t);
+  assert( maIO.get()!=NULL );
   maIO->save();
-  addChild(child1, maIO);
-  addChild(child2, maIO);
+  addChild(child1, *maIO);
+  addChild(child2, *maIO);
   for(ChildrenVector::const_iterator it=otherChildren.begin();
       it!=otherChildren.end(); ++it)
-    addChild(*it, maIO);
+    addChild(*it, *maIO);
+
+  assert( !isLeaf() && "invalid initialization");
 }
 
 GraphNode::iterator GraphNode::begin(void)
@@ -74,13 +79,15 @@ GraphNode::const_iterator GraphNode::end(void) const
   return children_.end();
 }
 
-void GraphNode::addChild(GraphNodePtrNN child, IO::MetaAlertAutoPtr maIO)
+void GraphNode::addChild(GraphNodePtrNN child, IO::MetaAlert &maIO)
 {
-  assert( maIO.get()!=NULL );
+  ensureIsNode();
+
   // check if addition will not cause cycle
   nonCyclicAddition(child);
+
   // persistency save
-  maIO->addChild( child->getMetaAlert() );
+  maIO.addChild( child->getMetaAlert() );
 }
 
 bool GraphNode::isLeaf(void) const
@@ -99,7 +106,7 @@ MetaAlertPtrNN GraphNode::getMetaAlert(void)
   return self_;
 }
 
-AlertPtr GraphNode::getAlert(void)
+AlertPtrNN GraphNode::getAlert(void)
 {
   assert( getMetaAlert().get()!=NULL );
   if( !isLeaf() )
@@ -151,10 +158,11 @@ void GraphNode::nonCyclicAddition(GraphNodePtrNN child)
 
   PtrLock lock;     // only one addition at a time! (TODO: it's too restrictive)
 
-  if( this==childPtr || hasCycle(childPtr) )
-    throw ExceptionAdditionCausesCycle(__FILE__,
-                                       child->getMetaAlert()->getName().get(),
-                                       getMetaAlert()->getName().get() );
+  if( this==childPtr           ||   // instant-cycle
+      childPtr->hasCycle(this)    ) // is it possible to access self through child
+    throw ExceptionCycleDetected(__FILE__,
+                                 child->getMetaAlert()->getName().get(),
+                                 getMetaAlert()->getName().get() );
 
   // if there is no cycle, add new child
   children_.push(child);

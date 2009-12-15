@@ -16,7 +16,7 @@
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/ExceptionNotLeaf.hpp"
 #include "Persistency/ExceptionNotNode.hpp"
-#include "Persistency/ExceptionAdditionCausesCycle.hpp"
+#include "Persistency/ExceptionCycleDetected.hpp"
 
 namespace Persistency
 {
@@ -90,9 +90,9 @@ public:
 
   /** \brief adds new child to this node.
    *  \param child node to be added as a child.
-   *  \param maIO  persistency access element.
+   *  \param maIO  persistency access element for this node.
    */
-  void addChild(GraphNodePtrNN child, IO::MetaAlertAutoPtr maIO);
+  void addChild(GraphNodePtrNN child, IO::MetaAlert &maIO);
 
   /** \brief checks if given graph part is leaf or not.
    *  \return true if this is leaf, false if this is node.
@@ -106,7 +106,7 @@ public:
   /** \brief returns alert correspoiding to this leaf.
    *  \return alert.
    */
-  AlertPtr getAlert(void);
+  AlertPtrNN getAlert(void);
 
 private:
   void ensureIsNode(void) const;
