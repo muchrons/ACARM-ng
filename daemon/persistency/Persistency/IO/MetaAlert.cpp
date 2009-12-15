@@ -60,7 +60,7 @@ void MetaAlert::addChild(Persistency::MetaAlertPtrNN child)
 
 void MetaAlert::associateWithAlert(Persistency::AlertPtrNN alert)
 {
-  associateWithAlert(alert);
+  associateWithAlertImpl(alert);
 }
 
 const Persistency::MetaAlert &MetaAlert::get(void) const

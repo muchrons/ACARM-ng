@@ -67,9 +67,9 @@ protected:
   const Persistency::MetaAlert &get(void) const;
 
 private:
-  virtual void saveImpl() = 0;
-  virtual void markAsUsedImpl() = 0;
-  virtual void markAsUnusedImpl() = 0;
+  virtual void saveImpl(void) = 0;
+  virtual void markAsUsedImpl(void) = 0;
+  virtual void markAsUnusedImpl(void) = 0;
   virtual void updateSeverityDeltaImpl(double delta) = 0;
   virtual void updateCertanityDeltaImpl(double delta) = 0;
   virtual void addChildImpl(Persistency::MetaAlertPtrNN child) = 0;
