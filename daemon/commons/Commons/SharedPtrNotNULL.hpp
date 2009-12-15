@@ -120,6 +120,7 @@ public:
    */
   void swap(SharedPtrNotNULL<T> &other)
   {
+    assert( ptr_.get()!=NULL );
     ptr_.swap(other.ptr_);
     assert( ptr_.get()!=NULL );
   }
