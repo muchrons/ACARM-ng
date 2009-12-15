@@ -84,8 +84,6 @@ factory tf("Persistency/GraphNode");
 namespace tut
 {
 
-// TODO: implement tests                
-
 // test creationg from alert
 template<>
 template<>
