@@ -26,7 +26,6 @@ public:
   /** \brief URL itself.
    */
   typedef detail::LimitedString<256> URL;
-  // TODO: consider making URL a separate clas with syntax validation
 
   /** \brief creates an object.
    *  \param name name of url (~description).

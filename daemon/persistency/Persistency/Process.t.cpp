@@ -64,17 +64,20 @@ void testObj::test<1>(void)
   ensure_equals("invalid md5",  ti.getMD5()->get(), string(md5Str_)         );
 }
 
-// TODO: take a look at this code - fix it, or remove it.
-/*
 // test NULL path
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  const ProcessTestImpl ti(NULL, "file", &md5_);
-  ensure(       "invalid path", ti.getPath().get()==NULL            );
-  ensure_equals("invalid name", ti.getName().get(), string("file")  );
-  ensure_equals("invalid md5",  ti.getMD5()->get(), string(md5Str_) );
+  const Process ti(NULL,
+                   "file",
+                   &md5_,
+                   &pid_,
+                   &uid_,
+                   user_,
+                   &args_,
+                   url_);
+  ensure("invalid path", ti.getPath().get()==NULL );
 }
 
 // test NULL MD5
@@ -82,11 +85,102 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const ProcessTestImpl ti("/path/to/file", "file", NULL);
-  ensure_equals("invalid path", ti.getPath().get(), string("/path/to/file") );
-  ensure_equals("invalid name", ti.getName().get(), string("file")          );
-  ensure(       "invalid md5",  ti.getMD5()==NULL                           );
+  const Process ti("/path/to/file",
+                   "file",
+                   NULL,
+                   &pid_,
+                   &uid_,
+                   user_,
+                   &args_,
+                   url_);
+  ensure("invalid md5", ti.getMD5()==NULL );
 }
-*/
+
+// check NULL process name
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  try
+  {
+    const Process ti("/path/to/file",
+                     NULL,
+                     &md5_,
+                     &pid_,
+                     &uid_,
+                     user_,
+                     &args_,
+                     url_);
+    fail("NULL file name accepted");
+  }
+  catch(const ExceptionNULLParameter&)
+  {
+    // this is expected
+  }
+}
+
+// check NULL PID
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const Process ti("/path/to/file",
+                   "file",
+                   &md5_,
+                   NULL,
+                   &uid_,
+                   user_,
+                   &args_,
+                   url_);
+  ensure("invalid PID", ti.getPID()==NULL );
+}
+
+// check NULL UID
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const Process ti("/path/to/file",
+                   "file",
+                   &md5_,
+                   &pid_,
+                   NULL,
+                   user_,
+                   &args_,
+                   url_);
+  ensure("invalid UID", ti.getUID()==NULL );
+}
+
+// check NULL args
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const Process ti("/path/to/file",
+                   "file",
+                   &md5_,
+                   &pid_,
+                   &uid_,
+                   user_,
+                   NULL,
+                   url_);
+  ensure("invalid arguments/paramters", ti.getParameters()==NULL );
+}
+
+// check NULL URL
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const Process ti("/path/to/file",
+                   "file",
+                   &md5_,
+                   &pid_,
+                   &uid_,
+                   user_,
+                   &args_,
+                   ReferenceURLPtr() );
+  ensure("invalid ", ti.getReferenceURL()==NULL );
+}
 
 } // namespace tut
