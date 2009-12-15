@@ -13,9 +13,9 @@ namespace IO
 namespace Stubs
 {
 
-MetaAlert::MetaAlert(Persistency::MetaAlertPtr  ma,
-                     const Transaction         &t,
-                     int                        handler):
+MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
+                     const Transaction           &t,
+                     int                          handler):
   IO::MetaAlert(ma, t),
   saveCalls_(0),
   markAsUsedCalls_(0),
@@ -54,12 +54,12 @@ void MetaAlert::updateCertanityDeltaImpl(double /*delta*/)
   ++updateCertanityDeltaCalls_;
 }
 
-void MetaAlert::addChildImpl(Persistency::MetaAlertPtr /*child*/)
+void MetaAlert::addChildImpl(Persistency::MetaAlertPtrNN /*child*/)
 {
   ++addChildCalls_;
 }
 
-void MetaAlert::associateWithAlertImpl(Persistency::AlertPtr /*alert*/)
+void MetaAlert::associateWithAlertImpl(Persistency::AlertPtrNN /*alert*/)
 {
   ++assoicateWithAlertCalls_;
 }

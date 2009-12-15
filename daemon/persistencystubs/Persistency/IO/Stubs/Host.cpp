@@ -13,9 +13,9 @@ namespace IO
 namespace Stubs
 {
 
-Host::Host(Persistency::HostPtr  host,
-           const Transaction    &t,
-           int                   handler):
+Host::Host(Persistency::HostPtrNN  host,
+           const Transaction      &t,
+           int                     handler):
   IO::Host(host, t),
   setNameCalls_(0)
 {

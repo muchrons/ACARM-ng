@@ -24,9 +24,9 @@ public:
    *  \param t       active transaction.
    *  \param handler persistency handler.
    */
-  MetaAlert(Persistency::MetaAlertPtr  ma,
-            const Transaction         &t,
-            int                        handler);
+  MetaAlert(Persistency::MetaAlertPtrNN  ma,
+            const Transaction           &t,
+            int                          handler);
 
   size_t saveCalls_;                    ///< calss count to save().
   size_t markAsUsedCalls_;              ///< calss count to markAsUsed().
@@ -42,8 +42,8 @@ private:
   virtual void markAsUnusedImpl();
   virtual void updateSeverityDeltaImpl(double delta);
   virtual void updateCertanityDeltaImpl(double delta);
-  virtual void addChildImpl(Persistency::MetaAlertPtr child);
-  virtual void associateWithAlertImpl(Persistency::AlertPtr alert);
+  virtual void addChildImpl(Persistency::MetaAlertPtrNN child);
+  virtual void associateWithAlertImpl(Persistency::AlertPtrNN alert);
 }; // class MetaAlert
 
 } // namespace Stubs

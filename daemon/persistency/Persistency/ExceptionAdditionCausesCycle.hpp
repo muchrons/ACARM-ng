@@ -19,8 +19,9 @@ class ExceptionAdditionCausesCycle: public Exception
 {
 public:
   /** \brief create execption with given message.
-   *  \param where place where exception has been rised
-   *  \param name  name of the node (leaf).
+   *  \param where      place where exception has been rised
+   *  \param parentName name of a paretnt child was being tried to be attached to.
+   *  \param childName  name of child that was ot be attached.
    */
   ExceptionAdditionCausesCycle(const char *where,
                                const char *parentName,

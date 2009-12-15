@@ -13,9 +13,9 @@ namespace IO
 namespace Stubs
 {
 
-Alert::Alert(Persistency::AlertPtr  alert,
-             const Transaction     &t,
-             int                    handler):
+Alert::Alert(Persistency::AlertPtrNN  alert,
+             const Transaction       &t,
+             int                      handler):
   IO::Alert(alert, t),
   saveCalls_(0)
 {

@@ -50,10 +50,12 @@ public:
    *  \param t          current transaction.
    */
   GraphNode(AlertPtrNN             alert,
-            IO::ConnectionPtr      connection,
+            IO::ConnectionPtrNN    connection,
             const IO::Transaction &t);
   /** \brief create new node by correlating given ones.
    *  \param ma            meta alert's data to be used as this one.
+   *  \param connection    connection to persistency module.
+   *  \param t             transaction to use for connecting.
    *  \param child1        first node to be corelated.
    *  \param child2        second child to be correlated.
    *  \param otherChildren list of rest childrent, if needed.
@@ -62,7 +64,7 @@ public:
    *        (at 2 parameters are always required).
    */
   GraphNode(MetaAlertPtrNN         ma,
-            IO::ConnectionPtr      connection,
+            IO::ConnectionPtrNN    connection,
             const IO::Transaction &t,
             GraphNodePtrNN         child1,
             GraphNodePtrNN         child2,

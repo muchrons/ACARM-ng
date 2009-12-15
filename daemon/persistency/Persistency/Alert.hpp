@@ -50,7 +50,7 @@ public:
    *  \param targetHosts targeted hosts.
    */
   Alert(const Name          &name,
-        AnalyzerPtr          analyzer,
+        AnalyzerPtrNN        analyzer,
         const Timestamp     *detected,
         const Timestamp     &created,
         Severity             severity,
@@ -100,7 +100,7 @@ public:
 
 private:
   Name                           name_;
-  AnalyzerPtr                    analyzer_;
+  AnalyzerPtrNN                  analyzer_;
   boost::scoped_ptr<Timestamp>   detected_;
   Timestamp                      created_;
   Severity                       severity_;

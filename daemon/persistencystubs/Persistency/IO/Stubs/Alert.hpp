@@ -24,9 +24,9 @@ public:
    *  \param t       active transaction.
    *  \param handler persistency handler.
    */
-  Alert(Persistency::AlertPtr  alert,
-        const Transaction     &t,
-        int                    handler);
+  Alert(Persistency::AlertPtrNN  alert,
+        const Transaction       &t,
+        int                      handler);
 
   /** number of times 'saveImpl()' has been called. */
   size_t saveCalls_;

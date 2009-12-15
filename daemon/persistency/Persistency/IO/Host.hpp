@@ -28,8 +28,8 @@ public:
    *  \param host host to work on.
    *  \param t    active transaction.
    */
-  Host(Persistency::HostPtr  host,
-       const Transaction    &t);
+  Host(Persistency::HostPtrNN  host,
+       const Transaction      &t);
   /** \brief virtual d-tor for polymorphic base class.
    */
   virtual ~Host(void);

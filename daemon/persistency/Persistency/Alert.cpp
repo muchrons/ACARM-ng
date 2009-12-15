@@ -12,7 +12,7 @@ namespace Persistency
 {
 
 Alert::Alert(const Name          &name,
-             AnalyzerPtr          analyzer,
+             AnalyzerPtrNN        analyzer,
              const Timestamp     *detected,
              const Timestamp     &created,
              Severity             severity,
@@ -30,9 +30,6 @@ Alert::Alert(const Name          &name,
   sourceHosts_(sourceHosts),
   targetHosts_(targetHosts)
 {
-  // check if required pointer paramters are NOT NULLs, as they should
-  if(analyzer_.get()==NULL)
-    throw ExceptionNULLParameter(CALLNAME, "analyzer");
 }
 
 const Alert::Name &Alert::getName(void) const

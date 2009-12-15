@@ -30,21 +30,21 @@ TransactionAPIAutoPtr Connection::createNewTransactionImpl(
   return Persistency::IO::TransactionAPIAutoPtr();
 }
 
-AlertAutoPtr Connection::alertImpl(AlertPtr           /*alert*/,
+AlertAutoPtr Connection::alertImpl(AlertPtrNN         /*alert*/,
                                    const Transaction &/*t*/)
 {
   // TODO
   return Persistency::IO::AlertAutoPtr();
 }
 
-HostAutoPtr Connection::hostImpl(HostPtr            /*host*/,
+HostAutoPtr Connection::hostImpl(HostPtrNN          /*host*/,
                                  const Transaction &/*t*/)
 {
   // TODO
   return Persistency::IO::HostAutoPtr();
 }
 
-MetaAlertAutoPtr Connection::metaAlertImpl(MetaAlertPtr       /*ma*/,
+MetaAlertAutoPtr Connection::metaAlertImpl(MetaAlertPtrNN     /*ma*/,
                                            const Transaction &/*t*/)
 {
   // TODO

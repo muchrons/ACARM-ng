@@ -24,9 +24,9 @@ public:
    *  \param t       active transaction.
    *  \param handler persistency handler.
    */
-  Host(Persistency::HostPtr  host,
-       const Transaction    &t,
-       int                   handler);
+  Host(Persistency::HostPtrNN  host,
+       const Transaction      &t,
+       int                     handler);
 
   /** number of times setting name has been called. */
   size_t setNameCalls_;

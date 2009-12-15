@@ -11,7 +11,7 @@ namespace Persistency
 {
 
 GraphNode::GraphNode(AlertPtrNN             alert,
-                     IO::ConnectionPtr      connection,
+                     IO::ConnectionPtrNN    connection,
                      const IO::Transaction &t):
   self_( new MetaAlert(alert) ),
   leaf_(alert)
@@ -28,7 +28,7 @@ GraphNode::GraphNode(AlertPtrNN             alert,
 }
 
 GraphNode::GraphNode(MetaAlertPtrNN         ma,
-                     IO::ConnectionPtr      connection,
+                     IO::ConnectionPtrNN    connection,
                      const IO::Transaction &t,
                      GraphNodePtrNN         child1,
                      GraphNodePtrNN         child2,

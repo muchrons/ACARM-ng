@@ -104,4 +104,22 @@ void testObj::test<3>(void)
   ensure("description is not NULL", a.getDescription()==NULL);
 }
 
+// test c-tor for NULL analyzer
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  AnalyzerPtr tmp;
+  try
+  {
+    Alert a(name_, tmp, &detected_, created_, severity_, certanity_,
+            &description_, sourceHosts_, targetHosts_);
+    fail("NULL analyzer has been accepted");
+  }
+  catch(const Commons::ExceptionUnexpectedNULL&)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut
