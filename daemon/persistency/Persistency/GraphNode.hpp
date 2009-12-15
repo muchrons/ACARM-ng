@@ -16,8 +16,7 @@
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/ExceptionNotLeaf.hpp"
 #include "Persistency/ExceptionNotNode.hpp"
-
-// TODO
+#include "Persistency/ExceptionAdditionCausesCycle.hpp"
 
 namespace Persistency
 {
@@ -37,11 +36,12 @@ private:
   typedef Base::Threads::GrowingVector<GraphNodePtr> GraphNodesList;
 
 public:
-  /** \brief non-const iterator to collection.
-   */
+  /** \brief childrent to be passed as argument. */
+  typedef std::vector<GraphNodePtr>      ChildrenVector;
+
+  /** \brief non-const iterator to collection. */
   typedef GraphNodesList::iterator       iterator;
-  /** \brief const iterator to colection.
-   */
+  /** \brief const iterator to colection. */
   typedef GraphNodesList::const_iterator const_iterator;
 
   /** \brief create graph's leaf from a given alert.
@@ -52,6 +52,21 @@ public:
   GraphNode(AlertPtr               alert,
             IO::ConnectionPtr      connection,
             const IO::Transaction &t);
+  /** \brief create new node by correlating given ones.
+   *  \param ma            meta alert's data to be used as this one.
+   *  \param child1        first node to be corelated.
+   *  \param child2        second child to be correlated.
+   *  \param otherChildren list of rest childrent, if needed.
+   *  \note although all children are equal, this interface is intentionally
+   *        split into 3 paramters to ensure no missusage is possible
+   *        (at 2 parameters are always required).
+   */
+  GraphNode(MetaAlertPtr           ma,
+            IO::ConnectionPtr      connection,
+            const IO::Transaction &t,
+            GraphNodePtr           child1,
+            GraphNodePtr           child2,
+            const ChildrenVector  &otherChildren=ChildrenVector() );
 
   /** \brief returns non-const begin iterator.
    *  \return begin iterator.
@@ -93,10 +108,12 @@ public:
 
 private:
   void ensureIsNode(void) const;
+  void nonCyclicAddition(GraphNodePtr child);
+  bool hasCycle(const GraphNode *child) const;
 
-  MetaAlertPtr    self_;
-  GraphNodesList  children_;
-  AlertPtr        leaf_;
+  MetaAlertPtr   self_;
+  GraphNodesList children_;
+  AlertPtr       leaf_;
 }; // class GraphNode
 
 } // namespace Persistency
