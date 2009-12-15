@@ -10,6 +10,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Host.hpp"
 #include "Persistency/detail/LimitedString.hpp"
 
@@ -46,9 +47,11 @@ private:
 }; // class Analyzer
 
 
-/** \brief smarth pointer to analyzer class.
- */
-typedef boost::shared_ptr<Analyzer> AnalyzerPtr;
+/** \brief smarth pointer to analyzer class. */
+typedef boost::shared_ptr<Analyzer>         AnalyzerPtr;
+
+/** \brief smarth pointer to analyzer class, check not to be NULL. */
+typedef Commons::SharedPtrNotNULL<Analyzer> AnalyzerPtrNN;
 
 } // namespace Persistency
 

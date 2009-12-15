@@ -10,7 +10,7 @@
 namespace Persistency
 {
 
-GraphNode::GraphNode(AlertPtr               alert,
+GraphNode::GraphNode(AlertPtrNN             alert,
                      IO::ConnectionPtr      connection,
                      const IO::Transaction &t):
   self_( new MetaAlert(alert) ),
@@ -27,11 +27,11 @@ GraphNode::GraphNode(AlertPtr               alert,
   maIO->associateWithAlert(leaf_);
 }
 
-GraphNode::GraphNode(MetaAlertPtr           ma,
+GraphNode::GraphNode(MetaAlertPtrNN         ma,
                      IO::ConnectionPtr      connection,
                      const IO::Transaction &t,
-                     GraphNodePtr           child1,
-                     GraphNodePtr           child2,
+                     GraphNodePtrNN         child1,
+                     GraphNodePtrNN         child2,
                      const ChildrenVector  &otherChildren):
   self_(ma),
   leaf_()
@@ -74,7 +74,7 @@ GraphNode::const_iterator GraphNode::end(void) const
   return children_.end();
 }
 
-void GraphNode::addChild(GraphNodePtr child, IO::MetaAlertAutoPtr maIO)
+void GraphNode::addChild(GraphNodePtrNN child, IO::MetaAlertAutoPtr maIO)
 {
   assert( maIO.get()!=NULL );
   // check if addition will not cause cycle
@@ -93,7 +93,7 @@ bool GraphNode::isLeaf(void) const
   return false;
 }
 
-MetaAlertPtr GraphNode::getMetaAlert(void)
+MetaAlertPtrNN GraphNode::getMetaAlert(void)
 {
   assert(self_.get()!=NULL);
   return self_;
@@ -144,7 +144,7 @@ struct PtrLock
 
 } // unnamed namespace
 
-void GraphNode::nonCyclicAddition(GraphNodePtr child)
+void GraphNode::nonCyclicAddition(GraphNodePtrNN child)
 {
   const GraphNode *childPtr=child.get();
   assert(childPtr!=NULL);

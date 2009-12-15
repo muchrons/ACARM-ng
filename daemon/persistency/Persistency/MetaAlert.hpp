@@ -12,6 +12,7 @@
 #include <boost/date_time/gregorian/gregorian.hpp>
 
 #include "Base/Threads/Mutex.hpp"
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/ReferenceURL.hpp"
@@ -97,9 +98,11 @@ private:
 }; // class MetaAlert
 
 
-/** \brief smart pointer to Alert type.
- */
-typedef boost::shared_ptr<MetaAlert> MetaAlertPtr;
+/** \brief smart pointer to Alert type. */
+typedef boost::shared_ptr<MetaAlert>         MetaAlertPtr;
+
+/** \brief smart pointer to Alert type, checked not to be NULL. */
+typedef Commons::SharedPtrNotNULL<MetaAlert> MetaAlertPtrNN;
 
 } // namespace Persistency
 

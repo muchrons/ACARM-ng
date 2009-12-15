@@ -14,6 +14,7 @@
 #include <boost/asio/ip/address.hpp>
 
 #include "Base/Threads/Mutex.hpp"
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/ReferenceURL.hpp"
 #include "Persistency/Service.hpp"
 #include "Persistency/Process.hpp"
@@ -138,9 +139,11 @@ private:
 }; // class Host
 
 
-/** \brief smart pointer to host name.
- */
-typedef boost::shared_ptr<Host> HostPtr;
+/** \brief smart pointer to host name. */
+typedef boost::shared_ptr<Host>         HostPtr;
+
+/** \brief smart pointer to host name, checked not to be NULL. */
+typedef Commons::SharedPtrNotNULL<Host> HostPtrNN;
 
 } // namespace Persistency
 

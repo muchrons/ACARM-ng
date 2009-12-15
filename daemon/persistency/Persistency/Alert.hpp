@@ -13,6 +13,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/Severity.hpp"
@@ -110,9 +111,11 @@ private:
 }; // class Alert
 
 
-/** \brief smart pointer to Alert type.
- */
-typedef boost::shared_ptr<Alert> AlertPtr;
+/** \brief smart pointer to Alert type. */
+typedef boost::shared_ptr<Alert>         AlertPtr;
+
+/** \brief smart pointer to ALert type, that is sure not to be NULL. */
+typedef Commons::SharedPtrNotNULL<Alert> AlertPtrNN;
 
 } // namespace Persistency
 
