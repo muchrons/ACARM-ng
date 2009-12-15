@@ -18,9 +18,6 @@
 #include "Persistency/ReferenceURL.hpp"
 #include "Persistency/detail/LimitedString.hpp"
 
-// TODO: implement
-// TODO: test
-// TODO: comment
 
 namespace Persistency
 {
@@ -48,7 +45,7 @@ public:
   /** \brief creates meta alert based on exisitng alert.
    *  \param alert to corelate meta-alert with.
    */
-  explicit MetaAlert(AlertPtr alert);
+  explicit MetaAlert(AlertPtrNN alert);
 
   /** \brief create new meta-alert.
    *  \param name           name for meta alert.

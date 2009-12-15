@@ -10,7 +10,7 @@ using Base::Threads::Lock;
 namespace Persistency
 {
 
-MetaAlert::MetaAlert(AlertPtr alert):
+MetaAlert::MetaAlert(AlertPtrNN alert):
   name_( alert->getName() ),
   severityDelta_(0),
   certanityDelta_(0),
