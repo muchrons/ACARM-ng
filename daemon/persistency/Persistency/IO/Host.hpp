@@ -51,6 +51,7 @@ private:
 }; // class Host
 
 
+/** \brief auto pointer to IO::Host. */
 typedef std::auto_ptr<Host> HostAutoPtr;
 
 } // namespace IO

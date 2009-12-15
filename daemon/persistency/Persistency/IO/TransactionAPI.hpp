@@ -53,6 +53,7 @@ private:
 }; // class TransactionAPI
 
 
+/** \brief auto pointer to IO::TransactionAPI class. */
 typedef std::auto_ptr<TransactionAPI> TransactionAPIAutoPtr;
 
 } // namespace IO

@@ -79,6 +79,7 @@ private:
 }; // class MetaAlert
 
 
+/** \brief auto pointer to IO::MetaAlert class. */
 typedef std::auto_ptr<MetaAlert> MetaAlertAutoPtr;
 
 } // namespace IO
