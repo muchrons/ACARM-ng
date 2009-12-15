@@ -110,6 +110,7 @@ template<>
 void testObj::test<4>(void)
 {
   AnalyzerPtr tmp;
+  assert( tmp.get()==NULL );
   try
   {
     Alert a(name_, tmp, &detected_, created_, severity_, certanity_,

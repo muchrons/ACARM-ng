@@ -6,8 +6,7 @@
 #include <sstream>
 
 #include "Persistency/IO/Connection.hpp"
-#include "Persistency/IO/TestTransactionAPI.t.hpp"
-#include "Persistency/TestHelpers.t.hpp"
+#include "Persistency/IO/IOStubs.t.hpp"
 
 using namespace std;
 using namespace tut;
@@ -16,134 +15,6 @@ using namespace Persistency::IO;
 
 namespace
 {
-
-class IOAlert: public IO::Alert
-{
-public:
-  IOAlert(Persistency::AlertPtrNN  alert,
-          const Transaction       &t):
-    IO::Alert(alert, t),
-    alert_(alert),
-    calls_(0)
-  {
-  }
-
-  virtual void saveImpl(void)
-  {
-    ++calls_;
-    ensure("invalid object", &get()==alert_.get() );
-  }
-
-  Persistency::AlertPtrNN alert_;
-  int                     calls_;
-}; // class IOAlert
-
-
-class IOHost: public IO::Host
-{
-public:
-  IOHost(Persistency::HostPtrNN  host,
-         const Transaction      &t):
-    IO::Host(host, t),
-    host_(host)
-  {
-  }
-
-  virtual void setNameImpl(const Persistency::Host::Name &/*name*/)
-  {
-    ++calls_;
-    ensure("invalid host", &get()==host_.get() );
-  }
-
-  Persistency::HostPtr host_;
-  int                  calls_;
-}; // class IOHost
-
-class IOMetaAlert: public IO::MetaAlert
-{
-public:
-  IOMetaAlert(Persistency::MetaAlertPtrNN  ma,
-              const Transaction           &t):
-    IO::MetaAlert(ma, t),
-    ma_(ma)
-  {
-    for(unsigned int i=0; i<sizeof(called_)/sizeof(called_[0]); ++i)
-      called_[i]=0;
-  }
-
-  virtual void saveImpl(void)
-  {
-    ++called_[0];
-    ensure("invalid meta alert", &get()==ma_.get() );
-  }
-  virtual void markAsUsedImpl(void)
-  {
-    ++called_[1];
-    ensure("invalid meta alert", &get()==ma_.get() );
-  }
-  virtual void markAsUnusedImpl(void)
-  {
-    ++called_[2];
-    ensure("invalid meta alert", &get()==ma_.get() );
-  }
-  virtual void updateSeverityDeltaImpl(double /*delta*/)
-  {
-    ++called_[3];
-    ensure("invalid meta alert", &get()==ma_.get() );
-  }
-  virtual void updateCertanityDeltaImpl(double /*delta*/)
-  {
-    ++called_[4];
-    ensure("invalid meta alert", &get()==ma_.get() );
-  }
-  virtual void addChildImpl(Persistency::MetaAlertPtrNN /*child*/)
-  {
-    ++called_[5];
-    ensure("invalid meta alert", &get()==ma_.get() );
-  }
-  virtual void associateWithAlertImpl(Persistency::AlertPtrNN /*alert*/)
-  {
-    ++called_[6];
-    ensure("invalid meta alert", &get()==ma_.get() );
-  }
-
-  Persistency::MetaAlertPtr ma_;
-  int                       called_[7];
-}; // class MetaAlert
-
-
-struct TestIOConnection: public Persistency::IO::Connection
-{
-  TestIOConnection(void)
-  {
-    for(unsigned int i=0; i<sizeof(called_)/sizeof(called_[0]); ++i)
-      called_[i]=0;
-  }
-
-  virtual TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &/*mutex*/,
-                                                         const std::string    &/*name*/)
-  {
-    ++called_[0];
-    return TransactionAPIAutoPtr(new TestTransactionAPI);
-  }
-  virtual AlertAutoPtr alertImpl(AlertPtrNN alert, const Transaction &t)
-  {
-    ++called_[1];
-    return AlertAutoPtr( new IOAlert(alert, t) );
-  }
-  virtual HostAutoPtr hostImpl(HostPtrNN host, const Transaction &t)
-  {
-    ++called_[2];
-    return HostAutoPtr( new IOHost(host, t) );
-  }
-  virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, const Transaction &t)
-  {
-    ++called_[3];
-    return MetaAlertAutoPtr( new IOMetaAlert(ma, t) );
-  }
-
-  int called_[4];
-}; // struct TestIOConnection
 
 struct TestClass
 {
