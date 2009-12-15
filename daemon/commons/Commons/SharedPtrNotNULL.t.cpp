@@ -3,10 +3,11 @@
  *
  */
 #include <tut.h>
-#include <memory>
+#include <string>
 
 #include "Commons/SharedPtrNotNULL.hpp"
 
+using namespace std;
 using namespace Commons;
 
 namespace
@@ -14,8 +15,10 @@ namespace
 
 struct TestClass
 {
-  typedef boost::shared_ptr<int> BoostPtr;
-  typedef SharedPtrNotNULL<int>  PtrNN;
+  typedef boost::shared_ptr<int>   BoostPtr;
+  typedef SharedPtrNotNULL<int>    PtrNN;
+
+  typedef SharedPtrNotNULL<string> StrPtrNN;
 
   TestClass(void):
     nn_( new int(42) )
@@ -200,6 +203,26 @@ void testObj::test<14>(void)
   tmp.swap(nn_);
   ensure("invalid tmp pointer's value", tmp.get()==p1);
   ensure("invalid nn_ pointer's value", nn_.get()==p2);
+}
+
+// test arrow operator
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  const string tmp="Alice in Wonderland";
+  StrPtrNN     ptr( new string(tmp) );
+  ensure_equals("arrow operator failed", ptr->c_str(), tmp);
+}
+
+// test const-arrow operator
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  const string   tmp="Alice in Wonderland";
+  const StrPtrNN ptr( new string(tmp) );
+  ensure_equals("arrow operator failed", ptr->c_str(), tmp);
 }
 
 } // namespace tut
