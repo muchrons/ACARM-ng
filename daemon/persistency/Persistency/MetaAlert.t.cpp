@@ -38,8 +38,6 @@ factory tf("Persistency/MetaAlert");
 namespace tut
 {
 
-// TODO: implement this
-
 // test creting meta-alert from alert
 template<>
 template<>
