@@ -3,25 +3,28 @@
  *
  */
 #include <tut.h>
+#include <cstring>
 
 #include "Logger/detail/LogStream.hpp"
+#include "Logger/TestHelpers.t.hpp"
 
+using namespace std;
 using namespace Logger;
 using namespace Logger::detail;
 
 namespace
 {
 
+#define MAKE_LS(name) LogStream< &Node::debug > name(log_, "filename", "function()", 42)
+
 struct TestClass
 {
   TestClass(void):
-    log_("logger.test"),
-    ls_(log_, "filename", "function()", 42)
+    log_("logger.test")
   {
   }
 
-  Node                      log_;
-  LogStream< &Node::debug > ls_;
+  Node log_;
 };
 
 typedef TestClass TestClass;
@@ -35,22 +38,32 @@ factory tf("Logger/LogStream");
 namespace tut
 {
 
-// test c-tor, d-tor
+// test no log when nothing has been added to message
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  // d-tor will be called by test object's class
+  const string pre=getLastLogMessage();
+  {
+    MAKE_LS(ls);
+  }
+  const string post=getLastLogMessage();
+  ensure_equals("something has been logged", post, pre);
 }
 
-// try logging different data types - it should compile
+// try logging different data types
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  ls_<<"string";
-  ls_<<42;
-  ls_<<4.2;
+  {
+    MAKE_LS(ls);
+    ls<<"string";
+    ls<<42;
+    ls<<'+';
+    ls<<4.2;
+  }
+  ensureLoggedPart("string42+4.2");
 }
 
 // try multiple additions in single row
@@ -58,7 +71,11 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ls_<<1<<2<<3;
+  {
+    MAKE_LS(ls);
+    ls<<1<<2<<3;
+  }
+  ensureLoggedPart("123");
 }
 
 // try logging to temporary object
@@ -67,13 +84,12 @@ template<>
 void testObj::test<4>(void)
 {
   // 1
-  LogStream< &Node::debug >(log_, "file", "f()", 42)<<1<<2<<3;
-  // 2
-  LogStream< &Node::debug >(log_, "file", "f()", 42)<<4<<5<<6;
-}
+  LogStream< &Node::debug >(log_, "file", "f()", 42)<<'x'<<1<<2<<3;
+  ensureLoggedPart("x123");
 
-//
-// TODO: further testing requires configurable logger
-//
+  // 2
+  LogStream< &Node::debug >(log_, "file", "f()", 42)<<'y'<<4<<5<<6;
+  ensureLoggedPart("y456");
+}
 
 } // namespace tut
