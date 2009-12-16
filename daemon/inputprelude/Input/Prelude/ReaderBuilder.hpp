@@ -11,6 +11,7 @@
 
 #include "Logger/Logger.hpp"
 #include "Input/ReadersFactory.hpp"
+#include "Input/Exception.hpp"
 
 namespace Input
 {

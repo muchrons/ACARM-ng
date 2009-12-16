@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <cstring>
 #include <memory>
+#include <string>
 
 #include "Input/Prelude/Reader.hpp"
 
@@ -14,12 +15,15 @@ using namespace Input::Prelude;
 namespace
 {
 
-struct ReaderTestClass
+struct TestClass
 {
+  TestClass():r_("profile")
+  {   
+  }
   Reader r_;
 };
 
-typedef ReaderTestClass TestClass;
+typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

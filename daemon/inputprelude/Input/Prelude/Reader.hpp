@@ -7,11 +7,15 @@
 
 /* public header */
 
-#include <memory>
 #include <boost/noncopyable.hpp>
+#include <boost/scoped_ptr.hpp>
 
+#include "PreludePP/idmef.hpp"
+#include "PreludePP/prelude-client.hpp"
 #include "Input/Reader.hpp"
 #include "Input/Prelude/LogCallback.hpp"
+
+
 
 // TODO: implement
 // TODO: test
@@ -28,8 +32,8 @@ class Reader: public Input::Reader
 public:
   /** \brief create prelud reader.
    */
-  Reader(void);
-
+  Reader(const std::string profile);
+public:
   /** \brief reads data from input from prelude-manager.
    *  \param timeout milliseconds to wait before timeout occures.
    *  \return pointer to newly allocated strucutre or NULL on timeout.
@@ -38,6 +42,8 @@ public:
 
 private:
   LogCallback preludeLogger_;
+  std::string prelude_profile;
+  boost::scoped_ptr< ::Prelude::Client > client;
 }; // class Reader
 
 } // namespace Prelude

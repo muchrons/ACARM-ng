@@ -1,7 +1,7 @@
 format 66
 "acarm-ng"
-  revision 1
-  modified_by 42 "basz"
+  revision 2
+  modified_by 66 "wojek"
 
 
   
@@ -63,16 +63,6 @@ format 66
 	  on component_ref 128426 // ConfigIO
       end
 
-      simplerelation 128426
-	-_->
-	  on component_ref 128170 // InputDataSet
-      end
-
-      simplerelation 128554
-	-_->
-	  on component_ref 128298 // CorrelationSet
-      end
-
       simplerelation 128938
 	-_->
 	  on component_ref 129066 // Input
@@ -89,19 +79,6 @@ format 66
       end
     end
 
-    component 128170 "InputDataSet"
-      comment "Set holding all alerts that have arrived to the system. This is read-only set, that elements are not allowed to be modified. Elements themselfes can be added and removed though."
-    end
-
-    component 128298 "CorrelationSet"
-      comment "Set of correlated alerts. Set can be expanded, truncated and edited according to filter plugins rules.
-
-Note that each single alert in input set is a correlated alert too, though consisting only of 1 entry."
-      simplerelation 128682
-	-_->
-	  on component_ref 128170 // InputDataSet
-      end
-    end
   end
 
   componentview 128170 "IO"
@@ -164,5 +141,4 @@ In general each operation must happen in data base to ensure fail-safe and recov
       comment "FSM - Finite State Machine. Component for defining states and transitions between them and allows persistent state holding in case of system crash."
     end
   end
-
 end
