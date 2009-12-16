@@ -29,7 +29,7 @@ namespace Logger
 
 // log message in stream-like manier
 #define LOGMSG_PRI_INTERNAL_STREAM_IMPLEMENTATION(id, method) \
-  Logger::detail::LogStream< &Node::method >( (id), __FILE__, PRETTY_FUNCTION_WRAPPER, __LINE__ )
+  ::Logger::detail::LogStream< &::Logger::Node::method >( (id), __FILE__, PRETTY_FUNCTION_WRAPPER, __LINE__ )
 
 } // namespace Logger
 

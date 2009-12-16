@@ -10,15 +10,13 @@
 #include "Logger/TestHelpers.t.hpp"
 
 using namespace tut;
-using namespace std;
-using namespace Logger;
-
+using Logger::ensureLoggedPart;
 
 namespace
 {
-struct LoggerTestClass
+struct TestClass
 {
-  LoggerTestClass():
+  TestClass():
     n_("a.b.c")
   {
     for(unsigned int i=0; i<sizeof(calls_)/sizeof(calls_[0]); ++i)
@@ -34,12 +32,12 @@ struct LoggerTestClass
     ensure("invalid file name", strstr(file, "Logger.t.cpp")!=NULL);
 
     ensure("call paramter is null", call!=NULL);
-    ensure("invalid call name", strstr(call, "LoggerTestClass")!=NULL);
+    ensure("invalid call name", strstr(call, "TestClass")!=NULL);
 
     ensure("line is not valid",     line>30);
 
     ensure("msg paramter is null",  msg!=NULL);
-    ensure_equals("invalid message", string(msg), "test");
+    ensure_equals("invalid message", std::string(msg), "test");
   }
 
   void debug(const char   *file,
@@ -96,11 +94,11 @@ struct LoggerTestClass
         ensure_equals("invalid call made", calls_[i], 0);
   }
 
-  Node        n_;
-  mutable int calls_[5];
+  Logger::Node n_;
+  mutable int  calls_[5];
 };
 
-typedef LoggerTestClass TestClass;
+typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
