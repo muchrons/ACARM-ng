@@ -47,10 +47,10 @@ int main(int argc, char * argv[])
 
       if (id.GetType()==IDMEF_VALUE_TYPE_LIST)
 	{
-	  prelude_list_t *head=(prelude_list_t*)(&id);
-	  prelude_list_t *tmp=0;
-	  IDMEFValue *id2;
-
+	  //prelude_list_t *head=(prelude_list_t*)(&id);
+	  //prelude_list_t *tmp=0;
+	  //IDMEFValue *id2;
+	  /*
 	  if(head)
 	    prelude_list_for_each(head, tmp) 
 	      {
@@ -62,7 +62,8 @@ int main(int argc, char * argv[])
 		    //std::cerr << id2->GetType() << std::endl;		    
 		    //std::cout << (std::string)*id2 << std::endl;    
 		  }		
-	      }	      	  	  
+	      }
+	  */	      	  	  
 	}
       /*
       id=idmef.Get("alert.analyzer");
