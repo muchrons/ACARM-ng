@@ -18,7 +18,7 @@ namespace Threads
 
 /** \brief mutex-locking class.
  */
-typedef boost::lock_guard<Mutex> Lock;
+typedef boost::unique_lock<Mutex> Lock;
 
 } // namespace Threads
 } // namespace Base
