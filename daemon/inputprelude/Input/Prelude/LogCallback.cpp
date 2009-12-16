@@ -71,8 +71,8 @@ namespace Input
 namespace Prelude
 {
 
-LogCallback::LogCallback(void):
-  log_("input.prelude.logcallback")
+LogCallback::LogCallback(const char *node):
+  log_(node)
 {
   LOGMSG_INFO(log_, "registering callback to use common logger in system");
 
