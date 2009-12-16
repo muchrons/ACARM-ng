@@ -48,6 +48,4 @@ void testObj::test<2>(void)
   ensure("NULL pointere returned", ptr!=NULL);
 }
 
-// TODO: test different options
-
 } // namespace tut
