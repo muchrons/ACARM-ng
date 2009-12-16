@@ -4,11 +4,10 @@
  */
 #include <cassert>
 
-#include "Input/Prelude/Reader.hpp"
+#include "PreludePP/idmef.hpp"
+#include "PreludePP/prelude-client.hpp"
 #include "Persistency/Alert.hpp"
-
-#include <idmef.hxx>                                                                                                                         
-#include <prelude-client.hxx>
+#include "Input/Prelude/Reader.hpp"
 
 namespace Input
 {
@@ -18,13 +17,13 @@ namespace Prelude
 Reader::Reader(const std::string profile):
   preludeLogger_("input.prelude.reader.preludelog"),
   prelude_profile(profile),
-  client(new ::Prelude::Client("ACARM-wojek-acm")) 
+  client( new ::Prelude::Client( prelude_profile.c_str() ) )
 {
     client->SetConfigFilename("/etc/prelude/default/client.conf");
     client->SetRequiredPermission(PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
     //client.SetFlags( Client::FLAGS_ASYNC_TIMER);
     client->Init();
-    client->Start();    
+    client->Start();
 }
 
 Reader::DataPtr Reader::read(const unsigned int /*timeout*/)
@@ -36,9 +35,6 @@ Reader::DataPtr Reader::read(const unsigned int /*timeout*/)
   //IDMEF idmef;
   //client >> idmef;
 
-  
-  
-  
   return tmp;//new Alert();
 }
 

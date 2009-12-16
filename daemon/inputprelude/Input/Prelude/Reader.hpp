@@ -7,11 +7,11 @@
 
 /* public header */
 
-#include <memory>
 #include <boost/noncopyable.hpp>
-#include <PreludePP/idmef.hpp>
-#include <PreludePP/prelude-client.hpp>
+#include <boost/scoped_ptr.hpp>
 
+#include "PreludePP/idmef.hpp"
+#include "PreludePP/prelude-client.hpp"
 #include "Input/Reader.hpp"
 #include "Input/Prelude/LogCallback.hpp"
 
@@ -43,7 +43,7 @@ public:
 private:
   LogCallback preludeLogger_;
   std::string prelude_profile;
-  std::auto_ptr< ::Prelude::Client > client;
+  boost::scoped_ptr< ::Prelude::Client > client;
 }; // class Reader
 
 } // namespace Prelude

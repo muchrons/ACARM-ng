@@ -42,7 +42,10 @@ ReaderBuilder::FactoryPtr ReaderBuilder::buildImpl(const Options & opt) const
 
   // TODO: implement this
 
-  std::string profile=opt.find("prelude profile")->second;
+  Options::const_iterator it=opt.find("prelude profile");
+  if( it==opt.end() )
+    throw Exception(__FILE__, "option 'prelude profile' not found");
+  const std::string &profile=it->second;
 
   return ReaderBuilder::FactoryPtr( new Reader(profile) );
 }
