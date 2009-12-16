@@ -13,18 +13,24 @@
 
 #include "Logger/Node.hpp"
 
-// TODO: comment
-// TODO: test
 
 namespace Logger
 {
 namespace detail
 {
-
+/** \brief helper object that creates log message in stream-like form.
+ *  \param TPtr pointer to Node's logging method, for a given priority.
+ */
 template <void (Node::*TPtr)(const char*, const char*, unsigned int, const char*) const>
 class LogStream: private boost::noncopyable
 {
 public:
+  /** \brief starts log line.
+   *  \param log  node to log to.
+   *  \param file file name when log has been called.
+   *  \param call funciton name.
+   *  \param line line number log has been generated in.
+   */
   LogStream(const Node   &log,
             const char   *file,
             const char   *call,
@@ -36,6 +42,9 @@ public:
   {
   }
 
+  /** \brief log message with logger.
+   *  \note if nothing has been added, no log is generated.
+   */
   ~LogStream(void)
   {
     // log message at the end of the line, but only if something
@@ -47,6 +56,11 @@ public:
       (log_.*TPtr)(file_, call_, line_, msg);
   }
 
+  /** \brief add next log part.
+   *  \param t next message part.
+   *  \return self-reference to further logging.
+   *  \note call never throws.
+   */
   template <typename T>
   inline LogStream &operator<<(const T &t)
   {
