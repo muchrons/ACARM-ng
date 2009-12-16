@@ -17,7 +17,7 @@ namespace
 
 struct ReaderTestClass
 {
-  Reader r_;
+  Reader r_("profile");
 };
 
 typedef ReaderTestClass TestClass;
