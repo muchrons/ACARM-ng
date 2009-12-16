@@ -12,6 +12,10 @@
 #include "Logger/Logger.hpp"
 //#include "
 
+// TODO: this code is far-from-draft
+
+// TODO: to continue this thread-safe dequeue is needed.
+
 namespace Filter
 {
 
