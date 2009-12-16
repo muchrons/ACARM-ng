@@ -80,6 +80,22 @@ public:
     ptr_=other;
     return *this;
   }
+  /** \brief arrow operator.
+   *  \return const pointer to this.
+   */
+  const T *operator->(void) const
+  {
+    assert( ptr_.get()!=NULL );
+    return ptr_.get();
+  }
+  /** \brief arror operator.
+   *  \return pointer to this.
+   */
+  T *operator->(void)
+  {
+    assert( ptr_.get()!=NULL );
+    return ptr_.get();
+  }
   /** \brief dereference operator.
    *  \return const reference to this.
    */
@@ -120,6 +136,7 @@ public:
    */
   void swap(SharedPtrNotNULL<T> &other)
   {
+    assert( ptr_.get()!=NULL );
     ptr_.swap(other.ptr_);
     assert( ptr_.get()!=NULL );
   }

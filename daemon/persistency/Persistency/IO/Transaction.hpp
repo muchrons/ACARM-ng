@@ -11,6 +11,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
+#include "Logger/Logger.hpp"
 #include "Persistency/IO/TransactionAPI.hpp"
 #include "Persistency/ExceptionNULLParameter.hpp"
 
@@ -42,7 +43,10 @@ public:
   void rollback(void);
 
 private:
+  void logMsg(const char *str);
+
   boost::scoped_ptr<TransactionAPI> transaction_;
+  Logger::Node                      log_;
 }; // class Transaction
 
 } // namespace IO

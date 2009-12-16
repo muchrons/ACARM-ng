@@ -11,12 +11,10 @@ namespace Persistency
 namespace IO
 {
 
-Host::Host(Persistency::HostPtr  host,
-           const Transaction    &/*t*/):
+Host::Host(Persistency::HostPtrNN  host,
+           const Transaction      &/*t*/):
   host_(host)
 {
-  if( host_.get()==NULL )
-    throw ExceptionNULLParameter(__FILE__, "host");
 }
 
 Host::~Host(void)

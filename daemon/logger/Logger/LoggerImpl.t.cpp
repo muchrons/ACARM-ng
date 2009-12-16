@@ -8,17 +8,16 @@
 
 #include "Logger/Node.hpp"
 #include "Logger/LoggerImpl.hpp"
+#include "Logger/TestHelpers.t.hpp"
 
 using namespace tut;
-using namespace std;
-using namespace Logger;
 
 
 namespace
 {
-struct LoggerImplTestClass
+struct TestClass
 {
-  LoggerImplTestClass():
+  TestClass():
     n_("a.b.c")
   {
   }
@@ -35,18 +34,18 @@ struct LoggerImplTestClass
     ensure("invalid file name", strstr(file, "LoggerImpl.t.cpp")!=NULL);
 
     ensure("call paramter is null", call!=NULL);
-    ensure("invalid call name", strstr(call, "LoggerImplTestClass")!=NULL);
+    ensure("invalid call name", strstr(call, "TestClass")!=NULL);
 
     ensure("line is not valid",     line>30);
 
     ensure("msg paramter is null",  msg!=NULL);
-    ensure_equals("invalid message", string(msg), "test");
+    ensure_equals("invalid message", std::string(msg), "test");
   }
 
-  Node n_;
+  Logger::Node n_;
 };
 
-typedef LoggerImplTestClass TestClass;
+typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -74,6 +73,17 @@ void testObj::test<2>(void)
     LOGMSG_PRI_INTERNAL_IMPLEMENTATION(*this, "test");
   else
     LOGMSG_PRI_INTERNAL_IMPLEMENTATION(*this, "test");
+}
+
+// test normal, stream call
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  LOGMSG_PRI_INTERNAL_STREAM_IMPLEMENTATION(n_, debug)<<"impl-test";
+  Logger::ensureLoggedPart("impl-test");
+  Logger::ensureLoggedPart("LoggerImpl.t.cpp");
+  Logger::ensureLoggedPart("test");
 }
 
 } // namespace tut

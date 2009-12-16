@@ -11,7 +11,6 @@
 #include <boost/noncopyable.hpp>
 
 #include "Persistency/Alert.hpp"
-#include "Persistency/ExceptionNULLParameter.hpp"
 #include "Persistency/IO/Transaction.hpp"
 
 namespace Persistency
@@ -28,8 +27,8 @@ public:
    *  \param alert alert to create object for.
    *  \param t     associated transaction.
    */
-  Alert(Persistency::AlertPtr  alert,
-        const Transaction     &t);
+  Alert(Persistency::AlertPtrNN  alert,
+        const Transaction       &t);
   /** \brief virtual d-tor for polymorphic base class.
    */
   virtual ~Alert(void);
@@ -46,10 +45,11 @@ protected:
 private:
   virtual void saveImpl(void) = 0;
 
-  Persistency::AlertPtr alert_;
+  Persistency::AlertPtrNN alert_;
 }; // class Alert
 
 
+/** \brief auto pointer to IO::Alert class. */
 typedef std::auto_ptr<Alert> AlertAutoPtr;
 
 } // namespace IO

@@ -11,6 +11,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/MD5Sum.hpp"
 #include "Persistency/ReferenceURL.hpp"
 #include "Persistency/detail/NullValue.hpp"
@@ -99,9 +100,11 @@ private:
 }; // class Process
 
 
-/** \brief smart pointer to process type.
- */
-typedef boost::shared_ptr<Process> ProcessPtr;
+/** \brief smart pointer to process type. */
+typedef boost::shared_ptr<Process>         ProcessPtr;
+
+/** \brief smart pointer to process type, checked not to be NULL. */
+typedef Commons::SharedPtrNotNULL<Process> ProcessPtrNN;
 
 } // namespace Persistency
 

@@ -13,6 +13,7 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/Severity.hpp"
@@ -49,7 +50,7 @@ public:
    *  \param targetHosts targeted hosts.
    */
   Alert(const Name          &name,
-        AnalyzerPtr          analyzer,
+        AnalyzerPtrNN        analyzer,
         const Timestamp     *detected,
         const Timestamp     &created,
         Severity             severity,
@@ -99,7 +100,7 @@ public:
 
 private:
   Name                           name_;
-  AnalyzerPtr                    analyzer_;
+  AnalyzerPtrNN                  analyzer_;
   boost::scoped_ptr<Timestamp>   detected_;
   Timestamp                      created_;
   Severity                       severity_;
@@ -110,9 +111,11 @@ private:
 }; // class Alert
 
 
-/** \brief smart pointer to Alert type.
- */
-typedef boost::shared_ptr<Alert> AlertPtr;
+/** \brief smart pointer to Alert type. */
+typedef boost::shared_ptr<Alert>         AlertPtr;
+
+/** \brief smart pointer to ALert type, that is sure not to be NULL. */
+typedef Commons::SharedPtrNotNULL<Alert> AlertPtrNN;
 
 } // namespace Persistency
 

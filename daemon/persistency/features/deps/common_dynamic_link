@@ -1,2 +1,2 @@
 #!/bin/sh
-exec echo "-lboost_date_time-mt"
+exec echo "-lboost_date_time-mt -lboost_system-mt"

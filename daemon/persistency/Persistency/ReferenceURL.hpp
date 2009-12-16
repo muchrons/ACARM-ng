@@ -10,6 +10,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/detail/LimitedString.hpp"
 
 namespace Persistency
@@ -25,7 +26,6 @@ public:
   /** \brief URL itself.
    */
   typedef detail::LimitedString<256> URL;
-  // TODO: consider making URL a separate clas with syntax validation
 
   /** \brief creates an object.
    *  \param name name of url (~description).
@@ -49,9 +49,11 @@ private:
 }; // class ReferenceURL
 
 
-/** \brief smart pointer to reference url type.
- */
-typedef boost::shared_ptr<ReferenceURL> ReferenceURLPtr;
+/** \brief smart pointer to reference url type. */
+typedef boost::shared_ptr<ReferenceURL>         ReferenceURLPtr;
+
+/** \brief smart pointer to reference url type, not NULL. */
+typedef Commons::SharedPtrNotNULL<ReferenceURL> ReferenceURLPtrNN;
 
 } // namespace Persistency
 

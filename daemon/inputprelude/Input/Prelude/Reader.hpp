@@ -13,6 +13,7 @@
 #include <PreludePP/prelude-client.hpp>
 
 #include "Input/Reader.hpp"
+#include "Input/Prelude/LogCallback.hpp"
 
 
 
@@ -29,6 +30,8 @@ namespace Prelude
 class Reader: public Input::Reader
 {
 public:
+  /** \brief create prelud reader.
+   */
   Reader(const std::string profile)
   {
     prelude_profile=profile;
@@ -48,6 +51,7 @@ public:
   virtual DataPtr read(unsigned int timeout);
 
 private:
+  LogCallback preludeLogger_;
   std::string prelude_profile;
   std::auto_ptr< ::Prelude::Client > client;
 }; // class Reader

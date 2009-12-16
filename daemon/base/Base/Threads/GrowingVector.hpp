@@ -123,32 +123,6 @@ public:
     d->vec_.push_back(t);
   }
 
-#if 0
-  // NOTE: this is not needed at this time.
-  /** \brief random-access operator.
-   *  \param pos position to take element from.
-   *  \return reference to the element on a given posiotion.
-   *  \note this is thread safe, since this collection may only grow in time.
-   */
-  T &operator[](unsigned int pos)
-  {
-    DataPtr d=get();
-    Lock lock(d->mutex_);
-    return d->vec_.at(pos);
-  }
-  /** \brief random-access operator - const version.
-   *  \param pos position to take element from.
-   *  \return reference to the element on a given posiotion.
-   *  \note this is thread safe, since this collection may only grow in time.
-   */
-  const T &operator[](unsigned int pos) const
-  {
-    DataPtr d=get();
-    Lock lock(d->mutex_);
-    return d->vec_.at(pos);
-  }
-#endif
-
   /** \brief gets collection's total size.
    *  \return size of collection, in number of elements.
    *  \note after this call exits it is guaranteed that collection has at least

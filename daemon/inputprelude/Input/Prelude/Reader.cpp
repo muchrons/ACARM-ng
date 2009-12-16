@@ -15,7 +15,12 @@ namespace Input
 namespace Prelude
 {
 
-Reader::DataPtr Reader::read(const unsigned int timeout)
+Reader::Reader(void):
+  preludeLogger_("input.prelude.reader.preludelog")
+{
+}
+
+Reader::DataPtr Reader::read(const unsigned int /*timeout*/)
 {
   // TODO: implement
   DataPtr tmp;

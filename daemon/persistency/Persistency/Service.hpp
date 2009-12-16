@@ -11,6 +11,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/ReferenceURL.hpp"
 #include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/detail/LimitedNULLString.hpp"
@@ -69,9 +70,11 @@ private:
 }; // class Service
 
 
-/** \brief smart pointer to service type.
- */
-typedef boost::shared_ptr<Service> ServicePtr;
+/** \brief smart pointer to service type. */
+typedef boost::shared_ptr<Service>         ServicePtr;
+
+/** \brief smart pointer to service type, not NULL. */
+typedef Commons::SharedPtrNotNULL<Service> ServicePtrNN;
 
 } // namespace Persistency
 

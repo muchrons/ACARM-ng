@@ -11,7 +11,6 @@
 #include "Logger/Priority.hpp"
 #include "Logger/NodeConfPtr.hpp"
 
-// TODO: add '...' interface for logging
 
 namespace Logger
 {

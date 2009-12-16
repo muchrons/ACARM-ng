@@ -36,11 +36,11 @@ private:
   virtual TransactionAPIAutoPtr createNewTransactionImpl(
                                                   Base::Threads::Mutex &mutex,
                                                   const std::string    &name);
-  virtual AlertAutoPtr alertImpl(AlertPtr           alert,
+  virtual AlertAutoPtr alertImpl(AlertPtrNN         alert,
                                  const Transaction &t);
-  virtual HostAutoPtr hostImpl(HostPtr            host,
+  virtual HostAutoPtr hostImpl(HostPtrNN          host,
                                const Transaction &t);
-  virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtr       ma,
+  virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN     ma,
                                          const Transaction &t);
 
   Base::Threads::Mutex mutex_;

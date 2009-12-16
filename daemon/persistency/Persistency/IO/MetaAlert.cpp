@@ -11,12 +11,11 @@ namespace Persistency
 namespace IO
 {
 
-MetaAlert::MetaAlert(Persistency::MetaAlertPtr  ma,
-                     const Transaction         &/*t*/):
+MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
+                     const Transaction           &/*t*/):
   ma_(ma)
 {
-  if( ma_.get()==NULL )
-    throw ExceptionNULLParameter(__FILE__, "ma");
+  assert( ma_.get()!=NULL );
 }
 
 MetaAlert::~MetaAlert(void)
@@ -54,14 +53,14 @@ void MetaAlert::updateCertanityDelta(double delta)
   ma_->updateCertanityDelta(delta);
 }
 
-void MetaAlert::addChild(Persistency::MetaAlertPtr child)
+void MetaAlert::addChild(Persistency::MetaAlertPtrNN child)
 {
   addChildImpl(child);
 }
 
-void MetaAlert::associateWithAlert(Persistency::AlertPtr alert)
+void MetaAlert::associateWithAlert(Persistency::AlertPtrNN alert)
 {
-  associateWithAlert(alert);
+  associateWithAlertImpl(alert);
 }
 
 const Persistency::MetaAlert &MetaAlert::get(void) const

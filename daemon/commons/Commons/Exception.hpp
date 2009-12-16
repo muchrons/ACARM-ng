@@ -31,7 +31,7 @@ public:
         std::string( ensureString(where) ) + ": " + msg ),
     log_("commons.exception")
   {
-    LOGMSG_ERROR(log_, ( std::string("exception rised: ") + what() ).c_str() );
+    LOGMSG_ERROR_S(log_)<<"exception rised: "<<what();
   }
 
   /** \brief dealocates object in inheritance-secure way.

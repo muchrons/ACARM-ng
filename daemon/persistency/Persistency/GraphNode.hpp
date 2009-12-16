@@ -7,17 +7,16 @@
 
 /* public header */
 
-#include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
 #include "Base/Threads/GrowingVector.hpp"
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/MetaAlert.hpp"
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/ExceptionNotLeaf.hpp"
 #include "Persistency/ExceptionNotNode.hpp"
-
-// TODO
+#include "Persistency/ExceptionCycleDetected.hpp"
 
 namespace Persistency
 {
@@ -27,21 +26,22 @@ class GraphNode;
 
 /** \brief pointer to single graph node.
  */
-typedef boost::shared_ptr<GraphNode> GraphNodePtr;
+typedef Commons::SharedPtrNotNULL<GraphNode> GraphNodePtrNN;
 
 /** \brief graph node's representation.
  */
 class GraphNode: private boost::noncopyable
 {
 private:
-  typedef Base::Threads::GrowingVector<GraphNodePtr> GraphNodesList;
+  typedef Base::Threads::GrowingVector<GraphNodePtrNN> GraphNodesList;
 
 public:
-  /** \brief non-const iterator to collection.
-   */
+  /** \brief childrent to be passed as argument. */
+  typedef std::vector<GraphNodePtrNN>    ChildrenVector;
+
+  /** \brief non-const iterator to collection. */
   typedef GraphNodesList::iterator       iterator;
-  /** \brief const iterator to colection.
-   */
+  /** \brief const iterator to colection. */
   typedef GraphNodesList::const_iterator const_iterator;
 
   /** \brief create graph's leaf from a given alert.
@@ -49,9 +49,26 @@ public:
    *  \param connection connection to use for persistency writes.
    *  \param t          current transaction.
    */
-  GraphNode(AlertPtr               alert,
-            IO::ConnectionPtr      connection,
+  GraphNode(AlertPtrNN             alert,
+            IO::ConnectionPtrNN    connection,
             const IO::Transaction &t);
+  /** \brief create new node by correlating given ones.
+   *  \param ma            meta alert's data to be used as this one.
+   *  \param connection    connection to persistency module.
+   *  \param t             transaction to use for connecting.
+   *  \param child1        first node to be corelated.
+   *  \param child2        second child to be correlated.
+   *  \param otherChildren list of rest childrent, if needed.
+   *  \note although all children are equal, this interface is intentionally
+   *        split into 3 paramters to ensure no missusage is possible
+   *        (at 2 parameters are always required).
+   */
+  GraphNode(MetaAlertPtrNN         ma,
+            IO::ConnectionPtrNN    connection,
+            const IO::Transaction &t,
+            GraphNodePtrNN         child1,
+            GraphNodePtrNN         child2,
+            const ChildrenVector  &otherChildren=ChildrenVector() );
 
   /** \brief returns non-const begin iterator.
    *  \return begin iterator.
@@ -73,9 +90,9 @@ public:
 
   /** \brief adds new child to this node.
    *  \param child node to be added as a child.
-   *  \param maIO  persistency access element.
+   *  \param maIO  persistency access element for this node.
    */
-  void addChild(GraphNodePtr child, IO::MetaAlertAutoPtr maIO);
+  void addChild(GraphNodePtrNN child, IO::MetaAlert &maIO);
 
   /** \brief checks if given graph part is leaf or not.
    *  \return true if this is leaf, false if this is node.
@@ -85,18 +102,20 @@ public:
   /** \brief returns meta-alert correspoiding to this leaf/node.
    *  \return meta-alert.
    */
-  MetaAlertPtr getMetaAlert(void);
+  MetaAlertPtrNN getMetaAlert(void);
   /** \brief returns alert correspoiding to this leaf.
    *  \return alert.
    */
-  AlertPtr getAlert(void);
+  AlertPtrNN getAlert(void);
 
 private:
   void ensureIsNode(void) const;
+  void nonCyclicAddition(GraphNodePtrNN child);
+  bool hasCycle(const GraphNode *child) const;
 
-  MetaAlertPtr    self_;
-  GraphNodesList  children_;
-  AlertPtr        leaf_;
+  MetaAlertPtrNN self_;
+  GraphNodesList children_;
+  AlertPtr       leaf_;
 }; // class GraphNode
 
 } // namespace Persistency

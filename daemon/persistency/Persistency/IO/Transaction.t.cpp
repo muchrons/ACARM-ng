@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "Persistency/IO/Transaction.hpp"
+#include "Persistency/IO/TestTransactionAPI.t.hpp"
 
 using namespace std;
 using namespace Persistency::IO;
@@ -14,33 +15,12 @@ using namespace Persistency::IO;
 namespace
 {
 
-struct TestTransactionAPI: public Persistency::IO::TransactionAPI
-{
-  TestTransactionAPI(Base::Threads::Mutex &mutex, int *commits, int *rollbacks):
-    Persistency::IO::TransactionAPI(mutex, "test_transaction"),
-    commited_(commits),
-    rollbacked_(rollbacks)
-  {
-  }
-  virtual void commitImpl(void)
-  {
-    ++*commited_;
-  }
-  virtual void rollbackImpl(void)
-  {
-    ++*rollbacked_;
-  }
-
-  int *commited_;
-  int *rollbacked_;
-};
-
 struct TestClass
 {
   TestClass(void):
     commits_(0),
     rollbacks_(0),
-    tapi_( new TestTransactionAPI(mutex_, &commits_, &rollbacks_) ),
+    tapi_( new TestTransactionAPI(&commits_, &rollbacks_) ),
     t_( new Transaction(tapi_) )
   {
     tut::ensure("API ownership not taken", tapi_.get()==NULL);
@@ -48,7 +28,6 @@ struct TestClass
 
   int                        commits_;
   int                        rollbacks_;
-  Base::Threads::Mutex       mutex_;
   TransactionAPIAutoPtr      tapi_;
   std::auto_ptr<Transaction> t_;
 };

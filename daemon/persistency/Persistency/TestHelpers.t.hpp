@@ -30,22 +30,24 @@ const Host::Netmask_v6::bytes_type mask6_bytes={ {
                                                   0x00, 0x00, 0x00, 0x00,
                                                  } };
 
-AnalyzerPtr makeNewAnalyzer(const char *name="some analyzer");
-AnalyzerPtr makeNewAnalyzer(const char *name, HostPtr host);
+AnalyzerPtrNN makeNewAnalyzer(const char *name="some analyzer");
+AnalyzerPtrNN makeNewAnalyzer(const char *name, HostPtr host);
 
-HostPtr makeNewHost(void);
-HostPtr makeNewHost4(const char             *ip,
-                     const Host::Netmask_v4 *mask,
-                     const char             *os,
-                     bool                    nullRef=false);
-HostPtr makeNewHost6(const char             *ip,
-                     const Host::Netmask_v6 *mask,
-                     const char             *os,
-                     bool                    nullRef=false);
+AlertPtrNN makeNewAlert(void);
 
-ProcessPtr makeNewProcess(const char *name="process name");
+HostPtrNN makeNewHost(void);
+HostPtrNN makeNewHost4(const char             *ip,
+                       const Host::Netmask_v4 *mask,
+                       const char             *os,
+                       bool                    nullRef=false);
+HostPtrNN makeNewHost6(const char             *ip,
+                       const Host::Netmask_v6 *mask,
+                       const char             *os,
+                       bool                    nullRef=false);
 
-ReferenceURLPtr makeNewReferenceURL(const char *url="http://gnu.org");
+ProcessPtrNN makeNewProcess(const char *name="process name");
+
+ReferenceURLPtrNN makeNewReferenceURL(const char *url="http://gnu.org");
 
 } // namespace Persistency
 

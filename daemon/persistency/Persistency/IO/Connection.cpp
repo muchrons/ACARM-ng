@@ -2,6 +2,8 @@
  * Connection.cpp
  *
  */
+#include <cassert>
+
 #include "Persistency/IO/Connection.hpp"
 
 namespace Persistency
@@ -15,22 +17,30 @@ Connection::~Connection(void)
 
 TransactionAPIAutoPtr Connection::createNewTransaction(const std::string &name)
 {
-  return createNewTransactionImpl(mutex_, name);
+  TransactionAPIAutoPtr ptr=createNewTransactionImpl(mutex_, name);
+  assert( ptr.get()!=NULL );
+  return ptr;
 }
 
-AlertAutoPtr Connection::alert(AlertPtr alert, const Transaction &t)
+AlertAutoPtr Connection::alert(AlertPtrNN alert, const Transaction &t)
 {
-  return alertImpl(alert, t);
+  AlertAutoPtr ptr=alertImpl(alert, t);
+  assert( ptr.get()!=NULL );
+  return ptr;
 }
 
-HostAutoPtr Connection::host(HostPtr host, const Transaction &t)
+HostAutoPtr Connection::host(HostPtrNN host, const Transaction &t)
 {
-  return hostImpl(host, t);
+  HostAutoPtr ptr=hostImpl(host, t);
+  assert( ptr.get()!=NULL );
+  return ptr;
 }
 
-MetaAlertAutoPtr Connection::metaAlert(MetaAlertPtr ma, const Transaction &t)
+MetaAlertAutoPtr Connection::metaAlert(MetaAlertPtrNN ma, const Transaction &t)
 {
-  return metaAlertImpl(ma, t);
+  MetaAlertAutoPtr ptr=metaAlertImpl(ma, t);
+  assert( ptr.get()!=NULL );
+  return ptr;
 }
 
 } // namespace IO

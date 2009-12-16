@@ -13,6 +13,7 @@
 
 #include "Base/Threads/Mutex.hpp"
 #include "Base/Threads/Lock.hpp"
+#include "Logger/Logger.hpp"
 
 
 namespace Persistency
@@ -36,6 +37,10 @@ public:
   /** \brief transaction abort interface.
    */
   void rollback(void);
+  /** \brief gets transaciton name.
+   *  \return name of this transaction.
+   */
+  const std::string getName(void) const;
 
 protected:
   /** \brief open transaction.
@@ -48,11 +53,15 @@ private:
   virtual void commitImpl(void) = 0;
   virtual void rollbackImpl(void) = 0;
 
+  void logMsg(const char *str);
+
   Base::Threads::Lock lock_;
   const std::string   name_;
+  Logger::Node        log_;
 }; // class TransactionAPI
 
 
+/** \brief auto pointer to IO::TransactionAPI class. */
 typedef std::auto_ptr<TransactionAPI> TransactionAPIAutoPtr;
 
 } // namespace IO

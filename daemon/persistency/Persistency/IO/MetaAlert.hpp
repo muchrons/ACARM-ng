@@ -29,8 +29,8 @@ public:
    *  \param ma meta alert to work on.
    *  \param t  active transaction.
    */
-  MetaAlert(Persistency::MetaAlertPtr  ma,
-            const Transaction         &t);
+  MetaAlert(Persistency::MetaAlertPtrNN  ma,
+            const Transaction           &t);
   /** \brief virtual d-tor for polymorphic base class.
    */
   virtual ~MetaAlert(void);
@@ -55,11 +55,11 @@ public:
   /** \brief save information that this meta-alert has another child.
    *  \param child meta-alert to be added as a child.
    */
-  void addChild(Persistency::MetaAlertPtr child);
+  void addChild(Persistency::MetaAlertPtrNN child);
   /** \brief mark this meta-alert as associated with given alert.
    *  \param alert alter to be used as a leaf-node.
    */
-  void associateWithAlert(Persistency::AlertPtr alert);
+  void associateWithAlert(Persistency::AlertPtrNN alert);
 
 protected:
   /** \brief gets read-only access to meta-alert.
@@ -67,18 +67,19 @@ protected:
   const Persistency::MetaAlert &get(void) const;
 
 private:
-  virtual void saveImpl() = 0;
-  virtual void markAsUsedImpl() = 0;
-  virtual void markAsUnusedImpl() = 0;
+  virtual void saveImpl(void) = 0;
+  virtual void markAsUsedImpl(void) = 0;
+  virtual void markAsUnusedImpl(void) = 0;
   virtual void updateSeverityDeltaImpl(double delta) = 0;
   virtual void updateCertanityDeltaImpl(double delta) = 0;
-  virtual void addChildImpl(Persistency::MetaAlertPtr child) = 0;
-  virtual void associateWithAlertImpl(Persistency::AlertPtr alert) = 0;
+  virtual void addChildImpl(Persistency::MetaAlertPtrNN child) = 0;
+  virtual void associateWithAlertImpl(Persistency::AlertPtrNN alert) = 0;
 
   Persistency::MetaAlertPtr ma_;
 }; // class MetaAlert
 
 
+/** \brief auto pointer to IO::MetaAlert class. */
 typedef std::auto_ptr<MetaAlert> MetaAlertAutoPtr;
 
 } // namespace IO

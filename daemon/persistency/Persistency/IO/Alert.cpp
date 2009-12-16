@@ -11,12 +11,10 @@ namespace Persistency
 namespace IO
 {
 
-Alert::Alert(Persistency::AlertPtr  alert,
-             const Transaction     &/*t*/):
+Alert::Alert(Persistency::AlertPtrNN  alert,
+             const Transaction       &/*t*/):
   alert_(alert)
 {
-  if( alert_.get()==NULL )
-    throw ExceptionNULLParameter(__FILE__, "alert");
 }
 
 Alert::~Alert(void)

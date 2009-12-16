@@ -15,7 +15,8 @@ export MFLAGS \
 
 # turn memory debugging on, if requested
 ifneq (,$(MEM_DEBUG))
-  END_LINK_LIBS+=-lefence
+  #END_LINK_LIBS+=-lefence
+  END_LINK_LIBS+=-lduma
   MEM_CHECK:=memdeb
 else
   MEM_CHECK:=normal

@@ -7,17 +7,16 @@
 #include <cstring>
 
 #include "Logger/Logger.hpp"
+#include "Logger/TestHelpers.t.hpp"
 
 using namespace tut;
-using namespace std;
-using namespace Logger;
-
+using Logger::ensureLoggedPart;
 
 namespace
 {
-struct LoggerTestClass
+struct TestClass
 {
-  LoggerTestClass():
+  TestClass():
     n_("a.b.c")
   {
     for(unsigned int i=0; i<sizeof(calls_)/sizeof(calls_[0]); ++i)
@@ -33,12 +32,12 @@ struct LoggerTestClass
     ensure("invalid file name", strstr(file, "Logger.t.cpp")!=NULL);
 
     ensure("call paramter is null", call!=NULL);
-    ensure("invalid call name", strstr(call, "LoggerTestClass")!=NULL);
+    ensure("invalid call name", strstr(call, "TestClass")!=NULL);
 
     ensure("line is not valid",     line>30);
 
     ensure("msg paramter is null",  msg!=NULL);
-    ensure_equals("invalid message", string(msg), "test");
+    ensure_equals("invalid message", std::string(msg), "test");
   }
 
   void debug(const char   *file,
@@ -95,11 +94,11 @@ struct LoggerTestClass
         ensure_equals("invalid call made", calls_[i], 0);
   }
 
-  Node        n_;
-  mutable int calls_[5];
+  Logger::Node n_;
+  mutable int  calls_[5];
 };
 
-typedef LoggerTestClass TestClass;
+typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -153,6 +152,64 @@ void testObj::test<5>(void)
 {
   LOGMSG_FATAL(*this, "test");
   ensureCalls(4);
+}
+
+// test stream logging - empty message.
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  LOGMSG_DEBUG_S(n_);
+}
+
+// test stream logging debug message
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  LOGMSG_DEBUG_S(n_)<<"hello "<<"debug"<<" stream!";
+  ensureLoggedPart("hello debug stream!");
+  ensureLoggedPart("DEBUG@");
+}
+
+// test stream logging info message
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  LOGMSG_INFO_S(n_)<<"hello "<<"info"<<" stream!";
+  ensureLoggedPart("hello info stream!");
+  ensureLoggedPart("INFO @");
+}
+
+// test stream logging warning message
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  LOGMSG_WARN_S(n_)<<"hello "<<"warn"<<" stream!";
+  ensureLoggedPart("hello warn stream!");
+  ensureLoggedPart("WARN @");
+}
+
+// test stream logging error message
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  LOGMSG_ERROR_S(n_)<<"hello "<<"error"<<" stream!";
+  ensureLoggedPart("hello error stream!");
+  ensureLoggedPart("ERROR@");
+}
+
+// test stream logging fatal message
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  LOGMSG_FATAL_S(n_)<<"hello "<<"fatal"<<" stream!";
+  ensureLoggedPart("hello fatal stream!");
+  ensureLoggedPart("FATAL@");
 }
 
 } // namespace tut

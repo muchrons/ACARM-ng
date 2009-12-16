@@ -2,10 +2,15 @@
  * Host.cpp
  *
  */
+#include <sstream>
 #include <cassert>
 
 #include "Persistency/Host.hpp"
 #include "Base/Threads/Lock.hpp"
+#include "Logger/Logger.hpp"
+
+using std::stringstream;
+
 
 namespace Persistency
 {
@@ -83,7 +88,13 @@ Host::Host(const IPv6              &ip,
 
 void Host::setName(const Name &name)
 {
-  // TODO: add logging of name resolved event
+  // log setting host's name
+  {
+    Logger::Node log("persistency.host");
+    stringstream ss;
+    ss<<"host "<<ip_<<" - setting name to '"<<name.get()<<"'";
+    LOGMSG_INFO(log, ss.str().c_str() );
+  }
 
   Base::Threads::Lock lock(mutex_);
   // NOTE: checking for not-setting multiple times is crutial here, since
