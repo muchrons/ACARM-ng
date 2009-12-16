@@ -32,17 +32,7 @@ class Reader: public Input::Reader
 public:
   /** \brief create prelud reader.
    */
-  Reader(const std::string profile)
-  {
-    prelude_profile=profile;
-    client.reset(new ::Prelude::Client("ACARM-wojek-acm"));
-    client->SetConfigFilename("/etc/prelude/default/client.conf");
-    client->SetRequiredPermission(PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
-    //client.SetFlags( Client::FLAGS_ASYNC_TIMER);
-    client->Init();
-    client->Start();    
-  }
-
+  Reader(const std::string profile);
 public:
   /** \brief reads data from input from prelude-manager.
    *  \param timeout milliseconds to wait before timeout occures.
