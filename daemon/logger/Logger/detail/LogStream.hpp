@@ -2,13 +2,14 @@
  * LogStream.hpp
  *
  */
-#ifndef INCLUDE_LOGGER_LOGSTREAM_HPP_FILE
-#define INCLUDE_LOGGER_LOGSTREAM_HPP_FILE
+#ifndef INCLUDE_LOGGER_DETAIL_LOGSTREAM_HPP_FILE
+#define INCLUDE_LOGGER_DETAIL_LOGSTREAM_HPP_FILE
 
 /* public header */
 
 #include <sstream>
 #include <boost/noncopyable.hpp>
+#include <cassert>
 
 #include "Logger/Node.hpp"
 
@@ -16,6 +17,8 @@
 // TODO: test
 
 namespace Logger
+{
+namespace detail
 {
 
 template <void (Node::*TPtr)(const char*, const char*, unsigned int, const char*) const>
@@ -35,8 +38,13 @@ public:
 
   ~LogStream(void)
   {
-    // log message at the end of the line
-    (log_.*TPtr)(file_, call_, line_, ss_.str().c_str() );
+    // log message at the end of the line, but only if something
+    // really happened (i.e. something was added to stream).
+    const std::string &str=ss_.str();
+    const char        *msg=str.c_str();
+    assert(msg!=NULL);
+    if(msg[0]!=0)   // i.e. not empty
+      (log_.*TPtr)(file_, call_, line_, msg);
   }
 
   template <typename T>
@@ -62,6 +70,7 @@ private:
   std::stringstream  ss_;
 }; // class LogStream
 
+} // namespace detail
 } // namespace Logger
 
 #endif

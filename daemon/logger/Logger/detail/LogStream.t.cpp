@@ -4,9 +4,10 @@
  */
 #include <tut.h>
 
-#include "Logger/LogStream.hpp"
+#include "Logger/detail/LogStream.hpp"
 
 using namespace Logger;
+using namespace Logger::detail;
 
 namespace
 {
@@ -68,7 +69,7 @@ void testObj::test<4>(void)
   // 1
   LogStream< &Node::debug >(log_, "file", "f()", 42)<<1<<2<<3;
   // 2
-  LogStream< &Node::debug >(log_, "file", "f()", 42)<<1<<2<<3;
+  LogStream< &Node::debug >(log_, "file", "f()", 42)<<4<<5<<6;
 }
 
 //
