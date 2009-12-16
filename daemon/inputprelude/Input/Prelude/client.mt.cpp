@@ -18,51 +18,62 @@ int main(int argc, char * argv[])
     return -1;
   }
   
-  Client client("ACARM-wojek");
+  Client client("ACARM-wojek-acm");
   client.SetConfigFilename("/etc/prelude/default/client.conf");
   client.SetRequiredPermission(PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
   //client.SetFlags( Client::FLAGS_ASYNC_TIMER);
   client.Init();
   client.Start();
 
-  IDMEF idmef;  
+  IDMEF idmef=0;  
 
   std::cout << "Started" << std::endl;
 
   client >> idmef;
 
-  std::cout << RED;
+  if (idmef)
+    std::cerr << 1;
+  else
+    std::cerr << 0;
 
-  //idmef.Set("alert.classification.text", "My classification text");
-
-  IDMEFValue id,*id2;
-  prelude_list_t *head, *tmp;
-
-  id=idmef.Get("alert.analyzer");
-
-  head=(prelude_list_t*)(&id);
-  if(head)
-    prelude_list_for_each(head, tmp) 
-      {
-	id2=(IDMEFValue*)tmp;
-	if(id2)
-	  {
-	    std::cout << id2->GetType() << std::endl;
-	    std::cout << (std::string)*id2 << std::endl;    
-	  }
-      }
   
+  if (idmef)
+    {
+      std::cerr << RED;
+      std::cout << idmef.ToString() << std::endl;
+      //idmef.Set("alert.classification.text", "My classification text");
 
+      IDMEFValue id=idmef.Get("alert.analyzer");
 
-  id=idmef.Get("alert.analyzer");
-  std::cout << id.GetType() << std::endl;
+      if (id.GetType()==IDMEF_VALUE_TYPE_LIST)
+	{
+	  prelude_list_t *head=(prelude_list_t*)(&id);
+	  prelude_list_t *tmp=0;
+	  IDMEFValue *id2;
 
-  id=idmef.Get("alert");
-  std::cout << id.GetType() << std::endl;
+	  if(head)
+	    prelude_list_for_each(head, tmp) 
+	      {
+		id2=prelude_list_entry(tmp,int,list);
+		std::cerr << '*';
+		id2=(IDMEFValue*)tmp;
+		if(id2)
+		  {
+		    //std::cerr << id2->GetType() << std::endl;		    
+		    //std::cout << (std::string)*id2 << std::endl;    
+		  }		
+	      }	      	  	  
+	}
+      /*
+      id=idmef.Get("alert.analyzer");
+      std::cout << id.GetType() << std::endl;
 
+      id=idmef.Get("alert");
+      std::cout << id.GetType() << std::endl;
+      */
 
-  std::cout << WHITE;
-  std::cout << idmef.ToString() << std::endl;
+      std::cerr << WHITE;
 
+      }
   return 0;
 }

@@ -1,4 +1,4 @@
-L/*
+/*
  * Singleton.hpp
  *
  * singleton template for general usage.

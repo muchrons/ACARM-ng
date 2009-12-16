@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <cstring>
 #include <memory>
+#include <string>
 
 #include "Input/Prelude/Reader.hpp"
 
