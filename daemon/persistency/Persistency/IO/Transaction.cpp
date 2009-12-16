@@ -56,8 +56,7 @@ void Transaction::logMsg(const char *str)
 {
   assert(str!=NULL);
   assert( transaction_.get()!=NULL && "logging called for finished transaction");
-  const string msg=transaction_->getName() + ": " + str;
-  LOGMSG_INFO(log_, msg.c_str() );
+  LOGMSG_INFO_S(log_)<<transaction_->getName()<<": "<<str;
 }
 
 } // namespace IO

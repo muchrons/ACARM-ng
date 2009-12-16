@@ -48,8 +48,7 @@ TransactionAPI::TransactionAPI(Base::Threads::Mutex &mutex,
 void TransactionAPI::logMsg(const char *msg)
 {
   assert(msg!=NULL);
-  const string &str=name_ + ": " + msg;
-  LOGMSG_INFO(log_, str.c_str() );
+  LOGMSG_INFO_S(log_)<<name_<<": "<<msg;
 }
 
 } // namespace IO

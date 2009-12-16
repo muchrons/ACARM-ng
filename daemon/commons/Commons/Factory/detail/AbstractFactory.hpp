@@ -18,8 +18,6 @@
 #include "Commons/Factory/ExceptionBuilderAlreadyRegistered.hpp"
 #include "Commons/Factory/ExceptionNullBuilder.hpp"
 
-// TODO: this functionality must be available as a singleton<TFactory>
-
 namespace Commons
 {
 namespace Factory
@@ -78,10 +76,7 @@ public:
    */
   FactoryPtr create(const FactoryTypeName &name, const Options &options) const
   {
-    {
-      const std::string tmp="building factory type: '" + name + "'";
-      LOGMSG_INFO(log_, tmp.c_str() );
-    }
+    LOGMSG_INFO_S(log_)<<"building factory type: '"<<name<<"'";
     // check if proper builders exist
     typename BuildersMap::const_iterator cit=builders_.find(name);
     if( cit==builders_.end() )
@@ -104,10 +99,7 @@ public:
     if( ptr.get()==NULL )
       throw ExceptionNullBuilder(CALLNAME);
 
-    {
-      const std::string tmp="registering factory type: '" + ptr->getTypeName() + "'";
-      LOGMSG_INFO(log_, tmp.c_str() );
-    }
+    LOGMSG_INFO_S(log_)<<"registering factory type: '"<<ptr->getTypeName()<<"'";
 
     // ensure entry does not already exist
     typename BuildersMap::const_iterator cit=builders_.find( ptr->getTypeName() );
@@ -124,10 +116,7 @@ public:
    */
   void unregisterBuilder(const FactoryTypeName &name)
   {
-    {
-      const std::string tmp="unregistering factory type: '" + name + "'";
-      LOGMSG_INFO(log_, tmp.c_str() );
-    }
+    LOGMSG_INFO_S(log_)<<"unregistering factory type: '"<<name<<"'";
     // check if it is registered - if not, we're done
     typename BuildersMap::iterator it=builders_.find(name);
     if( it==builders_.end() )

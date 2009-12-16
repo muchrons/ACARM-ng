@@ -62,7 +62,7 @@ public:
    */
   FactoryPtr build(const Options &options) const
   {
-    LOGMSG_INFO(log_, ("building: " + getTypeNameImpl() ).c_str() );
+    LOGMSG_INFO_S(log_)<<"building: '"<<getTypeNameImpl()<<"'";
     const FactoryPtr ptr=buildImpl(options);
     assert(ptr!=NULL);
     return ptr;
