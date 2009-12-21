@@ -94,7 +94,7 @@ CREATE TABLE    alerts
                            REFERENCES severities(id),
   certanity   int          NOT NULL
                            DEFAULT 100,
-  description text         NULL,
+  description text         NOT NULL,
 
   CONSTRAINT certanity_check      CHECK ( 0<certanity AND certanity<=100 ),
   CONSTRAINT dates_relation_check CHECK ( detect_time IS NULL OR
