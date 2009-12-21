@@ -89,4 +89,14 @@ void testObj::test<5>(void)
   ensure_equals("invalid char read at[6]", ls[6], '\0');
 }
 
+// test c-tor form string
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const string            str("(: narf :)");
+  const LimitedString<10> ls(str);
+  ensure_equals("invalid stirng", ls.get(), str);
+}
+
 } // namespace tut

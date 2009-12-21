@@ -138,4 +138,16 @@ void testObj::test<10>(void)
   ensure_equals("invalid string", ls.get(), string("abc") );
 }
 
+// test creating from string
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  const string          str("kszy");
+  LimitedNULLString<10> ls(str);
+  ensure("got NULL pointer", ls.get()!=NULL);
+  ensure("invalid pointer assigned", ls.get()!=str.c_str() );
+  ensure_equals("invalid string", ls.get(), str);
+}
+
 } // namespace tut
