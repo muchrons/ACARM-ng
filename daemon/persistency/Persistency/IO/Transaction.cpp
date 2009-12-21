@@ -17,45 +17,78 @@ namespace IO
 
 Transaction::Transaction(TransactionAPIAutoPtr transaction):
   transaction_( transaction.release() ),
+  isActive_(true),
   log_("persistency.io.transaction")
 {
   if( transaction_.get()==NULL )
     throw ExceptionNULLParameter(__FILE__, "NULL transaction's API");
   assert( transaction_.get()!=NULL );
+  assert( isActive() );
   logMsg("transaction object created with proper API");
 }
 
 Transaction::~Transaction(void)
 {
-  // if transaction has not been commited, commit it now
-  if( transaction_.get()!=NULL )
+  try
   {
-    logMsg("transaction has not been commited/rollbacked - doing "
-           "automatic rollback upon transaction destruction");
-    transaction_->rollback();
+    // if transaction has not been commited, rollback it now
+    if( isActive() )
+    {
+      logMsg("transaction has not been commited/rollbacked - doing "
+             "automatic rollback upon transaction destruction");
+      rollback();
+    }
+  }
+  catch(const std::exception &ex)
+  {
+    LOGMSG_ERROR_S(log_)<<transaction_->getName()<<": "
+                        <<"rollback() failed in d-tor of transaction: "
+                        <<ex.what();
+  }
+  catch(...)
+  {
+    LOGMSG_ERROR_S(log_)<<transaction_->getName()<<": "
+                        <<"rollback() failed in d-tor of transaction";
   }
 }
 
 void Transaction::commit(void)
 {
-  if(transaction_.get()==NULL)
+  if( !isActive() )
     return;
   transaction_->commit();
-  transaction_.reset(NULL);
+  isActive_=false;
 }
 
 void Transaction::rollback(void)
 {
-  if(transaction_.get()==NULL)
+  if( !isActive() )
     return;
   transaction_->rollback();
-  transaction_.reset(NULL);
+  isActive_=false;
+}
+
+void Transaction::ensureIsActive(void) const
+{
+  if( !isActive() )
+  {
+    LOGMSG_ERROR_S(log_)<<transaction_->getName()<<": "
+                        <<"operation called on inactive transaction";
+    throw ExceptionTransactionNotActive(__FILE__,
+                                        transaction_->getName().c_str() );
+  }
+}
+
+bool Transaction::isActive(void) const
+{
+  assert( transaction_.get()!=NULL );
+  return isActive_;
 }
 
 void Transaction::logMsg(const char *str)
 {
   assert(str!=NULL);
-  assert( transaction_.get()!=NULL && "logging called for finished transaction");
+  assert( isActive() && "logging called for finished transaction");
   LOGMSG_INFO_S(log_)<<transaction_->getName()<<": "<<str;
 }
 

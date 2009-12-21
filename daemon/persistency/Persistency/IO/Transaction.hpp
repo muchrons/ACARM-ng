@@ -12,6 +12,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "Logger/Logger.hpp"
+#include "Persistency/IO/ExceptionTransactionNotActive.hpp"
 #include "Persistency/IO/TransactionAPI.hpp"
 #include "Persistency/ExceptionNULLParameter.hpp"
 
@@ -27,8 +28,7 @@ class Transaction: private boost::noncopyable
 public:
   /** \brief creates transaction algorith for a given persistency transaction
    *         implementation.
-   *  \param transaction base object to be used for implementing transaction
-   *                     or NULL, if no transaction is required.
+   *  \param transaction base object to be used for implementing transaction.
    */
   explicit Transaction(TransactionAPIAutoPtr transaction);
   /** \brief ends transaction.
@@ -41,11 +41,16 @@ public:
   /** \brief rollbacks changes since transaction start.
    */
   void rollback(void);
+  /** \brief throws exception if transaction has been already commited/rollbacked.
+   */
+  void ensureIsActive(void) const;
 
 private:
+  bool isActive(void) const;
   void logMsg(const char *str);
 
   boost::scoped_ptr<TransactionAPI> transaction_;
+  bool                              isActive_;
   Logger::Node                      log_;
 }; // class Transaction
 

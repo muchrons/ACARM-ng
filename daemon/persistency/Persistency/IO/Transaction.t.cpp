@@ -125,4 +125,46 @@ void testObj::test<7>(void)
   }
 }
 
+// test if ensuring of active transaction pass
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  t_->ensureIsActive(); // should not throw
+}
+
+// test if transaction is not active after commit
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  t_->commit();
+  try
+  {
+    t_->ensureIsActive();   // should throw
+    fail("not exception has been rasied after ensuring ended transaction");
+  }
+  catch(const ExceptionTransactionNotActive&)
+  {
+    // this is expected
+  }
+}
+
+// test if transaction is not active after rollback
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  t_->rollback();
+  try
+  {
+    t_->ensureIsActive();   // should throw
+    fail("not exception has been rasied after ensuring ended transaction");
+  }
+  catch(const ExceptionTransactionNotActive&)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut
