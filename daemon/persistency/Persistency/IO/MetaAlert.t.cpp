@@ -84,7 +84,7 @@ struct TestClass
 
   Persistency::MetaAlertPtrNN ma_;
   TransactionAPIAutoPtr       tapi_;
-  const Transaction           t_;
+  Transaction                 t_;
   IOMetaAlert                 ioma_;
 };
 
@@ -178,6 +178,143 @@ void testObj::test<8>(void)
 {
   ioma_.associateWithAlert( makeNewAlert() );
   ensureCalls(6);
+}
+
+// test c-tor throw on inactive transaction
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  t_.rollback();
+  try
+  {
+    IOMetaAlert tmp(ma_, t_);
+    fail("c-tor didn't throw on inactive transaction");
+  }
+  catch(const ExceptionTransactionNotActive&)
+  {
+    // this is expected
+  }
+}
+
+// test if saving throws on inactive transaction
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  t_.rollback();
+  try
+  {
+    ioma_.save();
+    fail("save() didn't throw on inactive transaction");
+  }
+  catch(const ExceptionTransactionNotActive&)
+  {
+    // this is expected
+  }
+}
+
+// test if markAsUnused() throws on inactive transaction
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  t_.rollback();
+  try
+  {
+    ioma_.markAsUnused();
+    fail("markAsUnused() didn't throw on inactive transaction");
+  }
+  catch(const ExceptionTransactionNotActive&)
+  {
+    // this is expected
+  }
+}
+
+// test if markAsUsed() throws on inactive transaction
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  t_.rollback();
+  try
+  {
+    ioma_.markAsUsed();
+    fail("markAsUsed() didn't throw on inactive transaction");
+  }
+  catch(const ExceptionTransactionNotActive&)
+  {
+    // this is expected
+  }
+}
+
+// test if updating severity throws on inactive transaction
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  t_.rollback();
+  try
+  {
+    ioma_.updateSeverityDelta(4.2);
+    fail("updateSeverityDelta() didn't throw on inactive transaction");
+  }
+  catch(const ExceptionTransactionNotActive&)
+  {
+    // this is expected
+  }
+}
+
+// test if updating certanity throws on inactive transaction
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  t_.rollback();
+  try
+  {
+    ioma_.updateCertanityDelta(4.2);
+    fail("updateCertanityDelta() didn't throw on inactive transaction");
+  }
+  catch(const ExceptionTransactionNotActive&)
+  {
+    // this is expected
+  }
+}
+
+// test if adding child throws on inactive transaction
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  t_.rollback();
+  MetaAlertPtrNN mapnn( new Persistency::MetaAlert( makeNewAlert() ) );
+  try
+  {
+    ioma_.addChild(mapnn);
+    fail("addChild() didn't throw on inactive transaction");
+  }
+  catch(const ExceptionTransactionNotActive&)
+  {
+    // this is expected
+  }
+}
+
+// test if associating with alert throws on inactive transaction
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  t_.rollback();
+  try
+  {
+    ioma_.associateWithAlert( makeNewAlert() );
+    fail("associateWithAlert() didn't throw on inactive transaction");
+  }
+  catch(const ExceptionTransactionNotActive&)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut

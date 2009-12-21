@@ -75,7 +75,8 @@ private:
   virtual void addChildImpl(Persistency::MetaAlertPtrNN child) = 0;
   virtual void associateWithAlertImpl(Persistency::AlertPtrNN alert) = 0;
 
-  Persistency::MetaAlertPtr ma_;
+  Persistency::MetaAlertPtr  ma_;
+  const Transaction         &t_;
 }; // class MetaAlert
 
 

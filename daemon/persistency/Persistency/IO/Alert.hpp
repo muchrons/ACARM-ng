@@ -45,7 +45,8 @@ protected:
 private:
   virtual void saveImpl(void) = 0;
 
-  Persistency::AlertPtrNN alert_;
+  Persistency::AlertPtrNN  alert_;
+  const Transaction       &t_;
 }; // class Alert
 
 

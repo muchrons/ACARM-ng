@@ -45,8 +45,8 @@ struct TestClass
   {
   }
 
-  TransactionAPIAutoPtr  tapi_;
-  const Transaction      t_;
+  TransactionAPIAutoPtr tapi_;
+  Transaction           t_;
 };
 
 typedef TestClass TestClass;
@@ -91,6 +91,41 @@ void testObj::test<3>(void)
     fail("NULL host has been accepted");
   }
   catch(const Commons::ExceptionUnexpectedNULL&)
+  {
+    // this is expected
+  }
+}
+
+// test throw when creating object with non-active transaction.
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  t_.rollback();
+  try
+  {
+    IOHost host( makeNewHost(), t_);
+    fail("non-active transaction has been accepted");
+  }
+  catch(const ExceptionTransactionNotActive&)
+  {
+    // this is expected
+  }
+}
+
+// test throw when setting name with non-active transaction.
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  IOHost host( makeNewHost(), t_);
+  t_.rollback();
+  try
+  {
+    host.setName("baszerr.org");
+    fail("setting name didn't failed for non-active transaction");
+  }
+  catch(const ExceptionTransactionNotActive&)
   {
     // this is expected
   }

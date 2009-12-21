@@ -54,7 +54,7 @@ struct TestClass
 
   Persistency::AlertPtrNN alert_;
   TransactionAPIAutoPtr   tapi_;
-  const Transaction       t_;
+  Transaction             t_;
 };
 
 typedef TestClass TestClass;
@@ -99,6 +99,41 @@ void testObj::test<3>(void)
     fail("NULL alert has been accepted");
   }
   catch(const Commons::ExceptionUnexpectedNULL&)
+  {
+    // this is expected
+  }
+}
+
+// test throw when creating from non-active transaction
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  t_.rollback();
+  try
+  {
+    TestIOAlert a(alert_, t_);
+    fail("c-tor didn't throw on non-active transaction");
+  }
+  catch(const ExceptionTransactionNotActive&)
+  {
+    // this is expected
+  }
+}
+
+// test throw when saving with non-active transaction
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  TestIOAlert a(alert_, t_);
+  t_.rollback();
+  try
+  {
+    a.save();
+    fail("save() didn't throw on non-active transaction");
+  }
+  catch(const ExceptionTransactionNotActive&)
   {
     // this is expected
   }

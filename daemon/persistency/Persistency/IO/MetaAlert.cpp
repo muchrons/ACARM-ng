@@ -12,10 +12,12 @@ namespace IO
 {
 
 MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
-                     const Transaction           &/*t*/):
-  ma_(ma)
+                     const Transaction           &t):
+  ma_(ma),
+  t_(t)
 {
   assert( ma_.get()!=NULL );
+  t_.ensureIsActive();
 }
 
 MetaAlert::~MetaAlert(void)
@@ -24,21 +26,25 @@ MetaAlert::~MetaAlert(void)
 
 void MetaAlert::save()
 {
+  t_.ensureIsActive();
   saveImpl();
 }
 
 void MetaAlert::markAsUsed()
 {
+  t_.ensureIsActive();
   markAsUsedImpl();
 }
 
 void MetaAlert::markAsUnused()
 {
+  t_.ensureIsActive();
   markAsUnusedImpl();
 }
 
 void MetaAlert::updateSeverityDelta(double delta)
 {
+  t_.ensureIsActive();
   updateSeverityDeltaImpl(delta);
 
   assert(ma_.get()!=NULL);
@@ -47,6 +53,7 @@ void MetaAlert::updateSeverityDelta(double delta)
 
 void MetaAlert::updateCertanityDelta(double delta)
 {
+  t_.ensureIsActive();
   updateCertanityDeltaImpl(delta);
 
   assert(ma_.get()!=NULL);
@@ -55,11 +62,13 @@ void MetaAlert::updateCertanityDelta(double delta)
 
 void MetaAlert::addChild(Persistency::MetaAlertPtrNN child)
 {
+  t_.ensureIsActive();
   addChildImpl(child);
 }
 
 void MetaAlert::associateWithAlert(Persistency::AlertPtrNN alert)
 {
+  t_.ensureIsActive();
   associateWithAlertImpl(alert);
 }
 

@@ -12,9 +12,11 @@ namespace IO
 {
 
 Alert::Alert(Persistency::AlertPtrNN  alert,
-             const Transaction       &/*t*/):
-  alert_(alert)
+             const Transaction       &t):
+  alert_(alert),
+  t_(t)
 {
+  t_.ensureIsActive();
 }
 
 Alert::~Alert(void)
@@ -23,6 +25,7 @@ Alert::~Alert(void)
 
 void Alert::save(void)
 {
+  t_.ensureIsActive();
   saveImpl();
 }
 

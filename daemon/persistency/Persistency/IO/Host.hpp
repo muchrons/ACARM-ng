@@ -47,7 +47,8 @@ protected:
 private:
   virtual void setNameImpl(const Persistency::Host::Name &name) = 0;
 
-  Persistency::HostPtr host_;
+  Persistency::HostPtr  host_;
+  const Transaction    &t_;
 }; // class Host
 
 
