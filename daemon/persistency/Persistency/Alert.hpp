@@ -55,7 +55,7 @@ public:
         const Timestamp     &created,
         Severity             severity,
         Certanity            certanity,
-        const std::string   *description,
+        const std::string   &description,
         const ReportedHosts &sourceHosts,
         const ReportedHosts &targetHosts);
 
@@ -88,7 +88,7 @@ public:
    *  \return description of alert.
    *  \note this is equivalent of IDMEF's comments.
    */
-  const std::string *getDescription(void) const;
+  const std::string &getDescription(void) const;
   /** \brief gets vector of source hosts reported in this alert.
    *  \return vector of reported source hosts.
    */
@@ -99,15 +99,15 @@ public:
   const ReportedHosts &getReportedTargetHosts(void) const;
 
 private:
-  Name                           name_;
-  AnalyzerPtrNN                  analyzer_;
-  boost::scoped_ptr<Timestamp>   detected_;
-  Timestamp                      created_;
-  Severity                       severity_;
-  Certanity                      certanity_;
-  boost::scoped_ptr<std::string> description_;
-  ReportedHosts                  sourceHosts_;
-  ReportedHosts                  targetHosts_;
+  Name                         name_;
+  AnalyzerPtrNN                analyzer_;
+  boost::scoped_ptr<Timestamp> detected_;
+  Timestamp                    created_;
+  Severity                     severity_;
+  Certanity                    certanity_;
+  std::string                  description_;
+  ReportedHosts                sourceHosts_;
+  ReportedHosts                targetHosts_;
 }; // class Alert
 
 

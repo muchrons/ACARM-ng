@@ -66,7 +66,7 @@ template<>
 void testObj::test<1>(void)
 {
   const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
-                &description_, sourceHosts_, targetHosts_);
+                description_, sourceHosts_, targetHosts_);
   // check getters
   ensure_equals("invalid name", a.getName().get(), string( name_.get() ) );
   ensure("invalid analyzer", &a.getAnalyzer()==analyzer_.get() );
@@ -76,8 +76,7 @@ void testObj::test<1>(void)
   ensure_equals("invalid severity",
                 a.getSeverity().getLevel().toInt(), severity_.getLevel().toInt() );
   ensure_equals("invalid certanity", a.getCertanity().get(), certanity_.get() );
-  ensure("NULL description", a.getDescription()!=NULL);
-  ensure_equals("invalid description", *a.getDescription(), description_);
+  ensure_equals("invalid description", a.getDescription(), description_);
   ensure_equals("invalid source hosts",
                 a.getReportedSourceHosts().size(), sourceHosts_.size() );
   ensure_equals("invalid destination hosts",
@@ -90,31 +89,21 @@ template<>
 void testObj::test<2>(void)
 {
   const Alert a(name_, analyzer_, NULL, created_, severity_, certanity_,
-                &description_, sourceHosts_, targetHosts_);
+                description_, sourceHosts_, targetHosts_);
   ensure("detection time is not NULL", a.getDetectionTime()==NULL);
-}
-
-// test c-tor with NULL description
-template<>
-template<>
-void testObj::test<3>(void)
-{
-  const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
-                NULL, sourceHosts_, targetHosts_);
-  ensure("description is not NULL", a.getDescription()==NULL);
 }
 
 // test c-tor for NULL analyzer
 template<>
 template<>
-void testObj::test<4>(void)
+void testObj::test<3>(void)
 {
   AnalyzerPtr tmp;
   assert( tmp.get()==NULL );
   try
   {
     Alert a(name_, tmp, &detected_, created_, severity_, certanity_,
-            &description_, sourceHosts_, targetHosts_);
+            description_, sourceHosts_, targetHosts_);
     fail("NULL analyzer has been accepted");
   }
   catch(const Commons::ExceptionUnexpectedNULL&)
