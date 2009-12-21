@@ -25,7 +25,7 @@ AlertPtrNN makeNewAlert(void)
                                             Timestamp(),
                                             Severity(SeverityLevel::INFO),
                                             Certanity(42),
-                                            NULL,
+                                            "some description",
                                             Persistency::Alert::ReportedHosts(),
                                             Persistency::Alert::ReportedHosts()) );
 }

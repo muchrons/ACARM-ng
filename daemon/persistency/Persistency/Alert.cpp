@@ -17,7 +17,7 @@ Alert::Alert(const Name          &name,
              const Timestamp     &created,
              Severity             severity,
              Certanity            certanity,
-             const std::string   *description,
+             const std::string   &description,
              const ReportedHosts &sourceHosts,
              const ReportedHosts &targetHosts):
   name_(name),
@@ -26,7 +26,7 @@ Alert::Alert(const Name          &name,
   created_(created),
   severity_(severity),
   certanity_(certanity),
-  description_( (description!=NULL)?( new string(*description) ):NULL ),
+  description_(description),
   sourceHosts_(sourceHosts),
   targetHosts_(targetHosts)
 {
@@ -63,9 +63,9 @@ Certanity Alert::getCertanity(void) const
   return certanity_;
 }
 
-const std::string *Alert::getDescription(void) const
+const std::string &Alert::getDescription(void) const
 {
-  return description_.get();
+  return description_;
 }
 
 const Alert::ReportedHosts &Alert::getReportedSourceHosts(void) const
