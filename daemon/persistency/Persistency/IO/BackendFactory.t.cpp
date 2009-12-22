@@ -37,7 +37,7 @@ void testObj::test<1>(void)
 {
   try
   {
-    BackendFactory::create();
+    create();
     fail("create() didn't throw when no factory is registered");
   }
   catch(const Commons::Factory::ExceptionBuilderDoesNotExist&)

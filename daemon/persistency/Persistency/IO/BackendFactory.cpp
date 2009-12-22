@@ -5,14 +5,14 @@ namespace Persistency
 namespace IO
 {
 
-BackendFactory::FactoryPtr BackendFactory::create(void)
+BackendFactory::FactoryPtr create(void)
 {
   // TODO: get name from config
-  const Singleton::FactoryTypeName name="stubs";    // TODO: temporary solution
+  const BackendFactory::FactoryTypeName name="stubs";   // TODO: temporary solution
   // TODO: get options form configuration
-  const Singleton::Options         options;
+  const BackendFactory::Options         options;
 
-  return Singleton::create(name, options);
+  return BackendFactory::create(name, options);
 }
 
 } // namespace IO
