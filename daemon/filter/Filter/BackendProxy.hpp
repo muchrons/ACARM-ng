@@ -13,7 +13,6 @@
 
 #include "Persistency/GraphNode.hpp"
 
-// TODO: implementation
 // TODO: tests
 // TODO: comments
 
@@ -44,7 +43,7 @@ public:
   void updateCertanityDelta(Persistency::MetaAlertPtrNN ma, double delta);
   void addChild(Persistency::GraphNodePtrNN parent,
                 Persistency::GraphNodePtrNN child);
-  Persistency::GraphNodePtrNN corelate(
+  Persistency::GraphNodePtrNN correlate(
             Persistency::MetaAlertPtrNN  ma,
             Persistency::GraphNodePtrNN  child1,
             Persistency::GraphNodePtrNN  child2,

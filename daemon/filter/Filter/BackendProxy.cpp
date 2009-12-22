@@ -58,7 +58,7 @@ void BackendProxy::addChild(Persistency::GraphNodePtrNN parent,
   parent->addChild(child, *io);
 }
 
-Persistency::GraphNodePtrNN BackendProxy::corelate(
+Persistency::GraphNodePtrNN BackendProxy::correlate(
             Persistency::MetaAlertPtrNN  ma,
             Persistency::GraphNodePtrNN  child1,
             Persistency::GraphNodePtrNN  child2,
@@ -69,7 +69,6 @@ Persistency::GraphNodePtrNN BackendProxy::corelate(
                                     child1, child2, otherChildren) );
   return ptr;
 }
-
 
 void BackendProxy::commitChanges(void)
 {
