@@ -317,4 +317,32 @@ void testObj::test<16>(void)
   }
 }
 
+// test if updating severity updates (not overwrites) value
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  double v=4;
+  ioma_.updateSeverityDelta(v);
+  ensure_equals("severity update 1 failed", ma_->getSeverityDelta(), v);
+
+  v+=0.2;
+  ioma_.updateSeverityDelta(0.2);
+  ensure_equals("severity update 2 failed", ma_->getSeverityDelta(), v);
+}
+
+// test if updating certanity updates (not overwrites) value
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  double v=4;
+  ioma_.updateCertanityDelta(v);
+  ensure_equals("certanity update 1 failed", ma_->getCertanityDelta(), v);
+
+  v+=0.2;
+  ioma_.updateCertanityDelta(0.2);
+  ensure_equals("certanity update 2 failed", ma_->getCertanityDelta(), v);
+}
+
 } // namespace tut
