@@ -28,6 +28,8 @@ namespace
 const Commons::Factory::RegistratorHelper<ReadersFactory, ReaderBuilder> g_rh;
 } // unnamed namespace
 
+FORCE_LINK_THIS_OBJECT(Input_Prelude_ReaderBuilder);
+
 
 ReaderBuilder::ReaderBuilder(void):
   name_("prelude"),
