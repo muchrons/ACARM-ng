@@ -23,6 +23,7 @@ include $(MAKEFILES_COMMON_BASE_DIR)/$(COMPONENT_TYPE).mk
 # add ourselfs to VPATH
 VPATH+=$(THIS_SRC_BASE_DIR)
 
+include $(MAKEFILES_COMMON_BASE_DIR)/build_macros.mk
 include $(MAKEFILES_COMMON_BASE_DIR)/rules.mk
 include $(MAKEFILES_COMMON_BASE_DIR)/deps.mk
 

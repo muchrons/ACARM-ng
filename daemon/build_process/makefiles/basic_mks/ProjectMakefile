@@ -28,9 +28,11 @@ TMP:=$(shell mkdir -p "$(GEN_COMPONENTS_DEPS_DIR)" && \
                `cat $(COMPONENTS_LIST)` )
 TMP:=
 
-# by default make everything
+# ensure default target is defined in proper way
 include $(GEN_COMPONENTS_DEPS_DIR)/_default_target_.mk
 
+# make pre-build requirements
+include $(MAKEFILES_COMMON_BASE_DIR)/pre_build.mk
 
 # include all generated component-dependencies
 include $(wildcard $(GEN_COMPONENTS_DEPS_DIR)/[^_]*.mk)
