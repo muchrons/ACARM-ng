@@ -21,4 +21,3 @@ FIND_DEPS_FOR_THIS_COMPONENT=$(shell \
     $(GETDEPS_SCRIPT) $(THIS_COMPONENT) $(COMPONENT_DEPS_REL_PATH))
 # components list file
 COMPONENTS_LIST:=$(SRC_BASE_DIR)/components.lst
-

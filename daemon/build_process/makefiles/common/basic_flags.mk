@@ -3,7 +3,7 @@ ifeq (,$V)
   MFLAGS+=-s
 endif
 
-COMMON_FLAGS= -Wall -Wextra -pipe -I$(GEN_INCLUDES_DIR)
+COMMON_FLAGS= -Wall -Wextra -pipe -I$(GEN_INCLUDES_DIR) -I$(CODE_BASE_DIR)
 CFLAGS  += $(COMMON_FLAGS)
 CXXFLAGS+= $(COMMON_FLAGS)
 LDFLAGS += -L$(GEN_LIBS_DIR)

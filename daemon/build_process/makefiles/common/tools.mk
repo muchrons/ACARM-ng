@@ -12,6 +12,7 @@ export CC \
        CXX \
        AR \
        RANLIB \
+       NM \
        LD \
        STRIP \
        DOXYGEN
