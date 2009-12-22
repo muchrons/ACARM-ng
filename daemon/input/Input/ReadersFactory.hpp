@@ -19,6 +19,11 @@ namespace Input
  */
 typedef Commons::Factory::AbstractFactorySingleton<Reader> ReadersFactory;
 
+/** \brief creates new input.
+ *  \return newly created input. each call returns new instance.
+ */
+ReadersFactory::FactoryPtr create(void);
+
 } // namespace Input
 
 #endif
