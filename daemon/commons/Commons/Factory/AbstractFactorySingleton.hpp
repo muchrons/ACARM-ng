@@ -56,7 +56,6 @@ public:
    */
   typedef typename TAbstractFactory::Options                   Options;
 
-public:
   /** \brief creates factory with a proper builder, and with proper options.
    *  \param name    parameter that decides which builder is to be used.
    *  \param options paramters to be builder.
