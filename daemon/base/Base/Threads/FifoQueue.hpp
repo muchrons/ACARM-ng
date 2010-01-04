@@ -8,6 +8,7 @@
 /* public header */
 
 #include <deque>
+#include <boost/thread.hpp>
 #include <cassert>
 
 #include "Base/Threads/Mutex.hpp"
@@ -26,17 +27,6 @@ template<typename T>
 class FifoQueue
 {
 public:
-  /*
-  struct ExceptionTimeouted: public System::Exceptions::Base<ExceptionTimeouted,
-                                                             std::exception>
-  {
-    explicit ExceptionTimeouted(const char *where):
-      System::Exceptions::Base<ExceptionTimeouted,
-                               std::exception>(where, "FifoQueue::pop() timeouted");
-    {
-    }
-  }; // struct Exception
-*/
   /** \brief gets first element out.
    *  \return element from the begin of the queue (oldest).
    *
