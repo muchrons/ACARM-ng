@@ -33,8 +33,13 @@ struct TestClass: protected Interface
 
     tut::ensure("invalid node", n.get()==node_.get() );
     tut::ensure("invalid changes list", &changed==&changed_);
+
     // smoke test - checks if object is valid
     bp.commitChanges();
+
+    // node and changed should be writable
+    changed.push_back( makeGraphLeaf() );
+    n->getMetaAlert();
   }
 
   MetaAlertPtrNN makeMetaAlert(void) const
