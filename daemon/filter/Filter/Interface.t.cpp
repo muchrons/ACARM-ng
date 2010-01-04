@@ -19,7 +19,7 @@ namespace
 struct TestClass: protected Interface
 {
   TestClass(void):
-    Interface("test_filter"),
+    Interface("testfilter"),
     calls_(0),
     node_( makeGraphLeaf() )
   {
@@ -81,7 +81,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid name", getFilterName(), "test_filter");
+  ensure_equals("invalid name", getFilterName(), "testfilter");
 }
 
 // check if process() calls implementation (with valid arguments)

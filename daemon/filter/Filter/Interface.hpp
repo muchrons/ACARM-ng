@@ -30,6 +30,10 @@ public:
   /** \brief helper typedef for list of chenged nodes. */
   typedef std::vector<Node>           ChangedNodes;
 
+  /** \brief deallocate object.
+   */
+  virtual ~Interface(void);
+
   /** \brief processes given meta-alert.
    */
   void process(Node n, ChangedNodes &changed);
@@ -48,6 +52,8 @@ protected:
   /** \brief create instance.
    */
   explicit Interface(const std::string &name);
+
+  const Logger::Node log_;  ///< logger node to log messages to
 
 private:
   /** \brief user-provided implementation of node processing.
