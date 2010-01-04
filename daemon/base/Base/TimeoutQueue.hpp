@@ -145,7 +145,7 @@ private:
 
     bool operator()(const Element &e) const
     {
-      return e->second>now_;
+      return e.second<now_;
     }
 
   private:
