@@ -7,7 +7,7 @@
 
 /* public header */
 
-#include <deque>
+#include <vector>
 #include <algorithm>
 #include <boost/shared_ptr.hpp>
 #include <boost/iterator/iterator_facade.hpp>
@@ -22,8 +22,11 @@ template<typename T>
 class TimeoutQueue
 {
 private:
-  typedef std::pair<T, time_t> Element;
-  typedef std::deque<Element>  Queue;
+  typedef std::pair<T, time_t>           Element;
+  typedef std::vector<Element>           Queue;
+
+  typedef typename Queue::iterator       ImplIter;
+  typedef typename Queue::const_iterator ConstImplIter;
 
 public:
   /** \brief implementation of GrowingVector's iterator.
@@ -87,34 +90,49 @@ public:
     InternalIterator it_;
   }; // class TimeoutQueueIterator
 
-  typedef TimeoutQueueIterator<T,       typename Queue::iterator>       iterator;
-  typedef TimeoutQueueIterator<T const, typename Queue::const_iterator> const_iterator;
+  typedef TimeoutQueueIterator<T,       ImplIter>      iterator;
+  typedef TimeoutQueueIterator<T const, ConstImplIter> const_iterator;
 
-  /*
+
   iterator begin(void)
   {
-    return q_.begin();
+    return iterator( q_.begin() );
   }
   iterator end(void)
   {
-    return q_.end();
+    return iterator( q_.end() );
   }
 
   const_iterator begin(void) const
   {
-    return q_.begin();
+    return const_iterator( q_.begin() );
   }
   const_iterator end(void) const
   {
-    return q_.end();
+    return const_iterator( q_.end() );
   }
 
   void prune(void)
   {
-    std::remove
+    // find matchich
+    ImplIter new_end=std::remove_if( q_.begin(), q_.end(), TimeoutPred() );
+    // remove them
+    q_.erase(new_end, q_.end() );
   }
 
-  void update(const T &t, unsigned int seconds);*/
+  void update(const T &e, unsigned int seconds)
+  {
+    seconds+=time(NULL);        // make absolute time
+    // go through all elements to find matching
+    for(ImplIter it=q_.begin(); it!=q_.end(); ++it)
+      if(it->first==e)
+      {
+        it->second+=seconds;    // make entry last longer
+        return;                 // if updated, we can finish
+      }
+    // if entry not found, insert new
+    q_.push_back( make_pair(e, seconds) );
+  }
 
 private:
   class TimeoutPred
@@ -125,10 +143,9 @@ private:
     {
     }
 
-    bool operator()(const T &t) const
+    bool operator()(const Element &e) const
     {
-      // TODO
-      return false;
+      return e->second>now_;
     }
 
   private:

@@ -16,9 +16,9 @@ namespace
 {
 struct TestClass
 {
-  typedef double                                Type;
-  typedef std::deque< std::pair<Type, time_t> > DequeImpl;
-  typedef TimeoutQueue<Type>                    Queue;
+  typedef double                                 Type;
+  typedef std::vector< std::pair<Type, time_t> > DequeImpl;
+  typedef TimeoutQueue<Type>                     Queue;
 
 
   typedef Queue::iterator       Iter;
@@ -223,7 +223,7 @@ template<>
 template<>
 void testObj::test<13>(void)
 {
-  Iter      it( qImpl1_.begin() );
+  Iter      it( qImpl2_.begin() );
   ConstIter cit(it);
   ensure_equals("iterators point ot different places", *it, *cit);
 }
