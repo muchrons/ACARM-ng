@@ -56,7 +56,6 @@ public:
         it_(other.it_)
     {
     }
-
     /** \brief create end iterator.
      *  \param it iterator on internal collection to create from.
      */
@@ -80,17 +79,14 @@ public:
     {
       return it_==other.it_;
     }
-
     void increment()
     {
       ++it_;
     }
-
     void decrement()
     {
       --it_;
     }
-
     Value &dereference() const
     {
       return it_->first;
