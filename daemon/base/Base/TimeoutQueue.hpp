@@ -11,13 +11,22 @@
 #include <algorithm>
 #include <boost/shared_ptr.hpp>
 #include <boost/iterator/iterator_facade.hpp>
-//#include <boost/type_traits/remove_const.hpp>
 #include <time.h>
-#include <cassert>
 
 namespace Base
 {
-
+/** \brief timeouting queue.
+ *
+ *  list-like class that has an easy way of removing elements that are expired
+ *  from the queue. it integrates adding new element with updating timeout
+ *  of one already present in the queue, makign it event easier to use.
+ *
+ *  in order to remove timeouted elements user has to call 'prune()' method.
+ *  it is not done automatically due to performance reasons.
+ *
+ *  \note this class does not guarantee any order of elements inside
+ *  after doing any operation, that change its content.
+ */
 template<typename T>
 class TimeoutQueue
 {
@@ -90,36 +99,61 @@ public:
     InternalIterator it_;
   }; // class TimeoutQueueIterator
 
+  /** \brief collection's iterator. */
   typedef TimeoutQueueIterator<T,       ImplIter>      iterator;
+  /** \brief collection's const iterator. */
   typedef TimeoutQueueIterator<T const, ConstImplIter> const_iterator;
 
-
+  /** \brief returns iterator to begin of the collection.
+   *  \return begin iterator to collection.
+   */
   iterator begin(void)
   {
     return iterator( q_.begin() );
   }
+  /** \brief returns iterator to end of the collection.
+   *  \return end iterator to collection.
+   */
   iterator end(void)
   {
     return iterator( q_.end() );
   }
 
+  /** \brief returns const iterator to begin of the collection.
+   *  \return begin const iterator to collection.
+   */
   const_iterator begin(void) const
   {
     return const_iterator( q_.begin() );
   }
+  /** \brief returns const iterator to end of the collection.
+   *  \return end const iterator to collection.
+   */
   const_iterator end(void) const
   {
     return const_iterator( q_.end() );
   }
-
+  /** \brief removes timeouted elements from queue.
+   *  \note order of elements after pruning is not guaranteed.
+   */
   void prune(void)
   {
     // find matchich
+    // NOTE: std::remove_if<> is stable, but it does not have to be. if this is
+    //       will be time-critical, custom algorithm may be introduced here.
     ImplIter new_end=std::remove_if( q_.begin(), q_.end(), TimeoutPred() );
     // remove them
     q_.erase(new_end, q_.end() );
   }
-
+  /** \brief add or update element with a timeout.
+   *  \param e       element to be added.
+   *  \param seconds number of seconds before timeouting.
+   *
+   *  if elements does not exist in queue, new entry is added. if such element
+   *  already exists timeout is enlarged by a given value.
+   *
+   *  \note order of elements after pruning is not guaranteed.
+   */
   void update(const T &e, unsigned int seconds)
   {
     seconds+=time(NULL);        // make absolute time
@@ -135,6 +169,7 @@ public:
   }
 
 private:
+  // helper class for finiding timeouted elements
   class TimeoutPred
   {
   public:
