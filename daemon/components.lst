@@ -1,6 +1,8 @@
 filter
 persistencystubs
 persistency
+core
+coretypes
 input
 preludepp
 xml
