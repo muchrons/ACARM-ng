@@ -34,7 +34,7 @@ public:
 
   /** \brief creates new transaction, of a given name.
    *  \param name name for new transaction.
-   *  \return transaction API object for given persistency type.
+   *  \return non-NULL transaction API object for given persistency type.
    *  \note opening transaction locks communication object so that only
    *        one transaction can be created at a time. if more call will
    *        appear, they will be waiting for it to finish.
@@ -43,19 +43,19 @@ public:
   /** \brief create alert's persistency proxy.
    *  \param alert alert to work on.
    *  \param t     active transaction.
-   *  \return alert's persistency proxy object.
+   *  \return non-NULL alert's persistency proxy object.
    */
   AlertAutoPtr alert(AlertPtrNN alert, const Transaction &t);
   /** \brief create host's persistency proxy.
    *  \param host host to work on.
    *  \param t    active transaction.
-   *  \return host's persistency proxy.
+   *  \return non-NULL host's persistency proxy.
    */
   HostAutoPtr host(HostPtrNN host, const Transaction &t);
   /** \brief creates meta-alert proxy object.
    *  \param ma meta alert to work on.
    *  \param t  active transaction.
-   *  \return meta-alert persistency proxy.
+   *  \return non-NULL meta-alert persistency proxy.
    */
   MetaAlertAutoPtr metaAlert(MetaAlertPtrNN ma, const Transaction &t);
 

@@ -53,15 +53,15 @@ public:
     // sanity check
     if(str==NULL)
       throw ExceptionNULLParameter(CALLNAME, "str");
-
-    // check length
-    const size_t len=strlen(str);
-    if(len>N)
-      throw ExceptionStringTooLong(CALLNAME, str);
-
-    // save data
-    assert(len+1<=sizeof(str_));
-    memcpy(str_, str, len+1);
+    createFromNonNULL(str);
+  }
+  /** \brief creates object from a given string.
+   *  \param str string to create object from.
+   *  \note this c-tor is not explicit to allow easier argument passing.
+   */
+  LimitedString(const std::string &str)
+  {
+    createFromNonNULL( str.c_str() );
   }
 
   /** \brief gets pointer to data.
@@ -86,6 +86,19 @@ public:
 
 private:
   BOOST_STATIC_ASSERT(N<=512 && "string is unreasonably large");
+
+  void createFromNonNULL(const char *str)
+  {
+    assert(str!=NULL);
+    // check length
+    const size_t len=strlen(str);
+    if(len>N)
+      throw ExceptionStringTooLong(CALLNAME, str);
+
+    // save data
+    assert(len+1<=sizeof(str_));
+    memcpy(str_, str, len+1);
+  }
 
   char str_[N+1];
 }; // class LimitedString

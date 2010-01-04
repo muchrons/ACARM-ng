@@ -1,5 +1,5 @@
 /*
- * RegistratorHelper.cpp
+ * RegistratorHelper.hpp
  *
  */
 #ifndef INCLUDE_COMMONS_FACTORY_REGISTRATORHELPER_HPP_FILE
@@ -9,6 +9,7 @@
 
 #include <sstream>
 
+#include "BuildProcess/ForceLink.hpp"
 #include "Logger/Logger.hpp"
 
 namespace Commons

@@ -1,15 +1,15 @@
 /*
- * ReadersFactory.t.cpp
+ * BackendFactory.t.cpp
  *
  */
 #include <tut.h>
 #include <cstring>
 #include <memory>
 
-#include "Input/ReadersFactory.hpp"
+#include "Persistency/IO/BackendFactory.hpp"
 
 using namespace std;
-using namespace Input;
+using namespace Persistency::IO;
 
 namespace
 {
@@ -22,7 +22,7 @@ typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Input/ReadersFactory");
+factory tf("Persistency/IO/BackendFactory");
 } // unnamed namespace
 
 

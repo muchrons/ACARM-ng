@@ -30,6 +30,16 @@ public:
   {
     assert( ptr_==NULL || str_.get()==ptr_ );
   }
+  /** \brief creates object from a given string.
+   *  \param str string to create object from.
+   *  \note this c-tor is not explicit to allow easier argument passing.
+   */
+  LimitedNULLString(const std::string &str):
+    str_(str),
+    ptr_( str_.get() )
+  {
+    assert( ptr_==NULL || str_.get()==ptr_ );
+  }
 
   /** \brief gets pointer to data.
    *  \return string held inside.
