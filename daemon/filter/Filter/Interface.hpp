@@ -8,16 +8,13 @@
 /* public header */
 
 #include <string>
-#include <deque>
+#include <vector>
 #include <boost/noncopyable.hpp>
 
 #include "Logger/Logger.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Filter/BackendProxy.hpp"
 
-// TODO: implement
-// TODO: test
-// TODO: comment
 
 namespace Filter
 {
@@ -27,14 +24,16 @@ namespace Filter
 class Interface: private boost::noncopyable
 {
 public:
+  /** \brief helper typedef for GraphNode pointer. */
   typedef Persistency::GraphNodePtrNN Node;
-  typedef std::deque<Node>            NodesDeque;
+  /** \brief helper typedef for list of chenged nodes. */
+  typedef std::vector<Node>           ChangedNodes;
 
   /** \brief processes given meta-alert.
    */
-  void process(Node n, NodesDeque &changed);   // TODO
-  /** \biref gets filter name.
-   *  \reutrn name of implemented filter.
+  void process(Node n, ChangedNodes &changed);
+  /** \brief gets filter name.
+   *  \return name of implemented filter.
    */
   const std::string &getFilterName(void) const
   {
@@ -47,7 +46,7 @@ protected:
   explicit Interface(const std::string &name);
 
 private:
-  virtual void processImpl(Node n, NodesDeque &changed, BackendProxy &bp) = 0;   // TODO
+  virtual void processImpl(Node n, ChangedNodes &changed, BackendProxy &bp) = 0;
 
   const std::string                name_;
   Persistency::IO::ConnectionPtrNN conn_;

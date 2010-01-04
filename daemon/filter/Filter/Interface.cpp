@@ -10,10 +10,9 @@
 namespace Filter
 {
 
-void Interface::process(Node n, NodesDeque &changed)
+void Interface::process(Node n, ChangedNodes &changed)
 {
   BackendProxy bp( conn_, getFilterName() );
-
   assert( changed.size()==0 && "non-empty output collection received");
   processImpl(n, changed, bp);
 }

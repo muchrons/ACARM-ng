@@ -25,7 +25,7 @@ struct TestClass: protected Interface
   {
   }
 
-  virtual void processImpl(Node n, NodesDeque &changed, BackendProxy &bp)
+  virtual void processImpl(Node n, ChangedNodes &changed, BackendProxy &bp)
   {
     ++calls_;
     tut::ensure_equals("invalid count of elements in changed list",
@@ -54,8 +54,8 @@ struct TestClass: protected Interface
     return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn,  t) );
   }
 
-  int        calls_;
-  NodesDeque changed_;
+  int          calls_;
+  ChangedNodes changed_;
   Node       node_;
 };
 
