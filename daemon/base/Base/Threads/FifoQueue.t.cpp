@@ -218,7 +218,7 @@ void testObj::test<6>(void)
   usleep(30*1000);
   // switch state and interrupt thread
   th.interrupt();
-  q_.signallAll();
+  q_.signalAll();
   // check if everything's fine.
   th.join();
   ensure_equals("invalid state", state, 2);

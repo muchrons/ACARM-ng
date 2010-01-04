@@ -55,9 +55,9 @@ public:
     return tmp;
   }
 
-  /** \brief signalls all threads waiting on pop().
+  /** \brief signals all threads waiting on pop().
    */
-  void signallAll(void)
+  void signalAll(void)
   {
     cond_.notify_all();
   }
