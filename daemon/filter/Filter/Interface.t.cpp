@@ -25,7 +25,10 @@ struct TestClass: protected Interface
   {
   }
 
-  virtual void processImpl(Node n, ChangedNodes &changed, BackendProxy &bp)
+  virtual void processImpl(Node               n,
+                           ChangedNodes      &changed,
+                           NodesTimeoutQueue &ntq,
+                           BackendProxy      &bp)
   {
     ++calls_;
     tut::ensure_equals("invalid count of elements in changed list",
@@ -40,6 +43,9 @@ struct TestClass: protected Interface
     // node and changed should be writable
     changed.push_back( makeGraphLeaf() );
     n->getMetaAlert();
+
+    // ntq should be empty by default
+    tut::ensure("NTQ not empty", ntq.begin()==ntq.end() );
   }
 
   MetaAlertPtrNN makeMetaAlert(void) const

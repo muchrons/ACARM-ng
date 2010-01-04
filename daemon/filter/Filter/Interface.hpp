@@ -11,6 +11,7 @@
 #include <vector>
 #include <boost/noncopyable.hpp>
 
+#include "Base/TimeoutQueue.hpp"
 #include "Logger/Logger.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Filter/BackendProxy.hpp"
@@ -41,15 +42,34 @@ public:
   }
 
 protected:
+  /** \brief timeouting queue colleciton type. */
+  typedef Base::TimeoutQueue<Node> NodesTimeoutQueue;
+
   /** \brief create instance.
    */
   explicit Interface(const std::string &name);
 
 private:
-  virtual void processImpl(Node n, ChangedNodes &changed, BackendProxy &bp) = 0;
+  /** \brief user-provided implementation of node processing.
+   *  \param n       added/changed node to be processed by filter.
+   *  \param changed collection of nodes that changed (user should use this
+   *                 to inform other filters about changes).
+   *  \param ntq     internal filter's collection of elements with assigned
+   *                 timeout. it can be browsed any time. if element is to be
+   *                 saved for processing in later calls (ex.: it looks like it
+   *                 can be correlated later on) it is to be saved here, with
+   *                 proper timeout.
+   *  \param bp      persistency proxy - object that allows saving changes on
+   *                 persistent storage.
+   */
+  virtual void processImpl(Node               n,
+                           ChangedNodes      &changed,
+                           NodesTimeoutQueue &ntq,
+                           BackendProxy      &bp) = 0;
 
   const std::string                name_;
   Persistency::IO::ConnectionPtrNN conn_;
+  NodesTimeoutQueue                ntq_;
 }; // class Interface
 
 } // namespace Filter
