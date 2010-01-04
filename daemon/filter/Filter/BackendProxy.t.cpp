@@ -21,7 +21,7 @@ namespace
 struct TestClass
 {
   TestClass(void):
-    conn_( IO::BackendFactory::create("stubs", IO::BackendFactory::Options() ) ),
+    conn_( IO::create() ),
     bp_( new BackendProxy(conn_, "sometest") )
   {
     assert( bp_.get()!=NULL );

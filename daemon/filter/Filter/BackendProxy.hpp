@@ -14,16 +14,6 @@
 #include "Persistency/GraphNode.hpp"
 
 
-namespace Persistency
-{
-namespace IO
-{
-// forward declarations to ommit direct interface usage
-class Transaction;
-class Connection;
-} // namespace IO
-} // namespace Persistency
-
 namespace Filter
 {
 /** \brief persistent storage communication simplification layer.
@@ -94,10 +84,10 @@ private:
   void beginTransaction(void);
   const Persistency::IO::Transaction &getTransaction(void) const;
 
-  typedef boost::scoped_ptr<Persistency::IO::Transaction> TransactionSPtr;
+  typedef boost::scoped_ptr<Persistency::IO::Transaction> TransactionScPtr;
 
   std::string                      filterName_;
-  TransactionSPtr                  transaction_;
+  TransactionScPtr                 transaction_;
   Persistency::IO::ConnectionPtrNN conn_;
 }; // class BackendProxy
 

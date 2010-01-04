@@ -83,7 +83,8 @@ void BackendProxy::beginTransaction(void)
 {
   if( transaction_.get()==NULL )    // new transaction
   {
-    TransactionAPIAutoPtr api=conn_->createNewTransaction(filterName_);
+    TransactionAPIAutoPtr api=conn_->createNewTransaction(
+                                "transaction_for_filter_" + filterName_);
     transaction_.reset( new Transaction(api) );
   }
   // if begin has been requested, transaction must always be valid
