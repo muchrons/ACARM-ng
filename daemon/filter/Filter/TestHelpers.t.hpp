@@ -70,7 +70,7 @@ GraphNodePtrNN th_makeTree2(void)
   return th_makeNode( node1,
                       th_makeNode(
                             th_makeNode( th_makeLeaf(), node1 ), node1 ) );
-} // th_makeTree1()
+} // th_makeTree2()
 
 } // unnamed namespace
 

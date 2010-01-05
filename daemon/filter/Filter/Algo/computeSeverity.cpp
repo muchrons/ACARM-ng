@@ -3,6 +3,7 @@
  *
  */
 #include <set>
+#include <cassert>
 
 #include "Filter/Algo/computeSeverity.hpp"
 #include "Filter/Algo/forEachUniqueInTree.hpp"
@@ -34,6 +35,8 @@ public:
   {
     if( node->isLeaf() )
     {
+      assert( node->getMetaAlert()->getSeverityDelta()==0 &&
+              "non-zero severity delta for leaf detected" );
       ++leafsCount_;
       leafsSeveritySum_+=node->getAlert()->getSeverity().getLevel().toInt();
     }

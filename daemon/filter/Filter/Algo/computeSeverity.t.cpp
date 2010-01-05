@@ -49,7 +49,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  checkMatch( computeSeverity( th_makeLeaf() ), alertSeverity_);
+  checkMatch( computeSeverity( th_makeLeaf() ),
+                               1*alertSeverity_/1.0 + 0*0.1);
 }
 
 // compute severity of a node with 2 leafs

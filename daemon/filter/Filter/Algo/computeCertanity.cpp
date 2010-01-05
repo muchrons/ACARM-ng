@@ -3,6 +3,7 @@
  *
  */
 #include <set>
+#include <cassert>
 
 #include "Filter/Algo/computeCertanity.hpp"
 #include "Filter/Algo/forEachUniqueInTree.hpp"
@@ -24,7 +25,7 @@ public:
   CertComput(void):
     delta_(0),
     leafsCount_(0),
-    leafstySum_(0)
+    leafsCertanitySum_(0)
   {
   }
   /** \brief work procedure itself.
@@ -32,23 +33,27 @@ public:
    */
   void operator()(Persistency::GraphNodePtrNN node)
   {
+std::cerr<<"! "<<leafsCertanitySum_<<" / "<<leafsCount_<<" / "<<delta_<<"\n";                       
     if( node->isLeaf() )
     {
+      assert( node->getMetaAlert()->getCertanityDelta()==0 &&
+              "non-zero certaity delta for leaf detected"     );
       ++leafsCount_;
-      leafsSeveritySum_+=node->getAlert()->getSeverity().getLevel().toInt();
+      leafsCertanitySum_+=node->getAlert()->getCertanity().get();
     }
     else // node
     {
-      delta_+=node->getMetaAlert()->getSeverityDelta();
+      delta_+=node->getMetaAlert()->getCertanityDelta();
     }
+std::cerr<<"> "<<leafsCertanitySum_<<" / "<<leafsCount_<<" / "<<delta_<<"\n";                       
   }
   /** \brief gets the computed value.
    *  \return total (sub)tree certanity.
    */
   double get(void) const
   {
-    // arithmetic average of all severities modified by delta.
-    return (0.0+leafsSeveritySum_)/leafsCount_ + delta_;
+    // arithmetic average of all certanities modified by delta.
+    return (0.0+leafsCertanitySum_)/leafsCount_ + delta_;
   }
 
 private:
