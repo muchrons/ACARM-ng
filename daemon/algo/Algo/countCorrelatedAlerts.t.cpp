@@ -4,10 +4,10 @@
  */
 #include <tut.h>
 
-#include "Filter/Algo/countCorrelatedAlerts.hpp"
-#include "Filter/TestHelpers.t.hpp"
+#include "Algo/countCorrelatedAlerts.hpp"
+#include "Algo/TestHelpers.t.hpp"
 
-using namespace Filter::Algo;
+using namespace Algo;
 using namespace Persistency;
 
 namespace
@@ -29,7 +29,7 @@ typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Filter/Algo/countCorrelatedAlerts");
+factory tf("Algo/countCorrelatedAlerts");
 } // unnamed namespace
 
 

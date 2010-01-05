@@ -4,11 +4,9 @@
  */
 #include <set>
 
-#include "Filter/Algo/countCorrelatedAlerts.hpp"
-#include "Filter/Algo/forEachInTree.hpp"
+#include "Algo/countCorrelatedAlerts.hpp"
+#include "Algo/forEachInTree.hpp"
 
-namespace Filter
-{
 namespace Algo
 {
 
@@ -47,4 +45,3 @@ size_t countCorrelatedAlerts(Persistency::GraphNodePtrNN root)
 } // forEach()
 
 } // namespace Algo
-} // namespace Filter

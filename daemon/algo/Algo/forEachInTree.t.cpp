@@ -4,10 +4,10 @@
  */
 #include <tut.h>
 
-#include "Filter/Algo/forEachInTree.hpp"
-#include "Filter/TestHelpers.t.hpp"
+#include "Algo/forEachInTree.hpp"
+#include "Algo/TestHelpers.t.hpp"
 
-using namespace Filter::Algo;
+using namespace Algo;
 using namespace Persistency;
 
 namespace
@@ -40,7 +40,7 @@ typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Filter/Algo/forEachInTree");
+factory tf("Algo/forEachInTree");
 } // unnamed namespace
 
 

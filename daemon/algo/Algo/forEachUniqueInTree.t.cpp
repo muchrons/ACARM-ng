@@ -4,10 +4,10 @@
  */
 #include <tut.h>
 
-#include "Filter/Algo/forEachUniqueInTree.hpp"
-#include "Filter/TestHelpers.t.hpp"
+#include "Algo/forEachUniqueInTree.hpp"
+#include "Algo/TestHelpers.t.hpp"
 
-using namespace Filter::Algo;
+using namespace Algo;
 using namespace Persistency;
 
 namespace
@@ -35,7 +35,7 @@ typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Filter/Algo/forEachUniqueInTree");
+factory tf("Algo/forEachUniqueInTree");
 } // unnamed namespace
 
 

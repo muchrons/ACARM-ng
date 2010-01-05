@@ -2,15 +2,13 @@
  * countCorrelatedAlerts.hpp
  *
  */
-#ifndef INCLUDE_FILTER_ALGO_COUNTCORRELATEDALERTS_HPP_FILE
-#define INCLUDE_FILTER_ALGO_COUNTCORRELATEDALERTS_HPP_FILE
+#ifndef INCLUDE_ALGO_COUNTCORRELATEDALERTS_HPP_FILE
+#define INCLUDE_ALGO_COUNTCORRELATEDALERTS_HPP_FILE
 
 /* public header */
 
 #include "Persistency/GraphNode.hpp"
 
-namespace Filter
-{
 namespace Algo
 {
 /** \brief counts number of alerts in given (sub)tree.
@@ -22,6 +20,5 @@ namespace Algo
 size_t countCorrelatedAlerts(Persistency::GraphNodePtrNN root);
 
 } // namespace Algo
-} // namespace Filter
 
 #endif

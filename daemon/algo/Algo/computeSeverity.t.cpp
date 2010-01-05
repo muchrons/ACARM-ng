@@ -4,10 +4,10 @@
  */
 #include <tut.h>
 
-#include "Filter/Algo/computeSeverity.hpp"
-#include "Filter/TestHelpers.t.hpp"
+#include "Algo/computeSeverity.hpp"
+#include "Algo/TestHelpers.t.hpp"
 
-using namespace Filter::Algo;
+using namespace Algo;
 using namespace Persistency;
 
 namespace
@@ -37,7 +37,7 @@ typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Filter/Algo/computeSeverity");
+factory tf("Algo/computeSeverity");
 } // unnamed namespace
 
 

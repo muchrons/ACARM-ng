@@ -2,18 +2,16 @@
  * forEachInTree.hpp
  *
  */
-#ifndef INCLUDE_FILTER_ALGO_FOREACHINTREE_HPP_FILE
-#define INCLUDE_FILTER_ALGO_FOREACHINTREE_HPP_FILE
+#ifndef INCLUDE_ALGO_FOREACHINTREE_HPP_FILE
+#define INCLUDE_ALGO_FOREACHINTREE_HPP_FILE
 
 /* public header */
 
 #include <cassert>
 
 #include "Persistency/GraphNode.hpp"
-#include "Filter/Algo/forEach.hpp"
+#include "Algo/forEach.hpp"
 
-namespace Filter
-{
 namespace Algo
 {
 
@@ -66,6 +64,5 @@ FuncObj forEachInTree(Persistency::GraphNodePtrNN root, FuncObj f)
 } // forEach()
 
 } // namespace Algo
-} // namespace Filter
 
 #endif

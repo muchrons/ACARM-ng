@@ -5,11 +5,9 @@
 #include <set>
 #include <cassert>
 
-#include "Filter/Algo/computeCertanity.hpp"
-#include "Filter/Algo/forEachUniqueInTree.hpp"
+#include "Algo/computeCertanity.hpp"
+#include "Algo/forEachUniqueInTree.hpp"
 
-namespace Filter
-{
 namespace Algo
 {
 
@@ -68,4 +66,3 @@ double computeCertanity(Persistency::GraphNodePtrNN root)
 } // computeSeverity()
 
 } // namespace Algo
-} // namespace Filter

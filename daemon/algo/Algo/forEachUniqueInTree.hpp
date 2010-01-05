@@ -2,8 +2,8 @@
  * forEachUniqueInTree.hpp
  *
  */
-#ifndef INCLUDE_FILTER_ALGO_FOREACHUNIQUEINTREE_HPP_FILE
-#define INCLUDE_FILTER_ALGO_FOREACHUNIQUEINTREE_HPP_FILE
+#ifndef INCLUDE_ALGO_FOREACHUNIQUEINTREE_HPP_FILE
+#define INCLUDE_ALGO_FOREACHUNIQUEINTREE_HPP_FILE
 
 /* public header */
 
@@ -12,8 +12,6 @@
 
 #include "Persistency/GraphNode.hpp"
 
-namespace Filter
-{
 namespace Algo
 {
 
@@ -45,6 +43,5 @@ FuncObj forEachUniqueInTree(Persistency::GraphNodePtrNN root, FuncObj f)
 } // forEach()
 
 } // namespace Algo
-} // namespace Filter
 
 #endif

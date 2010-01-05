@@ -4,11 +4,9 @@
  */
 #include <cassert>
 
-#include "Filter/Algo/forEachUniqueInTree.hpp"
-#include "Filter/Algo/forEachInTree.hpp"
+#include "Algo/forEachUniqueInTree.hpp"
+#include "Algo/forEachInTree.hpp"
 
-namespace Filter
-{
 namespace Algo
 {
 namespace detail
@@ -44,4 +42,3 @@ void findUniqueNodes(Persistency::GraphNodePtrNN root, NodesSet &ns)
 
 } // namespace detail
 } // namespace Algo
-} // namespace Filter
