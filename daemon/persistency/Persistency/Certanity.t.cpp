@@ -45,8 +45,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Certanity c(10);
-  ensure_equals("invalid value", c.get(), 10);
+  const Certanity c(0.10);
+  ensure_equals("invalid value", c.get(), 0.10);
 }
 
 // test maximum value
@@ -54,8 +54,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Certanity c(100);
-  ensure_equals("invalid value", c.get(), 100);
+  const Certanity c(1);
+  ensure_equals("invalid value", c.get(), 1);
 }
 
 // test default value
@@ -64,15 +64,15 @@ template<>
 void testObj::test<3>(void)
 {
   Certanity c;
-  ensure_equals("invalid value", c.get(), 100);
+  ensure_equals("invalid value", c.get(), 1);
 }
 
-// check v>100
+// check v>1
 template<>
 template<>
 void testObj::test<4>(void)
 {
-  check(100.1);
+  check(1.001);
 }
 
 // check negative value
@@ -80,7 +80,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  check(-10);
+  check(-0.1);
 }
 
 // check zero
@@ -88,7 +88,8 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  check(0);
+  Certanity c(0);
+  ensure_equals("invalid value", c.get(), 0);
 }
 
 } // namespace tut

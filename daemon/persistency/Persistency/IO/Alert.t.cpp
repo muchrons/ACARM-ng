@@ -43,7 +43,7 @@ struct TestClass
                                    NULL,
                                    Timestamp(),
                                    Severity(SeverityLevel::INFO),
-                                   Certanity(42),
+                                   Certanity(0.42),
                                    "some description",
                                    Persistency::Alert::ReportedHosts(),
                                    Persistency::Alert::ReportedHosts()) ),
