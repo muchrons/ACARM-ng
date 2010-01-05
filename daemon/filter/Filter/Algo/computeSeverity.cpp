@@ -55,7 +55,7 @@ private:
   double delta_;
   int    leafsCount_;
   int    leafsSeveritySum_;
-}; // struct TreeFuncObj
+}; // struct SeverComput
 } // unnamed namespace
 
 

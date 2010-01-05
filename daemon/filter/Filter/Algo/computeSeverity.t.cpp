@@ -30,7 +30,7 @@ struct TestClass
       tut::ensure_equals("invalid value", v, e);
   }
 
-  int alertSeverity_;
+  const int alertSeverity_;
 };
 
 typedef TestClass TestClass;
