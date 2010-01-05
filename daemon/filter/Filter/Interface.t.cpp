@@ -6,8 +6,7 @@
 #include <boost/thread.hpp>
 
 #include "Filter/Interface.hpp"
-#include "Persistency/IO/BackendFactory.hpp"
-#include "Persistency/Stubs/TestHelpers.hpp"
+#include "Filter/TestHelpers.t.hpp"
 
 using namespace Filter;
 using namespace Persistency;
@@ -50,14 +49,12 @@ struct TestFilter: public Interface
 
   static MetaAlertPtrNN makeMetaAlert(void)
   {
-    return MetaAlertPtrNN( new MetaAlert( makeNewAlert() ) );
+    return th_makeMetaAlert();
   }
 
   static GraphNodePtrNN makeGraphLeaf(void)
   {
-    Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
-    const IO::Transaction t( conn->createNewTransaction("graph_transaction") );
-    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn,  t) );
+    return th_makeLeaf();
   }
 
   int          calls_;
