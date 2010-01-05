@@ -58,9 +58,9 @@ public:
       }
       catch(const std::exception &ex)
       {
-        LOGMSG_ERROR_S(log_)<<"exception cought in thread for filter ("
-                            <<filter_->getFilterName()
-                            <<"): "<<ex.what();
+        LOGMSG_ERROR_S(log_)<<"exception ("<< typeid(ex).name()
+                            <<") cought in thread for filter ("
+                            << filter_->getFilterName() << "): " << ex.what();
       }
     } // for(;;)
   }

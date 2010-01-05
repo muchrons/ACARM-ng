@@ -26,34 +26,24 @@ struct TestFilter: public Interface
 
   virtual void processImpl(Node               n,
                            ChangedNodes      &changed,
-                           NodesTimeoutQueue &ntq,
-                           BackendProxy      &bp)
+                           NodesTimeoutQueue &,
+                           BackendProxy      &)
   {
     ++calls_;
     tut::ensure_equals("invalid count of elements in changed list",
                        changed.size(), 0);
 
-    tut::ensure("invalid node", n.get()==node_.get() );
-    tut::ensure("invalid changes list", &changed==&changed_);
-
-    // smoke test - checks if object is valid
-    bp.commitChanges();
-
-    // node and changed should be writable
+    // add two nodes to chenged list
     changed.push_back( makeGraphLeaf() );
     changed.push_back(n);
-    n->getMetaAlert();
-
-    // ntq should be empty by default
-    tut::ensure("NTQ not empty", ntq.begin()==ntq.end() );
   }
 
-  MetaAlertPtrNN makeMetaAlert(void) const
+  static MetaAlertPtrNN makeMetaAlert(void)
   {
     return MetaAlertPtrNN( new MetaAlert( makeNewAlert() ) );
   }
 
-  GraphNodePtrNN makeGraphLeaf(void)
+  static GraphNodePtrNN makeGraphLeaf(void)
   {
     Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
     const IO::Transaction t( conn->createNewTransaction("graph_transaction") );
@@ -116,25 +106,51 @@ void testObj::test<2>(void)
   }
 }
 
-// 
+// test whole call sequence
 template<>
 template<>
 void testObj::test<3>(void)
 {
+  ensure_equals("pre-condition failed", mainQueue_.size(), 0);
+  // process data
+  Processor                   p(mainQueue_, filter_);
+  Persistency::GraphNodePtrNN node( TestFilter::makeGraphLeaf() );
+  p.process(node);              // this call should add 2 elements to 'changed'
+                                // elements set, and processor should forward it
+                                // to the main queue.
+  // wait for the results
+  for(int i=0; i<10; ++i)
+    if( mainQueue_.size()==2 )
+      break;
+    else
+      usleep(50*1000);
+  // check results
+  ensure_equals("pre-condition failed", mainQueue_.size(), 2);
+  ensure("requested element not found", mainQueue_.pop().get()==node.get() ||
+                                        mainQueue_.pop().get()==node.get()   );
 }
 
-// 
+// test if multiple calls to process() does not break anything
+// (i.e. if 'changed' set is cleared before each call)
 template<>
 template<>
 void testObj::test<4>(void)
 {
-}
-
-// 
-template<>
-template<>
-void testObj::test<5>(void)
-{
+  ensure_equals("pre-condition failed", mainQueue_.size(), 0);
+  // process data
+  Processor                   p(mainQueue_, filter_);
+  Persistency::GraphNodePtrNN node( TestFilter::makeGraphLeaf() );
+  p.process(node);              // this call should add 2 elements to 'changed'
+  p.process(node);              // elements set, and processor should forward it
+                                // to the main queue.
+  // wait for the results
+  for(int i=0; i<10; ++i)
+    if( mainQueue_.size()==4 )
+      break;
+    else
+      usleep(50*1000);
+  // check results
+  ensure_equals("pre-condition failed", mainQueue_.size(), 4);
 }
 
 } // namespace tut
