@@ -26,10 +26,18 @@ namespace Filter
 class Processor: private boost::noncopyable
 {
 public:
+  /** \brief auto pointer to filter's interface. */
   typedef std::auto_ptr<Interface> InterfaceAutoPtr;
 
+  /** \brief create processor attached to main queue.
+   *  \param mainQueue core changed node's queue - each new/changed node
+   *                   is puth there to be signalized later on.
+   *  \param filter    filter to use with this processor.
+   */
   Processor(Core::Types::NodesFifo &mainQueue,
             InterfaceAutoPtr        filter);
+  /** \brief stops background thread and deallocates internal data.
+   */
   ~Processor(void);
 
   /** \brief processes given meta-alert.

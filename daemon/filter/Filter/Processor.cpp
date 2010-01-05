@@ -37,18 +37,26 @@ public:
     {
       try
       {
+        // get new data
         boost::this_thread::interruption_point();             // allow interrupts
         LOGMSG_DEBUG_S(log_)<<"waiting for data for: "<<filter_->getFilterName();
         Persistency::GraphNodePtrNN node=filterQueue_->pop(); // wait for data
 
+        // process new data
         LOGMSG_DEBUG_S(log_)<<"data recieved for: "<<filter_->getFilterName()
                             <<" - processing";
-        Interface::ChangedNodes     changed;
+        Interface::ChangedNodes changed;
         filter_->process(node, changed);
         LOGMSG_DEBUG_S(log_)<<"data processing done for: "
                             <<filter_->getFilterName();
+
+        boost::this_thread::interruption_point();             // allow interrupts
+        // signal others about changes made
+        for(Interface::ChangedNodes::iterator it=changed.begin();
+            it!=changed.end(); ++it)
+          mainQueue_->push(*it);
       }
-      catch(const std::execption &ex)
+      catch(const std::exception &ex)
       {
         LOGMSG_ERROR_S(log_)<<"exception cought in thread for filter ("
                             <<filter_->getFilterName()
