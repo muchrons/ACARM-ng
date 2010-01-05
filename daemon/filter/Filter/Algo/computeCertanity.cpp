@@ -33,7 +33,6 @@ public:
    */
   void operator()(Persistency::GraphNodePtrNN node)
   {
-std::cerr<<"! "<<leafsCertanitySum_<<" / "<<leafsCount_<<" / "<<delta_<<"\n";                       
     if( node->isLeaf() )
     {
       assert( node->getMetaAlert()->getCertanityDelta()==0 &&
@@ -45,7 +44,6 @@ std::cerr<<"! "<<leafsCertanitySum_<<" / "<<leafsCount_<<" / "<<delta_<<"\n";
     {
       delta_+=node->getMetaAlert()->getCertanityDelta();
     }
-std::cerr<<"> "<<leafsCertanitySum_<<" / "<<leafsCount_<<" / "<<delta_<<"\n";                       
   }
   /** \brief gets the computed value.
    *  \return total (sub)tree certanity.
@@ -59,7 +57,7 @@ std::cerr<<"> "<<leafsCertanitySum_<<" / "<<leafsCount_<<" / "<<delta_<<"\n";
 private:
   double delta_;
   int    leafsCount_;
-  int    leafsCertanitySum_;
+  double leafsCertanitySum_;
 }; // struct CertComput
 } // unnamed namespace
 
