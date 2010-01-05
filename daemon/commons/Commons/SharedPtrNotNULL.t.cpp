@@ -297,4 +297,14 @@ void testObj::test<24>(void)
   ensure("different pointers match", other!=nn_);
 }
 
+// check less-than operator
+template<>
+template<>
+void testObj::test<25>(void)
+{
+  assert(nn_!=other_);
+  ensure("less-than operator does not work properly",
+         (other_<nn_ && !(nn_<other_)) || (nn_<other_ && !(other_<nn_)) );
+}
+
 } // namespace tut
