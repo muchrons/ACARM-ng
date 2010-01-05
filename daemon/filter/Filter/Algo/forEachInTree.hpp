@@ -7,7 +7,6 @@
 
 /* public header */
 
-#include <algorithm>
 #include <cassert>
 
 #include "Persistency/GraphNode.hpp"
