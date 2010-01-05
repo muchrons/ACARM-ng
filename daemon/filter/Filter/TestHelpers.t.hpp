@@ -17,7 +17,10 @@ namespace
 
 MetaAlertPtrNN th_makeMetaAlert(void)
 {
-  return MetaAlertPtrNN( new MetaAlert( Stubs::makeNewAlert() ) );
+  return MetaAlertPtrNN( new MetaAlert( MetaAlert::Name("meta-alertX"),
+                                        0.1, 0.2,
+                                        Stubs::makeNewReferenceURL(),
+                                        Timestamp() ) );
 } // th_makeMetaAlert()
 
 GraphNodePtrNN th_makeLeaf(void)

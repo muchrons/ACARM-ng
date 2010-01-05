@@ -90,8 +90,9 @@ template<>
 void testObj::test<3>(void)
 {
   MetaAlertPtrNN ma( makeMetaAlert() );
+  const double c=ma->getSeverityDelta();
   bp_->updateSeverityDelta(ma, 1.3);
-  ensure_equals("invalid severity", ma->getSeverityDelta(), 1.3);
+  ensure_equals("invalid severity", ma->getSeverityDelta(), c+1.3);
 }
 
 // test updating certanity
@@ -100,8 +101,9 @@ template<>
 void testObj::test<4>(void)
 {
   MetaAlertPtrNN ma( makeMetaAlert() );
+  const double c=ma->getCertanityDelta();
   bp_->updateCertanityDelta(ma, 1.3);
-  ensure_equals("invalid certanity", ma->getCertanityDelta(), 1.3);
+  ensure_equals("invalid certanity", ma->getCertanityDelta(), c+1.3);
 }
 
 // test commiting empty change-set
