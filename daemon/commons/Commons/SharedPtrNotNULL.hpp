@@ -8,6 +8,7 @@
 /* public header */
 
 #include <boost/shared_ptr.hpp>
+#include <boost/operators.hpp>
 #include <cassert>
 
 #include "Commons/ExceptionUnexpectedNULL.hpp"
@@ -20,12 +21,12 @@ namespace Commons
  *        ExceptionUnexpectedNULL.
  */
 template<typename T>
-class SharedPtrNotNULL
+class SharedPtrNotNULL: public boost::equality_comparable< SharedPtrNotNULL<T> >
 {
-private:
+public:
+  /** \brief type used as boost::shared_ptr<>. */
   typedef boost::shared_ptr<T> PtrT;
 
-public:
   /** \brief create class from raw-pointer.
    *  \param t pointer to take ownership of.
    */
@@ -57,6 +58,20 @@ public:
   {
     assert( ptr_.get()!=NULL );
     return ptr_;
+  }
+  /** \brief compare this pointer to other.
+   *  \param other element to compare with.
+   */
+  bool operator==(const PtrT &other) const
+  {
+    return ptr_==other;
+  }
+  /** \brief compare this pointer to other.
+   *  \param other element to compare with.
+   */
+  bool operator==(const SharedPtrNotNULL<T> &other) const
+  {
+    return ptr_==other.ptr_;
   }
   /** \brief assignmen of other instance.
    *  \param other object to assigne from.
@@ -154,6 +169,32 @@ private:
 
   PtrT ptr_;
 }; // struct SharedPtrNotNULL
+
+
+
+/** \brief compares boost_ptr to wrapped_ptr.
+ *  \param t1 boost opinter.
+ *  \param t2 this type pointer.
+ *  \return true if pointers are equal, false otherwise.
+ */
+template<typename T>
+inline bool operator==(const typename SharedPtrNotNULL<T>::PtrT &t1,
+                       const          SharedPtrNotNULL<T>       &t2)
+{
+  return t1.get()==t2.get();
+} // operator==()
+
+/** \brief compares boost_ptr to wrapped_ptr.
+ *  \param t1 boost opinter.
+ *  \param t2 this type pointer.
+ *  \return true if pointers are not equal, false otherwise.
+ */
+template<typename T>
+inline bool operator!=(const typename SharedPtrNotNULL<T>::PtrT &t1,
+                       const          SharedPtrNotNULL<T>       &t2)
+{
+  return !(t1==t2);
+} // operator!=()
 
 } // namespace Commons
 
