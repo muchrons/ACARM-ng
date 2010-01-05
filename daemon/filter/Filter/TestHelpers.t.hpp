@@ -44,34 +44,6 @@ GraphNodePtrNN th_makeNode(void)
   return th_makeNode( th_makeLeaf(), th_makeLeaf() );
 } // th_makeNode()
 
-//
-//                root
-//     node1               node2
-//  leaf1 leaf2      node3      leaf5
-//                leaf3 leaf4
-//
-GraphNodePtrNN th_makeTree1(void)
-{
-  return th_makeNode( th_makeNode(),
-                      th_makeNode(
-                            th_makeNode(), th_makeLeaf() ) );
-} // th_makeTree1()
-
-//
-//                root
-//     node1               node2
-//  leaf1 leaf2      node3      node1
-//                leaf3 node1    ...
-//                       ...
-//
-GraphNodePtrNN th_makeTree2(void)
-{
-  GraphNodePtrNN node1=th_makeNode();
-  return th_makeNode( node1,
-                      th_makeNode(
-                            th_makeNode( th_makeLeaf(), node1 ), node1 ) );
-} // th_makeTree2()
-
 } // unnamed namespace
 
 #endif
