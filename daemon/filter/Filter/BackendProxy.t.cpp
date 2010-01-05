@@ -9,6 +9,7 @@
 
 #include "Filter/BackendProxy.hpp"
 #include "Filter/TestHelpers.t.hpp"
+#include "Persistency/IO/BackendFactory.hpp"
 
 using namespace Filter;
 using namespace Persistency;

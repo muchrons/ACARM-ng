@@ -5,8 +5,6 @@
 #ifndef INCLUDE_FILTER_TESTHELPERS_T_HPP
 #define INCLUDE_FILTER_TESTHELPERS_T_HPP
 
-#include "Persistency/GraphNode.hpp"
-#include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/Stubs/TestHelpers.hpp"
 
 // looks bad, but this is header included only in .t.cpp files
@@ -17,31 +15,22 @@ namespace
 
 MetaAlertPtrNN th_makeMetaAlert(void)
 {
-  return MetaAlertPtrNN( new MetaAlert( MetaAlert::Name("meta-alertX"),
-                                        0.1, 0.2,
-                                        Stubs::makeNewReferenceURL(),
-                                        Timestamp() ) );
+  return Stubs::makeNewMetaAlert();
 } // th_makeMetaAlert()
 
 GraphNodePtrNN th_makeLeaf(void)
 {
-  Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
-  const IO::Transaction t( conn->createNewTransaction("make_leaf_transaction") );
-  return GraphNodePtrNN( new GraphNode( Stubs::makeNewAlert(), conn, t) );
+  return Stubs::makeNewLeaf();
 } // th_makeLeaf()
 
 GraphNodePtrNN th_makeNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
 {
-  Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
-  const IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
-  return GraphNodePtrNN( new GraphNode( th_makeMetaAlert(),
-                                        conn, t,
-                                        child1, child2 ) );
+  return Stubs::makeNewNode(child1, child2);
 } // th_makeNode()
 
 GraphNodePtrNN th_makeNode(void)
 {
-  return th_makeNode( th_makeLeaf(), th_makeLeaf() );
+  return Stubs::makeNewNode();
 } // th_makeNode()
 
 } // unnamed namespace
