@@ -3,7 +3,7 @@
  *
  */
 #include <tut.h>
-#include <cassert>
+#include <boost/thread.hpp>
 
 #include "Filter/Interface.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
@@ -16,9 +16,9 @@ using namespace Persistency::Stubs;
 namespace
 {
 
-struct TestClass: protected Interface
+struct TestFilter: public Interface
 {
-  TestClass(void):
+  TestFilter(void):
     Interface("testfilter"),
     calls_(0),
     node_( makeGraphLeaf() )
@@ -48,12 +48,12 @@ struct TestClass: protected Interface
     tut::ensure("NTQ not empty", ntq.begin()==ntq.end() );
   }
 
-  MetaAlertPtrNN makeMetaAlert(void) const
+  static MetaAlertPtrNN makeMetaAlert(void)
   {
     return MetaAlertPtrNN( new MetaAlert( makeNewAlert() ) );
   }
 
-  GraphNodePtrNN makeGraphLeaf(void)
+  static GraphNodePtrNN makeGraphLeaf(void)
   {
     Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
     const IO::Transaction t( conn->createNewTransaction("graph_transaction") );
@@ -62,7 +62,13 @@ struct TestClass: protected Interface
 
   int          calls_;
   ChangedNodes changed_;
-  Node       node_;
+  Node         node_;
+};
+
+
+struct TestClass
+{
+  TestFilter tf_;
 };
 
 typedef TestClass TestClass;
@@ -81,7 +87,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid name", getFilterName(), "testfilter");
+  ensure_equals("invalid name", tf_.getFilterName(), "testfilter");
 }
 
 // check if process() calls implementation (with valid arguments)
@@ -89,9 +95,52 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("pre-condition failed", calls_, 0);
-  process(node_, changed_);
-  ensure_equals("invalid number of calls", calls_, 1);
+  ensure_equals("pre-condition failed", tf_.calls_, 0);
+  tf_.process(tf_.node_, tf_.changed_);
+  ensure_equals("invalid number of calls", tf_.calls_, 1);
+}
+
+
+namespace
+{
+struct TestLoopFilter: public Interface
+{
+  TestLoopFilter(void):
+    Interface("testloopfilter")
+  {
+  }
+
+  virtual void processImpl(Node, ChangedNodes&, NodesTimeoutQueue&, BackendProxy&)
+  {
+    for(;;)
+    {
+      boost::this_thread::yield();  // avoid too much CPU waste
+      interruptionPoint();
+    }
+  }
+}; // struct TestLoopFilter
+
+struct CallableLF
+{
+  void operator()(void)
+  {
+    Interface::ChangedNodes cn;
+    tlf_.process( TestFilter::makeGraphLeaf(), cn );
+  }
+
+  TestLoopFilter tlf_;
+}; // struct CollableLF
+} // unnmaed namespace
+
+// check if interruptionPoint() works as expected
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  CallableLF clf;
+  boost::thread th( boost::ref(clf) );
+  th.interrupt();
+  th.join();
 }
 
 } // namespace tut

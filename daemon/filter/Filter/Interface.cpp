@@ -2,6 +2,7 @@
  * Interface.cpp
  *
  */
+#include <boost/thread.hpp>
 #include <cassert>
 
 #include "Logger/Logger.hpp"
@@ -44,6 +45,11 @@ Interface::Interface(const std::string &name):
   conn_( Persistency::IO::create() )
 {
   LOGMSG_INFO(log_, "creating filter");
+}
+
+void Interface::interruptionPoint(void)
+{
+  boost::this_thread::interruption_point();
 }
 
 } // namespace Filter

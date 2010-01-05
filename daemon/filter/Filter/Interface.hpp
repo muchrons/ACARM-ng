@@ -53,6 +53,13 @@ protected:
    */
   explicit Interface(const std::string &name);
 
+  /** \brief call allows interruption of call sequence.
+   *
+   *  this method should be called in long-running algorithms, so that
+   *  aborting thread will be reasonable fast.
+   */
+  void interruptionPoint(void);
+
   const Logger::Node log_;  ///< logger node to log messages to
 
 private:
