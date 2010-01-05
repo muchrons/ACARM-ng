@@ -25,23 +25,17 @@ MetaAlertPtrNN th_makeMetaAlert(void)
 
 GraphNodePtrNN th_makeLeaf(void)
 {
-  Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
-  const IO::Transaction t( conn->createNewTransaction("make_leaf_transaction") );
-  return GraphNodePtrNN( new GraphNode( Stubs::makeNewAlert(), conn, t) );
+  return Stubs::makeNewLeaf();
 } // th_makeLeaf()
 
 GraphNodePtrNN th_makeNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
 {
-  Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
-  const IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
-  return GraphNodePtrNN( new GraphNode( th_makeMetaAlert(),
-                                        conn, t,
-                                        child1, child2 ) );
+  return Stubs::makeNewNode(child1, child2);
 } // th_makeNode()
 
 GraphNodePtrNN th_makeNode(void)
 {
-  return th_makeNode( th_makeLeaf(), th_makeLeaf() );
+  return Stubs::makeNewNode();
 } // th_makeNode()
 
 //
@@ -52,9 +46,7 @@ GraphNodePtrNN th_makeNode(void)
 //
 GraphNodePtrNN th_makeTree1(void)
 {
-  return th_makeNode( th_makeNode(),
-                      th_makeNode(
-                            th_makeNode(), th_makeLeaf() ) );
+  return Stubs::makeNewTree1();
 } // th_makeTree1()
 
 //
@@ -66,10 +58,7 @@ GraphNodePtrNN th_makeTree1(void)
 //
 GraphNodePtrNN th_makeTree2(void)
 {
-  GraphNodePtrNN node1=th_makeNode();
-  return th_makeNode( node1,
-                      th_makeNode(
-                            th_makeNode( th_makeLeaf(), node1 ), node1 ) );
+  return Stubs::makeNewTree2();
 } // th_makeTree2()
 
 } // unnamed namespace

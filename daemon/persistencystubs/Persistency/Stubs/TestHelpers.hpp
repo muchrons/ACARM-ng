@@ -59,6 +59,23 @@ GraphNodePtrNN makeNewLeaf(void);
 GraphNodePtrNN makeNewNode(void);
 GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2);
 
+//
+//                root
+//     node1               node2
+//  leaf1 leaf2      node3      leaf5
+//                leaf3 leaf4
+//
+GraphNodePtrNN makeNewTree1(void);
+
+//
+//                root
+//     node1               node2
+//  leaf1 leaf2      node3      node1
+//                leaf3 node1    ...
+//                       ...
+//
+GraphNodePtrNN makeNewTree2(void);
+
 } // namespace Stubs
 } // namespace Persistency
 

@@ -111,5 +111,20 @@ GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
                                         child1, child2 ) );
 }
 
+GraphNodePtrNN makeNewTree1(void)
+{
+  return makeNewNode( makeNewNode(),
+                      makeNewNode(
+                         makeNewNode(), makeNewLeaf() ) );
+}
+
+GraphNodePtrNN makeNewTree2(void)
+{
+  GraphNodePtrNN node1=makeNewNode();
+  return makeNewNode( node1,
+                      makeNewNode(
+                        makeNewNode( makeNewLeaf(), node1 ), node1 ) );
+}
+
 } // namespace Stubs
 } // namespace Persistency
