@@ -17,6 +17,7 @@ namespace Algo
  *  \param begin first iterator to check.
  *  \param end   end-indicating iterator.
  *  \param f     function object to apply to each element.
+ *  \return copy of funciton object, that traversed through all elements.
  *  \note algorithm does not go deeper into tree.
  */
 template<typename Iter, typename FuncObj>
