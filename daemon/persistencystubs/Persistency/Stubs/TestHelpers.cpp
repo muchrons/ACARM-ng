@@ -3,6 +3,7 @@
  *
  */
 #include "Persistency/Stubs/TestHelpers.hpp"
+#include "Persistency/IO/BackendFactory.hpp"
 
 namespace Persistency
 {
@@ -20,6 +21,14 @@ AlertPtr makeNewAlert(const char *name)
                              "some test allert",
                              Alert::ReportedHosts(),
                              Alert::ReportedHosts() ) );
+}
+
+MetaAlertPtr makeNewMetaAlert(const char *name)
+{
+  return MetaAlertPtrNN( new MetaAlert( MetaAlert::Name(name),
+                                        0.1, 0.2,
+                                        Stubs::makeNewReferenceURL(),
+                                        Timestamp() ) );
 }
 
 AnalyzerPtr makeNewAnalyzer(const char *name)
@@ -79,6 +88,27 @@ ProcessPtr makeNewProcess(const char *name)
 ReferenceURLPtr makeNewReferenceURL(const char *url)
 {
   return ReferenceURLPtr( new ReferenceURL("some name", url) );
+}
+
+GraphNodePtrNN makeNewLeaf(void)
+{
+  Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
+  const IO::Transaction t( conn->createNewTransaction("make_leaf_transaction") );
+  return GraphNodePtrNN( new GraphNode( Stubs::makeNewAlert(), conn, t) );
+}
+
+GraphNodePtrNN makeNewNode(void)
+{
+  return makeNewNode( makeNewLeaf(), makeNewLeaf() );
+}
+
+GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
+{
+  Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
+  const IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
+  return GraphNodePtrNN( new GraphNode( makeNewMetaAlert(),
+                                        conn, t,
+                                        child1, child2 ) );
 }
 
 } // namespace Stubs
