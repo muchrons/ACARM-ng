@@ -34,7 +34,7 @@ namespace
 {
 inline Logger::NodeName makeNodeName(const string &name)
 {
-  const string &out="filter.interface." + name;
+  const string &out="filter." + name;
   return Logger::NodeName( out.c_str() );
 } // makeNodeName()
 } // unnamed namespace

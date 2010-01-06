@@ -12,7 +12,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "Base/TimeoutQueue.hpp"
-#include "Logger/Logger.hpp"
+#include "Logger/Node.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Filter/BackendProxy.hpp"
 
