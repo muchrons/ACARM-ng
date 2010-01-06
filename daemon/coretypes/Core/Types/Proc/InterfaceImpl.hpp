@@ -16,9 +16,6 @@ namespace Types
 namespace Proc
 {
 
-// TODO: test
-
-
 /** \brief template-based implementation of interface for different strategies.
  *
  *  this class is to be parametrized with proper strategy and passed as an
