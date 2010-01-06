@@ -33,7 +33,7 @@ class ObservingSet
 public:
   /** \brief weak pointer to data. */
   typedef boost::weak_ptr<T>   WeakPtr;
-  /** \breif shared pointer to data. */
+  /** \brief shared pointer to data. */
   typedef boost::shared_ptr<T> SharedPtr;
 
 private:
