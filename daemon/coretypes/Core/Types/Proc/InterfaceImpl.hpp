@@ -20,6 +20,9 @@ namespace Proc
 
 
 /** \brief template-based implementation of interface for different strategies.
+ *
+ *  this class is to be parametrized with proper strategy and passed as an
+ *  interface to be used by Processor.
  */
 template<typename TStrategy>
 class InterfaceImpl: public Interface

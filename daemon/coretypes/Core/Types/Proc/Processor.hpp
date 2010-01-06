@@ -37,6 +37,10 @@ public:
    *  \param outputQueue core changed node's queue - each new/changed node
    *                     is puth there to be signalized later on.
    *  \param interface   processing unit to use with this processor.
+   *  \note use InterfaceImpl<> template to provide generic implementations
+   *        instead of directly deriving from Interface object. InterfaceImpl<>
+   *        ensures user does not reimplement process() call, if further virtual
+   *        calls are used.
    */
   Processor(Core::Types::NodesFifo &outputQueue,
             InterfaceAutoPtr        interface);
