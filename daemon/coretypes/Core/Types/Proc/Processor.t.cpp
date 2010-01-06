@@ -4,71 +4,58 @@
  */
 #include <tut.h>
 
-#include "Filter/Processor.hpp"
-#include "Filter/TestHelpers.t.hpp"
+#include "Core/Types/Proc/Processor.hpp"
+#include "Persistency/Stubs/TestHelpers.hpp"
 
-using namespace Filter;
+using namespace Core::Types::Proc;
 using namespace Persistency;
 using namespace Persistency::Stubs;
 
 namespace
 {
 
-struct TestFilter: public Interface
+struct TestInterface: public Interface
 {
-  TestFilter(void):
-    Interface("testfilter"),
+  TestInterface(void):
+    Interface("testinterface"),
     calls_(0),
-    node_( makeGraphLeaf() )
+    node_( makeNewLeaf() )
   {
   }
 
-  virtual void processImpl(Node               n,
-                           ChangedNodes      &changed,
-                           NodesTimeoutQueue &,
-                           BackendProxy      &)
+  virtual void process(Node node, ChangedNodes &changedNodes)
   {
     ++calls_;
+
+    tut::ensure("invalid node", node.get()==node_.get() );
     tut::ensure_equals("invalid count of elements in changed list",
-                       changed.size(), 0);
+                       changedNodes.size(), 0);
 
     // add two nodes to chenged list
-    changed.push_back( makeGraphLeaf() );
-    changed.push_back(n);
+    changedNodes.push_back(node);
   }
 
-  static MetaAlertPtrNN makeMetaAlert(void)
-  {
-    return th_makeMetaAlert();
-  }
-
-  static GraphNodePtrNN makeGraphLeaf(void)
-  {
-    return th_makeLeaf();
-  }
-
-  int          calls_;
-  ChangedNodes changed_;
-  Node       node_;
+  int  calls_;
+  Node node_;
 };
 
 
 struct TestClass
 {
   TestClass(void):
-    filter_(new TestFilter)
+    interface_(new TestInterface)
   {
   }
 
   Core::Types::NodesFifo      mainQueue_;
-  Processor::InterfaceAutoPtr filter_;
+  Processor::InterfaceAutoPtr interface_;
 };
 
 typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Filter/Processor");
+factory tf("Core/Types/Proc/Processor");
 } // unnamed namespace
 
 
@@ -80,12 +67,12 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Processor p(mainQueue_, filter_);
+  Processor p(mainQueue_, interface_);
   usleep(30*1000);                      // wait a while to ensure thread is running
   // when exiting this should not block
 }
 
-// test c-tor throw when NULL filter passed
+// test c-tor throw when NULL interface passed
 template<>
 template<>
 void testObj::test<2>(void)
@@ -95,9 +82,9 @@ void testObj::test<2>(void)
   try
   {
     Processor p(mainQueue_, tmp);
-    fail("processor's c-tor didn't throw on NULL filter");
+    fail("processor's c-tor didn't throw on NULL interface");
   }
-  catch(const ExceptionInvalidFilter &)
+  catch(const ExceptionInvalidInterface&)
   {
     // this is expected
   }
@@ -110,21 +97,20 @@ void testObj::test<3>(void)
 {
   ensure_equals("pre-condition failed", mainQueue_.size(), 0);
   // process data
-  Processor                   p(mainQueue_, filter_);
-  Persistency::GraphNodePtrNN node( TestFilter::makeGraphLeaf() );
-  p.process(node);              // this call should add 2 elements to 'changed'
-                                // elements set, and processor should forward it
-                                // to the main queue.
+  TestInterface &ti=dynamic_cast<TestInterface&>(*interface_);
+  Processor      p(mainQueue_, interface_);
+  p.process(ti.node_);  // this call should add 1 element to 'changed'
+                        // elements set, and processor should forward it
+                        // to the main queue.
   // wait for the results
   for(int i=0; i<10; ++i)
-    if( mainQueue_.size()==2 )
+    if( mainQueue_.size()==1 )
       break;
     else
       usleep(50*1000);
   // check results
-  ensure_equals("pre-condition failed", mainQueue_.size(), 2);
-  ensure("requested element not found", mainQueue_.pop().get()==node.get() ||
-                                        mainQueue_.pop().get()==node.get()   );
+  ensure_equals("invalid number of elements", mainQueue_.size(), 1);
+  ensure("requested element not found", mainQueue_.pop().get()==ti.node_.get() );
 }
 
 // test if multiple calls to process() does not break anything
@@ -135,19 +121,19 @@ void testObj::test<4>(void)
 {
   ensure_equals("pre-condition failed", mainQueue_.size(), 0);
   // process data
-  Processor                   p(mainQueue_, filter_);
-  Persistency::GraphNodePtrNN node( TestFilter::makeGraphLeaf() );
-  p.process(node);              // this call should add 2 elements to 'changed'
-  p.process(node);              // elements set, and processor should forward it
+  TestInterface &ti=dynamic_cast<TestInterface&>(*interface_);
+  Processor                   p(mainQueue_, interface_);
+  p.process(ti.node_);          // this call should add 2 elements to 'changed'
+  p.process(ti.node_);          // elements set, and processor should forward it
                                 // to the main queue.
   // wait for the results
   for(int i=0; i<10; ++i)
-    if( mainQueue_.size()==4 )
+    if( mainQueue_.size()==2 )
       break;
     else
       usleep(50*1000);
   // check results
-  ensure_equals("pre-condition failed", mainQueue_.size(), 4);
+  ensure_equals("invalid number of elements", mainQueue_.size(), 2);
 }
 
 } // namespace tut
