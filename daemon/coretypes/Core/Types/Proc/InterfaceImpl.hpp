@@ -26,7 +26,8 @@ class InterfaceImpl: public Interface
 {
 public:
   /** \brief creates object with a given name.
-   *  \param name name for this processing unit.
+   *  \param name     name for this processing unit.
+   *  \param strategy strategy to process requests.
    */
   InterfaceImpl(const std::string &name,
                 const TStrategy   &strategy):
