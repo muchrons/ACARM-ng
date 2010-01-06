@@ -20,11 +20,8 @@ namespace Types
 {
 namespace Proc
 {
-
-// TODO: implement
-// TODO: comment
-// TODO: test
-
+/** \brief interface for processing units to implement.
+ */
 class Interface: private boost::noncopyable
 {
 public:
@@ -33,12 +30,24 @@ public:
   /** \brief helper typedef for list of chenged nodes. */
   typedef std::vector<Node>           ChangedNodes;
 
+  /** \brief dealocates resources in polymorphic way.
+   */
   virtual ~Interface(void);
+  /** \brief call to process data in derived class.
+   *  \param node         node to process.
+   *  \param changedNodes output list of nodes that were chenged/created
+   *                      during this call. initially list is empty.
+   */
   virtual void process(Node node, ChangedNodes &changedNodes) = 0;
-
+  /** \brief gets name of this processing unit.
+   *  \return returns processing unit's name.
+   */
   const std::string &getName(void) const;
 
 protected:
+  /** \brief creates object with a given name.
+   *  \param name name for this processing unit.
+   */
   explicit Interface(const std::string &name);
 
 private:
