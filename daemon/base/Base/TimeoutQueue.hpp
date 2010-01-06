@@ -129,6 +129,7 @@ public:
   {
     return const_iterator( q_.end() );
   }
+
   /** \brief removes timeouted elements from queue.
    *  \note order of elements after pruning is not guaranteed.
    */
@@ -141,6 +142,7 @@ public:
     // remove them
     q_.erase(new_end, q_.end() );
   }
+
   /** \brief add or update element with a timeout.
    *  \param e       element to be added.
    *  \param seconds number of seconds before timeouting.
@@ -148,7 +150,7 @@ public:
    *  if elements does not exist in queue, new entry is added. if such element
    *  already exists timeout is enlarged by a given value.
    *
-   *  \note order of elements after pruning is not guaranteed.
+   *  \note order of elements after updating pruning is not guaranteed.
    */
   void update(const T &e, unsigned int seconds)
   {
