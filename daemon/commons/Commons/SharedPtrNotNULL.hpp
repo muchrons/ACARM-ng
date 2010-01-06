@@ -30,6 +30,15 @@ public:
   /** \brief type used as boost::shared_ptr<>. */
   typedef boost::shared_ptr<T> PtrT;
 
+  /** \brief type of element held inside (for compatibility with boost::shared_ptr). */
+  typedef typename PtrT::element_type element_type;
+  /** \brief type of element held inside (for compatibility with boost::shared_ptr). */
+  typedef typename PtrT::value_type   value_type;
+  /** \brief type of pointer to element held inside (for compatibility with boost::shared_ptr). */
+  typedef typename PtrT::pointer      pointer;
+  /** \brief type of reference to element held inside (for compatibility with boost::shared_ptr). */
+  typedef typename PtrT::reference    reference;
+
   /** \brief create class from raw-pointer.
    *  \param t pointer to take ownership of.
    */

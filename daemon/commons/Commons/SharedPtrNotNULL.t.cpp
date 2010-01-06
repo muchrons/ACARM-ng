@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 #include <string>
+#include <boost/mpl/equal.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
 
@@ -305,6 +306,42 @@ void testObj::test<25>(void)
   assert(nn_!=other_);
   ensure("less-than operator does not work properly",
          (other_<nn_ && !(nn_<other_)) || (nn_<other_ && !(other_<nn_)) );
+}
+
+// check element's type
+template<>
+template<>
+void testObj::test<26>(void)
+{
+  ensure("invalid element's type declaration",
+         boost::mpl::equal<int, PtrNN::element_type>::type::value);
+}
+
+// check value's type
+template<>
+template<>
+void testObj::test<27>(void)
+{
+  ensure("invalid element's value type declaration",
+         boost::mpl::equal<int, PtrNN::value_type>::type::value);
+}
+
+// check element's pionter type
+template<>
+template<>
+void testObj::test<28>(void)
+{
+  ensure("invalid element's pointer type declaration",
+         boost::mpl::equal<int*, PtrNN::pointer>::type::value);
+}
+
+// check element's reference type
+template<>
+template<>
+void testObj::test<29>(void)
+{
+  ensure("invalid element's reference type declaration",
+         boost::mpl::equal<int&, PtrNN::reference>::type::value);
 }
 
 } // namespace tut
