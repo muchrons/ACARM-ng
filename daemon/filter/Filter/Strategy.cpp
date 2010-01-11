@@ -1,5 +1,5 @@
 /*
- * Interface.cpp
+ * Strategy.cpp
  *
  */
 #include <boost/thread.hpp>
@@ -7,7 +7,7 @@
 
 #include "Logger/Logger.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
-#include "Filter/Interface.hpp"
+#include "Filter/Strategy.hpp"
 
 using namespace std;
 
@@ -15,12 +15,12 @@ using namespace std;
 namespace Filter
 {
 
-Interface::~Interface(void)
+Strategy::~Strategy(void)
 {
   LOGMSG_INFO(log_, "deallocating filter");
 }
 
-void Interface::process(Node n, ChangedNodes &changed)
+void Strategy::process(Node n, ChangedNodes &changed)
 {
   LOGMSG_DEBUG_S(log_)<<"processing node at address 0x"
                       <<static_cast<void*>( n.get() );
@@ -39,7 +39,7 @@ inline Logger::NodeName makeNodeName(const string &name)
 } // makeNodeName()
 } // unnamed namespace
 
-Interface::Interface(const std::string &name):
+Strategy::Strategy(const std::string &name):
   log_( makeNodeName(name) ),
   name_(name),
   conn_( Persistency::IO::create() )
@@ -47,7 +47,7 @@ Interface::Interface(const std::string &name):
   LOGMSG_INFO(log_, "creating filter");
 }
 
-void Interface::interruptionPoint(void)
+void Strategy::interruptionPoint(void)
 {
   boost::this_thread::interruption_point();
 }

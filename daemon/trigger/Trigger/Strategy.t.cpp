@@ -1,11 +1,11 @@
 /*
- * Interface.t.cpp
+ * Strategy.t.cpp
  *
  */
 #include <tut.h>
 #include <boost/thread.hpp>
 
-#include "Trigger/Interface.hpp"
+#include "Trigger/Strategy.hpp"
 #include "Persistency/Stubs/TestHelpers.hpp"
 
 using namespace Trigger;
@@ -15,10 +15,10 @@ using namespace Persistency::Stubs;
 namespace
 {
 
-struct TestTrigger: public Interface
+struct TestTrigger: public Strategy
 {
   TestTrigger(void):
-    Interface("testtrigger"),
+    Strategy("testtrigger"),
     callsCriteria_(0),
     callsTrigger_(0),
     criteria_(false),
@@ -60,7 +60,7 @@ typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Trigger/Interface");
+factory tf("Trigger/Strategy");
 } // unnamed namespace
 
 
@@ -97,10 +97,10 @@ void testObj::test<2>(void)
 
 namespace
 {
-struct TestLoopTrigger: public Interface
+struct TestLoopTrigger: public Strategy
 {
   TestLoopTrigger(void):
-    Interface("testlooptrigger")
+    Strategy("testlooptrigger")
   {
   }
 

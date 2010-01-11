@@ -1,5 +1,5 @@
 /*
- * Interface.hpp
+ * Strategy.hpp
  *
  */
 #ifndef INCLUDE_FILTER_INTERFACE_HPP_FILE
@@ -22,7 +22,7 @@ namespace Filter
 
 /** \brief interface (base) for all filters.
  */
-class Interface: private boost::noncopyable
+class Strategy: private boost::noncopyable
 {
 public:
   /** \brief helper typedef for GraphNode pointer. */
@@ -32,7 +32,7 @@ public:
 
   /** \brief deallocate object.
    */
-  virtual ~Interface(void);
+  virtual ~Strategy(void);
 
   /** \brief processes given meta-alert.
    */
@@ -51,7 +51,7 @@ protected:
 
   /** \brief create instance.
    */
-  explicit Interface(const std::string &name);
+  explicit Strategy(const std::string &name);
 
   /** \brief call allows interruption of call sequence.
    *
@@ -83,7 +83,7 @@ private:
   const std::string                name_;
   Persistency::IO::ConnectionPtrNN conn_;
   NodesTimeoutQueue                ntq_;
-}; // class Interface
+}; // class Strategy
 
 } // namespace Filter
 

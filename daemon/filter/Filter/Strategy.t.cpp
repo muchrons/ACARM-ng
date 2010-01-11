@@ -1,11 +1,11 @@
 /*
- * Interface.t.cpp
+ * Strategy.t.cpp
  *
  */
 #include <tut.h>
 #include <boost/thread.hpp>
 
-#include "Filter/Interface.hpp"
+#include "Filter/Strategy.hpp"
 #include "Filter/TestHelpers.t.hpp"
 
 using namespace Filter;
@@ -15,10 +15,10 @@ using namespace Persistency::Stubs;
 namespace
 {
 
-struct TestFilter: public Interface
+struct TestFilter: public Strategy
 {
   TestFilter(void):
-    Interface("testfilter"),
+    Strategy("testfilter"),
     calls_(0),
     node_( makeGraphLeaf() )
   {
@@ -72,7 +72,7 @@ typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Filter/Interface");
+factory tf("Filter/Strategy");
 } // unnamed namespace
 
 
@@ -100,10 +100,10 @@ void testObj::test<2>(void)
 
 namespace
 {
-struct TestLoopFilter: public Interface
+struct TestLoopFilter: public Strategy
 {
   TestLoopFilter(void):
-    Interface("testloopfilter")
+    Strategy("testloopfilter")
   {
   }
 
@@ -121,7 +121,7 @@ struct CallableLF
 {
   void operator()(void)
   {
-    Interface::ChangedNodes cn;
+    Strategy::ChangedNodes cn;
     tlf_.process( TestFilter::makeGraphLeaf(), cn );
   }
 

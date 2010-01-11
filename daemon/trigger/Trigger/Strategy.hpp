@@ -1,5 +1,5 @@
 /*
- * Interface.hpp
+ * Strategy.hpp
  *
  */
 #ifndef INCLUDE_TRIGGER_INTERFACE_HPP_FILE
@@ -21,12 +21,12 @@ namespace Trigger
 
 /** \brief interface (base) for all triggers.
  */
-class Interface: private boost::noncopyable
+class Strategy: private boost::noncopyable
 {
 public:
   /** \brief deallocate object.
    */
-  virtual ~Interface(void);
+  virtual ~Strategy(void);
 
   /** \brief processes given meta-alert.
    *  \param n node to be processed.
@@ -47,7 +47,7 @@ protected:
   /** \brief create instance.
    *  \param name name of given trigger type.
    */
-  explicit Interface(const std::string &name);
+  explicit Strategy(const std::string &name);
 
   /** \brief call allows interruption of call sequence.
    *
@@ -83,7 +83,7 @@ private:
 
   const std::string            name_;
   Base::ObservingSet<NodeType> nos_;
-}; // class Interface
+}; // class Strategy
 
 } // namespace Trigger
 

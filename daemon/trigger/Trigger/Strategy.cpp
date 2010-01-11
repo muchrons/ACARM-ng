@@ -1,24 +1,24 @@
 /*
- * Interface.cpp
+ * Strategy.cpp
  *
  */
 #include <boost/thread.hpp>
 #include <cassert>
 
 #include "Logger/Logger.hpp"
-#include "Trigger/Interface.hpp"
+#include "Trigger/Strategy.hpp"
 
 using namespace std;
 
 namespace Trigger
 {
 
-Interface::~Interface(void)
+Strategy::~Strategy(void)
 {
   LOGMSG_INFO(log_, "deallocating trigger");
 }
 
-void Interface::process(Persistency::GraphNodePtrNN n)
+void Strategy::process(Persistency::GraphNodePtrNN n)
 {
   LOGMSG_DEBUG_S(log_)<<"processing node at address 0x"
                       <<static_cast<void*>( n.get() );
@@ -51,14 +51,14 @@ inline Logger::NodeName makeNodeName(const string &name)
 } // makeNodeName()
 } // unnamed namespace
 
-Interface::Interface(const std::string &name):
+Strategy::Strategy(const std::string &name):
   log_( makeNodeName(name) ),
   name_(name)
 {
   LOGMSG_INFO(log_, "creating trigger");
 }
 
-void Interface::interruptionPoint(void)
+void Strategy::interruptionPoint(void)
 {
   boost::this_thread::interruption_point();
 }
