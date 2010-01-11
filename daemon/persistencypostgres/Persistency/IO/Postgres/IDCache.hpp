@@ -8,6 +8,7 @@
 #include <boost/noncopyable.hpp>
 #include <cassert>
 
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Host.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/MetaAlert.hpp"
@@ -85,6 +86,10 @@ private:
   StorageDataCache<Persistency::Alert>     alertsIDs_;
   StorageDataCache<Persistency::MetaAlert> metaAlertsIDs_;
 }; // class IDCache
+
+
+/** \brief non-NULL, shared pointer to IDCache. */
+typedef Commons::SharedPtrNotNULL<IDCache> IDCachePtrNN;
 
 } // namespace Postgres
 } // namespace IO

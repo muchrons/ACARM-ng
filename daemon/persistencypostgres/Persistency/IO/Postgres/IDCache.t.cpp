@@ -98,4 +98,12 @@ void testObj::test<5>(void)
   metaAlert_=makeNewMetaAlert();
 }
 
+// test creating instance of IDCachePtrNN - smoke test.
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  IDCachePtrNN ptr(new IDCache);
+}
+
 } // namespace tut
