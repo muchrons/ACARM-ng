@@ -17,7 +17,7 @@ namespace IO
 /** \brief Helper class for easier creating basic implementations of derived ones.
  */
 template<typename TPersistencyHandler,
-         typename TTransactionIO,
+         typename TTransactionAPIIO,
          typename TAlertIO,
          typename THostIO,
          typename TMetaAlertIO>
@@ -37,10 +37,10 @@ public:
   }
 
 private:
-  virtual TransactionAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
+  virtual TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
                                                          const std::string    &name)
   {
-    return TransactionAutoPtr( new TTransactionIO(mutex, name, ph_) );
+    return TransactionAPIAutoPtr( new TTransactionAPIIO(mutex, name, ph_) );
   }
 
   virtual AlertAutoPtr alertImpl(AlertPtrNN alert, const Transaction &t)

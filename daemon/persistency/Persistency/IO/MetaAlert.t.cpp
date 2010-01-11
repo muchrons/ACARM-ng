@@ -68,7 +68,7 @@ struct TestClass
   TestClass(void):
     ma_( new Persistency::MetaAlert( makeNewAlert() ) ),
     tapi_( new TestTransactionAPI() ),
-    t_(*tapi_),
+    t_(tapi_),
     ioma_(ma_, t_)
   {
   }
@@ -82,10 +82,10 @@ struct TestClass
         tut::ensure_equals("invalid call made", ioma_.calls_[i], 0);
   }
 
-  Persistency::MetaAlertPtrNN  ma_;
-  TransactionAutoPtr           tapi_;
-  Transaction                 &t_;
-  IOMetaAlert                  ioma_;
+  Persistency::MetaAlertPtrNN ma_;
+  TransactionAPIAutoPtr       tapi_;
+  Transaction                 t_;
+  IOMetaAlert                 ioma_;
 };
 
 typedef TestClass TestClass;

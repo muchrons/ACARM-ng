@@ -41,12 +41,12 @@ struct TestClass
 {
   TestClass(void):
     tapi_( new TestTransactionAPI() ),
-    t_(*tapi_)
+    t_(tapi_)
   {
   }
 
-  TransactionAutoPtr  tapi_;
-  Transaction        &t_;
+  TransactionAPIAutoPtr tapi_;
+  Transaction           t_;
 };
 
 typedef TestClass TestClass;

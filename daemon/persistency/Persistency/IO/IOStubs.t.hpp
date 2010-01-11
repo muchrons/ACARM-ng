@@ -113,12 +113,12 @@ struct TestIOConnection: public Persistency::IO::Connection
       called_[i]=0;
   }
 
-  virtual Persistency::IO::TransactionAutoPtr createNewTransactionImpl(
+  virtual Persistency::IO::TransactionAPIAutoPtr createNewTransactionImpl(
                                         Base::Threads::Mutex &/*mutex*/,
                                         const std::string    &/*name*/)
   {
     ++called_[0];
-    return Persistency::IO::TransactionAutoPtr(new TestTransactionAPI);
+    return Persistency::IO::TransactionAPIAutoPtr(new TestTransactionAPI);
   }
   virtual Persistency::IO::AlertAutoPtr alertImpl(
                                         Persistency::AlertPtrNN             alert,

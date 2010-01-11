@@ -5,24 +5,19 @@
 #ifndef INCLUDE_TESTTRANSACTIONAPI_T_HPP_FILE
 #define INCLUDE_TESTTRANSACTIONAPI_T_HPP_FILE
 
-#include "Persistency/IO/Transaction.hpp"
+#include "Persistency/IO/TransactionAPI.hpp"
 
 namespace
 {
 
-struct TestTransactionAPI: public Persistency::IO::Transaction
+struct TestTransactionAPI: public Persistency::IO::TransactionAPI
 {
   explicit TestTransactionAPI(int *commits=NULL, int *rollbacks=NULL):
-    Persistency::IO::Transaction( getStaticMutex(), "test_transaction"),
+    Persistency::IO::TransactionAPI( getStaticMutex(), "test_transaction"),
     commited_(commits),
     rollbacked_(rollbacks)
   {
   }
-
-  int *commited_;
-  int *rollbacked_;
-
-private:
   virtual void commitImpl(void)
   {
     if(commited_!=NULL)
@@ -34,6 +29,10 @@ private:
       ++*rollbacked_;
   }
 
+  int                  *commited_;
+  int                  *rollbacked_;
+
+private:
   Base::Threads::Mutex &getStaticMutex(void)
   {
     static Base::Threads::Mutex m;

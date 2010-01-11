@@ -48,13 +48,13 @@ struct TestClass
                                    Persistency::Alert::ReportedHosts(),
                                    Persistency::Alert::ReportedHosts()) ),
     tapi_( new TestTransactionAPI() ),
-    t_(*tapi_)
+    t_(tapi_)
   {
   }
 
-  Persistency::AlertPtrNN  alert_;
-  TransactionAutoPtr       tapi_;
-  Transaction             &t_;
+  Persistency::AlertPtrNN alert_;
+  TransactionAPIAutoPtr   tapi_;
+  Transaction             t_;
 };
 
 typedef TestClass TestClass;

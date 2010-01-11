@@ -20,12 +20,15 @@ struct TestClass
   TestClass(void):
     commits_(0),
     rollbacks_(0),
-    t_( new TestTransactionAPI(&commits_, &rollbacks_) )
+    tapi_( new TestTransactionAPI(&commits_, &rollbacks_) ),
+    t_( new Transaction(tapi_) )
   {
+    tut::ensure("API ownership not taken", tapi_.get()==NULL);
   }
 
   int                        commits_;
   int                        rollbacks_;
+  TransactionAPIAutoPtr      tapi_;
   std::auto_ptr<Transaction> t_;
 };
 
@@ -106,18 +109,17 @@ void testObj::test<6>(void)
   ensure_equals("rollback called after commit", rollbacks_, 0);
 }
 
-// test if transaction is not active after rollback
+// test transaction when NULL API is given
 template<>
 template<>
 void testObj::test<7>(void)
 {
-  t_->rollback();
   try
   {
-    t_->ensureIsActive();   // should throw
-    fail("not exception has been rasied after ensuring ended transaction");
+    Transaction t( TransactionAPIAutoPtr(NULL) );
+    fail("Transaction(NULL) didn't throw");
   }
-  catch(const ExceptionTransactionNotActive&)
+  catch(const Persistency::ExceptionNULLParameter&)
   {
     // this is expected
   }
@@ -137,6 +139,23 @@ template<>
 void testObj::test<9>(void)
 {
   t_->commit();
+  try
+  {
+    t_->ensureIsActive();   // should throw
+    fail("not exception has been rasied after ensuring ended transaction");
+  }
+  catch(const ExceptionTransactionNotActive&)
+  {
+    // this is expected
+  }
+}
+
+// test if transaction is not active after rollback
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  t_->rollback();
   try
   {
     t_->ensureIsActive();   // should throw

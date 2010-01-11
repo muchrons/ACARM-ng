@@ -7,16 +7,13 @@
 
 /* public header */
 
-#include <memory>
-#include <string>
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
-#include "Base/Threads/Mutex.hpp"
-#include "Base/Threads/Lock.hpp"
 #include "Logger/Logger.hpp"
 #include "Persistency/IO/ExceptionTransactionNotActive.hpp"
+#include "Persistency/IO/TransactionAPI.hpp"
 #include "Persistency/ExceptionNULLParameter.hpp"
 
 namespace Persistency
@@ -25,30 +22,28 @@ namespace IO
 {
 
 /** \brief transaction logic implementation.
+ *
+ * class uses TransactionAPI as a backend. this is required to avoid
+ * pure-virtual member rollback() call in d-tor (default: rollback).
  */
 class Transaction: private boost::noncopyable
 {
 public:
   /** \brief creates transaction algorith for a given persistency transaction
    *         implementation.
-   *  \param mutex connection's mutex to lock.
-   *  \param name  name of the transaction.
+   *  \param transaction base object to be used for implementing transaction.
    */
-  Transaction(Base::Threads::Mutex &mutex, const std::string &name);
+  explicit Transaction(TransactionAPIAutoPtr transaction);
   /** \brief ends transaction.
    *  \note if transaction was not commited it is automatically rollbacked.
    */
-  virtual ~Transaction(void);
+  ~Transaction(void);
   /** \brief performs commit, if operation not done already.
    */
   void commit(void);
   /** \brief rollbacks changes since transaction start.
    */
   void rollback(void);
-  /** \brief gets transaciton name.
-   *  \return name of this transaction.
-   */
-  const std::string getName(void) const;
   /** \brief throws exception if transaction has been already commited/rollbacked.
    */
   void ensureIsActive(void) const;
@@ -57,18 +52,10 @@ private:
   bool isActive(void) const;
   void logMsg(const char *str);
 
-  virtual void commitImpl(void) = 0;
-  virtual void rollbackImpl(void) = 0;
-
-  Base::Threads::Lock lock_;
-  const std::string   name_;
-  bool                isActive_;
-  Logger::Node        log_;
+  boost::scoped_ptr<TransactionAPI> transaction_;
+  bool                              isActive_;
+  Logger::Node                      log_;
 }; // class Transaction
-
-
-/** \brief auto pointer to IO::Transaction class. */
-typedef std::auto_ptr<Transaction> TransactionAutoPtr;
 
 } // namespace IO
 } // namespace Persistency

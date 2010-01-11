@@ -54,7 +54,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  IO::TransactionAutoPtr tapi=c_.createNewTransaction("X");
+  IO::TransactionAPIAutoPtr tapi=c_.createNewTransaction("X");
   ensure("NULL pointer retuirned", tapi.get()!=NULL );
   ensureCalls(0);
 }
@@ -64,8 +64,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const TransactionAutoPtr t( c_.createNewTransaction("abc") );
-  AlertAutoPtr ptr=c_.alert( makeNewAlert(), *t);
+  const Transaction t( c_.createNewTransaction("abc") );
+  AlertAutoPtr ptr=c_.alert( makeNewAlert(), t);
   ensure("NULL pointer received", ptr.get()!=NULL );
   ensureCalls(1);
 }
@@ -75,8 +75,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const TransactionAutoPtr t( c_.createNewTransaction("abc") );
-  HostAutoPtr ptr=c_.host( makeNewHost(), *t);
+  const Transaction t( c_.createNewTransaction("abc") );
+  HostAutoPtr ptr=c_.host( makeNewHost(), t);
   ensure("NULL pointer received", ptr.get()!=NULL );
   ensureCalls(2);
 }
@@ -86,10 +86,10 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const TransactionAutoPtr t( c_.createNewTransaction("abc") );
+  const Transaction t( c_.createNewTransaction("abc") );
   AlertPtrNN   alert=makeNewAlert();
   MetaAlertPtr ma( new Persistency::MetaAlert(alert) );
-  MetaAlertAutoPtr ptr=c_.metaAlert(ma, *t);
+  MetaAlertAutoPtr ptr=c_.metaAlert(ma, t);
   ensure("NULL pointer received", ptr.get()!=NULL );
   ensureCalls(3);
 }
