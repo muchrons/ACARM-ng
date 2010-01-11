@@ -23,6 +23,7 @@ public:
   /** \brief create meta-alert persistency proxy.
    *  \param ma meta alert to work on.
    *  \param t  active transaction.
+   *  \param sc shared connection ot be used for communication.
    */
   MetaAlert(Persistency::MetaAlertPtrNN  ma,
             const Transaction           &t,

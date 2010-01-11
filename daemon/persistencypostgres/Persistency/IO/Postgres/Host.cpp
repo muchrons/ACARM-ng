@@ -19,7 +19,7 @@ Host::Host(Persistency::HostPtrNN  host,
 {
 }
 
-void Host::setNameImpl(const Persistency::Host::Name &name)
+void Host::setNameImpl(const Persistency::Host::Name &/*name*/)
 {
   // TODO
 }

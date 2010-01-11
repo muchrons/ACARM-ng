@@ -14,6 +14,11 @@ namespace IO
 namespace Postgres
 {
 
+/** \brief class reprenseting shared connection to data base.
+ *
+ *  class has boost::shared_ptr<>-like copy semantics. it does not
+ *  guarantee safe usage from multiple threads.
+ */
 class DBSharedConnection
 {
 public:

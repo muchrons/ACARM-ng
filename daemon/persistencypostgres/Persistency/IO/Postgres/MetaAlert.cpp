@@ -34,22 +34,22 @@ void MetaAlert::markAsUnusedImpl(void)
   // TODO
 }
 
-void MetaAlert::updateSeverityDeltaImpl(double delta)
+void MetaAlert::updateSeverityDeltaImpl(double /*delta*/)
 {
   // TODO
 }
 
-void MetaAlert::updateCertanityDeltaImpl(double delta)
+void MetaAlert::updateCertanityDeltaImpl(double /*delta*/)
 {
   // TODO
 }
 
-void MetaAlert::addChildImpl(Persistency::MetaAlertPtrNN child)
+void MetaAlert::addChildImpl(Persistency::MetaAlertPtrNN /*child*/)
 {
   // TODO
 }
 
-void MetaAlert::associateWithAlertImpl(Persistency::AlertPtrNN alert)
+void MetaAlert::associateWithAlertImpl(Persistency::AlertPtrNN /*alert*/)
 {
   // TODO
 }
