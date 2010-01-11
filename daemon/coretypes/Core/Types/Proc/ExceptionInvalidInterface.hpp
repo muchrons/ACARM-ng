@@ -7,7 +7,7 @@
 
 /* public header */
 
-#include "Core/Types/Exception.hpp"
+#include "Core/Types/Proc/Exception.hpp"
 
 namespace Core
 {
@@ -25,8 +25,7 @@ public:
    *  \param name  name of invalid filter.
    */
   ExceptionInvalidInterface(const char *where, const char *name):
-    Exception(where, std::string("invalid processing unit's interface: ") +
-                     ensureString(name) )
+    Exception(where, name, "invalid/NULL processing unit's interface")
   {
   }
 }; // class ExceptionInvalidInterface
