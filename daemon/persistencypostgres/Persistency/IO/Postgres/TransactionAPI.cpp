@@ -2,8 +2,9 @@
  * TransactionAPI.cpp
  *
  */
-#include "Persistency/IO/Postgres/TransactionAPI.hpp"
+#include <cassert>
 
+#include "Persistency/IO/Postgres/TransactionAPI.hpp"
 
 namespace Persistency
 {
@@ -16,19 +17,21 @@ TransactionAPI::TransactionAPI(Base::Threads::Mutex &mutex,
                                const std::string    &name,
                                DBHandlerPtrNN        dbHandler):
   Persistency::IO::TransactionAPI(mutex, name),
-  dbHandler_(dbHandler)
+  t_( dbHandler->getConnection().get(), name ),
+  rollback_(false)
 {
-  // TODO
 }
 
 void TransactionAPI::commitImpl(void)
 {
-  // TODO
+  assert(rollback_==false && "commit() called after rollback()");
+  t_.commit();
 }
 
 void TransactionAPI::rollbackImpl(void)
 {
-  // TODO
+  assert(rollback_==false && "rollback() called multiple times");
+  rollback_=true;
 }
 
 } // namespace Postgres

@@ -6,6 +6,7 @@
 #define INCLUDE_PERSISTENCY_POSTGRES_IO_TRANSACTIONAPI_HPP_FILE
 
 #include <string>
+#include <pqxx/pqxx>
 
 #include "Persistency/IO/TransactionAPI.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
@@ -41,8 +42,8 @@ private:
    */
   virtual void rollbackImpl(void);
 
-  // TODO: is this member needed here?
-  DBHandlerPtrNN dbHandler_;
+  pqxx::work t_;
+  bool       rollback_;
 }; // class TransactionAPI
 
 } // namespace Postgres
