@@ -14,31 +14,56 @@ using namespace Persistency::Stubs;
 namespace
 {
 
+struct TestStrategyParams
+{
+  mutable int calls_;
+}; // struct TestStrategyParams
+
 struct TestStrategy
 {
-  TestStrategy(void):
-    calls_(0)
+  explicit TestStrategy(const TestStrategyParams &p):
+    p_(p)
   {
+    p_.calls_=0;
   }
 
-  virtual void process(GraphNodePtrNN, Interface::ChangedNodes&)
+  void process(GraphNodePtrNN, Interface::ChangedNodes&)
   {
-    ++calls_;
+    ++p_.calls_;
   }
 
-  int calls_;
+  const TestStrategyParams &p_;
+};
+
+
+namespace
+{
+int testStrategyNoParmCalls=0;
+} // unnamed namespace
+
+struct TestStrategyNoParm
+{
+  TestStrategyNoParm(void)
+  {
+    testStrategyNoParmCalls=0;
+  }
+
+  void process(GraphNodePtrNN, Interface::ChangedNodes&)
+  {
+    ++testStrategyNoParmCalls;
+  }
 };
 
 
 struct TestClass
 {
   TestClass(void):
-    impl_("somename", strat_)
+    impl_("somename", params_)
   {
   }
 
-  TestStrategy                 strat_;
-  InterfaceImpl<TestStrategy&> impl_;
+  TestStrategyParams                              params_;
+  InterfaceImpl<TestStrategy, TestStrategyParams> impl_;
 };
 
 typedef TestClass TestClass;
@@ -65,10 +90,30 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("pre-condition failed", strat_.calls_, 0);
+  ensure_equals("pre-condition failed", params_.calls_, 0);
   Interface::ChangedNodes changed;
   impl_.process( makeNewLeaf(), changed );
-  ensure_equals("process() is not virtual", strat_.calls_, 1);
+  ensure_equals("process() is not virtual", params_.calls_, 1);
+}
+
+// test test 1-arg c-tor (should compile)
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  InterfaceImpl<TestStrategyNoParm> tmp("sometest");
+}
+
+// test process() on non-param strategy object
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  InterfaceImpl<TestStrategyNoParm> tmp("sometest");
+  ensure_equals("pre-condition failed", testStrategyNoParmCalls, 0);
+  Interface::ChangedNodes changed;
+  tmp.process( makeNewLeaf(), changed );
+  ensure_equals("process() is not virtual", testStrategyNoParmCalls, 1);
 }
 
 } // namespace tut

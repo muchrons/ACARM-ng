@@ -21,18 +21,25 @@ namespace Proc
  *  this class is to be parametrized with proper strategy and passed as an
  *  interface to be used by Processor.
  */
-template<typename TStrategy>
+template<typename TStrategy, typename TParam=int>
 class InterfaceImpl: public Interface
 {
 public:
   /** \brief creates object with a given name.
-   *  \param name     name for this processing unit.
-   *  \param strategy strategy to process requests.
+   *  \param name name for this processing unit.
+   */
+  explicit InterfaceImpl(const std::string &name):
+    Interface(name)
+  {
+  }
+  /** \brief creates object with a given name and properties.
+   *  \param name  name for this processing unit.
+   *  \param param paramter to eb given when constructing strategy.
    */
   InterfaceImpl(const std::string &name,
-                const TStrategy   &strategy):
+                const TParam      &param):
     Interface(name),
-    strategy_(strategy)
+    strategy_(param)
   {
   }
 
