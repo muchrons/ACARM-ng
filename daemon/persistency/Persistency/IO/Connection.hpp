@@ -16,7 +16,6 @@
 #include "Persistency/IO/Host.hpp"
 #include "Persistency/IO/MetaAlert.hpp"
 #include "Persistency/IO/Transaction.hpp"
-#include "Persistency/IO/TransactionAPI.hpp"
 
 namespace Persistency
 {
@@ -39,7 +38,7 @@ public:
    *        one transaction can be created at a time. if more call will
    *        appear, they will be waiting for it to finish.
    */
-  TransactionAPIAutoPtr createNewTransaction(const std::string &name);
+  TransactionAutoPtr createNewTransaction(const std::string &name);
   /** \brief create alert's persistency proxy.
    *  \param alert alert to work on.
    *  \param t     active transaction.
@@ -60,8 +59,8 @@ public:
   MetaAlertAutoPtr metaAlert(MetaAlertPtrNN ma, const Transaction &t);
 
 private:
-  virtual TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
-                                                         const std::string    &name) = 0;
+  virtual TransactionAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
+                                                      const std::string    &name) = 0;
   virtual AlertAutoPtr alertImpl(AlertPtrNN alert, const Transaction &t) = 0;
   virtual HostAutoPtr hostImpl(HostPtrNN host, const Transaction &t) = 0;
   virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, const Transaction &t) = 0;

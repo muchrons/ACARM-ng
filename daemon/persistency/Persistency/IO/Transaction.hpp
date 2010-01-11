@@ -7,13 +7,16 @@
 
 /* public header */
 
+#include <memory>
+#include <string>
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
+#include "Base/Threads/Mutex.hpp"
+#include "Base/Threads/Lock.hpp"
 #include "Logger/Logger.hpp"
 #include "Persistency/IO/ExceptionTransactionNotActive.hpp"
-#include "Persistency/IO/TransactionAPI.hpp"
 #include "Persistency/ExceptionNULLParameter.hpp"
 
 namespace Persistency
@@ -28,19 +31,24 @@ class Transaction: private boost::noncopyable
 public:
   /** \brief creates transaction algorith for a given persistency transaction
    *         implementation.
-   *  \param transaction base object to be used for implementing transaction.
+   *  \param mutex connection's mutex to lock.
+   *  \param name  name of the transaction.
    */
-  explicit Transaction(TransactionAPIAutoPtr transaction);
+  Transaction(Base::Threads::Mutex &mutex, const std::string &name);
   /** \brief ends transaction.
    *  \note if transaction was not commited it is automatically rollbacked.
    */
-  ~Transaction(void);
+  virtual ~Transaction(void);
   /** \brief performs commit, if operation not done already.
    */
   void commit(void);
   /** \brief rollbacks changes since transaction start.
    */
   void rollback(void);
+  /** \brief gets transaciton name.
+   *  \return name of this transaction.
+   */
+  const std::string getName(void) const;
   /** \brief throws exception if transaction has been already commited/rollbacked.
    */
   void ensureIsActive(void) const;
@@ -49,10 +57,18 @@ private:
   bool isActive(void) const;
   void logMsg(const char *str);
 
-  boost::scoped_ptr<TransactionAPI> transaction_;
-  bool                              isActive_;
-  Logger::Node                      log_;
+  virtual void commitImpl(void) = 0;
+  virtual void rollbackImpl(void) = 0;
+
+  Base::Threads::Lock lock_;
+  const std::string   name_;
+  bool                isActive_;
+  Logger::Node        log_;
 }; // class Transaction
+
+
+/** \brief auto pointer to IO::Transaction class. */
+typedef std::auto_ptr<Transaction> TransactionAutoPtr;
 
 } // namespace IO
 } // namespace Persistency

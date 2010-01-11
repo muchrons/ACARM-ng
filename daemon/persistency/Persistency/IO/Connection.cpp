@@ -15,9 +15,9 @@ Connection::~Connection(void)
 {
 }
 
-TransactionAPIAutoPtr Connection::createNewTransaction(const std::string &name)
+TransactionAutoPtr Connection::createNewTransaction(const std::string &name)
 {
-  TransactionAPIAutoPtr ptr=createNewTransactionImpl(mutex_, name);
+  TransactionAutoPtr ptr=createNewTransactionImpl(mutex_, name);
   assert( ptr.get()!=NULL );
   return ptr;
 }

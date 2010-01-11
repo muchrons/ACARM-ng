@@ -40,7 +40,7 @@ struct TestClass
 
     return GraphNodePtrNN( new GraphNode(ma,
                                          conn_,
-                                         t_,
+                                         *t_,
                                          makeLeaf(),
                                          makeLeaf(),
                                          vec) );
@@ -48,7 +48,7 @@ struct TestClass
 
   GraphNodePtrNN makeLeaf(void)
   {
-    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, t_) );
+    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, *t_) );
   }
 
   int childrenCount(const GraphNode &gn) const
@@ -61,16 +61,16 @@ struct TestClass
 
   IO::MetaAlertAutoPtr makeIO(GraphNodePtrNN gn)
   {
-    return conn_->metaAlert( gn->getMetaAlert(), t_);
+    return conn_->metaAlert( gn->getMetaAlert(), *t_);
   }
 
-  MetaAlertPtrNN      ma1_;
-  MetaAlertPtrNN      ma2_;
-  IO::ConnectionPtrNN conn_;
-  IO::Transaction     t_;
+  MetaAlertPtrNN         ma1_;
+  MetaAlertPtrNN         ma2_;
+  IO::ConnectionPtrNN    conn_;
+  IO::TransactionAutoPtr t_;
 
-  GraphNodePtrNN      leaf_;
-  GraphNodePtrNN      node_;
+  GraphNodePtrNN         leaf_;
+  GraphNodePtrNN         node_;
 };
 
 typedef TestClass TestClass;
@@ -211,7 +211,7 @@ void testObj::test<9>(void)
                                    0,
                                    makeNewReferenceURL(),
                                    Timestamp() ) );
-  const GraphNode gn(ma, conn_, t_, makeLeaf(), makeLeaf() );
+  const GraphNode gn(ma, conn_, *t_, makeLeaf(), makeLeaf() );
   ensure_equals("invalid children count", childrenCount(gn), 2);
 }
 
