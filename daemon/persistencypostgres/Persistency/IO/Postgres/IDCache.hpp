@@ -22,6 +22,9 @@ namespace Postgres
 {
 
 /** \brief common cache for all types of data-base entries.
+ *
+ *  class given unified entry point to ID caches for different object types.
+ *  class is thread-safe.
  */
 class IDCache: private boost::noncopyable
 {

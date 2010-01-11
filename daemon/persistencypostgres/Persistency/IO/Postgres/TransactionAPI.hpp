@@ -8,6 +8,7 @@
 #include <string>
 
 #include "Persistency/IO/TransactionAPI.hpp"
+#include "Persistency/IO/Postgres/DBHandler.hpp"
 
 
 namespace Persistency
@@ -24,21 +25,24 @@ class TransactionAPI: public Persistency::IO::TransactionAPI
 {
 public:
   /** \brief open transaction.
-   *  \param mutex mutex protecting connection object.
-   *  \param name  name of transaction.
+   *  \param mutex     mutex protecting connection object.
+   *  \param name      name of transaction.
+   *  \param dbHandler data base handler object.
    */
   TransactionAPI(Base::Threads::Mutex &mutex,
-                 const std::string    &name);
-
-  /** \brief transaction acceptance opration's interface.
-   */
-  virtual void commit(void);
-  /** \brief transaction abort interface.
-   */
-  virtual void rollback(void);
+                 const std::string    &name,
+                 DBHandlerPtrNN        dbHandler);
 
 private:
-  // TODO
+  /** \brief transaction acceptance opration's interface.
+   */
+  virtual void commitImpl(void);
+  /** \brief transaction abort interface.
+   */
+  virtual void rollbackImpl(void);
+
+  // TODO: is this member needed here?
+  DBHandlerPtrNN dbHandler_;
 }; // class TransactionAPI
 
 } // namespace Postgres

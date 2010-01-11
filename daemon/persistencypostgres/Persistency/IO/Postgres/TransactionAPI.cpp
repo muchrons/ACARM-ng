@@ -13,18 +13,20 @@ namespace Postgres
 {
 
 TransactionAPI::TransactionAPI(Base::Threads::Mutex &mutex,
-                               const std::string    &name):
-  Persistency::IO::TransactionAPI(mutex, name)
+                               const std::string    &name,
+                               DBHandlerPtrNN        dbHandler):
+  Persistency::IO::TransactionAPI(mutex, name),
+  dbHandler_(dbHandler)
 {
   // TODO
 }
 
-void TransactionAPI::commit(void)
+void TransactionAPI::commitImpl(void)
 {
   // TODO
 }
 
-void TransactionAPI::rollback(void)
+void TransactionAPI::rollbackImpl(void)
 {
   // TODO
 }

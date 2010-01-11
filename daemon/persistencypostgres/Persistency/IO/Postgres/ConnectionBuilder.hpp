@@ -9,6 +9,7 @@
 
 #include "Logger/Logger.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
+#include "Persistency/IO/Postgres/IDCache.hpp"
 
 namespace Persistency
 {
@@ -32,6 +33,7 @@ private:
 
   const std::string  name_;
   const Logger::Node log_;
+  IDCachePtrNN       idCache_;
 }; // class ConnectionBuilder
 
 } // namespace Postgres

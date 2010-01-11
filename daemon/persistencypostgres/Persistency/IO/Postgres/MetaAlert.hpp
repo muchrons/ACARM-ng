@@ -6,7 +6,7 @@
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_METAALERT_HPP_FILE
 
 #include "Persistency/IO/MetaAlert.hpp"
-#include "Persistency/IO/Postgres/DBSharedConnection.hpp"
+#include "Persistency/IO/Postgres/DBHandler.hpp"
 
 namespace Persistency
 {
@@ -21,13 +21,13 @@ class MetaAlert: public IO::MetaAlert
 {
 public:
   /** \brief create meta-alert persistency proxy.
-   *  \param ma meta alert to work on.
-   *  \param t  active transaction.
-   *  \param sc shared connection ot be used for communication.
+   *  \param ma        meta alert to work on.
+   *  \param t         active transaction.
+   *  \param dbHandler shared connection ot be used for communication.
    */
   MetaAlert(Persistency::MetaAlertPtrNN  ma,
             const Transaction           &t,
-            DBSharedConnection           sc);
+            DBHandlerPtrNN               dbHandler);
 
 private:
   virtual void saveImpl(void);
@@ -38,7 +38,7 @@ private:
   virtual void addChildImpl(Persistency::MetaAlertPtrNN child);
   virtual void associateWithAlertImpl(Persistency::AlertPtrNN alert);
 
-  DBSharedConnection sc_;
+  DBHandlerPtrNN dbHandler_;
 }; // class MetaAlert
 
 } // namespace Postgres

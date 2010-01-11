@@ -13,9 +13,9 @@ namespace Postgres
 
 Host::Host(Persistency::HostPtrNN  host,
            const Transaction      &t,
-           DBSharedConnection      sc):
+           DBHandlerPtrNN          dbHandler):
   IO::Host(host, t),
-  sc_(sc)
+  dbHandler_(dbHandler)
 {
 }
 

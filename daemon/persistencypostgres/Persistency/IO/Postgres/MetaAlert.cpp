@@ -13,9 +13,9 @@ namespace Postgres
 
 MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
                      const Transaction           &t,
-                     DBSharedConnection           sc):
+                     DBHandlerPtrNN               dbHandler):
   IO::MetaAlert(ma, t),
-  sc_(sc)
+  dbHandler_(dbHandler)
 {
 }
 
