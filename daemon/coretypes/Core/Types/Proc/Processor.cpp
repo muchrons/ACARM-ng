@@ -73,6 +73,11 @@ public:
             it!=changed.end(); ++it)
           outputQueue_->push(*it);
       }
+      catch(const Core::Types::Proc::Exception &ex)
+      {
+        LOGMSG_ERROR_S(log_)<<"Core::Types::Proc::Exception ("<< typeid(ex).name()
+                            <<") cought in thread: "<<ex.what();
+      }
       catch(const std::exception &ex)
       {
         LOGMSG_ERROR_S(log_)<<"exception ("<< typeid(ex).name()
