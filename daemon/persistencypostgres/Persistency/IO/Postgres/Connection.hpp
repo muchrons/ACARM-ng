@@ -5,7 +5,6 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_CONNECTION_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_CONNECTION_HPP_FILE
 
-#include "Persistency/IO/Connection.hpp"
 #include "Persistency/IO/ConnectionHelper.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
 #include "Persistency/IO/Postgres/Alert.hpp"
