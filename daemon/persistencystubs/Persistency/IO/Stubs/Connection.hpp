@@ -45,9 +45,9 @@ public:
 private:
   virtual TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
                                                          const std::string    &name);
-  virtual AlertAutoPtr alertImpl(AlertPtrNN alert, const Transaction &t);
-  virtual HostAutoPtr hostImpl(HostPtrNN host, const Transaction &t);
-  virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, const Transaction &t);
+  virtual AlertAutoPtr alertImpl(AlertPtrNN alert, Transaction &t);
+  virtual HostAutoPtr hostImpl(HostPtrNN host, Transaction &t);
+  virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, Transaction &t);
 
   detail::ConnectionImpl impl_;
 }; // class Connection

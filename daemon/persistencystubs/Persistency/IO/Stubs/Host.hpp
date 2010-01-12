@@ -25,14 +25,14 @@ public:
    *  \param handler persistency handler.
    */
   Host(Persistency::HostPtrNN  host,
-       const Transaction      &t,
+       Transaction            &t,
        int                     handler);
 
   /** number of times setting name has been called. */
   size_t setNameCalls_;
 
 private:
-  virtual void setNameImpl(const Persistency::Host::Name &name);
+  virtual void setNameImpl(Transaction &, const Persistency::Host::Name &name);
 }; // class Host
 
 } // namespace Stubs

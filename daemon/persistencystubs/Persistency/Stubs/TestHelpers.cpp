@@ -93,7 +93,7 @@ ReferenceURLPtr makeNewReferenceURL(const char *url)
 GraphNodePtrNN makeNewLeaf(void)
 {
   Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
-  const IO::Transaction t( conn->createNewTransaction("make_leaf_transaction") );
+  IO::Transaction t( conn->createNewTransaction("make_leaf_transaction") );
   return GraphNodePtrNN( new GraphNode( Stubs::makeNewAlert(), conn, t) );
 }
 
@@ -105,7 +105,7 @@ GraphNodePtrNN makeNewNode(void)
 GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
 {
   Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
-  const IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
+  IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
   return GraphNodePtrNN( new GraphNode( makeNewMetaAlert(),
                                         conn, t,
                                         child1, child2 ) );

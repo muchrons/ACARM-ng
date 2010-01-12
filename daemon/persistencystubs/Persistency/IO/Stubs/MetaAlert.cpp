@@ -14,7 +14,7 @@ namespace Stubs
 {
 
 MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
-                     const Transaction           &t,
+                     Transaction                 &t,
                      int                          handler):
   IO::MetaAlert(ma, t),
   saveCalls_(0),
@@ -29,37 +29,37 @@ MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
   handler=0;
 }
 
-void MetaAlert::saveImpl()
+void MetaAlert::saveImpl(Transaction &)
 {
   ++saveCalls_;
 }
 
-void MetaAlert::markAsUsedImpl()
+void MetaAlert::markAsUsedImpl(Transaction &)
 {
   ++markAsUsedCalls_;
 }
 
-void MetaAlert::markAsUnusedImpl()
+void MetaAlert::markAsUnusedImpl(Transaction &)
 {
   ++markAsUnusedCalls_;
 }
 
-void MetaAlert::updateSeverityDeltaImpl(double /*delta*/)
+void MetaAlert::updateSeverityDeltaImpl(Transaction &, double /*delta*/)
 {
   ++updateSeverityDeltaCalls_;
 }
 
-void MetaAlert::updateCertanityDeltaImpl(double /*delta*/)
+void MetaAlert::updateCertanityDeltaImpl(Transaction &, double /*delta*/)
 {
   ++updateCertanityDeltaCalls_;
 }
 
-void MetaAlert::addChildImpl(Persistency::MetaAlertPtrNN /*child*/)
+void MetaAlert::addChildImpl(Transaction &, Persistency::MetaAlertPtrNN /*child*/)
 {
   ++addChildCalls_;
 }
 
-void MetaAlert::associateWithAlertImpl(Persistency::AlertPtrNN /*alert*/)
+void MetaAlert::associateWithAlertImpl(Transaction &, Persistency::AlertPtrNN /*alert*/)
 {
   ++assoicateWithAlertCalls_;
 }

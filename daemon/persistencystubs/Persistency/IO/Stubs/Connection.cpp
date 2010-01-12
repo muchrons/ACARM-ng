@@ -28,19 +28,19 @@ TransactionAPIAutoPtr Connection::createNewTransactionImpl(Base::Threads::Mutex 
   return impl_.createNewTransaction(name);
 }
 
-AlertAutoPtr Connection::alertImpl(AlertPtrNN alert, const Transaction &t)
+AlertAutoPtr Connection::alertImpl(AlertPtrNN alert, Transaction &t)
 {
   ++alertCalls_;
   return impl_.alert(alert, t);
 }
 
-HostAutoPtr Connection::hostImpl(HostPtrNN host, const Transaction &t)
+HostAutoPtr Connection::hostImpl(HostPtrNN host, Transaction &t)
 {
   ++hostCalls_;
   return impl_.host(host, t);
 }
 
-MetaAlertAutoPtr Connection::metaAlertImpl(MetaAlertPtrNN ma, const Transaction &t)
+MetaAlertAutoPtr Connection::metaAlertImpl(MetaAlertPtrNN ma, Transaction &t)
 {
   ++metaAlertCalls_;
   return impl_.metaAlert(ma, t);
