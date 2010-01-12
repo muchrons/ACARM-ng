@@ -91,7 +91,7 @@ void BackendProxy::beginTransaction(void)
   transaction_->ensureIsActive();
 }
 
-const Transaction &BackendProxy::getTransaction(void) const
+Transaction &BackendProxy::getTransaction(void) const
 {
   assert( transaction_.get()!=NULL );
   return *transaction_;
