@@ -17,7 +17,7 @@ namespace Postgres
 struct TestConnection
 {
   TestConnection(void):
-    connParams_("localhost", "acarm_ng_test", "acarm-ng-tests", "test.password"),
+    connParams_("localhost", "acarm_ng_test", "acarm-ng-daemon", "test.daemon"),
     idCache_(new IDCache),
     dbHandler_(connParams_, idCache_)
   {
