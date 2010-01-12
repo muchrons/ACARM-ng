@@ -21,6 +21,13 @@ namespace Persistency
 namespace IO
 {
 
+namespace detail
+{
+// forward declaration.
+class TransactionAPIOperations;
+} // namespace detail
+
+
 /** \brief transaction calls that are persistency-type-dependent.
  *  \note transaction must begin in derived object's c-tor.
  */
@@ -30,13 +37,6 @@ public:
   /** \brief unlocks connection's mutex.
    */
   virtual ~TransactionAPI(void);
-
-  /** \brief transaction acceptance opration's interface.
-   */
-  void commit(void);
-  /** \brief transaction abort interface.
-   */
-  void rollback(void);
   /** \brief gets transaciton name.
    *  \return name of this transaction.
    */
@@ -50,8 +50,17 @@ protected:
   TransactionAPI(Base::Threads::Mutex &mutex, const std::string &name);
 
 private:
+  /** \brief transaction acceptance opration's interface.
+   */
+  void commit(void);
+  /** \brief transaction abort interface.
+   */
+  void rollback(void);
+
   virtual void commitImpl(void) = 0;
   virtual void rollbackImpl(void) = 0;
+
+  friend class detail::TransactionAPIOperations;
 
   void logMsg(const char *str);
 
