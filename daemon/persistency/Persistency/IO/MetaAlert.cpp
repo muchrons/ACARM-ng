@@ -27,25 +27,25 @@ MetaAlert::~MetaAlert(void)
 void MetaAlert::save()
 {
   t_.ensureIsActive();
-  saveImpl();
+  saveImpl(t_);
 }
 
 void MetaAlert::markAsUsed()
 {
   t_.ensureIsActive();
-  markAsUsedImpl();
+  markAsUsedImpl(t_);
 }
 
 void MetaAlert::markAsUnused()
 {
   t_.ensureIsActive();
-  markAsUnusedImpl();
+  markAsUnusedImpl(t_);
 }
 
 void MetaAlert::updateSeverityDelta(double delta)
 {
   t_.ensureIsActive();
-  updateSeverityDeltaImpl(delta);
+  updateSeverityDeltaImpl(t_, delta);
 
   assert(ma_.get()!=NULL);
   ma_->updateSeverityDelta(delta);
@@ -54,7 +54,7 @@ void MetaAlert::updateSeverityDelta(double delta)
 void MetaAlert::updateCertanityDelta(double delta)
 {
   t_.ensureIsActive();
-  updateCertanityDeltaImpl(delta);
+  updateCertanityDeltaImpl(t_, delta);
 
   assert(ma_.get()!=NULL);
   ma_->updateCertanityDelta(delta);
@@ -63,13 +63,13 @@ void MetaAlert::updateCertanityDelta(double delta)
 void MetaAlert::addChild(Persistency::MetaAlertPtrNN child)
 {
   t_.ensureIsActive();
-  addChildImpl(child);
+  addChildImpl(t_, child);
 }
 
 void MetaAlert::associateWithAlert(Persistency::AlertPtrNN alert)
 {
   t_.ensureIsActive();
-  associateWithAlertImpl(alert);
+  associateWithAlertImpl(t_, alert);
 }
 
 const Persistency::MetaAlert &MetaAlert::get(void) const

@@ -25,7 +25,7 @@ struct TestIOAlert: public Persistency::IO::Alert
   {
   }
 
-  virtual void saveImpl(void)
+  virtual void saveImpl(Transaction&)
   {
     ++called_;
     tut::ensure("invalid pointer", &get()==alert_.get() );

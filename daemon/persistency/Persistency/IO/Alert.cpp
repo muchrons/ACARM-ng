@@ -26,7 +26,7 @@ Alert::~Alert(void)
 void Alert::save(void)
 {
   t_.ensureIsActive();
-  saveImpl();
+  saveImpl(t_);
 }
 
 const Persistency::Alert &Alert::get(void) const

@@ -43,7 +43,7 @@ protected:
   const Persistency::Alert &get(void) const;
 
 private:
-  virtual void saveImpl(void) = 0;
+  virtual void saveImpl(Transaction &t) = 0;
 
   Persistency::AlertPtrNN  alert_;
   Transaction             &t_;

@@ -26,7 +26,7 @@ public:
   {
   }
 
-  virtual void setNameImpl(const Persistency::Host::Name &/*name*/)
+  virtual void setNameImpl(Transaction &, const Persistency::Host::Name &/*name*/)
   {
     ++calls_;
     tut::ensure("invalid pointer", &get()==host_.get() );

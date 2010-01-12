@@ -29,31 +29,31 @@ public:
       calls_[i]=0;
   }
 
-  virtual void saveImpl(void)
+  virtual void saveImpl(Transaction &)
   {
     ++calls_[0];
   }
-  virtual void markAsUsedImpl(void)
+  virtual void markAsUsedImpl(Transaction &)
   {
     ++calls_[1];
   }
-  virtual void markAsUnusedImpl(void)
+  virtual void markAsUnusedImpl(Transaction &)
   {
     ++calls_[2];
   }
-  virtual void updateSeverityDeltaImpl(double /*delta*/)
+  virtual void updateSeverityDeltaImpl(Transaction &, double /*delta*/)
   {
     ++calls_[3];
   }
-  virtual void updateCertanityDeltaImpl(double /*delta*/)
+  virtual void updateCertanityDeltaImpl(Transaction &, double /*delta*/)
   {
     ++calls_[4];
   }
-  virtual void addChildImpl(Persistency::MetaAlertPtrNN /*child*/)
+  virtual void addChildImpl(Transaction &, Persistency::MetaAlertPtrNN /*child*/)
   {
     ++calls_[5];
   }
-  virtual void associateWithAlertImpl(Persistency::AlertPtrNN /*alert*/)
+  virtual void associateWithAlertImpl(Transaction &, Persistency::AlertPtrNN /*alert*/)
   {
     ++calls_[6];
   }

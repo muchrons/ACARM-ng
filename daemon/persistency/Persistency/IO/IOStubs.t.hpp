@@ -8,6 +8,7 @@
 #include <tut.h>
 
 #include "Persistency/IO/Connection.hpp"
+#include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/TestTransactionAPI.t.hpp"
 #include "Persistency/IO/IOStubs.t.hpp"
 #include "Persistency/TestHelpers.t.hpp"
@@ -26,7 +27,7 @@ public:
   {
   }
 
-  virtual void saveImpl(void)
+  virtual void saveImpl(Persistency::IO::Transaction&)
   {
     ++calls_;
     tut::ensure("invalid object", &get()==alert_.get() );
@@ -47,7 +48,8 @@ public:
   {
   }
 
-  virtual void setNameImpl(const Persistency::Host::Name &/*name*/)
+  virtual void setNameImpl(Persistency::IO::Transaction &,
+                           const Persistency::Host::Name &/*name*/)
   {
     ++calls_;
     tut::ensure("invalid host", &get()==host_.get() );
@@ -71,31 +73,31 @@ public:
       called_[i]=0;
   }
 
-  virtual void saveImpl(void)
+  virtual void saveImpl(Persistency::IO::Transaction &)
   {
     ++called_[0];
   }
-  virtual void markAsUsedImpl(void)
+  virtual void markAsUsedImpl(Persistency::IO::Transaction &)
   {
     ++called_[1];
   }
-  virtual void markAsUnusedImpl(void)
+  virtual void markAsUnusedImpl(Persistency::IO::Transaction &)
   {
     ++called_[2];
   }
-  virtual void updateSeverityDeltaImpl(double /*delta*/)
+  virtual void updateSeverityDeltaImpl(Persistency::IO::Transaction &, double /*delta*/)
   {
     ++called_[3];
   }
-  virtual void updateCertanityDeltaImpl(double /*delta*/)
+  virtual void updateCertanityDeltaImpl(Persistency::IO::Transaction &, double /*delta*/)
   {
     ++called_[4];
   }
-  virtual void addChildImpl(Persistency::MetaAlertPtrNN /*child*/)
+  virtual void addChildImpl(Persistency::IO::Transaction &, Persistency::MetaAlertPtrNN /*child*/)
   {
     ++called_[5];
   }
-  virtual void associateWithAlertImpl(Persistency::AlertPtrNN /*alert*/)
+  virtual void associateWithAlertImpl(Persistency::IO::Transaction &, Persistency::AlertPtrNN /*alert*/)
   {
     ++called_[6];
   }

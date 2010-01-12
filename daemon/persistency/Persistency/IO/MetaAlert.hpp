@@ -67,13 +67,13 @@ protected:
   const Persistency::MetaAlert &get(void) const;
 
 private:
-  virtual void saveImpl(void) = 0;
-  virtual void markAsUsedImpl(void) = 0;
-  virtual void markAsUnusedImpl(void) = 0;
-  virtual void updateSeverityDeltaImpl(double delta) = 0;
-  virtual void updateCertanityDeltaImpl(double delta) = 0;
-  virtual void addChildImpl(Persistency::MetaAlertPtrNN child) = 0;
-  virtual void associateWithAlertImpl(Persistency::AlertPtrNN alert) = 0;
+  virtual void saveImpl(Transaction &t) = 0;
+  virtual void markAsUsedImpl(Transaction &t) = 0;
+  virtual void markAsUnusedImpl(Transaction &t) = 0;
+  virtual void updateSeverityDeltaImpl(Transaction &t, double delta) = 0;
+  virtual void updateCertanityDeltaImpl(Transaction &t, double delta) = 0;
+  virtual void addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child) = 0;
+  virtual void associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN alert) = 0;
 
   Persistency::MetaAlertPtr  ma_;
   Transaction               &t_;
