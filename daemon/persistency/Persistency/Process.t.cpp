@@ -31,7 +31,7 @@ struct TestClass
   const pid_t              pid_;
   const int                uid_;
   const Process::Username  user_;
-  const string             args_;
+  const char              *args_;
   ReferenceURLPtr          url_;
 };
 
@@ -57,7 +57,7 @@ void testObj::test<1>(void)
                    &pid_,
                    &uid_,
                    user_,
-                   &args_,
+                   args_,
                    url_);
   ensure_equals("invalid path", ti.getPath().get(), string("/path/to/file") );
   ensure_equals("invalid name", ti.getName().get(), string("file")          );
@@ -75,7 +75,7 @@ void testObj::test<2>(void)
                    &pid_,
                    &uid_,
                    user_,
-                   &args_,
+                   args_,
                    url_);
   ensure("invalid path", ti.getPath().get()==NULL );
 }
@@ -91,7 +91,7 @@ void testObj::test<3>(void)
                    &pid_,
                    &uid_,
                    user_,
-                   &args_,
+                   args_,
                    url_);
   ensure("invalid md5", ti.getMD5()==NULL );
 }
@@ -109,7 +109,7 @@ void testObj::test<4>(void)
                      &pid_,
                      &uid_,
                      user_,
-                     &args_,
+                     args_,
                      url_);
     fail("NULL file name accepted");
   }
@@ -130,7 +130,7 @@ void testObj::test<5>(void)
                    NULL,
                    &uid_,
                    user_,
-                   &args_,
+                   args_,
                    url_);
   ensure("invalid PID", ti.getPID()==NULL );
 }
@@ -146,7 +146,7 @@ void testObj::test<6>(void)
                    &pid_,
                    NULL,
                    user_,
-                   &args_,
+                   args_,
                    url_);
   ensure("invalid UID", ti.getUID()==NULL );
 }
@@ -178,7 +178,7 @@ void testObj::test<8>(void)
                    &pid_,
                    &uid_,
                    user_,
-                   &args_,
+                   args_,
                    ReferenceURLPtr() );
   ensure("invalid ", ti.getReferenceURL()==NULL );
 }

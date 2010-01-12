@@ -52,7 +52,7 @@ public:
           const pid_t       *pid,
           const int         *uid,
           const Username    &username,
-          const std::string *arguments,
+          const char        *arguments,
           ReferenceURLPtr    url);
 
   /** \brief gets path to executable.
