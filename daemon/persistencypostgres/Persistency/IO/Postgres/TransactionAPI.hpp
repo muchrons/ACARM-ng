@@ -35,6 +35,13 @@ public:
   TransactionAPI(Base::Threads::Mutex &mutex,
                  const std::string    &name,
                  DBHandlerPtrNN        dbHandler);
+  /** \brief gets native transaction handler.
+   *  \return PostgreSQL transaction handler.
+   */
+  pqxx::work &getHandle(void)
+  {
+    return t_;
+  }
 
 private:
   /** \brief transaction acceptance opration's interface.
