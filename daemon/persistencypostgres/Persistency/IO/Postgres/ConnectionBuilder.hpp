@@ -10,6 +10,7 @@
 #include "Logger/Logger.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/IDCache.hpp"
+#include "Persistency/IO/Postgres/Exception.hpp"
 
 namespace Persistency
 {
@@ -23,6 +24,20 @@ namespace Postgres
 class ConnectionBuilder: public BackendFactory::TFactoryBuilderBase
 {
 public:
+  /** \brief execption thrown when required options is not present.
+   */
+  struct ExceptionNoSuchOption: public Exception
+  {
+    /** \brief create message.
+     *  \param where place where exception has been generated.
+     *  \param name  name of the missing paramter.
+     */
+    ExceptionNoSuchOption(const char *where, const char *name):
+      Exception(where, std::string("no such option: ") + ensureString(name) )
+    {
+    }
+  }; // struct ExceptionNoSuchOption
+
   /** \brief creates builder of a object's facotry for Persistency::Postgres.
    */
   ConnectionBuilder(void);
@@ -30,6 +45,8 @@ public:
 private:
   virtual FactoryPtr buildImpl(const Options &options) const;
   virtual const FactoryTypeName &getTypeNameImpl(void) const;
+
+  const std::string &getOption(const Options &options, const char *name) const;
 
   const std::string  name_;
   const Logger::Node log_;

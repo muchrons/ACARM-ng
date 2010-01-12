@@ -16,8 +16,41 @@ namespace
 
 struct TestClass
 {
-  ConnectionBuilder          ofb_;
-  ConnectionBuilder::Options opts_;
+  ConnectionBuilder::FactoryPtr build(const char *host  ="localhost",
+                                      const char *dbname="acarm_ng_test",
+                                      const char *user  ="acarm-ng-daemon",
+                                      const char *pass  ="test.daemon") const
+  {
+    ConnectionBuilder::Options opts;
+    if(host!=NULL)
+      opts["host"]=host;
+    if(dbname!=NULL)
+      opts["dbname"]=dbname;
+    if(user!=NULL)
+      opts["user"]=user;
+    if(pass!=NULL)
+      opts["pass"]=pass;
+
+    return ofb_.build(opts);
+  }
+
+  void ensureThrow(const char *host,
+                   const char *dbname,
+                   const char *user,
+                   const char *pass) const
+  {
+    try
+    {
+      build(host, dbname, user, pass);
+      tut::fail("build() didn't throw on missing paramter");
+    }
+    catch(const ConnectionBuilder::ExceptionNoSuchOption&)
+    {
+      // this is expected
+    }
+  }
+
+  ConnectionBuilder ofb_;
 };
 
 typedef TestClass TestClass;
@@ -44,10 +77,56 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ConnectionBuilder::FactoryPtr ptr=ofb_.build(opts_);
+  ConnectionBuilder::FactoryPtr ptr=build();
   ensure("NULL pointere returned", ptr!=NULL);
 }
 
-// TODO: test different options
+// test throw on missing host name
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  ensureThrow(NULL, "b", "c", "d");
+}
+
+// test throw on missing data base name
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  ensureThrow("a", NULL, "c", "d");
+}
+
+// test throw on missing user name
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ensureThrow("a", "b", NULL, "d");
+}
+
+// test throw on missing password
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  ensureThrow("a", "b", "c", NULL);
+}
+
+// test throw on invalid options
+template<>
+template<>
+void testObj::test<7>(void)
+{
+    try
+    {
+      build("localhost", "acarm_ng_test", "acarm-ng-daemon", "BAD_PASSWORD");
+      tut::fail("build() didn't throw on invalid options");
+    }
+    catch(const std::runtime_error&)
+    {
+      // this is expected
+    }
+}
 
 } // namespace tut

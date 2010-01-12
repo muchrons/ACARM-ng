@@ -36,17 +36,15 @@ ConnectionBuilder::ConnectionBuilder(void):
 {
 }
 
-ConnectionBuilder::FactoryPtr ConnectionBuilder::buildImpl(const Options &/*options*/) const
+ConnectionBuilder::FactoryPtr ConnectionBuilder::buildImpl(const Options &options) const
 {
   LOGMSG_INFO(log_, "building Persistency::IO::Postgres");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  // TODO: implement this as reading from configuration.
-  const string server="localhost";
-  const string dbname="acarm_ng_test";
-  const string user  ="acarm-ng-tests";
-  const string pass  ="test.password";
-  DBConnection::Parameters params(server, dbname, user, pass);
+  const DBConnection::Parameters params( getOption(options, "host"),
+                                         getOption(options, "dbname"),
+                                         getOption(options, "user"),
+                                         getOption(options, "pass")  );
 
   // create and return new handler.
   DBHandlerPtrNN handler( new DBHandler(params, idCache_) );
@@ -56,6 +54,16 @@ ConnectionBuilder::FactoryPtr ConnectionBuilder::buildImpl(const Options &/*opti
 const ConnectionBuilder::FactoryTypeName &ConnectionBuilder::getTypeNameImpl(void) const
 {
   return name_;
+}
+
+const std::string &ConnectionBuilder::getOption(const Options &options,
+                                                const char    *name) const
+{
+  assert(name!=NULL);
+  Options::const_iterator it=options.find(name);
+  if( it==options.end() )
+    throw ExceptionNoSuchOption(__FILE__, name);
+  return it->second;
 }
 
 } // namespace Postgres
