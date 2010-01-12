@@ -22,21 +22,21 @@ TransactionAPIAutoPtr Connection::createNewTransaction(const std::string &name)
   return ptr;
 }
 
-AlertAutoPtr Connection::alert(AlertPtrNN alert, const Transaction &t)
+AlertAutoPtr Connection::alert(AlertPtrNN alert, Transaction &t)
 {
   AlertAutoPtr ptr=alertImpl(alert, t);
   assert( ptr.get()!=NULL );
   return ptr;
 }
 
-HostAutoPtr Connection::host(HostPtrNN host, const Transaction &t)
+HostAutoPtr Connection::host(HostPtrNN host, Transaction &t)
 {
   HostAutoPtr ptr=hostImpl(host, t);
   assert( ptr.get()!=NULL );
   return ptr;
 }
 
-MetaAlertAutoPtr Connection::metaAlert(MetaAlertPtrNN ma, const Transaction &t)
+MetaAlertAutoPtr Connection::metaAlert(MetaAlertPtrNN ma, Transaction &t)
 {
   MetaAlertAutoPtr ptr=metaAlertImpl(ma, t);
   assert( ptr.get()!=NULL );

@@ -12,7 +12,7 @@ namespace IO
 {
 
 Alert::Alert(Persistency::AlertPtrNN  alert,
-             const Transaction       &t):
+             Transaction             &t):
   alert_(alert),
   t_(t)
 {

@@ -30,7 +30,7 @@ public:
    *  \param t  active transaction.
    */
   MetaAlert(Persistency::MetaAlertPtrNN  ma,
-            const Transaction           &t);
+            Transaction                 &t);
   /** \brief virtual d-tor for polymorphic base class.
    */
   virtual ~MetaAlert(void);
@@ -76,7 +76,7 @@ private:
   virtual void associateWithAlertImpl(Persistency::AlertPtrNN alert) = 0;
 
   Persistency::MetaAlertPtr  ma_;
-  const Transaction         &t_;
+  Transaction               &t_;
 }; // class MetaAlert
 
 

@@ -19,7 +19,7 @@ struct IOMetaAlert: public IO::MetaAlert
 {
 public:
   IOMetaAlert(Persistency::MetaAlertPtrNN  ma,
-              const Transaction           &t):
+              Transaction                 &t):
     IO::MetaAlert(ma, t),
     ma_(ma)
   {

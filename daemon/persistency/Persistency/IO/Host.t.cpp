@@ -19,7 +19,7 @@ class IOHost: public IO::Host
 {
 public:
   IOHost(Persistency::HostPtrNN  host,
-         const Transaction      &t):
+         Transaction            &t):
     IO::Host(host, t),
     host_(host),
     calls_(0)

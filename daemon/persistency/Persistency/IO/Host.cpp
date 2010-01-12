@@ -12,7 +12,7 @@ namespace IO
 {
 
 Host::Host(Persistency::HostPtrNN  host,
-           const Transaction      &t):
+           Transaction            &t):
   host_(host),
   t_(t)
 {

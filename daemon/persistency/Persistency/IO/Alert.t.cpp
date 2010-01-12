@@ -18,7 +18,7 @@ namespace
 struct TestIOAlert: public Persistency::IO::Alert
 {
   TestIOAlert(Persistency::AlertPtr  alert,
-              const Transaction     &t):
+              Transaction           &t):
     Persistency::IO::Alert(alert, t),
     alert_(alert),
     called_(0)

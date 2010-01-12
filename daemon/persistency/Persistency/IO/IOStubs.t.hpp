@@ -18,8 +18,8 @@ namespace
 class IOAlert: public Persistency::IO::Alert
 {
 public:
-  IOAlert(Persistency::AlertPtrNN             alert,
-          const Persistency::IO::Transaction &t):
+  IOAlert(Persistency::AlertPtrNN       alert,
+          Persistency::IO::Transaction &t):
     Persistency::IO::Alert(alert, t),
     alert_(alert),
     calls_(0)
@@ -40,8 +40,8 @@ public:
 class IOHost: public Persistency::IO::Host
 {
 public:
-  IOHost(Persistency::HostPtrNN              host,
-         const Persistency::IO::Transaction &t):
+  IOHost(Persistency::HostPtrNN        host,
+         Persistency::IO::Transaction &t):
     Persistency::IO::Host(host, t),
     host_(host)
   {
@@ -60,8 +60,8 @@ public:
 class IOMetaAlert: public Persistency::IO::MetaAlert
 {
 public:
-  IOMetaAlert(Persistency::MetaAlertPtrNN         ma,
-              const Persistency::IO::Transaction &t):
+  IOMetaAlert(Persistency::MetaAlertPtrNN   ma,
+              Persistency::IO::Transaction &t):
     Persistency::IO::MetaAlert(ma, t),
     ma_(ma)
   {
@@ -121,22 +121,22 @@ struct TestIOConnection: public Persistency::IO::Connection
     return Persistency::IO::TransactionAPIAutoPtr(new TestTransactionAPI);
   }
   virtual Persistency::IO::AlertAutoPtr alertImpl(
-                                        Persistency::AlertPtrNN             alert,
-                                        const Persistency::IO::Transaction &t)
+                                        Persistency::AlertPtrNN       alert,
+                                        Persistency::IO::Transaction &t)
   {
     ++called_[1];
     return Persistency::IO::AlertAutoPtr( new IOAlert(alert, t) );
   }
   virtual Persistency::IO::HostAutoPtr hostImpl(
-                                        Persistency::HostPtrNN              host,
-                                        const Persistency::IO::Transaction &t)
+                                        Persistency::HostPtrNN        host,
+                                        Persistency::IO::Transaction &t)
   {
     ++called_[2];
     return Persistency::IO::HostAutoPtr( new IOHost(host, t) );
   }
   virtual Persistency::IO::MetaAlertAutoPtr metaAlertImpl(
-                                        Persistency::MetaAlertPtrNN         ma,
-                                        const Persistency::IO::Transaction &t)
+                                        Persistency::MetaAlertPtrNN   ma,
+                                        Persistency::IO::Transaction &t)
   {
     ++called_[3];
     return Persistency::IO::MetaAlertAutoPtr( new IOMetaAlert(ma, t) );

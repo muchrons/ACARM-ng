@@ -12,7 +12,7 @@ namespace IO
 {
 
 MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
-                     const Transaction           &t):
+                     Transaction                 &t):
   ma_(ma),
   t_(t)
 {

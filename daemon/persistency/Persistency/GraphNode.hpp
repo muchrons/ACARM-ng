@@ -49,9 +49,9 @@ public:
    *  \param connection connection to use for persistency writes.
    *  \param t          current transaction.
    */
-  GraphNode(AlertPtrNN             alert,
-            IO::ConnectionPtrNN    connection,
-            const IO::Transaction &t);
+  GraphNode(AlertPtrNN           alert,
+            IO::ConnectionPtrNN  connection,
+            IO::Transaction     &t);
   /** \brief create new node by correlating given ones.
    *  \param ma            meta alert's data to be used as this one.
    *  \param connection    connection to persistency module.
@@ -63,12 +63,12 @@ public:
    *        split into 3 paramters to ensure no missusage is possible
    *        (at 2 parameters are always required).
    */
-  GraphNode(MetaAlertPtrNN         ma,
-            IO::ConnectionPtrNN    connection,
-            const IO::Transaction &t,
-            GraphNodePtrNN         child1,
-            GraphNodePtrNN         child2,
-            const ChildrenVector  &otherChildren=ChildrenVector() );
+  GraphNode(MetaAlertPtrNN        ma,
+            IO::ConnectionPtrNN   connection,
+            IO::Transaction      &t,
+            GraphNodePtrNN        child1,
+            GraphNodePtrNN        child2,
+            const ChildrenVector &otherChildren=ChildrenVector() );
 
   /** \brief returns non-const begin iterator.
    *  \return begin iterator.

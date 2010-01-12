@@ -45,26 +45,26 @@ public:
    *  \param t     active transaction.
    *  \return non-NULL alert's persistency proxy object.
    */
-  AlertAutoPtr alert(AlertPtrNN alert, const Transaction &t);
+  AlertAutoPtr alert(AlertPtrNN alert, Transaction &t);
   /** \brief create host's persistency proxy.
    *  \param host host to work on.
    *  \param t    active transaction.
    *  \return non-NULL host's persistency proxy.
    */
-  HostAutoPtr host(HostPtrNN host, const Transaction &t);
+  HostAutoPtr host(HostPtrNN host, Transaction &t);
   /** \brief creates meta-alert proxy object.
    *  \param ma meta alert to work on.
    *  \param t  active transaction.
    *  \return non-NULL meta-alert persistency proxy.
    */
-  MetaAlertAutoPtr metaAlert(MetaAlertPtrNN ma, const Transaction &t);
+  MetaAlertAutoPtr metaAlert(MetaAlertPtrNN ma, Transaction &t);
 
 private:
   virtual TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
                                                          const std::string    &name) = 0;
-  virtual AlertAutoPtr alertImpl(AlertPtrNN alert, const Transaction &t) = 0;
-  virtual HostAutoPtr hostImpl(HostPtrNN host, const Transaction &t) = 0;
-  virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, const Transaction &t) = 0;
+  virtual AlertAutoPtr alertImpl(AlertPtrNN alert, Transaction &t) = 0;
+  virtual HostAutoPtr hostImpl(HostPtrNN host, Transaction &t) = 0;
+  virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, Transaction &t) = 0;
 
   Base::Threads::Mutex mutex_;
 }; // class Connection

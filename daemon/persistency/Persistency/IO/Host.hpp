@@ -29,7 +29,7 @@ public:
    *  \param t    active transaction.
    */
   Host(Persistency::HostPtrNN  host,
-       const Transaction      &t);
+       Transaction            &t);
   /** \brief virtual d-tor for polymorphic base class.
    */
   virtual ~Host(void);
@@ -48,7 +48,7 @@ private:
   virtual void setNameImpl(const Persistency::Host::Name &name) = 0;
 
   Persistency::HostPtr  host_;
-  const Transaction    &t_;
+  Transaction          &t_;
 }; // class Host
 
 
