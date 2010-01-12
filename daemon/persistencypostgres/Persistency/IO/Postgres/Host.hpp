@@ -26,11 +26,11 @@ public:
    *  \param dbHandler shared connection to data base.
    */
   Host(Persistency::HostPtrNN  host,
-       const Transaction      &t,
+       Transaction            &t,
        DBHandlerPtrNN          dbHandler);
 
 private:
-  virtual void setNameImpl(const Persistency::Host::Name &name);
+  virtual void setNameImpl(Transaction &, const Persistency::Host::Name &name);
 
   DBHandlerPtrNN dbHandler_;
 }; // class Host

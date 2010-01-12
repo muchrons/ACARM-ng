@@ -12,44 +12,44 @@ namespace Postgres
 {
 
 MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
-                     const Transaction           &t,
+                     Transaction                 &t,
                      DBHandlerPtrNN               dbHandler):
   IO::MetaAlert(ma, t),
   dbHandler_(dbHandler)
 {
 }
 
-void MetaAlert::saveImpl(void)
+void MetaAlert::saveImpl(Transaction &)
 {
   // TODO
 }
 
-void MetaAlert::markAsUsedImpl(void)
+void MetaAlert::markAsUsedImpl(Transaction &)
 {
   // TODO
 }
 
-void MetaAlert::markAsUnusedImpl(void)
+void MetaAlert::markAsUnusedImpl(Transaction &)
 {
   // TODO
 }
 
-void MetaAlert::updateSeverityDeltaImpl(double /*delta*/)
+void MetaAlert::updateSeverityDeltaImpl(Transaction &, double /*delta*/)
 {
   // TODO
 }
 
-void MetaAlert::updateCertanityDeltaImpl(double /*delta*/)
+void MetaAlert::updateCertanityDeltaImpl(Transaction &, double /*delta*/)
 {
   // TODO
 }
 
-void MetaAlert::addChildImpl(Persistency::MetaAlertPtrNN /*child*/)
+void MetaAlert::addChildImpl(Transaction &, Persistency::MetaAlertPtrNN /*child*/)
 {
   // TODO
 }
 
-void MetaAlert::associateWithAlertImpl(Persistency::AlertPtrNN /*alert*/)
+void MetaAlert::associateWithAlertImpl(Transaction &, Persistency::AlertPtrNN /*alert*/)
 {
   // TODO
 }

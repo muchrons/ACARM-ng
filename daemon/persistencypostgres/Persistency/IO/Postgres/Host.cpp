@@ -12,14 +12,14 @@ namespace Postgres
 {
 
 Host::Host(Persistency::HostPtrNN  host,
-           const Transaction      &t,
+           Transaction            &t,
            DBHandlerPtrNN          dbHandler):
   IO::Host(host, t),
   dbHandler_(dbHandler)
 {
 }
 
-void Host::setNameImpl(const Persistency::Host::Name &/*name*/)
+void Host::setNameImpl(Transaction &, const Persistency::Host::Name &/*name*/)
 {
   // TODO
 }

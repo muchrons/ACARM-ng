@@ -26,17 +26,17 @@ public:
    *  \param dbHandler shared connection ot be used for communication.
    */
   MetaAlert(Persistency::MetaAlertPtrNN  ma,
-            const Transaction           &t,
+            Transaction                 &t,
             DBHandlerPtrNN               dbHandler);
 
 private:
-  virtual void saveImpl(void);
-  virtual void markAsUsedImpl(void);
-  virtual void markAsUnusedImpl(void);
-  virtual void updateSeverityDeltaImpl(double delta);
-  virtual void updateCertanityDeltaImpl(double delta);
-  virtual void addChildImpl(Persistency::MetaAlertPtrNN child);
-  virtual void associateWithAlertImpl(Persistency::AlertPtrNN alert);
+  virtual void saveImpl(Transaction &t);
+  virtual void markAsUsedImpl(Transaction &t);
+  virtual void markAsUnusedImpl(Transaction &t);
+  virtual void updateSeverityDeltaImpl(Transaction &t, double delta);
+  virtual void updateCertanityDeltaImpl(Transaction &t, double delta);
+  virtual void addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child);
+  virtual void associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN alert);
 
   DBHandlerPtrNN dbHandler_;
 }; // class MetaAlert

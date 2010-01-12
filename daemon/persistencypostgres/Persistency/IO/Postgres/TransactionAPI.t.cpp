@@ -38,11 +38,4 @@ void testObj::test<1>(void)
 {
 }
 
-// 
-template<>
-template<>
-void testObj::test<2>(void)
-{
-}
-
 } // namespace tut

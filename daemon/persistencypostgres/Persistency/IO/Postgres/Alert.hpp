@@ -26,11 +26,11 @@ public:
    *  \param dbHandler shared connection to data base.
    */
   Alert(Persistency::AlertPtrNN  alert,
-        const Transaction       &t,
+        Transaction             &t,
         DBHandlerPtrNN           dbHandler);
 
 private:
-  virtual void saveImpl(void);
+  virtual void saveImpl(Transaction &t);
 
   DBHandlerPtrNN dbHandler_;
 }; // class Alert

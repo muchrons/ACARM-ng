@@ -12,14 +12,14 @@ namespace Postgres
 {
 
 Alert::Alert(Persistency::AlertPtrNN  alert,
-             const Transaction       &t,
+             Transaction             &t,
              DBHandlerPtrNN           dbHandler):
   IO::Alert(alert, t),
   dbHandler_(dbHandler)
 {
 }
 
-void Alert::saveImpl(void)
+void Alert::saveImpl(Transaction &)
 {
   // TODO
 }
