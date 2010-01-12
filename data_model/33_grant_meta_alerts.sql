@@ -9,6 +9,10 @@ GRANT SELECT
            alert_to_meta_alert_map
   TO "acarm-ng-ui",
      "acarm-ng-daemon";
+GRANT SELECT
+  ON SEQUENCE meta_alerts_id_seq
+  TO "acarm-ng-ui",
+     "acarm-ng-daemon";
 
 
 -- daemon may add new data to DB
@@ -16,6 +20,9 @@ GRANT INSERT
   ON TABLE meta_alerts,
            meta_alerts_tree,
            alert_to_meta_alert_map
+  TO "acarm-ng-daemon";
+GRANT UPDATE
+  ON TABLE meta_alerts_id_seq
   TO "acarm-ng-daemon";
 
 
