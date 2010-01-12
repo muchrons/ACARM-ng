@@ -47,6 +47,19 @@ public:
   /** \brief throws exception if transaction has been already commited/rollbacked.
    */
   void ensureIsActive(void) const;
+  /** \brief gives access to transaction's API implementation.
+   *
+   *  this method allows doing transaction-specific operations in backend
+   *  implementation context. since it only does make sense to haven
+   *  final implementation class, method does dynamic cast automatically.
+   *
+   *  \return reference to API used by given transaction.
+   */
+  template<typename T>
+  T &getAPI(void)
+  {
+    return dynamic_cast<T&>(*transaction_);
+  }
 
 private:
   bool isActive(void) const;
