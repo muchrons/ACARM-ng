@@ -9,7 +9,7 @@
 
 #include <string>
 
-#include "System/Exceptions/Base.hpp"
+#include "System/Exceptions/RuntimeError.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/CallName.h"
 
@@ -18,7 +18,7 @@ namespace Commons
 
 /** \brief common's base exception class.
  */
-class Exception: public System::Exceptions::Base<Exception, std::exception>
+class Exception: public System::Exceptions::RuntimeError<Exception>
 {
 public:
   /** \brief create execption with given message.
@@ -27,7 +27,7 @@ public:
    */
   template<typename T>
   Exception(const char *where, const T &msg):
-    System::Exceptions::Base<Exception, std::exception>(
+    System::Exceptions::RuntimeError<Exception>(
         std::string( ensureString(where) ) + ": " + msg ),
     log_("commons.exception")
   {
