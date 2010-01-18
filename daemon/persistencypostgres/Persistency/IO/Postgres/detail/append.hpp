@@ -38,7 +38,7 @@ public:
   static void append(std::stringstream &ss, const T &t);
 
 private:
-  static void appendEscape(std::stringstream &ss, const char *t)
+  inline static void appendEscape(std::stringstream &ss, const char *t)
   {
     if(t==NULL)
       ss << "NULL";
@@ -47,7 +47,7 @@ private:
   }
 
   template<typename T>
-  static void appendNoEscape(std::stringstream &ss, const T *t)
+  inline static void appendNoEscape(std::stringstream &ss, const T *t)
   {
     if(t==NULL)
       ss << "NULL";
