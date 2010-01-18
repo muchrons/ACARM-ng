@@ -36,7 +36,7 @@ private:
   virtual void markAsUsedImpl(Transaction &t);
   virtual void markAsUnusedImpl(Transaction &t);
   virtual void updateSeverityDeltaImpl(Transaction &t, double delta);
-  virtual void updateCertanityDeltaImpl(Transaction &t, double delta);
+  virtual void updateCertaintyDeltaImpl(Transaction &t, double delta);
   virtual void addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child);
   virtual void associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN alert);
 

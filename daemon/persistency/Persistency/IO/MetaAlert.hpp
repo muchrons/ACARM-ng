@@ -51,7 +51,7 @@ public:
   /** \brief update certanity delta.
    *  \param delta how much update certanity's value.
    */
-  void updateCertanityDelta(double delta);
+  void updateCertaintyDelta(double delta);
   /** \brief save information that this meta-alert has another child.
    *  \param child meta-alert to be added as a child.
    */
@@ -71,7 +71,7 @@ private:
   virtual void markAsUsedImpl(Transaction &t) = 0;
   virtual void markAsUnusedImpl(Transaction &t) = 0;
   virtual void updateSeverityDeltaImpl(Transaction &t, double delta) = 0;
-  virtual void updateCertanityDeltaImpl(Transaction &t, double delta) = 0;
+  virtual void updateCertaintyDeltaImpl(Transaction &t, double delta) = 0;
   virtual void addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child) = 0;
   virtual void associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN alert) = 0;
 

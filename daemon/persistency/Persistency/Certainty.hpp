@@ -1,9 +1,9 @@
 /*
- * Certanity.hpp
+ * Certainty.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_CERTANITY_HPP_FILE
-#define INCLUDE_PERSISTENCY_CERTANITY_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_CERTAINTY_HPP_FILE
+#define INCLUDE_PERSISTENCY_CERTAINTY_HPP_FILE
 
 /* public header */
 
@@ -17,32 +17,32 @@ namespace Persistency
 
 /** \brief exception on invalid certanity level.
  */
-struct ExceptionInvalidCertanity: public Exception
+struct ExceptionInvalidCertainty: public Exception
 {
   /** \brief create execption with given message.
    *  \param where place where exception has been thrown.
    */
-  ExceptionInvalidCertanity(const char *where):
-    Exception(where, "certanity out of bound requested")
+  ExceptionInvalidCertainty(const char *where):
+    Exception(where, "certainty out of bound requested")
   {
   }
-}; // struct ExceptionInvalidCertanity
+}; // struct ExceptionInvalidCertainty
 
 
 /** \brief certanity level representation.
  */
-class Certanity
+class Certainty
 {
 public:
   /** \brief create certanity representation [0;1].
    *  \param c certanity value.
    *  \note c-tor is not explicit to make usage simpler.
    */
-  Certanity(const double c=1):
+  Certainty(const double c=1):
     c_(c)
   {
     if(c_<0 || 1<c_)
-      throw ExceptionInvalidCertanity(CALLNAME);
+      throw ExceptionInvalidCertainty(CALLNAME);
   }
   /** \brief gets certanity level.
    *  \return certanity saved in class.
@@ -56,7 +56,7 @@ public:
 
 private:
   double c_;
-}; // class Certanity
+}; // class Certainty
 
 } // namespace Presistency
 

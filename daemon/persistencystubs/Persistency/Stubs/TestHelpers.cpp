@@ -17,7 +17,7 @@ AlertPtr makeNewAlert(const char *name)
                              NULL,
                              Timestamp(),
                              Severity(SeverityLevel::INFO),
-                             Certanity(0.42),
+                             Certainty(0.42),
                              "some test allert",
                              Alert::ReportedHosts(),
                              Alert::ReportedHosts() ) );

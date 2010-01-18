@@ -7,7 +7,7 @@
 
 #include "Persistency/Alert.hpp"
 #include "Persistency/Analyzer.hpp"
-#include "Persistency/Certanity.hpp"
+#include "Persistency/Certainty.hpp"
 #include "Persistency/Host.hpp"
 #include "Persistency/MD5Sum.hpp"
 #include "Persistency/MetaAlert.hpp"

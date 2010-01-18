@@ -17,7 +17,7 @@
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/Severity.hpp"
-#include "Persistency/Certanity.hpp"
+#include "Persistency/Certainty.hpp"
 #include "Persistency/Host.hpp"
 #include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/ExceptionNULLParameter.hpp"
@@ -54,7 +54,7 @@ public:
         const Timestamp     *detected,
         const Timestamp     &created,
         Severity             severity,
-        Certanity            certanity,
+        Certainty            certanity,
         const std::string   &description,
         const ReportedHosts &sourceHosts,
         const ReportedHosts &targetHosts);
@@ -83,7 +83,7 @@ public:
    *  \return certanity, i.e. probability that given alert is valid/real
    *          (not a mistaken).
    */
-  Certanity getCertanity(void) const;
+  Certainty getCertainty(void) const;
   /** \brief gets description of alert.
    *  \return description of alert.
    *  \note this is equivalent of IDMEF's comments.
@@ -104,7 +104,7 @@ private:
   boost::scoped_ptr<Timestamp> detected_;
   Timestamp                    created_;
   Severity                     severity_;
-  Certanity                    certanity_;
+  Certainty                    certanity_;
   std::string                  description_;
   ReportedHosts                sourceHosts_;
   ReportedHosts                targetHosts_;

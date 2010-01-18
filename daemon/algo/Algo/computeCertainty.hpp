@@ -1,9 +1,9 @@
 /*
- * computeCertanity.hpp
+ * computeCertainty.hpp
  *
  */
-#ifndef INCLUDE_ALGO_COMPUTECERTANITY_HPP_FILE
-#define INCLUDE_ALGO_COMPUTECERTANITY_HPP_FILE
+#ifndef INCLUDE_ALGO_COMPUTECERTAINTY_HPP_FILE
+#define INCLUDE_ALGO_COMPUTECERTAINTY_HPP_FILE
 
 /* public header */
 
@@ -15,7 +15,7 @@ namespace Algo
  *  \param root root node of the computation.
  *  \return computed certanity.
  */
-double computeCertanity(Persistency::GraphNodePtrNN root);
+double computeCertainty(Persistency::GraphNodePtrNN root);
 
 } // namespace Algo
 

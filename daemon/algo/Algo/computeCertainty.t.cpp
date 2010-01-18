@@ -1,10 +1,10 @@
 /*
- * computeCertanity.t.cpp
+ * computeCertainty.t.cpp
  *
  */
 #include <tut.h>
 
-#include "Algo/computeCertanity.hpp"
+#include "Algo/computeCertainty.hpp"
 #include "Algo/TestHelpers.t.hpp"
 
 using namespace Algo;
@@ -16,7 +16,7 @@ namespace
 struct TestClass
 {
   TestClass(void):
-    alertCertanity_(0.42)
+    alertCertainty_(0.42)
   {
   }
 
@@ -30,14 +30,14 @@ struct TestClass
       tut::ensure_equals("invalid value", v, e);
   }
 
-  const double alertCertanity_;
+  const double alertCertainty_;
 };
 
 typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Algo/computeCertanity");
+factory tf("Algo/computeCertainty");
 } // unnamed namespace
 
 
@@ -49,7 +49,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  checkMatch( computeCertanity( th_makeLeaf() ), alertCertanity_);
+  checkMatch( computeCertainty( th_makeLeaf() ), alertCertainty_);
 }
 
 // compute certanity of a node with 2 leafs
@@ -57,8 +57,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  checkMatch( computeCertanity( th_makeNode() ),
-              2*alertCertanity_/2.0 + 1*0.2);
+  checkMatch( computeCertainty( th_makeNode() ),
+              2*alertCertainty_/2.0 + 1*0.2);
 }
 
 // compute certanity on non-unique tree
@@ -66,8 +66,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  checkMatch( computeCertanity( th_makeTree2() ),
-              3*alertCertanity_/3.0 + 4*0.2);
+  checkMatch( computeCertainty( th_makeTree2() ),
+              3*alertCertainty_/3.0 + 4*0.2);
 }
 
 } // namespace tut
