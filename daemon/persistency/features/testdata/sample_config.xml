@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+
+  <persistency>
+    <type>postgres</type>
+    <host>xzaaa</host>
+    <port>5432</port>
+    <dbname>database</dbname>
+    <user>naft</user>
+    <pass>$3cr3t</pass>
+  </persistency>
+
+  <logger>
+    <appenders>
+      <file name="default">
+        <output>loggerfile.log</output>
+      </file>
+    </appenders>
+
+    <nodes appender="default">
+    </nodes>
+  </logger>
+
+</acarm_ng>
