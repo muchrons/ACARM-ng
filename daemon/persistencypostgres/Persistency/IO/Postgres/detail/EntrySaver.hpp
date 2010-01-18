@@ -27,11 +27,21 @@ namespace Postgres
 namespace detail
 {
 
+/** \brief helper class to save particular elements in data base.
+ */
 class EntrySaver: private boost::noncopyable
 {
 public:
+  /** \brief create saver.
+   *  \param t   transaction to be used for saving.
+   *  \param dbh data base handler object.
+   */
   EntrySaver(Transaction &t, DBHandler &dbh);
 
+  /** \brief saves process data to data base.
+   *  \param reportedHostID ID of reported host, that this Process should be assigned to.
+   *  \param p              process to be saved.
+   */
   DataBaseID saveProcess(DataBaseID reportedHostID, const Process &p);
   // TODO
 

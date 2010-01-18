@@ -64,6 +64,10 @@ inline void Appender::append(std::stringstream &ss, const T *t)
   appendNoEscape(ss, t);
 }
 
+/** \brief appends given pointer's data to statement.
+ *  \param ss output stream.
+ *  \param t  pointer to element to be added.
+ */
 template<>
 inline void Appender::append<char>(std::stringstream &ss, const char *t)
 {

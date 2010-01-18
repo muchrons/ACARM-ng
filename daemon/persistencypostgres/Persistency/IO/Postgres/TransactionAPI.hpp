@@ -36,7 +36,8 @@ public:
                  const std::string    &name,
                  DBHandlerPtrNN        dbHandler);
   /** \brief executes statement on handler
-   *  \return opeartion results.
+   *  \param sql SQL statement to be executed.
+   *  \return query results.
    */
   template<typename T>
   pqxx::result exec(const T& sql)
