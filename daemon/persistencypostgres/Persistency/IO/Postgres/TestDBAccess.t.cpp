@@ -48,7 +48,8 @@ void TestDBAccess::removeAllData(void)
 void TestDBAccess::fillWithContent1(void)
 {
   pqxx::work t(conn_.get(), "fill_with_content1");
-  // TODO
+  // TODO: data base content should be insrted here.
+  // NOTE: this should be probably external script in testdata directory.
 }
 
 } // namespace Postgres
