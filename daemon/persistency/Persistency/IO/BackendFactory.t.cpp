@@ -5,6 +5,9 @@
 #include <tut.h>
 #include <cstring>
 #include <memory>
+#include <sstream>
+#include <unistd.h>
+#include <stdlib.h>
 
 #include "Persistency/IO/BackendFactory.hpp"
 
@@ -16,6 +19,16 @@ namespace
 
 struct TestClass
 {
+  TestClass(void)
+  {
+    const char *defaultFile="acarm_ng_config.xml";
+    unlink(defaultFile);
+    stringstream ss;
+    ss<<"cp 'testdata/sample_config.xml' '"<<defaultFile<<"'";
+    tut::ensure_equals("copying file as default config failed",
+                       system( ss.str().c_str() ), 0);
+
+  }
 };
 
 typedef TestClass TestClass;
