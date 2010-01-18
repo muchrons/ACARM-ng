@@ -14,23 +14,6 @@
 namespace ConfigIO
 {
 
-/** \brief exception informing about invalid port number.
- */
-struct ExceptionPortNumberConversionFailed: public Exception
-{
-  /** \brief create exception of no appenders defined
-   *  \param where place where problem has been detected.
-   *  \param port  port string that was not valid.
-   */
-  ExceptionPortNumberConversionFailed(const char        *where,
-                                      const std::string &port):
-    Exception( std::string( ensureValidString(where) ) +
-               ": invalid port in config: " + port )
-  {
-  }
-}; // struct ExceptionPortNumberConversionFailed
-
-
 /** \brief parser for persistency configuration.
  */
 class ParsePersistency
@@ -51,8 +34,6 @@ public:
 
 private:
   PersistencyConfig parse(const XML::Node &node) const;
-
-  PersistencyConfig::PortNumber parsePort(const std::string &port) const;
 
   PersistencyConfig cfg_;
 }; // class ParasePersistency

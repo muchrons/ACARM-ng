@@ -57,8 +57,7 @@ void testObj::test<1>(void)
   const Parser             p("testdata/sample_config.xml");
   const PersistencyConfig &pc=p.getPersistencyConfig();
   // check some random fields
-  ensure_equals("invalid type", pc.getType(),       "PostgreSQL");
-  ensure_equals("invalid port", pc.getPortNumber(), 5432        );
+  ensure_equals("invalid type", pc.getType(), "postgres");
 }
 
 // test throwing on invalid logger config (double-check)

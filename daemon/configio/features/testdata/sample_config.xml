@@ -2,7 +2,7 @@
 <acarm_ng>
 
   <persistency>
-    <type>PostgreSQL</type>
+    <type>postgres</type>
     <user>john</user>
     <pass>$3cr3t</pass>
     <host>db.server.my.domain.org</host>

@@ -8,10 +8,9 @@
 /* public header */
 
 #include <string>
-#include <stdint.h>
+#include <map>
 
 #include "ConfigIO/Exception.hpp"
-
 
 namespace ConfigIO
 {
@@ -21,94 +20,46 @@ namespace ConfigIO
 class PersistencyConfig
 {
 public:
-  /** \brief type used to represent port number.
+  /** \brief name of the persistency type.
    */
-  typedef uint16_t PortNumber;
+  typedef std::string                 TypeName;
+  /** \brief type representing parameter name.
+   */
+  typedef std::string                 Parameter;
+  /** \brief type representing string value.
+   */
+  typedef std::string                 Value;
+  /** \brief options map (paramter=>value).
+   */
+  typedef std::map<Parameter, Value>  Options;
 
   /** \brief creates persistency configuration.
-   *  \param type   persistency type.
-   *  \param user   user name to lgoin with.
-   *  \param pass   password to use for user.
-   *  \param host   host name/address to connect to.
-   *  \param port   port number to use when connecting.
-   *  \param dbname data base name.
+   *  \param type    persistency type.
+   *  \param options options for persistency.
    */
-  PersistencyConfig(const std::string &type,
-                    const std::string &user,
-                    const std::string &pass,
-                    const std::string &host,
-                    PortNumber         port,
-                    const std::string &dbname);
+  PersistencyConfig(const TypeName &type,
+                    const Options  &options);
 
   /** \brief gets persistency storage type.
    *  \return persitency type name.
    */
-  const std::string getType(void) const
+  const TypeName &getType(void) const
   {
     return type_;
   }
 
-  /** \brief gets user name (login).
-   *  \return user name to login with.
+  /** \brief gets options for persistency.
+   *  \return options map.
    */
-  const std::string getUser(void) const
+  const Options &getOptions(void) const
   {
-    return user_;
-  }
-
-  /** \brief gets password to autenticate with.
-   *  \return password to persistency storage.
-   */
-  const std::string getPassword(void) const
-  {
-    return pass_;
-  }
-
-  /** \brief gets host name to connect to.
-   *  \return host name to connect to.
-   */
-  const std::string getHost(void) const
-  {
-    return host_;
-  }
-
-  /** \brief gets port number to connect to on given host.
-   *  \return port to connect to.
-   */
-  PortNumber getPortNumber(void) const
-  {
-    return port_;
-  }
-
-  /** \brief gets name of the data base to connect to.
-   *  \return data base name.
-   */
-  const std::string getDataBaseName(void) const
-  {
-    return dbname_;
+    return options_;
   }
 
 private:
-  std::string type_;
-  std::string user_;
-  std::string pass_;
-  std::string host_;
-  PortNumber  port_;
-  std::string dbname_;
+  TypeName type_;
+  Options  options_;
 }; // class PersistencyConfig
-
-
-/** \brief exception informing about incorrect port number.
- */
-struct ExceptionInvalidPortNumber: public Exception
-{
-  /** \brief create exception of invalid port number.
-   *  \param where place where problem has been detected.
-   *  \param port  port that has been decided to be invalid.
-   */
-  ExceptionInvalidPortNumber(const char                    *where,
-                             PersistencyConfig::PortNumber  port);
-}; // struct ExceptionInvalidPortNumber
 
 } // namespace ConfigIO
 
