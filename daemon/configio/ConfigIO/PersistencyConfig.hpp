@@ -26,17 +26,19 @@ public:
   typedef uint16_t PortNumber;
 
   /** \brief creates persistency configuration.
-   *  \param type persistency type.
-   *  \param user user name to lgoin with.
-   *  \param pass password to use for user.
-   *  \param host host name/address to connect to.
-   *  \param port port number to use when connecting.
+   *  \param type   persistency type.
+   *  \param user   user name to lgoin with.
+   *  \param pass   password to use for user.
+   *  \param host   host name/address to connect to.
+   *  \param port   port number to use when connecting.
+   *  \param dbname data base name.
    */
   PersistencyConfig(const std::string &type,
                     const std::string &user,
                     const std::string &pass,
                     const std::string &host,
-                    PortNumber         port);
+                    PortNumber         port,
+                    const std::string &dbname);
 
   /** \brief gets persistency storage type.
    *  \return persitency type name.
@@ -78,12 +80,21 @@ public:
     return port_;
   }
 
+  /** \brief gets name of the data base to connect to.
+   *  \return data base name.
+   */
+  const std::string getDataBaseName(void) const
+  {
+    return dbname_;
+  }
+
 private:
   std::string type_;
   std::string user_;
   std::string pass_;
   std::string host_;
   PortNumber  port_;
+  std::string dbname_;
 }; // class PersistencyConfig
 
 

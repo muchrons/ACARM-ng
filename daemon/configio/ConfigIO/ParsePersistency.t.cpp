@@ -24,6 +24,7 @@ const char *xmlOK1=
   "    <pass>s3cr3t</pass>"
   "    <host>my.domain.pl</host>"
   "    <port>666</port>"
+  "    <dbname>mydatabase</dbname>"
   "  </persistency>"
   "</acarm_ng>"
   "";
@@ -37,6 +38,7 @@ const char *xmlErr1=
   "    <pass>s3cr3t</pass>"
   "    <host>my.domain.pl</host>"
   "    <port>666</port>"
+  "    <dbname>mydatabase</dbname>"
   "  </persistency>"
   "</acarm_ng>"
   "";
@@ -50,6 +52,7 @@ const char *xmlErr2=
   ""                            // <-- no 'pass' filed
   "    <host>my.domain.pl</host>"
   "    <port>666</port>"
+  "    <dbname>mydatabase</dbname>"
   "  </persistency>"
   "</acarm_ng>"
   "";
@@ -63,6 +66,7 @@ const char *xmlErr3=
   "    <pass>s3cr3t</pass>"
   ""                            // <-- no 'host' field
   "    <port>666</port>"
+  "    <dbname>mydatabase</dbname>"
   "  </persistency>"
   "</acarm_ng>"
   "";
@@ -76,6 +80,7 @@ const char *xmlErr4=
   "    <pass>s3cr3t</pass>"
   "    <host>my.domain.pl</host>"
   ""                            // <-- no 'port' field
+  "    <dbname>mydatabase</dbname>"
   "  </persistency>"
   "</acarm_ng>"
   "";
@@ -89,6 +94,21 @@ const char *xmlErr5=
   "    <pass>s3cr3t</pass>"
   "    <host>my.domain.pl</host>"
   "    <port>666</port>"
+  "    <dbname>mydatabase</dbname>"
+  "  </persistency>"
+  "</acarm_ng>"
+  "";
+
+const char *xmlErr6=
+  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+  "<acarm_ng>"
+  "  <persistency>"
+  "    <type>PostgreSQL</type>"
+  "    <user>login</user>"
+  "    <pass>s3cr3t</pass>"
+  "    <host>my.domain.pl</host>"
+  "    <port>666</port>"
+  ""                            // <-- no 'dbname' field
   "  </persistency>"
   "</acarm_ng>"
   "";
@@ -209,6 +229,14 @@ template<>
 void testObj::test<8>(void)
 {
   ensureFails(xmlErr5);
+}
+
+// test missing 'dbname' field
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  ensureFails(xmlErr6);
 }
 
 } // namespace tut

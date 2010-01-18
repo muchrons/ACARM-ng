@@ -7,6 +7,7 @@
     <pass>$3cr3t</pass>
     <host>db.server.my.domain.org</host>
     <port>5432</port>
+    <dbname>kszy</dbname>
   </persistency>
 
   <logger>

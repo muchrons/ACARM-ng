@@ -17,12 +17,14 @@ PersistencyConfig::PersistencyConfig(const std::string &type,
                                      const std::string &user,
                                      const std::string &pass,
                                      const std::string &host,
-                                     PortNumber         port):
+                                     PortNumber         port,
+                                     const std::string &dbname):
   type_(type),
   user_(user),
   pass_(pass),
   host_(host),
-  port_(port)
+  port_(port),
+  dbname_(dbname)
 {
   if(port_==0)
     throw ExceptionInvalidPortNumber("PersistencyConfig::PersistencyConfig()",
@@ -32,7 +34,7 @@ PersistencyConfig::PersistencyConfig(const std::string &type,
 
 namespace
 {
-string makeExceptionString(const char                    *where,
+inline string makeExceptionString(const char                    *where,
                            PersistencyConfig::PortNumber  port)
 {
   stringstream ss;

@@ -27,16 +27,17 @@ inline PersistencyConfig ParsePersistency::parse(const XML::Node &node) const
   assert( node.getName()=="persistency" );
 
   // get direct values values
-  const string &type=node.getChild("type").getValuesString();
-  const string &user=node.getChild("user").getValuesString();
-  const string &pass=node.getChild("pass").getValuesString();
-  const string &host=node.getChild("host").getValuesString();
-  const string &port=node.getChild("port").getValuesString();
+  const string &type  =node.getChild("type").getValuesString();
+  const string &user  =node.getChild("user").getValuesString();
+  const string &pass  =node.getChild("pass").getValuesString();
+  const string &host  =node.getChild("host").getValuesString();
+  const string &port  =node.getChild("port").getValuesString();
+  const string &dbname=node.getChild("dbname").getValuesString();
 
   // compute value
   const PersistencyConfig::PortNumber portNumber=parsePort(port);
 
-  return PersistencyConfig(type, user, pass, host, portNumber);
+  return PersistencyConfig(type, user, pass, host, portNumber, dbname);
 }
 
 inline PersistencyConfig::PortNumber ParsePersistency::parsePort(

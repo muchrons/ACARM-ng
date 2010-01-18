@@ -23,7 +23,7 @@ struct ExceptionPortNumberConversionFailed: public Exception
    *  \param port  port string that was not valid.
    */
   ExceptionPortNumberConversionFailed(const char        *where,
-                                      const std::string  port):
+                                      const std::string &port):
     Exception( std::string( ensureValidString(where) ) +
                ": invalid port in config: " + port )
   {
