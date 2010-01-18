@@ -79,7 +79,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  es_.saveProcess(42, proc_);
+  // TODO: host has to be saved first
+  //es_.saveProcess(42, proc_);
 }
 
 // check returned IDs
@@ -87,67 +88,26 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const DataBaseID id1=es_.saveProcess(42, proc_);
-  const DataBaseID id2=es_.saveProcess(42, proc_);
-  ensure("invalid ids returned", id1<=id2+1);
+  // TODO: host has to be saved first
+  //const DataBaseID id1=es_.saveProcess(42, proc_);
+  //const DataBaseID id2=es_.saveProcess(42, proc_);
+  //ensure("invalid ids returned", id1<=id2+1);
 }
 
-// TODO
-
-// 
+// test if call throws when invalid ID is passed
 template<>
 template<>
 void testObj::test<3>(void)
 {
-}
-
-// 
-template<>
-template<>
-void testObj::test<4>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<5>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<6>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<7>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<8>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<9>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<10>(void)
-{
+  try
+  {
+    es_.saveProcess(42, proc_);
+    fail("saving didn't failed for non-exising process ID");
+  }
+  catch(const std::runtime_error &)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut

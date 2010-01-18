@@ -2,8 +2,8 @@
  * EntrySaver.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_DETAIL_HPP_FILE
-#define INCLUDE_PERSISTENCY_IO_POSTGRES_DETAIL_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_DETAIL_ENTRYSAVER_HPP_FILE
+#define INCLUDE_PERSISTENCY_IO_POSTGRES_DETAIL_ENTRYSAVER_HPP_FILE
 
 #include <boost/noncopyable.hpp>
 
@@ -35,9 +35,16 @@ public:
   DataBaseID saveProcess(DataBaseID reportedHostID, const Process &p);
   // TODO
 
-  DataBaseID getID(const std::string &seqName);
 
 private:
+  DataBaseID getID(const std::string &seqName);
+
+  DataBaseID saveProcessData(const Process &p);
+  DataBaseID saveReportedProcessData(DataBaseID     reportedHostID,
+                                     DataBaseID     procID,
+                                     const Process &p);
+  DataBaseID saveReferenceURL(const ReferenceURL &url);
+
   DBHandler   &dbh_;
   Transaction &t_;
 }; // class EntrySaver
