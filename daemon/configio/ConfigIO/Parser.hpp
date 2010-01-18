@@ -5,8 +5,6 @@
 #ifndef INCLUDE_CONFIGIO_PARSER_HPP_FILE
 #define INCLUDE_CONFIGIO_PARSER_HPP_FILE
 
-/* public header */
-
 #include <string>
 #include <boost/scoped_ptr.hpp>
 
@@ -46,6 +44,7 @@ private:
   // forward declaraion
   class ParserImpl;
 
+  // TODO: Parser is not public, therefor does not have to be PIMPLed anymore.
   boost::scoped_ptr<ParserImpl> pimpl_;
 }; // class Parser
 
