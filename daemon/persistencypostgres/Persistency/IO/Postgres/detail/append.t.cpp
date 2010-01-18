@@ -23,6 +23,14 @@ struct TestClass
     Appender::append(ss, in);
     tut::ensure_equals("invalid string appended", ss.str(), out);
   }
+
+  template<typename T>
+  void checkRef(const T &in, const string &out) const
+  {
+    stringstream ss;
+    Appender::append(ss, in);
+    tut::ensure_equals("invalid string appended", ss.str(), out);
+  }
 };
 
 typedef TestClass                  TestClass;
@@ -102,6 +110,42 @@ void testObj::test<8>(void)
 {
   const double tmp=3.1416;
   check(&tmp, "3.1416");
+}
+
+// test non-null std::string
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const string tmp="abc";
+  checkRef(tmp, "'abc'");
+}
+
+// test integer
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  const int tmp=42;
+  checkRef(tmp, "42");
+}
+
+// test long
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  const long tmp=42;
+  checkRef(tmp, "42");
+}
+
+// test double
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const double tmp=3.1416;
+  checkRef(tmp, "3.1416");
 }
 
 } // namespace tut
