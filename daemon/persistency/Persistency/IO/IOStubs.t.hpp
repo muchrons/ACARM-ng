@@ -89,7 +89,7 @@ public:
   {
     ++called_[3];
   }
-  virtual void updateCertanityDeltaImpl(Persistency::IO::Transaction &, double /*delta*/)
+  virtual void updateCertaintyDeltaImpl(Persistency::IO::Transaction &, double /*delta*/)
   {
     ++called_[4];
   }

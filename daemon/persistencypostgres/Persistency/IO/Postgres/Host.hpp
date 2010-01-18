@@ -8,6 +8,8 @@
 #include "Persistency/IO/Host.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 
+// TODO: test
+
 namespace Persistency
 {
 namespace IO
@@ -30,7 +32,7 @@ public:
        DBHandlerPtrNN          dbHandler);
 
 private:
-  virtual void setNameImpl(Transaction &, const Persistency::Host::Name &name);
+  virtual void setNameImpl(Transaction &t, const Persistency::Host::Name &name);
 
   DBHandlerPtrNN dbHandler_;
 }; // class Host

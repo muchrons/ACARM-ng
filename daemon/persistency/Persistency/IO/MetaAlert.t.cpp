@@ -45,7 +45,7 @@ public:
   {
     ++calls_[3];
   }
-  virtual void updateCertanityDeltaImpl(Transaction &, double /*delta*/)
+  virtual void updateCertaintyDeltaImpl(Transaction &, double /*delta*/)
   {
     ++calls_[4];
   }
@@ -158,7 +158,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  ioma_.updateCertanityDelta(0);
+  ioma_.updateCertaintyDelta(0);
   ensureCalls(4);
 }
 
@@ -273,8 +273,8 @@ void testObj::test<14>(void)
   t_.rollback();
   try
   {
-    ioma_.updateCertanityDelta(4.2);
-    fail("updateCertanityDelta() didn't throw on inactive transaction");
+    ioma_.updateCertaintyDelta(4.2);
+    fail("updateCertaintyDelta() didn't throw on inactive transaction");
   }
   catch(const ExceptionTransactionNotActive&)
   {
@@ -337,12 +337,12 @@ template<>
 void testObj::test<18>(void)
 {
   double v=4;
-  ioma_.updateCertanityDelta(v);
-  ensure_equals("certanity update 1 failed", ma_->getCertanityDelta(), v);
+  ioma_.updateCertaintyDelta(v);
+  ensure_equals("certanity update 1 failed", ma_->getCertaintyDelta(), v);
 
   v+=0.2;
-  ioma_.updateCertanityDelta(0.2);
-  ensure_equals("certanity update 2 failed", ma_->getCertanityDelta(), v);
+  ioma_.updateCertaintyDelta(0.2);
+  ensure_equals("certanity update 2 failed", ma_->getCertaintyDelta(), v);
 }
 
 } // namespace tut

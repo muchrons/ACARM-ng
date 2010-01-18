@@ -1,39 +1,39 @@
 /*
- * Certanity.t.cpp
+ * Certainty.t.cpp
  *
  */
 #include <tut.h>
 #include <cstring>
 #include <memory>
 
-#include "Persistency/Certanity.hpp"
+#include "Persistency/Certainty.hpp"
 
 using namespace Persistency;
 
 namespace
 {
 
-struct CertanityTestClass
+struct CertaintyTestClass
 {
   void check(const double cv)
   {
     try
     {
-      const Certanity c(cv);
-      tut::fail("Certanity() did'nt throw on invalid value");
+      const Certainty c(cv);
+      tut::fail("Certainty() did'nt throw on invalid value");
     }
-    catch(const ExceptionInvalidCertanity&)
+    catch(const ExceptionInvalidCertainty&)
     {
       // this is expected
     }
   }
 };
 
-typedef CertanityTestClass TestClass;
+typedef CertaintyTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Certanity");
+factory tf("Persistency/Certainty");
 } // unnamed namespace
 
 
@@ -45,7 +45,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Certanity c(0.10);
+  const Certainty c(0.10);
   ensure_equals("invalid value", c.get(), 0.10);
 }
 
@@ -54,7 +54,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Certanity c(1);
+  const Certainty c(1);
   ensure_equals("invalid value", c.get(), 1);
 }
 
@@ -63,7 +63,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  Certanity c;
+  Certainty c;
   ensure_equals("invalid value", c.get(), 1);
 }
 
@@ -88,7 +88,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  Certanity c(0);
+  Certainty c(0);
   ensure_equals("invalid value", c.get(), 0);
 }
 

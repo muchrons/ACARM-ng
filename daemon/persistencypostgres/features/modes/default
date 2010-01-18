@@ -1,1 +1,2 @@
 Persistency/IO/Postgres/*.?pp
+Persistency/IO/Postgres/detail/*.?pp

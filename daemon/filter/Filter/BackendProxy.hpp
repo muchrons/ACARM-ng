@@ -54,7 +54,7 @@ public:
    *  \param ma    meta alert to update certanity on.
    *  \param delta certanity change to be applied.
    */
-  void updateCertanityDelta(Persistency::MetaAlertPtrNN ma, double delta);
+  void updateCertaintyDelta(Persistency::MetaAlertPtrNN ma, double delta);
   /** \brief adds given node as a child for other node.
    *  \param parent parent node (this node will have child added).
    *  \param child  child node (will be added to parent node).

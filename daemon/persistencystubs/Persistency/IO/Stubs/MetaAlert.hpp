@@ -32,7 +32,7 @@ public:
   size_t markAsUsedCalls_;              ///< calss count to markAsUsed().
   size_t markAsUnusedCalls_;            ///< calss count to markAsUnused().
   size_t updateSeverityDeltaCalls_;     ///< calss count to updateSeverityDelta().
-  size_t updateCertanityDeltaCalls_;    ///< calss count to updateCertanityDelta().
+  size_t updateCertaintyDeltaCalls_;    ///< calss count to updateCertanityDelta().
   size_t addChildCalls_;                ///< calss count to addChild().
   size_t assoicateWithAlertCalls_;      ///< calss count to associateWithAlert().
 
@@ -41,7 +41,7 @@ private:
   virtual void markAsUsedImpl(Transaction &t);
   virtual void markAsUnusedImpl(Transaction &t);
   virtual void updateSeverityDeltaImpl(Transaction &t, double delta);
-  virtual void updateCertanityDeltaImpl(Transaction &t, double delta);
+  virtual void updateCertaintyDeltaImpl(Transaction &t, double delta);
   virtual void addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child);
   virtual void associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN alert);
 }; // class MetaAlert

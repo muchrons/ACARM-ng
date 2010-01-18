@@ -7,14 +7,14 @@
 
 /* public header */
 
-#include "System/Exceptions/Base.hpp"
+#include "System/Exceptions/RuntimeError.hpp"
 
 namespace Logger
 {
 
 /** \brief internal exception class.
  */
-class Exception: public System::Exceptions::Base<Exception, std::exception>
+class Exception: public System::Exceptions::RuntimeError<Exception>
 {
 public:
   /** \brief create execption with given message.
@@ -22,7 +22,7 @@ public:
    */
   template<typename T>
   explicit Exception(const T &msg):
-    System::Exceptions::Base<Exception, std::exception>(msg)
+    System::Exceptions::RuntimeError<Exception>(msg)
   {
   }
 

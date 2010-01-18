@@ -17,7 +17,7 @@ Process::Process(const Process::Path     &path,
                  const pid_t             *pid,
                  const int               *uid,
                  const Process::Username &username,
-                 const std::string       *arguments,
+                 const char              *arguments,
                  ReferenceURLPtr          url):
   path_(path),
   name_(name),
@@ -25,7 +25,7 @@ Process::Process(const Process::Path     &path,
   pid_(pid),
   uid_(uid),
   username_(username),
-  arguments_( (arguments!=NULL)?(new string(*arguments)):NULL ),
+  arguments_( (arguments!=NULL)?(new string(arguments)):NULL ),
   url_(url)
 {
 }

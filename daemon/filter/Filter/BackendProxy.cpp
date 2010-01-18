@@ -43,11 +43,11 @@ void BackendProxy::updateSeverityDelta(Persistency::MetaAlertPtrNN ma, double de
   io->updateSeverityDelta(delta);
 }
 
-void BackendProxy::updateCertanityDelta(Persistency::MetaAlertPtrNN ma, double delta)
+void BackendProxy::updateCertaintyDelta(Persistency::MetaAlertPtrNN ma, double delta)
 {
   beginTransaction();
   IO::MetaAlertAutoPtr io=conn_->metaAlert(ma, getTransaction() );
-  io->updateCertanityDelta(delta);
+  io->updateCertaintyDelta(delta);
 }
 
 void BackendProxy::addChild(Persistency::GraphNodePtrNN parent,

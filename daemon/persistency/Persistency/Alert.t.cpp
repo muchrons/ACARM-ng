@@ -43,7 +43,7 @@ struct TestClass
   const Timestamp            detected_;
   const Timestamp            created_;
   const Severity             severity_;
-  const Certanity            certanity_;
+  const Certainty            certanity_;
   const string               description_;
   const Alert::ReportedHosts sourceHosts_;
   const Alert::ReportedHosts targetHosts_;
@@ -75,7 +75,7 @@ void testObj::test<1>(void)
   ensure_equals("invalid created time", a.getCreationTime(), created_);
   ensure_equals("invalid severity",
                 a.getSeverity().getLevel().toInt(), severity_.getLevel().toInt() );
-  ensure_equals("invalid certanity", a.getCertanity().get(), certanity_.get() );
+  ensure_equals("invalid certanity", a.getCertainty().get(), certanity_.get() );
   ensure_equals("invalid description", a.getDescription(), description_);
   ensure_equals("invalid source hosts",
                 a.getReportedSourceHosts().size(), sourceHosts_.size() );

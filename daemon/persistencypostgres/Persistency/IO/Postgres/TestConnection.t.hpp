@@ -17,10 +17,18 @@ namespace Postgres
 struct TestConnection
 {
   TestConnection(void):
-    connParams_("localhost", "acarm_ng_test", "acarm-ng-tests", "test.password"),
+    connParams_( makeParams() ),
     idCache_(new IDCache),
     dbHandler_(connParams_, idCache_)
   {
+  }
+
+  static DBConnection::Parameters makeParams(void)
+  {
+    return DBConnection::Parameters("localhost",
+                                    "acarm_ng_test",
+                                    "acarm-ng-daemon",
+                                    "test.daemon");
   }
 
   DBConnection::Parameters connParams_;

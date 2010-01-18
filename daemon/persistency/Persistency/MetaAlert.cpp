@@ -21,7 +21,7 @@ MetaAlert::MetaAlert(AlertPtrNN alert):
 
 MetaAlert::MetaAlert(const Name      &name,
                      SeverityDelta    severityDelta,
-                     CertanityDelta   certanityDelta,
+                     CertaintyDelta   certanityDelta,
                      ReferenceURLPtr  url,
                      Timestamp        created):
   name_(name),
@@ -44,7 +44,7 @@ MetaAlert::SeverityDelta MetaAlert::getSeverityDelta(void) const
   return severityDelta_;
 }
 
-MetaAlert::CertanityDelta MetaAlert::getCertanityDelta(void) const
+MetaAlert::CertaintyDelta MetaAlert::getCertaintyDelta(void) const
 {
   Lock lock(mutex_);
   return certanityDelta_;
@@ -66,7 +66,7 @@ void MetaAlert::updateSeverityDelta(double delta)
   severityDelta_+=delta;
 }
 
-void MetaAlert::updateCertanityDelta(double delta)
+void MetaAlert::updateCertaintyDelta(double delta)
 {
   Lock lock(mutex_);
   certanityDelta_+=delta;

@@ -12,6 +12,8 @@
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 
 
+// TODO: test
+
 namespace Persistency
 {
 namespace IO
@@ -33,6 +35,15 @@ public:
   TransactionAPI(Base::Threads::Mutex &mutex,
                  const std::string    &name,
                  DBHandlerPtrNN        dbHandler);
+  /** \brief executes statement on handler
+   *  \param sql SQL statement to be executed.
+   *  \return query results.
+   */
+  template<typename T>
+  pqxx::result exec(const T& sql)
+  {
+    return t_.exec(sql);
+  }
 
 private:
   /** \brief transaction acceptance opration's interface.

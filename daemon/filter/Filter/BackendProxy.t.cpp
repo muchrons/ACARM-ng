@@ -102,9 +102,9 @@ template<>
 void testObj::test<4>(void)
 {
   MetaAlertPtrNN ma( makeMetaAlert() );
-  const double c=ma->getCertanityDelta();
-  bp_->updateCertanityDelta(ma, 1.3);
-  ensure_equals("invalid certanity", ma->getCertanityDelta(), c+1.3);
+  const double c=ma->getCertaintyDelta();
+  bp_->updateCertaintyDelta(ma, 1.3);
+  ensure_equals("invalid certanity", ma->getCertaintyDelta(), c+1.3);
 }
 
 // test commiting empty change-set

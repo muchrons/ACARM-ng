@@ -51,13 +51,13 @@ void MetaAlert::updateSeverityDelta(double delta)
   ma_->updateSeverityDelta(delta);
 }
 
-void MetaAlert::updateCertanityDelta(double delta)
+void MetaAlert::updateCertaintyDelta(double delta)
 {
   t_.ensureIsActive();
-  updateCertanityDeltaImpl(t_, delta);
+  updateCertaintyDeltaImpl(t_, delta);
 
   assert(ma_.get()!=NULL);
-  ma_->updateCertanityDelta(delta);
+  ma_->updateCertaintyDelta(delta);
 }
 
 void MetaAlert::addChild(Persistency::MetaAlertPtrNN child)

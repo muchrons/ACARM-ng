@@ -39,7 +39,7 @@ void MetaAlert::updateSeverityDeltaImpl(Transaction &, double /*delta*/)
   // TODO
 }
 
-void MetaAlert::updateCertanityDeltaImpl(Transaction &, double /*delta*/)
+void MetaAlert::updateCertaintyDeltaImpl(Transaction &, double /*delta*/)
 {
   // TODO
 }
