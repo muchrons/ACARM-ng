@@ -15,6 +15,7 @@ namespace Postgres
 
 TestDBAccess::TestDBAccess(void):
   conn_( DBConnection::Parameters("localhost",
+                                  "5432",
                                   "acarm_ng_test",
                                   "acarm-ng-tests",
                                   "test.password") )
