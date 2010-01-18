@@ -38,8 +38,8 @@ public:
   DataBaseID getID(const std::string &seqName);
 
 private:
-  pqxx::work &t_;
   DBHandler   &dbh_;
+  Transaction &t_;
 }; // class EntrySaver
 
 } // namespace detail

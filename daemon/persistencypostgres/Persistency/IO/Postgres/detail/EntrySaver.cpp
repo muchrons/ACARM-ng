@@ -4,6 +4,7 @@
  */
 #include <sstream>
 #include <cassert>
+#include <iostream>                                                         
 
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
@@ -21,12 +22,12 @@ namespace detail
 {
 
 EntrySaver::EntrySaver(Transaction &t, DBHandler &dbh):
-  t_( t.getAPI<Postgres::TransactionAPI>().getHandle() ),
-  dbh_(dbh)
+  dbh_(dbh),
+  t_(t)
 {
 }
 
-DataBaseID EntrySaver::saveProcess(DataBaseID reportedHostID, const Process &p)
+DataBaseID EntrySaver::saveProcess(DataBaseID /*reportedHostID*/, const Process &p)
 {
   // write data to DB
   stringstream ss;
@@ -40,18 +41,21 @@ DataBaseID EntrySaver::saveProcess(DataBaseID reportedHostID, const Process &p)
     ss << "NULL";
 
   ss << ");";
-  t_.exec(ss);
-  // TODO
+  // insert object to data base.
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+  // TODO: fill-in reported_procs
+  // TODO: asociate with reportedHostID
 
   // get the ID
-  return getID("procs_id_seq");
+  return getID("reported_procs_id_seq");
 }
 
 DataBaseID EntrySaver::getID(const std::string &seqName)
 {
   assert( seqName==pqxx::sqlesc(seqName) && "invalid sequence name" );
 
-  result r=t_.exec( "SELECT currval('" + seqName + "') as id;" );
+  const std::string sql="SELECT currval('" + seqName + "') as id;";
+  result r=t_.getAPI<Postgres::TransactionAPI>().exec(sql);
   assert( r.size()==1 && "unable to read current sequence number" );
 
   DataBaseID id;
