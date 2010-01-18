@@ -1,0 +1,29 @@
+/*
+ * Host.hpp
+ *
+ */
+#include "Persistency/IO/Postgres/Host.hpp"
+
+namespace Persistency
+{
+namespace IO
+{
+namespace Postgres
+{
+
+Host::Host(Persistency::HostPtrNN  host,
+           Transaction            &t,
+           DBHandlerPtrNN          dbHandler):
+  IO::Host(host, t),
+  dbHandler_(dbHandler)
+{
+}
+
+void Host::setNameImpl(Transaction &, const Persistency::Host::Name &/*name*/)
+{
+  // TODO
+}
+
+} // namespace Postgres
+} // namespace IO
+} // namespace Persistency

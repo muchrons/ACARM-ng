@@ -83,9 +83,9 @@ struct CollectionWriter
   {
     // wait until main thread is ready
     while( *state_!=1 )
-      usleep(5*1000);
+      boost::this_thread::yield();
     // wait a while to ensure other thread is waiting
-    usleep(100*1000);
+    usleep(30*1000);
     // switch state and add element. order is important, not to cause races
     *state_=2;
     q_->push("new data");
@@ -169,6 +169,59 @@ void testObj::test<5>(void)
   th2.join();
   th3.join();
   th4.join();
+}
+
+namespace
+{
+struct Signaller
+{
+  Signaller(FQ *q, int *state):
+    q_(q),
+    state_(state)
+  {
+    assert(q_!=NULL);
+    assert(state_!=NULL);
+    assert(*state==0 || *state==1);
+  }
+
+  void operator()(void)
+  {
+    *state_=1;
+    try
+    {
+      q_->pop();    // should block for a while and throw
+      fail("pop() didn't throw on interrupt");
+    }
+    catch(const boost::thread_interrupted &)
+    {
+      // this is expected
+    }
+    *state_=2;
+  }
+
+  FQ  *q_;
+  int *state_;
+}; // struct CollectionWriter
+} // unnamed namespace
+
+// test blocking of pop(), when no elements are present
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  int state=0;
+  boost::thread th( Signaller(&q_, &state) );
+  // wait until thread is ready
+  while( state!=1 )
+    boost::this_thread::yield();
+  // wait a while to ensure other thread is waiting
+  usleep(30*1000);
+  // switch state and interrupt thread
+  th.interrupt();
+  q_.signalAll();
+  // check if everything's fine.
+  th.join();
+  ensure_equals("invalid state", state, 2);
 }
 
 } // namespace tut

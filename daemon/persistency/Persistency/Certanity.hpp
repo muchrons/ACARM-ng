@@ -34,14 +34,14 @@ struct ExceptionInvalidCertanity: public Exception
 class Certanity
 {
 public:
-  /** \brief create certanity representation.
+  /** \brief create certanity representation [0;1].
    *  \param c certanity value.
    *  \note c-tor is not explicit to make usage simpler.
    */
-  Certanity(const double c=100):
+  Certanity(const double c=1):
     c_(c)
   {
-    if(c_<=0 || 100<c_)
+    if(c_<0 || 1<c_)
       throw ExceptionInvalidCertanity(CALLNAME);
   }
   /** \brief gets certanity level.
@@ -49,8 +49,8 @@ public:
    */
   double get(void) const
   {
-    assert(0<c_);
-    assert(c_<=100);
+    assert(0<=c_);
+    assert(c_<=1);
     return c_;
   }
 

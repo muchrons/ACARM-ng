@@ -18,14 +18,14 @@ namespace
 struct TestIOAlert: public Persistency::IO::Alert
 {
   TestIOAlert(Persistency::AlertPtr  alert,
-              const Transaction     &t):
+              Transaction           &t):
     Persistency::IO::Alert(alert, t),
     alert_(alert),
     called_(0)
   {
   }
 
-  virtual void saveImpl(void)
+  virtual void saveImpl(Transaction&)
   {
     ++called_;
     tut::ensure("invalid pointer", &get()==alert_.get() );
@@ -43,7 +43,7 @@ struct TestClass
                                    NULL,
                                    Timestamp(),
                                    Severity(SeverityLevel::INFO),
-                                   Certanity(42),
+                                   Certanity(0.42),
                                    "some description",
                                    Persistency::Alert::ReportedHosts(),
                                    Persistency::Alert::ReportedHosts()) ),

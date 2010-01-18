@@ -28,7 +28,7 @@ public:
    *  \param t     associated transaction.
    */
   Alert(Persistency::AlertPtrNN  alert,
-        const Transaction       &t);
+        Transaction             &t);
   /** \brief virtual d-tor for polymorphic base class.
    */
   virtual ~Alert(void);
@@ -43,10 +43,10 @@ protected:
   const Persistency::Alert &get(void) const;
 
 private:
-  virtual void saveImpl(void) = 0;
+  virtual void saveImpl(Transaction &t) = 0;
 
   Persistency::AlertPtrNN  alert_;
-  const Transaction       &t_;
+  Transaction             &t_;
 }; // class Alert
 
 

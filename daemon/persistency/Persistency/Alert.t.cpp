@@ -23,7 +23,7 @@ struct TestClass
     detected_(),
     created_(),
     severity_(SeverityLevel::INFO),
-    certanity_(42),
+    certanity_(0.42),
     description_("alert's description"),
     sourceHosts_( generateReportedHosts(2) ),
     targetHosts_( generateReportedHosts(5) )

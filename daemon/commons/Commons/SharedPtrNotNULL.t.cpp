@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 #include <string>
+#include <boost/mpl/equal.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
 
@@ -21,7 +22,8 @@ struct TestClass
   typedef SharedPtrNotNULL<string> StrPtrNN;
 
   TestClass(void):
-    nn_( new int(42) )
+    nn_( new int(42) ),
+    other_( new int(42) )
   {
   }
 
@@ -31,6 +33,7 @@ struct TestClass
   }
 
   PtrNN nn_;
+  PtrNN other_;
 };
 
 typedef TestClass TestClass;
@@ -223,6 +226,122 @@ void testObj::test<16>(void)
   const string   tmp="Alice in Wonderland";
   const StrPtrNN ptr( new string(tmp) );
   ensure_equals("arrow operator failed", ptr->c_str(), tmp);
+}
+
+// compare with boost::shared_ptr pointer
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  BoostPtr other( new int(*nn_) );
+  ensure("different pointers match", !(nn_==other) );
+}
+
+// compare with other wrapped-pointer
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  ensure("different pointers match", !(nn_==other_) );
+}
+
+// compare with the same boost::shared_ptr
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  BoostPtr other=nn_;
+  ensure("the same pointer does not match", nn_==other);
+}
+
+// compare the same wrapped pointers
+template<>
+template<>
+void testObj::test<20>(void)
+{
+  other_=nn_;
+  ensure("the same pointer does not match", nn_==other_);
+}
+
+// compare with != of boost::shared_ptr
+template<>
+template<>
+void testObj::test<21>(void)
+{
+  BoostPtr other( new int(*nn_) );
+  ensure("different pointers match", nn_!=other);
+}
+
+// compare with != of wrapped ptr
+template<>
+template<>
+void testObj::test<22>(void)
+{
+  ensure("different pointers match", nn_!=other_);
+}
+
+// compare boost with wrapped ptr (in reversed order)
+template<>
+template<>
+void testObj::test<23>(void)
+{
+  BoostPtr other=nn_;
+  ensure("different pointers match", other==nn_);
+}
+
+// compare boost with wrapped ptr (in reversed order) with !=
+template<>
+template<>
+void testObj::test<24>(void)
+{
+  BoostPtr other=other_;
+  ensure("different pointers match", other!=nn_);
+}
+
+// check less-than operator
+template<>
+template<>
+void testObj::test<25>(void)
+{
+  assert(nn_!=other_);
+  ensure("less-than operator does not work properly",
+         (other_<nn_ && !(nn_<other_)) || (nn_<other_ && !(other_<nn_)) );
+}
+
+// check element's type
+template<>
+template<>
+void testObj::test<26>(void)
+{
+  ensure("invalid element's type declaration",
+         boost::mpl::equal<int, PtrNN::element_type>::type::value);
+}
+
+// check value's type
+template<>
+template<>
+void testObj::test<27>(void)
+{
+  ensure("invalid element's value type declaration",
+         boost::mpl::equal<int, PtrNN::value_type>::type::value);
+}
+
+// check element's pionter type
+template<>
+template<>
+void testObj::test<28>(void)
+{
+  ensure("invalid element's pointer type declaration",
+         boost::mpl::equal<int*, PtrNN::pointer>::type::value);
+}
+
+// check element's reference type
+template<>
+template<>
+void testObj::test<29>(void)
+{
+  ensure("invalid element's reference type declaration",
+         boost::mpl::equal<int&, PtrNN::reference>::type::value);
 }
 
 } // namespace tut

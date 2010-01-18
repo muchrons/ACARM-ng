@@ -82,7 +82,7 @@ public:
 
 private:
   void beginTransaction(void);
-  const Persistency::IO::Transaction &getTransaction(void) const;
+  Persistency::IO::Transaction &getTransaction(void) const;
 
   typedef boost::scoped_ptr<Persistency::IO::Transaction> TransactionScPtr;
 

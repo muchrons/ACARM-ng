@@ -6,6 +6,7 @@
 #include <cassert>
 
 #include "Persistency/IO/Transaction.hpp"
+#include "Persistency/IO/detail/TransactionAPIOperations.hpp"
 
 using std::string;
 
@@ -56,7 +57,8 @@ void Transaction::commit(void)
 {
   if( !isActive() )
     return;
-  transaction_->commit();
+  detail::TransactionAPIOperations tao(*transaction_);
+  tao.commit();
   isActive_=false;
 }
 
@@ -64,7 +66,8 @@ void Transaction::rollback(void)
 {
   if( !isActive() )
     return;
-  transaction_->rollback();
+  detail::TransactionAPIOperations tao(*transaction_);
+  tao.rollback();
   isActive_=false;
 }
 

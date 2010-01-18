@@ -12,7 +12,7 @@ namespace IO
 {
 
 Host::Host(Persistency::HostPtrNN  host,
-           const Transaction      &t):
+           Transaction            &t):
   host_(host),
   t_(t)
 {
@@ -26,7 +26,7 @@ Host::~Host(void)
 void Host::setName(const Persistency::Host::Name &name)
 {
   t_.ensureIsActive();
-  setNameImpl(name);
+  setNameImpl(t_, name);
 
   assert(host_.get()!=NULL);
   host_->setName(name);

@@ -1,6 +1,10 @@
+algo
 filter
+trigger
 persistencystubs
 persistency
+core
+coretypes
 input
 preludepp
 xml
@@ -14,3 +18,5 @@ inputprelude
 inputfile
 
 persistencypostgres
+
+acarmng

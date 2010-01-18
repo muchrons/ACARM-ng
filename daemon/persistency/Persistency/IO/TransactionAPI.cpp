@@ -19,18 +19,6 @@ TransactionAPI::~TransactionAPI(void)
   logMsg("transaction is being destroyed");
 }
 
-void TransactionAPI::commit(void)
-{
-  logMsg("commiting transaction");
-  commitImpl();
-}
-
-void TransactionAPI::rollback(void)
-{
-  logMsg("transaction rollback requested");
-  rollbackImpl();
-}
-
 const std::string TransactionAPI::getName(void) const
 {
   return name_;
@@ -43,6 +31,18 @@ TransactionAPI::TransactionAPI(Base::Threads::Mutex &mutex,
   log_("persistency.io.transactionapi")
 {
   logMsg("starting transaction");
+}
+
+void TransactionAPI::commit(void)
+{
+  logMsg("commiting transaction");
+  commitImpl();
+}
+
+void TransactionAPI::rollback(void)
+{
+  logMsg("transaction rollback requested");
+  rollbackImpl();
 }
 
 void TransactionAPI::logMsg(const char *msg)

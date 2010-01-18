@@ -8,8 +8,8 @@
 #include <cassert>
 
 #include "Filter/BackendProxy.hpp"
+#include "Filter/TestHelpers.t.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
-#include "Persistency/Stubs/TestHelpers.hpp"
 
 using namespace Filter;
 using namespace Persistency;
@@ -30,24 +30,16 @@ struct TestClass
 
   MetaAlertPtrNN makeMetaAlert(void) const
   {
-    return MetaAlertPtrNN( new MetaAlert( makeNewAlert() ) );
+    return th_makeMetaAlert();
   }
 
-  GraphNodePtrNN makeGraphLeaf(void)
+  GraphNodePtrNN makeGraphLeaf(void) const
   {
-    const IO::Transaction t( conn_->createNewTransaction("graph_transaction") );
-    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_,  t) );
+    return th_makeLeaf();
   }
-  GraphNodePtrNN makeGraphNode(void)
+  GraphNodePtrNN makeGraphNode(void) const
   {
-    GraphNodePtrNN leaf1=makeGraphLeaf();
-    GraphNodePtrNN leaf2=makeGraphLeaf();
-    const IO::Transaction t( conn_->createNewTransaction("graph_transaction") );
-    return GraphNodePtrNN( new GraphNode( makeMetaAlert(),
-                                          conn_,
-                                          t,
-                                          leaf1,
-                                          leaf2 ) );
+    return th_makeNode();
   }
 
   int childrenCount(const GraphNodePtrNN ptr) const
@@ -99,8 +91,9 @@ template<>
 void testObj::test<3>(void)
 {
   MetaAlertPtrNN ma( makeMetaAlert() );
+  const double c=ma->getSeverityDelta();
   bp_->updateSeverityDelta(ma, 1.3);
-  ensure_equals("invalid severity", ma->getSeverityDelta(), 1.3);
+  ensure_equals("invalid severity", ma->getSeverityDelta(), c+1.3);
 }
 
 // test updating certanity
@@ -109,8 +102,9 @@ template<>
 void testObj::test<4>(void)
 {
   MetaAlertPtrNN ma( makeMetaAlert() );
+  const double c=ma->getCertanityDelta();
   bp_->updateCertanityDelta(ma, 1.3);
-  ensure_equals("invalid certanity", ma->getCertanityDelta(), 1.3);
+  ensure_equals("invalid certanity", ma->getCertanityDelta(), c+1.3);
 }
 
 // test commiting empty change-set

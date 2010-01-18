@@ -19,6 +19,7 @@
 #include "Persistency/Severity.hpp"
 #include "Persistency/SeverityLevel.hpp"
 #include "Persistency/Timestamp.hpp"
+#include "Persistency/GraphNode.hpp"
 
 
 namespace Persistency
@@ -27,6 +28,8 @@ namespace Stubs
 {
 
 AlertPtr makeNewAlert(const char *name="some alert");
+
+MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert");
 
 AnalyzerPtr makeNewAnalyzer(const char *name="some analyzer");
 AnalyzerPtr makeNewAnalyzer(const char *name, HostPtr host);
@@ -51,6 +54,27 @@ HostPtr makeNewHost6(const char             *ip,
 ProcessPtr makeNewProcess(const char *name="process name");
 
 ReferenceURLPtr makeNewReferenceURL(const char *url="http://gnu.org");
+
+GraphNodePtrNN makeNewLeaf(void);
+GraphNodePtrNN makeNewNode(void);
+GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2);
+
+//
+//                root
+//     node1               node2
+//  leaf1 leaf2      node3      leaf5
+//                leaf3 leaf4
+//
+GraphNodePtrNN makeNewTree1(void);
+
+//
+//                root
+//     node1               node2
+//  leaf1 leaf2      node3      node1
+//                leaf3 node1    ...
+//                       ...
+//
+GraphNodePtrNN makeNewTree2(void);
 
 } // namespace Stubs
 } // namespace Persistency

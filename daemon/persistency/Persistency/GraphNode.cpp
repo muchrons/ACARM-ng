@@ -10,9 +10,9 @@
 namespace Persistency
 {
 
-GraphNode::GraphNode(AlertPtrNN             alert,
-                     IO::ConnectionPtrNN    connection,
-                     const IO::Transaction &t):
+GraphNode::GraphNode(AlertPtrNN           alert,
+                     IO::ConnectionPtrNN  connection,
+                     IO::Transaction     &t):
   self_( new MetaAlert(alert) ),
   leaf_(alert)
 {
@@ -29,12 +29,12 @@ GraphNode::GraphNode(AlertPtrNN             alert,
   assert( isLeaf() && "invalid initialization");
 }
 
-GraphNode::GraphNode(MetaAlertPtrNN         ma,
-                     IO::ConnectionPtrNN    connection,
-                     const IO::Transaction &t,
-                     GraphNodePtrNN         child1,
-                     GraphNodePtrNN         child2,
-                     const ChildrenVector  &otherChildren):
+GraphNode::GraphNode(MetaAlertPtrNN        ma,
+                     IO::ConnectionPtrNN   connection,
+                     IO::Transaction      &t,
+                     GraphNodePtrNN        child1,
+                     GraphNodePtrNN        child2,
+                     const ChildrenVector &otherChildren):
   self_(ma),
   leaf_()
 {

@@ -8,6 +8,7 @@
 /* public header */
 
 #include <boost/shared_ptr.hpp>
+#include <boost/operators.hpp>
 #include <cassert>
 
 #include "Commons/ExceptionUnexpectedNULL.hpp"
@@ -20,12 +21,24 @@ namespace Commons
  *        ExceptionUnexpectedNULL.
  */
 template<typename T>
-class SharedPtrNotNULL
+class SharedPtrNotNULL: public boost::less_than_comparable< SharedPtrNotNULL<T> >,
+                        public boost::equivalent<           SharedPtrNotNULL<T> >,
+                        public boost::equality_comparable<  SharedPtrNotNULL<T> >,
+                        public boost::equality_comparable<  SharedPtrNotNULL<T>, boost::shared_ptr<T> >
 {
-private:
+public:
+  /** \brief type used as boost::shared_ptr<>. */
   typedef boost::shared_ptr<T> PtrT;
 
-public:
+  /** \brief type of element held inside (for compatibility with boost::shared_ptr). */
+  typedef typename PtrT::element_type element_type;
+  /** \brief type of element held inside (for compatibility with boost::shared_ptr). */
+  typedef typename PtrT::value_type   value_type;
+  /** \brief type of pointer to element held inside (for compatibility with boost::shared_ptr). */
+  typedef typename PtrT::pointer      pointer;
+  /** \brief type of reference to element held inside (for compatibility with boost::shared_ptr). */
+  typedef typename PtrT::reference    reference;
+
   /** \brief create class from raw-pointer.
    *  \param t pointer to take ownership of.
    */
@@ -57,6 +70,13 @@ public:
   {
     assert( ptr_.get()!=NULL );
     return ptr_;
+  }
+  /** \brief less-then compare
+   *  \param other element to compare with.
+   */
+  inline bool operator<(const SharedPtrNotNULL<T> &other) const
+  {
+    return ptr_<other.ptr_;
   }
   /** \brief assignmen of other instance.
    *  \param other object to assigne from.

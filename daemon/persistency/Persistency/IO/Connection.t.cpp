@@ -64,7 +64,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Transaction t( c_.createNewTransaction("abc") );
+  Transaction  t( c_.createNewTransaction("abc") );
   AlertAutoPtr ptr=c_.alert( makeNewAlert(), t);
   ensure("NULL pointer received", ptr.get()!=NULL );
   ensureCalls(1);
@@ -75,7 +75,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const Transaction t( c_.createNewTransaction("abc") );
+  Transaction t( c_.createNewTransaction("abc") );
   HostAutoPtr ptr=c_.host( makeNewHost(), t);
   ensure("NULL pointer received", ptr.get()!=NULL );
   ensureCalls(2);
@@ -86,7 +86,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const Transaction t( c_.createNewTransaction("abc") );
+  Transaction  t( c_.createNewTransaction("abc") );
   AlertPtrNN   alert=makeNewAlert();
   MetaAlertPtr ma( new Persistency::MetaAlert(alert) );
   MetaAlertAutoPtr ptr=c_.metaAlert(ma, t);

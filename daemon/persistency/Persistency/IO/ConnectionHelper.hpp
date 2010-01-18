@@ -43,17 +43,17 @@ private:
     return TransactionAPIAutoPtr( new TTransactionAPIIO(mutex, name, ph_) );
   }
 
-  virtual AlertAutoPtr alertImpl(AlertPtrNN alert, const Transaction &t)
+  virtual AlertAutoPtr alertImpl(AlertPtrNN alert, Transaction &t)
   {
     return AlertAutoPtr( new TAlertIO(alert, t, ph_) );
   }
 
-  virtual HostAutoPtr hostImpl(HostPtrNN host, const Transaction &t)
+  virtual HostAutoPtr hostImpl(HostPtrNN host, Transaction &t)
   {
     return HostAutoPtr( new THostIO(host, t, ph_) );
   }
 
-  virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, const Transaction &t)
+  virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, Transaction &t)
   {
     return MetaAlertAutoPtr( new TMetaAlertIO(ma, t, ph_) );
   }

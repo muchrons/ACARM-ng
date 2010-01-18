@@ -19,14 +19,14 @@ class IOHost: public IO::Host
 {
 public:
   IOHost(Persistency::HostPtrNN  host,
-         const Transaction      &t):
+         Transaction            &t):
     IO::Host(host, t),
     host_(host),
     calls_(0)
   {
   }
 
-  virtual void setNameImpl(const Persistency::Host::Name &/*name*/)
+  virtual void setNameImpl(Transaction &, const Persistency::Host::Name &/*name*/)
   {
     ++calls_;
     tut::ensure("invalid pointer", &get()==host_.get() );

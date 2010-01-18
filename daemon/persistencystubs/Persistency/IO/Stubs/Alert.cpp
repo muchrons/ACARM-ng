@@ -14,7 +14,7 @@ namespace Stubs
 {
 
 Alert::Alert(Persistency::AlertPtrNN  alert,
-             const Transaction       &t,
+             Transaction             &t,
              int                      handler):
   IO::Alert(alert, t),
   saveCalls_(0)
@@ -23,7 +23,7 @@ Alert::Alert(Persistency::AlertPtrNN  alert,
   handler=0;
 }
 
-void Alert::saveImpl(void)
+void Alert::saveImpl(Transaction &)
 {
   ++saveCalls_;
 }

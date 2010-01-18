@@ -167,4 +167,14 @@ void testObj::test<10>(void)
   }
 }
 
+// test transaction::getAPI()
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  TestTransactionAPI &tapiImpl=t_->getAPI<TestTransactionAPI>();
+  ensure("invalid pointer to commited",   tapiImpl.commited_  !=NULL);
+  ensure("invalid pointer to rollbacked", tapiImpl.rollbacked_!=NULL);
+}
+
 } // namespace tut

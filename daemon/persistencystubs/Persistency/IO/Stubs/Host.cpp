@@ -14,7 +14,7 @@ namespace Stubs
 {
 
 Host::Host(Persistency::HostPtrNN  host,
-           const Transaction      &t,
+           Transaction            &t,
            int                     handler):
   IO::Host(host, t),
   setNameCalls_(0)
@@ -23,7 +23,7 @@ Host::Host(Persistency::HostPtrNN  host,
   handler=0;
 }
 
-void Host::setNameImpl(const Persistency::Host::Name &/*name*/)
+void Host::setNameImpl(Transaction &, const Persistency::Host::Name &/*name*/)
 {
   ++setNameCalls_;
 }
