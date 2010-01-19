@@ -6,7 +6,7 @@
 
 #include "Algo/forEachUniqueInTree.hpp"
 #include "Algo/TestHelpers.t.hpp"
-#include "Algo/TestBase.t.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Algo;
 using namespace Persistency;
@@ -14,7 +14,7 @@ using namespace Persistency;
 namespace
 {
 
-struct CountNodes: private TestBase
+struct CountNodes: private TestHelpers::Persistency::TestStubs
 {
   CountNodes(void):
     cnt_(0)
