@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <string>
 #include <memory>
 #include <boost/noncopyable.hpp>
 
@@ -38,6 +39,10 @@ public:
   /** \brief saves meta alert to persistency storage.
    */
   void save();
+  /** \brief save information that this obejct has been already triggered.
+   *  \param name name of the triggering processor.
+   */
+  void markAsTriggered(const std::string &name);
   /** \brief save information that this obejct is in use now.
    */
   void markAsUsed();
@@ -68,6 +73,7 @@ protected:
 
 private:
   virtual void saveImpl(Transaction &t) = 0;
+  virtual void markAsTriggeredImpl(Transaction &t, const std::string &name) = 0;
   virtual void markAsUsedImpl(Transaction &t) = 0;
   virtual void markAsUnusedImpl(Transaction &t) = 0;
   virtual void updateSeverityDeltaImpl(Transaction &t, double delta) = 0;

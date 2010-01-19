@@ -30,6 +30,12 @@ void MetaAlert::save()
   saveImpl(t_);
 }
 
+void MetaAlert::markAsTriggered(const std::string &name)
+{
+  t_.ensureIsActive();
+  markAsTriggeredImpl(t_, name);
+}
+
 void MetaAlert::markAsUsed()
 {
   t_.ensureIsActive();

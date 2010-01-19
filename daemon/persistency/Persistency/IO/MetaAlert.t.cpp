@@ -33,6 +33,10 @@ public:
   {
     ++calls_[0];
   }
+  virtual void markAsTriggeredImpl(Transaction &, const std::string &)
+  {
+    ++calls_[7];
+  }
   virtual void markAsUsedImpl(Transaction &)
   {
     ++calls_[1];
@@ -59,7 +63,7 @@ public:
   }
 
   Persistency::MetaAlertPtr ma_;
-  int                       calls_[7];
+  int                       calls_[8];
 }; // class MetaAlert
 
 
@@ -343,6 +347,15 @@ void testObj::test<18>(void)
   v+=0.2;
   ioma_.updateCertaintyDelta(0.2);
   ensure_equals("certanity update 2 failed", ma_->getCertaintyDelta(), v);
+}
+
+// test marking as triggered
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  ioma_.markAsTriggered("test");
+  ensureCalls(7);
 }
 
 } // namespace tut

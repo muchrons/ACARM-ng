@@ -18,6 +18,7 @@ MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
                      int                          handler):
   IO::MetaAlert(ma, t),
   saveCalls_(0),
+  markAsTriggeredCalls_(0),
   markAsUsedCalls_(0),
   markAsUnusedCalls_(0),
   updateSeverityDeltaCalls_(0),
@@ -32,6 +33,11 @@ MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
 void MetaAlert::saveImpl(Transaction &)
 {
   ++saveCalls_;
+}
+
+void MetaAlert::markAsTriggeredImpl(Transaction &, const std::string &)
+{
+  ++markAsTriggeredCalls_;
 }
 
 void MetaAlert::markAsUsedImpl(Transaction &)
