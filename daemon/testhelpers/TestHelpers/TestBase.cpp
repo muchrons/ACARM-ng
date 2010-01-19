@@ -17,33 +17,6 @@ const char *defaultConfigContent=
   "<acarm_ng>"
   ""
   "  <persistency>"
-  "    <type>postgres</type>"
-  "    <host>localhost</host>"
-  "    <port>5432</port>"
-  "    <dbname>acarm_ng_test</dbname>"
-  "    <user>acarm-ng-daemon</user>"
-  "    <pass>test.daemon</pass>"
-  "  </persistency>"
-  ""
-  "  <logger>"
-  "    <appenders>"
-  "      <file name=\"default\">"
-  "        <output>loggerfile.log</output>"
-  "      </file>"
-  "    </appenders>"
-  ""
-  "    <nodes appender=\"default\">"
-  "    </nodes>"
-  "  </logger>"
-  ""
-  "</acarm_ng>"
-  ;
-
-const char *defaultConfigContentStubs=
-  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
-  "<acarm_ng>"
-  ""
-  "  <persistency>"
   "    <type>stubs</type>"
   "  </persistency>"
   ""
@@ -65,13 +38,14 @@ const char *defaultConfigContentStubs=
 namespace TestHelpers
 {
 
-TestBase::TestBase(const bool useStub):
+TestBase::TestBase(const char *xml):
   defaultFile_("acarm_ng_config.xml")
 {
   // remove old file
   unlink(defaultFile_);
   // write new content
-  const char *xml =useStub ? defaultConfigContentStubs : defaultConfigContent;
+  if(xml==NULL)
+    xml=defaultConfigContent;
   const int   size=strlen(xml);
   System::DiskFile df(defaultFile_);
   tut::ensure_equals("unable to write to default config file",
@@ -80,7 +54,7 @@ TestBase::TestBase(const bool useStub):
 
 TestBase::~TestBase(void)
 {
-  //unlink(defaultFile_);
+  unlink(defaultFile_);
 }
 
 } // namespace TestHelpers

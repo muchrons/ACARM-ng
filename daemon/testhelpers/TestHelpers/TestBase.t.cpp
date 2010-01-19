@@ -25,22 +25,24 @@ factory tf("TestHelpers/TestBase");
 namespace tut
 {
 
-// create stubs
+// check for persistency section
 template<>
 template<>
 void testObj::test<1>(void)
 {
   TestBase tb;
-  ensure_equals("invalid content", system("grep -q '>postgres<' acarm_ng_config.xml"), 0);
+  ensure_equals("no persistency section",
+                system("grep -q '<persistency>' acarm_ng_config.xml"), 0);
 }
 
-// create non-stubs
+// check for logger section
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  TestBase tb(true);
-  ensure_equals("invalid content", system("grep -q '>stubs<' acarm_ng_config.xml"), 0);
+  TestBase tb;
+  ensure_equals("no logger section",
+                system("grep -q '<logger>' acarm_ng_config.xml"), 0);
 }
 
 } // namespace tut

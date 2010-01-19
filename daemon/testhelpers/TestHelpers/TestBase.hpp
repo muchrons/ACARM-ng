@@ -15,7 +15,7 @@ namespace TestHelpers
 class TestBase
 {
 public:
-  TestBase(bool useStub=false);
+  TestBase(const char *xml=NULL);
   ~TestBase(void);
 
 private:
