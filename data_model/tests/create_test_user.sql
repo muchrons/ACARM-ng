@@ -18,7 +18,8 @@ GRANT ALL ON TABLE
     meta_alerts,
     alert_to_meta_alert_map,
     meta_alerts_tree,
-    meta_alerts_in_use
+    meta_alerts_in_use,
+    meta_alerts_already_triggered
     TO "acarm-ng-tests";
 
 GRANT ALL ON SEQUENCE

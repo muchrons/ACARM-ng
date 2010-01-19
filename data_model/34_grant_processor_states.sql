@@ -4,7 +4,8 @@
 
 -- ui/daemon may read everything
 GRANT SELECT
-  ON TABLE meta_alerts_in_use
+  ON TABLE meta_alerts_in_use,
+           meta_alerts_already_triggered
   TO "acarm-ng-ui",
      "acarm-ng-daemon";
 
@@ -12,5 +13,6 @@ GRANT SELECT
 -- daemon may add and delete data to set
 GRANT INSERT,
       DELETE
-  ON TABLE meta_alerts_in_use
+  ON TABLE meta_alerts_in_use,
+           meta_alerts_already_triggered
   TO "acarm-ng-daemon";
