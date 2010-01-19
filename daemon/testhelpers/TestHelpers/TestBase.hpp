@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <stdlib.h>
+
 namespace TestHelpers
 {
 
