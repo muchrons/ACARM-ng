@@ -7,6 +7,7 @@
 
 #include <string>
 #include <boost/noncopyable.hpp>
+#include <boost/lexical_cast.hpp>
 #include <pqxx/pqxx>
 
 #include "Logger/Node.hpp"
@@ -31,15 +32,18 @@ public:
   {
     /** \brief fast creating of conneciton paramters.
      *  \param host     name of the host data base runs on.
+     *  \param port     port data base server listens on.
      *  \param dbname   name of the data base to connect to.
      *  \param username name of the user to authorize with.
      *  \param password password for user.
      */
     Parameters(const std::string &host,
+               const std::string &port,
                const std::string &dbname,
                const std::string &username,
                const std::string &password):
       host_(host),
+      port_( boost::lexical_cast<uint16_t>(port) ),
       dbname_(dbname),
       username_(username),
       password_(password)
@@ -47,6 +51,7 @@ public:
     }
 
     std::string host_;      ///< name of the host data base server runs on.
+    uint16_t    port_;      ///< port number on a given host.
     std::string dbname_;    ///< name of the data base.
     std::string username_;  ///< user name ot authenticate with.
     std::string password_;  ///< password for given user.

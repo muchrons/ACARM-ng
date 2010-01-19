@@ -42,6 +42,7 @@ ConnectionBuilder::FactoryPtr ConnectionBuilder::buildImpl(const Options &option
   assert(g_rh.isRegistered() && "oops - registration failed");
 
   const DBConnection::Parameters params( getOption(options, "host"),
+                                         getOption(options, "port"),
                                          getOption(options, "dbname"),
                                          getOption(options, "user"),
                                          getOption(options, "pass")  );

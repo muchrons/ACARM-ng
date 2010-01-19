@@ -6,6 +6,7 @@
 
 #include "Algo/countCorrelatedAlerts.hpp"
 #include "Algo/TestHelpers.t.hpp"
+#include "Algo/TestBase.t.hpp"
 
 using namespace Algo;
 using namespace Persistency;
@@ -13,7 +14,7 @@ using namespace Persistency;
 namespace
 {
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestClass(void):
     tree_( th_makeTree1() ),

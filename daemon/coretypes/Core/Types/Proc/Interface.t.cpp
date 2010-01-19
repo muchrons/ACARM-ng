@@ -8,6 +8,7 @@
 
 #include "Core/Types/Proc/Interface.hpp"
 #include "Persistency/Stubs/TestHelpers.hpp"
+#include "Core/Types/TestBase.t.hpp"
 
 using namespace Core::Types::Proc;
 using namespace Persistency;
@@ -41,7 +42,7 @@ struct TestInterface: public Interface
 };
 
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestClass(void):
     dtor_(false),

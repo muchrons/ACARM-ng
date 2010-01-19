@@ -6,6 +6,7 @@
 
 #include "Algo/forEachInTree.hpp"
 #include "Algo/TestHelpers.t.hpp"
+#include "Algo/TestBase.t.hpp"
 
 using namespace Algo;
 using namespace Persistency;
@@ -13,7 +14,7 @@ using namespace Persistency;
 namespace
 {
 
-struct FuncObj
+struct FuncObj: private TestBase
 {
   FuncObj(void):
     cnt_(0)

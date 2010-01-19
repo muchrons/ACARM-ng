@@ -5,14 +5,16 @@
 #ifndef INCLUDE_CONFIGIO_PARSER_HPP_FILE
 #define INCLUDE_CONFIGIO_PARSER_HPP_FILE
 
-/* public header */
-
 #include <string>
 #include <boost/scoped_ptr.hpp>
 
-#include "System/Exception.hpp" // may be thrown by PIMPLed implementation
+#include "System/Exception.hpp" // may be thrown by implementation
+#include "XML/Tree.hpp"
 #include "ConfigIO/LoggerConfig.hpp"
 #include "ConfigIO/PersistencyConfig.hpp"
+#include "ConfigIO/ParseLoggerNodes.hpp"
+#include "ConfigIO/ParseLoggerAppenders.hpp"
+#include "ConfigIO/ParsePersistency.hpp"
 
 
 namespace ConfigIO
@@ -28,10 +30,6 @@ public:
    */
   explicit Parser(const std::string &path="acarm_ng_config.xml");
 
-  /** \brief deallocates internal data.
-   */
-  ~Parser(void);
-
   /** \brief gets logger's configuration, read from file.
    *  \return logger's configuration.
    */
@@ -43,10 +41,12 @@ public:
   const PersistencyConfig &getPersistencyConfig(void) const;
 
 private:
-  // forward declaraion
-  class ParserImpl;
+  XML::Tree            tree_;
+  ParseLoggerNodes     parseNodes_;
+  ParseLoggerAppenders parseAppenders_;
+  ParsePersistency     parsePersistency_;
 
-  boost::scoped_ptr<ParserImpl> pimpl_;
+  LoggerConfig         loggerCfg_;
 }; // class Parser
 
 } // namespace ConfigIO

@@ -7,6 +7,7 @@
 
 #include "Trigger/Strategy.hpp"
 #include "Persistency/Stubs/TestHelpers.hpp"
+#include "Trigger/TestBase.t.hpp"
 
 using namespace Trigger;
 using namespace Persistency;
@@ -51,7 +52,7 @@ struct TestTrigger: public Strategy
 };
 
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestTrigger tt_;
 };

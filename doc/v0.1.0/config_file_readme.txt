@@ -25,12 +25,14 @@ be shown in the example, for sake of document's simplicity.
 persistency configuration
 =========================
 
-configuration of persistenyc requires only giving its type to use and options
+configuration of persistency requires only giving its type to use and options
 for it.
-example:
 
+following persistencies are supported:
+  * PostgreSQL:
 <persistency>
-  <type>PostgreSQL</type>
+  <type>postgres</type>
+  <dbname>acarm_ng</dbname>
   <user>john</user>
   <pass>$3cr3t</pass>
   <host>db.server.my.domain.org</host>
@@ -38,8 +40,6 @@ example:
   </persistencytype>
 </persistency>
 
-where persistencytype can be one of the following:
-  * PostgreSQL
 
 
 logger configuration

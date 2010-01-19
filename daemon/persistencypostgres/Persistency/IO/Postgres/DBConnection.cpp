@@ -31,6 +31,7 @@ std::string DBConnection::makeConnectionString(const Parameters &params)
 {
   std::stringstream ss;
   ss<<"  host='"    <<params.host_
+    <<"' port='"    <<params.port_
     <<"' dbname='"  <<params.dbname_
     <<"' user='"    <<params.username_
     <<"' password='"<<params.password_

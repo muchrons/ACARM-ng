@@ -2,12 +2,7 @@
 <acarm_ng>
 
   <persistency>
-    <type>PostgreSQL</type>
-    <user>john</user>
-    <pass>$3cr3t</pass>
-    <host>db.server.my.domain.org</host>
-    <port>5432</port>
-    <dbname>kszy</dbname>
+    <type>stubs</type>
   </persistency>
 
   <logger>
@@ -17,7 +12,7 @@
       </file>
     </appenders>
 
-    <nodes appender="invalid_name_of_default_appender">
+    <nodes appender="default">
     </nodes>
   </logger>
 

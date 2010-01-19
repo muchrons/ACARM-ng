@@ -1,33 +1,36 @@
 /*
- * BackendFactory.t.cpp
+ * Singleton.t.cpp
  *
  */
 #include <tut.h>
-#include <cstring>
-#include <memory>
 #include <sstream>
 #include <unistd.h>
 #include <stdlib.h>
 
-#include "Persistency/IO/BackendFactory.hpp"
+#include "ConfigIO/Singleton.hpp"
 
 using namespace std;
-using namespace Persistency::IO;
+using namespace ConfigIO;
 
 namespace
 {
+const char *defaultFile="acarm_ng_config.xml";
 
 struct TestClass
 {
   TestClass(void)
   {
-    const char *defaultFile="acarm_ng_config.xml";
     unlink(defaultFile);
+
     stringstream ss;
     ss<<"cp 'testdata/sample_config.xml' '"<<defaultFile<<"'";
     tut::ensure_equals("copying file as default config failed",
                        system( ss.str().c_str() ), 0);
+  }
 
+  ~TestClass(void)
+  {
+    unlink(defaultFile);
   }
 };
 
@@ -35,28 +38,35 @@ typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/IO/BackendFactory");
+factory tf("ConfigIO/Singleton");
 } // unnamed namespace
 
 
 namespace tut
 {
 
-// creating of instance should not be possible, since at the moment no
-// backend is registered.
+// test getting singleton's implementation
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  try
-  {
-    create();
-    fail("create() didn't throw when no factory is registered");
-  }
-  catch(const Commons::Factory::ExceptionBuilderDoesNotExist&)
-  {
-    // this is expected
-  }
+  ensure("NULL pointer received", Singleton::get()!=NULL );
+}
+
+// test getting logger's config
+template<>
+template<>
+void testObj::test<2>(void)
+{
+  Singleton::get()->loggerConfig();
+}
+
+// test getting persistency's config
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  Singleton::get()->persistencyConfig();
 }
 
 } // namespace tut
