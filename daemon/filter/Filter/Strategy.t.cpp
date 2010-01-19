@@ -7,6 +7,7 @@
 
 #include "Filter/Strategy.hpp"
 #include "Filter/TestHelpers.t.hpp"
+#include "Filter/TestBase.t.hpp"
 
 using namespace Filter;
 using namespace Persistency;
@@ -63,7 +64,7 @@ struct TestFilter: public Strategy
 };
 
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestFilter tf_;
 };

@@ -9,6 +9,7 @@
 
 #include "Filter/BackendProxy.hpp"
 #include "Filter/TestHelpers.t.hpp"
+#include "Filter/TestBase.t.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 
 using namespace Filter;
@@ -18,7 +19,7 @@ using namespace Persistency::Stubs;
 namespace
 {
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestClass(void):
     conn_( IO::create() ),
