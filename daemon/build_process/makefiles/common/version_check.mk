@@ -22,5 +22,6 @@ $(BUILD_PROCESS_VERSION_TIMESTAMP): $(wildcard $(SCRIPTS_BASE_DIR)/*)
 			echo "--------------------------------------------------------------------------" >&2 ; \
 			false ; \
 		else \
-			echo "dependent files are: $^" > "$@" ; \
+			echo "dependent files are:"         >  "$@" ; \
+			echo "$^" | sed 's: \+:\n:g' | sort >> "$@" ; \
 		fi

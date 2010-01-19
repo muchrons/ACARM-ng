@@ -6,8 +6,8 @@
  * from TUT home page.
  *
  */
-#include <tut.h>
-#include <tut_reporter.h>
+#include <tut/tut.hpp>
+#include <tut/tut_reporter.hpp>
 #include <iostream>
 #include <string>
 #include <stdlib.h>
