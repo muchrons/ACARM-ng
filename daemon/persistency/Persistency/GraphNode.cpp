@@ -6,6 +6,7 @@
 #include <cassert>
 
 #include "Persistency/GraphNode.hpp"
+#include "Persistency/IO/GlobalConnection.hpp"
 
 namespace Persistency
 {
@@ -25,6 +26,7 @@ GraphNode::GraphNode(AlertPtrNN           alert,
   IO::MetaAlertAutoPtr maIO=connection->metaAlert( getMetaAlert(), t);
   maIO->save();
   maIO->associateWithAlert(leaf_);
+  maIO->markAsUsed();
 
   assert( isLeaf() && "invalid initialization");
 }
@@ -51,8 +53,14 @@ GraphNode::GraphNode(MetaAlertPtrNN        ma,
   for(ChildrenVector::const_iterator it=otherChildren.begin();
       it!=otherChildren.end(); ++it)
     addChild(*it, *maIO);
+  maIO->markAsUsed();
 
   assert( !isLeaf() && "invalid initialization");
+}
+
+GraphNode::~GraphNode(void)
+{
+  IO::GlobalConnection::get()->markAsUnused( getMetaAlert() );
 }
 
 GraphNode::iterator GraphNode::begin(void)
@@ -129,6 +137,7 @@ void GraphNode::ensureIsNode(void) const
 //       sort of distributed algorithm, not to block whole structure
 //       when non-dependent data parts are being operated on.
 //
+// TODO: this can be repaced with System::SecureInitLock.
 // namespace with helpers for locking on global level of whole structure
 namespace
 {

@@ -47,6 +47,7 @@ public:
    */
   void markAsUsed();
   /** \brief mark object as not used anymore.
+   *  \note calling this method cleans up markAsTriggered() marks too.
    */
   void markAsUnused();
   /** \brief update severity delta.

@@ -69,6 +69,12 @@ public:
             GraphNodePtrNN        child1,
             GraphNodePtrNN        child2,
             const ChildrenVector &otherChildren=ChildrenVector() );
+  /** \brief deallocates object and its resources.
+   *
+   *  as a part of deallocation process object meta-alert is marked as not
+   *  used any more, in data base.
+   */
+  ~GraphNode(void);
 
   /** \brief returns non-const begin iterator.
    *  \return begin iterator.

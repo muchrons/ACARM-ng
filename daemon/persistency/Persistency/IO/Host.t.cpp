@@ -37,7 +37,7 @@ public:
 }; // class Host
 
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestClass(void):
     tapi_( new TestTransactionAPI() ),

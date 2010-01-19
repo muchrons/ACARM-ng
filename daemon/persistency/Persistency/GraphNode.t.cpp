@@ -15,7 +15,7 @@ using namespace Persistency;
 namespace
 {
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestClass(void):
     ma1_( new MetaAlert( makeNewAlert() ) ),
@@ -343,7 +343,7 @@ struct NodeAdder
   {
     IO::MetaAlertAutoPtr io=testClass_->makeIO(gn_);
 
-    for(int i=0; i<4500; ++i)
+    for(int i=0; i<666; ++i)
     {
       assert( io.get()!=NULL );
       gn_->addChild( testClass_->makeNode(), *io);

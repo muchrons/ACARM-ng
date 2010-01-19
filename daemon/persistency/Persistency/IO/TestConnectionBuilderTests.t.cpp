@@ -5,13 +5,14 @@
 #include <tut.h>
 
 #include "Persistency/IO/BackendFactory.hpp"
+#include "Persistency/TestBase.t.hpp"
 
 using namespace Persistency::IO;
 
 namespace
 {
 
-struct TestClass
+struct TestClass: private Persistency::TestBase
 {
 };
 

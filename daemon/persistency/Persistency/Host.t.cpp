@@ -21,7 +21,7 @@ const Host::Netmask_v6::bytes_type mask6_bytes={ {
                                                    0x00, 0x00, 0x00, 0x00,
                                                } };
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestClass(void):
     mask4_( Host::Netmask_v4(mask4_bytes) ),

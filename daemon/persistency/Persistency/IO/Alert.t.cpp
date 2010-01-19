@@ -35,7 +35,7 @@ struct TestIOAlert: public Persistency::IO::Alert
   int                   called_;
 }; // struct TestIOAlert
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestClass(void):
     alert_( new Persistency::Alert("abc",

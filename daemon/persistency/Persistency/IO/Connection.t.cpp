@@ -16,7 +16,7 @@ using namespace Persistency::IO;
 namespace
 {
 
-struct TestClass
+struct TestClass: private TestBase
 {
   void ensureCalls(unsigned int pos, int count=1)
   {

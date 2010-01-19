@@ -67,7 +67,7 @@ public:
 }; // class MetaAlert
 
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestClass(void):
     ma_( new Persistency::MetaAlert( makeNewAlert() ) ),
