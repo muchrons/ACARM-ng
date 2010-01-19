@@ -87,13 +87,16 @@ GraphNode::const_iterator GraphNode::end(void) const
   return children_.end();
 }
 
+void GraphNode::markAsTriggered(const std::string &name)
+{
+  IO::GlobalConnection::get()->markAsTriggered( getMetaAlert(), name);
+}
+
 void GraphNode::addChild(GraphNodePtrNN child, IO::MetaAlert &maIO)
 {
   ensureIsNode();
-
   // check if addition will not cause cycle
   nonCyclicAddition(child);
-
   // persistency save
   maIO.addChild( child->getMetaAlert() );
 }

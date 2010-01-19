@@ -368,4 +368,13 @@ void testObj::test<17>(void)
   th2.join();
 }
 
+// smoke-test for marking as triggered
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  node_->markAsTriggered("some_proc");
+  leaf_->markAsTriggered("some_proc");
+}
+
 } // namespace tut
