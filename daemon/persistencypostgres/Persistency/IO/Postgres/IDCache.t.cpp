@@ -5,10 +5,9 @@
 #include <tut.h>
 
 #include "Persistency/IO/Postgres/IDCache.hpp"
-#include "Persistency/Stubs/TestHelpers.hpp"
+#include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 
 using namespace std;
-using namespace Persistency::Stubs;
 using namespace Persistency::IO::Postgres;
 
 namespace

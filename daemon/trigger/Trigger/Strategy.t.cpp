@@ -6,12 +6,12 @@
 #include <boost/thread.hpp>
 
 #include "Trigger/Strategy.hpp"
-#include "Persistency/Stubs/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Trigger;
 using namespace Persistency;
-using namespace Persistency::Stubs;
+using namespace TestHelpers::Persistency;
 
 namespace
 {

@@ -2,12 +2,14 @@
  * TestHelpers.cpp
  *
  */
-#include "Persistency/Stubs/TestHelpers.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
 
-namespace Persistency
+using namespace ::Persistency;
+
+namespace TestHelpers
 {
-namespace Stubs
+namespace Persistency
 {
 
 AlertPtr makeNewAlert(const char *name)
@@ -27,7 +29,7 @@ MetaAlertPtr makeNewMetaAlert(const char *name)
 {
   return MetaAlertPtrNN( new MetaAlert( MetaAlert::Name(name),
                                         0.1, 0.2,
-                                        Stubs::makeNewReferenceURL(),
+                                        makeNewReferenceURL(),
                                         Timestamp() ) );
 }
 
@@ -92,9 +94,9 @@ ReferenceURLPtr makeNewReferenceURL(const char *url)
 
 GraphNodePtrNN makeNewLeaf(void)
 {
-  Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
+  ::Persistency::IO::ConnectionPtrNN conn=::Persistency::IO::create();
   IO::Transaction t( conn->createNewTransaction("make_leaf_transaction") );
-  return GraphNodePtrNN( new GraphNode( Stubs::makeNewAlert(), conn, t) );
+  return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn, t) );
 }
 
 GraphNodePtrNN makeNewNode(void)
@@ -104,7 +106,7 @@ GraphNodePtrNN makeNewNode(void)
 
 GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
 {
-  Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
+  ::Persistency::IO::ConnectionPtrNN conn=::Persistency::IO::create();
   IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
   return GraphNodePtrNN( new GraphNode( makeNewMetaAlert(),
                                         conn, t,
@@ -126,5 +128,5 @@ GraphNodePtrNN makeNewTree2(void)
                         makeNewNode( makeNewLeaf(), node1 ), node1 ) );
 }
 
-} // namespace Stubs
 } // namespace Persistency
+} // namespace TestHelpers

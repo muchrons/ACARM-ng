@@ -11,7 +11,6 @@
 
 using namespace Filter;
 using namespace Persistency;
-using namespace Persistency::Stubs;
 
 namespace
 {
