@@ -154,7 +154,6 @@ public:
    */
   void update(const T &e, unsigned int seconds)
   {
-    seconds+=time(NULL);        // make absolute time
     // go through all elements to find matching
     for(ImplIter it=q_.begin(); it!=q_.end(); ++it)
       if(it->first==e)
@@ -163,7 +162,7 @@ public:
         return;                 // if updated, we can finish
       }
     // if entry not found, insert new
-    q_.push_back( make_pair(e, seconds) );
+    q_.push_back( make_pair(e, seconds+time(NULL)) );
   }
 
 private:
