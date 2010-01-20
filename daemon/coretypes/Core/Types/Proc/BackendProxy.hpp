@@ -63,8 +63,8 @@ private:
   typedef boost::scoped_ptr<Persistency::IO::Transaction> TransactionScPtr;
 
   std::string                      processorName_;
-  TransactionScPtr                 transaction_;
   Persistency::IO::ConnectionPtrNN conn_;
+  TransactionScPtr                 transaction_;
 }; // class BackendProxy
 
 } // namespace Proc
