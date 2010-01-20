@@ -90,10 +90,10 @@ template<>
 void testObj::test<3>(void)
 {
   const size_t oneMB=1024*1024;
-  const size_t size =300*oneMB;     // 300MB
+  const size_t size =30*oneMB;      // 30MB
   const size_t off  =size-oneMB;    // next to last MB
   assert(size>oneMB);
-  for(size_t i=0; i<10; ++i)
+  for(size_t i=0; i<200; ++i)
   {
     ACP p( malloc(size) );          // allocate and catch.
     ensure( p.get()!=NULL );        // test if it passed.

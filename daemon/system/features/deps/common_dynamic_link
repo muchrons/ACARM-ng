@@ -1,0 +1,2 @@
+#!/bin/sh
+exec echo "-lboost_thread-mt -lpthread"

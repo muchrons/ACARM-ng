@@ -21,13 +21,25 @@ namespace Exceptions
 template<typename CRTP>
 class LogicError: public BaseSimple<LogicError<CRTP>, std::logic_error>
 {
+private:
+  typedef BaseSimple<LogicError<CRTP>, std::logic_error> BaseC;
+
 protected:
   /** \brief create execption with given message.
    *  \param msg message to represent.
    */
   template<typename T>
   explicit LogicError(const T &msg):
-    Exceptions::BaseSimple<LogicError<CRTP>, std::logic_error>(msg)
+    BaseC(msg)
+  {
+  }
+  /** \brief create execption with given message.
+   *  \param where location of exception raising.
+   *  \param msg   message to represent.
+   */
+  template<typename T>
+  LogicError(const typename BaseC::Location &where, const T &msg):
+    BaseC(where, msg)
   {
   }
 }; // class LogicError
