@@ -94,11 +94,6 @@ public:
    */
   const_iterator end(void) const;
 
-  /** \brief marks node as triggered by given processor.
-   *  \param name name of the processor that triggered meta-alert.
-   */
-  void markAsTriggered(const std::string &name);
-
   /** \brief adds new child to this node.
    *  \param child node to be added as a child.
    *  \param maIO  persistency access element for this node.
