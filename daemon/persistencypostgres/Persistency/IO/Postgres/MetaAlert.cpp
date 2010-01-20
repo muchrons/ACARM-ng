@@ -24,6 +24,11 @@ void MetaAlert::saveImpl(Transaction &)
   // TODO
 }
 
+void MetaAlert::markAsTriggeredImpl(Transaction &, const std::string &/*name*/)
+{
+  // TODO
+}
+
 void MetaAlert::markAsUsedImpl(Transaction &)
 {
   // TODO

@@ -6,7 +6,7 @@
 
 #include "Algo/computeSeverity.hpp"
 #include "Algo/TestHelpers.t.hpp"
-#include "Algo/TestBase.t.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Algo;
 using namespace Persistency;
@@ -14,7 +14,7 @@ using namespace Persistency;
 namespace
 {
 
-struct TestClass: private TestBase
+struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     alertSeverity_( SeverityLevel::INFO )

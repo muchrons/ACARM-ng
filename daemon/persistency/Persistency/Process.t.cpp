@@ -13,7 +13,7 @@ using namespace Persistency;
 namespace
 {
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestClass(void):
     md5Str_("01234567890123456789012345678901"),

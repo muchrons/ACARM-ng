@@ -1,5 +1,5 @@
 /*
- * ObjectFactoryBuilder.cpp
+ * ConnectionBuilder.cpp
  *
  */
 #include <cassert>

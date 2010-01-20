@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "Input/Reader.hpp"
-#include "Persistency/Stubs/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace std;
 using namespace Input;
@@ -30,7 +30,7 @@ struct TestReader: public Reader
 
   virtual DataPtr read(unsigned int)
   {
-    return Persistency::Stubs::makeNewAlert();
+    return TestHelpers::Persistency::makeNewAlert();
   }
 
   bool &i_;

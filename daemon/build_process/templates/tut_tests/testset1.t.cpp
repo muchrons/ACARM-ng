@@ -4,7 +4,7 @@
  * some example test set for test application.
  *
  */
-#include <tut.h>
+#include <tut/tut.hpp>
 
 #include "UserNamespace/Some.hpp"
 
@@ -20,9 +20,8 @@ struct TestClass
   }
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
-typedef factory::object testObj;
+typedef factory::object            testObj;
 
 factory tf("UserNamespace/Some");
 } // unnamed namespace

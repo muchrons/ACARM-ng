@@ -77,6 +77,10 @@ public:
   {
     ++called_[0];
   }
+  virtual void markAsTriggeredImpl(Persistency::IO::Transaction &, const std::string &)
+  {
+    ++called_[7];
+  }
   virtual void markAsUsedImpl(Persistency::IO::Transaction &)
   {
     ++called_[1];
@@ -103,7 +107,7 @@ public:
   }
 
   Persistency::MetaAlertPtr ma_;
-  int                       called_[7];
+  int                       called_[8];
 }; // class MetaAlert
 
 
@@ -116,11 +120,11 @@ struct TestIOConnection: public Persistency::IO::Connection
   }
 
   virtual Persistency::IO::TransactionAPIAutoPtr createNewTransactionImpl(
-                                        Base::Threads::Mutex &/*mutex*/,
-                                        const std::string    &/*name*/)
+                                        Base::Threads::Mutex &mutex,
+                                        const std::string    &name)
   {
     ++called_[0];
-    return Persistency::IO::TransactionAPIAutoPtr(new TestTransactionAPI);
+    return Persistency::IO::TransactionAPIAutoPtr( new TestTransactionAPI(mutex, name) );
   }
   virtual Persistency::IO::AlertAutoPtr alertImpl(
                                         Persistency::AlertPtrNN       alert,

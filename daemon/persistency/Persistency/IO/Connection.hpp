@@ -36,7 +36,7 @@ public:
    *  \param name name for new transaction.
    *  \return non-NULL transaction API object for given persistency type.
    *  \note opening transaction locks communication object so that only
-   *        one transaction can be created at a time. if more call will
+   *        one transaction can be created at a time. if more calls will
    *        appear, they will be waiting for it to finish.
    */
   TransactionAPIAutoPtr createNewTransaction(const std::string &name);

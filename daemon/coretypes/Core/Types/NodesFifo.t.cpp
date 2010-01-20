@@ -5,14 +5,14 @@
 #include <tut.h>
 
 #include "Core/Types/NodesFifo.hpp"
-#include "Core/Types/TestBase.t.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Core::Types;
 
 namespace
 {
 
-struct TestClass: private TestBase
+struct TestClass: private TestHelpers::Persistency::TestStubs
 {
 };
 

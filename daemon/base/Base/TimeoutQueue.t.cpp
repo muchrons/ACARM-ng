@@ -177,4 +177,19 @@ void testObj::test<8>(void)
   ensure_equals("invalid element 1", *it, "new2");
 }
 
+// test updating timeout should make time longer by a given amount.
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  ensure_equals("invalid size/1", size(empty_), 0);
+  empty_.update("old", 0);  // this should be timeouted strigh away
+  empty_.update("old", 1);  // now make it last longer, but not too long
+  ensure_equals("invalid size/2", size(empty_), 1);
+  sleep(2);                 // now for sure!
+
+  empty_.prune();           // entry should now be removed
+  ensure_equals("invalid size/4", size(empty_), 0);
+}
+
 } // namespace tut

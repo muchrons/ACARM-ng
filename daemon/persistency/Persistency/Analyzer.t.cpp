@@ -15,7 +15,7 @@ using namespace Persistency;
 namespace
 {
 
-struct TestClass
+struct TestClass: private TestBase
 {
 };
 

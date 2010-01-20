@@ -10,12 +10,15 @@
 
 #include "System/AtExit.hpp"
 #include "System/AtExitImpl.hpp"
+#include "System/Threads/SafeInitLocking.hpp"
 
 using namespace std;
+using System::Threads::SafeInitLock;
 
 
 namespace
 {
+
 //
 // pointer to implementation class of AtExit. it is static, raw
 // pointer since it will be freed by AtExit() uppon application
@@ -30,33 +33,7 @@ namespace
 // are run), to the very end.
 //
 System::AtExitImpl *atExitImpl=NULL;
-pthread_mutex_t     mutex     =PTHREAD_MUTEX_INITIALIZER;
-
-//
-// helper class for synchronizing access to atExitImpl.
-// it is manually written for pthreads, since its mutex has to be
-// initialized in compile time, to make it work.
-//
-struct PtrLock
-{
-  PtrLock(void)
-  {
-    if( pthread_mutex_lock(&mutex)!=0 )
-      throw System::Exception("unable to lock mutex for AtExitImpl");
-  }
-
-  ~PtrLock(void)
-  {
-    if( pthread_mutex_unlock(&mutex)!=0 )
-    {
-      assert(!"unable to unlock mutex for AtExitImpl");
-      cerr<<"System::<unnamed_namespace>::PtrLock::~PtrLock(): "
-            "unable to unlock mutex for AtExitImpl"<<endl;
-      cerr<<"System::<unnamed_namespace>::PtrLock::~PtrLock(): "
-            "you should NEVER see this error!"<<endl;
-    }
-  }
-}; // struct PtrLock
+SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_mutex);
 
 } // unnamed namespace
 
@@ -67,18 +44,25 @@ extern "C"
 {
 static void cStyleCallForAtExit(void)
 {
-  PtrLock lock;
-  // pointer can be null in case when this function has been already
-  // registered, but AtExitImpl's constructor thrown exception.
-  if(atExitImpl!=NULL)
+  // swap this queue with new (NULL - will be allocated, if needed) so
+  // that it is possible to register new handlers while processing
+  // other handlers.
+  System::AtExitImpl *tmp=NULL;
   {
-    // run dealocation of registered elements
-    atExitImpl->deallocateAll();
-    // free resource
-    boost::checked_delete(atExitImpl);
+    SafeInitLock lock(g_mutex);
+    tmp       =atExitImpl;
     atExitImpl=NULL;
   }
-  assert(atExitImpl==NULL);
+  // pointer can be null in case when this function has been already
+  // registered, but AtExitImpl's constructor thrown exception or when
+  // adding something to queue from queue itself (ex. Phoenix Singleton).
+  if(tmp!=NULL)
+  {
+    // run dealocation of registered elements
+    tmp->deallocateAll();
+    // free resource
+    boost::checked_delete(tmp);
+  }
 } // cStyleCallForAtExit()
 } // extern "C"
 
@@ -88,7 +72,7 @@ namespace System
 
 void AtExit::registerDeallocator(TDeallocPtr p)
 {
-  PtrLock lock;
+  SafeInitLock lock(g_mutex);
   if(atExitImpl==NULL)          // not initialized?
     AtExit::init();             // will throw on failure
   assert(atExitImpl!=NULL);

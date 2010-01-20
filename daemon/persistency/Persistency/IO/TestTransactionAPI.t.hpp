@@ -18,6 +18,15 @@ struct TestTransactionAPI: public Persistency::IO::TransactionAPI
     rollbacked_(rollbacks)
   {
   }
+  TestTransactionAPI(Base::Threads::Mutex &mutex,
+                     const std::string    &name,
+                     int                  *commits=NULL,
+                     int                  *rollbacks=NULL):
+    Persistency::IO::TransactionAPI(mutex, name),
+    commited_(commits),
+    rollbacked_(rollbacks)
+  {
+  }
   virtual void commitImpl(void)
   {
     if(commited_!=NULL)

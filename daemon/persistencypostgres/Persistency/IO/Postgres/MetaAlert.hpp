@@ -33,6 +33,7 @@ public:
 
 private:
   virtual void saveImpl(Transaction &t);
+  virtual void markAsTriggeredImpl(Transaction &t, const std::string &name);
   virtual void markAsUsedImpl(Transaction &t);
   virtual void markAsUnusedImpl(Transaction &t);
   virtual void updateSeverityDeltaImpl(Transaction &t, double delta);

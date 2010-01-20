@@ -17,6 +17,7 @@
 #include "Persistency/Severity.hpp"
 #include "Persistency/SeverityLevel.hpp"
 #include "Persistency/Timestamp.hpp"
+#include "Persistency/TestBase.t.hpp"
 
 
 namespace Persistency

@@ -17,7 +17,7 @@ namespace IO
 namespace Stubs
 {
 
-/** \brief builder for reader of prelude format.
+/** \brief builder for connection stubs.
  */
 class ConnectionBuilder: public BackendFactory::TFactoryBuilderBase
 {

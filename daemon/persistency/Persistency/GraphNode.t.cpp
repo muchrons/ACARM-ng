@@ -15,7 +15,7 @@ using namespace Persistency;
 namespace
 {
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestClass(void):
     ma1_( new MetaAlert( makeNewAlert() ) ),
@@ -343,7 +343,7 @@ struct NodeAdder
   {
     IO::MetaAlertAutoPtr io=testClass_->makeIO(gn_);
 
-    for(int i=0; i<4500; ++i)
+    for(int i=0; i<666; ++i)
     {
       assert( io.get()!=NULL );
       gn_->addChild( testClass_->makeNode(), *io);
@@ -366,6 +366,15 @@ void testObj::test<17>(void)
   // wait till threads exit.
   th1.join();
   th2.join();
+}
+
+// smoke-test for marking as triggered
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  node_->markAsTriggered("some_proc");
+  leaf_->markAsTriggered("some_proc");
 }
 
 } // namespace tut

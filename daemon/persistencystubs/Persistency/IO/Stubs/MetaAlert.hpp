@@ -29,6 +29,7 @@ public:
             int                          handler);
 
   size_t saveCalls_;                    ///< calss count to save().
+  size_t markAsTriggeredCalls_;         ///< calss count to markAsTriggered().
   size_t markAsUsedCalls_;              ///< calss count to markAsUsed().
   size_t markAsUnusedCalls_;            ///< calss count to markAsUnused().
   size_t updateSeverityDeltaCalls_;     ///< calss count to updateSeverityDelta().
@@ -38,6 +39,7 @@ public:
 
 private:
   virtual void saveImpl(Transaction &t);
+  virtual void markAsTriggeredImpl(Transaction &t, const std::string &name);
   virtual void markAsUsedImpl(Transaction &t);
   virtual void markAsUnusedImpl(Transaction &t);
   virtual void updateSeverityDeltaImpl(Transaction &t, double delta);
