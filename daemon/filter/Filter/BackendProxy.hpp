@@ -7,11 +7,8 @@
 
 /* public header */
 
-#include <string>
-#include <boost/noncopyable.hpp>
-#include <boost/scoped_ptr.hpp>
-
 #include "Persistency/GraphNode.hpp"
+#include "Core/Types/Proc/BackendProxy.hpp"
 
 
 namespace Filter
@@ -24,7 +21,7 @@ namespace Filter
  * \note this object allows transaction's to take place, but only on persistent
  *       level, i.e. rollbacking transaction does not change user objects.
  */
-class BackendProxy: private boost::noncopyable
+class BackendProxy: public Core::Types::Proc::BackendProxy
 {
 public:
   /** \brief forward of type definition (for simplified usage). */
@@ -36,9 +33,6 @@ public:
    */
   BackendProxy(Persistency::IO::ConnectionPtrNN  conn,
                const std::string                &filterName);
-  /** \brief deallocates object's internal resources.
-   */
-  ~BackendProxy(void);
 
   /** \brief set name of a given host.
    *  \param host host naem ot set name to.
@@ -72,23 +66,6 @@ public:
             Persistency::GraphNodePtrNN  child1,
             Persistency::GraphNodePtrNN  child2,
             const ChildrenVector        &otherChildren=ChildrenVector() );
-  /** \brief commit current transaction.
-   *
-   * if not transaction is started, call does nothing. if transaction is opened,
-   * it is commited. calling another call after commitChanges will open new
-   * transaction.
-   */
-  void commitChanges(void);
-
-private:
-  void beginTransaction(void);
-  Persistency::IO::Transaction &getTransaction(void) const;
-
-  typedef boost::scoped_ptr<Persistency::IO::Transaction> TransactionScPtr;
-
-  std::string                      filterName_;
-  TransactionScPtr                 transaction_;
-  Persistency::IO::ConnectionPtrNN conn_;
 }; // class BackendProxy
 
 } // namespace Filter
