@@ -6,6 +6,7 @@
 #include <cassert>
 
 #include "Logger/Logger.hpp"
+#include "Persistency/IO/BackendFactory.hpp"
 #include "Trigger/Strategy.hpp"
 
 using namespace std;
@@ -39,6 +40,8 @@ void Strategy::process(Persistency::GraphNodePtrNN n)
   LOGMSG_INFO_S(log_)<<"calling trigger for node at address 0x"
                      <<static_cast<void*>( n.get() );
   trigger(*n);
+  // if it succeeded, mark it as triggered
+  bp_.markAsTriggered( n->getMetaAlert() );
 }
 
 
@@ -53,9 +56,11 @@ inline Logger::NodeName makeNodeName(const string &name)
 
 Strategy::Strategy(const std::string &name):
   log_( makeNodeName(name) ),
-  name_(name)
+  name_(name),
+  conn_( Persistency::IO::create() ),
+  bp_(conn_, name_)
 {
-  LOGMSG_INFO(log_, "creating trigger");
+  LOGMSG_INFO(log_, "trigger created");
 }
 
 void Strategy::interruptionPoint(void)
