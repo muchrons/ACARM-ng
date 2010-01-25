@@ -11,7 +11,6 @@
 
 #include "System/Exceptions/RuntimeError.hpp"
 #include "Logger/Logger.hpp"
-#include "Commons/CallName.h"
 
 namespace Commons
 {

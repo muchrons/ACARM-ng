@@ -22,7 +22,7 @@ struct ExceptionInvalidCertainty: public Exception
   /** \brief create execption with given message.
    *  \param where place where exception has been thrown.
    */
-  ExceptionInvalidCertainty(const char *where):
+  ExceptionInvalidCertainty(const Location &where):
     Exception(where, "certainty out of bound requested")
   {
   }
@@ -42,7 +42,7 @@ public:
     c_(c)
   {
     if(c_<0 || 1<c_)
-      throw ExceptionInvalidCertainty(CALLNAME);
+      throw ExceptionInvalidCertainty(SYSTEM_SAVE_LOCATION);
   }
   /** \brief gets certanity level.
    *  \return certanity saved in class.

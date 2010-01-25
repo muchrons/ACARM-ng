@@ -22,8 +22,7 @@ MD5Sum::MD5Sum(const char *str):
   // check all chars
   for(int i=0; i<MD5_STR_LEN; ++i)
     if( !isdigit(str_[i]) && !islower(str_[i]) )
-      throw ExceptionInvalidMD5String(CALLNAME, str_.get() );
-
+      throw ExceptionInvalidMD5String(SYSTEM_SAVE_LOCATION, str_.get() );
 }
 
 } // namespace Persistency

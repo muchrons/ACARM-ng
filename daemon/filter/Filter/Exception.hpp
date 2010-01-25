@@ -22,7 +22,7 @@ public:
    *  \param msg   message to represent.
    */
   template<typename T>
-  Exception(const char *where, const char *name, const T &msg):
+  Exception(const Location &where, const char *name, const T &msg):
     Core::Types::Proc::Exception(where, name, msg)
   {
   }

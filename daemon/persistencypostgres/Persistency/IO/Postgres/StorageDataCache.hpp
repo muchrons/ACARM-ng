@@ -58,9 +58,10 @@ public:
   struct ExceptionNoSuchEntry: public Exception
   {
     /** \brief c-tor with proper error message.
+     *  \param where place where exception has been raised.
      */
-    ExceptionNoSuchEntry(void):
-      Exception(__FILE__, "entry to be read with StorageDataCache::get() does not exist")
+    explicit ExceptionNoSuchEntry(const Location &where):
+      Exception(where, "entry to be read does not exist")
     {
     }
   }; // struct ExceptionEntryAlreadyExist
@@ -74,7 +75,7 @@ public:
     Base::Threads::Lock lock(mutex_);
     typename ObjectIDMapping::iterator it=oidm_.find( ptr.get() );
     if( it==oidm_.end() )
-      throw ExceptionNoSuchEntry();
+      throw ExceptionNoSuchEntry(SYSTEM_SAVE_LOCATION);
     assert( it->second.ptr_.lock().get()==ptr.get() );
     return it->second.id_;
   }
@@ -84,9 +85,10 @@ public:
   struct ExceptionEntryAlreadyExist: public Exception
   {
     /** \brief c-tor with proper error message.
+     *  \param where place where exception has been rised.
      */
-    ExceptionEntryAlreadyExist(void):
-      Exception(__FILE__, "entry to be added in StorageDataCache::add() already exist")
+    explicit ExceptionEntryAlreadyExist(const Location &where):
+      Exception(where, "entry to be added already exist")
     {
     }
   }; // struct ExceptionEntryAlreadyExist
@@ -99,7 +101,7 @@ public:
   {
     Base::Threads::Lock lock(mutex_);
     if( oidm_.find( ptr.get() )!=oidm_.end() )
-      throw ExceptionEntryAlreadyExist();
+      throw ExceptionEntryAlreadyExist(SYSTEM_SAVE_LOCATION);
     oidm_.insert( typename ObjectIDMapping::value_type( ptr.get(),
                                                         EntryID(ptr, id) ) );
   }
