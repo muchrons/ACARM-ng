@@ -62,6 +62,10 @@ protected:
    *  \return connection object.
    */
   Persistency::IO::ConnectionPtrNN getConnection(void);
+  /** \brief gets name of this processor.
+   *  \return processor name.
+   */
+  const std::string &getName(void) const;
 
 private:
   typedef boost::scoped_ptr<Persistency::IO::Transaction> TransactionScPtr;

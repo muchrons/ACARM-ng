@@ -29,6 +29,11 @@ struct TestProxy: public BackendProxy
     return getConnection();
   }
 
+  const std::string &getNamePublic(void) const
+  {
+    return getName();
+  }
+
   void doSth(void)
   {
     beginTransaction();
@@ -89,6 +94,14 @@ template<>
 void testObj::test<4>(void)
 {
   ensure("NULL connection received", bp_->getConnectionPublic().get()!=NULL);
+}
+
+// test getting proxy's processor name
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ensure_equals("invalid name", bp_->getNamePublic(), "sometest");
 }
 
 } // namespace tut

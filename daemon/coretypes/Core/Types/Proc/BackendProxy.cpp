@@ -46,7 +46,7 @@ void BackendProxy::beginTransaction(void)
   if( transaction_.get()==NULL )    // new transaction
   {
     TransactionAPIAutoPtr api=conn_->createNewTransaction(
-                                "transaction_for_proc_" + processorName_);
+                                "transaction_for_proc_" + getName() );
     transaction_.reset( new Transaction(api) );
   }
   // if begin has been requested, transaction must always be valid
@@ -62,6 +62,11 @@ Transaction &BackendProxy::getTransaction(void)
 Persistency::IO::ConnectionPtrNN BackendProxy::getConnection(void)
 {
   return conn_;
+}
+
+const std::string &BackendProxy::getName(void) const
+{
+  return processorName_;
 }
 
 } // namespace Proc
