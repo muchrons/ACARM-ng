@@ -169,7 +169,7 @@ private:
   void ensure(const T *t) const
   {
     if(t==NULL)
-      throw ExceptionUnexpectedNULL(__FILE__);
+      throw ExceptionUnexpectedNULL(SYSTEM_SAVE_LOCATION);
   }
 
   PtrT ptr_;

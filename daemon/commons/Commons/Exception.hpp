@@ -26,9 +26,8 @@ public:
    *  \param msg   message to represent.
    */
   template<typename T>
-  Exception(const char *where, const T &msg):
-    System::Exceptions::RuntimeError<Exception>(
-        std::string( ensureString(where) ) + ": " + msg ),
+  Exception(const Location &where, const T &msg):
+    System::Exceptions::RuntimeError<Exception>(where, msg),
     log_("commons.exception")
   {
     LOGMSG_ERROR_S(log_)<<"exception rised: "<<what();
