@@ -20,11 +20,12 @@ namespace Logger
 struct ExceptionInvalidNodeName: public Exception
 {
   /** \brief create execption with given name as a parameter.
+   *  \param where    place where exception has been raised.
    *  \param nodeName invlaid node name that has been given.
    */
-  explicit ExceptionInvalidNodeName(const char *nodeName):
-    Exception( std::string("invalid node name: ") +
-               ensureValidString(nodeName) )
+  explicit ExceptionInvalidNodeName(const Location &where, const char *nodeName):
+    Exception(where, std::string("invalid node name: ") +
+                     ensureValidString(nodeName) )
   {
   }
 }; // struct ExceptionInvalidNodeName

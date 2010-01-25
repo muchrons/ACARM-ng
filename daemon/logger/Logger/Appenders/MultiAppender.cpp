@@ -19,7 +19,7 @@ MultiAppender::MultiAppender(const AppVec &apps):
   // ensure that all vector elements are not NULL
   for(AppVec::const_iterator it=apps_.begin(); it!=apps_.end(); ++it)
     if( it->get()==NULL )
-      throw ExceptionNullParameter("MultiAppender::MultiAppender()", "it->get()");
+      throw ExceptionNullParameter(SYSTEM_SAVE_LOCATION, "it->get()");
 }
 
 void MultiAppender::appendImpl(const std::string &str)

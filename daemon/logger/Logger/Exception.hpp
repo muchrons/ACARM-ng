@@ -18,11 +18,12 @@ class Exception: public System::Exceptions::RuntimeError<Exception>
 {
 public:
   /** \brief create execption with given message.
-   *  \param msg message to represent.
+   *  \param where place where exception has been rised.
+   *  \param msg   message to represent.
    */
   template<typename T>
-  explicit Exception(const T &msg):
-    System::Exceptions::RuntimeError<Exception>(msg)
+  explicit Exception(const Location &where, const T &msg):
+    System::Exceptions::RuntimeError<Exception>(where, msg)
   {
   }
 
