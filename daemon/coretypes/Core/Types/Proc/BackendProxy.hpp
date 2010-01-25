@@ -57,7 +57,11 @@ protected:
   /** \brief gets transaction object.
    *  \return ongoing transaction.
    */
-  Persistency::IO::Transaction &getTransaction(void) const;
+  Persistency::IO::Transaction &getTransaction(void);
+  /** \brief gets connection object.
+   *  \return connection object.
+   */
+  Persistency::IO::ConnectionPtrNN getConnection(void);
 
 private:
   typedef boost::scoped_ptr<Persistency::IO::Transaction> TransactionScPtr;

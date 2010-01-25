@@ -24,6 +24,11 @@ struct TestProxy: public BackendProxy
   {
   }
 
+  Persistency::IO::ConnectionPtrNN getConnectionPublic(void)
+  {
+    return getConnection();
+  }
+
   void doSth(void)
   {
     beginTransaction();
@@ -76,6 +81,14 @@ void testObj::test<3>(void)
 {
   bp_->doSth();
   bp_->commitChanges();
+}
+
+// test getting connection
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  ensure("NULL connection received", bp_->getConnectionPublic().get()!=NULL);
 }
 
 } // namespace tut

@@ -53,10 +53,15 @@ void BackendProxy::beginTransaction(void)
   transaction_->ensureIsActive();
 }
 
-Transaction &BackendProxy::getTransaction(void) const
+Transaction &BackendProxy::getTransaction(void)
 {
   assert( transaction_.get()!=NULL );
   return *transaction_;
+}
+
+Persistency::IO::ConnectionPtrNN BackendProxy::getConnection(void)
+{
+  return conn_;
 }
 
 } // namespace Proc
