@@ -24,10 +24,8 @@ struct ExceptionInvalidAppenderName: public Exception
    *  \param where place where problem has been detected.
    *  \param name  name that is duplicated.
    */
-  ExceptionInvalidAppenderName(const char        *where,
-                               const std::string &name):
-    Exception( std::string( ensureValidString(where) ) +
-               ": appender name does not exist: " + name )
+  ExceptionInvalidAppenderName(const Location &where, const std::string &name):
+    Exception(where, std::string("appender name does not exist: ") + name )
   {
   }
 }; // struct ExceptionInvalidAppenderName
@@ -40,10 +38,8 @@ struct ExceptionDuplicatedAppenderName: public Exception
    *  \param where place where problem has been detected.
    *  \param name  name that does not exist
    */
-  ExceptionDuplicatedAppenderName(const char        *where,
-                                  const std::string &name):
-    Exception( std::string( ensureValidString(where) ) +
-               ": duplicated appender name: " + name )
+  ExceptionDuplicatedAppenderName(const Location &where, const std::string &name):
+    Exception(where, std::string("duplicated appender name: ") + name)
   {
   }
 }; // struct ExceptionDuplicatedAppenderName

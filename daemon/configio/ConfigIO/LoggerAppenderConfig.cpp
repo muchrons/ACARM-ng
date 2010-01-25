@@ -24,7 +24,7 @@ const LoggerAppenderConfig::ParameterValues &
 {
   const Options::const_iterator it=opts_.find(name);
   if( it==opts_.end() )
-    throw ExceptionInvalidOptionName("LoggerAppenderConfig::operator[]()", name);
+    throw ExceptionInvalidOptionName(SYSTEM_SAVE_LOCATION, name);
   return it->second;
 }
 

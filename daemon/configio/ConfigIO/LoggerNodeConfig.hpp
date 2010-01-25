@@ -24,10 +24,9 @@ struct ExceptionNoAppenderAssigned: public Exception
    *  \param where    place where problem has been detected.
    *  \param nodeName name that does not exist.
    */
-  ExceptionNoAppenderAssigned(const char        *where,
+  ExceptionNoAppenderAssigned(const Location    &where,
                               const std::string &nodeName):
-    Exception( std::string( ensureValidString(where) ) +
-               ": appender not assigned to node: " + nodeName)
+    Exception(where, std::string("appender not assigned to node: ") + nodeName)
   {
   }
 }; // struct ExceptionNoAppenderAssigned
@@ -73,8 +72,7 @@ public:
   const std::string &getAppenderName(void) const
   {
     if( !hasAppender() )
-      throw ExceptionNoAppenderAssigned("LoggerNodeConfig::getAppenderName()",
-                                        getNodeName() );
+      throw ExceptionNoAppenderAssigned(SYSTEM_SAVE_LOCATION, getNodeName() );
     return appenderName_;
   }
 
