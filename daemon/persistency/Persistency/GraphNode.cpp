@@ -4,7 +4,9 @@
  */
 #include <pthread.h>
 #include <cassert>
+#include <exception>
 
+#include "Logger/Logger.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/IO/GlobalConnection.hpp"
 
@@ -60,7 +62,20 @@ GraphNode::GraphNode(MetaAlertPtrNN        ma,
 
 GraphNode::~GraphNode(void)
 {
-  IO::GlobalConnection::get()->markAsUnused( getMetaAlert() );
+  try
+  {
+    IO::GlobalConnection::get()->markAsUnused( getMetaAlert() );
+  }
+  catch(const std::exception &ex)
+  {
+    Logger::Node log("persistency.graphnode");
+    LOGMSG_ERROR_S(log)<<"unambe to mark meta alert as unused: "<<ex.what();
+  }
+  catch(...)
+  {
+    Logger::Node log("persistency.graphnode");
+    LOGMSG_ERROR(log, "unambe to mark meta alert as unused (unknown exception)");
+  }
 }
 
 GraphNode::iterator GraphNode::begin(void)
