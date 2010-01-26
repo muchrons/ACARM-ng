@@ -6,6 +6,7 @@
 #include <string>
 #include <cstring>
 
+#include "TestHelpers/TestBase.hpp"
 #include "Logger/Node.hpp"
 #include "Logger/LoggerImpl.hpp"
 #include "Logger/TestHelpers.t.hpp"
@@ -15,7 +16,7 @@ using namespace tut;
 
 namespace
 {
-struct TestClass
+struct TestClass: private TestHelpers::TestBase
 {
   TestClass():
     n_("a.b.c")

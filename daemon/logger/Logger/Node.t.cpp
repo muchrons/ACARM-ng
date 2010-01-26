@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "TestHelpers/TestBase.hpp"
 #include "Logger/Node.hpp"
 
 using namespace Logger;
@@ -11,7 +12,7 @@ using namespace Logger;
 namespace
 {
 
-struct NodeTestClass
+struct NodeTestClass: private TestHelpers::TestBase
 {
 };
 

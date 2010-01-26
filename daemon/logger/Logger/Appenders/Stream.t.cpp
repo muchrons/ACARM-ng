@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <sstream>
 
+#include "TestHelpers/TestBase.hpp"
 #include "Logger/Appenders/Stream.hpp"
 
 using namespace std;
@@ -14,7 +15,8 @@ using namespace Logger::Appenders;
 namespace
 {
 
-struct StreamTestClass: public Stream<StreamTestClass>
+struct StreamTestClass: public  Stream<StreamTestClass>,
+                        private TestHelpers::TestBase
 {
   StreamTestClass(void):
     Stream<StreamTestClass>(ss_)

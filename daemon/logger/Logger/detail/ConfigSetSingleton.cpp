@@ -18,7 +18,7 @@ namespace detail
 
 ConfigSetImpl::ConfigSetImpl(void)
 {
-  //const LoggerConfig &lc=ConfigIO::Singleton::get()->loggerConfig();
+  const LoggerConfig &lc=ConfigIO::Singleton::get()->loggerConfig();
 
   //
   // TODO: hardcoded console output is temporaray. it is to be replaced

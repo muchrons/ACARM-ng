@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "TestHelpers/TestBase.hpp"
 #include "Logger/NodeConf.hpp"
 
 using namespace Logger;
@@ -11,7 +12,8 @@ using namespace Logger;
 namespace
 {
 
-struct TestAppender: public Appenders::Base
+struct TestAppender: public  Appenders::Base,
+                     private TestHelpers::TestBase
 {
   virtual void appendImpl(const std::string &)
   {
