@@ -26,6 +26,7 @@ Appenders::BasePtr AppenderMap::operator[](const std::string &name)
   AppMap::iterator it=apps_.find(name);
   if( it==apps_.end() )
     throw ExceptionNoSuchAppender(SYSTEM_SAVE_LOCATION, name.c_str() );
+  assert( it->second.get()!=NULL );
   return it->second;
 }
 
@@ -63,7 +64,7 @@ Appenders::BasePtr AppenderMap::configureNew(const ConfigIO::LoggerAppenderConfi
 
   // unknown appender name spotted
   throw ExceptionNoSuchAppenderType(SYSTEM_SAVE_LOCATION,
-                                    cfg.getName().c_str() );
+                                    cfg.getType().c_str() );
 }
 
 void AppenderMap::add(const std::string &name, Appenders::BasePtr ptr)
