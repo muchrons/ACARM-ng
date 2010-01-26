@@ -8,9 +8,10 @@
 #include <boost/noncopyable.hpp>
 
 #include "System/Singleton.hpp"
+#include "Base/Threads/Mutex.hpp"
 #include "Logger/NodeName.hpp"
 #include "Logger/NodeConf.hpp"
-#include "Logger/Appenders/Base.hpp"
+#include "Logger/AppenderMap.hpp"
 
 namespace Logger
 {
@@ -40,23 +41,25 @@ private:
 
   //
   // NOTE: solution with configration maps and returning pointer to
-  //       configurations looks strang at the first sight, but it is done
+  //       configurations looks strange at the first sight, but it is done
   //       that way for a very specific reason. this allows thread-safe update
   //       of loggers' configration on a fly. this feature is planned to be
   //       used later on to allow dynamic (runtime) change of configuration.
   //
 
-  typedef std::map<std::string, NodeConfPtr>        ConfigMap;
-  typedef std::map<const char*, Appenders::BasePtr> AppendersMap;
+  typedef std::map<std::string, NodeConfPtr> ConfigMap;
 
-  ConfigMap    cfgMap_;
-  AppendersMap appMap_;
+  ConfigMap            cfgMap_;
+  AppenderMap          appMap_;
+  Base::Threads::Mutex mutex_;
 }; // class ConfigSet
 
 
+/** \brief singleton type itself.
+ */
 typedef System::Singleton<detail::ConfigSetImpl> ConfigSetSingleton;
-} // namespace detail
 
+} // namespace detail
 } // namespace Logger
 
 #endif

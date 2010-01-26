@@ -51,7 +51,7 @@ public:
   /** \brief returns node name.
    *  \return node name.
    */
-  const std::string get() const
+  const std::string &get() const
   {
     return name_;
   }
