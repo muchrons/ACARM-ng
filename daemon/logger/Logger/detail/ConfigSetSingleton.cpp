@@ -32,12 +32,14 @@ NodeConfPtr ConfigSetImpl::getNodeConfiguration(const NodeName &nn)
   // if entry does not exist, it has to be created.
   if( it==cfgMap_.end() )
   {
+    // TODO: this should be parsed from configuration
     assert( appMap_.size()==1 && "appenders map has been updated, but code not");
     Appenders::BasePtr app=appMap_.begin()->second;
     assert(app.get()!=NULL);
-    NodeConfPtr        nc( new NodeConf(app) ); // create entry
-    cfgMap_.insert( make_pair(nn.get(), nc) );  // add it to map
-    it=cfgMap_.find( nn.get() );                // get newly added entry
+    const Priority     thr(Priority::DEBUG);
+    NodeConfPtr        nc( new NodeConf(app, thr) );    // create entry
+    cfgMap_.insert( make_pair(nn.get(), nc) );          // add it to map
+    it=cfgMap_.find( nn.get() );                        // get newly added entry
   } // if(entry does not exist)
 
   assert( it!=cfgMap_.end() );
