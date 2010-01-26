@@ -7,6 +7,7 @@
 #include <cassert>
 
 #include "Commons/Factory/detail/AbstractFactory.hpp"
+#include "TestHelpers/TestBase.hpp"
 
 using namespace std;
 using namespace Commons::Factory;
@@ -61,7 +62,7 @@ private:
 typedef AbstractFactory<TestFactory> TestAbstractFactory;
 
 
-struct AbstractFactoryTestClass
+struct AbstractFactoryTestClass: private TestHelpers::TestBase
 {
   AbstractFactoryTestClass(void):
     auto1_(new TestBuilder<1>),

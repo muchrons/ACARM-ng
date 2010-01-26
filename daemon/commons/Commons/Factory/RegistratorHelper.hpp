@@ -63,20 +63,19 @@ private:
         LOGMSG_INFO(node, ( "registering builder: " +
                             ptr->getTypeName() ).c_str() );
         TSingleton::registerBuilder(ptr);
+        return true;        // everything's fine
       }
       catch(const std::exception &ex)
       {
         const std::string msg="exception cought while registering: " +
                               ptr->getTypeName() + ": " + ex.what();
         LOGMSG_FATAL(node, msg.c_str() );
-        return false;
       }
       catch(...)
       {
         const std::string msg="unknown exception while registering: " +
                               ptr->getTypeName();
         LOGMSG_FATAL(node, msg.c_str() );
-        return false;
       } // try{}catch() for registration
 
     }
@@ -84,16 +83,14 @@ private:
     {
       std::cerr<<"RegistrationHelper: error while registering factory: "
                << ex.what() << std::endl;
-      return false;
     }
     catch(...)
     {
       std::cerr<<"RegistrationHelper: unknown error while registering factory"
                << std::endl;
-      return false;
     } // try{}catch() before registration
 
-    return true;
+    return false;           // some error occured
   }
 
   // notice that making instance of this object a global object takes adventage

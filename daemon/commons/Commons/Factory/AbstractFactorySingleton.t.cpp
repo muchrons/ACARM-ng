@@ -5,6 +5,7 @@
 #include <tut.h>
 
 #include "Commons/Factory/AbstractFactorySingleton.hpp"
+#include "TestHelpers/TestBase.hpp"
 
 using namespace std;
 using namespace Commons::Factory;
@@ -13,7 +14,7 @@ using namespace Commons::Factory;
 namespace
 {
 
-struct TestFactory
+struct TestFactory: private TestHelpers::TestBase
 {
   template<typename T>
   TestFactory(const T &, int n):

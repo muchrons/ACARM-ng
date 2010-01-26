@@ -6,6 +6,7 @@
 #include <cstring>
 
 #include "Commons/Exception.hpp"
+#include "TestHelpers/TestBase.hpp"
 
 using namespace Commons;
 
@@ -24,7 +25,7 @@ struct TestException: public Commons::Exception
   }
 };
 
-struct ExceptionTestClass
+struct ExceptionTestClass: private TestHelpers::TestBase
 {
   TestException te_;
 };

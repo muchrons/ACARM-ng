@@ -7,6 +7,7 @@
 #include <boost/mpl/equal.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "TestHelpers/TestBase.hpp"
 
 using namespace std;
 using namespace Commons;
@@ -14,7 +15,7 @@ using namespace Commons;
 namespace
 {
 
-struct TestClass
+struct TestClass: private TestHelpers::TestBase
 {
   typedef boost::shared_ptr<int>   BoostPtr;
   typedef SharedPtrNotNULL<int>    PtrNN;
