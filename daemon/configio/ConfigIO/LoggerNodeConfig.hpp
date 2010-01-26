@@ -97,7 +97,7 @@ private:
   std::string    nodeName_;
   OptionalString appenderName_;
   OptionalString threshold_;
-}; // class LoggerAppenderConfig
+}; // class LoggerNodeConfig
 
 } // namespace ConfigIO
 

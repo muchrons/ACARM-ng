@@ -17,7 +17,6 @@ ParseLoggerAppenders::ParseLoggerAppenders(const XML::Node &node):
 {
 }
 
-
 LoggerAppenders ParseLoggerAppenders::parse(const XML::Node &node) const
 {
   // this in fact will be already checked before this call happens
@@ -54,6 +53,5 @@ LoggerAppenders ParseLoggerAppenders::parse(const XML::Node &node) const
 
   return LoggerAppenders(apps);
 }
-
 
 } // namespace ConfigIO
