@@ -21,7 +21,7 @@ const char *defaultConfigContent=
   "      </file>"
   "    </appenders>"
   ""
-  "    <nodes appender=\"default\">"
+  "    <nodes appender=\"default\" threshold=\"debug\">"
   "    </nodes>"
   "  </logger>"
   ""
