@@ -12,16 +12,21 @@
 #include "Logger/Appenders/Base.hpp"
 #include "Logger/Exception.hpp"
 
-// TODO: comment
-
 namespace Logger
 {
-
+/** \brief map that creates required appenders based on their configuration.
+ */
 class AppenderMap
 {
 public:
+  /** \brief exception thrown when requested appender is not registered.
+   */
   struct ExceptionNoSuchAppender: public Exception
   {
+    /** \brief create exception.
+     *  \param where place where exeception has been thrown.
+     *  \param name  name of appender's instance that has been required.
+     */
     ExceptionNoSuchAppender(const Location &where,
                             const char     *name):
       Exception(where, std::string("no such appender: ") +
@@ -30,8 +35,15 @@ public:
     }
   }; // struct ExceptionNoSuchAppender
 
+  /** \brief exception throw when configuration requires non-exisitng type
+   *         to be created.
+   */
   struct ExceptionNoSuchAppenderType: public Exception
   {
+    /** \brief create exception.
+     *  \param where place where exeception has been thrown.
+     *  \param name  name of appender's type that has been required.
+     */
     ExceptionNoSuchAppenderType(const Location &where,
                                 const char     *name):
       Exception(where, std::string("no such appender type: ") +
@@ -41,8 +53,15 @@ public:
   }; // struct ExceptionNoSuchAppenderType
 
 
+  /** \brief create appender's map from given configuration.
+   *  \param cfg configuration to read appender's config from.
+   */
   explicit AppenderMap(const ConfigIO::LoggerAppenders &cfg);
-
+  /** \brief get appender instance of a given name.
+   *  \param name name of instance to get.
+   *  \return base pointer to proper instance.
+   *  \note if instance gy a given anme does not exist, call throws.
+   */
   Appenders::BasePtr operator[](const std::string &name);
 
 private:
