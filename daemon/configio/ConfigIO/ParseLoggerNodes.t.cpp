@@ -19,7 +19,7 @@ const char *xmlOK1=
   "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   "<acarm_ng>"
   "  <logger>"
-  "    <nodes appender=\"defaultAppender\">"
+  "    <nodes appender=\"defaultAppender\" threshold=\"debug\">"
   "    </nodes>"
   "  </logger>"
   "</acarm_ng>"
@@ -29,7 +29,7 @@ const char *xmlOK2=
   "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   "<acarm_ng>"
   "  <logger>"
-  "    <nodes appender=\"app1\">"
+  "    <nodes appender=\"app1\" threshold=\"debug\">"
   ""
   "      <sub1>"
   "        <sub11 appender=\"appxyz\"/>"
@@ -37,9 +37,9 @@ const char *xmlOK2=
   ""
   "      <sub2>"
   "        <sub21 appender=\"appxyz\"/>"
-  "        <sub22 appender=\"appxyz\"/>"
+  "        <sub22 appender=\"appxyz\" threshold=\"info\"/>"
   "        <sub23>"
-  "          <sub231/>"
+  "          <sub231 threshold=\"error\"/>"
   "        </sub23>"
   "      </sub2>"
   ""
@@ -52,7 +52,17 @@ const char *xmlErr1=
   "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
   "<acarm_ng>"
   "  <logger>"
-  "    <nodes>"         // <-- default appender not defined
+  "    <nodes threshold=\"debug\">"     // <-- default appender not defined
+  "    </nodes>"
+  "  </logger>"
+  "</acarm_ng>"
+  "";
+
+const char *xmlErr2=
+  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+  "<acarm_ng>"
+  "  <logger>"
+  "    <nodes appender=\"xyz\">"        // <-- default threshold not defined
   "    </nodes>"
   "  </logger>"
   "</acarm_ng>"
@@ -169,6 +179,9 @@ void testObj::test<4>(void)
   ensure("sub2.sub22 node does not have appender", it->hasAppender() );
   ensure_equals("inalid appedenr anme for sub2.sub22 node",
                 it->getAppenderName(), "appxyz");
+  ensure("sub2.sub22 node does not have threshold", it->hasThreshold() );
+  ensure_equals("inalid threshold value for sub2.sub22 node",
+                it->getThresholdValue(), "info");
   ++it;
 
   // sub2.sub23<appxyz>
@@ -181,6 +194,9 @@ void testObj::test<4>(void)
   ensure("no elemtents in tree after sub2.sub23", it!=nodes.end() );
   ensure_equals("invalid node name", it->getNodeName(), "sub2.sub23.sub231");
   ensure("sub2.sub23.sub231 node has appender", !it->hasAppender() );
+  ensure("sub2.sub23.sub231 node does not have threshold", it->hasThreshold() );
+  ensure_equals("inalid threshold value for sub2.sub23.sub231 node",
+                it->getThresholdValue(), "error");
   ++it;
 
   // this houdl be the end
@@ -195,7 +211,23 @@ void testObj::test<5>(void)
   try
   {
     getNodesConfs(xmlErr1);
-    fail("parsing nodes without default appedner definede didn't throw");
+    fail("parsing nodes without default appedner defined didn't throw");
+  }
+  catch(const XML::Exception &)
+  {
+    // this is expected.
+  }
+}
+
+// check throw on no default threshold
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  try
+  {
+    getNodesConfs(xmlErr2);
+    fail("parsing nodes without default theshold defined didn't throw");
   }
   catch(const XML::Exception &)
   {

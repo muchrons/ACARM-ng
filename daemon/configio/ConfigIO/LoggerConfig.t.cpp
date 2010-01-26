@@ -16,7 +16,7 @@ namespace
 struct LoggerConfigTestClass
 {
   LoggerConfigTestClass():
-    defaultNode_("", "app1"),
+    defaultNode_("", "app1", "debug"),
     nodes_( mkNodes() ),
     appenders_( mkAppenders() )
   {
@@ -25,9 +25,9 @@ struct LoggerConfigTestClass
   LoggerNodes::Nodes mkNodes(void) const
   {
     LoggerNodes::Nodes nodes;
-    nodes.push_back( LoggerNodeConfig("some.node",       "app2") );
-    nodes.push_back( LoggerNodeConfig("some.other.node", "app2") );
-    nodes.push_back( LoggerNodeConfig("some",            "app1") );
+    nodes.push_back( LoggerNodeConfig("some.node",       "app2", "info") );
+    nodes.push_back( LoggerNodeConfig("some.other.node", "app2", OptionalString() ) );
+    nodes.push_back( LoggerNodeConfig("some",            "app1", "error") );
     return nodes;
   }
 
