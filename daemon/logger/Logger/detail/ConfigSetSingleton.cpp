@@ -4,11 +4,12 @@
  */
 #include <cassert>
 
+#include "ConfigIO/Singleton.hpp"
 #include "Logger/detail/ConfigSetSingleton.hpp"
 #include "Logger/Appenders/File.hpp"             // TODO: this is temporary
 
 using namespace std;
-
+using namespace ConfigIO;
 
 namespace Logger
 {
@@ -17,6 +18,8 @@ namespace detail
 
 ConfigSetImpl::ConfigSetImpl(void)
 {
+  //const LoggerConfig &lc=ConfigIO::Singleton::get()->loggerConfig();
+
   //
   // TODO: hardcoded console output is temporaray. it is to be replaced
   //       with file configuration that can be parsed and changed in runtime.
