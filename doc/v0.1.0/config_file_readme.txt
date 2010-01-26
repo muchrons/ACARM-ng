@@ -52,9 +52,9 @@ example configuration may look like this:
 
 <logger>
   <appenders>
-    <file name="file_app1">
+    <File name="file_app1">
       <output>myoutputfile.log</output>
-    </file>
+    </File>
 
     <console name="stdout"/>
 
@@ -72,3 +72,5 @@ example configuration may look like this:
     </otherChild>
   </nodes>
 </logger>
+
+TODO: describe appenders.
