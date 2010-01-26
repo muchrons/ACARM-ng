@@ -8,6 +8,7 @@
 /* public header */
 
 #include <sstream>
+#include <iostream>
 
 #include "BuildProcess/ForceLink.hpp"
 #include "Logger/Logger.hpp"
@@ -51,6 +52,7 @@ private:
   {
     try
     {
+
       // initialize basic helper objects
       const Logger::Node                             node("commons.factory");
       typename TSingleton::FactoryBuilderBaseAutoPtr ptr(new TBuilder);
@@ -78,8 +80,16 @@ private:
       } // try{}catch() for registration
 
     }
+    catch(const std::exception &ex)
+    {
+      std::cerr<<"RegistrationHelper: error while registering factory: "
+               << ex.what() << std::endl;
+      return false;
+    }
     catch(...)
     {
+      std::cerr<<"RegistrationHelper: unknown error while registering factory"
+               << std::endl;
       return false;
     } // try{}catch() before registration
 
