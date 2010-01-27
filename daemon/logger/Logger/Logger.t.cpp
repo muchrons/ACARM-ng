@@ -11,7 +11,9 @@
 #include "Logger/TestHelpers.t.hpp"
 
 using namespace tut;
+using Logger::Node;
 using Logger::ensureLoggedPart;
+using Logger::ensureNotLoggedPart;
 
 namespace
 {
@@ -211,6 +213,128 @@ void testObj::test<11>(void)
   LOGMSG_FATAL_S(n_)<<"hello "<<"fatal"<<" stream!";
   ensureLoggedPart("hello fatal stream!");
   ensureLoggedPart("FATAL@");
+}
+
+// thresholding for debug
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const Node  log("root");
+  const char *msg="hello debug 12";
+  LOGMSG_DEBUG(log, msg);
+  ensureLoggedPart(msg);
+  ensureLoggedPart("DEBUG@");
+}
+
+// thresholding for warn / 1
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  const Node  log("subtree1.subthreshold");
+  const char *msg="hello warn 13";
+  LOGMSG_DEBUG(log, msg);
+  ensureNotLoggedPart(msg);
+}
+
+// thresholding for warn / 2
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  const Node  log("subtree1.subthreshold");
+  const char *msg="hello warn 14";
+  LOGMSG_INFO(log, msg);
+  ensureNotLoggedPart(msg);
+}
+
+// thresholding for warn / 3
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  const Node  log("subtree1.subthreshold");
+  const char *msg="hello warn 15";
+  LOGMSG_WARN(log, msg);
+  ensureLoggedPart(msg);
+}
+
+// thresholding for warn / 4
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  const Node  log("subtree1.subthreshold");
+  const char *msg="hello warn 16";
+  LOGMSG_ERROR(log, msg);
+  ensureLoggedPart(msg);
+}
+
+// thresholding for warn / 5
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  const Node  log("subtree1.subthreshold");
+  const char *msg="hello warn 17";
+  LOGMSG_FATAL(log, msg);
+  ensureLoggedPart(msg);
+}
+
+// thresholding for warn / 1 (stream)
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  const Node  log("subtree1.subthreshold");
+  const char *msg="hello warn 18";
+  LOGMSG_DEBUG_S(log)<<msg;
+  ensureNotLoggedPart(msg);
+}
+
+// thresholding for warn / 2 (stream)
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  const Node  log("subtree1.subthreshold");
+  const char *msg="hello warn 19";
+  LOGMSG_INFO_S(log)<<msg;
+  ensureNotLoggedPart(msg);
+}
+
+// thresholding for warn / 3 (stream)
+template<>
+template<>
+void testObj::test<20>(void)
+{
+  const Node  log("subtree1.subthreshold");
+  const char *msg="hello warn 20";
+  LOGMSG_WARN_S(log)<<msg;
+  ensureLoggedPart(msg);
+}
+
+// thresholding for warn / 4 (stream)
+template<>
+template<>
+void testObj::test<21>(void)
+{
+  const Node  log("subtree1.subthreshold");
+  const char *msg="hello warn 21";
+  LOGMSG_ERROR_S(log)<<msg;
+  ensureLoggedPart(msg);
+}
+
+// thresholding for warn / 5 (stream)
+template<>
+template<>
+void testObj::test<22>(void)
+{
+  const Node  log("subtree1.subthreshold");
+  const char *msg="hello warn 22";
+  LOGMSG_FATAL_S(log)<<msg;
+  ensureLoggedPart(msg);
 }
 
 } // namespace tut
