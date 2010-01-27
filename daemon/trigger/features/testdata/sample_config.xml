@@ -7,12 +7,12 @@
 
   <logger>
     <appenders>
-      <file name="default">
+      <File name="default">
         <output>loggerfile.log</output>
-      </file>
+      </File>
     </appenders>
 
-    <nodes appender="default">
+    <nodes appender="default" threshold="debug">
     </nodes>
   </logger>
 
