@@ -215,4 +215,15 @@ void testObj::test<10>(void)
   ensure_equals("invalid contenet of file 2", getFileContent("file2.txt"), "narf\n");
 }
 
+// test const-correctness (this test must compile)
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  list_.push_back( ConfigIO::LoggerAppenderConfig("Null", "sth", opts_) );
+  ConfigIO::LoggerAppenders apps(list_);
+  const AppenderMap         am(apps);
+  am["sth"]->getTypeName();
+}
+
 } // namespace tut

@@ -10,9 +10,18 @@
       <File name="default">
         <output>loggerfile.log</output>
       </File>
+      <Null name="void" />
     </appenders>
 
     <nodes appender="default" threshold="debug">
+      <subtree1>
+        <subappender appender="void" />
+        <subthreshold threshold="warn" />
+        <both appender="void" threshold="fatal">
+          <derivedend/>
+          <updatethr threshold="info"/>
+        </both>
+      </subtree1>
     </nodes>
   </logger>
 

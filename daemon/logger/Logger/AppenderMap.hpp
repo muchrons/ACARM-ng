@@ -62,7 +62,7 @@ public:
    *  \return base pointer to proper instance.
    *  \note if instance gy a given anme does not exist, call throws.
    */
-  Appenders::BasePtr operator[](const std::string &name);
+  Appenders::BasePtr operator[](const std::string &name) const;
 
 private:
   Appenders::BasePtr configureNew(const ConfigIO::LoggerAppenderConfig &cfg);

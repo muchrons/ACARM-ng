@@ -11,7 +11,7 @@
 #include "Base/Threads/Mutex.hpp"
 #include "Logger/NodeName.hpp"
 #include "Logger/NodeConf.hpp"
-#include "Logger/AppenderMap.hpp"
+#include "Logger/NodeConfReader.hpp"
 
 namespace Logger
 {
@@ -50,7 +50,7 @@ private:
   typedef std::map<std::string, NodeConfPtr> ConfigMap;
 
   ConfigMap            cfgMap_;
-  AppenderMap          appMap_;
+  NodeConfReader       ncr_;
   Base::Threads::Mutex mutex_;
 }; // class ConfigSet
 
