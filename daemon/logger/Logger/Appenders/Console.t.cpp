@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "TestHelpers/TestBase.hpp"
 #include "Logger/Appenders/Console.hpp"
 
 using namespace std;
@@ -13,7 +14,7 @@ using namespace Logger::Appenders;
 namespace
 {
 
-struct ConsoleTestClass
+struct ConsoleTestClass: private TestHelpers::TestBase
 {
 };
 

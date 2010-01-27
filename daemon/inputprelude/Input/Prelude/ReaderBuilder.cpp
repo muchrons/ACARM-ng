@@ -46,7 +46,7 @@ ReaderBuilder::FactoryPtr ReaderBuilder::buildImpl(const Options & opt) const
 
   Options::const_iterator it=opt.find("prelude profile");
   if( it==opt.end() )
-    throw Exception(__FILE__, "option 'prelude profile' not found");
+    throw Exception(SYSTEM_SAVE_LOCATION, "option 'prelude profile' not found");
   const std::string &profile=it->second;
 
   return ReaderBuilder::FactoryPtr( new Reader(profile) );

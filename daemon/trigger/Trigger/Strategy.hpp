@@ -14,6 +14,8 @@
 #include "Base/ObservingSet.hpp"
 #include "Logger/Node.hpp"
 #include "Persistency/GraphNode.hpp"
+#include "Persistency/IO/Connection.hpp"
+#include "Trigger/BackendProxy.hpp"
 
 
 namespace Trigger
@@ -81,8 +83,10 @@ private:
    */
   virtual void trigger(const NodeType &n) = 0;
 
-  const std::string            name_;
-  Base::ObservingSet<NodeType> nos_;
+  const std::string                name_;
+  Base::ObservingSet<NodeType>     nos_;
+  Persistency::IO::ConnectionPtrNN conn_;
+  BackendProxy                     bp_;
 }; // class Strategy
 
 } // namespace Trigger

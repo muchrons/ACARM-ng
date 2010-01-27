@@ -52,9 +52,9 @@ example configuration may look like this:
 
 <logger>
   <appenders>
-    <file name="file_app1">
+    <File name="file_app1">
       <output>myoutputfile.log</output>
-    </file>
+    </File>
 
     <console name="stdout"/>
 
@@ -64,10 +64,13 @@ example configuration may look like this:
     </multi>
   </appenders>
 
-  <nodes appender="everywhere">
-    <someChild appender="console"/>
-    <otherChild>
-      <subChild1 appender="file"/>
+  <nodes appender="everywhere" threshold="info"> <!-- default is everywhere/info -->
+    <someChild appender="console"/> <!-- console/info -->
+    <otherChild>                    <!-- console/info -->
+      <subChild1 appender="file"/>  <!-- file/info -->
+      <subChild2 threshold="warn"/> <!-- console/warn -->
     </otherChild>
   </nodes>
 </logger>
+
+TODO: describe appenders.

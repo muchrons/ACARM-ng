@@ -63,7 +63,7 @@ const std::string &ConnectionBuilder::getOption(const Options &options,
   assert(name!=NULL);
   Options::const_iterator it=options.find(name);
   if( it==options.end() )
-    throw ExceptionNoSuchOption(__FILE__, name);
+    throw ExceptionNoSuchOption(SYSTEM_SAVE_LOCATION, name);
   return it->second;
 }
 

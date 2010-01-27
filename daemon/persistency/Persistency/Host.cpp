@@ -101,7 +101,7 @@ void Host::setName(const Name &name)
   //       getName() returns pointer to local variable and therefor it must
   //       be asured it never changes.
   if( name_.get()!=NULL )
-    throw Exception(__FILE__, "host's name already resolved");
+    throw Exception(SYSTEM_SAVE_LOCATION, "host's name already resolved");
 
   // add new host entry
   name_.reset( new Name(name) );

@@ -22,7 +22,7 @@ public:
   /** \brief create execption with given message.
    *  \param where message to represent.
    */
-  explicit ExceptionNullBuilder(const char *where):
+  explicit ExceptionNullBuilder(const Location &where):
     Commons::Factory::Exception(where, "builder is NULL")
   {
   }

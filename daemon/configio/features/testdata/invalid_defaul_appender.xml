@@ -17,7 +17,7 @@
       </file>
     </appenders>
 
-    <nodes appender="invalid_name_of_default_appender">
+    <nodes appender="invalid_name_of_default_appender" threshold="debug">
     </nodes>
   </logger>
 

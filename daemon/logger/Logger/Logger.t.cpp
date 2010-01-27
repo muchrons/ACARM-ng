@@ -6,6 +6,7 @@
 #include <string>
 #include <cstring>
 
+#include "TestHelpers/TestBase.hpp"
 #include "Logger/Logger.hpp"
 #include "Logger/TestHelpers.t.hpp"
 
@@ -14,7 +15,7 @@ using Logger::ensureLoggedPart;
 
 namespace
 {
-struct TestClass
+struct TestClass: private TestHelpers::TestBase
 {
   TestClass():
     n_("a.b.c")

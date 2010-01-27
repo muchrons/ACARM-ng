@@ -8,6 +8,8 @@
 /* public header */
 
 #include <sstream>
+#include <string>
+#include <iostream>
 
 #include "BuildProcess/ForceLink.hpp"
 #include "Logger/Logger.hpp"
@@ -51,39 +53,44 @@ private:
   {
     try
     {
-      // initialize basic helper objects
-      const Logger::Node                             node("commons.factory");
-      typename TSingleton::FactoryBuilderBaseAutoPtr ptr(new TBuilder);
+
+      // initialize helper objects
+      const Logger::Node node("commons.factory");
+      std::string        builderName=typeid(TBuilder).name();
 
       // try register given builder
       try
       {
-        LOGMSG_INFO(node, ( "registering builder: " +
-                            ptr->getTypeName() ).c_str() );
+        typename TSingleton::FactoryBuilderBaseAutoPtr ptr(new TBuilder);
+        builderName=ptr->getTypeName() + " (" + builderName + ")";
+        LOGMSG_INFO_S(node)<<"registering builder: "<<builderName;
         TSingleton::registerBuilder(ptr);
+        return true;        // everything's fine
       }
       catch(const std::exception &ex)
       {
-        const std::string msg="exception cought while registering: " +
-                              ptr->getTypeName() + ": " + ex.what();
-        LOGMSG_FATAL(node, msg.c_str() );
-        return false;
+        LOGMSG_FATAL_S(node) << "exception cought while registering: "
+                             << builderName << ": " << ex.what();
       }
       catch(...)
       {
-        const std::string msg="unknown exception while registering: " +
-                              ptr->getTypeName();
-        LOGMSG_FATAL(node, msg.c_str() );
-        return false;
+        LOGMSG_FATAL_S(node) << "unknown exception while registering: "
+                             << builderName;
       } // try{}catch() for registration
 
     }
+    catch(const std::exception &ex)
+    {
+      std::cerr<<"RegistrationHelper: error while registering factory: "
+               <<"unable to create logger node: " << ex.what() << std::endl;
+    }
     catch(...)
     {
-      return false;
+      std::cerr<<"RegistrationHelper: unknown error while registering factory: "
+               <<"unable to create logger node" << std::endl;
     } // try{}catch() before registration
 
-    return true;
+    return false;           // some error occured
   }
 
   // notice that making instance of this object a global object takes adventage

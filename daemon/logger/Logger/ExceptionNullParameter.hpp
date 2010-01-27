@@ -23,9 +23,9 @@ public:
    *  \param where place where exception was rised
    *  \param param parameter name that was null
    */
-  explicit ExceptionNullParameter(const char *where, const char *param):
-    Exception( std::string( ensureValidString(where) ) + ": NULL parameter: " +
-               ensureValidString(param) )
+  explicit ExceptionNullParameter(const Location &where, const char *param):
+    Exception(where, std::string(": NULL parameter: ") +
+                     ensureValidString(param) )
   {
   }
 }; // class Exception

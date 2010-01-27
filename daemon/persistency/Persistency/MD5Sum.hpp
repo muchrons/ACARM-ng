@@ -22,9 +22,8 @@ public:
    *  \param where place of creation
    *  \param md5   md5 that has been found invalid
    */
-  ExceptionInvalidMD5String(const char *where, const char *md5):
-    Exception(where,
-              std::string("invalid MD5 string: '") + ensureString(md5) + "'")
+  ExceptionInvalidMD5String(const Location &where, const char *md5):
+    Exception(where, std::string("invalid MD5 string: '") + ensureString(md5) + "'")
   {
   }
 }; // class ExceptionInvalidMD5String

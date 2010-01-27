@@ -19,9 +19,8 @@ struct ExceptionNoAppendersDefined: public Exception
   /** \brief create exception of no appenders defined
    *  \param where  place where problem has been detected.
    */
-  ExceptionNoAppendersDefined(const char *where):
-    Exception( std::string( ensureValidString(where) ) +
-               ": at least one appender must be defined" )
+  explicit ExceptionNoAppendersDefined(const Location &where):
+    Exception(where, "at least one appender must be defined")
   {
   }
 }; // struct ExceptionNoAppendersDefined

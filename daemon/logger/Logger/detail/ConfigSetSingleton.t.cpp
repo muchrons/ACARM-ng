@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "TestHelpers/TestBase.hpp"
 #include "Logger/detail/ConfigSetSingleton.hpp"
 
 using namespace Logger;
@@ -11,11 +12,10 @@ using namespace Logger;
 namespace
 {
 
-struct ConfigSetSingletonTestClass
+struct TestClass: private TestHelpers::TestBase
 {
 };
 
-typedef ConfigSetSingletonTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -25,5 +25,13 @@ factory tf("Logger/detail/ConfigSetSingleton");
 
 namespace tut
 {
+
+// try to initialize
+template<>
+template<>
+void testObj::test<1>(void)
+{
+  detail::ConfigSetSingleton::get();
+}
 
 } // namespace tut

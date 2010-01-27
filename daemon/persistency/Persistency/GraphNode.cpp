@@ -4,7 +4,9 @@
  */
 #include <pthread.h>
 #include <cassert>
+#include <exception>
 
+#include "Logger/Logger.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/IO/GlobalConnection.hpp"
 
@@ -60,7 +62,20 @@ GraphNode::GraphNode(MetaAlertPtrNN        ma,
 
 GraphNode::~GraphNode(void)
 {
-  IO::GlobalConnection::get()->markAsUnused( getMetaAlert() );
+  try
+  {
+    IO::GlobalConnection::get()->markAsUnused( getMetaAlert() );
+  }
+  catch(const std::exception &ex)
+  {
+    Logger::Node log("persistency.graphnode");
+    LOGMSG_ERROR_S(log)<<"unambe to mark meta alert as unused: "<<ex.what();
+  }
+  catch(...)
+  {
+    Logger::Node log("persistency.graphnode");
+    LOGMSG_ERROR(log, "unambe to mark meta alert as unused (unknown exception)");
+  }
 }
 
 GraphNode::iterator GraphNode::begin(void)
@@ -116,7 +131,7 @@ AlertPtrNN GraphNode::getAlert(void)
 {
   assert( getMetaAlert().get()!=NULL );
   if( !isLeaf() )
-    throw ExceptionNotLeaf(__FILE__, getMetaAlert()->getName().get() );
+    throw ExceptionNotLeaf(SYSTEM_SAVE_LOCATION, getMetaAlert()->getName().get() );
 
   assert( leaf_.get()!=NULL );
   return leaf_;
@@ -126,7 +141,7 @@ void GraphNode::ensureIsNode(void) const
 {
   assert( self_.get()!=NULL );
   if( isLeaf() )
-    throw ExceptionNotNode(__FILE__, self_->getName().get() );
+    throw ExceptionNotNode(SYSTEM_SAVE_LOCATION, self_->getName().get() );
 }
 
 
@@ -146,7 +161,7 @@ struct PtrLock
   PtrLock(void)
   {
     if( pthread_mutex_lock(&additionMutex)!=0 )
-      throw Exception(__FILE__, "unable to lock mutex for "
+      throw Exception(SYSTEM_SAVE_LOCATION, "unable to lock mutex for "
                                 "GraphNode/addition implementation");
   }
   ~PtrLock(void)
@@ -167,7 +182,7 @@ void GraphNode::nonCyclicAddition(GraphNodePtrNN child)
 
   if( this==childPtr           ||   // instant-cycle
       childPtr->hasCycle(this)    ) // is it possible to access self through child
-    throw ExceptionCycleDetected(__FILE__,
+    throw ExceptionCycleDetected(SYSTEM_SAVE_LOCATION,
                                  child->getMetaAlert()->getName().get(),
                                  getMetaAlert()->getName().get() );
 

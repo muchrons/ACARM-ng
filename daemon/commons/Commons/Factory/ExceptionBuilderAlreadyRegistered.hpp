@@ -23,7 +23,7 @@ public:
    *  \param where place where exception has been rised.
    *  \param name  name of builder that is already registered.
    */
-  ExceptionBuilderAlreadyRegistered(const char *where, const char *name):
+  ExceptionBuilderAlreadyRegistered(const Location &where, const char *name):
     Commons::Factory::Exception( where,
                                  std::string("builder already registered: ") +
                                     ensureString(name) )

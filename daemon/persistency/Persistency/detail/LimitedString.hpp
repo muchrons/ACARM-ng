@@ -31,7 +31,7 @@ public:
    *  \param where place wxception has been thrown.
    *  \param str   string that has been found too long.
    */
-  ExceptionStringTooLong(const char *where, const char *str):
+  ExceptionStringTooLong(const Location &where, const char *str):
     Exception(where, std::string("too long string: ") + ensureString(str) )
   {
   }
@@ -52,7 +52,7 @@ public:
   {
     // sanity check
     if(str==NULL)
-      throw ExceptionNULLParameter(CALLNAME, "str");
+      throw ExceptionNULLParameter(SYSTEM_SAVE_LOCATION, "str");
     createFromNonNULL(str);
   }
   /** \brief creates object from a given string.
@@ -93,7 +93,7 @@ private:
     // check length
     const size_t len=strlen(str);
     if(len>N)
-      throw ExceptionStringTooLong(CALLNAME, str);
+      throw ExceptionStringTooLong(SYSTEM_SAVE_LOCATION, str);
 
     // save data
     assert(len+1<=sizeof(str_));

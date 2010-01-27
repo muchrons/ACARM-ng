@@ -23,8 +23,7 @@ FileReader::FileReader(const std::string &path)
   {
     struct stat fs;
     if( fstat(df.get(), &fs)!=0 )
-      throw ExceptionFileAccessError("FileReader::FileReader(): fstat()",
-                                     path.c_str() );
+      throw ExceptionFileAccessError(SYSTEM_SAVE_LOCATION, path.c_str() );
     size_=fs.st_size;
   }
 
@@ -35,8 +34,7 @@ FileReader::FileReader(const std::string &path)
     // read file's content
     const int size=size_;               // suppresses signed/unsigned warning.
     if( read(df.get(), data_.get(), size_)!=size )
-      throw ExceptionFileAccessError("FileReader::FileReader(): write()",
-                                     path.c_str() );
+      throw ExceptionFileAccessError(SYSTEM_SAVE_LOCATION, path.c_str() );
     // mark last byte as terminating zero, in case of text files, so that
     // it could be read as regular string.
     data_[size_]=0;

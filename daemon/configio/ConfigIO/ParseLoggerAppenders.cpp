@@ -17,7 +17,6 @@ ParseLoggerAppenders::ParseLoggerAppenders(const XML::Node &node):
 {
 }
 
-
 LoggerAppenders ParseLoggerAppenders::parse(const XML::Node &node) const
 {
   // this in fact will be already checked before this call happens
@@ -28,7 +27,7 @@ LoggerAppenders ParseLoggerAppenders::parse(const XML::Node &node) const
 
   // at least one appender is required (default appender must be defined)
   if( children.begin()==children.end() )
-    throw ExceptionNoAppendersDefined("ParseLoggerAppenders::parse()");
+    throw ExceptionNoAppendersDefined(SYSTEM_SAVE_LOCATION);
 
   // iterate through all appenders
   for(Node::TNodesList::const_iterator it=children.begin();
@@ -54,6 +53,5 @@ LoggerAppenders ParseLoggerAppenders::parse(const XML::Node &node) const
 
   return LoggerAppenders(apps);
 }
-
 
 } // namespace ConfigIO

@@ -24,10 +24,9 @@ struct ExceptionDuplicatedNodeName: public Exception
    *  \param where place where problem has been detected.
    *  \param name  name that is duplicated.
    */
-  ExceptionDuplicatedNodeName(const char        *where,
+  ExceptionDuplicatedNodeName(const Location    &where,
                               const std::string &name):
-    Exception( std::string( ensureValidString(where) ) +
-               ": duplicated node name: " + name )
+    Exception(where, std::string("duplicated node name: ") + name)
   {
   }
 }; // struct ExceptionDuplicatedNodeName

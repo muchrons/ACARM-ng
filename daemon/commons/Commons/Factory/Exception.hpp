@@ -24,7 +24,7 @@ public:
    *  \param msg   message to represent.
    */
   template<typename T>
-  explicit Exception(const char *where, const T &msg):
+  explicit Exception(const Location &where, const T &msg):
     Commons::Exception(where, msg)
   {
   }

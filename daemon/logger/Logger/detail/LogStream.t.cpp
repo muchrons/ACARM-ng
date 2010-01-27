@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <cstring>
 
+#include "TestHelpers/TestBase.hpp"
 #include "Logger/detail/LogStream.hpp"
 #include "Logger/TestHelpers.t.hpp"
 
@@ -17,7 +18,7 @@ namespace
 
 #define MAKE_LS(name) LogStream< &Node::debug > name(log_, "filename", "function()", 42)
 
-struct TestClass
+struct TestClass: private TestHelpers::TestBase
 {
   TestClass(void):
     log_("logger.test")

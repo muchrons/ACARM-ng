@@ -24,7 +24,7 @@ File::File(const std::string &path):
   // open file and check if it succedded.
   out_.open(path.c_str(), ios_base::out | ios_base::app | ios_base::binary);
   if( !out_.is_open() )
-    throw ExceptionFileAccessError("File::File()", path.c_str() );
+    throw ExceptionFileAccessError(SYSTEM_SAVE_LOCATION, path.c_str() );
 
   assert( out_.is_open() );
 }
