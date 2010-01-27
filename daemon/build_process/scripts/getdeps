@@ -83,6 +83,22 @@ do
   test -x "$ROOT/common_dynamic_link"        && LINK_FLAGS="$LINK_FLAGS `$ROOT/common_dynamic_link`"
 done
 
+#
+# add local flags (run for this component only)
+#
+ROOT="$C/$BASE_PATH_DIR"
+if test -x "$ROOT/${PROFILE}_dynamic_compile_local"
+then
+  DEPS_FILES="$DEPS_FILES $ROOT/${PROFILE}_dynamic_compile_local"
+  COMPILE_FLAGS="$COMPILE_FLAGS `$ROOT/${PROFILE}_dynamic_compile_local`"
+fi
+if test -x "$ROOT/common_dynamic_compile_local"
+then
+  DEPS_FILES="$DEPS_FILES $ROOT/common_dynamic_compile_local"
+  COMPILE_FLAGS="$COMPILE_FLAGS `$ROOT/common_dynamic_compile_local`"
+fi
+
+
 # convert deps to libs and libs_deps (libraries this component depends on)
 if [ "`sed 's:^ *$::' <<< "$DEPS"`" ]
 then
@@ -113,4 +129,3 @@ $out:: $DEPS_FILES
 EOF
 
 exit 0
-
