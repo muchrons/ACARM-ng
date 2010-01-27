@@ -19,11 +19,12 @@ int main(void)
   LOGMSG_FATAL(n, "hello fatal"  ); w();
 
   // stream logging
-  LOGMSG_DEBUG_S(n)<<"hello debug";   w();
-  LOGMSG_INFO_S (n)<<"hello info";    w();
-  LOGMSG_WARN_S (n)<<"hello warning"; w();
-  LOGMSG_ERROR_S(n)<<"hello error";   w();
-  LOGMSG_FATAL_S(n)<<"hello fatal";   w();
+  int i=0;
+  LOGMSG_DEBUG_S(n)<<"hello debug "  <<++i; w();
+  LOGMSG_INFO_S (n)<<"hello info "   <<++i; w();
+  LOGMSG_WARN_S (n)<<"hello warning "<<++i; w();
+  LOGMSG_ERROR_S(n)<<"hello error "  <<++i; w();
+  LOGMSG_FATAL_S(n)<<"hello fatal "  <<++i; w();
 
   return 0;
 }
