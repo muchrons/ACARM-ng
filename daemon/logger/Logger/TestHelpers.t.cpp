@@ -35,9 +35,21 @@ void ensureLoggedPart(const char *part)
   const string msg=getLastLogMessage();
   if( strstr( msg.c_str(), part)==NULL )
   {
-    const string err="invalid message log: '" + msg + "' (part not found: '" + part + "')";
+    const string err="message NOT logged: '" + msg + "' (part not found: '" + part + "')";
     tut::fail( err.c_str() );
   }
 } // ensureLoggedPart()
+
+
+void ensureNotLoggedPart(const char *part)
+{
+  assert(part!=NULL);
+  const string msg=getLastLogMessage();
+  if( strstr( msg.c_str(), part)!=NULL )
+  {
+    const string err="message logged: '" + msg + "' (part found: '" + part + "')";
+    tut::fail( err.c_str() );
+  }
+} // ensureNotLoggedPart()
 
 } // namespace Logger

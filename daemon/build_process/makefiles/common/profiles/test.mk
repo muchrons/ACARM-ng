@@ -1,5 +1,4 @@
 .PHONY: test
-test: debug
 test: CXXFLAGS+=$(DBG_FLAGS)
 test: CFLAGS  +=$(DBG_FLAGS)
 test: LDFLAGS +=$(DBG_LDFLAGS)

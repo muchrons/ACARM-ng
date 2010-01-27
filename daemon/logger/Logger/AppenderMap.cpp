@@ -21,9 +21,9 @@ AppenderMap::AppenderMap(const ConfigIO::LoggerAppenders &cfg)
     add( it->getName(), configureNew(*it) );
 }
 
-Appenders::BasePtr AppenderMap::operator[](const std::string &name)
+Appenders::BasePtr AppenderMap::operator[](const std::string &name) const
 {
-  AppMap::iterator it=apps_.find(name);
+  AppMap::const_iterator it=apps_.find(name);
   if( it==apps_.end() )
     throw ExceptionNoSuchAppender(SYSTEM_SAVE_LOCATION, name.c_str() );
   assert( it->second.get()!=NULL );

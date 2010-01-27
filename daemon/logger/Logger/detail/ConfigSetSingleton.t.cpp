@@ -3,10 +3,12 @@
  *
  */
 #include <tut.h>
+#include <string>
 
 #include "TestHelpers/TestBase.hpp"
 #include "Logger/detail/ConfigSetSingleton.hpp"
 
+using namespace std;
 using namespace Logger;
 
 namespace
@@ -32,6 +34,17 @@ template<>
 void testObj::test<1>(void)
 {
   detail::ConfigSetSingleton::get();
+}
+
+// test getting node config
+template<>
+template<>
+void testObj::test<2>(void)
+{
+  const NodeName nn("subtree1.subappender");
+  NodeConfPtr    nc=detail::ConfigSetSingleton::get()->getNodeConfiguration(nn);
+  ensure_equals("invalid appender",
+                nc->getAppender()->getTypeName(), string("Null") );
 }
 
 } // namespace tut

@@ -6,10 +6,10 @@
 #include <string>
 #include <cstring>
 
-#include "TestHelpers/TestBase.hpp"
+#include "Logger/detail/LoggerImpl.hpp"
 #include "Logger/Node.hpp"
-#include "Logger/LoggerImpl.hpp"
 #include "Logger/TestHelpers.t.hpp"
+#include "TestHelpers/TestBase.hpp"
 
 using namespace tut;
 
@@ -50,7 +50,7 @@ typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Logger/LoggerImpl");
+factory tf("Logger/detail/LoggerImpl");
 } // unnamed namespace
 
 

@@ -4,10 +4,10 @@
  */
 #include <cassert>
 
+#include "Logger/detail/ConfigSetSingleton.hpp"
 #include "Base/Threads/Lock.hpp"
 #include "ConfigIO/Singleton.hpp"
-#include "Logger/detail/ConfigSetSingleton.hpp"
-#include "Logger/nodeConfReader.hpp"
+#include "Logger/NodeConfReader.hpp"
 
 using namespace std;
 using namespace ConfigIO;
@@ -26,7 +26,7 @@ NodeConfPtr ConfigSetImpl::getNodeConfiguration(const NodeName &nn)
   // if entry does not exist, it has to be created.
   if( it==cfgMap_.end() )
   {
-    NodeConfPtr nc=nodeConfReader(nn, appMap_);         // process configuration
+    NodeConfPtr nc=ncr_.read(nn);                       // process configuration
     assert( nc.get()!=NULL );
     cfgMap_.insert( make_pair(nn.get(), nc) );          // add it to map
     it=cfgMap_.find( nn.get() );                        // get newly added entry
@@ -38,8 +38,7 @@ NodeConfPtr ConfigSetImpl::getNodeConfiguration(const NodeName &nn)
   return it->second;
 }
 
-ConfigSetImpl::ConfigSetImpl(void):
-  appMap_( ConfigIO::Singleton::get()->loggerConfig().getAppenders() )
+ConfigSetImpl::ConfigSetImpl(void)
 {
 }
 
