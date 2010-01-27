@@ -50,7 +50,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     return cnt;
   }
 
-  IO::ConnectionPtrNN                 conn_;
+  IO::ConnectionPtrNN             conn_;
   boost::scoped_ptr<BackendProxy> bp_;
 };
 
