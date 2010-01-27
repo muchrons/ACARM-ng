@@ -18,8 +18,8 @@ namespace Logger
 struct ExceptionNoSuchPriority: public Exception
 {
   /** \brief create exception.
-   *  \param where place where exeception has been thrown.
-   *  \param name  name of appender's instance that has been required.
+   *  \param where    place where exeception has been thrown.
+   *  \param priority priority string that parsing failed.
    */
   ExceptionNoSuchPriority(const Location &where,
                           const char     *priority):
