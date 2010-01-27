@@ -48,6 +48,10 @@ void Node::log(Priority      pri,
 {
   try
   {
+    // skip if priority's below threshold
+    if( nc_->getThreshold().toInt() > pri.toInt() )
+      return;
+
     // get current time-stamp
     timeb ts;
     ftime(&ts);
