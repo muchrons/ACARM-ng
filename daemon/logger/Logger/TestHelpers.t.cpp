@@ -16,8 +16,8 @@ namespace Logger
 
 string getLastLogMessage(void)
 {
-  ifstream is("acarm-ng.log");
-  assert( is.is_open() );
+  ifstream is("loggerfile.log");
+  tut::ensure("unable ot open log file", is.is_open() );
   string out;
   string prev;
   while( !is.eof() )
