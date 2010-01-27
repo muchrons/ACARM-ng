@@ -18,7 +18,7 @@
 /* public header */
 
 #include "Logger/Node.hpp"
-#include "Logger/LoggerImpl.hpp"
+#include "Logger/detail/LoggerImpl.hpp"
 
 
 namespace Logger

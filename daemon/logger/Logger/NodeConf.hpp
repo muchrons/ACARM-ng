@@ -52,6 +52,7 @@ public:
    */
   Priority getThreshold(void) const
   {
+    Base::Threads::Lock lock(mutex_);
     return threshold_;
   }
 
