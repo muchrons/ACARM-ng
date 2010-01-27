@@ -2,14 +2,19 @@
 <acarm_ng>
 
   <persistency>
-    <type>stubs</type>
+    <type>postgres</type>
+    <host>localhost</host>
+    <port>5432</port>
+    <dbname>acarm_ng_test</dbname>
+    <user>acarm-ng-daemon</user>
+    <pass>test.daemon</pass>
   </persistency>
 
   <logger>
     <appenders>
-      <File name="default">
+      <file name="default">
         <output>loggerfile.log</output>
-      </File>
+      </file>
     </appenders>
 
     <nodes appender="default" threshold="debug">
