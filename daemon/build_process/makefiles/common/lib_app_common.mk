@@ -2,12 +2,16 @@
 
 .PHONY: test
 test:: copy_testdata
+test:: $(PUBLIC_HEADERS)
+test:: $(LIBRARY_NAME)
 test:: $(TEST_PROGRAM_NAME)
 
 .PHONY: mtest
 mtest:: copy_testdata
-mtest:: $(CXXBIN_MTEST) $(CBIN_MTEST) \
-		$(CXXOBJS_MTEST) $(COBJS_MTEST)
+mtest:: $(PUBLIC_HEADERS)
+mtest:: $(LIBRARY_NAME)
+mtest:: $(CXXBIN_MTEST) $(CBIN_MTEST)
+mtest:: $(CXXOBJS_MTEST) $(COBJS_MTEST)
 
 .PHONY: doc
 doc:: html/index.html
