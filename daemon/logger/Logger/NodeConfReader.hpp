@@ -15,7 +15,11 @@
 
 namespace Logger
 {
-
+/** \brief reader of configuration for a given node.
+ *
+ *  class uses ConfigIO to get access and return ready-to-go
+ *  configuration ofr a given node.
+ */
 class NodeConfReader: private boost::noncopyable
 {
 public:
@@ -36,7 +40,6 @@ public:
   }; // struct ExceptionNoSuchPriority
 
   /** \brief create instance.
-   *  \param apps appenders map to use for getting appenders.
    */
   NodeConfReader(void);
 
@@ -48,7 +51,6 @@ public:
 
   /** \brief reads node tree and gets configuration for a given node.
    *  \param nn   node name to create configration for.
-   *  \param apps appenders set.
    *  \return node's configuration description.
    */
   NodeConfPtr read(const NodeName &nn) const;
