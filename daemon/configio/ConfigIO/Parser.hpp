@@ -28,7 +28,7 @@ public:
   /** \brief creates parset for a given file.
    *  \param path file to be parsed.
    */
-  explicit Parser(const std::string &path="acarm_ng_config.xml");
+  explicit Parser(const std::string &path=DEFAULT_CONFIGIO_CONFIG_FILE);
 
   /** \brief gets logger's configuration, read from file.
    *  \return logger's configuration.

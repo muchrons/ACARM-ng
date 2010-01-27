@@ -106,20 +106,12 @@ void testObj::test<4>(void)
   }
 }
 
-// test throw when default file does not exist
+// test default file parameter - should not throw
 template<>
 template<>
 void testObj::test<5>(void)
 {
-  try
-  {
-    Parser p;
-    fail("Parser() didn't throw on nonexisting default file");
-  }
-  catch(const System::Exception&)
-  {
-    // this is not expected.
-  }
+  Parser p;
 }
 
 // test throw when default file does not exist
