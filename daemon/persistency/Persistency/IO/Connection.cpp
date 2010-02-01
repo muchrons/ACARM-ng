@@ -43,5 +43,12 @@ MetaAlertAutoPtr Connection::metaAlert(MetaAlertPtrNN ma, Transaction &t)
   return ptr;
 }
 
+RestorerAutoPtr Connection::restorer(Transaction &t)
+{
+  RestorerAutoPtr ptr=restorerImpl(t);
+  assert( ptr.get()!=NULL );
+  return ptr;
+}
+
 } // namespace IO
 } // namespace Persistency

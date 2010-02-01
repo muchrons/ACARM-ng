@@ -110,6 +110,33 @@ public:
   int                       called_[8];
 }; // class MetaAlert
 
+class IORestorer: public Persistency::IO::Restorer
+{
+public:
+  IORestorer(Persistency::IO::Transaction &t):
+    Persistency::IO::Restorer(t),
+    restoreAll_(0),
+    restoreBetween_(0)
+  {
+  }
+
+  virtual void restoreAllInUseImpl(Persistency::IO::Transaction&, NodesVector&)
+  {
+    ++restoreAll_;
+  }
+
+  virtual void restoreBetweenImpl(Persistency::IO::Transaction&,
+      NodesVector&,
+      const Persistency::Timestamp&,
+      const Persistency::Timestamp&)
+  {
+    ++restoreBetween_;
+  }
+
+  int restoreAll_;
+  int restoreBetween_;
+}; // class IORestorer
+
 
 struct TestIOConnection: public Persistency::IO::Connection
 {
@@ -148,7 +175,14 @@ struct TestIOConnection: public Persistency::IO::Connection
     return Persistency::IO::MetaAlertAutoPtr( new IOMetaAlert(ma, t) );
   }
 
-  int called_[4];
+  virtual Persistency::IO::RestorerAutoPtr restorerImpl(
+                                        Persistency::IO::Transaction &t)
+  {
+    ++called_[4];
+    return Persistency::IO::RestorerAutoPtr( new IORestorer(t) );
+  }
+
+  int called_[5];
 }; // struct TestIOConnection
 
 } // unnamed namespace

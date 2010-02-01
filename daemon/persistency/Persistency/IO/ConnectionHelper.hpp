@@ -20,7 +20,8 @@ template<typename TPersistencyHandler,
          typename TTransactionAPIIO,
          typename TAlertIO,
          typename THostIO,
-         typename TMetaAlertIO>
+         typename TMetaAlertIO,
+         typename TRestorerIO>
 class ConnectionHelper: public Connection
 {
 public:
@@ -56,6 +57,11 @@ private:
   virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, Transaction &t)
   {
     return MetaAlertAutoPtr( new TMetaAlertIO(ma, t, ph_) );
+  }
+
+  virtual RestorerAutoPtr restorerImpl(Transaction &t)
+  {
+    return RestorerAutoPtr( new TRestorerIO(t, ph_) );
   }
 
   TPersistencyHandler ph_;

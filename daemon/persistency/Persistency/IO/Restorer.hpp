@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <memory>
 #include <vector>
 #include <boost/noncopyable.hpp>
 
@@ -74,6 +75,10 @@ private:
 
   Transaction &t_;
 }; // class Restorer
+
+
+/** \brief auto pointer to restorer instance. */
+typedef std::auto_ptr<Restorer> RestorerAutoPtr;
 
 } // namespace IO
 } // namespace Persistency

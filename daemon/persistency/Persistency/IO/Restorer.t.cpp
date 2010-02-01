@@ -134,4 +134,12 @@ void testObj::test<4>(void)
                 ior_.restoreBetween_, 1);
 }
 
+// test auto-ptr typedef
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  RestorerAutoPtr ap( new IORestorer(t_) );
+}
+
 } // namespace tut

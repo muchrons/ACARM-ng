@@ -59,6 +59,11 @@ public:
    *  \return non-NULL meta-alert persistency proxy.
    */
   MetaAlertAutoPtr metaAlert(MetaAlertPtrNN ma, Transaction &t);
+  /** \brief create restorer object.
+   *  \param t transaction to be used for restoring data.
+   *  \return non-NULL restorer persistency proxy.
+   */
+  RestorerAutoPtr restorer(Transaction &t);
 
 private:
   virtual TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
@@ -66,6 +71,7 @@ private:
   virtual AlertAutoPtr alertImpl(AlertPtrNN alert, Transaction &t) = 0;
   virtual HostAutoPtr hostImpl(HostPtrNN host, Transaction &t) = 0;
   virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, Transaction &t) = 0;
+  virtual RestorerAutoPtr restorerImpl(Transaction &t) = 0;
 
   Base::Threads::Mutex mutex_;
 }; // class Connection
