@@ -119,4 +119,19 @@ void testObj::test<3>(void)
   }
 }
 
+// test calls to restore in a equal timespec
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  ensure_equals("pre-1 failed", ior_.restoreAll_,     0);
+  ensure_equals("pre-2 failed", ior_.restoreBetween_, 0);
+  const Timestamp ts=from_undelimited_string("20100101");
+  base_.restoreBetween(out_, ts, ts);
+  ensure_equals("invalid number of calls to restore all",
+                ior_.restoreAll_,     0);
+  ensure_equals("invalid number of calls to restore between",
+                ior_.restoreBetween_, 1);
+}
+
 } // namespace tut

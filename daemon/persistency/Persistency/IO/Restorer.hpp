@@ -10,7 +10,7 @@
 #include <vector>
 #include <boost/noncopyable.hpp>
 
-#include "Persistency/GraphNode.hpp"
+#include "Persistency/GraphNodePtr.hpp"
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/Exception.hpp"
@@ -39,8 +39,7 @@ public:
                              const Timestamp &to);
   }; // struct ExceptionInvalidTimeSpan
 
-  /** \brief collection of graph nodes read from DB.
-   */
+  /** \brief collection of graph nodes read from DB. */
   typedef std::vector<GraphNodePtrNN> NodesVector;
 
   /** \brief deallocate object.
