@@ -13,6 +13,7 @@
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/MetaAlert.hpp"
+#include "Persistency/GraphNodePtr.hpp"
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/ExceptionNotLeaf.hpp"
 #include "Persistency/ExceptionNotNode.hpp"
@@ -20,13 +21,6 @@
 
 namespace Persistency
 {
-
-// forward declaration, needed for smart-pointer decalration
-class GraphNode;
-
-/** \brief pointer to single graph node.
- */
-typedef Commons::SharedPtrNotNULL<GraphNode> GraphNodePtrNN;
 
 /** \brief graph node's representation.
  */
