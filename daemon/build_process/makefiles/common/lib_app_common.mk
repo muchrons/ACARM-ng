@@ -35,7 +35,7 @@ Doxyfile:
 
 LIBS_GEN_DEPS:=$(wildcard $(DEP_LIBS_WC)) $(GEN_LIBS_DIR)/$(LIBRARY_NAME)
 
-%.mt: %.mt.o $(LIBS_GEN_DEPS) $(LIBRARY_NAME)
+%.mt: %.mt.oxx $(LIBS_GEN_DEPS) $(LIBRARY_NAME)
 	@echo "LD    $@"
 	$(LD) $(LDFLAGS) -o $@ $^ $(FORCE_LINK_SYMBOLS) -l$(COMPONENT_NAME) $(LINK_LIBS) $(END_LINK_LIBS)
 

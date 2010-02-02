@@ -66,31 +66,31 @@ export SOURCE_DIRS
 #
 
 COBJS  :=$(CSRCS:.c=.o)
-CXXOBJS:=$(CXXSRCS:.cpp=.o)
+CXXOBJS:=$(CXXSRCS:.cpp=.oxx)
 export COBJS \
        CXXOBJS
 
 # obj files without 'main()':
 COBJS_NOMAIN  :=$(CSRCS_NOMAIN:.c=.o)
-CXXOBJS_NOMAIN:=$(CXXSRCS_NOMAIN:.cpp=.o)
+CXXOBJS_NOMAIN:=$(CXXSRCS_NOMAIN:.cpp=.oxx)
 export COBJS_NOMAIN \
        CXXOBJS_NOMAIN
 
 # obj files containing 'main()' (there should by just one BTW...)
 COBJS_MAIN  :=$(CSRCS_MAIN:.c=.o)
-CXXOBJS_MAIN:=$(CXXSRCS_MAIN:.cpp=.o)
+CXXOBJS_MAIN:=$(CXXSRCS_MAIN:.cpp=.oxx)
 export COBJS_MAIN \
        CXXOBJS_MAIN
 
 # test object files:
 COBJS_TEST  :=$(CSRCS_TEST:.c=.o)
-CXXOBJS_TEST:=$(CXXSRCS_TEST:.cpp=.o)
+CXXOBJS_TEST:=$(CXXSRCS_TEST:.cpp=.oxx)
 export COBJS_TEST \
        CXXOBJS_TEST
 
 # mtest object files:
 COBJS_MTEST  :=$(CSRCS_MTEST:.c=.o)
-CXXOBJS_MTEST:=$(CXXSRCS_MTEST:.cpp=.o)
+CXXOBJS_MTEST:=$(CXXSRCS_MTEST:.cpp=.oxx)
 export COBJS_MTEST \
        CXXOBJS_MTEST
 
@@ -101,8 +101,8 @@ export CBIN_MTEST \
        CXXBIN_MTEST
 
 # dep files:
-CDEPS  :=$(ALL_SOURCES_C:.c=.d)
-CXXDEPS:=$(ALL_SOURCES_CXX:.cpp=.d)
+CDEPS  :=$(ALL_SOURCES_C:.c=.o.d)
+CXXDEPS:=$(ALL_SOURCES_CXX:.cpp=.oxx.dxx)
 export CDEPS \
        CXXDEPS
 
