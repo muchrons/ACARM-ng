@@ -43,17 +43,40 @@ public:
    *  \param p              process to be saved.
    */
   DataBaseID saveProcess(DataBaseID reportedHostID, const Process &p);
+  DataBaseID saveAlert(DataBaseID AnalyzerID, const Alert &a);
+  DataBaseID saveAnalyzer(DataBaseID HostID, const AnalyzerPtr a);
+  DataBaseID saveDestinationHost(DataBaseID alertID, const HostPtr h);
+  DataBaseID saveTargetHost(DataBaseID alertID, const HostPtr h);
+  void saveService(DataBaseID reportedHostID, const Service &s);
+  DataBaseID saveHostData(const HostPtr h);
   // TODO
 
 
 private:
   DataBaseID getID(const std::string &seqName);
+  DataBaseID getSeverityID(const Alert &a);
 
   DataBaseID saveProcessData(const Process &p);
   DataBaseID saveReportedProcessData(DataBaseID     reportedHostID,
                                      DataBaseID     procID,
                                      const Process &p);
   DataBaseID saveReferenceURL(const ReferenceURL &url);
+  
+  DataBaseID saveAlertData(const Alert &a);
+  DataBaseID saveMetaAlertData(const MetaAlert &ma);
+  
+  DataBaseID saveAnalyzerData(const Analyzer &a);
+  
+  //DataBaseID saveHostData(const HostPtr h);
+  DataBaseID saveReportedHostData(DataBaseID  alertID,
+                                  DataBaseID  hostID,
+				  const std::string role,
+                                  const HostPtr h);
+
+  DataBaseID saveServiceData(const Service &s);
+  void saveReportedServiceData(DataBaseID  reportedHostID,
+                               DataBaseID  serID,
+                               const Service &s);
 
   DBHandler   &dbh_;
   Transaction &t_;

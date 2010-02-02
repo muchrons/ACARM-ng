@@ -8,6 +8,8 @@
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
+#include "Persistency/IO/Postgres/TestHelpers.t.hpp"
+#include "Persistency/detail/LimitedNULLString.hpp"
 
 using Persistency::IO::Transaction;
 using namespace Persistency;
@@ -17,9 +19,27 @@ using namespace Persistency::IO::Postgres::detail;
 namespace
 {
 
+const Host::Netmask_v4::bytes_type mask4_bytes={ {0xFF, 0xFF, 0x00, 0x00} };
+const Host::Netmask_v6::bytes_type mask6_bytes={ {
+                                                   0xFF, 0xFF, 0xFF, 0xFF,
+                                                   0xFF, 0xFF, 0xFF, 0x00,
+                                                   0x00, 0x00, 0x00, 0x00,
+                                                   0x00, 0x00, 0x00, 0x00,
+                                               } };
+
+
 struct TestClass
 {
   TestClass(void):
+    name_("some name"),
+    analyzer_( new Analyzer("analyzer name", HostPtr() ) ),
+    detected_(boost::gregorian::from_simple_string("2001-10-9")),
+    created_(boost::gregorian::from_simple_string("2001-10-10")),
+    severity_(SeverityLevel::INFO),
+    certanity_(0.42),
+    description_("alert's description"),
+    sourceHosts_( generateReportedHosts(2) ),
+    targetHosts_( generateReportedHosts(5) ),
     idCache_(new IDCache),
     dbh_(TestConnection::makeParams(), idCache_),
     conn_( makeConnection() ),
@@ -35,9 +55,12 @@ struct TestClass
            &uid_,
            "johndoe",
            "-a -b -c",
-           url_ )
+           url_ ),
+    mask4_( Host::Netmask_v4(mask4_bytes) ),
+    mask6_( Host::Netmask_v6(mask6_bytes) )
   {
-    tdba_.removeAllData();
+    //tdba_.removeAllData();
+    //tdba_.fillWithContetnt1();
   }
 
   IO::ConnectionPtrNN makeConnection(void) const
@@ -51,6 +74,25 @@ struct TestClass
     return Persistency::IO::BackendFactory::create("postgres", opts);
   }
 
+  Alert::ReportedHosts generateReportedHosts(unsigned int size) const
+  {
+    Alert::ReportedHosts out;
+    for(unsigned int i=0; i<size; ++i)
+      out.push_back( makeNewHost() );
+    return out;
+  }
+
+  const Alert::Name          name_;
+  const AnalyzerPtr          analyzer_;
+  const Timestamp            detected_;
+  const Timestamp            created_;
+  const Severity             severity_;
+  const Certainty            certanity_;
+  const std::string               description_;
+  const Alert::ReportedHosts sourceHosts_;
+  const Alert::ReportedHosts targetHosts_;
+
+
   TestDBAccess        tdba_;
   IDCachePtrNN        idCache_;
   DBHandler           dbh_;
@@ -62,6 +104,10 @@ struct TestClass
   const int         uid_;
   ReferenceURLPtrNN url_;
   const Process     proc_;
+
+  const Host::Netmask_v4 mask4_;
+  const Host::Netmask_v6 mask6_;
+
 };
 
 typedef TestClass                  TestClass;
@@ -109,6 +155,51 @@ void testObj::test<3>(void)
   {
     // this is expected
   }
+}
+
+// try saving example Alert
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  HostPtr host=makeNewHost();
+  const AnalyzerPtr anlz=makeNewAnalyzer("analyzer1", host);
+  DataBaseID hostID = es_.saveHostData(host);
+  DataBaseID anlzID = es_.saveAnalyzer(hostID,anlz);
+  es_.saveAlert(anlzID,a);
+  t_.commit();
+}
+
+// try saving example Service
+template<>
+template<>
+void testObj::test<5>(void)
+{ 
+  const Service ti("mail daemon", 25, "smtp", makeNewReferenceURL() );
+}
+
+// try saving example Analyzer
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  HostPtr host=makeNewHost();
+  const AnalyzerPtr a=makeNewAnalyzer("analyzer1", host);
+  DataBaseID hostID = es_.saveHostData(host);
+  es_.saveAnalyzer(hostID,a);
+  t_.commit();
+}
+
+template<>
+template<>
+void testObj::test<7>(void)
+{
+
+  const HostPtr ti=makeNewHost4("1.2.3.4", &mask4_, "myOS");
+  //es_.saveHost(ti);
+
 }
 
 } // namespace tut
