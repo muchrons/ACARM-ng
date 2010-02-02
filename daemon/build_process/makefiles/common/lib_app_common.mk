@@ -16,7 +16,7 @@ doc:: html/index.html
 
 html/index.html:: Doxyfile $(ALL_MODE_SOURCES)
 	@echo "DOXY  makedoc"
-	$(DOXYGEN)
+	@if $(DOXYGEN) 2>&1 | grep '' 1>&2 ; then rm -f "$@" ; false ; else true ; fi
 
 Doxyfile:
 	@echo "DOXY  $@"
