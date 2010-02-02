@@ -27,7 +27,7 @@ void Strategy::process(Persistency::GraphNodePtrNN n)
   nos_.prune();
 
   // check if node should be processed at all
-  if( !matchCriteria(*n) )
+  if( !matchesCriteria(*n) )
   {
     LOGMSG_DEBUG_S(log_)<<"node at address 0x"
                         <<static_cast<void*>( n.get() )
