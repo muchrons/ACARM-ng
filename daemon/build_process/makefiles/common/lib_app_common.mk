@@ -12,6 +12,7 @@ mtest:: $(CXXBIN_MTEST) $(CBIN_MTEST)
 mtest:: $(CXXOBJS_MTEST) $(COBJS_MTEST)
 
 .PHONY: doc
+doc:: $(PUBLIC_HEADERS)
 doc:: html/index.html
 
 html/index.html:: Doxyfile $(ALL_MODE_SOURCES)
