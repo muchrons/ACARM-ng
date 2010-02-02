@@ -149,36 +149,15 @@ void GraphNode::ensureIsNode(void) const
 // TODO: this is a TEMPORARY solution - it must be reworked to use some
 //       sort of distributed algorithm, not to block whole structure
 //       when non-dependent data parts are being operated on.
-//
-// TODO: this can be repaced with System::SecureInitLock.
-// namespace with helpers for locking on global level of whole structure
-namespace
-{
-pthread_mutex_t additionMutex=PTHREAD_MUTEX_INITIALIZER;
-
-struct PtrLock
-{
-  PtrLock(void)
-  {
-    if( pthread_mutex_lock(&additionMutex)!=0 )
-      throw Exception(SYSTEM_SAVE_LOCATION, "unable to lock mutex for "
-                                "GraphNode/addition implementation");
-  }
-  ~PtrLock(void)
-  {
-    if( pthread_mutex_unlock(&additionMutex)!=0 )
-      assert(!"unable to lock mutex for GraphNode/addition implementation");
-  }
-}; // struct PtrLock
-
-} // unnamed namespace
+SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_additionMutex);
 
 void GraphNode::nonCyclicAddition(GraphNodePtrNN child)
 {
   const GraphNode *childPtr=child.get();
   assert(childPtr!=NULL);
 
-  PtrLock lock;     // only one addition at a time! (TODO: it's too restrictive)
+  // only one addition at a time! (TODO: it's too restrictive)
+  System::Threads::SafeInitLock lock(g_additionMutex);
 
   if( this==childPtr           ||   // instant-cycle
       childPtr->hasCycle(this)    ) // is it possible to access self through child

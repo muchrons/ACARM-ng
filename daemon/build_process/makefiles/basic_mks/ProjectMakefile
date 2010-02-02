@@ -25,7 +25,7 @@ TMP:=$(shell mkdir -p "$(GEN_COMPONENTS_DEPS_DIR)" && \
                "$(GEN_COMPONENTS_DEPS_DIR)" \
                "$(COMPONENT_DEPS_REL_PATH)" \
                "$(GEN_LIBS_DIR)" \
-               `cat $(COMPONENTS_LISTS) 2>/dev/null` )
+               `cat $(COMPONENTS_LISTS) 2>/dev/null` 1>&2 )
 TMP:=
 
 # ensure default target is defined in proper way
