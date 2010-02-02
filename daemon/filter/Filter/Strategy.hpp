@@ -26,9 +26,9 @@ class Strategy: private boost::noncopyable
 {
 public:
   /** \brief helper typedef for GraphNode pointer. */
-  typedef Persistency::GraphNodePtrNN Node;
+  typedef BackendProxy::Node         Node;
   /** \brief helper typedef for list of chenged nodes. */
-  typedef std::vector<Node>           ChangedNodes;
+  typedef BackendProxy::ChangedNodes ChangedNodes;
 
   /** \brief deallocate object.
    */
@@ -76,7 +76,6 @@ private:
    *                 persistent storage.
    */
   virtual void processImpl(Node               n,
-                           ChangedNodes      &changed,
                            NodesTimeoutQueue &ntq,
                            BackendProxy      &bp) = 0;
 
