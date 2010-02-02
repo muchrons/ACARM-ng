@@ -39,7 +39,7 @@ public:
   /** \brief gets host that analizer runs on.
    *  \return pointer to host info, or NULL if not set.
    */
-  const Host *getHost(void) const;
+  HostPtr getHost(void) const;
 
 private:
   Name    name_;
