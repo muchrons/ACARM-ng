@@ -10,7 +10,7 @@ then
 fi
 
 # display info on rebuilding dependency for a given component
-echo "CDEPS $4" >&2
+echo "CDEPS $4"
 
 # remember output dir
 OUTPUT_DIR="$1"
@@ -113,10 +113,10 @@ cat<<EOF > "$out"
 .PHONY: $C
 $C:: LINK_LIBS:=$LINK_FLAGS
 $C:: DEP_LIBS_WC:=$DEP_LIBS_WC
-$C:: CXXFLAGS+=$COMPILE_FLAGS
-$C:: CFLAGS+=$COMPILE_FLAGS
+$C:: CXXFLAGS:=\$(CXXFLAGS) $COMPILE_FLAGS
+$C:: CFLAGS:=\$(CFLAGS) $COMPILE_FLAGS
 ifeq (,\$(WITHOUT_DEPS))
-$C::$DEPS
+$C:: $DEPS
 else
 $C::
 endif

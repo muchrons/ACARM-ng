@@ -1,5 +1,3 @@
-# TODO: TEST_LINK_LIBS looks like it should be removed (not used)
-
 .PHONY: test
 test:: copy_testdata
 test:: $(PUBLIC_HEADERS)
@@ -39,8 +37,7 @@ LIBS_GEN_DEPS:=$(wildcard $(DEP_LIBS_WC)) $(GEN_LIBS_DIR)/$(LIBRARY_NAME)
 
 %.mt: %.mt.o $(LIBS_GEN_DEPS) $(LIBRARY_NAME)
 	@echo "LD    $@"
-	$(LD) $(LDFLAGS) -o $@ $^ $(TEST_LINK_LIBS) $(FORCE_LINK_SYMBOLS) \
-		-l$(COMPONENT_NAME) $(LINK_LIBS)
+	$(LD) $(LDFLAGS) -o $@ $^ $(FORCE_LINK_SYMBOLS) -l$(COMPONENT_NAME) $(LINK_LIBS) $(END_LINK_LIBS)
 
 $(CBIN_MTEST)::
 	@echo "mtest taget is not implemented for C sources"
@@ -54,8 +51,8 @@ copy_testdata:
 
 $(TEST_PROGRAM_NAME):: $(CXXOBJS_TEST) $(COBJS_TEST) $(LIBS_GEN_DEPS) $(LIBRARY_NAME)
 	@echo "LD    $@"
-	$(LD) $(LDFLAGS) -o $@ $^ $(TEST_LINK_LIBS) $(FORCE_LINK_SYMBOLS) \
-		-l$(COMPONENT_NAME) $(LINK_LIBS) $(END_LINK_LIBS)
+	$(LD) $(LDFLAGS) -o $@ $^ $(FORCE_LINK_SYMBOLS) -l$(COMPONENT_NAME) \
+		$(LINK_LIBS) $(END_LINK_LIBS)
 
 LIBRARY_OBJ_DEPS:=$(CXXOBJS_NOMAIN) $(COBJS_NOMAIN)
 LIBRARY_DEPS    :=$(LIBRARY_OBJ_DEPS) $(GEN_LIBS_DIR)/$(LIBRARY_NAME) $(LIBS_GEN_DEPS) $(PUBLIC_HEADERS)
