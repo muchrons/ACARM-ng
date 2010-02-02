@@ -46,7 +46,8 @@ void BackendProxy::addChild(Persistency::GraphNodePtrNN parent,
                             Persistency::GraphNodePtrNN child)
 {
   beginTransaction();
-  IO::MetaAlertAutoPtr io=getConnection()->metaAlert( parent->getMetaAlert(), getTransaction() );
+  IO::MetaAlertAutoPtr io=getConnection()->metaAlert( parent->getMetaAlert(),
+                                                      getTransaction() );
   parent->addChild(child, *io);
 }
 
@@ -57,8 +58,12 @@ Persistency::GraphNodePtrNN BackendProxy::correlate(
             const ChildrenVector        &otherChildren)
 {
   beginTransaction();
-  GraphNodePtrNN ptr( new GraphNode(ma, getConnection(), getTransaction(),
-                                    child1, child2, otherChildren) );
+  GraphNodePtrNN ptr( new GraphNode(ma,
+                                    getConnection(),
+                                    getTransaction(),
+                                    child1,
+                                    child2,
+                                    otherChildren) );
   return ptr;
 }
 
