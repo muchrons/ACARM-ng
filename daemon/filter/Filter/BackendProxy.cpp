@@ -21,6 +21,9 @@ BackendProxy::BackendProxy(Persistency::IO::ConnectionPtrNN  conn,
   Core::Types::Proc::BackendProxy(conn, filterName),
   changed_(changed)
 {
+  if( changed_.size()!=0 )
+    throw ExceptionChangedNodesNotEmpty(SYSTEM_SAVE_LOCATION,
+                                        filterName.c_str() );
 }
 
 namespace

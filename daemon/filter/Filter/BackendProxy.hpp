@@ -9,6 +9,7 @@
 
 #include "Persistency/GraphNode.hpp"
 #include "Core/Types/Proc/BackendProxy.hpp"
+#include "Filter/Exception.hpp"
 
 
 namespace Filter
@@ -24,6 +25,20 @@ namespace Filter
 class BackendProxy: public Core::Types::Proc::BackendProxy
 {
 public:
+  /** \brief exception throw when changed elements colleciton is not empty.
+   */
+  struct ExceptionChangedNodesNotEmpty: public Exception
+  {
+    /** \brief create object.
+     *  \param where place where exception has been created.
+     *  \param name  name of filter throwing exception.
+     */
+    ExceptionChangedNodesNotEmpty(const Location &where, const char *name):
+      Exception(where, name, "ChangedNodes colleciton is not initially empty")
+    {
+    }
+  }; // struct ExceptionChangedNodesNoteEmpty
+
   /** \brief forward of type definition (for simplified usage). */
   typedef Persistency::GraphNode::ChildrenVector ChildrenVector;
   /** \brief helper typedef for GraphNode pointer. */
@@ -34,6 +49,7 @@ public:
 
   /** \brief create object's instance.
    *  \param conn       connection object to use.
+   *  \param changed    list of changed nodes to update.
    *  \param filterName name of filter this object is created for.
    */
   BackendProxy(Persistency::IO::ConnectionPtrNN  conn,

@@ -179,4 +179,21 @@ void testObj::test<9>(void)
   ensure_equals("change not marked", changed_.size(), 1);
 }
 
+// test throwing when non-mepty changed nodes colleciton is given
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  try
+  {
+    changed_.push_back( makeGraphNode() );  // colleciton shall be non-empty
+    BackendProxy tmp(conn_, changed_, "myunatedstatesofwhatever");
+    fail("c-tor didn't throw on non-empty changed nodes' collection");
+  }
+  catch(const BackendProxy::ExceptionChangedNodesNotEmpty&)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut
