@@ -174,7 +174,7 @@ void testObj::test<8>(void)
   ConstIter it=empty_.begin();
   ensure_equals("invalid element 1", *it, "new1");
   ++it;
-  ensure_equals("invalid element 1", *it, "new2");
+  ensure_equals("invalid element 2", *it, "new2");
 }
 
 // test updating timeout should make time longer by a given amount.
@@ -190,6 +190,32 @@ void testObj::test<9>(void)
 
   empty_.prune();           // entry should now be removed
   ensure_equals("invalid size/4", size(empty_), 0);
+}
+
+// test explicit removal of element
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  empty_.update("e1", 2);
+  empty_.update("e2", 9);
+  empty_.update("e3", 3);
+  ensure_equals("invalid number of elements", size(empty_), 3);
+
+  // explicitly removed 2nd element
+  {
+    Iter it=empty_.begin();
+    ++it;
+    empty_.dismiss(it);
+  }
+
+  // check size
+  ensure_equals("invalid number of elements after pruning", size(empty_), 2);
+  // check content
+  ConstIter it=empty_.begin();
+  ensure_equals("invalid element 1", *it, "e1");
+  ++it;
+  ensure_equals("invalid element 1", *it, "e3");
 }
 
 } // namespace tut
