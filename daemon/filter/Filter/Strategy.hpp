@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <boost/operators.hpp>
+
 #include "Base/TimeoutQueue.hpp"
 #include "Logger/Logger.hpp"
 #include "Persistency/GraphNode.hpp"
@@ -43,7 +45,7 @@ protected:
   /** \brief helper structure with user-provided data associated with
    *         node's entry.
    */
-  struct NodeEntry
+  struct NodeEntry: public boost::equality_comparable<NodeEntry>
   {
     /** \brief create entry object.
      *  \param node node to create.
@@ -53,6 +55,14 @@ protected:
       node_(node),
       t_(t)
     {
+    }
+    /** \brief check if given two entries correspond to the same node.
+     *  \param other node to compare with.
+     *  \return true if given entries correspond to the same node, false otherwise.
+     */
+    bool operator==(const NodeEntry &other) const
+    {
+      return node_.get()==other.node_.get();
     }
 
     Node node_;     ///< node itself.
