@@ -2,7 +2,6 @@
  * GraphNode.cpp
  *
  */
-#include <pthread.h>
 #include <cassert>
 #include <exception>
 
