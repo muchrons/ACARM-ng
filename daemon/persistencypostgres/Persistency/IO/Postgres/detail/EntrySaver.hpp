@@ -43,17 +43,62 @@ public:
    *  \param p              process to be saved.
    */
   DataBaseID saveProcess(DataBaseID reportedHostID, const Process &p);
+  /** \brief saves alert data to data base
+   *  \param AnalyzerID ID of reported, that this Alert should be assigned to.
+   *  \param a		alert to be saved
+   */
+  DataBaseID saveAlert(DataBaseID AnalyzerID, const Alert &a);
+  /** \brief saves analyzer data to data base
+   *  \param HostID
+   *  \param a		analyzer to be saved
+   */
+  DataBaseID saveAnalyzer(const DataBaseID *HostID, const Analyzer &a);
+  /** \brief save destination host data to data base
+   *  \param alertID	
+   *  \param h		destination host to be saved
+   */
+  DataBaseID saveDestinationHost(DataBaseID alertID, const Persistency::Host &h);
+  /** \brief save target host data to data base
+   *  \param alertID
+   *  \param h		target host to be saved
+   */
+  DataBaseID saveTargetHost(DataBaseID alertID, const Persistency::Host &h);
+  /** \brief save service data to data base
+   *  \param reportedHostID 
+   *  \param s		    service to be saved	
+   */
+  void saveService(DataBaseID reportedHostID, const Service &s);
+  /** \brief save host data to data base
+   *  \param h host to be saved
+   */
+  DataBaseID saveHostData(const Persistency::Host &h);
   // TODO
 
 
 private:
   DataBaseID getID(const std::string &seqName);
+  DataBaseID getSeverityID(const Alert &a);
 
   DataBaseID saveProcessData(const Process &p);
   DataBaseID saveReportedProcessData(DataBaseID     reportedHostID,
                                      DataBaseID     procID,
                                      const Process &p);
   DataBaseID saveReferenceURL(const ReferenceURL &url);
+  
+  DataBaseID saveAlertData(const Alert &a);
+  DataBaseID saveMetaAlertData(const MetaAlert &ma);
+  
+  DataBaseID saveAnalyzerData(const Analyzer &a);
+  
+  DataBaseID saveReportedHostData(DataBaseID  alertID,
+                                  DataBaseID  hostID,
+				  const std::string role,
+                                  const Persistency::Host &h);
+
+  DataBaseID saveServiceData(const Service &s);
+  void saveReportedServiceData(DataBaseID  reportedHostID,
+                               DataBaseID  serID,
+                               const Service &s);
 
   DBHandler   &dbh_;
   Transaction &t_;

@@ -1,0 +1,2 @@
+1 adding modified nodes to queue should be unique (i.e. there is no sense in repeating entries to process). consider creating Base::UniqueFifoQueue.
+2

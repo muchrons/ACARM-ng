@@ -14,9 +14,9 @@ const Analyzer::Name &Analyzer::getName(void) const
   return name_;
 }
 
-const Host *Analyzer::getHost(void) const
+HostPtr Analyzer::getHost(void) const
 {
-  return host_.get();
+  return host_;
 }
 
 Analyzer::Analyzer(const Name &name,

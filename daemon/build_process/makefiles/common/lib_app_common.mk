@@ -12,11 +12,12 @@ mtest:: $(CXXBIN_MTEST) $(CBIN_MTEST)
 mtest:: $(CXXOBJS_MTEST) $(COBJS_MTEST)
 
 .PHONY: doc
+doc:: $(PUBLIC_HEADERS)
 doc:: html/index.html
 
 html/index.html:: Doxyfile $(ALL_MODE_SOURCES)
 	@echo "DOXY  makedoc"
-	$(DOXYGEN)
+	@if $(DOXYGEN) 2>&1 | grep '' 1>&2 ; then rm -f "$@" ; false ; else true ; fi
 
 Doxyfile:
 	@echo "DOXY  $@"
@@ -35,7 +36,7 @@ Doxyfile:
 
 LIBS_GEN_DEPS:=$(wildcard $(DEP_LIBS_WC)) $(GEN_LIBS_DIR)/$(LIBRARY_NAME)
 
-%.mt: %.mt.o $(LIBS_GEN_DEPS) $(LIBRARY_NAME)
+%.mt: %.mt.oxx $(LIBS_GEN_DEPS) $(LIBRARY_NAME)
 	@echo "LD    $@"
 	$(LD) $(LDFLAGS) -o $@ $^ $(FORCE_LINK_SYMBOLS) -l$(COMPONENT_NAME) $(LINK_LIBS) $(END_LINK_LIBS)
 
