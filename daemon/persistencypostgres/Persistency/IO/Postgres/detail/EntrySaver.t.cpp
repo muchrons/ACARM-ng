@@ -60,7 +60,6 @@ struct TestClass
     mask6_( Host::Netmask_v6(mask6_bytes) )
   {
     //tdba_.removeAllData();
-    //tdba_.fillWithContetnt1();
   }
 
   IO::ConnectionPtrNN makeConnection(void) const
@@ -162,14 +161,14 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
-                description_, sourceHosts_, targetHosts_);
-  HostPtr host=makeNewHost();
-  const AnalyzerPtr anlz=makeNewAnalyzer("analyzer1", host);
-  DataBaseID hostID = es_.saveHostData(host);
-  DataBaseID anlzID = es_.saveAnalyzer(hostID,anlz);
-  es_.saveAlert(anlzID,a);
-  t_.commit();
+  //const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
+  //              description_, sourceHosts_, targetHosts_);
+  //HostPtr host=makeNewHost();
+  //const Analyzer anlz("analyzer1", host);
+  //DataBaseID hostID = es_.saveHostData(&host);
+  //DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
+  //es_.saveAlert(anlzID,a);
+  //t_.commit();
 }
 
 // try saving example Service
@@ -185,21 +184,21 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  HostPtr host=makeNewHost();
-  const AnalyzerPtr a=makeNewAnalyzer("analyzer1", host);
-  DataBaseID hostID = es_.saveHostData(host);
-  es_.saveAnalyzer(hostID,a);
-  t_.commit();
+  //HostPtr host=makeNewHost();
+  //const AnalyzerPtr a("analyzer2", host);
+  //DataBaseID hostID = es_.saveHostData(&host);
+  //es_.saveAnalyzer(&hostID,a);
+  //t_.commit();
 }
 
+// try saving example Analyzer with NULL id_host
 template<>
 template<>
 void testObj::test<7>(void)
 {
-
-  const HostPtr ti=makeNewHost4("1.2.3.4", &mask4_, "myOS");
-  //es_.saveHost(ti);
-
+  const Analyzer a("analyzer3",makeNewHost());
+  es_.saveAnalyzer(NULL,a);
+  t_.commit();
 }
 
 } // namespace tut

@@ -112,16 +112,16 @@ DataBaseID EntrySaver::saveReferenceURL(const ReferenceURL &url)
   return getID("reference_urls_id_seq");
 }
 
-DataBaseID EntrySaver::saveHostData(const HostPtr h)
+DataBaseID EntrySaver::saveHostData(const Persistency::Host &h)
 {
   stringstream ss;
   ss << "INSERT INTO hosts(ip, mask, os, name) VALUES (";
-  Appender::append(ss, h->getIP().to_string() );
+  Appender::append(ss, h.getIP().to_string() );
   ss << ",";
-  Appender::append(ss, h->getNetmask()->to_string() );
+  Appender::append(ss, h.getNetmask()->to_string() );
   ss << ",";
-  ss << "'" << pqxx::sqlesc(h->getOperatingSystem().get() ) << "',";
-  Appender::append(ss, (h->getName())?h->getName()->get():NULL);
+  ss << "'" << pqxx::sqlesc(h.getOperatingSystem().get() ) << "',";
+  Appender::append(ss, (h.getName())?h.getName()->get():NULL);
   //ss << "'" << pqxx::sqlesc(h->getName()->get() ) << "',";
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
@@ -132,16 +132,16 @@ DataBaseID EntrySaver::saveHostData(const HostPtr h)
 DataBaseID EntrySaver::saveReportedHostData(DataBaseID   alertID, 
 					    DataBaseID   hostID,
 					    const std::string  role,
-					    const HostPtr h)
+					    const Persistency::Host &h)
 {
   stringstream ss;
   ss << "INSERT INTO reported_hosts(id_alert, id_host, role, id_ref) VALUES (";
   ss << alertID << ",";
   ss << hostID << ",";
   ss << "'" << pqxx::sqlesc(role ) << "',";
-  if( h->getReferenceURL()!=NULL )
+  if( h.getReferenceURL()!=NULL )
   {
-    const DataBaseID urlID=saveReferenceURL( *h->getReferenceURL() );
+    const DataBaseID urlID=saveReferenceURL( *h.getReferenceURL() );
     ss << urlID;
   }
   else
@@ -151,13 +151,13 @@ DataBaseID EntrySaver::saveReportedHostData(DataBaseID   alertID,
   return getID("reported_hosts_id_seq");
 }
 
-DataBaseID EntrySaver::saveTargetHost(DataBaseID alertID, const HostPtr h)
+DataBaseID EntrySaver::saveTargetHost(DataBaseID alertID, const Persistency::Host &h)
 {
   DataBaseID hostID = saveHostData(h);
   return saveReportedHostData(alertID, hostID, "src", h); 
 }
 
-DataBaseID EntrySaver::saveDestinationHost(DataBaseID alertID, const HostPtr h)
+DataBaseID EntrySaver::saveDestinationHost(DataBaseID alertID, const Persistency::Host &h)
 {
   DataBaseID hostID = saveHostData(h);
   return saveReportedHostData(alertID, hostID, "dst", h);
@@ -187,17 +187,26 @@ DataBaseID EntrySaver::saveAlert(DataBaseID AnalyzerID, const Alert &a)
   return getID("alerts_id_seq");
 }
 
-DataBaseID EntrySaver::saveAnalyzer(DataBaseID HostID, const AnalyzerPtr a)
+DataBaseID EntrySaver::saveAnalyzer(const DataBaseID *HostID, const Analyzer &a)
 {
   stringstream ss;
-  ss << "SELECT * FROM analyzers WHERE name = ";
-  ss << "'" << pqxx::sqlesc(a->getName().get() ) << "';";
+  ss << "SELECT * FROM analyzers WHERE id_host ";
+  if(HostID==NULL)
+    ss << "IS NULL";
+  else 
+    ss << "= "<< *HostID;
+  ss << " and name = ";
+  ss << "'" << pqxx::sqlesc(a.getName().get() ) << "';";
   result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
   if(r.empty()) 
   {
+    ss.str("");
     ss << "INSERT INTO analyzers(name, id_host) VALUES (";
-    ss << "'" << pqxx::sqlesc(a->getName().get() ) << "',";
-    ss << HostID;
+    ss << "'" << pqxx::sqlesc(a.getName().get() ) << "',";
+    if(HostID==NULL)
+    	ss << "NULL";
+    else
+        ss << *HostID;
     ss << ");";
     t_.getAPI<Postgres::TransactionAPI>().exec(ss);
     return getID("analyzers_id_seq");
