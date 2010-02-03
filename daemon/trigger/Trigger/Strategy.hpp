@@ -68,7 +68,7 @@ private:
    *  if given node does not meet trigger criteria, method returns true
    *  and interface runs trigger() procedure.
    */
-  virtual bool matchCriteria(const NodeType &n) = 0;
+  virtual bool matchesCriteria(const NodeType &n) = 0;
 
   /** \brief user-provided implementation of node trigger.
    *  \param n added/changed node to be processed by trigger.

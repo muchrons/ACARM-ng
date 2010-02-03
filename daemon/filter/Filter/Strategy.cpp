@@ -24,9 +24,9 @@ void Strategy::process(Node n, ChangedNodes &changed)
 {
   LOGMSG_DEBUG_S(log_)<<"processing node at address 0x"
                       <<static_cast<void*>( n.get() );
-  BackendProxy bp( conn_, getFilterName() );
+  BackendProxy bp( conn_, changed, getFilterName() );
   assert( changed.size()==0 && "non-empty output collection received");
-  processImpl(n, changed, ntq_, bp);
+  processImpl(n, ntq_, bp);
 }
 
 

@@ -38,7 +38,7 @@ void testObj::test<1>(void)
   HostPtr host=makeNewHost();
   const AnalyzerPtr a=makeNewAnalyzer("analyzer1", host);
   ensure_equals("invalid name", a->getName().get(), string("analyzer1") );
-  ensure("invalid host", a->getHost()==host.get() );
+  ensure("invalid host", a->getHost().get()==host.get() );
 }
 
 // test creating with NULL host
@@ -49,7 +49,7 @@ void testObj::test<2>(void)
   HostPtr host;
   const AnalyzerPtr a=makeNewAnalyzer("analyzer1", host);
   ensure_equals("invalid name", a->getName().get(), string("analyzer1") );
-  ensure("invalid host", a->getHost()==NULL);
+  ensure("invalid host", a->getHost().get()==NULL);
 }
 
 } // namespace tut

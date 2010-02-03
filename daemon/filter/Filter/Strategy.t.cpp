@@ -25,24 +25,13 @@ struct TestFilter: public Strategy
   }
 
   virtual void processImpl(Node               n,
-                           ChangedNodes      &changed,
                            NodesTimeoutQueue &ntq,
                            BackendProxy      &bp)
   {
     ++calls_;
-    tut::ensure_equals("invalid count of elements in changed list",
-                       changed.size(), 0);
-
     tut::ensure("invalid node", n.get()==node_.get() );
-    tut::ensure("invalid changes list", &changed==&changed_);
-
     // smoke test - checks if object is valid
     bp.commitChanges();
-
-    // node and changed should be writable
-    changed.push_back( makeGraphLeaf() );
-    n->getMetaAlert();
-
     // ntq should be empty by default
     tut::ensure("NTQ not empty", ntq.begin()==ntq.end() );
   }
@@ -57,15 +46,15 @@ struct TestFilter: public Strategy
     return th_makeLeaf();
   }
 
-  int          calls_;
-  ChangedNodes changed_;
-  Node         node_;
+  int  calls_;
+  Node node_;
 };
 
 
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
-  TestFilter tf_;
+  BackendProxy::ChangedNodes changed_;
+  TestFilter                 tf_;
 };
 
 typedef TestClass TestClass;
@@ -93,7 +82,7 @@ template<>
 void testObj::test<2>(void)
 {
   ensure_equals("pre-condition failed", tf_.calls_, 0);
-  tf_.process(tf_.node_, tf_.changed_);
+  tf_.process(tf_.node_, changed_);
   ensure_equals("invalid number of calls", tf_.calls_, 1);
 }
 
@@ -107,7 +96,7 @@ struct TestLoopFilter: public Strategy
   {
   }
 
-  virtual void processImpl(Node, ChangedNodes&, NodesTimeoutQueue&, BackendProxy&)
+  virtual void processImpl(Node, NodesTimeoutQueue&, BackendProxy&)
   {
     for(;;)
     {
