@@ -40,7 +40,7 @@ FuncObj forEachUniqueInTree(Persistency::GraphNodePtrNN root, FuncObj f)
   detail::NodesSet ns;
   detail::findUniqueNodes(root, ns);
   return std::for_each(ns.begin(), ns.end(), f);
-} // forEach()
+} // forEachUniqueInTree()
 
 } // namespace Algo
 
