@@ -12,6 +12,9 @@
 namespace Algo
 {
 /** \brief traverses all elements in a given range.
+ *
+ *  this algorithm is here onyl for keeping all algorithms in one place.
+ *
  *  \param begin first iterator to check.
  *  \param end   end-indicating iterator.
  *  \param f     function object to apply to each element.
