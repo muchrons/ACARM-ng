@@ -1,5 +1,5 @@
 /*
- * Strategy.cpp
+ * StrategyBase.cpp
  *
  */
 #include <boost/thread.hpp>
@@ -7,7 +7,7 @@
 
 #include "Logger/Logger.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
-#include "Filter/Strategy.hpp"
+#include "Filter/StrategyBase.hpp"
 
 using namespace std;
 
@@ -15,20 +15,10 @@ using namespace std;
 namespace Filter
 {
 
-Strategy::~Strategy(void)
+StrategyBase::~StrategyBase(void)
 {
   LOGMSG_INFO(log_, "deallocating filter");
 }
-
-void Strategy::process(Node n, ChangedNodes &changed)
-{
-  LOGMSG_DEBUG_S(log_)<<"processing node at address 0x"
-                      <<static_cast<void*>( n.get() );
-  BackendProxy bp( conn_, changed, getFilterName() );
-  assert( changed.size()==0 && "non-empty output collection received");
-  processImpl(n, ntq_, bp);
-}
-
 
 namespace
 {
@@ -39,15 +29,15 @@ inline Logger::NodeName makeNodeName(const string &name)
 } // makeNodeName()
 } // unnamed namespace
 
-Strategy::Strategy(const std::string &name):
+StrategyBase::StrategyBase(const std::string &name):
   log_( makeNodeName(name) ),
-  name_(name),
-  conn_( Persistency::IO::create() )
+  conn_( Persistency::IO::create() ),
+  name_(name)
 {
   LOGMSG_INFO(log_, "creating filter");
 }
 
-void Strategy::interruptionPoint(void)
+void StrategyBase::interruptionPoint(void) const
 {
   boost::this_thread::interruption_point();
 }
