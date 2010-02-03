@@ -173,7 +173,7 @@ public:
         return;                 // if updated, we can finish
       }
     // if entry not found, insert new
-    q_.push_back( make_pair(e, seconds+time(NULL)) );
+    q_.push_back( std::make_pair(e, seconds+time(NULL)) );
   }
 
 private:
