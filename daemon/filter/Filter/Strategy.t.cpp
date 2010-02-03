@@ -15,10 +15,10 @@ using namespace Persistency;
 namespace
 {
 
-struct TestFilter: public Strategy
+struct TestFilter: public Strategy<int>
 {
   TestFilter(void):
-    Strategy("testfilter"),
+    Strategy<int>("testfilter"),
     calls_(0),
     node_( makeGraphLeaf() )
   {
@@ -89,10 +89,10 @@ void testObj::test<2>(void)
 
 namespace
 {
-struct TestLoopFilter: public Strategy
+struct TestLoopFilter: public Strategy<char>
 {
   TestLoopFilter(void):
-    Strategy("testloopfilter")
+    Strategy<char>("testloopfilter")
   {
   }
 
@@ -110,7 +110,7 @@ struct CallableLF
 {
   void operator()(void)
   {
-    Strategy::ChangedNodes cn;
+    Strategy<char>::ChangedNodes cn;
     tlf_.process( TestFilter::makeGraphLeaf(), cn );
   }
 
