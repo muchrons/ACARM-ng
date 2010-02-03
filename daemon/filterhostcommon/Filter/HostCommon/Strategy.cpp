@@ -11,13 +11,14 @@ namespace Filter
 namespace HostCommon
 {
 
-Strategy::Strategy(const std::string &name):
-  Filter::Strategy<detail::Data>(name)
+Strategy::Strategy(const std::string &name, unsigned int timeout):
+  Filter::Strategy<Data>(name),
+  timeout_(timeout)
 {
 }
 
 void Strategy::processImpl(Node               n,
-                           NodesTimeoutQueue &/*ntq*/,
+                           NodesTimeoutQueue &ntq,
                            BackendProxy      &/*bp*/)
 {
   // get host from this node.
@@ -26,8 +27,17 @@ void Strategy::processImpl(Node               n,
   if( h.get()==NULL )
     return;
   // add entry to observing set
-  //ntq.update( Data(
-  // TODO
+  const NodeEntry thisEntry(n, Data(h) );
+  ntq.update(thisEntry, getTimeout() );
+
+  // check if it can be correlated with other nodes
+  for(NodesTimeoutQueue::iterator it=ntq.begin(); it!=ntq.end(); ++it)
+  {
+    // skip self, if found
+    if( *it==thisEntry )
+      continue;
+    // TODO
+  }
 }
 
 } // namespace HostCommon
