@@ -57,12 +57,12 @@ public:
    *  \param alertID	
    *  \param h		destination host to be saved
    */
-  DataBaseID saveDestinationHost(DataBaseID alertID, const Persistency::Host &h);
+  DataBaseID saveDestinationHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h);
   /** \brief save target host data to data base
    *  \param alertID
    *  \param h		target host to be saved
    */
-  DataBaseID saveTargetHost(DataBaseID alertID, const Persistency::Host &h);
+  DataBaseID saveTargetHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h);
   /** \brief save service data to data base
    *  \param reportedHostID 
    *  \param s		    service to be saved	

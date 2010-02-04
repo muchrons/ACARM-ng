@@ -147,19 +147,19 @@ DataBaseID EntrySaver::saveReportedHostData(DataBaseID   alertID,
   else
     ss << "NULL";
   ss << ");"; 
-  
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
   return getID("reported_hosts_id_seq");
 }
 
-DataBaseID EntrySaver::saveTargetHost(DataBaseID alertID, const Persistency::Host &h)
+DataBaseID EntrySaver::saveTargetHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h)
 {
-  DataBaseID hostID = saveHostData(h);
+  //DataBaseID hostID = saveHostData(h);
   return saveReportedHostData(alertID, hostID, "src", h); 
 }
 
-DataBaseID EntrySaver::saveDestinationHost(DataBaseID alertID, const Persistency::Host &h)
+DataBaseID EntrySaver::saveDestinationHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h)
 {
-  DataBaseID hostID = saveHostData(h);
+  //DataBaseID hostID = saveHostData(h);
   return saveReportedHostData(alertID, hostID, "dst", h);
 }
 

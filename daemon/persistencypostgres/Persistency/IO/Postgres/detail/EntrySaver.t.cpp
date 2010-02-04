@@ -10,11 +10,14 @@
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/detail/LimitedNULLString.hpp"
+#include "Persistency/IO/Postgres/TransactionAPI.hpp"
 
 using Persistency::IO::Transaction;
 using namespace Persistency;
 using namespace Persistency::IO::Postgres;
 using namespace Persistency::IO::Postgres::detail;
+using namespace std;
+using namespace pqxx;
 
 namespace
 {
@@ -59,7 +62,7 @@ struct TestClass
     mask4_( Host::Netmask_v4(mask4_bytes) ),
     mask6_( Host::Netmask_v6(mask6_bytes) )
   {
-    //tdba_.removeAllData();
+    tdba_.removeAllData();
   }
 
   IO::ConnectionPtrNN makeConnection(void) const
@@ -126,7 +129,16 @@ template<>
 void testObj::test<1>(void)
 {
   // TODO: host has to be saved first
-  //es_.saveProcess(42, proc_);
+  const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  HostPtr host=makeNewHost();
+  const Analyzer anlz("analyzer1", host);
+  DataBaseID hostID = es_.saveHostData(*host);
+  DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
+  DataBaseID alertID = es_.saveAlert(anlzID,a);
+  DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
+  es_.saveProcess(thostID, proc_);
+  t_.commit();
 }
 
 // check returned IDs
@@ -135,9 +147,17 @@ template<>
 void testObj::test<2>(void)
 {
   // TODO: host has to be saved first
-  //const DataBaseID id1=es_.saveProcess(42, proc_);
-  //const DataBaseID id2=es_.saveProcess(42, proc_);
-  //ensure("invalid ids returned", id1<=id2+1);
+  const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  HostPtr host=makeNewHost();
+  const Analyzer anlz("analyzer1", host);
+  DataBaseID hostID = es_.saveHostData(*host);
+  DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
+  DataBaseID alertID = es_.saveAlert(anlzID,a);
+  DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
+  const DataBaseID id1=es_.saveProcess(thostID, proc_);
+  const DataBaseID id2=es_.saveProcess(thostID, proc_);
+  ensure("invalid ids returned", id1<=id2+1);
 }
 
 // test if call throws when invalid ID is passed
@@ -161,14 +181,14 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  //const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
-  //              description_, sourceHosts_, targetHosts_);
-  //HostPtr host=makeNewHost();
-  //const Analyzer anlz("analyzer1", host);
-  //DataBaseID hostID = es_.saveHostData(&host);
-  //DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
-  //es_.saveAlert(anlzID,a);
-  //t_.commit();
+  const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  HostPtr host=makeNewHost();
+  const Analyzer anlz("analyzer1", host);
+  DataBaseID hostID = es_.saveHostData(*host);
+  DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
+  es_.saveAlert(anlzID,a);
+  t_.commit();
 }
 
 // try saving example Service
@@ -177,6 +197,16 @@ template<>
 void testObj::test<5>(void)
 { 
   const Service ti("mail daemon", 25, "smtp", makeNewReferenceURL() );
+  const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  HostPtr host=makeNewHost();
+  const Analyzer anlz("analyzer1", host);
+  DataBaseID hostID = es_.saveHostData(*host);
+  DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
+  DataBaseID alertID = es_.saveAlert(anlzID,a);
+  DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
+  es_.saveService(thostID,ti);
+  t_.commit();
 }
 
 // try saving example Analyzer
@@ -184,11 +214,11 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  //HostPtr host=makeNewHost();
-  //const AnalyzerPtr a("analyzer2", host);
-  //DataBaseID hostID = es_.saveHostData(&host);
-  //es_.saveAnalyzer(&hostID,a);
-  //t_.commit();
+  HostPtr host=makeNewHost();
+  const Analyzer a("analyzer2", host);
+  DataBaseID hostID = es_.saveHostData(*host);
+  es_.saveAnalyzer(&hostID,a);
+  t_.commit();
 }
 
 // try saving example Analyzer with NULL id_host
@@ -196,8 +226,64 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const Analyzer a("analyzer3",makeNewHost());
-  es_.saveAnalyzer(NULL,a);
+  const string anlzName("analyzer3");
+  const Analyzer a(anlzName,makeNewHost());
+  DataBaseID anlzID = es_.saveAnalyzer(NULL,a);
+
+  stringstream ss;
+  string name;
+  ss << "SELECT * FROM analyzers WHERE id = " << anlzID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(),1);
+  
+  r[0]["name"].to(name);
+  ensure_equals("invalid Analyzer name",name,anlzName);
+
+  t_.commit();
+}
+
+//try saving example Target Host
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  HostPtr host=makeNewHost();
+  const Analyzer anlz("analyzer1", host);
+  DataBaseID hostID = es_.saveHostData(*host);
+  DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
+  DataBaseID alertID = es_.saveAlert(anlzID,a);
+  DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
+  
+  stringstream ss;
+  DataBaseID id;
+  ss << "SELECT * FROM reported_hosts WHERE id = " << thostID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(),1);
+  
+  r[0]["id_host"].to(id);
+  ensure_equals("invalid Host ID",id,hostID);
+  
+  r[0]["id_alert"].to(id);
+  ensure_equals("invalid Alert ID",id,alertID);
+ 
+  t_.commit();
+}
+
+//try saving example Destination Host
+template<>
+template<>
+void testObj::test<9>(void)
+{
+ const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  HostPtr host=makeNewHost();
+  const Analyzer anlz("analyzer1", host);
+  DataBaseID hostID = es_.saveHostData(*host);
+  DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
+  DataBaseID alertID = es_.saveAlert(anlzID,a);
+  es_.saveDestinationHost(hostID,alertID,*host);
   t_.commit();
 }
 
