@@ -137,7 +137,7 @@ void testObj::test<7>(void)
   ensure_equals("invalid size/2", size(empty_), 2);
   sleep(1);                 // now for sure!
 
-  empty_.update("old", 6);  // add some time
+  empty_.update("old", 6);  // set new timeout
   ensure_equals("invalid size/3", size(empty_), 2);
   empty_.prune();           // entry should not be removed
   ensure_equals("invalid size/4", size(empty_), 2);
@@ -177,7 +177,7 @@ void testObj::test<8>(void)
   ensure_equals("invalid element 2", *it, "new2");
 }
 
-// test updating timeout should make time longer by a given amount.
+// test updating timeout should set new time.
 template<>
 template<>
 void testObj::test<9>(void)

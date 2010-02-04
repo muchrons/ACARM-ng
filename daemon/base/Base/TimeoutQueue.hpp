@@ -165,15 +165,16 @@ public:
    */
   void update(const T &e, unsigned int seconds)
   {
+    const time_t to=time(NULL)+seconds;
     // go through all elements to find matching
     for(ImplIter it=q_.begin(); it!=q_.end(); ++it)
       if(it->first==e)
       {
-        it->second+=seconds;    // make entry last longer
+        it->second=to;          // make entry last longer
         return;                 // if updated, we can finish
       }
     // if entry not found, insert new
-    q_.push_back( make_pair(e, seconds+time(NULL)) );
+    q_.push_back( make_pair(e, to) );
   }
 
 private:
