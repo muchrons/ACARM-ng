@@ -40,34 +40,34 @@ public:
 
   /** \brief saves process data to data base.
    *  \param reportedHostID ID of reported host, that this Process should be assigned to.
-   *  \param p              process to be saved.
+   *  \param p              Process to be saved.
    */
   DataBaseID saveProcess(DataBaseID reportedHostID, const Process &p);
   /** \brief saves alert data to data base
-   *  \param AnalyzerID ID of reported, that this Alert should be assigned to.
-   *  \param a		alert to be saved
+   *  \param AnalyzerID ID of Analyzer, that this Alert should be assigned to.
+   *  \param a		Alert to be saved.
    */
   DataBaseID saveAlert(DataBaseID AnalyzerID, const Alert &a);
   /** \brief saves analyzer data to data base
-   *  \param HostID
-   *  \param a		analyzer to be saved
+   *  \param HostID	ID of Host, that this Analyzes should be assigned to.
+   *  \param a		Analyzer to be saved.
    */
   DataBaseID saveAnalyzer(const DataBaseID *HostID, const Analyzer &a);
   /** \brief save destination host data to data base
-   *  \param alertID	
-   *  \param h		destination host to be saved
+   *  \param hostID	ID of Host,
+   *  \param alertID	ID of Alert, that destination Host shoul be assigned to.
+   *  \param h		Destination Host to be saved.
    */
   DataBaseID saveDestinationHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h);
   /** \brief save target host data to data base
-   *  \param hostID
-   *  \param alertID
-   *  \param h		target host to be saved
+   *  \param hostID     ID of Host,
+   *  \param alertID	ID of Alert, that destination Host shoul be assigned to.
+   *  \param h		Target Host to be saved.
    */
   DataBaseID saveTargetHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h);
   /** \brief save service data to data base
-   *  \param hostID
-   *  \param reportedHostID 
-   *  \param s		    service to be saved	
+   *  \param reportedHostID 	ID of reported host, that this Process should be assigned to.
+   *  \param s		    	Service to be saved.
    */
   void saveService(DataBaseID reportedHostID, const Service &s);
   /** \brief save host data to data base
