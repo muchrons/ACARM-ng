@@ -260,6 +260,31 @@ void EntrySaver::saveService(DataBaseID reportedHostID, const Service &s)
   
 }
 
+DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
+{
+  //TODO: add saving field last_update_time
+  stringstream ss;
+  ss << "INSERT INTO meta_alerts(name, severity_delta, certanity_delta, id_ref, create_time) VALUES (";
+  ss << "'" << pqxx::sqlesc(ma.getName().get() ) << "',";
+  Appender::append(ss, ma.getSeverityDelta() );
+  ss << ",";
+  Appender::append(ss, ma.getCertaintyDelta() );
+  ss << ",";
+  if( ma.getReferenceURL()!=NULL )
+  {
+    const DataBaseID urlID=saveReferenceURL( *ma.getReferenceURL() );
+    ss << urlID;
+  }
+  else
+    ss << "NULL";
+  ss << ",";
+  Appender::append(ss, boost::gregorian::to_simple_string( ma.getCreateTime() ));
+  ss << ");";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+
+  return getID("meta_alerts_id_seq");
+}
+
 } // namespace detail
 } // namespace Postgres
 } // namespace IO

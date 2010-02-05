@@ -74,6 +74,10 @@ public:
    *  \param h host to be saved
    */
   DataBaseID saveHostData(const Persistency::Host &h);
+  /**\brief save Meta Alert data to data base
+   * \param ml	Meta Alert to be saved
+   */
+  DataBaseID saveMetaAlert(const Persistency::MetaAlert &ma);
   // TODO
 
 

@@ -62,7 +62,7 @@ struct TestClass
     mask4_( Host::Netmask_v4(mask4_bytes) ),
     mask6_( Host::Netmask_v6(mask6_bytes) )
   {
-    tdba_.removeAllData();
+    //tdba_.removeAllData();
   }
 
   IO::ConnectionPtrNN makeConnection(void) const
@@ -276,15 +276,42 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
- const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
   DataBaseID hostID = es_.saveHostData(*host);
   DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
-  es_.saveDestinationHost(hostID,alertID,*host);
+  DataBaseID dhostID = es_.saveDestinationHost(hostID,alertID,*host);
+  
+  stringstream ss;
+  DataBaseID id;
+  ss << "SELECT * FROM reported_hosts WHERE id = " << dhostID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(),1);
+
+  r[0]["id_host"].to(id);
+  ensure_equals("invalid Host ID",id,hostID);
+
+  r[0]["id_alert"].to(id);
+  ensure_equals("invalid Alert ID",id,alertID);
+
   t_.commit();
+}
+
+//try saving example Meta Alert
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  //AlertPtr  alert=makeNewAlert();
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  DataBaseID malertID = es_.saveMetaAlert(ma);
+  
+  t_.commit();
+
 }
 
 } // namespace tut
