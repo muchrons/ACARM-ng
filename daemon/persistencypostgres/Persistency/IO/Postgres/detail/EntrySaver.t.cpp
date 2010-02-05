@@ -308,7 +308,7 @@ void testObj::test<10>(void)
   //AlertPtr  alert=makeNewAlert();
   const MetaAlert::Name name("meta alert");
   MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
-  DataBaseID malertID = es_.saveMetaAlert(ma);
+  es_.saveMetaAlert(ma);
   
   t_.commit();
 
