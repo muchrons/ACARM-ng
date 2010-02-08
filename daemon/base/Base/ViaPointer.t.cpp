@@ -105,4 +105,22 @@ void testObj::test<8>(void)
   ensure("same C-strings not recognized", !ViaPointer::equal(a, b) );
 }
 
+// test passing two NULL chars*
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const char *p=NULL;
+  ensure("NULL C-strings not equals", ViaPointer::equal(p, p) );
+}
+
+// test passing one NULL chars*
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  const char *p=NULL;
+  ensure("NULL equals C-string", !ViaPointer::equal("abc", p) );
+}
+
 } // namespace tut
