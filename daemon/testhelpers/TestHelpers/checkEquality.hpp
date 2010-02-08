@@ -2,12 +2,14 @@
  * checkEquality.t.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_CHECKEQUALITY_T_HPP_FILE
-#define INCLUDE_PERSISTENCY_CHECKEQUALITY_T_HPP_FILE
+#ifndef INCLUDE_TESTHELPERS_CHECKEQUALITY_T_HPP_FILE
+#define INCLUDE_TESTHELPERS_CHECKEQUALITY_T_HPP_FILE
+
+/* public header */
 
 #include <tut/tut.hpp>
 
-namespace Persistency
+namespace TestHelpers
 {
 
 /** \brief helper to check == and != operators in given type.
@@ -45,6 +47,6 @@ void checkEquality(const T &t1, const T &t2)
   checkEquality(t1, t1, t2);
 } // checkEquality()
 
-} // namespace Persistency
+} // namespace TestHelpers
 
 #endif
