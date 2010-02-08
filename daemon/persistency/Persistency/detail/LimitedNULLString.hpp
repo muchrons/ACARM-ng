@@ -7,6 +7,9 @@
 
 /* public header */
 
+#include <boost/operators.hpp>
+#include <cassert>
+
 #include "Persistency/detail/LimitedString.hpp"
 
 namespace Persistency
@@ -17,7 +20,7 @@ namespace detail
 /** \brief class holding string of a given maximum length or NULL.
  */
 template<uint16_t N>
-class LimitedNULLString
+class LimitedNULLString: public boost::operators< LimitedNULLString<N> >
 {
 public:
   /** \brief creates object from a given string.
@@ -77,6 +80,7 @@ public:
    */
   const LimitedNULLString<N> &operator=(const LimitedNULLString &o)
   {
+    assert( ptr_==NULL || str_.get()==ptr_ );
     if(this!=&o)
     {
       str_=o.str_;
@@ -84,6 +88,27 @@ public:
     }
     assert( ptr_==NULL || str_.get()==ptr_ );
     return *this;
+  }
+
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const LimitedNULLString<N> &other) const
+  {
+    assert( ptr_==NULL || str_.get()==ptr_ );
+    // check if both are NULLs, or are equal
+    if(ptr_==other.ptr_)
+      return true;
+    // check if only one is NULL
+    if( ( ptr_==NULL && other.ptr_!=NULL ) ||
+        ( ptr_!=NULL && other.ptr_==NULL )    )
+      return false;
+    // compare strings
+    assert(ptr_!=NULL);
+    assert(other.ptr_!=NULL);
+    assert( ( str_==other.str_ ) == ( strcmp(ptr_, other.ptr_)==0 ) );
+    return strcmp(ptr_, other.ptr_)==0;
   }
 
 private:
