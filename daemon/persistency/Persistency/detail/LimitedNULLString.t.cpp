@@ -156,9 +156,10 @@ template<>
 template<>
 void testObj::test<12>(void)
 {
-  const LimitedNULLString<10> ls1("ABC");
-  const LimitedNULLString<10> ls2("XYZ");
-  TestHelpers::checkEquality(ls1, ls2);
+  const LimitedNULLString<10> ls1 ("ABC");
+  const LimitedNULLString<10> ls1o("ABC");
+  const LimitedNULLString<10> ls2 ("XYZ");
+  TestHelpers::checkEquality(ls1, ls1o, ls2);
 }
 
 // test comparing null strings
@@ -176,9 +177,10 @@ template<>
 template<>
 void testObj::test<14>(void)
 {
-  const LimitedNULLString<10> ls1("ABC");
-  const LimitedNULLString<10> ls2(NULL);
-  TestHelpers::checkEquality(ls1, ls2);
+  const LimitedNULLString<10> ls1 ("ABC");
+  const LimitedNULLString<10> ls1o("ABC");
+  const LimitedNULLString<10> ls2 (NULL);
+  TestHelpers::checkEquality(ls1, ls1o, ls2);
 }
 
 // test comparing NULL with string
@@ -186,9 +188,10 @@ template<>
 template<>
 void testObj::test<15>(void)
 {
-  const LimitedNULLString<10> ls1(NULL);
-  const LimitedNULLString<10> ls2("ABC");
-  TestHelpers::checkEquality(ls1, ls2);
+  const LimitedNULLString<10> ls1 (NULL);
+  const LimitedNULLString<10> ls1o(NULL);
+  const LimitedNULLString<10> ls2 ("ABC");
+  TestHelpers::checkEquality(ls1, ls1o, ls2);
 }
 
 } // namespace tut
