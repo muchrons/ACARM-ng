@@ -90,20 +90,20 @@ private:
                                      DataBaseID     procID,
                                      const Process &p);
   DataBaseID saveReferenceURL(const ReferenceURL &url);
-  
+
   DataBaseID saveAlertData(const Alert &a);
   DataBaseID saveMetaAlertData(const MetaAlert &ma);
-  
+
   DataBaseID saveAnalyzerData(const Analyzer &a);
-  
-  DataBaseID saveReportedHostData(DataBaseID  alertID,
-                                  DataBaseID  hostID,
-				  const std::string role,
+
+  DataBaseID saveReportedHostData(DataBaseID               alertID,
+                                  DataBaseID               hostID,
+                                  const std::string        role,
                                   const Persistency::Host &h);
 
   DataBaseID saveServiceData(const Service &s);
-  void saveReportedServiceData(DataBaseID  reportedHostID,
-                               DataBaseID  serID,
+  void saveReportedServiceData(DataBaseID     reportedHostID,
+                               DataBaseID     serID,
                                const Service &s);
 
   DBHandler   &dbh_;

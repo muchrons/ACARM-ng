@@ -133,12 +133,13 @@ void testObj::test<1>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
-  DataBaseID hostID = es_.saveHostData(*host);
-  DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
+  DataBaseID hostID  = es_.saveHostData(*host);
+  DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
   DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   es_.saveProcess(thostID, proc_);
   t_.commit();
+  // TODO: test result with select
 }
 
 // check returned IDs
@@ -151,8 +152,8 @@ void testObj::test<2>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
-  DataBaseID hostID = es_.saveHostData(*host);
-  DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
+  DataBaseID hostID  = es_.saveHostData(*host);
+  DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
   DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID id1=es_.saveProcess(thostID, proc_);
@@ -189,24 +190,26 @@ void testObj::test<4>(void)
   DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
   es_.saveAlert(anlzID,a);
   t_.commit();
+  // TODO: test result with select
 }
 
 // try saving example Service
 template<>
 template<>
 void testObj::test<5>(void)
-{ 
+{
   const Service ti("mail daemon", 25, "smtp", makeNewReferenceURL() );
   const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
-  DataBaseID hostID = es_.saveHostData(*host);
-  DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
+  DataBaseID hostID  = es_.saveHostData(*host);
+  DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
   DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   es_.saveService(thostID,ti);
   t_.commit();
+  // TODO: test result with select
 }
 
 // try saving example Analyzer
@@ -219,6 +222,7 @@ void testObj::test<6>(void)
   DataBaseID hostID = es_.saveHostData(*host);
   es_.saveAnalyzer(&hostID,a);
   t_.commit();
+  // TODO: test result with select
 }
 
 // try saving example Analyzer with NULL id_host
@@ -235,14 +239,14 @@ void testObj::test<7>(void)
   ss << "SELECT * FROM analyzers WHERE id = " << anlzID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(),1);
-  
+
   r[0]["name"].to(name);
   ensure_equals("invalid Analyzer name",name,anlzName);
 
   t_.commit();
 }
 
-//try saving example Target Host
+// try saving example Target Host
 template<>
 template<>
 void testObj::test<8>(void)
@@ -251,27 +255,27 @@ void testObj::test<8>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
-  DataBaseID hostID = es_.saveHostData(*host);
-  DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
+  DataBaseID hostID  = es_.saveHostData(*host);
+  DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
   DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
-  
+
   stringstream ss;
   DataBaseID id;
   ss << "SELECT * FROM reported_hosts WHERE id = " << thostID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(),1);
-  
+
   r[0]["id_host"].to(id);
   ensure_equals("invalid Host ID",id,hostID);
-  
+
   r[0]["id_alert"].to(id);
   ensure_equals("invalid Alert ID",id,alertID);
- 
+
   t_.commit();
 }
 
-//try saving example Destination Host
+// try saving example Destination Host
 template<>
 template<>
 void testObj::test<9>(void)
@@ -280,11 +284,11 @@ void testObj::test<9>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
-  DataBaseID hostID = es_.saveHostData(*host);
-  DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
+  DataBaseID hostID  = es_.saveHostData(*host);
+  DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
   DataBaseID dhostID = es_.saveDestinationHost(hostID,alertID,*host);
-  
+
   stringstream ss;
   DataBaseID id;
   ss << "SELECT * FROM reported_hosts WHERE id = " << dhostID << ";";
@@ -305,13 +309,12 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  //AlertPtr  alert=makeNewAlert();
   const MetaAlert::Name name("meta alert");
   MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
   es_.saveMetaAlert(ma);
-  
-  t_.commit();
 
+  t_.commit();
+  // TODO: test result with select
 }
 
 } // namespace tut
