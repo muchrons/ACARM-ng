@@ -5,6 +5,8 @@
 #ifndef INCLUDE_BASE_VIAPOINTER_HPP_FILE
 #define INCLUDE_BASE_VIAPOINTER_HPP_FILE
 
+/* public header */
+
 #include <cstring>
 #include <cassert>
 
