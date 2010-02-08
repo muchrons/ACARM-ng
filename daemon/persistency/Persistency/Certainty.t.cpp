@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "Persistency/Certainty.hpp"
+#include "TestHelpers/checkEquality.hpp"
 
 using namespace Persistency;
 
@@ -87,6 +88,15 @@ void testObj::test<5>(void)
 template<>
 template<>
 void testObj::test<6>(void)
+{
+  Certainty c(0);
+  ensure_equals("invalid value", c.get(), 0);
+}
+
+// check == and !=
+template<>
+template<>
+void testObj::test<7>(void)
 {
   Certainty c(0);
   ensure_equals("invalid value", c.get(), 0);
