@@ -1,1 +1,5 @@
 core
+inputprelude
+persistencystubs
+persistencypostgres
+filteronetomany
