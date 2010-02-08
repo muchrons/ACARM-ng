@@ -20,7 +20,7 @@ struct ViaPointer
    *  \param t1 first pointer.
    *  \param t2 second pointer.
    *  \return true if pointers pointo to identical values (but not necessary
-   *          the same instance!) or are both NULLs, or false otherwise.
+   *          the same instance!) or are both NULLs; false otherwise.
    */
   template<typename T>
   static bool equal(const T *t1, const T *t2);
@@ -48,6 +48,12 @@ inline bool ViaPointer::equal(const T *t1, const T *t2)
   return *t1==*t2;
 }
 
+/** \brief checks if values represented by C-string pointers are equal.
+ *  \param t1 first pointer.
+ *  \param t2 second pointer.
+ *  \return true if pointers repreesnt identical C-strings (but not necessary
+ *          the same instance!) or are both NULLs; false otherwise.
+ */
 template<>
 inline bool ViaPointer::equal<char>(const char *t1, const char *t2)
 {
