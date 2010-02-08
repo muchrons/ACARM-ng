@@ -5,6 +5,7 @@
 #include <tut.h>
 
 #include "Persistency/Timestamp.hpp"
+#include "TestHelpers/checkEquality.hpp"
 
 using namespace Persistency;
 
@@ -34,14 +35,14 @@ void testObj::test<1>(void)
   Timestamp ts;
 }
 
-// check equality operator
+// check (in)equality operators
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Timestamp ts1;
-  const Timestamp ts2=ts1;
-  ensure("comparison failed", ts1==ts2);
+  const Timestamp ts1=boost::gregorian::from_simple_string("2010-11-12");
+  const Timestamp ts2=boost::gregorian::from_simple_string("2009-10-11");
+  TestHelpers::checkEquality(ts1, ts2);
 }
 
 } // namespace tut
