@@ -30,7 +30,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Base/ViaPOinter");
+factory tf("Base/ViaPointer");
 } // unnamed namespace
 
 
