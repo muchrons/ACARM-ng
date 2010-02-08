@@ -34,4 +34,14 @@ void testObj::test<1>(void)
   Timestamp ts;
 }
 
+// check equality operator
+template<>
+template<>
+void testObj::test<2>(void)
+{
+  const Timestamp ts1;
+  const Timestamp ts2=ts1;
+  ensure("comparison failed", ts1==ts2);
+}
+
 } // namespace tut
