@@ -10,6 +10,7 @@
 #include <boost/operators.hpp>
 #include <cassert>
 
+#include "Base/ViaPointer.hpp"
 #include "Persistency/detail/LimitedString.hpp"
 
 namespace Persistency
@@ -97,18 +98,7 @@ public:
   bool operator==(const LimitedNULLString<N> &other) const
   {
     assert( ptr_==NULL || str_.get()==ptr_ );
-    // check if both are NULLs, or are equal
-    if(ptr_==other.ptr_)
-      return true;
-    // check if only one is NULL
-    if( ( ptr_==NULL && other.ptr_!=NULL ) ||
-        ( ptr_!=NULL && other.ptr_==NULL )    )
-      return false;
-    // compare strings
-    assert(ptr_!=NULL);
-    assert(other.ptr_!=NULL);
-    assert( ( str_==other.str_ ) == ( strcmp(ptr_, other.ptr_)==0 ) );
-    return strcmp(ptr_, other.ptr_)==0;
+    return Base::ViaPointer::equal(ptr_, other.ptr_);
   }
 
 private:

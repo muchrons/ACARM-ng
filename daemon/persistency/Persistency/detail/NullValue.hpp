@@ -11,6 +11,7 @@
 #include <boost/operators.hpp>
 #include <cassert>
 
+#include "Base/ViaPointer.hpp"
 
 namespace Persistency
 {
@@ -53,16 +54,7 @@ public:
    */
   bool operator==(const NullValue<T> &other) const
   {
-    // NULL or pointers identical
-    if( get()==other.get() )
-      return true;
-    // only one of them is NULL
-    if( get()==NULL || other.get()==NULL )
-      return false;
-    // no NULLs are present - compare values themselves
-    assert( get()!=NULL );
-    assert( other.get()!=NULL );
-    return value_==other.value_;
+    return Base::ViaPointer::equal( get(), other.get() );
   }
 
 private:

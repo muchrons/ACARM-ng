@@ -91,6 +91,8 @@ public:
    */
   bool operator==(const LimitedString<N> &other) const
   {
+    assert(str_!=NULL);
+    assert(other.str_!=NULL);
     if(str_==other.str_)    // small optimization
       return true;
     return strcmp(str_, other.str_)==0;
