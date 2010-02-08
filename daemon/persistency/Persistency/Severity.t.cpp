@@ -94,4 +94,44 @@ void testObj::test<7>(void)
   check(SeverityLevel::CRITICAL, "critical");
 }
 
+// check comparison
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const Severity s1(SeverityLevel::INFO);
+  const Severity s2(SeverityLevel::INFO);
+  ensure("comaprison failed for the same elements", s1==s2);
+}
+
+// check negative comparison
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const Severity s1(SeverityLevel::DEBUG);
+  const Severity s2(SeverityLevel::INFO);
+  ensure("comaprison didn't failed for different elements", s1!=s2);
+}
+
+// check comparison for different elements
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  const Severity s1(SeverityLevel::INFO);
+  const Severity s2(SeverityLevel::WARNING);
+  ensure("comaprison didn't failed for different elements", !(s1==s2) );
+}
+
+// check negative comparison
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  const Severity s1(SeverityLevel::INFO);
+  const Severity s2(SeverityLevel::INFO);
+  ensure("comaprison didn't failed for different elements", !(s1!=s2) );
+}
+
 } // namespace tut
