@@ -8,9 +8,9 @@
 /* public header */
 
 #include <set>
-#include <algorithm>
 
 #include "Persistency/GraphNode.hpp"
+#include "Algo/forEach.hpp"
 
 namespace Algo
 {
@@ -39,8 +39,8 @@ FuncObj forEachUniqueInTree(Persistency::GraphNodePtrNN root, FuncObj f)
 {
   detail::NodesSet ns;
   detail::findUniqueNodes(root, ns);
-  return std::for_each(ns.begin(), ns.end(), f);
-} // forEach()
+  return forEach(ns.begin(), ns.end(), f);
+} // forEachUniqueInTree()
 
 } // namespace Algo
 

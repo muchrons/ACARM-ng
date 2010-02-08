@@ -36,7 +36,7 @@ public:
   typedef detail::LimitedString<256> Name;
   /** \brief vector of reported hosts.
    */
-  typedef std::vector<HostPtr>       ReportedHosts;
+  typedef std::vector<HostPtrNN>     ReportedHosts;
 
   /** \brief creates alert.
    *  \param name        name of an alert (~title).

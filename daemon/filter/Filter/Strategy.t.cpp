@@ -46,6 +46,11 @@ struct TestFilter: public Strategy<int>
     return th_makeLeaf();
   }
 
+  static NodeEntry makeNodeEntry(Node n, int v)
+  {
+    return NodeEntry(n, v);
+  }
+
   int  calls_;
   Node node_;
 };
@@ -127,6 +132,78 @@ void testObj::test<3>(void)
   boost::thread th( boost::ref(clf) );
   th.interrupt();
   th.join();
+}
+
+// check if NodeEntry with different nodes differ template<>
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  ensure("different entries does not differ",
+           ! ( TestFilter::makeNodeEntry( TestFilter::makeGraphLeaf(), 1 )==
+               TestFilter::makeNodeEntry( TestFilter::makeGraphLeaf(), 1 ) )
+        );
+}
+
+// test if creating NodeEntry assigns proper node.
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  TestFilter::Node n=TestFilter::makeGraphLeaf();
+  ensure("invalid node", TestFilter::makeNodeEntry(n, 42).node_.get()==n.get() );
+}
+
+// test if creating NodeEntry assigns proper paramter.
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  TestFilter::Node n=TestFilter::makeGraphLeaf();
+  ensure_equals("invalid value",
+                TestFilter::makeNodeEntry(n, 42).t_, 42 );
+}
+
+// test operator != for different nodes
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  ensure("different entries does not differ",
+           TestFilter::makeNodeEntry( TestFilter::makeGraphLeaf(), 1 )!=
+           TestFilter::makeNodeEntry( TestFilter::makeGraphLeaf(), 1 )
+        );
+}
+
+// test operator != for the same nodes
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  TestFilter::Node n=TestFilter::makeGraphLeaf();
+  ensure("the same entries differ for != operator",
+          !( TestFilter::makeNodeEntry(n, 1)!=TestFilter::makeNodeEntry(n, 1) )
+        );
+}
+
+// check operator == for the same nodes
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  TestFilter::Node n=TestFilter::makeGraphLeaf();
+  ensure("the same entruies differ for == operator",
+         TestFilter::makeNodeEntry(n, 1)==TestFilter::makeNodeEntry(n, 1) );
+}
+
+// ensure different user-paramter does noe influence comparison
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  TestFilter::Node n=TestFilter::makeGraphLeaf();
+  ensure("user-value is taken into account in comparison",
+         TestFilter::makeNodeEntry(n, 1)==TestFilter::makeNodeEntry(n, 2) );
 }
 
 } // namespace tut

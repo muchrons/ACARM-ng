@@ -1,4 +1,6 @@
 algo
+filterhostcommon
+filteronetomany
 filter
 trigger
 persistencystubs

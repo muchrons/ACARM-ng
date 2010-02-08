@@ -38,7 +38,7 @@ LIBS_GEN_DEPS:=$(wildcard $(DEP_LIBS_WC)) $(GEN_LIBS_DIR)/$(LIBRARY_NAME)
 
 %.mt: %.mt.oxx $(LIBS_GEN_DEPS) $(LIBRARY_NAME)
 	@echo "LD    $@"
-	$(LD) $(LDFLAGS) -o $@ $^ $(FORCE_LINK_SYMBOLS) -l$(COMPONENT_NAME) $(LINK_LIBS) $(END_LINK_LIBS)
+	$(LD) $(LDFLAGS) -o $@ $(FORCE_LINK_SYMBOLS) $@.oxx -l$(COMPONENT_NAME) $(LINK_LIBS) $(END_LINK_LIBS)
 
 $(CBIN_MTEST)::
 	@echo "mtest taget is not implemented for C sources"
@@ -52,7 +52,7 @@ copy_testdata:
 
 $(TEST_PROGRAM_NAME):: $(CXXOBJS_TEST) $(COBJS_TEST) $(LIBS_GEN_DEPS) $(LIBRARY_NAME)
 	@echo "LD    $@"
-	$(LD) $(LDFLAGS) -o $@ $^ $(FORCE_LINK_SYMBOLS) -l$(COMPONENT_NAME) \
+	$(LD) $(LDFLAGS) -o $@ $(CXXOBJS_TEST) $(COBJS_TEST) $(FORCE_LINK_SYMBOLS) -l$(COMPONENT_NAME) \
 		$(LINK_LIBS) $(END_LINK_LIBS)
 
 LIBRARY_OBJ_DEPS:=$(CXXOBJS_NOMAIN) $(COBJS_NOMAIN)
