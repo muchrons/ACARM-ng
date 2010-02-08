@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <boost/operators.hpp>
+
 #include "Persistency/Exception.hpp"
 #include "Persistency/detail/LimitedString.hpp"
 
@@ -31,7 +33,7 @@ public:
 
 /** \brief class holding MD5 sum.
  */
-class MD5Sum
+class MD5Sum: public boost::equality_comparable<MD5Sum>
 {
 public:
   /** \brief named c-tor creating MD5Sum.
@@ -48,6 +50,14 @@ public:
   const char *get(void) const
   {
     return str_.get();
+  }
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const MD5Sum &other) const
+  {
+    return str_==other.str_;
   }
 
 private:
