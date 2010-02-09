@@ -157,8 +157,6 @@ DataBaseID EntrySaver::saveSourceHost(DataBaseID hostID, DataBaseID alertID, con
   return saveReportedHostData(alertID, hostID, "src", h);
 }
 
-
-
 DataBaseID EntrySaver::saveAlert(DataBaseID AnalyzerID, const Persistency::Alert &a)
 {
   stringstream ss;
@@ -201,9 +199,9 @@ DataBaseID EntrySaver::saveAnalyzer(const DataBaseID *HostID, const Analyzer &a)
     Appender::append(ss, a.getName().get() );
     ss << ",";
     if(HostID==NULL)
-    	ss << "NULL";
+      ss << "NULL";
     else
-        ss << *HostID;
+      ss << *HostID;
     ss << ");";
     t_.getAPI<Postgres::TransactionAPI>().exec(ss);
     return getID("analyzers_id_seq");
@@ -232,8 +230,8 @@ DataBaseID EntrySaver::saveServiceData(const Service &s)
 
 }
 
-void EntrySaver::saveReportedServiceData(DataBaseID  reportedHostID,
-                                         DataBaseID  serID,
+void EntrySaver::saveReportedServiceData(DataBaseID     reportedHostID,
+                                         DataBaseID     serID,
                                          const Service &s)
 {
   stringstream ss;
