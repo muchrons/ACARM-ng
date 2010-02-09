@@ -29,6 +29,7 @@ void Alert::saveImpl(Transaction &t)
   const Persistency::Analyzer &anlz=a.getAnalyzer();
   EntrySaver es(t,*dbHandler_);
 
+  // TODO: use typedefs declared in Persistency::Alert for this
   vector<HostPtrNN> SourceHosts(a.getReportedSourceHosts() );
   vector<HostPtrNN> TargetHosts(a.getReportedTargetHosts() );
 
