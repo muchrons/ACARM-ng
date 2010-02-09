@@ -4,7 +4,7 @@
  */
 
 #include "Persistency/Analyzer.hpp"
-
+#include "Base/ViaPointer.hpp"
 
 namespace Persistency
 {
@@ -30,7 +30,7 @@ bool Analyzer::operator==(const Analyzer &other) const
 {
   if( getName()!=other.getName() )
     return false;
-  if( getHost()!=other.getHost() )
+  if( !Base::ViaPointer::equal( getHost().get(), other.getHost().get() ) )
     return false;
   return true;
 }

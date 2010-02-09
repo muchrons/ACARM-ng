@@ -58,10 +58,10 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  HostPtr             host=makeNewHost();
-  const AnalyzerPtrNN a1  =makeNewAnalyzer("analyzer1", host);
-  const AnalyzerPtrNN a2  =makeNewAnalyzer("analyzer2", host);
-  TestHelpers::checkEquality(*a1, *a2);
+  const AnalyzerPtrNN a1a=makeNewAnalyzer("analyzer1", makeNewHost() );
+  const AnalyzerPtrNN a1b=makeNewAnalyzer("analyzer1", makeNewHost() );
+  const AnalyzerPtrNN a2 =makeNewAnalyzer("analyzer2", makeNewHost() );
+  TestHelpers::checkEquality(*a1a, *a1b, *a2);
 }
 
 // test comparing for different host
