@@ -244,4 +244,16 @@ void testObj::test<10>(void)
   ensure("now we should be at collection's end", it==end);
 }
 
+// check value_type definition
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  GV col;
+  col.push("hello");
+  ensure("collection is empty", col.begin()!=col.end() );
+  GV::value_type tmp=*col.begin();
+  ensure_equals("invalid value", tmp, "hello");
+}
+
 } // namespace tut
