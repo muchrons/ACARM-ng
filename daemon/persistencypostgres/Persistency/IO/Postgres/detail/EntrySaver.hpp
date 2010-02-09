@@ -47,29 +47,29 @@ public:
    *  \param AnalyzerID ID of Analyzer, that this Alert should be assigned to.
    *  \param a		Alert to be saved.
    */
-  DataBaseID saveAlert(DataBaseID AnalyzerID, const Alert &a);
+  DataBaseID saveAlert(DataBaseID AnalyzerID, const Persistency::Alert &a);
   /** \brief saves analyzer data to data base
    *  \param HostID	ID of Host, that this Analyzes should be assigned to.
    *  \param a		Analyzer to be saved.
    */
   DataBaseID saveAnalyzer(const DataBaseID *HostID, const Analyzer &a);
   /** \brief save destination host data to data base
-   *  \param hostID	ID of Host,
-   *  \param alertID	ID of Alert, that destination Host shoul be assigned to.
-   *  \param h		Destination Host to be saved.
+   *  \param hostID	  ID of Host,
+   *  \param alertID  ID of Alert, that destination Host shoul be assigned to.
+   *  \param h		  Destination Host to be saved.
    */
-  DataBaseID saveDestinationHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h);
+  DataBaseID saveSourceHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h);
   /** \brief save target host data to data base
-   *  \param hostID     ID of Host,
-   *  \param alertID	ID of Alert, that destination Host shoul be assigned to.
-   *  \param h		Target Host to be saved.
+   *  \param hostID   ID of Host,
+   *  \param alertID  ID of Alert, that source Host shoul be assigned to.
+   *  \param h        Target Host to be saved.
    */
   DataBaseID saveTargetHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h);
   /** \brief save service data to data base
-   *  \param reportedHostID 	ID of reported host, that this Process should be assigned to.
+   *  \param reportedHostID ID of reported host, that this Process should be assigned to.
    *  \param s		    	Service to be saved.
    */
-  void saveService(DataBaseID reportedHostID, const Service &s);
+  DataBaseID saveService(DataBaseID reportedHostID, const Service &s);
   /** \brief save host data to data base
    *  \param h host to be saved
    */

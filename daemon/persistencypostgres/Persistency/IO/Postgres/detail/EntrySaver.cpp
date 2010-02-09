@@ -121,10 +121,9 @@ DataBaseID EntrySaver::saveHostData(const Persistency::Host &h)
   ss << ",";
   Appender::append(ss, h.getNetmask()->to_string() );
   ss << ",";
-  // TODO: port this to Appender::append()
-  ss << "'" << pqxx::sqlesc(h.getOperatingSystem().get() ) << "',";
+  Appender::append(ss, h.getOperatingSystem().get() );
+  ss << ",";
   Appender::append(ss, (h.getName())?h.getName()->get():NULL);
-  //ss << "'" << pqxx::sqlesc(h->getName()->get() ) << "',";
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 
@@ -140,16 +139,9 @@ DataBaseID EntrySaver::saveReportedHostData(DataBaseID               alertID,
   ss << "INSERT INTO reported_hosts(id_alert, id_host, role, id_ref) VALUES (";
   ss << alertID << ",";
   ss << hostID << ",";
-  // TODO: port this to Appender::append()
-  ss << "'" << pqxx::sqlesc(role ) << "',";
-  // TODO: port this to Appender::append()
-  if( h.getReferenceURL()!=NULL )
-  {
-    const DataBaseID urlID=saveReferenceURL( *h.getReferenceURL() );
-    ss << urlID;
-  }
-  else
-    ss << "NULL";
+  Appender::append(ss, role);
+  ss << ",";
+  Appender::append(ss, h.getReferenceURL()?saveReferenceURL( *h.getReferenceURL() ):NULL);
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
   return getID("reported_hosts_id_seq");
@@ -157,22 +149,22 @@ DataBaseID EntrySaver::saveReportedHostData(DataBaseID               alertID,
 
 DataBaseID EntrySaver::saveTargetHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h)
 {
-  return saveReportedHostData(alertID, hostID, "src", h);
-}
-
-DataBaseID EntrySaver::saveDestinationHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h)
-{
   return saveReportedHostData(alertID, hostID, "dst", h);
 }
 
+DataBaseID EntrySaver::saveSourceHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h)
+{
+  return saveReportedHostData(alertID, hostID, "src", h);
+}
 
 
-DataBaseID EntrySaver::saveAlert(DataBaseID AnalyzerID, const Alert &a)
+
+DataBaseID EntrySaver::saveAlert(DataBaseID AnalyzerID, const Persistency::Alert &a)
 {
   stringstream ss;
   ss << "INSERT INTO alerts(name, id_analyzer, detect_time, create_time, id_severity, certanity, description) VALUES (";
-  // TODO: port this to Appender::append()
-  ss << "'" << pqxx::sqlesc(a.getName().get()) << "',";
+  Appender::append(ss, a.getName().get() );
+  ss << ",";
   Appender::append(ss, AnalyzerID);
   ss << ",";
   Appender::append(ss, boost::gregorian::to_simple_string(*a.getDetectionTime() ));
@@ -199,15 +191,15 @@ DataBaseID EntrySaver::saveAnalyzer(const DataBaseID *HostID, const Analyzer &a)
   else
     ss << "= "<< *HostID;
   ss << " and name = ";
-  // TODO: port this to Appender::append()
-  ss << "'" << pqxx::sqlesc(a.getName().get() ) << "';";
+  Appender::append(ss, a.getName().get() );
+  ss << ";";
   result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
   if(r.empty())
   {
     ss.str("");
     ss << "INSERT INTO analyzers(name, id_host) VALUES (";
-    // TODO: port this to Appender::append()
-    ss << "'" << pqxx::sqlesc(a.getName().get() ) << "',";
+    Appender::append(ss, a.getName().get() );
+    ss << ",";
     if(HostID==NULL)
     	ss << "NULL";
     else
@@ -228,12 +220,11 @@ DataBaseID EntrySaver::saveServiceData(const Service &s)
 {
   stringstream ss;
   ss << "INSERT INTO services(name, port, protocol) VALUES (";
-  // TODO: port this to Appender::append()
-  ss << "'" << pqxx::sqlesc(s.getName().get() ) << "',";
+  Appender::append(ss, s.getName().get() );
+  ss << ",";
   Appender::append(ss, s.getPort() );
   ss <<",";
-  // TODO: port this to Appender::append()
-  ss << "'" <<pqxx::sqlesc(s.getProtocol().get() ) << "'";
+  Appender::append(ss, s.getProtocol().get() );
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 
@@ -249,45 +240,33 @@ void EntrySaver::saveReportedServiceData(DataBaseID  reportedHostID,
   ss << "INSERT INTO reported_services(id_reported_host, id_service, id_ref) VALUES (";
   ss << reportedHostID << ",";
   ss << serID << ",";
-  // TODO: port this to Appender::append()
-  if( s.getReferenceURL()!=NULL )
-  {
-    const DataBaseID urlID=saveReferenceURL( *s.getReferenceURL() );
-    ss << urlID;
-  }
-  else
-    ss << "NULL";
+  Appender::append(ss, s.getReferenceURL()?saveReferenceURL( *s.getReferenceURL() ):NULL);
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
-void EntrySaver::saveService(DataBaseID reportedHostID, const Service &s)
+DataBaseID EntrySaver::saveService(DataBaseID reportedHostID, const Service &s)
 {
   DataBaseID serID = saveServiceData(s);
   saveReportedServiceData(reportedHostID, serID, s);
+  return serID;
 }
 
 DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
 {
-  //TODO: add saving field last_update_time
   stringstream ss;
-  ss << "INSERT INTO meta_alerts(name, severity_delta, certanity_delta, id_ref, create_time) VALUES (";
-  // TODO: port this to Appender::append()
-  ss << "'" << pqxx::sqlesc(ma.getName().get() ) << "',";
+  ss << "INSERT INTO meta_alerts(name, severity_delta, certanity_delta, id_ref, create_time, last_update_time) VALUES (";
+  Appender::append(ss, ma.getName().get() );
+  ss << ",";
   Appender::append(ss, ma.getSeverityDelta() );
   ss << ",";
   Appender::append(ss, ma.getCertaintyDelta() );
   ss << ",";
-  // TODO: port this to Appender::append()
-  if( ma.getReferenceURL()!=NULL )
-  {
-    const DataBaseID urlID=saveReferenceURL( *ma.getReferenceURL() );
-    ss << urlID;
-  }
-  else
-    ss << "NULL";
+  Appender::append(ss, ma.getReferenceURL()?saveReferenceURL( *ma.getReferenceURL() ):NULL);
   ss << ",";
   Appender::append(ss, boost::gregorian::to_simple_string( ma.getCreateTime() ));
+  ss << ",";
+  Appender::append(ss, "now()");
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 
