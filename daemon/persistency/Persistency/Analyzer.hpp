@@ -9,6 +9,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/operators.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Host.hpp"
@@ -18,7 +19,8 @@ namespace Persistency
 {
 /** \brief class representing analyzer's info.
  */
-class Analyzer: private boost::noncopyable
+class Analyzer: private boost::noncopyable,
+                public  boost::equality_comparable<Analyzer>
 {
 public:
   /** \brief name of an analyzer.
@@ -40,6 +42,11 @@ public:
    *  \return pointer to host info, or NULL if not set.
    */
   HostPtr getHost(void) const;
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const Analyzer &other) const;
 
 private:
   Name    name_;
