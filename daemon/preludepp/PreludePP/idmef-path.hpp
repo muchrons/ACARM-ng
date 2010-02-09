@@ -69,7 +69,7 @@ namespace Prelude {
                 int MakeParent();
                 int Compare(IDMEFPath *path, int depth=-1);
                 IDMEFPath Clone();
-		// removed for compatibility with previous version
+                // removed for compatibility with previous version
                 //int CheckOperator(idmef_criterion_operator_t op);
                 //idmef_criterion_operator_t GetApplicableOperators();
 

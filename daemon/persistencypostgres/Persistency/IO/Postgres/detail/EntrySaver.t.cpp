@@ -18,6 +18,7 @@ using namespace Persistency::IO::Postgres;
 using namespace Persistency::IO::Postgres::detail;
 using namespace std;
 using namespace pqxx;
+using boost::gregorian::from_simple_string;
 
 namespace
 {
@@ -62,7 +63,7 @@ struct TestClass
     mask4_( Host::Netmask_v4(mask4_bytes) ),
     mask6_( Host::Netmask_v6(mask6_bytes) )
   {
-    //tdba_.removeAllData();
+    tdba_.removeAllData();
   }
 
   IO::ConnectionPtrNN makeConnection(void) const
@@ -128,7 +129,6 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  // TODO: host has to be saved first
   const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
@@ -137,9 +137,25 @@ void testObj::test<1>(void)
   DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
   DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
-  es_.saveProcess(thostID, proc_);
+  DataBaseID procID  = es_.saveProcess(thostID, proc_);
+
+  stringstream ss;
+  string path, name, md5;
+  ss << "SELECT * FROM procs WHERE id = " << procID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(),1);
+
+  r[0]["path"].to(path);
+  ensure_equals("invalid path",proc_.getPath().get() ,path);
+
+  r[0]["name"].to(name);
+  ensure_equals("invalid name",proc_.getName().get() ,name);
+
+  //TODO: fix this
+  r[0]["md5"].to(md5);
+  //ensure_equals("invalid md5 sum",&proc_.getMD5()->get(), md5);
+
   t_.commit();
-  // TODO: test result with select
 }
 
 // check returned IDs
@@ -147,7 +163,6 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  // TODO: host has to be saved first
   const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
@@ -188,9 +203,39 @@ void testObj::test<4>(void)
   const Analyzer anlz("analyzer1", host);
   DataBaseID hostID = es_.saveHostData(*host);
   DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
-  es_.saveAlert(anlzID,a);
+  DataBaseID alrtID = es_.saveAlert(anlzID,a);
+
+  stringstream ss;
+  string name, time, description;
+  DataBaseID id;
+  double certanity;
+
+  ss << "SELECT * FROM alerts WHERE id = " << alrtID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(),1);
+
+  r[0]["name"].to(name);
+  ensure_equals("invalid name",name_.get(),name);
+
+  r[0]["id_analyzer"].to(id);
+  ensure_equals("invalid analyzer ID",anlzID,id);
+
+  r[0]["detect_time"].to(time);
+  ensure_equals("invalid detect time",detected_,from_simple_string(time));
+
+  r[0]["create_time"].to(time);
+  ensure_equals("invalid create time",created_,from_simple_string(time));
+
+  r[0]["id_severity"].to(id);
+  ensure_equals("invalid severity ID",a.getSeverity().getLevel().toInt(),id);
+
+  r[0]["certanity"].to(certanity);
+  ensure_equals("invalid certanity",certanity_.get(),certanity);
+
+  r[0]["description"].to(description);
+  ensure_equals("invalid description",description_,description);
+
   t_.commit();
-  // TODO: test result with select
 }
 
 // try saving example Service
@@ -207,9 +252,24 @@ void testObj::test<5>(void)
   DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
   DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
-  es_.saveService(thostID,ti);
+  DataBaseID servID = es_.saveService(thostID,ti);
+
+  stringstream ss;
+  string name, protocol;
+  int port;
+  ss << "SELECT * FROM services WHERE id = " << servID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  //TODO: fix this
+  r[0]["name"].to(name);
+  //ensure_equals("invalid name",ti.getName().get(),name);
+
+  r[0]["port"].to(port);
+  ensure_equals("invalid port",ti.getPort(),port);
+
+  r[0]["protocol"].to(protocol);
+  //ensure_equals("invalid protocol",ti.getProtocol().get(), protocol);
+
   t_.commit();
-  // TODO: test result with select
 }
 
 // try saving example Analyzer
@@ -220,9 +280,22 @@ void testObj::test<6>(void)
   HostPtr host=makeNewHost();
   const Analyzer a("analyzer2", host);
   DataBaseID hostID = es_.saveHostData(*host);
-  es_.saveAnalyzer(&hostID,a);
+  DataBaseID anlzID = es_.saveAnalyzer(&hostID,a);
+
+  stringstream ss;
+  string name;
+  DataBaseID id;
+  ss << "SELECT * FROM analyzers WHERE id = " << anlzID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(),1);
+
+  r[0]["name"].to(name);
+  ensure_equals("invalid Analyzer name",name,"analyzer2");
+
+  r[0]["id_host"].to(id);
+  ensure_equals("invalid Host ID",hostID,id);
+
   t_.commit();
-  // TODO: test result with select
 }
 
 // try saving example Analyzer with NULL id_host
@@ -236,12 +309,16 @@ void testObj::test<7>(void)
 
   stringstream ss;
   string name;
+  DataBaseID id;
   ss << "SELECT * FROM analyzers WHERE id = " << anlzID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(),1);
 
   r[0]["name"].to(name);
   ensure_equals("invalid Analyzer name",name,anlzName);
+  //TODO: fix this
+  r[0]["id_host"].to(id);
+  //ensure_equals("id_host is not NULL",id,NULL);
 
   t_.commit();
 }
@@ -275,7 +352,7 @@ void testObj::test<8>(void)
   t_.commit();
 }
 
-// try saving example Destination Host
+// try saving example Source Host
 template<>
 template<>
 void testObj::test<9>(void)
@@ -287,7 +364,7 @@ void testObj::test<9>(void)
   DataBaseID hostID  = es_.saveHostData(*host);
   DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
-  DataBaseID dhostID = es_.saveDestinationHost(hostID,alertID,*host);
+  DataBaseID dhostID = es_.saveSourceHost(hostID,alertID,*host);
 
   stringstream ss;
   DataBaseID id;
@@ -311,10 +388,29 @@ void testObj::test<10>(void)
 {
   const MetaAlert::Name name("meta alert");
   MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
-  es_.saveMetaAlert(ma);
+  DataBaseID malertID = es_.saveMetaAlert(ma);
+
+  stringstream ss;
+  double delta;
+  string mAlertName;
+  string time;
+  ss << "SELECT * FROM meta_alerts WHERE id = " << malertID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(),1);
+
+  r[0]["severity_delta"].to(delta);
+  ensure_equals("invalid severity delta",0.22,delta);
+
+  r[0]["certanity_delta"].to(delta);
+  ensure_equals("invalid certanity delta",0.23,delta);
+
+  r[0]["name"].to(mAlertName);
+  ensure_equals("invalid name","meta alert",mAlertName);
+
+  r[0]["create_time"].to(time);
+  ensure_equals("invalid created time",created_,boost::gregorian::from_simple_string(time));
 
   t_.commit();
-  // TODO: test result with select
 }
 
 } // namespace tut

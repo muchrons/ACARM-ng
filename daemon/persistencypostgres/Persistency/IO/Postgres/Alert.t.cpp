@@ -1,47 +1,38 @@
 /*
- * Reader.t.cpp
+ * Alert.t.cpp
  *
  */
-#include <tut.h>
-#include <cstring>
-#include <memory>
-#include <string>
 
-#include "Input/Prelude/Reader.hpp"
+#include <tut.h>
+
+//TODO: tests
 
 using namespace std;
-using namespace Input::Prelude;
 
 namespace
 {
 
 struct TestClass
 {
-  TestClass():
-    r_("profile")
-  {
-  }
-
-  Reader r_;
 };
 
 typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Input/Prelude/Reader");
-} // unnamed namespace
+factory tf("Persistency/IO/Postgres/Alert");
+} //unnamned namespace
 
 
 namespace tut
 {
 
-// TODO
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  // TODO
+
 }
 
 } // namespace tut
+
