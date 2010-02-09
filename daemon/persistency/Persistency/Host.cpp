@@ -7,6 +7,8 @@
 
 #include "Persistency/Host.hpp"
 #include "Base/Threads/Lock.hpp"
+#include "Base/ViaPointer.hpp"
+#include "Base/ViaCollection.hpp"
 #include "Logger/Logger.hpp"
 
 using std::stringstream;
@@ -14,47 +16,6 @@ using std::stringstream;
 
 namespace Persistency
 {
-
-const Host::IP &Host::getIP(void) const
-{
-  return ip_;
-}
-
-const Host::Netmask *Host::getNetmask(void) const
-{
-  return mask_.get();
-}
-
-const Host::OperatingSystem &Host::getOperatingSystem(void) const
-{
-  return os_;
-}
-
-const Host::Name *Host::getName(void) const
-{
-  // although it looks as returing pointer to non-thread safe code, it is fine, since
-  // this pointer may ge ither NULL (always thread-correct) or exact value, that
-  // is set just once. trying to set olready-set value will always throw. so in fact
-  // this pointer may transit NULL->0xC0DE only once and will have the same value
-  // until this object lives.
-  Base::Threads::Lock lock(mutex_);
-  return name_.get();
-}
-
-const ReferenceURL *Host::getReferenceURL(void) const
-{
-  return url_.get();
-}
-
-const Host::ReportedServices &Host::getReportedServices(void) const
-{
-  return services_;
-}
-
-const Host::ReportedProcesses &Host::getReportedProcesses(void) const
-{
-  return processes_;
-}
 
 Host::Host(const IPv4              &ip,
            const Netmask_v4        *mask,
@@ -84,6 +45,69 @@ Host::Host(const IPv6              &ip,
   services_(services),
   processes_(processes)
 {
+}
+
+const Host::IP &Host::getIP(void) const
+{
+  return ip_;
+}
+
+const Host::Netmask *Host::getNetmask(void) const
+{
+  return mask_.get();
+}
+
+const Host::OperatingSystem &Host::getOperatingSystem(void) const
+{
+  return os_;
+}
+
+const Host::Name *Host::getName(void) const
+{
+  // although it looks as returing pointer to non-thread safe code, it is fine, since
+  // this pointer may be ither NULL (always thread-correct) or exact value, that
+  // is set just once. trying to set olready-set value will always throw. so in fact
+  // this pointer may transit NULL->0xC0DE only once and will have the same value
+  // until this object lives.
+  Base::Threads::Lock lock(mutex_);
+  return name_.get();
+}
+
+const ReferenceURL *Host::getReferenceURL(void) const
+{
+  return url_.get();
+}
+
+const Host::ReportedServices &Host::getReportedServices(void) const
+{
+  return services_;
+}
+
+const Host::ReportedProcesses &Host::getReportedProcesses(void) const
+{
+  return processes_;
+}
+
+bool Host::operator==(const Host &other) const
+{
+  if( getIP()!=other.getIP() )
+    return false;
+  if( !Base::ViaPointer::equal( getNetmask(), other.getNetmask() ) )
+    return false;
+  if( getOperatingSystem()!=other.getOperatingSystem() )
+    return false;
+  if( !Base::ViaPointer::equal( getName(), other.getName() ) )
+    return false;
+  if( !Base::ViaPointer::equal( getReferenceURL(), other.getReferenceURL() ) )
+    return false;
+  if( !Base::ViaCollection::equal( getReportedServices(),
+                                   other.getReportedServices() ) )
+    return false;
+  if( !Base::ViaCollection::equal( getReportedProcesses(),
+                                   other.getReportedProcesses() ) )
+    return false;
+  // if everything's the same, return.
+  return true;
 }
 
 void Host::setName(const Name &name)
