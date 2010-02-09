@@ -29,21 +29,21 @@ factory tf("Filter/HostCommon/Strategy");
 namespace tut
 {
 
-// 
+//
 template<>
 template<>
 void testObj::test<1>(void)
 {
 }
 
-// 
+//
 template<>
 template<>
 void testObj::test<2>(void)
 {
 }
 
-// 
+//
 template<>
 template<>
 void testObj::test<3>(void)

@@ -31,7 +31,7 @@ factory tf("Persistency/IO/Postgres/TransactionAPI");
 namespace tut
 {
 
-// 
+//
 template<>
 template<>
 void testObj::test<1>(void)
