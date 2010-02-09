@@ -12,6 +12,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/operators.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Timestamp.hpp"
@@ -28,7 +29,8 @@ namespace Persistency
 
 /** \brief represents alert report got from input.
  */
-class Alert: private boost::noncopyable
+class Alert: private boost::noncopyable,
+             public  boost::equality_comparable<Alert>
 {
 public:
   /** \brief name of the alert (aka: title).
@@ -97,6 +99,11 @@ public:
    *  \return vector of reported target hosts.
    */
   const ReportedHosts &getReportedTargetHosts(void) const;
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const Alert &other) const;
 
 private:
   Name                         name_;
