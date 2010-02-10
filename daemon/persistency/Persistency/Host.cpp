@@ -8,7 +8,7 @@
 #include "Persistency/Host.hpp"
 #include "Base/Threads/Lock.hpp"
 #include "Base/ViaPointer.hpp"
-#include "Base/ViaCollection.hpp"
+#include "Commons/ViaCollection.hpp"
 #include "Logger/Logger.hpp"
 
 using std::stringstream;
@@ -100,11 +100,11 @@ bool Host::operator==(const Host &other) const
     return false;
   if( !Base::ViaPointer::equal( getReferenceURL(), other.getReferenceURL() ) )
     return false;
-  if( !Base::ViaCollection::equal( getReportedServices(),
-                                   other.getReportedServices() ) )
+  if( !Commons::ViaCollection::equal( getReportedServices(),
+                                      other.getReportedServices() ) )
     return false;
-  if( !Base::ViaCollection::equal( getReportedProcesses(),
-                                   other.getReportedProcesses() ) )
+  if( !Commons::ViaCollection::equal( getReportedProcesses(),
+                                      other.getReportedProcesses() ) )
     return false;
   // if everything's the same, return.
   return true;

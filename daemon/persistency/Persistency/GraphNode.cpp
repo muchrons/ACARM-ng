@@ -6,7 +6,7 @@
 #include <cassert>
 
 #include "Persistency/GraphNode.hpp"
-#include "Base/ViaCollection.hpp"
+#include "Commons/ViaCollection.hpp"
 #include "Logger/Logger.hpp"
 #include "Persistency/IO/GlobalConnection.hpp"
 
@@ -157,7 +157,7 @@ bool GraphNode::operator==(const GraphNode &other) const
   }
 
   // if nodes itself are identical, ensure all subtrees are identical too
-  return Base::ViaCollection::equal(children_, other.children_);
+  return Commons::ViaCollection::equal(children_, other.children_);
 }
 
 void GraphNode::ensureIsNode(void) const

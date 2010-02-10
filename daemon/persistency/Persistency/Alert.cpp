@@ -6,7 +6,7 @@
 
 #include "Persistency/Alert.hpp"
 #include "Base/ViaPointer.hpp"
-#include "Base/ViaCollection.hpp"
+#include "Commons/ViaCollection.hpp"
 
 using namespace std;
 
@@ -96,11 +96,11 @@ bool Alert::operator==(const Alert &other) const
     return false;
   if( getDescription()!=other.getDescription() )
     return false;
-  if( !Base::ViaCollection::equal( getReportedSourceHosts(),
-                                   other.getReportedSourceHosts() ) )
+  if( !Commons::ViaCollection::equal( getReportedSourceHosts(),
+                                      other.getReportedSourceHosts() ) )
     return false;
-  if( !Base::ViaCollection::equal( getReportedTargetHosts(),
-                                   other.getReportedTargetHosts() ) )
+  if( !Commons::ViaCollection::equal( getReportedTargetHosts(),
+                                      other.getReportedTargetHosts() ) )
     return false;
   // if all fields are equal, objects are equal too.
   return true;
