@@ -213,4 +213,19 @@ void testObj::test<12>(void)
   TestHelpers::checkEquality(custom_, a);
 }
 
+// test equality with different object representing the same values
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  const AnalyzerPtr          analyzer( new Analyzer("analyzer name", HostPtr() ) );
+  const Alert::ReportedHosts sourceHosts( generateReportedHosts(2) );
+  const Alert::ReportedHosts targetHosts( generateReportedHosts(5) );
+  const Alert a1(name_, analyzer, &detected_, created_, severity_,
+                 certanity_, description_, sourceHosts, targetHosts);
+  const Alert a2("different", analyzer_, &detected_, created_, severity_,
+                 certanity_, description_, sourceHosts_, targetHosts_);
+  TestHelpers::checkEquality(a1, a2, custom_);
+}
+
 } // namespace tut

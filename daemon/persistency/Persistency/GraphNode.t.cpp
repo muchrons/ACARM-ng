@@ -8,6 +8,7 @@
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/IO/IOStubs.t.hpp"
 #include "Persistency/TestHelpers.t.hpp"
+#include "TestHelpers/checkEquality.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -366,6 +367,31 @@ void testObj::test<17>(void)
   // wait till threads exit.
   th1.join();
   th2.join();
+}
+
+// test self-comparison
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  TestHelpers::checkEquality( *makeNode(), *makeLeaf() );
+}
+
+// test comparison with toher, but identical object
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  TestHelpers::checkEquality( *makeNode(), *makeNode(), *makeLeaf() );
+}
+
+// test self-comparison directly
+template<>
+template<>
+void testObj::test<20>(void)
+{
+  ensure( "comparing two instances of the same node failed",
+          *makeLeaf()==*makeLeaf() );
 }
 
 } // namespace tut

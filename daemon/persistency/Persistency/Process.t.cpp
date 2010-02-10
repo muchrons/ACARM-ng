@@ -6,6 +6,7 @@
 
 #include "Persistency/Process.hpp"
 #include "Persistency/TestHelpers.t.hpp"
+#include "TestHelpers/checkEquality.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -221,7 +222,7 @@ void testObj::test<10>(void)
                     user_,
                     args_,
                     url_ );
-  ensure("objects don't differ", custom_!=ti);
+  TestHelpers::checkEquality(custom_, ti);
 }
 
 // check comparison with different path
@@ -237,7 +238,7 @@ void testObj::test<11>(void)
                     user_,
                     args_,
                     url_ );
-  ensure("objects don't differ", custom_!=ti);
+  TestHelpers::checkEquality(custom_, ti);
 }
 
 // check comparison with different file name
@@ -253,7 +254,7 @@ void testObj::test<12>(void)
                     user_,
                     args_,
                     url_ );
-  ensure("objects don't differ", custom_!=ti);
+  TestHelpers::checkEquality(custom_, ti);
 }
 
 // check comparison with different md5
@@ -269,7 +270,7 @@ void testObj::test<13>(void)
                     user_,
                     args_,
                     url_ );
-  ensure("objects don't differ", custom_!=ti);
+  TestHelpers::checkEquality(custom_, ti);
 }
 
 // check comparison with different PID
@@ -285,7 +286,7 @@ void testObj::test<14>(void)
                     user_,
                     args_,
                     url_ );
-  ensure("objects don't differ", custom_!=ti);
+  TestHelpers::checkEquality(custom_, ti);
 }
 
 // check comparison with different UID
@@ -301,7 +302,7 @@ void testObj::test<15>(void)
                     user_,
                     args_,
                     url_ );
-  ensure("objects don't differ", custom_!=ti);
+  TestHelpers::checkEquality(custom_, ti);
 }
 
 // check comparison with different user
@@ -317,7 +318,7 @@ void testObj::test<16>(void)
                     "different.user",
                     args_,
                     url_ );
-  ensure("objects don't differ", custom_!=ti);
+  TestHelpers::checkEquality(custom_, ti);
 }
 
 // check comparison with different args
@@ -333,7 +334,7 @@ void testObj::test<17>(void)
                     user_,
                     "--different",
                     url_ );
-  ensure("objects don't differ", custom_!=ti);
+  TestHelpers::checkEquality(custom_, ti);
 }
 
 // check comparison with different URL
@@ -349,7 +350,7 @@ void testObj::test<18>(void)
                     user_,
                     args_,
                     ReferenceURLPtr() );
-  ensure("objects don't differ", custom_!=ti);
+  TestHelpers::checkEquality(custom_, ti);
 }
 
 } // namespace tut

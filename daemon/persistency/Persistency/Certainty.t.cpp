@@ -64,7 +64,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  Certainty c;
+  const Certainty c;
   ensure_equals("invalid value", c.get(), 1);
 }
 
@@ -89,7 +89,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  Certainty c(0);
+  const Certainty c(0);
   ensure_equals("invalid value", c.get(), 0);
 }
 
@@ -98,8 +98,9 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  Certainty c(0);
-  ensure_equals("invalid value", c.get(), 0);
+  const Certainty c1(0.1);
+  const Certainty c2(0.2);
+  TestHelpers::checkEquality(c1, c2);
 }
 
 } // namespace tut

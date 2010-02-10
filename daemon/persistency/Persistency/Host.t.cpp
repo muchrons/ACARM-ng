@@ -189,4 +189,30 @@ void testObj::test<11>(void)
   TestHelpers::checkEquality(custom_, h);
 }
 
+// test equality for different object representing the same values
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  Host::ReportedProcesses rp1;
+  rp1.push_back( makeNewProcess() );
+  const Host h1(  Host::IPv4::from_string("1.2.3.4"),
+                 &mask4_,
+                  "myos",
+                  makeNewReferenceURL(),
+                  Host::ReportedServices(),
+                  rp1 );
+
+  Host::ReportedProcesses rp2;
+  rp2.push_back( makeNewProcess() );
+  const Host h2(  Host::IPv4::from_string("1.2.3.4"),
+                 &mask4_,
+                  "myos",
+                  makeNewReferenceURL(),
+                  Host::ReportedServices(),
+                  rp2 );
+
+  TestHelpers::checkEquality(h1, h2, custom_);
+}
+
 } // namespace tut
