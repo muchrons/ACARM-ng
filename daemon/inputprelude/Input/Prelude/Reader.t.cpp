@@ -17,9 +17,11 @@ namespace
 
 struct TestClass
 {
-  TestClass():r_("profile")
-  {   
+  TestClass():
+    r_("profile")
+  {
   }
+
   Reader r_;
 };
 
