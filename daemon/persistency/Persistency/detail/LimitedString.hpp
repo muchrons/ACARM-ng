@@ -85,7 +85,7 @@ public:
   }
 
 private:
-  BOOST_STATIC_ASSERT(N<=512 && "string is unreasonably large");
+  BOOST_STATIC_ASSERT(N<=512);// string is unreasonably large
 
   void createFromNonNULL(const char *str)
   {
