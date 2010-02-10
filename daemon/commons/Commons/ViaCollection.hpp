@@ -14,69 +14,18 @@
 
 #include "Base/ViaPointer.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "Commons/detail/ElementCompare.hpp"
 
 namespace Commons
 {
-//
-// following declarations may look strange, but partial specializations of
-// functions nor methods are not allowed, and so proper classes had to be
-// created to handle this.
-//
-namespace detail
-{
-
-template<typename T>
-struct ElementCompare
-{
-  static bool equal(const T &e1, const T &e2)
-  {
-    return e1==e2;
-  }
-}; // struct ElementCompare
-
-
-template<typename T>
-struct ElementCompare<T*>
-{
-  static bool equal(const T *e1, const T *e2)
-  {
-    return Base::ViaPointer::equal(e1, e2);
-  }
-}; // struct ElementCompare
-
-
-template<typename T>
-struct ElementCompare< boost::shared_ptr<T> >
-{
-  static bool equal(const boost::shared_ptr<T> e1,
-                    const boost::shared_ptr<T> e2)
-  {
-    return ElementCompare<T*>::equal( e1.get(), e2.get() );
-  }
-}; // struct ElementCompare
-
-
-template<typename T>
-struct ElementCompare< SharedPtrNotNULL<T> >
-{
-  static bool equal(const SharedPtrNotNULL<T> e1,
-                    const SharedPtrNotNULL<T> e2)
-  {
-    return ElementCompare<T*>::equal( e1.get(), e2.get() );
-  }
-}; // struct ElementCompare
-
-} // namespace detail
-
-
 
 /** \brief performs certain checks on collections by comparing each element.
  */
 struct ViaCollection
 {
   /** \brief checks if colections are equal.
-   *  \param t1 first collection.
-   *  \param t2 second collection.
+   *  \param c1 first collection.
+   *  \param c2 second collection.
    *  \return true if collections are identical, false otherwise.
    *  \note collections are assumed to be STL-like; required methods are:
    *        begin(), end(), size(). iterators must be at least forward
