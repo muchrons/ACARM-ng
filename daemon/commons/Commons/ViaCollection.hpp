@@ -9,7 +9,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/static_assert.hpp>
-#include <boost/mpl/equal.hpp>
+#include <boost/type_traits/is_same.hpp>
 #include <cassert>
 
 #include "Base/ViaPointer.hpp"
@@ -85,11 +85,10 @@ struct ViaCollection
   template<typename T1, typename T2>
   static bool equal(const T1 &c1, const T2 &c2)
   {
-    // ensure value types are equal
+    // ensure both input value types are equal
     typedef typename T1::value_type T1Value;
     typedef typename T2::value_type T2Value;
-    BOOST_STATIC_ASSERT( (boost::mpl::equal<T1Value, T2Value>::type::value) &&
-                         "collections' element types must be the same" );
+    BOOST_STATIC_ASSERT( (boost::is_same<T1Value, T2Value>::value) );
     typedef T1Value                 TValue; // both are the same any way
 
     // quick test - check sizes
