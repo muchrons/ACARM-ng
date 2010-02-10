@@ -1,6 +1,6 @@
-core
-inputprelude
 persistency
 persistencystubs
 persistencypostgres
-filteronetomany
+algo
+configio
+commons
