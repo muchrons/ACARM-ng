@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 #include <list>
+#include <vector>
 #include <boost/static_assert.hpp>
 
 #include "Commons/ViaCollection.hpp"
@@ -190,6 +191,42 @@ void testObj::test<10>(void)
   // check
   ensure("lists of different smart pointers to different values reported equal",
          !ViaCollection::equal(l1, l2) );
+}
+
+// test different collection types for inequality
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  list<long>   c1;
+  vector<long> c2;
+
+  for(int i=0; i<3; ++i)
+  {
+    c1.push_back(42+i);
+    c2.push_back(42-i);
+  }
+  // check
+  ensure("different collections of different values reported equal",
+         !ViaCollection::equal(c1, c2) );
+}
+
+// test different collection types for equality
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  vector<long> c1;
+  list<long>   c2;
+
+  for(int i=0; i<3; ++i)
+  {
+    c1.push_back(42+i);
+    c2.push_back(42+i);
+  }
+  // check
+  ensure("different collections of the same values reported equal",
+         ViaCollection::equal(c1, c2) );
 }
 
 } // namespace tut

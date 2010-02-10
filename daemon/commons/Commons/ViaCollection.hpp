@@ -8,6 +8,8 @@
 /* public header */
 
 #include <boost/shared_ptr.hpp>
+#include <boost/static_assert.hpp>
+#include <boost/mpl/equal.hpp>
 #include <cassert>
 
 #include "Base/ViaPointer.hpp"
@@ -80,19 +82,27 @@ struct ViaCollection
    *        begin(), end(), size(). iterators must be at least forward
    *        iterators for this algorithm to work.
    */
-  template<typename T>
-  static bool equal(const T &c1, const T &c2)
+  template<typename T1, typename T2>
+  static bool equal(const T1 &c1, const T2 &c2)
   {
+    // ensure value types are equal
+    typedef typename T1::value_type T1Value;
+    typedef typename T2::value_type T2Value;
+    BOOST_STATIC_ASSERT( (boost::mpl::equal<T1Value, T2Value>::type::value) &&
+                         "collections' element types must be the same" );
+    typedef T1Value                 TValue; // both are the same any way
+
     // quick test - check sizes
     if( c1.size()!=c2.size() )
       return false;
     // test each element
-    for(typename T::const_iterator it1=c1.begin(), it2=c2.begin();
-        it1!=c1.end(); ++it1, ++it2)
+    typename T1::const_iterator it1=c1.begin();
+    typename T2::const_iterator it2=c2.begin();
+    for(; it1!=c1.end(); ++it1, ++it2)
     {
       assert( it1!=c1.end() );
       assert( it2!=c2.end() );
-      if( !detail::ElementCompare<typename T::value_type>::equal(*it1, *it2) )
+      if( !detail::ElementCompare<TValue>::equal(*it1, *it2) )
         return false;
     }
     // if no inequalities are found, collections are equal
