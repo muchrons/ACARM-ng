@@ -19,6 +19,7 @@ using namespace Persistency::IO::Postgres::detail;
 using namespace std;
 using namespace pqxx;
 using boost::posix_time::from_iso_string;
+using boost::posix_time::time_from_string;
 
 namespace
 {
@@ -221,10 +222,10 @@ void testObj::test<4>(void)
   ensure_equals("invalid analyzer ID",anlzID,id);
 
   r[0]["detect_time"].to(time);
-  ensure_equals("invalid detect time",detected_,from_iso_string(time));
+  ensure_equals("invalid detect time",detected_,time_from_string(time));
 
   r[0]["create_time"].to(time);
-  ensure_equals("invalid create time",created_,from_iso_string(time));
+  ensure_equals("invalid create time",created_,time_from_string(time));
 
   r[0]["id_severity"].to(id);
   ensure_equals("invalid severity ID",a.getSeverity().getLevel().toInt(),id);
@@ -408,7 +409,7 @@ void testObj::test<10>(void)
   ensure_equals("invalid name","meta alert",mAlertName);
 
   r[0]["create_time"].to(time);
-  ensure_equals("invalid created time",created_,from_iso_string(time));
+  ensure_equals("invalid created time", created_, time_from_string(time));
 
   t_.commit();
 }
