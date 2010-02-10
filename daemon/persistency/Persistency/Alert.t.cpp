@@ -218,13 +218,16 @@ template<>
 template<>
 void testObj::test<13>(void)
 {
-  const AnalyzerPtr          analyzer( new Analyzer("analyzer name", HostPtr() ) );
-  const Alert::ReportedHosts sourceHosts( generateReportedHosts(2) );
-  const Alert::ReportedHosts targetHosts( generateReportedHosts(5) );
-  const Alert a1(name_, analyzer, &detected_, created_, severity_,
-                 certanity_, description_, sourceHosts, targetHosts);
-  const Alert a2("different", analyzer_, &detected_, created_, severity_,
-                 certanity_, description_, sourceHosts_, targetHosts_);
+  const AnalyzerPtr          analyzer1( new Analyzer("analyzer name", HostPtr() ) );
+  const Alert::ReportedHosts hosts1( generateReportedHosts(1) );
+  const Alert a1(name_, analyzer1, &detected_, created_, severity_,
+                 certanity_, description_, hosts1, targetHosts_);
+
+  const AnalyzerPtr          analyzer2( new Analyzer("analyzer name", HostPtr() ) );
+  const Alert::ReportedHosts hosts2( generateReportedHosts(1) );
+  const Alert a2(name_, analyzer2, &detected_, created_, severity_,
+                 certanity_, description_, hosts2, targetHosts_);
+
   TestHelpers::checkEquality(a1, a2, custom_);
 }
 
