@@ -2,8 +2,8 @@
  * ViaCollection.hpp
  *
  */
-#ifndef INCLUDE_BASE_VIACOLLECTION_HPP_FILE
-#define INCLUDE_BASE_VIACOLLECTION_HPP_FILE
+#ifndef INCLUDE_COMMONS_VIACOLLECTION_HPP_FILE
+#define INCLUDE_COMMONS_VIACOLLECTION_HPP_FILE
 
 /* public header */
 
@@ -11,8 +11,9 @@
 #include <cassert>
 
 #include "Base/ViaPointer.hpp"
+#include "Commons/SharedPtrNotNULL.hpp"
 
-namespace Base
+namespace Commons
 {
 //
 // following declarations may look strange, but partial specializations of
@@ -37,7 +38,7 @@ struct ElementCompare<T*>
 {
   static bool equal(const T *e1, const T *e2)
   {
-    return ViaPointer::equal(e1, e2);
+    return Base::ViaPointer::equal(e1, e2);
   }
 }; // struct ElementCompare
 
@@ -47,6 +48,17 @@ struct ElementCompare< boost::shared_ptr<T> >
 {
   static bool equal(const boost::shared_ptr<T> e1,
                     const boost::shared_ptr<T> e2)
+  {
+    return ElementCompare<T*>::equal( e1.get(), e2.get() );
+  }
+}; // struct ElementCompare
+
+
+template<typename T>
+struct ElementCompare< SharedPtrNotNULL<T> >
+{
+  static bool equal(const SharedPtrNotNULL<T> e1,
+                    const SharedPtrNotNULL<T> e2)
   {
     return ElementCompare<T*>::equal( e1.get(), e2.get() );
   }
@@ -92,6 +104,6 @@ private:
   ViaCollection(void);
 }; // struct ViaCollection
 
-} // namespace Base
+} // namespace Commons
 
 #endif

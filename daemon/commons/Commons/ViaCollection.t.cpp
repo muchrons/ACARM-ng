@@ -6,10 +6,10 @@
 #include <list>
 #include <boost/static_assert.hpp>
 
-#include "Base/ViaCollection.hpp"
+#include "Commons/ViaCollection.hpp"
 
 using namespace std;
-using namespace Base;
+using namespace Commons;
 
 namespace
 {
@@ -21,7 +21,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Base/ViaCollection");
+factory tf("Commons/ViaCollection");
 } // unnamed namespace
 
 
@@ -135,12 +135,50 @@ void testObj::test<7>(void)
          ViaCollection::equal(l1, l2) );
 }
 
-// test lists of boost::shared_ptr<> to different values
+// test lists of boost::shared_ptr<> of different values
 template<>
 template<>
 void testObj::test<8>(void)
 {
   typedef boost::shared_ptr<long> LongPtr;
+  list<LongPtr> l1;
+  list<LongPtr> l2;
+
+  for(int i=0; i<3; ++i)
+  {
+    l1.push_back( LongPtr( new long(42+i) ) );
+    l2.push_back( LongPtr( new long(42-i) ) );
+  }
+  // check
+  ensure("lists of different smart pointers to different values reported equal",
+         !ViaCollection::equal(l1, l2) );
+}
+
+// test lists of SharedPtrNotNULL<> of the same values
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  typedef SharedPtrNotNULL<long> LongPtr;
+  list<LongPtr> l1;
+  list<LongPtr> l2;
+
+  for(int i=0; i<3; ++i)
+  {
+    l1.push_back( LongPtr( new long(42+i) ) );
+    l2.push_back( LongPtr( new long(42+i) ) );
+  }
+  // check
+  ensure("lists of different smart pointers to the same values are not equal",
+         ViaCollection::equal(l1, l2) );
+}
+
+// test lists of SharedPtrNotNULL<> to different values
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  typedef SharedPtrNotNULL<long> LongPtr;
   list<LongPtr> l1;
   list<LongPtr> l2;
 
