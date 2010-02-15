@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <cassert>
 #include <boost/static_assert.hpp>
+#include <boost/operators.hpp>
 
 #include "Persistency/Exception.hpp"
 #include "Persistency/ExceptionNULLParameter.hpp"
@@ -41,7 +42,7 @@ public:
 /** \brief class holding string of a given maximum length.
  */
 template<uint16_t N>
-class LimitedString
+class LimitedString: public boost::equality_comparable< LimitedString<N> >
 {
 public:
   /** \brief creates object from a given string.
@@ -82,6 +83,19 @@ public:
   {
     assert(p<=N && "index out of bound");
     return str_[p];
+  }
+
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const LimitedString<N> &other) const
+  {
+    assert(str_!=NULL);
+    assert(other.str_!=NULL);
+    if(str_==other.str_)    // small optimization
+      return true;
+    return strcmp(str_, other.str_)==0;
   }
 
 private:

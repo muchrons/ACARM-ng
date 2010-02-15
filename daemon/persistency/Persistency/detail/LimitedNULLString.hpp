@@ -7,6 +7,10 @@
 
 /* public header */
 
+#include <boost/operators.hpp>
+#include <cassert>
+
+#include "Base/ViaPointer.hpp"
 #include "Persistency/detail/LimitedString.hpp"
 
 namespace Persistency
@@ -17,7 +21,7 @@ namespace detail
 /** \brief class holding string of a given maximum length or NULL.
  */
 template<uint16_t N>
-class LimitedNULLString
+class LimitedNULLString: public boost::operators< LimitedNULLString<N> >
 {
 public:
   /** \brief creates object from a given string.
@@ -77,6 +81,7 @@ public:
    */
   const LimitedNULLString<N> &operator=(const LimitedNULLString &o)
   {
+    assert( ptr_==NULL || str_.get()==ptr_ );
     if(this!=&o)
     {
       str_=o.str_;
@@ -84,6 +89,16 @@ public:
     }
     assert( ptr_==NULL || str_.get()==ptr_ );
     return *this;
+  }
+
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const LimitedNULLString<N> &other) const
+  {
+    assert( ptr_==NULL || str_.get()==ptr_ );
+    return Base::ViaPointer::equal(ptr_, other.ptr_);
   }
 
 private:

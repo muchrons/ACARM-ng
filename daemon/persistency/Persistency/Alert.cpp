@@ -5,6 +5,8 @@
 #include <cassert>
 
 #include "Persistency/Alert.hpp"
+#include "Base/ViaPointer.hpp"
+#include "Commons/ViaCollection.hpp"
 
 using namespace std;
 
@@ -76,6 +78,32 @@ const Alert::ReportedHosts &Alert::getReportedSourceHosts(void) const
 const Alert::ReportedHosts &Alert::getReportedTargetHosts(void) const
 {
   return targetHosts_;
+}
+
+bool Alert::operator==(const Alert &other) const
+{
+  if( getName()!=other.getName() )
+    return false;
+  if( getAnalyzer()!=other.getAnalyzer() )
+    return false;
+  if( !Base::ViaPointer::equal( getDetectionTime(), other.getDetectionTime() ) )
+    return false;
+  if( getCreationTime()!=other.getCreationTime() )
+    return false;
+  if( getSeverity()!=other.getSeverity() )
+    return false;
+  if( getCertainty()!=other.getCertainty() )
+    return false;
+  if( getDescription()!=other.getDescription() )
+    return false;
+  if( !Commons::ViaCollection::equal( getReportedSourceHosts(),
+                                      other.getReportedSourceHosts() ) )
+    return false;
+  if( !Commons::ViaCollection::equal( getReportedTargetHosts(),
+                                      other.getReportedTargetHosts() ) )
+    return false;
+  // if all fields are equal, objects are equal too.
+  return true;
 }
 
 } // namespace Persistency
