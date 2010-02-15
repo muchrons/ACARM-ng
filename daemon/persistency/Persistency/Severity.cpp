@@ -37,4 +37,9 @@ Severity::Severity(const SeverityLevel sl):
 {
 }
 
+bool Severity::operator==(const Severity &other) const
+{
+  return getLevel()==other.getLevel();
+}
+
 } // namespace Persistency

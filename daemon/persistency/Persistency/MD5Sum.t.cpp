@@ -5,6 +5,7 @@
 #include <tut.h>
 
 #include "Persistency/MD5Sum.hpp"
+#include "TestHelpers/checkEquality.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -79,6 +80,16 @@ template<>
 void testObj::test<5>(void)
 {
   MD5Sum::createFromString("a1b3c5d7890123456789012345678901");
+}
+
+// test comparison
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const MD5Sum s1=MD5Sum::createFromString("01234567890123456789012345678901");
+  const MD5Sum s2=MD5Sum::createFromString("abcdefghijklmnopqrstuwvxyzabcdef");
+  TestHelpers::checkEquality(s1, s2);
 }
 
 } // namespace tut

@@ -8,6 +8,7 @@
 
 #include "Persistency/Alert.hpp"
 #include "Persistency/TestHelpers.t.hpp"
+#include "TestHelpers/checkEquality.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -26,7 +27,9 @@ struct TestClass: private TestBase
     certanity_(0.42),
     description_("alert's description"),
     sourceHosts_( generateReportedHosts(2) ),
-    targetHosts_( generateReportedHosts(5) )
+    targetHosts_( generateReportedHosts(5) ),
+    custom_(name_, analyzer_, &detected_, created_, severity_, certanity_,
+            description_, sourceHosts_, targetHosts_)
   {
   }
 
@@ -47,6 +50,7 @@ struct TestClass: private TestBase
   const string               description_;
   const Alert::ReportedHosts sourceHosts_;
   const Alert::ReportedHosts targetHosts_;
+  const Alert                custom_;
 };
 
 typedef TestClass TestClass;
@@ -110,6 +114,121 @@ void testObj::test<3>(void)
   {
     // this is expected
   }
+}
+
+// test equality with different names
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  const Alert a("different", analyzer_, &detected_, created_, severity_,
+                certanity_, description_, sourceHosts_, targetHosts_);
+  TestHelpers::checkEquality(custom_, a);
+}
+
+// test equality with different analyzers
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  AnalyzerPtrNN tmp( new Analyzer("different", HostPtr() ) );
+  const Alert   a(name_, tmp, &detected_, created_, severity_,
+                  certanity_, description_, sourceHosts_, targetHosts_);
+  TestHelpers::checkEquality(custom_, a);
+}
+
+// test equality with different detection time
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const Alert a(name_, analyzer_, NULL, created_, severity_,
+                certanity_, description_, sourceHosts_, targetHosts_);
+  TestHelpers::checkEquality(custom_, a);
+}
+
+// test equality with different creation time
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const Timestamp tmp=boost::posix_time::time_from_string("2010-11-12");
+  const Alert     a(name_, analyzer_, &detected_, tmp, severity_,
+                    certanity_, description_, sourceHosts_, targetHosts_);
+  TestHelpers::checkEquality(custom_, a);
+}
+
+// test equality with different severities
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const Severity tmp(SeverityLevel::ERROR);
+  const Alert    a(name_, analyzer_, &detected_, created_, tmp,
+                   certanity_, description_, sourceHosts_, targetHosts_);
+  TestHelpers::checkEquality(custom_, a);
+}
+
+// test equality with different certainties
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const Alert a(name_, analyzer_, &detected_, created_, severity_,
+                0.1234, description_, sourceHosts_, targetHosts_);
+  TestHelpers::checkEquality(custom_, a);
+}
+
+// test equality with different descriptions
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  const Alert a(name_, analyzer_, &detected_, created_, severity_,
+                certanity_, "blah", sourceHosts_, targetHosts_);
+  TestHelpers::checkEquality(custom_, a);
+}
+
+// test equality with different target hosts
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  Alert::ReportedHosts hosts;
+  hosts.push_back( makeNewHost() );
+  const Alert a(name_, analyzer_, &detected_, created_, severity_,
+                certanity_, description_, sourceHosts_, hosts);
+  TestHelpers::checkEquality(custom_, a);
+}
+
+// test equality with different source hosts
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  Alert::ReportedHosts hosts;
+  hosts.push_back( makeNewHost() );
+  const Alert a(name_, analyzer_, &detected_, created_, severity_,
+                certanity_, description_, hosts, targetHosts_);
+  TestHelpers::checkEquality(custom_, a);
+}
+
+// test equality with different object representing the same values
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  const AnalyzerPtr          analyzer1( new Analyzer("analyzer name", HostPtr() ) );
+  const Alert::ReportedHosts hosts1( generateReportedHosts(1) );
+  const Alert a1(name_, analyzer1, &detected_, created_, severity_,
+                 certanity_, description_, hosts1, targetHosts_);
+
+  const AnalyzerPtr          analyzer2( new Analyzer("analyzer name", HostPtr() ) );
+  const Alert::ReportedHosts hosts2( generateReportedHosts(1) );
+  const Alert a2(name_, analyzer2, &detected_, created_, severity_,
+                 certanity_, description_, hosts2, targetHosts_);
+
+  TestHelpers::checkEquality(a1, a2, custom_);
 }
 
 } // namespace tut

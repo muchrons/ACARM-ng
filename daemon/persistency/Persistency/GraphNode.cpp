@@ -2,11 +2,12 @@
  * GraphNode.cpp
  *
  */
-#include <cassert>
 #include <exception>
+#include <cassert>
 
-#include "Logger/Logger.hpp"
 #include "Persistency/GraphNode.hpp"
+#include "Commons/ViaCollection.hpp"
+#include "Logger/Logger.hpp"
 #include "Persistency/IO/GlobalConnection.hpp"
 
 namespace Persistency
@@ -134,6 +135,29 @@ AlertPtrNN GraphNode::getAlert(void)
 
   assert( leaf_.get()!=NULL );
   return leaf_;
+}
+
+bool GraphNode::operator==(const GraphNode &other) const
+{
+  // check if comparing to self
+  if(this==&other)
+    return true;
+  assert( self_.get()!=other.self_.get() );
+
+  // compare content
+  if( isLeaf()!=other.isLeaf() )
+    return false;
+  if( *self_!=*other.self_ )
+    return false;
+  if( isLeaf() )    // if one is leaf, second is leaf too - checked before
+  {
+    assert( leaf_.get()!=other.leaf_.get() );
+    if( *leaf_!=*other.leaf_ )
+      return false;
+  }
+
+  // if nodes itself are identical, ensure all subtrees are identical too
+  return Commons::ViaCollection::equal(children_, other.children_);
 }
 
 void GraphNode::ensureIsNode(void) const

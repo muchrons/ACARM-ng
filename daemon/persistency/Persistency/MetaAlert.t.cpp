@@ -7,6 +7,7 @@
 
 #include "Persistency/MetaAlert.hpp"
 #include "Persistency/TestHelpers.t.hpp"
+#include "TestHelpers/checkEquality.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -92,6 +93,63 @@ template<>
 void testObj::test<6>(void)
 {
   ensure("invalid creation time", ma_.getCreateTime()==ts_ );
+}
+
+// test equality with different names
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const MetaAlert ma("different", 42, 4.2, url_, ts_);
+  TestHelpers::checkEquality(ma, ma_);
+}
+
+// test equality with different severity
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const MetaAlert ma("name 1", 24, 4.2, url_, ts_);
+  TestHelpers::checkEquality(ma, ma_);
+}
+
+// test equality with different certanity
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const MetaAlert ma("name 1", 42, 2.4, url_, ts_);
+  TestHelpers::checkEquality(ma, ma_);
+}
+
+// test equality with different url
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  const MetaAlert ma("name 1", 42, 4.2, ReferenceURLPtr(), ts_);
+  TestHelpers::checkEquality(ma, ma_);
+}
+
+// test equality with different timestamp
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  const Timestamp tmp=boost::posix_time::time_from_string("1970-01-01");
+  const MetaAlert ma("name 1", 42, 4.2, url_, tmp);
+  TestHelpers::checkEquality(ma, ma_);
+}
+
+// test equality for different object representing the same values
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const Timestamp tmp=boost::posix_time::time_from_string("1970-01-01");
+  const MetaAlert ma1("name 1", 42, 4.2, makeNewReferenceURL(), tmp);
+  const MetaAlert ma2("name 1", 42, 4.2, makeNewReferenceURL(), tmp);
+  TestHelpers::checkEquality(ma1, ma2, ma_);
 }
 
 } // namespace tut
