@@ -28,7 +28,6 @@ else
 TMP:=
 TMPLD:=
 endif
-TMP+=-D__STRICT_ANSI__=0
 export USER_OPT_FLAGS:=-march=core2 $(TMP)
 export USER_DBG_FLAGS:=$(TMP)
 export USER_PRF_FLAGS:=$(USER_OPT_FLAGS)

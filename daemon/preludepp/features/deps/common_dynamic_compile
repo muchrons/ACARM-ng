@@ -1,2 +1,2 @@
 #!/bin/sh
-echo "-I/usr/include/libprelude"
+echo "-I/usr/include/libprelude -D__STRICT_ANSI__=0"
