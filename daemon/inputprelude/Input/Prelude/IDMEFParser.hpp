@@ -30,7 +30,8 @@ public:
    * @brief gets host name
    */
   Persistency::Host::Name getName();
-  /*
+
+  /**
    * @brief gets alert creation time
    */
   Persistency::Timestamp getCreateTime();
