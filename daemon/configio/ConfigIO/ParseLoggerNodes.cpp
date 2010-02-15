@@ -20,7 +20,7 @@ ParseLoggerNodes::ParseLoggerNodes(const XML::Node &node):
 }
 
 
-inline LoggerNodeConfig ParseLoggerNodes::parseDefaultNode(const XML::Node &node) const
+LoggerNodeConfig ParseLoggerNodes::parseDefaultNode(const XML::Node &node) const
 {
   // this in fact will be already checked before this call happens
   assert(node.getName()=="nodes");
@@ -31,7 +31,7 @@ inline LoggerNodeConfig ParseLoggerNodes::parseDefaultNode(const XML::Node &node
 }
 
 
-inline LoggerNodes ParseLoggerNodes::parse(const XML::Node &node) const
+LoggerNodes ParseLoggerNodes::parse(const XML::Node &node) const
 {
   // this in fact will be already checked before this call happens
   assert(node.getName()=="nodes");
