@@ -40,8 +40,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Timestamp ts1=boost::gregorian::from_simple_string("2010-11-12");
-  const Timestamp ts2=boost::gregorian::from_simple_string("2009-10-11");
+  const Timestamp ts1=boost::posix_time::time_from_string("2010-11-12");
+  const Timestamp ts2=boost::posix_time::time_from_string("2009-10-11");
   TestHelpers::checkEquality(ts1, ts2);
 }
 

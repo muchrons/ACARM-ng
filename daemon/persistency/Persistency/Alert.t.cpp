@@ -152,7 +152,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const Timestamp tmp=boost::gregorian::from_simple_string("1970-01-01");
+  const Timestamp tmp=boost::posix_time::time_from_string("2010-11-12");
   const Alert     a(name_, analyzer_, &detected_, tmp, severity_,
                     certanity_, description_, sourceHosts_, targetHosts_);
   TestHelpers::checkEquality(custom_, a);
