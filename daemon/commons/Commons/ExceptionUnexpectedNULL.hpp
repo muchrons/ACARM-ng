@@ -24,6 +24,6 @@ public:
   ExceptionUnexpectedNULL(const Location &where);
 }; // class ExceptionUnexpectedNULL
 
-}; // namespace Commons
+} // namespace Commons
 
 #endif

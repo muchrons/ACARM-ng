@@ -27,6 +27,6 @@ public:
   }
 }; // class ExceptionNotNode
 
-}; // namespace Persistency
+} // namespace Persistency
 
 #endif

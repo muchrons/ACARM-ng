@@ -28,6 +28,6 @@ public:
   }
 }; // class Exception
 
-}; // namespace Persistency
+} // namespace Persistency
 
 #endif

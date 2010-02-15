@@ -40,6 +40,6 @@ protected:
   }
 }; // class Exception
 
-}; // namespace Logger
+} // namespace Logger
 
 #endif

@@ -177,10 +177,10 @@ struct SaxParserTestClass
     TData data=mkInvalidData(n);
     try
     {
-      XML::Tree tree=sp.parse( data.get() );    // will throw on error
+      sp.parse( data.get() );    // will throw on error
       tut::fail("SaxParser::parse() didn't throw on error");
     }
-    catch(const std::exception &ex)
+    catch(const std::exception&)
     {
       // this is expected
     }
@@ -443,7 +443,7 @@ void testObj::test<3>(void)
   {
     SaxParser sp;
     TData     data=mkData(1);
-    XML::Tree tree=sp.parse( data.get() );   // will throw on error
+    sp.parse( data.get() );
     ensure("unknown error has been repoted", !sp.errorSpotted() );
   }
 }
@@ -457,10 +457,10 @@ void testObj::test<4>(void)
   TData     data=mkInvalidData(1);
   try
   {
-    XML::Tree tree=sp.parse( data.get() );    // will throw on error
+    sp.parse( data.get() );    // will throw on error
     fail("SaxParser::parse() didn't throw on error");
   }
-  catch(const std::exception &ex)
+  catch(const std::exception&)
   {
     // this is expected
   }
@@ -481,8 +481,8 @@ void testObj::test<5>(void)
   }
   // second call
   {
-    TData     data=mkData(1);
-    XML::Tree tree=sp.parse( data.get() );  // parse tree
+    TData data=mkData(1);
+    sp.parse( data.get() );  // parse tree
     ensure("unknown error has been repoted (2)", !sp.errorSpotted() );
   }
   // third call

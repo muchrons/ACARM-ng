@@ -21,16 +21,12 @@ endif
 # for intel disable some annoying remarks
 ifeq ($(TC),intel)
 TMP:=
-#TMP+=-wd177	# handler parameter "XYZ" was declared but never referenced
-TMP+=-wd193
-TMP+=-wd279
-TMP+=-wd383
-TMP+=-wd424
-TMP+=-wd981
-TMP+=-wd1418
+TMP+=-wd193	# zero used for undefined preprocessing identifier
+TMP+=-wd279	# controlling expression is constant
+TMP+=-wd383	# value copied to temporary, reference to temporary used
+TMP+=-wd981	# operands are evaluated in unspecified order
+TMP+=-wd1418	# external function definition with no prior declaration
 TMPLD:=-lstdc++
-# these are ok.
-TMP+=-wd271,444,522,819,854,1125,1572,1599,2259
 else
 TMP:=
 TMPLD:=

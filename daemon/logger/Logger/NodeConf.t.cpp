@@ -63,7 +63,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Formatter fmt=nc_.getFormatter();
+  nc_.getFormatter();
 }
 
 // test swapping
