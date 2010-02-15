@@ -2,7 +2,9 @@ BUILD_PROCESS_VERSION_TIMESTAMP:=$(GEN_BASE_DIR)/build_process_version_check.ts
 
 # this code checks if build process' files didn't changed since initial
 # build, and if so, inform user that (s)he should rebuild software
-$(BUILD_PROCESS_VERSION_TIMESTAMP): $(wildcard $(CODE_BASE_DIR)/* $(CODE_BASE_DIR)/*/*)
+$(BUILD_PROCESS_VERSION_TIMESTAMP): $(wildcard $(BUILD_CONFIG_BASE_DIR)/*.mk)
+$(BUILD_PROCESS_VERSION_TIMESTAMP): $(wildcard $(CODE_BASE_DIR)/*)
+$(BUILD_PROCESS_VERSION_TIMESTAMP): $(wildcard $(CODE_BASE_DIR)/*/*)
 $(BUILD_PROCESS_VERSION_TIMESTAMP): $(wildcard $(MAKEFILES_BASE_DIR)/*.mk)
 $(BUILD_PROCESS_VERSION_TIMESTAMP): $(wildcard $(MAKEFILES_BASE_DIR)/basic_mks/*)
 $(BUILD_PROCESS_VERSION_TIMESTAMP): $(wildcard $(MAKEFILES_COMMON_BASE_DIR)/*.mk)
@@ -19,6 +21,8 @@ $(BUILD_PROCESS_VERSION_TIMESTAMP): $(wildcard $(SCRIPTS_BASE_DIR)/*)
 			echo "if you understand what has happened and you are SURE this is false alarm" >&2 ; \
 			echo "you can supprese this message by removing following file:" >&2 ; \
 			echo "$@" >&2 ; \
+			echo "" >&2 ; \
+			echo "note: this message may inform on change in compilation flags as well." >&2 ; \
 			echo "--------------------------------------------------------------------------" >&2 ; \
 			false ; \
 		else \
