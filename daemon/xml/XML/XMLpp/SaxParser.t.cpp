@@ -177,7 +177,7 @@ struct SaxParserTestClass
     TData data=mkInvalidData(n);
     try
     {
-      sp.parse( data.get() );    // will throw on error
+      sp.parseContent( data.get() );    // will throw on error
       tut::fail("SaxParser::parse() didn't throw on error");
     }
     catch(const std::exception&)
@@ -429,8 +429,8 @@ void testObj::test<2>(void)
 {
   SaxParser sp;
   TData     data=mkData(2);
-  XML::Tree tree=sp.parse( data.get() );// parse tree
-  validateSecondXHTML(tree);            // check if tree is ok
+  XML::Tree tree=sp.parseContent( data.get() ); // parse tree
+  validateSecondXHTML(tree);                    // check if tree is ok
   ensure("unknown error has been repoted", !sp.errorSpotted() );
 }
 
@@ -443,7 +443,7 @@ void testObj::test<3>(void)
   {
     SaxParser sp;
     TData     data=mkData(1);
-    sp.parse( data.get() );
+    sp.parseContent( data.get() );
     ensure("unknown error has been repoted", !sp.errorSpotted() );
   }
 }
@@ -457,8 +457,8 @@ void testObj::test<4>(void)
   TData     data=mkInvalidData(1);
   try
   {
-    sp.parse( data.get() );    // will throw on error
-    fail("SaxParser::parse() didn't throw on error");
+    sp.parseContent( data.get() );    // will throw on error
+    fail("SaxParser::parseContent() didn't throw on error");
   }
   catch(const std::exception&)
   {
@@ -475,20 +475,20 @@ void testObj::test<5>(void)
   // first call
   {
     TData     data=mkData(2);
-    XML::Tree tree=sp.parse( data.get() );  // parse tree
+    XML::Tree tree=sp.parseContent( data.get() );  // parse tree
     validateSecondXHTML(tree);              // check if tree is ok
     ensure("unknown error has been repoted (1)", !sp.errorSpotted() );
   }
   // second call
   {
     TData data=mkData(1);
-    sp.parse( data.get() );  // parse tree
+    sp.parseContent( data.get() );  // parse tree
     ensure("unknown error has been repoted (2)", !sp.errorSpotted() );
   }
   // third call
   {
     TData     data=mkData(2);
-    XML::Tree tree=sp.parse( data.get() );  // parse tree
+    XML::Tree tree=sp.parseContent( data.get() );  // parse tree
     validateSecondXHTML(tree);              // check if tree is ok
     ensure("unknown error has been repoted (3)", !sp.errorSpotted() );
   }
