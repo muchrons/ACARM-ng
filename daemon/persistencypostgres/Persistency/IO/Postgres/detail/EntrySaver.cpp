@@ -271,6 +271,17 @@ DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
   return getID("meta_alerts_id_seq");
 }
 
+void EntrySaver::saveAlertToMetaAlertMap(DataBaseID alertID, DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "INSERT INTO alert_to_meta_alert_map(id_alert, id_meta_alert) VALUES(";
+  Appender::append(ss, alertID);
+  ss << ",";
+  Appender::append(ss, malertID);
+  ss << ");";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+}
+
 } // namespace detail
 } // namespace Postgres
 } // namespace IO
