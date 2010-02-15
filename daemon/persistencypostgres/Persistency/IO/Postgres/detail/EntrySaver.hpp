@@ -78,6 +78,11 @@ public:
    * \param ma Meta Alert to be saved
    */
   DataBaseID saveMetaAlert(const Persistency::MetaAlert &ma);
+  /** \brief save Alert to Meta Alert map
+   *  \param alertID  ID of Alert
+   *  \param malertID ID of Meta Alert
+   */
+  void saveAlertToMetaAlertMap(DataBaseID alertID, DataBaseID malertID);
   // TODO
 
 

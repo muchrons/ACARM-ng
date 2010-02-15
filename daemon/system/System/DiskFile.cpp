@@ -40,6 +40,7 @@ void DiskFile::throwFileErrorException(const char *methodName,
   stringstream ss;
   ss<<methodName<<": unable to "<<action<<" '"
     <<getName()<<"' file: "<< strerror(errno);
+  // TODO: make this separate exception type and add SYSTEM_SAVE_LOCATION
   throw Exception( ss.str() );
 }
 
