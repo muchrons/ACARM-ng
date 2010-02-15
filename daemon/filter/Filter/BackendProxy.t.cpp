@@ -8,12 +8,13 @@
 #include <cassert>
 
 #include "Filter/BackendProxy.hpp"
-#include "Filter/TestHelpers.t.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 
 using namespace Filter;
 using namespace Persistency;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
@@ -31,16 +32,16 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 
   MetaAlertPtrNN makeMetaAlert(void) const
   {
-    return th_makeMetaAlert();
+    return makeNewMetaAlert();
   }
 
   GraphNodePtrNN makeGraphLeaf(void) const
   {
-    return th_makeLeaf();
+    return makeNewLeaf();
   }
   GraphNodePtrNN makeGraphNode(void) const
   {
-    return th_makeNode();
+    return makeNewNode();
   }
 
   int childrenCount(const GraphNodePtrNN ptr) const
