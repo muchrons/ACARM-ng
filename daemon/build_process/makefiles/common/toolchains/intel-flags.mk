@@ -1,5 +1,5 @@
 # compiler flags
-CMN_FLAGS:=-Wall -Wextra -pipe
+CMN_FLAGS:=-Wall -pipe
 OPT_FLAGS:=-O3 -DNDEBUG -Werror
 DBG_FLAGS:=-g3
 PRF_FLAGS:=-g $(OPT_FLAGS) -pg
