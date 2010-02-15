@@ -390,8 +390,19 @@ template<>
 template<>
 void testObj::test<20>(void)
 {
-  ensure( "comparing two instances of the same node failed",
+  ensure( "comparing two instances of the same leaf failed",
           *makeLeaf()==*makeLeaf() );
+}
+
+// test comparing nodes that differ in children count
+template<>
+template<>
+void testObj::test<21>(void)
+{
+  GraphNodePtrNN node  =makeNode();
+  GraphNodePtrNN child=makeNode();
+  node->addChild(child, *makeIO(node) );
+  TestHelpers::checkEquality(node, *makeNode() );
 }
 
 } // namespace tut
