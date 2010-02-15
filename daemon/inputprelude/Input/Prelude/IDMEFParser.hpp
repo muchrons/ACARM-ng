@@ -36,12 +36,11 @@ public:
    */
   Persistency::Timestamp getCreateTime();
 
-private:    
+private:
   idmef_alert_t *alert_;
 };
 
-}
-}
+} // namespace Prelude
+} // namespace Input
 
 #endif
-
