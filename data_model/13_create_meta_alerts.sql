@@ -16,10 +16,8 @@ CREATE TABLE    meta_alerts
   id_ref           int          NULL
                                 REFERENCES reference_urls(id)
                                 DEFAULT NULL,
-  create_time      timestamp with time zone
-                                NOT NULL,
-  last_update_time timestamp with time zone
-                                NOT NULL
+  create_time      timestamp    NOT NULL,
+  last_update_time timestamp    NOT NULL
                                 DEFAULT now()
 );
 

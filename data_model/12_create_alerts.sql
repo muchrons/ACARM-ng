@@ -85,10 +85,8 @@ CREATE TABLE    alerts
   name        varchar(256) NOT NULL,
   id_analyzer int          NOT NULL
                            REFERENCES analyzers(id),
-  detect_time timestamp with time zone
-                           NULL,
-  create_time timestamp with time zone
-                           NOT NULL
+  detect_time timestamp    NULL,
+  create_time timestamp    NOT NULL
                            DEFAULT now(),
   id_severity int          NOT NULL
                            REFERENCES severities(id),
