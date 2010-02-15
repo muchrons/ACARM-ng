@@ -402,7 +402,7 @@ void testObj::test<21>(void)
   GraphNodePtrNN node  =makeNode();
   GraphNodePtrNN child=makeNode();
   node->addChild(child, *makeIO(node) );
-  TestHelpers::checkEquality(node, *makeNode() );
+  TestHelpers::checkEquality(*node, *makeNode() );
 }
 
 } // namespace tut
