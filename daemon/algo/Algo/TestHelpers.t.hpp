@@ -9,35 +9,17 @@
 #include "Persistency/IO/BackendFactory.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
-// looks bad, but this is header included only in .t.cpp files
-using namespace Persistency;
-using namespace TestHelpers::Persistency;
-
-namespace
+namespace Algo
 {
 
-MetaAlertPtrNN th_makeMetaAlert(void)
-{
-  return MetaAlertPtrNN( new MetaAlert( MetaAlert::Name("meta-alertX"),
-                                        0.1, 0.2,
-                                        makeNewReferenceURL(),
-                                        Timestamp() ) );
-} // th_makeMetaAlert()
+Persistency::MetaAlertPtrNN th_makeMetaAlert(void);
 
-GraphNodePtrNN th_makeLeaf(void)
-{
-  return makeNewLeaf();
-} // th_makeLeaf()
+Persistency::GraphNodePtrNN th_makeLeaf(void);
 
-GraphNodePtrNN th_makeNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
-{
-  return makeNewNode(child1, child2);
-} // th_makeNode()
+Persistency::GraphNodePtrNN th_makeNode(Persistency::GraphNodePtrNN child1,
+                                        Persistency::GraphNodePtrNN child2);
 
-GraphNodePtrNN th_makeNode(void)
-{
-  return makeNewNode();
-} // th_makeNode()
+Persistency::GraphNodePtrNN th_makeNode(void);
 
 //
 //                root
@@ -45,10 +27,7 @@ GraphNodePtrNN th_makeNode(void)
 //  leaf1 leaf2      node3      leaf5
 //                leaf3 leaf4
 //
-GraphNodePtrNN th_makeTree1(void)
-{
-  return makeNewTree1();
-} // th_makeTree1()
+Persistency::GraphNodePtrNN th_makeTree1(void);
 
 //
 //                root
@@ -57,11 +36,8 @@ GraphNodePtrNN th_makeTree1(void)
 //                leaf3 node1    ...
 //                       ...
 //
-GraphNodePtrNN th_makeTree2(void)
-{
-  return makeNewTree2();
-} // th_makeTree2()
+Persistency::GraphNodePtrNN th_makeTree2(void);
 
-} // unnamed namespace
+} // namespace Alego
 
 #endif
