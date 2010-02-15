@@ -10,6 +10,7 @@
 #include <stdint.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/operators.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/ReferenceURL.hpp"
@@ -21,7 +22,8 @@ namespace Persistency
 
 /** \brief service's data representation.
  */
-class Service: private boost::noncopyable
+class Service: private boost::noncopyable,
+               public  boost::equality_comparable<Service>
 {
 public:
   /** \brief name of the service.
@@ -61,6 +63,11 @@ public:
    *  \return reference url to given service.
    */
   const ReferenceURL *getReferenceURL(void) const;
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const Service &other) const;
 
 private:
   Name            name_;

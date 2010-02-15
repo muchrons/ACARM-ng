@@ -10,6 +10,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
+#include <boost/operators.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/MD5Sum.hpp"
@@ -23,7 +24,8 @@ namespace Persistency
 
 /** \brief process data repreesntation.
  */
-class Process: private boost::noncopyable
+class Process: private boost::noncopyable,
+               public  boost::equality_comparable<Process>
 {
 public:
   /** \brief path to file type.
@@ -87,6 +89,11 @@ public:
    *  \return referenceu url for a given process.
    */
   const ReferenceURL *getReferenceURL(void) const;
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const Process &other) const;
 
 private:
   Path                           path_;

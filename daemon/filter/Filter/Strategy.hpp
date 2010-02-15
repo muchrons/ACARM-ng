@@ -67,7 +67,7 @@ protected:
 
     Node node_;     ///< node itself.
     T    t_;        ///< user data, associated with node.
-  };
+  }; // struct NodeEntry
 
   /** \brief timeouting queue colleciton type. */
   typedef Base::TimeoutQueue<NodeEntry> NodesTimeoutQueue;

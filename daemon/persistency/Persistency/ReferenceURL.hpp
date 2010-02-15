@@ -9,6 +9,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/operators.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/detail/LimitedString.hpp"
@@ -17,7 +18,8 @@ namespace Persistency
 {
 /** \brief represents reference URL entry.
  */
-class ReferenceURL: private boost::noncopyable
+class ReferenceURL: private boost::noncopyable,
+                    public  boost::operators<ReferenceURL>
 {
 public:
   /** \brief type of name of reference URL.
@@ -33,7 +35,6 @@ public:
    */
   ReferenceURL(const Name &name, const URL &url);
 
-
   /** \brief gets reference url's name.
    *  \return name of reference URL.
    */
@@ -42,6 +43,11 @@ public:
    *  \return URL address.
    */
   const URL &getURL(void) const;
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const ReferenceURL &other) const;
 
 private:
   Name name_;

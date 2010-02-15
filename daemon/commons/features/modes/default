@@ -1,4 +1,4 @@
-Commons/*.[ch]
 Commons/*.[ch]pp
+Commons/detail/*.[ch]pp
 Commons/Factory/*.[ch]pp
 Commons/Factory/detail/*.[ch]pp

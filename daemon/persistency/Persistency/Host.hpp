@@ -11,6 +11,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/operators.hpp>
 #include <boost/asio/ip/address.hpp>
 
 #include "Base/Threads/Mutex.hpp"
@@ -31,7 +32,8 @@ class Host;
 
 /** \brief host information representation.
  */
-class Host: private boost::noncopyable
+class Host: private boost::noncopyable,
+            public  boost::equality_comparable<Host>
 {
 public:
   /** \brief any IP address type.
@@ -60,10 +62,10 @@ public:
   typedef detail::LimitedNULLString<64> Name;
   /** \brief services assigned to host.
    */
-  typedef std::vector<ServicePtr>       ReportedServices;
+  typedef std::vector<ServicePtrNN>     ReportedServices;
   /** \brief processes assigned to host.
    */
-  typedef std::vector<ProcessPtr>       ReportedProcesses;
+  typedef std::vector<ProcessPtrNN>     ReportedProcesses;
 
   /** \brief create host entry of IPv4 address.
    *  \param ip        ip address.
@@ -123,6 +125,11 @@ public:
    *  \return vector of reported processes.
    */
   const ReportedProcesses &getReportedProcesses(void) const;
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const Host &other) const;
 
 private:
   friend class ::Persistency::IO::Host;

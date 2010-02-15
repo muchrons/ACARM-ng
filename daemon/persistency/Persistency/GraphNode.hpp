@@ -8,6 +8,7 @@
 /* public header */
 
 #include <boost/noncopyable.hpp>
+#include <boost/operators.hpp>
 
 #include "Base/Threads/GrowingVector.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
@@ -24,7 +25,8 @@ namespace Persistency
 
 /** \brief graph node's representation.
  */
-class GraphNode: private boost::noncopyable
+class GraphNode: private boost::noncopyable,
+                 public  boost::equality_comparable<GraphNode>
 {
 private:
   typedef Base::Threads::GrowingVector<GraphNodePtrNN> GraphNodesList;
@@ -107,6 +109,11 @@ public:
    *  \return alert.
    */
   AlertPtrNN getAlert(void);
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const GraphNode &other) const;
 
 private:
   void ensureIsNode(void) const;

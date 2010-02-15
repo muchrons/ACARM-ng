@@ -9,13 +9,13 @@
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/date_time/posix_time/time_parsers.hpp>
-//consider change to posix_time_types.hpp (smaller)
+// TODO: consider change to posix_time_types.hpp (smaller)
 
 namespace Persistency
 {
 /** \brief common date/time representation.
  */
-  typedef boost::posix_time::ptime Timestamp;
+typedef boost::posix_time::ptime Timestamp;
 
 } // namespace Persistency
 
