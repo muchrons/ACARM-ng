@@ -20,7 +20,14 @@ endif
 # project-specific flags
 # for intel disable some annoying remarks
 ifeq ($(TC),intel)
-TMP:=-wd177,279,383,424,981,1418
+TMP:=
+#TMP+=-wd177	# handler parameter "XYZ" was declared but never referenced
+TMP+=-wd193
+TMP+=-wd279
+TMP+=-wd383
+TMP+=-wd424
+TMP+=-wd981
+TMP+=-wd1418
 TMPLD:=-lstdc++
 # these are ok.
 TMP+=-wd271,444,522,819,854,1125,1572,1599,2259
