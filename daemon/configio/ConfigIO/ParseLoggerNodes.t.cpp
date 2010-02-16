@@ -78,7 +78,7 @@ struct ParseLoggerNodesTestClass
   {
     assert(xml!=NULL);
     XMLpp::SaxParser sp;
-    const XML::Tree  tree=sp.parse(xml);
+    const XML::Tree  tree=sp.parseContent(xml);
     return tree.getRoot().getChild("logger").getChild("nodes");
   }
 

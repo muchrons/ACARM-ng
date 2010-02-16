@@ -210,7 +210,7 @@ void testObj::test<7>(void)
     n_.getChild("Child");   // no such name - should throw
     fail("getChild() didn't throw on node not found");
   }
-  catch(const XML::Exception &ex)
+  catch(const XML::Exception&)
   {
     // this is expected
   }

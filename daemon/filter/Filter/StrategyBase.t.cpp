@@ -6,7 +6,6 @@
 #include <boost/thread.hpp>
 
 #include "Filter/StrategyBase.hpp"
-#include "Filter/TestHelpers.t.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Filter;

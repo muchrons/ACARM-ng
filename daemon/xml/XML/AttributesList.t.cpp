@@ -98,7 +98,7 @@ void testObj::test<4>(void)
     al_.add(attr);  // should throw
     fail("add() did not throw on duplicated name");
   }
-  catch(const XML::Exception &ex)
+  catch(const XML::Exception&)
   {
     // this is expected
   }
@@ -154,7 +154,7 @@ void testObj::test<8>(void)
     al_.getAttribute("non_exisitng_element");
     fail("getAttribute() didn't throw on non-existing attribute");
   }
-  catch(const Exception &ex)
+  catch(const Exception&)
   {
     // this is expected
   }

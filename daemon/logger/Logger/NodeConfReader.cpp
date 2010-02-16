@@ -80,18 +80,18 @@ NodeConfPtr NodeConfReader::read(const NodeName &nn) const
       ss<<sepStr;
     ss<<*it;
     // check if configuration is present
-    ConfigIO::LoggerNodes::const_iterator it=find_if( nodes.begin(),
-                                                      nodes.end(),
-                                                      FindNode( ss.str() ) );
-    if( it==nodes.end() )   // if nothing has been found, it means that no more
+    ConfigIO::LoggerNodes::const_iterator itCfg=find_if( nodes.begin(),
+                                                         nodes.end(),
+                                                         FindNode( ss.str() ) );
+    if( itCfg==nodes.end() )// if nothing has been found, it means that no more
       break;                // specific conifguration exists
 
     // change appender, if defined
-    if( it->hasAppender() )
-      appender =appMap_[ it->getAppenderName() ];
+    if( itCfg->hasAppender() )
+      appender =appMap_[ itCfg->getAppenderName() ];
     // change threshold, if defined
-    if( it->hasThreshold() )
-      threshold=parsePriority( it->getThresholdValue() );
+    if( itCfg->hasThreshold() )
+      threshold=parsePriority( itCfg->getThresholdValue() );
   }
 
   return NodeConfPtr( new NodeConf(appender, threshold) );
