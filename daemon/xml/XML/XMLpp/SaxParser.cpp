@@ -17,7 +17,7 @@ namespace XML
 namespace XMLpp
 {
 
-XML::Tree SaxParser::parse(const char *doc)
+XML::Tree SaxParser::parseContent(const char *doc)
 {
   finishedOk_=false;
   clear();

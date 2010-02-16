@@ -77,7 +77,7 @@ private:
   std::string msg_;
 }; // class Base
 
-}; // namespace Exceptions
-}; // namespace System
+} // namespace Exceptions
+} // namespace System
 
 #endif

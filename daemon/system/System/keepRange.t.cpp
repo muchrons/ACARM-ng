@@ -3,6 +3,7 @@
  *
  */
 #include <tut.h>
+#include <cmath>
 
 #include "System/keepRange.hpp"
 
@@ -74,7 +75,7 @@ void testObj::test<4>(void)
     keepRange(30, 30,29);       // should throw
     fail("keepRange() didn't throw, given incorrect range");
   }
-  catch(const System::Exception &ex)
+  catch(const System::Exception&)
   {
     // this is expected
   }
@@ -116,7 +117,7 @@ void testObj::test<7>(void)
 {
   const char   in =66;
   const double out=keepRange<double>(in);
-  ensure(out==66);
+  ensure( fabs(out-in)<0.00001 );
 }
 
 // test converting real floating point
@@ -140,4 +141,3 @@ void testObj::test<10>(void)
 }
 
 } // namespace tut
-

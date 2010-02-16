@@ -100,7 +100,7 @@ void testObj::test<6>(void)
     NodeConfReader::parsePriority("invalid");
     fail("parsing invalid priority didn't failed");
   }
-  catch(const NodeConfReader::ExceptionNoSuchPriority &ex)
+  catch(const NodeConfReader::ExceptionNoSuchPriority&)
   {
     // this is expected
   }

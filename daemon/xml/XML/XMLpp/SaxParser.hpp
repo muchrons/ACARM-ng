@@ -37,7 +37,7 @@ public:
    * \param  doc document to be parsed.
    * \return XML tree of a parsed page.
    */
-  XML::Tree parse(const char *doc);
+  XML::Tree parseContent(const char *doc);
   /**
    * checks if there have been an error during last
    * call of parse().

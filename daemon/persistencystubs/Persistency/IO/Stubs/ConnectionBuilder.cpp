@@ -25,7 +25,7 @@ namespace
 const Commons::Factory::RegistratorHelper<BackendFactory, ConnectionBuilder> g_rh;
 } // unnamed namespace
 
-FORCE_LINK_THIS_OBJECT(Persistency_IO_Stubs_ConnectionBuilder);
+FORCE_LINK_THIS_OBJECT(Persistency_IO_Stubs_ConnectionBuilder)
 
 
 ConnectionBuilder::ConnectionBuilder(void):
