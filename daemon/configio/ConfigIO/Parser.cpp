@@ -24,7 +24,7 @@ inline Tree getParsedTree(const string &path)
 {
   FileReader       reader(path);
   XMLpp::SaxParser sax;
-  return sax.parse( reader.getString() );
+  return sax.parseContent( reader.getString() );
 } // getParsedTree()
 } // unnamed namespace
 

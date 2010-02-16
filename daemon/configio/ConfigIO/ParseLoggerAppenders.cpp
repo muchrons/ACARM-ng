@@ -42,9 +42,9 @@ LoggerAppenders ParseLoggerAppenders::parse(const XML::Node &node) const
     for(Node::TNodesList::const_iterator itOpts=appOpts.begin();
         itOpts!=appOpts.end(); ++itOpts)
     {
-      const string &name =itOpts->getName();
-      const string &value=itOpts->getValuesString();
-      opts[name].push_back(value);
+      const string &opName =itOpts->getName();
+      const string &opValue=itOpts->getValuesString();
+      opts[opName].push_back(opValue);
     }
 
     // add appender with configuration to options

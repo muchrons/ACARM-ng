@@ -54,6 +54,11 @@ struct FactoryBuilderBaseTestClass
   {
   }
 
+  template<typename T>
+  void ignore(const T&) const
+  {
+  }
+
   TestBuilder      tb_;
   TestBuilderBase &base_;
 };
@@ -85,6 +90,7 @@ void testObj::test<2>(void)
   ensure("NULL pointer returned", ptr.get()!=NULL);
   // check if type's fine
   TestFactory                    tf =*ptr;
+  ignore(tf);
 }
 
 } // namespace tut

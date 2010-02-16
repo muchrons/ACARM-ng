@@ -84,7 +84,7 @@ void testObj::test<2>(void)
     DiskFile( std::string("/somenonexisting/never/ever.file"), O_RDONLY );
     fail("DiskFile() didn't throw on unexisting file");
   }
-  catch(const Exception &ex)
+  catch(const Exception&)
   {
     // should throw here
   }

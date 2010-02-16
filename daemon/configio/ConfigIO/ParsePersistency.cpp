@@ -22,7 +22,7 @@ ParsePersistency::ParsePersistency(const XML::Node &node):
 }
 
 
-inline PersistencyConfig ParsePersistency::parse(const XML::Node &node) const
+PersistencyConfig ParsePersistency::parse(const XML::Node &node) const
 {
   // this will be checed before this call happens anyway
   assert( node.getName()=="persistency" );

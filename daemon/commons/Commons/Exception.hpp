@@ -55,6 +55,6 @@ private:
   Logger::Node log_;
 }; // class Exception
 
-}; // namespace Commons
+} // namespace Commons
 
 #endif

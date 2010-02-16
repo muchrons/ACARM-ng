@@ -27,6 +27,6 @@ public:
   }
 }; // class ExceptionNULLParameter
 
-}; // namespace Persistency
+} // namespace Persistency
 
 #endif

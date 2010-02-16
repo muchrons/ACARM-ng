@@ -5,11 +5,12 @@
 #include <tut.h>
 
 #include "Algo/forEach.hpp"
-#include "Algo/TestHelpers.t.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Algo;
 using namespace Persistency;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
@@ -30,7 +31,7 @@ struct FuncObj: private TestHelpers::Persistency::TestStubs
 struct TestClass
 {
   TestClass(void):
-    root_( th_makeTree1() )
+    root_( makeNewTree1() )
   {
   }
 

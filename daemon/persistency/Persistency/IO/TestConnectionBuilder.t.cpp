@@ -22,7 +22,7 @@ namespace
 const Commons::Factory::RegistratorHelper<BackendFactory, TestConnectionBuilder> g_rh;
 } // unnamed namespace
 
-FORCE_LINK_THIS_OBJECT(Persistency_IO_TestConnectionBuilder);
+FORCE_LINK_THIS_OBJECT(Persistency_IO_TestConnectionBuilder)
 
 
 TestConnectionBuilder::TestConnectionBuilder(void):

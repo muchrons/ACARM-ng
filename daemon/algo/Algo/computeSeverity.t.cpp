@@ -5,11 +5,12 @@
 #include <tut.h>
 
 #include "Algo/computeSeverity.hpp"
-#include "Algo/TestHelpers.t.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Algo;
 using namespace Persistency;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
@@ -50,7 +51,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  checkMatch( computeSeverity( th_makeLeaf() ),
+  checkMatch( computeSeverity( makeNewLeaf() ),
                                1*alertSeverity_/1.0 + 0*0.1);
 }
 
@@ -59,7 +60,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  checkMatch( computeSeverity( th_makeNode() ),
+  checkMatch( computeSeverity( makeNewNode() ),
               2*alertSeverity_/2.0 + 1*0.1);
 }
 
@@ -68,7 +69,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  checkMatch( computeSeverity( th_makeTree2() ),
+  checkMatch( computeSeverity( makeNewTree2() ),
               3*alertSeverity_/3.0 + 4*0.1);
 }
 
