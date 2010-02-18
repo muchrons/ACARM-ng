@@ -33,7 +33,9 @@ public:
         Transaction             &t,
         DBHandlerPtrNN           dbHandler);
 
-
+  /** \brief save alert
+   *  \param t  associated transaction.
+   */
   virtual void saveImpl(Transaction &t);
 private:
   typedef DataBaseID (EntrySaver::*PtrEntrySaver)(DataBaseID, DataBaseID, const Persistency::Host &);
