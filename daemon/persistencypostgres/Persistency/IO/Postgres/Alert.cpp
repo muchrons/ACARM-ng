@@ -3,7 +3,6 @@
  *
  */
 #include "Persistency/IO/Postgres/Alert.hpp"
-#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 
 using namespace Persistency::IO::Postgres::detail;
 
@@ -29,11 +28,16 @@ void Alert::saveImpl(Transaction &t)
   const Persistency::HostPtr host=anlz.getHost();
   EntrySaver es(t,*dbHandler_);
 
-
+  DataBaseID hostID;
+  DataBaseID anlzID;
   //save Host
-  DataBaseID hostID = es.saveHostData(*host.get());
-  //save Analyzer
-  DataBaseID anlzID = es.saveAnalyzer(&hostID, anlz);
+  if(host!=NULL)
+  {
+    hostID = es.saveHostData(*host.get());
+    anlzID = es.saveAnalyzer(&hostID, anlz);
+  }
+  else
+    anlzID = es.saveAnalyzer(NULL, anlz);
   //save Alert
   DataBaseID alertID = es.saveAlert(anlzID, a);
   //save source hosts

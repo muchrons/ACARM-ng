@@ -262,7 +262,7 @@ void testObj::test<5>(void)
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   //TODO: fix this
   r[0]["name"].to(name);
-  //ensure_equals("invalid name",ti.getName().get(),name);
+  //ensure_equals("invalid name",ti.getName().get() ,name);
 
   r[0]["port"].to(port);
   ensure_equals("invalid port",ti.getPort(),port);
@@ -309,17 +309,17 @@ void testObj::test<7>(void)
   DataBaseID anlzID = es_.saveAnalyzer(NULL,a);
 
   stringstream ss;
-  string name;
-  DataBaseID id;
+  string name, id;
+
   ss << "SELECT * FROM analyzers WHERE id = " << anlzID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(),1);
 
   r[0]["name"].to(name);
   ensure_equals("invalid Analyzer name",name,anlzName);
-  //TODO: fix this
+
   r[0]["id_host"].to(id);
-  //ensure_equals("id_host is not NULL",id,NULL);
+  ensure_equals("id_host is not NULL",id,"");
 
   t_.commit();
 }
@@ -412,6 +412,52 @@ void testObj::test<10>(void)
   ensure_equals("invalid created time", created_, time_from_string(time));
 
   t_.commit();
+}
+
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  const Alert a(name_, analyzer_, NULL, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  HostPtr host=makeNewHost();
+  const Analyzer anlz("analyzer1", host);
+  DataBaseID hostID = es_.saveHostData(*host);
+  DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
+  DataBaseID alrtID = es_.saveAlert(anlzID,a);
+
+  stringstream ss;
+  string name, time, description;
+  DataBaseID id;
+  double certanity;
+
+  ss << "SELECT * FROM alerts WHERE id = " << alrtID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(),1);
+
+  r[0]["name"].to(name);
+  ensure_equals("invalid name",name_.get(),name);
+
+  r[0]["id_analyzer"].to(id);
+  ensure_equals("invalid analyzer ID",anlzID,id);
+
+  r[0]["detect_time"].to(time);
+  ensure_equals("invalid detect time", "", time);
+
+  r[0]["create_time"].to(time);
+  ensure_equals("invalid create time",created_, time_from_string(time));
+
+  r[0]["id_severity"].to(id);
+  ensure_equals("invalid severity ID",a.getSeverity().getLevel().toInt(),id);
+
+  r[0]["certanity"].to(certanity);
+  ensure_equals("invalid certanity",certanity_.get(),certanity);
+
+  r[0]["description"].to(description);
+  ensure_equals("invalid description",description_,description);
+
+  t_.commit();
+  //TODO: save Alert with NULL detected time
 }
 
 } // namespace tut

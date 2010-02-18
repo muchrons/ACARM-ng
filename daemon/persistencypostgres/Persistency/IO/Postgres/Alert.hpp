@@ -33,9 +33,9 @@ public:
         Transaction             &t,
         DBHandlerPtrNN           dbHandler);
 
-private:
-  virtual void saveImpl(Transaction &t);
 
+  virtual void saveImpl(Transaction &t);
+private:
   typedef DataBaseID (EntrySaver::*PtrEntrySaver)(DataBaseID, DataBaseID, const Persistency::Host &);
   /** \brief save target or source hosts.
    *  \param es      EntrySaver object
