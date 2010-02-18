@@ -253,45 +253,45 @@ struct SaxParserTestClass
 
       // HEAD
       {
-        const XML::Node                       &head   =*childIt;
-        const XML::Node::TNodesList           &cList  =head.getChildrenList();
-        XML::Node::TNodesList::const_iterator  childIt=cList.begin();
+        const XML::Node                       &head    =*childIt;
+        const XML::Node::TNodesList           &hcList  =head.getChildrenList();
+        XML::Node::TNodesList::const_iterator  hchildIt=hcList.begin();
         ensure("head element not found", head.getName()=="head");
 
         // check attributes
-        const XML::AttributesList           &aList=head.getAttributesList();
-        XML::AttributesList::const_iterator  it   =aList.begin();
+        const XML::AttributesList           &haList=head.getAttributesList();
+        XML::AttributesList::const_iterator  itHa  =haList.begin();
 
-        ensure("head has some attributes", it==aList.end() );
+        ensure("head has some attributes", itHa==haList.end() );
 
         // check values
-        const XML::Node::TValuesList &vList=head.getValuesList();
+        const XML::Node::TValuesList &hvList=head.getValuesList();
         ensure("no values have been read (should be some white chars)",
-               vList.begin()!=vList.end() );
+               hvList.begin()!=hvList.end() );
 
         // TITLE
         {
-          ensure("title tag not found", childIt!=cList.end() );
-          const XML::Node              &title=*childIt;
-          const XML::Node::TNodesList  &cList=title.getChildrenList();
+          ensure("title tag not found", hchildIt!=hcList.end() );
+          const XML::Node              &title=*hchildIt;
+          const XML::Node::TNodesList  &tcList=title.getChildrenList();
           ensure("head element not found", title.getName()=="title");
-          ensure("title has child elements", cList.begin()==cList.end() );
+          ensure("title has child elements", tcList.begin()==tcList.end() );
 
           // check attributes
-          const XML::AttributesList    &aList=title.getAttributesList();
-          ensure("title has some attributes", aList.begin()==aList.end() );
+          const XML::AttributesList    &taList=title.getAttributesList();
+          ensure("title has some attributes", taList.begin()==taList.end() );
 
           // check values
-          const XML::Node::TValuesList &vList=title.getValuesList();
+          const XML::Node::TValuesList &tvList=title.getValuesList();
           ensure("no values have been read (should be some white chars)",
-                 vList.begin()!=vList.end() );
+                 tvList.begin()!=tvList.end() );
           // look for predefined string
           bool foundStr=false;
-          for(XML::Node::TValuesList::const_iterator it=vList.begin();
-              it!=vList.end();
-              ++it)
+          for(XML::Node::TValuesList::const_iterator itV=tvList.begin();
+              itV!=tvList.end();
+              ++itV)
           {
-            const string &str=it->get();
+            const string &str=itV->get();
             if( str.find(" Transitional DTD XHTML Example ") <
                 str.length() )   // got it?
             {
@@ -306,66 +306,66 @@ struct SaxParserTestClass
       ++childIt;
       // BODY
       {
-        const XML::Node                       &body   =*childIt;
-        const XML::Node::TNodesList           &cList  =body.getChildrenList();
-        XML::Node::TNodesList::const_iterator  childIt=cList.begin();
+        const XML::Node                       &body    =*childIt;
+        const XML::Node::TNodesList           &bcList  =body.getChildrenList();
+        XML::Node::TNodesList::const_iterator  hchildIt=bcList.begin();
         ensure("body element not found", body.getName()=="body");
 
         // check attributes
-        const XML::AttributesList           &aList=body.getAttributesList();
-        XML::AttributesList::const_iterator  it   =aList.begin();
-        ensure("body doesn't have attributes", it!=aList.end() );
+        const XML::AttributesList           &baList=body.getAttributesList();
+        XML::AttributesList::const_iterator  itAtt=baList.begin();
+        ensure("body doesn't have attributes", itAtt!=baList.end() );
         ensure("first attribute name is invalid",
-               it->getName()=="bgcolor");
+               itAtt->getName()=="bgcolor");
         ensure("first attribute values is invalid",
-               it->getValue()=="#FFFFFF");
+               itAtt->getValue()=="#FFFFFF");
 
-        ++it;
-        ensure("second BODY attribute is missing", it!=aList.end() );
+        ++itAtt;
+        ensure("second BODY attribute is missing", itAtt!=baList.end() );
         ensure("second attribute name is invalid",
-               it->getName()=="link");
+               itAtt->getName()=="link");
         ensure("second attribute values is invalid",
-               it->getValue()=="#000000");
+               itAtt->getValue()=="#000000");
 
-        ++it;
-        ensure("third HTML attribute is missing", it!=aList.end() );
+        ++itAtt;
+        ensure("third HTML attribute is missing", itAtt!=baList.end() );
         ensure("third attribute name is invalid",
-               it->getName()=="text");
+               itAtt->getName()=="text");
         ensure("third attribute values is invalid",
-               it->getValue()=="red");
+               itAtt->getValue()=="red");
 
-        ++it;
-        ensure("too many attributes have been read", it==aList.end() );
+        ++itAtt;
+        ensure("too many attributes have been read", itAtt==baList.end() );
 
         // check values
-        const XML::Node::TValuesList &vList=body.getValuesList();
+        const XML::Node::TValuesList &bvList=body.getValuesList();
         ensure("no values have been read (should be some white chars)",
-               vList.begin()!=vList.end() );
+               bvList.begin()!=bvList.end() );
 
         // P
         {
-          ensure("P tag not found", childIt!=cList.end() );
-          const XML::Node              &par  =*childIt;
-          const XML::Node::TNodesList  &cList=par.getChildrenList();
+          ensure("P tag not found", hchildIt!=bcList.end() );
+          const XML::Node              &par  =*hchildIt;
+          const XML::Node::TNodesList  &pcList=par.getChildrenList();
           ensure("P element not found", par.getName()=="p");
-          ensure("P has child elements", cList.begin()==cList.end() );
+          ensure("P has child elements", pcList.begin()==pcList.end() );
 
           // check attributes
-          const XML::AttributesList    &aList=par.getAttributesList();
-          ensure("P has some attributes", aList.begin()==aList.end() );
+          const XML::AttributesList    &paList=par.getAttributesList();
+          ensure("P has some attributes", paList.begin()==paList.end() );
 
           // check values
-          const XML::Node::TValuesList &vList=par.getValuesList();
+          const XML::Node::TValuesList &pvList=par.getValuesList();
           ensure("no values have been read (should be some white "
                  "chars and text)",
-                 vList.begin()!=vList.end() );
+                 pvList.begin()!=pvList.end() );
           // look for predefined string
           bool foundStr=false;
-          for(XML::Node::TValuesList::const_iterator it=vList.begin();
-              it!=vList.end();
-              ++it)
+          for(XML::Node::TValuesList::const_iterator itV=pvList.begin();
+              itV!=pvList.end();
+              ++itV)
           {
-            const string &str=it->get();
+            const string &str=itV->get();
             if( str.find("This is a transitional XHTML example") <
                 str.length() )   // got it?
             {
