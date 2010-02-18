@@ -33,11 +33,12 @@ public:
         Transaction             &t,
         DBHandlerPtrNN           dbHandler);
 
+private:
   /** \brief save alert
    *  \param t  associated transaction.
    */
   virtual void saveImpl(Transaction &t);
-private:
+  //handler to functions (saveSourceHost, saveTargetHost) in detail::EntrySaver class
   typedef DataBaseID (EntrySaver::*PtrEntrySaver)(DataBaseID, DataBaseID, const Persistency::Host &);
   /** \brief save target or source hosts.
    *  \param es      EntrySaver object

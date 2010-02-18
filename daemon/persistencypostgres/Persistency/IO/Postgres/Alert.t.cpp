@@ -99,7 +99,7 @@ void testObj::test<1>(void)
 {
   Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, analyzer_, &detected_, created_, severity_,                                                                   certainty_, description_, sourceHosts_, targetHosts_));
   Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
-  alert.saveImpl(t_);
+  alert.save();
 }
 
 //trying save Alert with NULL Host in Analyzer
@@ -109,7 +109,7 @@ void testObj::test<2>(void)
 {
   Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, nullanalyzer_, &detected_, created_, severity_,                                                                   certainty_, description_, sourceHosts_, targetHosts_));
   Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
-  alert.saveImpl(t_);
+  alert.save();
 }
 
 

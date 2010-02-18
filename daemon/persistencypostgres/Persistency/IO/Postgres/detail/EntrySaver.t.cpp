@@ -9,7 +9,7 @@
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
-#include "Persistency/detail/LimitedNULLString.hpp"
+#include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
 
 using Persistency::IO::Transaction;
@@ -53,6 +53,8 @@ struct TestClass
     pid_(42),
     uid_(69),
     url_( new ReferenceURL("url1", "http://www.lmgtfy.com") ),
+    md5Str_("01234567890123456789012345678901"),
+    md5_( MD5Sum::createFromString(md5Str_) ),
     proc_( "/a/b/c/d",
            "some.proc",
            NULL,
@@ -61,6 +63,14 @@ struct TestClass
            "johndoe",
            "-a -b -c",
            url_ ),
+    procnn_( "/a/b/c/d",
+            "some.proc",
+            &md5_,
+            &pid_,
+            &uid_,
+            "johndoe",
+            "-a -b -c",
+            url_ ),
     mask4_( Host::Netmask_v4(mask4_bytes) ),
     mask6_( Host::Netmask_v6(mask6_bytes) )
   {
@@ -107,7 +117,10 @@ struct TestClass
   const pid_t       pid_;
   const int         uid_;
   ReferenceURLPtrNN url_;
+  const char        *md5Str_;
+  const MD5Sum      md5_;
   const Process     proc_;
+  const Process     procnn_;
 
   const Host::Netmask_v4 mask4_;
   const Host::Netmask_v6 mask6_;
@@ -125,7 +138,7 @@ factory tf("Persistency/IO/Postgres/detail/EntrySaver");
 namespace tut
 {
 
-// try saving example Process - smoke test
+// try saving example Process with NULL MD5 sum- smoke test
 template<>
 template<>
 void testObj::test<1>(void)
@@ -152,9 +165,8 @@ void testObj::test<1>(void)
   r[0]["name"].to(name);
   ensure_equals("invalid name",proc_.getName().get() ,name);
 
-  //TODO: fix this
   r[0]["md5"].to(md5);
-  //ensure_equals("invalid md5 sum",&proc_.getMD5()->get(), md5);
+  ensure_equals("invalid md5 sum","", md5);
 
   t_.commit();
 }
@@ -256,19 +268,24 @@ void testObj::test<5>(void)
   DataBaseID servID = es_.saveService(thostID,ti);
 
   stringstream ss;
-  string name, protocol;
+  string protocol;
+  string name;
+  string name_(ti.getName().get());
+  name_.resize(32,' ');
+  string protocol_(ti.getProtocol().get() );
+  protocol_.resize(32,' ');
+
   int port;
   ss << "SELECT * FROM services WHERE id = " << servID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  //TODO: fix this
   r[0]["name"].to(name);
-  //ensure_equals("invalid name",ti.getName().get() ,name);
+  ensure_equals("invalid name",name_  ,name );
 
   r[0]["port"].to(port);
   ensure_equals("invalid port",ti.getPort(),port);
 
   r[0]["protocol"].to(protocol);
-  //ensure_equals("invalid protocol",ti.getProtocol().get(), protocol);
+  ensure_equals("invalid protocol", protocol_, protocol);
 
   t_.commit();
 }
@@ -414,6 +431,7 @@ void testObj::test<10>(void)
   t_.commit();
 }
 
+//try save alert with NULL detected time
 template<>
 template<>
 void testObj::test<11>(void)
@@ -426,7 +444,7 @@ void testObj::test<11>(void)
   DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alrtID = es_.saveAlert(anlzID,a);
 
-  stringstream ss;
+   stringstream ss;
   string name, time, description;
   DataBaseID id;
   double certanity;
@@ -457,7 +475,42 @@ void testObj::test<11>(void)
   ensure_equals("invalid description",description_,description);
 
   t_.commit();
-  //TODO: save Alert with NULL detected time
 }
+
+// try saving example Process with NULL MD5 sum- smoke test
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  HostPtr host=makeNewHost();
+  const Analyzer anlz("analyzer1", host);
+  DataBaseID hostID  = es_.saveHostData(*host);
+  DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
+  DataBaseID alertID = es_.saveAlert(anlzID,a);
+  DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
+  DataBaseID procID  = es_.saveProcess(thostID, procnn_);
+
+  stringstream ss;
+  string path, name, md5;
+  string md5_(procnn_.getMD5()->get());
+  md5_.resize(32,' ');
+  ss << "SELECT * FROM procs WHERE id = " << procID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(),1);
+
+  r[0]["path"].to(path);
+  ensure_equals("invalid path",proc_.getPath().get() ,path);
+
+  r[0]["name"].to(name);
+  ensure_equals("invalid name",proc_.getName().get() ,name);
+
+  r[0]["md5"].to(md5);
+  ensure_equals("invalid md5 sum",md5_, md5);
+
+  t_.commit();
+}
+
 
 } // namespace tut
