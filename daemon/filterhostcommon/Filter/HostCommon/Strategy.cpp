@@ -23,7 +23,7 @@ void Strategy::processImpl(Node               n,
 {
   // get host from this node.
   HostPtr h=getReportedHost(n);
-  // if there is no interesting entries, simply skip it.
+  // if there are no interesting entries, simply skip it.
   if( h.get()==NULL )
     return;
   // add entry to observing set
