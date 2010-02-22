@@ -545,4 +545,6 @@ void testObj::test<12>(void)
 
 // TODO: test saving service with NULL reference URL
 
+// TODO: add tests to check if max/min-length data types does fill in data base.
+
 } // namespace tut
