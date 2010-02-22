@@ -22,7 +22,7 @@ CREATE TABLE    services
                     DEFAULT nextval('services_id_seq'),
   name     char(32) NOT NULL,
   port     int      NOT NULL,
-  protocol char(23) NULL,
+  protocol char(32) NULL,
 
   CONSTRAINT port_check CHECK ( 0<port AND port<65536 )
 );

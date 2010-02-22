@@ -9,7 +9,7 @@
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
-#include "Persistency/detail/LimitedNULLString.hpp"
+#include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
 
 using Persistency::IO::Transaction;
@@ -53,6 +53,8 @@ struct TestClass
     pid_(42),
     uid_(69),
     url_( new ReferenceURL("url1", "http://www.lmgtfy.com") ),
+    md5Str_("01234567890123456789012345678901"),
+    md5_( MD5Sum::createFromString(md5Str_) ),
     proc_( "/a/b/c/d",
            "some.proc",
            NULL,
@@ -61,6 +63,14 @@ struct TestClass
            "johndoe",
            "-a -b -c",
            url_ ),
+    procnn_( "/a/b/c/d",
+            "some.proc",
+            &md5_,
+            &pid_,
+            &uid_,
+            "johndoe",
+            "-a -b -c",
+            url_ ),
     mask4_( Host::Netmask_v4(mask4_bytes) ),
     mask6_( Host::Netmask_v6(mask6_bytes) )
   {
@@ -92,7 +102,7 @@ struct TestClass
   const Timestamp            created_;
   const Severity             severity_;
   const Certainty            certanity_;
-  const std::string               description_;
+  const std::string          description_;
   const Alert::ReportedHosts sourceHosts_;
   const Alert::ReportedHosts targetHosts_;
 
@@ -107,7 +117,10 @@ struct TestClass
   const pid_t       pid_;
   const int         uid_;
   ReferenceURLPtrNN url_;
+  const char        *md5Str_;
+  const MD5Sum      md5_;
   const Process     proc_;
+  const Process     procnn_;
 
   const Host::Netmask_v4 mask4_;
   const Host::Netmask_v6 mask6_;
@@ -125,7 +138,7 @@ factory tf("Persistency/IO/Postgres/detail/EntrySaver");
 namespace tut
 {
 
-// try saving example Process - smoke test
+// try saving example Process with NULL MD5 sum- smoke test
 template<>
 template<>
 void testObj::test<1>(void)
@@ -134,6 +147,7 @@ void testObj::test<1>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
   DataBaseID hostID  = es_.saveHostData(*host);
   DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
@@ -152,9 +166,9 @@ void testObj::test<1>(void)
   r[0]["name"].to(name);
   ensure_equals("invalid name",proc_.getName().get() ,name);
 
-  //TODO: fix this
+  // TODO: there is dedicated method for checking if field is NULL in pqxx
   r[0]["md5"].to(md5);
-  //ensure_equals("invalid md5 sum",&proc_.getMD5()->get(), md5);
+  ensure_equals("invalid md5 sum","", md5);
 
   t_.commit();
 }
@@ -168,12 +182,14 @@ void testObj::test<2>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
   DataBaseID hostID  = es_.saveHostData(*host);
   DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
   DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID id1=es_.saveProcess(thostID, proc_);
   const DataBaseID id2=es_.saveProcess(thostID, proc_);
+  // TODO: condition is always true. should be id1<id2.
   ensure("invalid ids returned", id1<=id2+1);
 }
 
@@ -202,6 +218,7 @@ void testObj::test<4>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
   DataBaseID hostID = es_.saveHostData(*host);
   DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alrtID = es_.saveAlert(anlzID,a);
@@ -249,26 +266,40 @@ void testObj::test<5>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
   DataBaseID hostID  = es_.saveHostData(*host);
   DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
   DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   DataBaseID servID = es_.saveService(thostID,ti);
 
+  // TODO: trailing underscores are reserved for member names by convention.
+  //       do not use them for temporary, auto-variables
   stringstream ss;
-  string name, protocol;
+  string protocol;
+  string name;
+  string name_(ti.getName().get());
+  // TODO: this is not the way to do this. use trimming string read
+  //       from DB instead
+  name_.resize(32,' ');
+  string protocol_(ti.getProtocol().get() );
+  // TODO: this is not the way to do this. use trimming string read
+  //       from DB instead
+  protocol_.resize(32,' ');
+
+  // TODO: 'port' variable declarationshuld be moved next to usage place.
+  //       note that it can be used within a scope to minimize it's life-time
   int port;
   ss << "SELECT * FROM services WHERE id = " << servID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  //TODO: fix this
   r[0]["name"].to(name);
-  //ensure_equals("invalid name",ti.getName().get(),name);
+  ensure_equals("invalid name",name_  ,name );
 
   r[0]["port"].to(port);
   ensure_equals("invalid port",ti.getPort(),port);
 
   r[0]["protocol"].to(protocol);
-  //ensure_equals("invalid protocol",ti.getProtocol().get(), protocol);
+  ensure_equals("invalid protocol", protocol_, protocol);
 
   t_.commit();
 }
@@ -280,6 +311,7 @@ void testObj::test<6>(void)
 {
   HostPtr host=makeNewHost();
   const Analyzer a("analyzer2", host);
+  // TODO: these variables should be const:
   DataBaseID hostID = es_.saveHostData(*host);
   DataBaseID anlzID = es_.saveAnalyzer(&hostID,a);
 
@@ -305,21 +337,24 @@ template<>
 void testObj::test<7>(void)
 {
   const string anlzName("analyzer3");
+  // TODO: i'd suggest passing NULL host-ptr here, for better readability
   const Analyzer a(anlzName,makeNewHost());
+  // TODO: this variable should be const:
   DataBaseID anlzID = es_.saveAnalyzer(NULL,a);
 
   stringstream ss;
-  string name;
-  DataBaseID id;
+  string name, id;
+
   ss << "SELECT * FROM analyzers WHERE id = " << anlzID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(),1);
 
   r[0]["name"].to(name);
   ensure_equals("invalid Analyzer name",name,anlzName);
-  //TODO: fix this
+
+  // TODO: use dedicated method for checking NULL in DB
   r[0]["id_host"].to(id);
-  //ensure_equals("id_host is not NULL",id,NULL);
+  ensure_equals("id_host is not NULL",id,"");
 
   t_.commit();
 }
@@ -333,6 +368,7 @@ void testObj::test<8>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
   DataBaseID hostID  = es_.saveHostData(*host);
   DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
@@ -362,6 +398,7 @@ void testObj::test<9>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
   DataBaseID hostID  = es_.saveHostData(*host);
   DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
@@ -389,6 +426,7 @@ void testObj::test<10>(void)
 {
   const MetaAlert::Name name("meta alert");
   MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  // TODO: this variable should be const:
   DataBaseID malertID = es_.saveMetaAlert(ma);
 
   stringstream ss;
@@ -413,5 +451,100 @@ void testObj::test<10>(void)
 
   t_.commit();
 }
+
+//try save alert with NULL detected time
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  const Alert a(name_, analyzer_, NULL, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  HostPtr host=makeNewHost();
+  const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
+  DataBaseID hostID = es_.saveHostData(*host);
+  DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
+  DataBaseID alrtID = es_.saveAlert(anlzID,a);
+
+   stringstream ss;
+  string name, time, description;
+  DataBaseID id;
+  double certanity;
+
+  ss << "SELECT * FROM alerts WHERE id = " << alrtID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(),1);
+
+  r[0]["name"].to(name);
+  ensure_equals("invalid name",name_.get(),name);
+
+  r[0]["id_analyzer"].to(id);
+  ensure_equals("invalid analyzer ID",anlzID,id);
+
+  r[0]["detect_time"].to(time);
+  ensure_equals("invalid detect time", "", time);
+
+  r[0]["create_time"].to(time);
+  ensure_equals("invalid create time",created_, time_from_string(time));
+
+  r[0]["id_severity"].to(id);
+  ensure_equals("invalid severity ID",a.getSeverity().getLevel().toInt(),id);
+
+  r[0]["certanity"].to(certanity);
+  ensure_equals("invalid certanity",certanity_.get(),certanity);
+
+  r[0]["description"].to(description);
+  ensure_equals("invalid description",description_,description);
+
+  t_.commit();
+}
+
+// try saving example Process with non-NULL MD5 sum- smoke test
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  HostPtr host=makeNewHost();
+  const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
+  DataBaseID hostID  = es_.saveHostData(*host);
+  DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
+  DataBaseID alertID = es_.saveAlert(anlzID,a);
+  DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
+  DataBaseID procID  = es_.saveProcess(thostID, procnn_);
+
+  stringstream ss;
+  string path, name, md5;
+  string md5_(procnn_.getMD5()->get());
+  md5_.resize(32,' ');
+  ss << "SELECT * FROM procs WHERE id = " << procID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(),1);
+
+  r[0]["path"].to(path);
+  ensure_equals("invalid path",proc_.getPath().get() ,path);
+
+  r[0]["name"].to(name);
+  ensure_equals("invalid name",proc_.getName().get() ,name);
+
+  r[0]["md5"].to(md5);
+  ensure_equals("invalid md5 sum",md5_, md5);
+
+  t_.commit();
+}
+
+// TODO: test saving Process with NULL ReferenceURL
+
+// TODO: test saving Process with non-NULL ReferenceURL
+
+// TODO: test saving Host with NULL name
+
+// TODO: test saving meta-alert with NULL reference url
+
+// TODO: test saving service with NULL reference URL
+
+// TODO: add tests to check if max/min-length data types does fill in data base.
 
 } // namespace tut
