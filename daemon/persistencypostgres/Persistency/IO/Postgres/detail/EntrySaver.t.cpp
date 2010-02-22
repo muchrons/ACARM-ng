@@ -273,12 +273,18 @@ void testObj::test<5>(void)
   DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   DataBaseID servID = es_.saveService(thostID,ti);
 
+  // TODO: trailing underscores are reserved for member names by convention.
+  //       do not use them for temporary, auto-variables
   stringstream ss;
   string protocol;
   string name;
   string name_(ti.getName().get());
+  // TODO: this is not the way to do this. use trimming string read
+  //       from DB instead
   name_.resize(32,' ');
   string protocol_(ti.getProtocol().get() );
+  // TODO: this is not the way to do this. use trimming string read
+  //       from DB instead
   protocol_.resize(32,' ');
 
   // TODO: 'port' variable declarationshuld be moved next to usage place.
