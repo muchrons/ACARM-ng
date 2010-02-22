@@ -38,8 +38,10 @@ private:
    *  \param t  associated transaction.
    */
   virtual void saveImpl(Transaction &t);
-  //handler to functions (saveSourceHost, saveTargetHost) in detail::EntrySaver class
+  // handler to functions (saveSourceHost, saveTargetHost) in detail::EntrySaver class
+  // TODO: please avoid using pointers to methods whenever possible.
   typedef DataBaseID (EntrySaver::*PtrEntrySaver)(DataBaseID, DataBaseID, const Persistency::Host &);
+  // TODO: always use lower case for variable names (ex.: "ptr" instread of "Ptr")
   /** \brief save target or source hosts.
    *  \param es      EntrySaver object
    *  \param alertID ID of Alert
