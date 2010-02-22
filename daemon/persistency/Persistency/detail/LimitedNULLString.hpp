@@ -24,6 +24,14 @@ template<uint16_t N>
 class LimitedNULLString: public boost::operators< LimitedNULLString<N> >
 {
 public:
+  /** \brief creates empty object string.
+   */
+  LimitedNULLString(void):
+    str_(),
+    ptr_( str_.get() )
+  {
+    assert( ptr_==NULL || str_.get()==ptr_ );
+  }
   /** \brief creates object from a given string.
    *  \param str string to create object from.
    *  \note this c-tor is not explicit to allow easier argument passing.
