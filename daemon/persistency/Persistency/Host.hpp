@@ -19,6 +19,7 @@
 #include "Persistency/ReferenceURL.hpp"
 #include "Persistency/Service.hpp"
 #include "Persistency/Process.hpp"
+#include "Persistency/IPTypes.hpp"
 #include "Persistency/detail/LimitedNULLString.hpp"
 
 namespace Persistency
@@ -33,27 +34,10 @@ class Host;
 /** \brief host information representation.
  */
 class Host: private boost::noncopyable,
-            public  boost::equality_comparable<Host>
+            public  boost::equality_comparable<Host>,
+            public  IPTypes<Host>
 {
 public:
-  /** \brief any IP address type.
-   */
-  typedef boost::asio::ip::address      IP;
-  /** \brief IPv4 address.
-   */
-  typedef boost::asio::ip::address_v4   IPv4;
-  /** \brief IPv6 address.
-   */
-  typedef boost::asio::ip::address_v6   IPv6;
-  /** \brief any network mask.
-   */
-  typedef IP                            Netmask;
-  /** \brief network mask for IPv4.
-   */
-  typedef IPv4                          Netmask_v4;
-  /** \brief network mask for IPv6.
-   */
-  typedef IPv6                          Netmask_v6;
   /** \brief operation system name type.
    */
   typedef detail::LimitedNULLString<32> OperatingSystem;

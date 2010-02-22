@@ -9,10 +9,14 @@
 namespace Persistency
 {
 
-Analyzer::Analyzer(const Name &name,
-                   HostPtr     host):
+Analyzer::Analyzer(const Name    &name,
+                   const Version *version,
+                   const OS      *os,
+                   const IP      *ip):
   name_(name),
-  host_(host)
+  version_(version),
+  os_(os),
+  ip_(ip)
 {
 }
 
@@ -21,16 +25,30 @@ const Analyzer::Name &Analyzer::getName(void) const
   return name_;
 }
 
-HostPtr Analyzer::getHost(void) const
+const Analyzer::Version *Analyzer::getVersion(void) const
 {
-  return host_;
+  return version_.get();
+}
+
+const Analyzer::OS *Analyzer::getOS(void) const
+{
+  return os_.get();
+}
+
+const Analyzer::IP *Analyzer::getIP(void) const
+{
+  return ip_.get();
 }
 
 bool Analyzer::operator==(const Analyzer &other) const
 {
   if( getName()!=other.getName() )
     return false;
-  if( !Base::ViaPointer::equal( getHost().get(), other.getHost().get() ) )
+  if( !Base::ViaPointer::equal( getVersion(), other.getVersion() ) )
+    return false;
+  if( !Base::ViaPointer::equal( getOS(), other.getOS() ) )
+    return false;
+  if( !Base::ViaPointer::equal( getIP(), other.getIP() ) )
     return false;
   return true;
 }

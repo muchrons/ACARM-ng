@@ -20,7 +20,7 @@ struct TestClass: private TestBase
 {
   TestClass(void):
     name_("some name"),
-    analyzer_( new Analyzer("analyzer name", HostPtr() ) ),
+    analyzer_( new Analyzer("analyzer name", NULL, NULL, NULL) ),
     detected_(),
     created_(),
     severity_(SeverityLevel::INFO),
@@ -42,7 +42,7 @@ struct TestClass: private TestBase
   }
 
   const Alert::Name          name_;
-  const AnalyzerPtr          analyzer_;
+  const AnalyzerPtrNN        analyzer_;
   const Timestamp            detected_;
   const Timestamp            created_;
   const Severity             severity_;
@@ -97,23 +97,22 @@ void testObj::test<2>(void)
   ensure("detection time is not NULL", a.getDetectionTime()==NULL);
 }
 
-// test c-tor for NULL analyzer
+// test equality with different object representing the same values
 template<>
 template<>
 void testObj::test<3>(void)
 {
-  AnalyzerPtr tmp;
-  assert( tmp.get()==NULL );
-  try
-  {
-    Alert a(name_, tmp, &detected_, created_, severity_, certanity_,
-            description_, sourceHosts_, targetHosts_);
-    fail("NULL analyzer has been accepted");
-  }
-  catch(const Commons::ExceptionUnexpectedNULL&)
-  {
-    // this is expected
-  }
+  const AnalyzerPtrNN        analyzer1( new Analyzer("analyzer name", NULL, NULL, NULL) );
+  const Alert::ReportedHosts hosts1( generateReportedHosts(1) );
+  const Alert a1(name_, analyzer1, &detected_, created_, severity_,
+                 certanity_, description_, hosts1, targetHosts_);
+
+  const AnalyzerPtrNN        analyzer2( new Analyzer("analyzer name", NULL, NULL, NULL) );
+  const Alert::ReportedHosts hosts2( generateReportedHosts(1) );
+  const Alert a2(name_, analyzer2, &detected_, created_, severity_,
+                 certanity_, description_, hosts2, targetHosts_);
+
+  TestHelpers::checkEquality(a1, a2, custom_);
 }
 
 // test equality with different names
@@ -131,7 +130,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  AnalyzerPtrNN tmp( new Analyzer("different", HostPtr() ) );
+  AnalyzerPtrNN tmp( new Analyzer("different", NULL, NULL, NULL) );
   const Alert   a(name_, tmp, &detected_, created_, severity_,
                   certanity_, description_, sourceHosts_, targetHosts_);
   TestHelpers::checkEquality(custom_, a);
@@ -211,24 +210,6 @@ void testObj::test<12>(void)
   const Alert a(name_, analyzer_, &detected_, created_, severity_,
                 certanity_, description_, hosts, targetHosts_);
   TestHelpers::checkEquality(custom_, a);
-}
-
-// test equality with different object representing the same values
-template<>
-template<>
-void testObj::test<13>(void)
-{
-  const AnalyzerPtr          analyzer1( new Analyzer("analyzer name", HostPtr() ) );
-  const Alert::ReportedHosts hosts1( generateReportedHosts(1) );
-  const Alert a1(name_, analyzer1, &detected_, created_, severity_,
-                 certanity_, description_, hosts1, targetHosts_);
-
-  const AnalyzerPtr          analyzer2( new Analyzer("analyzer name", HostPtr() ) );
-  const Alert::ReportedHosts hosts2( generateReportedHosts(1) );
-  const Alert a2(name_, analyzer2, &detected_, created_, severity_,
-                 certanity_, description_, hosts2, targetHosts_);
-
-  TestHelpers::checkEquality(a1, a2, custom_);
 }
 
 } // namespace tut

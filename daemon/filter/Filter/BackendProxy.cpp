@@ -46,10 +46,6 @@ bool isHostFromNode(GraphNodePtrNN node, HostPtrNN host)
   // process alert
   AlertPtrNN a=node->getAlert();
 
-  // analyzer's host?
-  if( a->getAnalyzer().getHost().get()==host.get() )
-    return true;
-
   // source or destination host?
   if( hasHost( a->getReportedSourceHosts(), host) ||
       hasHost( a->getReportedTargetHosts(), host)    )

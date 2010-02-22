@@ -21,8 +21,9 @@ Alert::Alert(Persistency::AlertPtrNN  alert,
 {
 }
 
-void Alert::saveImpl(Transaction &t)
+void Alert::saveImpl(Transaction &/*t*/)
 {
+  /* TODO: THIS IS COMMENTED OUT SINCE IMPLEMENTATION OF ANALYZER CHANGED - UPDATE THIS CODE ASAP
   const Persistency::Alert    &a=get();
   const Persistency::Analyzer &anlz=a.getAnalyzer();
   const Persistency::HostPtr  host=anlz.getHost();
@@ -47,7 +48,7 @@ void Alert::saveImpl(Transaction &t)
   Persistency::Alert::ReportedHosts TargetHosts(a.getReportedTargetHosts() );
   PtrEntrySaver                     saveTargetHostPtr = &EntrySaver::saveTargetHost;
   saveHosts(es, alertID, saveTargetHostPtr, TargetHosts);
-
+  */
 }
 
 void Alert::saveHosts(EntrySaver                 &es,
