@@ -102,7 +102,7 @@ struct TestClass
   const Timestamp            created_;
   const Severity             severity_;
   const Certainty            certanity_;
-  const std::string               description_;
+  const std::string          description_;
   const Alert::ReportedHosts sourceHosts_;
   const Alert::ReportedHosts targetHosts_;
 
@@ -147,6 +147,7 @@ void testObj::test<1>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
   DataBaseID hostID  = es_.saveHostData(*host);
   DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
@@ -165,6 +166,7 @@ void testObj::test<1>(void)
   r[0]["name"].to(name);
   ensure_equals("invalid name",proc_.getName().get() ,name);
 
+  // TODO: there is dedicated method for checking if field is NULL in pqxx
   r[0]["md5"].to(md5);
   ensure_equals("invalid md5 sum","", md5);
 
@@ -180,12 +182,14 @@ void testObj::test<2>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
   DataBaseID hostID  = es_.saveHostData(*host);
   DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
   DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID id1=es_.saveProcess(thostID, proc_);
   const DataBaseID id2=es_.saveProcess(thostID, proc_);
+  // TODO: condition is always true. should be id1<id2.
   ensure("invalid ids returned", id1<=id2+1);
 }
 
@@ -214,6 +218,7 @@ void testObj::test<4>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
   DataBaseID hostID = es_.saveHostData(*host);
   DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alrtID = es_.saveAlert(anlzID,a);
@@ -261,6 +266,7 @@ void testObj::test<5>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
   DataBaseID hostID  = es_.saveHostData(*host);
   DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
@@ -275,6 +281,8 @@ void testObj::test<5>(void)
   string protocol_(ti.getProtocol().get() );
   protocol_.resize(32,' ');
 
+  // TODO: 'port' variable declarationshuld be moved next to usage place.
+  //       note that it can be used within a scope to minimize it's life-time
   int port;
   ss << "SELECT * FROM services WHERE id = " << servID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
@@ -297,6 +305,7 @@ void testObj::test<6>(void)
 {
   HostPtr host=makeNewHost();
   const Analyzer a("analyzer2", host);
+  // TODO: these variables should be const:
   DataBaseID hostID = es_.saveHostData(*host);
   DataBaseID anlzID = es_.saveAnalyzer(&hostID,a);
 
@@ -322,7 +331,9 @@ template<>
 void testObj::test<7>(void)
 {
   const string anlzName("analyzer3");
+  // TODO: i'd suggest passing NULL host-ptr here, for better readability
   const Analyzer a(anlzName,makeNewHost());
+  // TODO: this variable should be const:
   DataBaseID anlzID = es_.saveAnalyzer(NULL,a);
 
   stringstream ss;
@@ -335,6 +346,7 @@ void testObj::test<7>(void)
   r[0]["name"].to(name);
   ensure_equals("invalid Analyzer name",name,anlzName);
 
+  // TODO: use dedicated method for checking NULL in DB
   r[0]["id_host"].to(id);
   ensure_equals("id_host is not NULL",id,"");
 
@@ -350,6 +362,7 @@ void testObj::test<8>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
   DataBaseID hostID  = es_.saveHostData(*host);
   DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
@@ -379,6 +392,7 @@ void testObj::test<9>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
   DataBaseID hostID  = es_.saveHostData(*host);
   DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
@@ -406,6 +420,7 @@ void testObj::test<10>(void)
 {
   const MetaAlert::Name name("meta alert");
   MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  // TODO: this variable should be const:
   DataBaseID malertID = es_.saveMetaAlert(ma);
 
   stringstream ss;
@@ -440,6 +455,7 @@ void testObj::test<11>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
   DataBaseID hostID = es_.saveHostData(*host);
   DataBaseID anlzID = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alrtID = es_.saveAlert(anlzID,a);
@@ -477,7 +493,7 @@ void testObj::test<11>(void)
   t_.commit();
 }
 
-// try saving example Process with NULL MD5 sum- smoke test
+// try saving example Process with non-NULL MD5 sum- smoke test
 template<>
 template<>
 void testObj::test<12>(void)
@@ -486,6 +502,7 @@ void testObj::test<12>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", host);
+  // TODO: these variables should be const:
   DataBaseID hostID  = es_.saveHostData(*host);
   DataBaseID anlzID  = es_.saveAnalyzer(&hostID,anlz);
   DataBaseID alertID = es_.saveAlert(anlzID,a);
@@ -512,5 +529,14 @@ void testObj::test<12>(void)
   t_.commit();
 }
 
+// TODO: test saving Process with NULL ReferenceURL
+
+// TODO: test saving Process with non-NULL ReferenceURL
+
+// TODO: test saving Host with NULL name
+
+// TODO: test saving meta-alert with NULL reference url
+
+// TODO: test saving service with NULL reference URL
 
 } // namespace tut

@@ -58,7 +58,9 @@ DataBaseID EntrySaver::saveProcessData(const Process &p)
 {
   stringstream ss;
   ss << "INSERT INTO procs(path, name, md5) VALUES (";
+  // TODO: use detail::append() for this task
   ss << "'" << pqxx::sqlesc( p.getPath().get() ) << "',";
+  // TODO: use detail::append() for this task
   ss << "'" << pqxx::sqlesc( p.getName().get() ) << "',";
   Appender::append(ss, (p.getMD5())?p.getMD5()->get():NULL);
   ss << ");";
@@ -140,6 +142,7 @@ DataBaseID EntrySaver::saveReportedHostData(DataBaseID               alertID,
   ss << "INSERT INTO reported_hosts(id_alert, id_host, role, id_ref) VALUES (";
   ss << alertID << ",";
   ss << hostID << ",";
+  // TODO: assert should be placed here - role must be equalt to 1 of 2, predefined strings
   Appender::append(ss, role);
   ss << ",";
   Appender::append(ss, h.getReferenceURL()?saveReferenceURL( *h.getReferenceURL() ):NULL);
@@ -186,6 +189,15 @@ DataBaseID EntrySaver::saveAlert(DataBaseID AnalyzerID, const Persistency::Alert
 
 DataBaseID EntrySaver::saveAnalyzer(const DataBaseID *HostID, const Analyzer &a)
 {
+  //
+  // TODO: this method cannot work this way - it has to check given host's
+  //       paramters not the ID value, and save analyzer if, and only if it
+  //       does not already exist. thus it has to call saveHost() by itself,
+  //       if needed.
+  //
+  // TODO: notice that it is generally good idea to separate check if given
+  //       host already exist into separate method.
+  //
   stringstream ss;
   ss << "SELECT * FROM analyzers WHERE id_host ";
   if(HostID==NULL)
@@ -195,6 +207,8 @@ DataBaseID EntrySaver::saveAnalyzer(const DataBaseID *HostID, const Analyzer &a)
   ss << " and name = ";
   Appender::append(ss, a.getName().get() );
   ss << ";";
+
+  // TODO: result should be const
   result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
   if(r.empty())
   {
