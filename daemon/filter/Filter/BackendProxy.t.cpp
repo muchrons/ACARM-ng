@@ -52,6 +52,28 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     return cnt;
   }
 
+  HostPtrNN setName(const char *name)
+  {
+    const HostPtrNN      h=makeNewHost();
+    Alert::ReportedHosts srcHosts;
+    srcHosts.push_back(h);
+    AlertPtrNN           alert( new Alert("al1",
+                                          makeNewAnalyzer(),
+                                          NULL,
+                                          Timestamp(),
+                                          Severity(SeverityLevel::DEBUG),
+                                          Certainty(0.1),
+                                          "sescription xyz",
+                                          srcHosts,
+                                          Alert::ReportedHosts() ) );
+    Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
+    IO::Transaction      t( conn->createNewTransaction("make_leaf_transaction") );
+    GraphNodePtrNN       node( new GraphNode(alert, conn, t) );
+    bp_->setHostName(node, h, name);
+
+    return h;
+  }
+
   BackendProxy::ChangedNodes      changed_;
   IO::ConnectionPtrNN             conn_;
   boost::scoped_ptr<BackendProxy> bp_;
@@ -82,9 +104,7 @@ template<>
 void testObj::test<2>(void)
 {
   const std::string name("hello.pl");
-  GraphNodePtrNN    node( makeGraphLeaf() );
-  HostPtrNN         h=node->getAlert()->getAnalyzer().getHost();
-  bp_->setHostName(node, h, name);
+  const HostPtrNN   h=setName( name.c_str() );
   ensure("name not set", h->getName()!=NULL );
   ensure_equals("invalid name set", h->getName()->get(), name);
   ensure_equals("change not marked", changed_.size(), 1);
@@ -129,9 +149,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  GraphNodePtrNN node( makeGraphLeaf() );
-  HostPtrNN      h=node->getAlert()->getAnalyzer().getHost();
-  bp_->setHostName(node, h, "a.b.c");
+  setName("a.b.c");
   bp_->commitChanges();
 }
 

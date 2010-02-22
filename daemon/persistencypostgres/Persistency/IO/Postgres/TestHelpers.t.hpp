@@ -33,8 +33,7 @@ Persistency::AlertPtr makeNewAlert(const char *name="some alert");
 
 Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert");
 
-Persistency::AnalyzerPtr makeNewAnalyzer(const char *name="some analyzer");
-Persistency::AnalyzerPtr makeNewAnalyzer(const char *name, Persistency::HostPtr host);
+Persistency::AnalyzerPtrNN makeNewAnalyzer(const char *name="some analyzer");
 
 const Persistency::Host::Netmask_v4::bytes_type mask4_bytes={ {0xFF, 0xFF, 0x00, 0x00} };
 const Persistency::Host::Netmask_v6::bytes_type mask6_bytes={ {

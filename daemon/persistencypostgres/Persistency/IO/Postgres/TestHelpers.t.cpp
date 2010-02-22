@@ -33,14 +33,9 @@ MetaAlertPtr makeNewMetaAlert(const char *name)
                                         Persistency::Timestamp() ) );
 }
 
-AnalyzerPtr makeNewAnalyzer(const char *name)
+AnalyzerPtrNN makeNewAnalyzer(const char *name)
 {
-  return AnalyzerPtr( new Persistency::Analyzer(name, makeNewHost() ) );
-}
-
-AnalyzerPtr makeNewAnalyzer(const char *name, HostPtr host)
-{
-  return AnalyzerPtr( new Persistency::Analyzer(name, host) );
+  return AnalyzerPtrNN( new Persistency::Analyzer(name, NULL, NULL, NULL) );
 }
 
 HostPtr makeNewHost(void)

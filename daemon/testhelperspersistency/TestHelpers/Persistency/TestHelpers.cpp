@@ -33,14 +33,9 @@ MetaAlertPtr makeNewMetaAlert(const char *name)
                                         Timestamp() ) );
 }
 
-AnalyzerPtr makeNewAnalyzer(const char *name)
+AnalyzerPtrNN makeNewAnalyzer(const char *name)
 {
-  return AnalyzerPtr( new Analyzer(name, makeNewHost() ) );
-}
-
-AnalyzerPtr makeNewAnalyzer(const char *name, HostPtr host)
-{
-  return AnalyzerPtr( new Analyzer(name, host) );
+  return AnalyzerPtrNN( new Analyzer(name, NULL, NULL, NULL) );
 }
 
 HostPtr makeNewHost(void)
