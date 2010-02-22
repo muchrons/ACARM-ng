@@ -12,6 +12,7 @@
 using namespace std;
 using namespace pqxx;
 using boost::posix_time::to_simple_string;
+using boost::posix_time::to_iso_string;
 
 namespace Persistency
 {
@@ -165,18 +166,21 @@ DataBaseID EntrySaver::saveAlert(DataBaseID AnalyzerID, const Persistency::Alert
   ss << ",";
   Appender::append(ss, AnalyzerID);
   ss << ",";
-  Appender::append(ss, to_simple_string(*a.getDetectionTime() ));
+  if(a.getDetectionTime()==NULL)
+    ss << "NULL";
+  else
+    Appender::append(ss, to_iso_string((*a.getDetectionTime() ) ));
   ss << ",";
-  Appender::append(ss, to_simple_string(a.getCreationTime() ) );
+  Appender::append(ss, to_iso_string(a.getCreationTime() ) );
   ss << ",";
   const DataBaseID sevID = getSeverityID(a);
-  ss << sevID << ",";
+  Appender::append(ss, sevID);
+  ss << ",";
   Appender::append(ss, a.getCertainty().get() );
   ss << ",";
   Appender::append(ss, a.getDescription() );
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
-
   return getID("alerts_id_seq");
 }
 
