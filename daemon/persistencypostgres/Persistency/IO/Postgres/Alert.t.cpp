@@ -89,10 +89,10 @@ typedef factory::object testObj;
 factory tf("Persistency/IO/Postgres/Alert");
 } //unnamned namespace
 
-//trying save Alert
 namespace tut
 {
 
+//trying save Alert
 template<>
 template<>
 void testObj::test<1>(void)
@@ -112,7 +112,15 @@ void testObj::test<2>(void)
   alert.save();
 }
 
-
+//trying save Alert with NULL detected time
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, nullanalyzer_, NULL, created_, severity_,                                                                   certainty_, description_, sourceHosts_, targetHosts_));
+  Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
+  alert.save();
+}
 
 } // namespace tut
 
