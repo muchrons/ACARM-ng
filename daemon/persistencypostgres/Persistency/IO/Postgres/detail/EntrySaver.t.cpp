@@ -600,9 +600,6 @@ void testObj::test<14>(void)
   ensure_equals("invalid pid number",  *proc.getPID(), pid);
 
   t_.commit();
-
-
-
 }
 
 // TODO: test saving Host with NULL name
