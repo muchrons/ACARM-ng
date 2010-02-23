@@ -26,9 +26,10 @@ public:
    *  \param node node to compute them for.
    *  \return host pointer or NULL if not correlation has been found.
    */
-  static Persistency::HostPtr getReportedHost(const Types::Node node)
+  static Persistency::HostPtr getReportedHost(const Types::Node /*node*/)
   {
     // TODO
+    return Persistency::HostPtr();
   }
 
   static Persistency::MetaAlert::Name getMetaAlertName(const Persistency::HostPtrNN h)
