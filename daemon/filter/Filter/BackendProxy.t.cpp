@@ -58,7 +58,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     Alert::ReportedHosts srcHosts;
     srcHosts.push_back(h);
     AlertPtrNN           alert( new Alert("al1",
-                                          makeNewAnalyzer(),
+                                          Alert::SourceAnalyzers( makeNewAnalyzer() ),
                                           NULL,
                                           Timestamp(),
                                           Severity(SeverityLevel::DEBUG),

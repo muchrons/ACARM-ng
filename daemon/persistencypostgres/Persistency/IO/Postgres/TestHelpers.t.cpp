@@ -14,8 +14,9 @@ namespace Postgres
 
 AlertPtr makeNewAlert(const char *name)
 {
+  const Persistency::Alert::SourceAnalyzers sa( makeNewAnalyzer() );
   return AlertPtr( new Persistency::Alert(name,
-                             makeNewAnalyzer(),
+                             sa,
                              NULL,
                              Timestamp(),
                              Severity(SeverityLevel::INFO),
