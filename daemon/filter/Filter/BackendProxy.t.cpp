@@ -171,9 +171,10 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  GraphNodePtrNN leaf1=makeGraphLeaf();
-  GraphNodePtrNN node2=makeGraphNode();
-  GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), leaf1, node2);
+  GraphNodePtrNN               leaf1=makeGraphLeaf();
+  GraphNodePtrNN               node2=makeGraphNode();
+  BackendProxy::ChildrenVector children(leaf1, node2);
+  GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), children);
   // check
   ensure_equals("invalid number of children after correlation",
                 childrenCount(out), 2);
@@ -185,12 +186,12 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  GraphNodePtrNN leaf1=makeGraphLeaf();
-  GraphNodePtrNN node2=makeGraphNode();
-  BackendProxy::ChildrenVector children;
+  GraphNodePtrNN               leaf1=makeGraphLeaf();
+  GraphNodePtrNN               node2=makeGraphNode();
+  BackendProxy::ChildrenVector children(leaf1, node2);
   for(int i=0; i<3; ++i)
     children.push_back( makeGraphNode() );
-  GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), leaf1, node2, children);
+  GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), children);
   // check
   ensure_equals("invalid number of children after correlation",
                 childrenCount(out), 2+3);

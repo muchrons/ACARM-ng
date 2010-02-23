@@ -23,8 +23,9 @@ namespace Persistency
 class NodeChildrenVector: public Base::NonEmptyVector<GraphNodePtrNN>
 {
 public:
-  /** \brief initialize collection, adding first element.
-   *  \param v       first analyzer in collection.
+  /** \brief initialize collection, adding first two elements.
+   *  \param n1 first child node.
+   *  \param n2 second child node.
    */
   NodeChildrenVector(const value_type &n1, const value_type &n2):
     Base::NonEmptyVector<GraphNodePtrNN>(n1)
