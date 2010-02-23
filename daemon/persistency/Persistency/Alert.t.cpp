@@ -20,7 +20,8 @@ struct TestClass: private TestBase
 {
   TestClass(void):
     name_("some name"),
-    analyzer_( new Analyzer("analyzer name", HostPtr() ) ),
+    analyzer_( new Analyzer("analyzer name", NULL, NULL, NULL) ),
+    analyzers_(analyzer_),
     detected_(),
     created_(),
     severity_(SeverityLevel::INFO),
@@ -28,7 +29,7 @@ struct TestClass: private TestBase
     description_("alert's description"),
     sourceHosts_( generateReportedHosts(2) ),
     targetHosts_( generateReportedHosts(5) ),
-    custom_(name_, analyzer_, &detected_, created_, severity_, certanity_,
+    custom_(name_, analyzers_, &detected_, created_, severity_, certanity_,
             description_, sourceHosts_, targetHosts_)
   {
   }
@@ -42,7 +43,8 @@ struct TestClass: private TestBase
   }
 
   const Alert::Name          name_;
-  const AnalyzerPtr          analyzer_;
+  AnalyzerPtrNN              analyzer_;
+  Alert::SourceAnalyzers     analyzers_;
   const Timestamp            detected_;
   const Timestamp            created_;
   const Severity             severity_;
@@ -53,7 +55,6 @@ struct TestClass: private TestBase
   const Alert                custom_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -69,11 +70,12 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Alert a(name_, analyzer_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
   // check getters
   ensure_equals("invalid name", a.getName().get(), string( name_.get() ) );
-  ensure("invalid analyzer", &a.getAnalyzer()==analyzer_.get() );
+  ensure("invalid analyzer",
+         a.getSourceAnalyzers().begin()->get()==analyzers_.begin()->get() );
   ensure("NULL detect time", a.getDetectionTime()!=NULL);
   ensure_equals("invalid detect time", *a.getDetectionTime(), detected_);
   ensure_equals("invalid created time", a.getCreationTime(), created_);
@@ -92,28 +94,31 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Alert a(name_, analyzer_, NULL, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, NULL, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
   ensure("detection time is not NULL", a.getDetectionTime()==NULL);
 }
 
-// test c-tor for NULL analyzer
+// test equality with different object representing the same values
 template<>
 template<>
 void testObj::test<3>(void)
 {
-  AnalyzerPtr tmp;
-  assert( tmp.get()==NULL );
-  try
-  {
-    Alert a(name_, tmp, &detected_, created_, severity_, certanity_,
-            description_, sourceHosts_, targetHosts_);
-    fail("NULL analyzer has been accepted");
-  }
-  catch(const Commons::ExceptionUnexpectedNULL&)
-  {
-    // this is expected
-  }
+  const AnalyzerPtrNN          analyzer1( new Analyzer("analyzer name",
+                                                       NULL, NULL, NULL) );
+  const Alert::SourceAnalyzers anlzs1(analyzer1);
+  const Alert::ReportedHosts hosts1( generateReportedHosts(1) );
+  const Alert a1(name_, anlzs1, &detected_, created_, severity_,
+                 certanity_, description_, hosts1, targetHosts_);
+
+  const AnalyzerPtrNN          analyzer2( new Analyzer("analyzer name",
+                                                       NULL, NULL, NULL) );
+  const Alert::SourceAnalyzers anlzs2(analyzer2);
+  const Alert::ReportedHosts hosts2( generateReportedHosts(1) );
+  const Alert a2(name_, anlzs2, &detected_, created_, severity_,
+                 certanity_, description_, hosts2, targetHosts_);
+
+  TestHelpers::checkEquality(a1, a2, custom_);
 }
 
 // test equality with different names
@@ -121,7 +126,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const Alert a("different", analyzer_, &detected_, created_, severity_,
+  const Alert a("different", analyzers_, &detected_, created_, severity_,
                 certanity_, description_, sourceHosts_, targetHosts_);
   TestHelpers::checkEquality(custom_, a);
 }
@@ -131,9 +136,11 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  AnalyzerPtrNN tmp( new Analyzer("different", HostPtr() ) );
-  const Alert   a(name_, tmp, &detected_, created_, severity_,
-                  certanity_, description_, sourceHosts_, targetHosts_);
+  const AnalyzerPtrNN          tmp( new Analyzer("different", NULL, NULL, NULL) );
+  const Alert::SourceAnalyzers sa(tmp);
+  const Alert                  a(name_, sa, &detected_, created_,
+                                 severity_, certanity_, description_,
+                                 sourceHosts_, targetHosts_);
   TestHelpers::checkEquality(custom_, a);
 }
 
@@ -142,7 +149,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  const Alert a(name_, analyzer_, NULL, created_, severity_,
+  const Alert a(name_, analyzers_, NULL, created_, severity_,
                 certanity_, description_, sourceHosts_, targetHosts_);
   TestHelpers::checkEquality(custom_, a);
 }
@@ -153,7 +160,7 @@ template<>
 void testObj::test<7>(void)
 {
   const Timestamp tmp=boost::posix_time::time_from_string("2010-11-12");
-  const Alert     a(name_, analyzer_, &detected_, tmp, severity_,
+  const Alert     a(name_, analyzers_, &detected_, tmp, severity_,
                     certanity_, description_, sourceHosts_, targetHosts_);
   TestHelpers::checkEquality(custom_, a);
 }
@@ -164,7 +171,7 @@ template<>
 void testObj::test<8>(void)
 {
   const Severity tmp(SeverityLevel::ERROR);
-  const Alert    a(name_, analyzer_, &detected_, created_, tmp,
+  const Alert    a(name_, analyzers_, &detected_, created_, tmp,
                    certanity_, description_, sourceHosts_, targetHosts_);
   TestHelpers::checkEquality(custom_, a);
 }
@@ -174,7 +181,7 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  const Alert a(name_, analyzer_, &detected_, created_, severity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_,
                 0.1234, description_, sourceHosts_, targetHosts_);
   TestHelpers::checkEquality(custom_, a);
 }
@@ -184,7 +191,7 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  const Alert a(name_, analyzer_, &detected_, created_, severity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_,
                 certanity_, "blah", sourceHosts_, targetHosts_);
   TestHelpers::checkEquality(custom_, a);
 }
@@ -196,7 +203,7 @@ void testObj::test<11>(void)
 {
   Alert::ReportedHosts hosts;
   hosts.push_back( makeNewHost() );
-  const Alert a(name_, analyzer_, &detected_, created_, severity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_,
                 certanity_, description_, sourceHosts_, hosts);
   TestHelpers::checkEquality(custom_, a);
 }
@@ -208,27 +215,9 @@ void testObj::test<12>(void)
 {
   Alert::ReportedHosts hosts;
   hosts.push_back( makeNewHost() );
-  const Alert a(name_, analyzer_, &detected_, created_, severity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_,
                 certanity_, description_, hosts, targetHosts_);
   TestHelpers::checkEquality(custom_, a);
-}
-
-// test equality with different object representing the same values
-template<>
-template<>
-void testObj::test<13>(void)
-{
-  const AnalyzerPtr          analyzer1( new Analyzer("analyzer name", HostPtr() ) );
-  const Alert::ReportedHosts hosts1( generateReportedHosts(1) );
-  const Alert a1(name_, analyzer1, &detected_, created_, severity_,
-                 certanity_, description_, hosts1, targetHosts_);
-
-  const AnalyzerPtr          analyzer2( new Analyzer("analyzer name", HostPtr() ) );
-  const Alert::ReportedHosts hosts2( generateReportedHosts(1) );
-  const Alert a2(name_, analyzer2, &detected_, created_, severity_,
-                 certanity_, description_, hosts2, targetHosts_);
-
-  TestHelpers::checkEquality(a1, a2, custom_);
 }
 
 } // namespace tut

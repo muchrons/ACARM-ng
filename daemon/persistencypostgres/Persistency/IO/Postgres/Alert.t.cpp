@@ -11,8 +11,9 @@
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/Alert.hpp"
 
-//TODO: tests
+// TODO: tests
 
+/* TODO: THIS IS COMMENTED OUT SINCE IMPLEMENTATION OF ANALYZER CHANGED - UPDATE THIS CODE ASAP
 using Persistency::IO::Transaction;
 using namespace Persistency;
 using namespace Persistency::IO::Postgres;
@@ -82,17 +83,16 @@ struct TestClass
 
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
 factory tf("Persistency/IO/Postgres/Alert");
 } //unnamned namespace
 
-//trying save Alert
 namespace tut
 {
 
+// trying save Alert
 template<>
 template<>
 void testObj::test<1>(void)
@@ -112,7 +112,15 @@ void testObj::test<2>(void)
   alert.save();
 }
 
-
+// trying save Alert with NULL detected time
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, nullanalyzer_, NULL, created_, severity_,                                                                   certainty_, description_, sourceHosts_, targetHosts_));
+  Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
+  alert.save();
+}
 
 } // namespace tut
-
+*/

@@ -50,18 +50,19 @@ DataBaseID EntrySaver::getID(const std::string &seqName)
 
 DataBaseID EntrySaver::getSeverityID(const Alert &a)
 {
-  // TODO: add assert here
-  return a.getSeverity().getLevel().toInt();
+  const DataBaseID id = a.getSeverity().getLevel().toInt();
+  assert(id >= 1 && id <= 6);
+  return id;
 }
 
 DataBaseID EntrySaver::saveProcessData(const Process &p)
 {
   stringstream ss;
   ss << "INSERT INTO procs(path, name, md5) VALUES (";
-  // TODO: use detail::append() for this task
-  ss << "'" << pqxx::sqlesc( p.getPath().get() ) << "',";
-  // TODO: use detail::append() for this task
-  ss << "'" << pqxx::sqlesc( p.getName().get() ) << "',";
+  Appender::append(ss, p.getPath().get() );
+  ss << ",";
+  Appender::append(ss, p.getName().get() );
+  ss << ",";
   Appender::append(ss, (p.getMD5())?p.getMD5()->get():NULL);
   ss << ");";
   // insert object to data base.
@@ -142,7 +143,7 @@ DataBaseID EntrySaver::saveReportedHostData(DataBaseID               alertID,
   ss << "INSERT INTO reported_hosts(id_alert, id_host, role, id_ref) VALUES (";
   ss << alertID << ",";
   ss << hostID << ",";
-  // TODO: assert should be placed here - role must be equalt to 1 of 2, predefined strings
+  assert(role=="src" || role=="dst");
   Appender::append(ss, role);
   ss << ",";
   Appender::append(ss, h.getReferenceURL()?saveReferenceURL( *h.getReferenceURL() ):NULL);

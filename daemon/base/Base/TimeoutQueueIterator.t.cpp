@@ -111,7 +111,6 @@ struct TestClass
   DequeImpl qImpl2_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

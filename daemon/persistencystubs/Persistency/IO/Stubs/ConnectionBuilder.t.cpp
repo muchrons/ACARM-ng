@@ -20,7 +20,6 @@ struct TestClass
   ConnectionBuilder::Options opts_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

@@ -56,11 +56,12 @@ CREATE TABLE    hosts
 CREATE SEQUENCE analyzers_id_seq;
 CREATE TABLE    analyzers
 (
-  id      int         PRIMARY KEY
-                      DEFAULT nextval('analyzers_id_seq'),
-  name    varchar(64) NOT NULL,
-  id_host int         NULL
-                      REFERENCES hosts(id)  -- host analyzer runs on
+  id      int          PRIMARY KEY
+                       DEFAULT nextval('analyzers_id_seq'),
+  name    varchar(128) NOT NULL,
+  version char(16)     NULL,
+  os      varchar(128) NULL,
+  ip      inet         NULL
 );
 
 

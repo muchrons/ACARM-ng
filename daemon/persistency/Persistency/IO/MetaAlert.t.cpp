@@ -92,7 +92,6 @@ struct TestClass: private TestBase
   IOMetaAlert                 ioma_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

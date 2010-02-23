@@ -14,8 +14,9 @@ namespace Postgres
 
 AlertPtr makeNewAlert(const char *name)
 {
+  const Persistency::Alert::SourceAnalyzers sa( makeNewAnalyzer() );
   return AlertPtr( new Persistency::Alert(name,
-                             makeNewAnalyzer(),
+                             sa,
                              NULL,
                              Timestamp(),
                              Severity(SeverityLevel::INFO),
@@ -33,14 +34,9 @@ MetaAlertPtr makeNewMetaAlert(const char *name)
                                         Persistency::Timestamp() ) );
 }
 
-AnalyzerPtr makeNewAnalyzer(const char *name)
+AnalyzerPtrNN makeNewAnalyzer(const char *name)
 {
-  return AnalyzerPtr( new Persistency::Analyzer(name, makeNewHost() ) );
-}
-
-AnalyzerPtr makeNewAnalyzer(const char *name, HostPtr host)
-{
-  return AnalyzerPtr( new Persistency::Analyzer(name, host) );
+  return AnalyzerPtrNN( new Persistency::Analyzer(name, NULL, NULL, NULL) );
 }
 
 HostPtr makeNewHost(void)
@@ -108,9 +104,9 @@ GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
 {
   Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
   IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
+  const Persistency::NodeChildrenVector ncv(child1, child2);
   return GraphNodePtrNN( new Persistency::GraphNode( makeNewMetaAlert(),
-                                        conn, t,
-                                        child1, child2 ) );
+                                                     conn, t, ncv) );
 }
 
 GraphNodePtrNN makeNewTree1(void)

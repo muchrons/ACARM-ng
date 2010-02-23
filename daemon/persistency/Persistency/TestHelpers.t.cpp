@@ -9,18 +9,14 @@ namespace Persistency
 
 AnalyzerPtrNN makeNewAnalyzer(const char *name)
 {
-  return AnalyzerPtrNN( new Analyzer(name, makeNewHost() ) );
-}
-
-AnalyzerPtrNN makeNewAnalyzer(const char *name, HostPtr host)
-{
-  return AnalyzerPtrNN( new Analyzer(name, host) );
+  return AnalyzerPtrNN( new Analyzer(name, NULL, NULL, NULL) );
 }
 
 AlertPtrNN makeNewAlert(void)
 {
+  Alert::SourceAnalyzers sa( makeNewAnalyzer() );
   return AlertPtrNN( new Persistency::Alert("abc",
-                                            makeNewAnalyzer(),
+                                            sa,
                                             NULL,
                                             Timestamp(),
                                             Severity(SeverityLevel::INFO),

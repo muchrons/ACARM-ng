@@ -41,7 +41,6 @@ private:
   // handler to functions (saveSourceHost, saveTargetHost) in detail::EntrySaver class
   // TODO: please avoid using pointers to methods whenever possible.
   typedef DataBaseID (EntrySaver::*PtrEntrySaver)(DataBaseID, DataBaseID, const Persistency::Host &);
-  // TODO: always use lower case for variable names (ex.: "ptr" instread of "Ptr")
   /** \brief save target or source hosts.
    *  \param es      EntrySaver object
    *  \param alertID ID of Alert
@@ -50,8 +49,8 @@ private:
    */
   void saveHosts(EntrySaver                        &es,
                  DataBaseID                        alertID,
-                 PtrEntrySaver                     Ptr,
-                 Persistency::Alert::ReportedHosts &Hosts);
+                 PtrEntrySaver                     ptr,
+                 Persistency::Alert::ReportedHosts &hosts);
 
   DBHandlerPtrNN dbHandler_;
 }; // class Alert

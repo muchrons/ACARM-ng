@@ -45,7 +45,6 @@ struct TestClass: private TestBase
   const Process            custom_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
