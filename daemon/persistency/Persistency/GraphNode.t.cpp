@@ -35,16 +35,11 @@ struct TestClass: private TestBase
                                      0,
                                      makeNewReferenceURL(),
                                      Timestamp() ) );
-    GraphNode::ChildrenVector vec;
+    NodeChildrenVector vec( makeLeaf(), makeLeaf() );
     for(int i=0; i<extraNodes; ++i)
       vec.push_back( makeLeaf() );
 
-    return GraphNodePtrNN( new GraphNode(ma,
-                                         conn_,
-                                         t_,
-                                         makeLeaf(),
-                                         makeLeaf(),
-                                         vec) );
+    return GraphNodePtrNN( new GraphNode(ma, conn_, t_, vec) );
   }
 
   GraphNodePtrNN makeLeaf(void)
@@ -74,7 +69,6 @@ struct TestClass: private TestBase
   GraphNodePtrNN      node_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -212,7 +206,8 @@ void testObj::test<9>(void)
                                    0,
                                    makeNewReferenceURL(),
                                    Timestamp() ) );
-  const GraphNode gn(ma, conn_, t_, makeLeaf(), makeLeaf() );
+  const NodeChildrenVector vec( makeLeaf(), makeLeaf() );
+  const GraphNode          gn(ma, conn_, t_, vec);
   ensure_equals("invalid children count", childrenCount(gn), 2);
 }
 

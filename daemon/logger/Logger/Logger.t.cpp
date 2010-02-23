@@ -101,7 +101,6 @@ struct TestClass: private TestHelpers::TestBase
   mutable int  calls_[5];
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

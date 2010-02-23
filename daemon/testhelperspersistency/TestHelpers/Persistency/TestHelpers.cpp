@@ -14,8 +14,9 @@ namespace Persistency
 
 AlertPtr makeNewAlert(const char *name)
 {
+  const ::Persistency::Alert::SourceAnalyzers sa( makeNewAnalyzer() );
   return AlertPtr( new Alert(name,
-                             makeNewAnalyzer(),
+                             sa,
                              NULL,
                              Timestamp(),
                              Severity(SeverityLevel::INFO),
@@ -103,9 +104,9 @@ GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
 {
   ::Persistency::IO::ConnectionPtrNN conn=::Persistency::IO::create();
   IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
+  const ::Persistency::NodeChildrenVector ncv(child1, child2);
   return GraphNodePtrNN( new GraphNode( makeNewMetaAlert(),
-                                        conn, t,
-                                        child1, child2 ) );
+                                        conn, t, ncv) );
 }
 
 GraphNodePtrNN makeNewTree1(void)

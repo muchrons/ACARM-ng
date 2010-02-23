@@ -27,7 +27,6 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   GraphNodePtrNN nonUniqueTree_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

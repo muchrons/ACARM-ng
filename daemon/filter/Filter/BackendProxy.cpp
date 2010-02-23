@@ -98,17 +98,10 @@ void BackendProxy::addChild(Node parent, Node child)
 
 Persistency::GraphNodePtrNN BackendProxy::correlate(
             Persistency::MetaAlertPtrNN  ma,
-            Node                         child1,
-            Node                         child2,
-            const ChildrenVector        &otherChildren)
+            const ChildrenVector        &children)
 {
   beginTransaction();
-  Node ptr( new GraphNode(ma,
-                          getConnection(),
-                          getTransaction(),
-                          child1,
-                          child2,
-                          otherChildren) );
+  Node ptr( new GraphNode(ma, getConnection(), getTransaction(), children) );
   changed_.push_back(ptr);
   return ptr;
 }

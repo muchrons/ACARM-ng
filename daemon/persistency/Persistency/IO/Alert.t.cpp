@@ -39,7 +39,7 @@ struct TestClass: private TestBase
 {
   TestClass(void):
     alert_( new Persistency::Alert("abc",
-                                   makeNewAnalyzer(),
+                                   Persistency::Alert::SourceAnalyzers( makeNewAnalyzer() ),
                                    NULL,
                                    Timestamp(),
                                    Severity(SeverityLevel::INFO),
@@ -57,7 +57,6 @@ struct TestClass: private TestBase
   Transaction             t_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

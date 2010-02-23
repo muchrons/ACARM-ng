@@ -33,27 +33,23 @@ GraphNode::GraphNode(AlertPtrNN           alert,
   assert( isLeaf() && "invalid initialization");
 }
 
-GraphNode::GraphNode(MetaAlertPtrNN        ma,
-                     IO::ConnectionPtrNN   connection,
-                     IO::Transaction      &t,
-                     GraphNodePtrNN        child1,
-                     GraphNodePtrNN        child2,
-                     const ChildrenVector &otherChildren):
+GraphNode::GraphNode(MetaAlertPtrNN            ma,
+                     IO::ConnectionPtrNN       connection,
+                     IO::Transaction          &t,
+                     const NodeChildrenVector &children):
   self_(ma),
   leaf_()
 {
   assert( leaf_.get()==NULL );
   assert( self_.get()!=NULL );
   assert( connection.get()!=NULL );
+  assert( children.size()>=2 );
 
   // save data to DB along with adding elements to graph
   IO::MetaAlertAutoPtr maIO=connection->metaAlert( getMetaAlert(), t);
   assert( maIO.get()!=NULL );
   maIO->save();
-  addChild(child1, *maIO);
-  addChild(child2, *maIO);
-  for(ChildrenVector::const_iterator it=otherChildren.begin();
-      it!=otherChildren.end(); ++it)
+  for(NodeChildrenVector::const_iterator it=children.begin(); it!=children.end(); ++it)
     addChild(*it, *maIO);
   maIO->markAsUsed();
 
