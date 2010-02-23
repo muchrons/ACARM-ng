@@ -59,6 +59,7 @@ public:
    *        split into 3 paramters to ensure no missusage is possible
    *        (at 2 parameters are always required).
    */
+  // TODO: rework by adding class that ensures that there are at least 2 children.
   GraphNode(MetaAlertPtrNN        ma,
             IO::ConnectionPtrNN   connection,
             IO::Transaction      &t,

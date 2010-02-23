@@ -14,7 +14,7 @@ namespace Persistency
 {
 
 Alert::Alert(const Name          &name,
-             AnalyzerPtrNN        analyzer,
+             SourceAnalyzers      analyzers,
              const Timestamp     *detected,
              const Timestamp     &created,
              Severity             severity,
@@ -23,7 +23,7 @@ Alert::Alert(const Name          &name,
              const ReportedHosts &sourceHosts,
              const ReportedHosts &targetHosts):
   name_(name),
-  analyzer_(analyzer),
+  analyzers_(analyzers),
   detected_( (detected!=NULL)?( new Timestamp(*detected) ):NULL ),
   created_(created),
   severity_(severity),
@@ -32,6 +32,8 @@ Alert::Alert(const Name          &name,
   sourceHosts_(sourceHosts),
   targetHosts_(targetHosts)
 {
+  if( analyzers_.size()<1 )
+    throw ExceptionEmptyAnalyzersList(SYSTEM_SAVE_LOCATION);
 }
 
 const Alert::Name &Alert::getName(void) const
@@ -39,10 +41,10 @@ const Alert::Name &Alert::getName(void) const
   return name_;
 }
 
-const Analyzer &Alert::getAnalyzer(void) const
+const Alert::SourceAnalyzers &Alert::getAnalyzers(void) const
 {
-  assert( analyzer_.get()!=NULL );
-  return *analyzer_;
+  assert( analyzers_.size()>0 );
+  return analyzers_;
 }
 
 const Timestamp *Alert::getDetectionTime(void) const
@@ -84,7 +86,7 @@ bool Alert::operator==(const Alert &other) const
 {
   if( getName()!=other.getName() )
     return false;
-  if( getAnalyzer()!=other.getAnalyzer() )
+  if( !Commons::ViaCollection::equal( getAnalyzers(), other.getAnalyzers() ) )
     return false;
   if( !Base::ViaPointer::equal( getDetectionTime(), other.getDetectionTime() ) )
     return false;

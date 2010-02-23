@@ -39,7 +39,7 @@ struct TestClass: private TestBase
 {
   TestClass(void):
     alert_( new Persistency::Alert("abc",
-                                   makeNewAnalyzer(),
+                                   Persistency::Alert::SourceAnalyzers(1, makeNewAnalyzer() ),
                                    NULL,
                                    Timestamp(),
                                    Severity(SeverityLevel::INFO),

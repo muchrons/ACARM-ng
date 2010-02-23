@@ -14,8 +14,10 @@ AnalyzerPtrNN makeNewAnalyzer(const char *name)
 
 AlertPtrNN makeNewAlert(void)
 {
+  Alert::SourceAnalyzers sa;
+  sa.push_back( makeNewAnalyzer() );
   return AlertPtrNN( new Persistency::Alert("abc",
-                                            makeNewAnalyzer(),
+                                            sa,
                                             NULL,
                                             Timestamp(),
                                             Severity(SeverityLevel::INFO),
