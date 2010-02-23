@@ -5,6 +5,8 @@
 #ifndef INCLUDE_FILTER_ONETOMANY_OPERATIONS_HPP_FILE
 #define INCLUDE_FILTER_ONETOMANY_OPERATIONS_HPP_FILE
 
+#include <sstream>
+
 #include "Filter/HostCommon/Strategy.hpp"
 
 namespace Filter
@@ -31,7 +33,11 @@ public:
 
   static Persistency::MetaAlert::Name getMetaAlertName(const Persistency::HostPtrNN h)
   {
-    // TODO
+    std::stringstream ss;
+    ss << "Multiple attacks from host " << h->getIP();
+    if( h->getName().get()!=NULL )
+      ss << " (" << h->getName().get() << ")";
+    return ss.str();
   }
 }; // class Strategy
 

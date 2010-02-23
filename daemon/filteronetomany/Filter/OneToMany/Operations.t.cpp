@@ -24,26 +24,25 @@ typedef factory::object testObj;
 factory tf("Filter/OneToMany/Operations");
 } // unnamed namespace
 
-// TODO
 
 namespace tut
 {
 
-//
+// test getting meta alert name
 template<>
 template<>
 void testObj::test<1>(void)
 {
 }
 
-//
+// 
 template<>
 template<>
 void testObj::test<2>(void)
 {
 }
 
-//
+// 
 template<>
 template<>
 void testObj::test<3>(void)

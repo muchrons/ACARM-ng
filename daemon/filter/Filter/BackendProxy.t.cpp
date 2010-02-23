@@ -52,9 +52,20 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     return cnt;
   }
 
+  HostPtrNN makeHost(void) const
+  {
+    return HostPtr( new Host( Host::IPv4::from_string("1.2.3.4"),
+                              NULL,
+                              "os1",
+                              makeNewReferenceURL(),
+                              Host::ReportedServices(),
+                              Host::ReportedProcesses(),
+                              NULL) );
+  }
+
   HostPtrNN setName(const char *name)
   {
-    const HostPtrNN      h=makeNewHost();
+    const HostPtrNN      h=makeHost();
     Alert::ReportedHosts srcHosts;
     srcHosts.push_back(h);
     AlertPtrNN           alert( new Alert("al1",
@@ -105,7 +116,7 @@ void testObj::test<2>(void)
   const std::string name("hello.pl");
   const HostPtrNN   h=setName( name.c_str() );
   ensure("name not set", h->getName()!=NULL );
-  ensure_equals("invalid name set", h->getName()->get(), name);
+  ensure_equals("invalid name set", h->getName().get(), name);
   ensure_equals("change not marked", changed_.size(), 1);
 }
 

@@ -32,7 +32,8 @@ struct TestClass: private TestBase
               "myos",
               makeNewReferenceURL(),
               Host::ReportedServices(),
-              Host::ReportedProcesses() )
+              Host::ReportedProcesses(),
+              "dns.org" )
   {
   }
 
@@ -121,7 +122,8 @@ void testObj::test<7>(void)
                  "myos",
                  makeNewReferenceURL(),
                  Host::ReportedServices(),
-                 Host::ReportedProcesses() );
+                 Host::ReportedProcesses(),
+                 "dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
 
@@ -137,7 +139,8 @@ void testObj::test<8>(void)
                  "myos",
                  makeNewReferenceURL(),
                  Host::ReportedServices(),
-                 Host::ReportedProcesses() );
+                 Host::ReportedProcesses(),
+                 "dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
 
@@ -151,7 +154,8 @@ void testObj::test<9>(void)
                  "myos",
                  ReferenceURLPtr(),
                  Host::ReportedServices(),
-                 Host::ReportedProcesses() );
+                 Host::ReportedProcesses(),
+                 "dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
 
@@ -168,7 +172,8 @@ void testObj::test<10>(void)
                  "myos",
                  makeNewReferenceURL(),
                  rs,
-                 Host::ReportedProcesses() );
+                 Host::ReportedProcesses(),
+                 "dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
 
@@ -184,7 +189,8 @@ void testObj::test<11>(void)
                  "myos",
                  makeNewReferenceURL(),
                  Host::ReportedServices(),
-                 rp );
+                 rp,
+                 "dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
 
@@ -200,7 +206,8 @@ void testObj::test<12>(void)
                   "myos",
                   makeNewReferenceURL(),
                   Host::ReportedServices(),
-                  rp1 );
+                  rp1,
+                  "dns.org" );
 
   Host::ReportedProcesses rp2;
   rp2.push_back( makeNewProcess() );
@@ -209,9 +216,25 @@ void testObj::test<12>(void)
                   "myos",
                   makeNewReferenceURL(),
                   Host::ReportedServices(),
-                  rp2 );
+                  rp2,
+                  "dns.org" );
 
   TestHelpers::checkEquality(h1, h2, custom_);
+}
+
+// test equality for different dns-names
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  const Host h(  Host::IPv4::from_string("1.2.3.4"),
+                &mask4_,
+                 "myos",
+                 makeNewReferenceURL(),
+                 Host::ReportedServices(),
+                 Host::ReportedProcesses(),
+                 "other.dns.org" );
+  TestHelpers::checkEquality(custom_, h);
 }
 
 } // namespace tut
