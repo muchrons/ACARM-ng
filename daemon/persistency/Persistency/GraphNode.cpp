@@ -133,6 +133,21 @@ AlertPtrNN GraphNode::getAlert(void)
   return leaf_;
 }
 
+const MetaAlert &GraphNode::getMetaAlert(void) const
+{
+  assert(self_.get()!=NULL);
+  return *self_;
+}
+
+const Alert &GraphNode::getAlert(void) const
+{
+  if( !isLeaf() )
+    throw ExceptionNotLeaf(SYSTEM_SAVE_LOCATION, getMetaAlert().getName().get() );
+
+  assert( leaf_.get()!=NULL );
+  return *leaf_;
+}
+
 bool GraphNode::operator==(const GraphNode &other) const
 {
   // check if comparing to self
