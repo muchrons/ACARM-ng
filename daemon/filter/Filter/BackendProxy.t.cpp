@@ -79,7 +79,6 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   boost::scoped_ptr<BackendProxy> bp_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

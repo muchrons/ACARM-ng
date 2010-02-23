@@ -58,7 +58,6 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   TestFilter                 tf_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

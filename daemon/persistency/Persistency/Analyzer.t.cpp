@@ -30,7 +30,6 @@ struct TestClass: private TestBase
   const Analyzer::IP      ip_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

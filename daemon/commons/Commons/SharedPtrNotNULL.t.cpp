@@ -37,7 +37,6 @@ struct TestClass: private TestHelpers::TestBase
   PtrNN other_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
