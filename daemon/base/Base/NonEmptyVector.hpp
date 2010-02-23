@@ -22,24 +22,20 @@ class NonEmptyVector
 {
 public:
   /** \brief type held inside. */
-  typedef T                              value_type;
+  typedef T                                       value_type;
 private:
-  typedef std::deque<value_type>         CollectionType;
+  typedef std::deque<value_type>                  CollectionType;
 public:
   /** \brief iterator to access elements. */
-  typedef CollectionType::iterator       iterator;
+  typedef typename CollectionType::iterator       iterator;
   /** \brief const iterator to access elements. */
-  typedef CollectionType::const_iterator const_iterator;
+  typedef typename CollectionType::const_iterator const_iterator;
 
   /** \brief initialize collection, adding first element.
    *  \param v       first analyzer in collection.
-   *  \param reserve space to be reserved (0 means do not reserve any
-   *                 extra space).
    */
-  explicit NonEmptyVector(const value_type &v, unsigned int reserve=0)
+  explicit NonEmptyVector(const value_type &v)
   {
-    if(reserve>0)
-      data_.reserve(reserve);
     data_.push_back(v);
     assert( size()==1 );
   }
@@ -56,7 +52,7 @@ public:
    */
   size_t size(void) const
   {
-    data_.size();
+    return data_.size();
   }
 
   /** \brief gets iterator to be collection's begin.
