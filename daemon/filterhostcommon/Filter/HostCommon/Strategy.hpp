@@ -57,6 +57,12 @@ private:
    */
   virtual Persistency::HostPtr getReportedHost(Node node) = 0;
 
+  /** \brief call gets name for correlated meta-alert for a given host.
+   *  \param h host that has been common part of correlation.
+   *  \return name for the new, correlated meta-alert.
+   */
+  virtual Persistency::MetaAlert::Name getMetaAlertName(Persistency::HostPtrNN h) = 0;
+
   /** \brief gets timeout value.
    *  \return timeout for entry in timeout queue.
    */
@@ -68,6 +74,11 @@ private:
   virtual void processImpl(Node               n,
                            NodesTimeoutQueue &ntq,
                            BackendProxy      &bp);
+
+  bool tryCorrelate(NodesTimeoutQueue           &ntq,
+                    BackendProxy                &bp,
+                    const NodeEntry             &thisEntry,
+                    NodesTimeoutQueue::iterator  it);
 
   const unsigned int timeout_;
 }; // class Strategy
