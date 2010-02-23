@@ -20,18 +20,24 @@ struct Operations
 {
 private:
   typedef Filter::HostCommon::Strategy Types;
+  template<typename T> static void ignore(const T&) { } // TODO: remove this later on
 
 public:
   /** \brief computes reoprted host and downs it to one.
    *  \param node node to compute them for.
    *  \return host pointer or NULL if not correlation has been found.
    */
-  static Persistency::HostPtr getReportedHost(const Types::Node /*node*/)
+  static Persistency::HostPtr getReportedHost(const Types::Node node)
   {
+    ignore(node);
     // TODO
     return Persistency::HostPtr();
   }
 
+  /** \brief generates name for meta alert, based on given host name.
+   *  \param h host to generate name from.
+   *  \return name for this alert.
+   */
   static Persistency::MetaAlert::Name getMetaAlertName(const Persistency::HostPtrNN h)
   {
     std::stringstream ss;

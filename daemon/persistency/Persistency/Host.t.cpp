@@ -58,9 +58,10 @@ template<>
 void testObj::test<1>(void)
 {
   const HostPtr ti=makeNewHost4("1.2.3.4", &mask4_, "myOS");
-  ensure_equals("invalid IP",   ti->getIP().to_string(),        "1.2.3.4"      );
-  ensure_equals("invalid mask", ti->getNetmask()->to_string(),  "255.255.0.0"  );
-  ensure_equals("invalid OS",   ti->getOperatingSystem().get(), string("myOS") );
+  ensure_equals("invalid IP",   ti->getIP().to_string(),        "1.2.3.4"         );
+  ensure_equals("invalid mask", ti->getNetmask()->to_string(),  "255.255.0.0"     );
+  ensure_equals("invalid OS",   ti->getOperatingSystem().get(), string("myOS")    );
+  ensure_equals("invalid DNS",  ti->getName().get(),            string("dns.org") );
   ensure("invalid URL", ti->getReferenceURL()!=NULL);
 }
 
@@ -73,6 +74,7 @@ void testObj::test<2>(void)
   ensure_equals("invalid IP",   ti->getIP().to_string(),        "::1.2.3.4"             );
   ensure_equals("invalid mask", ti->getNetmask()->to_string(),  "ffff:ffff:ffff:ff00::" );
   ensure_equals("invalid OS",   ti->getOperatingSystem().get(), string("myOS")          );
+  ensure_equals("invalid DNS",  ti->getName().get(),            string("dns.org")       );
   ensure("invalid URL", ti->getReferenceURL()!=NULL);
 }
 
@@ -235,6 +237,21 @@ void testObj::test<13>(void)
                  Host::ReportedProcesses(),
                  "other.dns.org" );
   TestHelpers::checkEquality(custom_, h);
+}
+
+// test NULL dns-name
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  const Host h(  Host::IPv4::from_string("1.2.3.4"),
+                &mask4_,
+                 "myos",
+                 makeNewReferenceURL(),
+                 Host::ReportedServices(),
+                 Host::ReportedProcesses(),
+                 NULL );
+  ensure("invalid dns name", h.getName().get()==NULL );
 }
 
 } // namespace tut
