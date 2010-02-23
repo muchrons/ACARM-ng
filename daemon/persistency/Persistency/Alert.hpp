@@ -14,6 +14,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/operators.hpp>
 
+#include "Base/NonEmptyVector.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/Analyzer.hpp"
@@ -34,25 +35,12 @@ class Alert: private boost::noncopyable,
              public  boost::equality_comparable<Alert>
 {
 public:
-  /** \brief exception thrown on empty list of analyzers.
-   */
-  struct ExceptionEmptyAnalyzersList: public Exception
-  {
-    /** \brief create object.
-     *  \param where place of raising the exception.
-     */
-    explicit ExceptionEmptyAnalyzersList(const Location &where):
-      Exception(where, "Alert's analyzers list cannot be empty")
-    {
-    }
-  }; // struct ExceptionEmptyAnalyzersList
-
   /** \brief name of the alert (aka: title). */
-  typedef detail::LimitedString<256> Name;
+  typedef detail::LimitedString<256>          Name;
   /** \brief vector of reported hosts. */
-  typedef std::vector<HostPtrNN>     ReportedHosts;
+  typedef std::vector<HostPtrNN>              ReportedHosts;
   /** \brief vector of analyzers assigned to this alert. */
-  typedef std::vector<AnalyzerPtrNN> SourceAnalyzers;
+  typedef Base::NonEmptyVector<AnalyzerPtrNN> SourceAnalyzers;
 
   /** \brief creates alert.
    *  \param name        name of an alert (~title).
@@ -65,8 +53,6 @@ public:
    *  \param sourceHosts source hosts (attack came from them).
    *  \param targetHosts targeted hosts.
    */
-  // TODO: rework this to use dedicated class with Analyzers, that's never
-  //       empty.
   Alert(const Name          &name,
         SourceAnalyzers      analyzers,
         const Timestamp     *detected,
@@ -84,7 +70,7 @@ public:
   /** \brief get list of analyzers that reported alert.
    *  \return analyzers' data.
    */
-  const SourceAnalyzers &getAnalyzers(void) const;
+  const SourceAnalyzers &getSourceAnalyzers(void) const;
   /** \brief gets time alert has been detected.
    *  \return alert detection time.
    */

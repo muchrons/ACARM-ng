@@ -21,7 +21,7 @@ struct TestClass: private TestBase
   TestClass(void):
     name_("some name"),
     analyzer_( new Analyzer("analyzer name", NULL, NULL, NULL) ),
-    analyzers_(1, analyzer_),
+    analyzers_(analyzer_),
     detected_(),
     created_(),
     severity_(SeverityLevel::INFO),
@@ -74,7 +74,8 @@ void testObj::test<1>(void)
                 description_, sourceHosts_, targetHosts_);
   // check getters
   ensure_equals("invalid name", a.getName().get(), string( name_.get() ) );
-  ensure("invalid analyzer", a.getAnalyzers().at(0).get()==analyzers_.at(0).get() );
+  ensure("invalid analyzer",
+         a.getSourceAnalyzers().begin()->get()==analyzers_.begin()->get() );
   ensure("NULL detect time", a.getDetectionTime()!=NULL);
   ensure_equals("invalid detect time", *a.getDetectionTime(), detected_);
   ensure_equals("invalid created time", a.getCreationTime(), created_);
@@ -103,16 +104,16 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const AnalyzerPtrNN    analyzer1( new Analyzer("analyzer name", NULL, NULL, NULL) );
-  Alert::SourceAnalyzers anlzs1;
-  anlzs1.push_back(analyzer1);
+  const AnalyzerPtrNN          analyzer1( new Analyzer("analyzer name",
+                                                       NULL, NULL, NULL) );
+  const Alert::SourceAnalyzers anlzs1(analyzer1);
   const Alert::ReportedHosts hosts1( generateReportedHosts(1) );
   const Alert a1(name_, anlzs1, &detected_, created_, severity_,
                  certanity_, description_, hosts1, targetHosts_);
 
-  const AnalyzerPtrNN    analyzer2( new Analyzer("analyzer name", NULL, NULL, NULL) );
-  Alert::SourceAnalyzers anlzs2;
-  anlzs2.push_back(analyzer2);
+  const AnalyzerPtrNN          analyzer2( new Analyzer("analyzer name",
+                                                       NULL, NULL, NULL) );
+  const Alert::SourceAnalyzers anlzs2(analyzer2);
   const Alert::ReportedHosts hosts2( generateReportedHosts(1) );
   const Alert a2(name_, anlzs2, &detected_, created_, severity_,
                  certanity_, description_, hosts2, targetHosts_);
@@ -135,11 +136,11 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  AnalyzerPtrNN          tmp( new Analyzer("different", NULL, NULL, NULL) );
-  Alert::SourceAnalyzers sa;
-  sa.push_back(tmp);
-  const Alert a(name_, sa, &detected_, created_, severity_,
-                certanity_, description_, sourceHosts_, targetHosts_);
+  const AnalyzerPtrNN          tmp( new Analyzer("different", NULL, NULL, NULL) );
+  const Alert::SourceAnalyzers sa(tmp);
+  const Alert                  a(name_, sa, &detected_, created_,
+                                 severity_, certanity_, description_,
+                                 sourceHosts_, targetHosts_);
   TestHelpers::checkEquality(custom_, a);
 }
 
@@ -217,24 +218,6 @@ void testObj::test<12>(void)
   const Alert a(name_, analyzers_, &detected_, created_, severity_,
                 certanity_, description_, hosts, targetHosts_);
   TestHelpers::checkEquality(custom_, a);
-}
-
-// empty analyzer's list is NOT permitted
-template<>
-template<>
-void testObj::test<13>(void)
-{
-  const Alert::SourceAnalyzers sa;
-  try
-  {
-    const Alert a(name_, sa, &detected_, created_, severity_,
-                  certanity_, description_, sourceHosts_, targetHosts_);
-    fail("alert allowed empty analyzers' list");
-  }
-  catch(const Alert::ExceptionEmptyAnalyzersList &)
-  {
-    // this is expected
-  }
 }
 
 } // namespace tut

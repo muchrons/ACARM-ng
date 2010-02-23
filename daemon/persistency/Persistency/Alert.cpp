@@ -32,8 +32,6 @@ Alert::Alert(const Name          &name,
   sourceHosts_(sourceHosts),
   targetHosts_(targetHosts)
 {
-  if( analyzers_.size()<1 )
-    throw ExceptionEmptyAnalyzersList(SYSTEM_SAVE_LOCATION);
 }
 
 const Alert::Name &Alert::getName(void) const
@@ -41,7 +39,7 @@ const Alert::Name &Alert::getName(void) const
   return name_;
 }
 
-const Alert::SourceAnalyzers &Alert::getAnalyzers(void) const
+const Alert::SourceAnalyzers &Alert::getSourceAnalyzers(void) const
 {
   assert( analyzers_.size()>0 );
   return analyzers_;
@@ -86,7 +84,7 @@ bool Alert::operator==(const Alert &other) const
 {
   if( getName()!=other.getName() )
     return false;
-  if( !Commons::ViaCollection::equal( getAnalyzers(), other.getAnalyzers() ) )
+  if( !Commons::ViaCollection::equal( getSourceAnalyzers(), other.getSourceAnalyzers() ) )
     return false;
   if( !Base::ViaPointer::equal( getDetectionTime(), other.getDetectionTime() ) )
     return false;
