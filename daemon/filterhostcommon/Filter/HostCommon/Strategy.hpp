@@ -55,13 +55,14 @@ private:
    *  \param node node to get host from.
    *  \return host pointer to the one, to be used or NULL if none.
    */
-  virtual Persistency::HostPtr getReportedHost(Node node) = 0;
+  virtual Persistency::HostPtr getReportedHost(const Node node) const = 0;
 
   /** \brief call gets name for correlated meta-alert for a given host.
    *  \param h host that has been common part of correlation.
    *  \return name for the new, correlated meta-alert.
    */
-  virtual Persistency::MetaAlert::Name getMetaAlertName(Persistency::HostPtrNN h) = 0;
+  virtual Persistency::MetaAlert::Name getMetaAlertName(
+                                    const Persistency::HostPtrNN h) const = 0;
 
   /** \brief gets timeout value.
    *  \return timeout for entry in timeout queue.

@@ -3,7 +3,6 @@
  *
  */
 #include "Filter/HostCommon/Strategy.hpp"
-#include "Base/ViaPointer.hpp"
 #include "Logger/Logger.hpp"
 
 using namespace Persistency;
@@ -71,8 +70,8 @@ bool Strategy::tryCorrelate(NodesTimeoutQueue           &ntq,
   // skip self
   if( *it==thisEntry )
     return false;
-  // check if node represents report on the same host
-  if( !Base::ViaPointer::equal( thisEntry.t_.host_.get(), it->t_.host_.get() ) )
+  // check if node represents report on the same host (by IP address)
+  if( thisEntry.t_.host_->getIP()!=it->t_.host_->getIP() )
     return false;
 
   // ok - we've got a match!
