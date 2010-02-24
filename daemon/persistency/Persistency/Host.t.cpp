@@ -32,7 +32,8 @@ struct TestClass: private TestBase
               "myos",
               makeNewReferenceURL(),
               Host::ReportedServices(),
-              Host::ReportedProcesses() )
+              Host::ReportedProcesses(),
+              "dns.org" )
   {
   }
 
@@ -41,7 +42,6 @@ struct TestClass: private TestBase
   const Host             custom_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -58,9 +58,10 @@ template<>
 void testObj::test<1>(void)
 {
   const HostPtr ti=makeNewHost4("1.2.3.4", &mask4_, "myOS");
-  ensure_equals("invalid IP",   ti->getIP().to_string(),        "1.2.3.4"      );
-  ensure_equals("invalid mask", ti->getNetmask()->to_string(),  "255.255.0.0"  );
-  ensure_equals("invalid OS",   ti->getOperatingSystem().get(), string("myOS") );
+  ensure_equals("invalid IP",   ti->getIP().to_string(),        "1.2.3.4"         );
+  ensure_equals("invalid mask", ti->getNetmask()->to_string(),  "255.255.0.0"     );
+  ensure_equals("invalid OS",   ti->getOperatingSystem().get(), string("myOS")    );
+  ensure_equals("invalid DNS",  ti->getName().get(),            string("dns.org") );
   ensure("invalid URL", ti->getReferenceURL()!=NULL);
 }
 
@@ -73,6 +74,7 @@ void testObj::test<2>(void)
   ensure_equals("invalid IP",   ti->getIP().to_string(),        "::1.2.3.4"             );
   ensure_equals("invalid mask", ti->getNetmask()->to_string(),  "ffff:ffff:ffff:ff00::" );
   ensure_equals("invalid OS",   ti->getOperatingSystem().get(), string("myOS")          );
+  ensure_equals("invalid DNS",  ti->getName().get(),            string("dns.org")       );
   ensure("invalid URL", ti->getReferenceURL()!=NULL);
 }
 
@@ -122,7 +124,8 @@ void testObj::test<7>(void)
                  "myos",
                  makeNewReferenceURL(),
                  Host::ReportedServices(),
-                 Host::ReportedProcesses() );
+                 Host::ReportedProcesses(),
+                 "dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
 
@@ -138,7 +141,8 @@ void testObj::test<8>(void)
                  "myos",
                  makeNewReferenceURL(),
                  Host::ReportedServices(),
-                 Host::ReportedProcesses() );
+                 Host::ReportedProcesses(),
+                 "dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
 
@@ -152,7 +156,8 @@ void testObj::test<9>(void)
                  "myos",
                  ReferenceURLPtr(),
                  Host::ReportedServices(),
-                 Host::ReportedProcesses() );
+                 Host::ReportedProcesses(),
+                 "dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
 
@@ -169,7 +174,8 @@ void testObj::test<10>(void)
                  "myos",
                  makeNewReferenceURL(),
                  rs,
-                 Host::ReportedProcesses() );
+                 Host::ReportedProcesses(),
+                 "dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
 
@@ -185,7 +191,8 @@ void testObj::test<11>(void)
                  "myos",
                  makeNewReferenceURL(),
                  Host::ReportedServices(),
-                 rp );
+                 rp,
+                 "dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
 
@@ -201,7 +208,8 @@ void testObj::test<12>(void)
                   "myos",
                   makeNewReferenceURL(),
                   Host::ReportedServices(),
-                  rp1 );
+                  rp1,
+                  "dns.org" );
 
   Host::ReportedProcesses rp2;
   rp2.push_back( makeNewProcess() );
@@ -210,9 +218,40 @@ void testObj::test<12>(void)
                   "myos",
                   makeNewReferenceURL(),
                   Host::ReportedServices(),
-                  rp2 );
+                  rp2,
+                  "dns.org" );
 
   TestHelpers::checkEquality(h1, h2, custom_);
+}
+
+// test equality for different dns-names
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  const Host h(  Host::IPv4::from_string("1.2.3.4"),
+                &mask4_,
+                 "myos",
+                 makeNewReferenceURL(),
+                 Host::ReportedServices(),
+                 Host::ReportedProcesses(),
+                 "other.dns.org" );
+  TestHelpers::checkEquality(custom_, h);
+}
+
+// test NULL dns-name
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  const Host h(  Host::IPv4::from_string("1.2.3.4"),
+                &mask4_,
+                 "myos",
+                 makeNewReferenceURL(),
+                 Host::ReportedServices(),
+                 Host::ReportedProcesses(),
+                 NULL );
+  ensure("invalid dns name", h.getName().get()==NULL );
 }
 
 } // namespace tut

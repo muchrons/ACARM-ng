@@ -15,6 +15,7 @@
 #include "Persistency/Alert.hpp"
 #include "Persistency/MetaAlert.hpp"
 #include "Persistency/GraphNodePtr.hpp"
+#include "Persistency/NodeChildrenVector.hpp"
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/ExceptionNotLeaf.hpp"
 #include "Persistency/ExceptionNotNode.hpp"
@@ -32,9 +33,6 @@ private:
   typedef Base::Threads::GrowingVector<GraphNodePtrNN> GraphNodesList;
 
 public:
-  /** \brief childrent to be passed as argument. */
-  typedef std::vector<GraphNodePtrNN>    ChildrenVector;
-
   /** \brief non-const iterator to collection. */
   typedef GraphNodesList::iterator       iterator;
   /** \brief const iterator to colection. */
@@ -49,22 +47,15 @@ public:
             IO::ConnectionPtrNN  connection,
             IO::Transaction     &t);
   /** \brief create new node by correlating given ones.
-   *  \param ma            meta alert's data to be used as this one.
-   *  \param connection    connection to persistency module.
-   *  \param t             transaction to use for connecting.
-   *  \param child1        first node to be corelated.
-   *  \param child2        second child to be correlated.
-   *  \param otherChildren list of rest childrent, if needed.
-   *  \note although all children are equal, this interface is intentionally
-   *        split into 3 paramters to ensure no missusage is possible
-   *        (at 2 parameters are always required).
+   *  \param ma         meta alert's data to be used as this one.
+   *  \param connection connection to persistency module.
+   *  \param t          transaction to use for connecting.
+   *  \param children   list of node's children.
    */
-  GraphNode(MetaAlertPtrNN        ma,
-            IO::ConnectionPtrNN   connection,
-            IO::Transaction      &t,
-            GraphNodePtrNN        child1,
-            GraphNodePtrNN        child2,
-            const ChildrenVector &otherChildren=ChildrenVector() );
+  GraphNode(MetaAlertPtrNN            ma,
+            IO::ConnectionPtrNN       connection,
+            IO::Transaction          &t,
+            const NodeChildrenVector &children);
   /** \brief deallocates object and its resources.
    *
    *  as a part of deallocation process object meta-alert is marked as not
@@ -109,6 +100,15 @@ public:
    *  \return alert.
    */
   AlertPtrNN getAlert(void);
+  /** \brief returns meta-alert correspoiding to this leaf/node - const version.
+   *  \return meta-alert.
+   */
+  const MetaAlert &getMetaAlert(void) const;
+  /** \brief returns alert correspoiding to this leaf - const version.
+   *  \return alert.
+   */
+  const Alert &getAlert(void) const;
+
   /** \brief check if classes are equal.
    *  \param other element to compare with.
    *  \return true if elements are equal, false otherwise.

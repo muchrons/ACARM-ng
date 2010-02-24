@@ -3,7 +3,6 @@
  *
  */
 #include "Persistency/IO/Postgres/Alert.hpp"
-#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 
 using namespace Persistency::IO::Postgres::detail;
 
@@ -22,55 +21,60 @@ Alert::Alert(Persistency::AlertPtrNN  alert,
 {
 }
 
-void Alert::saveImpl(Transaction &t)
+void Alert::saveImpl(Transaction &/*t*/)
 {
-  const Persistency::Alert &a=get();
+  /* TODO: THIS IS COMMENTED OUT SINCE IMPLEMENTATION OF ANALYZER CHANGED - UPDATE THIS CODE ASAP
+  const Persistency::Alert    &a=get();
   const Persistency::Analyzer &anlz=a.getAnalyzer();
-  const Persistency::HostPtr host=anlz.getHost();
-  EntrySaver es(t,*dbHandler_);
+  const Persistency::HostPtr  host=anlz.getHost();
+  EntrySaver                  es(t,*dbHandler_);
 
-
+  DataBaseID anlzID;
   //save Host
-  DataBaseID hostID = es.saveHostData(*host.get());
-  //save Analyzer
-  DataBaseID anlzID = es.saveAnalyzer(&hostID, anlz);
+  if(host!=NULL)
+  {
+    const DataBaseID hostID = es.saveHostData(*host.get());
+    anlzID = es.saveAnalyzer(&hostID, anlz);
+  }
+  else
+    anlzID = es.saveAnalyzer(NULL, anlz);
   //save Alert
   DataBaseID alertID = es.saveAlert(anlzID, a);
   //save source hosts
   Persistency::Alert::ReportedHosts SourceHosts(a.getReportedSourceHosts() );
-  PtrEntrySaver saveSourceHostPtr = &EntrySaver::saveSourceHost;
+  PtrEntrySaver                     saveSourceHostPtr = &EntrySaver::saveSourceHost;
   saveHosts(es, alertID, saveSourceHostPtr, SourceHosts);
   //save target hosts
   Persistency::Alert::ReportedHosts TargetHosts(a.getReportedTargetHosts() );
-  PtrEntrySaver saveTargetHostPtr = &EntrySaver::saveTargetHost;
+  PtrEntrySaver                     saveTargetHostPtr = &EntrySaver::saveTargetHost;
   saveHosts(es, alertID, saveTargetHostPtr, TargetHosts);
-
+  */
 }
 
 void Alert::saveHosts(EntrySaver                 &es,
                DataBaseID                        alertID,
-               PtrEntrySaver                     Ptr,
-               Persistency::Alert::ReportedHosts &Hosts)
+               PtrEntrySaver                     ptr,
+               Persistency::Alert::ReportedHosts &hosts)
 {
-  Persistency::Alert::ReportedHosts::iterator it;
-  for(it = Hosts.begin(); it!=Hosts.end() ; it++)
+  for(Persistency::Alert::ReportedHosts::iterator it = hosts.begin(); it!=hosts.end() ; ++it)
   {
-    DataBaseID hostID = es.saveHostData(*it->get() );
+    const DataBaseID hostID = es.saveHostData(*it->get() );
     // save reported host
-    DataBaseID reportedHostID = (es.*Ptr)(hostID, alertID, *it->get() );
+    // TODO: this variable should be const
+    DataBaseID reportedHostID = (es.*ptr)(hostID, alertID, *it->get() );
     //get reported services from host
+    // TODO: this variable should be const reference
     Persistency::Host::ReportedServices Services((*it->get()).getReportedServices() );
     //get reported processes from host
+    // TODO: this variable should be const reference
     Persistency::Host::ReportedProcesses Processes((*it->get()).getReportedProcesses() );
-    //save reported services for host
-    Persistency::Host::ReportedServices::iterator it_s;
-    for(it_s = Services.begin(); it_s!=Services.end(); it_s++)
+
+    for(Persistency::Host::ReportedServices::iterator it_s = Services.begin(); it_s!=Services.end(); ++it_s)
     {
       es.saveService(reportedHostID, *it_s->get() );
     }
-    //save reported processes for host
-    Persistency::Host::ReportedProcesses::iterator it_p;
-    for(it_p = Processes.begin(); it_p!=Processes.end(); it_p++)
+
+    for(Persistency::Host::ReportedProcesses::iterator it_p = Processes.begin(); it_p!=Processes.end(); ++it_p)
     {
       es.saveProcess(reportedHostID, *it_p->get());
     }
