@@ -55,6 +55,50 @@ DataBaseID EntrySaver::getSeverityID(const Alert &a)
   return id;
 }
 
+bool EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
+{
+  //TODO: finish that
+  stringstream ss;
+  ss << "SELECT * FROM analyzers WHERE name = ";
+  Appender::append(ss, a.getName().get() );
+  ss << " AND version ";
+  ss << addToSelect( a.getVersion() );
+  ss << " AND os";
+  ss << addToSelect( a.getOS() );
+  ss << " AND ip";
+  ss << addIPToSelect( a.getIP() );
+  ss << ";";
+  cout << ss.str() << endl;
+  result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+
+  return false;
+}
+
+template <typename T>
+std::string EntrySaver::addToSelect(const T *ptr)
+{
+  stringstream ss;
+  if(ptr!=NULL){
+    ss << " = ";
+    Appender::append(ss, ptr->get() );
+  }
+  else
+    ss<< " IS NULL";
+  return ss.str();
+}
+
+std::string EntrySaver::addIPToSelect(const Analyzer::IP *ptr)
+{
+  stringstream ss;
+  if(ptr!=NULL){
+    ss << " = ";
+    Appender::append(ss, ptr->to_string() );
+  }
+  else
+    ss<< " IS NULL";
+  return ss.str();
+}
+
 DataBaseID EntrySaver::saveProcessData(const Process &p)
 {
   stringstream ss;
@@ -188,49 +232,25 @@ DataBaseID EntrySaver::saveAlert(DataBaseID AnalyzerID, const Persistency::Alert
   return getID("alerts_id_seq");
 }
 
-DataBaseID EntrySaver::saveAnalyzer(const DataBaseID *HostID, const Analyzer &a)
+DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
 {
-  //
-  // TODO: this method cannot work this way - it has to check given host's
-  //       paramters not the ID value, and save analyzer if, and only if it
-  //       does not already exist. thus it has to call saveHost() by itself,
-  //       if needed.
-  //
-  // TODO: notice that it is generally good idea to separate check if given
-  //       host already exist into separate method.
-  //
+  //TODO: Analyzer shoul be unique
+  bool is = isAnalyzerInDataBase(a);
   stringstream ss;
-  ss << "SELECT * FROM analyzers WHERE id_host ";
-  if(HostID==NULL)
-    ss << "IS NULL";
-  else
-    ss << "= "<< *HostID;
-  ss << " and name = ";
+  ss << "INSERT INTO analyzers(name, version, os, ip) VALUES (";
   Appender::append(ss, a.getName().get() );
-  ss << ";";
-
-  // TODO: result should be const
-  result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
-  if(r.empty())
-  {
-    ss.str("");
-    ss << "INSERT INTO analyzers(name, id_host) VALUES (";
-    Appender::append(ss, a.getName().get() );
-    ss << ",";
-    if(HostID==NULL)
-      ss << "NULL";
-    else
-      ss << *HostID;
-    ss << ");";
-    t_.getAPI<Postgres::TransactionAPI>().exec(ss);
-    return getID("analyzers_id_seq");
-  }
+  ss << ",";
+  Appender::append(ss, a.getVersion()?a.getVersion()->get():NULL);
+  ss << ",";
+  Appender::append(ss, a.getOS()?a.getOS()->get():NULL );
+  ss << ",";
+  if(a.getIP()==NULL)
+    ss << "NULL";
   else
-  {
-    DataBaseID id;
-    r[0]["id"].to(id);
-    return id;
-  }
+    Appender::append(ss, a.getIP()->to_string() );
+  ss << ");";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+  return getID("analyzers_id_seq");
 }
 
 DataBaseID EntrySaver::saveServiceData(const Service &s)

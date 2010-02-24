@@ -49,10 +49,9 @@ public:
    */
   DataBaseID saveAlert(DataBaseID AnalyzerID, const Persistency::Alert &a);
   /** \brief saves  analyzer data to data base
-   *  \param HostID ID of Host, that this Analyzes should be assigned to.
    *  \param a      Analyzer to be saved.
    */
-  DataBaseID saveAnalyzer(const DataBaseID *HostID, const Analyzer &a);
+  DataBaseID saveAnalyzer(const Analyzer &a);
   /** \brief save destination host data to data base
    *  \param hostID  ID of Host,
    *  \param alertID ID of Alert, that destination Host shoul be assigned to.
@@ -89,7 +88,11 @@ public:
 private:
   DataBaseID getID(const std::string &seqName);
   DataBaseID getSeverityID(const Alert &a);
+  bool isAnalyzerInDataBase(const Analyzer &a);
+  std::string addIPToSelect(const Analyzer::IP *ptr);
 
+  template <typename T>
+  std::string addToSelect(const T *ptr);
   DataBaseID saveProcessData(const Process &p);
   DataBaseID saveReportedProcessData(DataBaseID     reportedHostID,
                                      DataBaseID     procID,
