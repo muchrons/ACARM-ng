@@ -29,7 +29,12 @@ public:
     System::Exceptions::RuntimeError<Exception>(where, msg),
     log_("commons.exception")
   {
-    LOGMSG_ERROR_S(log_)<<"exception rised: "<<what();
+    LOGMSG_ERROR_S(log_) << "exception ("
+                         << getTypeName()
+                         << ") rised in "
+                         << where.getStr()
+                         << ": "
+                         << what();
   }
 
   /** \brief dealocates object in inheritance-secure way.
