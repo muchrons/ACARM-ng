@@ -4,6 +4,8 @@
  */
 #include "Filter/HostCommon/Strategy.hpp"
 #include "Logger/Logger.hpp"
+#include "Algo/forEachUniqueLeaf.hpp"
+#include "Filter/HostCommon/CheckHosts.hpp"
 
 using namespace Persistency;
 
@@ -16,6 +18,11 @@ Strategy::Strategy(const std::string &name, unsigned int timeout):
   Filter::Strategy<Data>(name),
   timeout_(timeout)
 {
+}
+
+Persistency::HostPtr Strategy::getReportedHost(const Node node) const
+{
+  return Algo::forEachUniqueLeaf( node, CheckHosts(this) ).out_;
 }
 
 void Strategy::processImpl(Node               n,

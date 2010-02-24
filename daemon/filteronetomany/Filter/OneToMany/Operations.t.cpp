@@ -3,10 +3,12 @@
  *
  */
 #include <tut.h>
+#include <string>
 
 #include "Filter/OneToMany/Operations.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
+using namespace std;
 using namespace Persistency;
 using namespace Filter::OneToMany;
 using namespace TestHelpers::Persistency;
@@ -28,24 +30,70 @@ factory tf("Filter/OneToMany/Operations");
 namespace tut
 {
 
-// test getting meta alert name
+// test getting meta alert name from host with dns name
 template<>
 template<>
 void testObj::test<1>(void)
 {
+  const string n=Operations::getMetaAlertName( makeNewHost() ).get();
+  ensure_equals("invlaid name", n, "Multiple attacks from host 1.2.3.4 (dns.org)");
 }
 
-//
+// test getting meta alert name from host without dns name
 template<>
 template<>
 void testObj::test<2>(void)
 {
+  HostPtrNN    h( new Host( Host::IPv4::from_string("1.2.3.4"),
+                            NULL,
+                            "myos",
+                            makeNewReferenceURL(),
+                            Host::ReportedServices(),
+                            Host::ReportedProcesses(),
+                            NULL ) );
+  const string n=Operations::getMetaAlertName(h).get();
+  ensure_equals("invlaid name", n, "Multiple attacks from host 1.2.3.4");
 }
 
 //
 template<>
 template<>
 void testObj::test<3>(void)
+{
+}
+
+//
+template<>
+template<>
+void testObj::test<4>(void)
+{
+}
+
+//
+template<>
+template<>
+void testObj::test<5>(void)
+{
+}
+
+//
+template<>
+template<>
+void testObj::test<6>(void)
+{
+}
+
+//
+template<>
+template<>
+void testObj::test<7>(void)
+{
+}
+
+//
+template<>
+template<>
+void testObj::test<8>(void)
 {
 }
 

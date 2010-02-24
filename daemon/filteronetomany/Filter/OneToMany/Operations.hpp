@@ -6,7 +6,9 @@
 #define INCLUDE_FILTER_ONETOMANY_OPERATIONS_HPP_FILE
 
 #include <sstream>
+#include <cassert>
 
+#include "Algo/forEachUniqueLeaf.hpp"
 #include "Filter/HostCommon/Strategy.hpp"
 
 namespace Filter
@@ -20,7 +22,44 @@ struct Operations
 {
 private:
   typedef Filter::HostCommon::Strategy Types;
-  template<typename T> static void ignore(const T&) { } // TODO: remove this later on
+
+  struct CheckHosts
+  {
+    CheckHosts(void):
+      noMatch_(false)
+    {
+    }
+
+    void operator()(Persistency::GraphNodePtrNN node)
+    {
+      assert( node->isLeaf() );
+      // if we already know there is not match, just skip the call
+      if(noMatch_)
+        return;
+      // check each and every reported host
+      const Persistency::Alert::ReportedHosts &hs=
+                                node->getAlert()->getReportedSourceHosts();
+      for(Persistency::Alert::ReportedHosts::const_iterator it=hs.begin();
+          it!=hs.end(); ++it)
+      {
+        if( out_.get()==NULL )
+          out_=*it;                 // first entry is always a match
+        else
+          if( out_->getIP()!=(*it)->getIP() )
+          {
+            // there is no unique host entry.
+            out_.reset();
+            noMatch_=true;
+            break;
+          }
+      } // for(reported hosts)
+    }
+
+    Persistency::HostPtr out_;
+
+  private:
+    bool                 noMatch_;
+  }; // struct CheckHosts
 
 public:
   /** \brief computes reoprted host and downs it to one.
@@ -29,9 +68,7 @@ public:
    */
   static Persistency::HostPtr getReportedHost(const Types::Node node)
   {
-    ignore(node);
-    // TODO
-    return Persistency::HostPtr();
+    return Algo::forEachUniqueLeaf( node, CheckHosts() ).out_;
   }
 
   /** \brief generates name for meta alert, based on given host name.
