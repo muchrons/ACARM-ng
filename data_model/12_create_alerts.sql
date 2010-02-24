@@ -84,8 +84,6 @@ CREATE TABLE    alerts
   id          int          PRIMARY KEY
                            DEFAULT nextval('alerts_id_seq'),
   name        varchar(256) NOT NULL,
-  id_analyzer int          NOT NULL
-                           REFERENCES analyzers(id),
   detect_time timestamp    NULL,
   create_time timestamp    NOT NULL
                            DEFAULT now(),
@@ -99,6 +97,18 @@ CREATE TABLE    alerts
   CONSTRAINT dates_relation_check CHECK ( detect_time IS NULL OR
                                           detect_time<=create_time ),
   CONSTRAINT in_past_event_check  CHECK ( create_time<=now() )
+);
+
+
+-- alerts<->analyzers
+CREATE TABLE alert_analyzers
+(
+  id_alert    int NOT NULL
+                  REFERENCES alerts(id),
+  id_analyzer int NOT NULL
+                  REFERENCES analyzers(id),
+
+  UNIQUE(id_alert, id_analyzer)
 );
 
 
