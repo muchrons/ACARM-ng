@@ -28,7 +28,6 @@ struct TestClass: private TestHelpers::TestBase
   Node log_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

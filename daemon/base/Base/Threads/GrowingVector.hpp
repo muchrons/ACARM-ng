@@ -40,6 +40,8 @@ private:
   typedef typename Data::V             V;
 
 public:
+  /** \brief export element held as type. */
+  typedef T                              value_type;
   /** \brief non-const iterator on elements. */
   typedef GrowingVectorIterator<T>       iterator;
   /** \brief const iterator on elements. */

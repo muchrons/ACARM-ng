@@ -40,6 +40,6 @@ protected:
   }
 }; // class Exception
 
-}; // namespace ConfigIO
+} // namespace ConfigIO
 
 #endif

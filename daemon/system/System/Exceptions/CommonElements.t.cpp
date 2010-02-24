@@ -29,7 +29,6 @@ struct TestClass
   CommonElements ce_;
 };
 
-typedef TestClass                  TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object            testObj;
 
@@ -99,7 +98,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const Derived  d;
+  const Derived  d=Derived();   // explicit c-tor to to suppress icc's warning
   const Base    &b=d;
   ensure("invalid type", strstr(ce_.getTypeName(b).c_str(), "Derived")!=NULL );
 }

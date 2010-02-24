@@ -34,6 +34,6 @@ public:
   }
 }; // class ExceptionCycleDetected
 
-}; // namespace Persistency
+} // namespace Persistency
 
 #endif

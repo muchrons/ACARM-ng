@@ -11,7 +11,8 @@
 
 using namespace std;
 using namespace pqxx;
-
+using boost::posix_time::to_simple_string;
+using boost::posix_time::to_iso_string;
 
 namespace Persistency
 {
@@ -49,16 +50,19 @@ DataBaseID EntrySaver::getID(const std::string &seqName)
 
 DataBaseID EntrySaver::getSeverityID(const Alert &a)
 {
-  // TODO: add assert here
-  return a.getSeverity().getLevel().toInt();
+  const DataBaseID id = a.getSeverity().getLevel().toInt();
+  assert(id >= 1 && id <= 6);
+  return id;
 }
 
 DataBaseID EntrySaver::saveProcessData(const Process &p)
 {
   stringstream ss;
   ss << "INSERT INTO procs(path, name, md5) VALUES (";
-  ss << "'" << pqxx::sqlesc( p.getPath().get() ) << "',";
-  ss << "'" << pqxx::sqlesc( p.getName().get() ) << "',";
+  Appender::append(ss, p.getPath().get() );
+  ss << ",";
+  Appender::append(ss, p.getName().get() );
+  ss << ",";
   Appender::append(ss, (p.getMD5())?p.getMD5()->get():NULL);
   ss << ");";
   // insert object to data base.
@@ -123,7 +127,7 @@ DataBaseID EntrySaver::saveHostData(const Persistency::Host &h)
   ss << ",";
   Appender::append(ss, h.getOperatingSystem().get() );
   ss << ",";
-  Appender::append(ss, (h.getName())?h.getName()->get():NULL);
+  Appender::append(ss, h.getName().get() );
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 
@@ -139,6 +143,7 @@ DataBaseID EntrySaver::saveReportedHostData(DataBaseID               alertID,
   ss << "INSERT INTO reported_hosts(id_alert, id_host, role, id_ref) VALUES (";
   ss << alertID << ",";
   ss << hostID << ",";
+  assert(role=="src" || role=="dst");
   Appender::append(ss, role);
   ss << ",";
   Appender::append(ss, h.getReferenceURL()?saveReferenceURL( *h.getReferenceURL() ):NULL);
@@ -165,23 +170,35 @@ DataBaseID EntrySaver::saveAlert(DataBaseID AnalyzerID, const Persistency::Alert
   ss << ",";
   Appender::append(ss, AnalyzerID);
   ss << ",";
-  Appender::append(ss, boost::gregorian::to_simple_string(*a.getDetectionTime() ));
+  if(a.getDetectionTime()==NULL)
+    ss << "NULL";
+  else
+    Appender::append(ss, to_iso_string((*a.getDetectionTime() ) ));
   ss << ",";
-  Appender::append(ss, boost::gregorian::to_simple_string(a.getCreationTime() ) );
+  Appender::append(ss, to_iso_string(a.getCreationTime() ) );
   ss << ",";
   const DataBaseID sevID = getSeverityID(a);
-  ss << sevID << ",";
+  Appender::append(ss, sevID);
+  ss << ",";
   Appender::append(ss, a.getCertainty().get() );
   ss << ",";
   Appender::append(ss, a.getDescription() );
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
-
   return getID("alerts_id_seq");
 }
 
 DataBaseID EntrySaver::saveAnalyzer(const DataBaseID *HostID, const Analyzer &a)
 {
+  //
+  // TODO: this method cannot work this way - it has to check given host's
+  //       paramters not the ID value, and save analyzer if, and only if it
+  //       does not already exist. thus it has to call saveHost() by itself,
+  //       if needed.
+  //
+  // TODO: notice that it is generally good idea to separate check if given
+  //       host already exist into separate method.
+  //
   stringstream ss;
   ss << "SELECT * FROM analyzers WHERE id_host ";
   if(HostID==NULL)
@@ -191,6 +208,8 @@ DataBaseID EntrySaver::saveAnalyzer(const DataBaseID *HostID, const Analyzer &a)
   ss << " and name = ";
   Appender::append(ss, a.getName().get() );
   ss << ";";
+
+  // TODO: result should be const
   result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
   if(r.empty())
   {
@@ -262,13 +281,24 @@ DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
   ss << ",";
   Appender::append(ss, ma.getReferenceURL()?saveReferenceURL( *ma.getReferenceURL() ):NULL);
   ss << ",";
-  Appender::append(ss, boost::gregorian::to_simple_string( ma.getCreateTime() ));
+  Appender::append(ss, to_simple_string( ma.getCreateTime() ));
   ss << ",";
   Appender::append(ss, "now()");
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 
   return getID("meta_alerts_id_seq");
+}
+
+void EntrySaver::saveAlertToMetaAlertMap(DataBaseID alertID, DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "INSERT INTO alert_to_meta_alert_map(id_alert, id_meta_alert) VALUES(";
+  Appender::append(ss, alertID);
+  ss << ",";
+  Appender::append(ss, malertID);
+  ss << ");";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
 } // namespace detail

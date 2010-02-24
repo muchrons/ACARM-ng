@@ -3,10 +3,8 @@
  *
  */
 #include "Persistency/IO/Postgres/Alert.hpp"
-#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 
 using namespace Persistency::IO::Postgres::detail;
-using namespace std;
 
 namespace Persistency
 {
@@ -23,34 +21,64 @@ Alert::Alert(Persistency::AlertPtrNN  alert,
 {
 }
 
-void Alert::saveImpl(Transaction &t)
+void Alert::saveImpl(Transaction &/*t*/)
 {
-  const Persistency::Alert &a=get();
+  /* TODO: THIS IS COMMENTED OUT SINCE IMPLEMENTATION OF ANALYZER CHANGED - UPDATE THIS CODE ASAP
+  const Persistency::Alert    &a=get();
   const Persistency::Analyzer &anlz=a.getAnalyzer();
-  EntrySaver es(t,*dbHandler_);
+  const Persistency::HostPtr  host=anlz.getHost();
+  EntrySaver                  es(t,*dbHandler_);
 
-  // TODO: use typedefs declared in Persistency::Alert for this
-  vector<HostPtrNN> SourceHosts(a.getReportedSourceHosts() );
-  vector<HostPtrNN> TargetHosts(a.getReportedTargetHosts() );
-
-
-  for(vector<HostPtrNN>::iterator it = SourceHosts.begin(); it!=SourceHosts.end() ; it++)
+  DataBaseID anlzID;
+  //save Host
+  if(host!=NULL)
   {
-    DataBaseID hostID = es.saveHostData(*it->get() );
-    DataBaseID anlzID = es.saveAnalyzer(&hostID, anlz);
-    DataBaseID alertID = es.saveAlert(anlzID, a);
-    es.saveSourceHost(hostID, alertID, *it->get() );
+    const DataBaseID hostID = es.saveHostData(*host.get());
+    anlzID = es.saveAnalyzer(&hostID, anlz);
   }
+  else
+    anlzID = es.saveAnalyzer(NULL, anlz);
+  //save Alert
+  DataBaseID alertID = es.saveAlert(anlzID, a);
+  //save source hosts
+  Persistency::Alert::ReportedHosts SourceHosts(a.getReportedSourceHosts() );
+  PtrEntrySaver                     saveSourceHostPtr = &EntrySaver::saveSourceHost;
+  saveHosts(es, alertID, saveSourceHostPtr, SourceHosts);
+  //save target hosts
+  Persistency::Alert::ReportedHosts TargetHosts(a.getReportedTargetHosts() );
+  PtrEntrySaver                     saveTargetHostPtr = &EntrySaver::saveTargetHost;
+  saveHosts(es, alertID, saveTargetHostPtr, TargetHosts);
+  */
+}
 
-  for(vector<HostPtrNN>::iterator it = TargetHosts.begin(); it!=TargetHosts.end() ; it++)
+void Alert::saveHosts(EntrySaver                 &es,
+               DataBaseID                        alertID,
+               PtrEntrySaver                     ptr,
+               Persistency::Alert::ReportedHosts &hosts)
+{
+  for(Persistency::Alert::ReportedHosts::iterator it = hosts.begin(); it!=hosts.end() ; ++it)
   {
-    DataBaseID hostID = es.saveHostData(*it->get() );
-    DataBaseID anlzID = es.saveAnalyzer(&hostID, anlz);
-    DataBaseID alertID = es.saveAlert(anlzID, a);
-    es.saveTargetHost(hostID, alertID, *it->get() );
-  }
+    const DataBaseID hostID = es.saveHostData(*it->get() );
+    // save reported host
+    // TODO: this variable should be const
+    DataBaseID reportedHostID = (es.*ptr)(hostID, alertID, *it->get() );
+    //get reported services from host
+    // TODO: this variable should be const reference
+    Persistency::Host::ReportedServices Services((*it->get()).getReportedServices() );
+    //get reported processes from host
+    // TODO: this variable should be const reference
+    Persistency::Host::ReportedProcesses Processes((*it->get()).getReportedProcesses() );
 
-  // TODO
+    for(Persistency::Host::ReportedServices::iterator it_s = Services.begin(); it_s!=Services.end(); ++it_s)
+    {
+      es.saveService(reportedHostID, *it_s->get() );
+    }
+
+    for(Persistency::Host::ReportedProcesses::iterator it_p = Processes.begin(); it_p!=Processes.end(); ++it_p)
+    {
+      es.saveProcess(reportedHostID, *it_p->get());
+    }
+  }
 }
 
 } // namespace Postgres

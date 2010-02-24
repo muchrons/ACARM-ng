@@ -8,12 +8,13 @@
 #include <cassert>
 
 #include "Filter/BackendProxy.hpp"
-#include "Filter/TestHelpers.t.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 
 using namespace Filter;
 using namespace Persistency;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
@@ -31,16 +32,16 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 
   MetaAlertPtrNN makeMetaAlert(void) const
   {
-    return th_makeMetaAlert();
+    return makeNewMetaAlert();
   }
 
   GraphNodePtrNN makeGraphLeaf(void) const
   {
-    return th_makeLeaf();
+    return makeNewLeaf();
   }
   GraphNodePtrNN makeGraphNode(void) const
   {
-    return th_makeNode();
+    return makeNewNode();
   }
 
   int childrenCount(const GraphNodePtrNN ptr) const
@@ -51,12 +52,44 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     return cnt;
   }
 
+  HostPtrNN makeHost(void) const
+  {
+    return HostPtr( new Host( Host::IPv4::from_string("1.2.3.4"),
+                              NULL,
+                              "os1",
+                              makeNewReferenceURL(),
+                              Host::ReportedServices(),
+                              Host::ReportedProcesses(),
+                              NULL) );
+  }
+
+  HostPtrNN setName(const char *name)
+  {
+    const HostPtrNN      h=makeHost();
+    Alert::ReportedHosts srcHosts;
+    srcHosts.push_back(h);
+    AlertPtrNN           alert( new Alert("al1",
+                                          Alert::SourceAnalyzers( makeNewAnalyzer() ),
+                                          NULL,
+                                          Timestamp(),
+                                          Severity(SeverityLevel::DEBUG),
+                                          Certainty(0.1),
+                                          "sescription xyz",
+                                          srcHosts,
+                                          Alert::ReportedHosts() ) );
+    Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
+    IO::Transaction      t( conn->createNewTransaction("make_leaf_transaction") );
+    GraphNodePtrNN       node( new GraphNode(alert, conn, t) );
+    bp_->setHostName(node, h, name);
+
+    return h;
+  }
+
   BackendProxy::ChangedNodes      changed_;
   IO::ConnectionPtrNN             conn_;
   boost::scoped_ptr<BackendProxy> bp_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -81,11 +114,9 @@ template<>
 void testObj::test<2>(void)
 {
   const std::string name("hello.pl");
-  GraphNodePtrNN    node( makeGraphLeaf() );
-  HostPtrNN         h=node->getAlert()->getAnalyzer().getHost();
-  bp_->setHostName(node, h, name);
+  const HostPtrNN   h=setName( name.c_str() );
   ensure("name not set", h->getName()!=NULL );
-  ensure_equals("invalid name set", h->getName()->get(), name);
+  ensure_equals("invalid name set", h->getName().get(), name);
   ensure_equals("change not marked", changed_.size(), 1);
 }
 
@@ -128,9 +159,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  GraphNodePtrNN node( makeGraphLeaf() );
-  HostPtrNN      h=node->getAlert()->getAnalyzer().getHost();
-  bp_->setHostName(node, h, "a.b.c");
+  setName("a.b.c");
   bp_->commitChanges();
 }
 
@@ -153,9 +182,10 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  GraphNodePtrNN leaf1=makeGraphLeaf();
-  GraphNodePtrNN node2=makeGraphNode();
-  GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), leaf1, node2);
+  GraphNodePtrNN               leaf1=makeGraphLeaf();
+  GraphNodePtrNN               node2=makeGraphNode();
+  BackendProxy::ChildrenVector children(leaf1, node2);
+  GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), children);
   // check
   ensure_equals("invalid number of children after correlation",
                 childrenCount(out), 2);
@@ -167,12 +197,12 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  GraphNodePtrNN leaf1=makeGraphLeaf();
-  GraphNodePtrNN node2=makeGraphNode();
-  BackendProxy::ChildrenVector children;
+  GraphNodePtrNN               leaf1=makeGraphLeaf();
+  GraphNodePtrNN               node2=makeGraphNode();
+  BackendProxy::ChildrenVector children(leaf1, node2);
   for(int i=0; i<3; ++i)
     children.push_back( makeGraphNode() );
-  GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), leaf1, node2, children);
+  GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), children);
   // check
   ensure_equals("invalid number of children after correlation",
                 childrenCount(out), 2+3);

@@ -22,7 +22,7 @@ CREATE TABLE    services
                     DEFAULT nextval('services_id_seq'),
   name     char(32) NOT NULL,
   port     int      NOT NULL,
-  protocol char(23) NULL,
+  protocol char(32) NULL,
 
   CONSTRAINT port_check CHECK ( 0<port AND port<65536 )
 );
@@ -56,11 +56,12 @@ CREATE TABLE    hosts
 CREATE SEQUENCE analyzers_id_seq;
 CREATE TABLE    analyzers
 (
-  id      int         PRIMARY KEY
-                      DEFAULT nextval('analyzers_id_seq'),
-  name    varchar(64) NOT NULL,
-  id_host int         NULL
-                      REFERENCES hosts(id)  -- host analyzer runs on
+  id      int          PRIMARY KEY
+                       DEFAULT nextval('analyzers_id_seq'),
+  name    varchar(128) NOT NULL,
+  version char(16)     NULL,
+  os      varchar(128) NULL,
+  ip      inet         NULL
 );
 
 
@@ -85,10 +86,8 @@ CREATE TABLE    alerts
   name        varchar(256) NOT NULL,
   id_analyzer int          NOT NULL
                            REFERENCES analyzers(id),
-  detect_time timestamp with time zone
-                           NULL,
-  create_time timestamp with time zone
-                           NOT NULL
+  detect_time timestamp    NULL,
+  create_time timestamp    NOT NULL
                            DEFAULT now(),
   id_severity int          NOT NULL
                            REFERENCES severities(id),

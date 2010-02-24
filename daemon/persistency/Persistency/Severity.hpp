@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <boost/operators.hpp>
+
 #include "Persistency/SeverityLevel.hpp"
 
 namespace Persistency
@@ -14,7 +16,7 @@ namespace Persistency
 
 /** \brief severity representation.
  */
-class Severity
+class Severity: public boost::equality_comparable<Severity>
 {
 public:
   /** \brief crates class with a given severity.
@@ -32,6 +34,11 @@ public:
    *        deallocated nor used after class instance is destroyed.
    */
   const char *getName(void) const;
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const Severity &other) const;
 
 private:
   SeverityLevel sl_;

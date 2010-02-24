@@ -125,7 +125,7 @@ void testObj::test<2>(void)
   TAFS::unregisterBuilder("factory-1");
   try
   {
-    TAFS::FactoryPtr ptr=TAFS::create("factory-1", options_);
+    TAFS::create("factory-1", options_);
     fail("Singleton::create() didn't throw on unregistered factory, or "
          "unregistration failed (i.e. factory stil present in singleton)");
   }

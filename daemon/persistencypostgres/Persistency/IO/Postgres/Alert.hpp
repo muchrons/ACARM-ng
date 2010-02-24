@@ -7,8 +7,10 @@
 
 #include "Persistency/IO/Alert.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
-
+#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 // TODO: test
+
+using namespace Persistency::IO::Postgres::detail;
 
 namespace Persistency
 {
@@ -32,7 +34,23 @@ public:
         DBHandlerPtrNN           dbHandler);
 
 private:
+  /** \brief save alert
+   *  \param t  associated transaction.
+   */
   virtual void saveImpl(Transaction &t);
+  // handler to functions (saveSourceHost, saveTargetHost) in detail::EntrySaver class
+  // TODO: please avoid using pointers to methods whenever possible.
+  typedef DataBaseID (EntrySaver::*PtrEntrySaver)(DataBaseID, DataBaseID, const Persistency::Host &);
+  /** \brief save target or source hosts.
+   *  \param es      EntrySaver object
+   *  \param alertID ID of Alert
+   *  \param Ptr     pointer to function which saves Hosts.
+   *  \param Hosts   Hosts to be saved.
+   */
+  void saveHosts(EntrySaver                        &es,
+                 DataBaseID                        alertID,
+                 PtrEntrySaver                     ptr,
+                 Persistency::Alert::ReportedHosts &hosts);
 
   DBHandlerPtrNN dbHandler_;
 }; // class Alert

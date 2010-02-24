@@ -64,7 +64,7 @@ protected:
   }
 }; // class BaseSimple
 
-}; // namespace Exceptions
-}; // namespace System
+} // namespace Exceptions
+} // namespace System
 
 #endif

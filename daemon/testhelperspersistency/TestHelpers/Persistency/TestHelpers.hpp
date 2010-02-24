@@ -31,8 +31,7 @@ namespace Persistency
 
 ::Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert");
 
-::Persistency::AnalyzerPtr makeNewAnalyzer(const char *name="some analyzer");
-::Persistency::AnalyzerPtr makeNewAnalyzer(const char *name, ::Persistency::HostPtr host);
+::Persistency::AnalyzerPtrNN makeNewAnalyzer(const char *name="some analyzer");
 
 const ::Persistency::Host::Netmask_v4::bytes_type mask4_bytes={ {0xFF, 0xFF, 0x00, 0x00} };
 const ::Persistency::Host::Netmask_v6::bytes_type mask6_bytes={ {
@@ -43,13 +42,13 @@ const ::Persistency::Host::Netmask_v6::bytes_type mask6_bytes={ {
                                                  } };
 ::Persistency::HostPtr makeNewHost(void);
 ::Persistency::HostPtr makeNewHost4(const char             *ip,
-                                  const ::Persistency::Host::Netmask_v4 *mask,
-                                  const char             *os,
-                                  bool                    nullRef=false);
+                                    const ::Persistency::Host::Netmask_v4 *mask,
+                                    const char             *os,
+                                    bool                    nullRef=false);
 ::Persistency::HostPtr makeNewHost6(const char             *ip,
-                                  const ::Persistency::Host::Netmask_v6 *mask,
-                                  const char             *os,
-                                  bool                    nullRef=false);
+                                    const ::Persistency::Host::Netmask_v6 *mask,
+                                    const char             *os,
+                                    bool                    nullRef=false);
 
 ::Persistency::ProcessPtr makeNewProcess(const char *name="process name");
 

@@ -32,7 +32,6 @@ struct TestClass
   std::auto_ptr<Transaction> t_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

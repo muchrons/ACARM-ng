@@ -52,7 +52,6 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   Processor::InterfaceAutoPtr interface_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

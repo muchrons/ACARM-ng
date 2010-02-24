@@ -5,6 +5,7 @@
 #include <tut.h>
 
 #include "Persistency/detail/NullValue.hpp"
+#include "TestHelpers/checkEquality.hpp"
 
 using namespace std;
 using namespace Persistency::detail;
@@ -44,7 +45,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const NullValue<double> nv(NULL);
+  const double *null=NULL;
+  const NullValue<double> nv(null);
   ensure("non-NULL pointer recieved", nv.get()==NULL);
 }
 
@@ -55,6 +57,47 @@ void testObj::test<3>(void)
 {
   NullValue<double> nv;
   ensure("non-NULL pointer recieved", nv.get()==NULL);
+}
+
+// test comparing NULLs
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  NullValue<double> nv1;
+  NullValue<double> nv2;
+  ensure("NULLs are not the same", nv1==nv2);
+}
+
+// test creating from values instead of pointer
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  NullValue<double> nv(4.2);
+  ensure("got NULL from value",  nv.get()!=NULL);
+  ensure("got invalid value",   *nv.get()==4.2 );
+}
+
+// test comparing values.
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  NullValue<double> nv1 (1.2);
+  NullValue<double> nv1o(1.2);
+  NullValue<double> nv2 (1.4);
+  TestHelpers::checkEquality(nv1, nv1o, nv2);
+}
+
+// test comparing values with NULLs.
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  NullValue<double> nv1(1.2);
+  NullValue<double> nv2;
+  TestHelpers::checkEquality(nv1, nv2);
 }
 
 } // namespace tut

@@ -7,13 +7,15 @@
 
 /* public header */
 
-#include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/date_time/posix_time/posix_time.hpp>
+#include <boost/date_time/posix_time/time_parsers.hpp>
+// TODO: consider change to posix_time_types.hpp (smaller)
 
 namespace Persistency
 {
 /** \brief common date/time representation.
  */
-typedef boost::gregorian::date Timestamp;
+typedef boost::posix_time::ptime Timestamp;
 
 } // namespace Persistency
 

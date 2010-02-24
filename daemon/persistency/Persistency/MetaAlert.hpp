@@ -9,7 +9,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/operators.hpp>
 
 #include "Base/Threads/Mutex.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
@@ -29,7 +29,8 @@ class MetaAlert;
 
 /** \brief meta-alert representation
  */
-class MetaAlert: private boost::noncopyable
+class MetaAlert: private boost::noncopyable,
+                 public  boost::equality_comparable<MetaAlert>
 {
 public:
   /** \brief name for meta alert.
@@ -80,6 +81,11 @@ public:
    *  \return time of creation of this meta alert.
    */
   Timestamp getCreateTime(void) const;
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const MetaAlert &other) const;
 
 private:
   friend class IO::MetaAlert;

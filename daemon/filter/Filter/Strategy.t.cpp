@@ -6,11 +6,12 @@
 #include <boost/thread.hpp>
 
 #include "Filter/Strategy.hpp"
-#include "Filter/TestHelpers.t.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Filter;
 using namespace Persistency;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
@@ -36,14 +37,9 @@ struct TestFilter: public Strategy<int>
     tut::ensure("NTQ not empty", ntq.begin()==ntq.end() );
   }
 
-  static MetaAlertPtrNN makeMetaAlert(void)
-  {
-    return th_makeMetaAlert();
-  }
-
   static GraphNodePtrNN makeGraphLeaf(void)
   {
-    return th_makeLeaf();
+    return makeNewLeaf();
   }
 
   static NodeEntry makeNodeEntry(Node n, int v)
@@ -62,7 +58,6 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   TestFilter                 tf_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

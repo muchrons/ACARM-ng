@@ -5,11 +5,12 @@
 #include <tut.h>
 
 #include "Algo/forEachUniqueLeaf.hpp"
-#include "Algo/TestHelpers.t.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Algo;
 using namespace Persistency;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
@@ -47,7 +48,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  CountNodes cn=forEachUniqueLeaf( th_makeTree1(), CountNodes() );
+  CountNodes cn=forEachUniqueLeaf( makeNewTree1(), CountNodes() );
   ensure_equals("invalid number of elements", cn.cnt_, 5);
 }
 
@@ -56,7 +57,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  CountNodes cn=forEachUniqueLeaf( th_makeLeaf(), CountNodes() );
+  CountNodes cn=forEachUniqueLeaf( makeNewLeaf(), CountNodes() );
   ensure_equals("invalid count for leaf", cn.cnt_, 1);
 }
 
@@ -65,7 +66,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  CountNodes cn=forEachUniqueLeaf( th_makeTree2(), CountNodes() );
+  CountNodes cn=forEachUniqueLeaf( makeNewTree2(), CountNodes() );
   ensure_equals("invalid number of elements", cn.cnt_, 3);
 }
 
