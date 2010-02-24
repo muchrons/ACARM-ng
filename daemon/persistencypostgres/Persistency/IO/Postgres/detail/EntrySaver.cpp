@@ -68,10 +68,11 @@ bool EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   ss << " AND ip";
   ss << addIPToSelect( a.getIP() );
   ss << ";";
-  cout << ss.str() << endl;
   result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
-
-  return false;
+  if(r.empty() )
+    return false;
+  else
+    return true;
 }
 
 template <typename T>
@@ -235,21 +236,23 @@ DataBaseID EntrySaver::saveAlert(DataBaseID AnalyzerID, const Persistency::Alert
 DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
 {
   //TODO: Analyzer shoul be unique
-  bool is = isAnalyzerInDataBase(a);
-  stringstream ss;
-  ss << "INSERT INTO analyzers(name, version, os, ip) VALUES (";
-  Appender::append(ss, a.getName().get() );
-  ss << ",";
-  Appender::append(ss, a.getVersion()?a.getVersion()->get():NULL);
-  ss << ",";
-  Appender::append(ss, a.getOS()?a.getOS()->get():NULL );
-  ss << ",";
-  if(a.getIP()==NULL)
-    ss << "NULL";
-  else
-    Appender::append(ss, a.getIP()->to_string() );
-  ss << ");";
-  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+  if(!isAnalyzerInDataBase(a) )
+  {
+    stringstream ss;
+    ss << "INSERT INTO analyzers(name, version, os, ip) VALUES (";
+    Appender::append(ss, a.getName().get() );
+    ss << ",";
+    Appender::append(ss, a.getVersion()?a.getVersion()->get():NULL);
+    ss << ",";
+    Appender::append(ss, a.getOS()?a.getOS()->get():NULL );
+    ss << ",";
+    if(a.getIP()==NULL)
+      ss << "NULL";
+    else
+      Appender::append(ss, a.getIP()->to_string() );
+    ss << ");";
+    t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+  }
   return getID("analyzers_id_seq");
 }
 

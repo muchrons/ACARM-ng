@@ -102,8 +102,6 @@ private:
   DataBaseID saveAlertData(const Alert &a);
   DataBaseID saveMetaAlertData(const MetaAlert &ma);
 
-  DataBaseID saveAnalyzerData(const Analyzer &a);
-
   DataBaseID saveReportedHostData(DataBaseID               alertID,
                                   DataBaseID               hostID,
                                   const std::string        role,

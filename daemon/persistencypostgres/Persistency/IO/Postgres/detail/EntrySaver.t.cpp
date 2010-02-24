@@ -12,6 +12,7 @@
 #include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
 #include <boost/algorithm/string.hpp>
+#include "Persistency/IO/Postgres/detail/append.hpp"
 
 using Persistency::IO::Transaction;
 using namespace Persistency;
@@ -77,7 +78,7 @@ struct TestClass
     mask4_( Host::Netmask_v4(mask4_bytes) ),
     mask6_( Host::Netmask_v6(mask6_bytes) )
   {
-    //tdba_.removeAllData();
+    tdba_.removeAllData();
   }
 
   IO::ConnectionPtrNN makeConnection(void) const
@@ -611,11 +612,30 @@ void testObj::test<14>(void)
   t_.commit();
 }
 
-// TODO: test saving Host with NULL name
+//test saving Host with NULL name
 template<>
 template<>
 void testObj::test<15>(void)
 {
+  const Host h(  Host::IPv4::from_string("1.2.3.4"),
+                 &mask4_,
+                 "myos",
+                 makeNewReferenceURL(),
+                 Host::ReportedServices(),
+                 Host::ReportedProcesses(),
+                 NULL );
+  const DataBaseID hostID = es_.saveHostData(h);
+
+  stringstream ss;
+
+
+  ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
+
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(),1);
+
+  ensure("Host name is not NULL",r[0]["name"].is_null() );
+  t_.commit();
 }
 
 // TODO: test saving meta-alert with NULL reference url
@@ -638,5 +658,36 @@ template<>
 void testObj::test<18>(void)
 {
 }
+
+//TODO: test saving two identical Analyzers
+
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  const string anlzName("analyzer3");
+  const Analyzer::Version ver("v1.2.3");
+  const Analyzer::OS      os("Linux 2.6.66");
+  const Analyzer::IP      ip( Analyzer::IPv4::from_string("1.2.3.4") );
+  const Analyzer a1(anlzName, &ver, &os, &ip);
+  const Analyzer a2(anlzName, &ver, &os, &ip);
+  const DataBaseID anlz1ID = es_.saveAnalyzer(a1);
+  const DataBaseID anlz2ID = es_.saveAnalyzer(a2);
+
+  stringstream ss;
+  ss << "SELECT * FROM analyzers WHERE name = ";
+  Appender::append(ss, anlzName );
+  ss << "AND version = ";
+  Appender::append(ss, ver.get() );
+  ss << "AND os = ";
+  Appender::append(ss, os.get() );
+  ss << "AND ip = ";
+  Appender::append(ss, ip.to_string() );
+  ss << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(),1);
+
+}
+
 
 } // namespace tut

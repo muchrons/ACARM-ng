@@ -24,20 +24,15 @@ Alert::Alert(Persistency::AlertPtrNN  alert,
 void Alert::saveImpl(Transaction &/*t*/)
 {
   /* TODO: THIS IS COMMENTED OUT SINCE IMPLEMENTATION OF ANALYZER CHANGED - UPDATE THIS CODE ASAP
-  const Persistency::Alert    &a=get();
-  const Persistency::Analyzer &anlz=a.getAnalyzer();
-  const Persistency::HostPtr  host=anlz.getHost();
-  EntrySaver                  es(t,*dbHandler_);
-
-  DataBaseID anlzID;
-  //save Host
-  if(host!=NULL)
+  const Persistency::Alert               &a=get();
+  Persistency::Alert::SourceAnalyzers    analyzers(a.getSourceAnalyzers() );
+  EntrySaver                             es(t,*dbHandler_);
+  for(Persistency::Alert::SourceAnalyzers::iterator it = analyzers.begin(); it != analyzers.end(); ++it)
   {
-    const DataBaseID hostID = es.saveHostData(*host.get());
-    anlzID = es.saveAnalyzer(&hostID, anlz);
+    const Persistency::Analyzer &analyzer=*it->get();
+    const DataBaseID           anlzID = es.saveAnalyzer(analyzer );
   }
-  else
-    anlzID = es.saveAnalyzer(NULL, anlz);
+
   //save Alert
   DataBaseID alertID = es.saveAlert(anlzID, a);
   //save source hosts
