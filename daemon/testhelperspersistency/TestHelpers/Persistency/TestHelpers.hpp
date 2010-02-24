@@ -42,13 +42,13 @@ const ::Persistency::Host::Netmask_v6::bytes_type mask6_bytes={ {
                                                  } };
 ::Persistency::HostPtr makeNewHost(void);
 ::Persistency::HostPtr makeNewHost4(const char             *ip,
-                                  const ::Persistency::Host::Netmask_v4 *mask,
-                                  const char             *os,
-                                  bool                    nullRef=false);
+                                    const ::Persistency::Host::Netmask_v4 *mask,
+                                    const char             *os,
+                                    bool                    nullRef=false);
 ::Persistency::HostPtr makeNewHost6(const char             *ip,
-                                  const ::Persistency::Host::Netmask_v6 *mask,
-                                  const char             *os,
-                                  bool                    nullRef=false);
+                                    const ::Persistency::Host::Netmask_v6 *mask,
+                                    const char             *os,
+                                    bool                    nullRef=false);
 
 ::Persistency::ProcessPtr makeNewProcess(const char *name="process name");
 

@@ -2,15 +2,15 @@
  * Strategy.hpp
  *
  */
-#ifndef INCLUDE_FILTER_ONETOMANY_STRATEGY_HPP_FILE
-#define INCLUDE_FILTER_ONETOMANY_STRATEGY_HPP_FILE
+#ifndef INCLUDE_FILTER_MANYTOONE_STRATEGY_HPP_FILE
+#define INCLUDE_FILTER_MANYTOONE_STRATEGY_HPP_FILE
 
 #include "Filter/HostCommon/Strategy.hpp"
 
 
 namespace Filter
 {
-namespace OneToMany
+namespace ManyToOne
 {
 
 /** \brief one-to-many filter implementation.
@@ -29,7 +29,7 @@ private:
                                     const Persistency::HostPtrNN h) const;
 }; // class Strategy
 
-} // namespace OneToMany
+} // namespace ManyToOne
 } // namespace Filter
 
 #endif

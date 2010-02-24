@@ -127,7 +127,7 @@ DataBaseID EntrySaver::saveHostData(const Persistency::Host &h)
   ss << ",";
   Appender::append(ss, h.getOperatingSystem().get() );
   ss << ",";
-  Appender::append(ss, (h.getName())?h.getName()->get():NULL);
+  Appender::append(ss, h.getName().get() );
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 

@@ -46,7 +46,8 @@ HostPtrNN makeNewHost4(const char             *ip,
                               os,
                               ref,
                               Host::ReportedServices(),
-                              Host::ReportedProcesses() ) );
+                              Host::ReportedProcesses(),
+                              "dns.org" ) );
 }
 
 HostPtrNN makeNewHost6(const char             *ip,
@@ -63,7 +64,8 @@ HostPtrNN makeNewHost6(const char             *ip,
                               os,
                               ref,
                               Host::ReportedServices(),
-                              Host::ReportedProcesses() ) );
+                              Host::ReportedProcesses(),
+                              "dns.org" ) );
 }
 
 ProcessPtrNN makeNewProcess(const char *name)

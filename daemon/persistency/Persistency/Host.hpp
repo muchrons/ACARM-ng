@@ -58,13 +58,15 @@ public:
    *  \param url       reference url for report (optional - can be NULL).
    *  \param services  service reported on a host.
    *  \param processes processes reported on host.
+   *  \param name      DNS name of this host (or NULL if not known).
    */
   Host(const IPv4              &ip,
        const Netmask_v4        *mask,
        const OperatingSystem    os,
        ReferenceURLPtr          url,
        const ReportedServices  &services,
-       const ReportedProcesses &processes);
+       const ReportedProcesses &processes,
+       const Name              &name);
   /** \brief create host entry of IPv6 address.
    *  \param ip        ip address.
    *  \param mask      network maks of a given host.
@@ -72,13 +74,15 @@ public:
    *  \param url       reference url for report (optional - cen be NULL).
    *  \param services  service reported on a host.
    *  \param processes processes reported on host.
+   *  \param name      DNS name of this host (or NULL if not known).
    */
   Host(const IPv6              &ip,
        const Netmask_v6        *mask,
        const OperatingSystem    os,
        ReferenceURLPtr          url,
        const ReportedServices  &services,
-       const ReportedProcesses &processes);
+       const ReportedProcesses &processes,
+       const Name              &name);
 
   /** \brief gets IP address.
    *  \return IP address of host.
@@ -96,7 +100,7 @@ public:
    *  \return host name.
    *  \note pointer may be NULL, if name has not been set.
    */
-  const Name *getName(void) const;
+  const Name &getName(void) const;
   /** \brief gets reference url for this host.
    *  \return reference url to get more info.
    */
@@ -122,7 +126,7 @@ private:
   IP                           ip_;
   boost::scoped_ptr<Netmask>   mask_;
   OperatingSystem              os_;
-  boost::scoped_ptr<Name>      name_;
+  Name                         name_;
   ReferenceURLPtr              url_;
   ReportedServices             services_;
   ReportedProcesses            processes_;

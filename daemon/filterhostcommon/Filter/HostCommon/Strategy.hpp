@@ -38,6 +38,14 @@ struct Data
  */
 class Strategy: public Filter::Strategy<Data>
 {
+public:
+  /** \brief call that gets reported hosts array from given node.
+   *  \param node node to get hosts from.
+   *  \return array of reported hosts.
+   */
+  virtual const Persistency::Alert::ReportedHosts &getReportedHostsArray(
+                                                    const Node node) const = 0;
+
 protected:
   /** \brief create instance.
    *  \param name    name to assign.
@@ -46,16 +54,14 @@ protected:
   Strategy(const std::string &name, unsigned int timeout);
 
 private:
-  /** \brief call that gets reported host from given node.
-   *
-   *  this call returns one, single host that this allert corresponds to
-   *  or NULL if there are more hosts reported or none (i.e. cannot determine
-   *  one, single host to get).
-   *
-   *  \param node node to get host from.
-   *  \return host pointer to the one, to be used or NULL if none.
+  /** \brief call gets name for correlated meta-alert for a given host.
+   *  \param h host that has been common part of correlation.
+   *  \return name for the new, correlated meta-alert.
    */
-  virtual Persistency::HostPtr getReportedHost(Node node) = 0;
+  virtual Persistency::MetaAlert::Name getMetaAlertName(
+                                    const Persistency::HostPtrNN h) const = 0;
+
+  Persistency::HostPtr getReportedHost(const Node node) const;
 
   /** \brief gets timeout value.
    *  \return timeout for entry in timeout queue.
@@ -68,6 +74,11 @@ private:
   virtual void processImpl(Node               n,
                            NodesTimeoutQueue &ntq,
                            BackendProxy      &bp);
+
+  bool tryCorrelate(NodesTimeoutQueue           &ntq,
+                    BackendProxy                &bp,
+                    const NodeEntry             &thisEntry,
+                    NodesTimeoutQueue::iterator  it);
 
   const unsigned int timeout_;
 }; // class Strategy
