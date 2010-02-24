@@ -15,7 +15,15 @@ namespace Filter
 namespace Simple
 {
 
-/** \brief host-operating filter implementation.
+/** \brief basic filters common code template.
+ *
+ *  most filters are assumed to do very simillar things, like comparing
+ *  new nodes with ones already held in queue and trying to find common
+ *  correlation basing on filter-dependent rules.
+ *
+ *  this can be easily generated and minimized to set of basic functions that
+ *  forwards calls to specific implementations, while keeping common parts
+ *  separated.
  */
 template<typedef TUserData>
 class Strategy: public Filter::Strategy<TUserData>
