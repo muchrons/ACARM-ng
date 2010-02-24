@@ -29,12 +29,18 @@ public:
   /**
    * @brief gets host name
    */
-  Persistency::Host::Name getName();
+  Persistency::Host::Name getName() const;
 
   /**
    * @brief gets alert creation time
    */
-  Persistency::Timestamp getCreateTime();
+  Persistency::Timestamp getCreateTime() const;
+
+  /**
+   * @brief gets Analyzer
+   */
+  Persistency::Analyzer getAnalyzer() const;
+
 
 private:    
   idmef_alert_t *alert_;
