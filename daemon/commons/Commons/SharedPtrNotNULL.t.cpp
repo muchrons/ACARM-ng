@@ -344,4 +344,15 @@ void testObj::test<29>(void)
          boost::mpl::equal<int&, PtrNN::reference>::type::value);
 }
 
+// test convertion operator for constness
+template<>
+template<>
+void testObj::test<30>(void)
+{
+  const PtrNN nn( new int(42) );
+  BoostPtr    bp;
+  bp=nn;
+  ensure("invalid pointer value", bp.get()==nn.get() );
+}
+
 } // namespace tut

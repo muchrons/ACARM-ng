@@ -66,7 +66,7 @@ public:
   /** \brief convertion operator.
    *  \return boost::shared_ptr<> for a given value.
    */
-  operator PtrT(void)
+  operator PtrT(void) const
   {
     assert( ptr_.get()!=NULL );
     return ptr_;

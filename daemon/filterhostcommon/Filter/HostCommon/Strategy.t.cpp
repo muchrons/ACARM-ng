@@ -27,16 +27,10 @@ struct TestStrategy: public Strategy
   {
   }
 
-  virtual HostPtr getReportedHost(const Node node) const
+  virtual const Persistency::Alert::ReportedHosts &getReportedHostsArray(
+                                                          const Node node) const
   {
-    if( !node->isLeaf() )
-      return getReportedHost( *node->begin() ); // for tests sake just get
-                                                // first host from first leaf
-    const Alert                &a  =node->getAlert();
-    const Alert::ReportedHosts &src=a.getReportedSourceHosts();
-    if( src.size()==0 )
-      return HostPtr();
-    return static_cast<HostPtrNN>(src[0]);
+    return node->getAlert().getReportedSourceHosts();
   }
 
   virtual MetaAlert::Name getMetaAlertName(const HostPtrNN /*h*/) const
@@ -49,11 +43,6 @@ struct TestStrategy: public Strategy
 
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
-  TestClass(void)
-  {
-    assert( ts_.getReportedHost( makeNewLeaf() ).get()==NULL );   // self test
-  }
-
   AlertPtrNN makeAlertWithHost(const char *host, const char *os) const
   {
     const Alert::SourceAnalyzers sa( makeNewAnalyzer() );
@@ -81,7 +70,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 
   TestStrategy::Node makeNode(void) const
   {
-    return makeNewNode( makeLeaf("1.2.3.4"), makeLeaf("2.3.4.5") );
+    return makeNewNode( makeLeaf("1.2.3.4"), makeLeaf("1.2.3.4") );
   }
 
   TestStrategy::ChangedNodes changed_;
@@ -94,7 +83,6 @@ typedef factory::object testObj;
 factory tf("Filter/HostCommon/Strategy");
 } // unnamed namespace
 
-// TODO
 
 namespace tut
 {
