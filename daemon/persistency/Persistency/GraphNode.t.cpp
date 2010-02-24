@@ -60,6 +60,12 @@ struct TestClass: private TestBase
     return conn_->metaAlert( gn->getMetaAlert(), t_);
   }
 
+  template<typename T>
+  void ignore(const T &) const
+  {
+    // helper to supress compierl warnign about unsued variables.
+  }
+
   MetaAlertPtrNN      ma1_;
   MetaAlertPtrNN      ma2_;
   IO::ConnectionPtrNN conn_;
@@ -398,6 +404,44 @@ void testObj::test<21>(void)
   GraphNodePtrNN child=makeNode();
   node->addChild(child, *makeIO(node) );
   TestHelpers::checkEquality(*node, *makeNode() );
+}
+
+// test get meta-alert - const version.
+template<>
+template<>
+void testObj::test<22>(void)
+{
+  const GraphNodePtrNN  n =makeNode();
+  const MetaAlert      &ma=n->getMetaAlert();   // smoke test
+  ignore(ma);
+}
+
+// test get alert - const version.
+template<>
+template<>
+void testObj::test<23>(void)
+{
+  const GraphNodePtrNN  n=makeLeaf();
+  const Alert          &a=n->getAlert();        // smoke test
+  ignore(a);
+}
+
+// test get alert on node - const version.
+template<>
+template<>
+void testObj::test<24>(void)
+{
+  const GraphNodePtrNN  n=makeNode();
+  ensure("pre-condition failed", !n->isLeaf() );
+  try
+  {
+    n->getAlert();
+    fail("getAlert() const - didn't throw on non-leaf object");
+  }
+  catch(const ExceptionNotLeaf &)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut

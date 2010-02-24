@@ -55,7 +55,8 @@ HostPtr makeNewHost4(const char             *ip,
                             os,
                             (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL()),
                             Host::ReportedServices(),
-                            Host::ReportedProcesses() ) );
+                            Host::ReportedProcesses(),
+                            "dns.org" ) );
 }
 
 HostPtr makeNewHost6(const char             *ip,
@@ -68,7 +69,8 @@ HostPtr makeNewHost6(const char             *ip,
                             os,
                             (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL()),
                             Host::ReportedServices(),
-                            Host::ReportedProcesses() ) );
+                            Host::ReportedProcesses(),
+                            "dns.org" ) );
 }
 
 ProcessPtr makeNewProcess(const char *name)

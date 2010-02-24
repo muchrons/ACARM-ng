@@ -72,7 +72,15 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  IOHost h( makeNewHost(), t_);
+  HostPtrNN host( new Persistency::Host( Persistency::Host::IPv4::from_string("1.2.3.4"),
+                                         NULL,
+                                         "some/os",
+                                         Persistency::ReferenceURLPtr(),
+                                         Persistency::Host::ReportedServices(),
+                                         Persistency::Host::ReportedProcesses(),
+                                         NULL) );
+
+  IOHost h(host, t_);
   h.setName("xyz");
   ensure_equals("implementatin has not been called", h.calls_, 1);
 }
@@ -125,6 +133,23 @@ void testObj::test<5>(void)
     fail("setting name didn't failed for non-active transaction");
   }
   catch(const ExceptionTransactionNotActive&)
+  {
+    // this is expected
+  }
+}
+
+// test throw when name is already set
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  IOHost h( makeNewHost(), t_);
+  try
+  {
+    h.setName("xyz");
+    fail("setName() didn't failed for already set entry");
+  }
+  catch(const Persistency::Exception &)
   {
     // this is expected
   }

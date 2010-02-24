@@ -2,16 +2,16 @@
  * Strategy.cpp
  *
  */
-#include "Filter/OneToMany/Strategy.hpp"
-#include "Filter/OneToMany/Operations.hpp"
+#include "Filter/ManyToOne/Strategy.hpp"
+#include "Filter/ManyToOne/Operations.hpp"
 
 namespace Filter
 {
-namespace OneToMany
+namespace ManyToOne
 {
 
 Strategy::Strategy(void):
-  Filter::HostCommon::Strategy("onetomany", 4*60)
+  Filter::HostCommon::Strategy("manytoone", 4*60)
 {
 }
 
@@ -27,5 +27,5 @@ Persistency::MetaAlert::Name Strategy::getMetaAlertName(
   return Operations::getMetaAlertName(h);
 }
 
-} // namespace OneToMany
+} // namespace ManyToOne
 } // namespace Filter
