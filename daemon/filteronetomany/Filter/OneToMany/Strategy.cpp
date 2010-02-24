@@ -15,13 +15,14 @@ Strategy::Strategy(void):
 {
 }
 
-Persistency::HostPtr Strategy::getReportedHost(const Node node) const
+const Persistency::Alert::ReportedHosts &Strategy::getReportedHostsArray(
+                                                        const Node node) const
 {
-  return Operations::getReportedHost(node);
+  return Operations::getReportedHostsArray(node);
 }
 
 Persistency::MetaAlert::Name Strategy::getMetaAlertName(
-                                        const Persistency::HostPtrNN h) const
+                                         const Persistency::HostPtrNN h) const
 {
   return Operations::getMetaAlertName(h);
 }

@@ -55,46 +55,12 @@ void testObj::test<2>(void)
   ensure_equals("invlaid name", n, "Multiple attacks from host 1.2.3.4");
 }
 
-//
+// getting repoted hosts smoke test
 template<>
 template<>
 void testObj::test<3>(void)
 {
-}
-
-//
-template<>
-template<>
-void testObj::test<4>(void)
-{
-}
-
-//
-template<>
-template<>
-void testObj::test<5>(void)
-{
-}
-
-//
-template<>
-template<>
-void testObj::test<6>(void)
-{
-}
-
-//
-template<>
-template<>
-void testObj::test<7>(void)
-{
-}
-
-//
-template<>
-template<>
-void testObj::test<8>(void)
-{
+  Operations::getReportedHostsArray( makeNewLeaf() );
 }
 
 } // namespace tut

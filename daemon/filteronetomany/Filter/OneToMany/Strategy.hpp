@@ -23,7 +23,8 @@ public:
   Strategy(void);
 
 private:
-  virtual Persistency::HostPtr getReportedHost(const Node node) const;
+  virtual const Persistency::Alert::ReportedHosts &getReportedHostsArray(
+                                                   const Node node) const;
   virtual Persistency::MetaAlert::Name getMetaAlertName(
                                     const Persistency::HostPtrNN h) const;
 }; // class Strategy

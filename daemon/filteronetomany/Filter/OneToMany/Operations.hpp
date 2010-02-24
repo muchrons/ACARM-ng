@@ -8,7 +8,6 @@
 #include <sstream>
 #include <cassert>
 
-#include "Algo/forEachUniqueLeaf.hpp"
 #include "Filter/HostCommon/Strategy.hpp"
 
 namespace Filter
@@ -20,55 +19,15 @@ namespace OneToMany
  */
 struct Operations
 {
-private:
-  typedef Filter::HostCommon::Strategy Types;
-
-  struct CheckHosts
-  {
-    CheckHosts(void):
-      noMatch_(false)
-    {
-    }
-
-    void operator()(Persistency::GraphNodePtrNN node)
-    {
-      assert( node->isLeaf() );
-      // if we already know there is not match, just skip the call
-      if(noMatch_)
-        return;
-      // check each and every reported host
-      const Persistency::Alert::ReportedHosts &hs=
-                                node->getAlert()->getReportedSourceHosts();
-      for(Persistency::Alert::ReportedHosts::const_iterator it=hs.begin();
-          it!=hs.end(); ++it)
-      {
-        if( out_.get()==NULL )
-          out_=*it;                 // first entry is always a match
-        else
-          if( out_->getIP()!=(*it)->getIP() )
-          {
-            // there is no unique host entry.
-            out_.reset();
-            noMatch_=true;
-            break;
-          }
-      } // for(reported hosts)
-    }
-
-    Persistency::HostPtr out_;
-
-  private:
-    bool                 noMatch_;
-  }; // struct CheckHosts
-
-public:
-  /** \brief computes reoprted host and downs it to one.
-   *  \param node node to compute them for.
-   *  \return host pointer or NULL if not correlation has been found.
+  /** \brief call that gets reported hosts array from given node.
+   *  \param node node to get hosts from.
+   *  \return array of reported hosts.
    */
-  static Persistency::HostPtr getReportedHost(const Types::Node node)
+  static const Persistency::Alert::ReportedHosts &getReportedHostsArray(
+                                        const Persistency::GraphNodePtrNN node)
   {
-    return Algo::forEachUniqueLeaf( node, CheckHosts() ).out_;
+    assert( node->isLeaf() );
+    return node->getAlert().getReportedSourceHosts();
   }
 
   /** \brief generates name for meta alert, based on given host name.
