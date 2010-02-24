@@ -153,7 +153,9 @@ void testObj::test<1>(void)
   const Analyzer anlz("analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
-  const DataBaseID alertID = es_.saveAlert(anlzID,a);
+  const DataBaseID alertID = es_.saveAlert(a);
+  //TODO: save data in table alert_analyzers
+  es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID procID  = es_.saveProcess(thostID, proc_);
 
@@ -185,7 +187,9 @@ void testObj::test<2>(void)
   const Analyzer anlz("analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
-  const DataBaseID alertID = es_.saveAlert(anlzID,a);
+  const DataBaseID alertID = es_.saveAlert(a);
+  //TODO: save data in table alert_analyzers
+  es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID id1=es_.saveProcess(thostID, proc_);
   const DataBaseID id2=es_.saveProcess(thostID, proc_);
@@ -217,10 +221,9 @@ void testObj::test<4>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", NULL, NULL, NULL);
-  // TODO: these variables should be const:
   const DataBaseID anlzID = es_.saveAnalyzer(anlz);
-  const DataBaseID alrtID = es_.saveAlert(anlzID,a);
-
+  const DataBaseID alrtID = es_.saveAlert(a);
+  es_.saveAlertToAnalyzers(alrtID, anlzID);
   stringstream ss;
   string name, time, description;
   DataBaseID id;
@@ -232,9 +235,6 @@ void testObj::test<4>(void)
 
   r[0]["name"].to(name);
   ensure_equals("invalid name",name_.get(),name);
-
-  r[0]["id_analyzer"].to(id);
-  ensure_equals("invalid analyzer ID",anlzID,id);
 
   r[0]["detect_time"].to(time);
   ensure_equals("invalid detect time",detected_,time_from_string(time));
@@ -266,7 +266,8 @@ void testObj::test<5>(void)
   const Analyzer anlz("analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
-  const DataBaseID alertID = es_.saveAlert(anlzID,a);
+  const DataBaseID alertID = es_.saveAlert(a);
+  es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID servID = es_.saveService(thostID,ti);
 
@@ -366,7 +367,8 @@ void testObj::test<8>(void)
   const Analyzer anlz("analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
-  const DataBaseID alertID = es_.saveAlert(anlzID,a);
+  const DataBaseID alertID = es_.saveAlert(a);
+  es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
 
   stringstream ss;
@@ -395,7 +397,8 @@ void testObj::test<9>(void)
   const Analyzer anlz("analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
-  const DataBaseID alertID = es_.saveAlert(anlzID,a);
+  const DataBaseID alertID = es_.saveAlert(a);
+  es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID dhostID = es_.saveSourceHost(hostID,alertID,*host);
 
   stringstream ss;
@@ -455,9 +458,10 @@ void testObj::test<11>(void)
   HostPtr host=makeNewHost();
   const Analyzer anlz("analyzer1", NULL, NULL, NULL);
   const DataBaseID anlzID = es_.saveAnalyzer(anlz);
-  const DataBaseID alrtID = es_.saveAlert(anlzID,a);
-
-   stringstream ss;
+  const DataBaseID alrtID = es_.saveAlert(a);
+  //TODO: test save data in alert_analyzers
+  es_.saveAlertToAnalyzers(alrtID, anlzID);
+  stringstream ss;
   string name, time, description;
   DataBaseID id;
   double certanity;
@@ -469,8 +473,6 @@ void testObj::test<11>(void)
   r[0]["name"].to(name);
   ensure_equals("invalid name",name_.get(),name);
 
-  r[0]["id_analyzer"].to(id);
-  ensure_equals("invalid analyzer ID",anlzID,id);
 
   r[0]["detect_time"].to(time);
   ensure_equals("invalid detect time", "", time);
@@ -501,14 +503,14 @@ void testObj::test<12>(void)
   const Analyzer anlz("analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
-  const DataBaseID alertID = es_.saveAlert(anlzID,a);
+  const DataBaseID alertID = es_.saveAlert(a);
+  //TODO: test save data in alert_analyzers
+  es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID procID  = es_.saveProcess(thostID, procnn_);
 
   stringstream ss;
   string path, name, md5;
-  string md5_(procnn_.getMD5()->get());
-  md5_.resize(32,' ');
   ss << "SELECT * FROM procs WHERE id = " << procID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(),1);
@@ -520,7 +522,8 @@ void testObj::test<12>(void)
   ensure_equals("invalid name",proc_.getName().get() ,name);
 
   r[0]["md5"].to(md5);
-  ensure_equals("invalid md5 sum",md5_, md5);
+  trim(md5);
+  ensure_equals("invalid md5 sum",procnn_.getMD5()->get(), md5);
 
   t_.commit();
 }
@@ -540,7 +543,9 @@ void testObj::test<13>(void)
   const Analyzer anlz("analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
-  const DataBaseID alertID = es_.saveAlert(anlzID,a);
+  const DataBaseID alertID = es_.saveAlert(a);
+  //TODO: test save data in alert_analyzers
+  es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID procID  = es_.saveProcess(thostID, proc);
 
@@ -583,7 +588,9 @@ void testObj::test<14>(void)
   const Analyzer anlz("analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
-  const DataBaseID alertID = es_.saveAlert(anlzID,a);
+  const DataBaseID alertID = es_.saveAlert(a);
+  //TODO: test save data in alert_analyzers
+  es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID procID  = es_.saveProcess(thostID, proc);
 
@@ -671,8 +678,8 @@ void testObj::test<19>(void)
   const Analyzer::IP      ip( Analyzer::IPv4::from_string("1.2.3.4") );
   const Analyzer a1(anlzName, &ver, &os, &ip);
   const Analyzer a2(anlzName, &ver, &os, &ip);
-  const DataBaseID anlz1ID = es_.saveAnalyzer(a1);
-  const DataBaseID anlz2ID = es_.saveAnalyzer(a2);
+  es_.saveAnalyzer(a1);
+  es_.saveAnalyzer(a2);
 
   stringstream ss;
   ss << "SELECT * FROM analyzers WHERE name = ";
@@ -686,7 +693,7 @@ void testObj::test<19>(void)
   ss << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(),1);
-
+  t_.commit();
 }
 
 

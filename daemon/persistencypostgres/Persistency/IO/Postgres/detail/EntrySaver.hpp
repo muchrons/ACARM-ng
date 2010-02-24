@@ -44,10 +44,9 @@ public:
    */
   DataBaseID saveProcess(DataBaseID reportedHostID, const Process &p);
   /** \brief saves alert data to data base
-   *  \param AnalyzerID ID of Analyzer, that this Alert should be assigned to.
    *  \param a          Alert to be saved.
    */
-  DataBaseID saveAlert(DataBaseID AnalyzerID, const Persistency::Alert &a);
+  DataBaseID saveAlert(const Persistency::Alert &a);
   /** \brief saves  analyzer data to data base
    *  \param a      Analyzer to be saved.
    */
@@ -82,6 +81,11 @@ public:
    *  \param malertID ID of Meta Alert
    */
   void saveAlertToMetaAlertMap(DataBaseID alertID, DataBaseID malertID);
+  /** \brief save Alert to Analyzers map
+   *  \param alertID ID of Alert
+   *  \param anlzID  ID of Analyzer
+   */
+  void saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID);
   // TODO
 
 

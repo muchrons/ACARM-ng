@@ -207,18 +207,16 @@ DataBaseID EntrySaver::saveSourceHost(DataBaseID hostID, DataBaseID alertID, con
   return saveReportedHostData(alertID, hostID, "src", h);
 }
 
-DataBaseID EntrySaver::saveAlert(DataBaseID AnalyzerID, const Persistency::Alert &a)
+DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 {
   stringstream ss;
-  ss << "INSERT INTO alerts(name, id_analyzer, detect_time, create_time, id_severity, certanity, description) VALUES (";
+  ss << "INSERT INTO alerts(name,  detect_time, create_time, id_severity, certanity, description) VALUES (";
   Appender::append(ss, a.getName().get() );
-  ss << ",";
-  Appender::append(ss, AnalyzerID);
   ss << ",";
   if(a.getDetectionTime()==NULL)
     ss << "NULL";
   else
-    Appender::append(ss, to_iso_string((*a.getDetectionTime() ) ));
+  Appender::append(ss, to_iso_string((*a.getDetectionTime() ) ));
   ss << ",";
   Appender::append(ss, to_iso_string(a.getCreationTime() ) );
   ss << ",";
@@ -324,6 +322,16 @@ void EntrySaver::saveAlertToMetaAlertMap(DataBaseID alertID, DataBaseID malertID
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
+void EntrySaver::saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID)
+{
+  stringstream ss;
+  ss << "INSERT INTO alert_analyzers(id_alert, id_analyzer) VALUES (";
+  Appender::append(ss, alertID);
+  ss << ",";
+  Appender::append(ss, anlzID);
+  ss << ");";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+}
 } // namespace detail
 } // namespace Postgres
 } // namespace IO
