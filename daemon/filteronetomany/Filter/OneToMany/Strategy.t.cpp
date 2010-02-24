@@ -4,8 +4,6 @@
  */
 #include <tut.h>
 
-// TODO
-
 #include "Filter/OneToMany/Strategy.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -15,9 +13,12 @@ using namespace Filter::OneToMany;
 namespace
 {
 
-struct TestClass: private TestHelpers::Persistency::TestStubs
+struct TestClass
 {
-  Filter::BackendProxy::ChangedNodes changed_;
+  template<typename T>
+  void ignore(const T &)
+  {
+  }
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -26,30 +27,17 @@ typedef factory::object testObj;
 factory tf("Filter/OneToMany/Strategy");
 } // unnamed namespace
 
-// TODO
 
 namespace tut
 {
 
-//
+// smoke test for the c-tor
 template<>
 template<>
 void testObj::test<1>(void)
 {
-}
-
-//
-template<>
-template<>
-void testObj::test<2>(void)
-{
-}
-
-//
-template<>
-template<>
-void testObj::test<3>(void)
-{
+  const Strategy s;
+  ignore(s);
 }
 
 } // namespace tut

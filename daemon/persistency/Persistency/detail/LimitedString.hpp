@@ -45,6 +45,12 @@ template<uint16_t N>
 class LimitedString: public boost::equality_comparable< LimitedString<N> >
 {
 public:
+  /** \brief creates empty string.
+   */
+  LimitedString(void)
+  {
+    createFromNonNULL("");
+  }
   /** \brief creates object from a given string.
    *  \param str string to create object from.
    *  \note this c-tor is not explicit to allow easier argument passing.

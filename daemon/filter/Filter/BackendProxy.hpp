@@ -40,11 +40,11 @@ public:
   }; // struct ExceptionChangedNodesNoteEmpty
 
   /** \brief forward of type definition (for simplified usage). */
-  typedef Persistency::GraphNode::ChildrenVector ChildrenVector;
+  typedef Persistency::NodeChildrenVector ChildrenVector;
   /** \brief helper typedef for GraphNode pointer. */
-  typedef Persistency::GraphNodePtrNN            Node;
+  typedef Persistency::GraphNodePtrNN     Node;
   /** \brief helper typedef for list of chenged nodes. */
-  typedef std::vector<Node>                      ChangedNodes;
+  typedef std::vector<Node>               ChangedNodes;
 
 
   /** \brief create object's instance.
@@ -81,16 +81,11 @@ public:
    */
   void addChild(Node parent, Node child);
   /** \brief correlate set of children creating new meta-alert's node as a parent.
-   *  \param ma            meta alert data of which to create node from.
-   *  \param child1        first child to correlate.
-   *  \param child2        second child to correlate.
-   *  \param otherChildren more child nodes, if needed.
+   *  \param ma       meta alert data of which to create node from.
+   *  \param children list of childrent to be correlated into new node.
    */
-  Persistency::GraphNodePtrNN correlate(
-            Persistency::MetaAlertPtrNN  ma,
-            Node                         child1,
-            Node                         child2,
-            const ChildrenVector        &otherChildren=ChildrenVector() );
+  Persistency::GraphNodePtrNN correlate(Persistency::MetaAlertPtrNN  ma,
+                                        const ChildrenVector        &children);
 
 private:
   ChangedNodes &changed_;

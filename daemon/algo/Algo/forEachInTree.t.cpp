@@ -5,11 +5,12 @@
 #include <tut.h>
 
 #include "Algo/forEachInTree.hpp"
-#include "Algo/TestHelpers.t.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Algo;
 using namespace Persistency;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
@@ -30,14 +31,13 @@ struct FuncObj: private TestHelpers::Persistency::TestStubs
 struct TestClass
 {
   TestClass(void):
-    root_( th_makeTree1() )
+    root_( makeNewTree1() )
   {
   }
 
   GraphNodePtrNN root_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -62,7 +62,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  FuncObj out=forEachInTree( th_makeLeaf(), FuncObj() );
+  FuncObj out=forEachInTree( makeNewLeaf(), FuncObj() );
   ensure_equals("invalid traversal count for leaf", out.cnt_, 1);
 }
 

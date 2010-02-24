@@ -22,10 +22,12 @@ Host::Host(const IPv4              &ip,
            const OperatingSystem    os,
            ReferenceURLPtr          url,
            const ReportedServices  &services,
-           const ReportedProcesses &processes):
+           const ReportedProcesses &processes,
+           const Name              &name):
   ip_(ip),
   mask_(*mask),
   os_(os),
+  name_(name),
   url_(url),
   services_(services),
   processes_(processes)
@@ -37,10 +39,12 @@ Host::Host(const IPv6              &ip,
            const OperatingSystem    os,
            ReferenceURLPtr          url,
            const ReportedServices  &services,
-           const ReportedProcesses &processes):
+           const ReportedProcesses &processes,
+           const Name              &name):
   ip_(ip),
   mask_(*mask),
   os_(os),
+  name_(name),
   url_(url),
   services_(services),
   processes_(processes)
@@ -62,7 +66,7 @@ const Host::OperatingSystem &Host::getOperatingSystem(void) const
   return os_;
 }
 
-const Host::Name *Host::getName(void) const
+const Host::Name &Host::getName(void) const
 {
   // although it looks as returing pointer to non-thread safe code, it is fine, since
   // this pointer may be ither NULL (always thread-correct) or exact value, that
@@ -70,7 +74,7 @@ const Host::Name *Host::getName(void) const
   // this pointer may transit NULL->0xC0DE only once and will have the same value
   // until this object lives.
   Base::Threads::Lock lock(mutex_);
-  return name_.get();
+  return name_;
 }
 
 const ReferenceURL *Host::getReferenceURL(void) const
@@ -96,7 +100,7 @@ bool Host::operator==(const Host &other) const
     return false;
   if( getOperatingSystem()!=other.getOperatingSystem() )
     return false;
-  if( !Base::ViaPointer::equal( getName(), other.getName() ) )
+  if( getName()!=other.getName() )
     return false;
   if( !Base::ViaPointer::equal( getReferenceURL(), other.getReferenceURL() ) )
     return false;
@@ -128,7 +132,7 @@ void Host::setName(const Name &name)
     throw Exception(SYSTEM_SAVE_LOCATION, "host's name already resolved");
 
   // add new host entry
-  name_.reset( new Name(name) );
+  name_=name;
   assert( name_.get()!=NULL );
 }
 

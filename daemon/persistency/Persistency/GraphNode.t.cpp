@@ -35,16 +35,11 @@ struct TestClass: private TestBase
                                      0,
                                      makeNewReferenceURL(),
                                      Timestamp() ) );
-    GraphNode::ChildrenVector vec;
+    NodeChildrenVector vec( makeLeaf(), makeLeaf() );
     for(int i=0; i<extraNodes; ++i)
       vec.push_back( makeLeaf() );
 
-    return GraphNodePtrNN( new GraphNode(ma,
-                                         conn_,
-                                         t_,
-                                         makeLeaf(),
-                                         makeLeaf(),
-                                         vec) );
+    return GraphNodePtrNN( new GraphNode(ma, conn_, t_, vec) );
   }
 
   GraphNodePtrNN makeLeaf(void)
@@ -65,6 +60,12 @@ struct TestClass: private TestBase
     return conn_->metaAlert( gn->getMetaAlert(), t_);
   }
 
+  template<typename T>
+  void ignore(const T &) const
+  {
+    // helper to supress compierl warnign about unsued variables.
+  }
+
   MetaAlertPtrNN      ma1_;
   MetaAlertPtrNN      ma2_;
   IO::ConnectionPtrNN conn_;
@@ -74,7 +75,6 @@ struct TestClass: private TestBase
   GraphNodePtrNN      node_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -212,7 +212,8 @@ void testObj::test<9>(void)
                                    0,
                                    makeNewReferenceURL(),
                                    Timestamp() ) );
-  const GraphNode gn(ma, conn_, t_, makeLeaf(), makeLeaf() );
+  const NodeChildrenVector vec( makeLeaf(), makeLeaf() );
+  const GraphNode          gn(ma, conn_, t_, vec);
   ensure_equals("invalid children count", childrenCount(gn), 2);
 }
 
@@ -403,6 +404,44 @@ void testObj::test<21>(void)
   GraphNodePtrNN child=makeNode();
   node->addChild(child, *makeIO(node) );
   TestHelpers::checkEquality(*node, *makeNode() );
+}
+
+// test get meta-alert - const version.
+template<>
+template<>
+void testObj::test<22>(void)
+{
+  const GraphNodePtrNN  n =makeNode();
+  const MetaAlert      &ma=n->getMetaAlert();   // smoke test
+  ignore(ma);
+}
+
+// test get alert - const version.
+template<>
+template<>
+void testObj::test<23>(void)
+{
+  const GraphNodePtrNN  n=makeLeaf();
+  const Alert          &a=n->getAlert();        // smoke test
+  ignore(a);
+}
+
+// test get alert on node - const version.
+template<>
+template<>
+void testObj::test<24>(void)
+{
+  const GraphNodePtrNN  n=makeNode();
+  ensure("pre-condition failed", !n->isLeaf() );
+  try
+  {
+    n->getAlert();
+    fail("getAlert() const - didn't throw on non-leaf object");
+  }
+  catch(const ExceptionNotLeaf &)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut

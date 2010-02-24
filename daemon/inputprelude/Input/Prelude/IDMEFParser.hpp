@@ -42,12 +42,11 @@ public:
   Persistency::Analyzer getAnalyzer() const;
 
 
-private:    
+private:
   idmef_alert_t *alert_;
 };
 
-}
-}
+} // namespace Prelude
+} // namespace Input
 
 #endif
-

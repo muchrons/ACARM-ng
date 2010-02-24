@@ -32,7 +32,6 @@ const Host::Netmask_v6::bytes_type mask6_bytes={ {
                                                  } };
 
 AnalyzerPtrNN makeNewAnalyzer(const char *name="some analyzer");
-AnalyzerPtrNN makeNewAnalyzer(const char *name, HostPtr host);
 
 AlertPtrNN makeNewAlert(void);
 

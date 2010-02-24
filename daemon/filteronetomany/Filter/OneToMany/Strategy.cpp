@@ -3,8 +3,7 @@
  *
  */
 #include "Filter/OneToMany/Strategy.hpp"
-
-// TODO
+#include "Filter/OneToMany/Operations.hpp"
 
 namespace Filter
 {
@@ -12,15 +11,19 @@ namespace OneToMany
 {
 
 Strategy::Strategy(void):
-  Filter::Strategy<detail::Data>("onetomany")
+  Filter::HostCommon::Strategy("onetomany", 4*60)
 {
 }
 
-void Strategy::processImpl(Node               /*n*/,
-                           NodesTimeoutQueue &/*ntq*/,
-                           BackendProxy      &/*bp*/)
+Persistency::HostPtr Strategy::getReportedHost(const Node node) const
 {
-  // TODO
+  return Operations::getReportedHost(node);
+}
+
+Persistency::MetaAlert::Name Strategy::getMetaAlertName(
+                                        const Persistency::HostPtrNN h) const
+{
+  return Operations::getMetaAlertName(h);
 }
 
 } // namespace OneToMany

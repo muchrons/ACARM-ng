@@ -110,4 +110,13 @@ void testObj::test<7>(void)
   TestHelpers::checkEquality(ls1, ls2);
 }
 
+// test default c-tor
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const LimitedString<10> tmp;
+  ensure_equals("invalid value after default c-tor", tmp.get(), string("") );
+}
+
 } // namespace tut

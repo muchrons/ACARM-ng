@@ -22,20 +22,20 @@ struct TestClass
   TestClass():name_("A stupid string to test ID")
   {
     int ret;
-    idmef_alert_t *alert; 
-    
+    idmef_alert_t *alert;
+
     ret = idmef_message_new(&message);
-    if ( ret < 0 ) 
+    if ( ret < 0 )
       throw Input::Exception(SYSTEM_SAVE_LOCATION,"Cannot create new IDMEF message.");
-    
+
     ret = idmef_message_new_alert(message, &alert);
     if ( ret < 0 )
       throw Input::Exception(SYSTEM_SAVE_LOCATION,"Cannot create new ALERT.");
-    
+
     prelude_string_t *string1,*string2;
     idmef_alert_new_messageid(alert,&string1);
     prelude_string_new_ref(&string2,name_);
-    idmef_alert_set_messageid(alert,string2);    
+    idmef_alert_set_messageid(alert,string2);
   }
 
   idmef_message_t * getMessage()
@@ -54,11 +54,10 @@ struct TestClass
   }
 
 private:
-  idmef_message_t *message; 
+  idmef_message_t *message;
   const char *name_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -72,16 +71,16 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  TestClass tc; 
+  TestClass   tc;
   IDMEFParser ip(tc.getMessage());
-  ensure(ip.getName()==Persistency::detail::LimitedNULLString<64>(tc.getName()));  
+  ensure(ip.getName()==Persistency::detail::LimitedNULLString<64>(tc.getName()));
 }
 
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  TestClass tc; 
+  TestClass tc;
 
   idmef_alert_t *alert=tc.getAlert();
 
@@ -90,13 +89,11 @@ void testObj::test<2>(void)
   tm timeptr=to_tm(time);
   const time_t t=mktime(&timeptr);
   idmef_time_t *idmeftime;
-  idmef_time_new_from_time(&idmeftime,&t);  
+  idmef_time_new_from_time(&idmeftime,&t);
   idmef_alert_set_create_time(alert,idmeftime);
-    
+
   IDMEFParser ip(tc.getMessage());
   ensure(strcmp(to_simple_string(ip.getCreateTime()).c_str(),time_char)==0);
 }
-
-
 
 } // namespace tut
