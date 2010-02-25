@@ -50,7 +50,7 @@ void Alert::saveImpl(Transaction &t)
 
 void Alert::saveHosts(EntrySaver                 &es,
                DataBaseID                        alertID,
-               enum                              host_type type,
+               host_type                         type,
                Persistency::Alert::ReportedHosts &hosts)
 {
   for(Persistency::Alert::ReportedHosts::iterator it = hosts.begin(); it!=hosts.end() ; ++it)

@@ -39,7 +39,7 @@ private:
    */
   virtual void saveImpl(Transaction &t);
 
-  enum host_type{SRC, DST} host_type;
+  typedef enum host_type{SRC, DST} host_type;
   /** \brief save target or source hosts.
    *  \param es      EntrySaver object
    *  \param alertID ID of Alert
@@ -48,7 +48,7 @@ private:
    */
   void saveHosts(EntrySaver                        &es,
                  DataBaseID                        alertID,
-                 enum                              host_type type,
+                 host_type                         type,
                  Persistency::Alert::ReportedHosts &hosts);
 
   DBHandlerPtrNN dbHandler_;

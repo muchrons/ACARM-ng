@@ -645,11 +645,12 @@ void testObj::test<15>(void)
   t_.commit();
 }
 
-// TODO: test saving meta-alert with NULL reference url
+// TODO: add tests to check if max/min-length data types does fill in data base.
 template<>
 template<>
 void testObj::test<16>(void)
 {
+
 }
 
 // TODO: test saving service with NULL reference URL
@@ -657,6 +658,29 @@ template<>
 template<>
 void testObj::test<17>(void)
 {
+  ReferenceURLPtr url;
+  const Service ti("mail daemon", 25, "smtp", url );
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  HostPtr host=makeNewHost();
+  const Analyzer anlz("analyzer1", NULL, NULL, NULL);
+  const DataBaseID hostID  = es_.saveHostData(*host);
+  const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
+  const DataBaseID alertID = es_.saveAlert(a);
+  es_.saveAlertToAnalyzers(alertID, anlzID);
+  const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
+  const DataBaseID servID = es_.saveService(thostID,ti);
+
+  stringstream ss;
+
+  ss << "SELECT * FROM reported_services WHERE id_service = " << servID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+
+  ensure("reference URL is not NULL", r[0]["id_ref"].is_null() );
+
+  t_.commit();
+
+
 }
 
 // TODO: add tests to check if max/min-length data types does fill in data base.
@@ -664,9 +688,23 @@ template<>
 template<>
 void testObj::test<18>(void)
 {
+  const MetaAlert::Name name("meta alert");
+  ReferenceURLPtr url;
+  MetaAlert ma(name, 0.22,0.23, url , created_);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
+
+  stringstream ss;
+  ss << "SELECT * FROM meta_alerts WHERE id = " << malertID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(),1);
+
+  ensure("Meta Alert reference URL is not NULL",r[0]["id_ref"].is_null() );
+
+  t_.commit();
+
 }
 
-//TODO: test saving two identical Analyzers
+//test saving two identical Analyzers
 
 template<>
 template<>

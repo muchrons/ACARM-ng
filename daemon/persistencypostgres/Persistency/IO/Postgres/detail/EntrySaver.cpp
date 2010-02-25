@@ -278,7 +278,13 @@ void EntrySaver::saveReportedServiceData(DataBaseID     reportedHostID,
   ss << "INSERT INTO reported_services(id_reported_host, id_service, id_ref) VALUES (";
   ss << reportedHostID << ",";
   ss << serID << ",";
-  Appender::append(ss, s.getReferenceURL()?saveReferenceURL( *s.getReferenceURL() ):NULL);
+  if( s.getReferenceURL()!=NULL )
+  {
+    const DataBaseID urlID=saveReferenceURL( *s.getReferenceURL() );
+    ss << urlID;
+  }
+  else
+    ss << "NULL";
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
@@ -300,7 +306,13 @@ DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
   ss << ",";
   Appender::append(ss, ma.getCertaintyDelta() );
   ss << ",";
-  Appender::append(ss, ma.getReferenceURL()?saveReferenceURL( *ma.getReferenceURL() ):NULL);
+  if( ma.getReferenceURL()!=NULL )
+  {
+    const DataBaseID urlID=saveReferenceURL( *ma.getReferenceURL() );
+    ss << urlID;
+  }
+  else
+    ss << "NULL";
   ss << ",";
   Appender::append(ss, to_simple_string( ma.getCreateTime() ));
   ss << ",";
