@@ -14,6 +14,9 @@ using namespace pqxx;
 using boost::posix_time::to_simple_string;
 using boost::posix_time::to_iso_string;
 
+// TODO: saving ReferenceURL is c&p in 3 places - make this small, helper
+//       f-ction in unnamed namespace (i.e. in this file).
+
 namespace Persistency
 {
 namespace IO
@@ -57,7 +60,7 @@ DataBaseID EntrySaver::getSeverityID(const Alert &a)
 
 bool EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
 {
-  //TODO: finish that
+  // TODO: finish that
   stringstream ss;
   ss << "SELECT * FROM analyzers WHERE name = ";
   Appender::append(ss, a.getName().get() );
@@ -75,6 +78,9 @@ bool EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
     return true;
 }
 
+// TODO: using template for this is a good idea. make this Appender::append<>
+//       specialization for smart pointers, to be sonsistent with already
+//       exisiting code.
 template <typename T>
 std::string EntrySaver::addToSelect(const T *ptr)
 {
@@ -85,9 +91,14 @@ std::string EntrySaver::addToSelect(const T *ptr)
   }
   else
     ss<< " IS NULL";
+  // TODO: void should be returned here - adding returned string to 'ss' makes
+  //       two entries, instead of one.
   return ss.str();
 }
 
+// TODO: using template for this is a good idea. make this Appender::append<>
+//       specialization for smart pointers, to be sonsistent with already
+//       exisiting code.
 std::string EntrySaver::addIPToSelect(const Analyzer::IP *ptr)
 {
   stringstream ss;
@@ -97,6 +108,8 @@ std::string EntrySaver::addIPToSelect(const Analyzer::IP *ptr)
   }
   else
     ss<< " IS NULL";
+  // TODO: void should be returned here - adding returned string to 'ss' makes
+  //       two entries, instead of one.
   return ss.str();
 }
 
@@ -213,10 +226,11 @@ DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
   ss << "INSERT INTO alerts(name,  detect_time, create_time, id_severity, certanity, description) VALUES (";
   Appender::append(ss, a.getName().get() );
   ss << ",";
+  // TODO: use ternary operator for this
   if(a.getDetectionTime()==NULL)
     ss << "NULL";
   else
-  Appender::append(ss, to_iso_string((*a.getDetectionTime() ) ));
+    Appender::append(ss, to_iso_string((*a.getDetectionTime() ) ));
   ss << ",";
   Appender::append(ss, to_iso_string(a.getCreationTime() ) );
   ss << ",";
@@ -233,8 +247,8 @@ DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 
 DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
 {
-  //TODO: Analyzer shoul be unique
-  if(!isAnalyzerInDataBase(a) )
+  // TODO: Analyzer should be unique
+  if( !isAnalyzerInDataBase(a) )
   {
     stringstream ss;
     ss << "INSERT INTO analyzers(name, version, os, ip) VALUES (";
@@ -244,6 +258,7 @@ DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
     ss << ",";
     Appender::append(ss, a.getOS()?a.getOS()->get():NULL );
     ss << ",";
+    // TODO: use ternary operator for this
     if(a.getIP()==NULL)
       ss << "NULL";
     else

@@ -39,6 +39,8 @@ private:
    */
   virtual void saveImpl(Transaction &t);
 
+  // TODO: use System::Enum<> for this.
+  // TODO: keep names uppercase, camel-casing (ex: HostType)
   typedef enum host_type{SRC, DST} host_type;
   /** \brief save target or source hosts.
    *  \param es      EntrySaver object
