@@ -32,6 +32,7 @@ void TestDBAccess::removeAllData(void)
   t.exec("DELETE FROM reported_procs");
   t.exec("DELETE FROM reported_services");
   t.exec("DELETE FROM reported_hosts");
+  t.exec("DELETE FROM alert_analyzers");
   t.exec("DELETE FROM alerts");
   t.exec("DELETE FROM analyzers");
   t.exec("DELETE FROM hosts");

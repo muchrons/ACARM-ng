@@ -7,7 +7,7 @@
 
 #include "Persistency/IO/MetaAlert.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
-
+#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 // TODO: test
 
 namespace Persistency
