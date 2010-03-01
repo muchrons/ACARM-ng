@@ -2,6 +2,9 @@
  * CheckHosts.hpp
  *
  */
+#ifndef INCLUDE_FILTER_HOSTCOMON_CHECKHOSTS_HPP_FILE
+#define INCLUDE_FILTER_HOSTCOMON_CHECKHOSTS_HPP_FILE
+
 #include "Filter/HostCommon/Strategy.hpp"
 
 namespace Filter
@@ -60,3 +63,5 @@ private:
 
 } // namespace HostCommon
 } // namespace Filter
+
+#endif
