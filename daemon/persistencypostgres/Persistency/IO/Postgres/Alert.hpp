@@ -38,18 +38,19 @@ private:
    *  \param t  associated transaction.
    */
   virtual void saveImpl(Transaction &t);
-  // handler to functions (saveSourceHost, saveTargetHost) in detail::EntrySaver class
-  // TODO: please avoid using pointers to methods whenever possible.
-  typedef DataBaseID (EntrySaver::*PtrEntrySaver)(DataBaseID, DataBaseID, const Persistency::Host &);
+
+  // TODO: use System::Enum<> for this.
+  // TODO: keep names uppercase, camel-casing (ex: HostType)
+  typedef enum host_type{SRC, DST} host_type;
   /** \brief save target or source hosts.
    *  \param es      EntrySaver object
    *  \param alertID ID of Alert
-   *  \param Ptr     pointer to function which saves Hosts.
+   *  \param type    type of saved Host (source or target).
    *  \param Hosts   Hosts to be saved.
    */
   void saveHosts(EntrySaver                        &es,
                  DataBaseID                        alertID,
-                 PtrEntrySaver                     ptr,
+                 host_type                         type,
                  Persistency::Alert::ReportedHosts &hosts);
 
   DBHandlerPtrNN dbHandler_;

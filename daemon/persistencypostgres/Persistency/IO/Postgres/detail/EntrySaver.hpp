@@ -44,15 +44,13 @@ public:
    */
   DataBaseID saveProcess(DataBaseID reportedHostID, const Process &p);
   /** \brief saves alert data to data base
-   *  \param AnalyzerID ID of Analyzer, that this Alert should be assigned to.
    *  \param a          Alert to be saved.
    */
-  DataBaseID saveAlert(DataBaseID AnalyzerID, const Persistency::Alert &a);
+  DataBaseID saveAlert(const Persistency::Alert &a);
   /** \brief saves  analyzer data to data base
-   *  \param HostID ID of Host, that this Analyzes should be assigned to.
    *  \param a      Analyzer to be saved.
    */
-  DataBaseID saveAnalyzer(const DataBaseID *HostID, const Analyzer &a);
+  DataBaseID saveAnalyzer(const Analyzer &a);
   /** \brief save destination host data to data base
    *  \param hostID  ID of Host,
    *  \param alertID ID of Alert, that destination Host shoul be assigned to.
@@ -83,13 +81,26 @@ public:
    *  \param malertID ID of Meta Alert
    */
   void saveAlertToMetaAlertMap(DataBaseID alertID, DataBaseID malertID);
+  /** \brief save Alert to Analyzers map
+   *  \param alertID ID of Alert
+   *  \param anlzID  ID of Analyzer
+   */
+  void saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID);
+
+  //TODO
+  //DataBaseID getMetaAlertID(MetaAlert &ma);
+  //DataBaseID getAlertID(Alert &a);
   // TODO
 
 
 private:
   DataBaseID getID(const std::string &seqName);
   DataBaseID getSeverityID(const Alert &a);
+  bool isAnalyzerInDataBase(const Analyzer &a);
+  std::string addIPToSelect(const Analyzer::IP *ptr);
 
+  template <typename T>
+  std::string addToSelect(const T *ptr);
   DataBaseID saveProcessData(const Process &p);
   DataBaseID saveReportedProcessData(DataBaseID     reportedHostID,
                                      DataBaseID     procID,
@@ -98,8 +109,6 @@ private:
 
   DataBaseID saveAlertData(const Alert &a);
   DataBaseID saveMetaAlertData(const MetaAlert &ma);
-
-  DataBaseID saveAnalyzerData(const Analyzer &a);
 
   DataBaseID saveReportedHostData(DataBaseID               alertID,
                                   DataBaseID               hostID,

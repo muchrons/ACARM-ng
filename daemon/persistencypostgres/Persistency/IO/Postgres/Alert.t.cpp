@@ -13,7 +13,7 @@
 
 // TODO: tests
 
-/* TODO: THIS IS COMMENTED OUT SINCE IMPLEMENTATION OF ANALYZER CHANGED - UPDATE THIS CODE ASAP
+// TODO: THIS IS COMMENTED OUT SINCE IMPLEMENTATION OF ANALYZER CHANGED - UPDATE THIS CODE ASAP
 using Persistency::IO::Transaction;
 using namespace Persistency;
 using namespace Persistency::IO::Postgres;
@@ -28,8 +28,11 @@ struct TestClass
 {
   TestClass(void):
     name_("some name"),
-    analyzer_( new Analyzer("analyzer name", makeNewHost() ) ),
-    nullanalyzer_( new Analyzer("analyzer name", HostPtr() )),
+    // TODO: remove DEADC0DE :)
+    //analyzer_( new Analyzer("analyzer name", makeNewHost() ) ),
+    //analyzers_( analyzer_ ),
+    nullanalyzer_( new Analyzer("analyzer name", NULL, NULL, NULL )),
+    nullanalyzers_( nullanalyzer_ ),
     detected_(from_iso_string("2001109T231100")),
     created_(from_iso_string("20011010T231100")),
     severity_(SeverityLevel::INFO),
@@ -65,8 +68,12 @@ struct TestClass
   }
 
   const Persistency::Alert::Name          name_;
-  const AnalyzerPtr                       analyzer_;
-  const AnalyzerPtr                       nullanalyzer_;
+  // TODO: remove DEADC0DE :)
+  //const AnalyzerPtrNN                     analyzer_;
+  //Persistency::Alert::SourceAnalyzers     analyzers_;
+  // TODO: inadequate variables' names (nullanalyzer is never NULL actually)
+  const AnalyzerPtrNN                     nullanalyzer_;
+  Persistency::Alert::SourceAnalyzers     nullanalyzers_;
   const Timestamp                         detected_;
   const Timestamp                         created_;
   const Severity                          severity_;
@@ -97,17 +104,23 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, analyzer_, &detected_, created_, severity_,                                                                   certainty_, description_, sourceHosts_, targetHosts_));
+  // TODO: fix this test
+  /*
+  Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, analyzers_, &detected_, created_, severity_,
+                                                         certainty_, description_, sourceHosts_, targetHosts_));
   Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
   alert.save();
+  */
 }
 
-//trying save Alert with NULL Host in Analyzer
+// TODO: description is outdated
+// trying save Alert with NULL Host in Analyzer
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, nullanalyzer_, &detected_, created_, severity_,                                                                   certainty_, description_, sourceHosts_, targetHosts_));
+  Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, nullanalyzers_, &detected_, created_, severity_,
+                                                         certainty_, description_, sourceHosts_, targetHosts_));
   Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
   alert.save();
 }
@@ -117,10 +130,10 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, nullanalyzer_, NULL, created_, severity_,                                                                   certainty_, description_, sourceHosts_, targetHosts_));
+  Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, nullanalyzers_, NULL, created_, severity_,
+                                                         certainty_, description_, sourceHosts_, targetHosts_));
   Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
   alert.save();
 }
 
 } // namespace tut
-*/

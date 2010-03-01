@@ -12,6 +12,7 @@ GRANT ALL ON TABLE
     analyzers,
     severities,
     alerts,
+    alert_analyzers,
     reported_hosts,
     reported_services,
     reported_procs,
