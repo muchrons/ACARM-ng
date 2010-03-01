@@ -163,7 +163,7 @@ private:
       LOGMSG_DEBUG_S(StrategyBase::log_)
         << "adding node '" << thisEntry.node_->getMetaAlert().getName().get()
         << "' to already correlated '"
-        << it->node_->getMetaAlert()->getName().get();
+        << it->node_->getMetaAlert()->getName().get() << "'";
       bp.addChild(it->node_, thisEntry.node_);      // add new alert to already
     }                                               // correlated in one set
 
