@@ -1,0 +1,248 @@
+/*
+ * Strategy.t.cpp
+ *
+ */
+#include <tut.h>
+#include <string>
+#include <cassert>
+
+#include "Filter/Simple/Strategy.hpp"
+#include "Persistency/IO/BackendFactory.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
+
+using namespace std;
+using namespace Persistency;
+using namespace Filter::Simple;
+using namespace TestHelpers::Persistency;
+
+namespace
+{
+
+struct TestData
+{
+}; // struct TestData
+
+struct TestStrategy: public Strategy<TestData>
+{
+  TestStrategy(bool isInteresting=true,
+               bool canCorrelate =true,
+               int  skipCorrelations=0):
+    Strategy<TestData>("teststrategy", 42),
+    isInteresting_(isInteresting),
+    canCorrelate_(canCorrelate),
+    skipCorrelations_(skipCorrelations)
+  {
+  }
+
+  virtual NodeEntry makeThisEntry(const Node n) const
+  {
+    return NodeEntry(n, TestData() );
+  }
+
+  virtual bool isEntryInteresting(const NodeEntry &/*thisEntry*/) const
+  {
+    return isInteresting_;
+  }
+
+  virtual Persistency::MetaAlert::Name getMetaAlertName(
+                                const NodeEntry /*thisEntry*/,
+                                const NodeEntry /*otherEntry*/) const
+  {
+    return Persistency::MetaAlert::Name("hakuna matata");
+  }
+
+  virtual bool canCorrelate(const NodeEntry /*thisEntry*/,
+                            const NodeEntry /*otherEntry*/) const
+  {
+    if( skipCorrelations_-- > 0 )
+      return false;
+    return canCorrelate_;
+  }
+
+  bool        isInteresting_;
+  bool        canCorrelate_;
+  mutable int skipCorrelations_;
+}; // struct TestStrategy
+
+
+
+struct TestClass: private TestHelpers::Persistency::TestStubs
+{
+  TestStrategy::ChangedNodes changed_;
+};
+
+typedef tut::test_group<TestClass> factory;
+typedef factory::object testObj;
+
+factory tf("Filter/Simple/Strategy");
+} // unnamed namespace
+
+
+namespace tut
+{
+
+// test runs when hosts differ
+template<>
+template<>
+void testObj::test<1>(void)
+{
+  TestStrategy ts(true, false);
+  for(int i=0; i<3; ++i)
+  {
+    ts.process( makeNewLeaf(), changed_ );
+    ensure_equals("something has cahnged", changed_.size(), 0);
+  }
+}
+
+// test running when self-entry has been found
+template<>
+template<>
+void testObj::test<2>(void)
+{
+  TestStrategy       ts;
+  TestStrategy::Node n=makeNewLeaf();
+  for(int i=0; i<2; ++i)
+  {
+    ts.process(n, changed_);
+    ensure_equals("some nodes have been changed", changed_.size(), 0);
+  }
+}
+
+// tests if hosts, that has been marked as interesting are stored.
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  TestStrategy       ts(true, false);
+  TestStrategy::Node n1=makeNewLeaf();
+  assert( n1->isLeaf() );
+  TestStrategy::Node n2=makeNewLeaf();
+  assert( n2->isLeaf() );
+  TestStrategy::Node n3=makeNewLeaf();
+  assert( n3->isLeaf() );
+
+  ts.process(n1, changed_);
+  ensure_equals("some nodes have been changed in first run", changed_.size(), 0);
+
+  ts.process(n2, changed_);
+  ensure_equals("some nodes have been changed in second run", changed_.size(), 0);
+
+  ts.canCorrelate_=true;
+  ts.process(n3, changed_);
+  ensure_equals("correlation failed", changed_.size(), 1);
+  // check if changed element is new one indeed
+  ensure("node 1 returned", n1.get()!=changed_.at(0).get() );
+  ensure("node 2 returned", n2.get()!=changed_.at(0).get() );
+  ensure("node 3 returned", n3.get()!=changed_.at(0).get() );
+
+  // check if proper one changed
+  ensure("invalid leaf returned", !changed_.at(0)->isLeaf() );
+
+  // check check if children are valid
+  GraphNode::const_iterator it =changed_.at(0)->begin();
+  GraphNode::const_iterator end=changed_.at(0)->end();
+  ensure("no children (?!) present", it!=end);
+  ensure("first child not from collection", it->get()==n1.get() );
+  ++it;
+  ensure("only one child present", it!=end);
+  ensure("second child not from paramter", it->get()==n3.get() );
+  ++it;
+  ensure("too many children", it==end);
+}
+
+// correlate to already exisitng node
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  TestStrategy       ts;
+  TestStrategy::Node n1=makeNewNode();
+  TestStrategy::Node n2=makeNewLeaf();
+
+  ts.process(n1, changed_);
+  ensure_equals("some nodes have been changed in first run", changed_.size(), 0);
+
+  ts.process(n2, changed_);
+  ensure_equals("correlation ot already existing node failed", changed_.size(), 1);
+
+  // check if changed node is first one.
+  ensure("node different than node1 returned", n1.get()==changed_.at(0).get() );
+}
+
+namespace
+{
+struct ThrowStrategy: public TestStrategy
+{
+  ThrowStrategy(void):
+    TestStrategy(true, true, 1),
+    throwCount_(3)
+  {
+  }
+
+  virtual Persistency::MetaAlert::Name getMetaAlertName(
+                                      const NodeEntry /*thisEntry*/,
+                                      const NodeEntry /*otherEntry*/) const
+
+  {
+    if( throwCount_-- > 0 )
+      throw Filter::Exception(SYSTEM_SAVE_LOCATION, "just", "testing");
+    return "alicehasacat";  // return something
+  }
+
+  mutable int throwCount_;
+}; // struct ThrowStrategy
+} // unnamed namespace
+
+// test if exceptions inside the loop does not break anything
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ThrowStrategy ts;
+  // add two elements
+  for(int i=0; i<2; ++i)
+  {
+    ts.process( makeNewLeaf(), changed_ );
+    ensure_equals("some nodes have been changed / 1", changed_.size(), 0);
+  }
+
+  // nothing should happen here, since two exceptions are thrown
+  ts.process( makeNewLeaf(), changed_ );
+  ensure_equals("some nodes have been changed / 2", changed_.size(), 0);
+
+  // this time exception should be thrown only for the first element, it should
+  // be logged and then next element should be correlated.
+  ts.process( makeNewLeaf(), changed_ );
+  ensure_equals("correlation failed", changed_.size(), 1);
+}
+
+// test if name is set properly
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  TestStrategy ts;
+  ts.process( makeNewLeaf(), changed_ );
+  ts.process( makeNewLeaf(), changed_ );
+  ensure_equals("nothing changed (no correlation has been done)",
+                changed_.size(), 1);
+  ensure_equals( "invalid meta-alert name",
+                 string( changed_.at(0)->getMetaAlert()->getName().get() ),
+                 string( "hakuna matata" ) );
+}
+
+// test run when entries are not interesting
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  TestStrategy ts(false);
+  for(int i=0; i<3; ++i)
+  {
+    ts.process( makeNewLeaf(), changed_ );
+    ensure_equals("something has cahnged", changed_.size(), 0);
+  }
+}
+
+} // namespace tut
