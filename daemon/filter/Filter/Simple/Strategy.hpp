@@ -24,12 +24,24 @@ namespace Simple
  *  this can be easily generated and minimized to set of basic functions that
  *  forwards calls to specific implementations, while keeping common parts
  *  separated.
+ *
+ *  in order to use this concretisation one must derive from this class and
+ *  implementing all pure-virtual methods, but do NOT overwrite virtual
+ *  members, that have been already defined.
  */
-template<typedef TUserData>
+template<typename TUserData>
 class Strategy: public Filter::Strategy<TUserData>
 {
 private:
-  typedef Filter::Strategy<TUserData> Base;
+  typedef Filter::Strategy<TUserData>      Base;
+
+public:
+  /** \brief helper forward of Base's type. */
+  typedef typename Base::NodeEntry         NodeEntry;
+  /** \brief helper forward of Base's type. */
+  typedef typename Base::Node              Node;
+  /** \brief helper forward of Base's type. */
+  typedef typename Base::NodesTimeoutQueue NodesTimeoutQueue;
 
 protected:
   /** \brief create instance.
@@ -70,6 +82,7 @@ private:
                             const NodeEntry otherEntry) const = 0;
 
 
+  // this is the core - do NOT overwrite this method
   virtual void processImpl(Node               n,
                            NodesTimeoutQueue &ntq,
                            BackendProxy      &bp)
@@ -81,7 +94,7 @@ private:
       return;
 
     // check if it can be correlated with other nodes
-    for(NodesTimeoutQueue::iterator it=ntq.begin(); it!=ntq.end(); ++it)
+    for(typename NodesTimeoutQueue::iterator it=ntq.begin(); it!=ntq.end(); ++it)
     {
       try
       {
@@ -91,18 +104,16 @@ private:
       }
       catch(const Commons::Exception &ex)
       {
-        LOGMSG_INFO_S(log_) << "exception ("
-                            << ex.getTypeName()
-                            << ") has been thrown: '"
-                            << ex.what()
-                            << "' - proceeding with processing next element";
+        LOGMSG_INFO_S(Base::log_) << "exception (" << ex.getTypeName()
+                                  << ") has been thrown: '" << ex.what()
+                                  << "' - proceeding with processing next element";
         // on error, continue with next element...
       }
       catch(const std::exception &ex)
       {
-        LOGMSG_INFO_S(log_) << "exception (std::exception) has been thrown: '"
-                            << ex.what()
-                            << "' - proceeding with processing next element";
+        LOGMSG_INFO_S(Base::log_) << "exception (std::exception) has been thrown: '"
+                                  << ex.what()
+                                  << "' - proceeding with processing next element";
         // on error, continue with next element...
       }
     } // for(nodes in timeout queue)
@@ -112,10 +123,10 @@ private:
     ntq.update(thisEntry, getTimeout() );
   }
 
-  bool tryCorrelate(NodesTimeoutQueue           &ntq,
-                    BackendProxy                &bp,
-                    const NodeEntry             &thisEntry,
-                    NodesTimeoutQueue::iterator  it)
+  bool tryCorrelate(NodesTimeoutQueue                    &ntq,
+                    BackendProxy                         &bp,
+                    const NodeEntry                      &thisEntry,
+                    typename NodesTimeoutQueue::iterator  it)
   {
     // skip self
     if( *it==thisEntry )
@@ -130,15 +141,16 @@ private:
     if( it->node_->isLeaf() )
     {
       const BackendProxy::ChildrenVector cv(it->node_, thisEntry.node_);
-      const MetaAlertPtrNN ma( new MetaAlert( getMetaAlertName(thisEntry, *it),
-                                              MetaAlert::SeverityDelta(0),
-                                              MetaAlert::CertaintyDelta(0),
-                                              ReferenceURLPtr(),
-                                              Timestamp() ) );
+      const Persistency::MetaAlertPtrNN ma(
+                  new Persistency::MetaAlert( getMetaAlertName(thisEntry, *it),
+                                              Persistency::MetaAlert::SeverityDelta(0),
+                                              Persistency::MetaAlert::CertaintyDelta(0),
+                                              Persistency::ReferenceURLPtr(),
+                                              Persistency::Timestamp() ) );
       // TODO: rework this in order to be able to continue correlating after
       //       removal of sample element.
       ntq.dismiss(it);                                // mark source element as already used
-      GraphNodePtrNN  newNode=bp.correlate(ma, cv);   // add new, correlated element
+      Persistency::GraphNodePtrNN newNode=bp.correlate(ma, cv); // add new, correlated element
       const NodeEntry newEntry(newNode, thisEntry.t_);// use the same reported host entry
       ntq.update(newEntry, getTimeout() );            // add newly correlated entry
     }
