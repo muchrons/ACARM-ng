@@ -86,6 +86,10 @@ public:
    *  \param anlzID  ID of Analyzer
    */
   void saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID);
+  
+  //TODO
+  //DataBaseID getMetaAlertID(MetaAlert &ma);
+  //DataBaseID getAlertID(Alert &a);
   // TODO
 
 

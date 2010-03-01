@@ -344,6 +344,14 @@ void EntrySaver::saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID)
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
+
+//TODO
+/*
+DataBaseID EntrySaver::getMetaAlertID(MetaAlert &ma)
+{
+
+}
+*/
 } // namespace detail
 } // namespace Postgres
 } // namespace IO
