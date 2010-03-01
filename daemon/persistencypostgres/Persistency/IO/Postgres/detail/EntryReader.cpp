@@ -27,6 +27,8 @@ EntryReader::EntryReader(Transaction &t, DBHandler &dbh):
   t_(t)
 {
 }
+
+//TODO: work in progress
 /*
 Alert &EntryReader::readAlert(DataDaseID alertID)
 {

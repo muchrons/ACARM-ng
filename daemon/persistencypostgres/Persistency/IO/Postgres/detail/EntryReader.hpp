@@ -37,7 +37,7 @@ public:
    *  \param dbh data base handler object.
    */
   EntryReader(Transaction &t, DBHandler &dbh);
-
+  //TODO: work in progress
   //Alert &readAlert(DataDaseID alertID);
 
   //Alert::SourceAnalyzers &getAnalyzers(DataBaseID alertID);
