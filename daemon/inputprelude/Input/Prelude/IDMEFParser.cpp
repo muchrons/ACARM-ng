@@ -31,13 +31,27 @@ Persistency::Timestamp IDMEFParser::getCreateTime() const
   const time_t t=idmef_time_get_sec(time);
   return boost::posix_time::from_time_t(t);
 }
-
+  /*
 Persistency::Analyzer IDMEFParser::getAnalyzer() const
 {  
   const idmef_analyzer_t *ptr;
   IDMEFParserAnalyzer an(alert_);
-  return AnalyzerPtrNN(new Analyzer(an.getName(),getHost()));
+  return AnalyzerPtrNN(new Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
 }
+  */
+
+Persistency::SourceAnalyzers IDMEFParser::getAnalyzers() const
+{
+  char buf[128];
+  idmef_analyzer_t *elem = NULL;
+  int cnt = 0, len;
+  
+  while ( (elem = idmef_alert_get_next_analyzer(ptr, elem)) ) 
+    {
+      IDMEFParserAnalyzer an(elem);      
+    }
+}
+
 
 } //namespace Prelude
 } //namespace Input

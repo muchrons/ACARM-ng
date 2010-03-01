@@ -26,10 +26,13 @@ public:
    * @brief c-tor creates parser object from idmef_message_t
    */
   IDMEFParser(idmef_message_t *msg);
+
+
+private:
   /**
    * @brief gets host name
    */
-  Persistency::Host::Name getName() const;
+  Persistency::Alert::Name getName() const;
 
   /**
    * @brief gets alert creation time
@@ -37,9 +40,9 @@ public:
   Persistency::Timestamp getCreateTime() const;
 
   /**
-   * @brief gets Analyzer
+   * @brief gets list of analyzers
    */
-  Persistency::Analyzer getAnalyzer() const;
+  Persistency::SourceAnalyzers getAnalyzers() const;
 
 
 private:
