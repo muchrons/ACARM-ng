@@ -68,7 +68,7 @@ private:
   //
 
   virtual NodeEntry makeThisEntry(const Node n) const;
-  virtual bool isEntryInteresting(const NodeEntry &thisEntry) const;
+  virtual bool isEntryInteresting(const NodeEntry thisEntry) const;
   virtual Persistency::MetaAlert::Name getMetaAlertName(
                                               const NodeEntry thisEntry,
                                               const NodeEntry otherEntry) const;

@@ -64,7 +64,7 @@ private:
    *  \param thisEntry entry to be checked.
    *  \return true if entry is interesting, false otherwise.
    */
-  virtual bool isEntryInteresting(const NodeEntry &thisEntry) const = 0;
+  virtual bool isEntryInteresting(const NodeEntry thisEntry) const = 0;
   /** \brief call gets name for correlated meta-alert for a given entries.
    *  \param thisEntry  entry created during this run.
    *  \param otherEntry entry that has been correlated with.
