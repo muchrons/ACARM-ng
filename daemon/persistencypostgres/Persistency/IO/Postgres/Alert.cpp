@@ -48,17 +48,16 @@ void Alert::saveImpl(Transaction &t)
 
 }
 
-void Alert::saveHosts(EntrySaver                 &es,
-               DataBaseID                        alertID,
-               host_type                         type,
-               Persistency::Alert::ReportedHosts &hosts)
+void Alert::saveHosts(EntrySaver                        &es,
+                      DataBaseID                         alertID,
+                      host_type                          type,
+                      Persistency::Alert::ReportedHosts &hosts)
 {
   for(Persistency::Alert::ReportedHosts::iterator it = hosts.begin(); it!=hosts.end() ; ++it)
   {
     const DataBaseID hostID = es.saveHostData(*it->get() );
     DataBaseID       reportedHostID;
     // save reported host
-    // TODO: this variable should be const
     switch(type)
     {
       case SRC:
@@ -67,22 +66,22 @@ void Alert::saveHosts(EntrySaver                 &es,
       case DST:
         reportedHostID = es.saveTargetHost(hostID, alertID, *it->get() );
       break;
+      // TODO: add default case with proper assertion
     }
-    //get reported services from host
-    Persistency::Host::ReportedServices Services((*it->get()).getReportedServices() );
-    //get reported processes from host
+
+    // get reported services from host
     // TODO: this variable should be const reference
-    Persistency::Host::ReportedProcesses Processes((*it->get()).getReportedProcesses() );
-
+    // TODO: keep variable names lowercase
+    Persistency::Host::ReportedServices Services((*it->get()).getReportedServices() );
     for(Persistency::Host::ReportedServices::iterator it_s = Services.begin(); it_s!=Services.end(); ++it_s)
-    {
       es.saveService(reportedHostID, *it_s->get() );
-    }
 
+    // get reported processes from host
+    // TODO: this variable should be const reference
+    // TODO: keep variable names lowercase
+    Persistency::Host::ReportedProcesses Processes((*it->get()).getReportedProcesses() );
     for(Persistency::Host::ReportedProcesses::iterator it_p = Processes.begin(); it_p!=Processes.end(); ++it_p)
-    {
       es.saveProcess(reportedHostID, *it_p->get());
-    }
   }
 }
 
