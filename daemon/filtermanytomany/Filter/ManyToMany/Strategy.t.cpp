@@ -3,7 +3,6 @@
  *
  */
 #include <tut.h>
-/*
 #include <string>
 #include <cassert>
 
@@ -15,7 +14,6 @@ using namespace std;
 using namespace Persistency;
 using namespace Filter::ManyToMany;
 using namespace TestHelpers::Persistency;
-*/
 
 namespace
 {
@@ -42,7 +40,7 @@ struct TestStrategy: public Strategy
 #endif
 
 
-struct TestClass/*: private CommonTestBase*/
+struct TestClass: private CommonTestBase
 {
   /*
   AlertPtrNN makeAlertWithHost(const char *host, const char *os) const
