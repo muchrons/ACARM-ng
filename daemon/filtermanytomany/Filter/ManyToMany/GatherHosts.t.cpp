@@ -87,9 +87,12 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  GatherHosts gh( makeLeaf( makeAlert(NULL, NULL, NULL, NULL) ) );
-  ensure_equals("source hosts found", gh.getSourceHosts().size(), 0);
-  ensure_equals("target hosts found", gh.getTargetHosts().size(), 0);
+  GatherHosts gh( makeNewNode(
+                    makeLeaf( makeAlert("1.2.3.4", "5.6.7.8", "2.3.4.5", "6.7.8.9") ),
+                    makeLeaf( makeAlert("2.3.4.5", "1.2.3.4", "2.3.4.5", "4.3.2.1") ) )
+                );
+  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 3);
+  ensure_equals("target hosts not found", gh.getTargetHosts().size(), 3);
 }
 
 // test returned values
@@ -97,9 +100,15 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  GatherHosts gh( makeLeaf( makeAlert(NULL, NULL, NULL, NULL) ) );
-  ensure_equals("source hosts found", gh.getSourceHosts().size(), 0);
-  ensure_equals("target hosts found", gh.getTargetHosts().size(), 0);
+  const HostPtrNN h1=makeHost("1.2.3.4");
+  const HostPtrNN h2=makeHost("9.8.7.6");
+  GatherHosts gh( makeLeaf( makeAlert("1.2.3.4", NULL, "9.8.7.6", NULL) ) );
+  // check numbers
+  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 1);
+  ensure_equals("target hosts not found", gh.getTargetHosts().size(), 1);
+  // check values
+  ensure("invalid source IP", (*gh.getSourceHosts().begin())->getIP()==h1->getIP() );
+  ensure("invalid target IP", (*gh.getTargetHosts().begin())->getIP()==h2->getIP() );
 }
 
 } // namespace tut

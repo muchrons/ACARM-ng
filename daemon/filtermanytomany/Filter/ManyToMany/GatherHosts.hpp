@@ -21,10 +21,25 @@ namespace ManyToMany
  */
 struct GatherHosts
 {
+private:
+  struct HostSWO
+  {
+    bool operator()(Persistency::HostPtrNN left, Persistency::HostPtrNN right)
+    {
+      // if IPs are equal, we must ensure ahat '!a<b && !b<a' holds, so that
+      // strict-weak-ordering will treat it as equal
+      if( left->getIP()==right->getIP() )
+        return false;
+      // if IPs differ, do normal pointer comparison
+      return left.get() < right.get();
+    }
+  }; // sutrct HostSWO
+
+public:
   /** \brief set of hosts. */
-  typedef std::set<Persistency::HostPtrNN>   HostSet;
+  typedef std::set<Persistency::HostPtrNN, HostSWO> HostSet;
   /** \brief shared poitner to set to avoid copying. */
-  typedef Commons::SharedPtrNotNULL<HostSet> HostSetPtr;
+  typedef Commons::SharedPtrNotNULL<HostSet>        HostSetPtr;
 
   /** \brief creates object's instance.
    *  \param node node to take hosts from;
