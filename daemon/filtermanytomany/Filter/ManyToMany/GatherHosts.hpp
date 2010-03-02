@@ -26,12 +26,7 @@ private:
   {
     bool operator()(Persistency::HostPtrNN left, Persistency::HostPtrNN right)
     {
-      // if IPs are equal, we must ensure ahat '!a<b && !b<a' holds, so that
-      // strict-weak-ordering will treat it as equal
-      if( left->getIP()==right->getIP() )
-        return false;
-      // if IPs differ, do normal pointer comparison
-      return left.get() < right.get();
+      return left->getIP() < right->getIP();
     }
   }; // sutrct HostSWO
 
