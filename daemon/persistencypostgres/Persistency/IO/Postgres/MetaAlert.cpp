@@ -23,10 +23,11 @@ MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
 
 void MetaAlert::saveImpl(Transaction &t)
 {
-  EntrySaver es(t, *dbHandler_);
-  const Persistency::MetaAlert &ma=get();
-  es.saveMetaAlert(ma);
-  // TODO
+  EntrySaver                    es(t, *dbHandler_);
+  const Persistency::MetaAlert &ma = *get();
+  DataBaseID                    maID = es.saveMetaAlert(ma);
+  dbHandler_->getIDCache()->add(get() , maID);
+  // TODO tests
 }
 
 void MetaAlert::markAsTriggeredImpl(Transaction &, const std::string &/*name*/)
@@ -47,21 +48,31 @@ void MetaAlert::markAsUnusedImpl(Transaction &)
 void MetaAlert::updateSeverityDeltaImpl(Transaction &, double /*delta*/)
 {
   // TODO
+  // add to the severity in data base
 }
 
 void MetaAlert::updateCertaintyDeltaImpl(Transaction &, double /*delta*/)
 {
   // TODO
+  // add to the certainty in data base
 }
 
-void MetaAlert::addChildImpl(Transaction &, Persistency::MetaAlertPtrNN /*child*/)
+void MetaAlert::addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child)
 {
-  // TODO
+  // TODO tests
+  EntrySaver es(t, *dbHandler_);
+  DataBaseID nodeID = dbHandler_->getIDCache()->get( get() );
+  DataBaseID childID = dbHandler_->getIDCache()->get( child );
+  es.saveMetaAlertsTree(nodeID, childID);
 }
 
-void MetaAlert::associateWithAlertImpl(Transaction &, Persistency::AlertPtrNN /*alert*/)
+void MetaAlert::associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN alert)
 {
-  // TODO
+  // TODO: tests
+  EntrySaver es(t, *dbHandler_);
+  DataBaseID maID = dbHandler_->getIDCache()->get( get() );
+  DataBaseID alertID = dbHandler_->getIDCache()->get( alert );
+  es.saveAlertToMetaAlertMap(alertID, maID);
 }
 
 } // namespace Postgres

@@ -29,10 +29,10 @@ void Alert::save(void)
   saveImpl(t_);
 }
 
-const Persistency::Alert &Alert::get(void) const
+Persistency::AlertPtrNN Alert::get(void)
 {
   assert(alert_.get()!=NULL);
-  return *alert_;
+  return alert_;
 }
 
 } // namespace IO

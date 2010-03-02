@@ -23,18 +23,19 @@ Alert::Alert(Persistency::AlertPtrNN  alert,
 
 void Alert::saveImpl(Transaction &t)
 {
-  // TODO: THIS IS COMMENTED OUT SINCE IMPLEMENTATION OF ANALYZER CHANGED - UPDATE THIS CODE ASAP
   EntrySaver                             es(t,*dbHandler_);
   //get Alert
-  const Persistency::Alert               &a=get();
+  const Persistency::Alert               &a=*get();
   //save Alert
-  const DataBaseID                       alertID=es.saveAlert(a);
+  DataBaseID                       alertID=es.saveAlert(a);
+  //add Alert to cache
+  dbHandler_->getIDCache()->add(get() , alertID);
   //save source hosts
   Persistency::Alert::ReportedHosts      SourceHosts(a.getReportedSourceHosts() );
-  saveHosts(es, alertID, SRC, SourceHosts);
+  saveHosts(es, alertID, HostType::SRC, SourceHosts);
   //save target hosts
   Persistency::Alert::ReportedHosts      TargetHosts(a.getReportedTargetHosts() );
-  saveHosts(es, alertID, DST, TargetHosts);
+  saveHosts(es, alertID, HostType::DST, TargetHosts);
   //get Analyzers from Alert
   Persistency::Alert::SourceAnalyzers    analyzers(a.getSourceAnalyzers() );
   //save Analyzers
@@ -50,7 +51,7 @@ void Alert::saveImpl(Transaction &t)
 
 void Alert::saveHosts(EntrySaver                        &es,
                       DataBaseID                         alertID,
-                      host_type                          type,
+                      HostType                           type,
                       Persistency::Alert::ReportedHosts &hosts)
 {
   for(Persistency::Alert::ReportedHosts::iterator it = hosts.begin(); it!=hosts.end() ; ++it)
@@ -58,15 +59,19 @@ void Alert::saveHosts(EntrySaver                        &es,
     const DataBaseID hostID = es.saveHostData(*it->get() );
     DataBaseID       reportedHostID;
     // save reported host
-    switch(type)
+    switch( type.toInt() )
     {
-      case SRC:
+      case HostType::SRC:
         reportedHostID = es.saveSourceHost(hostID, alertID, *it->get() );
       break;
-      case DST:
+
+      case HostType::DST:
         reportedHostID = es.saveTargetHost(hostID, alertID, *it->get() );
       break;
-      // TODO: add default case with proper assertion
+
+      default:
+        assert(type.toInt() == 1 || type.toInt() == 2);
+      break;
     }
 
     // get reported services from host

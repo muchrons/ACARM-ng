@@ -30,7 +30,7 @@ public:
   virtual void saveImpl(Persistency::IO::Transaction&)
   {
     ++calls_;
-    tut::ensure("invalid object", &get()==alert_.get() );
+    tut::ensure("invalid object", get().get()==alert_.get() );
   }
 
   Persistency::AlertPtrNN alert_;
@@ -52,7 +52,7 @@ public:
                            const Persistency::Host::Name &/*name*/)
   {
     ++calls_;
-    tut::ensure("invalid host", &get()==host_.get() );
+    tut::ensure("invalid host", get().get()==host_.get() );
   }
 
   Persistency::HostPtr host_;
@@ -67,7 +67,7 @@ public:
     Persistency::IO::MetaAlert(ma, t),
     ma_(ma)
   {
-    tut::ensure("invalid meta alert", &get()==ma_.get() );
+    tut::ensure("invalid meta alert", get().get()==ma_.get() );
 
     for(unsigned int i=0; i<sizeof(called_)/sizeof(called_[0]); ++i)
       called_[i]=0;

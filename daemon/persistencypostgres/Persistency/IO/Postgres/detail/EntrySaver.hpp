@@ -76,20 +76,24 @@ public:
    * \param ma Meta Alert to be saved
    */
   DataBaseID saveMetaAlert(const Persistency::MetaAlert &ma);
+
+  /** \brief save meta alerts tree
+   *  \param nodeID node ID
+   *  \param childID child associated with node
+   */
+  void saveMetaAlertsTree(DataBaseID nodeID, DataBaseID childID);
+
   /** \brief save Alert to Meta Alert map
    *  \param alertID  ID of Alert
    *  \param malertID ID of Meta Alert
    */
   void saveAlertToMetaAlertMap(DataBaseID alertID, DataBaseID malertID);
+
   /** \brief save Alert to Analyzers map
    *  \param alertID ID of Alert
    *  \param anlzID  ID of Analyzer
    */
   void saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID);
-
-  //TODO
-  //DataBaseID getMetaAlertID(MetaAlert &ma);
-  //DataBaseID getAlertID(Alert &a);
   // TODO
 
 
@@ -100,7 +104,7 @@ private:
   std::string addIPToSelect(const Analyzer::IP *ptr);
 
   template <typename T>
-  std::string addToSelect(const T *ptr);
+  void addToSelect(std::stringstream &ss, const T *ptr);
   DataBaseID saveProcessData(const Process &p);
   DataBaseID saveReportedProcessData(DataBaseID     reportedHostID,
                                      DataBaseID     procID,
@@ -119,6 +123,7 @@ private:
   void saveReportedServiceData(DataBaseID     reportedHostID,
                                DataBaseID     serID,
                                const Service &s);
+  void addReferenceURL(std::stringstream &ss, const ReferenceURL *url);
 
   DBHandler   &dbh_;
   Transaction &t_;

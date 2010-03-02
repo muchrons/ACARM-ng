@@ -70,7 +70,7 @@ public:
 protected:
   /** \brief gets read-only access to meta-alert.
    */
-  const Persistency::MetaAlert &get(void) const;
+  Persistency::MetaAlertPtrNN get(void);
 
 private:
   virtual void saveImpl(Transaction &t) = 0;

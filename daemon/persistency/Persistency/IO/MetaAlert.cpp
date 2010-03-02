@@ -78,10 +78,10 @@ void MetaAlert::associateWithAlert(Persistency::AlertPtrNN alert)
   associateWithAlertImpl(t_, alert);
 }
 
-const Persistency::MetaAlert &MetaAlert::get(void) const
+Persistency::MetaAlertPtrNN MetaAlert::get(void)
 {
   assert(ma_.get()!=NULL);
-  return *ma_;
+  return ma_;
 }
 
 } // namespace IO
