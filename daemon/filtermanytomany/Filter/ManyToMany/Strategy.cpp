@@ -2,9 +2,11 @@
  * Strategy.cpp
  *
  */
-#include "Filter/ManyToMany/Strategy.hpp"
 #include <cassert>
+
+#include "Filter/ManyToMany/Strategy.hpp"
 #include "Algo/forEachUniqueLeaf.hpp"
+#include "Filter/ManyToMany/GatherHosts.hpp"
 
 using namespace Persistency;
 
@@ -18,10 +20,9 @@ Strategy::Strategy(void):
 {
 }
 
-#error TODO: finish this code
 Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
 {
-  // TODO
+  return NodeEntry( n, Data() );
 }
 
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const

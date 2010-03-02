@@ -9,9 +9,7 @@
 
 #include "Filter/ManyToMany/Strategy.hpp"
 #include "Filter/ManyToMany/Exception.hpp"
-#include "Persistency/IO/BackendFactory.hpp"
-#include "TestHelpers/Persistency/TestStubs.hpp"
-#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "Filter/ManyToMany/CommonTestBase.t.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -44,7 +42,7 @@ struct TestStrategy: public Strategy
 #endif
 
 
-struct TestClass/*: private TestHelpers::Persistency::TestStubs*/
+struct TestClass/*: private CommonTestBase*/
 {
   /*
   AlertPtrNN makeAlertWithHost(const char *host, const char *os) const
