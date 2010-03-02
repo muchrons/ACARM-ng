@@ -68,10 +68,12 @@ void Alert::saveHosts(EntrySaver                        &es,
       case HostType::DST:
         reportedHostID = es.saveTargetHost(hostID, alertID, *it->get() );
       break;
-
+      //TODO
+      /*
       default:
         assert(type.toInt() == 1 || type.toInt() == 2);
       break;
+      */
     }
 
     // get reported services from host
