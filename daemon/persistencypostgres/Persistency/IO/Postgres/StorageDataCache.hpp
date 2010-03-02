@@ -74,8 +74,12 @@ public:
   {
     Base::Threads::Lock lock(mutex_);
     typename ObjectIDMapping::iterator it=oidm_.find( ptr.get() );
-    if( it==oidm_.end() )
+    if( it==oidm_.end() || it->second.ptr_.lock().get()==NULL )
       throw ExceptionNoSuchEntry(SYSTEM_SAVE_LOCATION);
+    // both these asserts are known to be true, since we have object's
+    // instance as a parameter, so pointer either is already deallocated
+    // or is still valid, and so assertion's hold.
+    assert( it->second.ptr_.lock().get()!=NULL      );
     assert( it->second.ptr_.lock().get()==ptr.get() );
     return it->second.id_;
   }
@@ -99,11 +103,30 @@ public:
    */
   void add(TSharedPtr ptr, DataBaseID id)
   {
-    Base::Threads::Lock lock(mutex_);
-    if( oidm_.find( ptr.get() )!=oidm_.end() )
-      throw ExceptionEntryAlreadyExist(SYSTEM_SAVE_LOCATION);
-    oidm_.insert( typename ObjectIDMapping::value_type( ptr.get(),
-                                                        EntryID(ptr, id) ) );
+    const EntryID                      tmp(ptr, id);
+    Base::Threads::Lock                lock(mutex_);
+    typename ObjectIDMapping::iterator it=oidm_.find( ptr.get() );
+    // check for duplicates
+    if( it!=oidm_.end() )
+    {
+      if( it->second.ptr_.lock().get()!=NULL )
+        throw ExceptionEntryAlreadyExist(SYSTEM_SAVE_LOCATION);
+      // if we're here it means we have dead entrym with dongling pointer
+      // to re-allocated place in memory
+      it->second=tmp;
+    }
+    else
+    {
+      // insert new entry to collection
+      oidm_.insert( typename ObjectIDMapping::value_type( ptr.get(), tmp ) );
+    }
+    // however we got here (overwriting dongling pointer, or inserting totaly
+    // new entry) following conditions must hold (note: since we're still in
+    // critical section there is no possibility of race conditions):
+    assert( oidm_.find( ptr.get() )!=oidm_.end() );
+    assert( oidm_.find( ptr.get() )->second.ptr_.lock().get()!=NULL );
+    assert( oidm_.find( ptr.get() )->second.ptr_.lock().get()==ptr.get() );
+    assert( oidm_.find( ptr.get() )->second.id_==id);
   }
 
   /** \brief performs collection cleanup of object to used anymore.
