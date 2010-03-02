@@ -4,9 +4,7 @@
  */
 #include "Filter/ManyToMany/Strategy.hpp"
 #include <cassert>
-#include "Logger/Logger.hpp"
 #include "Algo/forEachUniqueLeaf.hpp"
-#include "Filter/ManyToMany/CheckHosts.hpp"
 
 using namespace Persistency;
 
@@ -20,12 +18,13 @@ Strategy::Strategy(void):
 {
 }
 
+#error TODO: finish this code
 Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
 {
   // TODO
 }
 
-bool Strategy::isEntryInteresting(const NodeEntry &thisEntry) const
+bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
 {
   // TODO
 }
