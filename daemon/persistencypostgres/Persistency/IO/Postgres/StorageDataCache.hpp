@@ -74,7 +74,7 @@ public:
   {
     Base::Threads::Lock lock(mutex_);
     typename ObjectIDMapping::iterator it=oidm_.find( ptr.get() );
-    if( it==oidm_.end() || ptr.get()==NULL )
+    if( it==oidm_.end() || it->second.ptr_.lock().get()==NULL )
       throw ExceptionNoSuchEntry(SYSTEM_SAVE_LOCATION);
     // both these asserts are known to be true, since we have object's
     // instance as a parameter, so pointer either is already deallocated
