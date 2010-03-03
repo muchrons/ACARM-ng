@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <memory>
 #include <boost/shared_ptr.hpp>
 #include <boost/operators.hpp>
 #include <cassert>
@@ -63,6 +64,14 @@ public:
   {
     ensure();
   }
+  /** \brief create object from std::auto_ptr<>.
+   *  \param p pointer get ownership of.
+   */
+  SharedPtrNotNULL(std::auto_ptr<T> p):
+    ptr_( p.release() )
+  {
+    ensure();
+  }
   /** \brief convertion operator.
    *  \return boost::shared_ptr<> for a given value.
    */
@@ -85,19 +94,7 @@ public:
   const SharedPtrNotNULL<T> &operator=(const SharedPtrNotNULL<T> &other)
   {
     if(&other!=this)
-    {
       ptr_=other.ptr_;
-    }
-    return *this;
-  }
-  /** \brief assignment form boost::shared_ptr<>.
-   *  \param other pointer to assign.
-   *  \return const-reference to this.
-   */
-  const SharedPtrNotNULL<T> &operator=(const PtrT &other)
-  {
-    ensure( other.get() );
-    ptr_=other;
     return *this;
   }
   /** \brief arrow operator.
@@ -105,32 +102,28 @@ public:
    */
   const T *operator->(void) const
   {
-    assert( ptr_.get()!=NULL );
-    return ptr_.get();
+    return get();
   }
   /** \brief arror operator.
    *  \return pointer to this.
    */
   T *operator->(void)
   {
-    assert( ptr_.get()!=NULL );
-    return ptr_.get();
+    return get();
   }
   /** \brief dereference operator.
    *  \return const reference to this.
    */
   const T &operator*(void) const
   {
-    assert( ptr_.get()!=NULL );
-    return *ptr_;
+    return *get();
   }
   /** \brief dereference operator.
    *  \return reference to this.
    */
   T &operator*(void)
   {
-    assert( ptr_.get()!=NULL );
-    return *ptr_;
+    return *get();
   }
   /** \brief test getter.
    *  \return direct pointer value.
@@ -156,9 +149,9 @@ public:
    */
   void swap(SharedPtrNotNULL<T> &other)
   {
-    assert( ptr_.get()!=NULL );
+    assert( get()!=NULL );
     ptr_.swap(other.ptr_);
-    assert( ptr_.get()!=NULL );
+    assert( get()!=NULL );
   }
 
 private:
