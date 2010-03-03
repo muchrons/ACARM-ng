@@ -77,31 +77,43 @@ void testObj::test<3>(void)
   GraphNodePtrNN tmp( makeLeaf( makeAlert("6.6.3.4", "2.3.4.5",
                                           "6.6.3.4", "9.8.7.6") ) );
   s_.process(tmp, changed_);
-  ensure_equals("some nodes have been changed / 1", changed_.size(), 0);
+  ensure_equals("some nodes have been changed", changed_.size(), 0);
 
   s_.process(sampleLeaf_, changed_);
-  ensure_equals("some nodes have been changed / 2", changed_.size(), 1);
+  ensure_equals("no nodes changed", changed_.size(), 1);
 }
 
-// 
+// test if can correltate will return false for non-overlaping entries
 template<>
 template<>
 void testObj::test<4>(void)
 {
+  GraphNodePtrNN tmp( makeLeaf( makeAlert("6.6.3.4", "6.3.4.5",
+                                          "6.6.3.4", "6.8.7.6") ) );
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed / 1", changed_.size(), 0);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("some nodes have been changed / 2", changed_.size(), 0);
 }
 
-// 
+// test getting name of meta alert
 template<>
 template<>
 void testObj::test<5>(void)
 {
-}
+  GraphNodePtrNN tmp( makeLeaf( makeAlert("6.6.3.4", "2.3.4.5",
+                                          "6.6.3.4", "9.8.7.6") ) );
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed", changed_.size(), 0);
 
-// 
-template<>
-template<>
-void testObj::test<6>(void)
-{
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("no nodes changed", changed_.size(), 1);
+
+  const string resp("[many2many] atacks from multiple hosts on "
+                    "multiple hosts detected");
+  ensure_equals("invalid name",
+                changed_[0]->getMetaAlert()->getName().get(), resp);
 }
 
 } // namespace tut
