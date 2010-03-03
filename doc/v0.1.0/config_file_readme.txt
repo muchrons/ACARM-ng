@@ -89,14 +89,12 @@ what type of filter is to be created and optional, filter-specific fields.
 example configuration may look like this:
 
 <filters>
-  <filter>
-    <type>onetomany</type>  <!-- filter type name -->
-    <timeout>42</timeout>   <!-- timeout for observing entry, in seconds -->
-  </filter>
-  <filter>
-    <type>manytomany</type> <!-- filter type name -->
-    <timeout>42</timeout>   <!-- timeout for observing entry, in seconds -->
-  </filter>
+  <onetomany>
+    <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+  </onetomany>
+  <manytomany>
+    <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+  </manytomany>
 </filters>
 
 TODO: describe filters.

@@ -73,4 +73,15 @@ void testObj::test<2>(void)
   ensure_equals("invalid pass",   opts["pass"],   "$3cr3t");
 }
 
+// test if no extra paremters (like 'type') are present
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  const ParsePersistency      pp  =getConf();
+  const PersistencyConfig    &cfg =pp.getConfig();
+  PersistencyConfig::Options  opts=cfg.getOptions();
+  ensure_equals("invalid element's count", opts.size(), 5);
+}
+
 } // namespace tut

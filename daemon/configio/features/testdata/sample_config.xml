@@ -21,4 +21,14 @@
     </nodes>
   </logger>
 
+  <filters>
+    <noopts>
+    </noopts>
+
+    <something>
+      <opt2>abc</opt2>
+      <opt1>narf</opt1>
+    </something>
+  </filters>
+
 </acarm_ng>
