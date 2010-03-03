@@ -15,7 +15,11 @@ example may look like this:
     <!-- logger specific options -->
   </logger>
 
-  <!-- and so on... -->
+  <filters>
+    <!-- filter's configuration -->
+  </filters>
+
+  <!-- TODO -->
 </acarm_ng>
 
 in the following sections only subtrees specific for given components will
@@ -74,3 +78,25 @@ example configuration may look like this:
 </logger>
 
 TODO: describe appenders.
+
+
+filter configuration
+====================
+
+in filters' configuration subtree there are set of filter entries that are to
+be configured. each entry consists of required field 'type' that determines
+what type of filter is to be created and optional, filter-specific fields.
+example configuration may look like this:
+
+<filters>
+  <filter>
+    <type>onetomany</type>  <!-- filter type name -->
+    <timeout>42</timeout>   <!-- timeout for observing entry, in seconds -->
+  </filter>
+  <filter>
+    <type>manytomany</type> <!-- filter type name -->
+    <timeout>42</timeout>   <!-- timeout for observing entry, in seconds -->
+  </filter>
+</filters>
+
+TODO: describe filters.
