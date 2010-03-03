@@ -1,10 +1,10 @@
 /*
- * PersistencyConfig.t.cpp
+ * FilterConfig.t.cpp
  *
  */
 #include <tut.h>
 
-#include "ConfigIO/PersistencyConfig.hpp"
+#include "ConfigIO/FilterConfig.hpp"
 
 using namespace std;
 using namespace ConfigIO;
@@ -18,7 +18,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("ConfigIO/PersistencyConfig");
+factory tf("ConfigIO/FilterConfig");
 } // unnamed namespace
 
 
@@ -30,10 +30,10 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const PersistencyConfig::TypeName name("persist");
-  const PersistencyConfig::Options  opts;
-  const PersistencyConfig pc(name, opts);
-  ensure_equals("invalid type", pc.getType(), "persist");
+  const FilterConfig::TypeName name("somefilter");
+  const FilterConfig::Options  opts;
+  const FilterConfig pc(name, opts);
+  ensure_equals("invalid type", pc.getType(), "somefilter");
 }
 
 } // namespace tut
