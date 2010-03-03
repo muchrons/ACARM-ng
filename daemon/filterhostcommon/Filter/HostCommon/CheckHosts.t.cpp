@@ -66,7 +66,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   TestStrategy::Node makeLeaf(const char *host, const char *os="Linux") const
   {
     assert(host!=NULL);
-    IO::ConnectionPtrNN conn=IO::create();
+    IO::ConnectionPtrNN conn( IO::create() );
     IO::Transaction     t( conn->createNewTransaction("make_leaf_trans") );
     return GraphNodePtrNN( new GraphNode( makeAlertWithHost(host, os), conn, t) );
   }
