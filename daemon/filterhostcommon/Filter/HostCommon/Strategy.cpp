@@ -4,7 +4,6 @@
  */
 #include "Filter/HostCommon/Strategy.hpp"
 #include <cassert>
-#include "Logger/Logger.hpp"
 #include "Algo/forEachUniqueLeaf.hpp"
 #include "Filter/HostCommon/CheckHosts.hpp"
 
@@ -32,7 +31,7 @@ Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
   return NodeEntry( n, Data(h) );
 }
 
-bool Strategy::isEntryInteresting(const NodeEntry &thisEntry) const
+bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
 {
   // must be common host
   return thisEntry.t_.host_.get()!=NULL;
