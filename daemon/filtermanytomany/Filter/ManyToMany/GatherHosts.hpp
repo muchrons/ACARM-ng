@@ -23,6 +23,9 @@ struct GatherHosts
 {
 public:
   /** \brief SWO for set's elements comparison.
+   *
+   *  this class has to be exported in order to allow certian algorithms (like
+   *  set_intersection) to work.
    */
   struct HostSWO
   {
@@ -31,7 +34,8 @@ public:
      *  \param right right operand of the operation.
      *  \return true if left operand is less then right one, false otherwise.
      */
-    bool operator()(Persistency::HostPtrNN left, Persistency::HostPtrNN right)
+    bool operator()(const Persistency::HostPtrNN &left,
+                    const Persistency::HostPtrNN &right) const
     {
       return left->getIP() < right->getIP();
     }
