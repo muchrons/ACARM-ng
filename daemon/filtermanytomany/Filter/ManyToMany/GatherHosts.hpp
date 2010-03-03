@@ -21,16 +21,22 @@ namespace ManyToMany
  */
 struct GatherHosts
 {
-private:
+public:
+  /** \brief SWO for set's elements comparison.
+   */
   struct HostSWO
   {
+    /** \brief perform comparison 'left < right'.
+     *  \param left  left operand of the operation.
+     *  \param right right operand of the operation.
+     *  \return true if left operand is less then right one, false otherwise.
+     */
     bool operator()(Persistency::HostPtrNN left, Persistency::HostPtrNN right)
     {
       return left->getIP() < right->getIP();
     }
   }; // sutrct HostSWO
 
-public:
   /** \brief set of hosts. */
   typedef std::set<Persistency::HostPtrNN, HostSWO> HostSet;
   /** \brief shared poitner to set to avoid copying. */

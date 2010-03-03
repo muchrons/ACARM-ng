@@ -99,7 +99,8 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
                         ghThis.getSourceHosts().end(),
                         ghOther.getSourceHosts().begin(),
                         ghOther.getSourceHosts().end(),
-                        IntersectionOutputIterator() );
+                        IntersectionOutputIterator(),
+                        GatherHosts::HostSWO() );
   if( tmp.isEmpty() )
       return false;
 
@@ -108,7 +109,8 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
                         ghThis.getTargetHosts().end(),
                         ghOther.getTargetHosts().begin(),
                         ghOther.getTargetHosts().end(),
-                        IntersectionOutputIterator() );
+                        IntersectionOutputIterator(),
+                        GatherHosts::HostSWO() );
   if( tmp.isEmpty() )
       return false;
 
