@@ -33,6 +33,7 @@ Parser::Parser(const std::string &path):
     parseNodes_(       tree_.getRoot().getChild("logger").getChild("nodes") ),
     parseAppenders_(   tree_.getRoot().getChild("logger").getChild("appenders") ),
     parsePersistency_( tree_.getRoot().getChild("persistency") ),
+    parseFilters_(     tree_.getRoot().getChild("filters") ),
     loggerCfg_( parseNodes_.getDefaultNodeConfig(),
                 parseNodes_.getNodes(),
                 parseAppenders_.getAppenders() )
@@ -47,6 +48,11 @@ const LoggerConfig &Parser::getLoggerConfig(void) const
 const PersistencyConfig &Parser::getPersistencyConfig(void) const
 {
   return parsePersistency_.getConfig();
+}
+
+const ParseFilters::FiltersConfigCollection &Parser::getFiltersConfig(void) const
+{
+  return parseFilters_.getConfig();
 }
 
 } // namespace ConfigIO

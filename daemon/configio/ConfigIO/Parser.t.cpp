@@ -127,4 +127,14 @@ void testObj::test<6>(void)
                 lc.getDefaultNodeConfig().getAppenderName(), "default");
 }
 
+// test getting filters' configuration - smoke test
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  copyAsDefaultConfig("testdata/sample_config.xml");
+  const Parser        p;
+  p.getFiltersConfig();
+}
+
 } // namespace tut
