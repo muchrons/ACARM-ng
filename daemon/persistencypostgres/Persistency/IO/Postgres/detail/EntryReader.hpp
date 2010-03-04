@@ -17,6 +17,7 @@
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
+#include "Persistency/IPTypes.hpp"
 
 namespace Persistency
 {
@@ -38,10 +39,25 @@ public:
    */
   EntryReader(Transaction &t, DBHandler &dbh);
   //TODO: work in progress
-  //Alert &readAlert(DataDaseID alertID);
+  Persistency::AlertPtrNN readAlert(DataBaseID alertID);
 
-  //Alert::SourceAnalyzers &getAnalyzers(DataBaseID alertID);
+  Alert::SourceAnalyzers getAnalyzers(DataBaseID alertID);
+
 private:
+  AnalyzerPtrNN getAnalyzer(DataBaseID anlzID);
+  Alert::ReportedHosts getReporteHosts(DataBaseID alertID, std::string hostType);
+  HostPtr getHost(DataBaseID hostID, DataBaseID refID);
+
+  Persistency::Host::ReportedServices  getReportedServices(DataBaseID hostID);
+  Persistency::Host::ReportedProcesses getReportedProcesses(DataBaseID hostID);
+  ReferenceURLPtr getReferenceURL(DataBaseID refID);
+
+  Persistency::ProcessPtr getProcess(DataBaseID procID, DataBaseID refID);
+  Persistency::ServicePtr getService(DataBaseID servID, DataBaseID refID);
+
+  Alert::ReportedHosts getSourceHosts(DataBaseID alertID);
+  Alert::ReportedHosts getTargetHosts(DataBaseID alertID);
+
   DBHandler   &dbh_;
   Transaction &t_;
 }; // class EntryReader

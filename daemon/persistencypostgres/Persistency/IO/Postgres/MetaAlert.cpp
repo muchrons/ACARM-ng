@@ -35,14 +35,21 @@ void MetaAlert::markAsTriggeredImpl(Transaction &, const std::string &/*name*/)
   // TODO
 }
 
-void MetaAlert::markAsUsedImpl(Transaction &)
+void MetaAlert::markAsUsedImpl(Transaction &t)
 {
-  // TODO
+  // TODO tests
+  EntrySaver                    es(t, *dbHandler_);
+  DataBaseID malertID = dbHandler_->getIDCache()->get( get() );
+  es.saveMetaAlertAsUsed( malertID );
 }
 
-void MetaAlert::markAsUnusedImpl(Transaction &)
+void MetaAlert::markAsUnusedImpl(Transaction &t)
 {
-  // TODO
+  // TODO tests
+  EntrySaver                    es(t, *dbHandler_);
+  DataBaseID malertID = dbHandler_->getIDCache()->get( get() );
+  es.saveMetaAlertAsUnused( malertID );
+
 }
 
 void MetaAlert::updateSeverityDeltaImpl(Transaction &, double /*delta*/)

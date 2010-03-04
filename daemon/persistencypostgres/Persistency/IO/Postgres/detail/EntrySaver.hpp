@@ -94,6 +94,22 @@ public:
    *  \param anlzID  ID of Analyzer
    */
   void saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID);
+
+  /** \brief mark Meta Alert as used
+   *  \param malertID ID of Meta Alert
+   */
+  void saveMetaAlertAsUsed(DataBaseID malertID);
+
+  /** \bries mark Meta Alert as unused
+   *  \param malertID ID of Meta Alert
+   */
+  void saveMetaAlertAsUnused(DataBaseID malertID);
+
+  /** \brief mark Meta Alert as triggered
+   *  \param malertID ID of Meta Alert
+   *  \param name
+   */
+  void saveMetaAlertAsTriggered(DataBaseID malertID, std::string &name);
   // TODO
 
 

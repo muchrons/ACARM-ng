@@ -346,6 +346,25 @@ void EntrySaver::saveMetaAlertsTree(DataBaseID nodeID, DataBaseID childID)
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
+void EntrySaver::saveMetaAlertAsUsed(DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "INSERT INTO meta_alerts_in_use(id_meta_alert) VALUES (" << malertID << ");";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+}
+
+void EntrySaver::saveMetaAlertAsUnused(DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "DELETE FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ");";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+}
+
+void EntrySaver::saveMetaAlertAsTriggered(DataBaseID /*malertID*/, std::string &/*name*/)
+{
+  //TODO
+}
+
 } // namespace detail
 } // namespace Postgres
 } // namespace IO
