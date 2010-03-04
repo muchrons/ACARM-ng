@@ -40,7 +40,7 @@ struct TestStrategy: public Strategy<TestData>
     return NodeEntry(n, TestData() );
   }
 
-  virtual bool isEntryInteresting(const NodeEntry &/*thisEntry*/) const
+  virtual bool isEntryInteresting(const NodeEntry /*thisEntry*/) const
   {
     return isInteresting_;
   }

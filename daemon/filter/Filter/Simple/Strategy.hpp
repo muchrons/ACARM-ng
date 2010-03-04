@@ -64,7 +64,7 @@ private:
    *  \param thisEntry entry to be checked.
    *  \return true if entry is interesting, false otherwise.
    */
-  virtual bool isEntryInteresting(const NodeEntry &thisEntry) const = 0;
+  virtual bool isEntryInteresting(const NodeEntry thisEntry) const = 0;
   /** \brief call gets name for correlated meta-alert for a given entries.
    *  \param thisEntry  entry created during this run.
    *  \param otherEntry entry that has been correlated with.
@@ -140,6 +140,10 @@ private:
     // if node's leaf, create new node and correlate leafs there.
     if( it->node_->isLeaf() )
     {
+      LOGMSG_DEBUG_S(StrategyBase::log_)
+        << "correlating '" << it->node_->getMetaAlert()->getName().get()
+        << "' with '" << thisEntry.node_->getMetaAlert().getName().get()
+        << "' as a new node";
       const BackendProxy::ChildrenVector cv(it->node_, thisEntry.node_);
       const Persistency::MetaAlertPtrNN ma(
                   new Persistency::MetaAlert( getMetaAlertName(thisEntry, *it),
@@ -155,8 +159,13 @@ private:
       ntq.update(newEntry, getTimeout() );            // add newly correlated entry
     }
     else
-      bp.addChild(it->node_, thisEntry.node_);        // add new alert to already
-                                                      // correlated in one set
+    {
+      LOGMSG_DEBUG_S(StrategyBase::log_)
+        << "adding node '" << thisEntry.node_->getMetaAlert().getName().get()
+        << "' to already correlated '"
+        << it->node_->getMetaAlert()->getName().get() << "'";
+      bp.addChild(it->node_, thisEntry.node_);      // add new alert to already
+    }                                               // correlated in one set
 
     // if we're here, it means that we were able to correlate and may exit
     // in glory now.

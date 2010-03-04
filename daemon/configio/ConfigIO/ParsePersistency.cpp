@@ -2,10 +2,6 @@
  * ParsePersistency.cpp
  *
  */
-#include <cstdlib>
-#include <ctype.h>
-#include <boost/lexical_cast.hpp>
-#include <boost/numeric/conversion/cast.hpp>
 #include <cassert>
 
 #include "ConfigIO/ParsePersistency.hpp"
@@ -33,7 +29,8 @@ PersistencyConfig ParsePersistency::parse(const XML::Node &node) const
   // get all options to a single string
   const Node::TNodesList &children=node.getChildrenList();
   for(Node::TNodesList::const_iterator it=children.begin(); it!=children.end(); ++it)
-    options[ it->getName() ] = it->getValuesString();
+    if( it->getName()!="type" )     // skip persistency type name
+      options[ it->getName() ] = it->getValuesString();
 
   return PersistencyConfig(type, options);
 }
