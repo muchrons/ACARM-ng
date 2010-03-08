@@ -32,6 +32,8 @@ struct TestClass
       assert(!"oops - unexpected problem in test d-tor");
     }
   }
+
+  Core::Types::NodesFifo queue_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -49,7 +51,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const FiltersCollection fc=create();
+  const FiltersCollection fc=create(queue_);
   ensure_equals("some elements returend for empty filter's list", fc.size(), 0);
 }
 
@@ -61,7 +63,7 @@ void testObj::test<2>(void)
   ConfigIO::Singleton::get()->rereadConfig("testdata/non_existing_builder.xml");
   try
   {
-    create();
+    create(queue_);
     fail("create() didn't throw when no factory is registered");
   }
   catch(const Commons::Factory::ExceptionBuilderDoesNotExist&)
@@ -95,10 +97,23 @@ public:
   }
 
 private:
-  virtual FactoryPtr buildImpl(const Options &/*options*/) const
+  virtual FactoryPtr buildImpl(const Options &options) const
   {
-    Processor::InterfaceAutoPtr iface(new TestInterface);
-    return Factory::FactoryPtr( new Processor(queue_, iface) );
+    Options::const_iterator it=options.begin();
+    ensure("empty collection", it!=options.end() );
+
+    ensure_equals("invalid option 1 key",   it->first,  "opt1");
+    ensure_equals("invalid option 1 value", it->second, "kszy");
+    ++it;
+
+    ensure("just one element in collection", it!=options.end() );
+    ensure_equals("invalid option 2 key",   it->first,  "opt2");
+    ensure_equals("invalid option 2 value", it->second, "narf");
+    ++it;
+
+    ensure("too many elements in collection", it==options.end() );
+
+    return Processor::InterfaceAutoPtr(new TestInterface);
   }
 
   virtual const FactoryTypeName &getTypeNameImpl(void) const
@@ -106,8 +121,7 @@ private:
     return name_;
   }
 
-  const FactoryTypeName          name_;
-  mutable Core::Types::NodesFifo queue_;
+  const FactoryTypeName name_;
 }; // class SomeBuilder
 
 const Commons::Factory::RegistratorHelper<Factory, SomeBuilder> g_rh;
@@ -121,7 +135,7 @@ void testObj::test<3>(void)
 {
   assert( g_rh.isRegistered() && "oops - registration failed" );
   ConfigIO::Singleton::get()->rereadConfig("testdata/some_filter.xml");
-  const FiltersCollection fc=create();
+  const FiltersCollection fc=create(queue_);
   ensure_equals("no filters created", fc.size(), 1);
 }
 

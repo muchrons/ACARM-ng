@@ -7,14 +7,15 @@ using namespace ConfigIO;
 namespace Filter
 {
 
-FiltersCollection create(void)
+FiltersCollection create(Core::Types::NodesFifo &outputQueue)
 {
   const FiltersConfigCollection &c=Singleton::get()->filtersConfig();
   FiltersCollection              out;
 
   for(FiltersConfigCollection::const_iterator it=c.begin(); it!=c.end(); ++it)
   {
-    ProcessorPtrNN filter( Factory::create( it->getType(), it->getOptions() ) );
+    Processor::InterfaceAutoPtr iface( Factory::create( it->getType(), it->getOptions() ) );
+    ProcessorPtrNN filter( new Processor(outputQueue, iface) );
     out.push_back(filter);
   }
 
