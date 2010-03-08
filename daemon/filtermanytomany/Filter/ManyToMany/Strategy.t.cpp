@@ -22,7 +22,8 @@ struct TestClass: public CommonTestBase
 {
   TestClass(void):
     sampleLeaf_( makeLeaf( makeAlert("1.2.3.4", "2.3.4.5",
-                                     "1.2.3.4", "9.8.7.6") ) )
+                                     "1.2.3.4", "9.8.7.6") ) ),
+    s_(997)
   {
   }
 
