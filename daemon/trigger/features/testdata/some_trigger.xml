@@ -16,13 +16,13 @@
     </nodes>
   </logger>
 
-  <filters>
-    <somefilter>
+  <filters/>
+
+  <triggers>
+    <sometrigger>
       <opt1>kszy</opt1>
       <opt2>narf</opt2>
-    </somefilter>
-  </filters>
-
-  <triggers/>
+    </sometrigger>
+  </triggers>
 
 </acarm_ng>

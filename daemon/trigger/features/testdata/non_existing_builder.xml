@@ -16,13 +16,10 @@
     </nodes>
   </logger>
 
-  <filters>
-    <somefilter>
-      <opt1>kszy</opt1>
-      <opt2>narf</opt2>
-    </somefilter>
-  </filters>
+  <filters/>
 
-  <triggers/>
+  <triggers>
+    <thisbuilderdoesnotexist/>
+  </triggers>
 
 </acarm_ng>

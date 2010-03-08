@@ -43,6 +43,12 @@ const FiltersConfigCollection &SingletonImpl::filtersConfig(void) const
   return p_->getFiltersConfig();
 }
 
+const TriggersConfigCollection &SingletonImpl::triggersConfig(void) const
+{
+  assert( p_.get()!=NULL );
+  return p_->getTriggersConfig();
+}
+
 SingletonImpl::SingletonImpl(void):
   p_(new Parser)
 {

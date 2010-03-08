@@ -12,6 +12,7 @@
 #include "System/Singleton.hpp"
 #include "ConfigIO/PersistencyConfig.hpp"
 #include "ConfigIO/FiltersConfigCollection.hpp"
+#include "ConfigIO/TriggersConfigCollection.hpp"
 #include "ConfigIO/LoggerConfig.hpp"
 
 namespace ConfigIO
@@ -49,6 +50,10 @@ public:
    *  \return filters' configuration.
    */
   const FiltersConfigCollection &filtersConfig(void) const;
+  /** \brief gets triggers' configuration, read from file.
+   *  \return triggers' configuration.
+   */
+  const TriggersConfigCollection &triggersConfig(void) const;
 
 private:
   friend class System::Singleton<SingletonImpl>;

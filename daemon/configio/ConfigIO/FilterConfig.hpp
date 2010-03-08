@@ -14,7 +14,7 @@
 namespace ConfigIO
 {
 
-/** \brief class representing configuration of persistency storage.
+/** \brief class representing configuration of filter.
  */
 class FilterConfig: public Generic::Config<FilterConfig>
 {
