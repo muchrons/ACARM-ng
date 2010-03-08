@@ -31,6 +31,8 @@ public:
   typedef BackendProxy::ChangedNodes ChangedNodes;
 
   /** \brief processes given meta-alert.
+   *  \param n       node to be processed.
+   *  \param changed output collection of changed nodes.
    */
   void process(Node n, ChangedNodes &changed)
   {
