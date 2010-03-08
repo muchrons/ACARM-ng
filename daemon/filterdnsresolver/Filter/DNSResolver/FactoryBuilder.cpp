@@ -43,6 +43,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   const FilterConfig         fc(name_, options);
   const Strategy::Parameters params=Strategy::Parameters();
   //LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";
+  // TODO
 
   // create and return new handler.
   typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;

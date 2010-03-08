@@ -23,6 +23,7 @@ void Strategy::processImpl(Node               /*n*/,
                            NodesTimeoutQueue &/*ntq*/,
                            BackendProxy      &/*bp*/)
 {
+  // TODO
 }
 
 } // namespace DNSResolver
