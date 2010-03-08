@@ -5,8 +5,6 @@
 #ifndef INCLUDE_INPUT_PRELUDE_READER_HPP_FILE
 #define INCLUDE_INPUT_PRELUDE_READER_HPP_FILE
 
-/* public header */
-
 #include <boost/noncopyable.hpp>
 #include <boost/scoped_ptr.hpp>
 
