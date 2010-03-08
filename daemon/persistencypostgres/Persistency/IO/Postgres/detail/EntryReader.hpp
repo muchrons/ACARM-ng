@@ -41,11 +41,13 @@ public:
   //TODO: work in progress
   Persistency::AlertPtrNN readAlert(DataBaseID alertID);
 
-  Alert::SourceAnalyzers getAnalyzers(DataBaseID alertID);
+  Persistency::Alert::SourceAnalyzers getAnalyzers(DataBaseID alertID);
 
+  double getSeverityDelta(DataBaseID malertID);
+  double getCertaintyDelta(DataBaseID malertID);
 private:
   AnalyzerPtrNN getAnalyzer(DataBaseID anlzID);
-  Alert::ReportedHosts getReporteHosts(DataBaseID alertID, std::string hostType);
+  Persistency::Alert::ReportedHosts getReporteHosts(DataBaseID alertID, std::string hostType);
   HostPtr getHost(DataBaseID hostID, DataBaseID refID);
 
   Persistency::Host::ReportedServices  getReportedServices(DataBaseID hostID);
@@ -55,8 +57,8 @@ private:
   Persistency::ProcessPtr getProcess(DataBaseID procID, DataBaseID refID);
   Persistency::ServicePtr getService(DataBaseID servID, DataBaseID refID);
 
-  Alert::ReportedHosts getSourceHosts(DataBaseID alertID);
-  Alert::ReportedHosts getTargetHosts(DataBaseID alertID);
+  Persistency::Alert::ReportedHosts getSourceHosts(DataBaseID alertID);
+  Persistency::Alert::ReportedHosts getTargetHosts(DataBaseID alertID);
 
   DBHandler   &dbh_;
   Transaction &t_;

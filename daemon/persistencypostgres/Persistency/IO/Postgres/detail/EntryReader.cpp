@@ -290,6 +290,28 @@ ReferenceURLPtr EntryReader::getReferenceURL(DataBaseID refID)
   return refURLPtr;
 }
 
+double EntryReader::getSeverityDelta(DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "SELECT severity_delta FROM meta_alerts WHERE id = " << malertID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+
+  double severity;
+  r[0]["severity_delta"].to(severity);
+  return severity;
+}
+double EntryReader::getCertaintyDelta(DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "SELECT caertanity_delta FROM meta_alerts WHERE id = " << malertID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+
+  double certainty;
+  r[0]["certanity_delta"].to(certainty);
+  return certainty;
+}
+
+
 } // namespace detail
 } // namespace Postgres
 } // namespace IO

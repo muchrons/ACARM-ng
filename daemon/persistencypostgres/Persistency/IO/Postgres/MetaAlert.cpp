@@ -30,9 +30,12 @@ void MetaAlert::saveImpl(Transaction &t)
   // TODO tests
 }
 
-void MetaAlert::markAsTriggeredImpl(Transaction &, const std::string &/*name*/)
+void MetaAlert::markAsTriggeredImpl(Transaction &t, const std::string &name)
 {
   // TODO
+  EntrySaver                    es(t, *dbHandler_);
+  DataBaseID malertID = dbHandler_->getIDCache()->get( get() );
+  es.saveMetaAlertAsTriggered(malertID, name);
 }
 
 void MetaAlert::markAsUsedImpl(Transaction &t)
@@ -52,16 +55,25 @@ void MetaAlert::markAsUnusedImpl(Transaction &t)
 
 }
 
-void MetaAlert::updateSeverityDeltaImpl(Transaction &, double /*delta*/)
+void MetaAlert::updateSeverityDeltaImpl(Transaction &t, double delta)
 {
-  // TODO
-  // add to the severity in data base
+  // TODO tests
+  EntrySaver                    es(t, *dbHandler_);
+  EntryReader                   er(t, *dbHandler_);
+  DataBaseID                    malertID = dbHandler_->getIDCache()->get( get() );
+  double                        actualSeverity = er.getSeverityDelta(malertID);
+  es.updateSeverityDelta(malertID, actualSeverity + delta);
 }
 
-void MetaAlert::updateCertaintyDeltaImpl(Transaction &, double /*delta*/)
+void MetaAlert::updateCertaintyDeltaImpl(Transaction &t, double delta)
 {
-  // TODO
-  // add to the certainty in data base
+  // TODO tests
+  EntrySaver                    es(t, *dbHandler_);
+  EntryReader                   er(t, *dbHandler_);
+  DataBaseID                    malertID = dbHandler_->getIDCache()->get( get() );
+  double                        actualCertainty = er.getCertaintyDelta(malertID);
+  es.updateCertaintyDelta(malertID, actualCertainty + delta);
+
 }
 
 void MetaAlert::addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child)

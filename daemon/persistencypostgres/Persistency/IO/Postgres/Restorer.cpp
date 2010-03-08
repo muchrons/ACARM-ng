@@ -21,6 +21,15 @@ Restorer::Restorer(Transaction    &t,
 void Restorer::restoreAllInUseImpl(Transaction &/*t*/, NodesVector &/*out*/)
 {
   // TODO
+  // read meta alerts ids from table meta_alerts_in_use
+  // for(meta alerts in use)
+  // {
+  //   - create GraphNode
+  //     - read Meta Alert
+  //     - read Meta Alert Children:w
+  //
+  //   - add GraphNode to NodesVector
+  // }
 }
 
 void Restorer::restoreBetweenImpl(Transaction     &/*t*/,

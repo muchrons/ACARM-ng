@@ -76,16 +76,14 @@ void Alert::saveHosts(EntrySaver                        &es,
 
     // get reported services from host
     // TODO: this variable should be const reference
-    // TODO: keep variable names lowercase
-    Persistency::Host::ReportedServices Services((*it->get()).getReportedServices() );
-    for(Persistency::Host::ReportedServices::iterator it_s = Services.begin(); it_s!=Services.end(); ++it_s)
+    Persistency::Host::ReportedServices services((*it->get()).getReportedServices() );
+    for(Persistency::Host::ReportedServices::iterator it_s = services.begin(); it_s!=services.end(); ++it_s)
       es.saveService(reportedHostID, *it_s->get() );
 
     // get reported processes from host
     // TODO: this variable should be const reference
-    // TODO: keep variable names lowercase
-    Persistency::Host::ReportedProcesses Processes((*it->get()).getReportedProcesses() );
-    for(Persistency::Host::ReportedProcesses::iterator it_p = Processes.begin(); it_p!=Processes.end(); ++it_p)
+    Persistency::Host::ReportedProcesses processes((*it->get()).getReportedProcesses() );
+    for(Persistency::Host::ReportedProcesses::iterator it_p = processes.begin(); it_p!=processes.end(); ++it_p)
       es.saveProcess(reportedHostID, *it_p->get());
   }
 }

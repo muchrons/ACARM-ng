@@ -360,9 +360,34 @@ void EntrySaver::saveMetaAlertAsUnused(DataBaseID malertID)
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
-void EntrySaver::saveMetaAlertAsTriggered(DataBaseID /*malertID*/, std::string &/*name*/)
+void EntrySaver::saveMetaAlertAsTriggered(DataBaseID malertID, const std::string &name)
 {
   //TODO
+  stringstream ss;
+  ss << "INSERT INTO meta_alerts_alredy_triggered(id_meta_alerts_in_use, trigger_name) VALUES(";
+  Appender::append(ss, malertID);
+  ss << ",";
+  Appender::append(ss, name);
+  ss << ";";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+}
+
+void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
+{
+  stringstream ss;
+  ss << "UPDATE meta_alerts SET severity_delta = ";
+  Appender::append(ss, severityDelta);
+  ss << " WHERE id = " << malertID << ";";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+}
+
+void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta)
+{
+  stringstream ss;
+  ss << "UPDATE meta_alerts SET certanity_delta = ";
+  Appender::append(ss, certanityDelta);
+  ss << " WHERE id = " << malertID << ";";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
 } // namespace detail

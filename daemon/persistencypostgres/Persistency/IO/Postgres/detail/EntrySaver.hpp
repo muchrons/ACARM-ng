@@ -109,7 +109,20 @@ public:
    *  \param malertID ID of Meta Alert
    *  \param name
    */
-  void saveMetaAlertAsTriggered(DataBaseID malertID, std::string &name);
+  void saveMetaAlertAsTriggered(DataBaseID malertID, const std::string &name);
+
+  /** \brief update Meta Alert severity delta
+   *  \param malertID ID   of Meta Alert to update
+   *  \param severityDelta value of severity delta to write in data base
+   */
+  void updateSeverityDelta(DataBaseID malertID, double severityDelta);
+
+  /** \brief update Meta Alert certanity delta
+   *  \param malertID ID    of Meta Alert to update
+   *  \param certanityDelta value of certanity delta to write in data base
+   */
+  void updateCertaintyDelta(DataBaseID malertID, double certanityDelta);
+
   // TODO
 
 
