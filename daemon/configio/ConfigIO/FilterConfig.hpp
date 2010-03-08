@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <vector>
+
 #include "ConfigIO/Generic/Config.hpp"
 
 namespace ConfigIO

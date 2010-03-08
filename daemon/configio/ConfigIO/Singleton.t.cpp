@@ -68,4 +68,12 @@ void testObj::test<3>(void)
   Singleton::get()->persistencyConfig();
 }
 
+// test getting filters' config
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  Singleton::get()->filtersConfig();
+}
+
 } // namespace tut

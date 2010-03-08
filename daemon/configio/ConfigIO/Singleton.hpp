@@ -11,6 +11,7 @@
 
 #include "System/Singleton.hpp"
 #include "ConfigIO/PersistencyConfig.hpp"
+#include "ConfigIO/FiltersConfigCollection.hpp"
 #include "ConfigIO/LoggerConfig.hpp"
 
 namespace ConfigIO
@@ -36,6 +37,10 @@ public:
    *  \return configration of logger module.
    */
   const LoggerConfig &loggerConfig(void) const;
+  /** \brief gets filters' configuration, read from file.
+   *  \return filters' configuration.
+   */
+  const FiltersConfigCollection &filtersConfig(void) const;
 
 private:
   friend class System::Singleton<SingletonImpl>;
