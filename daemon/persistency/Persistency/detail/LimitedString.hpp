@@ -12,6 +12,7 @@
 #include <stdint.h>
 #include <cassert>
 #include <boost/static_assert.hpp>
+#include <boost/operators.hpp>
 
 #include "Persistency/Exception.hpp"
 #include "Persistency/ExceptionNULLParameter.hpp"
@@ -31,7 +32,7 @@ public:
    *  \param where place wxception has been thrown.
    *  \param str   string that has been found too long.
    */
-  ExceptionStringTooLong(const char *where, const char *str):
+  ExceptionStringTooLong(const Location &where, const char *str):
     Exception(where, std::string("too long string: ") + ensureString(str) )
   {
   }
@@ -41,9 +42,15 @@ public:
 /** \brief class holding string of a given maximum length.
  */
 template<uint16_t N>
-class LimitedString
+class LimitedString: public boost::equality_comparable< LimitedString<N> >
 {
 public:
+  /** \brief creates empty string.
+   */
+  LimitedString(void)
+  {
+    createFromNonNULL("");
+  }
   /** \brief creates object from a given string.
    *  \param str string to create object from.
    *  \note this c-tor is not explicit to allow easier argument passing.
@@ -52,7 +59,7 @@ public:
   {
     // sanity check
     if(str==NULL)
-      throw ExceptionNULLParameter(CALLNAME, "str");
+      throw ExceptionNULLParameter(SYSTEM_SAVE_LOCATION, "str");
     createFromNonNULL(str);
   }
   /** \brief creates object from a given string.
@@ -84,8 +91,21 @@ public:
     return str_[p];
   }
 
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const LimitedString<N> &other) const
+  {
+    assert(str_!=NULL);
+    assert(other.str_!=NULL);
+    if(str_==other.str_)    // small optimization
+      return true;
+    return strcmp(str_, other.str_)==0;
+  }
+
 private:
-  BOOST_STATIC_ASSERT(N<=512 && "string is unreasonably large");
+  BOOST_STATIC_ASSERT(N<=512);// string is unreasonably large
 
   void createFromNonNULL(const char *str)
   {
@@ -93,7 +113,7 @@ private:
     // check length
     const size_t len=strlen(str);
     if(len>N)
-      throw ExceptionStringTooLong(CALLNAME, str);
+      throw ExceptionStringTooLong(SYSTEM_SAVE_LOCATION, str);
 
     // save data
     assert(len+1<=sizeof(str_));

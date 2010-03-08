@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <boost/operators.hpp>
 #include <cassert>
 
 #include "Persistency/Exception.hpp"
@@ -22,7 +23,7 @@ struct ExceptionInvalidCertainty: public Exception
   /** \brief create execption with given message.
    *  \param where place where exception has been thrown.
    */
-  ExceptionInvalidCertainty(const char *where):
+  ExceptionInvalidCertainty(const Location &where):
     Exception(where, "certainty out of bound requested")
   {
   }
@@ -31,7 +32,7 @@ struct ExceptionInvalidCertainty: public Exception
 
 /** \brief certanity level representation.
  */
-class Certainty
+class Certainty: public boost::equality_comparable<Certainty>
 {
 public:
   /** \brief create certanity representation [0;1].
@@ -42,7 +43,7 @@ public:
     c_(c)
   {
     if(c_<0 || 1<c_)
-      throw ExceptionInvalidCertainty(CALLNAME);
+      throw ExceptionInvalidCertainty(SYSTEM_SAVE_LOCATION);
   }
   /** \brief gets certanity level.
    *  \return certanity saved in class.
@@ -52,6 +53,14 @@ public:
     assert(0<=c_);
     assert(c_<=1);
     return c_;
+  }
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const Certainty &other) const
+  {
+    return get()==other.get();
   }
 
 private:

@@ -5,6 +5,7 @@
 #include <tut.h>
 
 #include "Persistency/detail/LimitedString.hpp"
+#include "TestHelpers/checkEquality.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -97,6 +98,25 @@ void testObj::test<6>(void)
   const string            str("(: narf :)");
   const LimitedString<10> ls(str);
   ensure_equals("invalid stirng", ls.get(), str);
+}
+
+// test equality operators
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const LimitedString<10> ls1("kszy");
+  const LimitedString<10> ls2("narf");
+  TestHelpers::checkEquality(ls1, ls2);
+}
+
+// test default c-tor
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const LimitedString<10> tmp;
+  ensure_equals("invalid value after default c-tor", tmp.get(), string("") );
 }
 
 } // namespace tut

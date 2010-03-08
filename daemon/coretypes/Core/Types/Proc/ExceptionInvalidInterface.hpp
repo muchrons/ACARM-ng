@@ -24,7 +24,7 @@ public:
    *  \param where place where exception has been thrown.
    *  \param name  name of invalid filter.
    */
-  ExceptionInvalidInterface(const char *where, const char *name):
+  ExceptionInvalidInterface(const Location &where, const char *name):
     Exception(where, name, "invalid/NULL processing unit's interface")
   {
   }

@@ -41,13 +41,13 @@ inline T keepRange(const T in, const T min, const T max)
 template<typename Tout, typename Tin>
 inline Tout keepRange(const Tin v)
 {
-  static const Tout min=std::numeric_limits<Tout>::min();
-  static const Tout max=std::numeric_limits<Tout>::max();
+  const Tout min=std::numeric_limits<Tout>::min();
+  const Tout max=std::numeric_limits<Tout>::max();
   if(v<min)
     return min;
   if(v>max)
     return max;
-  return v;
+  return static_cast<Tout>(v);
 }
 
 } // namespace System

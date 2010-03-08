@@ -34,7 +34,6 @@ struct TestClass
   }
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -67,6 +66,68 @@ template<>
 void testObj::test<3>(void)
 {
   Singleton::get()->persistencyConfig();
+}
+
+// test getting filters' config
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  Singleton::get()->filtersConfig();
+}
+
+// test rereading configuration from default file.
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const PersistencyConfig *tmp=&Singleton::get()->persistencyConfig();
+  Singleton::get()->rereadConfig();             // re-read config
+  const PersistencyConfig *ptr=&Singleton::get()->persistencyConfig();
+  ensure("configuration not changed", ptr!=tmp);
+}
+
+// test reading different configuration file
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  ensure_equals("invalid initial read",
+                Singleton::get()->persistencyConfig().getType(),
+                "postgres");
+
+  Singleton::get()->rereadConfig("testdata/other_config.xml");  // re-read config
+
+  ensure_equals("invalid initial read",
+                Singleton::get()->persistencyConfig().getType(),
+                "stub");
+}
+
+// test if configuration stays un-touched in case of error
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const PersistencyConfig *tmp=&Singleton::get()->persistencyConfig();
+  try
+  {
+    Singleton::get()->rereadConfig("testdata/invalid_defaul_appender.xml");
+    fail("rereading configuration didn't failed on invalid config");
+  }
+  catch(const Exception &)
+  {
+    // this is expected
+  }
+  const PersistencyConfig *ptr=&Singleton::get()->persistencyConfig();
+  ensure("configuration changed", ptr==tmp);
+}
+
+// test getting triggers' config
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  Singleton::get()->triggersConfig();
 }
 
 } // namespace tut

@@ -5,20 +5,21 @@
 #include <tut.h>
 
 #include "Algo/countCorrelatedAlerts.hpp"
-#include "Algo/TestHelpers.t.hpp"
-#include "Algo/TestBase.t.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Algo;
 using namespace Persistency;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
 
-struct TestClass: private TestBase
+struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    tree_( th_makeTree1() ),
-    nonUniqueTree_( th_makeTree2() )
+    tree_( makeNewTree1() ),
+    nonUniqueTree_( makeNewTree2() )
   {
   }
 
@@ -26,7 +27,6 @@ struct TestClass: private TestBase
   GraphNodePtrNN nonUniqueTree_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -51,7 +51,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const size_t cnt=countCorrelatedAlerts( th_makeLeaf() );
+  const size_t cnt=countCorrelatedAlerts( makeNewLeaf() );
   ensure_equals("invalid count for leaf", cnt, 1);
 }
 

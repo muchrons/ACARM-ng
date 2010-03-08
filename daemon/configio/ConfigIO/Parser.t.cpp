@@ -106,20 +106,12 @@ void testObj::test<4>(void)
   }
 }
 
-// test throw when default file does not exist
+// test default file parameter - should not throw
 template<>
 template<>
 void testObj::test<5>(void)
 {
-  try
-  {
-    Parser p;
-    fail("Parser() didn't throw on nonexisting default file");
-  }
-  catch(const System::Exception&)
-  {
-    // this is not expected.
-  }
+  Parser p;
 }
 
 // test throw when default file does not exist
@@ -133,6 +125,26 @@ void testObj::test<6>(void)
   // check random field
   ensure_equals("invalid default appender",
                 lc.getDefaultNodeConfig().getAppenderName(), "default");
+}
+
+// test getting filters' configuration - smoke test
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  copyAsDefaultConfig("testdata/sample_config.xml");
+  const Parser        p;
+  p.getFiltersConfig();
+}
+
+// test getting triggers' configuration - smoke test
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  copyAsDefaultConfig("testdata/sample_config.xml");
+  const Parser        p;
+  p.getTriggersConfig();
 }
 
 } // namespace tut

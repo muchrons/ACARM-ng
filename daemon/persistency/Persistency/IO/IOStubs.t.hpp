@@ -77,6 +77,10 @@ public:
   {
     ++called_[0];
   }
+  virtual void markAsTriggeredImpl(Persistency::IO::Transaction &, const std::string &)
+  {
+    ++called_[7];
+  }
   virtual void markAsUsedImpl(Persistency::IO::Transaction &)
   {
     ++called_[1];
@@ -103,8 +107,35 @@ public:
   }
 
   Persistency::MetaAlertPtr ma_;
-  int                       called_[7];
+  int                       called_[8];
 }; // class MetaAlert
+
+class IORestorer: public Persistency::IO::Restorer
+{
+public:
+  IORestorer(Persistency::IO::Transaction &t):
+    Persistency::IO::Restorer(t),
+    restoreAll_(0),
+    restoreBetween_(0)
+  {
+  }
+
+  virtual void restoreAllInUseImpl(Persistency::IO::Transaction&, NodesVector&)
+  {
+    ++restoreAll_;
+  }
+
+  virtual void restoreBetweenImpl(Persistency::IO::Transaction&,
+      NodesVector&,
+      const Persistency::Timestamp&,
+      const Persistency::Timestamp&)
+  {
+    ++restoreBetween_;
+  }
+
+  int restoreAll_;
+  int restoreBetween_;
+}; // class IORestorer
 
 
 struct TestIOConnection: public Persistency::IO::Connection
@@ -116,11 +147,11 @@ struct TestIOConnection: public Persistency::IO::Connection
   }
 
   virtual Persistency::IO::TransactionAPIAutoPtr createNewTransactionImpl(
-                                        Base::Threads::Mutex &/*mutex*/,
-                                        const std::string    &/*name*/)
+                                        Base::Threads::Mutex &mutex,
+                                        const std::string    &name)
   {
     ++called_[0];
-    return Persistency::IO::TransactionAPIAutoPtr(new TestTransactionAPI);
+    return Persistency::IO::TransactionAPIAutoPtr( new TestTransactionAPI(mutex, name) );
   }
   virtual Persistency::IO::AlertAutoPtr alertImpl(
                                         Persistency::AlertPtrNN       alert,
@@ -144,7 +175,14 @@ struct TestIOConnection: public Persistency::IO::Connection
     return Persistency::IO::MetaAlertAutoPtr( new IOMetaAlert(ma, t) );
   }
 
-  int called_[4];
+  virtual Persistency::IO::RestorerAutoPtr restorerImpl(
+                                        Persistency::IO::Transaction &t)
+  {
+    ++called_[4];
+    return Persistency::IO::RestorerAutoPtr( new IORestorer(t) );
+  }
+
+  int called_[5];
 }; // struct TestIOConnection
 
 } // unnamed namespace

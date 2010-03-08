@@ -26,7 +26,7 @@ public:
    *  \param msg   message to represent.
    */
   template<typename T>
-  Exception(const char *where, const T &msg):
+  Exception(const Location &where, const T &msg):
     Persistency::Exception(where, std::string("PostgreSQL peristency: ") + msg)
   {
   }

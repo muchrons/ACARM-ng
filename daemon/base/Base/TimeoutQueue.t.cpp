@@ -46,7 +46,6 @@ struct TestClass
   Queue q1_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -137,7 +136,7 @@ void testObj::test<7>(void)
   ensure_equals("invalid size/2", size(empty_), 2);
   sleep(1);                 // now for sure!
 
-  empty_.update("old", 6);  // add some time
+  empty_.update("old", 6);  // set new timeout
   ensure_equals("invalid size/3", size(empty_), 2);
   empty_.prune();           // entry should not be removed
   ensure_equals("invalid size/4", size(empty_), 2);
@@ -174,10 +173,10 @@ void testObj::test<8>(void)
   ConstIter it=empty_.begin();
   ensure_equals("invalid element 1", *it, "new1");
   ++it;
-  ensure_equals("invalid element 1", *it, "new2");
+  ensure_equals("invalid element 2", *it, "new2");
 }
 
-// test updating timeout should make time longer by a given amount.
+// test updating timeout should set new time.
 template<>
 template<>
 void testObj::test<9>(void)
@@ -190,6 +189,32 @@ void testObj::test<9>(void)
 
   empty_.prune();           // entry should now be removed
   ensure_equals("invalid size/4", size(empty_), 0);
+}
+
+// test explicit removal of element
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  empty_.update("e1", 2);
+  empty_.update("e2", 9);
+  empty_.update("e3", 3);
+  ensure_equals("invalid number of elements", size(empty_), 3);
+
+  // explicitly removed 2nd element
+  {
+    Iter it=empty_.begin();
+    ++it;
+    empty_.dismiss(it);
+  }
+
+  // check size
+  ensure_equals("invalid number of elements after pruning", size(empty_), 2);
+  // check content
+  ConstIter it=empty_.begin();
+  ensure_equals("invalid element 1", *it, "e1");
+  ++it;
+  ensure_equals("invalid element 1", *it, "e3");
 }
 
 } // namespace tut

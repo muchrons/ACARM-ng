@@ -1,4 +1,8 @@
 algo
+filteronetomany
+filtermanytoone
+filtermanytomany
+filterhostcommon
 filter
 trigger
 persistencystubs
@@ -20,3 +24,4 @@ inputfile
 persistencypostgres
 
 acarmng
+fuseiodef

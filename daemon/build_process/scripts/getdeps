@@ -9,6 +9,9 @@ then
   exit 1
 fi
 
+# display info on rebuilding dependency for a given component
+echo "CDEPS $4"
+
 # remember output dir
 OUTPUT_DIR="$1"
 shift
@@ -20,7 +23,7 @@ GEN_LIBS_PATH="$1"
 shift
 
 # finder <component>
-#   return list of dependant components
+#   return list of dependent components
 function finder
 {
   # check all possible files
@@ -37,12 +40,28 @@ function finder
   done # for dependencies
 }
 
+# reduce_deps <c1> <c2> <c3> ... <cN>
+#   returns minimum list of dependent components
+function reduce_deps
+{
+  local TMP=""
+  echo "$@" | xargs -n 1 echo | grep -n '' | sort -r -n | sed 's:^[0-9]\+.::' | \
+    while read C
+    do
+      grep -q " $C " <<< " $TMP " && continue
+      TMP="$TMP $C"
+      echo "$C"
+    done | \
+  grep -n '' | sort -r -n | sed 's:^[0-9]\+.::' | xargs echo
+}
+
 # short name for component - it will be used many times
 C="$1"
 
 # find dependencies and build dependencies file
 out="$OUTPUT_DIR/$C.mk"
-DEPS="`finder $C | xargs echo`"
+DEPS_FULL="`finder $C | xargs echo`"
+DEPS="`reduce_deps "$DEPS_FULL"`"
 
 DEPS_FILES=""
 COMPILE_FLAGS=""
@@ -51,20 +70,7 @@ LINK_FLAGS=""
 for dc in $C $DEPS
 do
   ROOT="$dc/$BASE_PATH_DIR"
-
-  #
-  # dependent files
-  #
-
-  # profile-specific dependency files
-  test -f "$ROOT/${PROFILE}"                 && DEPS_FILES="$DEPS_FILES $ROOT/${PROFILE}"
-  test -x "$ROOT/${PROFILE}_dynamic_compile" && DEPS_FILES="$DEPS_FILES $ROOT/${PROFILE}_dynamic_compile"
-  # common dependency files
-  test -f "$ROOT/common"                     && DEPS_FILES="$DEPS_FILES $ROOT/common"
-  test -x "$ROOT/common_dynamic_compile"     && DEPS_FILES="$DEPS_FILES $ROOT/common_dynamic_compile"
-  # link files
-  test -x "$ROOT/common_dynamic_link"        && DEPS_FILES="$DEPS_FILES $ROOT/common_dynamic_link"
-  test -x "$ROOT/${PROFILE}_dynamic_link"    && DEPS_FILES="$DEPS_FILES $ROOT/${PROFILE}_dynamic_link"
+  DEPS_FILES="$DEPS_FILES $ROOT/common* $ROOT/${PROFILE}*"
 
   #
   # this link flags/libs
@@ -83,10 +89,19 @@ do
   test -x "$ROOT/common_dynamic_link"        && LINK_FLAGS="$LINK_FLAGS `$ROOT/common_dynamic_link`"
 done
 
+#
+# add local flags (run for this component only)
+#
+ROOT="$C/$BASE_PATH_DIR"
+test -x "$ROOT/${PROFILE}_dynamic_compile_local" && \
+  COMPILE_FLAGS="$COMPILE_FLAGS `$ROOT/${PROFILE}_dynamic_compile_local`"
+test -x "$ROOT/common_dynamic_compile_local" && \
+  COMPILE_FLAGS="$COMPILE_FLAGS `$ROOT/common_dynamic_compile_local`"
+
+
 # convert deps to libs and libs_deps (libraries this component depends on)
 if [ "`sed 's:^ *$::' <<< "$DEPS"`" ]
 then
-#  LINK_LIBS="`sed -e 's:^ *:-l:' -e 's: \+$::' -e 's: \+: -l:g'<<<"$DEPS"`"
   DEP_LIBS_WC="`sed -e "s:^ *: :" \
                     -e "s: *$: :" \
                     -e "s: \+\([^ ]\+\): $GEN_LIBS_PATH/lib\1.*:g" \
@@ -98,19 +113,18 @@ cat<<EOF > "$out"
 .PHONY: $C
 $C:: LINK_LIBS:=$LINK_FLAGS
 $C:: DEP_LIBS_WC:=$DEP_LIBS_WC
-$C:: CXXFLAGS+=$COMPILE_FLAGS
-$C:: CFLAGS+=$COMPILE_FLAGS
+$C:: CXXFLAGS:=\$(CXXFLAGS) $COMPILE_FLAGS
+$C:: CFLAGS:=\$(CFLAGS) $COMPILE_FLAGS
 ifeq (,\$(WITHOUT_DEPS))
-$C::$DEPS
+$C:: $DEPS
 else
 $C::
 endif
 	@\$(build-this-component)
 
 # update this dependency file if needed
-$out:: $DEPS_FILES
+$out:: \$(wildcard $DEPS_FILES)
 	@$THIS_SCRIPT "$OUTPUT_DIR" "$DEPS_PATH" "$GEN_LIBS_PATH" "$C"
 EOF
 
 exit 0
-

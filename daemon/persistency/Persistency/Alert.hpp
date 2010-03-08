@@ -12,7 +12,9 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/operators.hpp>
 
+#include "Base/NonEmptyVector.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/Analyzer.hpp"
@@ -20,6 +22,7 @@
 #include "Persistency/Certainty.hpp"
 #include "Persistency/Host.hpp"
 #include "Persistency/detail/LimitedString.hpp"
+#include "Persistency/Exception.hpp"
 #include "Persistency/ExceptionNULLParameter.hpp"
 
 
@@ -28,19 +31,20 @@ namespace Persistency
 
 /** \brief represents alert report got from input.
  */
-class Alert: private boost::noncopyable
+class Alert: private boost::noncopyable,
+             public  boost::equality_comparable<Alert>
 {
 public:
-  /** \brief name of the alert (aka: title).
-   */
-  typedef detail::LimitedString<256> Name;
-  /** \brief vector of reported hosts.
-   */
-  typedef std::vector<HostPtr>       ReportedHosts;
+  /** \brief name of the alert (aka: title). */
+  typedef detail::LimitedString<256>          Name;
+  /** \brief vector of reported hosts. */
+  typedef std::vector<HostPtrNN>              ReportedHosts;
+  /** \brief vector of analyzers assigned to this alert. */
+  typedef Base::NonEmptyVector<AnalyzerPtrNN> SourceAnalyzers;
 
   /** \brief creates alert.
    *  \param name        name of an alert (~title).
-   *  \param analyzer    analyzer that reported an issue.
+   *  \param analyzers   analyzers that reported this alert.
    *  \param detected    time when alert has been detected.
    *  \param created     time of creation of this alert.
    *  \param severity    severity of alert reported.
@@ -50,7 +54,7 @@ public:
    *  \param targetHosts targeted hosts.
    */
   Alert(const Name          &name,
-        AnalyzerPtrNN        analyzer,
+        SourceAnalyzers      analyzers,
         const Timestamp     *detected,
         const Timestamp     &created,
         Severity             severity,
@@ -63,10 +67,10 @@ public:
    *  \return name of alert.
    */
   const Name &getName(void) const;
-  /** \brief gets analyzer that reported alert.
-   *  \return analyzer data.
+  /** \brief get list of analyzers that reported alert.
+   *  \return analyzers' data.
    */
-  const Analyzer &getAnalyzer(void) const;
+  const SourceAnalyzers &getSourceAnalyzers(void) const;
   /** \brief gets time alert has been detected.
    *  \return alert detection time.
    */
@@ -97,10 +101,15 @@ public:
    *  \return vector of reported target hosts.
    */
   const ReportedHosts &getReportedTargetHosts(void) const;
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const Alert &other) const;
 
 private:
   Name                         name_;
-  AnalyzerPtrNN                analyzer_;
+  SourceAnalyzers              analyzers_;
   boost::scoped_ptr<Timestamp> detected_;
   Timestamp                    created_;
   Severity                     severity_;

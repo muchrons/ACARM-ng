@@ -6,6 +6,7 @@
 
 #include "Persistency/Process.hpp"
 #include "Persistency/TestHelpers.t.hpp"
+#include "TestHelpers/checkEquality.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -13,7 +14,7 @@ using namespace Persistency;
 namespace
 {
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestClass(void):
     md5Str_("01234567890123456789012345678901"),
@@ -22,7 +23,15 @@ struct TestClass
     uid_(13),
     user_("john"),
     args_("-a -b -c"),
-    url_( makeNewReferenceURL() )
+    url_( makeNewReferenceURL() ),
+    custom_( "/path/to/file",
+             "file",
+            &md5_,
+            &pid_,
+            &uid_,
+             user_,
+             args_,
+             url_ )
   {
   }
 
@@ -33,9 +42,9 @@ struct TestClass
   const Process::Username  user_;
   const char              *args_;
   ReferenceURLPtr          url_;
+  const Process            custom_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -181,6 +190,166 @@ void testObj::test<8>(void)
                    args_,
                    ReferenceURLPtr() );
   ensure("invalid ", ti.getReferenceURL()==NULL );
+}
+
+// check comparison
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const Process ti( "/path/to/file",
+                    "file",
+                   &md5_,
+                   &pid_,
+                   &uid_,
+                    user_,
+                    args_,
+                    url_ );
+  ensure("objects differ", custom_==ti);
+}
+
+// check inequality
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  const Process ti( "/path/to/file",
+                    "file_differs_now",
+                   &md5_,
+                   &pid_,
+                   &uid_,
+                    user_,
+                    args_,
+                    url_ );
+  TestHelpers::checkEquality(custom_, ti);
+}
+
+// check comparison with different path
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  const Process ti( "/path/to/DIFFERENT/file",
+                    "file",
+                   &md5_,
+                   &pid_,
+                   &uid_,
+                    user_,
+                    args_,
+                    url_ );
+  TestHelpers::checkEquality(custom_, ti);
+}
+
+// check comparison with different file name
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const Process ti( "/path/to/file",
+                    "differentfile",
+                   &md5_,
+                   &pid_,
+                   &uid_,
+                    user_,
+                    args_,
+                    url_ );
+  TestHelpers::checkEquality(custom_, ti);
+}
+
+// check comparison with different md5
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  const Process ti( "/path/to/file",
+                    "file",
+                    NULL,
+                   &pid_,
+                   &uid_,
+                    user_,
+                    args_,
+                    url_ );
+  TestHelpers::checkEquality(custom_, ti);
+}
+
+// check comparison with different PID
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  const Process ti( "/path/to/file",
+                    "file",
+                   &md5_,
+                    NULL,
+                   &uid_,
+                    user_,
+                    args_,
+                    url_ );
+  TestHelpers::checkEquality(custom_, ti);
+}
+
+// check comparison with different UID
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  const Process ti( "/path/to/file",
+                    "file",
+                   &md5_,
+                   &pid_,
+                    NULL,
+                    user_,
+                    args_,
+                    url_ );
+  TestHelpers::checkEquality(custom_, ti);
+}
+
+// check comparison with different user
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  const Process ti( "/path/to/file",
+                    "file",
+                   &md5_,
+                   &pid_,
+                   &uid_,
+                    "different.user",
+                    args_,
+                    url_ );
+  TestHelpers::checkEquality(custom_, ti);
+}
+
+// check comparison with different args
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  const Process ti( "/path/to/file",
+                    "file",
+                   &md5_,
+                   &pid_,
+                   &uid_,
+                    user_,
+                    "--different",
+                    url_ );
+  TestHelpers::checkEquality(custom_, ti);
+}
+
+// check comparison with different URL
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  const Process ti( "/path/to/file",
+                    "file",
+                   &md5_,
+                   &pid_,
+                   &uid_,
+                    user_,
+                    args_,
+                    ReferenceURLPtr() );
+  TestHelpers::checkEquality(custom_, ti);
 }
 
 } // namespace tut

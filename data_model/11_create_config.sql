@@ -5,14 +5,20 @@
 -- config_rdonly
 CREATE TABLE config_rdonly
 (
-  key   varchar(64)  NOT NULL UNIQUE,
-  value varchar(256) NOT NULL
+  owner varchar(64)  NOT NULL,  -- name of one who owns the entry
+  key   varchar(64)  NOT NULL,
+  value varchar(256) NOT NULL,
+
+  UNIQUE(owner, key)
 );
 
 
 -- config
 CREATE TABLE config
 (
-  key   varchar(64)  NOT NULL UNIQUE,
-  value varchar(256) NOT NULL
+  owner varchar(64)  NOT NULL,  -- name of one who owns the entry
+  key   varchar(64)  NOT NULL,
+  value varchar(256) NOT NULL,
+
+  UNIQUE(owner, key)
 );

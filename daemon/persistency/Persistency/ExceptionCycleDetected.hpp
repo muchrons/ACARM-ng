@@ -23,9 +23,9 @@ public:
    *  \param parentName name of a paretnt child was being tried to be attached to.
    *  \param childName  name of child that was ot be attached.
    */
-  ExceptionCycleDetected(const char *where,
-                         const char *parentName,
-                         const char *childName):
+  ExceptionCycleDetected(const Location &where,
+                         const char     *parentName,
+                         const char     *childName):
     Exception(where,
               std::string("addition node '") + ensureString(childName) +
               "' as a child of node '"       + ensureString(parentName) +
@@ -34,6 +34,6 @@ public:
   }
 }; // class ExceptionCycleDetected
 
-}; // namespace Persistency
+} // namespace Persistency
 
 #endif

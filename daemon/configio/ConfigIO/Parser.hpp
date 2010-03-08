@@ -15,6 +15,8 @@
 #include "ConfigIO/ParseLoggerNodes.hpp"
 #include "ConfigIO/ParseLoggerAppenders.hpp"
 #include "ConfigIO/ParsePersistency.hpp"
+#include "ConfigIO/ParseFilters.hpp"
+#include "ConfigIO/ParseTriggers.hpp"
 
 
 namespace ConfigIO
@@ -28,7 +30,7 @@ public:
   /** \brief creates parset for a given file.
    *  \param path file to be parsed.
    */
-  explicit Parser(const std::string &path="acarm_ng_config.xml");
+  explicit Parser(const std::string &path=DEFAULT_CONFIGIO_CONFIG_FILE);
 
   /** \brief gets logger's configuration, read from file.
    *  \return logger's configuration.
@@ -40,12 +42,23 @@ public:
    */
   const PersistencyConfig &getPersistencyConfig(void) const;
 
+  /** \brief gets filters' configuration, read from file.
+   *  \return filters' configuration.
+   */
+  const FiltersConfigCollection &getFiltersConfig(void) const;
+
+  /** \brief gets triggers' configuration, read from file.
+   *  \return triggers' configuration.
+   */
+  const TriggersConfigCollection &getTriggersConfig(void) const;
+
 private:
   XML::Tree            tree_;
+  ParsePersistency     parsePersistency_;
+  ParseFilters         parseFilters_;
+  ParseTriggers        parseTriggers_;
   ParseLoggerNodes     parseNodes_;
   ParseLoggerAppenders parseAppenders_;
-  ParsePersistency     parsePersistency_;
-
   LoggerConfig         loggerCfg_;
 }; // class Parser
 

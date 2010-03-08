@@ -19,11 +19,13 @@ struct LoggerNodesTestClass
   {
   }
 
-  LoggerNodeConfig mkNodeCfg(const char *name, const char *appName=NULL) const
+  LoggerNodeConfig mkNodeCfg(const char *name,
+                             const char *appName=NULL,
+                             const char *thr="debug") const
   {
     if(appName!=NULL)
-      return LoggerNodeConfig(name, appName);
-    return LoggerNodeConfig(name);
+      return LoggerNodeConfig(name, appName, thr);
+    return LoggerNodeConfig(name, OptionalString(), OptionalString() );
   }
 
   LoggerNodes::Nodes ns_;
@@ -49,13 +51,14 @@ void testObj::test<1>(void)
   ensure("non-zero elements in colelction", ln.begin()==ln.end() );
 }
 
-// test adding two unique elements
+// test adding 3 unique elements
 template<>
 template<>
 void testObj::test<2>(void)
 {
   ns_.push_back( mkNodeCfg("some.name.1") );
   ns_.push_back( mkNodeCfg("some.name.2", "app1") );
+  ns_.push_back( mkNodeCfg("some.name.3", "app2", "info") );
   const LoggerNodes ln(ns_);
 
   // check content
@@ -69,6 +72,12 @@ void testObj::test<2>(void)
   ensure("just one elements in colelction", it!=ln.end() );
   ensure_equals("invalid second element", it->getNodeName(), "some.name.2");
   ensure("element 2 reports no appender", it->hasAppender() );
+  ++it;
+
+  ensure("just two elements in colelction", it!=ln.end() );
+  ensure_equals("invalid third element", it->getNodeName(), "some.name.3");
+  ensure("element 3 reports no appender",  it->hasAppender()  );
+  ensure("element 3 reports no threshold", it->hasThreshold() );
   ++it;
 
   ensure("more than tow elements in collection", it==ln.end() );

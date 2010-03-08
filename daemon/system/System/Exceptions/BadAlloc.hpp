@@ -19,13 +19,25 @@ namespace Exceptions
 template<typename CRTP>
 class BadAlloc: public Base<BadAlloc<CRTP>, std::bad_alloc>
 {
+private:
+  typedef Base<BadAlloc<CRTP>, std::bad_alloc> BaseC;
+
 protected:
   /** \brief create execption with given message.
    *  \param msg message to represent.
    */
   template<typename T>
   explicit BadAlloc(const T &msg):
-    Exceptions::Base<BadAlloc, std::bad_alloc>(msg)
+    BaseC(msg)
+  {
+  }
+  /** \brief create execption with given message.
+   *  \param where message to represent.
+   *  \param msg   message to represent.
+   */
+  template<typename T>
+  BadAlloc(const typename BaseC::Location &where, const T &msg):
+    BaseC(where, msg)
   {
   }
 }; // class BadAlloc

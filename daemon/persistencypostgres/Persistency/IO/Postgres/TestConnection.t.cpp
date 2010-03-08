@@ -16,7 +16,6 @@ struct TestClass
   TestConnection tc_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

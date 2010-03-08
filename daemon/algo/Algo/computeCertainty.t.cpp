@@ -5,16 +5,17 @@
 #include <tut.h>
 
 #include "Algo/computeCertainty.hpp"
-#include "Algo/TestHelpers.t.hpp"
-#include "Algo/TestBase.t.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Algo;
 using namespace Persistency;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
 
-struct TestClass: private TestBase
+struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     alertCertainty_(0.42)
@@ -34,7 +35,6 @@ struct TestClass: private TestBase
   const double alertCertainty_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -50,7 +50,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  checkMatch( computeCertainty( th_makeLeaf() ), alertCertainty_);
+  checkMatch( computeCertainty( makeNewLeaf() ), alertCertainty_);
 }
 
 // compute certanity of a node with 2 leafs
@@ -58,7 +58,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  checkMatch( computeCertainty( th_makeNode() ),
+  checkMatch( computeCertainty( makeNewNode() ),
               2*alertCertainty_/2.0 + 1*0.2);
 }
 
@@ -67,7 +67,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  checkMatch( computeCertainty( th_makeTree2() ),
+  checkMatch( computeCertainty( makeNewTree2() ),
               3*alertCertainty_/3.0 + 4*0.2);
 }
 

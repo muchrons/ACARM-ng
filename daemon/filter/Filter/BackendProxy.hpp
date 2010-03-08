@@ -7,11 +7,9 @@
 
 /* public header */
 
-#include <string>
-#include <boost/noncopyable.hpp>
-#include <boost/scoped_ptr.hpp>
-
 #include "Persistency/GraphNode.hpp"
+#include "Core/Types/Proc/BackendProxy.hpp"
+#include "Filter/Exception.hpp"
 
 
 namespace Filter
@@ -24,71 +22,73 @@ namespace Filter
  * \note this object allows transaction's to take place, but only on persistent
  *       level, i.e. rollbacking transaction does not change user objects.
  */
-class BackendProxy: private boost::noncopyable
+class BackendProxy: public Core::Types::Proc::BackendProxy
 {
 public:
+  /** \brief exception throw when changed elements colleciton is not empty.
+   */
+  struct ExceptionChangedNodesNotEmpty: public Exception
+  {
+    /** \brief create object.
+     *  \param where place where exception has been created.
+     *  \param name  name of filter throwing exception.
+     */
+    ExceptionChangedNodesNotEmpty(const Location &where, const char *name):
+      Exception(where, name, "ChangedNodes colleciton is not initially empty")
+    {
+    }
+  }; // struct ExceptionChangedNodesNoteEmpty
+
   /** \brief forward of type definition (for simplified usage). */
-  typedef Persistency::GraphNode::ChildrenVector ChildrenVector;
+  typedef Persistency::NodeChildrenVector ChildrenVector;
+  /** \brief helper typedef for GraphNode pointer. */
+  typedef Persistency::GraphNodePtrNN     Node;
+  /** \brief helper typedef for list of chenged nodes. */
+  typedef std::vector<Node>               ChangedNodes;
+
 
   /** \brief create object's instance.
    *  \param conn       connection object to use.
+   *  \param changed    list of changed nodes to update.
    *  \param filterName name of filter this object is created for.
    */
   BackendProxy(Persistency::IO::ConnectionPtrNN  conn,
+               ChangedNodes                     &changed,
                const std::string                &filterName);
-  /** \brief deallocates object's internal resources.
-   */
-  ~BackendProxy(void);
 
   /** \brief set name of a given host.
-   *  \param host host naem ot set name to.
+   *  \param node node given host name is part of.
+   *  \param host host name ot set name to.
    *  \param name DNS name to be set for a ginve host.
+   *  \note host must be part of node, either as alaizer of source/destination.
    */
-  void setHostName(Persistency::HostPtrNN host, const std::string &name);
+  void setHostName(Node                    node,
+                   Persistency::HostPtrNN  host,
+                   const std::string      &name);
   /** \brief updates severity of a given meta-alert.
-   *  \param ma    meta-alert to update severity of.
+   *  \param node  meta-alert to update severity of.
    *  \param delta severity change to be applied.
    */
-  void updateSeverityDelta(Persistency::MetaAlertPtrNN ma, double delta);
+  void updateSeverityDelta(Node node, double delta);
   /** \brief updates certanity of a given meta-alert.
-   *  \param ma    meta alert to update certanity on.
+   *  \param node  meta alert to update certanity on.
    *  \param delta certanity change to be applied.
    */
-  void updateCertaintyDelta(Persistency::MetaAlertPtrNN ma, double delta);
+  void updateCertaintyDelta(Node node, double delta);
   /** \brief adds given node as a child for other node.
    *  \param parent parent node (this node will have child added).
    *  \param child  child node (will be added to parent node).
    */
-  void addChild(Persistency::GraphNodePtrNN parent,
-                Persistency::GraphNodePtrNN child);
+  void addChild(Node parent, Node child);
   /** \brief correlate set of children creating new meta-alert's node as a parent.
-   *  \param ma            meta alert data of which to create node from.
-   *  \param child1        first child to correlate.
-   *  \param child2        second child to correlate.
-   *  \param otherChildren more child nodes, if needed.
+   *  \param ma       meta alert data of which to create node from.
+   *  \param children list of childrent to be correlated into new node.
    */
-  Persistency::GraphNodePtrNN correlate(
-            Persistency::MetaAlertPtrNN  ma,
-            Persistency::GraphNodePtrNN  child1,
-            Persistency::GraphNodePtrNN  child2,
-            const ChildrenVector        &otherChildren=ChildrenVector() );
-  /** \brief commit current transaction.
-   *
-   * if not transaction is started, call does nothing. if transaction is opened,
-   * it is commited. calling another call after commitChanges will open new
-   * transaction.
-   */
-  void commitChanges(void);
+  Persistency::GraphNodePtrNN correlate(Persistency::MetaAlertPtrNN  ma,
+                                        const ChildrenVector        &children);
 
 private:
-  void beginTransaction(void);
-  Persistency::IO::Transaction &getTransaction(void) const;
-
-  typedef boost::scoped_ptr<Persistency::IO::Transaction> TransactionScPtr;
-
-  std::string                      filterName_;
-  TransactionScPtr                 transaction_;
-  Persistency::IO::ConnectionPtrNN conn_;
+  ChangedNodes &changed_;
 }; // class BackendProxy
 
 } // namespace Filter

@@ -32,7 +32,7 @@ public:
      *  \param where place where exception has been generated.
      *  \param name  name of the missing paramter.
      */
-    ExceptionNoSuchOption(const char *where, const char *name):
+    ExceptionNoSuchOption(const Location &where, const char *name):
       Exception(where, std::string("no such option: ") + ensureString(name) )
     {
     }

@@ -2,23 +2,22 @@
 <acarm_ng>
 
   <persistency>
-    <type>postgres</type>
-    <host>xzaaa</host>
-    <port>5432</port>
-    <dbname>database</dbname>
-    <user>naft</user>
-    <pass>$3cr3t</pass>
+    <type>persistencytest</type>
   </persistency>
 
   <logger>
     <appenders>
-      <file name="default">
-        <output>loggerfile.log</output>
-      </file>
+      <File name="default">
+        <output>acarm-ng.log</output>
+      </File>
     </appenders>
 
-    <nodes appender="default">
+    <nodes appender="default" threshold="debug">
     </nodes>
   </logger>
+
+  <filters/>
+
+  <triggers/>
 
 </acarm_ng>

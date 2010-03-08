@@ -25,10 +25,8 @@ struct ExceptionInvalidOptionName: public Exception
    *  \param where  place where problem has been detected.
    *  \param option name of an option that was not found.
    */
-  ExceptionInvalidOptionName(const char        *where,
-                             const std::string &option):
-    Exception( std::string( ensureValidString(where) ) +
-               ": invalid option requested: " + option )
+  ExceptionInvalidOptionName(const Location &where, const std::string &option):
+    Exception(where, std::string("invalid option requested: ") + option)
   {
   }
 }; // struct ExceptionInvalidOptionName

@@ -57,7 +57,6 @@ struct TestClass
   ConnectionBuilder ofb_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -82,7 +81,7 @@ template<>
 void testObj::test<2>(void)
 {
   ConnectionBuilder::FactoryPtr ptr=build();
-  ensure("NULL pointere returned", ptr!=NULL);
+  ensure("NULL pointere returned", ptr.get()!=NULL );
 }
 
 // test throw on missing host name

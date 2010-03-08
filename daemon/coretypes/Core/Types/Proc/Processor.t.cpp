@@ -5,12 +5,12 @@
 #include <tut.h>
 
 #include "Core/Types/Proc/Processor.hpp"
-#include "Persistency/Stubs/TestHelpers.hpp"
-#include "Core/Types/TestBase.t.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Core::Types::Proc;
 using namespace Persistency;
-using namespace Persistency::Stubs;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
@@ -41,7 +41,7 @@ struct TestInterface: public Interface
 };
 
 
-struct TestClass: private TestBase
+struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     interface_(new TestInterface)
@@ -52,7 +52,6 @@ struct TestClass: private TestBase
   Processor::InterfaceAutoPtr interface_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -135,6 +134,15 @@ void testObj::test<4>(void)
       usleep(50*1000);
   // check results
   ensure_equals("invalid number of elements", mainQueue_.size(), 2);
+}
+
+// smoke-test smart-poitner declaration
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ProcessorPtrNN p( new Processor(mainQueue_, interface_) );
+  ensure("NULL pointer received", p.get()!=NULL );  // could be assert as well
 }
 
 } // namespace tut

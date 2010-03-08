@@ -11,6 +11,8 @@ DROP TABLE    reported_services;
 DROP TABLE    reported_hosts;
 DROP SEQUENCE reported_hosts_id_seq;
 
+DROP TABLE    alert_analyzers;
+
 DROP TABLE    alerts;
 DROP SEQUENCE alerts_id_seq;
 

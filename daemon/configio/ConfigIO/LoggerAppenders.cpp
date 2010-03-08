@@ -26,9 +26,7 @@ LoggerAppenders::LoggerAppenders(const Appenders &apps):
     // raise exception when entries are not unique
     assert(cnt!=0);
     if(cnt!=1)
-      throw ExceptionDuplicatedAppenderName(
-                    "LoggerAppenders::LoggerAppenders()",
-                    it1->getName() );
+      throw ExceptionDuplicatedAppenderName(SYSTEM_SAVE_LOCATION, it1->getName() );
   }
 }
 
@@ -40,7 +38,7 @@ const LoggerAppenderConfig &LoggerAppenders::operator[](const std::string &name)
       return *it;
 
   // no appender found....
-  throw ExceptionInvalidAppenderName("LoggerAppenders::operator[]()", name);
+  throw ExceptionInvalidAppenderName(SYSTEM_SAVE_LOCATION, name);
 }
 
 } // namespace ConfigIO

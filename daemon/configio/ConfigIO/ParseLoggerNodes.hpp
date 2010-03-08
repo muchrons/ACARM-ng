@@ -44,10 +44,10 @@ private:
 
   LoggerNodes parse(const XML::Node &node) const;
 
-  void addParsed(LoggerNodes::Nodes &out,
-                 const std::string  &parent,
-                 const XML::Node    &node,
-                 const char         *sep) const;
+  void addParsed(LoggerNodes::Nodes   &out,
+                 const std::string    &parent,
+                 const XML::Node      &node,
+                 const char           *sep) const;
 
   LoggerNodeConfig defaultNode_;
   LoggerNodes      nodes_;

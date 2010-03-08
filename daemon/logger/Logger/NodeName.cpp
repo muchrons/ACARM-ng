@@ -24,13 +24,13 @@ const char *NodeName::validate(const char *name)
 {
   // sanity check
   if(name==NULL)
-    throw ExceptionNullParameter("NodeName::validate()", "name");
+    throw ExceptionNullParameter(SYSTEM_SAVE_LOCATION, "name");
 
   // check for lower case, numbers and '.' - nothing more is allowed
   const int len=strlen(name);
   for(int i=0; i<len; ++i)
     if( !islower(name[i]) && !isdigit(name[i]) && name[i]!='.' )
-      throw ExceptionInvalidNodeName(name);
+      throw ExceptionInvalidNodeName(SYSTEM_SAVE_LOCATION, name);
 
   return name;
 }

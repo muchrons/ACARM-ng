@@ -24,15 +24,17 @@ inline Tree getParsedTree(const string &path)
 {
   FileReader       reader(path);
   XMLpp::SaxParser sax;
-  return sax.parse( reader.getString() );
+  return sax.parseContent( reader.getString() );
 } // getParsedTree()
 } // unnamed namespace
 
 Parser::Parser(const std::string &path):
     tree_( getParsedTree(path) ),
+    parsePersistency_( tree_.getRoot().getChild("persistency") ),
+    parseFilters_(     tree_.getRoot().getChild("filters") ),
+    parseTriggers_(    tree_.getRoot().getChild("triggers") ),
     parseNodes_(       tree_.getRoot().getChild("logger").getChild("nodes") ),
     parseAppenders_(   tree_.getRoot().getChild("logger").getChild("appenders") ),
-    parsePersistency_( tree_.getRoot().getChild("persistency") ),
     loggerCfg_( parseNodes_.getDefaultNodeConfig(),
                 parseNodes_.getNodes(),
                 parseAppenders_.getAppenders() )
@@ -47,6 +49,16 @@ const LoggerConfig &Parser::getLoggerConfig(void) const
 const PersistencyConfig &Parser::getPersistencyConfig(void) const
 {
   return parsePersistency_.getConfig();
+}
+
+const FiltersConfigCollection &Parser::getFiltersConfig(void) const
+{
+  return parseFilters_.getConfig();
+}
+
+const TriggersConfigCollection &Parser::getTriggersConfig(void) const
+{
+  return parseTriggers_.getConfig();
 }
 
 } // namespace ConfigIO

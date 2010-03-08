@@ -7,8 +7,6 @@
 
 /* public header */
 
-#include <cassert>
-
 #include "ConfigIO/Exception.hpp"
 
 namespace ConfigIO
@@ -23,13 +21,12 @@ public:
    *  \param where place where exception was rised
    *  \param param parameter name that was null
    */
-  explicit ExceptionNullParameter(const char *where, const char *param):
-    Exception( std::string( ensureValidString(where) ) + ": NULL parameter: " +
-               ensureValidString(param) )
+  ExceptionNullParameter(const Location &where, const char *param):
+    Exception(where, std::string("NULL parameter: ") + ensureValidString(param) )
   {
   }
-}; // class Exception
+}; // class Exception NullParameter
 
-}; // namespace ConfigIO
+} // namespace ConfigIO
 
 #endif

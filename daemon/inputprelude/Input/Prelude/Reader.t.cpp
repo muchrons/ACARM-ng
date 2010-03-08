@@ -17,13 +17,14 @@ namespace
 
 struct TestClass
 {
-  TestClass():r_("profile")
-  {   
+  TestClass():
+    r_("profile")
+  {
   }
+
   Reader r_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

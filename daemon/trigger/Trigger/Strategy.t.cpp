@@ -6,12 +6,12 @@
 #include <boost/thread.hpp>
 
 #include "Trigger/Strategy.hpp"
-#include "Persistency/Stubs/TestHelpers.hpp"
-#include "Trigger/TestBase.t.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Trigger;
 using namespace Persistency;
-using namespace Persistency::Stubs;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
@@ -27,7 +27,7 @@ struct TestTrigger: public Strategy
   {
   }
 
-  virtual bool matchCriteria(const NodeType &n)
+  virtual bool matchesCriteria(const NodeType &n)
   {
     ++callsCriteria_;
     checkNode(n);
@@ -52,12 +52,11 @@ struct TestTrigger: public Strategy
 };
 
 
-struct TestClass: private TestBase
+struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestTrigger tt_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -81,7 +80,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("invalid initial number of calls to matchCriteria",
+  ensure_equals("invalid initial number of calls to matchesCriteria",
                 tt_.callsCriteria_, 0);
   ensure_equals("invalid initial number of calls to trigger",
                 tt_.callsTrigger_, 0);
@@ -89,7 +88,7 @@ void testObj::test<2>(void)
   tt_.criteria_=false;
   tt_.process(tt_.node_);
   // check
-  ensure_equals("invalid number of calls to matchCriteria",
+  ensure_equals("invalid number of calls to matchesCriteria",
                 tt_.callsCriteria_, 1);
   ensure_equals("invalid number of calls to trigger",
                 tt_.callsTrigger_, 0);
@@ -105,7 +104,7 @@ struct TestLoopTrigger: public Strategy
   {
   }
 
-  virtual bool matchCriteria(const NodeType&)
+  virtual bool matchesCriteria(const NodeType&)
   {
     return true;
   }
@@ -147,7 +146,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure_equals("invalid initial number of calls to matchCriteria",
+  ensure_equals("invalid initial number of calls to matchesCriteria",
                 tt_.callsCriteria_, 0);
   ensure_equals("invalid initial number of calls to trigger",
                 tt_.callsTrigger_, 0);
@@ -155,7 +154,7 @@ void testObj::test<4>(void)
   tt_.criteria_=true;
   tt_.process(tt_.node_);
   // check
-  ensure_equals("invalid number of calls to matchCriteria",
+  ensure_equals("invalid number of calls to matchesCriteria",
                 tt_.callsCriteria_, 1);
   ensure_equals("invalid number of calls to trigger",
                 tt_.callsTrigger_, 1);

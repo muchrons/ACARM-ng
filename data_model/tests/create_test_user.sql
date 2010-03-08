@@ -12,13 +12,15 @@ GRANT ALL ON TABLE
     analyzers,
     severities,
     alerts,
+    alert_analyzers,
     reported_hosts,
     reported_services,
     reported_procs,
     meta_alerts,
     alert_to_meta_alert_map,
     meta_alerts_tree,
-    meta_alerts_in_use
+    meta_alerts_in_use,
+    meta_alerts_already_triggered
     TO "acarm-ng-tests";
 
 GRANT ALL ON SEQUENCE

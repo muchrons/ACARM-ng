@@ -49,9 +49,15 @@ namespace
 {
 struct MyException: public BaseSimple<MyException, std::logic_error>
 {
+  typedef BaseSimple<MyException, std::logic_error> MyBase;
   template<typename T>
   MyException(const T &t):
-    BaseSimple<MyException, std::logic_error>(t)
+    MyBase(t)
+  {
+  }
+  template<typename T>
+  MyException(const Location &where, const T &t):
+    MyBase(where, t)
   {
   }
 }; // struct MyException
@@ -95,5 +101,25 @@ void testObj::test<4>(void)
   base.what();                  // this suppress warning from compiler
 }
 
-} // namespace tut
+// test c-tor with location information
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const MyException  me(SYSTEM_SAVE_LOCATION, someStr);
+  const logic_error &base=me;   // this line must compile
+  ensure("no/wrong location info", strstr( base.what(), "BaseSimple.t.cpp:")!=NULL );
+}
 
+// test getting type name
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const MyException          me(someStr);
+  const MyException::MyBase &base=me;       // this line must compile
+  ensure("invalid type name",
+         strstr(base.getTypeName().c_str(), "MyException")!=NULL );
+}
+
+} // namespace tut

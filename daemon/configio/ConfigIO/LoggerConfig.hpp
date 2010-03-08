@@ -23,12 +23,11 @@ struct ExceptionBadOrMissingDefaultNodeSetting: public Exception
    *  \param name  name of bad or missing option.
    *  \param value if value is bad, show it.
    */
-  ExceptionBadOrMissingDefaultNodeSetting(const char        *where,
+  ExceptionBadOrMissingDefaultNodeSetting(const Location    &where,
                                           const char        *name,
                                           const std::string &value):
-    Exception( std::string( ensureValidString(where) ) +
-        ": bad or missing oprion: " + ensureValidString(name) +
-        " (" + value + ")")
+    Exception(where, std::string("bad or missing oprion: ") +
+                     ensureValidString(name) + " (" + value + ")" )
   {
   }
 }; // struct ExceptionBadOrMissingDefaultNodeSetting

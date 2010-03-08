@@ -15,7 +15,11 @@ example may look like this:
     <!-- logger specific options -->
   </logger>
 
-  <!-- and so on... -->
+  <filters>
+    <!-- filter's configuration -->
+  </filters>
+
+  <!-- TODO -->
 </acarm_ng>
 
 in the following sections only subtrees specific for given components will
@@ -52,9 +56,9 @@ example configuration may look like this:
 
 <logger>
   <appenders>
-    <file name="file_app1">
+    <File name="file_app1">
       <output>myoutputfile.log</output>
-    </file>
+    </File>
 
     <console name="stdout"/>
 
@@ -64,10 +68,33 @@ example configuration may look like this:
     </multi>
   </appenders>
 
-  <nodes appender="everywhere">
-    <someChild appender="console"/>
-    <otherChild>
-      <subChild1 appender="file"/>
+  <nodes appender="everywhere" threshold="info"> <!-- default is everywhere/info -->
+    <someChild appender="console"/> <!-- console/info -->
+    <otherChild>                    <!-- console/info -->
+      <subChild1 appender="file"/>  <!-- file/info -->
+      <subChild2 threshold="warn"/> <!-- console/warn -->
     </otherChild>
   </nodes>
 </logger>
+
+TODO: describe appenders.
+
+
+filter configuration
+====================
+
+in filters' configuration subtree there are set of filter entries that are to
+be configured. each entry consists of required field 'type' that determines
+what type of filter is to be created and optional, filter-specific fields.
+example configuration may look like this:
+
+<filters>
+  <onetomany>
+    <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+  </onetomany>
+  <manytomany>
+    <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+  </manytomany>
+</filters>
+
+TODO: describe filters.

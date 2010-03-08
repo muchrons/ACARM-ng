@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <cstdlib>
 
+#include "TestHelpers/TestBase.hpp"
 #include "Logger/Appenders/MultiAppender.hpp"
 #include "Logger/Appenders/Stream.hpp"
 
@@ -16,7 +17,8 @@ namespace
 {
 
 // out fake appender to be used
-struct TestAppender: public Stream<TestAppender>
+struct TestAppender: public  Stream<TestAppender>,
+                     private TestHelpers::TestBase
 {
   explicit TestAppender(stringstream &ss):
     Stream<TestAppender>(ss)

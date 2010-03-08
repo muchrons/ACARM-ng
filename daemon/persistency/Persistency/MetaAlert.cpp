@@ -2,8 +2,9 @@
  * MetaAlert.hpp
  *
  */
-#include "Base/Threads/Lock.hpp"
 #include "Persistency/MetaAlert.hpp"
+#include "Base/Threads/Lock.hpp"
+#include "Base/ViaPointer.hpp"
 
 using Base::Threads::Lock;
 
@@ -70,6 +71,22 @@ void MetaAlert::updateCertaintyDelta(double delta)
 {
   Lock lock(mutex_);
   certanityDelta_+=delta;
+}
+
+bool MetaAlert::operator==(const MetaAlert &other) const
+{
+  if( getName()!=other.getName() )
+    return false;
+  if( getSeverityDelta()!=other.getSeverityDelta() )
+    return false;
+  if( getCertaintyDelta()!=other.getCertaintyDelta() )
+    return false;
+  if( !Base::ViaPointer::equal( getReferenceURL(), other.getReferenceURL() ) )
+    return false;
+  if( getCreateTime()!=other.getCreateTime() )
+    return false;
+  // if all fields matches, return true
+  return true;
 }
 
 } // namespace Persistency

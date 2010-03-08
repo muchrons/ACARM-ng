@@ -11,11 +11,10 @@ using namespace ConfigIO;
 
 namespace
 {
-struct PersistencyConfigTestClass
+struct TestClass
 {
 };
 
-typedef PersistencyConfigTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

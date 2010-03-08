@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "TestHelpers/TestBase.hpp"
 #include "Logger/Appenders/Console.hpp"
 #include "Logger/ConfigSet.hpp"
 
@@ -12,7 +13,7 @@ using namespace Logger;
 namespace
 {
 
-struct ConfigSetTestClass
+struct ConfigSetTestClass: private TestHelpers::TestBase
 {
 };
 

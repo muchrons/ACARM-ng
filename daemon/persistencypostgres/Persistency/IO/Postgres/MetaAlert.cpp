@@ -4,6 +4,8 @@
  */
 #include "Persistency/IO/Postgres/MetaAlert.hpp"
 
+using namespace Persistency::IO::Postgres::detail;
+
 namespace Persistency
 {
 namespace IO
@@ -19,7 +21,15 @@ MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
 {
 }
 
-void MetaAlert::saveImpl(Transaction &)
+void MetaAlert::saveImpl(Transaction &t)
+{
+  EntrySaver es(t, *dbHandler_);
+  const Persistency::MetaAlert &ma=get();
+  es.saveMetaAlert(ma);
+  // TODO
+}
+
+void MetaAlert::markAsTriggeredImpl(Transaction &, const std::string &/*name*/)
 {
   // TODO
 }

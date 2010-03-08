@@ -23,7 +23,7 @@ public:
    *  \param where place where exception ha been rised.
    *  \param name  name of non-existing builder.
    */
-  ExceptionBuilderDoesNotExist(const char *where, const char *name):
+  ExceptionBuilderDoesNotExist(const Location &where, const char *name):
     Commons::Factory::Exception( where,
                                  std::string("no such builder: ") +
                                     ensureString(name) )

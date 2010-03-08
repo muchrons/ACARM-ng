@@ -17,8 +17,28 @@
       </file>
     </appenders>
 
-    <nodes appender="default">
+    <nodes appender="default" threshold="debug">
     </nodes>
   </logger>
+
+  <filters>
+    <noopts>
+    </noopts>
+
+    <something>
+      <opt2>abc</opt2>
+      <opt1>narf</opt1>
+    </something>
+  </filters>
+
+  <triggers>
+    <noopts>
+    </noopts>
+
+    <something>
+      <opt7>cat</opt7>
+      <opt4>alice</opt4>
+    </something>
+  </triggers>
 
 </acarm_ng>

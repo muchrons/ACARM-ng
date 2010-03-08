@@ -2,10 +2,13 @@
  * GraphNode.cpp
  *
  */
-#include <pthread.h>
+#include <exception>
 #include <cassert>
 
 #include "Persistency/GraphNode.hpp"
+#include "Commons/ViaCollection.hpp"
+#include "Logger/Logger.hpp"
+#include "Persistency/IO/GlobalConnection.hpp"
 
 namespace Persistency
 {
@@ -25,34 +28,50 @@ GraphNode::GraphNode(AlertPtrNN           alert,
   IO::MetaAlertAutoPtr maIO=connection->metaAlert( getMetaAlert(), t);
   maIO->save();
   maIO->associateWithAlert(leaf_);
+  maIO->markAsUsed();
 
   assert( isLeaf() && "invalid initialization");
 }
 
-GraphNode::GraphNode(MetaAlertPtrNN        ma,
-                     IO::ConnectionPtrNN   connection,
-                     IO::Transaction      &t,
-                     GraphNodePtrNN        child1,
-                     GraphNodePtrNN        child2,
-                     const ChildrenVector &otherChildren):
+GraphNode::GraphNode(MetaAlertPtrNN            ma,
+                     IO::ConnectionPtrNN       connection,
+                     IO::Transaction          &t,
+                     const NodeChildrenVector &children):
   self_(ma),
   leaf_()
 {
   assert( leaf_.get()==NULL );
   assert( self_.get()!=NULL );
   assert( connection.get()!=NULL );
+  assert( children.size()>=2 );
 
   // save data to DB along with adding elements to graph
   IO::MetaAlertAutoPtr maIO=connection->metaAlert( getMetaAlert(), t);
   assert( maIO.get()!=NULL );
   maIO->save();
-  addChild(child1, *maIO);
-  addChild(child2, *maIO);
-  for(ChildrenVector::const_iterator it=otherChildren.begin();
-      it!=otherChildren.end(); ++it)
+  for(NodeChildrenVector::const_iterator it=children.begin(); it!=children.end(); ++it)
     addChild(*it, *maIO);
+  maIO->markAsUsed();
 
   assert( !isLeaf() && "invalid initialization");
+}
+
+GraphNode::~GraphNode(void)
+{
+  try
+  {
+    IO::GlobalConnection::get()->markAsUnused( getMetaAlert() );
+  }
+  catch(const std::exception &ex)
+  {
+    Logger::Node log("persistency.graphnode");
+    LOGMSG_ERROR_S(log)<<"unambe to mark meta alert as unused: "<<ex.what();
+  }
+  catch(...)
+  {
+    Logger::Node log("persistency.graphnode");
+    LOGMSG_ERROR(log, "unambe to mark meta alert as unused (unknown exception)");
+  }
 }
 
 GraphNode::iterator GraphNode::begin(void)
@@ -82,10 +101,8 @@ GraphNode::const_iterator GraphNode::end(void) const
 void GraphNode::addChild(GraphNodePtrNN child, IO::MetaAlert &maIO)
 {
   ensureIsNode();
-
   // check if addition will not cause cycle
   nonCyclicAddition(child);
-
   // persistency save
   maIO.addChild( child->getMetaAlert() );
 }
@@ -110,17 +127,55 @@ AlertPtrNN GraphNode::getAlert(void)
 {
   assert( getMetaAlert().get()!=NULL );
   if( !isLeaf() )
-    throw ExceptionNotLeaf(__FILE__, getMetaAlert()->getName().get() );
+    throw ExceptionNotLeaf(SYSTEM_SAVE_LOCATION, getMetaAlert()->getName().get() );
 
   assert( leaf_.get()!=NULL );
   return leaf_;
+}
+
+const MetaAlert &GraphNode::getMetaAlert(void) const
+{
+  assert(self_.get()!=NULL);
+  return *self_;
+}
+
+const Alert &GraphNode::getAlert(void) const
+{
+  if( !isLeaf() )
+    throw ExceptionNotLeaf(SYSTEM_SAVE_LOCATION, getMetaAlert().getName().get() );
+
+  assert( leaf_.get()!=NULL );
+  return *leaf_;
+}
+
+bool GraphNode::operator==(const GraphNode &other) const
+{
+  // check if comparing to self
+  if(this==&other)
+    return true;
+  assert( self_.get()!=other.self_.get() );
+
+  // compare content
+  if( isLeaf()!=other.isLeaf() )
+    return false;
+  if( *self_!=*other.self_ )
+    return false;
+  if( isLeaf() )    // if one is leaf, second is leaf too - checked before
+  {
+    assert( leaf_.get()!=other.leaf_.get() );
+    if( *leaf_!=*other.leaf_ )
+      return false;
+  }
+
+  // if nodes itself are identical, ensure all subtrees are identical too
+  return Commons::ViaCollection::equal(children_, other.children_);
 }
 
 void GraphNode::ensureIsNode(void) const
 {
   assert( self_.get()!=NULL );
   if( isLeaf() )
-    throw ExceptionNotNode(__FILE__, self_->getName().get() );
+    throw ExceptionNotNode(SYSTEM_SAVE_LOCATION, self_->getName().get() );
 }
 
 
@@ -128,39 +183,19 @@ void GraphNode::ensureIsNode(void) const
 // TODO: this is a TEMPORARY solution - it must be reworked to use some
 //       sort of distributed algorithm, not to block whole structure
 //       when non-dependent data parts are being operated on.
-//
-// namespace with helpers for locking on global level of whole structure
-namespace
-{
-pthread_mutex_t additionMutex=PTHREAD_MUTEX_INITIALIZER;
-
-struct PtrLock
-{
-  PtrLock(void)
-  {
-    if( pthread_mutex_lock(&additionMutex)!=0 )
-      throw Exception(__FILE__, "unable to lock mutex for "
-                                "GraphNode/addition implementation");
-  }
-  ~PtrLock(void)
-  {
-    if( pthread_mutex_unlock(&additionMutex)!=0 )
-      assert(!"unable to lock mutex for GraphNode/addition implementation");
-  }
-}; // struct PtrLock
-
-} // unnamed namespace
+SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_additionMutex);
 
 void GraphNode::nonCyclicAddition(GraphNodePtrNN child)
 {
   const GraphNode *childPtr=child.get();
   assert(childPtr!=NULL);
 
-  PtrLock lock;     // only one addition at a time! (TODO: it's too restrictive)
+  // only one addition at a time! (TODO: it's too restrictive)
+  System::Threads::SafeInitLock lock(g_additionMutex);
 
   if( this==childPtr           ||   // instant-cycle
       childPtr->hasCycle(this)    ) // is it possible to access self through child
-    throw ExceptionCycleDetected(__FILE__,
+    throw ExceptionCycleDetected(SYSTEM_SAVE_LOCATION,
                                  child->getMetaAlert()->getName().get(),
                                  getMetaAlert()->getName().get() );
 

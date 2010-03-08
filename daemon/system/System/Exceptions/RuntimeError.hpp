@@ -19,13 +19,25 @@ namespace Exceptions
 template<typename CRTP>
 class RuntimeError: public BaseSimple<RuntimeError<CRTP>, std::runtime_error>
 {
+private:
+  typedef BaseSimple<RuntimeError<CRTP>, std::runtime_error> BaseC;
+
 protected:
   /** \brief create execption with given message.
    *  \param msg message to represent.
    */
   template<typename T>
   explicit RuntimeError(const T &msg):
-    Exceptions::BaseSimple<RuntimeError<CRTP>, std::runtime_error>(msg)
+    BaseC(msg)
+  {
+  }
+  /** \brief create execption with given message.
+   *  \param where location of exception raising.
+   *  \param msg   message to represent.
+   */
+  template<typename T>
+  RuntimeError(const typename BaseC::Location &where, const T &msg):
+    BaseC(where, msg)
   {
   }
 }; // class RuntimeError

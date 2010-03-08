@@ -23,7 +23,7 @@ struct ParsePersistencyTestClass
   {
     assert(xml!=NULL);
     XMLpp::SaxParser sp;
-    const XML::Tree  tree=sp.parse(xml);
+    const XML::Tree  tree=sp.parseContent(xml);
     return tree.getRoot().getChild("persistency");
   }
 
@@ -71,6 +71,17 @@ void testObj::test<2>(void)
   ensure_equals("invalid dbname", opts["dbname"], "kszy");
   ensure_equals("invalid user",   opts["user"],   "john");
   ensure_equals("invalid pass",   opts["pass"],   "$3cr3t");
+}
+
+// test if no extra paremters (like 'type') are present
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  const ParsePersistency      pp  =getConf();
+  const PersistencyConfig    &cfg =pp.getConfig();
+  PersistencyConfig::Options  opts=cfg.getOptions();
+  ensure_equals("invalid element's count", opts.size(), 5);
 }
 
 } // namespace tut

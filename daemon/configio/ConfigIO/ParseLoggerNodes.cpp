@@ -5,6 +5,7 @@
 #include <cassert>
 
 #include "ConfigIO/ParseLoggerNodes.hpp"
+#include "ConfigIO/OptionalString.hpp"
 
 using namespace std;
 using namespace XML;
@@ -19,22 +20,23 @@ ParseLoggerNodes::ParseLoggerNodes(const XML::Node &node):
 }
 
 
-inline LoggerNodeConfig ParseLoggerNodes::parseDefaultNode(const XML::Node &node) const
+LoggerNodeConfig ParseLoggerNodes::parseDefaultNode(const XML::Node &node) const
 {
   // this in fact will be already checked before this call happens
   assert(node.getName()=="nodes");
 
-  const string &appender=node.getAttributesList().getAttribute("appender").getValue();
-  return LoggerNodeConfig("", appender);
+  const string &appender =node.getAttributesList().getAttribute("appender").getValue();
+  const string &threshold=node.getAttributesList().getAttribute("threshold").getValue();
+  return LoggerNodeConfig("", appender, threshold);
 }
 
 
-inline LoggerNodes ParseLoggerNodes::parse(const XML::Node &node) const
+LoggerNodes ParseLoggerNodes::parse(const XML::Node &node) const
 {
   // this in fact will be already checked before this call happens
   assert(node.getName()=="nodes");
   // parse whole tree and gather results on 'nodes' variable.
-  LoggerNodes::Nodes      nodes;
+  LoggerNodes::Nodes nodes;
   addParsed(nodes, defaultNode_.getNodeName(), node, "");
   // return gathered results
   return LoggerNodes(nodes);
@@ -61,18 +63,23 @@ void ParseLoggerNodes::addParsed(LoggerNodes::Nodes &out,
     //
     // add this node to collection
     //
-    const AttributesList &al=it->getAttributesList();
-    if( al.begin()==al.end() )
-    {
-      // node without appender
-      out.push_back( LoggerNodeConfig(path) );
-    }
-    else
-    {
-      // node with appender assigned
-      const string &appender=al.getAttribute("appender").getValue();
-      out.push_back( LoggerNodeConfig(path, appender) );
-    }
+    const AttributesList           &al=it->getAttributesList();
+    AttributesList::const_iterator  ait;
+    OptionalString                  app;
+    OptionalString                  thr;
+
+    // check if appender is present
+    ait=al.find("appender");
+    if( ait!=al.end() )
+      app=ait->getValue();
+
+    // check if threshold is present
+    ait=al.find("threshold");
+    if( ait!=al.end() )
+      thr=ait->getValue();
+
+    // add to collection
+    out.push_back( LoggerNodeConfig(path, app, thr) );
 
     //
     // dive into subtree(s)

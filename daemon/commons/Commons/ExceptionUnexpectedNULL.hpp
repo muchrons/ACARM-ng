@@ -21,9 +21,9 @@ public:
    *  \param where place where exception has been rised.
    *  \note this c-tor saves callstack.
    */
-  ExceptionUnexpectedNULL(const char *where);
+  ExceptionUnexpectedNULL(const Location &where);
 }; // class ExceptionUnexpectedNULL
 
-}; // namespace Commons
+} // namespace Commons
 
 #endif

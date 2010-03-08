@@ -26,7 +26,7 @@ namespace
 const Commons::Factory::RegistratorHelper<BackendFactory, ConnectionBuilder> g_rh;
 } // unnamed namespace
 
-FORCE_LINK_THIS_OBJECT(Persistency_IO_Postgres_ConnectionBuilder);
+FORCE_LINK_THIS_OBJECT(Persistency_IO_Postgres_ConnectionBuilder)
 
 
 ConnectionBuilder::ConnectionBuilder(void):
@@ -63,7 +63,7 @@ const std::string &ConnectionBuilder::getOption(const Options &options,
   assert(name!=NULL);
   Options::const_iterator it=options.find(name);
   if( it==options.end() )
-    throw ExceptionNoSuchOption(__FILE__, name);
+    throw ExceptionNoSuchOption(SYSTEM_SAVE_LOCATION, name);
   return it->second;
 }
 
