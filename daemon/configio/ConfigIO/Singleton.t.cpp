@@ -122,4 +122,12 @@ void testObj::test<7>(void)
   ensure("configuration changed", ptr==tmp);
 }
 
+// test getting triggers' config
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  Singleton::get()->triggersConfig();
+}
+
 } // namespace tut
