@@ -19,8 +19,9 @@ class Strategy: public Filter::HostCommon::Strategy
 {
 public:
   /** \brief create instance.
+   *  \param timeout timeout value for observed nod to be in queue.
    */
-  Strategy(void);
+  explicit Strategy(unsigned int timeout);
 
 private:
   virtual const Persistency::Alert::ReportedHosts &getReportedHostsArray(

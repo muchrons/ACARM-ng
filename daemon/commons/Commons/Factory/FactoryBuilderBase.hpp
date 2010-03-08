@@ -9,7 +9,7 @@
 
 #include <string>
 #include <map>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 #include <cassert>
 
 #include "Logger/Logger.hpp"
@@ -32,7 +32,7 @@ public:
   typedef std::string                 FactoryTypeName;
   /** \brief smart pointer to the factory instance.
    */
-  typedef boost::shared_ptr<TFactory> FactoryPtr;
+  typedef std::auto_ptr<TFactory>     FactoryPtr;
   /** \brief type representing parameter name.
    */
   typedef std::string                 Parameter;
@@ -63,8 +63,8 @@ public:
   FactoryPtr build(const Options &options) const
   {
     LOGMSG_INFO_S(log_)<<"building: '"<<getTypeNameImpl()<<"'";
-    const FactoryPtr ptr=buildImpl(options);
-    assert(ptr!=NULL);
+    FactoryPtr ptr=buildImpl(options);
+    assert( ptr.get()!=NULL );
     return ptr;
   }
 

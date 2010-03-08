@@ -137,4 +137,14 @@ void testObj::test<7>(void)
   p.getFiltersConfig();
 }
 
+// test getting triggers' configuration - smoke test
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  copyAsDefaultConfig("testdata/sample_config.xml");
+  const Parser        p;
+  p.getTriggersConfig();
+}
+
 } // namespace tut

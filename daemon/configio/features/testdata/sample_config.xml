@@ -31,4 +31,14 @@
     </something>
   </filters>
 
+  <triggers>
+    <noopts>
+    </noopts>
+
+    <something>
+      <opt7>cat</opt7>
+      <opt4>alice</opt4>
+    </something>
+  </triggers>
+
 </acarm_ng>

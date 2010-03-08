@@ -7,12 +7,14 @@
 
 /* public header */
 
+#include <vector>
+
 #include "ConfigIO/Generic/Config.hpp"
 
 namespace ConfigIO
 {
 
-/** \brief class representing configuration of persistency storage.
+/** \brief class representing configuration of filter.
  */
 class FilterConfig: public Generic::Config<FilterConfig>
 {

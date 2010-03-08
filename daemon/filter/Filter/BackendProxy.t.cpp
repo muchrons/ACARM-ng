@@ -77,7 +77,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
                                           "sescription xyz",
                                           srcHosts,
                                           Alert::ReportedHosts() ) );
-    Persistency::IO::ConnectionPtrNN conn=Persistency::IO::create();
+    Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
     IO::Transaction      t( conn->createNewTransaction("make_leaf_transaction") );
     GraphNodePtrNN       node( new GraphNode(alert, conn, t) );
     bp_->setHostName(node, h, name);

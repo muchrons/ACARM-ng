@@ -20,7 +20,7 @@ namespace
 struct TestProxy: public BackendProxy
 {
   TestProxy(void):
-    BackendProxy( IO::create(), "sometest")
+    BackendProxy( IO::ConnectionPtrNN( IO::create() ), "sometest")
   {
   }
 

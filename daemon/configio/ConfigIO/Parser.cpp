@@ -30,10 +30,11 @@ inline Tree getParsedTree(const string &path)
 
 Parser::Parser(const std::string &path):
     tree_( getParsedTree(path) ),
-    parseNodes_(       tree_.getRoot().getChild("logger").getChild("nodes") ),
-    parseAppenders_(   tree_.getRoot().getChild("logger").getChild("appenders") ),
     parsePersistency_( tree_.getRoot().getChild("persistency") ),
     parseFilters_(     tree_.getRoot().getChild("filters") ),
+    parseTriggers_(    tree_.getRoot().getChild("triggers") ),
+    parseNodes_(       tree_.getRoot().getChild("logger").getChild("nodes") ),
+    parseAppenders_(   tree_.getRoot().getChild("logger").getChild("appenders") ),
     loggerCfg_( parseNodes_.getDefaultNodeConfig(),
                 parseNodes_.getNodes(),
                 parseAppenders_.getAppenders() )
@@ -50,9 +51,14 @@ const PersistencyConfig &Parser::getPersistencyConfig(void) const
   return parsePersistency_.getConfig();
 }
 
-const ParseFilters::FiltersConfigCollection &Parser::getFiltersConfig(void) const
+const FiltersConfigCollection &Parser::getFiltersConfig(void) const
 {
   return parseFilters_.getConfig();
+}
+
+const TriggersConfigCollection &Parser::getTriggersConfig(void) const
+{
+  return parseTriggers_.getConfig();
 }
 
 } // namespace ConfigIO

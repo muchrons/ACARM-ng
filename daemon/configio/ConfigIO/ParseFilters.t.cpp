@@ -61,8 +61,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const ParseFilters                           pp  =getConf();
-  const ParseFilters::FiltersConfigCollection &cfg =pp.getConfig();
+  const ParseFilters             pp  =getConf();
+  const FiltersConfigCollection &cfg =pp.getConfig();
   ensure_equals("invalid number of entries", cfg.size(), 2);
 }
 
@@ -71,8 +71,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const ParseFilters                           pp  =getConf();
-  const ParseFilters::FiltersConfigCollection &cfg =pp.getConfig();
+  const ParseFilters             pp  =getConf();
+  const FiltersConfigCollection &cfg =pp.getConfig();
   ensure_equals("invalid type", cfg[0].getType(), "noopts");
   ensure_equals("invalid number of options", cfg[0].getOptions().size(), 0);
 }
@@ -82,8 +82,8 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const ParseFilters                           pp  =getConf();
-  const ParseFilters::FiltersConfigCollection &cfg =pp.getConfig();
+  const ParseFilters             pp  =getConf();
+  const FiltersConfigCollection &cfg =pp.getConfig();
   ensure_equals("invalid type", cfg[1].getType(), "something");
   ensure_equals("invalid number of options", cfg[1].getOptions().size(), 2);
   ensure_equals("invalid option's 1 value", cfg[1]["opt1"], "narf");
