@@ -28,7 +28,7 @@ public:
   /** \brief deallocate object.
    */
   ~SingletonImpl(void);
-  /** \biref re-reads configuration file.
+  /** \brief re-reads configuration file.
    *  \param path path to configuration file (NULL means: use default).
    *
    *  configuration is read from file and current config is substituted
