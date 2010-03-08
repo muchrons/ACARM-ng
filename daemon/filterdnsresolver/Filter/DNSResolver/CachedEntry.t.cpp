@@ -3,10 +3,12 @@
  *
  */
 #include <tut.h>
+#include <string>
 
 #include "Filter/DNSResolver/CachedEntry.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
+using namespace std;
 using namespace Filter::DNSResolver;
 
 namespace
@@ -30,36 +32,32 @@ factory tf("Filter/DNSResolver/CachedEntry");
 namespace tut
 {
 
-// test creating object
+// test timeout
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  const CachedEntry ce( ip("1.2.3.4"), "alice.has.a.cat", 21);
-  ensure("invalid IP", ce.ip_==ip("1.2.3.4") );
-  ensure("invalid name", ce.name_=="alice.has.a.cat" );
+  const CachedEntry ce( ip("127.0.0.1"), 21);
   ensure("invalid timeout", time(NULL)+21-ce.time_<20 );
 }
 
-// test SWO
+// test reverse-DNS
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  const CachedEntrySWO swo=CachedEntrySWO();
-  const CachedEntry    ce1( ip("2.2.3.4"),  "alice.has.a.cat", 21);
-  const CachedEntry    ce2( ip("2.1.30.4"), "alice.has.a.cat", 21);
-  const CachedEntry    ce3( ip("3.2.3.4"),  "alice.has.a.cat", 21);
+  const CachedEntry ce( ip("127.0.0.1"), 21);
+  ensure("reverse DNS for localhost failed", ce.hasName() );
+  ensure_equals("invalid name", ce.name_.get(), string("localhost") );
+}
 
-  ensure("comaprison 1 failed",  swo(ce2, ce1) );
-  ensure("comaprison 2 failed",  swo(ce2, ce3) );
-  ensure("comaprison 3 failed",  swo(ce1, ce3) );
-
-  ensure("comaprison 4 failed", !swo(ce1, ce2) );
-  ensure("comaprison 5 failed", !swo(ce3, ce2) );
-  ensure("comaprison 6 failed", !swo(ce3, ce1) );
-
-  ensure("comaprison 7 failed", !swo(ce1, ce1) );
+// reverse-dns didn't failed for unexisting entry
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  const CachedEntry ce( ip("192.168.255.254"), 21); // this IP most likely will not have reverse DNS
+  ensure("reverse DNS didn't failed for non-existings IP", !ce.hasName() );
 }
 
 } // namespace tut

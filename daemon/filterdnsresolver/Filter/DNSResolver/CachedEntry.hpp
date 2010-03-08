@@ -21,26 +21,25 @@ struct CachedEntry
   typedef Persistency::Host::Name Name;
   typedef time_t                  Time;
 
-  CachedEntry(const IP &ip, const Name &name, unsigned int timeout):
-    ip_(ip),
-    name_(name),
+  CachedEntry(const IP &ip, unsigned int timeout):
     time_( time(NULL)+timeout )
   {
+    resolve(ip);
   }
 
-  IP   ip_;
+  bool hasName(void) const
+  {
+    return hasName_;
+  }
+
   Name name_;
   Time time_;
+
+private:
+  void resolve(const IP &ip);
+
+  bool hasName_;
 }; // struct CachedEntry
-
-
-struct CachedEntrySWO
-{
-  bool operator()(const CachedEntry &left, const CachedEntry &right) const
-  {
-    return left.ip_<right.ip_;
-  }
-}; // struct CachedEntrySWO
 
 } // namespace DNSResolver
 } // namespace Filter
