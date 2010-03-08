@@ -95,7 +95,7 @@ public:
   }
 
 private:
-  virtual FactoryPtr buildImpl(const Options &options) const
+  virtual FactoryPtr buildImpl(const Options &/*options*/) const
   {
     Processor::InterfaceAutoPtr iface(new TestInterface);
     return Factory::FactoryPtr( new Processor(queue_, iface) );
