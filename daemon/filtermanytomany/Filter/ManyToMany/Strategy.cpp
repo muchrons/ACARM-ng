@@ -18,8 +18,8 @@ namespace Filter
 namespace ManyToMany
 {
 
-Strategy::Strategy(void):
-  Filter::Simple::Strategy<Data>("manytomany", 5*60)
+Strategy::Strategy(unsigned int timeout):
+  Filter::Simple::Strategy<Data>("manytomany", timeout)
 {
 }
 

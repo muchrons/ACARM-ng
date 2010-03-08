@@ -50,7 +50,7 @@ const PersistencyConfig &Parser::getPersistencyConfig(void) const
   return parsePersistency_.getConfig();
 }
 
-const ParseFilters::FiltersConfigCollection &Parser::getFiltersConfig(void) const
+const FiltersConfigCollection &Parser::getFiltersConfig(void) const
 {
   return parseFilters_.getConfig();
 }

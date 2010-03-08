@@ -136,4 +136,13 @@ void testObj::test<4>(void)
   ensure_equals("invalid number of elements", mainQueue_.size(), 2);
 }
 
+// smoke-test smart-poitner declaration
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ProcessorPtrNN p( new Processor(mainQueue_, interface_) );
+  ensure("NULL pointer received", p.get()!=NULL );  // could be assert as well
+}
+
 } // namespace tut

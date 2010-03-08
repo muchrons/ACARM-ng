@@ -56,7 +56,8 @@ struct TestClass
     opts["dbname"]="acarm_ng_test";
     opts["user"]  ="acarm-ng-daemon";
     opts["pass"]  ="test.daemon";
-    return Persistency::IO::BackendFactory::create("postgres", opts);
+    return IO::ConnectionPtrNN(
+        Persistency::IO::BackendFactory::create("postgres", opts) );
   }
 
   Persistency::Alert::ReportedHosts generateReportedHosts(unsigned int size) const

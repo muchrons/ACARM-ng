@@ -30,8 +30,9 @@ class Strategy: public Filter::Simple::Strategy<Data>
 {
 public:
   /** \brief create instance.
+   *  \param timeout time observed node shoudl be in queue.
    */
-  Strategy(void);
+  explicit Strategy(unsigned int timeout);
 
 private:
   //

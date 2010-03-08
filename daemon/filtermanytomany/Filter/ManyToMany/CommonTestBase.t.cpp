@@ -53,7 +53,7 @@ AlertPtrNN CommonTestBase::makeAlert(const char *hostSrc1,
 
 GraphNodePtrNN CommonTestBase::makeLeaf(AlertPtrNN alert) const
 {
-  IO::ConnectionPtrNN conn=IO::create();
+  IO::ConnectionPtrNN conn( IO::create() );
   IO::Transaction     t( conn->createNewTransaction("make_leaf_trans") );
   return GraphNodePtrNN( new GraphNode(alert, conn, t) );
 }

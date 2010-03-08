@@ -47,7 +47,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure("NULL pointer created", create()!=NULL );
+  ensure("NULL pointer created", create().get()!=NULL );
 }
 
 } // namespace tut

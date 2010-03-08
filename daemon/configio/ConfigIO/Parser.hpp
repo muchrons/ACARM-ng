@@ -44,7 +44,7 @@ public:
   /** \brief gets filters' configuration, read from file.
    *  \return filters' configuration.
    */
-  const ParseFilters::FiltersConfigCollection &getFiltersConfig(void) const;
+  const FiltersConfigCollection &getFiltersConfig(void) const;
 
 private:
   XML::Tree            tree_;
