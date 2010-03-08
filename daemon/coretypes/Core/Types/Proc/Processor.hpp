@@ -13,6 +13,7 @@
 #include <boost/thread.hpp>
 
 #include "Logger/Node.hpp"
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Core/Types/NodesFifo.hpp"
 #include "Core/Types/Proc/Interface.hpp"
 #include "Core/Types/Proc/ExceptionInvalidInterface.hpp"
@@ -25,7 +26,7 @@ namespace Types
 namespace Proc
 {
 
-/** \brief class wrapping threads for processing unit (derivees from interface).
+/** \brief class wrapping threads for processing unit.
  */
 class Processor: private boost::noncopyable
 {
@@ -60,6 +61,10 @@ private:
   boost::scoped_ptr<Interface>  interface_;
   boost::thread                 th_;
 }; // class Processor
+
+
+/** \brief shared pointer on processor. */
+typedef Commons::SharedPtrNotNULL<Processor> ProcessorPtrNN;
 
 } // namespace Proc
 } // namespace Types
