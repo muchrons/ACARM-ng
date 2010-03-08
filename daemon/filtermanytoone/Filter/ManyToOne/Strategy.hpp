@@ -19,7 +19,7 @@ class Strategy: public Filter::HostCommon::Strategy
 {
 public:
   /** \brief create instance.
-   *  \param tomeput timeout (in seconds) for observed node to be in queue.
+   *  \param timeout timeout (in seconds) for observed node to be in queue.
    */
   explicit Strategy(unsigned int timeout);
 
