@@ -4,10 +4,10 @@
  */
 #include <tut.h>
 
-#include "Filter/DNSResolver/detail/CachedEntry.hpp"
+#include "Filter/DNSResolver/CachedEntry.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
-using namespace Filter::DNSResolver::detail;
+using namespace Filter::DNSResolver;
 
 namespace
 {
@@ -23,7 +23,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Filter/DNSResolver/detail/CachedEntry");
+factory tf("Filter/DNSResolver/CachedEntry");
 } // unnamed namespace
 
 

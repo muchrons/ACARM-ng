@@ -2,8 +2,8 @@
  * CachedEntry.hpp
  *
  */
-#ifndef INCLUDE_FILTER_DNSRESOLVER_DETAIL_CACHEDENTRY_HPP_FILE
-#define INCLUDE_FILTER_DNSRESOLVER_DETAIL_CACHEDENTRY_HPP_FILE
+#ifndef INCLUDE_FILTER_DNSRESOLVER_CACHEDENTRY_HPP_FILE
+#define INCLUDE_FILTER_DNSRESOLVER_CACHEDENTRY_HPP_FILE
 
 #include <ctime>
 
@@ -13,8 +13,6 @@
 namespace Filter
 {
 namespace DNSResolver
-{
-namespace detail
 {
 
 struct CachedEntry
@@ -44,7 +42,6 @@ struct CachedEntrySWO
   }
 }; // struct CachedEntrySWO
 
-} // namespace detail
 } // namespace DNSResolver
 } // namespace Filter
 
