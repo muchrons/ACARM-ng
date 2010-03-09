@@ -94,4 +94,24 @@ void testObj::test<4>(void)
   ensure("cached read took more time than query", elapsed1>elapsed2);
 }
 
+// test timing when reading query-miss (i.e. non-existing entry) from cache.
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  // measure first call, when DNS query is performed
+  const System::Timer    t1;
+  const CachedDNS::Entry e1      =cache_[ ip("192.168.255.254") ];
+  const double           elapsed1=t1.elapsed();
+  ensure("name found 1", !e1.first );
+
+  // meauser second call, when result is read from cache
+  const System::Timer    t2;
+  const CachedDNS::Entry e2      =cache_[ ip("192.168.255.254") ];
+  const double           elapsed2=t2.elapsed();
+  ensure("name found 2", !e2.first );
+
+  ensure("cached read took more time than query", elapsed1>elapsed2);
+}
+
 } // namespace tut
