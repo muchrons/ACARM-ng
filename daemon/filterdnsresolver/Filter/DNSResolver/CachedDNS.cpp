@@ -49,7 +49,7 @@ void CachedDNS::prune(void)
   {
     const time_t now=time(NULL);
     for(Cache::const_iterator it=cache_.begin(); it!=cache_.end(); ++it)
-      if(it->second.time_>now)
+      if(it->second.time_<now)
         outdated.push_back(it->first);
   }
 

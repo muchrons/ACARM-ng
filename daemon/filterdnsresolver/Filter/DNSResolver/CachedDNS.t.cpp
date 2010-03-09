@@ -57,7 +57,7 @@ void testObj::test<2>(void)
   // create new entry
   cache_[ ip("127.0.0.1") ];
   // remove entry
-  sleep(1);
+  sleep(2);
   cache_.prune();
   // add entry once more
   const CachedEntry::Name &name=cache_[ ip("127.0.0.1") ].second;
@@ -112,6 +112,22 @@ void testObj::test<5>(void)
   ensure("name found 2", !e2.first );
 
   ensure("cached read took more time than query", elapsed1>elapsed2);
+}
+
+// test pruning only some of the elements
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  // create new entry
+  cache_[ ip("127.0.0.2") ];
+  cache_[ ip("127.0.0.3") ];
+  // timeout
+  sleep(1);
+  cache_[ ip("127.0.0.1") ];
+  // add some new
+  // remove entries - smoke test
+  cache_.prune();
 }
 
 } // namespace tut
