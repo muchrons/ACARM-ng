@@ -26,45 +26,10 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   {
   }
 
-  HostPtrNN makeHostIP(const char *ip, const char *dns=NULL) const
-  {
-    assert(ip!=NULL);
-    return HostPtrNN( new Host( Host::IPv4::from_string(ip),
-                                NULL,
-                                "penguin",
-                                makeNewReferenceURL(),
-                                Host::ReportedServices(),
-                                Host::ReportedProcesses(),
-                                dns ) );
-  }
-
-  AlertPtrNN makeAlertWithHost(const char *ip) const
-  {
-    const Alert::SourceAnalyzers sa( makeNewAnalyzer() );
-    Alert::ReportedHosts         hosts;
-    hosts.push_back( makeHostIP(ip) );
-    return AlertPtrNN( new Alert("alert 123",
-                                 sa,
-                                 NULL,
-                                 Timestamp(),
-                                 Severity(SeverityLevel::INFO),
-                                 Certainty(0.42),
-                                 "some test allert",
-                                 hosts,
-                                 Alert::ReportedHosts() ) );
-  }
-
-  Persistency::GraphNodePtrNN makeLeaf(const char *ip) const
-  {
-    assert(ip!=NULL);
-    IO::ConnectionPtrNN conn( Persistency::IO::create() );
-    IO::Transaction     t( conn->createNewTransaction("make_leaf_trans") );
-    return GraphNodePtrNN( new GraphNode( makeAlertWithHost(ip), conn, t) );
-  }
-
   Persistency::GraphNodePtrNN makeNode(void) const
   {
-    return makeNewNode( makeLeaf("127.0.0.1"), makeLeaf("127.0.0.1") );
+    return makeNewNode( makeNewLeaf("127.0.0.1", NULL, NULL),
+                        makeNewLeaf("127.0.0.1", NULL, NULL) );
   }
 
   Strategy::ChangedNodes changed_;
@@ -86,7 +51,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  s_.process( makeLeaf("127.0.0.1"), changed_ );
+  s_.process( makeNewLeaf("127.0.0.1", NULL, NULL), changed_ );
   ensure_equals("nothing changed", changed_.size(), 1);
 }
 
