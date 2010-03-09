@@ -51,7 +51,7 @@ void testObj::test<2>(void)
   ensure_equals("invalid name", ce.name_.get(), string("localhost") );
 }
 
-// reverse-dns didn't failed for unexisting entry
+// reverse-dns for unexisting entry
 template<>
 template<>
 void testObj::test<3>(void)

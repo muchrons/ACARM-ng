@@ -120,8 +120,9 @@ template<>
 void testObj::test<6>(void)
 {
   // create new entry
-  cache_[ ip("127.0.0.2") ];
-  cache_[ ip("127.0.0.3") ];
+  cache_[ ip("74.125.39.103") ];
+  cache_[ ip("74.125.39.104") ];
+  cache_[ ip("74.125.39.105") ];
   // timeout
   sleep(1);
   cache_[ ip("127.0.0.1") ];
