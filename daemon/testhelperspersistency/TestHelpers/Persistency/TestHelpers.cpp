@@ -14,16 +14,17 @@ namespace Persistency
 
 AlertPtr makeNewAlert(const char *name,
                       const char *sip,
-                      const char *tip)
+                      const char *tip,
+                      const char *dns)
 {
   const ::Persistency::Alert::SourceAnalyzers sa( makeNewAnalyzer() );
   Alert::ReportedHosts srcHosts;
   Alert::ReportedHosts tgtHosts;
 
   if(sip!=NULL)
-    srcHosts.push_back( makeNewHost(sip) );
+    srcHosts.push_back( makeNewHost(sip, dns) );
   if(tip!=NULL)
-    tgtHosts.push_back( makeNewHost(tip) );
+    tgtHosts.push_back( makeNewHost(tip, dns) );
 
   return AlertPtr( new Alert(name,
                              sa,
@@ -102,11 +103,12 @@ ReferenceURLPtr makeNewReferenceURL(const char *url)
   return ReferenceURLPtr( new ReferenceURL("some name", url) );
 }
 
-GraphNodePtrNN makeNewLeaf(const char *sip, const char *tip)
+GraphNodePtrNN makeNewLeaf(const char *sip, const char *tip, const bool dns)
 {
+  const char *name=dns?"dns.org":NULL;
   ::Persistency::IO::ConnectionPtrNN conn( ::Persistency::IO::create() );
   IO::Transaction t( conn->createNewTransaction("make_leaf_transaction") );
-  return GraphNodePtrNN( new GraphNode( makeNewAlert("some alert", sip, tip),
+  return GraphNodePtrNN( new GraphNode( makeNewAlert("some alert", sip, tip, name),
                                         conn, t ) );
 }
 
