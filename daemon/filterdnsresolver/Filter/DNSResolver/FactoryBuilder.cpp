@@ -2,6 +2,7 @@
  * FactoryBuilder.cpp
  *
  */
+#include <boost/lexical_cast.hpp>
 #include <cassert>
 
 #include "BuildProcess/ForceLink.hpp"
@@ -41,9 +42,9 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   assert(g_rh.isRegistered() && "oops - registration failed");
 
   const FilterConfig         fc(name_, options);
-  const Strategy::Parameters params=Strategy::Parameters();
-  //LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";
-  // TODO
+  const int                  timeout=boost::lexical_cast<int>( fc["cachetimeout"] );
+  LOGMSG_INFO_S(log_)<<"setting cache timeout to "<<timeout<<"[s]";
+  const Strategy::Parameters params(timeout);
 
   // create and return new handler.
   typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;

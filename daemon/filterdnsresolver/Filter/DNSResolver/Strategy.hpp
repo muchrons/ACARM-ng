@@ -7,10 +7,8 @@
 
 /* public header */
 
-#include "Persistency/Host.hpp"
 #include "Filter/Strategy.hpp"
-
-#warning TODO - finish this code when timeouting map is done.
+#include "Filter/DNSResolver/CachedDNS.hpp"
 
 namespace Filter
 {
@@ -33,6 +31,15 @@ public:
    */
   struct Parameters
   {
+    /** \brief create entry.
+     *  \param cacheTimeout timeout of cache entries.
+     */
+    explicit Parameters(const int cacheTimeout):
+      cacheTimeout_(cacheTimeout)
+    {
+    }
+
+    const int cacheTimeout_;    ///< timeout for cache entries.
   }; // struct Parameters
 
   /** \brief create instance.
@@ -44,6 +51,8 @@ private:
   virtual void processImpl(Node               n,
                            NodesTimeoutQueue &ntq,
                            BackendProxy      &bp);
+
+  CachedDNS cache_;
 }; // class Strategy
 
 } // namespace DNSResolver
