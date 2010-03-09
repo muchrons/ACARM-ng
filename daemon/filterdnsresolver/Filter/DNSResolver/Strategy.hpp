@@ -5,8 +5,6 @@
 #ifndef INCLUDE_FILTER_DNSRESOLVER_STRATEGY_HPP_FILE
 #define INCLUDE_FILTER_DNSRESOLVER_STRATEGY_HPP_FILE
 
-/* public header */
-
 #include "Filter/Strategy.hpp"
 #include "Filter/DNSResolver/CachedDNS.hpp"
 
