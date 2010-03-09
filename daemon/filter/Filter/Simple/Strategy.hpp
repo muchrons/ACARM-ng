@@ -140,7 +140,7 @@ private:
     // if node's leaf, create new node and correlate leafs there.
     if( it->node_->isLeaf() )
     {
-      LOGMSG_DEBUG_S(StrategyBase::log_)
+      LOGMSG_DEBUG_S(Base::log_)
         << "correlating '" << it->node_->getMetaAlert()->getName().get()
         << "' with '" << thisEntry.node_->getMetaAlert().getName().get()
         << "' as a new node";
@@ -160,7 +160,7 @@ private:
     }
     else
     {
-      LOGMSG_DEBUG_S(StrategyBase::log_)
+      LOGMSG_DEBUG_S(Base::log_)
         << "adding node '" << thisEntry.node_->getMetaAlert().getName().get()
         << "' to already correlated '"
         << it->node_->getMetaAlert()->getName().get() << "'";
