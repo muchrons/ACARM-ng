@@ -75,6 +75,9 @@ void MetaAlert::updateCertaintyDelta(double delta)
 
 bool MetaAlert::operator==(const MetaAlert &other) const
 {
+  if(this==&other)
+    return true;
+
   if( getName()!=other.getName() )
     return false;
   if( getSeverityDelta()!=other.getSeverityDelta() )

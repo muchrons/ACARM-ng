@@ -42,6 +42,9 @@ const Analyzer::IP *Analyzer::getIP(void) const
 
 bool Analyzer::operator==(const Analyzer &other) const
 {
+  if(this==&other)
+    return true;
+
   if( getName()!=other.getName() )
     return false;
   if( !Base::ViaPointer::equal( getVersion(), other.getVersion() ) )
