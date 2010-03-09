@@ -31,7 +31,7 @@ struct TestClass: private TestHelpers::TestBase
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Logger/LogStream");
+factory tf("Logger/detail/LogStream");
 } // unnamed namespace
 
 
