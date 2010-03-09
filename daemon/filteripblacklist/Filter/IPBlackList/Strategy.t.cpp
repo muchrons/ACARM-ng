@@ -45,6 +45,7 @@ factory tf("Filter/IPBlackList/Strategy");
 namespace tut
 {
 
+#if 0
 // test leaf
 template<>
 template<>
@@ -71,5 +72,6 @@ void testObj::test<3>(void)
   s_.process( makeNewLeaf("127.0.0.3"), changed_ );
   ensure_equals("something changed", changed_.size(), 0);
 }
+#endif
 
 } // namespace tut

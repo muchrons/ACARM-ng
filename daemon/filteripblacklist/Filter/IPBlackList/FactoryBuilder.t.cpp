@@ -70,6 +70,7 @@ void testObj::test<2>(void)
   ensure("NULL pointere returned", ptr.get()!=NULL );
 }
 
+#if 0
 // test throw on missing timeout
 template<>
 template<>
@@ -93,5 +94,6 @@ void testObj::test<5>(void)
 {
   ensureThrow("not a number");
 }
+#endif
 
 } // namespace tut
