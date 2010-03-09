@@ -19,7 +19,7 @@ CachedDNS::CachedDNS(unsigned int timeout):
 {
 }
 
-const CachedEntry::Name &CachedDNS::operator[](const IP &ip)
+CachedDNS::Entry CachedDNS::operator[](const IP &ip)
 {
   Cache::iterator it=cache_.find(ip);
   if( it==cache_.end() )
@@ -30,7 +30,7 @@ const CachedEntry::Name &CachedDNS::operator[](const IP &ip)
   }
 
   assert( it!=cache_.end() );
-  return it->second.name_;
+  return Entry( it->second.hasName(), it->second.name_ );
 }
 
 void CachedDNS::prune(void)

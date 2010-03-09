@@ -19,11 +19,12 @@ namespace DNSResolver
 class CachedDNS: private boost::noncopyable
 {
 public:
-  typedef Persistency::Host::IP IP;
+  typedef Persistency::Host::IP              IP;
+  typedef std::pair<bool, CachedEntry::Name> Entry;
 
   explicit CachedDNS(unsigned int timeout);
 
-  const CachedEntry::Name &operator[](const IP &ip);
+  Entry operator[](const IP &ip);
 
   void prune(void);
 
