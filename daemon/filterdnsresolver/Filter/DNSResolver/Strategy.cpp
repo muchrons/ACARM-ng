@@ -2,10 +2,11 @@
  * Strategy.cpp
  *
  */
-#include "Filter/DNSResolver/Strategy.hpp"
 #include <cassert>
+
+#include "Filter/DNSResolver/Strategy.hpp"
 #include "Algo/forEachUniqueLeaf.hpp"
-//#include "Filter/DNSResolver/EntryProcessor.hpp"
+#include "Filter/DNSResolver/EntryProcessor.hpp"
 
 using namespace Persistency;
 
@@ -20,11 +21,11 @@ Strategy::Strategy(const Parameters &params):
 {
 }
 
-void Strategy::processImpl(Node               /*n*/,
+void Strategy::processImpl(Node               n,
                            NodesTimeoutQueue &/*ntq*/,
-                           BackendProxy      &/*bp*/)
+                           BackendProxy      &bp)
 {
-  // TODO
+  Algo::forEachUniqueLeaf(n, EntryProcessor(&cache_, &bp) );
 }
 
 } // namespace DNSResolver
