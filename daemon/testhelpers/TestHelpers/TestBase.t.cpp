@@ -11,6 +11,32 @@ using namespace TestHelpers;
 
 namespace
 {
+const char *someTestConfigContent=
+      "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+      "<acarm_ng>"
+      ""
+      "  <persistency>"
+      "    <type>stubs</type>"
+      "  </persistency>"
+      ""
+      "  <logger>"
+      "    <appenders>"
+      "      <File name=\"default\">"
+      "        <output>acarm-ng.log</output>"
+      "      </File>"
+      "    </appenders>"
+      ""
+      "    <nodes appender=\"default\" threshold=\"debug\">"
+      "    </nodes>"
+      "  </logger>"
+      ""
+      "  <filters/>"
+      ""
+      "  <triggers/>"
+      ""
+      "</acarm_ng>"
+      ;
+
 struct TestClass
 {
 };
@@ -30,9 +56,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  TestBase tb;
+  const TestBase tb(someTestConfigContent);
   ensure_equals("no persistency section",
-                system("grep -q '<persistency>' acarm_ng_config.xml"), 0);
+                system("grep -q '<persistency>' test_base_config_file.xml"), 0);
 }
 
 // check for logger section
@@ -40,9 +66,9 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  TestBase tb;
+  const TestBase tb(someTestConfigContent);
   ensure_equals("no logger section",
-                system("grep -q '<logger>' acarm_ng_config.xml"), 0);
+                system("grep -q '<logger>' test_base_config_file.xml"), 0);
 }
 
 } // namespace tut

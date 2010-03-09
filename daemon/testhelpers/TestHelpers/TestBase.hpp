@@ -20,6 +20,8 @@ public:
   TestBase(const char *xml=NULL);
   ~TestBase(void);
 
+  void defaultConfig(void);
+
 private:
   const char *defaultFile_;
 }; // struct TestBase

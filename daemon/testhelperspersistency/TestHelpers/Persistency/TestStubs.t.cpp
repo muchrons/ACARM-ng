@@ -31,7 +31,8 @@ template<>
 void testObj::test<1>(void)
 {
   TestStubs ts;
-  ensure_equals("invalid content", system("grep -q '>stubs<' acarm_ng_config.xml"), 0);
+  ensure_equals("invalid content",
+                system("grep -q '>stubs<' test_base_config_file.xml"), 0);
 }
 
 } // namespace tut
