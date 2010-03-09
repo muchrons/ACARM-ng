@@ -13,6 +13,8 @@
 using namespace std;
 using namespace Persistency;
 
+// TODO: get list from http://www.dshield.org/ipsascii.html?limit=10000
+
 namespace Filter
 {
 namespace IPBlackList
