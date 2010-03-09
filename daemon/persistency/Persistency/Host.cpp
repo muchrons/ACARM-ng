@@ -94,6 +94,9 @@ const Host::ReportedProcesses &Host::getReportedProcesses(void) const
 
 bool Host::operator==(const Host &other) const
 {
+  if(this==&other)
+    return true;
+
   if( getIP()!=other.getIP() )
     return false;
   if( !Base::ViaPointer::equal( getNetmask(), other.getNetmask() ) )
