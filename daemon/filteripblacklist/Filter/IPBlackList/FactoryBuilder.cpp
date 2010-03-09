@@ -37,19 +37,22 @@ FactoryBuilder::FactoryBuilder(void):
 {
 }
 
-FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) const
+FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &/*options*/) const
 {
   LOGMSG_INFO(log_, "building filter's instance");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
+  /*
   const FilterConfig fc(name_, options);
   const int          timeoutInt=boost::lexical_cast<int>( fc["timeout"] );
   const unsigned int timeout   =boost::numeric_cast<unsigned int>(timeoutInt);
   LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";
+  */
+  Strategy::Parameters params;     // TODO
 
   // create and return new handler.
-  typedef InterfaceImpl<Strategy, unsigned int> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl(name_, timeout) );
+  typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;
+  return FactoryBuilder::FactoryPtr( new Impl(name_, params) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

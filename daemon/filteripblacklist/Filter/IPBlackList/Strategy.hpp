@@ -8,7 +8,7 @@
 /* public header */
 
 #include "Persistency/Host.hpp"
-#include "Filter/Simple/Strategy.hpp"
+#include "Filter/Strategy.hpp"
 
 
 namespace Filter
@@ -25,26 +25,35 @@ struct Data
 
 /** \brief filter detecting multiple attacks from multiple hosts implementation.
  */
-class Strategy: public Filter::Simple::Strategy<Data>
+class Strategy: public Filter::Strategy<Data>
 {
 public:
-  /** \brief create instance.
-   *  \param timeout time observed node shoudl be in queue.
+  /** \brief paramters for strategy.
    */
-  explicit Strategy(unsigned int timeout);
+  struct Parameters
+  {
+#if 0
+    /** \brief create entry.
+     *  \param cacheTimeout timeout of cache entries.
+     */
+    explicit Parameters(const int cacheTimeout):
+      cacheTimeout_(cacheTimeout)
+    {
+    }
+
+    const int cacheTimeout_;    ///< timeout for cache entries.
+#endif
+  }; // struct Parameters
+
+  /** \brief create instance.
+   *  \param params paramters for dns resolver.
+   */
+  explicit Strategy(const Parameters &params);
 
 private:
-  //
-  // Simple::Strategy implementation
-  //
-
-  virtual NodeEntry makeThisEntry(const Node n) const;
-  virtual bool isEntryInteresting(const NodeEntry thisEntry) const;
-  virtual Persistency::MetaAlert::Name getMetaAlertName(
-                                              const NodeEntry thisEntry,
-                                              const NodeEntry otherEntry) const;
-  virtual bool canCorrelate(const NodeEntry thisEntry,
-                            const NodeEntry otherEntry) const;
+  virtual void processImpl(Node               n,
+                           NodesTimeoutQueue &ntq,
+                           BackendProxy      &bp);
 }; // class Strategy
 
 } // namespace IPBlackList
