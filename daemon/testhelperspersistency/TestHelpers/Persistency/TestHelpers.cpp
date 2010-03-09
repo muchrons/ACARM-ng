@@ -106,10 +106,7 @@ ReferenceURLPtr makeNewReferenceURL(const char *url)
 GraphNodePtrNN makeNewLeaf(const char *sip, const char *tip, const bool dns)
 {
   const char *name=dns?"dns.org":NULL;
-  ::Persistency::IO::ConnectionPtrNN conn( ::Persistency::IO::create() );
-  IO::Transaction t( conn->createNewTransaction("make_leaf_transaction") );
-  return GraphNodePtrNN( new GraphNode( makeNewAlert("some alert", sip, tip, name),
-                                        conn, t ) );
+  return makeNewLeaf( makeNewAlert("some alert", sip, tip, name) );
 }
 
 GraphNodePtrNN makeNewNode(void)
@@ -139,6 +136,43 @@ GraphNodePtrNN makeNewTree2(void)
   return makeNewNode( node1,
                       makeNewNode(
                         makeNewNode( makeNewLeaf(), node1 ), node1 ) );
+}
+
+AlertPtrNN makeNewAlertWithHosts(const char *hostSrc1,
+                                 const char *hostSrc2,
+                                 const char *hostDst1,
+                                 const char *hostDst2)
+{
+  const Alert::SourceAnalyzers sa( makeNewAnalyzer() );
+  Alert::ReportedHosts         hostsSrc;
+  Alert::ReportedHosts         hostsDst;
+
+  if(hostSrc1!=NULL)
+    hostsSrc.push_back( makeNewHost(hostSrc1) );
+  if(hostSrc2!=NULL)
+    hostsSrc.push_back( makeNewHost(hostSrc2) );
+
+  if(hostDst1!=NULL)
+    hostsDst.push_back( makeNewHost(hostDst1) );
+  if(hostDst2!=NULL)
+    hostsDst.push_back( makeNewHost(hostDst2) );
+
+  return AlertPtrNN( new Alert("alert 123",
+                               sa,
+                               NULL,
+                               Timestamp(),
+                               Severity(SeverityLevel::INFO),
+                               Certainty(0.42),
+                               "some test allert",
+                               hostsSrc,
+                               hostsDst) );
+}
+
+GraphNodePtrNN makeNewLeaf(AlertPtrNN alert)
+{
+  IO::ConnectionPtrNN conn( IO::create() );
+  IO::Transaction     t( conn->createNewTransaction("make_leaf_trans") );
+  return GraphNodePtrNN( new GraphNode(alert, conn, t) );
 }
 
 } // namespace Persistency
