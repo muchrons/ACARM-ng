@@ -6,12 +6,12 @@
 #include <string>
 #include <cassert>
 
-#include "Filter/ManyToMany/GatherHosts.hpp"
-#include "Filter/ManyToMany/CommonTestBase.t.hpp"
+#include "Algo/GatherHosts.hpp"
+#include "Algo/CommonTestBase.t.hpp"
 
 using namespace std;
+using namespace Algo;
 using namespace Persistency;
-using namespace Filter::ManyToMany;
 using namespace TestHelpers::Persistency;
 
 namespace
@@ -24,7 +24,7 @@ struct TestClass: public CommonTestBase
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Filter/ManyToMany/GatherHosts");
+factory tf("Algo/GatherHosts");
 } // unnamed namespace
 
 
