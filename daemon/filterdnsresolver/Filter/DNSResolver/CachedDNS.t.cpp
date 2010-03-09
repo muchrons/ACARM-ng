@@ -54,10 +54,11 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  CachedDNS cache(0);       // we make this explicitly here, to set small timeout
   // create new entry
   cache_[ ip("127.0.0.1") ];
   // remove entry
-  sleep(2);
+  sleep(1);
   cache_.prune();
   // add entry once more
   const CachedEntry::Name &name=cache_[ ip("127.0.0.1") ].second;
