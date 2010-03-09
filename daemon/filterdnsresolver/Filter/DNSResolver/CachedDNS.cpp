@@ -5,6 +5,7 @@
 #include "Filter/DNSResolver/CachedDNS.hpp"
 #include <deque>
 #include <cassert>
+#include "Logger/Logger.hpp"
 
 using namespace std;
 
@@ -15,8 +16,10 @@ namespace DNSResolver
 {
 
 CachedDNS::CachedDNS(unsigned int timeout):
+  log_("filter.dnsresolver.cacheddns"),
   timeout_(timeout)
 {
+  LOGMSG_INFO(log_, "creating cache");
 }
 
 CachedDNS::Entry CachedDNS::operator[](const IP &ip)
@@ -24,9 +27,12 @@ CachedDNS::Entry CachedDNS::operator[](const IP &ip)
   Cache::iterator it=cache_.find(ip);
   if( it==cache_.end() )
   {
+    LOGMSG_DEBUG_S(log_)<<"adding new mapping for '"
+                        <<ip<<"' for "<<timeout_<<"[s]";
     // if entry does not exist yet, add it
     const CachedEntry ce(ip, timeout_);     // translate DNS
     it=cache_.insert( Cache::value_type(ip, ce) ).first;
+    LOGMSG_DEBUG_S(log_)<<it->first<<" maps to '"<<it->second.name_.get()<<"'";
   }
 
   assert( it!=cache_.end() );
@@ -35,6 +41,7 @@ CachedDNS::Entry CachedDNS::operator[](const IP &ip)
 
 void CachedDNS::prune(void)
 {
+  LOGMSG_DEBUG(log_, "prunning cache");
   typedef deque<IP> OutdatedList;
   OutdatedList outdated;
 
@@ -46,6 +53,7 @@ void CachedDNS::prune(void)
         outdated.push_back(it->first);
   }
 
+  LOGMSG_DEBUG_S(log_)<<outdated.size()<<" entries to be removed";
   // remove outdated entries
   for(OutdatedList::const_iterator it=outdated.begin(); it!=outdated.end(); ++it)
     cache_.erase(*it);

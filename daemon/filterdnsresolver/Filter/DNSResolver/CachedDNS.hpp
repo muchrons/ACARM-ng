@@ -8,6 +8,7 @@
 #include <map>
 #include <boost/noncopyable.hpp>
 
+#include "Logger/Node.hpp"
 #include "Filter/DNSResolver/CachedEntry.hpp"
 
 
@@ -49,8 +50,9 @@ public:
 private:
   typedef std::map<IP, CachedEntry> Cache;
 
-  unsigned int timeout_;
-  Cache        cache_;
+  const Logger::Node log_;
+  unsigned int       timeout_;
+  Cache              cache_;
 }; // class CachedDNS
 
 } // namespace DNSResolver
