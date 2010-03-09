@@ -7,7 +7,6 @@
 #include <cassert>
 
 #include "Filter/ManyToMany/Strategy.hpp"
-#include "Filter/ManyToMany/Exception.hpp"
 #include "Filter/ManyToMany/CommonTestBase.t.hpp"
 
 using namespace std;
