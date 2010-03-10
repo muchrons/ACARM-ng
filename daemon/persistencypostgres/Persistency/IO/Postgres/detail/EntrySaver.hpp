@@ -129,7 +129,7 @@ public:
 private:
   DataBaseID getID(const std::string &seqName);
   DataBaseID getSeverityID(const Alert &a);
-  bool isAnalyzerInDataBase(const Analyzer &a);
+  DataBaseID isAnalyzerInDataBase(const Analyzer &a);
   std::string addIPToSelect(const Analyzer::IP *ptr);
 
   template <typename T>

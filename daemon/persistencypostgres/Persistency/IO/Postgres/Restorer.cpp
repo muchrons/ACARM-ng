@@ -20,13 +20,16 @@ Restorer::Restorer(Transaction    &t,
 
 void Restorer::restoreAllInUseImpl(Transaction &/*t*/, NodesVector &/*out*/)
 {
+  //IO::ConnectionPtrNN connectionStubIO( createStubIO() );
+  //IO::Transaction tStubIO( connectionStubIO->createNewTransaction("stub transaction") );
   // TODO
   // read meta alerts ids from table meta_alerts_in_use
   // for(meta alerts in use)
   // {
   //   - create GraphNode
   //     - read Meta Alert
-  //     - read Meta Alert Children:w
+  //     - read Meta Alert Children
+  //     - leafs should be read first
   //
   //   - add GraphNode to NodesVector
   // }
@@ -38,6 +41,13 @@ void Restorer::restoreBetweenImpl(Transaction     &/*t*/,
                                   const Timestamp &/*to*/)
 {
   // TODO
+}
+
+BackendFactory::FactoryPtr Restorer::createStubIO(void)
+{
+  const BackendFactory::FactoryTypeName name("stubx");
+  const BackendFactory::Options         options;
+  return BackendFactory::create(name, options);
 }
 
 } // namespace Postgres

@@ -67,9 +67,10 @@ void EntrySaver::addReferenceURL(std::stringstream &ss, const ReferenceURL *url)
     ss << "NULL";
 }
 
-bool EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
+DataBaseID EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
 {
-  // TODO: finish that
+  // TODO: finish that, this function should return ID of analyzer
+  DataBaseID id;
   stringstream ss;
   ss << "SELECT * FROM analyzers WHERE name = ";
   Appender::append(ss, a.getName().get() );
@@ -82,9 +83,12 @@ bool EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   ss << ";";
   result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
   if(r.empty() )
-    return false;
+    return -1;
   else
-    return true;
+  {
+    r[0]["id"].to(id);
+    return id;
+  }
 }
 
 // TODO: using template for this is a good idea. make this Appender::append<>
@@ -232,7 +236,8 @@ DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
 {
   // TODO: Analyzer should be unique
-  if( !isAnalyzerInDataBase(a) )
+  DataBaseID id = isAnalyzerInDataBase(a);
+  if( id == -1)
   {
     stringstream ss;
     ss << "INSERT INTO analyzers(name, version, os, ip) VALUES (";
@@ -250,8 +255,9 @@ DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
       Appender::append(ss, a.getIP()->to_string() );
     ss << ");";
     t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+    return getID("analyzers_id_seq");
   }
-  return getID("analyzers_id_seq");
+  return id;
 }
 
 DataBaseID EntrySaver::saveServiceData(const Service &s)

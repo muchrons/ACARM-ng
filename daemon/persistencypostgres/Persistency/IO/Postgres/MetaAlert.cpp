@@ -58,6 +58,7 @@ void MetaAlert::markAsUnusedImpl(Transaction &t)
 void MetaAlert::updateSeverityDeltaImpl(Transaction &t, double delta)
 {
   // TODO tests
+  // maybe there shoul be only EntrySaver object which updates SeverityDelta
   EntrySaver                    es(t, *dbHandler_);
   EntryReader                   er(t, *dbHandler_);
   DataBaseID                    malertID = dbHandler_->getIDCache()->get( get() );
@@ -68,6 +69,7 @@ void MetaAlert::updateSeverityDeltaImpl(Transaction &t, double delta)
 void MetaAlert::updateCertaintyDeltaImpl(Transaction &t, double delta)
 {
   // TODO tests
+  // as above
   EntrySaver                    es(t, *dbHandler_);
   EntryReader                   er(t, *dbHandler_);
   DataBaseID                    malertID = dbHandler_->getIDCache()->get( get() );

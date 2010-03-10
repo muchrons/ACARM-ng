@@ -23,11 +23,11 @@ Alert::Alert(Persistency::AlertPtrNN  alert,
 
 void Alert::saveImpl(Transaction &t)
 {
-  EntrySaver                             es(t,*dbHandler_);
+  EntrySaver                 es(t,*dbHandler_);
   //get Alert
-  const Persistency::Alert               &a=*get();
+  const Persistency::Alert  &a=*get();
   //save Alert
-  DataBaseID                       alertID=es.saveAlert(a);
+  DataBaseID                 alertID=es.saveAlert(a);
   //add Alert to cache
   dbHandler_->getIDCache()->add(get() , alertID);
   //save source hosts
@@ -76,7 +76,7 @@ void Alert::saveHosts(EntrySaver                        &es,
 
     // get reported services from host
     // TODO: this variable should be const reference
-    Persistency::Host::ReportedServices services((*it->get()).getReportedServices() );
+    Persistency::Host::ReportedServices  services( (*it->get()).getReportedServices() );
     for(Persistency::Host::ReportedServices::iterator it_s = services.begin(); it_s!=services.end(); ++it_s)
       es.saveService(reportedHostID, *it_s->get() );
 

@@ -13,7 +13,6 @@
 
 // TODO: tests
 
-// TODO: THIS IS COMMENTED OUT SINCE IMPLEMENTATION OF ANALYZER CHANGED - UPDATE THIS CODE ASAP
 using Persistency::IO::Transaction;
 using namespace Persistency;
 using namespace Persistency::IO::Postgres;
@@ -28,9 +27,8 @@ struct TestClass
 {
   TestClass(void):
     name_("some name"),
-    // TODO: remove DEADC0DE :)
-    //analyzer_( new Analyzer("analyzer name", makeNewHost() ) ),
-    //analyzers_( analyzer_ ),
+    analyzer_( new Analyzer("analyzer name", NULL, NULL, NULL ) ),
+    analyzers_( analyzer_ ),
     nullanalyzer_( new Analyzer("analyzer name", NULL, NULL, NULL )),
     nullanalyzers_( nullanalyzer_ ),
     detected_(from_iso_string("2001109T231100")),
@@ -69,9 +67,8 @@ struct TestClass
   }
 
   const Persistency::Alert::Name          name_;
-  // TODO: remove DEADC0DE :)
-  //const AnalyzerPtrNN                     analyzer_;
-  //Persistency::Alert::SourceAnalyzers     analyzers_;
+  const AnalyzerPtrNN                     analyzer_;
+  Persistency::Alert::SourceAnalyzers     analyzers_;
   // TODO: inadequate variables' names (nullanalyzer is never NULL actually)
   const AnalyzerPtrNN                     nullanalyzer_;
   Persistency::Alert::SourceAnalyzers     nullanalyzers_;
@@ -105,17 +102,13 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  // TODO: fix this test
-  /*
   Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, analyzers_, &detected_, created_, severity_,
                                                          certainty_, description_, sourceHosts_, targetHosts_));
   Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
   alert.save();
-  */
 }
 
-// TODO: description is outdated
-// trying save Alert with NULL Host in Analyzer
+// trying save Alert with NULL Host in Analyzers
 template<>
 template<>
 void testObj::test<2>(void)
