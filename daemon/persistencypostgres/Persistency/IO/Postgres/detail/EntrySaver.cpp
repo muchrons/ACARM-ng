@@ -24,6 +24,21 @@ namespace Postgres
 namespace detail
 {
 
+namespace
+{
+template <typename T>
+void addToSelect(std::stringstream &ss, const T *ptr)
+{
+  if(ptr!=NULL)
+  {
+    ss << " = ";
+    Appender::append(ss, ptr->get() );
+  }
+  else
+    ss << " IS NULL";
+}
+} //unnamed namespace
+
 EntrySaver::EntrySaver(Transaction &t, DBHandler &dbh):
   dbh_(dbh),
   t_(t)
@@ -69,7 +84,6 @@ void EntrySaver::addReferenceURL(std::stringstream &ss, const ReferenceURL *url)
 
 DataBaseID EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
 {
-  // TODO: finish that, this function should return ID of analyzer
   DataBaseID id;
   stringstream ss;
   ss << "SELECT * FROM analyzers WHERE name = ";
@@ -90,22 +104,6 @@ DataBaseID EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
     return id;
   }
 }
-
-// TODO: using template for this is a good idea. make this Appender::append<>
-//       specialization for smart pointers, to be sonsistent with already
-//       exisiting code.
-//       ss as parameter, ternal operator
-template <typename T>
-void EntrySaver::addToSelect(stringstream &ss, const T *ptr)
-{
-  if(ptr!=NULL){
-    ss << " = ";
-    Appender::append(ss, ptr->get() );
-  }
-  else
-    ss<< " IS NULL";
-}
-
 
 DataBaseID EntrySaver::saveProcessData(const Process &p)
 {
@@ -235,7 +233,6 @@ DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 
 DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
 {
-  // TODO: Analyzer should be unique
   DataBaseID id = isAnalyzerInDataBase(a);
   if( id == -1)
   {

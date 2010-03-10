@@ -132,8 +132,6 @@ private:
   DataBaseID isAnalyzerInDataBase(const Analyzer &a);
   std::string addIPToSelect(const Analyzer::IP *ptr);
 
-  template <typename T>
-  void addToSelect(std::stringstream &ss, const T *ptr);
   DataBaseID saveProcessData(const Process &p);
   DataBaseID saveReportedProcessData(DataBaseID     reportedHostID,
                                      DataBaseID     procID,
