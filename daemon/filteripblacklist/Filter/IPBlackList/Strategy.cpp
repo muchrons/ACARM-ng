@@ -6,43 +6,49 @@
 #include <algorithm>
 #include <cassert>
 
-#include "Filter/ManyToMany/Strategy.hpp"
+#include "Filter/IPBlackList/Strategy.hpp"
 #include "Algo/forEachUniqueLeaf.hpp"
 #include "Algo/GatherHosts.hpp"
 
 using namespace std;
 using namespace Persistency;
 
+// TODO: get list from http://www.dshield.org/ipsascii.html?limit=10000
+
 namespace Filter
 {
-namespace ManyToMany
+namespace IPBlackList
 {
 
 Strategy::Strategy(unsigned int timeout):
-  Filter::Simple::Strategy<Data>("manytomany", timeout)
+  Filter::Simple::Strategy<Data>("ipblacklist", timeout)
 {
 }
 
 Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
 {
+  // TODO
   return NodeEntry( n, Data() );
 }
 
-bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
+bool Strategy::isEntryInteresting(const NodeEntry /*thisEntry*/) const
 {
+  return false;             // TODO
+  /*
   const Algo::GatherHosts gh(thisEntry.node_);
   return gh.getSourceHosts().size()>0 &&
          gh.getTargetHosts().size()>0;
+         */
 }
 
 Persistency::MetaAlert::Name Strategy::getMetaAlertName(
                                               const NodeEntry /*thisEntry*/,
                                               const NodeEntry /*otherEntry*/) const
 {
-  return "[many2many] atacks from multiple hosts on multiple hosts detected";
+  return "[ipblacklist] TODO";
 }
 
-
+#if 0
 namespace
 {
 /** \brief helper that determines if collection created out of the
@@ -81,11 +87,14 @@ private:
   bool empty_;
 }; // struct IntersectionOutputIterator
 } // unnamed namespace
+#endif
 
 
-bool Strategy::canCorrelate(const NodeEntry thisEntry,
-                            const NodeEntry otherEntry) const
+bool Strategy::canCorrelate(const NodeEntry /*thisEntry*/,
+                            const NodeEntry /*otherEntry*/) const
 {
+  return false;         // TODO
+  /*
   // sanityt check
   assert( isEntryInteresting(thisEntry)  );
   assert( isEntryInteresting(otherEntry) );
@@ -94,6 +103,16 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   const Algo::GatherHosts ghOther(otherEntry.node_);
 
   IntersectionOutputIterator tmp;
+  // perform set intersection on source hosts of
+  tmp=set_intersection( ghThis.getSourceHosts().begin(),
+                        ghThis.getSourceHosts().end(),
+                        ghOther.getSourceHosts().begin(),
+                        ghOther.getSourceHosts().end(),
+                        IntersectionOutputIterator(),
+                        Algo::GatherHosts::HostSWO() );
+  if( tmp.isEmpty() )
+      return false;
+
   // perform set intersection on source hosts
   tmp=set_intersection( ghThis.getSourceHosts().begin(),
                         ghThis.getSourceHosts().end(),
@@ -104,19 +123,10 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   if( tmp.isEmpty() )
       return false;
 
-  // perform set intersection on target hosts
-  tmp=set_intersection( ghThis.getTargetHosts().begin(),
-                        ghThis.getTargetHosts().end(),
-                        ghOther.getTargetHosts().begin(),
-                        ghOther.getTargetHosts().end(),
-                        IntersectionOutputIterator(),
-                        Algo::GatherHosts::HostSWO() );
-  if( tmp.isEmpty() )
-      return false;
-
   // ok - both intersections are non-empty
   return true;
+  */
 }
 
-} // namespace ManyToMany
+} // namespace IPBlackList
 } // namespace Filter

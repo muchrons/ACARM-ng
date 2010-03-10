@@ -6,13 +6,13 @@
 #include <string>
 #include <cassert>
 
-#include "Filter/ManyToMany/Strategy.hpp"
-#include "TestHelpers/Persistency/TestStubs.hpp"
+#include "Filter/IPBlackList/Strategy.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace std;
 using namespace Persistency;
-using namespace Filter::ManyToMany;
+using namespace Filter::IPBlackList;
 using namespace TestHelpers::Persistency;
 
 namespace
@@ -20,9 +20,10 @@ namespace
 
 struct TestClass: public TestStubs
 {
+  /*
   TestClass(void):
-    sampleLeaf_( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "2.3.4.5",
-                                                    "1.2.3.4", "9.8.7.6") ) ),
+    sampleLeaf_( makeNewLeaf( makeNewAlert("1.2.3.4", "2.3.4.5",
+                                     "1.2.3.4", "9.8.7.6") ) ),
     s_(997)
   {
   }
@@ -30,25 +31,27 @@ struct TestClass: public TestStubs
   GraphNodePtrNN         sampleLeaf_;
   Strategy::ChangedNodes changed_;
   Strategy               s_;
+  */
 };
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Filter/ManyToMany/Strategy");
+factory tf("Filter/IPBlackList/Strategy");
 } // unnamed namespace
 
 
 namespace tut
 {
 
+#if 0
 // test if entry is not interesting when no target hosts are set
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  GraphNodePtrNN sourceOnlyLeaf(
-        makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL, NULL, NULL) ) );
+  GraphNodePtrNN sourceOnlyLeaf( makeLeaf( makeAlert("1.2.3.4", NULL,
+                                                     NULL,      NULL) ) );
   s_.process(sourceOnlyLeaf, changed_);
   ensure_equals("some nodes have been changed / 1", changed_.size(), 0);
 
@@ -61,8 +64,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  GraphNodePtrNN targetOnlyLeaf(
-      makeNewLeaf( makeNewAlertWithHosts(NULL, NULL, "1.2.3.4", NULL) ) );
+  GraphNodePtrNN targetOnlyLeaf( makeLeaf( makeAlert(NULL,      NULL,
+                                                     "1.2.3.4", NULL) ) );
   s_.process(targetOnlyLeaf, changed_);
   ensure_equals("some nodes have been changed / 1", changed_.size(), 0);
 
@@ -75,8 +78,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.4", "2.3.4.5",
-                                                         "6.6.3.4", "9.8.7.6") ) );
+  GraphNodePtrNN tmp( makeLeaf( makeAlert("6.6.3.4", "2.3.4.5",
+                                          "6.6.3.4", "9.8.7.6") ) );
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed", changed_.size(), 0);
 
@@ -89,8 +92,8 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.4", "6.3.4.5",
-                                                         "6.6.3.4", "6.8.7.6") ) );
+  GraphNodePtrNN tmp( makeLeaf( makeAlert("6.6.3.4", "6.3.4.5",
+                                          "6.6.3.4", "6.8.7.6") ) );
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed / 1", changed_.size(), 0);
 
@@ -103,8 +106,8 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.4", "2.3.4.5",
-                                                         "6.6.3.4", "9.8.7.6") ) );
+  GraphNodePtrNN tmp( makeLeaf( makeAlert("6.6.3.4", "2.3.4.5",
+                                          "6.6.3.4", "9.8.7.6") ) );
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed", changed_.size(), 0);
 
@@ -116,5 +119,6 @@ void testObj::test<5>(void)
   ensure_equals("invalid name",
                 changed_[0]->getMetaAlert()->getName().get(), resp);
 }
+#endif
 
 } // namespace tut

@@ -2,8 +2,8 @@
  * Strategy.hpp
  *
  */
-#ifndef INCLUDE_FILTER_MANYTOMANY_STRATEGY_HPP_FILE
-#define INCLUDE_FILTER_MANYTOMANY_STRATEGY_HPP_FILE
+#ifndef INCLUDE_FILTER_IPBLACKLIST_STRATEGY_HPP_FILE
+#define INCLUDE_FILTER_IPBLACKLIST_STRATEGY_HPP_FILE
 
 /* public header */
 
@@ -13,7 +13,7 @@
 
 namespace Filter
 {
-namespace ManyToMany
+namespace IPBlackList
 {
 
 /** \brief this filter does not need to handle any data.
@@ -47,7 +47,7 @@ private:
                             const NodeEntry otherEntry) const;
 }; // class Strategy
 
-} // namespace ManyToMany
+} // namespace IPBlackList
 } // namespace Filter
 
 #endif
