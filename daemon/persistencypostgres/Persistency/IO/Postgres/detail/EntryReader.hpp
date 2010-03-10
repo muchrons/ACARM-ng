@@ -38,13 +38,27 @@ public:
    *  \param dbh data base handler object.
    */
   EntryReader(Transaction &t, DBHandler &dbh);
-  //TODO: work in progress
+
+  /** \brief read Alert data from data base
+   *  \param alertID ID of Alert in data base
+   */
   Persistency::AlertPtrNN readAlert(DataBaseID alertID);
 
+  /** \brief read Analyzers assiociated with Alert from data base
+   *  \param alertID ID of Alert in data base
+   */
   Persistency::Alert::SourceAnalyzers getAnalyzers(DataBaseID alertID);
 
+  /** \brief read value of Meta Alert severity delta
+   *  \param malertID ID of Meta Alert
+   */
   double getSeverityDelta(DataBaseID malertID);
+
+  /** \brief read value of Meta Alert certainty delta
+   *  \param malertID ID of Meta Alert
+   */
   double getCertaintyDelta(DataBaseID malertID);
+
 private:
   AnalyzerPtrNN getAnalyzer(DataBaseID anlzID);
   Persistency::Alert::ReportedHosts getReporteHosts(DataBaseID alertID, std::string hostType);
