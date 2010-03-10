@@ -73,6 +73,7 @@ void testObj::test<3>(void)
 {
   const ParseTriggers             pp  =getConf();
   const TriggersConfigCollection &cfg =pp.getConfig();
+  ensure_equals("invalid number of entries", cfg.size(), 2);
   ensure_equals("invalid type", cfg[0].getType(), "noopts");
   ensure_equals("invalid number of options", cfg[0].getOptions().size(), 0);
 }
@@ -84,10 +85,11 @@ void testObj::test<4>(void)
 {
   const ParseTriggers             pp  =getConf();
   const TriggersConfigCollection &cfg =pp.getConfig();
+  ensure_equals("invalid number of entries", cfg.size(), 2);
   ensure_equals("invalid type", cfg[1].getType(), "something");
   ensure_equals("invalid number of options", cfg[1].getOptions().size(), 2);
   ensure_equals("invalid option's 1 value", cfg[1]["opt4"], "alice");
-  ensure_equals("invalid option's 2 value", cfg[2]["opt7"], "cat");
+  ensure_equals("invalid option's 2 value", cfg[1]["opt7"], "cat");
 }
 
 } // namespace tut
