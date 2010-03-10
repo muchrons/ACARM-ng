@@ -345,7 +345,7 @@ struct NodeAdder
   {
     IO::MetaAlertAutoPtr io=testClass_->makeIO(gn_);
 
-    for(int i=0; i<666; ++i)
+    for(int i=0; i<303; ++i)
     {
       assert( io.get()!=NULL );
       gn_->addChild( testClass_->makeNode(), *io);
