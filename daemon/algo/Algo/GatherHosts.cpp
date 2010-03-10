@@ -4,12 +4,10 @@
  */
 #include <cassert>
 
-#include "Filter/ManyToMany/GatherHosts.hpp"
+#include "Algo/GatherHosts.hpp"
 
 
-namespace Filter
-{
-namespace ManyToMany
+namespace Algo
 {
 
 GatherHosts::GatherHosts(Persistency::GraphNodePtrNN node):
@@ -39,5 +37,4 @@ void GatherHosts::addHosts(HostSetPtr out, const Persistency::Alert::ReportedHos
   } // for(hosts)
 }
 
-} // namespace ManyToMany
-} // namespace Filter
+} // namespace Algo

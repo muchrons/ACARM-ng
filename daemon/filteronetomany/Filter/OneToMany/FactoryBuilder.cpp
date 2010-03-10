@@ -28,7 +28,7 @@ namespace
 const Commons::Factory::RegistratorHelper<Factory, FactoryBuilder> g_rh;
 } // unnamed namespace
 
-FORCE_LINK_THIS_OBJECT(Persistency_IO_Postgres_ConnectionBuilder)
+FORCE_LINK_THIS_OBJECT(Filter_OneToMany_FactoryBuilder)
 
 
 FactoryBuilder::FactoryBuilder(void):

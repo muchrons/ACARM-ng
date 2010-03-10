@@ -25,6 +25,10 @@ const char *defaultConfigContent=
   "    </nodes>"
   "  </logger>"
   ""
+  "  <filters/>"
+  ""
+  "  <triggers/>"
+  ""
   "</acarm_ng>"
   ;
 } // unnamed namespace

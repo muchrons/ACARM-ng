@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+
+  <persistency>
+    <type>stubs</type>
+  </persistency>
+
+  <logger>
+    <appenders>
+      <File name="default">
+        <output>loggerfile.log</output>
+      </File>
+    </appenders>
+
+    <nodes appender="default" threshold="debug">
+    </nodes>
+  </logger>
+
+  <filters/>
+
+  <triggers/>
+
+</acarm_ng>

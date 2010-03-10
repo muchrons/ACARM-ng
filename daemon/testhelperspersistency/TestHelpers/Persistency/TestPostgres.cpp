@@ -3,6 +3,7 @@
  *
  */
 #include "TestHelpers/Persistency/TestPostgres.hpp"
+#include "ConfigIO/Singleton.hpp"
 
 namespace
 {
@@ -29,6 +30,10 @@ const char *configContent=
   "    <nodes appender=\"default\" threshold=\"debug\">"
   "    </nodes>"
   "  </logger>"
+  ""
+  "  <filters/>"
+  ""
+  "  <triggers/>"
   ""
   "</acarm_ng>"
   ;

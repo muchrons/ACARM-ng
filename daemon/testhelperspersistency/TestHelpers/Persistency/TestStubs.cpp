@@ -25,6 +25,10 @@ const char *configContent=
   "    </nodes>"
   "  </logger>"
   ""
+  "  <filters/>"
+  ""
+  "  <triggers/>"
+  ""
   "</acarm_ng>"
   ;
 }

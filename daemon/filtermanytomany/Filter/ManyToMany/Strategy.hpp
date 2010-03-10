@@ -9,7 +9,6 @@
 
 #include "Persistency/Host.hpp"
 #include "Filter/Simple/Strategy.hpp"
-#include "Filter/ManyToMany/Exception.hpp"
 
 
 namespace Filter

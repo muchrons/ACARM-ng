@@ -26,6 +26,9 @@ const ReferenceURL::URL &ReferenceURL::getURL(void) const
 
 bool ReferenceURL::operator==(const ReferenceURL &other) const
 {
+  if(this==&other)
+    return true;
+
   if( getName()!=other.getName() )
     return false;
   if( getURL()!=other.getURL() )
