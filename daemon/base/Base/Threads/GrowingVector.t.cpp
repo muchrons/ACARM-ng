@@ -128,7 +128,7 @@ struct CollectionWriter
   void operator()(void)
   {
     // do a series of iterations
-    for(int i=0; i<300; ++i)
+    for(int i=0; i<142; ++i)
     {
       // iterate tgrough colleciton changing some elemtns
       for(GV::iterator it=data_->begin(), end=data_->end(); it!=end; ++it)
