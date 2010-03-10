@@ -48,7 +48,7 @@ void testObj::test<2>(void)
 {
   const CachedEntry ce( ip("127.0.0.1"), 21);
   ensure("reverse DNS for localhost failed", ce.hasName() );
-  ensure_equals("invalid name", ce.name_.get(), string("localhost") );
+  ensure("invalid name", strstr( ce.name_.get(), "localhost" )!=NULL );
 }
 
 // reverse-dns for unexisting entry

@@ -64,9 +64,8 @@ void testObj::test<2>(void)
 {
   ep_( makeNewLeaf("127.0.0.1", NULL, NULL) );
   ensure_equals("nothing has been changed", changed_.size(), 1);
-  ensure_equals("invalid dns found",
-                changed_.at(0)->getAlert()->getReportedSourceHosts().at(0)->getName().get(),
-                string("localhost") );
+  const char *tmp=changed_.at(0)->getAlert()->getReportedSourceHosts().at(0)->getName().get();
+  ensure("invalid dns found", strstr(tmp, "localhost")!=NULL );
 }
 
 // test run when there are hosts but no reverse dns mappings
@@ -85,9 +84,8 @@ void testObj::test<4>(void)
 {
   ep_( makeNewLeaf(NULL, "127.0.0.1", NULL) );
   ensure_equals("nothing has been changed", changed_.size(), 1);
-  ensure_equals("invalid dns found",
-                changed_.at(0)->getAlert()->getReportedTargetHosts().at(0)->getName().get(),
-                string("localhost") );
+  const char *tmp=changed_.at(0)->getAlert()->getReportedTargetHosts().at(0)->getName().get();
+  ensure("invalid dns found", strstr(tmp, "localhost")!=NULL );
 }
 
 } // namespace tut
