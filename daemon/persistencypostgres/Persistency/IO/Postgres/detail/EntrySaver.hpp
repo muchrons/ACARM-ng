@@ -100,7 +100,7 @@ public:
    */
   void saveMetaAlertAsUsed(DataBaseID malertID);
 
-  /** \bries mark Meta Alert as unused
+  /** \brief mark Meta Alert as unused
    *  \param malertID ID of Meta Alert
    */
   void saveMetaAlertAsUnused(DataBaseID malertID);
