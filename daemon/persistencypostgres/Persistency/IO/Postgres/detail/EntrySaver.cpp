@@ -14,8 +14,6 @@ using namespace pqxx;
 using boost::posix_time::to_simple_string;
 using boost::posix_time::to_iso_string;
 
-// TODO: saving ReferenceURL is c&p in 3 places - make this small, helper
-//       f-ction in unnamed namespace (i.e. in this file).
 
 namespace Persistency
 {
@@ -25,6 +23,21 @@ namespace Postgres
 {
 namespace detail
 {
+
+namespace
+{
+template <typename T>
+void addToSelect(std::stringstream &ss, const T *ptr)
+{
+  if(ptr!=NULL)
+  {
+    ss << " = ";
+    Appender::append(ss, ptr->get() );
+  }
+  else
+    ss << " IS NULL";
+}
+} //unnamed namespace
 
 EntrySaver::EntrySaver(Transaction &t, DBHandler &dbh):
   dbh_(dbh),
@@ -58,59 +71,38 @@ DataBaseID EntrySaver::getSeverityID(const Alert &a)
   return id;
 }
 
-bool EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
+void EntrySaver::addReferenceURL(std::stringstream &ss, const ReferenceURL *url)
 {
-  // TODO: finish that
+  if( url!=NULL )
+  {
+    const DataBaseID urlID=saveReferenceURL( *url );
+    ss << urlID;
+  }
+  else
+    ss << "NULL";
+}
+
+DataBaseID EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
+{
+  DataBaseID id;
   stringstream ss;
   ss << "SELECT * FROM analyzers WHERE name = ";
   Appender::append(ss, a.getName().get() );
   ss << " AND version ";
-  ss << addToSelect( a.getVersion() );
+  addToSelect(ss, a.getVersion() );
   ss << " AND os";
-  ss << addToSelect( a.getOS() );
+  addToSelect(ss, a.getOS() );
   ss << " AND ip";
-  ss << addIPToSelect( a.getIP() );
+  Appender::append(ss, a.getIP() );
   ss << ";";
   result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
   if(r.empty() )
-    return false;
+    return -1;
   else
-    return true;
-}
-
-// TODO: using template for this is a good idea. make this Appender::append<>
-//       specialization for smart pointers, to be sonsistent with already
-//       exisiting code.
-template <typename T>
-std::string EntrySaver::addToSelect(const T *ptr)
-{
-  stringstream ss;
-  if(ptr!=NULL){
-    ss << " = ";
-    Appender::append(ss, ptr->get() );
+  {
+    r[0]["id"].to(id);
+    return id;
   }
-  else
-    ss<< " IS NULL";
-  // TODO: void should be returned here - adding returned string to 'ss' makes
-  //       two entries, instead of one.
-  return ss.str();
-}
-
-// TODO: using template for this is a good idea. make this Appender::append<>
-//       specialization for smart pointers, to be sonsistent with already
-//       exisiting code.
-std::string EntrySaver::addIPToSelect(const Analyzer::IP *ptr)
-{
-  stringstream ss;
-  if(ptr!=NULL){
-    ss << " = ";
-    Appender::append(ss, ptr->to_string() );
-  }
-  else
-    ss<< " IS NULL";
-  // TODO: void should be returned here - adding returned string to 'ss' makes
-  //       two entries, instead of one.
-  return ss.str();
 }
 
 DataBaseID EntrySaver::saveProcessData(const Process &p)
@@ -147,13 +139,7 @@ DataBaseID EntrySaver::saveReportedProcessData(DataBaseID     reportedHostID,
   ss << ",";
   Appender::append(ss, p.getParameters() );
   ss << ",";
-  if( p.getReferenceURL()!=NULL )
-  {
-    const DataBaseID urlID=saveReferenceURL( *p.getReferenceURL() );
-    ss << urlID;
-  }
-  else
-    ss << "NULL";
+  addReferenceURL(ss, p.getReferenceURL() );
   ss << ");";
   // insert object to data base.
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
@@ -247,8 +233,8 @@ DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 
 DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
 {
-  // TODO: Analyzer should be unique
-  if( !isAnalyzerInDataBase(a) )
+  DataBaseID id = isAnalyzerInDataBase(a);
+  if( id == -1)
   {
     stringstream ss;
     ss << "INSERT INTO analyzers(name, version, os, ip) VALUES (";
@@ -259,14 +245,16 @@ DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
     Appender::append(ss, a.getOS()?a.getOS()->get():NULL );
     ss << ",";
     // TODO: use ternary operator for this
+    //Appender::append(ss, a.getIP()?(a.getIP()->to_string()):NULL);
     if(a.getIP()==NULL)
       ss << "NULL";
     else
       Appender::append(ss, a.getIP()->to_string() );
     ss << ");";
     t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+    return getID("analyzers_id_seq");
   }
-  return getID("analyzers_id_seq");
+  return id;
 }
 
 DataBaseID EntrySaver::saveServiceData(const Service &s)
@@ -293,13 +281,7 @@ void EntrySaver::saveReportedServiceData(DataBaseID     reportedHostID,
   ss << "INSERT INTO reported_services(id_reported_host, id_service, id_ref) VALUES (";
   ss << reportedHostID << ",";
   ss << serID << ",";
-  if( s.getReferenceURL()!=NULL )
-  {
-    const DataBaseID urlID=saveReferenceURL( *s.getReferenceURL() );
-    ss << urlID;
-  }
-  else
-    ss << "NULL";
+  addReferenceURL(ss, s.getReferenceURL() );
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
@@ -321,13 +303,7 @@ DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
   ss << ",";
   Appender::append(ss, ma.getCertaintyDelta() );
   ss << ",";
-  if( ma.getReferenceURL()!=NULL )
-  {
-    const DataBaseID urlID=saveReferenceURL( *ma.getReferenceURL() );
-    ss << urlID;
-  }
-  else
-    ss << "NULL";
+  addReferenceURL(ss, ma.getReferenceURL() );
   ss << ",";
   Appender::append(ss, to_simple_string( ma.getCreateTime() ));
   ss << ",";
@@ -360,13 +336,63 @@ void EntrySaver::saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID)
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
-//TODO
-/*
-DataBaseID EntrySaver::getMetaAlertID(MetaAlert &ma)
-{
 
+void EntrySaver::saveMetaAlertsTree(DataBaseID nodeID, DataBaseID childID)
+{
+  //TODO: check if childID is not NULL
+  stringstream ss;
+  ss << "INSERT INTO meta_alerts_tree(id_node, id_child) VALUES (";
+  Appender::append(ss, nodeID);
+  ss << ",";
+  Appender::append(ss, childID);
+  ss << ");";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
-*/
+
+void EntrySaver::saveMetaAlertAsUsed(DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "INSERT INTO meta_alerts_in_use(id_meta_alert) VALUES (" << malertID << ");";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+}
+
+void EntrySaver::saveMetaAlertAsUnused(DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "DELETE FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ");";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+}
+
+void EntrySaver::saveMetaAlertAsTriggered(DataBaseID malertID, const std::string &name)
+{
+  //TODO
+  stringstream ss;
+  ss << "INSERT INTO meta_alerts_alredy_triggered(id_meta_alerts_in_use, trigger_name) VALUES(";
+  Appender::append(ss, malertID);
+  ss << ",";
+  Appender::append(ss, name);
+  ss << ";";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+}
+
+void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
+{
+  stringstream ss;
+  ss << "UPDATE meta_alerts SET severity_delta = ";
+  Appender::append(ss, severityDelta);
+  ss << " WHERE id = " << malertID << ";";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+}
+
+void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta)
+{
+  stringstream ss;
+  ss << "UPDATE meta_alerts SET certanity_delta = ";
+  Appender::append(ss, certanityDelta);
+  ss << " WHERE id = " << malertID << ";";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+}
+
 } // namespace detail
 } // namespace Postgres
 } // namespace IO

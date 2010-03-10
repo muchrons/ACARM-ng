@@ -32,10 +32,10 @@ void Host::setName(const Persistency::Host::Name &name)
   host_->setName(name);
 }
 
-const Persistency::Host &Host::get(void) const
+Persistency::HostPtrNN Host::get(void)
 {
   assert(host_.get()!=NULL);
-  return *host_;
+  return host_;
 }
 
 } // namespace IO

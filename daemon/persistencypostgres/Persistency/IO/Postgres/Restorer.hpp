@@ -7,6 +7,8 @@
 
 #include "Persistency/IO/Restorer.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
+#include "Persistency/IO/BackendFactory.hpp"
+#include "Persistency/IO/Connection.hpp"
 
 // TODO: test
 
@@ -35,8 +37,10 @@ private:
                                   NodesVector     &out,
                                   const Timestamp &from,
                                   const Timestamp &to);
+  BackendFactory::FactoryPtr createStubIO(void);
 
-  DBHandlerPtrNN dbHandler_;
+  //IO::ConnectionPtrNN  connectionStubIO_;
+  DBHandlerPtrNN  dbHandler_;
 }; // class Restorer
 
 } // namespace Postgres

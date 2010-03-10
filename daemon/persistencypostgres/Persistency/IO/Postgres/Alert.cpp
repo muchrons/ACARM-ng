@@ -23,18 +23,19 @@ Alert::Alert(Persistency::AlertPtrNN  alert,
 
 void Alert::saveImpl(Transaction &t)
 {
-  // TODO: THIS IS COMMENTED OUT SINCE IMPLEMENTATION OF ANALYZER CHANGED - UPDATE THIS CODE ASAP
-  EntrySaver                             es(t,*dbHandler_);
+  EntrySaver                 es(t,*dbHandler_);
   //get Alert
-  const Persistency::Alert               &a=get();
+  const Persistency::Alert  &a=*get();
   //save Alert
-  const DataBaseID                       alertID=es.saveAlert(a);
+  DataBaseID                 alertID=es.saveAlert(a);
+  //add Alert to cache
+  dbHandler_->getIDCache()->add(get() , alertID);
   //save source hosts
   Persistency::Alert::ReportedHosts      SourceHosts(a.getReportedSourceHosts() );
-  saveHosts(es, alertID, SRC, SourceHosts);
+  saveHosts(es, alertID, HostType::SRC, SourceHosts);
   //save target hosts
   Persistency::Alert::ReportedHosts      TargetHosts(a.getReportedTargetHosts() );
-  saveHosts(es, alertID, DST, TargetHosts);
+  saveHosts(es, alertID, HostType::DST, TargetHosts);
   //get Analyzers from Alert
   Persistency::Alert::SourceAnalyzers    analyzers(a.getSourceAnalyzers() );
   //save Analyzers
@@ -50,7 +51,7 @@ void Alert::saveImpl(Transaction &t)
 
 void Alert::saveHosts(EntrySaver                        &es,
                       DataBaseID                         alertID,
-                      host_type                          type,
+                      HostType                           type,
                       Persistency::Alert::ReportedHosts &hosts)
 {
   for(Persistency::Alert::ReportedHosts::iterator it = hosts.begin(); it!=hosts.end() ; ++it)
@@ -58,29 +59,31 @@ void Alert::saveHosts(EntrySaver                        &es,
     const DataBaseID hostID = es.saveHostData(*it->get() );
     DataBaseID       reportedHostID;
     // save reported host
-    switch(type)
+    switch( type.toInt() )
     {
-      case SRC:
+      case HostType::SRC:
         reportedHostID = es.saveSourceHost(hostID, alertID, *it->get() );
       break;
-      case DST:
+
+      case HostType::DST:
         reportedHostID = es.saveTargetHost(hostID, alertID, *it->get() );
       break;
-      // TODO: add default case with proper assertion
+      default:
+        reportedHostID = 0;
+        assert(!"never reach here");
+      break;
     }
 
     // get reported services from host
     // TODO: this variable should be const reference
-    // TODO: keep variable names lowercase
-    Persistency::Host::ReportedServices Services((*it->get()).getReportedServices() );
-    for(Persistency::Host::ReportedServices::iterator it_s = Services.begin(); it_s!=Services.end(); ++it_s)
+    Persistency::Host::ReportedServices  services( (*it->get()).getReportedServices() );
+    for(Persistency::Host::ReportedServices::iterator it_s = services.begin(); it_s!=services.end(); ++it_s)
       es.saveService(reportedHostID, *it_s->get() );
 
     // get reported processes from host
     // TODO: this variable should be const reference
-    // TODO: keep variable names lowercase
-    Persistency::Host::ReportedProcesses Processes((*it->get()).getReportedProcesses() );
-    for(Persistency::Host::ReportedProcesses::iterator it_p = Processes.begin(); it_p!=Processes.end(); ++it_p)
+    Persistency::Host::ReportedProcesses processes((*it->get()).getReportedProcesses() );
+    for(Persistency::Host::ReportedProcesses::iterator it_p = processes.begin(); it_p!=processes.end(); ++it_p)
       es.saveProcess(reportedHostID, *it_p->get());
   }
 }
