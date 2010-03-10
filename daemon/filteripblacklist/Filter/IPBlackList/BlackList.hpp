@@ -37,6 +37,10 @@ public:
    *  \return true if IP is blacklisted, false otherwise.
    */
   bool operator[](const IP &ip) const;
+  /** \brief swaps contents of black lists.
+   *  \param other list to swap content with.
+   */
+  void swap(BlackList &other);
 
 private:
   typedef std::set<IP> IPList;

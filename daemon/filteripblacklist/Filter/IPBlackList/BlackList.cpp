@@ -15,5 +15,10 @@ bool BlackList::operator[](const IP &ip) const
   return it!=bl_.end();
 }
 
+void BlackList::swap(BlackList &other)
+{
+  bl_.swap( other.bl_ );
+}
+
 } // namespace IPBlackList
 } // namespace Filter

@@ -90,4 +90,26 @@ void testObj::test<4>(void)
   ensure("unexpected IP 2 found",  !bl1[ ip("1.2.3.4") ] );
 }
 
+// test swapping
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ips_.push_back( ip("1.1.1.1") );
+  BlackList bl1( ips_.begin(), ips_.end() );
+
+  ips_.clear();
+  ips_.push_back( ip("2.2.2.2") );
+  BlackList bl2( ips_.begin(), ips_.end() );
+
+  // swap
+  bl1.swap(bl2);
+
+  // check
+  ensure("missing content in bl1",  bl1[ ip("2.2.2.2") ] );
+  ensure("extra content in bl1",   !bl1[ ip("1.1.1.1") ] );
+  ensure("missing content in bl2",  bl2[ ip("1.1.1.1") ] );
+  ensure("extra content in bl2",   !bl2[ ip("2.2.2.2") ] );
+}
+
 } // namespace tut
