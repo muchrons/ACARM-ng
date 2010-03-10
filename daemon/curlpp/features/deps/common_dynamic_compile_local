@@ -1,0 +1,2 @@
+#!/bin/sh
+exec echo "-DHAVE_CONFIG_H"
