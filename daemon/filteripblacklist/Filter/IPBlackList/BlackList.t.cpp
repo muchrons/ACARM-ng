@@ -17,13 +17,13 @@ namespace
 
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
-  BlackList::IP ip(const char *str) const
+  IP ip(const char *str) const
   {
     assert(str!=NULL);
-    return BlackList::IP::from_string(str);
+    return IP::from_string(str);
   }
 
-  std::list<BlackList::IP> ips_;
+  std::list<IP> ips_;
 };
 
 typedef tut::test_group<TestClass> factory;

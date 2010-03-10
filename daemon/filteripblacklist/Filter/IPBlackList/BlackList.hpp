@@ -7,7 +7,7 @@
 
 #include <set>
 
-#include "Persistency/IPTypes.hpp"
+#include "Filter/IPBlackList/IP.hpp"
 
 namespace Filter
 {
@@ -19,9 +19,6 @@ namespace IPBlackList
 class BlackList
 {
 public:
-  /** \brief IP type. */
-  typedef Persistency::IPTypes<BlackList>::IP IP;
-
   /** \brief create instance.
    *  \param begin first iterator to read entry from.
    *  \param end   end iterator.
