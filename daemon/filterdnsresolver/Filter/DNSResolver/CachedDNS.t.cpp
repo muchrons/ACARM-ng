@@ -46,7 +46,7 @@ template<>
 void testObj::test<1>(void)
 {
   const CachedEntry::Name &name=cache_[ ip("127.0.0.1") ].second;
-  ensure_equals("invalid name", name.get(), string("localhost") );
+  ensure("invalid name", strstr( name.get(), "localhost" )!=NULL );
 }
 
 // test pruning
@@ -62,7 +62,7 @@ void testObj::test<2>(void)
   cache_.prune();
   // add entry once more
   const CachedEntry::Name &name=cache_[ ip("127.0.0.1") ].second;
-  ensure_equals("invalid name", name.get(), string("localhost") );
+  ensure("invalid name", strstr( name.get(), "localhost" )!=NULL );
 }
 
 // test resolving non-exisiting entry
