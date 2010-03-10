@@ -3,6 +3,8 @@ filteronetomany
 filtermanytoone
 filtermanytomany
 filterhostcommon
+filterdnsresolver
+filteripblacklist
 filter
 trigger
 persistencystubs

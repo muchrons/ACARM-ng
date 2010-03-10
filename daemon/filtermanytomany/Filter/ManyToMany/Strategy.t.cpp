@@ -7,8 +7,8 @@
 #include <cassert>
 
 #include "Filter/ManyToMany/Strategy.hpp"
-#include "Filter/ManyToMany/Exception.hpp"
-#include "Filter/ManyToMany/CommonTestBase.t.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -18,11 +18,11 @@ using namespace TestHelpers::Persistency;
 namespace
 {
 
-struct TestClass: public CommonTestBase
+struct TestClass: public TestStubs
 {
   TestClass(void):
-    sampleLeaf_( makeLeaf( makeAlert("1.2.3.4", "2.3.4.5",
-                                     "1.2.3.4", "9.8.7.6") ) ),
+    sampleLeaf_( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "2.3.4.5",
+                                                    "1.2.3.4", "9.8.7.6") ) ),
     s_(997)
   {
   }
@@ -47,8 +47,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  GraphNodePtrNN sourceOnlyLeaf( makeLeaf( makeAlert("1.2.3.4", NULL,
-                                                     NULL,      NULL) ) );
+  GraphNodePtrNN sourceOnlyLeaf(
+        makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL, NULL, NULL) ) );
   s_.process(sourceOnlyLeaf, changed_);
   ensure_equals("some nodes have been changed / 1", changed_.size(), 0);
 
@@ -61,8 +61,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  GraphNodePtrNN targetOnlyLeaf( makeLeaf( makeAlert(NULL,      NULL,
-                                                     "1.2.3.4", NULL) ) );
+  GraphNodePtrNN targetOnlyLeaf(
+      makeNewLeaf( makeNewAlertWithHosts(NULL, NULL, "1.2.3.4", NULL) ) );
   s_.process(targetOnlyLeaf, changed_);
   ensure_equals("some nodes have been changed / 1", changed_.size(), 0);
 
@@ -75,8 +75,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  GraphNodePtrNN tmp( makeLeaf( makeAlert("6.6.3.4", "2.3.4.5",
-                                          "6.6.3.4", "9.8.7.6") ) );
+  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.4", "2.3.4.5",
+                                                         "6.6.3.4", "9.8.7.6") ) );
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed", changed_.size(), 0);
 
@@ -89,8 +89,8 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  GraphNodePtrNN tmp( makeLeaf( makeAlert("6.6.3.4", "6.3.4.5",
-                                          "6.6.3.4", "6.8.7.6") ) );
+  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.4", "6.3.4.5",
+                                                         "6.6.3.4", "6.8.7.6") ) );
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed / 1", changed_.size(), 0);
 
@@ -103,8 +103,8 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  GraphNodePtrNN tmp( makeLeaf( makeAlert("6.6.3.4", "2.3.4.5",
-                                          "6.6.3.4", "9.8.7.6") ) );
+  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.4", "2.3.4.5",
+                                                         "6.6.3.4", "9.8.7.6") ) );
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed", changed_.size(), 0);
 

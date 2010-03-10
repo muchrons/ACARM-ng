@@ -8,7 +8,7 @@
 
 #include "Filter/ManyToMany/Strategy.hpp"
 #include "Algo/forEachUniqueLeaf.hpp"
-#include "Filter/ManyToMany/GatherHosts.hpp"
+#include "Algo/GatherHosts.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -30,7 +30,7 @@ Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
 
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
 {
-  const GatherHosts gh(thisEntry.node_);
+  const Algo::GatherHosts gh(thisEntry.node_);
   return gh.getSourceHosts().size()>0 &&
          gh.getTargetHosts().size()>0;
 }
@@ -90,8 +90,8 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   assert( isEntryInteresting(thisEntry)  );
   assert( isEntryInteresting(otherEntry) );
   // compute unique hosts
-  const GatherHosts ghThis (thisEntry.node_);
-  const GatherHosts ghOther(otherEntry.node_);
+  const Algo::GatherHosts ghThis (thisEntry.node_);
+  const Algo::GatherHosts ghOther(otherEntry.node_);
 
   IntersectionOutputIterator tmp;
   // perform set intersection on source hosts
@@ -100,7 +100,7 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
                         ghOther.getSourceHosts().begin(),
                         ghOther.getSourceHosts().end(),
                         IntersectionOutputIterator(),
-                        GatherHosts::HostSWO() );
+                        Algo::GatherHosts::HostSWO() );
   if( tmp.isEmpty() )
       return false;
 
@@ -110,7 +110,7 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
                         ghOther.getTargetHosts().begin(),
                         ghOther.getTargetHosts().end(),
                         IntersectionOutputIterator(),
-                        GatherHosts::HostSWO() );
+                        Algo::GatherHosts::HostSWO() );
   if( tmp.isEmpty() )
       return false;
 

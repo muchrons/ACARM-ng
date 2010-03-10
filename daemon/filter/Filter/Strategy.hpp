@@ -64,6 +64,8 @@ protected:
      */
     bool operator==(const NodeEntry &other) const
     {
+      if(this==&other)
+        return true;
       return node_.get()==other.node_.get();
     }
 

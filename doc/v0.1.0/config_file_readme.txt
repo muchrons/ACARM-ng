@@ -92,9 +92,28 @@ example configuration may look like this:
   <onetomany>
     <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
   </onetomany>
+</filters>
+
+following filters and paramters are available:
+
+  <!-- correlates multiple atacks originated from single host -->
+  <onetomany>
+    <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+  </onetomany>
+
+  <!-- correlates multiple atacks originated from single host -->
+  <manytoone>
+    <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+  </manytoone>
+
+  <!-- correlates multiple atacks directed on many host -->
   <manytomany>
     <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
   </manytomany>
-</filters>
 
-TODO: describe filters.
+  <!-- performs reverse-DNS mapping on hosts that do not have DNS name set -->
+  <dnsresolver>
+    <cachetimeout>3600</cachetimeout> <!-- time to keep cached DNS mappings -->
+  </dnsresolver>
+
+TODO: describe missing filters.

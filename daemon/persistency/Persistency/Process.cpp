@@ -72,6 +72,9 @@ const ReferenceURL *Process::getReferenceURL(void) const
 
 bool Process::operator==(const Process &other) const
 {
+  if(this==&other)
+    return true;
+
   if( getPath()!=other.getPath() )
     return false;
   if( getName()!=other.getName() )

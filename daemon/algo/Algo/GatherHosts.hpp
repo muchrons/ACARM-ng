@@ -2,19 +2,19 @@
  * GatherHosts.hpp
  *
  */
-#ifndef INCLUDE_FILTER_MANYTOMANY_GATHERHOSTS_HPP_FILE
-#define INCLUDE_FILTER_MANYTOMANY_GATHERHOSTS_HPP_FILE
+#ifndef INCLUDE_ALGO_GATHERHOSTS_HPP_FILE
+#define INCLUDE_ALGO_GATHERHOSTS_HPP_FILE
+
+/* public header */
 
 #include <set>
 
 #include "Commons/SharedPtrNotNULL.hpp"
-#include "Algo/forEachUniqueLeaf.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/Host.hpp"
+#include "Algo/forEachUniqueLeaf.hpp"
 
-namespace Filter
-{
-namespace ManyToMany
+namespace Algo
 {
 
 /** \brief function object collecting all unique source and target hosts.
@@ -78,7 +78,6 @@ private:
   HostSetPtr target_;
 }; // struct CheckHosts
 
-} // namespace ManyToMany
-} // namespace Filter
+} // namespace Algo
 
 #endif

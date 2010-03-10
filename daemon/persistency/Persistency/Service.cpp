@@ -41,6 +41,9 @@ const ReferenceURL *Service::getReferenceURL(void) const
 
 bool Service::operator==(const Service &other) const
 {
+  if(this==&other)
+    return true;
+
   if( getName()!=other.getName() )
     return false;
   if( getPort()!=other.getPort() )
