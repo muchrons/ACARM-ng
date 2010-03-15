@@ -53,11 +53,12 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   assert(g_rh.isRegistered() && "oops - registration failed");
 
   const FilterConfig fc(name_, options);
-  const unsigned int refresh=parseUnsignedInt( fc["refresh"] );
-  const unsigned int limit  =parseUnsignedInt( fc["limit"] );
+  const unsigned int refresh =parseUnsignedInt( fc["refresh"] );
+  const unsigned int limit   =parseUnsignedInt( fc["limit"] );
+  const double       priDelta=boost::lexical_cast<double>( fc["priorityDelta"] );
   LOGMSG_INFO_S(log_)<<"setting refresh interval to "<<refresh<<"[s]";
   LOGMSG_INFO_S(log_)<<"setting entries limit to "<<limit;
-  Strategy::Parameters params(refresh, limit);
+  Strategy::Parameters params(refresh, limit, priDelta);
 
   // create and return new handler.
   typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;

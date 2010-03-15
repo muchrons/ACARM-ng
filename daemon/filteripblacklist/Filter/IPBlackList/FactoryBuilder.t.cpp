@@ -14,25 +14,29 @@ namespace
 
 struct TestClass
 {
-  FactoryBuilder::FactoryPtr build(const char *refresh="666",
-                                   const char *limit  ="42") const
+  FactoryBuilder::FactoryPtr build(const char *refresh ="666",
+                                   const char *limit   ="42",
+                                   const char *priDelta="0.1") const
   {
     FactoryBuilder::Options opts;
     if(refresh!=NULL)
       opts["refresh"]=refresh;
     if(limit!=NULL)
       opts["limit"]=limit;
+    if(priDelta!=NULL)
+      opts["priorityDelta"]=priDelta;
 
     return fb_.build(opts);
   }
 
   void ensureThrow(const char *refresh="666",
-                   const char *limit  ="42") const
+                   const char *limit  ="42",
+                   const char *priDelta="0.1") const
   {
     bool ok=true;
     try
     {
-      build(refresh, limit);
+      build(refresh, limit, priDelta);
       ok=false;
       tut::fail("build() didn't throw on missing paramter");
     }
@@ -120,6 +124,14 @@ template<>
 void testObj::test<8>(void)
 {
   ensureThrow("not a number");
+}
+
+// test throw on invalid priority delta
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  ensureThrow("111", "222", "not a number");
 }
 
 } // namespace tut
