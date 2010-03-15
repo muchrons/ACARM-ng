@@ -19,6 +19,7 @@ commons
 logger
 system
 base
+curlpp
 
 inputprelude
 inputfile
