@@ -250,7 +250,7 @@ namespace cURLpp = curlpp;
 
 
 #ifdef CURLPP_INCLUDE_TEMPLATE_DEFINITIONS
-#include "Option.inl"
+#include "curlpp/Option.inl"
 #endif
 
 

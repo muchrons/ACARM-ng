@@ -39,7 +39,7 @@ namespace utilspp
 }
 
 //#ifdef CURLPP_INCLUDE_TEMPLATE_DEFINITIONS
-	#include "CreationUsingNew.inl"
+	#include "utilspp/singleton/CreationUsingNew.inl"
 //#endif
 
 #endif

@@ -103,7 +103,7 @@ namespace cURLpp = curlpp;
 
 
 #ifdef CURLPP_INCLUDE_TEMPLATE_DEFINITIONS
-	#include "OptionContainer.inl"
+	#include "curlpp/internal/OptionContainer.inl"
 #endif
 
 
