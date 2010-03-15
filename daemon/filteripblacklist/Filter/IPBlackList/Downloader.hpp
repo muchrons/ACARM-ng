@@ -7,7 +7,7 @@
 
 #include <sstream>
 
-#include "Filter/IPBlackList/ExceptionDownloadFiled.hpp"
+#include "Filter/IPBlackList/ExceptionDownloadFailed.hpp"
 
 namespace Filter
 {
