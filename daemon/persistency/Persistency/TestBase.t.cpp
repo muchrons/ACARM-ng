@@ -29,6 +29,8 @@ const char *defaultConfigContent=
   ""
   "  <triggers/>"
   ""
+  "  <inputs/>"
+  ""
   "</acarm_ng>"
   ;
 } // unnamed namespace

@@ -34,6 +34,8 @@ const char *someTestConfigContent=
       ""
       "  <triggers/>"
       ""
+      "  <inputs/>"
+      ""
       "</acarm_ng>"
       ;
 

@@ -29,6 +29,8 @@ const char *configContent=
   ""
   "  <triggers/>"
   ""
+  "  <inputs/>"
+  ""
   "</acarm_ng>"
   ;
 }
