@@ -11,12 +11,15 @@ namespace Filter
 namespace IPBlackList
 {
 
-EntryProcessor::EntryProcessor(/*CachedDNS *cache, */BackendProxy *bp):
-//  cache_(cache),
-  bp_(bp)
+EntryProcessor::EntryProcessor(const BlackList *bl,
+                               BackendProxy    *bp,
+                               const double     priDelta):
+  bl_(bl),
+  bp_(bp),
+  priDelta_(priDelta)
 {
-//  assert(cache_!=NULL);   // this is only internal implementation
-  assert(bp_   !=NULL);   // this is only internal implementation
+  assert(bl_!=NULL);    // this is only internal implementation
+  assert(bp_!=NULL);    // this is only internal implementation
 }
 
 void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
@@ -26,23 +29,16 @@ void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
   //processHosts(leaf, leaf->getAlert()->getReportedTargetHosts() );
 }
 
-void EntryProcessor::processHosts(Persistency::GraphNodePtrNN              /*leaf*/,
+void EntryProcessor::processHosts(Persistency::GraphNodePtrNN              leaf,
                                   const Persistency::Alert::ReportedHosts &rh)
 {
   typedef Persistency::Alert::ReportedHosts::const_iterator ConstIterator;
   for(ConstIterator it=rh.begin(); it!=rh.end(); ++it)
   {
-    /*
-    HostPtrNN host=*it;             // non-const pointer to set host name
-    if( host->getName()!=NULL )     // if host laready have DNS name skip it
-      continue;
-
-    // if no entry, try getting one
-    const CachedDNS::Entry e=(*cache_)[ host->getIP() ];
-    if(e.first)                                         // has name?
-      bp_->setHostName(leaf, host, e.second.get() );    // set it!
-      */
-  }
+    const HostPtrNN host=*it;       // helper object
+    if( (*bl_)[ host->getIP() ] )   // is IP blacklisted?
+      bp_->updateSeverityDelta(leaf, priDelta_);
+  } // for(all_hosts)
 }
 
 } // namespace IPBlackList

@@ -8,6 +8,7 @@
 
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Filter/IPBlackList/EntryProcessor.hpp"
+#include "Filter/IPBlackList/DShieldParser.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
@@ -24,15 +25,17 @@ struct TestClass: private TestStubs
 {
   TestClass(void):
     conn_( Persistency::IO::create() ),
-//    cache_(42),
+    dsp_(""),
+    bl_( dsp_.begin(), dsp_.end() ),
     bp_(conn_, changed_, "testdipblacklist"),
-    ep_(/*&cache_, */&bp_)
+    ep_(&bl_, &bp_, 0.3)
   {
     assert( changed_.size()==0 );
   }
 
   Persistency::IO::ConnectionPtrNN conn_;
-//  CachedDNS                        cache_;
+  DShieldParser                    dsp_;
+  BlackList                        bl_;
   BackendProxy::ChangedNodes       changed_;
   BackendProxy                     bp_;
   EntryProcessor                   ep_;

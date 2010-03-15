@@ -9,7 +9,7 @@
 
 #include "Persistency/GraphNode.hpp"
 #include "Filter/BackendProxy.hpp"
-//#include "Filter/DNSResolver/CachedDNS.hpp"
+#include "Filter/IPBlackList/BlackList.hpp"
 
 namespace Filter
 {
@@ -25,9 +25,11 @@ class EntryProcessor
 {
 public:
   /** \brief create instance.
-   *  \param bp    proxy for writing new names of hosts to persistency.
+   *  \param bp       proxy for writing new names of hosts to persistency.
+   *  \param bl       black list of hosts.
+   *  \param priDelta change of priority when black-listed host is found.
    */
-  EntryProcessor(/*CachedDNS *cache, */BackendProxy *bp);
+  EntryProcessor(const BlackList *bl, BackendProxy *bp, double priDelta);
   /** \brief method responsible for doing all the job.
    *  \param leaf leaft to be processed.
    */
@@ -37,8 +39,9 @@ private:
   void processHosts(Persistency::GraphNodePtrNN              leaf,
                     const Persistency::Alert::ReportedHosts &rh);
 
-//  CachedDNS    *cache_;
-  BackendProxy *bp_;
+  const BlackList *bl_;
+  BackendProxy    *bp_;
+  double           priDelta_;
 }; // class EntryProcessor
 
 } // namespace IPBlackList
