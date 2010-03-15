@@ -19,11 +19,11 @@ struct TestClass
   void testStr(const char *in, const char *out) const
   {
     const char *mark="problem while parsing input near '";
-    const ExceptionInvalidFormat e( SYSTEM_SAVE_LOCATION, in);
+    const ExceptionInvalidFormat e( SYSTEM_SAVE_LOCATION, in, "NaRf");
     const char *tmp=strstr( e.what(), mark);
     tut::ensure("oops - mark not found", tmp!=NULL);
     tmp+=strlen(mark);
-    tut::ensure_equals("invalid string", tmp, string(out)+"'");
+    tut::ensure_equals("invalid string", tmp, string(out)+"': NaRf");
   }
 };
 

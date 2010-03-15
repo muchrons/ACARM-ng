@@ -16,12 +16,14 @@ namespace IPBlackList
 {
 
 ExceptionInvalidFormat::ExceptionInvalidFormat(const Location &where,
-                                               const char     *around):
+                                               const char     *around,
+                                               const char     *comment):
   Filter::Exception( where,
                      "ipblacklist",
                      cc("problem while parsing input near '",
                         makeAround(around),
-                        "'").c_str() )
+                        "': ",
+                        comment).c_str() )
 {
 }
 

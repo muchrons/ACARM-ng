@@ -19,10 +19,13 @@ class ExceptionInvalidFormat: public Filter::Exception
 {
 public:
   /** \brief create execption with given message.
-   *  \param where  place where exception has been thrown.
-   *  \param around place around where problem has been spotted.
+   *  \param where   place where exception has been thrown.
+   *  \param around  place around where problem has been spotted.
+   *  \param comment additional comment on problem
    */
-  ExceptionInvalidFormat(const Location &where, const char *around);
+  ExceptionInvalidFormat(const Location &where,
+                         const char     *around,
+                         const char     *comment);
 
 private:
   std::string makeAround(const char *in) const;
