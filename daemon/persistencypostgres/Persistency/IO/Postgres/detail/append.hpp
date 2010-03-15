@@ -98,6 +98,8 @@ template<>
 inline void Appender::append<Persistency::Analyzer::IP>(std::stringstream &ss,
                                                         const Persistency::Analyzer::IP *t)
 {
+  // TODO: use appendEscape() for this
+  // NOTE: there is a bug at this moment, since it should be appending not comparing.
   // replace if with ternal operator
   if(t==NULL)
     ss << " IS NULL";
