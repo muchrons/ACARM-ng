@@ -20,11 +20,14 @@ public:
    *  \param where place where exception has been thrown.
    *  \param what  error details.
    */
-  ExceptionInvalidFormat(const Location &where,
-                         const char     *what):
+  ExceptionDownloadFailed(const Location &where,
+                          const char     *what):
     Filter::Exception( where,
+                       "ipblacklist",
                        cc("downloading dshield ip bloack list failed: ",
-                          what) )
+                          what).c_str() )
+  {
+  }
 }; // class ExceptionDownloadFailed
 
 } // namespace IPBlackList
