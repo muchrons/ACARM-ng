@@ -31,6 +31,13 @@ void Strategy::processImpl(Node               n,
                            NodesTimeoutQueue &/*ntq*/,
                            BackendProxy      &bp)
 {
+  //
+  // this set of 'if's is important, since it prevents connection flood
+  // when dshield host is not available. this makes processing nodes
+  // much faster and therefor will not collect too many nodes in awaiting
+  // queue in case of waiting for timeout.
+  //
+
   const time_t now=time(NULL);
   // refresh list if timeout already passed.
   if(deadline_<now)
