@@ -40,9 +40,9 @@ public:
 
 protected:
   /** \brief gets read-only host object access.
-   *  \return host object's working on.
+   *  \return not null pointer to host object's working on.
    */
-  const Persistency::Host &get(void) const;
+  Persistency::HostPtrNN get(void);
 
 private:
   virtual void setNameImpl(Transaction                   &t,

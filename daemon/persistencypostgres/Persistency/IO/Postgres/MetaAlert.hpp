@@ -8,6 +8,7 @@
 #include "Persistency/IO/MetaAlert.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
+#include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 // TODO: test
 
 namespace Persistency

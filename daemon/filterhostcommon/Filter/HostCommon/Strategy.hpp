@@ -8,7 +8,7 @@
 /* public header */
 
 #include "Persistency/Host.hpp"
-#include "Filter/Strategy.hpp"
+#include "Filter/Simple/Strategy.hpp"
 #include "Filter/HostCommon/Exception.hpp"
 
 
@@ -24,19 +24,19 @@ struct Data
   /** \brief create instance.
    *  \param host host to insert into data.
    */
-  explicit Data(Persistency::HostPtrNN host):
+  explicit Data(Persistency::HostPtr host):
     host_(host)
   {
   }
   /** \brief host for which correlation is being considered.
    */
-  Persistency::HostPtrNN host_;
+  Persistency::HostPtr host_;
 }; // struct Data
 
 
 /** \brief host-operating filter implementation.
  */
-class Strategy: public Filter::Strategy<Data>
+class Strategy: public Filter::Simple::Strategy<Data>
 {
 public:
   /** \brief call that gets reported hosts array from given node.
@@ -63,24 +63,17 @@ private:
 
   Persistency::HostPtr getReportedHost(const Node node) const;
 
-  /** \brief gets timeout value.
-   *  \return timeout for entry in timeout queue.
-   */
-  unsigned int getTimeout(void) const
-  {
-    return timeout_;
-  }
+  //
+  // Simple::Strategy implementation
+  //
 
-  virtual void processImpl(Node               n,
-                           NodesTimeoutQueue &ntq,
-                           BackendProxy      &bp);
-
-  bool tryCorrelate(NodesTimeoutQueue           &ntq,
-                    BackendProxy                &bp,
-                    const NodeEntry             &thisEntry,
-                    NodesTimeoutQueue::iterator  it);
-
-  const unsigned int timeout_;
+  virtual NodeEntry makeThisEntry(const Node n) const;
+  virtual bool isEntryInteresting(const NodeEntry thisEntry) const;
+  virtual Persistency::MetaAlert::Name getMetaAlertName(
+                                              const NodeEntry thisEntry,
+                                              const NodeEntry otherEntry) const;
+  virtual bool canCorrelate(const NodeEntry thisEntry,
+                            const NodeEntry otherEntry) const;
 }; // class Strategy
 
 } // namespace HostCommon

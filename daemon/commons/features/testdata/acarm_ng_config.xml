@@ -21,4 +21,8 @@
     </nodes>
   </logger>
 
+  <filters/>
+
+  <triggers/>
+
 </acarm_ng>

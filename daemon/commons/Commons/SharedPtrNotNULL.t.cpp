@@ -355,4 +355,28 @@ void testObj::test<30>(void)
   ensure("invalid pointer value", bp.get()==nn.get() );
 }
 
+// test convertion from auto_ptr<>.
+template<>
+template<>
+void testObj::test<31>(void)
+{
+  std::auto_ptr<int>  ap( new int(42) );
+  int                *ptr=ap.get();
+  const PtrNN         nn(ap);
+  ensure("ap not NULLed", ap.get()==NULL );
+  ensure("invalid pointer value", nn.get()==ptr );
+}
+
+// test assignment from auto_ptr<>.
+template<>
+template<>
+void testObj::test<32>(void)
+{
+  std::auto_ptr<int>  ap( new int(42) );
+  int                *ptr=ap.get();
+  nn_=ap;
+  ensure("ap not NULLed", ap.get()==NULL );
+  ensure("invalid pointer value", nn_.get()==ptr );
+}
+
 } // namespace tut

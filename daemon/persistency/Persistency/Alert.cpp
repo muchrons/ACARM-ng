@@ -82,6 +82,9 @@ const Alert::ReportedHosts &Alert::getReportedTargetHosts(void) const
 
 bool Alert::operator==(const Alert &other) const
 {
+  if(this==&other)
+    return true;
+
   if( getName()!=other.getName() )
     return false;
   if( !Commons::ViaCollection::equal( getSourceAnalyzers(), other.getSourceAnalyzers() ) )

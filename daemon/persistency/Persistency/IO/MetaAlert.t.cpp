@@ -23,7 +23,7 @@ public:
     IO::MetaAlert(ma, t),
     ma_(ma)
   {
-    tut::ensure("invalid object saved", &get()==ma_.get() );
+    tut::ensure("invalid object saved", get().get()==ma_.get() );
 
     for(unsigned int i=0; i<sizeof(calls_)/sizeof(calls_[0]); ++i)
       calls_[i]=0;

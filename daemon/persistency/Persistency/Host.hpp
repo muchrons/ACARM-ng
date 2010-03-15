@@ -83,6 +83,22 @@ public:
        const ReportedServices  &services,
        const ReportedProcesses &processes,
        const Name              &name);
+  /** \brief create host entry of IP address.
+   *  \param ip        ip address.
+   *  \param mask      network maks of a given host.
+   *  \param os        operating system name.
+   *  \param url       reference url for report (optional - cen be NULL).
+   *  \param services  service reported on a host.
+   *  \param processes processes reported on host.
+   *  \param name      DNS name of this host (or NULL if not known).
+   */
+  Host(const IP                &ip,
+       const Netmask           *mask,
+       const OperatingSystem    os,
+       ReferenceURLPtr          url,
+       const ReportedServices  &services,
+       const ReportedProcesses &processes,
+       const Name              &name);
 
   /** \brief gets IP address.
    *  \return IP address of host.

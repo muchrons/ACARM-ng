@@ -7,8 +7,6 @@
 
 /* public header */
 
-#include <cassert>
-
 #include "ConfigIO/Exception.hpp"
 
 namespace ConfigIO
@@ -27,8 +25,8 @@ public:
     Exception(where, std::string("NULL parameter: ") + ensureValidString(param) )
   {
   }
-}; // class Exception
+}; // class Exception NullParameter
 
-}; // namespace ConfigIO
+} // namespace ConfigIO
 
 #endif

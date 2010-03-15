@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 #include <pqxx/pqxx>
+#include "Persistency/Analyzer.hpp"
 
 namespace Persistency
 {
@@ -36,7 +37,6 @@ public:
    */
   template<typename T>
   static void append(std::stringstream &ss, const T &t);
-
 private:
   inline static void appendEscape(std::stringstream &ss, const char *t)
   {
@@ -91,6 +91,21 @@ template<>
 inline void Appender::append<std::string>(std::stringstream &ss, const std::string &t)
 {
   appendEscape(ss, t.c_str() );
+}
+
+
+template<>
+inline void Appender::append<Persistency::Analyzer::IP>(std::stringstream &ss,
+                                                        const Persistency::Analyzer::IP *t)
+{
+  // replace if with ternal operator
+  if(t==NULL)
+    ss << " IS NULL";
+  else
+  {
+    ss << " = ";
+    appendEscape(ss, t->to_string().c_str() );
+  }
 }
 
 } // namespace detail

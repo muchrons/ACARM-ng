@@ -57,6 +57,8 @@ public:
    */
   bool operator==(const MD5Sum &other) const
   {
+    if(this==&other)
+      return true;
     return str_==other.str_;
   }
 

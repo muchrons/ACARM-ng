@@ -11,6 +11,8 @@
 
 #include "System/Singleton.hpp"
 #include "ConfigIO/PersistencyConfig.hpp"
+#include "ConfigIO/FiltersConfigCollection.hpp"
+#include "ConfigIO/TriggersConfigCollection.hpp"
 #include "ConfigIO/LoggerConfig.hpp"
 
 namespace ConfigIO
@@ -27,6 +29,14 @@ public:
   /** \brief deallocate object.
    */
   ~SingletonImpl(void);
+  /** \brief re-reads configuration file.
+   *  \param path path to configuration file (NULL means: use default).
+   *
+   *  configuration is read from file and current config is substituted
+   *  with new one.
+   *  exception is thrown when new config parsing fails.
+   */
+  void rereadConfig(const char *path=NULL);
 
   /** \brief gets persistency configuration.
    *  \return configration of persistency module.
@@ -36,6 +46,14 @@ public:
    *  \return configration of logger module.
    */
   const LoggerConfig &loggerConfig(void) const;
+  /** \brief gets filters' configuration, read from file.
+   *  \return filters' configuration.
+   */
+  const FiltersConfigCollection &filtersConfig(void) const;
+  /** \brief gets triggers' configuration, read from file.
+   *  \return triggers' configuration.
+   */
+  const TriggersConfigCollection &triggersConfig(void) const;
 
 private:
   friend class System::Singleton<SingletonImpl>;

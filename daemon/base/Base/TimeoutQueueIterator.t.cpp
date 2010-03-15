@@ -232,7 +232,7 @@ template<>
 template<>
 void testObj::test<14>(void)
 {
-  Iter      it( qImpl2_.end() );
+  Iter      it( qImpl2_.begin()+1 );
   ConstIter cit( qImpl2_.begin() );
   ensure("pre-condition failed", *it!=*cit);
   cit=it;

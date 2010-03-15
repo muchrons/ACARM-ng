@@ -27,7 +27,10 @@ namespace TestHelpers
 namespace Persistency
 {
 
-::Persistency::AlertPtr makeNewAlert(const char *name="some alert");
+::Persistency::AlertPtr makeNewAlert(const char *name="some alert",
+                                     const char *sip=NULL,
+                                     const char *tip=NULL,
+                                     const char *dns="dns.org");
 
 ::Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert");
 
@@ -40,21 +43,25 @@ const ::Persistency::Host::Netmask_v6::bytes_type mask6_bytes={ {
                                                   0x00, 0x00, 0x00, 0x00,
                                                   0x00, 0x00, 0x00, 0x00,
                                                  } };
-::Persistency::HostPtr makeNewHost(void);
+::Persistency::HostPtr makeNewHost(const char *ip="1.2.3.4", const char *dns="dns.org");
 ::Persistency::HostPtr makeNewHost4(const char             *ip,
                                     const ::Persistency::Host::Netmask_v4 *mask,
                                     const char             *os,
-                                    bool                    nullRef=false);
+                                    bool                    nullRef=false,
+                                    const char             *dns="dns.org");
 ::Persistency::HostPtr makeNewHost6(const char             *ip,
                                     const ::Persistency::Host::Netmask_v6 *mask,
                                     const char             *os,
-                                    bool                    nullRef=false);
+                                    bool                    nullRef=false,
+                                    const char             *dns="dns.org");
 
 ::Persistency::ProcessPtr makeNewProcess(const char *name="process name");
 
 ::Persistency::ReferenceURLPtr makeNewReferenceURL(const char *url="http://gnu.org");
 
-::Persistency::GraphNodePtrNN makeNewLeaf(void);
+::Persistency::GraphNodePtrNN makeNewLeaf(const char *sip=NULL,
+                                          const char *tip=NULL,
+                                          const bool  dns=true);
 ::Persistency::GraphNodePtrNN makeNewNode(void);
 ::Persistency::GraphNodePtrNN makeNewNode(::Persistency::GraphNodePtrNN child1,
                                           ::Persistency::GraphNodePtrNN child2);
@@ -75,6 +82,13 @@ const ::Persistency::Host::Netmask_v6::bytes_type mask6_bytes={ {
 //                       ...
 //
 ::Persistency::GraphNodePtrNN makeNewTree2(void);
+
+::Persistency::AlertPtrNN makeNewAlertWithHosts(const char *hostSrc1,
+                                                const char *hostSrc2,
+                                                const char *hostDst1,
+                                                const char *hostDst2);
+
+::Persistency::GraphNodePtrNN makeNewLeaf(::Persistency::AlertPtrNN alert);
 
 } // namespace Persistency
 } // namespace TestHelpers

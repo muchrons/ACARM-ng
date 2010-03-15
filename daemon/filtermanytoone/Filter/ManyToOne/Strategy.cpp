@@ -10,8 +10,8 @@ namespace Filter
 namespace ManyToOne
 {
 
-Strategy::Strategy(void):
-  Filter::HostCommon::Strategy("manytoone", 4*60)
+Strategy::Strategy(unsigned int timeout):
+  Filter::HostCommon::Strategy("manytoone", timeout)
 {
 }
 

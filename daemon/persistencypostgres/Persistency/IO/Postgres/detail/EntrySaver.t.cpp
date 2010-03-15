@@ -78,7 +78,7 @@ struct TestClass
     mask4_( Host::Netmask_v4(mask4_bytes) ),
     mask6_( Host::Netmask_v6(mask6_bytes) )
   {
-    tdba_.removeAllData();
+    //tdba_.removeAllData();
   }
 
   IO::ConnectionPtrNN makeConnection(void) const
@@ -89,7 +89,8 @@ struct TestClass
     opts["dbname"]="acarm_ng_test";
     opts["user"]  ="acarm-ng-daemon";
     opts["pass"]  ="test.daemon";
-    return Persistency::IO::BackendFactory::create("postgres", opts);
+    return IO::ConnectionPtrNN(
+        Persistency::IO::BackendFactory::create("postgres", opts) );
   }
 
   Alert::ReportedHosts generateReportedHosts(unsigned int size) const
@@ -683,7 +684,7 @@ void testObj::test<17>(void)
 
 }
 
-// TODO: add tests to check if max/min-length data types does fill in data base.
+// try save Meta Alert with NULL reference URL.
 template<>
 template<>
 void testObj::test<18>(void)
@@ -734,5 +735,12 @@ void testObj::test<19>(void)
   t_.commit();
 }
 
+// TODO: add tests to check if max/min-length data types does fill in data base.
+template<>
+template<>
+void testObj::test<20>(void)
+{
+
+}
 
 } // namespace tut

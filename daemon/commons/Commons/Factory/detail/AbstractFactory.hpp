@@ -84,7 +84,7 @@ public:
 
     // use available builder
     assert( cit->second.get()!=NULL );
-    const FactoryPtr ptr=cit->second->build(options);
+    FactoryPtr ptr=cit->second->build(options);
     assert( ptr.get()!=NULL );
     return ptr;
   }

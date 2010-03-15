@@ -29,7 +29,7 @@ public:
                      ensureValidString(path) + "' - " + strerror(errno) )
   {
   }
-}; // class Exception
+}; // class ExceptionFileAccessError
 
 } // namespace ConfigIO
 

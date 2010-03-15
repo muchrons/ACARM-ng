@@ -51,6 +51,23 @@ Host::Host(const IPv6              &ip,
 {
 }
 
+Host::Host(const IP                &ip,
+           const Netmask           *mask,
+           const OperatingSystem    os,
+           ReferenceURLPtr          url,
+           const ReportedServices  &services,
+           const ReportedProcesses &processes,
+           const Name              &name):
+  ip_(ip),
+  mask_( (mask!=NULL)?( new Netmask(*mask) ):NULL ),
+  os_(os),
+  name_(name),
+  url_(url),
+  services_(services),
+  processes_(processes)
+{
+}
+
 const Host::IP &Host::getIP(void) const
 {
   return ip_;
@@ -94,6 +111,9 @@ const Host::ReportedProcesses &Host::getReportedProcesses(void) const
 
 bool Host::operator==(const Host &other) const
 {
+  if(this==&other)
+    return true;
+
   if( getIP()!=other.getIP() )
     return false;
   if( !Base::ViaPointer::equal( getNetmask(), other.getNetmask() ) )

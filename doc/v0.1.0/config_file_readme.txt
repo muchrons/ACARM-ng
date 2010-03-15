@@ -15,7 +15,11 @@ example may look like this:
     <!-- logger specific options -->
   </logger>
 
-  <!-- and so on... -->
+  <filters>
+    <!-- filter's configuration -->
+  </filters>
+
+  <!-- TODO -->
 </acarm_ng>
 
 in the following sections only subtrees specific for given components will
@@ -74,3 +78,42 @@ example configuration may look like this:
 </logger>
 
 TODO: describe appenders.
+
+
+filter configuration
+====================
+
+in filters' configuration subtree there are set of filter entries that are to
+be configured. each entry consists of required field 'type' that determines
+what type of filter is to be created and optional, filter-specific fields.
+example configuration may look like this:
+
+<filters>
+  <onetomany>
+    <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+  </onetomany>
+</filters>
+
+following filters and paramters are available:
+
+  <!-- correlates multiple atacks originated from single host -->
+  <onetomany>
+    <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+  </onetomany>
+
+  <!-- correlates multiple atacks originated from single host -->
+  <manytoone>
+    <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+  </manytoone>
+
+  <!-- correlates multiple atacks directed on many host -->
+  <manytomany>
+    <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+  </manytomany>
+
+  <!-- performs reverse-DNS mapping on hosts that do not have DNS name set -->
+  <dnsresolver>
+    <cachetimeout>3600</cachetimeout> <!-- time to keep cached DNS mappings -->
+  </dnsresolver>
+
+TODO: describe missing filters.
