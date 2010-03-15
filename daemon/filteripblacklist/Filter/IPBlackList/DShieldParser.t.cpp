@@ -76,14 +76,13 @@ void testObj::test<1>(void)
   checkParsing(in, "218.244.231.132", "218.8.251.187");
 }
 
-// test if iterators do have default c-tor and if it points to end.
+// test comparing with end iterator
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  DShieldParser                 p("");
-  DShieldParser::const_iterator it;
-  ensure("dafault iterator does not point to end", it==p.end() );
+  const DShieldParser p("");
+  ensure("end iterator does not point to end", p.begin()==p.end() );
 }
 
 // test empty input
@@ -196,6 +195,29 @@ void testObj::test<10>(void)
     "001.002.003.004 173049  96320   2009-09-28      2010-03-08\n"
     ;
   checkParsing(in, "1.2.3.4", NULL);
+}
+
+// test double dereference on element.
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  const char *in=
+    "# some comment\n"
+    "218.244.231.132 173049  96320   2009-09-28      2010-03-08\n"
+    "# some comment\n"
+    ;
+  DShieldParser                 p(in);
+  DShieldParser::const_iterator it=p.begin();
+
+  // first entry
+  tut::ensure("empty collection", it!=p.end() );
+  tut::ensure_equals("invalid first derefernce",  *it, ip("218.244.231.132") );
+  tut::ensure_equals("invalid second derefernce", *it, ip("218.244.231.132") );
+  ++it;
+
+  // end?
+  tut::ensure("too many elements in collection", it==p.end() );
 }
 
 } // namespace tut
