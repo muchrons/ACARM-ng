@@ -25,7 +25,7 @@ struct TestClass: private TestStubs
 {
   TestClass(void):
     conn_( Persistency::IO::create() ),
-    dsp_(""),
+    dsp_("084.109.175.233 687     352     2009-12-31      2010-03-12"),
     bl_( dsp_.begin(), dsp_.end() ),
     bp_(conn_, changed_, "testdipblacklist"),
     ep_(&bl_, &bp_, 0.3)
@@ -51,36 +51,30 @@ factory tf("Filter/IPBlackList/EntryProcessor");
 namespace tut
 {
 
-//
+// test host that is not on the list
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  // TODO
+  GraphNodePtrNN leaf=makeNewLeaf("1.2.3.4", "84.109.175.233");
+  const double   pri1=leaf->getMetaAlert()->getSeverityDelta();
+  ep_(leaf);
+  const double   pri2=leaf->getMetaAlert()->getSeverityDelta();
+  ensure_equals("priority changed", pri1, pri2);
+  ensure_equals("some node marked as changed", changed_.size(), 0);
 }
 
-//
+// test host on the list
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  // TODO
-}
-
-//
-template<>
-template<>
-void testObj::test<3>(void)
-{
-  // TODO
-}
-
-//
-template<>
-template<>
-void testObj::test<4>(void)
-{
-  // TODO
+  GraphNodePtrNN leaf=makeNewLeaf("84.109.175.233", "1.2.3.5");
+  const double   pri1=leaf->getMetaAlert()->getSeverityDelta();
+  ep_(leaf);
+  const double   pri2=leaf->getMetaAlert()->getSeverityDelta();
+  ensure_equals("priority changed", pri1+0.3, pri2);
+  ensure_equals("some node marked as changed", changed_.size(), 1);
 }
 
 } // namespace tut
