@@ -33,16 +33,18 @@ void Strategy::processImpl(Node               n,
 {
   const time_t now=time(NULL);
   // refresh list if timeout already passed.
-  if( deadline_<now || bl_.get()==NULL )
+  if(deadline_<now)
   {
+    LOGMSG_INFO(log_, "updating IPs black list");
     deadline_=now+params_.refresh_;
     try
     {
       const Downloader    d(params_.limit_);
       const DShieldParser dsp( d.get() );
-
-      BlackListPtr ptr( new BlackList( dsp.begin(), dsp.end() ) );
+      BlackListPtr        ptr( new BlackList( dsp.begin(), dsp.end() ) );
+      // if new list is available - save it!
       bl_.swap(ptr);
+      LOGMSG_ERROR_S(log_)<<"update's done - next one on "<<deadline_;
     }
     catch(const Filter::Exception &ex)
     {
@@ -50,14 +52,12 @@ void Strategy::processImpl(Node               n,
                             "block list from dshiled: '"
                           <<ex.what()
                           <<"' - skipping until next refresh";
-      // if there is no list read, we can only skip this call...
-      if( bl_.get()==NULL )
-      {
-        LOGMSG_INFO(log_, "no black list present - skipping this run...");
-        return;
-      }
     } // catch()
   } // if(need_update)
+
+  // if there is no list read, we can only skip this call...
+  if( bl_.get()==NULL )
+    return;
 
   assert( bl_.get()!=NULL );
   const EntryProcessor ep(bl_.get(), &bp, params_.priDelta_);
