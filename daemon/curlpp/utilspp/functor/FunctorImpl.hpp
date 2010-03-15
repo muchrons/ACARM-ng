@@ -1,22 +1,22 @@
 /*
  *    Copyright (c) <2002-2009> <Jean-Philippe Barrette-LaPierre>
- *    
+ *
  *    Permission is hereby granted, free of charge, to any person obtaining
- *    a copy of this software and associated documentation files 
- *    (curlpp), to deal in the Software without restriction, 
+ *    a copy of this software and associated documentation files
+ *    (curlpp), to deal in the Software without restriction,
  *    including without limitation the rights to use, copy, modify, merge,
  *    publish, distribute, sublicense, and/or sell copies of the Software,
- *    and to permit persons to whom the Software is furnished to do so, 
+ *    and to permit persons to whom the Software is furnished to do so,
  *    subject to the following conditions:
- *    
+ *
  *    The above copyright notice and this permission notice shall be included
  *    in all copies or substantial portions of the Software.
- *    
+ *
  *    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  *    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- *    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
- *    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
- *    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+ *    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ *    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ *    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
  *    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  *    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
@@ -28,7 +28,7 @@ namespace utilspp
 {
   template<typename R, class TList>
   struct FunctorImpl;
-  
+
   template<typename R>
   struct FunctorImpl<R, utilspp::NullType >
   {
@@ -36,7 +36,7 @@ namespace utilspp
     virtual FunctorImpl * clone() const = 0;
     virtual ~FunctorImpl(){};
   };
-  
+
   template<typename R, typename P1>
   struct FunctorImpl<R, TYPE_LIST_1(P1)>
   {
@@ -44,7 +44,7 @@ namespace utilspp
     virtual FunctorImpl * clone() const = 0;
     virtual ~FunctorImpl(){};
   };
-  
+
   template<typename R, typename P1, typename P2>
   struct FunctorImpl<R, TYPE_LIST_2(P1, P2)>
   {
@@ -52,7 +52,7 @@ namespace utilspp
     virtual FunctorImpl * clone() const = 0;
     virtual ~FunctorImpl(){};
   };
-  
+
   template<typename R, typename P1, typename P2, typename P3>
   struct FunctorImpl<R, TYPE_LIST_3(P1, P2, P3)>
   {
@@ -77,13 +77,13 @@ namespace utilspp
     virtual ~FunctorImpl(){};
   };
 
-  template< 
-    typename R, 
-    typename P1, 
-    typename P2, 
-    typename P3, 
-    typename P4, 
-    typename P5, 
+  template<
+    typename R,
+    typename P1,
+    typename P2,
+    typename P3,
+    typename P4,
+    typename P5,
     typename P6>
   struct FunctorImpl<R, TYPE_LIST_6(P1, P2, P3, P4, P5, P6)>
   {
@@ -92,14 +92,14 @@ namespace utilspp
     virtual ~FunctorImpl(){};
   };
 
-  template< 
-    typename R, 
-    typename P1, 
-    typename P2, 
-    typename P3, 
-    typename P4, 
-    typename P5, 
-    typename P6, 
+  template<
+    typename R,
+    typename P1,
+    typename P2,
+    typename P3,
+    typename P4,
+    typename P5,
+    typename P6,
     typename P7>
   struct FunctorImpl<R, TYPE_LIST_7(P1, P2, P3, P4, P5, P6, P7)>
   {
@@ -108,15 +108,15 @@ namespace utilspp
     virtual ~FunctorImpl(){};
   };
 
-  template< 
-    typename R, 
-    typename P1, 
-    typename P2, 
-    typename P3, 
-    typename P4, 
-    typename P5, 
-    typename P6, 
-    typename P7, 
+  template<
+    typename R,
+    typename P1,
+    typename P2,
+    typename P3,
+    typename P4,
+    typename P5,
+    typename P6,
+    typename P7,
     typename P8>
   struct FunctorImpl<R, TYPE_LIST_8(P1, P2, P3, P4, P5, P6, P7, P8)>
   {
@@ -125,16 +125,16 @@ namespace utilspp
     virtual ~FunctorImpl(){};
   };
 
-  template< 
-    typename R, 
-    typename P1, 
-    typename P2, 
-    typename P3, 
-    typename P4, 
-    typename P5, 
-    typename P6, 
-    typename P7, 
-    typename P8, 
+  template<
+    typename R,
+    typename P1,
+    typename P2,
+    typename P3,
+    typename P4,
+    typename P5,
+    typename P6,
+    typename P7,
+    typename P8,
     typename P9>
   struct FunctorImpl<R, TYPE_LIST_9(P1, P2, P3, P4, P5, P6, P7, P8, P9)>
   {
@@ -143,17 +143,17 @@ namespace utilspp
     virtual ~FunctorImpl(){};
   };
 
-  template< 
-    typename R, 
-    typename P1, 
-    typename P2, 
-    typename P3, 
-    typename P4, 
-    typename P5, 
-    typename P6, 
-    typename P7, 
-    typename P8, 
-    typename P9, 
+  template<
+    typename R,
+    typename P1,
+    typename P2,
+    typename P3,
+    typename P4,
+    typename P5,
+    typename P6,
+    typename P7,
+    typename P8,
+    typename P9,
     typename P10>
   struct FunctorImpl<R, TYPE_LIST_10(P1, P2, P3, P4, P5, P6, P7, P8, P9, P10)>
   {

@@ -7,8 +7,8 @@ utilspp::PrivateMembers::Deleter<T>::deleteObject(T * obj)
 }
 
 template<typename T, typename TDestroyer>
-utilspp::PrivateMembers::ConcreteLifetimeTracker<T, TDestroyer>::ConcreteLifetimeTracker( 
-      T * obj, unsigned int longevity, TDestroyer d) 
+utilspp::PrivateMembers::ConcreteLifetimeTracker<T, TDestroyer>::ConcreteLifetimeTracker(
+      T * obj, unsigned int longevity, TDestroyer d)
 : LifetimeTracker(longevity)
 , mTracked(obj)
 , mDestroyer(d)
@@ -23,9 +23,9 @@ utilspp::PrivateMembers::ConcreteLifetimeTracker<T, TDestroyer>::~ConcreteLifeti
 
 template <typename T>
 void
-utilspp::PrivateMembers::adapter<T>::operator()(T*) 
-{ 
-   return (*mFunc)(); 
+utilspp::PrivateMembers::adapter<T>::operator()(T*)
+{
+   return (*mFunc)();
 }
 
 /* public header */

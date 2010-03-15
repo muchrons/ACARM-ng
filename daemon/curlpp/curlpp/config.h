@@ -8,7 +8,7 @@
 /* #undef CURLPP_STATICLIB */
 
 /* define if the Boost library is available */
-#define HAVE_BOOST 
+#define HAVE_BOOST
 
 /* Define to 1 if you have the <curl/curl.h> header file. */
 #define HAVE_CURL_CURL_H 1

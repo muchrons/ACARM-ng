@@ -7,15 +7,15 @@
 #include <list>
 
 
-namespace curlpp 
+namespace curlpp
 {
 
 
 template<>
 void
-InfoTypeConverter<std::string>::get(curlpp::Easy & handle, 
-				      CURLINFO info,
-				      std::string & value)
+InfoTypeConverter<std::string>::get(curlpp::Easy & handle,
+              CURLINFO info,
+              std::string & value)
 {
   char * tmp;
   InfoGetter::get(handle, info, tmp);
@@ -24,23 +24,23 @@ InfoTypeConverter<std::string>::get(curlpp::Easy & handle,
 
 
 template<>
-void 
+void
 InfoTypeConverter<std::list<std::string> >::get(curlpp::Easy & handle,
-						   CURLINFO info,
-						   std::list<std::string> & value)
-{ 
+               CURLINFO info,
+               std::list<std::string> & value)
+{
   curl_slist * tmpList = NULL;
   InfoGetter::get(handle, info, tmpList);
-	internal::SList slist(tmpList);
+  internal::SList slist(tmpList);
   value = slist.list();
 }
 
 
 template<>
 void
-InfoTypeConverter<long>::get(curlpp::Easy & handle, 
-			       CURLINFO info,
-			       long & value)
+InfoTypeConverter<long>::get(curlpp::Easy & handle,
+             CURLINFO info,
+             long & value)
 {
   InfoGetter::get(handle, info, value);
 }
@@ -48,9 +48,9 @@ InfoTypeConverter<long>::get(curlpp::Easy & handle,
 
 template<>
 void
-InfoTypeConverter<double>::get(curlpp::Easy & handle, 
-				 CURLINFO info,
-				 double & value)
+InfoTypeConverter<double>::get(curlpp::Easy & handle,
+         CURLINFO info,
+         double & value)
 {
   curl_off_t tmp;
   InfoGetter::get(handle, info, tmp);

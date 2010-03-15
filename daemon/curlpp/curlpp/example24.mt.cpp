@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
 {
   if(argc != 2) {
     std::cerr << argv[0] << ": Wrong number of arguments" << std::endl 
-	      << argv[0] << ": Usage: " << " url " 
-	      << std::endl;
+        << argv[0] << ": Usage: " << " url " 
+        << std::endl;
     return EXIT_FAILURE;
   }
 
