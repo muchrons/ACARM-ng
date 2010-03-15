@@ -5,6 +5,7 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_ALERT_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_ALERT_HPP_FILE
 
+#include "System/Enum.hpp"
 #include "Persistency/IO/Alert.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
@@ -39,9 +40,12 @@ private:
    */
   virtual void saveImpl(Transaction &t);
 
-  // TODO: use System::Enum<> for this.
-  // TODO: keep names uppercase, camel-casing (ex: HostType)
-  typedef enum host_type{SRC, DST} host_type;
+  struct HostEnumType
+  {
+    typedef enum{ SRC = 1, DST = 2 } Type;
+  };
+
+  typedef System::Enum<HostEnumType> HostType;
   /** \brief save target or source hosts.
    *  \param es      EntrySaver object
    *  \param alertID ID of Alert
@@ -50,7 +54,7 @@ private:
    */
   void saveHosts(EntrySaver                        &es,
                  DataBaseID                        alertID,
-                 host_type                         type,
+                 HostType                          type,
                  Persistency::Alert::ReportedHosts &hosts);
 
   DBHandlerPtrNN dbHandler_;

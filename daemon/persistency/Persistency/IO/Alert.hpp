@@ -38,9 +38,9 @@ public:
 
 protected:
   /** \brief gets read-only acces to alert.
-   *  \return alert to operate on.
+   *  \return not null pointer to alert to operate on.
    */
-  const Persistency::Alert &get(void) const;
+  Persistency::AlertPtrNN get(void);
 
 private:
   virtual void saveImpl(Transaction &t) = 0;

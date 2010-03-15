@@ -76,31 +76,62 @@ public:
    * \param ma Meta Alert to be saved
    */
   DataBaseID saveMetaAlert(const Persistency::MetaAlert &ma);
+
+  /** \brief save meta alerts tree
+   *  \param nodeID node ID
+   *  \param childID child associated with node
+   */
+  void saveMetaAlertsTree(DataBaseID nodeID, DataBaseID childID);
+
   /** \brief save Alert to Meta Alert map
    *  \param alertID  ID of Alert
    *  \param malertID ID of Meta Alert
    */
   void saveAlertToMetaAlertMap(DataBaseID alertID, DataBaseID malertID);
+
   /** \brief save Alert to Analyzers map
    *  \param alertID ID of Alert
    *  \param anlzID  ID of Analyzer
    */
   void saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID);
 
-  //TODO
-  //DataBaseID getMetaAlertID(MetaAlert &ma);
-  //DataBaseID getAlertID(Alert &a);
+  /** \brief mark Meta Alert as used
+   *  \param malertID ID of Meta Alert
+   */
+  void saveMetaAlertAsUsed(DataBaseID malertID);
+
+  /** \brief mark Meta Alert as unused
+   *  \param malertID ID of Meta Alert
+   */
+  void saveMetaAlertAsUnused(DataBaseID malertID);
+
+  /** \brief mark Meta Alert as triggered
+   *  \param malertID ID of Meta Alert
+   *  \param name
+   */
+  void saveMetaAlertAsTriggered(DataBaseID malertID, const std::string &name);
+
+  /** \brief update Meta Alert severity delta
+   *  \param malertID ID   of Meta Alert to update
+   *  \param severityDelta value of severity delta to write in data base
+   */
+  void updateSeverityDelta(DataBaseID malertID, double severityDelta);
+
+  /** \brief update Meta Alert certanity delta
+   *  \param malertID ID    of Meta Alert to update
+   *  \param certanityDelta value of certanity delta to write in data base
+   */
+  void updateCertaintyDelta(DataBaseID malertID, double certanityDelta);
+
   // TODO
 
 
 private:
   DataBaseID getID(const std::string &seqName);
   DataBaseID getSeverityID(const Alert &a);
-  bool isAnalyzerInDataBase(const Analyzer &a);
+  DataBaseID isAnalyzerInDataBase(const Analyzer &a);
   std::string addIPToSelect(const Analyzer::IP *ptr);
 
-  template <typename T>
-  std::string addToSelect(const T *ptr);
   DataBaseID saveProcessData(const Process &p);
   DataBaseID saveReportedProcessData(DataBaseID     reportedHostID,
                                      DataBaseID     procID,
@@ -119,6 +150,7 @@ private:
   void saveReportedServiceData(DataBaseID     reportedHostID,
                                DataBaseID     serID,
                                const Service &s);
+  void addReferenceURL(std::stringstream &ss, const ReferenceURL *url);
 
   DBHandler   &dbh_;
   Transaction &t_;
