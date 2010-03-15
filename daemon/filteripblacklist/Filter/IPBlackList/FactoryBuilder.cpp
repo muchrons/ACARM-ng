@@ -37,19 +37,32 @@ FactoryBuilder::FactoryBuilder(void):
 {
 }
 
+namespace
+{
+unsigned int parseUnsignedInt(const string &str)
+{
+  const int          i =boost::lexical_cast<int>(str);
+  const unsigned int ui=boost::numeric_cast<unsigned int>(i);
+  return ui;
+} // parseUnsignedInt()
+} // unnamed namespace
+
 FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) const
 {
   LOGMSG_INFO(log_, "building filter's instance");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
   const FilterConfig fc(name_, options);
-  const int          timeoutInt=boost::lexical_cast<int>( fc["timeout"] );
-  const unsigned int timeout   =boost::numeric_cast<unsigned int>(timeoutInt);
-  LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";
+  const unsigned int refresh =parseUnsignedInt( fc["refresh"] );
+  const unsigned int limit   =parseUnsignedInt( fc["limit"] );
+  const double       priDelta=boost::lexical_cast<double>( fc["priorityDelta"] );
+  LOGMSG_INFO_S(log_)<<"setting refresh interval to "<<refresh<<"[s]";
+  LOGMSG_INFO_S(log_)<<"setting entries limit to "<<limit;
+  Strategy::Parameters params(refresh, limit, priDelta);
 
   // create and return new handler.
-  typedef InterfaceImpl<Strategy, unsigned int> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl(name_, timeout) );
+  typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;
+  return FactoryBuilder::FactoryPtr( new Impl(name_, params) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

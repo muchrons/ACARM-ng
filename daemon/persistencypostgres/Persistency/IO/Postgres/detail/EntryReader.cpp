@@ -180,10 +180,12 @@ HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID refID)
   r[0]["ip"].to(ip);
   r[0]["mask"].to(mask);
 
-  const Persistency::Host::Name             hostName(name);
-  const Persistency::Host::OperatingSystem  hostOS(os);
-  const Persistency::Host::Netmask       hostIP( Persistency::Host::Netmask::from_string(ip) );
-  const Persistency::Host::IP             hostNetmask( Persistency::Host::IP::from_string(mask) );
+  const Persistency::Host::Name            hostName(name);
+  const Persistency::Host::OperatingSystem hostOS(os);
+  const Persistency::Host::Netmask         hostIP(
+                    Persistency::Host::Netmask::from_string(ip) );
+  const Persistency::Host::IP              hostNetmask(
+                    Persistency::Host::IP::from_string(mask) );
 
   HostPtr host(new Persistency::Host(hostIP,
                                      &hostNetmask,

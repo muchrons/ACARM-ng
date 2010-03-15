@@ -42,7 +42,7 @@ struct TestClass
     opts["user"]  ="acarm-ng-daemon";
     opts["pass"]  ="test.daemon";
     return IO::ConnectionPtrNN(
-                               Persistency::IO::BackendFactory::create("postgres", opts) );
+      Persistency::IO::BackendFactory::create("postgres", opts) );
   }
 
   const string        name_;
