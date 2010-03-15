@@ -32,17 +32,18 @@ public:
    */
   struct Parameters
   {
-#if 0
-    /** \brief create entry.
-     *  \param cacheTimeout timeout of cache entries.
+    /** \brief create paramters object.
+     *  \param refresh interval between list updates (in seconds).
+     *  \param limit   limit number of entries to be read.
      */
-    explicit Parameters(const int cacheTimeout):
-      cacheTimeout_(cacheTimeout)
+    Parameters(const unsigned int refresh, const unsigned int limit):
+      refresh_(refresh),
+      limit_(limit)
     {
     }
 
-    const int cacheTimeout_;    ///< timeout for cache entries.
-#endif
+    const unsigned int refresh_;        ///< interval between list refreshing
+    const unsigned int limit_;          ///< limit number of entries
   }; // struct Parameters
 
   /** \brief create instance.
@@ -54,6 +55,8 @@ private:
   virtual void processImpl(Node               n,
                            NodesTimeoutQueue &ntq,
                            BackendProxy      &bp);
+
+  const Parameters params_;
 }; // class Strategy
 
 } // namespace IPBlackList

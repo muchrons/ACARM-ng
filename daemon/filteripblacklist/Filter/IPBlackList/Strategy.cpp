@@ -33,8 +33,9 @@ namespace Filter
 namespace IPBlackList
 {
 
-Strategy::Strategy(const Parameters &/*params*/):
-  Filter::Strategy<Data>("ipblacklist")
+Strategy::Strategy(const Parameters &params):
+  Filter::Strategy<Data>("ipblacklist"),
+  params_(params)
 {
 }
 
