@@ -36,7 +36,7 @@ EntryReader::EntryReader(Transaction &t, DBHandler &dbh):
 Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
 {
   stringstream ss;
-  ss << "SELECT * FROM alerts where id = " << alertID << ";";
+  ss << "SELECT * FROM alerts WHERE id = " << alertID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   string name, description, detect_time, create_time;
@@ -51,12 +51,12 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
   r[0]["certainty"].to(certainty);
 
   const Persistency::Alert::Name alertName(name);
-  const Timestamp   alertDetect( from_iso_string( detect_time ) );
-  const Timestamp   alertCreate( from_iso_string( create_time ) );
+  const Timestamp                alertDetect( from_iso_string( detect_time ) );
+  const Timestamp                alertCreate( from_iso_string( create_time ) );
   //TODO create SeverityLevel from int
-  const Severity    alertSeverity( SeverityLevel::INFO );
-  const Certainty   alertCertainty(certainty);
-  const string      alertDescription(description);
+  const Severity                 alertSeverity( SeverityLevel::INFO );
+  const Certainty                alertCertainty(certainty);
+  const string                   alertDescription(description);
 
   AlertPtrNN alert( new Alert(alertName,
                               getAnalyzers( alertID ),
@@ -70,6 +70,30 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
   return alert;
 }
 
+Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "SELECT * FROM meta_alerts WHERE id = " << malertID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  string name, createTime, lastUpdateTime;
+  double severityDelta, certaintyDelta;
+  DataBaseID refID;
+  r[0]["name"].to(name);
+  r[0]["severity_delta"].to(severityDelta);
+  r[0]["certanity_delta"].to(certaintyDelta);
+  r[0]["create_time"].to(createTime);
+  r[0]["id_ref"].to(refID);
+  const Persistency::MetaAlert::Name malertName(name);
+  Timestamp                          malertCreate( from_iso_string( createTime) );
+
+  //TODO: check if id_ref is NULL
+  MetaAlertPtrNN malert( new Persistency::MetaAlert( malertName,
+                                          severityDelta,
+                                          certaintyDelta,
+                                          getReferenceURL( refID  ),
+                                          malertCreate ) );
+  return malert;
+}
 
 AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
 {
@@ -168,6 +192,8 @@ HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID refID)
                                      getReportedServices( hostID ),
                                      getReportedProcesses( hostID ),
                                      hostName) );
+  // add host to cache
+  dbh_.getIDCache()->add(host , hostID);
   return host;
 }
 
@@ -278,7 +304,6 @@ ReferenceURLPtr EntryReader::getReferenceURL(DataBaseID refID)
   stringstream ss;
   ss << "SELECT * FROM reference_urls WHERE id = " << refID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-
   string name, url;
   r[0]["name"].to(name);
   r[0]["url"].to(url);
@@ -311,6 +336,31 @@ double EntryReader::getCertaintyDelta(DataBaseID malertID)
   return certainty;
 }
 
+size_t EntryReader::getChildrenIDs(DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "SELECT * FROM meta_alerts_tree WHERE id_node = " << malertID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+
+  return r.size();
+}
+
+void EntryReader::getLeafs(leafsMap &leafs)
+{
+  stringstream ss;
+  ss << "SELECT * FROM alert_to_meta_alert_map INNER JOIN meta_alerts_in_use ON (alert_to_meta_alert_map.id_meta_alert = meta_alerts_in_use.id_meta_alert);";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  for(unsigned int i=0; i<r.size(); ++i)
+  {
+    int idAlert;
+    int idMetaAlert;
+    r[i]["id_alert"].to(idAlert);
+    r[i]["id_meta_alert"].to(idMetaAlert);
+    dbh_.getIDCache()->add(readAlert(idAlert) , idAlert);
+    dbh_.getIDCache()->add(readMetaAlert(idMetaAlert) , idMetaAlert);
+    leafs.insert( pair<DataBaseID, Persistency::AlertPtrNN>(idMetaAlert, readAlert(idAlert) ) );
+  }
+}
 
 } // namespace detail
 } // namespace Postgres

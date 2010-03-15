@@ -5,11 +5,10 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_RESTORER_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_RESTORER_HPP_FILE
 
-#include "Persistency/IO/Restorer.hpp"
+//#include "Persistency/IO/Restorer.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Connection.hpp"
-
 // TODO: test
 
 namespace Persistency
@@ -38,8 +37,8 @@ private:
                                   const Timestamp &from,
                                   const Timestamp &to);
   BackendFactory::FactoryPtr createStubIO(void);
-
   //IO::ConnectionPtrNN  connectionStubIO_;
+  typedef std::map<DataBaseID, GraphNodePtrNN> leafsMap;
   DBHandlerPtrNN  dbHandler_;
 }; // class Restorer
 

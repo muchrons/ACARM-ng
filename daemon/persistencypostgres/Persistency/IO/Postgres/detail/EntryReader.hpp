@@ -14,6 +14,7 @@
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/MetaAlert.hpp"
+#include "Persistency/GraphNodePtr.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
@@ -33,6 +34,9 @@ namespace detail
 class EntryReader: private boost::noncopyable
 {
 public:
+
+  typedef std::map<DataBaseID, Persistency::AlertPtrNN> leafsMap;
+  typedef std::multimap<DataBaseID, std::pair<DataBaseID, Persistency::GraphNodePtrNN> > nodesMultimap;
   /** \brief create reader
    *  \param t   transaction to be used for reading.
    *  \param dbh data base handler object.
@@ -43,6 +47,11 @@ public:
    *  \param alertID ID of Alert in data base
    */
   Persistency::AlertPtrNN readAlert(DataBaseID alertID);
+
+  /** \brief read Meta Alert data from data base
+   *  \param maletrID ID of Meta Alert in data base
+   */
+  Persistency::MetaAlertPtrNN readMetaAlert(DataBaseID malertID);
 
   /** \brief read Analyzers assiociated with Alert from data base
    *  \param alertID ID of Alert in data base
@@ -58,6 +67,10 @@ public:
    *  \param malertID ID of Meta Alert
    */
   double getCertaintyDelta(DataBaseID malertID);
+
+  size_t getChildrenIDs(DataBaseID malertID);
+
+  void getLeafs(leafsMap &leafs);
 
 private:
   AnalyzerPtrNN getAnalyzer(DataBaseID anlzID);

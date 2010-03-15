@@ -3,6 +3,10 @@
  *
  */
 #include "Persistency/IO/Postgres/Restorer.hpp"
+#include "Persistency/IO/Postgres/detail/EntryReader.hpp"
+#include <map>
+
+using namespace Persistency::IO::Postgres::detail;
 
 namespace Persistency
 {
@@ -18,10 +22,28 @@ Restorer::Restorer(Transaction    &t,
 {
 }
 
-void Restorer::restoreAllInUseImpl(Transaction &/*t*/, NodesVector &/*out*/)
+void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &out)
 {
-  //IO::ConnectionPtrNN connectionStubIO( createStubIO() );
-  //IO::Transaction tStubIO( connectionStubIO->createNewTransaction("stub transaction") );
+  EntryReader er(t, *dbHandler_);
+  std::map<DataBaseID, Persistency::AlertPtrNN>           leafsAlertMap;
+  er.getLeafs(leafsAlertMap);
+
+  IO::ConnectionPtrNN connectionStubIO( createStubIO() );
+  IO::Transaction tStubIO( connectionStubIO->createNewTransaction("stub transaction") );
+
+  /*
+  leafsMap leafs;
+  for(std::map<DataBaseID, Persistency::AlertPtrNN>::iterator it = leafsAlertMap.begin();
+      it != leafsAlertMap.end(); ++it)
+  {
+    leafs.insert( std::pair<DataBaseID, Persistency::GraphNodePtrNN>( ((*it).first()),
+                  Persistency::GraphNodePtrNN( new Persistency::GraphNode( ((*it).second()),
+                                                              connectionStubIO,
+                                                              tStubIO) ) ) );
+  }
+  */
+  // nodesMultimap nodes;
+  // multimap<DataBaseID, pair<DataBaseID, GraphNode> > nodesMultimap;
   // TODO
   // read meta alerts ids from table meta_alerts_in_use
   // for(meta alerts in use)
@@ -30,7 +52,10 @@ void Restorer::restoreAllInUseImpl(Transaction &/*t*/, NodesVector &/*out*/)
   //     - read Meta Alert
   //     - read Meta Alert Children
   //     - leafs should be read first
-  //
+  //     - guery to select leafs ids
+  //     SELECT id_alert FROM alert_to_meta_alert_map
+  //     INNER JOIN meta_alerts_in_use ON
+  //     (alert_to_meta_alert_map.id_meta_alert = meta_alerts_in_use.id_meta_alert);
   //   - add GraphNode to NodesVector
   // }
 }
