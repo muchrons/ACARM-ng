@@ -55,6 +55,51 @@ DataBaseID EntrySaver::getSeverityID(const Alert &a)
   return id;
 }
 
+bool EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
+{
+  //TODO: finish that
+  stringstream ss;
+  ss << "SELECT * FROM analyzers WHERE name = ";
+  Appender::append(ss, a.getName().get() );
+  ss << " AND version ";
+  ss << addToSelect( a.getVersion() );
+  ss << " AND os";
+  ss << addToSelect( a.getOS() );
+  ss << " AND ip";
+  ss << addIPToSelect( a.getIP() );
+  ss << ";";
+  result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+  if(r.empty() )
+    return false;
+  else
+    return true;
+}
+
+template <typename T>
+std::string EntrySaver::addToSelect(const T *ptr)
+{
+  stringstream ss;
+  if(ptr!=NULL){
+    ss << " = ";
+    Appender::append(ss, ptr->get() );
+  }
+  else
+    ss<< " IS NULL";
+  return ss.str();
+}
+
+std::string EntrySaver::addIPToSelect(const Analyzer::IP *ptr)
+{
+  stringstream ss;
+  if(ptr!=NULL){
+    ss << " = ";
+    Appender::append(ss, ptr->to_string() );
+  }
+  else
+    ss<< " IS NULL";
+  return ss.str();
+}
+
 DataBaseID EntrySaver::saveProcessData(const Process &p)
 {
   stringstream ss;
@@ -162,18 +207,16 @@ DataBaseID EntrySaver::saveSourceHost(DataBaseID hostID, DataBaseID alertID, con
   return saveReportedHostData(alertID, hostID, "src", h);
 }
 
-DataBaseID EntrySaver::saveAlert(DataBaseID AnalyzerID, const Persistency::Alert &a)
+DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 {
   stringstream ss;
-  ss << "INSERT INTO alerts(name, id_analyzer, detect_time, create_time, id_severity, certanity, description) VALUES (";
+  ss << "INSERT INTO alerts(name,  detect_time, create_time, id_severity, certanity, description) VALUES (";
   Appender::append(ss, a.getName().get() );
-  ss << ",";
-  Appender::append(ss, AnalyzerID);
   ss << ",";
   if(a.getDetectionTime()==NULL)
     ss << "NULL";
   else
-    Appender::append(ss, to_iso_string((*a.getDetectionTime() ) ));
+  Appender::append(ss, to_iso_string((*a.getDetectionTime() ) ));
   ss << ",";
   Appender::append(ss, to_iso_string(a.getCreationTime() ) );
   ss << ",";
@@ -188,49 +231,27 @@ DataBaseID EntrySaver::saveAlert(DataBaseID AnalyzerID, const Persistency::Alert
   return getID("alerts_id_seq");
 }
 
-DataBaseID EntrySaver::saveAnalyzer(const DataBaseID *HostID, const Analyzer &a)
+DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
 {
-  //
-  // TODO: this method cannot work this way - it has to check given host's
-  //       paramters not the ID value, and save analyzer if, and only if it
-  //       does not already exist. thus it has to call saveHost() by itself,
-  //       if needed.
-  //
-  // TODO: notice that it is generally good idea to separate check if given
-  //       host already exist into separate method.
-  //
-  stringstream ss;
-  ss << "SELECT * FROM analyzers WHERE id_host ";
-  if(HostID==NULL)
-    ss << "IS NULL";
-  else
-    ss << "= "<< *HostID;
-  ss << " and name = ";
-  Appender::append(ss, a.getName().get() );
-  ss << ";";
-
-  // TODO: result should be const
-  result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
-  if(r.empty())
+  //TODO: Analyzer shoul be unique
+  if(!isAnalyzerInDataBase(a) )
   {
-    ss.str("");
-    ss << "INSERT INTO analyzers(name, id_host) VALUES (";
+    stringstream ss;
+    ss << "INSERT INTO analyzers(name, version, os, ip) VALUES (";
     Appender::append(ss, a.getName().get() );
     ss << ",";
-    if(HostID==NULL)
+    Appender::append(ss, a.getVersion()?a.getVersion()->get():NULL);
+    ss << ",";
+    Appender::append(ss, a.getOS()?a.getOS()->get():NULL );
+    ss << ",";
+    if(a.getIP()==NULL)
       ss << "NULL";
     else
-      ss << *HostID;
+      Appender::append(ss, a.getIP()->to_string() );
     ss << ");";
     t_.getAPI<Postgres::TransactionAPI>().exec(ss);
-    return getID("analyzers_id_seq");
   }
-  else
-  {
-    DataBaseID id;
-    r[0]["id"].to(id);
-    return id;
-  }
+  return getID("analyzers_id_seq");
 }
 
 DataBaseID EntrySaver::saveServiceData(const Service &s)
@@ -257,7 +278,13 @@ void EntrySaver::saveReportedServiceData(DataBaseID     reportedHostID,
   ss << "INSERT INTO reported_services(id_reported_host, id_service, id_ref) VALUES (";
   ss << reportedHostID << ",";
   ss << serID << ",";
-  Appender::append(ss, s.getReferenceURL()?saveReferenceURL( *s.getReferenceURL() ):NULL);
+  if( s.getReferenceURL()!=NULL )
+  {
+    const DataBaseID urlID=saveReferenceURL( *s.getReferenceURL() );
+    ss << urlID;
+  }
+  else
+    ss << "NULL";
   ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
@@ -279,7 +306,13 @@ DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
   ss << ",";
   Appender::append(ss, ma.getCertaintyDelta() );
   ss << ",";
-  Appender::append(ss, ma.getReferenceURL()?saveReferenceURL( *ma.getReferenceURL() ):NULL);
+  if( ma.getReferenceURL()!=NULL )
+  {
+    const DataBaseID urlID=saveReferenceURL( *ma.getReferenceURL() );
+    ss << urlID;
+  }
+  else
+    ss << "NULL";
   ss << ",";
   Appender::append(ss, to_simple_string( ma.getCreateTime() ));
   ss << ",";
@@ -301,6 +334,16 @@ void EntrySaver::saveAlertToMetaAlertMap(DataBaseID alertID, DataBaseID malertID
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
+void EntrySaver::saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID)
+{
+  stringstream ss;
+  ss << "INSERT INTO alert_analyzers(id_alert, id_analyzer) VALUES (";
+  Appender::append(ss, alertID);
+  ss << ",";
+  Appender::append(ss, anlzID);
+  ss << ");";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+}
 } // namespace detail
 } // namespace Postgres
 } // namespace IO
