@@ -19,8 +19,14 @@ namespace IPBlackList
 class Downloader
 {
 public:
+  /** \brief create object with downloaded data.
+   *  \param limit limit number of entries.
+   *  \note when c-tor is done, data are already downaloded.
+   */
   explicit Downloader(const unsigned int limit=10000);
-
+  /** \brief gets string downloaded as response.
+   *  \return string with downaloeded data.
+   */
   inline std::string get(void) const
   {
     return ss_.str();
