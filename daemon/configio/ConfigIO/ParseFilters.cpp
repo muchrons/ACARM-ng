@@ -31,7 +31,7 @@ void ParseFilters::parse(const XML::Node &node)
     const FilterConfig::TypeName &type=fit->getName();
     FilterConfig::Options         options;
 
-    // get all options to a single string
+    // get all options to a single collection
     const Node::TNodesList &children=fit->getChildrenList();
     for(Node::TNodesList::const_iterator it=children.begin(); it!=children.end(); ++it)
       options[ it->getName() ] = it->getValuesString();
