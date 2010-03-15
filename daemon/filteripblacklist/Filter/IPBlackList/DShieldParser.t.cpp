@@ -237,4 +237,16 @@ void testObj::test<12>(void)
   checkParsing(in, "218.244.231.132", "218.8.251.187");
 }
 
+// test tabs instead of spaces
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  const char *in=
+    "218.244.231.132\t152063\t92867\t2009-09-28\t2010-03-15\n"
+    "060.173.011.114\t1134493\t90051\t2010-02-03\t2010-03-04\n"
+    ;
+  checkParsing(in, "218.244.231.132", "60.173.11.114");
+}
+
 } // namespace tut

@@ -96,14 +96,14 @@ bool DShieldParser::const_iterator::operator==(const const_iterator &other) cons
 IP DShieldParser::const_iterator::operator*(void) const
 {
   assert(str_!=NULL);
-  if( !isLongEnoughForIP(str_) || str_[ipLength]!=' ' )
+  if( !isLongEnoughForIP(str_) || !isblank(str_[ipLength]) )
     throw ExceptionInvalidFormat(SYSTEM_SAVE_LOCATION, str_, "invalid line");
 
   // construct proper string
   bool        lastDot=true;
   const char *in     =str_;
   char        tmp[ipLength+1]={0};
-  for(size_t i=0; i<ipLength && *in!=' '; ++i)
+  for(size_t i=0; i<ipLength && !isblank(*in); ++i)
   {
     if(lastDot)
     {
@@ -129,7 +129,9 @@ IP DShieldParser::const_iterator::operator*(void) const
   }
   catch(const std::exception &ex)
   {
-    string err("unable to parse IP: ");
+    string err("unable to parse IP: '");
+    err+=tmp;
+    err+="' - ";
     err+=ex.what();
     throw ExceptionInvalidFormat(SYSTEM_SAVE_LOCATION, str_, err.c_str() );
   }
