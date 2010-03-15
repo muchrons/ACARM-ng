@@ -5,8 +5,6 @@
 #ifndef INCLUDE_FILTER_IPBLACKLIST_STRATEGY_HPP_FILE
 #define INCLUDE_FILTER_IPBLACKLIST_STRATEGY_HPP_FILE
 
-/* public header */
-
 #include "Persistency/Host.hpp"
 #include "Filter/Strategy.hpp"
 
