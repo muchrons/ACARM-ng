@@ -100,7 +100,7 @@ namespace utilspp
 }
 
 //#ifdef CURLPP_INCLUDE_TEMPLATE_DEFINITIONS
-	#include "utilspp/singleton/LifetimeLibrary.inl"
+	#include "utilspp/singleton/LifetimeLibrary_inl.hpp"
 //#endif
 
 #endif

@@ -24,6 +24,9 @@
 #ifndef CURLPP_GLOBAL_H
 #define CURLPP_GLOBAL_H
 
+// passing macros further is not good idea.
+#define HAVE_CONFIG_H
+
 #ifndef HAVE_CONFIG_H
 	#include "curlpp/config.win32.h"
 #else

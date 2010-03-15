@@ -49,7 +49,7 @@ namespace utilspp
 }
 
 //#ifdef CURLPP_INCLUDE_TEMPLATE_DEFINITIONS
-	#include "utilspp/ThreadingSingle.inl"
+	#include "utilspp/ThreadingSingle_inl.hpp"
 //#endif
 
 #endif

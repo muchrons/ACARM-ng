@@ -42,7 +42,7 @@ namespace utilspp
 }
 
 //#ifdef CURLPP_INCLUDE_TEMPLATE_DEFINITIONS
-	#include "utilspp/ThreadingFactoryMutex.inl"
+	#include "utilspp/ThreadingFactoryMutex_inl.hpp"
 //#endif
 
 #endif

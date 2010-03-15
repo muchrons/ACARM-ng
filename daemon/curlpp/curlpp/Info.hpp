@@ -118,7 +118,7 @@ namespace cURLpp = curlpp;
 
 
 #ifdef CURLPP_INCLUDE_TEMPLATE_DEFINITIONS
-	#include "curlpp/Info.inl"
+	#include "curlpp/Info_inl.hpp"
 #endif
 
 

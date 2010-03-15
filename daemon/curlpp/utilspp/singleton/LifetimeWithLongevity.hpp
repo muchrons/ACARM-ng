@@ -52,7 +52,7 @@ namespace utilspp
 }
 
 //#ifdef CURLPP_INCLUDE_TEMPLATE_DEFINITIONS
-	#include "utilspp/singleton/LifetimeWithLongevity.inl"
+	#include "utilspp/singleton/LifetimeWithLongevity_inl.hpp"
 //#endif
 
 #endif

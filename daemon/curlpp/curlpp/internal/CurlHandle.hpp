@@ -200,7 +200,7 @@ namespace cURLpp = curlpp;
 
 
 #ifdef CURLPP_INCLUDE_TEMPLATE_DEFINITIONS
-	#include "curlpp/internal/CurlHandle.inl"
+	#include "curlpp/internal/CurlHandle_inl.hpp"
 #endif
 
 

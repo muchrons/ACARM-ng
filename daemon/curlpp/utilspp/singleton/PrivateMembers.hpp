@@ -89,7 +89,7 @@ namespace utilspp
 }
 
 //#ifdef CURLPP_INCLUDE_TEMPLATE_DEFINITIONS
-	#include "utilspp/singleton/PrivateMembers.inl"
+	#include "utilspp/singleton/PrivateMembers_inl.hpp"
 //#endif
 
 #endif

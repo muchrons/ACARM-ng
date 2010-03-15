@@ -50,7 +50,7 @@ namespace utilspp
 }
 
 //#ifdef CURLPP_INCLUDE_TEMPLATE_DEFINITIONS
-	#include "utilspp/singleton/CreationStatic.inl"
+	#include "utilspp/singleton/CreationStatic_inl.hpp"
 //#endif
 
 #endif

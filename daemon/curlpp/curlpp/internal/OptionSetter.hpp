@@ -502,7 +502,7 @@ namespace cURLpp = curlpp;
 
 
 #ifdef CURLPP_INCLUDE_TEMPLATE_DEFINITIONS
-	#include "curlpp/internal/OptionSetter.inl"
+	#include "curlpp/internal/OptionSetter_inl.hpp"
 #endif
 
 

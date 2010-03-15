@@ -62,7 +62,7 @@ namespace utilspp
 }
 
 //#ifdef CURLPP_INCLUDE_TEMPLATE_DEFINITIONS
-	#include "utilspp/singleton/SingletonHolder.inl"
+	#include "utilspp/singleton/SingletonHolder_inl.hpp"
 //#endif
 
 #endif
