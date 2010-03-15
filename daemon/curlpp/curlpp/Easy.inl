@@ -46,3 +46,4 @@ curlpp::Easy::setOpt(InputIterator first, InputIterator last)
 		setOpt(*it);
 	}
 } 
+/* public header */

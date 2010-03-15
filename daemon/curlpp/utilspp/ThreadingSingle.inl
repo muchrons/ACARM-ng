@@ -48,3 +48,4 @@ utilspp::ThreadingSingle<T>::mutex::unlock()
 {};
 
 #endif
+/* public header */

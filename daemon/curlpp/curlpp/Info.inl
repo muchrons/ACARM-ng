@@ -77,3 +77,4 @@ curlpp::InfoTypeConverter<T>::get(curlpp::Easy & handle,
 
 
 #endif
+/* public header */

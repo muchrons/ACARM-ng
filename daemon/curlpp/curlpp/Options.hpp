@@ -369,3 +369,4 @@ CURLPPAPI std::ostream & operator<<(std::ostream & stream, const curlpp::options
 
 
 #endif // #ifndef CURLPP_OPTIONS_HPP
+/* public header */

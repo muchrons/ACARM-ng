@@ -205,3 +205,4 @@ namespace cURLpp = curlpp;
 
 
 #endif // #ifndef CURLPP_CURL_HANDLE_HPP
+/* public header */

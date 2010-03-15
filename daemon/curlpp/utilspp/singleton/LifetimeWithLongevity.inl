@@ -56,3 +56,4 @@ utilspp::getLongevity(T *)
 }
 
 
+/* public header */

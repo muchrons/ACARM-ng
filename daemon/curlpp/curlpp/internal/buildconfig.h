@@ -75,3 +75,4 @@
 
 
 #endif // #ifndef CURLPP_BUILDCONFIG_H
+/* public header */

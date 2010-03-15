@@ -71,3 +71,4 @@ OptionContainer<OptionType>::getHandleOptionValue()
 } // namespace internal
 
 } // namespace curlpp
+/* public header */

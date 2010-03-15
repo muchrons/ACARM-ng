@@ -31,3 +31,4 @@
 #endif
 
 #endif // #ifndef CURLPP_GLOBAL_H
+/* public header */

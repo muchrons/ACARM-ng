@@ -204,3 +204,4 @@ NotAvailableOptionTrait<OptionType>::updateHandleToMe(internal::CurlHandle *) co
 } // namespace curlpp
 
 #endif
+/* public header */

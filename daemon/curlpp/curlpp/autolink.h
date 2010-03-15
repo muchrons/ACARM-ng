@@ -45,3 +45,4 @@
 #endif //Windows
 
 #endif //__AUTOLINK__H_
+/* public header */

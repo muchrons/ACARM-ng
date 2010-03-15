@@ -172,3 +172,4 @@ CURLPPAPI std::ostream & operator<<(std::ostream & stream, const curlpp::Easy & 
 
 
 #endif // #ifndef CURLPP_EASY_HPP
+/* public header */

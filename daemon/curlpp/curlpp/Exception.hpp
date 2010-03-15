@@ -305,3 +305,4 @@ namespace cURLpp = curlpp;
 
 
 #endif // #ifndef CURLPP_EXCEPTION_HPP
+/* public header */

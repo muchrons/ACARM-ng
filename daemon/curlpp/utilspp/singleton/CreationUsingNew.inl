@@ -40,3 +40,4 @@ utilspp::CreationUsingNew<T>::destroy(T * obj)
 
 
 #endif
+/* public header */

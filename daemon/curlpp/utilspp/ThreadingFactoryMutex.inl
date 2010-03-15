@@ -34,4 +34,4 @@ inline
 utilspp::ThreadingSingle<T>::lock::lock(const T &)
 {};
 
-#endif
+#endif/* public header */

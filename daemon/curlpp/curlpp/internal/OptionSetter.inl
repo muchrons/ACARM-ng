@@ -54,3 +54,4 @@ curlpp::internal::OptionSetter<std::list<std::string>, optionType>
 }
 
 #endif
+/* public header */

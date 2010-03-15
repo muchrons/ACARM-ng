@@ -91,3 +91,4 @@ std::ostream CURLPPAPI & operator<<(std::ostream & stream, const std::list<std::
 
 
 #endif // #ifndef CURLPP_SLIST_HPP
+/* public header */

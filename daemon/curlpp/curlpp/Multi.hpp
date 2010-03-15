@@ -80,3 +80,4 @@ namespace cURLpp = curlpp;
 
 
 #endif // #ifndef CURLPP_MULTI_HPP
+/* public header */

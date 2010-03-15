@@ -40,3 +40,4 @@ utilspp::CreationStatic<T>::destroy(T*)
 
 
 #endif
+/* public header */

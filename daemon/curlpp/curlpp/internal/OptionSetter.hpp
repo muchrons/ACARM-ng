@@ -507,3 +507,4 @@ namespace cURLpp = curlpp;
 
 
 #endif // #ifndef CURLPP_OPTION_SETTER_HPP
+/* public header */

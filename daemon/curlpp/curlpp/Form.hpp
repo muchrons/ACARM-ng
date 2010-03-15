@@ -271,3 +271,4 @@ namespace cURLpp = curlpp;
 
 
 #endif //CURLPP_FORM_HPP
+/* public header */

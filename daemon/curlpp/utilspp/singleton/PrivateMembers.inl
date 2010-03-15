@@ -28,3 +28,4 @@ utilspp::PrivateMembers::adapter<T>::operator()(T*)
    return (*mFunc)(); 
 }
 
+/* public header */

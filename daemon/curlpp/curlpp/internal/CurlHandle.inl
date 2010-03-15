@@ -74,3 +74,4 @@ CurlHandle::getInfo(CURLINFO info, T & value)
 
 #endif 
 
+/* public header */

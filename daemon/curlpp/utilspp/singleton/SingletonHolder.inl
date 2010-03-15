@@ -124,3 +124,4 @@ template <class> class M
 bool utilspp::SingletonHolder<T, C, L, M>::mDestroyed;
 
 #endif
+/* public header */

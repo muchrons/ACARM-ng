@@ -31,3 +31,4 @@ utilspp::LifetimeLibraryGuard<T>::~LifetimeLibraryGuard()
   T::instance().terminate();
 }
 
+/* public header */
