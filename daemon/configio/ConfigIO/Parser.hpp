@@ -17,6 +17,7 @@
 #include "ConfigIO/ParsePersistency.hpp"
 #include "ConfigIO/ParseFilters.hpp"
 #include "ConfigIO/ParseTriggers.hpp"
+#include "ConfigIO/ParseInputs.hpp"
 
 
 namespace ConfigIO
@@ -36,27 +37,29 @@ public:
    *  \return logger's configuration.
    */
   const LoggerConfig &getLoggerConfig(void) const;
-
   /** \brief gets persistency configuration, read from file.
    *  \return persistency configuration.
    */
   const PersistencyConfig &getPersistencyConfig(void) const;
-
   /** \brief gets filters' configuration, read from file.
    *  \return filters' configuration.
    */
   const FiltersConfigCollection &getFiltersConfig(void) const;
-
   /** \brief gets triggers' configuration, read from file.
    *  \return triggers' configuration.
    */
   const TriggersConfigCollection &getTriggersConfig(void) const;
+  /** \brief gets inputs' configuration, read from file.
+   *  \return inputs' configuration.
+   */
+  const InputsConfigCollection &getInputsConfig(void) const;
 
 private:
   XML::Tree            tree_;
   ParsePersistency     parsePersistency_;
   ParseFilters         parseFilters_;
   ParseTriggers        parseTriggers_;
+  ParseInputs          parseInputs_;
   ParseLoggerNodes     parseNodes_;
   ParseLoggerAppenders parseAppenders_;
   LoggerConfig         loggerCfg_;

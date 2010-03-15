@@ -13,6 +13,7 @@
 #include "ConfigIO/PersistencyConfig.hpp"
 #include "ConfigIO/FiltersConfigCollection.hpp"
 #include "ConfigIO/TriggersConfigCollection.hpp"
+#include "ConfigIO/InputsConfigCollection.hpp"
 #include "ConfigIO/LoggerConfig.hpp"
 
 namespace ConfigIO
@@ -54,6 +55,10 @@ public:
    *  \return triggers' configuration.
    */
   const TriggersConfigCollection &triggersConfig(void) const;
+  /** \brief gets inputs' configuration, read from file.
+   *  \return inputs' configuration.
+   */
+  const InputsConfigCollection &inputsConfig(void) const;
 
 private:
   friend class System::Singleton<SingletonImpl>;

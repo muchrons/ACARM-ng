@@ -49,6 +49,12 @@ const TriggersConfigCollection &SingletonImpl::triggersConfig(void) const
   return p_->getTriggersConfig();
 }
 
+const InputsConfigCollection &SingletonImpl::inputsConfig(void) const
+{
+  assert( p_.get()!=NULL );
+  return p_->getInputsConfig();
+}
+
 SingletonImpl::SingletonImpl(void):
   p_(new Parser)
 {

@@ -147,4 +147,14 @@ void testObj::test<8>(void)
   p.getTriggersConfig();
 }
 
+// test getting inputs' configuration - smoke test
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  copyAsDefaultConfig("testdata/sample_config.xml");
+  const Parser        p;
+  p.getInputsConfig();
+}
+
 } // namespace tut
