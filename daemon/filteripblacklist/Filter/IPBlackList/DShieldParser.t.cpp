@@ -28,7 +28,7 @@ struct TestClass
     if(ip1==NULL)
     {
       // end?
-      tut::ensure("too many elements in collection", it==p.end() );
+      tut::ensure("no first element", it==p.end() );
       return;
     }
     // first entry
@@ -39,7 +39,7 @@ struct TestClass
     if(ip2==NULL)
     {
       // end?
-      tut::ensure("too many elements in collection", it==p.end() );
+      tut::ensure("no second element", it==p.end() );
       return;
     }
     // second entry
@@ -218,6 +218,23 @@ void testObj::test<11>(void)
 
   // end?
   tut::ensure("too many elements in collection", it==p.end() );
+}
+
+// test skipping multiple comments in line
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const char *in=
+    "# some comment 1\n"
+    "# some comment 2\n"
+    "# some comment 3\n"
+    "218.244.231.132 173049  96320   2009-09-28      2010-03-08\n"
+    "218.008.251.187 245502  90990   2009-10-02      2010-03-07\n"
+    "# some comment 4\n"
+    "# some comment 5\n"
+    ;
+  checkParsing(in, "218.244.231.132", "218.8.251.187");
 }
 
 } // namespace tut

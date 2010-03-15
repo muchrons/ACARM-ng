@@ -63,7 +63,7 @@ public:
   const_iterator end(void) const;
 
 private:
-  const std::string &data_;
+  const std::string data_;
 }; // class DShieldParser
 
 } // namespace IPBlackList
