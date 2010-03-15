@@ -36,10 +36,7 @@ public:
    *  \note method in non-const on purpose, to allow internal buffering and
    *        doing actual reading in separate thread.
    */
-  DataPtr read(unsigned int timeout=0);
-
-private:
-  virtual DataPtr readImpl(unsigned int timeout) = 0;
+  virtual DataPtr read(unsigned int timeout=0) = 0;
 }; // class Reader
 
 } // namespace Input
