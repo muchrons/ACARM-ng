@@ -8,7 +8,7 @@
 #include <string>
 
 #include "Logger/Logger.hpp"
-#include "Input/ReadersFactory.hpp"
+#include "Input/Factory.hpp"
 #include "Input/Exception.hpp"
 
 namespace Input
@@ -18,10 +18,10 @@ namespace Prelude
 
 /** \brief builder for reader of prelude format.
  */
-class ReaderBuilder: public ReadersFactory::TFactoryBuilderBase
+class ReaderBuilder: public Factory::TFactoryBuilderBase
 {
 public:
-  /** \brief creates builder of a readers for Input::Prelude
+  /** \brief creates builder of a readers for Input::Prelude.
    */
   ReaderBuilder(void);
 

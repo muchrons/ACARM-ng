@@ -8,6 +8,7 @@
 #include "XML/Node.hpp"
 #include "ConfigIO/TriggerConfig.hpp"
 #include "ConfigIO/TriggersConfigCollection.hpp"
+#include "ConfigIO/Generic/Parse.hpp"
 
 
 namespace ConfigIO
@@ -15,26 +16,13 @@ namespace ConfigIO
 
 /** \brief parser for triggers' configuration.
  */
-class ParseTriggers
+class ParseTriggers: public Generic::Parse<TriggerConfig, TriggersConfigCollection>
 {
 public:
   /** \brief parses configuration and saves it internally.
    *  \param node node to start parsing from.
    */
   explicit ParseTriggers(const XML::Node &node);
-
-  /** \brief gets triggers' configuration.
-   *  \return collection of striggers' configuration.
-   */
-  const TriggersConfigCollection &getConfig(void) const
-  {
-    return tcc_;
-  }
-
-private:
-  void parse(const XML::Node &node);
-
-  TriggersConfigCollection tcc_;
 }; // class ParaseTriggers
 
 } // namespace ConfigIO
