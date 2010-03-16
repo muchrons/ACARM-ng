@@ -38,6 +38,7 @@ void Thread::operator()(void)
     {
       // this means we're interrupted.
       LOGMSG_INFO_S(log_)<<"thread has been interrupted - exiting";
+      output_->signalAll();     // signal all listeners - just in case...
       return;
     }
     catch(const Commons::Exception &ex)
