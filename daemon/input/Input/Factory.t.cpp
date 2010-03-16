@@ -26,21 +26,14 @@ factory tf("Input/Factory");
 namespace tut
 {
 
-// creating of instance should not be possible, since at the moment no
-// backend is registered.
+// test creating empty inputs
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  try
-  {
-    create();
-    fail("create() didn't throw when no factory is registered");
-  }
-  catch(const Commons::Factory::ExceptionBuilderDoesNotExist&)
-  {
-    // this is expected
-  }
+  Core::Types::AlertsFifo q;
+  InputsCollection        c=create(q);
+  ensure_equals("some elements are found", c.size(), 0);
 }
 
 } // namespace tut
