@@ -10,6 +10,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/thread.hpp>
 
+#include "Logger/Node.hpp"
 #include "Core/Types/AlertsFifo.hpp"
 #include "Input/Reader.hpp"
 
@@ -26,8 +27,17 @@ public:
    *  \param output queue to output data to.
    */
   Interface(ReaderPtrNN reader, Core::Types::AlertsFifo &output);
+  /** \brief deactivate thread and do the cleanup.
+   */
+  ~Interface(void);
+  /** \brief request stop on thread.
+   *
+   *  this call exits fast, but thread usually need some time to exit.
+   */
+  void stop(void);
 
 private:
+  Logger::Node  log_;
   boost::thread thread_;
 }; // class Interface
 

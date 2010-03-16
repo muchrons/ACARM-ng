@@ -25,7 +25,7 @@ struct TestReader: public Reader
 
   virtual DataPtr read(unsigned int)
   {
-    usleep(50*1000);   // limit output a little...
+    usleep(10*1000);   // limit output a little...
     ++count_;
     if(justThrow_)
       throw std::runtime_error("just-throw-test");
@@ -76,7 +76,9 @@ void testObj::test<2>(void)
   ensure_equals("pre-condition 2 failed", output_.size(), 0);
   {
     boost::thread th( Thread(r_, output_) );
-    usleep(130*1000);   // run ~2-3 times
+    // run ~2-3 times
+    while(tr_->count_==0 || tr_->count_==1 || tr_->count_==2)
+      usleep(10*1000);
     th.interrupt();
     th.join();
   }
@@ -95,7 +97,9 @@ void testObj::test<3>(void)
   tr_->justThrow_=true;
   {
     boost::thread th( Thread(r_, output_) );
-    usleep(130*1000);   // run ~2-3 times
+    // run ~2-3 times
+    while(tr_->count_==0 || tr_->count_==1 || tr_->count_==2)
+      usleep(10*1000);
     th.interrupt();
     th.join();
   }
