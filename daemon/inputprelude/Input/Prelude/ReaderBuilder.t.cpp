@@ -44,6 +44,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  opts_["preludeProfile"]="prelude";
   ReaderBuilder::FactoryPtr ptr=rb_.build(opts_);
   ensure("NULL pointere returned", ptr.get()!=NULL );
 }

@@ -1,9 +1,9 @@
 /*
- * ReadersFactory.hpp
+ * Factory.hpp
  *
  */
-#ifndef INCLUDE_INPUT_READERSFACTORY_HPP_FILE
-#define INCLUDE_INPUT_READERSFACTORY_HPP_FILE
+#ifndef INCLUDE_INPUT_FACTORY_HPP_FILE
+#define INCLUDE_INPUT_FACTORY_HPP_FILE
 
 /* public header */
 
@@ -17,12 +17,12 @@ namespace Input
 
 /** \brief abstract factory producing readers.
  */
-typedef Commons::Factory::AbstractFactorySingleton<Reader> ReadersFactory;
+typedef Commons::Factory::AbstractFactorySingleton<Reader> Factory;
 
 /** \brief creates new input.
  *  \return newly created input. each call returns new instance.
  */
-ReadersFactory::FactoryPtr create(void);
+Factory::FactoryPtr create(void);
 
 } // namespace Input
 

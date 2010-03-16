@@ -1,12 +1,10 @@
 /*
- * ReadersFactory.t.cpp
+ * Factory.t.cpp
  *
  */
 #include <tut.h>
-#include <cstring>
-#include <memory>
 
-#include "Input/ReadersFactory.hpp"
+#include "Input/Factory.hpp"
 
 using namespace std;
 using namespace Input;
@@ -21,7 +19,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Input/ReadersFactory");
+factory tf("Input/Factory");
 } // unnamed namespace
 
 
