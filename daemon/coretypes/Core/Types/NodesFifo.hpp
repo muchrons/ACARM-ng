@@ -15,7 +15,7 @@ namespace Core
 namespace Types
 {
 
-/** \brief type that graph nodes fifo is hold in.
+/** \brief fifo queue holding graph nodes.
  *  \note this class may be updated later on to insert only unique entries,
  *        since repeated ones does not introduce anything new.
  */
