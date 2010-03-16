@@ -2,7 +2,6 @@
  * Source.cpp
  *
  */
-#include "Persistency/GraphNode.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Core/Source.hpp"
 

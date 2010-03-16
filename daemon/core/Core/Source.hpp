@@ -7,6 +7,7 @@
 
 #include <boost/noncopyable.hpp>
 
+#include "Persistency/GraphNode.hpp"
 #include "Persistency/IO/Connection.hpp"
 #include "Core/Types/AlertsFifo.hpp"
 #include "Input/Factory.hpp"

@@ -3,6 +3,7 @@
  *
  */
 #include <tut/tut.hpp>
+#include <string>
 
 #include "Core/Source.hpp"
 
@@ -24,12 +25,24 @@ factory tf("Core/Source");
 namespace tut
 {
 
-//
+// test c-tor/d-tor
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  // TODO
+  Source s;
+}
+
+// test reading from input
+template<>
+template<>
+void testObj::test<2>(void)
+{
+  Source                      s;
+  Persistency::GraphNodePtrNN leaf=s.read();
+  ensure_equals("invalid leaf returned",
+                leaf->getAlert()->getName().get(),
+                std::string("some alert") );
 }
 
 } // namespace tut
