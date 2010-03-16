@@ -1,2 +1,2 @@
 #!/bin/sh
-exec echo "-lboost_system"
+exec echo "-lboost_system-mt"
