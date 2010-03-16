@@ -11,6 +11,7 @@
 #include <boost/thread.hpp>
 
 #include "Logger/Node.hpp"
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Core/Types/AlertsFifo.hpp"
 #include "Input/Reader.hpp"
 
@@ -40,6 +41,10 @@ private:
   Logger::Node  log_;
   boost::thread thread_;
 }; // class Interface
+
+
+/** \brief interface pointer. */
+typedef Commons::SharedPtrNotNULL<Interface> InterfacePtrNN;
 
 } // namespace Input
 

@@ -81,4 +81,12 @@ void testObj::test<2>(void)
   ensure_equals("thread didn't stop", output_.size(), size);
 }
 
+// test pointer declaration's presence
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  InterfacePtrNN iface( new Interface(r_, output_) );
+}
+
 } // namespace tut
