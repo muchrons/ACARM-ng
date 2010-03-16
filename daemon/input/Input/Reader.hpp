@@ -52,7 +52,7 @@ protected:
    */
   explicit Reader(const std::string &name);
 
-  Logger::Node log_;
+  Logger::Node log_;    ///< logger node to log messages to.
 
 private:
   const std::string name_;

@@ -22,7 +22,8 @@ public:
    *  \param output queue to output data to.
    */
   Thread(ReaderPtrNN reader, Core::Types::AlertsFifo &output);
-
+  /** \brief thread loop implementation.
+   */
   void operator()(void);
 
 private:
