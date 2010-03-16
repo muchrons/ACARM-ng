@@ -130,4 +130,12 @@ void testObj::test<8>(void)
   Singleton::get()->triggersConfig();
 }
 
+// test getting inputs' config
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  Singleton::get()->inputsConfig();
+}
+
 } // namespace tut
