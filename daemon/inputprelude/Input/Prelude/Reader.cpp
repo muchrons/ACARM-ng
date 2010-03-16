@@ -15,6 +15,7 @@ namespace Prelude
 {
 
 Reader::Reader(const std::string profile):
+  Input::Reader("prelude"),
   preludeLogger_("input.prelude.reader.preludelog"),
   preludeProfile_(profile),
   client_( new ::Prelude::Client( preludeProfile_.c_str() ) )
