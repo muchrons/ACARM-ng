@@ -1,4 +1,3 @@
 daemon/gen
 doc/v0.1.0/acarm-ng/*.session
 .~lock.*
-bzr_team.conf
