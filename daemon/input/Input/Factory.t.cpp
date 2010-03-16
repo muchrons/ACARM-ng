@@ -55,4 +55,15 @@ void testObj::test<2>(void)
   }
 }
 
+// test creating some sample, existing input
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  ConfigIO::Singleton::get()->rereadConfig("testdata/valid_input.xml");
+  Core::Types::AlertsFifo q;
+  InputsCollection        c=create(q);
+  ensure_equals("invalid number of entries read", c.size(), 1);
+}
+
 } // namespace tut
