@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "ConfigIO/Singleton.hpp"
 #include "Input/Factory.hpp"
 
 using namespace std;
@@ -26,18 +27,40 @@ factory tf("Input/Factory");
 namespace tut
 {
 
-// creating of instance should not be possible, since at the moment no
-// backend is registered.
+// test creating empty inputs
 template<>
 template<>
 void testObj::test<1>(void)
 {
+  Core::Types::AlertsFifo q;
+  InputsCollection        c=create(q);
+  ensure_equals("some elements are found", c.size(), 0);
+}
+
+// test creating some sample, existing input
+template<>
+template<>
+void testObj::test<2>(void)
+{
+  ConfigIO::Singleton::get()->rereadConfig("testdata/valid_input.xml");
+  Core::Types::AlertsFifo q;
+  InputsCollection        c=create(q);
+  ensure_equals("invalid number of entries read", c.size(), 1);
+}
+
+// test throw when non-existing input type is requested.
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  ConfigIO::Singleton::get()->rereadConfig("testdata/invalid_input.xml");
+  Core::Types::AlertsFifo q;
   try
   {
-    create();
-    fail("create() didn't throw when no factory is registered");
+    InputsCollection c=create(q);
+    fail("create() didn't throw when requested non-existing input");
   }
-  catch(const Commons::Factory::ExceptionBuilderDoesNotExist&)
+  catch(const std::runtime_error &)
   {
     // this is expected
   }

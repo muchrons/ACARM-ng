@@ -1,16 +1,33 @@
+#include "ConfigIO/InputConfig.hpp"
+#include "ConfigIO/Singleton.hpp"
 #include "Input/Factory.hpp"
+
+using namespace ConfigIO;
 
 namespace Input
 {
 
-Factory::FactoryPtr create(void)
+InputsCollection create(Core::Types::AlertsFifo &output)
 {
-  // TODO: get name from config
-  const Factory::FactoryTypeName name="file";   // TODO: temporary solution
-  // TODO: get options form configuration
-  const Factory::Options         options;
+  InputsCollection              out;
 
-  return Factory::create(name, options);
+  // create each input and configure it
+  const InputsConfigCollection &inputs=Singleton::get()->inputsConfig();
+  for(InputsConfigCollection::const_iterator iit=inputs.begin();
+      iit!=inputs.end(); ++iit)
+  {
+    // create each and every element
+    const Factory::FactoryTypeName &name   =iit->getType();
+    const Factory::Options         &options=iit->getOptions();
+    Factory::FactoryPtr             tmp    =Factory::create(name, options);
+    ReaderPtrNN                     reader( tmp.release() );
+    InterfacePtrNN                  iface( new Interface(reader, output) );
+    // add input to collection
+    out.push_back(iface);
+  }
+
+  // return collection
+  return out;
 }
 
 } // namespace Input
