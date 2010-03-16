@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <cstdlib>
 
+#include "TestHelpers/TestBase.hpp"
 #include "Logger/Appenders/File.hpp"
 #include "Logger/Appenders/FileUnlinker.t.hpp"
 
@@ -15,7 +16,7 @@ using namespace Logger::Appenders;
 namespace
 {
 
-struct FileTestClass
+struct FileTestClass: private TestHelpers::TestBase
 {
   FileTestClass():
     path_("mytest.log"),

@@ -9,7 +9,7 @@
 
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/date_time/gregorian/gregorian.hpp>
+#include <boost/operators.hpp>
 
 #include "Base/Threads/Mutex.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
@@ -29,7 +29,8 @@ class MetaAlert;
 
 /** \brief meta-alert representation
  */
-class MetaAlert: private boost::noncopyable
+class MetaAlert: private boost::noncopyable,
+                 public  boost::equality_comparable<MetaAlert>
 {
 public:
   /** \brief name for meta alert.
@@ -40,7 +41,7 @@ public:
   typedef double                     SeverityDelta;
   /** \brief certanity difference type.
    */
-  typedef double                     CertanityDelta;
+  typedef double                     CertaintyDelta;
 
   /** \brief creates meta alert based on exisitng alert.
    *  \param alert to corelate meta-alert with.
@@ -56,7 +57,7 @@ public:
    */
   MetaAlert(const Name      &name,
             SeverityDelta    severityDelta,
-            CertanityDelta   certanityDelta,
+            CertaintyDelta   certanityDelta,
             ReferenceURLPtr  url,
             Timestamp        created);
 
@@ -71,7 +72,7 @@ public:
   /** \brief gets certanity delta.
    *  \return certanity delta.
    */
-  CertanityDelta getCertanityDelta(void) const;
+  CertaintyDelta getCertaintyDelta(void) const;
   /** \brief gets reference url.
    *  \return reference url.
    */
@@ -80,16 +81,21 @@ public:
    *  \return time of creation of this meta alert.
    */
   Timestamp getCreateTime(void) const;
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const MetaAlert &other) const;
 
 private:
   friend class IO::MetaAlert;
   void updateSeverityDelta(double delta);
-  void updateCertanityDelta(double delta);
+  void updateCertaintyDelta(double delta);
 
   mutable Base::Threads::Mutex mutex_;
   Name                         name_;
   SeverityDelta                severityDelta_;
-  CertanityDelta               certanityDelta_;
+  CertaintyDelta               certanityDelta_;
   ReferenceURLPtr              url_;
   Timestamp                    created_;
 }; // class MetaAlert

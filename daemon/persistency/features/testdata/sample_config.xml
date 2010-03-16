@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+
+  <persistency>
+    <type>persistencytest</type>
+  </persistency>
+
+  <logger>
+    <appenders>
+      <File name="default">
+        <output>acarm-ng.log</output>
+      </File>
+    </appenders>
+
+    <nodes appender="default" threshold="debug">
+    </nodes>
+  </logger>
+
+  <filters/>
+
+  <triggers/>
+
+  <inputs/>
+
+</acarm_ng>

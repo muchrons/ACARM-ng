@@ -18,11 +18,12 @@ class Exception: public System::Exceptions::RuntimeError<Exception>
 {
 public:
   /** \brief create execption with given message.
-   *  \param msg message to represent.
+   *  \param where place execption has been rised.
+   *  \param msg   message to represent.
    */
   template<typename T>
-  explicit Exception(const T &msg):
-    System::Exceptions::RuntimeError<Exception>(msg)
+  Exception(const Location &where, const T &msg):
+    System::Exceptions::RuntimeError<Exception>(where, msg)
   {
   }
 
@@ -39,6 +40,6 @@ protected:
   }
 }; // class Exception
 
-}; // namespace ConfigIO
+} // namespace ConfigIO
 
 #endif

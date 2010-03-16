@@ -5,7 +5,7 @@
 #ifndef INCLUDE_SYSTEM_ATEXITIMPL_HPP_FILE
 #define INCLUDE_SYSTEM_ATEXITIMPL_HPP_FILE
 
-#include <list>
+#include <deque>
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
@@ -41,7 +41,7 @@ public:
 
 private:
   typedef boost::shared_ptr<AtExitResourceDeallocator> TElem;
-  typedef std::list<TElem>                             TList;
+  typedef std::deque<TElem>                            TList;
 
   TList deallocators_;
   bool  deallocationDone_;

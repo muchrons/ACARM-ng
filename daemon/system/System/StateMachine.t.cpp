@@ -20,7 +20,7 @@ struct StateMachineTestData
     {
       STATE_A=0,
       STATE_B=1,
-      STATE_C=2,
+      STATE_C=2
     } Type;
   };
   typedef System::Enum<MyEnum> StateEnum;

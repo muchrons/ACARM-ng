@@ -30,6 +30,12 @@ void MetaAlert::save()
   saveImpl(t_);
 }
 
+void MetaAlert::markAsTriggered(const std::string &name)
+{
+  t_.ensureIsActive();
+  markAsTriggeredImpl(t_, name);
+}
+
 void MetaAlert::markAsUsed()
 {
   t_.ensureIsActive();
@@ -51,13 +57,13 @@ void MetaAlert::updateSeverityDelta(double delta)
   ma_->updateSeverityDelta(delta);
 }
 
-void MetaAlert::updateCertanityDelta(double delta)
+void MetaAlert::updateCertaintyDelta(double delta)
 {
   t_.ensureIsActive();
-  updateCertanityDeltaImpl(t_, delta);
+  updateCertaintyDeltaImpl(t_, delta);
 
   assert(ma_.get()!=NULL);
-  ma_->updateCertanityDelta(delta);
+  ma_->updateCertaintyDelta(delta);
 }
 
 void MetaAlert::addChild(Persistency::MetaAlertPtrNN child)
@@ -72,10 +78,10 @@ void MetaAlert::associateWithAlert(Persistency::AlertPtrNN alert)
   associateWithAlertImpl(t_, alert);
 }
 
-const Persistency::MetaAlert &MetaAlert::get(void) const
+Persistency::MetaAlertPtrNN MetaAlert::get(void)
 {
   assert(ma_.get()!=NULL);
-  return *ma_;
+  return ma_;
 }
 
 } // namespace IO

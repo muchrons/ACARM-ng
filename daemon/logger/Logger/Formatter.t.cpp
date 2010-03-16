@@ -4,11 +4,12 @@
  */
 #include <tut.h>
 
+#include "TestHelpers/TestBase.hpp"
 #include "Logger/Formatter.hpp"
 
 namespace
 {
-struct FormatterTestClass
+struct FormatterTestClass: private TestHelpers::TestBase
 {
   FormatterTestClass():
     fmt_()

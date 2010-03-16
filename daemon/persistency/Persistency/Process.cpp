@@ -2,7 +2,7 @@
  * Process.cpp
  *
  */
-
+#include "Base/ViaPointer.hpp"
 #include "Persistency/Process.hpp"
 
 using namespace std;
@@ -68,6 +68,31 @@ const std::string *Process::getParameters(void) const
 const ReferenceURL *Process::getReferenceURL(void) const
 {
   return url_.get();
+}
+
+bool Process::operator==(const Process &other) const
+{
+  if(this==&other)
+    return true;
+
+  if( getPath()!=other.getPath() )
+    return false;
+  if( getName()!=other.getName() )
+    return false;
+  if( !Base::ViaPointer::equal( getMD5(), other.getMD5() ) )
+    return false;
+  if( !Base::ViaPointer::equal( getPID(), other.getPID() ) )
+    return false;
+  if( !Base::ViaPointer::equal( getUID(), other.getUID() ) )
+    return false;
+  if( getUsername()!=other.getUsername() )
+    return false;
+  if( !Base::ViaPointer::equal( getParameters(), other.getParameters() ) )
+    return false;
+  if( !Base::ViaPointer::equal( getReferenceURL(), other.getReferenceURL() ) )
+    return false;
+  // if all fields are identical, Processes are identical too.
+  return true;
 }
 
 } // namespace Persistency

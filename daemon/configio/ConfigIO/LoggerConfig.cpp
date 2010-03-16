@@ -17,13 +17,13 @@ LoggerConfig::LoggerConfig(const LoggerNodeConfig &defaultNode,
   // root node should not have name
   if( defaultNode_.getNodeName()!="" )
     throw ExceptionBadOrMissingDefaultNodeSetting(
-                            "LoggerConfig::LoggerConfig()",
+                            SYSTEM_SAVE_LOCATION,
                             "node name", defaultNode_.getNodeName() );
 
   // default not must have appender set
   if( !defaultNode_.hasAppender() )
     throw ExceptionBadOrMissingDefaultNodeSetting(
-                            "LoggerConfig::LoggerConfig()",
+                            SYSTEM_SAVE_LOCATION,
                             "appender", "<none>");
 
   // check if appender name is valid (if not following call will throw.

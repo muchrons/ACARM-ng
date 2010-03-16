@@ -28,22 +28,22 @@ struct TestIOAlert: public Persistency::IO::Alert
   virtual void saveImpl(Transaction&)
   {
     ++called_;
-    tut::ensure("invalid pointer", &get()==alert_.get() );
+    tut::ensure("invalid pointer", get().get()==alert_.get() );
   }
 
   Persistency::AlertPtr alert_;
   int                   called_;
 }; // struct TestIOAlert
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestClass(void):
     alert_( new Persistency::Alert("abc",
-                                   makeNewAnalyzer(),
+                                   Persistency::Alert::SourceAnalyzers( makeNewAnalyzer() ),
                                    NULL,
                                    Timestamp(),
                                    Severity(SeverityLevel::INFO),
-                                   Certanity(0.42),
+                                   Certainty(0.42),
                                    "some description",
                                    Persistency::Alert::ReportedHosts(),
                                    Persistency::Alert::ReportedHosts()) ),
@@ -57,7 +57,6 @@ struct TestClass
   Transaction             t_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

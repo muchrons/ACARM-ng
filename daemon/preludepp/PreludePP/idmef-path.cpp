@@ -78,7 +78,9 @@ idmef_value_type_id_t IDMEFPath::GetValueType(int depth)
         return idmef_path_get_value_type(_path, depth);
 }
 
+// removed for compatibility with previous version
 
+/*
 int IDMEFPath::CheckOperator(idmef_criterion_operator_t op)
 {
         return idmef_path_check_operator(_path, op);
@@ -97,7 +99,7 @@ idmef_criterion_operator_t IDMEFPath::GetApplicableOperators()
 
         return res;
 }
-
+*/
 
 void IDMEFPath::Set(IDMEF &message, IDMEFValue *value)
 {

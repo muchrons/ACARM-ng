@@ -11,7 +11,6 @@
 
 #include "System/Exceptions/RuntimeError.hpp"
 #include "Logger/Logger.hpp"
-#include "Commons/CallName.h"
 
 namespace Commons
 {
@@ -26,12 +25,16 @@ public:
    *  \param msg   message to represent.
    */
   template<typename T>
-  Exception(const char *where, const T &msg):
-    System::Exceptions::RuntimeError<Exception>(
-        std::string( ensureString(where) ) + ": " + msg ),
+  Exception(const Location &where, const T &msg):
+    System::Exceptions::RuntimeError<Exception>(where, msg),
     log_("commons.exception")
   {
-    LOGMSG_ERROR_S(log_)<<"exception rised: "<<what();
+    LOGMSG_ERROR_S(log_) << "exception ("
+                         << getTypeName()
+                         << ") rised in "
+                         << where.getStr()
+                         << ": "
+                         << what();
   }
 
   /** \brief dealocates object in inheritance-secure way.
@@ -57,6 +60,6 @@ private:
   Logger::Node log_;
 }; // class Exception
 
-}; // namespace Commons
+} // namespace Commons
 
 #endif

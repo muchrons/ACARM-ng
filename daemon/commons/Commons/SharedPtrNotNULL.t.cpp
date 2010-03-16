@@ -7,6 +7,7 @@
 #include <boost/mpl/equal.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "TestHelpers/TestBase.hpp"
 
 using namespace std;
 using namespace Commons;
@@ -14,7 +15,7 @@ using namespace Commons;
 namespace
 {
 
-struct TestClass
+struct TestClass: private TestHelpers::TestBase
 {
   typedef boost::shared_ptr<int>   BoostPtr;
   typedef SharedPtrNotNULL<int>    PtrNN;
@@ -36,7 +37,6 @@ struct TestClass
   PtrNN other_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -342,6 +342,41 @@ void testObj::test<29>(void)
 {
   ensure("invalid element's reference type declaration",
          boost::mpl::equal<int&, PtrNN::reference>::type::value);
+}
+
+// test convertion operator for constness
+template<>
+template<>
+void testObj::test<30>(void)
+{
+  const PtrNN nn( new int(42) );
+  BoostPtr    bp;
+  bp=nn;
+  ensure("invalid pointer value", bp.get()==nn.get() );
+}
+
+// test convertion from auto_ptr<>.
+template<>
+template<>
+void testObj::test<31>(void)
+{
+  std::auto_ptr<int>  ap( new int(42) );
+  int                *ptr=ap.get();
+  const PtrNN         nn(ap);
+  ensure("ap not NULLed", ap.get()==NULL );
+  ensure("invalid pointer value", nn.get()==ptr );
+}
+
+// test assignment from auto_ptr<>.
+template<>
+template<>
+void testObj::test<32>(void)
+{
+  std::auto_ptr<int>  ap( new int(42) );
+  int                *ptr=ap.get();
+  nn_=ap;
+  ensure("ap not NULLed", ap.get()==NULL );
+  ensure("invalid pointer value", nn_.get()==ptr );
 }
 
 } // namespace tut

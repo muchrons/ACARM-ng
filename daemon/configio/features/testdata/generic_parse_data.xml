@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+
+  <whatever>
+    <noopts>
+    </noopts>
+
+    <something>
+      <opt7>cat</opt7>
+      <opt4>alice</opt4>
+    </something>
+  </whatever>
+
+</acarm_ng>

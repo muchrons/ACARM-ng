@@ -11,6 +11,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
+#include <boost/operators.hpp>
 #include <boost/asio/ip/address.hpp>
 
 #include "Base/Threads/Mutex.hpp"
@@ -18,6 +19,7 @@
 #include "Persistency/ReferenceURL.hpp"
 #include "Persistency/Service.hpp"
 #include "Persistency/Process.hpp"
+#include "Persistency/IPTypes.hpp"
 #include "Persistency/detail/LimitedNULLString.hpp"
 
 namespace Persistency
@@ -31,27 +33,11 @@ class Host;
 
 /** \brief host information representation.
  */
-class Host: private boost::noncopyable
+class Host: private boost::noncopyable,
+            public  boost::equality_comparable<Host>,
+            public  IPTypes<Host>
 {
 public:
-  /** \brief any IP address type.
-   */
-  typedef boost::asio::ip::address      IP;
-  /** \brief IPv4 address.
-   */
-  typedef boost::asio::ip::address_v4   IPv4;
-  /** \brief IPv6 address.
-   */
-  typedef boost::asio::ip::address_v6   IPv6;
-  /** \brief any network mask.
-   */
-  typedef IP                            Netmask;
-  /** \brief network mask for IPv4.
-   */
-  typedef IPv4                          Netmask_v4;
-  /** \brief network mask for IPv6.
-   */
-  typedef IPv6                          Netmask_v6;
   /** \brief operation system name type.
    */
   typedef detail::LimitedNULLString<32> OperatingSystem;
@@ -60,10 +46,10 @@ public:
   typedef detail::LimitedNULLString<64> Name;
   /** \brief services assigned to host.
    */
-  typedef std::vector<ServicePtr>       ReportedServices;
+  typedef std::vector<ServicePtrNN>     ReportedServices;
   /** \brief processes assigned to host.
    */
-  typedef std::vector<ProcessPtr>       ReportedProcesses;
+  typedef std::vector<ProcessPtrNN>     ReportedProcesses;
 
   /** \brief create host entry of IPv4 address.
    *  \param ip        ip address.
@@ -72,13 +58,15 @@ public:
    *  \param url       reference url for report (optional - can be NULL).
    *  \param services  service reported on a host.
    *  \param processes processes reported on host.
+   *  \param name      DNS name of this host (or NULL if not known).
    */
   Host(const IPv4              &ip,
        const Netmask_v4        *mask,
        const OperatingSystem    os,
        ReferenceURLPtr          url,
        const ReportedServices  &services,
-       const ReportedProcesses &processes);
+       const ReportedProcesses &processes,
+       const Name              &name);
   /** \brief create host entry of IPv6 address.
    *  \param ip        ip address.
    *  \param mask      network maks of a given host.
@@ -86,13 +74,31 @@ public:
    *  \param url       reference url for report (optional - cen be NULL).
    *  \param services  service reported on a host.
    *  \param processes processes reported on host.
+   *  \param name      DNS name of this host (or NULL if not known).
    */
   Host(const IPv6              &ip,
        const Netmask_v6        *mask,
        const OperatingSystem    os,
        ReferenceURLPtr          url,
        const ReportedServices  &services,
-       const ReportedProcesses &processes);
+       const ReportedProcesses &processes,
+       const Name              &name);
+  /** \brief create host entry of IP address.
+   *  \param ip        ip address.
+   *  \param mask      network maks of a given host.
+   *  \param os        operating system name.
+   *  \param url       reference url for report (optional - cen be NULL).
+   *  \param services  service reported on a host.
+   *  \param processes processes reported on host.
+   *  \param name      DNS name of this host (or NULL if not known).
+   */
+  Host(const IP                &ip,
+       const Netmask           *mask,
+       const OperatingSystem    os,
+       ReferenceURLPtr          url,
+       const ReportedServices  &services,
+       const ReportedProcesses &processes,
+       const Name              &name);
 
   /** \brief gets IP address.
    *  \return IP address of host.
@@ -110,7 +116,7 @@ public:
    *  \return host name.
    *  \note pointer may be NULL, if name has not been set.
    */
-  const Name *getName(void) const;
+  const Name &getName(void) const;
   /** \brief gets reference url for this host.
    *  \return reference url to get more info.
    */
@@ -123,6 +129,11 @@ public:
    *  \return vector of reported processes.
    */
   const ReportedProcesses &getReportedProcesses(void) const;
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const Host &other) const;
 
 private:
   friend class ::Persistency::IO::Host;
@@ -131,7 +142,7 @@ private:
   IP                           ip_;
   boost::scoped_ptr<Netmask>   mask_;
   OperatingSystem              os_;
-  boost::scoped_ptr<Name>      name_;
+  Name                         name_;
   ReferenceURLPtr              url_;
   ReportedServices             services_;
   ReportedProcesses            processes_;

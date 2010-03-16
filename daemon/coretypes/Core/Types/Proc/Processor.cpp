@@ -21,7 +21,7 @@ Logger::Node makeNodeName(const char *prefix, const Interface *interface)
 {
   assert(prefix!=NULL);
   if(interface==NULL)
-    throw ExceptionInvalidInterface(__FILE__, "NULL");
+    throw ExceptionInvalidInterface(SYSTEM_SAVE_LOCATION, "NULL");
 
   const string str=prefix + interface->getName();
   return Logger::Node( str.c_str() );
@@ -40,7 +40,7 @@ public:
     interface_(interface)
   {
     if(interface_==NULL)
-      throw ExceptionInvalidInterface(__FILE__, "NULL");
+      throw ExceptionInvalidInterface(SYSTEM_SAVE_LOCATION, "NULL");
   }
 
   void operator()(void)

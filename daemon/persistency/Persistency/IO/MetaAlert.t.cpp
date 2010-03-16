@@ -23,7 +23,7 @@ public:
     IO::MetaAlert(ma, t),
     ma_(ma)
   {
-    tut::ensure("invalid object saved", &get()==ma_.get() );
+    tut::ensure("invalid object saved", get().get()==ma_.get() );
 
     for(unsigned int i=0; i<sizeof(calls_)/sizeof(calls_[0]); ++i)
       calls_[i]=0;
@@ -32,6 +32,10 @@ public:
   virtual void saveImpl(Transaction &)
   {
     ++calls_[0];
+  }
+  virtual void markAsTriggeredImpl(Transaction &, const std::string &)
+  {
+    ++calls_[7];
   }
   virtual void markAsUsedImpl(Transaction &)
   {
@@ -45,7 +49,7 @@ public:
   {
     ++calls_[3];
   }
-  virtual void updateCertanityDeltaImpl(Transaction &, double /*delta*/)
+  virtual void updateCertaintyDeltaImpl(Transaction &, double /*delta*/)
   {
     ++calls_[4];
   }
@@ -59,11 +63,11 @@ public:
   }
 
   Persistency::MetaAlertPtr ma_;
-  int                       calls_[7];
+  int                       calls_[8];
 }; // class MetaAlert
 
 
-struct TestClass
+struct TestClass: private TestBase
 {
   TestClass(void):
     ma_( new Persistency::MetaAlert( makeNewAlert() ) ),
@@ -88,7 +92,6 @@ struct TestClass
   IOMetaAlert                 ioma_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -158,7 +161,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  ioma_.updateCertanityDelta(0);
+  ioma_.updateCertaintyDelta(0);
   ensureCalls(4);
 }
 
@@ -273,8 +276,8 @@ void testObj::test<14>(void)
   t_.rollback();
   try
   {
-    ioma_.updateCertanityDelta(4.2);
-    fail("updateCertanityDelta() didn't throw on inactive transaction");
+    ioma_.updateCertaintyDelta(4.2);
+    fail("updateCertaintyDelta() didn't throw on inactive transaction");
   }
   catch(const ExceptionTransactionNotActive&)
   {
@@ -337,12 +340,21 @@ template<>
 void testObj::test<18>(void)
 {
   double v=4;
-  ioma_.updateCertanityDelta(v);
-  ensure_equals("certanity update 1 failed", ma_->getCertanityDelta(), v);
+  ioma_.updateCertaintyDelta(v);
+  ensure_equals("certanity update 1 failed", ma_->getCertaintyDelta(), v);
 
   v+=0.2;
-  ioma_.updateCertanityDelta(0.2);
-  ensure_equals("certanity update 2 failed", ma_->getCertanityDelta(), v);
+  ioma_.updateCertaintyDelta(0.2);
+  ensure_equals("certanity update 2 failed", ma_->getCertaintyDelta(), v);
+}
+
+// test marking as triggered
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  ioma_.markAsTriggered("test");
+  ensureCalls(7);
 }
 
 } // namespace tut

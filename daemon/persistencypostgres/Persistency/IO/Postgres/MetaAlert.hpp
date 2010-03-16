@@ -7,7 +7,8 @@
 
 #include "Persistency/IO/MetaAlert.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
-
+#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
+#include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 // TODO: test
 
 namespace Persistency
@@ -33,10 +34,11 @@ public:
 
 private:
   virtual void saveImpl(Transaction &t);
+  virtual void markAsTriggeredImpl(Transaction &t, const std::string &name);
   virtual void markAsUsedImpl(Transaction &t);
   virtual void markAsUnusedImpl(Transaction &t);
   virtual void updateSeverityDeltaImpl(Transaction &t, double delta);
-  virtual void updateCertanityDeltaImpl(Transaction &t, double delta);
+  virtual void updateCertaintyDeltaImpl(Transaction &t, double delta);
   virtual void addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child);
   virtual void associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN alert);
 

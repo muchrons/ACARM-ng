@@ -111,7 +111,6 @@ struct TestClass
   DequeImpl qImpl2_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -233,7 +232,7 @@ template<>
 template<>
 void testObj::test<14>(void)
 {
-  Iter      it( qImpl2_.end() );
+  Iter      it( qImpl2_.begin()+1 );
   ConstIter cit( qImpl2_.begin() );
   ensure("pre-condition failed", *it!=*cit);
   cit=it;
@@ -247,6 +246,7 @@ void testObj::test<15>(void)
 {
   Iter it1( qImpl1_.begin() );
   Iter it2=it1;
+  it1=it2;  // suppress warning
 }
 
 // test copying iterators of the same type - const
@@ -256,6 +256,7 @@ void testObj::test<16>(void)
 {
   ConstIter it1( qImpl1_.begin() );
   ConstIter it2=it1;
+  it1=it2;  // suppress warning
 }
 
 } // namespace tut

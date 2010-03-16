@@ -52,7 +52,7 @@ private:
   std::string msg_;
 }; // class Exception
 
-}; // namespace XML
+} // namespace XML
 
 #endif
 

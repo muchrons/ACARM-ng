@@ -80,11 +80,11 @@ public:
     // check if proper builders exist
     typename BuildersMap::const_iterator cit=builders_.find(name);
     if( cit==builders_.end() )
-      throw ExceptionBuilderDoesNotExist(CALLNAME, name.c_str() );
+      throw ExceptionBuilderDoesNotExist(SYSTEM_SAVE_LOCATION, name.c_str() );
 
     // use available builder
     assert( cit->second.get()!=NULL );
-    const FactoryPtr ptr=cit->second->build(options);
+    FactoryPtr ptr=cit->second->build(options);
     assert( ptr.get()!=NULL );
     return ptr;
   }
@@ -97,14 +97,14 @@ public:
     FactoryBuilderBasePtr ptr( fb.release() );  // transform auto_ptr<> to shared_ptr<>
     // check if pointer is valid
     if( ptr.get()==NULL )
-      throw ExceptionNullBuilder(CALLNAME);
+      throw ExceptionNullBuilder(SYSTEM_SAVE_LOCATION);
 
     LOGMSG_INFO_S(log_)<<"registering factory type: '"<<ptr->getTypeName()<<"'";
 
     // ensure entry does not already exist
     typename BuildersMap::const_iterator cit=builders_.find( ptr->getTypeName() );
     if( cit!=builders_.end() )
-      throw ExceptionBuilderAlreadyRegistered(CALLNAME,
+      throw ExceptionBuilderAlreadyRegistered(SYSTEM_SAVE_LOCATION,
                                               ptr->getTypeName().c_str() );
 
     // ok - we can register it

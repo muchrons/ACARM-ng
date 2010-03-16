@@ -4,11 +4,12 @@
  */
 #include <tut.h>
 
+#include "TestHelpers/TestBase.hpp"
 #include "Logger/NodeName.hpp"
 
 namespace
 {
-struct NodeNameTestClass
+struct NodeNameTestClass: private TestHelpers::TestBase
 {
 };
 

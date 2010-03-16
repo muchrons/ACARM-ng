@@ -2,11 +2,12 @@
 <acarm_ng>
 
   <persistency>
-    <type>PostgreSQL</type>
+    <type>postgres</type>
     <user>john</user>
     <pass>$3cr3t</pass>
     <host>db.server.my.domain.org</host>
     <port>5432</port>
+    <dbname>kszy</dbname>
   </persistency>
 
   <logger>
@@ -16,8 +17,38 @@
       </file>
     </appenders>
 
-    <nodes appender="default">
+    <nodes appender="default" threshold="debug">
     </nodes>
   </logger>
+
+  <filters>
+    <noopts>
+    </noopts>
+
+    <something>
+      <opt2>abc</opt2>
+      <opt1>narf</opt1>
+    </something>
+  </filters>
+
+  <triggers>
+    <noopts>
+    </noopts>
+
+    <something>
+      <opt7>cat</opt7>
+      <opt4>alice</opt4>
+    </something>
+  </triggers>
+
+  <inputs>
+    <noopts>
+    </noopts>
+
+    <something>
+      <opt9>XOR</opt9>
+      <opt6>or</opt6>
+    </something>
+  </inputs>
 
 </acarm_ng>

@@ -5,11 +5,12 @@
 #include <tut.h>
 
 #include "Core/Types/Proc/InterfaceImpl.hpp"
-#include "Persistency/Stubs/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Core::Types::Proc;
 using namespace Persistency;
-using namespace Persistency::Stubs;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
@@ -55,7 +56,7 @@ struct TestStrategyNoParm
 };
 
 
-struct TestClass
+struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     impl_("somename", params_)
@@ -66,7 +67,6 @@ struct TestClass
   InterfaceImpl<TestStrategy, TestStrategyParams> impl_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

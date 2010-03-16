@@ -5,10 +5,9 @@
 #include <tut.h>
 
 #include "Persistency/IO/Postgres/IDCache.hpp"
-#include "Persistency/Stubs/TestHelpers.hpp"
+#include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 
 using namespace std;
-using namespace Persistency::Stubs;
 using namespace Persistency::IO::Postgres;
 
 namespace
@@ -36,7 +35,6 @@ struct TestClass
   IDCache                     idc_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

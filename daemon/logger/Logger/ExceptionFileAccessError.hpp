@@ -24,13 +24,13 @@ public:
    *  \param where place where exception was rised.
    *  \param path  file that caused error.
    */
-  explicit ExceptionFileAccessError(const char *where, const char *path):
-    Exception( std::string( ensureValidString(where) ) + ": unable to access file: '" +
-               ensureValidString(path) + "' - " + strerror(errno) )
+  explicit ExceptionFileAccessError(const Location &where, const char *path):
+    Exception(where, std::string(": unable to access file: '") +
+                     ensureValidString(path) + "' - " + strerror(errno) )
   {
   }
 }; // class Exception
 
-}; // namespace Logger
+} // namespace Logger
 
 #endif

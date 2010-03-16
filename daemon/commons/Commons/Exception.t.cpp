@@ -6,6 +6,7 @@
 #include <cstring>
 
 #include "Commons/Exception.hpp"
+#include "TestHelpers/TestBase.hpp"
 
 using namespace Commons;
 
@@ -14,7 +15,7 @@ namespace
 struct TestException: public Commons::Exception
 {
   TestException(void):
-    Commons::Exception("ExceptionTestClass::ExceptionTestClass()", "blah")
+    Commons::Exception(SYSTEM_SAVE_LOCATION, "blah")
   {
   }
 
@@ -24,7 +25,7 @@ struct TestException: public Commons::Exception
   }
 };
 
-struct ExceptionTestClass
+struct ExceptionTestClass: private TestHelpers::TestBase
 {
   TestException te_;
 };
@@ -63,7 +64,7 @@ template<>
 void testObj::test<3>(void)
 {
   // this is just a smoke test
-  Exception e("where-not-NULL", "narf");
+  Exception e(SYSTEM_SAVE_LOCATION, "narf");
 }
 
 } // namespace tut

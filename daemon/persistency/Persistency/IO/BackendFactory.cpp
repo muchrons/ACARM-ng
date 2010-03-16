@@ -1,4 +1,11 @@
+#include <string>
+#include <sstream>
+#include <boost/lexical_cast.hpp>
+
 #include "Persistency/IO/BackendFactory.hpp"
+#include "ConfigIO/Singleton.hpp"
+
+using namespace ConfigIO;
 
 namespace Persistency
 {
@@ -7,11 +14,9 @@ namespace IO
 
 BackendFactory::FactoryPtr create(void)
 {
-  // TODO: get name from config
-  const BackendFactory::FactoryTypeName name="stubs";   // TODO: temporary solution
-  // TODO: get options form configuration
-  const BackendFactory::Options         options;
-
+  const PersistencyConfig               &cfg    =Singleton::get()->persistencyConfig();
+  const BackendFactory::FactoryTypeName &name   =cfg.getType();
+  const BackendFactory::Options         &options=cfg.getOptions();
   return BackendFactory::create(name, options);
 }
 

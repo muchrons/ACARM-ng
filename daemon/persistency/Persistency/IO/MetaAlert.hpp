@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <string>
 #include <memory>
 #include <boost/noncopyable.hpp>
 
@@ -38,10 +39,15 @@ public:
   /** \brief saves meta alert to persistency storage.
    */
   void save();
+  /** \brief save information that this obejct has been already triggered.
+   *  \param name name of the triggering processor.
+   */
+  void markAsTriggered(const std::string &name);
   /** \brief save information that this obejct is in use now.
    */
   void markAsUsed();
   /** \brief mark object as not used anymore.
+   *  \note calling this method cleans up markAsTriggered() marks too.
    */
   void markAsUnused();
   /** \brief update severity delta.
@@ -51,7 +57,7 @@ public:
   /** \brief update certanity delta.
    *  \param delta how much update certanity's value.
    */
-  void updateCertanityDelta(double delta);
+  void updateCertaintyDelta(double delta);
   /** \brief save information that this meta-alert has another child.
    *  \param child meta-alert to be added as a child.
    */
@@ -64,14 +70,15 @@ public:
 protected:
   /** \brief gets read-only access to meta-alert.
    */
-  const Persistency::MetaAlert &get(void) const;
+  Persistency::MetaAlertPtrNN get(void);
 
 private:
   virtual void saveImpl(Transaction &t) = 0;
+  virtual void markAsTriggeredImpl(Transaction &t, const std::string &name) = 0;
   virtual void markAsUsedImpl(Transaction &t) = 0;
   virtual void markAsUnusedImpl(Transaction &t) = 0;
   virtual void updateSeverityDeltaImpl(Transaction &t, double delta) = 0;
-  virtual void updateCertanityDeltaImpl(Transaction &t, double delta) = 0;
+  virtual void updateCertaintyDeltaImpl(Transaction &t, double delta) = 0;
   virtual void addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child) = 0;
   virtual void associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN alert) = 0;
 

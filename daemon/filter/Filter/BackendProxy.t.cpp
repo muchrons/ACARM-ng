@@ -8,38 +8,40 @@
 #include <cassert>
 
 #include "Filter/BackendProxy.hpp"
-#include "Filter/TestHelpers.t.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 
 using namespace Filter;
 using namespace Persistency;
-using namespace Persistency::Stubs;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
 
-struct TestClass
+struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     conn_( IO::create() ),
-    bp_( new BackendProxy(conn_, "sometest") )
+    bp_( new BackendProxy(conn_, changed_, "sometest") )
   {
     assert( bp_.get()!=NULL );
     assert( conn_.get()!=NULL );
+    assert( changed_.size()==0 );
   }
 
   MetaAlertPtrNN makeMetaAlert(void) const
   {
-    return th_makeMetaAlert();
+    return makeNewMetaAlert();
   }
 
   GraphNodePtrNN makeGraphLeaf(void) const
   {
-    return th_makeLeaf();
+    return makeNewLeaf();
   }
   GraphNodePtrNN makeGraphNode(void) const
   {
-    return th_makeNode();
+    return makeNewNode();
   }
 
   int childrenCount(const GraphNodePtrNN ptr) const
@@ -50,11 +52,44 @@ struct TestClass
     return cnt;
   }
 
-  IO::ConnectionPtrNN                 conn_;
+  HostPtrNN makeHost(void) const
+  {
+    return HostPtr( new Host( Host::IPv4::from_string("1.2.3.4"),
+                              NULL,
+                              "os1",
+                              makeNewReferenceURL(),
+                              Host::ReportedServices(),
+                              Host::ReportedProcesses(),
+                              NULL) );
+  }
+
+  HostPtrNN setName(const char *name)
+  {
+    const HostPtrNN      h=makeHost();
+    Alert::ReportedHosts srcHosts;
+    srcHosts.push_back(h);
+    AlertPtrNN           alert( new Alert("al1",
+                                          Alert::SourceAnalyzers( makeNewAnalyzer() ),
+                                          NULL,
+                                          Timestamp(),
+                                          Severity(SeverityLevel::DEBUG),
+                                          Certainty(0.1),
+                                          "sescription xyz",
+                                          srcHosts,
+                                          Alert::ReportedHosts() ) );
+    Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
+    IO::Transaction      t( conn->createNewTransaction("make_leaf_transaction") );
+    GraphNodePtrNN       node( new GraphNode(alert, conn, t) );
+    bp_->setHostName(node, h, name);
+
+    return h;
+  }
+
+  BackendProxy::ChangedNodes      changed_;
+  IO::ConnectionPtrNN             conn_;
   boost::scoped_ptr<BackendProxy> bp_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -79,10 +114,10 @@ template<>
 void testObj::test<2>(void)
 {
   const std::string name("hello.pl");
-  HostPtrNN         h( makeNewHost() );
-  bp_->setHostName(h, name);
+  const HostPtrNN   h=setName( name.c_str() );
   ensure("name not set", h->getName()!=NULL );
-  ensure_equals("invalid name set", h->getName()->get(), name);
+  ensure_equals("invalid name set", h->getName().get(), name);
+  ensure_equals("change not marked", changed_.size(), 1);
 }
 
 // check updating severity
@@ -90,10 +125,12 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  MetaAlertPtrNN ma( makeMetaAlert() );
+  GraphNodePtrNN node=makeGraphNode();
+  MetaAlertPtrNN ma  =node->getMetaAlert();
   const double c=ma->getSeverityDelta();
-  bp_->updateSeverityDelta(ma, 1.3);
+  bp_->updateSeverityDelta(node, 1.3);
   ensure_equals("invalid severity", ma->getSeverityDelta(), c+1.3);
+  ensure_equals("change not marked", changed_.size(), 1);
 }
 
 // test updating certanity
@@ -101,10 +138,12 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  MetaAlertPtrNN ma( makeMetaAlert() );
-  const double c=ma->getCertanityDelta();
-  bp_->updateCertanityDelta(ma, 1.3);
-  ensure_equals("invalid certanity", ma->getCertanityDelta(), c+1.3);
+  GraphNodePtrNN node=makeGraphNode();
+  MetaAlertPtrNN ma  =node->getMetaAlert();
+  const double c=ma->getCertaintyDelta();
+  bp_->updateCertaintyDelta(node, 1.3);
+  ensure_equals("invalid certanity", ma->getCertaintyDelta(), c+1.3);
+  ensure_equals("change not marked", changed_.size(), 1);
 }
 
 // test commiting empty change-set
@@ -120,7 +159,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  bp_->setHostName( makeNewHost(), "a.b.c");
+  setName("a.b.c");
   bp_->commitChanges();
 }
 
@@ -135,6 +174,7 @@ void testObj::test<7>(void)
   // check
   ensure_equals("child not added",    childrenCount(parent), 2+1);
   ensure_equals("wrong way addition", childrenCount(child),  2+0);
+  ensure_equals("change not marked", changed_.size(), 1);
 }
 
 // test correlating nodes
@@ -142,12 +182,14 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  GraphNodePtrNN leaf1=makeGraphLeaf();
-  GraphNodePtrNN node2=makeGraphNode();
-  GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), leaf1, node2);
+  GraphNodePtrNN               leaf1=makeGraphLeaf();
+  GraphNodePtrNN               node2=makeGraphNode();
+  BackendProxy::ChildrenVector children(leaf1, node2);
+  GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), children);
   // check
   ensure_equals("invalid number of children after correlation",
                 childrenCount(out), 2);
+  ensure_equals("change not marked", changed_.size(), 1);
 }
 
 // test correlating more than 2 hosts.
@@ -155,15 +197,33 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  GraphNodePtrNN leaf1=makeGraphLeaf();
-  GraphNodePtrNN node2=makeGraphNode();
-  BackendProxy::ChildrenVector children;
+  GraphNodePtrNN               leaf1=makeGraphLeaf();
+  GraphNodePtrNN               node2=makeGraphNode();
+  BackendProxy::ChildrenVector children(leaf1, node2);
   for(int i=0; i<3; ++i)
     children.push_back( makeGraphNode() );
-  GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), leaf1, node2, children);
+  GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), children);
   // check
   ensure_equals("invalid number of children after correlation",
                 childrenCount(out), 2+3);
+  ensure_equals("change not marked", changed_.size(), 1);
+}
+
+// test throwing when non-mepty changed nodes colleciton is given
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  try
+  {
+    changed_.push_back( makeGraphNode() );  // colleciton shall be non-empty
+    BackendProxy tmp(conn_, changed_, "myunatedstatesofwhatever");
+    fail("c-tor didn't throw on non-empty changed nodes' collection");
+  }
+  catch(const BackendProxy::ExceptionChangedNodesNotEmpty&)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut

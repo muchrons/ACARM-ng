@@ -10,6 +10,7 @@
 #include "Persistency/IO/Postgres/Alert.hpp"
 #include "Persistency/IO/Postgres/MetaAlert.hpp"
 #include "Persistency/IO/Postgres/Host.hpp"
+#include "Persistency/IO/Postgres/Restorer.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 
 namespace Persistency
@@ -24,7 +25,8 @@ typedef IO::ConnectionHelper<DBHandlerPtrNN,
                              TransactionAPI,
                              Alert,
                              Host,
-                             MetaAlert>   Connection;
+                             MetaAlert,
+                             Restorer>   Connection;
 
 } // namespace Postgres
 } // namespace IO

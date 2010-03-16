@@ -65,6 +65,9 @@ public:
     }
 
   private:
+    // allow getting internal iterator via this one to mother-class
+    friend class TimeoutQueue<T>;
+
     // this friend declaration is required for boost::iterators to work.
     friend class boost::iterator_core_access;
     // this one is required for interoperatability
@@ -143,6 +146,14 @@ public:
     q_.erase(new_end, q_.end() );
   }
 
+  /** \brief remove given element from queue.
+   *  \param it iterator to element to be removed.
+   */
+  void dismiss(iterator it)
+  {
+    q_.erase(it.it_);
+  }
+
   /** \brief add or update element with a timeout.
    *  \param e       element to be added.
    *  \param seconds number of seconds before timeouting.
@@ -154,16 +165,16 @@ public:
    */
   void update(const T &e, unsigned int seconds)
   {
-    seconds+=time(NULL);        // make absolute time
+    const time_t to=time(NULL)+seconds;
     // go through all elements to find matching
     for(ImplIter it=q_.begin(); it!=q_.end(); ++it)
       if(it->first==e)
       {
-        it->second+=seconds;    // make entry last longer
+        it->second=to;          // make entry last longer
         return;                 // if updated, we can finish
       }
     // if entry not found, insert new
-    q_.push_back( make_pair(e, seconds) );
+    q_.push_back( std::make_pair(e, to) );
   }
 
 private:

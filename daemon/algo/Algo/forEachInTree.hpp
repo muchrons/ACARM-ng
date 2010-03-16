@@ -61,7 +61,7 @@ FuncObj forEachInTree(Persistency::GraphNodePtrNN root, FuncObj f)
   detail::TreeFuncObj<FuncObj> tfo(&f);
   tfo(root);
   return f;
-} // forEach()
+} // forEachInTree()
 
 } // namespace Algo
 

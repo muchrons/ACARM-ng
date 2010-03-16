@@ -2,12 +2,8 @@
  * Base.t.cpp
  *
  */
-#include <tut.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <string.h>
+#include <tut/tut.hpp>
+#include <cstring>
 #include <cassert>
 
 #include "System/Exceptions/Base.hpp"
@@ -49,9 +45,16 @@ namespace
 {
 struct MyException: public Base<MyException, std::exception>
 {
+  typedef Base<MyException, std::exception> MyBase;
+
   template<typename T>
   MyException(const T &t):
-    Base<MyException, std::exception>(t)
+    MyBase(t)
+  {
+  }
+  template<typename T>
+  MyException(const detail::Location &where, const T &t):
+    MyBase(where, t)
   {
   }
 }; // struct MyException
@@ -93,6 +96,27 @@ void testObj::test<4>(void)
   const MyException  me(someStr);
   const exception   &base=me;   // this line must compile
   base.what();                  // this suppress warning from compiler
+}
+
+// test saving location
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const MyException  me(SYSTEM_SAVE_LOCATION, someStr);
+  const exception   &base=me;   // this line must compile
+  ensure("no/wrong location info", strstr( base.what(), "Base.t.cpp:")!=NULL );
+}
+
+// test getting type name
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const MyException          me(someStr);
+  const MyException::MyBase &base=me;       // this line must compile
+  ensure("invalid type name",
+         strstr(base.getTypeName().c_str(), "MyException")!=NULL );
 }
 
 } // namespace tut

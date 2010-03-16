@@ -22,7 +22,7 @@ Transaction::Transaction(TransactionAPIAutoPtr transaction):
   log_("persistency.io.transaction")
 {
   if( transaction_.get()==NULL )
-    throw ExceptionNULLParameter(__FILE__, "NULL transaction's API");
+    throw ExceptionNULLParameter(SYSTEM_SAVE_LOCATION, "NULL transaction's API");
   assert( transaction_.get()!=NULL );
   assert( isActive() );
   logMsg("transaction object created with proper API");
@@ -77,7 +77,7 @@ void Transaction::ensureIsActive(void) const
   {
     LOGMSG_ERROR_S(log_)<<transaction_->getName()<<": "
                         <<"operation called on inactive transaction";
-    throw ExceptionTransactionNotActive(__FILE__,
+    throw ExceptionTransactionNotActive(SYSTEM_SAVE_LOCATION,
                                         transaction_->getName().c_str() );
   }
 }

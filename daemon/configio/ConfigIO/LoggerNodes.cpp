@@ -26,8 +26,7 @@ LoggerNodes::LoggerNodes(const Nodes &ns):
     // raise exception when entries are not unique
     assert(cnt!=0);
     if(cnt!=1)
-      throw ExceptionDuplicatedNodeName("LoggerNodes::LoggerNodes()",
-                                        it1->getNodeName() );
+      throw ExceptionDuplicatedNodeName(SYSTEM_SAVE_LOCATION, it1->getNodeName() );
   }
 }
 

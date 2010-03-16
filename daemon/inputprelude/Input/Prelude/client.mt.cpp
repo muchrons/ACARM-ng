@@ -17,7 +17,7 @@ int main(int argc, char * argv[])
     prelude_perror(ret, "unable to initialize the prelude library");
     return -1;
   }
-  
+
   Client client("ACARM-wojek-acm");
   client.SetConfigFilename("/etc/prelude/default/client.conf");
   client.SetRequiredPermission(PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
@@ -25,7 +25,7 @@ int main(int argc, char * argv[])
   client.Init();
   client.Start();
 
-  IDMEF idmef=0;  
+  IDMEF idmef=0;
 
   std::cout << "Started" << std::endl;
 
@@ -36,7 +36,6 @@ int main(int argc, char * argv[])
   else
     std::cerr << 0;
 
-  
   if (idmef)
     {
       std::cerr << RED;
@@ -46,25 +45,25 @@ int main(int argc, char * argv[])
       IDMEFValue id=idmef.Get("alert.analyzer");
 
       if (id.GetType()==IDMEF_VALUE_TYPE_LIST)
-	{
-	  //prelude_list_t *head=(prelude_list_t*)(&id);
-	  //prelude_list_t *tmp=0;
-	  //IDMEFValue *id2;
-	  /*
-	  if(head)
-	    prelude_list_for_each(head, tmp) 
-	      {
-		id2=prelude_list_entry(tmp,int,list);
-		std::cerr << '*';
-		id2=(IDMEFValue*)tmp;
-		if(id2)
-		  {
-		    //std::cerr << id2->GetType() << std::endl;		    
-		    //std::cout << (std::string)*id2 << std::endl;    
-		  }		
-	      }
-	  */	      	  	  
-	}
+    {
+      //prelude_list_t *head=(prelude_list_t*)(&id);
+      //prelude_list_t *tmp=0;
+      //IDMEFValue *id2;
+      /*
+      if(head)
+        prelude_list_for_each(head, tmp)
+          {
+        id2=prelude_list_entry(tmp,int,list);
+        std::cerr << '*';
+        id2=(IDMEFValue*)tmp;
+        if(id2)
+          {
+            //std::cerr << id2->GetType() << std::endl;
+            //std::cout << (std::string)*id2 << std::endl;
+          }
+          }
+      */
+    }
       /*
       id=idmef.Get("alert.analyzer");
       std::cout << id.GetType() << std::endl;

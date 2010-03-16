@@ -11,6 +11,26 @@ namespace System
 {
 struct BacktraceTestData
 {
+  int myCall(int ncalls, int tmp=42)
+  {
+    if(ncalls==0)
+    {
+      bt_=Backtrace();
+      return tmp%3;
+    }
+
+    int a;
+    if(tmp%3)
+      a=myCall(ncalls-1, tmp+1);
+    else
+      a=myCall(ncalls-1, tmp+2);
+
+    if(a%2)
+      tmp+=3;
+    return a+tmp;
+  } // myCall()
+
+  Backtrace bt_;
 };
 } // namespace System
 
@@ -34,23 +54,13 @@ using namespace System;
 namespace tut
 {
 
-namespace
-{
-Backtrace myCall(int recurse)
-{
-  if(recurse>0)
-    return myCall(recurse-1);
-  return Backtrace();
-} // myCall()
-} // unnamed namespace
-
 // test if it shows something
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Backtrace &bt=myCall(10);
-  ensure("backtrace is too small", bt.size()>10);
+  myCall(10);
+  ensure("backtrace is too small", bt_.size()>10);
 }
 
 // test if backtraces relations works
@@ -58,9 +68,11 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Backtrace &bt1=myCall(10);
-  const Backtrace &bt2=myCall(21);
-  ensure_equals("backtrace counts does not match", 11, bt2.size()-bt1.size() );
+  myCall(10);
+  const Backtrace bt1=bt_;
+  myCall(21);
+  const Backtrace bt2=bt_;
+  ensure_equals("backtrace counts does not match", bt2.size()-bt1.size(), 11);
 }
 
 
@@ -69,12 +81,12 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const char      *prev=NULL;           // to check stack order
-  const Backtrace &bt  =myCall(10);
-  const string    &str =bt.toString();
-  for(Backtrace::const_iterator it=bt.begin(); it!=bt.end(); ++it)
+  myCall(10);
+  const string &str =bt_.toString();
+  const char   *prev=str.c_str();              // to check stack order
+  for(Backtrace::const_iterator it=bt_.begin(); it!=bt_.end(); ++it)
   {
-    const char *now=strstr( str.c_str(), (*it).c_str() );
+    const char *now=strstr(prev, it->c_str() );
     ensure("expected backtrace string not found", now!=NULL);
     // less-then-equal since entries may repeat in case of recursion
     ensure("invalid order of backtrace", prev<=now);
@@ -88,10 +100,10 @@ template<>
 void testObj::test<4>(void)
 {
   int cnt=0;
-  const Backtrace &bt=myCall(10);
-  for(Backtrace::const_iterator it=bt.begin(); it!=bt.end(); ++it)
+  myCall(10);
+  for(Backtrace::const_iterator it=bt_.begin(); it!=bt_.end(); ++it)
     ++cnt;
-  ensure_equals("invalid size or iterators", cnt, bt.size() );
+  ensure_equals("invalid size or iterators", cnt, bt_.size() );
 }
 
 // test copy-construction
@@ -120,9 +132,9 @@ void testObj::test<7>(void)
 {
   // the magic value for this test is 256: this is default initial size of table
   // with output addresse for backtrace.
-  const size_t    size=256+1;
-  const Backtrace bt  =myCall(size);    // this should call reallocation
-  ensure("resizing probably failed", bt.size()>size);
+  const size_t size=256+1;
+  myCall(size);                 // this should call reallocation
+  ensure("resizing probably failed", bt_.size()>size);
 }
 
 // test for multiple buffer enlargement
@@ -132,9 +144,9 @@ void testObj::test<8>(void)
 {
   // the magic value for this test is 256: this is default initial size of table
   // with output addresse for backtrace.
-  const size_t    size=256*10;
-  const Backtrace bt  =myCall(size);    // this should call reallocation
-  ensure("resizing probably failed", bt.size()>size);
+  const size_t size=256*10;
+  myCall(size);                 // this should call reallocation
+  ensure("resizing probably failed", bt_.size()>size);
 }
 
 } // namespace tut

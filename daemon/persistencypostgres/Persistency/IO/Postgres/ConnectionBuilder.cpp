@@ -26,7 +26,7 @@ namespace
 const Commons::Factory::RegistratorHelper<BackendFactory, ConnectionBuilder> g_rh;
 } // unnamed namespace
 
-FORCE_LINK_THIS_OBJECT(Persistency_IO_Postgres_ConnectionBuilder);
+FORCE_LINK_THIS_OBJECT(Persistency_IO_Postgres_ConnectionBuilder)
 
 
 ConnectionBuilder::ConnectionBuilder(void):
@@ -42,6 +42,7 @@ ConnectionBuilder::FactoryPtr ConnectionBuilder::buildImpl(const Options &option
   assert(g_rh.isRegistered() && "oops - registration failed");
 
   const DBConnection::Parameters params( getOption(options, "host"),
+                                         getOption(options, "port"),
                                          getOption(options, "dbname"),
                                          getOption(options, "user"),
                                          getOption(options, "pass")  );
@@ -62,7 +63,7 @@ const std::string &ConnectionBuilder::getOption(const Options &options,
   assert(name!=NULL);
   Options::const_iterator it=options.find(name);
   if( it==options.end() )
-    throw ExceptionNoSuchOption(__FILE__, name);
+    throw ExceptionNoSuchOption(SYSTEM_SAVE_LOCATION, name);
   return it->second;
 }
 

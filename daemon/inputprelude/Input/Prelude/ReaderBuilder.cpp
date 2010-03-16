@@ -8,10 +8,11 @@
 
 #include "Logger/Logger.hpp"
 
+#include "ConfigIO/InputConfig.hpp"
 #include "Commons/Factory/RegistratorHelper.hpp"
 #include "Input/Prelude/ReaderBuilder.hpp"
 #include "Input/Prelude/Reader.hpp"
-#include "Input/ReadersFactory.hpp"
+#include "Input/Factory.hpp"
 
 using namespace std;
 
@@ -25,10 +26,10 @@ namespace
 {
 // this code registers builder to readers factory, making it available for
 // further usage, by generic interface.
-const Commons::Factory::RegistratorHelper<ReadersFactory, ReaderBuilder> g_rh;
+const Commons::Factory::RegistratorHelper<Factory, ReaderBuilder> g_rh;
 } // unnamed namespace
 
-FORCE_LINK_THIS_OBJECT(Input_Prelude_ReaderBuilder);
+FORCE_LINK_THIS_OBJECT(Input_Prelude_ReaderBuilder)
 
 
 ReaderBuilder::ReaderBuilder(void):
@@ -44,10 +45,8 @@ ReaderBuilder::FactoryPtr ReaderBuilder::buildImpl(const Options & opt) const
 
   // TODO: implement this
 
-  Options::const_iterator it=opt.find("prelude profile");
-  if( it==opt.end() )
-    throw Exception(__FILE__, "option 'prelude profile' not found");
-  const std::string &profile=it->second;
+  const ConfigIO::InputConfig ic(name_, opt);
+  const std::string &profile=ic["preludeProfile"];
 
   return ReaderBuilder::FactoryPtr( new Reader(profile) );
 }

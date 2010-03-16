@@ -33,7 +33,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const LoggerNodeConfig lnc("node", "app");
+  const LoggerNodeConfig lnc("node", "app", "warn");
   ensure("appender not set", lnc.hasAppender() );
   ensure_equals("invlaid appender name", lnc.getAppenderName(), "app");
   ensure_equals("invlaid node name",     lnc.getNodeName(),     "node");
@@ -44,7 +44,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const LoggerNodeConfig lnc("node");
+  const LoggerNodeConfig lnc("node", OptionalString(), OptionalString() );
   ensure("appender not set", !lnc.hasAppender() );
   ensure_equals("invlaid node name", lnc.getNodeName(), "node");
 }
@@ -60,10 +60,20 @@ void testObj::test<3>(void)
     lnc.getAppenderName();
     fail("getAppenderName() didn't throw when appender was not set");
   }
-  catch(const ExceptionNoAppenderAssigned&)
+  catch(const LoggerNodeConfig::ExceptionNoValueAssigned&)
   {
     // this is expected
   }
+}
+
+// test creating element without appender, and threshold
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  const LoggerNodeConfig lnc("node");
+  ensure("appender is set",  lnc.hasAppender()==false);
+  ensure("threshold is set", lnc.hasThreshold()==false);
 }
 
 } // namespace tut

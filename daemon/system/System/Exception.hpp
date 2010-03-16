@@ -30,6 +30,6 @@ public:
   }
 }; // class Exception
 
-}; // namespace System
+} // namespace System
 
 #endif

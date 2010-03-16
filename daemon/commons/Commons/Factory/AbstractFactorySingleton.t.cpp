@@ -5,6 +5,7 @@
 #include <tut.h>
 
 #include "Commons/Factory/AbstractFactorySingleton.hpp"
+#include "TestHelpers/TestBase.hpp"
 
 using namespace std;
 using namespace Commons::Factory;
@@ -13,7 +14,7 @@ using namespace Commons::Factory;
 namespace
 {
 
-struct TestFactory
+struct TestFactory: private TestHelpers::TestBase
 {
   template<typename T>
   TestFactory(const T &, int n):
@@ -124,7 +125,7 @@ void testObj::test<2>(void)
   TAFS::unregisterBuilder("factory-1");
   try
   {
-    TAFS::FactoryPtr ptr=TAFS::create("factory-1", options_);
+    TAFS::create("factory-1", options_);
     fail("Singleton::create() didn't throw on unregistered factory, or "
          "unregistration failed (i.e. factory stil present in singleton)");
   }

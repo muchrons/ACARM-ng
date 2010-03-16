@@ -4,11 +4,12 @@
  */
 #include <tut.h>
 
+#include "TestHelpers/TestBase.hpp"
 #include "Logger/Priority.hpp"
 
 namespace
 {
-struct PriorityTestClass
+struct PriorityTestClass: private TestHelpers::TestBase
 {
 };
 

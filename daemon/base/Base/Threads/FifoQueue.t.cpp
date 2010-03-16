@@ -23,7 +23,6 @@ struct TestClass
   FQ q_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -122,7 +121,7 @@ struct Inserter
 
   void operator()(void)
   {
-    for(int i=0; i<50*1000; ++i)
+    for(int i=0; i<15*1000; ++i)
     {
       stringstream ss;
       ss<<"data from thread: "<<i;
@@ -143,7 +142,7 @@ struct Getter
 
   void operator()(void)
   {
-    for(int i=0; i<50*1000; ++i)
+    for(int i=0; i<15*1000; ++i)
     {
       const string tmp=q_->pop();
       assert( strstr( tmp.c_str(), "data from thread: ")!=NULL &&

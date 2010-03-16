@@ -17,6 +17,7 @@
 #include "Persistency/IO/MetaAlert.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/TransactionAPI.hpp"
+#include "Persistency/IO/Restorer.hpp"
 
 namespace Persistency
 {
@@ -36,7 +37,7 @@ public:
    *  \param name name for new transaction.
    *  \return non-NULL transaction API object for given persistency type.
    *  \note opening transaction locks communication object so that only
-   *        one transaction can be created at a time. if more call will
+   *        one transaction can be created at a time. if more calls will
    *        appear, they will be waiting for it to finish.
    */
   TransactionAPIAutoPtr createNewTransaction(const std::string &name);
@@ -58,6 +59,11 @@ public:
    *  \return non-NULL meta-alert persistency proxy.
    */
   MetaAlertAutoPtr metaAlert(MetaAlertPtrNN ma, Transaction &t);
+  /** \brief create restorer object.
+   *  \param t transaction to be used for restoring data.
+   *  \return non-NULL restorer persistency proxy.
+   */
+  RestorerAutoPtr restorer(Transaction &t);
 
 private:
   virtual TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
@@ -65,6 +71,7 @@ private:
   virtual AlertAutoPtr alertImpl(AlertPtrNN alert, Transaction &t) = 0;
   virtual HostAutoPtr hostImpl(HostPtrNN host, Transaction &t) = 0;
   virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, Transaction &t) = 0;
+  virtual RestorerAutoPtr restorerImpl(Transaction &t) = 0;
 
   Base::Threads::Mutex mutex_;
 }; // class Connection

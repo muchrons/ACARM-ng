@@ -5,15 +5,17 @@
 #include <tut.h>
 
 #include "Algo/forEach.hpp"
-#include "Algo/TestHelpers.t.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Algo;
 using namespace Persistency;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
 
-struct FuncObj
+struct FuncObj: private TestHelpers::Persistency::TestStubs
 {
   FuncObj(void):
     cnt_(0)
@@ -29,14 +31,13 @@ struct FuncObj
 struct TestClass
 {
   TestClass(void):
-    root_( th_makeTree1() )
+    root_( makeNewTree1() )
   {
   }
 
   GraphNodePtrNN root_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 

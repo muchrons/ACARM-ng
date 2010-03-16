@@ -35,12 +35,14 @@ public:
   TransactionAPI(Base::Threads::Mutex &mutex,
                  const std::string    &name,
                  DBHandlerPtrNN        dbHandler);
-  /** \brief gets native transaction handler.
-   *  \return PostgreSQL transaction handler.
+  /** \brief executes statement on handler
+   *  \param sql SQL statement to be executed.
+   *  \return query results.
    */
-  pqxx::work &getHandle(void)
+  template<typename T>
+  pqxx::result exec(const T& sql)
   {
-    return t_;
+    return t_.exec(sql);
   }
 
 private:

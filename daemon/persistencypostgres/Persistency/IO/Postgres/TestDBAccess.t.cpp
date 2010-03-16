@@ -15,6 +15,7 @@ namespace Postgres
 
 TestDBAccess::TestDBAccess(void):
   conn_( DBConnection::Parameters("localhost",
+                                  "5432",
                                   "acarm_ng_test",
                                   "acarm-ng-tests",
                                   "test.password") )
@@ -31,8 +32,8 @@ void TestDBAccess::removeAllData(void)
   t.exec("DELETE FROM reported_procs");
   t.exec("DELETE FROM reported_services");
   t.exec("DELETE FROM reported_hosts");
+  t.exec("DELETE FROM alert_analyzers");
   t.exec("DELETE FROM alerts");
-  t.exec("DELETE FROM severities");
   t.exec("DELETE FROM analyzers");
   t.exec("DELETE FROM hosts");
   t.exec("DELETE FROM reference_urls");
@@ -48,7 +49,8 @@ void TestDBAccess::removeAllData(void)
 void TestDBAccess::fillWithContent1(void)
 {
   pqxx::work t(conn_.get(), "fill_with_content1");
-  // TODO
+  // TODO: data base content should be insrted here.
+  // NOTE: this should be probably external script in testdata directory.
 }
 
 } // namespace Postgres

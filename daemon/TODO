@@ -1,0 +1,5 @@
+1 adding modified nodes to queue should be unique (i.e. there is no sense in repeating entries to process). consider creating Base::UniqueFifoQueue.
+2 rereading configuration from file (note: not all configuration may change).
+3 rework configuration layout for persistency, so that type would be placed other way. consider: <persistency><type1/><type2/><use>type2</use></persistency>.
+4 refactor configIO for triggers, filters and inputs config implentation - they are very similar and can be common.
+5

@@ -5,6 +5,7 @@
 #include <tut.h>
 
 #include "Commons/Factory/FactoryBuilderBase.hpp"
+#include "TestHelpers/TestBase.hpp"
 
 using namespace Commons::Factory;
 
@@ -12,7 +13,7 @@ using namespace Commons::Factory;
 namespace
 {
 
-struct TestFactory
+struct TestFactory: private TestHelpers::TestBase
 {
   template<typename T>
   explicit TestFactory(const T &)
@@ -53,6 +54,11 @@ struct FactoryBuilderBaseTestClass
   {
   }
 
+  template<typename T>
+  void ignore(const T&) const
+  {
+  }
+
   TestBuilder      tb_;
   TestBuilderBase &base_;
 };
@@ -84,6 +90,7 @@ void testObj::test<2>(void)
   ensure("NULL pointer returned", ptr.get()!=NULL);
   // check if type's fine
   TestFactory                    tf =*ptr;
+  ignore(tf);
 }
 
 } // namespace tut

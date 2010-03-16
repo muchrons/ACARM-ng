@@ -20,7 +20,6 @@ struct TestClass
   ConnectionBuilder::Options opts_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -45,7 +44,7 @@ template<>
 void testObj::test<2>(void)
 {
   ConnectionBuilder::FactoryPtr ptr=ofb_.build(opts_);
-  ensure("NULL pointere returned", ptr!=NULL);
+  ensure("NULL pointere returned", ptr.get()!=NULL );
 }
 
 } // namespace tut

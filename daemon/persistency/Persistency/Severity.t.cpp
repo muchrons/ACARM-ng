@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "Persistency/Severity.hpp"
+#include "TestHelpers/checkEquality.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -27,7 +28,6 @@ struct TestClass
   }
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -92,6 +92,37 @@ template<>
 void testObj::test<7>(void)
 {
   check(SeverityLevel::CRITICAL, "critical");
+}
+
+// check comparison
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const Severity s1(SeverityLevel::INFO);
+  const Severity s2(SeverityLevel::INFO);
+  const Severity s3(SeverityLevel::DEBUG);
+  TestHelpers::checkEquality(s1, s2, s3);
+}
+
+// check negative comparison
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const Severity s1(SeverityLevel::DEBUG);
+  const Severity s2(SeverityLevel::INFO);
+  TestHelpers::checkEquality(s1, s2);
+}
+
+// check comparison for different elements
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  const Severity s1(SeverityLevel::INFO);
+  const Severity s2(SeverityLevel::WARNING);
+  TestHelpers::checkEquality(s1, s2);
 }
 
 } // namespace tut

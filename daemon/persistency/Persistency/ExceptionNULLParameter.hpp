@@ -21,12 +21,12 @@ public:
    *  \param where place where exception has been rised
    *  \param name  paramter name.
    */
-  ExceptionNULLParameter(const char *where, const char *name):
+  ExceptionNULLParameter(const Location &where, const char *name):
     Exception(where, std::string("paramter is NULL: ") + ensureString(name) )
   {
   }
 }; // class ExceptionNULLParameter
 
-}; // namespace Persistency
+} // namespace Persistency
 
 #endif

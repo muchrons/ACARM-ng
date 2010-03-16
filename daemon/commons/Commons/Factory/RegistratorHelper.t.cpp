@@ -6,6 +6,7 @@
 #include <string>
 
 #include "Commons/Factory/RegistratorHelper.hpp"
+#include "TestHelpers/TestBase.hpp"
 
 using namespace std;
 using namespace Commons::Factory;
@@ -45,7 +46,7 @@ struct TestSingleton
 }; // struct TestSingleton
 
 
-struct RegistratorHelperTestClass
+struct RegistratorHelperTestClass: private TestHelpers::TestBase
 {
   RegistratorHelperTestClass(void)
   {

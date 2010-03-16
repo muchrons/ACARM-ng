@@ -1,1 +1,10 @@
 core
+inputprelude
+persistency
+persistencystubs
+persistencypostgres
+filteronetomany
+filtermanytoone
+filtermanytomany
+filterdnsresolver
+filteripblacklist

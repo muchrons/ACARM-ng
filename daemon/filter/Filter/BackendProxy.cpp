@@ -16,85 +16,94 @@ namespace Filter
 {
 
 BackendProxy::BackendProxy(Persistency::IO::ConnectionPtrNN  conn,
+                           ChangedNodes                     &changed,
                            const std::string                &filterName):
-  filterName_(filterName),
-  conn_(conn)
+  Core::Types::Proc::BackendProxy(conn, filterName),
+  changed_(changed)
 {
-  // transaction is not started here yet - it will be initialized when needed
-  // for the first time (not to do begin-rollback, useless traffic)
+  if( changed_.size()!=0 )
+    throw ExceptionChangedNodesNotEmpty(SYSTEM_SAVE_LOCATION,
+                                        filterName.c_str() );
 }
 
-BackendProxy::~BackendProxy(void)
+namespace
 {
-  // d-tor required to ensure proper destruction of forward-declared objects
-}
 
-void BackendProxy::setHostName(Persistency::HostPtrNN host, const std::string &name)
+bool hasHost(const Persistency::Alert::ReportedHosts &rh, HostPtrNN ptr)
 {
+  for(Persistency::Alert::ReportedHosts::const_iterator it=rh.begin();
+      it!=rh.end(); ++it)
+    if( it->get()==ptr.get() )
+      return true;
+  return false;
+} // hasHost()
+
+bool isHostFromNode(GraphNodePtrNN node, HostPtrNN host)
+{
+  if( !node->isLeaf() )
+    return false;
+
+  // process alert
+  AlertPtrNN a=node->getAlert();
+
+  // source or destination host?
+  if( hasHost( a->getReportedSourceHosts(), host) ||
+      hasHost( a->getReportedTargetHosts(), host)    )
+    return true;
+
+  return false;
+} // ensureHostIsFromNode()
+
+} // unnamed namespace
+
+void BackendProxy::setHostName(Node                    node,
+                               Persistency::HostPtrNN  host,
+                               const std::string      &name)
+{
+  assert( isHostFromNode(node, host) );
   beginTransaction();
-  IO::HostAutoPtr io=conn_->host(host, getTransaction() );
+  IO::HostAutoPtr io=getConnection()->host(host, getTransaction() );
   io->setName(name);
+  changed_.push_back(node);
 }
 
-void BackendProxy::updateSeverityDelta(Persistency::MetaAlertPtrNN ma, double delta)
+void BackendProxy::updateSeverityDelta(Node         node,
+                                       const double delta)
 {
   beginTransaction();
-  IO::MetaAlertAutoPtr io=conn_->metaAlert(ma, getTransaction() );
+  MetaAlertPtrNN       ma=node->getMetaAlert();
+  IO::MetaAlertAutoPtr io=getConnection()->metaAlert(ma, getTransaction() );
   io->updateSeverityDelta(delta);
+  changed_.push_back(node);
 }
 
-void BackendProxy::updateCertanityDelta(Persistency::MetaAlertPtrNN ma, double delta)
+void BackendProxy::updateCertaintyDelta(Node         node,
+                                        const double delta)
 {
   beginTransaction();
-  IO::MetaAlertAutoPtr io=conn_->metaAlert(ma, getTransaction() );
-  io->updateCertanityDelta(delta);
+  MetaAlertPtrNN       ma=node->getMetaAlert();
+  IO::MetaAlertAutoPtr io=getConnection()->metaAlert(ma, getTransaction() );
+  io->updateCertaintyDelta(delta);
+  changed_.push_back(node);
 }
 
-void BackendProxy::addChild(Persistency::GraphNodePtrNN parent,
-                            Persistency::GraphNodePtrNN child)
+void BackendProxy::addChild(Node parent, Node child)
 {
   beginTransaction();
-  IO::MetaAlertAutoPtr io=conn_->metaAlert( parent->getMetaAlert(), getTransaction() );
+  MetaAlertPtrNN       ma=parent->getMetaAlert();
+  IO::MetaAlertAutoPtr io=getConnection()->metaAlert(ma, getTransaction() );
   parent->addChild(child, *io);
+  changed_.push_back(parent);
 }
 
 Persistency::GraphNodePtrNN BackendProxy::correlate(
             Persistency::MetaAlertPtrNN  ma,
-            Persistency::GraphNodePtrNN  child1,
-            Persistency::GraphNodePtrNN  child2,
-            const ChildrenVector        &otherChildren)
+            const ChildrenVector        &children)
 {
   beginTransaction();
-  GraphNodePtrNN ptr( new GraphNode(ma, conn_, getTransaction(),
-                                    child1, child2, otherChildren) );
+  Node ptr( new GraphNode(ma, getConnection(), getTransaction(), children) );
+  changed_.push_back(ptr);
   return ptr;
-}
-
-void BackendProxy::commitChanges(void)
-{
-  // if no changes were introduced, just do nothing
-  if( transaction_.get()==NULL )
-    return;
-
-  transaction_->commit();
-}
-
-void BackendProxy::beginTransaction(void)
-{
-  if( transaction_.get()==NULL )    // new transaction
-  {
-    TransactionAPIAutoPtr api=conn_->createNewTransaction(
-                                "transaction_for_filter_" + filterName_);
-    transaction_.reset( new Transaction(api) );
-  }
-  // if begin has been requested, transaction must always be valid
-  transaction_->ensureIsActive();
-}
-
-Transaction &BackendProxy::getTransaction(void) const
-{
-  assert( transaction_.get()!=NULL );
-  return *transaction_;
 }
 
 } // namespace Filter

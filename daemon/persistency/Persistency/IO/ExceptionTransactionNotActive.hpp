@@ -26,9 +26,9 @@ public:
    *  \param where place where exception has been thrown.
    *  \param name  transaction's name.
    */
-  ExceptionTransactionNotActive(const char *where, const char *name):
+  ExceptionTransactionNotActive(const Location &where, const char *name):
     Exception(where,
-              std::string("transaction not active (commited or rollbacked): ") +
+              std::string("transaction not active (commited/rollbacked): ") +
               ensureString(name) )
   {
   }

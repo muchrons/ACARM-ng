@@ -9,6 +9,8 @@
 #include <string>
 #include <stdexcept>
 
+#include "System/Exceptions/CommonElements.hpp"
+
 namespace System
 {
 namespace Exceptions
@@ -22,7 +24,8 @@ namespace Exceptions
  *  \param StdBase base class for exception from sntadard library.
  */
 template<typename CRTP, typename StdBase>
-class BaseSimple: public StdBase
+class BaseSimple: public    StdBase,
+                  protected CommonElements
 {
 public:
   /** \brief return error message as string.
@@ -31,6 +34,13 @@ public:
   inline std::string whatAsStr(void) const
   {
     return StdBase::what();
+  }
+  /** \brief gets type info.
+   *  \return name of real type for this class.
+   */
+  std::string getTypeName(void) const
+  {
+    return CommonElements::getTypeName(*this);
   }
 
 protected:
@@ -42,9 +52,19 @@ protected:
     StdBase(msg)
   {
   }
+  /** \brief create execption with given message.
+   *  \param where place where exception has been raised.
+   *  \param msg   message to represent.
+   *  \note use SYSTEM_SAVE_LOCATION macro to generate 'where' field.
+   */
+  template<typename T>
+  explicit BaseSimple(const Location &where, const T &msg):
+    StdBase( cc(where.getStr(), ": ", msg) )
+  {
+  }
 }; // class BaseSimple
 
-}; // namespace Exceptions
-}; // namespace System
+} // namespace Exceptions
+} // namespace System
 
 #endif

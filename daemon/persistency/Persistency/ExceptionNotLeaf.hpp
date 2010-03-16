@@ -22,12 +22,12 @@ public:
    *  \param where place where exception has been rised
    *  \param name  name of the node (leaf).
    */
-  ExceptionNotLeaf(const char *where, const char *name):
+  ExceptionNotLeaf(const Location &where, const char *name):
     Exception(where, std::string("element is not leaf: ") + ensureString(name) )
   {
   }
 }; // class ExceptionNotNode
 
-}; // namespace Persistency
+} // namespace Persistency
 
 #endif

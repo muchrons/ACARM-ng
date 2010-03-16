@@ -28,7 +28,6 @@ struct TestClass
   const GV &cgv_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -129,7 +128,7 @@ struct CollectionWriter
   void operator()(void)
   {
     // do a series of iterations
-    for(int i=0; i<300; ++i)
+    for(int i=0; i<142; ++i)
     {
       // iterate tgrough colleciton changing some elemtns
       for(GV::iterator it=data_->begin(), end=data_->end(); it!=end; ++it)
@@ -242,6 +241,18 @@ void testObj::test<10>(void)
   // check the end of collection
   ++it;
   ensure("now we should be at collection's end", it==end);
+}
+
+// check value_type definition
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  GV col;
+  col.push("hello");
+  ensure("collection is empty", col.begin()!=col.end() );
+  GV::value_type tmp=*col.begin();
+  ensure_equals("invalid value", tmp, "hello");
 }
 
 } // namespace tut

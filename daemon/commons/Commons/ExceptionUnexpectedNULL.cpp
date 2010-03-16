@@ -13,7 +13,7 @@ using namespace std;
 namespace Commons
 {
 
-ExceptionUnexpectedNULL::ExceptionUnexpectedNULL(const char *where):
+ExceptionUnexpectedNULL::ExceptionUnexpectedNULL(const Location &where):
   Exception(where,
             string("unexpected NULL pointer received; stactrace is: ") +
               System::Backtrace().toString() )  // log call-stack as well.

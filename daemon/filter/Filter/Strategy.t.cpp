@@ -6,69 +6,58 @@
 #include <boost/thread.hpp>
 
 #include "Filter/Strategy.hpp"
-#include "Filter/TestHelpers.t.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Filter;
 using namespace Persistency;
-using namespace Persistency::Stubs;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
 
-struct TestFilter: public Strategy
+struct TestFilter: public Strategy<int>
 {
   TestFilter(void):
-    Strategy("testfilter"),
+    Strategy<int>("testfilter"),
     calls_(0),
     node_( makeGraphLeaf() )
   {
   }
 
   virtual void processImpl(Node               n,
-                           ChangedNodes      &changed,
                            NodesTimeoutQueue &ntq,
                            BackendProxy      &bp)
   {
     ++calls_;
-    tut::ensure_equals("invalid count of elements in changed list",
-                       changed.size(), 0);
-
     tut::ensure("invalid node", n.get()==node_.get() );
-    tut::ensure("invalid changes list", &changed==&changed_);
-
     // smoke test - checks if object is valid
     bp.commitChanges();
-
-    // node and changed should be writable
-    changed.push_back( makeGraphLeaf() );
-    n->getMetaAlert();
-
     // ntq should be empty by default
     tut::ensure("NTQ not empty", ntq.begin()==ntq.end() );
   }
 
-  static MetaAlertPtrNN makeMetaAlert(void)
-  {
-    return th_makeMetaAlert();
-  }
-
   static GraphNodePtrNN makeGraphLeaf(void)
   {
-    return th_makeLeaf();
+    return makeNewLeaf();
   }
 
-  int          calls_;
-  ChangedNodes changed_;
-  Node         node_;
+  static NodeEntry makeNodeEntry(Node n, int v)
+  {
+    return NodeEntry(n, v);
+  }
+
+  int  calls_;
+  Node node_;
 };
 
 
-struct TestClass
+struct TestClass: private TestHelpers::Persistency::TestStubs
 {
-  TestFilter tf_;
+  BackendProxy::ChangedNodes changed_;
+  TestFilter                 tf_;
 };
 
-typedef TestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -93,21 +82,21 @@ template<>
 void testObj::test<2>(void)
 {
   ensure_equals("pre-condition failed", tf_.calls_, 0);
-  tf_.process(tf_.node_, tf_.changed_);
+  tf_.process(tf_.node_, changed_);
   ensure_equals("invalid number of calls", tf_.calls_, 1);
 }
 
 
 namespace
 {
-struct TestLoopFilter: public Strategy
+struct TestLoopFilter: public Strategy<char>
 {
   TestLoopFilter(void):
-    Strategy("testloopfilter")
+    Strategy<char>("testloopfilter")
   {
   }
 
-  virtual void processImpl(Node, ChangedNodes&, NodesTimeoutQueue&, BackendProxy&)
+  virtual void processImpl(Node, NodesTimeoutQueue&, BackendProxy&)
   {
     for(;;)
     {
@@ -121,7 +110,7 @@ struct CallableLF
 {
   void operator()(void)
   {
-    Strategy::ChangedNodes cn;
+    Strategy<char>::ChangedNodes cn;
     tlf_.process( TestFilter::makeGraphLeaf(), cn );
   }
 
@@ -138,6 +127,78 @@ void testObj::test<3>(void)
   boost::thread th( boost::ref(clf) );
   th.interrupt();
   th.join();
+}
+
+// check if NodeEntry with different nodes differ template<>
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  ensure("different entries does not differ",
+           ! ( TestFilter::makeNodeEntry( TestFilter::makeGraphLeaf(), 1 )==
+               TestFilter::makeNodeEntry( TestFilter::makeGraphLeaf(), 1 ) )
+        );
+}
+
+// test if creating NodeEntry assigns proper node.
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  TestFilter::Node n=TestFilter::makeGraphLeaf();
+  ensure("invalid node", TestFilter::makeNodeEntry(n, 42).node_.get()==n.get() );
+}
+
+// test if creating NodeEntry assigns proper paramter.
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  TestFilter::Node n=TestFilter::makeGraphLeaf();
+  ensure_equals("invalid value",
+                TestFilter::makeNodeEntry(n, 42).t_, 42 );
+}
+
+// test operator != for different nodes
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  ensure("different entries does not differ",
+           TestFilter::makeNodeEntry( TestFilter::makeGraphLeaf(), 1 )!=
+           TestFilter::makeNodeEntry( TestFilter::makeGraphLeaf(), 1 )
+        );
+}
+
+// test operator != for the same nodes
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  TestFilter::Node n=TestFilter::makeGraphLeaf();
+  ensure("the same entries differ for != operator",
+          !( TestFilter::makeNodeEntry(n, 1)!=TestFilter::makeNodeEntry(n, 1) )
+        );
+}
+
+// check operator == for the same nodes
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  TestFilter::Node n=TestFilter::makeGraphLeaf();
+  ensure("the same entruies differ for == operator",
+         TestFilter::makeNodeEntry(n, 1)==TestFilter::makeNodeEntry(n, 1) );
+}
+
+// ensure different user-paramter does noe influence comparison
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  TestFilter::Node n=TestFilter::makeGraphLeaf();
+  ensure("user-value is taken into account in comparison",
+         TestFilter::makeNodeEntry(n, 1)==TestFilter::makeNodeEntry(n, 2) );
 }
 
 } // namespace tut

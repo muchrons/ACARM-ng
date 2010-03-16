@@ -2,8 +2,9 @@
  * MetaAlert.hpp
  *
  */
-#include "Base/Threads/Lock.hpp"
 #include "Persistency/MetaAlert.hpp"
+#include "Base/Threads/Lock.hpp"
+#include "Base/ViaPointer.hpp"
 
 using Base::Threads::Lock;
 
@@ -21,7 +22,7 @@ MetaAlert::MetaAlert(AlertPtrNN alert):
 
 MetaAlert::MetaAlert(const Name      &name,
                      SeverityDelta    severityDelta,
-                     CertanityDelta   certanityDelta,
+                     CertaintyDelta   certanityDelta,
                      ReferenceURLPtr  url,
                      Timestamp        created):
   name_(name),
@@ -44,7 +45,7 @@ MetaAlert::SeverityDelta MetaAlert::getSeverityDelta(void) const
   return severityDelta_;
 }
 
-MetaAlert::CertanityDelta MetaAlert::getCertanityDelta(void) const
+MetaAlert::CertaintyDelta MetaAlert::getCertaintyDelta(void) const
 {
   Lock lock(mutex_);
   return certanityDelta_;
@@ -66,10 +67,29 @@ void MetaAlert::updateSeverityDelta(double delta)
   severityDelta_+=delta;
 }
 
-void MetaAlert::updateCertanityDelta(double delta)
+void MetaAlert::updateCertaintyDelta(double delta)
 {
   Lock lock(mutex_);
   certanityDelta_+=delta;
+}
+
+bool MetaAlert::operator==(const MetaAlert &other) const
+{
+  if(this==&other)
+    return true;
+
+  if( getName()!=other.getName() )
+    return false;
+  if( getSeverityDelta()!=other.getSeverityDelta() )
+    return false;
+  if( getCertaintyDelta()!=other.getCertaintyDelta() )
+    return false;
+  if( !Base::ViaPointer::equal( getReferenceURL(), other.getReferenceURL() ) )
+    return false;
+  if( getCreateTime()!=other.getCreateTime() )
+    return false;
+  // if all fields matches, return true
+  return true;
 }
 
 } // namespace Persistency

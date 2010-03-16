@@ -15,23 +15,27 @@ namespace Stubs
 
 MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
                      Transaction                 &t,
-                     int                          handler):
+                     int                          /*handler*/):
   IO::MetaAlert(ma, t),
   saveCalls_(0),
+  markAsTriggeredCalls_(0),
   markAsUsedCalls_(0),
   markAsUnusedCalls_(0),
   updateSeverityDeltaCalls_(0),
-  updateCertanityDeltaCalls_(0),
+  updateCertaintyDeltaCalls_(0),
   addChildCalls_(0),
   assoicateWithAlertCalls_(0)
 {
-  assert(handler==42);
-  handler=0;
 }
 
 void MetaAlert::saveImpl(Transaction &)
 {
   ++saveCalls_;
+}
+
+void MetaAlert::markAsTriggeredImpl(Transaction &, const std::string &)
+{
+  ++markAsTriggeredCalls_;
 }
 
 void MetaAlert::markAsUsedImpl(Transaction &)
@@ -49,9 +53,9 @@ void MetaAlert::updateSeverityDeltaImpl(Transaction &, double /*delta*/)
   ++updateSeverityDeltaCalls_;
 }
 
-void MetaAlert::updateCertanityDeltaImpl(Transaction &, double /*delta*/)
+void MetaAlert::updateCertaintyDeltaImpl(Transaction &, double /*delta*/)
 {
-  ++updateCertanityDeltaCalls_;
+  ++updateCertaintyDeltaCalls_;
 }
 
 void MetaAlert::addChildImpl(Transaction &, Persistency::MetaAlertPtrNN /*child*/)

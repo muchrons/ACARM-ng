@@ -5,8 +5,6 @@
 #ifndef INCLUDE_INPUT_PRELUDE_READER_HPP_FILE
 #define INCLUDE_INPUT_PRELUDE_READER_HPP_FILE
 
-/* public header */
-
 #include <boost/noncopyable.hpp>
 #include <boost/scoped_ptr.hpp>
 
@@ -41,9 +39,9 @@ public:
   virtual DataPtr read(unsigned int timeout);
 
 private:
-  LogCallback preludeLogger_;
-  std::string prelude_profile;
-  boost::scoped_ptr< ::Prelude::Client > client;
+  LogCallback                            preludeLogger_;
+  std::string                            preludeProfile_;
+  boost::scoped_ptr< ::Prelude::Client > client_;
 }; // class Reader
 
 } // namespace Prelude

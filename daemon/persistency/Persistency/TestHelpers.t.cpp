@@ -9,22 +9,18 @@ namespace Persistency
 
 AnalyzerPtrNN makeNewAnalyzer(const char *name)
 {
-  return AnalyzerPtrNN( new Analyzer(name, makeNewHost() ) );
-}
-
-AnalyzerPtrNN makeNewAnalyzer(const char *name, HostPtr host)
-{
-  return AnalyzerPtrNN( new Analyzer(name, host) );
+  return AnalyzerPtrNN( new Analyzer(name, NULL, NULL, NULL) );
 }
 
 AlertPtrNN makeNewAlert(void)
 {
+  Alert::SourceAnalyzers sa( makeNewAnalyzer() );
   return AlertPtrNN( new Persistency::Alert("abc",
-                                            makeNewAnalyzer(),
+                                            sa,
                                             NULL,
                                             Timestamp(),
                                             Severity(SeverityLevel::INFO),
-                                            Certanity(0.42),
+                                            Certainty(0.42),
                                             "some description",
                                             Persistency::Alert::ReportedHosts(),
                                             Persistency::Alert::ReportedHosts()) );
@@ -50,7 +46,8 @@ HostPtrNN makeNewHost4(const char             *ip,
                               os,
                               ref,
                               Host::ReportedServices(),
-                              Host::ReportedProcesses() ) );
+                              Host::ReportedProcesses(),
+                              "dns.org" ) );
 }
 
 HostPtrNN makeNewHost6(const char             *ip,
@@ -67,7 +64,8 @@ HostPtrNN makeNewHost6(const char             *ip,
                               os,
                               ref,
                               Host::ReportedServices(),
-                              Host::ReportedProcesses() ) );
+                              Host::ReportedProcesses(),
+                              "dns.org" ) );
 }
 
 ProcessPtrNN makeNewProcess(const char *name)

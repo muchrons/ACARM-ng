@@ -5,6 +5,8 @@
 #include <cassert>
 
 #include "Persistency/Alert.hpp"
+#include "Base/ViaPointer.hpp"
+#include "Commons/ViaCollection.hpp"
 
 using namespace std;
 
@@ -12,16 +14,16 @@ namespace Persistency
 {
 
 Alert::Alert(const Name          &name,
-             AnalyzerPtrNN        analyzer,
+             SourceAnalyzers      analyzers,
              const Timestamp     *detected,
              const Timestamp     &created,
              Severity             severity,
-             Certanity            certanity,
+             Certainty            certanity,
              const std::string   &description,
              const ReportedHosts &sourceHosts,
              const ReportedHosts &targetHosts):
   name_(name),
-  analyzer_(analyzer),
+  analyzers_(analyzers),
   detected_( (detected!=NULL)?( new Timestamp(*detected) ):NULL ),
   created_(created),
   severity_(severity),
@@ -37,10 +39,10 @@ const Alert::Name &Alert::getName(void) const
   return name_;
 }
 
-const Analyzer &Alert::getAnalyzer(void) const
+const Alert::SourceAnalyzers &Alert::getSourceAnalyzers(void) const
 {
-  assert( analyzer_.get()!=NULL );
-  return *analyzer_;
+  assert( analyzers_.size()>0 );
+  return analyzers_;
 }
 
 const Timestamp *Alert::getDetectionTime(void) const
@@ -58,7 +60,7 @@ const Severity &Alert::getSeverity(void) const
   return severity_;
 }
 
-Certanity Alert::getCertanity(void) const
+Certainty Alert::getCertainty(void) const
 {
   return certanity_;
 }
@@ -76,6 +78,35 @@ const Alert::ReportedHosts &Alert::getReportedSourceHosts(void) const
 const Alert::ReportedHosts &Alert::getReportedTargetHosts(void) const
 {
   return targetHosts_;
+}
+
+bool Alert::operator==(const Alert &other) const
+{
+  if(this==&other)
+    return true;
+
+  if( getName()!=other.getName() )
+    return false;
+  if( !Commons::ViaCollection::equal( getSourceAnalyzers(), other.getSourceAnalyzers() ) )
+    return false;
+  if( !Base::ViaPointer::equal( getDetectionTime(), other.getDetectionTime() ) )
+    return false;
+  if( getCreationTime()!=other.getCreationTime() )
+    return false;
+  if( getSeverity()!=other.getSeverity() )
+    return false;
+  if( getCertainty()!=other.getCertainty() )
+    return false;
+  if( getDescription()!=other.getDescription() )
+    return false;
+  if( !Commons::ViaCollection::equal( getReportedSourceHosts(),
+                                      other.getReportedSourceHosts() ) )
+    return false;
+  if( !Commons::ViaCollection::equal( getReportedTargetHosts(),
+                                      other.getReportedTargetHosts() ) )
+    return false;
+  // if all fields are equal, objects are equal too.
+  return true;
 }
 
 } // namespace Persistency

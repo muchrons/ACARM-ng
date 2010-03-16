@@ -36,6 +36,14 @@ include $(MAKEFILES_TOOLCHAINS_BASE_DIR)/$(TC)-flags.mk
 OPT_FLAGS+=$(USER_OPT_FLAGS)
 DBG_FLAGS+=$(USER_DBG_FLAGS)
 PRF_FLAGS+=$(USER_PRF_FLAGS)
+# add project-specific link flags
+OPT_LDFLAGS+=$(USER_OPT_LDFLAGS)
+DBG_LDFLAGS+=$(USER_DBG_LDFLAGS)
+PRF_LDFLAGS+=$(USER_PRF_LDFLAGS)
+# add common flags, for all profiles
+CXXFLAGS+=$(CMN_FLAGS)
+CFLAGS  +=$(CMN_FLAGS)
+LDFLAGS +=$(CMN_LDFLAGS)
 
 # include profiles from extrnal files
 include $(wildcard $(MAKEFILES_PROFILES_BASE_DIR)/*.mk)
