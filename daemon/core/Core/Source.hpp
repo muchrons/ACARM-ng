@@ -15,11 +15,17 @@
 namespace Core
 {
 
+/** \brief common entry point gathering all inputs together.
+ */
 class Source: private boost::noncopyable
 {
 public:
+  /** \brief create all inputs and start reading from them.
+   */
   Source(void);
-
+  /** \brief read next entry from input(s).
+   *  \return newly read leaf.
+   */
   Persistency::GraphNodePtrNN read(void);
 
 private:
