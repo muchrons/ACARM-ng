@@ -10,7 +10,7 @@ namespace Input
 {
 
 Interface::Interface(ReaderPtrNN reader, Core::Types::AlertsFifo &output):
-  log_( Logger::NodeName("input.interface.", reader->getName().c_str() ) ),
+  log_( Logger::NodeName("input.interface", reader->getName().c_str() ) ),
   thread_( Thread(reader, output) )
 {
   LOGMSG_INFO(log_, "reader's thread started");
