@@ -4,17 +4,19 @@
  */
 #include <cassert>
 
+#include "System/Threads/SafeInitLocking.hpp"
 #include "Base/Threads/Lock.hpp"
 #include "Input/Prelude/LogCallback.hpp"
 #include "PreludePP/prelude-log.hpp"
 
+using namespace System::Threads;
 using namespace Base::Threads;
 
 // unnamed namespace for implementaiton details
 namespace
 {
-const Logger::Node *g_node =NULL;
-Mutex              *g_mutex=NULL;
+const Logger::Node *g_node=NULL;
+SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_mutex);
 } // unnamed namespace
 
 extern "C"
@@ -23,17 +25,15 @@ extern "C"
 static void wrp_Input_Prelude_ignore(int /*level*/, const char* /*log*/)
 {
   assert( g_node ==NULL && "unpredicted condition found");
-  assert( g_mutex==NULL && "unpredicted condition found");
   // nothing's done here.
 } // wrp_Input_Prelude_ignore()
 
 static void wrp_Input_Prelude_loggerCallback(int level, const char *log)
 {
+  assert( g_node !=NULL && "looks like callback has not ben registered");
+
   if(log==NULL)     // trust no one!
     log="<NULL>";
-
-  assert( g_node !=NULL && "looks like callback has not ben unregistered");
-  assert( g_mutex!=NULL && "looks like callback has not ben unregistered");
 
   /*
    * this definition is taken from Prelude++:
@@ -52,7 +52,7 @@ static void wrp_Input_Prelude_loggerCallback(int level, const char *log)
   assert( ::Prelude::PreludeLog::ERROR   == 0 );
   assert( ::Prelude::PreludeLog::CRITICAL==-1 );
 
-  Lock lock(*g_mutex);
+  SafeInitLock lock(g_mutex);
   switch(level)
   {
     case  3: LOGMSG_DEBUG(*g_node, log); break;
@@ -77,10 +77,8 @@ LogCallback::LogCallback(const char *node):
   LOGMSG_INFO(log_, "registering callback to use common logger in system");
 
   assert( g_node ==NULL && "LogCallback - more instances have been created!");
-  assert( g_mutex==NULL && "LogCallback - more instances have been created!");
 
   g_node =&log_;
-  g_mutex=&mutex_;
   // register callback to prelude
   ::Prelude::PreludeLog::SetCallback( wrp_Input_Prelude_loggerCallback );
   // set other options
@@ -92,9 +90,8 @@ LogCallback::~LogCallback(void)
   LOGMSG_WARN(log_, "disconnecting from Prelude++ logger - all logs from "
                     "Prelude++ will be ignored from now on");
 
-  Lock lock(mutex_);
+  SafeInitLock lock(g_mutex);
   g_node =NULL;
-  g_mutex=NULL;
 
   // after d-tor is called we may no loger provide loggin environment, so
   // we switch logging off to prevent illegal accesses.
