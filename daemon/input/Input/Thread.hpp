@@ -5,6 +5,7 @@
 #ifndef INCLUDE_INPUT_THREAD_HPP_FILE
 #define INCLUDE_INPUT_THREAD_HPP_FILE
 
+#include "Logger/Logger.hpp"
 #include "Core/Types/AlertsFifo.hpp"
 #include "Input/Reader.hpp"
 
@@ -27,6 +28,7 @@ public:
 private:
   ReaderPtrNN              reader_;
   Core::Types::AlertsFifo *output_;
+  Logger::Node             log_;
 }; // class Thread
 
 } // namespace Input
