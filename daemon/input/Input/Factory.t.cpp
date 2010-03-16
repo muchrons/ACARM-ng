@@ -37,10 +37,21 @@ void testObj::test<1>(void)
   ensure_equals("some elements are found", c.size(), 0);
 }
 
-// test throw when non-existing input type is requested.
+// test creating some sample, existing input
 template<>
 template<>
 void testObj::test<2>(void)
+{
+  ConfigIO::Singleton::get()->rereadConfig("testdata/valid_input.xml");
+  Core::Types::AlertsFifo q;
+  InputsCollection        c=create(q);
+  ensure_equals("invalid number of entries read", c.size(), 1);
+}
+
+// test throw when non-existing input type is requested.
+template<>
+template<>
+void testObj::test<3>(void)
 {
   ConfigIO::Singleton::get()->rereadConfig("testdata/invalid_input.xml");
   Core::Types::AlertsFifo q;
@@ -53,17 +64,6 @@ void testObj::test<2>(void)
   {
     // this is expected
   }
-}
-
-// test creating some sample, existing input
-template<>
-template<>
-void testObj::test<3>(void)
-{
-  ConfigIO::Singleton::get()->rereadConfig("testdata/valid_input.xml");
-  Core::Types::AlertsFifo q;
-  InputsCollection        c=create(q);
-  ensure_equals("invalid number of entries read", c.size(), 1);
 }
 
 } // namespace tut
