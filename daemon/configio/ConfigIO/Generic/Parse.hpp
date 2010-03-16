@@ -6,7 +6,6 @@
 #define INCLUDE_CONFIGIO_GENERIC_PARSE_HPP_FILE
 
 #include "XML/Node.hpp"
-#include "Persistency/GraphNode.hpp"
 
 namespace ConfigIO
 {
