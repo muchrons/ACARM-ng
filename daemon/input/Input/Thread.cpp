@@ -27,7 +27,7 @@ void Thread::operator()(void)
     try
     {
       boost::this_thread::interruption_point(); // check for interruption
-      Reader::DataPtr ptr=reader_->read(3);     // timeout every 3[s]
+      Reader::DataPtr ptr=reader_->read(30);    // timeout every 30[s]
       if( ptr.get()!=NULL )                     // if data is valid, forward it
       {
         LOGMSG_DEBUG(log_, "got new alert");
