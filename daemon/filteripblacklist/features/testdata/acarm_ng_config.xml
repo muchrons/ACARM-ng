@@ -16,8 +16,15 @@
     </nodes>
   </logger>
 
-  <filters/>
+  <filters>
+    <ipblacklist>
+      <refresh>36000</refresh>
+      <limit>10000</limit>
+    </ipblacklist>
+  </filters>
 
   <triggers/>
+
+  <inputs/>
 
 </acarm_ng>

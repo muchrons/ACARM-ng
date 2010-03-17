@@ -31,8 +31,7 @@ public:
   ~LogCallback(void);
 
 private:
-  Logger::Node         log_;
-  Base::Threads::Mutex mutex_;
+  Logger::Node log_;
 }; // class LogCallback
 
 } // namespace Prelude

@@ -1,0 +1,5 @@
+curlpp/*.*
+curlpp/internal/*.*
+utilspp/*.*
+utilspp/singleton/*.*
+utilspp/functor/*.*

@@ -1,0 +1,37 @@
+/*
+ * Thread.hpp
+ *
+ */
+#ifndef INCLUDE_INPUT_THREAD_HPP_FILE
+#define INCLUDE_INPUT_THREAD_HPP_FILE
+
+#include "Logger/Logger.hpp"
+#include "Core/Types/AlertsFifo.hpp"
+#include "Input/Reader.hpp"
+
+namespace Input
+{
+
+/** \brief thread's function object
+ */
+class Thread
+{
+public:
+  /** \brief create object.
+   *  \param reader reader to run in background.
+   *  \param output queue to output data to.
+   */
+  Thread(ReaderPtrNN reader, Core::Types::AlertsFifo &output);
+  /** \brief thread loop implementation.
+   */
+  void operator()(void);
+
+private:
+  ReaderPtrNN              reader_;
+  Core::Types::AlertsFifo *output_;
+  Logger::Node             log_;
+}; // class Thread
+
+} // namespace Input
+
+#endif

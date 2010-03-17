@@ -15,15 +15,17 @@ namespace Prelude
 {
 
 Reader::Reader(const std::string profile):
+  Input::Reader("prelude"),
   preludeLogger_("input.prelude.reader.preludelog"),
-  prelude_profile(profile),
-  client( new ::Prelude::Client( prelude_profile.c_str() ) )
+  preludeProfile_(profile),
+  client_( new ::Prelude::Client( preludeProfile_.c_str() ) )
 {
-    client->SetConfigFilename("/etc/prelude/default/client.conf");
-    client->SetRequiredPermission(PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
-    //client.SetFlags( Client::FLAGS_ASYNC_TIMER);
-    client->Init();
-    client->Start();
+  assert( client_.get()!=NULL );
+  client_->SetConfigFilename("/etc/prelude/default/client.conf");
+  client_->SetRequiredPermission(PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
+  //client.SetFlags( Client::FLAGS_ASYNC_TIMER);
+  client_->Init();
+  client_->Start();
 }
 
 Reader::DataPtr Reader::read(const unsigned int /*timeout*/)

@@ -233,6 +233,8 @@ DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 
 DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
 {
+  // TODO: method named 'is' cannot return non-bool value.
+  // TODO: -1 can be valid ID.
   DataBaseID id = isAnalyzerInDataBase(a);
   if( id == -1)
   {

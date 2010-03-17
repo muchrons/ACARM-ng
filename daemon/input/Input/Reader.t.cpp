@@ -19,6 +19,7 @@ struct TestReader: public Reader
   typedef Reader::DataPtr DataPtr;
 
   explicit TestReader(bool &i):
+    Reader("testreader"),
     i_(i)
   {
   }
@@ -77,6 +78,15 @@ void testObj::test<2>(void)
   Reader::DataPtr     tmp  =r_->read();
   Persistency::Alert *alert=tmp.get();
   ensure("NULL pointer returned", alert!=NULL);
+}
+
+// smoke test for presence of smart-pointer declaration
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  ReaderPtrNN ptr( new TestReader(i_) );
+  ensure("NULL pointer", ptr.get()!=NULL );
 }
 
 } // namespace tut

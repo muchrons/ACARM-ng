@@ -254,4 +254,6 @@ void testObj::test<14>(void)
   ensure("invalid dns name", h.getName().get()==NULL );
 }
 
+// TODO: add test for new c-tor, taking IP/mask without explicit protocol version.
+
 } // namespace tut
