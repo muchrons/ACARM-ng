@@ -2,11 +2,9 @@
  * Downloader.cpp
  *
  */
+#include <sstream>
 #include <boost/lexical_cast.hpp>
 
-#include "curlpp/cURLpp.hpp"
-#include "curlpp/Easy.hpp"
-#include "curlpp/Options.hpp"
 #include "Filter/IPBlackList/Downloader.hpp"
 
 using namespace std;
@@ -16,14 +14,18 @@ namespace Filter
 namespace IPBlackList
 {
 
-Downloader::Downloader(const unsigned int limit)
+Downloader::Downloader(const unsigned int limit):
+  url_( "http://www.dshield.org/ipsascii.html?limit=" +
+        boost::lexical_cast<string>(limit) )
 {
-  const std::string     url( "http://www.dshield.org/ipsascii.html?limit=" +
-                             boost::lexical_cast<string>(limit) );
-  const curlpp::Cleanup myCleanup=curlpp::Cleanup();
+}
+
+std::string Downloader::download(void) const
+{
+  stringstream ss;
   try
   {
-    ss_ << curlpp::options::Url(url);
+    ss<<curlpp::options::Url(url_);
   }
   catch(const curlpp::RuntimeError &ex)
   {
@@ -33,6 +35,7 @@ Downloader::Downloader(const unsigned int limit)
   {
     throw ExceptionDownloadFailed(SYSTEM_SAVE_LOCATION, ex.what() );
   }
+  return ss.str();
 }
 
 

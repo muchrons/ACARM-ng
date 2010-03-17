@@ -5,8 +5,11 @@
 #ifndef INCLUDE_FILTER_IPBLACKLIST_DOWNLOADER_HPP_FILE
 #define INCLUDE_FILTER_IPBLACKLIST_DOWNLOADER_HPP_FILE
 
-#include <sstream>
+#include <string>
 
+#include "curlpp/cURLpp.hpp"
+#include "curlpp/Easy.hpp"
+#include "curlpp/Options.hpp"
 #include "Filter/IPBlackList/ExceptionDownloadFailed.hpp"
 
 namespace Filter
@@ -21,19 +24,16 @@ class Downloader
 public:
   /** \brief create object with downloaded data.
    *  \param limit limit number of entries.
-   *  \note when c-tor is done, data are already downaloded.
    */
   explicit Downloader(const unsigned int limit=10000);
   /** \brief gets string downloaded as response.
    *  \return string with downaloeded data.
    */
-  inline std::string get(void) const
-  {
-    return ss_.str();
-  }
+  std::string download(void) const;
 
 private:
-  std::stringstream ss_;
+  const curlpp::Cleanup myCleanup_;
+  const std::string     url_;
 }; // class Downloader
 
 } // namespace IPBlackList
