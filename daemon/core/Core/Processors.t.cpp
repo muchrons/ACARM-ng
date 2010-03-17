@@ -151,7 +151,7 @@ void testObj::test<2>(void)
   p.process();  // this enqueues node in every filters
 
   // wait until everything's processed
-  const time_t deadline=time(NULL)+4;
+  const time_t deadline=time(NULL)+16;
   while( filterCalls_<1 && triggerCalls_<1 && time(NULL)<=deadline )
   {
     usleep(50*1000);
