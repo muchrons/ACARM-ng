@@ -5,6 +5,9 @@
 #include <sstream>
 #include <boost/lexical_cast.hpp>
 
+#include "curlpp/cURLpp.hpp"
+#include "curlpp/Easy.hpp"
+#include "curlpp/Options.hpp"
 #include "Filter/IPBlackList/Downloader.hpp"
 
 using namespace std;
@@ -37,7 +40,6 @@ std::string Downloader::download(void) const
   }
   return ss.str();
 }
-
 
 } // namespace IPBlackList
 } // namespace Filter

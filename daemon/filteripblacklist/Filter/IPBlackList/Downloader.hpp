@@ -7,9 +7,7 @@
 
 #include <string>
 
-#include "curlpp/cURLpp.hpp"
-#include "curlpp/Easy.hpp"
-#include "curlpp/Options.hpp"
+#include "Filter/IPBlackList/CUrlInit.hpp"
 #include "Filter/IPBlackList/ExceptionDownloadFailed.hpp"
 
 namespace Filter
@@ -32,8 +30,8 @@ public:
   std::string download(void) const;
 
 private:
-  const curlpp::Cleanup myCleanup_;
-  const std::string     url_;
+  const CUrlInit    curlInit_;
+  const std::string url_;
 }; // class Downloader
 
 } // namespace IPBlackList
