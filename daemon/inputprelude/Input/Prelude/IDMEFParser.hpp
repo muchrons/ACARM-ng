@@ -24,6 +24,7 @@ class IDMEFParser
 public:
   /**
    * @brief c-tor creates parser object from idmef_message_t
+   * \param msg idmef_message_t object to parse
    */
   IDMEFParser(idmef_message_t *msg);
 
@@ -32,22 +33,38 @@ private:
   /**
    * @brief gets host name
    */
-  Persistency::Alert::Name getName() const;
+  const Persistency::Host::Name& getName() const;
 
   /**
    * @brief gets alert creation time
    */
-  Persistency::Timestamp getCreateTime() const;
+  const Persistency::Timestamp& getCreateTime() const;
 
   /**
    * @brief gets list of analyzers
    */
-  Persistency::SourceAnalyzers getAnalyzers() const;
+  const Persistency::Alert::SourceAnalyzers& getAnalyzers() const;
 
+  /**
+   * @brief gets list of sources
+   */
+  const Persistency::Alert::ReportedHosts getSources();
+
+  /**
+   * @brief gets list of targets
+   */
+  const Persistency::Alert::ReportedHosts getTargets();
+  
 
 private:
   idmef_alert_t *alert_;
-};
+
+  Persistency::Host::Name name_;
+  Persistency::Timestamp ctime_;
+  boost::scoped_ptr<Persistency::Alert::SourceAnalyzers> analyzers_;
+  Persistency::Alert::ReportedHosts sourceHosts;
+  Persistency::Alert::ReportedHosts targetHosts;
+}; //class IDMEFParser
 
 } // namespace Prelude
 } // namespace Input

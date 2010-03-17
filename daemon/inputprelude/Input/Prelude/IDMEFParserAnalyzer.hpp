@@ -23,19 +23,40 @@ namespace Prelude
 class IDMEFParserAnalyzer
 {
 public:
-  /*
+  /**
    * @brief c-tor
-   * $param ptr 
+   * \param ptr idmef_analyzer_t structure to parse
    */
   IDMEFParserAnalyzer(idmef_analyzer_t *ptr);  
+
+  /**
+   * @brief gets name of an analyzer
+   */
   Persistency::Analyzer::Name getName() const;
-  Persistency::Analyzer::Version getVersion() const;
-  Persistency::Analyzer::OS getOS() const;
-  Persistency::Analyzer::IP getIP() const;
+
+  /**
+   * @brief gets version of an analyzer
+   */
+  const Persistency::Analyzer::Version* getVersion() const;
+
+  /**
+   * @brief gets OS version this analyzer is running on
+   */
+  const Persistency::Analyzer::OS* getOS() const;
+
+  /**
+   * @brief gets IP address of an analyzer
+   */
+  const Persistency::Analyzer::IP* getIP() const;
 
 private:
   idmef_analyzer_t *ptr_;
-};
+
+  Persistency::Analyzer::Name name_;
+  boost::shared_ptr<Persistency::Analyzer::Version> version_;
+  boost::shared_ptr<Persistency::Analyzer::OS> os_;
+  boost::shared_ptr<Persistency::Analyzer::IP> ip_;
+};//class IDMEFParserAnalyzer
 
 } // namespace Prelude
 } // namespace Input

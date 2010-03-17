@@ -17,39 +17,57 @@ IDMEFParser::IDMEFParser(idmef_message_t * msg)
   if (idmef_message_get_type(msg)!=IDMEF_MESSAGE_TYPE_ALERT)
     throw Exception(SYSTEM_SAVE_LOCATION, "Heartbeats are not supported");
   alert_=idmef_message_get_alert(msg);
-}
 
-Persistency::Host::Name IDMEFParser::getName() const
-{
-  const prelude_string_t *field = idmef_alert_get_messageid(alert_);
-  return Persistency::Host::Name(prelude_string_get_string_or_default(field, "Unknown"));
-}
-
-Persistency::Timestamp IDMEFParser::getCreateTime() const
-{
-  const idmef_time_t *time = idmef_alert_get_create_time(alert_);
-  const time_t t=idmef_time_get_sec(time);
-  return boost::posix_time::from_time_t(t);
-}
-  /*
-Persistency::Analyzer IDMEFParser::getAnalyzer() const
-{  
-  const idmef_analyzer_t *ptr;
-  IDMEFParserAnalyzer an(alert_);
-  return AnalyzerPtrNN(new Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
-}
-  */
-
-Persistency::SourceAnalyzers IDMEFParser::getAnalyzers() const
-{
-  char buf[128];
-  idmef_analyzer_t *elem = NULL;
-  int cnt = 0, len;
+  const prelude_string_t *idmef_name = idmef_alert_get_messageid(alert_);
+  name_=(prelude_string_get_string_or_default(idmef_name, "Unknown"));
   
-  while ( (elem = idmef_alert_get_next_analyzer(ptr, elem)) ) 
+  const idmef_time_t *idmef_time = idmef_alert_get_create_time(alert_);
+  const time_t ctime_t=idmef_time_get_sec(idmef_time);
+  ctime_=boost::posix_time::from_time_t(ctime_t);
+
+  idmef_analyzer_t *elem = idmef_alert_get_next_analyzer(alert_, NULL);
+  int cnt = 0, len;
+
+  if (elem)
+    throw Exception(SYSTEM_SAVE_LOCATION, "No obligatory field \"Analyzer\" in this Alert!");
+  
+  const IDMEFParserAnalyzer an(elem);
+
+  Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
+
+  analyzers_.reset(new Persistency::Alert::SourceAnalyzers(ptr));
+  
+  while ( (elem = idmef_alert_get_next_analyzer(alert_, elem)) ) 
     {
-      IDMEFParserAnalyzer an(elem);      
-    }
+      const IDMEFParserAnalyzer an2(elem);
+      Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
+      analyzers_->push_back(ptr);
+    }  
+}
+
+const Persistency::Host::Name& IDMEFParser::getName() const
+{  
+  return name_;
+}
+
+const Persistency::Timestamp& IDMEFParser::getCreateTime() const
+{
+  return ctime_;
+}
+
+const Persistency::Alert::SourceAnalyzers& IDMEFParser::getAnalyzers() const
+{
+  return *analyzers_; 
+}
+
+const Persistency::Alert::ReportedHosts getSources() const
+{
+  //todo
+}
+
+const Persistency::Alert::ReportedHosts getTargets()
+{
+  //todo
 }
 
 
