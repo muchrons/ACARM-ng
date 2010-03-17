@@ -89,13 +89,15 @@ struct ProcessorsThread
     LOGMSG_INFO(log_, "thread ends");
   }
 
-  Logger::Node                        log_;
+  Logger::Node                          log_;
   Commons::SharedPtrNotNULL<Processors> procs_;
 }; // struct ProcessorsThread
 } // unnamed namespace
 
 Main::Main(void):
-  log_("core.main")
+  log_("core.main"),
+  procs_( ProcessorsThread(queue_) ),
+  srcs_( SourcesThread(queue_) )
 {
   LOGMSG_INFO(log_, "core is up and running");
 }
