@@ -2,6 +2,7 @@
  * Processors.cpp
  *
  */
+#include "Logger/Logger.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Filter/Factory.hpp"
 #include "Trigger/Factory.hpp"
@@ -14,10 +15,18 @@ namespace Core
 {
 
 Processors::Processors(Core::Types::NodesFifo &queue):
+  log_("core.processors"),
   queue_(queue)
 {
+  LOGMSG_INFO(log_, "building processors");
   append( Filter::create(queue) );  // create filters
   append( Trigger::create(queue) ); // create triggers
+  LOGMSG_INFO_S(log_)<<"total "<<procs_.size()<<" processors created";
+}
+
+Processors::~Processors(void)
+{
+  LOGMSG_INFO(log_, "deallocating all processors");
 }
 
 void Processors::process(void)

@@ -7,6 +7,7 @@
 
 #include <boost/noncopyable.hpp>
 
+#include "Logger/Node.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Core/Types/NodesFifo.hpp"
 #include "Core/Types/Proc/ProcessorsCollection.hpp"
@@ -23,6 +24,10 @@ public:
    *  \param queue queue to process (i.e. to work on).
    */
   explicit Processors(Core::Types::NodesFifo &queue);
+  /** \brief clean-up data.
+   */
+  ~Processors(void);
+
   /** \brief call that performs single step in processing queue.
    *
    *  call reads first element from queue and passes it to all the processors
@@ -34,6 +39,7 @@ public:
 private:
   void append(const Core::Types::Proc::ProcessorsCollection &newProcs);
 
+  Logger::Node                             log_;
   Core::Types::NodesFifo                  &queue_;
   Core::Types::Proc::ProcessorsCollection  procs_;
 }; // class Source
