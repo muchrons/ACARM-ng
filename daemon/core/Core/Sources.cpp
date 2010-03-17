@@ -1,22 +1,22 @@
 /*
- * Source.cpp
+ * Sources.cpp
  *
  */
 #include "Persistency/IO/BackendFactory.hpp"
-#include "Core/Source.hpp"
+#include "Core/Sources.hpp"
 
 using namespace Persistency;
 
 namespace Core
 {
 
-Source::Source(void):
+Sources::Sources(void):
   conn_( IO::create() ),
   inputs_( Input::create(queue_) )
 {
 }
 
-Persistency::GraphNodePtrNN Source::read(void)
+Persistency::GraphNodePtrNN Sources::read(void)
 {
   AlertPtrNN      alert=readAlert();
   IO::Transaction t( conn_->createNewTransaction("core_save_graphnode") );
@@ -24,7 +24,7 @@ Persistency::GraphNodePtrNN Source::read(void)
   return leaf;
 }
 
-Persistency::AlertPtrNN Source::readAlert(void)
+Persistency::AlertPtrNN Sources::readAlert(void)
 {
   return queue_.pop();
 }

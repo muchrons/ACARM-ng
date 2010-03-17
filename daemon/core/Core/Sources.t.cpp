@@ -1,11 +1,11 @@
 /*
- * Source.t.cpp
+ * Sources.t.cpp
  *
  */
 #include <tut/tut.hpp>
 #include <string>
 
-#include "Core/Source.hpp"
+#include "Core/Sources.hpp"
 
 using namespace Core;
 
@@ -18,7 +18,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object            testObj;
 
-factory tf("Core/Source");
+factory tf("Core/Sources");
 } // unnamed namespace
 
 
@@ -30,7 +30,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Source s;
+  Sources s;
 }
 
 // test reading from input
@@ -38,7 +38,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Source                      s;
+  Sources                     s;
   Persistency::GraphNodePtrNN leaf=s.read();
   ensure_equals("invalid leaf returned",
                 leaf->getAlert()->getName().get(),
