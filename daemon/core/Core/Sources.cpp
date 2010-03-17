@@ -16,12 +16,12 @@ Sources::Sources(void):
   conn_( IO::create() ),
   inputs_( Input::create(queue_) )
 {
-  LOGMSG_INFO("created");
+  LOGMSG_INFO(log_, "created");
 }
 
 Sources::~Sources(void)
 {
-  LOGMSG_INFO("deallocating");
+  LOGMSG_INFO(log_, "deallocating");
 }
 
 Persistency::GraphNodePtrNN Sources::read(void)
