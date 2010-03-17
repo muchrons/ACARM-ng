@@ -11,6 +11,7 @@
 #include "Trigger/Factory.hpp"
 #include "Core/Processors.hpp"
 #include "TestHelpers/TestBase.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace Core;
 
@@ -139,6 +140,26 @@ void testObj::test<2>(void)
   ensure("test trigger not registered", g_rhTrigger.isRegistered() );
   // read dedicated config file
   config("testdata/filter_and_trigger.xml");
+
+  // create processors
+  Processors p(queue_);
+  ensure_equals("filter has been called too fast",  filterCalls_,  0);
+  ensure_equals("trigger has been called too fast", triggerCalls_, 0);
+
+  // test example call
+  queue_.push( TestHelpers::Persistency::makeNewNode() );
+  p.process();  // this enqueues node in every filters
+
+  // wait until everything's processed
+  const time_t deadline=time(NULL)+4;
+  while( filterCalls_<1 && triggerCalls_<1 && time(NULL)<=deadline )
+  {
+    usleep(50*1000);
+  }
+
+  // now check if every element has been processed
+  ensure_equals("filter has not been called",  filterCalls_,  1);
+  ensure_equals("trigger has not been called", triggerCalls_, 1);
 }
 
 } // namespace tut
