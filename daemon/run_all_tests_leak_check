@@ -1,0 +1,19 @@
+#!/bin/bash
+
+RET=0
+
+# iterata through all build components
+for d in `cat build_config/components{.,_test.}lst | sort | uniq`
+do
+  echo "----------------------------"
+  echo "testing $d:"
+  ( cd gen/test_local_normal/$d && valgrind -v --leak-check=full --show-reachable=yes ./$d.t ) || RET=1
+done
+
+echo
+if [ "$RET" -ne "0" ]
+then
+  echo "$0: some of the tests FAILED..."
+fi
+
+exit $RET
