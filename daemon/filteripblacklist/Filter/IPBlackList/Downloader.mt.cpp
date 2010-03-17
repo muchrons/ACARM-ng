@@ -11,6 +11,6 @@ using namespace std;
 int main(void)
 {
   const Filter::IPBlackList::Downloader d(13);
-  cout << d.get() << endl;
+  cout << d.download() << endl;
   return 0;
 }
