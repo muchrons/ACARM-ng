@@ -2,7 +2,12 @@
 <acarm_ng>
 
   <persistency>
-    <type>stubs</type>
+    <type>postgres</type>
+    <user>john</user>
+    <pass>$3cr3t</pass>
+    <host>db.server.my.domain.org</host>
+    <port>5432</port>
+    <dbname>kszy</dbname>
   </persistency>
 
   <logger>
@@ -21,7 +26,7 @@
   <triggers/>
 
   <inputs>
-    <someinput/>
+    <nonexisting/>
   </inputs>
 
 </acarm_ng>

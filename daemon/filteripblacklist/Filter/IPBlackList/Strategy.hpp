@@ -10,6 +10,7 @@
 #include "Persistency/Host.hpp"
 #include "Filter/Strategy.hpp"
 #include "Filter/IPBlackList/BlackList.hpp"
+#include "Filter/IPBlackList/Downloader.hpp"
 
 
 namespace Filter
@@ -67,6 +68,7 @@ private:
   const Parameters params_;
   time_t           deadline_;
   BlackListPtr     bl_;
+  Downloader       dwnl_;
 }; // class Strategy
 
 } // namespace IPBlackList

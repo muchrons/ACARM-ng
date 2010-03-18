@@ -116,4 +116,11 @@ following filters and paramters are available:
     <cachetimeout>3600</cachetimeout> <!-- time to keep cached DNS mappings -->
   </dnsresolver>
 
+  <!-- updates severity of given meta-alert if it includes source-host that is blacklisted -->
+  <ipblacklist>
+    <refresh>36000</refresh> <!-- how often refresh list of black-listed IPs in seconds -->
+    <limit>10000</limit>     <!-- limits number of entries to be downloaded -->
+    <priorityDelta>0.8</priorityDelta> <!-- amount to update priority by when black-listed IP's found -->
+  </ipblacklist>
+
 TODO: describe missing filters.
