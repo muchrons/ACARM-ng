@@ -24,6 +24,28 @@ namespace Postgres
 namespace detail
 {
 
+namespace
+{
+
+SeverityLevel fromInt(int level)
+{
+  switch(level)
+  {
+    case 0: return SeverityLevel::DEBUG;
+    case 1: return SeverityLevel::INFO;
+    case 2: return SeverityLevel::NOTICE;
+    case 3: return SeverityLevel::WARNING;
+    case 4: return SeverityLevel::PROBLEM;
+    case 5: return SeverityLevel::ERROR;
+    case 6: return SeverityLevel::CRITICAL;
+  }
+  // when we reach here, there is wrong severity level in data base
+  assert(!"invalid severity level");
+  // TODO: throw exception when value of severity level is wrong
+}
+
+} // unnamed namespace
+
 EntryReader::EntryReader(Transaction &t, DBHandler &dbh):
   dbh_(dbh),
   t_(t)
@@ -40,21 +62,20 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   string name, description, detect_time, create_time;
-  int id_severity;
+  int idSeverity;
   double certainty;
 
   r[0]["name"].to(name);
   r[0]["description"].to(description);
   r[0]["create_time"].to(create_time);
   r[0]["detect_time"].to(detect_time);
-  r[0]["id_severity"].to(id_severity);
+  r[0]["id_severity"].to(idSeverity);
   r[0]["certainty"].to(certainty);
 
   const Persistency::Alert::Name alertName(name);
   const Timestamp                alertDetect( from_iso_string( detect_time ) );
   const Timestamp                alertCreate( from_iso_string( create_time ) );
-  //TODO create SeverityLevel from int
-  const Severity                 alertSeverity( SeverityLevel::INFO );
+  const Severity                 alertSeverity( fromInt(idSeverity) );
   const Certainty                alertCertainty(certainty);
   const string                   alertDescription(description);
 
@@ -95,6 +116,7 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
   return malert;
 }
 
+// TODO: tests
 AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
 {
   stringstream sa;
@@ -103,21 +125,35 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
 
   string name, version, os, ip;
   ra[0]["name"].to(name);
-  ra[0]["version"].to(version);
-  ra[0]["os"].to(os);
-  ra[0]["ip"].to(ip);
+
+  Analyzer::Version anlzVersion;
+  if( !ra[0]["version"].is_null() )
+  {
+    ra[0]["version"].to(version);
+    anlzVersion =  Analyzer::Version(version) ;
+  }
+
+  Analyzer::OS anlzOS;
+  if( !ra[0]["os"].is_null() )
+  {
+    ra[0]["os"].to(os);
+    anlzOS = Analyzer::OS(os);
+  }
+
+  Analyzer::IP anlzIP;
+  if( !ra[0]["ip"].is_null() )
+  {
+    ra[0]["ip"].to(ip);
+    anlzIP = Analyzer::IP( Analyzer::IPv4::from_string(ip) );
+  }
 
   const Analyzer::Name    anlzName(name);
-  const Analyzer::Version anlzVersion(version);
-  const Analyzer::OS      anlzOS(os);
-  const Analyzer::IP      anlzIP( Analyzer::IPv4::from_string(ip) );
 
   AnalyzerPtrNN anlz(new Analyzer( anlzName,
                                    &anlzVersion,
                                    &anlzOS,
                                    &anlzIP ));
   return anlz;
-
 }
 
 Alert::SourceAnalyzers EntryReader::getAnalyzers(DataBaseID alertID)
@@ -269,9 +305,20 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID refID)
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   string path, name, md5;
-  r[0]["path"].to(path);
+  Process::Path     procPath;
+  if( !r[0]["path"].is_null() )
+  {
+    r[0]["path"].to(path);
+    procPath = Process::Path(path);
+  }
+
   r[0]["name"].to(name);
-  r[0]["md5"].to(md5);
+  //MD5Sum procMD5 = NULL;
+  //if( !r[0]["md5"].is_null() )
+  //{
+    r[0]["md5"].to(md5);
+  MD5Sum  procMD5 = MD5Sum( MD5Sum::createFromString(md5.c_str()) );
+  //}
 
   stringstream sr;
   sr << "SELECT * FROM reported_procs WHERE id_proc = " << procID << ";";
@@ -284,9 +331,7 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID refID)
   rr[0]["username"].to(username);
   rr[0]["arguments"].to(arguments);
 
-  const Process::Path     procPath(path);
   const Process::Name     procName(name);
-  const MD5Sum            procMD5(MD5Sum::createFromString(md5.c_str()) );
   const pid_t             procPid(pid);
   const Process::Username procUsername(username);
 
