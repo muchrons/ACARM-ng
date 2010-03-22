@@ -25,6 +25,7 @@ TestDBAccess::TestDBAccess(void):
 void TestDBAccess::removeAllData(void)
 {
   pqxx::work t(conn_.get(), "remove_all_data");
+  t.exec("DELETE FROM meta_alerts_already_triggered");
   t.exec("DELETE FROM meta_alerts_in_use");
   t.exec("DELETE FROM alert_to_meta_alert_map");
   t.exec("DELETE FROM meta_alerts_tree");
