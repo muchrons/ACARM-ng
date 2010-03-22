@@ -26,8 +26,7 @@ IDMEFParser::IDMEFParser(idmef_message_t * msg)
   ctime_=boost::posix_time::from_time_t(ctime_t);
 
   idmef_analyzer_t *elem = idmef_alert_get_next_analyzer(alert_, NULL);
-  int cnt = 0, len;
-
+  
   if (elem)
     throw Exception(SYSTEM_SAVE_LOCATION, "No obligatory field \"Analyzer\" in this Alert!");
   
@@ -43,8 +42,16 @@ IDMEFParser::IDMEFParser(idmef_message_t * msg)
       Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
       analyzers_->push_back(ptr);
     }  
-}
 
+  idmef_source_t *elem = NULL;
+    
+  while ( (elem = idmef_alert_get_next_source(ptr, elem)) )
+    {
+      
+    }
+  
+}
+  
 const Persistency::Host::Name& IDMEFParser::getName() const
 {  
   return name_;
@@ -60,12 +67,12 @@ const Persistency::Alert::SourceAnalyzers& IDMEFParser::getAnalyzers() const
   return *analyzers_; 
 }
 
-const Persistency::Alert::ReportedHosts getSources() const
+const Persistency::Alert::ReportedHosts& IDMEFParser::getSources() const
 {
   //todo
 }
 
-const Persistency::Alert::ReportedHosts getTargets()
+const Persistency::Alert::ReportedHosts& IDMEFParser::getTargets() const
 {
   //todo
 }

@@ -28,8 +28,6 @@ public:
    */
   IDMEFParser(idmef_message_t *msg);
 
-
-private:
   /**
    * @brief gets host name
    */
@@ -48,12 +46,12 @@ private:
   /**
    * @brief gets list of sources
    */
-  const Persistency::Alert::ReportedHosts getSources();
+  const Persistency::Alert::ReportedHosts& getSources() const;
 
   /**
    * @brief gets list of targets
    */
-  const Persistency::Alert::ReportedHosts getTargets();
+  const Persistency::Alert::ReportedHosts& getTargets() const;
   
 
 private:
