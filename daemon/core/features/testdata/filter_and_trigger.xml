@@ -16,12 +16,14 @@
     </nodes>
   </logger>
 
-  <filters/>
+  <filters>
+    <somefilter/>
+  </filters>
 
-  <triggers/>
+  <triggers>
+    <sometrigger/>
+  </triggers>
 
-  <inputs>
-    <someinput/>
-  </inputs>
+  <inputs/>
 
 </acarm_ng>

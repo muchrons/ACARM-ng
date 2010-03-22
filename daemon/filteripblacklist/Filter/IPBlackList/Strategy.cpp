@@ -23,7 +23,8 @@ namespace IPBlackList
 Strategy::Strategy(const Parameters &params):
   Filter::Strategy<Data>("ipblacklist"),
   params_(params),
-  deadline_(0)
+  deadline_(0),
+  dwnl_(params_.limit_)
 {
 }
 
@@ -46,8 +47,7 @@ void Strategy::processImpl(Node               n,
     deadline_=now+params_.refresh_;
     try
     {
-      const Downloader    d(params_.limit_);
-      const DShieldParser dsp( d.get() );
+      const DShieldParser dsp( dwnl_.download() );
       BlackListPtr        ptr( new BlackList( dsp.begin(), dsp.end() ) );
       // if new list is available - save it!
       bl_.swap(ptr);

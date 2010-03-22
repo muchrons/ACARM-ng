@@ -110,4 +110,74 @@ void testObj::test<3>(void)
   ensure_equals("invalid queue size", output_.size(), 0);
 }
 
+
+namespace
+{
+struct TestWaitingReader: public Reader
+{
+  TestWaitingReader(void):
+    Reader("testwaitingreader")
+  {
+  }
+
+  virtual DataPtr read(unsigned int)
+  {
+    usleep(10*1000);    // limit output a little...
+    return DataPtr();   // return no results, so that read() on a thread will not exit
+  }
+}; // struct TestWaitingReader
+
+struct WaitForInterrupt
+{
+  WaitForInterrupt(Core::Types::AlertsFifo *q, bool *done):
+    q_(q),
+    done_(done)
+  {
+  }
+
+  void operator()(void)
+  {
+    Logger::Node log("test.waitforinterrupt");
+    assert(q_!=NULL);
+    try
+    {
+      LOGMSG_DEBUG(log, "waiting for message");
+      q_->pop();
+      LOGMSG_DEBUG(log, "got message");
+    }
+    catch(const boost::thread_interrupted &)
+    {
+      LOGMSG_DEBUG(log, "got interrupt");
+      assert(done_!=NULL);
+      *done_=true;
+    }
+    LOGMSG_DEBUG(log, "exiting thread");
+  }
+
+  Core::Types::AlertsFifo *q_;
+  bool                    *done_;
+}; // struct WaitForInterrupt
+} // unnamed namespace
+
+// test if queue is signaled uppon interruption
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  bool                   done=false;
+  ReaderPtrNN            r(new TestWaitingReader);
+  const Thread           pt(r, output_);
+  const WaitForInterrupt wfi(&output_, &done);
+  boost::thread          thInt(wfi);    // run waiting thread
+  boost::thread          th(pt);        // run generating thread.
+
+  ensure("oops - thread that supposed to wait finised earlier", done==false);
+
+  // now check...
+  th.interrupt();   // stop processing thread
+  thInt.interrupt();// mark thread as ready-to-exit
+  thInt.join();     // wait until thread waiting for data is done.
+  ensure("thread didn't join?!", done==true);
+}
+
 } // namespace tut

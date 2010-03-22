@@ -50,7 +50,7 @@ template<>
 void testObj::test<3>(void)
 {
   const Downloader d(12);
-  ensure("string too short", d.get().length()>50 );
+  ensure("string too short", d.download().length()>12*10 );
 }
 
 } // namespace tut
