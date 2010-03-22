@@ -34,7 +34,7 @@ typedef StreamTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Logger/Stream");
+factory tf("Logger/Appenders/Stream");
 } // unnamed namespace
 
 

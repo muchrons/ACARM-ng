@@ -1,11 +1,12 @@
 /*
- * Console.t.cpp
+ * Syslog.t.cpp
  *
  */
 #include <tut.h>
+#include <string>
 
 #include "TestHelpers/TestBase.hpp"
-#include "Logger/Appenders/Console.hpp"
+#include "Logger/Appenders/Syslog.hpp"
 
 using namespace std;
 using namespace Logger;
@@ -14,15 +15,14 @@ using namespace Logger::Appenders;
 namespace
 {
 
-struct ConsoleTestClass: private TestHelpers::TestBase
+struct TestClass: private TestHelpers::TestBase
 {
 };
 
-typedef ConsoleTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Logger/Appenders/Console");
+factory tf("Logger/Appenders/Syslog");
 } // unnamed namespace
 
 
@@ -35,7 +35,7 @@ template<>
 void testObj::test<1>(void)
 {
   ensure_equals("invalid name returned",
-               Console::getThisTypeName(), string("Console") );
+               Syslog::getThisTypeName(), string("Syslog") );
 }
 
 // test getting name from dynamic interface
@@ -43,10 +43,10 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Console                capp;
-  const Appenders::Base &b=capp;
+  Syslog                 sapp;
+  const Appenders::Base &b=sapp;
   ensure_equals("strings are not identical",
-                b.getTypeName(), string( Console::getThisTypeName() ) );
+                b.getTypeName(), string( Syslog::getThisTypeName() ) );
 }
 
 // check if addresses are physicaly indentical
@@ -54,10 +54,10 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  Console                capp;
-  const Appenders::Base &b=capp;
+  Syslog                 sapp;
+  const Appenders::Base &b=sapp;
   ensure("pointers are not identical",
-         b.getTypeName()==Console::getThisTypeName() );
+         b.getTypeName()==Syslog::getThisTypeName() );
 }
 
 } // namespace tut

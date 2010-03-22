@@ -34,7 +34,7 @@ typedef FileTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Logger/File");
+factory tf("Logger/Appenders/File");
 } // unnamed namespace
 
 
