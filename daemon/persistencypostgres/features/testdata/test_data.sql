@@ -5,6 +5,7 @@
 --
 -- clean up any old entries
 --
+DELETE FROM meta_alerts_already_triggered;
 DELETE FROM meta_alerts_in_use;
 DELETE FROM alert_to_meta_alert_map;
 DELETE FROM meta_alerts_tree;
@@ -107,7 +108,7 @@ INSERT INTO reported_procs VALUES
   (4, 1, 1, NULL, NULL, NULL,    NULL,       NULL)
 ;
 INSERT INTO meta_alerts VALUES
-  (1, 'meta/alert number 1', 0.5,  0.5, 3,    '1990-01-03 11:22:33', '1990-02-01 10:00:00'),
+  (1, 'meta/alert number 1', 0.5,  0.5,    3, '1990-01-03 11:22:33', '1990-02-01 10:00:00'),
   (2, 'meta/alert number 2', 1.5, -0.5, NULL, '2010-01-03 12:22:33', '2010-02-01 11:10:00'),
   (3, 'meta number 1',       0.1, -0.1, NULL, '2010-02-03 12:22:33', '2010-02-03 13:10:00'),
   (4, 'meta/alert number 3', 0.1, -0.1, NULL, '2010-02-03 12:22:33', '2010-02-03 13:10:00'),
