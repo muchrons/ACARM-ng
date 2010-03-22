@@ -50,5 +50,10 @@ RestorerAutoPtr Connection::restorer(Transaction &t)
   return ptr;
 }
 
+size_t Connection::removeEntriesOlderThan(size_t days, Transaction &t)
+{
+  return removeEntriesOlderThanImpl(days, t);
+}
+
 } // namespace IO
 } // namespace Persistency
