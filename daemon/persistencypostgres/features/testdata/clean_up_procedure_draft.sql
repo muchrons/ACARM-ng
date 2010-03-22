@@ -48,8 +48,8 @@ DELETE FROM meta_alerts             WHERE id             IN (SELECT id_meta_aler
 -- will be called, it will remove next level in tree, until all unused entries are removed.
 -- this causes some dead entries to be present for some time, though they will not
 -- interfear with existing entries, since they are already marked as unused anyway.
-DELETE FROM meta_alerts             WHERE id         NOT IN (SELECT id_node  FROM meta_alerts_tree)
-                                      AND id         NOT IN (SELECT id_child FROM meta_alerts_tree);
+DELETE FROM meta_alerts             WHERE id         NOT IN (SELECT id_node  FROM meta_alerts_tree) AND
+                                          id         NOT IN (SELECT id_child FROM meta_alerts_tree);
 
 DELETE FROM alerts                  WHERE id             IN (SELECT id FROM tmp);
 
