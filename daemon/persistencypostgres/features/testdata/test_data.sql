@@ -23,3 +23,5 @@ DELETE FROM config;
 DELETE FROM config_rdonly;
 DELETE FROM logger_logs;
 DELETE FROM logger_nodes;
+
+
