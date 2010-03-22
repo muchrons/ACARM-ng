@@ -22,7 +22,7 @@ typedef ConsoleTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Logger/Console");
+factory tf("Logger/Appenders/Console");
 } // unnamed namespace
 
 
