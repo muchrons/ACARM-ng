@@ -4,6 +4,7 @@
  */
 #include <sstream>
 #include <cassert>
+#include <boost/algorithm/string.hpp>
 
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
@@ -13,7 +14,8 @@ using namespace std;
 using namespace pqxx;
 
 using Persistency::IO::Transaction;
-using boost::posix_time::from_iso_string;
+using boost::posix_time::time_from_string;
+using boost::algorithm::trim;
 
 namespace Persistency
 {
@@ -68,26 +70,31 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
   r[0]["name"].to(name);
   r[0]["description"].to(description);
   r[0]["create_time"].to(create_time);
-  r[0]["detect_time"].to(detect_time);
   r[0]["id_severity"].to(idSeverity);
-  r[0]["certainty"].to(certainty);
+  r[0]["certanity"].to(certainty);
+  Timestamp                *alertDetect = NULL;
+  if( !r[0]["detect_time"].is_null() )
+  {
+    r[0]["detect_time"].to(detect_time);
+    alertDetect = new Timestamp( time_from_string(detect_time) );
+  }
 
   const Persistency::Alert::Name alertName(name);
-  const Timestamp                alertDetect( from_iso_string( detect_time ) );
-  const Timestamp                alertCreate( from_iso_string( create_time ) );
+  const Timestamp                alertCreate( time_from_string( create_time ) );
   const Severity                 alertSeverity( fromInt(idSeverity) );
   const Certainty                alertCertainty(certainty);
   const string                   alertDescription(description);
 
   AlertPtrNN alert( new Alert(alertName,
                               getAnalyzers( alertID ),
-                             &alertDetect,
+                              alertDetect,
                               alertCreate,
                               alertSeverity,
                               alertCertainty,
                               alertDescription,
                               getSourceHosts( alertID ),
                               getTargetHosts( alertID ) ) );
+  //if(alertDetect) delete alertDetect;
   return alert;
 }
 
@@ -98,14 +105,19 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   string name, createTime, lastUpdateTime;
   double severityDelta, certaintyDelta;
-  DataBaseID refID;
+  DataBaseID *refID = NULL, id;
   r[0]["name"].to(name);
+  trim(name);
   r[0]["severity_delta"].to(severityDelta);
   r[0]["certanity_delta"].to(certaintyDelta);
   r[0]["create_time"].to(createTime);
-  r[0]["id_ref"].to(refID);
+  if( !r[0]["id_ref"].is_null() )
+  {
+    r[0]["id_ref"].to(id);
+    refID = new DataBaseID(id);
+  }
   const Persistency::MetaAlert::Name malertName(name);
-  Timestamp                          malertCreate( from_iso_string( createTime) );
+  Timestamp                          malertCreate( time_from_string( createTime) );
 
   //TODO: check if id_ref is NULL
   MetaAlertPtrNN malert( new Persistency::MetaAlert( malertName,
@@ -113,6 +125,7 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
                                           certaintyDelta,
                                           getReferenceURL( refID  ),
                                           malertCreate ) );
+  if(refID) delete refID;
   return malert;
 }
 
@@ -126,33 +139,36 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
   string name, version, os, ip;
   ra[0]["name"].to(name);
 
-  Analyzer::Version anlzVersion;
+  Analyzer::Version *anlzVersion = NULL;
   if( !ra[0]["version"].is_null() )
   {
     ra[0]["version"].to(version);
-    anlzVersion =  Analyzer::Version(version) ;
+    anlzVersion =  new Analyzer::Version(version) ;
   }
 
-  Analyzer::OS anlzOS;
+  Analyzer::OS *anlzOS = NULL;
   if( !ra[0]["os"].is_null() )
   {
     ra[0]["os"].to(os);
-    anlzOS = Analyzer::OS(os);
+    anlzOS = new Analyzer::OS(os);
   }
 
-  Analyzer::IP anlzIP;
+  Analyzer::IP *anlzIP = NULL;
   if( !ra[0]["ip"].is_null() )
   {
     ra[0]["ip"].to(ip);
-    anlzIP = Analyzer::IP( Analyzer::IPv4::from_string(ip) );
+    anlzIP = new Analyzer::IP( Analyzer::IPv4::from_string(ip) );
   }
 
   const Analyzer::Name    anlzName(name);
 
   AnalyzerPtrNN anlz(new Analyzer( anlzName,
-                                   &anlzVersion,
-                                   &anlzOS,
-                                   &anlzIP ));
+                                   anlzVersion,
+                                   anlzOS,
+                                   anlzIP ));
+  if(anlzOS)      delete anlzOS;
+  if(anlzVersion) delete anlzVersion;
+  if(anlzIP)      delete anlzIP;
   return anlz;
 }
 
@@ -188,7 +204,7 @@ Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::strin
     DataBaseID idHost, idRefURL;
     r[i]["id_host"].to(idHost);
     r[i]["id_ref"].to(idRefURL);
-    hosts.push_back( getHost(idHost, idRefURL) );
+    hosts.push_back( getHost(idHost, &idRefURL) );
   }
   return hosts;
 }
@@ -200,10 +216,10 @@ Alert::ReportedHosts EntryReader::getSourceHosts(DataBaseID alertID)
 
 Alert::ReportedHosts EntryReader::getTargetHosts(DataBaseID alertID)
 {
-    return getReporteHosts(alertID, "dst");
+  return getReporteHosts(alertID, "dst");
 }
 
-HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID refID)
+HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID *refID)
 {
   stringstream ss;
   ss << "SELECT * FROM hosts WHERE id = "<< hostID <<";";
@@ -211,15 +227,29 @@ HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID refID)
 
   string ip, mask, os, name;
 
-  r[0]["name"].to(name);
-  r[0]["os"].to(os);
   r[0]["ip"].to(ip);
-  r[0]["mask"].to(mask);
 
-  const Persistency::Host::Name            hostName(name);
-  const Persistency::Host::OperatingSystem hostOS(os);
-  const Persistency::Host::Netmask         hostIP(
-                    Persistency::Host::Netmask::from_string(ip) );
+  Persistency::Host::Name            hostName;
+  if( !r[0]["name"].is_null() )
+  {
+    r[0]["name"].to(name);
+    hostName = Persistency::Host::Name(name);
+  }
+
+  Persistency::Host::OperatingSystem hostOS;
+  if( !r[0]["os"].is_null() )
+  {
+    r[0]["os"].to(os);
+    hostOS = Persistency::Host::OperatingSystem(os);
+  }
+
+  Persistency::Host::Netmask         hostIP;
+  if( !r[0]["mask"].is_null() )
+  {
+    r[0]["mask"].to(mask);
+    hostIP = Persistency::Host::Netmask( Persistency::Host::Netmask::from_string(ip) );
+  }
+
   const Persistency::Host::IP              hostNetmask(
                     Persistency::Host::IP::from_string(mask) );
 
@@ -247,7 +277,7 @@ Persistency::Host::ReportedServices EntryReader::getReportedServices(DataBaseID 
   {
     r[i]["id_service"].to(idService);
     r[i]["id_ref"].to(idRef);
-    services.push_back( getService(idService, idRef) );
+    services.push_back( getService(idService, &idRef) );
   }
   return services;
   //TODO
@@ -257,7 +287,7 @@ Persistency::Host::ReportedProcesses EntryReader::getReportedProcesses(DataBaseI
 {
   //TODO
   stringstream ss;
-  ss << "SELECT * FROM reported_processes WHERE id_reported_host = " << hostID << ";";
+  ss << "SELECT * FROM reported_procs WHERE id_reported_host = " << hostID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   Persistency::Host::ReportedProcesses processes;
@@ -266,12 +296,12 @@ Persistency::Host::ReportedProcesses EntryReader::getReportedProcesses(DataBaseI
   {
     r[i]["id_proc"].to(idProcess);
     r[i]["id_ref"].to(idRef);
-    processes.push_back( getProcess(idProcess, idRef) );
+    processes.push_back( getProcess(idProcess, &idRef) );
   }
   return processes;
 }
 
-Persistency::ServicePtr EntryReader::getService(DataBaseID servID, DataBaseID refID)
+Persistency::ServicePtr EntryReader::getService(DataBaseID servID, DataBaseID *refID)
 {
   //TODO
   stringstream ss;
@@ -283,10 +313,14 @@ Persistency::ServicePtr EntryReader::getService(DataBaseID servID, DataBaseID re
 
   r[0]["name"].to(name);
   r[0]["protocol"].to(protocol);
-  r[0]["port"].to(port);
+  Persistency::Service::Protocol serviceProtocol;
+  if( !r[0]["port"].is_null() )
+  {
+    r[0]["port"].to(port);
+    serviceProtocol = Persistency::Service::Protocol(protocol);
+  }
 
   const Persistency::Service::Name     serviceName(name);
-  const Persistency::Service::Protocol serviceProtocol(protocol);
   const Persistency::Service::Port     servicePort(port);
 
   Persistency::ServicePtr service(new Persistency::Service(serviceName,
@@ -297,9 +331,9 @@ Persistency::ServicePtr EntryReader::getService(DataBaseID servID, DataBaseID re
 
 }
 
-ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID refID)
+ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
 {
-  //TODO
+  //TODO tests
   stringstream ss;
   ss << "SELECT * FROM processes WHERE id = " << procID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
@@ -313,12 +347,12 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID refID)
   }
 
   r[0]["name"].to(name);
-  //MD5Sum procMD5 = NULL;
-  //if( !r[0]["md5"].is_null() )
-  //{
+  MD5Sum *procMD5 = NULL;
+  if( !r[0]["md5"].is_null() )
+  {
     r[0]["md5"].to(md5);
-  MD5Sum  procMD5 = MD5Sum( MD5Sum::createFromString(md5.c_str()) );
-  //}
+    *procMD5 = MD5Sum( MD5Sum::createFromString(md5.c_str()) );
+  }
 
   stringstream sr;
   sr << "SELECT * FROM reported_procs WHERE id_proc = " << procID << ";";
@@ -337,7 +371,7 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID refID)
 
   Persistency::ProcessPtr process( new Process(procPath,
                                                procName,
-                                               &procMD5,
+                                               procMD5,
                                                &procPid,
                                                &uid,
                                                procUsername,
@@ -346,10 +380,13 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID refID)
   return process;
 }
 
-ReferenceURLPtr EntryReader::getReferenceURL(DataBaseID refID)
+ReferenceURLPtr EntryReader::getReferenceURL(DataBaseID *refID)
 {
+  ReferenceURLPtr refURLPtr;
+  if(refID == NULL)
+    return refURLPtr;
   stringstream ss;
-  ss << "SELECT * FROM reference_urls WHERE id = " << refID << ";";
+  ss << "SELECT * FROM reference_urls WHERE id = " << *refID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   string name, url;
   r[0]["name"].to(name);
@@ -358,7 +395,7 @@ ReferenceURLPtr EntryReader::getReferenceURL(DataBaseID refID)
   const ReferenceURL::Name refName(name);
   const ReferenceURL::URL  refURL(url);
 
-  ReferenceURLPtr refURLPtr(new ReferenceURL(refName, refURL));
+  refURLPtr = ReferenceURLPtr( new ReferenceURL(refName, refURL) );
   return refURLPtr;
 }
 

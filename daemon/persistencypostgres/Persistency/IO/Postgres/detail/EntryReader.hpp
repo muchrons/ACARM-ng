@@ -72,17 +72,17 @@ public:
 
   void getLeafs(leafsMap &leafs);
 
-private:
   AnalyzerPtrNN getAnalyzer(DataBaseID anlzID);
+private:
   Persistency::Alert::ReportedHosts getReporteHosts(DataBaseID alertID, std::string hostType);
-  HostPtr getHost(DataBaseID hostID, DataBaseID refID);
+  HostPtr getHost(DataBaseID hostID, DataBaseID *refID);
 
   Persistency::Host::ReportedServices  getReportedServices(DataBaseID hostID);
   Persistency::Host::ReportedProcesses getReportedProcesses(DataBaseID hostID);
-  ReferenceURLPtr getReferenceURL(DataBaseID refID);
+  ReferenceURLPtr getReferenceURL(DataBaseID *refID);
 
-  Persistency::ProcessPtr getProcess(DataBaseID procID, DataBaseID refID);
-  Persistency::ServicePtr getService(DataBaseID servID, DataBaseID refID);
+  Persistency::ProcessPtr getProcess(DataBaseID procID, DataBaseID *refID);
+  Persistency::ServicePtr getService(DataBaseID servID, DataBaseID *refID);
 
   Persistency::Alert::ReportedHosts getSourceHosts(DataBaseID alertID);
   Persistency::Alert::ReportedHosts getTargetHosts(DataBaseID alertID);

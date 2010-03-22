@@ -380,7 +380,7 @@ void EntrySaver::saveMetaAlertAsTriggered(DataBaseID malertID, const std::string
 void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
 {
   stringstream ss;
-  ss << "UPDATE meta_alerts SET severity_delta = ";
+  ss << "UPDATE meta_alerts SET severity_delta = severity_delta + ";
   Appender::append(ss, severityDelta);
   ss << " WHERE id = " << malertID << ";";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
