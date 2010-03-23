@@ -5,6 +5,8 @@
 #ifndef INCLUDE_SYSTEM_SIGNALREGISTRATOR_HPP_FILE
 #define INCLUDE_SYSTEM_SIGNALREGISTRATOR_HPP_FILE
 
+/* public header */
+
 #include <signal.h>
 
 #include "System/Exception.hpp"
