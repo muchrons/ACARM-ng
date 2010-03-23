@@ -80,32 +80,33 @@ void Connection::removeExtraMetaAlertsEntries(Transaction &t) const
   size_t affected;
   do
   {
+    affected=0;
     // save set of IDs that are to be (potentially) removed in next iteration.
     execSQL(t, "INSERT INTO tmp_ma_swap "
                "  SELECT id_node as id FROM meta_alerts_tree WHERE id_child "
                "    IN (SELECT id_meta_alert FROM tmp_ma)");
 
     // delete leafs that are known to be removed.
-    execSQL(t, "DELETE FROM meta_alerts_tree WHERE id_child "
-               " IN (SELECT id_meta_alert FROM tmp_ma)");
+    affected+=execSQL(t, "DELETE FROM meta_alerts_tree WHERE id_child "
+               " IN (SELECT id_meta_alert FROM tmp_ma)").affected_rows();
     // remove from list of candidates to be removed ones that
     // still have some children
     execSQL(t, "DELETE FROM tmp_ma_swap WHERE id IN "
                " (SELECT id_node FROM meta_alerts_tree)");
 
     // remove meta alerts that were removed (as children) from tree
-    execSQL(t, "DELETE FROM meta_alerts WHERE id "
-               " IN (SELECT id_meta_alert FROM tmp_ma)");
+    affected+=execSQL(t, "DELETE FROM meta_alerts WHERE id "
+               " IN (SELECT id_meta_alert FROM tmp_ma)").affected_rows();
 
     // remove meta alerts that are not referenced from tree any more
-    execSQL(t, "DELETE FROM meta_alerts WHERE id "
+    affected+=execSQL(t, "DELETE FROM meta_alerts WHERE id "
                " NOT IN (SELECT id_node  FROM meta_alerts_tree) "
                " AND id "
-               " NOT IN (SELECT id_child FROM meta_alerts_tree)");
+               " NOT IN (SELECT id_child FROM meta_alerts_tree)").affected_rows();
 
     // move tmp_ma_swap's content to tmp_ma
     execSQL(t, "DELETE FROM tmp_ma");
-    affected=execSQL(t, "INSERT INTO tmp_ma SELECT id FROM tmp_ma_swap"
+    execSQL(t, "INSERT INTO tmp_ma SELECT id FROM tmp_ma_swap"
                     ).affected_rows();
   }
   while(affected>0);

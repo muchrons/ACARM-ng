@@ -3,6 +3,7 @@
  *
  */
 #include <tut.h>
+#include <sstream>
 
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
@@ -28,7 +29,6 @@ struct TestClass
     t_( conn_->createNewTransaction("save_alert_tests") )
   {
     tdba_.removeAllData();
-    tdba_.fillWithContent1();
   }
 
   IO::ConnectionPtrNN makeConnection(void) const
@@ -41,6 +41,54 @@ struct TestClass
     opts["pass"]  ="test.daemon";
     return IO::ConnectionPtrNN(
         Persistency::IO::BackendFactory::create("postgres", opts) );
+  }
+
+  void makeAlert(int id, bool isOld=true)
+  {
+    {
+      stringstream ss;
+      ss<<"INSERT INTO alerts VALUES("
+        <<id
+        <<", 'name', NULL, "
+          "now() - interval '"
+        <<(isOld?"42":"0")
+        <<" day', 1, DEFAULT, 'description')";
+      t_.getAPI<TransactionAPI>().exec( ss.str() );
+    }
+
+    const int metaID=1000+id;
+    makeMetaAlert(metaID);
+
+    {
+      stringstream ss;
+      ss<<"INSERT INTO alert_to_meta_alert_map VALUES("
+        <<id<<", "<<metaID<<")";
+      t_.getAPI<TransactionAPI>().exec( ss.str() );
+    }
+  }
+
+  void makeMetaAlert(int id)
+  {
+    stringstream ss;
+    ss<<"INSERT INTO meta_alerts VALUES("
+      <<id
+      <<", 'name', DEFAULT, DEFAULT, DEFAULT, now(), DEFAULT)";
+    t_.getAPI<TransactionAPI>().exec( ss.str() );
+  }
+
+  void addToTree(int parent, int child)
+  {
+    stringstream ss;
+    ss<<"INSERT INTO meta_alerts_tree VALUES("
+      <<parent<<", "<<child<<")";
+    t_.getAPI<TransactionAPI>().exec( ss.str() );
+  }
+
+  size_t count(const char *table)
+  {
+    stringstream ss;
+    ss<<"SELECT * FROM "<<table;
+    return t_.getAPI<TransactionAPI>().exec( ss.str() ).size();
   }
 
   IDCachePtrNN        idCache_;
@@ -66,6 +114,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
+  tdba_.fillWithContent1();
   ensure_equals("some entries have been deleted",
                 conn_->removeEntriesOlderThan(9999, t_), 0);
 }
@@ -75,24 +124,81 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  tdba_.fillWithContent1();
   ensure_equals("invalid number of entries removed",
                 conn_->removeEntriesOlderThan(0, t_), 2);
 }
 
-//TODO tests
+// test cleanup tree where not all leafs from given parents can be removed
 template<>
 template<>
 void testObj::test<3>(void)
 {
+  makeAlert(1);
+  makeAlert(2);
+  makeAlert(3, false);
+  makeMetaAlert(4);
+  addToTree(4, 1001);
+  addToTree(4, 1002);
+  addToTree(4, 1003);
 
+  makeAlert(5, false);
+  makeAlert(6, false);
+  makeMetaAlert(7);
+  addToTree(7, 1005);
+  addToTree(7, 1006);
+
+  makeMetaAlert(8);
+  addToTree(8, 4);
+  addToTree(8, 7);
+
+  ensure_equals("invalid number of entries removed",
+                conn_->removeEntriesOlderThan(9, t_), 2);
+  ensure_equals("invalid alerts' size",      count("alerts"), 3);
+  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 3+3);
 }
 
-//TODO tests
+// test removing parent, when no more children are present
 template<>
 template<>
 void testObj::test<4>(void)
 {
+  makeAlert(1);
+  makeAlert(2);
+  makeAlert(3);
+  makeMetaAlert(4);
+  addToTree(4, 1001);
+  addToTree(4, 1002);
+  addToTree(4, 1003);
 
+  makeAlert(5, false);
+  makeAlert(6, false);
+  makeMetaAlert(7);
+  addToTree(7, 1005);
+  addToTree(7, 1006);
+
+  makeMetaAlert(8);
+  addToTree(8, 4);
+  addToTree(8, 7);
+
+  ensure_equals("invalid number of entries removed",
+                conn_->removeEntriesOlderThan(9, t_), 3);
+  ensure_equals("invalid alerts' size",      count("alerts"), 2);
+  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 2+2);
+}
+
+// TODO tests
+template<>
+template<>
+void testObj::test<5>(void)
+{
+}
+
+// TODO tests
+template<>
+template<>
+void testObj::test<6>(void)
+{
 }
 
 } // namespace tut
