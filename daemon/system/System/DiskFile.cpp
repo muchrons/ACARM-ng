@@ -29,7 +29,8 @@ DiskFile::DiskFile( std::pair<std::string, boost::shared_ptr<AutoDescriptor> > p
   _fd( *p.second.get() )    // pass the ownership
 {
   if( !_fd.isInitialized() )
-    throw Exception("DiskFile::DiskFile(): "
+    throw Exception(SYSTEM_SAVE_LOCATION,
+                    "DiskFile::DiskFile(): "
                     "direct initializing from derived class failed");
 }
 
@@ -40,8 +41,8 @@ void DiskFile::throwFileErrorException(const char *methodName,
   stringstream ss;
   ss<<methodName<<": unable to "<<action<<" '"
     <<getName()<<"' file: "<< strerror(errno);
-  // TODO: make this separate exception type and add SYSTEM_SAVE_LOCATION
-  throw Exception( ss.str() );
+  // TODO: make this separate exception type
+  throw Exception( SYSTEM_SAVE_LOCATION, ss.str() );
 }
 
 
