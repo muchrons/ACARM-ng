@@ -22,12 +22,29 @@ namespace detail
 {
 /** \brief helper typedef to make names shorter.
  */
-typedef IO::ConnectionHelper<int,   // connection handler - anything...
-                             Stubs::TransactionAPI,
-                             Stubs::Alert,
-                             Stubs::Host,
-                             Stubs::MetaAlert,
-                             Stubs::Restorer> ConnectionImpl;
+class ConnectionImpl: public IO::ConnectionHelper<int,   // connection handler - anything...
+                                                  Stubs::TransactionAPI,
+                                                  Stubs::Alert,
+                                                  Stubs::Host,
+                                                  Stubs::MetaAlert,
+                                                  Stubs::Restorer>
+{
+public:
+  ConnectionImpl(void):
+    IO::ConnectionHelper<int,
+                         Stubs::TransactionAPI,
+                         Stubs::Alert,
+                         Stubs::Host,
+                         Stubs::MetaAlert,
+                         Stubs::Restorer>(42)
+  {
+  }
+private:
+  virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &/*t*/)
+  {
+    return days+42;
+  }
+};
 } // namespace detail
 
 /** \brief stub of connection element
@@ -44,6 +61,7 @@ public:
   size_t hostCalls_;                ///< number of calls to create hosts.
   size_t metaAlertCalls_;           ///< number of calls to create metaAlerts.
   size_t restorerCalls_;            ///< number of calls to create restorers.
+  size_t removeOldCalls_;           ///< number of calls to removing old entries.
 
 private:
   virtual TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
@@ -52,6 +70,7 @@ private:
   virtual HostAutoPtr hostImpl(HostPtrNN host, Transaction &t);
   virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, Transaction &t);
   virtual RestorerAutoPtr restorerImpl(Transaction &t);
+  virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t);
 
   detail::ConnectionImpl impl_;
 }; // class Connection
