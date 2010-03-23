@@ -187,18 +187,68 @@ void testObj::test<4>(void)
   ensure_equals("invalid meta alerts' size", count("meta_alerts"), 2+2);
 }
 
-// TODO tests
+// test removing all elements
 template<>
 template<>
 void testObj::test<5>(void)
 {
+  makeAlert(1);
+  makeAlert(2);
+  makeAlert(3);
+  makeMetaAlert(4);
+  addToTree(4, 1001);
+  addToTree(4, 1002);
+  addToTree(4, 1003);
+
+  makeAlert(5);
+  makeAlert(6);
+  makeMetaAlert(7);
+  addToTree(7, 1005);
+  addToTree(7, 1006);
+
+  makeMetaAlert(8);
+  addToTree(8, 4);
+  addToTree(8, 7);
+
+  ensure_equals("invalid number of entries removed",
+                conn_->removeEntriesOlderThan(9, t_), 5);
+  ensure_equals("invalid alerts' size",      count("alerts"), 0);
+  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 0);
 }
 
-// TODO tests
+// test removing whole subtree of not-needed nodes
 template<>
 template<>
 void testObj::test<6>(void)
 {
+  makeAlert(1);
+  makeAlert(2);
+  makeAlert(3);
+  makeMetaAlert(4);
+  addToTree(4, 1001);
+  addToTree(4, 1002);
+  addToTree(4, 1003);
+
+  makeAlert(5);
+  makeAlert(6);
+  makeMetaAlert(7);
+  addToTree(7, 1005);
+  addToTree(7, 1006);
+
+  makeMetaAlert(8);
+  addToTree(8, 4);
+  addToTree(8, 7);
+
+  makeAlert(9,  false);
+  makeAlert(10, false);
+  makeMetaAlert(11);
+  addToTree(11, 1009);
+  addToTree(11, 1010);
+
+  ensure_equals("invalid number of entries removed",
+                conn_->removeEntriesOlderThan(9, t_), 5);
+  ensure_equals("invalid alerts' size",      count("alerts"), 2);
+  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 3);
 }
 
 } // namespace tut

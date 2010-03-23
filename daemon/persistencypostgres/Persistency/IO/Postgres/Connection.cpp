@@ -73,68 +73,42 @@ void Connection::createTemporaryTables(size_t days, Transaction &t) const
              " ( SELECT id_meta_alert FROM alert_to_meta_alert_map WHERE id_alert IN (SELECT id FROM tmp) )");
 }
 
-                
-void printResult(const char *head, const pqxx::result &result)
-{
-std::cerr<<head<<"={\n";
-for(unsigned int i=0; i<result.size(); ++i)
-{
-  std::cerr<<"  < ";
-  for(unsigned int j=0; j<result[i].size(); ++j)
-    std::cerr<<result[i][j]<<" ";
-  std::cerr<<">"<<std::endl;
-}
-std::cerr<<"}\n";                                                       
-}
-                
 
 void Connection::removeExtraMetaAlertsEntries(Transaction &t) const
 {
   // remove elements in tree until there are some more to be removed.
   execSQL(t, "CREATE TEMP TABLE tmp_ma_swap (id int NOT NULL) ON COMMIT DROP");
   size_t affected;
-int x=0;                    
   do
   {
-const pqxx::result tmp=execSQL(t, "select * from tmp_ma");         
-printResult("tmp_ma", tmp);                         
-
     // save set of IDs that are to be (potentially) removed in next iteration.
     execSQL(t, "INSERT INTO tmp_ma_swap "
                "  SELECT DISTINCT(id_node) as id FROM meta_alerts_tree WHERE id_child "
                "    IN (SELECT id_meta_alert FROM tmp_ma)");
-printResult("tmp_ma_swap", execSQL(t, "select * from tmp_ma_swap") );             
 
     // delete leafs that are known to be removed.
     execSQL(t, "DELETE FROM meta_alerts_tree WHERE id_child "
                " IN (SELECT id_meta_alert FROM tmp_ma)");
-printResult("meta_alerts_tree", execSQL(t, "select * from meta_alerts_tree") );             
     // remove from list of candidates to be removed ones that
     // still have some children
     execSQL(t, "DELETE FROM tmp_ma_swap WHERE id IN "
                " (SELECT id_node FROM meta_alerts_tree)");
-printResult("tmp_ma_swap", execSQL(t, "select * from tmp_ma_swap") );             
 
     // remove meta alerts that were removed (as children) from tree
     execSQL(t, "DELETE FROM meta_alerts WHERE id "
                " IN (SELECT id_meta_alert FROM tmp_ma)");
-printResult("meta_alerts", execSQL(t, "select * from meta_alerts") );             
 
     // remove meta alerts that are not referenced from tree any more
     execSQL(t, "DELETE FROM meta_alerts WHERE id "
                " NOT IN (SELECT id_node  FROM meta_alerts_tree) "
                " AND id "
                " NOT IN (SELECT id_child FROM meta_alerts_tree)");
-printResult("meta_alerts", execSQL(t, "select * from meta_alerts") );             
 
     // move tmp_ma_swap's content to tmp_ma
     execSQL(t, "DELETE FROM tmp_ma");
     affected=execSQL(t, "INSERT INTO tmp_ma SELECT id FROM tmp_ma_swap"
                     ).affected_rows();
     execSQL(t, "DELETE FROM tmp_ma_swap");
-std::cerr<<"--------------------------------\n";                     
-++x;                    
-if(x==4) break;         
   }
   while(affected>0);
 }
