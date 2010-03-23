@@ -5,6 +5,8 @@
 #ifndef INCLUDE_CORE_SIGNALTOSTOP_HPP_FILE
 #define INCLUDE_CORE_SIGNALTOSTOP_HPP_FILE
 
+/* public header */
+
 #include "System/SignalRegistrator.hpp"
 #include "Core/Main.hpp"
 
@@ -14,7 +16,7 @@ namespace Core
  */
 class SignalToStop: public System::SignalRegistrator
 {
-protected:
+public:
   /** \brief registers handler for INT signal.
    *  \param signum signal number to be sent.
    *  \param main   main class.

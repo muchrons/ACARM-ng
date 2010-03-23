@@ -57,6 +57,7 @@ SignalToStop::SignalToStop(int signum, Main &main):
 
 SignalToStop::~SignalToStop(void)
 {
+  assert(g_main==NULL || g_main==&main);
   g_main=NULL;
 }
 
