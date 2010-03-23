@@ -11,6 +11,7 @@
 
 #include "Logger/Node.hpp"
 #include "Core/Types/NodesFifo.hpp"
+#include "Core/PersistencyCleanup.hpp"
 
 namespace Core
 {
@@ -42,6 +43,8 @@ public:
   void stop(void);
 
 private:
+  PersistencyCleanup     cleanup_;  // cleanup has to be here, since it should
+                                    // be called before any threads are started
   Logger::Node           log_;
   Core::Types::NodesFifo queue_;
   boost::thread          procs_;

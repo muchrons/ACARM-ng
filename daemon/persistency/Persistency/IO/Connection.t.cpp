@@ -93,4 +93,26 @@ void testObj::test<4>(void)
   ensureCalls(3);
 }
 
+// test creating restorer
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  Transaction     t( c_.createNewTransaction("abc") );
+  RestorerAutoPtr ptr=c_.restorer(t);
+  ensure("NULL pointer received", ptr.get()!=NULL );
+  ensureCalls(4);
+}
+
+// test calling remove on old entries.
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  Transaction  t( c_.createNewTransaction("abc") );
+  const size_t s=c_.removeEntriesOlderThan(11, t);
+  ensure_equals("invalid return values", s, 42);
+  ensureCalls(5);
+}
+
 } // namespace tut

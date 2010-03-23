@@ -64,6 +64,14 @@ public:
    *  \return non-NULL restorer persistency proxy.
    */
   RestorerAutoPtr restorer(Transaction &t);
+  /** \brief clean up saved entries older given number of days.
+   *  \param days maximum age of entry, counted in days.
+   *  \param t    transaction to be used when performing clean-up.
+   *  \return number of alerts removed from persistent storage.
+   *  \note entries that are still used by the system are not removed,
+   *        event if they are aready too old.
+   */
+  size_t removeEntriesOlderThan(size_t days, Transaction &t);
 
 private:
   virtual TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
@@ -72,6 +80,7 @@ private:
   virtual HostAutoPtr hostImpl(HostPtrNN host, Transaction &t) = 0;
   virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, Transaction &t) = 0;
   virtual RestorerAutoPtr restorerImpl(Transaction &t) = 0;
+  virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t) = 0;
 
   Base::Threads::Mutex mutex_;
 }; // class Connection
