@@ -2,11 +2,13 @@
  * SignalToStop.cpp
  *
  */
+#include <iostream>
 #include <stdlib.h>
 #include <cassert>
 
 #include "Core/SignalToStop.hpp"
 
+using namespace std;
 using namespace Logger;
 
 namespace Core
@@ -29,10 +31,13 @@ static void handle(int)
       // ignore if nothing is registered
       if(g_wt==NULL)
       {
+        cerr<<"ignoring signal (no handler attached yet)..."<<endl;
         LOGMSG_WARN(log, "no handler registered");
         return;
       }
+
       // send abort
+      cerr<<"work interrupted - stopping system (it may take while)..."<<endl;
       LOGMSG_WARN(log, "signal received - calling Core::Main::stop()");
       g_wt->stop();
     }
