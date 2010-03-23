@@ -8,6 +8,7 @@
 /* public header */
 
 #include <signal.h>
+#include <boost/noncopyable.hpp>
 
 #include "System/Exception.hpp"
 #include "System/ExceptionPointerIsNULL.hpp"
@@ -17,7 +18,7 @@ namespace System
 {
 /** \brief base class for signals handler registration.
  */
-class SignalRegistrator
+class SignalRegistrator: private boost::noncopyable
 {
 public:
   /** \brief excpetion thrown when registraion fails.
