@@ -76,6 +76,7 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
   if( !r[0]["detect_time"].is_null() )
   {
     r[0]["detect_time"].to(detect_time);
+    //TODO: smart pointer
     alertDetect = new Timestamp( time_from_string(detect_time) );
   }
 
@@ -94,7 +95,6 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
                               alertDescription,
                               getSourceHosts( alertID ),
                               getTargetHosts( alertID ) ) );
-  //if(alertDetect) delete alertDetect;
   return alert;
 }
 
@@ -114,18 +114,17 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
   if( !r[0]["id_ref"].is_null() )
   {
     r[0]["id_ref"].to(id);
+    //TODO smart pointer
     refID = new DataBaseID(id);
   }
   const Persistency::MetaAlert::Name malertName(name);
   Timestamp                          malertCreate( time_from_string( createTime) );
 
-  //TODO: check if id_ref is NULL
   MetaAlertPtrNN malert( new Persistency::MetaAlert( malertName,
                                           severityDelta,
                                           certaintyDelta,
                                           getReferenceURL( refID  ),
                                           malertCreate ) );
-  if(refID) delete refID;
   return malert;
 }
 
@@ -144,6 +143,7 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
   {
     ra[0]["version"].to(version);
     anlzVersion =  new Analyzer::Version(version) ;
+    //TODO smart pointer
   }
 
   Analyzer::OS *anlzOS = NULL;
@@ -151,6 +151,7 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
   {
     ra[0]["os"].to(os);
     anlzOS = new Analyzer::OS(os);
+    //TODO smart pointer
   }
 
   Analyzer::IP *anlzIP = NULL;
@@ -158,6 +159,7 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
   {
     ra[0]["ip"].to(ip);
     anlzIP = new Analyzer::IP( Analyzer::IPv4::from_string(ip) );
+    //TODO smart pointer
   }
 
   const Analyzer::Name    anlzName(name);
@@ -166,9 +168,6 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
                                    anlzVersion,
                                    anlzOS,
                                    anlzIP ));
-  if(anlzOS)      delete anlzOS;
-  if(anlzVersion) delete anlzVersion;
-  if(anlzIP)      delete anlzIP;
   return anlz;
 }
 

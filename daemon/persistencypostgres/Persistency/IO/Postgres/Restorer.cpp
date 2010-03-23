@@ -22,8 +22,9 @@ Restorer::Restorer(Transaction    &t,
 {
 }
 
-void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &out)
+void Restorer::restoreAllInUseImpl(Transaction &/*t*/, NodesVector &/*out*/)
 {
+  /*
   EntryReader er(t, *dbHandler_);
   std::map<DataBaseID, Persistency::AlertPtrNN>           leafsAlertMap;
   er.getLeafs(leafsAlertMap);
@@ -31,7 +32,6 @@ void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &out)
   IO::ConnectionPtrNN connectionStubIO( createStubIO() );
   IO::Transaction tStubIO( connectionStubIO->createNewTransaction("stub transaction") );
 
-  /*
   leafsMap leafs;
   for(std::map<DataBaseID, Persistency::AlertPtrNN>::iterator it = leafsAlertMap.begin();
       it != leafsAlertMap.end(); ++it)

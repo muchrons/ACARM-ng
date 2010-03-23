@@ -68,11 +68,24 @@ public:
    */
   double getCertaintyDelta(DataBaseID malertID);
 
+  /** \brief get number of Meta Alert children in meta alerts tree
+   *  \param  malertID ID of Mata Alert
+   *  \return number of children of Meta Alert
+   */
   size_t getChildrenIDs(DataBaseID malertID);
 
+  /** \brief read data associated with leafs in meta alerts tree
+   *  \param std::map which stores data after read
+   *  \note  this is a temporary solution
+   */
   void getLeafs(leafsMap &leafs);
 
+  /** \brief read Analyzers' data from data base
+   *  \param  anlzID ID of Analyzer
+   *  \return analyzers' data
+   */
   AnalyzerPtrNN getAnalyzer(DataBaseID anlzID);
+
 private:
   Persistency::Alert::ReportedHosts getReporteHosts(DataBaseID alertID, std::string hostType);
   HostPtr getHost(DataBaseID hostID, DataBaseID *refID);

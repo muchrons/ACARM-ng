@@ -37,8 +37,11 @@ private:
                                   const Timestamp &from,
                                   const Timestamp &to);
   BackendFactory::FactoryPtr createStubIO(void);
-  //IO::ConnectionPtrNN  connectionStubIO_;
+  /*
+  work in progress
+  IO::ConnectionPtrNN  connectionStubIO_;
   typedef std::map<DataBaseID, GraphNodePtrNN> leafsMap;
+  */
   DBHandlerPtrNN  dbHandler_;
 }; // class Restorer
 

@@ -247,7 +247,7 @@ DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
     Appender::append(ss, a.getOS()?a.getOS()->get():NULL );
     ss << ",";
     // TODO: use ternary operator for this
-    //Appender::append(ss, a.getIP()?(a.getIP()->to_string()):NULL);
+    //Appender::append(ss, a.getIP()?( a.getIP()->to_string() ):NULL);
     if(a.getIP()==NULL)
       ss << "NULL";
     else
@@ -341,7 +341,6 @@ void EntrySaver::saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID)
 
 void EntrySaver::saveMetaAlertsTree(DataBaseID nodeID, DataBaseID childID)
 {
-  //TODO: check if childID is not NULL
   stringstream ss;
   ss << "INSERT INTO meta_alerts_tree(id_node, id_child) VALUES (";
   Appender::append(ss, nodeID);
