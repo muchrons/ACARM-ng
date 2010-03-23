@@ -15,7 +15,9 @@ namespace Core
 
 Main::Main(void):
   log_("core.main"),
-  signals_(&threads_)
+  nullSignals_(NULL),   // ignore all interruptions at the begining
+  // (non-explicit initialization is being done here)
+  signals_(&threads_)   // after all initialization is done, register real handlers
 {
   LOGMSG_INFO(log_, "core is up and running");
 }
