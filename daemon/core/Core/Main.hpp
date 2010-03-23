@@ -11,6 +11,7 @@
 
 #include "Logger/Node.hpp"
 #include "Core/Types/NodesFifo.hpp"
+#include "Core/PersistencyCleanup.hpp"
 
 namespace Core
 {
@@ -42,6 +43,7 @@ public:
   void stop(void);
 
 private:
+  PersistencyCleanup     cleanup_;
   Logger::Node           log_;
   Core::Types::NodesFifo queue_;
   boost::thread          procs_;
