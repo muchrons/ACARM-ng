@@ -40,9 +40,9 @@ public:
   {
   }
 private:
-  virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &/*t*/)
+  virtual size_t removeEntriesOlderThanImpl(size_t /*days*/, Transaction &/*t*/)
   {
-    return days+42;
+    return 0;
   }
 };
 } // namespace detail

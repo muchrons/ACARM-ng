@@ -36,7 +36,7 @@ public:
    *  \param mode     mode to open file.
    */
   DiskFile(const std::string &fileName,
-           int    flags=O_RDWR|O_CREAT|O_LARGEFILE,
+           int    flags=O_RDWR|O_CREAT|O_LARGEFILE|O_CLOEXEC,
            mode_t mode =0644);
 
   /** \brief returns file name.

@@ -28,7 +28,8 @@ template<typename T>
 inline T keepRange(const T in, const T min, const T max)
 {
   if( min>max )
-    throw System::Exception("System::keepRange(): "
+    throw System::Exception(SYSTEM_SAVE_LOCATION,
+                            "System::keepRange(): "
                             "incorrect values - min>max");
   return std::min( max, std::max(min, in) );
 }
