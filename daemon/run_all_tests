@@ -10,7 +10,7 @@ for d in `cat build_config/components{.,_test.}lst | sort | uniq`
 do
   echo "----------------------------"
   echo "testing $d:"
-  ( cd gen/test_local_$MEM_MODE/$d && ./$d.t ) || RET=1
+  ( cd gen/test_local_$MEM_MODE/$d && LD_LIBRARY_PATH=../libs/ ./$d.t ) || RET=1
 done
 
 echo
