@@ -11,7 +11,6 @@
 
 #include "Core/SignalToStop.hpp"
 
-using namespace boost;
 using namespace Core;
 
 namespace
@@ -19,8 +18,8 @@ namespace
 
 struct SignalHUP: public SignalToStop
 {
-  explicit SignalHUP(Main &main):
-    SignalToStop(SIGHUP, main)
+  explicit SignalHUP(WorkThreads *wt):
+    SignalToStop(SIGHUP, wt)
   {
   }
 }; // struct SignalHUP
@@ -31,7 +30,7 @@ struct TestClass
   {
   }
 
-  Main main_;
+  WorkThreads wt_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -49,12 +48,24 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  SignalHUP sig(main_);
+  SignalHUP sig(&wt_);
   // send proper signal
   const int ret=kill( getpid(), SIGHUP );
   ensure_equals("sending signal failed", ret, 0);
   // if it failed, this call will block
-  main_.waitUntilDone();
+  wt_.waitUntilDone();
+}
+
+// test reaction when NULL pointer given
+template<>
+template<>
+void testObj::test<2>(void)
+{
+  SignalHUP sig(NULL);
+  // send proper signal
+  const int ret=kill( getpid(), SIGHUP );
+  ensure_equals("sending signal failed", ret, 0);
+  // smoke test - nothing should happen
 }
 
 } // namespace tut

@@ -8,7 +8,7 @@
 /* public header */
 
 #include "System/SignalRegistrator.hpp"
-#include "Core/Main.hpp"
+#include "Core/WorkThreads.hpp"
 
 namespace Core
 {
@@ -19,9 +19,9 @@ class SignalToStop: public System::SignalRegistrator
 public:
   /** \brief registers handler for INT signal.
    *  \param signum signal number to be sent.
-   *  \param main   main class.
+   *  \param wt     main system threads. if NULL, signal is ignored.
    */
-  SignalToStop(int signum, Main &main);
+  SignalToStop(int signum, WorkThreads *wt);
   /** \brief unregisters INT signal handler.
    */
   ~SignalToStop(void);

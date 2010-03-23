@@ -14,7 +14,7 @@ namespace Core
 
 namespace
 {
-Main *g_main=NULL;
+WorkThreads *g_wt=NULL;
 } // unnamed namespace
 
 extern "C"
@@ -27,14 +27,14 @@ static void handle(int)
     try
     {
       // ignore if nothing is registered
-      if(g_main==NULL)
+      if(g_wt==NULL)
       {
         LOGMSG_WARN(log, "no handler registered");
         return;
       }
       // send abort
       LOGMSG_WARN(log, "signal received - calling Core::Main::stop()");
-      g_main->stop();
+      g_wt->stop();
     }
     catch(const std::exception &ex)
     {
@@ -48,17 +48,16 @@ static void handle(int)
 } // handle()
 } // extern "C"
 
-SignalToStop::SignalToStop(int signum, Main &main):
+SignalToStop::SignalToStop(int signum, WorkThreads *wt):
   SignalRegistrator(signum, handle)
 {
-  assert(g_main==NULL || g_main==&main);
-  g_main=&main;
+  // NOTE: wt CAN be NULL!
+  g_wt=wt;
 }
 
 SignalToStop::~SignalToStop(void)
 {
-  assert(g_main==NULL || g_main==&main);
-  g_main=NULL;
+  g_wt=NULL;
 }
 
 } // namespace Core
