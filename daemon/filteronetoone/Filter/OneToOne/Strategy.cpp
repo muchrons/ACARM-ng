@@ -45,12 +45,14 @@ Persistency::MetaAlert::Name Strategy::getMetaAlertName(
                                               const NodeEntry thisEntry,
                                               const NodeEntry otherEntry) const
 {
+  // thisEntry and otherEntry must containt the same hosts here, so they
+  // can be used interchangebly.
   assert( thisEntry.t_.from_==otherEntry.t_.from_ );
   assert( thisEntry.t_.to_  ==otherEntry.t_.to_   );
   stringstream ss;
   ss << "[one2one] multiple attacks from "
      << thisEntry.t_.from_ << " host on "
-     << thisEntry.t_.to_ << " host";
+     << otherEntry.t_.to_ << " host";
   return ss.str();
 }
 
