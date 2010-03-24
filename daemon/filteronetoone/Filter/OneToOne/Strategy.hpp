@@ -20,11 +20,16 @@ namespace OneToOne
  */
 struct Data
 {
+  /** \brief create invalid object (no correlation is possible).
+   */
   Data(void):
     isValid_(false)
   {
   }
-
+  /** \brief create valid object (can be correlated).
+   *  \param from source host.
+   *  \param to   target host.
+   */
   Data(const Persistency::Host::IP &from,
        const Persistency::Host::IP &to):
     isValid_(true),
@@ -33,9 +38,9 @@ struct Data
   {
   }
 
-  bool                  isValid_;
-  Persistency::Host::IP from_;
-  Persistency::Host::IP to_;
+  bool                  isValid_;   ///< informs if host is valid or not
+  Persistency::Host::IP from_;      ///< source host
+  Persistency::Host::IP to_;        ///< target host
 }; // struct Data
 
 
