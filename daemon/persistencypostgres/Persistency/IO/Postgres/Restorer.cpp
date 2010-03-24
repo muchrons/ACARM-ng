@@ -5,9 +5,9 @@
 #include "Persistency/IO/Postgres/Restorer.hpp"
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 #include <map>
-
+#include <vector>
 using namespace Persistency::IO::Postgres::detail;
-
+using namespace std;
 namespace Persistency
 {
 namespace IO
@@ -22,10 +22,20 @@ Restorer::Restorer(Transaction    &t,
 {
 }
 
-void Restorer::restoreAllInUseImpl(Transaction &/*t*/, NodesVector &/*out*/)
+void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &/*out*/)
 {
-  /*
   EntryReader er(t, *dbHandler_);
+  vector<DataBaseID> maInUse( er.readIDsMalertsInUse() );
+
+  for(vector<DataBaseID>::iterator it = maInUse.begin(); it != maInUse.end(); ++it)
+  {
+    vector<DataBaseID> malertChildren( er.readMetaAlertChildren( (*it) ) );
+    // put this data to the tree which represents meta alerts tree structure
+    //
+  }
+
+  // an old solutions, ideas
+  /*
   std::map<DataBaseID, Persistency::AlertPtrNN>           leafsAlertMap;
   er.getLeafs(leafsAlertMap);
 

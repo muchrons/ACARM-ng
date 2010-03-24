@@ -75,10 +75,9 @@ public:
   size_t getChildrenIDs(DataBaseID malertID);
 
   /** \brief read data associated with leafs in meta alerts tree
-   *  \param std::map which stores data after read
-   *  \note  this is a temporary solution
+   *  \param malertID ID of Meta Alert associated with Alert
    */
-  void getLeafs(leafsMap &leafs);
+  Persistency::AlertPtrNN getLeaf(DataBaseID malertID);
 
   /** \brief read Analyzers' data from data base
    *  \param  anlzID ID of Analyzer
@@ -86,6 +85,16 @@ public:
    */
   AnalyzerPtrNN getAnalyzer(DataBaseID anlzID);
 
+  /** \brief  read meta alerts' children ID's from data base
+   *  \param  malertID ID of Meta Alert
+   *  \return vector which contains IDs of Meta Alert children
+   */
+  std::vector<DataBaseID> readMetaAlertChildren(DataBaseID malertID);
+
+  /** \brief read IDs of Meta Alerts in use
+   *  \return vector which contains IDs of Meta alerts in use
+   */
+  std::vector<DataBaseID> readIDsMalertsInUse();
 private:
   Persistency::Alert::ReportedHosts getReporteHosts(DataBaseID alertID, std::string hostType);
   HostPtr getHost(DataBaseID hostID, DataBaseID *refID);

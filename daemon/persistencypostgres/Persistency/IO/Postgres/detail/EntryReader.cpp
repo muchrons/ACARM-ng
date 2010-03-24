@@ -428,21 +428,47 @@ size_t EntryReader::getChildrenIDs(DataBaseID malertID)
   return r.size();
 }
 
-void EntryReader::getLeafs(leafsMap &leafs)
+Persistency::AlertPtrNN EntryReader::getLeaf(DataBaseID malertID)
 {
   stringstream ss;
-  ss << "SELECT * FROM alert_to_meta_alert_map INNER JOIN meta_alerts_in_use ON (alert_to_meta_alert_map.id_meta_alert = meta_alerts_in_use.id_meta_alert);";
+  ss << "SELECT id_alert FROM alert_to_meta_alert_map WHERE id_meta_alert = " << malertID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  DataBaseID idAlert;
+  r[0]["id_alert"].to(idAlert);
+  return Persistency::AlertPtrNN( readAlert(idAlert) );
+  //dbh_.getIDCache()->add(readAlert(idAlert) , idAlert);
+  //dbh_.getIDCache()->add(readMetaAlert(idMetaAlert) , idMetaAlert);
+}
+
+vector<DataBaseID> EntryReader::readMetaAlertChildren(DataBaseID malertID)
+{
+  vector<DataBaseID> childrenIDs;
+  stringstream ss;
+  ss << "SELECT id_child FROM meta_alerts_tree WHERE id_node = " << malertID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+
+  for(unsigned int i=0; i<r.size(); ++i)
+  {
+    DataBaseID idChild;
+    r[0]["id_child"].to(idChild);
+    childrenIDs.push_back(idChild);
+  }
+  return childrenIDs;
+}
+
+vector<DataBaseID> EntryReader::readIDsMalertsInUse()
+{
+  vector<DataBaseID> malertsInUse;
+  stringstream ss;
+  ss << "SELECT id_meta_alert FROM meta_alerts_in_use;";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   for(unsigned int i=0; i<r.size(); ++i)
   {
-    int idAlert;
-    int idMetaAlert;
-    r[i]["id_alert"].to(idAlert);
-    r[i]["id_meta_alert"].to(idMetaAlert);
-    dbh_.getIDCache()->add(readAlert(idAlert) , idAlert);
-    dbh_.getIDCache()->add(readMetaAlert(idMetaAlert) , idMetaAlert);
-    leafs.insert( pair<DataBaseID, Persistency::AlertPtrNN>(idMetaAlert, readAlert(idAlert) ) );
+    DataBaseID malertID;
+    r[0]["id_meta_alert"].to(malertID);
+    malertsInUse.push_back(malertID);
   }
+  return malertsInUse;
 }
 
 } // namespace detail
