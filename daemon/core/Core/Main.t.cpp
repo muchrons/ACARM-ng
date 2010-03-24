@@ -45,42 +45,4 @@ void testObj::test<2>(void)
   m.waitUntilDone();
 }
 
-
-namespace
-{
-struct Stopper
-{
-  Stopper(volatile bool *ready, Main *m):
-    ready_(ready),
-    m_(m)
-  {
-  }
-
-  void operator()(void)
-  {
-    assert(ready_!=NULL);
-    while(!*ready_)
-      usleep(30*1000);
-    usleep(50*1000);
-    assert(m_!=NULL);
-    m_->stop();
-  }
-
-  volatile bool *ready_;
-  Main          *m_;
-}; // struct Stopper
-} // unnamed namespace
-
-// test interruption form other thread.
-template<>
-template<>
-void testObj::test<3>(void)
-{
-  volatile bool ready=false;
-  Main          m;
-  boost::thread th( Stopper(&ready, &m) );
-  ready=true;
-  m.waitUntilDone();
-}
-
 } // namespace tut

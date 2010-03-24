@@ -18,4 +18,4 @@ ID-26 python support for:
 ID-27 generic shell script support for:
   ID-27.1 triggers.
 ID-28 common alert formatters (with API) to make reporting via triggers easier.
-ID-29 normalize on times in system to UTC (local time just for display).
+ID-29 normalize all times in system to UTC (local time just for display).

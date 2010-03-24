@@ -7,7 +7,8 @@ for d in `cat build_config/components{.,_test.}lst | sort | uniq`
 do
   echo "----------------------------"
   echo "testing $d:"
-  ( cd gen/test_local_normal/$d && valgrind --leak-check=full --show-reachable=yes ./$d.t ) || RET=1
+  ( cd gen/test_local_normal/$d && \
+    LD_LIBRARY_PATH=../libs/ valgrind --leak-check=full --show-reachable=yes ./$d.t ) || RET=1
 done
 
 echo
