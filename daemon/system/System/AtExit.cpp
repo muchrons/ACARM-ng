@@ -88,7 +88,8 @@ void AtExit::init(void)
   // this call, if there is a problem, can be registered/called
   // multiple times...
   if( atexit(cStyleCallForAtExit)!=0 )
-    throw Exception("AtExit::AtExit(): "
+    throw Exception(SYSTEM_SAVE_LOCATION,
+                    "AtExit::AtExit(): "
                     "unable to register handler in atexit() syscall");
 
   // sanity check
@@ -103,7 +104,8 @@ void AtExit::registerInternal(TDeallocPtr p)
 {
   // lock for this call is made in registerDeallocator()
   if( p.get()==NULL )
-    throw Exception("AtExit::registerInternal(): "
+    throw Exception(SYSTEM_SAVE_LOCATION,
+                    "AtExit::registerInternal(): "
                     "NULL pointer recieved for registration");
 
   assert(atExitImpl!=NULL);

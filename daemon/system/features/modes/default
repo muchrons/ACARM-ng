@@ -1,4 +1,5 @@
 System/*.?pp
+System/Math/*.?pp
 System/Threads/*.?pp
 System/Exceptions/*.?pp
 System/Exceptions/detail/*.?pp

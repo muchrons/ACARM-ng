@@ -17,8 +17,7 @@ Connection::Connection(void):
   alertCalls_(0),
   hostCalls_(0),
   metaAlertCalls_(0),
-  restorerCalls_(0),
-  impl_(42)
+  restorerCalls_(0)
 {
 }
 
@@ -51,6 +50,12 @@ RestorerAutoPtr Connection::restorerImpl(Transaction &t)
 {
   ++restorerCalls_;
   return impl_.restorer(t);
+}
+
+size_t Connection::removeEntriesOlderThanImpl(size_t days, Transaction &t)
+{
+  ++removeOldCalls_;
+  return impl_.removeEntriesOlderThan(days, t);
 }
 
 } // namespace Stubs

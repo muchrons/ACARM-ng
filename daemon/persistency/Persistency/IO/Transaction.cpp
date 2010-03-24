@@ -35,8 +35,10 @@ Transaction::~Transaction(void)
     // if transaction has not been commited, rollback it now
     if( isActive() )
     {
-      logMsg("transaction has not been commited/rollbacked - doing "
-             "automatic rollback upon transaction destruction");
+      LOGMSG_WARN_S(log_)<<transaction_->getName()
+                         <<": transaction has not been commited/rollbacked - "
+                           "doing automatic rollback upon transaction "
+                           "destruction";
       rollback();
     }
   }
@@ -91,7 +93,6 @@ bool Transaction::isActive(void) const
 void Transaction::logMsg(const char *str)
 {
   assert(str!=NULL);
-  assert( isActive() && "logging called for finished transaction");
   LOGMSG_INFO_S(log_)<<transaction_->getName()<<": "<<str;
 }
 

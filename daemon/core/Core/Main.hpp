@@ -10,7 +10,9 @@
 #include <boost/noncopyable.hpp>
 
 #include "Logger/Node.hpp"
-#include "Core/Types/NodesFifo.hpp"
+#include "Core/WorkThreads.hpp"
+#include "Core/PersistencyCleanup.hpp"
+#include "Core/HandleStopSignals.hpp"
 
 namespace Core
 {
@@ -42,10 +44,15 @@ public:
   void stop(void);
 
 private:
-  Logger::Node           log_;
-  Core::Types::NodesFifo queue_;
-  boost::thread          procs_;
-  boost::thread          srcs_;
+  Logger::Node       log_;
+  HandleStopSignals  nullSignals_;  // initially register empty handlers
+                                    // (will be overwritten later on)
+  PersistencyCleanup cleanup_;      // cleanup has to be here, since it should
+                                    // be called before any threads are started
+  WorkThreads        threads_;
+  HandleStopSignals  signals_;      // this element must be initialized after
+                                    // creating threads - it expects them to
+                                    // be valid objects.
 }; // class Main
 
 } // namespace Core

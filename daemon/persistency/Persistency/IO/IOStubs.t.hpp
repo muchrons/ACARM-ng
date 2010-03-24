@@ -182,7 +182,14 @@ struct TestIOConnection: public Persistency::IO::Connection
     return Persistency::IO::RestorerAutoPtr( new IORestorer(t) );
   }
 
-  int called_[5];
+  virtual size_t removeEntriesOlderThanImpl(size_t                        /*days*/,
+                                            Persistency::IO::Transaction &/*t*/)
+  {
+    ++called_[5];
+    return 42;
+  }
+
+  int called_[6];
 }; // struct TestIOConnection
 
 } // unnamed namespace

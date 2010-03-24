@@ -64,6 +64,10 @@ private:
     return RestorerAutoPtr( new TRestorerIO(t, ph_) );
   }
 
+  // there is no generic implementation for this call - it has to be
+  // implemented separately for each backend.
+  virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t) = 0;
+
   TPersistencyHandler ph_;
 }; // class ConnectionHelper
 

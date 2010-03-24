@@ -10,22 +10,23 @@
 
 /* public header */
 
-#include "System/Exceptions/Base.hpp"
+#include "System/Exceptions/RuntimeError.hpp"
 
 namespace System
 {
 
 /** \brief internal exception class.
  */
-class Exception: public Exceptions::Base<Exception, std::exception>
+class Exception: public Exceptions::RuntimeError<Exception>
 {
 public:
   /** \brief create execption with given message.
-   *  \param msg message to represent.
+   *  \param where location of exception raising.
+   *  \param msg   message to represent.
    */
   template<typename T>
-  explicit Exception(const T &msg):
-    Exceptions::Base<Exception, std::exception>(msg)
+  Exception(const typename BaseC::Location &where, const T &msg):
+    Exceptions::RuntimeError<Exception>(where, msg)
   {
   }
 }; // class Exception

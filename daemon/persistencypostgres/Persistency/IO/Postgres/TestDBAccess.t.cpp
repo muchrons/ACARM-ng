@@ -3,6 +3,7 @@
  *
  */
 #include <pqxx/pqxx>
+#include <cstdlib>
 
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
 
@@ -25,6 +26,7 @@ TestDBAccess::TestDBAccess(void):
 void TestDBAccess::removeAllData(void)
 {
   pqxx::work t(conn_.get(), "remove_all_data");
+  t.exec("DELETE FROM meta_alerts_already_triggered");
   t.exec("DELETE FROM meta_alerts_in_use");
   t.exec("DELETE FROM alert_to_meta_alert_map");
   t.exec("DELETE FROM meta_alerts_tree");
@@ -49,8 +51,9 @@ void TestDBAccess::removeAllData(void)
 void TestDBAccess::fillWithContent1(void)
 {
   pqxx::work t(conn_.get(), "fill_with_content1");
-  // TODO: data base content should be insrted here.
-  // NOTE: this should be probably external script in testdata directory.
+  const int  ret=system("psql -d acarm_ng_test -f testdata/test_data_001.sql "
+                        "> /dev/null");
+  assert(ret==0 && "ooops - filling data base with tst content failed");
 }
 
 } // namespace Postgres

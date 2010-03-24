@@ -37,9 +37,9 @@ CREATE TABLE alert_to_meta_alert_map
 --
 -- meta-alerts tree is in fact acircular graph. 'tree' name is used, since
 -- most of the time this graph is just a set of trees. the exceptions are:
---   1) in general few trees may have common subtrie
+--   1) in general few trees may have common subtree
 --   2) multiple parent nodes may have the same child
---   3) it does not gave one, single root (using graph terminology, it is
+--   3) it does not have one, single root (using graph terminology, it is
 --      "not consistent")
 --
 -- structure representation from logical point of view looks like this:
@@ -81,7 +81,7 @@ CREATE TABLE meta_alerts_tree
 (
   id_node  int NOT NULL
            REFERENCES meta_alerts(id),
-  id_child int NULL
+  id_child int NOT NULL
            REFERENCES meta_alerts(id),
 
   UNIQUE(id_node, id_child)
