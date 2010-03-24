@@ -5,6 +5,8 @@
 
 #include "Input/Exception.hpp"
 #include "IDMEFParserAnalyzer.hpp"
+#include "IDMEFParserSource.hpp"
+#include "IDMEFParserTarget.hpp"
 #include "IDMEFParser.hpp"
 
 namespace Input
@@ -43,13 +45,31 @@ IDMEFParser::IDMEFParser(idmef_message_t * msg)
       analyzers_->push_back(ptr);
     }  
 
-  idmef_source_t *elem = NULL;
+  idmef_source_t *src = NULL;
     
-  while ( (elem = idmef_alert_get_next_source(ptr, elem)) )
+  while ( (src = idmef_alert_get_next_source(alert_, src)) )
     {
-      
+      const IDMEFParserSource sr(src);
+      Persistency::Host::ReportedServices rs;
+      rs.push_back(sr.getService());
+      Persistency::Host::ReportedProcesses rp;
+      rp.push_back(sr.getProcess());
+      Persistency::HostPtrNN ptr(new Persistency::Host(sr.getAddress(),NULL,NULL,Persistency::ReferenceURLPtr(),rs,rp,NULL));
+      sourceHosts.push_back(ptr);
     }
-  
+
+  idmef_target_t *tar = NULL;
+    
+  while ( (tar = idmef_alert_get_next_target(alert_, tar)) )
+    {
+      const IDMEFParserTarget tr(tar);
+      Persistency::Host::ReportedServices rs;
+      rs.push_back(tr.getService());
+      Persistency::Host::ReportedProcesses rp;
+      rp.push_back(tr.getProcess());
+      Persistency::HostPtrNN ptr(new Persistency::Host(tr.getAddress(),NULL,NULL,Persistency::ReferenceURLPtr(),rs,rp,NULL));
+      targetHosts.push_back(ptr);      
+    }  
 }
   
 const Persistency::Host::Name& IDMEFParser::getName() const
@@ -69,12 +89,12 @@ const Persistency::Alert::SourceAnalyzers& IDMEFParser::getAnalyzers() const
 
 const Persistency::Alert::ReportedHosts& IDMEFParser::getSources() const
 {
-  //todo
+  return sourceHosts;
 }
 
 const Persistency::Alert::ReportedHosts& IDMEFParser::getTargets() const
 {
-  //todo
+  return targetHosts;
 }
 
 
