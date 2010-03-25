@@ -47,7 +47,7 @@ public:
   Persistency::AlertPtrNN readAlert(DataBaseID alertID);
 
   /** \brief read Meta Alert data from data base
-   *  \param maletrID ID of Meta Alert in data base
+   *  \param malertID ID of Meta Alert in data base
    */
   Persistency::MetaAlertPtrNN readMetaAlert(DataBaseID malertID);
 

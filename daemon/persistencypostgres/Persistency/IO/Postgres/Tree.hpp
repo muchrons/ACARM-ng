@@ -21,6 +21,8 @@ namespace Postgres
  */
 class Tree{
 public:
+  /** \brief id of tree node
+   */
   typedef DataBaseID IDNode;
 
   /** \brief create tree mode

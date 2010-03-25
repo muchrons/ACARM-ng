@@ -26,6 +26,8 @@ namespace Postgres
 class Restorer: public IO::Restorer
 {
 public:
+  /** \brief data type which stores tree nodes of class Tree
+   */
   typedef std::map<Tree::IDNode, TreePtr> nodesMap;
   /** \brief create restore from persistency proxy object
    *  \param t         active transaction.
