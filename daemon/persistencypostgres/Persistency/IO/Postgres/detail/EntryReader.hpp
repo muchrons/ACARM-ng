@@ -35,8 +35,6 @@ class EntryReader: private boost::noncopyable
 {
 public:
 
-  typedef std::map<DataBaseID, Persistency::AlertPtrNN> leafsMap;
-  typedef std::multimap<DataBaseID, std::pair<DataBaseID, Persistency::GraphNodePtrNN> > nodesMultimap;
   /** \brief create reader
    *  \param t   transaction to be used for reading.
    *  \param dbh data base handler object.
