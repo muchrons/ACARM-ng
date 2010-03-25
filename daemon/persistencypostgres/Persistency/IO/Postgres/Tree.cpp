@@ -1,4 +1,16 @@
-#include "Tree.hpp"
+/*
+ * Tree.cpp
+ *
+ */
+
+#include "Persistency/IO/Postgres/Tree.hpp"
+
+namespace Persistency
+{
+namespace IO
+{
+namespace Postgres
+{
 
 Tree::Tree(IDNode id, vector<IDNode> children):id_(id)
 {
@@ -8,7 +20,7 @@ Tree::Tree(IDNode id, vector<IDNode> children):id_(id)
   }
 }
 
-int Tree::getID()
+Tree::IDNode Tree::getID()
 {
   return id_;
 }
@@ -18,6 +30,7 @@ void Tree::addChild(IDNode childID)
   children_.push_back( childID );
 }
 
+/*
 void Tree::print()
 {
   for(vector<IDNode>::iterator it = children_.begin(); it != children_.end(); ++it)
@@ -25,14 +38,18 @@ void Tree::print()
     cout << "Node id: " << id_ << " Child id: " << (*it) << endl;
   }
 }
+*/
 
 int Tree::getChildrenNumber()
 {
   return children_.size();
 }
 
-vector<int> Tree::getChildren()
+vector<Tree::IDNode> Tree::getChildren()
 {
   return children_;
 }
 
+} // namespace Postgres
+} // namespace IO
+} // namespace Persistency
