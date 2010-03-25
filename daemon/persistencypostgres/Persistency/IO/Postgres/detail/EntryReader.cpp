@@ -43,6 +43,8 @@ SeverityLevel fromInt(int level)
   }
   // when we reach here, there is wrong severity level in data base
   assert(!"invalid severity level");
+  // temporary solution
+  return SeverityLevel::CRITICAL;
   // TODO: throw exception when value of severity level is wrong
 }
 
