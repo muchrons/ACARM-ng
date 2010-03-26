@@ -72,7 +72,7 @@ IDMEFParser::IDMEFParser(idmef_message_t * msg)
     }  
 }
   
-const Persistency::Host::Name& IDMEFParser::getName() const
+const Persistency::Alert::Name& IDMEFParser::getName() const
 {  
   return name_;
 }
@@ -82,7 +82,7 @@ const Persistency::Timestamp& IDMEFParser::getCreateTime() const
   return ctime_;
 }
 
-const Persistency::Alert::SourceAnalyzers& IDMEFParser::getAnalyzers() const
+Persistency::Alert::SourceAnalyzers IDMEFParser::getAnalyzers() const
 {
   return *analyzers_; 
 }

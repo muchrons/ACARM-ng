@@ -5,7 +5,7 @@
 #ifndef INCLUDE_INPUT_PRELUDE_IDMEFPARSER_HPP_FILE
 #define INCLUDE_INPUT_PRELUDE_IDMEFPARSER_HPP_FILE
 
-#include <prelude.h>
+#include <libprelude/prelude.h>
 
 #include "Persistency/Alert.hpp"
 #include "Persistency/Timestamp.hpp"
@@ -31,7 +31,7 @@ public:
   /**
    * @brief gets host name
    */
-  const Persistency::Host::Name& getName() const;
+  const Persistency::Alert::Name& getName() const;
 
   /**
    * @brief gets alert creation time
@@ -41,7 +41,7 @@ public:
   /**
    * @brief gets list of analyzers
    */
-  const Persistency::Alert::SourceAnalyzers& getAnalyzers() const;
+  Persistency::Alert::SourceAnalyzers getAnalyzers() const;
 
   /**
    * @brief gets list of sources
@@ -57,7 +57,7 @@ public:
 private:
   idmef_alert_t *alert_;
 
-  Persistency::Host::Name name_;
+  Persistency::Alert::Name name_;
   Persistency::Timestamp ctime_;
   boost::scoped_ptr<Persistency::Alert::SourceAnalyzers> analyzers_;
   Persistency::Alert::ReportedHosts sourceHosts;

@@ -5,7 +5,7 @@
 #ifndef INCLUDE_INPUT_PRELUDE_IDMEFPARSERSOURCE_HPP_FILE
 #define INCLUDE_INPUT_PRELUDE_IDMEFPARSERSOURCE_HPP_FILE
 
-#include <prelude.h>
+#include <libprelude/prelude.h>
 
 
 #include "Persistency/Alert.hpp"

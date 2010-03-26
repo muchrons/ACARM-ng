@@ -34,7 +34,7 @@ struct TestClass
 
     prelude_string_t *string1,*string2;
     idmef_alert_new_messageid(alert,&string1);
-    prelude_string_new_ref(&string2,name_);
+    prelude_string_new_ref(&string2,name_.c_str());
     idmef_alert_set_messageid(alert,string2);
   }
 
@@ -48,14 +48,14 @@ struct TestClass
     return idmef_message_get_alert(message);
   }
 
-  const char * getName()
+  const std::string & getName()
   {
     return name_;
   }
 
 private:
   idmef_message_t *message;
-  const char *name_;
+  const std::string name_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -73,7 +73,7 @@ void testObj::test<1>(void)
 {
   TestClass   tc;
   IDMEFParser ip(tc.getMessage());
-  ensure(ip.getName()==Persistency::detail::LimitedNULLString<64>(tc.getName()));
+  ensure(ip.getName()==Persistency::Alert::Name(tc.getName()));
 }
 
 template<>
