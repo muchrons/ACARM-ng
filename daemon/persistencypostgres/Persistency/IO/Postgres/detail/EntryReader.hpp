@@ -89,7 +89,7 @@ public:
 
   /** \brief read IDs of Meta Alerts from time interval
    *  \param  from begin of time interval
-   *  \param  end of time interval
+   *  \param  to end of time interval
    *  \return vector which contains IDs of Meta alerts from time interval
    */
   std::vector<DataBaseID> readIDsMalertsBetween(const Timestamp &from, const Timestamp &to);
