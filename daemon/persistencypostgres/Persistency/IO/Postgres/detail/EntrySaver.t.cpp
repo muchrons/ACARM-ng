@@ -220,7 +220,7 @@ void testObj::test<4>(void)
 {
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
-  HostPtr host=makeNewHost();
+
   const Analyzer anlz("analyzer1", NULL, NULL, NULL);
   const DataBaseID anlzID = es_.saveAnalyzer(anlz);
   const DataBaseID alrtID = es_.saveAlert(a);
@@ -456,7 +456,7 @@ void testObj::test<11>(void)
 {
   const Alert a(name_, analyzers_, NULL, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
-  HostPtr host=makeNewHost();
+
   const Analyzer anlz("analyzer1", NULL, NULL, NULL);
   const DataBaseID anlzID = es_.saveAnalyzer(anlz);
   const DataBaseID alrtID = es_.saveAlert(a);

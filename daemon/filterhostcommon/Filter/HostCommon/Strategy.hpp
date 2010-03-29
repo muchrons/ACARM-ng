@@ -34,6 +34,9 @@ struct Data
 }; // struct Data
 
 
+// disabling waring from ICC "virtual function override intended" - YES
+#pragma warning disable 1125
+
 /** \brief host-operating filter implementation.
  */
 class Strategy: public Filter::Simple::Strategy<Data>

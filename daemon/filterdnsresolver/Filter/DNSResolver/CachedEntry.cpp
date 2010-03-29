@@ -2,8 +2,8 @@
  * CachedEntry.hpp
  *
  */
-#include "Filter/DNSResolver/CachedEntry.hpp"
 #include <boost/asio.hpp>
+#include "Filter/DNSResolver/CachedEntry.hpp"
 
 using namespace boost::asio;
 
