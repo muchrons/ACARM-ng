@@ -18,14 +18,14 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     conn_( IO::create() ),
-    bp_( new BackendFacade(conn_, "sometest") )
+    bf_( new BackendFacade(conn_, "sometest") )
   {
-    assert( bp_.get()!=NULL );
+    assert( bf_.get()!=NULL );
     assert( conn_.get()!=NULL );
   }
 
-  IO::ConnectionPtrNN             conn_;
-  boost::scoped_ptr<BackendFacade> bp_;
+  IO::ConnectionPtrNN              conn_;
+  boost::scoped_ptr<BackendFacade> bf_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -43,7 +43,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  bp_->markAsTriggered( TestHelpers::Persistency::makeNewMetaAlert() );
+  bf_->markAsTriggered( TestHelpers::Persistency::makeNewMetaAlert() );
 }
 
 } // namespace tut
