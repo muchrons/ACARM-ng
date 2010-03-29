@@ -1,0 +1,74 @@
+/*
+ * Restorer.t.cpp
+ *
+ */
+#include <tut.h>
+
+#include "Persistency/IO/Postgres/TestConnection.t.hpp"
+#include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
+#include "Persistency/IO/Postgres/TestHelpers.t.hpp"
+#include "Persistency/IO/BackendFactory.hpp"
+#include "Persistency/IO/Postgres/Restorer.hpp"
+
+using Persistency::IO::Transaction;
+using namespace Persistency;
+using namespace Persistency::IO::Postgres;
+using namespace std;
+
+namespace
+{
+
+struct TestClass
+{
+  TestClass(void):
+    idCache_(new IDCache),
+    dbh_(DBHandlerPtrNN(new DBHandler(TestConnection::makeParams(), idCache_) ) ),
+    conn_(makeConnection() ),
+    t_( conn_->createNewTransaction("save_alert_tests") )
+  {
+    tdba_.removeAllData();
+  }
+
+  IO::ConnectionPtrNN makeConnection(void) const
+  {
+    IO::BackendFactory::Options opts;
+    opts["host"]  ="localhost";
+    opts["port"]  ="5432";
+    opts["dbname"]="acarm_ng_test";
+    opts["user"]  ="acarm-ng-daemon";
+    opts["pass"]  ="test.daemon";
+    return IO::ConnectionPtrNN(
+        Persistency::IO::BackendFactory::create("postgres", opts) );
+  }
+
+  TestDBAccess            tdba_;
+  IDCachePtrNN            idCache_;
+  DBHandlerPtrNN          dbh_;
+  IO::ConnectionPtrNN     conn_;
+  Transaction             t_;
+
+};
+
+typedef tut::test_group<TestClass> factory;
+typedef factory::object testObj;
+
+factory tf("Persistency/IO/Postgres/Restorer");
+} //unnamned namespace
+
+namespace tut
+{
+
+// trying restore ...
+template<>
+template<>
+void testObj::test<1>(void)
+{
+  Restorer r(t_, dbh_);
+  std::vector<GraphNodePtrNN> out;
+  makeNewTree1();
+  //r.restoreAllInUse(t_, out);
+  t_.commit();
+}
+
+} // namespace tut
+

@@ -55,7 +55,6 @@ Persistency::HostPtr makeNewHost6(const char             *ip,
 Persistency::ProcessPtr makeNewProcess(const char *name="process name");
 
 Persistency::ReferenceURLPtr makeNewReferenceURL(const char *url="http://gnu.org");
-
 Persistency::GraphNodePtrNN makeNewLeaf(void);
 Persistency::GraphNodePtrNN makeNewNode(void);
 Persistency::GraphNodePtrNN makeNewNode(Persistency::GraphNodePtrNN child1,
@@ -77,7 +76,12 @@ Persistency::GraphNodePtrNN makeNewTree1(void);
 //                       ...
 //
 Persistency::GraphNodePtrNN makeNewTree2(void);
-
+//
+//                   root1       root2
+//             node3       node4       leaf5
+//      node6        node7       leaf8
+//  node10 node11
+Persistency::GraphNodePtrNN makeNewTree3(void);
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency

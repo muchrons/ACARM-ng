@@ -29,15 +29,15 @@ void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &out)
   Restore(er, out, maInUse);
 }
 
-void Restorer::restoreBetweenImpl(Transaction     &/*t*/,
-                                  NodesVector     &/*out*/,
-                                  const Timestamp &/*from*/,
-                                  const Timestamp &/*to*/)
+void Restorer::restoreBetweenImpl(Transaction     &t,
+                                  NodesVector     &out,
+                                  const Timestamp &from,
+                                  const Timestamp &to)
 {
   // TODO
-  // EntryReader er(t, *dbHandler_);
-  // vector<DataBaseID> maBetween( er.readIDsMalertsBetween(from, to) );
-  // Restore(er, out, maBetween);
+  EntryReader er(t, *dbHandler_);
+  vector<DataBaseID> maBetween( er.readIDsMalertsBetween(from, to) );
+  Restore(er, out, maBetween);
 }
 
 BackendFactory::FactoryPtr Restorer::createStubIO(void)
@@ -93,7 +93,7 @@ GraphNodePtrNN Restorer::DeepFirstSearch(Tree::IDNode          id,
   return graphNode;
 }
 
-void Restorer::Restore(EntryReader &er, NodesVector &/*out*/, vector<DataBaseID> &malerts)
+void Restorer::Restore(EntryReader &er, NodesVector &out, vector<DataBaseID> &malerts)
 {
 
   for(vector<DataBaseID>::iterator it = malerts.begin(); it != malerts.end(); ++it)
@@ -106,11 +106,11 @@ void Restorer::Restore(EntryReader &er, NodesVector &/*out*/, vector<DataBaseID>
   IO::ConnectionPtrNN connStubIO( createStubIO() );
   IO::Transaction tStubIO( connStubIO->createNewTransaction("stub transaction") );
 
-  // vector<DataBaseID> roots( er.readRoots());
-  // for(vector<DataBaseID>::iteratot it = roots.begin(); it != roots.end(); ++it)
-  // {
-  //   out.push_back( DeepFirstSearch(*it, out, er, connStubIO, tStubIO) );
-  // }
+  vector<DataBaseID> roots( er.readRoots());
+  for(vector<DataBaseID>::iterator it = roots.begin(); it != roots.end(); ++it)
+  {
+    out.push_back( DeepFirstSearch(*it, out, er, connStubIO, tStubIO) );
+  }
 }
 
 } // namespace Postgres

@@ -473,6 +473,44 @@ vector<DataBaseID> EntryReader::readIDsMalertsInUse()
   return malertsInUse;
 }
 
+vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, const Timestamp &to)
+{
+  vector<DataBaseID> malertsBetween;
+  stringstream ss;
+  //TODO: test this query
+  ss << "SELECT id FROM meta_alerts WHERE "
+     << to_iso_string(from) << " <= create_time AND create_time <=" << to_iso_string(to) << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+
+  for(unsigned int i=0; i<r.size(); ++i)
+  {
+    DataBaseID malertID;
+    r[0]["id"].to(malertID);
+    malertsBetween.push_back(malertID);
+  }
+  return malertsBetween;
+}
+
+std::vector<DataBaseID> EntryReader::readRoots()
+{
+  vector<DataBaseID> roots;
+  stringstream ss;
+  ss << "SELECT id_node, id_child INTO TEMP TABLE tmp FROM meta_alerts_tree"
+        " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);";
+  t_.getAPI<TransactionAPI>().exec(ss);
+  ss.str("");
+  ss << "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );";
+
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  for(unsigned int i=0; i<r.size(); ++i)
+  {
+    DataBaseID nodeID;
+    r[0]["id_node"].to(nodeID);
+    roots.push_back(nodeID);
+  }
+  return roots;
+}
+
 } // namespace detail
 } // namespace Postgres
 } // namespace IO

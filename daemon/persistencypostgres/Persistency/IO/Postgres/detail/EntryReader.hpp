@@ -93,6 +93,18 @@ public:
    *  \return vector which contains IDs of Meta alerts in use
    */
   std::vector<DataBaseID> readIDsMalertsInUse();
+
+  /** \brief read IDs of Meta Alerts from time interval
+   *  \param  from begin of time interval
+   *  \param  end of time interval
+   *  \return vector which contains IDs of Meta alerts from time interval
+   */
+  std::vector<DataBaseID> readIDsMalertsBetween(const Timestamp &from, const Timestamp &to);
+
+  /** \brief read IDs of root nodes
+   *  \return vector of IDs
+   */
+  std::vector<DataBaseID> readRoots();
 private:
   Persistency::Alert::ReportedHosts getReporteHosts(DataBaseID alertID, std::string hostType);
   HostPtr getHost(DataBaseID hostID, DataBaseID *refID);
