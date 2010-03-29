@@ -53,8 +53,8 @@ public:
   idmef_message_t* recvMessage(int timeout=-1);
 
 private:
-  prelude_client_t *_client;
-  prelude_client_profile_t *_profile;
+  prelude_client_t *client_;
+  prelude_client_profile_t *profile_;
 }; // class Client
 
 } // namespace Prelude
