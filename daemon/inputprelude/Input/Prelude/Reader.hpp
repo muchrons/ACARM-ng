@@ -8,9 +8,8 @@
 #include <boost/noncopyable.hpp>
 #include <boost/scoped_ptr.hpp>
 
-#include "PreludePP/idmef.hpp"
-#include "PreludePP/prelude-client.hpp"
 #include "Input/Reader.hpp"
+#include "Input/Prelude/Client.hpp"
 #include "Input/Prelude/LogCallback.hpp"
 
 
@@ -41,7 +40,7 @@ public:
 private:
   LogCallback                            preludeLogger_;
   std::string                            preludeProfile_;
-  boost::scoped_ptr< ::Prelude::Client > client_;
+  boost::scoped_ptr< Client > client_;
 }; // class Reader
 
 } // namespace Prelude

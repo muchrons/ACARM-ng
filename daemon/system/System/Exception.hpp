@@ -25,7 +25,7 @@ public:
    *  \param msg   message to represent.
    */
   template<typename T>
-  Exception(const typename BaseC::Location &where, const T &msg):
+  Exception(const Location &where, const T &msg):
     Exceptions::RuntimeError<Exception>(where, msg)
   {
   }

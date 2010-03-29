@@ -13,9 +13,19 @@
 
 using std::stringstream;
 
-
 namespace Persistency
 {
+
+namespace
+{
+  template<typename T>
+  detail::NullValue<Host::Netmask> makeNetmask(const T *mask)
+  {
+    if(mask!=NULL)
+      return detail::NullValue<Host::Netmask>(*mask);
+    return detail::NullValue<Host::Netmask>(NULL);
+  }
+}
 
 Host::Host(const IPv4              &ip,
            const Netmask_v4        *mask,
@@ -25,7 +35,7 @@ Host::Host(const IPv4              &ip,
            const ReportedProcesses &processes,
            const Name              &name):
   ip_(ip),
-  mask_( (mask!=NULL)?( new Netmask(*mask) ):NULL ),
+  mask_( makeNetmask(mask) ),
   os_(os),
   name_(name),
   url_(url),
@@ -42,7 +52,7 @@ Host::Host(const IPv6              &ip,
            const ReportedProcesses &processes,
            const Name              &name):
   ip_(ip),
-  mask_( (mask!=NULL)?( new Netmask(*mask) ):NULL ),
+  mask_( makeNetmask(mask) ),
   os_(os),
   name_(name),
   url_(url),
@@ -59,7 +69,7 @@ Host::Host(const IP                &ip,
            const ReportedProcesses &processes,
            const Name              &name):
   ip_(ip),
-  mask_( (mask!=NULL)?( new Netmask(*mask) ):NULL ),
+  mask_(mask),
   os_(os),
   name_(name),
   url_(url),
