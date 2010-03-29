@@ -13,7 +13,6 @@ persistency
 core
 coretypes
 input
-preludepp
 xml
 configio
 commons

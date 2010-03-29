@@ -34,6 +34,7 @@ struct Data
 }; // struct Data
 
 
+
 /** \brief host-operating filter implementation.
  */
 class Strategy: public Filter::Simple::Strategy<Data>

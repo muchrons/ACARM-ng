@@ -109,7 +109,7 @@ void testObj::test<3>(void)
     TestRegistrator tr(SIGUSR1, NULL);  // should throw
     fail("SignalRegistrator didn't throw on invalid handler");
   }
-  catch(const System::Exception &ex)
+  catch(const System::Exception &)
   {
     // this is expected
   }

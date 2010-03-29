@@ -322,7 +322,7 @@ Persistency::ServicePtr EntryReader::getService(DataBaseID servID, DataBaseID *r
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   string name, protocol;
-  int port;
+  int16_t port;
 
   r[0]["name"].to(name);
   r[0]["protocol"].to(protocol);
