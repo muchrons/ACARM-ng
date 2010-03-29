@@ -74,6 +74,7 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
   r[0]["create_time"].to(create_time);
   r[0]["id_severity"].to(idSeverity);
   r[0]["certanity"].to(certainty);
+  // TODO: consider using NullValue class for this.
   Timestamp                *alertDetect = NULL;
   if( !r[0]["detect_time"].is_null() )
   {
@@ -113,6 +114,7 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
   r[0]["severity_delta"].to(severityDelta);
   r[0]["certanity_delta"].to(certaintyDelta);
   r[0]["create_time"].to(createTime);
+  // TODO: consider using NullValue class for this.
   if( !r[0]["id_ref"].is_null() )
   {
     r[0]["id_ref"].to(id);
@@ -141,6 +143,7 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
   ra[0]["name"].to(name);
 
   Analyzer::Version *anlzVersion = NULL;
+  // TODO: consider using NullValue class for this.
   if( !ra[0]["version"].is_null() )
   {
     ra[0]["version"].to(version);
@@ -148,6 +151,7 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
     //TODO smart pointer
   }
 
+  // TODO: consider using NullValue class for this.
   Analyzer::OS *anlzOS = NULL;
   if( !ra[0]["os"].is_null() )
   {
@@ -156,6 +160,7 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
     //TODO smart pointer
   }
 
+  // TODO: consider using NullValue class for this.
   Analyzer::IP *anlzIP = NULL;
   if( !ra[0]["ip"].is_null() )
   {
@@ -230,6 +235,7 @@ HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID *refID)
 
   r[0]["ip"].to(ip);
 
+  // TODO: consider using NullValue class for this.
   Persistency::Host::Name            hostName;
   if( !r[0]["name"].is_null() )
   {
@@ -237,6 +243,7 @@ HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID *refID)
     hostName = Persistency::Host::Name(name);
   }
 
+  // TODO: consider using NullValue class for this.
   Persistency::Host::OperatingSystem hostOS;
   if( !r[0]["os"].is_null() )
   {
@@ -244,6 +251,7 @@ HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID *refID)
     hostOS = Persistency::Host::OperatingSystem(os);
   }
 
+  // TODO: consider using NullValue class for this.
   Persistency::Host::Netmask         hostIP;
   if( !r[0]["mask"].is_null() )
   {
@@ -254,6 +262,10 @@ HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID *refID)
   const Persistency::Host::IP              hostNetmask(
                     Persistency::Host::IP::from_string(mask) );
 
+  // TODO: you do not know if given values are set or not. i'd suggest
+  //       reversing logic - if they are NULL (but shouldn't) throw an
+  //       exception. notice that this code is generic, therofor it can be
+  //       implemented as a template.
   HostPtr host(new Persistency::Host(hostIP,
                                      &hostNetmask,
                                      hostOS,
@@ -329,7 +341,6 @@ Persistency::ServicePtr EntryReader::getService(DataBaseID servID, DataBaseID *r
                                                            serviceProtocol,
                                                            getReferenceURL( refID )));
   return service;
-
 }
 
 ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
@@ -347,11 +358,13 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
     procPath = Process::Path(path);
   }
 
+  // TODO: consider using NullValue class for this.
   r[0]["name"].to(name);
   MD5Sum *procMD5 = NULL;
   if( !r[0]["md5"].is_null() )
   {
     r[0]["md5"].to(md5);
+    // TODO: SEGV here - procMD5 is NULL in this context
     *procMD5 = MD5Sum( MD5Sum::createFromString(md5.c_str()) );
   }
 
@@ -370,14 +383,15 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
   const pid_t             procPid(pid);
   const Process::Username procUsername(username);
 
-  Persistency::ProcessPtr process( new Process(procPath,
-                                               procName,
-                                               procMD5,
+  // TODO: what if procPid and/or uid are NULLs in data base?
+  Persistency::ProcessPtr process( new Process( procPath,
+                                                procName,
+                                                procMD5,
                                                &procPid,
                                                &uid,
-                                               procUsername,
-                                               arguments.c_str(),
-                                               getReferenceURL( refID )) );
+                                                procUsername,
+                                                arguments.c_str(),
+                                                getReferenceURL( refID )) );
   return process;
 }
 
@@ -421,6 +435,7 @@ double EntryReader::getCertaintyDelta(DataBaseID malertID)
   return certainty;
 }
 
+// TODO: method has a wrong name. consider getChildrenCount() or simillar
 size_t EntryReader::getChildrenIDs(DataBaseID malertID)
 {
   stringstream ss;
@@ -464,6 +479,7 @@ vector<DataBaseID> EntryReader::readIDsMalertsInUse()
   stringstream ss;
   ss << "SELECT id_meta_alert FROM meta_alerts_in_use;";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
+  // TODO: use vector<>::reserve() to avoid extra allocations.
   for(unsigned int i=0; i<r.size(); ++i)
   {
     DataBaseID malertID;

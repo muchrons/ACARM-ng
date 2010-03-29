@@ -6,6 +6,7 @@
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_TREEPTR_HPP_FILE
 
 #include<boost/shared_ptr.hpp>
+
 namespace Persistency
 {
 namespace IO
@@ -15,6 +16,7 @@ namespace Postgres
 // forward declaration, needed for smart-pointer decalration
 class Tree;
 
+// TODO: comment this typedef
 typedef boost::shared_ptr<Tree> TreePtr;
 
 } // namespace Postgres

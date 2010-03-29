@@ -2,7 +2,6 @@
  * Tree.cpp
  *
  */
-
 #include "Persistency/IO/Postgres/Tree.hpp"
 
 namespace Persistency
@@ -30,6 +29,10 @@ void Tree::addChild(IDNode childID)
   children_.push_back( childID );
 }
 
+// TODO: remove dead code
+// TODO: note - in future, if such a code is needed better write test or mtest
+//       to perform this - print() should not be part of Tree class (see:
+//       single responsability principle).
 /*
 void Tree::print()
 {

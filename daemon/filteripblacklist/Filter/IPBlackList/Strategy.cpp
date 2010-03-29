@@ -30,7 +30,7 @@ Strategy::Strategy(const Parameters &params):
 
 void Strategy::processImpl(Node               n,
                            NodesTimeoutQueue &/*ntq*/,
-                           BackendProxy      &bp)
+                           BackendFacade     &bf)
 {
   //
   // this set of 'if's is important, since it prevents connection flood
@@ -67,7 +67,7 @@ void Strategy::processImpl(Node               n,
     return;
 
   assert( bl_.get()!=NULL );
-  const EntryProcessor ep(bl_.get(), &bp, params_.priDelta_);
+  const EntryProcessor ep(bl_.get(), &bf, params_.priDelta_);
   Algo::forEachUniqueLeaf(n, ep);
 }
 

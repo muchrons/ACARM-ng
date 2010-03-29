@@ -1,14 +1,14 @@
 /*
- * BackendProxy.hpp
+ * BackendFacade.hpp
  *
  */
-#ifndef INCLUDE_TRIGGER_BACKENDPROXY_HPP_FILE
-#define INCLUDE_TRIGGER_BACKENDPROXY_HPP_FILE
+#ifndef INCLUDE_TRIGGER_BACKENDFACADE_HPP_FILE
+#define INCLUDE_TRIGGER_BACKENDFACADE_HPP_FILE
 
 /* public header */
 
 #include "Persistency/GraphNode.hpp"
-#include "Core/Types/Proc/BackendProxy.hpp"
+#include "Core/Types/Proc/BackendFacade.hpp"
 
 
 namespace Trigger
@@ -21,14 +21,14 @@ namespace Trigger
  * \note this object allows transaction's to take place, but only on persistent
  *       level, i.e. rollbacking transaction does not change user objects.
  */
-class BackendProxy: public Core::Types::Proc::BackendProxy
+class BackendFacade: public Core::Types::Proc::BackendFacade
 {
 public:
   /** \brief create object's instance.
    *  \param conn        connection object to use.
    *  \param triggerName name of trigger this object is created for.
    */
-  BackendProxy(Persistency::IO::ConnectionPtrNN  conn,
+  BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
                const std::string                &triggerName);
 
   /** \brief saves information that given meta-alert has been already
@@ -36,7 +36,7 @@ public:
    *  \param ma meta-alert that has been triggered.
    */
   void markAsTriggered(Persistency::MetaAlertPtrNN ma);
-}; // class BackendProxy
+}; // class BackendFacade
 
 } // namespace Trigger
 

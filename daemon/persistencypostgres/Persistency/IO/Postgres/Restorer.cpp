@@ -53,6 +53,7 @@ TreePtr Restorer::getNode(Tree::IDNode id )
   if(treeNodes_.count(id) > 0)
     return treeNodes_.find(id)->second;
   else
+    // TODO: use typedef for this
     return boost::shared_ptr<Tree>();
 }
 
@@ -67,28 +68,34 @@ int Restorer::getNumberOfChildren(Tree::IDNode id )
 GraphNodePtrNN Restorer::DeepFirstSearch(Tree::IDNode          id,
                                          NodesVector          &out,
                                          EntryReader          &er,
-                                         IO::ConnectionPtrNN  connStubIO,
+                                         IO::ConnectionPtrNN   connStubIO,
                                          IO::Transaction      &tStubIO)
 {
   TreePtr node = getNode(id);
-  // change to check if there is no children
+  // check if there are no children (i.e. is leaf)
   if( node == NULL )
   {
     return GraphNodePtrNN( new GraphNode( er.getLeaf(id), connStubIO, tStubIO ) );
   }
   vector<GraphNodePtrNN> tmpNodes;
-  vector<Tree::IDNode> nodeChildren( node->getChildren() );
-  for(vector<Tree::IDNode>::iterator it = nodeChildren.begin(); it != nodeChildren.end(); ++it)
+  vector<Tree::IDNode>   nodeChildren( node->getChildren() );
+  for(vector<Tree::IDNode>::iterator it = nodeChildren.begin();
+      it != nodeChildren.end(); ++it)
   {
     tmpNodes.push_back( DeepFirstSearch( *it, out, er, connStubIO, tStubIO ) );
   }
+  // TODO: this cannot be assert - it has to be runtime-check, since invalid
+  //       data may appear in data base for some reason.
   assert(tmpNodes.size() >= 2);
   NodeChildrenVector vec(tmpNodes[0], tmpNodes[1]);
+  // TODO: note that you can use vector<>::reserve() method to ensure no extra
+  //       allocations will be done when adding new elements.
   for(unsigned int i = 2; i<tmpNodes.size(); ++i)
   {
     vec.push_back(tmpNodes[i]);
   }
-  GraphNodePtrNN graphNode(new GraphNode( er.readMetaAlert(id), connStubIO, tStubIO, vec ));
+  GraphNodePtrNN graphNode(new GraphNode( er.readMetaAlert(id),
+                                          connStubIO, tStubIO, vec ));
   out.push_back(graphNode);
   return graphNode;
 }
@@ -100,7 +107,8 @@ void Restorer::Restore(EntryReader &er, NodesVector &out, vector<DataBaseID> &ma
   {
     vector<DataBaseID> malertChildren( er.readMetaAlertChildren( (*it) ) );
     // put this data to the tree which represents meta alerts tree structure
-    treeNodes_.insert( pair<Tree::IDNode, TreePtr>(*it, TreePtr(new Tree(*it, malertChildren) ) ) );
+    pair<Tree::IDNode, TreePtr> tmp(*it, TreePtr(new Tree(*it, malertChildren) ) );
+    treeNodes_.insert(tmp);
   }
 
   IO::ConnectionPtrNN connStubIO( createStubIO() );

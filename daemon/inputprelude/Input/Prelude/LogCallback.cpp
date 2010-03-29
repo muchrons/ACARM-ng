@@ -2,12 +2,12 @@
  * LogCallback.cpp
  *
  */
+#include <prelude.h>
 #include <cassert>
 
 #include "System/Threads/SafeInitLocking.hpp"
 #include "Base/Threads/Lock.hpp"
 #include "Input/Prelude/LogCallback.hpp"
-#include "PreludePP/prelude-log.hpp"
 
 using namespace System::Threads;
 using namespace Base::Threads;
@@ -15,28 +15,28 @@ using namespace Base::Threads;
 // unnamed namespace for implementaiton details
 namespace
 {
-const Logger::Node *g_node=NULL;
 SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_mutex);
+const Logger::Node *g_node=NULL;
 } // unnamed namespace
 
 extern "C"
 {
 
-static void wrp_Input_Prelude_ignore(int /*level*/, const char* /*log*/)
+static void wrp_Input_Prelude_ignore(prelude_log_t /*level*/, const char* /*log*/)
 {
   assert( g_node ==NULL && "unpredicted condition found");
   // nothing's done here.
 } // wrp_Input_Prelude_ignore()
 
-static void wrp_Input_Prelude_loggerCallback(int level, const char *log)
+static void wrp_Input_Prelude_loggerCallback(prelude_log_t level, const char *log)
 {
-  assert( g_node !=NULL && "looks like callback has not ben registered");
+  assert( g_node !=NULL && "looks like callback has not been registered");
 
   if(log==NULL)     // trust no one!
     log="<NULL>";
 
   /*
-   * this definition is taken from Prelude++:
+   * this definition is taken from libprelude
    *
    * typedef enum {
    *    PRELUDE_LOG_CRIT  = -1,
@@ -46,11 +46,11 @@ static void wrp_Input_Prelude_loggerCallback(int level, const char *log)
    *    PRELUDE_LOG_DEBUG  = 3
    * } prelude_log_t;
    */
-  assert( ::Prelude::PreludeLog::DEBUG   == 3 );
-  assert( ::Prelude::PreludeLog::INFO    == 2 );
-  assert( ::Prelude::PreludeLog::WARNING == 1 );
-  assert( ::Prelude::PreludeLog::ERROR   == 0 );
-  assert( ::Prelude::PreludeLog::CRITICAL==-1 );
+  assert( PRELUDE_LOG_DEBUG ==  3 );
+  assert( PRELUDE_LOG_INFO  ==  2 );
+  assert( PRELUDE_LOG_WARN  ==  1 );
+  assert( PRELUDE_LOG_ERR   ==  0 );
+  assert( PRELUDE_LOG_CRIT  == -1 );
 
   SafeInitLock lock(g_mutex);
   switch(level)
@@ -80,7 +80,7 @@ LogCallback::LogCallback(const char *node):
 
   g_node =&log_;
   // register callback to prelude
-  ::Prelude::PreludeLog::SetCallback( wrp_Input_Prelude_loggerCallback );
+  prelude_log_set_callback( wrp_Input_Prelude_loggerCallback );
   // set other options
   //::Prelude::PreludeLog::SetFlags(0);   // disable loffing to syslog and quiet mode
 }
@@ -95,7 +95,7 @@ LogCallback::~LogCallback(void)
 
   // after d-tor is called we may no loger provide loggin environment, so
   // we switch logging off to prevent illegal accesses.
-  ::Prelude::PreludeLog::SetCallback( wrp_Input_Prelude_ignore );
+  prelude_log_set_callback( wrp_Input_Prelude_ignore );
 }
 
 } // namespace Prelude

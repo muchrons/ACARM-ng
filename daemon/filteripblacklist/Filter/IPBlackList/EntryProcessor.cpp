@@ -2,6 +2,8 @@
  * EntryProcessor.cpp
  *
  */
+#include <cassert>
+
 #include "Filter/IPBlackList/EntryProcessor.hpp"
 
 using namespace Persistency;
@@ -12,14 +14,14 @@ namespace IPBlackList
 {
 
 EntryProcessor::EntryProcessor(const BlackList *bl,
-                               BackendProxy    *bp,
+                               BackendFacade   *bf,
                                const double     priDelta):
   bl_(bl),
-  bp_(bp),
+  bf_(bf),
   priDelta_(priDelta)
 {
   assert(bl_!=NULL);    // this is only internal implementation
-  assert(bp_!=NULL);    // this is only internal implementation
+  assert(bf_!=NULL);    // this is only internal implementation
 }
 
 void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
@@ -36,8 +38,12 @@ void EntryProcessor::processHosts(Persistency::GraphNodePtrNN              leaf,
   for(ConstIterator it=rh.begin(); it!=rh.end(); ++it)
   {
     const HostPtrNN host=*it;       // helper object
+    assert(bl_!=NULL);
     if( (*bl_)[ host->getIP() ] )   // is IP blacklisted?
-      bp_->updateSeverityDelta(leaf, priDelta_);
+    {
+      assert(bf_!=NULL);
+      bf_->updateSeverityDelta(leaf, priDelta_);
+    }
   } // for(all_hosts)
 }
 

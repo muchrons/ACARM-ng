@@ -1,5 +1,5 @@
 /*
- * BackendProxy.t.cpp
+ * BackendFacade.t.cpp
  *
  */
 #include <tut.h>
@@ -7,7 +7,7 @@
 #include <memory>
 #include <cassert>
 
-#include "Filter/BackendProxy.hpp"
+#include "Filter/BackendFacade.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
@@ -23,9 +23,9 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     conn_( IO::create() ),
-    bp_( new BackendProxy(conn_, changed_, "sometest") )
+    bf_( new BackendFacade(conn_, changed_, "sometest") )
   {
-    assert( bp_.get()!=NULL );
+    assert( bf_.get()!=NULL );
     assert( conn_.get()!=NULL );
     assert( changed_.size()==0 );
   }
@@ -80,20 +80,20 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
     IO::Transaction      t( conn->createNewTransaction("make_leaf_transaction") );
     GraphNodePtrNN       node( new GraphNode(alert, conn, t) );
-    bp_->setHostName(node, h, name);
+    bf_->setHostName(node, h, name);
 
     return h;
   }
 
-  BackendProxy::ChangedNodes      changed_;
-  IO::ConnectionPtrNN             conn_;
-  boost::scoped_ptr<BackendProxy> bp_;
+  BackendFacade::ChangedNodes      changed_;
+  IO::ConnectionPtrNN              conn_;
+  boost::scoped_ptr<BackendFacade> bf_;
 };
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Filter/BackendProxy");
+factory tf("Filter/BackendFacade");
 } // unnamed namespace
 
 
@@ -105,7 +105,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  bp_.reset();
+  bf_.reset();
 }
 
 // check setting name of a host
@@ -128,7 +128,7 @@ void testObj::test<3>(void)
   GraphNodePtrNN node=makeGraphNode();
   MetaAlertPtrNN ma  =node->getMetaAlert();
   const double c=ma->getSeverityDelta();
-  bp_->updateSeverityDelta(node, 1.3);
+  bf_->updateSeverityDelta(node, 1.3);
   ensure_equals("invalid severity", ma->getSeverityDelta(), c+1.3);
   ensure_equals("change not marked", changed_.size(), 1);
 }
@@ -141,7 +141,7 @@ void testObj::test<4>(void)
   GraphNodePtrNN node=makeGraphNode();
   MetaAlertPtrNN ma  =node->getMetaAlert();
   const double c=ma->getCertaintyDelta();
-  bp_->updateCertaintyDelta(node, 1.3);
+  bf_->updateCertaintyDelta(node, 1.3);
   ensure_equals("invalid certanity", ma->getCertaintyDelta(), c+1.3);
   ensure_equals("change not marked", changed_.size(), 1);
 }
@@ -151,7 +151,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  bp_->commitChanges();
+  bf_->commitChanges();
 }
 
 // test commiting some change
@@ -160,7 +160,7 @@ template<>
 void testObj::test<6>(void)
 {
   setName("a.b.c");
-  bp_->commitChanges();
+  bf_->commitChanges();
 }
 
 // test adding child to graph node, with default extra nodes
@@ -170,7 +170,7 @@ void testObj::test<7>(void)
 {
   GraphNodePtrNN parent=makeGraphNode();
   GraphNodePtrNN child =makeGraphNode();
-  bp_->addChild(parent, child);
+  bf_->addChild(parent, child);
   // check
   ensure_equals("child not added",    childrenCount(parent), 2+1);
   ensure_equals("wrong way addition", childrenCount(child),  2+0);
@@ -182,10 +182,10 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  GraphNodePtrNN               leaf1=makeGraphLeaf();
-  GraphNodePtrNN               node2=makeGraphNode();
-  BackendProxy::ChildrenVector children(leaf1, node2);
-  GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), children);
+  GraphNodePtrNN                leaf1=makeGraphLeaf();
+  GraphNodePtrNN                node2=makeGraphNode();
+  BackendFacade::ChildrenVector children(leaf1, node2);
+  GraphNodePtrNN                out=bf_->correlate( makeMetaAlert(), children);
   // check
   ensure_equals("invalid number of children after correlation",
                 childrenCount(out), 2);
@@ -197,12 +197,12 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  GraphNodePtrNN               leaf1=makeGraphLeaf();
-  GraphNodePtrNN               node2=makeGraphNode();
-  BackendProxy::ChildrenVector children(leaf1, node2);
+  GraphNodePtrNN                leaf1=makeGraphLeaf();
+  GraphNodePtrNN                node2=makeGraphNode();
+  BackendFacade::ChildrenVector children(leaf1, node2);
   for(int i=0; i<3; ++i)
     children.push_back( makeGraphNode() );
-  GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), children);
+  GraphNodePtrNN out=bf_->correlate( makeMetaAlert(), children);
   // check
   ensure_equals("invalid number of children after correlation",
                 childrenCount(out), 2+3);
@@ -217,10 +217,10 @@ void testObj::test<10>(void)
   try
   {
     changed_.push_back( makeGraphNode() );  // colleciton shall be non-empty
-    BackendProxy tmp(conn_, changed_, "myunatedstatesofwhatever");
+    BackendFacade tmp(conn_, changed_, "myunatedstatesofwhatever");
     fail("c-tor didn't throw on non-empty changed nodes' collection");
   }
-  catch(const BackendProxy::ExceptionChangedNodesNotEmpty&)
+  catch(const BackendFacade::ExceptionChangedNodesNotEmpty&)
   {
     // this is expected
   }

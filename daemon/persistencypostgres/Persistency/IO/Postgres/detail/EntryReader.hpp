@@ -34,7 +34,6 @@ namespace detail
 class EntryReader: private boost::noncopyable
 {
 public:
-
   /** \brief create reader
    *  \param t   transaction to be used for reading.
    *  \param dbh data base handler object.
