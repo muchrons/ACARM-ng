@@ -26,6 +26,10 @@ namespace Postgres
 class Restorer: public IO::Restorer
 {
 public:
+  /** \brief create restore from persistency proxy object
+   *  \param t         active transaction.
+   *  \param dbHandler shared connection to data base.
+   */
   Restorer(Transaction    &t,
            DBHandlerPtrNN  dbHandler);
 
@@ -34,10 +38,6 @@ private:
    */
   typedef std::map<Tree::IDNode, TreePtr> nodesMap;
 
-  /** \brief create restore from persistency proxy object
-   *  \param t         active transaction.
-   *  \param dbHandler shared connection to data base.
-   */
   virtual void restoreAllInUseImpl(Transaction &t, NodesVector &out);
   virtual void restoreBetweenImpl(Transaction     &t,
                                   NodesVector     &out,
