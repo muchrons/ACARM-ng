@@ -22,7 +22,7 @@ IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):ptr_(ptr)
   const prelude_string_t *idmef_version = idmef_analyzer_get_version(ptr_);
   if (idmef_version)
     version_.reset(new Persistency::Analyzer::Version(prelude_string_get_string(idmef_version)));
-  
+
   const prelude_string_t *idmef_ostype = idmef_analyzer_get_ostype(ptr_);
   const prelude_string_t *idmef_osversion = idmef_analyzer_get_osversion(ptr_);
 
@@ -33,10 +33,10 @@ IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):ptr_(ptr)
 
   if (idmef_osversion)
     osname+=std::string(prelude_string_get_string_or_default(idmef_osversion, ""));
- 
+
   if (osname!="")
     os_.reset(new Persistency::Analyzer::Name(osname));
-  
+
   idmef_node_t *idmef_node = idmef_analyzer_get_node(ptr_);
 
   if (idmef_node)
@@ -48,9 +48,9 @@ IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):ptr_(ptr)
 	  if (idmef_node_address)
 	    ip_.reset(new Persistency::Analyzer::IP(boost::asio::ip::address_v6::from_string(prelude_string_get_string(idmef_node_address))));
 	}
-    }  
+    }
 }
- 
+
 Persistency::Analyzer::Name IDMEFParserAnalyzer::getName() const
 {
   return name_;
@@ -58,16 +58,16 @@ Persistency::Analyzer::Name IDMEFParserAnalyzer::getName() const
 
 const Persistency::Analyzer::Version* IDMEFParserAnalyzer::getVersion() const
 {
-  return version_.get();  
+  return version_.get();
 }
-  
+
 const Persistency::Analyzer::OS* IDMEFParserAnalyzer::getOS() const
 {
   return os_.get();
 }
 
 const Persistency::Analyzer::IP* IDMEFParserAnalyzer::getIP() const
-{  
+{
   return ip_.get();
 }
 
