@@ -16,7 +16,9 @@ namespace Input
 {
 namespace Prelude
 {
-
+/**
+ * @brief Extracts and parses idmef_source object
+ */
 class IDMEFParserSource
 {
 public:

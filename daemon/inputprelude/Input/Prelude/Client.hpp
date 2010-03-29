@@ -18,36 +18,37 @@ namespace Prelude
 class Client
 {
 public:
-  /*
+  /**
    * \brief c-tor, creates a prelude client with given profile.
    * \param profile profile to be used.
    */
   Client(const char *profile);
 
-  /*
+  /**
    * \brief d-tor
    */
   ~Client();
 
-  /*
+  /**
    * \brief Set prelude config file.
    * \param name path to a config file.
    */
   void SetConfigFilename(const char *name);
 
-  /*
+  /**
    * \brief Set required permission to access prelude manager
    * \param permission permission to acquire
    */
   void SetRequiredPermission(int permission);
 
-  /*
+  /**
    * \brief Initialize and start prelude client
    */
   void start();
 
-  /*
+  /**
    * \brief Receive IDMEF (either Alert or Heartbeat)
+   * \param timeout timeout
    * \return IDMEF message or NULL on timeout
    */
   idmef_message_t* recvMessage(int timeout=-1);
