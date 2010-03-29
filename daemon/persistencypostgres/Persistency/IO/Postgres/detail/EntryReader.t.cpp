@@ -6,6 +6,7 @@
 #include <tut.h>
 #include <boost/algorithm/string.hpp>
 
+// TODO: fix order of including headers
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
@@ -51,6 +52,10 @@ struct TestClass
   {
     tdba_.removeAllData();
   }
+
+  // TODO: this method appears in many test suits - consider making base class
+  //       for test suits in Persistency::Postgres and deriving from it in
+  //       tests, making common tests' parts common.
   IO::ConnectionPtrNN makeConnection(void) const
   {
     IO::BackendFactory::Options opts;
@@ -124,7 +129,7 @@ void testObj::test<2>(void)
   const Analyzer::OS      anlzOS("wiendols");
   const Analyzer          a("analyzer2", &anlzVersion, &anlzOS, NULL);
   const DataBaseID        anlzID = es_.saveAnalyzer(a);
-  const Analyzer         &readAnalyzer =  *er_.getAnalyzer(anlzID) ;
+  const Analyzer         &readAnalyzer =  *er_.getAnalyzer(anlzID); // TODO: what is Analyzer is NULL?
   string                  version(readAnalyzer.getVersion()->get());
   string                  os(readAnalyzer.getOS()->get());
   trim(version);
@@ -140,10 +145,11 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  Persistency::AlertPtrNN alertPtr ( new Persistency::Alert(name_, analyzers_, &detected_,
-                                                           created_,
-                                                           severity_, certanity_,description_,
-                                                           sourceHosts_, targetHosts_) );
+  Persistency::AlertPtrNN alertPtr (
+        new Persistency::Alert(name_, analyzers_, &detected_,
+                               created_,
+                               severity_, certanity_,description_,
+                               sourceHosts_, targetHosts_) );
   // save alert
   Persistency::IO::Postgres::Alert alert(alertPtr, t_, dbh_ );
   alert.save();
@@ -153,9 +159,12 @@ void testObj::test<3>(void)
   TestHelpers::checkEquality(alertPtr, a);
   ensure("invalid name", alertPtr->getName() == a->getName() );
   ensure_equals("invalid description", a->getDescription() , description_ );
-  ensure_equals("invalid detected time", to_simple_string(*a->getDetectionTime()), to_simple_string(detected_));
-  ensure_equals("invalid create time", to_simple_string(a->getCreationTime()), to_simple_string(created_));
-  ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(), severity_.getLevel().toInt());
+  ensure_equals("invalid detected time", to_simple_string(*a->getDetectionTime()),
+                                         to_simple_string(detected_));
+  ensure_equals("invalid create time", to_simple_string(a->getCreationTime()),
+                                       to_simple_string(created_));
+  ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(),
+                                    severity_.getLevel().toInt());
   ensure_equals("invalid caertainty", a->getCertainty().get(), certanity_.get());
   t_.commit();
 }
@@ -165,10 +174,11 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  Persistency::AlertPtr alertPtr ( new Persistency::Alert(name_, analyzers_, NULL,
-                                                           created_,
-                                                           severity_, certanity_,description_,
-                                                           sourceHosts_, targetHosts_) );
+  Persistency::AlertPtr alertPtr (
+      new Persistency::Alert(name_, analyzers_, NULL,
+                             created_,
+                             severity_, certanity_,description_,
+                             sourceHosts_, targetHosts_) );
   // save alert
   Persistency::IO::Postgres::Alert alert(alertPtr, t_, dbh_ );
   alert.save();
@@ -178,8 +188,10 @@ void testObj::test<4>(void)
   ensure("invalid name",a->getName() == name_ );
   ensure_equals("invalid description", a->getDescription() , description_ );
   ensure("detected time is not NULL", a->getDetectionTime()==NULL);
-  ensure_equals("invalid create time", to_simple_string(a->getCreationTime()), to_simple_string(created_));
-  ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(), severity_.getLevel().toInt());
+  ensure_equals("invalid create time", to_simple_string(a->getCreationTime()),
+                                       to_simple_string(created_));
+  ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(),
+                                    severity_.getLevel().toInt());
   ensure_equals("invalid caertainty", a->getCertainty().get(), certanity_.get());
   t_.commit();
 }
@@ -192,23 +204,26 @@ void testObj::test<5>(void)
 
   const std::string malertName("meta alert name");
   ReferenceURLPtr refURL( makeNewReferenceURL() );
-  Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
-                                                                 0.1, 0.2,
-                                                                 refURL,
-                                                                 from_iso_string("20011009T231100") ) );
+  Persistency::MetaAlertPtrNN maPtr(
+      new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
+                                  0.1, 0.2,
+                                  refURL,
+                                  from_iso_string("20011009T231100") ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
   DataBaseID malertID = dbh_->getIDCache()->get(maPtr);
   Persistency::MetaAlertPtrNN ma( er_.readMetaAlert(malertID) );
   ensure("error restoring meta alert", *maPtr == *ma);
   ensure("invalid meta alert name", ma->getName() == maPtr->getName() );
-  ensure_equals("invalid craeted time", to_iso_string( ma->getCreateTime()), "20011009T231100");
+  ensure_equals("invalid craeted time", to_iso_string( ma->getCreateTime()),
+                                        "20011009T231100");
   ensure_equals("invalid severity delta", ma->getSeverityDelta(), 0.1);
   ensure_equals("invalid certainty delta", ma->getCertaintyDelta(), 0.2);
 
   ReferenceURL::Name nameURL(ma->getReferenceURL()->getName().get());
   ReferenceURL::URL  urlURL(ma->getReferenceURL()->getURL().get());
 
+  // TODO: check for NULLs first
   ensure("invalid reference url", *refURL==*ma->getReferenceURL() );
   ensure("invalid url name", nameURL == refURL->getName() );
   ensure("invalid url", urlURL == refURL->getURL());
@@ -224,16 +239,18 @@ void testObj::test<6>(void)
 
   std::string malertName("meta alert name");
   ReferenceURLPtr  url;
-  Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
-                                                                 0.1, 0.2,
-                                                                 url,
-                                                                 from_iso_string("20011009T231100") ) );
+  Persistency::MetaAlertPtrNN maPtr(
+        new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
+                                    0.1, 0.2,
+                                    url,
+                                    from_iso_string("20011009T231100") ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
   DataBaseID malertID = dbh_->getIDCache()->get(maPtr);
   Persistency::MetaAlertPtrNN ma( er_.readMetaAlert(malertID) );
   ensure("invalid meta alert name", strcmp( ma->getName().get(), malertName.c_str() ) == 0);
-  ensure_equals("invalid craeted time", to_iso_string( ma->getCreateTime()), "20011009T231100");
+  ensure_equals("invalid craeted time", to_iso_string( ma->getCreateTime()),
+                                        "20011009T231100");
   ensure_equals("invalid severity delta", ma->getSeverityDelta(), 0.1);
   ensure_equals("invalid certainty delta", ma->getCertaintyDelta(), 0.2);
   ensure("reference url is not null", ma->getReferenceURL()==NULL);
