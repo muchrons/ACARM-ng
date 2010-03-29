@@ -8,7 +8,7 @@
 #include <cassert>
 
 #include "Persistency/GraphNode.hpp"
-#include "Filter/BackendProxy.hpp"
+#include "Filter/BackendFacade.hpp"
 #include "Filter/DNSResolver/CachedDNS.hpp"
 
 namespace Filter
@@ -26,9 +26,9 @@ class EntryProcessor
 public:
   /** \brief create instance.
    *  \param cache cache to be used for mappings.
-   *  \param bp    proxy for writing new names of hosts to persistency.
+   *  \param bf    facade for writing new names of hosts to persistency.
    */
-  EntryProcessor(CachedDNS *cache, BackendProxy *bp);
+  EntryProcessor(CachedDNS *cache, BackendFacade *bf);
   /** \brief method responsible for doing all the job.
    *  \param leaf leaft to be processed.
    */
@@ -38,8 +38,8 @@ private:
   void processHosts(Persistency::GraphNodePtrNN              leaf,
                     const Persistency::Alert::ReportedHosts &rh);
 
-  CachedDNS    *cache_;
-  BackendProxy *bp_;
+  CachedDNS     *cache_;
+  BackendFacade *bf_;
 }; // class EntryProcessor
 
 } // namespace DNSResolver

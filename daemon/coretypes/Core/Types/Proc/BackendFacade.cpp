@@ -1,10 +1,10 @@
 /*
- * BackendProxy.cpp
+ * BackendFacade.cpp
  *
  */
 #include <cassert>
 
-#include "Core/Types/Proc/BackendProxy.hpp"
+#include "Core/Types/Proc/BackendFacade.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/Connection.hpp"
 
@@ -18,7 +18,7 @@ namespace Types
 namespace Proc
 {
 
-BackendProxy::BackendProxy(Persistency::IO::ConnectionPtrNN  conn,
+BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
                            const std::string                &processorName):
   processorName_(processorName),
   conn_(conn)
@@ -27,12 +27,12 @@ BackendProxy::BackendProxy(Persistency::IO::ConnectionPtrNN  conn,
   // for the first time (not to do begin-rollback, useless traffic)
 }
 
-BackendProxy::~BackendProxy(void)
+BackendFacade::~BackendFacade(void)
 {
   // d-tor required to ensure proper destruction of forward-declared objects
 }
 
-void BackendProxy::commitChanges(void)
+void BackendFacade::commitChanges(void)
 {
   // if no changes were introduced, just do nothing
   if( transaction_.get()==NULL )
@@ -41,7 +41,7 @@ void BackendProxy::commitChanges(void)
   transaction_->commit();
 }
 
-void BackendProxy::beginTransaction(void)
+void BackendFacade::beginTransaction(void)
 {
   if( transaction_.get()==NULL )    // new transaction
   {
@@ -53,18 +53,18 @@ void BackendProxy::beginTransaction(void)
   transaction_->ensureIsActive();
 }
 
-Transaction &BackendProxy::getTransaction(void)
+Transaction &BackendFacade::getTransaction(void)
 {
   assert( transaction_.get()!=NULL );
   return *transaction_;
 }
 
-Persistency::IO::ConnectionPtrNN BackendProxy::getConnection(void)
+Persistency::IO::ConnectionPtrNN BackendFacade::getConnection(void)
 {
   return conn_;
 }
 
-const std::string &BackendProxy::getName(void) const
+const std::string &BackendFacade::getName(void) const
 {
   return processorName_;
 }

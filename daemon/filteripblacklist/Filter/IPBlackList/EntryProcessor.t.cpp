@@ -27,8 +27,8 @@ struct TestClass: private TestStubs
     conn_( Persistency::IO::create() ),
     dsp_("084.109.175.233 687     352     2009-12-31      2010-03-12"),
     bl_( dsp_.begin(), dsp_.end() ),
-    bp_(conn_, changed_, "testdipblacklist"),
-    ep_(&bl_, &bp_, 0.3)
+    bf_(conn_, changed_, "testdipblacklist"),
+    ep_(&bl_, &bf_, 0.3)
   {
     assert( changed_.size()==0 );
   }
@@ -36,8 +36,8 @@ struct TestClass: private TestStubs
   Persistency::IO::ConnectionPtrNN conn_;
   DShieldParser                    dsp_;
   BlackList                        bl_;
-  BackendProxy::ChangedNodes       changed_;
-  BackendProxy                     bp_;
+  BackendFacade::ChangedNodes      changed_;
+  BackendFacade                    bf_;
   EntryProcessor                   ep_;
 };
 

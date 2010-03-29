@@ -48,7 +48,7 @@ public:
 private:
   virtual void processImpl(Node               n,
                            NodesTimeoutQueue &ntq,
-                           BackendProxy      &bp);
+                           BackendFacade     &bf);
 
   CachedDNS cache_;
 }; // class Strategy
