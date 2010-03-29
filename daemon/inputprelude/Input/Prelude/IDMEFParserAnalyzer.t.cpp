@@ -51,7 +51,6 @@ struct TestClass
   ~TestClass()
   {
     idmef_analyzer_destroy(analyzer_);
-
   }
 
   idmef_analyzer_t * getAnalyzer()
