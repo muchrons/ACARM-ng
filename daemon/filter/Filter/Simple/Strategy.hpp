@@ -85,7 +85,7 @@ private:
   // this is the core - do NOT overwrite this method
   virtual void processImpl(Node               n,
                            NodesTimeoutQueue &ntq,
-                           BackendProxy      &bp)
+                           BackendFacade      &bf)
   {
     // prepare entry to compare with
     const NodeEntry thisEntry( makeThisEntry(n) );
@@ -99,7 +99,7 @@ private:
       try
       {
         // stop after first successful correlation.
-        if( tryCorrelate(ntq, bp, thisEntry, it) )
+        if( tryCorrelate(ntq, bf, thisEntry, it) )
           return;
       }
       catch(const Commons::Exception &ex)
@@ -124,7 +124,7 @@ private:
   }
 
   bool tryCorrelate(NodesTimeoutQueue                    &ntq,
-                    BackendProxy                         &bp,
+                    BackendFacade                         &bf,
                     const NodeEntry                      &thisEntry,
                     typename NodesTimeoutQueue::iterator  it)
   {
@@ -144,7 +144,7 @@ private:
         << "correlating '" << it->node_->getMetaAlert()->getName().get()
         << "' with '" << thisEntry.node_->getMetaAlert().getName().get()
         << "' as a new node";
-      const BackendProxy::ChildrenVector cv(it->node_, thisEntry.node_);
+      const BackendFacade::ChildrenVector cv(it->node_, thisEntry.node_);
       const Persistency::MetaAlertPtrNN ma(
                   new Persistency::MetaAlert( getMetaAlertName(thisEntry, *it),
                                               Persistency::MetaAlert::SeverityDelta(0),
@@ -154,7 +154,7 @@ private:
       // TODO: rework this in order to be able to continue correlating after
       //       removal of sample element.
       ntq.dismiss(it);                                // mark source element as already used
-      Persistency::GraphNodePtrNN newNode=bp.correlate(ma, cv); // add new, correlated element
+      Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv); // add new, correlated element
       const NodeEntry newEntry(newNode, thisEntry.t_);// use the same reported host entry
       ntq.update(newEntry, getTimeout() );            // add newly correlated entry
     }
@@ -164,7 +164,7 @@ private:
         << "adding node '" << thisEntry.node_->getMetaAlert().getName().get()
         << "' to already correlated '"
         << it->node_->getMetaAlert()->getName().get() << "'";
-      bp.addChild(it->node_, thisEntry.node_);      // add new alert to already
+      bf.addChild(it->node_, thisEntry.node_);      // add new alert to already
     }                                               // correlated in one set
 
     // if we're here, it means that we were able to correlate and may exit

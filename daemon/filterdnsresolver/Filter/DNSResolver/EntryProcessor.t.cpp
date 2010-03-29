@@ -25,16 +25,16 @@ struct TestClass: private TestStubs
   TestClass(void):
     conn_( Persistency::IO::create() ),
     cache_(42),
-    bp_(conn_, changed_, "testdnsresolver"),
-    ep_(&cache_, &bp_)
+    bf_(conn_, changed_, "testdnsresolver"),
+    ep_(&cache_, &bf_)
   {
     assert( changed_.size()==0 );
   }
 
   Persistency::IO::ConnectionPtrNN conn_;
   CachedDNS                        cache_;
-  BackendProxy::ChangedNodes       changed_;
-  BackendProxy                     bp_;
+  BackendFacade::ChangedNodes      changed_;
+  BackendFacade                    bf_;
   EntryProcessor                   ep_;
 };
 

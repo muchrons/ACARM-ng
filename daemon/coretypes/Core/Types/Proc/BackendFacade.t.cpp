@@ -1,5 +1,5 @@
 /*
- * BackendProxy.t.cpp
+ * BackendFacade.t.cpp
  *
  */
 #include <tut.h>
@@ -7,7 +7,7 @@
 #include <memory>
 #include <cassert>
 
-#include "Core/Types/Proc/BackendProxy.hpp"
+#include "Core/Types/Proc/BackendFacade.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -17,10 +17,10 @@ using namespace Core::Types::Proc;
 namespace
 {
 
-struct TestProxy: public BackendProxy
+struct TestProxy: public BackendFacade
 {
   TestProxy(void):
-    BackendProxy( IO::ConnectionPtrNN( IO::create() ), "sometest")
+    BackendFacade( IO::ConnectionPtrNN( IO::create() ), "sometest")
   {
   }
 
@@ -44,19 +44,19 @@ struct TestProxy: public BackendProxy
 struct TestClass
 {
   TestClass(void):
-    bp_(new TestProxy)
+    bf_(new TestProxy)
   {
-    assert( bp_.get()!=NULL );
+    assert( bf_.get()!=NULL );
   }
 
   TestHelpers::Persistency::TestStubs cfg_;
-  boost::scoped_ptr<TestProxy>        bp_;
+  boost::scoped_ptr<TestProxy>        bf_;
 };
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Core/Types/Proc/BackendProxy");
+factory tf("Core/Types/Proc/BackendFacade");
 } // unnamed namespace
 
 
@@ -68,7 +68,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  bp_.reset();
+  bf_.reset();
 }
 
 // test commiting empty change-set
@@ -76,7 +76,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  bp_->commitChanges();
+  bf_->commitChanges();
 }
 
 // test commiting some change
@@ -84,8 +84,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  bp_->doSth();
-  bp_->commitChanges();
+  bf_->doSth();
+  bf_->commitChanges();
 }
 
 // test getting connection
@@ -93,7 +93,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure("NULL connection received", bp_->getConnectionPublic().get()!=NULL);
+  ensure("NULL connection received", bf_->getConnectionPublic().get()!=NULL);
 }
 
 // test getting proxy's processor name
@@ -101,7 +101,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ensure_equals("invalid name", bp_->getNamePublic(), "sometest");
+  ensure_equals("invalid name", bf_->getNamePublic(), "sometest");
 }
 
 } // namespace tut

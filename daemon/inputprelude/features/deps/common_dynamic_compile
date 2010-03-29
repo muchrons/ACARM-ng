@@ -1,0 +1,2 @@
+#!/bin/sh
+exec echo "-I/usr/include/libprelude"

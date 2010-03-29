@@ -8,7 +8,7 @@
 #include <cassert>
 
 #include "Persistency/GraphNode.hpp"
-#include "Filter/BackendProxy.hpp"
+#include "Filter/BackendFacade.hpp"
 #include "Filter/IPBlackList/BlackList.hpp"
 
 namespace Filter
@@ -25,11 +25,11 @@ class EntryProcessor
 {
 public:
   /** \brief create instance.
-   *  \param bp       proxy for writing new names of hosts to persistency.
    *  \param bl       black list of hosts.
+   *  \param bf       facade for writing new names of hosts to persistency.
    *  \param priDelta change of priority when black-listed host is found.
    */
-  EntryProcessor(const BlackList *bl, BackendProxy *bp, double priDelta);
+  EntryProcessor(const BlackList *bl, BackendFacade *bf, double priDelta);
   /** \brief method responsible for doing all the job.
    *  \param leaf leaft to be processed.
    */
@@ -40,7 +40,7 @@ private:
                     const Persistency::Alert::ReportedHosts &rh);
 
   const BlackList *bl_;
-  BackendProxy    *bp_;
+  BackendFacade   *bf_;
   double           priDelta_;
 }; // class EntryProcessor
 

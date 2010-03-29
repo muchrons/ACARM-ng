@@ -1,9 +1,9 @@
 /*
- * BackendProxy.hpp
+ * BackendFacade.hpp
  *
  */
-#ifndef INCLUDE_CORE_TYPES_PROC_BACKENDPROXY_HPP_FILE
-#define INCLUDE_CORE_TYPES_PROC_BACKENDPROXY_HPP_FILE
+#ifndef INCLUDE_CORE_TYPES_PROC_BACKENDFACADE_HPP_FILE
+#define INCLUDE_CORE_TYPES_PROC_BACKENDFACADE_HPP_FILE
 
 /* public header */
 
@@ -27,12 +27,12 @@ namespace Proc
  *  \note this object allows transaction's to take place, but only on persistent
  *        level, i.e. rollbacking transaction does not change user objects.
  */
-class BackendProxy: private boost::noncopyable
+class BackendFacade: private boost::noncopyable
 {
 public:
   /** \brief deallocates object's internal resources.
    */
-  virtual ~BackendProxy(void);
+  virtual ~BackendFacade(void);
   /** \brief commit current transaction.
    *
    *  if not transaction is started, call does nothing. if transaction is opened,
@@ -47,7 +47,7 @@ protected:
    *  \param conn          connection object to use.
    *  \param processorName name of processor this object is created for.
    */
-  BackendProxy(Persistency::IO::ConnectionPtrNN  conn,
+  BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
                const std::string                &processorName);
   /** \brief ensure transaction is in progress (by running new, if needed).
    *  \note if transaciton is started, call does nothing. otherwise starts
@@ -73,7 +73,7 @@ private:
   std::string                      processorName_;
   Persistency::IO::ConnectionPtrNN conn_;
   TransactionScPtr                 transaction_;
-}; // class BackendProxy
+}; // class BackendFacade
 
 } // namespace Proc
 } // namespace Types
