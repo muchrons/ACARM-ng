@@ -78,7 +78,7 @@ struct TestClass
     mask4_( Host::Netmask_v4(mask4_bytes) ),
     mask6_( Host::Netmask_v6(mask6_bytes) )
   {
-    //tdba_.removeAllData();
+    tdba_.removeAllData();
   }
 
   IO::ConnectionPtrNN makeConnection(void) const
