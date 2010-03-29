@@ -1,10 +1,10 @@
 /*
- * BackendProxy.cpp
+ * BackendFacade.cpp
  *
  */
 #include <cassert>
 
-#include "Filter/BackendProxy.hpp"
+#include "Filter/BackendFacade.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/Connection.hpp"
 
@@ -15,10 +15,10 @@ using namespace Persistency::IO;
 namespace Filter
 {
 
-BackendProxy::BackendProxy(Persistency::IO::ConnectionPtrNN  conn,
+BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
                            ChangedNodes                     &changed,
                            const std::string                &filterName):
-  Core::Types::Proc::BackendProxy(conn, filterName),
+  Core::Types::Proc::BackendFacade(conn, filterName),
   changed_(changed)
 {
   if( changed_.size()!=0 )
@@ -56,7 +56,7 @@ bool isHostFromNode(GraphNodePtrNN node, HostPtrNN host)
 
 } // unnamed namespace
 
-void BackendProxy::setHostName(Node                    node,
+void BackendFacade::setHostName(Node                    node,
                                Persistency::HostPtrNN  host,
                                const std::string      &name)
 {
@@ -67,7 +67,7 @@ void BackendProxy::setHostName(Node                    node,
   changed_.push_back(node);
 }
 
-void BackendProxy::updateSeverityDelta(Node         node,
+void BackendFacade::updateSeverityDelta(Node         node,
                                        const double delta)
 {
   beginTransaction();
@@ -77,7 +77,7 @@ void BackendProxy::updateSeverityDelta(Node         node,
   changed_.push_back(node);
 }
 
-void BackendProxy::updateCertaintyDelta(Node         node,
+void BackendFacade::updateCertaintyDelta(Node         node,
                                         const double delta)
 {
   beginTransaction();
@@ -87,7 +87,7 @@ void BackendProxy::updateCertaintyDelta(Node         node,
   changed_.push_back(node);
 }
 
-void BackendProxy::addChild(Node parent, Node child)
+void BackendFacade::addChild(Node parent, Node child)
 {
   beginTransaction();
   MetaAlertPtrNN       ma=parent->getMetaAlert();
@@ -96,7 +96,7 @@ void BackendProxy::addChild(Node parent, Node child)
   changed_.push_back(parent);
 }
 
-Persistency::GraphNodePtrNN BackendProxy::correlate(
+Persistency::GraphNodePtrNN BackendFacade::correlate(
             Persistency::MetaAlertPtrNN  ma,
             const ChildrenVector        &children)
 {

@@ -1,5 +1,5 @@
 /*
- * BackendProxy.t.cpp
+ * BackendFacade.t.cpp
  *
  */
 #include <tut.h>
@@ -7,7 +7,7 @@
 #include <memory>
 #include <cassert>
 
-#include "Filter/BackendProxy.hpp"
+#include "Filter/BackendFacade.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
@@ -23,7 +23,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     conn_( IO::create() ),
-    bp_( new BackendProxy(conn_, changed_, "sometest") )
+    bp_( new BackendFacade(conn_, changed_, "sometest") )
   {
     assert( bp_.get()!=NULL );
     assert( conn_.get()!=NULL );
@@ -85,15 +85,15 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     return h;
   }
 
-  BackendProxy::ChangedNodes      changed_;
+  BackendFacade::ChangedNodes      changed_;
   IO::ConnectionPtrNN             conn_;
-  boost::scoped_ptr<BackendProxy> bp_;
+  boost::scoped_ptr<BackendFacade> bp_;
 };
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Filter/BackendProxy");
+factory tf("Filter/BackendFacade");
 } // unnamed namespace
 
 
@@ -184,7 +184,7 @@ void testObj::test<8>(void)
 {
   GraphNodePtrNN               leaf1=makeGraphLeaf();
   GraphNodePtrNN               node2=makeGraphNode();
-  BackendProxy::ChildrenVector children(leaf1, node2);
+  BackendFacade::ChildrenVector children(leaf1, node2);
   GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), children);
   // check
   ensure_equals("invalid number of children after correlation",
@@ -199,7 +199,7 @@ void testObj::test<9>(void)
 {
   GraphNodePtrNN               leaf1=makeGraphLeaf();
   GraphNodePtrNN               node2=makeGraphNode();
-  BackendProxy::ChildrenVector children(leaf1, node2);
+  BackendFacade::ChildrenVector children(leaf1, node2);
   for(int i=0; i<3; ++i)
     children.push_back( makeGraphNode() );
   GraphNodePtrNN out  =bp_->correlate( makeMetaAlert(), children);
@@ -217,10 +217,10 @@ void testObj::test<10>(void)
   try
   {
     changed_.push_back( makeGraphNode() );  // colleciton shall be non-empty
-    BackendProxy tmp(conn_, changed_, "myunatedstatesofwhatever");
+    BackendFacade tmp(conn_, changed_, "myunatedstatesofwhatever");
     fail("c-tor didn't throw on non-empty changed nodes' collection");
   }
-  catch(const BackendProxy::ExceptionChangedNodesNotEmpty&)
+  catch(const BackendFacade::ExceptionChangedNodesNotEmpty&)
   {
     // this is expected
   }

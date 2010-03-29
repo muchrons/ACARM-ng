@@ -1,14 +1,14 @@
 /*
- * BackendProxy.hpp
+ * BackendFacade.hpp
  *
  */
-#ifndef INCLUDE_FILTER_BACKENDPROXY_HPP_FILE
-#define INCLUDE_FILTER_BACKENDPROXY_HPP_FILE
+#ifndef INCLUDE_FILTER_BACKENDFACADE_HPP_FILE
+#define INCLUDE_FILTER_BACKENDFACADE_HPP_FILE
 
 /* public header */
 
 #include "Persistency/GraphNode.hpp"
-#include "Core/Types/Proc/BackendProxy.hpp"
+#include "Core/Types/Proc/BackendFacade.hpp"
 #include "Filter/Exception.hpp"
 
 
@@ -22,7 +22,7 @@ namespace Filter
  * \note this object allows transaction's to take place, but only on persistent
  *       level, i.e. rollbacking transaction does not change user objects.
  */
-class BackendProxy: public Core::Types::Proc::BackendProxy
+class BackendFacade: public Core::Types::Proc::BackendFacade
 {
 public:
   /** \brief exception throw when changed elements colleciton is not empty.
@@ -52,7 +52,7 @@ public:
    *  \param changed    list of changed nodes to update.
    *  \param filterName name of filter this object is created for.
    */
-  BackendProxy(Persistency::IO::ConnectionPtrNN  conn,
+  BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
                ChangedNodes                     &changed,
                const std::string                &filterName);
 
@@ -89,7 +89,7 @@ public:
 
 private:
   ChangedNodes &changed_;
-}; // class BackendProxy
+}; // class BackendFacade
 
 } // namespace Filter
 

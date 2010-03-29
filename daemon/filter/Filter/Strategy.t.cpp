@@ -27,12 +27,12 @@ struct TestFilter: public Strategy<int>
 
   virtual void processImpl(Node               n,
                            NodesTimeoutQueue &ntq,
-                           BackendProxy      &bp)
+                           BackendFacade      &bf)
   {
     ++calls_;
     tut::ensure("invalid node", n.get()==node_.get() );
     // smoke test - checks if object is valid
-    bp.commitChanges();
+    bf.commitChanges();
     // ntq should be empty by default
     tut::ensure("NTQ not empty", ntq.begin()==ntq.end() );
   }
@@ -54,7 +54,7 @@ struct TestFilter: public Strategy<int>
 
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
-  BackendProxy::ChangedNodes changed_;
+  BackendFacade::ChangedNodes changed_;
   TestFilter                 tf_;
 };
 
@@ -96,7 +96,7 @@ struct TestLoopFilter: public Strategy<char>
   {
   }
 
-  virtual void processImpl(Node, NodesTimeoutQueue&, BackendProxy&)
+  virtual void processImpl(Node, NodesTimeoutQueue&, BackendFacade&)
   {
     for(;;)
     {

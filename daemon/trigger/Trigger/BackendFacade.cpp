@@ -1,10 +1,10 @@
 /*
- * BackendProxy.cpp
+ * BackendFacade.cpp
  *
  */
 #include <cassert>
 
-#include "Trigger/BackendProxy.hpp"
+#include "Trigger/BackendFacade.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/Connection.hpp"
 
@@ -15,13 +15,13 @@ using namespace Persistency::IO;
 namespace Trigger
 {
 
-BackendProxy::BackendProxy(Persistency::IO::ConnectionPtrNN  conn,
+BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
                            const std::string                &triggerName):
-  Core::Types::Proc::BackendProxy(conn, triggerName)
+  Core::Types::Proc::BackendFacade(conn, triggerName)
 {
 }
 
-void BackendProxy::markAsTriggered(Persistency::MetaAlertPtrNN ma)
+void BackendFacade::markAsTriggered(Persistency::MetaAlertPtrNN ma)
 {
   beginTransaction();
   IO::MetaAlertAutoPtr io=getConnection()->metaAlert(ma, getTransaction() );

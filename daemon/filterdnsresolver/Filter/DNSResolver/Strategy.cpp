@@ -23,9 +23,9 @@ Strategy::Strategy(const Parameters &params):
 
 void Strategy::processImpl(Node               n,
                            NodesTimeoutQueue &/*ntq*/,
-                           BackendProxy      &bp)
+                           BackendFacade      &bf)
 {
-  Algo::forEachUniqueLeaf(n, EntryProcessor(&cache_, &bp) );
+  Algo::forEachUniqueLeaf(n, EntryProcessor(&cache_, &bf) );
 }
 
 } // namespace DNSResolver

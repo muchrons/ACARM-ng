@@ -12,7 +12,7 @@
 #include "Base/TimeoutQueue.hpp"
 #include "Logger/Logger.hpp"
 #include "Persistency/GraphNode.hpp"
-#include "Filter/BackendProxy.hpp"
+#include "Filter/BackendFacade.hpp"
 #include "Filter/StrategyBase.hpp"
 
 
@@ -26,9 +26,9 @@ class Strategy: public StrategyBase
 {
 public:
   /** \brief helper typedef for GraphNode pointer. */
-  typedef BackendProxy::Node         Node;
+  typedef BackendFacade::Node         Node;
   /** \brief helper typedef for list of chenged nodes. */
-  typedef BackendProxy::ChangedNodes ChangedNodes;
+  typedef BackendFacade::ChangedNodes ChangedNodes;
 
   /** \brief processes given meta-alert.
    *  \param n       node to be processed.
@@ -38,9 +38,9 @@ public:
   {
     LOGMSG_DEBUG_S(log_)<<"processing node at address 0x"
                         <<static_cast<void*>( n.get() );
-    BackendProxy bp( conn_, changed, getFilterName() );
+    BackendFacade bf( conn_, changed, getFilterName() );
     assert( changed.size()==0 && "non-empty output collection received");
-    processImpl(n, ntq_, bp);
+    processImpl(n, ntq_, bf);
   }
 
 protected:
@@ -93,12 +93,12 @@ private:
    *                 saved for processing in later calls (ex.: it looks like it
    *                 can be correlated later on) it is to be saved here, with
    *                 proper timeout.
-   *  \param bp      persistency proxy - object that allows saving changes on
+   *  \param bf      persistency facade - object that allows saving changes on
    *                 persistent storage.
    */
   virtual void processImpl(Node               n,
                            NodesTimeoutQueue &ntq,
-                           BackendProxy      &bp) = 0;
+                           BackendFacade      &bf) = 0;
 
   NodesTimeoutQueue ntq_;
 }; // class Strategy

@@ -11,12 +11,12 @@ namespace Filter
 namespace DNSResolver
 {
 
-EntryProcessor::EntryProcessor(CachedDNS *cache, BackendProxy *bp):
+EntryProcessor::EntryProcessor(CachedDNS *cache, BackendFacade *bf):
   cache_(cache),
-  bp_(bp)
+  bf_(bf)
 {
   assert(cache_!=NULL);   // this is only internal implementation
-  assert(bp_   !=NULL);   // this is only internal implementation
+  assert(bf_   !=NULL);   // this is only internal implementation
 }
 
 void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
@@ -39,7 +39,7 @@ void EntryProcessor::processHosts(Persistency::GraphNodePtrNN              leaf,
     // if no entry, try getting one
     const CachedDNS::Entry e=(*cache_)[ host->getIP() ];
     if(e.first)                                         // has name?
-      bp_->setHostName(leaf, host, e.second.get() );    // set it!
+      bf_->setHostName(leaf, host, e.second.get() );    // set it!
   }
 }
 

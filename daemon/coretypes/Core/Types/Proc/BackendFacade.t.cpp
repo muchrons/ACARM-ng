@@ -1,5 +1,5 @@
 /*
- * BackendProxy.t.cpp
+ * BackendFacade.t.cpp
  *
  */
 #include <tut.h>
@@ -7,7 +7,7 @@
 #include <memory>
 #include <cassert>
 
-#include "Core/Types/Proc/BackendProxy.hpp"
+#include "Core/Types/Proc/BackendFacade.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -17,10 +17,10 @@ using namespace Core::Types::Proc;
 namespace
 {
 
-struct TestProxy: public BackendProxy
+struct TestProxy: public BackendFacade
 {
   TestProxy(void):
-    BackendProxy( IO::ConnectionPtrNN( IO::create() ), "sometest")
+    BackendFacade( IO::ConnectionPtrNN( IO::create() ), "sometest")
   {
   }
 
@@ -56,7 +56,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Core/Types/Proc/BackendProxy");
+factory tf("Core/Types/Proc/BackendFacade");
 } // unnamed namespace
 
 

@@ -41,7 +41,7 @@ void Strategy::process(Persistency::GraphNodePtrNN n)
                      <<static_cast<void*>( n.get() );
   trigger(*n);
   // if it succeeded, mark it as triggered
-  bp_.markAsTriggered( n->getMetaAlert() );
+  bf_.markAsTriggered( n->getMetaAlert() );
 }
 
 
@@ -58,7 +58,7 @@ Strategy::Strategy(const std::string &name):
   log_( makeNodeName(name) ),
   name_(name),
   conn_( Persistency::IO::create() ),
-  bp_(conn_, name_)
+  bf_(conn_, name_)
 {
   LOGMSG_INFO(log_, "trigger created");
 }
