@@ -3,7 +3,6 @@
  *
  */
 #include "Persistency/IO/Postgres/Restorer.hpp"
-#include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 
 using namespace Persistency::IO::Postgres::detail;
 using namespace std;
@@ -26,7 +25,7 @@ void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &out)
 {
   EntryReader er(t, *dbHandler_);
   vector<DataBaseID> maInUse( er.readIDsMalertsInUse() );
-  Restore(er, out, maInUse);
+  restore(er, out, maInUse);
 }
 
 void Restorer::restoreBetweenImpl(Transaction     &t,
@@ -37,12 +36,12 @@ void Restorer::restoreBetweenImpl(Transaction     &t,
   // TODO
   EntryReader er(t, *dbHandler_);
   vector<DataBaseID> maBetween( er.readIDsMalertsBetween(from, to) );
-  Restore(er, out, maBetween);
+  restore(er, out, maBetween);
 }
 
 BackendFactory::FactoryPtr Restorer::createStubIO(void)
 {
-  const BackendFactory::FactoryTypeName name("stubx");
+  const BackendFactory::FactoryTypeName name("stubs");
   const BackendFactory::Options         options;
   return BackendFactory::create(name, options);
 }
@@ -57,15 +56,7 @@ TreePtr Restorer::getNode(Tree::IDNode id )
     return boost::shared_ptr<Tree>();
 }
 
-int Restorer::getNumberOfChildren(Tree::IDNode id )
-{
-  if(treeNodes_.count(id) > 0)
-    return treeNodes_.find(id)->second->getChildrenNumber();
-  else
-    return 0;
-}
-
-GraphNodePtrNN Restorer::DeepFirstSearch(Tree::IDNode          id,
+GraphNodePtrNN Restorer::deepFirstSearch(Tree::IDNode          id,
                                          NodesVector          &out,
                                          EntryReader          &er,
                                          IO::ConnectionPtrNN   connStubIO,
@@ -73,16 +64,17 @@ GraphNodePtrNN Restorer::DeepFirstSearch(Tree::IDNode          id,
 {
   TreePtr node = getNode(id);
   // check if there are no children (i.e. is leaf)
-  if( node == NULL )
+  if( !node->getChildrenNumber() )
   {
     return GraphNodePtrNN( new GraphNode( er.getLeaf(id), connStubIO, tStubIO ) );
   }
   vector<GraphNodePtrNN> tmpNodes;
   vector<Tree::IDNode>   nodeChildren( node->getChildren() );
+  tmpNodes.reserve( nodeChildren.size() );
   for(vector<Tree::IDNode>::iterator it = nodeChildren.begin();
       it != nodeChildren.end(); ++it)
   {
-    tmpNodes.push_back( DeepFirstSearch( *it, out, er, connStubIO, tStubIO ) );
+    tmpNodes.push_back( deepFirstSearch( *it, out, er, connStubIO, tStubIO ) );
   }
   // TODO: this cannot be assert - it has to be runtime-check, since invalid
   //       data may appear in data base for some reason.
@@ -100,7 +92,7 @@ GraphNodePtrNN Restorer::DeepFirstSearch(Tree::IDNode          id,
   return graphNode;
 }
 
-void Restorer::Restore(EntryReader &er, NodesVector &out, vector<DataBaseID> &malerts)
+void Restorer::restore(EntryReader &er, NodesVector &out, vector<DataBaseID> &malerts)
 {
 
   for(vector<DataBaseID>::iterator it = malerts.begin(); it != malerts.end(); ++it)
@@ -117,7 +109,7 @@ void Restorer::Restore(EntryReader &er, NodesVector &out, vector<DataBaseID> &ma
   vector<DataBaseID> roots( er.readRoots());
   for(vector<DataBaseID>::iterator it = roots.begin(); it != roots.end(); ++it)
   {
-    out.push_back( DeepFirstSearch(*it, out, er, connStubIO, tStubIO) );
+    out.push_back( deepFirstSearch(*it, out, er, connStubIO, tStubIO) );
   }
 }
 

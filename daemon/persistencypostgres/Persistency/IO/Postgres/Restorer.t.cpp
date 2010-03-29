@@ -63,10 +63,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Restorer r(t_, dbh_);
   std::vector<GraphNodePtrNN> out;
   makeNewTree1();
-  //r.restoreAllInUse(t_, out);
+  conn_->restorer(t_)->restoreAllInUse(out);
   t_.commit();
 }
 

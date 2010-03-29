@@ -65,12 +65,6 @@ public:
    */
   double getCertaintyDelta(DataBaseID malertID);
 
-  /** \brief get number of Meta Alert children in meta alerts tree
-   *  \param  malertID ID of Mata Alert
-   *  \return number of children of Meta Alert
-   */
-  size_t getChildrenIDs(DataBaseID malertID);
-
   /** \brief read data associated with leafs in meta alerts tree
    *  \param malertID ID of Meta Alert associated with Alert
    */

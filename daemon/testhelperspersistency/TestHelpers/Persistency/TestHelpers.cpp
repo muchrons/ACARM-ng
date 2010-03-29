@@ -119,8 +119,10 @@ GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
   ::Persistency::IO::ConnectionPtrNN conn( ::Persistency::IO::create() );
   IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
   const ::Persistency::NodeChildrenVector ncv(child1, child2);
-  return GraphNodePtrNN( new GraphNode( makeNewMetaAlert(),
-                                        conn, t, ncv) );
+  GraphNodePtrNN graphNode( new GraphNode( makeNewMetaAlert(),
+                                           conn, t, ncv) );
+  t.commit();
+  return graphNode;
 }
 
 GraphNodePtrNN makeNewTree1(void)
@@ -172,7 +174,9 @@ GraphNodePtrNN makeNewLeaf(AlertPtrNN alert)
 {
   IO::ConnectionPtrNN conn( IO::create() );
   IO::Transaction     t( conn->createNewTransaction("make_leaf_trans") );
-  return GraphNodePtrNN( new GraphNode(alert, conn, t) );
+  GraphNodePtrNN graphNode( new GraphNode(alert, conn, t) );
+  t.commit();
+  return graphNode;
 }
 
 } // namespace Persistency
