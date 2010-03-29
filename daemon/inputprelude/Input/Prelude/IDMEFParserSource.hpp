@@ -24,7 +24,7 @@ public:
    * @brief c-tor
    * \param ptr idmef_source_t structure to parse
    */
-  IDMEFParserSource(idmef_source_t *ptr);  
+  IDMEFParserSource(idmef_source_t *ptr);
 
   /**
    * @brief gets address of a source

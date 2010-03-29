@@ -43,11 +43,11 @@ IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):ptr_(ptr)
     {
       idmef_address_t *idmef_node_addr = idmef_node_get_next_address(idmef_node, NULL);
       if (idmef_node_addr)
-	{
-	  const prelude_string_t *idmef_node_address = idmef_address_get_address(idmef_node_addr);
-	  if (idmef_node_address)
-	    ip_.reset(new Persistency::Analyzer::IP(boost::asio::ip::address_v6::from_string(prelude_string_get_string(idmef_node_address))));
-	}
+  {
+    const prelude_string_t *idmef_node_address = idmef_address_get_address(idmef_node_addr);
+    if (idmef_node_address)
+      ip_.reset(new Persistency::Analyzer::IP(boost::asio::ip::address_v6::from_string(prelude_string_get_string(idmef_node_address))));
+  }
     }
 }
 

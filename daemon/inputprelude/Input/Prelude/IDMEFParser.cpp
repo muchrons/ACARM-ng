@@ -22,31 +22,31 @@ IDMEFParser::IDMEFParser(idmef_message_t * msg)
 
   const prelude_string_t *idmef_name = idmef_alert_get_messageid(alert_);
   name_=(prelude_string_get_string_or_default(idmef_name, "Unknown"));
-  
+
   const idmef_time_t *idmef_time = idmef_alert_get_create_time(alert_);
   const time_t ctime_t=idmef_time_get_sec(idmef_time);
   ctime_=boost::posix_time::from_time_t(ctime_t);
 
   idmef_analyzer_t *elem = idmef_alert_get_next_analyzer(alert_, NULL);
-  
+
   if (elem)
     throw Exception(SYSTEM_SAVE_LOCATION, "No obligatory field \"Analyzer\" in this Alert!");
-  
+
   const IDMEFParserAnalyzer an(elem);
 
   Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
 
   analyzers_.reset(new Persistency::Alert::SourceAnalyzers(ptr));
-  
-  while ( (elem = idmef_alert_get_next_analyzer(alert_, elem)) ) 
+
+  while ( (elem = idmef_alert_get_next_analyzer(alert_, elem)) )
     {
       const IDMEFParserAnalyzer an2(elem);
       Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
       analyzers_->push_back(ptr);
-    }  
+    }
 
   idmef_source_t *src = NULL;
-    
+
   while ( (src = idmef_alert_get_next_source(alert_, src)) )
     {
       const IDMEFParserSource sr(src);
@@ -59,7 +59,7 @@ IDMEFParser::IDMEFParser(idmef_message_t * msg)
     }
 
   idmef_target_t *tar = NULL;
-    
+
   while ( (tar = idmef_alert_get_next_target(alert_, tar)) )
     {
       const IDMEFParserTarget tr(tar);
@@ -68,12 +68,12 @@ IDMEFParser::IDMEFParser(idmef_message_t * msg)
       Persistency::Host::ReportedProcesses rp;
       rp.push_back(tr.getProcess());
       Persistency::HostPtrNN ptr(new Persistency::Host(tr.getAddress(),NULL,NULL,Persistency::ReferenceURLPtr(),rs,rp,NULL));
-      targetHosts.push_back(ptr);      
-    }  
+      targetHosts.push_back(ptr);
+    }
 }
-  
+
 const Persistency::Alert::Name& IDMEFParser::getName() const
-{  
+{
   return name_;
 }
 
@@ -84,7 +84,7 @@ const Persistency::Timestamp& IDMEFParser::getCreateTime() const
 
 Persistency::Alert::SourceAnalyzers IDMEFParser::getAnalyzers() const
 {
-  return *analyzers_; 
+  return *analyzers_;
 }
 
 const Persistency::Alert::ReportedHosts& IDMEFParser::getSources() const

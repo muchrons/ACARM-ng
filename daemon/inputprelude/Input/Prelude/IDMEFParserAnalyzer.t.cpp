@@ -39,7 +39,7 @@ struct TestClass
 
     idmef_analyzer_set_name(analyzer_,ps_name);
     idmef_analyzer_set_ostype(analyzer_,ps_ostype);
-    idmef_analyzer_set_osversion(analyzer_,ps_osversion);    
+    idmef_analyzer_set_osversion(analyzer_,ps_osversion);
 
     idmef_node_t *node;
     idmef_analyzer_new_node(analyzer_, &node);
@@ -79,7 +79,7 @@ void testObj::test<1>(void)
 {
   TestClass   tc("The Analyzer of Luke Skywaker","Wojtek linux", "2.6.129 gr-sec", "156.117.92.22");
   IDMEFParserAnalyzer an(tc.getAnalyzer());
-  
+
   //  ensure(ip.getName()==Persistency::Alert::Name(tc.getName()));
 }
 

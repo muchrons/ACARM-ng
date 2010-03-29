@@ -12,7 +12,7 @@ namespace Input
 namespace Prelude
 {
 
-/** 
+/**
  * \brief prelude_client_t wrapper
  */
 class Client

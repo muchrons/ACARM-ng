@@ -27,7 +27,7 @@ public:
    * @brief c-tor
    * \param ptr idmef_analyzer_t structure to parse
    */
-  IDMEFParserAnalyzer(idmef_analyzer_t *ptr);  
+  IDMEFParserAnalyzer(idmef_analyzer_t *ptr);
 
   /**
    * @brief gets name of an analyzer

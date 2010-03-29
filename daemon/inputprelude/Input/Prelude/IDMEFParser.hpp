@@ -52,7 +52,7 @@ public:
    * @brief gets list of targets
    */
   const Persistency::Alert::ReportedHosts& getTargets() const;
-  
+
 
 private:
   idmef_alert_t *alert_;
