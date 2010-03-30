@@ -64,7 +64,11 @@ template<>
 void testObj::test<1>(void)
 {
   std::vector<GraphNodePtrNN> out;
+  // create tree
   makeNewTree1();
+  // cache cleanup
+  dbh_->getIDCache()->prune();
+  // restore data from data base
   conn_->restorer(t_)->restoreAllInUse(out);
   t_.commit();
 }

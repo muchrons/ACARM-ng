@@ -66,10 +66,15 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID         id,
   // check if there are no children (i.e. is leaf)
   if( !node->getChildrenNumber() )
   {
-    return GraphNodePtrNN( new GraphNode( er.getLeaf(id), connStubIO, tStubIO ) );
+    // read Alert from data base
+    AlertPtrNN alertPtr( er.getLeaf(id) );
+    // add Alert to cache
+    if(!dbHandler_->getIDCache()->has( alertPtr ))
+      dbHandler_->getIDCache()->add(alertPtr, id);
+    return GraphNodePtrNN( new GraphNode( alertPtr, connStubIO, tStubIO ) );
   }
   vector<GraphNodePtrNN> tmpNodes;
-  vector<DataBaseID>   nodeChildren( node->getChildren() );
+  vector<DataBaseID>     nodeChildren( node->getChildren() );
   tmpNodes.reserve( nodeChildren.size() );
   for(vector<DataBaseID>::iterator it = nodeChildren.begin();
       it != nodeChildren.end(); ++it)
@@ -86,7 +91,12 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID         id,
   {
     vec.push_back(tmpNodes[i]);
   }
-  GraphNodePtrNN graphNode(new GraphNode( er.readMetaAlert(id),
+  // read Meta Alert from data base
+  MetaAlertPtrNN malertPtr( er.readMetaAlert(id) );
+  // add Meta Alert to cache
+  if(!dbHandler_->getIDCache()->has( malertPtr ))
+    dbHandler_->getIDCache()->add(malertPtr, id);
+  GraphNodePtrNN graphNode(new GraphNode( malertPtr,
                                           connStubIO, tStubIO, vec ));
   out.push_back(graphNode);
   return graphNode;
