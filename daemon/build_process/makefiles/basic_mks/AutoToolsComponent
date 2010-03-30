@@ -27,7 +27,9 @@ doc:
 	@echo "BUILD $(COMPONENT_NAME): ignoring doc"
 
 .PHONY: all test mtest
-all test mtest: copy_headers_time_stamp copy_libs_time_stamp
+all test mtest: post_install.dep
+
+post_install.dep: copy_headers_time_stamp copy_libs_time_stamp
 
 copy_headers_time_stamp: install_time_stamp
 	@echo "BUILD $(COMPONENT_NAME): copy headers"
@@ -53,7 +55,7 @@ build_time_stamp: configure_time_stamp
 	@cd "ext_sources" && $(MAKE) $(MAKE_OPTIONS) MAKEOVERRIDES= MAKEFLAGS= 2>&1
 	@date > "$@"
 
-configure_time_stamp: copy_time_stamp
+configure_time_stamp: copy_time_stamp pre_configure.dep
 	@echo "BUILD $(COMPONENT_NAME): init"
 	@cd "ext_sources" && ./configure $(CONFIGURE_OPTIONS) --prefix="$(CURDIR)/installed"
 	@date > "$@"
@@ -63,6 +65,12 @@ copy_time_stamp: $(shell find "$(THIS_SRC_BASE_DIR)" -type f)
 	@mkdir -p "ext_sources"
 	@cp -ruav "`ls $(THIS_SRC_BASE_DIR)/*/configure | head -1 | xargs dirname`"/* "ext_sources" > copy.log 2>&1
 	@date > "$@"
+
+
+# do not require user-provided rules by default
+%.dep:
+	@date > "$@"
+
 
 # include user_post makefile, if it exists
 -include $(THIS_SRC_BASE_DIR)/user_post.mk
