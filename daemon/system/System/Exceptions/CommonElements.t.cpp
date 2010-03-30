@@ -99,7 +99,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const Derived  d;
+  const Derived  d=Derived();
   const Base    &b=d;
   ensure("invalid type", strstr(ce_.getTypeName(b).c_str(), "Derived")!=NULL );
 }
