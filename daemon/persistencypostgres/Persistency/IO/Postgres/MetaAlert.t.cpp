@@ -74,6 +74,7 @@ void testObj::test<1>(void)
                                                                  from_iso_string("2001109T231100") ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
+  t_.commit();
 }
 
 //TODO tests
