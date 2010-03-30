@@ -1,2 +1,2 @@
 #!/bin/sh
-exec echo '"-I$(GEN_INCLUDES_DIR)/libprelude"'
+exec echo '-I$(GEN_INCLUDES_DIR)/libprelude'
