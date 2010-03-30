@@ -6,14 +6,13 @@
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_RESTORER_HPP_FILE
 
 #include "Persistency/GraphNode.hpp"
-#include "Persistency/IO/Postgres/DBHandler.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Connection.hpp"
+#include "Persistency/IO/Postgres/DBHandler.hpp"
 #include "Persistency/IO/Postgres/Tree.hpp"
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 // TODO: test
 
-using namespace Persistency::IO::Postgres::detail;
 namespace Persistency
 {
 namespace IO
@@ -36,7 +35,7 @@ public:
 private:
   /** \brief data type which stores tree nodes of class Tree
    */
-  typedef std::map<Tree::IDNode, TreePtr> nodesMap;
+  typedef std::map<DataBaseID, TreePtr> nodesMap;
 
   virtual void restoreAllInUseImpl(Transaction &t, NodesVector &out);
   virtual void restoreBetweenImpl(Transaction     &t,
@@ -44,13 +43,15 @@ private:
                                   const Timestamp &from,
                                   const Timestamp &to);
   BackendFactory::FactoryPtr createStubIO(void);
-  TreePtr getNode(Tree::IDNode id);
-  GraphNodePtrNN deepFirstSearch(Tree::IDNode         id,
+  TreePtr getNode(DataBaseID id);
+  GraphNodePtrNN deepFirstSearch(DataBaseID         id,
                                  NodesVector         &out,
-                                 EntryReader         &er,
+                                 Persistency::IO::Postgres::detail::EntryReader         &er,
                                  IO::ConnectionPtrNN  connStubIO,
                                  IO::Transaction     &tStubIO);
-  void restore(EntryReader &er, NodesVector &out, std::vector<DataBaseID> &malerts);
+  void restore(Persistency::IO::Postgres::detail::EntryReader             &er,
+                                                  NodesVector             &out,
+                                                  std::vector<DataBaseID> &malerts);
 
   DBHandlerPtrNN  dbHandler_;
   nodesMap        treeNodes_;

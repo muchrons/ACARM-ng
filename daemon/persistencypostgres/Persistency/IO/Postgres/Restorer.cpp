@@ -47,7 +47,7 @@ BackendFactory::FactoryPtr Restorer::createStubIO(void)
 }
 
 
-TreePtr Restorer::getNode(Tree::IDNode id )
+TreePtr Restorer::getNode(DataBaseID id )
 {
   if(treeNodes_.count(id) > 0)
     return treeNodes_.find(id)->second;
@@ -56,9 +56,9 @@ TreePtr Restorer::getNode(Tree::IDNode id )
     return boost::shared_ptr<Tree>();
 }
 
-GraphNodePtrNN Restorer::deepFirstSearch(Tree::IDNode          id,
+GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID         id,
                                          NodesVector          &out,
-                                         EntryReader          &er,
+                                         Persistency::IO::Postgres::detail::EntryReader          &er,
                                          IO::ConnectionPtrNN   connStubIO,
                                          IO::Transaction      &tStubIO)
 {
@@ -69,9 +69,9 @@ GraphNodePtrNN Restorer::deepFirstSearch(Tree::IDNode          id,
     return GraphNodePtrNN( new GraphNode( er.getLeaf(id), connStubIO, tStubIO ) );
   }
   vector<GraphNodePtrNN> tmpNodes;
-  vector<Tree::IDNode>   nodeChildren( node->getChildren() );
+  vector<DataBaseID>   nodeChildren( node->getChildren() );
   tmpNodes.reserve( nodeChildren.size() );
-  for(vector<Tree::IDNode>::iterator it = nodeChildren.begin();
+  for(vector<DataBaseID>::iterator it = nodeChildren.begin();
       it != nodeChildren.end(); ++it)
   {
     tmpNodes.push_back( deepFirstSearch( *it, out, er, connStubIO, tStubIO ) );
@@ -92,14 +92,16 @@ GraphNodePtrNN Restorer::deepFirstSearch(Tree::IDNode          id,
   return graphNode;
 }
 
-void Restorer::restore(EntryReader &er, NodesVector &out, vector<DataBaseID> &malerts)
+void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader        &er,
+                                                          NodesVector        &out,
+                                                          std::vector<DataBaseID> &malerts)
 {
 
   for(vector<DataBaseID>::iterator it = malerts.begin(); it != malerts.end(); ++it)
   {
     vector<DataBaseID> malertChildren( er.readMetaAlertChildren( (*it) ) );
     // put this data to the tree which represents meta alerts tree structure
-    pair<Tree::IDNode, TreePtr> tmp(*it, TreePtr(new Tree(*it, malertChildren) ) );
+    pair<DataBaseID, TreePtr> tmp(*it, TreePtr(new Tree(*it, malertChildren) ) );
     treeNodes_.insert(tmp);
   }
 
