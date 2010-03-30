@@ -1,0 +1,932 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>prelude-plugin</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="ch04.html" title="Others">
+<link rel="prev" href="libprelude-prelude-client-profile.html" title="prelude-client-profile">
+<link rel="next" href="libprelude-prelude-hash.html" title="prelude-hash">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libprelude-prelude-client-profile.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="libprelude-prelude-hash.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-prelude-plugin.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-prelude-plugin.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="prelude-plugin">
+<a name="libprelude-prelude-plugin"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-prelude-plugin.top_of_page"></a>prelude-plugin</span></h2>
+<p>prelude-plugin</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-prelude-plugin.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+#define             <a class="link" href="libprelude-prelude-plugin.html#lt-preloaded-symbols" title="lt_preloaded_symbols">lt_preloaded_symbols</a>
+#define             <a class="link" href="libprelude-prelude-plugin.html#PRELUDE-PLUGIN-API-VERSION--CAPS" title="PRELUDE_PLUGIN_API_VERSION">PRELUDE_PLUGIN_API_VERSION</a>
+typedef             <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-entry-t" title="prelude_plugin_entry_t">prelude_plugin_entry_t</a>;
+typedef             <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a>;
+#define             <a class="link" href="libprelude-prelude-plugin.html#PRELUDE-PLUGIN-GENERIC--CAPS" title="PRELUDE_PLUGIN_GENERIC">PRELUDE_PLUGIN_GENERIC</a>
+                    <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-generic-t" title="prelude_plugin_generic_t">prelude_plugin_generic_t</a>;
+#define             <a class="link" href="libprelude-prelude-plugin.html#PRELUDE-PLUGIN-SET-PRELOADED-SYMBOLS--CAPS" title="PRELUDE_PLUGIN_SET_PRELOADED_SYMBOLS()">PRELUDE_PLUGIN_SET_PRELOADED_SYMBOLS</a>()
+#define             <a class="link" href="libprelude-prelude-plugin.html#PRELUDE-PLUGIN-OPTION-DECLARE-STRING-CB--CAPS" title="PRELUDE_PLUGIN_OPTION_DECLARE_STRING_CB()">PRELUDE_PLUGIN_OPTION_DECLARE_STRING_CB</a>(prefix, type, name)
+#define             <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-get-name" title="prelude_plugin_get_name()">prelude_plugin_get_name</a>             (p)
+#define             <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-set-name" title="prelude_plugin_set_name()">prelude_plugin_set_name</a>             (p, str)
+#define             <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-set-destroy-func" title="prelude_plugin_set_destroy_func()">prelude_plugin_set_destroy_func</a>     (p, func)
+void                <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-entry-set-plugin" title="prelude_plugin_entry_set_plugin ()">prelude_plugin_entry_set_plugin</a>     (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-entry-t" title="prelude_plugin_entry_t">prelude_plugin_entry_t</a> *pe,
+                                                         <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-generic-t" title="prelude_plugin_generic_t">prelude_plugin_generic_t</a> *pl);
+int                 <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-set-activation-option" title="prelude_plugin_set_activation_option ()">prelude_plugin_set_activation_option</a>
+                                                        (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-entry-t" title="prelude_plugin_entry_t">prelude_plugin_entry_t</a> *pe,
+                                                         <a class="link" href="libprelude-prelude-option.html#prelude-option-t" title="prelude_option_t">prelude_option_t</a> *opt,
+                                                         int (commitprelude_plugin_instance_t *pi, prelude_string_t *err) ());
+int                 <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-subscribe" title="prelude_plugin_instance_subscribe ()">prelude_plugin_instance_subscribe</a>   (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);
+int                 <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-unsubscribe" title="prelude_plugin_instance_unsubscribe ()">prelude_plugin_instance_unsubscribe</a> (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);
+int                 <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-new-instance" title="prelude_plugin_new_instance ()">prelude_plugin_new_instance</a>         (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> **pi,
+                                                         <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-generic-t" title="prelude_plugin_generic_t">prelude_plugin_generic_t</a> *plugin,
+                                                         const char *name,
+                                                         void *data);
+<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-generic-t" title="prelude_plugin_generic_t">prelude_plugin_generic_t</a> * <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-search-by-name" title="prelude_plugin_search_by_name ()">prelude_plugin_search_by_name</a>
+                                                        (<a class="link" href="libprelude-prelude-list.html#prelude-list-t" title="prelude_list_t">prelude_list_t</a> *head,
+                                                         const char *name);
+<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> * <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-search-instance-by-name" title="prelude_plugin_search_instance_by_name ()">prelude_plugin_search_instance_by_name</a>
+                                                        (<a class="link" href="libprelude-prelude-list.html#prelude-list-t" title="prelude_list_t">prelude_list_t</a> *head,
+                                                         const char *pname,
+                                                         const char *iname);
+void                <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-set-data" title="prelude_plugin_instance_set_data ()">prelude_plugin_instance_set_data</a>    (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi,
+                                                         void *data);
+void *              <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-get-data" title="prelude_plugin_instance_get_data ()">prelude_plugin_instance_get_data</a>    (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);
+void                <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-set-plugin-data" title="prelude_plugin_instance_set_plugin_data ()">prelude_plugin_instance_set_plugin_data</a>
+                                                        (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi,
+                                                         void *data);
+void *              <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-get-plugin-data" title="prelude_plugin_instance_get_plugin_data ()">prelude_plugin_instance_get_plugin_data</a>
+                                                        (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);
+const char *        <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-get-name" title="prelude_plugin_instance_get_name ()">prelude_plugin_instance_get_name</a>    (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);
+<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-generic-t" title="prelude_plugin_generic_t">prelude_plugin_generic_t</a> * <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-get-plugin" title="prelude_plugin_instance_get_plugin ()">prelude_plugin_instance_get_plugin</a>
+                                                        (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);
+int                 <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-load-from-dir" title="prelude_plugin_load_from_dir ()">prelude_plugin_load_from_dir</a>        (<a class="link" href="libprelude-prelude-list.html#prelude-list-t" title="prelude_list_t">prelude_list_t</a> *head,
+                                                         const char *dirname,
+                                                         const char *symbol,
+                                                         void *ptr,
+                                                         int (subscribeprelude_plugin_instance_t *p) (),
+                                                         void (unsubscribeprelude_plugin_instance_t *pi) ());
+int                 <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-add" title="prelude_plugin_instance_add ()">prelude_plugin_instance_add</a>         (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi,
+                                                         <a class="link" href="libprelude-prelude-list.html#prelude-list-t" title="prelude_list_t">prelude_list_t</a> *h);
+void                <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-del" title="prelude_plugin_instance_del ()">prelude_plugin_instance_del</a>         (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);
+void                <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-compute-time" title="prelude_plugin_instance_compute_time ()">prelude_plugin_instance_compute_time</a>
+                                                        (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi,
+                                                         struct timeval *start,
+                                                         struct timeval *end);
+int                 <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-call-commit-func" title="prelude_plugin_instance_call_commit_func ()">prelude_plugin_instance_call_commit_func</a>
+                                                        (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi,
+                                                         <a class="link" href="libprelude-prelude-string.html#prelude-string-t" title="prelude_string_t">prelude_string_t</a> *err);
+<a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-has-commit-func" title="prelude_plugin_instance_has_commit_func ()">prelude_plugin_instance_has_commit_func</a>
+                                                        (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);
+void                <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-set-preloaded-symbols" title="prelude_plugin_set_preloaded_symbols ()">prelude_plugin_set_preloaded_symbols</a>
+                                                        (void *symlist);
+<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-generic-t" title="prelude_plugin_generic_t">prelude_plugin_generic_t</a> * <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-get-next" title="prelude_plugin_get_next ()">prelude_plugin_get_next</a>      (<a class="link" href="libprelude-prelude-list.html#prelude-list-t" title="prelude_list_t">prelude_list_t</a> *head,
+                                                         <a class="link" href="libprelude-prelude-list.html#prelude-list-t" title="prelude_list_t">prelude_list_t</a> **iter);
+void                <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-unload" title="prelude_plugin_unload ()">prelude_plugin_unload</a>               (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-generic-t" title="prelude_plugin_generic_t">prelude_plugin_generic_t</a> *plugin);
+#define             <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-compute-stats" title="prelude_plugin_compute_stats()">prelude_plugin_compute_stats</a>        (pi, func)
+#define             <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-run" title="prelude_plugin_run()">prelude_plugin_run</a>                  (pi, type, member, ...)
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-prelude-plugin.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-prelude-plugin.details"></a><h2>Details</h2>
+<div class="refsect2" title="lt_preloaded_symbols">
+<a name="lt-preloaded-symbols"></a><h3>lt_preloaded_symbols</h3>
+<pre class="programlisting"># define lt_preloaded_symbols lt__PROGRAM__LTX_preloaded_symbols
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PLUGIN_API_VERSION">
+<a name="PRELUDE-PLUGIN-API-VERSION--CAPS"></a><h3>PRELUDE_PLUGIN_API_VERSION</h3>
+<pre class="programlisting">#define PRELUDE_PLUGIN_API_VERSION 1
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_entry_t">
+<a name="prelude-plugin-entry-t"></a><h3>prelude_plugin_entry_t</h3>
+<pre class="programlisting">typedef struct prelude_plugin_entry prelude_plugin_entry_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_instance_t">
+<a name="prelude-plugin-instance-t"></a><h3>prelude_plugin_instance_t</h3>
+<pre class="programlisting">typedef struct prelude_plugin_instance prelude_plugin_instance_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PLUGIN_GENERIC">
+<a name="PRELUDE-PLUGIN-GENERIC--CAPS"></a><h3>PRELUDE_PLUGIN_GENERIC</h3>
+<pre class="programlisting">#define             PRELUDE_PLUGIN_GENERIC</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_generic_t">
+<a name="prelude-plugin-generic-t"></a><h3>prelude_plugin_generic_t</h3>
+<pre class="programlisting">typedef struct {
+        PRELUDE_PLUGIN_GENERIC;
+} prelude_plugin_generic_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PLUGIN_SET_PRELOADED_SYMBOLS()">
+<a name="PRELUDE-PLUGIN-SET-PRELOADED-SYMBOLS--CAPS"></a><h3>PRELUDE_PLUGIN_SET_PRELOADED_SYMBOLS()</h3>
+<pre class="programlisting">#define             PRELUDE_PLUGIN_SET_PRELOADED_SYMBOLS()</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PLUGIN_OPTION_DECLARE_STRING_CB()">
+<a name="PRELUDE-PLUGIN-OPTION-DECLARE-STRING-CB--CAPS"></a><h3>PRELUDE_PLUGIN_OPTION_DECLARE_STRING_CB()</h3>
+<pre class="programlisting">#define             PRELUDE_PLUGIN_OPTION_DECLARE_STRING_CB(prefix, type, name)</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>prefix</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_get_name()">
+<a name="prelude-plugin-get-name"></a><h3>prelude_plugin_get_name()</h3>
+<pre class="programlisting">#define prelude_plugin_get_name(p) (p)-&gt;name
+</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>p</code></em> :</span></p></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_set_name()">
+<a name="prelude-plugin-set-name"></a><h3>prelude_plugin_set_name()</h3>
+<pre class="programlisting">#define prelude_plugin_set_name(p, str) (p)-&gt;name = (str)
+</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>p</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>str</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_set_destroy_func()">
+<a name="prelude-plugin-set-destroy-func"></a><h3>prelude_plugin_set_destroy_func()</h3>
+<pre class="programlisting">#define prelude_plugin_set_destroy_func(p, func) (p)-&gt;destroy = func
+</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>p</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>func</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_entry_set_plugin ()">
+<a name="prelude-plugin-entry-set-plugin"></a><h3>prelude_plugin_entry_set_plugin ()</h3>
+<pre class="programlisting">void                prelude_plugin_entry_set_plugin     (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-entry-t" title="prelude_plugin_entry_t">prelude_plugin_entry_t</a> *pe,
+                                                         <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-generic-t" title="prelude_plugin_generic_t">prelude_plugin_generic_t</a> *pl);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pe</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pl</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_set_activation_option ()">
+<a name="prelude-plugin-set-activation-option"></a><h3>prelude_plugin_set_activation_option ()</h3>
+<pre class="programlisting">int                 prelude_plugin_set_activation_option
+                                                        (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-entry-t" title="prelude_plugin_entry_t">prelude_plugin_entry_t</a> *pe,
+                                                         <a class="link" href="libprelude-prelude-option.html#prelude-option-t" title="prelude_option_t">prelude_option_t</a> *opt,
+                                                         int (commitprelude_plugin_instance_t *pi, prelude_string_t *err) ());</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pe</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>opt</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>commit</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_instance_subscribe ()">
+<a name="prelude-plugin-instance-subscribe"></a><h3>prelude_plugin_instance_subscribe ()</h3>
+<pre class="programlisting">int                 prelude_plugin_instance_subscribe   (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_instance_unsubscribe ()">
+<a name="prelude-plugin-instance-unsubscribe"></a><h3>prelude_plugin_instance_unsubscribe ()</h3>
+<pre class="programlisting">int                 prelude_plugin_instance_unsubscribe (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);</pre>
+<p>
+Set <em class="parameter"><code>pi</code></em> to be inactive.
+</p>
+<p>
+The unsubscribe function specified in <code class="function">plugin_load_from_dir()</code>
+is called for plugin un-registration and the instance for this
+plugin is freed.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td> Pointer to a plugin instance.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_new_instance ()">
+<a name="prelude-plugin-new-instance"></a><h3>prelude_plugin_new_instance ()</h3>
+<pre class="programlisting">int                 prelude_plugin_new_instance         (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> **pi,
+                                                         <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-generic-t" title="prelude_plugin_generic_t">prelude_plugin_generic_t</a> *plugin,
+                                                         const char *name,
+                                                         void *data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>plugin</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_search_by_name ()">
+<a name="prelude-plugin-search-by-name"></a><h3>prelude_plugin_search_by_name ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-generic-t" title="prelude_plugin_generic_t">prelude_plugin_generic_t</a> * prelude_plugin_search_by_name
+                                                        (<a class="link" href="libprelude-prelude-list.html#prelude-list-t" title="prelude_list_t">prelude_list_t</a> *head,
+                                                         const char *name);</pre>
+<p>
+Search <em class="parameter"><code>head</code></em> list of plugin for a plugin with name <em class="parameter"><code>name</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>head</code></em> :</span></p></td>
+<td> List where to search the plugin from.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td> Name of the plugin to search.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the a <span class="type">prelude_plugin_t</span> on success, or NULL if the plugin does not exist.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_search_instance_by_name ()">
+<a name="prelude-plugin-search-instance-by-name"></a><h3>prelude_plugin_search_instance_by_name ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> * prelude_plugin_search_instance_by_name
+                                                        (<a class="link" href="libprelude-prelude-list.html#prelude-list-t" title="prelude_list_t">prelude_list_t</a> *head,
+                                                         const char *pname,
+                                                         const char *iname);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>head</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pname</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>iname</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_instance_set_data ()">
+<a name="prelude-plugin-instance-set-data"></a><h3>prelude_plugin_instance_set_data ()</h3>
+<pre class="programlisting">void                prelude_plugin_instance_set_data    (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi,
+                                                         void *data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_instance_get_data ()">
+<a name="prelude-plugin-instance-get-data"></a><h3>prelude_plugin_instance_get_data ()</h3>
+<pre class="programlisting">void *              prelude_plugin_instance_get_data    (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_instance_set_plugin_data ()">
+<a name="prelude-plugin-instance-set-plugin-data"></a><h3>prelude_plugin_instance_set_plugin_data ()</h3>
+<pre class="programlisting">void                prelude_plugin_instance_set_plugin_data
+                                                        (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi,
+                                                         void *data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_instance_get_plugin_data ()">
+<a name="prelude-plugin-instance-get-plugin-data"></a><h3>prelude_plugin_instance_get_plugin_data ()</h3>
+<pre class="programlisting">void *              prelude_plugin_instance_get_plugin_data
+                                                        (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_instance_get_name ()">
+<a name="prelude-plugin-instance-get-name"></a><h3>prelude_plugin_instance_get_name ()</h3>
+<pre class="programlisting">const char *        prelude_plugin_instance_get_name    (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_instance_get_plugin ()">
+<a name="prelude-plugin-instance-get-plugin"></a><h3>prelude_plugin_instance_get_plugin ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-generic-t" title="prelude_plugin_generic_t">prelude_plugin_generic_t</a> * prelude_plugin_instance_get_plugin
+                                                        (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_load_from_dir ()">
+<a name="prelude-plugin-load-from-dir"></a><h3>prelude_plugin_load_from_dir ()</h3>
+<pre class="programlisting">int                 prelude_plugin_load_from_dir        (<a class="link" href="libprelude-prelude-list.html#prelude-list-t" title="prelude_list_t">prelude_list_t</a> *head,
+                                                         const char *dirname,
+                                                         const char *symbol,
+                                                         void *ptr,
+                                                         int (subscribeprelude_plugin_instance_t *p) (),
+                                                         void (unsubscribeprelude_plugin_instance_t *pi) ());</pre>
+<p>
+Load all plugins in directory 'dirname', using <em class="parameter"><code>symbol</code></em> entry point.
+Each plugin have a <em class="parameter"><code>subscribe</code></em> and <em class="parameter"><code>unsubscribe</code></em> callback associated with it.
+</p>
+<p>
+The plugins are loaded, but not active, until someone call <code class="function">prelude_plugin_subscribe()</code>
+on one of the plugin. Which'll call <em class="parameter"><code>subscribe</code></em> in order to register it.
+</p>
+<p>
+<em class="parameter"><code>ptr</code></em> is an extra argument provided to the plugin at initialization time.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>head</code></em> :</span></p></td>
+<td> List where the loaded plugin should be added.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dirname</code></em> :</span></p></td>
+<td> The directory to load the plugin from.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>symbol</code></em> :</span></p></td>
+<td> Symbol to lookup within loaded plugin.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Extra pointer to provide to the plugin initialization function.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>subscribe</code></em> :</span></p></td>
+<td> Pointer to a callback function for plugin subscribtion.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>unsubscribe</code></em> :</span></p></td>
+<td> Pointer to a callback function for plugin un-subscribtion.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The number of loaded plugins on success, -1 on error.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_instance_add ()">
+<a name="prelude-plugin-instance-add"></a><h3>prelude_plugin_instance_add ()</h3>
+<pre class="programlisting">int                 prelude_plugin_instance_add         (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi,
+                                                         <a class="link" href="libprelude-prelude-list.html#prelude-list-t" title="prelude_list_t">prelude_list_t</a> *h);</pre>
+<p>
+This function add the plugin instance associated with <em class="parameter"><code>pi</code></em> to the linked list
+specified by <em class="parameter"><code>h</code></em>. If this instance is already used somewhere else, a copy is
+made, since instance does not share information).</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td> Pointer to a plugin instance
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>h</code></em> :</span></p></td>
+<td> Pointer to a linked list
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success or -1 if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_instance_del ()">
+<a name="prelude-plugin-instance-del"></a><h3>prelude_plugin_instance_del ()</h3>
+<pre class="programlisting">void                prelude_plugin_instance_del         (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);</pre>
+<p>
+Delete <em class="parameter"><code>pi</code></em> from the list specified at <a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-add" title="prelude_plugin_instance_add ()"><code class="function">prelude_plugin_instance_add()</code></a> time.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td> Pointer to a plugin instance.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_instance_compute_time ()">
+<a name="prelude-plugin-instance-compute-time"></a><h3>prelude_plugin_instance_compute_time ()</h3>
+<pre class="programlisting">void                prelude_plugin_instance_compute_time
+                                                        (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi,
+                                                         struct timeval *start,
+                                                         struct timeval *end);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>start</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>end</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_instance_call_commit_func ()">
+<a name="prelude-plugin-instance-call-commit-func"></a><h3>prelude_plugin_instance_call_commit_func ()</h3>
+<pre class="programlisting">int                 prelude_plugin_instance_call_commit_func
+                                                        (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi,
+                                                         <a class="link" href="libprelude-prelude-string.html#prelude-string-t" title="prelude_string_t">prelude_string_t</a> *err);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>err</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_instance_has_commit_func ()">
+<a name="prelude-plugin-instance-has-commit-func"></a><h3>prelude_plugin_instance_has_commit_func ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      prelude_plugin_instance_has_commit_func
+                                                        (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-instance-t" title="prelude_plugin_instance_t">prelude_plugin_instance_t</a> *pi);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_set_preloaded_symbols ()">
+<a name="prelude-plugin-set-preloaded-symbols"></a><h3>prelude_plugin_set_preloaded_symbols ()</h3>
+<pre class="programlisting">void                prelude_plugin_set_preloaded_symbols
+                                                        (void *symlist);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>symlist</code></em> :</span></p></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_get_next ()">
+<a name="prelude-plugin-get-next"></a><h3>prelude_plugin_get_next ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-generic-t" title="prelude_plugin_generic_t">prelude_plugin_generic_t</a> * prelude_plugin_get_next      (<a class="link" href="libprelude-prelude-list.html#prelude-list-t" title="prelude_list_t">prelude_list_t</a> *head,
+                                                         <a class="link" href="libprelude-prelude-list.html#prelude-list-t" title="prelude_list_t">prelude_list_t</a> **iter);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>head</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>iter</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_unload ()">
+<a name="prelude-plugin-unload"></a><h3>prelude_plugin_unload ()</h3>
+<pre class="programlisting">void                prelude_plugin_unload               (<a class="link" href="libprelude-prelude-plugin.html#prelude-plugin-generic-t" title="prelude_plugin_generic_t">prelude_plugin_generic_t</a> *plugin);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>plugin</code></em> :</span></p></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_compute_stats()">
+<a name="prelude-plugin-compute-stats"></a><h3>prelude_plugin_compute_stats()</h3>
+<pre class="programlisting">#define             prelude_plugin_compute_stats(pi, func)</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>func</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_plugin_run()">
+<a name="prelude-plugin-run"></a><h3>prelude_plugin_run()</h3>
+<pre class="programlisting">#define             prelude_plugin_run(pi, type, member, ...)</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pi</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>member</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

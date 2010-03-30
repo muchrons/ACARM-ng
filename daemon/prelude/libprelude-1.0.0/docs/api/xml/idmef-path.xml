@@ -1,0 +1,618 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-idmef-path">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-idmef-path.top_of_page">idmef-path</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>idmef-path</refname>
+<refpurpose>The High level IDMEF API.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-idmef-path.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+typedef             <link linkend="idmef-path-t">idmef_path_t</link>;
+<link linkend="int">int</link>                 <link linkend="idmef-path-get">idmef_path_get</link>                      (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="idmef-message-t">idmef_message_t</link> *message,
+                                                         <link linkend="idmef-value-t">idmef_value_t</link> **ret);
+<link linkend="int">int</link>                 <link linkend="idmef-path-set">idmef_path_set</link>                      (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="idmef-message-t">idmef_message_t</link> *message,
+                                                         <link linkend="idmef-value-t">idmef_value_t</link> *value);
+<link linkend="int">int</link>                 <link linkend="idmef-path-new">idmef_path_new</link>                      (<link linkend="idmef-path-t">idmef_path_t</link> **path,
+                                                         const <link linkend="char">char</link> *format,
+                                                         ...);
+<link linkend="int">int</link>                 <link linkend="idmef-path-new-v">idmef_path_new_v</link>                    (<link linkend="idmef-path-t">idmef_path_t</link> **path,
+                                                         const <link linkend="char">char</link> *format,
+                                                         <link linkend="va-list">va_list</link> args);
+<link linkend="int">int</link>                 <link linkend="idmef-path-new-fast">idmef_path_new_fast</link>                 (<link linkend="idmef-path-t">idmef_path_t</link> **path,
+                                                         const <link linkend="char">char</link> *buffer);
+<link linkend="idmef-class-id-t">idmef_class_id_t</link>    <link linkend="idmef-path-get-class">idmef_path_get_class</link>                (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="int">int</link> depth);
+<link linkend="idmef-value-type-id-t">idmef_value_type_id_t</link>  <link linkend="idmef-path-get-value-type">idmef_path_get_value_type</link>        (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="int">int</link> depth);
+<link linkend="int">int</link>                 <link linkend="idmef-path-set-index">idmef_path_set_index</link>                (<link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         unsigned <link linkend="int">int</link> depth,
+                                                         <link linkend="int">int</link> index);
+<link linkend="int">int</link>                 <link linkend="idmef-path-undefine-index">idmef_path_undefine_index</link>           (<link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         unsigned <link linkend="int">int</link> depth);
+<link linkend="int">int</link>                 <link linkend="idmef-path-get-index">idmef_path_get_index</link>                (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         unsigned <link linkend="int">int</link> depth);
+<link linkend="int">int</link>                 <link linkend="idmef-path-make-child">idmef_path_make_child</link>               (<link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         const <link linkend="char">char</link> *child_name,
+                                                         <link linkend="int">int</link> index);
+<link linkend="int">int</link>                 <link linkend="idmef-path-make-parent">idmef_path_make_parent</link>              (<link linkend="idmef-path-t">idmef_path_t</link> *path);
+<link linkend="void">void</link>                <link linkend="idmef-path-destroy">idmef_path_destroy</link>                  (<link linkend="idmef-path-t">idmef_path_t</link> *path);
+<link linkend="int">int</link>                 <link linkend="idmef-path-ncompare">idmef_path_ncompare</link>                 (const <link linkend="idmef-path-t">idmef_path_t</link> *p1,
+                                                         const <link linkend="idmef-path-t">idmef_path_t</link> *p2,
+                                                         unsigned <link linkend="int">int</link> depth);
+<link linkend="int">int</link>                 <link linkend="idmef-path-compare">idmef_path_compare</link>                  (const <link linkend="idmef-path-t">idmef_path_t</link> *p1,
+                                                         const <link linkend="idmef-path-t">idmef_path_t</link> *p2);
+<link linkend="int">int</link>                 <link linkend="idmef-path-clone">idmef_path_clone</link>                    (const <link linkend="idmef-path-t">idmef_path_t</link> *src,
+                                                         <link linkend="idmef-path-t">idmef_path_t</link> **dst);
+<link linkend="idmef-path-t">idmef_path_t</link> *      <link linkend="idmef-path-ref">idmef_path_ref</link>                      (<link linkend="idmef-path-t">idmef_path_t</link> *path);
+const <link linkend="char">char</link> *        <link linkend="idmef-path-get-name">idmef_path_get_name</link>                 (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="int">int</link> depth);
+<link linkend="prelude-bool-t">prelude_bool_t</link>      <link linkend="idmef-path-is-ambiguous">idmef_path_is_ambiguous</link>             (const <link linkend="idmef-path-t">idmef_path_t</link> *path);
+<link linkend="int">int</link>                 <link linkend="idmef-path-has-lists">idmef_path_has_lists</link>                (const <link linkend="idmef-path-t">idmef_path_t</link> *path);
+<link linkend="prelude-bool-t">prelude_bool_t</link>      <link linkend="idmef-path-is-list">idmef_path_is_list</link>                  (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="int">int</link> depth);
+unsigned <link linkend="int">int</link>        <link linkend="idmef-path-get-depth">idmef_path_get_depth</link>                (const <link linkend="idmef-path-t">idmef_path_t</link> *path);
+<link linkend="int">int</link>                 <link linkend="idmef-path-check-operator">idmef_path_check_operator</link>           (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);
+<link linkend="int">int</link>                 <link linkend="idmef-path-get-applicable-operators">idmef_path_get_applicable_operators</link> (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> *result);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-idmef-path.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+The IDMEF path API provide a methodes to define a "path" in the IDMEF tree.
+Once this path is defined, the user might set or retrieve this path.
+</para>
+<para>
+Here is an example of how to use this API in order to set a given path within
+a <link linkend="idmef-message-t"><type>idmef_message_t</type></link> root object:
+</para>
+<para>
+First, we need to create a path to the object we want to create. If for example,
+we wish to create the alert.classification.text path within our message, we will use:
+<programlisting>
+int ret;
+idmef_path_t *path;
+ret = idmef_path_new(&amp;path, "alert.classification.text");
+if ( ret &lt; 0 )
+        return ret;
+</programlisting>
+Using the above, we just created a "pointer" to a given path in our <link linkend="idmef-message-t"><type>idmef_message_t</type></link>. This
+path doesn't yet exist, but might be used to read, or to write a value.
+<programlisting>
+int ret;
+idmef_value_t *value;
+ret = idmef_value_new_from_path(&amp;value, path, "A value");
+if ( ret &lt; 0 )
+        return ret;
+</programlisting>
+Here we just created a value applicable to the previously created path. That is, if our path
+is pointing to a value of type string, the created <link linkend="idmef-value-t"><type>idmef_value_t</type></link> object will be of this type.
+<programlisting>
+idmef_message_t *idmef;
+/*
+ * create our top message
+ */
+ret = idmef_message_new(&amp;idmef);
+/*
+ * Set the previously defined path to the previously created value
+ * in the top level idmef message 'idmef'.
+ */
+ret = idmef_path_set(path, idmef, value);
+</programlisting>
+And finally, we create our top level <link linkend="idmef-message-t"><type>idmef_message_t</type></link> object and set the created <link linkend="idmef-value-t"><type>idmef_value_t</type></link>
+as the value for our created <link linkend="idmef-path-t"><type>idmef_path_t</type></link>.
+</para>
+<para>
+Given our previous example, we can write the following function:
+<programlisting>
+static int set_idmef_path(idmef_message_t *message, const char *pathname, const char *value)
+{
+        int ret;
+        idmef_value_t *val;
+        idmef_path_t *path;
+        ret = idmef_path_new(&amp;path, pathname);
+        if ( ret &lt; 0 )
+                return ret;
+        ret = idmef_value_new_from_path(&amp;val, path, value);
+        if ( ret &lt; 0 ) {
+                idmef_path_destroy(path);
+                return ret;
+        }
+        ret = idmef_path_set(path, message, val);
+        idmef_value_destroy(val);
+        idmef_path_destroy(path);
+        return ret;
+}
+</programlisting>
+You will then be able to set any field of the IDMEF message using:
+<programlisting>
+idmef_message_t *idmef;
+ret = idmef_message_new(&amp;idmef);
+if ( ret &lt; 0 )
+        return ret;
+set_idmef_path(idmef, "alert.classification.text", "My classification text");
+set_idmef_path(idmef, "alert.classification.reference(0).name", "OSVDB-XXXX");
+set_idmef_path(idmef, "alert.classification.reference(0).origin", "osvdb");
+set_idmef_path(idmef, "alert.classification.reference(0).url", "http://my.url/");
+set_idmef_path(idmef, "alert.source(0).node.address(0).address", "127.0.0.1");
+</programlisting>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-idmef-path.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="idmef-path-t" role="typedef">
+<title>idmef_path_t</title>
+<indexterm zone="idmef-path-t"><primary sortas="idmef_path_t">idmef_path_t</primary></indexterm><programlisting>typedef struct idmef_path idmef_path_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="idmef-path-get" role="function">
+<title>idmef_path_get ()</title>
+<indexterm zone="idmef-path-get"><primary sortas="idmef_path_get">idmef_path_get</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_get                      (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="idmef-message-t">idmef_message_t</link> *message,
+                                                         <link linkend="idmef-value-t">idmef_value_t</link> **ret);</programlisting>
+<para>
+This function retrieves the value for <parameter>path</parameter> within <parameter>message</parameter>,
+and stores it into the provided <parameter>ret</parameter> address of type <link linkend="idmef-value-t"><type>idmef_value_t</type></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>message</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-message-t"><type>idmef_message_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ret</parameter>&#160;:</term>
+<listitem><simpara> Address where to store the retrieved <link linkend="idmef-value-t"><type>idmef_value_t</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The number of element retrieved, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-set" role="function">
+<title>idmef_path_set ()</title>
+<indexterm zone="idmef-path-set"><primary sortas="idmef_path_set">idmef_path_set</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_set                      (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="idmef-message-t">idmef_message_t</link> *message,
+                                                         <link linkend="idmef-value-t">idmef_value_t</link> *value);</programlisting>
+<para>
+This function sets the provided <parameter>value</parameter> for <parameter>path</parameter> within <parameter>message</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>message</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-message-t"><type>idmef_message_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-value-t"><type>idmef_value_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-new" role="function">
+<title>idmef_path_new ()</title>
+<indexterm zone="idmef-path-new"><primary sortas="idmef_path_new">idmef_path_new</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_new                      (<link linkend="idmef-path-t">idmef_path_t</link> **path,
+                                                         const <link linkend="char">char</link> *format,
+                                                         ...);</programlisting>
+<para>
+Creates an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object pointing to the provided format
+string <parameter>format</parameter> and @..., and stores it within <parameter>path</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Address where to store the created <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&#160;:</term>
+<listitem><simpara> Format string.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>...</parameter>&#160;:</term>
+<listitem><simpara> Arguments list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-new-v" role="function">
+<title>idmef_path_new_v ()</title>
+<indexterm zone="idmef-path-new-v"><primary sortas="idmef_path_new_v">idmef_path_new_v</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_new_v                    (<link linkend="idmef-path-t">idmef_path_t</link> **path,
+                                                         const <link linkend="char">char</link> *format,
+                                                         <link linkend="va-list">va_list</link> args);</programlisting>
+<para>
+Creates an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object pointing to the provided format
+string <parameter>format</parameter> and <parameter>args</parameter>, and stores it within <parameter>path</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Address where to store the created <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>format</parameter>&#160;:</term>
+<listitem><simpara> Format string.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>args</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a variable argument list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-new-fast" role="function">
+<title>idmef_path_new_fast ()</title>
+<indexterm zone="idmef-path-new-fast"><primary sortas="idmef_path_new_fast">idmef_path_new_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_new_fast                 (<link linkend="idmef-path-t">idmef_path_t</link> **path,
+                                                         const <link linkend="char">char</link> *buffer);</programlisting>
+<para>
+Creates a <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object pointing to <parameter>buffer</parameter>, and stores it within <parameter>path</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Address where to store the created <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buffer</parameter>&#160;:</term>
+<listitem><simpara> Name of the path to create.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-get-class" role="function">
+<title>idmef_path_get_class ()</title>
+<indexterm zone="idmef-path-get-class"><primary sortas="idmef_path_get_class">idmef_path_get_class</primary></indexterm><programlisting><link linkend="idmef-class-id-t">idmef_class_id_t</link>    idmef_path_get_class                (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="int">int</link> depth);</programlisting>
+<para>
+Retrieves the <link linkend="idmef-class-id-t"><type>idmef_class_id_t</type></link> value for the element of <parameter>path</parameter>
+located at <parameter>depth</parameter>. If depth is -1, the last element depth is addressed.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>depth</parameter>&#160;:</term>
+<listitem><simpara> Depth of <parameter>path</parameter> to retrieve the <link linkend="idmef-class-id-t"><type>idmef_class_id_t</type></link> from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The <link linkend="idmef-class-id-t"><type>idmef_class_id_t</type></link> for the elemnt, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-get-value-type" role="function">
+<title>idmef_path_get_value_type ()</title>
+<indexterm zone="idmef-path-get-value-type"><primary sortas="idmef_path_get_value_type">idmef_path_get_value_type</primary></indexterm><programlisting><link linkend="idmef-value-type-id-t">idmef_value_type_id_t</link>  idmef_path_get_value_type        (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="int">int</link> depth);</programlisting>
+<para>
+Retrieves the <link linkend="idmef-value-type-id-t"><type>idmef_value_type_id_t</type></link> identifying the type of value
+acceptable for this path element, for the <parameter>path</parameter> element located at
+<parameter>depth</parameter>. If depth is -1, the last element depth is addressed.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>depth</parameter>&#160;:</term>
+<listitem><simpara> Depth of <parameter>path</parameter> to retrieve the <link linkend="idmef-value-type-id-t"><type>idmef_value_type_id_t</type></link> from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The <link linkend="idmef-value-type-id-t"><type>idmef_value_type_id_t</type></link> for the element, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-set-index" role="function">
+<title>idmef_path_set_index ()</title>
+<indexterm zone="idmef-path-set-index"><primary sortas="idmef_path_set_index">idmef_path_set_index</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_set_index                (<link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         unsigned <link linkend="int">int</link> depth,
+                                                         <link linkend="int">int</link> index);</programlisting>
+<para>
+Modifies <parameter>index</parameter> for the element located at <parameter>depth</parameter> of provided <parameter>path</parameter>.
+This function is only applicable for element that accept listed value.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>depth</parameter>&#160;:</term>
+<listitem><simpara> Depth of <parameter>path</parameter> to set <parameter>index</parameter> for.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>index</parameter>&#160;:</term>
+<listitem><simpara> Index for the provided element <parameter>depth</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-undefine-index" role="function">
+<title>idmef_path_undefine_index ()</title>
+<indexterm zone="idmef-path-undefine-index"><primary sortas="idmef_path_undefine_index">idmef_path_undefine_index</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_undefine_index           (<link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         unsigned <link linkend="int">int</link> depth);</programlisting>
+<para>
+Modifies the element located at <parameter>depth</parameter> of provided <parameter>path</parameter> so that it's
+index is undefined.
+</para>
+<para>
+This function is only applicable for element that accept listed value.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>depth</parameter>&#160;:</term>
+<listitem><simpara> Depth of <parameter>path</parameter> to undefine the index for.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-get-index" role="function">
+<title>idmef_path_get_index ()</title>
+<indexterm zone="idmef-path-get-index"><primary sortas="idmef_path_get_index">idmef_path_get_index</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_get_index                (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         unsigned <link linkend="int">int</link> depth);</programlisting>
+<para>
+Gets the current index for element located at <parameter>depth</parameter> of <parameter>path</parameter>.
+This function is only applicable for element that accepts listed value.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>depth</parameter>&#160;:</term>
+<listitem><simpara> Depth of <parameter>path</parameter> to retrieve the index from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The element index, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-make-child" role="function">
+<title>idmef_path_make_child ()</title>
+<indexterm zone="idmef-path-make-child"><primary sortas="idmef_path_make_child">idmef_path_make_child</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_make_child               (<link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         const <link linkend="char">char</link> *child_name,
+                                                         <link linkend="int">int</link> index);</programlisting>
+<para>
+Modifies <parameter>path</parameter> so that it points to the child node identified by <parameter>child_name</parameter>,
+children of the current path. That is if the path is currently pointing to
+alert.classification, and <parameter>child_name</parameter> is set to "text", <parameter>path</parameter> will be
+modified to point to alert.classification.text.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>child_name</parameter>&#160;:</term>
+<listitem><simpara> Name of the child element to create.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>index</parameter>&#160;:</term>
+<listitem><simpara> Index for <parameter>child_name</parameter>, if applicable.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-make-parent" role="function">
+<title>idmef_path_make_parent ()</title>
+<indexterm zone="idmef-path-make-parent"><primary sortas="idmef_path_make_parent">idmef_path_make_parent</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_make_parent              (<link linkend="idmef-path-t">idmef_path_t</link> *path);</programlisting>
+<para>
+Removes the last element of the path. That is, if <parameter>path</parameter> is currently pointing to
+alert.classification, <parameter>path</parameter> will be modified to point to alert.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-destroy" role="function">
+<title>idmef_path_destroy ()</title>
+<indexterm zone="idmef-path-destroy"><primary sortas="idmef_path_destroy">idmef_path_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_path_destroy                  (<link linkend="idmef-path-t">idmef_path_t</link> *path);</programlisting>
+<para>
+Destroys the provided <parameter>path</parameter> object.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-ncompare" role="function">
+<title>idmef_path_ncompare ()</title>
+<indexterm zone="idmef-path-ncompare"><primary sortas="idmef_path_ncompare">idmef_path_ncompare</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_ncompare                 (const <link linkend="idmef-path-t">idmef_path_t</link> *p1,
+                                                         const <link linkend="idmef-path-t">idmef_path_t</link> *p2,
+                                                         unsigned <link linkend="int">int</link> depth);</programlisting>
+<para>
+Compares <parameter>p1</parameter> and <parameter>p2</parameter> elements up to <parameter>depth</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>p1</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>p2</parameter>&#160;:</term>
+<listitem><simpara> Pointer to another <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>depth</parameter>&#160;:</term>
+<listitem><simpara> Maximum depth to use for path comparison.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 if both element match, a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-compare" role="function">
+<title>idmef_path_compare ()</title>
+<indexterm zone="idmef-path-compare"><primary sortas="idmef_path_compare">idmef_path_compare</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_compare                  (const <link linkend="idmef-path-t">idmef_path_t</link> *p1,
+                                                         const <link linkend="idmef-path-t">idmef_path_t</link> *p2);</programlisting>
+<para>
+Compares <parameter>p1</parameter> and <parameter>p2</parameter> elements.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>p1</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>p2</parameter>&#160;:</term>
+<listitem><simpara> Pointer to another <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 if both element match, a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-clone" role="function">
+<title>idmef_path_clone ()</title>
+<indexterm zone="idmef-path-clone"><primary sortas="idmef_path_clone">idmef_path_clone</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_clone                    (const <link linkend="idmef-path-t">idmef_path_t</link> *src,
+                                                         <link linkend="idmef-path-t">idmef_path_t</link> **dst);</programlisting>
+<para>
+Clones <parameter>src</parameter> and stores the result in the provided <parameter>dst</parameter> address.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara> Address where to store the copy of <parameter>src</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-ref" role="function">
+<title>idmef_path_ref ()</title>
+<indexterm zone="idmef-path-ref"><primary sortas="idmef_path_ref">idmef_path_ref</primary></indexterm><programlisting><link linkend="idmef-path-t">idmef_path_t</link> *      idmef_path_ref                      (<link linkend="idmef-path-t">idmef_path_t</link> *path);</programlisting>
+<para>
+Increases <parameter>path</parameter> reference count.
+</para>
+<para>
+<link linkend="idmef-path-destroy"><function>idmef_path_destroy()</function></link> will destroy the refcount until it reaches 0,
+at which point the path will be destroyed.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The provided <parameter>path</parameter> is returned.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-get-name" role="function">
+<title>idmef_path_get_name ()</title>
+<indexterm zone="idmef-path-get-name"><primary sortas="idmef_path_get_name">idmef_path_get_name</primary></indexterm><programlisting>const <link linkend="char">char</link> *        idmef_path_get_name                 (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="int">int</link> depth);</programlisting>
+<para>
+Returns the full path name if the provided <parameter>depth</parameter> is -1, or the specific
+element name if depth is set. That is, for a <parameter>path</parameter> pointing to
+"alert.classification.text": A depth of -1 would return "alert.classification.text";
+a depth of 0 would return "alert"; a depth of 1 would return "classification"; and
+a depth of 2 would return "text".</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>depth</parameter>&#160;:</term>
+<listitem><simpara> Depth of the <parameter>path</parameter> element to get the name from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <parameter>path</parameter> name relative to the provided <parameter>dept</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-is-ambiguous" role="function">
+<title>idmef_path_is_ambiguous ()</title>
+<indexterm zone="idmef-path-is-ambiguous"><primary sortas="idmef_path_is_ambiguous">idmef_path_is_ambiguous</primary></indexterm><programlisting><link linkend="prelude-bool-t">prelude_bool_t</link>      idmef_path_is_ambiguous             (const <link linkend="idmef-path-t">idmef_path_t</link> *path);</programlisting>
+<para>
+Returns TRUE if <parameter>path</parameter> contain elements that are supposed
+to be listed, but for which no index were provided.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE if the object is ambiguous, FALSE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-has-lists" role="function">
+<title>idmef_path_has_lists ()</title>
+<indexterm zone="idmef-path-has-lists"><primary sortas="idmef_path_has_lists">idmef_path_has_lists</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_has_lists                (const <link linkend="idmef-path-t">idmef_path_t</link> *path);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the number of listed element within <parameter>path</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-is-list" role="function">
+<title>idmef_path_is_list ()</title>
+<indexterm zone="idmef-path-is-list"><primary sortas="idmef_path_is_list">idmef_path_is_list</primary></indexterm><programlisting><link linkend="prelude-bool-t">prelude_bool_t</link>      idmef_path_is_list                  (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="int">int</link> depth);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>depth</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-get-depth" role="function">
+<title>idmef_path_get_depth ()</title>
+<indexterm zone="idmef-path-get-depth"><primary sortas="idmef_path_get_depth">idmef_path_get_depth</primary></indexterm><programlisting>unsigned <link linkend="int">int</link>        idmef_path_get_depth                (const <link linkend="idmef-path-t">idmef_path_t</link> *path);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <parameter>depth</parameter> number of elements.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-check-operator" role="function">
+<title>idmef_path_check_operator ()</title>
+<indexterm zone="idmef-path-check-operator"><primary sortas="idmef_path_check_operator">idmef_path_check_operator</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_check_operator           (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);</programlisting>
+<para>
+Check whether <parameter>op</parameter> can apply to value pointed to by <parameter>path</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>op</parameter>&#160;:</term>
+<listitem><simpara> Operator to check compatibility with.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-path-get-applicable-operators" role="function">
+<title>idmef_path_get_applicable_operators ()</title>
+<indexterm zone="idmef-path-get-applicable-operators"><primary sortas="idmef_path_get_applicable_operators">idmef_path_get_applicable_operators</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_path_get_applicable_operators (const <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> *result);</programlisting>
+<para>
+Retrieve all applicable operator that might be used by the type of
+value pointed to by <parameter>path</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-path-t"><type>idmef_path_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>result</parameter>&#160;:</term>
+<listitem><simpara> Pointer to storage for applicable operator.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+<refsect1 id="libprelude-idmef-path.see-also">
+<title>See Also</title>
+<para>
+<link linkend="idmef-value-t"><type>idmef_value_t</type></link> for setting <link linkend="idmef-path-t"><type>idmef_path_t</type></link> value.
+</para>
+</refsect1>
+
+</refentry>

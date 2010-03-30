@@ -1,0 +1,779 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>prelude-io</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="ch04.html" title="Others">
+<link rel="prev" href="libprelude-prelude-linked-object.html" title="prelude-linked-object">
+<link rel="next" href="libprelude-prelude-log.html" title="prelude-log">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libprelude-prelude-linked-object.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="libprelude-prelude-log.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-prelude-io.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-prelude-io.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="prelude-io">
+<a name="libprelude-prelude-io"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-prelude-io.top_of_page"></a>prelude-io</span></h2>
+<p>prelude-io</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-prelude-io.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+typedef             <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a>;
+int                 <a class="link" href="libprelude-prelude-io.html#prelude-io-new" title="prelude_io_new ()">prelude_io_new</a>                      (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> **ret);
+void                <a class="link" href="libprelude-prelude-io.html#prelude-io-destroy" title="prelude_io_destroy ()">prelude_io_destroy</a>                  (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio);
+void                <a class="link" href="libprelude-prelude-io.html#prelude-io-set-file-io" title="prelude_io_set_file_io ()">prelude_io_set_file_io</a>              (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         FILE *fd);
+void                <a class="link" href="libprelude-prelude-io.html#prelude-io-set-tls-io" title="prelude_io_set_tls_io ()">prelude_io_set_tls_io</a>               (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         void *tls);
+void                <a class="link" href="libprelude-prelude-io.html#prelude-io-set-sys-io" title="prelude_io_set_sys_io ()">prelude_io_set_sys_io</a>               (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         int fd);
+int                 <a class="link" href="libprelude-prelude-io.html#prelude-io-set-buffer-io" title="prelude_io_set_buffer_io ()">prelude_io_set_buffer_io</a>            (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio);
+void                <a class="link" href="libprelude-prelude-io.html#prelude-io-set-fdptr" title="prelude_io_set_fdptr ()">prelude_io_set_fdptr</a>                (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         void *ptr);
+void                <a class="link" href="libprelude-prelude-io.html#prelude-io-set-pending-callback" title="prelude_io_set_pending_callback ()">prelude_io_set_pending_callback</a>     (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         ssize_t (pendingprelude_io_t *io) ());
+void                <a class="link" href="libprelude-prelude-io.html#prelude-io-set-read-callback" title="prelude_io_set_read_callback ()">prelude_io_set_read_callback</a>        (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         ssize_t (readprelude_io_t *io, void *buf, size_t count) ());
+void                <a class="link" href="libprelude-prelude-io.html#prelude-io-set-write-callback" title="prelude_io_set_write_callback ()">prelude_io_set_write_callback</a>       (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         ssize_t (writeprelude_io_t *io, const void *buf, size_t count) ());
+int                 <a class="link" href="libprelude-prelude-io.html#prelude-io-close" title="prelude_io_close ()">prelude_io_close</a>                    (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio);
+ssize_t             <a class="link" href="libprelude-prelude-io.html#prelude-io-read" title="prelude_io_read ()">prelude_io_read</a>                     (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         void *buf,
+                                                         size_t count);
+ssize_t             <a class="link" href="libprelude-prelude-io.html#prelude-io-read-wait" title="prelude_io_read_wait ()">prelude_io_read_wait</a>                (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         void *buf,
+                                                         size_t count);
+ssize_t             <a class="link" href="libprelude-prelude-io.html#prelude-io-read-delimited" title="prelude_io_read_delimited ()">prelude_io_read_delimited</a>           (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         unsigned char **buf);
+ssize_t             <a class="link" href="libprelude-prelude-io.html#prelude-io-write" title="prelude_io_write ()">prelude_io_write</a>                    (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         const void *buf,
+                                                         size_t count);
+ssize_t             <a class="link" href="libprelude-prelude-io.html#prelude-io-write-delimited" title="prelude_io_write_delimited ()">prelude_io_write_delimited</a>          (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         const void *buf,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint16-t" title="uint16_t">uint16_t</a> count);
+ssize_t             <a class="link" href="libprelude-prelude-io.html#prelude-io-forward" title="prelude_io_forward ()">prelude_io_forward</a>                  (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *dst,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *src,
+                                                         size_t count);
+int                 <a class="link" href="libprelude-prelude-io.html#prelude-io-get-fd" title="prelude_io_get_fd ()">prelude_io_get_fd</a>                   (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio);
+void *              <a class="link" href="libprelude-prelude-io.html#prelude-io-get-fdptr" title="prelude_io_get_fdptr ()">prelude_io_get_fdptr</a>                (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio);
+ssize_t             <a class="link" href="libprelude-prelude-io.html#prelude-io-pending" title="prelude_io_pending ()">prelude_io_pending</a>                  (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio);
+<a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      <a class="link" href="libprelude-prelude-io.html#prelude-io-is-error-fatal" title="prelude_io_is_error_fatal ()">prelude_io_is_error_fatal</a>           (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         int error);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-prelude-io.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-prelude-io.details"></a><h2>Details</h2>
+<div class="refsect2" title="prelude_io_t">
+<a name="prelude-io-t"></a><h3>prelude_io_t</h3>
+<pre class="programlisting">typedef struct prelude_io prelude_io_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_new ()">
+<a name="prelude-io-new"></a><h3>prelude_io_new ()</h3>
+<pre class="programlisting">int                 prelude_io_new                      (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> **ret);</pre>
+<p>
+Create a new prelude IO object.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ret</code></em> :</span></p></td>
+<td> Pointer where to store the created <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, or a negative value if an error occur.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_destroy ()">
+<a name="prelude-io-destroy"></a><h3>prelude_io_destroy ()</h3>
+<pre class="programlisting">void                prelude_io_destroy                  (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio);</pre>
+<p>
+Destroy the <em class="parameter"><code>pio</code></em> object.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_set_file_io ()">
+<a name="prelude-io-set-file-io"></a><h3>prelude_io_set_file_io ()</h3>
+<pre class="programlisting">void                prelude_io_set_file_io              (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         FILE *fd);</pre>
+<p>
+Setup the <em class="parameter"><code>pio</code></em> object to work with file I/O function.
+The <em class="parameter"><code>pio</code></em> object is then associated with <em class="parameter"><code>fd</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> A pointer on the <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> File descriptor identifying a file.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_set_tls_io ()">
+<a name="prelude-io-set-tls-io"></a><h3>prelude_io_set_tls_io ()</h3>
+<pre class="programlisting">void                prelude_io_set_tls_io               (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         void *tls);</pre>
+<p>
+Setup the <em class="parameter"><code>pio</code></em> object to work with TLS based I/O function.
+The <em class="parameter"><code>pio</code></em> object is then associated with <em class="parameter"><code>tls</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> A pointer on the <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>tls</code></em> :</span></p></td>
+<td> Pointer on the TLS structure holding the TLS connection data.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_set_sys_io ()">
+<a name="prelude-io-set-sys-io"></a><h3>prelude_io_set_sys_io ()</h3>
+<pre class="programlisting">void                prelude_io_set_sys_io               (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         int fd);</pre>
+<p>
+Setup the <em class="parameter"><code>pio</code></em> object to work with system based I/O function.
+The <em class="parameter"><code>pio</code></em> object is then associated with <em class="parameter"><code>fd</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> A pointer on the <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> A file descriptor.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_set_buffer_io ()">
+<a name="prelude-io-set-buffer-io"></a><h3>prelude_io_set_buffer_io ()</h3>
+<pre class="programlisting">int                 prelude_io_set_buffer_io            (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_set_fdptr ()">
+<a name="prelude-io-set-fdptr"></a><h3>prelude_io_set_fdptr ()</h3>
+<pre class="programlisting">void                prelude_io_set_fdptr                (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         void *ptr);</pre>
+<p>
+Set an user defined pointer that might be retrieved using
+<a class="link" href="libprelude-prelude-io.html#prelude-io-get-fdptr" title="prelude_io_get_fdptr ()"><code class="function">prelude_io_get_fdptr()</code></a>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to user defined data.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_set_pending_callback ()">
+<a name="prelude-io-set-pending-callback"></a><h3>prelude_io_set_pending_callback ()</h3>
+<pre class="programlisting">void                prelude_io_set_pending_callback     (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         ssize_t (pendingprelude_io_t *io) ());</pre>
+<p>
+Set an user defined read callback function to be called on
+<a class="link" href="libprelude-prelude-io.html#prelude-io-pending" title="prelude_io_pending ()"><code class="function">prelude_io_pending()</code></a>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pending</code></em> :</span></p></td>
+<td> Callback function to be called on <a class="link" href="libprelude-prelude-io.html#prelude-io-pending" title="prelude_io_pending ()"><code class="function">prelude_io_pending()</code></a>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_set_read_callback ()">
+<a name="prelude-io-set-read-callback"></a><h3>prelude_io_set_read_callback ()</h3>
+<pre class="programlisting">void                prelude_io_set_read_callback        (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         ssize_t (readprelude_io_t *io, void *buf, size_t count) ());</pre>
+<p>
+Set an user defined read callback function to be called on
+<a class="link" href="libprelude-prelude-io.html#prelude-io-read" title="prelude_io_read ()"><code class="function">prelude_io_read()</code></a>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>read</code></em> :</span></p></td>
+<td> Callback function to be called on <a class="link" href="libprelude-prelude-io.html#prelude-io-read" title="prelude_io_read ()"><code class="function">prelude_io_read()</code></a>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_set_write_callback ()">
+<a name="prelude-io-set-write-callback"></a><h3>prelude_io_set_write_callback ()</h3>
+<pre class="programlisting">void                prelude_io_set_write_callback       (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         ssize_t (writeprelude_io_t *io, const void *buf, size_t count) ());</pre>
+<p>
+Set an user defined write callback function to be called on
+<a class="link" href="libprelude-prelude-io.html#prelude-io-write" title="prelude_io_write ()"><code class="function">prelude_io_write()</code></a>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>write</code></em> :</span></p></td>
+<td> Callback function to be called on <a class="link" href="libprelude-prelude-io.html#prelude-io-write" title="prelude_io_write ()"><code class="function">prelude_io_write()</code></a>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_close ()">
+<a name="prelude-io-close"></a><h3>prelude_io_close ()</h3>
+<pre class="programlisting">int                 prelude_io_close                    (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio);</pre>
+<p>
+<a class="link" href="libprelude-prelude-io.html#prelude-io-close" title="prelude_io_close ()"><code class="function">prelude_io_close()</code></a> closes the file descriptor indentified by <em class="parameter"><code>pio</code></em>,
+</p>
+<p>
+The case where the <code class="function">close()</code> function would be interrupted by a signal is
+handled internally. So you don't have to check for EINTR.
+</p>
+<p>
+However, and especially when the underlaying layer is TLS, <a class="link" href="libprelude-prelude-io.html#prelude-io-close" title="prelude_io_close ()"><code class="function">prelude_io_close()</code></a>
+might return error. If this happen, you should continue calling the function
+until it return zero.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> zero on success, or -1 if an error occurred.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_read ()">
+<a name="prelude-io-read"></a><h3>prelude_io_read ()</h3>
+<pre class="programlisting">ssize_t             prelude_io_read                     (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         void *buf,
+                                                         size_t count);</pre>
+<p>
+<a class="link" href="libprelude-prelude-io.html#prelude-io-read" title="prelude_io_read ()"><code class="function">prelude_io_read()</code></a> attempts to read up to <em class="parameter"><code>count</code></em> bytes from the
+file descriptor identified by <em class="parameter"><code>pio</code></em> into the buffer starting at <em class="parameter"><code>buf</code></em>.
+</p>
+<p>
+If <em class="parameter"><code>count</code></em> is zero, <a class="link" href="libprelude-prelude-io.html#prelude-io-read" title="prelude_io_read ()"><code class="function">prelude_io_read()</code></a> returns zero and has no other
+results. If <em class="parameter"><code>count</code></em> is greater than SSIZE_MAX, the result is unspecified.
+</p>
+<p>
+The case where the read function would be interrupted by a signal is
+handled internally. So you don't have to check for EINTR.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> Pointer to the buffer to store data into.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td> Number of bytes to read.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> On success, the number of bytes read is returned (zero
+indicates end of file). It is not an error if this number is smaller
+than the number of bytes requested; this may happen for example because
+fewer bytes are actually available right now or because <code class="function">read()</code> was
+interrupted by a signal.
+
+On error, a negative value is returned. In this case it is left unspecified
+whether the file position (if any) changes.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_read_wait ()">
+<a name="prelude-io-read-wait"></a><h3>prelude_io_read_wait ()</h3>
+<pre class="programlisting">ssize_t             prelude_io_read_wait                (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         void *buf,
+                                                         size_t count);</pre>
+<p>
+<a class="link" href="libprelude-prelude-io.html#prelude-io-read-wait" title="prelude_io_read_wait ()"><code class="function">prelude_io_read_wait()</code></a> attempts to read up to <em class="parameter"><code>count</code></em> bytes from the
+file descriptor identified by <em class="parameter"><code>pio</code></em> into the buffer starting at <em class="parameter"><code>buf</code></em>.
+</p>
+<p>
+If <em class="parameter"><code>count</code></em> is zero, <a class="link" href="libprelude-prelude-io.html#prelude-io-read" title="prelude_io_read ()"><code class="function">prelude_io_read()</code></a> returns zero and has no other
+results. If <em class="parameter"><code>count</code></em> is greater than SSIZE_MAX, the result is unspecified.
+</p>
+<p>
+The case where the read function would be interrupted by a signal is
+handled internally. So you don't have to check for EINTR.
+</p>
+<p>
+<a class="link" href="libprelude-prelude-io.html#prelude-io-read-wait" title="prelude_io_read_wait ()"><code class="function">prelude_io_read_wait()</code></a> always return the number of bytes requested.
+Be carefull that this function is blocking.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> Pointer to the buffer to store data into.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td> Number of bytes to read.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> On success, the number of bytes read is returned (zero
+indicates end of file).
+
+On error, -1 is returned, and errno is set appropriately. In this
+case it is left unspecified whether the file position (if any) changes.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_read_delimited ()">
+<a name="prelude-io-read-delimited"></a><h3>prelude_io_read_delimited ()</h3>
+<pre class="programlisting">ssize_t             prelude_io_read_delimited           (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         unsigned char **buf);</pre>
+<p>
+<a class="link" href="libprelude-prelude-io.html#prelude-io-read-delimited" title="prelude_io_read_delimited ()"><code class="function">prelude_io_read_delimited()</code></a> read message written by <code class="function">prelude_write_delimited()</code>.
+Theses messages are sents along with the len of the message.
+</p>
+<p>
+Uppon return the <em class="parameter"><code>buf</code></em> argument is updated to point on a newly allocated
+buffer containing the data read. The <em class="parameter"><code>count</code></em> argument is set to the number of
+bytes the message was containing.
+</p>
+<p>
+The case where the read function would be interrupted by a signal is
+handled internally. So you don't have to check for EINTR.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> Pointer to the address of a buffer to store address of data into.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> On success, the number of bytes read is returned (zero
+indicates end of file).
+
+On error, -1 is returned, and errno is set appropriately. In this
+case it is left unspecified whether the file position (if any) changes.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_write ()">
+<a name="prelude-io-write"></a><h3>prelude_io_write ()</h3>
+<pre class="programlisting">ssize_t             prelude_io_write                    (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         const void *buf,
+                                                         size_t count);</pre>
+<p>
+<a class="link" href="libprelude-prelude-io.html#prelude-io-write" title="prelude_io_write ()"><code class="function">prelude_io_write()</code></a> writes up to <em class="parameter"><code>count</code></em> bytes to the file descriptor
+identified by <em class="parameter"><code>pio</code></em> from the buffer starting at <em class="parameter"><code>buf</code></em>. POSIX requires
+that a <code class="function">read()</code> which can be proved to occur after a <code class="function">write()</code> has returned
+returns the new data. Note that not all file systems are POSIX conforming.
+</p>
+<p>
+The case where the <code class="function">write()</code> function would be interrupted by a signal is
+handled internally. So you don't have to check for EINTR.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> Pointer to the buffer to write data from.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td> Number of bytes to write.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> On success, the number of bytes written are returned (zero
+indicates nothing was written). On error, -1 is returned, and errno
+is set appropriately. If <em class="parameter"><code>count</code></em> is zero and the file descriptor refers
+to a regular file, 0 will be returned without causing any other effect.
+For a special file, the results are not portable.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_write_delimited ()">
+<a name="prelude-io-write-delimited"></a><h3>prelude_io_write_delimited ()</h3>
+<pre class="programlisting">ssize_t             prelude_io_write_delimited          (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         const void *buf,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint16-t" title="uint16_t">uint16_t</a> count);</pre>
+<p>
+<a class="link" href="libprelude-prelude-io.html#prelude-io-write-delimited" title="prelude_io_write_delimited ()"><code class="function">prelude_io_write_delimited()</code></a> writes up to <em class="parameter"><code>count</code></em> bytes to the file descriptor
+identified by <em class="parameter"><code>pio</code></em> from the buffer starting at <em class="parameter"><code>buf</code></em>. POSIX requires
+that a <code class="function">read()</code> which can be proved to occur after a <code class="function">write()</code> has returned
+returns the new data. Note that not all file systems are POSIX conforming.
+</p>
+<p>
+<a class="link" href="libprelude-prelude-io.html#prelude-io-write-delimited" title="prelude_io_write_delimited ()"><code class="function">prelude_io_write_delimited()</code></a> also write the len of the data to be sent.
+which allow <a class="link" href="libprelude-prelude-io.html#prelude-io-read-delimited" title="prelude_io_read_delimited ()"><code class="function">prelude_io_read_delimited()</code></a> to safely know if it got all the
+data a given write contain.
+</p>
+<p>
+The case where the <code class="function">write()</code> function would be interrupted by a signal is
+handled internally. So you don't have to check for EINTR.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> Pointer to the buffer to write data from.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td> Number of bytes to write.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> On success, the number of bytes written are returned (zero
+indicates nothing was written). On error, -1 is returned, and errno
+is set appropriately.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_forward ()">
+<a name="prelude-io-forward"></a><h3>prelude_io_forward ()</h3>
+<pre class="programlisting">ssize_t             prelude_io_forward                  (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *dst,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *src,
+                                                         size_t count);</pre>
+<p>
+<a class="link" href="libprelude-prelude-io.html#prelude-io-forward" title="prelude_io_forward ()"><code class="function">prelude_io_forward()</code></a> attempts to transfer up to <em class="parameter"><code>count</code></em> bytes from
+the file descriptor identified by <em class="parameter"><code>src</code></em> into the file descriptor
+identified by <em class="parameter"><code>dst</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dst</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td> Number of byte to forward from <em class="parameter"><code>src</code></em> to <em class="parameter"><code>dst</code></em>.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> If the transfer was successful, the number of bytes written
+to <em class="parameter"><code>dst</code></em> is returned.  On error, -1 is returned, and errno is set appropriately.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_get_fd ()">
+<a name="prelude-io-get-fd"></a><h3>prelude_io_get_fd ()</h3>
+<pre class="programlisting">int                 prelude_io_get_fd                   (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio);</pre>
+<p>
+</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> A pointer on a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The FD associated with this object.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_get_fdptr ()">
+<a name="prelude-io-get-fdptr"></a><h3>prelude_io_get_fdptr ()</h3>
+<pre class="programlisting">void *              prelude_io_get_fdptr                (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio);</pre>
+<p>
+</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> A pointer on a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> Pointer associated with this object (file, tls, buffer, or NULL).
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_pending ()">
+<a name="prelude-io-pending"></a><h3>prelude_io_pending ()</h3>
+<pre class="programlisting">ssize_t             prelude_io_pending                  (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio);</pre>
+<p>
+prelude_io_pending return the number of bytes waiting to
+be read on an TLS or socket fd.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> Number of byte waiting to be read on <em class="parameter"><code>pio</code></em>, or -1
+if <em class="parameter"><code>pio</code></em> is not of type TLS or socket.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_io_is_error_fatal ()">
+<a name="prelude-io-is-error-fatal"></a><h3>prelude_io_is_error_fatal ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      prelude_io_is_error_fatal           (<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *pio,
+                                                         int error);</pre>
+<p>
+Check whether the returned error is fatal, or not.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pio</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td> Error returned by one of the <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> function.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> TRUE if error is fatal, FALSE if it is not.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

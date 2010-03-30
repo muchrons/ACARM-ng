@@ -1,0 +1,205 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>prelude</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="prev" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="next" href="libprelude-prelude-client.html" title="prelude-client">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="pt01.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="pt01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="libprelude-prelude-client.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-prelude.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-prelude.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="prelude">
+<a name="libprelude-prelude"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-prelude.top_of_page"></a>prelude</span></h2>
+<p>prelude — Initializing the library</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-prelude.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+#define             <a class="link" href="libprelude-prelude.html#LIBPRELUDE-VERSION--CAPS" title="LIBPRELUDE_VERSION">LIBPRELUDE_VERSION</a>
+int                 <a class="link" href="libprelude-prelude.html#prelude-init" title="prelude_init ()">prelude_init</a>                        (int *argc,
+                                                         char **argv);
+void                <a class="link" href="libprelude-prelude.html#prelude-deinit" title="prelude_deinit ()">prelude_deinit</a>                      (void);
+const char *        <a class="link" href="libprelude-prelude.html#prelude-check-version" title="prelude_check_version ()">prelude_check_version</a>               (const char *req_version);
+int                 <a class="link" href="libprelude-prelude.html#prelude-thread-init" title="prelude_thread_init ()">prelude_thread_init</a>                 (void *nil);
+void                <a class="link" href="libprelude-prelude.html#prelude-fork-child" title="prelude_fork_child ()">prelude_fork_child</a>                  (void);
+void                <a class="link" href="libprelude-prelude.html#prelude-fork-parent" title="prelude_fork_parent ()">prelude_fork_parent</a>                 (void);
+void                <a class="link" href="libprelude-prelude.html#prelude-fork-prepare" title="prelude_fork_prepare ()">prelude_fork_prepare</a>                (void);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-prelude.description"></a><h2>Description</h2>
+<p>
+Before any operation are done using the prelude library, the user first need
+to initialize it using the <a class="link" href="libprelude-prelude.html#prelude-init" title="prelude_init ()"><code class="function">prelude_init()</code></a> function.
+</p>
+<pre class="programlisting">
+int ret;
+ret = prelude_init(&amp;argc, argv);
+if ( ret &lt; 0 ) {
+        prelude_perror(ret, "unable to initialize the prelude library");
+        return -1;
+}
+</pre>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-prelude.details"></a><h2>Details</h2>
+<div class="refsect2" title="LIBPRELUDE_VERSION">
+<a name="LIBPRELUDE-VERSION--CAPS"></a><h3>LIBPRELUDE_VERSION</h3>
+<pre class="programlisting">#define LIBPRELUDE_VERSION "1.0.0"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_init ()">
+<a name="prelude-init"></a><h3>prelude_init ()</h3>
+<pre class="programlisting">int                 prelude_init                        (int *argc,
+                                                         char **argv);</pre>
+<p>
+Call this function before using any other Prelude functions in your applications.
+It will initialize everything needed to operate the library and parses some standard
+command line options. <em class="parameter"><code>argc</code></em> and <em class="parameter"><code>argv</code></em> are adjusted accordingly so your own code will
+never see those standard arguments.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>argc</code></em> :</span></p></td>
+<td> Address of the argc parameter of your <code class="function">main()</code> function.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>argv</code></em> :</span></p></td>
+<td> Address of the argv parameter of your <code class="function">main()</code> function.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_deinit ()">
+<a name="prelude-deinit"></a><h3>prelude_deinit ()</h3>
+<pre class="programlisting">void                prelude_deinit                      (void);</pre>
+<p>
+Call this function if you're done using the library and want to free global
+shared ressource allocated by libprelude.</p>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_check_version ()">
+<a name="prelude-check-version"></a><h3>prelude_check_version ()</h3>
+<pre class="programlisting">const char *        prelude_check_version               (const char *req_version);</pre>
+<p>
+If <em class="parameter"><code>req_version</code></em> is NULL this function will return the version of the library.
+Otherwise, <em class="parameter"><code>req_version</code></em> will be compared to the current library version. If
+the library version is higher or equal, this function will return the current
+library version. Otherwise, NULL is returned.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>req_version</code></em> :</span></p></td>
+<td> The minimum acceptable version number.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The current library version, or NULL if <em class="parameter"><code>req_version</code></em> doesn't match.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_thread_init ()">
+<a name="prelude-thread-init"></a><h3>prelude_thread_init ()</h3>
+<pre class="programlisting">int                 prelude_thread_init                 (void *nil);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>nil</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_fork_child ()">
+<a name="prelude-fork-child"></a><h3>prelude_fork_child ()</h3>
+<pre class="programlisting">void                prelude_fork_child                  (void);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_fork_parent ()">
+<a name="prelude-fork-parent"></a><h3>prelude_fork_parent ()</h3>
+<pre class="programlisting">void                prelude_fork_parent                 (void);</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_fork_prepare ()">
+<a name="prelude-fork-prepare"></a><h3>prelude_fork_prepare ()</h3>
+<pre class="programlisting">void                prelude_fork_prepare                (void);</pre>
+<p>
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

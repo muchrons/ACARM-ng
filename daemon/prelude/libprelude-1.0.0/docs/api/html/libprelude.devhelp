@@ -1,0 +1,1692 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE book PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "">
+<book xmlns="http://www.devhelp.net/book" title="Prelude library Reference Manual" link="index.html" author="" name="libprelude">
+  <chapters>
+    <sub name="Using libprelude to interoperate with prelude-manager" link="pt01.html">
+      <sub name="prelude" link="libprelude-prelude.html"/>
+      <sub name="prelude-client" link="libprelude-prelude-client.html"/>
+    </sub>
+    <sub name="Sending events with libprelude" link="pt02.html">
+      <sub name="The low level IDMEF API" link="ch01.html">
+        <sub name="idmef-tree-wrap" link="libprelude-idmef-tree-wrap.html"/>
+        <sub name="idmef-additional-data" link="libprelude-idmef-additional-data.html"/>
+        <sub name="idmef-time" link="libprelude-idmef-time.html"/>
+        <sub name="idmef-data" link="libprelude-idmef-data.html"/>
+      </sub>
+      <sub name="The high level IDMEF API" link="ch02.html">
+        <sub name="idmef-path" link="libprelude-idmef-path.html"/>
+        <sub name="idmef-value" link="libprelude-idmef-value.html"/>
+      </sub>
+    </sub>
+    <sub name="Reading events from the collector" link="pt03.html">
+      <sub name="idmef-message-read" link="libprelude-idmef-message-read.html"/>
+      <sub name="prelude-connection-pool" link="libprelude-prelude-connection-pool.html"/>
+    </sub>
+    <sub name="Filtering operation on IDMEF messages" link="pt04.html">
+      <sub name="idmef-criteria" link="libprelude-idmef-criteria.html"/>
+      <sub name="idmef-criterion-value" link="libprelude-idmef-criterion-value.html"/>
+    </sub>
+    <sub name="Utility functions" link="ch03.html">
+      <sub name="idmef-message-print" link="libprelude-idmef-message-print.html"/>
+    </sub>
+    <sub name="Others" link="ch04.html">
+      <sub name="prelude-error" link="libprelude-prelude-error.html"/>
+      <sub name="prelude-linked-object" link="libprelude-prelude-linked-object.html"/>
+      <sub name="prelude-io" link="libprelude-prelude-io.html"/>
+      <sub name="prelude-log" link="libprelude-prelude-log.html"/>
+      <sub name="prelude-msg" link="libprelude-prelude-msg.html"/>
+      <sub name="prelude-option" link="libprelude-prelude-option.html"/>
+      <sub name="prelude-connection" link="libprelude-prelude-connection.html"/>
+      <sub name="prelude-string" link="libprelude-prelude-string.html"/>
+      <sub name="prelude-msgbuf" link="libprelude-prelude-msgbuf.html"/>
+      <sub name="idmef-message-write" link="libprelude-idmef-message-write.html"/>
+      <sub name="prelude-ident" link="libprelude-prelude-ident.html"/>
+      <sub name="prelude-client-profile" link="libprelude-prelude-client-profile.html"/>
+      <sub name="prelude-plugin" link="libprelude-prelude-plugin.html"/>
+      <sub name="prelude-hash" link="libprelude-prelude-hash.html"/>
+      <sub name="prelude-failover" link="libprelude-prelude-failover.html"/>
+      <sub name="prelude-async" link="libprelude-prelude-async.html"/>
+      <sub name="prelude-list" link="libprelude-prelude-list.html"/>
+      <sub name="prelude-inttypes" link="libprelude-prelude-inttypes.html"/>
+      <sub name="prelude-option-wide" link="libprelude-prelude-option-wide.html"/>
+      <sub name="prelude-timer" link="libprelude-prelude-timer.html"/>
+    </sub>
+  </chapters>
+  <functions>
+    <function name="LIBPRELUDE_VERSION" link="libprelude-prelude.html#LIBPRELUDE-VERSION--CAPS"/>
+    <function name="prelude_init ()" link="libprelude-prelude.html#prelude-init"/>
+    <function name="prelude_deinit ()" link="libprelude-prelude.html#prelude-deinit"/>
+    <function name="prelude_check_version ()" link="libprelude-prelude.html#prelude-check-version"/>
+    <function name="prelude_thread_init ()" link="libprelude-prelude.html#prelude-thread-init"/>
+    <function name="prelude_fork_child ()" link="libprelude-prelude.html#prelude-fork-child"/>
+    <function name="prelude_fork_parent ()" link="libprelude-prelude.html#prelude-fork-parent"/>
+    <function name="prelude_fork_prepare ()" link="libprelude-prelude.html#prelude-fork-prepare"/>
+    <function name="enum prelude_client_exit_status_t" link="libprelude-prelude-client.html#prelude-client-exit-status-t"/>
+    <function name="enum prelude_client_flags_t" link="libprelude-prelude-client.html#prelude-client-flags-t"/>
+    <function name="prelude_client_t" link="libprelude-prelude-client.html#prelude-client-t"/>
+    <function name="prelude_client_get_unique_ident ()" link="libprelude-prelude-client.html#prelude-client-get-unique-ident"/>
+    <function name="prelude_client_set_connection_pool ()" link="libprelude-prelude-client.html#prelude-client-set-connection-pool"/>
+    <function name="prelude_client_get_connection_pool ()" link="libprelude-prelude-client.html#prelude-client-get-connection-pool"/>
+    <function name="prelude_client_start ()" link="libprelude-prelude-client.html#prelude-client-start"/>
+    <function name="prelude_client_init ()" link="libprelude-prelude-client.html#prelude-client-init"/>
+    <function name="prelude_client_new ()" link="libprelude-prelude-client.html#prelude-client-new"/>
+    <function name="prelude_client_ref ()" link="libprelude-prelude-client.html#prelude-client-ref"/>
+    <function name="prelude_client_get_analyzer ()" link="libprelude-prelude-client.html#prelude-client-get-analyzer"/>
+    <function name="prelude_client_get_flags ()" link="libprelude-prelude-client.html#prelude-client-get-flags"/>
+    <function name="prelude_client_set_required_permission ()" link="libprelude-prelude-client.html#prelude-client-set-required-permission"/>
+    <function name="prelude_client_get_required_permission ()" link="libprelude-prelude-client.html#prelude-client-get-required-permission"/>
+    <function name="prelude_client_send_msg ()" link="libprelude-prelude-client.html#prelude-client-send-msg"/>
+    <function name="prelude_client_recv_msg ()" link="libprelude-prelude-client.html#prelude-client-recv-msg"/>
+    <function name="prelude_client_set_heartbeat_cb ()" link="libprelude-prelude-client.html#prelude-client-set-heartbeat-cb"/>
+    <function name="prelude_client_send_idmef ()" link="libprelude-prelude-client.html#prelude-client-send-idmef"/>
+    <function name="prelude_client_recv_idmef ()" link="libprelude-prelude-client.html#prelude-client-recv-idmef"/>
+    <function name="prelude_client_destroy ()" link="libprelude-prelude-client.html#prelude-client-destroy"/>
+    <function name="prelude_client_set_flags ()" link="libprelude-prelude-client.html#prelude-client-set-flags"/>
+    <function name="prelude_client_set_config_filename ()" link="libprelude-prelude-client.html#prelude-client-set-config-filename"/>
+    <function name="prelude_client_get_config_filename ()" link="libprelude-prelude-client.html#prelude-client-get-config-filename"/>
+    <function name="prelude_client_is_setup_needed ()" link="libprelude-prelude-client.html#prelude-client-is-setup-needed"/>
+    <function name="prelude_client_get_profile ()" link="libprelude-prelude-client.html#prelude-client-get-profile"/>
+    <function name="prelude_client_new_msgbuf ()" link="libprelude-prelude-client.html#prelude-client-new-msgbuf"/>
+    <function name="prelude_client_handle_msg_default ()" link="libprelude-prelude-client.html#prelude-client-handle-msg-default"/>
+    <function name="prelude_client_get_setup_error ()" link="libprelude-prelude-client.html#prelude-client-get-setup-error"/>
+    <function name="prelude_client_print_setup_error ()" link="libprelude-prelude-client.html#prelude-client-print-setup-error"/>
+    <function name="IDMEF_LIST_APPEND" link="libprelude-idmef-tree-wrap.html#IDMEF-LIST-APPEND--CAPS"/>
+    <function name="IDMEF_LIST_PREPEND" link="libprelude-idmef-tree-wrap.html#IDMEF-LIST-PREPEND--CAPS"/>
+    <function name="idmef_message_get_data ()" link="libprelude-idmef-tree-wrap.html#idmef-message-get-data"/>
+    <function name="idmef_message_get_number ()" link="libprelude-idmef-tree-wrap.html#idmef-message-get-number"/>
+    <function name="idmef_message_get_string ()" link="libprelude-idmef-tree-wrap.html#idmef-message-get-string"/>
+    <function name="idmef_message_get_value ()" link="libprelude-idmef-tree-wrap.html#idmef-message-get-value"/>
+    <function name="idmef_message_set_data ()" link="libprelude-idmef-tree-wrap.html#idmef-message-set-data"/>
+    <function name="idmef_message_set_number ()" link="libprelude-idmef-tree-wrap.html#idmef-message-set-number"/>
+    <function name="idmef_message_set_string ()" link="libprelude-idmef-tree-wrap.html#idmef-message-set-string"/>
+    <function name="idmef_message_set_value ()" link="libprelude-idmef-tree-wrap.html#idmef-message-set-value"/>
+    <function name="enum idmef_additional_data_type_t" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-type-t"/>
+    <function name="idmef_additional_data_type_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-type-to-numeric"/>
+    <function name="idmef_additional_data_type_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-type-to-string"/>
+    <function name="idmef_additional_data_t" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-t"/>
+    <function name="idmef_additional_data_new ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-new"/>
+    <function name="idmef_additional_data_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-copy"/>
+    <function name="idmef_additional_data_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-clone"/>
+    <function name="idmef_additional_data_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-ref"/>
+    <function name="idmef_additional_data_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-destroy"/>
+    <function name="idmef_additional_data_get_type ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-get-type"/>
+    <function name="idmef_additional_data_set_type ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-set-type"/>
+    <function name="idmef_additional_data_new_type ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-new-type"/>
+    <function name="idmef_additional_data_get_meaning ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-get-meaning"/>
+    <function name="idmef_additional_data_set_meaning ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-set-meaning"/>
+    <function name="idmef_additional_data_new_meaning ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-new-meaning"/>
+    <function name="idmef_additional_data_get_data ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-get-data"/>
+    <function name="idmef_additional_data_set_data ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-set-data"/>
+    <function name="idmef_additional_data_new_data ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-new-data"/>
+    <function name="enum idmef_reference_origin_t" link="libprelude-idmef-tree-wrap.html#idmef-reference-origin-t"/>
+    <function name="idmef_reference_origin_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-origin-to-numeric"/>
+    <function name="idmef_reference_origin_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-origin-to-string"/>
+    <function name="idmef_reference_t" link="libprelude-idmef-tree-wrap.html#idmef-reference-t"/>
+    <function name="idmef_reference_new ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-new"/>
+    <function name="idmef_reference_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-copy"/>
+    <function name="idmef_reference_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-clone"/>
+    <function name="idmef_reference_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-ref"/>
+    <function name="idmef_reference_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-destroy"/>
+    <function name="idmef_reference_get_origin ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-get-origin"/>
+    <function name="idmef_reference_set_origin ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-set-origin"/>
+    <function name="idmef_reference_new_origin ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-new-origin"/>
+    <function name="idmef_reference_get_name ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-get-name"/>
+    <function name="idmef_reference_set_name ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-set-name"/>
+    <function name="idmef_reference_new_name ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-new-name"/>
+    <function name="idmef_reference_get_url ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-get-url"/>
+    <function name="idmef_reference_set_url ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-set-url"/>
+    <function name="idmef_reference_new_url ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-new-url"/>
+    <function name="idmef_reference_get_meaning ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-get-meaning"/>
+    <function name="idmef_reference_set_meaning ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-set-meaning"/>
+    <function name="idmef_reference_new_meaning ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-new-meaning"/>
+    <function name="idmef_classification_t" link="libprelude-idmef-tree-wrap.html#idmef-classification-t"/>
+    <function name="idmef_classification_new ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-new"/>
+    <function name="idmef_classification_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-copy"/>
+    <function name="idmef_classification_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-clone"/>
+    <function name="idmef_classification_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-ref"/>
+    <function name="idmef_classification_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-destroy"/>
+    <function name="idmef_classification_get_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-get-ident"/>
+    <function name="idmef_classification_set_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-set-ident"/>
+    <function name="idmef_classification_new_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-new-ident"/>
+    <function name="idmef_classification_get_text ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-get-text"/>
+    <function name="idmef_classification_set_text ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-set-text"/>
+    <function name="idmef_classification_new_text ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-new-text"/>
+    <function name="idmef_classification_get_next_reference ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-get-next-reference"/>
+    <function name="idmef_classification_set_reference ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-set-reference"/>
+    <function name="idmef_classification_new_reference ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-new-reference"/>
+    <function name="enum idmef_user_id_type_t" link="libprelude-idmef-tree-wrap.html#idmef-user-id-type-t"/>
+    <function name="idmef_user_id_type_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-type-to-numeric"/>
+    <function name="idmef_user_id_type_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-type-to-string"/>
+    <function name="idmef_user_id_t" link="libprelude-idmef-tree-wrap.html#idmef-user-id-t"/>
+    <function name="idmef_user_id_new ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-new"/>
+    <function name="idmef_user_id_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-copy"/>
+    <function name="idmef_user_id_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-clone"/>
+    <function name="idmef_user_id_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-ref"/>
+    <function name="idmef_user_id_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-destroy"/>
+    <function name="idmef_user_id_get_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-get-ident"/>
+    <function name="idmef_user_id_set_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-set-ident"/>
+    <function name="idmef_user_id_new_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-new-ident"/>
+    <function name="idmef_user_id_get_type ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-get-type"/>
+    <function name="idmef_user_id_set_type ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-set-type"/>
+    <function name="idmef_user_id_new_type ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-new-type"/>
+    <function name="idmef_user_id_get_tty ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-get-tty"/>
+    <function name="idmef_user_id_set_tty ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-set-tty"/>
+    <function name="idmef_user_id_new_tty ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-new-tty"/>
+    <function name="idmef_user_id_get_name ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-get-name"/>
+    <function name="idmef_user_id_set_name ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-set-name"/>
+    <function name="idmef_user_id_new_name ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-new-name"/>
+    <function name="idmef_user_id_unset_number ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-unset-number"/>
+    <function name="idmef_user_id_get_number ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-get-number"/>
+    <function name="idmef_user_id_set_number ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-set-number"/>
+    <function name="idmef_user_id_new_number ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-new-number"/>
+    <function name="enum idmef_user_category_t" link="libprelude-idmef-tree-wrap.html#idmef-user-category-t"/>
+    <function name="idmef_user_category_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-user-category-to-numeric"/>
+    <function name="idmef_user_category_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-user-category-to-string"/>
+    <function name="idmef_user_t" link="libprelude-idmef-tree-wrap.html#idmef-user-t"/>
+    <function name="idmef_user_new ()" link="libprelude-idmef-tree-wrap.html#idmef-user-new"/>
+    <function name="idmef_user_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-user-copy"/>
+    <function name="idmef_user_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-user-clone"/>
+    <function name="idmef_user_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-user-ref"/>
+    <function name="idmef_user_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-user-destroy"/>
+    <function name="idmef_user_get_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-user-get-ident"/>
+    <function name="idmef_user_set_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-user-set-ident"/>
+    <function name="idmef_user_new_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-user-new-ident"/>
+    <function name="idmef_user_get_category ()" link="libprelude-idmef-tree-wrap.html#idmef-user-get-category"/>
+    <function name="idmef_user_set_category ()" link="libprelude-idmef-tree-wrap.html#idmef-user-set-category"/>
+    <function name="idmef_user_new_category ()" link="libprelude-idmef-tree-wrap.html#idmef-user-new-category"/>
+    <function name="idmef_user_get_next_user_id ()" link="libprelude-idmef-tree-wrap.html#idmef-user-get-next-user-id"/>
+    <function name="idmef_user_set_user_id ()" link="libprelude-idmef-tree-wrap.html#idmef-user-set-user-id"/>
+    <function name="idmef_user_new_user_id ()" link="libprelude-idmef-tree-wrap.html#idmef-user-new-user-id"/>
+    <function name="enum idmef_address_category_t" link="libprelude-idmef-tree-wrap.html#idmef-address-category-t"/>
+    <function name="idmef_address_category_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-address-category-to-numeric"/>
+    <function name="idmef_address_category_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-address-category-to-string"/>
+    <function name="idmef_address_t" link="libprelude-idmef-tree-wrap.html#idmef-address-t"/>
+    <function name="idmef_address_new ()" link="libprelude-idmef-tree-wrap.html#idmef-address-new"/>
+    <function name="idmef_address_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-address-copy"/>
+    <function name="idmef_address_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-address-clone"/>
+    <function name="idmef_address_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-address-ref"/>
+    <function name="idmef_address_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-address-destroy"/>
+    <function name="idmef_address_get_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-address-get-ident"/>
+    <function name="idmef_address_set_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-address-set-ident"/>
+    <function name="idmef_address_new_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-address-new-ident"/>
+    <function name="idmef_address_get_category ()" link="libprelude-idmef-tree-wrap.html#idmef-address-get-category"/>
+    <function name="idmef_address_set_category ()" link="libprelude-idmef-tree-wrap.html#idmef-address-set-category"/>
+    <function name="idmef_address_new_category ()" link="libprelude-idmef-tree-wrap.html#idmef-address-new-category"/>
+    <function name="idmef_address_get_vlan_name ()" link="libprelude-idmef-tree-wrap.html#idmef-address-get-vlan-name"/>
+    <function name="idmef_address_set_vlan_name ()" link="libprelude-idmef-tree-wrap.html#idmef-address-set-vlan-name"/>
+    <function name="idmef_address_new_vlan_name ()" link="libprelude-idmef-tree-wrap.html#idmef-address-new-vlan-name"/>
+    <function name="idmef_address_unset_vlan_num ()" link="libprelude-idmef-tree-wrap.html#idmef-address-unset-vlan-num"/>
+    <function name="idmef_address_get_vlan_num ()" link="libprelude-idmef-tree-wrap.html#idmef-address-get-vlan-num"/>
+    <function name="idmef_address_set_vlan_num ()" link="libprelude-idmef-tree-wrap.html#idmef-address-set-vlan-num"/>
+    <function name="idmef_address_new_vlan_num ()" link="libprelude-idmef-tree-wrap.html#idmef-address-new-vlan-num"/>
+    <function name="idmef_address_get_address ()" link="libprelude-idmef-tree-wrap.html#idmef-address-get-address"/>
+    <function name="idmef_address_set_address ()" link="libprelude-idmef-tree-wrap.html#idmef-address-set-address"/>
+    <function name="idmef_address_new_address ()" link="libprelude-idmef-tree-wrap.html#idmef-address-new-address"/>
+    <function name="idmef_address_get_netmask ()" link="libprelude-idmef-tree-wrap.html#idmef-address-get-netmask"/>
+    <function name="idmef_address_set_netmask ()" link="libprelude-idmef-tree-wrap.html#idmef-address-set-netmask"/>
+    <function name="idmef_address_new_netmask ()" link="libprelude-idmef-tree-wrap.html#idmef-address-new-netmask"/>
+    <function name="idmef_process_t" link="libprelude-idmef-tree-wrap.html#idmef-process-t"/>
+    <function name="idmef_process_new ()" link="libprelude-idmef-tree-wrap.html#idmef-process-new"/>
+    <function name="idmef_process_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-process-copy"/>
+    <function name="idmef_process_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-process-clone"/>
+    <function name="idmef_process_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-process-ref"/>
+    <function name="idmef_process_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-process-destroy"/>
+    <function name="idmef_process_get_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-process-get-ident"/>
+    <function name="idmef_process_set_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-process-set-ident"/>
+    <function name="idmef_process_new_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-process-new-ident"/>
+    <function name="idmef_process_get_name ()" link="libprelude-idmef-tree-wrap.html#idmef-process-get-name"/>
+    <function name="idmef_process_set_name ()" link="libprelude-idmef-tree-wrap.html#idmef-process-set-name"/>
+    <function name="idmef_process_new_name ()" link="libprelude-idmef-tree-wrap.html#idmef-process-new-name"/>
+    <function name="idmef_process_unset_pid ()" link="libprelude-idmef-tree-wrap.html#idmef-process-unset-pid"/>
+    <function name="idmef_process_get_pid ()" link="libprelude-idmef-tree-wrap.html#idmef-process-get-pid"/>
+    <function name="idmef_process_set_pid ()" link="libprelude-idmef-tree-wrap.html#idmef-process-set-pid"/>
+    <function name="idmef_process_new_pid ()" link="libprelude-idmef-tree-wrap.html#idmef-process-new-pid"/>
+    <function name="idmef_process_get_path ()" link="libprelude-idmef-tree-wrap.html#idmef-process-get-path"/>
+    <function name="idmef_process_set_path ()" link="libprelude-idmef-tree-wrap.html#idmef-process-set-path"/>
+    <function name="idmef_process_new_path ()" link="libprelude-idmef-tree-wrap.html#idmef-process-new-path"/>
+    <function name="idmef_process_get_next_arg ()" link="libprelude-idmef-tree-wrap.html#idmef-process-get-next-arg"/>
+    <function name="idmef_process_set_arg ()" link="libprelude-idmef-tree-wrap.html#idmef-process-set-arg"/>
+    <function name="idmef_process_new_arg ()" link="libprelude-idmef-tree-wrap.html#idmef-process-new-arg"/>
+    <function name="idmef_process_get_next_env ()" link="libprelude-idmef-tree-wrap.html#idmef-process-get-next-env"/>
+    <function name="idmef_process_set_env ()" link="libprelude-idmef-tree-wrap.html#idmef-process-set-env"/>
+    <function name="idmef_process_new_env ()" link="libprelude-idmef-tree-wrap.html#idmef-process-new-env"/>
+    <function name="idmef_web_service_t" link="libprelude-idmef-tree-wrap.html#idmef-web-service-t"/>
+    <function name="idmef_web_service_new ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-new"/>
+    <function name="idmef_web_service_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-copy"/>
+    <function name="idmef_web_service_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-clone"/>
+    <function name="idmef_web_service_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-ref"/>
+    <function name="idmef_web_service_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-destroy"/>
+    <function name="idmef_web_service_get_url ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-get-url"/>
+    <function name="idmef_web_service_set_url ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-set-url"/>
+    <function name="idmef_web_service_new_url ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-new-url"/>
+    <function name="idmef_web_service_get_cgi ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-get-cgi"/>
+    <function name="idmef_web_service_set_cgi ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-set-cgi"/>
+    <function name="idmef_web_service_new_cgi ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-new-cgi"/>
+    <function name="idmef_web_service_get_http_method ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-get-http-method"/>
+    <function name="idmef_web_service_set_http_method ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-set-http-method"/>
+    <function name="idmef_web_service_new_http_method ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-new-http-method"/>
+    <function name="idmef_web_service_get_next_arg ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-get-next-arg"/>
+    <function name="idmef_web_service_set_arg ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-set-arg"/>
+    <function name="idmef_web_service_new_arg ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-new-arg"/>
+    <function name="idmef_snmp_service_t" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-t"/>
+    <function name="idmef_snmp_service_new ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-new"/>
+    <function name="idmef_snmp_service_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-copy"/>
+    <function name="idmef_snmp_service_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-clone"/>
+    <function name="idmef_snmp_service_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-ref"/>
+    <function name="idmef_snmp_service_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-destroy"/>
+    <function name="idmef_snmp_service_get_oid ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-get-oid"/>
+    <function name="idmef_snmp_service_set_oid ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-set-oid"/>
+    <function name="idmef_snmp_service_new_oid ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-new-oid"/>
+    <function name="idmef_snmp_service_unset_message_processing_model ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-unset-message-processing-model"/>
+    <function name="idmef_snmp_service_get_message_processing_model ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-get-message-processing-model"/>
+    <function name="idmef_snmp_service_set_message_processing_model ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-set-message-processing-model"/>
+    <function name="idmef_snmp_service_new_message_processing_model ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-new-message-processing-model"/>
+    <function name="idmef_snmp_service_unset_security_model ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-unset-security-model"/>
+    <function name="idmef_snmp_service_get_security_model ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-get-security-model"/>
+    <function name="idmef_snmp_service_set_security_model ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-set-security-model"/>
+    <function name="idmef_snmp_service_new_security_model ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-new-security-model"/>
+    <function name="idmef_snmp_service_get_security_name ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-get-security-name"/>
+    <function name="idmef_snmp_service_set_security_name ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-set-security-name"/>
+    <function name="idmef_snmp_service_new_security_name ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-new-security-name"/>
+    <function name="idmef_snmp_service_unset_security_level ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-unset-security-level"/>
+    <function name="idmef_snmp_service_get_security_level ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-get-security-level"/>
+    <function name="idmef_snmp_service_set_security_level ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-set-security-level"/>
+    <function name="idmef_snmp_service_new_security_level ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-new-security-level"/>
+    <function name="idmef_snmp_service_get_context_name ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-get-context-name"/>
+    <function name="idmef_snmp_service_set_context_name ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-set-context-name"/>
+    <function name="idmef_snmp_service_new_context_name ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-new-context-name"/>
+    <function name="idmef_snmp_service_get_context_engine_id ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-get-context-engine-id"/>
+    <function name="idmef_snmp_service_set_context_engine_id ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-set-context-engine-id"/>
+    <function name="idmef_snmp_service_new_context_engine_id ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-new-context-engine-id"/>
+    <function name="idmef_snmp_service_get_command ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-get-command"/>
+    <function name="idmef_snmp_service_set_command ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-set-command"/>
+    <function name="idmef_snmp_service_new_command ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-new-command"/>
+    <function name="idmef_snmp_service_get_community ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-get-community"/>
+    <function name="idmef_snmp_service_set_community ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-set-community"/>
+    <function name="idmef_snmp_service_new_community ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-new-community"/>
+    <function name="enum idmef_service_type_t" link="libprelude-idmef-tree-wrap.html#idmef-service-type-t"/>
+    <function name="idmef_service_type_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-service-type-to-numeric"/>
+    <function name="idmef_service_type_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-service-type-to-string"/>
+    <function name="idmef_service_t" link="libprelude-idmef-tree-wrap.html#idmef-service-t"/>
+    <function name="idmef_service_new ()" link="libprelude-idmef-tree-wrap.html#idmef-service-new"/>
+    <function name="idmef_service_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-service-copy"/>
+    <function name="idmef_service_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-service-clone"/>
+    <function name="idmef_service_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-service-ref"/>
+    <function name="idmef_service_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-service-destroy"/>
+    <function name="idmef_service_get_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-service-get-ident"/>
+    <function name="idmef_service_set_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-service-set-ident"/>
+    <function name="idmef_service_new_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-service-new-ident"/>
+    <function name="idmef_service_unset_ip_version ()" link="libprelude-idmef-tree-wrap.html#idmef-service-unset-ip-version"/>
+    <function name="idmef_service_get_ip_version ()" link="libprelude-idmef-tree-wrap.html#idmef-service-get-ip-version"/>
+    <function name="idmef_service_set_ip_version ()" link="libprelude-idmef-tree-wrap.html#idmef-service-set-ip-version"/>
+    <function name="idmef_service_new_ip_version ()" link="libprelude-idmef-tree-wrap.html#idmef-service-new-ip-version"/>
+    <function name="idmef_service_unset_iana_protocol_number ()" link="libprelude-idmef-tree-wrap.html#idmef-service-unset-iana-protocol-number"/>
+    <function name="idmef_service_get_iana_protocol_number ()" link="libprelude-idmef-tree-wrap.html#idmef-service-get-iana-protocol-number"/>
+    <function name="idmef_service_set_iana_protocol_number ()" link="libprelude-idmef-tree-wrap.html#idmef-service-set-iana-protocol-number"/>
+    <function name="idmef_service_new_iana_protocol_number ()" link="libprelude-idmef-tree-wrap.html#idmef-service-new-iana-protocol-number"/>
+    <function name="idmef_service_get_iana_protocol_name ()" link="libprelude-idmef-tree-wrap.html#idmef-service-get-iana-protocol-name"/>
+    <function name="idmef_service_set_iana_protocol_name ()" link="libprelude-idmef-tree-wrap.html#idmef-service-set-iana-protocol-name"/>
+    <function name="idmef_service_new_iana_protocol_name ()" link="libprelude-idmef-tree-wrap.html#idmef-service-new-iana-protocol-name"/>
+    <function name="idmef_service_get_name ()" link="libprelude-idmef-tree-wrap.html#idmef-service-get-name"/>
+    <function name="idmef_service_set_name ()" link="libprelude-idmef-tree-wrap.html#idmef-service-set-name"/>
+    <function name="idmef_service_new_name ()" link="libprelude-idmef-tree-wrap.html#idmef-service-new-name"/>
+    <function name="idmef_service_unset_port ()" link="libprelude-idmef-tree-wrap.html#idmef-service-unset-port"/>
+    <function name="idmef_service_get_port ()" link="libprelude-idmef-tree-wrap.html#idmef-service-get-port"/>
+    <function name="idmef_service_set_port ()" link="libprelude-idmef-tree-wrap.html#idmef-service-set-port"/>
+    <function name="idmef_service_new_port ()" link="libprelude-idmef-tree-wrap.html#idmef-service-new-port"/>
+    <function name="idmef_service_get_portlist ()" link="libprelude-idmef-tree-wrap.html#idmef-service-get-portlist"/>
+    <function name="idmef_service_set_portlist ()" link="libprelude-idmef-tree-wrap.html#idmef-service-set-portlist"/>
+    <function name="idmef_service_new_portlist ()" link="libprelude-idmef-tree-wrap.html#idmef-service-new-portlist"/>
+    <function name="idmef_service_get_protocol ()" link="libprelude-idmef-tree-wrap.html#idmef-service-get-protocol"/>
+    <function name="idmef_service_set_protocol ()" link="libprelude-idmef-tree-wrap.html#idmef-service-set-protocol"/>
+    <function name="idmef_service_new_protocol ()" link="libprelude-idmef-tree-wrap.html#idmef-service-new-protocol"/>
+    <function name="idmef_service_get_type ()" link="libprelude-idmef-tree-wrap.html#idmef-service-get-type"/>
+    <function name="idmef_service_get_web_service ()" link="libprelude-idmef-tree-wrap.html#idmef-service-get-web-service"/>
+    <function name="idmef_service_set_web_service ()" link="libprelude-idmef-tree-wrap.html#idmef-service-set-web-service"/>
+    <function name="idmef_service_new_web_service ()" link="libprelude-idmef-tree-wrap.html#idmef-service-new-web-service"/>
+    <function name="idmef_service_get_snmp_service ()" link="libprelude-idmef-tree-wrap.html#idmef-service-get-snmp-service"/>
+    <function name="idmef_service_set_snmp_service ()" link="libprelude-idmef-tree-wrap.html#idmef-service-set-snmp-service"/>
+    <function name="idmef_service_new_snmp_service ()" link="libprelude-idmef-tree-wrap.html#idmef-service-new-snmp-service"/>
+    <function name="enum idmef_node_category_t" link="libprelude-idmef-tree-wrap.html#idmef-node-category-t"/>
+    <function name="idmef_node_category_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-node-category-to-numeric"/>
+    <function name="idmef_node_category_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-node-category-to-string"/>
+    <function name="idmef_node_t" link="libprelude-idmef-tree-wrap.html#idmef-node-t"/>
+    <function name="idmef_node_new ()" link="libprelude-idmef-tree-wrap.html#idmef-node-new"/>
+    <function name="idmef_node_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-node-copy"/>
+    <function name="idmef_node_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-node-clone"/>
+    <function name="idmef_node_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-node-ref"/>
+    <function name="idmef_node_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-node-destroy"/>
+    <function name="idmef_node_get_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-node-get-ident"/>
+    <function name="idmef_node_set_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-node-set-ident"/>
+    <function name="idmef_node_new_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-node-new-ident"/>
+    <function name="idmef_node_get_category ()" link="libprelude-idmef-tree-wrap.html#idmef-node-get-category"/>
+    <function name="idmef_node_set_category ()" link="libprelude-idmef-tree-wrap.html#idmef-node-set-category"/>
+    <function name="idmef_node_new_category ()" link="libprelude-idmef-tree-wrap.html#idmef-node-new-category"/>
+    <function name="idmef_node_get_location ()" link="libprelude-idmef-tree-wrap.html#idmef-node-get-location"/>
+    <function name="idmef_node_set_location ()" link="libprelude-idmef-tree-wrap.html#idmef-node-set-location"/>
+    <function name="idmef_node_new_location ()" link="libprelude-idmef-tree-wrap.html#idmef-node-new-location"/>
+    <function name="idmef_node_get_name ()" link="libprelude-idmef-tree-wrap.html#idmef-node-get-name"/>
+    <function name="idmef_node_set_name ()" link="libprelude-idmef-tree-wrap.html#idmef-node-set-name"/>
+    <function name="idmef_node_new_name ()" link="libprelude-idmef-tree-wrap.html#idmef-node-new-name"/>
+    <function name="idmef_node_get_next_address ()" link="libprelude-idmef-tree-wrap.html#idmef-node-get-next-address"/>
+    <function name="idmef_node_set_address ()" link="libprelude-idmef-tree-wrap.html#idmef-node-set-address"/>
+    <function name="idmef_node_new_address ()" link="libprelude-idmef-tree-wrap.html#idmef-node-new-address"/>
+    <function name="enum idmef_source_spoofed_t" link="libprelude-idmef-tree-wrap.html#idmef-source-spoofed-t"/>
+    <function name="idmef_source_spoofed_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-source-spoofed-to-numeric"/>
+    <function name="idmef_source_spoofed_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-source-spoofed-to-string"/>
+    <function name="idmef_source_t" link="libprelude-idmef-tree-wrap.html#idmef-source-t"/>
+    <function name="idmef_source_new ()" link="libprelude-idmef-tree-wrap.html#idmef-source-new"/>
+    <function name="idmef_source_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-source-copy"/>
+    <function name="idmef_source_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-source-clone"/>
+    <function name="idmef_source_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-source-ref"/>
+    <function name="idmef_source_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-source-destroy"/>
+    <function name="idmef_source_get_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-source-get-ident"/>
+    <function name="idmef_source_set_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-source-set-ident"/>
+    <function name="idmef_source_new_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-source-new-ident"/>
+    <function name="idmef_source_get_spoofed ()" link="libprelude-idmef-tree-wrap.html#idmef-source-get-spoofed"/>
+    <function name="idmef_source_set_spoofed ()" link="libprelude-idmef-tree-wrap.html#idmef-source-set-spoofed"/>
+    <function name="idmef_source_new_spoofed ()" link="libprelude-idmef-tree-wrap.html#idmef-source-new-spoofed"/>
+    <function name="idmef_source_get_interface ()" link="libprelude-idmef-tree-wrap.html#idmef-source-get-interface"/>
+    <function name="idmef_source_set_interface ()" link="libprelude-idmef-tree-wrap.html#idmef-source-set-interface"/>
+    <function name="idmef_source_new_interface ()" link="libprelude-idmef-tree-wrap.html#idmef-source-new-interface"/>
+    <function name="idmef_source_get_node ()" link="libprelude-idmef-tree-wrap.html#idmef-source-get-node"/>
+    <function name="idmef_source_set_node ()" link="libprelude-idmef-tree-wrap.html#idmef-source-set-node"/>
+    <function name="idmef_source_new_node ()" link="libprelude-idmef-tree-wrap.html#idmef-source-new-node"/>
+    <function name="idmef_source_get_user ()" link="libprelude-idmef-tree-wrap.html#idmef-source-get-user"/>
+    <function name="idmef_source_set_user ()" link="libprelude-idmef-tree-wrap.html#idmef-source-set-user"/>
+    <function name="idmef_source_new_user ()" link="libprelude-idmef-tree-wrap.html#idmef-source-new-user"/>
+    <function name="idmef_source_get_process ()" link="libprelude-idmef-tree-wrap.html#idmef-source-get-process"/>
+    <function name="idmef_source_set_process ()" link="libprelude-idmef-tree-wrap.html#idmef-source-set-process"/>
+    <function name="idmef_source_new_process ()" link="libprelude-idmef-tree-wrap.html#idmef-source-new-process"/>
+    <function name="idmef_source_get_service ()" link="libprelude-idmef-tree-wrap.html#idmef-source-get-service"/>
+    <function name="idmef_source_set_service ()" link="libprelude-idmef-tree-wrap.html#idmef-source-set-service"/>
+    <function name="idmef_source_new_service ()" link="libprelude-idmef-tree-wrap.html#idmef-source-new-service"/>
+    <function name="idmef_file_access_t" link="libprelude-idmef-tree-wrap.html#idmef-file-access-t"/>
+    <function name="idmef_file_access_new ()" link="libprelude-idmef-tree-wrap.html#idmef-file-access-new"/>
+    <function name="idmef_file_access_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-file-access-copy"/>
+    <function name="idmef_file_access_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-file-access-clone"/>
+    <function name="idmef_file_access_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-file-access-ref"/>
+    <function name="idmef_file_access_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-file-access-destroy"/>
+    <function name="idmef_file_access_get_user_id ()" link="libprelude-idmef-tree-wrap.html#idmef-file-access-get-user-id"/>
+    <function name="idmef_file_access_set_user_id ()" link="libprelude-idmef-tree-wrap.html#idmef-file-access-set-user-id"/>
+    <function name="idmef_file_access_new_user_id ()" link="libprelude-idmef-tree-wrap.html#idmef-file-access-new-user-id"/>
+    <function name="idmef_file_access_get_next_permission ()" link="libprelude-idmef-tree-wrap.html#idmef-file-access-get-next-permission"/>
+    <function name="idmef_file_access_set_permission ()" link="libprelude-idmef-tree-wrap.html#idmef-file-access-set-permission"/>
+    <function name="idmef_file_access_new_permission ()" link="libprelude-idmef-tree-wrap.html#idmef-file-access-new-permission"/>
+    <function name="idmef_inode_t" link="libprelude-idmef-tree-wrap.html#idmef-inode-t"/>
+    <function name="idmef_inode_new ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-new"/>
+    <function name="idmef_inode_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-copy"/>
+    <function name="idmef_inode_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-clone"/>
+    <function name="idmef_inode_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-ref"/>
+    <function name="idmef_inode_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-destroy"/>
+    <function name="idmef_inode_get_change_time ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-get-change-time"/>
+    <function name="idmef_inode_set_change_time ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-set-change-time"/>
+    <function name="idmef_inode_new_change_time ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-new-change-time"/>
+    <function name="idmef_inode_unset_number ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-unset-number"/>
+    <function name="idmef_inode_get_number ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-get-number"/>
+    <function name="idmef_inode_set_number ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-set-number"/>
+    <function name="idmef_inode_new_number ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-new-number"/>
+    <function name="idmef_inode_unset_major_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-unset-major-device"/>
+    <function name="idmef_inode_get_major_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-get-major-device"/>
+    <function name="idmef_inode_set_major_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-set-major-device"/>
+    <function name="idmef_inode_new_major_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-new-major-device"/>
+    <function name="idmef_inode_unset_minor_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-unset-minor-device"/>
+    <function name="idmef_inode_get_minor_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-get-minor-device"/>
+    <function name="idmef_inode_set_minor_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-set-minor-device"/>
+    <function name="idmef_inode_new_minor_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-new-minor-device"/>
+    <function name="idmef_inode_unset_c_major_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-unset-c-major-device"/>
+    <function name="idmef_inode_get_c_major_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-get-c-major-device"/>
+    <function name="idmef_inode_set_c_major_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-set-c-major-device"/>
+    <function name="idmef_inode_new_c_major_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-new-c-major-device"/>
+    <function name="idmef_inode_unset_c_minor_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-unset-c-minor-device"/>
+    <function name="idmef_inode_get_c_minor_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-get-c-minor-device"/>
+    <function name="idmef_inode_set_c_minor_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-set-c-minor-device"/>
+    <function name="idmef_inode_new_c_minor_device ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-new-c-minor-device"/>
+    <function name="idmef_linkage_t" link="libprelude-idmef-tree-wrap.html#idmef-linkage-t"/>
+    <function name="enum idmef_checksum_algorithm_t" link="libprelude-idmef-tree-wrap.html#idmef-checksum-algorithm-t"/>
+    <function name="idmef_checksum_algorithm_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-algorithm-to-numeric"/>
+    <function name="idmef_checksum_algorithm_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-algorithm-to-string"/>
+    <function name="idmef_checksum_t" link="libprelude-idmef-tree-wrap.html#idmef-checksum-t"/>
+    <function name="idmef_checksum_new ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-new"/>
+    <function name="idmef_checksum_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-copy"/>
+    <function name="idmef_checksum_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-clone"/>
+    <function name="idmef_checksum_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-ref"/>
+    <function name="idmef_checksum_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-destroy"/>
+    <function name="idmef_checksum_get_value ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-get-value"/>
+    <function name="idmef_checksum_set_value ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-set-value"/>
+    <function name="idmef_checksum_new_value ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-new-value"/>
+    <function name="idmef_checksum_get_key ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-get-key"/>
+    <function name="idmef_checksum_set_key ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-set-key"/>
+    <function name="idmef_checksum_new_key ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-new-key"/>
+    <function name="idmef_checksum_get_algorithm ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-get-algorithm"/>
+    <function name="idmef_checksum_set_algorithm ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-set-algorithm"/>
+    <function name="idmef_checksum_new_algorithm ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-new-algorithm"/>
+    <function name="enum idmef_file_category_t" link="libprelude-idmef-tree-wrap.html#idmef-file-category-t"/>
+    <function name="idmef_file_category_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-file-category-to-numeric"/>
+    <function name="idmef_file_category_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-file-category-to-string"/>
+    <function name="enum idmef_file_fstype_t" link="libprelude-idmef-tree-wrap.html#idmef-file-fstype-t"/>
+    <function name="idmef_file_fstype_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-file-fstype-to-numeric"/>
+    <function name="idmef_file_fstype_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-file-fstype-to-string"/>
+    <function name="idmef_file_t" link="libprelude-idmef-tree-wrap.html#idmef-file-t"/>
+    <function name="idmef_file_new ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new"/>
+    <function name="idmef_file_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-file-copy"/>
+    <function name="idmef_file_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-file-clone"/>
+    <function name="idmef_file_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-file-ref"/>
+    <function name="idmef_file_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-file-destroy"/>
+    <function name="idmef_file_get_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-ident"/>
+    <function name="idmef_file_set_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-ident"/>
+    <function name="idmef_file_new_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-ident"/>
+    <function name="idmef_file_get_name ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-name"/>
+    <function name="idmef_file_set_name ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-name"/>
+    <function name="idmef_file_new_name ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-name"/>
+    <function name="idmef_file_get_path ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-path"/>
+    <function name="idmef_file_set_path ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-path"/>
+    <function name="idmef_file_new_path ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-path"/>
+    <function name="idmef_file_get_create_time ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-create-time"/>
+    <function name="idmef_file_set_create_time ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-create-time"/>
+    <function name="idmef_file_new_create_time ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-create-time"/>
+    <function name="idmef_file_get_modify_time ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-modify-time"/>
+    <function name="idmef_file_set_modify_time ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-modify-time"/>
+    <function name="idmef_file_new_modify_time ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-modify-time"/>
+    <function name="idmef_file_get_access_time ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-access-time"/>
+    <function name="idmef_file_set_access_time ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-access-time"/>
+    <function name="idmef_file_new_access_time ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-access-time"/>
+    <function name="idmef_file_unset_data_size ()" link="libprelude-idmef-tree-wrap.html#idmef-file-unset-data-size"/>
+    <function name="idmef_file_get_data_size ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-data-size"/>
+    <function name="idmef_file_set_data_size ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-data-size"/>
+    <function name="idmef_file_new_data_size ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-data-size"/>
+    <function name="idmef_file_unset_disk_size ()" link="libprelude-idmef-tree-wrap.html#idmef-file-unset-disk-size"/>
+    <function name="idmef_file_get_disk_size ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-disk-size"/>
+    <function name="idmef_file_set_disk_size ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-disk-size"/>
+    <function name="idmef_file_new_disk_size ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-disk-size"/>
+    <function name="idmef_file_get_next_file_access ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-next-file-access"/>
+    <function name="idmef_file_set_file_access ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-file-access"/>
+    <function name="idmef_file_new_file_access ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-file-access"/>
+    <function name="idmef_file_get_next_linkage ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-next-linkage"/>
+    <function name="idmef_file_set_linkage ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-linkage"/>
+    <function name="idmef_file_new_linkage ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-linkage"/>
+    <function name="idmef_file_get_inode ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-inode"/>
+    <function name="idmef_file_set_inode ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-inode"/>
+    <function name="idmef_file_new_inode ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-inode"/>
+    <function name="idmef_file_get_next_checksum ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-next-checksum"/>
+    <function name="idmef_file_set_checksum ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-checksum"/>
+    <function name="idmef_file_new_checksum ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-checksum"/>
+    <function name="idmef_file_get_category ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-category"/>
+    <function name="idmef_file_set_category ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-category"/>
+    <function name="idmef_file_new_category ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-category"/>
+    <function name="idmef_file_unset_fstype ()" link="libprelude-idmef-tree-wrap.html#idmef-file-unset-fstype"/>
+    <function name="idmef_file_get_fstype ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-fstype"/>
+    <function name="idmef_file_set_fstype ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-fstype"/>
+    <function name="idmef_file_new_fstype ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-fstype"/>
+    <function name="idmef_file_get_file_type ()" link="libprelude-idmef-tree-wrap.html#idmef-file-get-file-type"/>
+    <function name="idmef_file_set_file_type ()" link="libprelude-idmef-tree-wrap.html#idmef-file-set-file-type"/>
+    <function name="idmef_file_new_file_type ()" link="libprelude-idmef-tree-wrap.html#idmef-file-new-file-type"/>
+    <function name="enum idmef_linkage_category_t" link="libprelude-idmef-tree-wrap.html#idmef-linkage-category-t"/>
+    <function name="idmef_linkage_category_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-category-to-numeric"/>
+    <function name="idmef_linkage_category_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-category-to-string"/>
+    <function name="idmef_linkage_new ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-new"/>
+    <function name="idmef_linkage_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-copy"/>
+    <function name="idmef_linkage_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-clone"/>
+    <function name="idmef_linkage_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-ref"/>
+    <function name="idmef_linkage_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-destroy"/>
+    <function name="idmef_linkage_get_category ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-get-category"/>
+    <function name="idmef_linkage_set_category ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-set-category"/>
+    <function name="idmef_linkage_new_category ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-new-category"/>
+    <function name="idmef_linkage_get_name ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-get-name"/>
+    <function name="idmef_linkage_set_name ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-set-name"/>
+    <function name="idmef_linkage_new_name ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-new-name"/>
+    <function name="idmef_linkage_get_path ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-get-path"/>
+    <function name="idmef_linkage_set_path ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-set-path"/>
+    <function name="idmef_linkage_new_path ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-new-path"/>
+    <function name="idmef_linkage_get_file ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-get-file"/>
+    <function name="idmef_linkage_set_file ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-set-file"/>
+    <function name="idmef_linkage_new_file ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-new-file"/>
+    <function name="enum idmef_target_decoy_t" link="libprelude-idmef-tree-wrap.html#idmef-target-decoy-t"/>
+    <function name="idmef_target_decoy_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-target-decoy-to-numeric"/>
+    <function name="idmef_target_decoy_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-target-decoy-to-string"/>
+    <function name="idmef_target_t" link="libprelude-idmef-tree-wrap.html#idmef-target-t"/>
+    <function name="idmef_target_new ()" link="libprelude-idmef-tree-wrap.html#idmef-target-new"/>
+    <function name="idmef_target_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-target-copy"/>
+    <function name="idmef_target_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-target-clone"/>
+    <function name="idmef_target_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-target-ref"/>
+    <function name="idmef_target_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-target-destroy"/>
+    <function name="idmef_target_get_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-target-get-ident"/>
+    <function name="idmef_target_set_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-target-set-ident"/>
+    <function name="idmef_target_new_ident ()" link="libprelude-idmef-tree-wrap.html#idmef-target-new-ident"/>
+    <function name="idmef_target_get_decoy ()" link="libprelude-idmef-tree-wrap.html#idmef-target-get-decoy"/>
+    <function name="idmef_target_set_decoy ()" link="libprelude-idmef-tree-wrap.html#idmef-target-set-decoy"/>
+    <function name="idmef_target_new_decoy ()" link="libprelude-idmef-tree-wrap.html#idmef-target-new-decoy"/>
+    <function name="idmef_target_get_interface ()" link="libprelude-idmef-tree-wrap.html#idmef-target-get-interface"/>
+    <function name="idmef_target_set_interface ()" link="libprelude-idmef-tree-wrap.html#idmef-target-set-interface"/>
+    <function name="idmef_target_new_interface ()" link="libprelude-idmef-tree-wrap.html#idmef-target-new-interface"/>
+    <function name="idmef_target_get_node ()" link="libprelude-idmef-tree-wrap.html#idmef-target-get-node"/>
+    <function name="idmef_target_set_node ()" link="libprelude-idmef-tree-wrap.html#idmef-target-set-node"/>
+    <function name="idmef_target_new_node ()" link="libprelude-idmef-tree-wrap.html#idmef-target-new-node"/>
+    <function name="idmef_target_get_user ()" link="libprelude-idmef-tree-wrap.html#idmef-target-get-user"/>
+    <function name="idmef_target_set_user ()" link="libprelude-idmef-tree-wrap.html#idmef-target-set-user"/>
+    <function name="idmef_target_new_user ()" link="libprelude-idmef-tree-wrap.html#idmef-target-new-user"/>
+    <function name="idmef_target_get_process ()" link="libprelude-idmef-tree-wrap.html#idmef-target-get-process"/>
+    <function name="idmef_target_set_process ()" link="libprelude-idmef-tree-wrap.html#idmef-target-set-process"/>
+    <function name="idmef_target_new_process ()" link="libprelude-idmef-tree-wrap.html#idmef-target-new-process"/>
+    <function name="idmef_target_get_service ()" link="libprelude-idmef-tree-wrap.html#idmef-target-get-service"/>
+    <function name="idmef_target_set_service ()" link="libprelude-idmef-tree-wrap.html#idmef-target-set-service"/>
+    <function name="idmef_target_new_service ()" link="libprelude-idmef-tree-wrap.html#idmef-target-new-service"/>
+    <function name="idmef_target_get_next_file ()" link="libprelude-idmef-tree-wrap.html#idmef-target-get-next-file"/>
+    <function name="idmef_target_set_file ()" link="libprelude-idmef-tree-wrap.html#idmef-target-set-file"/>
+    <function name="idmef_target_new_file ()" link="libprelude-idmef-tree-wrap.html#idmef-target-new-file"/>
+    <function name="idmef_analyzer_t" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-t"/>
+    <function name="idmef_analyzer_new ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-new"/>
+    <function name="idmef_analyzer_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-copy"/>
+    <function name="idmef_analyzer_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-clone"/>
+    <function name="idmef_analyzer_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-ref"/>
+    <function name="idmef_analyzer_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-destroy"/>
+    <function name="idmef_analyzer_get_analyzerid ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-get-analyzerid"/>
+    <function name="idmef_analyzer_set_analyzerid ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-set-analyzerid"/>
+    <function name="idmef_analyzer_new_analyzerid ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-new-analyzerid"/>
+    <function name="idmef_analyzer_get_name ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-get-name"/>
+    <function name="idmef_analyzer_set_name ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-set-name"/>
+    <function name="idmef_analyzer_new_name ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-new-name"/>
+    <function name="idmef_analyzer_get_manufacturer ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-get-manufacturer"/>
+    <function name="idmef_analyzer_set_manufacturer ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-set-manufacturer"/>
+    <function name="idmef_analyzer_new_manufacturer ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-new-manufacturer"/>
+    <function name="idmef_analyzer_get_model ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-get-model"/>
+    <function name="idmef_analyzer_set_model ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-set-model"/>
+    <function name="idmef_analyzer_new_model ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-new-model"/>
+    <function name="idmef_analyzer_get_version ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-get-version"/>
+    <function name="idmef_analyzer_set_version ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-set-version"/>
+    <function name="idmef_analyzer_new_version ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-new-version"/>
+    <function name="idmef_analyzer_get_class ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-get-class"/>
+    <function name="idmef_analyzer_set_class ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-set-class"/>
+    <function name="idmef_analyzer_new_class ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-new-class"/>
+    <function name="idmef_analyzer_get_ostype ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-get-ostype"/>
+    <function name="idmef_analyzer_set_ostype ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-set-ostype"/>
+    <function name="idmef_analyzer_new_ostype ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-new-ostype"/>
+    <function name="idmef_analyzer_get_osversion ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-get-osversion"/>
+    <function name="idmef_analyzer_set_osversion ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-set-osversion"/>
+    <function name="idmef_analyzer_new_osversion ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-new-osversion"/>
+    <function name="idmef_analyzer_get_node ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-get-node"/>
+    <function name="idmef_analyzer_set_node ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-set-node"/>
+    <function name="idmef_analyzer_new_node ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-new-node"/>
+    <function name="idmef_analyzer_get_process ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-get-process"/>
+    <function name="idmef_analyzer_set_process ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-set-process"/>
+    <function name="idmef_analyzer_new_process ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-new-process"/>
+    <function name="idmef_alertident_t" link="libprelude-idmef-tree-wrap.html#idmef-alertident-t"/>
+    <function name="idmef_alertident_new ()" link="libprelude-idmef-tree-wrap.html#idmef-alertident-new"/>
+    <function name="idmef_alertident_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-alertident-copy"/>
+    <function name="idmef_alertident_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-alertident-clone"/>
+    <function name="idmef_alertident_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-alertident-ref"/>
+    <function name="idmef_alertident_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-alertident-destroy"/>
+    <function name="idmef_alertident_get_alertident ()" link="libprelude-idmef-tree-wrap.html#idmef-alertident-get-alertident"/>
+    <function name="idmef_alertident_set_alertident ()" link="libprelude-idmef-tree-wrap.html#idmef-alertident-set-alertident"/>
+    <function name="idmef_alertident_new_alertident ()" link="libprelude-idmef-tree-wrap.html#idmef-alertident-new-alertident"/>
+    <function name="idmef_alertident_get_analyzerid ()" link="libprelude-idmef-tree-wrap.html#idmef-alertident-get-analyzerid"/>
+    <function name="idmef_alertident_set_analyzerid ()" link="libprelude-idmef-tree-wrap.html#idmef-alertident-set-analyzerid"/>
+    <function name="idmef_alertident_new_analyzerid ()" link="libprelude-idmef-tree-wrap.html#idmef-alertident-new-analyzerid"/>
+    <function name="enum idmef_impact_severity_t" link="libprelude-idmef-tree-wrap.html#idmef-impact-severity-t"/>
+    <function name="idmef_impact_severity_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-severity-to-numeric"/>
+    <function name="idmef_impact_severity_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-severity-to-string"/>
+    <function name="enum idmef_impact_completion_t" link="libprelude-idmef-tree-wrap.html#idmef-impact-completion-t"/>
+    <function name="idmef_impact_completion_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-completion-to-numeric"/>
+    <function name="idmef_impact_completion_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-completion-to-string"/>
+    <function name="enum idmef_impact_type_t" link="libprelude-idmef-tree-wrap.html#idmef-impact-type-t"/>
+    <function name="idmef_impact_type_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-type-to-numeric"/>
+    <function name="idmef_impact_type_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-type-to-string"/>
+    <function name="idmef_impact_t" link="libprelude-idmef-tree-wrap.html#idmef-impact-t"/>
+    <function name="idmef_impact_new ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-new"/>
+    <function name="idmef_impact_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-copy"/>
+    <function name="idmef_impact_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-clone"/>
+    <function name="idmef_impact_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-ref"/>
+    <function name="idmef_impact_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-destroy"/>
+    <function name="idmef_impact_unset_severity ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-unset-severity"/>
+    <function name="idmef_impact_get_severity ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-get-severity"/>
+    <function name="idmef_impact_set_severity ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-set-severity"/>
+    <function name="idmef_impact_new_severity ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-new-severity"/>
+    <function name="idmef_impact_unset_completion ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-unset-completion"/>
+    <function name="idmef_impact_get_completion ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-get-completion"/>
+    <function name="idmef_impact_set_completion ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-set-completion"/>
+    <function name="idmef_impact_new_completion ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-new-completion"/>
+    <function name="idmef_impact_get_type ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-get-type"/>
+    <function name="idmef_impact_set_type ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-set-type"/>
+    <function name="idmef_impact_new_type ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-new-type"/>
+    <function name="idmef_impact_get_description ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-get-description"/>
+    <function name="idmef_impact_set_description ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-set-description"/>
+    <function name="idmef_impact_new_description ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-new-description"/>
+    <function name="enum idmef_action_category_t" link="libprelude-idmef-tree-wrap.html#idmef-action-category-t"/>
+    <function name="idmef_action_category_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-action-category-to-numeric"/>
+    <function name="idmef_action_category_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-action-category-to-string"/>
+    <function name="idmef_action_t" link="libprelude-idmef-tree-wrap.html#idmef-action-t"/>
+    <function name="idmef_action_new ()" link="libprelude-idmef-tree-wrap.html#idmef-action-new"/>
+    <function name="idmef_action_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-action-copy"/>
+    <function name="idmef_action_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-action-clone"/>
+    <function name="idmef_action_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-action-ref"/>
+    <function name="idmef_action_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-action-destroy"/>
+    <function name="idmef_action_get_category ()" link="libprelude-idmef-tree-wrap.html#idmef-action-get-category"/>
+    <function name="idmef_action_set_category ()" link="libprelude-idmef-tree-wrap.html#idmef-action-set-category"/>
+    <function name="idmef_action_new_category ()" link="libprelude-idmef-tree-wrap.html#idmef-action-new-category"/>
+    <function name="idmef_action_get_description ()" link="libprelude-idmef-tree-wrap.html#idmef-action-get-description"/>
+    <function name="idmef_action_set_description ()" link="libprelude-idmef-tree-wrap.html#idmef-action-set-description"/>
+    <function name="idmef_action_new_description ()" link="libprelude-idmef-tree-wrap.html#idmef-action-new-description"/>
+    <function name="enum idmef_confidence_rating_t" link="libprelude-idmef-tree-wrap.html#idmef-confidence-rating-t"/>
+    <function name="idmef_confidence_rating_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-confidence-rating-to-numeric"/>
+    <function name="idmef_confidence_rating_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-confidence-rating-to-string"/>
+    <function name="idmef_confidence_t" link="libprelude-idmef-tree-wrap.html#idmef-confidence-t"/>
+    <function name="idmef_confidence_new ()" link="libprelude-idmef-tree-wrap.html#idmef-confidence-new"/>
+    <function name="idmef_confidence_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-confidence-copy"/>
+    <function name="idmef_confidence_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-confidence-clone"/>
+    <function name="idmef_confidence_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-confidence-ref"/>
+    <function name="idmef_confidence_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-confidence-destroy"/>
+    <function name="idmef_confidence_get_rating ()" link="libprelude-idmef-tree-wrap.html#idmef-confidence-get-rating"/>
+    <function name="idmef_confidence_set_rating ()" link="libprelude-idmef-tree-wrap.html#idmef-confidence-set-rating"/>
+    <function name="idmef_confidence_new_rating ()" link="libprelude-idmef-tree-wrap.html#idmef-confidence-new-rating"/>
+    <function name="idmef_confidence_get_confidence ()" link="libprelude-idmef-tree-wrap.html#idmef-confidence-get-confidence"/>
+    <function name="idmef_confidence_set_confidence ()" link="libprelude-idmef-tree-wrap.html#idmef-confidence-set-confidence"/>
+    <function name="idmef_confidence_new_confidence ()" link="libprelude-idmef-tree-wrap.html#idmef-confidence-new-confidence"/>
+    <function name="idmef_assessment_t" link="libprelude-idmef-tree-wrap.html#idmef-assessment-t"/>
+    <function name="idmef_assessment_new ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-new"/>
+    <function name="idmef_assessment_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-copy"/>
+    <function name="idmef_assessment_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-clone"/>
+    <function name="idmef_assessment_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-ref"/>
+    <function name="idmef_assessment_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-destroy"/>
+    <function name="idmef_assessment_get_impact ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-get-impact"/>
+    <function name="idmef_assessment_set_impact ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-set-impact"/>
+    <function name="idmef_assessment_new_impact ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-new-impact"/>
+    <function name="idmef_assessment_get_next_action ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-get-next-action"/>
+    <function name="idmef_assessment_set_action ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-set-action"/>
+    <function name="idmef_assessment_new_action ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-new-action"/>
+    <function name="idmef_assessment_get_confidence ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-get-confidence"/>
+    <function name="idmef_assessment_set_confidence ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-set-confidence"/>
+    <function name="idmef_assessment_new_confidence ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-new-confidence"/>
+    <function name="idmef_tool_alert_t" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-t"/>
+    <function name="idmef_tool_alert_new ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-new"/>
+    <function name="idmef_tool_alert_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-copy"/>
+    <function name="idmef_tool_alert_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-clone"/>
+    <function name="idmef_tool_alert_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-ref"/>
+    <function name="idmef_tool_alert_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-destroy"/>
+    <function name="idmef_tool_alert_get_name ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-get-name"/>
+    <function name="idmef_tool_alert_set_name ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-set-name"/>
+    <function name="idmef_tool_alert_new_name ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-new-name"/>
+    <function name="idmef_tool_alert_get_command ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-get-command"/>
+    <function name="idmef_tool_alert_set_command ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-set-command"/>
+    <function name="idmef_tool_alert_new_command ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-new-command"/>
+    <function name="idmef_tool_alert_get_next_alertident ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-get-next-alertident"/>
+    <function name="idmef_tool_alert_set_alertident ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-set-alertident"/>
+    <function name="idmef_tool_alert_new_alertident ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-new-alertident"/>
+    <function name="idmef_correlation_alert_t" link="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-t"/>
+    <function name="idmef_correlation_alert_new ()" link="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-new"/>
+    <function name="idmef_correlation_alert_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-copy"/>
+    <function name="idmef_correlation_alert_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-clone"/>
+    <function name="idmef_correlation_alert_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-ref"/>
+    <function name="idmef_correlation_alert_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-destroy"/>
+    <function name="idmef_correlation_alert_get_name ()" link="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-get-name"/>
+    <function name="idmef_correlation_alert_set_name ()" link="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-set-name"/>
+    <function name="idmef_correlation_alert_new_name ()" link="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-new-name"/>
+    <function name="idmef_correlation_alert_get_next_alertident ()" link="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-get-next-alertident"/>
+    <function name="idmef_correlation_alert_set_alertident ()" link="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-set-alertident"/>
+    <function name="idmef_correlation_alert_new_alertident ()" link="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-new-alertident"/>
+    <function name="idmef_overflow_alert_t" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-t"/>
+    <function name="idmef_overflow_alert_new ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-new"/>
+    <function name="idmef_overflow_alert_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-copy"/>
+    <function name="idmef_overflow_alert_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-clone"/>
+    <function name="idmef_overflow_alert_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-ref"/>
+    <function name="idmef_overflow_alert_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-destroy"/>
+    <function name="idmef_overflow_alert_get_program ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-get-program"/>
+    <function name="idmef_overflow_alert_set_program ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-set-program"/>
+    <function name="idmef_overflow_alert_new_program ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-new-program"/>
+    <function name="idmef_overflow_alert_unset_size ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-unset-size"/>
+    <function name="idmef_overflow_alert_get_size ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-get-size"/>
+    <function name="idmef_overflow_alert_set_size ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-set-size"/>
+    <function name="idmef_overflow_alert_new_size ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-new-size"/>
+    <function name="idmef_overflow_alert_get_buffer ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-get-buffer"/>
+    <function name="idmef_overflow_alert_set_buffer ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-set-buffer"/>
+    <function name="idmef_overflow_alert_new_buffer ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-new-buffer"/>
+    <function name="enum idmef_alert_type_t" link="libprelude-idmef-tree-wrap.html#idmef-alert-type-t"/>
+    <function name="idmef_alert_type_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-type-to-numeric"/>
+    <function name="idmef_alert_type_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-type-to-string"/>
+    <function name="idmef_alert_t" link="libprelude-idmef-tree-wrap.html#idmef-alert-t"/>
+    <function name="idmef_alert_new ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-new"/>
+    <function name="idmef_alert_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-copy"/>
+    <function name="idmef_alert_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-clone"/>
+    <function name="idmef_alert_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-ref"/>
+    <function name="idmef_alert_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-destroy"/>
+    <function name="idmef_alert_get_messageid ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-get-messageid"/>
+    <function name="idmef_alert_set_messageid ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-set-messageid"/>
+    <function name="idmef_alert_new_messageid ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-new-messageid"/>
+    <function name="idmef_alert_get_next_analyzer ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-get-next-analyzer"/>
+    <function name="idmef_alert_set_analyzer ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-set-analyzer"/>
+    <function name="idmef_alert_new_analyzer ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-new-analyzer"/>
+    <function name="idmef_alert_get_create_time ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-get-create-time"/>
+    <function name="idmef_alert_set_create_time ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-set-create-time"/>
+    <function name="idmef_alert_new_create_time ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-new-create-time"/>
+    <function name="idmef_alert_get_classification ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-get-classification"/>
+    <function name="idmef_alert_set_classification ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-set-classification"/>
+    <function name="idmef_alert_new_classification ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-new-classification"/>
+    <function name="idmef_alert_get_detect_time ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-get-detect-time"/>
+    <function name="idmef_alert_set_detect_time ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-set-detect-time"/>
+    <function name="idmef_alert_new_detect_time ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-new-detect-time"/>
+    <function name="idmef_alert_get_analyzer_time ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-get-analyzer-time"/>
+    <function name="idmef_alert_set_analyzer_time ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-set-analyzer-time"/>
+    <function name="idmef_alert_new_analyzer_time ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-new-analyzer-time"/>
+    <function name="idmef_alert_get_next_source ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-get-next-source"/>
+    <function name="idmef_alert_set_source ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-set-source"/>
+    <function name="idmef_alert_new_source ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-new-source"/>
+    <function name="idmef_alert_get_next_target ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-get-next-target"/>
+    <function name="idmef_alert_set_target ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-set-target"/>
+    <function name="idmef_alert_new_target ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-new-target"/>
+    <function name="idmef_alert_get_assessment ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-get-assessment"/>
+    <function name="idmef_alert_set_assessment ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-set-assessment"/>
+    <function name="idmef_alert_new_assessment ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-new-assessment"/>
+    <function name="idmef_alert_get_next_additional_data ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-get-next-additional-data"/>
+    <function name="idmef_alert_set_additional_data ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-set-additional-data"/>
+    <function name="idmef_alert_new_additional_data ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-new-additional-data"/>
+    <function name="idmef_alert_get_type ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-get-type"/>
+    <function name="idmef_alert_get_tool_alert ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-get-tool-alert"/>
+    <function name="idmef_alert_set_tool_alert ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-set-tool-alert"/>
+    <function name="idmef_alert_new_tool_alert ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-new-tool-alert"/>
+    <function name="idmef_alert_get_correlation_alert ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-get-correlation-alert"/>
+    <function name="idmef_alert_set_correlation_alert ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-set-correlation-alert"/>
+    <function name="idmef_alert_new_correlation_alert ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-new-correlation-alert"/>
+    <function name="idmef_alert_get_overflow_alert ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-get-overflow-alert"/>
+    <function name="idmef_alert_set_overflow_alert ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-set-overflow-alert"/>
+    <function name="idmef_alert_new_overflow_alert ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-new-overflow-alert"/>
+    <function name="idmef_heartbeat_t" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-t"/>
+    <function name="idmef_heartbeat_new ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-new"/>
+    <function name="idmef_heartbeat_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-copy"/>
+    <function name="idmef_heartbeat_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-clone"/>
+    <function name="idmef_heartbeat_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-ref"/>
+    <function name="idmef_heartbeat_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-destroy"/>
+    <function name="idmef_heartbeat_get_messageid ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-get-messageid"/>
+    <function name="idmef_heartbeat_set_messageid ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-set-messageid"/>
+    <function name="idmef_heartbeat_new_messageid ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-new-messageid"/>
+    <function name="idmef_heartbeat_get_next_analyzer ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-get-next-analyzer"/>
+    <function name="idmef_heartbeat_set_analyzer ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-set-analyzer"/>
+    <function name="idmef_heartbeat_new_analyzer ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-new-analyzer"/>
+    <function name="idmef_heartbeat_get_create_time ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-get-create-time"/>
+    <function name="idmef_heartbeat_set_create_time ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-set-create-time"/>
+    <function name="idmef_heartbeat_new_create_time ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-new-create-time"/>
+    <function name="idmef_heartbeat_get_analyzer_time ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-get-analyzer-time"/>
+    <function name="idmef_heartbeat_set_analyzer_time ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-set-analyzer-time"/>
+    <function name="idmef_heartbeat_new_analyzer_time ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-new-analyzer-time"/>
+    <function name="idmef_heartbeat_unset_heartbeat_interval ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-unset-heartbeat-interval"/>
+    <function name="idmef_heartbeat_get_heartbeat_interval ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-get-heartbeat-interval"/>
+    <function name="idmef_heartbeat_set_heartbeat_interval ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-set-heartbeat-interval"/>
+    <function name="idmef_heartbeat_new_heartbeat_interval ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-new-heartbeat-interval"/>
+    <function name="idmef_heartbeat_get_next_additional_data ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-get-next-additional-data"/>
+    <function name="idmef_heartbeat_set_additional_data ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-set-additional-data"/>
+    <function name="idmef_heartbeat_new_additional_data ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-new-additional-data"/>
+    <function name="enum idmef_message_type_t" link="libprelude-idmef-tree-wrap.html#idmef-message-type-t"/>
+    <function name="idmef_message_type_to_numeric ()" link="libprelude-idmef-tree-wrap.html#idmef-message-type-to-numeric"/>
+    <function name="idmef_message_type_to_string ()" link="libprelude-idmef-tree-wrap.html#idmef-message-type-to-string"/>
+    <function name="idmef_message_t" link="libprelude-idmef-tree-wrap.html#idmef-message-t"/>
+    <function name="idmef_message_new ()" link="libprelude-idmef-tree-wrap.html#idmef-message-new"/>
+    <function name="idmef_message_copy ()" link="libprelude-idmef-tree-wrap.html#idmef-message-copy"/>
+    <function name="idmef_message_clone ()" link="libprelude-idmef-tree-wrap.html#idmef-message-clone"/>
+    <function name="idmef_message_ref ()" link="libprelude-idmef-tree-wrap.html#idmef-message-ref"/>
+    <function name="idmef_message_destroy ()" link="libprelude-idmef-tree-wrap.html#idmef-message-destroy"/>
+    <function name="idmef_message_get_version ()" link="libprelude-idmef-tree-wrap.html#idmef-message-get-version"/>
+    <function name="idmef_message_set_version ()" link="libprelude-idmef-tree-wrap.html#idmef-message-set-version"/>
+    <function name="idmef_message_new_version ()" link="libprelude-idmef-tree-wrap.html#idmef-message-new-version"/>
+    <function name="idmef_message_get_type ()" link="libprelude-idmef-tree-wrap.html#idmef-message-get-type"/>
+    <function name="idmef_message_get_alert ()" link="libprelude-idmef-tree-wrap.html#idmef-message-get-alert"/>
+    <function name="idmef_message_set_alert ()" link="libprelude-idmef-tree-wrap.html#idmef-message-set-alert"/>
+    <function name="idmef_message_new_alert ()" link="libprelude-idmef-tree-wrap.html#idmef-message-new-alert"/>
+    <function name="idmef_message_get_heartbeat ()" link="libprelude-idmef-tree-wrap.html#idmef-message-get-heartbeat"/>
+    <function name="idmef_message_set_heartbeat ()" link="libprelude-idmef-tree-wrap.html#idmef-message-set-heartbeat"/>
+    <function name="idmef_message_new_heartbeat ()" link="libprelude-idmef-tree-wrap.html#idmef-message-new-heartbeat"/>
+    <function name="idmef_message_set_pmsg ()" link="libprelude-idmef-tree-wrap.html#idmef-message-set-pmsg"/>
+    <function name="idmef_message_get_pmsg ()" link="libprelude-idmef-tree-wrap.html#idmef-message-get-pmsg"/>
+    <function name="idmef_action_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-action-compare"/>
+    <function name="idmef_additional_data_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-additional-data-compare"/>
+    <function name="idmef_address_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-address-compare"/>
+    <function name="idmef_alert_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-alert-compare"/>
+    <function name="idmef_alertident_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-alertident-compare"/>
+    <function name="idmef_analyzer_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-analyzer-compare"/>
+    <function name="idmef_assessment_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-assessment-compare"/>
+    <function name="idmef_checksum_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-checksum-compare"/>
+    <function name="idmef_classification_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-classification-compare"/>
+    <function name="idmef_confidence_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-confidence-compare"/>
+    <function name="idmef_correlation_alert_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-compare"/>
+    <function name="idmef_data_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-data-compare"/>
+    <function name="idmef_file_access_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-file-access-compare"/>
+    <function name="idmef_file_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-file-compare"/>
+    <function name="idmef_heartbeat_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-heartbeat-compare"/>
+    <function name="idmef_impact_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-impact-compare"/>
+    <function name="idmef_inode_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-inode-compare"/>
+    <function name="idmef_linkage_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-linkage-compare"/>
+    <function name="idmef_message_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-message-compare"/>
+    <function name="idmef_node_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-node-compare"/>
+    <function name="idmef_overflow_alert_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-compare"/>
+    <function name="idmef_process_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-process-compare"/>
+    <function name="idmef_reference_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-reference-compare"/>
+    <function name="idmef_service_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-service-compare"/>
+    <function name="idmef_snmp_service_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-snmp-service-compare"/>
+    <function name="idmef_source_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-source-compare"/>
+    <function name="idmef_target_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-target-compare"/>
+    <function name="idmef_time_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-time-compare"/>
+    <function name="idmef_tool_alert_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-tool-alert-compare"/>
+    <function name="idmef_user_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-user-compare"/>
+    <function name="idmef_user_id_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-user-id-compare"/>
+    <function name="idmef_web_service_compare ()" link="libprelude-idmef-tree-wrap.html#idmef-web-service-compare"/>
+    <function name="IDMEF_CLASS_ID_ADDITIONAL_DATA_TYPE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-ADDITIONAL-DATA-TYPE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_ADDITIONAL_DATA" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-ADDITIONAL-DATA--CAPS"/>
+    <function name="IDMEF_CLASS_ID_REFERENCE_ORIGIN" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-REFERENCE-ORIGIN--CAPS"/>
+    <function name="IDMEF_CLASS_ID_REFERENCE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-REFERENCE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_CLASSIFICATION" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-CLASSIFICATION--CAPS"/>
+    <function name="IDMEF_CLASS_ID_USER_ID_TYPE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-USER-ID-TYPE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_USER_ID" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-USER-ID--CAPS"/>
+    <function name="IDMEF_CLASS_ID_USER_CATEGORY" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-USER-CATEGORY--CAPS"/>
+    <function name="IDMEF_CLASS_ID_USER" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-USER--CAPS"/>
+    <function name="IDMEF_CLASS_ID_ADDRESS_CATEGORY" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-ADDRESS-CATEGORY--CAPS"/>
+    <function name="IDMEF_CLASS_ID_ADDRESS" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-ADDRESS--CAPS"/>
+    <function name="IDMEF_CLASS_ID_PROCESS" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-PROCESS--CAPS"/>
+    <function name="IDMEF_CLASS_ID_WEB_SERVICE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-WEB-SERVICE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_SNMP_SERVICE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-SNMP-SERVICE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_SERVICE_TYPE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-SERVICE-TYPE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_SERVICE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-SERVICE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_NODE_CATEGORY" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-NODE-CATEGORY--CAPS"/>
+    <function name="IDMEF_CLASS_ID_NODE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-NODE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_SOURCE_SPOOFED" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-SOURCE-SPOOFED--CAPS"/>
+    <function name="IDMEF_CLASS_ID_SOURCE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-SOURCE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_FILE_ACCESS" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-FILE-ACCESS--CAPS"/>
+    <function name="IDMEF_CLASS_ID_INODE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-INODE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_CHECKSUM_ALGORITHM" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-CHECKSUM-ALGORITHM--CAPS"/>
+    <function name="IDMEF_CLASS_ID_CHECKSUM" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-CHECKSUM--CAPS"/>
+    <function name="IDMEF_CLASS_ID_FILE_CATEGORY" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-FILE-CATEGORY--CAPS"/>
+    <function name="IDMEF_CLASS_ID_FILE_FSTYPE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-FILE-FSTYPE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_FILE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-FILE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_LINKAGE_CATEGORY" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-LINKAGE-CATEGORY--CAPS"/>
+    <function name="IDMEF_CLASS_ID_LINKAGE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-LINKAGE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_TARGET_DECOY" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-TARGET-DECOY--CAPS"/>
+    <function name="IDMEF_CLASS_ID_TARGET" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-TARGET--CAPS"/>
+    <function name="IDMEF_CLASS_ID_ANALYZER" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-ANALYZER--CAPS"/>
+    <function name="IDMEF_CLASS_ID_ALERTIDENT" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-ALERTIDENT--CAPS"/>
+    <function name="IDMEF_CLASS_ID_IMPACT_SEVERITY" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-IMPACT-SEVERITY--CAPS"/>
+    <function name="IDMEF_CLASS_ID_IMPACT_COMPLETION" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-IMPACT-COMPLETION--CAPS"/>
+    <function name="IDMEF_CLASS_ID_IMPACT_TYPE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-IMPACT-TYPE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_IMPACT" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-IMPACT--CAPS"/>
+    <function name="IDMEF_CLASS_ID_ACTION_CATEGORY" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-ACTION-CATEGORY--CAPS"/>
+    <function name="IDMEF_CLASS_ID_ACTION" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-ACTION--CAPS"/>
+    <function name="IDMEF_CLASS_ID_CONFIDENCE_RATING" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-CONFIDENCE-RATING--CAPS"/>
+    <function name="IDMEF_CLASS_ID_CONFIDENCE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-CONFIDENCE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_ASSESSMENT" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-ASSESSMENT--CAPS"/>
+    <function name="IDMEF_CLASS_ID_TOOL_ALERT" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-TOOL-ALERT--CAPS"/>
+    <function name="IDMEF_CLASS_ID_CORRELATION_ALERT" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-CORRELATION-ALERT--CAPS"/>
+    <function name="IDMEF_CLASS_ID_OVERFLOW_ALERT" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-OVERFLOW-ALERT--CAPS"/>
+    <function name="IDMEF_CLASS_ID_ALERT_TYPE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-ALERT-TYPE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_ALERT" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-ALERT--CAPS"/>
+    <function name="IDMEF_CLASS_ID_HEARTBEAT" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-HEARTBEAT--CAPS"/>
+    <function name="IDMEF_CLASS_ID_MESSAGE_TYPE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-MESSAGE-TYPE--CAPS"/>
+    <function name="IDMEF_CLASS_ID_MESSAGE" link="libprelude-idmef-tree-wrap.html#IDMEF-CLASS-ID-MESSAGE--CAPS"/>
+    <function name="idmef_additional_data_new_real ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-new-real"/>
+    <function name="idmef_additional_data_new_byte ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-new-byte"/>
+    <function name="idmef_additional_data_new_integer ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-new-integer"/>
+    <function name="idmef_additional_data_new_boolean ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-new-boolean"/>
+    <function name="idmef_additional_data_new_character ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-new-character"/>
+    <function name="idmef_additional_data_set_real ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-set-real"/>
+    <function name="idmef_additional_data_set_byte ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-set-byte"/>
+    <function name="idmef_additional_data_set_integer ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-set-integer"/>
+    <function name="idmef_additional_data_set_boolean ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-set-boolean"/>
+    <function name="idmef_additional_data_set_character ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-set-character"/>
+    <function name="idmef_additional_data_new_byte_string_ref ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-new-byte-string-ref"/>
+    <function name="idmef_additional_data_set_byte_string_ref ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-set-byte-string-ref"/>
+    <function name="idmef_additional_data_new_byte_string_dup ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-new-byte-string-dup"/>
+    <function name="idmef_additional_data_set_byte_string_dup ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-set-byte-string-dup"/>
+    <function name="idmef_additional_data_new_byte_string_nodup ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-new-byte-string-nodup"/>
+    <function name="idmef_additional_data_set_byte_string_nodup ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-set-byte-string-nodup"/>
+    <function name="idmef_additional_data_copy_ref ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-copy-ref"/>
+    <function name="idmef_additional_data_copy_dup ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-copy-dup"/>
+    <function name="idmef_additional_data_get_real ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-get-real"/>
+    <function name="idmef_additional_data_get_integer ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-get-integer"/>
+    <function name="idmef_additional_data_get_boolean ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-get-boolean"/>
+    <function name="idmef_additional_data_get_character ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-get-character"/>
+    <function name="idmef_additional_data_get_byte ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-get-byte"/>
+    <function name="idmef_additional_data_get_len ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-get-len"/>
+    <function name="idmef_additional_data_is_empty ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-is-empty"/>
+    <function name="idmef_additional_data_data_to_string ()" link="libprelude-idmef-additional-data.html#idmef-additional-data-data-to-string"/>
+    <function name="idmef_time_t" link="libprelude-idmef-time.html#idmef-time-t"/>
+    <function name="idmef_time_ref ()" link="libprelude-idmef-time.html#idmef-time-ref"/>
+    <function name="idmef_time_new ()" link="libprelude-idmef-time.html#idmef-time-new"/>
+    <function name="idmef_time_new_from_time ()" link="libprelude-idmef-time.html#idmef-time-new-from-time"/>
+    <function name="idmef_time_new_from_gettimeofday ()" link="libprelude-idmef-time.html#idmef-time-new-from-gettimeofday"/>
+    <function name="idmef_time_new_from_string ()" link="libprelude-idmef-time.html#idmef-time-new-from-string"/>
+    <function name="idmef_time_new_from_ntpstamp ()" link="libprelude-idmef-time.html#idmef-time-new-from-ntpstamp"/>
+    <function name="idmef_time_new_from_timeval ()" link="libprelude-idmef-time.html#idmef-time-new-from-timeval"/>
+    <function name="idmef_time_set_from_time ()" link="libprelude-idmef-time.html#idmef-time-set-from-time"/>
+    <function name="idmef_time_set_from_gettimeofday ()" link="libprelude-idmef-time.html#idmef-time-set-from-gettimeofday"/>
+    <function name="idmef_time_set_from_string ()" link="libprelude-idmef-time.html#idmef-time-set-from-string"/>
+    <function name="idmef_time_set_from_ntpstamp ()" link="libprelude-idmef-time.html#idmef-time-set-from-ntpstamp"/>
+    <function name="idmef_time_set_from_timeval ()" link="libprelude-idmef-time.html#idmef-time-set-from-timeval"/>
+    <function name="idmef_time_destroy_internal ()" link="libprelude-idmef-time.html#idmef-time-destroy-internal"/>
+    <function name="idmef_time_destroy ()" link="libprelude-idmef-time.html#idmef-time-destroy"/>
+    <function name="idmef_time_clone ()" link="libprelude-idmef-time.html#idmef-time-clone"/>
+    <function name="idmef_time_copy ()" link="libprelude-idmef-time.html#idmef-time-copy"/>
+    <function name="idmef_time_set_sec ()" link="libprelude-idmef-time.html#idmef-time-set-sec"/>
+    <function name="idmef_time_set_usec ()" link="libprelude-idmef-time.html#idmef-time-set-usec"/>
+    <function name="idmef_time_set_gmt_offset ()" link="libprelude-idmef-time.html#idmef-time-set-gmt-offset"/>
+    <function name="idmef_time_get_sec ()" link="libprelude-idmef-time.html#idmef-time-get-sec"/>
+    <function name="idmef_time_get_usec ()" link="libprelude-idmef-time.html#idmef-time-get-usec"/>
+    <function name="idmef_time_get_gmt_offset ()" link="libprelude-idmef-time.html#idmef-time-get-gmt-offset"/>
+    <function name="idmef_time_to_string ()" link="libprelude-idmef-time.html#idmef-time-to-string"/>
+    <function name="idmef_time_to_ntpstamp ()" link="libprelude-idmef-time.html#idmef-time-to-ntpstamp"/>
+    <function name="enum idmef_data_type_t" link="libprelude-idmef-data.html#idmef-data-type-t"/>
+    <function name="data" link="libprelude-idmef-data.html#data"/>
+    <function name="idmef_data_new ()" link="libprelude-idmef-data.html#idmef-data-new"/>
+    <function name="idmef_data_ref ()" link="libprelude-idmef-data.html#idmef-data-ref"/>
+    <function name="idmef_data_new_char ()" link="libprelude-idmef-data.html#idmef-data-new-char"/>
+    <function name="idmef_data_new_byte ()" link="libprelude-idmef-data.html#idmef-data-new-byte"/>
+    <function name="idmef_data_new_uint32 ()" link="libprelude-idmef-data.html#idmef-data-new-uint32"/>
+    <function name="idmef_data_new_uint64 ()" link="libprelude-idmef-data.html#idmef-data-new-uint64"/>
+    <function name="idmef_data_new_float ()" link="libprelude-idmef-data.html#idmef-data-new-float"/>
+    <function name="idmef_data_set_char ()" link="libprelude-idmef-data.html#idmef-data-set-char"/>
+    <function name="idmef_data_set_byte ()" link="libprelude-idmef-data.html#idmef-data-set-byte"/>
+    <function name="idmef_data_set_uint32 ()" link="libprelude-idmef-data.html#idmef-data-set-uint32"/>
+    <function name="idmef_data_set_uint64 ()" link="libprelude-idmef-data.html#idmef-data-set-uint64"/>
+    <function name="idmef_data_set_float ()" link="libprelude-idmef-data.html#idmef-data-set-float"/>
+    <function name="idmef_data_set_ptr_dup_fast ()" link="libprelude-idmef-data.html#idmef-data-set-ptr-dup-fast"/>
+    <function name="idmef_data_set_ptr_ref_fast ()" link="libprelude-idmef-data.html#idmef-data-set-ptr-ref-fast"/>
+    <function name="idmef_data_set_ptr_nodup_fast ()" link="libprelude-idmef-data.html#idmef-data-set-ptr-nodup-fast"/>
+    <function name="idmef_data_new_ptr_dup_fast ()" link="libprelude-idmef-data.html#idmef-data-new-ptr-dup-fast"/>
+    <function name="idmef_data_new_ptr_ref_fast ()" link="libprelude-idmef-data.html#idmef-data-new-ptr-ref-fast"/>
+    <function name="idmef_data_new_ptr_nodup_fast ()" link="libprelude-idmef-data.html#idmef-data-new-ptr-nodup-fast"/>
+    <function name="idmef_data_set_char_string_dup_fast ()" link="libprelude-idmef-data.html#idmef-data-set-char-string-dup-fast"/>
+    <function name="idmef_data_new_char_string_dup_fast ()" link="libprelude-idmef-data.html#idmef-data-new-char-string-dup-fast"/>
+    <function name="idmef_data_new_char_string_ref_fast ()" link="libprelude-idmef-data.html#idmef-data-new-char-string-ref-fast"/>
+    <function name="idmef_data_new_char_string_nodup_fast ()" link="libprelude-idmef-data.html#idmef-data-new-char-string-nodup-fast"/>
+    <function name="idmef_data_set_char_string_ref_fast ()" link="libprelude-idmef-data.html#idmef-data-set-char-string-ref-fast"/>
+    <function name="idmef_data_set_char_string_nodup_fast ()" link="libprelude-idmef-data.html#idmef-data-set-char-string-nodup-fast"/>
+    <function name="idmef_data_new_char_string_ref ()" link="libprelude-idmef-data.html#idmef-data-new-char-string-ref"/>
+    <function name="idmef_data_new_char_string_dup ()" link="libprelude-idmef-data.html#idmef-data-new-char-string-dup"/>
+    <function name="idmef_data_new_char_string_nodup ()" link="libprelude-idmef-data.html#idmef-data-new-char-string-nodup"/>
+    <function name="idmef_data_set_char_string_ref ()" link="libprelude-idmef-data.html#idmef-data-set-char-string-ref"/>
+    <function name="idmef_data_set_char_string_dup ()" link="libprelude-idmef-data.html#idmef-data-set-char-string-dup"/>
+    <function name="idmef_data_set_char_string_nodup ()" link="libprelude-idmef-data.html#idmef-data-set-char-string-nodup"/>
+    <function name="idmef_data_set_char_string_constant()" link="libprelude-idmef-data.html#idmef-data-set-char-string-constant"/>
+    <function name="idmef_data_new_byte_string_ref ()" link="libprelude-idmef-data.html#idmef-data-new-byte-string-ref"/>
+    <function name="idmef_data_new_byte_string_dup ()" link="libprelude-idmef-data.html#idmef-data-new-byte-string-dup"/>
+    <function name="idmef_data_new_byte_string_nodup ()" link="libprelude-idmef-data.html#idmef-data-new-byte-string-nodup"/>
+    <function name="idmef_data_set_byte_string_ref ()" link="libprelude-idmef-data.html#idmef-data-set-byte-string-ref"/>
+    <function name="idmef_data_set_byte_string_dup ()" link="libprelude-idmef-data.html#idmef-data-set-byte-string-dup"/>
+    <function name="idmef_data_set_byte_string_nodup ()" link="libprelude-idmef-data.html#idmef-data-set-byte-string-nodup"/>
+    <function name="idmef_data_destroy ()" link="libprelude-idmef-data.html#idmef-data-destroy"/>
+    <function name="idmef_data_copy_ref ()" link="libprelude-idmef-data.html#idmef-data-copy-ref"/>
+    <function name="idmef_data_copy_dup ()" link="libprelude-idmef-data.html#idmef-data-copy-dup"/>
+    <function name="idmef_data_clone ()" link="libprelude-idmef-data.html#idmef-data-clone"/>
+    <function name="idmef_data_get_type ()" link="libprelude-idmef-data.html#idmef-data-get-type"/>
+    <function name="idmef_data_get_len ()" link="libprelude-idmef-data.html#idmef-data-get-len"/>
+    <function name="idmef_data_get_data ()" link="libprelude-idmef-data.html#idmef-data-get-data"/>
+    <function name="idmef_data_get_char ()" link="libprelude-idmef-data.html#idmef-data-get-char"/>
+    <function name="idmef_data_get_byte ()" link="libprelude-idmef-data.html#idmef-data-get-byte"/>
+    <function name="idmef_data_get_uint32 ()" link="libprelude-idmef-data.html#idmef-data-get-uint32"/>
+    <function name="idmef_data_get_uint64 ()" link="libprelude-idmef-data.html#idmef-data-get-uint64"/>
+    <function name="idmef_data_get_float ()" link="libprelude-idmef-data.html#idmef-data-get-float"/>
+    <function name="idmef_data_get_char_string ()" link="libprelude-idmef-data.html#idmef-data-get-char-string"/>
+    <function name="idmef_data_get_byte_string ()" link="libprelude-idmef-data.html#idmef-data-get-byte-string"/>
+    <function name="idmef_data_is_empty ()" link="libprelude-idmef-data.html#idmef-data-is-empty"/>
+    <function name="idmef_data_to_string ()" link="libprelude-idmef-data.html#idmef-data-to-string"/>
+    <function name="idmef_data_destroy_internal ()" link="libprelude-idmef-data.html#idmef-data-destroy-internal"/>
+    <function name="idmef_path_t" link="libprelude-idmef-path.html#idmef-path-t"/>
+    <function name="idmef_path_get ()" link="libprelude-idmef-path.html#idmef-path-get"/>
+    <function name="idmef_path_set ()" link="libprelude-idmef-path.html#idmef-path-set"/>
+    <function name="idmef_path_new ()" link="libprelude-idmef-path.html#idmef-path-new"/>
+    <function name="idmef_path_new_v ()" link="libprelude-idmef-path.html#idmef-path-new-v"/>
+    <function name="idmef_path_new_fast ()" link="libprelude-idmef-path.html#idmef-path-new-fast"/>
+    <function name="idmef_path_get_class ()" link="libprelude-idmef-path.html#idmef-path-get-class"/>
+    <function name="idmef_path_get_value_type ()" link="libprelude-idmef-path.html#idmef-path-get-value-type"/>
+    <function name="idmef_path_set_index ()" link="libprelude-idmef-path.html#idmef-path-set-index"/>
+    <function name="idmef_path_undefine_index ()" link="libprelude-idmef-path.html#idmef-path-undefine-index"/>
+    <function name="idmef_path_get_index ()" link="libprelude-idmef-path.html#idmef-path-get-index"/>
+    <function name="idmef_path_make_child ()" link="libprelude-idmef-path.html#idmef-path-make-child"/>
+    <function name="idmef_path_make_parent ()" link="libprelude-idmef-path.html#idmef-path-make-parent"/>
+    <function name="idmef_path_destroy ()" link="libprelude-idmef-path.html#idmef-path-destroy"/>
+    <function name="idmef_path_ncompare ()" link="libprelude-idmef-path.html#idmef-path-ncompare"/>
+    <function name="idmef_path_compare ()" link="libprelude-idmef-path.html#idmef-path-compare"/>
+    <function name="idmef_path_clone ()" link="libprelude-idmef-path.html#idmef-path-clone"/>
+    <function name="idmef_path_ref ()" link="libprelude-idmef-path.html#idmef-path-ref"/>
+    <function name="idmef_path_get_name ()" link="libprelude-idmef-path.html#idmef-path-get-name"/>
+    <function name="idmef_path_is_ambiguous ()" link="libprelude-idmef-path.html#idmef-path-is-ambiguous"/>
+    <function name="idmef_path_has_lists ()" link="libprelude-idmef-path.html#idmef-path-has-lists"/>
+    <function name="idmef_path_is_list ()" link="libprelude-idmef-path.html#idmef-path-is-list"/>
+    <function name="idmef_path_get_depth ()" link="libprelude-idmef-path.html#idmef-path-get-depth"/>
+    <function name="idmef_path_check_operator ()" link="libprelude-idmef-path.html#idmef-path-check-operator"/>
+    <function name="idmef_path_get_applicable_operators ()" link="libprelude-idmef-path.html#idmef-path-get-applicable-operators"/>
+    <function name="idmef_value_t" link="libprelude-idmef-value.html#idmef-value-t"/>
+    <function name="idmef_value_new_int8 ()" link="libprelude-idmef-value.html#idmef-value-new-int8"/>
+    <function name="idmef_value_new_uint8 ()" link="libprelude-idmef-value.html#idmef-value-new-uint8"/>
+    <function name="idmef_value_new_int16 ()" link="libprelude-idmef-value.html#idmef-value-new-int16"/>
+    <function name="idmef_value_new_uint16 ()" link="libprelude-idmef-value.html#idmef-value-new-uint16"/>
+    <function name="idmef_value_new_int32 ()" link="libprelude-idmef-value.html#idmef-value-new-int32"/>
+    <function name="idmef_value_new_uint32 ()" link="libprelude-idmef-value.html#idmef-value-new-uint32"/>
+    <function name="idmef_value_new_int64 ()" link="libprelude-idmef-value.html#idmef-value-new-int64"/>
+    <function name="idmef_value_new_uint64 ()" link="libprelude-idmef-value.html#idmef-value-new-uint64"/>
+    <function name="idmef_value_new_float ()" link="libprelude-idmef-value.html#idmef-value-new-float"/>
+    <function name="idmef_value_new_double ()" link="libprelude-idmef-value.html#idmef-value-new-double"/>
+    <function name="idmef_value_new_string ()" link="libprelude-idmef-value.html#idmef-value-new-string"/>
+    <function name="idmef_value_new_time ()" link="libprelude-idmef-value.html#idmef-value-new-time"/>
+    <function name="idmef_value_new_data ()" link="libprelude-idmef-value.html#idmef-value-new-data"/>
+    <function name="idmef_value_new_class ()" link="libprelude-idmef-value.html#idmef-value-new-class"/>
+    <function name="idmef_value_new_list ()" link="libprelude-idmef-value.html#idmef-value-new-list"/>
+    <function name="idmef_value_new_enum ()" link="libprelude-idmef-value.html#idmef-value-new-enum"/>
+    <function name="idmef_value_new_enum_from_string ()" link="libprelude-idmef-value.html#idmef-value-new-enum-from-string"/>
+    <function name="idmef_value_new_enum_from_numeric ()" link="libprelude-idmef-value.html#idmef-value-new-enum-from-numeric"/>
+    <function name="idmef_value_new ()" link="libprelude-idmef-value.html#idmef-value-new"/>
+    <function name="idmef_value_new_from_path ()" link="libprelude-idmef-value.html#idmef-value-new-from-path"/>
+    <function name="idmef_value_new_from_string ()" link="libprelude-idmef-value.html#idmef-value-new-from-string"/>
+    <function name="idmef_value_set_class ()" link="libprelude-idmef-value.html#idmef-value-set-class"/>
+    <function name="idmef_value_set_data ()" link="libprelude-idmef-value.html#idmef-value-set-data"/>
+    <function name="idmef_value_set_double ()" link="libprelude-idmef-value.html#idmef-value-set-double"/>
+    <function name="idmef_value_set_enum ()" link="libprelude-idmef-value.html#idmef-value-set-enum"/>
+    <function name="idmef_value_set_enum_from_numeric ()" link="libprelude-idmef-value.html#idmef-value-set-enum-from-numeric"/>
+    <function name="idmef_value_set_enum_from_string ()" link="libprelude-idmef-value.html#idmef-value-set-enum-from-string"/>
+    <function name="idmef_value_set_float ()" link="libprelude-idmef-value.html#idmef-value-set-float"/>
+    <function name="idmef_value_set_int16 ()" link="libprelude-idmef-value.html#idmef-value-set-int16"/>
+    <function name="idmef_value_set_int32 ()" link="libprelude-idmef-value.html#idmef-value-set-int32"/>
+    <function name="idmef_value_set_int64 ()" link="libprelude-idmef-value.html#idmef-value-set-int64"/>
+    <function name="idmef_value_set_int8 ()" link="libprelude-idmef-value.html#idmef-value-set-int8"/>
+    <function name="idmef_value_set_string ()" link="libprelude-idmef-value.html#idmef-value-set-string"/>
+    <function name="idmef_value_set_time ()" link="libprelude-idmef-value.html#idmef-value-set-time"/>
+    <function name="idmef_value_set_uint16 ()" link="libprelude-idmef-value.html#idmef-value-set-uint16"/>
+    <function name="idmef_value_set_uint32 ()" link="libprelude-idmef-value.html#idmef-value-set-uint32"/>
+    <function name="idmef_value_set_uint64 ()" link="libprelude-idmef-value.html#idmef-value-set-uint64"/>
+    <function name="idmef_value_set_uint8 ()" link="libprelude-idmef-value.html#idmef-value-set-uint8"/>
+    <function name="idmef_value_get_int8 ()" link="libprelude-idmef-value.html#idmef-value-get-int8"/>
+    <function name="idmef_value_get_uint8 ()" link="libprelude-idmef-value.html#idmef-value-get-uint8"/>
+    <function name="idmef_value_get_int16 ()" link="libprelude-idmef-value.html#idmef-value-get-int16"/>
+    <function name="idmef_value_get_uint16 ()" link="libprelude-idmef-value.html#idmef-value-get-uint16"/>
+    <function name="idmef_value_get_int32 ()" link="libprelude-idmef-value.html#idmef-value-get-int32"/>
+    <function name="idmef_value_get_uint32 ()" link="libprelude-idmef-value.html#idmef-value-get-uint32"/>
+    <function name="idmef_value_get_int64 ()" link="libprelude-idmef-value.html#idmef-value-get-int64"/>
+    <function name="idmef_value_get_uint64 ()" link="libprelude-idmef-value.html#idmef-value-get-uint64"/>
+    <function name="idmef_value_get_enum ()" link="libprelude-idmef-value.html#idmef-value-get-enum"/>
+    <function name="idmef_value_get_float ()" link="libprelude-idmef-value.html#idmef-value-get-float"/>
+    <function name="idmef_value_get_double ()" link="libprelude-idmef-value.html#idmef-value-get-double"/>
+    <function name="idmef_value_get_time ()" link="libprelude-idmef-value.html#idmef-value-get-time"/>
+    <function name="idmef_value_get_data ()" link="libprelude-idmef-value.html#idmef-value-get-data"/>
+    <function name="idmef_value_get_string ()" link="libprelude-idmef-value.html#idmef-value-get-string"/>
+    <function name="idmef_value_list_add ()" link="libprelude-idmef-value.html#idmef-value-list-add"/>
+    <function name="idmef_value_is_list ()" link="libprelude-idmef-value.html#idmef-value-is-list"/>
+    <function name="idmef_value_list_is_empty ()" link="libprelude-idmef-value.html#idmef-value-list-is-empty"/>
+    <function name="idmef_value_have_own_data ()" link="libprelude-idmef-value.html#idmef-value-have-own-data"/>
+    <function name="idmef_value_dont_have_own_data ()" link="libprelude-idmef-value.html#idmef-value-dont-have-own-data"/>
+    <function name="idmef_value_get_type ()" link="libprelude-idmef-value.html#idmef-value-get-type"/>
+    <function name="idmef_value_get_class ()" link="libprelude-idmef-value.html#idmef-value-get-class"/>
+    <function name="idmef_value_get_object ()" link="libprelude-idmef-value.html#idmef-value-get-object"/>
+    <function name="idmef_value_iterate ()" link="libprelude-idmef-value.html#idmef-value-iterate"/>
+    <function name="idmef_value_iterate_reversed ()" link="libprelude-idmef-value.html#idmef-value-iterate-reversed"/>
+    <function name="idmef_value_get_nth ()" link="libprelude-idmef-value.html#idmef-value-get-nth"/>
+    <function name="idmef_value_get_count ()" link="libprelude-idmef-value.html#idmef-value-get-count"/>
+    <function name="idmef_value_clone ()" link="libprelude-idmef-value.html#idmef-value-clone"/>
+    <function name="idmef_value_ref ()" link="libprelude-idmef-value.html#idmef-value-ref"/>
+    <function name="idmef_value_print ()" link="libprelude-idmef-value.html#idmef-value-print"/>
+    <function name="idmef_value_to_string ()" link="libprelude-idmef-value.html#idmef-value-to-string"/>
+    <function name="idmef_value_get ()" link="libprelude-idmef-value.html#idmef-value-get"/>
+    <function name="idmef_value_match ()" link="libprelude-idmef-value.html#idmef-value-match"/>
+    <function name="idmef_value_check_operator ()" link="libprelude-idmef-value.html#idmef-value-check-operator"/>
+    <function name="idmef_value_get_applicable_operators ()" link="libprelude-idmef-value.html#idmef-value-get-applicable-operators"/>
+    <function name="idmef_value_destroy ()" link="libprelude-idmef-value.html#idmef-value-destroy"/>
+    <function name="idmef_additional_data_read ()" link="libprelude-idmef-message-read.html#idmef-additional-data-read"/>
+    <function name="idmef_reference_read ()" link="libprelude-idmef-message-read.html#idmef-reference-read"/>
+    <function name="idmef_classification_read ()" link="libprelude-idmef-message-read.html#idmef-classification-read"/>
+    <function name="idmef_user_id_read ()" link="libprelude-idmef-message-read.html#idmef-user-id-read"/>
+    <function name="idmef_user_read ()" link="libprelude-idmef-message-read.html#idmef-user-read"/>
+    <function name="idmef_address_read ()" link="libprelude-idmef-message-read.html#idmef-address-read"/>
+    <function name="idmef_process_read ()" link="libprelude-idmef-message-read.html#idmef-process-read"/>
+    <function name="idmef_web_service_read ()" link="libprelude-idmef-message-read.html#idmef-web-service-read"/>
+    <function name="idmef_snmp_service_read ()" link="libprelude-idmef-message-read.html#idmef-snmp-service-read"/>
+    <function name="idmef_service_read ()" link="libprelude-idmef-message-read.html#idmef-service-read"/>
+    <function name="idmef_node_read ()" link="libprelude-idmef-message-read.html#idmef-node-read"/>
+    <function name="idmef_source_read ()" link="libprelude-idmef-message-read.html#idmef-source-read"/>
+    <function name="idmef_file_access_read ()" link="libprelude-idmef-message-read.html#idmef-file-access-read"/>
+    <function name="idmef_inode_read ()" link="libprelude-idmef-message-read.html#idmef-inode-read"/>
+    <function name="idmef_checksum_read ()" link="libprelude-idmef-message-read.html#idmef-checksum-read"/>
+    <function name="idmef_file_read ()" link="libprelude-idmef-message-read.html#idmef-file-read"/>
+    <function name="idmef_linkage_read ()" link="libprelude-idmef-message-read.html#idmef-linkage-read"/>
+    <function name="idmef_target_read ()" link="libprelude-idmef-message-read.html#idmef-target-read"/>
+    <function name="idmef_analyzer_read ()" link="libprelude-idmef-message-read.html#idmef-analyzer-read"/>
+    <function name="idmef_alertident_read ()" link="libprelude-idmef-message-read.html#idmef-alertident-read"/>
+    <function name="idmef_impact_read ()" link="libprelude-idmef-message-read.html#idmef-impact-read"/>
+    <function name="idmef_action_read ()" link="libprelude-idmef-message-read.html#idmef-action-read"/>
+    <function name="idmef_confidence_read ()" link="libprelude-idmef-message-read.html#idmef-confidence-read"/>
+    <function name="idmef_assessment_read ()" link="libprelude-idmef-message-read.html#idmef-assessment-read"/>
+    <function name="idmef_tool_alert_read ()" link="libprelude-idmef-message-read.html#idmef-tool-alert-read"/>
+    <function name="idmef_correlation_alert_read ()" link="libprelude-idmef-message-read.html#idmef-correlation-alert-read"/>
+    <function name="idmef_overflow_alert_read ()" link="libprelude-idmef-message-read.html#idmef-overflow-alert-read"/>
+    <function name="idmef_alert_read ()" link="libprelude-idmef-message-read.html#idmef-alert-read"/>
+    <function name="idmef_heartbeat_read ()" link="libprelude-idmef-message-read.html#idmef-heartbeat-read"/>
+    <function name="idmef_message_read ()" link="libprelude-idmef-message-read.html#idmef-message-read"/>
+    <function name="enum prelude_connection_pool_flags_t" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-flags-t"/>
+    <function name="enum prelude_connection_pool_event_t" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-event-t"/>
+    <function name="prelude_connection_pool_t" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-t"/>
+    <function name="prelude_connection_pool_broadcast ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-broadcast"/>
+    <function name="prelude_connection_pool_broadcast_async ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-broadcast-async"/>
+    <function name="prelude_connection_pool_init ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-init"/>
+    <function name="prelude_connection_pool_new ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-new"/>
+    <function name="prelude_connection_pool_ref ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-ref"/>
+    <function name="prelude_connection_pool_get_connection_list ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-get-connection-list"/>
+    <function name="prelude_connection_pool_add_connection ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-add-connection"/>
+    <function name="prelude_connection_pool_del_connection ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-del-connection"/>
+    <function name="prelude_connection_pool_set_connection_dead ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-set-connection-dead"/>
+    <function name="prelude_connection_pool_set_connection_alive ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-set-connection-alive"/>
+    <function name="prelude_connection_pool_set_connection_string ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-set-connection-string"/>
+    <function name="prelude_connection_pool_get_connection_string ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-get-connection-string"/>
+    <function name="prelude_connection_pool_destroy ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-destroy"/>
+    <function name="prelude_connection_pool_get_flags ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-get-flags"/>
+    <function name="prelude_connection_pool_set_flags ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-set-flags"/>
+    <function name="prelude_connection_pool_set_required_permission ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-set-required-permission"/>
+    <function name="prelude_connection_pool_set_data ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-set-data"/>
+    <function name="prelude_connection_pool_get_data ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-get-data"/>
+    <function name="prelude_connection_pool_recv ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-recv"/>
+    <function name="prelude_connection_pool_check_event ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-check-event"/>
+    <function name="prelude_connection_pool_set_global_event_handler ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-set-global-event-handler"/>
+    <function name="prelude_connection_pool_set_event_handler ()" link="libprelude-prelude-connection-pool.html#prelude-connection-pool-set-event-handler"/>
+    <function name="enum idmef_criterion_operator_t" link="libprelude-idmef-criteria.html#idmef-criterion-operator-t"/>
+    <function name="idmef_criteria_t" link="libprelude-idmef-criteria.html#idmef-criteria-t"/>
+    <function name="idmef_criterion_t" link="libprelude-idmef-criteria.html#idmef-criterion-t"/>
+    <function name="idmef_criterion_operator_to_string ()" link="libprelude-idmef-criteria.html#idmef-criterion-operator-to-string"/>
+    <function name="idmef_criterion_new ()" link="libprelude-idmef-criteria.html#idmef-criterion-new"/>
+    <function name="idmef_criterion_destroy ()" link="libprelude-idmef-criteria.html#idmef-criterion-destroy"/>
+    <function name="idmef_criterion_clone ()" link="libprelude-idmef-criteria.html#idmef-criterion-clone"/>
+    <function name="idmef_criterion_print ()" link="libprelude-idmef-criteria.html#idmef-criterion-print"/>
+    <function name="idmef_criterion_to_string ()" link="libprelude-idmef-criteria.html#idmef-criterion-to-string"/>
+    <function name="idmef_criterion_get_path ()" link="libprelude-idmef-criteria.html#idmef-criterion-get-path"/>
+    <function name="idmef_criterion_get_value ()" link="libprelude-idmef-criteria.html#idmef-criterion-get-value"/>
+    <function name="idmef_criterion_get_operator ()" link="libprelude-idmef-criteria.html#idmef-criterion-get-operator"/>
+    <function name="idmef_criterion_match ()" link="libprelude-idmef-criteria.html#idmef-criterion-match"/>
+    <function name="idmef_criteria_new ()" link="libprelude-idmef-criteria.html#idmef-criteria-new"/>
+    <function name="idmef_criteria_ref ()" link="libprelude-idmef-criteria.html#idmef-criteria-ref"/>
+    <function name="idmef_criteria_destroy ()" link="libprelude-idmef-criteria.html#idmef-criteria-destroy"/>
+    <function name="idmef_criteria_clone ()" link="libprelude-idmef-criteria.html#idmef-criteria-clone"/>
+    <function name="idmef_criteria_print ()" link="libprelude-idmef-criteria.html#idmef-criteria-print"/>
+    <function name="idmef_criteria_to_string ()" link="libprelude-idmef-criteria.html#idmef-criteria-to-string"/>
+    <function name="idmef_criteria_is_criterion ()" link="libprelude-idmef-criteria.html#idmef-criteria-is-criterion"/>
+    <function name="idmef_criteria_get_criterion ()" link="libprelude-idmef-criteria.html#idmef-criteria-get-criterion"/>
+    <function name="idmef_criteria_set_criterion ()" link="libprelude-idmef-criteria.html#idmef-criteria-set-criterion"/>
+    <function name="idmef_criteria_or_criteria ()" link="libprelude-idmef-criteria.html#idmef-criteria-or-criteria"/>
+    <function name="idmef_criteria_and_criteria ()" link="libprelude-idmef-criteria.html#idmef-criteria-and-criteria"/>
+    <function name="idmef_criteria_match ()" link="libprelude-idmef-criteria.html#idmef-criteria-match"/>
+    <function name="idmef_criteria_get_or ()" link="libprelude-idmef-criteria.html#idmef-criteria-get-or"/>
+    <function name="idmef_criteria_get_and ()" link="libprelude-idmef-criteria.html#idmef-criteria-get-and"/>
+    <function name="idmef_criteria_new_from_string ()" link="libprelude-idmef-criteria.html#idmef-criteria-new-from-string"/>
+    <function name="idmef_criteria_get_negation ()" link="libprelude-idmef-criteria.html#idmef-criteria-get-negation"/>
+    <function name="idmef_criteria_set_negation ()" link="libprelude-idmef-criteria.html#idmef-criteria-set-negation"/>
+    <function name="idmef_criterion_value_t" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-t"/>
+    <function name="enum idmef_criterion_value_type_t" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-type-t"/>
+    <function name="idmef_criterion_value_new ()" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-new"/>
+    <function name="idmef_criterion_value_new_regex ()" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-new-regex"/>
+    <function name="idmef_criterion_value_new_value ()" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-new-value"/>
+    <function name="idmef_criterion_value_new_from_string ()" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-new-from-string"/>
+    <function name="idmef_criterion_value_new_broken_down_time ()" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-new-broken-down-time"/>
+    <function name="idmef_criterion_value_clone ()" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-clone"/>
+    <function name="idmef_criterion_value_destroy ()" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-destroy"/>
+    <function name="idmef_criterion_value_print ()" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-print"/>
+    <function name="idmef_criterion_value_to_string ()" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-to-string"/>
+    <function name="idmef_criterion_value_match ()" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-match"/>
+    <function name="idmef_criterion_value_get_value ()" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-get-value"/>
+    <function name="idmef_criterion_value_get_regex ()" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-get-regex"/>
+    <function name="idmef_criterion_value_get_broken_down_time ()" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-get-broken-down-time"/>
+    <function name="idmef_criterion_value_get_type ()" link="libprelude-idmef-criterion-value.html#idmef-criterion-value-get-type"/>
+    <function name="idmef_additional_data_print ()" link="libprelude-idmef-message-print.html#idmef-additional-data-print"/>
+    <function name="idmef_reference_print ()" link="libprelude-idmef-message-print.html#idmef-reference-print"/>
+    <function name="idmef_classification_print ()" link="libprelude-idmef-message-print.html#idmef-classification-print"/>
+    <function name="idmef_user_id_print ()" link="libprelude-idmef-message-print.html#idmef-user-id-print"/>
+    <function name="idmef_user_print ()" link="libprelude-idmef-message-print.html#idmef-user-print"/>
+    <function name="idmef_address_print ()" link="libprelude-idmef-message-print.html#idmef-address-print"/>
+    <function name="idmef_process_print ()" link="libprelude-idmef-message-print.html#idmef-process-print"/>
+    <function name="idmef_web_service_print ()" link="libprelude-idmef-message-print.html#idmef-web-service-print"/>
+    <function name="idmef_snmp_service_print ()" link="libprelude-idmef-message-print.html#idmef-snmp-service-print"/>
+    <function name="idmef_service_print ()" link="libprelude-idmef-message-print.html#idmef-service-print"/>
+    <function name="idmef_node_print ()" link="libprelude-idmef-message-print.html#idmef-node-print"/>
+    <function name="idmef_source_print ()" link="libprelude-idmef-message-print.html#idmef-source-print"/>
+    <function name="idmef_file_access_print ()" link="libprelude-idmef-message-print.html#idmef-file-access-print"/>
+    <function name="idmef_inode_print ()" link="libprelude-idmef-message-print.html#idmef-inode-print"/>
+    <function name="idmef_checksum_print ()" link="libprelude-idmef-message-print.html#idmef-checksum-print"/>
+    <function name="idmef_file_print ()" link="libprelude-idmef-message-print.html#idmef-file-print"/>
+    <function name="idmef_linkage_print ()" link="libprelude-idmef-message-print.html#idmef-linkage-print"/>
+    <function name="idmef_target_print ()" link="libprelude-idmef-message-print.html#idmef-target-print"/>
+    <function name="idmef_analyzer_print ()" link="libprelude-idmef-message-print.html#idmef-analyzer-print"/>
+    <function name="idmef_alertident_print ()" link="libprelude-idmef-message-print.html#idmef-alertident-print"/>
+    <function name="idmef_impact_print ()" link="libprelude-idmef-message-print.html#idmef-impact-print"/>
+    <function name="idmef_action_print ()" link="libprelude-idmef-message-print.html#idmef-action-print"/>
+    <function name="idmef_confidence_print ()" link="libprelude-idmef-message-print.html#idmef-confidence-print"/>
+    <function name="idmef_assessment_print ()" link="libprelude-idmef-message-print.html#idmef-assessment-print"/>
+    <function name="idmef_tool_alert_print ()" link="libprelude-idmef-message-print.html#idmef-tool-alert-print"/>
+    <function name="idmef_correlation_alert_print ()" link="libprelude-idmef-message-print.html#idmef-correlation-alert-print"/>
+    <function name="idmef_overflow_alert_print ()" link="libprelude-idmef-message-print.html#idmef-overflow-alert-print"/>
+    <function name="idmef_alert_print ()" link="libprelude-idmef-message-print.html#idmef-alert-print"/>
+    <function name="idmef_heartbeat_print ()" link="libprelude-idmef-message-print.html#idmef-heartbeat-print"/>
+    <function name="idmef_message_print ()" link="libprelude-idmef-message-print.html#idmef-message-print"/>
+    <function name="PRELUDE_ERROR_SOURCE_DEFAULT" link="libprelude-prelude-error.html#PRELUDE-ERROR-SOURCE-DEFAULT--CAPS"/>
+    <function name="PRELUDE_ERROR_SYSTEM_ERROR" link="libprelude-prelude-error.html#PRELUDE-ERROR-SYSTEM-ERROR--CAPS"/>
+    <function name="enum prelude_error_source_t" link="libprelude-prelude-error.html#prelude-error-source-t"/>
+    <function name="enum prelude_error_code_t" link="libprelude-prelude-error.html#prelude-error-code-t"/>
+    <function name="prelude_error_t" link="libprelude-prelude-error.html#prelude-error-t"/>
+    <function name="prelude_error_get_code ()" link="libprelude-prelude-error.html#prelude-error-get-code"/>
+    <function name="prelude_error_get_source ()" link="libprelude-prelude-error.html#prelude-error-get-source"/>
+    <function name="prelude_perror ()" link="libprelude-prelude-error.html#prelude-perror"/>
+    <function name="prelude_strerror ()" link="libprelude-prelude-error.html#prelude-strerror"/>
+    <function name="prelude_strsource ()" link="libprelude-prelude-error.html#prelude-strsource"/>
+    <function name="prelude_error_code_from_errno ()" link="libprelude-prelude-error.html#prelude-error-code-from-errno"/>
+    <function name="prelude_error_make ()" link="libprelude-prelude-error.html#prelude-error-make"/>
+    <function name="prelude_error_make_from_errno ()" link="libprelude-prelude-error.html#prelude-error-make-from-errno"/>
+    <function name="prelude_error_verbose_make ()" link="libprelude-prelude-error.html#prelude-error-verbose-make"/>
+    <function name="prelude_error_verbose_make_v ()" link="libprelude-prelude-error.html#prelude-error-verbose-make-v"/>
+    <function name="prelude_error_code_to_errno ()" link="libprelude-prelude-error.html#prelude-error-code-to-errno"/>
+    <function name="prelude_error_is_verbose ()" link="libprelude-prelude-error.html#prelude-error-is-verbose"/>
+    <function name="PRELUDE_LINKED_OBJECT" link="libprelude-prelude-linked-object.html#PRELUDE-LINKED-OBJECT--CAPS"/>
+    <function name="prelude_linked_object_t" link="libprelude-prelude-linked-object.html#prelude-linked-object-t"/>
+    <function name="prelude_linked_object_get_object()" link="libprelude-prelude-linked-object.html#prelude-linked-object-get-object"/>
+    <function name="prelude_io_t" link="libprelude-prelude-io.html#prelude-io-t"/>
+    <function name="prelude_io_new ()" link="libprelude-prelude-io.html#prelude-io-new"/>
+    <function name="prelude_io_destroy ()" link="libprelude-prelude-io.html#prelude-io-destroy"/>
+    <function name="prelude_io_set_file_io ()" link="libprelude-prelude-io.html#prelude-io-set-file-io"/>
+    <function name="prelude_io_set_tls_io ()" link="libprelude-prelude-io.html#prelude-io-set-tls-io"/>
+    <function name="prelude_io_set_sys_io ()" link="libprelude-prelude-io.html#prelude-io-set-sys-io"/>
+    <function name="prelude_io_set_buffer_io ()" link="libprelude-prelude-io.html#prelude-io-set-buffer-io"/>
+    <function name="prelude_io_set_fdptr ()" link="libprelude-prelude-io.html#prelude-io-set-fdptr"/>
+    <function name="prelude_io_set_pending_callback ()" link="libprelude-prelude-io.html#prelude-io-set-pending-callback"/>
+    <function name="prelude_io_set_read_callback ()" link="libprelude-prelude-io.html#prelude-io-set-read-callback"/>
+    <function name="prelude_io_set_write_callback ()" link="libprelude-prelude-io.html#prelude-io-set-write-callback"/>
+    <function name="prelude_io_close ()" link="libprelude-prelude-io.html#prelude-io-close"/>
+    <function name="prelude_io_read ()" link="libprelude-prelude-io.html#prelude-io-read"/>
+    <function name="prelude_io_read_wait ()" link="libprelude-prelude-io.html#prelude-io-read-wait"/>
+    <function name="prelude_io_read_delimited ()" link="libprelude-prelude-io.html#prelude-io-read-delimited"/>
+    <function name="prelude_io_write ()" link="libprelude-prelude-io.html#prelude-io-write"/>
+    <function name="prelude_io_write_delimited ()" link="libprelude-prelude-io.html#prelude-io-write-delimited"/>
+    <function name="prelude_io_forward ()" link="libprelude-prelude-io.html#prelude-io-forward"/>
+    <function name="prelude_io_get_fd ()" link="libprelude-prelude-io.html#prelude-io-get-fd"/>
+    <function name="prelude_io_get_fdptr ()" link="libprelude-prelude-io.html#prelude-io-get-fdptr"/>
+    <function name="prelude_io_pending ()" link="libprelude-prelude-io.html#prelude-io-pending"/>
+    <function name="prelude_io_is_error_fatal ()" link="libprelude-prelude-io.html#prelude-io-is-error-fatal"/>
+    <function name="enum prelude_log_t" link="libprelude-prelude-log.html#prelude-log-t"/>
+    <function name="enum prelude_log_flags_t" link="libprelude-prelude-log.html#prelude-log-flags-t"/>
+    <function name="prelude_log ()" link="libprelude-prelude-log.html#prelude-log"/>
+    <function name="prelude_log_debug ()" link="libprelude-prelude-log.html#prelude-log-debug"/>
+    <function name="prelude_log_v()" link="libprelude-prelude-log.html#prelude-log-v"/>
+    <function name="prelude_log_debug_v()" link="libprelude-prelude-log.html#prelude-log-debug-v"/>
+    <function name="prelude_log_set_level ()" link="libprelude-prelude-log.html#prelude-log-set-level"/>
+    <function name="prelude_log_set_debug_level ()" link="libprelude-prelude-log.html#prelude-log-set-debug-level"/>
+    <function name="prelude_log_get_flags ()" link="libprelude-prelude-log.html#prelude-log-get-flags"/>
+    <function name="prelude_log_set_flags ()" link="libprelude-prelude-log.html#prelude-log-set-flags"/>
+    <function name="prelude_log_get_prefix ()" link="libprelude-prelude-log.html#prelude-log-get-prefix"/>
+    <function name="prelude_log_set_prefix ()" link="libprelude-prelude-log.html#prelude-log-set-prefix"/>
+    <function name="prelude_log_set_callback ()" link="libprelude-prelude-log.html#prelude-log-set-callback"/>
+    <function name="prelude_log_set_logfile ()" link="libprelude-prelude-log.html#prelude-log-set-logfile"/>
+    <function name="prelude_msg_t" link="libprelude-prelude-msg.html#prelude-msg-t"/>
+    <function name="enum prelude_msg_priority_t" link="libprelude-prelude-msg.html#prelude-msg-priority-t"/>
+    <function name="prelude_msg_read ()" link="libprelude-prelude-msg.html#prelude-msg-read"/>
+    <function name="prelude_msg_forward ()" link="libprelude-prelude-msg.html#prelude-msg-forward"/>
+    <function name="prelude_msg_get ()" link="libprelude-prelude-msg.html#prelude-msg-get"/>
+    <function name="prelude_msg_recycle ()" link="libprelude-prelude-msg.html#prelude-msg-recycle"/>
+    <function name="prelude_msg_mark_end ()" link="libprelude-prelude-msg.html#prelude-msg-mark-end"/>
+    <function name="prelude_msg_dynamic_new ()" link="libprelude-prelude-msg.html#prelude-msg-dynamic-new"/>
+    <function name="prelude_msg_new ()" link="libprelude-prelude-msg.html#prelude-msg-new"/>
+    <function name="prelude_msg_set ()" link="libprelude-prelude-msg.html#prelude-msg-set"/>
+    <function name="prelude_msg_write ()" link="libprelude-prelude-msg.html#prelude-msg-write"/>
+    <function name="prelude_msg_set_tag ()" link="libprelude-prelude-msg.html#prelude-msg-set-tag"/>
+    <function name="prelude_msg_set_priority ()" link="libprelude-prelude-msg.html#prelude-msg-set-priority"/>
+    <function name="prelude_msg_get_tag ()" link="libprelude-prelude-msg.html#prelude-msg-get-tag"/>
+    <function name="prelude_msg_get_priority ()" link="libprelude-prelude-msg.html#prelude-msg-get-priority"/>
+    <function name="prelude_msg_get_len ()" link="libprelude-prelude-msg.html#prelude-msg-get-len"/>
+    <function name="prelude_msg_get_datalen ()" link="libprelude-prelude-msg.html#prelude-msg-get-datalen"/>
+    <function name="prelude_msg_destroy ()" link="libprelude-prelude-msg.html#prelude-msg-destroy"/>
+    <function name="prelude_msg_get_time ()" link="libprelude-prelude-msg.html#prelude-msg-get-time"/>
+    <function name="prelude_msg_is_empty ()" link="libprelude-prelude-msg.html#prelude-msg-is-empty"/>
+    <function name="prelude_msg_is_fragment ()" link="libprelude-prelude-msg.html#prelude-msg-is-fragment"/>
+    <function name="prelude_msg_ref ()" link="libprelude-prelude-msg.html#prelude-msg-ref"/>
+    <function name="prelude_msg_set_callback ()" link="libprelude-prelude-msg.html#prelude-msg-set-callback"/>
+    <function name="prelude_msg_set_data ()" link="libprelude-prelude-msg.html#prelude-msg-set-data"/>
+    <function name="prelude_msg_get_message_data ()" link="libprelude-prelude-msg.html#prelude-msg-get-message-data"/>
+    <function name="enum prelude_option_type_t" link="libprelude-prelude-option.html#prelude-option-type-t"/>
+    <function name="enum prelude_option_input_type_t" link="libprelude-prelude-option.html#prelude-option-input-type-t"/>
+    <function name="prelude_option_t" link="libprelude-prelude-option.html#prelude-option-t"/>
+    <function name="prelude_option_context_t" link="libprelude-prelude-option.html#prelude-option-context-t"/>
+    <function name="prelude_option_destroy_callback_t ()" link="libprelude-prelude-option.html#prelude-option-destroy-callback-t"/>
+    <function name="prelude_option_commit_callback_t ()" link="libprelude-prelude-option.html#prelude-option-commit-callback-t"/>
+    <function name="prelude_option_get_callback_t ()" link="libprelude-prelude-option.html#prelude-option-get-callback-t"/>
+    <function name="prelude_option_set_callback_t ()" link="libprelude-prelude-option.html#prelude-option-set-callback-t"/>
+    <function name="enum prelude_option_argument_t" link="libprelude-prelude-option.html#prelude-option-argument-t"/>
+    <function name="enum prelude_option_priority_t" link="libprelude-prelude-option.html#prelude-option-priority-t"/>
+    <function name="enum prelude_option_warning_t" link="libprelude-prelude-option.html#prelude-option-warning-t"/>
+    <function name="prelude_option_set_priority ()" link="libprelude-prelude-option.html#prelude-option-set-priority"/>
+    <function name="prelude_option_print ()" link="libprelude-prelude-option.html#prelude-option-print"/>
+    <function name="prelude_option_wide_send_msg ()" link="libprelude-prelude-option.html#prelude-option-wide-send-msg"/>
+    <function name="prelude_option_destroy ()" link="libprelude-prelude-option.html#prelude-option-destroy"/>
+    <function name="prelude_option_read ()" link="libprelude-prelude-option.html#prelude-option-read"/>
+    <function name="prelude_option_add ()" link="libprelude-prelude-option.html#prelude-option-add"/>
+    <function name="prelude_option_set_type ()" link="libprelude-prelude-option.html#prelude-option-set-type"/>
+    <function name="prelude_option_get_type ()" link="libprelude-prelude-option.html#prelude-option-get-type"/>
+    <function name="prelude_option_set_warnings ()" link="libprelude-prelude-option.html#prelude-option-set-warnings"/>
+    <function name="prelude_option_get_shortname ()" link="libprelude-prelude-option.html#prelude-option-get-shortname"/>
+    <function name="prelude_option_get_longname ()" link="libprelude-prelude-option.html#prelude-option-get-longname"/>
+    <function name="prelude_option_set_data ()" link="libprelude-prelude-option.html#prelude-option-set-data"/>
+    <function name="prelude_option_get_data ()" link="libprelude-prelude-option.html#prelude-option-get-data"/>
+    <function name="prelude_option_context_get_data ()" link="libprelude-prelude-option.html#prelude-option-context-get-data"/>
+    <function name="prelude_option_context_set_data ()" link="libprelude-prelude-option.html#prelude-option-context-set-data"/>
+    <function name="prelude_option_invoke_commit ()" link="libprelude-prelude-option.html#prelude-option-invoke-commit"/>
+    <function name="prelude_option_invoke_set ()" link="libprelude-prelude-option.html#prelude-option-invoke-set"/>
+    <function name="prelude_option_invoke_get ()" link="libprelude-prelude-option.html#prelude-option-invoke-get"/>
+    <function name="prelude_option_invoke_destroy ()" link="libprelude-prelude-option.html#prelude-option-invoke-destroy"/>
+    <function name="prelude_option_new_root ()" link="libprelude-prelude-option.html#prelude-option-new-root"/>
+    <function name="prelude_option_new ()" link="libprelude-prelude-option.html#prelude-option-new"/>
+    <function name="prelude_option_set_longopt ()" link="libprelude-prelude-option.html#prelude-option-set-longopt"/>
+    <function name="prelude_option_get_longopt ()" link="libprelude-prelude-option.html#prelude-option-get-longopt"/>
+    <function name="prelude_option_set_description ()" link="libprelude-prelude-option.html#prelude-option-set-description"/>
+    <function name="prelude_option_get_description ()" link="libprelude-prelude-option.html#prelude-option-get-description"/>
+    <function name="prelude_option_set_has_arg ()" link="libprelude-prelude-option.html#prelude-option-set-has-arg"/>
+    <function name="prelude_option_get_has_arg ()" link="libprelude-prelude-option.html#prelude-option-get-has-arg"/>
+    <function name="prelude_option_set_value ()" link="libprelude-prelude-option.html#prelude-option-set-value"/>
+    <function name="prelude_option_get_value ()" link="libprelude-prelude-option.html#prelude-option-get-value"/>
+    <function name="prelude_option_set_help ()" link="libprelude-prelude-option.html#prelude-option-set-help"/>
+    <function name="prelude_option_get_help ()" link="libprelude-prelude-option.html#prelude-option-get-help"/>
+    <function name="prelude_option_set_input_validation_regex ()" link="libprelude-prelude-option.html#prelude-option-set-input-validation-regex"/>
+    <function name="prelude_option_get_input_validation_regex ()" link="libprelude-prelude-option.html#prelude-option-get-input-validation-regex"/>
+    <function name="prelude_option_set_input_type ()" link="libprelude-prelude-option.html#prelude-option-set-input-type"/>
+    <function name="prelude_option_get_input_type ()" link="libprelude-prelude-option.html#prelude-option-get-input-type"/>
+    <function name="prelude_option_get_optlist ()" link="libprelude-prelude-option.html#prelude-option-get-optlist"/>
+    <function name="prelude_option_get_next ()" link="libprelude-prelude-option.html#prelude-option-get-next"/>
+    <function name="prelude_option_has_optlist ()" link="libprelude-prelude-option.html#prelude-option-has-optlist"/>
+    <function name="prelude_option_get_parent ()" link="libprelude-prelude-option.html#prelude-option-get-parent"/>
+    <function name="prelude_option_set_destroy_callback ()" link="libprelude-prelude-option.html#prelude-option-set-destroy-callback"/>
+    <function name="prelude_option_get_destroy_callback ()" link="libprelude-prelude-option.html#prelude-option-get-destroy-callback"/>
+    <function name="prelude_option_set_set_callback ()" link="libprelude-prelude-option.html#prelude-option-set-set-callback"/>
+    <function name="prelude_option_get_set_callback ()" link="libprelude-prelude-option.html#prelude-option-get-set-callback"/>
+    <function name="prelude_option_set_get_callback ()" link="libprelude-prelude-option.html#prelude-option-set-get-callback"/>
+    <function name="prelude_option_get_get_callback ()" link="libprelude-prelude-option.html#prelude-option-get-get-callback"/>
+    <function name="prelude_option_set_commit_callback ()" link="libprelude-prelude-option.html#prelude-option-set-commit-callback"/>
+    <function name="prelude_option_get_commit_callback ()" link="libprelude-prelude-option.html#prelude-option-get-commit-callback"/>
+    <function name="prelude_option_set_default_context ()" link="libprelude-prelude-option.html#prelude-option-set-default-context"/>
+    <function name="prelude_option_new_context ()" link="libprelude-prelude-option.html#prelude-option-new-context"/>
+    <function name="prelude_option_context_destroy ()" link="libprelude-prelude-option.html#prelude-option-context-destroy"/>
+    <function name="prelude_option_search ()" link="libprelude-prelude-option.html#prelude-option-search"/>
+    <function name="prelude_option_search_context ()" link="libprelude-prelude-option.html#prelude-option-search-context"/>
+    <function name="enum prelude_connection_permission_t" link="libprelude-prelude-connection.html#prelude-connection-permission-t"/>
+    <function name="enum prelude_connection_state_t" link="libprelude-prelude-connection.html#prelude-connection-state-t"/>
+    <function name="prelude_connection_t" link="libprelude-prelude-connection.html#prelude-connection-t"/>
+    <function name="prelude_connection_destroy ()" link="libprelude-prelude-connection.html#prelude-connection-destroy"/>
+    <function name="prelude_connection_send ()" link="libprelude-prelude-connection.html#prelude-connection-send"/>
+    <function name="prelude_connection_recv ()" link="libprelude-prelude-connection.html#prelude-connection-recv"/>
+    <function name="prelude_connection_recv_idmef ()" link="libprelude-prelude-connection.html#prelude-connection-recv-idmef"/>
+    <function name="prelude_connection_connect ()" link="libprelude-prelude-connection.html#prelude-connection-connect"/>
+    <function name="prelude_connection_forward ()" link="libprelude-prelude-connection.html#prelude-connection-forward"/>
+    <function name="prelude_connection_get_local_addr ()" link="libprelude-prelude-connection.html#prelude-connection-get-local-addr"/>
+    <function name="prelude_connection_get_local_port ()" link="libprelude-prelude-connection.html#prelude-connection-get-local-port"/>
+    <function name="prelude_connection_get_peer_addr ()" link="libprelude-prelude-connection.html#prelude-connection-get-peer-addr"/>
+    <function name="prelude_connection_get_peer_port ()" link="libprelude-prelude-connection.html#prelude-connection-get-peer-port"/>
+    <function name="prelude_connection_is_alive ()" link="libprelude-prelude-connection.html#prelude-connection-is-alive"/>
+    <function name="prelude_connection_get_fd ()" link="libprelude-prelude-connection.html#prelude-connection-get-fd"/>
+    <function name="prelude_connection_close ()" link="libprelude-prelude-connection.html#prelude-connection-close"/>
+    <function name="prelude_connection_set_fd_ref ()" link="libprelude-prelude-connection.html#prelude-connection-set-fd-ref"/>
+    <function name="prelude_connection_set_fd_nodup ()" link="libprelude-prelude-connection.html#prelude-connection-set-fd-nodup"/>
+    <function name="prelude_connection_set_state ()" link="libprelude-prelude-connection.html#prelude-connection-set-state"/>
+    <function name="prelude_connection_get_state ()" link="libprelude-prelude-connection.html#prelude-connection-get-state"/>
+    <function name="prelude_connection_set_data ()" link="libprelude-prelude-connection.html#prelude-connection-set-data"/>
+    <function name="prelude_connection_get_data ()" link="libprelude-prelude-connection.html#prelude-connection-get-data"/>
+    <function name="prelude_connection_get_default_socket_filename ()" link="libprelude-prelude-connection.html#prelude-connection-get-default-socket-filename"/>
+    <function name="prelude_connection_get_permission ()" link="libprelude-prelude-connection.html#prelude-connection-get-permission"/>
+    <function name="prelude_connection_get_peer_analyzerid ()" link="libprelude-prelude-connection.html#prelude-connection-get-peer-analyzerid"/>
+    <function name="prelude_connection_set_peer_analyzerid ()" link="libprelude-prelude-connection.html#prelude-connection-set-peer-analyzerid"/>
+    <function name="prelude_connection_new ()" link="libprelude-prelude-connection.html#prelude-connection-new"/>
+    <function name="prelude_connection_ref ()" link="libprelude-prelude-connection.html#prelude-connection-ref"/>
+    <function name="prelude_connection_new_msgbuf ()" link="libprelude-prelude-connection.html#prelude-connection-new-msgbuf"/>
+    <function name="prelude_connection_permission_to_string ()" link="libprelude-prelude-connection.html#prelude-connection-permission-to-string"/>
+    <function name="prelude_connection_permission_new_from_string ()" link="libprelude-prelude-connection.html#prelude-connection-permission-new-from-string"/>
+    <function name="prelude_string_t" link="libprelude-prelude-string.html#prelude-string-t"/>
+    <function name="prelude_string_new ()" link="libprelude-prelude-string.html#prelude-string-new"/>
+    <function name="prelude_string_new_nodup ()" link="libprelude-prelude-string.html#prelude-string-new-nodup"/>
+    <function name="prelude_string_new_ref ()" link="libprelude-prelude-string.html#prelude-string-new-ref"/>
+    <function name="prelude_string_new_dup ()" link="libprelude-prelude-string.html#prelude-string-new-dup"/>
+    <function name="prelude_string_new_dup_fast ()" link="libprelude-prelude-string.html#prelude-string-new-dup-fast"/>
+    <function name="prelude_string_destroy ()" link="libprelude-prelude-string.html#prelude-string-destroy"/>
+    <function name="prelude_string_destroy_internal ()" link="libprelude-prelude-string.html#prelude-string-destroy-internal"/>
+    <function name="prelude_string_new_nodup_fast ()" link="libprelude-prelude-string.html#prelude-string-new-nodup-fast"/>
+    <function name="prelude_string_new_ref_fast ()" link="libprelude-prelude-string.html#prelude-string-new-ref-fast"/>
+    <function name="prelude_string_set_dup_fast ()" link="libprelude-prelude-string.html#prelude-string-set-dup-fast"/>
+    <function name="prelude_string_set_dup ()" link="libprelude-prelude-string.html#prelude-string-set-dup"/>
+    <function name="prelude_string_set_nodup_fast ()" link="libprelude-prelude-string.html#prelude-string-set-nodup-fast"/>
+    <function name="prelude_string_set_nodup ()" link="libprelude-prelude-string.html#prelude-string-set-nodup"/>
+    <function name="prelude_string_set_ref_fast ()" link="libprelude-prelude-string.html#prelude-string-set-ref-fast"/>
+    <function name="prelude_string_set_ref ()" link="libprelude-prelude-string.html#prelude-string-set-ref"/>
+    <function name="prelude_string_copy_ref ()" link="libprelude-prelude-string.html#prelude-string-copy-ref"/>
+    <function name="prelude_string_copy_dup ()" link="libprelude-prelude-string.html#prelude-string-copy-dup"/>
+    <function name="prelude_string_ref ()" link="libprelude-prelude-string.html#prelude-string-ref"/>
+    <function name="prelude_string_clone ()" link="libprelude-prelude-string.html#prelude-string-clone"/>
+    <function name="prelude_string_get_len ()" link="libprelude-prelude-string.html#prelude-string-get-len"/>
+    <function name="prelude_string_get_string_or_default ()" link="libprelude-prelude-string.html#prelude-string-get-string-or-default"/>
+    <function name="prelude_string_get_string ()" link="libprelude-prelude-string.html#prelude-string-get-string"/>
+    <function name="prelude_string_get_string_released ()" link="libprelude-prelude-string.html#prelude-string-get-string-released"/>
+    <function name="prelude_string_is_empty ()" link="libprelude-prelude-string.html#prelude-string-is-empty"/>
+    <function name="prelude_string_clear ()" link="libprelude-prelude-string.html#prelude-string-clear"/>
+    <function name="prelude_string_cat ()" link="libprelude-prelude-string.html#prelude-string-cat"/>
+    <function name="prelude_string_ncat ()" link="libprelude-prelude-string.html#prelude-string-ncat"/>
+    <function name="prelude_string_sprintf ()" link="libprelude-prelude-string.html#prelude-string-sprintf"/>
+    <function name="prelude_string_vprintf ()" link="libprelude-prelude-string.html#prelude-string-vprintf"/>
+    <function name="prelude_string_set_constant()" link="libprelude-prelude-string.html#prelude-string-set-constant"/>
+    <function name="prelude_string_new_constant()" link="libprelude-prelude-string.html#prelude-string-new-constant"/>
+    <function name="prelude_string_compare ()" link="libprelude-prelude-string.html#prelude-string-compare"/>
+    <function name="prelude_msgbuf_t" link="libprelude-prelude-msgbuf.html#prelude-msgbuf-t"/>
+    <function name="enum prelude_msgbuf_flags_t" link="libprelude-prelude-msgbuf.html#prelude-msgbuf-flags-t"/>
+    <function name="prelude_msgbuf_new ()" link="libprelude-prelude-msgbuf.html#prelude-msgbuf-new"/>
+    <function name="prelude_msgbuf_destroy ()" link="libprelude-prelude-msgbuf.html#prelude-msgbuf-destroy"/>
+    <function name="prelude_msgbuf_mark_end ()" link="libprelude-prelude-msgbuf.html#prelude-msgbuf-mark-end"/>
+    <function name="prelude_msgbuf_set ()" link="libprelude-prelude-msgbuf.html#prelude-msgbuf-set"/>
+    <function name="prelude_msgbuf_get_msg ()" link="libprelude-prelude-msgbuf.html#prelude-msgbuf-get-msg"/>
+    <function name="prelude_msgbuf_set_callback ()" link="libprelude-prelude-msgbuf.html#prelude-msgbuf-set-callback"/>
+    <function name="prelude_msgbuf_set_data ()" link="libprelude-prelude-msgbuf.html#prelude-msgbuf-set-data"/>
+    <function name="prelude_msgbuf_get_data ()" link="libprelude-prelude-msgbuf.html#prelude-msgbuf-get-data"/>
+    <function name="prelude_msgbuf_set_flags ()" link="libprelude-prelude-msgbuf.html#prelude-msgbuf-set-flags"/>
+    <function name="prelude_msgbuf_get_flags ()" link="libprelude-prelude-msgbuf.html#prelude-msgbuf-get-flags"/>
+    <function name="idmef_additional_data_write ()" link="libprelude-idmef-message-write.html#idmef-additional-data-write"/>
+    <function name="idmef_reference_write ()" link="libprelude-idmef-message-write.html#idmef-reference-write"/>
+    <function name="idmef_classification_write ()" link="libprelude-idmef-message-write.html#idmef-classification-write"/>
+    <function name="idmef_user_id_write ()" link="libprelude-idmef-message-write.html#idmef-user-id-write"/>
+    <function name="idmef_user_write ()" link="libprelude-idmef-message-write.html#idmef-user-write"/>
+    <function name="idmef_address_write ()" link="libprelude-idmef-message-write.html#idmef-address-write"/>
+    <function name="idmef_process_write ()" link="libprelude-idmef-message-write.html#idmef-process-write"/>
+    <function name="idmef_web_service_write ()" link="libprelude-idmef-message-write.html#idmef-web-service-write"/>
+    <function name="idmef_snmp_service_write ()" link="libprelude-idmef-message-write.html#idmef-snmp-service-write"/>
+    <function name="idmef_service_write ()" link="libprelude-idmef-message-write.html#idmef-service-write"/>
+    <function name="idmef_node_write ()" link="libprelude-idmef-message-write.html#idmef-node-write"/>
+    <function name="idmef_source_write ()" link="libprelude-idmef-message-write.html#idmef-source-write"/>
+    <function name="idmef_file_access_write ()" link="libprelude-idmef-message-write.html#idmef-file-access-write"/>
+    <function name="idmef_inode_write ()" link="libprelude-idmef-message-write.html#idmef-inode-write"/>
+    <function name="idmef_checksum_write ()" link="libprelude-idmef-message-write.html#idmef-checksum-write"/>
+    <function name="idmef_file_write ()" link="libprelude-idmef-message-write.html#idmef-file-write"/>
+    <function name="idmef_linkage_write ()" link="libprelude-idmef-message-write.html#idmef-linkage-write"/>
+    <function name="idmef_target_write ()" link="libprelude-idmef-message-write.html#idmef-target-write"/>
+    <function name="idmef_analyzer_write ()" link="libprelude-idmef-message-write.html#idmef-analyzer-write"/>
+    <function name="idmef_alertident_write ()" link="libprelude-idmef-message-write.html#idmef-alertident-write"/>
+    <function name="idmef_impact_write ()" link="libprelude-idmef-message-write.html#idmef-impact-write"/>
+    <function name="idmef_action_write ()" link="libprelude-idmef-message-write.html#idmef-action-write"/>
+    <function name="idmef_confidence_write ()" link="libprelude-idmef-message-write.html#idmef-confidence-write"/>
+    <function name="idmef_assessment_write ()" link="libprelude-idmef-message-write.html#idmef-assessment-write"/>
+    <function name="idmef_tool_alert_write ()" link="libprelude-idmef-message-write.html#idmef-tool-alert-write"/>
+    <function name="idmef_correlation_alert_write ()" link="libprelude-idmef-message-write.html#idmef-correlation-alert-write"/>
+    <function name="idmef_overflow_alert_write ()" link="libprelude-idmef-message-write.html#idmef-overflow-alert-write"/>
+    <function name="idmef_alert_write ()" link="libprelude-idmef-message-write.html#idmef-alert-write"/>
+    <function name="idmef_heartbeat_write ()" link="libprelude-idmef-message-write.html#idmef-heartbeat-write"/>
+    <function name="idmef_message_write ()" link="libprelude-idmef-message-write.html#idmef-message-write"/>
+    <function name="prelude_ident_t" link="libprelude-prelude-ident.html#prelude-ident-t"/>
+    <function name="prelude_ident_inc ()" link="libprelude-prelude-ident.html#prelude-ident-inc"/>
+    <function name="prelude_ident_generate ()" link="libprelude-prelude-ident.html#prelude-ident-generate"/>
+    <function name="prelude_ident_destroy ()" link="libprelude-prelude-ident.html#prelude-ident-destroy"/>
+    <function name="prelude_ident_new ()" link="libprelude-prelude-ident.html#prelude-ident-new"/>
+    <function name="prelude_gid_t" link="libprelude-prelude-client-profile.html#prelude-gid-t"/>
+    <function name="prelude_uid_t" link="libprelude-prelude-client-profile.html#prelude-uid-t"/>
+    <function name="prelude_client_profile_t" link="libprelude-prelude-client-profile.html#prelude-client-profile-t"/>
+    <function name="prelude_client_profile_new ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-new"/>
+    <function name="prelude_client_profile_ref ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-ref"/>
+    <function name="prelude_client_profile_destroy ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-destroy"/>
+    <function name="prelude_client_profile_get_config_filename ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-config-filename"/>
+    <function name="prelude_client_profile_get_analyzerid_filename ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-analyzerid-filename"/>
+    <function name="prelude_client_profile_get_tls_key_filename ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-tls-key-filename"/>
+    <function name="prelude_client_profile_get_tls_server_ca_cert_filename ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-tls-server-ca-cert-filename"/>
+    <function name="prelude_client_profile_get_tls_server_keycert_filename ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-tls-server-keycert-filename"/>
+    <function name="prelude_client_profile_get_tls_server_crl_filename ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-tls-server-crl-filename"/>
+    <function name="prelude_client_profile_get_tls_client_keycert_filename ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-tls-client-keycert-filename"/>
+    <function name="prelude_client_profile_get_tls_client_trusted_cert_filename ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-tls-client-trusted-cert-filename"/>
+    <function name="prelude_client_profile_get_backup_dirname ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-backup-dirname"/>
+    <function name="prelude_client_profile_get_profile_dirname ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-profile-dirname"/>
+    <function name="prelude_client_profile_get_default_config_dirname ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-default-config-dirname"/>
+    <function name="prelude_client_profile_set_prefix ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-set-prefix"/>
+    <function name="prelude_client_profile_get_prefix ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-prefix"/>
+    <function name="prelude_client_profile_set_uid ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-set-uid"/>
+    <function name="prelude_client_profile_get_uid ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-uid"/>
+    <function name="prelude_client_profile_set_gid ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-set-gid"/>
+    <function name="prelude_client_profile_get_gid ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-gid"/>
+    <function name="prelude_client_profile_set_name ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-set-name"/>
+    <function name="prelude_client_profile_get_name ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-name"/>
+    <function name="prelude_client_profile_get_analyzerid ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-analyzerid"/>
+    <function name="prelude_client_profile_set_analyzerid ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-set-analyzerid"/>
+    <function name="prelude_client_profile_get_credentials ()" link="libprelude-prelude-client-profile.html#prelude-client-profile-get-credentials"/>
+    <function name="lt_preloaded_symbols" link="libprelude-prelude-plugin.html#lt-preloaded-symbols"/>
+    <function name="PRELUDE_PLUGIN_API_VERSION" link="libprelude-prelude-plugin.html#PRELUDE-PLUGIN-API-VERSION--CAPS"/>
+    <function name="prelude_plugin_entry_t" link="libprelude-prelude-plugin.html#prelude-plugin-entry-t"/>
+    <function name="prelude_plugin_instance_t" link="libprelude-prelude-plugin.html#prelude-plugin-instance-t"/>
+    <function name="PRELUDE_PLUGIN_GENERIC" link="libprelude-prelude-plugin.html#PRELUDE-PLUGIN-GENERIC--CAPS"/>
+    <function name="prelude_plugin_generic_t" link="libprelude-prelude-plugin.html#prelude-plugin-generic-t"/>
+    <function name="PRELUDE_PLUGIN_SET_PRELOADED_SYMBOLS()" link="libprelude-prelude-plugin.html#PRELUDE-PLUGIN-SET-PRELOADED-SYMBOLS--CAPS"/>
+    <function name="PRELUDE_PLUGIN_OPTION_DECLARE_STRING_CB()" link="libprelude-prelude-plugin.html#PRELUDE-PLUGIN-OPTION-DECLARE-STRING-CB--CAPS"/>
+    <function name="prelude_plugin_get_name()" link="libprelude-prelude-plugin.html#prelude-plugin-get-name"/>
+    <function name="prelude_plugin_set_name()" link="libprelude-prelude-plugin.html#prelude-plugin-set-name"/>
+    <function name="prelude_plugin_set_destroy_func()" link="libprelude-prelude-plugin.html#prelude-plugin-set-destroy-func"/>
+    <function name="prelude_plugin_entry_set_plugin ()" link="libprelude-prelude-plugin.html#prelude-plugin-entry-set-plugin"/>
+    <function name="prelude_plugin_set_activation_option ()" link="libprelude-prelude-plugin.html#prelude-plugin-set-activation-option"/>
+    <function name="prelude_plugin_instance_subscribe ()" link="libprelude-prelude-plugin.html#prelude-plugin-instance-subscribe"/>
+    <function name="prelude_plugin_instance_unsubscribe ()" link="libprelude-prelude-plugin.html#prelude-plugin-instance-unsubscribe"/>
+    <function name="prelude_plugin_new_instance ()" link="libprelude-prelude-plugin.html#prelude-plugin-new-instance"/>
+    <function name="prelude_plugin_search_by_name ()" link="libprelude-prelude-plugin.html#prelude-plugin-search-by-name"/>
+    <function name="prelude_plugin_search_instance_by_name ()" link="libprelude-prelude-plugin.html#prelude-plugin-search-instance-by-name"/>
+    <function name="prelude_plugin_instance_set_data ()" link="libprelude-prelude-plugin.html#prelude-plugin-instance-set-data"/>
+    <function name="prelude_plugin_instance_get_data ()" link="libprelude-prelude-plugin.html#prelude-plugin-instance-get-data"/>
+    <function name="prelude_plugin_instance_set_plugin_data ()" link="libprelude-prelude-plugin.html#prelude-plugin-instance-set-plugin-data"/>
+    <function name="prelude_plugin_instance_get_plugin_data ()" link="libprelude-prelude-plugin.html#prelude-plugin-instance-get-plugin-data"/>
+    <function name="prelude_plugin_instance_get_name ()" link="libprelude-prelude-plugin.html#prelude-plugin-instance-get-name"/>
+    <function name="prelude_plugin_instance_get_plugin ()" link="libprelude-prelude-plugin.html#prelude-plugin-instance-get-plugin"/>
+    <function name="prelude_plugin_load_from_dir ()" link="libprelude-prelude-plugin.html#prelude-plugin-load-from-dir"/>
+    <function name="prelude_plugin_instance_add ()" link="libprelude-prelude-plugin.html#prelude-plugin-instance-add"/>
+    <function name="prelude_plugin_instance_del ()" link="libprelude-prelude-plugin.html#prelude-plugin-instance-del"/>
+    <function name="prelude_plugin_instance_compute_time ()" link="libprelude-prelude-plugin.html#prelude-plugin-instance-compute-time"/>
+    <function name="prelude_plugin_instance_call_commit_func ()" link="libprelude-prelude-plugin.html#prelude-plugin-instance-call-commit-func"/>
+    <function name="prelude_plugin_instance_has_commit_func ()" link="libprelude-prelude-plugin.html#prelude-plugin-instance-has-commit-func"/>
+    <function name="prelude_plugin_set_preloaded_symbols ()" link="libprelude-prelude-plugin.html#prelude-plugin-set-preloaded-symbols"/>
+    <function name="prelude_plugin_get_next ()" link="libprelude-prelude-plugin.html#prelude-plugin-get-next"/>
+    <function name="prelude_plugin_unload ()" link="libprelude-prelude-plugin.html#prelude-plugin-unload"/>
+    <function name="prelude_plugin_compute_stats()" link="libprelude-prelude-plugin.html#prelude-plugin-compute-stats"/>
+    <function name="prelude_plugin_run()" link="libprelude-prelude-plugin.html#prelude-plugin-run"/>
+    <function name="prelude_hash_t" link="libprelude-prelude-hash.html#prelude-hash-t"/>
+    <function name="prelude_hash_new ()" link="libprelude-prelude-hash.html#prelude-hash-new"/>
+    <function name="prelude_hash_new2 ()" link="libprelude-prelude-hash.html#prelude-hash-new2"/>
+    <function name="prelude_hash_destroy ()" link="libprelude-prelude-hash.html#prelude-hash-destroy"/>
+    <function name="prelude_hash_set ()" link="libprelude-prelude-hash.html#prelude-hash-set"/>
+    <function name="prelude_hash_get ()" link="libprelude-prelude-hash.html#prelude-hash-get"/>
+    <function name="prelude_hash_elem_destroy ()" link="libprelude-prelude-hash.html#prelude-hash-elem-destroy"/>
+    <function name="prelude_hash_iterate ()" link="libprelude-prelude-hash.html#prelude-hash-iterate"/>
+    <function name="prelude_failover_t" link="libprelude-prelude-failover.html#prelude-failover-t"/>
+    <function name="prelude_failover_destroy ()" link="libprelude-prelude-failover.html#prelude-failover-destroy"/>
+    <function name="prelude_failover_new ()" link="libprelude-prelude-failover.html#prelude-failover-new"/>
+    <function name="prelude_failover_set_quota ()" link="libprelude-prelude-failover.html#prelude-failover-set-quota"/>
+    <function name="prelude_failover_save_msg ()" link="libprelude-prelude-failover.html#prelude-failover-save-msg"/>
+    <function name="prelude_failover_get_saved_msg ()" link="libprelude-prelude-failover.html#prelude-failover-get-saved-msg"/>
+    <function name="prelude_failover_get_deleted_msg_count ()" link="libprelude-prelude-failover.html#prelude-failover-get-deleted-msg-count"/>
+    <function name="prelude_failover_get_available_msg_count ()" link="libprelude-prelude-failover.html#prelude-failover-get-available-msg-count"/>
+    <function name="prelude_failover_commit ()" link="libprelude-prelude-failover.html#prelude-failover-commit"/>
+    <function name="prelude_failover_disable_transaction ()" link="libprelude-prelude-failover.html#prelude-failover-disable-transaction"/>
+    <function name="prelude_failover_enable_transaction ()" link="libprelude-prelude-failover.html#prelude-failover-enable-transaction"/>
+    <function name="prelude_failover_rollback ()" link="libprelude-prelude-failover.html#prelude-failover-rollback"/>
+    <function name="enum prelude_async_flags_t" link="libprelude-prelude-async.html#prelude-async-flags-t"/>
+    <function name="prelude_async_callback_t ()" link="libprelude-prelude-async.html#prelude-async-callback-t"/>
+    <function name="PRELUDE_ASYNC_OBJECT" link="libprelude-prelude-async.html#PRELUDE-ASYNC-OBJECT--CAPS"/>
+    <function name="prelude_async_object_t" link="libprelude-prelude-async.html#prelude-async-object-t"/>
+    <function name="prelude_async_init ()" link="libprelude-prelude-async.html#prelude-async-init"/>
+    <function name="prelude_async_get_flags ()" link="libprelude-prelude-async.html#prelude-async-get-flags"/>
+    <function name="prelude_async_set_flags ()" link="libprelude-prelude-async.html#prelude-async-set-flags"/>
+    <function name="prelude_async_add ()" link="libprelude-prelude-async.html#prelude-async-add"/>
+    <function name="prelude_async_del ()" link="libprelude-prelude-async.html#prelude-async-del"/>
+    <function name="prelude_async_exit ()" link="libprelude-prelude-async.html#prelude-async-exit"/>
+    <function name="PRELUDE_LIST()" link="libprelude-prelude-list.html#PRELUDE-LIST--CAPS"/>
+    <function name="prelude_list_t" link="libprelude-prelude-list.html#prelude-list-t"/>
+    <function name="prelude_list_entry()" link="libprelude-prelude-list.html#prelude-list-entry"/>
+    <function name="prelude_list_for_each()" link="libprelude-prelude-list.html#prelude-list-for-each"/>
+    <function name="prelude_list_for_each_safe()" link="libprelude-prelude-list.html#prelude-list-for-each-safe"/>
+    <function name="prelude_list_for_each_reversed()" link="libprelude-prelude-list.html#prelude-list-for-each-reversed"/>
+    <function name="prelude_list_for_each_reversed_safe()" link="libprelude-prelude-list.html#prelude-list-for-each-reversed-safe"/>
+    <function name="prelude_list_for_each_continue()" link="libprelude-prelude-list.html#prelude-list-for-each-continue"/>
+    <function name="prelude_list_for_each_continue_safe()" link="libprelude-prelude-list.html#prelude-list-for-each-continue-safe"/>
+    <function name="prelude_list_get_next()" link="libprelude-prelude-list.html#prelude-list-get-next"/>
+    <function name="prelude_list_get_next_safe()" link="libprelude-prelude-list.html#prelude-list-get-next-safe"/>
+    <function name="PRELUDE_INT8_MIN" link="libprelude-prelude-inttypes.html#PRELUDE-INT8-MIN--CAPS"/>
+    <function name="PRELUDE_INT16_MIN" link="libprelude-prelude-inttypes.html#PRELUDE-INT16-MIN--CAPS"/>
+    <function name="PRELUDE_INT32_MIN" link="libprelude-prelude-inttypes.html#PRELUDE-INT32-MIN--CAPS"/>
+    <function name="PRELUDE_INT64_MIN" link="libprelude-prelude-inttypes.html#PRELUDE-INT64-MIN--CAPS"/>
+    <function name="PRELUDE_INT8_MAX" link="libprelude-prelude-inttypes.html#PRELUDE-INT8-MAX--CAPS"/>
+    <function name="PRELUDE_INT16_MAX" link="libprelude-prelude-inttypes.html#PRELUDE-INT16-MAX--CAPS"/>
+    <function name="PRELUDE_INT32_MAX" link="libprelude-prelude-inttypes.html#PRELUDE-INT32-MAX--CAPS"/>
+    <function name="PRELUDE_INT64_MAX" link="libprelude-prelude-inttypes.html#PRELUDE-INT64-MAX--CAPS"/>
+    <function name="PRELUDE_UINT8_MAX" link="libprelude-prelude-inttypes.html#PRELUDE-UINT8-MAX--CAPS"/>
+    <function name="PRELUDE_UINT16_MAX" link="libprelude-prelude-inttypes.html#PRELUDE-UINT16-MAX--CAPS"/>
+    <function name="PRELUDE_UINT32_MAX" link="libprelude-prelude-inttypes.html#PRELUDE-UINT32-MAX--CAPS"/>
+    <function name="PRELUDE_UINT64_MAX" link="libprelude-prelude-inttypes.html#PRELUDE-UINT64-MAX--CAPS"/>
+    <function name="PRELUDE_INTMAX_MIN" link="libprelude-prelude-inttypes.html#PRELUDE-INTMAX-MIN--CAPS"/>
+    <function name="PRELUDE_INTMAX_MAX" link="libprelude-prelude-inttypes.html#PRELUDE-INTMAX-MAX--CAPS"/>
+    <function name="PRELUDE_UINTMAX_MAX" link="libprelude-prelude-inttypes.html#PRELUDE-UINTMAX-MAX--CAPS"/>
+    <function name="PRELUDE_PRId64" link="libprelude-prelude-inttypes.html#PRELUDE-PRId64"/>
+    <function name="PRELUDE_PRIi64" link="libprelude-prelude-inttypes.html#PRELUDE-PRIi64"/>
+    <function name="PRELUDE_PRIo64" link="libprelude-prelude-inttypes.html#PRELUDE-PRIo64"/>
+    <function name="PRELUDE_PRIx64" link="libprelude-prelude-inttypes.html#PRELUDE-PRIx64"/>
+    <function name="PRELUDE_PRIX64" link="libprelude-prelude-inttypes.html#PRELUDE-PRIX64--CAPS"/>
+    <function name="PRELUDE_PRIu64" link="libprelude-prelude-inttypes.html#PRELUDE-PRIu64"/>
+    <function name="PRELUDE_PRId32" link="libprelude-prelude-inttypes.html#PRELUDE-PRId32"/>
+    <function name="PRELUDE_PRIi32" link="libprelude-prelude-inttypes.html#PRELUDE-PRIi32"/>
+    <function name="PRELUDE_PRIo32" link="libprelude-prelude-inttypes.html#PRELUDE-PRIo32"/>
+    <function name="PRELUDE_PRIx32" link="libprelude-prelude-inttypes.html#PRELUDE-PRIx32"/>
+    <function name="PRELUDE_PRIX32" link="libprelude-prelude-inttypes.html#PRELUDE-PRIX32--CAPS"/>
+    <function name="PRELUDE_PRIu32" link="libprelude-prelude-inttypes.html#PRELUDE-PRIu32"/>
+    <function name="PRELUDE_PRId16" link="libprelude-prelude-inttypes.html#PRELUDE-PRId16"/>
+    <function name="PRELUDE_PRIi16" link="libprelude-prelude-inttypes.html#PRELUDE-PRIi16"/>
+    <function name="PRELUDE_PRIo16" link="libprelude-prelude-inttypes.html#PRELUDE-PRIo16"/>
+    <function name="PRELUDE_PRIx16" link="libprelude-prelude-inttypes.html#PRELUDE-PRIx16"/>
+    <function name="PRELUDE_PRIX16" link="libprelude-prelude-inttypes.html#PRELUDE-PRIX16--CAPS"/>
+    <function name="PRELUDE_PRIu16" link="libprelude-prelude-inttypes.html#PRELUDE-PRIu16"/>
+    <function name="PRELUDE_PRId8" link="libprelude-prelude-inttypes.html#PRELUDE-PRId8"/>
+    <function name="PRELUDE_PRIi8" link="libprelude-prelude-inttypes.html#PRELUDE-PRIi8"/>
+    <function name="PRELUDE_PRIo8" link="libprelude-prelude-inttypes.html#PRELUDE-PRIo8"/>
+    <function name="PRELUDE_PRIx8" link="libprelude-prelude-inttypes.html#PRELUDE-PRIx8"/>
+    <function name="PRELUDE_PRIX8" link="libprelude-prelude-inttypes.html#PRELUDE-PRIX8--CAPS"/>
+    <function name="PRELUDE_PRIu8" link="libprelude-prelude-inttypes.html#PRELUDE-PRIu8"/>
+    <function name="PRELUDE_SCNd64" link="libprelude-prelude-inttypes.html#PRELUDE-SCNd64"/>
+    <function name="PRELUDE_SCNi64" link="libprelude-prelude-inttypes.html#PRELUDE-SCNi64"/>
+    <function name="PRELUDE_SCNo64" link="libprelude-prelude-inttypes.html#PRELUDE-SCNo64"/>
+    <function name="PRELUDE_SCNx64" link="libprelude-prelude-inttypes.html#PRELUDE-SCNx64"/>
+    <function name="PRELUDE_SCNu64" link="libprelude-prelude-inttypes.html#PRELUDE-SCNu64"/>
+    <function name="enum prelude_bool_t" link="libprelude-prelude-inttypes.html#prelude-bool-t"/>
+    <function name="int8_t" link="libprelude-prelude-inttypes.html#int8-t"/>
+    <function name="uint8_t" link="libprelude-prelude-inttypes.html#uint8-t"/>
+    <function name="int16_t" link="libprelude-prelude-inttypes.html#int16-t"/>
+    <function name="uint16_t" link="libprelude-prelude-inttypes.html#uint16-t"/>
+    <function name="int32_t" link="libprelude-prelude-inttypes.html#int32-t"/>
+    <function name="uint32_t" link="libprelude-prelude-inttypes.html#uint32-t"/>
+    <function name="int64_t" link="libprelude-prelude-inttypes.html#int64-t"/>
+    <function name="uint64_t" link="libprelude-prelude-inttypes.html#uint64-t"/>
+    <function name="PRELUDE_OPTION_REPLY_TYPE_SET" link="libprelude-prelude-option-wide.html#PRELUDE-OPTION-REPLY-TYPE-SET--CAPS"/>
+    <function name="PRELUDE_OPTION_REPLY_TYPE_GET" link="libprelude-prelude-option-wide.html#PRELUDE-OPTION-REPLY-TYPE-GET--CAPS"/>
+    <function name="PRELUDE_OPTION_REPLY_TYPE_LIST" link="libprelude-prelude-option-wide.html#PRELUDE-OPTION-REPLY-TYPE-LIST--CAPS"/>
+    <function name="PRELUDE_OPTION_REPLY_TYPE_ERROR" link="libprelude-prelude-option-wide.html#PRELUDE-OPTION-REPLY-TYPE-ERROR--CAPS"/>
+    <function name="prelude_option_push_request ()" link="libprelude-prelude-option-wide.html#prelude-option-push-request"/>
+    <function name="prelude_option_new_request ()" link="libprelude-prelude-option-wide.html#prelude-option-new-request"/>
+    <function name="prelude_option_process_request ()" link="libprelude-prelude-option-wide.html#prelude-option-process-request"/>
+    <function name="prelude_option_recv_reply ()" link="libprelude-prelude-option-wide.html#prelude-option-recv-reply"/>
+    <function name="prelude_timer_t" link="libprelude-prelude-timer.html#prelude-timer-t"/>
+    <function name="prelude_timer_get_expire()" link="libprelude-prelude-timer.html#prelude-timer-get-expire"/>
+    <function name="prelude_timer_get_data()" link="libprelude-prelude-timer.html#prelude-timer-get-data"/>
+    <function name="prelude_timer_get_callback()" link="libprelude-prelude-timer.html#prelude-timer-get-callback"/>
+    <function name="prelude_timer_set_expire()" link="libprelude-prelude-timer.html#prelude-timer-set-expire"/>
+    <function name="prelude_timer_set_data()" link="libprelude-prelude-timer.html#prelude-timer-set-data"/>
+    <function name="prelude_timer_set_callback()" link="libprelude-prelude-timer.html#prelude-timer-set-callback"/>
+    <function name="prelude_timer_init ()" link="libprelude-prelude-timer.html#prelude-timer-init"/>
+    <function name="prelude_timer_init_list ()" link="libprelude-prelude-timer.html#prelude-timer-init-list"/>
+    <function name="prelude_timer_reset ()" link="libprelude-prelude-timer.html#prelude-timer-reset"/>
+    <function name="prelude_timer_destroy ()" link="libprelude-prelude-timer.html#prelude-timer-destroy"/>
+    <function name="prelude_timer_wake_up ()" link="libprelude-prelude-timer.html#prelude-timer-wake-up"/>
+    <function name="prelude_timer_flush ()" link="libprelude-prelude-timer.html#prelude-timer-flush"/>
+    <function name="prelude_timer_lock_critical_region ()" link="libprelude-prelude-timer.html#prelude-timer-lock-critical-region"/>
+    <function name="prelude_timer_unlock_critical_region ()" link="libprelude-prelude-timer.html#prelude-timer-unlock-critical-region"/>
+  </functions>
+</book>

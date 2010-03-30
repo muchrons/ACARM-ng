@@ -1,0 +1,581 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-prelude-plugin">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-prelude-plugin.top_of_page">prelude-plugin</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>prelude-plugin</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-prelude-plugin.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+#define             <link linkend="lt-preloaded-symbols">lt_preloaded_symbols</link>
+#define             <link linkend="PRELUDE-PLUGIN-API-VERSION--CAPS">PRELUDE_PLUGIN_API_VERSION</link>
+typedef             <link linkend="prelude-plugin-entry-t">prelude_plugin_entry_t</link>;
+typedef             <link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link>;
+#define             <link linkend="PRELUDE-PLUGIN-GENERIC--CAPS">PRELUDE_PLUGIN_GENERIC</link>
+                    <link linkend="prelude-plugin-generic-t">prelude_plugin_generic_t</link>;
+#define             <link linkend="PRELUDE-PLUGIN-SET-PRELOADED-SYMBOLS--CAPS">PRELUDE_PLUGIN_SET_PRELOADED_SYMBOLS</link>()
+#define             <link linkend="PRELUDE-PLUGIN-OPTION-DECLARE-STRING-CB--CAPS">PRELUDE_PLUGIN_OPTION_DECLARE_STRING_CB</link>(prefix, type, name)
+#define             <link linkend="prelude-plugin-get-name">prelude_plugin_get_name</link>             (p)
+#define             <link linkend="prelude-plugin-set-name">prelude_plugin_set_name</link>             (p, str)
+#define             <link linkend="prelude-plugin-set-destroy-func">prelude_plugin_set_destroy_func</link>     (p, func)
+<link linkend="void">void</link>                <link linkend="prelude-plugin-entry-set-plugin">prelude_plugin_entry_set_plugin</link>     (<link linkend="prelude-plugin-entry-t">prelude_plugin_entry_t</link> *pe,
+                                                         <link linkend="prelude-plugin-generic-t">prelude_plugin_generic_t</link> *pl);
+<link linkend="int">int</link>                 <link linkend="prelude-plugin-set-activation-option">prelude_plugin_set_activation_option</link>
+                                                        (<link linkend="prelude-plugin-entry-t">prelude_plugin_entry_t</link> *pe,
+                                                         <link linkend="prelude-option-t">prelude_option_t</link> *opt,
+                                                         <link linkend="int">int</link> (commitprelude_plugin_instance_t *pi, prelude_string_t *err) ());
+<link linkend="int">int</link>                 <link linkend="prelude-plugin-instance-subscribe">prelude_plugin_instance_subscribe</link>   (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);
+<link linkend="int">int</link>                 <link linkend="prelude-plugin-instance-unsubscribe">prelude_plugin_instance_unsubscribe</link> (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);
+<link linkend="int">int</link>                 <link linkend="prelude-plugin-new-instance">prelude_plugin_new_instance</link>         (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> **pi,
+                                                         <link linkend="prelude-plugin-generic-t">prelude_plugin_generic_t</link> *plugin,
+                                                         const <link linkend="char">char</link> *name,
+                                                         <link linkend="void">void</link> *data);
+<link linkend="prelude-plugin-generic-t">prelude_plugin_generic_t</link> * <link linkend="prelude-plugin-search-by-name">prelude_plugin_search_by_name</link>
+                                                        (<link linkend="prelude-list-t">prelude_list_t</link> *head,
+                                                         const <link linkend="char">char</link> *name);
+<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> * <link linkend="prelude-plugin-search-instance-by-name">prelude_plugin_search_instance_by_name</link>
+                                                        (<link linkend="prelude-list-t">prelude_list_t</link> *head,
+                                                         const <link linkend="char">char</link> *pname,
+                                                         const <link linkend="char">char</link> *iname);
+<link linkend="void">void</link>                <link linkend="prelude-plugin-instance-set-data">prelude_plugin_instance_set_data</link>    (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi,
+                                                         <link linkend="void">void</link> *data);
+<link linkend="void">void</link> *              <link linkend="prelude-plugin-instance-get-data">prelude_plugin_instance_get_data</link>    (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);
+<link linkend="void">void</link>                <link linkend="prelude-plugin-instance-set-plugin-data">prelude_plugin_instance_set_plugin_data</link>
+                                                        (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi,
+                                                         <link linkend="void">void</link> *data);
+<link linkend="void">void</link> *              <link linkend="prelude-plugin-instance-get-plugin-data">prelude_plugin_instance_get_plugin_data</link>
+                                                        (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);
+const <link linkend="char">char</link> *        <link linkend="prelude-plugin-instance-get-name">prelude_plugin_instance_get_name</link>    (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);
+<link linkend="prelude-plugin-generic-t">prelude_plugin_generic_t</link> * <link linkend="prelude-plugin-instance-get-plugin">prelude_plugin_instance_get_plugin</link>
+                                                        (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);
+<link linkend="int">int</link>                 <link linkend="prelude-plugin-load-from-dir">prelude_plugin_load_from_dir</link>        (<link linkend="prelude-list-t">prelude_list_t</link> *head,
+                                                         const <link linkend="char">char</link> *dirname,
+                                                         const <link linkend="char">char</link> *symbol,
+                                                         <link linkend="void">void</link> *ptr,
+                                                         <link linkend="int">int</link> (subscribeprelude_plugin_instance_t *p) (),
+                                                         <link linkend="void">void</link> (unsubscribeprelude_plugin_instance_t *pi) ());
+<link linkend="int">int</link>                 <link linkend="prelude-plugin-instance-add">prelude_plugin_instance_add</link>         (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi,
+                                                         <link linkend="prelude-list-t">prelude_list_t</link> *h);
+<link linkend="void">void</link>                <link linkend="prelude-plugin-instance-del">prelude_plugin_instance_del</link>         (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);
+<link linkend="void">void</link>                <link linkend="prelude-plugin-instance-compute-time">prelude_plugin_instance_compute_time</link>
+                                                        (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi,
+                                                         <link linkend="struct-timeval">struct timeval</link> *start,
+                                                         <link linkend="struct-timeval">struct timeval</link> *end);
+<link linkend="int">int</link>                 <link linkend="prelude-plugin-instance-call-commit-func">prelude_plugin_instance_call_commit_func</link>
+                                                        (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *err);
+<link linkend="prelude-bool-t">prelude_bool_t</link>      <link linkend="prelude-plugin-instance-has-commit-func">prelude_plugin_instance_has_commit_func</link>
+                                                        (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);
+<link linkend="void">void</link>                <link linkend="prelude-plugin-set-preloaded-symbols">prelude_plugin_set_preloaded_symbols</link>
+                                                        (<link linkend="void">void</link> *symlist);
+<link linkend="prelude-plugin-generic-t">prelude_plugin_generic_t</link> * <link linkend="prelude-plugin-get-next">prelude_plugin_get_next</link>      (<link linkend="prelude-list-t">prelude_list_t</link> *head,
+                                                         <link linkend="prelude-list-t">prelude_list_t</link> **iter);
+<link linkend="void">void</link>                <link linkend="prelude-plugin-unload">prelude_plugin_unload</link>               (<link linkend="prelude-plugin-generic-t">prelude_plugin_generic_t</link> *plugin);
+#define             <link linkend="prelude-plugin-compute-stats">prelude_plugin_compute_stats</link>        (pi, func)
+#define             <link linkend="prelude-plugin-run">prelude_plugin_run</link>                  (pi, type, member, ...)
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-prelude-plugin.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-prelude-plugin.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="lt-preloaded-symbols" role="macro">
+<title>lt_preloaded_symbols</title>
+<indexterm zone="lt-preloaded-symbols"><primary sortas="lt_preloaded_symbols">lt_preloaded_symbols</primary></indexterm><programlisting># define lt_preloaded_symbols lt__PROGRAM__LTX_preloaded_symbols
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PLUGIN-API-VERSION--CAPS" role="macro">
+<title>PRELUDE_PLUGIN_API_VERSION</title>
+<indexterm zone="PRELUDE-PLUGIN-API-VERSION--CAPS"><primary sortas="PRELUDE_PLUGIN_API_VERSION">PRELUDE_PLUGIN_API_VERSION</primary></indexterm><programlisting>#define PRELUDE_PLUGIN_API_VERSION 1
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-plugin-entry-t" role="typedef">
+<title>prelude_plugin_entry_t</title>
+<indexterm zone="prelude-plugin-entry-t"><primary sortas="prelude_plugin_entry_t">prelude_plugin_entry_t</primary></indexterm><programlisting>typedef struct prelude_plugin_entry prelude_plugin_entry_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-plugin-instance-t" role="typedef">
+<title>prelude_plugin_instance_t</title>
+<indexterm zone="prelude-plugin-instance-t"><primary sortas="prelude_plugin_instance_t">prelude_plugin_instance_t</primary></indexterm><programlisting>typedef struct prelude_plugin_instance prelude_plugin_instance_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PLUGIN-GENERIC--CAPS" role="macro">
+<title>PRELUDE_PLUGIN_GENERIC</title>
+<indexterm zone="PRELUDE-PLUGIN-GENERIC--CAPS"><primary sortas="PRELUDE_PLUGIN_GENERIC">PRELUDE_PLUGIN_GENERIC</primary></indexterm><programlisting>#define             PRELUDE_PLUGIN_GENERIC</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-plugin-generic-t" role="struct">
+<title>prelude_plugin_generic_t</title>
+<indexterm zone="prelude-plugin-generic-t"><primary sortas="prelude_plugin_generic_t">prelude_plugin_generic_t</primary></indexterm><programlisting>typedef struct {
+        PRELUDE_PLUGIN_GENERIC;
+} prelude_plugin_generic_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PLUGIN-SET-PRELOADED-SYMBOLS--CAPS" role="macro">
+<title>PRELUDE_PLUGIN_SET_PRELOADED_SYMBOLS()</title>
+<indexterm zone="PRELUDE-PLUGIN-SET-PRELOADED-SYMBOLS--CAPS"><primary sortas="PRELUDE_PLUGIN_SET_PRELOADED_SYMBOLS">PRELUDE_PLUGIN_SET_PRELOADED_SYMBOLS</primary></indexterm><programlisting>#define             PRELUDE_PLUGIN_SET_PRELOADED_SYMBOLS()</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PLUGIN-OPTION-DECLARE-STRING-CB--CAPS" role="macro">
+<title>PRELUDE_PLUGIN_OPTION_DECLARE_STRING_CB()</title>
+<indexterm zone="PRELUDE-PLUGIN-OPTION-DECLARE-STRING-CB--CAPS"><primary sortas="PRELUDE_PLUGIN_OPTION_DECLARE_STRING_CB">PRELUDE_PLUGIN_OPTION_DECLARE_STRING_CB</primary></indexterm><programlisting>#define             PRELUDE_PLUGIN_OPTION_DECLARE_STRING_CB(prefix, type, name)</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>prefix</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-get-name" role="macro">
+<title>prelude_plugin_get_name()</title>
+<indexterm zone="prelude-plugin-get-name"><primary sortas="prelude_plugin_get_name">prelude_plugin_get_name</primary></indexterm><programlisting>#define prelude_plugin_get_name(p) (p)-&gt;name
+</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>p</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-set-name" role="macro">
+<title>prelude_plugin_set_name()</title>
+<indexterm zone="prelude-plugin-set-name"><primary sortas="prelude_plugin_set_name">prelude_plugin_set_name</primary></indexterm><programlisting>#define prelude_plugin_set_name(p, str) (p)-&gt;name = (str)
+</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>p</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-set-destroy-func" role="macro">
+<title>prelude_plugin_set_destroy_func()</title>
+<indexterm zone="prelude-plugin-set-destroy-func"><primary sortas="prelude_plugin_set_destroy_func">prelude_plugin_set_destroy_func</primary></indexterm><programlisting>#define prelude_plugin_set_destroy_func(p, func) (p)-&gt;destroy = func
+</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>p</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>func</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-entry-set-plugin" role="function">
+<title>prelude_plugin_entry_set_plugin ()</title>
+<indexterm zone="prelude-plugin-entry-set-plugin"><primary sortas="prelude_plugin_entry_set_plugin">prelude_plugin_entry_set_plugin</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_plugin_entry_set_plugin     (<link linkend="prelude-plugin-entry-t">prelude_plugin_entry_t</link> *pe,
+                                                         <link linkend="prelude-plugin-generic-t">prelude_plugin_generic_t</link> *pl);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pe</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pl</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-set-activation-option" role="function">
+<title>prelude_plugin_set_activation_option ()</title>
+<indexterm zone="prelude-plugin-set-activation-option"><primary sortas="prelude_plugin_set_activation_option">prelude_plugin_set_activation_option</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_plugin_set_activation_option
+                                                        (<link linkend="prelude-plugin-entry-t">prelude_plugin_entry_t</link> *pe,
+                                                         <link linkend="prelude-option-t">prelude_option_t</link> *opt,
+                                                         <link linkend="int">int</link> (commitprelude_plugin_instance_t *pi, prelude_string_t *err) ());</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pe</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>opt</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>commit</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-instance-subscribe" role="function">
+<title>prelude_plugin_instance_subscribe ()</title>
+<indexterm zone="prelude-plugin-instance-subscribe"><primary sortas="prelude_plugin_instance_subscribe">prelude_plugin_instance_subscribe</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_plugin_instance_subscribe   (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-instance-unsubscribe" role="function">
+<title>prelude_plugin_instance_unsubscribe ()</title>
+<indexterm zone="prelude-plugin-instance-unsubscribe"><primary sortas="prelude_plugin_instance_unsubscribe">prelude_plugin_instance_unsubscribe</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_plugin_instance_unsubscribe (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);</programlisting>
+<para>
+Set <parameter>pi</parameter> to be inactive.
+</para>
+<para>
+The unsubscribe function specified in <link linkend="plugin-load-from-dir"><function>plugin_load_from_dir()</function></link>
+is called for plugin un-registration and the instance for this
+plugin is freed.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a plugin instance.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, -1 if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-new-instance" role="function">
+<title>prelude_plugin_new_instance ()</title>
+<indexterm zone="prelude-plugin-new-instance"><primary sortas="prelude_plugin_new_instance">prelude_plugin_new_instance</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_plugin_new_instance         (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> **pi,
+                                                         <link linkend="prelude-plugin-generic-t">prelude_plugin_generic_t</link> *plugin,
+                                                         const <link linkend="char">char</link> *name,
+                                                         <link linkend="void">void</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>plugin</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-search-by-name" role="function">
+<title>prelude_plugin_search_by_name ()</title>
+<indexterm zone="prelude-plugin-search-by-name"><primary sortas="prelude_plugin_search_by_name">prelude_plugin_search_by_name</primary></indexterm><programlisting><link linkend="prelude-plugin-generic-t">prelude_plugin_generic_t</link> * prelude_plugin_search_by_name
+                                                        (<link linkend="prelude-list-t">prelude_list_t</link> *head,
+                                                         const <link linkend="char">char</link> *name);</programlisting>
+<para>
+Search <parameter>head</parameter> list of plugin for a plugin with name <parameter>name</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>head</parameter>&#160;:</term>
+<listitem><simpara> List where to search the plugin from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>name</parameter>&#160;:</term>
+<listitem><simpara> Name of the plugin to search.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the a <link linkend="prelude-plugin-t"><type>prelude_plugin_t</type></link> on success, or NULL if the plugin does not exist.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-search-instance-by-name" role="function">
+<title>prelude_plugin_search_instance_by_name ()</title>
+<indexterm zone="prelude-plugin-search-instance-by-name"><primary sortas="prelude_plugin_search_instance_by_name">prelude_plugin_search_instance_by_name</primary></indexterm><programlisting><link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> * prelude_plugin_search_instance_by_name
+                                                        (<link linkend="prelude-list-t">prelude_list_t</link> *head,
+                                                         const <link linkend="char">char</link> *pname,
+                                                         const <link linkend="char">char</link> *iname);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>head</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pname</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>iname</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-instance-set-data" role="function">
+<title>prelude_plugin_instance_set_data ()</title>
+<indexterm zone="prelude-plugin-instance-set-data"><primary sortas="prelude_plugin_instance_set_data">prelude_plugin_instance_set_data</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_plugin_instance_set_data    (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi,
+                                                         <link linkend="void">void</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-instance-get-data" role="function">
+<title>prelude_plugin_instance_get_data ()</title>
+<indexterm zone="prelude-plugin-instance-get-data"><primary sortas="prelude_plugin_instance_get_data">prelude_plugin_instance_get_data</primary></indexterm><programlisting><link linkend="void">void</link> *              prelude_plugin_instance_get_data    (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-instance-set-plugin-data" role="function">
+<title>prelude_plugin_instance_set_plugin_data ()</title>
+<indexterm zone="prelude-plugin-instance-set-plugin-data"><primary sortas="prelude_plugin_instance_set_plugin_data">prelude_plugin_instance_set_plugin_data</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_plugin_instance_set_plugin_data
+                                                        (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi,
+                                                         <link linkend="void">void</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-instance-get-plugin-data" role="function">
+<title>prelude_plugin_instance_get_plugin_data ()</title>
+<indexterm zone="prelude-plugin-instance-get-plugin-data"><primary sortas="prelude_plugin_instance_get_plugin_data">prelude_plugin_instance_get_plugin_data</primary></indexterm><programlisting><link linkend="void">void</link> *              prelude_plugin_instance_get_plugin_data
+                                                        (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-instance-get-name" role="function">
+<title>prelude_plugin_instance_get_name ()</title>
+<indexterm zone="prelude-plugin-instance-get-name"><primary sortas="prelude_plugin_instance_get_name">prelude_plugin_instance_get_name</primary></indexterm><programlisting>const <link linkend="char">char</link> *        prelude_plugin_instance_get_name    (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-instance-get-plugin" role="function">
+<title>prelude_plugin_instance_get_plugin ()</title>
+<indexterm zone="prelude-plugin-instance-get-plugin"><primary sortas="prelude_plugin_instance_get_plugin">prelude_plugin_instance_get_plugin</primary></indexterm><programlisting><link linkend="prelude-plugin-generic-t">prelude_plugin_generic_t</link> * prelude_plugin_instance_get_plugin
+                                                        (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-load-from-dir" role="function">
+<title>prelude_plugin_load_from_dir ()</title>
+<indexterm zone="prelude-plugin-load-from-dir"><primary sortas="prelude_plugin_load_from_dir">prelude_plugin_load_from_dir</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_plugin_load_from_dir        (<link linkend="prelude-list-t">prelude_list_t</link> *head,
+                                                         const <link linkend="char">char</link> *dirname,
+                                                         const <link linkend="char">char</link> *symbol,
+                                                         <link linkend="void">void</link> *ptr,
+                                                         <link linkend="int">int</link> (subscribeprelude_plugin_instance_t *p) (),
+                                                         <link linkend="void">void</link> (unsubscribeprelude_plugin_instance_t *pi) ());</programlisting>
+<para>
+Load all plugins in directory 'dirname', using <parameter>symbol</parameter> entry point.
+Each plugin have a <parameter>subscribe</parameter> and <parameter>unsubscribe</parameter> callback associated with it.
+</para>
+<para>
+The plugins are loaded, but not active, until someone call <link linkend="prelude-plugin-subscribe"><function>prelude_plugin_subscribe()</function></link>
+on one of the plugin. Which'll call <parameter>subscribe</parameter> in order to register it.
+</para>
+<para>
+<parameter>ptr</parameter> is an extra argument provided to the plugin at initialization time.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>head</parameter>&#160;:</term>
+<listitem><simpara> List where the loaded plugin should be added.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dirname</parameter>&#160;:</term>
+<listitem><simpara> The directory to load the plugin from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>symbol</parameter>&#160;:</term>
+<listitem><simpara> Symbol to lookup within loaded plugin.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara> Extra pointer to provide to the plugin initialization function.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>subscribe</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a callback function for plugin subscribtion.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>unsubscribe</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a callback function for plugin un-subscribtion.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The number of loaded plugins on success, -1 on error.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-instance-add" role="function">
+<title>prelude_plugin_instance_add ()</title>
+<indexterm zone="prelude-plugin-instance-add"><primary sortas="prelude_plugin_instance_add">prelude_plugin_instance_add</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_plugin_instance_add         (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi,
+                                                         <link linkend="prelude-list-t">prelude_list_t</link> *h);</programlisting>
+<para>
+This function add the plugin instance associated with <parameter>pi</parameter> to the linked list
+specified by <parameter>h</parameter>. If this instance is already used somewhere else, a copy is
+made, since instance does not share information).</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a plugin instance
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>h</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a linked list
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success or -1 if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-instance-del" role="function">
+<title>prelude_plugin_instance_del ()</title>
+<indexterm zone="prelude-plugin-instance-del"><primary sortas="prelude_plugin_instance_del">prelude_plugin_instance_del</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_plugin_instance_del         (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);</programlisting>
+<para>
+Delete <parameter>pi</parameter> from the list specified at <link linkend="prelude-plugin-instance-add"><function>prelude_plugin_instance_add()</function></link> time.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a plugin instance.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-instance-compute-time" role="function">
+<title>prelude_plugin_instance_compute_time ()</title>
+<indexterm zone="prelude-plugin-instance-compute-time"><primary sortas="prelude_plugin_instance_compute_time">prelude_plugin_instance_compute_time</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_plugin_instance_compute_time
+                                                        (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi,
+                                                         <link linkend="struct-timeval">struct timeval</link> *start,
+                                                         <link linkend="struct-timeval">struct timeval</link> *end);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>start</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>end</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-instance-call-commit-func" role="function">
+<title>prelude_plugin_instance_call_commit_func ()</title>
+<indexterm zone="prelude-plugin-instance-call-commit-func"><primary sortas="prelude_plugin_instance_call_commit_func">prelude_plugin_instance_call_commit_func</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_plugin_instance_call_commit_func
+                                                        (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *err);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>err</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-instance-has-commit-func" role="function">
+<title>prelude_plugin_instance_has_commit_func ()</title>
+<indexterm zone="prelude-plugin-instance-has-commit-func"><primary sortas="prelude_plugin_instance_has_commit_func">prelude_plugin_instance_has_commit_func</primary></indexterm><programlisting><link linkend="prelude-bool-t">prelude_bool_t</link>      prelude_plugin_instance_has_commit_func
+                                                        (<link linkend="prelude-plugin-instance-t">prelude_plugin_instance_t</link> *pi);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-set-preloaded-symbols" role="function">
+<title>prelude_plugin_set_preloaded_symbols ()</title>
+<indexterm zone="prelude-plugin-set-preloaded-symbols"><primary sortas="prelude_plugin_set_preloaded_symbols">prelude_plugin_set_preloaded_symbols</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_plugin_set_preloaded_symbols
+                                                        (<link linkend="void">void</link> *symlist);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>symlist</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-get-next" role="function">
+<title>prelude_plugin_get_next ()</title>
+<indexterm zone="prelude-plugin-get-next"><primary sortas="prelude_plugin_get_next">prelude_plugin_get_next</primary></indexterm><programlisting><link linkend="prelude-plugin-generic-t">prelude_plugin_generic_t</link> * prelude_plugin_get_next      (<link linkend="prelude-list-t">prelude_list_t</link> *head,
+                                                         <link linkend="prelude-list-t">prelude_list_t</link> **iter);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>head</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>iter</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-unload" role="function">
+<title>prelude_plugin_unload ()</title>
+<indexterm zone="prelude-plugin-unload"><primary sortas="prelude_plugin_unload">prelude_plugin_unload</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_plugin_unload               (<link linkend="prelude-plugin-generic-t">prelude_plugin_generic_t</link> *plugin);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>plugin</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-compute-stats" role="macro">
+<title>prelude_plugin_compute_stats()</title>
+<indexterm zone="prelude-plugin-compute-stats"><primary sortas="prelude_plugin_compute_stats">prelude_plugin_compute_stats</primary></indexterm><programlisting>#define             prelude_plugin_compute_stats(pi, func)</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>func</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-plugin-run" role="macro">
+<title>prelude_plugin_run()</title>
+<indexterm zone="prelude-plugin-run"><primary sortas="prelude_plugin_run">prelude_plugin_run</primary></indexterm><programlisting>#define             prelude_plugin_run(pi, type, member, ...)</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pi</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>member</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>...</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,0 +1,850 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>prelude-connection</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="ch04.html" title="Others">
+<link rel="prev" href="libprelude-prelude-option.html" title="prelude-option">
+<link rel="next" href="libprelude-prelude-string.html" title="prelude-string">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libprelude-prelude-option.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="libprelude-prelude-string.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-prelude-connection.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-prelude-connection.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="prelude-connection">
+<a name="libprelude-prelude-connection"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-prelude-connection.top_of_page"></a>prelude-connection</span></h2>
+<p>prelude-connection</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-prelude-connection.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+enum                <a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-t" title="enum prelude_connection_permission_t">prelude_connection_permission_t</a>;
+enum                <a class="link" href="libprelude-prelude-connection.html#prelude-connection-state-t" title="enum prelude_connection_state_t">prelude_connection_state_t</a>;
+typedef             <a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a>;
+void                <a class="link" href="libprelude-prelude-connection.html#prelude-connection-destroy" title="prelude_connection_destroy ()">prelude_connection_destroy</a>          (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *conn);
+int                 <a class="link" href="libprelude-prelude-connection.html#prelude-connection-send" title="prelude_connection_send ()">prelude_connection_send</a>             (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-prelude-connection.html#prelude-connection-recv" title="prelude_connection_recv ()">prelude_connection_recv</a>             (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> **outmsg);
+int                 <a class="link" href="libprelude-prelude-connection.html#prelude-connection-recv-idmef" title="prelude_connection_recv_idmef ()">prelude_connection_recv_idmef</a>       (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *con,
+                                                         <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> **idmef);
+int                 <a class="link" href="libprelude-prelude-connection.html#prelude-connection-connect" title="prelude_connection_connect ()">prelude_connection_connect</a>          (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *profile,
+                                                         <a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-t" title="enum prelude_connection_permission_t">prelude_connection_permission_t</a> permission);
+ssize_t             <a class="link" href="libprelude-prelude-connection.html#prelude-connection-forward" title="prelude_connection_forward ()">prelude_connection_forward</a>          (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *src,
+                                                         size_t count);
+const char *        <a class="link" href="libprelude-prelude-connection.html#prelude-connection-get-local-addr" title="prelude_connection_get_local_addr ()">prelude_connection_get_local_addr</a>   (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);
+unsigned int        <a class="link" href="libprelude-prelude-connection.html#prelude-connection-get-local-port" title="prelude_connection_get_local_port ()">prelude_connection_get_local_port</a>   (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);
+const char *        <a class="link" href="libprelude-prelude-connection.html#prelude-connection-get-peer-addr" title="prelude_connection_get_peer_addr ()">prelude_connection_get_peer_addr</a>    (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);
+unsigned int        <a class="link" href="libprelude-prelude-connection.html#prelude-connection-get-peer-port" title="prelude_connection_get_peer_port ()">prelude_connection_get_peer_port</a>    (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);
+<a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      <a class="link" href="libprelude-prelude-connection.html#prelude-connection-is-alive" title="prelude_connection_is_alive ()">prelude_connection_is_alive</a>         (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);
+<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *      <a class="link" href="libprelude-prelude-connection.html#prelude-connection-get-fd" title="prelude_connection_get_fd ()">prelude_connection_get_fd</a>           (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);
+int                 <a class="link" href="libprelude-prelude-connection.html#prelude-connection-close" title="prelude_connection_close ()">prelude_connection_close</a>            (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);
+void                <a class="link" href="libprelude-prelude-connection.html#prelude-connection-set-fd-ref" title="prelude_connection_set_fd_ref ()">prelude_connection_set_fd_ref</a>       (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-prelude-connection.html#prelude-connection-set-fd-nodup" title="prelude_connection_set_fd_nodup ()">prelude_connection_set_fd_nodup</a>     (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-prelude-connection.html#prelude-connection-set-state" title="prelude_connection_set_state ()">prelude_connection_set_state</a>        (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-connection.html#prelude-connection-state-t" title="enum prelude_connection_state_t">prelude_connection_state_t</a> state);
+<a class="link" href="libprelude-prelude-connection.html#prelude-connection-state-t" title="enum prelude_connection_state_t">prelude_connection_state_t</a>  <a class="link" href="libprelude-prelude-connection.html#prelude-connection-get-state" title="prelude_connection_get_state ()">prelude_connection_get_state</a>
+                                                        (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);
+void                <a class="link" href="libprelude-prelude-connection.html#prelude-connection-set-data" title="prelude_connection_set_data ()">prelude_connection_set_data</a>         (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         void *data);
+void *              <a class="link" href="libprelude-prelude-connection.html#prelude-connection-get-data" title="prelude_connection_get_data ()">prelude_connection_get_data</a>         (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);
+const char *        <a class="link" href="libprelude-prelude-connection.html#prelude-connection-get-default-socket-filename" title="prelude_connection_get_default_socket_filename ()">prelude_connection_get_default_socket_filename</a>
+                                                        (void);
+<a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-t" title="enum prelude_connection_permission_t">prelude_connection_permission_t</a>  <a class="link" href="libprelude-prelude-connection.html#prelude-connection-get-permission" title="prelude_connection_get_permission ()">prelude_connection_get_permission</a>
+                                                        (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *conn);
+<a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a>            <a class="link" href="libprelude-prelude-connection.html#prelude-connection-get-peer-analyzerid" title="prelude_connection_get_peer_analyzerid ()">prelude_connection_get_peer_analyzerid</a>
+                                                        (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);
+void                <a class="link" href="libprelude-prelude-connection.html#prelude-connection-set-peer-analyzerid" title="prelude_connection_set_peer_analyzerid ()">prelude_connection_set_peer_analyzerid</a>
+                                                        (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a> analyzerid);
+int                 <a class="link" href="libprelude-prelude-connection.html#prelude-connection-new" title="prelude_connection_new ()">prelude_connection_new</a>              (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> **ret,
+                                                         const char *addr);
+<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> * <a class="link" href="libprelude-prelude-connection.html#prelude-connection-ref" title="prelude_connection_ref ()">prelude_connection_ref</a>           (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *conn);
+int                 <a class="link" href="libprelude-prelude-connection.html#prelude-connection-new-msgbuf" title="prelude_connection_new_msgbuf ()">prelude_connection_new_msgbuf</a>       (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *connection,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> **msgbuf);
+int                 <a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-to-string" title="prelude_connection_permission_to_string ()">prelude_connection_permission_to_string</a>
+                                                        (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-t" title="enum prelude_connection_permission_t">prelude_connection_permission_t</a> perm,
+                                                         <a class="link" href="libprelude-prelude-string.html#prelude-string-t" title="prelude_string_t">prelude_string_t</a> *out);
+int                 <a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-new-from-string" title="prelude_connection_permission_new_from_string ()">prelude_connection_permission_new_from_string</a>
+                                                        (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-t" title="enum prelude_connection_permission_t">prelude_connection_permission_t</a> *out,
+                                                         const char *buf);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-prelude-connection.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-prelude-connection.details"></a><h2>Details</h2>
+<div class="refsect2" title="enum prelude_connection_permission_t">
+<a name="prelude-connection-permission-t"></a><h3>enum prelude_connection_permission_t</h3>
+<pre class="programlisting">typedef enum {
+        PRELUDE_CONNECTION_PERMISSION_IDMEF_READ      = 0x01, /* client might read received IDMEF message */
+        PRELUDE_CONNECTION_PERMISSION_ADMIN_READ      = 0x02, /* client might read received ADMIN message */
+        PRELUDE_CONNECTION_PERMISSION_IDMEF_WRITE     = 0x04, /* client might send IDMEF message          */
+        PRELUDE_CONNECTION_PERMISSION_ADMIN_WRITE     = 0x08  /* client might issue OPTION request        */
+} prelude_connection_permission_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="enum prelude_connection_state_t">
+<a name="prelude-connection-state-t"></a><h3>enum prelude_connection_state_t</h3>
+<pre class="programlisting">typedef enum {
+        PRELUDE_CONNECTION_STATE_ESTABLISHED     = 0x01
+} prelude_connection_state_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_t">
+<a name="prelude-connection-t"></a><h3>prelude_connection_t</h3>
+<pre class="programlisting">typedef struct prelude_connection prelude_connection_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_destroy ()">
+<a name="prelude-connection-destroy"></a><h3>prelude_connection_destroy ()</h3>
+<pre class="programlisting">void                prelude_connection_destroy          (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *conn);</pre>
+<p>
+Destroy the connection referenced by <em class="parameter"><code>conn</code></em>.
+</p>
+<p>
+In case the connection is still alive, it is closed in a blocking
+manner. Use <a class="link" href="libprelude-prelude-connection.html#prelude-connection-close" title="prelude_connection_close ()"><code class="function">prelude_connection_close()</code></a> if you want to close the
+connection in a non blocking manner prior <a class="link" href="libprelude-prelude-connection.html#prelude-connection-destroy" title="prelude_connection_destroy ()"><code class="function">prelude_connection_destroy()</code></a>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t"><span class="type">prelude_connection_t</span></a> object.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_send ()">
+<a name="prelude-connection-send"></a><h3>prelude_connection_send ()</h3>
+<pre class="programlisting">int                 prelude_connection_send             (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_recv ()">
+<a name="prelude-connection-recv"></a><h3>prelude_connection_recv ()</h3>
+<pre class="programlisting">int                 prelude_connection_recv             (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> **outmsg);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>outmsg</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_recv_idmef ()">
+<a name="prelude-connection-recv-idmef"></a><h3>prelude_connection_recv_idmef ()</h3>
+<pre class="programlisting">int                 prelude_connection_recv_idmef       (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *con,
+                                                         <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> **idmef);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>con</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>idmef</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_connect ()">
+<a name="prelude-connection-connect"></a><h3>prelude_connection_connect ()</h3>
+<pre class="programlisting">int                 prelude_connection_connect          (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *profile,
+                                                         <a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-t" title="enum prelude_connection_permission_t">prelude_connection_permission_t</a> permission);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>permission</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_forward ()">
+<a name="prelude-connection-forward"></a><h3>prelude_connection_forward ()</h3>
+<pre class="programlisting">ssize_t             prelude_connection_forward          (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *src,
+                                                         size_t count);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>count</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_get_local_addr ()">
+<a name="prelude-connection-get-local-addr"></a><h3>prelude_connection_get_local_addr ()</h3>
+<pre class="programlisting">const char *        prelude_connection_get_local_addr   (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);</pre>
+<p>
+</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t"><span class="type">prelude_connection_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the local address used to connect.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_get_local_port ()">
+<a name="prelude-connection-get-local-port"></a><h3>prelude_connection_get_local_port ()</h3>
+<pre class="programlisting">unsigned int        prelude_connection_get_local_port   (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);</pre>
+<p>
+</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t"><span class="type">prelude_connection_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the local port used to connect.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_get_peer_addr ()">
+<a name="prelude-connection-get-peer-addr"></a><h3>prelude_connection_get_peer_addr ()</h3>
+<pre class="programlisting">const char *        prelude_connection_get_peer_addr    (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_get_peer_port ()">
+<a name="prelude-connection-get-peer-port"></a><h3>prelude_connection_get_peer_port ()</h3>
+<pre class="programlisting">unsigned int        prelude_connection_get_peer_port    (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_is_alive ()">
+<a name="prelude-connection-is-alive"></a><h3>prelude_connection_is_alive ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      prelude_connection_is_alive         (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);</pre>
+<p>
+</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t"><span class="type">prelude_connection_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 if the connection associated with <em class="parameter"><code>cnx</code></em> is alive, -1 otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_get_fd ()">
+<a name="prelude-connection-get-fd"></a><h3>prelude_connection_get_fd ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *      prelude_connection_get_fd           (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);</pre>
+<p>
+</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t"><span class="type">prelude_connection_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> A pointer to the <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object used for
+communicating with the peer.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_close ()">
+<a name="prelude-connection-close"></a><h3>prelude_connection_close ()</h3>
+<pre class="programlisting">int                 prelude_connection_close            (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_set_fd_ref ()">
+<a name="prelude-connection-set-fd-ref"></a><h3>prelude_connection_set_fd_ref ()</h3>
+<pre class="programlisting">void                prelude_connection_set_fd_ref       (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_set_fd_nodup ()">
+<a name="prelude-connection-set-fd-nodup"></a><h3>prelude_connection_set_fd_nodup ()</h3>
+<pre class="programlisting">void                prelude_connection_set_fd_nodup     (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_set_state ()">
+<a name="prelude-connection-set-state"></a><h3>prelude_connection_set_state ()</h3>
+<pre class="programlisting">void                prelude_connection_set_state        (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-connection.html#prelude-connection-state-t" title="enum prelude_connection_state_t">prelude_connection_state_t</a> state);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>state</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_get_state ()">
+<a name="prelude-connection-get-state"></a><h3>prelude_connection_get_state ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-connection.html#prelude-connection-state-t" title="enum prelude_connection_state_t">prelude_connection_state_t</a>  prelude_connection_get_state
+                                                        (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_set_data ()">
+<a name="prelude-connection-set-data"></a><h3>prelude_connection_set_data ()</h3>
+<pre class="programlisting">void                prelude_connection_set_data         (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         void *data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_get_data ()">
+<a name="prelude-connection-get-data"></a><h3>prelude_connection_get_data ()</h3>
+<pre class="programlisting">void *              prelude_connection_get_data         (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_get_default_socket_filename ()">
+<a name="prelude-connection-get-default-socket-filename"></a><h3>prelude_connection_get_default_socket_filename ()</h3>
+<pre class="programlisting">const char *        prelude_connection_get_default_socket_filename
+                                                        (void);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_get_permission ()">
+<a name="prelude-connection-get-permission"></a><h3>prelude_connection_get_permission ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-t" title="enum prelude_connection_permission_t">prelude_connection_permission_t</a>  prelude_connection_get_permission
+                                                        (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *conn);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_get_peer_analyzerid ()">
+<a name="prelude-connection-get-peer-analyzerid"></a><h3>prelude_connection_get_peer_analyzerid ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a>            prelude_connection_get_peer_analyzerid
+                                                        (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_set_peer_analyzerid ()">
+<a name="prelude-connection-set-peer-analyzerid"></a><h3>prelude_connection_set_peer_analyzerid ()</h3>
+<pre class="programlisting">void                prelude_connection_set_peer_analyzerid
+                                                        (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *cnx,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a> analyzerid);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cnx</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>analyzerid</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_new ()">
+<a name="prelude-connection-new"></a><h3>prelude_connection_new ()</h3>
+<pre class="programlisting">int                 prelude_connection_new              (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> **ret,
+                                                         const char *addr);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ret</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>addr</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_ref ()">
+<a name="prelude-connection-ref"></a><h3>prelude_connection_ref ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> * prelude_connection_ref           (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *conn);</pre>
+<p>
+Increases <em class="parameter"><code>conn</code></em> reference count.
+</p>
+<p>
+<a class="link" href="libprelude-prelude-connection.html#prelude-connection-destroy" title="prelude_connection_destroy ()"><code class="function">prelude_connection_destroy()</code></a> will decrease the refcount until it
+reaches 0, at which point <em class="parameter"><code>conn</code></em> will be destroyed.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>conn</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t"><span class="type">prelude_connection_t</span></a> object to reference.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <em class="parameter"><code>conn</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_new_msgbuf ()">
+<a name="prelude-connection-new-msgbuf"></a><h3>prelude_connection_new_msgbuf ()</h3>
+<pre class="programlisting">int                 prelude_connection_new_msgbuf       (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-t" title="prelude_connection_t">prelude_connection_t</a> *connection,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> **msgbuf);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>connection</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msgbuf</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_permission_to_string ()">
+<a name="prelude-connection-permission-to-string"></a><h3>prelude_connection_permission_to_string ()</h3>
+<pre class="programlisting">int                 prelude_connection_permission_to_string
+                                                        (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-t" title="enum prelude_connection_permission_t">prelude_connection_permission_t</a> perm,
+                                                         <a class="link" href="libprelude-prelude-string.html#prelude-string-t" title="prelude_string_t">prelude_string_t</a> *out);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>perm</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_connection_permission_new_from_string ()">
+<a name="prelude-connection-permission-new-from-string"></a><h3>prelude_connection_permission_new_from_string ()</h3>
+<pre class="programlisting">int                 prelude_connection_permission_new_from_string
+                                                        (<a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-t" title="enum prelude_connection_permission_t">prelude_connection_permission_t</a> *out,
+                                                         const char *buf);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!-- ##### SECTION Title ##### -->
+prelude-ident
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### TYPEDEF prelude_ident_t ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION prelude_ident_inc ##### -->
+<para>
+
+</para>
+
+@ident: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_ident_generate ##### -->
+<para>
+
+</para>
+
+@ident: 
+@out: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_ident_destroy ##### -->
+<para>
+
+</para>
+
+@ident: 
+
+
+<!-- ##### FUNCTION prelude_ident_new ##### -->
+<para>
+
+</para>
+
+@ret: 
+@Returns: 
+
+

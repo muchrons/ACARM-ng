@@ -1,0 +1,150 @@
+/*****
+*
+* Copyright (C) 2004, 2005 PreludeIDS Technologies. All Rights Reserved.
+* Author: Yoann Vandoorselaere <yoann.v@prelude-ids.com>
+*
+* This file is part of the Prelude library.
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2, or (at your option)
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; see the file COPYING.  If not, write to
+* the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+*
+*****/
+
+#ifndef _LIBPRELUDE_PRELUDE_ERROR_H
+#define _LIBPRELUDE_PRELUDE_ERROR_H
+
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
+#include <stdio.h>
+#include <unistd.h>
+#include <stdarg.h>
+#include <errno.h>
+
+
+#include "prelude-thread.h"
+#include "prelude-string.h"
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+#ifndef __attribute__
+/* This feature is available in gcc versions 2.5 and later.  */
+# if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 5) || __STRICT_ANSI__
+#  define __attribute__(Spec) /* empty */
+# endif
+/* The __-protected variants of `format' and `printf' attributes
+   are accepted by gcc versions 2.6.4 (effectively 2.7) and later.  */
+# if __GNUC__ < 2 || (__GNUC__ == 2 && __GNUC_MINOR__ < 7)
+#  define __format__ format
+#  define __printf__ printf
+# endif
+#endif
+
+
+/*
+ * This is inspired from the GPG error interface.
+ *
+ * Bit 1 of prelude_error_t remain set (negative value).
+ * Bit 2 to 9 are set to the source of the error.
+ * Bit 10 specify whether there is a verbose error available.
+ * Bit 11 to 15 are unspecified.
+ * Bit 16 to 32 are set to the code of the error.
+ */
+
+
+#define PRELUDE_ERROR_SYSTEM_ERROR    (1 << 15)
+
+typedef enum {
+@include err-sources.in
+} prelude_error_source_t;
+
+typedef enum {
+@include err-codes.in
+@include errnos.in
+} prelude_error_code_t;
+
+
+#ifndef PRELUDE_ERROR_SOURCE_DEFAULT
+ #define PRELUDE_ERROR_SOURCE_DEFAULT  PRELUDE_ERROR_SOURCE_UNKNOWN
+#endif
+
+typedef signed int prelude_error_t;
+
+prelude_bool_t prelude_error_is_verbose(prelude_error_t error);
+
+prelude_error_code_t prelude_error_get_code(prelude_error_t error);
+
+prelude_error_source_t prelude_error_get_source(prelude_error_t error);
+
+prelude_error_code_t prelude_error_code_from_errno(int err);
+
+prelude_error_t prelude_error_make(prelude_error_source_t source, prelude_error_code_t code);
+
+prelude_error_t prelude_error_make_from_errno(prelude_error_source_t source, int err);
+
+void prelude_perror(prelude_error_t error, const char *fmt, ...) __attribute__ ((__format__ (__printf__, 2, 3)));
+
+const char *prelude_strerror(prelude_error_t err);
+
+const char *prelude_strsource(prelude_error_t err);
+
+int prelude_error_code_to_errno(prelude_error_code_t code);
+
+prelude_error_t prelude_error_verbose_make_v(prelude_error_source_t source,
+                                             prelude_error_code_t code, const char *fmt, va_list ap)
+                                             __attribute__ ((__format__ (__printf__, 3, 0)));
+
+prelude_error_t prelude_error_verbose_make(prelude_error_source_t source,
+                                           prelude_error_code_t code, const char *fmt, ...)
+                                           __attribute__ ((__format__ (__printf__, 3, 4)));
+
+
+static inline prelude_error_t prelude_error(prelude_error_code_t code)
+{
+        return prelude_error_make(PRELUDE_ERROR_SOURCE_DEFAULT, code);
+}
+
+
+static inline prelude_error_t prelude_error_verbose(prelude_error_code_t code, const char *fmt, ...)
+                                                    __attribute__ ((__format__ (__printf__, 2, 3)));
+
+static inline prelude_error_t prelude_error_verbose(prelude_error_code_t code, const char *fmt, ...)
+{
+        int ret;
+        va_list ap;
+
+        va_start(ap, fmt);
+        ret = prelude_error_verbose_make_v(PRELUDE_ERROR_SOURCE_DEFAULT, code, fmt, ap);
+        va_end(ap);
+
+        return ret;
+}
+
+
+
+static inline prelude_error_t prelude_error_from_errno(int err)
+{
+        return prelude_error_make(PRELUDE_ERROR_SOURCE_DEFAULT, prelude_error_code_from_errno(err));
+}
+
+
+#ifdef __cplusplus
+ }
+#endif
+
+
+#endif

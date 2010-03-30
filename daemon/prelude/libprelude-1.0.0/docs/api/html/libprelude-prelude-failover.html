@@ -1,0 +1,347 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>prelude-failover</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="ch04.html" title="Others">
+<link rel="prev" href="libprelude-prelude-hash.html" title="prelude-hash">
+<link rel="next" href="libprelude-prelude-async.html" title="prelude-async">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libprelude-prelude-hash.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="libprelude-prelude-async.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-prelude-failover.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-prelude-failover.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="prelude-failover">
+<a name="libprelude-prelude-failover"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-prelude-failover.top_of_page"></a>prelude-failover</span></h2>
+<p>prelude-failover</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-prelude-failover.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+typedef             <a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a>;
+void                <a class="link" href="libprelude-prelude-failover.html#prelude-failover-destroy" title="prelude_failover_destroy ()">prelude_failover_destroy</a>            (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover);
+int                 <a class="link" href="libprelude-prelude-failover.html#prelude-failover-new" title="prelude_failover_new ()">prelude_failover_new</a>                (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> **ret,
+                                                         const char *dirname);
+void                <a class="link" href="libprelude-prelude-failover.html#prelude-failover-set-quota" title="prelude_failover_set_quota ()">prelude_failover_set_quota</a>          (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover,
+                                                         size_t limit);
+int                 <a class="link" href="libprelude-prelude-failover.html#prelude-failover-save-msg" title="prelude_failover_save_msg ()">prelude_failover_save_msg</a>           (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+ssize_t             <a class="link" href="libprelude-prelude-failover.html#prelude-failover-get-saved-msg" title="prelude_failover_get_saved_msg ()">prelude_failover_get_saved_msg</a>      (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> **out);
+unsigned long       <a class="link" href="libprelude-prelude-failover.html#prelude-failover-get-deleted-msg-count" title="prelude_failover_get_deleted_msg_count ()">prelude_failover_get_deleted_msg_count</a>
+                                                        (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover);
+unsigned long       <a class="link" href="libprelude-prelude-failover.html#prelude-failover-get-available-msg-count" title="prelude_failover_get_available_msg_count ()">prelude_failover_get_available_msg_count</a>
+                                                        (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover);
+int                 <a class="link" href="libprelude-prelude-failover.html#prelude-failover-commit" title="prelude_failover_commit ()">prelude_failover_commit</a>             (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+void                <a class="link" href="libprelude-prelude-failover.html#prelude-failover-disable-transaction" title="prelude_failover_disable_transaction ()">prelude_failover_disable_transaction</a>
+                                                        (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover);
+void                <a class="link" href="libprelude-prelude-failover.html#prelude-failover-enable-transaction" title="prelude_failover_enable_transaction ()">prelude_failover_enable_transaction</a> (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover);
+int                 <a class="link" href="libprelude-prelude-failover.html#prelude-failover-rollback" title="prelude_failover_rollback ()">prelude_failover_rollback</a>           (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-prelude-failover.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-prelude-failover.details"></a><h2>Details</h2>
+<div class="refsect2" title="prelude_failover_t">
+<a name="prelude-failover-t"></a><h3>prelude_failover_t</h3>
+<pre class="programlisting">typedef struct prelude_failover prelude_failover_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_failover_destroy ()">
+<a name="prelude-failover-destroy"></a><h3>prelude_failover_destroy ()</h3>
+<pre class="programlisting">void                prelude_failover_destroy            (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>failover</code></em> :</span></p></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_failover_new ()">
+<a name="prelude-failover-new"></a><h3>prelude_failover_new ()</h3>
+<pre class="programlisting">int                 prelude_failover_new                (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> **ret,
+                                                         const char *dirname);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ret</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dirname</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_failover_set_quota ()">
+<a name="prelude-failover-set-quota"></a><h3>prelude_failover_set_quota ()</h3>
+<pre class="programlisting">void                prelude_failover_set_quota          (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover,
+                                                         size_t limit);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>failover</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>limit</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_failover_save_msg ()">
+<a name="prelude-failover-save-msg"></a><h3>prelude_failover_save_msg ()</h3>
+<pre class="programlisting">int                 prelude_failover_save_msg           (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>failover</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_failover_get_saved_msg ()">
+<a name="prelude-failover-get-saved-msg"></a><h3>prelude_failover_get_saved_msg ()</h3>
+<pre class="programlisting">ssize_t             prelude_failover_get_saved_msg      (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> **out);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>failover</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_failover_get_deleted_msg_count ()">
+<a name="prelude-failover-get-deleted-msg-count"></a><h3>prelude_failover_get_deleted_msg_count ()</h3>
+<pre class="programlisting">unsigned long       prelude_failover_get_deleted_msg_count
+                                                        (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>failover</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_failover_get_available_msg_count ()">
+<a name="prelude-failover-get-available-msg-count"></a><h3>prelude_failover_get_available_msg_count ()</h3>
+<pre class="programlisting">unsigned long       prelude_failover_get_available_msg_count
+                                                        (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>failover</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_failover_commit ()">
+<a name="prelude-failover-commit"></a><h3>prelude_failover_commit ()</h3>
+<pre class="programlisting">int                 prelude_failover_commit             (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>failover</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_failover_disable_transaction ()">
+<a name="prelude-failover-disable-transaction"></a><h3>prelude_failover_disable_transaction ()</h3>
+<pre class="programlisting">void                prelude_failover_disable_transaction
+                                                        (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>failover</code></em> :</span></p></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_failover_enable_transaction ()">
+<a name="prelude-failover-enable-transaction"></a><h3>prelude_failover_enable_transaction ()</h3>
+<pre class="programlisting">void                prelude_failover_enable_transaction (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>failover</code></em> :</span></p></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_failover_rollback ()">
+<a name="prelude-failover-rollback"></a><h3>prelude_failover_rollback ()</h3>
+<pre class="programlisting">int                 prelude_failover_rollback           (<a class="link" href="libprelude-prelude-failover.html#prelude-failover-t" title="prelude_failover_t">prelude_failover_t</a> *failover,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>failover</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

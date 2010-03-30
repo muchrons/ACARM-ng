@@ -1,0 +1,516 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-prelude-io">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-prelude-io.top_of_page">prelude-io</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>prelude-io</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-prelude-io.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+typedef             <link linkend="prelude-io-t">prelude_io_t</link>;
+<link linkend="int">int</link>                 <link linkend="prelude-io-new">prelude_io_new</link>                      (<link linkend="prelude-io-t">prelude_io_t</link> **ret);
+<link linkend="void">void</link>                <link linkend="prelude-io-destroy">prelude_io_destroy</link>                  (<link linkend="prelude-io-t">prelude_io_t</link> *pio);
+<link linkend="void">void</link>                <link linkend="prelude-io-set-file-io">prelude_io_set_file_io</link>              (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="FILE--CAPS">FILE</link> *fd);
+<link linkend="void">void</link>                <link linkend="prelude-io-set-tls-io">prelude_io_set_tls_io</link>               (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="void">void</link> *tls);
+<link linkend="void">void</link>                <link linkend="prelude-io-set-sys-io">prelude_io_set_sys_io</link>               (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="int">int</link> fd);
+<link linkend="int">int</link>                 <link linkend="prelude-io-set-buffer-io">prelude_io_set_buffer_io</link>            (<link linkend="prelude-io-t">prelude_io_t</link> *pio);
+<link linkend="void">void</link>                <link linkend="prelude-io-set-fdptr">prelude_io_set_fdptr</link>                (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="void">void</link> *ptr);
+<link linkend="void">void</link>                <link linkend="prelude-io-set-pending-callback">prelude_io_set_pending_callback</link>     (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="ssize-t">ssize_t</link> (pendingprelude_io_t *io) ());
+<link linkend="void">void</link>                <link linkend="prelude-io-set-read-callback">prelude_io_set_read_callback</link>        (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="ssize-t">ssize_t</link> (readprelude_io_t *io, void *buf, size_t count) ());
+<link linkend="void">void</link>                <link linkend="prelude-io-set-write-callback">prelude_io_set_write_callback</link>       (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="ssize-t">ssize_t</link> (writeprelude_io_t *io, const void *buf, size_t count) ());
+<link linkend="int">int</link>                 <link linkend="prelude-io-close">prelude_io_close</link>                    (<link linkend="prelude-io-t">prelude_io_t</link> *pio);
+<link linkend="ssize-t">ssize_t</link>             <link linkend="prelude-io-read">prelude_io_read</link>                     (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="void">void</link> *buf,
+                                                         <link linkend="size-t">size_t</link> count);
+<link linkend="ssize-t">ssize_t</link>             <link linkend="prelude-io-read-wait">prelude_io_read_wait</link>                (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="void">void</link> *buf,
+                                                         <link linkend="size-t">size_t</link> count);
+<link linkend="ssize-t">ssize_t</link>             <link linkend="prelude-io-read-delimited">prelude_io_read_delimited</link>           (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         unsigned <link linkend="char">char</link> **buf);
+<link linkend="ssize-t">ssize_t</link>             <link linkend="prelude-io-write">prelude_io_write</link>                    (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         const <link linkend="void">void</link> *buf,
+                                                         <link linkend="size-t">size_t</link> count);
+<link linkend="ssize-t">ssize_t</link>             <link linkend="prelude-io-write-delimited">prelude_io_write_delimited</link>          (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         const <link linkend="void">void</link> *buf,
+                                                         <link linkend="uint16-t">uint16_t</link> count);
+<link linkend="ssize-t">ssize_t</link>             <link linkend="prelude-io-forward">prelude_io_forward</link>                  (<link linkend="prelude-io-t">prelude_io_t</link> *dst,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *src,
+                                                         <link linkend="size-t">size_t</link> count);
+<link linkend="int">int</link>                 <link linkend="prelude-io-get-fd">prelude_io_get_fd</link>                   (<link linkend="prelude-io-t">prelude_io_t</link> *pio);
+<link linkend="void">void</link> *              <link linkend="prelude-io-get-fdptr">prelude_io_get_fdptr</link>                (<link linkend="prelude-io-t">prelude_io_t</link> *pio);
+<link linkend="ssize-t">ssize_t</link>             <link linkend="prelude-io-pending">prelude_io_pending</link>                  (<link linkend="prelude-io-t">prelude_io_t</link> *pio);
+<link linkend="prelude-bool-t">prelude_bool_t</link>      <link linkend="prelude-io-is-error-fatal">prelude_io_is_error_fatal</link>           (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="int">int</link> error);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-prelude-io.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-prelude-io.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="prelude-io-t" role="typedef">
+<title>prelude_io_t</title>
+<indexterm zone="prelude-io-t"><primary sortas="prelude_io_t">prelude_io_t</primary></indexterm><programlisting>typedef struct prelude_io prelude_io_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-io-new" role="function">
+<title>prelude_io_new ()</title>
+<indexterm zone="prelude-io-new"><primary sortas="prelude_io_new">prelude_io_new</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_io_new                      (<link linkend="prelude-io-t">prelude_io_t</link> **ret);</programlisting>
+<para>
+Create a new prelude IO object.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ret</parameter>&#160;:</term>
+<listitem><simpara> Pointer where to store the created <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occur.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-destroy" role="function">
+<title>prelude_io_destroy ()</title>
+<indexterm zone="prelude-io-destroy"><primary sortas="prelude_io_destroy">prelude_io_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_io_destroy                  (<link linkend="prelude-io-t">prelude_io_t</link> *pio);</programlisting>
+<para>
+Destroy the <parameter>pio</parameter> object.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-set-file-io" role="function">
+<title>prelude_io_set_file_io ()</title>
+<indexterm zone="prelude-io-set-file-io"><primary sortas="prelude_io_set_file_io">prelude_io_set_file_io</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_io_set_file_io              (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="FILE--CAPS">FILE</link> *fd);</programlisting>
+<para>
+Setup the <parameter>pio</parameter> object to work with file I/O function.
+The <parameter>pio</parameter> object is then associated with <parameter>fd</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> A pointer on the <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>fd</parameter>&#160;:</term>
+<listitem><simpara> File descriptor identifying a file.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-set-tls-io" role="function">
+<title>prelude_io_set_tls_io ()</title>
+<indexterm zone="prelude-io-set-tls-io"><primary sortas="prelude_io_set_tls_io">prelude_io_set_tls_io</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_io_set_tls_io               (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="void">void</link> *tls);</programlisting>
+<para>
+Setup the <parameter>pio</parameter> object to work with TLS based I/O function.
+The <parameter>pio</parameter> object is then associated with <parameter>tls</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> A pointer on the <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tls</parameter>&#160;:</term>
+<listitem><simpara> Pointer on the TLS structure holding the TLS connection data.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-set-sys-io" role="function">
+<title>prelude_io_set_sys_io ()</title>
+<indexterm zone="prelude-io-set-sys-io"><primary sortas="prelude_io_set_sys_io">prelude_io_set_sys_io</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_io_set_sys_io               (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="int">int</link> fd);</programlisting>
+<para>
+Setup the <parameter>pio</parameter> object to work with system based I/O function.
+The <parameter>pio</parameter> object is then associated with <parameter>fd</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> A pointer on the <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>fd</parameter>&#160;:</term>
+<listitem><simpara> A file descriptor.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-set-buffer-io" role="function">
+<title>prelude_io_set_buffer_io ()</title>
+<indexterm zone="prelude-io-set-buffer-io"><primary sortas="prelude_io_set_buffer_io">prelude_io_set_buffer_io</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_io_set_buffer_io            (<link linkend="prelude-io-t">prelude_io_t</link> *pio);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-set-fdptr" role="function">
+<title>prelude_io_set_fdptr ()</title>
+<indexterm zone="prelude-io-set-fdptr"><primary sortas="prelude_io_set_fdptr">prelude_io_set_fdptr</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_io_set_fdptr                (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="void">void</link> *ptr);</programlisting>
+<para>
+Set an user defined pointer that might be retrieved using
+<link linkend="prelude-io-get-fdptr"><function>prelude_io_get_fdptr()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara> Pointer to user defined data.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-set-pending-callback" role="function">
+<title>prelude_io_set_pending_callback ()</title>
+<indexterm zone="prelude-io-set-pending-callback"><primary sortas="prelude_io_set_pending_callback">prelude_io_set_pending_callback</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_io_set_pending_callback     (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="ssize-t">ssize_t</link> (pendingprelude_io_t *io) ());</programlisting>
+<para>
+Set an user defined read callback function to be called on
+<link linkend="prelude-io-pending"><function>prelude_io_pending()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pending</parameter>&#160;:</term>
+<listitem><simpara> Callback function to be called on <link linkend="prelude-io-pending"><function>prelude_io_pending()</function></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-set-read-callback" role="function">
+<title>prelude_io_set_read_callback ()</title>
+<indexterm zone="prelude-io-set-read-callback"><primary sortas="prelude_io_set_read_callback">prelude_io_set_read_callback</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_io_set_read_callback        (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="ssize-t">ssize_t</link> (readprelude_io_t *io, void *buf, size_t count) ());</programlisting>
+<para>
+Set an user defined read callback function to be called on
+<link linkend="prelude-io-read"><function>prelude_io_read()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>read</parameter>&#160;:</term>
+<listitem><simpara> Callback function to be called on <link linkend="prelude-io-read"><function>prelude_io_read()</function></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-set-write-callback" role="function">
+<title>prelude_io_set_write_callback ()</title>
+<indexterm zone="prelude-io-set-write-callback"><primary sortas="prelude_io_set_write_callback">prelude_io_set_write_callback</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_io_set_write_callback       (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="ssize-t">ssize_t</link> (writeprelude_io_t *io, const void *buf, size_t count) ());</programlisting>
+<para>
+Set an user defined write callback function to be called on
+<link linkend="prelude-io-write"><function>prelude_io_write()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>write</parameter>&#160;:</term>
+<listitem><simpara> Callback function to be called on <link linkend="prelude-io-write"><function>prelude_io_write()</function></link>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-close" role="function">
+<title>prelude_io_close ()</title>
+<indexterm zone="prelude-io-close"><primary sortas="prelude_io_close">prelude_io_close</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_io_close                    (<link linkend="prelude-io-t">prelude_io_t</link> *pio);</programlisting>
+<para>
+<link linkend="prelude-io-close"><function>prelude_io_close()</function></link> closes the file descriptor indentified by <parameter>pio</parameter>,
+</para>
+<para>
+The case where the <link linkend="close"><function>close()</function></link> function would be interrupted by a signal is
+handled internally. So you don't have to check for EINTR.
+</para>
+<para>
+However, and especially when the underlaying layer is TLS, <link linkend="prelude-io-close"><function>prelude_io_close()</function></link>
+might return error. If this happen, you should continue calling the function
+until it return zero.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> zero on success, or -1 if an error occurred.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-read" role="function">
+<title>prelude_io_read ()</title>
+<indexterm zone="prelude-io-read"><primary sortas="prelude_io_read">prelude_io_read</primary></indexterm><programlisting><link linkend="ssize-t">ssize_t</link>             prelude_io_read                     (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="void">void</link> *buf,
+                                                         <link linkend="size-t">size_t</link> count);</programlisting>
+<para>
+<link linkend="prelude-io-read"><function>prelude_io_read()</function></link> attempts to read up to <parameter>count</parameter> bytes from the
+file descriptor identified by <parameter>pio</parameter> into the buffer starting at <parameter>buf</parameter>.
+</para>
+<para>
+If <parameter>count</parameter> is zero, <link linkend="prelude-io-read"><function>prelude_io_read()</function></link> returns zero and has no other
+results. If <parameter>count</parameter> is greater than SSIZE_MAX, the result is unspecified.
+</para>
+<para>
+The case where the read function would be interrupted by a signal is
+handled internally. So you don't have to check for EINTR.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> Pointer to the buffer to store data into.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>count</parameter>&#160;:</term>
+<listitem><simpara> Number of bytes to read.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> On success, the number of bytes read is returned (zero
+indicates end of file). It is not an error if this number is smaller
+than the number of bytes requested; this may happen for example because
+fewer bytes are actually available right now or because <link linkend="read"><function>read()</function></link> was
+interrupted by a signal.
+
+On error, a negative value is returned. In this case it is left unspecified
+whether the file position (if any) changes.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-read-wait" role="function">
+<title>prelude_io_read_wait ()</title>
+<indexterm zone="prelude-io-read-wait"><primary sortas="prelude_io_read_wait">prelude_io_read_wait</primary></indexterm><programlisting><link linkend="ssize-t">ssize_t</link>             prelude_io_read_wait                (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="void">void</link> *buf,
+                                                         <link linkend="size-t">size_t</link> count);</programlisting>
+<para>
+<link linkend="prelude-io-read-wait"><function>prelude_io_read_wait()</function></link> attempts to read up to <parameter>count</parameter> bytes from the
+file descriptor identified by <parameter>pio</parameter> into the buffer starting at <parameter>buf</parameter>.
+</para>
+<para>
+If <parameter>count</parameter> is zero, <link linkend="prelude-io-read"><function>prelude_io_read()</function></link> returns zero and has no other
+results. If <parameter>count</parameter> is greater than SSIZE_MAX, the result is unspecified.
+</para>
+<para>
+The case where the read function would be interrupted by a signal is
+handled internally. So you don't have to check for EINTR.
+</para>
+<para>
+<link linkend="prelude-io-read-wait"><function>prelude_io_read_wait()</function></link> always return the number of bytes requested.
+Be carefull that this function is blocking.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> Pointer to the buffer to store data into.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>count</parameter>&#160;:</term>
+<listitem><simpara> Number of bytes to read.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> On success, the number of bytes read is returned (zero
+indicates end of file).
+
+On error, -1 is returned, and errno is set appropriately. In this
+case it is left unspecified whether the file position (if any) changes.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-read-delimited" role="function">
+<title>prelude_io_read_delimited ()</title>
+<indexterm zone="prelude-io-read-delimited"><primary sortas="prelude_io_read_delimited">prelude_io_read_delimited</primary></indexterm><programlisting><link linkend="ssize-t">ssize_t</link>             prelude_io_read_delimited           (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         unsigned <link linkend="char">char</link> **buf);</programlisting>
+<para>
+<link linkend="prelude-io-read-delimited"><function>prelude_io_read_delimited()</function></link> read message written by <link linkend="prelude-write-delimited"><function>prelude_write_delimited()</function></link>.
+Theses messages are sents along with the len of the message.
+</para>
+<para>
+Uppon return the <parameter>buf</parameter> argument is updated to point on a newly allocated
+buffer containing the data read. The <parameter>count</parameter> argument is set to the number of
+bytes the message was containing.
+</para>
+<para>
+The case where the read function would be interrupted by a signal is
+handled internally. So you don't have to check for EINTR.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> Pointer to the address of a buffer to store address of data into.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> On success, the number of bytes read is returned (zero
+indicates end of file).
+
+On error, -1 is returned, and errno is set appropriately. In this
+case it is left unspecified whether the file position (if any) changes.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-write" role="function">
+<title>prelude_io_write ()</title>
+<indexterm zone="prelude-io-write"><primary sortas="prelude_io_write">prelude_io_write</primary></indexterm><programlisting><link linkend="ssize-t">ssize_t</link>             prelude_io_write                    (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         const <link linkend="void">void</link> *buf,
+                                                         <link linkend="size-t">size_t</link> count);</programlisting>
+<para>
+<link linkend="prelude-io-write"><function>prelude_io_write()</function></link> writes up to <parameter>count</parameter> bytes to the file descriptor
+identified by <parameter>pio</parameter> from the buffer starting at <parameter>buf</parameter>. POSIX requires
+that a <link linkend="read"><function>read()</function></link> which can be proved to occur after a <link linkend="write"><function>write()</function></link> has returned
+returns the new data. Note that not all file systems are POSIX conforming.
+</para>
+<para>
+The case where the <link linkend="write"><function>write()</function></link> function would be interrupted by a signal is
+handled internally. So you don't have to check for EINTR.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> Pointer to the buffer to write data from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>count</parameter>&#160;:</term>
+<listitem><simpara> Number of bytes to write.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> On success, the number of bytes written are returned (zero
+indicates nothing was written). On error, -1 is returned, and errno
+is set appropriately. If <parameter>count</parameter> is zero and the file descriptor refers
+to a regular file, 0 will be returned without causing any other effect.
+For a special file, the results are not portable.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-write-delimited" role="function">
+<title>prelude_io_write_delimited ()</title>
+<indexterm zone="prelude-io-write-delimited"><primary sortas="prelude_io_write_delimited">prelude_io_write_delimited</primary></indexterm><programlisting><link linkend="ssize-t">ssize_t</link>             prelude_io_write_delimited          (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         const <link linkend="void">void</link> *buf,
+                                                         <link linkend="uint16-t">uint16_t</link> count);</programlisting>
+<para>
+<link linkend="prelude-io-write-delimited"><function>prelude_io_write_delimited()</function></link> writes up to <parameter>count</parameter> bytes to the file descriptor
+identified by <parameter>pio</parameter> from the buffer starting at <parameter>buf</parameter>. POSIX requires
+that a <link linkend="read"><function>read()</function></link> which can be proved to occur after a <link linkend="write"><function>write()</function></link> has returned
+returns the new data. Note that not all file systems are POSIX conforming.
+</para>
+<para>
+<link linkend="prelude-io-write-delimited"><function>prelude_io_write_delimited()</function></link> also write the len of the data to be sent.
+which allow <link linkend="prelude-io-read-delimited"><function>prelude_io_read_delimited()</function></link> to safely know if it got all the
+data a given write contain.
+</para>
+<para>
+The case where the <link linkend="write"><function>write()</function></link> function would be interrupted by a signal is
+handled internally. So you don't have to check for EINTR.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> Pointer to the buffer to write data from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>count</parameter>&#160;:</term>
+<listitem><simpara> Number of bytes to write.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> On success, the number of bytes written are returned (zero
+indicates nothing was written). On error, -1 is returned, and errno
+is set appropriately.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-forward" role="function">
+<title>prelude_io_forward ()</title>
+<indexterm zone="prelude-io-forward"><primary sortas="prelude_io_forward">prelude_io_forward</primary></indexterm><programlisting><link linkend="ssize-t">ssize_t</link>             prelude_io_forward                  (<link linkend="prelude-io-t">prelude_io_t</link> *dst,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *src,
+                                                         <link linkend="size-t">size_t</link> count);</programlisting>
+<para>
+<link linkend="prelude-io-forward"><function>prelude_io_forward()</function></link> attempts to transfer up to <parameter>count</parameter> bytes from
+the file descriptor identified by <parameter>src</parameter> into the file descriptor
+identified by <parameter>dst</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>count</parameter>&#160;:</term>
+<listitem><simpara> Number of byte to forward from <parameter>src</parameter> to <parameter>dst</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> If the transfer was successful, the number of bytes written
+to <parameter>dst</parameter> is returned.  On error, -1 is returned, and errno is set appropriately.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-get-fd" role="function">
+<title>prelude_io_get_fd ()</title>
+<indexterm zone="prelude-io-get-fd"><primary sortas="prelude_io_get_fd">prelude_io_get_fd</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_io_get_fd                   (<link linkend="prelude-io-t">prelude_io_t</link> *pio);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> A pointer on a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The FD associated with this object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-get-fdptr" role="function">
+<title>prelude_io_get_fdptr ()</title>
+<indexterm zone="prelude-io-get-fdptr"><primary sortas="prelude_io_get_fdptr">prelude_io_get_fdptr</primary></indexterm><programlisting><link linkend="void">void</link> *              prelude_io_get_fdptr                (<link linkend="prelude-io-t">prelude_io_t</link> *pio);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> A pointer on a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> Pointer associated with this object (file, tls, buffer, or NULL).
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-pending" role="function">
+<title>prelude_io_pending ()</title>
+<indexterm zone="prelude-io-pending"><primary sortas="prelude_io_pending">prelude_io_pending</primary></indexterm><programlisting><link linkend="ssize-t">ssize_t</link>             prelude_io_pending                  (<link linkend="prelude-io-t">prelude_io_t</link> *pio);</programlisting>
+<para>
+prelude_io_pending return the number of bytes waiting to
+be read on an TLS or socket fd.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> Number of byte waiting to be read on <parameter>pio</parameter>, or -1
+if <parameter>pio</parameter> is not of type TLS or socket.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-io-is-error-fatal" role="function">
+<title>prelude_io_is_error_fatal ()</title>
+<indexterm zone="prelude-io-is-error-fatal"><primary sortas="prelude_io_is_error_fatal">prelude_io_is_error_fatal</primary></indexterm><programlisting><link linkend="prelude-bool-t">prelude_bool_t</link>      prelude_io_is_error_fatal           (<link linkend="prelude-io-t">prelude_io_t</link> *pio,
+                                                         <link linkend="int">int</link> error);</programlisting>
+<para>
+Check whether the returned error is fatal, or not.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>error</parameter>&#160;:</term>
+<listitem><simpara> Error returned by one of the <link linkend="prelude-io-t"><type>prelude_io_t</type></link> function.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE if error is fatal, FALSE if it is not.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

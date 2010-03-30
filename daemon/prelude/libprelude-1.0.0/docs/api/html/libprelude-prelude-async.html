@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>prelude-async</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="ch04.html" title="Others">
+<link rel="prev" href="libprelude-prelude-failover.html" title="prelude-failover">
+<link rel="next" href="libprelude-prelude-list.html" title="prelude-list">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libprelude-prelude-failover.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="libprelude-prelude-list.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-prelude-async.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-prelude-async.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="prelude-async">
+<a name="libprelude-prelude-async"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-prelude-async.top_of_page"></a>prelude-async</span></h2>
+<p>prelude-async</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-prelude-async.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+enum                <a class="link" href="libprelude-prelude-async.html#prelude-async-flags-t" title="enum prelude_async_flags_t">prelude_async_flags_t</a>;
+void                (<a class="link" href="libprelude-prelude-async.html#prelude-async-callback-t" title="prelude_async_callback_t ()">*prelude_async_callback_t</a>)         (void *object,
+                                                         void *data);
+#define             <a class="link" href="libprelude-prelude-async.html#PRELUDE-ASYNC-OBJECT--CAPS" title="PRELUDE_ASYNC_OBJECT">PRELUDE_ASYNC_OBJECT</a>
+                    <a class="link" href="libprelude-prelude-async.html#prelude-async-object-t" title="prelude_async_object_t">prelude_async_object_t</a>;
+int                 <a class="link" href="libprelude-prelude-async.html#prelude-async-init" title="prelude_async_init ()">prelude_async_init</a>                  (void);
+<a class="link" href="libprelude-prelude-async.html#prelude-async-flags-t" title="enum prelude_async_flags_t">prelude_async_flags_t</a>  <a class="link" href="libprelude-prelude-async.html#prelude-async-get-flags" title="prelude_async_get_flags ()">prelude_async_get_flags</a>          (void);
+void                <a class="link" href="libprelude-prelude-async.html#prelude-async-set-flags" title="prelude_async_set_flags ()">prelude_async_set_flags</a>             (<a class="link" href="libprelude-prelude-async.html#prelude-async-flags-t" title="enum prelude_async_flags_t">prelude_async_flags_t</a> flags);
+void                <a class="link" href="libprelude-prelude-async.html#prelude-async-add" title="prelude_async_add ()">prelude_async_add</a>                   (<a class="link" href="libprelude-prelude-async.html#prelude-async-object-t" title="prelude_async_object_t">prelude_async_object_t</a> *obj);
+void                <a class="link" href="libprelude-prelude-async.html#prelude-async-del" title="prelude_async_del ()">prelude_async_del</a>                   (<a class="link" href="libprelude-prelude-async.html#prelude-async-object-t" title="prelude_async_object_t">prelude_async_object_t</a> *obj);
+void                <a class="link" href="libprelude-prelude-async.html#prelude-async-exit" title="prelude_async_exit ()">prelude_async_exit</a>                  (void);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-prelude-async.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-prelude-async.details"></a><h2>Details</h2>
+<div class="refsect2" title="enum prelude_async_flags_t">
+<a name="prelude-async-flags-t"></a><h3>enum prelude_async_flags_t</h3>
+<pre class="programlisting">typedef enum {
+        PRELUDE_ASYNC_FLAGS_TIMER   = 0x01
+} prelude_async_flags_t;
+</pre>
+<p>
+This provides asynchronous timer. When enabled, the heartbeat
+function (and user specified callback, if any) will be called
+automatically, from an asynchronous thread.
+</p>
+<p>
+If you use this flags, you won't need to call <code class="function">prelude_wake_up_timer()</code>
+anymore.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><a name="PRELUDE-ASYNC-FLAGS-TIMER--CAPS"></a><span class="term"><code class="literal">PRELUDE_ASYNC_FLAGS_TIMER</code></span></p></td>
+<td> Enable asynchronous timer.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_async_callback_t ()">
+<a name="prelude-async-callback-t"></a><h3>prelude_async_callback_t ()</h3>
+<pre class="programlisting">void                (*prelude_async_callback_t)         (void *object,
+                                                         void *data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>object</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_ASYNC_OBJECT">
+<a name="PRELUDE-ASYNC-OBJECT--CAPS"></a><h3>PRELUDE_ASYNC_OBJECT</h3>
+<pre class="programlisting">#define             PRELUDE_ASYNC_OBJECT</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_async_object_t">
+<a name="prelude-async-object-t"></a><h3>prelude_async_object_t</h3>
+<pre class="programlisting">typedef struct {
+        PRELUDE_ASYNC_OBJECT;
+} prelude_async_object_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_async_init ()">
+<a name="prelude-async-init"></a><h3>prelude_async_init ()</h3>
+<pre class="programlisting">int                 prelude_async_init                  (void);</pre>
+<p>
+Initialize the asynchronous subsystem.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 if an error occured.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_async_get_flags ()">
+<a name="prelude-async-get-flags"></a><h3>prelude_async_get_flags ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-async.html#prelude-async-flags-t" title="enum prelude_async_flags_t">prelude_async_flags_t</a>  prelude_async_get_flags          (void);</pre>
+<p>
+Retrieves flags from the asynchronous subsystem</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> asynchronous flags
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_async_set_flags ()">
+<a name="prelude-async-set-flags"></a><h3>prelude_async_set_flags ()</h3>
+<pre class="programlisting">void                prelude_async_set_flags             (<a class="link" href="libprelude-prelude-async.html#prelude-async-flags-t" title="enum prelude_async_flags_t">prelude_async_flags_t</a> flags);</pre>
+<p>
+Sets flags to the asynchronous subsystem.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
+<td> flags you want to set
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_async_add ()">
+<a name="prelude-async-add"></a><h3>prelude_async_add ()</h3>
+<pre class="programlisting">void                prelude_async_add                   (<a class="link" href="libprelude-prelude-async.html#prelude-async-object-t" title="prelude_async_object_t">prelude_async_object_t</a> *obj);</pre>
+<p>
+Adds <em class="parameter"><code>obj</code></em> to the asynchronous processing list.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>obj</code></em> :</span></p></td>
+<td> Pointer to a <span class="type">prelude_async_t</span> object.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_async_del ()">
+<a name="prelude-async-del"></a><h3>prelude_async_del ()</h3>
+<pre class="programlisting">void                prelude_async_del                   (<a class="link" href="libprelude-prelude-async.html#prelude-async-object-t" title="prelude_async_object_t">prelude_async_object_t</a> *obj);</pre>
+<p>
+Deletes <em class="parameter"><code>obj</code></em> from the asynchronous processing list.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>obj</code></em> :</span></p></td>
+<td> Pointer to a <span class="type">prelude_async_t</span> object.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_async_exit ()">
+<a name="prelude-async-exit"></a><h3>prelude_async_exit ()</h3>
+<pre class="programlisting">void                prelude_async_exit                  (void);</pre>
+<p>
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

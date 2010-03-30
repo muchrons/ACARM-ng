@@ -1,0 +1,1026 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>prelude-client</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="prev" href="libprelude-prelude.html" title="prelude">
+<link rel="next" href="pt02.html" title="Part II. Sending events with libprelude">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libprelude-prelude.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="pt01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="pt02.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-prelude-client.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-prelude-client.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="prelude-client">
+<a name="libprelude-prelude-client"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-prelude-client.top_of_page"></a>prelude-client</span></h2>
+<p>prelude-client — Creating a Prelude Client</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-prelude-client.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+enum                <a class="link" href="libprelude-prelude-client.html#prelude-client-exit-status-t" title="enum prelude_client_exit_status_t">prelude_client_exit_status_t</a>;
+enum                <a class="link" href="libprelude-prelude-client.html#prelude-client-flags-t" title="enum prelude_client_flags_t">prelude_client_flags_t</a>;
+typedef             <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a>;
+<a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t">prelude_ident_t</a> *   <a class="link" href="libprelude-prelude-client.html#prelude-client-get-unique-ident" title="prelude_client_get_unique_ident ()">prelude_client_get_unique_ident</a>     (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);
+void                <a class="link" href="libprelude-prelude-client.html#prelude-client-set-connection-pool" title="prelude_client_set_connection_pool ()">prelude_client_set_connection_pool</a>  (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-connection-pool.html#prelude-connection-pool-t" title="prelude_connection_pool_t">prelude_connection_pool_t</a> *pool);
+<a class="link" href="libprelude-prelude-connection-pool.html#prelude-connection-pool-t" title="prelude_connection_pool_t">prelude_connection_pool_t</a> * <a class="link" href="libprelude-prelude-client.html#prelude-client-get-connection-pool" title="prelude_client_get_connection_pool ()">prelude_client_get_connection_pool</a>
+                                                        (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);
+int                 <a class="link" href="libprelude-prelude-client.html#prelude-client-start" title="prelude_client_start ()">prelude_client_start</a>                (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);
+int                 <a class="link" href="libprelude-prelude-client.html#prelude-client-init" title="prelude_client_init ()">prelude_client_init</a>                 (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);
+int                 <a class="link" href="libprelude-prelude-client.html#prelude-client-new" title="prelude_client_new ()">prelude_client_new</a>                  (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> **client,
+                                                         const char *profile);
+<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *  <a class="link" href="libprelude-prelude-client.html#prelude-client-ref" title="prelude_client_ref ()">prelude_client_ref</a>                  (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);
+<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-analyzer-t" title="idmef_analyzer_t">idmef_analyzer_t</a> *  <a class="link" href="libprelude-prelude-client.html#prelude-client-get-analyzer" title="prelude_client_get_analyzer ()">prelude_client_get_analyzer</a>         (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);
+<a class="link" href="libprelude-prelude-client.html#prelude-client-flags-t" title="enum prelude_client_flags_t">prelude_client_flags_t</a>  <a class="link" href="libprelude-prelude-client.html#prelude-client-get-flags" title="prelude_client_get_flags ()">prelude_client_get_flags</a>        (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);
+void                <a class="link" href="libprelude-prelude-client.html#prelude-client-set-required-permission" title="prelude_client_set_required_permission ()">prelude_client_set_required_permission</a>
+                                                        (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-t" title="enum prelude_connection_permission_t">prelude_connection_permission_t</a> permission);
+<a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-t" title="enum prelude_connection_permission_t">prelude_connection_permission_t</a>  <a class="link" href="libprelude-prelude-client.html#prelude-client-get-required-permission" title="prelude_client_get_required_permission ()">prelude_client_get_required_permission</a>
+                                                        (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);
+void                <a class="link" href="libprelude-prelude-client.html#prelude-client-send-msg" title="prelude_client_send_msg ()">prelude_client_send_msg</a>             (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-prelude-client.html#prelude-client-recv-msg" title="prelude_client_recv_msg ()">prelude_client_recv_msg</a>             (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         int timeout,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> **msg);
+void                <a class="link" href="libprelude-prelude-client.html#prelude-client-set-heartbeat-cb" title="prelude_client_set_heartbeat_cb ()">prelude_client_set_heartbeat_cb</a>     (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         void (cbprelude_client_t *client, idmef_message_t *hb) ());
+void                <a class="link" href="libprelude-prelude-client.html#prelude-client-send-idmef" title="prelude_client_send_idmef ()">prelude_client_send_idmef</a>           (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> *msg);
+int                 <a class="link" href="libprelude-prelude-client.html#prelude-client-recv-idmef" title="prelude_client_recv_idmef ()">prelude_client_recv_idmef</a>           (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         int timeout,
+                                                         <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> **idmef);
+void                <a class="link" href="libprelude-prelude-client.html#prelude-client-destroy" title="prelude_client_destroy ()">prelude_client_destroy</a>              (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-client.html#prelude-client-exit-status-t" title="enum prelude_client_exit_status_t">prelude_client_exit_status_t</a> status);
+int                 <a class="link" href="libprelude-prelude-client.html#prelude-client-set-flags" title="prelude_client_set_flags ()">prelude_client_set_flags</a>            (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-client.html#prelude-client-flags-t" title="enum prelude_client_flags_t">prelude_client_flags_t</a> flags);
+int                 <a class="link" href="libprelude-prelude-client.html#prelude-client-set-config-filename" title="prelude_client_set_config_filename ()">prelude_client_set_config_filename</a>  (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         const char *filename);
+const char *        <a class="link" href="libprelude-prelude-client.html#prelude-client-get-config-filename" title="prelude_client_get_config_filename ()">prelude_client_get_config_filename</a>  (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);
+<a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      <a class="link" href="libprelude-prelude-client.html#prelude-client-is-setup-needed" title="prelude_client_is_setup_needed ()">prelude_client_is_setup_needed</a>      (int error);
+<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> * <a class="link" href="libprelude-prelude-client.html#prelude-client-get-profile" title="prelude_client_get_profile ()">prelude_client_get_profile</a>   (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);
+int                 <a class="link" href="libprelude-prelude-client.html#prelude-client-new-msgbuf" title="prelude_client_new_msgbuf ()">prelude_client_new_msgbuf</a>           (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> **msgbuf);
+int                 <a class="link" href="libprelude-prelude-client.html#prelude-client-handle-msg-default" title="prelude_client_handle_msg_default ()">prelude_client_handle_msg_default</a>   (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msgbuf);
+const char *        <a class="link" href="libprelude-prelude-client.html#prelude-client-get-setup-error" title="prelude_client_get_setup_error ()">prelude_client_get_setup_error</a>      (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);
+void                <a class="link" href="libprelude-prelude-client.html#prelude-client-print-setup-error" title="prelude_client_print_setup_error ()">prelude_client_print_setup_error</a>    (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-prelude-client.description"></a><h2>Description</h2>
+<p>
+In order to send or to read data from a Prelude collector (prelude-manager),
+you will need to create a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object. This object will be necessary
+for most of the work you are going to do with prelude.
+</p>
+<p>
+</p>
+<pre class="programlisting">
+int ret;
+prelude_client_t *client;
+ret = prelude_client_new(&amp;client, "my-analyzer");
+if ( ! client ) {
+        prelude_perror(ret, "Unable to create a prelude client object");
+        return -1;
+}
+</pre>
+<p>
+This will create a new client object, whose default profile is my-analyzer.
+This default profile might be overriden using the --prelude --profile profile_name option on your
+command line as parsed by <a class="link" href="libprelude-prelude.html#prelude-init" title="prelude_init ()"><code class="function">prelude_init()</code></a>.
+</p>
+<p>
+Additionally, prelude specific option might be overriden using a Prelude specific configuration file,
+like the template file created within each profile, or a configuration file specified using
+<a class="link" href="libprelude-prelude-client.html#prelude-client-set-config-filename" title="prelude_client_set_config_filename ()"><code class="function">prelude_client_set_config_filename()</code></a> before <a class="link" href="libprelude-prelude-client.html#prelude-client-start" title="prelude_client_start ()"><code class="function">prelude_client_start()</code></a> is called.
+</p>
+<p>
+The default required permission for the created client are set to PRELUDE_CONNECTION_PERMISSION_IDMEF_WRITE
+and PRELUDE_CONNECTION_PERMISSION_ADMIN_READ, which mean the client will reject any certificate where
+permission are set to anything less than this. You can change the default required permission using the
+<a class="link" href="libprelude-prelude-client.html#prelude-client-set-required-permission" title="prelude_client_set_required_permission ()"><code class="function">prelude_client_set_required_permission()</code></a> function.
+</p>
+<p>
+As an example, if you want to create a client that will read alert from a Manager, and accept administrative
+option request you should use:
+</p>
+<pre class="programlisting">
+prelude_client_set_required_permission(client, PRELUDE_CONNECTION_PERMISSION_IDMEF_READ|PRELUDE_CONNECTION_PERMISSION_ADMIN_WRITE);
+</pre>
+<p>
+</p>
+<p>
+Once the client is created and you have everything setup, you will need to start your client.
+The <a class="link" href="libprelude-prelude-client.html#prelude-client-start" title="prelude_client_start ()"><code class="function">prelude_client_start()</code></a> function is responsible for this, and will trigger the connection to
+the configured manager, and send the initial client heartbeat.
+</p>
+<pre class="programlisting">
+ret = prelude_client_start(client);
+if ( ret &lt; 0 ) {
+       prelude_log(ret, "Unable to start prelude client");
+       return -1;
+}
+</pre>
+<p>
+Additionally, it is possible to set additional client flags, however, you should be careful
+since some of theses flags (marked asynchronous) will result in creating an internal thread,
+which should only be done after an eventual fork of the program since threads are not copied
+accross a fork call.
+</p>
+<p>
+The prelude library will also register an internal timer in order to send heartbeat message at
+the defined interval. Timer registered by the library itself or by the program will either be called
+automatically if the <span class="type">PRELUDE_CLIENT_FLAGS_ASYNC_TIMER</span> flags is set, otherwise, the program is responsible
+for calling the <a class="link" href="libprelude-prelude-timer.html#prelude-timer-wake-up" title="prelude_timer_wake_up ()"><code class="function">prelude_timer_wake_up()</code></a> function every second from it's main loop, in order to check the
+registered timer.
+</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+<span class="type">PRELUDE_CLIENT_FLAGS_CONNECT</span> - Used for a client to connect to a manager (this is the default).</li>
+<li class="listitem">
+<span class="type">PRELUDE_CLIENT_FLAGS_HEARTBEAT</span> - Used for client to send heartbeat (this is the default).</li>
+<li class="listitem">
+<span class="type">PRELUDE_CLIENT_FLAGS_ASYNC_SEND</span> - Used if you want message to be sent asynchronously.</li>
+<li class="listitem">
+<span class="type">PRELUDE_CLIENT_FLAGS_ASYNC_TIMER</span> - Used if you want timer to be automatically called from the asynchronous thread.</li>
+<li class="listitem">See <a class="link" href="libprelude-prelude-client.html#prelude-client-flags-t" title="enum prelude_client_flags_t"><span class="type">prelude_client_flags_t</span></a> for a list of available flags.</li>
+</ul></div>
+<p>
+</p>
+<pre class="programlisting">
+ret = prelude_client_set_flags(client, PRELUDE_CLIENT_FLAGS_ASYNC_SEND|PRELUDE_CLIENT_FLAGS_ASYNC_TIMER);
+if ( ret &lt; 0 ) {
+       fprintf(stderr, "Unable to set asynchronous send and timer.\n");
+       return -1;
+}
+</pre>
+<p>
+</p>
+<p>
+For documentation on how to create IDMEF message, please see <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t"><span class="type">idmef_message_t</span></a>
+or <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a>.
+</p>
+<p>
+Once you created and IDMEF message, you should use the <a class="link" href="libprelude-prelude-client.html#prelude-client-send-idmef" title="prelude_client_send_idmef ()"><code class="function">prelude_client_send_idmef()</code></a> function
+in order to send it to the collector you are connected to.
+</p>
+<div class="informalexample"><pre class="programlisting">
+prelude_client_send_idmef(client, idmef);
+</pre></div>
+<p>
+</p>
+<p>
+In case the analyzer you are developing is not a persistant analyzer (meaning an
+analyzer that is not supposed to exit), it is important that you call the <a class="link" href="libprelude-prelude-client.html#prelude-client-destroy" title="prelude_client_destroy ()"><code class="function">prelude_client_destroy()</code></a>
+function prior to exiting. This function have the side effect of sending an heartbeat to the remote
+manager, as well as an information regarding the analyzer state.
+</p>
+<p>
+This state information is important since an analyzer not reporting a successful exit status,
+or an analyzer which stop sending heartbeat at all will be reported as having a problem.
+</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">PRELUDE_CLIENT_STATUS_EXIT_SUCCESS - Exiting the sensor is the expected behavior.</li>
+<li class="listitem">PRELUDE_CLIENT_STATUS_EXIT_FAILED - There is something wrong going on, notice the security analyst.</li>
+</ul></div>
+<p>
+</p>
+<div class="informalexample"><pre class="programlisting">
+prelude_client_destroy(client, PRELUDE_CLIENT_STATUS_EXIT_SUCCESS);
+</pre></div>
+<p>
+As a side note, please remember that a persistant sensor should never use this function
+(except maybe if it is working in batch mode), unless it want to report the
+PRELUDE_CLIENT_STATUS_EXIT_FAILED exit status. This is also the case if your persistant sensor
+is interrupted by a signal.
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-prelude-client.details"></a><h2>Details</h2>
+<div class="refsect2" title="enum prelude_client_exit_status_t">
+<a name="prelude-client-exit-status-t"></a><h3>enum prelude_client_exit_status_t</h3>
+<pre class="programlisting">typedef enum {
+        PRELUDE_CLIENT_EXIT_STATUS_SUCCESS = 0,
+        PRELUDE_CLIENT_EXIT_STATUS_FAILURE = -1
+} prelude_client_exit_status_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="enum prelude_client_flags_t">
+<a name="prelude-client-flags-t"></a><h3>enum prelude_client_flags_t</h3>
+<pre class="programlisting">typedef enum {
+        PRELUDE_CLIENT_FLAGS_ASYNC_SEND  = 0x01,
+        PRELUDE_CLIENT_FLAGS_ASYNC_TIMER = 0x02,
+        PRELUDE_CLIENT_FLAGS_HEARTBEAT   = 0x04,
+        PRELUDE_CLIENT_FLAGS_CONNECT     = 0x08,
+        PRELUDE_CLIENT_FLAGS_AUTOCONFIG  = 0x10
+} prelude_client_flags_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_t">
+<a name="prelude-client-t"></a><h3>prelude_client_t</h3>
+<pre class="programlisting">typedef struct prelude_client prelude_client_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_get_unique_ident ()">
+<a name="prelude-client-get-unique-ident"></a><h3>prelude_client_get_unique_ident ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t">prelude_ident_t</a> *   prelude_client_get_unique_ident     (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_set_connection_pool ()">
+<a name="prelude-client-set-connection-pool"></a><h3>prelude_client_set_connection_pool ()</h3>
+<pre class="programlisting">void                prelude_client_set_connection_pool  (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-connection-pool.html#prelude-connection-pool-t" title="prelude_connection_pool_t">prelude_connection_pool_t</a> *pool);</pre>
+<p>
+Use this function in order to set your own list of peer that <em class="parameter"><code>client</code></em>
+should send message too. This might be usefull in case you don't want
+this to be automated by <a class="link" href="libprelude-prelude-client.html#prelude-client-init" title="prelude_client_init ()"><code class="function">prelude_client_init()</code></a>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> pointer to a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>pool</code></em> :</span></p></td>
+<td> pointer to a <span class="type">prelude_client_pool_t</span> object.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_get_connection_pool ()">
+<a name="prelude-client-get-connection-pool"></a><h3>prelude_client_get_connection_pool ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-connection-pool.html#prelude-connection-pool-t" title="prelude_connection_pool_t">prelude_connection_pool_t</a> * prelude_client_get_connection_pool
+                                                        (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);</pre>
+<p>
+Return a pointer to the <a class="link" href="libprelude-prelude-connection-pool.html#prelude-connection-pool-t" title="prelude_connection_pool_t"><span class="type">prelude_connection_pool_t</span></a> object used by <em class="parameter"><code>client</code></em>
+to send messages.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> pointer to a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> a pointer to a <a class="link" href="libprelude-prelude-connection-pool.html#prelude-connection-pool-t" title="prelude_connection_pool_t"><span class="type">prelude_connection_pool_t</span></a> object.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_start ()">
+<a name="prelude-client-start"></a><h3>prelude_client_start ()</h3>
+<pre class="programlisting">int                 prelude_client_start                (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);</pre>
+<p>
+This function start the <em class="parameter"><code>client</code></em> object, triggering
+a connection from the client to it's server if any were
+specified, and sending the initial <em class="parameter"><code>client</code></em> heartbeat.
+</p>
+<p>
+If <em class="parameter"><code>client</code></em> was not initialized, then <a class="link" href="libprelude-prelude-client.html#prelude-client-init" title="prelude_client_init ()"><code class="function">prelude_client_init()</code></a>
+will be called and thus this function might fail if the
+client was not registered.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> Pointer to a client object to initialize.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_init ()">
+<a name="prelude-client-init"></a><h3>prelude_client_init ()</h3>
+<pre class="programlisting">int                 prelude_client_init                 (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);</pre>
+<p>
+This function initialize the <em class="parameter"><code>client</code></em> object, meaning reading generic
+options from the <a class="link" href="libprelude-prelude-client.html#prelude-client-new" title="prelude_client_new ()"><code class="function">prelude_client_new()</code></a> provided configuration file
+and the array of arguments specified through <a class="link" href="libprelude-prelude.html#prelude-init" title="prelude_init ()"><code class="function">prelude_init()</code></a>.
+</p>
+<p>
+Calling this function is optional and should be done only if you need more
+granularity between <a class="link" href="libprelude-prelude-client.html#prelude-client-new" title="prelude_client_new ()"><code class="function">prelude_client_new()</code></a> and <a class="link" href="libprelude-prelude-client.html#prelude-client-start" title="prelude_client_start ()"><code class="function">prelude_client_start()</code></a>:
+</p>
+<p>
+<a class="link" href="libprelude-prelude-client.html#prelude-client-start" title="prelude_client_start ()"><code class="function">prelude_client_start()</code></a> will call <a class="link" href="libprelude-prelude-client.html#prelude-client-init" title="prelude_client_init ()"><code class="function">prelude_client_init()</code></a> for you if needed.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object to initialize.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_new ()">
+<a name="prelude-client-new"></a><h3>prelude_client_new ()</h3>
+<pre class="programlisting">int                 prelude_client_new                  (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> **client,
+                                                         const char *profile);</pre>
+<p>
+This function initialize the <em class="parameter"><code>client</code></em> object.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> Pointer to a client object to initialize.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>profile</code></em> :</span></p></td>
+<td> Default profile name for this analyzer.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success or a negative value if an error occur.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_ref ()">
+<a name="prelude-client-ref"></a><h3>prelude_client_ref ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *  prelude_client_ref                  (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_get_analyzer ()">
+<a name="prelude-client-get-analyzer"></a><h3>prelude_client_get_analyzer ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-idmef-tree-wrap.html#idmef-analyzer-t" title="idmef_analyzer_t">idmef_analyzer_t</a> *  prelude_client_get_analyzer         (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);</pre>
+<p>
+Provide access to the <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-analyzer-t" title="idmef_analyzer_t"><span class="type">idmef_analyzer_t</span></a> object associated to <em class="parameter"><code>client</code></em>.
+This analyzer object is sent along with every alerts and heartbeats emited
+by this client. The analyzer object is created by <a class="link" href="libprelude-prelude-client.html#prelude-client-init" title="prelude_client_init ()"><code class="function">prelude_client_init()</code></a>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-analyzer-t" title="idmef_analyzer_t"><span class="type">idmef_analyzer_t</span></a> object associated with <em class="parameter"><code>client</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_get_flags ()">
+<a name="prelude-client-get-flags"></a><h3>prelude_client_get_flags ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-client.html#prelude-client-flags-t" title="enum prelude_client_flags_t">prelude_client_flags_t</a>  prelude_client_get_flags        (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);</pre>
+<p>
+Get flags set through <a class="link" href="libprelude-prelude-client.html#prelude-client-set-flags" title="prelude_client_set_flags ()"><code class="function">prelude_client_set_flags()</code></a>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> Pointer on a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> an or'ed list of <a class="link" href="libprelude-prelude-client.html#prelude-client-flags-t" title="enum prelude_client_flags_t"><span class="type">prelude_client_flags_t</span></a>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_set_required_permission ()">
+<a name="prelude-client-set-required-permission"></a><h3>prelude_client_set_required_permission ()</h3>
+<pre class="programlisting">void                prelude_client_set_required_permission
+                                                        (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-t" title="enum prelude_connection_permission_t">prelude_connection_permission_t</a> permission);</pre>
+<p>
+Set the required <em class="parameter"><code>permission</code></em> for <em class="parameter"><code>client</code></em>.
+The default is <span class="type">PRELUDE_CONNECTION_PERMISSION_IDMEF_WRITE</span> | <span class="type">PRELUDE_CONNECTION_PERMISSION_ADMIN_READ</span>.
+Value set through this function should be set before <a class="link" href="libprelude-prelude-client.html#prelude-client-start" title="prelude_client_start ()"><code class="function">prelude_client_start()</code></a>.
+</p>
+<p>
+If the client certificate for connecting to one of the specified manager doesn't have theses permission
+the client will reject the certificate and ask for registration.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> Pointer on a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>permission</code></em> :</span></p></td>
+<td> Required permission for <em class="parameter"><code>client</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_get_required_permission ()">
+<a name="prelude-client-get-required-permission"></a><h3>prelude_client_get_required_permission ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-connection.html#prelude-connection-permission-t" title="enum prelude_connection_permission_t">prelude_connection_permission_t</a>  prelude_client_get_required_permission
+                                                        (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);</pre>
+<p>
+</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> Pointer on a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <em class="parameter"><code>client</code></em> permission as set with <a class="link" href="libprelude-prelude-client.html#prelude-client-set-required-permission" title="prelude_client_set_required_permission ()"><code class="function">prelude_client_set_required_permission()</code></a>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_send_msg ()">
+<a name="prelude-client-send-msg"></a><h3>prelude_client_send_msg ()</h3>
+<pre class="programlisting">void                prelude_client_send_msg             (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Send <em class="parameter"><code>msg</code></em> to the peers <em class="parameter"><code>client</code></em> is communicating with.
+</p>
+<p>
+The message will be sent asynchronously if <em class="parameter"><code>PRELUDE_CLIENT_FLAGS_ASYNC_SEND</code></em>
+was set using <a class="link" href="libprelude-prelude-client.html#prelude-client-set-flags" title="prelude_client_set_flags ()"><code class="function">prelude_client_set_flags()</code></a> in which case the caller should
+not call <a class="link" href="libprelude-prelude-msg.html#prelude-msg-destroy" title="prelude_msg_destroy ()"><code class="function">prelude_msg_destroy()</code></a> on <em class="parameter"><code>msg</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> pointer to a message that <em class="parameter"><code>client</code></em> should send.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_recv_msg ()">
+<a name="prelude-client-recv-msg"></a><h3>prelude_client_recv_msg ()</h3>
+<pre class="programlisting">int                 prelude_client_recv_msg             (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         int timeout,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> **msg);</pre>
+<p>
+Wait <em class="parameter"><code>timeout</code></em> second for a message on <em class="parameter"><code>client</code></em> connection pool.
+</p>
+<p>
+A <em class="parameter"><code>timeout</code></em> of -1, mean <a class="link" href="libprelude-prelude-client.html#prelude-client-recv-msg" title="prelude_client_recv_msg ()"><code class="function">prelude_client_recv_msg()</code></a> will block until
+a message is received. A <em class="parameter"><code>timeout</code></em> of 0 mean that it will return
+immediatly.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>timeout</code></em> :</span></p></td>
+<td> Number of millisecond to wait for a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer where the received <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> should be stored.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on timeout, a negative value on error, 1 on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_set_heartbeat_cb ()">
+<a name="prelude-client-set-heartbeat-cb"></a><h3>prelude_client_set_heartbeat_cb ()</h3>
+<pre class="programlisting">void                prelude_client_set_heartbeat_cb     (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         void (cbprelude_client_t *client, idmef_message_t *hb) ());</pre>
+<p>
+Use if you want to override the default function used to
+automatically send heartbeat to <em class="parameter"><code>client</code></em> peers.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> pointer to a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cb</code></em> :</span></p></td>
+<td> pointer to a function handling heartbeat sending.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_send_idmef ()">
+<a name="prelude-client-send-idmef"></a><h3>prelude_client_send_idmef ()</h3>
+<pre class="programlisting">void                prelude_client_send_idmef           (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> *msg);</pre>
+<p>
+Send <em class="parameter"><code>msg</code></em> to the peers <em class="parameter"><code>client</code></em> is communicating with.
+</p>
+<p>
+The message will be sent asynchronously if <em class="parameter"><code>PRELUDE_CLIENT_FLAGS_ASYNC_SEND</code></em>
+was set using <a class="link" href="libprelude-prelude-client.html#prelude-client-set-flags" title="prelude_client_set_flags ()"><code class="function">prelude_client_set_flags()</code></a>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> pointer to an IDMEF message to be sent to <em class="parameter"><code>client</code></em> peers.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_recv_idmef ()">
+<a name="prelude-client-recv-idmef"></a><h3>prelude_client_recv_idmef ()</h3>
+<pre class="programlisting">int                 prelude_client_recv_idmef           (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         int timeout,
+                                                         <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> **idmef);</pre>
+<p>
+Wait <em class="parameter"><code>timeout</code></em> second for a message on <em class="parameter"><code>client</code></em> connection pool.
+</p>
+<p>
+A <em class="parameter"><code>timeout</code></em> of -1, mean <a class="link" href="libprelude-prelude-client.html#prelude-client-recv-idmef" title="prelude_client_recv_idmef ()"><code class="function">prelude_client_recv_idmef()</code></a> will block until
+a message is received. A <em class="parameter"><code>timeout</code></em> of 0 mean that it will return
+immediatly.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>timeout</code></em> :</span></p></td>
+<td> Number of second to wait for a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>idmef</code></em> :</span></p></td>
+<td> Pointer where the received <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t"><span class="type">idmef_message_t</span></a> should be stored.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on timeout, a negative value on error, 1 on success.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_destroy ()">
+<a name="prelude-client-destroy"></a><h3>prelude_client_destroy ()</h3>
+<pre class="programlisting">void                prelude_client_destroy              (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-client.html#prelude-client-exit-status-t" title="enum prelude_client_exit_status_t">prelude_client_exit_status_t</a> status);</pre>
+<p>
+Destroy <em class="parameter"><code>client</code></em>, and send an heartbeat containing the 'exiting'
+status in case <em class="parameter"><code>status</code></em> is PRELUDE_CLIENT_EXIT_STATUS_SUCCESS.
+</p>
+<p>
+This is useful for analyzer expected to be running periodically,
+and that shouldn't be treated as behaving anormaly in case no
+heartbeat is sent.
+</p>
+<p>
+Please note that your are not supposed to run this function
+from a signal handler.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> Pointer on a client object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>status</code></em> :</span></p></td>
+<td> Exit status for the client.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_set_flags ()">
+<a name="prelude-client-set-flags"></a><h3>prelude_client_set_flags ()</h3>
+<pre class="programlisting">int                 prelude_client_set_flags            (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-client.html#prelude-client-flags-t" title="enum prelude_client_flags_t">prelude_client_flags_t</a> flags);</pre>
+<p>
+Set specific flags in the <em class="parameter"><code>client</code></em> structure.
+This function can be called anytime after the creation of the
+<em class="parameter"><code>client</code></em> object.
+</p>
+<p>
+When settings asynchronous flags such as <span class="type">PRELUDE_CLIENT_FLAGS_ASYNC_SEND</span>
+or <span class="type">PRELUDE_CLIENT_FLAGS_ASYNC_TIMER</span>, be carefull to call
+<a class="link" href="libprelude-prelude-client.html#prelude-client-set-flags" title="prelude_client_set_flags ()"><code class="function">prelude_client_set_flags()</code></a> in the same process you want to use the
+asynchronous API from. Threads aren't copied accross <code class="function">fork()</code>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> Pointer on a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>flags</code></em> :</span></p></td>
+<td> Or'd list of flags used by <em class="parameter"><code>client</code></em>.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 if setting <em class="parameter"><code>flags</code></em> succeed, -1 otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_set_config_filename ()">
+<a name="prelude-client-set-config-filename"></a><h3>prelude_client_set_config_filename ()</h3>
+<pre class="programlisting">int                 prelude_client_set_config_filename  (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         const char *filename);</pre>
+<p>
+The default for a client is to use a template configuration file (idmef-client.conf).
+By using this function you might override the default and provide your own
+configuration file to use for <em class="parameter"><code>client</code></em>. The format of the configuration file need
+to be compatible with the Prelude format.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> pointer on a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>filename</code></em> :</span></p></td>
+<td> Configuration file to use for this client.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, -1 if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_get_config_filename ()">
+<a name="prelude-client-get-config-filename"></a><h3>prelude_client_get_config_filename ()</h3>
+<pre class="programlisting">const char *        prelude_client_get_config_filename  (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);</pre>
+<p>
+Return the filename where <em class="parameter"><code>client</code></em> configuration is stored.
+This filename is originally set by the <a class="link" href="libprelude-prelude-client.html#prelude-client-new" title="prelude_client_new ()"><code class="function">prelude_client_new()</code></a> function.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td> pointer on a <a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t"><span class="type">prelude_client_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> a pointer to <em class="parameter"><code>client</code></em> configuration filename.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_is_setup_needed ()">
+<a name="prelude-client-is-setup-needed"></a><h3>prelude_client_is_setup_needed ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      prelude_client_is_setup_needed      (int error);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">prelude_client_is_setup_needed</code> is deprecated and should not be used in newly-written code. use standard error API.</p>
+</div>
+<p>
+This function should be called as a result of an error by
+the <a class="link" href="libprelude-prelude-client.html#prelude-client-start" title="prelude_client_start ()"><code class="function">prelude_client_start()</code></a> function, to know if the analyzer
+need to be registered.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>error</code></em> :</span></p></td>
+<td> Error returned by <a class="link" href="libprelude-prelude-client.html#prelude-client-start" title="prelude_client_start ()"><code class="function">prelude_client_start()</code></a>.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> TRUE if setup is needed, FALSE otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_get_profile ()">
+<a name="prelude-client-get-profile"></a><h3>prelude_client_get_profile ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> * prelude_client_get_profile   (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_new_msgbuf ()">
+<a name="prelude-client-new-msgbuf"></a><h3>prelude_client_new_msgbuf ()</h3>
+<pre class="programlisting">int                 prelude_client_new_msgbuf           (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> **msgbuf);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msgbuf</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_handle_msg_default ()">
+<a name="prelude-client-handle-msg-default"></a><h3>prelude_client_handle_msg_default ()</h3>
+<pre class="programlisting">int                 prelude_client_handle_msg_default   (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msgbuf);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msgbuf</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_get_setup_error ()">
+<a name="prelude-client-get-setup-error"></a><h3>prelude_client_get_setup_error ()</h3>
+<pre class="programlisting">const char *        prelude_client_get_setup_error      (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);</pre>
+<div class="warning" title="Warning" style="margin-left: 0.5in; margin-right: 0.5in;">
+<h3 class="title">Warning</h3>
+<p><code class="literal">prelude_client_get_setup_error</code> is deprecated and should not be used in newly-written code.</p>
+</div>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_print_setup_error ()">
+<a name="prelude-client-print-setup-error"></a><h3>prelude_client_print_setup_error ()</h3>
+<pre class="programlisting">void                prelude_client_print_setup_error    (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" title="See Also">
+<a name="libprelude-prelude-client.see-also"></a><h2>See Also</h2>
+<p>
+<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t"><span class="type">idmef_message_t</span></a>
+<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a>
+</p>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

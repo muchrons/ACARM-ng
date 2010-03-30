@@ -1,0 +1,1246 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-idmef-value">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-idmef-value.top_of_page">idmef-value</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>idmef-value</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-idmef-value.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+typedef             <link linkend="idmef-value-t">idmef_value_t</link>;
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-int8">idmef_value_new_int8</link>                (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="int8-t">int8_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-uint8">idmef_value_new_uint8</link>               (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="uint8-t">uint8_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-int16">idmef_value_new_int16</link>               (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="int16-t">int16_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-uint16">idmef_value_new_uint16</link>              (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="uint16-t">uint16_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-int32">idmef_value_new_int32</link>               (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="int32-t">int32_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-uint32">idmef_value_new_uint32</link>              (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="uint32-t">uint32_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-int64">idmef_value_new_int64</link>               (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="int64-t">int64_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-uint64">idmef_value_new_uint64</link>              (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="uint64-t">uint64_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-float">idmef_value_new_float</link>               (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="float">float</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-double">idmef_value_new_double</link>              (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="double">double</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-string">idmef_value_new_string</link>              (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *string);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-time">idmef_value_new_time</link>                (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-time-t">idmef_time_t</link> *time);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-data">idmef_value_new_data</link>                (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-data-t">idmef_data_t</link> *data);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-class">idmef_value_new_class</link>               (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         <link linkend="void">void</link> *ptr);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-list">idmef_value_new_list</link>                (<link linkend="idmef-value-t">idmef_value_t</link> **value);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-enum">idmef_value_new_enum</link>                (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         const <link linkend="char">char</link> *buf);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-enum-from-string">idmef_value_new_enum_from_string</link>    (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         const <link linkend="char">char</link> *buf);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-enum-from-numeric">idmef_value_new_enum_from_numeric</link>   (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         <link linkend="int">int</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new">idmef_value_new</link>                     (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-value-type-id-t">idmef_value_type_id_t</link> type,
+                                                         <link linkend="void">void</link> *ptr);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-from-path">idmef_value_new_from_path</link>           (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         const <link linkend="char">char</link> *buf);
+<link linkend="int">int</link>                 <link linkend="idmef-value-new-from-string">idmef_value_new_from_string</link>         (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-value-type-id-t">idmef_value_type_id_t</link> type,
+                                                         const <link linkend="char">char</link> *buf);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-class">idmef_value_set_class</link>               (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         <link linkend="void">void</link> *ptr);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-data">idmef_value_set_data</link>                (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-data-t">idmef_data_t</link> *data);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-double">idmef_value_set_double</link>              (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="double">double</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-enum">idmef_value_set_enum</link>                (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         const <link linkend="char">char</link> *buf);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-enum-from-numeric">idmef_value_set_enum_from_numeric</link>   (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         <link linkend="int">int</link> no);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-enum-from-string">idmef_value_set_enum_from_string</link>    (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         const <link linkend="char">char</link> *buf);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-float">idmef_value_set_float</link>               (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="float">float</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-int16">idmef_value_set_int16</link>               (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="int16-t">int16_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-int32">idmef_value_set_int32</link>               (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="int32-t">int32_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-int64">idmef_value_set_int64</link>               (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="int64-t">int64_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-int8">idmef_value_set_int8</link>                (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="int8-t">int8_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-string">idmef_value_set_string</link>              (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *string);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-time">idmef_value_set_time</link>                (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-time-t">idmef_time_t</link> *time);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-uint16">idmef_value_set_uint16</link>              (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="uint16-t">uint16_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-uint32">idmef_value_set_uint32</link>              (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="uint32-t">uint32_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-uint64">idmef_value_set_uint64</link>              (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="uint64-t">uint64_t</link> val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-set-uint8">idmef_value_set_uint8</link>               (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="uint8-t">uint8_t</link> val);
+<link linkend="int8-t">int8_t</link>              <link linkend="idmef-value-get-int8">idmef_value_get_int8</link>                (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="uint8-t">uint8_t</link>             <link linkend="idmef-value-get-uint8">idmef_value_get_uint8</link>               (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="int16-t">int16_t</link>             <link linkend="idmef-value-get-int16">idmef_value_get_int16</link>               (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="uint16-t">uint16_t</link>            <link linkend="idmef-value-get-uint16">idmef_value_get_uint16</link>              (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="int32-t">int32_t</link>             <link linkend="idmef-value-get-int32">idmef_value_get_int32</link>               (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="uint32-t">uint32_t</link>            <link linkend="idmef-value-get-uint32">idmef_value_get_uint32</link>              (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="int64-t">int64_t</link>             <link linkend="idmef-value-get-int64">idmef_value_get_int64</link>               (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="uint64-t">uint64_t</link>            <link linkend="idmef-value-get-uint64">idmef_value_get_uint64</link>              (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-get-enum">idmef_value_get_enum</link>                (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="float">float</link>               <link linkend="idmef-value-get-float">idmef_value_get_float</link>               (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="double">double</link>              <link linkend="idmef-value-get-double">idmef_value_get_double</link>              (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="idmef-time-t">idmef_time_t</link> *      <link linkend="idmef-value-get-time">idmef_value_get_time</link>                (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="idmef-data-t">idmef_data_t</link> *      <link linkend="idmef-value-get-data">idmef_value_get_data</link>                (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="prelude-string-t">prelude_string_t</link> *  <link linkend="idmef-value-get-string">idmef_value_get_string</link>              (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-list-add">idmef_value_list_add</link>                (<link linkend="idmef-value-t">idmef_value_t</link> *list,
+                                                         <link linkend="idmef-value-t">idmef_value_t</link> *item);
+<link linkend="prelude-bool-t">prelude_bool_t</link>      <link linkend="idmef-value-is-list">idmef_value_is_list</link>                 (const <link linkend="idmef-value-t">idmef_value_t</link> *list);
+<link linkend="prelude-bool-t">prelude_bool_t</link>      <link linkend="idmef-value-list-is-empty">idmef_value_list_is_empty</link>           (const <link linkend="idmef-value-t">idmef_value_t</link> *list);
+<link linkend="int">int</link>                 <link linkend="idmef-value-have-own-data">idmef_value_have_own_data</link>           (<link linkend="idmef-value-t">idmef_value_t</link> *value);
+<link linkend="int">int</link>                 <link linkend="idmef-value-dont-have-own-data">idmef_value_dont_have_own_data</link>      (<link linkend="idmef-value-t">idmef_value_t</link> *value);
+<link linkend="idmef-value-type-id-t">idmef_value_type_id_t</link>  <link linkend="idmef-value-get-type">idmef_value_get_type</link>             (const <link linkend="idmef-value-t">idmef_value_t</link> *value);
+<link linkend="idmef-class-id-t">idmef_class_id_t</link>    <link linkend="idmef-value-get-class">idmef_value_get_class</link>               (const <link linkend="idmef-value-t">idmef_value_t</link> *value);
+<link linkend="void">void</link> *              <link linkend="idmef-value-get-object">idmef_value_get_object</link>              (const <link linkend="idmef-value-t">idmef_value_t</link> *value);
+<link linkend="int">int</link>                 <link linkend="idmef-value-iterate">idmef_value_iterate</link>                 (const <link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="int">int</link> (callbackidmef_value_t *ptr, void *extra) (),
+                                                         <link linkend="void">void</link> *extra);
+<link linkend="int">int</link>                 <link linkend="idmef-value-iterate-reversed">idmef_value_iterate_reversed</link>        (const <link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="int">int</link> (callbackidmef_value_t *ptr, void *extra) (),
+                                                         <link linkend="void">void</link> *extra);
+<link linkend="idmef-value-t">idmef_value_t</link> *     <link linkend="idmef-value-get-nth">idmef_value_get_nth</link>                 (const <link linkend="idmef-value-t">idmef_value_t</link> *val,
+                                                         <link linkend="int">int</link> n);
+<link linkend="int">int</link>                 <link linkend="idmef-value-get-count">idmef_value_get_count</link>               (const <link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-clone">idmef_value_clone</link>                   (const <link linkend="idmef-value-t">idmef_value_t</link> *val,
+                                                         <link linkend="idmef-value-t">idmef_value_t</link> **dst);
+<link linkend="idmef-value-t">idmef_value_t</link> *     <link linkend="idmef-value-ref">idmef_value_ref</link>                     (<link linkend="idmef-value-t">idmef_value_t</link> *val);
+<link linkend="int">int</link>                 <link linkend="idmef-value-print">idmef_value_print</link>                   (const <link linkend="idmef-value-t">idmef_value_t</link> *val,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *fd);
+<link linkend="int">int</link>                 <link linkend="idmef-value-to-string">idmef_value_to_string</link>               (const <link linkend="idmef-value-t">idmef_value_t</link> *val,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *out);
+<link linkend="int">int</link>                 <link linkend="idmef-value-get">idmef_value_get</link>                     (const <link linkend="idmef-value-t">idmef_value_t</link> *val,
+                                                         <link linkend="void">void</link> *res);
+<link linkend="int">int</link>                 <link linkend="idmef-value-match">idmef_value_match</link>                   (<link linkend="idmef-value-t">idmef_value_t</link> *val1,
+                                                         <link linkend="idmef-value-t">idmef_value_t</link> *val2,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);
+<link linkend="int">int</link>                 <link linkend="idmef-value-check-operator">idmef_value_check_operator</link>          (const <link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);
+<link linkend="int">int</link>                 <link linkend="idmef-value-get-applicable-operators">idmef_value_get_applicable_operators</link>
+                                                        (const <link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> *result);
+<link linkend="void">void</link>                <link linkend="idmef-value-destroy">idmef_value_destroy</link>                 (<link linkend="idmef-value-t">idmef_value_t</link> *val);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-idmef-value.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-idmef-value.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="idmef-value-t" role="typedef">
+<title>idmef_value_t</title>
+<indexterm zone="idmef-value-t"><primary sortas="idmef_value_t">idmef_value_t</primary></indexterm><programlisting>typedef struct idmef_value idmef_value_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="idmef-value-new-int8" role="function">
+<title>idmef_value_new_int8 ()</title>
+<indexterm zone="idmef-value-new-int8"><primary sortas="idmef_value_new_int8">idmef_value_new_int8</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_int8                (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="int8-t">int8_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-uint8" role="function">
+<title>idmef_value_new_uint8 ()</title>
+<indexterm zone="idmef-value-new-uint8"><primary sortas="idmef_value_new_uint8">idmef_value_new_uint8</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_uint8               (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="uint8-t">uint8_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-int16" role="function">
+<title>idmef_value_new_int16 ()</title>
+<indexterm zone="idmef-value-new-int16"><primary sortas="idmef_value_new_int16">idmef_value_new_int16</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_int16               (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="int16-t">int16_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-uint16" role="function">
+<title>idmef_value_new_uint16 ()</title>
+<indexterm zone="idmef-value-new-uint16"><primary sortas="idmef_value_new_uint16">idmef_value_new_uint16</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_uint16              (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="uint16-t">uint16_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-int32" role="function">
+<title>idmef_value_new_int32 ()</title>
+<indexterm zone="idmef-value-new-int32"><primary sortas="idmef_value_new_int32">idmef_value_new_int32</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_int32               (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="int32-t">int32_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-uint32" role="function">
+<title>idmef_value_new_uint32 ()</title>
+<indexterm zone="idmef-value-new-uint32"><primary sortas="idmef_value_new_uint32">idmef_value_new_uint32</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_uint32              (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="uint32-t">uint32_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-int64" role="function">
+<title>idmef_value_new_int64 ()</title>
+<indexterm zone="idmef-value-new-int64"><primary sortas="idmef_value_new_int64">idmef_value_new_int64</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_int64               (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="int64-t">int64_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-uint64" role="function">
+<title>idmef_value_new_uint64 ()</title>
+<indexterm zone="idmef-value-new-uint64"><primary sortas="idmef_value_new_uint64">idmef_value_new_uint64</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_uint64              (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="uint64-t">uint64_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-float" role="function">
+<title>idmef_value_new_float ()</title>
+<indexterm zone="idmef-value-new-float"><primary sortas="idmef_value_new_float">idmef_value_new_float</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_float               (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="float">float</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-double" role="function">
+<title>idmef_value_new_double ()</title>
+<indexterm zone="idmef-value-new-double"><primary sortas="idmef_value_new_double">idmef_value_new_double</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_double              (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="double">double</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-string" role="function">
+<title>idmef_value_new_string ()</title>
+<indexterm zone="idmef-value-new-string"><primary sortas="idmef_value_new_string">idmef_value_new_string</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_string              (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *string);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-time" role="function">
+<title>idmef_value_new_time ()</title>
+<indexterm zone="idmef-value-new-time"><primary sortas="idmef_value_new_time">idmef_value_new_time</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_time                (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-time-t">idmef_time_t</link> *time);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-data" role="function">
+<title>idmef_value_new_data ()</title>
+<indexterm zone="idmef-value-new-data"><primary sortas="idmef_value_new_data">idmef_value_new_data</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_data                (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-class" role="function">
+<title>idmef_value_new_class ()</title>
+<indexterm zone="idmef-value-new-class"><primary sortas="idmef_value_new_class">idmef_value_new_class</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_class               (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         <link linkend="void">void</link> *ptr);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>classid</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-list" role="function">
+<title>idmef_value_new_list ()</title>
+<indexterm zone="idmef-value-new-list"><primary sortas="idmef_value_new_list">idmef_value_new_list</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_list                (<link linkend="idmef-value-t">idmef_value_t</link> **value);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-enum" role="function">
+<title>idmef_value_new_enum ()</title>
+<indexterm zone="idmef-value-new-enum"><primary sortas="idmef_value_new_enum">idmef_value_new_enum</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_enum                (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         const <link linkend="char">char</link> *buf);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>classid</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-enum-from-string" role="function">
+<title>idmef_value_new_enum_from_string ()</title>
+<indexterm zone="idmef-value-new-enum-from-string"><primary sortas="idmef_value_new_enum_from_string">idmef_value_new_enum_from_string</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_enum_from_string    (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         const <link linkend="char">char</link> *buf);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>classid</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-enum-from-numeric" role="function">
+<title>idmef_value_new_enum_from_numeric ()</title>
+<indexterm zone="idmef-value-new-enum-from-numeric"><primary sortas="idmef_value_new_enum_from_numeric">idmef_value_new_enum_from_numeric</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_enum_from_numeric   (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         <link linkend="int">int</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>classid</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new" role="function">
+<title>idmef_value_new ()</title>
+<indexterm zone="idmef-value-new"><primary sortas="idmef_value_new">idmef_value_new</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new                     (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-value-type-id-t">idmef_value_type_id_t</link> type,
+                                                         <link linkend="void">void</link> *ptr);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-from-path" role="function">
+<title>idmef_value_new_from_path ()</title>
+<indexterm zone="idmef-value-new-from-path"><primary sortas="idmef_value_new_from_path">idmef_value_new_from_path</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_from_path           (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         const <link linkend="char">char</link> *buf);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-new-from-string" role="function">
+<title>idmef_value_new_from_string ()</title>
+<indexterm zone="idmef-value-new-from-string"><primary sortas="idmef_value_new_from_string">idmef_value_new_from_string</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_new_from_string         (<link linkend="idmef-value-t">idmef_value_t</link> **value,
+                                                         <link linkend="idmef-value-type-id-t">idmef_value_type_id_t</link> type,
+                                                         const <link linkend="char">char</link> *buf);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-class" role="function">
+<title>idmef_value_set_class ()</title>
+<indexterm zone="idmef-value-set-class"><primary sortas="idmef_value_set_class">idmef_value_set_class</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_class               (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         <link linkend="void">void</link> *ptr);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>classid</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-data" role="function">
+<title>idmef_value_set_data ()</title>
+<indexterm zone="idmef-value-set-data"><primary sortas="idmef_value_set_data">idmef_value_set_data</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_data                (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-double" role="function">
+<title>idmef_value_set_double ()</title>
+<indexterm zone="idmef-value-set-double"><primary sortas="idmef_value_set_double">idmef_value_set_double</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_double              (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="double">double</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-enum" role="function">
+<title>idmef_value_set_enum ()</title>
+<indexterm zone="idmef-value-set-enum"><primary sortas="idmef_value_set_enum">idmef_value_set_enum</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_enum                (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         const <link linkend="char">char</link> *buf);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>classid</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-enum-from-numeric" role="function">
+<title>idmef_value_set_enum_from_numeric ()</title>
+<indexterm zone="idmef-value-set-enum-from-numeric"><primary sortas="idmef_value_set_enum_from_numeric">idmef_value_set_enum_from_numeric</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_enum_from_numeric   (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         <link linkend="int">int</link> no);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>classid</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>no</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-enum-from-string" role="function">
+<title>idmef_value_set_enum_from_string ()</title>
+<indexterm zone="idmef-value-set-enum-from-string"><primary sortas="idmef_value_set_enum_from_string">idmef_value_set_enum_from_string</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_enum_from_string    (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-class-id-t">idmef_class_id_t</link> classid,
+                                                         const <link linkend="char">char</link> *buf);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>classid</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-float" role="function">
+<title>idmef_value_set_float ()</title>
+<indexterm zone="idmef-value-set-float"><primary sortas="idmef_value_set_float">idmef_value_set_float</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_float               (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="float">float</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-int16" role="function">
+<title>idmef_value_set_int16 ()</title>
+<indexterm zone="idmef-value-set-int16"><primary sortas="idmef_value_set_int16">idmef_value_set_int16</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_int16               (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="int16-t">int16_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-int32" role="function">
+<title>idmef_value_set_int32 ()</title>
+<indexterm zone="idmef-value-set-int32"><primary sortas="idmef_value_set_int32">idmef_value_set_int32</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_int32               (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="int32-t">int32_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-int64" role="function">
+<title>idmef_value_set_int64 ()</title>
+<indexterm zone="idmef-value-set-int64"><primary sortas="idmef_value_set_int64">idmef_value_set_int64</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_int64               (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="int64-t">int64_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-int8" role="function">
+<title>idmef_value_set_int8 ()</title>
+<indexterm zone="idmef-value-set-int8"><primary sortas="idmef_value_set_int8">idmef_value_set_int8</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_int8                (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="int8-t">int8_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-string" role="function">
+<title>idmef_value_set_string ()</title>
+<indexterm zone="idmef-value-set-string"><primary sortas="idmef_value_set_string">idmef_value_set_string</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_string              (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *string);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-time" role="function">
+<title>idmef_value_set_time ()</title>
+<indexterm zone="idmef-value-set-time"><primary sortas="idmef_value_set_time">idmef_value_set_time</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_time                (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-time-t">idmef_time_t</link> *time);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-uint16" role="function">
+<title>idmef_value_set_uint16 ()</title>
+<indexterm zone="idmef-value-set-uint16"><primary sortas="idmef_value_set_uint16">idmef_value_set_uint16</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_uint16              (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="uint16-t">uint16_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-uint32" role="function">
+<title>idmef_value_set_uint32 ()</title>
+<indexterm zone="idmef-value-set-uint32"><primary sortas="idmef_value_set_uint32">idmef_value_set_uint32</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_uint32              (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="uint32-t">uint32_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-uint64" role="function">
+<title>idmef_value_set_uint64 ()</title>
+<indexterm zone="idmef-value-set-uint64"><primary sortas="idmef_value_set_uint64">idmef_value_set_uint64</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_uint64              (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="uint64-t">uint64_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-set-uint8" role="function">
+<title>idmef_value_set_uint8 ()</title>
+<indexterm zone="idmef-value-set-uint8"><primary sortas="idmef_value_set_uint8">idmef_value_set_uint8</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_set_uint8               (<link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="uint8-t">uint8_t</link> val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-int8" role="function">
+<title>idmef_value_get_int8 ()</title>
+<indexterm zone="idmef-value-get-int8"><primary sortas="idmef_value_get_int8">idmef_value_get_int8</primary></indexterm><programlisting><link linkend="int8-t">int8_t</link>              idmef_value_get_int8                (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-uint8" role="function">
+<title>idmef_value_get_uint8 ()</title>
+<indexterm zone="idmef-value-get-uint8"><primary sortas="idmef_value_get_uint8">idmef_value_get_uint8</primary></indexterm><programlisting><link linkend="uint8-t">uint8_t</link>             idmef_value_get_uint8               (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-int16" role="function">
+<title>idmef_value_get_int16 ()</title>
+<indexterm zone="idmef-value-get-int16"><primary sortas="idmef_value_get_int16">idmef_value_get_int16</primary></indexterm><programlisting><link linkend="int16-t">int16_t</link>             idmef_value_get_int16               (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-uint16" role="function">
+<title>idmef_value_get_uint16 ()</title>
+<indexterm zone="idmef-value-get-uint16"><primary sortas="idmef_value_get_uint16">idmef_value_get_uint16</primary></indexterm><programlisting><link linkend="uint16-t">uint16_t</link>            idmef_value_get_uint16              (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-int32" role="function">
+<title>idmef_value_get_int32 ()</title>
+<indexterm zone="idmef-value-get-int32"><primary sortas="idmef_value_get_int32">idmef_value_get_int32</primary></indexterm><programlisting><link linkend="int32-t">int32_t</link>             idmef_value_get_int32               (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-uint32" role="function">
+<title>idmef_value_get_uint32 ()</title>
+<indexterm zone="idmef-value-get-uint32"><primary sortas="idmef_value_get_uint32">idmef_value_get_uint32</primary></indexterm><programlisting><link linkend="uint32-t">uint32_t</link>            idmef_value_get_uint32              (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-int64" role="function">
+<title>idmef_value_get_int64 ()</title>
+<indexterm zone="idmef-value-get-int64"><primary sortas="idmef_value_get_int64">idmef_value_get_int64</primary></indexterm><programlisting><link linkend="int64-t">int64_t</link>             idmef_value_get_int64               (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-uint64" role="function">
+<title>idmef_value_get_uint64 ()</title>
+<indexterm zone="idmef-value-get-uint64"><primary sortas="idmef_value_get_uint64">idmef_value_get_uint64</primary></indexterm><programlisting><link linkend="uint64-t">uint64_t</link>            idmef_value_get_uint64              (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-enum" role="function">
+<title>idmef_value_get_enum ()</title>
+<indexterm zone="idmef-value-get-enum"><primary sortas="idmef_value_get_enum">idmef_value_get_enum</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_get_enum                (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-float" role="function">
+<title>idmef_value_get_float ()</title>
+<indexterm zone="idmef-value-get-float"><primary sortas="idmef_value_get_float">idmef_value_get_float</primary></indexterm><programlisting><link linkend="float">float</link>               idmef_value_get_float               (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-double" role="function">
+<title>idmef_value_get_double ()</title>
+<indexterm zone="idmef-value-get-double"><primary sortas="idmef_value_get_double">idmef_value_get_double</primary></indexterm><programlisting><link linkend="double">double</link>              idmef_value_get_double              (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-time" role="function">
+<title>idmef_value_get_time ()</title>
+<indexterm zone="idmef-value-get-time"><primary sortas="idmef_value_get_time">idmef_value_get_time</primary></indexterm><programlisting><link linkend="idmef-time-t">idmef_time_t</link> *      idmef_value_get_time                (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-data" role="function">
+<title>idmef_value_get_data ()</title>
+<indexterm zone="idmef-value-get-data"><primary sortas="idmef_value_get_data">idmef_value_get_data</primary></indexterm><programlisting><link linkend="idmef-data-t">idmef_data_t</link> *      idmef_value_get_data                (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-string" role="function">
+<title>idmef_value_get_string ()</title>
+<indexterm zone="idmef-value-get-string"><primary sortas="idmef_value_get_string">idmef_value_get_string</primary></indexterm><programlisting><link linkend="prelude-string-t">prelude_string_t</link> *  idmef_value_get_string              (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-list-add" role="function">
+<title>idmef_value_list_add ()</title>
+<indexterm zone="idmef-value-list-add"><primary sortas="idmef_value_list_add">idmef_value_list_add</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_list_add                (<link linkend="idmef-value-t">idmef_value_t</link> *list,
+                                                         <link linkend="idmef-value-t">idmef_value_t</link> *item);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>item</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-is-list" role="function">
+<title>idmef_value_is_list ()</title>
+<indexterm zone="idmef-value-is-list"><primary sortas="idmef_value_is_list">idmef_value_is_list</primary></indexterm><programlisting><link linkend="prelude-bool-t">prelude_bool_t</link>      idmef_value_is_list                 (const <link linkend="idmef-value-t">idmef_value_t</link> *list);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-list-is-empty" role="function">
+<title>idmef_value_list_is_empty ()</title>
+<indexterm zone="idmef-value-list-is-empty"><primary sortas="idmef_value_list_is_empty">idmef_value_list_is_empty</primary></indexterm><programlisting><link linkend="prelude-bool-t">prelude_bool_t</link>      idmef_value_list_is_empty           (const <link linkend="idmef-value-t">idmef_value_t</link> *list);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-have-own-data" role="function">
+<title>idmef_value_have_own_data ()</title>
+<indexterm zone="idmef-value-have-own-data"><primary sortas="idmef_value_have_own_data">idmef_value_have_own_data</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_have_own_data           (<link linkend="idmef-value-t">idmef_value_t</link> *value);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-dont-have-own-data" role="function">
+<title>idmef_value_dont_have_own_data ()</title>
+<indexterm zone="idmef-value-dont-have-own-data"><primary sortas="idmef_value_dont_have_own_data">idmef_value_dont_have_own_data</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_dont_have_own_data      (<link linkend="idmef-value-t">idmef_value_t</link> *value);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-type" role="function">
+<title>idmef_value_get_type ()</title>
+<indexterm zone="idmef-value-get-type"><primary sortas="idmef_value_get_type">idmef_value_get_type</primary></indexterm><programlisting><link linkend="idmef-value-type-id-t">idmef_value_type_id_t</link>  idmef_value_get_type             (const <link linkend="idmef-value-t">idmef_value_t</link> *value);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-class" role="function">
+<title>idmef_value_get_class ()</title>
+<indexterm zone="idmef-value-get-class"><primary sortas="idmef_value_get_class">idmef_value_get_class</primary></indexterm><programlisting><link linkend="idmef-class-id-t">idmef_class_id_t</link>    idmef_value_get_class               (const <link linkend="idmef-value-t">idmef_value_t</link> *value);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-object" role="function">
+<title>idmef_value_get_object ()</title>
+<indexterm zone="idmef-value-get-object"><primary sortas="idmef_value_get_object">idmef_value_get_object</primary></indexterm><programlisting><link linkend="void">void</link> *              idmef_value_get_object              (const <link linkend="idmef-value-t">idmef_value_t</link> *value);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-iterate" role="function">
+<title>idmef_value_iterate ()</title>
+<indexterm zone="idmef-value-iterate"><primary sortas="idmef_value_iterate">idmef_value_iterate</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_iterate                 (const <link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="int">int</link> (callbackidmef_value_t *ptr, void *extra) (),
+                                                         <link linkend="void">void</link> *extra);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>extra</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-iterate-reversed" role="function">
+<title>idmef_value_iterate_reversed ()</title>
+<indexterm zone="idmef-value-iterate-reversed"><primary sortas="idmef_value_iterate_reversed">idmef_value_iterate_reversed</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_iterate_reversed        (const <link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="int">int</link> (callbackidmef_value_t *ptr, void *extra) (),
+                                                         <link linkend="void">void</link> *extra);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>callback</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>extra</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-nth" role="function">
+<title>idmef_value_get_nth ()</title>
+<indexterm zone="idmef-value-get-nth"><primary sortas="idmef_value_get_nth">idmef_value_get_nth</primary></indexterm><programlisting><link linkend="idmef-value-t">idmef_value_t</link> *     idmef_value_get_nth                 (const <link linkend="idmef-value-t">idmef_value_t</link> *val,
+                                                         <link linkend="int">int</link> n);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>n</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-count" role="function">
+<title>idmef_value_get_count ()</title>
+<indexterm zone="idmef-value-get-count"><primary sortas="idmef_value_get_count">idmef_value_get_count</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_get_count               (const <link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-clone" role="function">
+<title>idmef_value_clone ()</title>
+<indexterm zone="idmef-value-clone"><primary sortas="idmef_value_clone">idmef_value_clone</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_clone                   (const <link linkend="idmef-value-t">idmef_value_t</link> *val,
+                                                         <link linkend="idmef-value-t">idmef_value_t</link> **dst);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-ref" role="function">
+<title>idmef_value_ref ()</title>
+<indexterm zone="idmef-value-ref"><primary sortas="idmef_value_ref">idmef_value_ref</primary></indexterm><programlisting><link linkend="idmef-value-t">idmef_value_t</link> *     idmef_value_ref                     (<link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-print" role="function">
+<title>idmef_value_print ()</title>
+<indexterm zone="idmef-value-print"><primary sortas="idmef_value_print">idmef_value_print</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_print                   (const <link linkend="idmef-value-t">idmef_value_t</link> *val,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *fd);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>fd</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-to-string" role="function">
+<title>idmef_value_to_string ()</title>
+<indexterm zone="idmef-value-to-string"><primary sortas="idmef_value_to_string">idmef_value_to_string</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_to_string               (const <link linkend="idmef-value-t">idmef_value_t</link> *val,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *out);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>out</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get" role="function">
+<title>idmef_value_get ()</title>
+<indexterm zone="idmef-value-get"><primary sortas="idmef_value_get">idmef_value_get</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_get                     (const <link linkend="idmef-value-t">idmef_value_t</link> *val,
+                                                         <link linkend="void">void</link> *res);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>res</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-match" role="function">
+<title>idmef_value_match ()</title>
+<indexterm zone="idmef-value-match"><primary sortas="idmef_value_match">idmef_value_match</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_match                   (<link linkend="idmef-value-t">idmef_value_t</link> *val1,
+                                                         <link linkend="idmef-value-t">idmef_value_t</link> *val2,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);</programlisting>
+<para>
+Match <parameter>val1</parameter> and <parameter>val2</parameter> using <parameter>op</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val1</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-value-t"><type>idmef_value_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>val2</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-value-t"><type>idmef_value_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>op</parameter>&#160;:</term>
+<listitem><simpara> operator to use for matching.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the number of match, 0 for none, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-check-operator" role="function">
+<title>idmef_value_check_operator ()</title>
+<indexterm zone="idmef-value-check-operator"><primary sortas="idmef_value_check_operator">idmef_value_check_operator</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_check_operator          (const <link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);</programlisting>
+<para>
+Check whether <parameter>op</parameter> can apply to <parameter>value</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-value-t"><type>idmef_value_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>op</parameter>&#160;:</term>
+<listitem><simpara> Type of operator to check <parameter>value</parameter> for.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-get-applicable-operators" role="function">
+<title>idmef_value_get_applicable_operators ()</title>
+<indexterm zone="idmef-value-get-applicable-operators"><primary sortas="idmef_value_get_applicable_operators">idmef_value_get_applicable_operators</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_value_get_applicable_operators
+                                                        (const <link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> *result);</programlisting>
+<para>
+Store all operator supported by <parameter>value</parameter> in <parameter>result</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-value-t"><type>idmef_value_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>result</parameter>&#160;:</term>
+<listitem><simpara> Pointer where the result will be stored.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-value-destroy" role="function">
+<title>idmef_value_destroy ()</title>
+<indexterm zone="idmef-value-destroy"><primary sortas="idmef_value_destroy">idmef_value_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_value_destroy                 (<link linkend="idmef-value-t">idmef_value_t</link> *val);</programlisting>
+<para>
+Decrement refcount and destroy <parameter>value</parameter> if it reach 0.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>val</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-value-t"><type>idmef_value_t</type></link> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>
