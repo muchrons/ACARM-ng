@@ -14,16 +14,15 @@ namespace Input
 namespace Prelude
 {
 
-Reader::Reader(const std::string profile):
-  Input::Reader("prelude"),
+  Reader::Reader(const std::string profile, const std::string config):
+  Input::Reader("profile"),
   preludeLogger_("input.prelude.reader.preludelog"),
   preludeProfile_(profile),
   client_( new Client( preludeProfile_.c_str() ) )
 {
   assert( client_.get()!=NULL );
 
-  // TODO: czesc Bartek, to ja. Ustaw moze ponizsza linijke zeby byla wczytywana z konfiga bo ja nie pamietam jak sie go uzywa, dzieki.
-  client_->SetConfigFilename("/etc/prelude/default/client.conf");
+  client_->SetConfigFilename(config.c_str());
   client_->SetRequiredPermission(PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
   client_->start();
 }
