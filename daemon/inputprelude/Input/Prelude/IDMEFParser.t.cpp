@@ -111,8 +111,8 @@ void testObj::test<2>(void)
   idmef_time_new_from_time(&idmeftime,&t);
   idmef_alert_set_create_time(alert,idmeftime);
 
-  IDMEFParser ip(getMessage()); 
-  ensure_equals("Something broken with time",string(to_iso_string(ip.getCreateTime()).c_str()),string(time_char)); 
+  IDMEFParser ip(getMessage());
+  ensure_equals("Something broken with time",string(to_iso_string(ip.getCreateTime()).c_str()),string(time_char));
 }
 
 } // namespace tut
