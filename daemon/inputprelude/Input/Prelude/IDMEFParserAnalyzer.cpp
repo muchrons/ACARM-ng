@@ -33,6 +33,7 @@ IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):ptr_(ptr)
 
   if (idmef_osversion)
     osname+=std::string(prelude_string_get_string_or_default(idmef_osversion, ""));
+  //final os version is a concatenation of the two
 
   if (osname!="")
     os_.reset(new Persistency::Analyzer::Name(osname));

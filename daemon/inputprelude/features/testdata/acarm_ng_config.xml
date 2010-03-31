@@ -20,6 +20,11 @@
 
   <triggers/>
 
-  <inputs/>
+  <inputs>
+    <prelude>
+      <preludeProfile>adadprofile</preludeProfile>
+      <preludeConfig>/etc/prelude/default/client.conf</preludeConfig>
+    </prelude>
+  </inputs>
 
 </acarm_ng>
