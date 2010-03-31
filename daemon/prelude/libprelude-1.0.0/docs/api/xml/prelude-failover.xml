@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-prelude-failover">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-prelude-failover.top_of_page">prelude-failover</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>prelude-failover</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-prelude-failover.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+typedef             <link linkend="prelude-failover-t">prelude_failover_t</link>;
+<link linkend="void">void</link>                <link linkend="prelude-failover-destroy">prelude_failover_destroy</link>            (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover);
+<link linkend="int">int</link>                 <link linkend="prelude-failover-new">prelude_failover_new</link>                (<link linkend="prelude-failover-t">prelude_failover_t</link> **ret,
+                                                         const <link linkend="char">char</link> *dirname);
+<link linkend="void">void</link>                <link linkend="prelude-failover-set-quota">prelude_failover_set_quota</link>          (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover,
+                                                         <link linkend="size-t">size_t</link> limit);
+<link linkend="int">int</link>                 <link linkend="prelude-failover-save-msg">prelude_failover_save_msg</link>           (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="ssize-t">ssize_t</link>             <link linkend="prelude-failover-get-saved-msg">prelude_failover_get_saved_msg</link>      (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> **out);
+unsigned <link linkend="long">long</link>       <link linkend="prelude-failover-get-deleted-msg-count">prelude_failover_get_deleted_msg_count</link>
+                                                        (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover);
+unsigned <link linkend="long">long</link>       <link linkend="prelude-failover-get-available-msg-count">prelude_failover_get_available_msg_count</link>
+                                                        (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover);
+<link linkend="int">int</link>                 <link linkend="prelude-failover-commit">prelude_failover_commit</link>             (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="void">void</link>                <link linkend="prelude-failover-disable-transaction">prelude_failover_disable_transaction</link>
+                                                        (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover);
+<link linkend="void">void</link>                <link linkend="prelude-failover-enable-transaction">prelude_failover_enable_transaction</link> (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover);
+<link linkend="int">int</link>                 <link linkend="prelude-failover-rollback">prelude_failover_rollback</link>           (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-prelude-failover.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-prelude-failover.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="prelude-failover-t" role="typedef">
+<title>prelude_failover_t</title>
+<indexterm zone="prelude-failover-t"><primary sortas="prelude_failover_t">prelude_failover_t</primary></indexterm><programlisting>typedef struct prelude_failover prelude_failover_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-failover-destroy" role="function">
+<title>prelude_failover_destroy ()</title>
+<indexterm zone="prelude-failover-destroy"><primary sortas="prelude_failover_destroy">prelude_failover_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_failover_destroy            (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>failover</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-failover-new" role="function">
+<title>prelude_failover_new ()</title>
+<indexterm zone="prelude-failover-new"><primary sortas="prelude_failover_new">prelude_failover_new</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_failover_new                (<link linkend="prelude-failover-t">prelude_failover_t</link> **ret,
+                                                         const <link linkend="char">char</link> *dirname);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ret</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dirname</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-failover-set-quota" role="function">
+<title>prelude_failover_set_quota ()</title>
+<indexterm zone="prelude-failover-set-quota"><primary sortas="prelude_failover_set_quota">prelude_failover_set_quota</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_failover_set_quota          (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover,
+                                                         <link linkend="size-t">size_t</link> limit);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>failover</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>limit</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-failover-save-msg" role="function">
+<title>prelude_failover_save_msg ()</title>
+<indexterm zone="prelude-failover-save-msg"><primary sortas="prelude_failover_save_msg">prelude_failover_save_msg</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_failover_save_msg           (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>failover</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-failover-get-saved-msg" role="function">
+<title>prelude_failover_get_saved_msg ()</title>
+<indexterm zone="prelude-failover-get-saved-msg"><primary sortas="prelude_failover_get_saved_msg">prelude_failover_get_saved_msg</primary></indexterm><programlisting><link linkend="ssize-t">ssize_t</link>             prelude_failover_get_saved_msg      (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> **out);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>failover</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>out</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-failover-get-deleted-msg-count" role="function">
+<title>prelude_failover_get_deleted_msg_count ()</title>
+<indexterm zone="prelude-failover-get-deleted-msg-count"><primary sortas="prelude_failover_get_deleted_msg_count">prelude_failover_get_deleted_msg_count</primary></indexterm><programlisting>unsigned <link linkend="long">long</link>       prelude_failover_get_deleted_msg_count
+                                                        (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>failover</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-failover-get-available-msg-count" role="function">
+<title>prelude_failover_get_available_msg_count ()</title>
+<indexterm zone="prelude-failover-get-available-msg-count"><primary sortas="prelude_failover_get_available_msg_count">prelude_failover_get_available_msg_count</primary></indexterm><programlisting>unsigned <link linkend="long">long</link>       prelude_failover_get_available_msg_count
+                                                        (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>failover</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-failover-commit" role="function">
+<title>prelude_failover_commit ()</title>
+<indexterm zone="prelude-failover-commit"><primary sortas="prelude_failover_commit">prelude_failover_commit</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_failover_commit             (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>failover</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-failover-disable-transaction" role="function">
+<title>prelude_failover_disable_transaction ()</title>
+<indexterm zone="prelude-failover-disable-transaction"><primary sortas="prelude_failover_disable_transaction">prelude_failover_disable_transaction</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_failover_disable_transaction
+                                                        (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>failover</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-failover-enable-transaction" role="function">
+<title>prelude_failover_enable_transaction ()</title>
+<indexterm zone="prelude-failover-enable-transaction"><primary sortas="prelude_failover_enable_transaction">prelude_failover_enable_transaction</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_failover_enable_transaction (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>failover</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-failover-rollback" role="function">
+<title>prelude_failover_rollback ()</title>
+<indexterm zone="prelude-failover-rollback"><primary sortas="prelude_failover_rollback">prelude_failover_rollback</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_failover_rollback           (<link linkend="prelude-failover-t">prelude_failover_t</link> *failover,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>failover</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

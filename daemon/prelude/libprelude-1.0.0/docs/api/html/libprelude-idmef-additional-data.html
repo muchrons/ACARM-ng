@@ -1,0 +1,825 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>idmef-additional-data</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="ch01.html" title="The low level IDMEF API">
+<link rel="prev" href="libprelude-idmef-tree-wrap.html" title="idmef-tree-wrap">
+<link rel="next" href="libprelude-idmef-time.html" title="idmef-time">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libprelude-idmef-tree-wrap.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch01.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="libprelude-idmef-time.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-idmef-additional-data.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-idmef-additional-data.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="idmef-additional-data">
+<a name="libprelude-idmef-additional-data"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-idmef-additional-data.top_of_page"></a>idmef-additional-data</span></h2>
+<p>idmef-additional-data</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-idmef-additional-data.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+int                 <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-new-real" title="idmef_additional_data_new_real ()">idmef_additional_data_new_real</a>      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ret,
+                                                         float data);
+int                 <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-new-byte" title="idmef_additional_data_new_byte ()">idmef_additional_data_new_byte</a>      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ret,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint8-t" title="uint8_t">uint8_t</a> byte);
+int                 <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-new-integer" title="idmef_additional_data_new_integer ()">idmef_additional_data_new_integer</a>   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ret,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint32-t" title="uint32_t">uint32_t</a> data);
+int                 <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-new-boolean" title="idmef_additional_data_new_boolean ()">idmef_additional_data_new_boolean</a>   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ret,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a> data);
+int                 <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-new-character" title="idmef_additional_data_new_character ()">idmef_additional_data_new_character</a> (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ret,
+                                                         char data);
+void                <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-set-real" title="idmef_additional_data_set_real ()">idmef_additional_data_set_real</a>      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ptr,
+                                                         float data);
+void                <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-set-byte" title="idmef_additional_data_set_byte ()">idmef_additional_data_set_byte</a>      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint8-t" title="uint8_t">uint8_t</a> byte);
+void                <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-set-integer" title="idmef_additional_data_set_integer ()">idmef_additional_data_set_integer</a>   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint32-t" title="uint32_t">uint32_t</a> data);
+void                <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-set-boolean" title="idmef_additional_data_set_boolean ()">idmef_additional_data_set_boolean</a>   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a> data);
+void                <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-set-character" title="idmef_additional_data_set_character ()">idmef_additional_data_set_character</a> (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ptr,
+                                                         char data);
+int                 <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-new-byte-string-ref" title="idmef_additional_data_new_byte_string_ref ()">idmef_additional_data_new_byte_string_ref</a>
+                                                        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ad,
+                                                         unsigned char *data,
+                                                         size_t len);
+int                 <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-set-byte-string-ref" title="idmef_additional_data_set_byte_string_ref ()">idmef_additional_data_set_byte_string_ref</a>
+                                                        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ad,
+                                                         unsigned char *data,
+                                                         size_t len);
+int                 <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-new-byte-string-dup" title="idmef_additional_data_new_byte_string_dup ()">idmef_additional_data_new_byte_string_dup</a>
+                                                        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ad,
+                                                         unsigned char *data,
+                                                         size_t len);
+int                 <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-set-byte-string-dup" title="idmef_additional_data_set_byte_string_dup ()">idmef_additional_data_set_byte_string_dup</a>
+                                                        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ad,
+                                                         unsigned char *data,
+                                                         size_t len);
+int                 <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-new-byte-string-nodup" title="idmef_additional_data_new_byte_string_nodup ()">idmef_additional_data_new_byte_string_nodup</a>
+                                                        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ad,
+                                                         unsigned char *data,
+                                                         size_t len);
+int                 <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-set-byte-string-nodup" title="idmef_additional_data_set_byte_string_nodup ()">idmef_additional_data_set_byte_string_nodup</a>
+                                                        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ad,
+                                                         unsigned char *data,
+                                                         size_t len);
+int                 <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-copy-ref" title="idmef_additional_data_copy_ref ()">idmef_additional_data_copy_ref</a>      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *src,
+                                                         <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *dst);
+int                 <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-copy-dup" title="idmef_additional_data_copy_dup ()">idmef_additional_data_copy_dup</a>      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *src,
+                                                         <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *dst);
+float               <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-get-real" title="idmef_additional_data_get_real ()">idmef_additional_data_get_real</a>      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *data);
+<a class="link" href="libprelude-prelude-inttypes.html#uint32-t" title="uint32_t">uint32_t</a>            <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-get-integer" title="idmef_additional_data_get_integer ()">idmef_additional_data_get_integer</a>   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *data);
+<a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-get-boolean" title="idmef_additional_data_get_boolean ()">idmef_additional_data_get_boolean</a>   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *data);
+char                <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-get-character" title="idmef_additional_data_get_character ()">idmef_additional_data_get_character</a> (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *data);
+<a class="link" href="libprelude-prelude-inttypes.html#uint8-t" title="uint8_t">uint8_t</a>             <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-get-byte" title="idmef_additional_data_get_byte ()">idmef_additional_data_get_byte</a>      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *data);
+size_t              <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-get-len" title="idmef_additional_data_get_len ()">idmef_additional_data_get_len</a>       (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *data);
+<a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-is-empty" title="idmef_additional_data_is_empty ()">idmef_additional_data_is_empty</a>      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *data);
+int                 <a class="link" href="libprelude-idmef-additional-data.html#idmef-additional-data-data-to-string" title="idmef_additional_data_data_to_string ()">idmef_additional_data_data_to_string</a>
+                                                        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ad,
+                                                         <a class="link" href="libprelude-prelude-string.html#prelude-string-t" title="prelude_string_t">prelude_string_t</a> *out);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-idmef-additional-data.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-idmef-additional-data.details"></a><h2>Details</h2>
+<div class="refsect2" title="idmef_additional_data_new_real ()">
+<a name="idmef-additional-data-new-real"></a><h3>idmef_additional_data_new_real ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_new_real      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ret,
+                                                         float data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ret</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_new_byte ()">
+<a name="idmef-additional-data-new-byte"></a><h3>idmef_additional_data_new_byte ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_new_byte      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ret,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint8-t" title="uint8_t">uint8_t</a> byte);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ret</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>byte</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_new_integer ()">
+<a name="idmef-additional-data-new-integer"></a><h3>idmef_additional_data_new_integer ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_new_integer   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ret,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint32-t" title="uint32_t">uint32_t</a> data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ret</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_new_boolean ()">
+<a name="idmef-additional-data-new-boolean"></a><h3>idmef_additional_data_new_boolean ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_new_boolean   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ret,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a> data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ret</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_new_character ()">
+<a name="idmef-additional-data-new-character"></a><h3>idmef_additional_data_new_character ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_new_character (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ret,
+                                                         char data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ret</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_set_real ()">
+<a name="idmef-additional-data-set-real"></a><h3>idmef_additional_data_set_real ()</h3>
+<pre class="programlisting">void                idmef_additional_data_set_real      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ptr,
+                                                         float data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_set_byte ()">
+<a name="idmef-additional-data-set-byte"></a><h3>idmef_additional_data_set_byte ()</h3>
+<pre class="programlisting">void                idmef_additional_data_set_byte      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint8-t" title="uint8_t">uint8_t</a> byte);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>byte</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_set_integer ()">
+<a name="idmef-additional-data-set-integer"></a><h3>idmef_additional_data_set_integer ()</h3>
+<pre class="programlisting">void                idmef_additional_data_set_integer   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint32-t" title="uint32_t">uint32_t</a> data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_set_boolean ()">
+<a name="idmef-additional-data-set-boolean"></a><h3>idmef_additional_data_set_boolean ()</h3>
+<pre class="programlisting">void                idmef_additional_data_set_boolean   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a> data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_set_character ()">
+<a name="idmef-additional-data-set-character"></a><h3>idmef_additional_data_set_character ()</h3>
+<pre class="programlisting">void                idmef_additional_data_set_character (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ptr,
+                                                         char data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_new_byte_string_ref ()">
+<a name="idmef-additional-data-new-byte-string-ref"></a><h3>idmef_additional_data_new_byte_string_ref ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_new_byte_string_ref
+                                                        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ad,
+                                                         unsigned char *data,
+                                                         size_t len);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ad</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_set_byte_string_ref ()">
+<a name="idmef-additional-data-set-byte-string-ref"></a><h3>idmef_additional_data_set_byte_string_ref ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_set_byte_string_ref
+                                                        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ad,
+                                                         unsigned char *data,
+                                                         size_t len);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ad</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_new_byte_string_dup ()">
+<a name="idmef-additional-data-new-byte-string-dup"></a><h3>idmef_additional_data_new_byte_string_dup ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_new_byte_string_dup
+                                                        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ad,
+                                                         unsigned char *data,
+                                                         size_t len);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ad</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_set_byte_string_dup ()">
+<a name="idmef-additional-data-set-byte-string-dup"></a><h3>idmef_additional_data_set_byte_string_dup ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_set_byte_string_dup
+                                                        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ad,
+                                                         unsigned char *data,
+                                                         size_t len);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ad</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_new_byte_string_nodup ()">
+<a name="idmef-additional-data-new-byte-string-nodup"></a><h3>idmef_additional_data_new_byte_string_nodup ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_new_byte_string_nodup
+                                                        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> **ad,
+                                                         unsigned char *data,
+                                                         size_t len);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ad</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_set_byte_string_nodup ()">
+<a name="idmef-additional-data-set-byte-string-nodup"></a><h3>idmef_additional_data_set_byte_string_nodup ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_set_byte_string_nodup
+                                                        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ad,
+                                                         unsigned char *data,
+                                                         size_t len);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ad</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>len</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_copy_ref ()">
+<a name="idmef-additional-data-copy-ref"></a><h3>idmef_additional_data_copy_ref ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_copy_ref      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *src,
+                                                         <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *dst);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dst</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_copy_dup ()">
+<a name="idmef-additional-data-copy-dup"></a><h3>idmef_additional_data_copy_dup ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_copy_dup      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *src,
+                                                         <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *dst);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dst</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_get_real ()">
+<a name="idmef-additional-data-get-real"></a><h3>idmef_additional_data_get_real ()</h3>
+<pre class="programlisting">float               idmef_additional_data_get_real      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_get_integer ()">
+<a name="idmef-additional-data-get-integer"></a><h3>idmef_additional_data_get_integer ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-inttypes.html#uint32-t" title="uint32_t">uint32_t</a>            idmef_additional_data_get_integer   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_get_boolean ()">
+<a name="idmef-additional-data-get-boolean"></a><h3>idmef_additional_data_get_boolean ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      idmef_additional_data_get_boolean   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_get_character ()">
+<a name="idmef-additional-data-get-character"></a><h3>idmef_additional_data_get_character ()</h3>
+<pre class="programlisting">char                idmef_additional_data_get_character (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_get_byte ()">
+<a name="idmef-additional-data-get-byte"></a><h3>idmef_additional_data_get_byte ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-inttypes.html#uint8-t" title="uint8_t">uint8_t</a>             idmef_additional_data_get_byte      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_get_len ()">
+<a name="idmef-additional-data-get-len"></a><h3>idmef_additional_data_get_len ()</h3>
+<pre class="programlisting">size_t              idmef_additional_data_get_len       (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_is_empty ()">
+<a name="idmef-additional-data-is-empty"></a><h3>idmef_additional_data_is_empty ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      idmef_additional_data_is_empty      (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *data);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>data</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_additional_data_data_to_string ()">
+<a name="idmef-additional-data-data-to-string"></a><h3>idmef_additional_data_data_to_string ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_data_to_string
+                                                        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ad,
+                                                         <a class="link" href="libprelude-prelude-string.html#prelude-string-t" title="prelude_string_t">prelude_string_t</a> *out);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ad</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

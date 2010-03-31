@@ -3,4 +3,5 @@
 3 rework configuration layout for persistency, so that type would be placed other way. consider: <persistency><type1/><type2/><use>type2</use></persistency>.
 5 think how to remove timeout in daemon/input/Input/Thread.cpp
 6 think about removing logger's entries from data base - is it really needed?
-7
+7 add automatic removal of *.la files from libs/ dir.
+8

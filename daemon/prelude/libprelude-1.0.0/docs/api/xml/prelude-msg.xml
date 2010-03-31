@@ -1,0 +1,536 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-prelude-msg">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-prelude-msg.top_of_page">prelude-msg</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>prelude-msg</refname>
+<refpurpose>Prelude Messaging API</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-prelude-msg.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+typedef             <link linkend="prelude-msg-t">prelude_msg_t</link>;
+enum                <link linkend="prelude-msg-priority-t">prelude_msg_priority_t</link>;
+<link linkend="int">int</link>                 <link linkend="prelude-msg-read">prelude_msg_read</link>                    (<link linkend="prelude-msg-t">prelude_msg_t</link> **msg,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *pio);
+<link linkend="int">int</link>                 <link linkend="prelude-msg-forward">prelude_msg_forward</link>                 (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *dst,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *src);
+<link linkend="int">int</link>                 <link linkend="prelude-msg-get">prelude_msg_get</link>                     (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="uint8-t">uint8_t</link> *tag,
+                                                         <link linkend="uint32-t">uint32_t</link> *len,
+                                                         <link linkend="void">void</link> **buf);
+<link linkend="void">void</link>                <link linkend="prelude-msg-recycle">prelude_msg_recycle</link>                 (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="void">void</link>                <link linkend="prelude-msg-mark-end">prelude_msg_mark_end</link>                (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="prelude-msg-dynamic-new">prelude_msg_dynamic_new</link>             (<link linkend="prelude-msg-t">prelude_msg_t</link> **ret,
+                                                         <link linkend="int">int</link> (flush_msg_cbprelude_msg_t **msg, void *data) (),
+                                                         <link linkend="void">void</link> *data);
+<link linkend="int">int</link>                 <link linkend="prelude-msg-new">prelude_msg_new</link>                     (<link linkend="prelude-msg-t">prelude_msg_t</link> **ret,
+                                                         <link linkend="size-t">size_t</link> msgcount,
+                                                         <link linkend="size-t">size_t</link> msglen,
+                                                         <link linkend="uint8-t">uint8_t</link> tag,
+                                                         <link linkend="prelude-msg-priority-t">prelude_msg_priority_t</link> priority);
+<link linkend="int">int</link>                 <link linkend="prelude-msg-set">prelude_msg_set</link>                     (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="uint8-t">uint8_t</link> tag,
+                                                         <link linkend="uint32-t">uint32_t</link> len,
+                                                         const <link linkend="void">void</link> *data);
+<link linkend="int">int</link>                 <link linkend="prelude-msg-write">prelude_msg_write</link>                   (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *dst);
+<link linkend="void">void</link>                <link linkend="prelude-msg-set-tag">prelude_msg_set_tag</link>                 (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="uint8-t">uint8_t</link> tag);
+<link linkend="void">void</link>                <link linkend="prelude-msg-set-priority">prelude_msg_set_priority</link>            (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="prelude-msg-priority-t">prelude_msg_priority_t</link> priority);
+<link linkend="uint8-t">uint8_t</link>             <link linkend="prelude-msg-get-tag">prelude_msg_get_tag</link>                 (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="prelude-msg-priority-t">prelude_msg_priority_t</link>  <link linkend="prelude-msg-get-priority">prelude_msg_get_priority</link>        (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="uint32-t">uint32_t</link>            <link linkend="prelude-msg-get-len">prelude_msg_get_len</link>                 (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="uint32-t">uint32_t</link>            <link linkend="prelude-msg-get-datalen">prelude_msg_get_datalen</link>             (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="void">void</link>                <link linkend="prelude-msg-destroy">prelude_msg_destroy</link>                 (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+struct <link linkend="timeval">timeval</link> *    <link linkend="prelude-msg-get-time">prelude_msg_get_time</link>                (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="struct-timeval">struct timeval</link> *tv);
+<link linkend="int">int</link>                 <link linkend="prelude-msg-is-empty">prelude_msg_is_empty</link>                (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="prelude-msg-is-fragment">prelude_msg_is_fragment</link>             (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="prelude-msg-t">prelude_msg_t</link> *     <link linkend="prelude-msg-ref">prelude_msg_ref</link>                     (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="void">void</link>                <link linkend="prelude-msg-set-callback">prelude_msg_set_callback</link>            (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="int">int</link> (flush_msg_cbprelude_msg_t **msg, void *data) ());
+<link linkend="void">void</link>                <link linkend="prelude-msg-set-data">prelude_msg_set_data</link>                (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="void">void</link> *data);
+const unsigned <link linkend="char">char</link> * <link linkend="prelude-msg-get-message-data">prelude_msg_get_message_data</link>      (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-prelude-msg.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+This Mesaging API is used for differents Prelude program to communicate
+together. It feature compatibility between version, and use a way to describe
+data similar to XML.
+</para>
+<para>
+The Message header contain the protocol version, which is only to be used
+in case the main protocol structure change (compatibility break), The tag
+describe the kind of message, The fragment field may be used if a message
+is sent in several time, The priority may be used by the receiving end
+to priorityze task, The datalen contain the size of the whole message in
+network byte order
+<programlisting>
+   8bits    8bits   8bits     8bits                32bits
++--------+--------+--------+----------+------------------------------+
+|version |   tag  |priority| fragment |            datalen           |
++--------+--------+--------+----------+------------------------------+
+</programlisting>
+</para>
+<para>
+Then the message itself contain submessage composed of :
+A tag describing the kind of payload, the len of the payload (in network byte order),
+the payload itself, and an end of message byte (0xff) in order to resynchronize in
+case of problem.
+<programlisting>
+  8bits              32bits                                   8bits
++--------+--------------------------------+-----------------+--------+
+|  tag   |             len                |     payload     |  0xff  |
++--------+--------------------------------+-----------------+--------+
+</programlisting>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-prelude-msg.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="prelude-msg-t" role="typedef">
+<title>prelude_msg_t</title>
+<indexterm zone="prelude-msg-t"><primary sortas="prelude_msg_t">prelude_msg_t</primary></indexterm><programlisting>typedef struct prelude_msg prelude_msg_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-msg-priority-t" role="enum">
+<title>enum prelude_msg_priority_t</title>
+<indexterm zone="prelude-msg-priority-t"><primary sortas="prelude_msg_priority_t">prelude_msg_priority_t</primary></indexterm><programlisting>typedef enum {
+        PRELUDE_MSG_PRIORITY_NONE = 0,
+        PRELUDE_MSG_PRIORITY_LOW  = 1,
+        PRELUDE_MSG_PRIORITY_MID  = 2,
+        PRELUDE_MSG_PRIORITY_HIGH = 3
+} prelude_msg_priority_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-msg-read" role="function">
+<title>prelude_msg_read ()</title>
+<indexterm zone="prelude-msg-read"><primary sortas="prelude_msg_read">prelude_msg_read</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_msg_read                    (<link linkend="prelude-msg-t">prelude_msg_t</link> **msg,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *pio);</programlisting>
+<para>
+Read a message on <parameter>pio</parameter> into <parameter>msg</parameter>. If <parameter>msg</parameter> is NULL, it is
+allocated. This function will never block.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object address.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pio</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 if reading the message is complete, or a <link linkend="prelude-error-t"><type>prelude_error_t</type></link>
+error if an error occured. Take particular attention to <link linkend="PRELUDE-ERROR-EAGAIN--CAPS"><type>PRELUDE_ERROR_EAGAIN</type></link>
+and PRELUDE_ERROR_EOF.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-forward" role="function">
+<title>prelude_msg_forward ()</title>
+<indexterm zone="prelude-msg-forward"><primary sortas="prelude_msg_forward">prelude_msg_forward</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_msg_forward                 (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *dst,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *src);</programlisting>
+<para>
+<link linkend="prelude-msg-forward"><function>prelude_msg_forward()</function></link> read the message corresponding to the <parameter>msg</parameter> object
+containing the message header previously gathered using <link linkend="prelude-msg-read-header"><function>prelude_msg_read_header()</function></link>
+from the <parameter>src</parameter> object, and transfer it to <parameter>dst</parameter>. The header is also transfered.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object containing a message header.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object to send message to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object to read message from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-get" role="function">
+<title>prelude_msg_get ()</title>
+<indexterm zone="prelude-msg-get"><primary sortas="prelude_msg_get">prelude_msg_get</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_msg_get                     (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="uint8-t">uint8_t</link> *tag,
+                                                         <link linkend="uint32-t">uint32_t</link> *len,
+                                                         <link linkend="void">void</link> **buf);</programlisting>
+<para>
+<link linkend="prelude-msg-get"><function>prelude_msg_get()</function></link> read the next data chunk contained in the message.
+<parameter>tag</parameter> is updated to contain the kind of data the chunk contain.
+<parameter>len</parameter> is updated to contain the len of the data chunk.
+<parameter>buf</parameter> is updated to point on the data chunk.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object representing the message to get data from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tag</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a 8 bits unsigned integer to store the message tag.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a 32 bits unsigned integer to store the message len to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> Address of a pointer to store the buffer starting address.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a <link linkend="prelude-error-t"><type>prelude_error_t</type></link> value on error.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-recycle" role="function">
+<title>prelude_msg_recycle ()</title>
+<indexterm zone="prelude-msg-recycle"><primary sortas="prelude_msg_recycle">prelude_msg_recycle</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_msg_recycle                 (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Recycle <parameter>msg</parameter> so you can write at it again, even
+thought it was written.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-mark-end" role="function">
+<title>prelude_msg_mark_end ()</title>
+<indexterm zone="prelude-msg-mark-end"><primary sortas="prelude_msg_mark_end">prelude_msg_mark_end</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_msg_mark_end                (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Mark end of message in the <parameter>msg</parameter> buffer, so you can continue
+adding different message in the same buffer.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-dynamic-new" role="function">
+<title>prelude_msg_dynamic_new ()</title>
+<indexterm zone="prelude-msg-dynamic-new"><primary sortas="prelude_msg_dynamic_new">prelude_msg_dynamic_new</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_msg_dynamic_new             (<link linkend="prelude-msg-t">prelude_msg_t</link> **ret,
+                                                         <link linkend="int">int</link> (flush_msg_cbprelude_msg_t **msg, void *data) (),
+                                                         <link linkend="void">void</link> *data);</programlisting>
+<para>
+Allocate a new <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object. <link linkend="prelude-msg-set"><function>prelude_msg_set()</function></link> can then be used to
+add chunk of data to the message, and <link linkend="prelude-msg-mark-start"><function>prelude_msg_mark_start()</function></link> to separate
+different message in the same buffer.
+</para>
+<para>
+This function use memory chunk of static size to store the message in. If
+the size of the data you want to store is bigger than the actual chunk size,
+<parameter>flush_msg_cb</parameter> callback will be called for the current message to be flushed,
+and the returned message will be used in order to store remaining data.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ret</parameter>&#160;:</term>
+<listitem><simpara> Pointer where to store the create <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>flush_msg_cb</parameter>&#160;:</term>
+<listitem><simpara> Callback function to call when the buffer need to be flushed.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara> Data to pass to the <parameter>flush_msg_cb</parameter> callback function.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-new" role="function">
+<title>prelude_msg_new ()</title>
+<indexterm zone="prelude-msg-new"><primary sortas="prelude_msg_new">prelude_msg_new</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_msg_new                     (<link linkend="prelude-msg-t">prelude_msg_t</link> **ret,
+                                                         <link linkend="size-t">size_t</link> msgcount,
+                                                         <link linkend="size-t">size_t</link> msglen,
+                                                         <link linkend="uint8-t">uint8_t</link> tag,
+                                                         <link linkend="prelude-msg-priority-t">prelude_msg_priority_t</link> priority);</programlisting>
+<para>
+Allocate a new <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object and store it into <parameter>ret</parameter>. <link linkend="prelude-msg-set"><function>prelude_msg_set()</function></link>
+can then be used to add chunk of data to the message, and <link linkend="prelude-msg-write"><function>prelude_msg_write()</function></link>
+to send it.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ret</parameter>&#160;:</term>
+<listitem><simpara> Pointer where to store the created <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msgcount</parameter>&#160;:</term>
+<listitem><simpara> Number of chunk of data the created object can accept.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msglen</parameter>&#160;:</term>
+<listitem><simpara> Maximum number of bytes the object should handle for all the chunks.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tag</parameter>&#160;:</term>
+<listitem><simpara> A tag identifying the kind of message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>priority</parameter>&#160;:</term>
+<listitem><simpara> The priority of this message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-set" role="function">
+<title>prelude_msg_set ()</title>
+<indexterm zone="prelude-msg-set"><primary sortas="prelude_msg_set">prelude_msg_set</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_msg_set                     (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="uint8-t">uint8_t</link> tag,
+                                                         <link linkend="uint32-t">uint32_t</link> len,
+                                                         const <link linkend="void">void</link> *data);</programlisting>
+<para>
+<link linkend="prelude-msg-set"><function>prelude_msg_set()</function></link> append <parameter>len</parameter> bytes of data from the <parameter>data</parameter> buffer
+to the <parameter>msg</parameter> object representing a message. The data is tagged with <parameter>tag</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object to store the data to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tag</parameter>&#160;:</term>
+<listitem><simpara> 8 bits unsigned integer describing the kind of data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara> len of the data chunk.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara> Pointer to the starting address of the data.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if the remaining space is not
+available. You might check the return value mostly if using a dynamic message
+through <link linkend="prelude-msg-dynamic-new"><function>prelude_msg_dynamic_new()</function></link>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-write" role="function">
+<title>prelude_msg_write ()</title>
+<indexterm zone="prelude-msg-write"><primary sortas="prelude_msg_write">prelude_msg_write</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_msg_write                   (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *dst);</programlisting>
+<para>
+<link linkend="prelude-msg-write"><function>prelude_msg_write()</function></link> write the message corresponding to the <parameter>msg</parameter>
+object to <parameter>dst</parameter>. The message should have been created using the
+<link linkend="prelude-msg-new"><function>prelude_msg_new()</function></link> and <link linkend="prelude-msg-set"><function>prelude_msg_set()</function></link> functions.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object containing the message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object to send the message to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-set-tag" role="function">
+<title>prelude_msg_set_tag ()</title>
+<indexterm zone="prelude-msg-set-tag"><primary sortas="prelude_msg_set_tag">prelude_msg_set_tag</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_msg_set_tag                 (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="uint8-t">uint8_t</link> tag);</programlisting>
+<para>
+Tag <parameter>msg</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tag</parameter>&#160;:</term>
+<listitem><simpara> Tag to associate with <parameter>msg</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-set-priority" role="function">
+<title>prelude_msg_set_priority ()</title>
+<indexterm zone="prelude-msg-set-priority"><primary sortas="prelude_msg_set_priority">prelude_msg_set_priority</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_msg_set_priority            (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="prelude-msg-priority-t">prelude_msg_priority_t</link> priority);</programlisting>
+<para>
+Associate <parameter>priority</parameter> with <parameter>msg</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>priority</parameter>&#160;:</term>
+<listitem><simpara> Priority to associate with <parameter>msg</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-get-tag" role="function">
+<title>prelude_msg_get_tag ()</title>
+<indexterm zone="prelude-msg-get-tag"><primary sortas="prelude_msg_get_tag">prelude_msg_get_tag</primary></indexterm><programlisting><link linkend="uint8-t">uint8_t</link>             prelude_msg_get_tag                 (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+<link linkend="prelude-msg-get-tag"><function>prelude_msg_get_tag()</function></link> return the tag contained in the <parameter>msg</parameter> header.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A tag.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-get-priority" role="function">
+<title>prelude_msg_get_priority ()</title>
+<indexterm zone="prelude-msg-get-priority"><primary sortas="prelude_msg_get_priority">prelude_msg_get_priority</primary></indexterm><programlisting><link linkend="prelude-msg-priority-t">prelude_msg_priority_t</link>  prelude_msg_get_priority        (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+<link linkend="prelude-msg-get-priority"><function>prelude_msg_get_priority()</function></link> return the priority contained in the <parameter>msg</parameter> header.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A priority.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-get-len" role="function">
+<title>prelude_msg_get_len ()</title>
+<indexterm zone="prelude-msg-get-len"><primary sortas="prelude_msg_get_len">prelude_msg_get_len</primary></indexterm><programlisting><link linkend="uint32-t">uint32_t</link>            prelude_msg_get_len                 (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+<link linkend="prelude-msg-get-len"><function>prelude_msg_get_len()</function></link> return the currently used
+len for the <parameter>msg</parameter> message.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> Len of the message.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-get-datalen" role="function">
+<title>prelude_msg_get_datalen ()</title>
+<indexterm zone="prelude-msg-get-datalen"><primary sortas="prelude_msg_get_datalen">prelude_msg_get_datalen</primary></indexterm><programlisting><link linkend="uint32-t">uint32_t</link>            prelude_msg_get_datalen             (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+<link linkend="prelude-msg-get-datalen"><function>prelude_msg_get_datalen()</function></link> return the len of the whole message
+contained in the <parameter>msg</parameter> header.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> Len of the message.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-destroy" role="function">
+<title>prelude_msg_destroy ()</title>
+<indexterm zone="prelude-msg-destroy"><primary sortas="prelude_msg_destroy">prelude_msg_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_msg_destroy                 (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+<link linkend="prelude-msg-destroy"><function>prelude_msg_destroy()</function></link> destroy the <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object pointed
+to by <parameter>msg</parameter>. All the ressources for this message are freed.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-get-time" role="function">
+<title>prelude_msg_get_time ()</title>
+<indexterm zone="prelude-msg-get-time"><primary sortas="prelude_msg_get_time">prelude_msg_get_time</primary></indexterm><programlisting>struct <link linkend="timeval">timeval</link> *    prelude_msg_get_time                (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="struct-timeval">struct timeval</link> *tv);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tv</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-is-empty" role="function">
+<title>prelude_msg_is_empty ()</title>
+<indexterm zone="prelude-msg-is-empty"><primary sortas="prelude_msg_is_empty">prelude_msg_is_empty</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_msg_is_empty                (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> true if <parameter>msg</parameter> doesn't contain any data to send.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-is-fragment" role="function">
+<title>prelude_msg_is_fragment ()</title>
+<indexterm zone="prelude-msg-is-fragment"><primary sortas="prelude_msg_is_fragment">prelude_msg_is_fragment</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_msg_is_fragment             (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> true if <parameter>msg</parameter> only contain a fragment of message.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-ref" role="function">
+<title>prelude_msg_ref ()</title>
+<indexterm zone="prelude-msg-ref"><primary sortas="prelude_msg_ref">prelude_msg_ref</primary></indexterm><programlisting><link linkend="prelude-msg-t">prelude_msg_t</link> *     prelude_msg_ref                     (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-set-callback" role="function">
+<title>prelude_msg_set_callback ()</title>
+<indexterm zone="prelude-msg-set-callback"><primary sortas="prelude_msg_set_callback">prelude_msg_set_callback</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_msg_set_callback            (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="int">int</link> (flush_msg_cbprelude_msg_t **msg, void *data) ());</programlisting>
+<para>
+<link linkend="prelude-msg-set-callback"><function>prelude_msg_set_callback()</function></link> allow to change the callback used
+to flush a message created with <link linkend="prelude-msg-dynamic-new"><function>prelude_msg_dynamic_new()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>flush_msg_cb</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a function responssible of sending the message.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-set-data" role="function">
+<title>prelude_msg_set_data ()</title>
+<indexterm zone="prelude-msg-set-data"><primary sortas="prelude_msg_set_data">prelude_msg_set_data</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_msg_set_data                (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="void">void</link> *data);</programlisting>
+<para>
+<link linkend="prelude-msg-set-data"><function>prelude_msg_set_data()</function></link> allow to change the data passed
+to the message sending callback.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer on a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara> Pointer on the data to associate to this message.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-msg-get-message-data" role="function">
+<title>prelude_msg_get_message_data ()</title>
+<indexterm zone="prelude-msg-get-message-data"><primary sortas="prelude_msg_get_message_data">prelude_msg_get_message_data</primary></indexterm><programlisting>const unsigned <link linkend="char">char</link> * prelude_msg_get_message_data      (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+<refsect1 id="libprelude-prelude-msg.see-also">
+<title>See Also</title>
+<para>
+prelude-msgbuf
+</para>
+</refsect1>
+
+</refentry>

@@ -1,0 +1,507 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>idmef-criterion-value</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="prev" href="libprelude-idmef-criteria.html" title="idmef-criteria">
+<link rel="next" href="ch03.html" title="Utility functions">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libprelude-idmef-criteria.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="pt04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="ch03.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-idmef-criterion-value.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-idmef-criterion-value.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="idmef-criterion-value">
+<a name="libprelude-idmef-criterion-value"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-idmef-criterion-value.top_of_page"></a>idmef-criterion-value</span></h2>
+<p>idmef-criterion-value</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-idmef-criterion-value.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+typedef             <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a>;
+enum                <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-type-t" title="enum idmef_criterion_value_type_t">idmef_criterion_value_type_t</a>;
+int                 <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-new" title="idmef_criterion_value_new ()">idmef_criterion_value_new</a>           (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> **cv);
+int                 <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-new-regex" title="idmef_criterion_value_new_regex ()">idmef_criterion_value_new_regex</a>     (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> **cv,
+                                                         const char *regex,
+                                                         <a class="link" href="libprelude-idmef-criteria.html#idmef-criterion-operator-t" title="enum idmef_criterion_operator_t">idmef_criterion_operator_t</a> op);
+int                 <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-new-value" title="idmef_criterion_value_new_value ()">idmef_criterion_value_new_value</a>     (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> **cv,
+                                                         <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t">idmef_value_t</a> *value,
+                                                         <a class="link" href="libprelude-idmef-criteria.html#idmef-criterion-operator-t" title="enum idmef_criterion_operator_t">idmef_criterion_operator_t</a> op);
+int                 <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-new-from-string" title="idmef_criterion_value_new_from_string ()">idmef_criterion_value_new_from_string</a>
+                                                        (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> **cv,
+                                                         <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         const char *value,
+                                                         <a class="link" href="libprelude-idmef-criteria.html#idmef-criterion-operator-t" title="enum idmef_criterion_operator_t">idmef_criterion_operator_t</a> op);
+int                 <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-new-broken-down-time" title="idmef_criterion_value_new_broken_down_time ()">idmef_criterion_value_new_broken_down_time</a>
+                                                        (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> **cv,
+                                                         const char *time,
+                                                         <a class="link" href="libprelude-idmef-criteria.html#idmef-criterion-operator-t" title="enum idmef_criterion_operator_t">idmef_criterion_operator_t</a> op);
+int                 <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-clone" title="idmef_criterion_value_clone ()">idmef_criterion_value_clone</a>         (const <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *src,
+                                                         <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> **dst);
+void                <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-destroy" title="idmef_criterion_value_destroy ()">idmef_criterion_value_destroy</a>       (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *value);
+int                 <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-print" title="idmef_criterion_value_print ()">idmef_criterion_value_print</a>         (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *value,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+int                 <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-to-string" title="idmef_criterion_value_to_string ()">idmef_criterion_value_to_string</a>     (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *value,
+                                                         <a class="link" href="libprelude-prelude-string.html#prelude-string-t" title="prelude_string_t">prelude_string_t</a> *out);
+int                 <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-match" title="idmef_criterion_value_match ()">idmef_criterion_value_match</a>         (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *cv,
+                                                         <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t">idmef_value_t</a> *value,
+                                                         <a class="link" href="libprelude-idmef-criteria.html#idmef-criterion-operator-t" title="enum idmef_criterion_operator_t">idmef_criterion_operator_t</a> op);
+const <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t">idmef_value_t</a> * <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-get-value" title="idmef_criterion_value_get_value ()">idmef_criterion_value_get_value</a>   (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *cv);
+const char *        <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-get-regex" title="idmef_criterion_value_get_regex ()">idmef_criterion_value_get_regex</a>     (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *cv);
+const struct tm *   <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-get-broken-down-time" title="idmef_criterion_value_get_broken_down_time ()">idmef_criterion_value_get_broken_down_time</a>
+                                                        (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *cv);
+<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-type-t" title="enum idmef_criterion_value_type_t">idmef_criterion_value_type_t</a>  <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-get-type" title="idmef_criterion_value_get_type ()">idmef_criterion_value_get_type</a>
+                                                        (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *cv);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-idmef-criterion-value.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-idmef-criterion-value.details"></a><h2>Details</h2>
+<div class="refsect2" title="idmef_criterion_value_t">
+<a name="idmef-criterion-value-t"></a><h3>idmef_criterion_value_t</h3>
+<pre class="programlisting">typedef struct idmef_criterion_value idmef_criterion_value_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="enum idmef_criterion_value_type_t">
+<a name="idmef-criterion-value-type-t"></a><h3>enum idmef_criterion_value_type_t</h3>
+<pre class="programlisting">typedef enum {
+        IDMEF_CRITERION_VALUE_TYPE_ERROR            = -1,
+        IDMEF_CRITERION_VALUE_TYPE_VALUE            =  0,
+        IDMEF_CRITERION_VALUE_TYPE_REGEX            =  1,
+        IDMEF_CRITERION_VALUE_TYPE_BROKEN_DOWN_TIME =  2
+} idmef_criterion_value_type_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="idmef_criterion_value_new ()">
+<a name="idmef-criterion-value-new"></a><h3>idmef_criterion_value_new ()</h3>
+<pre class="programlisting">int                 idmef_criterion_value_new           (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> **cv);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cv</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_criterion_value_new_regex ()">
+<a name="idmef-criterion-value-new-regex"></a><h3>idmef_criterion_value_new_regex ()</h3>
+<pre class="programlisting">int                 idmef_criterion_value_new_regex     (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> **cv,
+                                                         const char *regex,
+                                                         <a class="link" href="libprelude-idmef-criteria.html#idmef-criterion-operator-t" title="enum idmef_criterion_operator_t">idmef_criterion_operator_t</a> op);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cv</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>regex</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>op</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_criterion_value_new_value ()">
+<a name="idmef-criterion-value-new-value"></a><h3>idmef_criterion_value_new_value ()</h3>
+<pre class="programlisting">int                 idmef_criterion_value_new_value     (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> **cv,
+                                                         <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t">idmef_value_t</a> *value,
+                                                         <a class="link" href="libprelude-idmef-criteria.html#idmef-criterion-operator-t" title="enum idmef_criterion_operator_t">idmef_criterion_operator_t</a> op);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cv</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>op</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_criterion_value_new_from_string ()">
+<a name="idmef-criterion-value-new-from-string"></a><h3>idmef_criterion_value_new_from_string ()</h3>
+<pre class="programlisting">int                 idmef_criterion_value_new_from_string
+                                                        (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> **cv,
+                                                         <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         const char *value,
+                                                         <a class="link" href="libprelude-idmef-criteria.html#idmef-criterion-operator-t" title="enum idmef_criterion_operator_t">idmef_criterion_operator_t</a> op);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cv</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>op</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_criterion_value_new_broken_down_time ()">
+<a name="idmef-criterion-value-new-broken-down-time"></a><h3>idmef_criterion_value_new_broken_down_time ()</h3>
+<pre class="programlisting">int                 idmef_criterion_value_new_broken_down_time
+                                                        (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> **cv,
+                                                         const char *time,
+                                                         <a class="link" href="libprelude-idmef-criteria.html#idmef-criterion-operator-t" title="enum idmef_criterion_operator_t">idmef_criterion_operator_t</a> op);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cv</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>time</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>op</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_criterion_value_clone ()">
+<a name="idmef-criterion-value-clone"></a><h3>idmef_criterion_value_clone ()</h3>
+<pre class="programlisting">int                 idmef_criterion_value_clone         (const <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *src,
+                                                         <a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> **dst);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dst</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_criterion_value_destroy ()">
+<a name="idmef-criterion-value-destroy"></a><h3>idmef_criterion_value_destroy ()</h3>
+<pre class="programlisting">void                idmef_criterion_value_destroy       (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *value);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_criterion_value_print ()">
+<a name="idmef-criterion-value-print"></a><h3>idmef_criterion_value_print ()</h3>
+<pre class="programlisting">int                 idmef_criterion_value_print         (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *value,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_criterion_value_to_string ()">
+<a name="idmef-criterion-value-to-string"></a><h3>idmef_criterion_value_to_string ()</h3>
+<pre class="programlisting">int                 idmef_criterion_value_to_string     (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *value,
+                                                         <a class="link" href="libprelude-prelude-string.html#prelude-string-t" title="prelude_string_t">prelude_string_t</a> *out);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_criterion_value_match ()">
+<a name="idmef-criterion-value-match"></a><h3>idmef_criterion_value_match ()</h3>
+<pre class="programlisting">int                 idmef_criterion_value_match         (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *cv,
+                                                         <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t">idmef_value_t</a> *value,
+                                                         <a class="link" href="libprelude-idmef-criteria.html#idmef-criterion-operator-t" title="enum idmef_criterion_operator_t">idmef_criterion_operator_t</a> op);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cv</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>op</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_criterion_value_get_value ()">
+<a name="idmef-criterion-value-get-value"></a><h3>idmef_criterion_value_get_value ()</h3>
+<pre class="programlisting">const <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t">idmef_value_t</a> * idmef_criterion_value_get_value   (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *cv);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cv</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_criterion_value_get_regex ()">
+<a name="idmef-criterion-value-get-regex"></a><h3>idmef_criterion_value_get_regex ()</h3>
+<pre class="programlisting">const char *        idmef_criterion_value_get_regex     (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *cv);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cv</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_criterion_value_get_broken_down_time ()">
+<a name="idmef-criterion-value-get-broken-down-time"></a><h3>idmef_criterion_value_get_broken_down_time ()</h3>
+<pre class="programlisting">const struct tm *   idmef_criterion_value_get_broken_down_time
+                                                        (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *cv);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cv</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_criterion_value_get_type ()">
+<a name="idmef-criterion-value-get-type"></a><h3>idmef_criterion_value_get_type ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-type-t" title="enum idmef_criterion_value_type_t">idmef_criterion_value_type_t</a>  idmef_criterion_value_get_type
+                                                        (<a class="link" href="libprelude-idmef-criterion-value.html#idmef-criterion-value-t" title="idmef_criterion_value_t">idmef_criterion_value_t</a> *cv);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cv</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-prelude-hash">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-prelude-hash.top_of_page">prelude-hash</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>prelude-hash</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-prelude-hash.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+typedef             <link linkend="prelude-hash-t">prelude_hash_t</link>;
+<link linkend="int">int</link>                 <link linkend="prelude-hash-new">prelude_hash_new</link>                    (<link linkend="prelude-hash-t">prelude_hash_t</link> **hash,
+                                                         unsigned <link linkend="int">int</link> (hash_funcconst void *) (),
+                                                         <link linkend="int">int</link> (key_cmp_funcconst void *, const void *) (),
+                                                         <link linkend="void">void</link> (key_destroy_funcvoid *) (),
+                                                         <link linkend="void">void</link> (value_destroy_funcvoid *) ());
+<link linkend="int">int</link>                 <link linkend="prelude-hash-new2">prelude_hash_new2</link>                   (<link linkend="prelude-hash-t">prelude_hash_t</link> **hash,
+                                                         <link linkend="size-t">size_t</link> size,
+                                                         unsigned <link linkend="int">int</link> (hash_funcconst void *) (),
+                                                         <link linkend="int">int</link> (key_cmp_funcconst void *, const void *) (),
+                                                         <link linkend="void">void</link> (key_destroy_funcvoid *) (),
+                                                         <link linkend="void">void</link> (value_destroy_funcvoid *) ());
+<link linkend="void">void</link>                <link linkend="prelude-hash-destroy">prelude_hash_destroy</link>                (<link linkend="prelude-hash-t">prelude_hash_t</link> *hash);
+<link linkend="int">int</link>                 <link linkend="prelude-hash-set">prelude_hash_set</link>                    (<link linkend="prelude-hash-t">prelude_hash_t</link> *hash,
+                                                         <link linkend="void">void</link> *key,
+                                                         <link linkend="void">void</link> *value);
+<link linkend="void">void</link> *              <link linkend="prelude-hash-get">prelude_hash_get</link>                    (<link linkend="prelude-hash-t">prelude_hash_t</link> *hash,
+                                                         const <link linkend="void">void</link> *key);
+<link linkend="int">int</link>                 <link linkend="prelude-hash-elem-destroy">prelude_hash_elem_destroy</link>           (<link linkend="prelude-hash-t">prelude_hash_t</link> *hash,
+                                                         const <link linkend="void">void</link> *key);
+<link linkend="void">void</link>                <link linkend="prelude-hash-iterate">prelude_hash_iterate</link>                (<link linkend="prelude-hash-t">prelude_hash_t</link> *hash,
+                                                         <link linkend="void">void</link> (cbvoid *data) ());
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-prelude-hash.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-prelude-hash.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="prelude-hash-t" role="typedef">
+<title>prelude_hash_t</title>
+<indexterm zone="prelude-hash-t"><primary sortas="prelude_hash_t">prelude_hash_t</primary></indexterm><programlisting>typedef struct prelude_hash prelude_hash_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-hash-new" role="function">
+<title>prelude_hash_new ()</title>
+<indexterm zone="prelude-hash-new"><primary sortas="prelude_hash_new">prelude_hash_new</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_hash_new                    (<link linkend="prelude-hash-t">prelude_hash_t</link> **hash,
+                                                         unsigned <link linkend="int">int</link> (hash_funcconst void *) (),
+                                                         <link linkend="int">int</link> (key_cmp_funcconst void *, const void *) (),
+                                                         <link linkend="void">void</link> (key_destroy_funcvoid *) (),
+                                                         <link linkend="void">void</link> (value_destroy_funcvoid *) ());</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>hash</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>hash_func</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key_cmp_func</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key_destroy_func</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>value_destroy_func</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-hash-new2" role="function">
+<title>prelude_hash_new2 ()</title>
+<indexterm zone="prelude-hash-new2"><primary sortas="prelude_hash_new2">prelude_hash_new2</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_hash_new2                   (<link linkend="prelude-hash-t">prelude_hash_t</link> **hash,
+                                                         <link linkend="size-t">size_t</link> size,
+                                                         unsigned <link linkend="int">int</link> (hash_funcconst void *) (),
+                                                         <link linkend="int">int</link> (key_cmp_funcconst void *, const void *) (),
+                                                         <link linkend="void">void</link> (key_destroy_funcvoid *) (),
+                                                         <link linkend="void">void</link> (value_destroy_funcvoid *) ());</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>hash</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>size</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>hash_func</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key_cmp_func</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key_destroy_func</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>value_destroy_func</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-hash-destroy" role="function">
+<title>prelude_hash_destroy ()</title>
+<indexterm zone="prelude-hash-destroy"><primary sortas="prelude_hash_destroy">prelude_hash_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_hash_destroy                (<link linkend="prelude-hash-t">prelude_hash_t</link> *hash);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>hash</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-hash-set" role="function">
+<title>prelude_hash_set ()</title>
+<indexterm zone="prelude-hash-set"><primary sortas="prelude_hash_set">prelude_hash_set</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_hash_set                    (<link linkend="prelude-hash-t">prelude_hash_t</link> *hash,
+                                                         <link linkend="void">void</link> *key,
+                                                         <link linkend="void">void</link> *value);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>hash</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-hash-get" role="function">
+<title>prelude_hash_get ()</title>
+<indexterm zone="prelude-hash-get"><primary sortas="prelude_hash_get">prelude_hash_get</primary></indexterm><programlisting><link linkend="void">void</link> *              prelude_hash_get                    (<link linkend="prelude-hash-t">prelude_hash_t</link> *hash,
+                                                         const <link linkend="void">void</link> *key);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>hash</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-hash-elem-destroy" role="function">
+<title>prelude_hash_elem_destroy ()</title>
+<indexterm zone="prelude-hash-elem-destroy"><primary sortas="prelude_hash_elem_destroy">prelude_hash_elem_destroy</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_hash_elem_destroy           (<link linkend="prelude-hash-t">prelude_hash_t</link> *hash,
+                                                         const <link linkend="void">void</link> *key);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>hash</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>key</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-hash-iterate" role="function">
+<title>prelude_hash_iterate ()</title>
+<indexterm zone="prelude-hash-iterate"><primary sortas="prelude_hash_iterate">prelude_hash_iterate</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_hash_iterate                (<link linkend="prelude-hash-t">prelude_hash_t</link> *hash,
+                                                         <link linkend="void">void</link> (cbvoid *data) ());</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>hash</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>cb</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>prelude-ident</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="ch04.html" title="Others">
+<link rel="prev" href="libprelude-idmef-message-write.html" title="idmef-message-write">
+<link rel="next" href="libprelude-prelude-client-profile.html" title="prelude-client-profile">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libprelude-idmef-message-write.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="libprelude-prelude-client-profile.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-prelude-ident.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-prelude-ident.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="prelude-ident">
+<a name="libprelude-prelude-ident"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-prelude-ident.top_of_page"></a>prelude-ident</span></h2>
+<p>prelude-ident</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-prelude-ident.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+typedef             <a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t">prelude_ident_t</a>;
+<a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a>            <a class="link" href="libprelude-prelude-ident.html#prelude-ident-inc" title="prelude_ident_inc ()">prelude_ident_inc</a>                   (<a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t">prelude_ident_t</a> *ident);
+int                 <a class="link" href="libprelude-prelude-ident.html#prelude-ident-generate" title="prelude_ident_generate ()">prelude_ident_generate</a>              (<a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t">prelude_ident_t</a> *ident,
+                                                         <a class="link" href="libprelude-prelude-string.html#prelude-string-t" title="prelude_string_t">prelude_string_t</a> *out);
+void                <a class="link" href="libprelude-prelude-ident.html#prelude-ident-destroy" title="prelude_ident_destroy ()">prelude_ident_destroy</a>               (<a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t">prelude_ident_t</a> *ident);
+int                 <a class="link" href="libprelude-prelude-ident.html#prelude-ident-new" title="prelude_ident_new ()">prelude_ident_new</a>                   (<a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t">prelude_ident_t</a> **ret);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-prelude-ident.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-prelude-ident.details"></a><h2>Details</h2>
+<div class="refsect2" title="prelude_ident_t">
+<a name="prelude-ident-t"></a><h3>prelude_ident_t</h3>
+<pre class="programlisting">typedef struct prelude_ident prelude_ident_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_ident_inc ()">
+<a name="prelude-ident-inc"></a><h3>prelude_ident_inc ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a>            prelude_ident_inc                   (<a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t">prelude_ident_t</a> *ident);</pre>
+<p>
+Deprecated.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ident</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t"><span class="type">prelude_ident_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> A new ident.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_ident_generate ()">
+<a name="prelude-ident-generate"></a><h3>prelude_ident_generate ()</h3>
+<pre class="programlisting">int                 prelude_ident_generate              (<a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t">prelude_ident_t</a> *ident,
+                                                         <a class="link" href="libprelude-prelude-string.html#prelude-string-t" title="prelude_string_t">prelude_string_t</a> *out);</pre>
+<p>
+Generate an UUID and store it in <em class="parameter"><code>out</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ident</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t"><span class="type">prelude_ident_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>out</code></em> :</span></p></td>
+<td> <a class="link" href="libprelude-prelude-string.html#prelude-string-t" title="prelude_string_t"><span class="type">prelude_string_t</span></a> where the ident will be generated.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> A negative value if an error occur.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_ident_destroy ()">
+<a name="prelude-ident-destroy"></a><h3>prelude_ident_destroy ()</h3>
+<pre class="programlisting">void                prelude_ident_destroy               (<a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t">prelude_ident_t</a> *ident);</pre>
+<p>
+Destroy a <a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t"><span class="type">prelude_ident_t</span></a> object.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>ident</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t"><span class="type">prelude_ident_t</span></a> object.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_ident_new ()">
+<a name="prelude-ident-new"></a><h3>prelude_ident_new ()</h3>
+<pre class="programlisting">int                 prelude_ident_new                   (<a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t">prelude_ident_t</a> **ret);</pre>
+<p>
+Create a new <a class="link" href="libprelude-prelude-ident.html#prelude-ident-t" title="prelude_ident_t"><span class="type">prelude_ident_t</span></a> object with an unique value.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ret</code></em> :</span></p></td>
+<td> Pointer where to store the created object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, or a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

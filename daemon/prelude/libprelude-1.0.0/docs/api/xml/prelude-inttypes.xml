@@ -1,0 +1,415 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-prelude-inttypes">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-prelude-inttypes.top_of_page">prelude-inttypes</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>prelude-inttypes</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-prelude-inttypes.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+#define             <link linkend="PRELUDE-INT8-MIN--CAPS">PRELUDE_INT8_MIN</link>
+#define             <link linkend="PRELUDE-INT16-MIN--CAPS">PRELUDE_INT16_MIN</link>
+#define             <link linkend="PRELUDE-INT32-MIN--CAPS">PRELUDE_INT32_MIN</link>
+#define             <link linkend="PRELUDE-INT64-MIN--CAPS">PRELUDE_INT64_MIN</link>
+#define             <link linkend="PRELUDE-INT8-MAX--CAPS">PRELUDE_INT8_MAX</link>
+#define             <link linkend="PRELUDE-INT16-MAX--CAPS">PRELUDE_INT16_MAX</link>
+#define             <link linkend="PRELUDE-INT32-MAX--CAPS">PRELUDE_INT32_MAX</link>
+#define             <link linkend="PRELUDE-INT64-MAX--CAPS">PRELUDE_INT64_MAX</link>
+#define             <link linkend="PRELUDE-UINT8-MAX--CAPS">PRELUDE_UINT8_MAX</link>
+#define             <link linkend="PRELUDE-UINT16-MAX--CAPS">PRELUDE_UINT16_MAX</link>
+#define             <link linkend="PRELUDE-UINT32-MAX--CAPS">PRELUDE_UINT32_MAX</link>
+#define             <link linkend="PRELUDE-UINT64-MAX--CAPS">PRELUDE_UINT64_MAX</link>
+#define             <link linkend="PRELUDE-INTMAX-MIN--CAPS">PRELUDE_INTMAX_MIN</link>
+#define             <link linkend="PRELUDE-INTMAX-MAX--CAPS">PRELUDE_INTMAX_MAX</link>
+#define             <link linkend="PRELUDE-UINTMAX-MAX--CAPS">PRELUDE_UINTMAX_MAX</link>
+#define             <link linkend="PRELUDE-PRId64">PRELUDE_PRId64</link>
+#define             <link linkend="PRELUDE-PRIi64">PRELUDE_PRIi64</link>
+#define             <link linkend="PRELUDE-PRIo64">PRELUDE_PRIo64</link>
+#define             <link linkend="PRELUDE-PRIx64">PRELUDE_PRIx64</link>
+#define             <link linkend="PRELUDE-PRIX64--CAPS">PRELUDE_PRIX64</link>
+#define             <link linkend="PRELUDE-PRIu64">PRELUDE_PRIu64</link>
+#define             <link linkend="PRELUDE-PRId32">PRELUDE_PRId32</link>
+#define             <link linkend="PRELUDE-PRIi32">PRELUDE_PRIi32</link>
+#define             <link linkend="PRELUDE-PRIo32">PRELUDE_PRIo32</link>
+#define             <link linkend="PRELUDE-PRIx32">PRELUDE_PRIx32</link>
+#define             <link linkend="PRELUDE-PRIX32--CAPS">PRELUDE_PRIX32</link>
+#define             <link linkend="PRELUDE-PRIu32">PRELUDE_PRIu32</link>
+#define             <link linkend="PRELUDE-PRId16">PRELUDE_PRId16</link>
+#define             <link linkend="PRELUDE-PRIi16">PRELUDE_PRIi16</link>
+#define             <link linkend="PRELUDE-PRIo16">PRELUDE_PRIo16</link>
+#define             <link linkend="PRELUDE-PRIx16">PRELUDE_PRIx16</link>
+#define             <link linkend="PRELUDE-PRIX16--CAPS">PRELUDE_PRIX16</link>
+#define             <link linkend="PRELUDE-PRIu16">PRELUDE_PRIu16</link>
+#define             <link linkend="PRELUDE-PRId8">PRELUDE_PRId8</link>
+#define             <link linkend="PRELUDE-PRIi8">PRELUDE_PRIi8</link>
+#define             <link linkend="PRELUDE-PRIo8">PRELUDE_PRIo8</link>
+#define             <link linkend="PRELUDE-PRIx8">PRELUDE_PRIx8</link>
+#define             <link linkend="PRELUDE-PRIX8--CAPS">PRELUDE_PRIX8</link>
+#define             <link linkend="PRELUDE-PRIu8">PRELUDE_PRIu8</link>
+#define             <link linkend="PRELUDE-SCNd64">PRELUDE_SCNd64</link>
+#define             <link linkend="PRELUDE-SCNi64">PRELUDE_SCNi64</link>
+#define             <link linkend="PRELUDE-SCNo64">PRELUDE_SCNo64</link>
+#define             <link linkend="PRELUDE-SCNx64">PRELUDE_SCNx64</link>
+#define             <link linkend="PRELUDE-SCNu64">PRELUDE_SCNu64</link>
+enum                <link linkend="prelude-bool-t">prelude_bool_t</link>;
+typedef             <link linkend="int8-t">int8_t</link>;
+typedef             <link linkend="uint8-t">uint8_t</link>;
+typedef             <link linkend="int16-t">int16_t</link>;
+typedef             <link linkend="uint16-t">uint16_t</link>;
+typedef             <link linkend="int32-t">int32_t</link>;
+typedef             <link linkend="uint32-t">uint32_t</link>;
+typedef             <link linkend="int64-t">int64_t</link>;
+typedef             <link linkend="uint64-t">uint64_t</link>;
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-prelude-inttypes.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-prelude-inttypes.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="PRELUDE-INT8-MIN--CAPS" role="macro">
+<title>PRELUDE_INT8_MIN</title>
+<indexterm zone="PRELUDE-INT8-MIN--CAPS"><primary sortas="PRELUDE_INT8_MIN">PRELUDE_INT8_MIN</primary></indexterm><programlisting>#define PRELUDE_INT8_MIN               (-128)
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-INT16-MIN--CAPS" role="macro">
+<title>PRELUDE_INT16_MIN</title>
+<indexterm zone="PRELUDE-INT16-MIN--CAPS"><primary sortas="PRELUDE_INT16_MIN">PRELUDE_INT16_MIN</primary></indexterm><programlisting>#define PRELUDE_INT16_MIN              (-32767 - 1)
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-INT32-MIN--CAPS" role="macro">
+<title>PRELUDE_INT32_MIN</title>
+<indexterm zone="PRELUDE-INT32-MIN--CAPS"><primary sortas="PRELUDE_INT32_MIN">PRELUDE_INT32_MIN</primary></indexterm><programlisting>#define PRELUDE_INT32_MIN              (-2147483647 - 1)
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-INT64-MIN--CAPS" role="macro">
+<title>PRELUDE_INT64_MIN</title>
+<indexterm zone="PRELUDE-INT64-MIN--CAPS"><primary sortas="PRELUDE_INT64_MIN">PRELUDE_INT64_MIN</primary></indexterm><programlisting>#define PRELUDE_INT64_MIN              (-__PRELUDE_INT64_SUFFIX(9223372036854775807) - 1)
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-INT8-MAX--CAPS" role="macro">
+<title>PRELUDE_INT8_MAX</title>
+<indexterm zone="PRELUDE-INT8-MAX--CAPS"><primary sortas="PRELUDE_INT8_MAX">PRELUDE_INT8_MAX</primary></indexterm><programlisting>#define PRELUDE_INT8_MAX               (127)
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-INT16-MAX--CAPS" role="macro">
+<title>PRELUDE_INT16_MAX</title>
+<indexterm zone="PRELUDE-INT16-MAX--CAPS"><primary sortas="PRELUDE_INT16_MAX">PRELUDE_INT16_MAX</primary></indexterm><programlisting>#define PRELUDE_INT16_MAX              (32767)
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-INT32-MAX--CAPS" role="macro">
+<title>PRELUDE_INT32_MAX</title>
+<indexterm zone="PRELUDE-INT32-MAX--CAPS"><primary sortas="PRELUDE_INT32_MAX">PRELUDE_INT32_MAX</primary></indexterm><programlisting>#define PRELUDE_INT32_MAX              (2147483647)
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-INT64-MAX--CAPS" role="macro">
+<title>PRELUDE_INT64_MAX</title>
+<indexterm zone="PRELUDE-INT64-MAX--CAPS"><primary sortas="PRELUDE_INT64_MAX">PRELUDE_INT64_MAX</primary></indexterm><programlisting>#define PRELUDE_INT64_MAX              (__PRELUDE_INT64_SUFFIX(9223372036854775807))
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-UINT8-MAX--CAPS" role="macro">
+<title>PRELUDE_UINT8_MAX</title>
+<indexterm zone="PRELUDE-UINT8-MAX--CAPS"><primary sortas="PRELUDE_UINT8_MAX">PRELUDE_UINT8_MAX</primary></indexterm><programlisting>#define PRELUDE_UINT8_MAX              (255)
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-UINT16-MAX--CAPS" role="macro">
+<title>PRELUDE_UINT16_MAX</title>
+<indexterm zone="PRELUDE-UINT16-MAX--CAPS"><primary sortas="PRELUDE_UINT16_MAX">PRELUDE_UINT16_MAX</primary></indexterm><programlisting>#define PRELUDE_UINT16_MAX             (65535)
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-UINT32-MAX--CAPS" role="macro">
+<title>PRELUDE_UINT32_MAX</title>
+<indexterm zone="PRELUDE-UINT32-MAX--CAPS"><primary sortas="PRELUDE_UINT32_MAX">PRELUDE_UINT32_MAX</primary></indexterm><programlisting>#define PRELUDE_UINT32_MAX             (4294967295U)
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-UINT64-MAX--CAPS" role="macro">
+<title>PRELUDE_UINT64_MAX</title>
+<indexterm zone="PRELUDE-UINT64-MAX--CAPS"><primary sortas="PRELUDE_UINT64_MAX">PRELUDE_UINT64_MAX</primary></indexterm><programlisting>#define PRELUDE_UINT64_MAX             (__PRELUDE_UINT64_SUFFIX(18446744073709551615))
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-INTMAX-MIN--CAPS" role="macro">
+<title>PRELUDE_INTMAX_MIN</title>
+<indexterm zone="PRELUDE-INTMAX-MIN--CAPS"><primary sortas="PRELUDE_INTMAX_MIN">PRELUDE_INTMAX_MIN</primary></indexterm><programlisting>#define PRELUDE_INTMAX_MIN             INT64_MIN
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-INTMAX-MAX--CAPS" role="macro">
+<title>PRELUDE_INTMAX_MAX</title>
+<indexterm zone="PRELUDE-INTMAX-MAX--CAPS"><primary sortas="PRELUDE_INTMAX_MAX">PRELUDE_INTMAX_MAX</primary></indexterm><programlisting>#define PRELUDE_INTMAX_MAX             INT64_MAX
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-UINTMAX-MAX--CAPS" role="macro">
+<title>PRELUDE_UINTMAX_MAX</title>
+<indexterm zone="PRELUDE-UINTMAX-MAX--CAPS"><primary sortas="PRELUDE_UINTMAX_MAX">PRELUDE_UINTMAX_MAX</primary></indexterm><programlisting>#define PRELUDE_UINTMAX_MAX            UINT64_MAX
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRId64" role="macro">
+<title>PRELUDE_PRId64</title>
+<indexterm zone="PRELUDE-PRId64"><primary sortas="PRELUDE_PRId64">PRELUDE_PRId64</primary></indexterm><programlisting>#define PRELUDE_PRId64      __PRELUDE_64BIT_FORMAT_PREFIX "d"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIi64" role="macro">
+<title>PRELUDE_PRIi64</title>
+<indexterm zone="PRELUDE-PRIi64"><primary sortas="PRELUDE_PRIi64">PRELUDE_PRIi64</primary></indexterm><programlisting>#define PRELUDE_PRIi64      __PRELUDE_64BIT_FORMAT_PREFIX "i"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIo64" role="macro">
+<title>PRELUDE_PRIo64</title>
+<indexterm zone="PRELUDE-PRIo64"><primary sortas="PRELUDE_PRIo64">PRELUDE_PRIo64</primary></indexterm><programlisting>#define PRELUDE_PRIo64      __PRELUDE_64BIT_FORMAT_PREFIX "o"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIx64" role="macro">
+<title>PRELUDE_PRIx64</title>
+<indexterm zone="PRELUDE-PRIx64"><primary sortas="PRELUDE_PRIx64">PRELUDE_PRIx64</primary></indexterm><programlisting>#define PRELUDE_PRIx64      __PRELUDE_64BIT_FORMAT_PREFIX "x"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIX64--CAPS" role="macro">
+<title>PRELUDE_PRIX64</title>
+<indexterm zone="PRELUDE-PRIX64--CAPS"><primary sortas="PRELUDE_PRIX64">PRELUDE_PRIX64</primary></indexterm><programlisting>#define PRELUDE_PRIX64      __PRELUDE_64BIT_FORMAT_PREFIX "X"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIu64" role="macro">
+<title>PRELUDE_PRIu64</title>
+<indexterm zone="PRELUDE-PRIu64"><primary sortas="PRELUDE_PRIu64">PRELUDE_PRIu64</primary></indexterm><programlisting>#define PRELUDE_PRIu64      __PRELUDE_64BIT_FORMAT_PREFIX "u"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRId32" role="macro">
+<title>PRELUDE_PRId32</title>
+<indexterm zone="PRELUDE-PRId32"><primary sortas="PRELUDE_PRId32">PRELUDE_PRId32</primary></indexterm><programlisting>#define PRELUDE_PRId32      "d"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIi32" role="macro">
+<title>PRELUDE_PRIi32</title>
+<indexterm zone="PRELUDE-PRIi32"><primary sortas="PRELUDE_PRIi32">PRELUDE_PRIi32</primary></indexterm><programlisting>#define PRELUDE_PRIi32      "i"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIo32" role="macro">
+<title>PRELUDE_PRIo32</title>
+<indexterm zone="PRELUDE-PRIo32"><primary sortas="PRELUDE_PRIo32">PRELUDE_PRIo32</primary></indexterm><programlisting>#define PRELUDE_PRIo32      "o"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIx32" role="macro">
+<title>PRELUDE_PRIx32</title>
+<indexterm zone="PRELUDE-PRIx32"><primary sortas="PRELUDE_PRIx32">PRELUDE_PRIx32</primary></indexterm><programlisting>#define PRELUDE_PRIx32      "x"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIX32--CAPS" role="macro">
+<title>PRELUDE_PRIX32</title>
+<indexterm zone="PRELUDE-PRIX32--CAPS"><primary sortas="PRELUDE_PRIX32">PRELUDE_PRIX32</primary></indexterm><programlisting>#define PRELUDE_PRIX32      "X"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIu32" role="macro">
+<title>PRELUDE_PRIu32</title>
+<indexterm zone="PRELUDE-PRIu32"><primary sortas="PRELUDE_PRIu32">PRELUDE_PRIu32</primary></indexterm><programlisting>#define PRELUDE_PRIu32      "u"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRId16" role="macro">
+<title>PRELUDE_PRId16</title>
+<indexterm zone="PRELUDE-PRId16"><primary sortas="PRELUDE_PRId16">PRELUDE_PRId16</primary></indexterm><programlisting>#define PRELUDE_PRId16      "d"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIi16" role="macro">
+<title>PRELUDE_PRIi16</title>
+<indexterm zone="PRELUDE-PRIi16"><primary sortas="PRELUDE_PRIi16">PRELUDE_PRIi16</primary></indexterm><programlisting>#define PRELUDE_PRIi16      "i"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIo16" role="macro">
+<title>PRELUDE_PRIo16</title>
+<indexterm zone="PRELUDE-PRIo16"><primary sortas="PRELUDE_PRIo16">PRELUDE_PRIo16</primary></indexterm><programlisting>#define PRELUDE_PRIo16      "o"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIx16" role="macro">
+<title>PRELUDE_PRIx16</title>
+<indexterm zone="PRELUDE-PRIx16"><primary sortas="PRELUDE_PRIx16">PRELUDE_PRIx16</primary></indexterm><programlisting>#define PRELUDE_PRIx16      "x"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIX16--CAPS" role="macro">
+<title>PRELUDE_PRIX16</title>
+<indexterm zone="PRELUDE-PRIX16--CAPS"><primary sortas="PRELUDE_PRIX16">PRELUDE_PRIX16</primary></indexterm><programlisting>#define PRELUDE_PRIX16      "X"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIu16" role="macro">
+<title>PRELUDE_PRIu16</title>
+<indexterm zone="PRELUDE-PRIu16"><primary sortas="PRELUDE_PRIu16">PRELUDE_PRIu16</primary></indexterm><programlisting>#define PRELUDE_PRIu16      "u"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRId8" role="macro">
+<title>PRELUDE_PRId8</title>
+<indexterm zone="PRELUDE-PRId8"><primary sortas="PRELUDE_PRId8">PRELUDE_PRId8</primary></indexterm><programlisting>#define PRELUDE_PRId8       "d"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIi8" role="macro">
+<title>PRELUDE_PRIi8</title>
+<indexterm zone="PRELUDE-PRIi8"><primary sortas="PRELUDE_PRIi8">PRELUDE_PRIi8</primary></indexterm><programlisting>#define PRELUDE_PRIi8       "i"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIo8" role="macro">
+<title>PRELUDE_PRIo8</title>
+<indexterm zone="PRELUDE-PRIo8"><primary sortas="PRELUDE_PRIo8">PRELUDE_PRIo8</primary></indexterm><programlisting>#define PRELUDE_PRIo8       "o"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIx8" role="macro">
+<title>PRELUDE_PRIx8</title>
+<indexterm zone="PRELUDE-PRIx8"><primary sortas="PRELUDE_PRIx8">PRELUDE_PRIx8</primary></indexterm><programlisting>#define PRELUDE_PRIx8       "x"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIX8--CAPS" role="macro">
+<title>PRELUDE_PRIX8</title>
+<indexterm zone="PRELUDE-PRIX8--CAPS"><primary sortas="PRELUDE_PRIX8">PRELUDE_PRIX8</primary></indexterm><programlisting>#define PRELUDE_PRIX8       "X"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-PRIu8" role="macro">
+<title>PRELUDE_PRIu8</title>
+<indexterm zone="PRELUDE-PRIu8"><primary sortas="PRELUDE_PRIu8">PRELUDE_PRIu8</primary></indexterm><programlisting>#define PRELUDE_PRIu8       "u"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-SCNd64" role="macro">
+<title>PRELUDE_SCNd64</title>
+<indexterm zone="PRELUDE-SCNd64"><primary sortas="PRELUDE_SCNd64">PRELUDE_SCNd64</primary></indexterm><programlisting>#define PRELUDE_SCNd64      __PRELUDE_64BIT_FORMAT_PREFIX "d"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-SCNi64" role="macro">
+<title>PRELUDE_SCNi64</title>
+<indexterm zone="PRELUDE-SCNi64"><primary sortas="PRELUDE_SCNi64">PRELUDE_SCNi64</primary></indexterm><programlisting>#define PRELUDE_SCNi64      __PRELUDE_64BIT_FORMAT_PREFIX "i"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-SCNo64" role="macro">
+<title>PRELUDE_SCNo64</title>
+<indexterm zone="PRELUDE-SCNo64"><primary sortas="PRELUDE_SCNo64">PRELUDE_SCNo64</primary></indexterm><programlisting>#define PRELUDE_SCNo64      __PRELUDE_64BIT_FORMAT_PREFIX "o"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-SCNx64" role="macro">
+<title>PRELUDE_SCNx64</title>
+<indexterm zone="PRELUDE-SCNx64"><primary sortas="PRELUDE_SCNx64">PRELUDE_SCNx64</primary></indexterm><programlisting>#define PRELUDE_SCNx64      __PRELUDE_64BIT_FORMAT_PREFIX "x"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-SCNu64" role="macro">
+<title>PRELUDE_SCNu64</title>
+<indexterm zone="PRELUDE-SCNu64"><primary sortas="PRELUDE_SCNu64">PRELUDE_SCNu64</primary></indexterm><programlisting>#define PRELUDE_SCNu64      __PRELUDE_64BIT_FORMAT_PREFIX "u"
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-bool-t" role="enum">
+<title>enum prelude_bool_t</title>
+<indexterm zone="prelude-bool-t"><primary sortas="prelude_bool_t">prelude_bool_t</primary></indexterm><programlisting>typedef enum { 
+	PRELUDE_BOOL_TRUE = TRUE, 
+	PRELUDE_BOOL_FALSE = FALSE 
+} prelude_bool_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="int8-t" role="typedef">
+<title>int8_t</title>
+<indexterm zone="int8-t"><primary sortas="int8_t">int8_t</primary></indexterm><programlisting> typedef signed char int8_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="uint8-t" role="typedef">
+<title>uint8_t</title>
+<indexterm zone="uint8-t"><primary sortas="uint8_t">uint8_t</primary></indexterm><programlisting> typedef unsigned char uint8_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="int16-t" role="typedef">
+<title>int16_t</title>
+<indexterm zone="int16-t"><primary sortas="int16_t">int16_t</primary></indexterm><programlisting> typedef short int16_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="uint16-t" role="typedef">
+<title>uint16_t</title>
+<indexterm zone="uint16-t"><primary sortas="uint16_t">uint16_t</primary></indexterm><programlisting> typedef unsigned short uint16_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="int32-t" role="typedef">
+<title>int32_t</title>
+<indexterm zone="int32-t"><primary sortas="int32_t">int32_t</primary></indexterm><programlisting> typedef int int32_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="uint32-t" role="typedef">
+<title>uint32_t</title>
+<indexterm zone="uint32-t"><primary sortas="uint32_t">uint32_t</primary></indexterm><programlisting> typedef unsigned int uint32_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="int64-t" role="typedef">
+<title>int64_t</title>
+<indexterm zone="int64-t"><primary sortas="int64_t">int64_t</primary></indexterm><para>
+</para></refsect2>
+<refsect2 id="uint64-t" role="typedef">
+<title>uint64_t</title>
+<indexterm zone="uint64-t"><primary sortas="uint64_t">uint64_t</primary></indexterm><para>
+</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,0 +1,876 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>prelude-client-profile</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="ch04.html" title="Others">
+<link rel="prev" href="libprelude-prelude-ident.html" title="prelude-ident">
+<link rel="next" href="libprelude-prelude-plugin.html" title="prelude-plugin">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libprelude-prelude-ident.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="libprelude-prelude-plugin.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-prelude-client-profile.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-prelude-client-profile.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="prelude-client-profile">
+<a name="libprelude-prelude-client-profile"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-prelude-client-profile.top_of_page"></a>prelude-client-profile</span></h2>
+<p>prelude-client-profile</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-prelude-client-profile.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+typedef             <a class="link" href="libprelude-prelude-client-profile.html#prelude-gid-t" title="prelude_gid_t">prelude_gid_t</a>;
+typedef             <a class="link" href="libprelude-prelude-client-profile.html#prelude-uid-t" title="prelude_uid_t">prelude_uid_t</a>;
+typedef             <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a>;
+int                 <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-new" title="prelude_client_profile_new ()">prelude_client_profile_new</a>          (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> **ret,
+                                                         const char *name);
+<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> * <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-ref" title="prelude_client_profile_ref ()">prelude_client_profile_ref</a>   (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-destroy" title="prelude_client_profile_destroy ()">prelude_client_profile_destroy</a>      (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-config-filename" title="prelude_client_profile_get_config_filename ()">prelude_client_profile_get_config_filename</a>
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-analyzerid-filename" title="prelude_client_profile_get_analyzerid_filename ()">prelude_client_profile_get_analyzerid_filename</a>
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-tls-key-filename" title="prelude_client_profile_get_tls_key_filename ()">prelude_client_profile_get_tls_key_filename</a>
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-tls-server-ca-cert-filename" title="prelude_client_profile_get_tls_server_ca_cert_filename ()">prelude_client_profile_get_tls_server_ca_cert_filename</a>
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-tls-server-keycert-filename" title="prelude_client_profile_get_tls_server_keycert_filename ()">prelude_client_profile_get_tls_server_keycert_filename</a>
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-tls-server-crl-filename" title="prelude_client_profile_get_tls_server_crl_filename ()">prelude_client_profile_get_tls_server_crl_filename</a>
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-tls-client-keycert-filename" title="prelude_client_profile_get_tls_client_keycert_filename ()">prelude_client_profile_get_tls_client_keycert_filename</a>
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-tls-client-trusted-cert-filename" title="prelude_client_profile_get_tls_client_trusted_cert_filename ()">prelude_client_profile_get_tls_client_trusted_cert_filename</a>
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-backup-dirname" title="prelude_client_profile_get_backup_dirname ()">prelude_client_profile_get_backup_dirname</a>
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-profile-dirname" title="prelude_client_profile_get_profile_dirname ()">prelude_client_profile_get_profile_dirname</a>
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-default-config-dirname" title="prelude_client_profile_get_default_config_dirname ()">prelude_client_profile_get_default_config_dirname</a>
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);
+int                 <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-set-prefix" title="prelude_client_profile_set_prefix ()">prelude_client_profile_set_prefix</a>   (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         const char *prefix);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-prefix" title="prelude_client_profile_get_prefix ()">prelude_client_profile_get_prefix</a>   (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-set-uid" title="prelude_client_profile_set_uid ()">prelude_client_profile_set_uid</a>      (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         <a class="link" href="libprelude-prelude-client-profile.html#prelude-uid-t" title="prelude_uid_t">prelude_uid_t</a> uid);
+<a class="link" href="libprelude-prelude-client-profile.html#prelude-uid-t" title="prelude_uid_t">prelude_uid_t</a>       <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-uid" title="prelude_client_profile_get_uid ()">prelude_client_profile_get_uid</a>      (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-set-gid" title="prelude_client_profile_set_gid ()">prelude_client_profile_set_gid</a>      (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         <a class="link" href="libprelude-prelude-client-profile.html#prelude-uid-t" title="prelude_uid_t">prelude_uid_t</a> gid);
+<a class="link" href="libprelude-prelude-client-profile.html#prelude-gid-t" title="prelude_gid_t">prelude_gid_t</a>       <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-gid" title="prelude_client_profile_get_gid ()">prelude_client_profile_get_gid</a>      (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp);
+int                 <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-set-name" title="prelude_client_profile_set_name ()">prelude_client_profile_set_name</a>     (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         const char *name);
+const char *        <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-name" title="prelude_client_profile_get_name ()">prelude_client_profile_get_name</a>     (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp);
+<a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a>            <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-analyzerid" title="prelude_client_profile_get_analyzerid ()">prelude_client_profile_get_analyzerid</a>
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp);
+void                <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-set-analyzerid" title="prelude_client_profile_set_analyzerid ()">prelude_client_profile_set_analyzerid</a>
+                                                        (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a> analyzerid);
+int                 <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-get-credentials" title="prelude_client_profile_get_credentials ()">prelude_client_profile_get_credentials</a>
+                                                        (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         void **credentials);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-prelude-client-profile.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-prelude-client-profile.details"></a><h2>Details</h2>
+<div class="refsect2" title="prelude_gid_t">
+<a name="prelude-gid-t"></a><h3>prelude_gid_t</h3>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_uid_t">
+<a name="prelude-uid-t"></a><h3>prelude_uid_t</h3>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_t">
+<a name="prelude-client-profile-t"></a><h3>prelude_client_profile_t</h3>
+<pre class="programlisting">typedef struct prelude_client_profile prelude_client_profile_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_new ()">
+<a name="prelude-client-profile-new"></a><h3>prelude_client_profile_new ()</h3>
+<pre class="programlisting">int                 prelude_client_profile_new          (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> **ret,
+                                                         const char *name);</pre>
+<p>
+Creates a new <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object and store its
+address into <em class="parameter"><code>ret</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ret</code></em> :</span></p></td>
+<td> Pointer where to store the address of the created object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td> Name for this profile.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success or a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_ref ()">
+<a name="prelude-client-profile-ref"></a><h3>prelude_client_profile_ref ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> * prelude_client_profile_ref   (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_destroy ()">
+<a name="prelude-client-profile-destroy"></a><h3>prelude_client_profile_destroy ()</h3>
+<pre class="programlisting">void                prelude_client_profile_destroy      (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp);</pre>
+<p>
+Destroys <em class="parameter"><code>cp</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a>.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_config_filename ()">
+<a name="prelude-client-profile-get-config-filename"></a><h3>prelude_client_profile_get_config_filename ()</h3>
+<pre class="programlisting">void                prelude_client_profile_get_config_filename
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);</pre>
+<p>
+Writes the filename used to store <em class="parameter"><code>cp</code></em> configuration template.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> pointer on a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> buffer to write the returned filename to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td> size of <em class="parameter"><code>buf</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_analyzerid_filename ()">
+<a name="prelude-client-profile-get-analyzerid-filename"></a><h3>prelude_client_profile_get_analyzerid_filename ()</h3>
+<pre class="programlisting">void                prelude_client_profile_get_analyzerid_filename
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);</pre>
+<p>
+Writes the filename used to store <em class="parameter"><code>cp</code></em> unique and permanent analyzer ident.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> pointer on a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> buffer to write the returned filename to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td> size of <em class="parameter"><code>buf</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_tls_key_filename ()">
+<a name="prelude-client-profile-get-tls-key-filename"></a><h3>prelude_client_profile_get_tls_key_filename ()</h3>
+<pre class="programlisting">void                prelude_client_profile_get_tls_key_filename
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);</pre>
+<p>
+Writes the filename used to store <em class="parameter"><code>cp</code></em> private key.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> pointer on a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> buffer to write the returned filename to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td> size of <em class="parameter"><code>buf</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_tls_server_ca_cert_filename ()">
+<a name="prelude-client-profile-get-tls-server-ca-cert-filename"></a><h3>prelude_client_profile_get_tls_server_ca_cert_filename ()</h3>
+<pre class="programlisting">void                prelude_client_profile_get_tls_server_ca_cert_filename
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);</pre>
+<p>
+Writes the filename used to store <em class="parameter"><code>cp</code></em> related CA certificate.
+This only apply to <em class="parameter"><code>cp</code></em> receiving connection from analyzer (server).</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> pointer on a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> buffer to write the returned filename to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td> size of <em class="parameter"><code>buf</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_tls_server_keycert_filename ()">
+<a name="prelude-client-profile-get-tls-server-keycert-filename"></a><h3>prelude_client_profile_get_tls_server_keycert_filename ()</h3>
+<pre class="programlisting">void                prelude_client_profile_get_tls_server_keycert_filename
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);</pre>
+<p>
+Writes the filename used to store certificate for <em class="parameter"><code>cp</code></em> server.
+This only apply to <em class="parameter"><code>cp</code></em> receiving connection from analyzer (server).</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> pointer on a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> buffer to write the returned filename to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td> size of <em class="parameter"><code>buf</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_tls_server_crl_filename ()">
+<a name="prelude-client-profile-get-tls-server-crl-filename"></a><h3>prelude_client_profile_get_tls_server_crl_filename ()</h3>
+<pre class="programlisting">void                prelude_client_profile_get_tls_server_crl_filename
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);</pre>
+<p>
+Writes the filename used to store CRL for <em class="parameter"><code>cp</code></em> server.
+This only apply to <em class="parameter"><code>cp</code></em> receiving connection from analyzer (server).</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> pointer on a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> buffer to write the returned filename to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td> size of <em class="parameter"><code>buf</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_tls_client_keycert_filename ()">
+<a name="prelude-client-profile-get-tls-client-keycert-filename"></a><h3>prelude_client_profile_get_tls_client_keycert_filename ()</h3>
+<pre class="programlisting">void                prelude_client_profile_get_tls_client_keycert_filename
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);</pre>
+<p>
+Writes the filename used to store public certificate for <em class="parameter"><code>cp</code></em> private key.
+This only apply to client connecting to a peer.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> pointer on a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> buffer to write the returned filename to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td> size of <em class="parameter"><code>buf</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_tls_client_trusted_cert_filename ()">
+<a name="prelude-client-profile-get-tls-client-trusted-cert-filename"></a><h3>prelude_client_profile_get_tls_client_trusted_cert_filename ()</h3>
+<pre class="programlisting">void                prelude_client_profile_get_tls_client_trusted_cert_filename
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);</pre>
+<p>
+Writes the filename used to store peers public certificates that <em class="parameter"><code>cp</code></em> trust.
+This only apply to client connecting to a peer.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> pointer on a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> buffer to write the returned filename to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td> size of <em class="parameter"><code>buf</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_backup_dirname ()">
+<a name="prelude-client-profile-get-backup-dirname"></a><h3>prelude_client_profile_get_backup_dirname ()</h3>
+<pre class="programlisting">void                prelude_client_profile_get_backup_dirname
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);</pre>
+<p>
+Writes the directory name where the profile for <em class="parameter"><code>cp</code></em> is stored. If
+<em class="parameter"><code>cp</code></em> is NULL or has no name, then this function will provide the main
+profile directory.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> pointer on a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> buffer to write the returned filename to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td> size of <em class="parameter"><code>buf</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_profile_dirname ()">
+<a name="prelude-client-profile-get-profile-dirname"></a><h3>prelude_client_profile_get_profile_dirname ()</h3>
+<pre class="programlisting">void                prelude_client_profile_get_profile_dirname
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_default_config_dirname ()">
+<a name="prelude-client-profile-get-default-config-dirname"></a><h3>prelude_client_profile_get_default_config_dirname ()</h3>
+<pre class="programlisting">void                prelude_client_profile_get_default_config_dirname
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_set_prefix ()">
+<a name="prelude-client-profile-set-prefix"></a><h3>prelude_client_profile_set_prefix ()</h3>
+<pre class="programlisting">int                 prelude_client_profile_set_prefix   (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         const char *prefix);</pre>
+<p>
+This function allow to dynamically change the prefix used to acess
+libprelude related file. This is particularly usefull in case of
+application running under certain condition (chroot).</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> pointer on a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>prefix</code></em> :</span></p></td>
+<td> Prefix to use for various libprelude files.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_prefix ()">
+<a name="prelude-client-profile-get-prefix"></a><h3>prelude_client_profile_get_prefix ()</h3>
+<pre class="programlisting">void                prelude_client_profile_get_prefix   (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         char *buf,
+                                                         size_t size);</pre>
+<p>
+Retrieve current prefix used with this profile.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> pointer on a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buf</code></em> :</span></p></td>
+<td> buffer to write the returned filename to.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td> size of <em class="parameter"><code>buf</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_set_uid ()">
+<a name="prelude-client-profile-set-uid"></a><h3>prelude_client_profile_set_uid ()</h3>
+<pre class="programlisting">void                prelude_client_profile_set_uid      (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         <a class="link" href="libprelude-prelude-client-profile.html#prelude-uid-t" title="prelude_uid_t">prelude_uid_t</a> uid);</pre>
+<p>
+Sets the UID used by <em class="parameter"><code>cp</code></em> to <em class="parameter"><code>uid</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>uid</code></em> :</span></p></td>
+<td> UID to be used by <em class="parameter"><code>cp</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_uid ()">
+<a name="prelude-client-profile-get-uid"></a><h3>prelude_client_profile_get_uid ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-client-profile.html#prelude-uid-t" title="prelude_uid_t">prelude_uid_t</a>       prelude_client_profile_get_uid      (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp);</pre>
+<p>
+Gets the UID associated with <em class="parameter"><code>cp</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the UID associated used by <em class="parameter"><code>cp</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_set_gid ()">
+<a name="prelude-client-profile-set-gid"></a><h3>prelude_client_profile_set_gid ()</h3>
+<pre class="programlisting">void                prelude_client_profile_set_gid      (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         <a class="link" href="libprelude-prelude-client-profile.html#prelude-uid-t" title="prelude_uid_t">prelude_uid_t</a> gid);</pre>
+<p>
+Sets the GID used by <em class="parameter"><code>cp</code></em> to <em class="parameter"><code>gid</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>gid</code></em> :</span></p></td>
+<td> GID to be used by <em class="parameter"><code>cp</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_gid ()">
+<a name="prelude-client-profile-get-gid"></a><h3>prelude_client_profile_get_gid ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-client-profile.html#prelude-gid-t" title="prelude_gid_t">prelude_gid_t</a>       prelude_client_profile_get_gid      (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp);</pre>
+<p>
+Gets the GID associated with <em class="parameter"><code>cp</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the GID associated used by <em class="parameter"><code>cp</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_set_name ()">
+<a name="prelude-client-profile-set-name"></a><h3>prelude_client_profile_set_name ()</h3>
+<pre class="programlisting">int                 prelude_client_profile_set_name     (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         const char *name);</pre>
+<p>
+Sets the prelude client profile name.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>name</code></em> :</span></p></td>
+<td> Name to associate the profile with.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success or a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_name ()">
+<a name="prelude-client-profile-get-name"></a><h3>prelude_client_profile_get_name ()</h3>
+<pre class="programlisting">const char *        prelude_client_profile_get_name     (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp);</pre>
+<p>
+Gets the name of <em class="parameter"><code>cp</code></em> client profile.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the name used by <em class="parameter"><code>cp</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_analyzerid ()">
+<a name="prelude-client-profile-get-analyzerid"></a><h3>prelude_client_profile_get_analyzerid ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a>            prelude_client_profile_get_analyzerid
+                                                        (const <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp);</pre>
+<p>
+Gets the unique and permanent analyzer ident associated with <em class="parameter"><code>cp</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the analyzer ident used by <em class="parameter"><code>cp</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_set_analyzerid ()">
+<a name="prelude-client-profile-set-analyzerid"></a><h3>prelude_client_profile_set_analyzerid ()</h3>
+<pre class="programlisting">void                prelude_client_profile_set_analyzerid
+                                                        (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a> analyzerid);</pre>
+<p>
+Sets the Analyzer ID used by <em class="parameter"><code>cp</code></em> to <em class="parameter"><code>analyzerid</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t"><span class="type">prelude_client_profile_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>analyzerid</code></em> :</span></p></td>
+<td> Analyzer ID to be used by <em class="parameter"><code>cp</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_client_profile_get_credentials ()">
+<a name="prelude-client-profile-get-credentials"></a><h3>prelude_client_profile_get_credentials ()</h3>
+<pre class="programlisting">int                 prelude_client_profile_get_credentials
+                                                        (<a class="link" href="libprelude-prelude-client-profile.html#prelude-client-profile-t" title="prelude_client_profile_t">prelude_client_profile_t</a> *cp,
+                                                         void **credentials);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>cp</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>credentials</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

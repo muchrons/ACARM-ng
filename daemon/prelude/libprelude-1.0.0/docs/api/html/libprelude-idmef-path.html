@@ -1,0 +1,957 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>idmef-path</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="ch02.html" title="The high level IDMEF API">
+<link rel="prev" href="ch02.html" title="The high level IDMEF API">
+<link rel="next" href="libprelude-idmef-value.html" title="idmef-value">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ch02.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch02.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="libprelude-idmef-value.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-idmef-path.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-idmef-path.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="idmef-path">
+<a name="libprelude-idmef-path"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-idmef-path.top_of_page"></a>idmef-path</span></h2>
+<p>idmef-path — The High level IDMEF API.</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-idmef-path.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+typedef             <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a>;
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-get" title="idmef_path_get ()">idmef_path_get</a>                      (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> *message,
+                                                         <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t">idmef_value_t</a> **ret);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-set" title="idmef_path_set ()">idmef_path_set</a>                      (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> *message,
+                                                         <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t">idmef_value_t</a> *value);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-new" title="idmef_path_new ()">idmef_path_new</a>                      (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> **path,
+                                                         const char *format,
+                                                         ...);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-new-v" title="idmef_path_new_v ()">idmef_path_new_v</a>                    (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> **path,
+                                                         const char *format,
+                                                         va_list args);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-new-fast" title="idmef_path_new_fast ()">idmef_path_new_fast</a>                 (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> **path,
+                                                         const char *buffer);
+idmef_class_id_t    <a class="link" href="libprelude-idmef-path.html#idmef-path-get-class" title="idmef_path_get_class ()">idmef_path_get_class</a>                (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         int depth);
+idmef_value_type_id_t  <a class="link" href="libprelude-idmef-path.html#idmef-path-get-value-type" title="idmef_path_get_value_type ()">idmef_path_get_value_type</a>        (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         int depth);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-set-index" title="idmef_path_set_index ()">idmef_path_set_index</a>                (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         unsigned int depth,
+                                                         int index);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-undefine-index" title="idmef_path_undefine_index ()">idmef_path_undefine_index</a>           (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         unsigned int depth);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-get-index" title="idmef_path_get_index ()">idmef_path_get_index</a>                (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         unsigned int depth);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-make-child" title="idmef_path_make_child ()">idmef_path_make_child</a>               (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         const char *child_name,
+                                                         int index);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-make-parent" title="idmef_path_make_parent ()">idmef_path_make_parent</a>              (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path);
+void                <a class="link" href="libprelude-idmef-path.html#idmef-path-destroy" title="idmef_path_destroy ()">idmef_path_destroy</a>                  (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-ncompare" title="idmef_path_ncompare ()">idmef_path_ncompare</a>                 (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *p1,
+                                                         const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *p2,
+                                                         unsigned int depth);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-compare" title="idmef_path_compare ()">idmef_path_compare</a>                  (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *p1,
+                                                         const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *p2);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-clone" title="idmef_path_clone ()">idmef_path_clone</a>                    (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *src,
+                                                         <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> **dst);
+<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *      <a class="link" href="libprelude-idmef-path.html#idmef-path-ref" title="idmef_path_ref ()">idmef_path_ref</a>                      (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path);
+const char *        <a class="link" href="libprelude-idmef-path.html#idmef-path-get-name" title="idmef_path_get_name ()">idmef_path_get_name</a>                 (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         int depth);
+<a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      <a class="link" href="libprelude-idmef-path.html#idmef-path-is-ambiguous" title="idmef_path_is_ambiguous ()">idmef_path_is_ambiguous</a>             (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-has-lists" title="idmef_path_has_lists ()">idmef_path_has_lists</a>                (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path);
+<a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      <a class="link" href="libprelude-idmef-path.html#idmef-path-is-list" title="idmef_path_is_list ()">idmef_path_is_list</a>                  (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         int depth);
+unsigned int        <a class="link" href="libprelude-idmef-path.html#idmef-path-get-depth" title="idmef_path_get_depth ()">idmef_path_get_depth</a>                (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-check-operator" title="idmef_path_check_operator ()">idmef_path_check_operator</a>           (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         <a class="link" href="libprelude-idmef-criteria.html#idmef-criterion-operator-t" title="enum idmef_criterion_operator_t">idmef_criterion_operator_t</a> op);
+int                 <a class="link" href="libprelude-idmef-path.html#idmef-path-get-applicable-operators" title="idmef_path_get_applicable_operators ()">idmef_path_get_applicable_operators</a> (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         <a class="link" href="libprelude-idmef-criteria.html#idmef-criterion-operator-t" title="enum idmef_criterion_operator_t">idmef_criterion_operator_t</a> *result);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-idmef-path.description"></a><h2>Description</h2>
+<p>
+The IDMEF path API provide a methodes to define a "path" in the IDMEF tree.
+Once this path is defined, the user might set or retrieve this path.
+</p>
+<p>
+Here is an example of how to use this API in order to set a given path within
+a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t"><span class="type">idmef_message_t</span></a> root object:
+</p>
+<p>
+First, we need to create a path to the object we want to create. If for example,
+we wish to create the alert.classification.text path within our message, we will use:
+</p>
+<pre class="programlisting">
+int ret;
+idmef_path_t *path;
+ret = idmef_path_new(&amp;path, "alert.classification.text");
+if ( ret &lt; 0 )
+        return ret;
+</pre>
+<p>
+Using the above, we just created a "pointer" to a given path in our <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t"><span class="type">idmef_message_t</span></a>. This
+path doesn't yet exist, but might be used to read, or to write a value.
+</p>
+<pre class="programlisting">
+int ret;
+idmef_value_t *value;
+ret = idmef_value_new_from_path(&amp;value, path, "A value");
+if ( ret &lt; 0 )
+        return ret;
+</pre>
+<p>
+Here we just created a value applicable to the previously created path. That is, if our path
+is pointing to a value of type string, the created <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t"><span class="type">idmef_value_t</span></a> object will be of this type.
+</p>
+<pre class="programlisting">
+idmef_message_t *idmef;
+/*
+ * create our top message
+ */
+ret = idmef_message_new(&amp;idmef);
+/*
+ * Set the previously defined path to the previously created value
+ * in the top level idmef message 'idmef'.
+ */
+ret = idmef_path_set(path, idmef, value);
+</pre>
+<p>
+And finally, we create our top level <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t"><span class="type">idmef_message_t</span></a> object and set the created <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t"><span class="type">idmef_value_t</span></a>
+as the value for our created <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a>.
+</p>
+<p>
+Given our previous example, we can write the following function:
+</p>
+<pre class="programlisting">
+static int set_idmef_path(idmef_message_t *message, const char *pathname, const char *value)
+{
+        int ret;
+        idmef_value_t *val;
+        idmef_path_t *path;
+        ret = idmef_path_new(&amp;path, pathname);
+        if ( ret &lt; 0 )
+                return ret;
+        ret = idmef_value_new_from_path(&amp;val, path, value);
+        if ( ret &lt; 0 ) {
+                idmef_path_destroy(path);
+                return ret;
+        }
+        ret = idmef_path_set(path, message, val);
+        idmef_value_destroy(val);
+        idmef_path_destroy(path);
+        return ret;
+}
+</pre>
+<p>
+You will then be able to set any field of the IDMEF message using:
+</p>
+<pre class="programlisting">
+idmef_message_t *idmef;
+ret = idmef_message_new(&amp;idmef);
+if ( ret &lt; 0 )
+        return ret;
+set_idmef_path(idmef, "alert.classification.text", "My classification text");
+set_idmef_path(idmef, "alert.classification.reference(0).name", "OSVDB-XXXX");
+set_idmef_path(idmef, "alert.classification.reference(0).origin", "osvdb");
+set_idmef_path(idmef, "alert.classification.reference(0).url", "http://my.url/");
+set_idmef_path(idmef, "alert.source(0).node.address(0).address", "127.0.0.1");
+</pre>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-idmef-path.details"></a><h2>Details</h2>
+<div class="refsect2" title="idmef_path_t">
+<a name="idmef-path-t"></a><h3>idmef_path_t</h3>
+<pre class="programlisting">typedef struct idmef_path idmef_path_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_get ()">
+<a name="idmef-path-get"></a><h3>idmef_path_get ()</h3>
+<pre class="programlisting">int                 idmef_path_get                      (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> *message,
+                                                         <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t">idmef_value_t</a> **ret);</pre>
+<p>
+This function retrieves the value for <em class="parameter"><code>path</code></em> within <em class="parameter"><code>message</code></em>,
+and stores it into the provided <em class="parameter"><code>ret</code></em> address of type <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t"><span class="type">idmef_value_t</span></a>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>message</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t"><span class="type">idmef_message_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ret</code></em> :</span></p></td>
+<td> Address where to store the retrieved <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t"><span class="type">idmef_value_t</span></a>.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The number of element retrieved, or a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_set ()">
+<a name="idmef-path-set"></a><h3>idmef_path_set ()</h3>
+<pre class="programlisting">int                 idmef_path_set                      (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> *message,
+                                                         <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t">idmef_value_t</a> *value);</pre>
+<p>
+This function sets the provided <em class="parameter"><code>value</code></em> for <em class="parameter"><code>path</code></em> within <em class="parameter"><code>message</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>message</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t"><span class="type">idmef_message_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t"><span class="type">idmef_value_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_new ()">
+<a name="idmef-path-new"></a><h3>idmef_path_new ()</h3>
+<pre class="programlisting">int                 idmef_path_new                      (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> **path,
+                                                         const char *format,
+                                                         ...);</pre>
+<p>
+Creates an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object pointing to the provided format
+string <em class="parameter"><code>format</code></em> and @..., and stores it within <em class="parameter"><code>path</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Address where to store the created <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
+<td> Format string.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>...</code></em> :</span></p></td>
+<td> Arguments list.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, or a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_new_v ()">
+<a name="idmef-path-new-v"></a><h3>idmef_path_new_v ()</h3>
+<pre class="programlisting">int                 idmef_path_new_v                    (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> **path,
+                                                         const char *format,
+                                                         va_list args);</pre>
+<p>
+Creates an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object pointing to the provided format
+string <em class="parameter"><code>format</code></em> and <em class="parameter"><code>args</code></em>, and stores it within <em class="parameter"><code>path</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Address where to store the created <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>format</code></em> :</span></p></td>
+<td> Format string.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>args</code></em> :</span></p></td>
+<td> Pointer to a variable argument list.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, or a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_new_fast ()">
+<a name="idmef-path-new-fast"></a><h3>idmef_path_new_fast ()</h3>
+<pre class="programlisting">int                 idmef_path_new_fast                 (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> **path,
+                                                         const char *buffer);</pre>
+<p>
+Creates a <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object pointing to <em class="parameter"><code>buffer</code></em>, and stores it within <em class="parameter"><code>path</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Address where to store the created <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>buffer</code></em> :</span></p></td>
+<td> Name of the path to create.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, or a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_get_class ()">
+<a name="idmef-path-get-class"></a><h3>idmef_path_get_class ()</h3>
+<pre class="programlisting">idmef_class_id_t    idmef_path_get_class                (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         int depth);</pre>
+<p>
+Retrieves the <span class="type">idmef_class_id_t</span> value for the element of <em class="parameter"><code>path</code></em>
+located at <em class="parameter"><code>depth</code></em>. If depth is -1, the last element depth is addressed.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>depth</code></em> :</span></p></td>
+<td> Depth of <em class="parameter"><code>path</code></em> to retrieve the <span class="type">idmef_class_id_t</span> from.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The <span class="type">idmef_class_id_t</span> for the elemnt, or a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_get_value_type ()">
+<a name="idmef-path-get-value-type"></a><h3>idmef_path_get_value_type ()</h3>
+<pre class="programlisting">idmef_value_type_id_t  idmef_path_get_value_type        (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         int depth);</pre>
+<p>
+Retrieves the <span class="type">idmef_value_type_id_t</span> identifying the type of value
+acceptable for this path element, for the <em class="parameter"><code>path</code></em> element located at
+<em class="parameter"><code>depth</code></em>. If depth is -1, the last element depth is addressed.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>depth</code></em> :</span></p></td>
+<td> Depth of <em class="parameter"><code>path</code></em> to retrieve the <span class="type">idmef_value_type_id_t</span> from.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The <span class="type">idmef_value_type_id_t</span> for the element, or a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_set_index ()">
+<a name="idmef-path-set-index"></a><h3>idmef_path_set_index ()</h3>
+<pre class="programlisting">int                 idmef_path_set_index                (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         unsigned int depth,
+                                                         int index);</pre>
+<p>
+Modifies <em class="parameter"><code>index</code></em> for the element located at <em class="parameter"><code>depth</code></em> of provided <em class="parameter"><code>path</code></em>.
+This function is only applicable for element that accept listed value.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>depth</code></em> :</span></p></td>
+<td> Depth of <em class="parameter"><code>path</code></em> to set <em class="parameter"><code>index</code></em> for.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>index</code></em> :</span></p></td>
+<td> Index for the provided element <em class="parameter"><code>depth</code></em>.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_undefine_index ()">
+<a name="idmef-path-undefine-index"></a><h3>idmef_path_undefine_index ()</h3>
+<pre class="programlisting">int                 idmef_path_undefine_index           (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         unsigned int depth);</pre>
+<p>
+Modifies the element located at <em class="parameter"><code>depth</code></em> of provided <em class="parameter"><code>path</code></em> so that it's
+index is undefined.
+</p>
+<p>
+This function is only applicable for element that accept listed value.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>depth</code></em> :</span></p></td>
+<td> Depth of <em class="parameter"><code>path</code></em> to undefine the index for.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_get_index ()">
+<a name="idmef-path-get-index"></a><h3>idmef_path_get_index ()</h3>
+<pre class="programlisting">int                 idmef_path_get_index                (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         unsigned int depth);</pre>
+<p>
+Gets the current index for element located at <em class="parameter"><code>depth</code></em> of <em class="parameter"><code>path</code></em>.
+This function is only applicable for element that accepts listed value.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>depth</code></em> :</span></p></td>
+<td> Depth of <em class="parameter"><code>path</code></em> to retrieve the index from.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The element index, or a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_make_child ()">
+<a name="idmef-path-make-child"></a><h3>idmef_path_make_child ()</h3>
+<pre class="programlisting">int                 idmef_path_make_child               (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         const char *child_name,
+                                                         int index);</pre>
+<p>
+Modifies <em class="parameter"><code>path</code></em> so that it points to the child node identified by <em class="parameter"><code>child_name</code></em>,
+children of the current path. That is if the path is currently pointing to
+alert.classification, and <em class="parameter"><code>child_name</code></em> is set to "text", <em class="parameter"><code>path</code></em> will be
+modified to point to alert.classification.text.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>child_name</code></em> :</span></p></td>
+<td> Name of the child element to create.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>index</code></em> :</span></p></td>
+<td> Index for <em class="parameter"><code>child_name</code></em>, if applicable.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, or a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_make_parent ()">
+<a name="idmef-path-make-parent"></a><h3>idmef_path_make_parent ()</h3>
+<pre class="programlisting">int                 idmef_path_make_parent              (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path);</pre>
+<p>
+Removes the last element of the path. That is, if <em class="parameter"><code>path</code></em> is currently pointing to
+alert.classification, <em class="parameter"><code>path</code></em> will be modified to point to alert.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, or a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_destroy ()">
+<a name="idmef-path-destroy"></a><h3>idmef_path_destroy ()</h3>
+<pre class="programlisting">void                idmef_path_destroy                  (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path);</pre>
+<p>
+Destroys the provided <em class="parameter"><code>path</code></em> object.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_ncompare ()">
+<a name="idmef-path-ncompare"></a><h3>idmef_path_ncompare ()</h3>
+<pre class="programlisting">int                 idmef_path_ncompare                 (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *p1,
+                                                         const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *p2,
+                                                         unsigned int depth);</pre>
+<p>
+Compares <em class="parameter"><code>p1</code></em> and <em class="parameter"><code>p2</code></em> elements up to <em class="parameter"><code>depth</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>p1</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>p2</code></em> :</span></p></td>
+<td> Pointer to another <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>depth</code></em> :</span></p></td>
+<td> Maximum depth to use for path comparison.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 if both element match, a negative value otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_compare ()">
+<a name="idmef-path-compare"></a><h3>idmef_path_compare ()</h3>
+<pre class="programlisting">int                 idmef_path_compare                  (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *p1,
+                                                         const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *p2);</pre>
+<p>
+Compares <em class="parameter"><code>p1</code></em> and <em class="parameter"><code>p2</code></em> elements.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>p1</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>p2</code></em> :</span></p></td>
+<td> Pointer to another <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 if both element match, a negative value otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_clone ()">
+<a name="idmef-path-clone"></a><h3>idmef_path_clone ()</h3>
+<pre class="programlisting">int                 idmef_path_clone                    (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *src,
+                                                         <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> **dst);</pre>
+<p>
+Clones <em class="parameter"><code>src</code></em> and stores the result in the provided <em class="parameter"><code>dst</code></em> address.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>src</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>dst</code></em> :</span></p></td>
+<td> Address where to store the copy of <em class="parameter"><code>src</code></em>.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_ref ()">
+<a name="idmef-path-ref"></a><h3>idmef_path_ref ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *      idmef_path_ref                      (<a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path);</pre>
+<p>
+Increases <em class="parameter"><code>path</code></em> reference count.
+</p>
+<p>
+<a class="link" href="libprelude-idmef-path.html#idmef-path-destroy" title="idmef_path_destroy ()"><code class="function">idmef_path_destroy()</code></a> will destroy the refcount until it reaches 0,
+at which point the path will be destroyed.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> The provided <em class="parameter"><code>path</code></em> is returned.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_get_name ()">
+<a name="idmef-path-get-name"></a><h3>idmef_path_get_name ()</h3>
+<pre class="programlisting">const char *        idmef_path_get_name                 (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         int depth);</pre>
+<p>
+Returns the full path name if the provided <em class="parameter"><code>depth</code></em> is -1, or the specific
+element name if depth is set. That is, for a <em class="parameter"><code>path</code></em> pointing to
+"alert.classification.text": A depth of -1 would return "alert.classification.text";
+a depth of 0 would return "alert"; a depth of 1 would return "classification"; and
+a depth of 2 would return "text".</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>depth</code></em> :</span></p></td>
+<td> Depth of the <em class="parameter"><code>path</code></em> element to get the name from.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <em class="parameter"><code>path</code></em> name relative to the provided <em class="parameter"><code>dept</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_is_ambiguous ()">
+<a name="idmef-path-is-ambiguous"></a><h3>idmef_path_is_ambiguous ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      idmef_path_is_ambiguous             (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path);</pre>
+<p>
+Returns TRUE if <em class="parameter"><code>path</code></em> contain elements that are supposed
+to be listed, but for which no index were provided.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> TRUE if the object is ambiguous, FALSE otherwise.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_has_lists ()">
+<a name="idmef-path-has-lists"></a><h3>idmef_path_has_lists ()</h3>
+<pre class="programlisting">int                 idmef_path_has_lists                (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path);</pre>
+<p>
+</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> the number of listed element within <em class="parameter"><code>path</code></em>.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_is_list ()">
+<a name="idmef-path-is-list"></a><h3>idmef_path_is_list ()</h3>
+<pre class="programlisting"><a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>      idmef_path_is_list                  (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         int depth);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>depth</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_get_depth ()">
+<a name="idmef-path-get-depth"></a><h3>idmef_path_get_depth ()</h3>
+<pre class="programlisting">unsigned int        idmef_path_get_depth                (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path);</pre>
+<p>
+</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to an <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> <em class="parameter"><code>depth</code></em> number of elements.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_check_operator ()">
+<a name="idmef-path-check-operator"></a><h3>idmef_path_check_operator ()</h3>
+<pre class="programlisting">int                 idmef_path_check_operator           (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         <a class="link" href="libprelude-idmef-criteria.html#idmef-criterion-operator-t" title="enum idmef_criterion_operator_t">idmef_criterion_operator_t</a> op);</pre>
+<p>
+Check whether <em class="parameter"><code>op</code></em> can apply to value pointed to by <em class="parameter"><code>path</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>op</code></em> :</span></p></td>
+<td> Operator to check compatibility with.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_path_get_applicable_operators ()">
+<a name="idmef-path-get-applicable-operators"></a><h3>idmef_path_get_applicable_operators ()</h3>
+<pre class="programlisting">int                 idmef_path_get_applicable_operators (const <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t">idmef_path_t</a> *path,
+                                                         <a class="link" href="libprelude-idmef-criteria.html#idmef-criterion-operator-t" title="enum idmef_criterion_operator_t">idmef_criterion_operator_t</a> *result);</pre>
+<p>
+Retrieve all applicable operator that might be used by the type of
+value pointed to by <em class="parameter"><code>path</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>path</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>result</code></em> :</span></p></td>
+<td> Pointer to storage for applicable operator.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" title="See Also">
+<a name="libprelude-idmef-path.see-also"></a><h2>See Also</h2>
+<p>
+<a class="link" href="libprelude-idmef-value.html#idmef-value-t" title="idmef_value_t"><span class="type">idmef_value_t</span></a> for setting <a class="link" href="libprelude-idmef-path.html#idmef-path-t" title="idmef_path_t"><span class="type">idmef_path_t</span></a> value.
+</p>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

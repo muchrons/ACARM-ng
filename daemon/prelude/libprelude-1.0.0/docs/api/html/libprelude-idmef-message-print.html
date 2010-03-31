@@ -1,0 +1,916 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>idmef-message-print</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="ch03.html" title="Utility functions">
+<link rel="prev" href="ch03.html" title="Utility functions">
+<link rel="next" href="ch04.html" title="Others">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="ch03.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="ch04.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-idmef-message-print.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-idmef-message-print.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="idmef-message-print">
+<a name="libprelude-idmef-message-print"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-idmef-message-print.top_of_page"></a>idmef-message-print</span></h2>
+<p>idmef-message-print — Dumping an IDMEF message as a string</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-idmef-message-print.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-additional-data-print" title="idmef_additional_data_print ()">idmef_additional_data_print</a>         (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-reference-print" title="idmef_reference_print ()">idmef_reference_print</a>               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-reference-t" title="idmef_reference_t">idmef_reference_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-classification-print" title="idmef_classification_print ()">idmef_classification_print</a>          (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-classification-t" title="idmef_classification_t">idmef_classification_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-user-id-print" title="idmef_user_id_print ()">idmef_user_id_print</a>                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-id-t" title="idmef_user_id_t">idmef_user_id_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-user-print" title="idmef_user_print ()">idmef_user_print</a>                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-t" title="idmef_user_t">idmef_user_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-address-print" title="idmef_address_print ()">idmef_address_print</a>                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-address-t" title="idmef_address_t">idmef_address_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-process-print" title="idmef_process_print ()">idmef_process_print</a>                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-process-t" title="idmef_process_t">idmef_process_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-web-service-print" title="idmef_web_service_print ()">idmef_web_service_print</a>             (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-web-service-t" title="idmef_web_service_t">idmef_web_service_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-snmp-service-print" title="idmef_snmp_service_print ()">idmef_snmp_service_print</a>            (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-snmp-service-t" title="idmef_snmp_service_t">idmef_snmp_service_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-service-print" title="idmef_service_print ()">idmef_service_print</a>                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-service-t" title="idmef_service_t">idmef_service_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-node-print" title="idmef_node_print ()">idmef_node_print</a>                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-node-t" title="idmef_node_t">idmef_node_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-source-print" title="idmef_source_print ()">idmef_source_print</a>                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-source-t" title="idmef_source_t">idmef_source_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-file-access-print" title="idmef_file_access_print ()">idmef_file_access_print</a>             (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-access-t" title="idmef_file_access_t">idmef_file_access_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-inode-print" title="idmef_inode_print ()">idmef_inode_print</a>                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-inode-t" title="idmef_inode_t">idmef_inode_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-checksum-print" title="idmef_checksum_print ()">idmef_checksum_print</a>                (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-checksum-t" title="idmef_checksum_t">idmef_checksum_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-file-print" title="idmef_file_print ()">idmef_file_print</a>                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-t" title="idmef_file_t">idmef_file_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-linkage-print" title="idmef_linkage_print ()">idmef_linkage_print</a>                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-linkage-t" title="idmef_linkage_t">idmef_linkage_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-target-print" title="idmef_target_print ()">idmef_target_print</a>                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-target-t" title="idmef_target_t">idmef_target_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-analyzer-print" title="idmef_analyzer_print ()">idmef_analyzer_print</a>                (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-analyzer-t" title="idmef_analyzer_t">idmef_analyzer_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-alertident-print" title="idmef_alertident_print ()">idmef_alertident_print</a>              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alertident-t" title="idmef_alertident_t">idmef_alertident_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-impact-print" title="idmef_impact_print ()">idmef_impact_print</a>                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-impact-t" title="idmef_impact_t">idmef_impact_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-action-print" title="idmef_action_print ()">idmef_action_print</a>                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-action-t" title="idmef_action_t">idmef_action_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-confidence-print" title="idmef_confidence_print ()">idmef_confidence_print</a>              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-confidence-t" title="idmef_confidence_t">idmef_confidence_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-assessment-print" title="idmef_assessment_print ()">idmef_assessment_print</a>              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-assessment-t" title="idmef_assessment_t">idmef_assessment_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-tool-alert-print" title="idmef_tool_alert_print ()">idmef_tool_alert_print</a>              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-tool-alert-t" title="idmef_tool_alert_t">idmef_tool_alert_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-correlation-alert-print" title="idmef_correlation_alert_print ()">idmef_correlation_alert_print</a>       (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-t" title="idmef_correlation_alert_t">idmef_correlation_alert_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-overflow-alert-print" title="idmef_overflow_alert_print ()">idmef_overflow_alert_print</a>          (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-t" title="idmef_overflow_alert_t">idmef_overflow_alert_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-alert-print" title="idmef_alert_print ()">idmef_alert_print</a>                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alert-t" title="idmef_alert_t">idmef_alert_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-heartbeat-print" title="idmef_heartbeat_print ()">idmef_heartbeat_print</a>               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-heartbeat-t" title="idmef_heartbeat_t">idmef_heartbeat_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+void                <a class="link" href="libprelude-idmef-message-print.html#idmef-message-print" title="idmef_message_print ()">idmef_message_print</a>                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-idmef-message-print.description"></a><h2>Description</h2>
+<p>
+This API provide method for dumping any IDMEF object as a string of characters.
+When dumping an object, the object and all of it's children are dumped to the
+provided <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object.
+</p>
+<p>
+The <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object might be a buffer, a file, or even a socket. Check
+the <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> API for more information.
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-idmef-message-print.details"></a><h2>Details</h2>
+<div class="refsect2" title="idmef_additional_data_print ()">
+<a name="idmef-additional-data-print"></a><h3>idmef_additional_data_print ()</h3>
+<pre class="programlisting">void                idmef_additional_data_print         (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_additional_data_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_reference_print ()">
+<a name="idmef-reference-print"></a><h3>idmef_reference_print ()</h3>
+<pre class="programlisting">void                idmef_reference_print               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-reference-t" title="idmef_reference_t">idmef_reference_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_reference_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_classification_print ()">
+<a name="idmef-classification-print"></a><h3>idmef_classification_print ()</h3>
+<pre class="programlisting">void                idmef_classification_print          (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-classification-t" title="idmef_classification_t">idmef_classification_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_classification_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_user_id_print ()">
+<a name="idmef-user-id-print"></a><h3>idmef_user_id_print ()</h3>
+<pre class="programlisting">void                idmef_user_id_print                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-id-t" title="idmef_user_id_t">idmef_user_id_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_user_id_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_user_print ()">
+<a name="idmef-user-print"></a><h3>idmef_user_print ()</h3>
+<pre class="programlisting">void                idmef_user_print                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-t" title="idmef_user_t">idmef_user_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_user_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_address_print ()">
+<a name="idmef-address-print"></a><h3>idmef_address_print ()</h3>
+<pre class="programlisting">void                idmef_address_print                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-address-t" title="idmef_address_t">idmef_address_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_address_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_process_print ()">
+<a name="idmef-process-print"></a><h3>idmef_process_print ()</h3>
+<pre class="programlisting">void                idmef_process_print                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-process-t" title="idmef_process_t">idmef_process_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_process_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_web_service_print ()">
+<a name="idmef-web-service-print"></a><h3>idmef_web_service_print ()</h3>
+<pre class="programlisting">void                idmef_web_service_print             (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-web-service-t" title="idmef_web_service_t">idmef_web_service_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_web_service_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_snmp_service_print ()">
+<a name="idmef-snmp-service-print"></a><h3>idmef_snmp_service_print ()</h3>
+<pre class="programlisting">void                idmef_snmp_service_print            (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-snmp-service-t" title="idmef_snmp_service_t">idmef_snmp_service_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_snmp_service_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_service_print ()">
+<a name="idmef-service-print"></a><h3>idmef_service_print ()</h3>
+<pre class="programlisting">void                idmef_service_print                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-service-t" title="idmef_service_t">idmef_service_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_service_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_node_print ()">
+<a name="idmef-node-print"></a><h3>idmef_node_print ()</h3>
+<pre class="programlisting">void                idmef_node_print                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-node-t" title="idmef_node_t">idmef_node_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_node_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_source_print ()">
+<a name="idmef-source-print"></a><h3>idmef_source_print ()</h3>
+<pre class="programlisting">void                idmef_source_print                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-source-t" title="idmef_source_t">idmef_source_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_source_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_file_access_print ()">
+<a name="idmef-file-access-print"></a><h3>idmef_file_access_print ()</h3>
+<pre class="programlisting">void                idmef_file_access_print             (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-access-t" title="idmef_file_access_t">idmef_file_access_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_file_access_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_inode_print ()">
+<a name="idmef-inode-print"></a><h3>idmef_inode_print ()</h3>
+<pre class="programlisting">void                idmef_inode_print                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-inode-t" title="idmef_inode_t">idmef_inode_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_inode_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_checksum_print ()">
+<a name="idmef-checksum-print"></a><h3>idmef_checksum_print ()</h3>
+<pre class="programlisting">void                idmef_checksum_print                (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-checksum-t" title="idmef_checksum_t">idmef_checksum_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_checksum_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_file_print ()">
+<a name="idmef-file-print"></a><h3>idmef_file_print ()</h3>
+<pre class="programlisting">void                idmef_file_print                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-t" title="idmef_file_t">idmef_file_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_file_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_linkage_print ()">
+<a name="idmef-linkage-print"></a><h3>idmef_linkage_print ()</h3>
+<pre class="programlisting">void                idmef_linkage_print                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-linkage-t" title="idmef_linkage_t">idmef_linkage_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_linkage_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_target_print ()">
+<a name="idmef-target-print"></a><h3>idmef_target_print ()</h3>
+<pre class="programlisting">void                idmef_target_print                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-target-t" title="idmef_target_t">idmef_target_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_target_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_analyzer_print ()">
+<a name="idmef-analyzer-print"></a><h3>idmef_analyzer_print ()</h3>
+<pre class="programlisting">void                idmef_analyzer_print                (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-analyzer-t" title="idmef_analyzer_t">idmef_analyzer_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_analyzer_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_alertident_print ()">
+<a name="idmef-alertident-print"></a><h3>idmef_alertident_print ()</h3>
+<pre class="programlisting">void                idmef_alertident_print              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alertident-t" title="idmef_alertident_t">idmef_alertident_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_alertident_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_impact_print ()">
+<a name="idmef-impact-print"></a><h3>idmef_impact_print ()</h3>
+<pre class="programlisting">void                idmef_impact_print                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-impact-t" title="idmef_impact_t">idmef_impact_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_impact_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_action_print ()">
+<a name="idmef-action-print"></a><h3>idmef_action_print ()</h3>
+<pre class="programlisting">void                idmef_action_print                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-action-t" title="idmef_action_t">idmef_action_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_action_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_confidence_print ()">
+<a name="idmef-confidence-print"></a><h3>idmef_confidence_print ()</h3>
+<pre class="programlisting">void                idmef_confidence_print              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-confidence-t" title="idmef_confidence_t">idmef_confidence_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_confidence_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_assessment_print ()">
+<a name="idmef-assessment-print"></a><h3>idmef_assessment_print ()</h3>
+<pre class="programlisting">void                idmef_assessment_print              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-assessment-t" title="idmef_assessment_t">idmef_assessment_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_assessment_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_tool_alert_print ()">
+<a name="idmef-tool-alert-print"></a><h3>idmef_tool_alert_print ()</h3>
+<pre class="programlisting">void                idmef_tool_alert_print              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-tool-alert-t" title="idmef_tool_alert_t">idmef_tool_alert_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_tool_alert_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_correlation_alert_print ()">
+<a name="idmef-correlation-alert-print"></a><h3>idmef_correlation_alert_print ()</h3>
+<pre class="programlisting">void                idmef_correlation_alert_print       (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-t" title="idmef_correlation_alert_t">idmef_correlation_alert_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_correlation_alert_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_overflow_alert_print ()">
+<a name="idmef-overflow-alert-print"></a><h3>idmef_overflow_alert_print ()</h3>
+<pre class="programlisting">void                idmef_overflow_alert_print          (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-t" title="idmef_overflow_alert_t">idmef_overflow_alert_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_overflow_alert_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_alert_print ()">
+<a name="idmef-alert-print"></a><h3>idmef_alert_print ()</h3>
+<pre class="programlisting">void                idmef_alert_print                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alert-t" title="idmef_alert_t">idmef_alert_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_alert_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_heartbeat_print ()">
+<a name="idmef-heartbeat-print"></a><h3>idmef_heartbeat_print ()</h3>
+<pre class="programlisting">void                idmef_heartbeat_print               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-heartbeat-t" title="idmef_heartbeat_t">idmef_heartbeat_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_heartbeat_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_message_print ()">
+<a name="idmef-message-print"></a><h3>idmef_message_print ()</h3>
+<pre class="programlisting">void                idmef_message_print                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> *ptr,
+                                                         <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t">prelude_io_t</a> *fd);</pre>
+<p>
+This function will convert <em class="parameter"><code>ptr</code></em> to a string suitable for writing,
+and write it to the provided <em class="parameter"><code>fd</code></em> descriptor.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>ptr</code></em> :</span></p></td>
+<td> Pointer to an idmef_message_t object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>fd</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> object where to print <em class="parameter"><code>ptr</code></em> to.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" title="See Also">
+<a name="libprelude-idmef-message-print.see-also"></a><h2>See Also</h2>
+<p>
+<a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a>
+</p>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

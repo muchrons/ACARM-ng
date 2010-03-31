@@ -1,0 +1,665 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-idmef-message-read">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-idmef-message-read.top_of_page">idmef-message-read</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>idmef-message-read</refname>
+<refpurpose>Reading a message from a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> buffer</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-idmef-message-read.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+<link linkend="int">int</link>                 <link linkend="idmef-additional-data-read">idmef_additional_data_read</link>          (<link linkend="idmef-additional-data-t">idmef_additional_data_t</link> *additional_data,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-reference-read">idmef_reference_read</link>                (<link linkend="idmef-reference-t">idmef_reference_t</link> *reference,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-classification-read">idmef_classification_read</link>           (<link linkend="idmef-classification-t">idmef_classification_t</link> *classification,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-user-id-read">idmef_user_id_read</link>                  (<link linkend="idmef-user-id-t">idmef_user_id_t</link> *user_id,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-user-read">idmef_user_read</link>                     (<link linkend="idmef-user-t">idmef_user_t</link> *user,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-address-read">idmef_address_read</link>                  (<link linkend="idmef-address-t">idmef_address_t</link> *address,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-process-read">idmef_process_read</link>                  (<link linkend="idmef-process-t">idmef_process_t</link> *process,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-web-service-read">idmef_web_service_read</link>              (<link linkend="idmef-web-service-t">idmef_web_service_t</link> *web_service,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-snmp-service-read">idmef_snmp_service_read</link>             (<link linkend="idmef-snmp-service-t">idmef_snmp_service_t</link> *snmp_service,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-service-read">idmef_service_read</link>                  (<link linkend="idmef-service-t">idmef_service_t</link> *service,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-node-read">idmef_node_read</link>                     (<link linkend="idmef-node-t">idmef_node_t</link> *node,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-source-read">idmef_source_read</link>                   (<link linkend="idmef-source-t">idmef_source_t</link> *source,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-file-access-read">idmef_file_access_read</link>              (<link linkend="idmef-file-access-t">idmef_file_access_t</link> *file_access,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-inode-read">idmef_inode_read</link>                    (<link linkend="idmef-inode-t">idmef_inode_t</link> *inode,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-checksum-read">idmef_checksum_read</link>                 (<link linkend="idmef-checksum-t">idmef_checksum_t</link> *checksum,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-file-read">idmef_file_read</link>                     (<link linkend="idmef-file-t">idmef_file_t</link> *file,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-linkage-read">idmef_linkage_read</link>                  (<link linkend="idmef-linkage-t">idmef_linkage_t</link> *linkage,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-target-read">idmef_target_read</link>                   (<link linkend="idmef-target-t">idmef_target_t</link> *target,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-analyzer-read">idmef_analyzer_read</link>                 (<link linkend="idmef-analyzer-t">idmef_analyzer_t</link> *analyzer,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-alertident-read">idmef_alertident_read</link>               (<link linkend="idmef-alertident-t">idmef_alertident_t</link> *alertident,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-impact-read">idmef_impact_read</link>                   (<link linkend="idmef-impact-t">idmef_impact_t</link> *impact,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-action-read">idmef_action_read</link>                   (<link linkend="idmef-action-t">idmef_action_t</link> *action,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-confidence-read">idmef_confidence_read</link>               (<link linkend="idmef-confidence-t">idmef_confidence_t</link> *confidence,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-assessment-read">idmef_assessment_read</link>               (<link linkend="idmef-assessment-t">idmef_assessment_t</link> *assessment,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-tool-alert-read">idmef_tool_alert_read</link>               (<link linkend="idmef-tool-alert-t">idmef_tool_alert_t</link> *tool_alert,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-correlation-alert-read">idmef_correlation_alert_read</link>        (<link linkend="idmef-correlation-alert-t">idmef_correlation_alert_t</link> *correlation_alert,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-overflow-alert-read">idmef_overflow_alert_read</link>           (<link linkend="idmef-overflow-alert-t">idmef_overflow_alert_t</link> *overflow_alert,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-alert-read">idmef_alert_read</link>                    (<link linkend="idmef-alert-t">idmef_alert_t</link> *alert,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-heartbeat-read">idmef_heartbeat_read</link>                (<link linkend="idmef-heartbeat-t">idmef_heartbeat_t</link> *heartbeat,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="idmef-message-read">idmef_message_read</link>                  (<link linkend="idmef-message-t">idmef_message_t</link> *message,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-idmef-message-read.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+Once you read a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, you need to decode this message.
+In case this is an IDMEF style message, the following API allow to read
+the relevant IDMEF fields from the <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, and create the
+IDMEF object from it's content.
+</para>
+<para>
+The function you're most probably looking to use is <link linkend="idmef-message-read"><function>idmef_message_read()</function></link>, and here
+is an example on how to use it:
+<programlisting>
+int ret;
+prelude_msg_t *pmsg;
+idmef_message_t *message;
+pmsg = whatever_method_to_get_a_prelude_msg();
+ret = idmef_message_new(&amp;message);
+if ( ret &lt; 0 )
+        return ret;
+ret = idmef_message_read(message, pmsg);
+</programlisting>
+This will decode the full IDMEF message stored within pmsg into the <link linkend="idmef-message-t"><type>idmef_message_t</type></link>
+IDMEF object and it's childrens.
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-idmef-message-read.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="idmef-additional-data-read" role="function">
+<title>idmef_additional_data_read ()</title>
+<indexterm zone="idmef-additional-data-read"><primary sortas="idmef_additional_data_read">idmef_additional_data_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_additional_data_read          (<link linkend="idmef-additional-data-t">idmef_additional_data_t</link> *additional_data,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_additional_data from the <parameter>msg</parameter> message, and 
+store it into <parameter>additional_data</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>additional_data</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-additional-data-t"><type>idmef_additional_data_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-reference-read" role="function">
+<title>idmef_reference_read ()</title>
+<indexterm zone="idmef-reference-read"><primary sortas="idmef_reference_read">idmef_reference_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_reference_read                (<link linkend="idmef-reference-t">idmef_reference_t</link> *reference,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_reference from the <parameter>msg</parameter> message, and 
+store it into <parameter>reference</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>reference</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-reference-t"><type>idmef_reference_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-classification-read" role="function">
+<title>idmef_classification_read ()</title>
+<indexterm zone="idmef-classification-read"><primary sortas="idmef_classification_read">idmef_classification_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_classification_read           (<link linkend="idmef-classification-t">idmef_classification_t</link> *classification,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_classification from the <parameter>msg</parameter> message, and 
+store it into <parameter>classification</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>classification</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-classification-t"><type>idmef_classification_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-user-id-read" role="function">
+<title>idmef_user_id_read ()</title>
+<indexterm zone="idmef-user-id-read"><primary sortas="idmef_user_id_read">idmef_user_id_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_user_id_read                  (<link linkend="idmef-user-id-t">idmef_user_id_t</link> *user_id,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_user_id from the <parameter>msg</parameter> message, and 
+store it into <parameter>user_id</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>user_id</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-user-id-t"><type>idmef_user_id_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-user-read" role="function">
+<title>idmef_user_read ()</title>
+<indexterm zone="idmef-user-read"><primary sortas="idmef_user_read">idmef_user_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_user_read                     (<link linkend="idmef-user-t">idmef_user_t</link> *user,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_user from the <parameter>msg</parameter> message, and 
+store it into <parameter>user</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>user</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-user-t"><type>idmef_user_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-address-read" role="function">
+<title>idmef_address_read ()</title>
+<indexterm zone="idmef-address-read"><primary sortas="idmef_address_read">idmef_address_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_address_read                  (<link linkend="idmef-address-t">idmef_address_t</link> *address,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_address from the <parameter>msg</parameter> message, and 
+store it into <parameter>address</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>address</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-address-t"><type>idmef_address_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-process-read" role="function">
+<title>idmef_process_read ()</title>
+<indexterm zone="idmef-process-read"><primary sortas="idmef_process_read">idmef_process_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_process_read                  (<link linkend="idmef-process-t">idmef_process_t</link> *process,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_process from the <parameter>msg</parameter> message, and 
+store it into <parameter>process</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>process</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-process-t"><type>idmef_process_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-web-service-read" role="function">
+<title>idmef_web_service_read ()</title>
+<indexterm zone="idmef-web-service-read"><primary sortas="idmef_web_service_read">idmef_web_service_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_web_service_read              (<link linkend="idmef-web-service-t">idmef_web_service_t</link> *web_service,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_web_service from the <parameter>msg</parameter> message, and 
+store it into <parameter>web_service</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>web_service</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-web-service-t"><type>idmef_web_service_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-snmp-service-read" role="function">
+<title>idmef_snmp_service_read ()</title>
+<indexterm zone="idmef-snmp-service-read"><primary sortas="idmef_snmp_service_read">idmef_snmp_service_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_snmp_service_read             (<link linkend="idmef-snmp-service-t">idmef_snmp_service_t</link> *snmp_service,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_snmp_service from the <parameter>msg</parameter> message, and 
+store it into <parameter>snmp_service</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>snmp_service</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-snmp-service-t"><type>idmef_snmp_service_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-service-read" role="function">
+<title>idmef_service_read ()</title>
+<indexterm zone="idmef-service-read"><primary sortas="idmef_service_read">idmef_service_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_service_read                  (<link linkend="idmef-service-t">idmef_service_t</link> *service,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_service from the <parameter>msg</parameter> message, and 
+store it into <parameter>service</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>service</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-service-t"><type>idmef_service_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-node-read" role="function">
+<title>idmef_node_read ()</title>
+<indexterm zone="idmef-node-read"><primary sortas="idmef_node_read">idmef_node_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_node_read                     (<link linkend="idmef-node-t">idmef_node_t</link> *node,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_node from the <parameter>msg</parameter> message, and 
+store it into <parameter>node</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>node</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-node-t"><type>idmef_node_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-source-read" role="function">
+<title>idmef_source_read ()</title>
+<indexterm zone="idmef-source-read"><primary sortas="idmef_source_read">idmef_source_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_source_read                   (<link linkend="idmef-source-t">idmef_source_t</link> *source,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_source from the <parameter>msg</parameter> message, and 
+store it into <parameter>source</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>source</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-source-t"><type>idmef_source_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-file-access-read" role="function">
+<title>idmef_file_access_read ()</title>
+<indexterm zone="idmef-file-access-read"><primary sortas="idmef_file_access_read">idmef_file_access_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_file_access_read              (<link linkend="idmef-file-access-t">idmef_file_access_t</link> *file_access,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_file_access from the <parameter>msg</parameter> message, and 
+store it into <parameter>file_access</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>file_access</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-file-access-t"><type>idmef_file_access_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-inode-read" role="function">
+<title>idmef_inode_read ()</title>
+<indexterm zone="idmef-inode-read"><primary sortas="idmef_inode_read">idmef_inode_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_inode_read                    (<link linkend="idmef-inode-t">idmef_inode_t</link> *inode,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_inode from the <parameter>msg</parameter> message, and 
+store it into <parameter>inode</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>inode</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-inode-t"><type>idmef_inode_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-checksum-read" role="function">
+<title>idmef_checksum_read ()</title>
+<indexterm zone="idmef-checksum-read"><primary sortas="idmef_checksum_read">idmef_checksum_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_checksum_read                 (<link linkend="idmef-checksum-t">idmef_checksum_t</link> *checksum,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_checksum from the <parameter>msg</parameter> message, and 
+store it into <parameter>checksum</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>checksum</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-checksum-t"><type>idmef_checksum_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-file-read" role="function">
+<title>idmef_file_read ()</title>
+<indexterm zone="idmef-file-read"><primary sortas="idmef_file_read">idmef_file_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_file_read                     (<link linkend="idmef-file-t">idmef_file_t</link> *file,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_file from the <parameter>msg</parameter> message, and 
+store it into <parameter>file</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>file</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-file-t"><type>idmef_file_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-linkage-read" role="function">
+<title>idmef_linkage_read ()</title>
+<indexterm zone="idmef-linkage-read"><primary sortas="idmef_linkage_read">idmef_linkage_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_linkage_read                  (<link linkend="idmef-linkage-t">idmef_linkage_t</link> *linkage,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_linkage from the <parameter>msg</parameter> message, and 
+store it into <parameter>linkage</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>linkage</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-linkage-t"><type>idmef_linkage_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-target-read" role="function">
+<title>idmef_target_read ()</title>
+<indexterm zone="idmef-target-read"><primary sortas="idmef_target_read">idmef_target_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_target_read                   (<link linkend="idmef-target-t">idmef_target_t</link> *target,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_target from the <parameter>msg</parameter> message, and 
+store it into <parameter>target</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>target</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-target-t"><type>idmef_target_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-analyzer-read" role="function">
+<title>idmef_analyzer_read ()</title>
+<indexterm zone="idmef-analyzer-read"><primary sortas="idmef_analyzer_read">idmef_analyzer_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_analyzer_read                 (<link linkend="idmef-analyzer-t">idmef_analyzer_t</link> *analyzer,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_analyzer from the <parameter>msg</parameter> message, and 
+store it into <parameter>analyzer</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>analyzer</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-analyzer-t"><type>idmef_analyzer_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-alertident-read" role="function">
+<title>idmef_alertident_read ()</title>
+<indexterm zone="idmef-alertident-read"><primary sortas="idmef_alertident_read">idmef_alertident_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_alertident_read               (<link linkend="idmef-alertident-t">idmef_alertident_t</link> *alertident,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_alertident from the <parameter>msg</parameter> message, and 
+store it into <parameter>alertident</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>alertident</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-alertident-t"><type>idmef_alertident_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-impact-read" role="function">
+<title>idmef_impact_read ()</title>
+<indexterm zone="idmef-impact-read"><primary sortas="idmef_impact_read">idmef_impact_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_impact_read                   (<link linkend="idmef-impact-t">idmef_impact_t</link> *impact,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_impact from the <parameter>msg</parameter> message, and 
+store it into <parameter>impact</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>impact</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-impact-t"><type>idmef_impact_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-action-read" role="function">
+<title>idmef_action_read ()</title>
+<indexterm zone="idmef-action-read"><primary sortas="idmef_action_read">idmef_action_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_action_read                   (<link linkend="idmef-action-t">idmef_action_t</link> *action,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_action from the <parameter>msg</parameter> message, and 
+store it into <parameter>action</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>action</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-action-t"><type>idmef_action_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-confidence-read" role="function">
+<title>idmef_confidence_read ()</title>
+<indexterm zone="idmef-confidence-read"><primary sortas="idmef_confidence_read">idmef_confidence_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_confidence_read               (<link linkend="idmef-confidence-t">idmef_confidence_t</link> *confidence,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_confidence from the <parameter>msg</parameter> message, and 
+store it into <parameter>confidence</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>confidence</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-confidence-t"><type>idmef_confidence_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-assessment-read" role="function">
+<title>idmef_assessment_read ()</title>
+<indexterm zone="idmef-assessment-read"><primary sortas="idmef_assessment_read">idmef_assessment_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_assessment_read               (<link linkend="idmef-assessment-t">idmef_assessment_t</link> *assessment,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_assessment from the <parameter>msg</parameter> message, and 
+store it into <parameter>assessment</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>assessment</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-assessment-t"><type>idmef_assessment_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-tool-alert-read" role="function">
+<title>idmef_tool_alert_read ()</title>
+<indexterm zone="idmef-tool-alert-read"><primary sortas="idmef_tool_alert_read">idmef_tool_alert_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_tool_alert_read               (<link linkend="idmef-tool-alert-t">idmef_tool_alert_t</link> *tool_alert,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_tool_alert from the <parameter>msg</parameter> message, and 
+store it into <parameter>tool_alert</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>tool_alert</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-tool-alert-t"><type>idmef_tool_alert_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-correlation-alert-read" role="function">
+<title>idmef_correlation_alert_read ()</title>
+<indexterm zone="idmef-correlation-alert-read"><primary sortas="idmef_correlation_alert_read">idmef_correlation_alert_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_correlation_alert_read        (<link linkend="idmef-correlation-alert-t">idmef_correlation_alert_t</link> *correlation_alert,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_correlation_alert from the <parameter>msg</parameter> message, and 
+store it into <parameter>correlation_alert</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>correlation_alert</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-correlation-alert-t"><type>idmef_correlation_alert_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-overflow-alert-read" role="function">
+<title>idmef_overflow_alert_read ()</title>
+<indexterm zone="idmef-overflow-alert-read"><primary sortas="idmef_overflow_alert_read">idmef_overflow_alert_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_overflow_alert_read           (<link linkend="idmef-overflow-alert-t">idmef_overflow_alert_t</link> *overflow_alert,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_overflow_alert from the <parameter>msg</parameter> message, and 
+store it into <parameter>overflow_alert</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>overflow_alert</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-overflow-alert-t"><type>idmef_overflow_alert_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-alert-read" role="function">
+<title>idmef_alert_read ()</title>
+<indexterm zone="idmef-alert-read"><primary sortas="idmef_alert_read">idmef_alert_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_alert_read                    (<link linkend="idmef-alert-t">idmef_alert_t</link> *alert,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_alert from the <parameter>msg</parameter> message, and 
+store it into <parameter>alert</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>alert</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-alert-t"><type>idmef_alert_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-heartbeat-read" role="function">
+<title>idmef_heartbeat_read ()</title>
+<indexterm zone="idmef-heartbeat-read"><primary sortas="idmef_heartbeat_read">idmef_heartbeat_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_heartbeat_read                (<link linkend="idmef-heartbeat-t">idmef_heartbeat_t</link> *heartbeat,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_heartbeat from the <parameter>msg</parameter> message, and 
+store it into <parameter>heartbeat</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>heartbeat</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-heartbeat-t"><type>idmef_heartbeat_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-message-read" role="function">
+<title>idmef_message_read ()</title>
+<indexterm zone="idmef-message-read"><primary sortas="idmef_message_read">idmef_message_read</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_message_read                  (<link linkend="idmef-message-t">idmef_message_t</link> *message,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+Read an idmef_message from the <parameter>msg</parameter> message, and 
+store it into <parameter>message</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>message</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-message-t"><type>idmef_message_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-msg-t"><type>prelude_msg_t</type></link> object, containing a message.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

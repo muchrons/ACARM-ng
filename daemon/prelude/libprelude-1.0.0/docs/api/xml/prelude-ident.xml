@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-prelude-ident">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-prelude-ident.top_of_page">prelude-ident</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>prelude-ident</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-prelude-ident.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+typedef             <link linkend="prelude-ident-t">prelude_ident_t</link>;
+<link linkend="uint64-t">uint64_t</link>            <link linkend="prelude-ident-inc">prelude_ident_inc</link>                   (<link linkend="prelude-ident-t">prelude_ident_t</link> *ident);
+<link linkend="int">int</link>                 <link linkend="prelude-ident-generate">prelude_ident_generate</link>              (<link linkend="prelude-ident-t">prelude_ident_t</link> *ident,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *out);
+<link linkend="void">void</link>                <link linkend="prelude-ident-destroy">prelude_ident_destroy</link>               (<link linkend="prelude-ident-t">prelude_ident_t</link> *ident);
+<link linkend="int">int</link>                 <link linkend="prelude-ident-new">prelude_ident_new</link>                   (<link linkend="prelude-ident-t">prelude_ident_t</link> **ret);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-prelude-ident.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-prelude-ident.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="prelude-ident-t" role="typedef">
+<title>prelude_ident_t</title>
+<indexterm zone="prelude-ident-t"><primary sortas="prelude_ident_t">prelude_ident_t</primary></indexterm><programlisting>typedef struct prelude_ident prelude_ident_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-ident-inc" role="function">
+<title>prelude_ident_inc ()</title>
+<indexterm zone="prelude-ident-inc"><primary sortas="prelude_ident_inc">prelude_ident_inc</primary></indexterm><programlisting><link linkend="uint64-t">uint64_t</link>            prelude_ident_inc                   (<link linkend="prelude-ident-t">prelude_ident_t</link> *ident);</programlisting>
+<para>
+Deprecated.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ident</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-ident-t"><type>prelude_ident_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A new ident.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-ident-generate" role="function">
+<title>prelude_ident_generate ()</title>
+<indexterm zone="prelude-ident-generate"><primary sortas="prelude_ident_generate">prelude_ident_generate</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_ident_generate              (<link linkend="prelude-ident-t">prelude_ident_t</link> *ident,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *out);</programlisting>
+<para>
+Generate an UUID and store it in <parameter>out</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ident</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-ident-t"><type>prelude_ident_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>out</parameter>&#160;:</term>
+<listitem><simpara> <link linkend="prelude-string-t"><type>prelude_string_t</type></link> where the ident will be generated.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A negative value if an error occur.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-ident-destroy" role="function">
+<title>prelude_ident_destroy ()</title>
+<indexterm zone="prelude-ident-destroy"><primary sortas="prelude_ident_destroy">prelude_ident_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_ident_destroy               (<link linkend="prelude-ident-t">prelude_ident_t</link> *ident);</programlisting>
+<para>
+Destroy a <link linkend="prelude-ident-t"><type>prelude_ident_t</type></link> object.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ident</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-ident-t"><type>prelude_ident_t</type></link> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-ident-new" role="function">
+<title>prelude_ident_new ()</title>
+<indexterm zone="prelude-ident-new"><primary sortas="prelude_ident_new">prelude_ident_new</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_ident_new                   (<link linkend="prelude-ident-t">prelude_ident_t</link> **ret);</programlisting>
+<para>
+Create a new <link linkend="prelude-ident-t"><type>prelude_ident_t</type></link> object with an unique value.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ret</parameter>&#160;:</term>
+<listitem><simpara> Pointer where to store the created object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

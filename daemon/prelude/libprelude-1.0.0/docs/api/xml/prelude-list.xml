@@ -1,0 +1,240 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-prelude-list">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-prelude-list.top_of_page">prelude-list</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>prelude-list</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-prelude-list.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+#define             <link linkend="PRELUDE-LIST--CAPS">PRELUDE_LIST</link>                        (item)
+                    <link linkend="prelude-list-t">prelude_list_t</link>;
+#define             <link linkend="prelude-list-entry">prelude_list_entry</link>                  (item, type, member)
+#define             <link linkend="prelude-list-for-each">prelude_list_for_each</link>               (list, pos)
+#define             <link linkend="prelude-list-for-each-safe">prelude_list_for_each_safe</link>          (list, pos, bkp)
+#define             <link linkend="prelude-list-for-each-reversed">prelude_list_for_each_reversed</link>      (list, pos)
+#define             <link linkend="prelude-list-for-each-reversed-safe">prelude_list_for_each_reversed_safe</link> (list, pos, bkp)
+#define             <link linkend="prelude-list-for-each-continue">prelude_list_for_each_continue</link>      (list, pos)
+#define             <link linkend="prelude-list-for-each-continue-safe">prelude_list_for_each_continue_safe</link> (list, pos, bkp)
+#define             <link linkend="prelude-list-get-next">prelude_list_get_next</link>               (list, pos, class, member)
+#define             <link linkend="prelude-list-get-next-safe">prelude_list_get_next_safe</link>          (list, pos, bkp, class, member)
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-prelude-list.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-prelude-list.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="PRELUDE-LIST--CAPS" role="macro">
+<title>PRELUDE_LIST()</title>
+<indexterm zone="PRELUDE-LIST--CAPS"><primary sortas="PRELUDE_LIST">PRELUDE_LIST</primary></indexterm><programlisting>#define PRELUDE_LIST(item) prelude_list_t (item) = { &amp;(item), &amp;(item) }
+</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>item</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-list-t" role="struct">
+<title>prelude_list_t</title>
+<indexterm zone="prelude-list-t"><primary sortas="prelude_list_t">prelude_list_t</primary></indexterm><programlisting>typedef struct {
+        struct prelude_list *next;
+        struct prelude_list *prev;
+} prelude_list_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-list-entry" role="macro">
+<title>prelude_list_entry()</title>
+<indexterm zone="prelude-list-entry"><primary sortas="prelude_list_entry">prelude_list_entry</primary></indexterm><programlisting>#define             prelude_list_entry(item, type, member)</programlisting>
+<para>
+Retrieve the entry of type <parameter>type</parameter> from the <link linkend="prelude-list-t"><type>prelude_list_t</type></link> object <parameter>tmp</parameter>,
+using the item list member <parameter>member</parameter>. Returns the entry associated with <parameter>item</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>item</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> object to retrieve the entry from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara> Type of the entry to retrieve.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>member</parameter>&#160;:</term>
+<listitem><simpara> List member in <parameter>type</parameter> used to link it to a list.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-list-for-each" role="macro">
+<title>prelude_list_for_each()</title>
+<indexterm zone="prelude-list-for-each"><primary sortas="prelude_list_for_each">prelude_list_for_each</primary></indexterm><programlisting>#define             prelude_list_for_each(list, pos)</programlisting>
+<para>
+Iterate through all <parameter>list</parameter> entry. <link linkend="prelude-list-entry"><function>prelude_list_entry()</function></link> can be used to retrieve
+and entry from the <parameter>pos</parameter> pointer. It is not safe to call <link linkend="prelude-list-del"><function>prelude_list_del()</function></link> while
+iterating using this function, see <link linkend="prelude-list-for-each-safe"><function>prelude_list_for_each_safe()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> object pointing to the current list member.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-list-for-each-safe" role="macro">
+<title>prelude_list_for_each_safe()</title>
+<indexterm zone="prelude-list-for-each-safe"><primary sortas="prelude_list_for_each_safe">prelude_list_for_each_safe</primary></indexterm><programlisting>#define             prelude_list_for_each_safe(list, pos, bkp)</programlisting>
+<para>
+Iterate through all <parameter>list</parameter> entry. <link linkend="prelude-list-entry"><function>prelude_list_entry()</function></link> can be used to retrieve
+and entry from the <parameter>pos</parameter> pointer. Calling <link linkend="prelude-list-del"><function>prelude_list_del()</function></link> while iterating the
+list is safe.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> object pointing to the current list member.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bkp</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> object pointing to the next list member.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-list-for-each-reversed" role="macro">
+<title>prelude_list_for_each_reversed()</title>
+<indexterm zone="prelude-list-for-each-reversed"><primary sortas="prelude_list_for_each_reversed">prelude_list_for_each_reversed</primary></indexterm><programlisting>#define             prelude_list_for_each_reversed(list, pos)</programlisting>
+<para>
+Iterate through all <parameter>list</parameter> entry in reverse order. <link linkend="prelude-list-entry"><function>prelude_list_entry()</function></link> can be
+used to retrieve and entry from the <parameter>pos</parameter> pointer. It is not safe to call
+<link linkend="prelude-list-del"><function>prelude_list_del()</function></link> while iterating using this function, see
+<link linkend="prelude-list-for-each-reversed-safe"><function>prelude_list_for_each_reversed_safe()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> object pointing to the current list member.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-list-for-each-reversed-safe" role="macro">
+<title>prelude_list_for_each_reversed_safe()</title>
+<indexterm zone="prelude-list-for-each-reversed-safe"><primary sortas="prelude_list_for_each_reversed_safe">prelude_list_for_each_reversed_safe</primary></indexterm><programlisting>#define             prelude_list_for_each_reversed_safe(list, pos, bkp)</programlisting>
+<para>
+Iterate through all <parameter>list</parameter> entry in reverse order. <link linkend="prelude-list-entry"><function>prelude_list_entry()</function></link> can be used to retrieve
+and entry from the <parameter>pos</parameter> pointer. Calling <link linkend="prelude-list-del"><function>prelude_list_del()</function></link> while iterating the
+list is safe.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> object pointing to the current list member.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bkp</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> object pointing to the next list member.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-list-for-each-continue" role="macro">
+<title>prelude_list_for_each_continue()</title>
+<indexterm zone="prelude-list-for-each-continue"><primary sortas="prelude_list_for_each_continue">prelude_list_for_each_continue</primary></indexterm><programlisting>#define             prelude_list_for_each_continue(list, pos)</programlisting>
+<para>
+Iterate through all <parameter>list</parameter> entry starting from <parameter>pos</parameter> if it is not NULL, or from
+the start of <parameter>list</parameter> if it is. <link linkend="prelude-list-entry"><function>prelude_list_entry()</function></link> can be used to retrieve
+and entry from the <parameter>pos</parameter> pointer. Calling <link linkend="prelude-list-del"><function>prelude_list_del()</function></link> while iterating the
+list is not safe.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> object pointing to the current list member.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-list-for-each-continue-safe" role="macro">
+<title>prelude_list_for_each_continue_safe()</title>
+<indexterm zone="prelude-list-for-each-continue-safe"><primary sortas="prelude_list_for_each_continue_safe">prelude_list_for_each_continue_safe</primary></indexterm><programlisting>#define             prelude_list_for_each_continue_safe(list, pos, bkp)</programlisting>
+<para>
+Iterate through all <parameter>list</parameter> entry starting from <parameter>pos</parameter> if it is not NULL, or from
+the start of <parameter>list</parameter> if it is. <link linkend="prelude-list-entry"><function>prelude_list_entry()</function></link> can be used to retrieve
+and entry from the <parameter>pos</parameter> pointer. Calling <link linkend="prelude-list-del"><function>prelude_list_del()</function></link> while iterating the
+list is safe.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> object pointing to the current list member.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bkp</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-list-t"><type>prelude_list_t</type></link> object pointing to the next list member.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-list-get-next" role="macro">
+<title>prelude_list_get_next()</title>
+<indexterm zone="prelude-list-get-next"><primary sortas="prelude_list_get_next">prelude_list_get_next</primary></indexterm><programlisting>#define             prelude_list_get_next(list, pos, class, member)</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>class</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>member</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-list-get-next-safe" role="macro">
+<title>prelude_list_get_next_safe()</title>
+<indexterm zone="prelude-list-get-next-safe"><primary sortas="prelude_list_get_next_safe">prelude_list_get_next_safe</primary></indexterm><programlisting>#define             prelude_list_get_next_safe(list, pos, bkp, class, member)</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>list</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>pos</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>bkp</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>class</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>member</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>
