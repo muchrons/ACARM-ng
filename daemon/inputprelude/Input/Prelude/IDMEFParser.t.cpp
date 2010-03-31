@@ -36,7 +36,7 @@ struct TestClass
     idmef_alert_new_messageid(alert,&string1);
     prelude_string_new_ref(&string2,name_.c_str());
     idmef_alert_set_messageid(alert,string2);
-    
+
     idmef_analyzer_t *analyzer;
     idmef_alert_new_analyzer(alert,&analyzer,IDMEF_LIST_APPEND);
     prelude_string_t *ps_name,*ps_ostype,*ps_osversion,*ps_address;
@@ -47,17 +47,17 @@ struct TestClass
     prelude_string_new_dup(&ps_ostype,ostype.c_str());
     prelude_string_new_dup(&ps_osversion,osversion.c_str());
     prelude_string_new_dup(&ps_address,address.c_str());
-    
+
     idmef_analyzer_set_name(analyzer,ps_name);
     idmef_analyzer_set_ostype(analyzer,ps_ostype);
     idmef_analyzer_set_osversion(analyzer,ps_osversion);
-    
+
     idmef_node_t *node;
     idmef_analyzer_new_node(analyzer, &node);
     idmef_address_t * addr;
-    
+
     idmef_node_new_address(node,&addr,IDMEF_LIST_APPEND);
-    idmef_address_set_address(addr,ps_address);        
+    idmef_address_set_address(addr,ps_address);
   }
 
   idmef_message_t * getMessage()

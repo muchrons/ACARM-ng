@@ -24,24 +24,24 @@ struct TestClass
   {
     if (idmef_analyzer_new(&analyzer_)<0)
       tut::fail("Unable to create analyzer obcject.");
-    
+
     prelude_string_t *ps_name,*ps_ostype,*ps_osversion,*ps_address;
-    
+
     prelude_string_new_dup(&ps_name,name_.c_str());
     prelude_string_new_dup(&ps_ostype,ostype_.c_str());
     prelude_string_new_dup(&ps_osversion,osversion_.c_str());
     prelude_string_new_dup(&ps_address,address_.c_str());
-    
+
     idmef_analyzer_set_name(analyzer_,ps_name);
     idmef_analyzer_set_ostype(analyzer_,ps_ostype);
     idmef_analyzer_set_osversion(analyzer_,ps_osversion);
-    
+
     idmef_node_t *node;
     idmef_analyzer_new_node(analyzer_, &node);
     idmef_address_t * addr;
-    
+
     idmef_node_new_address(node,&addr,IDMEF_LIST_APPEND);
-    idmef_address_set_address(addr,ps_address);    
+    idmef_address_set_address(addr,ps_address);
   }
 
   ~TestClass()
@@ -71,10 +71,10 @@ namespace tut
 template<>
 template<>
 void testObj::test<1>(void)
-{  
+{
   IDMEFParserAnalyzer an(getAnalyzer());
   /*
-  ensure(an.getName()==Persistency::Analyzer::Name(name_));   
+  ensure(an.getName()==Persistency::Analyzer::Name(name_));
   */
 }
 
@@ -83,7 +83,7 @@ template<>
 void testObj::test<2>(void)
 {  /*
   IDMEFParserAnalyzer an(getAnalyzer());
-  ensure(*(an.getOS())==Persistency::Analyzer::OS(ostype_));  
+  ensure(*(an.getOS())==Persistency::Analyzer::OS(ostype_));
    */
 }
 
