@@ -11,6 +11,10 @@ namespace Input
 namespace Prelude
 {
 
+using boost::asio::ip::address_v4;
+using boost::asio::ip::address_v6;
+using Persistency::Analyzer;
+
 IDMEFParserTarget::IDMEFParserTarget(idmef_target_t *ptr):ptr_(ptr)
 {
   if (!ptr)
@@ -59,19 +63,20 @@ IDMEFParserTarget::IDMEFParserTarget(idmef_target_t *ptr):ptr_(ptr)
           const prelude_string_t *idmef_node_address = idmef_address_get_address(idmef_node_addr);
           if (idmef_node_address)
             {
+              const char * tmp=prelude_string_get_string(idmef_node_address);
               switch (idmef_address_get_category(idmef_node_addr))
                 {
                 case IDMEF_ADDRESS_CATEGORY_IPV4_ADDR:
                 case IDMEF_ADDRESS_CATEGORY_IPV4_ADDR_HEX:
                 case IDMEF_ADDRESS_CATEGORY_IPV4_NET:
                 case IDMEF_ADDRESS_CATEGORY_IPV4_NET_MASK:
-                  ip_.reset(new Persistency::Analyzer::IP(boost::asio::ip::address_v4::from_string(prelude_string_get_string(idmef_node_address))));
+                  ip_.reset(new Analyzer::IP(address_v4::from_string(tmp)));
                   break;
                 case IDMEF_ADDRESS_CATEGORY_IPV6_ADDR:
                 case IDMEF_ADDRESS_CATEGORY_IPV6_ADDR_HEX:
                 case IDMEF_ADDRESS_CATEGORY_IPV6_NET:
                 case IDMEF_ADDRESS_CATEGORY_IPV6_NET_MASK:
-                  ip_.reset(new Persistency::Analyzer::IP(boost::asio::ip::address_v6::from_string(prelude_string_get_string(idmef_node_address))));
+                  ip_.reset(new Analyzer::IP(address_v4::from_string(tmp)));
                   break;
                 default:
                   break;
