@@ -34,14 +34,14 @@ post_install.dep: copy_headers_time_stamp copy_libs_time_stamp
 copy_headers_time_stamp: install_time_stamp
 	@echo "BUILD $(COMPONENT_NAME): copy headers"
 	@mkdir -p "$(GEN_INCLUDES_DIR)"
-	@echo 'for d in "$$@" ; do if test -d "$$d" ; then cd "$$d" && find . -type f -exec cp -ruv --parents {} "$(GEN_INCLUDES_DIR)"/ \; || exit $? ; fi ; done ; exit 0' > copy_headers.sh
+	@echo 'for d in "$$@" ; do if test -d "$$d" ; then cd "$$d" && find . -type f -exec cp -aruv --parents {} "$(GEN_INCLUDES_DIR)"/ \; || exit $? ; fi ; done ; exit 0' > copy_headers.sh
 	@bash copy_headers.sh "installed/include" "installed/usr/include" > copy_headers.log 2>&1
 	@date > "$@"
 
 copy_libs_time_stamp: install_time_stamp
 	@echo "BUILD $(COMPONENT_NAME): copy libs"
 	@mkdir -p "$(GEN_LIBS_DIR)"
-	@echo 'for d in "$$@" ; do if test -d "$$d" ; then cd "$$d" && find . -type f -exec cp -ruv --parents {} "$(GEN_LIBS_DIR)"/ \; || exit $? ; fi ; done ; exit 0' > copy_libs.sh
+	@echo 'for d in "$$@" ; do if test -d "$$d" ; then cd "$$d" && find . -type f -iname "*.so" -o -name "*.so.*" -o -name "*.a" -exec cp -aruv --parents {} "$(GEN_LIBS_DIR)"/ \; || exit $? ; fi ; done ; exit 0' > copy_libs.sh
 	@bash copy_libs.sh "installed/lib" "installed/usr/lib" > copy_libs.log 2>&1
 	@date > "$@"
 
