@@ -1,5 +1,5 @@
-#include "PreludePP/idmef.hpp"
-#include "PreludePP/prelude-client.hpp"
+#include "idmef.hxx"
+#include "prelude-client.hxx"
 
 #define YELLOW "\033[1;33m"
 #define WHITE "\033[0m"
