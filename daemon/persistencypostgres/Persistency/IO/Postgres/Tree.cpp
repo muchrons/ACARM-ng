@@ -12,12 +12,12 @@ namespace IO
 namespace Postgres
 {
 
-Tree::Tree(DataBaseID id, const std::vector<DataBaseID> &children):id_(id)
+Tree::Tree(DataBaseID id, const std::vector<DataBaseID> &children):
+  id_(id)
 {
-  for(vector<DataBaseID>::const_iterator it = children.begin(); it != children.end(); ++it)
-  {
+  for(vector<DataBaseID>::const_iterator it = children.begin();
+      it != children.end(); ++it)
     addChild(*it);
-  }
 }
 
 DataBaseID Tree::getID()

@@ -6,6 +6,10 @@
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 
 using boost::posix_time::from_iso_string;
+
+// TODO: make these changes (i.e. - commiting graph node changes) also in
+//       testhelperspersistency component.
+
 namespace Persistency
 {
 namespace IO
@@ -130,6 +134,8 @@ GraphNodePtrNN makeNewTree2(void)
                       makeNewNode(
                         makeNewNode( makeNewLeaf(), node1 ), node1 ) );
 }
+
+// TODO
 /*
 GraphNodePtrNN makeNewTree3(void)
 {

@@ -140,8 +140,7 @@ private:
   void setName(const Name &name);
 
   IP                           ip_;
-
-  detail::NullValue<Netmask>           mask_;
+  detail::NullValue<Netmask>   mask_;
   OperatingSystem              os_;
   Name                         name_;
   ReferenceURLPtr              url_;
