@@ -9,9 +9,6 @@ then
   exit 1
 fi
 
-# display info on rebuilding dependency for a given component
-echo "CDEPS $4"
-
 # remember output dir
 OUTPUT_DIR="$1"
 shift
@@ -44,15 +41,8 @@ function finder
 #   returns minimum list of dependent components
 function reduce_deps
 {
-  local TMP=""
-  echo "$@" | xargs -n 1 echo | grep -n '' | sort -r -n | sed 's:^[0-9]\+.::' | \
-    while read C
-    do
-      grep -q " $C " <<< " $TMP " && continue
-      TMP="$TMP $C"
-      echo "$C"
-    done | \
-  grep -n '' | sort -r -n | sed 's:^[0-9]\+.::' | xargs echo
+  echo "$@" | \
+    awk '{ j=1 ; for(i=NF; i>0 ; i-=1) { more[$i]+=1 ; if(more[$i]==1) { out[j]=$i ; j+=1 } } ; for(i=j-1; i>0; i-=1) { printf("%s ", out[i]) } ; print("") }'
 }
 
 # short name for component - it will be used many times
@@ -126,5 +116,8 @@ endif
 $out:: \$(wildcard $DEPS_FILES)
 	@$THIS_SCRIPT "$OUTPUT_DIR" "$DEPS_PATH" "$GEN_LIBS_PATH" "$C"
 EOF
+
+# display info on rebuilding dependency for a given component
+echo "CDEPS $C"
 
 exit 0
