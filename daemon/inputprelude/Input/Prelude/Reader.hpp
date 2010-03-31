@@ -12,8 +12,6 @@
 #include "Input/Prelude/Client.hpp"
 #include "Input/Prelude/LogCallback.hpp"
 
-
-
 // TODO: implement
 // TODO: test
 
@@ -30,7 +28,6 @@ public:
   /** \brief create prelud reader.
    */
   Reader(const std::string profile);
-public:
   /** \brief reads data from input from prelude-manager.
    *  \param timeout milliseconds to wait before timeout occures.
    *  \return pointer to newly allocated strucutre or NULL on timeout.
@@ -38,9 +35,9 @@ public:
   virtual DataPtr read(unsigned int timeout);
 
 private:
-  LogCallback                            preludeLogger_;
-  std::string                            preludeProfile_;
-  boost::scoped_ptr< Client > client_;
+  LogCallback               preludeLogger_;
+  std::string               preludeProfile_;
+  boost::scoped_ptr<Client> client_;
 }; // class Reader
 
 } // namespace Prelude

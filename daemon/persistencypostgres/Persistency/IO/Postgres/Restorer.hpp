@@ -33,6 +33,7 @@ public:
            DBHandlerPtrNN  dbHandler);
 
 private:
+  // TODO: use upper-case for type names
   /** \brief data type which stores tree nodes of class Tree
    */
   typedef std::map<DataBaseID, TreePtr> nodesMap;
@@ -44,18 +45,18 @@ private:
                                   const Timestamp &to);
   BackendFactory::FactoryPtr createStubIO(void);
   TreePtr getNode(DataBaseID id);
-  GraphNodePtrNN deepFirstSearch(DataBaseID         id,
-                                 NodesVector         &out,
-                                 Persistency::IO::Postgres::detail::EntryReader         &er,
-                                 IO::ConnectionPtrNN  connStubIO,
-                                 IO::Transaction     &tStubIO);
-  void restore(Persistency::IO::Postgres::detail::EntryReader             &er,
-                                                  NodesVector             &out,
-                                                  std::vector<DataBaseID> &malerts);
+  GraphNodePtrNN deepFirstSearch(DataBaseID                                      id,
+                                 NodesVector                                    &out,
+                                 Persistency::IO::Postgres::detail::EntryReader &er,
+                                 IO::ConnectionPtrNN                             connStubIO,
+                                 IO::Transaction                                &tStubIO);
+  // TODO: use private typedef for vector<ID> - it is used in few places already
+  void restore(Persistency::IO::Postgres::detail::EntryReader &er,
+               NodesVector                                    &out,
+               std::vector<DataBaseID>                        &malerts);
 
   DBHandlerPtrNN  dbHandler_;
   nodesMap        treeNodes_;
-
 }; // class Restorer
 
 } // namespace Postgres

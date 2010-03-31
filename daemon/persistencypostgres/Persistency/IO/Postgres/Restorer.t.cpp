@@ -29,6 +29,7 @@ struct TestClass
     tdba_.removeAllData();
   }
 
+  // TODO: make common implementations common (this code appears in many tests)
   IO::ConnectionPtrNN makeConnection(void) const
   {
     IO::BackendFactory::Options opts;
@@ -71,7 +72,13 @@ void testObj::test<1>(void)
   // restore data from data base
   conn_->restorer(t_)->restoreAllInUse(out);
   t_.commit();
+  // TODO: check what has been read
 }
 
-} // namespace tut
+// TODO: try restoring few non-trivial test cases
 
+// TODO: try restoring empty set and all meta alerts
+
+// TODO: try restoring invalid data (i.e. node that has no children, etc...)
+
+} // namespace tut
