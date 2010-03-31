@@ -5,7 +5,7 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_TREE_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_TREE_HPP_FILE
 
-// TODO: vector's header's missing (you use it, but you do not include it)
+#include <vector>
 
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 
