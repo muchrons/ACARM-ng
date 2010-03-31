@@ -1,24 +1,23 @@
-/* A Bison parser, made by GNU Bison 2.3.  */
+
+/* A Bison parser, made by GNU Bison 2.4.1.  */
 
 /* Skeleton implementation for Bison's Yacc-like parsers in C
-
-   Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
+   
+      Copyright (C) 1984, 1989, 1990, 2000, 2001, 2002, 2003, 2004, 2005, 2006
    Free Software Foundation, Inc.
-
-   This program is free software; you can redistribute it and/or modify
+   
+   This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2, or (at your option)
-   any later version.
-
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+   
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-
+   
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.  */
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -29,7 +28,7 @@
    special exception, which will cause the skeleton and the resulting
    Bison output files to be licensed under the GNU General Public
    License without this special exception.
-
+   
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
@@ -47,7 +46,7 @@
 #define YYBISON 1
 
 /* Bison version.  */
-#define YYBISON_VERSION "2.3"
+#define YYBISON_VERSION "2.4.1"
 
 /* Skeleton name.  */
 #define YYSKELETON_NAME "yacc.c"
@@ -55,70 +54,21 @@
 /* Pure parsers.  */
 #define YYPURE 0
 
+/* Push parsers.  */
+#define YYPUSH 0
+
+/* Pull parsers.  */
+#define YYPULL 1
+
 /* Using locations.  */
 #define YYLSP_NEEDED 0
 
 
 
-/* Tokens.  */
-#ifndef YYTOKENTYPE
-# define YYTOKENTYPE
-   /* Put the tokens into the symbol table, so that GDB and other debuggers
-      know about them.  */
-   enum yytokentype {
-     TOK_IDMEF_VALUE = 258,
-     TOK_IDMEF_PATH = 259,
-     TOK_RELATION_SUBSTRING = 260,
-     TOK_RELATION_SUBSTRING_NOCASE = 261,
-     TOK_RELATION_NOT_SUBSTRING = 262,
-     TOK_RELATION_NOT_SUBSTRING_NOCASE = 263,
-     TOK_RELATION_REGEXP = 264,
-     TOK_RELATION_REGEXP_NOCASE = 265,
-     TOK_RELATION_NOT_REGEXP = 266,
-     TOK_RELATION_NOT_REGEXP_NOCASE = 267,
-     TOK_RELATION_GREATER = 268,
-     TOK_RELATION_GREATER_OR_EQUAL = 269,
-     TOK_RELATION_LESS = 270,
-     TOK_RELATION_LESS_OR_EQUAL = 271,
-     TOK_RELATION_EQUAL = 272,
-     TOK_RELATION_EQUAL_NOCASE = 273,
-     TOK_RELATION_NOT_EQUAL = 274,
-     TOK_RELATION_NOT_EQUAL_NOCASE = 275,
-     TOK_NOT = 276,
-     TOK_OPERATOR_AND = 277,
-     TOK_OPERATOR_OR = 278,
-     TOK_ERROR = 279
-   };
-#endif
-/* Tokens.  */
-#define TOK_IDMEF_VALUE 258
-#define TOK_IDMEF_PATH 259
-#define TOK_RELATION_SUBSTRING 260
-#define TOK_RELATION_SUBSTRING_NOCASE 261
-#define TOK_RELATION_NOT_SUBSTRING 262
-#define TOK_RELATION_NOT_SUBSTRING_NOCASE 263
-#define TOK_RELATION_REGEXP 264
-#define TOK_RELATION_REGEXP_NOCASE 265
-#define TOK_RELATION_NOT_REGEXP 266
-#define TOK_RELATION_NOT_REGEXP_NOCASE 267
-#define TOK_RELATION_GREATER 268
-#define TOK_RELATION_GREATER_OR_EQUAL 269
-#define TOK_RELATION_LESS 270
-#define TOK_RELATION_LESS_OR_EQUAL 271
-#define TOK_RELATION_EQUAL 272
-#define TOK_RELATION_EQUAL_NOCASE 273
-#define TOK_RELATION_NOT_EQUAL 274
-#define TOK_RELATION_NOT_EQUAL_NOCASE 275
-#define TOK_NOT 276
-#define TOK_OPERATOR_AND 277
-#define TOK_OPERATOR_OR 278
-#define TOK_ERROR 279
-
-
-
-
 /* Copy the first part of user declarations.  */
-#line 25 "idmef-criteria-string.yac.y"
+
+/* Line 189 of yacc.c  */
+#line 25 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
 
 #define PRELUDE_ERROR_SOURCE_DEFAULT PRELUDE_ERROR_SOURCE_IDMEF_CRITERIA
 
@@ -193,6 +143,9 @@ err:
 
 
 
+/* Line 189 of yacc.c  */
+#line 148 "y.tab.c"
+
 /* Enabling traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -211,31 +164,93 @@ err:
 # define YYTOKEN_TABLE 0
 #endif
 
+
+/* Tokens.  */
+#ifndef YYTOKENTYPE
+# define YYTOKENTYPE
+   /* Put the tokens into the symbol table, so that GDB and other debuggers
+      know about them.  */
+   enum yytokentype {
+     TOK_IDMEF_VALUE = 258,
+     TOK_IDMEF_PATH = 259,
+     TOK_RELATION_SUBSTRING = 260,
+     TOK_RELATION_SUBSTRING_NOCASE = 261,
+     TOK_RELATION_NOT_SUBSTRING = 262,
+     TOK_RELATION_NOT_SUBSTRING_NOCASE = 263,
+     TOK_RELATION_REGEXP = 264,
+     TOK_RELATION_REGEXP_NOCASE = 265,
+     TOK_RELATION_NOT_REGEXP = 266,
+     TOK_RELATION_NOT_REGEXP_NOCASE = 267,
+     TOK_RELATION_GREATER = 268,
+     TOK_RELATION_GREATER_OR_EQUAL = 269,
+     TOK_RELATION_LESS = 270,
+     TOK_RELATION_LESS_OR_EQUAL = 271,
+     TOK_RELATION_EQUAL = 272,
+     TOK_RELATION_EQUAL_NOCASE = 273,
+     TOK_RELATION_NOT_EQUAL = 274,
+     TOK_RELATION_NOT_EQUAL_NOCASE = 275,
+     TOK_NOT = 276,
+     TOK_OPERATOR_AND = 277,
+     TOK_OPERATOR_OR = 278,
+     TOK_ERROR = 279
+   };
+#endif
+/* Tokens.  */
+#define TOK_IDMEF_VALUE 258
+#define TOK_IDMEF_PATH 259
+#define TOK_RELATION_SUBSTRING 260
+#define TOK_RELATION_SUBSTRING_NOCASE 261
+#define TOK_RELATION_NOT_SUBSTRING 262
+#define TOK_RELATION_NOT_SUBSTRING_NOCASE 263
+#define TOK_RELATION_REGEXP 264
+#define TOK_RELATION_REGEXP_NOCASE 265
+#define TOK_RELATION_NOT_REGEXP 266
+#define TOK_RELATION_NOT_REGEXP_NOCASE 267
+#define TOK_RELATION_GREATER 268
+#define TOK_RELATION_GREATER_OR_EQUAL 269
+#define TOK_RELATION_LESS 270
+#define TOK_RELATION_LESS_OR_EQUAL 271
+#define TOK_RELATION_EQUAL 272
+#define TOK_RELATION_EQUAL_NOCASE 273
+#define TOK_RELATION_NOT_EQUAL 274
+#define TOK_RELATION_NOT_EQUAL_NOCASE 275
+#define TOK_NOT 276
+#define TOK_OPERATOR_AND 277
+#define TOK_OPERATOR_OR 278
+#define TOK_ERROR 279
+
+
+
+
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 99 "idmef-criteria-string.yac.y"
 {
+
+/* Line 214 of yacc.c  */
+#line 99 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
+
         char *str;
         int operator;
         idmef_path_t *path;
         idmef_criteria_t *criteria;
         idmef_criterion_operator_t relation;
-}
-/* Line 187 of yacc.c.  */
-#line 226 "idmef-criteria-string.yac.c"
-  YYSTYPE;
+
+
+
+/* Line 214 of yacc.c  */
+#line 242 "y.tab.c"
+} YYSTYPE;
+# define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
-# define YYSTYPE_IS_TRIVIAL 1
 #endif
-
 
 
 /* Copy the second part of user declarations.  */
 
 
-/* Line 216 of yacc.c.  */
-#line 239 "idmef-criteria-string.yac.c"
+/* Line 264 of yacc.c  */
+#line 254 "y.tab.c"
 
 #ifdef short
 # undef short
@@ -310,14 +325,14 @@ typedef short int yytype_int16;
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static int
-YYID (int i)
+YYID (int yyi)
 #else
 static int
-YYID (i)
-    int i;
+YYID (yyi)
+    int yyi;
 #endif
 {
-  return i;
+  return yyi;
 }
 #endif
 
@@ -367,7 +382,7 @@ YYID (i)
 #  endif
 #  if (defined __cplusplus && ! defined _STDLIB_H \
        && ! ((defined YYMALLOC || defined malloc) \
-       && (defined YYFREE || defined free)))
+	     && (defined YYFREE || defined free)))
 #   include <stdlib.h> /* INFRINGES ON USER NAME SPACE */
 #   ifndef _STDLIB_H
 #    define _STDLIB_H 1
@@ -393,14 +408,14 @@ void free (void *); /* INFRINGES ON USER NAME SPACE */
 
 #if (! defined yyoverflow \
      && (! defined __cplusplus \
-   || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
+	 || (defined YYSTYPE_IS_TRIVIAL && YYSTYPE_IS_TRIVIAL)))
 
 /* A type that is properly aligned for any stack member.  */
 union yyalloc
 {
-  yytype_int16 yyss;
-  YYSTYPE yyvs;
-  };
+  yytype_int16 yyss_alloc;
+  YYSTYPE yyvs_alloc;
+};
 
 /* The size of the maximum gap between one aligned stack and the next.  */
 # define YYSTACK_GAP_MAXIMUM (sizeof (union yyalloc) - 1)
@@ -418,13 +433,13 @@ union yyalloc
 #   define YYCOPY(To, From, Count) \
       __builtin_memcpy (To, From, (Count) * sizeof (*(From)))
 #  else
-#   define YYCOPY(To, From, Count)    \
-      do          \
-  {          \
-    YYSIZE_T yyi;        \
-    for (yyi = 0; yyi < (Count); yyi++)  \
-      (To)[yyi] = (From)[yyi];    \
-  }          \
+#   define YYCOPY(To, From, Count)		\
+      do					\
+	{					\
+	  YYSIZE_T yyi;				\
+	  for (yyi = 0; yyi < (Count); yyi++)	\
+	    (To)[yyi] = (From)[yyi];		\
+	}					\
       while (YYID (0))
 #  endif
 # endif
@@ -434,15 +449,15 @@ union yyalloc
    elements in the stack, and YYPTR gives the new location of the
    stack.  Advance YYPTR to a properly aligned location for the next
    stack.  */
-# define YYSTACK_RELOCATE(Stack)          \
-    do                  \
-      {                  \
-  YYSIZE_T yynewbytes;            \
-  YYCOPY (&yyptr->Stack, Stack, yysize);        \
-  Stack = &yyptr->Stack;            \
-  yynewbytes = yystacksize * sizeof (*Stack) + YYSTACK_GAP_MAXIMUM; \
-  yyptr += yynewbytes / sizeof (*yyptr);        \
-      }                  \
+# define YYSTACK_RELOCATE(Stack_alloc, Stack)				\
+    do									\
+      {									\
+	YYSIZE_T yynewbytes;						\
+	YYCOPY (&yyptr->Stack_alloc, Stack, yysize);			\
+	Stack = &yyptr->Stack_alloc;					\
+	yynewbytes = yystacksize * sizeof (*Stack) + YYSTACK_GAP_MAXIMUM; \
+	yyptr += yynewbytes / sizeof (*yyptr);				\
+      }									\
     while (YYID (0))
 
 #endif
@@ -465,7 +480,7 @@ union yyalloc
 #define YYUNDEFTOK  2
 #define YYMAXUTOK   279
 
-#define YYTRANSLATE(YYX)            \
+#define YYTRANSLATE(YYX)						\
   ((unsigned int) (YYX) <= YYMAXUTOK ? yytranslate[YYX] : YYUNDEFTOK)
 
 /* YYTRANSLATE[YYLEX] -- Bison symbol number corresponding to YYLEX.  */
@@ -652,44 +667,44 @@ static const yytype_uint8 yystos[] =
       33,    26,    25,    33,    34,    34,    26,    36,    26,    34
 };
 
-#define yyerrok    (yyerrstatus = 0)
-#define yyclearin  (yychar = YYEMPTY)
-#define YYEMPTY    (-2)
-#define YYEOF    0
+#define yyerrok		(yyerrstatus = 0)
+#define yyclearin	(yychar = YYEMPTY)
+#define YYEMPTY		(-2)
+#define YYEOF		0
 
-#define YYACCEPT  goto yyacceptlab
-#define YYABORT    goto yyabortlab
-#define YYERROR    goto yyerrorlab
+#define YYACCEPT	goto yyacceptlab
+#define YYABORT		goto yyabortlab
+#define YYERROR		goto yyerrorlab
 
 
 /* Like YYERROR except do call yyerror.  This remains here temporarily
    to ease the transition to the new meaning of YYERROR, for GCC.
    Once GCC version 2 has supplanted version 1, this can go.  */
 
-#define YYFAIL    goto yyerrlab
+#define YYFAIL		goto yyerrlab
 
 #define YYRECOVERING()  (!!yyerrstatus)
 
-#define YYBACKUP(Token, Value)          \
-do                \
-  if (yychar == YYEMPTY && yylen == 1)        \
-    {                \
-      yychar = (Token);            \
-      yylval = (Value);            \
-      yytoken = YYTRANSLATE (yychar);        \
-      YYPOPSTACK (1);            \
-      goto yybackup;            \
-    }                \
-  else                \
-    {                \
+#define YYBACKUP(Token, Value)					\
+do								\
+  if (yychar == YYEMPTY && yylen == 1)				\
+    {								\
+      yychar = (Token);						\
+      yylval = (Value);						\
+      yytoken = YYTRANSLATE (yychar);				\
+      YYPOPSTACK (1);						\
+      goto yybackup;						\
+    }								\
+  else								\
+    {								\
       yyerror (YY_("syntax error: cannot back up")); \
-      YYERROR;              \
-    }                \
+      YYERROR;							\
+    }								\
 while (YYID (0))
 
 
-#define YYTERROR  1
-#define YYERRCODE  256
+#define YYTERROR	1
+#define YYERRCODE	256
 
 
 /* YYLLOC_DEFAULT -- Set CURRENT to span from RHS[1] to RHS[N].
@@ -698,22 +713,22 @@ while (YYID (0))
 
 #define YYRHSLOC(Rhs, K) ((Rhs)[K])
 #ifndef YYLLOC_DEFAULT
-# define YYLLOC_DEFAULT(Current, Rhs, N)        \
-    do                  \
+# define YYLLOC_DEFAULT(Current, Rhs, N)				\
+    do									\
       if (YYID (N))                                                    \
-  {                \
-    (Current).first_line   = YYRHSLOC (Rhs, 1).first_line;  \
-    (Current).first_column = YYRHSLOC (Rhs, 1).first_column;  \
-    (Current).last_line    = YYRHSLOC (Rhs, N).last_line;    \
-    (Current).last_column  = YYRHSLOC (Rhs, N).last_column;  \
-  }                \
-      else                \
-  {                \
-    (Current).first_line   = (Current).last_line   =    \
-      YYRHSLOC (Rhs, 0).last_line;        \
-    (Current).first_column = (Current).last_column =    \
-      YYRHSLOC (Rhs, 0).last_column;        \
-  }                \
+	{								\
+	  (Current).first_line   = YYRHSLOC (Rhs, 1).first_line;	\
+	  (Current).first_column = YYRHSLOC (Rhs, 1).first_column;	\
+	  (Current).last_line    = YYRHSLOC (Rhs, N).last_line;		\
+	  (Current).last_column  = YYRHSLOC (Rhs, N).last_column;	\
+	}								\
+      else								\
+	{								\
+	  (Current).first_line   = (Current).last_line   =		\
+	    YYRHSLOC (Rhs, 0).last_line;				\
+	  (Current).first_column = (Current).last_column =		\
+	    YYRHSLOC (Rhs, 0).last_column;				\
+	}								\
     while (YYID (0))
 #endif
 
@@ -724,10 +739,10 @@ while (YYID (0))
 
 #ifndef YY_LOCATION_PRINT
 # if YYLTYPE_IS_TRIVIAL
-#  define YY_LOCATION_PRINT(File, Loc)      \
-     fprintf (File, "%d.%d-%d.%d",      \
-        (Loc).first_line, (Loc).first_column,  \
-        (Loc).last_line,  (Loc).last_column)
+#  define YY_LOCATION_PRINT(File, Loc)			\
+     fprintf (File, "%d.%d-%d.%d",			\
+	      (Loc).first_line, (Loc).first_column,	\
+	      (Loc).last_line,  (Loc).last_column)
 # else
 #  define YY_LOCATION_PRINT(File, Loc) ((void) 0)
 # endif
@@ -750,21 +765,21 @@ while (YYID (0))
 #  define YYFPRINTF fprintf
 # endif
 
-# define YYDPRINTF(Args)      \
-do {            \
-  if (yydebug)          \
-    YYFPRINTF Args;        \
+# define YYDPRINTF(Args)			\
+do {						\
+  if (yydebug)					\
+    YYFPRINTF Args;				\
 } while (YYID (0))
 
-# define YY_SYMBOL_PRINT(Title, Type, Value, Location)        \
-do {                    \
-  if (yydebug)                  \
-    {                    \
-      YYFPRINTF (stderr, "%s ", Title);            \
-      yy_symbol_print (stderr,              \
-      Type, Value); \
-      YYFPRINTF (stderr, "\n");              \
-    }                    \
+# define YY_SYMBOL_PRINT(Title, Type, Value, Location)			  \
+do {									  \
+  if (yydebug)								  \
+    {									  \
+      YYFPRINTF (stderr, "%s ", Title);					  \
+      yy_symbol_print (stderr,						  \
+		  Type, Value); \
+      YYFPRINTF (stderr, "\n");						  \
+    }									  \
 } while (YYID (0))
 
 
@@ -796,7 +811,7 @@ yy_symbol_value_print (yyoutput, yytype, yyvaluep)
   switch (yytype)
     {
       default:
-  break;
+	break;
     }
 }
 
@@ -834,24 +849,27 @@ yy_symbol_print (yyoutput, yytype, yyvaluep)
 #if (defined __STDC__ || defined __C99__FUNC__ \
      || defined __cplusplus || defined _MSC_VER)
 static void
-yy_stack_print (yytype_int16 *bottom, yytype_int16 *top)
+yy_stack_print (yytype_int16 *yybottom, yytype_int16 *yytop)
 #else
 static void
-yy_stack_print (bottom, top)
-    yytype_int16 *bottom;
-    yytype_int16 *top;
+yy_stack_print (yybottom, yytop)
+    yytype_int16 *yybottom;
+    yytype_int16 *yytop;
 #endif
 {
   YYFPRINTF (stderr, "Stack now");
-  for (; bottom <= top; ++bottom)
-    YYFPRINTF (stderr, " %d", *bottom);
+  for (; yybottom <= yytop; yybottom++)
+    {
+      int yybot = *yybottom;
+      YYFPRINTF (stderr, " %d", yybot);
+    }
   YYFPRINTF (stderr, "\n");
 }
 
-# define YY_STACK_PRINT(Bottom, Top)        \
-do {                \
-  if (yydebug)              \
-    yy_stack_print ((Bottom), (Top));        \
+# define YY_STACK_PRINT(Bottom, Top)				\
+do {								\
+  if (yydebug)							\
+    yy_stack_print ((Bottom), (Top));				\
 } while (YYID (0))
 
 
@@ -874,21 +892,21 @@ yy_reduce_print (yyvsp, yyrule)
   int yyi;
   unsigned long int yylno = yyrline[yyrule];
   YYFPRINTF (stderr, "Reducing stack by rule %d (line %lu):\n",
-       yyrule - 1, yylno);
+	     yyrule - 1, yylno);
   /* The symbols being reduced.  */
   for (yyi = 0; yyi < yynrhs; yyi++)
     {
-      fprintf (stderr, "   $%d = ", yyi + 1);
+      YYFPRINTF (stderr, "   $%d = ", yyi + 1);
       yy_symbol_print (stderr, yyrhs[yyprhs[yyrule] + yyi],
-           &(yyvsp[(yyi + 1) - (yynrhs)])
-                      );
-      fprintf (stderr, "\n");
+		       &(yyvsp[(yyi + 1) - (yynrhs)])
+		       		       );
+      YYFPRINTF (stderr, "\n");
     }
 }
 
-# define YY_REDUCE_PRINT(Rule)    \
-do {          \
-  if (yydebug)        \
+# define YY_REDUCE_PRINT(Rule)		\
+do {					\
+  if (yydebug)				\
     yy_reduce_print (yyvsp, Rule); \
 } while (YYID (0))
 
@@ -904,7 +922,7 @@ int yydebug;
 
 
 /* YYINITDEPTH -- initial size of the parser's stacks.  */
-#ifndef  YYINITDEPTH
+#ifndef	YYINITDEPTH
 # define YYINITDEPTH 200
 #endif
 
@@ -991,27 +1009,27 @@ yytnamerr (char *yyres, const char *yystr)
       char const *yyp = yystr;
 
       for (;;)
-  switch (*++yyp)
-    {
-    case '\'':
-    case ',':
-      goto do_not_strip_quotes;
+	switch (*++yyp)
+	  {
+	  case '\'':
+	  case ',':
+	    goto do_not_strip_quotes;
 
-    case '\\':
-      if (*++yyp != '\\')
-        goto do_not_strip_quotes;
-      /* Fall through.  */
-    default:
-      if (yyres)
-        yyres[yyn] = *yyp;
-      yyn++;
-      break;
+	  case '\\':
+	    if (*++yyp != '\\')
+	      goto do_not_strip_quotes;
+	    /* Fall through.  */
+	  default:
+	    if (yyres)
+	      yyres[yyn] = *yyp;
+	    yyn++;
+	    break;
 
-    case '"':
-      if (yyres)
-        yyres[yyn] = '\0';
-      return yyn;
-    }
+	  case '"':
+	    if (yyres)
+	      yyres[yyn] = '\0';
+	    return yyn;
+	  }
     do_not_strip_quotes: ;
     }
 
@@ -1049,7 +1067,7 @@ yysyntax_error (char *yyresult, int yystate, int yychar)
 
 # if 0
       /* This is so xgettext sees the translatable formats that are
-   constructed on the fly.  */
+	 constructed on the fly.  */
       YY_("syntax error, unexpected %s");
       YY_("syntax error, unexpected %s, expecting %s");
       YY_("syntax error, unexpected %s, expecting %s or %s");
@@ -1062,13 +1080,13 @@ yysyntax_error (char *yyresult, int yystate, int yychar)
       static char const yyexpecting[] = ", expecting %s";
       static char const yyor[] = " or %s";
       char yyformat[sizeof yyunexpected
-        + sizeof yyexpecting - 1
-        + ((YYERROR_VERBOSE_ARGS_MAXIMUM - 2)
-           * (sizeof yyor - 1))];
+		    + sizeof yyexpecting - 1
+		    + ((YYERROR_VERBOSE_ARGS_MAXIMUM - 2)
+		       * (sizeof yyor - 1))];
       char const *yyprefix = yyexpecting;
 
       /* Start YYX at -YYN if negative to avoid negative indexes in
-   YYCHECK.  */
+	 YYCHECK.  */
       int yyxbegin = yyn < 0 ? -yyn : 0;
 
       /* Stay within bounds of both yycheck and yytname.  */
@@ -1080,22 +1098,22 @@ yysyntax_error (char *yyresult, int yystate, int yychar)
       yyfmt = yystpcpy (yyformat, yyunexpected);
 
       for (yyx = yyxbegin; yyx < yyxend; ++yyx)
-  if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR)
-    {
-      if (yycount == YYERROR_VERBOSE_ARGS_MAXIMUM)
-        {
-    yycount = 1;
-    yysize = yysize0;
-    yyformat[sizeof yyunexpected - 1] = '\0';
-    break;
-        }
-      yyarg[yycount++] = yytname[yyx];
-      yysize1 = yysize + yytnamerr (0, yytname[yyx]);
-      yysize_overflow |= (yysize1 < yysize);
-      yysize = yysize1;
-      yyfmt = yystpcpy (yyfmt, yyprefix);
-      yyprefix = yyor;
-    }
+	if (yycheck[yyx + yyn] == yyx && yyx != YYTERROR)
+	  {
+	    if (yycount == YYERROR_VERBOSE_ARGS_MAXIMUM)
+	      {
+		yycount = 1;
+		yysize = yysize0;
+		yyformat[sizeof yyunexpected - 1] = '\0';
+		break;
+	      }
+	    yyarg[yycount++] = yytname[yyx];
+	    yysize1 = yysize + yytnamerr (0, yytname[yyx]);
+	    yysize_overflow |= (yysize1 < yysize);
+	    yysize = yysize1;
+	    yyfmt = yystpcpy (yyfmt, yyprefix);
+	    yyprefix = yyor;
+	  }
 
       yyf = YY_(yyformat);
       yysize1 = yysize + yystrlen (yyf);
@@ -1103,29 +1121,29 @@ yysyntax_error (char *yyresult, int yystate, int yychar)
       yysize = yysize1;
 
       if (yysize_overflow)
-  return YYSIZE_MAXIMUM;
+	return YYSIZE_MAXIMUM;
 
       if (yyresult)
-  {
-    /* Avoid sprintf, as that infringes on the user's name space.
-       Don't have undefined behavior even if the translation
-       produced a string with the wrong number of "%s"s.  */
-    char *yyp = yyresult;
-    int yyi = 0;
-    while ((*yyp = *yyf) != '\0')
-      {
-        if (*yyp == '%' && yyf[1] == 's' && yyi < yycount)
-    {
-      yyp += yytnamerr (yyp, yyarg[yyi++]);
-      yyf += 2;
-    }
-        else
-    {
-      yyp++;
-      yyf++;
-    }
-      }
-  }
+	{
+	  /* Avoid sprintf, as that infringes on the user's name space.
+	     Don't have undefined behavior even if the translation
+	     produced a string with the wrong number of "%s"s.  */
+	  char *yyp = yyresult;
+	  int yyi = 0;
+	  while ((*yyp = *yyf) != '\0')
+	    {
+	      if (*yyp == '%' && yyf[1] == 's' && yyi < yycount)
+		{
+		  yyp += yytnamerr (yyp, yyarg[yyi++]);
+		  yyf += 2;
+		}
+	      else
+		{
+		  yyp++;
+		  yyf++;
+		}
+	    }
+	}
       return yysize;
     }
 }
@@ -1158,29 +1176,39 @@ yydestruct (yymsg, yytype, yyvaluep)
   switch (yytype)
     {
       case 3: /* "\"<IDMEF-Value>\"" */
-#line 112 "idmef-criteria-string.yac.y"
-  { free((yyvaluep->str)); };
-#line 1164 "idmef-criteria-string.yac.c"
-  break;
+
+/* Line 1000 of yacc.c  */
+#line 112 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
+	{ free((yyvaluep->str)); };
+
+/* Line 1000 of yacc.c  */
+#line 1186 "y.tab.c"
+	break;
       case 4: /* "\"<IDMEF-Path>\"" */
-#line 112 "idmef-criteria-string.yac.y"
-  { free((yyvaluep->str)); };
-#line 1169 "idmef-criteria-string.yac.c"
-  break;
+
+/* Line 1000 of yacc.c  */
+#line 112 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
+	{ free((yyvaluep->str)); };
+
+/* Line 1000 of yacc.c  */
+#line 1195 "y.tab.c"
+	break;
       case 29: /* "criteria" */
-#line 113 "idmef-criteria-string.yac.y"
-  { idmef_criteria_destroy((yyvaluep->criteria)); };
-#line 1174 "idmef-criteria-string.yac.c"
-  break;
+
+/* Line 1000 of yacc.c  */
+#line 113 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
+	{ idmef_criteria_destroy((yyvaluep->criteria)); };
+
+/* Line 1000 of yacc.c  */
+#line 1204 "y.tab.c"
+	break;
 
       default:
-  break;
+	break;
     }
 }
-
 
 /* Prevent warnings from -Wmissing-prototypes.  */
-
 #ifdef YYPARSE_PARAM
 #if defined __STDC__ || defined __cplusplus
 int yyparse (void *YYPARSE_PARAM);
@@ -1196,11 +1224,10 @@ int yyparse ();
 #endif /* ! YYPARSE_PARAM */
 
 
-
-/* The look-ahead symbol.  */
+/* The lookahead symbol.  */
 int yychar;
 
-/* The semantic value of the look-ahead symbol.  */
+/* The semantic value of the lookahead symbol.  */
 YYSTYPE yylval;
 
 /* Number of syntax errors so far.  */
@@ -1208,9 +1235,9 @@ int yynerrs;
 
 
 
-/*----------.
-| yyparse.  |
-`----------*/
+/*-------------------------.
+| yyparse or yypush_parse.  |
+`-------------------------*/
 
 #ifdef YYPARSE_PARAM
 #if (defined __STDC__ || defined __C99__FUNC__ \
@@ -1235,13 +1262,38 @@ yyparse ()
 #endif
 {
 
-  int yystate;
+
+    int yystate;
+    /* Number of tokens to shift before error messages enabled.  */
+    int yyerrstatus;
+
+    /* The stacks and their tools:
+       `yyss': related to states.
+       `yyvs': related to semantic values.
+
+       Refer to the stacks thru separate pointers, to allow yyoverflow
+       to reallocate them elsewhere.  */
+
+    /* The state stack.  */
+    yytype_int16 yyssa[YYINITDEPTH];
+    yytype_int16 *yyss;
+    yytype_int16 *yyssp;
+
+    /* The semantic value stack.  */
+    YYSTYPE yyvsa[YYINITDEPTH];
+    YYSTYPE *yyvs;
+    YYSTYPE *yyvsp;
+
+    YYSIZE_T yystacksize;
+
   int yyn;
   int yyresult;
-  /* Number of tokens to shift before error messages enabled.  */
-  int yyerrstatus;
-  /* Look-ahead token as an internal (translated) token number.  */
-  int yytoken = 0;
+  /* Lookahead token as an internal (translated) token number.  */
+  int yytoken;
+  /* The variables used to return semantic value and location from the
+     action routines.  */
+  YYSTYPE yyval;
+
 #if YYERROR_VERBOSE
   /* Buffer for error messages, and its allocated size.  */
   char yymsgbuf[128];
@@ -1249,51 +1301,28 @@ yyparse ()
   YYSIZE_T yymsg_alloc = sizeof yymsgbuf;
 #endif
 
-  /* Three stacks and their tools:
-     `yyss': related to states,
-     `yyvs': related to semantic values,
-     `yyls': related to locations.
-
-     Refer to the stacks thru separate pointers, to allow yyoverflow
-     to reallocate them elsewhere.  */
-
-  /* The state stack.  */
-  yytype_int16 yyssa[YYINITDEPTH];
-  yytype_int16 *yyss = yyssa;
-  yytype_int16 *yyssp;
-
-  /* The semantic value stack.  */
-  YYSTYPE yyvsa[YYINITDEPTH];
-  YYSTYPE *yyvs = yyvsa;
-  YYSTYPE *yyvsp;
-
-
-
 #define YYPOPSTACK(N)   (yyvsp -= (N), yyssp -= (N))
-
-  YYSIZE_T yystacksize = YYINITDEPTH;
-
-  /* The variables used to return semantic value and location from the
-     action routines.  */
-  YYSTYPE yyval;
-
 
   /* The number of symbols on the RHS of the reduced rule.
      Keep to zero when no symbol should be popped.  */
   int yylen = 0;
+
+  yytoken = 0;
+  yyss = yyssa;
+  yyvs = yyvsa;
+  yystacksize = YYINITDEPTH;
 
   YYDPRINTF ((stderr, "Starting parse\n"));
 
   yystate = 0;
   yyerrstatus = 0;
   yynerrs = 0;
-  yychar = YYEMPTY;    /* Cause a token to be read.  */
+  yychar = YYEMPTY; /* Cause a token to be read.  */
 
   /* Initialize stack pointers.
      Waste one element of value and location stack
      so that they stay on the same level as the state stack.
      The wasted elements are never initialized.  */
-
   yyssp = yyss;
   yyvsp = yyvs;
 
@@ -1317,25 +1346,23 @@ yyparse ()
 
 #ifdef yyoverflow
       {
-  /* Give user a chance to reallocate the stack.  Use copies of
-     these so that the &'s don't force the real ones into
-     memory.  */
-  YYSTYPE *yyvs1 = yyvs;
-  yytype_int16 *yyss1 = yyss;
+	/* Give user a chance to reallocate the stack.  Use copies of
+	   these so that the &'s don't force the real ones into
+	   memory.  */
+	YYSTYPE *yyvs1 = yyvs;
+	yytype_int16 *yyss1 = yyss;
 
+	/* Each stack pointer address is followed by the size of the
+	   data in use in that stack, in bytes.  This used to be a
+	   conditional around just the two extra args, but that might
+	   be undefined if yyoverflow is a macro.  */
+	yyoverflow (YY_("memory exhausted"),
+		    &yyss1, yysize * sizeof (*yyssp),
+		    &yyvs1, yysize * sizeof (*yyvsp),
+		    &yystacksize);
 
-  /* Each stack pointer address is followed by the size of the
-     data in use in that stack, in bytes.  This used to be a
-     conditional around just the two extra args, but that might
-     be undefined if yyoverflow is a macro.  */
-  yyoverflow (YY_("memory exhausted"),
-        &yyss1, yysize * sizeof (*yyssp),
-        &yyvs1, yysize * sizeof (*yyvsp),
-
-        &yystacksize);
-
-  yyss = yyss1;
-  yyvs = yyvs1;
+	yyss = yyss1;
+	yyvs = yyvs1;
       }
 #else /* no yyoverflow */
 # ifndef YYSTACK_RELOCATE
@@ -1343,23 +1370,22 @@ yyparse ()
 # else
       /* Extend the stack our own way.  */
       if (YYMAXDEPTH <= yystacksize)
-  goto yyexhaustedlab;
+	goto yyexhaustedlab;
       yystacksize *= 2;
       if (YYMAXDEPTH < yystacksize)
-  yystacksize = YYMAXDEPTH;
+	yystacksize = YYMAXDEPTH;
 
       {
-  yytype_int16 *yyss1 = yyss;
-  union yyalloc *yyptr =
-    (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
-  if (! yyptr)
-    goto yyexhaustedlab;
-  YYSTACK_RELOCATE (yyss);
-  YYSTACK_RELOCATE (yyvs);
-
+	yytype_int16 *yyss1 = yyss;
+	union yyalloc *yyptr =
+	  (union yyalloc *) YYSTACK_ALLOC (YYSTACK_BYTES (yystacksize));
+	if (! yyptr)
+	  goto yyexhaustedlab;
+	YYSTACK_RELOCATE (yyss_alloc, yyss);
+	YYSTACK_RELOCATE (yyvs_alloc, yyvs);
 #  undef YYSTACK_RELOCATE
-  if (yyss1 != yyssa)
-    YYSTACK_FREE (yyss1);
+	if (yyss1 != yyssa)
+	  YYSTACK_FREE (yyss1);
       }
 # endif
 #endif /* no yyoverflow */
@@ -1367,15 +1393,17 @@ yyparse ()
       yyssp = yyss + yysize - 1;
       yyvsp = yyvs + yysize - 1;
 
-
       YYDPRINTF ((stderr, "Stack size increased to %lu\n",
-      (unsigned long int) yystacksize));
+		  (unsigned long int) yystacksize));
 
       if (yyss + yystacksize - 1 <= yyssp)
-  YYABORT;
+	YYABORT;
     }
 
   YYDPRINTF ((stderr, "Entering state %d\n", yystate));
+
+  if (yystate == YYFINAL)
+    YYACCEPT;
 
   goto yybackup;
 
@@ -1385,16 +1413,16 @@ yyparse ()
 yybackup:
 
   /* Do appropriate processing given the current state.  Read a
-     look-ahead token if we need one and don't already have one.  */
+     lookahead token if we need one and don't already have one.  */
 
-  /* First try to decide what to do without reference to look-ahead token.  */
+  /* First try to decide what to do without reference to lookahead token.  */
   yyn = yypact[yystate];
   if (yyn == YYPACT_NINF)
     goto yydefault;
 
-  /* Not known => get a look-ahead token if don't already have one.  */
+  /* Not known => get a lookahead token if don't already have one.  */
 
-  /* YYCHAR is either YYEMPTY or YYEOF or a valid look-ahead symbol.  */
+  /* YYCHAR is either YYEMPTY or YYEOF or a valid lookahead symbol.  */
   if (yychar == YYEMPTY)
     {
       YYDPRINTF ((stderr, "Reading a token: "));
@@ -1421,25 +1449,21 @@ yybackup:
   if (yyn <= 0)
     {
       if (yyn == 0 || yyn == YYTABLE_NINF)
-  goto yyerrlab;
+	goto yyerrlab;
       yyn = -yyn;
       goto yyreduce;
     }
-
-  if (yyn == YYFINAL)
-    YYACCEPT;
 
   /* Count tokens shifted since error; after three, turn off error
      status.  */
   if (yyerrstatus)
     yyerrstatus--;
 
-  /* Shift the look-ahead token.  */
+  /* Shift the lookahead token.  */
   YY_SYMBOL_PRINT ("Shifting", yytoken, &yylval, &yylloc);
 
-  /* Discard the shifted token unless it is eof.  */
-  if (yychar != YYEOF)
-    yychar = YYEMPTY;
+  /* Discard the shifted token.  */
+  yychar = YYEMPTY;
 
   yystate = yyn;
   *++yyvsp = yylval;
@@ -1479,21 +1503,27 @@ yyreduce:
   switch (yyn)
     {
         case 2:
-#line 154 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 154 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 processed_criteria = (yyvsp[(1) - (1)].criteria);
         }
     break;
 
   case 3:
-#line 161 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 161 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 (yyval.criteria) = (yyvsp[(1) - (1)].criteria);
         }
     break;
 
   case 4:
-#line 165 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 165 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 if ( (yyvsp[(2) - (3)].operator) == operator_or )
                         idmef_criteria_or_criteria((yyvsp[(1) - (3)].criteria), (yyvsp[(3) - (3)].criteria));
@@ -1505,21 +1535,27 @@ yyreduce:
     break;
 
   case 5:
-#line 176 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 176 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 (yyval.criteria) = (yyvsp[(1) - (1)].criteria);
         }
     break;
 
   case 6:
-#line 180 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 180 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 (yyval.criteria) = (yyvsp[(2) - (3)].criteria);
         }
     break;
 
   case 7:
-#line 184 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 184 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 idmef_criteria_set_negation((yyvsp[(3) - (4)].criteria), TRUE);
                 (yyval.criteria) = (yyvsp[(3) - (4)].criteria);
@@ -1527,21 +1563,27 @@ yyreduce:
     break;
 
   case 8:
-#line 192 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 192 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 (yyval.criteria) = (yyvsp[(4) - (5)].criteria);
         }
     break;
 
   case 9:
-#line 196 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 196 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 (yyval.criteria) = (yyvsp[(3) - (3)].criteria);
         }
     break;
 
   case 10:
-#line 200 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 200 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 idmef_criteria_t *criteria;
 
@@ -1554,7 +1596,9 @@ yyreduce:
     break;
 
   case 11:
-#line 210 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 210 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 idmef_criteria_t *criteria;
 
@@ -1567,7 +1611,9 @@ yyreduce:
     break;
 
   case 12:
-#line 223 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 223 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 real_ret = idmef_path_new_fast(&cur_path, (yyvsp[(1) - (1)].str));
                 free((yyvsp[(1) - (1)].str));
@@ -1581,7 +1627,9 @@ yyreduce:
     break;
 
   case 13:
-#line 237 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 237 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 idmef_criteria_t *criteria;
                 idmef_criterion_value_t *value = NULL;
@@ -1601,7 +1649,9 @@ yyreduce:
     break;
 
   case 14:
-#line 258 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 258 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 if ( (yyvsp[(2) - (3)].operator) == operator_or )
                         idmef_criteria_or_criteria((yyvsp[(1) - (3)].criteria), (yyvsp[(3) - (3)].criteria));
@@ -1613,123 +1663,168 @@ yyreduce:
     break;
 
   case 15:
-#line 267 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 267 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 (yyval.criteria) = (yyvsp[(2) - (3)].criteria);
         }
     break;
 
   case 16:
-#line 271 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 271 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     {
                 (yyval.criteria) = (yyvsp[(1) - (1)].criteria);
         }
     break;
 
   case 17:
-#line 278 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 278 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_SUBSTR; }
     break;
 
   case 18:
-#line 279 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 279 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_SUBSTR|IDMEF_CRITERION_OPERATOR_NOCASE; }
     break;
 
   case 19:
-#line 280 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 280 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_SUBSTR|IDMEF_CRITERION_OPERATOR_NOT; }
     break;
 
   case 20:
-#line 281 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 281 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_SUBSTR|IDMEF_CRITERION_OPERATOR_NOT|IDMEF_CRITERION_OPERATOR_NOCASE; }
     break;
 
   case 21:
-#line 282 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 282 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_REGEX; }
     break;
 
   case 22:
-#line 283 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 283 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_REGEX|IDMEF_CRITERION_OPERATOR_NOCASE; }
     break;
 
   case 23:
-#line 284 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 284 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_REGEX|IDMEF_CRITERION_OPERATOR_NOT; }
     break;
 
   case 24:
-#line 285 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 285 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_REGEX|IDMEF_CRITERION_OPERATOR_NOT|IDMEF_CRITERION_OPERATOR_NOCASE; }
     break;
 
   case 25:
-#line 286 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 286 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_GREATER; }
     break;
 
   case 26:
-#line 287 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 287 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_GREATER|IDMEF_CRITERION_OPERATOR_EQUAL; }
     break;
 
   case 27:
-#line 288 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 288 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_LESSER; }
     break;
 
   case 28:
-#line 289 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 289 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_LESSER|IDMEF_CRITERION_OPERATOR_EQUAL; }
     break;
 
   case 29:
-#line 290 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 290 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_EQUAL; }
     break;
 
   case 30:
-#line 291 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 291 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_EQUAL|IDMEF_CRITERION_OPERATOR_NOCASE; }
     break;
 
   case 31:
-#line 292 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 292 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_EQUAL|IDMEF_CRITERION_OPERATOR_NOT; }
     break;
 
   case 32:
-#line 293 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 293 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_EQUAL|IDMEF_CRITERION_OPERATOR_NOCASE|IDMEF_CRITERION_OPERATOR_NOT; }
     break;
 
   case 33:
-#line 294 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 294 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { cur_operator = (yyval.relation) = IDMEF_CRITERION_OPERATOR_NULL; }
     break;
 
   case 34:
-#line 295 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 295 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { real_ret = prelude_error_verbose(PRELUDE_ERROR_IDMEF_CRITERIA_PARSE,
                                                                        "Criteria parser reported: Invalid operator found"); YYERROR; }
     break;
 
   case 35:
-#line 299 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 299 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { (yyval.operator) = operator_and; }
     break;
 
   case 36:
-#line 300 "idmef-criteria-string.yac.y"
+
+/* Line 1455 of yacc.c  */
+#line 300 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
     { (yyval.operator) = operator_or; }
     break;
 
 
-/* Line 1267 of yacc.c.  */
-#line 1733 "idmef-criteria-string.yac.c"
+
+/* Line 1455 of yacc.c  */
+#line 1828 "y.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1739,7 +1834,6 @@ yyreduce:
   YY_STACK_PRINT (yyss, yyssp);
 
   *++yyvsp = yyval;
-
 
   /* Now `shift' the result of the reduction.  Determine what state
      that goes to, based on the state we popped back to and the rule
@@ -1768,35 +1862,35 @@ yyerrlab:
       yyerror (YY_("syntax error"));
 #else
       {
-  YYSIZE_T yysize = yysyntax_error (0, yystate, yychar);
-  if (yymsg_alloc < yysize && yymsg_alloc < YYSTACK_ALLOC_MAXIMUM)
-    {
-      YYSIZE_T yyalloc = 2 * yysize;
-      if (! (yysize <= yyalloc && yyalloc <= YYSTACK_ALLOC_MAXIMUM))
-        yyalloc = YYSTACK_ALLOC_MAXIMUM;
-      if (yymsg != yymsgbuf)
-        YYSTACK_FREE (yymsg);
-      yymsg = (char *) YYSTACK_ALLOC (yyalloc);
-      if (yymsg)
-        yymsg_alloc = yyalloc;
-      else
-        {
-    yymsg = yymsgbuf;
-    yymsg_alloc = sizeof yymsgbuf;
-        }
-    }
+	YYSIZE_T yysize = yysyntax_error (0, yystate, yychar);
+	if (yymsg_alloc < yysize && yymsg_alloc < YYSTACK_ALLOC_MAXIMUM)
+	  {
+	    YYSIZE_T yyalloc = 2 * yysize;
+	    if (! (yysize <= yyalloc && yyalloc <= YYSTACK_ALLOC_MAXIMUM))
+	      yyalloc = YYSTACK_ALLOC_MAXIMUM;
+	    if (yymsg != yymsgbuf)
+	      YYSTACK_FREE (yymsg);
+	    yymsg = (char *) YYSTACK_ALLOC (yyalloc);
+	    if (yymsg)
+	      yymsg_alloc = yyalloc;
+	    else
+	      {
+		yymsg = yymsgbuf;
+		yymsg_alloc = sizeof yymsgbuf;
+	      }
+	  }
 
-  if (0 < yysize && yysize <= yymsg_alloc)
-    {
-      (void) yysyntax_error (yymsg, yystate, yychar);
-      yyerror (yymsg);
-    }
-  else
-    {
-      yyerror (YY_("syntax error"));
-      if (yysize != 0)
-        goto yyexhaustedlab;
-    }
+	if (0 < yysize && yysize <= yymsg_alloc)
+	  {
+	    (void) yysyntax_error (yymsg, yystate, yychar);
+	    yyerror (yymsg);
+	  }
+	else
+	  {
+	    yyerror (YY_("syntax error"));
+	    if (yysize != 0)
+	      goto yyexhaustedlab;
+	  }
       }
 #endif
     }
@@ -1805,24 +1899,24 @@ yyerrlab:
 
   if (yyerrstatus == 3)
     {
-      /* If just tried and failed to reuse look-ahead token after an
-   error, discard it.  */
+      /* If just tried and failed to reuse lookahead token after an
+	 error, discard it.  */
 
       if (yychar <= YYEOF)
-  {
-    /* Return failure if at end of input.  */
-    if (yychar == YYEOF)
-      YYABORT;
-  }
+	{
+	  /* Return failure if at end of input.  */
+	  if (yychar == YYEOF)
+	    YYABORT;
+	}
       else
-  {
-    yydestruct ("Error: discarding",
-          yytoken, &yylval);
-    yychar = YYEMPTY;
-  }
+	{
+	  yydestruct ("Error: discarding",
+		      yytoken, &yylval);
+	  yychar = YYEMPTY;
+	}
     }
 
-  /* Else will try to reuse look-ahead token after shifting the error
+  /* Else will try to reuse lookahead token after shifting the error
      token.  */
   goto yyerrlab1;
 
@@ -1851,36 +1945,33 @@ yyerrorlab:
 | yyerrlab1 -- common code for both syntax error and YYERROR.  |
 `-------------------------------------------------------------*/
 yyerrlab1:
-  yyerrstatus = 3;  /* Each real token shifted decrements this.  */
+  yyerrstatus = 3;	/* Each real token shifted decrements this.  */
 
   for (;;)
     {
       yyn = yypact[yystate];
       if (yyn != YYPACT_NINF)
-  {
-    yyn += YYTERROR;
-    if (0 <= yyn && yyn <= YYLAST && yycheck[yyn] == YYTERROR)
-      {
-        yyn = yytable[yyn];
-        if (0 < yyn)
-    break;
-      }
-  }
+	{
+	  yyn += YYTERROR;
+	  if (0 <= yyn && yyn <= YYLAST && yycheck[yyn] == YYTERROR)
+	    {
+	      yyn = yytable[yyn];
+	      if (0 < yyn)
+		break;
+	    }
+	}
 
       /* Pop the current state because it cannot handle the error token.  */
       if (yyssp == yyss)
-  YYABORT;
+	YYABORT;
 
 
       yydestruct ("Error: popping",
-      yystos[yystate], yyvsp);
+		  yystos[yystate], yyvsp);
       YYPOPSTACK (1);
       yystate = *yyssp;
       YY_STACK_PRINT (yyss, yyssp);
     }
-
-  if (yyn == YYFINAL)
-    YYACCEPT;
 
   *++yyvsp = yylval;
 
@@ -1906,7 +1997,7 @@ yyabortlab:
   yyresult = 1;
   goto yyreturn;
 
-#ifndef yyoverflow
+#if !defined(yyoverflow) || YYERROR_VERBOSE
 /*-------------------------------------------------.
 | yyexhaustedlab -- memory exhaustion comes here.  |
 `-------------------------------------------------*/
@@ -1917,9 +2008,9 @@ yyexhaustedlab:
 #endif
 
 yyreturn:
-  if (yychar != YYEOF && yychar != YYEMPTY)
+  if (yychar != YYEMPTY)
      yydestruct ("Cleanup: discarding lookahead",
-     yytoken, &yylval);
+		 yytoken, &yylval);
   /* Do not reclaim the symbols of the rule which action triggered
      this YYABORT or YYACCEPT.  */
   YYPOPSTACK (yylen);
@@ -1927,7 +2018,7 @@ yyreturn:
   while (yyssp != yyss)
     {
       yydestruct ("Cleanup: popping",
-      yystos[*yyssp], yyvsp);
+		  yystos[*yyssp], yyvsp);
       YYPOPSTACK (1);
     }
 #ifndef yyoverflow
@@ -1943,7 +2034,9 @@ yyreturn:
 }
 
 
-#line 303 "idmef-criteria-string.yac.y"
+
+/* Line 1675 of yacc.c  */
+#line 303 "/home/muchrons/acarm-ng/main/daemon/prelude/libprelude-1.0.0/src/idmef-criteria-string.yac.y"
 
 
 static void yyerror(char *s)  /* Called by yyparse on error */
