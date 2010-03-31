@@ -14,6 +14,7 @@
 #include <boost/operators.hpp>
 #include <boost/asio/ip/address.hpp>
 
+#include "Base/NullValue.hpp"
 #include "Base/Threads/Mutex.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/ReferenceURL.hpp"
@@ -140,7 +141,7 @@ private:
   void setName(const Name &name);
 
   IP                           ip_;
-  detail::NullValue<Netmask>   mask_;
+  Base::NullValue<Netmask>     mask_;
   OperatingSystem              os_;
   Name                         name_;
   ReferenceURLPtr              url_;

@@ -12,10 +12,10 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/operators.hpp>
 
+#include "Base/NullValue.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/MD5Sum.hpp"
 #include "Persistency/ReferenceURL.hpp"
-#include "Persistency/detail/NullValue.hpp"
 #include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/detail/LimitedNULLString.hpp"
 
@@ -99,8 +99,8 @@ private:
   Path                           path_;
   Name                           name_;
   boost::scoped_ptr<MD5Sum>      md5_;
-  detail::NullValue<pid_t>       pid_;
-  detail::NullValue<int>         uid_;
+  Base::NullValue<pid_t>         pid_;
+  Base::NullValue<int>           uid_;
   Username                       username_;
   boost::scoped_ptr<std::string> arguments_;
   ReferenceURLPtr                url_;

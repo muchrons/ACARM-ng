@@ -4,24 +4,23 @@
  */
 #include <tut.h>
 
-#include "Persistency/detail/NullValue.hpp"
+#include "Base/NullValue.hpp"
 #include "TestHelpers/checkEquality.hpp"
 
 using namespace std;
-using namespace Persistency::detail;
+using namespace Base;
 
 namespace
 {
 
-struct NullValueTestClass
+struct TestClass
 {
 };
 
-typedef NullValueTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/detail/NullValue");
+factory tf("Base/NullValue");
 } // unnamed namespace
 
 
@@ -33,7 +32,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const double x=3.14;
+  const double            x=3.14;
   const NullValue<double> nv(&x);
   ensure("NULL pointer recieved", nv.get()!=NULL);
   ensure("invalid pointer",       nv.get()!=&x);
@@ -45,8 +44,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const double *null=NULL;
-  const NullValue<double> nv(null);
+  const double            *null=NULL;
+  const NullValue<double>  nv(null);
   ensure("non-NULL pointer recieved", nv.get()==NULL);
 }
 
