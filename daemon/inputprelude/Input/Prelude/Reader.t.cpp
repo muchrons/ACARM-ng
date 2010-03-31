@@ -18,7 +18,7 @@ namespace
 struct TestClass
 {
   TestClass():
-    r_("profile")
+    r_("profile","/etc/prelude/default/client.conf")
   {
   }
 
