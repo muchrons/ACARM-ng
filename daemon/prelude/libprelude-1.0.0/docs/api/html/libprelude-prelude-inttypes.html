@@ -1,0 +1,539 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>prelude-inttypes</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="ch04.html" title="Others">
+<link rel="prev" href="libprelude-prelude-list.html" title="prelude-list">
+<link rel="next" href="libprelude-prelude-option-wide.html" title="prelude-option-wide">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libprelude-prelude-list.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="libprelude-prelude-option-wide.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-prelude-inttypes.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-prelude-inttypes.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="prelude-inttypes">
+<a name="libprelude-prelude-inttypes"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-prelude-inttypes.top_of_page"></a>prelude-inttypes</span></h2>
+<p>prelude-inttypes</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-prelude-inttypes.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-INT8-MIN--CAPS" title="PRELUDE_INT8_MIN">PRELUDE_INT8_MIN</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-INT16-MIN--CAPS" title="PRELUDE_INT16_MIN">PRELUDE_INT16_MIN</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-INT32-MIN--CAPS" title="PRELUDE_INT32_MIN">PRELUDE_INT32_MIN</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-INT64-MIN--CAPS" title="PRELUDE_INT64_MIN">PRELUDE_INT64_MIN</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-INT8-MAX--CAPS" title="PRELUDE_INT8_MAX">PRELUDE_INT8_MAX</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-INT16-MAX--CAPS" title="PRELUDE_INT16_MAX">PRELUDE_INT16_MAX</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-INT32-MAX--CAPS" title="PRELUDE_INT32_MAX">PRELUDE_INT32_MAX</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-INT64-MAX--CAPS" title="PRELUDE_INT64_MAX">PRELUDE_INT64_MAX</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-UINT8-MAX--CAPS" title="PRELUDE_UINT8_MAX">PRELUDE_UINT8_MAX</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-UINT16-MAX--CAPS" title="PRELUDE_UINT16_MAX">PRELUDE_UINT16_MAX</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-UINT32-MAX--CAPS" title="PRELUDE_UINT32_MAX">PRELUDE_UINT32_MAX</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-UINT64-MAX--CAPS" title="PRELUDE_UINT64_MAX">PRELUDE_UINT64_MAX</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-INTMAX-MIN--CAPS" title="PRELUDE_INTMAX_MIN">PRELUDE_INTMAX_MIN</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-INTMAX-MAX--CAPS" title="PRELUDE_INTMAX_MAX">PRELUDE_INTMAX_MAX</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-UINTMAX-MAX--CAPS" title="PRELUDE_UINTMAX_MAX">PRELUDE_UINTMAX_MAX</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRId64" title="PRELUDE_PRId64">PRELUDE_PRId64</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIi64" title="PRELUDE_PRIi64">PRELUDE_PRIi64</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIo64" title="PRELUDE_PRIo64">PRELUDE_PRIo64</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIx64" title="PRELUDE_PRIx64">PRELUDE_PRIx64</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIX64--CAPS" title="PRELUDE_PRIX64">PRELUDE_PRIX64</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIu64" title="PRELUDE_PRIu64">PRELUDE_PRIu64</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRId32" title="PRELUDE_PRId32">PRELUDE_PRId32</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIi32" title="PRELUDE_PRIi32">PRELUDE_PRIi32</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIo32" title="PRELUDE_PRIo32">PRELUDE_PRIo32</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIx32" title="PRELUDE_PRIx32">PRELUDE_PRIx32</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIX32--CAPS" title="PRELUDE_PRIX32">PRELUDE_PRIX32</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIu32" title="PRELUDE_PRIu32">PRELUDE_PRIu32</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRId16" title="PRELUDE_PRId16">PRELUDE_PRId16</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIi16" title="PRELUDE_PRIi16">PRELUDE_PRIi16</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIo16" title="PRELUDE_PRIo16">PRELUDE_PRIo16</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIx16" title="PRELUDE_PRIx16">PRELUDE_PRIx16</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIX16--CAPS" title="PRELUDE_PRIX16">PRELUDE_PRIX16</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIu16" title="PRELUDE_PRIu16">PRELUDE_PRIu16</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRId8" title="PRELUDE_PRId8">PRELUDE_PRId8</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIi8" title="PRELUDE_PRIi8">PRELUDE_PRIi8</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIo8" title="PRELUDE_PRIo8">PRELUDE_PRIo8</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIx8" title="PRELUDE_PRIx8">PRELUDE_PRIx8</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIX8--CAPS" title="PRELUDE_PRIX8">PRELUDE_PRIX8</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-PRIu8" title="PRELUDE_PRIu8">PRELUDE_PRIu8</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-SCNd64" title="PRELUDE_SCNd64">PRELUDE_SCNd64</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-SCNi64" title="PRELUDE_SCNi64">PRELUDE_SCNi64</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-SCNo64" title="PRELUDE_SCNo64">PRELUDE_SCNo64</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-SCNx64" title="PRELUDE_SCNx64">PRELUDE_SCNx64</a>
+#define             <a class="link" href="libprelude-prelude-inttypes.html#PRELUDE-SCNu64" title="PRELUDE_SCNu64">PRELUDE_SCNu64</a>
+enum                <a class="link" href="libprelude-prelude-inttypes.html#prelude-bool-t" title="enum prelude_bool_t">prelude_bool_t</a>;
+typedef             <a class="link" href="libprelude-prelude-inttypes.html#int8-t" title="int8_t">int8_t</a>;
+typedef             <a class="link" href="libprelude-prelude-inttypes.html#uint8-t" title="uint8_t">uint8_t</a>;
+typedef             <a class="link" href="libprelude-prelude-inttypes.html#int16-t" title="int16_t">int16_t</a>;
+typedef             <a class="link" href="libprelude-prelude-inttypes.html#uint16-t" title="uint16_t">uint16_t</a>;
+typedef             <a class="link" href="libprelude-prelude-inttypes.html#int32-t" title="int32_t">int32_t</a>;
+typedef             <a class="link" href="libprelude-prelude-inttypes.html#uint32-t" title="uint32_t">uint32_t</a>;
+typedef             <a class="link" href="libprelude-prelude-inttypes.html#int64-t" title="int64_t">int64_t</a>;
+typedef             <a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a>;
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-prelude-inttypes.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-prelude-inttypes.details"></a><h2>Details</h2>
+<div class="refsect2" title="PRELUDE_INT8_MIN">
+<a name="PRELUDE-INT8-MIN--CAPS"></a><h3>PRELUDE_INT8_MIN</h3>
+<pre class="programlisting">#define PRELUDE_INT8_MIN               (-128)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_INT16_MIN">
+<a name="PRELUDE-INT16-MIN--CAPS"></a><h3>PRELUDE_INT16_MIN</h3>
+<pre class="programlisting">#define PRELUDE_INT16_MIN              (-32767 - 1)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_INT32_MIN">
+<a name="PRELUDE-INT32-MIN--CAPS"></a><h3>PRELUDE_INT32_MIN</h3>
+<pre class="programlisting">#define PRELUDE_INT32_MIN              (-2147483647 - 1)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_INT64_MIN">
+<a name="PRELUDE-INT64-MIN--CAPS"></a><h3>PRELUDE_INT64_MIN</h3>
+<pre class="programlisting">#define PRELUDE_INT64_MIN              (-__PRELUDE_INT64_SUFFIX(9223372036854775807) - 1)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_INT8_MAX">
+<a name="PRELUDE-INT8-MAX--CAPS"></a><h3>PRELUDE_INT8_MAX</h3>
+<pre class="programlisting">#define PRELUDE_INT8_MAX               (127)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_INT16_MAX">
+<a name="PRELUDE-INT16-MAX--CAPS"></a><h3>PRELUDE_INT16_MAX</h3>
+<pre class="programlisting">#define PRELUDE_INT16_MAX              (32767)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_INT32_MAX">
+<a name="PRELUDE-INT32-MAX--CAPS"></a><h3>PRELUDE_INT32_MAX</h3>
+<pre class="programlisting">#define PRELUDE_INT32_MAX              (2147483647)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_INT64_MAX">
+<a name="PRELUDE-INT64-MAX--CAPS"></a><h3>PRELUDE_INT64_MAX</h3>
+<pre class="programlisting">#define PRELUDE_INT64_MAX              (__PRELUDE_INT64_SUFFIX(9223372036854775807))
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_UINT8_MAX">
+<a name="PRELUDE-UINT8-MAX--CAPS"></a><h3>PRELUDE_UINT8_MAX</h3>
+<pre class="programlisting">#define PRELUDE_UINT8_MAX              (255)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_UINT16_MAX">
+<a name="PRELUDE-UINT16-MAX--CAPS"></a><h3>PRELUDE_UINT16_MAX</h3>
+<pre class="programlisting">#define PRELUDE_UINT16_MAX             (65535)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_UINT32_MAX">
+<a name="PRELUDE-UINT32-MAX--CAPS"></a><h3>PRELUDE_UINT32_MAX</h3>
+<pre class="programlisting">#define PRELUDE_UINT32_MAX             (4294967295U)
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_UINT64_MAX">
+<a name="PRELUDE-UINT64-MAX--CAPS"></a><h3>PRELUDE_UINT64_MAX</h3>
+<pre class="programlisting">#define PRELUDE_UINT64_MAX             (__PRELUDE_UINT64_SUFFIX(18446744073709551615))
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_INTMAX_MIN">
+<a name="PRELUDE-INTMAX-MIN--CAPS"></a><h3>PRELUDE_INTMAX_MIN</h3>
+<pre class="programlisting">#define PRELUDE_INTMAX_MIN             INT64_MIN
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_INTMAX_MAX">
+<a name="PRELUDE-INTMAX-MAX--CAPS"></a><h3>PRELUDE_INTMAX_MAX</h3>
+<pre class="programlisting">#define PRELUDE_INTMAX_MAX             INT64_MAX
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_UINTMAX_MAX">
+<a name="PRELUDE-UINTMAX-MAX--CAPS"></a><h3>PRELUDE_UINTMAX_MAX</h3>
+<pre class="programlisting">#define PRELUDE_UINTMAX_MAX            UINT64_MAX
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRId64">
+<a name="PRELUDE-PRId64"></a><h3>PRELUDE_PRId64</h3>
+<pre class="programlisting">#define PRELUDE_PRId64      __PRELUDE_64BIT_FORMAT_PREFIX "d"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIi64">
+<a name="PRELUDE-PRIi64"></a><h3>PRELUDE_PRIi64</h3>
+<pre class="programlisting">#define PRELUDE_PRIi64      __PRELUDE_64BIT_FORMAT_PREFIX "i"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIo64">
+<a name="PRELUDE-PRIo64"></a><h3>PRELUDE_PRIo64</h3>
+<pre class="programlisting">#define PRELUDE_PRIo64      __PRELUDE_64BIT_FORMAT_PREFIX "o"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIx64">
+<a name="PRELUDE-PRIx64"></a><h3>PRELUDE_PRIx64</h3>
+<pre class="programlisting">#define PRELUDE_PRIx64      __PRELUDE_64BIT_FORMAT_PREFIX "x"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIX64">
+<a name="PRELUDE-PRIX64--CAPS"></a><h3>PRELUDE_PRIX64</h3>
+<pre class="programlisting">#define PRELUDE_PRIX64      __PRELUDE_64BIT_FORMAT_PREFIX "X"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIu64">
+<a name="PRELUDE-PRIu64"></a><h3>PRELUDE_PRIu64</h3>
+<pre class="programlisting">#define PRELUDE_PRIu64      __PRELUDE_64BIT_FORMAT_PREFIX "u"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRId32">
+<a name="PRELUDE-PRId32"></a><h3>PRELUDE_PRId32</h3>
+<pre class="programlisting">#define PRELUDE_PRId32      "d"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIi32">
+<a name="PRELUDE-PRIi32"></a><h3>PRELUDE_PRIi32</h3>
+<pre class="programlisting">#define PRELUDE_PRIi32      "i"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIo32">
+<a name="PRELUDE-PRIo32"></a><h3>PRELUDE_PRIo32</h3>
+<pre class="programlisting">#define PRELUDE_PRIo32      "o"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIx32">
+<a name="PRELUDE-PRIx32"></a><h3>PRELUDE_PRIx32</h3>
+<pre class="programlisting">#define PRELUDE_PRIx32      "x"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIX32">
+<a name="PRELUDE-PRIX32--CAPS"></a><h3>PRELUDE_PRIX32</h3>
+<pre class="programlisting">#define PRELUDE_PRIX32      "X"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIu32">
+<a name="PRELUDE-PRIu32"></a><h3>PRELUDE_PRIu32</h3>
+<pre class="programlisting">#define PRELUDE_PRIu32      "u"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRId16">
+<a name="PRELUDE-PRId16"></a><h3>PRELUDE_PRId16</h3>
+<pre class="programlisting">#define PRELUDE_PRId16      "d"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIi16">
+<a name="PRELUDE-PRIi16"></a><h3>PRELUDE_PRIi16</h3>
+<pre class="programlisting">#define PRELUDE_PRIi16      "i"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIo16">
+<a name="PRELUDE-PRIo16"></a><h3>PRELUDE_PRIo16</h3>
+<pre class="programlisting">#define PRELUDE_PRIo16      "o"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIx16">
+<a name="PRELUDE-PRIx16"></a><h3>PRELUDE_PRIx16</h3>
+<pre class="programlisting">#define PRELUDE_PRIx16      "x"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIX16">
+<a name="PRELUDE-PRIX16--CAPS"></a><h3>PRELUDE_PRIX16</h3>
+<pre class="programlisting">#define PRELUDE_PRIX16      "X"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIu16">
+<a name="PRELUDE-PRIu16"></a><h3>PRELUDE_PRIu16</h3>
+<pre class="programlisting">#define PRELUDE_PRIu16      "u"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRId8">
+<a name="PRELUDE-PRId8"></a><h3>PRELUDE_PRId8</h3>
+<pre class="programlisting">#define PRELUDE_PRId8       "d"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIi8">
+<a name="PRELUDE-PRIi8"></a><h3>PRELUDE_PRIi8</h3>
+<pre class="programlisting">#define PRELUDE_PRIi8       "i"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIo8">
+<a name="PRELUDE-PRIo8"></a><h3>PRELUDE_PRIo8</h3>
+<pre class="programlisting">#define PRELUDE_PRIo8       "o"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIx8">
+<a name="PRELUDE-PRIx8"></a><h3>PRELUDE_PRIx8</h3>
+<pre class="programlisting">#define PRELUDE_PRIx8       "x"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIX8">
+<a name="PRELUDE-PRIX8--CAPS"></a><h3>PRELUDE_PRIX8</h3>
+<pre class="programlisting">#define PRELUDE_PRIX8       "X"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_PRIu8">
+<a name="PRELUDE-PRIu8"></a><h3>PRELUDE_PRIu8</h3>
+<pre class="programlisting">#define PRELUDE_PRIu8       "u"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_SCNd64">
+<a name="PRELUDE-SCNd64"></a><h3>PRELUDE_SCNd64</h3>
+<pre class="programlisting">#define PRELUDE_SCNd64      __PRELUDE_64BIT_FORMAT_PREFIX "d"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_SCNi64">
+<a name="PRELUDE-SCNi64"></a><h3>PRELUDE_SCNi64</h3>
+<pre class="programlisting">#define PRELUDE_SCNi64      __PRELUDE_64BIT_FORMAT_PREFIX "i"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_SCNo64">
+<a name="PRELUDE-SCNo64"></a><h3>PRELUDE_SCNo64</h3>
+<pre class="programlisting">#define PRELUDE_SCNo64      __PRELUDE_64BIT_FORMAT_PREFIX "o"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_SCNx64">
+<a name="PRELUDE-SCNx64"></a><h3>PRELUDE_SCNx64</h3>
+<pre class="programlisting">#define PRELUDE_SCNx64      __PRELUDE_64BIT_FORMAT_PREFIX "x"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_SCNu64">
+<a name="PRELUDE-SCNu64"></a><h3>PRELUDE_SCNu64</h3>
+<pre class="programlisting">#define PRELUDE_SCNu64      __PRELUDE_64BIT_FORMAT_PREFIX "u"
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="enum prelude_bool_t">
+<a name="prelude-bool-t"></a><h3>enum prelude_bool_t</h3>
+<pre class="programlisting">typedef enum { 
+	PRELUDE_BOOL_TRUE = TRUE, 
+	PRELUDE_BOOL_FALSE = FALSE 
+} prelude_bool_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="int8_t">
+<a name="int8-t"></a><h3>int8_t</h3>
+<pre class="programlisting"> typedef signed char int8_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="uint8_t">
+<a name="uint8-t"></a><h3>uint8_t</h3>
+<pre class="programlisting"> typedef unsigned char uint8_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="int16_t">
+<a name="int16-t"></a><h3>int16_t</h3>
+<pre class="programlisting"> typedef short int16_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="uint16_t">
+<a name="uint16-t"></a><h3>uint16_t</h3>
+<pre class="programlisting"> typedef unsigned short uint16_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="int32_t">
+<a name="int32-t"></a><h3>int32_t</h3>
+<pre class="programlisting"> typedef int int32_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="uint32_t">
+<a name="uint32-t"></a><h3>uint32_t</h3>
+<pre class="programlisting"> typedef unsigned int uint32_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="int64_t">
+<a name="int64-t"></a><h3>int64_t</h3>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="uint64_t">
+<a name="uint64-t"></a><h3>uint64_t</h3>
+<p>
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

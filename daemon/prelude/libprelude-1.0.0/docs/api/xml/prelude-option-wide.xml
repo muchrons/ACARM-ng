@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-prelude-option-wide">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-prelude-option-wide.top_of_page">prelude-option-wide</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>prelude-option-wide</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-prelude-option-wide.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+#define             <link linkend="PRELUDE-OPTION-REPLY-TYPE-SET--CAPS">PRELUDE_OPTION_REPLY_TYPE_SET</link>
+#define             <link linkend="PRELUDE-OPTION-REPLY-TYPE-GET--CAPS">PRELUDE_OPTION_REPLY_TYPE_GET</link>
+#define             <link linkend="PRELUDE-OPTION-REPLY-TYPE-LIST--CAPS">PRELUDE_OPTION_REPLY_TYPE_LIST</link>
+#define             <link linkend="PRELUDE-OPTION-REPLY-TYPE-ERROR--CAPS">PRELUDE_OPTION_REPLY_TYPE_ERROR</link>
+<link linkend="int">int</link>                 <link linkend="prelude-option-push-request">prelude_option_push_request</link>         (<link linkend="prelude-msgbuf-t">prelude_msgbuf_t</link> *msg,
+                                                         <link linkend="int">int</link> type,
+                                                         const <link linkend="char">char</link> *request);
+<link linkend="int">int</link>                 <link linkend="prelude-option-new-request">prelude_option_new_request</link>          (<link linkend="prelude-msgbuf-t">prelude_msgbuf_t</link> *msgbuf,
+                                                         <link linkend="uint32-t">uint32_t</link> request_id,
+                                                         <link linkend="uint64-t">uint64_t</link> *target_id,
+                                                         <link linkend="size-t">size_t</link> size);
+<link linkend="int">int</link>                 <link linkend="prelude-option-process-request">prelude_option_process_request</link>      (<link linkend="prelude-client-t">prelude_client_t</link> *client,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="prelude-msgbuf-t">prelude_msgbuf_t</link> *reply);
+<link linkend="int">int</link>                 <link linkend="prelude-option-recv-reply">prelude_option_recv_reply</link>           (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="uint64-t">uint64_t</link> *source_id,
+                                                         <link linkend="uint32-t">uint32_t</link> *request_id,
+                                                         <link linkend="void">void</link> **value);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-prelude-option-wide.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-prelude-option-wide.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="PRELUDE-OPTION-REPLY-TYPE-SET--CAPS" role="macro">
+<title>PRELUDE_OPTION_REPLY_TYPE_SET</title>
+<indexterm zone="PRELUDE-OPTION-REPLY-TYPE-SET--CAPS"><primary sortas="PRELUDE_OPTION_REPLY_TYPE_SET">PRELUDE_OPTION_REPLY_TYPE_SET</primary></indexterm><programlisting>#define PRELUDE_OPTION_REPLY_TYPE_SET   0x01
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-OPTION-REPLY-TYPE-GET--CAPS" role="macro">
+<title>PRELUDE_OPTION_REPLY_TYPE_GET</title>
+<indexterm zone="PRELUDE-OPTION-REPLY-TYPE-GET--CAPS"><primary sortas="PRELUDE_OPTION_REPLY_TYPE_GET">PRELUDE_OPTION_REPLY_TYPE_GET</primary></indexterm><programlisting>#define PRELUDE_OPTION_REPLY_TYPE_GET   0x02
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-OPTION-REPLY-TYPE-LIST--CAPS" role="macro">
+<title>PRELUDE_OPTION_REPLY_TYPE_LIST</title>
+<indexterm zone="PRELUDE-OPTION-REPLY-TYPE-LIST--CAPS"><primary sortas="PRELUDE_OPTION_REPLY_TYPE_LIST">PRELUDE_OPTION_REPLY_TYPE_LIST</primary></indexterm><programlisting>#define PRELUDE_OPTION_REPLY_TYPE_LIST  0x04
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="PRELUDE-OPTION-REPLY-TYPE-ERROR--CAPS" role="macro">
+<title>PRELUDE_OPTION_REPLY_TYPE_ERROR</title>
+<indexterm zone="PRELUDE-OPTION-REPLY-TYPE-ERROR--CAPS"><primary sortas="PRELUDE_OPTION_REPLY_TYPE_ERROR">PRELUDE_OPTION_REPLY_TYPE_ERROR</primary></indexterm><programlisting>#define PRELUDE_OPTION_REPLY_TYPE_ERROR 0x08
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-option-push-request" role="function">
+<title>prelude_option_push_request ()</title>
+<indexterm zone="prelude-option-push-request"><primary sortas="prelude_option_push_request">prelude_option_push_request</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_option_push_request         (<link linkend="prelude-msgbuf-t">prelude_msgbuf_t</link> *msg,
+                                                         <link linkend="int">int</link> type,
+                                                         const <link linkend="char">char</link> *request);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>request</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-option-new-request" role="function">
+<title>prelude_option_new_request ()</title>
+<indexterm zone="prelude-option-new-request"><primary sortas="prelude_option_new_request">prelude_option_new_request</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_option_new_request          (<link linkend="prelude-msgbuf-t">prelude_msgbuf_t</link> *msgbuf,
+                                                         <link linkend="uint32-t">uint32_t</link> request_id,
+                                                         <link linkend="uint64-t">uint64_t</link> *target_id,
+                                                         <link linkend="size-t">size_t</link> size);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msgbuf</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>request_id</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>target_id</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>size</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-option-process-request" role="function">
+<title>prelude_option_process_request ()</title>
+<indexterm zone="prelude-option-process-request"><primary sortas="prelude_option_process_request">prelude_option_process_request</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_option_process_request      (<link linkend="prelude-client-t">prelude_client_t</link> *client,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="prelude-msgbuf-t">prelude_msgbuf_t</link> *reply);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>client</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>reply</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-option-recv-reply" role="function">
+<title>prelude_option_recv_reply ()</title>
+<indexterm zone="prelude-option-recv-reply"><primary sortas="prelude_option_recv_reply">prelude_option_recv_reply</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_option_recv_reply           (<link linkend="prelude-msg-t">prelude_msg_t</link> *msg,
+                                                         <link linkend="uint64-t">uint64_t</link> *source_id,
+                                                         <link linkend="uint32-t">uint32_t</link> *request_id,
+                                                         <link linkend="void">void</link> **value);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>source_id</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>request_id</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

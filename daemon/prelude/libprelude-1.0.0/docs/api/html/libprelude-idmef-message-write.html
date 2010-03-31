@@ -1,0 +1,1081 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>idmef-message-write</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="ch04.html" title="Others">
+<link rel="prev" href="libprelude-prelude-msgbuf.html" title="prelude-msgbuf">
+<link rel="next" href="libprelude-prelude-ident.html" title="prelude-ident">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libprelude-prelude-msgbuf.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="libprelude-prelude-ident.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-idmef-message-write.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-idmef-message-write.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="idmef-message-write">
+<a name="libprelude-idmef-message-write"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-idmef-message-write.top_of_page"></a>idmef-message-write</span></h2>
+<p>idmef-message-write — Writing IDMEF class to a message buffer</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-idmef-message-write.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-additional-data-write" title="idmef_additional_data_write ()">idmef_additional_data_write</a>         (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *additional_data,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-reference-write" title="idmef_reference_write ()">idmef_reference_write</a>               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-reference-t" title="idmef_reference_t">idmef_reference_t</a> *reference,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-classification-write" title="idmef_classification_write ()">idmef_classification_write</a>          (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-classification-t" title="idmef_classification_t">idmef_classification_t</a> *classification,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-user-id-write" title="idmef_user_id_write ()">idmef_user_id_write</a>                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-id-t" title="idmef_user_id_t">idmef_user_id_t</a> *user_id,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-user-write" title="idmef_user_write ()">idmef_user_write</a>                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-t" title="idmef_user_t">idmef_user_t</a> *user,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-address-write" title="idmef_address_write ()">idmef_address_write</a>                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-address-t" title="idmef_address_t">idmef_address_t</a> *address,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-process-write" title="idmef_process_write ()">idmef_process_write</a>                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-process-t" title="idmef_process_t">idmef_process_t</a> *process,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-web-service-write" title="idmef_web_service_write ()">idmef_web_service_write</a>             (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-web-service-t" title="idmef_web_service_t">idmef_web_service_t</a> *web_service,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-snmp-service-write" title="idmef_snmp_service_write ()">idmef_snmp_service_write</a>            (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-snmp-service-t" title="idmef_snmp_service_t">idmef_snmp_service_t</a> *snmp_service,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-service-write" title="idmef_service_write ()">idmef_service_write</a>                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-service-t" title="idmef_service_t">idmef_service_t</a> *service,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-node-write" title="idmef_node_write ()">idmef_node_write</a>                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-node-t" title="idmef_node_t">idmef_node_t</a> *node,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-source-write" title="idmef_source_write ()">idmef_source_write</a>                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-source-t" title="idmef_source_t">idmef_source_t</a> *source,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-file-access-write" title="idmef_file_access_write ()">idmef_file_access_write</a>             (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-access-t" title="idmef_file_access_t">idmef_file_access_t</a> *file_access,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-inode-write" title="idmef_inode_write ()">idmef_inode_write</a>                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-inode-t" title="idmef_inode_t">idmef_inode_t</a> *inode,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-checksum-write" title="idmef_checksum_write ()">idmef_checksum_write</a>                (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-checksum-t" title="idmef_checksum_t">idmef_checksum_t</a> *checksum,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-file-write" title="idmef_file_write ()">idmef_file_write</a>                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-t" title="idmef_file_t">idmef_file_t</a> *file,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-linkage-write" title="idmef_linkage_write ()">idmef_linkage_write</a>                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-linkage-t" title="idmef_linkage_t">idmef_linkage_t</a> *linkage,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-target-write" title="idmef_target_write ()">idmef_target_write</a>                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-target-t" title="idmef_target_t">idmef_target_t</a> *target,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-analyzer-write" title="idmef_analyzer_write ()">idmef_analyzer_write</a>                (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-analyzer-t" title="idmef_analyzer_t">idmef_analyzer_t</a> *analyzer,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-alertident-write" title="idmef_alertident_write ()">idmef_alertident_write</a>              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alertident-t" title="idmef_alertident_t">idmef_alertident_t</a> *alertident,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-impact-write" title="idmef_impact_write ()">idmef_impact_write</a>                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-impact-t" title="idmef_impact_t">idmef_impact_t</a> *impact,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-action-write" title="idmef_action_write ()">idmef_action_write</a>                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-action-t" title="idmef_action_t">idmef_action_t</a> *action,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-confidence-write" title="idmef_confidence_write ()">idmef_confidence_write</a>              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-confidence-t" title="idmef_confidence_t">idmef_confidence_t</a> *confidence,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-assessment-write" title="idmef_assessment_write ()">idmef_assessment_write</a>              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-assessment-t" title="idmef_assessment_t">idmef_assessment_t</a> *assessment,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-tool-alert-write" title="idmef_tool_alert_write ()">idmef_tool_alert_write</a>              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-tool-alert-t" title="idmef_tool_alert_t">idmef_tool_alert_t</a> *tool_alert,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-correlation-alert-write" title="idmef_correlation_alert_write ()">idmef_correlation_alert_write</a>       (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-t" title="idmef_correlation_alert_t">idmef_correlation_alert_t</a> *correlation_alert,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-overflow-alert-write" title="idmef_overflow_alert_write ()">idmef_overflow_alert_write</a>          (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-t" title="idmef_overflow_alert_t">idmef_overflow_alert_t</a> *overflow_alert,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-alert-write" title="idmef_alert_write ()">idmef_alert_write</a>                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alert-t" title="idmef_alert_t">idmef_alert_t</a> *alert,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-heartbeat-write" title="idmef_heartbeat_write ()">idmef_heartbeat_write</a>               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-heartbeat-t" title="idmef_heartbeat_t">idmef_heartbeat_t</a> *heartbeat,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-write.html#idmef-message-write" title="idmef_message_write ()">idmef_message_write</a>                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> *message,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-idmef-message-write.description"></a><h2>Description</h2>
+<p>
+If you're not willing to use the <a class="link" href="libprelude-prelude-client.html#prelude-client-send-idmef" title="prelude_client_send_idmef ()"><code class="function">prelude_client_send_idmef()</code></a> function, because for
+example you want more control over how a message is sent, you can use the idmef-message-write
+API to send your message manually.
+</p>
+<p>
+The functions defined in this API all take an IDMEF object as an argument and
+dump this object in a format suitable for writing it to a socket or a file
+(covering, for example, convertion from host byte order to network byte order),
+to the provided <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> buffer.
+</p>
+<p>
+The <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object is just a buffer holding a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object. When
+the buffer is full, the user defined function for <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> will be called,
+and the user can write his message using the <a class="link" href="libprelude-prelude-msg.html#prelude-msg-write" title="prelude_msg_write ()"><code class="function">prelude_msg_write()</code></a> function.
+</p>
+<p>
+</p>
+<pre class="programlisting">
+idmef_message_write(message, msgbuf);
+</pre>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-idmef-message-write.details"></a><h2>Details</h2>
+<div class="refsect2" title="idmef_additional_data_write ()">
+<a name="idmef-additional-data-write"></a><h3>idmef_additional_data_write ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_write         (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *additional_data,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>additional_data</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>additional_data</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t"><span class="type">idmef_additional_data_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_reference_write ()">
+<a name="idmef-reference-write"></a><h3>idmef_reference_write ()</h3>
+<pre class="programlisting">int                 idmef_reference_write               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-reference-t" title="idmef_reference_t">idmef_reference_t</a> *reference,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>reference</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>reference</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-reference-t" title="idmef_reference_t"><span class="type">idmef_reference_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_classification_write ()">
+<a name="idmef-classification-write"></a><h3>idmef_classification_write ()</h3>
+<pre class="programlisting">int                 idmef_classification_write          (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-classification-t" title="idmef_classification_t">idmef_classification_t</a> *classification,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>classification</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>classification</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-classification-t" title="idmef_classification_t"><span class="type">idmef_classification_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_user_id_write ()">
+<a name="idmef-user-id-write"></a><h3>idmef_user_id_write ()</h3>
+<pre class="programlisting">int                 idmef_user_id_write                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-id-t" title="idmef_user_id_t">idmef_user_id_t</a> *user_id,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>user_id</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_id</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-id-t" title="idmef_user_id_t"><span class="type">idmef_user_id_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_user_write ()">
+<a name="idmef-user-write"></a><h3>idmef_user_write ()</h3>
+<pre class="programlisting">int                 idmef_user_write                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-t" title="idmef_user_t">idmef_user_t</a> *user,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>user</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-t" title="idmef_user_t"><span class="type">idmef_user_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_address_write ()">
+<a name="idmef-address-write"></a><h3>idmef_address_write ()</h3>
+<pre class="programlisting">int                 idmef_address_write                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-address-t" title="idmef_address_t">idmef_address_t</a> *address,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>address</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>address</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-address-t" title="idmef_address_t"><span class="type">idmef_address_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_process_write ()">
+<a name="idmef-process-write"></a><h3>idmef_process_write ()</h3>
+<pre class="programlisting">int                 idmef_process_write                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-process-t" title="idmef_process_t">idmef_process_t</a> *process,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>process</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>process</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-process-t" title="idmef_process_t"><span class="type">idmef_process_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_web_service_write ()">
+<a name="idmef-web-service-write"></a><h3>idmef_web_service_write ()</h3>
+<pre class="programlisting">int                 idmef_web_service_write             (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-web-service-t" title="idmef_web_service_t">idmef_web_service_t</a> *web_service,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>web_service</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>web_service</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-web-service-t" title="idmef_web_service_t"><span class="type">idmef_web_service_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_snmp_service_write ()">
+<a name="idmef-snmp-service-write"></a><h3>idmef_snmp_service_write ()</h3>
+<pre class="programlisting">int                 idmef_snmp_service_write            (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-snmp-service-t" title="idmef_snmp_service_t">idmef_snmp_service_t</a> *snmp_service,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>snmp_service</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>snmp_service</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-snmp-service-t" title="idmef_snmp_service_t"><span class="type">idmef_snmp_service_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_service_write ()">
+<a name="idmef-service-write"></a><h3>idmef_service_write ()</h3>
+<pre class="programlisting">int                 idmef_service_write                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-service-t" title="idmef_service_t">idmef_service_t</a> *service,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>service</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>service</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-service-t" title="idmef_service_t"><span class="type">idmef_service_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_node_write ()">
+<a name="idmef-node-write"></a><h3>idmef_node_write ()</h3>
+<pre class="programlisting">int                 idmef_node_write                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-node-t" title="idmef_node_t">idmef_node_t</a> *node,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>node</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>node</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-node-t" title="idmef_node_t"><span class="type">idmef_node_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_source_write ()">
+<a name="idmef-source-write"></a><h3>idmef_source_write ()</h3>
+<pre class="programlisting">int                 idmef_source_write                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-source-t" title="idmef_source_t">idmef_source_t</a> *source,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>source</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>source</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-source-t" title="idmef_source_t"><span class="type">idmef_source_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_file_access_write ()">
+<a name="idmef-file-access-write"></a><h3>idmef_file_access_write ()</h3>
+<pre class="programlisting">int                 idmef_file_access_write             (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-access-t" title="idmef_file_access_t">idmef_file_access_t</a> *file_access,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>file_access</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file_access</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-access-t" title="idmef_file_access_t"><span class="type">idmef_file_access_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_inode_write ()">
+<a name="idmef-inode-write"></a><h3>idmef_inode_write ()</h3>
+<pre class="programlisting">int                 idmef_inode_write                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-inode-t" title="idmef_inode_t">idmef_inode_t</a> *inode,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>inode</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>inode</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-inode-t" title="idmef_inode_t"><span class="type">idmef_inode_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_checksum_write ()">
+<a name="idmef-checksum-write"></a><h3>idmef_checksum_write ()</h3>
+<pre class="programlisting">int                 idmef_checksum_write                (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-checksum-t" title="idmef_checksum_t">idmef_checksum_t</a> *checksum,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>checksum</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>checksum</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-checksum-t" title="idmef_checksum_t"><span class="type">idmef_checksum_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_file_write ()">
+<a name="idmef-file-write"></a><h3>idmef_file_write ()</h3>
+<pre class="programlisting">int                 idmef_file_write                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-t" title="idmef_file_t">idmef_file_t</a> *file,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>file</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-t" title="idmef_file_t"><span class="type">idmef_file_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_linkage_write ()">
+<a name="idmef-linkage-write"></a><h3>idmef_linkage_write ()</h3>
+<pre class="programlisting">int                 idmef_linkage_write                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-linkage-t" title="idmef_linkage_t">idmef_linkage_t</a> *linkage,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>linkage</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>linkage</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-linkage-t" title="idmef_linkage_t"><span class="type">idmef_linkage_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_target_write ()">
+<a name="idmef-target-write"></a><h3>idmef_target_write ()</h3>
+<pre class="programlisting">int                 idmef_target_write                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-target-t" title="idmef_target_t">idmef_target_t</a> *target,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>target</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>target</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-target-t" title="idmef_target_t"><span class="type">idmef_target_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_analyzer_write ()">
+<a name="idmef-analyzer-write"></a><h3>idmef_analyzer_write ()</h3>
+<pre class="programlisting">int                 idmef_analyzer_write                (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-analyzer-t" title="idmef_analyzer_t">idmef_analyzer_t</a> *analyzer,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>analyzer</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>analyzer</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-analyzer-t" title="idmef_analyzer_t"><span class="type">idmef_analyzer_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_alertident_write ()">
+<a name="idmef-alertident-write"></a><h3>idmef_alertident_write ()</h3>
+<pre class="programlisting">int                 idmef_alertident_write              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alertident-t" title="idmef_alertident_t">idmef_alertident_t</a> *alertident,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>alertident</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>alertident</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alertident-t" title="idmef_alertident_t"><span class="type">idmef_alertident_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_impact_write ()">
+<a name="idmef-impact-write"></a><h3>idmef_impact_write ()</h3>
+<pre class="programlisting">int                 idmef_impact_write                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-impact-t" title="idmef_impact_t">idmef_impact_t</a> *impact,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>impact</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>impact</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-impact-t" title="idmef_impact_t"><span class="type">idmef_impact_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_action_write ()">
+<a name="idmef-action-write"></a><h3>idmef_action_write ()</h3>
+<pre class="programlisting">int                 idmef_action_write                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-action-t" title="idmef_action_t">idmef_action_t</a> *action,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>action</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>action</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-action-t" title="idmef_action_t"><span class="type">idmef_action_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_confidence_write ()">
+<a name="idmef-confidence-write"></a><h3>idmef_confidence_write ()</h3>
+<pre class="programlisting">int                 idmef_confidence_write              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-confidence-t" title="idmef_confidence_t">idmef_confidence_t</a> *confidence,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>confidence</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>confidence</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-confidence-t" title="idmef_confidence_t"><span class="type">idmef_confidence_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_assessment_write ()">
+<a name="idmef-assessment-write"></a><h3>idmef_assessment_write ()</h3>
+<pre class="programlisting">int                 idmef_assessment_write              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-assessment-t" title="idmef_assessment_t">idmef_assessment_t</a> *assessment,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>assessment</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>assessment</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-assessment-t" title="idmef_assessment_t"><span class="type">idmef_assessment_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_tool_alert_write ()">
+<a name="idmef-tool-alert-write"></a><h3>idmef_tool_alert_write ()</h3>
+<pre class="programlisting">int                 idmef_tool_alert_write              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-tool-alert-t" title="idmef_tool_alert_t">idmef_tool_alert_t</a> *tool_alert,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>tool_alert</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>tool_alert</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-tool-alert-t" title="idmef_tool_alert_t"><span class="type">idmef_tool_alert_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_correlation_alert_write ()">
+<a name="idmef-correlation-alert-write"></a><h3>idmef_correlation_alert_write ()</h3>
+<pre class="programlisting">int                 idmef_correlation_alert_write       (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-t" title="idmef_correlation_alert_t">idmef_correlation_alert_t</a> *correlation_alert,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>correlation_alert</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>correlation_alert</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-t" title="idmef_correlation_alert_t"><span class="type">idmef_correlation_alert_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_overflow_alert_write ()">
+<a name="idmef-overflow-alert-write"></a><h3>idmef_overflow_alert_write ()</h3>
+<pre class="programlisting">int                 idmef_overflow_alert_write          (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-t" title="idmef_overflow_alert_t">idmef_overflow_alert_t</a> *overflow_alert,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>overflow_alert</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>overflow_alert</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-t" title="idmef_overflow_alert_t"><span class="type">idmef_overflow_alert_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_alert_write ()">
+<a name="idmef-alert-write"></a><h3>idmef_alert_write ()</h3>
+<pre class="programlisting">int                 idmef_alert_write                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alert-t" title="idmef_alert_t">idmef_alert_t</a> *alert,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>alert</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>alert</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alert-t" title="idmef_alert_t"><span class="type">idmef_alert_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_heartbeat_write ()">
+<a name="idmef-heartbeat-write"></a><h3>idmef_heartbeat_write ()</h3>
+<pre class="programlisting">int                 idmef_heartbeat_write               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-heartbeat-t" title="idmef_heartbeat_t">idmef_heartbeat_t</a> *heartbeat,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>heartbeat</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>heartbeat</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-heartbeat-t" title="idmef_heartbeat_t"><span class="type">idmef_heartbeat_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_message_write ()">
+<a name="idmef-message-write"></a><h3>idmef_message_write ()</h3>
+<pre class="programlisting">int                 idmef_message_write                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> *message,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg);</pre>
+<p>
+Write <em class="parameter"><code>message</code></em> within <em class="parameter"><code>msg</code></em> message buffer. The buffer is
+associated with a <a class="link" href="libprelude-prelude-io.html#prelude-io-t" title="prelude_io_t"><span class="type">prelude_io_t</span></a> file descriptor where the data will be written.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>message</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t"><span class="type">idmef_message_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a> object, where the message should be written.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+<div class="refsect1" title="See Also">
+<a name="libprelude-idmef-message-write.see-also"></a><h2>See Also</h2>
+<p>
+<a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t"><span class="type">prelude_msgbuf_t</span></a>
+<a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a>
+</p>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

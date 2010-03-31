@@ -1,0 +1,676 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-prelude-string">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-prelude-string.top_of_page">prelude-string</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>prelude-string</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-prelude-string.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+typedef             <link linkend="prelude-string-t">prelude_string_t</link>;
+<link linkend="int">int</link>                 <link linkend="prelude-string-new">prelude_string_new</link>                  (<link linkend="prelude-string-t">prelude_string_t</link> **string);
+<link linkend="int">int</link>                 <link linkend="prelude-string-new-nodup">prelude_string_new_nodup</link>            (<link linkend="prelude-string-t">prelude_string_t</link> **string,
+                                                         <link linkend="char">char</link> *str);
+<link linkend="int">int</link>                 <link linkend="prelude-string-new-ref">prelude_string_new_ref</link>              (<link linkend="prelude-string-t">prelude_string_t</link> **string,
+                                                         const <link linkend="char">char</link> *str);
+<link linkend="int">int</link>                 <link linkend="prelude-string-new-dup">prelude_string_new_dup</link>              (<link linkend="prelude-string-t">prelude_string_t</link> **string,
+                                                         const <link linkend="char">char</link> *str);
+<link linkend="int">int</link>                 <link linkend="prelude-string-new-dup-fast">prelude_string_new_dup_fast</link>         (<link linkend="prelude-string-t">prelude_string_t</link> **string,
+                                                         const <link linkend="char">char</link> *str,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="void">void</link>                <link linkend="prelude-string-destroy">prelude_string_destroy</link>              (<link linkend="prelude-string-t">prelude_string_t</link> *string);
+<link linkend="void">void</link>                <link linkend="prelude-string-destroy-internal">prelude_string_destroy_internal</link>     (<link linkend="prelude-string-t">prelude_string_t</link> *string);
+<link linkend="int">int</link>                 <link linkend="prelude-string-new-nodup-fast">prelude_string_new_nodup_fast</link>       (<link linkend="prelude-string-t">prelude_string_t</link> **string,
+                                                         <link linkend="char">char</link> *str,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="prelude-string-new-ref-fast">prelude_string_new_ref_fast</link>         (<link linkend="prelude-string-t">prelude_string_t</link> **string,
+                                                         const <link linkend="char">char</link> *str,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="prelude-string-set-dup-fast">prelude_string_set_dup_fast</link>         (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         const <link linkend="char">char</link> *buf,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="prelude-string-set-dup">prelude_string_set_dup</link>              (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         const <link linkend="char">char</link> *buf);
+<link linkend="int">int</link>                 <link linkend="prelude-string-set-nodup-fast">prelude_string_set_nodup_fast</link>       (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         <link linkend="char">char</link> *buf,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="prelude-string-set-nodup">prelude_string_set_nodup</link>            (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         <link linkend="char">char</link> *buf);
+<link linkend="int">int</link>                 <link linkend="prelude-string-set-ref-fast">prelude_string_set_ref_fast</link>         (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         const <link linkend="char">char</link> *buf,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="prelude-string-set-ref">prelude_string_set_ref</link>              (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         const <link linkend="char">char</link> *buf);
+<link linkend="int">int</link>                 <link linkend="prelude-string-copy-ref">prelude_string_copy_ref</link>             (const <link linkend="prelude-string-t">prelude_string_t</link> *src,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *dst);
+<link linkend="int">int</link>                 <link linkend="prelude-string-copy-dup">prelude_string_copy_dup</link>             (const <link linkend="prelude-string-t">prelude_string_t</link> *src,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *dst);
+<link linkend="prelude-string-t">prelude_string_t</link> *  <link linkend="prelude-string-ref">prelude_string_ref</link>                  (<link linkend="prelude-string-t">prelude_string_t</link> *string);
+<link linkend="int">int</link>                 <link linkend="prelude-string-clone">prelude_string_clone</link>                (const <link linkend="prelude-string-t">prelude_string_t</link> *src,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> **dst);
+<link linkend="size-t">size_t</link>              <link linkend="prelude-string-get-len">prelude_string_get_len</link>              (const <link linkend="prelude-string-t">prelude_string_t</link> *string);
+const <link linkend="char">char</link> *        <link linkend="prelude-string-get-string-or-default">prelude_string_get_string_or_default</link>
+                                                        (const <link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         const <link linkend="char">char</link> *def);
+const <link linkend="char">char</link> *        <link linkend="prelude-string-get-string">prelude_string_get_string</link>           (const <link linkend="prelude-string-t">prelude_string_t</link> *string);
+<link linkend="int">int</link>                 <link linkend="prelude-string-get-string-released">prelude_string_get_string_released</link>  (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         <link linkend="char">char</link> **outptr);
+<link linkend="prelude-bool-t">prelude_bool_t</link>      <link linkend="prelude-string-is-empty">prelude_string_is_empty</link>             (const <link linkend="prelude-string-t">prelude_string_t</link> *string);
+<link linkend="void">void</link>                <link linkend="prelude-string-clear">prelude_string_clear</link>                (<link linkend="prelude-string-t">prelude_string_t</link> *string);
+<link linkend="int">int</link>                 <link linkend="prelude-string-cat">prelude_string_cat</link>                  (<link linkend="prelude-string-t">prelude_string_t</link> *dst,
+                                                         const <link linkend="char">char</link> *str);
+<link linkend="int">int</link>                 <link linkend="prelude-string-ncat">prelude_string_ncat</link>                 (<link linkend="prelude-string-t">prelude_string_t</link> *dst,
+                                                         const <link linkend="char">char</link> *str,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="prelude-string-sprintf">prelude_string_sprintf</link>              (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         const <link linkend="char">char</link> *fmt,
+                                                         ...);
+<link linkend="int">int</link>                 <link linkend="prelude-string-vprintf">prelude_string_vprintf</link>              (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         const <link linkend="char">char</link> *fmt,
+                                                         <link linkend="va-list">va_list</link> ap);
+#define             <link linkend="prelude-string-set-constant">prelude_string_set_constant</link>         (string, str)
+#define             <link linkend="prelude-string-new-constant">prelude_string_new_constant</link>         (string, str)
+<link linkend="int">int</link>                 <link linkend="prelude-string-compare">prelude_string_compare</link>              (const <link linkend="prelude-string-t">prelude_string_t</link> *str1,
+                                                         const <link linkend="prelude-string-t">prelude_string_t</link> *str2);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-prelude-string.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-prelude-string.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="prelude-string-t" role="typedef">
+<title>prelude_string_t</title>
+<indexterm zone="prelude-string-t"><primary sortas="prelude_string_t">prelude_string_t</primary></indexterm><programlisting>typedef struct prelude_string prelude_string_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-string-new" role="function">
+<title>prelude_string_new ()</title>
+<indexterm zone="prelude-string-new"><primary sortas="prelude_string_new">prelude_string_new</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_new                  (<link linkend="prelude-string-t">prelude_string_t</link> **string);</programlisting>
+<para>
+Create a new <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object, and store in in <parameter>string</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer where to store the created <link linkend="prelude-string-t"><type>prelude_string_t</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-new-nodup" role="function">
+<title>prelude_string_new_nodup ()</title>
+<indexterm zone="prelude-string-new-nodup"><primary sortas="prelude_string_new_nodup">prelude_string_new_nodup</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_new_nodup            (<link linkend="prelude-string-t">prelude_string_t</link> **string,
+                                                         <link linkend="char">char</link> *str);</programlisting>
+<para>
+Create a new <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object with a reference to <parameter>str</parameter> as
+initial value.  <parameter>str</parameter> is owned by <parameter>string</parameter> and will be freed upon
+<link linkend="prelude-string-destroy"><function>prelude_string_destroy()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer where to store the created <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara> Initial string value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-new-ref" role="function">
+<title>prelude_string_new_ref ()</title>
+<indexterm zone="prelude-string-new-ref"><primary sortas="prelude_string_new_ref">prelude_string_new_ref</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_new_ref              (<link linkend="prelude-string-t">prelude_string_t</link> **string,
+                                                         const <link linkend="char">char</link> *str);</programlisting>
+<para>
+Create a new <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object with a reference to <parameter>str</parameter> as
+initial value. <parameter>str</parameter> won't be freed upon <link linkend="prelude-string-destroy"><function>prelude_string_destroy()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer where to store the created <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara> Initial string value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-new-dup" role="function">
+<title>prelude_string_new_dup ()</title>
+<indexterm zone="prelude-string-new-dup"><primary sortas="prelude_string_new_dup">prelude_string_new_dup</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_new_dup              (<link linkend="prelude-string-t">prelude_string_t</link> **string,
+                                                         const <link linkend="char">char</link> *str);</programlisting>
+<para>
+Create a new <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object with a copy of <parameter>str</parameter> as it's
+initial value. The copy is owned by the <parameter>string</parameter> and will be freed
+upon <link linkend="prelude-string-destroy"><function>prelude_string_destroy()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer where to store the created <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara> Initial string value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-new-dup-fast" role="function">
+<title>prelude_string_new_dup_fast ()</title>
+<indexterm zone="prelude-string-new-dup-fast"><primary sortas="prelude_string_new_dup_fast">prelude_string_new_dup_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_new_dup_fast         (<link linkend="prelude-string-t">prelude_string_t</link> **string,
+                                                         const <link linkend="char">char</link> *str,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+Create a new <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object with a copy of <parameter>str</parameter> as it's
+initial value.  The copy is owned by the <parameter>string</parameter> and will be freed
+upon <link linkend="prelude-string-destroy"><function>prelude_string_destroy()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer where to store the created <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara> Initial string value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara> Lenght of <parameter>str</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-destroy" role="function">
+<title>prelude_string_destroy ()</title>
+<indexterm zone="prelude-string-destroy"><primary sortas="prelude_string_destroy">prelude_string_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_string_destroy              (<link linkend="prelude-string-t">prelude_string_t</link> *string);</programlisting>
+<para>
+Decrease refcount and destroy <parameter>string</parameter>.
+<parameter>string</parameter> content content is destroyed if applicable (dup and nodup,
+or a referenced string that have been modified.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-destroy-internal" role="function">
+<title>prelude_string_destroy_internal ()</title>
+<indexterm zone="prelude-string-destroy-internal"><primary sortas="prelude_string_destroy_internal">prelude_string_destroy_internal</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_string_destroy_internal     (<link linkend="prelude-string-t">prelude_string_t</link> *string);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-new-nodup-fast" role="function">
+<title>prelude_string_new_nodup_fast ()</title>
+<indexterm zone="prelude-string-new-nodup-fast"><primary sortas="prelude_string_new_nodup_fast">prelude_string_new_nodup_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_new_nodup_fast       (<link linkend="prelude-string-t">prelude_string_t</link> **string,
+                                                         <link linkend="char">char</link> *str,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+Create a new <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object with a reference to <parameter>str</parameter> as
+initial value.  <parameter>str</parameter> is owned by <parameter>string</parameter> and will be freed upon
+<link linkend="prelude-string-destroy"><function>prelude_string_destroy()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer where to store the created <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara> Initial string value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara> Lenght of <parameter>str</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-new-ref-fast" role="function">
+<title>prelude_string_new_ref_fast ()</title>
+<indexterm zone="prelude-string-new-ref-fast"><primary sortas="prelude_string_new_ref_fast">prelude_string_new_ref_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_new_ref_fast         (<link linkend="prelude-string-t">prelude_string_t</link> **string,
+                                                         const <link linkend="char">char</link> *str,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+Create a new <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object with a reference to <parameter>str</parameter> as
+initial value. <parameter>str</parameter> won't be freed upon <link linkend="prelude-string-destroy"><function>prelude_string_destroy()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer where to store the created <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara> Initial string value.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara> Length of <parameter>str</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-set-dup-fast" role="function">
+<title>prelude_string_set_dup_fast ()</title>
+<indexterm zone="prelude-string-set-dup-fast"><primary sortas="prelude_string_set_dup_fast">prelude_string_set_dup_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_set_dup_fast         (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         const <link linkend="char">char</link> *buf,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+Store a copy of the string pointed by <parameter>buf</parameter> in <parameter>string</parameter>.
+The <parameter>buf</parameter> copy will be freed upon <link linkend="prelude-string-destroy"><function>prelude_string_destroy()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> String to store in <parameter>string</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara> Lenght of <parameter>buf</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-set-dup" role="function">
+<title>prelude_string_set_dup ()</title>
+<indexterm zone="prelude-string-set-dup"><primary sortas="prelude_string_set_dup">prelude_string_set_dup</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_set_dup              (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         const <link linkend="char">char</link> *buf);</programlisting>
+<para>
+Store a copy of the string pointed by <parameter>buf</parameter> in <parameter>string</parameter>.
+The <parameter>buf</parameter> copy will be freed upon <link linkend="prelude-string-destroy"><function>prelude_string_destroy()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> String to store in <parameter>string</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-set-nodup-fast" role="function">
+<title>prelude_string_set_nodup_fast ()</title>
+<indexterm zone="prelude-string-set-nodup-fast"><primary sortas="prelude_string_set_nodup_fast">prelude_string_set_nodup_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_set_nodup_fast       (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         <link linkend="char">char</link> *buf,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+Store a reference to the string pointed by <parameter>buf</parameter> in <parameter>string</parameter>.
+The referenced <parameter>buf</parameter> will be freed upon <link linkend="prelude-string-destroy"><function>prelude_string_destroy()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> String to store in <parameter>string</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara> Lenght of <parameter>buf</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-set-nodup" role="function">
+<title>prelude_string_set_nodup ()</title>
+<indexterm zone="prelude-string-set-nodup"><primary sortas="prelude_string_set_nodup">prelude_string_set_nodup</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_set_nodup            (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         <link linkend="char">char</link> *buf);</programlisting>
+<para>
+Store a reference to the string pointed by <parameter>buf</parameter> in <parameter>string</parameter>.
+The referenced <parameter>buf</parameter> will be freed upon <link linkend="prelude-string-destroy"><function>prelude_string_destroy()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> String to store in <parameter>string</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-set-ref-fast" role="function">
+<title>prelude_string_set_ref_fast ()</title>
+<indexterm zone="prelude-string-set-ref-fast"><primary sortas="prelude_string_set_ref_fast">prelude_string_set_ref_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_set_ref_fast         (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         const <link linkend="char">char</link> *buf,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+Store a reference to the string pointed by <parameter>buf</parameter> in <parameter>string</parameter>.
+The referenced <parameter>buf</parameter> value won't be modified or freed.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> String to store in <parameter>string</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara> Lenght of <parameter>buf</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-set-ref" role="function">
+<title>prelude_string_set_ref ()</title>
+<indexterm zone="prelude-string-set-ref"><primary sortas="prelude_string_set_ref">prelude_string_set_ref</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_set_ref              (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         const <link linkend="char">char</link> *buf);</programlisting>
+<para>
+Store a reference to the string pointed by <parameter>buf</parameter> in <parameter>string</parameter>.
+The referenced <parameter>buf</parameter> value won't be modified or freed.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> String to store in <parameter>string</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-copy-ref" role="function">
+<title>prelude_string_copy_ref ()</title>
+<indexterm zone="prelude-string-copy-ref"><primary sortas="prelude_string_copy_ref">prelude_string_copy_ref</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_copy_ref             (const <link linkend="prelude-string-t">prelude_string_t</link> *src,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *dst);</programlisting>
+<para>
+Reference <parameter>src</parameter> content within <parameter>dst</parameter>.
+The referenced content won't be modified or freed.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object to copy data from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object to copy data to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-copy-dup" role="function">
+<title>prelude_string_copy_dup ()</title>
+<indexterm zone="prelude-string-copy-dup"><primary sortas="prelude_string_copy_dup">prelude_string_copy_dup</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_copy_dup             (const <link linkend="prelude-string-t">prelude_string_t</link> *src,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *dst);</programlisting>
+<para>
+Copy <parameter>src</parameter> content within <parameter>dst</parameter>.
+The content is owned by <parameter>src</parameter> and independent of <parameter>dst</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object to copy data from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object to copy data to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-ref" role="function">
+<title>prelude_string_ref ()</title>
+<indexterm zone="prelude-string-ref"><primary sortas="prelude_string_ref">prelude_string_ref</primary></indexterm><programlisting><link linkend="prelude-string-t">prelude_string_t</link> *  prelude_string_ref                  (<link linkend="prelude-string-t">prelude_string_t</link> *string);</programlisting>
+<para>
+Increase <parameter>string</parameter> reference count.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object to reference.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <parameter>string</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-clone" role="function">
+<title>prelude_string_clone ()</title>
+<indexterm zone="prelude-string-clone"><primary sortas="prelude_string_clone">prelude_string_clone</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_clone                (const <link linkend="prelude-string-t">prelude_string_t</link> *src,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> **dst);</programlisting>
+<para>
+Clone <parameter>src</parameter> within a new <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object stored into <parameter>dst</parameter>.
+Data carried by <parameter>dst</parameter> and <parameter>src</parameter> are independant.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an existing <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an address where to store the created <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-get-len" role="function">
+<title>prelude_string_get_len ()</title>
+<indexterm zone="prelude-string-get-len"><primary sortas="prelude_string_get_len">prelude_string_get_len</primary></indexterm><programlisting><link linkend="size-t">size_t</link>              prelude_string_get_len              (const <link linkend="prelude-string-t">prelude_string_t</link> *string);</programlisting>
+<para>
+Return the length of the string carried by <parameter>string</parameter> object.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The length of the string owned by <parameter>string</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-get-string-or-default" role="function">
+<title>prelude_string_get_string_or_default ()</title>
+<indexterm zone="prelude-string-get-string-or-default"><primary sortas="prelude_string_get_string_or_default">prelude_string_get_string_or_default</primary></indexterm><programlisting>const <link linkend="char">char</link> *        prelude_string_get_string_or_default
+                                                        (const <link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         const <link linkend="char">char</link> *def);</programlisting>
+<para>
+Return the string carried on by <parameter>string</parameter> object, or <parameter>def</parameter> if it is empty.
+There should be no operation done on the returned string since it is still
+owned by <parameter>string</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>def</parameter>&#160;:</term>
+<listitem><simpara> Default value to a return in case <parameter>string</parameter> is empty.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The string owned by <parameter>string</parameter> or <parameter>def</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-get-string" role="function">
+<title>prelude_string_get_string ()</title>
+<indexterm zone="prelude-string-get-string"><primary sortas="prelude_string_get_string">prelude_string_get_string</primary></indexterm><programlisting>const <link linkend="char">char</link> *        prelude_string_get_string           (const <link linkend="prelude-string-t">prelude_string_t</link> *string);</programlisting>
+<para>
+Return the string carried on by <parameter>string</parameter> object.
+There should be no operation done on the returned string since
+it is still owned by <parameter>string</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The string owned by <parameter>string</parameter> if any.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-get-string-released" role="function">
+<title>prelude_string_get_string_released ()</title>
+<indexterm zone="prelude-string-get-string-released"><primary sortas="prelude_string_get_string_released">prelude_string_get_string_released</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_get_string_released  (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         <link linkend="char">char</link> **outptr);</programlisting>
+<para>
+Get <parameter>string</parameter> content, and release it so that further operation on
+<parameter>string</parameter> won't modify the returned content.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>outptr</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an address where to store the released string.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-is-empty" role="function">
+<title>prelude_string_is_empty ()</title>
+<indexterm zone="prelude-string-is-empty"><primary sortas="prelude_string_is_empty">prelude_string_is_empty</primary></indexterm><programlisting><link linkend="prelude-bool-t">prelude_bool_t</link>      prelude_string_is_empty             (const <link linkend="prelude-string-t">prelude_string_t</link> *string);</programlisting>
+<para>
+Check whether <parameter>string</parameter> is empty.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE if <parameter>string</parameter> is empty, FALSE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-clear" role="function">
+<title>prelude_string_clear ()</title>
+<indexterm zone="prelude-string-clear"><primary sortas="prelude_string_clear">prelude_string_clear</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_string_clear                (<link linkend="prelude-string-t">prelude_string_t</link> *string);</programlisting>
+<para>
+Reset <parameter>string</parameter> content to zero.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-cat" role="function">
+<title>prelude_string_cat ()</title>
+<indexterm zone="prelude-string-cat"><primary sortas="prelude_string_cat">prelude_string_cat</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_cat                  (<link linkend="prelude-string-t">prelude_string_t</link> *dst,
+                                                         const <link linkend="char">char</link> *str);</programlisting>
+<para>
+The <link linkend="prelude-string-cat"><function>prelude_string_cat()</function></link> function appends the <parameter>str</parameter> string to the <parameter>dst</parameter>
+prelude_string_t object over-writing the `\0' character at the end of
+<parameter>dst</parameter>, and then adds a termi-nating `\0' character.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a string.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <parameter>len</parameter>, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-ncat" role="function">
+<title>prelude_string_ncat ()</title>
+<indexterm zone="prelude-string-ncat"><primary sortas="prelude_string_ncat">prelude_string_ncat</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_ncat                 (<link linkend="prelude-string-t">prelude_string_t</link> *dst,
+                                                         const <link linkend="char">char</link> *str,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-sprintf" role="function">
+<title>prelude_string_sprintf ()</title>
+<indexterm zone="prelude-string-sprintf"><primary sortas="prelude_string_sprintf">prelude_string_sprintf</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_sprintf              (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         const <link linkend="char">char</link> *fmt,
+                                                         ...);</programlisting>
+<para>
+Produce output according to <parameter>fmt</parameter>, and write output to the given
+<parameter>string</parameter>. See snprintf(3) to learn more about <parameter>fmt</parameter> format.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>fmt</parameter>&#160;:</term>
+<listitem><simpara> Format string to use.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>...</parameter>&#160;:</term>
+<listitem><simpara> Variable argument list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The number of characters written, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-vprintf" role="function">
+<title>prelude_string_vprintf ()</title>
+<indexterm zone="prelude-string-vprintf"><primary sortas="prelude_string_vprintf">prelude_string_vprintf</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_vprintf              (<link linkend="prelude-string-t">prelude_string_t</link> *string,
+                                                         const <link linkend="char">char</link> *fmt,
+                                                         <link linkend="va-list">va_list</link> ap);</programlisting>
+<para>
+Produce output according to <parameter>fmt</parameter>, storing argument provided in <parameter>ap</parameter>
+variable argument list, and write the output to the given <parameter>string</parameter>.
+See sprintf(3) for more information on <parameter>fmt</parameter> format.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>fmt</parameter>&#160;:</term>
+<listitem><simpara> Format string to use.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ap</parameter>&#160;:</term>
+<listitem><simpara> Variable argument list.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The number of characters written, or a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-set-constant" role="macro">
+<title>prelude_string_set_constant()</title>
+<indexterm zone="prelude-string-set-constant"><primary sortas="prelude_string_set_constant">prelude_string_set_constant</primary></indexterm><programlisting>#define             prelude_string_set_constant(string, str)</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-new-constant" role="macro">
+<title>prelude_string_new_constant()</title>
+<indexterm zone="prelude-string-new-constant"><primary sortas="prelude_string_new_constant">prelude_string_new_constant</primary></indexterm><programlisting>#define             prelude_string_new_constant(string, str)</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-string-compare" role="function">
+<title>prelude_string_compare ()</title>
+<indexterm zone="prelude-string-compare"><primary sortas="prelude_string_compare">prelude_string_compare</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_string_compare              (const <link linkend="prelude-string-t">prelude_string_t</link> *str1,
+                                                         const <link linkend="prelude-string-t">prelude_string_t</link> *str2);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>str1</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object to compare with <parameter>str2</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str2</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> object to compare with <parameter>str1</parameter>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 if <parameter>str1</parameter> and <parameter>str2</parameter> value are equal, a negative value otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,0 +1,510 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-prelude-connection">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-prelude-connection.top_of_page">prelude-connection</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>prelude-connection</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-prelude-connection.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+enum                <link linkend="prelude-connection-permission-t">prelude_connection_permission_t</link>;
+enum                <link linkend="prelude-connection-state-t">prelude_connection_state_t</link>;
+typedef             <link linkend="prelude-connection-t">prelude_connection_t</link>;
+<link linkend="void">void</link>                <link linkend="prelude-connection-destroy">prelude_connection_destroy</link>          (<link linkend="prelude-connection-t">prelude_connection_t</link> *conn);
+<link linkend="int">int</link>                 <link linkend="prelude-connection-send">prelude_connection_send</link>             (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);
+<link linkend="int">int</link>                 <link linkend="prelude-connection-recv">prelude_connection_recv</link>             (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> **outmsg);
+<link linkend="int">int</link>                 <link linkend="prelude-connection-recv-idmef">prelude_connection_recv_idmef</link>       (<link linkend="prelude-connection-t">prelude_connection_t</link> *con,
+                                                         <link linkend="idmef-message-t">idmef_message_t</link> **idmef);
+<link linkend="int">int</link>                 <link linkend="prelude-connection-connect">prelude_connection_connect</link>          (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="prelude-client-profile-t">prelude_client_profile_t</link> *profile,
+                                                         <link linkend="prelude-connection-permission-t">prelude_connection_permission_t</link> permission);
+<link linkend="ssize-t">ssize_t</link>             <link linkend="prelude-connection-forward">prelude_connection_forward</link>          (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *src,
+                                                         <link linkend="size-t">size_t</link> count);
+const <link linkend="char">char</link> *        <link linkend="prelude-connection-get-local-addr">prelude_connection_get_local_addr</link>   (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);
+unsigned <link linkend="int">int</link>        <link linkend="prelude-connection-get-local-port">prelude_connection_get_local_port</link>   (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);
+const <link linkend="char">char</link> *        <link linkend="prelude-connection-get-peer-addr">prelude_connection_get_peer_addr</link>    (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);
+unsigned <link linkend="int">int</link>        <link linkend="prelude-connection-get-peer-port">prelude_connection_get_peer_port</link>    (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);
+<link linkend="prelude-bool-t">prelude_bool_t</link>      <link linkend="prelude-connection-is-alive">prelude_connection_is_alive</link>         (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);
+<link linkend="prelude-io-t">prelude_io_t</link> *      <link linkend="prelude-connection-get-fd">prelude_connection_get_fd</link>           (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);
+<link linkend="int">int</link>                 <link linkend="prelude-connection-close">prelude_connection_close</link>            (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);
+<link linkend="void">void</link>                <link linkend="prelude-connection-set-fd-ref">prelude_connection_set_fd_ref</link>       (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *fd);
+<link linkend="void">void</link>                <link linkend="prelude-connection-set-fd-nodup">prelude_connection_set_fd_nodup</link>     (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *fd);
+<link linkend="void">void</link>                <link linkend="prelude-connection-set-state">prelude_connection_set_state</link>        (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="prelude-connection-state-t">prelude_connection_state_t</link> state);
+<link linkend="prelude-connection-state-t">prelude_connection_state_t</link>  <link linkend="prelude-connection-get-state">prelude_connection_get_state</link>
+                                                        (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);
+<link linkend="void">void</link>                <link linkend="prelude-connection-set-data">prelude_connection_set_data</link>         (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="void">void</link> *data);
+<link linkend="void">void</link> *              <link linkend="prelude-connection-get-data">prelude_connection_get_data</link>         (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);
+const <link linkend="char">char</link> *        <link linkend="prelude-connection-get-default-socket-filename">prelude_connection_get_default_socket_filename</link>
+                                                        (void);
+<link linkend="prelude-connection-permission-t">prelude_connection_permission_t</link>  <link linkend="prelude-connection-get-permission">prelude_connection_get_permission</link>
+                                                        (<link linkend="prelude-connection-t">prelude_connection_t</link> *conn);
+<link linkend="uint64-t">uint64_t</link>            <link linkend="prelude-connection-get-peer-analyzerid">prelude_connection_get_peer_analyzerid</link>
+                                                        (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);
+<link linkend="void">void</link>                <link linkend="prelude-connection-set-peer-analyzerid">prelude_connection_set_peer_analyzerid</link>
+                                                        (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="uint64-t">uint64_t</link> analyzerid);
+<link linkend="int">int</link>                 <link linkend="prelude-connection-new">prelude_connection_new</link>              (<link linkend="prelude-connection-t">prelude_connection_t</link> **ret,
+                                                         const <link linkend="char">char</link> *addr);
+<link linkend="prelude-connection-t">prelude_connection_t</link> * <link linkend="prelude-connection-ref">prelude_connection_ref</link>           (<link linkend="prelude-connection-t">prelude_connection_t</link> *conn);
+<link linkend="int">int</link>                 <link linkend="prelude-connection-new-msgbuf">prelude_connection_new_msgbuf</link>       (<link linkend="prelude-connection-t">prelude_connection_t</link> *connection,
+                                                         <link linkend="prelude-msgbuf-t">prelude_msgbuf_t</link> **msgbuf);
+<link linkend="int">int</link>                 <link linkend="prelude-connection-permission-to-string">prelude_connection_permission_to_string</link>
+                                                        (<link linkend="prelude-connection-permission-t">prelude_connection_permission_t</link> perm,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *out);
+<link linkend="int">int</link>                 <link linkend="prelude-connection-permission-new-from-string">prelude_connection_permission_new_from_string</link>
+                                                        (<link linkend="prelude-connection-permission-t">prelude_connection_permission_t</link> *out,
+                                                         const <link linkend="char">char</link> *buf);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-prelude-connection.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-prelude-connection.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="prelude-connection-permission-t" role="enum">
+<title>enum prelude_connection_permission_t</title>
+<indexterm zone="prelude-connection-permission-t"><primary sortas="prelude_connection_permission_t">prelude_connection_permission_t</primary></indexterm><programlisting>typedef enum {
+        PRELUDE_CONNECTION_PERMISSION_IDMEF_READ      = 0x01, /* client might read received IDMEF message */
+        PRELUDE_CONNECTION_PERMISSION_ADMIN_READ      = 0x02, /* client might read received ADMIN message */
+        PRELUDE_CONNECTION_PERMISSION_IDMEF_WRITE     = 0x04, /* client might send IDMEF message          */
+        PRELUDE_CONNECTION_PERMISSION_ADMIN_WRITE     = 0x08  /* client might issue OPTION request        */
+} prelude_connection_permission_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-connection-state-t" role="enum">
+<title>enum prelude_connection_state_t</title>
+<indexterm zone="prelude-connection-state-t"><primary sortas="prelude_connection_state_t">prelude_connection_state_t</primary></indexterm><programlisting>typedef enum {
+        PRELUDE_CONNECTION_STATE_ESTABLISHED     = 0x01
+} prelude_connection_state_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-connection-t" role="typedef">
+<title>prelude_connection_t</title>
+<indexterm zone="prelude-connection-t"><primary sortas="prelude_connection_t">prelude_connection_t</primary></indexterm><programlisting>typedef struct prelude_connection prelude_connection_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-connection-destroy" role="function">
+<title>prelude_connection_destroy ()</title>
+<indexterm zone="prelude-connection-destroy"><primary sortas="prelude_connection_destroy">prelude_connection_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_connection_destroy          (<link linkend="prelude-connection-t">prelude_connection_t</link> *conn);</programlisting>
+<para>
+Destroy the connection referenced by <parameter>conn</parameter>.
+</para>
+<para>
+In case the connection is still alive, it is closed in a blocking
+manner. Use <link linkend="prelude-connection-close"><function>prelude_connection_close()</function></link> if you want to close the
+connection in a non blocking manner prior <link linkend="prelude-connection-destroy"><function>prelude_connection_destroy()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>conn</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-connection-t"><type>prelude_connection_t</type></link> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-send" role="function">
+<title>prelude_connection_send ()</title>
+<indexterm zone="prelude-connection-send"><primary sortas="prelude_connection_send">prelude_connection_send</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_connection_send             (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> *msg);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msg</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-recv" role="function">
+<title>prelude_connection_recv ()</title>
+<indexterm zone="prelude-connection-recv"><primary sortas="prelude_connection_recv">prelude_connection_recv</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_connection_recv             (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="prelude-msg-t">prelude_msg_t</link> **outmsg);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>outmsg</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-recv-idmef" role="function">
+<title>prelude_connection_recv_idmef ()</title>
+<indexterm zone="prelude-connection-recv-idmef"><primary sortas="prelude_connection_recv_idmef">prelude_connection_recv_idmef</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_connection_recv_idmef       (<link linkend="prelude-connection-t">prelude_connection_t</link> *con,
+                                                         <link linkend="idmef-message-t">idmef_message_t</link> **idmef);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>con</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>idmef</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-connect" role="function">
+<title>prelude_connection_connect ()</title>
+<indexterm zone="prelude-connection-connect"><primary sortas="prelude_connection_connect">prelude_connection_connect</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_connection_connect          (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="prelude-client-profile-t">prelude_client_profile_t</link> *profile,
+                                                         <link linkend="prelude-connection-permission-t">prelude_connection_permission_t</link> permission);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>profile</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>permission</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-forward" role="function">
+<title>prelude_connection_forward ()</title>
+<indexterm zone="prelude-connection-forward"><primary sortas="prelude_connection_forward">prelude_connection_forward</primary></indexterm><programlisting><link linkend="ssize-t">ssize_t</link>             prelude_connection_forward          (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *src,
+                                                         <link linkend="size-t">size_t</link> count);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>count</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-get-local-addr" role="function">
+<title>prelude_connection_get_local_addr ()</title>
+<indexterm zone="prelude-connection-get-local-addr"><primary sortas="prelude_connection_get_local_addr">prelude_connection_get_local_addr</primary></indexterm><programlisting>const <link linkend="char">char</link> *        prelude_connection_get_local_addr   (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-connection-t"><type>prelude_connection_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the local address used to connect.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-get-local-port" role="function">
+<title>prelude_connection_get_local_port ()</title>
+<indexterm zone="prelude-connection-get-local-port"><primary sortas="prelude_connection_get_local_port">prelude_connection_get_local_port</primary></indexterm><programlisting>unsigned <link linkend="int">int</link>        prelude_connection_get_local_port   (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-connection-t"><type>prelude_connection_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the local port used to connect.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-get-peer-addr" role="function">
+<title>prelude_connection_get_peer_addr ()</title>
+<indexterm zone="prelude-connection-get-peer-addr"><primary sortas="prelude_connection_get_peer_addr">prelude_connection_get_peer_addr</primary></indexterm><programlisting>const <link linkend="char">char</link> *        prelude_connection_get_peer_addr    (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-get-peer-port" role="function">
+<title>prelude_connection_get_peer_port ()</title>
+<indexterm zone="prelude-connection-get-peer-port"><primary sortas="prelude_connection_get_peer_port">prelude_connection_get_peer_port</primary></indexterm><programlisting>unsigned <link linkend="int">int</link>        prelude_connection_get_peer_port    (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-is-alive" role="function">
+<title>prelude_connection_is_alive ()</title>
+<indexterm zone="prelude-connection-is-alive"><primary sortas="prelude_connection_is_alive">prelude_connection_is_alive</primary></indexterm><programlisting><link linkend="prelude-bool-t">prelude_bool_t</link>      prelude_connection_is_alive         (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-connection-t"><type>prelude_connection_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 if the connection associated with <parameter>cnx</parameter> is alive, -1 otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-get-fd" role="function">
+<title>prelude_connection_get_fd ()</title>
+<indexterm zone="prelude-connection-get-fd"><primary sortas="prelude_connection_get_fd">prelude_connection_get_fd</primary></indexterm><programlisting><link linkend="prelude-io-t">prelude_io_t</link> *      prelude_connection_get_fd           (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-connection-t"><type>prelude_connection_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> A pointer to the <link linkend="prelude-io-t"><type>prelude_io_t</type></link> object used for
+communicating with the peer.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-close" role="function">
+<title>prelude_connection_close ()</title>
+<indexterm zone="prelude-connection-close"><primary sortas="prelude_connection_close">prelude_connection_close</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_connection_close            (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-set-fd-ref" role="function">
+<title>prelude_connection_set_fd_ref ()</title>
+<indexterm zone="prelude-connection-set-fd-ref"><primary sortas="prelude_connection_set_fd_ref">prelude_connection_set_fd_ref</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_connection_set_fd_ref       (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *fd);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>fd</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-set-fd-nodup" role="function">
+<title>prelude_connection_set_fd_nodup ()</title>
+<indexterm zone="prelude-connection-set-fd-nodup"><primary sortas="prelude_connection_set_fd_nodup">prelude_connection_set_fd_nodup</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_connection_set_fd_nodup     (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *fd);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>fd</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-set-state" role="function">
+<title>prelude_connection_set_state ()</title>
+<indexterm zone="prelude-connection-set-state"><primary sortas="prelude_connection_set_state">prelude_connection_set_state</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_connection_set_state        (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="prelude-connection-state-t">prelude_connection_state_t</link> state);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>state</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-get-state" role="function">
+<title>prelude_connection_get_state ()</title>
+<indexterm zone="prelude-connection-get-state"><primary sortas="prelude_connection_get_state">prelude_connection_get_state</primary></indexterm><programlisting><link linkend="prelude-connection-state-t">prelude_connection_state_t</link>  prelude_connection_get_state
+                                                        (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-set-data" role="function">
+<title>prelude_connection_set_data ()</title>
+<indexterm zone="prelude-connection-set-data"><primary sortas="prelude_connection_set_data">prelude_connection_set_data</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_connection_set_data         (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="void">void</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-get-data" role="function">
+<title>prelude_connection_get_data ()</title>
+<indexterm zone="prelude-connection-get-data"><primary sortas="prelude_connection_get_data">prelude_connection_get_data</primary></indexterm><programlisting><link linkend="void">void</link> *              prelude_connection_get_data         (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-get-default-socket-filename" role="function">
+<title>prelude_connection_get_default_socket_filename ()</title>
+<indexterm zone="prelude-connection-get-default-socket-filename"><primary sortas="prelude_connection_get_default_socket_filename">prelude_connection_get_default_socket_filename</primary></indexterm><programlisting>const <link linkend="char">char</link> *        prelude_connection_get_default_socket_filename
+                                                        (void);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-get-permission" role="function">
+<title>prelude_connection_get_permission ()</title>
+<indexterm zone="prelude-connection-get-permission"><primary sortas="prelude_connection_get_permission">prelude_connection_get_permission</primary></indexterm><programlisting><link linkend="prelude-connection-permission-t">prelude_connection_permission_t</link>  prelude_connection_get_permission
+                                                        (<link linkend="prelude-connection-t">prelude_connection_t</link> *conn);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>conn</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-get-peer-analyzerid" role="function">
+<title>prelude_connection_get_peer_analyzerid ()</title>
+<indexterm zone="prelude-connection-get-peer-analyzerid"><primary sortas="prelude_connection_get_peer_analyzerid">prelude_connection_get_peer_analyzerid</primary></indexterm><programlisting><link linkend="uint64-t">uint64_t</link>            prelude_connection_get_peer_analyzerid
+                                                        (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-set-peer-analyzerid" role="function">
+<title>prelude_connection_set_peer_analyzerid ()</title>
+<indexterm zone="prelude-connection-set-peer-analyzerid"><primary sortas="prelude_connection_set_peer_analyzerid">prelude_connection_set_peer_analyzerid</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_connection_set_peer_analyzerid
+                                                        (<link linkend="prelude-connection-t">prelude_connection_t</link> *cnx,
+                                                         <link linkend="uint64-t">uint64_t</link> analyzerid);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cnx</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>analyzerid</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-new" role="function">
+<title>prelude_connection_new ()</title>
+<indexterm zone="prelude-connection-new"><primary sortas="prelude_connection_new">prelude_connection_new</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_connection_new              (<link linkend="prelude-connection-t">prelude_connection_t</link> **ret,
+                                                         const <link linkend="char">char</link> *addr);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>ret</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>addr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-ref" role="function">
+<title>prelude_connection_ref ()</title>
+<indexterm zone="prelude-connection-ref"><primary sortas="prelude_connection_ref">prelude_connection_ref</primary></indexterm><programlisting><link linkend="prelude-connection-t">prelude_connection_t</link> * prelude_connection_ref           (<link linkend="prelude-connection-t">prelude_connection_t</link> *conn);</programlisting>
+<para>
+Increases <parameter>conn</parameter> reference count.
+</para>
+<para>
+<link linkend="prelude-connection-destroy"><function>prelude_connection_destroy()</function></link> will decrease the refcount until it
+reaches 0, at which point <parameter>conn</parameter> will be destroyed.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>conn</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-connection-t"><type>prelude_connection_t</type></link> object to reference.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> <parameter>conn</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-new-msgbuf" role="function">
+<title>prelude_connection_new_msgbuf ()</title>
+<indexterm zone="prelude-connection-new-msgbuf"><primary sortas="prelude_connection_new_msgbuf">prelude_connection_new_msgbuf</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_connection_new_msgbuf       (<link linkend="prelude-connection-t">prelude_connection_t</link> *connection,
+                                                         <link linkend="prelude-msgbuf-t">prelude_msgbuf_t</link> **msgbuf);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>connection</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>msgbuf</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-permission-to-string" role="function">
+<title>prelude_connection_permission_to_string ()</title>
+<indexterm zone="prelude-connection-permission-to-string"><primary sortas="prelude_connection_permission_to_string">prelude_connection_permission_to_string</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_connection_permission_to_string
+                                                        (<link linkend="prelude-connection-permission-t">prelude_connection_permission_t</link> perm,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *out);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>perm</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>out</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-connection-permission-new-from-string" role="function">
+<title>prelude_connection_permission_new_from_string ()</title>
+<indexterm zone="prelude-connection-permission-new-from-string"><primary sortas="prelude_connection_permission_new_from_string">prelude_connection_permission_new_from_string</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_connection_permission_new_from_string
+                                                        (<link linkend="prelude-connection-permission-t">prelude_connection_permission_t</link> *out,
+                                                         const <link linkend="char">char</link> *buf);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>out</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

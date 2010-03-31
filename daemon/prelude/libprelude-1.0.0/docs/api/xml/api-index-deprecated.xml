@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!DOCTYPE indexdiv PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<indexdiv>
+<indexdiv><title>P</title>
+<indexentry><primaryie linkends="prelude-client-get-setup-error"><link linkend="prelude-client-get-setup-error">prelude_client_get_setup_error</link></primaryie></indexentry>
+<indexentry><primaryie linkends="prelude-client-is-setup-needed"><link linkend="prelude-client-is-setup-needed">prelude_client_is_setup_needed</link></primaryie></indexentry>
+</indexdiv>
+</indexdiv>

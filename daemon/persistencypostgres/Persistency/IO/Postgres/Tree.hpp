@@ -5,6 +5,8 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_TREE_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_TREE_HPP_FILE
 
+#include <vector>
+
 #include "Persistency/IO/Postgres/TreePtr.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 

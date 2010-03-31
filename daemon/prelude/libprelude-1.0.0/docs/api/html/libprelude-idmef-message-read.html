@@ -1,0 +1,1075 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>idmef-message-read</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="prev" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="next" href="libprelude-prelude-connection-pool.html" title="prelude-connection-pool">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="pt03.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="pt03.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="libprelude-prelude-connection-pool.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-idmef-message-read.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-idmef-message-read.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="idmef-message-read">
+<a name="libprelude-idmef-message-read"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-idmef-message-read.top_of_page"></a>idmef-message-read</span></h2>
+<p>idmef-message-read — Reading a message from a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> buffer</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-idmef-message-read.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-additional-data-read" title="idmef_additional_data_read ()">idmef_additional_data_read</a>          (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *additional_data,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-reference-read" title="idmef_reference_read ()">idmef_reference_read</a>                (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-reference-t" title="idmef_reference_t">idmef_reference_t</a> *reference,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-classification-read" title="idmef_classification_read ()">idmef_classification_read</a>           (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-classification-t" title="idmef_classification_t">idmef_classification_t</a> *classification,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-user-id-read" title="idmef_user_id_read ()">idmef_user_id_read</a>                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-id-t" title="idmef_user_id_t">idmef_user_id_t</a> *user_id,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-user-read" title="idmef_user_read ()">idmef_user_read</a>                     (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-t" title="idmef_user_t">idmef_user_t</a> *user,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-address-read" title="idmef_address_read ()">idmef_address_read</a>                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-address-t" title="idmef_address_t">idmef_address_t</a> *address,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-process-read" title="idmef_process_read ()">idmef_process_read</a>                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-process-t" title="idmef_process_t">idmef_process_t</a> *process,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-web-service-read" title="idmef_web_service_read ()">idmef_web_service_read</a>              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-web-service-t" title="idmef_web_service_t">idmef_web_service_t</a> *web_service,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-snmp-service-read" title="idmef_snmp_service_read ()">idmef_snmp_service_read</a>             (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-snmp-service-t" title="idmef_snmp_service_t">idmef_snmp_service_t</a> *snmp_service,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-service-read" title="idmef_service_read ()">idmef_service_read</a>                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-service-t" title="idmef_service_t">idmef_service_t</a> *service,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-node-read" title="idmef_node_read ()">idmef_node_read</a>                     (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-node-t" title="idmef_node_t">idmef_node_t</a> *node,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-source-read" title="idmef_source_read ()">idmef_source_read</a>                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-source-t" title="idmef_source_t">idmef_source_t</a> *source,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-file-access-read" title="idmef_file_access_read ()">idmef_file_access_read</a>              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-access-t" title="idmef_file_access_t">idmef_file_access_t</a> *file_access,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-inode-read" title="idmef_inode_read ()">idmef_inode_read</a>                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-inode-t" title="idmef_inode_t">idmef_inode_t</a> *inode,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-checksum-read" title="idmef_checksum_read ()">idmef_checksum_read</a>                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-checksum-t" title="idmef_checksum_t">idmef_checksum_t</a> *checksum,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-file-read" title="idmef_file_read ()">idmef_file_read</a>                     (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-t" title="idmef_file_t">idmef_file_t</a> *file,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-linkage-read" title="idmef_linkage_read ()">idmef_linkage_read</a>                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-linkage-t" title="idmef_linkage_t">idmef_linkage_t</a> *linkage,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-target-read" title="idmef_target_read ()">idmef_target_read</a>                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-target-t" title="idmef_target_t">idmef_target_t</a> *target,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-analyzer-read" title="idmef_analyzer_read ()">idmef_analyzer_read</a>                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-analyzer-t" title="idmef_analyzer_t">idmef_analyzer_t</a> *analyzer,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-alertident-read" title="idmef_alertident_read ()">idmef_alertident_read</a>               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alertident-t" title="idmef_alertident_t">idmef_alertident_t</a> *alertident,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-impact-read" title="idmef_impact_read ()">idmef_impact_read</a>                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-impact-t" title="idmef_impact_t">idmef_impact_t</a> *impact,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-action-read" title="idmef_action_read ()">idmef_action_read</a>                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-action-t" title="idmef_action_t">idmef_action_t</a> *action,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-confidence-read" title="idmef_confidence_read ()">idmef_confidence_read</a>               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-confidence-t" title="idmef_confidence_t">idmef_confidence_t</a> *confidence,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-assessment-read" title="idmef_assessment_read ()">idmef_assessment_read</a>               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-assessment-t" title="idmef_assessment_t">idmef_assessment_t</a> *assessment,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-tool-alert-read" title="idmef_tool_alert_read ()">idmef_tool_alert_read</a>               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-tool-alert-t" title="idmef_tool_alert_t">idmef_tool_alert_t</a> *tool_alert,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-correlation-alert-read" title="idmef_correlation_alert_read ()">idmef_correlation_alert_read</a>        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-t" title="idmef_correlation_alert_t">idmef_correlation_alert_t</a> *correlation_alert,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-overflow-alert-read" title="idmef_overflow_alert_read ()">idmef_overflow_alert_read</a>           (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-t" title="idmef_overflow_alert_t">idmef_overflow_alert_t</a> *overflow_alert,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-alert-read" title="idmef_alert_read ()">idmef_alert_read</a>                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alert-t" title="idmef_alert_t">idmef_alert_t</a> *alert,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-heartbeat-read" title="idmef_heartbeat_read ()">idmef_heartbeat_read</a>                (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-heartbeat-t" title="idmef_heartbeat_t">idmef_heartbeat_t</a> *heartbeat,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+int                 <a class="link" href="libprelude-idmef-message-read.html#idmef-message-read" title="idmef_message_read ()">idmef_message_read</a>                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> *message,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-idmef-message-read.description"></a><h2>Description</h2>
+<p>
+Once you read a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, you need to decode this message.
+In case this is an IDMEF style message, the following API allow to read
+the relevant IDMEF fields from the <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, and create the
+IDMEF object from it's content.
+</p>
+<p>
+The function you're most probably looking to use is <a class="link" href="libprelude-idmef-message-read.html#idmef-message-read" title="idmef_message_read ()"><code class="function">idmef_message_read()</code></a>, and here
+is an example on how to use it:
+</p>
+<pre class="programlisting">
+int ret;
+prelude_msg_t *pmsg;
+idmef_message_t *message;
+pmsg = whatever_method_to_get_a_prelude_msg();
+ret = idmef_message_new(&amp;message);
+if ( ret &lt; 0 )
+        return ret;
+ret = idmef_message_read(message, pmsg);
+</pre>
+<p>
+This will decode the full IDMEF message stored within pmsg into the <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t"><span class="type">idmef_message_t</span></a>
+IDMEF object and it's childrens.
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-idmef-message-read.details"></a><h2>Details</h2>
+<div class="refsect2" title="idmef_additional_data_read ()">
+<a name="idmef-additional-data-read"></a><h3>idmef_additional_data_read ()</h3>
+<pre class="programlisting">int                 idmef_additional_data_read          (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t">idmef_additional_data_t</a> *additional_data,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_additional_data from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>additional_data</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>additional_data</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-additional-data-t" title="idmef_additional_data_t"><span class="type">idmef_additional_data_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_reference_read ()">
+<a name="idmef-reference-read"></a><h3>idmef_reference_read ()</h3>
+<pre class="programlisting">int                 idmef_reference_read                (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-reference-t" title="idmef_reference_t">idmef_reference_t</a> *reference,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_reference from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>reference</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>reference</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-reference-t" title="idmef_reference_t"><span class="type">idmef_reference_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_classification_read ()">
+<a name="idmef-classification-read"></a><h3>idmef_classification_read ()</h3>
+<pre class="programlisting">int                 idmef_classification_read           (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-classification-t" title="idmef_classification_t">idmef_classification_t</a> *classification,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_classification from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>classification</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>classification</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-classification-t" title="idmef_classification_t"><span class="type">idmef_classification_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_user_id_read ()">
+<a name="idmef-user-id-read"></a><h3>idmef_user_id_read ()</h3>
+<pre class="programlisting">int                 idmef_user_id_read                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-id-t" title="idmef_user_id_t">idmef_user_id_t</a> *user_id,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_user_id from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>user_id</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user_id</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-id-t" title="idmef_user_id_t"><span class="type">idmef_user_id_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_user_read ()">
+<a name="idmef-user-read"></a><h3>idmef_user_read ()</h3>
+<pre class="programlisting">int                 idmef_user_read                     (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-t" title="idmef_user_t">idmef_user_t</a> *user,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_user from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>user</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>user</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-user-t" title="idmef_user_t"><span class="type">idmef_user_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_address_read ()">
+<a name="idmef-address-read"></a><h3>idmef_address_read ()</h3>
+<pre class="programlisting">int                 idmef_address_read                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-address-t" title="idmef_address_t">idmef_address_t</a> *address,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_address from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>address</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>address</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-address-t" title="idmef_address_t"><span class="type">idmef_address_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_process_read ()">
+<a name="idmef-process-read"></a><h3>idmef_process_read ()</h3>
+<pre class="programlisting">int                 idmef_process_read                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-process-t" title="idmef_process_t">idmef_process_t</a> *process,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_process from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>process</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>process</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-process-t" title="idmef_process_t"><span class="type">idmef_process_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_web_service_read ()">
+<a name="idmef-web-service-read"></a><h3>idmef_web_service_read ()</h3>
+<pre class="programlisting">int                 idmef_web_service_read              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-web-service-t" title="idmef_web_service_t">idmef_web_service_t</a> *web_service,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_web_service from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>web_service</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>web_service</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-web-service-t" title="idmef_web_service_t"><span class="type">idmef_web_service_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_snmp_service_read ()">
+<a name="idmef-snmp-service-read"></a><h3>idmef_snmp_service_read ()</h3>
+<pre class="programlisting">int                 idmef_snmp_service_read             (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-snmp-service-t" title="idmef_snmp_service_t">idmef_snmp_service_t</a> *snmp_service,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_snmp_service from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>snmp_service</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>snmp_service</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-snmp-service-t" title="idmef_snmp_service_t"><span class="type">idmef_snmp_service_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_service_read ()">
+<a name="idmef-service-read"></a><h3>idmef_service_read ()</h3>
+<pre class="programlisting">int                 idmef_service_read                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-service-t" title="idmef_service_t">idmef_service_t</a> *service,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_service from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>service</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>service</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-service-t" title="idmef_service_t"><span class="type">idmef_service_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_node_read ()">
+<a name="idmef-node-read"></a><h3>idmef_node_read ()</h3>
+<pre class="programlisting">int                 idmef_node_read                     (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-node-t" title="idmef_node_t">idmef_node_t</a> *node,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_node from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>node</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>node</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-node-t" title="idmef_node_t"><span class="type">idmef_node_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_source_read ()">
+<a name="idmef-source-read"></a><h3>idmef_source_read ()</h3>
+<pre class="programlisting">int                 idmef_source_read                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-source-t" title="idmef_source_t">idmef_source_t</a> *source,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_source from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>source</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>source</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-source-t" title="idmef_source_t"><span class="type">idmef_source_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_file_access_read ()">
+<a name="idmef-file-access-read"></a><h3>idmef_file_access_read ()</h3>
+<pre class="programlisting">int                 idmef_file_access_read              (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-access-t" title="idmef_file_access_t">idmef_file_access_t</a> *file_access,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_file_access from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>file_access</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file_access</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-access-t" title="idmef_file_access_t"><span class="type">idmef_file_access_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_inode_read ()">
+<a name="idmef-inode-read"></a><h3>idmef_inode_read ()</h3>
+<pre class="programlisting">int                 idmef_inode_read                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-inode-t" title="idmef_inode_t">idmef_inode_t</a> *inode,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_inode from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>inode</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>inode</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-inode-t" title="idmef_inode_t"><span class="type">idmef_inode_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_checksum_read ()">
+<a name="idmef-checksum-read"></a><h3>idmef_checksum_read ()</h3>
+<pre class="programlisting">int                 idmef_checksum_read                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-checksum-t" title="idmef_checksum_t">idmef_checksum_t</a> *checksum,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_checksum from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>checksum</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>checksum</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-checksum-t" title="idmef_checksum_t"><span class="type">idmef_checksum_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_file_read ()">
+<a name="idmef-file-read"></a><h3>idmef_file_read ()</h3>
+<pre class="programlisting">int                 idmef_file_read                     (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-t" title="idmef_file_t">idmef_file_t</a> *file,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_file from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>file</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>file</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-file-t" title="idmef_file_t"><span class="type">idmef_file_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_linkage_read ()">
+<a name="idmef-linkage-read"></a><h3>idmef_linkage_read ()</h3>
+<pre class="programlisting">int                 idmef_linkage_read                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-linkage-t" title="idmef_linkage_t">idmef_linkage_t</a> *linkage,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_linkage from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>linkage</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>linkage</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-linkage-t" title="idmef_linkage_t"><span class="type">idmef_linkage_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_target_read ()">
+<a name="idmef-target-read"></a><h3>idmef_target_read ()</h3>
+<pre class="programlisting">int                 idmef_target_read                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-target-t" title="idmef_target_t">idmef_target_t</a> *target,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_target from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>target</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>target</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-target-t" title="idmef_target_t"><span class="type">idmef_target_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_analyzer_read ()">
+<a name="idmef-analyzer-read"></a><h3>idmef_analyzer_read ()</h3>
+<pre class="programlisting">int                 idmef_analyzer_read                 (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-analyzer-t" title="idmef_analyzer_t">idmef_analyzer_t</a> *analyzer,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_analyzer from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>analyzer</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>analyzer</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-analyzer-t" title="idmef_analyzer_t"><span class="type">idmef_analyzer_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_alertident_read ()">
+<a name="idmef-alertident-read"></a><h3>idmef_alertident_read ()</h3>
+<pre class="programlisting">int                 idmef_alertident_read               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alertident-t" title="idmef_alertident_t">idmef_alertident_t</a> *alertident,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_alertident from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>alertident</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>alertident</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alertident-t" title="idmef_alertident_t"><span class="type">idmef_alertident_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_impact_read ()">
+<a name="idmef-impact-read"></a><h3>idmef_impact_read ()</h3>
+<pre class="programlisting">int                 idmef_impact_read                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-impact-t" title="idmef_impact_t">idmef_impact_t</a> *impact,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_impact from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>impact</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>impact</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-impact-t" title="idmef_impact_t"><span class="type">idmef_impact_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_action_read ()">
+<a name="idmef-action-read"></a><h3>idmef_action_read ()</h3>
+<pre class="programlisting">int                 idmef_action_read                   (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-action-t" title="idmef_action_t">idmef_action_t</a> *action,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_action from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>action</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>action</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-action-t" title="idmef_action_t"><span class="type">idmef_action_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_confidence_read ()">
+<a name="idmef-confidence-read"></a><h3>idmef_confidence_read ()</h3>
+<pre class="programlisting">int                 idmef_confidence_read               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-confidence-t" title="idmef_confidence_t">idmef_confidence_t</a> *confidence,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_confidence from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>confidence</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>confidence</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-confidence-t" title="idmef_confidence_t"><span class="type">idmef_confidence_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_assessment_read ()">
+<a name="idmef-assessment-read"></a><h3>idmef_assessment_read ()</h3>
+<pre class="programlisting">int                 idmef_assessment_read               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-assessment-t" title="idmef_assessment_t">idmef_assessment_t</a> *assessment,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_assessment from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>assessment</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>assessment</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-assessment-t" title="idmef_assessment_t"><span class="type">idmef_assessment_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_tool_alert_read ()">
+<a name="idmef-tool-alert-read"></a><h3>idmef_tool_alert_read ()</h3>
+<pre class="programlisting">int                 idmef_tool_alert_read               (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-tool-alert-t" title="idmef_tool_alert_t">idmef_tool_alert_t</a> *tool_alert,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_tool_alert from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>tool_alert</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>tool_alert</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-tool-alert-t" title="idmef_tool_alert_t"><span class="type">idmef_tool_alert_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_correlation_alert_read ()">
+<a name="idmef-correlation-alert-read"></a><h3>idmef_correlation_alert_read ()</h3>
+<pre class="programlisting">int                 idmef_correlation_alert_read        (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-t" title="idmef_correlation_alert_t">idmef_correlation_alert_t</a> *correlation_alert,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_correlation_alert from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>correlation_alert</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>correlation_alert</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-correlation-alert-t" title="idmef_correlation_alert_t"><span class="type">idmef_correlation_alert_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_overflow_alert_read ()">
+<a name="idmef-overflow-alert-read"></a><h3>idmef_overflow_alert_read ()</h3>
+<pre class="programlisting">int                 idmef_overflow_alert_read           (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-t" title="idmef_overflow_alert_t">idmef_overflow_alert_t</a> *overflow_alert,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_overflow_alert from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>overflow_alert</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>overflow_alert</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-overflow-alert-t" title="idmef_overflow_alert_t"><span class="type">idmef_overflow_alert_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_alert_read ()">
+<a name="idmef-alert-read"></a><h3>idmef_alert_read ()</h3>
+<pre class="programlisting">int                 idmef_alert_read                    (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alert-t" title="idmef_alert_t">idmef_alert_t</a> *alert,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_alert from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>alert</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>alert</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-alert-t" title="idmef_alert_t"><span class="type">idmef_alert_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_heartbeat_read ()">
+<a name="idmef-heartbeat-read"></a><h3>idmef_heartbeat_read ()</h3>
+<pre class="programlisting">int                 idmef_heartbeat_read                (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-heartbeat-t" title="idmef_heartbeat_t">idmef_heartbeat_t</a> *heartbeat,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_heartbeat from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>heartbeat</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>heartbeat</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-heartbeat-t" title="idmef_heartbeat_t"><span class="type">idmef_heartbeat_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="idmef_message_read ()">
+<a name="idmef-message-read"></a><h3>idmef_message_read ()</h3>
+<pre class="programlisting">int                 idmef_message_read                  (<a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t">idmef_message_t</a> *message,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg);</pre>
+<p>
+Read an idmef_message from the <em class="parameter"><code>msg</code></em> message, and 
+store it into <em class="parameter"><code>message</code></em>.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>message</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-idmef-tree-wrap.html#idmef-message-t" title="idmef_message_t"><span class="type">idmef_message_t</span></a> object.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t"><span class="type">prelude_msg_t</span></a> object, containing a message.
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td> 0 on success, a negative value if an error occured.
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-prelude-async">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-prelude-async.top_of_page">prelude-async</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>prelude-async</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-prelude-async.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+enum                <link linkend="prelude-async-flags-t">prelude_async_flags_t</link>;
+<link linkend="void">void</link>                (<link linkend="prelude-async-callback-t">*prelude_async_callback_t</link>)         (<link linkend="void">void</link> *object,
+                                                         <link linkend="void">void</link> *data);
+#define             <link linkend="PRELUDE-ASYNC-OBJECT--CAPS">PRELUDE_ASYNC_OBJECT</link>
+                    <link linkend="prelude-async-object-t">prelude_async_object_t</link>;
+<link linkend="int">int</link>                 <link linkend="prelude-async-init">prelude_async_init</link>                  (void);
+<link linkend="prelude-async-flags-t">prelude_async_flags_t</link>  <link linkend="prelude-async-get-flags">prelude_async_get_flags</link>          (void);
+<link linkend="void">void</link>                <link linkend="prelude-async-set-flags">prelude_async_set_flags</link>             (<link linkend="prelude-async-flags-t">prelude_async_flags_t</link> flags);
+<link linkend="void">void</link>                <link linkend="prelude-async-add">prelude_async_add</link>                   (<link linkend="prelude-async-object-t">prelude_async_object_t</link> *obj);
+<link linkend="void">void</link>                <link linkend="prelude-async-del">prelude_async_del</link>                   (<link linkend="prelude-async-object-t">prelude_async_object_t</link> *obj);
+<link linkend="void">void</link>                <link linkend="prelude-async-exit">prelude_async_exit</link>                  (void);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-prelude-async.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-prelude-async.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="prelude-async-flags-t" role="enum">
+<title>enum prelude_async_flags_t</title>
+<indexterm zone="prelude-async-flags-t"><primary sortas="prelude_async_flags_t">prelude_async_flags_t</primary></indexterm><programlisting>typedef enum {
+        PRELUDE_ASYNC_FLAGS_TIMER   = 0x01
+} prelude_async_flags_t;
+</programlisting>
+<para>
+This provides asynchronous timer. When enabled, the heartbeat
+function (and user specified callback, if any) will be called
+automatically, from an asynchronous thread.
+</para>
+<para>
+If you use this flags, you won't need to call <link linkend="prelude-wake-up-timer"><function>prelude_wake_up_timer()</function></link>
+anymore.</para>
+<para>
+</para><variablelist role="enum">
+<varlistentry id="PRELUDE-ASYNC-FLAGS-TIMER--CAPS" role="constant">
+<term><literal>PRELUDE_ASYNC_FLAGS_TIMER</literal></term>
+<listitem><simpara> Enable asynchronous timer.
+</simpara></listitem>
+</varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-async-callback-t" role="function">
+<title>prelude_async_callback_t ()</title>
+<indexterm zone="prelude-async-callback-t"><primary sortas="prelude_async_callback_t">prelude_async_callback_t</primary></indexterm><programlisting><link linkend="void">void</link>                (*prelude_async_callback_t)         (<link linkend="void">void</link> *object,
+                                                         <link linkend="void">void</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="PRELUDE-ASYNC-OBJECT--CAPS" role="macro">
+<title>PRELUDE_ASYNC_OBJECT</title>
+<indexterm zone="PRELUDE-ASYNC-OBJECT--CAPS"><primary sortas="PRELUDE_ASYNC_OBJECT">PRELUDE_ASYNC_OBJECT</primary></indexterm><programlisting>#define             PRELUDE_ASYNC_OBJECT</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-async-object-t" role="struct">
+<title>prelude_async_object_t</title>
+<indexterm zone="prelude-async-object-t"><primary sortas="prelude_async_object_t">prelude_async_object_t</primary></indexterm><programlisting>typedef struct {
+        PRELUDE_ASYNC_OBJECT;
+} prelude_async_object_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-async-init" role="function">
+<title>prelude_async_init ()</title>
+<indexterm zone="prelude-async-init"><primary sortas="prelude_async_init">prelude_async_init</primary></indexterm><programlisting><link linkend="int">int</link>                 prelude_async_init                  (void);</programlisting>
+<para>
+Initialize the asynchronous subsystem.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, -1 if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-async-get-flags" role="function">
+<title>prelude_async_get_flags ()</title>
+<indexterm zone="prelude-async-get-flags"><primary sortas="prelude_async_get_flags">prelude_async_get_flags</primary></indexterm><programlisting><link linkend="prelude-async-flags-t">prelude_async_flags_t</link>  prelude_async_get_flags          (void);</programlisting>
+<para>
+Retrieves flags from the asynchronous subsystem</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> asynchronous flags
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-async-set-flags" role="function">
+<title>prelude_async_set_flags ()</title>
+<indexterm zone="prelude-async-set-flags"><primary sortas="prelude_async_set_flags">prelude_async_set_flags</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_async_set_flags             (<link linkend="prelude-async-flags-t">prelude_async_flags_t</link> flags);</programlisting>
+<para>
+Sets flags to the asynchronous subsystem.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>flags</parameter>&#160;:</term>
+<listitem><simpara> flags you want to set
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-async-add" role="function">
+<title>prelude_async_add ()</title>
+<indexterm zone="prelude-async-add"><primary sortas="prelude_async_add">prelude_async_add</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_async_add                   (<link linkend="prelude-async-object-t">prelude_async_object_t</link> *obj);</programlisting>
+<para>
+Adds <parameter>obj</parameter> to the asynchronous processing list.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>obj</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-async-t"><type>prelude_async_t</type></link> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-async-del" role="function">
+<title>prelude_async_del ()</title>
+<indexterm zone="prelude-async-del"><primary sortas="prelude_async_del">prelude_async_del</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_async_del                   (<link linkend="prelude-async-object-t">prelude_async_object_t</link> *obj);</programlisting>
+<para>
+Deletes <parameter>obj</parameter> from the asynchronous processing list.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>obj</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-async-t"><type>prelude_async_t</type></link> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="prelude-async-exit" role="function">
+<title>prelude_async_exit ()</title>
+<indexterm zone="prelude-async-exit"><primary sortas="prelude_async_exit">prelude_async_exit</primary></indexterm><programlisting><link linkend="void">void</link>                prelude_async_exit                  (void);</programlisting>
+<para>
+</para></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

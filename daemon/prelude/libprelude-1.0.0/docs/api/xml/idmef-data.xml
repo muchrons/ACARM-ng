@@ -1,0 +1,1051 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-idmef-data">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-idmef-data.top_of_page">idmef-data</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>idmef-data</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-idmef-data.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+enum                <link linkend="idmef-data-type-t">idmef_data_type_t</link>;
+                    <link linkend="data">data</link>;
+<link linkend="int">int</link>                 <link linkend="idmef-data-new">idmef_data_new</link>                      (<link linkend="idmef-data-t">idmef_data_t</link> **data);
+<link linkend="idmef-data-t">idmef_data_t</link> *      <link linkend="idmef-data-ref">idmef_data_ref</link>                      (<link linkend="idmef-data-t">idmef_data_t</link> *data);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-char">idmef_data_new_char</link>                 (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="char">char</link> c);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-byte">idmef_data_new_byte</link>                 (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="uint8-t">uint8_t</link> i);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-uint32">idmef_data_new_uint32</link>               (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="uint32-t">uint32_t</link> i);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-uint64">idmef_data_new_uint64</link>               (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="uint64-t">uint64_t</link> i);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-float">idmef_data_new_float</link>                (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="float">float</link> f);
+<link linkend="void">void</link>                <link linkend="idmef-data-set-char">idmef_data_set_char</link>                 (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="char">char</link> c);
+<link linkend="void">void</link>                <link linkend="idmef-data-set-byte">idmef_data_set_byte</link>                 (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="uint8-t">uint8_t</link> i);
+<link linkend="void">void</link>                <link linkend="idmef-data-set-uint32">idmef_data_set_uint32</link>               (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="uint32-t">uint32_t</link> i);
+<link linkend="void">void</link>                <link linkend="idmef-data-set-uint64">idmef_data_set_uint64</link>               (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="uint64-t">uint64_t</link> i);
+<link linkend="void">void</link>                <link linkend="idmef-data-set-float">idmef_data_set_float</link>                (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="float">float</link> f);
+<link linkend="int">int</link>                 <link linkend="idmef-data-set-ptr-dup-fast">idmef_data_set_ptr_dup_fast</link>         (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="idmef-data-type-t">idmef_data_type_t</link> type,
+                                                         const <link linkend="void">void</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-set-ptr-ref-fast">idmef_data_set_ptr_ref_fast</link>         (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="idmef-data-type-t">idmef_data_type_t</link> type,
+                                                         const <link linkend="void">void</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-set-ptr-nodup-fast">idmef_data_set_ptr_nodup_fast</link>       (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="idmef-data-type-t">idmef_data_type_t</link> type,
+                                                         <link linkend="void">void</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-ptr-dup-fast">idmef_data_new_ptr_dup_fast</link>         (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="idmef-data-type-t">idmef_data_type_t</link> type,
+                                                         const <link linkend="void">void</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-ptr-ref-fast">idmef_data_new_ptr_ref_fast</link>         (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="idmef-data-type-t">idmef_data_type_t</link> type,
+                                                         const <link linkend="void">void</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-ptr-nodup-fast">idmef_data_new_ptr_nodup_fast</link>       (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="idmef-data-type-t">idmef_data_type_t</link> type,
+                                                         <link linkend="void">void</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-set-char-string-dup-fast">idmef_data_set_char_string_dup_fast</link> (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         const <link linkend="char">char</link> *str,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-char-string-dup-fast">idmef_data_new_char_string_dup_fast</link> (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         const <link linkend="char">char</link> *str,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-char-string-ref-fast">idmef_data_new_char_string_ref_fast</link> (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         const <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-char-string-nodup-fast">idmef_data_new_char_string_nodup_fast</link>
+                                                        (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-set-char-string-ref-fast">idmef_data_set_char_string_ref_fast</link> (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         const <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-set-char-string-nodup-fast">idmef_data_set_char_string_nodup_fast</link>
+                                                        (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-char-string-ref">idmef_data_new_char_string_ref</link>      (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         const <link linkend="char">char</link> *ptr);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-char-string-dup">idmef_data_new_char_string_dup</link>      (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         const <link linkend="char">char</link> *ptr);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-char-string-nodup">idmef_data_new_char_string_nodup</link>    (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="char">char</link> *ptr);
+<link linkend="int">int</link>                 <link linkend="idmef-data-set-char-string-ref">idmef_data_set_char_string_ref</link>      (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         const <link linkend="char">char</link> *ptr);
+<link linkend="int">int</link>                 <link linkend="idmef-data-set-char-string-dup">idmef_data_set_char_string_dup</link>      (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         const <link linkend="char">char</link> *ptr);
+<link linkend="int">int</link>                 <link linkend="idmef-data-set-char-string-nodup">idmef_data_set_char_string_nodup</link>    (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="char">char</link> *ptr);
+#define             <link linkend="idmef-data-set-char-string-constant">idmef_data_set_char_string_constant</link> (string, str)
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-byte-string-ref">idmef_data_new_byte_string_ref</link>      (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         unsigned <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-byte-string-dup">idmef_data_new_byte_string_dup</link>      (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         unsigned <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-new-byte-string-nodup">idmef_data_new_byte_string_nodup</link>    (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         unsigned <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-set-byte-string-ref">idmef_data_set_byte_string_ref</link>      (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         unsigned <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-set-byte-string-dup">idmef_data_set_byte_string_dup</link>      (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         unsigned <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="int">int</link>                 <link linkend="idmef-data-set-byte-string-nodup">idmef_data_set_byte_string_nodup</link>    (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         unsigned <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);
+<link linkend="void">void</link>                <link linkend="idmef-data-destroy">idmef_data_destroy</link>                  (<link linkend="idmef-data-t">idmef_data_t</link> *data);
+<link linkend="int">int</link>                 <link linkend="idmef-data-copy-ref">idmef_data_copy_ref</link>                 (const <link linkend="idmef-data-t">idmef_data_t</link> *src,
+                                                         <link linkend="idmef-data-t">idmef_data_t</link> *dst);
+<link linkend="int">int</link>                 <link linkend="idmef-data-copy-dup">idmef_data_copy_dup</link>                 (const <link linkend="idmef-data-t">idmef_data_t</link> *src,
+                                                         <link linkend="idmef-data-t">idmef_data_t</link> *dst);
+<link linkend="int">int</link>                 <link linkend="idmef-data-clone">idmef_data_clone</link>                    (const <link linkend="idmef-data-t">idmef_data_t</link> *src,
+                                                         <link linkend="idmef-data-t">idmef_data_t</link> **dst);
+<link linkend="idmef-data-type-t">idmef_data_type_t</link>   <link linkend="idmef-data-get-type">idmef_data_get_type</link>                 (const <link linkend="idmef-data-t">idmef_data_t</link> *data);
+<link linkend="size-t">size_t</link>              <link linkend="idmef-data-get-len">idmef_data_get_len</link>                  (const <link linkend="idmef-data-t">idmef_data_t</link> *data);
+const <link linkend="void">void</link> *        <link linkend="idmef-data-get-data">idmef_data_get_data</link>                 (const <link linkend="idmef-data-t">idmef_data_t</link> *data);
+<link linkend="char">char</link>                <link linkend="idmef-data-get-char">idmef_data_get_char</link>                 (const <link linkend="idmef-data-t">idmef_data_t</link> *data);
+<link linkend="uint8-t">uint8_t</link>             <link linkend="idmef-data-get-byte">idmef_data_get_byte</link>                 (const <link linkend="idmef-data-t">idmef_data_t</link> *data);
+<link linkend="uint32-t">uint32_t</link>            <link linkend="idmef-data-get-uint32">idmef_data_get_uint32</link>               (const <link linkend="idmef-data-t">idmef_data_t</link> *data);
+<link linkend="uint64-t">uint64_t</link>            <link linkend="idmef-data-get-uint64">idmef_data_get_uint64</link>               (const <link linkend="idmef-data-t">idmef_data_t</link> *data);
+<link linkend="float">float</link>               <link linkend="idmef-data-get-float">idmef_data_get_float</link>                (const <link linkend="idmef-data-t">idmef_data_t</link> *data);
+const <link linkend="char">char</link> *        <link linkend="idmef-data-get-char-string">idmef_data_get_char_string</link>          (const <link linkend="idmef-data-t">idmef_data_t</link> *data);
+const unsigned <link linkend="char">char</link> * <link linkend="idmef-data-get-byte-string">idmef_data_get_byte_string</link>        (const <link linkend="idmef-data-t">idmef_data_t</link> *data);
+<link linkend="prelude-bool-t">prelude_bool_t</link>      <link linkend="idmef-data-is-empty">idmef_data_is_empty</link>                 (const <link linkend="idmef-data-t">idmef_data_t</link> *data);
+<link linkend="int">int</link>                 <link linkend="idmef-data-to-string">idmef_data_to_string</link>                (const <link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *out);
+<link linkend="void">void</link>                <link linkend="idmef-data-destroy-internal">idmef_data_destroy_internal</link>         (<link linkend="idmef-data-t">idmef_data_t</link> *data);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-idmef-data.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-idmef-data.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="idmef-data-type-t" role="enum">
+<title>enum idmef_data_type_t</title>
+<indexterm zone="idmef-data-type-t"><primary sortas="idmef_data_type_t">idmef_data_type_t</primary></indexterm><programlisting>typedef enum {
+	IDMEF_DATA_TYPE_UNKNOWN      = 0,
+	IDMEF_DATA_TYPE_CHAR         = 1,
+	IDMEF_DATA_TYPE_BYTE         = 2,
+	IDMEF_DATA_TYPE_UINT32       = 3,
+	IDMEF_DATA_TYPE_UINT64       = 4,
+	IDMEF_DATA_TYPE_FLOAT        = 5,
+	IDMEF_DATA_TYPE_CHAR_STRING  = 6,
+	IDMEF_DATA_TYPE_BYTE_STRING  = 7
+} idmef_data_type_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="data" role="struct">
+<title>data</title>
+<indexterm zone="data"><primary sortas="data">data</primary></indexterm><programlisting>typedef struct {
+        int refcount;
+
+        int flags;
+        idmef_data_type_t type;
+        size_t len;
+
+        union {
+		char char_data;
+		uint8_t byte_data;
+		uint32_t uint32_data;
+		uint64_t uint64_data;
+		float float_data;
+		void *rw_data;
+		const void *ro_data;
+} data;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="idmef-data-new" role="function">
+<title>idmef_data_new ()</title>
+<indexterm zone="idmef-data-new"><primary sortas="idmef_data_new">idmef_data_new</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new                      (<link linkend="idmef-data-t">idmef_data_t</link> **data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-ref" role="function">
+<title>idmef_data_ref ()</title>
+<indexterm zone="idmef-data-ref"><primary sortas="idmef_data_ref">idmef_data_ref</primary></indexterm><programlisting><link linkend="idmef-data-t">idmef_data_t</link> *      idmef_data_ref                      (<link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-char" role="function">
+<title>idmef_data_new_char ()</title>
+<indexterm zone="idmef-data-new-char"><primary sortas="idmef_data_new_char">idmef_data_new_char</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_char                 (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="char">char</link> c);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>c</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-byte" role="function">
+<title>idmef_data_new_byte ()</title>
+<indexterm zone="idmef-data-new-byte"><primary sortas="idmef_data_new_byte">idmef_data_new_byte</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_byte                 (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="uint8-t">uint8_t</link> i);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>i</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-uint32" role="function">
+<title>idmef_data_new_uint32 ()</title>
+<indexterm zone="idmef-data-new-uint32"><primary sortas="idmef_data_new_uint32">idmef_data_new_uint32</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_uint32               (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="uint32-t">uint32_t</link> i);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>i</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-uint64" role="function">
+<title>idmef_data_new_uint64 ()</title>
+<indexterm zone="idmef-data-new-uint64"><primary sortas="idmef_data_new_uint64">idmef_data_new_uint64</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_uint64               (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="uint64-t">uint64_t</link> i);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>i</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-float" role="function">
+<title>idmef_data_new_float ()</title>
+<indexterm zone="idmef-data-new-float"><primary sortas="idmef_data_new_float">idmef_data_new_float</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_float                (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="float">float</link> f);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>f</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-char" role="function">
+<title>idmef_data_set_char ()</title>
+<indexterm zone="idmef-data-set-char"><primary sortas="idmef_data_set_char">idmef_data_set_char</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_data_set_char                 (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="char">char</link> c);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>c</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-byte" role="function">
+<title>idmef_data_set_byte ()</title>
+<indexterm zone="idmef-data-set-byte"><primary sortas="idmef_data_set_byte">idmef_data_set_byte</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_data_set_byte                 (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="uint8-t">uint8_t</link> i);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>i</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-uint32" role="function">
+<title>idmef_data_set_uint32 ()</title>
+<indexterm zone="idmef-data-set-uint32"><primary sortas="idmef_data_set_uint32">idmef_data_set_uint32</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_data_set_uint32               (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="uint32-t">uint32_t</link> i);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>i</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-uint64" role="function">
+<title>idmef_data_set_uint64 ()</title>
+<indexterm zone="idmef-data-set-uint64"><primary sortas="idmef_data_set_uint64">idmef_data_set_uint64</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_data_set_uint64               (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="uint64-t">uint64_t</link> i);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>i</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-float" role="function">
+<title>idmef_data_set_float ()</title>
+<indexterm zone="idmef-data-set-float"><primary sortas="idmef_data_set_float">idmef_data_set_float</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_data_set_float                (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="float">float</link> f);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>f</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-ptr-dup-fast" role="function">
+<title>idmef_data_set_ptr_dup_fast ()</title>
+<indexterm zone="idmef-data-set-ptr-dup-fast"><primary sortas="idmef_data_set_ptr_dup_fast">idmef_data_set_ptr_dup_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_set_ptr_dup_fast         (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="idmef-data-type-t">idmef_data_type_t</link> type,
+                                                         const <link linkend="void">void</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-ptr-ref-fast" role="function">
+<title>idmef_data_set_ptr_ref_fast ()</title>
+<indexterm zone="idmef-data-set-ptr-ref-fast"><primary sortas="idmef_data_set_ptr_ref_fast">idmef_data_set_ptr_ref_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_set_ptr_ref_fast         (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="idmef-data-type-t">idmef_data_type_t</link> type,
+                                                         const <link linkend="void">void</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-ptr-nodup-fast" role="function">
+<title>idmef_data_set_ptr_nodup_fast ()</title>
+<indexterm zone="idmef-data-set-ptr-nodup-fast"><primary sortas="idmef_data_set_ptr_nodup_fast">idmef_data_set_ptr_nodup_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_set_ptr_nodup_fast       (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="idmef-data-type-t">idmef_data_type_t</link> type,
+                                                         <link linkend="void">void</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-ptr-dup-fast" role="function">
+<title>idmef_data_new_ptr_dup_fast ()</title>
+<indexterm zone="idmef-data-new-ptr-dup-fast"><primary sortas="idmef_data_new_ptr_dup_fast">idmef_data_new_ptr_dup_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_ptr_dup_fast         (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="idmef-data-type-t">idmef_data_type_t</link> type,
+                                                         const <link linkend="void">void</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-ptr-ref-fast" role="function">
+<title>idmef_data_new_ptr_ref_fast ()</title>
+<indexterm zone="idmef-data-new-ptr-ref-fast"><primary sortas="idmef_data_new_ptr_ref_fast">idmef_data_new_ptr_ref_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_ptr_ref_fast         (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="idmef-data-type-t">idmef_data_type_t</link> type,
+                                                         const <link linkend="void">void</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-ptr-nodup-fast" role="function">
+<title>idmef_data_new_ptr_nodup_fast ()</title>
+<indexterm zone="idmef-data-new-ptr-nodup-fast"><primary sortas="idmef_data_new_ptr_nodup_fast">idmef_data_new_ptr_nodup_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_ptr_nodup_fast       (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="idmef-data-type-t">idmef_data_type_t</link> type,
+                                                         <link linkend="void">void</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>type</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-char-string-dup-fast" role="function">
+<title>idmef_data_set_char_string_dup_fast ()</title>
+<indexterm zone="idmef-data-set-char-string-dup-fast"><primary sortas="idmef_data_set_char_string_dup_fast">idmef_data_set_char_string_dup_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_set_char_string_dup_fast (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         const <link linkend="char">char</link> *str,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-char-string-dup-fast" role="function">
+<title>idmef_data_new_char_string_dup_fast ()</title>
+<indexterm zone="idmef-data-new-char-string-dup-fast"><primary sortas="idmef_data_new_char_string_dup_fast">idmef_data_new_char_string_dup_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_char_string_dup_fast (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         const <link linkend="char">char</link> *str,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-char-string-ref-fast" role="function">
+<title>idmef_data_new_char_string_ref_fast ()</title>
+<indexterm zone="idmef-data-new-char-string-ref-fast"><primary sortas="idmef_data_new_char_string_ref_fast">idmef_data_new_char_string_ref_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_char_string_ref_fast (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         const <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-char-string-nodup-fast" role="function">
+<title>idmef_data_new_char_string_nodup_fast ()</title>
+<indexterm zone="idmef-data-new-char-string-nodup-fast"><primary sortas="idmef_data_new_char_string_nodup_fast">idmef_data_new_char_string_nodup_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_char_string_nodup_fast
+                                                        (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-char-string-ref-fast" role="function">
+<title>idmef_data_set_char_string_ref_fast ()</title>
+<indexterm zone="idmef-data-set-char-string-ref-fast"><primary sortas="idmef_data_set_char_string_ref_fast">idmef_data_set_char_string_ref_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_set_char_string_ref_fast (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         const <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-char-string-nodup-fast" role="function">
+<title>idmef_data_set_char_string_nodup_fast ()</title>
+<indexterm zone="idmef-data-set-char-string-nodup-fast"><primary sortas="idmef_data_set_char_string_nodup_fast">idmef_data_set_char_string_nodup_fast</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_set_char_string_nodup_fast
+                                                        (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-char-string-ref" role="function">
+<title>idmef_data_new_char_string_ref ()</title>
+<indexterm zone="idmef-data-new-char-string-ref"><primary sortas="idmef_data_new_char_string_ref">idmef_data_new_char_string_ref</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_char_string_ref      (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         const <link linkend="char">char</link> *ptr);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-char-string-dup" role="function">
+<title>idmef_data_new_char_string_dup ()</title>
+<indexterm zone="idmef-data-new-char-string-dup"><primary sortas="idmef_data_new_char_string_dup">idmef_data_new_char_string_dup</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_char_string_dup      (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         const <link linkend="char">char</link> *ptr);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-char-string-nodup" role="function">
+<title>idmef_data_new_char_string_nodup ()</title>
+<indexterm zone="idmef-data-new-char-string-nodup"><primary sortas="idmef_data_new_char_string_nodup">idmef_data_new_char_string_nodup</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_char_string_nodup    (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         <link linkend="char">char</link> *ptr);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-char-string-ref" role="function">
+<title>idmef_data_set_char_string_ref ()</title>
+<indexterm zone="idmef-data-set-char-string-ref"><primary sortas="idmef_data_set_char_string_ref">idmef_data_set_char_string_ref</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_set_char_string_ref      (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         const <link linkend="char">char</link> *ptr);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-char-string-dup" role="function">
+<title>idmef_data_set_char_string_dup ()</title>
+<indexterm zone="idmef-data-set-char-string-dup"><primary sortas="idmef_data_set_char_string_dup">idmef_data_set_char_string_dup</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_set_char_string_dup      (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         const <link linkend="char">char</link> *ptr);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-char-string-nodup" role="function">
+<title>idmef_data_set_char_string_nodup ()</title>
+<indexterm zone="idmef-data-set-char-string-nodup"><primary sortas="idmef_data_set_char_string_nodup">idmef_data_set_char_string_nodup</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_set_char_string_nodup    (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="char">char</link> *ptr);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-char-string-constant" role="macro">
+<title>idmef_data_set_char_string_constant()</title>
+<indexterm zone="idmef-data-set-char-string-constant"><primary sortas="idmef_data_set_char_string_constant">idmef_data_set_char_string_constant</primary></indexterm><programlisting>#define             idmef_data_set_char_string_constant(string, str)</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>string</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>str</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-byte-string-ref" role="function">
+<title>idmef_data_new_byte_string_ref ()</title>
+<indexterm zone="idmef-data-new-byte-string-ref"><primary sortas="idmef_data_new_byte_string_ref">idmef_data_new_byte_string_ref</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_byte_string_ref      (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         unsigned <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-byte-string-dup" role="function">
+<title>idmef_data_new_byte_string_dup ()</title>
+<indexterm zone="idmef-data-new-byte-string-dup"><primary sortas="idmef_data_new_byte_string_dup">idmef_data_new_byte_string_dup</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_byte_string_dup      (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         unsigned <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-new-byte-string-nodup" role="function">
+<title>idmef_data_new_byte_string_nodup ()</title>
+<indexterm zone="idmef-data-new-byte-string-nodup"><primary sortas="idmef_data_new_byte_string_nodup">idmef_data_new_byte_string_nodup</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_new_byte_string_nodup    (<link linkend="idmef-data-t">idmef_data_t</link> **data,
+                                                         unsigned <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-byte-string-ref" role="function">
+<title>idmef_data_set_byte_string_ref ()</title>
+<indexterm zone="idmef-data-set-byte-string-ref"><primary sortas="idmef_data_set_byte_string_ref">idmef_data_set_byte_string_ref</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_set_byte_string_ref      (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         unsigned <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-byte-string-dup" role="function">
+<title>idmef_data_set_byte_string_dup ()</title>
+<indexterm zone="idmef-data-set-byte-string-dup"><primary sortas="idmef_data_set_byte_string_dup">idmef_data_set_byte_string_dup</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_set_byte_string_dup      (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         unsigned <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-set-byte-string-nodup" role="function">
+<title>idmef_data_set_byte_string_nodup ()</title>
+<indexterm zone="idmef-data-set-byte-string-nodup"><primary sortas="idmef_data_set_byte_string_nodup">idmef_data_set_byte_string_nodup</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_set_byte_string_nodup    (<link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         unsigned <link linkend="char">char</link> *ptr,
+                                                         <link linkend="size-t">size_t</link> len);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>ptr</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>len</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-destroy" role="function">
+<title>idmef_data_destroy ()</title>
+<indexterm zone="idmef-data-destroy"><primary sortas="idmef_data_destroy">idmef_data_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_data_destroy                  (<link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+Frees <parameter>data</parameter>. The buffer pointed by <parameter>data</parameter> will be freed if
+the <parameter>data</parameter> object is marked as _dup or _nodup.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-data-t"><type>idmef_data_t</type></link> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-copy-ref" role="function">
+<title>idmef_data_copy_ref ()</title>
+<indexterm zone="idmef-data-copy-ref"><primary sortas="idmef_data_copy_ref">idmef_data_copy_ref</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_copy_ref                 (const <link linkend="idmef-data-t">idmef_data_t</link> *src,
+                                                         <link linkend="idmef-data-t">idmef_data_t</link> *dst);</programlisting>
+<para>
+Makes <parameter>dst</parameter> reference the same buffer as <parameter>src</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara> Source <link linkend="idmef-data-t"><type>idmef_data_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara> Destination <link linkend="idmef-data-t"><type>idmef_data_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-copy-dup" role="function">
+<title>idmef_data_copy_dup ()</title>
+<indexterm zone="idmef-data-copy-dup"><primary sortas="idmef_data_copy_dup">idmef_data_copy_dup</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_copy_dup                 (const <link linkend="idmef-data-t">idmef_data_t</link> *src,
+                                                         <link linkend="idmef-data-t">idmef_data_t</link> *dst);</programlisting>
+<para>
+Copies <parameter>src</parameter> to <parameter>dst</parameter>, including the associated buffer.
+This is an alternative to <link linkend="idmef-data-clone"><function>idmef_data_clone()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara> Source <link linkend="idmef-data-t"><type>idmef_data_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara> Destination <link linkend="idmef-data-t"><type>idmef_data_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-clone" role="function">
+<title>idmef_data_clone ()</title>
+<indexterm zone="idmef-data-clone"><primary sortas="idmef_data_clone">idmef_data_clone</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_clone                    (const <link linkend="idmef-data-t">idmef_data_t</link> *src,
+                                                         <link linkend="idmef-data-t">idmef_data_t</link> **dst);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-get-type" role="function">
+<title>idmef_data_get_type ()</title>
+<indexterm zone="idmef-data-get-type"><primary sortas="idmef_data_get_type">idmef_data_get_type</primary></indexterm><programlisting><link linkend="idmef-data-type-t">idmef_data_type_t</link>   idmef_data_get_type                 (const <link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-data-t"><type>idmef_data_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the type of the embedded data.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-get-len" role="function">
+<title>idmef_data_get_len ()</title>
+<indexterm zone="idmef-data-get-len"><primary sortas="idmef_data_get_len">idmef_data_get_len</primary></indexterm><programlisting><link linkend="size-t">size_t</link>              idmef_data_get_len                  (const <link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-data-t"><type>idmef_data_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the length of data contained within <parameter>data</parameter> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-get-data" role="function">
+<title>idmef_data_get_data ()</title>
+<indexterm zone="idmef-data-get-data"><primary sortas="idmef_data_get_data">idmef_data_get_data</primary></indexterm><programlisting>const <link linkend="void">void</link> *        idmef_data_get_data                 (const <link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-data-t"><type>idmef_data_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> the data contained within <parameter>data</parameter> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-get-char" role="function">
+<title>idmef_data_get_char ()</title>
+<indexterm zone="idmef-data-get-char"><primary sortas="idmef_data_get_char">idmef_data_get_char</primary></indexterm><programlisting><link linkend="char">char</link>                idmef_data_get_char                 (const <link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-get-byte" role="function">
+<title>idmef_data_get_byte ()</title>
+<indexterm zone="idmef-data-get-byte"><primary sortas="idmef_data_get_byte">idmef_data_get_byte</primary></indexterm><programlisting><link linkend="uint8-t">uint8_t</link>             idmef_data_get_byte                 (const <link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-get-uint32" role="function">
+<title>idmef_data_get_uint32 ()</title>
+<indexterm zone="idmef-data-get-uint32"><primary sortas="idmef_data_get_uint32">idmef_data_get_uint32</primary></indexterm><programlisting><link linkend="uint32-t">uint32_t</link>            idmef_data_get_uint32               (const <link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-get-uint64" role="function">
+<title>idmef_data_get_uint64 ()</title>
+<indexterm zone="idmef-data-get-uint64"><primary sortas="idmef_data_get_uint64">idmef_data_get_uint64</primary></indexterm><programlisting><link linkend="uint64-t">uint64_t</link>            idmef_data_get_uint64               (const <link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-get-float" role="function">
+<title>idmef_data_get_float ()</title>
+<indexterm zone="idmef-data-get-float"><primary sortas="idmef_data_get_float">idmef_data_get_float</primary></indexterm><programlisting><link linkend="float">float</link>               idmef_data_get_float                (const <link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-get-char-string" role="function">
+<title>idmef_data_get_char_string ()</title>
+<indexterm zone="idmef-data-get-char-string"><primary sortas="idmef_data_get_char_string">idmef_data_get_char_string</primary></indexterm><programlisting>const <link linkend="char">char</link> *        idmef_data_get_char_string          (const <link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-get-byte-string" role="function">
+<title>idmef_data_get_byte_string ()</title>
+<indexterm zone="idmef-data-get-byte-string"><primary sortas="idmef_data_get_byte_string">idmef_data_get_byte_string</primary></indexterm><programlisting>const unsigned <link linkend="char">char</link> * idmef_data_get_byte_string        (const <link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-is-empty" role="function">
+<title>idmef_data_is_empty ()</title>
+<indexterm zone="idmef-data-is-empty"><primary sortas="idmef_data_is_empty">idmef_data_is_empty</primary></indexterm><programlisting><link linkend="prelude-bool-t">prelude_bool_t</link>      idmef_data_is_empty                 (const <link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-data-t"><type>idmef_data_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> TRUE if empty, FALSE otherwise.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-to-string" role="function">
+<title>idmef_data_to_string ()</title>
+<indexterm zone="idmef-data-to-string"><primary sortas="idmef_data_to_string">idmef_data_to_string</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_data_to_string                (const <link linkend="idmef-data-t">idmef_data_t</link> *data,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *out);</programlisting>
+<para>
+Formats data contained within <parameter>data</parameter> to be printable,
+and stores the result in the provided <parameter>out</parameter> buffer.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-data-t"><type>idmef_data_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>out</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> to store the formated data into.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-data-destroy-internal" role="function">
+<title>idmef_data_destroy_internal ()</title>
+<indexterm zone="idmef-data-destroy-internal"><primary sortas="idmef_data_destroy_internal">idmef_data_destroy_internal</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_data_destroy_internal         (<link linkend="idmef-data-t">idmef_data_t</link> *data);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>data</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

@@ -1,0 +1,75 @@
+/*****
+*
+* Copyright (C) 2004, 2005 PreludeIDS Technologies. All Rights Reserved.
+* Author: Yoann Vandoorselaere <yoann.v@prelude-ids.com>
+*
+* This file is part of the Prelude library.
+*
+* This program is free software; you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation; either version 2, or (at your option)
+* any later version.
+*
+* This program is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with this program; see the file COPYING.  If not, write to
+* the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+*
+*****/
+
+#ifndef _LIBPRELUDE_PRELUDE_H
+#define _LIBPRELUDE_PRELUDE_H
+
+/*
+ * LIBPRELUDE_VERSION:
+ * Version of libprelude this header come from.
+ *
+ * This is mostly used by the libprelude detection routine in libprelude.m4
+ * to make sure that the header version is consistant with the linked library.
+ */
+#define LIBPRELUDE_VERSION "1.0.0"
+
+#include "prelude-inttypes.h"
+#include "common.h"
+#include "prelude-client.h"
+#include "prelude-connection.h"
+#include "prelude-connection-pool.h"
+#include "prelude-error.h"
+#include "prelude-io.h"
+#include "prelude-option.h"
+#include "prelude-async.h"
+#include "prelude-error.h"
+#include "prelude-plugin.h"
+#include "prelude-msg.h"
+#include "prelude-msgbuf.h"
+#include "prelude-timer.h"
+#include "idmef.h"
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+int prelude_init(int *argc, char **argv);
+
+void prelude_deinit(void);
+
+const char *prelude_check_version(const char *req_version);
+
+int prelude_thread_init(void *future_use);
+
+void prelude_fork_prepare(void);
+
+void prelude_fork_parent(void);
+
+void prelude_fork_child(void);
+
+
+#ifdef __cplusplus
+ }
+#endif
+
+#endif /* _LIBPRELUDE_PRELUDE_H */

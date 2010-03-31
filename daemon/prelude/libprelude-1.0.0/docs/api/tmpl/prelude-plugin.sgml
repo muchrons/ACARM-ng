@@ -1,0 +1,333 @@
+<!-- ##### SECTION Title ##### -->
+prelude-plugin
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO lt_preloaded_symbols ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PLUGIN_API_VERSION ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### TYPEDEF prelude_plugin_entry_t ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF prelude_plugin_instance_t ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO PRELUDE_PLUGIN_GENERIC ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### STRUCT prelude_plugin_generic_t ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### MACRO PRELUDE_PLUGIN_SET_PRELOADED_SYMBOLS ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PLUGIN_OPTION_DECLARE_STRING_CB ##### -->
+<para>
+
+</para>
+
+@prefix: 
+@type: 
+@name: 
+
+
+<!-- ##### MACRO prelude_plugin_get_name ##### -->
+<para>
+
+</para>
+
+@p: 
+
+
+<!-- ##### MACRO prelude_plugin_set_name ##### -->
+<para>
+
+</para>
+
+@p: 
+@str: 
+
+
+<!-- ##### MACRO prelude_plugin_set_destroy_func ##### -->
+<para>
+
+</para>
+
+@p: 
+@func: 
+
+
+<!-- ##### FUNCTION prelude_plugin_entry_set_plugin ##### -->
+<para>
+
+</para>
+
+@pe: 
+@pl: 
+
+
+<!-- ##### FUNCTION prelude_plugin_set_activation_option ##### -->
+<para>
+
+</para>
+
+@pe: 
+@opt: 
+@commit: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_instance_subscribe ##### -->
+<para>
+
+</para>
+
+@pi: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_instance_unsubscribe ##### -->
+<para>
+
+</para>
+
+@pi: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_new_instance ##### -->
+<para>
+
+</para>
+
+@pi: 
+@plugin: 
+@name: 
+@data: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_search_by_name ##### -->
+<para>
+
+</para>
+
+@head: 
+@name: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_search_instance_by_name ##### -->
+<para>
+
+</para>
+
+@head: 
+@pname: 
+@iname: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_instance_set_data ##### -->
+<para>
+
+</para>
+
+@pi: 
+@data: 
+
+
+<!-- ##### FUNCTION prelude_plugin_instance_get_data ##### -->
+<para>
+
+</para>
+
+@pi: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_instance_set_plugin_data ##### -->
+<para>
+
+</para>
+
+@pi: 
+@data: 
+
+
+<!-- ##### FUNCTION prelude_plugin_instance_get_plugin_data ##### -->
+<para>
+
+</para>
+
+@pi: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_instance_get_name ##### -->
+<para>
+
+</para>
+
+@pi: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_instance_get_plugin ##### -->
+<para>
+
+</para>
+
+@pi: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_load_from_dir ##### -->
+<para>
+
+</para>
+
+@head: 
+@dirname: 
+@symbol: 
+@ptr: 
+@subscribe: 
+@unsubscribe: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_instance_add ##### -->
+<para>
+
+</para>
+
+@pi: 
+@h: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_instance_del ##### -->
+<para>
+
+</para>
+
+@pi: 
+
+
+<!-- ##### FUNCTION prelude_plugin_instance_compute_time ##### -->
+<para>
+
+</para>
+
+@pi: 
+@start: 
+@end: 
+
+
+<!-- ##### FUNCTION prelude_plugin_instance_call_commit_func ##### -->
+<para>
+
+</para>
+
+@pi: 
+@err: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_instance_has_commit_func ##### -->
+<para>
+
+</para>
+
+@pi: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_set_preloaded_symbols ##### -->
+<para>
+
+</para>
+
+@symlist: 
+
+
+<!-- ##### FUNCTION prelude_plugin_get_next ##### -->
+<para>
+
+</para>
+
+@head: 
+@iter: 
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_plugin_unload ##### -->
+<para>
+
+</para>
+
+@plugin: 
+
+
+<!-- ##### MACRO prelude_plugin_compute_stats ##### -->
+<para>
+
+</para>
+
+@pi: 
+@func: 
+
+
+<!-- ##### MACRO prelude_plugin_run ##### -->
+<para>
+
+</para>
+
+@pi: 
+@type: 
+@member: 
+@...: 
+
+
