@@ -1,2 +1,2 @@
 #!/bin/sh
-exec echo '-lltdl'
+exec echo '-lltdl -lgnutls'

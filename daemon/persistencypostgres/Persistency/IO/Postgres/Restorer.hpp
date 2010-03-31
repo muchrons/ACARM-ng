@@ -33,11 +33,9 @@ public:
            DBHandlerPtrNN  dbHandler);
 
 private:
-  // TODO: use upper-case for type names
   /** \brief data type which stores tree nodes of class Tree
    */
-  typedef std::map<DataBaseID, TreePtr> nodesMap;
-
+  typedef std::map<DataBaseID, TreePtr> NodesMap;
   virtual void restoreAllInUseImpl(Transaction &t, NodesVector &out);
   virtual void restoreBetweenImpl(Transaction     &t,
                                   NodesVector     &out,
@@ -50,13 +48,15 @@ private:
                                  Persistency::IO::Postgres::detail::EntryReader &er,
                                  IO::ConnectionPtrNN                             connStubIO,
                                  IO::Transaction                                &tStubIO);
-  // TODO: use private typedef for vector<ID> - it is used in few places already
   void restore(Persistency::IO::Postgres::detail::EntryReader &er,
                NodesVector                                    &out,
-               std::vector<DataBaseID>                        &malerts);
+               Tree::IDsVector                                &malerts);
+
+  template<typename T>
+  void addIfNew(T e, DataBaseID id);
 
   DBHandlerPtrNN  dbHandler_;
-  nodesMap        treeNodes_;
+  NodesMap        treeNodes_;
 }; // class Restorer
 
 } // namespace Postgres

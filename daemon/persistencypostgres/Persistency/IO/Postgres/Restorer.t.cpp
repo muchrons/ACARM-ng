@@ -24,7 +24,7 @@ struct TestClass
     idCache_(new IDCache),
     dbh_(DBHandlerPtrNN(new DBHandler(TestConnection::makeParams(), idCache_) ) ),
     conn_(makeConnection() ),
-    t_( conn_->createNewTransaction("save_alert_tests") )
+    t_( conn_->createNewTransaction("restore_tests") )
   {
     tdba_.removeAllData();
   }
@@ -66,13 +66,19 @@ void testObj::test<1>(void)
 {
   std::vector<GraphNodePtrNN> out;
   // create tree
-  makeNewTree1();
+  GraphNodePtrNN tree = makeNewTree1();
   // cache cleanup
-  dbh_->getIDCache()->prune();
+  // dbh_->getIDCache()->prune();
   // restore data from data base
-  conn_->restorer(t_)->restoreAllInUse(out);
-  t_.commit();
-  // TODO: check what has been read
+  Restorer r(t_, dbh_);
+  r.restoreAllInUse(out);
+
+  // check if meta alerts exist in cache
+  for(std::vector<GraphNodePtrNN>::iterator it = out.begin(); it !=out.end(); ++it)
+  {
+    ensure("meta alert shoud be in cache", idCache_->has( (*it)->getMetaAlert()) );
+  }
+
 }
 
 // TODO: try restoring few non-trivial test cases

@@ -24,7 +24,7 @@ Restorer::Restorer(Transaction    &t,
 void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &out)
 {
   EntryReader er(t, *dbHandler_);
-  vector<DataBaseID> maInUse( er.readIDsMalertsInUse() );
+  Tree::IDsVector maInUse( er.readIDsMalertsInUse() );
   restore(er, out, maInUse);
 }
 
@@ -35,7 +35,7 @@ void Restorer::restoreBetweenImpl(Transaction     &t,
 {
   // TODO
   EntryReader er(t, *dbHandler_);
-  vector<DataBaseID> maBetween( er.readIDsMalertsBetween(from, to) );
+  Tree::IDsVector maBetween( er.readIDsMalertsBetween(from, to) );
   restore(er, out, maBetween);
 }
 
@@ -46,7 +46,15 @@ BackendFactory::FactoryPtr Restorer::createStubIO(void)
   return BackendFactory::create(name, options);
 }
 
-
+template<typename T>
+void Restorer::addIfNew(T e, DataBaseID id)
+{
+  if(!dbHandler_->getIDCache()->has(e))
+    dbHandler_->getIDCache()->add(e, id);
+  // TODO: i'd suggest adding assert in else{} that given alert has the
+  //       expected ID, i.e. that cache's content is consistent with current
+  //       expectations.
+}
 TreePtr Restorer::getNode(DataBaseID id )
 {
   if(treeNodes_.count(id) > 0)
@@ -66,25 +74,19 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   //       or add proper runtime check.
   TreePtr node = getNode(id);
   // check if there are no children (i.e. is leaf)
-  // TODO: compare explicitly with 0 - it is more readable
-  if( !node->getChildrenNumber() )
+  if( node->getChildrenNumber() == 0 )
   {
     // read Alert from data base
     AlertPtrNN alertPtr( er.getLeaf(id) );
+    const DataBaseID alertID = er.getAlertIDAssociatedWithMetaAlert(id);
     // add Alert to cache
-    if(!dbHandler_->getIDCache()->has( alertPtr ))
-      dbHandler_->getIDCache()->add(alertPtr, id);
-    // TODO: i'd suggest adding assert in else{} that given alert has the
-    //       expected ID, i.e. that cache's content is consistent with current
-    //       expectations.
+    addIfNew(alertPtr, alertID);
     return GraphNodePtrNN( new GraphNode( alertPtr, connStubIO, tStubIO ) );
   }
-  vector<GraphNodePtrNN> tmpNodes;
-  // TODO: const reference should be enought here
-  vector<DataBaseID>     nodeChildren( node->getChildren() );
+  vector<GraphNodePtrNN>  tmpNodes;
+  const Tree::IDsVector  &nodeChildren = node->getChildren();
   tmpNodes.reserve( nodeChildren.size() );
-  // TODO: you don't change nodeChildren's content - use const-iterator here.
-  for(vector<DataBaseID>::iterator it = nodeChildren.begin();
+  for(Tree::IDsVector::const_iterator it = nodeChildren.begin();
       it != nodeChildren.end(); ++it)
   {
     tmpNodes.push_back( deepFirstSearch( *it, out, er, connStubIO, tStubIO ) );
@@ -95,20 +97,12 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   NodeChildrenVector vec(tmpNodes[0], tmpNodes[1]);
   // TODO: note that you can use vector<>::reserve() method to ensure no extra
   //       allocations will be done when adding new elements.
-  // TODO: use size_t instead of unsigned int here.
-  for(unsigned int i = 2; i<tmpNodes.size(); ++i)
+  for(size_t i = 2; i<tmpNodes.size(); ++i)
     vec.push_back(tmpNodes[i]);
   // read Meta Alert from data base
   MetaAlertPtrNN malertPtr( er.readMetaAlert(id) );
   // add Meta Alert to cache
-  // TODO: code nearly identical with the one at the method's begining - consider
-  //       makeing it a template helper, ex. 'addIfNew<T>(T e, ID id)' - assertation
-  //       can be put there as well.
-  if(!dbHandler_->getIDCache()->has( malertPtr ))
-    dbHandler_->getIDCache()->add(malertPtr, id);
-  // TODO: i'd suggest adding assert in else{} that given alert has the
-  //       expected ID, i.e. that cache's content is consistent with current
-  //       expectations.
+  addIfNew(malertPtr, id);
   GraphNodePtrNN graphNode(new GraphNode( malertPtr,
                                           connStubIO, tStubIO, vec ));
   out.push_back(graphNode);
@@ -117,13 +111,12 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
 
 void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
                        NodesVector                                    &out,
-                       std::vector<DataBaseID>                        &malerts)
+                       Tree::IDsVector                                &malerts)
 {
 
-  for(vector<DataBaseID>::iterator it = malerts.begin(); it != malerts.end(); ++it)
+  for(Tree::IDsVector::iterator it = malerts.begin(); it != malerts.end(); ++it)
   {
-    // TODO: const reference should be enought here
-    vector<DataBaseID> malertChildren( er.readMetaAlertChildren( (*it) ) );
+    const Tree::IDsVector &malertChildren = er.readMetaAlertChildren( (*it) );
     // put this data to the tree which represents meta alerts tree structure
     pair<DataBaseID, TreePtr> tmp(*it, TreePtr(new Tree(*it, malertChildren) ) );
     treeNodes_.insert(tmp);
@@ -132,11 +125,9 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
   IO::ConnectionPtrNN connStubIO( createStubIO() );
   IO::Transaction     tStubIO( connStubIO->createNewTransaction("stub transaction") );
 
-  // TODO: const reference should be enought here
-  vector<DataBaseID> roots( er.readRoots());
-  // TODO: whenever when you don't change container's content use const-iterator.
-  for(vector<DataBaseID>::iterator it = roots.begin(); it != roots.end(); ++it)
-    out.push_back( deepFirstSearch(*it, out, er, connStubIO, tStubIO) );
+  const Tree::IDsVector &roots = er.readRoots();
+  for(Tree::IDsVector::const_iterator it = roots.begin(); it != roots.end(); ++it)
+    deepFirstSearch(*it, out, er, connStubIO, tStubIO) ;
 }
 
 } // namespace Postgres
