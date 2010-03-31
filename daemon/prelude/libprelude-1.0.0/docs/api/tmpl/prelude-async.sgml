@@ -1,0 +1,95 @@
+<!-- ##### SECTION Title ##### -->
+prelude-async
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### ENUM prelude_async_flags_t ##### -->
+<para>
+
+</para>
+
+@PRELUDE_ASYNC_FLAGS_TIMER: 
+
+<!-- ##### USER_FUNCTION prelude_async_callback_t ##### -->
+<para>
+
+</para>
+
+@object: 
+@data: 
+
+
+<!-- ##### MACRO PRELUDE_ASYNC_OBJECT ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### STRUCT prelude_async_object_t ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### FUNCTION prelude_async_init ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_async_get_flags ##### -->
+<para>
+
+</para>
+
+@Returns: 
+
+
+<!-- ##### FUNCTION prelude_async_set_flags ##### -->
+<para>
+
+</para>
+
+@flags: 
+
+
+<!-- ##### FUNCTION prelude_async_add ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### FUNCTION prelude_async_del ##### -->
+<para>
+
+</para>
+
+@obj: 
+
+
+<!-- ##### FUNCTION prelude_async_exit ##### -->
+<para>
+
+</para>
+
+
+

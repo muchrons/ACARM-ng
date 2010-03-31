@@ -1,0 +1,308 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-idmef-criterion-value">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-idmef-criterion-value.top_of_page">idmef-criterion-value</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>idmef-criterion-value</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-idmef-criterion-value.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+typedef             <link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link>;
+enum                <link linkend="idmef-criterion-value-type-t">idmef_criterion_value_type_t</link>;
+<link linkend="int">int</link>                 <link linkend="idmef-criterion-value-new">idmef_criterion_value_new</link>           (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> **cv);
+<link linkend="int">int</link>                 <link linkend="idmef-criterion-value-new-regex">idmef_criterion_value_new_regex</link>     (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> **cv,
+                                                         const <link linkend="char">char</link> *regex,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);
+<link linkend="int">int</link>                 <link linkend="idmef-criterion-value-new-value">idmef_criterion_value_new_value</link>     (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> **cv,
+                                                         <link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);
+<link linkend="int">int</link>                 <link linkend="idmef-criterion-value-new-from-string">idmef_criterion_value_new_from_string</link>
+                                                        (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> **cv,
+                                                         <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         const <link linkend="char">char</link> *value,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);
+<link linkend="int">int</link>                 <link linkend="idmef-criterion-value-new-broken-down-time">idmef_criterion_value_new_broken_down_time</link>
+                                                        (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> **cv,
+                                                         const <link linkend="char">char</link> *time,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);
+<link linkend="int">int</link>                 <link linkend="idmef-criterion-value-clone">idmef_criterion_value_clone</link>         (const <link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *src,
+                                                         <link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> **dst);
+<link linkend="void">void</link>                <link linkend="idmef-criterion-value-destroy">idmef_criterion_value_destroy</link>       (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *value);
+<link linkend="int">int</link>                 <link linkend="idmef-criterion-value-print">idmef_criterion_value_print</link>         (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *value,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *fd);
+<link linkend="int">int</link>                 <link linkend="idmef-criterion-value-to-string">idmef_criterion_value_to_string</link>     (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *value,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *out);
+<link linkend="int">int</link>                 <link linkend="idmef-criterion-value-match">idmef_criterion_value_match</link>         (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *cv,
+                                                         <link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);
+const <link linkend="idmef-value-t">idmef_value_t</link> * <link linkend="idmef-criterion-value-get-value">idmef_criterion_value_get_value</link>   (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *cv);
+const <link linkend="char">char</link> *        <link linkend="idmef-criterion-value-get-regex">idmef_criterion_value_get_regex</link>     (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *cv);
+const struct <link linkend="tm">tm</link> *   <link linkend="idmef-criterion-value-get-broken-down-time">idmef_criterion_value_get_broken_down_time</link>
+                                                        (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *cv);
+<link linkend="idmef-criterion-value-type-t">idmef_criterion_value_type_t</link>  <link linkend="idmef-criterion-value-get-type">idmef_criterion_value_get_type</link>
+                                                        (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *cv);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-idmef-criterion-value.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-idmef-criterion-value.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="idmef-criterion-value-t" role="typedef">
+<title>idmef_criterion_value_t</title>
+<indexterm zone="idmef-criterion-value-t"><primary sortas="idmef_criterion_value_t">idmef_criterion_value_t</primary></indexterm><programlisting>typedef struct idmef_criterion_value idmef_criterion_value_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="idmef-criterion-value-type-t" role="enum">
+<title>enum idmef_criterion_value_type_t</title>
+<indexterm zone="idmef-criterion-value-type-t"><primary sortas="idmef_criterion_value_type_t">idmef_criterion_value_type_t</primary></indexterm><programlisting>typedef enum {
+        IDMEF_CRITERION_VALUE_TYPE_ERROR            = -1,
+        IDMEF_CRITERION_VALUE_TYPE_VALUE            =  0,
+        IDMEF_CRITERION_VALUE_TYPE_REGEX            =  1,
+        IDMEF_CRITERION_VALUE_TYPE_BROKEN_DOWN_TIME =  2
+} idmef_criterion_value_type_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="idmef-criterion-value-new" role="function">
+<title>idmef_criterion_value_new ()</title>
+<indexterm zone="idmef-criterion-value-new"><primary sortas="idmef_criterion_value_new">idmef_criterion_value_new</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_criterion_value_new           (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> **cv);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cv</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-criterion-value-new-regex" role="function">
+<title>idmef_criterion_value_new_regex ()</title>
+<indexterm zone="idmef-criterion-value-new-regex"><primary sortas="idmef_criterion_value_new_regex">idmef_criterion_value_new_regex</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_criterion_value_new_regex     (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> **cv,
+                                                         const <link linkend="char">char</link> *regex,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cv</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>regex</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>op</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-criterion-value-new-value" role="function">
+<title>idmef_criterion_value_new_value ()</title>
+<indexterm zone="idmef-criterion-value-new-value"><primary sortas="idmef_criterion_value_new_value">idmef_criterion_value_new_value</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_criterion_value_new_value     (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> **cv,
+                                                         <link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cv</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>op</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-criterion-value-new-from-string" role="function">
+<title>idmef_criterion_value_new_from_string ()</title>
+<indexterm zone="idmef-criterion-value-new-from-string"><primary sortas="idmef_criterion_value_new_from_string">idmef_criterion_value_new_from_string</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_criterion_value_new_from_string
+                                                        (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> **cv,
+                                                         <link linkend="idmef-path-t">idmef_path_t</link> *path,
+                                                         const <link linkend="char">char</link> *value,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cv</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>path</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>op</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-criterion-value-new-broken-down-time" role="function">
+<title>idmef_criterion_value_new_broken_down_time ()</title>
+<indexterm zone="idmef-criterion-value-new-broken-down-time"><primary sortas="idmef_criterion_value_new_broken_down_time">idmef_criterion_value_new_broken_down_time</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_criterion_value_new_broken_down_time
+                                                        (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> **cv,
+                                                         const <link linkend="char">char</link> *time,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cv</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>op</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-criterion-value-clone" role="function">
+<title>idmef_criterion_value_clone ()</title>
+<indexterm zone="idmef-criterion-value-clone"><primary sortas="idmef_criterion_value_clone">idmef_criterion_value_clone</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_criterion_value_clone         (const <link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *src,
+                                                         <link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> **dst);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-criterion-value-destroy" role="function">
+<title>idmef_criterion_value_destroy ()</title>
+<indexterm zone="idmef-criterion-value-destroy"><primary sortas="idmef_criterion_value_destroy">idmef_criterion_value_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_criterion_value_destroy       (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *value);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-criterion-value-print" role="function">
+<title>idmef_criterion_value_print ()</title>
+<indexterm zone="idmef-criterion-value-print"><primary sortas="idmef_criterion_value_print">idmef_criterion_value_print</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_criterion_value_print         (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *value,
+                                                         <link linkend="prelude-io-t">prelude_io_t</link> *fd);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>fd</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-criterion-value-to-string" role="function">
+<title>idmef_criterion_value_to_string ()</title>
+<indexterm zone="idmef-criterion-value-to-string"><primary sortas="idmef_criterion_value_to_string">idmef_criterion_value_to_string</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_criterion_value_to_string     (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *value,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *out);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>out</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-criterion-value-match" role="function">
+<title>idmef_criterion_value_match ()</title>
+<indexterm zone="idmef-criterion-value-match"><primary sortas="idmef_criterion_value_match">idmef_criterion_value_match</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_criterion_value_match         (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *cv,
+                                                         <link linkend="idmef-value-t">idmef_value_t</link> *value,
+                                                         <link linkend="idmef-criterion-operator-t">idmef_criterion_operator_t</link> op);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cv</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>value</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>op</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-criterion-value-get-value" role="function">
+<title>idmef_criterion_value_get_value ()</title>
+<indexterm zone="idmef-criterion-value-get-value"><primary sortas="idmef_criterion_value_get_value">idmef_criterion_value_get_value</primary></indexterm><programlisting>const <link linkend="idmef-value-t">idmef_value_t</link> * idmef_criterion_value_get_value   (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *cv);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cv</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-criterion-value-get-regex" role="function">
+<title>idmef_criterion_value_get_regex ()</title>
+<indexterm zone="idmef-criterion-value-get-regex"><primary sortas="idmef_criterion_value_get_regex">idmef_criterion_value_get_regex</primary></indexterm><programlisting>const <link linkend="char">char</link> *        idmef_criterion_value_get_regex     (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *cv);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cv</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-criterion-value-get-broken-down-time" role="function">
+<title>idmef_criterion_value_get_broken_down_time ()</title>
+<indexterm zone="idmef-criterion-value-get-broken-down-time"><primary sortas="idmef_criterion_value_get_broken_down_time">idmef_criterion_value_get_broken_down_time</primary></indexterm><programlisting>const struct <link linkend="tm">tm</link> *   idmef_criterion_value_get_broken_down_time
+                                                        (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *cv);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cv</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-criterion-value-get-type" role="function">
+<title>idmef_criterion_value_get_type ()</title>
+<indexterm zone="idmef-criterion-value-get-type"><primary sortas="idmef_criterion_value_get_type">idmef_criterion_value_get_type</primary></indexterm><programlisting><link linkend="idmef-criterion-value-type-t">idmef_criterion_value_type_t</link>  idmef_criterion_value_get_type
+                                                        (<link linkend="idmef-criterion-value-t">idmef_criterion_value_t</link> *cv);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>cv</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

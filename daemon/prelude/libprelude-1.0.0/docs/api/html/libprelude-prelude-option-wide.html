@@ -1,0 +1,261 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>prelude-option-wide</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="ch04.html" title="Others">
+<link rel="prev" href="libprelude-prelude-inttypes.html" title="prelude-inttypes">
+<link rel="next" href="libprelude-prelude-timer.html" title="prelude-timer">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libprelude-prelude-inttypes.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td><a accesskey="n" href="libprelude-prelude-timer.html"><img src="right.png" width="24" height="24" border="0" alt="Next"></a></td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-prelude-option-wide.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-prelude-option-wide.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="prelude-option-wide">
+<a name="libprelude-prelude-option-wide"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-prelude-option-wide.top_of_page"></a>prelude-option-wide</span></h2>
+<p>prelude-option-wide</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-prelude-option-wide.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+#define             <a class="link" href="libprelude-prelude-option-wide.html#PRELUDE-OPTION-REPLY-TYPE-SET--CAPS" title="PRELUDE_OPTION_REPLY_TYPE_SET">PRELUDE_OPTION_REPLY_TYPE_SET</a>
+#define             <a class="link" href="libprelude-prelude-option-wide.html#PRELUDE-OPTION-REPLY-TYPE-GET--CAPS" title="PRELUDE_OPTION_REPLY_TYPE_GET">PRELUDE_OPTION_REPLY_TYPE_GET</a>
+#define             <a class="link" href="libprelude-prelude-option-wide.html#PRELUDE-OPTION-REPLY-TYPE-LIST--CAPS" title="PRELUDE_OPTION_REPLY_TYPE_LIST">PRELUDE_OPTION_REPLY_TYPE_LIST</a>
+#define             <a class="link" href="libprelude-prelude-option-wide.html#PRELUDE-OPTION-REPLY-TYPE-ERROR--CAPS" title="PRELUDE_OPTION_REPLY_TYPE_ERROR">PRELUDE_OPTION_REPLY_TYPE_ERROR</a>
+int                 <a class="link" href="libprelude-prelude-option-wide.html#prelude-option-push-request" title="prelude_option_push_request ()">prelude_option_push_request</a>         (<a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg,
+                                                         int type,
+                                                         const char *request);
+int                 <a class="link" href="libprelude-prelude-option-wide.html#prelude-option-new-request" title="prelude_option_new_request ()">prelude_option_new_request</a>          (<a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msgbuf,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint32-t" title="uint32_t">uint32_t</a> request_id,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a> *target_id,
+                                                         size_t size);
+int                 <a class="link" href="libprelude-prelude-option-wide.html#prelude-option-process-request" title="prelude_option_process_request ()">prelude_option_process_request</a>      (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *reply);
+int                 <a class="link" href="libprelude-prelude-option-wide.html#prelude-option-recv-reply" title="prelude_option_recv_reply ()">prelude_option_recv_reply</a>           (<a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a> *source_id,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint32-t" title="uint32_t">uint32_t</a> *request_id,
+                                                         void **value);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-prelude-option-wide.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-prelude-option-wide.details"></a><h2>Details</h2>
+<div class="refsect2" title="PRELUDE_OPTION_REPLY_TYPE_SET">
+<a name="PRELUDE-OPTION-REPLY-TYPE-SET--CAPS"></a><h3>PRELUDE_OPTION_REPLY_TYPE_SET</h3>
+<pre class="programlisting">#define PRELUDE_OPTION_REPLY_TYPE_SET   0x01
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_OPTION_REPLY_TYPE_GET">
+<a name="PRELUDE-OPTION-REPLY-TYPE-GET--CAPS"></a><h3>PRELUDE_OPTION_REPLY_TYPE_GET</h3>
+<pre class="programlisting">#define PRELUDE_OPTION_REPLY_TYPE_GET   0x02
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_OPTION_REPLY_TYPE_LIST">
+<a name="PRELUDE-OPTION-REPLY-TYPE-LIST--CAPS"></a><h3>PRELUDE_OPTION_REPLY_TYPE_LIST</h3>
+<pre class="programlisting">#define PRELUDE_OPTION_REPLY_TYPE_LIST  0x04
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="PRELUDE_OPTION_REPLY_TYPE_ERROR">
+<a name="PRELUDE-OPTION-REPLY-TYPE-ERROR--CAPS"></a><h3>PRELUDE_OPTION_REPLY_TYPE_ERROR</h3>
+<pre class="programlisting">#define PRELUDE_OPTION_REPLY_TYPE_ERROR 0x08
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_option_push_request ()">
+<a name="prelude-option-push-request"></a><h3>prelude_option_push_request ()</h3>
+<pre class="programlisting">int                 prelude_option_push_request         (<a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msg,
+                                                         int type,
+                                                         const char *request);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>type</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>request</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_option_new_request ()">
+<a name="prelude-option-new-request"></a><h3>prelude_option_new_request ()</h3>
+<pre class="programlisting">int                 prelude_option_new_request          (<a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *msgbuf,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint32-t" title="uint32_t">uint32_t</a> request_id,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a> *target_id,
+                                                         size_t size);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msgbuf</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>request_id</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>target_id</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>size</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_option_process_request ()">
+<a name="prelude-option-process-request"></a><h3>prelude_option_process_request ()</h3>
+<pre class="programlisting">int                 prelude_option_process_request      (<a class="link" href="libprelude-prelude-client.html#prelude-client-t" title="prelude_client_t">prelude_client_t</a> *client,
+                                                         <a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg,
+                                                         <a class="link" href="libprelude-prelude-msgbuf.html#prelude-msgbuf-t" title="prelude_msgbuf_t">prelude_msgbuf_t</a> *reply);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>client</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>reply</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_option_recv_reply ()">
+<a name="prelude-option-recv-reply"></a><h3>prelude_option_recv_reply ()</h3>
+<pre class="programlisting">int                 prelude_option_recv_reply           (<a class="link" href="libprelude-prelude-msg.html#prelude-msg-t" title="prelude_msg_t">prelude_msg_t</a> *msg,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint64-t" title="uint64_t">uint64_t</a> *source_id,
+                                                         <a class="link" href="libprelude-prelude-inttypes.html#uint32-t" title="uint32_t">uint32_t</a> *request_id,
+                                                         void **value);</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>msg</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>source_id</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>request_id</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>value</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><span class="emphasis"><em>Returns</em></span> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

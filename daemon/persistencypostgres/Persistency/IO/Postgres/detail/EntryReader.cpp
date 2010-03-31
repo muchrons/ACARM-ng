@@ -321,7 +321,9 @@ Persistency::ServicePtr EntryReader::getService(DataBaseID servID, DataBaseID *r
   ss << "SELECT * FROM services WHERE id = " << servID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
-  string name, protocol;
+  string  name;
+  string  protocol;
+  // TODO: use Persistency::Service::Port as a type instead of manually specifing it.
   int16_t port;
 
   r[0]["name"].to(name);
@@ -468,10 +470,14 @@ vector<DataBaseID> EntryReader::readIDsMalertsInUse()
   vector<DataBaseID> malertsInUse;
   stringstream ss;
   ss << "SELECT id_meta_alert FROM meta_alerts_in_use;";
+  // TODO: result should be const
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   malertsInUse.reserve( r.size() );
+  // TODO: use size_t instead of unsigned int
   for(unsigned int i=0; i<r.size(); ++i)
   {
+    // TODO: add assertion that id_meta_alert is not NULL - DB schema should
+    //       enforce this, but it's better to be safe then sorry.
     DataBaseID malertID;
     r[i]["id_meta_alert"].to(malertID);
     malertsInUse.push_back(malertID);
@@ -500,6 +506,11 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
 std::vector<DataBaseID> EntryReader::readRoots()
 {
   vector<DataBaseID> roots;
+  // TODO: when you know whole query a'priori do not put it additionaly in
+  //       stringstream - it takes extra time and memory. better user simple
+  //       const char * for this, or if query is trivial (i.e. short like
+  //       'drop table x') write it stright in exec() call
+  //        [ btw: nice trick with temporary table! :) ]
   stringstream ss;
   ss << "SELECT id_node, id_child INTO TEMP TABLE tmp FROM meta_alerts_tree"
         " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);";
@@ -511,8 +522,10 @@ std::vector<DataBaseID> EntryReader::readRoots()
   ss.str("");
   ss << "DROP TABLE tmp;";
   t_.getAPI<TransactionAPI>().exec(ss);
+  // TODO: use size_t here
   for(unsigned int i=0; i<r.size(); ++i)
   {
+    // TODO: use assert to ensure value is not null
     DataBaseID nodeID;
     r[i]["id_node"].to(nodeID);
     roots.push_back(nodeID);

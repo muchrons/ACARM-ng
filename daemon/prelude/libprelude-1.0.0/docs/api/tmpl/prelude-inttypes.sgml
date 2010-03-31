@@ -1,0 +1,383 @@
+<!-- ##### SECTION Title ##### -->
+prelude-inttypes
+
+<!-- ##### SECTION Short_Description ##### -->
+
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### MACRO PRELUDE_INT8_MIN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_INT16_MIN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_INT32_MIN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_INT64_MIN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_INT8_MAX ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_INT16_MAX ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_INT32_MAX ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_INT64_MAX ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_UINT8_MAX ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_UINT16_MAX ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_UINT32_MAX ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_UINT64_MAX ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_INTMAX_MIN ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_INTMAX_MAX ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_UINTMAX_MAX ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRId64 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIi64 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIo64 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIx64 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIX64 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIu64 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRId32 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIi32 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIo32 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIx32 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIX32 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIu32 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRId16 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIi16 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIo16 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIx16 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIX16 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIu16 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRId8 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIi8 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIo8 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIx8 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIX8 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_PRIu8 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_SCNd64 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_SCNi64 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_SCNo64 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_SCNx64 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### MACRO PRELUDE_SCNu64 ##### -->
+<para>
+
+</para>
+
+
+
+<!-- ##### ENUM prelude_bool_t ##### -->
+<para>
+
+</para>
+
+@PRELUDE_BOOL_TRUE: 
+@PRELUDE_BOOL_FALSE: 
+
+<!-- ##### TYPEDEF int8_t ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF uint8_t ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF int16_t ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF uint16_t ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF int32_t ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF uint32_t ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF int64_t ##### -->
+<para>
+
+</para>
+
+
+<!-- ##### TYPEDEF uint64_t ##### -->
+<para>
+
+</para>
+
+

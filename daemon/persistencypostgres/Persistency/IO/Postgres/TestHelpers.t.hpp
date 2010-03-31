@@ -76,12 +76,13 @@ Persistency::GraphNodePtrNN makeNewTree1(void);
 //                       ...
 //
 Persistency::GraphNodePtrNN makeNewTree2(void);
+// TODO
 //
 //                   root1       root2
 //             node3       node4       leaf5
 //      node6        node7       leaf8
 //  node10 node11
-Persistency::GraphNodePtrNN makeNewTree3(void);
+//Persistency::GraphNodePtrNN makeNewTree3(void);
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency

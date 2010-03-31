@@ -1,0 +1,70 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-prelude-linked-object">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-prelude-linked-object.top_of_page">prelude-linked-object</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>prelude-linked-object</refname>
+<refpurpose></refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-prelude-linked-object.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+#define             <link linkend="PRELUDE-LINKED-OBJECT--CAPS">PRELUDE_LINKED_OBJECT</link>
+                    <link linkend="prelude-linked-object-t">prelude_linked_object_t</link>;
+#define             <link linkend="prelude-linked-object-get-object">prelude_linked_object_get_object</link>    (object)
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-prelude-linked-object.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-prelude-linked-object.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="PRELUDE-LINKED-OBJECT--CAPS" role="macro">
+<title>PRELUDE_LINKED_OBJECT</title>
+<indexterm zone="PRELUDE-LINKED-OBJECT--CAPS"><primary sortas="PRELUDE_LINKED_OBJECT">PRELUDE_LINKED_OBJECT</primary></indexterm><programlisting>#define             PRELUDE_LINKED_OBJECT</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-linked-object-t" role="struct">
+<title>prelude_linked_object_t</title>
+<indexterm zone="prelude-linked-object-t"><primary sortas="prelude_linked_object_t">prelude_linked_object_t</primary></indexterm><programlisting>typedef struct {
+        PRELUDE_LINKED_OBJECT;
+} prelude_linked_object_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="prelude-linked-object-get-object" role="macro">
+<title>prelude_linked_object_get_object()</title>
+<indexterm zone="prelude-linked-object-get-object"><primary sortas="prelude_linked_object_get_object">prelude_linked_object_get_object</primary></indexterm><programlisting>#define             prelude_linked_object_get_object(object)</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>object</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>

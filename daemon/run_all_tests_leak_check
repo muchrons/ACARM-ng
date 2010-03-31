@@ -3,7 +3,7 @@
 RET=0
 
 # iterata through all build components
-for d in `cat build_config/components{.,_test.}lst | sort | uniq`
+for d in `cat build_config/components{.,_test.}lst | sort | uniq | grep -v '^prelude$'`
 do
   echo "----------------------------"
   echo "testing $d:"

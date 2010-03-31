@@ -1,0 +1,320 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>prelude-timer</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.2">
+<link rel="home" href="index.html" title="Prelude library Reference Manual">
+<link rel="up" href="ch04.html" title="Others">
+<link rel="prev" href="libprelude-prelude-option-wide.html" title="prelude-option-wide">
+<meta name="generator" content="GTK-Doc V1.11 (XML mode)">
+<link rel="stylesheet" href="style.css" type="text/css">
+<link rel="part" href="pt01.html" title="Part I. Using libprelude to interoperate with prelude-manager">
+<link rel="part" href="pt02.html" title="Part II. Sending events with libprelude">
+<link rel="chapter" href="ch01.html" title="The low level IDMEF API">
+<link rel="chapter" href="ch02.html" title="The high level IDMEF API">
+<link rel="part" href="pt03.html" title="Part III. Reading events from the collector">
+<link rel="part" href="pt04.html" title="Part IV. Filtering operation on IDMEF messages">
+<link rel="chapter" href="ch03.html" title="Utility functions">
+<link rel="chapter" href="ch04.html" title="Others">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<table class="navigation" id="top" width="100%" summary="Navigation header" cellpadding="2" cellspacing="2">
+<tr valign="middle">
+<td><a accesskey="p" href="libprelude-prelude-option-wide.html"><img src="left.png" width="24" height="24" border="0" alt="Prev"></a></td>
+<td><a accesskey="u" href="ch04.html"><img src="up.png" width="24" height="24" border="0" alt="Up"></a></td>
+<td><a accesskey="h" href="index.html"><img src="home.png" width="24" height="24" border="0" alt="Home"></a></td>
+<th width="100%" align="center">Prelude library Reference Manual</th>
+<td> </td>
+</tr>
+<tr><td colspan="5" class="shortcuts">
+<a href="#libprelude-prelude-timer.synopsis" class="shortcut">Top</a>
+                 | 
+                <a href="#libprelude-prelude-timer.description" class="shortcut">Description</a>
+</td></tr>
+</table>
+<div class="refentry" title="prelude-timer">
+<a name="libprelude-prelude-timer"></a><div class="titlepage"></div>
+<div class="refnamediv"><table width="100%"><tr>
+<td valign="top">
+<h2><span class="refentrytitle"><a name="libprelude-prelude-timer.top_of_page"></a>prelude-timer</span></h2>
+<p>prelude-timer</p>
+</td>
+<td valign="top" align="right"></td>
+</tr></table></div>
+<div class="refsynopsisdiv" title="Synopsis">
+<a name="libprelude-prelude-timer.synopsis"></a><h2>Synopsis</h2>
+<pre class="synopsis">
+                    <a class="link" href="libprelude-prelude-timer.html#prelude-timer-t" title="prelude_timer_t">prelude_timer_t</a>;
+#define             <a class="link" href="libprelude-prelude-timer.html#prelude-timer-get-expire" title="prelude_timer_get_expire()">prelude_timer_get_expire</a>            (timer)
+#define             <a class="link" href="libprelude-prelude-timer.html#prelude-timer-get-data" title="prelude_timer_get_data()">prelude_timer_get_data</a>              (timer)
+#define             <a class="link" href="libprelude-prelude-timer.html#prelude-timer-get-callback" title="prelude_timer_get_callback()">prelude_timer_get_callback</a>          (timer)
+#define             <a class="link" href="libprelude-prelude-timer.html#prelude-timer-set-expire" title="prelude_timer_set_expire()">prelude_timer_set_expire</a>            (timer, x)
+#define             <a class="link" href="libprelude-prelude-timer.html#prelude-timer-set-data" title="prelude_timer_set_data()">prelude_timer_set_data</a>              (timer, x)
+#define             <a class="link" href="libprelude-prelude-timer.html#prelude-timer-set-callback" title="prelude_timer_set_callback()">prelude_timer_set_callback</a>          (timer, x)
+void                <a class="link" href="libprelude-prelude-timer.html#prelude-timer-init" title="prelude_timer_init ()">prelude_timer_init</a>                  (<a class="link" href="libprelude-prelude-timer.html#prelude-timer-t" title="prelude_timer_t">prelude_timer_t</a> *timer);
+void                <a class="link" href="libprelude-prelude-timer.html#prelude-timer-init-list" title="prelude_timer_init_list ()">prelude_timer_init_list</a>             (<a class="link" href="libprelude-prelude-timer.html#prelude-timer-t" title="prelude_timer_t">prelude_timer_t</a> *timer);
+void                <a class="link" href="libprelude-prelude-timer.html#prelude-timer-reset" title="prelude_timer_reset ()">prelude_timer_reset</a>                 (<a class="link" href="libprelude-prelude-timer.html#prelude-timer-t" title="prelude_timer_t">prelude_timer_t</a> *timer);
+void                <a class="link" href="libprelude-prelude-timer.html#prelude-timer-destroy" title="prelude_timer_destroy ()">prelude_timer_destroy</a>               (<a class="link" href="libprelude-prelude-timer.html#prelude-timer-t" title="prelude_timer_t">prelude_timer_t</a> *timer);
+void                <a class="link" href="libprelude-prelude-timer.html#prelude-timer-wake-up" title="prelude_timer_wake_up ()">prelude_timer_wake_up</a>               (void);
+void                <a class="link" href="libprelude-prelude-timer.html#prelude-timer-flush" title="prelude_timer_flush ()">prelude_timer_flush</a>                 (void);
+void                <a class="link" href="libprelude-prelude-timer.html#prelude-timer-lock-critical-region" title="prelude_timer_lock_critical_region ()">prelude_timer_lock_critical_region</a>  (void);
+void                <a class="link" href="libprelude-prelude-timer.html#prelude-timer-unlock-critical-region" title="prelude_timer_unlock_critical_region ()">prelude_timer_unlock_critical_region</a>
+                                                        (void);
+</pre>
+</div>
+<div class="refsect1" title="Description">
+<a name="libprelude-prelude-timer.description"></a><h2>Description</h2>
+<p>
+</p>
+</div>
+<div class="refsect1" title="Details">
+<a name="libprelude-prelude-timer.details"></a><h2>Details</h2>
+<div class="refsect2" title="prelude_timer_t">
+<a name="prelude-timer-t"></a><h3>prelude_timer_t</h3>
+<pre class="programlisting">typedef struct {
+        prelude_list_t list;
+
+        int expire;
+        time_t start_time;
+
+        void *data;
+        void (*function)(void *data);
+} prelude_timer_t;
+</pre>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_timer_get_expire()">
+<a name="prelude-timer-get-expire"></a><h3>prelude_timer_get_expire()</h3>
+<pre class="programlisting">#define prelude_timer_get_expire(timer) (timer)-&gt;expire
+</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>timer</code></em> :</span></p></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_timer_get_data()">
+<a name="prelude-timer-get-data"></a><h3>prelude_timer_get_data()</h3>
+<pre class="programlisting">#define prelude_timer_get_data(timer) (timer)-&gt;data
+</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>timer</code></em> :</span></p></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_timer_get_callback()">
+<a name="prelude-timer-get-callback"></a><h3>prelude_timer_get_callback()</h3>
+<pre class="programlisting">#define prelude_timer_get_callback(timer) (timer)-&gt;function
+</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>timer</code></em> :</span></p></td>
+<td>
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_timer_set_expire()">
+<a name="prelude-timer-set-expire"></a><h3>prelude_timer_set_expire()</h3>
+<pre class="programlisting">#define prelude_timer_set_expire(timer, x) prelude_timer_get_expire((timer)) = (x)
+</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>timer</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_timer_set_data()">
+<a name="prelude-timer-set-data"></a><h3>prelude_timer_set_data()</h3>
+<pre class="programlisting">#define prelude_timer_set_data(timer, x) prelude_timer_get_data((timer)) = (x)
+</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>timer</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_timer_set_callback()">
+<a name="prelude-timer-set-callback"></a><h3>prelude_timer_set_callback()</h3>
+<pre class="programlisting">#define prelude_timer_set_callback(timer, x) prelude_timer_get_callback((timer)) = (x)
+</pre>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>timer</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+<tr>
+<td><p><span class="term"><em class="parameter"><code>x</code></em> :</span></p></td>
+<td>
+</td>
+</tr>
+</tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_timer_init ()">
+<a name="prelude-timer-init"></a><h3>prelude_timer_init ()</h3>
+<pre class="programlisting">void                prelude_timer_init                  (<a class="link" href="libprelude-prelude-timer.html#prelude-timer-t" title="prelude_timer_t">prelude_timer_t</a> *timer);</pre>
+<p>
+Initialize a timer (add it to the timer list).</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>timer</code></em> :</span></p></td>
+<td> timer to initialize.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_timer_init_list ()">
+<a name="prelude-timer-init-list"></a><h3>prelude_timer_init_list ()</h3>
+<pre class="programlisting">void                prelude_timer_init_list             (<a class="link" href="libprelude-prelude-timer.html#prelude-timer-t" title="prelude_timer_t">prelude_timer_t</a> *timer);</pre>
+<p>
+Initialize <em class="parameter"><code>timer</code></em> list member. This is useful if
+you're going to call <a class="link" href="libprelude-prelude-timer.html#prelude-timer-destroy" title="prelude_timer_destroy ()"><code class="function">prelude_timer_destroy()</code></a> on timer
+for which <a class="link" href="libprelude-prelude-timer.html#prelude-timer-init" title="prelude_timer_init ()"><code class="function">prelude_timer_init()</code></a> was never called.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>timer</code></em> :</span></p></td>
+<td> Pointer to a <a class="link" href="libprelude-prelude-timer.html#prelude-timer-t" title="prelude_timer_t"><span class="type">prelude_timer_t</span></a> object.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_timer_reset ()">
+<a name="prelude-timer-reset"></a><h3>prelude_timer_reset ()</h3>
+<pre class="programlisting">void                prelude_timer_reset                 (<a class="link" href="libprelude-prelude-timer.html#prelude-timer-t" title="prelude_timer_t">prelude_timer_t</a> *timer);</pre>
+<p>
+Reset timer 'timer', as if it was just started.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>timer</code></em> :</span></p></td>
+<td> the timer to reset.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_timer_destroy ()">
+<a name="prelude-timer-destroy"></a><h3>prelude_timer_destroy ()</h3>
+<pre class="programlisting">void                prelude_timer_destroy               (<a class="link" href="libprelude-prelude-timer.html#prelude-timer-t" title="prelude_timer_t">prelude_timer_t</a> *timer);</pre>
+<p>
+Destroy the timer 'timer',
+this remove it from the active timer list.</p>
+<p>
+</p>
+<div class="variablelist"><table border="0">
+<col align="left" valign="top">
+<tbody><tr>
+<td><p><span class="term"><em class="parameter"><code>timer</code></em> :</span></p></td>
+<td> the timer to destroy.
+</td>
+</tr></tbody>
+</table></div>
+</div>
+<hr>
+<div class="refsect2" title="prelude_timer_wake_up ()">
+<a name="prelude-timer-wake-up"></a><h3>prelude_timer_wake_up ()</h3>
+<pre class="programlisting">void                prelude_timer_wake_up               (void);</pre>
+<p>
+Wake up timer that need it.
+This function should be called every second to work properly.</p>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_timer_flush ()">
+<a name="prelude-timer-flush"></a><h3>prelude_timer_flush ()</h3>
+<pre class="programlisting">void                prelude_timer_flush                 (void);</pre>
+<p>
+Expire every timer.</p>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_timer_lock_critical_region ()">
+<a name="prelude-timer-lock-critical-region"></a><h3>prelude_timer_lock_critical_region ()</h3>
+<pre class="programlisting">void                prelude_timer_lock_critical_region  (void);</pre>
+<p>
+Deactivate timer wake-up until <code class="function">timer_unlock_critical_region()</code> is called.</p>
+<p>
+</p>
+</div>
+<hr>
+<div class="refsect2" title="prelude_timer_unlock_critical_region ()">
+<a name="prelude-timer-unlock-critical-region"></a><h3>prelude_timer_unlock_critical_region ()</h3>
+<pre class="programlisting">void                prelude_timer_unlock_critical_region
+                                                        (void);</pre>
+<p>
+Reactivate timer wake-up after <code class="function">timer_lock_critical_regions()</code> has been called.</p>
+<p>
+</p>
+</div>
+</div>
+</div>
+<div class="footer">
+<hr>
+          Generated by GTK-Doc V1.11</div>
+</body>
+</html>

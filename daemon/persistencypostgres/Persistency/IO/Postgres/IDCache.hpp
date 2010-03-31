@@ -111,7 +111,11 @@ public:
   {
     return hostsIDs_.hasImpl(host);
   }
+
 private:
+  // TODO: use DataHolder<> mechanism to make has()/get()/add() implementation
+  //       generic templates - this will make implementation shorter and more
+  //       generic (ex: in case more cache's would be needed).
   StorageDataCache<Persistency::Host>      hostsIDs_;
   StorageDataCache<Persistency::Alert>     alertsIDs_;
   StorageDataCache<Persistency::MetaAlert> metaAlertsIDs_;

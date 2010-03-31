@@ -43,11 +43,29 @@ IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):ptr_(ptr)
     {
       idmef_address_t *idmef_node_addr = idmef_node_get_next_address(idmef_node, NULL);
       if (idmef_node_addr)
-  {
-    const prelude_string_t *idmef_node_address = idmef_address_get_address(idmef_node_addr);
-    if (idmef_node_address)
-      ip_.reset(new Persistency::Analyzer::IP(boost::asio::ip::address_v6::from_string(prelude_string_get_string(idmef_node_address))));
-  }
+        {
+          const prelude_string_t *idmef_node_address = idmef_address_get_address(idmef_node_addr);
+          if (idmef_node_address)
+            {
+              switch (idmef_address_get_category(idmef_node_addr))
+                {
+                case IDMEF_ADDRESS_CATEGORY_IPV4_ADDR:
+                case IDMEF_ADDRESS_CATEGORY_IPV4_ADDR_HEX: //<-- What does it look like? Does it work with asio? I dunno. Gotta check.
+                case IDMEF_ADDRESS_CATEGORY_IPV4_NET:
+                case IDMEF_ADDRESS_CATEGORY_IPV4_NET_MASK:
+                  ip_.reset(new Persistency::Analyzer::IP(boost::asio::ip::address_v4::from_string(prelude_string_get_string(idmef_node_address))));
+                  break;
+                case IDMEF_ADDRESS_CATEGORY_IPV6_ADDR:
+                case IDMEF_ADDRESS_CATEGORY_IPV6_ADDR_HEX:
+                case IDMEF_ADDRESS_CATEGORY_IPV6_NET:
+                case IDMEF_ADDRESS_CATEGORY_IPV6_NET_MASK:
+                  ip_.reset(new Persistency::Analyzer::IP(boost::asio::ip::address_v6::from_string(prelude_string_get_string(idmef_node_address))));
+                  break;
+                default:
+                  break;
+                }
+            }
+        }
     }
 }
 

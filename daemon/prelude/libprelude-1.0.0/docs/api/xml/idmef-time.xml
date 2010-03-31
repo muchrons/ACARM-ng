@@ -1,0 +1,530 @@
+<?xml version="1.0"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<refentry id="libprelude-idmef-time">
+<refmeta>
+<refentrytitle role="top_of_page" id="libprelude-idmef-time.top_of_page">idmef-time</refentrytitle>
+<manvolnum>3</manvolnum>
+<refmiscinfo>LIBPRELUDE Library</refmiscinfo>
+</refmeta>
+
+<refnamediv>
+<refname>idmef-time</refname>
+<refpurpose>Time representation in IDMEF message</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv id="libprelude-idmef-time.synopsis" role="synopsis">
+<title role="synopsis.title">Synopsis</title>
+
+<synopsis>
+typedef             <link linkend="idmef-time-t">idmef_time_t</link>;
+<link linkend="idmef-time-t">idmef_time_t</link> *      <link linkend="idmef-time-ref">idmef_time_ref</link>                      (<link linkend="idmef-time-t">idmef_time_t</link> *time);
+<link linkend="int">int</link>                 <link linkend="idmef-time-new">idmef_time_new</link>                      (<link linkend="idmef-time-t">idmef_time_t</link> **time);
+<link linkend="int">int</link>                 <link linkend="idmef-time-new-from-time">idmef_time_new_from_time</link>            (<link linkend="idmef-time-t">idmef_time_t</link> **time,
+                                                         const <link linkend="time-t">time_t</link> *t);
+<link linkend="int">int</link>                 <link linkend="idmef-time-new-from-gettimeofday">idmef_time_new_from_gettimeofday</link>    (<link linkend="idmef-time-t">idmef_time_t</link> **time);
+<link linkend="int">int</link>                 <link linkend="idmef-time-new-from-string">idmef_time_new_from_string</link>          (<link linkend="idmef-time-t">idmef_time_t</link> **time,
+                                                         const <link linkend="char">char</link> *buf);
+<link linkend="int">int</link>                 <link linkend="idmef-time-new-from-ntpstamp">idmef_time_new_from_ntpstamp</link>        (<link linkend="idmef-time-t">idmef_time_t</link> **time,
+                                                         const <link linkend="char">char</link> *buf);
+<link linkend="int">int</link>                 <link linkend="idmef-time-new-from-timeval">idmef_time_new_from_timeval</link>         (<link linkend="idmef-time-t">idmef_time_t</link> **time,
+                                                         const <link linkend="struct-timeval">struct timeval</link> *tv);
+<link linkend="void">void</link>                <link linkend="idmef-time-set-from-time">idmef_time_set_from_time</link>            (<link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         const <link linkend="time-t">time_t</link> *t);
+<link linkend="int">int</link>                 <link linkend="idmef-time-set-from-gettimeofday">idmef_time_set_from_gettimeofday</link>    (<link linkend="idmef-time-t">idmef_time_t</link> *time);
+<link linkend="int">int</link>                 <link linkend="idmef-time-set-from-string">idmef_time_set_from_string</link>          (<link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         const <link linkend="char">char</link> *buf);
+<link linkend="int">int</link>                 <link linkend="idmef-time-set-from-ntpstamp">idmef_time_set_from_ntpstamp</link>        (<link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         const <link linkend="char">char</link> *buf);
+<link linkend="int">int</link>                 <link linkend="idmef-time-set-from-timeval">idmef_time_set_from_timeval</link>         (<link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         const <link linkend="struct-timeval">struct timeval</link> *tv);
+<link linkend="void">void</link>                <link linkend="idmef-time-destroy-internal">idmef_time_destroy_internal</link>         (<link linkend="idmef-time-t">idmef_time_t</link> *time);
+<link linkend="void">void</link>                <link linkend="idmef-time-destroy">idmef_time_destroy</link>                  (<link linkend="idmef-time-t">idmef_time_t</link> *time);
+<link linkend="int">int</link>                 <link linkend="idmef-time-clone">idmef_time_clone</link>                    (const <link linkend="idmef-time-t">idmef_time_t</link> *src,
+                                                         <link linkend="idmef-time-t">idmef_time_t</link> **dst);
+<link linkend="int">int</link>                 <link linkend="idmef-time-copy">idmef_time_copy</link>                     (const <link linkend="idmef-time-t">idmef_time_t</link> *src,
+                                                         <link linkend="idmef-time-t">idmef_time_t</link> *dst);
+<link linkend="void">void</link>                <link linkend="idmef-time-set-sec">idmef_time_set_sec</link>                  (<link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         <link linkend="uint32-t">uint32_t</link> sec);
+<link linkend="void">void</link>                <link linkend="idmef-time-set-usec">idmef_time_set_usec</link>                 (<link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         <link linkend="uint32-t">uint32_t</link> usec);
+<link linkend="void">void</link>                <link linkend="idmef-time-set-gmt-offset">idmef_time_set_gmt_offset</link>           (<link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         <link linkend="int32-t">int32_t</link> gmtoff);
+<link linkend="uint32-t">uint32_t</link>            <link linkend="idmef-time-get-sec">idmef_time_get_sec</link>                  (const <link linkend="idmef-time-t">idmef_time_t</link> *time);
+<link linkend="uint32-t">uint32_t</link>            <link linkend="idmef-time-get-usec">idmef_time_get_usec</link>                 (const <link linkend="idmef-time-t">idmef_time_t</link> *time);
+<link linkend="int32-t">int32_t</link>             <link linkend="idmef-time-get-gmt-offset">idmef_time_get_gmt_offset</link>           (const <link linkend="idmef-time-t">idmef_time_t</link> *time);
+<link linkend="int">int</link>                 <link linkend="idmef-time-to-string">idmef_time_to_string</link>                (const <link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *out);
+<link linkend="int">int</link>                 <link linkend="idmef-time-to-ntpstamp">idmef_time_to_ntpstamp</link>              (const <link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *out);
+</synopsis>
+</refsynopsisdiv>
+
+
+
+
+
+
+
+
+
+<refsect1 id="libprelude-idmef-time.description" role="desc">
+<title role="desc.title">Description</title>
+<para>
+The <link linkend="idmef-time-t"><type>idmef_time_t</type></link> type is used in order to represent a time value in
+an IDMEF message. This object contain information such as the number
+of seconds since the Epoch, the local GMT offset, the number of micro second (if applicable).
+</para>
+<para>
+When creating an IDMEF message, you need to insert a timestamp in it.
+IDMEF provide differents time field to be used for this:
+<itemizedlist>
+ <listitem>AnalyzerTime<para>The AnalyzerTime class is used to indicate the current date and time
+   on the analyzer. Its values should be filled in as late as possible in the message transmission
+   process, ideally immediately before placing the message "on the wire."</para></listitem>
+ <listitem>CreateTime<para>The CreateTime class is used to indicate the date and time the alert
+   or heartbeat was created by the analyzer.</para></listitem>
+ <listitem>DetectTime<para>The DetectTime class is used to indicate the date and time the
+   event(s) producing an alert was detected by the analyzer. In the case of more than one event,
+   the time the first event was detected. (This may or may not be the same time as CreateTime;
+   analyzers are not required to send alerts immediately upon detection).</para></listitem>
+</itemizedlist>
+You don't need to take care of the AnalyzerTime field, since in Prelude, once an events
+is handed to the library, and if the sending of the message fail, there will be a fallback
+to backuping the event for later retransmission.
+Thus the library has to take care of setting the AnalyzerTime for you (since the message might
+not be emited immediatly in this specific case.
+</para>
+<para>
+Several helper are available in order to create <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object. Most probably, the function
+that you will need are the one bellow:
+<itemizedlist>
+ <listitem><link linkend="idmef-time-new-from-gettimeofday"><function>idmef_time_new_from_gettimeofday()</function></link> and <link linkend="idmef-time-set-from-gettimeofday"><function>idmef_time_set_from_gettimeofday()</function></link></listitem>
+ <listitem><link linkend="idmef-time-new-from-timeval"><function>idmef_time_new_from_timeval()</function></link> and <link linkend="idmef-time-set-from-timeval"><function>idmef_time_set_from_timeval()</function></link></listitem>
+ <listitem><link linkend="idmef-time-new-from-time"><function>idmef_time_new_from_time()</function></link> and <link linkend="idmef-time-set-from-time"><function>idmef_time_set_from_time()</function></link></listitem>
+ <listitem><link linkend="idmef-time-new-from-string"><function>idmef_time_new_from_string()</function></link> and <link linkend="idmef-time-set-from-string"><function>idmef_time_set_from_string()</function></link></listitem>
+</itemizedlist>
+</para>
+</refsect1>
+
+<refsect1 id="libprelude-idmef-time.details" role="details">
+<title role="details.title">Details</title>
+<refsect2 id="idmef-time-t" role="typedef">
+<title>idmef_time_t</title>
+<indexterm zone="idmef-time-t"><primary sortas="idmef_time_t">idmef_time_t</primary></indexterm><programlisting>typedef struct idmef_time idmef_time_t;
+</programlisting>
+<para>
+</para></refsect2>
+<refsect2 id="idmef-time-ref" role="function">
+<title>idmef_time_ref ()</title>
+<indexterm zone="idmef-time-ref"><primary sortas="idmef_time_ref">idmef_time_ref</primary></indexterm><programlisting><link linkend="idmef-time-t">idmef_time_t</link> *      idmef_time_ref                      (<link linkend="idmef-time-t">idmef_time_t</link> *time);</programlisting>
+<para>
+Increases <parameter>time</parameter> reference count.
+<link linkend="idmef-time-destroy"><function>idmef_time_destroy()</function></link> won't destroy <parameter>time</parameter> until the refcount
+reach 0.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The <parameter>time</parameter> provided argument.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-new" role="function">
+<title>idmef_time_new ()</title>
+<indexterm zone="idmef-time-new"><primary sortas="idmef_time_new">idmef_time_new</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_time_new                      (<link linkend="idmef-time-t">idmef_time_t</link> **time);</programlisting>
+<para>
+Creates an empty <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object and store it in <parameter>time</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Address where to store the created <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-new-from-time" role="function">
+<title>idmef_time_new_from_time ()</title>
+<indexterm zone="idmef-time-new-from-time"><primary sortas="idmef_time_new_from_time">idmef_time_new_from_time</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_time_new_from_time            (<link linkend="idmef-time-t">idmef_time_t</link> **time,
+                                                         const <link linkend="time-t">time_t</link> *t);</programlisting>
+<para>
+Creates a new <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object and store it in <parameter>time</parameter>.
+This object will be filled with information available in <parameter>t</parameter>. The created
+<parameter>time</parameter> won't contain micro seconds information, since theses are not
+available within <parameter>t</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Address where to store the created <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>t</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a time_t.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-new-from-gettimeofday" role="function">
+<title>idmef_time_new_from_gettimeofday ()</title>
+<indexterm zone="idmef-time-new-from-gettimeofday"><primary sortas="idmef_time_new_from_gettimeofday">idmef_time_new_from_gettimeofday</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_time_new_from_gettimeofday    (<link linkend="idmef-time-t">idmef_time_t</link> **time);</programlisting>
+<para>
+Creates an <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object filled with information retrieved
+using <link linkend="gettimeofday"><function>gettimeofday()</function></link>, and stores it in <parameter>time</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Address where to store the created <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-new-from-string" role="function">
+<title>idmef_time_new_from_string ()</title>
+<indexterm zone="idmef-time-new-from-string"><primary sortas="idmef_time_new_from_string">idmef_time_new_from_string</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_time_new_from_string          (<link linkend="idmef-time-t">idmef_time_t</link> **time,
+                                                         const <link linkend="char">char</link> *buf);</programlisting>
+<para>
+Creates an <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object filled with information retrieved
+from the user provided <parameter>buf</parameter>, containing a string describing a time in a format
+conforming to the IDMEF definition  (v. 0.10, section 3.2.6).
+</para>
+<para>
+Additionally, the provided time might be separated with white spaces, instead
+of the IDMEF define 'T' character. The format might not specify a timezone
+(will assume UTC in this case).
+</para>
+<para>
+The resulting <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object is stored in <parameter>time</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Address where to store the created <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a string describing a time in an IDMEF conforming format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-new-from-ntpstamp" role="function">
+<title>idmef_time_new_from_ntpstamp ()</title>
+<indexterm zone="idmef-time-new-from-ntpstamp"><primary sortas="idmef_time_new_from_ntpstamp">idmef_time_new_from_ntpstamp</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_time_new_from_ntpstamp        (<link linkend="idmef-time-t">idmef_time_t</link> **time,
+                                                         const <link linkend="char">char</link> *buf);</programlisting>
+<para>
+Creates an <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object filled with information provided
+from the <parameter>buf</parameter> NTP timestamp, and stores it in <parameter>time</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Address where to store the created <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a string containing an NTP timestamp.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-new-from-timeval" role="function">
+<title>idmef_time_new_from_timeval ()</title>
+<indexterm zone="idmef-time-new-from-timeval"><primary sortas="idmef_time_new_from_timeval">idmef_time_new_from_timeval</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_time_new_from_timeval         (<link linkend="idmef-time-t">idmef_time_t</link> **time,
+                                                         const <link linkend="struct-timeval">struct timeval</link> *tv);</programlisting>
+<para>
+Creates an <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object filled with information provided
+within the <parameter>tv</parameter> structure.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Address where to store the created <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tv</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a struct timeval (see <link linkend="gettimeofday"><function>gettimeofday()</function></link>).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-set-from-time" role="function">
+<title>idmef_time_set_from_time ()</title>
+<indexterm zone="idmef-time-set-from-time"><primary sortas="idmef_time_set_from_time">idmef_time_set_from_time</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_time_set_from_time            (<link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         const <link linkend="time-t">time_t</link> *t);</programlisting>
+<para>
+Fills <parameter>time</parameter> from the information described by <parameter>t</parameter>.
+<parameter>time</parameter> won't contain micro seconds information, since theses are not
+available within <parameter>t</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>t</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a time_t.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-set-from-gettimeofday" role="function">
+<title>idmef_time_set_from_gettimeofday ()</title>
+<indexterm zone="idmef-time-set-from-gettimeofday"><primary sortas="idmef_time_set_from_gettimeofday">idmef_time_set_from_gettimeofday</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_time_set_from_gettimeofday    (<link linkend="idmef-time-t">idmef_time_t</link> *time);</programlisting>
+<para>
+Fills <parameter>time</parameter> with information retrieved using <link linkend="gettimeofday"><function>gettimeofday()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-set-from-string" role="function">
+<title>idmef_time_set_from_string ()</title>
+<indexterm zone="idmef-time-set-from-string"><primary sortas="idmef_time_set_from_string">idmef_time_set_from_string</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_time_set_from_string          (<link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         const <link linkend="char">char</link> *buf);</programlisting>
+<para>
+Fills <parameter>time</parameter> object with information retrieved from the user provided
+<parameter>buf</parameter>, containing a string describing a time in a format conforming
+to the IDMEF definition (v. 0.10, section 3.2.6).
+</para>
+<para>
+Additionally, the provided time might be separated with white spaces,
+instead of the IDMEF defined 'T' character.
+</para>
+<para>
+If there is no UTC offset specified, we assume that the provided
+time is local, and compute the GMT offset by ourselve.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a string describing a time in an IDMEF conforming format.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-set-from-ntpstamp" role="function">
+<title>idmef_time_set_from_ntpstamp ()</title>
+<indexterm zone="idmef-time-set-from-ntpstamp"><primary sortas="idmef_time_set_from_ntpstamp">idmef_time_set_from_ntpstamp</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_time_set_from_ntpstamp        (<link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         const <link linkend="char">char</link> *buf);</programlisting>
+<para>
+Fills the <parameter>time</parameter> object with information provided within the <parameter>buf</parameter> NTP timestamp.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>buf</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a string containing an NTP timestamp.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-set-from-timeval" role="function">
+<title>idmef_time_set_from_timeval ()</title>
+<indexterm zone="idmef-time-set-from-timeval"><primary sortas="idmef_time_set_from_timeval">idmef_time_set_from_timeval</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_time_set_from_timeval         (<link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         const <link linkend="struct-timeval">struct timeval</link> *tv);</programlisting>
+<para>
+Fills <parameter>time</parameter> object filled with information provided within the <parameter>tv</parameter> structure.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>tv</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a struct timeval (see <link linkend="gettimeofday"><function>gettimeofday()</function></link>).
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-destroy-internal" role="function">
+<title>idmef_time_destroy_internal ()</title>
+<indexterm zone="idmef-time-destroy-internal"><primary sortas="idmef_time_destroy_internal">idmef_time_destroy_internal</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_time_destroy_internal         (<link linkend="idmef-time-t">idmef_time_t</link> *time);</programlisting>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara>
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-destroy" role="function">
+<title>idmef_time_destroy ()</title>
+<indexterm zone="idmef-time-destroy"><primary sortas="idmef_time_destroy">idmef_time_destroy</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_time_destroy                  (<link linkend="idmef-time-t">idmef_time_t</link> *time);</programlisting>
+<para>
+Destroys <parameter>time</parameter> if refcount reach 0.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an <link linkend="idmef-time-t"><type>idmef_time_t</type></link> object.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-clone" role="function">
+<title>idmef_time_clone ()</title>
+<indexterm zone="idmef-time-clone"><primary sortas="idmef_time_clone">idmef_time_clone</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_time_clone                    (const <link linkend="idmef-time-t">idmef_time_t</link> *src,
+                                                         <link linkend="idmef-time-t">idmef_time_t</link> **dst);</programlisting>
+<para>
+Clones <parameter>src</parameter> and stores the result in the <parameter>dst</parameter> address.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-time-t"><type>idmef_time_t</type></link> to clone.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara> Address where to store the cloned <parameter>src</parameter> object.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-copy" role="function">
+<title>idmef_time_copy ()</title>
+<indexterm zone="idmef-time-copy"><primary sortas="idmef_time_copy">idmef_time_copy</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_time_copy                     (const <link linkend="idmef-time-t">idmef_time_t</link> *src,
+                                                         <link linkend="idmef-time-t">idmef_time_t</link> *dst);</programlisting>
+<para>
+Copies <parameter>src</parameter> internal to <parameter>dst</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>src</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-time-t"><type>idmef_time_t</type></link> to copy data from.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>dst</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-time-t"><type>idmef_time_t</type></link> to copy data to.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> 0 on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-set-sec" role="function">
+<title>idmef_time_set_sec ()</title>
+<indexterm zone="idmef-time-set-sec"><primary sortas="idmef_time_set_sec">idmef_time_set_sec</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_time_set_sec                  (<link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         <link linkend="uint32-t">uint32_t</link> sec);</programlisting>
+<para>
+Sets the number of second from the Epoch to <parameter>sec</parameter> within <parameter>time</parameter>.
+</para>
+<para>
+WARNING: this is just an accessor function, and using it to
+set <parameter>time</parameter> current time also requires the use of <link linkend="idmef-time-set-usec"><function>idmef_time_set_usec()</function></link>
+and <link linkend="idmef-time-set-gmt-offset"><function>idmef_time_set_gmt_offset()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-time-t"><type>idmef_time_t</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>sec</parameter>&#160;:</term>
+<listitem><simpara> Number of seconds since the Epoch.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-set-usec" role="function">
+<title>idmef_time_set_usec ()</title>
+<indexterm zone="idmef-time-set-usec"><primary sortas="idmef_time_set_usec">idmef_time_set_usec</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_time_set_usec                 (<link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         <link linkend="uint32-t">uint32_t</link> usec);</programlisting>
+<para>
+Sets the number of micro second to <parameter>usec</parameter> within <parameter>time</parameter>.
+</para>
+<para>
+WARNING: this is just an accessor function, and using it to
+set <parameter>time</parameter> current time also requires the use of <link linkend="idmef-time-set-sec"><function>idmef_time_set_sec()</function></link>
+and <link linkend="idmef-time-set-gmt-offset"><function>idmef_time_set_gmt_offset()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-time-t"><type>idmef_time_t</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>usec</parameter>&#160;:</term>
+<listitem><simpara> Number of micro seconds to set within <parameter>time</parameter>.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-set-gmt-offset" role="function">
+<title>idmef_time_set_gmt_offset ()</title>
+<indexterm zone="idmef-time-set-gmt-offset"><primary sortas="idmef_time_set_gmt_offset">idmef_time_set_gmt_offset</primary></indexterm><programlisting><link linkend="void">void</link>                idmef_time_set_gmt_offset           (<link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         <link linkend="int32-t">int32_t</link> gmtoff);</programlisting>
+<para>
+Sets the GMT offset <parameter>gmtoff</parameter>, in seconds, within <parameter>time</parameter>.
+</para>
+<para>
+WARNING: this is just an accessor function, and using it to
+set <parameter>time</parameter> current time also requires the use of <link linkend="idmef-time-set-sec"><function>idmef_time_set_sec()</function></link>
+and <link linkend="idmef-time-set-usec"><function>idmef_time_set_usec()</function></link>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-time-t"><type>idmef_time_t</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>gmtoff</parameter>&#160;:</term>
+<listitem><simpara> GMT offset for <parameter>time</parameter>, in seconds.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-get-sec" role="function">
+<title>idmef_time_get_sec ()</title>
+<indexterm zone="idmef-time-get-sec"><primary sortas="idmef_time_get_sec">idmef_time_get_sec</primary></indexterm><programlisting><link linkend="uint32-t">uint32_t</link>            idmef_time_get_sec                  (const <link linkend="idmef-time-t">idmef_time_t</link> *time);</programlisting>
+<para>
+Returns the number of second since the Epoch (00:00:00 UTC, January 1, 1970),
+previously set within <parameter>time</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-time-t"><type>idmef_time_t</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The number of seconds.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-get-usec" role="function">
+<title>idmef_time_get_usec ()</title>
+<indexterm zone="idmef-time-get-usec"><primary sortas="idmef_time_get_usec">idmef_time_get_usec</primary></indexterm><programlisting><link linkend="uint32-t">uint32_t</link>            idmef_time_get_usec                 (const <link linkend="idmef-time-t">idmef_time_t</link> *time);</programlisting>
+<para>
+Returns the u-second member of <parameter>time</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-time-t"><type>idmef_time_t</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The number of u-seconds.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-get-gmt-offset" role="function">
+<title>idmef_time_get_gmt_offset ()</title>
+<indexterm zone="idmef-time-get-gmt-offset"><primary sortas="idmef_time_get_gmt_offset">idmef_time_get_gmt_offset</primary></indexterm><programlisting><link linkend="int32-t">int32_t</link>             idmef_time_get_gmt_offset           (const <link linkend="idmef-time-t">idmef_time_t</link> *time);</programlisting>
+<para>
+Returns the GMT offset that applies to <parameter>time</parameter>.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="idmef-time-t"><type>idmef_time_t</type></link>.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> The GMT offset, in seconds.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-to-string" role="function">
+<title>idmef_time_to_string ()</title>
+<indexterm zone="idmef-time-to-string"><primary sortas="idmef_time_to_string">idmef_time_to_string</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_time_to_string                (const <link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *out);</programlisting>
+<para>
+Translates <parameter>time</parameter> to an user readable string conforming to the IDMEF
+defined time format.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an IDMEF time structure.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>out</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> output buffer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> number of bytes written on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+<refsect2 id="idmef-time-to-ntpstamp" role="function">
+<title>idmef_time_to_ntpstamp ()</title>
+<indexterm zone="idmef-time-to-ntpstamp"><primary sortas="idmef_time_to_ntpstamp">idmef_time_to_ntpstamp</primary></indexterm><programlisting><link linkend="int">int</link>                 idmef_time_to_ntpstamp              (const <link linkend="idmef-time-t">idmef_time_t</link> *time,
+                                                         <link linkend="prelude-string-t">prelude_string_t</link> *out);</programlisting>
+<para>
+Translates <parameter>time</parameter> to an user readable NTP timestamp string,
+conforming to the IDMEF defined time format.</para>
+<para>
+</para><variablelist role="params">
+<varlistentry><term><parameter>time</parameter>&#160;:</term>
+<listitem><simpara> Pointer to an IDMEF time structure.
+</simpara></listitem></varlistentry>
+<varlistentry><term><parameter>out</parameter>&#160;:</term>
+<listitem><simpara> Pointer to a <link linkend="prelude-string-t"><type>prelude_string_t</type></link> output buffer.
+</simpara></listitem></varlistentry>
+<varlistentry><term><emphasis>Returns</emphasis>&#160;:</term><listitem><simpara> number of bytes written on success, a negative value if an error occured.
+</simpara></listitem></varlistentry>
+</variablelist></refsect2>
+
+</refsect1>
+
+
+
+
+</refentry>
