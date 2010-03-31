@@ -532,6 +532,15 @@ std::vector<DataBaseID> EntryReader::readRoots()
   }
   return roots;
 }
+DataBaseID EntryReader::getAlertIDAssociatedWithMetaAlert(DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "SELECT id_alert FROM alert_to_meta_alert_map WHERE id_meta_alert = " << malertID << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  DataBaseID idAlert;
+  r[0]["id_alert"].to(idAlert);
+  return idAlert;
+}
 
 } // namespace detail
 } // namespace Postgres
