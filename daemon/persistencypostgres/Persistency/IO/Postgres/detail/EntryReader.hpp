@@ -98,6 +98,11 @@ public:
    *  \return vector of IDs
    */
   std::vector<DataBaseID> readRoots();
+
+  /** \brief get ID of Alert asssiciated with Meata Alert
+   *  \param malertID ID of Meta Alert
+   */
+  DataBaseID getAlertIDAssociatedWithMetaAlert(DataBaseID malertID);
 private:
   Persistency::Alert::ReportedHosts getReporteHosts(DataBaseID alertID, std::string hostType);
   HostPtr getHost(DataBaseID hostID, DataBaseID *refID);

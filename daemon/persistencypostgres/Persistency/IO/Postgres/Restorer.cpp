@@ -56,21 +56,21 @@ TreePtr Restorer::getNode(DataBaseID id )
     return boost::shared_ptr<Tree>();
 }
 
-GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID         id,
-                                         NodesVector          &out,
-                                         Persistency::IO::Postgres::detail::EntryReader          &er,
-                                         IO::ConnectionPtrNN   connStubIO,
-                                         IO::Transaction      &tStubIO)
+GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                                        id,
+                                         NodesVector                                      &out,
+                                         Persistency::IO::Postgres::detail::EntryReader   &er,
+                                         IO::ConnectionPtrNN                               connStubIO,
+                                         IO::Transaction                                  &tStubIO)
 {
   TreePtr node = getNode(id);
   // check if there are no children (i.e. is leaf)
   if( !node->getChildrenNumber() )
   {
     // read Alert from data base
-    AlertPtrNN alertPtr( er.getLeaf(id) );
+    AlertPtrNN alertPtr( er.getLeaf( id ) );
     // add Alert to cache
     if(!dbHandler_->getIDCache()->has( alertPtr ))
-      dbHandler_->getIDCache()->add(alertPtr, id);
+      dbHandler_->getIDCache()->add( alertPtr, er.getAlertIDAssociatedWithMetaAlert( id ) );
     return GraphNodePtrNN( new GraphNode( alertPtr, connStubIO, tStubIO ) );
   }
   vector<GraphNodePtrNN> tmpNodes;
@@ -121,7 +121,7 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader        &er
   vector<DataBaseID> roots( er.readRoots());
   for(vector<DataBaseID>::iterator it = roots.begin(); it != roots.end(); ++it)
   {
-    out.push_back( deepFirstSearch(*it, out, er, connStubIO, tStubIO) );
+    deepFirstSearch(*it, out, er, connStubIO, tStubIO) ;
   }
 }
 
