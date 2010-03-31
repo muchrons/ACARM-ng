@@ -10,9 +10,9 @@
 #include <boost/noncopyable.hpp>
 #include <boost/operators.hpp>
 
+#include "Base/NullValue.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/IPTypes.hpp"
-#include "Persistency/detail/NullValue.hpp"
 #include "Persistency/detail/LimitedString.hpp"
 
 namespace Persistency
@@ -65,10 +65,10 @@ public:
   bool operator==(const Analyzer &other) const;
 
 private:
-  Name                       name_;
-  detail::NullValue<Version> version_;
-  detail::NullValue<OS>      os_;
-  detail::NullValue<IP>      ip_;
+  Name                     name_;
+  Base::NullValue<Version> version_;
+  Base::NullValue<OS>      os_;
+  Base::NullValue<IP>      ip_;
 }; // class Analyzer
 
 /** \brief smarth pointer to analyzer class, check not to be NULL. */

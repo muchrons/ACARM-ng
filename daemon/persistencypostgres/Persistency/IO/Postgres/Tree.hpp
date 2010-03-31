@@ -5,20 +5,9 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_TREE_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_TREE_HPP_FILE
 
-// TODO: review note - when using someting explicitly, also include it
-//       explicitly. it saves problems when different systems use different
-//       header sets, and some does not implicilty include missing files.
-//       note that repeating inclusion of the same header (explicit and
-//       (potentaially) implicit via other headers does not cause problems
-//       since pre-processor will ignore these any wah (header guards)).
 #include <vector>
 
-// TODO: note that you do not use TreePtr within Tree and so you can safely
-//       moved typedef declaration ot the end of this header and remove extra
-//       TreePtr.hpp file.
-#include "Persistency/IO/Postgres/TreePtr.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
-
 
 namespace Persistency
 {
@@ -32,6 +21,8 @@ namespace Postgres
 class Tree
 {
 public:
+  /** \brief collection of IDs read from DB. */
+  typedef std::vector<DataBaseID>       IDsVector;
   /** \brief create tree mode
    *  \param id       ID of tree node
    *  \param children vector of children IDs
@@ -55,6 +46,10 @@ private:
   std::vector<DataBaseID> children_;
   DataBaseID              id_;
 }; // class Tree
+
+
+/** \brief shared pointer to Tree instance. */
+typedef boost::shared_ptr<Tree> TreePtr;
 
 } // namespace Postgres
 } // namespace IO
