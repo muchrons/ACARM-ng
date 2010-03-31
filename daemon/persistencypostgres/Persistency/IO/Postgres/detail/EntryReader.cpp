@@ -532,12 +532,16 @@ std::vector<DataBaseID> EntryReader::readRoots()
   }
   return roots;
 }
+
 DataBaseID EntryReader::getAlertIDAssociatedWithMetaAlert(DataBaseID malertID)
 {
   stringstream ss;
   ss << "SELECT id_alert FROM alert_to_meta_alert_map WHERE id_meta_alert = " << malertID << ";";
+  // TODO: result should be const
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   DataBaseID idAlert;
+  // TODO: first check if result has any entries at all. btw: in fact it should
+  //       be checked if we have EXACTLY one result.
   r[0]["id_alert"].to(idAlert);
   return idAlert;
 }
