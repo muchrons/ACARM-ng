@@ -27,7 +27,7 @@ class Reader: public Input::Reader
 public:
   /** \brief create prelud reader.
    */
-  Reader(const std::string profile);
+  Reader(const std::string profile, const std::string config);
   /** \brief reads data from input from prelude-manager.
    *  \param timeout milliseconds to wait before timeout occures.
    *  \return pointer to newly allocated strucutre or NULL on timeout.
