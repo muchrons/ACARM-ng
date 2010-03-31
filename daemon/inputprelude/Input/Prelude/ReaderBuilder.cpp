@@ -38,7 +38,7 @@ ReaderBuilder::ReaderBuilder(void):
 {
 }
 
-ReaderBuilder::FactoryPtr ReaderBuilder::buildImpl(const Options & opt) const
+ReaderBuilder::FactoryPtr ReaderBuilder::buildImpl(const Options &opt) const
 {
   LOGMSG_INFO(log_, "building Input::Reader");
   assert(g_rh.isRegistered() && "oops - registration failed");
@@ -46,10 +46,12 @@ ReaderBuilder::FactoryPtr ReaderBuilder::buildImpl(const Options & opt) const
   // TODO: implement this
 
   const ConfigIO::InputConfig ic(name_, opt);
+  // TODO: i'd suggest removign 'prelude' surfix - parameters are
+  //       per-input any way so no collision is possible.
   const std::string &pprofile=ic["preludeProfile"];
   const std::string &pconfig=ic["preludeConfig"];
 
-  return ReaderBuilder::FactoryPtr( new Reader(pprofile,pconfig) );
+  return ReaderBuilder::FactoryPtr( new Reader(pprofile, pconfig) );
 }
 
 const ReaderBuilder::FactoryTypeName &ReaderBuilder::getTypeNameImpl(void) const

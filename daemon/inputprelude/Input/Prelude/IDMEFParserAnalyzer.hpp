@@ -53,7 +53,7 @@ public:
 
 private:
   // TODO: stict to names-in-one-column convention
-  idmef_analyzer_t *ptr_;
+  idmef_analyzer_t *ptr_;   // TODO: this member is not needed.
 
   Persistency::Analyzer::Name name_;
   // TODO: NullValue<> should be used here - i'll port it from Persistency to
