@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 
+// TODO: "prelude-client.h"
 #include <prelude-client.h>
 #include "Input/Exception.hpp"
 #include "Input/Prelude/IDMEFParserAnalyzer.hpp"
@@ -20,11 +21,13 @@ namespace
 
 struct TestClass
 {
+  // TODO: keep members' initialization in saparate lines
   TestClass():name_("The Analyzer of Luke Skywaker"),ostype_("Wojtek linux"),osversion_("2.6.129 gr-sec"),address_("156.117.92.22")
   {
     if (idmef_analyzer_new(&analyzer_)<0)
       tut::fail("Unable to create analyzer obcject.");
 
+    // TODO: keep one declaration per line.
     prelude_string_t *ps_name,*ps_ostype,*ps_osversion,*ps_address;
 
     prelude_string_new_dup(&ps_name,name_.c_str());
@@ -49,6 +52,7 @@ struct TestClass
     idmef_analyzer_destroy(analyzer_);
   }
 
+  // TODO: you may skip hermetization in tests
   idmef_analyzer_t * getAnalyzer()
   {
     return analyzer_;
@@ -56,6 +60,7 @@ struct TestClass
 
 protected:
   idmef_analyzer_t *analyzer_;
+  // TODO: keep one declaration per line.
   std::string name_,ostype_,osversion_,address_;
 };
 
@@ -68,24 +73,47 @@ factory tf("Input/Prelude/IDMEFParserAnalyzer");
 
 namespace tut
 {
+
+// TODO: test case's description's missing
 template<>
 template<>
 void testObj::test<1>(void)
 {
+  // TODO
   IDMEFParserAnalyzer an(getAnalyzer());
   /*
   ensure(an.getName()==Persistency::Analyzer::Name(name_));
   */
 }
 
+// TODO: test case's description's missing
 template<>
 template<>
 void testObj::test<2>(void)
-{  /*
+{
+  // TODO
+  /*
   IDMEFParserAnalyzer an(getAnalyzer());
   ensure(*(an.getOS())==Persistency::Analyzer::OS(ostype_));
    */
 }
 
+// TODO: test passing NULL pointer
+
+// TODO: test parsing analyzer without name
+
+// TODO: test parsing analyzer without version
+
+// TODO: test parsing analyzer without ostype
+
+// TODO: test parsing analyzer without osversion
+
+// TODO: test parsing analyzer without osname
+
+// TODO: test parsing analyzer without address
+
+// TODO: test parsing analyzer with IPv4 address
+
+// TODO: test parsing analyzer with IPv6 address
 
 } // namespace tut
