@@ -71,18 +71,15 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  TestClass   tc;
-  IDMEFParser ip(tc.getMessage());
-  ensure(ip.getName()==Persistency::Alert::Name(tc.getName()));
+  IDMEFParser ip(getMessage());
+  ensure(ip.getName()==Persistency::Alert::Name(getName()));
 }
 
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  TestClass tc;
-
-  idmef_alert_t *alert=tc.getAlert();
+  idmef_alert_t *alert=getAlert();
 
   const char * time_char="2002-01-20 23:59:59.000";
   Persistency::Timestamp time(time_from_string(time_char));
@@ -92,7 +89,7 @@ void testObj::test<2>(void)
   idmef_time_new_from_time(&idmeftime,&t);
   idmef_alert_set_create_time(alert,idmeftime);
 
-  IDMEFParser ip(tc.getMessage());
+  IDMEFParser ip(getMessage());
   ensure(strcmp(to_simple_string(ip.getCreateTime()).c_str(),time_char)==0);
 }
 
