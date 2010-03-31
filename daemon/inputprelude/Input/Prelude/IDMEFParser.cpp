@@ -29,7 +29,7 @@ IDMEFParser::IDMEFParser(idmef_message_t * msg)
 
   idmef_analyzer_t *elem = idmef_alert_get_next_analyzer(alert_, NULL);
 
-  if (elem)
+  if (!elem)
     throw Exception(SYSTEM_SAVE_LOCATION, "No obligatory field \"Analyzer\" in this Alert!");
 
   const IDMEFParserAnalyzer an(elem);
