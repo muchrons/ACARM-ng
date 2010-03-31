@@ -49,16 +49,16 @@ IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):ptr_(ptr)
             {
               switch (idmef_address_get_category(idmef_node_addr))
                 {
-                IDMEF_ADDRESS_CATEGORY_IPV4_ADDR:
-                IDMEF_ADDRESS_CATEGORY_IPV4_ADDR_HEX: //<-- What does it look like? Does it work with asio? I dunno. Gotta check.
-                IDMEF_ADDRESS_CATEGORY_IPV4_NET:
-                IDMEF_ADDRESS_CATEGORY_IPV4_NET_MASK:
+                case IDMEF_ADDRESS_CATEGORY_IPV4_ADDR:
+                case IDMEF_ADDRESS_CATEGORY_IPV4_ADDR_HEX: //<-- What does it look like? Does it work with asio? I dunno. Gotta check.
+                case IDMEF_ADDRESS_CATEGORY_IPV4_NET:
+                case IDMEF_ADDRESS_CATEGORY_IPV4_NET_MASK:
                   ip_.reset(new Persistency::Analyzer::IP(boost::asio::ip::address_v4::from_string(prelude_string_get_string(idmef_node_address))));
                   break;
-                IDMEF_ADDRESS_CATEGORY_IPV6_ADDR:
-                IDMEF_ADDRESS_CATEGORY_IPV6_ADDR_HEX:
-                IDMEF_ADDRESS_CATEGORY_IPV6_NET:
-                IDMEF_ADDRESS_CATEGORY_IPV6_NET_MASK:
+                case IDMEF_ADDRESS_CATEGORY_IPV6_ADDR:
+                case IDMEF_ADDRESS_CATEGORY_IPV6_ADDR_HEX:
+                case IDMEF_ADDRESS_CATEGORY_IPV6_NET:
+                case IDMEF_ADDRESS_CATEGORY_IPV6_NET_MASK:
                   ip_.reset(new Persistency::Analyzer::IP(boost::asio::ip::address_v6::from_string(prelude_string_get_string(idmef_node_address))));
                   break;
                 default:
