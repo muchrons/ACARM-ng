@@ -19,7 +19,8 @@ namespace
 
 struct TestClass
 {
-  TestClass():name_("A stupid string to test ID")
+  TestClass():
+    name_("A stupid string to test ID")
   {
     int ret;
     idmef_alert_t *alert;
@@ -32,6 +33,7 @@ struct TestClass
     if ( ret < 0 )
       throw Input::Exception(SYSTEM_SAVE_LOCATION,"Cannot create new ALERT.");
 
+    // TODO: stick to one declaration in a line
     prelude_string_t *string1,*string2;
     idmef_alert_new_messageid(alert,&string1);
     prelude_string_new_ref(&string2,name_.c_str());
@@ -39,9 +41,11 @@ struct TestClass
 
     idmef_analyzer_t *analyzer;
     idmef_alert_new_analyzer(alert,&analyzer,IDMEF_LIST_APPEND);
+    // TODO: stick to one declaration in a line
     prelude_string_t *ps_name,*ps_ostype,*ps_osversion,*ps_address;
 
-    std::string name("The Analyzer of Luke Skywaker"),ostype("Wojtek linux"),osversion("2.6.129 gr-sec"),address("156.117.92.22");
+    // TODO: stick to one declaration in a line
+    std::string name("The Analyzer of Luke Skywaker"),ostype("Wojtek linux"),osversion("2.6.129 gr-sec"),address("156.117.92.22");  // TODO: LTL
 
     prelude_string_new_dup(&ps_name,name.c_str());
     prelude_string_new_dup(&ps_ostype,ostype.c_str());
@@ -59,6 +63,12 @@ struct TestClass
     idmef_node_new_address(node,&addr,IDMEF_LIST_APPEND);
     idmef_address_set_address(addr,ps_address);
   }
+
+  // TODO: d-tor missing - resource leaks possible
+
+  // TODO: review note: you can skip hermetization here - these are just tests
+  //                    so feel tree to make members public and access them
+  //                    directly! :)
 
   idmef_message_t * getMessage()
   {
@@ -93,6 +103,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
+  // TODO: this should be const (thatnks to this you'd test if method
+  //       is const as well)
   IDMEFParser ip(getMessage());
   ensure(ip.getName()==Persistency::Alert::Name(getName()));
 }
@@ -111,8 +123,22 @@ void testObj::test<2>(void)
   idmef_time_new_from_time(&idmeftime,&t);
   idmef_alert_set_create_time(alert,idmeftime);
 
+  // TODO: object should be const
   IDMEFParser ip(getMessage());
-  ensure_equals("Something broken with time",string(to_iso_string(ip.getCreateTime()).c_str()),string(time_char));
+  // TODO: string( someMakeStringCall().c_str() ) does not make sense
+  ensure_equals("Something broken with time",string(to_iso_string(ip.getCreateTime()).c_str()),string(time_char));  // TODO: LTL
 }
+
+// TODO: test parsing when heart beat is passed
+
+// TODO: test alert without analyzer
+
+// TODO: test no source hosts
+
+// TODO: test multiple source hosts
+
+// TODO: test no target hosts
+
+// TODO: test multiple target hosts
 
 } // namespace tut
