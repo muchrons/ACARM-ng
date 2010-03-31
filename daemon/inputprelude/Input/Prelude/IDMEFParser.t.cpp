@@ -99,6 +99,8 @@ factory tf("Input/Prelude/IDMEFParser");
 
 namespace tut
 {
+
+// TODO: test name description's missing
 template<>
 template<>
 void testObj::test<1>(void)
@@ -109,6 +111,7 @@ void testObj::test<1>(void)
   ensure(ip.getName()==Persistency::Alert::Name(getName()));
 }
 
+// TODO: test name description's missing
 template<>
 template<>
 void testObj::test<2>(void)

@@ -62,7 +62,7 @@ public:
 
 private:
   // TODO: please stick to convention of keeping variable names in one column
-  idmef_alert_t *alert_;
+  idmef_alert_t *alert_;    // TODO: this member is not needed
 
   Persistency::Alert::Name name_;
   Persistency::Timestamp ctime_;
