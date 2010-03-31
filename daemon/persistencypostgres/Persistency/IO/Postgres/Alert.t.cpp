@@ -106,6 +106,7 @@ void testObj::test<1>(void)
                                                          certainty_, description_, sourceHosts_, targetHosts_));
   Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
   alert.save();
+  t_.commit();
 }
 
 // trying save Alert with NULL Host in Analyzers
@@ -117,6 +118,7 @@ void testObj::test<2>(void)
                                                          certainty_, description_, sourceHosts_, targetHosts_));
   Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
   alert.save();
+  t_.commit();
 }
 
 // trying save Alert with NULL detected time
@@ -128,6 +130,7 @@ void testObj::test<3>(void)
                                                          certainty_, description_, sourceHosts_, targetHosts_));
   Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
   alert.save();
+  t_.commit();
 }
 
 } // namespace tut

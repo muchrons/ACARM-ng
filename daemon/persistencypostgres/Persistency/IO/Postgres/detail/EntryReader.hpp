@@ -65,12 +65,6 @@ public:
    */
   double getCertaintyDelta(DataBaseID malertID);
 
-  /** \brief get number of Meta Alert children in meta alerts tree
-   *  \param  malertID ID of Mata Alert
-   *  \return number of children of Meta Alert
-   */
-  size_t getChildrenIDs(DataBaseID malertID);
-
   /** \brief read data associated with leafs in meta alerts tree
    *  \param malertID ID of Meta Alert associated with Alert
    */
@@ -93,6 +87,17 @@ public:
    */
   std::vector<DataBaseID> readIDsMalertsInUse();
 
+  /** \brief read IDs of Meta Alerts from time interval
+   *  \param  from begin of time interval
+   *  \param  to end of time interval
+   *  \return vector which contains IDs of Meta alerts from time interval
+   */
+  std::vector<DataBaseID> readIDsMalertsBetween(const Timestamp &from, const Timestamp &to);
+
+  /** \brief read IDs of root nodes
+   *  \return vector of IDs
+   */
+  std::vector<DataBaseID> readRoots();
 private:
   Persistency::Alert::ReportedHosts getReporteHosts(DataBaseID alertID, std::string hostType);
   HostPtr getHost(DataBaseID hostID, DataBaseID *refID);

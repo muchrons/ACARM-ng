@@ -5,6 +5,7 @@
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 
+using boost::posix_time::from_iso_string;
 namespace Persistency
 {
 namespace IO
@@ -18,7 +19,7 @@ AlertPtr makeNewAlert(const char *name)
   return AlertPtr( new Persistency::Alert(name,
                              sa,
                              NULL,
-                             Timestamp(),
+                             Timestamp(from_iso_string("2001109T231100")),
                              Severity(SeverityLevel::INFO),
                              Certainty(0.42),
                              "some test allert",
@@ -31,7 +32,7 @@ MetaAlertPtr makeNewMetaAlert(const char *name)
   return MetaAlertPtrNN( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name),
                                         0.1, 0.2,
                                         makeNewReferenceURL(),
-                                        Persistency::Timestamp() ) );
+                                        Persistency::Timestamp(from_iso_string("2001109T231100")) ) );
 }
 
 AnalyzerPtrNN makeNewAnalyzer(const char *name)
@@ -94,7 +95,9 @@ GraphNodePtrNN makeNewLeaf(void)
 {
   Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
   IO::Transaction t( conn->createNewTransaction("make_leaf_transaction") );
-  return GraphNodePtrNN( new Persistency::GraphNode( makeNewAlert(), conn, t) );
+  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewAlert(), conn, t) );
+  t.commit();
+  return graphNode;
 }
 
 GraphNodePtrNN makeNewNode(void)
@@ -107,8 +110,10 @@ GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
   Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
   IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
   const Persistency::NodeChildrenVector ncv(child1, child2);
-  return GraphNodePtrNN( new Persistency::GraphNode( makeNewMetaAlert(),
+  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewMetaAlert(),
                                                      conn, t, ncv) );
+  t.commit();
+  return graphNode;
 }
 
 GraphNodePtrNN makeNewTree1(void)
@@ -125,7 +130,18 @@ GraphNodePtrNN makeNewTree2(void)
                       makeNewNode(
                         makeNewNode( makeNewLeaf(), node1 ), node1 ) );
 }
+/*
+GraphNodePtrNN makeNewTree3(void)
+{
+  GraphNodePtrNN node6 = makeNewNode();
+  GraphNodePtrNN node7 = makeNewNode();
+  GraphNodePtrNN node8 = makeNewLeaf();
+  GraphNodePtrNN node5 = makeNewLeaf();
 
+  GraphNodePtrNN node6 = makeNewNode();
+
+}
+*/
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency

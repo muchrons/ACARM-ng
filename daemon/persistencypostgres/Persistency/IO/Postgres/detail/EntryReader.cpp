@@ -435,16 +435,6 @@ double EntryReader::getCertaintyDelta(DataBaseID malertID)
   return certainty;
 }
 
-// TODO: method has a wrong name. consider getChildrenCount() or simillar
-size_t EntryReader::getChildrenIDs(DataBaseID malertID)
-{
-  stringstream ss;
-  ss << "SELECT * FROM meta_alerts_tree WHERE id_node = " << malertID << ";";
-  result r = t_.getAPI<TransactionAPI>().exec(ss);
-
-  return r.size();
-}
-
 Persistency::AlertPtrNN EntryReader::getLeaf(DataBaseID malertID)
 {
   stringstream ss;
@@ -467,7 +457,7 @@ vector<DataBaseID> EntryReader::readMetaAlertChildren(DataBaseID malertID)
   for(unsigned int i=0; i<r.size(); ++i)
   {
     DataBaseID idChild;
-    r[0]["id_child"].to(idChild);
+    r[i]["id_child"].to(idChild);
     childrenIDs.push_back(idChild);
   }
   return childrenIDs;
@@ -479,14 +469,55 @@ vector<DataBaseID> EntryReader::readIDsMalertsInUse()
   stringstream ss;
   ss << "SELECT id_meta_alert FROM meta_alerts_in_use;";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  // TODO: use vector<>::reserve() to avoid extra allocations.
+  malertsInUse.reserve( r.size() );
   for(unsigned int i=0; i<r.size(); ++i)
   {
     DataBaseID malertID;
-    r[0]["id_meta_alert"].to(malertID);
+    r[i]["id_meta_alert"].to(malertID);
     malertsInUse.push_back(malertID);
   }
   return malertsInUse;
+}
+
+vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, const Timestamp &to)
+{
+  vector<DataBaseID> malertsBetween;
+  stringstream ss;
+  //TODO: test this query
+  ss << "SELECT id FROM meta_alerts WHERE "
+     << to_iso_string(from) << " <= create_time AND create_time <=" << to_iso_string(to) << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+
+  for(unsigned int i=0; i<r.size(); ++i)
+  {
+    DataBaseID malertID;
+    r[i]["id"].to(malertID);
+    malertsBetween.push_back(malertID);
+  }
+  return malertsBetween;
+}
+
+std::vector<DataBaseID> EntryReader::readRoots()
+{
+  vector<DataBaseID> roots;
+  stringstream ss;
+  ss << "SELECT id_node, id_child INTO TEMP TABLE tmp FROM meta_alerts_tree"
+        " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);";
+  t_.getAPI<TransactionAPI>().exec(ss);
+  ss.str("");
+  ss << "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );";
+
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ss.str("");
+  ss << "DROP TABLE tmp;";
+  t_.getAPI<TransactionAPI>().exec(ss);
+  for(unsigned int i=0; i<r.size(); ++i)
+  {
+    DataBaseID nodeID;
+    r[i]["id_node"].to(nodeID);
+    roots.push_back(nodeID);
+  }
+  return roots;
 }
 
 } // namespace detail

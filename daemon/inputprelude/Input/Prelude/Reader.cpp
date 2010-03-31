@@ -22,7 +22,7 @@ Reader::Reader(const std::string profile):
 {
   assert( client_.get()!=NULL );
 
-  //czesc Bartek, to ja. Ustaw moze ponizsza linijke zeby byla wczytywana z konfiga bo ja nie pamietam jak sie go uzywa, dzieki.
+  // TODO: czesc Bartek, to ja. Ustaw moze ponizsza linijke zeby byla wczytywana z konfiga bo ja nie pamietam jak sie go uzywa, dzieki.
   client_->SetConfigFilename("/etc/prelude/default/client.conf");
   client_->SetRequiredPermission(PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
   client_->start();
