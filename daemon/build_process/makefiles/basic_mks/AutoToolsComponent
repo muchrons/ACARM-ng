@@ -20,7 +20,9 @@ else
 # include user_pre makefile, if it exists
 -include $(THIS_SRC_BASE_DIR)/user_pre.mk
 
-
+# -Werror causes most open-source components not to build at all...
+CFLAGS:=$(filter-out -Werror,$(CFLAGS))
+CXXFLAGS:=$(filter-out -Werror,$(CXXFLAGS))
 
 .PHONY: doc
 doc:
