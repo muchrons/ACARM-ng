@@ -52,20 +52,24 @@ private:
                                                     // since weak_ptr<> may become NULL and this
                                                     // would cause problems with finding with
                                                     // indexes.
+
   typedef typename ObjectIDMapping::iterator ObjectIDMappingIt;
 
-ObjectIDMappingIt getImpl(TSharedPtr ptr)
-{
-  ObjectIDMappingIt it=oidm_.find( ptr.get() );
-  if( it==oidm_.end() || it->second.ptr_.lock().get()==NULL )
-    return oidm_.end();
-  // both these asserts are known to be true, since we have object's
-  // instance as a parameter, so pointer either is already deallocated
-  // or is still valid, and so assertion's hold.
-  assert( it->second.ptr_.lock().get()!=NULL      );
-  assert( it->second.ptr_.lock().get()==ptr.get() );
-  return it;
-}
+  // TODO: move this implementation detail to the class' end. EntryID and typedef's
+  //       must be at eh begining for syntactical reasons, but method can be moved
+  //       to the class' end, making API more readable.
+  ObjectIDMappingIt getImpl(TSharedPtr ptr)
+  {
+    ObjectIDMappingIt it=oidm_.find( ptr.get() );
+    if( it==oidm_.end() || it->second.ptr_.lock().get()==NULL )
+      return oidm_.end();
+    // both these asserts are known to be true, since we have object's
+    // instance as a parameter, so pointer either is already deallocated
+    // or is still valid, and so assertion's hold.
+    assert( it->second.ptr_.lock().get()!=NULL      );
+    assert( it->second.ptr_.lock().get()==ptr.get() );
+    return it;
+  }
 
 public:
   /** \brief exception thrown when entry does not exist.
@@ -81,6 +85,7 @@ public:
     }
   }; // struct ExceptionEntryAlreadyExist
 
+  // TODO: this method should be const
   /** \brief gets ID for a given object.
    *  \param ptr pointer to object to check.
    *  \return id if given object in data base.
@@ -94,6 +99,9 @@ public:
     return it->second.id_;
   }
 
+  // TODO: this method should be const
+  // TODO: rename this method to 'has' - it is not implementation internal
+  //       element - it's class's interface.
   /** \brief check if given object is in cache
    *  \param ptr pointer to object to check
    *  \return true if given object is in cache
