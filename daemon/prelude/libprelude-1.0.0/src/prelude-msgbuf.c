@@ -49,30 +49,30 @@ struct prelude_msgbuf {
 static int default_send_msg_cb(prelude_msg_t **msg, void *data);
 
 
-static int do_send_msg(prelude_msgbuf_t *msgbuf, prelude_msg_t *msg) 
+static int do_send_msg(prelude_msgbuf_t *msgbuf, prelude_msg_t *msg)
 {
         int ret;
 
         ret = msgbuf->send_msg(msgbuf, msg);
         if ( ret < 0 && prelude_error_get_code(ret) == PRELUDE_ERROR_EAGAIN )
                 return ret;
-        
+
         prelude_msg_recycle(msg);
         prelude_msg_set_priority(msg, PRELUDE_MSG_PRIORITY_NONE);
-        
+
         return ret;
 }
 
 
 
-static int do_send_msg_async(prelude_msgbuf_t *msgbuf, prelude_msg_t *msg) 
+static int do_send_msg_async(prelude_msgbuf_t *msgbuf, prelude_msg_t *msg)
 {
         int ret;
 
         ret = msgbuf->send_msg(msgbuf, msg);
         if ( ret < 0 && prelude_error_get_code(ret) == PRELUDE_ERROR_EAGAIN )
                 return ret;
-        
+
         ret = prelude_msg_dynamic_new(&msgbuf->msg, default_send_msg_cb, msgbuf);
         if ( ret < 0 )
                 return ret;
@@ -93,7 +93,7 @@ static int default_send_msg_cb(prelude_msg_t **msg, void *data)
                 ret = do_send_msg(msgbuf, *msg);
 
         *msg = msgbuf->msg;
-        
+
         return ret;
 }
 
@@ -138,11 +138,11 @@ int prelude_msgbuf_new(prelude_msgbuf_t **msgbuf)
         *msgbuf = calloc(1, sizeof(**msgbuf));
         if ( ! *msgbuf )
                 return prelude_error_from_errno(errno);
-        
-        ret = prelude_msg_dynamic_new(&(*msgbuf)->msg, default_send_msg_cb, *msgbuf);     
+
+        ret = prelude_msg_dynamic_new(&(*msgbuf)->msg, default_send_msg_cb, *msgbuf);
         if ( ret < 0 )
                 return ret;
-        
+
         return 0;
 }
 
@@ -169,10 +169,10 @@ prelude_msg_t *prelude_msgbuf_get_msg(prelude_msgbuf_t *msgbuf)
  * This function should be called to tell the msgbuf subsystem
  * that you finished writing your message.
  */
-void prelude_msgbuf_mark_end(prelude_msgbuf_t *msgbuf) 
+void prelude_msgbuf_mark_end(prelude_msgbuf_t *msgbuf)
 {
         prelude_msg_mark_end(msgbuf->msg);
-        
+
         /*
          * FIXME:
          * only flush the message if we're not under an alert burst.
@@ -189,8 +189,8 @@ void prelude_msgbuf_mark_end(prelude_msgbuf_t *msgbuf)
  *
  * Destroy @msgbuf, all data remaining will be flushed.
  */
-void prelude_msgbuf_destroy(prelude_msgbuf_t *msgbuf) 
-{        
+void prelude_msgbuf_destroy(prelude_msgbuf_t *msgbuf)
+{
         if ( msgbuf->msg && ! prelude_msg_is_empty(msgbuf->msg) )
                 default_send_msg_cb(&msgbuf->msg, msgbuf);
 
@@ -219,7 +219,7 @@ void prelude_msgbuf_set_callback(prelude_msgbuf_t *msgbuf,
 
 
 
-void prelude_msgbuf_set_data(prelude_msgbuf_t *msgbuf, void *data) 
+void prelude_msgbuf_set_data(prelude_msgbuf_t *msgbuf, void *data)
 {
         msgbuf->data = data;
 }
@@ -233,7 +233,7 @@ void *prelude_msgbuf_get_data(prelude_msgbuf_t *msgbuf)
 
 
 void prelude_msgbuf_set_flags(prelude_msgbuf_t *msgbuf, prelude_msgbuf_flags_t flags)
-{        
+{
         msgbuf->flags = flags;
 }
 

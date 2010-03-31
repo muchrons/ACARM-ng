@@ -7,12 +7,12 @@
    modify it under the terms of the GNU Lesser General Public License
    as published by the Free Software Foundation; either version 2.1 of
    the License, or (at your option) any later version.
- 
+
    libgpg-error is distributed in the hope that it will be useful, but
    WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
    Lesser General Public License for more details.
- 
+
    You should have received a copy of the GNU Lesser General Public
    License along with libgpg-error; if not, write to the Free
    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -57,20 +57,20 @@ main (int argc, char **argv)
     {
       sorted = 1;
       for (i = 0; i < sizeof (err_table) / sizeof (err_table[0]) - 1; i++)
-	if (err_table[i].err > err_table[i + 1].err)
-	  {
-	    int err = err_table[i].err;
-	    const char *err_sym = err_table[i].err_sym;
+  if (err_table[i].err > err_table[i + 1].err)
+    {
+      int err = err_table[i].err;
+      const char *err_sym = err_table[i].err_sym;
 
-	    err_table[i].err = err_table[i + 1].err;
-	    err_table[i].err_sym = err_table[i + 1].err_sym;
-	    err_table[i + 1].err = err;
-	    err_table[i + 1].err_sym = err_sym;
-	    sorted = 0;
-	  }
+      err_table[i].err = err_table[i + 1].err;
+      err_table[i].err_sym = err_table[i + 1].err_sym;
+      err_table[i + 1].err = err;
+      err_table[i + 1].err_sym = err_sym;
+      sorted = 0;
+    }
     }
   while (!sorted);
-      
+
   for (i = 0; i < sizeof (err_table) / sizeof (err_table[0]); i++)
     printf ("%i\t%s\n", err_table[i].err, err_table[i].err_sym);
 

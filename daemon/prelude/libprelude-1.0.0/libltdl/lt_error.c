@@ -31,22 +31,22 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #include "lt__private.h"
 #include "lt_error.h"
 
-static const char	*last_error	= 0;
-static const char	error_strings[LT_ERROR_MAX][LT_ERROR_LEN_MAX + 1] =
+static const char  *last_error  = 0;
+static const char  error_strings[LT_ERROR_MAX][LT_ERROR_LEN_MAX + 1] =
   {
-#define LT_ERROR(name, diagnostic)	diagnostic,
+#define LT_ERROR(name, diagnostic)  diagnostic,
     lt_dlerror_table
 #undef LT_ERROR
   };
 
-static	const char    **user_error_strings	= 0;
-static	int		errorcount		= LT_ERROR_MAX;
+static  const char    **user_error_strings  = 0;
+static  int    errorcount    = LT_ERROR_MAX;
 
 int
 lt_dladderror (const char *diagnostic)
 {
-  int		errindex = 0;
-  int		result	 = -1;
+  int    errindex = 0;
+  int    result   = -1;
   const char  **temp     = (const char **) 0;
 
   assert (diagnostic);
@@ -55,9 +55,9 @@ lt_dladderror (const char *diagnostic)
   temp = REALLOC (const char *, user_error_strings, 1 + errindex);
   if (temp)
     {
-      user_error_strings		= temp;
-      user_error_strings[errindex]	= diagnostic;
-      result				= errorcount++;
+      user_error_strings    = temp;
+      user_error_strings[errindex]  = diagnostic;
+      result        = errorcount++;
     }
 
   return result;
@@ -66,7 +66,7 @@ lt_dladderror (const char *diagnostic)
 int
 lt_dlseterror (int errindex)
 {
-  int		errors	 = 0;
+  int    errors   = 0;
 
   if (errindex >= errorcount || errindex < 0)
     {

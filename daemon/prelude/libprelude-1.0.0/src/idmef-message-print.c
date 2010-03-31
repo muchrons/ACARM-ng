@@ -1092,13 +1092,13 @@ void idmef_service_print(idmef_service_t *ptr, prelude_io_t *fd)
                 prelude_io_write(fd, "web_service:\n", sizeof("web_service:\n") - 1);
                 idmef_web_service_print(idmef_service_get_web_service(ptr), fd);
                 break;
- 
+
         case IDMEF_SERVICE_TYPE_SNMP:
                 print_indent(fd);
                 prelude_io_write(fd, "snmp_service:\n", sizeof("snmp_service:\n") - 1);
                 idmef_snmp_service_print(idmef_service_get_snmp_service(ptr), fd);
                 break;
- 
+
         default:
                 break;
         }
@@ -2685,19 +2685,19 @@ void idmef_alert_print(idmef_alert_t *ptr, prelude_io_t *fd)
                 prelude_io_write(fd, "tool_alert:\n", sizeof("tool_alert:\n") - 1);
                 idmef_tool_alert_print(idmef_alert_get_tool_alert(ptr), fd);
                 break;
- 
+
         case IDMEF_ALERT_TYPE_CORRELATION:
                 print_indent(fd);
                 prelude_io_write(fd, "correlation_alert:\n", sizeof("correlation_alert:\n") - 1);
                 idmef_correlation_alert_print(idmef_alert_get_correlation_alert(ptr), fd);
                 break;
- 
+
         case IDMEF_ALERT_TYPE_OVERFLOW:
                 print_indent(fd);
                 prelude_io_write(fd, "overflow_alert:\n", sizeof("overflow_alert:\n") - 1);
                 idmef_overflow_alert_print(idmef_alert_get_overflow_alert(ptr), fd);
                 break;
- 
+
         default:
                 break;
         }
@@ -2845,13 +2845,13 @@ void idmef_message_print(idmef_message_t *ptr, prelude_io_t *fd)
                 prelude_io_write(fd, "alert:\n", sizeof("alert:\n") - 1);
                 idmef_alert_print(idmef_message_get_alert(ptr), fd);
                 break;
- 
+
         case IDMEF_MESSAGE_TYPE_HEARTBEAT:
                 print_indent(fd);
                 prelude_io_write(fd, "heartbeat:\n", sizeof("heartbeat:\n") - 1);
                 idmef_heartbeat_print(idmef_message_get_heartbeat(ptr), fd);
                 break;
- 
+
         default:
                 break;
         }

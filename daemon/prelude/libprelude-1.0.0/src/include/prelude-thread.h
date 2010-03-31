@@ -42,7 +42,7 @@ int _prelude_thread_set_error(const char *error);
 const char *_prelude_thread_get_error(void);
 
 void _prelude_thread_deinit(void);
-         
+
 #ifdef __cplusplus
  }
 #endif

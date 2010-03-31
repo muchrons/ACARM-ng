@@ -50,12 +50,12 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 #  include <windows.h>
 
-#  define D_NAMLEN(dirent)	(strlen((dirent)->d_name))
-#  define dirent		lt__dirent
-#  define DIR			lt__DIR
-#  define opendir		lt__opendir
-#  define readdir		lt__readdir
-#  define closedir		lt__closedir
+#  define D_NAMLEN(dirent)  (strlen((dirent)->d_name))
+#  define dirent    lt__dirent
+#  define DIR      lt__DIR
+#  define opendir    lt__opendir
+#  define readdir    lt__readdir
+#  define closedir    lt__closedir
 
 LT_BEGIN_C_DECLS
 
@@ -74,9 +74,9 @@ typedef struct
 } DIR;
 
 
-LT_SCOPE DIR *		opendir		(const char *path);
-LT_SCOPE struct dirent *readdir		(DIR *entry);
-LT_SCOPE void		closedir	(DIR *entry);
+LT_SCOPE DIR *    opendir    (const char *path);
+LT_SCOPE struct dirent *readdir    (DIR *entry);
+LT_SCOPE void    closedir  (DIR *entry);
 
 LT_END_C_DECLS
 

@@ -200,7 +200,7 @@ static inline void prelude_list_del_init(prelude_list_t *item)
  * prelude_list_for_each_reversed_safe().
  */
 #define prelude_list_for_each_reversed(list, pos)                          \
-        for ( (pos) = (list)->prev; (pos) != (list); (pos) = (pos)->prev ) 
+        for ( (pos) = (list)->prev; (pos) != (list); (pos) = (pos)->prev )
 
 
 
@@ -237,7 +237,7 @@ static inline void prelude_list_del_init(prelude_list_t *item)
  * @list: Pointer to a #prelude_list_t list.
  * @pos: Pointer to a #prelude_list_t object pointing to the current list member.
  * @bkp: Pointer to a #prelude_list_t object pointing to the next list member.
- * 
+ *
  * Iterate through all @list entry starting from @pos if it is not NULL, or from
  * the start of @list if it is. prelude_list_entry() can be used to retrieve
  * and entry from the @pos pointer. Calling prelude_list_del() while iterating the

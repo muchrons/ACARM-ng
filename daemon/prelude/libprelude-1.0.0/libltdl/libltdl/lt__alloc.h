@@ -35,13 +35,13 @@ or obtained by writing to the Free Software Foundation, Inc.,
 
 LT_BEGIN_C_DECLS
 
-#define MALLOC(tp, n)		(tp*) lt__malloc((n) * sizeof(tp))
-#define REALLOC(tp, mem, n)	(tp*) lt__realloc((mem), (n) * sizeof(tp))
-#define FREE(mem)					LT_STMT_START {	\
-	if (mem) { free ((void *)mem); mem = NULL; }	} LT_STMT_END
-#define MEMREASSIGN(p, q)				LT_STMT_START {	\
-	if ((p) != (q)) { if (p) free (p); (p) = (q); (q) = 0; }	\
-								} LT_STMT_END
+#define MALLOC(tp, n)    (tp*) lt__malloc((n) * sizeof(tp))
+#define REALLOC(tp, mem, n)  (tp*) lt__realloc((mem), (n) * sizeof(tp))
+#define FREE(mem)          LT_STMT_START {  \
+  if (mem) { free ((void *)mem); mem = NULL; }  } LT_STMT_END
+#define MEMREASSIGN(p, q)        LT_STMT_START {  \
+  if ((p) != (q)) { if (p) free (p); (p) = (q); (q) = 0; }  \
+                } LT_STMT_END
 
 /* If set, this function is called when memory allocation has failed.  */
 LT_SCOPE void (*lt__alloc_die) (void);

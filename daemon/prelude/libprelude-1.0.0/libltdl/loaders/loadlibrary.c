@@ -40,7 +40,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
    collisions when the loader code is statically linked into libltdl.
    Use the "<module_name>_LTX_" prefix so that the symbol addresses can
    be fetched from the preloaded symbol list by lt_dlsym():  */
-#define get_vtable	loadlibrary_LTX_get_vtable
+#define get_vtable  loadlibrary_LTX_get_vtable
 
 LT_BEGIN_C_DECLS
 LT_SCOPE lt_dlvtable *get_vtable (lt_user_data loader_data);
@@ -49,12 +49,12 @@ LT_END_C_DECLS
 
 /* Boilerplate code to set up the vtable for hooking this loader into
    libltdl's loader list:  */
-static int	 vl_exit  (lt_user_data loader_data);
+static int   vl_exit  (lt_user_data loader_data);
 static lt_module vm_open  (lt_user_data loader_data, const char *filename,
                            lt_dladvise advise);
-static int	 vm_close (lt_user_data loader_data, lt_module module);
-static void *	 vm_sym   (lt_user_data loader_data, lt_module module,
-			  const char *symbolname);
+static int   vm_close (lt_user_data loader_data, lt_module module);
+static void *   vm_sym   (lt_user_data loader_data, lt_module module,
+        const char *symbolname);
 
 static lt_dlinterface_id iface_id = 0;
 static lt_dlvtable *vtable = 0;
@@ -73,13 +73,13 @@ get_vtable (lt_user_data loader_data)
 
   if (vtable && !vtable->name)
     {
-      vtable->name		= "lt_loadlibrary";
-      vtable->module_open	= vm_open;
-      vtable->module_close	= vm_close;
-      vtable->find_sym		= vm_sym;
-      vtable->dlloader_exit	= vl_exit;
-      vtable->dlloader_data	= loader_data;
-      vtable->priority		= LT_DLLOADER_APPEND;
+      vtable->name    = "lt_loadlibrary";
+      vtable->module_open  = vm_open;
+      vtable->module_close  = vm_close;
+      vtable->find_sym    = vm_sym;
+      vtable->dlloader_exit  = vl_exit;
+      vtable->dlloader_data  = loader_data;
+      vtable->priority    = LT_DLLOADER_APPEND;
     }
 
   if (vtable && (vtable->dlloader_data != loader_data))
@@ -114,10 +114,10 @@ static lt_module
 vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
          lt_dladvise LT__UNUSED advise)
 {
-  lt_module	module	   = 0;
-  char		*ext;
-  char		wpath[MAX_PATH];
-  size_t	len;
+  lt_module  module     = 0;
+  char    *ext;
+  char    wpath[MAX_PATH];
+  size_t  len;
 
   if (!filename)
     {
@@ -132,16 +132,16 @@ vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
 
       if (len >= MAX_PATH)
         {
-	  LT__SETERROR (CANNOT_OPEN);
-	  return 0;
-	}
+    LT__SETERROR (CANNOT_OPEN);
+    return 0;
+  }
 
 #if HAVE_DECL_CYGWIN_CONV_PATH
       if (cygwin_conv_path (CCP_POSIX_TO_WIN_A, filename, wpath, MAX_PATH))
-	{
-	  LT__SETERROR (CANNOT_OPEN);
-	  return 0;
-	}
+  {
+    LT__SETERROR (CANNOT_OPEN);
+    return 0;
+  }
       len = 0;
 #elif defined(__CYGWIN__)
       cygwin_conv_to_full_win32_path (filename, wpath);
@@ -152,21 +152,21 @@ vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
 
       ext = strrchr (wpath, '.');
       if (!ext)
-	{
-	  /* Append a `.' to stop Windows from adding an
-	     implicit `.dll' extension. */
-	  if (!len)
-	    len = LT_STRLEN (wpath);
+  {
+    /* Append a `.' to stop Windows from adding an
+       implicit `.dll' extension. */
+    if (!len)
+      len = LT_STRLEN (wpath);
 
-	  if (len + 1 >= MAX_PATH)
-	    {
-	      LT__SETERROR (CANNOT_OPEN);
-	      return 0;
-	    }
+    if (len + 1 >= MAX_PATH)
+      {
+        LT__SETERROR (CANNOT_OPEN);
+        return 0;
+      }
 
-	  wpath[len] = '.';
-	  wpath[len+1] = '\0';
-	}
+    wpath[len] = '.';
+    wpath[len+1] = '\0';
+  }
     }
 
   {

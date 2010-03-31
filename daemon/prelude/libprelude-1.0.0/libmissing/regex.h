@@ -32,9 +32,9 @@ extern "C" {
 /* Define __USE_GNU_REGEX to declare GNU extensions that violate the
    POSIX name space rules.  */
 #undef __USE_GNU_REGEX
-#if (defined _GNU_SOURCE					\
-     || (!defined _POSIX_C_SOURCE && !defined _POSIX_SOURCE	\
-	 && !defined _XOPEN_SOURCE))
+#if (defined _GNU_SOURCE          \
+     || (!defined _POSIX_C_SOURCE && !defined _POSIX_SOURCE  \
+   && !defined _XOPEN_SOURCE))
 # define __USE_GNU_REGEX 1
 #endif
 
@@ -242,35 +242,35 @@ extern reg_syntax_t re_syntax_options;
 /* [[[begin syntaxes]]] */
 # define RE_SYNTAX_EMACS 0
 
-# define RE_SYNTAX_AWK							\
-  (RE_BACKSLASH_ESCAPE_IN_LISTS   | RE_DOT_NOT_NULL			\
-   | RE_NO_BK_PARENS              | RE_NO_BK_REFS			\
-   | RE_NO_BK_VBAR                | RE_NO_EMPTY_RANGES			\
-   | RE_DOT_NEWLINE		  | RE_CONTEXT_INDEP_ANCHORS		\
+# define RE_SYNTAX_AWK              \
+  (RE_BACKSLASH_ESCAPE_IN_LISTS   | RE_DOT_NOT_NULL      \
+   | RE_NO_BK_PARENS              | RE_NO_BK_REFS      \
+   | RE_NO_BK_VBAR                | RE_NO_EMPTY_RANGES      \
+   | RE_DOT_NEWLINE      | RE_CONTEXT_INDEP_ANCHORS    \
    | RE_UNMATCHED_RIGHT_PAREN_ORD | RE_NO_GNU_OPS)
 
-# define RE_SYNTAX_GNU_AWK						\
-  ((RE_SYNTAX_POSIX_EXTENDED | RE_BACKSLASH_ESCAPE_IN_LISTS | RE_DEBUG)	\
-   & ~(RE_DOT_NOT_NULL | RE_INTERVALS | RE_CONTEXT_INDEP_OPS		\
+# define RE_SYNTAX_GNU_AWK            \
+  ((RE_SYNTAX_POSIX_EXTENDED | RE_BACKSLASH_ESCAPE_IN_LISTS | RE_DEBUG)  \
+   & ~(RE_DOT_NOT_NULL | RE_INTERVALS | RE_CONTEXT_INDEP_OPS    \
        | RE_CONTEXT_INVALID_OPS ))
 
-# define RE_SYNTAX_POSIX_AWK						\
-  (RE_SYNTAX_POSIX_EXTENDED | RE_BACKSLASH_ESCAPE_IN_LISTS		\
-   | RE_INTERVALS	    | RE_NO_GNU_OPS)
+# define RE_SYNTAX_POSIX_AWK            \
+  (RE_SYNTAX_POSIX_EXTENDED | RE_BACKSLASH_ESCAPE_IN_LISTS    \
+   | RE_INTERVALS      | RE_NO_GNU_OPS)
 
-# define RE_SYNTAX_GREP							\
-  (RE_BK_PLUS_QM              | RE_CHAR_CLASSES				\
-   | RE_HAT_LISTS_NOT_NEWLINE | RE_INTERVALS				\
+# define RE_SYNTAX_GREP              \
+  (RE_BK_PLUS_QM              | RE_CHAR_CLASSES        \
+   | RE_HAT_LISTS_NOT_NEWLINE | RE_INTERVALS        \
    | RE_NEWLINE_ALT)
 
-# define RE_SYNTAX_EGREP						\
-  (RE_CHAR_CLASSES        | RE_CONTEXT_INDEP_ANCHORS			\
-   | RE_CONTEXT_INDEP_OPS | RE_HAT_LISTS_NOT_NEWLINE			\
-   | RE_NEWLINE_ALT       | RE_NO_BK_PARENS				\
+# define RE_SYNTAX_EGREP            \
+  (RE_CHAR_CLASSES        | RE_CONTEXT_INDEP_ANCHORS      \
+   | RE_CONTEXT_INDEP_OPS | RE_HAT_LISTS_NOT_NEWLINE      \
+   | RE_NEWLINE_ALT       | RE_NO_BK_PARENS        \
    | RE_NO_BK_VBAR)
 
-# define RE_SYNTAX_POSIX_EGREP						\
-  (RE_SYNTAX_EGREP | RE_INTERVALS | RE_NO_BK_BRACES			\
+# define RE_SYNTAX_POSIX_EGREP            \
+  (RE_SYNTAX_EGREP | RE_INTERVALS | RE_NO_BK_BRACES      \
    | RE_INVALID_INTERVAL_ORD)
 
 /* P1003.2/D11.2, section 4.20.7.1, lines 5078ff.  */
@@ -279,32 +279,32 @@ extern reg_syntax_t re_syntax_options;
 # define RE_SYNTAX_SED RE_SYNTAX_POSIX_BASIC
 
 /* Syntax bits common to both basic and extended POSIX regex syntax.  */
-# define _RE_SYNTAX_POSIX_COMMON					\
-  (RE_CHAR_CLASSES | RE_DOT_NEWLINE      | RE_DOT_NOT_NULL		\
+# define _RE_SYNTAX_POSIX_COMMON          \
+  (RE_CHAR_CLASSES | RE_DOT_NEWLINE      | RE_DOT_NOT_NULL    \
    | RE_INTERVALS  | RE_NO_EMPTY_RANGES)
 
-# define RE_SYNTAX_POSIX_BASIC						\
+# define RE_SYNTAX_POSIX_BASIC            \
   (_RE_SYNTAX_POSIX_COMMON | RE_BK_PLUS_QM | RE_CONTEXT_INVALID_DUP)
 
 /* Differs from ..._POSIX_BASIC only in that RE_BK_PLUS_QM becomes
    RE_LIMITED_OPS, i.e., \? \+ \| are not recognized.  Actually, this
    isn't minimal, since other operators, such as \`, aren't disabled.  */
-# define RE_SYNTAX_POSIX_MINIMAL_BASIC					\
+# define RE_SYNTAX_POSIX_MINIMAL_BASIC          \
   (_RE_SYNTAX_POSIX_COMMON | RE_LIMITED_OPS)
 
-# define RE_SYNTAX_POSIX_EXTENDED					\
-  (_RE_SYNTAX_POSIX_COMMON  | RE_CONTEXT_INDEP_ANCHORS			\
-   | RE_CONTEXT_INDEP_OPS   | RE_NO_BK_BRACES				\
-   | RE_NO_BK_PARENS        | RE_NO_BK_VBAR				\
+# define RE_SYNTAX_POSIX_EXTENDED          \
+  (_RE_SYNTAX_POSIX_COMMON  | RE_CONTEXT_INDEP_ANCHORS      \
+   | RE_CONTEXT_INDEP_OPS   | RE_NO_BK_BRACES        \
+   | RE_NO_BK_PARENS        | RE_NO_BK_VBAR        \
    | RE_CONTEXT_INVALID_OPS | RE_UNMATCHED_RIGHT_PAREN_ORD)
 
 /* Differs from ..._POSIX_EXTENDED in that RE_CONTEXT_INDEP_OPS is
    removed and RE_NO_BK_REFS is added.  */
-# define RE_SYNTAX_POSIX_MINIMAL_EXTENDED				\
-  (_RE_SYNTAX_POSIX_COMMON  | RE_CONTEXT_INDEP_ANCHORS			\
-   | RE_CONTEXT_INVALID_OPS | RE_NO_BK_BRACES				\
-   | RE_NO_BK_PARENS        | RE_NO_BK_REFS				\
-   | RE_NO_BK_VBAR	    | RE_UNMATCHED_RIGHT_PAREN_ORD)
+# define RE_SYNTAX_POSIX_MINIMAL_EXTENDED        \
+  (_RE_SYNTAX_POSIX_COMMON  | RE_CONTEXT_INDEP_ANCHORS      \
+   | RE_CONTEXT_INVALID_OPS | RE_NO_BK_BRACES        \
+   | RE_NO_BK_PARENS        | RE_NO_BK_REFS        \
+   | RE_NO_BK_VBAR      | RE_UNMATCHED_RIGHT_PAREN_ORD)
 /* [[[end syntaxes]]] */
 
 #endif /* defined __USE_GNU_REGEX */
@@ -372,51 +372,51 @@ extern reg_syntax_t re_syntax_options;
 
 typedef enum
 {
-  _REG_ENOSYS = -1,	/* This will never happen for this implementation.  */
-  _REG_NOERROR = 0,	/* Success.  */
-  _REG_NOMATCH,		/* Didn't find a match (for regexec).  */
+  _REG_ENOSYS = -1,  /* This will never happen for this implementation.  */
+  _REG_NOERROR = 0,  /* Success.  */
+  _REG_NOMATCH,    /* Didn't find a match (for regexec).  */
 
   /* POSIX regcomp return error codes.  (In the order listed in the
      standard.)  */
-  _REG_BADPAT,		/* Invalid pattern.  */
-  _REG_ECOLLATE,	/* Invalid collating element.  */
-  _REG_ECTYPE,		/* Invalid character class name.  */
-  _REG_EESCAPE,		/* Trailing backslash.  */
-  _REG_ESUBREG,		/* Invalid back reference.  */
-  _REG_EBRACK,		/* Unmatched left bracket.  */
-  _REG_EPAREN,		/* Parenthesis imbalance.  */
-  _REG_EBRACE,		/* Unmatched \{.  */
-  _REG_BADBR,		/* Invalid contents of \{\}.  */
-  _REG_ERANGE,		/* Invalid range end.  */
-  _REG_ESPACE,		/* Ran out of memory.  */
-  _REG_BADRPT,		/* No preceding re for repetition op.  */
+  _REG_BADPAT,    /* Invalid pattern.  */
+  _REG_ECOLLATE,  /* Invalid collating element.  */
+  _REG_ECTYPE,    /* Invalid character class name.  */
+  _REG_EESCAPE,    /* Trailing backslash.  */
+  _REG_ESUBREG,    /* Invalid back reference.  */
+  _REG_EBRACK,    /* Unmatched left bracket.  */
+  _REG_EPAREN,    /* Parenthesis imbalance.  */
+  _REG_EBRACE,    /* Unmatched \{.  */
+  _REG_BADBR,    /* Invalid contents of \{\}.  */
+  _REG_ERANGE,    /* Invalid range end.  */
+  _REG_ESPACE,    /* Ran out of memory.  */
+  _REG_BADRPT,    /* No preceding re for repetition op.  */
 
   /* Error codes we've added.  */
-  _REG_EEND,		/* Premature end.  */
-  _REG_ESIZE,		/* Compiled pattern bigger than 2^16 bytes.  */
-  _REG_ERPAREN		/* Unmatched ) or \); not returned from regcomp.  */
+  _REG_EEND,    /* Premature end.  */
+  _REG_ESIZE,    /* Compiled pattern bigger than 2^16 bytes.  */
+  _REG_ERPAREN    /* Unmatched ) or \); not returned from regcomp.  */
 } reg_errcode_t;
 
 #ifdef _XOPEN_SOURCE
-# define REG_ENOSYS	_REG_ENOSYS
+# define REG_ENOSYS  _REG_ENOSYS
 #endif
-#define REG_NOERROR	_REG_NOERROR
-#define REG_NOMATCH	_REG_NOMATCH
-#define REG_BADPAT	_REG_BADPAT
-#define REG_ECOLLATE	_REG_ECOLLATE
-#define REG_ECTYPE	_REG_ECTYPE
-#define REG_EESCAPE	_REG_EESCAPE
-#define REG_ESUBREG	_REG_ESUBREG
-#define REG_EBRACK	_REG_EBRACK
-#define REG_EPAREN	_REG_EPAREN
-#define REG_EBRACE	_REG_EBRACE
-#define REG_BADBR	_REG_BADBR
-#define REG_ERANGE	_REG_ERANGE
-#define REG_ESPACE	_REG_ESPACE
-#define REG_BADRPT	_REG_BADRPT
-#define REG_EEND	_REG_EEND
-#define REG_ESIZE	_REG_ESIZE
-#define REG_ERPAREN	_REG_ERPAREN
+#define REG_NOERROR  _REG_NOERROR
+#define REG_NOMATCH  _REG_NOMATCH
+#define REG_BADPAT  _REG_BADPAT
+#define REG_ECOLLATE  _REG_ECOLLATE
+#define REG_ECTYPE  _REG_ECTYPE
+#define REG_EESCAPE  _REG_EESCAPE
+#define REG_ESUBREG  _REG_ESUBREG
+#define REG_EBRACK  _REG_EBRACK
+#define REG_EPAREN  _REG_EPAREN
+#define REG_EBRACE  _REG_EBRACE
+#define REG_BADBR  _REG_BADBR
+#define REG_ERANGE  _REG_ERANGE
+#define REG_ESPACE  _REG_ESPACE
+#define REG_BADRPT  _REG_BADRPT
+#define REG_EEND  _REG_EEND
+#define REG_ESIZE  _REG_ESIZE
+#define REG_ERPAREN  _REG_ERPAREN
 
 /* struct re_pattern_buffer normally uses member names like `buffer'
    that POSIX does not allow.  In POSIX mode these members have names
@@ -555,7 +555,7 @@ extern reg_syntax_t re_set_syntax (reg_syntax_t __syntax);
    and syntax given by the global `re_syntax_options', into the buffer
    BUFFER.  Return NULL if successful, and an error string if not.  */
 extern const char *re_compile_pattern (const char *__pattern, size_t __length,
-				       struct re_pattern_buffer *__buffer);
+               struct re_pattern_buffer *__buffer);
 
 
 /* Compile a fastmap for the compiled pattern in BUFFER; used to
@@ -570,34 +570,34 @@ extern int re_compile_fastmap (struct re_pattern_buffer *__buffer);
    match, or -2 for an internal error.  Also return register
    information in REGS (if REGS and BUFFER->no_sub are nonzero).  */
 extern regoff_t re_search (struct re_pattern_buffer *__buffer,
-			   const char *__string, __re_idx_t __length,
-			   __re_idx_t __start, regoff_t __range,
-			   struct re_registers *__regs);
+         const char *__string, __re_idx_t __length,
+         __re_idx_t __start, regoff_t __range,
+         struct re_registers *__regs);
 
 
 /* Like `re_search', but search in the concatenation of STRING1 and
    STRING2.  Also, stop searching at index START + STOP.  */
 extern regoff_t re_search_2 (struct re_pattern_buffer *__buffer,
-			     const char *__string1, __re_idx_t __length1,
-			     const char *__string2, __re_idx_t __length2,
-			     __re_idx_t __start, regoff_t __range,
-			     struct re_registers *__regs,
-			     __re_idx_t __stop);
+           const char *__string1, __re_idx_t __length1,
+           const char *__string2, __re_idx_t __length2,
+           __re_idx_t __start, regoff_t __range,
+           struct re_registers *__regs,
+           __re_idx_t __stop);
 
 
 /* Like `re_search', but return how many characters in STRING the regexp
    in BUFFER matched, starting at position START.  */
 extern regoff_t re_match (struct re_pattern_buffer *__buffer,
-			  const char *__string, __re_idx_t __length,
-			  __re_idx_t __start, struct re_registers *__regs);
+        const char *__string, __re_idx_t __length,
+        __re_idx_t __start, struct re_registers *__regs);
 
 
 /* Relates to `re_match' as `re_search_2' relates to `re_search'.  */
 extern regoff_t re_match_2 (struct re_pattern_buffer *__buffer,
-			    const char *__string1, __re_idx_t __length1,
-			    const char *__string2, __re_idx_t __length2,
-			    __re_idx_t __start, struct re_registers *__regs,
-			    __re_idx_t __stop);
+          const char *__string1, __re_idx_t __length1,
+          const char *__string2, __re_idx_t __length2,
+          __re_idx_t __start, struct re_registers *__regs,
+          __re_idx_t __stop);
 
 
 /* Set REGS to hold NUM_REGS registers, storing them in STARTS and
@@ -613,9 +613,9 @@ extern regoff_t re_match_2 (struct re_pattern_buffer *__buffer,
    PATTERN_BUFFER will allocate its own register data, without
    freeing the old data.  */
 extern void re_set_registers (struct re_pattern_buffer *__buffer,
-			      struct re_registers *__regs,
-			      __re_size_t __num_regs,
-			      regoff_t *__starts, regoff_t *__ends);
+            struct re_registers *__regs,
+            __re_size_t __num_regs,
+            regoff_t *__starts, regoff_t *__ends);
 
 #if defined _REGEX_RE_COMP || defined _LIBC
 # ifndef _CRAY
@@ -643,9 +643,9 @@ extern int re_exec (const char *);
    sys/cdefs.h's definition of __restrict_arr, though, as it
    mishandles gcc -ansi -pedantic.  */
 #ifndef _Restrict_arr_
-# if ((199901L <= __STDC_VERSION__					\
-       || ((3 < __GNUC__ || (3 == __GNUC__ && 1 <= __GNUC_MINOR__))	\
-	   && !__STRICT_ANSI__))					\
+# if ((199901L <= __STDC_VERSION__          \
+       || ((3 < __GNUC__ || (3 == __GNUC__ && 1 <= __GNUC_MINOR__))  \
+     && !__STRICT_ANSI__))          \
       && !defined __GNUG__)
 #  define _Restrict_arr_ _Restrict_
 # else
@@ -655,22 +655,22 @@ extern int re_exec (const char *);
 
 /* POSIX compatibility.  */
 extern int regcomp (regex_t *_Restrict_ __preg,
-		    const char *_Restrict_ __pattern,
-		    int __cflags);
+        const char *_Restrict_ __pattern,
+        int __cflags);
 
 extern int regexec (const regex_t *_Restrict_ __preg,
-		    const char *_Restrict_ __string, size_t __nmatch,
-		    regmatch_t __pmatch[_Restrict_arr_],
-		    int __eflags);
+        const char *_Restrict_ __string, size_t __nmatch,
+        regmatch_t __pmatch[_Restrict_arr_],
+        int __eflags);
 
 extern size_t regerror (int __errcode, const regex_t *_Restrict_ __preg,
-			char *_Restrict_ __errbuf, size_t __errbuf_size);
+      char *_Restrict_ __errbuf, size_t __errbuf_size);
 
 extern void regfree (regex_t *__preg);
 
 
 #ifdef __cplusplus
 }
-#endif	/* C++ */
+#endif  /* C++ */
 
 #endif /* regex.h */

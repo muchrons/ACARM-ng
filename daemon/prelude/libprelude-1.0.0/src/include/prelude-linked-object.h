@@ -39,14 +39,14 @@ typedef struct {
 
 
 
-static inline void prelude_linked_object_del(prelude_linked_object_t *obj) 
+static inline void prelude_linked_object_del(prelude_linked_object_t *obj)
 {
         prelude_list_del(&obj->_list);
 }
 
 
 
-static inline void prelude_linked_object_del_init(prelude_linked_object_t *obj) 
+static inline void prelude_linked_object_del_init(prelude_linked_object_t *obj)
 {
         prelude_list_del(&obj->_list);
         prelude_list_init(&obj->_list);
@@ -54,14 +54,14 @@ static inline void prelude_linked_object_del_init(prelude_linked_object_t *obj)
 
 
 
-static inline void prelude_linked_object_add(prelude_list_t *head, prelude_linked_object_t *obj) 
+static inline void prelude_linked_object_add(prelude_list_t *head, prelude_linked_object_t *obj)
 {
         prelude_list_add(head, &obj->_list);
 }
 
 
 
-static inline void prelude_linked_object_add_tail(prelude_list_t *head, prelude_linked_object_t *obj) 
+static inline void prelude_linked_object_add_tail(prelude_list_t *head, prelude_linked_object_t *obj)
 {
         prelude_list_add_tail(head, &obj->_list);
 }

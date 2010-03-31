@@ -96,22 +96,22 @@ argz_create_sep (const char *str, int delim, char **pargz, size_t *pargz_len)
 
       argz = (char *) malloc (argz_len);
       if (!argz)
-	return ENOMEM;
+  return ENOMEM;
 
       for (p = str, q = argz; *p != EOS_CHAR; ++p)
-	{
-	  if (*p == delim)
-	    {
-	      /* Ignore leading delimiters, and fold consecutive
-		 delimiters in STR into a single '\0' in ARGZ.  */
-	      if ((q > argz) && (q[-1] != EOS_CHAR))
-		*q++ = EOS_CHAR;
-	      else
-		--argz_len;
-	    }
-	  else
-	    *q++ = *p;
-	}
+  {
+    if (*p == delim)
+      {
+        /* Ignore leading delimiters, and fold consecutive
+     delimiters in STR into a single '\0' in ARGZ.  */
+        if ((q > argz) && (q[-1] != EOS_CHAR))
+    *q++ = EOS_CHAR;
+        else
+    --argz_len;
+      }
+    else
+      *q++ = *p;
+  }
       /* Copy terminating EOS_CHAR.  */
       *q = *p;
     }
@@ -147,10 +147,10 @@ argz_insert (char **pargz, size_t *pargz_len, char *before, const char *entry)
     --before;
 
   {
-    size_t entry_len	= 1+ strlen (entry);
-    size_t argz_len	= *pargz_len + entry_len;
-    size_t offset	= before - *pargz;
-    char   *argz	= (char *) realloc (*pargz, argz_len);
+    size_t entry_len  = 1+ strlen (entry);
+    size_t argz_len  = *pargz_len + entry_len;
+    size_t offset  = before - *pargz;
+    char   *argz  = (char *) realloc (*pargz, argz_len);
 
     if (!argz)
       return ENOMEM;
@@ -182,28 +182,28 @@ argz_next (char *argz, size_t argz_len, const char *entry)
   if (entry)
     {
       /* Either ARGZ/ARGZ_LEN is empty, or ENTRY points into an address
-	 within the ARGZ vector.  */
+   within the ARGZ vector.  */
       assert ((!argz && !argz_len)
-	      || ((argz <= entry) && (entry < (argz + argz_len))));
+        || ((argz <= entry) && (entry < (argz + argz_len))));
 
       /* Move to the char immediately after the terminating
-	 '\0' of ENTRY.  */
+   '\0' of ENTRY.  */
       entry = 1+ strchr (entry, EOS_CHAR);
 
       /* Return either the new ENTRY, or else NULL if ARGZ is
-	 exhausted.  */
+   exhausted.  */
       return (entry >= argz + argz_len) ? 0 : (char *) entry;
     }
   else
     {
       /* This should probably be flagged as a programmer error,
-	 since starting an argz_next loop with the iterator set
-	 to ARGZ is safer.  To preserve semantics, handle the NULL
-	 case by returning the start of ARGZ (if any).  */
+   since starting an argz_next loop with the iterator set
+   to ARGZ is safer.  To preserve semantics, handle the NULL
+   case by returning the start of ARGZ (if any).  */
       if (argz_len > 0)
-	return argz;
+  return argz;
       else
-	return 0;
+  return 0;
     }
 }
 
@@ -215,12 +215,12 @@ argz_stringify (char *argz, size_t argz_len, int sep)
 
   if (sep)
     {
-      --argz_len;		/* don't stringify the terminating EOS */
+      --argz_len;    /* don't stringify the terminating EOS */
       while (--argz_len > 0)
-	{
-	  if (argz[argz_len] == EOS_CHAR)
-	    argz[argz_len] = sep;
-	}
+  {
+    if (argz[argz_len] == EOS_CHAR)
+      argz[argz_len] = sep;
+  }
     }
 }
 

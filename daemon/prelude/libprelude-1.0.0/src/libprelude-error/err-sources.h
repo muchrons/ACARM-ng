@@ -9,12 +9,12 @@
    modify it under the terms of the GNU Lesser General Public License
    as published by the Free Software Foundation; either version 2.1 of
    the License, or (at your option) any later version.
- 
+
    libgpg-error is distributed in the hope that it will be useful, but
    WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
    Lesser General Public License for more details.
- 
+
    You should have received a copy of the GNU Lesser General Public
    License along with libgpg-error; if not, write to the Free
    Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
@@ -24,7 +24,7 @@
 /* The purpose of this complex string table is to produce
    optimal code with a minimum of relocations.  */
 
-static const char msgstr[] = 
+static const char msgstr[] =
   gettext_noop ("Unspecified source") "\0"
   gettext_noop ("prelude-io") "\0"
   gettext_noop ("prelude-message") "\0"

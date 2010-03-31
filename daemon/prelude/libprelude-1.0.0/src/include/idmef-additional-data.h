@@ -27,7 +27,7 @@
 #ifdef __cplusplus
  extern "C" {
 #endif
-         
+
 /*
  * basic type
  */
@@ -70,9 +70,9 @@ int idmef_additional_data_new_byte_string_dup(idmef_additional_data_t **ad, cons
 int idmef_additional_data_set_byte_string_dup(idmef_additional_data_t *ad, const unsigned char *data, size_t len);
 int idmef_additional_data_new_byte_string_nodup(idmef_additional_data_t **ad, unsigned char *data, size_t len);
 int idmef_additional_data_set_byte_string_nodup(idmef_additional_data_t *ad, unsigned char *data, size_t len);
-         
 
-         
+
+
 /*
  * copy / clone / destroy
  */
@@ -98,5 +98,5 @@ int idmef_additional_data_data_to_string(idmef_additional_data_t *ad, prelude_st
 #ifdef __cplusplus
  }
 #endif
-         
+
 #endif /* _LIBPRELUDE_IDMEF_DATA_H */

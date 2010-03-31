@@ -34,11 +34,11 @@ or obtained by writing to the Free Software Foundation, Inc.,
 #define RETURN_SUCCESS 0
 #define RETURN_FAILURE 1
 
-static void *	loader_callback (SList *item, void *userdata);
+static void *  loader_callback (SList *item, void *userdata);
 
 /* A list of all the dlloaders we know about, each stored as a boxed
    SList item:  */
-static	SList    *loaders		= 0;
+static  SList    *loaders    = 0;
 
 
 /* Return NULL, unless the loader in this ITEM has a matching name,
@@ -48,7 +48,7 @@ static void *
 loader_callback (SList *item, void *userdata)
 {
   const lt_dlvtable *vtable = (const lt_dlvtable *) item->userdata;
-  const char *	    name    = (const char *) userdata;
+  const char *      name    = (const char *) userdata;
 
   assert (vtable);
 
@@ -63,12 +63,12 @@ lt_dlloader_add (const lt_dlvtable *vtable)
 {
   SList *item;
 
-  if ((vtable == 0)	/* diagnose invalid vtable fields */
+  if ((vtable == 0)  /* diagnose invalid vtable fields */
       || (vtable->module_open == 0)
       || (vtable->module_close == 0)
       || (vtable->find_sym == 0)
       || ((vtable->priority != LT_DLLOADER_PREPEND) &&
-	  (vtable->priority != LT_DLLOADER_APPEND)))
+    (vtable->priority != LT_DLLOADER_APPEND)))
     {
       LT__SETERROR (INVALID_LOADER);
       return RETURN_FAILURE;
@@ -80,7 +80,7 @@ lt_dlloader_add (const lt_dlvtable *vtable)
       (*lt__alloc_die) ();
 
       /* Let the caller know something went wrong if lt__alloc_die
-	 doesn't abort.  */
+   doesn't abort.  */
       return RETURN_FAILURE;
     }
 
@@ -119,7 +119,7 @@ lt_dlloader_dump (void)
       const lt_dlvtable *head = (const lt_dlvtable *) loaders->userdata;
       fprintf (stderr, "%s", (head && head->name) ? head->name : "(null)");
       if (slist_tail (loaders))
-	slist_foreach (slist_tail (loaders), loader_dump_callback, NULL);
+  slist_foreach (slist_tail (loaders), loader_dump_callback, NULL);
     }
   fprintf (stderr, "\n");
 }
@@ -137,7 +137,7 @@ lt_dlloader_next (lt_dlloader loader)
 
 /* Non-destructive unboxing of a loader.  */
 const lt_dlvtable *
-lt_dlloader_get	(lt_dlloader loader)
+lt_dlloader_get  (lt_dlloader loader)
 {
   return (const lt_dlvtable *) (loader ? ((SList *) loader)->userdata : NULL);
 }
@@ -152,12 +152,12 @@ lt_dlloader_get	(lt_dlloader loader)
 lt_dlvtable *
 lt_dlloader_remove (char *name)
 {
-  const lt_dlvtable *	vtable	= lt_dlloader_find (name);
-  static const char	id_string[] = "lt_dlloader_remove";
-  lt_dlinterface_id	iface;
-  lt_dlhandle		handle = 0;
-  int			in_use = 0;
-  int			in_use_by_resident = 0;
+  const lt_dlvtable *  vtable  = lt_dlloader_find (name);
+  static const char  id_string[] = "lt_dlloader_remove";
+  lt_dlinterface_id  iface;
+  lt_dlhandle    handle = 0;
+  int      in_use = 0;
+  int      in_use_by_resident = 0;
 
   if (!vtable)
     {
@@ -171,17 +171,17 @@ lt_dlloader_remove (char *name)
     {
       lt_dlhandle cur = handle;
       if (cur->vtable == vtable)
-	{
-	  in_use = 1;
-	  if (lt_dlisresident (handle))
-	    in_use_by_resident = 1;
-	}
+  {
+    in_use = 1;
+    if (lt_dlisresident (handle))
+      in_use_by_resident = 1;
+  }
     }
   lt_dlinterface_free (iface);
   if (in_use)
     {
       if (!in_use_by_resident)
-	LT__SETERROR (REMOVE_LOADER);
+  LT__SETERROR (REMOVE_LOADER);
       return 0;
     }
 
@@ -189,12 +189,12 @@ lt_dlloader_remove (char *name)
   if (vtable && vtable->dlloader_exit)
     {
       if ((*vtable->dlloader_exit) (vtable->dlloader_data) != 0)
-	{
-	  /* If there is an exit function, and it returns non-zero
-	     then it must set an error, and we will not remove it
-	     from the list.  */
-	  return 0;
-	}
+  {
+    /* If there is an exit function, and it returns non-zero
+       then it must set an error, and we will not remove it
+       from the list.  */
+    return 0;
+  }
     }
 
   /* If we got this far, remove the loader from our global list.  */

@@ -20,7 +20,7 @@
 
 #define TS_MASK         0xfffff000      /* mask to usec, for time stamps */
 #define TS_ROUNDBIT     0x00000800      /* round at this bit */
-#define	JAN_1970	0x83aa7e80	/* 2208988800 1970 - 1900 in seconds */
+#define  JAN_1970  0x83aa7e80  /* 2208988800 1970 - 1900 in seconds */
 
 
 typedef int32_t s_fp;
@@ -95,7 +95,7 @@ extern const unsigned long ustotshi[];
  */
 #define TV_SHIFT        3
 #define TV_ROUNDBIT     0x4
-    
+
 
 /*
  * Convert a time stamp fraction to microseconds.  The time stamp

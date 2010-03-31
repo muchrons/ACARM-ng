@@ -35,20 +35,20 @@
 static int get_path_infos(const char *path, struct stat *st, int *flag)
 {
         int ret;
-        
+
         ret = stat(path, st);
         if ( ret < 0 ) {
                 *flag = FTW_NS;
                 return -1;
         }
-        
+
         if ( S_ISREG(st->st_mode) )
                 *flag = FTW_F;
-                
+
         else if ( S_ISDIR(st->st_mode) )
                 *flag = FTW_D;
 
-#ifdef S_ISLNK        
+#ifdef S_ISLNK
         else if ( S_ISLNK(st->st_mode) )
                 *flag = FTW_SL;
 #endif
@@ -59,7 +59,7 @@ static int get_path_infos(const char *path, struct stat *st, int *flag)
 
 
 int ftw(const char *dir,
-        int (*fn)(const char *file, const struct stat *sb, int flag), int nopenfd) 
+        int (*fn)(const char *file, const struct stat *sb, int flag), int nopenfd)
 {
         DIR *d;
         size_t len;
@@ -71,7 +71,7 @@ int ftw(const char *dir,
         ret = get_path_infos(dir, &st, &flag);
         if ( ret < 0 )
                 return -1;
-                        
+
         d = opendir(dir);
         if ( ! d )
                 return (errno == EACCES) ? fn(dir, &st, FTW_DNR) : -1;
@@ -81,19 +81,19 @@ int ftw(const char *dir,
                 closedir(d);
                 return ret;
         }
-        
-        while ( (de = readdir(d)) ) {          
+
+        while ( (de = readdir(d)) ) {
 
                 len = snprintf(filename, sizeof(filename), "%s/%s", dir, de->d_name);
                 if ( len < 0 || len >= sizeof(filename) ) {
                         errno = ENAMETOOLONG;
                         return -1;
                 }
-                
+
                 ret = get_path_infos(filename, &st, &flag);
                 if ( ret < 0 )
                         break;
-                                
+
                 if ( flag == FTW_D ) {
                         if ( strcmp(de->d_name, "..") == 0 || strcmp(de->d_name, ".") == 0 )
                                 continue;
@@ -101,10 +101,10 @@ int ftw(const char *dir,
                         ret = ftw(filename, fn, nopenfd);
                         if ( ret < 0 )
                                 break;
-                        
+
                         continue;
                 }
-                
+
                 ret = fn(filename, (flag == FTW_NS) ? NULL : &st, flag);
                 if ( ret < 0 )
                         break;

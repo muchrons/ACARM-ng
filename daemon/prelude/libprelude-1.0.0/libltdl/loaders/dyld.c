@@ -36,7 +36,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
    collisions when the loader code is statically linked into libltdl.
    Use the "<module_name>_LTX_" prefix so that the symbol addresses can
    be fetched from the preloaded symbol list by lt_dlsym():  */
-#define get_vtable	dyld_LTX_get_vtable
+#define get_vtable  dyld_LTX_get_vtable
 
 LT_BEGIN_C_DECLS
 LT_SCOPE lt_dlvtable *get_vtable (lt_user_data loader_data);
@@ -45,13 +45,13 @@ LT_END_C_DECLS
 
 /* Boilerplate code to set up the vtable for hooking this loader into
    libltdl's loader list:  */
-static int	 vl_init  (lt_user_data loader_data);
-static int	 vl_exit  (lt_user_data loader_data);
+static int   vl_init  (lt_user_data loader_data);
+static int   vl_exit  (lt_user_data loader_data);
 static lt_module vm_open  (lt_user_data loader_data, const char *filename,
                            lt_dladvise advise);
-static int	 vm_close (lt_user_data loader_data, lt_module module);
-static void *	 vm_sym   (lt_user_data loader_data, lt_module module,
-			  const char *symbolname);
+static int   vm_close (lt_user_data loader_data, lt_module module);
+static void *   vm_sym   (lt_user_data loader_data, lt_module module,
+        const char *symbolname);
 
 static lt_dlvtable *vtable = 0;
 
@@ -68,15 +68,15 @@ get_vtable (lt_user_data loader_data)
 
   if (vtable && !vtable->name)
     {
-      vtable->name		= "lt_dyld";
-      vtable->sym_prefix	= "_";
-      vtable->dlloader_init	= vl_init;
-      vtable->module_open	= vm_open;
-      vtable->module_close	= vm_close;
-      vtable->find_sym		= vm_sym;
-      vtable->dlloader_exit	= vl_exit;
-      vtable->dlloader_data	= loader_data;
-      vtable->priority		= LT_DLLOADER_APPEND;
+      vtable->name    = "lt_dyld";
+      vtable->sym_prefix  = "_";
+      vtable->dlloader_init  = vl_init;
+      vtable->module_open  = vm_open;
+      vtable->module_close  = vm_close;
+      vtable->find_sym    = vm_sym;
+      vtable->dlloader_exit  = vl_exit;
+      vtable->dlloader_data  = loader_data;
+      vtable->priority    = LT_DLLOADER_APPEND;
     }
 
   if (vtable && (vtable->dlloader_data != loader_data))
@@ -149,17 +149,17 @@ get_vtable (lt_user_data loader_data)
 #  define NSLOOKUPSYMBOLINIMAGE_OPTION_RETURN_ON_ERROR    0x4
 #endif
 
-#define LT__SYMLOOKUP_OPTS	(NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_NOW \
-				| NSLOOKUPSYMBOLINIMAGE_OPTION_RETURN_ON_ERROR)
+#define LT__SYMLOOKUP_OPTS  (NSLOOKUPSYMBOLINIMAGE_OPTION_BIND_NOW \
+        | NSLOOKUPSYMBOLINIMAGE_OPTION_RETURN_ON_ERROR)
 
 #if defined(__BIG_ENDIAN__)
-#  define LT__MAGIC	MH_MAGIC
+#  define LT__MAGIC  MH_MAGIC
 #else
-#  define LT__MAGIC	MH_CIGAM
+#  define LT__MAGIC  MH_CIGAM
 #endif
 
 #define DYLD__SETMYERROR(errmsg)    LT__SETERRORSTR (dylderror (errmsg))
-#define DYLD__SETERROR(errcode)	    DYLD__SETMYERROR (LT__STRERROR (errcode))
+#define DYLD__SETERROR(errcode)      DYLD__SETMYERROR (LT__STRERROR (errcode))
 
 typedef struct mach_header mach_header;
 typedef struct dylib_command dylib_command;
@@ -170,16 +170,16 @@ static const char *lt__header_get_instnam (const mach_header *mh);
 static const mach_header *lt__match_loadedlib (const char *name);
 static NSSymbol lt__linkedlib_symbol (const char *symname, const mach_header *mh);
 
-static const mach_header *(*lt__addimage)	(const char *image_name,
-						 unsigned long options) = 0;
-static NSSymbol	(*lt__image_symbol)		(const mach_header *image,
-						 const char *symbolName,
-						 unsigned long options) = 0;
-static enum DYLD_BOOL (*lt__image_symbol_p)	(const mach_header *image,
-						 const char *symbolName) = 0;
-static enum DYLD_BOOL (*lt__module_export)	(NSModule module) = 0;
+static const mach_header *(*lt__addimage)  (const char *image_name,
+             unsigned long options) = 0;
+static NSSymbol  (*lt__image_symbol)    (const mach_header *image,
+             const char *symbolName,
+             unsigned long options) = 0;
+static enum DYLD_BOOL (*lt__image_symbol_p)  (const mach_header *image,
+             const char *symbolName) = 0;
+static enum DYLD_BOOL (*lt__module_export)  (NSModule module) = 0;
 
-static int dyld_cannot_close				  = 0;
+static int dyld_cannot_close          = 0;
 
 
 /* A function called through the vtable when this loader is no
@@ -200,21 +200,21 @@ vl_init (lt_user_data loader_data)
   if (! dyld_cannot_close)
     {
       if (!_dyld_present ())
-	{
-	  ++errors;
-	}
+  {
+    ++errors;
+  }
       else
-	{
-	  (void) _dyld_func_lookup ("__dyld_NSAddImage",
-				    (unsigned long*) &lt__addimage);
-	  (void) _dyld_func_lookup ("__dyld_NSLookupSymbolInImage",
-				    (unsigned long*)&lt__image_symbol);
-	  (void) _dyld_func_lookup ("__dyld_NSIsSymbolNameDefinedInImage",
-				    (unsigned long*) &lt__image_symbol_p);
-	  (void) _dyld_func_lookup ("__dyld_NSMakePrivateModulePublic",
-				    (unsigned long*) &lt__module_export);
-	  dyld_cannot_close = lt_dladderror ("can't close a dylib");
-	}
+  {
+    (void) _dyld_func_lookup ("__dyld_NSAddImage",
+            (unsigned long*) &lt__addimage);
+    (void) _dyld_func_lookup ("__dyld_NSLookupSymbolInImage",
+            (unsigned long*)&lt__image_symbol);
+    (void) _dyld_func_lookup ("__dyld_NSIsSymbolNameDefinedInImage",
+            (unsigned long*) &lt__image_symbol_p);
+    (void) _dyld_func_lookup ("__dyld_NSMakePrivateModulePublic",
+            (unsigned long*) &lt__module_export);
+    dyld_cannot_close = lt_dladderror ("can't close a dylib");
+  }
     }
 
   return errors;
@@ -240,22 +240,22 @@ vm_open (lt_user_data loader_data, const char *filename,
     {
     case NSObjectFileImageSuccess:
       module = NSLinkModule (ofi, filename, NSLINKMODULE_OPTION_RETURN_ON_ERROR
-			     		    | NSLINKMODULE_OPTION_PRIVATE
-			     		    | NSLINKMODULE_OPTION_BINDNOW);
+                   | NSLINKMODULE_OPTION_PRIVATE
+                   | NSLINKMODULE_OPTION_BINDNOW);
       NSDestroyObjectFileImage (ofi);
 
       if (module)
-	{
-	  lt__module_export (module);
-	}
+  {
+    lt__module_export (module);
+  }
       break;
 
     case NSObjectFileImageInappropriateFile:
       if (lt__image_symbol_p && lt__image_symbol)
-	{
-	  module = (lt_module) lt__addimage(filename,
-					    NSADDIMAGE_OPTION_RETURN_ON_ERROR);
-	}
+  {
+    module = (lt_module) lt__addimage(filename,
+              NSADDIMAGE_OPTION_RETURN_ON_ERROR);
+  }
       break;
 
     case NSObjectFileImageFailure:
@@ -287,30 +287,30 @@ vm_close (lt_user_data loader_data, lt_module module)
       const mach_header *mh = (const mach_header *) module;
       int flags = 0;
       if (mh->magic == LT__MAGIC)
-	{
-	  lt_dlseterror (dyld_cannot_close);
-	  ++errors;
-	}
+  {
+    lt_dlseterror (dyld_cannot_close);
+    ++errors;
+  }
       else
-	{
-	  /* Currently, if a module contains c++ static destructors and it
-	     is unloaded, we get a segfault in atexit(), due to compiler and
-	     dynamic loader differences of opinion, this works around that.  */
-	  if ((const struct section *) NULL !=
-	      getsectbynamefromheader (lt__nsmodule_get_header (module),
-				       "__DATA", "__mod_term_func"))
-	    {
-	      flags |= NSUNLINKMODULE_OPTION_KEEP_MEMORY_MAPPED;
-	    }
+  {
+    /* Currently, if a module contains c++ static destructors and it
+       is unloaded, we get a segfault in atexit(), due to compiler and
+       dynamic loader differences of opinion, this works around that.  */
+    if ((const struct section *) NULL !=
+        getsectbynamefromheader (lt__nsmodule_get_header (module),
+               "__DATA", "__mod_term_func"))
+      {
+        flags |= NSUNLINKMODULE_OPTION_KEEP_MEMORY_MAPPED;
+      }
 #if defined(__ppc__)
-	  flags |= NSUNLINKMODULE_OPTION_RESET_LAZY_REFERENCES;
+    flags |= NSUNLINKMODULE_OPTION_RESET_LAZY_REFERENCES;
 #endif
-	  if (!NSUnLinkModule (module, flags))
-	    {
-	      DYLD__SETERROR (CANNOT_CLOSE);
-	      ++errors;
-	    }
-	}
+    if (!NSUnLinkModule (module, flags))
+      {
+        DYLD__SETERROR (CANNOT_CLOSE);
+        ++errors;
+      }
+  }
     }
 
   return errors;
@@ -335,12 +335,12 @@ vm_sym (lt_user_data loader_data, lt_module module, const char *name)
   if (mh->magic == LT__MAGIC)
     {
       if (lt__image_symbol_p && lt__image_symbol)
-	{
-	  if (lt__image_symbol_p (mh, name))
-	    {
-	      nssym = lt__image_symbol (mh, name, LT__SYMLOOKUP_OPTS);
-	    }
-	}
+  {
+    if (lt__image_symbol_p (mh, name))
+      {
+        nssym = lt__image_symbol (mh, name, LT__SYMLOOKUP_OPTS);
+      }
+  }
 
     }
   else
@@ -353,9 +353,9 @@ vm_sym (lt_user_data loader_data, lt_module module, const char *name)
       strncpy (saveError, dylderror (LT__STRERROR (SYMBOL_NOT_FOUND)), 255);
       saveError[255] = 0;
       if (!mh)
-	{
-	  mh = (mach_header *)lt__nsmodule_get_header (module);
-	}
+  {
+    mh = (mach_header *)lt__nsmodule_get_header (module);
+  }
       nssym = lt__linkedlib_symbol (name, mh);
     }
 
@@ -407,10 +407,10 @@ lt__nsmodule_get_header (NSModule module)
     {
       --i;
       if (strneq (_dyld_get_image_name (i), modname))
-	{
-	  mh = _dyld_get_image_header (i);
-	  break;
-	}
+  {
+    mh = _dyld_get_image_header (i);
+    break;
+  }
     }
 
   return mh;
@@ -433,10 +433,10 @@ lt__header_get_instnam (const mach_header *mh)
 
       lc = (struct load_command*) (((unsigned long) mh) + offset);
       if (LC_ID_DYLIB == lc->cmd)
-	{
-	  result=(char*)(((dylib_command*) lc)->dylib.name.offset +
-			 (unsigned long) lc);
-	}
+  {
+    result=(char*)(((dylib_command*) lc)->dylib.name.offset +
+       (unsigned long) lc);
+  }
       offset += lc->cmdsize;
     }
 
@@ -446,7 +446,7 @@ lt__header_get_instnam (const mach_header *mh)
 static const mach_header *
 lt__match_loadedlib (const char *name)
 {
-  const mach_header *mh	= 0;
+  const mach_header *mh  = 0;
   int i = _dyld_image_count();
 
   while (i > 0)
@@ -456,10 +456,10 @@ lt__match_loadedlib (const char *name)
       --i;
       id = lt__header_get_instnam (_dyld_get_image_header (i));
       if (id && strneq (id, name))
-	{
-	  mh = _dyld_get_image_header (i);
-	  break;
-	}
+  {
+    mh = _dyld_get_image_header (i);
+    break;
+  }
     }
 
   return mh;
@@ -478,33 +478,33 @@ lt__linkedlib_symbol (const char *symname, const mach_header *mh)
       int j;
 
       for (j = 0; j < mh->ncmds; j++)
-	{
-	  lc = (struct load_command*) (((unsigned long) mh) + offset);
-	  if ((LC_LOAD_DYLIB == lc->cmd) || (LC_LOAD_WEAK_DYLIB == lc->cmd))
-	    {
-	      unsigned long base = ((dylib_command *) lc)->dylib.name.offset;
-	      char *name = (char *) (base + (unsigned long) lc);
-	      const mach_header *mh1 = lt__match_loadedlib (name);
+  {
+    lc = (struct load_command*) (((unsigned long) mh) + offset);
+    if ((LC_LOAD_DYLIB == lc->cmd) || (LC_LOAD_WEAK_DYLIB == lc->cmd))
+      {
+        unsigned long base = ((dylib_command *) lc)->dylib.name.offset;
+        char *name = (char *) (base + (unsigned long) lc);
+        const mach_header *mh1 = lt__match_loadedlib (name);
 
-	      if (!mh1)
-		{
-		  /* Maybe NSAddImage can find it */
-		  mh1 = lt__addimage (name,
-				      NSADDIMAGE_OPTION_RETURN_ONLY_IF_LOADED
-				      | NSADDIMAGE_OPTION_WITH_SEARCHING
-				      | NSADDIMAGE_OPTION_RETURN_ON_ERROR);
-		}
+        if (!mh1)
+    {
+      /* Maybe NSAddImage can find it */
+      mh1 = lt__addimage (name,
+              NSADDIMAGE_OPTION_RETURN_ONLY_IF_LOADED
+              | NSADDIMAGE_OPTION_WITH_SEARCHING
+              | NSADDIMAGE_OPTION_RETURN_ON_ERROR);
+    }
 
-	      if (mh1)
-		{
-		  symbol = lt__image_symbol (mh1, symname, LT__SYMLOOKUP_OPTS);
-		  if (symbol)
-		    break;
-		}
-	    }
+        if (mh1)
+    {
+      symbol = lt__image_symbol (mh1, symname, LT__SYMLOOKUP_OPTS);
+      if (symbol)
+        break;
+    }
+      }
 
-	  offset += lc->cmdsize;
-	}
+    offset += lc->cmdsize;
+  }
     }
 
   return symbol;

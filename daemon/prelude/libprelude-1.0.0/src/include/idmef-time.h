@@ -88,9 +88,9 @@ int idmef_time_to_string(const idmef_time_t *time, prelude_string_t *out);
 int idmef_time_to_ntpstamp(const idmef_time_t *time, prelude_string_t *out);
 
 int idmef_time_compare(const idmef_time_t *time1, const idmef_time_t *time2);
-         
+
 #ifdef __cplusplus
  }
 #endif
-         
+
 #endif /* _LIBPRELUDE_IDMEF_TIME_H */

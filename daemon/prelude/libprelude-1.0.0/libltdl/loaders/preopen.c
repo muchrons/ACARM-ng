@@ -36,7 +36,7 @@ or obtained by writing to the Free Software Foundation, Inc.,
    collisions when the loader code is statically linked into libltdl.
    Use the "<module_name>_LTX_" prefix so that the symbol addresses can
    be fetched from the preloaded symbol list by lt_dlsym():  */
-#define get_vtable	preopen_LTX_get_vtable
+#define get_vtable  preopen_LTX_get_vtable
 
 LT_BEGIN_C_DECLS
 LT_SCOPE lt_dlvtable *get_vtable (lt_user_data loader_data);
@@ -45,13 +45,13 @@ LT_END_C_DECLS
 
 /* Boilerplate code to set up the vtable for hooking this loader into
    libltdl's loader list:  */
-static int	 vl_init  (lt_user_data loader_data);
-static int	 vl_exit  (lt_user_data loader_data);
+static int   vl_init  (lt_user_data loader_data);
+static int   vl_exit  (lt_user_data loader_data);
 static lt_module vm_open  (lt_user_data loader_data, const char *filename,
                            lt_dladvise advise);
-static int	 vm_close (lt_user_data loader_data, lt_module module);
-static void *	 vm_sym   (lt_user_data loader_data, lt_module module,
-			  const char *symbolname);
+static int   vm_close (lt_user_data loader_data, lt_module module);
+static void *   vm_sym   (lt_user_data loader_data, lt_module module,
+        const char *symbolname);
 
 static lt_dlvtable *vtable = 0;
 
@@ -68,15 +68,15 @@ get_vtable (lt_user_data loader_data)
 
   if (vtable && !vtable->name)
     {
-      vtable->name		= "lt_preopen";
-      vtable->sym_prefix	= 0;
-      vtable->module_open	= vm_open;
-      vtable->module_close	= vm_close;
-      vtable->find_sym		= vm_sym;
-      vtable->dlloader_init	= vl_init;
-      vtable->dlloader_exit	= vl_exit;
-      vtable->dlloader_data	= loader_data;
-      vtable->priority		= LT_DLLOADER_PREPEND;
+      vtable->name    = "lt_preopen";
+      vtable->sym_prefix  = 0;
+      vtable->module_open  = vm_open;
+      vtable->module_close  = vm_close;
+      vtable->find_sym    = vm_sym;
+      vtable->dlloader_init  = vl_init;
+      vtable->dlloader_exit  = vl_exit;
+      vtable->dlloader_data  = loader_data;
+      vtable->priority    = LT_DLLOADER_PREPEND;
     }
 
   if (vtable && (vtable->dlloader_data != loader_data))
@@ -105,10 +105,10 @@ static int add_symlist   (const lt_dlsymlist *symlist);
 static int free_symlists (void);
 
 /* The start of the symbol lists chain.  */
-static symlist_chain	       *preloaded_symlists		= 0;
+static symlist_chain         *preloaded_symlists    = 0;
 
 /* A symbol list preloaded before lt_init() was called.  */
-static const	lt_dlsymlist   *default_preloaded_symbols	= 0;
+static const  lt_dlsymlist   *default_preloaded_symbols  = 0;
 
 
 /* A function called through the vtable to initialise this loader.  */
@@ -146,7 +146,7 @@ vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
          lt_dladvise LT__UNUSED advise)
 {
   symlist_chain *lists;
-  lt_module	 module = 0;
+  lt_module   module = 0;
 
   if (!preloaded_symlists)
     {
@@ -167,22 +167,22 @@ vm_open (lt_user_data LT__UNUSED loader_data, const char *filename,
     {
       const lt_dlsymlist *symbol;
       for (symbol= lists->symlist; symbol->name; ++symbol)
-	{
-	  if (!symbol->address && streq (symbol->name, filename))
-	    {
-	      /* If the next symbol's name and address is 0, it means
-		 the module just contains the originator and no symbols.
-		 In this case we pretend that we never saw the module and
-	         hope that some other loader will be able to load the module
-	         and have access to its symbols */
-	      const lt_dlsymlist *next_symbol = symbol +1;
-	      if (next_symbol->address && next_symbol->name)
-		{
-	          module = (lt_module) lists->symlist;
-	          goto done;
-		}
-	    }
-	}
+  {
+    if (!symbol->address && streq (symbol->name, filename))
+      {
+        /* If the next symbol's name and address is 0, it means
+     the module just contains the originator and no symbols.
+     In this case we pretend that we never saw the module and
+           hope that some other loader will be able to load the module
+           and have access to its symbols */
+        const lt_dlsymlist *next_symbol = symbol +1;
+        if (next_symbol->address && next_symbol->name)
+    {
+            module = (lt_module) lists->symlist;
+            goto done;
+    }
+      }
+  }
     }
 
   LT__SETERROR (FILE_NOT_FOUND);
@@ -208,16 +208,16 @@ vm_close (lt_user_data LT__UNUSED loader_data, lt_module LT__UNUSED module)
 static void *
 vm_sym (lt_user_data LT__UNUSED loader_data, lt_module module, const char *name)
 {
-  lt_dlsymlist	       *symbol = (lt_dlsymlist*) module;
+  lt_dlsymlist         *symbol = (lt_dlsymlist*) module;
 
-  symbol +=2;			/* Skip header (originator then libname). */
+  symbol +=2;      /* Skip header (originator then libname). */
 
   while (symbol->name)
     {
       if (streq (symbol->name, name))
-	{
-	  return symbol->address;
-	}
+  {
+    return symbol->address;
+  }
 
     ++symbol;
   }
@@ -256,7 +256,7 @@ static int
 add_symlist (const lt_dlsymlist *symlist)
 {
   symlist_chain *lists;
-  int		 errors   = 0;
+  int     errors   = 0;
 
   /* Search for duplicate entries:  */
   for (lists = preloaded_symlists;
@@ -269,15 +269,15 @@ add_symlist (const lt_dlsymlist *symlist)
       symlist_chain *tmp = (symlist_chain *) lt__zalloc (sizeof *tmp);
 
       if (tmp)
-	{
-	  tmp->symlist = symlist;
-	  tmp->next = preloaded_symlists;
-	  preloaded_symlists = tmp;
-	}
+  {
+    tmp->symlist = symlist;
+    tmp->next = preloaded_symlists;
+    preloaded_symlists = tmp;
+  }
       else
-	{
-	  ++errors;
-	}
+  {
+    ++errors;
+  }
     }
 
   return errors;
@@ -313,9 +313,9 @@ lt_dlpreload (const lt_dlsymlist *preloaded)
       free_symlists();
 
       if (default_preloaded_symbols)
-	{
-	  errors = lt_dlpreload (default_preloaded_symbols);
-	}
+  {
+    errors = lt_dlpreload (default_preloaded_symbols);
+  }
     }
 
   return errors;
@@ -329,8 +329,8 @@ int
 lt_dlpreload_open (const char *originator, lt_dlpreload_callback_func *func)
 {
   symlist_chain *list;
-  int		 errors = 0;
-  int		 found  = 0;
+  int     errors = 0;
+  int     found  = 0;
 
   /* For each symlist in the chain...  */
   for (list = preloaded_symlists; list; list = list->next)
@@ -338,31 +338,31 @@ lt_dlpreload_open (const char *originator, lt_dlpreload_callback_func *func)
       /* ...that was preloaded by the requesting ORIGINATOR... */
       if ((originator && streq (list->symlist->name, originator))
           || (!originator && streq (list->symlist->name, "@PROGRAM@")))
-	{
-	  const lt_dlsymlist *symbol;
-	  unsigned int idx = 0;
+  {
+    const lt_dlsymlist *symbol;
+    unsigned int idx = 0;
 
-	  ++found;
+    ++found;
 
-	  /* ...load the symbols per source compilation unit:
-	     (we preincrement the index to skip over the originator entry)  */
-	  while ((symbol = &list->symlist[++idx])->name != 0)
-	    {
-	      if ((symbol->address == 0)
-		  && (strneq (symbol->name, "@PROGRAM@")))
-		{
-		  lt_dlhandle handle = lt_dlopen (symbol->name);
-		  if (handle == 0)
-		    {
-		      ++errors;
-		    }
-		  else
-		    {
-		      errors += (*func) (handle);
-		    }
-		}
-	    }
-	}
+    /* ...load the symbols per source compilation unit:
+       (we preincrement the index to skip over the originator entry)  */
+    while ((symbol = &list->symlist[++idx])->name != 0)
+      {
+        if ((symbol->address == 0)
+      && (strneq (symbol->name, "@PROGRAM@")))
+    {
+      lt_dlhandle handle = lt_dlopen (symbol->name);
+      if (handle == 0)
+        {
+          ++errors;
+        }
+      else
+        {
+          errors += (*func) (handle);
+        }
+    }
+      }
+  }
     }
 
   if (!found)
