@@ -84,6 +84,33 @@ public:
    */
   void prune(void);
 
+  /** \brief check if alert is in cache
+   *  \param alert alert to be checked
+   *  \return true if alert is in cache
+   */
+  bool has(AlertPtrNN alert)
+  {
+    return alertsIDs_.hasImpl(alert);
+  }
+
+  /** \brief check if meta-alert is in cache
+   *  \param ma meta-alert to be checked
+   *  \return true if alert is in cache
+   */
+  bool has(MetaAlertPtrNN ma)
+  {
+    return metaAlertsIDs_.hasImpl(ma);
+  }
+
+
+  /** \brief check if host is in cache
+   *  \param host host to be checked
+   *  \return true if host is in cache
+   */
+  bool has(HostPtrNN host)
+  {
+    return hostsIDs_.hasImpl(host);
+  }
 private:
   StorageDataCache<Persistency::Host>      hostsIDs_;
   StorageDataCache<Persistency::Alert>     alertsIDs_;

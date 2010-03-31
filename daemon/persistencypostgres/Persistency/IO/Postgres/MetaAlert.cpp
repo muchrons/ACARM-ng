@@ -3,7 +3,7 @@
  *
  */
 #include "Persistency/IO/Postgres/MetaAlert.hpp"
-
+#include <iostream>
 using namespace Persistency::IO::Postgres::detail;
 
 namespace Persistency

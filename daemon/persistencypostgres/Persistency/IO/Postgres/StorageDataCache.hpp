@@ -52,6 +52,21 @@ private:
                                                     // since weak_ptr<> may become NULL and this
                                                     // would cause problems with finding with
                                                     // indexes.
+  typedef typename ObjectIDMapping::iterator ObjectIDMappingIt;
+
+ObjectIDMappingIt getImpl(TSharedPtr ptr)
+{
+  ObjectIDMappingIt it=oidm_.find( ptr.get() );
+  if( it==oidm_.end() || it->second.ptr_.lock().get()==NULL )
+    return oidm_.end();
+  // both these asserts are known to be true, since we have object's
+  // instance as a parameter, so pointer either is already deallocated
+  // or is still valid, and so assertion's hold.
+  assert( it->second.ptr_.lock().get()!=NULL      );
+  assert( it->second.ptr_.lock().get()==ptr.get() );
+  return it;
+}
+
 public:
   /** \brief exception thrown when entry does not exist.
    */
@@ -73,15 +88,20 @@ public:
   DataBaseID get(TSharedPtr ptr)
   {
     Base::Threads::Lock lock(mutex_);
-    typename ObjectIDMapping::iterator it=oidm_.find( ptr.get() );
-    if( it==oidm_.end() || it->second.ptr_.lock().get()==NULL )
+    ObjectIDMappingIt it=getImpl( ptr );
+    if( it==oidm_.end() )
       throw ExceptionNoSuchEntry(SYSTEM_SAVE_LOCATION);
-    // both these asserts are known to be true, since we have object's
-    // instance as a parameter, so pointer either is already deallocated
-    // or is still valid, and so assertion's hold.
-    assert( it->second.ptr_.lock().get()!=NULL      );
-    assert( it->second.ptr_.lock().get()==ptr.get() );
     return it->second.id_;
+  }
+
+  /** \brief check if given object is in cache
+   *  \param ptr pointer to object to check
+   *  \return true if given object is in cache
+   */
+  bool hasImpl(TSharedPtr ptr)
+  {
+    Base::Threads::Lock lock(mutex_);
+    return getImpl(ptr)!=oidm_.end();
   }
 
   /** \brief exception throw when trying to add dupliaceted entry.
