@@ -46,6 +46,8 @@ BackendFactory::FactoryPtr Restorer::createStubIO(void)
   return BackendFactory::create(name, options);
 }
 
+// TODO: please try keeping methods in order they are declared in hpp file -
+//       it makes finding core easier. :)
 template<typename T>
 void Restorer::addIfNew(T e, DataBaseID id)
 {
@@ -113,7 +115,7 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
                        NodesVector                                    &out,
                        Tree::IDsVector                                &malerts)
 {
-
+  // TODO: const iterator should be enough here
   for(Tree::IDsVector::iterator it = malerts.begin(); it != malerts.end(); ++it)
   {
     const Tree::IDsVector &malertChildren = er.readMetaAlertChildren( (*it) );

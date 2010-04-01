@@ -5,9 +5,9 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_TREE_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_TREE_HPP_FILE
 
+#include <vector>
 
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
-
 
 namespace Persistency
 {
@@ -21,7 +21,6 @@ namespace Postgres
 class Tree
 {
 public:
-
   /** \brief collection of IDs read from DB. */
   typedef std::vector<DataBaseID>       IDsVector;
   /** \brief create tree mode
@@ -48,8 +47,10 @@ private:
   DataBaseID              id_;
 }; // class Tree
 
-/** \brief shared pointer to Tree instance */
+
+/** \brief shared pointer to Tree instance. */
 typedef boost::shared_ptr<Tree> TreePtr;
+
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency

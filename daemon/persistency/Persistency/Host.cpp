@@ -18,13 +18,13 @@ namespace Persistency
 
 namespace
 {
-  template<typename T>
-  detail::NullValue<Host::Netmask> makeNetmask(const T *mask)
-  {
-    if(mask!=NULL)
-      return detail::NullValue<Host::Netmask>(*mask);
-    return detail::NullValue<Host::Netmask>(NULL);
-  }
+template<typename T>
+Base::NullValue<Host::Netmask> makeNetmask(const T *mask)
+{
+  if(mask!=NULL)
+    return Base::NullValue<Host::Netmask>(*mask);
+  return Base::NullValue<Host::Netmask>(NULL);
+} // makeNetmask()
 }
 
 Host::Host(const IPv4              &ip,

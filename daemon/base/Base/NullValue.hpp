@@ -2,22 +2,19 @@
  * NullValue.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_DETAIL_NULLVALUE_HPP_FILE
-#define INCLUDE_PERSISTENCY_DETAIL_NULLVALUE_HPP_FILE
+#ifndef INCLUDE_BASE_NULLVALUE_HPP_FILE
+#define INCLUDE_BASE_NULLVALUE_HPP_FILE
 
 /* public header */
 
 #include <cstdlib>
 #include <boost/operators.hpp>
-#include <cassert>
 
 #include "Base/ViaPointer.hpp"
 
-namespace Persistency
+namespace Base
 {
-namespace detail
-{
-/** \brief class holding simple value and returning pointer to it or NULL>
+/** \brief class holding simple value and returning pointer to it or NULL.
  */
 template<typename T>
 class NullValue: public boost::equality_comparable< NullValue<T> >
@@ -62,7 +59,6 @@ private:
   T    value_;
 }; // class NullValue
 
-} // namespace detail
-} // namespace Persistency
+} // namespace Base
 
 #endif

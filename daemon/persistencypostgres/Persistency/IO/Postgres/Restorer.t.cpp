@@ -60,9 +60,7 @@ void testObj::test<1>(void)
   r.restoreAllInUse(out);
   // check if restored meta alerts exist in cache
   for(std::vector<GraphNodePtrNN>::iterator it = out.begin(); it !=out.end(); ++it)
-  {
     ensure("meta alert shoud be in cache", idCache_->has( (*it)->getMetaAlert()) );
-  }
 }
 
 // TODO: try restoring few non-trivial test cases
