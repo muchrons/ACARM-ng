@@ -51,10 +51,10 @@ void Restorer::addIfNew(T e, DataBaseID id)
 {
   if(!dbHandler_->getIDCache()->has(e))
     dbHandler_->getIDCache()->add(e, id);
-  // TODO: i'd suggest adding assert in else{} that given alert has the
-  //       expected ID, i.e. that cache's content is consistent with current
-  //       expectations.
+  else
+    assert(id == dbHandler_->getIDCache()->get(e));
 }
+
 TreePtr Restorer::getNode(DataBaseID id )
 {
   if(treeNodes_.count(id) > 0)
@@ -127,7 +127,7 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
 
   const Tree::IDsVector &roots = er.readRoots();
   for(Tree::IDsVector::const_iterator it = roots.begin(); it != roots.end(); ++it)
-    deepFirstSearch(*it, out, er, connStubIO, tStubIO) ;
+    out.push_back(deepFirstSearch(*it, out, er, connStubIO, tStubIO));
 }
 
 } // namespace Postgres

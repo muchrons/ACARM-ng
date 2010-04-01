@@ -48,6 +48,10 @@ SeverityLevel fromInt(int level)
   // TODO: throw exception when value of severity level is wrong
 }
 
+inline pqxx::result execSQL(Transaction &t, const char *sql)
+{
+  return t.getAPI<TransactionAPI>().exec(sql);
+} // execSQL()
 } // unnamed namespace
 
 EntryReader::EntryReader(Transaction &t, DBHandler &dbh):
@@ -445,8 +449,6 @@ Persistency::AlertPtrNN EntryReader::getLeaf(DataBaseID malertID)
   DataBaseID idAlert;
   r[0]["id_alert"].to(idAlert);
   return Persistency::AlertPtrNN( readAlert(idAlert) );
-  //dbh_.getIDCache()->add(readAlert(idAlert) , idAlert);
-  //dbh_.getIDCache()->add(readMetaAlert(idMetaAlert) , idMetaAlert);
 }
 
 vector<DataBaseID> EntryReader::readMetaAlertChildren(DataBaseID malertID)
@@ -470,11 +472,9 @@ vector<DataBaseID> EntryReader::readIDsMalertsInUse()
   vector<DataBaseID> malertsInUse;
   stringstream ss;
   ss << "SELECT id_meta_alert FROM meta_alerts_in_use;";
-  // TODO: result should be const
-  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  const result r = t_.getAPI<TransactionAPI>().exec(ss);
   malertsInUse.reserve( r.size() );
-  // TODO: use size_t instead of unsigned int
-  for(unsigned int i=0; i<r.size(); ++i)
+  for(size_t i=0; i<r.size(); ++i)
   {
     // TODO: add assertion that id_meta_alert is not NULL - DB schema should
     //       enforce this, but it's better to be safe then sorry.
@@ -506,24 +506,14 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
 std::vector<DataBaseID> EntryReader::readRoots()
 {
   vector<DataBaseID> roots;
-  // TODO: when you know whole query a'priori do not put it additionaly in
-  //       stringstream - it takes extra time and memory. better user simple
-  //       const char * for this, or if query is trivial (i.e. short like
-  //       'drop table x') write it stright in exec() call
-  //        [ btw: nice trick with temporary table! :) ]
-  stringstream ss;
-  ss << "SELECT id_node, id_child INTO TEMP TABLE tmp FROM meta_alerts_tree"
-        " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);";
-  t_.getAPI<TransactionAPI>().exec(ss);
-  ss.str("");
-  ss << "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );";
+  execSQL(t_,"SELECT id_node, id_child INTO TEMP TABLE tmp FROM meta_alerts_tree"
+             " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);");
 
-  result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ss.str("");
-  ss << "DROP TABLE tmp;";
-  t_.getAPI<TransactionAPI>().exec(ss);
-  // TODO: use size_t here
-  for(unsigned int i=0; i<r.size(); ++i)
+  result r = execSQL(t_, "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
+                         "SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );");
+
+  execSQL(t_, "DROP TABLE tmp;");
+  for(size_t i=0; i<r.size(); ++i)
   {
     // TODO: use assert to ensure value is not null
     DataBaseID nodeID;

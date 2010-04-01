@@ -17,6 +17,18 @@ namespace IO
 namespace Postgres
 {
 
+IO::ConnectionPtrNN makeConnection(void)
+{
+  IO::BackendFactory::Options opts;
+  opts["host"]  ="localhost";
+  opts["port"]  ="5432";
+  opts["dbname"]="acarm_ng_test";
+  opts["user"]  ="acarm-ng-daemon";
+  opts["pass"]  ="test.daemon";
+  return IO::ConnectionPtrNN(
+        Persistency::IO::BackendFactory::create("postgres", opts) );
+}
+
 AlertPtr makeNewAlert(const char *name)
 {
   const Persistency::Alert::SourceAnalyzers sa( makeNewAnalyzer() );

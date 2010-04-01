@@ -29,6 +29,7 @@ namespace IO
 namespace Postgres
 {
 
+IO::ConnectionPtrNN makeConnection(void);
 Persistency::AlertPtr makeNewAlert(const char *name="some alert");
 
 Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert");
