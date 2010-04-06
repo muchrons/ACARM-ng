@@ -1,22 +1,22 @@
 /*
  *    Copyright (c) <2002-2009> <Jean-Philippe Barrette-LaPierre>
- *    
+ *
  *    Permission is hereby granted, free of charge, to any person obtaining
- *    a copy of this software and associated documentation files 
- *    (curlpp), to deal in the Software without restriction, 
+ *    a copy of this software and associated documentation files
+ *    (curlpp), to deal in the Software without restriction,
  *    including without limitation the rights to use, copy, modify, merge,
  *    publish, distribute, sublicense, and/or sell copies of the Software,
- *    and to permit persons to whom the Software is furnished to do so, 
+ *    and to permit persons to whom the Software is furnished to do so,
  *    subject to the following conditions:
- *    
+ *
  *    The above copyright notice and this permission notice shall be included
  *    in all copies or substantial portions of the Software.
- *    
+ *
  *    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  *    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- *    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
- *    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
- *    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+ *    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ *    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ *    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
  *    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  *    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
@@ -38,29 +38,29 @@ namespace internal
 {
 
 
-	class CurlHandle;
+  class CurlHandle;
 
 
 }
 
   /**
    * This is the parent of the curlpp::option class.
-	 *
-	 * This is only used to be able to stock a list of options.
+   *
+   * This is only used to be able to stock a list of options.
    */
 
-	class CURLPPAPI OptionBase
+  class CURLPPAPI OptionBase
   {
 
-	public:
+  public:
 
-		OptionBase(CURLoption option);
-     
+    OptionBase(CURLoption option);
+
     /**
      * Base class needs virtual destructor.
      */
     virtual ~OptionBase();
-         
+
     /**
      * See curlpp::option::operator< for documentation.
      */
@@ -83,7 +83,7 @@ namespace internal
     virtual void updateMeToOption(const OptionBase & other) = 0;
 
     /**
-     * will call the actual libcurl option function with the value we got 
+     * will call the actual libcurl option function with the value we got
      * on the handle.
      */
     virtual void updateHandleToMe(internal::CurlHandle * handle) const = 0;

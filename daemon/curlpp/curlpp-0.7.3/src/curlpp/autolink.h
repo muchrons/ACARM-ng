@@ -35,10 +35,10 @@
     defined(__ICC) || defined(__ECC) || defined(__MWERKS__) || defined(__BORLANDC__)
 
         #if defined(_DEBUG) || defined(DEBUG)
-			#pragma comment(lib, "libcurlppd.lib")
-		#else //DEBUG
-			#pragma comment(lib, "libcurlpp.lib")
-		#endif //DEBUG
+      #pragma comment(lib, "libcurlppd.lib")
+    #else //DEBUG
+      #pragma comment(lib, "libcurlpp.lib")
+    #endif //DEBUG
 
     #endif //Supported compilers
 

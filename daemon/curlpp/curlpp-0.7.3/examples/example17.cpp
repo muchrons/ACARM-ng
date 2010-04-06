@@ -46,7 +46,7 @@ public:
   {
     ++writeRound;
 
-		curlpp::options::Url url;
+    curlpp::options::Url url;
     handle->getOpt(url);
 
     // Calculate the real size of the incoming buffer
@@ -67,8 +67,8 @@ int main(int argc, char *argv[])
 {
   if(argc != 2) {
     std::cerr << argv[0] << ": Wrong number of arguments" << std::endl 
-	      << argv[0] << ": Usage: " << " url " 
-	      << std::endl;
+        << argv[0] << ": Usage: " << " url " 
+        << std::endl;
     return EXIT_FAILURE;
   }
 

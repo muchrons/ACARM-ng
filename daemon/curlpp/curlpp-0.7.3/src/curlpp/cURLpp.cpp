@@ -9,11 +9,11 @@
 #include <cstdlib>
 
 
-namespace 
+namespace
 {
 
-	
-	struct libcURLInstance
+
+  struct libcURLInstance
   {
     libcURLInstance();
 
@@ -47,7 +47,7 @@ curlpp::Cleanup::~Cleanup()
 {}
 
 
-std::string 
+std::string
 curlpp::escape(const std::string & url)
 {
    std::string buffer;
@@ -107,12 +107,12 @@ curlpp::libcurlVersion()
    {
       throw RuntimeError("unable to get the libcurl version"); //we got an error
    }
-      
+
    return std::string(p);
 }
 
 
-time_t 
+time_t
 curlpp::getdate(const std::string & date, time_t * now)
 {
   time_t return_value = curl_getdate(date.c_str(), now);

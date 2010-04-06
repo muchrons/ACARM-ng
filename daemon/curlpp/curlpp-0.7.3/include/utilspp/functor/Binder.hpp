@@ -1,22 +1,22 @@
 /*
  *    Copyright (c) <2002-2009> <Jean-Philippe Barrette-LaPierre>
- *    
+ *
  *    Permission is hereby granted, free of charge, to any person obtaining
- *    a copy of this software and associated documentation files 
- *    (curlpp), to deal in the Software without restriction, 
+ *    a copy of this software and associated documentation files
+ *    (curlpp), to deal in the Software without restriction,
  *    including without limitation the rights to use, copy, modify, merge,
  *    publish, distribute, sublicense, and/or sell copies of the Software,
- *    and to permit persons to whom the Software is furnished to do so, 
+ *    and to permit persons to whom the Software is furnished to do so,
  *    subject to the following conditions:
- *    
+ *
  *    The above copyright notice and this permission notice shall be included
  *    in all copies or substantial portions of the Software.
- *    
+ *
  *    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
  *    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- *    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. 
- *    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY 
- *    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, 
+ *    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ *    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+ *    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
  *    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
  *    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
@@ -28,12 +28,12 @@ namespace utilspp
 {
   template<typename Incoming>
   class BinderFirst : public FunctorImpl<typename Incoming::ResultType,
-					  typename Incoming::ParmList::tail>
+            typename Incoming::ParmList::tail>
   {
     typedef utilspp::Functor<typename Incoming::ResultType, typename Incoming::ParmList::tail> Outgoing;
     typedef typename Incoming::Parm1 Bound;
     typedef typename Incoming::ResultType ResultType;
-    
+
   public:
     BinderFirst(const Incoming & fun, Bound bound)
       : mFun(fun), mBound(bound)
@@ -91,17 +91,17 @@ namespace utilspp
     Incoming mFun;
     Bound mBound;
   };
-  
+
   template<typename R, class TList>
   Functor<R, typename TList::tail> BindFirst(const Functor<R, TList> & fun,
-					     typename TList::head bound)
+               typename TList::head bound)
   {
     typedef Functor<R, TList> Incoming;
     typedef Functor<R, typename TList::tail> Outgoing;
-    
+
     return Outgoing(std::auto_ptr<typename Outgoing::Impl>(new BinderFirst<Incoming>(fun, bound)));
   }
-    
+
 }
 
 #endif
