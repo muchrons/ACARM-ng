@@ -5,4 +5,5 @@
 6 think about removing logger's entries from data base - is it really needed?
 8 refactor ConfigIO - it should read configuration file and keep it in memory. proper handlers for specific parts of configuration file should be implemented by interested components.
 9 think what can be done about libprelude's GPL license (others are commercial) - move it to separate process or bug LGPG/BSD?
-10
+10 investigate changes in prelude/.../*.lex, etc... - something's wrong there.
+11
