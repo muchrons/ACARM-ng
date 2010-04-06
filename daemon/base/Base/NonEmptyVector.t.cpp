@@ -44,7 +44,7 @@ template<>
 void testObj::test<1>(void)
 {
   const NEV c(e1_);
-  ensure_equals("invalid size", c.size(), 1);
+  ensure_equals("invalid size", c.size(), 1u);
 }
 
 // test const iterators
@@ -101,13 +101,13 @@ void testObj::test<5>(void)
 {
   const NEV c1(e1_);
   NEV       c2(e2_);
-  ensure_equals("empty collection 1", c1.size(), 1);
-  ensure_equals("empty collection 2", c2.size(), 1);
+  ensure_equals("empty collection 1", c1.size(), 1u);
+  ensure_equals("empty collection 2", c2.size(), 1u);
   ensure("pre-condition failed", *c1.begin()!=*c2.begin() );
 
   c2=c1;
-  ensure_equals("empty collection 1/after", c1.size(), 1);
-  ensure_equals("empty collection 2/after", c2.size(), 1);
+  ensure_equals("empty collection 1/after", c1.size(), 1u);
+  ensure_equals("empty collection 2/after", c2.size(), 1u);
   ensure("copying failed", *c1.begin()==*c2.begin() );
 }
 

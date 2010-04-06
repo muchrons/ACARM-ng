@@ -69,7 +69,7 @@ template<>
 void testObj::test<4>(void)
 {
   const LimitedNULLString<10> ls("0123456789");
-  ensure_equals("string has been truncated", strlen( ls.get() ), 10);
+  ensure_equals("string has been truncated", strlen( ls.get() ), 10u);
 }
 
 // test operator[]

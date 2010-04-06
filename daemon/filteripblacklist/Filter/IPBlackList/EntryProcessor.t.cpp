@@ -61,7 +61,7 @@ void testObj::test<1>(void)
   ep_(leaf);
   const double   pri2=leaf->getMetaAlert()->getSeverityDelta();
   ensure_equals("priority changed", pri1, pri2);
-  ensure_equals("some node marked as changed", changed_.size(), 0);
+  ensure_equals("some node marked as changed", changed_.size(), 0u);
 }
 
 // test host on the list
@@ -74,7 +74,7 @@ void testObj::test<2>(void)
   ep_(leaf);
   const double   pri2=leaf->getMetaAlert()->getSeverityDelta();
   ensure_equals("priority changed", pri1+0.3, pri2);
-  ensure_equals("some node marked as changed", changed_.size(), 1);
+  ensure_equals("some node marked as changed", changed_.size(), 1u);
 }
 
 } // namespace tut

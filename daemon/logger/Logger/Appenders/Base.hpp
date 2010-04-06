@@ -22,6 +22,12 @@ namespace Appenders
 class Base
 {
 public:
+  /** \brief ensure polymorphic destruction.
+   */
+  virtual ~Base(void)
+  {
+  }
+
   /** \brief appends given string (calls appender) implenetation.
    *  \param str message to be appended.
    *  \note call is thread-safe.

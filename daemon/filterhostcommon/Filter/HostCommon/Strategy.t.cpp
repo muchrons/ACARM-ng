@@ -97,7 +97,7 @@ void testObj::test<1>(void)
   {
     const TestStrategy::Node tmp=makeLeaf(tab[i]);
     ts_.process(tmp, changed_);
-    ensure_equals("some nodes have been changed", changed_.size(), 0);
+    ensure_equals("some nodes have been changed", changed_.size(), 0u);
   }
 }
 
@@ -110,7 +110,7 @@ void testObj::test<2>(void)
   for(int i=0; i<2; ++i)
   {
     ts_.process(n, changed_);
-    ensure_equals("some nodes have been changed", changed_.size(), 0);
+    ensure_equals("some nodes have been changed", changed_.size(), 0u);
   }
 }
 
@@ -122,7 +122,7 @@ void testObj::test<3>(void)
   for(int i=0; i<2; ++i)
   {
     ts_.process( makeNewLeaf(), changed_);
-    ensure_equals("some nodes have been changed", changed_.size(), 0);
+    ensure_equals("some nodes have been changed", changed_.size(), 0u);
   }
 }
 
@@ -133,11 +133,11 @@ void testObj::test<4>(void)
 {
   TestStrategy::Node l1=makeLeaf("1.2.3.4", "os2");
   ts_.process(l1, changed_);
-  ensure_equals("some nodes have been changed", changed_.size(), 0);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
 
   TestStrategy::Node l2=makeLeaf("1.2.3.4", "os2");
   ts_.process(l2, changed_);
-  ensure_equals("no correlation has been done", changed_.size(), 1);
+  ensure_equals("no correlation has been done", changed_.size(), 1u);
   // comapre pointers - new node should have been created here
   ensure("invalid element in changed list",
              changed_.begin()->get()!=l1.get() &&
@@ -166,9 +166,9 @@ void testObj::test<5>(void)
 {
   ThrowStrategy ts;
   ts.process( makeLeaf("1.2.3.4", "os1"), changed_);
-  ensure_equals("some nodes have been changed / 1", changed_.size(), 0);
+  ensure_equals("some nodes have been changed / 1", changed_.size(), 0u);
   ts.process( makeLeaf("1.2.3.4", "os2"), changed_);    // nothing should happen here
-  ensure_equals("some nodes have been changed / 2", changed_.size(), 0);
+  ensure_equals("some nodes have been changed / 2", changed_.size(), 0u);
 }
 
 // test adding elements to already exisitng node.
@@ -178,11 +178,11 @@ void testObj::test<6>(void)
 {
   TestStrategy::Node n=makeNode();
   ts_.process(n, changed_);
-  ensure_equals("some nodes have been changed", changed_.size(), 0);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
 
   TestStrategy::Node l=makeLeaf("1.2.3.4");
   ts_.process(l, changed_);
-  ensure_equals("nodes not changed", changed_.size(), 1);
+  ensure_equals("nodes not changed", changed_.size(), 1u);
   // check pointers
   ensure("invalid node has been changed", changed_.begin()->get()==n.get() );
 }

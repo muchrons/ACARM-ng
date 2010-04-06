@@ -143,7 +143,7 @@ void testObj::test<6>(void)
   ts_.prune();
   // check if all elements are present and valid
   for(size_t i=0; i<data_.size(); ++i)
-    ensure_equals("invalid element", ts_.get(data_[i]), 420+i);
+    ensure_equals("invalid element", ts_.get(data_[i]), 420+static_cast<int>(i) );
 }
 
 // test prunning when NULL is present
@@ -157,7 +157,7 @@ void testObj::test<7>(void)
   ts_.prune();
   // check if all elements are present and valid
   for(size_t i=0; i<data_.size(); ++i)
-    ensure_equals("invalid element", ts_.get(data_[i]), 420+i+1);
+    ensure_equals("invalid element", ts_.get(data_[i]), 420+static_cast<int>(i)+1);
 }
 
 // test prunning when all elements are NULLs
@@ -171,7 +171,7 @@ void testObj::test<8>(void)
     data_.erase( data_.begin() );
   // test
   ts_.prune();
-  ensure_equals("invalid output size", ts_.size(), 0);
+  ensure_equals("invalid output size", ts_.size(), 0u);
 }
 
 // test size of collection
@@ -180,7 +180,7 @@ template<>
 void testObj::test<9>(void)
 {
   fill();
-  ensure_equals("invalid size", ts_.size(), 3);
+  ensure_equals("invalid size", ts_.size(), 3u);
 }
 
 // test adding dupliacete entry
