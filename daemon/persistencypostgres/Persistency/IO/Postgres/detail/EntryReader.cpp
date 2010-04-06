@@ -30,8 +30,9 @@ namespace detail
 namespace
 {
 
-template<typename T>
-Base::NullValue<T> setWithString(const pqxx::result::field r)
+
+template<typename T, typename S>
+Base::NullValue<T> set(const pqxx::result::field r)
 {
   if( r.is_null() )
   {
@@ -40,32 +41,15 @@ Base::NullValue<T> setWithString(const pqxx::result::field r)
   }
   else
   {
-    string s;
+    S s;
     r.to(s);
     Base::NullValue<T> ret(new T(s));
     return ret;
   }
 }
 
-template<typename T>
-Base::NullValue<T> setWithDataBaseID(const pqxx::result::field r)
-{
-  if( r.is_null() )
-  {
-    Base::NullValue<T> ret;
-    return ret;
-  }
-  else
-  {
-    T id;
-    r.to(id);
-    Base::NullValue<T> ret(new T(id));
-    return ret;
-  }
-}
-
-template<>
-Base::NullValue<Analyzer::IP> setWithString(const pqxx::result::field r)
+template<typename S>
+Base::NullValue<Analyzer::IP> set(const pqxx::result::field r)
 {
   if( r.is_null() )
   {
@@ -74,7 +58,7 @@ Base::NullValue<Analyzer::IP> setWithString(const pqxx::result::field r)
   }
   else
   {
-    string s;
+    S s;
     r.to(s);
     Base::NullValue<Analyzer::IP> ret(new Analyzer::IP(Analyzer::IPv4::from_string(s)));
     return ret;
@@ -205,7 +189,7 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
   MetaAlertPtrNN malert( new Persistency::MetaAlert( malertName,
                                           severityDelta,
                                           certaintyDelta,
-                                          getReferenceURL( setWithDataBaseID<DataBaseID>(r[0]["id_ref"]).get() ),
+                                          getReferenceURL( set<DataBaseID, DataBaseID>(r[0]["id_ref"]).get() ),
                                           malertCreate ) );
   return malert;
 }
@@ -250,11 +234,11 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
   const Analyzer::Name    anlzName(name);
 
   AnalyzerPtrNN anlz(new Analyzer( anlzName,
-                                   setWithString<Analyzer::Version>(ra[0]["version"] ).get(),
+                                   set<Analyzer::Version, string>(ra[0]["version"] ).get(),
                                    /*anlzVersion.get(),*/
-                                   setWithString<Analyzer::OS>(ra[0]["os"] ).get(),
+                                   set<Analyzer::OS, string>(ra[0]["os"] ).get(),
                                    /*anlzOS,*/
-                                   setWithString<Analyzer::IP>(ra[0]["ip"] ).get()
+                                   set<string>(ra[0]["ip"] ).get()
                                    /*anlzIP*/ ));
   return anlz;
 }
@@ -269,7 +253,7 @@ Alert::SourceAnalyzers EntryReader::getAnalyzers(DataBaseID alertID)
   r[0]["id_analyzer"].to(id);
   Alert::SourceAnalyzers analyzers( getAnalyzer(id) );
 
-  for(unsigned int i=0; i<r.size(); ++i)
+  for(size_t i=0; i<r.size(); ++i)
   {
     r[i]["id_analyzer"].to(id);
 
@@ -286,7 +270,7 @@ Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::strin
   ss << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   Alert::ReportedHosts hosts;
-  for(unsigned int i=0; i<r.size(); ++i)
+  for(size_t i=0; i<r.size(); ++i)
   {
     DataBaseID idHost, idRefURL;
     r[i]["id_host"].to(idHost);
@@ -350,12 +334,12 @@ HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID *refID)
   //       implemented as a template.
   HostPtr host(new Persistency::Host(hostIP,
                                      &hostNetmask,
-                                     *setWithString<Persistency::Host::OperatingSystem>(r[0]["os"]).get(),
+                                     *set<Persistency::Host::OperatingSystem, string>(r[0]["os"]).get(),
                                      /*hostOS,*/
                                      getReferenceURL(refID),
                                      getReportedServices( hostID ),
                                      getReportedProcesses( hostID ),
-                                     *setWithString<Persistency::Host::Name>(r[0]["name"]).get()
+                                     *set<Persistency::Host::Name, string>(r[0]["name"]).get()
                                      /*hostName*/) );
   // add host to cache
   dbh_.getIDCache()->add(host , hostID);
@@ -370,7 +354,7 @@ Persistency::Host::ReportedServices EntryReader::getReportedServices(DataBaseID 
 
   Persistency::Host::ReportedServices services;
   DataBaseID idService, idRef;
-  for(unsigned int i = 0;i < r.size(); ++i)
+  for(size_t i = 0;i < r.size(); ++i)
   {
     r[i]["id_service"].to(idService);
     r[i]["id_ref"].to(idRef);
@@ -389,7 +373,7 @@ Persistency::Host::ReportedProcesses EntryReader::getReportedProcesses(DataBaseI
 
   Persistency::Host::ReportedProcesses processes;
   DataBaseID idProcess, idRef;
-  for(unsigned int i = 0; i<r.size(); ++i)
+  for(size_t i = 0; i<r.size(); ++i)
   {
     r[i]["id_proc"].to(idProcess);
     r[i]["id_ref"].to(idRef);
@@ -423,7 +407,7 @@ Persistency::ServicePtr EntryReader::getService(DataBaseID servID, DataBaseID *r
 
   Persistency::ServicePtr service(new Persistency::Service(serviceName,
                                                            servicePort,
-                                                           *setWithString<Persistency::Service::Protocol>(r[0]["protocol"]).get(),
+                                                           *set<Persistency::Service::Protocol, string>(r[0]["protocol"]).get(),
                                                            /*serviceProtocol,*/
                                                            getReferenceURL( refID )));
   return service;
@@ -473,7 +457,7 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
 
   // TODO: what if procPid and/or uid are NULLs in data base?
   // TODO: (answer) this shoul be added, work in progress
-  Persistency::ProcessPtr process( new Process(*setWithString<Process::Path>(r[0]["path"]).get(),
+  Persistency::ProcessPtr process( new Process(*set<Process::Path, string>(r[0]["path"]).get(),
                                                 /*procPath,*/
                                                 procName,
                                                 procMD5,
@@ -542,7 +526,7 @@ vector<DataBaseID> EntryReader::readMetaAlertChildren(DataBaseID malertID)
   ss << "SELECT id_child FROM meta_alerts_tree WHERE id_node = " << malertID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
-  for(unsigned int i=0; i<r.size(); ++i)
+  for(size_t i=0; i<r.size(); ++i)
   {
     DataBaseID idChild;
     r[i]["id_child"].to(idChild);
@@ -578,7 +562,7 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
      << to_iso_string(from) << " <= create_time AND create_time <=" << to_iso_string(to) << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
-  for(unsigned int i=0; i<r.size(); ++i)
+  for(size_t i=0; i<r.size(); ++i)
   {
     DataBaseID malertID;
     r[i]["id"].to(malertID);
