@@ -116,7 +116,7 @@ void testObj::test<1>(void)
 {
   tdba_.fillWithContent1();
   ensure_equals("some entries have been deleted",
-                conn_->removeEntriesOlderThan(9999, t_), 0);
+                conn_->removeEntriesOlderThan(9999, t_), 0u);
 }
 
 // remove all entries (except those being used ath the moment)
@@ -126,7 +126,7 @@ void testObj::test<2>(void)
 {
   tdba_.fillWithContent1();
   ensure_equals("invalid number of entries removed",
-                conn_->removeEntriesOlderThan(0, t_), 2);
+                conn_->removeEntriesOlderThan(0, t_), 2u);
 }
 
 // test cleanup tree where not all leafs from given parents can be removed
@@ -153,9 +153,9 @@ void testObj::test<3>(void)
   addToTree(8, 7);
 
   ensure_equals("invalid number of entries removed",
-                conn_->removeEntriesOlderThan(9, t_), 2);
-  ensure_equals("invalid alerts' size",      count("alerts"), 3);
-  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 3+3);
+                conn_->removeEntriesOlderThan(9, t_), 2u);
+  ensure_equals("invalid alerts' size",      count("alerts"), 3u);
+  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 3u+3u);
 }
 
 // test removing parent, when no more children are present
@@ -182,9 +182,9 @@ void testObj::test<4>(void)
   addToTree(8, 7);
 
   ensure_equals("invalid number of entries removed",
-                conn_->removeEntriesOlderThan(9, t_), 3);
-  ensure_equals("invalid alerts' size",      count("alerts"), 2);
-  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 2+2);
+                conn_->removeEntriesOlderThan(9, t_), 3u);
+  ensure_equals("invalid alerts' size",      count("alerts"), 2u);
+  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 2u+2u);
 }
 
 // test removing all elements
@@ -211,9 +211,9 @@ void testObj::test<5>(void)
   addToTree(8, 7);
 
   ensure_equals("invalid number of entries removed",
-                conn_->removeEntriesOlderThan(9, t_), 5);
-  ensure_equals("invalid alerts' size",      count("alerts"), 0);
-  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 0);
+                conn_->removeEntriesOlderThan(9, t_), 5u);
+  ensure_equals("invalid alerts' size",      count("alerts"), 0u);
+  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 0u);
 }
 
 // test removing whole subtree of not-needed nodes
@@ -246,9 +246,9 @@ void testObj::test<6>(void)
   addToTree(11, 1010);
 
   ensure_equals("invalid number of entries removed",
-                conn_->removeEntriesOlderThan(9, t_), 5);
-  ensure_equals("invalid alerts' size",      count("alerts"), 2);
-  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 3);
+                conn_->removeEntriesOlderThan(9, t_), 5u);
+  ensure_equals("invalid alerts' size",      count("alerts"), 2u);
+  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 3u);
 }
 
 } // namespace tut

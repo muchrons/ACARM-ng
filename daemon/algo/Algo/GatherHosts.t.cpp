@@ -38,8 +38,8 @@ template<>
 void testObj::test<1>(void)
 {
   GatherHosts gh( makeNewLeaf( makeNewAlertWithHosts(NULL, NULL, NULL, NULL) ) );
-  ensure_equals("source hosts found", gh.getSourceHosts().size(), 0);
-  ensure_equals("target hosts found", gh.getTargetHosts().size(), 0);
+  ensure_equals("source hosts found", gh.getSourceHosts().size(), 0u);
+  ensure_equals("target hosts found", gh.getTargetHosts().size(), 0u);
 }
 
 // check if source hosts are recognized
@@ -48,8 +48,8 @@ template<>
 void testObj::test<2>(void)
 {
   GatherHosts gh( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL, NULL, NULL) ) );
-  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 1);
-  ensure_equals("target hosts found",     gh.getTargetHosts().size(), 0);
+  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 1u);
+  ensure_equals("target hosts found",     gh.getTargetHosts().size(), 0u);
 }
 
 // tets if destination hosts are recognized
@@ -58,8 +58,8 @@ template<>
 void testObj::test<3>(void)
 {
   GatherHosts gh( makeNewLeaf( makeNewAlertWithHosts(NULL, NULL, "1.2.3.4", NULL) ) );
-  ensure_equals("source hosts found",     gh.getSourceHosts().size(), 0);
-  ensure_equals("target hosts not found", gh.getTargetHosts().size(), 1);
+  ensure_equals("source hosts found",     gh.getSourceHosts().size(), 0u);
+  ensure_equals("target hosts not found", gh.getTargetHosts().size(), 1u);
 }
 
 // tets if non-unique entries are saved
@@ -69,8 +69,8 @@ void testObj::test<4>(void)
 {
   GatherHosts gh( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "2.3.4.5",
                                                      "2.3.4.5", "1.2.3.4") ) );
-  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 2);
-  ensure_equals("target hosts not found", gh.getTargetHosts().size(), 2);
+  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 2u);
+  ensure_equals("target hosts not found", gh.getTargetHosts().size(), 2u);
 }
 
 // test if unique hosts are gathered as one
@@ -80,8 +80,8 @@ void testObj::test<5>(void)
 {
   GatherHosts gh( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "1.2.3.4",
                                                      NULL,      NULL) ) );
-  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 1);
-  ensure_equals("target hosts found",     gh.getTargetHosts().size(), 0);
+  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 1u);
+  ensure_equals("target hosts found",     gh.getTargetHosts().size(), 0u);
 }
 
 // smoke test passing throught bigger tree
@@ -95,8 +95,8 @@ void testObj::test<6>(void)
                     makeNewLeaf( makeNewAlertWithHosts("2.3.4.5", "1.2.3.4",
                                                        "2.3.4.5", "4.3.2.1") ) )
                 );
-  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 3);
-  ensure_equals("target hosts not found", gh.getTargetHosts().size(), 3);
+  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 3u);
+  ensure_equals("target hosts not found", gh.getTargetHosts().size(), 3u);
 }
 
 // test returned values
@@ -109,8 +109,8 @@ void testObj::test<7>(void)
   GatherHosts gh( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL,
                                                      "9.8.7.6", NULL) ) );
   // check numbers
-  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 1);
-  ensure_equals("target hosts not found", gh.getTargetHosts().size(), 1);
+  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 1u);
+  ensure_equals("target hosts not found", gh.getTargetHosts().size(), 1u);
   // check values
   ensure("invalid source IP", (*gh.getSourceHosts().begin())->getIP()==h1->getIP() );
   ensure("invalid target IP", (*gh.getTargetHosts().begin())->getIP()==h2->getIP() );

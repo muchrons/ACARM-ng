@@ -42,9 +42,9 @@ template<>
 void testObj::test<2>(void)
 {
   const FileReader fr("testdata/file1.txt");
-  ensure_equals("invalid file size", fr.getSize(), 25);
+  ensure_equals("invalid file size", fr.getSize(), 25u);
   ensure_equals("invalid string length of read file",
-                strlen( fr.getString() ), 25);
+                strlen( fr.getString() ), 25u);
   ensure_equals("invalid stirng's content", string( fr.getString() ),
                 "alice has a cat.\nor not?\n");
 }
@@ -55,7 +55,7 @@ template<>
 void testObj::test<3>(void)
 {
   const FileReader fr("testdata/file2.bin");
-  ensure_equals("invalid file size", fr.getSize(), 28);
+  ensure_equals("invalid file size", fr.getSize(), 28u);
 }
 
 // check if string and data pointers are equal

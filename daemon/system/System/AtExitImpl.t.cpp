@@ -91,7 +91,7 @@ void testObj::test<2>(void)
   impl.deallocateAll();
 
   // check output
-  ensure_equals("invlid size of output container", out_.size(), 3);
+  ensure_equals("invlid size of output container", out_.size(), 3u);
   ensure_equals("unknown unregistration no. 1", out_[0], 3);
   ensure_equals("unknown unregistration no. 2", out_[1], 2);
   ensure_equals("unknown unregistration no. 3", out_[2], 1);
@@ -108,7 +108,7 @@ void testObj::test<3>(void)
   ensure("problem passing ownership to AtExitImpl", res.get()==NULL);
   impl.deallocateAll();
   // check output
-  ensure_equals("invlid size of output container", out_.size(), 1);
+  ensure_equals("invlid size of output container", out_.size(), 1u);
   ensure_equals("unknown unregistration", out_[0], 12);
 }
 

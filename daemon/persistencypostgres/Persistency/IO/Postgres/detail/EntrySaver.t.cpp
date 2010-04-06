@@ -164,7 +164,7 @@ void testObj::test<1>(void)
   string path, name;
   ss << "SELECT * FROM procs WHERE id = " << procID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(),1);
+  ensure_equals("invalid size",r.size(), 1u);
 
   r[0]["path"].to(path);
   ensure_equals("invalid path",proc_.getPath().get() ,path);
@@ -232,7 +232,7 @@ void testObj::test<4>(void)
 
   ss << "SELECT * FROM alerts WHERE id = " << alrtID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(),1);
+  ensure_equals("invalid size", r.size(), 1u);
 
   r[0]["name"].to(name);
   ensure_equals("invalid name",name_.get(),name);
@@ -307,7 +307,7 @@ void testObj::test<6>(void)
   string       name;
   ss << "SELECT * FROM analyzers WHERE id = " << anlzID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(),1);
+  ensure_equals("invalid size", r.size(), 1u);
 
   r[0]["name"].to(name);
   ensure_equals("invalid Analyzer name",name,"analyzer2");
@@ -337,7 +337,7 @@ void testObj::test<7>(void)
 
   ss << "SELECT * FROM analyzers WHERE id = " << anlzID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(),1);
+  ensure_equals("invalid size", r.size(), 1u);
 
   r[0]["name"].to(name);
   ensure_equals("invalid Analyzer name",name,anlzName);
@@ -376,7 +376,7 @@ void testObj::test<8>(void)
   DataBaseID id;
   ss << "SELECT * FROM reported_hosts WHERE id = " << thostID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(),1);
+  ensure_equals("invalid size", r.size(), 1u);
 
   r[0]["id_host"].to(id);
   ensure_equals("invalid Host ID",id,hostID);
@@ -406,7 +406,7 @@ void testObj::test<9>(void)
   DataBaseID id;
   ss << "SELECT * FROM reported_hosts WHERE id = " << dhostID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(),1);
+  ensure_equals("invalid size", r.size(), 1u);
 
   r[0]["id_host"].to(id);
   ensure_equals("invalid Host ID",id,hostID);
@@ -432,7 +432,7 @@ void testObj::test<10>(void)
   string time;
   ss << "SELECT * FROM meta_alerts WHERE id = " << malertID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(),1);
+  ensure_equals("invalid size", r.size(), 1u);
 
   r[0]["severity_delta"].to(delta);
   ensure_equals("invalid severity delta",0.22,delta);
@@ -469,7 +469,7 @@ void testObj::test<11>(void)
 
   ss << "SELECT * FROM alerts WHERE id = " << alrtID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(),1);
+  ensure_equals("invalid size", r.size(), 1u);
 
   r[0]["name"].to(name);
   ensure_equals("invalid name",name_.get(),name);
@@ -514,7 +514,7 @@ void testObj::test<12>(void)
   string path, name, md5;
   ss << "SELECT * FROM procs WHERE id = " << procID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(),1);
+  ensure_equals("invalid size", r.size(), 1u);
 
   r[0]["path"].to(path);
   ensure_equals("invalid path",proc_.getPath().get() ,path);
@@ -555,7 +555,7 @@ void testObj::test<13>(void)
   int pid, uid;
   ss << "SELECT * FROM reported_procs WHERE id_proc = " << procID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(),1);
+  ensure_equals("invalid size", r.size(), 1u);
 
 
   r[0]["username"].to(username);
@@ -600,7 +600,7 @@ void testObj::test<14>(void)
   int pid, uid;
   ss << "SELECT * FROM reported_procs WHERE id = " << procID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(),1);
+  ensure_equals("invalid size", r.size(), 1u);
 
   r[0]["username"].to(username);
   trim(username);
@@ -640,7 +640,7 @@ void testObj::test<15>(void)
   ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
 
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(),1);
+  ensure_equals("invalid size", r.size(), 1u);
 
   ensure("Host name is not NULL",r[0]["name"].is_null() );
   t_.commit();
@@ -697,7 +697,7 @@ void testObj::test<18>(void)
   stringstream ss;
   ss << "SELECT * FROM meta_alerts WHERE id = " << malertID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(),1);
+  ensure_equals("invalid size", r.size(), 1u);
 
   ensure("Meta Alert reference URL is not NULL",r[0]["id_ref"].is_null() );
 
@@ -731,7 +731,7 @@ void testObj::test<19>(void)
   Appender::append(ss, ip.to_string() );
   ss << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(),1);
+  ensure_equals("invalid size", r.size(), 1u);
   t_.commit();
 }
 

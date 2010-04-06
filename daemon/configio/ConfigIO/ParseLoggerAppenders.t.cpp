@@ -126,7 +126,7 @@ void testObj::test<2>(void)
   ensure_equals("'output' option is missing for appender 1",
                 (*it)["output"].at(0), "somefile.log");
   ensure_equals("invalid options count in appender 1",
-                (*it)["output"].size(), 1);
+                (*it)["output"].size(), 1u);
   ++it;
 
   // check second
@@ -136,7 +136,7 @@ void testObj::test<2>(void)
   ensure_equals("'output' option is missing for appender 2",
                 (*it)["output"].at(0), "some_other_file.log");
   ensure_equals("invalid options count in appender 2",
-                (*it)["output"].size(), 1);
+                (*it)["output"].size(), 1u);
   ++it;
 
   // check third
@@ -154,7 +154,7 @@ void testObj::test<2>(void)
   ensure_equals("appender option 2 is invalid for appender 4",
                 (*it)["appender"].at(1), "stdout");
   ensure_equals("invalid options count in appender 4",
-                (*it)["appender"].size(), 2);
+                (*it)["appender"].size(), 2u);
   ++it;
 }
 

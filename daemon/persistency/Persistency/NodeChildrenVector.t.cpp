@@ -58,7 +58,7 @@ template<>
 void testObj::test<1>(void)
 {
   const NodeChildrenVector ncv(leaf1_, leaf2_);
-  ensure_equals("invalid size", ncv.size(), 2);
+  ensure_equals("invalid size", ncv.size(), 2u);
 }
 
 // test adding 3rd element
@@ -67,9 +67,9 @@ template<>
 void testObj::test<2>(void)
 {
   NodeChildrenVector ncv(leaf1_, leaf2_);
-  ensure_equals("invalid size", ncv.size(), 2);
+  ensure_equals("invalid size", ncv.size(), 2u);
   ncv.push_back(leaf3_);
-  ensure_equals("addition failed", ncv.size(), 3);
+  ensure_equals("addition failed", ncv.size(), 3u);
 }
 
 } // namespace tut

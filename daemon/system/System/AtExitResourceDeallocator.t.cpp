@@ -68,11 +68,11 @@ void testObj::test<1>(void)
   size_t counter=0;
 
   TDealloc dealloc( new SomeTestObject(&counter) );
-  ensure_equals("counter changed in constructor", counter, 0);
+  ensure_equals("counter changed in constructor", counter, 0u);
 
   AtExitResourceDeallocator &base=dealloc;
   base.deallocate();
-  ensure_equals("counter not changed - resource leaked", counter, 1);
+  ensure_equals("counter not changed - resource leaked", counter, 1u);
 }
 
 // test creation of memory deallocator from auto_ptr.
@@ -86,11 +86,11 @@ void testObj::test<2>(void)
   auto_ptr<SomeTestObject>   ptr( new SomeTestObject(&counter) );
   TDealloc                   dealloc(ptr);
   AtExitResourceDeallocator &base=dealloc;
-  ensure_equals("counter changed in constructor", counter, 0);
+  ensure_equals("counter changed in constructor", counter, 0u);
   // now dealicaotion should take place
   base.deallocate();
   ensure_equals("counter didn't changed. object has not been freed",
-                counter, 1);
+                counter, 1u);
 }
 
 } // namespace tut
