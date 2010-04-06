@@ -28,8 +28,8 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 
   Persistency::GraphNodePtrNN makeNode(void) const
   {
-    return makeNewNode( makeNewLeaf("127.0.0.1", NULL, NULL),
-                        makeNewLeaf("127.0.0.1", NULL, NULL) );
+    return makeNewNode( makeNewLeaf("127.0.0.1", NULL, false),
+                        makeNewLeaf("127.0.0.1", NULL, false) );
   }
 
   Strategy::ChangedNodes changed_;
@@ -51,7 +51,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  s_.process( makeNewLeaf("127.0.0.1", NULL, NULL), changed_ );
+  s_.process( makeNewLeaf("127.0.0.1", NULL, false), changed_ );
   ensure_equals("nothing changed", changed_.size(), 1);
 }
 

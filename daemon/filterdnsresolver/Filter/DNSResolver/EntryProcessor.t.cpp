@@ -62,7 +62,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ep_( makeNewLeaf("127.0.0.1", NULL, NULL) );
+  ep_( makeNewLeaf("127.0.0.1", NULL, false) );
   ensure_equals("nothing has been changed", changed_.size(), 1);
   const char *tmp=changed_.at(0)->getAlert()->getReportedSourceHosts().at(0)->getName().get();
   ensure("invalid dns found", strstr(tmp, "localhost")!=NULL );
@@ -73,7 +73,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ep_( makeNewLeaf("192.168.255.254", "192.168.255.253", NULL) );
+  ep_( makeNewLeaf("192.168.255.254", "192.168.255.253", false) );
   ensure_equals("something has been changed", changed_.size(), 0);
 }
 
@@ -82,7 +82,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ep_( makeNewLeaf(NULL, "127.0.0.1", NULL) );
+  ep_( makeNewLeaf(NULL, "127.0.0.1", false) );
   ensure_equals("nothing has been changed", changed_.size(), 1);
   const char *tmp=changed_.at(0)->getAlert()->getReportedTargetHosts().at(0)->getName().get();
   ensure("invalid dns found", strstr(tmp, "localhost")!=NULL );

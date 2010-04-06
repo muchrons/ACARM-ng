@@ -21,10 +21,10 @@ struct TestClass
   {
   }
 
-  const int i1_;
-  const int i2_;
-  const int i3_;
-  const int null_;
+  const int  i1_;
+  const int  i2_;
+  const int  i3_;
+  const int *null_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -50,7 +50,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure("two NULLs differ", ViaPointer::equal(&null_, &null_) );
+  ensure("two NULLs differ", ViaPointer::equal(null_, null_) );
 }
 
 // check if one pointer can be NULL
@@ -58,7 +58,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensure("first NULL doesn't differ", !ViaPointer::equal(&null_, &i1_) );
+  ensure("first NULL doesn't differ", !ViaPointer::equal(null_, &i1_) );
 }
 
 // check if second pointer can be NULL
@@ -66,7 +66,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure("second NULL doesn't differ", !ViaPointer::equal(&i1_, &null_) );
+  ensure("second NULL doesn't differ", !ViaPointer::equal(&i1_, null_) );
 }
 
 // check if the same values for 2 different pointers work file
