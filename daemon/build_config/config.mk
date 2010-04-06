@@ -12,9 +12,12 @@ export PROFILE=test
 # set default toolchain
 export TC=local
 
+# enable distcc
+export WITH_DISTCC:=1
+
 # enable ccache, if not using intel's toolchain
 ifneq ($(TC),intel)
-export WITH_CCACHE=1
+export WITH_CCACHE:=1
 endif
 
 # project-specific flags
