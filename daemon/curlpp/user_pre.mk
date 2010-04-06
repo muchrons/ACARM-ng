@@ -1,4 +1,3 @@
-#
-# this is required since curlpp is not fully documented.
-#
-include $(MAKEFILES_COMPONENT_MODS_DIR)/no_doxygen.mk
+CONFIGURE_OPTIONS:=--enable-static=no --disable-dependency-tracking --with-pic
+MAKE_OPTIONS:=
+MAKE_INSTALL_OPTIONS:=
