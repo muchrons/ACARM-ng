@@ -68,7 +68,9 @@ void testObj::test<1>(void)
 // TODO: try restoring few non-trivial test cases
 template<>
 template<>
-void testObj::test<2>
+void testObj::test<2>(void)
+{
+}
 // TODO: try restoring empty set and all meta alerts
 
 // TODO: try restoring invalid data (i.e. node that has no children, etc...)
