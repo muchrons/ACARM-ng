@@ -32,7 +32,7 @@ namespace
 
 
 template<typename T, typename S>
-Base::NullValue<T> set(const pqxx::result::field r)
+Base::NullValue<T> set(const pqxx::result::field &r)
 {
   if( r.is_null() )
   {
@@ -49,7 +49,7 @@ Base::NullValue<T> set(const pqxx::result::field r)
 }
 
 template<typename S>
-Base::NullValue<Analyzer::IP> set(const pqxx::result::field r)
+Base::NullValue<Analyzer::IP> set(const pqxx::result::field &r)
 {
   if( r.is_null() )
   {
@@ -96,9 +96,7 @@ SeverityLevel fromInt(int level)
   }
   // when we reach here, there is wrong severity level in data base
   assert(!"invalid severity level");
-  // temporary solution
   return SeverityLevel::CRITICAL;
-  // TODO: throw exception when value of severity level is wrong
 }
 
 inline pqxx::result execSQL(Transaction &t, const char *sql)
@@ -437,6 +435,7 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
   {
     r[0]["md5"].to(md5);
     // TODO: SEGV here - procMD5 is NULL in this context
+    // smart pointer
     *procMD5 = MD5Sum( MD5Sum::createFromString(md5.c_str()) );
   }
 

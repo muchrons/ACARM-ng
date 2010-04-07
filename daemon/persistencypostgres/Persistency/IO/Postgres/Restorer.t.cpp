@@ -52,7 +52,7 @@ template<>
 void testObj::test<1>(void)
 {
   std::vector<GraphNodePtrNN> out;
-  // create tree
+  // create tree and save data to the data base
   GraphNodePtrNN tree = makeNewTree1();
   // create restorer
   Restorer r(t_, dbh_);
@@ -61,11 +61,14 @@ void testObj::test<1>(void)
   // check if restored meta alerts exist in cache
   for(std::vector<GraphNodePtrNN>::iterator it = out.begin(); it !=out.end(); ++it)
     ensure("meta alert shoud be in cache", idCache_->has( (*it)->getMetaAlert()) );
-  // TODO:
+  // TODO: check if readed data (alerts and meta alerts) are the same
+  //       as writed before
 }
 
 // TODO: try restoring few non-trivial test cases
-
+template<>
+template<>
+void testObj::test<2>
 // TODO: try restoring empty set and all meta alerts
 
 // TODO: try restoring invalid data (i.e. node that has no children, etc...)
