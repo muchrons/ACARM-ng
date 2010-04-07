@@ -30,7 +30,7 @@ struct TestInterface: public Interface
 
     tut::ensure("invalid node", node.get()==node_.get() );
     tut::ensure_equals("invalid count of elements in changed list",
-                       changedNodes.size(), 0);
+                       changedNodes.size(), 0u);
 
     // add two nodes to chenged list
     changedNodes.push_back(node);
@@ -95,7 +95,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensure_equals("pre-condition failed", mainQueue_.size(), 0);
+  ensure_equals("pre-condition failed", mainQueue_.size(), 0u);
   // process data
   TestInterface &ti=dynamic_cast<TestInterface&>(*interface_);
   Processor      p(mainQueue_, interface_);
@@ -109,7 +109,7 @@ void testObj::test<3>(void)
     else
       usleep(50*1000);
   // check results
-  ensure_equals("invalid number of elements", mainQueue_.size(), 1);
+  ensure_equals("invalid number of elements", mainQueue_.size(), 1u);
   ensure("requested element not found", mainQueue_.pop().get()==ti.node_.get() );
 }
 
@@ -119,7 +119,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure_equals("pre-condition failed", mainQueue_.size(), 0);
+  ensure_equals("pre-condition failed", mainQueue_.size(), 0u);
   // process data
   TestInterface &ti=dynamic_cast<TestInterface&>(*interface_);
   Processor                   p(mainQueue_, interface_);
@@ -133,7 +133,7 @@ void testObj::test<4>(void)
     else
       usleep(50*1000);
   // check results
-  ensure_equals("invalid number of elements", mainQueue_.size(), 2);
+  ensure_equals("invalid number of elements", mainQueue_.size(), 2u);
 }
 
 // smoke-test smart-poitner declaration

@@ -72,7 +72,7 @@ void testObj::test<2>(void)
   const Backtrace bt1=bt_;
   myCall(21);
   const Backtrace bt2=bt_;
-  ensure_equals("backtrace counts does not match", bt2.size()-bt1.size(), 11);
+  ensure_equals("backtrace counts does not match", bt2.size()-bt1.size(), 11u);
 }
 
 
@@ -99,7 +99,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  int cnt=0;
+  unsigned int cnt=0;
   myCall(10);
   for(Backtrace::const_iterator it=bt_.begin(); it!=bt_.end(); ++it)
     ++cnt;

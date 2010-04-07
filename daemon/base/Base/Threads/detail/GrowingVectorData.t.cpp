@@ -40,8 +40,8 @@ template<>
 void testObj::test<1>(void)
 {
   GVD tmp;
-  ensure_equals("invalid new collection size", tmp.vec_.size(),  0);
-  ensure_equals("invalid collection size",     gvd_.vec_.size(), 2);
+  ensure_equals("invalid new collection size", tmp.vec_.size(),  0u);
+  ensure_equals("invalid collection size",     gvd_.vec_.size(), 2u);
 }
 
 // test copy c-tor
@@ -69,8 +69,8 @@ template<>
 void testObj::test<4>(void)
 {
   const GVD &tmp=(gvd_=gvd_);
-  ensure_equals("selft assignment failed", gvd_.vec_.size(), 2);
-  ensure_equals("invalid returned value",  tmp.vec_.size(),  2);
+  ensure_equals("selft assignment failed", gvd_.vec_.size(), 2u);
+  ensure_equals("invalid returned value",  tmp.vec_.size(),  2u);
 }
 
 } // namespace tut

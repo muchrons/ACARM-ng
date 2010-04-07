@@ -63,7 +63,7 @@ void testObj::test<2>(void)
 {
   const ParseInputs             pp  =getConf();
   const InputsConfigCollection &cfg =pp.getConfig();
-  ensure_equals("invalid number of entries", cfg.size(), 2);
+  ensure_equals("invalid number of entries", cfg.size(), 2u);
 }
 
 // check input with no options
@@ -73,9 +73,9 @@ void testObj::test<3>(void)
 {
   const ParseInputs             pp  =getConf();
   const InputsConfigCollection &cfg =pp.getConfig();
-  ensure_equals("invalid number of entries", cfg.size(), 2);
+  ensure_equals("invalid number of entries", cfg.size(), 2u);
   ensure_equals("invalid type", cfg[0].getType(), "noopts");
-  ensure_equals("invalid number of options", cfg[0].getOptions().size(), 0);
+  ensure_equals("invalid number of options", cfg[0].getOptions().size(), 0u);
 }
 
 // check input with options
@@ -85,9 +85,9 @@ void testObj::test<4>(void)
 {
   const ParseInputs             pp  =getConf();
   const InputsConfigCollection &cfg =pp.getConfig();
-  ensure_equals("invalid number of entries", cfg.size(), 2);
+  ensure_equals("invalid number of entries", cfg.size(), 2u);
   ensure_equals("invalid type", cfg[1].getType(), "something");
-  ensure_equals("invalid number of options", cfg[1].getOptions().size(), 2);
+  ensure_equals("invalid number of options", cfg[1].getOptions().size(), 2u);
   ensure_equals("invalid option's 1 value", cfg[1]["opt6"], "or");
   ensure_equals("invalid option's 2 value", cfg[1]["opt9"], "XOR");
 }

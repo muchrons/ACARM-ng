@@ -34,7 +34,7 @@ void testObj::test<1>(void)
 {
   Core::Types::AlertsFifo q;
   InputsCollection        c=create(q);
-  ensure_equals("some elements are found", c.size(), 0);
+  ensure_equals("some elements are found", c.size(), 0u);
 }
 
 // test creating some sample, existing input
@@ -45,7 +45,7 @@ void testObj::test<2>(void)
   ConfigIO::Singleton::get()->rereadConfig("testdata/valid_input.xml");
   Core::Types::AlertsFifo q;
   InputsCollection        c=create(q);
-  ensure_equals("invalid number of entries read", c.size(), 1);
+  ensure_equals("invalid number of entries read", c.size(), 1u);
 }
 
 // test throw when non-existing input type is requested.

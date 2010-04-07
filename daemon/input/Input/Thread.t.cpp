@@ -32,8 +32,8 @@ struct TestReader: public Reader
     return TestHelpers::Persistency::makeNewAlert();
   }
 
-  int  count_;
-  bool justThrow_;
+  size_t count_;
+  bool   justThrow_;
 }; // struct TestReader
 
 struct TestClass
@@ -72,8 +72,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("pre-condition 1 failed", tr_->count_, 0);
-  ensure_equals("pre-condition 2 failed", output_.size(), 0);
+  ensure_equals("pre-condition 1 failed", tr_->count_, 0u);
+  ensure_equals("pre-condition 2 failed", output_.size(), 0u);
   {
     boost::thread th( Thread(r_, output_) );
     // run ~2-3 times
@@ -82,7 +82,7 @@ void testObj::test<2>(void)
     th.interrupt();
     th.join();
   }
-  const int count=tr_->count_;
+  const size_t count=tr_->count_;
   usleep(100*1000);
   ensure_equals("thread didn't stopped", tr_->count_, count);
   ensure_equals("invalid queue size", output_.size(), count);
@@ -93,7 +93,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensure_equals("pre-condition failed", tr_->count_, 0);
+  ensure_equals("pre-condition failed", tr_->count_, 0u);
   tr_->justThrow_=true;
   {
     boost::thread th( Thread(r_, output_) );
@@ -103,11 +103,11 @@ void testObj::test<3>(void)
     th.interrupt();
     th.join();
   }
-  const int count=tr_->count_;
+  const size_t count=tr_->count_;
   ensure("thread didn't run at all", count>0);
   usleep(100*1000);
   ensure_equals("thread didn't stopped", tr_->count_, count);
-  ensure_equals("invalid queue size", output_.size(), 0);
+  ensure_equals("invalid queue size", output_.size(), 0u);
 }
 
 

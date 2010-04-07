@@ -81,7 +81,7 @@ void testObj::test<3>(void)
   const ParsePersistency      pp  =getConf();
   const PersistencyConfig    &cfg =pp.getConfig();
   PersistencyConfig::Options  opts=cfg.getOptions();
-  ensure_equals("invalid element's count", opts.size(), 5);
+  ensure_equals("invalid element's count", opts.size(), 5u);
 }
 
 } // namespace tut
