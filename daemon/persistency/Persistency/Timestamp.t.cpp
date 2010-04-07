@@ -56,8 +56,8 @@ void testObj::test<3>(void)
 {
   const Timestamp ts1(42);
   const Timestamp ts2(666);
-  ensure_equals("less-than failed", ts1<ts2);
-  ensure_equals("negated less-than failed", !(ts1<ts2) );
+  ensure("less-than failed", ts1<ts2);
+  ensure("negated less-than failed", !(ts1>ts2) );
 }
 
 // test creation from timestamp
