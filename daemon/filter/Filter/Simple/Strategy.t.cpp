@@ -91,7 +91,7 @@ void testObj::test<1>(void)
   for(int i=0; i<3; ++i)
   {
     ts.process( makeNewLeaf(), changed_ );
-    ensure_equals("something has cahnged", changed_.size(), 0);
+    ensure_equals("something has cahnged", changed_.size(), 0u);
   }
 }
 
@@ -105,7 +105,7 @@ void testObj::test<2>(void)
   for(int i=0; i<2; ++i)
   {
     ts.process(n, changed_);
-    ensure_equals("some nodes have been changed", changed_.size(), 0);
+    ensure_equals("some nodes have been changed", changed_.size(), 0u);
   }
 }
 
@@ -123,14 +123,14 @@ void testObj::test<3>(void)
   assert( n3->isLeaf() );
 
   ts.process(n1, changed_);
-  ensure_equals("some nodes have been changed in first run", changed_.size(), 0);
+  ensure_equals("some nodes have been changed in first run", changed_.size(), 0u);
 
   ts.process(n2, changed_);
-  ensure_equals("some nodes have been changed in second run", changed_.size(), 0);
+  ensure_equals("some nodes have been changed in second run", changed_.size(), 0u);
 
   ts.canCorrelate_=true;
   ts.process(n3, changed_);
-  ensure_equals("correlation failed", changed_.size(), 1);
+  ensure_equals("correlation failed", changed_.size(), 1u);
   // check if changed element is new one indeed
   ensure("node 1 returned", n1.get()!=changed_.at(0).get() );
   ensure("node 2 returned", n2.get()!=changed_.at(0).get() );
@@ -161,10 +161,10 @@ void testObj::test<4>(void)
   TestStrategy::Node n2=makeNewLeaf();
 
   ts.process(n1, changed_);
-  ensure_equals("some nodes have been changed in first run", changed_.size(), 0);
+  ensure_equals("some nodes have been changed in first run", changed_.size(), 0u);
 
   ts.process(n2, changed_);
-  ensure_equals("correlation ot already existing node failed", changed_.size(), 1);
+  ensure_equals("correlation ot already existing node failed", changed_.size(), 1u);
 
   // check if changed node is first one.
   ensure("node different than node1 returned", n1.get()==changed_.at(0).get() );
@@ -204,17 +204,17 @@ void testObj::test<5>(void)
   for(int i=0; i<2; ++i)
   {
     ts.process( makeNewLeaf(), changed_ );
-    ensure_equals("some nodes have been changed / 1", changed_.size(), 0);
+    ensure_equals("some nodes have been changed / 1", changed_.size(), 0u);
   }
 
   // nothing should happen here, since two exceptions are thrown
   ts.process( makeNewLeaf(), changed_ );
-  ensure_equals("some nodes have been changed / 2", changed_.size(), 0);
+  ensure_equals("some nodes have been changed / 2", changed_.size(), 0u);
 
   // this time exception should be thrown only for the first element, it should
   // be logged and then next element should be correlated.
   ts.process( makeNewLeaf(), changed_ );
-  ensure_equals("correlation failed", changed_.size(), 1);
+  ensure_equals("correlation failed", changed_.size(), 1u);
 }
 
 // test if name is set properly
@@ -226,7 +226,7 @@ void testObj::test<6>(void)
   ts.process( makeNewLeaf(), changed_ );
   ts.process( makeNewLeaf(), changed_ );
   ensure_equals("nothing changed (no correlation has been done)",
-                changed_.size(), 1);
+                changed_.size(), 1u);
   ensure_equals( "invalid meta-alert name",
                  string( changed_.at(0)->getMetaAlert()->getName().get() ),
                  string( "hakuna matata" ) );
@@ -241,7 +241,7 @@ void testObj::test<7>(void)
   for(int i=0; i<3; ++i)
   {
     ts.process( makeNewLeaf(), changed_ );
-    ensure_equals("something has cahnged", changed_.size(), 0);
+    ensure_equals("something has cahnged", changed_.size(), 0u);
   }
 }
 

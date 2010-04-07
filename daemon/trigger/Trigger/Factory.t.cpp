@@ -52,7 +52,7 @@ template<>
 void testObj::test<1>(void)
 {
   const TriggersCollection fc=create(queue_);
-  ensure_equals("some elements returend for empty triggers's list", fc.size(), 0);
+  ensure_equals("some elements returend for empty triggers's list", fc.size(), 0u);
 }
 
 // test exception when requesting non-existing builder
@@ -136,7 +136,7 @@ void testObj::test<3>(void)
   assert( g_rh.isRegistered() && "oops - registration failed" );
   ConfigIO::Singleton::get()->rereadConfig("testdata/some_trigger.xml");
   const TriggersCollection fc=create(queue_);
-  ensure_equals("no triggers created", fc.size(), 1);
+  ensure_equals("no triggers created", fc.size(), 1u);
 }
 
 } // namespace tut

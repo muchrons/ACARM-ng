@@ -51,7 +51,7 @@ template<>
 void testObj::test<1>(void)
 {
   s_.process( makeNewLeaf("127.0.0.2"), changed_ );
-  ensure_equals("nothing changed", changed_.size(), 0);
+  ensure_equals("nothing changed", changed_.size(), 0u);
 }
 
 // test node
@@ -60,7 +60,7 @@ template<>
 void testObj::test<2>(void)
 {
   s_.process( makeNode(), changed_ );
-  ensure_equals("nothing changed", changed_.size(), 0);
+  ensure_equals("nothing changed", changed_.size(), 0u);
 }
 
 } // namespace tut

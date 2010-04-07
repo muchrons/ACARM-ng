@@ -32,7 +32,7 @@ template<>
 void testObj::test<1>(void)
 {
   ProcessorsCollection pc;
-  ensure_equals("invalid size", pc.size(), 0);
+  ensure_equals("invalid size", pc.size(), 0u);
 }
 
 } // namespace tut

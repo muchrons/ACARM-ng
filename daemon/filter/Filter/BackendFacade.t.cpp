@@ -117,7 +117,7 @@ void testObj::test<2>(void)
   const HostPtrNN   h=setName( name.c_str() );
   ensure("name not set", h->getName()!=NULL );
   ensure_equals("invalid name set", h->getName().get(), name);
-  ensure_equals("change not marked", changed_.size(), 1);
+  ensure_equals("change not marked", changed_.size(), 1u);
 }
 
 // check updating severity
@@ -130,7 +130,7 @@ void testObj::test<3>(void)
   const double c=ma->getSeverityDelta();
   bf_->updateSeverityDelta(node, 1.3);
   ensure_equals("invalid severity", ma->getSeverityDelta(), c+1.3);
-  ensure_equals("change not marked", changed_.size(), 1);
+  ensure_equals("change not marked", changed_.size(), 1u);
 }
 
 // test updating certanity
@@ -143,7 +143,7 @@ void testObj::test<4>(void)
   const double c=ma->getCertaintyDelta();
   bf_->updateCertaintyDelta(node, 1.3);
   ensure_equals("invalid certanity", ma->getCertaintyDelta(), c+1.3);
-  ensure_equals("change not marked", changed_.size(), 1);
+  ensure_equals("change not marked", changed_.size(), 1u);
 }
 
 // test commiting empty change-set
@@ -174,7 +174,7 @@ void testObj::test<7>(void)
   // check
   ensure_equals("child not added",    childrenCount(parent), 2+1);
   ensure_equals("wrong way addition", childrenCount(child),  2+0);
-  ensure_equals("change not marked", changed_.size(), 1);
+  ensure_equals("change not marked", changed_.size(), 1u);
 }
 
 // test correlating nodes
@@ -189,7 +189,7 @@ void testObj::test<8>(void)
   // check
   ensure_equals("invalid number of children after correlation",
                 childrenCount(out), 2);
-  ensure_equals("change not marked", changed_.size(), 1);
+  ensure_equals("change not marked", changed_.size(), 1u);
 }
 
 // test correlating more than 2 hosts.
@@ -206,7 +206,7 @@ void testObj::test<9>(void)
   // check
   ensure_equals("invalid number of children after correlation",
                 childrenCount(out), 2+3);
-  ensure_equals("change not marked", changed_.size(), 1);
+  ensure_equals("change not marked", changed_.size(), 1u);
 }
 
 // test throwing when non-mepty changed nodes colleciton is given

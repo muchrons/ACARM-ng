@@ -111,7 +111,7 @@ void testObj::test<6>(void)
 {
   Transaction  t( c_.createNewTransaction("abc") );
   const size_t s=c_.removeEntriesOlderThan(11, t);
-  ensure_equals("invalid return values", s, 42);
+  ensure_equals("invalid return values", s, 42u);
   ensureCalls(5);
 }
 

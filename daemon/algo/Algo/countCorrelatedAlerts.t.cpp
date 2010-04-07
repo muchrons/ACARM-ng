@@ -43,7 +43,7 @@ template<>
 void testObj::test<1>(void)
 {
   const size_t cnt=countCorrelatedAlerts(tree_);
-  ensure_equals("invalid number of elements", cnt, 5);
+  ensure_equals("invalid number of elements", cnt, 5u);
 }
 
 // check leaf traversal
@@ -52,7 +52,7 @@ template<>
 void testObj::test<2>(void)
 {
   const size_t cnt=countCorrelatedAlerts( makeNewLeaf() );
-  ensure_equals("invalid count for leaf", cnt, 1);
+  ensure_equals("invalid count for leaf", cnt, 1u);
 }
 
 // check tree with non-unique leafs
@@ -61,7 +61,7 @@ template<>
 void testObj::test<3>(void)
 {
   const size_t cnt=countCorrelatedAlerts(nonUniqueTree_);
-  ensure_equals("invalid number of elements", cnt, 3);
+  ensure_equals("invalid number of elements", cnt, 3u);
 }
 
 } // namespace tut

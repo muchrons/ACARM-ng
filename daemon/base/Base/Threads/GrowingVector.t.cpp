@@ -45,7 +45,7 @@ void testObj::test<1>(void)
 {
   ensure("const-iterators are invalid", cgv_.begin()==cgv_.end() );
   ensure("iterators are invalid",       gv_.begin() ==gv_.end()  );
-  ensure_equals("invalid size", cgv_.size(), 0);
+  ensure_equals("invalid size", cgv_.size(), 0u);
 }
 
 // adding element at the end.
@@ -54,7 +54,7 @@ template<>
 void testObj::test<2>(void)
 {
   gv_.push("hello world");
-  ensure_equals("invalid size after adding one element", cgv_.size(), 1);
+  ensure_equals("invalid size after adding one element", cgv_.size(), 1u);
   ensure("const-iterators are invalid", cgv_.begin()!=cgv_.end() );
   ensure("iterators are invalid",       gv_.begin() !=gv_.end()  );
 }
@@ -65,7 +65,7 @@ template<>
 void testObj::test<3>(void)
 {
   gv_.push("hello world");
-  ensure_equals("invalid size after adding one element", cgv_.size(), 1);
+  ensure_equals("invalid size after adding one element", cgv_.size(), 1u);
   GV::const_iterator it =cgv_.begin();
   GV::const_iterator end=cgv_.end();
   ensure("const-iterators are invalid", it!=end);
@@ -179,8 +179,8 @@ void testObj::test<7>(void)
   c1.push("abc");
 
   // ensure proper sizes
-  ensure_equals("invlaid size for collection 1", c1.size(), 2);
-  ensure_equals("invlaid size for collection 2", c2.size(), 1);
+  ensure_equals("invlaid size for collection 1", c1.size(), 2u);
+  ensure_equals("invlaid size for collection 2", c2.size(), 1u);
 }
 
 // test assignment operator
@@ -197,8 +197,8 @@ void testObj::test<8>(void)
   c1.push("abc");
 
   // ensure proper sizes
-  ensure_equals("invlaid size for collection 1", c1.size(), 2);
-  ensure_equals("invlaid size for collection 2", c2.size(), 1);
+  ensure_equals("invlaid size for collection 1", c1.size(), 2u);
+  ensure_equals("invlaid size for collection 2", c2.size(), 1u);
 }
 
 // test self assignment
@@ -211,7 +211,7 @@ void testObj::test<9>(void)
   gv_=gv_;
 
   // ensure proper sizes
-  ensure_equals("invlaid size for collection", gv_.size(), 2);
+  ensure_equals("invlaid size for collection", gv_.size(), 2u);
 }
 
 // iterators should remain valid and non-changing after assignment
@@ -233,7 +233,7 @@ void testObj::test<10>(void)
   }
 
   // check assignment results
-  ensure_equals("invlaid collection size", col.size(), 2);
+  ensure_equals("invlaid collection size", col.size(), 2u);
 
   // this is smoke test - if objects have been reallocated and this iterator
   // points to nowhere, it will probably crash.

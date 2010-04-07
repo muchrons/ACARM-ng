@@ -52,7 +52,7 @@ template<>
 void testObj::test<1>(void)
 {
   const FiltersCollection fc=create(queue_);
-  ensure_equals("some elements returend for empty filter's list", fc.size(), 0);
+  ensure_equals("some elements returend for empty filter's list", fc.size(), 0u);
 }
 
 // test exception when requesting non-existing builder
@@ -136,7 +136,7 @@ void testObj::test<3>(void)
   assert( g_rh.isRegistered() && "oops - registration failed" );
   ConfigIO::Singleton::get()->rereadConfig("testdata/some_filter.xml");
   const FiltersCollection fc=create(queue_);
-  ensure_equals("no filters created", fc.size(), 1);
+  ensure_equals("no filters created", fc.size(), 1u);
 }
 
 } // namespace tut
