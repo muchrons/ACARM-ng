@@ -20,10 +20,21 @@ ifneq ($(TC),intel)
 export WITH_CCACHE:=1
 endif
 
+TMP:=
+TMPLD:=
+
+# determine architecture to compile for
+ARCH_STR:=$(shell uname -m)
+ifeq ($(ARCH_STR),x86_64)
+TMP:=-m64
+else
+TMP:=-m32
+endif
+
 # project-specific flags
 # for intel disable some annoying remarks
 ifeq ($(TC),intel)
-TMP:=
+#TMP:=
 TMP+=-wd193  # zero used for undefined preprocessing identifier
 TMP+=-wd279  # controlling expression is constant
 TMP+=-wd383  # value copied to temporary, reference to temporary used
@@ -35,8 +46,8 @@ TMP+=-wd1418 # external function definition with no prior declaration
 TMP+=-wd1572 # floating-point equality and inequality comparisons are unreliable
 TMPLD:=-lstdc++
 else
-TMP:=
-TMPLD:=
+#TMP:=
+#TMPLD:=
 endif
 export USER_OPT_FLAGS:=-march=core2 $(TMP)
 export USER_DBG_FLAGS:=$(TMP)
