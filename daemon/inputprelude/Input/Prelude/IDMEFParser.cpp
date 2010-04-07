@@ -35,6 +35,7 @@ IDMEFParser::IDMEFParser(idmef_message_t * msg)
   const idmef_time_t *idmef_time = idmef_alert_get_create_time(alert_);
   const time_t ctime_t=idmef_time_get_sec(idmef_time);
   ctime_=boost::posix_time::from_time_t(ctime_t);
+  std::cerr << '<' << ctime_t  << '>' << std::endl;
   // TODO: 3rd - end
 
   // TODO: 4th - begin
