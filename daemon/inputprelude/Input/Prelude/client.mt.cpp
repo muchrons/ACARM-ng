@@ -18,7 +18,7 @@ int main(int argc, char * argv[])
     return -1;
   }
 
-  Client client("ACARM-wojek-acm");
+  Client client("profile");
   client.SetConfigFilename("/etc/prelude/default/client.conf");
   client.SetRequiredPermission(PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
   //client.SetFlags( Client::FLAGS_ASYNC_TIMER);
