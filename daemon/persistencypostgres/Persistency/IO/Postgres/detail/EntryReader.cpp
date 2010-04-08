@@ -48,19 +48,19 @@ Base::NullValue<T> set(const pqxx::result::field &r)
   }
 }
 
-template<typename S>
-Base::NullValue<Analyzer::IP> set(const pqxx::result::field &r)
+template<typename T, typename S>
+Base::NullValue<T> setFromString(const pqxx::result::field &r)
 {
   if( r.is_null() )
   {
-    Base::NullValue<Analyzer::IP> ret;
+    Base::NullValue<T> ret;
     return ret;
   }
   else
   {
     S s;
     r.to(s);
-    Base::NullValue<Analyzer::IP> ret(new Analyzer::IP(Analyzer::IPv4::from_string(s)));
+    Base::NullValue<T> ret(new T(T::from_string(s)));
     return ret;
   }
 }
@@ -80,24 +80,6 @@ Base::NullValue<Timestamp> set(const pqxx::result::field &r)
     return ret;
   }
 }
-/*
-template<>
-Base::NullValue<Timestamp> setWithString(const pqxx::result::field r)
-{
-  if( r.is_null() )
-  {
-    Base::NullValue<MD5Sum> ret;
-    return ret;
-  }
-  else
-  {
-    string s;
-    r.to(s);
-    Base::NullValue<MD5Sum> ret(new MD5Sum( MD5Sum::createFromString(s.c_str()) ));
-    return ret;
-  }
-}
-*/
 
 SeverityLevel fromInt(int level)
 {
@@ -138,7 +120,7 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
   ss << "SELECT * FROM alerts WHERE id = " << alertID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
-  string name, description, detect_time, create_time;
+  string name, description, create_time;
   int idSeverity;
   double certainty;
 
@@ -147,14 +129,6 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
   r[0]["create_time"].to(create_time);
   r[0]["id_severity"].to(idSeverity);
   r[0]["certanity"].to(certainty);
-  // TODO: consider using NullValue class for this.
-  Timestamp                *alertDetect = NULL;
-  if( !r[0]["detect_time"].is_null() )
-  {
-    r[0]["detect_time"].to(detect_time);
-    //TODO: smart pointer
-    alertDetect = new Timestamp( time_from_string(detect_time) );
-  }
 
   const Persistency::Alert::Name alertName(name);
   const Timestamp                alertCreate( time_from_string( create_time ) );
@@ -164,7 +138,7 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
 
   AlertPtrNN alert( new Alert(alertName,
                               getAnalyzers( alertID ),
-                              alertDetect,
+                              set(r[0]["detect"]).get(),
                               alertCreate,
                               alertSeverity,
                               alertCertainty,
@@ -181,23 +155,12 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   string name, createTime, lastUpdateTime;
   double severityDelta, certaintyDelta;
-  //DataBaseID *refID = NULL;
-  //DataBaseID id;
   r[0]["name"].to(name);
   trim(name);
   r[0]["severity_delta"].to(severityDelta);
   r[0]["certanity_delta"].to(certaintyDelta);
   r[0]["create_time"].to(createTime);
-  // TODO: consider using NullValue class for this.
-  // TODO: remove this code after review
-  /*
-  if( !r[0]["id_ref"].is_null() )
-  {
-    r[0]["id_ref"].to(id);
-    //TODO smart pointer
-    refID = new DataBaseID(id);
-  }
-  */
+
   const Persistency::MetaAlert::Name malertName(name);
   Timestamp                          malertCreate( time_from_string( createTime) );
 
@@ -216,45 +179,15 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
   sa << "SELECT * FROM analyzers WHERE id = " << anlzID << ";";
   result ra = t_.getAPI<TransactionAPI>().exec(sa);
 
-  string name, version, os, ip;
+  string name;
   ra[0]["name"].to(name);
-  /*
-  Analyzer::Version *anlzVersion = NULL;
-  // TODO: consider using NullValue class for this.
-  if( !ra[0]["version"].is_null() )
-  {
-    ra[0]["version"].to(version);
-    anlzVersion = new Analyzer::Version(version) ;
-    //TODO smart pointer
-  }
 
-  // TODO: consider using NullValue class for this.
-  Analyzer::OS *anlzOS = NULL;
-  if( !ra[0]["os"].is_null() )
-  {
-    ra[0]["os"].to(os);
-    anlzOS = new Analyzer::OS(os);
-    //TODO smart pointer
-  }
-
-  // TODO: consider using NullValue class for this.
-  Analyzer::IP *anlzIP = NULL;
-  if( !ra[0]["ip"].is_null() )
-  {
-    ra[0]["ip"].to(ip);
-    anlzIP = new Analyzer::IP( Analyzer::IPv4::from_string(ip) );
-    //TODO smart pointer
-  }
-  */
   const Analyzer::Name    anlzName(name);
 
   AnalyzerPtrNN anlz(new Analyzer( anlzName,
                                    set<Analyzer::Version, string>(ra[0]["version"] ).get(),
-                                   /*anlzVersion.get(),*/
                                    set<Analyzer::OS, string>(ra[0]["os"] ).get(),
-                                   /*anlzOS,*/
-                                   set<string>(ra[0]["ip"] ).get()
-                                   /*anlzIP*/ ));
+                                   setFromString<Analyzer::IP, string>(ra[0]["ip"] ).get() ));
   return anlz;
 }
 
@@ -314,48 +247,15 @@ HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID *refID)
   string ip, mask, os, name;
 
   r[0]["ip"].to(ip);
-  // TODO: remove this code after review
-  /*
-  // TODO: consider using NullValue class for this.
-  Persistency::Host::Name            hostName;
-  if( !r[0]["name"].is_null() )
-  {
-    r[0]["name"].to(name);
-    hostName = Persistency::Host::Name(name);
-  }
+  const Persistency::Host::IP hostIP(Persistency::Host::IP::from_string(ip) );
 
-  // TODO: consider using NullValue class for this.
-  Persistency::Host::OperatingSystem hostOS;
-  if( !r[0]["os"].is_null() )
-  {
-    r[0]["os"].to(os);
-    hostOS = Persistency::Host::OperatingSystem(os);
-  }
-  */
-  // TODO: consider using NullValue class for this.
-  Persistency::Host::Netmask         hostIP;
-  if( !r[0]["mask"].is_null() )
-  {
-    r[0]["mask"].to(mask);
-    hostIP = Persistency::Host::Netmask( Persistency::Host::Netmask::from_string(mask) );
-  }
-
-  const Persistency::Host::IP              hostNetmask(
-                    Persistency::Host::IP::from_string(mask) );
-
-  // TODO: you do not know if given values are set or not. i'd suggest
-  //       reversing logic - if they are NULL (but shouldn't) throw an
-  //       exception. notice that this code is generic, therofor it can be
-  //       implemented as a template.
   HostPtr host(new Persistency::Host(hostIP,
-                                     &hostNetmask,
+                                     setFromString<Persistency::Host::Netmask, string>(r[0]["mask"]).get(),
                                      *set<Persistency::Host::OperatingSystem, string>(r[0]["os"]).get(),
-                                     /*hostOS,*/
                                      getReferenceURL(refID),
                                      getReportedServices( hostID ),
                                      getReportedProcesses( hostID ),
-                                     *set<Persistency::Host::Name, string>(r[0]["name"]).get()
-                                     /*hostName*/) );
+                                     *set<Persistency::Host::Name, string>(r[0]["name"]).get() ) );
   // add host to cache
   dbh_.getIDCache()->add(host , hostID);
   return host;
@@ -409,21 +309,13 @@ Persistency::ServicePtr EntryReader::getService(DataBaseID servID, DataBaseID *r
 
   r[0]["name"].to(name);
   r[0]["port"].to(port);
-/*
-  Persistency::Service::Protocol serviceProtocol;
-  if( !r[0]["port"].is_null() )
-  {
-    r[0]["port"].to(port);
-    serviceProtocol = Persistency::Service::Port(port);
-  }
-*/
+
   const Persistency::Service::Name     serviceName(name);
   const Persistency::Service::Port     servicePort(port);
 
   Persistency::ServicePtr service(new Persistency::Service(serviceName,
                                                            servicePort,
                                                            *set<Persistency::Service::Protocol, string>(r[0]["protocol"]).get(),
-                                                           /*serviceProtocol,*/
                                                            getReferenceURL( refID )));
   return service;
 }
@@ -435,16 +327,7 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
   ss << "SELECT * FROM processes WHERE id = " << procID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
-  string path, name, md5;
-  // TODO: this should be deleted after review
-  /*
-  Process::Path     procPath;
-  if( !r[0]["path"].is_null() )
-  {
-    r[0]["path"].to(path);
-    procPath = Process::Path(path);
-  }
-  */
+  string name, md5;
   // TODO: consider using NullValue class for this.
   r[0]["name"].to(name);
   MD5Sum *procMD5 = NULL;
@@ -461,24 +344,17 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
   result rr = t_.getAPI<TransactionAPI>().exec(sr);
 
   string username, arguments;
-  int pid, uid;
-  rr[0]["pid"].to(pid);
-  rr[0]["uid"].to(uid);
   rr[0]["username"].to(username);
   rr[0]["arguments"].to(arguments);
 
   const Process::Name     procName(name);
-  const pid_t             procPid(pid);
   const Process::Username procUsername(username);
 
-  // TODO: what if procPid and/or uid are NULLs in data base?
-  // TODO: (answer) this shoul be added, work in progress
   Persistency::ProcessPtr process( new Process(*set<Process::Path, string>(r[0]["path"]).get(),
-                                                /*procPath,*/
                                                 procName,
                                                 procMD5,
-                                               &procPid,
-                                               &uid,
+                                                set<pid_t, int>(rr[0]["pid"]).get(),
+                                                set<int, int>(rr[0]["uid"]).get(),
                                                 procUsername,
                                                 arguments.c_str(),
                                                 getReferenceURL( refID )) );
