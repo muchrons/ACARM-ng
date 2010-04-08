@@ -63,6 +63,7 @@ void testObj::test<1>(void)
     ensure("meta alert shoud be in cache", idCache_->has( (*it)->getMetaAlert()) );
   // TODO: check if readed data (alerts and meta alerts) are the same
   //       as writed before
+  //       there should be test which writes differents alerts, meta alerts to the data base
 }
 
 // TODO: try restoring few non-trivial test cases

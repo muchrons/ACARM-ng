@@ -138,7 +138,7 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
 
   AlertPtrNN alert( new Alert(alertName,
                               getAnalyzers( alertID ),
-                              set(r[0]["detect"]).get(),
+                              set(r[0]["detect_time"]).get(),
                               alertCreate,
                               alertSeverity,
                               alertCertainty,
