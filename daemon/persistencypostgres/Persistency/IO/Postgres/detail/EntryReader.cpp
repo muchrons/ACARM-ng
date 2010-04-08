@@ -64,9 +64,25 @@ Base::NullValue<Analyzer::IP> set(const pqxx::result::field &r)
     return ret;
   }
 }
+
+Base::NullValue<Timestamp> set(const pqxx::result::field &r)
+{
+  if( r.is_null() )
+  {
+    Base::NullValue<Timestamp> ret;
+    return ret;
+  }
+  else
+  {
+    string s;
+    r.to(s);
+    Base::NullValue<Timestamp> ret( new Timestamp( time_from_string(s) ) );
+    return ret;
+  }
+}
 /*
 template<>
-Base::NullValue<MD5Sum> setWithString(const pqxx::result::field r)
+Base::NullValue<Timestamp> setWithString(const pqxx::result::field r)
 {
   if( r.is_null() )
   {
@@ -82,6 +98,7 @@ Base::NullValue<MD5Sum> setWithString(const pqxx::result::field r)
   }
 }
 */
+
 SeverityLevel fromInt(int level)
 {
   switch(level)
