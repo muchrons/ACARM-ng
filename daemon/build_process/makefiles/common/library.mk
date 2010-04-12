@@ -5,6 +5,9 @@ all:: all-$(COMPONENT_PART)
 
 include $(MAKEFILES_COMMON_BASE_DIR)/lib_app_common.mk
 
+#
+# ALL
+#
 .PHONY: all-MKPUBLIC
 all-MKPUBLIC:: $(PUBLIC_HEADERS)
 .PHONY: all-OBJECTS

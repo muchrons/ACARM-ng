@@ -16,6 +16,9 @@ $(APPLICATION_NAME):: $(LIBRARY_NAME) $(MAIN_OBJS) $(LIBS_GEN_DEPS)
 	  $(STRIP) $@ || rm -f "$@" ; \
 	fi
 
+#
+# ALL
+#
 .PHONY: all-MKPUBLIC
 all-MKPUBLIC::
 .PHONY: all-OBJECTS
