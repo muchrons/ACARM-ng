@@ -69,4 +69,15 @@ void testObj::test<4>(void)
   ensure_equals("invalid value", ts.get(), 42);
 }
 
+// testy asignment operator for Tiemstamp
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const Timestamp ts1(111);
+  Timestamp       ts2(222);
+  ts2=ts1;
+  ensure_equals("invalid value", ts2.get(), 111);
+}
+
 } // namespace tut
