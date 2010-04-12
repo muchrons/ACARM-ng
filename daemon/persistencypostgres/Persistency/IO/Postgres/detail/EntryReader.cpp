@@ -84,7 +84,7 @@ Base::NullValue<Timestamp> set(const pqxx::result::field &r)
   {
     string s;
     r.to(s);
-    Base::NullValue<Timestamp> ret( new Timestamp( time_from_string(s) ) );
+    Base::NullValue<Timestamp> ret( new Timestamp( timestampFromString(s) ) );
     return ret;
   }
 }
@@ -172,7 +172,7 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
   r[0]["create_time"].to(createTime);
 
   const Persistency::MetaAlert::Name malertName(name);  // TODO: this variable is not needed
-  Timestamp                          malertCreate( time_from_string( createTime) ); // TODO: this variable is not needed
+  Timestamp                          malertCreate( timestampFromString( createTime) ); // TODO: this variable is not needed
 
   MetaAlertPtrNN malert( new Persistency::MetaAlert( malertName,
                                           severityDelta,
@@ -494,8 +494,10 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
   vector<DataBaseID> malertsBetween;
   stringstream       ss;
   //TODO: test this query
-  ss << "SELECT id FROM meta_alerts WHERE "
-     << to_iso_string(from) << " <= create_time AND create_time <=" << to_iso_string(to) << ";";
+  ss << "SELECT id FROM meta_alerts WHERE ";
+  Appender::append(ss, from);
+  ss << " <= create_time AND create_time <=";
+  Appender::append(ss, to);
   // TODO: this variable should be const.
   // TODO: there is dedicated template for runnign SQL statements.
   result r = t_.getAPI<TransactionAPI>().exec(ss);
