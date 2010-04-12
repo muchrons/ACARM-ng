@@ -5,17 +5,16 @@
 #include <sstream>
 #include <ctime>
 #include <cassert>
-#include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 
-#include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
+#include "Persistency/IO/Postgres/timestampFromString.hpp"
+#include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 #include "Persistency/IO/Postgres/detail/Appender.hpp"
 
 using namespace std;
 using namespace pqxx;
 
-using boost::lexical_cast;
 using boost::algorithm::trim;
 using Persistency::IO::Transaction;
 
@@ -82,11 +81,11 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
   {
     r[0]["detect_time"].to(detect_time);
     //TODO: smart pointer
-    alertDetect = new Timestamp( lexical_cast<time_t>(detect_time) );
+    alertDetect = new Timestamp( timestampFromString(detect_time) );
   }
 
   const Persistency::Alert::Name alertName(name);
-  const Timestamp                alertCreate( lexical_cast<time_t>( create_time ) );
+  const Timestamp                alertCreate( timestampFromString( create_time ) );
   const Severity                 alertSeverity( fromInt(idSeverity) );
   const Certainty                alertCertainty(certainty);
   const string                   alertDescription(description);
@@ -124,7 +123,7 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
     refID = new DataBaseID(id);
   }
   const Persistency::MetaAlert::Name malertName(name);
-  Timestamp                          malertCreate( lexical_cast<time_t>(createTime) );
+  Timestamp                          malertCreate( timestampFromString(createTime) );
 
   MetaAlertPtrNN malert( new Persistency::MetaAlert( malertName,
                                           severityDelta,
