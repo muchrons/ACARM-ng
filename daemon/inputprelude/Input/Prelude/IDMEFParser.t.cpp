@@ -116,20 +116,18 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  idmef_alert_t *alert=getAlert();
+  const time_t                  tt=54321;
+  const Persistency::Timestamp  time(tt);
 
-  const char * time_char="20020131T235959";
-  Persistency::Timestamp time(from_iso_string(time_char));
-  tm timeptr=to_tm(time);
-  const time_t t=mktime(&timeptr);
-  idmef_time_t *idmeftime;
-  idmef_time_new_from_time(&idmeftime,&t);
-  idmef_alert_set_create_time(alert,idmeftime);
+  idmef_time_t  *idmeftime=NULL;
+  idmef_alert_t *alert=getAlert();
+  idmef_time_new_from_time(&idmeftime, &tt);
+  idmef_alert_set_create_time(alert, idmeftime);
 
   // TODO: object should be const
-  IDMEFParser ip(getMessage());
+  IDMEFParser ip( getMessage() );
   // TODO: string( someMakeStringCall().c_str() ) does not make sense
-  ensure_equals("Something broken with time",string(to_iso_string(ip.getCreateTime()).c_str()),string(time_char));  // TODO: LTL
+  ensure_equals("Something broken with time", ip.getCreateTime(), time);
 }
 
 // TODO: test parsing when heart beat is passed
