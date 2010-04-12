@@ -8,7 +8,9 @@
 #include <sstream>
 #include <string>
 #include <pqxx/pqxx>
+
 #include "Persistency/Analyzer.hpp"
+#include "Persistency/Timestamp.hpp"
 
 namespace Persistency
 {
@@ -91,6 +93,13 @@ template<>
 inline void Appender::append<std::string>(std::stringstream &ss, const std::string &t)
 {
   appendEscape(ss, t.c_str() );
+}
+
+template<>
+inline void Appender::append<Persistency::Timestamp>(std::stringstream            &ss,
+                                                     const Persistency::Timestamp &t)
+{
+  ss<<t.get()<<"::abstime::timestamp";
 }
 
 

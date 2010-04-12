@@ -147,4 +147,13 @@ void testObj::test<12>(void)
   checkRef(tmp, "3.1416");
 }
 
+// test appending timestamp
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  const Persistency::Timestamp tmp(42);
+  checkRef(tmp, "42::abstime::timestamp");
+}
+
 } // namespace tut

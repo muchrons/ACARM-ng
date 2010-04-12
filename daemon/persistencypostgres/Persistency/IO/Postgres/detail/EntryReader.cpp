@@ -3,7 +3,9 @@
  *
  */
 #include <sstream>
+#include <ctime>
 #include <cassert>
+#include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
 
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
@@ -13,9 +15,9 @@
 using namespace std;
 using namespace pqxx;
 
-using Persistency::IO::Transaction;
-using boost::posix_time::time_from_string;
+using boost::lexical_cast;
 using boost::algorithm::trim;
+using Persistency::IO::Transaction;
 
 namespace Persistency
 {
@@ -80,11 +82,11 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
   {
     r[0]["detect_time"].to(detect_time);
     //TODO: smart pointer
-    alertDetect = new Timestamp( time_from_string(detect_time) );
+    alertDetect = new Timestamp( lexical_cast<time_t>(detect_time) );
   }
 
   const Persistency::Alert::Name alertName(name);
-  const Timestamp                alertCreate( time_from_string( create_time ) );
+  const Timestamp                alertCreate( lexical_cast<time_t>( create_time ) );
   const Severity                 alertSeverity( fromInt(idSeverity) );
   const Certainty                alertCertainty(certainty);
   const string                   alertDescription(description);
@@ -122,7 +124,7 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
     refID = new DataBaseID(id);
   }
   const Persistency::MetaAlert::Name malertName(name);
-  Timestamp                          malertCreate( time_from_string( createTime) );
+  Timestamp                          malertCreate( lexical_cast<time_t>(createTime) );
 
   MetaAlertPtrNN malert( new Persistency::MetaAlert( malertName,
                                           severityDelta,
@@ -491,7 +493,9 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
   stringstream ss;
   //TODO: test this query
   ss << "SELECT id FROM meta_alerts WHERE "
-     << to_iso_string(from) << " <= create_time AND create_time <=" << to_iso_string(to) << ";";
+     // TODO: 'from' and 'to' should be inserted here using proper query (append()
+     //       call will be handy here).
+     << from << " <= create_time AND create_time <=" << to << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   for(unsigned int i=0; i<r.size(); ++i)

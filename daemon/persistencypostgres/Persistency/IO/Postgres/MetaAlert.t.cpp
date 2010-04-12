@@ -12,11 +12,10 @@
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/MetaAlert.hpp"
 
-using Persistency::IO::Transaction;
+using namespace std;
 using namespace Persistency;
 using namespace Persistency::IO::Postgres;
-using namespace std;
-using boost::posix_time::from_iso_string;
+using Persistency::IO::Transaction;
 
 namespace
 {
@@ -71,7 +70,7 @@ void testObj::test<1>(void)
   Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name_),
                                                                  0.1, 0.2,
                                                                  makeNewReferenceURL(),
-                                                                 from_iso_string("2001109T231100") ) );
+                                                                 Timestamp() ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
   t_.commit();

@@ -13,12 +13,10 @@
 
 // TODO: tests
 
-using Persistency::IO::Transaction;
+using namespace std;
 using namespace Persistency;
 using namespace Persistency::IO::Postgres;
-using namespace std;
-using boost::posix_time::from_iso_string;
-using boost::posix_time::time_from_string;
+using Persistency::IO::Transaction;
 
 namespace
 {
@@ -31,8 +29,8 @@ struct TestClass
     analyzers_( analyzer_ ),
     nullanalyzer_( new Analyzer("analyzer name", NULL, NULL, NULL )),
     nullanalyzers_( nullanalyzer_ ),
-    detected_(from_iso_string("2001109T231100")),
-    created_(from_iso_string("20011010T231100")),
+    detected_(123444),
+    created_(123555),
     severity_(SeverityLevel::INFO),
     certainty_(0.42),
     description_("alert's description"),

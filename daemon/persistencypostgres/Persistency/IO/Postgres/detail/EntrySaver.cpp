@@ -11,9 +11,6 @@
 
 using namespace std;
 using namespace pqxx;
-using boost::posix_time::to_simple_string;
-using boost::posix_time::to_iso_string;
-
 
 namespace Persistency
 {
@@ -216,9 +213,9 @@ DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
   if(a.getDetectionTime()==NULL)
     ss << "NULL";
   else
-    Appender::append(ss, to_iso_string((*a.getDetectionTime() ) ));
+    Appender::append(ss, a.getDetectionTime() );
   ss << ",";
-  Appender::append(ss, to_iso_string(a.getCreationTime() ) );
+  Appender::append(ss, a.getCreationTime() );
   ss << ",";
   const DataBaseID sevID = getSeverityID(a);
   Appender::append(ss, sevID);
@@ -307,7 +304,7 @@ DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
   ss << ",";
   addReferenceURL(ss, ma.getReferenceURL() );
   ss << ",";
-  Appender::append(ss, to_simple_string( ma.getCreateTime() ));
+  Appender::append(ss, ma.getCreateTime() );
   ss << ",";
   Appender::append(ss, "now()");
   ss << ");";
