@@ -1,2 +1,2 @@
 #!/bin/sh
-echo "-lpqxx"
+echo "-lpqxx -lboost_date_time -lboost_system"

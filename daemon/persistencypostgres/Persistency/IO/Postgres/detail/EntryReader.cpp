@@ -3,20 +3,21 @@
  *
  */
 #include <sstream>
+#include <ctime>
 #include <cassert>
 #include <boost/algorithm/string.hpp>
 
 #include "Base/NullValue.hpp"
-#include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
-#include "Persistency/IO/Postgres/detail/append.hpp"
+#include "Persistency/IO/Postgres/timestampFromString.hpp"
+#include "Persistency/IO/Postgres/detail/EntryReader.hpp"
+#include "Persistency/IO/Postgres/detail/Appender.hpp"
 
 using namespace std;
 using namespace pqxx;
 
-using Persistency::IO::Transaction;
-using boost::posix_time::time_from_string;
 using boost::algorithm::trim;
+using Persistency::IO::Transaction;
 
 namespace Persistency
 {
@@ -83,7 +84,7 @@ Base::NullValue<Timestamp> set(const pqxx::result::field &r)
   {
     string s;
     r.to(s);
-    Base::NullValue<Timestamp> ret( new Timestamp( time_from_string(s) ) );
+    Base::NullValue<Timestamp> ret( new Timestamp( timestampFromString(s) ) );
     return ret;
   }
 }
@@ -140,7 +141,7 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
   r[0]["certanity"].to(certainty);
 
   const Persistency::Alert::Name alertName(name);               // TODO: this variable is not needed
-  const Timestamp                alertCreate( time_from_string( create_time ) );    // TODO: this variable is not needed
+  const Timestamp                alertCreate( timestampFromString( create_time ) );
   const Severity                 alertSeverity( fromInt(idSeverity) );  // TODO: this variable is not needed
   const Certainty                alertCertainty(certainty);     // TODO: this variable is not needed
   const string                   alertDescription(description); // TODO: this variable is not needed
@@ -171,7 +172,7 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
   r[0]["create_time"].to(createTime);
 
   const Persistency::MetaAlert::Name malertName(name);  // TODO: this variable is not needed
-  Timestamp                          malertCreate( time_from_string( createTime) ); // TODO: this variable is not needed
+  Timestamp                          malertCreate( timestampFromString( createTime) ); // TODO: this variable is not needed
 
   MetaAlertPtrNN malert( new Persistency::MetaAlert( malertName,
                                           severityDelta,
@@ -493,8 +494,10 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
   vector<DataBaseID> malertsBetween;
   stringstream       ss;
   //TODO: test this query
-  ss << "SELECT id FROM meta_alerts WHERE "
-     << to_iso_string(from) << " <= create_time AND create_time <=" << to_iso_string(to) << ";";
+  ss << "SELECT id FROM meta_alerts WHERE ";
+  Appender::append(ss, from);
+  ss << " <= create_time AND create_time <=";
+  Appender::append(ss, to);
   // TODO: this variable should be const.
   // TODO: there is dedicated template for runnign SQL statements.
   result r = t_.getAPI<TransactionAPI>().exec(ss);

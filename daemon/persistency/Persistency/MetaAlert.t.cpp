@@ -135,7 +135,7 @@ template<>
 template<>
 void testObj::test<11>(void)
 {
-  const Timestamp tmp=boost::posix_time::time_from_string("1970-01-01");
+  const Timestamp tmp(0);
   const MetaAlert ma("name 1", 42, 4.2, url_, tmp);
   TestHelpers::checkEquality(ma, ma_);
 }
@@ -145,7 +145,7 @@ template<>
 template<>
 void testObj::test<12>(void)
 {
-  const Timestamp tmp=boost::posix_time::time_from_string("1970-01-01");
+  const Timestamp tmp(0);
   const MetaAlert ma1("name 1", 42, 4.2, makeNewReferenceURL(), tmp);
   const MetaAlert ma2("name 1", 42, 4.2, makeNewReferenceURL(), tmp);
   TestHelpers::checkEquality(ma1, ma2, ma_);

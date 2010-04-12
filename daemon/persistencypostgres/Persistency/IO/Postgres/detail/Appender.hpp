@@ -1,14 +1,16 @@
 /*
- * append.hpp
+ * Appender.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_DETAIL_APPEND_HPP_FILE
-#define INCLUDE_PERSISTENCY_IO_POSTGRES_DETAIL_APPEND_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_DETAIL_APPENDER_HPP_FILE
+#define INCLUDE_PERSISTENCY_IO_POSTGRES_DETAIL_APPENDER_HPP_FILE
 
 #include <sstream>
 #include <string>
 #include <pqxx/pqxx>
+
 #include "Persistency/Analyzer.hpp"
+#include "Persistency/Timestamp.hpp"
 
 namespace Persistency
 {
@@ -80,6 +82,32 @@ inline void Appender::append<std::string>(std::stringstream &ss, const std::stri
   appendEscape(ss, (t?t->c_str():NULL) );
 }
 
+template<>
+inline void Appender::append<Persistency::Timestamp>(std::stringstream            &ss,
+                                                     const Persistency::Timestamp *t)
+{
+  if(t==NULL)
+    ss << "NULL";
+  else
+    ss << t->get() << "::abstime::timestamp";
+}
+
+template<>
+inline void Appender::append<Persistency::Analyzer::IP>(std::stringstream               &ss,
+                                                        const Persistency::Analyzer::IP *t)
+{
+  // TODO: use appendEscape() for this
+  // NOTE: there is a bug at this moment, since it should be appending not comparing.
+  // replace if with ternal operator
+  if(t==NULL)
+    ss << " IS NULL";
+  else
+  {
+    ss << " = ";
+    appendEscape(ss, t->to_string().c_str() );
+  }
+}
+
 
 template<typename T>
 inline void Appender::append(std::stringstream &ss, const T &t)
@@ -93,21 +121,11 @@ inline void Appender::append<std::string>(std::stringstream &ss, const std::stri
   appendEscape(ss, t.c_str() );
 }
 
-
 template<>
-inline void Appender::append<Persistency::Analyzer::IP>(std::stringstream &ss,
-                                                        const Persistency::Analyzer::IP *t)
+inline void Appender::append<Persistency::Timestamp>(std::stringstream            &ss,
+                                                     const Persistency::Timestamp &t)
 {
-  // TODO: use appendEscape() for this
-  // NOTE: there is a bug at this moment, since it should be appending not comparing.
-  // replace if with ternal operator
-  if(t==NULL)
-    ss << " IS NULL";
-  else
-  {
-    ss << " = ";
-    appendEscape(ss, t->to_string().c_str() );
-  }
+  append(ss, &t);
 }
 
 } // namespace detail

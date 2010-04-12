@@ -6,7 +6,7 @@
 #include <string>
 #include <sstream>
 
-#include "Persistency/IO/Postgres/detail/append.hpp"
+#include "Persistency/IO/Postgres/detail/Appender.hpp"
 
 using namespace std;
 using namespace Persistency::IO::Postgres::detail;
@@ -145,6 +145,33 @@ void testObj::test<12>(void)
 {
   const double tmp=3.1416;
   checkRef(tmp, "3.1416");
+}
+
+// test appending timestamp
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  const Persistency::Timestamp tmp(42);
+  checkRef(tmp, "42::abstime::timestamp");
+}
+
+// test appending timestamp as pointer
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  const Persistency::Timestamp tmp(42);
+  check(&tmp, "42::abstime::timestamp");
+}
+
+// test appending timestamp as NULL pointer
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  const Persistency::Timestamp *tmp=NULL;
+  check(tmp, "NULL");
 }
 
 } // namespace tut
