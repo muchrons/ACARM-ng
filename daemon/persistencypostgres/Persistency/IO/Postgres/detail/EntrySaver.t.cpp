@@ -13,7 +13,7 @@
 #include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
 #include <boost/algorithm/string.hpp>
-#include "Persistency/IO/Postgres/detail/append.hpp"
+#include "Persistency/IO/Postgres/detail/Appender.hpp"
 
 using namespace std;
 using namespace pqxx;

@@ -10,7 +10,7 @@
 
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
-#include "Persistency/IO/Postgres/detail/append.hpp"
+#include "Persistency/IO/Postgres/detail/Appender.hpp"
 
 using namespace std;
 using namespace pqxx;

@@ -7,7 +7,7 @@
 
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
-#include "Persistency/IO/Postgres/detail/append.hpp"
+#include "Persistency/IO/Postgres/detail/Appender.hpp"
 
 using namespace std;
 using namespace pqxx;
@@ -206,7 +206,7 @@ DataBaseID EntrySaver::saveSourceHost(DataBaseID hostID, DataBaseID alertID, con
 DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 {
   stringstream ss;
-  ss << "INSERT INTO alerts(name,  detect_time, create_time, id_severity, certanity, description) VALUES (";
+  ss << "INSERT INTO alerts(name, detect_time, create_time, id_severity, certanity, description) VALUES (";
   Appender::append(ss, a.getName().get() );
   ss << ",";
   // TODO: use ternary operator for this
