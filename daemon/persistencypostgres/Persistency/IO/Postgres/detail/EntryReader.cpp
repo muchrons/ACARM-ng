@@ -30,7 +30,7 @@ namespace detail
 namespace
 {
 
-
+// TODO: set() is not accurate gere - get() or read() (readAs()?) would be better here
 template<typename T, typename S>
 Base::NullValue<T> set(const pqxx::result::field &r)
 {
@@ -43,11 +43,16 @@ Base::NullValue<T> set(const pqxx::result::field &r)
   {
     S s;
     r.to(s);
+    // TODO: memory leak here. should be ret(&s).
     Base::NullValue<T> ret(new T(s));
     return ret;
   }
 }
 
+// TODO: make this partial specialization of set() method.
+// NOTE: partial specialization is a bit tricky - you may want to make class with
+//       template methods instead, just as Append is done.
+// NOTE: you can separate it to own header - it will make testing easier.
 template<typename T, typename S>
 Base::NullValue<T> setFromString(const pqxx::result::field &r)
 {
@@ -60,11 +65,13 @@ Base::NullValue<T> setFromString(const pqxx::result::field &r)
   {
     S s;
     r.to(s);
+    // TODO: memory leak here.
     Base::NullValue<T> ret(new T(T::from_string(s)));
     return ret;
   }
 }
 
+// TODO: make this partial specialization of set() method.
 Base::NullValue<Timestamp> set(const pqxx::result::field &r)
 {
   if( r.is_null() )
@@ -81,6 +88,7 @@ Base::NullValue<Timestamp> set(const pqxx::result::field &r)
   }
 }
 
+// TODO: rename this method to soemthing like severityFromInt().
 SeverityLevel fromInt(int level)
 {
   switch(level)
@@ -104,6 +112,7 @@ inline pqxx::result execSQL(Transaction &t, const char *sql)
 } // execSQL()
 
 } // unnamed namespace
+
 
 EntryReader::EntryReader(Transaction &t, DBHandler &dbh):
   dbh_(dbh),
@@ -130,11 +139,11 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
   r[0]["id_severity"].to(idSeverity);
   r[0]["certanity"].to(certainty);
 
-  const Persistency::Alert::Name alertName(name);
-  const Timestamp                alertCreate( time_from_string( create_time ) );
-  const Severity                 alertSeverity( fromInt(idSeverity) );
-  const Certainty                alertCertainty(certainty);
-  const string                   alertDescription(description);
+  const Persistency::Alert::Name alertName(name);               // TODO: this variable is not needed
+  const Timestamp                alertCreate( time_from_string( create_time ) );    // TODO: this variable is not needed
+  const Severity                 alertSeverity( fromInt(idSeverity) );  // TODO: this variable is not needed
+  const Certainty                alertCertainty(certainty);     // TODO: this variable is not needed
+  const string                   alertDescription(description); // TODO: this variable is not needed
 
   AlertPtrNN alert( new Alert(alertName,
                               getAnalyzers( alertID ),
@@ -161,8 +170,8 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
   r[0]["certanity_delta"].to(certaintyDelta);
   r[0]["create_time"].to(createTime);
 
-  const Persistency::MetaAlert::Name malertName(name);
-  Timestamp                          malertCreate( time_from_string( createTime) );
+  const Persistency::MetaAlert::Name malertName(name);  // TODO: this variable is not needed
+  Timestamp                          malertCreate( time_from_string( createTime) ); // TODO: this variable is not needed
 
   MetaAlertPtrNN malert( new Persistency::MetaAlert( malertName,
                                           severityDelta,
@@ -182,7 +191,7 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
   string name;
   ra[0]["name"].to(name);
 
-  const Analyzer::Name    anlzName(name);
+  const Analyzer::Name    anlzName(name);   // TODO: this variable is not needed
 
   AnalyzerPtrNN anlz(new Analyzer( anlzName,
                                    set<Analyzer::Version, string>(ra[0]["version"] ).get(),
@@ -195,8 +204,10 @@ Alert::SourceAnalyzers EntryReader::getAnalyzers(DataBaseID alertID)
 {
   stringstream ss;
   ss << "SELECT * FROM alert_analyzers WHERE id_alert = " << alertID <<";";
+  // TODO: this variable should be const
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
+  // TODO: common code for creating varuiable, reading and using. make this a common tempate.
   DataBaseID id;
   r[0]["id_analyzer"].to(id);
   Alert::SourceAnalyzers analyzers( getAnalyzer(id) );
@@ -204,7 +215,6 @@ Alert::SourceAnalyzers EntryReader::getAnalyzers(DataBaseID alertID)
   for(size_t i=0; i<r.size(); ++i)
   {
     r[i]["id_analyzer"].to(id);
-
     analyzers.push_back( getAnalyzer(id) );
   }
   return analyzers;
@@ -216,6 +226,8 @@ Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::strin
   ss << "SELECT * FROM reported_hosts WHERE id_alert = "<< alertID <<" AND role = ";
   Appender::append(ss, hostType);
   ss << ";";
+  // TODO: this variable should be const
+  // TODO: there is dedicated template for runnign SQL statements.
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   Alert::ReportedHosts hosts;
   for(size_t i=0; i<r.size(); ++i)
@@ -242,6 +254,8 @@ HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID *refID)
 {
   stringstream ss;
   ss << "SELECT * FROM hosts WHERE id = "<< hostID <<";";
+  // TODO: this variable should be const.
+  // TODO: there is dedicated template for runnign SQL statements.
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   string ip, mask, os, name;
@@ -251,11 +265,11 @@ HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID *refID)
 
   HostPtr host(new Persistency::Host(hostIP,
                                      setFromString<Persistency::Host::Netmask, string>(r[0]["mask"]).get(),
-                                     *set<Persistency::Host::OperatingSystem, string>(r[0]["os"]).get(),
+                                     *set<Persistency::Host::OperatingSystem, string>(r[0]["os"]).get(),    // TODO: getNotNULL()?
                                      getReferenceURL(refID),
                                      getReportedServices( hostID ),
                                      getReportedProcesses( hostID ),
-                                     *set<Persistency::Host::Name, string>(r[0]["name"]).get() ) );
+                                     *set<Persistency::Host::Name, string>(r[0]["name"]).get() ) );     // TODO: getNotNULL()?
   // add host to cache
   dbh_.getIDCache()->add(host , hostID);
   return host;
@@ -265,8 +279,11 @@ Persistency::Host::ReportedServices EntryReader::getReportedServices(DataBaseID 
 {
   stringstream ss;
   ss << "SELECT * FROM reported_services WHERE id_reported_host = " << hostID << ";";
+  // TODO: this variable should be const.
+  // TODO: there is dedicated template for runnign SQL statements.
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
+  // TODO: these two variables should be declared inside loop
   Persistency::Host::ReportedServices services;
   DataBaseID idService, idRef;
   for(size_t i = 0;i < r.size(); ++i)
@@ -284,6 +301,8 @@ Persistency::Host::ReportedProcesses EntryReader::getReportedProcesses(DataBaseI
   //TODO
   stringstream ss;
   ss << "SELECT * FROM reported_procs WHERE id_reported_host = " << hostID << ";";
+  // TODO: this variable should be const.
+  // TODO: there is dedicated template for runnign SQL statements.
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   Persistency::Host::ReportedProcesses processes;
@@ -302,17 +321,20 @@ Persistency::ServicePtr EntryReader::getService(DataBaseID servID, DataBaseID *r
   //TODO
   stringstream ss;
   ss << "SELECT * FROM services WHERE id = " << servID << ";";
+  // TODO: this variable should be const.
+  // TODO: there is dedicated template for runnign SQL statements.
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
-  string  name;
+  string                     name;
   Persistency::Service::Port port;
 
   r[0]["name"].to(name);
   r[0]["port"].to(port);
 
-  const Persistency::Service::Name     serviceName(name);
-  const Persistency::Service::Port     servicePort(port);
+  const Persistency::Service::Name serviceName(name);
+  const Persistency::Service::Port servicePort(port);
 
+  // TODO: ServicePtrNN?
   Persistency::ServicePtr service(new Persistency::Service(serviceName,
                                                            servicePort,
                                                            *set<Persistency::Service::Protocol, string>(r[0]["protocol"]).get(),
@@ -325,6 +347,8 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
   //TODO tests
   stringstream ss;
   ss << "SELECT * FROM processes WHERE id = " << procID << ";";
+  // TODO: this variable should be const.
+  // TODO: there is dedicated template for runnign SQL statements.
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   string name, md5;
@@ -336,21 +360,25 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
     r[0]["md5"].to(md5);
     // TODO: SEGV here - procMD5 is NULL in this context
     // smart pointer
+    // TODO: copy c-tor not needed here
     *procMD5 = MD5Sum( MD5Sum::createFromString(md5.c_str()) );
   }
 
   stringstream sr;
   sr << "SELECT * FROM reported_procs WHERE id_proc = " << procID << ";";
+  // TODO: this variable should be const.
+  // TODO: there is dedicated template for runnign SQL statements.
   result rr = t_.getAPI<TransactionAPI>().exec(sr);
 
   string username, arguments;
+  // TODO: SEGV when no entries returned!
   rr[0]["username"].to(username);
   rr[0]["arguments"].to(arguments);
 
   const Process::Name     procName(name);
   const Process::Username procUsername(username);
 
-  Persistency::ProcessPtr process( new Process(*set<Process::Path, string>(r[0]["path"]).get(),
+  Persistency::ProcessPtr process( new Process(*set<Process::Path, string>(r[0]["path"]).get(), // TODO: what if path is NULL?
                                                 procName,
                                                 procMD5,
                                                 set<pid_t, int>(rr[0]["pid"]).get(),
@@ -368,8 +396,11 @@ ReferenceURLPtr EntryReader::getReferenceURL(const DataBaseID *refID)
     return refURLPtr;
   stringstream ss;
   ss << "SELECT * FROM reference_urls WHERE id = " << *refID << ";";
+  // TODO: this variable should be const.
+  // TODO: there is dedicated template for runnign SQL statements.
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   string name, url;
+  // TODO: segv if not entries returned.
   r[0]["name"].to(name);
   r[0]["url"].to(url);
 
@@ -384,9 +415,12 @@ double EntryReader::getSeverityDelta(DataBaseID malertID)
 {
   stringstream ss;
   ss << "SELECT severity_delta FROM meta_alerts WHERE id = " << malertID << ";";
+  // TODO: this variable should be const.
+  // TODO: there is dedicated template for runnign SQL statements.
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   double severity;
+  // TODO: SEGV if no entruies returned
   r[0]["severity_delta"].to(severity);
   return severity;
 }
@@ -394,9 +428,12 @@ double EntryReader::getCertaintyDelta(DataBaseID malertID)
 {
   stringstream ss;
   ss << "SELECT caertanity_delta FROM meta_alerts WHERE id = " << malertID << ";";
+  // TODO: this variable should be const.
+  // TODO: there is dedicated template for runnign SQL statements.
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   double certainty;
+  // TODO: SEGV if no entries returned.
   r[0]["certanity_delta"].to(certainty);
   return certainty;
 }
@@ -405,8 +442,11 @@ Persistency::AlertPtrNN EntryReader::getLeaf(DataBaseID malertID)
 {
   stringstream ss;
   ss << "SELECT id_alert FROM alert_to_meta_alert_map WHERE id_meta_alert = " << malertID << ";";
+  // TODO: this variable should be const.
+  // TODO: there is dedicated template for runnign SQL statements.
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   DataBaseID idAlert;
+  // TODO: SEGV...
   r[0]["id_alert"].to(idAlert);
   return Persistency::AlertPtrNN( readAlert(idAlert) );
 }
@@ -416,6 +456,8 @@ vector<DataBaseID> EntryReader::readMetaAlertChildren(DataBaseID malertID)
   vector<DataBaseID> childrenIDs;
   stringstream ss;
   ss << "SELECT id_child FROM meta_alerts_tree WHERE id_node = " << malertID << ";";
+  // TODO: this variable should be const.
+  // TODO: there is dedicated template for runnign SQL statements.
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   for(size_t i=0; i<r.size(); ++i)
@@ -432,6 +474,7 @@ vector<DataBaseID> EntryReader::readIDsMalertsInUse()
   vector<DataBaseID> malertsInUse;
   stringstream ss;
   ss << "SELECT id_meta_alert FROM meta_alerts_in_use;";
+  // TODO: there is dedicated template for runnign SQL statements.
   const result r = t_.getAPI<TransactionAPI>().exec(ss);
   malertsInUse.reserve( r.size() );
   for(size_t i=0; i<r.size(); ++i)
@@ -448,10 +491,12 @@ vector<DataBaseID> EntryReader::readIDsMalertsInUse()
 vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, const Timestamp &to)
 {
   vector<DataBaseID> malertsBetween;
-  stringstream ss;
+  stringstream       ss;
   //TODO: test this query
   ss << "SELECT id FROM meta_alerts WHERE "
      << to_iso_string(from) << " <= create_time AND create_time <=" << to_iso_string(to) << ";";
+  // TODO: this variable should be const.
+  // TODO: there is dedicated template for runnign SQL statements.
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   for(size_t i=0; i<r.size(); ++i)
@@ -469,9 +514,12 @@ std::vector<DataBaseID> EntryReader::readRoots()
   execSQL(t_,"SELECT id_node, id_child INTO TEMP TABLE tmp FROM meta_alerts_tree"
              " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);");
 
+  // TODO: this variable should be const.
+  // TODO: there is dedicated template for runnign SQL statements.
   result r = execSQL(t_, "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
                          "SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );");
 
+  // TODO: this should be ensured on transaction level (use 'ON COMMIT DROP' feature).
   execSQL(t_, "DROP TABLE tmp;");
   for(size_t i=0; i<r.size(); ++i)
   {
@@ -488,6 +536,7 @@ DataBaseID EntryReader::getAlertIDAssociatedWithMetaAlert(DataBaseID malertID)
 {
   stringstream ss;
   ss << "SELECT id_alert FROM alert_to_meta_alert_map WHERE id_meta_alert = " << malertID << ";";
+  // TODO: there is dedicated template for runnign SQL statements.
   const result r = t_.getAPI<TransactionAPI>().exec(ss);
   DataBaseID idAlert;
   // TODO: first check if result has any entries at all. btw: in fact it should
