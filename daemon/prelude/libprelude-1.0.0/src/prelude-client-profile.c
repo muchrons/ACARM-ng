@@ -47,25 +47,25 @@
 #endif
 
 
-#define PRELUDE_PROFILE_DIR PRELUDE_CONFIG_DIR "/profile"
-#define PRELUDE_CONFIG_DEFAULT_DIR PRELUDE_CONFIG_DIR "/default"
+#define PRELUDE_PROFILE_DIR "/etc/prelude/"  "/profile"
+#define PRELUDE_CONFIG_DEFAULT_DIR "/etc/prelude/"  "/default"
 #define TLS_CONFIG PRELUDE_CONFIG_DEFAULT_DIR "/tls.conf"
 
 
 /*
  * directory where TLS private keys file are stored.
  */
-#define TLS_KEY_DIR PRELUDE_CONFIG_DIR "/keys"
+#define TLS_KEY_DIR "/etc/prelude/"  "/keys"
 
 /*
  * directory where TLS client certificate file are stored.
  */
-#define TLS_CLIENT_CERT_DIR PRELUDE_CONFIG_DIR "/tls/client"
+#define TLS_CLIENT_CERT_DIR "/etc/prelude/"  "/tls/client"
 
 /*
  * directory where TLS server certificate file are stored.
  */
-#define TLS_SERVER_CERT_DIR PRELUDE_CONFIG_DIR "/tls/server"
+#define TLS_SERVER_CERT_DIR "/etc/prelude/"  "/tls/server"
 
 
 

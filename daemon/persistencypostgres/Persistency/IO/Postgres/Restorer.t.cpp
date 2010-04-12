@@ -29,19 +29,6 @@ struct TestClass
     tdba_.removeAllData();
   }
 
-  // TODO: make common implementations common (this code appears in many tests)
-  IO::ConnectionPtrNN makeConnection(void) const
-  {
-    IO::BackendFactory::Options opts;
-    opts["host"]  ="localhost";
-    opts["port"]  ="5432";
-    opts["dbname"]="acarm_ng_test";
-    opts["user"]  ="acarm-ng-daemon";
-    opts["pass"]  ="test.daemon";
-    return IO::ConnectionPtrNN(
-        Persistency::IO::BackendFactory::create("postgres", opts) );
-  }
-
   TestDBAccess            tdba_;
   IDCachePtrNN            idCache_;
   DBHandlerPtrNN          dbh_;
@@ -65,21 +52,26 @@ template<>
 void testObj::test<1>(void)
 {
   std::vector<GraphNodePtrNN> out;
-  // create tree
+  // create tree and save data to the data base
   GraphNodePtrNN tree = makeNewTree1();
-  // cache cleanup
-  // dbh_->getIDCache()->prune();
-  // restore data from data base
+  // create restorer
   Restorer r(t_, dbh_);
+  // restore data from data base
   r.restoreAllInUse(out);
-
-  // check if meta alerts exist in cache
+  // check if restored meta alerts exist in cache
   for(std::vector<GraphNodePtrNN>::iterator it = out.begin(); it !=out.end(); ++it)
     ensure("meta alert shoud be in cache", idCache_->has( (*it)->getMetaAlert()) );
+  // TODO: check if readed data (alerts and meta alerts) are the same
+  //       as writed before
+  //       there should be test which writes differents alerts, meta alerts to the data base
 }
 
 // TODO: try restoring few non-trivial test cases
-
+template<>
+template<>
+void testObj::test<2>(void)
+{
+}
 // TODO: try restoring empty set and all meta alerts
 
 // TODO: try restoring invalid data (i.e. node that has no children, etc...)

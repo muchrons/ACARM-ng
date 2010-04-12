@@ -7,16 +7,16 @@
 #include <boost/algorithm/string.hpp>
 
 // TODO: fix order of including headers
-#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
-#include "Persistency/IO/Postgres/detail/EntryReader.hpp"
+#include "TestHelpers/checkEquality.hpp"
+#include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
-#include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/Postgres/Alert.hpp"
 #include "Persistency/IO/Postgres/MetaAlert.hpp"
-#include "TestHelpers/checkEquality.hpp"
+#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
+#include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 
 using namespace std;
 using namespace pqxx;

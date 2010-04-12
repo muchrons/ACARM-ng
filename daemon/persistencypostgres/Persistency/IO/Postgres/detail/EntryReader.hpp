@@ -110,7 +110,7 @@ private:
 
   Persistency::Host::ReportedServices  getReportedServices(DataBaseID hostID);
   Persistency::Host::ReportedProcesses getReportedProcesses(DataBaseID hostID);
-  ReferenceURLPtr getReferenceURL(DataBaseID *refID);
+  ReferenceURLPtr getReferenceURL(const DataBaseID *refID);
 
   Persistency::ProcessPtr getProcess(DataBaseID procID, DataBaseID *refID);
   Persistency::ServicePtr getService(DataBaseID servID, DataBaseID *refID);
