@@ -101,14 +101,32 @@ fi
 # write to file
 cat<<EOF > "$out"
 .PHONY: $C
-$C:: LINK_LIBS:=$LINK_FLAGS
-$C:: DEP_LIBS_WC:=$DEP_LIBS_WC
-$C:: CXXFLAGS:=\$(CXXFLAGS) $COMPILE_FLAGS
-$C:: CFLAGS:=\$(CFLAGS) $COMPILE_FLAGS
+$C:: $C-LINK
+
+$C-LINK:: LINK_LIBS:=$LINK_FLAGS
+$C-LINK:: DEP_LIBS_WC:=$DEP_LIBS_WC
+$C-LINK:: COMPONENT_DIR:=$C
+$C-LINK:: COMPONENT_PART:=LINK
 ifeq (,\$(WITHOUT_DEPS))
-$C:: $DEPS
+$C-LINK:: $C-OBJECTS `test -z "$DEPS" || echo "$DEPS " | sed 's: \+:-LINK :g'`
 else
-$C::
+$C-LINK:: $C-OBJECTS
+endif
+	@\$(build-this-component)
+
+$C-OBJECTS:: CXXFLAGS:=\$(CXXFLAGS) $COMPILE_FLAGS
+$C-OBJECTS:: CFLAGS:=\$(CFLAGS) $COMPILE_FLAGS
+$C-OBJECTS:: COMPONENT_DIR:=$C
+$C-OBJECTS:: COMPONENT_PART:=OBJECTS
+$C-OBJECTS:: $C-MKPUBLIC
+	@\$(build-this-component)
+
+$C-MKPUBLIC:: COMPONENT_DIR:=$C
+$C-MKPUBLIC:: COMPONENT_PART:=MKPUBLIC
+ifeq (,\$(WITHOUT_DEPS))
+$C-MKPUBLIC:: `test -z "$DEPS" || echo "$DEPS " | sed 's: \+:-MKPUBLIC :g'`
+else
+$C-MKPUBLIC::
 endif
 	@\$(build-this-component)
 
