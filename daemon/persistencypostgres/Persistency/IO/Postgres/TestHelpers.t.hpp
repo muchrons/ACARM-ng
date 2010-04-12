@@ -60,6 +60,9 @@ Persistency::GraphNodePtrNN makeNewLeaf(void);
 Persistency::GraphNodePtrNN makeNewNode(void);
 Persistency::GraphNodePtrNN makeNewNode(Persistency::GraphNodePtrNN child1,
                                         Persistency::GraphNodePtrNN child2);
+Persistency::GraphNodePtrNN makeNewNode(Persistency::GraphNodePtrNN child1,
+                                        Persistency::GraphNodePtrNN child2,
+                                        const char *name);
 
 //
 //                root
