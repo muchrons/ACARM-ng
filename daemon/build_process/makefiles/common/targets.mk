@@ -1,7 +1,5 @@
 # makro for common calls
 define run-in-gen
-	@echo
-	@echo "##### build $(COMPONENT_NAME) in $@_$(TC)_$(MEM_CHECK)"
 	# make gen/ dir structure for source files
 	GEN_NOW="$(GEN_BASE_DIR)/$@_$(TC)_$(MEM_CHECK)/`basename $(CURDIR)`" && \
 		mkdir -p "$$GEN_NOW" && cd "$$GEN_NOW" && \

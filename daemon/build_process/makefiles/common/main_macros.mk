@@ -2,8 +2,10 @@
 define build-this-component
 
 	# build given component
-	+$(MAKE) $(MFLAGS) -C "$@" $(MAKEFLAGS) \
-		LINK_LIBS="$(LINK_LIBS)" DEP_LIBS_WC="$(DEP_LIBS_WC)" \
+	+$(MAKE) $(MFLAGS) -C "$(COMPONENT_DIR)" $(MAKEFLAGS) \
+		LINK_LIBS="$(LINK_LIBS)" \
+		DEP_LIBS_WC="$(DEP_LIBS_WC)" \
+		COMPONENT_PART=$(COMPONENT_PART) \
 		$(PROFILE)
 
 endef

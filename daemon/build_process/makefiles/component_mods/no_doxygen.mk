@@ -6,7 +6,7 @@
 # include $(MAKEFILES_COMPONENT_MODS_DIR)/no_doxygen.mk
 #
 html/index.html:: Doxyfile
-	@echo "(note: suppressing doxygen warnings for this component)"
+	@echo "(note: suppressing doxygen warnings for $(COMPONENT_NAME) component)"
 	@cp 'Doxyfile' 'Doxyfile.prev'
 	@sed -e 's:^\(WARNINGS \+=\).*:\1 NO:' \
 	     -e 's:^\(WARN_IF_UNDOCUMENTED \+=\).*:\1 NO:' \
