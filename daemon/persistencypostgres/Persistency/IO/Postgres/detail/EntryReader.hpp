@@ -103,6 +103,7 @@ public:
    *  \param malertID ID of Meta Alert
    */
   DataBaseID getAlertIDAssociatedWithMetaAlert(DataBaseID malertID);
+
 private:
   Persistency::Alert::ReportedHosts getReporteHosts(DataBaseID alertID, std::string hostType);
   HostPtr getHost(DataBaseID hostID, DataBaseID *refID);

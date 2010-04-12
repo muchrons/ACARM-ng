@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "Persistency/IO/Postgres/timestampFromString.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
@@ -12,17 +13,16 @@
 #include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
 #include <boost/algorithm/string.hpp>
-#include "Persistency/IO/Postgres/detail/append.hpp"
+#include "Persistency/IO/Postgres/detail/Appender.hpp"
 
-using Persistency::IO::Transaction;
+using namespace std;
+using namespace pqxx;
 using namespace Persistency;
 using namespace Persistency::IO::Postgres;
 using namespace Persistency::IO::Postgres::detail;
-using namespace std;
-using namespace pqxx;
-using boost::posix_time::from_iso_string;
-using boost::posix_time::time_from_string;
+
 using boost::algorithm::trim;
+using Persistency::IO::Transaction;
 
 namespace
 {
@@ -42,8 +42,8 @@ struct TestClass
     name_("some name"),
     analyzer_( new Analyzer("analyzer name", NULL, NULL, NULL) ),
     analyzers_(analyzer_),
-    detected_(from_iso_string("2001109T231100")),
-    created_(from_iso_string("20011010T231100")),
+    detected_(1500),
+    created_(2900),
     severity_(SeverityLevel::INFO),
     certanity_(0.42),
     description_("alert's description"),
@@ -238,10 +238,11 @@ void testObj::test<4>(void)
   ensure_equals("invalid name",name_.get(),name);
 
   r[0]["detect_time"].to(time);
-  ensure_equals("invalid detect time",detected_,time_from_string(time));
+  const Timestamp ts=timestampFromString(time);
+  ensure_equals("invalid detect time", detected_, ts);
 
   r[0]["create_time"].to(time);
-  ensure_equals("invalid create time",created_,time_from_string(time));
+  ensure_equals("invalid create time", created_, timestampFromString(time) );
 
   r[0]["id_severity"].to(id);
   ensure_equals("invalid severity ID",a.getSeverity().getLevel().toInt(),id);
@@ -444,7 +445,7 @@ void testObj::test<10>(void)
   ensure_equals("invalid name","meta alert",mAlertName);
 
   r[0]["create_time"].to(time);
-  ensure_equals("invalid created time", created_, time_from_string(time));
+  ensure_equals("invalid created time", created_, timestampFromString(time) );
 
   t_.commit();
 }
@@ -479,7 +480,7 @@ void testObj::test<11>(void)
   ensure_equals("invalid detect time", "", time);
 
   r[0]["create_time"].to(time);
-  ensure_equals("invalid create time",created_, time_from_string(time));
+  ensure_equals("invalid create time", created_, timestampFromString(time) );
 
   r[0]["id_severity"].to(id);
   ensure_equals("invalid severity ID",a.getSeverity().getLevel().toInt(),id);

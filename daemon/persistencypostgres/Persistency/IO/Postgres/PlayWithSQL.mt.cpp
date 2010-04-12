@@ -2,6 +2,9 @@
  * PlayWithSQL.mt.cpp
  *
  */
+#include <iostream>
+#include <pqxx/pqxx>
+
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
 
 using namespace std;

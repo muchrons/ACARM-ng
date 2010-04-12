@@ -11,7 +11,6 @@
 using namespace std;
 using namespace Persistency;
 using namespace Persistency::IO;
-using boost::posix_time::from_iso_string;
 
 namespace
 {
@@ -92,9 +91,7 @@ void testObj::test<2>(void)
 {
   ensure_equals("pre-1 failed", ior_.restoreAll_,     0);
   ensure_equals("pre-2 failed", ior_.restoreBetween_, 0);
-  base_.restoreBetween(out_,
-                       from_iso_string("20100101T235959"),
-                       from_iso_string("20100201T235959") );
+  base_.restoreBetween( out_, Timestamp(100), Timestamp(200) );
   ensure_equals("invalid number of calls to restore all",
                 ior_.restoreAll_,     0);
   ensure_equals("invalid number of calls to restore between",
@@ -108,9 +105,7 @@ void testObj::test<3>(void)
 {
   try
   {
-    base_.restoreBetween(out_,
-                         from_iso_string("20100201T235959"),
-                         from_iso_string("20100101T235959") );
+    base_.restoreBetween(out_, Timestamp(301), Timestamp(300) );
     fail("restoreBetween() didn't throw on invalid time span");
   }
   catch(const Restorer::ExceptionInvalidTimeSpan&)
@@ -126,7 +121,7 @@ void testObj::test<4>(void)
 {
   ensure_equals("pre-1 failed", ior_.restoreAll_,     0);
   ensure_equals("pre-2 failed", ior_.restoreBetween_, 0);
-  const Timestamp ts=from_iso_string("20100101T235959");
+  const Timestamp ts(12344567);
   base_.restoreBetween(out_, ts, ts);
   ensure_equals("invalid number of calls to restore all",
                 ior_.restoreAll_,     0);
