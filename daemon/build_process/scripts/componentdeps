@@ -32,11 +32,6 @@ done
 # wait for all processes to finish
 wait $PIDS
 
-while pidof getdeps
-do
-  sleep 1
-done
-
 # make default target
 cat<<EOF > "$OUTPUT_DIR/_default_target_.mk"
 .PHONY: all
