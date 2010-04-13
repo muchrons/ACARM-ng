@@ -14,6 +14,7 @@
 #include "Base/Threads/Mutex.hpp"
 #include "Base/Threads/Lock.hpp"
 #include "Base/Threads/Conditional.hpp"
+#include "Base/Threads/FifoAcceptAllPolicy.hpp"
 
 namespace Base
 {
@@ -23,7 +24,7 @@ namespace Threads
 /** \brief first-in-first-out queue - thread safe implementation.
  *  \note T many not throw uppon copying, or one will loose enqueued elements.
  */
-template<typename T>
+template<typename T, typename AddPolicy=FifoAcceptAllPolicy>
 class FifoQueue
 {
 public:
@@ -68,7 +69,10 @@ public:
   void push(const T &t)
   {
     {
-      Lock lock(mutex_);
+      const AddPolicy ap=AddPolicy();
+      const Lock      lock(mutex_);
+      if( !ap(q_, t) )      // element should not be added?
+        return;
       q_.push_back(t);      // add element to queue
     }
     cond_.notify_one();     // signal presence of new entry
