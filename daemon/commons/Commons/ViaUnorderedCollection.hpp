@@ -18,10 +18,13 @@ namespace Commons
 {
 
 /** \brief performs certain checks on collections by comparing each element.
+ *
+ *  this is variation of ViaCollection comparer, but this one does not assume
+ *  elements in collections are in exactly the same order.
  */
 struct ViaUnorderedCollection
 {
-  /** \brief checks if colections are equal.
+  /** \brief checks if colections are equal, disregarding order of elements.
    *  \param c1 first collection.
    *  \param c2 second collection.
    *  \return true if collections are identical, false otherwise.

@@ -17,6 +17,9 @@ namespace Commons
 {
 
 /** \brief performs certain checks on collections by comparing each element.
+ *
+ *  this algorithm assumes elements in collection are specified in exactly the
+ *  same order. if this statement does not hold, use ViaUnorderedCollection instead.
  */
 struct ViaCollection
 {
