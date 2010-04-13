@@ -1,26 +1,20 @@
 .PHONY: test
-test:: copy_testdata
-test:: $(PUBLIC_HEADERS)
-test:: $(LIBRARY_NAME)
-test:: $(TEST_PROGRAM_NAME)
+test:: test-$(COMPONENT_PART)
 
 .PHONY: mtest
-mtest:: copy_testdata
-mtest:: $(PUBLIC_HEADERS)
-mtest:: $(LIBRARY_NAME)
-mtest:: $(CXXBIN_MTEST) $(CBIN_MTEST)
-mtest:: $(CXXOBJS_MTEST) $(COBJS_MTEST)
+mtest:: mtest-$(COMPONENT_PART)
 
 .PHONY: doc
-doc:: $(PUBLIC_HEADERS)
-doc:: html/index.html
+doc:: doc-$(COMPONENT_PART)
+
 
 html/index.html:: Doxyfile $(ALL_MODE_SOURCES)
-	@echo "DOXY  makedoc"
+	@echo "DOXY  $(COMPONENT_NAME)/makedoc"
 	@if $(DOXYGEN) 2>&1 | grep '' 1>&2 ; then rm -f "$@" ; false ; else true ; fi
 
 Doxyfile:
-	@echo "DOXY  $@"
+	@echo "DOXY  $(COMPONENT_NAME)/$@"
+	rm -f "$@"
 	$(DOXYGEN) -g "$@.def" > /dev/null
 	sed -e "s:^\(INPUT \+=\).*:\1 $(THIS_SRC_BASE_DIR):" \
 		-e "s:^\(RECURSIVE \+=\).*:\1 YES:" \
@@ -32,7 +26,8 @@ Doxyfile:
 		-e "s:^\(HAVE_DOT \+=\).*:\1 YES:" \
 		-e "s:^\(UML_LOOK \+=\).*:\1 YES:" \
 		-e "s:^\(GENERATE_LATEX \+=\).*:\1 NO:" \
-		"$@.def" > "$@" || ( rm -f "$@" ; false )
+		"$@.def" > "$@.mod"
+	mv "$@.mod" "$@"
 
 LIBS_GEN_DEPS:=$(wildcard $(DEP_LIBS_WC)) $(GEN_LIBS_DIR)/$(LIBRARY_NAME)
 
@@ -75,3 +70,38 @@ endif
 # ensure there is proper link in gen
 $(GEN_LIBS_DIR)/$(LIBRARY_NAME):
 	ln -sf "$(CURDIR)/$(LIBRARY_NAME)" "$(GEN_LIBS_DIR)"
+
+
+#
+# TEST
+#
+.PHONY: test-MKPUBLIC
+test-MKPUBLIC:: $(PUBLIC_HEADERS)
+.PHONY: test-OBJECTS
+test-OBJECTS:: $(LIBRARY_OBJ_DEPS) $(CXXOBJS_TEST) $(COBJS_TEST)
+.PHONY: test-LINK
+test-LINK:: copy_testdata
+test-LINK:: $(LIBRARY_NAME)
+test-LINK:: $(TEST_PROGRAM_NAME)
+
+#
+# MTEST
+#
+.PHONY: mtest-MKPUBLIC
+mtest-MKPUBLIC:: $(PUBLIC_HEADERS)
+.PHONY: mtest-OBJECTS
+mtest-OBJECTS:: $(LIBRARY_OBJ_DEPS) $(CXXOBJS_MTEST) $(COBJS_MTEST)
+.PHONY: mtest-LINK
+mtest-LINK:: copy_testdata
+mtest-LINK:: $(LIBRARY_NAME)
+mtest-LINK:: $(CXXBIN_MTEST) $(CBIN_MTEST)
+
+#
+# DOC
+#
+.PHONY: doc-MKPUBLIC
+doc-MKPUBLIC:: $(PUBLIC_HEADERS)
+.PHONY: doc-LINK
+doc-LINK:: html/index.html
+.PHONY: doc-OBJECTS
+doc-OBJECTS::

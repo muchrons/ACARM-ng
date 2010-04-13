@@ -24,9 +24,9 @@ else
 CFLAGS:=$(filter-out -Werror,$(CFLAGS))
 CXXFLAGS:=$(filter-out -Werror,$(CXXFLAGS))
 
-.PHONY: doc
 doc:
-	@echo "BUILD $(COMPONENT_NAME): ignoring doc"
+	@echo "BUILD $(COMPONENT_NAME)/ignoring-doc"
+	touch "$@"
 
 .PHONY: all test mtest
 all test mtest: post_install.dep
@@ -34,45 +34,45 @@ all test mtest: post_install.dep
 post_install.dep: copy_headers_time_stamp copy_libs_time_stamp
 
 copy_headers_time_stamp: install_time_stamp
-	@touch copy_headers.log
-	@echo "BUILD $(COMPONENT_NAME): copy headers (`readlink -f copy_headers.log`)"
-	@mkdir -p "$(GEN_INCLUDES_DIR)"
-	@echo 'for d in "$$@" ; do if test -d "$$d" ; then cd "$$d" && find . -type f -exec cp -aruv --parents {} "$(GEN_INCLUDES_DIR)"/ \; || exit $? ; fi ; done ; exit 0' > copy_headers.sh
-	@bash copy_headers.sh "installed/include" "installed/usr/include" > copy_headers.log 2>&1
-	@date > "$@"
+	touch copy_headers.log
+	@echo "BUILD $(COMPONENT_NAME)/copy-headers (`readlink -f copy_headers.log`)"
+	mkdir -p "$(GEN_INCLUDES_DIR)"
+	echo 'for d in "$$@" ; do if test -d "$$d" ; then cd "$$d" && find . -type f -exec cp -aruv --parents {} "$(GEN_INCLUDES_DIR)"/ \; || exit $? ; fi ; done ; exit 0' > copy_headers.sh
+	bash copy_headers.sh "installed/include" "installed/usr/include" > copy_headers.log 2>&1
+	date > "$@"
 
 copy_libs_time_stamp: install_time_stamp
-	@touch copy_libs.log
-	@echo "BUILD $(COMPONENT_NAME): copy libs (`readlink -f copy_libs.log`)"
-	@mkdir -p "$(GEN_LIBS_DIR)"
-	@echo 'for d in "$$@" ; do if test -d "$$d" ; then cd "$$d" && find . -type f -iname "*.so" -o -name "*.so.*" -o -name "*.a" -exec cp -aruv --parents {} "$(GEN_LIBS_DIR)"/ \; || exit $? ; fi ; done ; exit 0' > copy_libs.sh
-	@bash copy_libs.sh "installed/lib" "installed/usr/lib" > copy_libs.log 2>&1
-	@date > "$@"
+	touch copy_libs.log
+	@echo "BUILD $(COMPONENT_NAME)/copy-libs (`readlink -f copy_libs.log`)"
+	mkdir -p "$(GEN_LIBS_DIR)"
+	echo 'for d in "$$@" ; do if test -d "$$d" ; then cd "$$d" && find . -type f -iname "*.so" -o -name "*.so.*" -o -name "*.a" -exec cp -aruv --parents {} "$(GEN_LIBS_DIR)"/ \; || exit $? ; fi ; done ; exit 0' > copy_libs.sh
+	bash copy_libs.sh "installed/lib" "installed/usr/lib" > copy_libs.log 2>&1
+	date > "$@"
 
 install_time_stamp: build_time_stamp
-	@touch install.log
-	@echo "BUILD $(COMPONENT_NAME): install (`readlink -f install.log`)"
-	@( cd "ext_sources" && $(MAKE) install $(MAKE_INSTALL_OPTIONS) MAKEOVERRIDES= MAKEFLAGS= ) > install.log 2>&1
-	@date > "$@"
+	touch install.log
+	@echo "BUILD $(COMPONENT_NAME)/install (`readlink -f install.log`)"
+	( cd "ext_sources" && $(MAKE) install $(MAKE_INSTALL_OPTIONS) MAKEOVERRIDES= MAKEFLAGS= ) > install.log 2>&1
+	date > "$@"
 
 build_time_stamp: configure_time_stamp
-	@touch build.log
-	@echo "BUILD $(COMPONENT_NAME): build (`readlink -f build.log`)"
-	@( cd "ext_sources" && $(MAKE) $(MAKE_OPTIONS) MAKEOVERRIDES= MAKEFLAGS= ) > build.log 2>&1
-	@date > "$@"
+	touch build.log
+	@echo "BUILD $(COMPONENT_NAME)/build (`readlink -f build.log`)"
+	( cd "ext_sources" && $(MAKE) $(MAKE_OPTIONS) MAKEOVERRIDES= MAKEFLAGS= ) > build.log 2>&1
+	date > "$@"
 
 configure_time_stamp: copy_time_stamp pre_configure.dep
-	@touch init.log
-	@echo "BUILD $(COMPONENT_NAME): init (`readlink -f init.log`)"
-	@( cd "ext_sources" && ./configure $(CONFIGURE_OPTIONS) --prefix="$(CURDIR)/installed" ) > init.log 2>&1
-	@date > "$@"
+	touch init.log
+	@echo "BUILD $(COMPONENT_NAME)/init (`readlink -f init.log`)"
+	( cd "ext_sources" && ./configure $(CONFIGURE_OPTIONS) --prefix="$(CURDIR)/installed" ) > init.log 2>&1
+	date > "$@"
 
 copy_time_stamp: $(shell find "$(THIS_SRC_BASE_DIR)" -type f)
-	@touch copy.log
-	@echo "COPY  $(COMPONENT_NAME) sources (`readlink -f copy.log`)"
-	@mkdir -p "ext_sources"
-	@cp -ruav "`ls $(THIS_SRC_BASE_DIR)/*/configure | head -1 | xargs dirname`"/* "ext_sources" > copy.log 2>&1
-	@date > "$@"
+	touch copy.log
+	@echo "COPY  $(COMPONENT_NAME)/sources (`readlink -f copy.log`)"
+	mkdir -p "ext_sources"
+	cp -ruav "`ls $(THIS_SRC_BASE_DIR)/*/configure | head -1 | xargs dirname`"/* "ext_sources" > copy.log 2>&1
+	date > "$@"
 
 
 # do not require user-provided rules by default
