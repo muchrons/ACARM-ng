@@ -39,4 +39,3 @@ export \
        GEN_COMPONENTS_DEPS_DIR
 
 include $(MAKEFILES_COMMON_BASE_DIR)/dirs_features.mk
-
