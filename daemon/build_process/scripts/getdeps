@@ -98,6 +98,10 @@ then
 						<<<"$DEPS"`"
 fi
 
+# reverse dependencies order, so that it whould be more natural for make to prefer building
+# base components as first, so that linking won't group at the compilation's end.
+RDEPS="`echo "$DEPS" | awk '{ for(i=NF; i>0; --i) printf("%s ", $i) ; print "" }'`"
+
 # write to file
 cat<<EOF > "$out"
 .PHONY: $C
@@ -108,7 +112,7 @@ $C-LINK:: DEP_LIBS_WC:=$DEP_LIBS_WC
 $C-LINK:: COMPONENT_DIR:=$C
 $C-LINK:: COMPONENT_PART:=LINK
 ifeq (,\$(WITHOUT_DEPS))
-$C-LINK:: $C-OBJECTS `test -z "$DEPS" || echo "$DEPS " | sed 's: \+:-LINK :g'`
+$C-LINK:: $C-OBJECTS `test -z "$RDEPS" || echo "$RDEPS " | sed 's: \+:-LINK :g'`
 else
 $C-LINK:: $C-OBJECTS
 endif
@@ -124,7 +128,7 @@ $C-OBJECTS:: $C-MKPUBLIC
 $C-MKPUBLIC:: COMPONENT_DIR:=$C
 $C-MKPUBLIC:: COMPONENT_PART:=MKPUBLIC
 ifeq (,\$(WITHOUT_DEPS))
-$C-MKPUBLIC:: `test -z "$DEPS" || echo "$DEPS " | sed 's: \+:-MKPUBLIC :g'`
+$C-MKPUBLIC:: `test -z "$RDEPS" || echo "$RDEPS " | sed 's: \+:-MKPUBLIC :g'`
 else
 $C-MKPUBLIC::
 endif
