@@ -1,0 +1,37 @@
+/*
+ * FifoAcceptUniquePolicy.hpp
+ *
+ */
+#ifndef INCLUDE_BASE_THREADS_FIFOACCEPTUNIQUEPOLICY_HPP_FILE
+#define INCLUDE_BASE_THREADS_FIFOACCEPTUNIQUEPOLICY_HPP_FILE
+
+/* public header */
+
+namespace Base
+{
+namespace Threads
+{
+
+/** \brief policy accepting elements that are not yet in queue
+ */
+struct FifoAcceptUniquePolicy
+{
+  /** \brief policy for accepting (enqueuing) unique elements in fifo queue.
+   *  \param c collection to check against.
+   *  \param e element to be checked.
+   */
+  template<typename TCollection, typename TElement>
+  inline bool operator()(const TCollection &c, const TElement &e) const
+  {
+    for(typename TCollection::const_iterator it=c.begin(); it!=c.end(); ++it)
+      if(*it==e)
+        return false;
+    // if we're here new element is unique.
+    return true;
+  }
+}; // struct FifoAcceptUniquePolicy
+
+} // namespace Threads
+} // namespace Base
+
+#endif
