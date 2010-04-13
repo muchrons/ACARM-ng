@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <algorithm>
+
 namespace Base
 {
 namespace Threads
@@ -23,11 +25,7 @@ struct FifoAcceptUniquePolicy
   template<typename TCollection, typename TElement>
   inline bool operator()(const TCollection &c, const TElement &e) const
   {
-    for(typename TCollection::const_iterator it=c.begin(); it!=c.end(); ++it)
-      if(*it==e)
-        return false;
-    // if we're here new element is unique.
-    return true;
+    return std::find(c.begin(), c.end(), e)==c.end();
   }
 }; // struct FifoAcceptUniquePolicy
 
