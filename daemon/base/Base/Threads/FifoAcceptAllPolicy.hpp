@@ -17,8 +17,6 @@ namespace Threads
 struct FifoAcceptAllPolicy
 {
   /** \brief policy for accepting (enqueuing) all elements in fifo queue.
-   *  \param c collection to check against.
-   *  \param e element to be checked.
    */
   template<typename TCollection, typename TElement>
   inline bool operator()(const TCollection &, const TElement &) const
