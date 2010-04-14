@@ -87,8 +87,6 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   //       data may appear in data base for some reason.
   assert(tmpNodes.size() >= 2);
   NodeChildrenVector vec(tmpNodes[0], tmpNodes[1]);
-  // TODO: note that you can use vector<>::reserve() method to ensure no extra
-  //       allocations will be done when adding new elements.
   for(size_t i = 2; i<tmpNodes.size(); ++i)
     vec.push_back(tmpNodes[i]);
   // read Meta Alert from data base
