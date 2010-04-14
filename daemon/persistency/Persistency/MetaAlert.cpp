@@ -3,10 +3,12 @@
  *
  */
 #include "Persistency/MetaAlert.hpp"
-#include "Base/Threads/Lock.hpp"
+#include "Base/Threads/ReadLock.hpp"
+#include "Base/Threads/WriteLock.hpp"
 #include "Base/ViaPointer.hpp"
 
-using Base::Threads::Lock;
+using Base::Threads::ReadLock;
+using Base::Threads::WriteLock;
 
 namespace Persistency
 {
@@ -41,13 +43,13 @@ const MetaAlert::Name &MetaAlert::getName(void) const
 
 MetaAlert::SeverityDelta MetaAlert::getSeverityDelta(void) const
 {
-  Lock lock(mutex_);
+  ReadLock lock(mutex_);
   return severityDelta_;
 }
 
 MetaAlert::CertaintyDelta MetaAlert::getCertaintyDelta(void) const
 {
-  Lock lock(mutex_);
+  ReadLock lock(mutex_);
   return certanityDelta_;
 }
 
@@ -63,13 +65,13 @@ Timestamp MetaAlert::getCreateTime(void) const
 
 void MetaAlert::updateSeverityDelta(double delta)
 {
-  Lock lock(mutex_);
+  WriteLock lock(mutex_);
   severityDelta_+=delta;
 }
 
 void MetaAlert::updateCertaintyDelta(double delta)
 {
-  Lock lock(mutex_);
+  WriteLock lock(mutex_);
   certanityDelta_+=delta;
 }
 

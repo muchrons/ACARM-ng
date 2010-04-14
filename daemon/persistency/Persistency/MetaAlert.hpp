@@ -11,7 +11,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/operators.hpp>
 
-#include "Base/Threads/Mutex.hpp"
+#include "Base/Threads/ReadWriteMutex.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/Timestamp.hpp"
@@ -92,12 +92,12 @@ private:
   void updateSeverityDelta(double delta);
   void updateCertaintyDelta(double delta);
 
-  mutable Base::Threads::Mutex mutex_;
-  Name                         name_;
-  SeverityDelta                severityDelta_;
-  CertaintyDelta               certanityDelta_;
-  ReferenceURLPtr              url_;
-  Timestamp                    created_;
+  mutable Base::Threads::ReadWriteMutex mutex_;
+  Name                                  name_;
+  SeverityDelta                         severityDelta_;
+  CertaintyDelta                        certanityDelta_;
+  ReferenceURLPtr                       url_;
+  Timestamp                             created_;
 }; // class MetaAlert
 
 
