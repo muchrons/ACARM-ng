@@ -3,6 +3,7 @@
  *
  */
 #include <tut.h>
+#include <cassert>
 
 #include "Core/Types/Proc/Processor.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
@@ -20,15 +21,18 @@ struct TestInterface: public Interface
   TestInterface(void):
     Interface("testinterface"),
     calls_(0),
-    node_( makeNewLeaf() )
+    node_( makeNewLeaf() ),
+    node2_( makeNewLeaf() )
   {
+    assert( node_.get()!=node2_.get() );
   }
 
   virtual void process(Node node, ChangedNodes &changedNodes)
   {
     ++calls_;
 
-    tut::ensure("invalid node", node.get()==node_.get() );
+    tut::ensure("invalid node", node.get()==node_.get() ||
+                                node.get()==node2_.get() );
     tut::ensure_equals("invalid count of elements in changed list",
                        changedNodes.size(), 0u);
 
@@ -38,6 +42,7 @@ struct TestInterface: public Interface
 
   int  calls_;
   Node node_;
+  Node node2_;
 };
 
 
@@ -122,9 +127,9 @@ void testObj::test<4>(void)
   ensure_equals("pre-condition failed", mainQueue_.size(), 0u);
   // process data
   TestInterface &ti=dynamic_cast<TestInterface&>(*interface_);
-  Processor                   p(mainQueue_, interface_);
+  Processor      p(mainQueue_, interface_);
   p.process(ti.node_);          // this call should add 2 elements to 'changed'
-  p.process(ti.node_);          // elements set, and processor should forward it
+  p.process(ti.node2_);         // elements set, and processor should forward it
                                 // to the main queue.
   // wait for the results
   for(int i=0; i<10; ++i)

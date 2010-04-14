@@ -1,14 +1,12 @@
 /*
- * Lock.t.cpp
+ * WriteLock.t.cpp
  *
  */
 #include <tut.h>
 #include <boost/thread/thread.hpp>
 #include <cassert>
-#include <unistd.h>
 
-#include "Base/Threads/Mutex.hpp"
-#include "Base/Threads/Lock.hpp"
+#include "Base/Threads/WriteLock.hpp"
 
 using namespace Base::Threads;
 
@@ -21,7 +19,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Base/Threads/Lock");
+factory tf("Base/Threads/WriteLock");
 } // unnamed namespace
 
 
@@ -33,8 +31,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Mutex m;
-  Lock  lock(m);
+  ReadWriteMutex m;
+  WriteLock      lock(m);
 }
 
 // re-locking
@@ -42,13 +40,13 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Mutex m;
+  ReadWriteMutex m;
   {
-    Lock  lock(m);
+    WriteLock lock(m);
   }
   // here mutex should be already released
   {
-    Lock  lock(m);
+    WriteLock lock(m);
   }
 }
 
@@ -58,7 +56,7 @@ namespace
 class TestLocker
 {
 public:
-  TestLocker(Mutex *mutex, double *data):
+  TestLocker(ReadWriteMutex *mutex, double *data):
     mutex_(mutex),
     data_(data)
   {
@@ -70,7 +68,7 @@ public:
     const int seed=rand();
     for(int i=0; i<200; ++i)
     {
-      Lock lock(*mutex_);
+      WriteLock lock(*mutex_);
       ensure_equals("data is invalid", data_[1], data_[0]+1);
       data_[0]=10.5+seed;
       boost::thread::yield();  // switch context
@@ -78,8 +76,8 @@ public:
     }
   }
 private:
-  Mutex  *mutex_;
-  double *data_;
+  ReadWriteMutex *mutex_;
+  double         *data_;
 }; // class TestLocker
 
 } // unnamed namespace
@@ -89,10 +87,10 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  double     data[2]={1, 2};
-  Mutex      mutex;
-  TestLocker tl1(&mutex, data);
-  TestLocker tl2(&mutex, data);
+  double         data[2]={1, 2};
+  ReadWriteMutex mutex;
+  TestLocker     tl1(&mutex, data);
+  TestLocker     tl2(&mutex, data);
 
   // start two threads
   boost::thread th1(tl1);

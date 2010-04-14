@@ -7,7 +7,7 @@
 
 /* public header */
 
-#include "Base/Threads/FifoQueue.hpp"
+#include "Base/Threads/UniqueFifoQueue.hpp"
 #include "Persistency/GraphNode.hpp"
 
 namespace Core
@@ -16,10 +16,8 @@ namespace Types
 {
 
 /** \brief fifo queue holding graph nodes.
- *  \note this class may be updated later on to insert only unique entries,
- *        since repeated ones does not introduce anything new.
  */
-typedef Base::Threads::FifoQueue<Persistency::GraphNodePtrNN> NodesFifo;
+typedef Base::Threads::UniqueFifoQueue<Persistency::GraphNodePtrNN> NodesFifo;
 
 } // namespace Types
 } // namespace Core

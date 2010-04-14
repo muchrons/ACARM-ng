@@ -6,7 +6,8 @@
 #include <cassert>
 
 #include "Persistency/Host.hpp"
-#include "Base/Threads/Lock.hpp"
+#include "Base/Threads/ReadLock.hpp"
+#include "Base/Threads/WriteLock.hpp"
 #include "Base/ViaPointer.hpp"
 #include "Commons/ViaCollection.hpp"
 #include "Logger/Logger.hpp"
@@ -95,12 +96,14 @@ const Host::OperatingSystem &Host::getOperatingSystem(void) const
 
 const Host::Name &Host::getName(void) const
 {
+  // TODO: this code is INVALID - it has to return pointer to const char* or copy!
+
   // although it looks as returing pointer to non-thread safe code, it is fine, since
   // this pointer may be ither NULL (always thread-correct) or exact value, that
   // is set just once. trying to set olready-set value will always throw. so in fact
   // this pointer may transit NULL->0xC0DE only once and will have the same value
   // until this object lives.
-  Base::Threads::Lock lock(mutex_);
+  Base::Threads::ReadLock lock(mutex_);
   return name_;
 }
 
@@ -154,7 +157,7 @@ void Host::setName(const Name &name)
     LOGMSG_INFO(log, ss.str().c_str() );
   }
 
-  Base::Threads::Lock lock(mutex_);
+  Base::Threads::WriteLock lock(mutex_);
   // NOTE: checking for not-setting multiple times is crutial here, since
   //       getName() returns pointer to local variable and therefor it must
   //       be asured it never changes.

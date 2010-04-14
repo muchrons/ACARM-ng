@@ -9,4 +9,4 @@ else
   CPUS="`cat /proc/cpuinfo  | grep processor | wc -l`"
 fi
 
-exec make "-j$CPUS" "$@"
+exec make WITH_DISTCC=1 "-j$CPUS" "$@"

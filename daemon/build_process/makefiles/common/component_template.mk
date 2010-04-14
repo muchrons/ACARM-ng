@@ -31,4 +31,3 @@ include $(MAKEFILES_COMMON_BASE_DIR)/deps.mk
 -include $(THIS_SRC_BASE_DIR)/user_post.mk
 
 endif
-

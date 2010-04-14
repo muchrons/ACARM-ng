@@ -87,6 +87,7 @@ Base::NullValue<Timestamp> set(const pqxx::result::field &r)
   {
     string s;
     r.to(s);
+    // TODO: memory leak here
     Base::NullValue<Timestamp> ret( new Timestamp( timestampFromString(s) ) );
     return ret;
   }
