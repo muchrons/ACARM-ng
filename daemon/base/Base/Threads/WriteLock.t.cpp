@@ -5,7 +5,6 @@
 #include <tut.h>
 #include <boost/thread/thread.hpp>
 #include <cassert>
-#include <unistd.h>
 
 #include "Base/Threads/WriteLock.hpp"
 
@@ -67,7 +66,7 @@ public:
   void operator()(void)
   {
     const int seed=rand();
-    for(int i=0; i<20; ++i)
+    for(int i=0; i<200; ++i)
     {
       WriteLock lock(*mutex_);
       ensure_equals("data is invalid", data_[1], data_[0]+1);

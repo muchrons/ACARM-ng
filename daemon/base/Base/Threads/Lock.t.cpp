@@ -68,7 +68,7 @@ public:
   void operator()(void)
   {
     const int seed=rand();
-    for(int i=0; i<20; ++i)
+    for(int i=0; i<200; ++i)
     {
       Lock lock(*mutex_);
       ensure_equals("data is invalid", data_[1], data_[0]+1);
