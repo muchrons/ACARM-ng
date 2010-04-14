@@ -7,8 +7,8 @@
 
 #include <boost/noncopyable.hpp>
 
-#include "Base/Threads/Mutex.hpp"
-#include "Base/Threads/Lock.hpp"
+#include "Base/Threads/ReadWriteMutex.hpp"
+#include "Base/Threads/ReadLock.hpp"
 #include "Logger/Appenders/Base.hpp"
 #include "Logger/Formatter.hpp"
 #include "Logger/Priority.hpp"
@@ -36,7 +36,7 @@ public:
    */
   Appenders::BasePtr getAppender(void) const
   {
-    Base::Threads::Lock lock(mutex_);
+    Base::Threads::ReadLock lock(mutex_);
     return appender_;
   }
   /** \brief gives access to formatter.
@@ -44,7 +44,7 @@ public:
    */
   Formatter getFormatter(void) const
   {
-    Base::Threads::Lock lock(mutex_);
+    Base::Threads::ReadLock lock(mutex_);
     return formatter_;
   }
   /** \brief gets threshold level for logging.
@@ -52,18 +52,18 @@ public:
    */
   Priority getThreshold(void) const
   {
-    Base::Threads::Lock lock(mutex_);
+    Base::Threads::ReadLock lock(mutex_);
     return threshold_;
   }
 
 private:
-  mutable Base::Threads::Mutex mutex_;
-  Appenders::BasePtr           appender_;
-  Priority                     threshold_;
-  Formatter                    formatter_;  // note: formatter is held by value since
-                                            //       at this moment it has just one
-                                            //       possible instance and is not planned
-                                            //       to expand like appenders' case.
+  mutable Base::Threads::ReadWriteMutex mutex_;
+  Appenders::BasePtr                    appender_;
+  Priority                              threshold_;
+  Formatter                             formatter_;  // note: formatter is held by value since
+                                                     //       at this moment it has just one
+                                                     //       possible instance and is not planned
+                                                     //       to expand like appenders' case.
 }; // class NodeConf
 
 } // namespace Logger
