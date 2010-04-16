@@ -33,7 +33,7 @@ struct ReaderHelper
   {
     if( r.is_null() )
     {
-      T2 ret(NULL);
+      T2 ret;
       return ret;
     }
     else
@@ -49,7 +49,6 @@ struct ReaderHelper
    *  \param r SQL result field.
    *  \return data get from SQL result field.
    */
-
   static T1 fromSQLResult(const pqxx::result::field &r)
   {
     T1 data;
