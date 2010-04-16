@@ -95,12 +95,11 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
   MetaAlertPtrNN malert( new Persistency::MetaAlert( ReaderHelper<string>::fromSQLResult(r[0]["name"]),
                                           ReaderHelper<double>::fromSQLResult(r[0]["severity_delta"]),
                                           ReaderHelper<double>::fromSQLResult(r[0]["certanity_delta"]),
-                                          getReferenceURL( ReaderHelper<DataBaseID,Base::NullValue<DataBaseID> ,DataBaseID>::readAs(r[0]["id_ref"]).get() ),
+                                          getReferenceURL( ReaderHelper<DataBaseID, Base::NullValue<DataBaseID> ,DataBaseID>::readAs(r[0]["id_ref"]).get() ),
                                           timestampFromString( ReaderHelper<string>::fromSQLResult(r[0]["create_time"]) )) );
   return malert;
 }
 
-// TODO: tests
 AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
 {
   stringstream sa;

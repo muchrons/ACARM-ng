@@ -33,7 +33,7 @@ struct ReaderHelper
   {
     if( r.is_null() )
     {
-      T2 ret;
+      T2 ret(NULL);
       return ret;
     }
     else
