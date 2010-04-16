@@ -7,6 +7,7 @@
 
 #include <boost/noncopyable.hpp>
 
+#include "Persistency/IPTypes.hpp"
 #include "Persistency/Process.hpp"
 #include "Persistency/Service.hpp"
 #include "Persistency/ReferenceURL.hpp"
@@ -18,7 +19,8 @@
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
-#include "Persistency/IPTypes.hpp"
+#include "Persistency/IO/Postgres/ExceptionNoEntries.hpp"
+
 
 namespace Persistency
 {

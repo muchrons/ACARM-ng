@@ -3,17 +3,17 @@
  *
  */
 #include <tut.h>
+#include <boost/algorithm/string.hpp>
 
+#include "Persistency/detail/LimitedString.hpp"
+#include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
-#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
-#include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
-#include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
-#include <boost/algorithm/string.hpp>
 #include "Persistency/IO/Postgres/detail/Appender.hpp"
+#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 
 using namespace std;
 using namespace pqxx;
@@ -531,7 +531,7 @@ void testObj::test<12>(void)
 }
 
 
-// TODO: test saving Process with NULL ReferenceURL
+// try save Process with NULL ReferenceURL
 
 template<>
 template<>
@@ -578,7 +578,7 @@ void testObj::test<13>(void)
 }
 
 
-// TODO: test saving Process with non-NULL ReferenceURL
+// try save Process with non-NULL ReferenceURL
 template<>
 template<>
 void testObj::test<14>(void)
@@ -655,7 +655,7 @@ void testObj::test<16>(void)
 
 }
 
-// TODO: test saving service with NULL reference URL
+// try save service with NULL reference URL
 template<>
 template<>
 void testObj::test<17>(void)
