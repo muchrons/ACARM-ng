@@ -159,7 +159,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const Timestamp tmp=boost::posix_time::time_from_string("2010-11-12");
+  const Timestamp tmp(123456);
   const Alert     a(name_, analyzers_, &detected_, tmp, severity_,
                     certanity_, description_, sourceHosts_, targetHosts_);
   TestHelpers::checkEquality(custom_, a);

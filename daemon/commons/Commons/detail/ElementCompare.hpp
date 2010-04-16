@@ -9,6 +9,7 @@
 
 #include <boost/shared_ptr.hpp>
 
+#include "Base/ViaPointer.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 
 namespace Commons

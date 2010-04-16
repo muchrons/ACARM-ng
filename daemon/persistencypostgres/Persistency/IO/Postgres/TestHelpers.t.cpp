@@ -5,8 +5,6 @@
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 
-using boost::posix_time::from_iso_string;
-
 // TODO: make these changes (i.e. - commiting graph node changes) also in
 //       testhelperspersistency component.
 
@@ -17,13 +15,25 @@ namespace IO
 namespace Postgres
 {
 
+IO::ConnectionPtrNN makeConnection(void)
+{
+  IO::BackendFactory::Options opts;
+  opts["host"]  ="localhost";
+  opts["port"]  ="5432";
+  opts["dbname"]="acarm_ng_test";
+  opts["user"]  ="acarm-ng-daemon";
+  opts["pass"]  ="test.daemon";
+  return IO::ConnectionPtrNN(
+        Persistency::IO::BackendFactory::create("postgres", opts) );
+}
+
 AlertPtr makeNewAlert(const char *name)
 {
   const Persistency::Alert::SourceAnalyzers sa( makeNewAnalyzer() );
   return AlertPtr( new Persistency::Alert(name,
                              sa,
                              NULL,
-                             Timestamp(from_iso_string("2001109T231100")),
+                             Timestamp(444),
                              Severity(SeverityLevel::INFO),
                              Certainty(0.42),
                              "some test allert",
@@ -36,7 +46,7 @@ MetaAlertPtr makeNewMetaAlert(const char *name)
   return MetaAlertPtrNN( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name),
                                         0.1, 0.2,
                                         makeNewReferenceURL(),
-                                        Persistency::Timestamp(from_iso_string("2001109T231100")) ) );
+                                        Persistency::Timestamp(444) ) );
 }
 
 AnalyzerPtrNN makeNewAnalyzer(const char *name)

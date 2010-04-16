@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# use as much CPUs as possible
+CPUS="1"
+if distcc -j > /dev/null 2>&1
+then
+  CPUS="`distcc -j`"
+else
+  CPUS="`cat /proc/cpuinfo  | grep processor | wc -l`"
+fi
+
+exec make WITH_DISTCC=1 "-j$CPUS" "$@"

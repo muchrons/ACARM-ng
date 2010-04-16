@@ -120,49 +120,20 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  const time_t                  tt=54321;
+  const Persistency::Timestamp  time(tt);
+
+  idmef_time_t  *idmeftime=NULL;
   idmef_alert_t *alert=getAlert();
-
-  const char * time_char="20120131T000000";
-  //Persistency::Timestamp time(from_iso_string(time_char));
-  Persistency::Timestamp time(second_clock::local_time());
-
-  tm timeptr=to_tm(time);
-  const time_t t=mktime(&timeptr);
-  /*
-  std::cerr << t << std::endl;
-  idmef_time_t *idmeftime;
-  idmef_time_new_from_time(&idmeftime,&t);
-  idmef_alert_set_create_time(alert,idmeftime);
+  idmef_time_new_from_time(&idmeftime, &tt);
 
 
-  {
-    int len;
-    time_t _time;
-    struct tm _tm;
-    char tmp[32], buf[128];
-
-    _time = idmef_time_get_sec(idmeftime) + idmef_time_get_gmt_offset(idmeftime);
-
-    if ( ! gmtime_r(&_time, &_tm) )
-      return;
-
-    len = strftime(tmp, sizeof(tmp), "%d/%m/%Y %H:%M:%S", &_tm);
-    if ( len == 0 )
-      return;
-
-    len = snprintf(buf, sizeof(buf), "%s.%u %+.2d:%.2d",
-                   tmp, idmef_time_get_usec(idmeftime), idmef_time_get_gmt_offset(idmeftime) / 3600,
-                   idmef_time_get_gmt_offset(idmeftime) % 3600 / 60);
-
-    std::cerr << buf << std::endl;
-  }
-  */
+  idmef_alert_set_create_time(alert, idmeftime);
 
   // TODO: object should be const
-  //IDMEFParser ip(getMessage());
+  IDMEFParser ip( getMessage() );
   // TODO: string( someMakeStringCall().c_str() ) does not make sense
-  std::cerr << t << " = " << to_iso_string(time) << " - " << time_char << " - " << to_iso_string(boost::posix_time::from_time_t(t)) << std::endl;
-  //ensure_equals("Something broken with time",to_iso_string(ip.getCreateTime()),string(time_char));
+  ensure_equals("Something broken with time", ip.getCreateTime(), time);
 }
 
 // TODO: test parsing when heart beat is passed

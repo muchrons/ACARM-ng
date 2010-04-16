@@ -13,7 +13,7 @@ export PROFILE:=test
 export TC:=local
 
 # enable distcc
-export WITH_DISTCC:=1
+#export WITH_DISTCC:=1
 
 # enable ccache
 export WITH_CCACHE:=1

@@ -7,26 +7,25 @@
 #include <boost/algorithm/string.hpp>
 
 // TODO: fix order of including headers
-#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
-#include "Persistency/IO/Postgres/detail/EntryReader.hpp"
+#include "TestHelpers/checkEquality.hpp"
+#include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
-#include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/Postgres/Alert.hpp"
 #include "Persistency/IO/Postgres/MetaAlert.hpp"
-#include "TestHelpers/checkEquality.hpp"
+#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
+#include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 
-using Persistency::IO::Transaction;
+using namespace std;
+using namespace pqxx;
 using namespace Persistency;
 using namespace Persistency::IO::Postgres;
 using namespace Persistency::IO::Postgres::detail;
-using namespace std;
-using namespace pqxx;
+
 using boost::algorithm::trim;
-using boost::posix_time::from_iso_string;
-using boost::posix_time::time_from_string;
+using Persistency::IO::Transaction;
 
 namespace
 {
@@ -36,8 +35,8 @@ struct TestClass
     name_("some name"),
     analyzer_( new Analyzer("analyzer name", NULL, NULL, NULL) ),
     analyzers_(analyzer_),
-    detected_(from_iso_string("20011009T231100")),
-    created_(from_iso_string("20011010T231100")),
+    detected_(1000),
+    created_(1010),
     severity_(SeverityLevel::INFO),
     certanity_(0.42),
     description_("alert's description"),
@@ -112,11 +111,13 @@ void testObj::test<1>(void)
   //TODO
   const Analyzer   a("analyzer2", NULL, NULL, NULL);
   const DataBaseID anlzID = es_.saveAnalyzer(a);
+  // TODO: SEGV - this is holding reference to already deallocated object, returned
+  //       by getAnalyzer(). you need to keep smart pointer here instead...
   const Analyzer   &readAnalyzer =  *er_.getAnalyzer(anlzID) ;
 
-  ensure("version is not null",readAnalyzer.getVersion()==NULL);
-  ensure("ip is not null",readAnalyzer.getIP()==NULL);
-  ensure("os is not null",readAnalyzer.getOS()==NULL);
+  ensure("version is not null",readAnalyzer.getVersion()==NULL);    // TODO: SEGV (invalid access) - here...
+  ensure("ip is not null",readAnalyzer.getIP()==NULL);              // TODO: SEGV (invalid access) - here...
+  ensure("os is not null",readAnalyzer.getOS()==NULL);              // TODO: SEGV (invalid access) - here...
   t_.commit();
 }
 
@@ -129,13 +130,15 @@ void testObj::test<2>(void)
   const Analyzer::OS      anlzOS("wiendols");
   const Analyzer          a("analyzer2", &anlzVersion, &anlzOS, NULL);
   const DataBaseID        anlzID = es_.saveAnalyzer(a);
+  // TODO: SEGV - this is holding reference to already deallocated object, returned
+  //       by getAnalyzer(). you need to keep smart pointer here instead...
   const Analyzer         &readAnalyzer =  *er_.getAnalyzer(anlzID); // TODO: what is Analyzer is NULL?
-  string                  version(readAnalyzer.getVersion()->get());
-  string                  os(readAnalyzer.getOS()->get());
+  string                  version(readAnalyzer.getVersion()->get());    // TODO: SEGV (invalid access) - here...
+  string                  os(readAnalyzer.getOS()->get());              // TODO: SEGV (invalid access) - here...
   trim(version);
   //trim(os);
   ensure_equals("wrong version",version, string(anlzVersion.get()) );
-  ensure("ip is not null",readAnalyzer.getIP()==NULL);
+  ensure("ip is not null",readAnalyzer.getIP()==NULL);  // TODO: SEGV (invalid access) - here...
   ensure_equals("wrong os", os, string( anlzOS.get()) );
   t_.commit();
 }
@@ -159,10 +162,8 @@ void testObj::test<3>(void)
   TestHelpers::checkEquality(alertPtr, a);
   ensure("invalid name", alertPtr->getName() == a->getName() );
   ensure_equals("invalid description", a->getDescription() , description_ );
-  ensure_equals("invalid detected time", to_simple_string(*a->getDetectionTime()),
-                                         to_simple_string(detected_));
-  ensure_equals("invalid create time", to_simple_string(a->getCreationTime()),
-                                       to_simple_string(created_));
+  ensure_equals("invalid detected time", *a->getDetectionTime(), detected_);
+  ensure_equals("invalid create time", a->getCreationTime(), created_);
   ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(),
                                     severity_.getLevel().toInt());
   ensure_equals("invalid caertainty", a->getCertainty().get(), certanity_.get());
@@ -188,8 +189,7 @@ void testObj::test<4>(void)
   ensure("invalid name",a->getName() == name_ );
   ensure_equals("invalid description", a->getDescription() , description_ );
   ensure("detected time is not NULL", a->getDetectionTime()==NULL);
-  ensure_equals("invalid create time", to_simple_string(a->getCreationTime()),
-                                       to_simple_string(created_));
+  ensure_equals("invalid create time", a->getCreationTime(), created_);
   ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(),
                                     severity_.getLevel().toInt());
   ensure_equals("invalid caertainty", a->getCertainty().get(), certanity_.get());
@@ -208,15 +208,14 @@ void testObj::test<5>(void)
       new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                   0.1, 0.2,
                                   refURL,
-                                  from_iso_string("20011009T231100") ) );
+                                  Timestamp(123) ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
   DataBaseID malertID = dbh_->getIDCache()->get(maPtr);
   Persistency::MetaAlertPtrNN ma( er_.readMetaAlert(malertID) );
   ensure("error restoring meta alert", *maPtr == *ma);
   ensure("invalid meta alert name", ma->getName() == maPtr->getName() );
-  ensure_equals("invalid craeted time", to_iso_string( ma->getCreateTime()),
-                                        "20011009T231100");
+  ensure_equals("invalid craeted time",  ma->getCreateTime(), Timestamp(123) );
   ensure_equals("invalid severity delta", ma->getSeverityDelta(), 0.1);
   ensure_equals("invalid certainty delta", ma->getCertaintyDelta(), 0.2);
 
@@ -243,14 +242,13 @@ void testObj::test<6>(void)
         new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                     0.1, 0.2,
                                     url,
-                                    from_iso_string("20011009T231100") ) );
+                                    Timestamp(1500) ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
   DataBaseID malertID = dbh_->getIDCache()->get(maPtr);
   Persistency::MetaAlertPtrNN ma( er_.readMetaAlert(malertID) );
   ensure("invalid meta alert name", strcmp( ma->getName().get(), malertName.c_str() ) == 0);
-  ensure_equals("invalid craeted time", to_iso_string( ma->getCreateTime()),
-                                        "20011009T231100");
+  ensure_equals("invalid craeted time", ma->getCreateTime(), Timestamp(1500) );
   ensure_equals("invalid severity delta", ma->getSeverityDelta(), 0.1);
   ensure_equals("invalid certainty delta", ma->getCertaintyDelta(), 0.2);
   ensure("reference url is not null", ma->getReferenceURL()==NULL);

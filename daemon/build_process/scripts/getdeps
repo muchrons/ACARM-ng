@@ -19,30 +19,42 @@ shift
 GEN_LIBS_PATH="$1"
 shift
 
-# finder <component>
-#   return list of dependent components
-function finder
-{
-  # check all possible files
-  for dep in "$1/$DEPS_PATH" "$1/$BASE_PATH_DIR/common"
-  do
-    # static dependency is not present?
-    [ -f "$dep" ] || continue
-
-    for subdep in `cat "$dep"`
-    do
-      echo "$subdep"
-      finder "$subdep"
-    done # for subdependencies
-  done # for dependencies
-}
-
 # reduce_deps <c1> <c2> <c3> ... <cN>
 #   returns minimum list of dependent components
 function reduce_deps
 {
   echo "$@" | \
     awk '{ j=1 ; for(i=NF; i>0 ; i-=1) { more[$i]+=1 ; if(more[$i]==1) { out[j]=$i ; j+=1 } } ; for(i=j-1; i>0; i-=1) { printf("%s ", out[i]) } ; print("") }'
+}
+
+# finder_impl <got_deps>
+#   return list of dependent components
+function finder_impl
+{
+  local TMP_SET=""
+  for q in $1
+  do
+    # check all possible files
+    for dep in "$q/$DEPS_PATH" "$q/$BASE_PATH_DIR/common"
+    do
+      # static dependency is not present?
+      [ -f "$dep" ] || continue
+      # save found dependency now
+      TMP_SET="$TMP_SET `cat $dep | xargs echo -n`"
+    done # for dependencies
+  done # for in-queue dependencies
+
+  # output dependencies
+  echo -n "$TMP_SET"
+  # if set is not empty, run again
+  [ -z "$TMP_SET" ] || finder "`reduce_deps "$TMP_SET"`"
+}
+
+# finder <component>
+#   return list of dependent components
+function finder
+{
+  finder_impl "$1"
 }
 
 # short name for component - it will be used many times
@@ -98,17 +110,39 @@ then
 						<<<"$DEPS"`"
 fi
 
+# reverse dependencies order, so that it whould be more natural for make to prefer building
+# base components as first, so that linking won't group at the compilation's end.
+RDEPS="`echo "$DEPS" | awk '{ for(i=NF; i>0; --i) printf("%s ", $i) ; print "" }'`"
+
 # write to file
 cat<<EOF > "$out"
 .PHONY: $C
-$C:: LINK_LIBS:=$LINK_FLAGS
-$C:: DEP_LIBS_WC:=$DEP_LIBS_WC
-$C:: CXXFLAGS:=\$(CXXFLAGS) $COMPILE_FLAGS
-$C:: CFLAGS:=\$(CFLAGS) $COMPILE_FLAGS
+$C:: $C-LINK
+
+$C-LINK:: LINK_LIBS:=`reduce_deps $LINK_FLAGS`
+$C-LINK:: DEP_LIBS_WC:=$DEP_LIBS_WC
+$C-LINK:: COMPONENT_DIR:=$C
+$C-LINK:: COMPONENT_PART:=LINK
 ifeq (,\$(WITHOUT_DEPS))
-$C:: $DEPS
+$C-LINK:: `test -z "$RDEPS" || echo "$RDEPS " | sed 's: \+:-LINK :g'` $C-OBJECTS
 else
-$C::
+$C-LINK:: $C-OBJECTS
+endif
+	@\$(build-this-component)
+
+$C-OBJECTS:: CXXFLAGS:=\$(CXXFLAGS) $COMPILE_FLAGS
+$C-OBJECTS:: CFLAGS:=\$(CFLAGS) $COMPILE_FLAGS
+$C-OBJECTS:: COMPONENT_DIR:=$C
+$C-OBJECTS:: COMPONENT_PART:=OBJECTS
+$C-OBJECTS:: $C-MKPUBLIC
+	@\$(build-this-component)
+
+$C-MKPUBLIC:: COMPONENT_DIR:=$C
+$C-MKPUBLIC:: COMPONENT_PART:=MKPUBLIC
+ifeq (,\$(WITHOUT_DEPS))
+$C-MKPUBLIC:: `test -z "$RDEPS" || echo "$RDEPS " | sed 's: \+:-MKPUBLIC :g'`
+else
+$C-MKPUBLIC::
 endif
 	@\$(build-this-component)
 

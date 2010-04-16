@@ -7,19 +7,19 @@
 
 /* public header */
 
-#include <boost/shared_ptr.hpp>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <cassert>
 
-#include "Base/ViaPointer.hpp"
-#include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/detail/ElementCompare.hpp"
 
 namespace Commons
 {
 
 /** \brief performs certain checks on collections by comparing each element.
+ *
+ *  this algorithm assumes elements in collection are specified in exactly the
+ *  same order. if this statement does not hold, use ViaUnorderedCollection instead.
  */
 struct ViaCollection
 {

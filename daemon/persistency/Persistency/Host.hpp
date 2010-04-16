@@ -15,7 +15,7 @@
 #include <boost/asio/ip/address.hpp>
 
 #include "Base/NullValue.hpp"
-#include "Base/Threads/Mutex.hpp"
+#include "Base/Threads/ReadWriteMutex.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/ReferenceURL.hpp"
 #include "Persistency/Service.hpp"
@@ -140,14 +140,14 @@ private:
   friend class ::Persistency::IO::Host;
   void setName(const Name &name);
 
-  IP                           ip_;
-  Base::NullValue<Netmask>     mask_;
-  OperatingSystem              os_;
-  Name                         name_;
-  ReferenceURLPtr              url_;
-  ReportedServices             services_;
-  ReportedProcesses            processes_;
-  mutable Base::Threads::Mutex mutex_;
+  IP                                    ip_;
+  Base::NullValue<Netmask>              mask_;
+  OperatingSystem                       os_;
+  Name                                  name_;
+  ReferenceURLPtr                       url_;
+  ReportedServices                      services_;
+  ReportedProcesses                     processes_;
+  mutable Base::Threads::ReadWriteMutex mutex_;
 }; // class Host
 
 

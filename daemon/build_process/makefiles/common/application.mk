@@ -1,6 +1,7 @@
-# note: public_headers are NOT necessary for applications
+# note: public_headers are NOT needed for applications
+
 .PHONY: all
-all:: $(APPLICATION_NAME)
+all:: all-$(COMPONENT_PART)
 
 include $(MAKEFILES_COMMON_BASE_DIR)/lib_app_common.mk
 
@@ -15,3 +16,12 @@ $(APPLICATION_NAME):: $(LIBRARY_NAME) $(MAIN_OBJS) $(LIBS_GEN_DEPS)
 	  $(STRIP) $@ || rm -f "$@" ; \
 	fi
 
+#
+# ALL
+#
+.PHONY: all-MKPUBLIC
+all-MKPUBLIC::
+.PHONY: all-OBJECTS
+all-OBJECTS:: $(LIBRARY_OBJ_DEPS) $(MAIN_OBJS)
+.PHONY: all-LINK
+all-LINK:: $(APPLICATION_NAME)
