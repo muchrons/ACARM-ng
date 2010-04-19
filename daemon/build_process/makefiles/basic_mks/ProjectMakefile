@@ -23,7 +23,7 @@ include $(MAKEFILES_COMMON_BASE_DIR)/main_macros.mk
 # running anything else. this is required not to removed newly-generated
 # dependencies from build's gen.
 ifneq (, $(filter clean, $(MAKECMDGOALS)))
-TMP:=$(shell echo "CLEAN $(PROFILE)_$(TC)_$(MEM_CHECK)" >&2)
+TMP:=$(shell echo "CLEAN `basename $(GEN_WORK_ROOT)`" >&2)
 TMP:=$(shell $(MAKE) $(MFLAGS) clean.implementation)
 TMP:=
 endif
@@ -71,4 +71,4 @@ clean:
 	@true	# this little trick suppresses 'nothing to be done for clean' message
 .PHONY: clean.implementation
 clean.implementation:
-	rm -rf $(GEN_BASE_DIR)/$(PROFILE)_$(TC)_$(MEM_CHECK)
+	rm -rf "$(GEN_WORK_ROOT)"
