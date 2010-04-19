@@ -7,9 +7,9 @@
 
 #include <prelude.h>
 
-
+#include "ParseException.hpp"
 #include "Persistency/Alert.hpp"
-#include "Persistency/Host.hpp"
+#include "Persistency/IPTypes.hpp"
 
 
 namespace Input
@@ -22,6 +22,12 @@ namespace Prelude
 class IDMEFParserSource
 {
 public:
+  /**
+   * @brief IP address
+   */
+  typedef Persistency::IPTypes<IDMEFParserSource>::IP IP;
+
+  // TODO: c-tor should be explicit
   /**
    * @brief c-tor
    * \param ptr idmef_source_t structure to parse
@@ -44,8 +50,12 @@ public:
   const Persistency::ServicePtr getService() const;
 
 private:
-  idmef_source_t *ptr_;
-  boost::shared_ptr<Persistency::Analyzer::IP> ip_;
+  idmef_source_t * isEmpty(idmef_source_t *ptr) const;
+  std::auto_ptr<IP> parseIP(idmef_source_t *ptr) const;
+  Persistency::ProcessPtr parseProcess(idmef_source_t * ptr) const;
+  Persistency::ServicePtr parseService(idmef_source_t * ptr) const;
+
+  std::auto_ptr<IP>       ip_;      // TODO: smart Prt not needed here. see Host::IP typedef for instance
   Persistency::ProcessPtr process_;
   Persistency::ServicePtr service_;
 };//class IDMEFParserSource

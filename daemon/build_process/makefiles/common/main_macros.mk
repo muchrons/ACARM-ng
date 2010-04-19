@@ -2,7 +2,7 @@
 define build-this-component
 
 	# build given component
-	+$(MAKE) $(MFLAGS) -C "$(COMPONENT_DIR)" $(MAKEFLAGS) \
+	+$(MAKE) $(MFLAGS) -C "$(COMPONENT_DIR)" \
 		LINK_LIBS="$(LINK_LIBS)" \
 		DEP_LIBS_WC="$(DEP_LIBS_WC)" \
 		COMPONENT_PART=$(COMPONENT_PART) \

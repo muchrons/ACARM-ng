@@ -183,6 +183,7 @@ void GraphNode::ensureIsNode(void) const
 // TODO: this is a TEMPORARY solution - it must be reworked to use some
 //       sort of distributed algorithm, not to block whole structure
 //       when non-dependent data parts are being operated on.
+//
 SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_additionMutex);
 
 void GraphNode::nonCyclicAddition(GraphNodePtrNN child)

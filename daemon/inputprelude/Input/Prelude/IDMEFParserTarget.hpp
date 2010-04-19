@@ -22,6 +22,7 @@ namespace Prelude
 class IDMEFParserTarget
 {
 public:
+  // TODO: c-tor should be explicit
   /**
    * @brief c-tor
    * \param ptr idmef_target_t structure to parse
@@ -44,10 +45,10 @@ public:
   const Persistency::ServicePtr getService() const;
 
 private:
-  idmef_target_t *ptr_;
-  boost::shared_ptr<Persistency::Analyzer::IP> ip_;
-  Persistency::ProcessPtr process_;
-  Persistency::ServicePtr service_;
+  idmef_target_t                               *ptr_;
+  boost::shared_ptr<Persistency::Analyzer::IP>  ip_;        // TODO: use Base::NullValue<> here
+  Persistency::ProcessPtr                       process_;
+  Persistency::ServicePtr                       service_;
 };//class IDMEFParserTarget
 
 } // namespace Prelude
