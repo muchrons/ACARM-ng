@@ -16,19 +16,13 @@ namespace Prelude
 
 using namespace Persistency;
 
-IDMEFParser::IDMEFParser(idmef_message_t * msg)
+IDMEFParser::IDMEFParser(idmef_message_t * msg):
+  name_(parseName(extractAlert(msg))),
+  ctime_(parseCtime(extractAlert(msg))),
+  analyzers_(parseAnalyzers(extractAlert(msg))),
+  sourceHosts_(parseSources(extractAlert(msg))),
+  targetHosts_(parseTargets(extractAlert(msg)))
 {
-  idmef_alert_t *alert = extractAlert(msg);
-
-  name_=parseName(alert);
-
-  ctime_=parseCtime(alert);
-
-  analyzers_=parseAnalyzers(alert);
-
-  sourceHosts_=parseSources(alert);
-
-  targetHosts_=parseTargets(alert);
 }
 
 idmef_alert_t* IDMEFParser::extractAlert(idmef_message_t *msg) const
@@ -87,7 +81,7 @@ Persistency::Alert::ReportedHosts IDMEFParser::parseTargets(idmef_alert_t *alert
   return rh;
 }
 
-std::auto_ptr<Persistency::Alert::SourceAnalyzers> IDMEFParser::parseAnalyzers(idmef_alert_t *alert) const
+Persistency::Alert::SourceAnalyzers IDMEFParser::parseAnalyzers(idmef_alert_t *alert) const
 {
   idmef_analyzer_t *elem = idmef_alert_get_next_analyzer(alert, NULL);
 
@@ -98,13 +92,13 @@ std::auto_ptr<Persistency::Alert::SourceAnalyzers> IDMEFParser::parseAnalyzers(i
 
   Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
 
-  std::auto_ptr <Alert::SourceAnalyzers> analyzers(new Alert::SourceAnalyzers(ptr));
+  Alert::SourceAnalyzers analyzers(ptr);
 
   while ( (elem = idmef_alert_get_next_analyzer(alert, elem)) )
   {
     const IDMEFParserAnalyzer an2(elem);
     Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
-    analyzers->push_back(ptr);
+    analyzers.push_back(ptr);
   }
 
   return analyzers;
@@ -120,19 +114,19 @@ const Persistency::Timestamp& IDMEFParser::getCreateTime() const
   return ctime_;
 }
 
-Persistency::Alert::SourceAnalyzers IDMEFParser::getAnalyzers() const
+const Persistency::Alert::SourceAnalyzers& IDMEFParser::getAnalyzers() const
 {
-  return *analyzers_;
+  return analyzers_;
 }
 
 const Persistency::Alert::ReportedHosts& IDMEFParser::getSources() const
 {
-  return sourceHosts;
+  return sourceHosts_;
 }
 
 const Persistency::Alert::ReportedHosts& IDMEFParser::getTargets() const
 {
-  return targetHosts;
+  return targetHosts_;
 }
 
 } //namespace Prelude
