@@ -357,7 +357,6 @@ void testObj::test<7>(void)
   t_.commit();
 }
 
-
 // try saving example Target Host
 template<>
 template<>
@@ -530,9 +529,7 @@ void testObj::test<12>(void)
   t_.commit();
 }
 
-
 // try save Process with NULL ReferenceURL
-
 template<>
 template<>
 void testObj::test<13>(void)
@@ -576,7 +573,6 @@ void testObj::test<13>(void)
 
   t_.commit();
 }
-
 
 // try save Process with non-NULL ReferenceURL
 template<>
@@ -681,8 +677,6 @@ void testObj::test<17>(void)
   ensure("reference URL is not NULL", r[0]["id_ref"].is_null() );
 
   t_.commit();
-
-
 }
 
 // try save Meta Alert with NULL reference URL.
@@ -707,7 +701,6 @@ void testObj::test<18>(void)
 }
 
 //test saving two identical Analyzers
-
 template<>
 template<>
 void testObj::test<19>(void)
@@ -741,7 +734,6 @@ template<>
 template<>
 void testObj::test<20>(void)
 {
-
 }
 
 } // namespace tut

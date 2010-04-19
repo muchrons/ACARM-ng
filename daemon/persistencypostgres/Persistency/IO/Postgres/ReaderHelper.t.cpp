@@ -28,6 +28,7 @@ inline pqxx::result execSQL(Transaction &t, const T &sql)
 {
   return t.getAPI<TransactionAPI>().exec(sql);
 } // execSQL()
+
 struct TestClass
 {
 
@@ -44,6 +45,7 @@ struct TestClass
 
   void CreateTempTable()
   {
+    // TODO: 'ON COMMIT DROP'
     execSQL(t_, "CREATE TEMP TABLE tmp"
                 "("
                 "  val1 int         NULL,"
@@ -53,12 +55,12 @@ struct TestClass
                 ");");
   }
 
-  TestDBAccess            tdba_;
-  IDCachePtrNN            idCache_;
-  DBHandlerPtrNN          dbh_;
-  IO::ConnectionPtrNN     conn_;
-  Transaction             t_;
-  Name                    name_;
+  TestDBAccess        tdba_;
+  IDCachePtrNN        idCache_;
+  DBHandlerPtrNN      dbh_;
+  IO::ConnectionPtrNN conn_;
+  Transaction         t_;
+  Name                name_;
 };
 
 
@@ -71,6 +73,7 @@ factory tf("Persistency/IO/Postgres/ReaderHelper");
 namespace tut
 {
 
+// TODO: add proper comment for this test
 // trying ...
 template<>
 template<>
@@ -81,10 +84,11 @@ void testObj::test<1>(void)
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
   ensure("value isn't NULL", ReaderHelper<int, Base::NullValue<int>, int>::readAs(r[0]["val1"]).get() == NULL);
   ensure("value isn't NULL", ReaderHelper<double, Base::NullValue<double>, double>::readAs(r[0]["val2"]).get() == NULL);
-  execSQL(t_, "DROP TABLE tmp;");
+  execSQL(t_, "DROP TABLE tmp;");   // TODO: should be done automatically when comiting/rolbacking transaction
   t_.commit();
 }
 
+// TODO: add proper comment for this test
 // trying ...
 template<>
 template<>
@@ -102,7 +106,12 @@ void testObj::test<2>(void)
   ensure_equals("invalid value", *(ReaderHelper<int, Base::NullValue<int>, int>::readAs(r[0]["val1"]).get() ), val1);
   ensure_equals("invalid value", *ReaderHelper<double, Base::NullValue<double>, double>::readAs(r[0]["val2"]).get(), val2);
   ensure("invalid value", strcmp( ReaderHelper<string, Name>::readAs(r[0]["val4"]).get(), name_.get() ) == 0 );
-
 }
+
+// TODO: test specialization for Timestamp
+
+// TODO: test specialization for IP
+
+// TODO: test specialization for LimitedNULLString
 
 } // namespace tut
