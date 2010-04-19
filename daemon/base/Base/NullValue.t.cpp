@@ -99,4 +99,13 @@ void testObj::test<7>(void)
   TestHelpers::checkEquality(nv1, nv2);
 }
 
+// test for warning when no value is set.
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  NullValue<int> nv2;
+  nv2.get();
+}
+
 } // namespace tut
