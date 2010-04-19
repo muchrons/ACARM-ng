@@ -23,18 +23,16 @@ namespace Prelude
 class IDMEFParserAnalyzer
 {
 public:
-  // TODO: c-tor should be explicit
   /**
    * @brief c-tor
    * \param ptr idmef_analyzer_t structure to parse
    */
-  IDMEFParserAnalyzer(idmef_analyzer_t *ptr);
+  explicit IDMEFParserAnalyzer(idmef_analyzer_t *ptr);
 
-  // TODO: const reference should be returned
   /**
    * @brief gets name of an analyzer
    */
-  Persistency::Analyzer::Name getName() const;
+  const Persistency::Analyzer::Name& getName() const;
 
   /**
    * @brief gets version of an analyzer
@@ -52,15 +50,19 @@ public:
   const Persistency::Analyzer::IP* getIP() const;
 
 private:
-  // TODO: stict to names-in-one-column convention
-  idmef_analyzer_t *ptr_;   // TODO: this member is not needed.
+  // TODO: isEmpty is not a good name here. consider changing it to getNonNull() or simillar.
+  idmef_analyzer_t * isEmpty(idmef_analyzer_t *ptr) const;
+  Persistency::Analyzer::Name parseName(idmef_analyzer_t *ptr) const;
+  // TODO: auto_ptr is over kill here - consider using Base::NullValue<> for this
+  std::auto_ptr<Persistency::Analyzer::Version> parseVersion(idmef_analyzer_t *ptr) const;
+  std::auto_ptr<Persistency::Analyzer::OS> parseOs(idmef_analyzer_t *ptr) const;
+  std::auto_ptr<Persistency::Analyzer::IP> parseIP(idmef_analyzer_t *ptr) const;
 
-  Persistency::Analyzer::Name name_;
-  // TODO: NullValue<> should be used here - i'll port it from Persistency to
-  //       Base component and let you know when done (ticket #258).
-  boost::shared_ptr<Persistency::Analyzer::Version> version_;
-  boost::shared_ptr<Persistency::Analyzer::OS> os_;
-  boost::shared_ptr<Persistency::Analyzer::IP> ip_;
+  Persistency::Analyzer::Name                   name_;
+  // TODO: auto_ptr is over kill here - consider using Base::NullValue<> for this
+  std::auto_ptr<Persistency::Analyzer::Version> version_;
+  std::auto_ptr<Persistency::Analyzer::OS>      os_;
+  std::auto_ptr<Persistency::Analyzer::IP>      ip_;
 }; // class IDMEFParserAnalyzer
 
 } // namespace Prelude

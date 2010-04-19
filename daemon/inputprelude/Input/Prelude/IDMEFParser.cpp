@@ -14,82 +14,92 @@ namespace Input
 namespace Prelude
 {
 
-IDMEFParser::IDMEFParser(idmef_message_t * msg)
-{
-  // TODO: method is too long - split it into small, private methods or calls
-  //       places in cpp's unnamed namespace selction. suggested split goes on.
+using namespace Persistency;
 
-  // TODO: 1st - begin
-  // TODO: check if msg is NULL
+IDMEFParser::IDMEFParser(idmef_message_t * msg):
+  name_(        parseName(      extractAlert(msg) ) ),
+  ctime_(       parseCtime(     extractAlert(msg) ) ),
+  analyzers_(   parseAnalyzers( extractAlert(msg) ) ),
+  sourceHosts_( parseSources(   extractAlert(msg) ) ),
+  targetHosts_( parseTargets(   extractAlert(msg) ) )
+{
+}
+
+idmef_alert_t* IDMEFParser::extractAlert(idmef_message_t *msg) const
+{
+  if(!msg)
+    throw Exception(SYSTEM_SAVE_LOCATION, "Message is null");
   if (idmef_message_get_type(msg)!=IDMEF_MESSAGE_TYPE_ALERT)
     throw Exception(SYSTEM_SAVE_LOCATION, "Heartbeats are not supported");
-  alert_=idmef_message_get_alert(msg);
-  // TODO: 1st - end
+  return idmef_message_get_alert(msg);
+}
 
-  // TODO: 2nd - begin
-  const prelude_string_t *idmef_name = idmef_alert_get_messageid(alert_);
-  name_=(prelude_string_get_string_or_default(idmef_name, "Unknown"));
-  // TODO: 2nd - end
+Persistency::Alert::Name IDMEFParser::parseName(idmef_alert_t *alert) const
+{
+  const prelude_string_t *idmef_name = idmef_alert_get_messageid(alert);
+  return prelude_string_get_string_or_default(idmef_name, "Unknown");
+}
 
-  // TODO: 3rd - begin
-  const idmef_time_t *idmef_time = idmef_alert_get_create_time(alert_);
+Persistency::Timestamp IDMEFParser::parseCtime(idmef_alert_t* alert) const
+{
+  const idmef_time_t *idmef_time = idmef_alert_get_create_time(alert);
   const time_t ctime_t=idmef_time_get_sec(idmef_time);
-  ctime_=Persistency::Timestamp(ctime_t);
-  // TODO: 3rd - end
+  return Persistency::Timestamp(ctime_t);
+}
 
-  // TODO: 4th - begin
-  idmef_analyzer_t *elem = idmef_alert_get_next_analyzer(alert_, NULL);
-
-  if (!elem)
-    throw Exception(SYSTEM_SAVE_LOCATION, "No obligatory field \"Analyzer\" in this Alert!");
-
-  const IDMEFParserAnalyzer an(elem);
-
-  Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
-
-  analyzers_.reset(new Persistency::Alert::SourceAnalyzers(ptr));
-  // TODO: 4th - end
-
-  // TODO: 5th - begin
-  while ( (elem = idmef_alert_get_next_analyzer(alert_, elem)) )
-  {
-    const IDMEFParserAnalyzer an2(elem);
-    Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));  // TODO: LTL (LineTooLong)
-    analyzers_->push_back(ptr);
-  }
-  // TODO: 5th - end
-
-  // TODO: 6th - begin
-  idmef_source_t *src = NULL;
-
-  while ( (src = idmef_alert_get_next_source(alert_, src)) )
+Persistency::Alert::ReportedHosts IDMEFParser::parseSources(idmef_alert_t *alert) const
+{
+  idmef_source_t                    *src = NULL;
+  Persistency::Alert::ReportedHosts  rh;
+  while( (src = idmef_alert_get_next_source(alert, src))!=NULL )
   {
     const IDMEFParserSource sr(src);
-    Persistency::Host::ReportedServices rs;
+    Host::ReportedServices  rs;
     rs.push_back(sr.getService());
-    Persistency::Host::ReportedProcesses rp;
+    Host::ReportedProcesses rp;
     rp.push_back(sr.getProcess());
-    Persistency::HostPtrNN ptr(new Persistency::Host(sr.getAddress(),NULL,NULL,Persistency::ReferenceURLPtr(),rs,rp,NULL)); // TODO: LTL
-    sourceHosts.push_back(ptr);
+    HostPtrNN ptr(new Host(sr.getAddress(),NULL,NULL,ReferenceURLPtr(),rs,rp,NULL));
+    rh.push_back(ptr);
   }
-  // TODO: 6th - end
+  return rh;
+}
 
-  // TODO: 7th - begin
-  idmef_target_t *tar = NULL;
-
-  // TODO: c&p from '6th' - make this code common, parametrized with function
-  //       to call and output collection.
-  while ( (tar = idmef_alert_get_next_target(alert_, tar)) )
+Persistency::Alert::ReportedHosts IDMEFParser::parseTargets(idmef_alert_t *alert) const
+{
+  idmef_target_t                    *tar = NULL;
+  Persistency::Alert::ReportedHosts  rh;
+  while( (tar = idmef_alert_get_next_target(alert, tar))!=NULL )
   {
     const IDMEFParserTarget tr(tar);
-    Persistency::Host::ReportedServices rs;
+    Host::ReportedServices  rs;
     rs.push_back(tr.getService());
-    Persistency::Host::ReportedProcesses rp;
+    Host::ReportedProcesses rp;
     rp.push_back(tr.getProcess());
-    Persistency::HostPtrNN ptr(new Persistency::Host(tr.getAddress(),NULL,NULL,Persistency::ReferenceURLPtr(),rs,rp,NULL)); // TODO: LTL
-    targetHosts.push_back(ptr);
+    HostPtrNN ptr(new Host(tr.getAddress(),NULL,NULL,ReferenceURLPtr(),rs,rp,NULL));
+    rh.push_back(ptr);
   }
-  // TODO: 7th - end
+  return rh;
+}
+
+Persistency::Alert::SourceAnalyzers IDMEFParser::parseAnalyzers(idmef_alert_t *alert) const
+{
+  idmef_analyzer_t *elem = idmef_alert_get_next_analyzer(alert, NULL);
+
+  if(elem==NULL)
+    throw Exception(SYSTEM_SAVE_LOCATION, "No obligatory field \"Analyzer\" in this Alert!");
+
+  const IDMEFParserAnalyzer  an(elem);
+  Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
+  Alert::SourceAnalyzers     analyzers(ptr);
+
+  while( (elem = idmef_alert_get_next_analyzer(alert, elem))!=NULL )
+  {
+    const IDMEFParserAnalyzer  an2(elem);
+    Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
+    analyzers.push_back(ptr);
+  }
+
+  return analyzers;
 }
 
 const Persistency::Alert::Name& IDMEFParser::getName() const
@@ -102,19 +112,19 @@ const Persistency::Timestamp& IDMEFParser::getCreateTime() const
   return ctime_;
 }
 
-Persistency::Alert::SourceAnalyzers IDMEFParser::getAnalyzers() const
+const Persistency::Alert::SourceAnalyzers& IDMEFParser::getAnalyzers() const
 {
-  return *analyzers_;
+  return analyzers_;
 }
 
 const Persistency::Alert::ReportedHosts& IDMEFParser::getSources() const
 {
-  return sourceHosts;
+  return sourceHosts_;
 }
 
 const Persistency::Alert::ReportedHosts& IDMEFParser::getTargets() const
 {
-  return targetHosts;
+  return targetHosts_;
 }
 
 } //namespace Prelude
