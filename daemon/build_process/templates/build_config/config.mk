@@ -18,6 +18,11 @@ export TC:=local
 # enable ccache
 export WITH_CCACHE:=1
 
+# default features set
+export FEATURES:= \
+    ans2 \
+    ft1
+
 # project-specific flags
 export USER_OPT_FLAGS:=-DSOME_PROJECT_SPECIFIC_OPTION
 export USER_DBG_FLAGS:=-DSOME_PROJECT_SPECIFIC_OPTION
