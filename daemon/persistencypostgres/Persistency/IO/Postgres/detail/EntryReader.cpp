@@ -351,14 +351,12 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
 std::vector<DataBaseID> EntryReader::readRoots()
 {
   vector<DataBaseID> roots;
-  execSQL(t_,"SELECT id_node, id_child INTO TEMP TABLE tmp FROM meta_alerts_tree"
+  execSQL(t_,"CREATE TEMP TABLE tmp ON COMMIT DROP AS SELECT id_node, id_child FROM meta_alerts_tree"
              " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);");
 
   const result r = execSQL(t_, "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
                          "SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );");
 
-  // TODO: this should be ensured on transaction level (use 'ON COMMIT DROP' feature).
-  execSQL(t_, "DROP TABLE tmp;");
   for(size_t i=0; i<r.size(); ++i)
   {
     // assert to ensure value is not null
