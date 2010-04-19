@@ -62,7 +62,7 @@ std::auto_ptr<Persistency::Analyzer::OS> IDMEFParserAnalyzer::parseOs(idmef_anal
 
   if (osname!="")
     os.reset(new Persistency::Analyzer::Name(osname));
-  return os;  
+  return os;
 }
 
 std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_analyzer_t *ptr) const

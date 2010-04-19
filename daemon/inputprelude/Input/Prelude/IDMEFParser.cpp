@@ -37,7 +37,7 @@ idmef_alert_t* IDMEFParser::extractAlert(idmef_message_t *msg) const
 Persistency::Alert::Name IDMEFParser::parseName(idmef_alert_t *alert) const
 {
   const prelude_string_t *idmef_name = idmef_alert_get_messageid(alert);
-  return prelude_string_get_string_or_default(idmef_name, "Unknown");  
+  return prelude_string_get_string_or_default(idmef_name, "Unknown");
 }
 
 Persistency::Timestamp IDMEFParser::parseCtime(idmef_alert_t* alert) const

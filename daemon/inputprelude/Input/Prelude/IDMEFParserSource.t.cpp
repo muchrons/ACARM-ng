@@ -39,7 +39,7 @@ struct TestClass
 
     idmef_node_set_address(node,addr,IDMEF_LIST_APPEND);
 
-    prelude_string_t *proc_str;  
+    prelude_string_t *proc_str;
     prelude_string_new_dup(&proc_str,"some process");
     /*
     idmef_process_t *proc;
@@ -99,7 +99,7 @@ void testObj::test<2>(void)
   idmef_source_new_node(source6, &node);
 
   idmef_node_set_address(node,addr,IDMEF_LIST_APPEND);
-  
+
   IDMEFParserSource ips(source6);
   ensure_equals("Address IPv6",ips.getAddress(),Persistency::Analyzer::IP(boost::asio::ip::address_v6::from_string(addrv6)));
 }
@@ -109,7 +109,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  
+
 }
 
 
