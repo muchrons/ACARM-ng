@@ -61,14 +61,18 @@ public:
   const Persistency::Alert::ReportedHosts& getTargets() const;
 
 private:
-  // TODO: please stick to convention of keeping variable names in one column
-  idmef_alert_t *alert_;    // TODO: this member is not needed
-
-  Persistency::Alert::Name name_;
-  Persistency::Timestamp ctime_;
-  boost::scoped_ptr<Persistency::Alert::SourceAnalyzers> analyzers_;    // TODO: smart ptr is not needed here
-  Persistency::Alert::ReportedHosts sourceHosts;
-  Persistency::Alert::ReportedHosts targetHosts;
+  idmef_alert_t *extractAlert(idmef_message_t *msg) const;
+  Persistency::Alert::Name parseName(idmef_alert_t *alert) const;
+  Persistency::Timestamp parseCtime(idmef_alert_t *alert) const;
+  std::auto_ptr<Persistency::Alert::SourceAnalyzers> parseAnalyzers(idmef_alert_t *alert) const;
+  Persistency::Alert::ReportedHosts parseSources(idmef_alert_t *alert) const;
+  Persistency::Alert::ReportedHosts parseTargets(idmef_alert_t *alert) const;
+    
+  Persistency::Alert::Name                           name_;
+  Persistency::Timestamp                             ctime_;
+  std::auto_ptr<Persistency::Alert::SourceAnalyzers> analyzers_;    // TODO: smart ptr is not needed here - Actually it is needed due to the fact that S.A. lacks default c-tor
+  Persistency::Alert::ReportedHosts                  sourceHosts;
+  Persistency::Alert::ReportedHosts                  targetHosts;
 }; //class IDMEFParser
 
 } // namespace Prelude
