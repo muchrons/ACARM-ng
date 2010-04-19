@@ -11,6 +11,10 @@ namespace Input
 namespace Prelude
 {
 
+using boost::asio::ip::address_v4;
+using boost::asio::ip::address_v6;
+using Persistency::Analyzer;
+
 IDMEFParserTarget::IDMEFParserTarget(idmef_target_t *ptr):ptr_(ptr)
 {
   if (!ptr)
@@ -55,11 +59,30 @@ IDMEFParserTarget::IDMEFParserTarget(idmef_target_t *ptr):ptr_(ptr)
     {
       idmef_address_t *idmef_node_addr = idmef_node_get_next_address(idmef_node, NULL);
       if (idmef_node_addr)
-  {
-    const prelude_string_t *idmef_node_address = idmef_address_get_address(idmef_node_addr);
-    if (idmef_node_address)
-      ip_.reset(new Persistency::Analyzer::IP(boost::asio::ip::address_v6::from_string(prelude_string_get_string(idmef_node_address))));
-  }
+        {
+          const prelude_string_t *idmef_node_address = idmef_address_get_address(idmef_node_addr);
+          if (idmef_node_address)
+            {
+              const char * tmp=prelude_string_get_string(idmef_node_address);
+              switch (idmef_address_get_category(idmef_node_addr))
+                {
+                case IDMEF_ADDRESS_CATEGORY_IPV4_ADDR:
+                case IDMEF_ADDRESS_CATEGORY_IPV4_ADDR_HEX:
+                case IDMEF_ADDRESS_CATEGORY_IPV4_NET:
+                case IDMEF_ADDRESS_CATEGORY_IPV4_NET_MASK:
+                  ip_.reset(new Analyzer::IP(address_v4::from_string(tmp)));
+                  break;
+                case IDMEF_ADDRESS_CATEGORY_IPV6_ADDR:
+                case IDMEF_ADDRESS_CATEGORY_IPV6_ADDR_HEX:
+                case IDMEF_ADDRESS_CATEGORY_IPV6_NET:
+                case IDMEF_ADDRESS_CATEGORY_IPV6_NET_MASK:
+                  ip_.reset(new Analyzer::IP(address_v4::from_string(tmp)));
+                  break;
+                default:
+                  break;
+                }
+            }
+        }
     }
 
   idmef_service_t *idmef_service = idmef_target_get_service(ptr);
@@ -67,18 +90,18 @@ IDMEFParserTarget::IDMEFParserTarget(idmef_target_t *ptr):ptr_(ptr)
     {
       prelude_string_t *idmef_service_name = idmef_service_get_name(idmef_service);
       if (idmef_service_name)
-  {
-    Persistency::Service::Name name=prelude_string_get_string(idmef_service_name);
-    Persistency::Service::Protocol protocol;
+        {
+          Persistency::Service::Name name=prelude_string_get_string(idmef_service_name);
+          Persistency::Service::Protocol protocol;
 
-    prelude_string_t *idmef_protocol_str = idmef_service_get_iana_protocol_name(idmef_service);
-    if (idmef_protocol_str)
-      protocol=prelude_string_get_string(idmef_protocol_str);
+          prelude_string_t *idmef_protocol_str = idmef_service_get_iana_protocol_name(idmef_service);
+          if (idmef_protocol_str)
+            protocol=prelude_string_get_string(idmef_protocol_str);
 
-    uint16_t *idmef_port = idmef_service_get_port(idmef_service);
+          uint16_t *idmef_port = idmef_service_get_port(idmef_service);
 
-    service_.reset(new Persistency::Service(name,*idmef_port,protocol,Persistency::ReferenceURLPtr()));
-  }
+          service_.reset(new Persistency::Service(name,*idmef_port,protocol,Persistency::ReferenceURLPtr()));
+        }
     }
 }
 
