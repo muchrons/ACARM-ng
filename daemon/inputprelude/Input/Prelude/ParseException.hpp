@@ -14,6 +14,7 @@ namespace Input
 namespace Prelude
 {
 
+// TODO: stick to the naming convention for exceptions: 'ExceptionBlaBlaBla', ex. ExceptionUnableToParseIDMEF
 /** \brief parse exception
  */
 class ParseException: public Input::Exception
@@ -25,7 +26,8 @@ public:
    */
   template<typename T>
   ParseException(const Location &where, const T &msg):
-    Input::Exception(where, std::string("Parse Exception: ") + msg)
+  // TODO: notice that there is cc() set of methods for concatenating elements in strings.
+    Input::Exception(where, std::string("parse exception: ") + msg)
   {
   }
 }; // class Exception
