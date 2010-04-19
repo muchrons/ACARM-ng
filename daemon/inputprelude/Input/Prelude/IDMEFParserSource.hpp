@@ -22,7 +22,9 @@ namespace Prelude
 class IDMEFParserSource
 {
 public:
-  //IP address
+  /**
+   * @brief IP address
+   */
   typedef Persistency::IPTypes<IDMEFParserSource>::IP IP;
 
   /**
