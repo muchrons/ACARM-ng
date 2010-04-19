@@ -27,6 +27,7 @@ public:
    */
   typedef Persistency::IPTypes<IDMEFParserSource>::IP IP;
 
+  // TODO: c-tor should be explicit
   /**
    * @brief c-tor
    * \param ptr idmef_source_t structure to parse
@@ -54,9 +55,9 @@ private:
   Persistency::ProcessPtr parseProcess(idmef_source_t * ptr) const;
   Persistency::ServicePtr parseService(idmef_source_t * ptr) const;
 
-  std::auto_ptr<IP>  ip_;
-  Persistency::ProcessPtr                                     process_;
-  Persistency::ServicePtr                                     service_;
+  std::auto_ptr<IP>       ip_;      // TODO: smart Prt not needed here. see Host::IP typedef for instance
+  Persistency::ProcessPtr process_;
+  Persistency::ServicePtr service_;
 };//class IDMEFParserSource
 
 } // namespace Prelude

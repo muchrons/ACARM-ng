@@ -64,11 +64,11 @@ private:
   Persistency::Alert::ReportedHosts parseSources(idmef_alert_t *alert) const;
   Persistency::Alert::ReportedHosts parseTargets(idmef_alert_t *alert) const;
 
-  Persistency::Alert::Name                           name_;
-  Persistency::Timestamp                             ctime_;
-  Persistency::Alert::SourceAnalyzers                analyzers_;
-  Persistency::Alert::ReportedHosts                  sourceHosts_;
-  Persistency::Alert::ReportedHosts                  targetHosts_;
+  Persistency::Alert::Name            name_;
+  Persistency::Timestamp              ctime_;
+  Persistency::Alert::SourceAnalyzers analyzers_;
+  Persistency::Alert::ReportedHosts   sourceHosts_;
+  Persistency::Alert::ReportedHosts   targetHosts_;
 }; //class IDMEFParser
 
 } // namespace Prelude

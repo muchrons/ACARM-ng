@@ -2,6 +2,7 @@
  * IDMEFParserSource.cpp
  *
  */
+// TODO: use full include paths
 #include "ParseException.hpp"
 #include "IDMEFParserSource.hpp"
 #include "Persistency/Process.hpp"
@@ -31,6 +32,8 @@ idmef_source_t * IDMEFParserSource::isEmpty(idmef_source_t *ptr) const
 
 std::auto_ptr<IDMEFParserSource::IP> IDMEFParserSource::parseIP(idmef_source_t *ptr) const
 {
+  // TODO: c&p from IDMEFParserAnalyzer::parseIP - make this a common code
+
   std::auto_ptr<IP> ip;
   idmef_node_t *idmef_node = idmef_source_get_node(ptr);
 
@@ -69,6 +72,9 @@ std::auto_ptr<IDMEFParserSource::IP> IDMEFParserSource::parseIP(idmef_source_t *
 
 Persistency::ProcessPtr IDMEFParserSource::parseProcess(idmef_source_t * ptr) const
 {
+  // TODO: keep brackets in the same line as if/for/while/switch/etc
+
+  // TODO: what if username is NULL?
   Persistency::Process::Username username;
 
   idmef_user_t *idmef_user = idmef_source_get_user(ptr);
@@ -83,10 +89,12 @@ Persistency::ProcessPtr IDMEFParserSource::parseProcess(idmef_source_t * ptr) co
         }
     }
 
+  // TODO: what if process is NULL?
   Persistency::ProcessPtr process;
   idmef_process_t *idmef_process = idmef_source_get_process(ptr);
   if (idmef_process)
     {
+      // TODO: what is path is NULL?
       Persistency::Process::Path path;
       const prelude_string_t *idmef_path_str = idmef_process_get_path(idmef_process);
 
@@ -107,6 +115,8 @@ Persistency::ProcessPtr IDMEFParserSource::parseProcess(idmef_source_t * ptr) co
 
 Persistency::ServicePtr IDMEFParserSource::parseService(idmef_source_t * ptr) const
 {
+  // TODO: keep brackets in the same line as if/for/while/switch/etc
+
   Persistency::ServicePtr service;
   idmef_service_t *idmef_service = idmef_source_get_service(ptr);
   if (idmef_service)
@@ -115,6 +125,7 @@ Persistency::ServicePtr IDMEFParserSource::parseService(idmef_source_t * ptr) co
       if (idmef_service_name)
         {
           const Persistency::Service::Name name=prelude_string_get_string(idmef_service_name);
+          // TODO: what if protocol is NULL?
           Persistency::Service::Protocol protocol;
 
           const prelude_string_t *idmef_protocol_str = idmef_service_get_iana_protocol_name(idmef_service);
@@ -123,6 +134,8 @@ Persistency::ServicePtr IDMEFParserSource::parseService(idmef_source_t * ptr) co
 
           const uint16_t *idmef_port = idmef_service_get_port(idmef_service);
 
+          // TODO: segv. when idmef_port is NULL
+          // NOTE: read idmef_service_get_port() doc and use 'if' or 'assert' statement, according to needs.
           service.reset(new Persistency::Service(name,*idmef_port,protocol,Persistency::ReferenceURLPtr()));
         }
     }
@@ -131,6 +144,7 @@ Persistency::ServicePtr IDMEFParserSource::parseService(idmef_source_t * ptr) co
 
 Persistency::Analyzer::IP IDMEFParserSource::getAddress() const
 {
+  // TODO: segv. when ip_==NULL
   return *ip_;
 }
 

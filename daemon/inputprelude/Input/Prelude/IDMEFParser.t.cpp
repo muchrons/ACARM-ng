@@ -47,6 +47,7 @@ struct TestClass
     prelude_string_t *ps_osversion;
     prelude_string_t *ps_address;
 
+    // TODO: these should be const variables
     std::string name("The Analyzer of Luke Skywaker");
     std::string ostype("Wojtek linux");
     std::string osversion("2.6.129 gr-sec");
@@ -104,7 +105,7 @@ factory tf("Input/Prelude/IDMEFParser");
 namespace tut
 {
 
-  // check if alert name is extracted properly
+// check if alert name is extracted properly
 template<>
 template<>
 void testObj::test<1>(void)
@@ -112,6 +113,7 @@ void testObj::test<1>(void)
   // TODO: this should be const (thatnks to this you'd test if method
   //       is const as well)
   const IDMEFParser ip(getMessage());
+  // TODO: use ensure_equals for string somparison
   ensure(ip.getName()==Persistency::Alert::Name(getName()));
 }
 

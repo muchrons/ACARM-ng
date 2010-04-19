@@ -72,14 +72,17 @@ factory tf("Input/Prelude/IDMEFParserSource");
 
 namespace tut
 {
+
+// TODO: add test case name
 template<>
 template<>
 void testObj::test<1>(void)
 {
   IDMEFParserSource ips(getSource());
-  ensure_equals("Address IPv4",ips.getAddress(),Persistency::Analyzer::IP(boost::asio::ip::address_v4::from_string("192.168.55.54")));
+  ensure_equals("Address IPv4",ips.getAddress(),Persistency::Analyzer::IP(boost::asio::ip::address_v4::from_string("192.168.55.54")));  // TODO: LTL
 }
 
+// TODO: add test case name
 template<>
 template<>
 void testObj::test<2>(void)
@@ -101,15 +104,15 @@ void testObj::test<2>(void)
   idmef_node_set_address(node,addr,IDMEF_LIST_APPEND);
 
   IDMEFParserSource ips(source6);
-  ensure_equals("Address IPv6",ips.getAddress(),Persistency::Analyzer::IP(boost::asio::ip::address_v6::from_string(addrv6)));
+  ensure_equals("Address IPv6",ips.getAddress(),Persistency::Analyzer::IP(boost::asio::ip::address_v6::from_string(addrv6)));   // TODO: LTL
 }
 
-
+// TODO: add test case name
 template<>
 template<>
 void testObj::test<3>(void)
 {
-
+  // TODO
 }
 
 

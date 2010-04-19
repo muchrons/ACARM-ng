@@ -2,6 +2,7 @@
  * IDMEFParserAnalyzer.cpp
  *
  */
+// TODO: use full paths for including headers
 #include "ParseException.hpp"
 #include "IDMEFParserAnalyzer.hpp"
 
@@ -24,7 +25,7 @@ IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):
 
 idmef_analyzer_t * IDMEFParserAnalyzer::isEmpty(idmef_analyzer_t *ptr) const
 {
-  if (!ptr)
+  if(ptr==NULL)
     throw ParseException(SYSTEM_SAVE_LOCATION, "Idmef Analyzer is empty.");
   return ptr;
 }
@@ -39,6 +40,7 @@ std::auto_ptr<Persistency::Analyzer::Version> IDMEFParserAnalyzer::parseVersion(
 {
   std::auto_ptr<Persistency::Analyzer::Version> ver;
   const prelude_string_t *idmef_version = idmef_analyzer_get_version(ptr );
+  // TODO: use explicit comparison with NULL - it more readable
   if (idmef_version)
     ver.reset(new Persistency::Analyzer::Version(prelude_string_get_string(idmef_version)));
   return ver;
@@ -53,9 +55,11 @@ std::auto_ptr<Persistency::Analyzer::OS> IDMEFParserAnalyzer::parseOs(idmef_anal
 
   std::string osname="";
 
+  // TODO: use explicit comparison with NULL - it more readable
   if (idmef_ostype)
     osname=std::string(prelude_string_get_string_or_default(idmef_ostype, ""));
 
+  // TODO: use explicit comparison with NULL - it more readable
   if (idmef_osversion)
     osname+=std::string(prelude_string_get_string_or_default(idmef_osversion, ""));
   //final os version is a concatenation of the two
@@ -70,12 +74,17 @@ std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_anal
   std::auto_ptr<Persistency::Analyzer::IP> ip;
   idmef_node_t *idmef_node = idmef_analyzer_get_node(ptr);
 
+  // TODO: avoid nested ifs - use if(!cond) { return error } instead.
+
+  // TODO: use explicit comparison with NULL - it more readable
   if (idmef_node)
   {
     idmef_address_t *idmef_node_addr = idmef_node_get_next_address(idmef_node, NULL);
+    // TODO: use explicit comparison with NULL - it more readable
     if (idmef_node_addr)
     {
       const prelude_string_t *idmef_node_address = idmef_address_get_address(idmef_node_addr);
+      // TODO: use explicit comparison with NULL - it more readable
       if (idmef_node_address)
       {
         const char * tmp=prelude_string_get_string(idmef_node_address);
