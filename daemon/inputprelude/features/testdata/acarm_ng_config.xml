@@ -22,8 +22,8 @@
 
   <inputs>
     <prelude>
-      <preludeProfile>adadprofile</preludeProfile>
-      <preludeConfig>/etc/prelude/default/client.conf</preludeConfig>
+      <profile>profile</profile>
+      <config>/etc/prelude/default/client.conf</config>
     </prelude>
   </inputs>
 

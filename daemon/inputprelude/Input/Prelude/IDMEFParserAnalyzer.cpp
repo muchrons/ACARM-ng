@@ -61,7 +61,7 @@ std::auto_ptr<Persistency::Analyzer::OS> IDMEFParserAnalyzer::parseOs(idmef_anal
   //final os version is a concatenation of the two
 
   if (osname!="")
-    os.reset(new Persistency::Analyzer::Name(osname));
+    os.reset(new Persistency::Analyzer::OS(osname));
   return os;
 }
 
@@ -93,7 +93,7 @@ std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_anal
           case IDMEF_ADDRESS_CATEGORY_IPV6_NET_MASK:
             ip.reset(new Analyzer::IP(address_v6::from_string(tmp)));
             break;
-          default:
+          default:            
             assert(!"Unknown type of IP address, skipping...");
             break;
         }

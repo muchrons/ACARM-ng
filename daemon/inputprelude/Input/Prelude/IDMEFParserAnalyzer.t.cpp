@@ -21,14 +21,19 @@ namespace
 
 struct TestClass
 {
-  // TODO: keep members' initialization in saparate lines
-  TestClass():name_("The Analyzer of Luke Skywaker"),ostype_("Wojtek linux"),osversion_("2.6.129 gr-sec"),address_("156.117.92.22")
+  TestClass():
+    name_("The Analyzer of Luke Skywaker"),
+    ostype_("Wojtek linux"),
+    osversion_("2.6.129 gr-sec"),
+    address_("156.117.92.22")
   {
     if (idmef_analyzer_new(&analyzer_)<0)
       tut::fail("Unable to create analyzer obcject.");
 
-    // TODO: keep one declaration per line.
-    prelude_string_t *ps_name,*ps_ostype,*ps_osversion,*ps_address;
+    prelude_string_t *ps_name;
+    prelude_string_t *ps_ostype;
+    prelude_string_t *ps_osversion;
+    prelude_string_t *ps_address;
 
     prelude_string_new_dup(&ps_name,name_.c_str());
     prelude_string_new_dup(&ps_ostype,ostype_.c_str());
@@ -45,6 +50,7 @@ struct TestClass
 
     idmef_node_new_address(node,&addr,IDMEF_LIST_APPEND);
     idmef_address_set_address(addr,ps_address);
+    idmef_address_set_category(addr,IDMEF_ADDRESS_CATEGORY_IPV4_ADDR);
   }
 
   ~TestClass()
@@ -52,7 +58,6 @@ struct TestClass
     idmef_analyzer_destroy(analyzer_);
   }
 
-  // TODO: you may skip hermetization in tests
   idmef_analyzer_t * getAnalyzer()
   {
     return analyzer_;
@@ -60,8 +65,10 @@ struct TestClass
 
 protected:
   idmef_analyzer_t *analyzer_;
-  // TODO: keep one declaration per line.
-  std::string name_,ostype_,osversion_,address_;
+  std::string name_;
+  std::string ostype_;
+  std::string osversion_;
+  std::string address_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -74,28 +81,23 @@ factory tf("Input/Prelude/IDMEFParserAnalyzer");
 namespace tut
 {
 
-// TODO: test case's description's missing
+// Name extraction from Analyzer
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  // TODO
   IDMEFParserAnalyzer an(getAnalyzer());
-  /*
   ensure(an.getName()==Persistency::Analyzer::Name(name_));
-  */
 }
 
-// TODO: test case's description's missing
+// OS extraction test
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  // TODO
-  /*
   IDMEFParserAnalyzer an(getAnalyzer());
-  ensure(*(an.getOS())==Persistency::Analyzer::OS(ostype_));
-   */
+  std::cerr << *an.getOS() << ' ' << std::endl;
+  //ensure_equals("asd",*an.getOS(),Persistency::Analyzer::OS(ostype_));
 }
 
 // TODO: test passing NULL pointer
