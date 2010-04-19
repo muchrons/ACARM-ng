@@ -114,9 +114,18 @@ GraphNodePtrNN makeNewLeaf(void)
   return graphNode;
 }
 
+GraphNodePtrNN makeNewLeaf(const char *name)
+{
+  Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
+  IO::Transaction t( conn->createNewTransaction("make_leaf_transaction") );
+  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewAlert(name), conn, t) );
+  t.commit();
+  return graphNode;
+}
+
 GraphNodePtrNN makeNewNode(void)
 {
-  return makeNewNode( makeNewLeaf(), makeNewLeaf() );
+  return makeNewNode( makeNewLeaf("some name 1"), makeNewLeaf("some name 2"), "another meta alert name");
 }
 
 GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
@@ -124,7 +133,18 @@ GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
   Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
   IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
   const Persistency::NodeChildrenVector ncv(child1, child2);
-  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewMetaAlert(),
+  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewMetaAlert("bla"),
+                                                     conn, t, ncv) );
+  t.commit();
+  return graphNode;
+}
+
+GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2, const char *name)
+{
+  Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
+  IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
+  const Persistency::NodeChildrenVector ncv(child1, child2);
+  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewMetaAlert(name),
                                                      conn, t, ncv) );
   t.commit();
   return graphNode;
@@ -134,7 +154,7 @@ GraphNodePtrNN makeNewTree1(void)
 {
   return makeNewNode( makeNewNode(),
                       makeNewNode(
-                         makeNewNode(), makeNewLeaf() ) );
+                         makeNewNode(), makeNewLeaf("some name 3"), "meta alert name"), "other meta alert name" );
 }
 
 GraphNodePtrNN makeNewTree2(void)
