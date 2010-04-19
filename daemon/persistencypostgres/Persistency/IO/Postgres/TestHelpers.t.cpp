@@ -105,6 +105,7 @@ ReferenceURLPtr makeNewReferenceURL(const char *url)
   return ReferenceURLPtr( new Persistency::ReferenceURL("some name", url) );
 }
 
+// TODO: make this and makeNewLeaf(const char*) single function with default paramter.
 GraphNodePtrNN makeNewLeaf(void)
 {
   Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
@@ -114,6 +115,7 @@ GraphNodePtrNN makeNewLeaf(void)
   return graphNode;
 }
 
+// TODO: function not declared in header
 GraphNodePtrNN makeNewLeaf(const char *name)
 {
   Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );

@@ -95,7 +95,7 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
   MetaAlertPtrNN malert( new Persistency::MetaAlert( ReaderHelper<string>::fromSQLResult(r[0]["name"]),
                                           ReaderHelper<double>::fromSQLResult(r[0]["severity_delta"]),
                                           ReaderHelper<double>::fromSQLResult(r[0]["certanity_delta"]),
-                                          getReferenceURL( ReaderHelper<DataBaseID, Base::NullValue<DataBaseID> ,DataBaseID>::readAs(r[0]["id_ref"]).get() ),
+                                          getReferenceURL( ReaderHelper<DataBaseID, Base::NullValue<DataBaseID> ,DataBaseID>::readAs(r[0]["id_ref"]).get() ),   // TODO: LTL
                                           timestampFromString( ReaderHelper<string>::fromSQLResult(r[0]["create_time"]) )) );
   return malert;
 }
@@ -137,6 +137,7 @@ Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::strin
   Alert::ReportedHosts hosts;
   for(size_t i=0; i<r.size(); ++i)
   {
+    // TODO: use ReaderHelper for this for this
     DataBaseID idRefURL;
     r[i]["id_ref"].to(idRefURL);
     hosts.push_back(getHost( ReaderHelper<DataBaseID>::fromSQLResult(r[i]["id_host"]),
@@ -216,8 +217,8 @@ Persistency::ServicePtrNN EntryReader::getService(DataBaseID servID, DataBaseID 
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
   Persistency::ServicePtrNN service(new Persistency::Service(ReaderHelper<string>::fromSQLResult(r[0]["name"]),
                                                              ReaderHelper<DataBaseID>::fromSQLResult(r[0]["port"]),
-                                                             ReaderHelper<string, Persistency::Service::Protocol>::readAs(r[0]["protocol"]),
-                                                           getReferenceURL( refID )));
+                                                             ReaderHelper<string, Persistency::Service::Protocol>::readAs(r[0]["protocol"]), // TODO: LTL
+                                                             getReferenceURL( refID )));
   return service;
 }
 
@@ -245,6 +246,7 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
   const result rr = execSQL(t_, sr);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
+  // TODO: use ReaderHerlper here.
   string arguments;
   rr[0]["arguments"].to(arguments);
 

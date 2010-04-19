@@ -14,6 +14,7 @@
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/detail/LimitedNULLString.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
+
 namespace Persistency
 {
 namespace IO
@@ -65,6 +66,8 @@ template<uint16_t N>
 template<typename T1, typename T3>
 struct ReaderHelper< T1, Persistency::detail::LimitedNULLString<N>, T3>
 {
+  // TODO: rename this method to readAs() - when this specialization will be used,
+  //       no other specialization will be present any way.
   /** \brief check if SQL query is null, if not return proper value
    *  \param r SQL result field
    */
