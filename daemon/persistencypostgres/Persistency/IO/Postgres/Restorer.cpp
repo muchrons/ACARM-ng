@@ -52,8 +52,7 @@ TreePtr Restorer::getNode(DataBaseID id )
   if(treeNodes_.count(id) > 0)
     return treeNodes_.find(id)->second;
   else
-    // TODO: use typedef for this
-    return boost::shared_ptr<Tree>();
+    return TreePtr();
 }
 
 GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                                      id,
@@ -62,9 +61,7 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
                                          IO::ConnectionPtrNN                             connStubIO,
                                          IO::Transaction                                &tStubIO)
 {
-  // TODO: in this context node can be NULL - either switch to not-null ptr type
-  //       or add proper runtime check.
-  TreePtr node = getNode(id);
+  TreePtrNN node = getNode(id);
   // check if there are no children (i.e. is leaf)
   if( node->getChildrenNumber() == 0 )
   {
@@ -85,6 +82,8 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   }
   // TODO: this cannot be assert - it has to be runtime-check, since invalid
   //       data may appear in data base for some reason.
+  // if(tmpNode.size() < 2)
+  //   throw ExceptionBadNumberOfNodeChildren(SYSTEM_SAVE_LOCATION, ... );
   assert(tmpNodes.size() >= 2);
   NodeChildrenVector vec(tmpNodes[0], tmpNodes[1]);
   for(size_t i = 2; i<tmpNodes.size(); ++i)
@@ -117,6 +116,7 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
   const Tree::IDsVector &roots = er.readRoots();
   for(Tree::IDsVector::const_iterator it = roots.begin(); it != roots.end(); ++it)
     out.push_back(deepFirstSearch(*it, out, er, connStubIO, tStubIO));
+  //TODO: try - catch
 }
 
 template<typename T>

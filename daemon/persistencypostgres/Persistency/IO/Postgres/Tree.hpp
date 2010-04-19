@@ -7,6 +7,7 @@
 
 #include <vector>
 
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 
 namespace Persistency
@@ -51,6 +52,8 @@ private:
 /** \brief shared pointer to Tree instance. */
 typedef boost::shared_ptr<Tree> TreePtr;
 
+/** \brief shared pointer to Tree instance, checked not to be NULL. */
+typedef Commons::SharedPtrNotNULL<Tree> TreePtrNN;
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency
