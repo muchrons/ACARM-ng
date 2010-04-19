@@ -22,7 +22,7 @@ class ExceptionNoEntries: public Exception
 public:
   /** \brief create execption with given message.
    *  \param where place where exception has been rised
-   *  \param name  SQL query.
+   *  \param query  SQL query.
    */
   ExceptionNoEntries(const Location &where, const std::string &query):
     Exception(where, std::string("given query returns no entries: ") + query )
