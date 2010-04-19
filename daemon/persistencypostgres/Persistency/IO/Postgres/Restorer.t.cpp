@@ -61,6 +61,7 @@ void testObj::test<1>(void)
   // check if restored meta alerts exist in cache
   for(std::vector<GraphNodePtrNN>::iterator it = out.begin(); it !=out.end(); ++it)
     ensure("meta alert shoud be in cache", idCache_->has( (*it)->getMetaAlert()) );
+
   // TODO: check if readed data (alerts and meta alerts) are the same
   //       as writed before
   //       there should be test which writes differents alerts, meta alerts to the data base
