@@ -2,6 +2,7 @@
  * IDMEFParserAnalyzer.cpp
  *
  */
+// TODO: use full paths for including headers
 #include "ParseException.hpp"
 #include "IDMEFParserAnalyzer.hpp"
 
@@ -24,7 +25,7 @@ IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):
 
 idmef_analyzer_t * IDMEFParserAnalyzer::isEmpty(idmef_analyzer_t *ptr) const
 {
-  if (!ptr)
+  if(ptr==NULL)
     throw ParseException(SYSTEM_SAVE_LOCATION, "Idmef Analyzer is empty.");
   return ptr;
 }

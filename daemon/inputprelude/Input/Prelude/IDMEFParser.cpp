@@ -17,11 +17,11 @@ namespace Prelude
 using namespace Persistency;
 
 IDMEFParser::IDMEFParser(idmef_message_t * msg):
-  name_(parseName(extractAlert(msg))),
-  ctime_(parseCtime(extractAlert(msg))),
-  analyzers_(parseAnalyzers(extractAlert(msg))),
-  sourceHosts_(parseSources(extractAlert(msg))),
-  targetHosts_(parseTargets(extractAlert(msg)))
+  name_(        parseName(      extractAlert(msg) ) ),
+  ctime_(       parseCtime(     extractAlert(msg) ) ),
+  analyzers_(   parseAnalyzers( extractAlert(msg) ) ),
+  sourceHosts_( parseSources(   extractAlert(msg) ) ),
+  targetHosts_( parseTargets(   extractAlert(msg) ) )
 {
 }
 
@@ -49,12 +49,12 @@ Persistency::Timestamp IDMEFParser::parseCtime(idmef_alert_t* alert) const
 
 Persistency::Alert::ReportedHosts IDMEFParser::parseSources(idmef_alert_t *alert) const
 {
-  idmef_source_t *src = NULL;
-  Persistency::Alert::ReportedHosts rh;
-  while ( (src = idmef_alert_get_next_source(alert, src)) )
-    {
+  idmef_source_t                    *src = NULL;
+  Persistency::Alert::ReportedHosts  rh;
+  while( (src = idmef_alert_get_next_source(alert, src))!=NULL )
+  {
     const IDMEFParserSource sr(src);
-    Host::ReportedServices rs;
+    Host::ReportedServices  rs;
     rs.push_back(sr.getService());
     Host::ReportedProcesses rp;
     rp.push_back(sr.getProcess());
@@ -66,12 +66,12 @@ Persistency::Alert::ReportedHosts IDMEFParser::parseSources(idmef_alert_t *alert
 
 Persistency::Alert::ReportedHosts IDMEFParser::parseTargets(idmef_alert_t *alert) const
 {
-  idmef_target_t *tar = NULL;
-  Persistency::Alert::ReportedHosts rh;
-  while ( (tar = idmef_alert_get_next_target(alert, tar)) )
-    {
+  idmef_target_t                    *tar = NULL;
+  Persistency::Alert::ReportedHosts  rh;
+  while( (tar = idmef_alert_get_next_target(alert, tar))!=NULL )
+  {
     const IDMEFParserTarget tr(tar);
-    Host::ReportedServices rs;
+    Host::ReportedServices  rs;
     rs.push_back(tr.getService());
     Host::ReportedProcesses rp;
     rp.push_back(tr.getProcess());
@@ -85,18 +85,16 @@ Persistency::Alert::SourceAnalyzers IDMEFParser::parseAnalyzers(idmef_alert_t *a
 {
   idmef_analyzer_t *elem = idmef_alert_get_next_analyzer(alert, NULL);
 
-  if (!elem)
+  if(elem==NULL)
     throw Exception(SYSTEM_SAVE_LOCATION, "No obligatory field \"Analyzer\" in this Alert!");
 
-  const IDMEFParserAnalyzer an(elem);
-
+  const IDMEFParserAnalyzer  an(elem);
   Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
+  Alert::SourceAnalyzers     analyzers(ptr);
 
-  Alert::SourceAnalyzers analyzers(ptr);
-
-  while ( (elem = idmef_alert_get_next_analyzer(alert, elem)) )
+  while( (elem = idmef_alert_get_next_analyzer(alert, elem))!=NULL )
   {
-    const IDMEFParserAnalyzer an2(elem);
+    const IDMEFParserAnalyzer  an2(elem);
     Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
     analyzers.push_back(ptr);
   }
