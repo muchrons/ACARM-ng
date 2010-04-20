@@ -7,7 +7,7 @@
 
 /* public header */
 
-#include <boost/share_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
 

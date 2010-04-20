@@ -6,20 +6,12 @@
 
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/detail/NonCyclicAdder.hpp"
+#include "Persistency/detail/NonCyclicAdder/LockOnWrite_InternalImplementation.hpp"
 
 namespace Persistency
 {
 namespace detail
 {
-
-/** \brief helper object fotr implementeation. not used here.
- */
-class NonCyclicAdder::InternalImplementation
-{
-public:
-  // TODO
-}; // class NonCyclicAdder
-
 
 NonCyclicAdder::NonCyclicAdder(void):
   data_(new InternalImplementation)
@@ -33,10 +25,10 @@ NonCyclicAdder::~NonCyclicAdder(void)
   // NOTE: this generates valid d-tor for PImpl'ed class.
 }
 
-void NonCyclicAdder::addChildImpl(const GraphNode * /*parent*/, GraphNodePtrNN child)
+void NonCyclicAdder::addChildImpl(const GraphNode *parent, GraphNodePtrNN child)
 {
   assert( data_.get()!=NULL );
-  //assert( parent!=NULL );
+  assert( parent!=NULL );
   // TODO
 
   // if there is no cycle, add new child
