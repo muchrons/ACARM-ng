@@ -273,7 +273,7 @@ void testObj::test<14>(void)
   try
   {
     node_->addChild(child, *makeIO(node_) );
-    fail("addChild() didn't failed for 1-stop-long cycle");
+    fail("addChild() didn't failed for 1-step-long cycle");
   }
   catch(const ExceptionCycleDetected&)
   {
