@@ -5,9 +5,10 @@
 #include <exception>
 #include <cassert>
 
-#include "Persistency/GraphNode.hpp"
 #include "Commons/ViaCollection.hpp"
 #include "Logger/Logger.hpp"
+#include "Persistency/GraphNode.hpp"
+#include "Persistency/detail/InternalAccessProxy.hpp"
 #include "Persistency/IO/GlobalConnection.hpp"
 
 namespace Persistency
@@ -102,7 +103,8 @@ void GraphNode::addChild(GraphNodePtrNN child, IO::MetaAlert &maIO)
 {
   ensureIsNode();
   // check if addition will not cause cycle
-  addChildImpl(this, child);
+  detail::InternalAccessProxy iap;
+  nca_.addChildImpl(*this, iap, child);
   // persistency save
   maIO.addChild( child->getMetaAlert() );
 }
@@ -176,11 +178,6 @@ void GraphNode::ensureIsNode(void) const
   assert( self_.get()!=NULL );
   if( isLeaf() )
     throw ExceptionNotNode(SYSTEM_SAVE_LOCATION, self_->getName().get() );
-}
-
-void GraphNode::addChildToChildrenVector(GraphNodePtrNN child)
-{
-  children_.push(child);
 }
 
 } // namespace Persistency
