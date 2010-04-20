@@ -102,7 +102,7 @@ void GraphNode::addChild(GraphNodePtrNN child, IO::MetaAlert &maIO)
 {
   ensureIsNode();
   // check if addition will not cause cycle
-  nonCyclicAddition(child);
+  addChildImpl(this, child);
   // persistency save
   maIO.addChild( child->getMetaAlert() );
 }
@@ -178,55 +178,9 @@ void GraphNode::ensureIsNode(void) const
     throw ExceptionNotNode(SYSTEM_SAVE_LOCATION, self_->getName().get() );
 }
 
-
-//
-// TODO: this is a TEMPORARY solution - it must be reworked to use some
-//       sort of distributed algorithm, not to block whole structure
-//       when non-dependent data parts are being operated on.
-//
-SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_additionMutex);
-
-void GraphNode::nonCyclicAddition(GraphNodePtrNN child)
+void GraphNode::addChildToChildrenVector(GraphNodePtrNN child)
 {
-  const GraphNode *childPtr=child.get();
-  assert(childPtr!=NULL);
-
-  // only one addition at a time! (TODO: it's too restrictive)
-  System::Threads::SafeInitLock lock(g_additionMutex);
-
-  if( this==childPtr           ||   // instant-cycle
-      childPtr->hasCycle(this)    ) // is it possible to access self through child
-    throw ExceptionCycleDetected(SYSTEM_SAVE_LOCATION,
-                                 child->getMetaAlert()->getName().get(),
-                                 getMetaAlert()->getName().get() );
-
-  // if there is no cycle, add new child
   children_.push(child);
-}
-
-bool GraphNode::hasCycle(const GraphNode *child) const
-{
-  assert(child!=NULL);
-
-  // for leaf check if current node is not the one to be added
-  if( isLeaf() )
-    return this==child;
-
-  //
-  // TODO: where is better algorithm with do { for(...) } while() loops, to
-  //       be used when no global locking is present.
-  //       depending on strategy implemented it might be not needed though.
-  //
-  for(const_iterator it=begin(); it!=end(); ++it)
-  {
-    const GraphNode *tmp=it->get();
-    assert(tmp!=NULL);
-    if( tmp==child || tmp->hasCycle(child) )    // ooops - cycle detected...
-      return true;
-  } // for(children)
-
-  // no cycle detected - seems ok.
-  return false;
 }
 
 } // namespace Persistency

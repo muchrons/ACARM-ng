@@ -16,10 +16,10 @@
 #include "Persistency/MetaAlert.hpp"
 #include "Persistency/GraphNodePtr.hpp"
 #include "Persistency/NodeChildrenVector.hpp"
+#include "Persistency/detail/NonCyclicAdder.hpp"
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/ExceptionNotLeaf.hpp"
 #include "Persistency/ExceptionNotNode.hpp"
-#include "Persistency/ExceptionCycleDetected.hpp"
 
 namespace Persistency
 {
@@ -27,7 +27,8 @@ namespace Persistency
 /** \brief graph node's representation.
  */
 class GraphNode: private boost::noncopyable,
-                 public  boost::equality_comparable<GraphNode>
+                 public  boost::equality_comparable<GraphNode>,
+                 private detail::NonCyclicAdder
 {
 private:
   typedef Base::Threads::GrowingVector<GraphNodePtrNN> GraphNodesList;
@@ -117,8 +118,7 @@ public:
 
 private:
   void ensureIsNode(void) const;
-  void nonCyclicAddition(GraphNodePtrNN child);
-  bool hasCycle(const GraphNode *child) const;
+  virtual void addChildToChildrenVector(GraphNodePtrNN child);
 
   MetaAlertPtrNN self_;
   GraphNodesList children_;
