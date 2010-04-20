@@ -15,6 +15,10 @@ export TC=local
 # enable distcc
 #export WITH_DISTCC:=1
 
+# features to build with
+export FEATURES= \
+                 simple_graph_add
+
 # enable ccache, if not using intel's toolchain
 ifneq ($(TC),intel)
 export WITH_CCACHE:=1

@@ -10,7 +10,8 @@ include $(MAKEFILES_BASE_DIR)/common/dirs_features.mk
 #
 
 # find all sources selected by MODE
-MODE_EXPRESSION :=$(shell cat $(THIS_SRC_FEATURES_MODES_DIR)/$(MODE))
+MODE_EXPRESSION :=$(shell cd "$(THIS_SRC_FEATURES_MODES_DIR)" && cat $(MODE)) \
+                  $(shell [ -d "$(THIS_SRC_FEATURES_SPLIT_DIR)" ] && cd "$(THIS_SRC_FEATURES_SPLIT_DIR)" && cat /dev/null $(FEATURES) 2>/dev/null | xargs echo )
 ALL_MODE_SOURCES:=$(wildcard $(MODE_EXPRESSION))
 export ALL_MODE_SOURCES
 

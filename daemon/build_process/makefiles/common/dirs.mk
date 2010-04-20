@@ -30,10 +30,15 @@ endif
 export GEN_BASE_DIR
 
 # sub dirs of gen/
-GEN_INCLUDES_DIR=$(GEN_BASE_DIR)/$(PROFILE)_$(TC)_$(MEM_CHECK)/includes
-GEN_LIBS_DIR=$(GEN_BASE_DIR)/$(PROFILE)_$(TC)_$(MEM_CHECK)/libs
-GEN_COMPONENTS_DEPS_DIR=$(GEN_BASE_DIR)/$(PROFILE)_$(TC)_$(MEM_CHECK)/components_deps
+FEATURES_HASH:=$(shell echo "$(FEATURES)" | xargs -n 1 echo | sort | uniq | md5sum | cut -b1-32)
+GEN_WORK_ROOT_SHORT=$(GEN_BASE_DIR)/$(PROFILE)_$(TC)_$(MEM_CHECK)_$(MODE)
+GEN_WORK_ROOT=$(GEN_WORK_ROOT_SHORT)_$(FEATURES_HASH)
+GEN_INCLUDES_DIR=$(GEN_WORK_ROOT)/includes
+GEN_LIBS_DIR=$(GEN_WORK_ROOT)/libs
+GEN_COMPONENTS_DEPS_DIR=$(GEN_WORK_ROOT)/components_deps
 export \
+       FEATURES_HASH \
+       GEN_WORK_ROOT \
        GEN_INCLUDES_DIR \
        GEN_LIBS_DIR \
        GEN_COMPONENTS_DEPS_DIR

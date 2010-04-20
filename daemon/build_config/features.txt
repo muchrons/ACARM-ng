@@ -1,0 +1,9 @@
+features.txt
+------------
+
+short description of all available features that can be turned on/off. it consists
+of features description along with description of possible values to assign.
+
+graph_add -implementation of adding new nodes to graphs algorithm
+  - simple_graph_add        - locks whole graph while adding single element
+  - lock_on_write_graph_add - more sophisticated algorithm that locks only nodes being changed.
