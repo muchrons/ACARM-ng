@@ -62,7 +62,7 @@ factory tf("Persistency/IO/Postgres/MetaAlert");
 namespace tut
 {
 
-//TODO trying save example MetaAlert
+// trying save example MetaAlert
 template<>
 template<>
 void testObj::test<1>(void)

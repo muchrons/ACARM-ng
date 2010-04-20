@@ -155,7 +155,7 @@ void testObj::test<1>(void)
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
-  //TODO: save data in table alert_analyzers
+  // save data in table alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID procID  = es_.saveProcess(thostID, proc_);
@@ -189,7 +189,7 @@ void testObj::test<2>(void)
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
-  //TODO: save data in table alert_analyzers
+  // save data in table alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID id1=es_.saveProcess(thostID, proc_);
@@ -461,7 +461,7 @@ void testObj::test<11>(void)
   const Analyzer anlz("analyzer1", NULL, NULL, NULL);
   const DataBaseID anlzID = es_.saveAnalyzer(anlz);
   const DataBaseID alrtID = es_.saveAlert(a);
-  //TODO: test save data in alert_analyzers
+  // save data in alert_analyzers
   es_.saveAlertToAnalyzers(alrtID, anlzID);
   stringstream ss;
   string name, time, description;
@@ -506,7 +506,7 @@ void testObj::test<12>(void)
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
-  //TODO: test save data in alert_analyzers
+  // save data in alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID procID  = es_.saveProcess(thostID, procnn_);
@@ -546,7 +546,7 @@ void testObj::test<13>(void)
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
-  //TODO: test save data in alert_analyzers
+  // save data in alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID procID  = es_.saveProcess(thostID, proc);
@@ -591,7 +591,7 @@ void testObj::test<14>(void)
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
-  //TODO: test save data in alert_analyzers
+  // save data in alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID procID  = es_.saveProcess(thostID, proc);
@@ -736,12 +736,5 @@ void testObj::test<19>(void)
   t_.commit();
 }
 
-// TODO: add tests to check if max/min-length data types does fill in data base.
-template<>
-template<>
-void testObj::test<20>(void)
-{
-
-}
 
 } // namespace tut

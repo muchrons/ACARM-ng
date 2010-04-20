@@ -3,7 +3,6 @@
  *
  */
 #include "Persistency/IO/Postgres/MetaAlert.hpp"
-#include <iostream>     // TODO: remove this header - this code must not print anything!
 using namespace Persistency::IO::Postgres::detail;
 
 namespace Persistency

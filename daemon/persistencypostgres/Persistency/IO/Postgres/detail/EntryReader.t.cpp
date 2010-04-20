@@ -131,7 +131,7 @@ void testObj::test<2>(void)
   trim(version);
   //trim(os);
   ensure_equals("wrong version",version, string(anlzVersion.get()) );
-  ensure("ip is not null",readAnalyzer->getIP()==NULL);  // TODO: SEGV (invalid access) - here...
+  ensure("ip is not null",readAnalyzer.get()->getIP()==NULL);
   ensure_equals("wrong os", os, string( anlzOS.get()) );
   t_.commit();
 }
@@ -215,7 +215,10 @@ void testObj::test<5>(void)
   ReferenceURL::Name nameURL(ma->getReferenceURL()->getName().get());
   ReferenceURL::URL  urlURL(ma->getReferenceURL()->getURL().get());
 
-  // TODO: check for NULLs first
+  ensure("url name is NULL", nameURL.get()!=NULL);
+  ensure("url is NULL", urlURL.get()!=NULL);
+  ensure("reference url is NULL", ma->getReferenceURL()!=NULL);
+
   ensure("invalid reference url", *refURL==*ma->getReferenceURL() );
   ensure("invalid url name", nameURL == refURL->getName() );
   ensure("invalid url", urlURL == refURL->getURL());
