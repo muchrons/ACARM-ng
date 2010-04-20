@@ -13,6 +13,8 @@ namespace Persistency
 namespace detail
 {
 
+/** \brief helper object for implementation.
+ */
 class NonCyclicAdder::InternalImplementation
 {
 }; // class NonCyclicAdder

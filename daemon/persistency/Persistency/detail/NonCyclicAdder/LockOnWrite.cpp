@@ -12,6 +12,8 @@ namespace Persistency
 namespace detail
 {
 
+/** \brief helper object fotr implementeation. not used here.
+ */
 class NonCyclicAdder::InternalImplementation
 {
 public:
