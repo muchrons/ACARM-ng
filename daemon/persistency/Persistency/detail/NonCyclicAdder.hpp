@@ -27,17 +27,18 @@ public:
   NonCyclicAdder(void);
   /** \brief cleans up object's instance.
    */
-  ~NonCyclicAdder(void);
+  virtual ~NonCyclicAdder(void);
 
-  /** \brief adds new child to this node.
-   *  \param child node to be added as a child.
-   *  \param maIO  persistency access element for this node.
+  /** \brief adds new child to given node.
+   *  \param parentPtr node to add child to.
+   *  \param child     node to be added as a child.
    */
-  void addChild(GraphNodePtrNN parent, GraphNodePtrNN child);
+  void addChildImpl(const GraphNode *parentPtr, GraphNodePtrNN child);
 
 private:
-  class InternalImplementation;
+  virtual void addChildToChildrenVector(GraphNodePtrNN child) = 0;
 
+  class InternalImplementation;
   boost::scoped_ptr<InternalImplementation> data_;
 }; // class NonCyclicAdder
 

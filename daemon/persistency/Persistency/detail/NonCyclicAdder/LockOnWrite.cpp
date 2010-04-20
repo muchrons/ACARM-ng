@@ -2,6 +2,9 @@
  * LockOnWrite.cpp
  *
  */
+#include <cassert>
+
+#include "Persistency/GraphNode.hpp"
 #include "Persistency/detail/NonCyclicAdder.hpp"
 
 namespace Persistency
@@ -19,16 +22,23 @@ public:
 NonCyclicAdder::NonCyclicAdder(void):
   data_(new InternalImplementation)
 {
+  assert( data_.get()!=NULL );
 }
 
 NonCyclicAdder::~NonCyclicAdder(void)
 {
+  assert( data_.get()!=NULL );
   // NOTE: this generates valid d-tor for PImpl'ed class.
 }
 
-void NonCyclicAdder::addChild(GraphNodePtrNN parent, GraphNodePtrNN child)
+void NonCyclicAdder::addChildImpl(const GraphNode *parent, GraphNodePtrNN child)
 {
+  assert( data_.get()!=NULL );
+  assert( parent!=NULL );
   // TODO
+
+  // if there is no cycle, add new child
+  addChildToChildrenVector(child);
 }
 
 } // namespace detail
