@@ -1,8 +1,8 @@
+# basic configuration for project
+include build_config/config.mk
+
 # basic directories used in project
 include build_process/makefiles/common/dirs.mk
-
-# basic configuration for project
-include $(BUILD_CONFIG_BASE_DIR)/config.mk
 
 # check basic constraints
 include $(MAKEFILES_COMMON_BASE_DIR)/main_constraints.mk
