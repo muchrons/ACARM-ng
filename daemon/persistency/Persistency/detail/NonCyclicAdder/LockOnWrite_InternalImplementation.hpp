@@ -3,34 +3,23 @@
  *
  */
 #include "Base/Threads/Mutex.hpp"
+#include "Base/Threads/ReadWriteMutex.hpp"
 #include "Base/Threads/Conditional.hpp"
 #include "Persistency/GraphNodePtr.hpp"
 #include "Persistency/detail/NonCyclicAdder.hpp"
+#include "Persistency/detail/NonCyclicAdder/WaitingLockData.hpp"
 
 namespace Persistency
 {
 namespace detail
 {
 
-/** \brief helper object fotr implementeation. not used here.
+/** \brief helper data structure
  */
-class NonCyclicAdder::InternalImplementation
+struct NonCyclicAdder::InternalImplementation
 {
-public:
-  InternalImplementation(void);
-  ~InternalImplementation(void);
-
-  void setPtr(GraphNodePtr ptr);
-  GraphNodePtr getPtr(void) const;
-  void signalALl(void) const;
-  GraphNodePtr waitIfCannotLock(ReadWriteLock &rwl);
-
-private:
-  void setPtrImpl(GraphNodePtr ptr);
-
-  mutable Base::Threads::Mutex       mutex_;
-  mutable Base::Threads::Conditional cond_;
-  GraphNodePtr                       ptr_;
+  mutable Base::Threads::ReadWriteMutex mutexRW_;
+  WaitingLockData                       wld_;
 }; // class InternalImplementation
 
 } // namespace detail

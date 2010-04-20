@@ -1,2 +1,3 @@
 Persistency/detail/NonCyclicAdder/LockOnWrite.*pp
 Persistency/detail/NonCyclicAdder/LockOnWrite_InternalImplementation.*pp
+Persistency/detail/NonCyclicAdder/WaitingLockData.*pp
