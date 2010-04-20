@@ -33,10 +33,10 @@ NonCyclicAdder::~NonCyclicAdder(void)
   // NOTE: this generates valid d-tor for PImpl'ed class.
 }
 
-void NonCyclicAdder::addChildImpl(const GraphNode *parent, GraphNodePtrNN child)
+void NonCyclicAdder::addChildImpl(const GraphNode * /*parent*/, GraphNodePtrNN child)
 {
   assert( data_.get()!=NULL );
-  assert( parent!=NULL );
+  //assert( parent!=NULL );
   // TODO
 
   // if there is no cycle, add new child
