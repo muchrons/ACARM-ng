@@ -81,18 +81,6 @@ struct TestClass
     tdba_.removeAllData();
   }
 
-  IO::ConnectionPtrNN makeConnection(void) const
-  {
-    IO::BackendFactory::Options opts;
-    opts["host"]  ="localhost";
-    opts["port"]  ="5432";
-    opts["dbname"]="acarm_ng_test";
-    opts["user"]  ="acarm-ng-daemon";
-    opts["pass"]  ="test.daemon";
-    return IO::ConnectionPtrNN(
-        Persistency::IO::BackendFactory::create("postgres", opts) );
-  }
-
   Alert::ReportedHosts generateReportedHosts(unsigned int size) const
   {
     Alert::ReportedHosts out;

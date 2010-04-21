@@ -51,21 +51,6 @@ struct TestClass
     tdba_.removeAllData();
   }
 
-  // TODO: this method appears in many test suits - consider making base class
-  //       for test suits in Persistency::Postgres and deriving from it in
-  //       tests, making common tests' parts common.
-  IO::ConnectionPtrNN makeConnection(void) const
-  {
-    IO::BackendFactory::Options opts;
-    opts["host"]  ="localhost";
-    opts["port"]  ="5432";
-    opts["dbname"]="acarm_ng_test";
-    opts["user"]  ="acarm-ng-daemon";
-    opts["pass"]  ="test.daemon";
-    return IO::ConnectionPtrNN(
-        Persistency::IO::BackendFactory::create("postgres", opts) );
-  }
-
   Persistency::Alert::ReportedHosts generateReportedHosts(unsigned int size) const
   {
     Persistency::Alert::ReportedHosts out;
@@ -127,9 +112,8 @@ void testObj::test<2>(void)
   const DataBaseID        anlzID = es_.saveAnalyzer(a);
   const AnalyzerPtrNN     readAnalyzer =  er_.getAnalyzer(anlzID);  // TODO: what is Analyzer is NULL?
   string                  version(readAnalyzer->getVersion()->get());
-  string                  os(readAnalyzer->getOS()->get());         // TODO: this variable should be const.
+  const string                  os(readAnalyzer->getOS()->get());
   trim(version);
-  //trim(os);
   ensure_equals("wrong version",version, string(anlzVersion.get()) );
   ensure("ip is not null",readAnalyzer.get()->getIP()==NULL);
   ensure_equals("wrong os", os, string( anlzOS.get()) );

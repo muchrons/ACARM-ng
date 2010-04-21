@@ -209,11 +209,7 @@ DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
   ss << "INSERT INTO alerts(name, detect_time, create_time, id_severity, certanity, description) VALUES (";
   Appender::append(ss, a.getName().get() );
   ss << ",";
-  // TODO: use ternary operator for this
-  if(a.getDetectionTime()==NULL)
-    ss << "NULL";
-  else
-    Appender::append(ss, a.getDetectionTime() );
+  Appender::append(ss, a.getDetectionTime()?a.getDetectionTime():NULL);
   ss << ",";
   Appender::append(ss, a.getCreationTime() );
   ss << ",";
@@ -243,12 +239,7 @@ DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
     ss << ",";
     Appender::append(ss, a.getOS()?a.getOS()->get():NULL );
     ss << ",";
-    // TODO: use ternary operator for this
-    //Appender::append(ss, a.getIP()?( a.getIP()->to_string() ):NULL);
-    if(a.getIP()==NULL)
-      ss << "NULL";
-    else
-      Appender::append(ss, a.getIP()->to_string() );
+    Appender::append(ss, a.getIP()?( a.getIP()->to_string().c_str() ):NULL);
     ss << ");";
     t_.getAPI<Postgres::TransactionAPI>().exec(ss);
     return getID("analyzers_id_seq");
@@ -363,7 +354,7 @@ void EntrySaver::saveMetaAlertAsUnused(DataBaseID malertID)
 
 void EntrySaver::saveMetaAlertAsTriggered(DataBaseID malertID, const std::string &name)
 {
-  //TODO
+  //TODO tests
   stringstream ss;
   ss << "INSERT INTO meta_alerts_alredy_triggered(id_meta_alerts_in_use, trigger_name) VALUES(";
   Appender::append(ss, malertID);

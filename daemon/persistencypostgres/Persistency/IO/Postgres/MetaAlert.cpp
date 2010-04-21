@@ -31,7 +31,7 @@ void MetaAlert::saveImpl(Transaction &t)
 
 void MetaAlert::markAsTriggeredImpl(Transaction &t, const std::string &name)
 {
-  // TODO
+  // TODO tests
   EntrySaver                  es(t, *dbHandler_);
   const DataBaseID malertID = dbHandler_->getIDCache()->get( get() );
   es.saveMetaAlertAsTriggered(malertID, name);
