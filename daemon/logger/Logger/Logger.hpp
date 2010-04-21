@@ -24,6 +24,10 @@
 namespace Logger
 {
 
+//
+// TODO: make debug logs disappear in release mode.
+//
+
 /** \brief log debug message to a given node.
  *  \param id  logger node.
  *  \param msg message to log.
