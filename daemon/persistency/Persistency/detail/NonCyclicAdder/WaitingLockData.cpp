@@ -25,7 +25,6 @@ WaitingLockData::ResetOnRelease::~ResetOnRelease(void)
   try
   {
     wld_.setPtr( GraphNodePtr() );  // set to NULL and signal
-    //wld_.signalAll();
   }
   catch(...)
   {
@@ -74,15 +73,10 @@ GraphNodePtr WaitingLockData::getWhenDifferOrLocked(GraphNodePtr                
   return ptr_;
 }
 
-void WaitingLockData::signalAll(void)
-{
-  cond_.notify_all();
-}
-
 void WaitingLockData::setPtrImpl(GraphNodePtr ptr)
 {
   ptr_=ptr;
-  signalAll();
+  cond_.notify_all();
 }
 
 } // namespace detail
