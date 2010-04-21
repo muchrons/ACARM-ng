@@ -21,22 +21,28 @@ void NonCyclicAdder::InternalImplementation::addChild(InternalAccessProxy &iap,
                                                       GraphNode           &parent,
                                                       GraphNodePtrNN       child)
 {
-  // ensure that releaseing parent's lock will be broadcasted and then
-  // lock parent for writing (so that others will not be able to use it).
-  // NOTE: sequence of creation/destruction of these object is critical!
-  //       FIRSTLY lock must be released and THEN others should be informed
-  //       about locking oprtunity.
-  NonCyclicAdder                  &nca=iap.getNonCyclicAdderFromNode(parent);
-  assert(nca.data_.get()==this);    // sanity check - we should be "parent" here
-  WaitingLockData::ResetOnRelease  parentReleased(nca.data_->wld_);
-  WriteLock                        parentLock(nca.data_->mutexRW_);    // exclusive access to this node
+  NonCyclicAdder &nca=iap.getNonCyclicAdderFromNode(parent);    // short name
+  assert( nca.data_.get()==this );  // sanity check - we should be "parent" here
 
-  // look for cycle in structure and throw on error
-  LockingSession ls;
-  checkForCycle(ls, iap, parent, child, &parent);
+  // open helper scope for internal operations
+  {
+    // ensure that releaseing parent's lock will be broadcasted and then
+    // lock parent for writing (so that others will not be able to use it).
+    // NOTE: sequence of creation/destruction of these object is critical!
+    //       FIRSTLY lock must be released and THEN others should be informed
+    //       about locking oprtunity.
+    WaitingLockData::ResetOnRelease parentReleased(nca.data_->wld_);
+    WriteLock                       parentLock(nca.data_->mutexRW_);    // exclusive access to root
 
-  // if there is no cycle, add new child
-  iap.addChildToChildrenVector(parent, child);
+    // look for cycle in structure and throw on error
+    LockingSession ls;
+    checkForCycle(ls, iap, parent, child, &parent);
+
+    // if there is no cycle, add new child
+    iap.addChildToChildrenVector(parent, child);
+  } // helper scope - releases all locks and objects
+
+  assert( nca.data_->wld_.getPtr().get()==NULL );
 }
 
 void NonCyclicAdder::InternalImplementation::checkForCycle(LockingSession            &ls,
