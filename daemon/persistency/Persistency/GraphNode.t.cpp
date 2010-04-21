@@ -273,7 +273,7 @@ void testObj::test<14>(void)
   try
   {
     node_->addChild(child, *makeIO(node_) );
-    fail("addChild() didn't failed for 1-stop-long cycle");
+    fail("addChild() didn't failed for 1-step-long cycle");
   }
   catch(const ExceptionCycleDetected&)
   {
@@ -378,7 +378,7 @@ void testObj::test<18>(void)
   TestHelpers::checkEquality( *makeNode(), *makeLeaf() );
 }
 
-// test comparison with toher, but identical object
+// test comparison with other instances identical object
 template<>
 template<>
 void testObj::test<19>(void)
@@ -431,7 +431,7 @@ template<>
 template<>
 void testObj::test<24>(void)
 {
-  const GraphNodePtrNN  n=makeNode();
+  const GraphNodePtrNN n=makeNode();
   ensure("pre-condition failed", !n->isLeaf() );
   try
   {
@@ -442,6 +442,60 @@ void testObj::test<24>(void)
   {
     // this is expected
   }
+}
+
+
+namespace
+{
+struct BigThread
+{
+  BigThread(GraphNodePtrNN root, TestClass &tc):
+    root_(root),
+    big_( tc.makeNode(50) ),
+    tc_(&tc)
+  {
+  }
+
+  void operator()(void)
+  {
+    root_->addChild(big_, *tc_->makeIO(big_) ); // this should take a while and so
+                                                // lock root_ object for some time
+  }
+
+private:
+  GraphNodePtrNN  root_;
+  GraphNodePtrNN  big_;
+  TestClass      *tc_;
+}; // struct BigThread
+} // unnamed namespace
+
+// test if WaitingLockData resets wait-for pointer when error occured
+template<>
+template<>
+void testObj::test<25>(void)
+{
+  // force error
+  try
+  {
+    node_->addChild(node_, *makeIO(node_) );
+    fail("addChild() didn't failed for point-to-self cycle");
+  }
+  catch(const ExceptionCycleDetected&)
+  {
+    // this is expected
+  }
+
+  GraphNodePtrNN top=makeNode();
+  // run some other addition in separte thread
+  BigThread      bt(node_, *this);
+  boost::thread  th(bt);                // start thread
+  boost::thread::yield();               // go to thread
+
+  // this call must not throw nor hung
+  top->addChild(node_, *makeIO(node_) );
+
+  // join thread
+  th.join();
 }
 
 } // namespace tut

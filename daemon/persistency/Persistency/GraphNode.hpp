@@ -23,12 +23,17 @@
 
 namespace Persistency
 {
+namespace detail
+{
+/** \brief forward declaration for friend declaration.
+ */
+struct InternalAccessProxy;
+} // namespace detail
 
 /** \brief graph node's representation.
  */
 class GraphNode: private boost::noncopyable,
-                 public  boost::equality_comparable<GraphNode>,
-                 private detail::NonCyclicAdder
+                 public  boost::equality_comparable<GraphNode>
 {
 private:
   typedef Base::Threads::GrowingVector<GraphNodePtrNN> GraphNodesList;
@@ -117,12 +122,14 @@ public:
   bool operator==(const GraphNode &other) const;
 
 private:
-  void ensureIsNode(void) const;
-  virtual void addChildToChildrenVector(GraphNodePtrNN child);
+  friend struct detail::InternalAccessProxy;
 
-  MetaAlertPtrNN self_;
-  GraphNodesList children_;
-  AlertPtr       leaf_;
+  void ensureIsNode(void) const;
+
+  MetaAlertPtrNN         self_;
+  GraphNodesList         children_;
+  AlertPtr               leaf_;
+  detail::NonCyclicAdder nca_;
 }; // class GraphNode
 
 } // namespace Persistency

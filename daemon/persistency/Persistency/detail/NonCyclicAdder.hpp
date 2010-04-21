@@ -17,6 +17,10 @@ namespace Persistency
 namespace detail
 {
 
+/** \brief forward declaration for helper object.
+ */
+class InternalAccessProxy;
+
 /** \brief algorithm for non-cyclic addition implementation.
  */
 class NonCyclicAdder
@@ -27,19 +31,20 @@ public:
   NonCyclicAdder(void);
   /** \brief cleans up object's instance.
    */
-  virtual ~NonCyclicAdder(void);
-
+  ~NonCyclicAdder(void);
   /** \brief adds new child to given node.
-   *  \param parentPtr node to add child to.
-   *  \param child     node to be added as a child.
+   *  \param parent node to add child to.
+   *  \param iap    helper object that allows extra access to some of GraphNode's internal parts
+   *  \param child  node to be added as a child.
    */
-  void addChildImpl(const GraphNode *parentPtr, GraphNodePtrNN child);
+  void addChildImpl(GraphNode           &parent,
+                    InternalAccessProxy &iap,
+                    GraphNodePtrNN       child);
 
 private:
-  virtual void addChildToChildrenVector(GraphNodePtrNN child) = 0;
-
   class InternalImplementation;
   boost::scoped_ptr<InternalImplementation> data_;
+  friend class InternalImplementation;
 }; // class NonCyclicAdder
 
 } // namespace detail
