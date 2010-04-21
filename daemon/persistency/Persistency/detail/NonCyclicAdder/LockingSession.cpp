@@ -16,7 +16,7 @@ bool LockingSession::hasNode(const GraphNode &node) const
   return lockedNodes_.find(&node)!=lockedNodes_.end();
 }
 
-void LockingSession::addLockedNode(const GraphNode &node, ReadTryLockPtr lock)
+void LockingSession::addLockedNode(const GraphNode &node, ReadTryLockPtrNN lock)
 {
   assert( lockedNodes_.size()==locks_.size() );
 
@@ -24,9 +24,13 @@ void LockingSession::addLockedNode(const GraphNode &node, ReadTryLockPtr lock)
   assert( hasNode(node)==false );
   lockedNodes_.insert(&node);
   assert( hasNode(node)==true );
+
   // save lock
+  assert( lock.get()!=NULL );
+  assert( lock->ownsLock() );
   locks_.push_back(lock);
 
+  // sanity check
   assert( lockedNodes_.size()==locks_.size() );
 }
 
