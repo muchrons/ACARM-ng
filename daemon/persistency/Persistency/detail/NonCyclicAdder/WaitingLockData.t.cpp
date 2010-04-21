@@ -153,4 +153,25 @@ void testObj::test<5>(void)
   th.join();
 }
 
+// test signalAll() call
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  WaitingLockData     wld;
+  int                 state=0;
+  auto_ptr<WriteLock> wlock( new WriteLock(mutexRW_) );
+  assert( wlock.get()!=NULL );
+  TestThread          tt(&wld, &state, &mutexRW_);
+  thread              th(tt);
+  // wait for thread a little
+  while(state!=1)
+    boost::thread::yield();
+  // release lock by releaseing write-lock
+  wlock.reset();
+  wld.signalAll();
+  // join - if call exited, thread will join cleanly
+  th.join();
+}
+
 } // namespace tut

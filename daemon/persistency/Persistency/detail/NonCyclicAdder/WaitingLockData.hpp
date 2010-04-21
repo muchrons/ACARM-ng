@@ -64,6 +64,12 @@ public:
    *  \return currently saved pointer's value.
    */
   GraphNodePtr getWhenDifferOrLocked(GraphNodePtr ptr, Base::Threads::ReadTryLock &rtl);
+  /** \brief notify other on change.
+   *
+   *  notification must be made when write-lock is released on object too. see
+   *  SignalOnRelease helper class for more details.
+   */
+  void signalAll(void);
 
 private:
   void setPtrImpl(GraphNodePtr ptr);
