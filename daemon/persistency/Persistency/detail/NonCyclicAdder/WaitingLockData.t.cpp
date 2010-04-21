@@ -169,6 +169,7 @@ void testObj::test<6>(void)
     boost::thread::yield();
   // release lock by releaseing write-lock
   wlock.reset();
+  wld.signalAll();
   // join - if call exited, thread will join cleanly
   th.join();
 }

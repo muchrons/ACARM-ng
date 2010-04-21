@@ -5,6 +5,7 @@
 #include <set>
 #include <vector>
 #include <boost/shared_ptr.hpp>
+#include <boost/noncopyable.hpp>
 
 #include "Base/Threads/ReadTryLock.hpp"
 #include "Persistency/GraphNodePtr.hpp"
@@ -18,7 +19,7 @@ namespace detail
 
 /** \brief 
  */
-class LockingSession
+class LockingSession: private boost::noncopyable
 {
 public:
   typedef boost::shared_ptr<Base::Threads::ReadTryLock> ReadTryLockPtr;

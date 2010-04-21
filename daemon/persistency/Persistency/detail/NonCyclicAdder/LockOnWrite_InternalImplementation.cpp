@@ -32,22 +32,16 @@ void NonCyclicAdder::InternalImplementation::addChild(InternalAccessProxy &iap,
   WriteLock                         parentLock(nca.data_->mutexRW_);    // exclusive access to this node
 
   // look for cycle in structure and throw on error
-  // TODO: set<*> and vector<ReadTryLock> are needed here (wrapped)
-  checkForCycle(iap, child, &parent);
+  LockingSession ls;
+  checkForCycle(ls, iap, parent, child, &parent);
 
   // if there is no cycle, add new child
   iap.addChildToChildrenVector(parent, child);
 }
 
-void NonCyclicAdder::InternalImplementation::checkForCycle(InternalAccessProxy &iap,
-                                                           GraphNodePtrNN       node,
-                                                           const GraphNode     *checkFor)
-{
-  assert(checkFor!=NULL);
-  checkForCycle(iap, *node, checkFor);
-}
-
-void NonCyclicAdder::InternalImplementation::checkForCycle(InternalAccessProxy       &iap,
+void NonCyclicAdder::InternalImplementation::checkForCycle(LockingSession            &ls,
+                                                           InternalAccessProxy       &iap,
+                                                           GraphNode                 &parent,
                                                            GraphNode::const_iterator  begin,
                                                            GraphNode::const_iterator  end,
                                                            const GraphNode           *checkFor)
@@ -55,20 +49,78 @@ void NonCyclicAdder::InternalImplementation::checkForCycle(InternalAccessProxy  
   assert(checkFor!=NULL);
   // check each element
   for(GraphNode::const_iterator it=begin; it!=end; ++it)
-    checkForCycle(iap, *it, checkFor);
+    checkForCycle(ls, iap, parent, *it, checkFor);
 }
 
-void NonCyclicAdder::InternalImplementation::checkForCycle(InternalAccessProxy &iap,
-                                                           GraphNode           &node,
+void NonCyclicAdder::InternalImplementation::checkForCycle(LockingSession      &ls,
+                                                           InternalAccessProxy &iap,
+                                                           GraphNode           &parent,
+                                                           GraphNodePtrNN       node,
                                                            const GraphNode     *checkFor)
 {
   assert(checkFor!=NULL);
-  // TODO: try-lock
+  // first check if this node has not been already visited
+  if( ls.hasNode(*node) )
+    return;
 
-  // TODO: work on already locked object
-  if( node.isLeaf() )
+  //
+  // try-lock(node)
+  //
+  assert( iap.getNonCyclicAdderFromNode(*node).data_.get()!=NULL );
+  ReadWriteMutex                 &mutexRW=iap.getNonCyclicAdderFromNode(*node).data_->mutexRW_;
+  LockingSession::ReadTryLockPtr  lockPtr( new ReadTryLock(mutexRW) );
+  assert( lockPtr.get()!=NULL );
+  if( lockPtr->ownsLock()==false )
   {
-  }
+    // save information on what node we're waiting
+    iap.getNonCyclicAdderFromNode(parent).data_->wld_.setPtr(node);
+    WaitingLockData &wldNode=iap.getNonCyclicAdderFromNode(*node).data_->wld_;  // short name
+    GraphNodePtr     waitFor=wldNode.getPtr();
+    do
+    {
+      // if there is something we wait for, check if it is not a cycle
+      throwIfDeadlock(iap, waitFor, checkFor);
+      // wait until something changed
+      // NOTE: this call tries to lock lockPtr inside
+      waitFor=wldNode.getWhenDifferOrLocked(waitFor, *lockPtr);
+    }
+    while( lockPtr->ownsLock()==false );
+  } // if(!owns_lock)
+
+  //
+  // save already locked object (node)
+  //
+  assert( lockPtr->ownsLock() );
+  ls.addLockedNode(*node, lockPtr); // save information that we've already been here
+
+  //
+  // continue checking children of node
+  //
+  if( node->isLeaf()==false )
+    checkForCycle(ls, iap, parent, node->begin(), node->end(), checkFor);
+}
+
+// detect deadlock condition
+void NonCyclicAdder::InternalImplementation::throwIfDeadlock(InternalAccessProxy &iap,
+                                                             GraphNodePtr         node,
+                                                             const GraphNode     *rootToCheck)
+{
+  assert(rootToCheck!=NULL);
+  GraphNodePtr waitFor=node;
+  while( waitFor.get()!=NULL )
+  {
+    // cycle detected?
+    if( waitFor.get()==rootToCheck )
+    {
+      // finding deadlock means that we're back to own node which is a cycle
+      throw ExceptionCycleDetected(SYSTEM_SAVE_LOCATION,
+                                   rootToCheck->getMetaAlert().getName().get(),
+                                   node->getMetaAlert()->getName().get() );
+    }
+    // proceed with next element
+    const WaitingLockData &wldNode=iap.getNonCyclicAdderFromNode(*waitFor).data_->wld_; // short name
+    waitFor=wldNode.getPtr();
+  } // while(waitFor!=NULL)
 }
 
 } // namespace detail
