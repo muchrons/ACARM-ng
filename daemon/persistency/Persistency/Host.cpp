@@ -94,15 +94,8 @@ const Host::OperatingSystem &Host::getOperatingSystem(void) const
   return os_;
 }
 
-const Host::Name &Host::getName(void) const
+Host::Name Host::getName(void) const
 {
-  // TODO: this code is INVALID - it has to return pointer to const char* or copy!
-
-  // although it looks as returing pointer to non-thread safe code, it is fine, since
-  // this pointer may be ither NULL (always thread-correct) or exact value, that
-  // is set just once. trying to set olready-set value will always throw. so in fact
-  // this pointer may transit NULL->0xC0DE only once and will have the same value
-  // until this object lives.
   Base::Threads::ReadLock lock(mutex_);
   return name_;
 }

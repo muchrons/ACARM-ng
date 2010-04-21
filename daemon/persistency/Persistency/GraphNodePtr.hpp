@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <boost/shared_ptr.hpp>
+
 #include "Commons/SharedPtrNotNULL.hpp"
 
 namespace Persistency
@@ -16,6 +18,9 @@ namespace Persistency
 class GraphNode;
 
 /** \brief pointer to single graph node. */
+typedef boost::shared_ptr<GraphNode> GraphNodePtr;
+
+/** \brief non-null pointer to single graph node. */
 typedef Commons::SharedPtrNotNULL<GraphNode> GraphNodePtrNN;
 
 } // namespace Persistency

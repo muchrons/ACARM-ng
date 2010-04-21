@@ -7,6 +7,7 @@
 #include "System/Threads/SafeInitLocking.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/detail/NonCyclicAdder.hpp"
+#include "Persistency/detail/InternalAccessProxy.hpp"
 
 namespace Persistency
 {
@@ -64,10 +65,13 @@ SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_additionMutex);
 
 } // unnamed namespace
 
-void NonCyclicAdder::addChildImpl(const GraphNode *parentPtr, GraphNodePtrNN child)
+void NonCyclicAdder::addChildImpl(GraphNode           &parent,
+                                  InternalAccessProxy &iap,
+                                  GraphNodePtrNN       child)
 {
   assert( data_.get()==NULL );
-  const GraphNode *childPtr=child.get();
+  const GraphNode *childPtr =child.get();
+  const GraphNode *parentPtr=&parent;
   assert(childPtr !=NULL);
   assert(parentPtr!=NULL);
 
@@ -82,7 +86,7 @@ void NonCyclicAdder::addChildImpl(const GraphNode *parentPtr, GraphNodePtrNN chi
                                  parentPtr->getMetaAlert().getName().get() );
 
   // if there is no cycle, add new child
-  addChildToChildrenVector(child);
+  iap.addChildToChildrenVector(parent, child);
 }
 
 } // namespace detail
