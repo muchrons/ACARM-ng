@@ -7,6 +7,7 @@
 
 #include <boost/noncopyable.hpp>
 
+#include "Persistency/IPTypes.hpp"
 #include "Persistency/Process.hpp"
 #include "Persistency/Service.hpp"
 #include "Persistency/ReferenceURL.hpp"
@@ -18,7 +19,8 @@
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
-#include "Persistency/IPTypes.hpp"
+#include "Persistency/IO/Postgres/ExceptionNoEntries.hpp"
+
 
 namespace Persistency
 {
@@ -113,7 +115,7 @@ private:
   ReferenceURLPtr getReferenceURL(const DataBaseID *refID);
 
   Persistency::ProcessPtr getProcess(DataBaseID procID, DataBaseID *refID);
-  Persistency::ServicePtr getService(DataBaseID servID, DataBaseID *refID);
+  Persistency::ServicePtrNN getService(DataBaseID servID, DataBaseID *refID);
 
   Persistency::Alert::ReportedHosts getSourceHosts(DataBaseID alertID);
   Persistency::Alert::ReportedHosts getTargetHosts(DataBaseID alertID);

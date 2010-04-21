@@ -6,7 +6,6 @@
 #include <tut.h>
 #include <boost/algorithm/string.hpp>
 
-// TODO: fix order of including headers
 #include "TestHelpers/checkEquality.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
@@ -108,16 +107,13 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  //TODO
   const Analyzer   a("analyzer2", NULL, NULL, NULL);
   const DataBaseID anlzID = es_.saveAnalyzer(a);
-  // TODO: SEGV - this is holding reference to already deallocated object, returned
-  //       by getAnalyzer(). you need to keep smart pointer here instead...
-  const Analyzer   &readAnalyzer =  *er_.getAnalyzer(anlzID) ;
+  const AnalyzerPtrNN   readAnalyzer =  er_.getAnalyzer(anlzID) ;
 
-  ensure("version is not null",readAnalyzer.getVersion()==NULL);    // TODO: SEGV (invalid access) - here...
-  ensure("ip is not null",readAnalyzer.getIP()==NULL);              // TODO: SEGV (invalid access) - here...
-  ensure("os is not null",readAnalyzer.getOS()==NULL);              // TODO: SEGV (invalid access) - here...
+  ensure("version is not null",readAnalyzer->getVersion()==NULL);
+  ensure("ip is not null",readAnalyzer->getIP()==NULL);
+  ensure("os is not null",readAnalyzer->getOS()==NULL);
   t_.commit();
 }
 
@@ -125,20 +121,17 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  //TODO
   const Analyzer::Version anlzVersion("v0.1.0");
   const Analyzer::OS      anlzOS("wiendols");
   const Analyzer          a("analyzer2", &anlzVersion, &anlzOS, NULL);
   const DataBaseID        anlzID = es_.saveAnalyzer(a);
-  // TODO: SEGV - this is holding reference to already deallocated object, returned
-  //       by getAnalyzer(). you need to keep smart pointer here instead...
-  const Analyzer         &readAnalyzer =  *er_.getAnalyzer(anlzID); // TODO: what is Analyzer is NULL?
-  string                  version(readAnalyzer.getVersion()->get());    // TODO: SEGV (invalid access) - here...
-  string                  os(readAnalyzer.getOS()->get());              // TODO: SEGV (invalid access) - here...
+  const AnalyzerPtrNN     readAnalyzer =  er_.getAnalyzer(anlzID);  // TODO: what is Analyzer is NULL?
+  string                  version(readAnalyzer->getVersion()->get());
+  string                  os(readAnalyzer->getOS()->get());         // TODO: this variable should be const.
   trim(version);
   //trim(os);
   ensure_equals("wrong version",version, string(anlzVersion.get()) );
-  ensure("ip is not null",readAnalyzer.getIP()==NULL);  // TODO: SEGV (invalid access) - here...
+  ensure("ip is not null",readAnalyzer->getIP()==NULL);  // TODO: SEGV (invalid access) - here...
   ensure_equals("wrong os", os, string( anlzOS.get()) );
   t_.commit();
 }

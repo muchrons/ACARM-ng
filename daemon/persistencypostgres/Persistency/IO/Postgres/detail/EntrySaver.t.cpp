@@ -3,17 +3,17 @@
  *
  */
 #include <tut.h>
+#include <boost/algorithm/string.hpp>
 
+#include "Persistency/detail/LimitedString.hpp"
+#include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
-#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
-#include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
-#include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
-#include <boost/algorithm/string.hpp>
 #include "Persistency/IO/Postgres/detail/Appender.hpp"
+#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 
 using namespace std;
 using namespace pqxx;
@@ -357,7 +357,6 @@ void testObj::test<7>(void)
   t_.commit();
 }
 
-
 // try saving example Target Host
 template<>
 template<>
@@ -530,9 +529,7 @@ void testObj::test<12>(void)
   t_.commit();
 }
 
-
-// TODO: test saving Process with NULL ReferenceURL
-
+// try save Process with NULL ReferenceURL
 template<>
 template<>
 void testObj::test<13>(void)
@@ -577,8 +574,7 @@ void testObj::test<13>(void)
   t_.commit();
 }
 
-
-// TODO: test saving Process with non-NULL ReferenceURL
+// try save Process with non-NULL ReferenceURL
 template<>
 template<>
 void testObj::test<14>(void)
@@ -655,7 +651,7 @@ void testObj::test<16>(void)
 
 }
 
-// TODO: test saving service with NULL reference URL
+// try save service with NULL reference URL
 template<>
 template<>
 void testObj::test<17>(void)
@@ -681,8 +677,6 @@ void testObj::test<17>(void)
   ensure("reference URL is not NULL", r[0]["id_ref"].is_null() );
 
   t_.commit();
-
-
 }
 
 // try save Meta Alert with NULL reference URL.
@@ -707,7 +701,6 @@ void testObj::test<18>(void)
 }
 
 //test saving two identical Analyzers
-
 template<>
 template<>
 void testObj::test<19>(void)
@@ -741,7 +734,6 @@ template<>
 template<>
 void testObj::test<20>(void)
 {
-
 }
 
 } // namespace tut
