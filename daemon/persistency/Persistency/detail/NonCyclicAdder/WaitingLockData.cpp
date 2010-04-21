@@ -15,16 +15,17 @@ namespace Persistency
 namespace detail
 {
 
-WaitingLockData::SignalOnRelease::SignalOnRelease(WaitingLockData &wld):
+WaitingLockData::ResetOnRelease::ResetOnRelease(WaitingLockData &wld):
   wld_(wld)
 {
 }
 
-WaitingLockData::SignalOnRelease::~SignalOnRelease(void)
+WaitingLockData::ResetOnRelease::~ResetOnRelease(void)
 {
   try
   {
-    wld_.signalAll();
+    wld_.setPtr( GraphNodePtr() );  // set to NULL and signal
+    //wld_.signalAll();
   }
   catch(...)
   {

@@ -26,10 +26,10 @@ void NonCyclicAdder::InternalImplementation::addChild(InternalAccessProxy &iap,
   // NOTE: sequence of creation/destruction of these object is critical!
   //       FIRSTLY lock must be released and THEN others should be informed
   //       about locking oprtunity.
-  NonCyclicAdder                   &nca=iap.getNonCyclicAdderFromNode(parent);
+  NonCyclicAdder                  &nca=iap.getNonCyclicAdderFromNode(parent);
   assert(nca.data_.get()==this);    // sanity check - we should be "parent" here
-  WaitingLockData::SignalOnRelease  parentReleased(nca.data_->wld_);
-  WriteLock                         parentLock(nca.data_->mutexRW_);    // exclusive access to this node
+  WaitingLockData::ResetOnRelease  parentReleased(nca.data_->wld_);
+  WriteLock                        parentLock(nca.data_->mutexRW_);    // exclusive access to this node
 
   // look for cycle in structure and throw on error
   LockingSession ls;
