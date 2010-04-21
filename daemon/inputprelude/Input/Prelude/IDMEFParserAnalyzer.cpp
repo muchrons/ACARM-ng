@@ -33,7 +33,9 @@ idmef_analyzer_t * IDMEFParserAnalyzer::isEmpty(idmef_analyzer_t *ptr) const
 Persistency::Analyzer::Name IDMEFParserAnalyzer::parseName(idmef_analyzer_t *ptr) const
 {
   const prelude_string_t *idmef_name = idmef_analyzer_get_name(ptr);
-  return Persistency::Analyzer::Name(prelude_string_get_string_or_default(idmef_name, "Unknown"));
+  if (idmef_name)
+    return prelude_string_get_string(idmef_name);
+  return "Unknown";
 }
 
 std::auto_ptr<Persistency::Analyzer::Version> IDMEFParserAnalyzer::parseVersion(idmef_analyzer_t *ptr) const
@@ -76,16 +78,15 @@ std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_anal
 
   // TODO: avoid nested ifs - use if(!cond) { return error } instead.
 
-  // TODO: use explicit comparison with NULL - it more readable
-  if (idmef_node)
+  if (idmef_node!=NULL)
   {
     idmef_address_t *idmef_node_addr = idmef_node_get_next_address(idmef_node, NULL);
-    // TODO: use explicit comparison with NULL - it more readable
-    if (idmef_node_addr)
+
+    if (idmef_node_addr!=NULL)
     {
       const prelude_string_t *idmef_node_address = idmef_address_get_address(idmef_node_addr);
-      // TODO: use explicit comparison with NULL - it more readable
-      if (idmef_node_address)
+
+      if (idmef_node_address!=NULL)
       {
         const char * tmp=prelude_string_get_string(idmef_node_address);
         switch (idmef_address_get_category(idmef_node_addr))

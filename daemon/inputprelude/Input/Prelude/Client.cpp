@@ -6,18 +6,24 @@
 #include "Input/Exception.hpp"
 #include "Input/Prelude/Client.hpp"
 
+#include <iostream>
+
 namespace Input
 {
 namespace Prelude
 {
 
-Client::Client(const char *profile)
+Client::Client(const std::string& profile, const std::string& config, int permission)
 {
-  const int ret = prelude_client_new(&client_, profile);
-  if ( ret < 0 )
-    throw Exception(SYSTEM_SAVE_LOCATION, "Cannot create prelude client.");
+    if ( prelude_client_new(&client_, profile.c_str()) < 0 )
+      throw Exception(SYSTEM_SAVE_LOCATION, "Cannot create prelude client.");
 
   profile_ = prelude_client_get_profile(client_);
+
+  if ( prelude_client_set_config_filename(client_, config.c_str()) < 0 )
+    throw Exception(SYSTEM_SAVE_LOCATION, "Error reading prelude config file " + config);
+
+  prelude_client_set_required_permission(client_, (prelude_connection_permission_t) permission);
 }
 
 Client::~Client()
@@ -50,18 +56,6 @@ idmef_message_t* Client::recvMessage(int timeout)
     return NULL;
 
   return idmef_p;
-}
-
-void Client::SetConfigFilename(const char *name)
-{
-  const int ret = prelude_client_set_config_filename(client_, name);
-  if ( ret < 0 )
-    throw Exception(SYSTEM_SAVE_LOCATION, "Error reading prelude config file " + std::string(name));
-}
-
-void Client::SetRequiredPermission(int permission)
-{
-  prelude_client_set_required_permission(client_, (prelude_connection_permission_t) permission);
 }
 
 
