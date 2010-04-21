@@ -117,7 +117,7 @@ public:
    *  \return host name.
    *  \note pointer may be NULL, if name has not been set.
    */
-  const Name &getName(void) const;
+  Name getName(void) const;
   /** \brief gets reference url for this host.
    *  \return reference url to get more info.
    */

@@ -11,6 +11,8 @@
 
 using namespace Base::Threads;
 
+// TODO: add loging so that it will be easier to trace what happens in the system
+// NOTE: most of them should be debuging logs.
 
 namespace Persistency
 {
