@@ -67,8 +67,8 @@ void NonCyclicAdder::InternalImplementation::checkForCycle(LockingSession      &
   // try-lock(node)
   //
   assert( iap.getNonCyclicAdderFromNode(*node).data_.get()!=NULL );
-  ReadWriteMutex                 &mutexRW=iap.getNonCyclicAdderFromNode(*node).data_->mutexRW_;
-  LockingSession::ReadTryLockPtr  lockPtr( new ReadTryLock(mutexRW) );
+  ReadWriteMutex                   &mutexRW=iap.getNonCyclicAdderFromNode(*node).data_->mutexRW_;
+  LockingSession::ReadTryLockPtrNN  lockPtr( new ReadTryLock(mutexRW) );
   assert( lockPtr.get()!=NULL );
   if( lockPtr->ownsLock()==false )
   {

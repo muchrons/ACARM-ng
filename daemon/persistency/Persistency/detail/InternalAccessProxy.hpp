@@ -17,14 +17,22 @@ namespace Persistency
 namespace detail
 {
 
-// TODO: comment this code
-
+/** \brief helper object that allows GraphNode to grant certain extra privilages
+ *         to external classes.
+ */
 struct InternalAccessProxy: private boost::noncopyable
 {
+  /** \brief adds new child to parent.
+   *  \param parent parent to add child to.
+   *  \param child  child to be added.
+   */
   void addChildToChildrenVector(GraphNode &parent, GraphNodePtrNN child)
   {
     parent.children_.push(child);
   }
+  /** \brief gives non-const access to implementation helper object.
+   *  \param node note to get implementation helper's instance from.
+   */
   detail::NonCyclicAdder &getNonCyclicAdderFromNode(GraphNode &node)
   {
     return node.nca_;

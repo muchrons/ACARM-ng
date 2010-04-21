@@ -33,9 +33,9 @@ struct TestClass
     return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, t_) );
   }
 
-  LockingSession::ReadTryLockPtr makeLock(void)
+  LockingSession::ReadTryLockPtrNN makeLock(void)
   {
-    return LockingSession::ReadTryLockPtr( new ReadTryLock(mutexRW_) );
+    return LockingSession::ReadTryLockPtrNN( new ReadTryLock(mutexRW_) );
   }
 
   MetaAlertPtrNN      ma1_;

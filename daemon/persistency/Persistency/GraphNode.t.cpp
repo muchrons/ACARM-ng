@@ -378,7 +378,7 @@ void testObj::test<18>(void)
   TestHelpers::checkEquality( *makeNode(), *makeLeaf() );
 }
 
-// test comparison with toher, but identical object
+// test comparison with other instances identical object
 template<>
 template<>
 void testObj::test<19>(void)

@@ -15,12 +15,15 @@ namespace Persistency
 namespace detail
 {
 
-// TODO: comment this code
-
-/** \brief helper data structure
+/** \brief helper data structure's implemenation
  */
 struct NonCyclicAdder::InternalImplementation
 {
+  /** \brief add new child ot given parent.
+   *  \param iap    helper object to get acces to some of GraphNode's internals
+   *  \param parent parent node to add child to.
+   *  \param child  child to be added to parent.
+   */
   void addChild(InternalAccessProxy &iap,
                 GraphNode           &parent,
                 GraphNodePtrNN       child);
@@ -43,8 +46,8 @@ private:
                        GraphNodePtr         node,
                        const GraphNode     *rootToCheck);
 
-  mutable Base::Threads::ReadWriteMutex mutexRW_;
-  WaitingLockData                       wld_;
+  mutable Base::Threads::ReadWriteMutex mutexRW_;   // multiple-readers/single-writer mutex for GraphNode
+  WaitingLockData                       wld_;       // helper class holding extra information
 }; // class InternalImplementation
 
 } // namespace detail
