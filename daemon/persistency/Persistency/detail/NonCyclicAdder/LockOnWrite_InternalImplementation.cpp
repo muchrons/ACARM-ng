@@ -29,10 +29,12 @@ void NonCyclicAdder::InternalImplementation::addChild(InternalAccessProxy &iap,
     // ensure that releaseing parent's lock will be broadcasted and then
     // lock parent for writing (so that others will not be able to use it).
     // NOTE: sequence of creation/destruction of these object is critical!
-    //       FIRSTLY lock must be released and THEN others should be informed
-    //       about locking oprtunity.
-    WaitingLockData::ResetOnRelease parentReleased(nca.data_->wld_);
-    WriteLock                       parentLock(nca.data_->mutexRW_);    // exclusive access to root
+    //       FIRSTLY pointer must be NULLEd (ResetOnRelease), THEN we can leave
+    //       lock without race condition risk THEN others should be informed
+    //       about locking oprtunity (i.e. lock is free).
+    WaitingLockData::SignalOnRelease signalRelease(nca.data_->wld_);
+    WriteLock                        parentLock(nca.data_->mutexRW_);    // exclusive access to root
+    WaitingLockData::ResetOnRelease  reset(nca.data_->wld_);
 
     // look for cycle in structure and throw on error
     LockingSession ls;

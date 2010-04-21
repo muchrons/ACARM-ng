@@ -23,24 +23,44 @@ class WaitingLockData
 public:
   /** \brief created object reset's WaitingLockData pointer uppon release.
    *
-   *  this helper is to be used to signal that lock is not used any more.
-   *  it also sets pointer to NULL, to mark that node does not wait for
+   *  this helper sets pointer to NULL, to mark that node does not wait for
    *  anything, while not in operational mode.
    */
   class ResetOnRelease: private boost::noncopyable
   {
   public:
     /** \brief create instance.
-     *  \param wld object to reset/signal when exiting.
+     *  \param wld object to reset when exiting.
      */
     explicit ResetOnRelease(WaitingLockData &wld);
-    /** \brief reest&signal saved instance.
+    /** \brief reest saved instance.
      */
     ~ResetOnRelease(void);
 
   private:
     WaitingLockData &wld_;
   }; // class ResetOnRelease
+
+
+  /** \brief created object signals WaitingLockData users uppon release.
+   *
+   *  this helper is to be used to signal that lock is not used any more.
+   */
+  class SignalOnRelease: private boost::noncopyable
+  {
+  public:
+    /** \brief create instance.
+     *  \param wld object to signal when exiting.
+     */
+    explicit SignalOnRelease(WaitingLockData &wld);
+    /** \brief signal saved instance.
+     */
+    ~SignalOnRelease(void);
+
+  private:
+    WaitingLockData &wld_;
+  }; // class SignalOnRelease
+
 
   /** \brief create instance.
    */

@@ -25,13 +25,31 @@ WaitingLockData::ResetOnRelease::~ResetOnRelease(void)
   try
   {
     wld_.setPtr( GraphNodePtr() );  // set to NULL and signal
-    //wld_.signalAll();
   }
   catch(...)
   {
     // nothing to be done here
   }
 }
+
+
+WaitingLockData::SignalOnRelease::SignalOnRelease(WaitingLockData &wld):
+  wld_(wld)
+{
+}
+
+WaitingLockData::SignalOnRelease::~SignalOnRelease(void)
+{
+  try
+  {
+    wld_.signalAll();   // signal all waiting entities
+  }
+  catch(...)
+  {
+    // nothing to be done here
+  }
+}
+
 
 WaitingLockData::WaitingLockData(void)
 {
