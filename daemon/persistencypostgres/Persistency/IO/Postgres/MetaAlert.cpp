@@ -26,12 +26,10 @@ void MetaAlert::saveImpl(Transaction &t)
   const Persistency::MetaAlert &ma = *get();
   const DataBaseID                    maID = es.saveMetaAlert(ma);
   dbHandler_->getIDCache()->add(get() , maID);
-  // TODO tests
 }
 
 void MetaAlert::markAsTriggeredImpl(Transaction &t, const std::string &name)
 {
-  // TODO tests
   EntrySaver                  es(t, *dbHandler_);
   const DataBaseID malertID = dbHandler_->getIDCache()->get( get() );
   es.saveMetaAlertAsTriggered(malertID, name);
@@ -39,7 +37,6 @@ void MetaAlert::markAsTriggeredImpl(Transaction &t, const std::string &name)
 
 void MetaAlert::markAsUsedImpl(Transaction &t)
 {
-  // TODO tests
   EntrySaver                  es(t, *dbHandler_);
   const DataBaseID malertID = dbHandler_->getIDCache()->get( get() );
   es.saveMetaAlertAsUsed( malertID );
@@ -47,7 +44,6 @@ void MetaAlert::markAsUsedImpl(Transaction &t)
 
 void MetaAlert::markAsUnusedImpl(Transaction &t)
 {
-  // TODO tests
   EntrySaver                    es(t, *dbHandler_);
   const DataBaseID malertID = dbHandler_->getIDCache()->get( get() );
   es.saveMetaAlertAsUnused( malertID );

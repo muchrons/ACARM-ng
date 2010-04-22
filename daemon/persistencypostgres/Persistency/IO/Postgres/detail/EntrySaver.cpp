@@ -348,7 +348,7 @@ void EntrySaver::saveMetaAlertAsUsed(DataBaseID malertID)
 void EntrySaver::saveMetaAlertAsUnused(DataBaseID malertID)
 {
   stringstream ss;
-  ss << "DELETE FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ");";
+  ss << "DELETE FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
@@ -356,11 +356,11 @@ void EntrySaver::saveMetaAlertAsTriggered(DataBaseID malertID, const std::string
 {
   //TODO tests
   stringstream ss;
-  ss << "INSERT INTO meta_alerts_alredy_triggered(id_meta_alerts_in_use, trigger_name) VALUES(";
+  ss << "INSERT INTO meta_alerts_already_triggered(id_meta_alert_in_use, trigger_name) VALUES(";
   Appender::append(ss, malertID);
   ss << ",";
   Appender::append(ss, name);
-  ss << ";";
+  ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
@@ -376,7 +376,7 @@ void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
 void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta)
 {
   stringstream ss;
-  ss << "UPDATE meta_alerts SET certanity_delta = ";
+  ss << "UPDATE meta_alerts SET certanity_delta = certanity_delta + ";
   Appender::append(ss, certanityDelta);
   ss << " WHERE id = " << malertID << ";";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);

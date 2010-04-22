@@ -11,8 +11,6 @@
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/Alert.hpp"
 
-// TODO: tests
-
 using namespace std;
 using namespace Persistency;
 using namespace Persistency::IO::Postgres;

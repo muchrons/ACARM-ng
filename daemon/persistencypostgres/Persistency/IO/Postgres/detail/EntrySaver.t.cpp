@@ -12,6 +12,7 @@
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
+#include "Persistency/IO/Postgres/ReaderHelper.hpp"
 #include "Persistency/IO/Postgres/detail/Appender.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 
@@ -214,32 +215,34 @@ void testObj::test<4>(void)
   const DataBaseID alrtID = es_.saveAlert(a);
   es_.saveAlertToAnalyzers(alrtID, anlzID);
   stringstream ss;
-  string name, time, description;
-  DataBaseID id;
-  double certanity;
 
   ss << "SELECT * FROM alerts WHERE id = " << alrtID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
 
-  r[0]["name"].to(name);
-  ensure_equals("invalid name",name_.get(),name);
+  ensure_equals("invalid name",
+                name_.get(),
+                ReaderHelper<string>::fromSQLResult(r[0]["name"]));
 
-  r[0]["detect_time"].to(time);
-  const Timestamp ts=timestampFromString(time);
-  ensure_equals("invalid detect time", detected_, ts);
+  ensure_equals("invalid detect time",
+                detected_,
+                timestampFromString( ReaderHelper<string>::fromSQLResult(r[0]["detect_time"]) ));
 
-  r[0]["create_time"].to(time);
-  ensure_equals("invalid create time", created_, timestampFromString(time) );
+  ensure_equals("invalid create time",
+                created_,
+                timestampFromString( ReaderHelper<string>::fromSQLResult(r[0]["create_time"]) ));
 
-  r[0]["id_severity"].to(id);
-  ensure_equals("invalid severity ID",a.getSeverity().getLevel().toInt(),id);
+  ensure_equals("invalid severity ID",
+                a.getSeverity().getLevel().toInt(),
+                ReaderHelper<DataBaseID>::fromSQLResult(r[0]["id_severity"]));
 
-  r[0]["certanity"].to(certanity);
-  ensure_equals("invalid certanity",certanity_.get(),certanity);
+  ensure_equals("invalid certanity",
+                certanity_.get(),
+                ReaderHelper<double>::fromSQLResult(r[0]["certanity"]) );
 
-  r[0]["description"].to(description);
-  ensure_equals("invalid description",description_,description);
+  ensure_equals("invalid description",
+                description_,
+                ReaderHelper<string>::fromSQLResult(r[0]["description"]));
 
   t_.commit();
 }
@@ -262,20 +265,15 @@ void testObj::test<5>(void)
   const DataBaseID servID = es_.saveService(thostID,ti);
 
   stringstream ss;
-  string protocol;
-  string name;
+  string protocol, name;
 
-  // TODO: 'port' variable declarationshuld be moved next to usage place.
-  //       note that it can be used within a scope to minimize it's life-time
-  int port;
   ss << "SELECT * FROM services WHERE id = " << servID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   r[0]["name"].to(name);
   trim(name);
   ensure_equals("invalid name",ti.getName().get()  ,name );
 
-  r[0]["port"].to(port);
-  ensure_equals("invalid port",ti.getPort(),port);
+  ensure_equals("invalid port",ti.getPort(),ReaderHelper<int>::fromSQLResult(r[0]["port"]));
 
   r[0]["protocol"].to(protocol);
   trim(protocol);
