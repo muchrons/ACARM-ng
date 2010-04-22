@@ -27,7 +27,7 @@ struct TestClass
     service_name("apache"),
     service_protocol("TCP"),
     service_port(27600),
-    addressv4("192.168.55.54")    
+    addressv4("192.168.55.54")
   {
     if (idmef_source_new(&source_)<0)
       tut::fail("Unable to create source obcject.");
@@ -50,7 +50,7 @@ struct TestClass
 
     prelude_string_t *proc_name;
     prelude_string_new_dup(&proc_name,process_user.c_str());
-    
+
     idmef_process_t *proc;
     idmef_process_new(&proc);
     idmef_process_set_name(proc,proc_str);
@@ -65,7 +65,7 @@ struct TestClass
     prelude_string_new_dup(&username,process_user.c_str());
     idmef_user_id_set_name(userid,username);
 
-    idmef_source_set_process(source_,proc);    
+    idmef_source_set_process(source_,proc);
 
     idmef_service_t * service;
     idmef_source_new_service(source_,&service);
@@ -79,9 +79,9 @@ struct TestClass
     idmef_service_set_protocol(service,protocol);
 
     idmef_service_set_port(service,27600);
-    
+
     //idmef_service_set
-    
+
 
   }
 
@@ -100,7 +100,7 @@ protected:
   std::string process_name;
   std::string process_user;
   std::string service_name;
-  std::string service_protocol;  
+  std::string service_protocol;
   uint16_t service_port;
   std::string addressv4;
 };

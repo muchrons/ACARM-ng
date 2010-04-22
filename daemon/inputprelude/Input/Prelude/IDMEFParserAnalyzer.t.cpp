@@ -116,7 +116,7 @@ void testObj::test<4>(void)
   idmef_analyzer_t *analyzer;
   if (idmef_analyzer_new(&analyzer)<0)
     tut::fail("Unable to create analyzer object.");
-  
+
   prelude_string_t *ps_name;
   prelude_string_t *ps_ostype;
   prelude_string_t *ps_osversion;
@@ -233,19 +233,19 @@ void testObj::test<8>(void)
   idmef_analyzer_t *analyzer;
   if (idmef_analyzer_new(&analyzer)<0)
     tut::fail("Unable to create analyzer object.");
-  
+
   prelude_string_t *ps_name;
   prelude_string_t *ps_ostype;
   prelude_string_t *ps_osversion;
-  
+
   prelude_string_new_dup(&ps_name,name_.c_str());
   prelude_string_new_dup(&ps_ostype,ostype_.c_str());
   prelude_string_new_dup(&ps_osversion,osversion_.c_str());
-  
+
   idmef_analyzer_set_name(analyzer,ps_name);
   idmef_analyzer_set_ostype(analyzer,ps_ostype);
   idmef_analyzer_set_osversion(analyzer,ps_osversion);
-  
+
   IDMEFParserAnalyzer an(analyzer);
   idmef_analyzer_destroy(analyzer);
 }

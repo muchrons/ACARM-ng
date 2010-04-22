@@ -14,8 +14,8 @@ Client::Client(const std::string& profile, const std::string& config, int permis
 {
   int argc=1;
   char *argv[]={"name"};
-  if ( prelude_init(&argc, argv) < 0 ) 
-    throw Input::Exception(SYSTEM_SAVE_LOCATION, "Unable to initialize prelude library.");    
+  if ( prelude_init(&argc, argv) < 0 )
+    throw Input::Exception(SYSTEM_SAVE_LOCATION, "Unable to initialize prelude library.");
 
   if ( prelude_client_new(&client_, profile.c_str()) < 0 )
       throw Exception(SYSTEM_SAVE_LOCATION, "Cannot create prelude client.");
