@@ -85,14 +85,14 @@ Persistency::ProcessPtr IDMEFParserSource::parseProcess(idmef_source_t * ptr) co
   idmef_process_t *idmef_process = idmef_source_get_process(ptr);
   if (idmef_process==NULL)
     return process;
-  
+
   // TODO: what is path is NULL?
   Persistency::Process::Path path;
   const prelude_string_t *idmef_path_str = idmef_process_get_path(idmef_process);
-  
+
   if (idmef_path_str)
     path=prelude_string_get_string(idmef_path_str);
-  
+
   prelude_string_t *idmef_process_str = idmef_process_get_name(idmef_process);
   if (idmef_process_str)
     {
@@ -105,7 +105,7 @@ Persistency::ProcessPtr IDMEFParserSource::parseProcess(idmef_source_t * ptr) co
         pidt=*pid;
       process.reset(new Persistency::Process(path,name,NULL,&pidt,NULL,username,NULL,Persistency::ReferenceURLPtr()));
     }
-  
+
   return process;
 }
 
