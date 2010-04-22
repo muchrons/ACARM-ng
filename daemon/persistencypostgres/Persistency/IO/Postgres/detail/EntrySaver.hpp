@@ -123,9 +123,6 @@ public:
    */
   void updateCertaintyDelta(DataBaseID malertID, double certanityDelta);
 
-  // TODO
-
-
 private:
   DataBaseID getID(const std::string &seqName);
   DataBaseID getSeverityID(const Alert &a);

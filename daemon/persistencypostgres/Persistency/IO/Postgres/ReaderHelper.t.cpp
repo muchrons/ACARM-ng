@@ -12,6 +12,7 @@
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
+#include "Persistency/IO/Postgres/timestampFromString.hpp"
 #include "Persistency/IO/Postgres/detail/Appender.hpp"
 
 using Persistency::IO::Transaction;
@@ -45,14 +46,14 @@ struct TestClass
 
   void CreateTempTable()
   {
-    // TODO: 'ON COMMIT DROP'
     execSQL(t_, "CREATE TEMP TABLE tmp"
                 "("
                 "  val1 int         NULL,"
                 "  val2 real        NULL,"
                 "  val3 timestamp   NULL,"
-                "  val4 varchar(32) NULL"
-                ");");
+                "  val4 varchar(32) NULL,"
+                "  val5 inet        NULL"
+                ")ON COMMIT DROP;");
   }
 
   TestDBAccess        tdba_;
@@ -73,8 +74,7 @@ factory tf("Persistency/IO/Postgres/ReaderHelper");
 namespace tut
 {
 
-// TODO: add proper comment for this test
-// trying ...
+// trying read NULL values from data base
 template<>
 template<>
 void testObj::test<1>(void)
@@ -84,12 +84,10 @@ void testObj::test<1>(void)
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
   ensure("value isn't NULL", ReaderHelper<int, Base::NullValue<int>, int>::readAs(r[0]["val1"]).get() == NULL);
   ensure("value isn't NULL", ReaderHelper<double, Base::NullValue<double>, double>::readAs(r[0]["val2"]).get() == NULL);
-  execSQL(t_, "DROP TABLE tmp;");   // TODO: should be done automatically when comiting/rolbacking transaction
   t_.commit();
 }
 
-// TODO: add proper comment for this test
-// trying ...
+// test specialization for int, double and LinitedNULLString
 template<>
 template<>
 void testObj::test<2>(void)
@@ -108,10 +106,54 @@ void testObj::test<2>(void)
   ensure("invalid value", strcmp( ReaderHelper<string, Name>::readAs(r[0]["val4"]).get(), name_.get() ) == 0 );
 }
 
-// TODO: test specialization for Timestamp
+// test specialization for Timestamp
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  CreateTempTable();
+  string time("1970-01-15 07:56:07");
+  const Timestamp ts=timestampFromString( time );
+  stringstream ss;
+  ss << "INSERT INTO tmp(val3) VALUES(";
+  Appender::append(ss, time);
+  ss << ");";
+  execSQL(t_, ss);
+  const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
+  ensure_equals("invalid time", ReaderHelper<Timestamp>::readAs(r[0]["val3"]).get()->get() , ts.get());
+}
+// test specialization for IP
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  CreateTempTable();
+  string adr("1.2.3.4");
+  boost::asio::ip::address ip(boost::asio::ip::address::from_string ( adr ) );
+  stringstream ss;
+  ss << "INSERT INTO tmp(val5) VALUES(";
+  Appender::append(ss, ip.to_string());
+  ss << ");";
+  execSQL(t_, ss);
+  const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
+  ensure("invalid IP adress", *ReaderHelper<boost::asio::ip::address>::readAs(r[0]["val5"]).get() == ip);
+}
 
-// TODO: test specialization for IP
-
-// TODO: test specialization for LimitedNULLString
+// test specialization for LimitedNULLString
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  CreateTempTable();
+  // create LimitedNULLString
+  Name s("some string");
+  stringstream ss;
+  ss << "INSERT INTO tmp(val4) VALUES(";
+  Appender::append(ss, s.get() );
+  ss << ");";
+  execSQL(t_, ss);
+  const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
+  ensure("invalid value", strcmp( ReaderHelper<string, Name>::readAs(r[0]["val4"]).get(), s.get() ) == 0 );
+}
 
 } // namespace tut

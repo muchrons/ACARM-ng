@@ -55,21 +55,6 @@ private:
 
   typedef typename ObjectIDMapping::iterator ObjectIDMappingIt;
 
-  // TODO: move this implementation detail to the class' end. EntryID and typedef's
-  //       must be at eh begining for syntactical reasons, but method can be moved
-  //       to the class' end, making API more readable.
-  ObjectIDMappingIt getImpl(TSharedPtr ptr)
-  {
-    ObjectIDMappingIt it=oidm_.find( ptr.get() );
-    if( it==oidm_.end() || it->second.ptr_.lock().get()==NULL )
-      return oidm_.end();
-    // both these asserts are known to be true, since we have object's
-    // instance as a parameter, so pointer either is already deallocated
-    // or is still valid, and so assertion's hold.
-    assert( it->second.ptr_.lock().get()!=NULL      );
-    assert( it->second.ptr_.lock().get()==ptr.get() );
-    return it;
-  }
 
 public:
   /** \brief exception thrown when entry does not exist.
@@ -100,13 +85,12 @@ public:
   }
 
   // TODO: this method should be const
-  // TODO: rename this method to 'has' - it is not implementation internal
   //       element - it's class's interface.
   /** \brief check if given object is in cache
    *  \param ptr pointer to object to check
    *  \return true if given object is in cache
    */
-  bool hasImpl(TSharedPtr ptr)
+  bool has(TSharedPtr ptr)
   {
     Base::Threads::Lock lock(mutex_);
     return getImpl(ptr)!=oidm_.end();
@@ -190,6 +174,20 @@ public:
   }
 
 private:
+
+  ObjectIDMappingIt getImpl(TSharedPtr ptr)
+  {
+    ObjectIDMappingIt it=oidm_.find( ptr.get() );
+    if( it==oidm_.end() || it->second.ptr_.lock().get()==NULL )
+      return oidm_.end();
+    // both these asserts are known to be true, since we have object's
+    // instance as a parameter, so pointer either is already deallocated
+    // or is still valid, and so assertion's hold.
+    assert( it->second.ptr_.lock().get()!=NULL      );
+    assert( it->second.ptr_.lock().get()==ptr.get() );
+    return it;
+  }
+
   mutable Base::Threads::Mutex mutex_;
   ObjectIDMapping              oidm_;
 }; // class StorageDataCache

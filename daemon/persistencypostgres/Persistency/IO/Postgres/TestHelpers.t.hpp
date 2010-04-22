@@ -56,7 +56,7 @@ Persistency::HostPtr makeNewHost6(const char             *ip,
 Persistency::ProcessPtr makeNewProcess(const char *name="process name");
 
 Persistency::ReferenceURLPtr makeNewReferenceURL(const char *url="http://gnu.org");
-Persistency::GraphNodePtrNN makeNewLeaf(void);
+Persistency::GraphNodePtrNN makeNewLeaf(const char *name="some name");
 Persistency::GraphNodePtrNN makeNewNode(void);
 Persistency::GraphNodePtrNN makeNewNode(Persistency::GraphNodePtrNN child1,
                                         Persistency::GraphNodePtrNN child2);

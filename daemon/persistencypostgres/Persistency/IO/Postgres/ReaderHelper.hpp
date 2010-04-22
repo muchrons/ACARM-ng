@@ -12,6 +12,7 @@
 
 #include "Base/NullValue.hpp"
 #include "Persistency/Timestamp.hpp"
+#include "Persistency/MD5Sum.hpp"
 #include "Persistency/detail/LimitedNULLString.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
 
@@ -66,12 +67,10 @@ template<uint16_t N>
 template<typename T1, typename T3>
 struct ReaderHelper< T1, Persistency::detail::LimitedNULLString<N>, T3>
 {
-  // TODO: rename this method to readAs() - when this specialization will be used,
-  //       no other specialization will be present any way.
   /** \brief check if SQL query is null, if not return proper value
    *  \param r SQL result field
    */
-  static Persistency::detail::LimitedNULLString<N> readAsNs(const pqxx::result::field &r)
+  static Persistency::detail::LimitedNULLString<N> readAs(const pqxx::result::field &r)
   {
     if( r.is_null() )
     {
@@ -133,6 +132,33 @@ struct ReaderHelper< Persistency::Timestamp , T2, T3>
       T3 s;
       r.to(s);
       T2 ret( Timestamp( timestampFromString(s) ) );
+      return ret;
+    }
+  }
+}; // ReaderHelper class partial specialization
+
+/** \brief helper class which gets values from SQL queries - specialization for Persistency::MD5Sum
+ */
+template<typename T2, typename T3>
+struct ReaderHelper< Persistency::MD5Sum , T2, T3>
+{
+private:
+  typedef Persistency::MD5Sum MD5;
+public:
+  /** \brief check if SQL query is null, if not return proper value
+   *  \param r SQL result field
+   */
+  static std::auto_ptr<MD5> readAs(const pqxx::result::field &r)
+  {
+    if( r.is_null() )
+    {
+      return std::auto_ptr<MD5>();
+    }
+    else
+    {
+      T3 s;
+      r.to(s);
+      std::auto_ptr<MD5> ret( new MD5( MD5::createFromString(s.c_str())) );
       return ret;
     }
   }
