@@ -3,10 +3,7 @@
  *
  */
 
-#include "Input/Exception.hpp"
 #include "Input/Prelude/Client.hpp"
-
-#include <iostream>
 
 namespace Input
 {
@@ -15,7 +12,12 @@ namespace Prelude
 
 Client::Client(const std::string& profile, const std::string& config, int permission)
 {
-    if ( prelude_client_new(&client_, profile.c_str()) < 0 )
+  int argc=1;
+  char *argv[]={"name"};
+  if ( prelude_init(&argc, argv) < 0 ) 
+    throw Input::Exception(SYSTEM_SAVE_LOCATION, "Unable to initialize prelude library.");    
+
+  if ( prelude_client_new(&client_, profile.c_str()) < 0 )
       throw Exception(SYSTEM_SAVE_LOCATION, "Cannot create prelude client.");
 
   profile_ = prelude_client_get_profile(client_);
@@ -30,6 +32,7 @@ Client::~Client()
 {
   profile_ = NULL;
   prelude_client_destroy(client_, PRELUDE_CLIENT_EXIT_STATUS_SUCCESS);
+  prelude_deinit();
 }
 
 void Client::start()
@@ -57,7 +60,6 @@ idmef_message_t* Client::recvMessage(int timeout)
 
   return idmef_p;
 }
-
 
 } // namespace Prelude
 } // namespace Input

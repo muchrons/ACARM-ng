@@ -7,6 +7,9 @@
 
 #include <string>
 #include <prelude-client.h>
+#include <prelude.h>
+
+#include "Input/Exception.hpp"
 
 namespace Input
 {

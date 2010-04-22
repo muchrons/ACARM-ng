@@ -14,20 +14,26 @@
 using namespace std;
 using namespace Input::Prelude;
 using namespace boost::posix_time;
+using namespace Persistency;
 
 namespace
 {
 
 struct TestClass
 {
-  TestClass()
+  TestClass():
+    process_name("some_process"),
+    process_user("wojek"),
+    service_name("apache"),
+    service_protocol("TCP"),
+    service_port(27600),
+    addressv4("192.168.55.54")    
   {
     if (idmef_source_new(&source_)<0)
       tut::fail("Unable to create source obcject.");
 
-
     prelude_string_t *addr_str;
-    prelude_string_new_dup(&addr_str,"192.168.55.54");
+    prelude_string_new_dup(&addr_str,addressv4.c_str());
 
     idmef_address_t *addr;
     idmef_address_new(&addr);
@@ -40,13 +46,43 @@ struct TestClass
     idmef_node_set_address(node,addr,IDMEF_LIST_APPEND);
 
     prelude_string_t *proc_str;
-    prelude_string_new_dup(&proc_str,"some process");
-    /*
+    prelude_string_new_dup(&proc_str,process_name.c_str());
+
+    prelude_string_t *proc_name;
+    prelude_string_new_dup(&proc_name,process_user.c_str());
+    
     idmef_process_t *proc;
     idmef_process_new(&proc);
     idmef_process_set_name(proc,proc_str);
-    idmef_source_set_process(source_,proc);
-    */
+
+    idmef_user_t *user;
+    idmef_source_new_user(source_,&user);
+
+    idmef_user_id_t* userid;
+    idmef_user_new_user_id(user,&userid,IDMEF_LIST_APPEND);
+
+    prelude_string_t *username;
+    prelude_string_new_dup(&username,process_user.c_str());
+    idmef_user_id_set_name(userid,username);
+
+    idmef_source_set_process(source_,proc);    
+
+    idmef_service_t * service;
+    idmef_source_new_service(source_,&service);
+
+    prelude_string_t *servicename;
+    prelude_string_new_dup(&servicename,service_name.c_str());
+    idmef_service_set_name(service,servicename);
+
+    prelude_string_t *protocol;
+    prelude_string_new_dup(&protocol,service_protocol.c_str());
+    idmef_service_set_protocol(service,protocol);
+
+    idmef_service_set_port(service,27600);
+    
+    //idmef_service_set
+    
+
   }
 
   ~TestClass()
@@ -61,6 +97,12 @@ struct TestClass
 
 protected:
   idmef_source_t *source_;
+  std::string process_name;
+  std::string process_user;
+  std::string service_name;
+  std::string service_protocol;  
+  uint16_t service_port;
+  std::string addressv4;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -73,16 +115,16 @@ factory tf("Input/Prelude/IDMEFParserSource");
 namespace tut
 {
 
-// TODO: add test case name
+// Check address (IPv4)
 template<>
 template<>
 void testObj::test<1>(void)
 {
   IDMEFParserSource ips(getSource());
-  ensure_equals("Address IPv4",ips.getAddress(),Persistency::Analyzer::IP(boost::asio::ip::address_v4::from_string("192.168.55.54")));  // TODO: LTL
+  ensure_equals("Address IPv4",ips.getAddress(),Analyzer::IP(boost::asio::ip::address_v4::from_string(addressv4)));
 }
 
-// TODO: add test case name
+// Check address (IPv6)
 template<>
 template<>
 void testObj::test<2>(void)
@@ -104,15 +146,57 @@ void testObj::test<2>(void)
   idmef_node_set_address(node,addr,IDMEF_LIST_APPEND);
 
   IDMEFParserSource ips(source6);
-  ensure_equals("Address IPv6",ips.getAddress(),Persistency::Analyzer::IP(boost::asio::ip::address_v6::from_string(addrv6)));   // TODO: LTL
+  ensure_equals("Address IPv6",ips.getAddress(),Analyzer::IP(boost::asio::ip::address_v6::from_string(addrv6)));
 }
 
-// TODO: add test case name
+//Check process name
 template<>
 template<>
 void testObj::test<3>(void)
 {
-  // TODO
+  IDMEFParserSource ips(getSource());
+  ensure("Source process is null",ips.getProcess()!=NULL);
+  ensure_equals("Process Name",ips.getProcess()->getName().get(),process_name);
+}
+
+//Check process user
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  IDMEFParserSource ips(getSource());
+  ensure("Source process is null",ips.getProcess()!=NULL);
+  ensure_equals("Process User",ips.getProcess()->getUsername().get(),process_user);
+}
+
+//Check service name
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  IDMEFParserSource ips(getSource());
+  ensure("Source service is null",ips.getService()!=NULL);
+  ensure_equals("Service Name",ips.getService()->getName().get(),service_name);
+}
+
+//Check service protocol
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  IDMEFParserSource ips(getSource());
+  ensure("Source service is null",ips.getService()!=NULL);
+  ensure_equals("Service Protocol",ips.getService()->getProtocol().get(),service_protocol);
+}
+
+//Check service port
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  IDMEFParserSource ips(getSource());
+  ensure("Source service is null",ips.getService()!=NULL);
+  ensure_equals("Service Port",ips.getService()->getPort(),service_port);
 }
 
 

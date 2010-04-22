@@ -7,7 +7,7 @@
 
 #include <prelude.h>
 
-#include "ParseException.hpp"
+#include "Input/Prelude/ParseException.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/IPTypes.hpp"
 
@@ -27,17 +27,16 @@ public:
    */
   typedef Persistency::IPTypes<IDMEFParserSource>::IP IP;
 
-  // TODO: c-tor should be explicit
   /**
    * @brief c-tor
    * \param ptr idmef_source_t structure to parse
    */
-  IDMEFParserSource(idmef_source_t *ptr);
+  explicit IDMEFParserSource(idmef_source_t *ptr);
 
   /**
    * @brief gets address of a source
    */
-  Persistency::Analyzer::IP getAddress() const;
+  const Persistency::Analyzer::IP& getAddress() const;
 
   /**
    * @brief gets reported process
@@ -50,12 +49,12 @@ public:
   const Persistency::ServicePtr getService() const;
 
 private:
-  idmef_source_t * isEmpty(idmef_source_t *ptr) const;
-  std::auto_ptr<IP> parseIP(idmef_source_t *ptr) const;
+  idmef_source_t * getNotNull(idmef_source_t *ptr) const;
+  IP parseIP(idmef_source_t *ptr) const;
   Persistency::ProcessPtr parseProcess(idmef_source_t * ptr) const;
   Persistency::ServicePtr parseService(idmef_source_t * ptr) const;
 
-  std::auto_ptr<IP>       ip_;      // TODO: smart Prt not needed here. see Host::IP typedef for instance
+  IP                      ip_;
   Persistency::ProcessPtr process_;
   Persistency::ServicePtr service_;
 };//class IDMEFParserSource
