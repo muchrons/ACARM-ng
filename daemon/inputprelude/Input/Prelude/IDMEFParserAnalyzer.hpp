@@ -5,7 +5,7 @@
 #ifndef INCLUDE_INPUT_PRELUDE_IDMEFPARSERANALYZER_HPP_FILE
 #define INCLUDE_INPUT_PRELUDE_IDMEFPARSERANALYZER_HPP_FILE
 
-#include "Prelude/prelude.h"
+#include "prelude.h"
 
 #include "Persistency/Alert.hpp"
 #include "Persistency/Timestamp.hpp"
