@@ -66,8 +66,7 @@ EntryReader::EntryReader(Transaction &t, DBHandler &dbh):
 {
 }
 
-//TODO: work in progress
-// write tests !!
+//TODO: write tests
 Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
 {
   stringstream ss;
@@ -241,7 +240,6 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
   // TODO: use ReaderHerlper here.
   string arguments;
   rr[0]["arguments"].to(arguments);
-
   Persistency::ProcessPtr process( new Process( ReaderHelper<string,Process::Path>::readAs(r[0]["path"]),
                                                 ReaderHelper<string>::fromSQLResult(r[0]["name"]),
                                                 ReaderHelper<MD5Sum>::readAs(r[0]["md5"]).get(),
@@ -306,7 +304,7 @@ vector<DataBaseID> EntryReader::readMetaAlertChildren(DataBaseID malertID)
   stringstream ss;
   ss << "SELECT id_child FROM meta_alerts_tree WHERE id_node = " << malertID << ";";
   const result r = execSQL(t_, ss);
-
+  childrenIDs.reserve( r.size() );
   for(size_t i=0; i<r.size(); ++i)
     childrenIDs.push_back( ReaderHelper<DataBaseID>::fromSQLResult(r[i]["id_child"]) );
   return childrenIDs;
@@ -332,13 +330,12 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
 {
   vector<DataBaseID> malertsBetween;
   stringstream       ss;
-  //TODO: test this query
   ss << "SELECT id FROM meta_alerts WHERE ";
   Appender::append(ss, from);
   ss << " <= create_time AND create_time <=";
   Appender::append(ss, to);
   const result r = execSQL(t_, ss);
-
+  malertsBetween.reserve( r.size() );
   for(size_t i=0; i<r.size(); ++i)
     malertsBetween.push_back( ReaderHelper<DataBaseID>::fromSQLResult(r[i]["id"]) );
   return malertsBetween;
@@ -353,6 +350,7 @@ std::vector<DataBaseID> EntryReader::readRoots()
   const result r = execSQL(t_, "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
                          "SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );");
 
+  roots.reserve( r.size() );
   for(size_t i=0; i<r.size(); ++i)
   {
     // assert to ensure value is not null

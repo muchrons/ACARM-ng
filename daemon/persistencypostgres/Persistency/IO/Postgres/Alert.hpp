@@ -9,7 +9,6 @@
 #include "Persistency/IO/Alert.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
-// TODO: test
 
 using namespace Persistency::IO::Postgres::detail;
 

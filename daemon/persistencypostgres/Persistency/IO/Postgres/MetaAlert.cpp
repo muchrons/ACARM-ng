@@ -52,7 +52,6 @@ void MetaAlert::markAsUnusedImpl(Transaction &t)
 
 void MetaAlert::updateSeverityDeltaImpl(Transaction &t, double delta)
 {
-  // TODO tests
   EntrySaver                    es(t, *dbHandler_);
   const DataBaseID              malertID = dbHandler_->getIDCache()->get( get() );
   es.updateSeverityDelta(malertID, delta);
@@ -60,7 +59,6 @@ void MetaAlert::updateSeverityDeltaImpl(Transaction &t, double delta)
 
 void MetaAlert::updateCertaintyDeltaImpl(Transaction &t, double delta)
 {
-  // TODO tests
   EntrySaver                    es(t, *dbHandler_);
   const DataBaseID              malertID = dbHandler_->getIDCache()->get( get() );
   es.updateCertaintyDelta(malertID, delta);
@@ -69,7 +67,6 @@ void MetaAlert::updateCertaintyDeltaImpl(Transaction &t, double delta)
 
 void MetaAlert::addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child)
 {
-  // TODO tests
   EntrySaver       es(t, *dbHandler_);
   const DataBaseID nodeID = dbHandler_->getIDCache()->get( get() );
   const DataBaseID childID = dbHandler_->getIDCache()->get( child );
@@ -78,7 +75,6 @@ void MetaAlert::addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child)
 
 void MetaAlert::associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN alert)
 {
-  // TODO: tests
   EntrySaver       es(t, *dbHandler_);
   const DataBaseID maID = dbHandler_->getIDCache()->get( get() );
   const DataBaseID alertID = dbHandler_->getIDCache()->get( alert );

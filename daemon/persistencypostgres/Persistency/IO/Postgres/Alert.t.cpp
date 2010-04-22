@@ -25,8 +25,8 @@ struct TestClass
     name_("some name"),
     analyzer_( new Analyzer("analyzer name", NULL, NULL, NULL ) ),
     analyzers_( analyzer_ ),
-    nullanalyzer_( new Analyzer("analyzer name", NULL, NULL, NULL )),
-    nullanalyzers_( nullanalyzer_ ),
+    analyzerWithNull_( new Analyzer("analyzer name", NULL, NULL, NULL )),
+    analyzersWithNull_( analyzerWithNull_ ),
     detected_(123444),
     created_(123555),
     severity_(SeverityLevel::INFO),
@@ -53,9 +53,8 @@ struct TestClass
   const Persistency::Alert::Name          name_;
   const AnalyzerPtrNN                     analyzer_;
   Persistency::Alert::SourceAnalyzers     analyzers_;
-  // TODO: inadequate variables' names (nullanalyzer is never NULL actually)
-  const AnalyzerPtrNN                     nullanalyzer_;
-  Persistency::Alert::SourceAnalyzers     nullanalyzers_;
+  const AnalyzerPtrNN                     analyzerWithNull_;
+  Persistency::Alert::SourceAnalyzers     analyzersWithNull_;
   const Timestamp                         detected_;
   const Timestamp                         created_;
   const Severity                          severity_;
@@ -98,7 +97,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, nullanalyzers_, &detected_, created_, severity_,
+  Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, analyzersWithNull_, &detected_, created_, severity_,
                                                          certainty_, description_, sourceHosts_, targetHosts_));
   Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
   alert.save();
@@ -110,7 +109,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, nullanalyzers_, NULL, created_, severity_,
+  Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, analyzersWithNull_, NULL, created_, severity_,
                                                          certainty_, description_, sourceHosts_, targetHosts_));
   Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
   alert.save();

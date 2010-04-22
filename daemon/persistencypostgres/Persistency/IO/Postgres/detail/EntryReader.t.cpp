@@ -14,6 +14,7 @@
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/Postgres/Alert.hpp"
 #include "Persistency/IO/Postgres/MetaAlert.hpp"
+#include "Persistency/IO/Postgres/timestampFromString.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 
@@ -233,5 +234,52 @@ void testObj::test<6>(void)
   ensure_equals("invalid certainty delta", ma->getCertaintyDelta(), 0.2);
   ensure("reference url is not null", ma->getReferenceURL()==NULL);
   t_.commit();
+}
+
+// trying restoring MetaAlerts between
+template<>
+template<>
+void testObj::test<7>(void)
+{
+
+  const std::string malertName("meta alert name");
+  Timestamp t1( timestampFromString("1970-01-15 07:56:07") );
+  Timestamp t2( timestampFromString("1999-10-10 17:56:07") );
+  Timestamp t3( timestampFromString("2010-04-22 07:56:07") );
+
+  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  Persistency::MetaAlertPtrNN maPtr1(
+      new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
+                                  0.1, 0.2,
+                                  refURL,
+                                  t1 ) );
+  Persistency::IO::Postgres::MetaAlert malert1(maPtr1, t_, dbh_);
+  Persistency::MetaAlertPtrNN maPtr2(
+      new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
+                                  0.1, 0.2,
+                                  refURL,
+                                  t2 ) );
+  Persistency::IO::Postgres::MetaAlert malert2(maPtr2, t_, dbh_);
+  Persistency::MetaAlertPtrNN maPtr3(
+      new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
+                                  0.1, 0.2,
+                                  refURL,
+                                  t3 ) );
+  Persistency::IO::Postgres::MetaAlert malert3(maPtr3, t_, dbh_);
+  malert1.save();
+  malert2.save();
+  malert3.save();
+  vector<DataBaseID> malertsBetween;
+  malertsBetween = er_.readIDsMalertsBetween(t1, t1);
+  ensure_equals("invalid size", malertsBetween.size(), 1);
+
+  malertsBetween = er_.readIDsMalertsBetween(t1, t2);
+  ensure_equals("invalid size", malertsBetween.size(), 2);
+
+  malertsBetween = er_.readIDsMalertsBetween(t1, t3);
+  ensure_equals("invalid size", malertsBetween.size(), 3);
+
+  malertsBetween = er_.readIDsMalertsBetween(t3, t1);
+  ensure_equals("invalid size", malertsBetween.size(), 0);
 }
 } // namespace tut

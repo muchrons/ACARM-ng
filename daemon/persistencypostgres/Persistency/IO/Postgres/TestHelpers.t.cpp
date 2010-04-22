@@ -5,8 +5,6 @@
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 
-// TODO: make these changes (i.e. - commiting graph node changes) also in
-//       testhelperspersistency component.
 
 namespace Persistency
 {
