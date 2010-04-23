@@ -137,6 +137,31 @@ struct ReaderHelper< Persistency::Timestamp , T2, T3>
   }
 }; // ReaderHelper class partial specialization
 
+/** \brief helper class which gets values from SQL queries - specialization for char
+ */
+template<typename T2, typename T3>
+struct ReaderHelper< char, T2, T3>
+{
+  /** \brief check if SQL query is null, if not return proper value
+   *  \param r SQL result field
+   */
+  static T2 readAs(const pqxx::result::field &r)
+  {
+    if( r.is_null() )
+    {
+      T2 ret;
+      return ret;
+    }
+    else
+    {
+      T3 s;
+      r.to(s);
+      T2 ret( s.c_str() );
+      return ret;
+    }
+  }
+}; // ReaderHelper class partial specialization
+
 /** \brief helper class which gets values from SQL queries - specialization for Persistency::MD5Sum
  */
 template<typename T2, typename T3>

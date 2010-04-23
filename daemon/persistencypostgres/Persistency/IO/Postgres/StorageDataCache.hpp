@@ -113,7 +113,7 @@ public:
    *  \param ptr pointer to be added (as a key).
    *  \param id  data base ID for this object.
    */
-  void add(TSharedPtr ptr, DataBaseID id)
+  void add(const TSharedPtr ptr, DataBaseID id)
   {
     const EntryID                      tmp(ptr, id);
     Base::Threads::Lock                lock(mutex_);

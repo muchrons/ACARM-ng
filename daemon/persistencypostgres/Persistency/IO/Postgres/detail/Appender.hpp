@@ -104,7 +104,7 @@ inline void Appender::append<Persistency::Analyzer::IP>(std::stringstream       
   else
   {
     ss << " = ";
-    appendEscape(ss, t->to_string().c_str() );
+    append(ss, t->to_string().c_str() );
   }
 }
 

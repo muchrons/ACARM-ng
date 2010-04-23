@@ -634,7 +634,6 @@ template<>
 template<>
 void testObj::test<16>(void)
 {
-
 }
 
 // try save service with NULL reference URL
@@ -715,5 +714,70 @@ void testObj::test<19>(void)
   t_.commit();
 }
 
+// trying save MetaAlert as triggered
+template<>
+template<>
+void testObj::test<20>(void)
+{
+  const string TriggerName("some trigger name");
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
+  es_.saveMetaAlertAsUsed(malertID);
+  stringstream ss;
+  {
+    ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid size",r.size(), 1u);
+  }
+  es_.saveMetaAlertAsTriggered(malertID, TriggerName);
+  ss.str("");
+  {
+    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
+    result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid size",r.size(), 1u);
+    ensure_equals("invalid trigger name", ReaderHelper<string>::fromSQLResult(r[0]["trigger_name"]), TriggerName);
+  }
+}
+
+// trying save MetaAlert as used
+template<>
+template<>
+void testObj::test<21>(void)
+{
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
+  es_.saveMetaAlertAsUsed(malertID);
+  stringstream ss;
+  ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
+  const result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(), 1u);
+}
+
+// trying save MetaAlert as unused
+template<>
+template<>
+void testObj::test<22>(void)
+{
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
+  es_.saveMetaAlertAsUsed(malertID);
+  stringstream ss;
+  {
+    ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid size",r.size(), 1u);
+  }
+  es_.saveMetaAlertAsUnused(malertID);
+  ss.str("");
+  {
+    ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
+    result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid size",r.size(), 0);
+  }
+
+}
 
 } // namespace tut
