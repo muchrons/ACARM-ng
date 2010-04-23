@@ -102,13 +102,13 @@ static void _get_dir_once(void)
 {
         relocated_prefix = (_prelude_prefix) ? _prelude_prefix : relocate(INSTALLPREFIX);
 
-        relative_spool_dir = get_relpath(PRELUDE_SPOOL_DIR);
+        relative_spool_dir = get_relpath("/var/spool/prelude");
         relative_profile_dir = get_relpath(PRELUDE_PROFILE_DIR);
         relative_config_default_dir = get_relpath(PRELUDE_CONFIG_DEFAULT_DIR);
 
         prelude_log_debug(2, "install   prefix=%s", INSTALLPREFIX);
         prelude_log_debug(2, "relocated prefix=%s\n", relocated_prefix);
-        prelude_log_debug(2, "relative   spool=%s\n", relative_spool_dir ? relative_spool_dir : PRELUDE_SPOOL_DIR);
+        prelude_log_debug(2, "relative   spool=%s\n", relative_spool_dir ? relative_spool_dir : "/var/spool/prelude");
         prelude_log_debug(2, "relative  config=%s\n", relative_config_default_dir ? relative_config_default_dir : PRELUDE_CONFIG_DEFAULT_DIR);
         prelude_log_debug(2, "relative profile=%s\n", relative_profile_dir ? relative_profile_dir : PRELUDE_PROFILE_DIR);
 }
@@ -486,7 +486,7 @@ void prelude_client_profile_get_backup_dirname(const prelude_client_profile_t *c
 
         prefix = init_once_and_get_prefix();
         if ( ! relative_spool_dir )
-                snprintf(buf, size, "%s/%s", PRELUDE_SPOOL_DIR, cp->name);
+                snprintf(buf, size, "%s/%s", "/var/spool/prelude", cp->name);
         else
                 snprintf(buf, size, "%s/%s/%s", prefix, relative_spool_dir, cp->name);
 

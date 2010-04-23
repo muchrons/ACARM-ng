@@ -44,7 +44,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  opts_["preludeProfile"]="profile";
+  opts_["profile"]="profile";
+  opts_["config"]="/etc/prelude/default/client.conf";
   ReaderBuilder::FactoryPtr ptr=rb_.build(opts_);
   ensure("NULL pointere returned", ptr.get()!=NULL );
 }
