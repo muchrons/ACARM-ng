@@ -1,8 +1,9 @@
 /*
- * Host.hpp
+ * Host.cpp
  *
  */
 #include "Persistency/IO/Postgres/Host.hpp"
+using namespace Persistency::IO::Postgres::detail;
 
 namespace Persistency
 {
@@ -19,9 +20,11 @@ Host::Host(Persistency::HostPtrNN  host,
 {
 }
 
-void Host::setNameImpl(Transaction &, const Persistency::Host::Name &/*name*/)
+void Host::setNameImpl(Transaction &t, const Persistency::Host::Name &name)
 {
-  // TODO
+  EntrySaver es(t, *dbHandler_);
+  DataBaseID hostID = dbHandler_->getIDCache()->get( get() );
+  es.setHostName(hostID, name);
 }
 
 } // namespace Postgres

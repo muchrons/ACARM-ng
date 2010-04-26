@@ -39,18 +39,12 @@ struct ReaderHelper
   static T2 readAs(const pqxx::result::field &r)
   {
     if( r.is_null() )
-    {
-      T2 ret;
-      return ret;
-    }
-    else
-    {
-      T3 s;
-      r.to(s);
-      T1 data(s);
-      T2 ret( data );
-      return ret;
-    }
+      return T2();
+    T3 s;
+    r.to(s);
+    T1 data(s);
+    T2 ret( data );
+    return ret;
   }
   /** \brief get data from given SQL result field.
    *  \param r SQL result field.

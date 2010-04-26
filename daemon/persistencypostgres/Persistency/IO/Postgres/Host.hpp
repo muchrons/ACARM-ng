@@ -7,8 +7,7 @@
 
 #include "Persistency/IO/Host.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
-
-// TODO: test
+#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 
 namespace Persistency
 {

@@ -37,6 +37,15 @@ struct TestClass
     tdba_.removeAllData();
   }
 
+
+  void checkIfMetaAlertIsUsed(DataBaseID malertID, const size_t size = 1u)
+  {
+    stringstream ss;
+    ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    tut::ensure_equals("invalid size",r.size(), size);
+  }
+
   const string        name_;
   TestDBAccess        tdba_;
   IDCachePtrNN        idCache_;
@@ -91,10 +100,7 @@ void testObj::test<2>(void)
   malert.markAsUsed();
   const DataBaseID malertID = dbh_->getIDCache()->get( maPtr );
   stringstream ss;
-  // TODO: c&p code - please make this method of test class
-  ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
-  const result r = t_.getAPI<TransactionAPI>().exec(ss);
-  ensure_equals("invalid size",r.size(), 1u);
+  checkIfMetaAlertIsUsed(malertID);
   t_.commit();
 }
 // trying mark MetaAlert as triggered
@@ -111,15 +117,9 @@ void testObj::test<3>(void)
   malert.markAsUsed();
   const DataBaseID malertID = dbh_->getIDCache()->get( maPtr );
   stringstream ss;
-  // TODO: c&p code - please make this method of test class
-  {
-    ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
-    result r = t_.getAPI<TransactionAPI>().exec(ss);
-    ensure_equals("invalid size",r.size(), 1u);
-  }
+  checkIfMetaAlertIsUsed(malertID);
   string TriggerName("some trigger name");
   malert.markAsTriggered(TriggerName);
-  ss.str("");
   ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(), 1u);
@@ -140,20 +140,9 @@ void testObj::test<4>(void)
   malert.markAsUsed();
   const DataBaseID malertID = dbh_->getIDCache()->get( maPtr );
   stringstream ss;
-  // TODO: c&p code - please make this method of test class
-  {
-    ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
-    result r = t_.getAPI<TransactionAPI>().exec(ss);
-    ensure_equals("invalid size",r.size(), 1u);
-  }
+  checkIfMetaAlertIsUsed(malertID);
   malert.markAsUnused();
-  ss.str("");
-  // TODO: c&p code - please make this method of test class
-  {
-    ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
-    result r = t_.getAPI<TransactionAPI>().exec(ss);
-    ensure_equals("invalid size",r.size(), 0);
-  }
+  checkIfMetaAlertIsUsed(malertID, 0);
   t_.commit();
 }
 

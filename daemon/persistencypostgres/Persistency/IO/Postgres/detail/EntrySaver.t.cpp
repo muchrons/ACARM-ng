@@ -723,14 +723,14 @@ void testObj::test<20>(void)
   const MetaAlert::Name name("meta alert");
   MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
-  es_.saveMetaAlertAsUsed(malertID);
+  es_.markMetaAlertAsUsed(malertID);
   stringstream ss;
   {
     ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
   }
-  es_.saveMetaAlertAsTriggered(malertID, TriggerName);
+  es_.markMetaAlertAsTriggered(malertID, TriggerName);
   ss.str("");
   {
     ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
@@ -748,7 +748,7 @@ void testObj::test<21>(void)
   const MetaAlert::Name name("meta alert");
   MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
-  es_.saveMetaAlertAsUsed(malertID);
+  es_.markMetaAlertAsUsed(malertID);
   stringstream ss;
   ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
   const result r = t_.getAPI<TransactionAPI>().exec(ss);
@@ -763,14 +763,14 @@ void testObj::test<22>(void)
   const MetaAlert::Name name("meta alert");
   MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
-  es_.saveMetaAlertAsUsed(malertID);
+  es_.markMetaAlertAsUsed(malertID);
   stringstream ss;
   {
     ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
   }
-  es_.saveMetaAlertAsUnused(malertID);
+  es_.markMetaAlertAsUnused(malertID);
   ss.str("");
   {
     ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
@@ -780,6 +780,40 @@ void testObj::test<22>(void)
 
 }
 
+//test set Host name
+template<>
+template<>
+void testObj::test<23>(void)
+{
+  const string hostName("some.host.com");
+  const Host h(  Host::IPv4::from_string("1.2.3.4"),
+                 &mask4_,
+                 "myos",
+                 makeNewReferenceURL(),
+                 Host::ReportedServices(),
+                 Host::ReportedProcesses(),
+                 NULL );
+  DataBaseID hostID = es_.saveHostData(h);
+
+  stringstream ss;
+  {
+    ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid size", r.size(), 1u);
+
+    ensure("Host name is not NULL",r[0]["name"].is_null() );
+  }
+  // trying set Host name
+  es_.setHostName(hostID, hostName);
+  {
+    ss << "SELECT name FROM hosts WHERE id = " << hostID << ";";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    string name = ReaderHelper<string>::fromSQLResult(r[0]["name"]);
+    trim(name);
+    ensure_equals("invalid host name",  name, hostName);
+  }
+  t_.commit();
+}
 // TODO: add tests to check if max/min-length data types does fill in data base.
 
 } // namespace tut

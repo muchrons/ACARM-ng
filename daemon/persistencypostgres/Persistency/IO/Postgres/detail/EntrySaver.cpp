@@ -79,8 +79,7 @@ void EntrySaver::addReferenceURL(std::stringstream &ss, const ReferenceURL *url)
     ss << "NULL";
 }
 
-// TODO: return NullValue<> instead of auto_ptr<> - there is no need to make extra allocations here
-std::auto_ptr<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
+Base::NullValue<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
 {
   DataBaseID id;
   stringstream ss;
@@ -93,14 +92,13 @@ std::auto_ptr<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   ss << " AND ip";
   Appender::append(ss, a.getIP() );
   ss << ";";
-  // TODO: this variable should be const
-  result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+  const result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
   if(r.empty() )
-    return std::auto_ptr<DataBaseID>();
+    return Base::NullValue<DataBaseID>();
   else
   {
     r[0]["id"].to(id);
-    return std::auto_ptr<DataBaseID>(new DataBaseID(id));
+    return Base::NullValue<DataBaseID>( id );
   }
 }
 
@@ -228,7 +226,7 @@ DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 
 DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
 {
-  std::auto_ptr<DataBaseID> id = isAnalyzerInDataBase(a);
+  Base::NullValue<DataBaseID> id = isAnalyzerInDataBase(a);
   if( id.get() == NULL)
   {
     stringstream ss;
@@ -338,21 +336,21 @@ void EntrySaver::saveMetaAlertsTree(DataBaseID nodeID, DataBaseID childID)
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
-void EntrySaver::saveMetaAlertAsUsed(DataBaseID malertID)
+void EntrySaver::markMetaAlertAsUsed(DataBaseID malertID)
 {
   stringstream ss;
   ss << "INSERT INTO meta_alerts_in_use(id_meta_alert) VALUES (" << malertID << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
-void EntrySaver::saveMetaAlertAsUnused(DataBaseID malertID)
+void EntrySaver::markMetaAlertAsUnused(DataBaseID malertID)
 {
   stringstream ss;
   ss << "DELETE FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
-void EntrySaver::saveMetaAlertAsTriggered(DataBaseID malertID, const std::string &name)
+void EntrySaver::markMetaAlertAsTriggered(DataBaseID malertID, const std::string &name)
 {
   stringstream ss;
   ss << "INSERT INTO meta_alerts_already_triggered(id_meta_alert_in_use, trigger_name) VALUES(";
@@ -378,6 +376,25 @@ void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta
   ss << "UPDATE meta_alerts SET certanity_delta = certanity_delta + ";
   Appender::append(ss, certanityDelta);
   ss << " WHERE id = " << malertID << ";";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+}
+
+bool EntrySaver::isHostNameNull(DataBaseID hostID)
+{
+  stringstream ss;
+  ss << "SELECT name FROM hosts WHERE id = " << hostID << ";";
+  const result r = t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+  if(r[0]["name"].is_null())
+    return true;
+  return false;
+}
+void EntrySaver::setHostName(DataBaseID hostID, const Persistency::Host::Name &name)
+{
+  assert( isHostNameNull(hostID) == true );
+  stringstream ss;
+  ss << "UPDATE hosts SET name = ";
+  Appender::append(ss, name.get());
+  ss << " WHERE id = " << hostID << ";";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
