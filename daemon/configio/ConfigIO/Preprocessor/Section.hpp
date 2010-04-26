@@ -7,8 +7,6 @@
 
 /* public header */
 
-#include <string>
-
 #include "System/Enum.hpp"
 #include "ConfigIO/Preprocessor/Expression.hpp"
 
