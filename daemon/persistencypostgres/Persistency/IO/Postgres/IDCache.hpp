@@ -29,93 +29,57 @@ namespace Postgres
 class IDCache: private boost::noncopyable
 {
 public:
-  /** \brief gets ID for a given host.
-   *  \param host host to get ID for.
-   *  \return data-base ID for a given host.
+  /** \brief gets ID for a given Host/Alert/MetaAlert.
+   *  \param t Host/Alert/MetaAlert to get ID for.
+   *  \return data-base ID for a given Host/Alert/MetaAlert.
    */
-  DataBaseID get(HostPtrNN host)
+  template<typename T>
+  DataBaseID get(const T &t)
   {
-    return hostsIDs_.get(host);
-  }
-  /** \brief adds new entry to cache.
-   *  \param host host to be added.
-   *  \param id   data base ID to associate with a given host.
-   */
-  void add(HostPtrNN host, DataBaseID id)
-  {
-    return hostsIDs_.add(host, id);
+    return getDataHolder(t).get(t);
   }
 
-  /** \brief gets ID for a given alert.
-   *  \param alert alert to get ID for.
-   *  \return data-base ID or a given alert.
-   */
-  DataBaseID get(AlertPtrNN alert)
-  {
-    return alertsIDs_.get(alert);
-  }
   /** \brief adds new entry to cache.
-   *  \param alert alert to be added.
-   *  \param id    id to associate with given alert.
+   *  \param t  Host/Alert/MetaAlerti to be added.
+   *  \param id ID to associate with given Host/Alert/MetaAlert.
    */
-  void add(AlertPtrNN alert, DataBaseID id)
+  template<typename T>
+  void add(const T &t, DataBaseID id)
   {
-    return alertsIDs_.add(alert, id);
+    return getDataHolder(t).add(t, id);
   }
 
-  /** \brief gets ID for a given meta-alert.
-   *  \param ma meta-alert to get ID for.
-   *  \return data-base ID or a given meta-alert.
+  /** \brief check if Host/Alert/MetaAlert is in cache
+   *  \param t Host/Alert/MetaAlert to be checked
+   *  \return true if Host/Alert/MetaAlert is in cache
    */
-  DataBaseID get(MetaAlertPtrNN ma)
+  template<typename T>
+  bool has(const T &t)
   {
-    return metaAlertsIDs_.get(ma);
-  }
-  /** \brief adds new entry to cache.
-   *  \param ma meta-alert to be added.
-   *  \param id id to associate with given meta-alert.
-   */
-  void add(MetaAlertPtrNN ma, DataBaseID id)
-  {
-    return metaAlertsIDs_.add(ma, id);
+    return getDataHolder(t).has(t);
   }
 
   /** \brief removes entries that are no longer prenset in the memory.
    */
   void prune(void);
 
-  /** \brief check if alert is in cache
-   *  \param alert alert to be checked
-   *  \return true if alert is in cache
-   */
-  bool has(AlertPtrNN alert)
-  {
-    return alertsIDs_.hasImpl(alert);
-  }
-
-  /** \brief check if meta-alert is in cache
-   *  \param ma meta-alert to be checked
-   *  \return true if alert is in cache
-   */
-  bool has(MetaAlertPtrNN ma)
-  {
-    return metaAlertsIDs_.hasImpl(ma);
-  }
-
-
-  /** \brief check if host is in cache
-   *  \param host host to be checked
-   *  \return true if host is in cache
-   */
-  bool has(HostPtrNN host)
-  {
-    return hostsIDs_.hasImpl(host);
-  }
-
 private:
-  // TODO: use DataHolder<> mechanism to make has()/get()/add() implementation
-  //       generic templates - this will make implementation shorter and more
-  //       generic (ex: in case more cache's would be needed).
+
+  StorageDataCache<Persistency::Host> &getDataHolder(const HostPtrNN &)
+  {
+    return hostsIDs_;
+  }
+
+  StorageDataCache<Persistency::Alert> &getDataHolder(const AlertPtrNN &)
+  {
+    return alertsIDs_;
+  }
+
+  StorageDataCache<Persistency::MetaAlert> &getDataHolder(const MetaAlertPtrNN &)
+  {
+    return metaAlertsIDs_;
+  }
+
   StorageDataCache<Persistency::Host>      hostsIDs_;
   StorageDataCache<Persistency::Alert>     alertsIDs_;
   StorageDataCache<Persistency::MetaAlert> metaAlertsIDs_;

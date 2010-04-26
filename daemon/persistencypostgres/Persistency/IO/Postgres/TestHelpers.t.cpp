@@ -5,8 +5,6 @@
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 
-// TODO: make these changes (i.e. - commiting graph node changes) also in
-//       testhelperspersistency component.
 
 namespace Persistency
 {
@@ -105,17 +103,6 @@ ReferenceURLPtr makeNewReferenceURL(const char *url)
   return ReferenceURLPtr( new Persistency::ReferenceURL("some name", url) );
 }
 
-// TODO: make this and makeNewLeaf(const char*) single function with default paramter.
-GraphNodePtrNN makeNewLeaf(void)
-{
-  Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
-  IO::Transaction t( conn->createNewTransaction("make_leaf_transaction") );
-  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewAlert(), conn, t) );
-  t.commit();
-  return graphNode;
-}
-
-// TODO: function not declared in header
 GraphNodePtrNN makeNewLeaf(const char *name)
 {
   Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
@@ -167,7 +154,6 @@ GraphNodePtrNN makeNewTree2(void)
                         makeNewNode( makeNewLeaf(), node1 ), node1 ) );
 }
 
-// TODO
 /*
 GraphNodePtrNN makeNewTree3(void)
 {

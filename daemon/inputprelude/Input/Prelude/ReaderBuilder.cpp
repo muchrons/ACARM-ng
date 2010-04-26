@@ -46,10 +46,9 @@ ReaderBuilder::FactoryPtr ReaderBuilder::buildImpl(const Options &opt) const
   // TODO: implement this
 
   const ConfigIO::InputConfig ic(name_, opt);
-  // TODO: i'd suggest removign 'prelude' surfix - parameters are
-  //       per-input any way so no collision is possible.
-  const std::string &pprofile=ic["preludeProfile"];
-  const std::string &pconfig=ic["preludeConfig"];
+
+  const std::string &pprofile=ic["profile"];
+  const std::string &pconfig=ic["config"];
 
   return ReaderBuilder::FactoryPtr( new Reader(pprofile, pconfig) );
 }

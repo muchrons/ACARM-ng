@@ -79,7 +79,7 @@ void EntrySaver::addReferenceURL(std::stringstream &ss, const ReferenceURL *url)
     ss << "NULL";
 }
 
-DataBaseID EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
+std::auto_ptr<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
 {
   DataBaseID id;
   stringstream ss;
@@ -94,11 +94,11 @@ DataBaseID EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   ss << ";";
   result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
   if(r.empty() )
-    return -1;
+    return std::auto_ptr<DataBaseID>();
   else
   {
     r[0]["id"].to(id);
-    return id;
+    return std::auto_ptr<DataBaseID>(new DataBaseID(id));
   }
 }
 
@@ -209,11 +209,7 @@ DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
   ss << "INSERT INTO alerts(name, detect_time, create_time, id_severity, certanity, description) VALUES (";
   Appender::append(ss, a.getName().get() );
   ss << ",";
-  // TODO: use ternary operator for this
-  if(a.getDetectionTime()==NULL)
-    ss << "NULL";
-  else
-    Appender::append(ss, a.getDetectionTime() );
+  Appender::append(ss, a.getDetectionTime()?a.getDetectionTime():NULL);
   ss << ",";
   Appender::append(ss, a.getCreationTime() );
   ss << ",";
@@ -230,10 +226,8 @@ DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 
 DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
 {
-  // TODO: method named 'is' cannot return non-bool value.
-  // TODO: -1 can be valid ID.
-  DataBaseID id = isAnalyzerInDataBase(a);
-  if( id == -1)
+  std::auto_ptr<DataBaseID> id = isAnalyzerInDataBase(a);
+  if( id.get() == NULL)
   {
     stringstream ss;
     ss << "INSERT INTO analyzers(name, version, os, ip) VALUES (";
@@ -243,17 +237,12 @@ DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
     ss << ",";
     Appender::append(ss, a.getOS()?a.getOS()->get():NULL );
     ss << ",";
-    // TODO: use ternary operator for this
-    //Appender::append(ss, a.getIP()?( a.getIP()->to_string() ):NULL);
-    if(a.getIP()==NULL)
-      ss << "NULL";
-    else
-      Appender::append(ss, a.getIP()->to_string() );
+    Appender::append(ss, a.getIP()?( a.getIP()->to_string().c_str() ):NULL);
     ss << ");";
     t_.getAPI<Postgres::TransactionAPI>().exec(ss);
     return getID("analyzers_id_seq");
   }
-  return id;
+  return *id.get();
 }
 
 DataBaseID EntrySaver::saveServiceData(const Service &s)
@@ -357,19 +346,18 @@ void EntrySaver::saveMetaAlertAsUsed(DataBaseID malertID)
 void EntrySaver::saveMetaAlertAsUnused(DataBaseID malertID)
 {
   stringstream ss;
-  ss << "DELETE FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ");";
+  ss << "DELETE FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
 void EntrySaver::saveMetaAlertAsTriggered(DataBaseID malertID, const std::string &name)
 {
-  //TODO
   stringstream ss;
-  ss << "INSERT INTO meta_alerts_alredy_triggered(id_meta_alerts_in_use, trigger_name) VALUES(";
+  ss << "INSERT INTO meta_alerts_already_triggered(id_meta_alert_in_use, trigger_name) VALUES(";
   Appender::append(ss, malertID);
   ss << ",";
   Appender::append(ss, name);
-  ss << ";";
+  ss << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
@@ -385,7 +373,7 @@ void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
 void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta)
 {
   stringstream ss;
-  ss << "UPDATE meta_alerts SET certanity_delta = ";
+  ss << "UPDATE meta_alerts SET certanity_delta = certanity_delta + ";
   Appender::append(ss, certanityDelta);
   ss << " WHERE id = " << malertID << ";";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);

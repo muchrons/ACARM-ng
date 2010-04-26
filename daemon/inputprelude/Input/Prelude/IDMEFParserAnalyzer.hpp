@@ -5,8 +5,7 @@
 #ifndef INCLUDE_INPUT_PRELUDE_IDMEFPARSERANALYZER_HPP_FILE
 #define INCLUDE_INPUT_PRELUDE_IDMEFPARSERANALYZER_HPP_FILE
 
-// TODO: "prelude.h"
-#include <prelude.h>
+#include "prelude.h"
 
 #include "Persistency/Alert.hpp"
 #include "Persistency/Timestamp.hpp"
@@ -50,12 +49,11 @@ public:
   const Persistency::Analyzer::IP* getIP() const;
 
 private:
-  // TODO: isEmpty is not a good name here. consider changing it to getNonNull() or simillar.
-  idmef_analyzer_t * isEmpty(idmef_analyzer_t *ptr) const;
+  idmef_analyzer_t * getNonNull(idmef_analyzer_t *ptr) const;
   Persistency::Analyzer::Name parseName(idmef_analyzer_t *ptr) const;
-  // TODO: auto_ptr is over kill here - consider using Base::NullValue<> for this
+
   std::auto_ptr<Persistency::Analyzer::Version> parseVersion(idmef_analyzer_t *ptr) const;
-  std::auto_ptr<Persistency::Analyzer::OS> parseOs(idmef_analyzer_t *ptr) const;
+  std::auto_ptr<Persistency::Analyzer::OS> parseOS(idmef_analyzer_t *ptr) const;
   std::auto_ptr<Persistency::Analyzer::IP> parseIP(idmef_analyzer_t *ptr) const;
 
   Persistency::Analyzer::Name                   name_;

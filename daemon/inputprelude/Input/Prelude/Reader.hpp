@@ -36,7 +36,6 @@ public:
 
 private:
   LogCallback               preludeLogger_;
-  std::string               preludeProfile_;
   boost::scoped_ptr<Client> client_;
 }; // class Reader
 

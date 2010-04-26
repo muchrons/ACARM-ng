@@ -33,7 +33,7 @@ void Restorer::restoreBetweenImpl(Transaction     &t,
                                   const Timestamp &from,
                                   const Timestamp &to)
 {
-  // TODO
+  // TODO tests
   EntryReader er(t, *dbHandler_);
   Tree::IDsVector maBetween( er.readIDsMalertsBetween(from, to) );
   restore(er, out, maBetween);
