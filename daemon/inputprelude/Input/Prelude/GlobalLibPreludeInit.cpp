@@ -29,6 +29,11 @@ struct Releaser
   ~Releaser(void)
   {
     System::Threads::SafeInitLock lock(g_mutex);
+
+    // if there was no initialization, just skip it
+    if(g_wasInitialized==false)
+      return;
+
     // this condition means that prelude is still being used somewhere...
     if(g_counter>0)
     {
