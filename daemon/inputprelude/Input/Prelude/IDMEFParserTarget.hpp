@@ -7,9 +7,9 @@
 
 #include <prelude.h>
 
-
+#include "Input/Prelude/ParseException.hpp"
 #include "Persistency/Alert.hpp"
-#include "Persistency/Host.hpp"
+#include "Persistency/IPTypes.hpp"
 
 
 namespace Input
@@ -17,22 +17,21 @@ namespace Input
 namespace Prelude
 {
 /**
- * @brief Extracts and parses information about target
+ * @brief Extracts and parses idmef_target object
  */
-class IDMEFParserTarget
+class IDMEFParserTarget : public Persistency::IPTypes<IDMEFParserTarget>
 {
 public:
-  // TODO: c-tor should be explicit
   /**
    * @brief c-tor
    * \param ptr idmef_target_t structure to parse
    */
-  IDMEFParserTarget(idmef_target_t *ptr);
+  explicit IDMEFParserTarget(idmef_target_t *ptr);
 
   /**
-   * @brief gets address of a source
+   * @brief gets address of a target
    */
-  Persistency::Analyzer::IP getAddress() const;
+  const Persistency::Analyzer::IP& getAddress() const;
 
   /**
    * @brief gets reported process
@@ -45,10 +44,14 @@ public:
   const Persistency::ServicePtr getService() const;
 
 private:
-  idmef_target_t                               *ptr_;
-  boost::shared_ptr<Persistency::Analyzer::IP>  ip_;        // TODO: use Base::NullValue<> here
-  Persistency::ProcessPtr                       process_;
-  Persistency::ServicePtr                       service_;
+  idmef_target_t * getNotNull(idmef_target_t *ptr) const;
+  IP parseIP(idmef_target_t *ptr) const;
+  Persistency::ProcessPtr parseProcess(idmef_target_t * ptr) const;
+  Persistency::ServicePtr parseService(idmef_target_t * ptr) const;
+
+  IP                      ip_;
+  Persistency::ProcessPtr process_;
+  Persistency::ServicePtr service_;
 };//class IDMEFParserTarget
 
 } // namespace Prelude
