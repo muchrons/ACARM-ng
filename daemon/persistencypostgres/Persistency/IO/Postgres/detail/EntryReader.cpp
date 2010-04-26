@@ -239,7 +239,7 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
   Persistency::ProcessPtr process( new Process( ReaderHelper<string,Process::Path>::readAs(r[0]["path"]),
                                                 ReaderHelper<string>::fromSQLResult(r[0]["name"]),
-                                                ReaderHelper<MD5Sum>::readAs(r[0]["md5"]).get(),
+                                                ReaderHelper<MD5Sum, string>::readAs(r[0]["md5"]).get(),
                                                 ReaderHelper<pid_t,
                                                              NullValue<pid_t>,
                                                              int>::readAs(rr[0]["pid"]).get(),

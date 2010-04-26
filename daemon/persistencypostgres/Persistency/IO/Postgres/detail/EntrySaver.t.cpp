@@ -814,6 +814,32 @@ void testObj::test<23>(void)
   }
   t_.commit();
 }
-// TODO: add tests to check if max/min-length data types does fill in data base.
+
+//test saving Host with NULL name and NULL mask
+template<>
+template<>
+void testObj::test<24>(void)
+{
+  const Host h(  Host::IPv4::from_string("1.2.3.4"),
+                 NULL,
+                 "myos",
+                 makeNewReferenceURL(),
+                 Host::ReportedServices(),
+                 Host::ReportedProcesses(),
+                 NULL );
+  const DataBaseID hostID = es_.saveHostData(h);
+
+  stringstream ss;
+
+
+  ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
+
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size", r.size(), 1u);
+
+  ensure("Host name is not NULL",r[0]["name"].is_null() );
+  ensure("Mask is not NULL",r[0]["mask"].is_null() );
+  t_.commit();
+}
 
 } // namespace tut

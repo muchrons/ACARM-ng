@@ -34,6 +34,18 @@ void addToSelect(std::stringstream &ss, const T *ptr)
   else
     ss << " IS NULL";
 }
+
+template <>
+void addToSelect<Persistency::Analyzer::IP>(std::stringstream &ss, const Persistency::Analyzer::IP *ptr)
+{
+  if(ptr!=NULL)
+  {
+    ss << " = ";
+    Appender::append(ss, ptr->to_string().c_str() );
+  }
+  else
+    ss << " IS NULL";
+}
 } //unnamed namespace
 
 EntrySaver::EntrySaver(Transaction &t, DBHandler &dbh):
@@ -63,8 +75,8 @@ DataBaseID EntrySaver::getID(const std::string &seqName)
 
 DataBaseID EntrySaver::getSeverityID(const Alert &a)
 {
-  const DataBaseID id = a.getSeverity().getLevel().toInt()+1;   // TODO: this has to be fixed.
-  assert(id >= 1 && id <= 6);
+  const DataBaseID id = a.getSeverity().getLevel().toInt();
+  assert(id >= 0 && id <= 6);
   return id;
 }
 
@@ -90,16 +102,13 @@ Base::NullValue<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   ss << " AND os";
   addToSelect(ss, a.getOS() );
   ss << " AND ip";
-  Appender::append(ss, a.getIP() );
+  addToSelect(ss, a.getIP() );
   ss << ";";
   const result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
-  if(r.empty() )
+  if( r.empty() )
     return Base::NullValue<DataBaseID>();
-  else
-  {
-    r[0]["id"].to(id);
-    return Base::NullValue<DataBaseID>( id );
-  }
+  r[0]["id"].to(id);
+  return Base::NullValue<DataBaseID>( id );
 }
 
 DataBaseID EntrySaver::saveProcessData(const Process &p)
@@ -164,8 +173,7 @@ DataBaseID EntrySaver::saveHostData(const Persistency::Host &h)
   ss << "INSERT INTO hosts(ip, mask, os, name) VALUES (";
   Appender::append(ss, h.getIP().to_string() );
   ss << ",";
-  // TODO: SEGV - hostmaks can be NULL
-  Appender::append(ss, h.getNetmask()->to_string() );
+  Appender::append(ss, h.getNetmask()?h.getNetmask()->to_string().c_str():NULL );
   ss << ",";
   Appender::append(ss, h.getOperatingSystem().get() );
   ss << ",";
