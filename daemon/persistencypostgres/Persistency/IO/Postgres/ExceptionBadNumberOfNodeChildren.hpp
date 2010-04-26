@@ -22,7 +22,7 @@ class ExceptionBadNumberOfNodeChildren: public Exception
 public:
   /** \brief create execption with given message.
    *  \param where place where exception has been rised
-   *  \param query  SQL query.
+   *  \param id    ID of node.
    */
   ExceptionBadNumberOfNodeChildren(const Location &where, const std::string &id):
     Exception(where, std::string("node ") + id + std::string(" has less than two children") )
