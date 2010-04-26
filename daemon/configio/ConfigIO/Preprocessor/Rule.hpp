@@ -11,6 +11,8 @@
 
 #include "System/Enum.hpp"
 
+// TODO: comment this code.
+
 namespace ConfigIO
 {
 namespace Preprocessor
