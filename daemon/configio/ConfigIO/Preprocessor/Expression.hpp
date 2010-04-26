@@ -43,54 +43,74 @@ class Expression
 public:
   /** \brief type of expression to be used. */
   typedef System::Enum<detail::ExpressionType> Type;
+  /** \brief type holding set of rules. */
   typedef std::vector<Rule>                    Rules;
+  /** \brief type holding set of expressions. */
   typedef std::vector<Expression>              Expressions;
 
-  static makeAnd(const Rules &rules, const Expressions &expressions)
+  /** \brief named c-tor creating AND expression.
+   *  \param rules       rules to take part in computation.
+   *  \param expressions expressions to take part in computation.
+   *  \return created object.
+   */
+  static Expression makeAnd(const Rules &rules, const Expressions &expressions)
   {
     return Expression(Type::AND, rules, expressions);
   }
-
-  static makeOr(const Rules &rules, const Expressions &expressions)
+  /** \brief named c-tor creating OR expression.
+   *  \param rules       rules to take part in computation.
+   *  \param expressions expressions to take part in computation.
+   *  \return created object.
+   */
+  static Expression makeOr(const Rules &rules, const Expressions &expressions)
   {
     return Expression(Type::OR, rules, expressions);
   }
-
-  static makeNot(const Rule &rule)
-  {
-    Rules rules;
-    rules.push_back(rule);
-    return Expression(Type::NOT, rules, Expressions() );
-  }
-
-  static makeNot(const Expression &expression)
+  /** \brief named c-tor creating NOT expression.
+   *  \param expression expression to be negated.
+   *  \return created object.
+   */
+  static Expression makeNot(const Expression &expression)
   {
     Expressions expressions;
     expressions.push_back(expression);
-    return Expression(Type::NOT, Rules(), expression);
+    return Expression(Type::NOT, Rules(), expressions);
   }
-
-  static makeTerm(const Rule &rule)
+  /** \brief named c-tor creating terminal expression.
+   *  \param rule rule to create expression from.
+   *  \return created object.
+   */
+  static Expression makeTerm(const Rule &rule)
   {
     Rules rules;
     rules.push_back(rule);
     return Expression(Type::TERM, rules, Expressions() );
   }
 
+  /** \brief gets expression type.
+   *  \return expression type.
+   */
   Type getType(void) const
   {
     return type_;
   }
+  /** \brief gets rules held inside.
+   *  \return rules hold inside.
+   */
   const Rules &getRules(void) const
   {
     return rules_;
   }
+  /** \brief gets expressions held inside.
+   *  \return expressions hold inside.
+   */
   const Expressions &getExpressions(void) const
   {
     return expressions_;
   }
 
 private:
+  // named c-tors are to be used instead of direct object creation.
   Expression(Type type, const Rules &rules, const Expressions &expressions):
     type_(type),
     rules_(rules),

@@ -11,8 +11,6 @@
 
 #include "System/Enum.hpp"
 
-// TODO: comment this code.
-
 namespace ConfigIO
 {
 namespace Preprocessor
@@ -53,41 +51,69 @@ class Rule
 public:
   /** \brief type of rule ot be used. */
   typedef System::Enum<detail::RuleType> Type;
+  /** \brief type representing path to element. */
   typedef std::string                    Path;
+  /** \brief type for rules mode specification. */
   typedef System::Enum<detail::RuleMode> Mode;
+  /** \brief type representing value to check for. */
   typedef std::string                    Value;
 
+  /** \brief named c-tor for 'true' condition.
+   *  \return created object.
+   */
   static Rule makeTrue(void)
   {
     return Rule(Type::TRUE, "", Mode::EQUALS, "");
   }
+  /** \brief named c-tor for 'false' condition.
+   *  \return created object.
+   */
   static Rule makeFalse(void)
   {
     return Rule(Type::FALSE, "", Mode::EQUALS, "");
   }
+  /** \brief named c-tor for dynamically computed condition.
+   *  \param path  path ot be checked.
+   *  \param mode  operationg mode of the rule.
+   *  \param value value to compare with.
+   *  \return created object.
+   */
   static Rule makeRule(const Path &path, Mode mode, const Value &value)
   {
     return Rule(Type::RULE, path, mode, value);
   }
 
+  /** \brief gets rule type.
+   *  \return rule type.
+   */
   Type getType(void) const
   {
     return type_;
   }
+  /** \brief gets path element to check.
+   *  \return path to element to be checked.
+   */
   const Path &getPath(void) const
   {
     return path_;
   }
+  /** \brief gets rule mode.
+   *  \return rule mode.
+   */
   Mode getMode(void) const
   {
     return mode_;
   }
+  /** \brief gets value to compare against.
+   *  \return value to be comapred.
+   */
   const Value &getValue(void) const
   {
     return value_;
   }
 
 private:
+  // use named c-tors to create these objects.
   Rule(Type type, const Path &path, Mode mode, const Value &value):
     type_(type),
     path_(path),
