@@ -42,7 +42,7 @@ template<>
 void testObj::test<1>(void)
 {
   const Rule r=Rule::makeTrue();
-  check(r, Rule::Type::TRUE, "", Rule::Mode::EQUALS, "");
+  check(r, Rule::Type::RULE_TRUE, "", Rule::Mode::EQUALS, "");
 }
 
 // test making 'false' rule
@@ -51,7 +51,7 @@ template<>
 void testObj::test<2>(void)
 {
   const Rule r=Rule::makeFalse();
-  check(r, Rule::Type::FALSE, "", Rule::Mode::EQUALS, "");
+  check(r, Rule::Type::RULE_FALSE, "", Rule::Mode::EQUALS, "");
 }
 
 // test making random rule

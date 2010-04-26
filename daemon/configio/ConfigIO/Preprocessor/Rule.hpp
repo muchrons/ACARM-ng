@@ -24,8 +24,8 @@ struct RuleType
   /** \brief implementaiton enum. only to be used via Rule::Type. */
   typedef enum
   {
-    TRUE,
-    FALSE,
+    RULE_TRUE,
+    RULE_FALSE,
     RULE
   } Type;
 };
@@ -63,14 +63,14 @@ public:
    */
   static Rule makeTrue(void)
   {
-    return Rule(Type::TRUE, "", Mode::EQUALS, "");
+    return Rule(Type::RULE_TRUE, "", Mode::EQUALS, "");
   }
   /** \brief named c-tor for 'false' condition.
    *  \return created object.
    */
   static Rule makeFalse(void)
   {
-    return Rule(Type::FALSE, "", Mode::EQUALS, "");
+    return Rule(Type::RULE_FALSE, "", Mode::EQUALS, "");
   }
   /** \brief named c-tor for dynamically computed condition.
    *  \param path  path ot be checked.

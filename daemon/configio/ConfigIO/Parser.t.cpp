@@ -157,4 +157,6 @@ void testObj::test<9>(void)
   p.getInputsConfig();
 }
 
+// TODO: test getting preprocessor's config
+
 } // namespace tut

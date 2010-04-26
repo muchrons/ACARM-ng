@@ -138,4 +138,6 @@ void testObj::test<9>(void)
   Singleton::get()->inputsConfig();
 }
 
+// TODO: test getting preprocessor's config
+
 } // namespace tut
