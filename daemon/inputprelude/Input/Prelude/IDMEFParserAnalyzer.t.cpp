@@ -87,6 +87,7 @@ template<>
 void testObj::test<1>(void)
 {
   IDMEFParserAnalyzer an(getAnalyzer());
+  // TODO: use ensure_equals here
   ensure(an.getName()==Persistency::Analyzer::Name(name_));
 }
 
@@ -150,6 +151,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
+  // TODO: fix indentation
   try
     {
       IDMEFParserAnalyzer an(NULL);
@@ -188,7 +190,6 @@ void testObj::test<6>(void)
   idmef_node_new_address(node,&addr,IDMEF_LIST_APPEND);
   idmef_address_set_address(addr,ps_address);
   idmef_address_set_category(addr,IDMEF_ADDRESS_CATEGORY_IPV4_ADDR);
-
 
   IDMEFParserAnalyzer an(analyzer);
   ensure_equals("Name",std::string(an.getName().get()),"Unknown");
@@ -281,6 +282,7 @@ void testObj::test<9>(void)
   idmef_address_set_address(addr,ps_address);
   idmef_address_set_category(addr,IDMEF_ADDRESS_CATEGORY_IPV6_ADDR);
 
+  // TODO: fix indentation
   try
     {
       IDMEFParserAnalyzer an(analyzer);

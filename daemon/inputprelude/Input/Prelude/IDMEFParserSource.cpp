@@ -49,7 +49,7 @@ IDMEFParserSource::IP IDMEFParserSource::parseIP(idmef_source_t *ptr) const
 
   const char * tmp=prelude_string_get_string(idmef_node_address);
   switch (idmef_address_get_category(idmef_node_addr))
-    {
+  {
     case IDMEF_ADDRESS_CATEGORY_IPV4_ADDR:
     case IDMEF_ADDRESS_CATEGORY_IPV4_NET:
       return address_v4::from_string(tmp);
@@ -60,16 +60,20 @@ IDMEFParserSource::IP IDMEFParserSource::parseIP(idmef_source_t *ptr) const
 
     default:
       throw ParseException(SYSTEM_SAVE_LOCATION, "Wrong address type.");
-    }
+  }
 
   return ip;
 }
 
 Persistency::ProcessPtr IDMEFParserSource::parseProcess(idmef_source_t * ptr) const
 {
+  // TODO: comment these parts of code
+
+  // TODO: what if username is NULL in IDMEF?
   Persistency::Process::Username username="";
 
   idmef_user_t *idmef_user = idmef_source_get_user(ptr);
+  // TODO: use explicit comparison of pointers with NULL
   if (idmef_user)
   {
     idmef_user_id_t *idmef_user_id = idmef_user_get_next_user_id(idmef_user, NULL);
@@ -86,7 +90,6 @@ Persistency::ProcessPtr IDMEFParserSource::parseProcess(idmef_source_t * ptr) co
   if (idmef_process==NULL)
     return process;
 
-  // TODO: what is path is NULL?
   Persistency::Process::Path path;
   const prelude_string_t *idmef_path_str = idmef_process_get_path(idmef_process);
 
@@ -95,16 +98,17 @@ Persistency::ProcessPtr IDMEFParserSource::parseProcess(idmef_source_t * ptr) co
 
   prelude_string_t *idmef_process_str = idmef_process_get_name(idmef_process);
   if (idmef_process_str)
-    {
-      const Persistency::Process::Name name=prelude_string_get_string(idmef_process_str);
-      const uint32_t *pid=idmef_process_get_pid(idmef_process);
-      pid_t pidt;
-      if (pid==NULL)
-        pidt=0;
-      else
-        pidt=*pid;
-      process.reset(new Persistency::Process(path,name,NULL,&pidt,NULL,username,NULL,Persistency::ReferenceURLPtr()));
-    }
+  {
+    const Persistency::Process::Name name=prelude_string_get_string(idmef_process_str);
+    const uint32_t *pid=idmef_process_get_pid(idmef_process);
+    pid_t pidt; // TODO: NullValue<>?
+    // TODO: what if PID is not set in idmef?
+    if (pid==NULL)
+      pidt=0;
+    else
+      pidt=*pid;
+    process.reset(new Persistency::Process(path,name,NULL,&pidt,NULL,username,NULL,Persistency::ReferenceURLPtr()));
+  }
 
   return process;
 }
@@ -120,7 +124,6 @@ Persistency::ServicePtr IDMEFParserSource::parseService(idmef_source_t * ptr) co
       return service;
 
     const Persistency::Service::Name name=prelude_string_get_string(idmef_service_name);
-    // TODO: what if protocol is NULL?
     Persistency::Service::Protocol protocol;
     const prelude_string_t *idmef_protocol_str = idmef_service_get_protocol(idmef_service);
     if (idmef_protocol_str)
