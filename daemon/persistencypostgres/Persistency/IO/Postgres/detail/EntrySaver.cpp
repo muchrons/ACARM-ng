@@ -167,8 +167,7 @@ DataBaseID EntrySaver::saveHostData(const Persistency::Host &h)
   Appender::append(ss, h.getIP().to_string() );
   ss << ",";
   // TODO: SEGV - hostmaks can be NULL
-  ss << "NULL";
-  //Appender::append(ss, h.getNetmask()->to_string() );
+  Appender::append(ss, h.getNetmask()->to_string() );
   ss << ",";
   Appender::append(ss, h.getOperatingSystem().get() );
   ss << ",";
