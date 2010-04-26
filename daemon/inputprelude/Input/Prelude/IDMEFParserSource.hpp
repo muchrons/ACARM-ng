@@ -19,14 +19,9 @@ namespace Prelude
 /**
  * @brief Extracts and parses idmef_source object
  */
-class IDMEFParserSource
+class IDMEFParserSource : public Persistency::IPTypes<IDMEFParserSource>
 {
 public:
-  /**
-   * @brief IP address
-   */
-  typedef Persistency::IPTypes<IDMEFParserSource>::IP IP;
-
   /**
    * @brief c-tor
    * \param ptr idmef_source_t structure to parse

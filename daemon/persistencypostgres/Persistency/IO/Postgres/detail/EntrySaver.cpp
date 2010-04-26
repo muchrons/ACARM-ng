@@ -63,7 +63,7 @@ DataBaseID EntrySaver::getID(const std::string &seqName)
 
 DataBaseID EntrySaver::getSeverityID(const Alert &a)
 {
-  const DataBaseID id = a.getSeverity().getLevel().toInt();
+  const DataBaseID id = a.getSeverity().getLevel().toInt()+1;   // TODO: this has to be fixed.
   assert(id >= 1 && id <= 6);
   return id;
 }
@@ -164,6 +164,7 @@ DataBaseID EntrySaver::saveHostData(const Persistency::Host &h)
   ss << "INSERT INTO hosts(ip, mask, os, name) VALUES (";
   Appender::append(ss, h.getIP().to_string() );
   ss << ",";
+  // TODO: SEGV - hostmaks can be NULL
   Appender::append(ss, h.getNetmask()->to_string() );
   ss << ",";
   Appender::append(ss, h.getOperatingSystem().get() );

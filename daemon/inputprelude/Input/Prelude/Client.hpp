@@ -9,7 +9,7 @@
 // TODO: include "prelude..."
 #include <prelude-client.h>
 #include <prelude.h>
-
+#include "Input/Prelude/GlobalLibPreludeInit.hpp"
 #include "Input/Exception.hpp"
 
 namespace Input
@@ -51,6 +51,7 @@ public:
 private:
   prelude_client_t         *client_;
   prelude_client_profile_t *profile_;
+  GlobalLibPreludeInit g_;
 }; // class Client
 
 } // namespace Prelude

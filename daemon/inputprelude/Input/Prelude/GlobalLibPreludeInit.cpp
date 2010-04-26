@@ -4,8 +4,11 @@
  */
 #include <cassert>
 
+// TODO: "prelude.h"
+#include <prelude.h>
 #include "System/Threads/SafeInitLocking.hpp"
 #include "Input/Prelude/GlobalLibPreludeInit.hpp"
+#include "Input/Exception.hpp"
 
 namespace Input
 {
@@ -52,7 +55,11 @@ struct Releaser
     assert(g_wasInitialized==false);
     assert(g_end==false);
 
-    // TODO: prelude-init code goes here
+    int argc=1;
+    char a1[]="name";
+    char *argv[]={a1};
+    if ( prelude_init(&argc, argv) < 0 )
+      throw Input::Exception(SYSTEM_SAVE_LOCATION, "Unable to initialize prelude library.");
   }
 
   static void uninit(void)
@@ -63,7 +70,7 @@ struct Releaser
 
     try
     {
-      // TODO: prelude-release code goes here
+      prelude_deinit();
     }
     catch(...)
     {

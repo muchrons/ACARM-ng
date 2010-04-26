@@ -44,6 +44,7 @@ template<>
 void testObj::test<1>(void)
 {
   // TODO
+  Client("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
   //Client("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
 }
 
