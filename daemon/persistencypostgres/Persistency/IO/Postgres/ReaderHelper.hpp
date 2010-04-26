@@ -16,6 +16,11 @@
 #include "Persistency/detail/LimitedNULLString.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
 
+// TODO: notice that you can make this code shorter by constructing all methdos in form:
+//       if(is_null)
+//          return DefaultCtor();
+//       ... code from else part here (but without 'else') ...
+
 namespace Persistency
 {
 namespace IO
@@ -162,6 +167,7 @@ struct ReaderHelper< char, T2, T3>
   }
 }; // ReaderHelper class partial specialization
 
+// TODO: T2 is not used in this template
 /** \brief helper class which gets values from SQL queries - specialization for Persistency::MD5Sum
  */
 template<typename T2, typename T3>

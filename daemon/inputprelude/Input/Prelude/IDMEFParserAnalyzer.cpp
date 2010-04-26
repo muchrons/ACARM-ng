@@ -31,7 +31,9 @@ idmef_analyzer_t * IDMEFParserAnalyzer::getNonNull(idmef_analyzer_t *ptr) const
 
 Persistency::Analyzer::Name IDMEFParserAnalyzer::parseName(idmef_analyzer_t *ptr) const
 {
+  // TODO: c&p code
   const prelude_string_t *idmef_name = idmef_analyzer_get_name(ptr);
+  // TODO: throw on error
   if (idmef_name)
     return prelude_string_get_string(idmef_name);
   return "Unknown";
@@ -49,11 +51,13 @@ std::auto_ptr<Persistency::Analyzer::Version> IDMEFParserAnalyzer::parseVersion(
 
 std::auto_ptr<Persistency::Analyzer::OS> IDMEFParserAnalyzer::parseOS(idmef_analyzer_t *ptr) const
 {
+  // TODO: consider using NullValue<> here
   std::auto_ptr<Persistency::Analyzer::OS> os;
 
   const prelude_string_t *idmef_ostype = idmef_analyzer_get_ostype(ptr);
   const prelude_string_t *idmef_osversion = idmef_analyzer_get_osversion(ptr);
 
+  // TODO: can't prelude_string_get_string_or_default() be used directly here?
   std::string osname="";
 
   if (idmef_ostype!=NULL)

@@ -14,8 +14,10 @@ namespace Input
 namespace Prelude
 {
 
+// TODO: fix indentation
   Reader::Reader(const std::string profile, const std::string config):
   Input::Reader(profile),
+  // TODO: logger is not used here
   preludeLogger_("input.prelude.reader.preludelog"),
   client_( new Client( profile, config, PRELUDE_CONNECTION_PERMISSION_IDMEF_READ))
 {
@@ -42,7 +44,7 @@ Reader::DataPtr Reader::read(const unsigned int timeout)
                                    ip.getAnalyzers(),
                                    NULL,
                                    ip.getCreateTime(),
-                                   Persistency::Severity(Persistency::SeverityLevel::DEBUG),
+                                   Persistency::Severity(Persistency::SeverityLevel::DEBUG),    // TODO
                                    Persistency::Certainty(1.0),
                                    "",
                                    ip.getSources(),

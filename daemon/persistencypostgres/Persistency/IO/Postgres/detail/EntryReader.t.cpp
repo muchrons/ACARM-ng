@@ -111,7 +111,7 @@ void testObj::test<2>(void)
   const Analyzer::OS      anlzOS("wiendols");
   const Analyzer          a("analyzer2", &anlzVersion, &anlzOS, NULL);
   const DataBaseID        anlzID = es_.saveAnalyzer(a);
-  const AnalyzerPtrNN     readAnalyzer =  er_.getAnalyzer(anlzID);  // TODO: what is Analyzer is NULL?
+  const AnalyzerPtrNN     readAnalyzer =  er_.getAnalyzer(anlzID);  // TODO: what if Analyzer is NULL?
   string                  version(readAnalyzer->getVersion()->get());
   const string                  os(readAnalyzer->getOS()->get());
   trim(version);
