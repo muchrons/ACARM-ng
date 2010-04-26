@@ -18,6 +18,11 @@
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 
+// TODO: add loging here:
+//         - debug logs while saving each element
+//         - info logs while in main algorithm parts
+//         - detailed errors while error conditions are detected.
+
 namespace Persistency
 {
 namespace IO
@@ -100,11 +105,13 @@ public:
    */
   void saveMetaAlertAsUsed(DataBaseID malertID);
 
+  // TODO: 'mark' is better name then 'save' here
   /** \brief mark Meta Alert as unused
    *  \param malertID ID of Meta Alert
    */
   void saveMetaAlertAsUnused(DataBaseID malertID);
 
+  // TODO: 'mark' is better name then 'save' here
   /** \brief mark Meta Alert as triggered
    *  \param malertID ID of Meta Alert
    *  \param name

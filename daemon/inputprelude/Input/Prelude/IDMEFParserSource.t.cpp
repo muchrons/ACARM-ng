@@ -81,8 +81,6 @@ struct TestClass
     idmef_service_set_port(service,27600);
 
     //idmef_service_set
-
-
   }
 
   ~TestClass()

@@ -780,4 +780,6 @@ void testObj::test<22>(void)
 
 }
 
+// TODO: add tests to check if max/min-length data types does fill in data base.
+
 } // namespace tut

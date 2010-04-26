@@ -79,6 +79,7 @@ void EntrySaver::addReferenceURL(std::stringstream &ss, const ReferenceURL *url)
     ss << "NULL";
 }
 
+// TODO: return NullValue<> instead of auto_ptr<> - there is no need to make extra allocations here
 std::auto_ptr<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
 {
   DataBaseID id;
@@ -92,6 +93,7 @@ std::auto_ptr<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   ss << " AND ip";
   Appender::append(ss, a.getIP() );
   ss << ";";
+  // TODO: this variable should be const
   result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
   if(r.empty() )
     return std::auto_ptr<DataBaseID>();
