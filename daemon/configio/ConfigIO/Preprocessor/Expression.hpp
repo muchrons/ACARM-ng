@@ -46,11 +46,35 @@ public:
   typedef std::vector<Rule>                    Rules;
   typedef std::vector<Expression>              Expressions;
 
-  Expression(Type type, const Rules &rules, const Expressions &expressions):
-    type_(type),
-    rules_(rules),
-    expressions_(expressions)
+  static makeAnd(const Rules &rules, const Expressions &expressions)
   {
+    return Expression(Type::AND, rules, expressions);
+  }
+
+  static makeOr(const Rules &rules, const Expressions &expressions)
+  {
+    return Expression(Type::OR, rules, expressions);
+  }
+
+  static makeNot(const Rule &rule)
+  {
+    Rules rules;
+    rules.push_back(rule);
+    return Expression(Type::NOT, rules, Expressions() );
+  }
+
+  static makeNot(const Expression &expression)
+  {
+    Expressions expressions;
+    expressions.push_back(expression);
+    return Expression(Type::NOT, Rules(), expression);
+  }
+
+  static makeTerm(const Rule &rule)
+  {
+    Rules rules;
+    rules.push_back(rule);
+    return Expression(Type::TERM, rules, Expressions() );
   }
 
   Type getType(void) const
@@ -67,6 +91,13 @@ public:
   }
 
 private:
+  Expression(Type type, const Rules &rules, const Expressions &expressions):
+    type_(type),
+    rules_(rules),
+    expressions_(expressions)
+  {
+  }
+
   Type        type_;
   Rules       rules_;
   Expressions expressions_;
