@@ -29,6 +29,9 @@ namespace Postgres
 class IDCache: private boost::noncopyable
 {
 public:
+  // TODO: making template here is to ensure generic type-independence - please do not give
+  //       explicit types in description.
+  // TODO: this method should be const.
   /** \brief gets ID for a given Host/Alert/MetaAlert.
    *  \param t Host/Alert/MetaAlert to get ID for.
    *  \return data-base ID for a given Host/Alert/MetaAlert.
@@ -39,6 +42,8 @@ public:
     return getDataHolder(t).get(t);
   }
 
+  // TODO: making template here is to ensure generic type-independence - please do not give
+  //       explicit types in description.
   /** \brief adds new entry to cache.
    *  \param t  Host/Alert/MetaAlerti to be added.
    *  \param id ID to associate with given Host/Alert/MetaAlert.
@@ -49,6 +54,9 @@ public:
     return getDataHolder(t).add(t, id);
   }
 
+  // TODO: making template here is to ensure generic type-independence - please do not give
+  //       explicit types in description.
+  // TODO: this method should be const.
   /** \brief check if Host/Alert/MetaAlert is in cache
    *  \param t Host/Alert/MetaAlert to be checked
    *  \return true if Host/Alert/MetaAlert is in cache
@@ -64,17 +72,17 @@ public:
   void prune(void);
 
 private:
-
+  // TODO: const version of this method is missing
   StorageDataCache<Persistency::Host> &getDataHolder(const HostPtrNN &)
   {
     return hostsIDs_;
   }
-
+  // TODO: const version of this method is missing
   StorageDataCache<Persistency::Alert> &getDataHolder(const AlertPtrNN &)
   {
     return alertsIDs_;
   }
-
+  // TODO: const version of this method is missing
   StorageDataCache<Persistency::MetaAlert> &getDataHolder(const MetaAlertPtrNN &)
   {
     return metaAlertsIDs_;

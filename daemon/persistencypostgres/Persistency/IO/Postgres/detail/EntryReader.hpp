@@ -21,6 +21,10 @@
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 #include "Persistency/IO/Postgres/ExceptionNoEntries.hpp"
 
+// TODO: add loging here:
+//         - debug logs while reading each element
+//         - info logs while in main algorithm parts
+//         - detailed errors while error conditions are detected.
 
 namespace Persistency
 {

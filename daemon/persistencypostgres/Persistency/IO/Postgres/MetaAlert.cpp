@@ -12,6 +12,10 @@ namespace IO
 namespace Postgres
 {
 
+// TODO: notice that most methods here are almost idenytical. consider making
+//       EntrySaver filed of the class. 'dbHandler_->getIDCache()->get( get() );'
+//       can became method 'getID()'. this will reduce most methods to single line.
+
 MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
                      Transaction                 &t,
                      DBHandlerPtrNN               dbHandler):
