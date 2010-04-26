@@ -126,7 +126,7 @@ public:
 private:
   DataBaseID getID(const std::string &seqName);
   DataBaseID getSeverityID(const Alert &a);
-  DataBaseID isAnalyzerInDataBase(const Analyzer &a);
+  std::auto_ptr<DataBaseID> isAnalyzerInDataBase(const Analyzer &a);
   std::string addIPToSelect(const Analyzer::IP *ptr);
 
   DataBaseID saveProcessData(const Process &p);

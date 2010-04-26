@@ -237,9 +237,6 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
   const result rr = execSQL(t_, sr);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
-  // TODO: use ReaderHerlper here.
-  string arguments;
-  rr[0]["arguments"].to(arguments);
   Persistency::ProcessPtr process( new Process( ReaderHelper<string,Process::Path>::readAs(r[0]["path"]),
                                                 ReaderHelper<string>::fromSQLResult(r[0]["name"]),
                                                 ReaderHelper<MD5Sum>::readAs(r[0]["md5"]).get(),
@@ -248,7 +245,7 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
                                                              int>::readAs(rr[0]["pid"]).get(),
                                                 ReaderHelper<int, NullValue<int>, int>::readAs(rr[0]["uid"]).get(),
                                                 ReaderHelper<string>::fromSQLResult(rr[0]["username"]),
-                                                arguments.c_str(),
+                                                ReaderHelper<char>::readAs(rr[0]["arguments"]).get(),
                                                 getReferenceURL( refID )) );
   return process;
 }

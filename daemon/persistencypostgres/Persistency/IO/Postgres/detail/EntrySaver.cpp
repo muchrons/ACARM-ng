@@ -79,7 +79,7 @@ void EntrySaver::addReferenceURL(std::stringstream &ss, const ReferenceURL *url)
     ss << "NULL";
 }
 
-DataBaseID EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
+std::auto_ptr<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
 {
   DataBaseID id;
   stringstream ss;
@@ -94,11 +94,11 @@ DataBaseID EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   ss << ";";
   result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
   if(r.empty() )
-    return -1;
+    return std::auto_ptr<DataBaseID>();
   else
   {
     r[0]["id"].to(id);
-    return id;
+    return std::auto_ptr<DataBaseID>(new DataBaseID(id));
   }
 }
 
@@ -226,10 +226,8 @@ DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 
 DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
 {
-  // TODO: method named 'is' cannot return non-bool value.
-  // TODO: -1 can be valid ID.
-  DataBaseID id = isAnalyzerInDataBase(a);
-  if( id == -1)
+  std::auto_ptr<DataBaseID> id = isAnalyzerInDataBase(a);
+  if( id.get() == NULL)
   {
     stringstream ss;
     ss << "INSERT INTO analyzers(name, version, os, ip) VALUES (";
@@ -244,7 +242,7 @@ DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
     t_.getAPI<Postgres::TransactionAPI>().exec(ss);
     return getID("analyzers_id_seq");
   }
-  return id;
+  return *id.get();
 }
 
 DataBaseID EntrySaver::saveServiceData(const Service &s)
@@ -354,7 +352,6 @@ void EntrySaver::saveMetaAlertAsUnused(DataBaseID malertID)
 
 void EntrySaver::saveMetaAlertAsTriggered(DataBaseID malertID, const std::string &name)
 {
-  //TODO tests
   stringstream ss;
   ss << "INSERT INTO meta_alerts_already_triggered(id_meta_alert_in_use, trigger_name) VALUES(";
   Appender::append(ss, malertID);
