@@ -70,7 +70,7 @@ template<>
 void testObj::test<3>(void)
 {
   exps_.push_back(expr_);
-  check(Expression::makeOr(rules_, exps_), Expression::Type::OR, 0, 1);
+  check(Expression::makeOr(exps_), Expression::Type::OR, 0, 1);
 }
 
 // test creating 'and'
@@ -79,7 +79,7 @@ template<>
 void testObj::test<4>(void)
 {
   exps_.push_back(expr_);
-  check(Expression::makeAnd(rules_, exps_), Expression::Type::AND, 0, 1);
+  check(Expression::makeAnd(exps_), Expression::Type::AND, 0, 1);
 }
 
 // test creating 'or' w-out elements
@@ -87,7 +87,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  check(Expression::makeOr(rules_, exps_), Expression::Type::OR, 0, 0);
+  check(Expression::makeOr(exps_), Expression::Type::OR, 0, 0);
 }
 
 // test creating 'and' w-out elements
@@ -95,7 +95,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  check(Expression::makeAnd(rules_, exps_), Expression::Type::AND, 0, 0);
+  check(Expression::makeAnd(exps_), Expression::Type::AND, 0, 0);
 }
 
 } // namespace tut

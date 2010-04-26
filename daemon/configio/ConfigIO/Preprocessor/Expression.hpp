@@ -49,22 +49,20 @@ public:
   typedef std::vector<Expression>              Expressions;
 
   /** \brief named c-tor creating AND expression.
-   *  \param rules       rules to take part in computation.
    *  \param expressions expressions to take part in computation.
    *  \return created object.
    */
-  static Expression makeAnd(const Rules &rules, const Expressions &expressions)
+  static Expression makeAnd(const Expressions &expressions)
   {
-    return Expression(Type::AND, rules, expressions);
+    return Expression(Type::AND, Rules(), expressions);
   }
   /** \brief named c-tor creating OR expression.
-   *  \param rules       rules to take part in computation.
    *  \param expressions expressions to take part in computation.
    *  \return created object.
    */
-  static Expression makeOr(const Rules &rules, const Expressions &expressions)
+  static Expression makeOr(const Expressions &expressions)
   {
-    return Expression(Type::OR, rules, expressions);
+    return Expression(Type::OR, Rules(), expressions);
   }
   /** \brief named c-tor creating NOT expression.
    *  \param expression expression to be negated.
