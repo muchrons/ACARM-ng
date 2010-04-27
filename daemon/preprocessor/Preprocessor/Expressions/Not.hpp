@@ -7,17 +7,25 @@
 
 #include "Preprocessor/Expressions/Base.hpp"
 
-// TODO: comment this code
-
 namespace Preprocessor
 {
 namespace Expressions
 {
 
+/** \brief expression negating given condition.
+ */
 class Not: public Base
 {
 public:
+  /** \brief create instance.
+   *  \param e expression ot be negated.
+   */
   explicit Not(BasePtrNN e);
+
+  /** \brief computes answer for given alert.
+   *  \param alert alert to be chekced/computed.
+   *  \return true if alert matches given criteria, false otherwise.
+   */
   virtual bool compute(const Persistency::Alert &alert) const;
 
 private:

@@ -12,20 +12,32 @@
 #include "Preprocessor/Expressions/Base.hpp"
 #include "Preprocessor/ExceptionInvalidPath.hpp"
 
-// TODO: comment this code
-
 namespace Preprocessor
 {
 namespace Expressions
 {
 
+/** \brief expression representing complex rule.
+ */
 class Rule: public Base
 {
 public:
+  /** \brief forward definition of rule's mode. */
   typedef ConfigIO::Preprocessor::Rule::Mode  Mode;
+  /** \brief forward definition of rule's value to operate on. */
   typedef ConfigIO::Preprocessor::Rule::Value Value;
 
+  /** \brief create complex rule.
+   *  \param path  path to alert's element
+   *  \param mode  mode of checking.
+   *  \param value value to operate on.
+   */
   Rule(const Path &path, Mode mode, const Value &value);
+
+  /** \brief computes answer for given alert.
+   *  \param alert alert to be chekced/computed.
+   *  \return true if alert matches given criteria, false otherwise.
+   */
   virtual bool compute(const Persistency::Alert &alert) const;
 
 private:

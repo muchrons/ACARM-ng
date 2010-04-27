@@ -10,32 +10,43 @@
 
 #include "Preprocessor/ExceptionInvalidPath.hpp"
 
-// TODO: comment
-
 namespace Preprocessor
 {
 
+/** \brief class representing path as sequence of tokens.
+ */
 class Path
 {
 private:
   typedef std::vector<std::string> Elements;
 
 public:
+  /** \brief const iterator for tokends. */
   typedef Elements::const_iterator const_iterator;
 
+  /** \brief tokenize given path string.
+   *  \param path path to be tokenized.
+   */
   explicit Path(const std::string &path);
 
+  /** \brief gets begin iterator - const version.
+   *  \return begin const iterator.
+   */
   const_iterator begin(void) const
   {
     return e_.begin();
   }
-
+  /** \brief gets end iterator - const version.
+   *  \return begin end iterator.
+   */
   const_iterator end(void) const
   {
     return e_.end();
   }
-
-  const std::string get(void) const
+  /** \brief gets path as string.
+   *  \return path in string form.
+   */
+  const std::string &get(void) const
   {
     return path_;
   }
