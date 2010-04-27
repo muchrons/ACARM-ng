@@ -3,6 +3,7 @@
  *
  */
 #include "Persistency/IO/Postgres/Host.hpp"
+#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 using namespace Persistency::IO::Postgres::detail;
 
 namespace Persistency
