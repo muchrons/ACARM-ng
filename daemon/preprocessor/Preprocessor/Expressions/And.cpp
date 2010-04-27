@@ -11,7 +11,7 @@ namespace Preprocessor
 namespace Expressions
 {
 
-And::And(const Expressions e)
+And::And(const Expressions e):
   e_(e)
 {
   if( e_.size()<2u )
@@ -22,8 +22,8 @@ And::And(const Expressions e)
 bool And::compute(const Path &path, const Persistency::Alert &alert) const
 {
   assert( e_.size()>=2u );
-  for(Expressions::const_iteartor it=e_.begin(); it!=e_.end(); ++it)
-    if( it->compute(path, alert)==false )
+  for(Expressions::const_iterator it=e_.begin(); it!=e_.end(); ++it)
+    if( (*it)->compute(path, alert)==false )
       return false;
   // ok - all are true
   return true;
@@ -31,5 +31,3 @@ bool And::compute(const Path &path, const Persistency::Alert &alert) const
 
 } // namespace Expressions
 } // namespace Preprocessor
-
-#endif
