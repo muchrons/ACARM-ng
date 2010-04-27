@@ -217,12 +217,14 @@ alert.analyzers.[].ip
 alert.source.[].ip
 alert.source.[].mask
 alert.source.[].os
-alert.source.[].url
+alert.source.[].url.name
+alert.source.[].url.url
 alert.source.[].name
 alert.source.[].services.[].name
 alert.source.[].services.[].port
 alert.source.[].services.[].protocol
-alert.source.[].services.[].url
+alert.source.[].services.[].url.name
+alert.source.[].services.[].url.url
 alert.source.[].processes.[].path
 alert.source.[].processes.[].name
 alert.source.[].processes.[].md5
@@ -230,16 +232,19 @@ alert.source.[].processes.[].pid
 alert.source.[].processes.[].uid
 alert.source.[].processes.[].username
 alert.source.[].processes.[].arguments
-alert.source.[].processes.[].url
+alert.source.[].processes.[].url.name
+alert.source.[].processes.[].url.url
 alert.target.[].ip
 alert.target.[].mask
 alert.target.[].os
-alert.target.[].url
+alert.target.[].url.name
+alert.target.[].url.url
 alert.target.[].name
 alert.target.[].services.[].name
 alert.target.[].services.[].port
 alert.target.[].services.[].protocol
-alert.target.[].services.[].url
+alert.target.[].services.[].url.name
+alert.target.[].services.[].url.url
 alert.target.[].processes.[].path
 alert.target.[].processes.[].name
 alert.target.[].processes.[].md5
@@ -247,7 +252,8 @@ alert.target.[].processes.[].pid
 alert.target.[].processes.[].uid
 alert.target.[].processes.[].username
 alert.target.[].processes.[].arguments
-alert.target.[].processes.[].url
+alert.target.[].processes.[].url.name
+alert.target.[].processes.[].url.url
 -------------
 notice that since elements in collections are in undefined order there are no
 indexes available. instead two markers are present: '*' and '$'. putting '*' in
