@@ -22,7 +22,7 @@ public:
   typedef std::vector<BasePtrNN> Expressions;
 
   explicit And(const Expressions e);
-  virtual bool compute(const Path &path, const Persistency::Alert &alert) const;
+  virtual bool compute(const Persistency::Alert &alert) const;
 
 private:
   const Expressions e_;

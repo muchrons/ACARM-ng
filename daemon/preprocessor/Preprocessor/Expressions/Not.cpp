@@ -14,9 +14,9 @@ Not::Not(BasePtrNN e):
 {
 }
 
-bool Not::compute(const Path &path, const Persistency::Alert &alert) const
+bool Not::compute(const Persistency::Alert &alert) const
 {
-  return !e_->compute(path, alert);
+  return !e_->compute(alert);
 }
 
 } // namespace Expressions

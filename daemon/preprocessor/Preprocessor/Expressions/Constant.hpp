@@ -19,7 +19,7 @@ class Constant: public Base
 public:
   explicit Constant(bool value);
 
-  virtual bool compute(const Path &path, const Persistency::Alert &alert) const;
+  virtual bool compute(const Persistency::Alert &alert) const;
 
 private:
   bool v_;

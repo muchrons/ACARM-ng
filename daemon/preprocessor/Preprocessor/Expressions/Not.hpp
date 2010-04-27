@@ -18,7 +18,7 @@ class Not: public Base
 {
 public:
   explicit Not(BasePtrNN e);
-  virtual bool compute(const Path &path, const Persistency::Alert &alert) const;
+  virtual bool compute(const Persistency::Alert &alert) const;
 
 private:
   BasePtrNN e_;

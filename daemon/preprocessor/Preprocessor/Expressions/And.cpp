@@ -19,11 +19,11 @@ And::And(const Expressions e):
                                      "AND expression must have at least two arguments");
 }
 
-bool And::compute(const Path &path, const Persistency::Alert &alert) const
+bool And::compute(const Persistency::Alert &alert) const
 {
   assert( e_.size()>=2u );
   for(Expressions::const_iterator it=e_.begin(); it!=e_.end(); ++it)
-    if( (*it)->compute(path, alert)==false )
+    if( (*it)->compute(alert)==false )
       return false;
   // ok - all are true
   return true;

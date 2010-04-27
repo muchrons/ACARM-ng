@@ -14,7 +14,7 @@ Constant::Constant(bool value):
 {
 }
 
-bool Constant::compute(const Path &/*path*/, const Persistency::Alert &/*alert*/) const
+bool Constant::compute(const Persistency::Alert &/*alert*/) const
 {
   return v_;
 }

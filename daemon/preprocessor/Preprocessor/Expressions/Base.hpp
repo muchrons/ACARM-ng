@@ -24,7 +24,7 @@ class Base: private boost::noncopyable
 public:
   virtual ~Base(void);
 
-  virtual bool compute(const Path &path, const Persistency::Alert &alert) const = 0;
+  virtual bool compute(const Persistency::Alert &alert) const = 0;
 }; // class Base
 
 

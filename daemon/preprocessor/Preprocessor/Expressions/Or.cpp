@@ -19,11 +19,11 @@ Or::Or(const Expressions e):
                                      "OR expression must have at least two arguments");
 }
 
-bool Or::compute(const Path &path, const Persistency::Alert &alert) const
+bool Or::compute(const Persistency::Alert &alert) const
 {
   assert( e_.size()>=2u );
   for(Expressions::const_iterator it=e_.begin(); it!=e_.end(); ++it)
-    if( (*it)->compute(path, alert) )
+    if( (*it)->compute(alert) )
       return true;
   // all expressions are false - return false as well
   return false;
