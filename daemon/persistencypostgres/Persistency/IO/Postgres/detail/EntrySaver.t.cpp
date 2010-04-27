@@ -312,12 +312,12 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const string anlzName("analyzer3");
-  const Analyzer::Version ver("v1.2.3");
-  const Analyzer::OS      os("Linux 2.6.66");
-  const Analyzer::IP      ip( Analyzer::IPv4::from_string("1.2.3.4") );
-  const Analyzer a(anlzName, &ver, &os, &ip);
-  const DataBaseID anlzID = es_.saveAnalyzer(a);
+  const string                    anlzName("analyzer3");
+  const Analyzer::Version         ver("v1.2.3");
+  const Analyzer::OperatingSystem os("Linux 2.6.66");
+  const Analyzer::IP              ip( Analyzer::IPv4::from_string("1.2.3.4") );
+  const Analyzer                  a(anlzName, ver, os, &ip);
+  const DataBaseID                anlzID = es_.saveAnalyzer(a);
 
   stringstream ss;
   string name, version, os_name, ip_adress;
@@ -690,12 +690,12 @@ template<>
 template<>
 void testObj::test<19>(void)
 {
-  const string anlzName("analyzer3");
-  const Analyzer::Version ver("v1.2.3");
-  const Analyzer::OS      os("Linux 2.6.66");
-  const Analyzer::IP      ip( Analyzer::IPv4::from_string("1.2.3.4") );
-  const Analyzer a1(anlzName, &ver, &os, &ip);
-  const Analyzer a2(anlzName, &ver, &os, &ip);
+  const string                    anlzName("analyzer3");
+  const Analyzer::Version         ver("v1.2.3");
+  const Analyzer::OperatingSystem os("Linux 2.6.66");
+  const Analyzer::IP              ip( Analyzer::IPv4::from_string("1.2.3.4") );
+  const Analyzer                  a1(anlzName, ver, os, &ip);
+  const Analyzer                  a2(anlzName, ver, os, &ip);
   es_.saveAnalyzer(a1);
   es_.saveAnalyzer(a2);
 

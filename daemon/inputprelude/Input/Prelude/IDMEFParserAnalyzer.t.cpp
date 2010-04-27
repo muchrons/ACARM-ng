@@ -97,7 +97,7 @@ template<>
 void testObj::test<2>(void)
 {
   IDMEFParserAnalyzer an(getAnalyzer());
-  ensure_equals("OS version:",std::string(an.getOS()->get()),ostype_+osversion_);
+  ensure_equals("OS version:", std::string(an.getOS().get()),ostype_+osversion_);
 }
 
 // address extracion (IPv4)

@@ -165,9 +165,9 @@ bool Rule::check(const Persistency::Analyzer &e, PathCit t) const
   if(*t=="name")
     return check( cast( e.getName().get() ), t+1 );
   if(*t=="version")
-    return check( cast( (e.getVersion()==NULL)?NULL:e.getVersion()->get() ), t+1 );
+    return check( cast( e.getVersion().get() ), t+1 );
   if(*t=="os")
-    return check( cast( (e.getOS()==NULL)?NULL:e.getOS()->get() ), t+1 );
+    return check( cast( e.getOperatingSystem().get() ), t+1 );
   if(*t=="ip")
     return check( cast( (e.getIP()==NULL)?NULL:e.getIP() ), t+1 );
 

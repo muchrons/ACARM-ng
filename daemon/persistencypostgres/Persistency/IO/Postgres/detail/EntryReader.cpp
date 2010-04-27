@@ -112,9 +112,9 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
   if(ra.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, sa.str());
   AnalyzerPtrNN anlz(new Analyzer( Analyzer::Name( ReaderHelper<string>::fromSQLResult(ra[0]["name"]) ),
-                                   ReaderHelper<Analyzer::Version>::readAs(ra[0]["version"] ).get(),
-                                   ReaderHelper<Analyzer::OS>::readAs(ra[0]["os"] ).get(),
-                                   ReaderHelper<Analyzer::IP>::readAs(ra[0]["ip"] ).get() ));
+                                   ReaderHelper<Analyzer::Version, Analyzer::Version>::readAs(ra[0]["version"]),
+                                   ReaderHelper<Analyzer::OperatingSystem, Analyzer::OperatingSystem>::readAs(ra[0]["os"]),
+                                   ReaderHelper<Analyzer::IP>::readAs(ra[0]["ip"]).get() ));
   return anlz;
 }
 
