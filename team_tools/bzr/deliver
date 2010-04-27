@@ -16,6 +16,11 @@ function has_changes
   bzr status --short 2>&1 | grep -q -v '^?'
 }
 
+function has_notversioned
+{
+  bzr status --short 2>&1 | grep -q '^?'
+}
+
 # sanity check
 if [ "`bzr root`" != "`readlink -f .`" ]
 then
@@ -25,6 +30,11 @@ fi
 if has_changes
 then
   echo "$SCRIPT_NAME: error: pending changes have been found" >&2
+  exit 2
+fi
+if has_notversioned
+then
+  echo "$SCRIPT_NAME: error: not versioned files have been found - either add them to repository or ignore list" >&2
   exit 2
 fi
 #if ! [ -f "$LOG_FILE" ]
