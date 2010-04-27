@@ -1,3 +1,9 @@
+-- v0.4.0 --
+* build now by default runs count(CPU)+1 threads in make.
+* deliver now fails if there are not-versioned files - this prevents situation when not-complete code is delivered.
+* defauolt build script now checks for tabulators and trailing spaces in sources.
+* gcc and intel toolchains are now tested by default and used during build if present.
+
 -- v0.3.0 --
 * merging directories now work as it should, with respect to version history of an element.
 * merging is more robust now.

@@ -8,8 +8,8 @@
 #include <string>
 #include <boost/scoped_ptr.hpp>
 
-#include "System/Exception.hpp" // may be thrown by implementation
 #include "XML/Tree.hpp"
+#include "System/Exception.hpp" // may be thrown by implementation
 #include "ConfigIO/LoggerConfig.hpp"
 #include "ConfigIO/PersistencyConfig.hpp"
 #include "ConfigIO/ParseLoggerNodes.hpp"
@@ -18,6 +18,7 @@
 #include "ConfigIO/ParseFilters.hpp"
 #include "ConfigIO/ParseTriggers.hpp"
 #include "ConfigIO/ParseInputs.hpp"
+#include "ConfigIO/Preprocessor/Parse.hpp"
 
 
 namespace ConfigIO
@@ -53,6 +54,10 @@ public:
    *  \return inputs' configuration.
    */
   const InputsConfigCollection &getInputsConfig(void) const;
+  /** \brief gets preprocessor's configuration.
+   *  \return preprocessor's configuration.
+   */
+  const Preprocessor::Config &getPreprocessorConfig(void) const;
 
 private:
   XML::Tree            tree_;
@@ -63,6 +68,7 @@ private:
   ParseLoggerNodes     parseNodes_;
   ParseLoggerAppenders parseAppenders_;
   LoggerConfig         loggerCfg_;
+  Preprocessor::Parse  parsePreprocessor_;
 }; // class Parser
 
 } // namespace ConfigIO

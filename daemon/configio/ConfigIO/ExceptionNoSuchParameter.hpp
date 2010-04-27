@@ -9,14 +9,14 @@
 
 #include <string>
 
-#include "ConfigIO/Exception.hpp"
+#include "ConfigIO/ExceptionParseError.hpp"
 
 namespace ConfigIO
 {
 
 /** \brief internal exception class.
  */
-class ExceptionNoSuchParameter: public Exception
+class ExceptionNoSuchParameter: public ExceptionParseError
 {
 public:
   /** \brief create execption on invalid parameter request.
@@ -24,7 +24,7 @@ public:
    *  \param param parameter name that was null.
    */
   ExceptionNoSuchParameter(const Location &where, const std::string &param):
-    Exception(where, cc("no such paramter parameter: ", param) )
+    ExceptionParseError(where, cc("no such paramter parameter: ", param) )
   {
   }
 }; // class ExceptionNoSuchParameter

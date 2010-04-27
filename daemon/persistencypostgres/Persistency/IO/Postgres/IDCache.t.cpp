@@ -104,7 +104,7 @@ void testObj::test<6>(void)
   IDCachePtrNN ptr(new IDCache);
 }
 
-// test const get
+// test const get()
 template<>
 template<>
 void testObj::test<7>(void)
@@ -114,7 +114,7 @@ void testObj::test<7>(void)
   ensure_equals("invalid value", cRef.get(metaAlert_), 42);
 }
 
-// test const has
+// test const has()
 template<>
 template<>
 void testObj::test<8>(void)
