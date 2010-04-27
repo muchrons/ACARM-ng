@@ -104,4 +104,23 @@ void testObj::test<6>(void)
   IDCachePtrNN ptr(new IDCache);
 }
 
+// test const get()
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  idc_.add(metaAlert_, 42);
+  const IDCache &cRef=idc_;
+  ensure_equals("invalid value", cRef.get(metaAlert_), 42);
+}
+
+// test const has()
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const IDCache &cRef=idc_;
+  ensure("invalid value", cRef.has(metaAlert_) == false );
+
+}
 } // namespace tut

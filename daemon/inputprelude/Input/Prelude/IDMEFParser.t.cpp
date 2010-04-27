@@ -68,6 +68,7 @@ struct TestClass
 
     idmef_node_new_address(node,&addr,IDMEF_LIST_APPEND);
     idmef_address_set_address(addr,ps_address);
+    idmef_address_set_category(addr,IDMEF_ADDRESS_CATEGORY_IPV4_ADDR);
   }
 
   ~TestClass()
@@ -132,8 +133,7 @@ void testObj::test<2>(void)
 
   idmef_alert_set_create_time(alert, idmeftime);
 
-  // TODO: object should be const
-  IDMEFParser ip( getMessage() );
+  const IDMEFParser ip( getMessage() );
   // TODO: string( someMakeStringCall().c_str() ) does not make sense
   ensure_equals("Something broken with time", ip.getCreateTime(), time);
 }

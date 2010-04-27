@@ -25,6 +25,7 @@ namespace Prelude
 class Reader: public Input::Reader
 {
 public:
+  // TODO: add default value for config (/etc/...)
   /** \brief create prelud reader.
    */
   Reader(const std::string profile, const std::string config);
@@ -36,7 +37,6 @@ public:
 
 private:
   LogCallback               preludeLogger_;
-  std::string               preludeProfile_;
   boost::scoped_ptr<Client> client_;
 }; // class Reader
 

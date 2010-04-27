@@ -53,23 +53,8 @@ private:
                                                     // would cause problems with finding with
                                                     // indexes.
 
-  typedef typename ObjectIDMapping::iterator ObjectIDMappingIt;
+  typedef typename ObjectIDMapping::const_iterator ObjectIDMappingIt;
 
-  // TODO: move this implementation detail to the class' end. EntryID and typedef's
-  //       must be at eh begining for syntactical reasons, but method can be moved
-  //       to the class' end, making API more readable.
-  ObjectIDMappingIt getImpl(TSharedPtr ptr)
-  {
-    ObjectIDMappingIt it=oidm_.find( ptr.get() );
-    if( it==oidm_.end() || it->second.ptr_.lock().get()==NULL )
-      return oidm_.end();
-    // both these asserts are known to be true, since we have object's
-    // instance as a parameter, so pointer either is already deallocated
-    // or is still valid, and so assertion's hold.
-    assert( it->second.ptr_.lock().get()!=NULL      );
-    assert( it->second.ptr_.lock().get()==ptr.get() );
-    return it;
-  }
 
 public:
   /** \brief exception thrown when entry does not exist.
@@ -85,12 +70,11 @@ public:
     }
   }; // struct ExceptionEntryAlreadyExist
 
-  // TODO: this method should be const
   /** \brief gets ID for a given object.
    *  \param ptr pointer to object to check.
    *  \return id if given object in data base.
    */
-  DataBaseID get(TSharedPtr ptr)
+  DataBaseID get(TSharedPtr ptr) const
   {
     Base::Threads::Lock lock(mutex_);
     ObjectIDMappingIt it=getImpl( ptr );
@@ -99,14 +83,12 @@ public:
     return it->second.id_;
   }
 
-  // TODO: this method should be const
-  // TODO: rename this method to 'has' - it is not implementation internal
   //       element - it's class's interface.
   /** \brief check if given object is in cache
    *  \param ptr pointer to object to check
    *  \return true if given object is in cache
    */
-  bool hasImpl(TSharedPtr ptr)
+  bool has(TSharedPtr ptr) const
   {
     Base::Threads::Lock lock(mutex_);
     return getImpl(ptr)!=oidm_.end();
@@ -129,7 +111,7 @@ public:
    *  \param ptr pointer to be added (as a key).
    *  \param id  data base ID for this object.
    */
-  void add(TSharedPtr ptr, DataBaseID id)
+  void add(const TSharedPtr ptr, DataBaseID id)
   {
     const EntryID                      tmp(ptr, id);
     Base::Threads::Lock                lock(mutex_);
@@ -190,6 +172,20 @@ public:
   }
 
 private:
+
+  ObjectIDMappingIt getImpl(TSharedPtr ptr) const
+  {
+    ObjectIDMappingIt it=oidm_.find( ptr.get() );
+    if( it==oidm_.end() || it->second.ptr_.lock().get()==NULL )
+      return oidm_.end();
+    // both these asserts are known to be true, since we have object's
+    // instance as a parameter, so pointer either is already deallocated
+    // or is still valid, and so assertion's hold.
+    assert( it->second.ptr_.lock().get()!=NULL      );
+    assert( it->second.ptr_.lock().get()==ptr.get() );
+    return it;
+  }
+
   mutable Base::Threads::Mutex mutex_;
   ObjectIDMapping              oidm_;
 }; // class StorageDataCache

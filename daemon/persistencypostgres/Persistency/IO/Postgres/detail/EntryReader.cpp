@@ -18,6 +18,8 @@ using namespace std;
 using namespace pqxx;
 
 using boost::algorithm::trim;
+using namespace Persistency;
+using namespace Base;
 using Persistency::IO::Transaction;
 
 namespace Persistency
@@ -64,8 +66,7 @@ EntryReader::EntryReader(Transaction &t, DBHandler &dbh):
 {
 }
 
-//TODO: work in progress
-// write tests !!
+//TODO: write tests
 Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
 {
   stringstream ss;
@@ -92,11 +93,14 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
   const result r = execSQL(t_, ss);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
+  const string CreateTime( ReaderHelper<string>::fromSQLResult(r[0]["create_time"]) );
   MetaAlertPtrNN malert( new Persistency::MetaAlert( ReaderHelper<string>::fromSQLResult(r[0]["name"]),
                                           ReaderHelper<double>::fromSQLResult(r[0]["severity_delta"]),
                                           ReaderHelper<double>::fromSQLResult(r[0]["certanity_delta"]),
-                                          getReferenceURL( ReaderHelper<DataBaseID, Base::NullValue<DataBaseID> ,DataBaseID>::readAs(r[0]["id_ref"]).get() ),   // TODO: LTL
-                                          timestampFromString( ReaderHelper<string>::fromSQLResult(r[0]["create_time"]) )) );
+                                          getReferenceURL( ReaderHelper<DataBaseID,
+                                                                        NullValue<DataBaseID>,
+                                                                        DataBaseID>::readAs(r[0]["id_ref"]).get() ),
+                                          timestampFromString( CreateTime ) ) );
   return malert;
 }
 
@@ -137,11 +141,9 @@ Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::strin
   Alert::ReportedHosts hosts;
   for(size_t i=0; i<r.size(); ++i)
   {
-    // TODO: use ReaderHelper for this for this
-    DataBaseID idRefURL;
-    r[i]["id_ref"].to(idRefURL);
+    DataBaseID idRefURL = ReaderHelper<DataBaseID>::fromSQLResult(r[i]["id_ref"]);
     hosts.push_back(getHost( ReaderHelper<DataBaseID>::fromSQLResult(r[i]["id_host"]),
-                             &idRefURL /*fromSQLResult<DataBaseID>(r[i]["id_ref"])*/ ));
+                             &idRefURL));
   }
   return hosts;
 }
@@ -215,10 +217,10 @@ Persistency::ServicePtrNN EntryReader::getService(DataBaseID servID, DataBaseID 
   const result r = execSQL(t_, ss);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
-  Persistency::ServicePtrNN service(new Persistency::Service(ReaderHelper<string>::fromSQLResult(r[0]["name"]),
-                                                             ReaderHelper<DataBaseID>::fromSQLResult(r[0]["port"]),
-                                                             ReaderHelper<string, Persistency::Service::Protocol>::readAs(r[0]["protocol"]), // TODO: LTL
-                                                             getReferenceURL( refID )));
+  ServicePtrNN service(new Service(ReaderHelper<string>::fromSQLResult(r[0]["name"]),
+                                   ReaderHelper<DataBaseID>::fromSQLResult(r[0]["port"]),
+                                   ReaderHelper<string, Service::Protocol>::readAs(r[0]["protocol"]),
+                                   getReferenceURL( refID )));
   return service;
 }
 
@@ -229,34 +231,21 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
   const result r = execSQL(t_, ss);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
-  string md5;
-  // TODO: consider using NullValue class for this.
-  MD5Sum *procMD5 = NULL;
-  if( !r[0]["md5"].is_null() )
-  {
-    r[0]["md5"].to(md5);
-    // TODO: SEGV here - procMD5 is NULL in this context
-    // smart pointer
-    // TODO: copy c-tor not needed here
-    *procMD5 = MD5Sum( MD5Sum::createFromString(md5.c_str()) );
-  }
 
   stringstream sr;
   sr << "SELECT * FROM reported_procs WHERE id_proc = " << procID << ";";
   const result rr = execSQL(t_, sr);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
-  // TODO: use ReaderHerlper here.
-  string arguments;
-  rr[0]["arguments"].to(arguments);
-
   Persistency::ProcessPtr process( new Process( ReaderHelper<string,Process::Path>::readAs(r[0]["path"]),
                                                 ReaderHelper<string>::fromSQLResult(r[0]["name"]),
-                                                procMD5,
-                                                ReaderHelper<pid_t, Base::NullValue<pid_t>, int>::readAs(rr[0]["pid"]).get(),
-                                                ReaderHelper<int, Base::NullValue<int>, int>::readAs(rr[0]["uid"]).get(),
+                                                ReaderHelper<MD5Sum, string>::readAs(r[0]["md5"]).get(),
+                                                ReaderHelper<pid_t,
+                                                             NullValue<pid_t>,
+                                                             int>::readAs(rr[0]["pid"]).get(),
+                                                ReaderHelper<int, NullValue<int>, int>::readAs(rr[0]["uid"]).get(),
                                                 ReaderHelper<string>::fromSQLResult(rr[0]["username"]),
-                                                arguments.c_str(),
+                                                ReaderHelper<char>::readAs(rr[0]["arguments"]).get(),
                                                 getReferenceURL( refID )) );
   return process;
 }
@@ -312,7 +301,7 @@ vector<DataBaseID> EntryReader::readMetaAlertChildren(DataBaseID malertID)
   stringstream ss;
   ss << "SELECT id_child FROM meta_alerts_tree WHERE id_node = " << malertID << ";";
   const result r = execSQL(t_, ss);
-
+  childrenIDs.reserve( r.size() );
   for(size_t i=0; i<r.size(); ++i)
     childrenIDs.push_back( ReaderHelper<DataBaseID>::fromSQLResult(r[i]["id_child"]) );
   return childrenIDs;
@@ -338,13 +327,12 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
 {
   vector<DataBaseID> malertsBetween;
   stringstream       ss;
-  //TODO: test this query
   ss << "SELECT id FROM meta_alerts WHERE ";
   Appender::append(ss, from);
   ss << " <= create_time AND create_time <=";
   Appender::append(ss, to);
   const result r = execSQL(t_, ss);
-
+  malertsBetween.reserve( r.size() );
   for(size_t i=0; i<r.size(); ++i)
     malertsBetween.push_back( ReaderHelper<DataBaseID>::fromSQLResult(r[i]["id"]) );
   return malertsBetween;
@@ -359,6 +347,7 @@ std::vector<DataBaseID> EntryReader::readRoots()
   const result r = execSQL(t_, "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
                          "SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );");
 
+  roots.reserve( r.size() );
   for(size_t i=0; i<r.size(); ++i)
   {
     // assert to ensure value is not null

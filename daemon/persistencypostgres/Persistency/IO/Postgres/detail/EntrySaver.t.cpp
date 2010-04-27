@@ -12,6 +12,7 @@
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
+#include "Persistency/IO/Postgres/ReaderHelper.hpp"
 #include "Persistency/IO/Postgres/detail/Appender.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 
@@ -81,18 +82,6 @@ struct TestClass
     tdba_.removeAllData();
   }
 
-  IO::ConnectionPtrNN makeConnection(void) const
-  {
-    IO::BackendFactory::Options opts;
-    opts["host"]  ="localhost";
-    opts["port"]  ="5432";
-    opts["dbname"]="acarm_ng_test";
-    opts["user"]  ="acarm-ng-daemon";
-    opts["pass"]  ="test.daemon";
-    return IO::ConnectionPtrNN(
-        Persistency::IO::BackendFactory::create("postgres", opts) );
-  }
-
   Alert::ReportedHosts generateReportedHosts(unsigned int size) const
   {
     Alert::ReportedHosts out;
@@ -155,7 +144,7 @@ void testObj::test<1>(void)
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
-  //TODO: save data in table alert_analyzers
+  // save data in table alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID procID  = es_.saveProcess(thostID, proc_);
@@ -189,7 +178,7 @@ void testObj::test<2>(void)
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
-  //TODO: save data in table alert_analyzers
+  // save data in table alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID id1=es_.saveProcess(thostID, proc_);
@@ -226,32 +215,34 @@ void testObj::test<4>(void)
   const DataBaseID alrtID = es_.saveAlert(a);
   es_.saveAlertToAnalyzers(alrtID, anlzID);
   stringstream ss;
-  string name, time, description;
-  DataBaseID id;
-  double certanity;
 
   ss << "SELECT * FROM alerts WHERE id = " << alrtID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
 
-  r[0]["name"].to(name);
-  ensure_equals("invalid name",name_.get(),name);
+  ensure_equals("invalid name",
+                name_.get(),
+                ReaderHelper<string>::fromSQLResult(r[0]["name"]));
 
-  r[0]["detect_time"].to(time);
-  const Timestamp ts=timestampFromString(time);
-  ensure_equals("invalid detect time", detected_, ts);
+  ensure_equals("invalid detect time",
+                detected_,
+                timestampFromString( ReaderHelper<string>::fromSQLResult(r[0]["detect_time"]) ));
 
-  r[0]["create_time"].to(time);
-  ensure_equals("invalid create time", created_, timestampFromString(time) );
+  ensure_equals("invalid create time",
+                created_,
+                timestampFromString( ReaderHelper<string>::fromSQLResult(r[0]["create_time"]) ));
 
-  r[0]["id_severity"].to(id);
-  ensure_equals("invalid severity ID",a.getSeverity().getLevel().toInt(),id);
+  ensure_equals("invalid severity ID",
+                a.getSeverity().getLevel().toInt(),
+                ReaderHelper<DataBaseID>::fromSQLResult(r[0]["id_severity"]));
 
-  r[0]["certanity"].to(certanity);
-  ensure_equals("invalid certanity",certanity_.get(),certanity);
+  ensure_equals("invalid certanity",
+                certanity_.get(),
+                ReaderHelper<double>::fromSQLResult(r[0]["certanity"]) );
 
-  r[0]["description"].to(description);
-  ensure_equals("invalid description",description_,description);
+  ensure_equals("invalid description",
+                description_,
+                ReaderHelper<string>::fromSQLResult(r[0]["description"]));
 
   t_.commit();
 }
@@ -274,20 +265,15 @@ void testObj::test<5>(void)
   const DataBaseID servID = es_.saveService(thostID,ti);
 
   stringstream ss;
-  string protocol;
-  string name;
+  string protocol, name;
 
-  // TODO: 'port' variable declarationshuld be moved next to usage place.
-  //       note that it can be used within a scope to minimize it's life-time
-  int port;
   ss << "SELECT * FROM services WHERE id = " << servID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   r[0]["name"].to(name);
   trim(name);
   ensure_equals("invalid name",ti.getName().get()  ,name );
 
-  r[0]["port"].to(port);
-  ensure_equals("invalid port",ti.getPort(),port);
+  ensure_equals("invalid port",ti.getPort(),ReaderHelper<int>::fromSQLResult(r[0]["port"]));
 
   r[0]["protocol"].to(protocol);
   trim(protocol);
@@ -460,7 +446,7 @@ void testObj::test<11>(void)
   const Analyzer anlz("analyzer1", NULL, NULL, NULL);
   const DataBaseID anlzID = es_.saveAnalyzer(anlz);
   const DataBaseID alrtID = es_.saveAlert(a);
-  //TODO: test save data in alert_analyzers
+  // save data in alert_analyzers
   es_.saveAlertToAnalyzers(alrtID, anlzID);
   stringstream ss;
   string name, time, description;
@@ -505,7 +491,7 @@ void testObj::test<12>(void)
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
-  //TODO: test save data in alert_analyzers
+  // save data in alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID procID  = es_.saveProcess(thostID, procnn_);
@@ -543,7 +529,7 @@ void testObj::test<13>(void)
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
-  //TODO: test save data in alert_analyzers
+  // save data in alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID procID  = es_.saveProcess(thostID, proc);
@@ -587,7 +573,7 @@ void testObj::test<14>(void)
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
-  //TODO: test save data in alert_analyzers
+  // save data in alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
   const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
   const DataBaseID procID  = es_.saveProcess(thostID, proc);
@@ -648,7 +634,6 @@ template<>
 template<>
 void testObj::test<16>(void)
 {
-
 }
 
 // try save service with NULL reference URL
@@ -729,11 +714,134 @@ void testObj::test<19>(void)
   t_.commit();
 }
 
-// TODO: add tests to check if max/min-length data types does fill in data base.
+// trying save MetaAlert as triggered
 template<>
 template<>
 void testObj::test<20>(void)
 {
+  const string TriggerName("some trigger name");
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
+  es_.markMetaAlertAsUsed(malertID);
+  stringstream ss;
+  {
+    ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid size",r.size(), 1u);
+  }
+  es_.markMetaAlertAsTriggered(malertID, TriggerName);
+  ss.str("");
+  {
+    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
+    result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid size",r.size(), 1u);
+    ensure_equals("invalid trigger name", ReaderHelper<string>::fromSQLResult(r[0]["trigger_name"]), TriggerName);
+  }
+}
+
+// trying save MetaAlert as used
+template<>
+template<>
+void testObj::test<21>(void)
+{
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
+  es_.markMetaAlertAsUsed(malertID);
+  stringstream ss;
+  ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
+  const result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size",r.size(), 1u);
+}
+
+// trying save MetaAlert as unused
+template<>
+template<>
+void testObj::test<22>(void)
+{
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
+  es_.markMetaAlertAsUsed(malertID);
+  stringstream ss;
+  {
+    ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid size",r.size(), 1u);
+  }
+  es_.markMetaAlertAsUnused(malertID);
+  ss.str("");
+  {
+    ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
+    result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid size",r.size(), 0);
+  }
+
+}
+
+// test seting host name
+template<>
+template<>
+void testObj::test<23>(void)
+{
+  const string hostName("some.host.com");
+  const Host h(  Host::IPv4::from_string("1.2.3.4"),
+                 &mask4_,
+                 "myos",
+                 makeNewReferenceURL(),
+                 Host::ReportedServices(),
+                 Host::ReportedProcesses(),
+                 NULL );
+  // TODO: this variable should be const
+  DataBaseID hostID = es_.saveHostData(h);
+
+  stringstream ss;
+  {
+    ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid size", r.size(), 1u);
+
+    ensure("Host name is not NULL",r[0]["name"].is_null() );
+  }
+  // trying set Host name
+  es_.setHostName(hostID, hostName);
+  {
+    // TODO: 'ss' should is not empty here - ensure this test does work indeed.
+    // TODO: note that this and previous statement are almost equal (i.e. they're
+    //       not equal, but they can be) and so 'ss' can be set just once.
+    ss << "SELECT name FROM hosts WHERE id = " << hostID << ";";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    string name = ReaderHelper<string>::fromSQLResult(r[0]["name"]);
+    trim(name);
+    ensure_equals("invalid host name",  name, hostName);
+  }
+  t_.commit();
+}
+
+// test saving host with NULL name and NULL mask
+template<>
+template<>
+void testObj::test<24>(void)
+{
+  const Host h(  Host::IPv4::from_string("1.2.3.4"),
+                 NULL,
+                 "myos",
+                 makeNewReferenceURL(),
+                 Host::ReportedServices(),
+                 Host::ReportedProcesses(),
+                 NULL );
+  const DataBaseID hostID = es_.saveHostData(h);
+
+  stringstream ss;
+  ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
+  // TODO: this variable should be const
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size", r.size(), 1u);
+
+  ensure("Host name is not NULL",r[0]["name"].is_null() );
+  ensure("Mask is not NULL",r[0]["mask"].is_null() );
+  t_.commit();
 }
 
 } // namespace tut

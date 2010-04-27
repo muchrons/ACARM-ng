@@ -200,4 +200,22 @@ void testObj::test<10>(void)
   }
 }
 
+// test const version of get() method
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  fill();
+  const TestStorage &cRef=ts_;
+  ensure_equals("invalid data", cRef.get(data_[0]), 420);
+}
+
+// test const version of has() method
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const TestStorage &cRef=ts_;
+  ensure("invalid data", cRef.has(data_[0]) == false);
+}
 } // namespace tut

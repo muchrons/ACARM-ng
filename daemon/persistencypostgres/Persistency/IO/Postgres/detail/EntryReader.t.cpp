@@ -14,6 +14,7 @@
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/Postgres/Alert.hpp"
 #include "Persistency/IO/Postgres/MetaAlert.hpp"
+#include "Persistency/IO/Postgres/timestampFromString.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 
@@ -49,21 +50,6 @@ struct TestClass
     er_(t_, *dbh_)
   {
     tdba_.removeAllData();
-  }
-
-  // TODO: this method appears in many test suits - consider making base class
-  //       for test suits in Persistency::Postgres and deriving from it in
-  //       tests, making common tests' parts common.
-  IO::ConnectionPtrNN makeConnection(void) const
-  {
-    IO::BackendFactory::Options opts;
-    opts["host"]  ="localhost";
-    opts["port"]  ="5432";
-    opts["dbname"]="acarm_ng_test";
-    opts["user"]  ="acarm-ng-daemon";
-    opts["pass"]  ="test.daemon";
-    return IO::ConnectionPtrNN(
-        Persistency::IO::BackendFactory::create("postgres", opts) );
   }
 
   Persistency::Alert::ReportedHosts generateReportedHosts(unsigned int size) const
@@ -125,13 +111,12 @@ void testObj::test<2>(void)
   const Analyzer::OS      anlzOS("wiendols");
   const Analyzer          a("analyzer2", &anlzVersion, &anlzOS, NULL);
   const DataBaseID        anlzID = es_.saveAnalyzer(a);
-  const AnalyzerPtrNN     readAnalyzer =  er_.getAnalyzer(anlzID);  // TODO: what is Analyzer is NULL?
+  const AnalyzerPtrNN     readAnalyzer =  er_.getAnalyzer(anlzID);  // TODO: what if Analyzer is NULL?
   string                  version(readAnalyzer->getVersion()->get());
-  string                  os(readAnalyzer->getOS()->get());         // TODO: this variable should be const.
+  const string                  os(readAnalyzer->getOS()->get());
   trim(version);
-  //trim(os);
   ensure_equals("wrong version",version, string(anlzVersion.get()) );
-  ensure("ip is not null",readAnalyzer->getIP()==NULL);  // TODO: SEGV (invalid access) - here...
+  ensure("ip is not null",readAnalyzer.get()->getIP()==NULL);
   ensure_equals("wrong os", os, string( anlzOS.get()) );
   t_.commit();
 }
@@ -215,7 +200,10 @@ void testObj::test<5>(void)
   ReferenceURL::Name nameURL(ma->getReferenceURL()->getName().get());
   ReferenceURL::URL  urlURL(ma->getReferenceURL()->getURL().get());
 
-  // TODO: check for NULLs first
+  ensure("url name is NULL", nameURL.get()!=NULL);
+  ensure("url is NULL", urlURL.get()!=NULL);
+  ensure("reference url is NULL", ma->getReferenceURL()!=NULL);
+
   ensure("invalid reference url", *refURL==*ma->getReferenceURL() );
   ensure("invalid url name", nameURL == refURL->getName() );
   ensure("invalid url", urlURL == refURL->getURL());
@@ -246,5 +234,52 @@ void testObj::test<6>(void)
   ensure_equals("invalid certainty delta", ma->getCertaintyDelta(), 0.2);
   ensure("reference url is not null", ma->getReferenceURL()==NULL);
   t_.commit();
+}
+
+// trying restoring MetaAlerts between
+template<>
+template<>
+void testObj::test<7>(void)
+{
+
+  const std::string malertName("meta alert name");
+  Timestamp t1( timestampFromString("1970-01-15 07:56:07") );
+  Timestamp t2( timestampFromString("1999-10-10 17:56:07") );
+  Timestamp t3( timestampFromString("2010-04-22 07:56:07") );
+
+  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  Persistency::MetaAlertPtrNN maPtr1(
+      new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
+                                  0.1, 0.2,
+                                  refURL,
+                                  t1 ) );
+  Persistency::IO::Postgres::MetaAlert malert1(maPtr1, t_, dbh_);
+  Persistency::MetaAlertPtrNN maPtr2(
+      new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
+                                  0.1, 0.2,
+                                  refURL,
+                                  t2 ) );
+  Persistency::IO::Postgres::MetaAlert malert2(maPtr2, t_, dbh_);
+  Persistency::MetaAlertPtrNN maPtr3(
+      new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
+                                  0.1, 0.2,
+                                  refURL,
+                                  t3 ) );
+  Persistency::IO::Postgres::MetaAlert malert3(maPtr3, t_, dbh_);
+  malert1.save();
+  malert2.save();
+  malert3.save();
+  vector<DataBaseID> malertsBetween;
+  malertsBetween = er_.readIDsMalertsBetween(t1, t1);
+  ensure_equals("invalid size", malertsBetween.size(), 1);
+
+  malertsBetween = er_.readIDsMalertsBetween(t1, t2);
+  ensure_equals("invalid size", malertsBetween.size(), 2);
+
+  malertsBetween = er_.readIDsMalertsBetween(t1, t3);
+  ensure_equals("invalid size", malertsBetween.size(), 3);
+
+  malertsBetween = er_.readIDsMalertsBetween(t3, t1);
+  ensure_equals("invalid size", malertsBetween.size(), 0);
 }
 } // namespace tut

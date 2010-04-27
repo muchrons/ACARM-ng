@@ -14,16 +14,14 @@ namespace Input
 namespace Prelude
 {
 
+// TODO: fix indentation
   Reader::Reader(const std::string profile, const std::string config):
-  Input::Reader("profile"),
+  Input::Reader(profile),
+  // TODO: logger is not used here
   preludeLogger_("input.prelude.reader.preludelog"),
-  preludeProfile_(profile),
-  client_( new Client( preludeProfile_.c_str() ) )
+  client_( new Client( profile, config, PRELUDE_CONNECTION_PERMISSION_IDMEF_READ))
 {
   assert( client_.get()!=NULL );
-
-  client_->SetConfigFilename(config.c_str());
-  client_->SetRequiredPermission(PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
   client_->start();
 }
 
@@ -42,7 +40,15 @@ Reader::DataPtr Reader::read(const unsigned int timeout)
 
   IDMEFParser ip(message);
 
-  tmp.reset(new Persistency::Alert(ip.getName(),ip.getAnalyzers(),NULL,ip.getCreateTime(),Persistency::Severity(Persistency::SeverityLevel::DEBUG),Persistency::Certainty(1.0),"",ip.getSources(),ip.getTargets()));
+  tmp.reset(new Persistency::Alert(ip.getName(),
+                                   ip.getAnalyzers(),
+                                   NULL,
+                                   ip.getCreateTime(),
+                                   Persistency::Severity(Persistency::SeverityLevel::DEBUG),    // TODO
+                                   Persistency::Certainty(1.0),
+                                   "",
+                                   ip.getSources(),
+                                   ip.getTargets()));
 
   return tmp;
 }

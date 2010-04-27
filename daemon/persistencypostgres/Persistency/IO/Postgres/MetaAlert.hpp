@@ -9,7 +9,6 @@
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
-// TODO: test
 
 namespace Persistency
 {
@@ -41,6 +40,7 @@ private:
   virtual void updateCertaintyDeltaImpl(Transaction &t, double delta);
   virtual void addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child);
   virtual void associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN alert);
+  DataBaseID getID();
 
   DBHandlerPtrNN dbHandler_;
 }; // class MetaAlert

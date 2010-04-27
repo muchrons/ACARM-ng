@@ -7,6 +7,7 @@
 
 #include <boost/noncopyable.hpp>
 
+#include "Base/NullValue.hpp"
 #include "Persistency/Process.hpp"
 #include "Persistency/Service.hpp"
 #include "Persistency/ReferenceURL.hpp"
@@ -17,6 +18,11 @@
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
+
+// TODO: add loging here:
+//         - debug logs while saving each element
+//         - info logs while in main algorithm parts
+//         - detailed errors while error conditions are detected.
 
 namespace Persistency
 {
@@ -98,18 +104,18 @@ public:
   /** \brief mark Meta Alert as used
    *  \param malertID ID of Meta Alert
    */
-  void saveMetaAlertAsUsed(DataBaseID malertID);
+  void markMetaAlertAsUsed(DataBaseID malertID);
 
   /** \brief mark Meta Alert as unused
    *  \param malertID ID of Meta Alert
    */
-  void saveMetaAlertAsUnused(DataBaseID malertID);
+  void markMetaAlertAsUnused(DataBaseID malertID);
 
   /** \brief mark Meta Alert as triggered
    *  \param malertID ID of Meta Alert
    *  \param name
    */
-  void saveMetaAlertAsTriggered(DataBaseID malertID, const std::string &name);
+  void markMetaAlertAsTriggered(DataBaseID malertID, const std::string &name);
 
   /** \brief update Meta Alert severity delta
    *  \param malertID ID   of Meta Alert to update
@@ -123,13 +129,16 @@ public:
    */
   void updateCertaintyDelta(DataBaseID malertID, double certanityDelta);
 
-  // TODO
-
+  /** \brief set Host name in the data base
+   *  \param hostID ID of Host to set name
+   *  \param name   name of Host
+   */
+  void setHostName(DataBaseID hostID, const Persistency::Host::Name &name);
 
 private:
   DataBaseID getID(const std::string &seqName);
   DataBaseID getSeverityID(const Alert &a);
-  DataBaseID isAnalyzerInDataBase(const Analyzer &a);
+  Base::NullValue<DataBaseID> isAnalyzerInDataBase(const Analyzer &a);
   std::string addIPToSelect(const Analyzer::IP *ptr);
 
   DataBaseID saveProcessData(const Process &p);
@@ -151,6 +160,7 @@ private:
                                DataBaseID     serID,
                                const Service &s);
   void addReferenceURL(std::stringstream &ss, const ReferenceURL *url);
+  bool isHostNameNull(DataBaseID hostID);
 
   DBHandler   &dbh_;
   Transaction &t_;
