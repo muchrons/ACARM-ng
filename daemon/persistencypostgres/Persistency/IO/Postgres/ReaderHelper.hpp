@@ -66,8 +66,9 @@ struct ReaderHelper< T1, Persistency::detail::LimitedNULLString<N>, T3>
    */
   static Persistency::detail::LimitedNULLString<N> readAs(const pqxx::result::field &r)
   {
+    // TODO: bug has been fixed here: LimitedNULLString<> creates "" object by default, not NULL.
     if( r.is_null() )
-      return Persistency::detail::LimitedNULLString<N>();
+      return Persistency::detail::LimitedNULLString<N>(NULL);
     T3 s;
     r.to(s);
     Persistency::detail::LimitedNULLString<N> ret( s );
