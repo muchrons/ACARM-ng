@@ -81,8 +81,11 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   }
   if(tmpNodes.size() < 2)
   {
+    // TODO: btw: i future use boost::lexical_cast<> to handle such a convertions (where needed)
     std::stringstream ss;
     ss << id;
+    // TODO: rework this exception to take ID in c-tor - there is cc() method
+    //       in exception that can handle convertions easily (ex: cc("the answer is: ", 42))
     throw ExceptionBadNumberOfNodeChildren(SYSTEM_SAVE_LOCATION, ss.str() );
   }
   NodeChildrenVector vec(tmpNodes[0], tmpNodes[1]);

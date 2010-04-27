@@ -11,6 +11,7 @@
 
 using namespace std;
 using namespace Persistency::IO::Postgres;
+
 namespace
 {
 
@@ -199,7 +200,7 @@ void testObj::test<10>(void)
   }
 }
 
-// test const version of get function
+// test const version of get() method
 template<>
 template<>
 void testObj::test<11>(void)
@@ -209,7 +210,7 @@ void testObj::test<11>(void)
   ensure_equals("invalid data", cRef.get(data_[0]), 420);
 }
 
-// test const version of has function
+// test const version of has() method
 template<>
 template<>
 void testObj::test<12>(void)

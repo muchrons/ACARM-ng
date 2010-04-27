@@ -161,6 +161,7 @@ private:
                                const Service &s);
   void addReferenceURL(std::stringstream &ss, const ReferenceURL *url);
   bool isHostNameNull(DataBaseID hostID);
+
   DBHandler   &dbh_;
   Transaction &t_;
 }; // class EntrySaver

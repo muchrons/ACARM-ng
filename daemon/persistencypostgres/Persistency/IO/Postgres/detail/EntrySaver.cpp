@@ -393,12 +393,14 @@ bool EntrySaver::isHostNameNull(DataBaseID hostID)
   stringstream ss;
   ss << "SELECT name FROM hosts WHERE id = " << hostID << ";";
   const result r = t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+  // TODO: return r[][].is_null();
   if(r[0]["name"].is_null())
     return true;
   return false;
 }
 void EntrySaver::setHostName(DataBaseID hostID, const Persistency::Host::Name &name)
 {
+  // TODO: assert( isHostNameNull(hostID) );
   assert( isHostNameNull(hostID) == true );
   stringstream ss;
   ss << "UPDATE hosts SET name = ";

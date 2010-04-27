@@ -780,7 +780,7 @@ void testObj::test<22>(void)
 
 }
 
-//test set Host name
+// test seting host name
 template<>
 template<>
 void testObj::test<23>(void)
@@ -793,6 +793,7 @@ void testObj::test<23>(void)
                  Host::ReportedServices(),
                  Host::ReportedProcesses(),
                  NULL );
+  // TODO: this variable should be const
   DataBaseID hostID = es_.saveHostData(h);
 
   stringstream ss;
@@ -806,6 +807,9 @@ void testObj::test<23>(void)
   // trying set Host name
   es_.setHostName(hostID, hostName);
   {
+    // TODO: 'ss' should is not empty here - ensure this test does work indeed.
+    // TODO: note that this and previous statement are almost equal (i.e. they're
+    //       not equal, but they can be) and so 'ss' can be set just once.
     ss << "SELECT name FROM hosts WHERE id = " << hostID << ";";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     string name = ReaderHelper<string>::fromSQLResult(r[0]["name"]);
@@ -815,7 +819,7 @@ void testObj::test<23>(void)
   t_.commit();
 }
 
-//test saving Host with NULL name and NULL mask
+// test saving host with NULL name and NULL mask
 template<>
 template<>
 void testObj::test<24>(void)
@@ -830,10 +834,8 @@ void testObj::test<24>(void)
   const DataBaseID hostID = es_.saveHostData(h);
 
   stringstream ss;
-
-
   ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
-
+  // TODO: this variable should be const
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
 
