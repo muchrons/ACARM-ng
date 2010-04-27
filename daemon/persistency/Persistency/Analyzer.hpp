@@ -14,6 +14,7 @@
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/IPTypes.hpp"
 #include "Persistency/detail/LimitedString.hpp"
+#include "Persistency/detail/LimitedNULLString.hpp"
 
 namespace Persistency
 {
@@ -24,15 +25,12 @@ class Analyzer: private boost::noncopyable,
                 public  IPTypes<Analyzer>
 {
 public:
-  // TODO: Name, Version and OS should be LimitedNULLString
-
   /** \brief name of an analyzer. */
-  typedef detail::LimitedString<128> Name;
+  typedef detail::LimitedString<128>     Name;
   /** \brief analyzer's version. */
-  typedef detail::LimitedString<16>  Version;
-  // TODO: OS -> OperatingSystem (for compatibility with Host)
+  typedef detail::LimitedNULLString<16>  Version;
   /** \brief os analyzer runs on. */
-  typedef detail::LimitedString<128> OS;
+  typedef detail::LimitedNULLString<128> OperatingSystem;
 
   /** \brief creates analyzer.
    *  \param name    name of an analyzer.
@@ -40,10 +38,10 @@ public:
    *  \param os      operating system name/version.
    *  \param ip      IP analyzer's running on.
    */
-  Analyzer(const Name    &name,
-           const Version *version,
-           const OS      *os,
-           const IP      *ip);
+  Analyzer(const Name            &name,
+           const Version         &version,
+           const OperatingSystem &os,
+           const IP              *ip);
 
   /** \brief get name of an analizer.
    *  \return analizer's name.
@@ -52,11 +50,11 @@ public:
   /** \brief gets analyzer's version.
    *  \return analyzer version or NULL.
    */
-  const Version *getVersion(void) const;
+  const Version &getVersion(void) const;
   /** \brief gets OS's name/version.
    *  \return OS name/version or NULL.
    */
-  const OS *getOS(void) const;
+  const OperatingSystem &getOperatingSystem(void) const;
   /** \brief gets analyzer's IP.
    *  \return IP of analyzer or NULL.
    */
@@ -68,10 +66,10 @@ public:
   bool operator==(const Analyzer &other) const;
 
 private:
-  Name                     name_;
-  Base::NullValue<Version> version_;
-  Base::NullValue<OS>      os_;
-  Base::NullValue<IP>      ip_;
+  Name                name_;
+  Version             version_;
+  OperatingSystem     os_;
+  Base::NullValue<IP> ip_;
 }; // class Analyzer
 
 /** \brief smarth pointer to analyzer class, check not to be NULL. */
