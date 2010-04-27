@@ -24,10 +24,13 @@ class Analyzer: private boost::noncopyable,
                 public  IPTypes<Analyzer>
 {
 public:
+  // TODO: Name, Version and OS should be LimitedNULLString
+
   /** \brief name of an analyzer. */
   typedef detail::LimitedString<128> Name;
   /** \brief analyzer's version. */
   typedef detail::LimitedString<16>  Version;
+  // TODO: OS -> OperatingSystem (for compatibility with Host)
   /** \brief os analyzer runs on. */
   typedef detail::LimitedString<128> OS;
 
