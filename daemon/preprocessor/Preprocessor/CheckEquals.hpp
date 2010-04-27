@@ -21,7 +21,7 @@ public:
 
 public:
   const std::string str_;
-}; // class CheckMode
+}; // class CheckEquals
 
 } // namespace Preprocessor
 
