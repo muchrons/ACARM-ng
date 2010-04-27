@@ -21,6 +21,8 @@
     </nodes>
   </logger>
 
+  <preprocessor/>
+
   <filters/>
 
   <triggers/>
