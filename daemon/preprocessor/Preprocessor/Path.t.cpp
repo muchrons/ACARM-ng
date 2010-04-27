@@ -92,4 +92,13 @@ void testObj::test<4>(void)
   testThrow("1.2.3.4.5.6.toolong");
 }
 
+// test getting path from object
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const Path p("1.2.3");
+  ensure_equals("invalid path", p.get(), "1.2.3");
+}
+
 } // namespace tut

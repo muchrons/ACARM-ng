@@ -35,10 +35,16 @@ public:
     return e_.end();
   }
 
-private:
-  void tokenizePath(const std::string &path);
+  const std::string get(void) const
+  {
+    return path_;
+  }
 
-  Elements e_;
+private:
+  void tokenizePath(void);
+
+  std::string path_;
+  Elements    e_;
 }; // class Path
 
 } // namespace Preprocessor
