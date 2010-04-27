@@ -1,12 +1,12 @@
 /*
- * CheckContains.t.cpp
+ * Equals.t.cpp
  *
  */
 #include <tut.h>
 
-#include "Preprocessor/CheckContains.hpp"
+#include "Preprocessor/Checkers/Equals.hpp"
 
-using namespace Preprocessor;
+using namespace Preprocessor::Checkers;
 
 namespace
 {
@@ -18,7 +18,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Preprocessor/CheckContains");
+factory tf("Preprocessor/Checkers/Equals");
 } // unnamed namespace
 
 
@@ -30,7 +30,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  CheckContains ce("abc");
+  Equals ce("abc");
 }
 
 // test positive comparison
@@ -38,8 +38,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const CheckContains ce("cat");
-  ensure("comparison failed", ce.check("alice has a cat") );
+  const Equals ce("abc");
+  ensure("comparison failed", ce.check("abc") );
 }
 
 // test negative comparison
@@ -47,8 +47,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const CheckContains ce("dog");
-  ensure("comparison didn't failed", ce.check("alice has a cat")==false );
+  const Equals ce("abc");
+  ensure("comparison didn't failed", ce.check("abcXYZ")==false );
 }
 
 } // namespace tut

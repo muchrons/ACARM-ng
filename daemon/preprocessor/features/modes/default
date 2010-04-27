@@ -1,1 +1,3 @@
 Preprocessor/*.[ch]pp
+Preprocessor/Checkers/*.[ch]pp
+Preprocessor/Expressions/*.[ch]pp
