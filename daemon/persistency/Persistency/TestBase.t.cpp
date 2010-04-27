@@ -25,6 +25,8 @@ const char *defaultConfigContent=
   "    </nodes>"
   "  </logger>"
   ""
+  "  <preprocessor/>"
+  ""
   "  <filters/>"
   ""
   "  <triggers/>"

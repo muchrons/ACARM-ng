@@ -55,6 +55,12 @@ const InputsConfigCollection &SingletonImpl::inputsConfig(void) const
   return p_->getInputsConfig();
 }
 
+const Preprocessor::Config &SingletonImpl::preprocessorConfig(void) const
+{
+  assert( p_.get()!=NULL );
+  return p_->getPreprocessorConfig();
+}
+
 SingletonImpl::SingletonImpl(void):
   p_(new Parser)
 {
