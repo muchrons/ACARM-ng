@@ -135,6 +135,8 @@ TODO: describe missing filters.
 
 TODO: describe triggers
 
+TODO: describe inputs
+
 
 preprocessor configiration
 ==========================
