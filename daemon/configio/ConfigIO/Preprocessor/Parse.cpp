@@ -29,11 +29,6 @@ Rule parseComplexRule(const XML::Node &rule)
 {
   assert( rule.getName()=="rule" );
 
-  // sanity check
-  if( rule.getChildrenList().size()!=0 )
-    throw ExceptionParseError(SYSTEM_SAVE_LOCATION,
-                              "term 'rule' cannot have children nodes");
-
   // check attributes
   const XML::AttributesList &attrs=rule.getAttributesList();
   int                        index=0;
@@ -71,13 +66,17 @@ Rule parseComplexRule(const XML::Node &rule)
     throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "path is missing for rule");
 
   return Rule::makeRule(pathStr, parseRuleMode(modeStr), valueStr);
-  // TODO
 } // parseComplexRule()
 
 
 Rule parseRule(const XML::Node &rule)
 {
   const std::string &name=rule.getName();
+
+  // sanity check
+  if( rule.getChildrenList().size()!=0 )
+    throw ExceptionParseError(SYSTEM_SAVE_LOCATION,
+                              "term " + name + "cannot have children nodes");
 
   // TRUE
   if(name=="true")
@@ -130,18 +129,20 @@ Expression parseExpression(const XML::Node &expression)
     return Expression::makeOr(  parseExpressionsSet(expression) );
 
   const XML::Node::TNodesList &children=expression.getChildrenList();
-  // both 'term' and 'not' must have exactly one element
-  if( children.size()!=1 )
-    throw ExceptionParseError(SYSTEM_SAVE_LOCATION,
-                              "invalid children cound for expression type: " + name);
-  assert( children.size()==1 );
 
   // NOT
   if(name=="not")
+  {
+    // 'not' must have exactly one element
+    if( children.size()!=1 )
+      throw ExceptionParseError(SYSTEM_SAVE_LOCATION,
+          "invalid children count for expression type: not");
+    assert( children.size()==1 );
     return Expression::makeNot( parseExpression( *children.begin() ) );
+  }
 
   // assume TERM
-  return Expression::makeTerm( parseRule( *children.begin() ) );
+  return Expression::makeTerm( parseRule(expression) );
 } // parseExpression()
 
 
