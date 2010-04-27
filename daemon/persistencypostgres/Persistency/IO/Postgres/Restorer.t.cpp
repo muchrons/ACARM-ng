@@ -46,7 +46,7 @@ factory tf("Persistency/IO/Postgres/Restorer");
 namespace tut
 {
 
-// trying restore ...
+// trying restore all in use
 template<>
 template<>
 void testObj::test<1>(void)
@@ -67,10 +67,17 @@ void testObj::test<1>(void)
   //       there should be test which writes differents alerts, meta alerts to the data base
 }
 
-// TODO: try restoring few non-trivial test cases
+//TODO: trying restore between
 template<>
 template<>
 void testObj::test<2>(void)
+{
+}
+
+// TODO: try restoring few non-trivial test cases
+template<>
+template<>
+void testObj::test<3>(void)
 {
 }
 // TODO: try restoring empty set and all meta alerts

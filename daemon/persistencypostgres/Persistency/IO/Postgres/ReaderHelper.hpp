@@ -16,11 +16,6 @@
 #include "Persistency/detail/LimitedNULLString.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
 
-// TODO: notice that you can make this code shorter by constructing all methdos in form:
-//       if(is_null)
-//          return DefaultCtor();
-//       ... code from else part here (but without 'else') ...
-
 namespace Persistency
 {
 namespace IO
@@ -39,18 +34,12 @@ struct ReaderHelper
   static T2 readAs(const pqxx::result::field &r)
   {
     if( r.is_null() )
-    {
-      T2 ret;
-      return ret;
-    }
-    else
-    {
-      T3 s;
-      r.to(s);
-      T1 data(s);
-      T2 ret( data );
-      return ret;
-    }
+      return T2();
+    T3 s;
+    r.to(s);
+    T1 data(s);
+    T2 ret( data );
+    return ret;
   }
   /** \brief get data from given SQL result field.
    *  \param r SQL result field.
@@ -78,17 +67,11 @@ struct ReaderHelper< T1, Persistency::detail::LimitedNULLString<N>, T3>
   static Persistency::detail::LimitedNULLString<N> readAs(const pqxx::result::field &r)
   {
     if( r.is_null() )
-    {
-      Persistency::detail::LimitedNULLString<N> ret;
-      return ret;
-    }
-    else
-    {
-      T3 s;
-      r.to(s);
-      Persistency::detail::LimitedNULLString<N> ret( s );
-      return ret;
-    }
+      return Persistency::detail::LimitedNULLString<N>();
+    T3 s;
+    r.to(s);
+    Persistency::detail::LimitedNULLString<N> ret( s );
+    return ret;
   }
 }; // ReaderHelper class partial specialization
 
@@ -103,17 +86,11 @@ struct ReaderHelper< boost::asio::ip::address, T2, T3>
   static T2 readAs(const pqxx::result::field &r)
   {
     if( r.is_null() )
-    {
-      T2 ret;
-      return ret;
-    }
-    else
-    {
-      T3 s;
-      r.to(s);
-      T2 ret( boost::asio::ip::address::from_string(s) );
-      return ret;
-    }
+      return T2();
+    T3 s;
+    r.to(s);
+    T2 ret( boost::asio::ip::address::from_string(s) );
+    return ret;
   }
 }; // ReaderHelper class partial specialization
 
@@ -128,17 +105,11 @@ struct ReaderHelper< Persistency::Timestamp , T2, T3>
   static T2 readAs(const pqxx::result::field &r)
   {
     if( r.is_null() )
-    {
-      T2 ret;
-      return ret;
-    }
-    else
-    {
-      T3 s;
-      r.to(s);
-      T2 ret( Timestamp( timestampFromString(s) ) );
-      return ret;
-    }
+      return T2();
+    T3 s;
+    r.to(s);
+    T2 ret( Timestamp( timestampFromString(s) ) );
+    return ret;
   }
 }; // ReaderHelper class partial specialization
 
@@ -153,25 +124,18 @@ struct ReaderHelper< char, T2, T3>
   static T2 readAs(const pqxx::result::field &r)
   {
     if( r.is_null() )
-    {
-      T2 ret;
-      return ret;
-    }
-    else
-    {
-      T3 s;
-      r.to(s);
-      T2 ret( s.c_str() );
-      return ret;
-    }
+      return T2();
+    T3 s;
+    r.to(s);
+    T2 ret( s.c_str() );
+    return ret;
   }
 }; // ReaderHelper class partial specialization
 
-// TODO: T2 is not used in this template
 /** \brief helper class which gets values from SQL queries - specialization for Persistency::MD5Sum
  */
-template<typename T2, typename T3>
-struct ReaderHelper< Persistency::MD5Sum , T2, T3>
+template<typename T3>
+struct ReaderHelper< Persistency::MD5Sum , T3>
 {
 private:
   typedef Persistency::MD5Sum MD5;
@@ -182,16 +146,11 @@ public:
   static std::auto_ptr<MD5> readAs(const pqxx::result::field &r)
   {
     if( r.is_null() )
-    {
       return std::auto_ptr<MD5>();
-    }
-    else
-    {
-      T3 s;
-      r.to(s);
-      std::auto_ptr<MD5> ret( new MD5( MD5::createFromString(s.c_str())) );
-      return ret;
-    }
+    T3 s;
+    r.to(s);
+    std::auto_ptr<MD5> ret( new MD5( MD5::createFromString(s.c_str())) );
+    return ret;
   }
 }; // ReaderHelper class partial specialization
 

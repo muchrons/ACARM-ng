@@ -34,6 +34,18 @@ void addToSelect(std::stringstream &ss, const T *ptr)
   else
     ss << " IS NULL";
 }
+
+template <>
+void addToSelect<Persistency::Analyzer::IP>(std::stringstream &ss, const Persistency::Analyzer::IP *ptr)
+{
+  if(ptr!=NULL)
+  {
+    ss << " = ";
+    Appender::append(ss, ptr->to_string().c_str() );
+  }
+  else
+    ss << " IS NULL";
+}
 } //unnamed namespace
 
 EntrySaver::EntrySaver(Transaction &t, DBHandler &dbh):
@@ -63,8 +75,8 @@ DataBaseID EntrySaver::getID(const std::string &seqName)
 
 DataBaseID EntrySaver::getSeverityID(const Alert &a)
 {
-  const DataBaseID id = a.getSeverity().getLevel().toInt()+1;   // TODO: this has to be fixed.
-  assert(id >= 1 && id <= 6);
+  const DataBaseID id = a.getSeverity().getLevel().toInt();
+  assert(id >= 0 && id <= 6);
   return id;
 }
 
@@ -79,8 +91,7 @@ void EntrySaver::addReferenceURL(std::stringstream &ss, const ReferenceURL *url)
     ss << "NULL";
 }
 
-// TODO: return NullValue<> instead of auto_ptr<> - there is no need to make extra allocations here
-std::auto_ptr<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
+Base::NullValue<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
 {
   DataBaseID id;
   stringstream ss;
@@ -91,17 +102,13 @@ std::auto_ptr<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   ss << " AND os";
   addToSelect(ss, a.getOS() );
   ss << " AND ip";
-  Appender::append(ss, a.getIP() );
+  addToSelect(ss, a.getIP() );
   ss << ";";
-  // TODO: this variable should be const
-  result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
-  if(r.empty() )
-    return std::auto_ptr<DataBaseID>();
-  else
-  {
-    r[0]["id"].to(id);
-    return std::auto_ptr<DataBaseID>(new DataBaseID(id));
-  }
+  const result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+  if( r.empty() )
+    return Base::NullValue<DataBaseID>();
+  r[0]["id"].to(id);
+  return Base::NullValue<DataBaseID>( id );
 }
 
 DataBaseID EntrySaver::saveProcessData(const Process &p)
@@ -166,8 +173,7 @@ DataBaseID EntrySaver::saveHostData(const Persistency::Host &h)
   ss << "INSERT INTO hosts(ip, mask, os, name) VALUES (";
   Appender::append(ss, h.getIP().to_string() );
   ss << ",";
-  // TODO: SEGV - hostmaks can be NULL
-  Appender::append(ss, h.getNetmask()->to_string() );
+  Appender::append(ss, h.getNetmask()?h.getNetmask()->to_string().c_str():NULL );
   ss << ",";
   Appender::append(ss, h.getOperatingSystem().get() );
   ss << ",";
@@ -229,7 +235,7 @@ DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 
 DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
 {
-  std::auto_ptr<DataBaseID> id = isAnalyzerInDataBase(a);
+  Base::NullValue<DataBaseID> id = isAnalyzerInDataBase(a);
   if( id.get() == NULL)
   {
     stringstream ss;
@@ -339,21 +345,21 @@ void EntrySaver::saveMetaAlertsTree(DataBaseID nodeID, DataBaseID childID)
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
-void EntrySaver::saveMetaAlertAsUsed(DataBaseID malertID)
+void EntrySaver::markMetaAlertAsUsed(DataBaseID malertID)
 {
   stringstream ss;
   ss << "INSERT INTO meta_alerts_in_use(id_meta_alert) VALUES (" << malertID << ");";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
-void EntrySaver::saveMetaAlertAsUnused(DataBaseID malertID)
+void EntrySaver::markMetaAlertAsUnused(DataBaseID malertID)
 {
   stringstream ss;
   ss << "DELETE FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
-void EntrySaver::saveMetaAlertAsTriggered(DataBaseID malertID, const std::string &name)
+void EntrySaver::markMetaAlertAsTriggered(DataBaseID malertID, const std::string &name)
 {
   stringstream ss;
   ss << "INSERT INTO meta_alerts_already_triggered(id_meta_alert_in_use, trigger_name) VALUES(";
@@ -379,6 +385,25 @@ void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta
   ss << "UPDATE meta_alerts SET certanity_delta = certanity_delta + ";
   Appender::append(ss, certanityDelta);
   ss << " WHERE id = " << malertID << ";";
+  t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+}
+
+bool EntrySaver::isHostNameNull(DataBaseID hostID)
+{
+  stringstream ss;
+  ss << "SELECT name FROM hosts WHERE id = " << hostID << ";";
+  const result r = t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+  if(r[0]["name"].is_null())
+    return true;
+  return false;
+}
+void EntrySaver::setHostName(DataBaseID hostID, const Persistency::Host::Name &name)
+{
+  assert( isHostNameNull(hostID) == true );
+  stringstream ss;
+  ss << "UPDATE hosts SET name = ";
+  Appender::append(ss, name.get());
+  ss << " WHERE id = " << hostID << ";";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);
 }
 
