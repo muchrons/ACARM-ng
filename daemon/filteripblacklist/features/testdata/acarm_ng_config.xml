@@ -16,6 +16,8 @@
     </nodes>
   </logger>
 
+  <preprocessor/>
+
   <filters>
     <ipblacklist>
       <refresh>36000</refresh>
