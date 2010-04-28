@@ -95,7 +95,7 @@ struct TestClass
     ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     tut::ensure_equals("invalid size", r.size(), 1u);
-    return ReaderHelper<string>::readAs(r[0]["name"]);
+    return ReaderHelper<Base::NullValue<string> >::readAs(r[0]["name"]);
   }
 
   const Alert::Name          name_;
@@ -802,16 +802,10 @@ void testObj::test<23>(void)
                  Host::ReportedProcesses(),
                  NULL );
   const DataBaseID hostID = es_.saveHostData(h);
-
   ensure("Host name is not NULL", testHostName(hostID).get() == NULL );
   // trying set Host name
   es_.setHostName(hostID, hostName);
-  {
-    // TODO: 'ss' should is not empty here - ensure this test does work indeed.
-    // TODO: note that this and previous statement are almost equal (i.e. they're
-    //       not equal, but they can be) and so 'ss' can be set just once.
-    ss << "SELECT name FROM hosts WHERE id = " << hostID << ";";
-    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+  string name( *testHostName(hostID).get() );
   trim(name);
   ensure_equals("invalid host name",  name, hostName);
   t_.commit();
