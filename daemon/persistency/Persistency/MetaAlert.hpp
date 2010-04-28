@@ -13,10 +13,10 @@
 
 #include "Base/Threads/ReadWriteMutex.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "Commons/LimitedString.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/ReferenceURL.hpp"
-#include "Persistency/detail/LimitedString.hpp"
 
 
 namespace Persistency
@@ -35,13 +35,13 @@ class MetaAlert: private boost::noncopyable,
 public:
   /** \brief name for meta alert.
    */
-  typedef detail::LimitedString<256> Name;
+  typedef Commons::LimitedString<256> Name;
   /** \brief severity difference type.
    */
-  typedef double                     SeverityDelta;
+  typedef double                      SeverityDelta;
   /** \brief certanity difference type.
    */
-  typedef double                     CertaintyDelta;
+  typedef double                      CertaintyDelta;
 
   /** \brief creates meta alert based on exisitng alert.
    *  \param alert to corelate meta-alert with.

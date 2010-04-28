@@ -2,8 +2,8 @@
  * LimitedNULLString.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_DETAIL_LIMITEDNULLSTRING_HPP_FILE
-#define INCLUDE_PERSISTENCY_DETAIL_LIMITEDNULLSTRING_HPP_FILE
+#ifndef INCLUDE_COMMONS_LIMITEDNULLSTRING_HPP_FILE
+#define INCLUDE_COMMONS_LIMITEDNULLSTRING_HPP_FILE
 
 /* public header */
 
@@ -11,11 +11,9 @@
 #include <cassert>
 
 #include "Base/ViaPointer.hpp"
-#include "Persistency/detail/LimitedString.hpp"
+#include "Commons/LimitedString.hpp"
 
-namespace Persistency
-{
-namespace detail
+namespace Commons
 {
 
 /** \brief class holding string of a given maximum length or NULL.
@@ -114,7 +112,6 @@ private:
   const char       *ptr_;
 }; // class LimitedString
 
-} // namespace detail
-} // namespace Persistency
+} // namespace Commons
 
 #endif

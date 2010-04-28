@@ -39,20 +39,19 @@ Persistency::Analyzer::Name IDMEFParserAnalyzer::parseName(idmef_analyzer_t *ptr
   return "Unknown";
 }
 
-std::auto_ptr<Persistency::Analyzer::Version> IDMEFParserAnalyzer::parseVersion(idmef_analyzer_t *ptr) const
+Persistency::Analyzer::Version IDMEFParserAnalyzer::parseVersion(idmef_analyzer_t *ptr) const
 {
-  std::auto_ptr<Persistency::Analyzer::Version> ver;
+  Persistency::Analyzer::Version ver(NULL);
   const prelude_string_t *idmef_version = idmef_analyzer_get_version(ptr );
 
   if (idmef_version!=NULL)
-    ver.reset(new Persistency::Analyzer::Version(prelude_string_get_string(idmef_version)));
+    ver=Persistency::Analyzer::Version(prelude_string_get_string(idmef_version));
   return ver;
 }
 
-std::auto_ptr<Persistency::Analyzer::OS> IDMEFParserAnalyzer::parseOS(idmef_analyzer_t *ptr) const
+Persistency::Analyzer::OperatingSystem IDMEFParserAnalyzer::parseOS(idmef_analyzer_t *ptr) const
 {
-  // TODO: consider using NullValue<> here
-  std::auto_ptr<Persistency::Analyzer::OS> os;
+  Persistency::Analyzer::OperatingSystem os(NULL);
 
   const prelude_string_t *idmef_ostype = idmef_analyzer_get_ostype(ptr);
   const prelude_string_t *idmef_osversion = idmef_analyzer_get_osversion(ptr);
@@ -68,7 +67,7 @@ std::auto_ptr<Persistency::Analyzer::OS> IDMEFParserAnalyzer::parseOS(idmef_anal
   //final os version is a concatenation of the two
 
   if (osname!="")
-    os.reset(new Persistency::Analyzer::OS(osname));
+    os=Persistency::Analyzer::OperatingSystem(osname);
   return os;
 }
 
@@ -111,14 +110,14 @@ const Persistency::Analyzer::Name& IDMEFParserAnalyzer::getName() const
   return name_;
 }
 
-const Persistency::Analyzer::Version* IDMEFParserAnalyzer::getVersion() const
+const Persistency::Analyzer::Version &IDMEFParserAnalyzer::getVersion() const
 {
-  return version_.get();
+  return version_;
 }
 
-const Persistency::Analyzer::OS* IDMEFParserAnalyzer::getOS() const
+const Persistency::Analyzer::OperatingSystem &IDMEFParserAnalyzer::getOS() const
 {
-  return os_.get();
+  return os_;
 }
 
 const Persistency::Analyzer::IP* IDMEFParserAnalyzer::getIP() const

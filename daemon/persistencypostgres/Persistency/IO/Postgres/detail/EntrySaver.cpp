@@ -98,9 +98,9 @@ Base::NullValue<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   ss << "SELECT * FROM analyzers WHERE name = ";
   Appender::append(ss, a.getName().get() );
   ss << " AND version ";
-  addToSelect(ss, a.getVersion() );
+  addToSelect(ss, &a.getVersion() );
   ss << " AND os";
-  addToSelect(ss, a.getOS() );
+  addToSelect(ss, &a.getOperatingSystem() );
   ss << " AND ip";
   addToSelect(ss, a.getIP() );
   ss << ";";
@@ -242,9 +242,9 @@ DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
     ss << "INSERT INTO analyzers(name, version, os, ip) VALUES (";
     Appender::append(ss, a.getName().get() );
     ss << ",";
-    Appender::append(ss, a.getVersion()?a.getVersion()->get():NULL);
+    Appender::append(ss, a.getVersion().get() );
     ss << ",";
-    Appender::append(ss, a.getOS()?a.getOS()->get():NULL );
+    Appender::append(ss, a.getOperatingSystem().get() );
     ss << ",";
     Appender::append(ss, a.getIP()?( a.getIP()->to_string().c_str() ):NULL);
     ss << ");";

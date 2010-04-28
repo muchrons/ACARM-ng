@@ -5,7 +5,6 @@
 #include <tut.h>
 #include <boost/algorithm/string.hpp>
 
-#include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
@@ -222,27 +221,27 @@ void testObj::test<4>(void)
 
   ensure_equals("invalid name",
                 name_.get(),
-                ReaderHelper<string>::fromSQLResult(r[0]["name"]));
+                ReaderHelper<string>::readAsNotNull(r[0]["name"]));
 
   ensure_equals("invalid detect time",
                 detected_,
-                timestampFromString( ReaderHelper<string>::fromSQLResult(r[0]["detect_time"]) ));
+                timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["detect_time"]) ));
 
   ensure_equals("invalid create time",
                 created_,
-                timestampFromString( ReaderHelper<string>::fromSQLResult(r[0]["create_time"]) ));
+                timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["create_time"]) ));
 
   ensure_equals("invalid severity ID",
                 a.getSeverity().getLevel().toInt(),
-                ReaderHelper<DataBaseID>::fromSQLResult(r[0]["id_severity"]));
+                ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_severity"]));
 
   ensure_equals("invalid certanity",
                 certanity_.get(),
-                ReaderHelper<double>::fromSQLResult(r[0]["certanity"]) );
+                ReaderHelper<double>::readAsNotNull(r[0]["certanity"]) );
 
   ensure_equals("invalid description",
                 description_,
-                ReaderHelper<string>::fromSQLResult(r[0]["description"]));
+                ReaderHelper<string>::readAsNotNull(r[0]["description"]));
 
   t_.commit();
 }
@@ -273,7 +272,7 @@ void testObj::test<5>(void)
   trim(name);
   ensure_equals("invalid name",ti.getName().get()  ,name );
 
-  ensure_equals("invalid port",ti.getPort(),ReaderHelper<int>::fromSQLResult(r[0]["port"]));
+  ensure_equals("invalid port",ti.getPort(),ReaderHelper<int>::readAsNotNull(r[0]["port"]));
 
   r[0]["protocol"].to(protocol);
   trim(protocol);
@@ -312,12 +311,12 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const string anlzName("analyzer3");
-  const Analyzer::Version ver("v1.2.3");
-  const Analyzer::OS      os("Linux 2.6.66");
-  const Analyzer::IP      ip( Analyzer::IPv4::from_string("1.2.3.4") );
-  const Analyzer a(anlzName, &ver, &os, &ip);
-  const DataBaseID anlzID = es_.saveAnalyzer(a);
+  const string                    anlzName("analyzer3");
+  const Analyzer::Version         ver("v1.2.3");
+  const Analyzer::OperatingSystem os("Linux 2.6.66");
+  const Analyzer::IP              ip( Analyzer::IPv4::from_string("1.2.3.4") );
+  const Analyzer                  a(anlzName, ver, os, &ip);
+  const DataBaseID                anlzID = es_.saveAnalyzer(a);
 
   stringstream ss;
   string name, version, os_name, ip_adress;
@@ -690,12 +689,12 @@ template<>
 template<>
 void testObj::test<19>(void)
 {
-  const string anlzName("analyzer3");
-  const Analyzer::Version ver("v1.2.3");
-  const Analyzer::OS      os("Linux 2.6.66");
-  const Analyzer::IP      ip( Analyzer::IPv4::from_string("1.2.3.4") );
-  const Analyzer a1(anlzName, &ver, &os, &ip);
-  const Analyzer a2(anlzName, &ver, &os, &ip);
+  const string                    anlzName("analyzer3");
+  const Analyzer::Version         ver("v1.2.3");
+  const Analyzer::OperatingSystem os("Linux 2.6.66");
+  const Analyzer::IP              ip( Analyzer::IPv4::from_string("1.2.3.4") );
+  const Analyzer                  a1(anlzName, ver, os, &ip);
+  const Analyzer                  a2(anlzName, ver, os, &ip);
   es_.saveAnalyzer(a1);
   es_.saveAnalyzer(a2);
 
@@ -736,7 +735,7 @@ void testObj::test<20>(void)
     ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
     result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
-    ensure_equals("invalid trigger name", ReaderHelper<string>::fromSQLResult(r[0]["trigger_name"]), TriggerName);
+    ensure_equals("invalid trigger name", ReaderHelper<string>::readAsNotNull(r[0]["trigger_name"]), TriggerName);
   }
 }
 
@@ -812,7 +811,7 @@ void testObj::test<23>(void)
     //       not equal, but they can be) and so 'ss' can be set just once.
     ss << "SELECT name FROM hosts WHERE id = " << hostID << ";";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
-    string name = ReaderHelper<string>::fromSQLResult(r[0]["name"]);
+    string name = ReaderHelper<string>::readAsNotNull(r[0]["name"]);
     trim(name);
     ensure_equals("invalid host name",  name, hostName);
   }

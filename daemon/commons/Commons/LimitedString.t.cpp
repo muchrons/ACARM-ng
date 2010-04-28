@@ -4,12 +4,11 @@
  */
 #include <tut.h>
 
-#include "Persistency/detail/LimitedString.hpp"
+#include "Commons/LimitedString.hpp"
 #include "TestHelpers/checkEquality.hpp"
 
 using namespace std;
-using namespace Persistency;
-using namespace Persistency::detail;
+using namespace Commons;
 
 namespace
 {
@@ -22,7 +21,7 @@ typedef LimitedStringTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/detail/LimitedString");
+factory tf("Commons/LimitedString");
 } // unnamed namespace
 
 
@@ -48,7 +47,7 @@ void testObj::test<2>(void)
     LimitedString<10> ls(NULL);
     fail("LimitedString() didn't throw on NULL");
   }
-  catch(const ExceptionNULLParameter&)
+  catch(const ExceptionUnexpectedNULL&)
   {
     // this is expected
   }

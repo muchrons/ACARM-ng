@@ -9,8 +9,8 @@
 
 #include <boost/operators.hpp>
 
+#include "Commons/LimitedString.hpp"
 #include "Persistency/Exception.hpp"
-#include "Persistency/detail/LimitedString.hpp"
 
 namespace Persistency
 {
@@ -66,7 +66,7 @@ private:
   explicit MD5Sum(const char *str);
 
   enum { MD5_STR_LEN=32 };
-  detail::LimitedString<MD5_STR_LEN> str_;
+  Commons::LimitedString<MD5_STR_LEN> str_;
 }; // class MD5Sum
 
 } // namespace Persistency

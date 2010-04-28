@@ -80,9 +80,9 @@ void testObj::test<1>(void)
   ss << "SELECT * FROM meta_alerts WHERE id = " << malertID << ";";
   const result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(), 1u);
-  ensure_equals("invalid name", ReaderHelper<string>::fromSQLResult(r[0]["name"]), name_);
-  ensure_equals("invalid severity delta", ReaderHelper<double>::fromSQLResult(r[0]["severity_delta"]), 0.1);
-  ensure_equals("invalid certanity delta", ReaderHelper<double>::fromSQLResult(r[0]["certanity_delta"]), 0.2);
+  ensure_equals("invalid name", ReaderHelper<string>::readAsNotNull(r[0]["name"]), name_);
+  ensure_equals("invalid severity delta", ReaderHelper<double>::readAsNotNull(r[0]["severity_delta"]), 0.1);
+  ensure_equals("invalid certanity delta", ReaderHelper<double>::readAsNotNull(r[0]["certanity_delta"]), 0.2);
   t_.commit();
 }
 
@@ -123,7 +123,7 @@ void testObj::test<3>(void)
   ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(), 1u);
-  ensure_equals("invalid trigger name", ReaderHelper<string>::fromSQLResult(r[0]["trigger_name"]), TriggerName);
+  ensure_equals("invalid trigger name", ReaderHelper<string>::readAsNotNull(r[0]["trigger_name"]), TriggerName);
   t_.commit();
 }
 // trying mark MetaAlert as unused
@@ -164,14 +164,14 @@ void testObj::test<5>(void)
   {
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
-    ensure_equals("invalid severity delta", ReaderHelper<double>::fromSQLResult(r[0]["severity_delta"]), 0.1);
+    ensure_equals("invalid severity delta", ReaderHelper<double>::readAsNotNull(r[0]["severity_delta"]), 0.1);
   }
   malert.updateSeverityDelta(delta);
   {
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
     ensure("invalid severity delta",
-           ( ReaderHelper<double>::fromSQLResult(r[0]["severity_delta"]) -  (0.1+delta)) < 0.01 );
+           ( ReaderHelper<double>::readAsNotNull(r[0]["severity_delta"]) -  (0.1+delta)) < 0.01 );
   }
   t_.commit();
 }
@@ -194,14 +194,14 @@ void testObj::test<6>(void)
   {
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
-    ensure_equals("invalid certanity delta", ReaderHelper<double>::fromSQLResult(r[0]["certanity_delta"]), 0.2);
+    ensure_equals("invalid certanity delta", ReaderHelper<double>::readAsNotNull(r[0]["certanity_delta"]), 0.2);
   }
   malert.updateCertaintyDelta(delta);
   {
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
     ensure("invalid certanity delta",
-           ( ReaderHelper<double>::fromSQLResult(r[0]["certanity_delta"]) - (0.2+delta) ) < 0.01 );
+           ( ReaderHelper<double>::readAsNotNull(r[0]["certanity_delta"]) - (0.2+delta) ) < 0.01 );
   }
   t_.commit();
 }
@@ -231,8 +231,8 @@ void testObj::test<7>(void)
   ss << "SELECT * FROM meta_alerts_tree WHERE id_node = " << malertNodeID << ";";
   const result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(), 1u);
-  ensure_equals("invalid node ID", ReaderHelper<DataBaseID>::fromSQLResult(r[0]["id_node"]), malertNodeID);
-  ensure_equals("invalid child ID", ReaderHelper<DataBaseID>::fromSQLResult(r[0]["id_child"]), malertChildID);
+  ensure_equals("invalid node ID", ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_node"]), malertNodeID);
+  ensure_equals("invalid child ID", ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_child"]), malertChildID);
   t_.commit();
 }
 
@@ -268,8 +268,8 @@ void testObj::test<8>(void)
   ss << "SELECT * FROM alert_to_meta_alert_map WHERE id_alert = " << alertID << ";";
   const result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(), 1u);
-  ensure_equals("invalid Alert ID", ReaderHelper<DataBaseID>::fromSQLResult(r[0]["id_meta_alert"]), malertNodeID);
-  ensure_equals("invalid MetaAlert ID", ReaderHelper<DataBaseID>::fromSQLResult(r[0]["id_alert"]), alertID);
+  ensure_equals("invalid Alert ID", ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_meta_alert"]), malertNodeID);
+  ensure_equals("invalid MetaAlert ID", ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_alert"]), alertID);
   t_.commit();
 }
 } // namespace tut
