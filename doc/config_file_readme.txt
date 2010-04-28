@@ -207,7 +207,7 @@ tree looks like this:
 alert.name
 alert.detected
 alert.created
-alert.certanity
+alert.certainty
 alert.severity
 alert.description
 alert.analyzers.[].name
