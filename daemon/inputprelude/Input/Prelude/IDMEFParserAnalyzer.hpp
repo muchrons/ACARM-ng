@@ -36,12 +36,12 @@ public:
   /**
    * @brief gets version of an analyzer
    */
-  const Persistency::Analyzer::Version* getVersion() const;
+  const Persistency::Analyzer::Version &getVersion() const;
 
   /**
    * @brief gets OS version this analyzer is running on
    */
-  const Persistency::Analyzer::OS* getOS() const;
+  const Persistency::Analyzer::OperatingSystem &getOS() const;
 
   /**
    * @brief gets IP address of an analyzer
@@ -52,15 +52,15 @@ private:
   idmef_analyzer_t * getNonNull(idmef_analyzer_t *ptr) const;
   Persistency::Analyzer::Name parseName(idmef_analyzer_t *ptr) const;
 
-  std::auto_ptr<Persistency::Analyzer::Version> parseVersion(idmef_analyzer_t *ptr) const;
-  std::auto_ptr<Persistency::Analyzer::OS> parseOS(idmef_analyzer_t *ptr) const;
+  Persistency::Analyzer::Version parseVersion(idmef_analyzer_t *ptr) const;
+  Persistency::Analyzer::OperatingSystem parseOS(idmef_analyzer_t *ptr) const;
   std::auto_ptr<Persistency::Analyzer::IP> parseIP(idmef_analyzer_t *ptr) const;
 
-  Persistency::Analyzer::Name                   name_;
+  Persistency::Analyzer::Name              name_;
+  Persistency::Analyzer::Version           version_;
+  Persistency::Analyzer::OperatingSystem   os_;
   // TODO: auto_ptr is over kill here - consider using Base::NullValue<> for this
-  std::auto_ptr<Persistency::Analyzer::Version> version_;
-  std::auto_ptr<Persistency::Analyzer::OS>      os_;
-  std::auto_ptr<Persistency::Analyzer::IP>      ip_;
+  std::auto_ptr<Persistency::Analyzer::IP> ip_;
 }; // class IDMEFParserAnalyzer
 
 } // namespace Prelude

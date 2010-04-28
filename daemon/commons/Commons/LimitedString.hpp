@@ -2,8 +2,8 @@
  * LimitedString.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_DETAIL_LIMITEDSTRING_HPP_FILE
-#define INCLUDE_PERSISTENCY_DETAIL_LIMITEDSTRING_HPP_FILE
+#ifndef INCLUDE_COMMONS_LIMITEDSTRING_HPP_FILE
+#define INCLUDE_COMMONS_LIMITEDSTRING_HPP_FILE
 
 /* public header */
 
@@ -14,13 +14,11 @@
 #include <boost/static_assert.hpp>
 #include <boost/operators.hpp>
 
-#include "Persistency/Exception.hpp"
-#include "Persistency/ExceptionNULLParameter.hpp"
+#include "Commons/Exception.hpp"
+#include "Commons/ExceptionUnexpectedNULL.hpp"
 
 
-namespace Persistency
-{
-namespace detail
+namespace Commons
 {
 
 /** \brief thrown when input string is too long.
@@ -59,7 +57,7 @@ public:
   {
     // sanity check
     if(str==NULL)
-      throw ExceptionNULLParameter(SYSTEM_SAVE_LOCATION, "str");
+      throw ExceptionUnexpectedNULL(SYSTEM_SAVE_LOCATION);
     createFromNonNULL(str);
   }
   /** \brief creates object from a given string.
@@ -123,7 +121,6 @@ private:
   char str_[N+1];
 }; // class LimitedString
 
-} // namespace detail
-} // namespace Persistency
+} // namespace Commons
 
 #endif

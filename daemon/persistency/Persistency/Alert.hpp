@@ -16,12 +16,12 @@
 
 #include "Base/NonEmptyVector.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "Commons/LimitedString.hpp"
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/Severity.hpp"
 #include "Persistency/Certainty.hpp"
 #include "Persistency/Host.hpp"
-#include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/Exception.hpp"
 #include "Persistency/ExceptionNULLParameter.hpp"
 
@@ -36,7 +36,7 @@ class Alert: private boost::noncopyable,
 {
 public:
   /** \brief name of the alert (aka: title). */
-  typedef detail::LimitedString<256>          Name;
+  typedef Commons::LimitedString<256>         Name;
   /** \brief vector of reported hosts. */
   typedef std::vector<HostPtrNN>              ReportedHosts;
   /** \brief vector of analyzers assigned to this alert. */

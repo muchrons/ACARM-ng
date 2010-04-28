@@ -31,14 +31,17 @@ Logger::Node makeNodeName(const char *prefix, const Interface *interface)
 class ThreadImpl
 {
 public:
-  ThreadImpl(Core::Types::NodesFifo &outputQueue,
+  ThreadImpl(volatile bool          *exit,
+             Core::Types::NodesFifo &outputQueue,
              Core::Types::NodesFifo &inputQueue,
              Interface              *interface):
+    exit_(exit),
     log_( makeNodeName("core.types.proc.processor.threadimpl.", interface) ),
     outputQueue_(&outputQueue),
     inputQueue_(&inputQueue),
     interface_(interface)
   {
+    assert(exit_!=NULL);
     if(interface_==NULL)
       throw ExceptionInvalidInterface(SYSTEM_SAVE_LOCATION, "NULL");
   }
@@ -52,7 +55,8 @@ public:
     LOGMSG_INFO(log_, "thread started");
 
     // loop forever
-    for(;;)
+    assert(exit_!=NULL);
+    for(; *exit_==false;)
     {
       try
       {
@@ -87,6 +91,7 @@ public:
   }
 
 private:
+  volatile bool          *exit_;
   Logger::Node            log_;
   Core::Types::NodesFifo *outputQueue_;
   Core::Types::NodesFifo *inputQueue_;
@@ -97,10 +102,11 @@ private:
 
 Processor::Processor(Core::Types::NodesFifo &outputQueue,
                      InterfaceAutoPtr        interface):
+  exit_(false),
   outputQueue_(outputQueue),
   log_( makeNodeName("core.types.proc..processor.", interface.get() ) ),
   interface_( interface.release() ),
-  th_( ThreadImpl(outputQueue_, inputQueue_, interface_.get() ) )
+  th_( ThreadImpl(&exit_, outputQueue_, inputQueue_, interface_.get() ) )
 {
   // if() throw() is already in thread's data c-tor
   assert( interface_.get()!=NULL );
@@ -111,8 +117,10 @@ Processor::Processor(Core::Types::NodesFifo &outputQueue,
 Processor::~Processor(void)
 {
   LOGMSG_INFO(log_, "stopping processor");
-  th_.interrupt();
+  exit_=true;               // this prevents deadlock when thread AFTER being signalled
+  th_.interrupt();          // waits on conditional, while other thread hangs on join().
   inputQueue_.signalAll();
+  // NOTE: this is place where this race could take place
   th_.join();
   LOGMSG_INFO(log_, "processor stopped");
 }

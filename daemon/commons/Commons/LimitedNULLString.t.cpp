@@ -4,12 +4,11 @@
  */
 #include <tut.h>
 
-#include "Persistency/detail/LimitedNULLString.hpp"
+#include "Commons/LimitedNULLString.hpp"
 #include "TestHelpers/checkEquality.hpp"
 
 using namespace std;
-using namespace Persistency;
-using namespace Persistency::detail;
+using namespace Commons;
 
 namespace
 {
@@ -22,7 +21,7 @@ typedef LimitedNULLStringTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/detail/LimitedNULLString");
+factory tf("Commons/LimitedNULLString");
 } // unnamed namespace
 
 

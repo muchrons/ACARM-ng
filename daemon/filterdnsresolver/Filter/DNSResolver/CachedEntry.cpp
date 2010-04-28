@@ -16,10 +16,6 @@ namespace DNSResolver
 
 void CachedEntry::resolve(const IP &ip)
 {
-  //
-  // TODO: why getting non-existing entry takes so much time?!
-  //
-
   io_service                  ios;
   ip::tcp::endpoint           ep(ip, 0);
   ip::tcp::resolver           resolver(ios);
