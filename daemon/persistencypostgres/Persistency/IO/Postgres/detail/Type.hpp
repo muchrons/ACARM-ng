@@ -26,6 +26,8 @@ namespace detail
 {
 
 /** \brief type convertion mechanism.
+ *
+ *  this is helper code for ReaderHelper<> template.
  */
 template<typename To>
 struct Type

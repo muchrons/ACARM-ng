@@ -18,6 +18,8 @@ namespace detail
 {
 
 /** \brief helper object to create NULL objects.
+ *
+ *  this is helper code for ReaderHelper<> template.
  */
 template<typename T>
 struct Default
