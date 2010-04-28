@@ -141,9 +141,11 @@ GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2, const c
 
 GraphNodePtrNN makeNewTree1(void)
 {
-  return makeNewNode( makeNewNode(),
+  return makeNewNode( makeNewNode(makeNewLeaf("leaf1"), makeNewLeaf("leaf2"), "node1" ),
                       makeNewNode(
-                         makeNewNode(), makeNewLeaf("some name 3"), "meta alert name"), "other meta alert name" );
+                         makeNewNode(makeNewLeaf("leaf3"),
+                                     makeNewLeaf("leaf4"),
+                                     "node3"), makeNewLeaf("leaf5"), "node2"), "root" );
 }
 
 GraphNodePtrNN makeNewTree2(void)
