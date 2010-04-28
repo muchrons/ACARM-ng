@@ -1,5 +1,5 @@
 /*
- * append.t.cpp
+ * Appender.t.cpp
  *
  */
 #include <tut.h>
@@ -36,7 +36,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object            testObj;
 
-factory tf("Persistency/IO/Postgres/detail/append");
+factory tf("Persistency/IO/Postgres/detail/Appender");
 } // unnamed namespace
 
 
