@@ -140,6 +140,7 @@ void testObj::test<4>(void)
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
   // TODO: size check for result is missing
+  ensure("NULL value has been read", r[0]["val5"].is_null()==false);
   ensure("invalid IP adress", ReaderHelper<boost::asio::ip::address>::readAsNotNull(r[0]["val5"]) == ip);
 }
 
