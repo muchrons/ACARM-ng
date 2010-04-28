@@ -35,12 +35,10 @@ struct TestClass
     if( node->isLeaf())
     {
       Persistency::AlertPtrNN alert( node->getAlert() );
-      std::cout << "Leaf name: " << alert->getName().get() << endl;
     }
     else
     {
       Persistency::MetaAlertPtrNN malert( node->getMetaAlert() );
-      std::cout << "Node name: " << malert->getName().get() << endl;
       for(GraphNode::iterator it = node->begin(); it != node->end(); ++it)
       {
         deepSearch(*it);
@@ -87,7 +85,7 @@ void testObj::test<1>(void)
         ensure("alert shoud be in cache", idCache_->has( (*git)->getAlert()) );
     }
   }
-  deepSearch(tree);
+  //deepSearch(tree);
   // TODO: check if readed data (alerts and meta alerts) are the same
   //       as writed before
   //       there should be test which writes differents alerts, meta alerts to the data base
