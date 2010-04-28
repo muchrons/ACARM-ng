@@ -178,6 +178,7 @@ void testObj::test<4>(void)
   thInt.interrupt();// mark thread as ready-to-exit
   thInt.join();     // wait until thread waiting for data is done.
   ensure("thread didn't join?!", done==true);
+  th.join();        // wait for ptocessing thread
 }
 
 } // namespace tut

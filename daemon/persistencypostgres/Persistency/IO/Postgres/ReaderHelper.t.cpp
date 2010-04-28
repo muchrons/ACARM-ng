@@ -81,7 +81,7 @@ void testObj::test<1>(void)
   CreateTempTable();
   execSQL(t_, "INSERT INTO tmp(val1, val2, val3, val4) VALUES(NULL, NULL, NULL, NULL);");
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
-  // TODO: size check for result is missing
+  ensure_equals("invalid size", r.size(), 1u);
   ensure("value isn't NULL", ReaderHelper< Base::NullValue<int> >::readAs(r[0]["val1"]).get() == NULL);
   ensure("value isn't NULL", ReaderHelper< Base::NullValue<double> >::readAs(r[0]["val2"]).get() == NULL);
   t_.commit();
@@ -101,10 +101,9 @@ void testObj::test<2>(void)
   ss << ");";
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
-  // TODO: size check for result is missing
-  // TODO: SEGV if NULL pointer is read
-  ensure_equals("invalid value", *(ReaderHelper< Base::NullValue<int> >::readAs(r[0]["val1"]).get() ), val1);
-  ensure_equals("invalid value", *ReaderHelper< Base::NullValue<double> >::readAs(r[0]["val2"]).get(), val2);
+  ensure_equals("invalid size", r.size(), 1u);
+  ensure_equals("invalid value", ReaderHelper<int>::readAsNotNull(r[0]["val1"]) , val1);
+  ensure_equals("invalid value", ReaderHelper<double>::readAsNotNull(r[0]["val2"]), val2);
   ensure("invalid value", strcmp( ReaderHelper<Name>::readAs(r[0]["val4"]).get(), name_.get() ) == 0 );
 }
 
@@ -122,7 +121,7 @@ void testObj::test<3>(void)
   ss << ");";
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
-  // TODO: size check for result is missing
+  ensure_equals("invalid size", r.size(), 1u);
   ensure_equals("invalid time", ReaderHelper< Base::NullValue<Timestamp> >::readAs(r[0]["val3"]).get()->get() , ts.get());
 }
 // test specialization for IP
@@ -139,7 +138,7 @@ void testObj::test<4>(void)
   ss << ");";
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
-  // TODO: size check for result is missing
+  ensure_equals("invalid size", r.size(), 1u);
   ensure("NULL value has been read", r[0]["val5"].is_null()==false);
   ensure("invalid IP adress", ReaderHelper<boost::asio::ip::address>::readAsNotNull(r[0]["val5"]) == ip);
 }
@@ -158,7 +157,7 @@ void testObj::test<5>(void)
   ss << ");";
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
-  // TODO: size check for result is missing
+  ensure_equals("invalid size", r.size(), 1u);
   ensure("invalid value", strcmp( ReaderHelper<Name>::readAs(r[0]["val4"]).get(), s.get() ) == 0 );
 }
 

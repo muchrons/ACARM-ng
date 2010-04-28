@@ -241,17 +241,19 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
+  // making timestamp for all calls prevents timing issues.
+  const Timestamp now=Timestamp();
   Persistency::MetaAlertPtrNN maPtrNode( new Persistency::MetaAlert( Persistency::MetaAlert::Name("meta alert node"),
-                                                                 0.1, 0.2,
-                                                                 makeNewReferenceURL(),
-                                                                 Timestamp() ) );
+                                                                     0.1, 0.2,
+                                                                     makeNewReferenceURL(),
+                                                                     now ) );
   Persistency::IO::Postgres::MetaAlert malertNode(maPtrNode, t_, dbh_);
 
   Persistency::Alert::SourceAnalyzers sa( AnalyzerPtrNN( new Analyzer("analyzer name", NULL, NULL, NULL) ) );
   Persistency::AlertPtr alertPtr(new Persistency::Alert("abc",
                                                         sa,
                                                         NULL,
-                                                        Timestamp(),
+                                                        now,
                                                         Severity(SeverityLevel::INFO),
                                                         Certainty(0.42),
                                                         "some description",

@@ -31,17 +31,14 @@ Logger::Node makeNodeName(const char *prefix, const Interface *interface)
 class ThreadImpl
 {
 public:
-  ThreadImpl(volatile bool          *exit,
-             Core::Types::NodesFifo &outputQueue,
+  ThreadImpl(Core::Types::NodesFifo &outputQueue,
              Core::Types::NodesFifo &inputQueue,
              Interface              *interface):
-    exit_(exit),
     log_( makeNodeName("core.types.proc.processor.threadimpl.", interface) ),
     outputQueue_(&outputQueue),
     inputQueue_(&inputQueue),
     interface_(interface)
   {
-    assert(exit_!=NULL);
     if(interface_==NULL)
       throw ExceptionInvalidInterface(SYSTEM_SAVE_LOCATION, "NULL");
   }
@@ -55,8 +52,7 @@ public:
     LOGMSG_INFO(log_, "thread started");
 
     // loop forever
-    assert(exit_!=NULL);
-    for(; *exit_==false;)
+    for(;;)
     {
       try
       {
@@ -91,7 +87,6 @@ public:
   }
 
 private:
-  volatile bool          *exit_;
   Logger::Node            log_;
   Core::Types::NodesFifo *outputQueue_;
   Core::Types::NodesFifo *inputQueue_;
@@ -102,11 +97,10 @@ private:
 
 Processor::Processor(Core::Types::NodesFifo &outputQueue,
                      InterfaceAutoPtr        interface):
-  exit_(false),
   outputQueue_(outputQueue),
   log_( makeNodeName("core.types.proc..processor.", interface.get() ) ),
   interface_( interface.release() ),
-  th_( ThreadImpl(&exit_, outputQueue_, inputQueue_, interface_.get() ) )
+  th_( ThreadImpl(outputQueue_, inputQueue_, interface_.get() ) )
 {
   // if() throw() is already in thread's data c-tor
   assert( interface_.get()!=NULL );
@@ -117,11 +111,14 @@ Processor::Processor(Core::Types::NodesFifo &outputQueue,
 Processor::~Processor(void)
 {
   LOGMSG_INFO(log_, "stopping processor");
-  exit_=true;               // this prevents deadlock when thread AFTER being signalled
-  th_.interrupt();          // waits on conditional, while other thread hangs on join().
-  inputQueue_.signalAll();
-  // NOTE: this is place where this race could take place
-  th_.join();
+  // try signalling/joining in a loop, until everything's finished and joined
+  do
+  {
+    // interrupt and signal conditionals.
+    th_.interrupt();
+    inputQueue_.signalAll();
+  }
+  while( th_.timed_join( boost::posix_time::millisec(200) )==false );
   LOGMSG_INFO(log_, "processor stopped");
 }
 

@@ -55,7 +55,6 @@ public:
   void process(Persistency::GraphNodePtrNN node);
 
 private:
-  volatile bool                 exit_;
   Core::Types::NodesFifo       &outputQueue_;
   Core::Types::NodesFifo        inputQueue_;
   Logger::Node                  log_;

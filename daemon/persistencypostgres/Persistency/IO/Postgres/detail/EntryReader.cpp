@@ -162,7 +162,7 @@ HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID *refID)
   ss << "SELECT * FROM hosts WHERE id = "<< hostID <<";";
   const result r = execSQL(t_, ss);
 
-  HostPtr host(new Persistency::Host(Persistency::Host::IP::from_string(ReaderHelper<string>::readAsNotNull(r[0]["ip"])),   // TODO: RH<IP>?
+  HostPtr host(new Persistency::Host(ReaderHelper<Persistency::Host::IP>::readAsNotNull(r[0]["ip"]),
                                      ReaderHelper< Base::NullValue<Persistency::Host::Netmask> >::readAs(r[0]["mask"]).get(),
                                      ReaderHelper<Persistency::Host::OperatingSystem>::readAs(r[0]["os"]),
                                      getReferenceURL(refID),

@@ -89,6 +89,16 @@ struct TestClass
     return out;
   }
 
+  // TODO: better use Host::Name for compatibility
+  Base::NullValue<string> testHostName(DataBaseID hostID)
+  {
+    stringstream ss;
+    ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    tut::ensure_equals("invalid size", r.size(), 1u);
+    return ReaderHelper<Base::NullValue<string> >::readAs(r[0]["name"]);
+  }
+
   const Alert::Name          name_;
   const AnalyzerPtrNN        analyzer_;
   Alert::SourceAnalyzers     analyzers_;
@@ -792,29 +802,14 @@ void testObj::test<23>(void)
                  Host::ReportedServices(),
                  Host::ReportedProcesses(),
                  NULL );
-  // TODO: this variable should be const
-  DataBaseID hostID = es_.saveHostData(h);
-
-  stringstream ss;
-  {
-    ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
-    const result r = t_.getAPI<TransactionAPI>().exec(ss);
-    ensure_equals("invalid size", r.size(), 1u);
-
-    ensure("Host name is not NULL",r[0]["name"].is_null() );
-  }
+  const DataBaseID hostID = es_.saveHostData(h);
+  ensure("Host name is not NULL", testHostName(hostID).get() == NULL );
   // trying set Host name
   es_.setHostName(hostID, hostName);
-  {
-    // TODO: 'ss' should is not empty here - ensure this test does work indeed.
-    // TODO: note that this and previous statement are almost equal (i.e. they're
-    //       not equal, but they can be) and so 'ss' can be set just once.
-    ss << "SELECT name FROM hosts WHERE id = " << hostID << ";";
-    const result r = t_.getAPI<TransactionAPI>().exec(ss);
-    string name = ReaderHelper<string>::readAsNotNull(r[0]["name"]);
-    trim(name);
-    ensure_equals("invalid host name",  name, hostName);
-  }
+  // TODO: SEGV when testHostName(hostID).get()==NULL
+  string name( *testHostName(hostID).get() );
+  trim(name);
+  ensure_equals("invalid host name",  name, hostName);
   t_.commit();
 }
 
@@ -834,8 +829,7 @@ void testObj::test<24>(void)
 
   stringstream ss;
   ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
-  // TODO: this variable should be const
-  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  const result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
 
   ensure("Host name is not NULL",r[0]["name"].is_null() );
