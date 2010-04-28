@@ -34,6 +34,14 @@ string cast(const T *t)
   return cast(*t);
 } // cast()
 
+template<>
+string cast<char>(const char *t)
+{
+  if(t==NULL)
+    return "<NULL>";
+  return string(t);
+} // cast()
+
 } // unnamed namespace
 
 
@@ -132,7 +140,7 @@ bool Rule::check(const Persistency::Alert &e, const PathCit t) const
     return check( cast( e.getDetectionTime() ), t+1);
   if(*t=="created")
     return check( cast( e.getCreationTime() ), t+1);
-  if(*t=="certanity")
+  if(*t=="certainty")
     return check( cast( e.getCertainty().get() ), t+1);
   if(*t=="severity")
     return check( cast( e.getSeverity().getName() ), t+1);
