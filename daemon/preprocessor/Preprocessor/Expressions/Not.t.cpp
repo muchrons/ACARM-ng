@@ -5,31 +5,12 @@
 #include <tut.h>
 
 #include "Preprocessor/Expressions/Not.hpp"
-#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "Preprocessor/Expressions/TestsCommon.t.hpp"
 
 using namespace Preprocessor::Expressions;
 
 namespace
 {
-
-struct TestExpression: public Preprocessor::Expressions::Base
-{
-  explicit TestExpression(bool ret):
-    ret_(ret),
-    calls_(0)
-  {
-  }
-
-  virtual bool compute(const Persistency::Alert &/*alert*/) const
-  {
-    ++calls_;
-    return ret_;
-  }
-
-  bool         ret_;
-  mutable int  calls_;
-};
-
 struct TestClass
 {
 };
@@ -53,7 +34,7 @@ void testObj::test<1>(void)
   BasePtrNN       b(te);
   Not             n(b);
   ensure_equals("compute() called in c-tor", te->calls_, 0u);
-  ensure("invalid value", n.compute( *TestHelpers::Persistency::makeNewAlert() )==false );
+  ensure("invalid value", n.compute( *makeAlert() )==false );
   ensure_equals("compute() not called", te->calls_, 1u);
 }
 
@@ -66,7 +47,7 @@ void testObj::test<2>(void)
   BasePtrNN       b(te);
   Not             n(b);
   ensure_equals("compute() called in c-tor", te->calls_, 0u);
-  ensure("invalid value", n.compute( *TestHelpers::Persistency::makeNewAlert() )==true );
+  ensure("invalid value", n.compute( *makeAlert() )==true );
   ensure_equals("compute() not called", te->calls_, 1u);
 }
 

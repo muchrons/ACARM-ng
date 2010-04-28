@@ -5,31 +5,12 @@
 #include <tut.h>
 
 #include "Preprocessor/Expressions/Or.hpp"
-#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "Preprocessor/Expressions/TestsCommon.t.hpp"
 
 using namespace Preprocessor::Expressions;
 
 namespace
 {
-
-struct TestExpression: public Preprocessor::Expressions::Base
-{
-  explicit TestExpression(bool ret):
-    ret_(ret),
-    calls_(0)
-  {
-  }
-
-  virtual bool compute(const Persistency::Alert &/*alert*/) const
-  {
-    ++calls_;
-    return ret_;
-  }
-
-  bool         ret_;
-  mutable int  calls_;
-};
-
 struct TestClass
 {
 };
@@ -61,7 +42,7 @@ void testObj::test<1>(void)
 
   ensure_equals("compute()/1 called in c-tor", te1->calls_, 0u);
   ensure_equals("compute()/2 called in c-tor", te1->calls_, 0u);
-  ensure("invalid value", o.compute( *TestHelpers::Persistency::makeNewAlert() )==true );
+  ensure("invalid value", o.compute( *makeAlert() )==true );
   ensure_equals("compute()/1 not called", te1->calls_, 1u);
   ensure_equals("compute()/2 not called", te2->calls_, 1u);
 }
@@ -83,7 +64,7 @@ void testObj::test<2>(void)
 
   ensure_equals("compute()/1 called in c-tor", te1->calls_, 0u);
   ensure_equals("compute()/2 called in c-tor", te1->calls_, 0u);
-  ensure("invalid negated", o.compute( *TestHelpers::Persistency::makeNewAlert() )==false );
+  ensure("invalid negated", o.compute( *makeAlert() )==false );
   ensure_equals("compute()/1 not called", te1->calls_, 1u);
   ensure_equals("compute()/2 not called", te2->calls_, 1u);
 }
