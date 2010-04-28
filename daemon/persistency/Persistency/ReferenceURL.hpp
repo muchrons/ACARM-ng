@@ -12,7 +12,7 @@
 #include <boost/operators.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
-#include "Persistency/detail/LimitedString.hpp"
+#include "Commons/LimitedString.hpp"
 
 namespace Persistency
 {
@@ -24,10 +24,10 @@ class ReferenceURL: private boost::noncopyable,
 public:
   /** \brief type of name of reference URL.
    */
-  typedef detail::LimitedString<128> Name;
+  typedef Commons::LimitedString<128> Name;
   /** \brief URL itself.
    */
-  typedef detail::LimitedString<256> URL;
+  typedef Commons::LimitedString<256> URL;
 
   /** \brief creates an object.
    *  \param name name of url (~description).

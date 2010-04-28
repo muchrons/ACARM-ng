@@ -12,9 +12,9 @@
 #include <pqxx/pqxx>
 
 #include "Base/NullValue.hpp"
+#include "Commons/LimitedNULLString.hpp"
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/MD5Sum.hpp"
-#include "Persistency/detail/LimitedNULLString.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
 
 namespace Persistency
@@ -58,13 +58,13 @@ struct Type
 }; // struct TypeConvert
 
 template<uint16_t N>
-struct Type< Persistency::detail::LimitedNULLString<N> >
+struct Type< Commons::LimitedNULLString<N> >
 {
   typedef std::string ReadProxy;
 
-  static inline Persistency::detail::LimitedNULLString<N> convert(const ReadProxy &f)
+  static inline Commons::LimitedNULLString<N> convert(const ReadProxy &f)
   {
-    return Persistency::detail::LimitedNULLString<N>(f);
+    return Commons::LimitedNULLString<N>(f);
   }
 }; // struct TypeConvert
 

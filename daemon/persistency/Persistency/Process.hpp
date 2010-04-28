@@ -14,10 +14,10 @@
 
 #include "Base/NullValue.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "Commons/LimitedString.hpp"
+#include "Commons/LimitedNULLString.hpp"
 #include "Persistency/MD5Sum.hpp"
 #include "Persistency/ReferenceURL.hpp"
-#include "Persistency/detail/LimitedString.hpp"
-#include "Persistency/detail/LimitedNULLString.hpp"
 
 namespace Persistency
 {
@@ -30,13 +30,13 @@ class Process: private boost::noncopyable,
 public:
   /** \brief path to file type.
    */
-  typedef detail::LimitedNULLString<256> Path;
+  typedef Commons::LimitedNULLString<256> Path;
   /** \brief process name representation.
    */
-  typedef detail::LimitedString<256>     Name;
+  typedef Commons::LimitedString<256>     Name;
   /** \brief user name type.
    */
-  typedef detail::LimitedNULLString<32>  Username;
+  typedef Commons::LimitedNULLString<32>  Username;
 
   /** \brief creates object from given data.
    *  \param path      path to executable

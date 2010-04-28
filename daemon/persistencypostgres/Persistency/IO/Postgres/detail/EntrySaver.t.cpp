@@ -5,7 +5,6 @@
 #include <tut.h>
 #include <boost/algorithm/string.hpp>
 
-#include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"

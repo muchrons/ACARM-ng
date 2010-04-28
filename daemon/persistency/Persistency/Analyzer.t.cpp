@@ -70,7 +70,7 @@ void testObj::test<2>(void)
     const Analyzer a(NULL, ver_, os_, &ip_);
     fail("analyzer didn't throw on NULL name");
   }
-  catch(const ExceptionNULLParameter &)
+  catch(const Commons::ExceptionUnexpectedNULL&)
   {
     // this is expected
   }

@@ -122,7 +122,7 @@ void testObj::test<4>(void)
                      url_);
     fail("NULL file name accepted");
   }
-  catch(const ExceptionNULLParameter&)
+  catch(const Commons::ExceptionUnexpectedNULL&)
   {
     // this is expected
   }

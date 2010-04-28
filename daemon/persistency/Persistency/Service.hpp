@@ -13,9 +13,9 @@
 #include <boost/operators.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "Commons/LimitedString.hpp"
+#include "Commons/LimitedNULLString.hpp"
 #include "Persistency/ReferenceURL.hpp"
-#include "Persistency/detail/LimitedString.hpp"
-#include "Persistency/detail/LimitedNULLString.hpp"
 
 namespace Persistency
 {
@@ -28,13 +28,13 @@ class Service: private boost::noncopyable,
 public:
   /** \brief name of the service.
    */
-  typedef detail::LimitedString<32>     Name;
+  typedef Commons::LimitedString<32>     Name;
   /** \brief port number.
    */
   typedef uint16_t                      Port;
   /** \brief protocol used by sevice.
    */
-  typedef detail::LimitedNULLString<32> Protocol;
+  typedef Commons::LimitedNULLString<32> Protocol;
 
   /** \brief creates object from given data.
    *  \param name     service name.

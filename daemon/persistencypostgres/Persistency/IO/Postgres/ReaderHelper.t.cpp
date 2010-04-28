@@ -5,7 +5,6 @@
 #include <tut.h>
 #include <sstream>
 
-#include "Persistency/detail/LimitedNULLString.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/ReaderHelper.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
@@ -32,7 +31,7 @@ inline pqxx::result execSQL(Transaction &t, const T &sql)
 
 struct TestClass
 {
-  typedef Persistency::detail::LimitedNULLString<32> Name;
+  typedef Commons::LimitedNULLString<32> Name;
 
   TestClass(void):
     idCache_(new IDCache),

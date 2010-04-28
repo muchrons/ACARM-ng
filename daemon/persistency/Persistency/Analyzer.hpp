@@ -12,9 +12,9 @@
 
 #include "Base/NullValue.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "Commons/LimitedString.hpp"
+#include "Commons/LimitedNULLString.hpp"
 #include "Persistency/IPTypes.hpp"
-#include "Persistency/detail/LimitedString.hpp"
-#include "Persistency/detail/LimitedNULLString.hpp"
 
 namespace Persistency
 {
@@ -26,11 +26,11 @@ class Analyzer: private boost::noncopyable,
 {
 public:
   /** \brief name of an analyzer. */
-  typedef detail::LimitedString<128>     Name;
+  typedef Commons::LimitedString<128>     Name;
   /** \brief analyzer's version. */
-  typedef detail::LimitedNULLString<16>  Version;
+  typedef Commons::LimitedNULLString<16>  Version;
   /** \brief os analyzer runs on. */
-  typedef detail::LimitedNULLString<128> OperatingSystem;
+  typedef Commons::LimitedNULLString<128> OperatingSystem;
 
   /** \brief creates analyzer.
    *  \param name    name of an analyzer.

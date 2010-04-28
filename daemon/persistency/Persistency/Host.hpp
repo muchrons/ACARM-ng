@@ -17,11 +17,11 @@
 #include "Base/NullValue.hpp"
 #include "Base/Threads/ReadWriteMutex.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "Commons/LimitedNULLString.hpp"
 #include "Persistency/ReferenceURL.hpp"
 #include "Persistency/Service.hpp"
 #include "Persistency/Process.hpp"
 #include "Persistency/IPTypes.hpp"
-#include "Persistency/detail/LimitedNULLString.hpp"
 
 namespace Persistency
 {
@@ -41,16 +41,16 @@ class Host: private boost::noncopyable,
 public:
   /** \brief operation system name type.
    */
-  typedef detail::LimitedNULLString<32> OperatingSystem;
+  typedef Commons::LimitedNULLString<32> OperatingSystem;
   /** \brief host name (DNS entry).
    */
-  typedef detail::LimitedNULLString<64> Name;
+  typedef Commons::LimitedNULLString<64> Name;
   /** \brief services assigned to host.
    */
-  typedef std::vector<ServicePtrNN>     ReportedServices;
+  typedef std::vector<ServicePtrNN>      ReportedServices;
   /** \brief processes assigned to host.
    */
-  typedef std::vector<ProcessPtrNN>     ReportedProcesses;
+  typedef std::vector<ProcessPtrNN>      ReportedProcesses;
 
   /** \brief create host entry of IPv4 address.
    *  \param ip        ip address.
