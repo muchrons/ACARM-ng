@@ -83,8 +83,8 @@ void testObj::test<1>(void)
   execSQL(t_, "INSERT INTO tmp(val1, val2, val3, val4) VALUES(NULL, NULL, NULL, NULL);");
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
   // TODO: size check for result is missing
-  ensure("value isn't NULL", ReaderHelper<int, Base::NullValue<int>, int>::readAs(r[0]["val1"]).get() == NULL);
-  ensure("value isn't NULL", ReaderHelper<double, Base::NullValue<double>, double>::readAs(r[0]["val2"]).get() == NULL);
+  ensure("value isn't NULL", ReaderHelper< Base::NullValue<int> >::readAs(r[0]["val1"]).get() == NULL);
+  ensure("value isn't NULL", ReaderHelper< Base::NullValue<double> >::readAs(r[0]["val2"]).get() == NULL);
   t_.commit();
 }
 
@@ -104,9 +104,9 @@ void testObj::test<2>(void)
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
   // TODO: size check for result is missing
   // TODO: SEGV if NULL pointer is read
-  ensure_equals("invalid value", *(ReaderHelper<int, Base::NullValue<int>, int>::readAs(r[0]["val1"]).get() ), val1);
-  ensure_equals("invalid value", *ReaderHelper<double, Base::NullValue<double>, double>::readAs(r[0]["val2"]).get(), val2);
-  ensure("invalid value", strcmp( ReaderHelper<string, Name>::readAs(r[0]["val4"]).get(), name_.get() ) == 0 );
+  ensure_equals("invalid value", *(ReaderHelper< Base::NullValue<int> >::readAs(r[0]["val1"]).get() ), val1);
+  ensure_equals("invalid value", *ReaderHelper< Base::NullValue<double> >::readAs(r[0]["val2"]).get(), val2);
+  ensure("invalid value", strcmp( ReaderHelper<Name>::readAs(r[0]["val4"]).get(), name_.get() ) == 0 );
 }
 
 // test specialization for Timestamp
@@ -124,7 +124,7 @@ void testObj::test<3>(void)
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
   // TODO: size check for result is missing
-  ensure_equals("invalid time", ReaderHelper<Timestamp>::readAs(r[0]["val3"]).get()->get() , ts.get());
+  ensure_equals("invalid time", ReaderHelper< Base::NullValue<Timestamp> >::readAs(r[0]["val3"]).get()->get() , ts.get());
 }
 // test specialization for IP
 template<>
@@ -141,7 +141,7 @@ void testObj::test<4>(void)
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
   // TODO: size check for result is missing
-  ensure("invalid IP adress", *ReaderHelper<boost::asio::ip::address>::readAs(r[0]["val5"]).get() == ip);
+  ensure("invalid IP adress", ReaderHelper<boost::asio::ip::address>::readAsNotNull(r[0]["val5"]) == ip);
 }
 
 // test specialization for LimitedNULLString
@@ -159,7 +159,7 @@ void testObj::test<5>(void)
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
   // TODO: size check for result is missing
-  ensure("invalid value", strcmp( ReaderHelper<string, Name>::readAs(r[0]["val4"]).get(), s.get() ) == 0 );
+  ensure("invalid value", strcmp( ReaderHelper<Name>::readAs(r[0]["val4"]).get(), s.get() ) == 0 );
 }
 
 // test specialization for LimitedNULLString - NULL value
@@ -177,7 +177,7 @@ void testObj::test<6>(void)
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
   ensure_equals("invalid number of elements returned", r.size(), 1u);
-  ensure("non-NULL value read", ReaderHelper<Name, Name>::readAs(r[0]["val4"]).get()==NULL );
+  ensure("non-NULL value read", ReaderHelper<Name>::readAs(r[0]["val4"]).get()==NULL );
 }
 
 } // namespace tut
