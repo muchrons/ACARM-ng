@@ -93,9 +93,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Analyzer   a("analyzer2", NULL, NULL, NULL);
-  const DataBaseID anlzID = es_.saveAnalyzer(a);
-  const AnalyzerPtrNN   readAnalyzer =  er_.getAnalyzer(anlzID) ;
+  const Analyzer      a("analyzer2", NULL, NULL, NULL);
+  const DataBaseID    anlzID       = es_.saveAnalyzer(a);
+  const AnalyzerPtrNN readAnalyzer = er_.getAnalyzer(anlzID) ;
 
   ensure("version is not null",readAnalyzer->getVersion().get()==NULL);
   ensure("ip is not null", readAnalyzer->getIP()==NULL);

@@ -32,8 +32,8 @@ inline pqxx::result execSQL(Transaction &t, const T &sql)
 
 struct TestClass
 {
-
   typedef Persistency::detail::LimitedNULLString<32> Name;
+
   TestClass(void):
     idCache_(new IDCache),
     dbh_(DBHandlerPtrNN(new DBHandler(TestConnection::makeParams(), idCache_) ) ),
@@ -53,7 +53,7 @@ struct TestClass
                 "  val3 timestamp   NULL,"
                 "  val4 varchar(32) NULL,"
                 "  val5 inet        NULL"
-                ")ON COMMIT DROP;");
+                ") ON COMMIT DROP;");
   }
 
   TestDBAccess        tdba_;
@@ -82,6 +82,7 @@ void testObj::test<1>(void)
   CreateTempTable();
   execSQL(t_, "INSERT INTO tmp(val1, val2, val3, val4) VALUES(NULL, NULL, NULL, NULL);");
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
+  // TODO: size check for result is missing
   ensure("value isn't NULL", ReaderHelper<int, Base::NullValue<int>, int>::readAs(r[0]["val1"]).get() == NULL);
   ensure("value isn't NULL", ReaderHelper<double, Base::NullValue<double>, double>::readAs(r[0]["val2"]).get() == NULL);
   t_.commit();
@@ -101,6 +102,8 @@ void testObj::test<2>(void)
   ss << ");";
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
+  // TODO: size check for result is missing
+  // TODO: SEGV if NULL pointer is read
   ensure_equals("invalid value", *(ReaderHelper<int, Base::NullValue<int>, int>::readAs(r[0]["val1"]).get() ), val1);
   ensure_equals("invalid value", *ReaderHelper<double, Base::NullValue<double>, double>::readAs(r[0]["val2"]).get(), val2);
   ensure("invalid value", strcmp( ReaderHelper<string, Name>::readAs(r[0]["val4"]).get(), name_.get() ) == 0 );
@@ -120,6 +123,7 @@ void testObj::test<3>(void)
   ss << ");";
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
+  // TODO: size check for result is missing
   ensure_equals("invalid time", ReaderHelper<Timestamp>::readAs(r[0]["val3"]).get()->get() , ts.get());
 }
 // test specialization for IP
@@ -136,6 +140,7 @@ void testObj::test<4>(void)
   ss << ");";
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
+  // TODO: size check for result is missing
   ensure("invalid IP adress", *ReaderHelper<boost::asio::ip::address>::readAs(r[0]["val5"]).get() == ip);
 }
 
@@ -153,7 +158,26 @@ void testObj::test<5>(void)
   ss << ");";
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
+  // TODO: size check for result is missing
   ensure("invalid value", strcmp( ReaderHelper<string, Name>::readAs(r[0]["val4"]).get(), s.get() ) == 0 );
+}
+
+// test specialization for LimitedNULLString - NULL value
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  CreateTempTable();
+  // create LimitedNULLString
+  Name s(NULL);
+  stringstream ss;
+  ss << "INSERT INTO tmp(val4) VALUES(";
+  Appender::append(ss, s.get() );
+  ss << ");";
+  execSQL(t_, ss);
+  const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
+  ensure_equals("invalid number of elements returned", r.size(), 1u);
+  ensure("non-NULL value read", ReaderHelper<Name, Name>::readAs(r[0]["val4"]).get()==NULL );
 }
 
 } // namespace tut

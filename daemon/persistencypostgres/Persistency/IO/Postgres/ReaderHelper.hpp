@@ -23,6 +23,10 @@ namespace IO
 namespace Postgres
 {
 
+// TODO: consider naming convention unification:
+//       readAs -> readAs
+//       fromSQLResult -> reasAsNotNULL
+
 /** \brief helper class which gets values from SQL queries
  */
 template<typename T1, typename T2 = Base::NullValue<T1>, typename T3 = std::string>
@@ -37,9 +41,7 @@ struct ReaderHelper
       return T2();
     T3 s;
     r.to(s);
-    T1 data(s);
-    T2 ret( data );
-    return ret;
+    return T2( T1(s) );
   }
   /** \brief get data from given SQL result field.
    *  \param r SQL result field.
@@ -47,6 +49,7 @@ struct ReaderHelper
    */
   static T1 fromSQLResult(const pqxx::result::field &r)
   {
+    // TODO: ensure r is NOT NULL - assertion should be fine here
     T1 data;
     r.to(data);
     return data;
@@ -54,12 +57,11 @@ struct ReaderHelper
 }; // ReaderHelper class
 
 
+// TODO: bug has been fixed here - template<>teamplte<> means temaplte-from-template, not partial specialization
 /** \brief helper class which gets values from SQL queries specialization for Persistency::detail::LimitedNULLString
  */
-
 template<uint16_t N>
-template<typename T1, typename T3>
-struct ReaderHelper< T1, Persistency::detail::LimitedNULLString<N>, T3>
+struct ReaderHelper<Persistency::detail::LimitedNULLString<N>, Persistency::detail::LimitedNULLString<N>, std::string>
 {
   /** \brief check if SQL query is null, if not return proper value
    *  \param r SQL result field
@@ -69,10 +71,9 @@ struct ReaderHelper< T1, Persistency::detail::LimitedNULLString<N>, T3>
     // TODO: bug has been fixed here: LimitedNULLString<> creates "" object by default, not NULL.
     if( r.is_null() )
       return Persistency::detail::LimitedNULLString<N>(NULL);
-    T3 s;
+    std::string s;
     r.to(s);
-    Persistency::detail::LimitedNULLString<N> ret( s );
-    return ret;
+    return Persistency::detail::LimitedNULLString<N>(s);
   }
 }; // ReaderHelper class partial specialization
 
@@ -90,8 +91,7 @@ struct ReaderHelper< boost::asio::ip::address, T2, T3>
       return T2();
     T3 s;
     r.to(s);
-    T2 ret( boost::asio::ip::address::from_string(s) );
-    return ret;
+    return T2( boost::asio::ip::address::from_string(s) );
   }
 }; // ReaderHelper class partial specialization
 
@@ -109,11 +109,11 @@ struct ReaderHelper< Persistency::Timestamp , T2, T3>
       return T2();
     T3 s;
     r.to(s);
-    T2 ret( Timestamp( timestampFromString(s) ) );
-    return ret;
+    return T2( Timestamp( timestampFromString(s) ) );
   }
 }; // ReaderHelper class partial specialization
 
+// TODO: shouldn't it be 'char *' specialization?
 /** \brief helper class which gets values from SQL queries - specialization for char
  */
 template<typename T2, typename T3>
@@ -128,8 +128,7 @@ struct ReaderHelper< char, T2, T3>
       return T2();
     T3 s;
     r.to(s);
-    T2 ret( s.c_str() );
-    return ret;
+    return T2( s.c_str() );
   }
 }; // ReaderHelper class partial specialization
 
@@ -150,7 +149,7 @@ public:
       return std::auto_ptr<MD5>();
     T3 s;
     r.to(s);
-    std::auto_ptr<MD5> ret( new MD5( MD5::createFromString(s.c_str())) );
+    std::auto_ptr<MD5> ret( new MD5( MD5::createFromString(s.c_str()) ) );
     return ret;
   }
 }; // ReaderHelper class partial specialization
