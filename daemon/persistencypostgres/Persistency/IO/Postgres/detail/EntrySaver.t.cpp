@@ -89,6 +89,7 @@ struct TestClass
     return out;
   }
 
+  // TODO: better use Host::Name for compatibility
   Base::NullValue<string> testHostName(DataBaseID hostID)
   {
     stringstream ss;
@@ -805,6 +806,7 @@ void testObj::test<23>(void)
   ensure("Host name is not NULL", testHostName(hostID).get() == NULL );
   // trying set Host name
   es_.setHostName(hostID, hostName);
+  // TODO: SEGV when testHostName(hostID).get()==NULL
   string name( *testHostName(hostID).get() );
   trim(name);
   ensure_equals("invalid host name",  name, hostName);
