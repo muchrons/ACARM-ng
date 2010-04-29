@@ -69,7 +69,9 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
     const DataBaseID alertID = er.getAlertIDAssociatedWithMetaAlert(id);
     // add Alert to cache
     addIfNew(alertPtr, alertID);
-    return GraphNodePtrNN( new GraphNode( alertPtr, connStubIO, tStubIO ) );
+    GraphNodePtrNN graphNodeLeaf( new GraphNode( alertPtr, connStubIO, tStubIO ) );
+    out.push_back(graphNodeLeaf);
+    return graphNodeLeaf;
   }
   vector<GraphNodePtrNN>  tmpNodes;
   const Tree::IDsVector  &nodeChildren = node->getChildren();
@@ -111,7 +113,7 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
 
   const Tree::IDsVector &roots = er.readRoots();
   for(Tree::IDsVector::const_iterator it = roots.begin(); it != roots.end(); ++it)
-    out.push_back(deepFirstSearch(*it, out, er, connStubIO, tStubIO));
+    deepFirstSearch(*it, out, er, connStubIO, tStubIO);
   //TODO: try - catch
 }
 

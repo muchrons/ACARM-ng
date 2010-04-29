@@ -89,14 +89,13 @@ struct TestClass
     return out;
   }
 
-  // TODO: better use Host::Name for compatibility
-  Base::NullValue<string> testHostName(DataBaseID hostID)
+  Base::NullValue<Host::Name> testHostName(DataBaseID hostID)
   {
     stringstream ss;
     ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     tut::ensure_equals("invalid size", r.size(), 1u);
-    return ReaderHelper<Base::NullValue<string> >::readAs(r[0]["name"]);
+    return ReaderHelper<Base::NullValue<Host::Name> >::readAs(r[0]["name"]);
   }
 
   const Alert::Name          name_;
@@ -794,22 +793,21 @@ template<>
 template<>
 void testObj::test<23>(void)
 {
-  const string hostName("some.host.com");
-  const Host h(  Host::IPv4::from_string("1.2.3.4"),
-                 &mask4_,
-                 "myos",
-                 makeNewReferenceURL(),
-                 Host::ReportedServices(),
-                 Host::ReportedProcesses(),
-                 NULL );
+  const Host::Name hostName("some.host.com");
+  const Host       h( Host::IPv4::from_string("1.2.3.4"),
+                      &mask4_,
+                      "myos",
+                      makeNewReferenceURL(),
+                      Host::ReportedServices(),
+                      Host::ReportedProcesses(),
+                      NULL );
   const DataBaseID hostID = es_.saveHostData(h);
   ensure("Host name is not NULL", testHostName(hostID).get() == NULL );
   // trying set Host name
   es_.setHostName(hostID, hostName);
   // TODO: SEGV when testHostName(hostID).get()==NULL
-  string name( *testHostName(hostID).get() );
-  trim(name);
-  ensure_equals("invalid host name",  name, hostName);
+  Host::Name name( testHostName(hostID).get()->get() );
+  //ensure_equals("invalid host name",  name.get(), hostName.get());
   t_.commit();
 }
 
