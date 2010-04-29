@@ -123,6 +123,8 @@ private:
 
   Persistency::Alert::ReportedHosts getSourceHosts(DataBaseID alertID);
   Persistency::Alert::ReportedHosts getTargetHosts(DataBaseID alertID);
+  template<typename T>
+  void addIfNew(T e, DataBaseID id);
 
   DBHandler   &dbh_;
   Transaction &t_;
