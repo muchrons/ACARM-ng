@@ -111,9 +111,14 @@ Processor::Processor(Core::Types::NodesFifo &outputQueue,
 Processor::~Processor(void)
 {
   LOGMSG_INFO(log_, "stopping processor");
-  th_.interrupt();
-  inputQueue_.signalAll();
-  th_.join();
+  // try signalling/joining in a loop, until everything's finished and joined
+  do
+  {
+    // interrupt and signal conditionals.
+    th_.interrupt();
+    inputQueue_.signalAll();
+  }
+  while( th_.timed_join( boost::posix_time::millisec(200) )==false );
   LOGMSG_INFO(log_, "processor stopped");
 }
 

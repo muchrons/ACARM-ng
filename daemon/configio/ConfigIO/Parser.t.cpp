@@ -120,7 +120,7 @@ template<>
 void testObj::test<6>(void)
 {
   copyAsDefaultConfig("testdata/sample_config.xml");
-  const Parser        p;
+  const Parser p;
   const LoggerConfig &lc=p.getLoggerConfig();
   // check random field
   ensure_equals("invalid default appender",
@@ -133,7 +133,7 @@ template<>
 void testObj::test<7>(void)
 {
   copyAsDefaultConfig("testdata/sample_config.xml");
-  const Parser        p;
+  const Parser p;
   p.getFiltersConfig();
 }
 
@@ -143,7 +143,7 @@ template<>
 void testObj::test<8>(void)
 {
   copyAsDefaultConfig("testdata/sample_config.xml");
-  const Parser        p;
+  const Parser p;
   p.getTriggersConfig();
 }
 
@@ -153,8 +153,18 @@ template<>
 void testObj::test<9>(void)
 {
   copyAsDefaultConfig("testdata/sample_config.xml");
-  const Parser        p;
+  const Parser p;
   p.getInputsConfig();
+}
+
+// test getting preprocessor's configuration - smoke test
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  copyAsDefaultConfig("testdata/sample_config.xml");
+  const Parser p;
+  p.getPreprocessorConfig();
 }
 
 } // namespace tut

@@ -1,5 +1,5 @@
 /*
- * MetaAlert.hpp
+ * MetaAlert.cpp
  *
  */
 #include "Persistency/IO/Postgres/MetaAlert.hpp"
@@ -11,10 +11,6 @@ namespace IO
 {
 namespace Postgres
 {
-
-// TODO: notice that most methods here are almost idenytical. consider making
-//       EntrySaver filed of the class. 'dbHandler_->getIDCache()->get( get() );'
-//       can became method 'getID()'. this will reduce most methods to single line.
 
 MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
                      Transaction                 &t,
@@ -35,56 +31,53 @@ void MetaAlert::saveImpl(Transaction &t)
 void MetaAlert::markAsTriggeredImpl(Transaction &t, const std::string &name)
 {
   EntrySaver                  es(t, *dbHandler_);
-  const DataBaseID malertID = dbHandler_->getIDCache()->get( get() );
-  es.saveMetaAlertAsTriggered(malertID, name);
+  es.markMetaAlertAsTriggered(getID(), name);
 }
 
 void MetaAlert::markAsUsedImpl(Transaction &t)
 {
   EntrySaver                  es(t, *dbHandler_);
-  const DataBaseID malertID = dbHandler_->getIDCache()->get( get() );
-  es.saveMetaAlertAsUsed( malertID );
+  es.markMetaAlertAsUsed( getID() );
 }
 
 void MetaAlert::markAsUnusedImpl(Transaction &t)
 {
   EntrySaver                    es(t, *dbHandler_);
-  const DataBaseID malertID = dbHandler_->getIDCache()->get( get() );
-  es.saveMetaAlertAsUnused( malertID );
+  es.markMetaAlertAsUnused( getID() );
 
 }
 
 void MetaAlert::updateSeverityDeltaImpl(Transaction &t, double delta)
 {
   EntrySaver                    es(t, *dbHandler_);
-  const DataBaseID              malertID = dbHandler_->getIDCache()->get( get() );
-  es.updateSeverityDelta(malertID, delta);
+  es.updateSeverityDelta(getID(), delta);
 }
 
 void MetaAlert::updateCertaintyDeltaImpl(Transaction &t, double delta)
 {
   EntrySaver                    es(t, *dbHandler_);
-  const DataBaseID              malertID = dbHandler_->getIDCache()->get( get() );
-  es.updateCertaintyDelta(malertID, delta);
+  es.updateCertaintyDelta(getID(), delta);
 
 }
 
 void MetaAlert::addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child)
 {
   EntrySaver       es(t, *dbHandler_);
-  const DataBaseID nodeID = dbHandler_->getIDCache()->get( get() );
   const DataBaseID childID = dbHandler_->getIDCache()->get( child );
-  es.saveMetaAlertsTree(nodeID, childID);
+  es.saveMetaAlertsTree(getID(), childID);
 }
 
 void MetaAlert::associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN alert)
 {
   EntrySaver       es(t, *dbHandler_);
-  const DataBaseID maID = dbHandler_->getIDCache()->get( get() );
   const DataBaseID alertID = dbHandler_->getIDCache()->get( alert );
-  es.saveAlertToMetaAlertMap(alertID, maID);
+  es.saveAlertToMetaAlertMap(alertID, getID() );
 }
 
+DataBaseID MetaAlert::getID()
+{
+  return dbHandler_->getIDCache()->get( get() );
+}
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency

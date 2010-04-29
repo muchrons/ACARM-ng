@@ -16,6 +16,8 @@
     <nodes appender="default" threshold="debug"/>
   </logger>
 
+  <preprocessor/>
+
   <filters/>
 
   <triggers/>

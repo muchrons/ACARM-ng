@@ -15,6 +15,7 @@
 #include "ConfigIO/TriggersConfigCollection.hpp"
 #include "ConfigIO/InputsConfigCollection.hpp"
 #include "ConfigIO/LoggerConfig.hpp"
+#include "ConfigIO/Preprocessor/Config.hpp"
 
 namespace ConfigIO
 {
@@ -59,6 +60,10 @@ public:
    *  \return inputs' configuration.
    */
   const InputsConfigCollection &inputsConfig(void) const;
+  /** \brief gets preprocessor's configuration.
+   *  \return preprocessor's configuration.
+   */
+  const Preprocessor::Config &preprocessorConfig(void) const;
 
 private:
   friend class System::Singleton<SingletonImpl>;

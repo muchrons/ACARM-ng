@@ -5,7 +5,6 @@
 #include <tut.h>
 #include <boost/algorithm/string.hpp>
 
-#include "Persistency/detail/LimitedString.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
@@ -88,6 +87,16 @@ struct TestClass
     for(unsigned int i=0; i<size; ++i)
       out.push_back( makeNewHost() );
     return out;
+  }
+
+  // TODO: better use Host::Name for compatibility
+  Base::NullValue<string> testHostName(DataBaseID hostID)
+  {
+    stringstream ss;
+    ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    tut::ensure_equals("invalid size", r.size(), 1u);
+    return ReaderHelper<Base::NullValue<string> >::readAs(r[0]["name"]);
   }
 
   const Alert::Name          name_;
@@ -222,27 +231,27 @@ void testObj::test<4>(void)
 
   ensure_equals("invalid name",
                 name_.get(),
-                ReaderHelper<string>::fromSQLResult(r[0]["name"]));
+                ReaderHelper<string>::readAsNotNull(r[0]["name"]));
 
   ensure_equals("invalid detect time",
                 detected_,
-                timestampFromString( ReaderHelper<string>::fromSQLResult(r[0]["detect_time"]) ));
+                timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["detect_time"]) ));
 
   ensure_equals("invalid create time",
                 created_,
-                timestampFromString( ReaderHelper<string>::fromSQLResult(r[0]["create_time"]) ));
+                timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["create_time"]) ));
 
   ensure_equals("invalid severity ID",
                 a.getSeverity().getLevel().toInt(),
-                ReaderHelper<DataBaseID>::fromSQLResult(r[0]["id_severity"]));
+                ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_severity"]));
 
   ensure_equals("invalid certanity",
                 certanity_.get(),
-                ReaderHelper<double>::fromSQLResult(r[0]["certanity"]) );
+                ReaderHelper<double>::readAsNotNull(r[0]["certanity"]) );
 
   ensure_equals("invalid description",
                 description_,
-                ReaderHelper<string>::fromSQLResult(r[0]["description"]));
+                ReaderHelper<string>::readAsNotNull(r[0]["description"]));
 
   t_.commit();
 }
@@ -273,7 +282,7 @@ void testObj::test<5>(void)
   trim(name);
   ensure_equals("invalid name",ti.getName().get()  ,name );
 
-  ensure_equals("invalid port",ti.getPort(),ReaderHelper<int>::fromSQLResult(r[0]["port"]));
+  ensure_equals("invalid port",ti.getPort(),ReaderHelper<int>::readAsNotNull(r[0]["port"]));
 
   r[0]["protocol"].to(protocol);
   trim(protocol);
@@ -312,12 +321,12 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const string anlzName("analyzer3");
-  const Analyzer::Version ver("v1.2.3");
-  const Analyzer::OS      os("Linux 2.6.66");
-  const Analyzer::IP      ip( Analyzer::IPv4::from_string("1.2.3.4") );
-  const Analyzer a(anlzName, &ver, &os, &ip);
-  const DataBaseID anlzID = es_.saveAnalyzer(a);
+  const string                    anlzName("analyzer3");
+  const Analyzer::Version         ver("v1.2.3");
+  const Analyzer::OperatingSystem os("Linux 2.6.66");
+  const Analyzer::IP              ip( Analyzer::IPv4::from_string("1.2.3.4") );
+  const Analyzer                  a(anlzName, ver, os, &ip);
+  const DataBaseID                anlzID = es_.saveAnalyzer(a);
 
   stringstream ss;
   string name, version, os_name, ip_adress;
@@ -690,12 +699,12 @@ template<>
 template<>
 void testObj::test<19>(void)
 {
-  const string anlzName("analyzer3");
-  const Analyzer::Version ver("v1.2.3");
-  const Analyzer::OS      os("Linux 2.6.66");
-  const Analyzer::IP      ip( Analyzer::IPv4::from_string("1.2.3.4") );
-  const Analyzer a1(anlzName, &ver, &os, &ip);
-  const Analyzer a2(anlzName, &ver, &os, &ip);
+  const string                    anlzName("analyzer3");
+  const Analyzer::Version         ver("v1.2.3");
+  const Analyzer::OperatingSystem os("Linux 2.6.66");
+  const Analyzer::IP              ip( Analyzer::IPv4::from_string("1.2.3.4") );
+  const Analyzer                  a1(anlzName, ver, os, &ip);
+  const Analyzer                  a2(anlzName, ver, os, &ip);
   es_.saveAnalyzer(a1);
   es_.saveAnalyzer(a2);
 
@@ -723,20 +732,20 @@ void testObj::test<20>(void)
   const MetaAlert::Name name("meta alert");
   MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
-  es_.saveMetaAlertAsUsed(malertID);
+  es_.markMetaAlertAsUsed(malertID);
   stringstream ss;
   {
     ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
   }
-  es_.saveMetaAlertAsTriggered(malertID, TriggerName);
+  es_.markMetaAlertAsTriggered(malertID, TriggerName);
   ss.str("");
   {
     ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
     result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
-    ensure_equals("invalid trigger name", ReaderHelper<string>::fromSQLResult(r[0]["trigger_name"]), TriggerName);
+    ensure_equals("invalid trigger name", ReaderHelper<string>::readAsNotNull(r[0]["trigger_name"]), TriggerName);
   }
 }
 
@@ -748,7 +757,7 @@ void testObj::test<21>(void)
   const MetaAlert::Name name("meta alert");
   MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
-  es_.saveMetaAlertAsUsed(malertID);
+  es_.markMetaAlertAsUsed(malertID);
   stringstream ss;
   ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
   const result r = t_.getAPI<TransactionAPI>().exec(ss);
@@ -763,14 +772,14 @@ void testObj::test<22>(void)
   const MetaAlert::Name name("meta alert");
   MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
-  es_.saveMetaAlertAsUsed(malertID);
+  es_.markMetaAlertAsUsed(malertID);
   stringstream ss;
   {
     ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
   }
-  es_.saveMetaAlertAsUnused(malertID);
+  es_.markMetaAlertAsUnused(malertID);
   ss.str("");
   {
     ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
@@ -780,6 +789,52 @@ void testObj::test<22>(void)
 
 }
 
-// TODO: add tests to check if max/min-length data types does fill in data base.
+// test seting host name
+template<>
+template<>
+void testObj::test<23>(void)
+{
+  const string hostName("some.host.com");
+  const Host h(  Host::IPv4::from_string("1.2.3.4"),
+                 &mask4_,
+                 "myos",
+                 makeNewReferenceURL(),
+                 Host::ReportedServices(),
+                 Host::ReportedProcesses(),
+                 NULL );
+  const DataBaseID hostID = es_.saveHostData(h);
+  ensure("Host name is not NULL", testHostName(hostID).get() == NULL );
+  // trying set Host name
+  es_.setHostName(hostID, hostName);
+  // TODO: SEGV when testHostName(hostID).get()==NULL
+  string name( *testHostName(hostID).get() );
+  trim(name);
+  ensure_equals("invalid host name",  name, hostName);
+  t_.commit();
+}
+
+// test saving host with NULL name and NULL mask
+template<>
+template<>
+void testObj::test<24>(void)
+{
+  const Host h(  Host::IPv4::from_string("1.2.3.4"),
+                 NULL,
+                 "myos",
+                 makeNewReferenceURL(),
+                 Host::ReportedServices(),
+                 Host::ReportedProcesses(),
+                 NULL );
+  const DataBaseID hostID = es_.saveHostData(h);
+
+  stringstream ss;
+  ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
+  const result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size", r.size(), 1u);
+
+  ensure("Host name is not NULL",r[0]["name"].is_null() );
+  ensure("Mask is not NULL",r[0]["mask"].is_null() );
+  t_.commit();
+}
 
 } // namespace tut

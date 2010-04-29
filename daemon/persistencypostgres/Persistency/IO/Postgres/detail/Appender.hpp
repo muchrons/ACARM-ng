@@ -92,23 +92,6 @@ inline void Appender::append<Persistency::Timestamp>(std::stringstream          
     ss << t->get() << "::abstime::timestamp";
 }
 
-template<>
-inline void Appender::append<Persistency::Analyzer::IP>(std::stringstream               &ss,
-                                                        const Persistency::Analyzer::IP *t)
-{
-  // TODO: use appendEscape() for this
-  // NOTE: there is a bug at this moment, since it should be appending not comparing.
-  // replace if with ternal operator
-  if(t==NULL)
-    ss << " IS NULL";
-  else
-  {
-    ss << " = ";
-    append(ss, t->to_string().c_str() );
-  }
-}
-
-
 template<typename T>
 inline void Appender::append(std::stringstream &ss, const T &t)
 {

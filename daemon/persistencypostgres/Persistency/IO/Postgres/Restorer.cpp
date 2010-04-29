@@ -3,7 +3,7 @@
  *
  */
 #include "Persistency/IO/Postgres/Restorer.hpp"
-
+#include "Persistency/IO/Postgres/ExceptionBadNumberOfNodeChildren.hpp"
 using namespace Persistency::IO::Postgres::detail;
 using namespace std;
 
@@ -33,7 +33,6 @@ void Restorer::restoreBetweenImpl(Transaction     &t,
                                   const Timestamp &from,
                                   const Timestamp &to)
 {
-  // TODO tests
   EntryReader er(t, *dbHandler_);
   Tree::IDsVector maBetween( er.readIDsMalertsBetween(from, to) );
   restore(er, out, maBetween);
@@ -80,11 +79,8 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   {
     tmpNodes.push_back( deepFirstSearch( *it, out, er, connStubIO, tStubIO ) );
   }
-  // TODO: this cannot be assert - it has to be runtime-check, since invalid
-  //       data may appear in data base for some reason.
-  // if(tmpNode.size() < 2)
-  //   throw ExceptionBadNumberOfNodeChildren(SYSTEM_SAVE_LOCATION, ... );
-  assert(tmpNodes.size() >= 2);
+  if(tmpNodes.size() < 2)
+    throw ExceptionBadNumberOfNodeChildren(SYSTEM_SAVE_LOCATION, id );
   NodeChildrenVector vec(tmpNodes[0], tmpNodes[1]);
   for(size_t i = 2; i<tmpNodes.size(); ++i)
     vec.push_back(tmpNodes[i]);

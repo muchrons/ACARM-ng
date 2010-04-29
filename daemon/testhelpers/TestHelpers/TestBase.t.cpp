@@ -30,6 +30,8 @@ const char *someTestConfigContent=
       "    </nodes>"
       "  </logger>"
       ""
+      "  <preprocessor/>"
+      ""
       "  <filters/>"
       ""
       "  <triggers/>"

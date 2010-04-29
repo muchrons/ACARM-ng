@@ -93,13 +93,13 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Analyzer   a("analyzer2", NULL, NULL, NULL);
-  const DataBaseID anlzID = es_.saveAnalyzer(a);
-  const AnalyzerPtrNN   readAnalyzer =  er_.getAnalyzer(anlzID) ;
+  const Analyzer      a("analyzer2", NULL, NULL, NULL);
+  const DataBaseID    anlzID       = es_.saveAnalyzer(a);
+  const AnalyzerPtrNN readAnalyzer = er_.getAnalyzer(anlzID) ;
 
-  ensure("version is not null",readAnalyzer->getVersion()==NULL);
-  ensure("ip is not null",readAnalyzer->getIP()==NULL);
-  ensure("os is not null",readAnalyzer->getOS()==NULL);
+  ensure("version is not null",readAnalyzer->getVersion().get()==NULL);
+  ensure("ip is not null", readAnalyzer->getIP()==NULL);
+  ensure("os is not null", readAnalyzer->getOperatingSystem().get()==NULL);
   t_.commit();
 }
 
@@ -107,13 +107,13 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Analyzer::Version anlzVersion("v0.1.0");
-  const Analyzer::OS      anlzOS("wiendols");
-  const Analyzer          a("analyzer2", &anlzVersion, &anlzOS, NULL);
-  const DataBaseID        anlzID = es_.saveAnalyzer(a);
-  const AnalyzerPtrNN     readAnalyzer =  er_.getAnalyzer(anlzID);  // TODO: what if Analyzer is NULL?
-  string                  version(readAnalyzer->getVersion()->get());
-  const string                  os(readAnalyzer->getOS()->get());
+  const Analyzer::Version         anlzVersion("v0.1.0");
+  const Analyzer::OperatingSystem anlzOS("wiendols");
+  const Analyzer                  a("analyzer2", anlzVersion, anlzOS, NULL);
+  const DataBaseID                anlzID = es_.saveAnalyzer(a);
+  const AnalyzerPtrNN             readAnalyzer =  er_.getAnalyzer(anlzID);  // TODO: what if Analyzer is NULL?
+  string                          version(readAnalyzer->getVersion().get());
+  const string                    os(readAnalyzer->getOperatingSystem().get());
   trim(version);
   ensure_equals("wrong version",version, string(anlzVersion.get()) );
   ensure("ip is not null",readAnalyzer.get()->getIP()==NULL);

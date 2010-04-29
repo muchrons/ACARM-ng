@@ -22,7 +22,11 @@ struct TestClass
       MD5Sum::createFromString(md5);    // should throw
       tut::fail("MD5Sum::createFromString(): didn't throw on invalid md5");
     }
-    catch(const Exception &)
+    catch(const Exception&)
+    {
+      // this is expected
+    }
+    catch(const Commons::Exception&)
     {
       // this is expected
     }

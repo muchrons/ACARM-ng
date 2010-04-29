@@ -30,15 +30,16 @@ inline Tree getParsedTree(const string &path)
 
 Parser::Parser(const std::string &path):
     tree_( getParsedTree(path) ),
-    parsePersistency_( tree_.getRoot().getChild("persistency") ),
-    parseFilters_(     tree_.getRoot().getChild("filters") ),
-    parseTriggers_(    tree_.getRoot().getChild("triggers") ),
-    parseInputs_(      tree_.getRoot().getChild("inputs") ),
-    parseNodes_(       tree_.getRoot().getChild("logger").getChild("nodes") ),
-    parseAppenders_(   tree_.getRoot().getChild("logger").getChild("appenders") ),
+    parsePersistency_(  tree_.getRoot().getChild("persistency") ),
+    parseFilters_(      tree_.getRoot().getChild("filters") ),
+    parseTriggers_(     tree_.getRoot().getChild("triggers") ),
+    parseInputs_(       tree_.getRoot().getChild("inputs") ),
+    parseNodes_(        tree_.getRoot().getChild("logger").getChild("nodes") ),
+    parseAppenders_(    tree_.getRoot().getChild("logger").getChild("appenders") ),
     loggerCfg_( parseNodes_.getDefaultNodeConfig(),
                 parseNodes_.getNodes(),
-                parseAppenders_.getAppenders() )
+                parseAppenders_.getAppenders() ),
+    parsePreprocessor_( tree_.getRoot().getChild("preprocessor") )
 {
 }
 
@@ -65,6 +66,11 @@ const TriggersConfigCollection &Parser::getTriggersConfig(void) const
 const InputsConfigCollection &Parser::getInputsConfig(void) const
 {
   return parseInputs_.getConfig();
+}
+
+const Preprocessor::Config &Parser::getPreprocessorConfig(void) const
+{
+  return parsePreprocessor_.getConfig();
 }
 
 } // namespace ConfigIO

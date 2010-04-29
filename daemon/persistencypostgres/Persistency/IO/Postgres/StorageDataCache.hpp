@@ -53,7 +53,7 @@ private:
                                                     // would cause problems with finding with
                                                     // indexes.
 
-  typedef typename ObjectIDMapping::iterator ObjectIDMappingIt;
+  typedef typename ObjectIDMapping::const_iterator ObjectIDMappingIt;
 
 
 public:
@@ -70,12 +70,11 @@ public:
     }
   }; // struct ExceptionEntryAlreadyExist
 
-  // TODO: this method should be const
   /** \brief gets ID for a given object.
    *  \param ptr pointer to object to check.
    *  \return id if given object in data base.
    */
-  DataBaseID get(TSharedPtr ptr)
+  DataBaseID get(TSharedPtr ptr) const
   {
     Base::Threads::Lock lock(mutex_);
     ObjectIDMappingIt it=getImpl( ptr );
@@ -84,13 +83,12 @@ public:
     return it->second.id_;
   }
 
-  // TODO: this method should be const
   //       element - it's class's interface.
   /** \brief check if given object is in cache
    *  \param ptr pointer to object to check
    *  \return true if given object is in cache
    */
-  bool has(TSharedPtr ptr)
+  bool has(TSharedPtr ptr) const
   {
     Base::Threads::Lock lock(mutex_);
     return getImpl(ptr)!=oidm_.end();
@@ -175,7 +173,7 @@ public:
 
 private:
 
-  ObjectIDMappingIt getImpl(TSharedPtr ptr)
+  ObjectIDMappingIt getImpl(TSharedPtr ptr) const
   {
     ObjectIDMappingIt it=oidm_.find( ptr.get() );
     if( it==oidm_.end() || it->second.ptr_.lock().get()==NULL )

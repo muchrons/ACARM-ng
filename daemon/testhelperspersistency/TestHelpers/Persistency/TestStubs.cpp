@@ -25,6 +25,8 @@ const char *configContent=
   "    </nodes>"
   "  </logger>"
   ""
+  "  <preprocessor/>"
+  ""
   "  <filters/>"
   ""
   "  <triggers/>"

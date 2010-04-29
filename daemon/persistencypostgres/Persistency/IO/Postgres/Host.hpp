@@ -8,8 +8,6 @@
 #include "Persistency/IO/Host.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 
-// TODO: test
-
 namespace Persistency
 {
 namespace IO

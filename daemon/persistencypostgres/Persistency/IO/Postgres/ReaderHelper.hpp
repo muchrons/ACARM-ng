@@ -6,20 +6,10 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_READERHELPER_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_READERHELPER_HPP_FILE
 
-#include <string>
 #include <pqxx/pqxx>
-#include <boost/asio/ip/address.hpp>
 
-#include "Base/NullValue.hpp"
-#include "Persistency/Timestamp.hpp"
-#include "Persistency/MD5Sum.hpp"
-#include "Persistency/detail/LimitedNULLString.hpp"
-#include "Persistency/IO/Postgres/timestampFromString.hpp"
-
-// TODO: notice that you can make this code shorter by constructing all methdos in form:
-//       if(is_null)
-//          return DefaultCtor();
-//       ... code from else part here (but without 'else') ...
+#include "Persistency/IO/Postgres/detail/Default.hpp"
+#include "Persistency/IO/Postgres/detail/Type.hpp"
 
 namespace Persistency
 {
@@ -28,172 +18,40 @@ namespace IO
 namespace Postgres
 {
 
-/** \brief helper class which gets values from SQL queries
+/** \brief helper class which gets values from SQL queries.
  */
-template<typename T1, typename T2 = Base::NullValue<T1>, typename T3 = std::string>
+template<typename T>
 struct ReaderHelper
 {
-  /** \brief check if SQL query is null, if not return proper value
+private:
+  typedef detail::Type<T>          Type;
+  typedef typename Type::ReadProxy ReadProxy;
+
+public:
+  /** \brief check if SQL query is null, if not return proper value.
    *  \param r SQL result field
+   *  \note default c-tor for T is expected to accept NULL paramter.
    */
-  static T2 readAs(const pqxx::result::field &r)
+  static T readAs(const pqxx::result::field &r)
   {
     if( r.is_null() )
-    {
-      T2 ret;
-      return ret;
-    }
-    else
-    {
-      T3 s;
-      r.to(s);
-      T1 data(s);
-      T2 ret( data );
-      return ret;
-    }
+      return detail::Default<T>::null();
+    return readAsNotNull(r);
   }
+
   /** \brief get data from given SQL result field.
    *  \param r SQL result field.
    *  \return data get from SQL result field.
+   *  \note r is assumed not to be NULL here.
    */
-  static T1 fromSQLResult(const pqxx::result::field &r)
+  static T readAsNotNull(const pqxx::result::field &r)
   {
-    T1 data;
-    r.to(data);
-    return data;
+    assert( r.is_null()==false );
+    ReadProxy p;
+    r.to(p);
+    return Type::convert(p);
   }
 }; // ReaderHelper class
-
-
-/** \brief helper class which gets values from SQL queries specialization for Persistency::detail::LimitedNULLString
- */
-
-template<uint16_t N>
-template<typename T1, typename T3>
-struct ReaderHelper< T1, Persistency::detail::LimitedNULLString<N>, T3>
-{
-  /** \brief check if SQL query is null, if not return proper value
-   *  \param r SQL result field
-   */
-  static Persistency::detail::LimitedNULLString<N> readAs(const pqxx::result::field &r)
-  {
-    if( r.is_null() )
-    {
-      Persistency::detail::LimitedNULLString<N> ret;
-      return ret;
-    }
-    else
-    {
-      T3 s;
-      r.to(s);
-      Persistency::detail::LimitedNULLString<N> ret( s );
-      return ret;
-    }
-  }
-}; // ReaderHelper class partial specialization
-
-/** \brief helper class which gets values from SQL queries - specialization for boost::asio::ip::address
- */
-template<typename T2, typename T3>
-struct ReaderHelper< boost::asio::ip::address, T2, T3>
-{
-  /** \brief check if SQL query is null, if not return proper value
-   *  \param r SQL result field
-   */
-  static T2 readAs(const pqxx::result::field &r)
-  {
-    if( r.is_null() )
-    {
-      T2 ret;
-      return ret;
-    }
-    else
-    {
-      T3 s;
-      r.to(s);
-      T2 ret( boost::asio::ip::address::from_string(s) );
-      return ret;
-    }
-  }
-}; // ReaderHelper class partial specialization
-
-/** \brief helper class which gets values from SQL queries - specialization for Persistency::Timestamp
- */
-template<typename T2, typename T3>
-struct ReaderHelper< Persistency::Timestamp , T2, T3>
-{
-  /** \brief check if SQL query is null, if not return proper value
-   *  \param r SQL result field
-   */
-  static T2 readAs(const pqxx::result::field &r)
-  {
-    if( r.is_null() )
-    {
-      T2 ret;
-      return ret;
-    }
-    else
-    {
-      T3 s;
-      r.to(s);
-      T2 ret( Timestamp( timestampFromString(s) ) );
-      return ret;
-    }
-  }
-}; // ReaderHelper class partial specialization
-
-/** \brief helper class which gets values from SQL queries - specialization for char
- */
-template<typename T2, typename T3>
-struct ReaderHelper< char, T2, T3>
-{
-  /** \brief check if SQL query is null, if not return proper value
-   *  \param r SQL result field
-   */
-  static T2 readAs(const pqxx::result::field &r)
-  {
-    if( r.is_null() )
-    {
-      T2 ret;
-      return ret;
-    }
-    else
-    {
-      T3 s;
-      r.to(s);
-      T2 ret( s.c_str() );
-      return ret;
-    }
-  }
-}; // ReaderHelper class partial specialization
-
-// TODO: T2 is not used in this template
-/** \brief helper class which gets values from SQL queries - specialization for Persistency::MD5Sum
- */
-template<typename T2, typename T3>
-struct ReaderHelper< Persistency::MD5Sum , T2, T3>
-{
-private:
-  typedef Persistency::MD5Sum MD5;
-public:
-  /** \brief check if SQL query is null, if not return proper value
-   *  \param r SQL result field
-   */
-  static std::auto_ptr<MD5> readAs(const pqxx::result::field &r)
-  {
-    if( r.is_null() )
-    {
-      return std::auto_ptr<MD5>();
-    }
-    else
-    {
-      T3 s;
-      r.to(s);
-      std::auto_ptr<MD5> ret( new MD5( MD5::createFromString(s.c_str())) );
-      return ret;
-    }
-  }
-}; // ReaderHelper class partial specialization
 
 } // namespace Postgres
 } // namespace IO
