@@ -80,13 +80,24 @@ Persistency::GraphNodePtrNN makeNewTree1(void);
 //                       ...
 //
 Persistency::GraphNodePtrNN makeNewTree2(void);
-// TODO
 //
 //                   root1       root2
-//             node3       node4       leaf5
-//      node6        node7       leaf8
-//  node10 node11
-//Persistency::GraphNodePtrNN makeNewTree3(void);
+//             node1       node2       node3
+//       leaf1       leaf2       leaf3       leaf4
+std::vector<Persistency::GraphNodePtrNN> makeNewTree3(void);
+
+//
+//                root
+//     node1               node2
+//  leaf1 leaf2      node3       node4
+//                leaf3 leaf4 leaf5 leaf6
+//
+Persistency::GraphNodePtrNN makeNewTree4(void);
+//
+//                   root1       root2
+//             node1       node2
+//       leaf1       leaf2       leaf3
+std::vector<Persistency::GraphNodePtrNN> makeNewTree5(void);
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency
