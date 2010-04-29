@@ -4,7 +4,7 @@
  */
 
 #include "Input/Prelude/Client.hpp"
-
+#include <iostream>
 namespace Input
 {
 namespace Prelude
@@ -21,12 +21,14 @@ Client::Client(const std::string& profile, const std::string& config, int permis
     throw Exception(SYSTEM_SAVE_LOCATION, "Error reading prelude config file " + config);
 
   prelude_client_set_required_permission(client_, (prelude_connection_permission_t) permission);
+  std::cerr << "C";
 }
 
 Client::~Client()
 {
   profile_ = NULL;
   prelude_client_destroy(client_, PRELUDE_CLIENT_EXIT_STATUS_SUCCESS);
+  std::cerr << "c";
 }
 
 void Client::start()

@@ -1,3 +1,4 @@
+#include <iostream>
 #include "idmef.hxx"
 #include "prelude-client.hxx"
 
@@ -11,7 +12,7 @@ using namespace Prelude;
 int main(int argc, char * argv[])
 {
   int ret;
-
+  std::cerr << argc << argv[0] << std::endl;
   ret = prelude_init(&argc, argv);
   if ( ret < 0 ) {
     prelude_perror(ret, "unable to initialize the prelude library");
