@@ -177,10 +177,6 @@ std::vector<GraphNodePtrNN> makeNewTree3(void)
                                      "node2");
   vec.push_back(node2);
 
-  vec.push_back(leaf3);
-  vec.push_back(leaf4);
-  vec.push_back(node2);
-
   GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
   GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
   vec.push_back(leaf5);
