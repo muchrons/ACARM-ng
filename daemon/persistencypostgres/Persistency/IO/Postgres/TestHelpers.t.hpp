@@ -94,9 +94,10 @@ std::vector<Persistency::GraphNodePtrNN> makeNewTree3(void);
 //
 Persistency::GraphNodePtrNN makeNewTree4(void);
 //
-//                   root1       root2
+//                   root1
 //             node1       node2
-//       leaf1       leaf2       leaf3
+//       node3       node4       node5
+//    leaf1 leaf2 leaf3 leaf4 leaf5 leaf6
 std::vector<Persistency::GraphNodePtrNN> makeNewTree5(void);
 } // namespace Postgres
 } // namespace IO

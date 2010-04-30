@@ -166,11 +166,28 @@ void testObj::test<4>(void)
   ensure_equals("invalid size", out.size(), 0);
 }
 
-// TODO: try restoring invalid data (i.e. node that has no children, etc...)
+// trying restoring tree
+//
+//                   root1
+//             node1       node2
+//       node3       node4       node5
+//    leaf1 leaf2 leaf3 leaf4 leaf5 leaf6
+//
 template<>
 template<>
 void testObj::test<5>(void)
 {
+  std::vector<GraphNodePtrNN> out;
+  std::vector<GraphNodePtrNN> outVec = makeNewTree5();
+  // create restorer
+  Restorer r(t_, dbh_);
+  // restore data from data base
+  r.restoreAllInUse(out);
+  ensure_equals("invalid size", out.size(), outVec.size());
+  ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
+  // check if restored alerts and meta alerts exist in cache
+  checkCache(out);
 }
 
+// TODO: try restoring invalid data (i.e. node that has no children, etc...)
 } // namespace tut

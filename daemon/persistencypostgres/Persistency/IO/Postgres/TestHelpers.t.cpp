@@ -208,6 +208,55 @@ Persistency::GraphNodePtrNN makeNewTree4(void)
                                      makeNewLeaf("leaf6"),
                                      "node4"), "node2"), "root" );
 }
+
+std::vector<GraphNodePtrNN> makeNewTree5(void)
+{
+  std::vector<GraphNodePtrNN> vec;
+  GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
+  GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+  vec.push_back(leaf1);
+  vec.push_back(leaf2);
+  GraphNodePtrNN node3 = makeNewNode(leaf1,
+                                     leaf2,
+                                     "node3");
+  vec.push_back(node3);
+
+  GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
+  GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+  vec.push_back(leaf3);
+  vec.push_back(leaf4);
+  GraphNodePtrNN node4 = makeNewNode(leaf3,
+                                     leaf4,
+                                     "node4");
+  vec.push_back(node4);
+
+  GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
+  GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
+  vec.push_back(leaf5);
+  vec.push_back(leaf6);
+  GraphNodePtrNN node5 = makeNewNode(leaf5,
+                                     leaf6,
+                                     "node5");
+
+  vec.push_back(node5);
+
+  GraphNodePtrNN node1 = makeNewNode(node3,
+                                     node4,
+                                     "node1");
+
+  vec.push_back(node1);
+
+  GraphNodePtrNN node2 = makeNewNode(node4,
+                                     node5,
+                                     "node2");
+
+  vec.push_back(node2);
+  GraphNodePtrNN root = makeNewNode(node1,
+                                     node2,
+                                     "root");
+  vec.push_back(root);
+  return vec;
+}
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency
