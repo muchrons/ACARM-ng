@@ -3,6 +3,7 @@
  *
  */
 #include "Input/Prelude/ParseException.hpp"
+#include "Input/Prelude/IDMEFParserCommons.hpp"
 #include "Input/Prelude/IDMEFParserAnalyzer.hpp"
 
 namespace Input
@@ -76,32 +77,14 @@ std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_anal
   std::auto_ptr<Persistency::Analyzer::IP> ip;
   idmef_node_t *idmef_node = idmef_analyzer_get_node(ptr);
 
-  if (idmef_node==NULL)
-    return ip;
-
-  idmef_address_t *idmef_node_addr = idmef_node_get_next_address(idmef_node, NULL);
-  if (idmef_node_addr==NULL)
-    return ip;
-
-  const prelude_string_t *idmef_node_address = idmef_address_get_address(idmef_node_addr);
-  if (idmef_node_address==NULL)
-    return ip;
-
-  const char * tmp=prelude_string_get_string(idmef_node_address);
-  switch (idmef_address_get_category(idmef_node_addr))
+  try
     {
-    case IDMEF_ADDRESS_CATEGORY_IPV4_ADDR:
-    case IDMEF_ADDRESS_CATEGORY_IPV4_NET:
-      ip.reset(new Analyzer::IP(address_v4::from_string(tmp)));
-      break;
-    case IDMEF_ADDRESS_CATEGORY_IPV6_ADDR:
-    case IDMEF_ADDRESS_CATEGORY_IPV6_NET:
-      ip.reset(new Analyzer::IP(address_v6::from_string(tmp)));
-      break;
-    default:
-      assert(!"Unknown type of IP address, sorry...");
-      break;
+      ip.reset(new Analyzer::IP(IDMEFParserCommons::getIPfromIdmefNode(idmef_node)));
     }
+  catch(ParseException &)
+    {
+      //there is no IP, but we can carry on
+    }  
   return ip;
 }
 

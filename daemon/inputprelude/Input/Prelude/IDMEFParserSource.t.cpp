@@ -44,17 +44,14 @@ struct TestClass
     idmef_source_new_node(source_, &node);
 
     idmef_node_set_address(node,addr,IDMEF_LIST_APPEND);
-
+    
     prelude_string_t *proc_str;
     prelude_string_new_dup(&proc_str,process_name.c_str());
-
-    prelude_string_t *proc_name;
-    prelude_string_new_dup(&proc_name,process_user.c_str());
 
     idmef_process_t *proc;
     idmef_process_new(&proc);
     idmef_process_set_name(proc,proc_str);
-
+    
     idmef_user_t *user;
     idmef_source_new_user(source_,&user);
 
@@ -79,8 +76,6 @@ struct TestClass
     idmef_service_set_protocol(service,protocol);
 
     idmef_service_set_port(service,27600);
-
-    //idmef_service_set
   }
 
   ~TestClass()
@@ -130,21 +125,22 @@ void testObj::test<2>(void)
   char addrv6[]="2001:0db8:0000:0000:0000:0000:1428:57ab";
   idmef_source_t *source6;
   idmef_source_new(&source6);
-  prelude_string_t *addr_str;
-  prelude_string_new_dup(&addr_str,addrv6);
+  prelude_string_t *addr_str6;
+  prelude_string_new_dup(&addr_str6,addrv6);
 
-  idmef_address_t *addr;
-  idmef_address_new(&addr);
-  idmef_address_set_category(addr,IDMEF_ADDRESS_CATEGORY_IPV6_ADDR);
-  idmef_address_set_address(addr,addr_str);
+  idmef_address_t *addr6;
+  idmef_address_new(&addr6);
+  idmef_address_set_category(addr6,IDMEF_ADDRESS_CATEGORY_IPV6_ADDR);
+  idmef_address_set_address(addr6,addr_str6);
 
-  idmef_node_t *node;
-  idmef_source_new_node(source6, &node);
+  idmef_node_t *node6;
+  idmef_source_new_node(source6, &node6);
 
-  idmef_node_set_address(node,addr,IDMEF_LIST_APPEND);
+  idmef_node_set_address(node6,addr6,IDMEF_LIST_APPEND);
 
   IDMEFParserSource ips(source6);
   ensure_equals("Address IPv6",ips.getAddress(),Analyzer::IP(boost::asio::ip::address_v6::from_string(addrv6)));
+  idmef_source_destroy(source6);
 }
 
 //Check process name

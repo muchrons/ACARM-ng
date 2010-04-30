@@ -64,7 +64,6 @@ struct Releaser
 
     if ( prelude_init(&argc, argv) < 0 )
       throw Input::Exception(SYSTEM_SAVE_LOCATION, "Unable to initialize prelude library.");
-    std::cerr << "INIT;";
   }
 
   static void uninit(void)
@@ -78,7 +77,6 @@ struct Releaser
       prelude_deinit();
       delete[] argv[0];
       delete[] argv;
-      std::cerr << "DEINIT;";
     }
     catch(...)
     {
