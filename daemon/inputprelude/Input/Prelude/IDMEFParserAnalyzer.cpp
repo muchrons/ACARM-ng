@@ -84,7 +84,7 @@ std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_anal
   catch(ParseException &)
     {
       //there is no IP, but we can carry on
-    }  
+    }
   return ip;
 }
 

@@ -44,14 +44,14 @@ struct TestClass
     idmef_target_new_node(target_, &node);
 
     idmef_node_set_address(node,addr,IDMEF_LIST_APPEND);
-    
+
     prelude_string_t *proc_str;
     prelude_string_new_dup(&proc_str,process_name.c_str());
 
     idmef_process_t *proc;
     idmef_process_new(&proc);
     idmef_process_set_name(proc,proc_str);
-    
+
     idmef_user_t *user;
     idmef_target_new_user(target_,&user);
 
