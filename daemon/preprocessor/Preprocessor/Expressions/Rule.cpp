@@ -149,9 +149,9 @@ bool Rule::check(const Persistency::Alert &e, const PathCit t) const
   // collections
   if(*t=="analyzers")
     return check( e.getSourceAnalyzers(), t+1);
-  if(*t=="source")
+  if(*t=="sources")
     return check( e.getReportedSourceHosts(), t+1);
-  if(*t=="target")
+  if(*t=="targets")
     return check( e.getReportedTargetHosts(), t+1);
 
   throwInvalid(SYSTEM_SAVE_LOCATION, t);

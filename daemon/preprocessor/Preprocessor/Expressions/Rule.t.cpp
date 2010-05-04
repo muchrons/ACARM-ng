@@ -223,7 +223,7 @@ template<>
 template<>
 void testObj::test<14>(void)
 {
-  const Rule r( Path("alert.source.$.ip"), Rule::Mode::EQUALS, "2.2.2.2" );
+  const Rule r( Path("alert.sources.$.ip"), Rule::Mode::EQUALS, "2.2.2.2" );
   ensure("invalid host's IP", r.compute(alert_)==true );
 }
 
@@ -241,7 +241,7 @@ template<>
 template<>
 void testObj::test<16>(void)
 {
-  const Rule r( Path("alert.source.*.mask"), Rule::Mode::EQUALS, "255.255.0.0" );
+  const Rule r( Path("alert.sources.*.mask"), Rule::Mode::EQUALS, "255.255.0.0" );
   ensure("invalid host's mask", r.compute(alert_)==true );
 }
 
@@ -250,7 +250,7 @@ template<>
 template<>
 void testObj::test<17>(void)
 {
-  const Rule r( Path("alert.source.*.os"), Rule::Mode::EQUALS, "penguin" );
+  const Rule r( Path("alert.sources.*.os"), Rule::Mode::EQUALS, "penguin" );
   ensure("invalid mask's OS", r.compute(alert_)==true );
 }
 
@@ -259,7 +259,7 @@ template<>
 template<>
 void testObj::test<18>(void)
 {
-  const Rule r( Path("alert.source.*.url.name"), Rule::Mode::EQUALS, "some name" );
+  const Rule r( Path("alert.sources.*.url.name"), Rule::Mode::EQUALS, "some name" );
   ensure("invalid url's name", r.compute(alert_)==true );
 }
 
@@ -268,7 +268,7 @@ template<>
 template<>
 void testObj::test<19>(void)
 {
-  const Rule r( Path("alert.source.*.url.url"), Rule::Mode::EQUALS, "http://gnu.org" );
+  const Rule r( Path("alert.sources.*.url.url"), Rule::Mode::EQUALS, "http://gnu.org" );
   ensure("invalid url's adderss", r.compute(alert_)==true );
 }
 
@@ -277,7 +277,7 @@ template<>
 template<>
 void testObj::test<20>(void)
 {
-  const Rule r( Path("alert.source.$.name"), Rule::Mode::EQUALS, "kszy.net" );
+  const Rule r( Path("alert.sources.$.name"), Rule::Mode::EQUALS, "kszy.net" );
   ensure("invalid hosts's dns name", r.compute(alert_)==true );
 }
 
@@ -286,7 +286,7 @@ template<>
 template<>
 void testObj::test<21>(void)
 {
-  const Rule r( Path("alert.source.*.services.*.name"), Rule::Mode::EQUALS, "service name" );
+  const Rule r( Path("alert.sources.*.services.*.name"), Rule::Mode::EQUALS, "service name" );
   ensure("invalid service's name", r.compute(alert_)==true );
 }
 
@@ -295,7 +295,7 @@ template<>
 template<>
 void testObj::test<22>(void)
 {
-  const Rule r( Path("alert.source.*.services.*.port"), Rule::Mode::EQUALS, "42" );
+  const Rule r( Path("alert.sources.*.services.*.port"), Rule::Mode::EQUALS, "42" );
   ensure("invalid service's port", r.compute(alert_)==true );
 }
 
@@ -304,7 +304,7 @@ template<>
 template<>
 void testObj::test<23>(void)
 {
-  const Rule r( Path("alert.source.*.services.*.protocol"), Rule::Mode::EQUALS, "magic_proto" );
+  const Rule r( Path("alert.sources.*.services.*.protocol"), Rule::Mode::EQUALS, "magic_proto" );
   ensure("invalid service's protocol", r.compute(alert_)==true );
 }
 
@@ -313,7 +313,7 @@ template<>
 template<>
 void testObj::test<24>(void)
 {
-  const Rule r( Path("alert.source.*.services.*.url.name"), Rule::Mode::EQUALS, "some name" );
+  const Rule r( Path("alert.sources.*.services.*.url.name"), Rule::Mode::EQUALS, "some name" );
   ensure("invalid service's url name", r.compute(alert_)==true );
 }
 
@@ -322,7 +322,7 @@ template<>
 template<>
 void testObj::test<25>(void)
 {
-  const Rule r( Path("alert.source.*.processes.*.url.name"), Rule::Mode::EQUALS, "some name" );
+  const Rule r( Path("alert.sources.*.processes.*.url.name"), Rule::Mode::EQUALS, "some name" );
   ensure("invalid process' url name", r.compute(alert_)==true );
 }
 
@@ -331,7 +331,7 @@ template<>
 template<>
 void testObj::test<26>(void)
 {
-  const Rule r( Path("alert.source.*.processes.*.path"), Rule::Mode::EQUALS, "/path/to/bin" );
+  const Rule r( Path("alert.sources.*.processes.*.path"), Rule::Mode::EQUALS, "/path/to/bin" );
   ensure("invalid process' path", r.compute(alert_)==true );
 }
 
@@ -340,7 +340,7 @@ template<>
 template<>
 void testObj::test<27>(void)
 {
-  const Rule r( Path("alert.source.*.processes.*.name"), Rule::Mode::EQUALS, "name" );
+  const Rule r( Path("alert.sources.*.processes.*.name"), Rule::Mode::EQUALS, "name" );
   ensure("invalid process' name", r.compute(alert_)==true );
 }
 
@@ -349,7 +349,7 @@ template<>
 template<>
 void testObj::test<28>(void)
 {
-  const Rule r( Path("alert.source.*.processes.*.md5"),
+  const Rule r( Path("alert.sources.*.processes.*.md5"),
                 Rule::Mode::EQUALS,
                 "01234567890123456789012345678901" );
   ensure("invalid process' md5", r.compute(alert_)==true );
@@ -360,7 +360,7 @@ template<>
 template<>
 void testObj::test<29>(void)
 {
-  const Rule r( Path("alert.source.*.processes.*.pid"), Rule::Mode::EQUALS, "666" );
+  const Rule r( Path("alert.sources.*.processes.*.pid"), Rule::Mode::EQUALS, "666" );
   ensure("invalid process' pid", r.compute(alert_)==true );
 }
 
@@ -369,7 +369,7 @@ template<>
 template<>
 void testObj::test<30>(void)
 {
-  const Rule r( Path("alert.source.*.processes.*.uid"), Rule::Mode::EQUALS, "42" );
+  const Rule r( Path("alert.sources.*.processes.*.uid"), Rule::Mode::EQUALS, "42" );
   ensure("invalid process' uid", r.compute(alert_)==true );
 }
 
@@ -378,7 +378,7 @@ template<>
 template<>
 void testObj::test<31>(void)
 {
-  const Rule r( Path("alert.source.*.processes.*.username"), Rule::Mode::EQUALS, "looser" );
+  const Rule r( Path("alert.sources.*.processes.*.username"), Rule::Mode::EQUALS, "looser" );
   ensure("invalid process' username", r.compute(alert_)==true );
 }
 
@@ -387,7 +387,7 @@ template<>
 template<>
 void testObj::test<32>(void)
 {
-  const Rule r( Path("alert.source.*.processes.*.arguments"), Rule::Mode::EQUALS, "-a -b -c" );
+  const Rule r( Path("alert.sources.*.processes.*.arguments"), Rule::Mode::EQUALS, "-a -b -c" );
   ensure("invalid process' arguments", r.compute(alert_)==true );
 }
 
@@ -396,7 +396,7 @@ template<>
 template<>
 void testObj::test<33>(void)
 {
-  const Rule r( Path("alert.source.*.ip"), Rule::Mode::EQUALS, "1.1.1.1" );
+  const Rule r( Path("alert.sources.*.ip"), Rule::Mode::EQUALS, "1.1.1.1" );
   ensure("for-each didn't failed on different entries", r.compute(alert_)==false );
 }
 
@@ -405,7 +405,7 @@ template<>
 template<>
 void testObj::test<34>(void)
 {
-  const Rule r( Path("alert.target.*.ip"), Rule::Mode::EQUALS, "3.2.2.3" );
+  const Rule r( Path("alert.targets.*.ip"), Rule::Mode::EQUALS, "3.2.2.3" );
   ensure("for-each failed for the same entries", r.compute(alert_)==true );
 }
 
@@ -414,7 +414,7 @@ template<>
 template<>
 void testObj::test<35>(void)
 {
-  const Rule r( Path("alert.source.$.ip"), Rule::Mode::EQUALS, "9.1.1.1" );
+  const Rule r( Path("alert.sources.$.ip"), Rule::Mode::EQUALS, "9.1.1.1" );
   ensure("for-any didn't failed on non-exisitng entry", r.compute(alert_)==false );
 }
 
@@ -423,7 +423,7 @@ template<>
 template<>
 void testObj::test<36>(void)
 {
-  const Rule r( Path("alert.source.$.ip"), Rule::Mode::EQUALS, "2.2.2.2" );
+  const Rule r( Path("alert.sources.$.ip"), Rule::Mode::EQUALS, "2.2.2.2" );
   ensure("for-any failed on existing entry", r.compute(alert_)==true );
 }
 
