@@ -10,13 +10,13 @@ using namespace std;
 
 namespace
 {
-  template<typename T>
-  void removeDuplicates(std::vector<T> &out)
-  {
-    std::set<T> s( out.begin(), out.end() );
-    out.erase( out.begin(), out.end() );
-    out.assign( s.begin(), s.end() );
-  }
+template<typename T>
+void removeDuplicates(std::vector<T> &out)
+{
+  std::set<T> s( out.begin(), out.end() );
+  out.erase( out.begin(), out.end() );
+  out.assign( s.begin(), s.end() );
+} // removeDuplicates()
 } // unnamed namespace
 
 namespace Persistency

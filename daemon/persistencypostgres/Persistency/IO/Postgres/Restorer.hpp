@@ -36,6 +36,7 @@ private:
    */
   typedef std::map<DataBaseID, TreePtr>        NodesMap;
   typedef std::map<DataBaseID, GraphNodePtrNN> GraphNodesMap;
+
   virtual void restoreAllInUseImpl(Transaction &t, NodesVector &out);
   virtual void restoreBetweenImpl(Transaction     &t,
                                   NodesVector     &out,

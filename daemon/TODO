@@ -8,4 +8,5 @@
 11 think how to overcome lack of additional data assigned for observed graph nodes in filters during normal run - they will not be present after reading from persistency.
 12 remove libprelude from build - system one should be used.
 14 add tests for configuration of Preprocessor - when config is being read, it should be already validated.
-15
+15 update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
+16
