@@ -12,11 +12,16 @@
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/Restorer.hpp"
+#include "Persistency/IO/Postgres/TransactionAPI.hpp"
+#include "Persistency/IO/Postgres/ReaderHelper.hpp"
+#include "Persistency/IO/Postgres/detail/Appender.hpp"
 
 using Persistency::IO::Transaction;
 using namespace Persistency;
 using namespace Persistency::IO::Postgres;
+using namespace Persistency::IO::Postgres::detail;
 using namespace std;
+using namespace pqxx;
 
 namespace
 {
@@ -101,6 +106,7 @@ void testObj::test<1>(void)
   ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
   // check if restored alerts and meta alerts exist in cache
   checkCache(out);
+  t_.commit();
 }
 
 // trying restoring tree
@@ -123,6 +129,7 @@ void testObj::test<2>(void)
   ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
   // check if restored alerts and meta alerts exist in cache
   checkCache(out);
+  t_.commit();
 }
 
 // trying restoring tree
@@ -151,6 +158,7 @@ void testObj::test<3>(void)
   ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
   // check if restored alerts and meta alerts exist in cache
   checkCache(out);
+  t_.commit();
 }
 
 // try restoring empty set
@@ -164,6 +172,7 @@ void testObj::test<4>(void)
   // restore data from data base
   r.restoreAllInUse(out);
   ensure_equals("invalid size", out.size(), 0);
+  t_.commit();
 }
 
 // trying restoring tree
@@ -187,7 +196,55 @@ void testObj::test<5>(void)
   ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
   // check if restored alerts and meta alerts exist in cache
   checkCache(out);
+  t_.commit();
 }
 
-// TODO: try restoring invalid data (i.e. node that has no children, etc...)
+// try restoring invalid data
+//
+//                   root1
+//             node1       node2
+//                   node4       node5
+//                leaf3 leaf4 leaf5 leaf6
+//
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  std::vector<GraphNodePtrNN> out;
+  std::vector<GraphNodePtrNN> outVec = makeNewTree5();
+  stringstream ss;
+  DataBaseID nodeID, childID;
+  {
+    const MetaAlert::Name node("node1");
+    ss << "SELECT * FROM meta_alerts WHERE name = ";
+    Appender::append(ss, node.get());
+    ss << ";";
+    result r = t_.getAPI<TransactionAPI>().exec(ss);
+    r[0]["id"].to(nodeID);
+  }
+  {
+    const MetaAlert::Name node("node3");
+    ss << "SELECT * FROM meta_alerts WHERE name = ";
+    Appender::append(ss, node.get());
+    ss << ";";
+    result r = t_.getAPI<TransactionAPI>().exec(ss);
+    r[0]["id"].to(childID);
+  }
+  ss << "DELETE FROM meta_alerts_tree WHERE id_node = " << nodeID << " AND id_child = " << childID << ";";
+  t_.getAPI<TransactionAPI>().exec(ss);
+  // create restorer
+  Restorer r(t_, dbh_);
+  try
+  {
+    // restore data from data base
+    r.restoreAllInUse(out);
+    fail("restoring didn't failed for invalid data");
+  }
+  catch(...)
+  {
+    // this is expected
+  }
+  t_.commit();
+}
+
 } // namespace tut

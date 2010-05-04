@@ -71,10 +71,12 @@ bool Restorer::isInCache(DataBaseID id)
     return true;
   return false;
 }
+
 GraphNodePtrNN Restorer::getFromCache(DataBaseID id)
 {
   return graphCache_.find(id)->second;
 }
+
 void Restorer::addToCache(DataBaseID id, GraphNodePtrNN node)
 {
   pair<DataBaseID, GraphNodePtrNN> tmp(id, node );
