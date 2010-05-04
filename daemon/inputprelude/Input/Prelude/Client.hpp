@@ -36,11 +36,15 @@ public:
    */
   ~Client();
 
+  // TODO: why this is not done in c-tor? and if not, why there is no stop() method?
   /**
    * \brief Initialize and start prelude client
    */
   void start();
 
+  // TODO: returned value should be wrapped into auto_ptr<> like manier, to prevent
+  //       resource leaks on exceptions. notice: you can customize System::AutoVariable<>
+  //       template for this task.
   /**
    * \brief Receive IDMEF (either Alert or Heartbeat)
    * \param timeout timeout
@@ -49,9 +53,9 @@ public:
   idmef_message_t* recvMessage(int timeout=-1);
 
 private:
+  GlobalLibPreludeInit      g_;
   prelude_client_t         *client_;
-  prelude_client_profile_t *profile_;
-  GlobalLibPreludeInit g_;
+  prelude_client_profile_t *profile_;   // TODO: unused variable
 }; // class Client
 
 } // namespace Prelude

@@ -77,12 +77,14 @@ std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_anal
   std::auto_ptr<Persistency::Analyzer::IP> ip;
   idmef_node_t *idmef_node = idmef_analyzer_get_node(ptr);
 
+  // TODO: fix brackets indentation
   try
     {
       ip.reset(new Analyzer::IP(IDMEFParserCommons::getIPfromIdmefNode(idmef_node)));
     }
   catch(ParseException &)
     {
+      // TODO: this should be logged
       //there is no IP, but we can carry on
     }
   return ip;

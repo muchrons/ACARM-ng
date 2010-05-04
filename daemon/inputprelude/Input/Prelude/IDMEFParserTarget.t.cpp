@@ -29,6 +29,9 @@ struct TestClass
     service_port(27600),
     addressv4("192.168.55.54")
   {
+    // TODO: code almost identival with IDMEFParserTargetSource.t.cpp - make this
+    //       common template base to derive from, in order to customize small
+    //       differencens in functions/types.
     if (idmef_target_new(&target_)<0)
       tut::fail("Unable to create target obcject.");
 
@@ -138,60 +141,66 @@ void testObj::test<2>(void)
 
   idmef_node_set_address(node6,addr6,IDMEF_LIST_APPEND);
 
+  // TODO: this variable should be const
   IDMEFParserTarget ips(target6);
+  // TODO: leak when ensure_equals() throws
   ensure_equals("Address IPv6",ips.getAddress(),Analyzer::IP(boost::asio::ip::address_v6::from_string(addrv6)));
   idmef_target_destroy(target6);
 }
 
-//Check process name
+// Check process name
 template<>
 template<>
 void testObj::test<3>(void)
 {
+  // TODO: this variable should be const
   IDMEFParserTarget ips(getTarget());
   ensure("Target process is null",ips.getProcess()!=NULL);
   ensure_equals("Process Name",ips.getProcess()->getName().get(),process_name);
 }
 
-//Check process user
+// Check process user
 template<>
 template<>
 void testObj::test<4>(void)
 {
+  // TODO: this variable should be const
   IDMEFParserTarget ips(getTarget());
   ensure("Target process is null",ips.getProcess()!=NULL);
   ensure_equals("Process User",ips.getProcess()->getUsername().get(),process_user);
 }
 
-//Check service name
+// Check service name
 template<>
 template<>
 void testObj::test<5>(void)
 {
+  // TODO: this variable should be const
   IDMEFParserTarget ips(getTarget());
   ensure("Target service is null",ips.getService()!=NULL);
   ensure_equals("Service Name",ips.getService()->getName().get(),service_name);
 }
 
-//Check service protocol
+// Check service protocol
 template<>
 template<>
 void testObj::test<6>(void)
 {
+  // TODO: this variable should be const
   IDMEFParserTarget ips(getTarget());
   ensure("Target service is null",ips.getService()!=NULL);
   ensure_equals("Service Protocol",ips.getService()->getProtocol().get(),service_protocol);
 }
 
-//Check service port
+// Check service port
 template<>
 template<>
 void testObj::test<7>(void)
 {
+  // TODO: this variable should be const
   IDMEFParserTarget ips(getTarget());
   ensure("Target service is null",ips.getService()!=NULL);
   ensure_equals("Service Port",ips.getService()->getPort(),service_port);
 }
-
 
 } // namespace tut

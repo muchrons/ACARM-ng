@@ -3,7 +3,7 @@
  *
  */
 #include <cassert>
-#include <iostream>
+#include <iostream> // TODO: remove this header - libs are not allowed to output anything in screen
 #include <cstring>
 // TODO: "prelude.h"
 #include <prelude.h>
@@ -57,8 +57,10 @@ struct Releaser
     assert(g_end==false);
 
     int argc=1;
+    // TODO: why allocating new memory? use global char arrays for this.
     argv=new char*[1];
-    //if exception was not thrown memory is allocated
+    // if exception was not thrown memory is allocated
+    // TODO: memory leak if second new throws
     argv[0]=new char[10];
     strcpy(argv[0],"name");
 
