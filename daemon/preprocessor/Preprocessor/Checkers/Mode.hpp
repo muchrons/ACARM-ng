@@ -8,6 +8,8 @@
 #include <string>
 #include <boost/noncopyable.hpp>
 
+#include "Logger/Node.hpp"
+
 namespace Preprocessor
 {
 namespace Checkers
@@ -27,6 +29,11 @@ public:
    *  \return true if string matches condition, false otherwise.
    */
   virtual bool check(const std::string &str) const = 0;
+
+protected:
+  explicit Mode(const std::string &name);
+
+  Logger::Node log_;
 }; // class Mode
 
 } // namespace Checkers
