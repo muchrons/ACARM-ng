@@ -19,6 +19,7 @@ namespace detail
  */
 struct SectionDecision
 {
+  /** \brief enum values to be used. */
   typedef enum
   {
     ACCEPT,     // accept alert
