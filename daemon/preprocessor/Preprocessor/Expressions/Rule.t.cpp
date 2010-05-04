@@ -53,7 +53,9 @@ struct TestClass
   {
     const Persistency::Host::Netmask_v4  mask(mask4_bytes);
     Persistency::Host::ReportedServices  services;
+    services.push_back( makeService() );
     Persistency::Host::ReportedProcesses procs;
+    procs.push_back( makeProcess() );
     return Persistency::HostPtrNN( new Persistency::Host( Persistency::Host::IPv4::from_string(ip),
                                                           &mask,
                                                           "penguin",
@@ -61,6 +63,29 @@ struct TestClass
                                                           services,
                                                           procs,
                                                           dns) );
+  }
+
+  Persistency::ProcessPtrNN makeProcess(void) const
+  {
+    const Persistency::MD5Sum md5=Persistency::MD5Sum::createFromString("01234567890123456789012345678901");
+    const pid_t               pid=666;
+    const int                 uid=42;
+    return Persistency::ProcessPtrNN( new Persistency::Process(  "/path/to/bin",
+                                                                 "name",
+                                                                &md5,
+                                                                &pid,
+                                                                &uid,
+                                                                 "looser",
+                                                                 "-a -b -c",
+                                                                 makeNewReferenceURL() ) );
+  }
+
+  Persistency::ServicePtrNN makeService(void) const
+  {
+    return Persistency::ServicePtrNN( new Persistency::Service( "service name",
+                                                                42,
+                                                                "magic_proto",
+                                                                makeNewReferenceURL() ) );
   }
 
   const Alert alert_;
@@ -229,223 +254,177 @@ void testObj::test<17>(void)
   ensure("invalid mask's OS", r.compute(alert_)==true );
 }
 
-// 
+// test url.name
 template<>
 template<>
 void testObj::test<18>(void)
 {
+  const Rule r( Path("alert.source.*.url.name"), Rule::Mode::EQUALS, "some name" );
+  ensure("invalid url's name", r.compute(alert_)==true );
 }
 
-// 
+// test url.url
 template<>
 template<>
 void testObj::test<19>(void)
 {
+  const Rule r( Path("alert.source.*.url.url"), Rule::Mode::EQUALS, "http://gnu.org" );
+  ensure("invalid url's adderss", r.compute(alert_)==true );
 }
 
-// 
+// test host.name
 template<>
 template<>
 void testObj::test<20>(void)
 {
+  const Rule r( Path("alert.source.$.name"), Rule::Mode::EQUALS, "kszy.net" );
+  ensure("invalid hosts's dns name", r.compute(alert_)==true );
 }
 
-// 
+// test service.name
 template<>
 template<>
 void testObj::test<21>(void)
 {
+  const Rule r( Path("alert.source.*.services.*.name"), Rule::Mode::EQUALS, "service name" );
+  ensure("invalid service's name", r.compute(alert_)==true );
 }
 
-// 
+// test service.port
 template<>
 template<>
 void testObj::test<22>(void)
 {
+  const Rule r( Path("alert.source.*.services.*.port"), Rule::Mode::EQUALS, "42" );
+  ensure("invalid service's port", r.compute(alert_)==true );
 }
 
-// 
+// test service.protocol
 template<>
 template<>
 void testObj::test<23>(void)
 {
+  const Rule r( Path("alert.source.*.services.*.protocol"), Rule::Mode::EQUALS, "magic_proto" );
+  ensure("invalid service's protocol", r.compute(alert_)==true );
 }
 
-// 
+// test service.url.name
 template<>
 template<>
 void testObj::test<24>(void)
 {
+  const Rule r( Path("alert.source.*.services.*.url.name"), Rule::Mode::EQUALS, "some name" );
+  ensure("invalid service's url name", r.compute(alert_)==true );
 }
 
-// 
+// test process.url
 template<>
 template<>
 void testObj::test<25>(void)
 {
+  const Rule r( Path("alert.source.*.processes.*.url.name"), Rule::Mode::EQUALS, "some name" );
+  ensure("invalid process' url name", r.compute(alert_)==true );
 }
 
-// 
+// test process.path
 template<>
 template<>
 void testObj::test<26>(void)
 {
+  const Rule r( Path("alert.source.*.processes.*.path"), Rule::Mode::EQUALS, "/path/to/bin" );
+  ensure("invalid process' path", r.compute(alert_)==true );
 }
 
-// 
+// test process.name
 template<>
 template<>
 void testObj::test<27>(void)
 {
+  const Rule r( Path("alert.source.*.processes.*.name"), Rule::Mode::EQUALS, "name" );
+  ensure("invalid process' name", r.compute(alert_)==true );
 }
 
-// 
+// test process.md5
 template<>
 template<>
 void testObj::test<28>(void)
 {
+  const Rule r( Path("alert.source.*.processes.*.md5"),
+                Rule::Mode::EQUALS,
+                "01234567890123456789012345678901" );
+  ensure("invalid process' md5", r.compute(alert_)==true );
 }
 
-// 
+// test process.pid
 template<>
 template<>
 void testObj::test<29>(void)
 {
+  const Rule r( Path("alert.source.*.processes.*.pid"), Rule::Mode::EQUALS, "666" );
+  ensure("invalid process' pid", r.compute(alert_)==true );
 }
 
-// 
+// test process.uid
 template<>
 template<>
 void testObj::test<30>(void)
 {
+  const Rule r( Path("alert.source.*.processes.*.uid"), Rule::Mode::EQUALS, "42" );
+  ensure("invalid process' uid", r.compute(alert_)==true );
 }
 
-// 
+// test process.username
 template<>
 template<>
 void testObj::test<31>(void)
 {
+  const Rule r( Path("alert.source.*.processes.*.username"), Rule::Mode::EQUALS, "looser" );
+  ensure("invalid process' username", r.compute(alert_)==true );
 }
 
-// 
+// test process.arguments
 template<>
 template<>
 void testObj::test<32>(void)
 {
+  const Rule r( Path("alert.source.*.processes.*.arguments"), Rule::Mode::EQUALS, "-a -b -c" );
+  ensure("invalid process' arguments", r.compute(alert_)==true );
 }
 
-// 
+// test for-each mark - negative test
 template<>
 template<>
 void testObj::test<33>(void)
 {
+  const Rule r( Path("alert.source.*.ip"), Rule::Mode::EQUALS, "1.1.1.1" );
+  ensure("for-each didn't failed on different entries", r.compute(alert_)==false );
 }
 
-// 
+// test for-each mark - positive test
 template<>
 template<>
 void testObj::test<34>(void)
 {
+  const Rule r( Path("alert.target.*.ip"), Rule::Mode::EQUALS, "3.2.2.3" );
+  ensure("for-each failed for the same entries", r.compute(alert_)==true );
 }
 
-// 
+// test for-any mark - negative test
 template<>
 template<>
 void testObj::test<35>(void)
 {
+  const Rule r( Path("alert.source.$.ip"), Rule::Mode::EQUALS, "9.1.1.1" );
+  ensure("for-any didn't failed on non-exisitng entry", r.compute(alert_)==false );
 }
 
-// 
+// test for-any mark - positive test
 template<>
 template<>
 void testObj::test<36>(void)
 {
+  const Rule r( Path("alert.source.$.ip"), Rule::Mode::EQUALS, "2.2.2.2" );
+  ensure("for-any failed on existing entry", r.compute(alert_)==true );
 }
-
-// 
-template<>
-template<>
-void testObj::test<37>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<38>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<39>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<40>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<41>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<42>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<43>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<44>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<45>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<46>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<47>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<48>(void)
-{
-}
-
-// TODO: finish these tests
 
 } // namespace tut
