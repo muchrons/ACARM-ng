@@ -35,7 +35,6 @@ bool LogicImpl::checkAccept(const Persistency::Alert &alert) const
   for(SectionSet::const_iterator it=ss_.begin(); it!=ss_.end(); ++it)
   {
     ++i;
-
     switch( it->process(alert).toInt() )
     {
       case Section::Decision::ACCEPT:
