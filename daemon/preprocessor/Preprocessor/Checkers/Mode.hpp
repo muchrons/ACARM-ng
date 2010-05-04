@@ -31,9 +31,13 @@ public:
   virtual bool check(const std::string &str) const = 0;
 
 protected:
+  /** \brief create object instance of a given (type) name.
+   *  \param name mode's type instance type name. this is used for
+   *              logging purposes.
+   */
   explicit Mode(const std::string &name);
 
-  Logger::Node log_;
+  const Logger::Node log_;      ///< logger to be used by derived classes
 }; // class Mode
 
 } // namespace Checkers
