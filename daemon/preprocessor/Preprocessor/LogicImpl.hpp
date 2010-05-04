@@ -5,8 +5,11 @@
 #ifndef INCLUDE_PREPROCESSOR_LOGICIMPL_HPP_FILE
 #define INCLUDE_PREPROCESSOR_LOGICIMPL_HPP_FILE
 
+#include <vector>
+
 #include "ConfigIO/Preprocessor/Config.hpp"
 #include "Persistency/Alert.hpp"
+#include "Preprocessor/Section.hpp"
 
 namespace Preprocessor
 {
@@ -27,6 +30,8 @@ public:
   bool checkAccept(const Persistency::Alert &alert) const;
 
 private:
+  typedef std::vector<Section> SectionSet;
+  SectionSet ss_;
 }; // class LogicImpl
 
 } // namespace Preprocessor
