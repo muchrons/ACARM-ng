@@ -81,9 +81,9 @@ void Restorer::addToCache(DataBaseID id, GraphNodePtrNN node)
     graphCache_.insert(tmp);
 }
 
-GraphNodePtrNN Restorer::getNode(DataBaseID          id,
-                                 AlertPtrNN          aPtr,
-                                 IO::ConnectionPtrNN connStubIO,
+GraphNodePtrNN Restorer::getNode(DataBaseID           id,
+                                 AlertPtrNN           aPtr,
+                                 IO::ConnectionPtrNN  connStubIO,
                                  IO::Transaction     &tStubIO)
 {
   if( isInCache(id) )
@@ -93,10 +93,10 @@ GraphNodePtrNN Restorer::getNode(DataBaseID          id,
   return leaf;
 }
 
-GraphNodePtrNN Restorer::getNode(DataBaseID          id,
-                                 MetaAlertPtrNN      maPtr,
+GraphNodePtrNN Restorer::getNode(DataBaseID           id,
+                                 MetaAlertPtrNN       maPtr,
                                  NodeChildrenVector  &vec,
-                                 IO::ConnectionPtrNN connStubIO,
+                                 IO::ConnectionPtrNN  connStubIO,
                                  IO::Transaction     &tStubIO)
 {
   if( isInCache(id) )
@@ -115,16 +115,21 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   // check if there are no children (i.e. is leaf)
   if( node->getChildrenNumber() == 0 )
   {
+    // TODO: make content of this if() separate method/function
     // read Alert from data base
     AlertPtrNN alertPtr( er.getLeaf(id) );
     const DataBaseID alertID = er.getAlertIDAssociatedWithMetaAlert(id);
     // add Alert to cache
     addIfNew(alertPtr, alertID);
-    GraphNodePtr gr;
+    GraphNodePtr gr;    // TODO: unused variable
     GraphNodePtrNN graphNodeLeaf( getNode( alertID, alertPtr, connStubIO, tStubIO ) );
     out.push_back(graphNodeLeaf);
     return graphNodeLeaf;
   }
+
+  // TODO: make this separeta method/function
+  // NOTE: for performance reasons you can make output vector<> non-const paramter to call
+  // TODO: start...
   vector<GraphNodePtrNN>  tmpNodes;
   const Tree::IDsVector  &nodeChildren = node->getChildren();
   tmpNodes.reserve( nodeChildren.size() );
@@ -138,6 +143,8 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   NodeChildrenVector vec(tmpNodes[0], tmpNodes[1]);
   for(size_t i = 2; i<tmpNodes.size(); ++i)
     vec.push_back(tmpNodes[i]);
+  // TODO: ...stop
+
   // read Meta Alert from data base
   MetaAlertPtrNN malertPtr( er.readMetaAlert(id) );
   // add Meta Alert to cache

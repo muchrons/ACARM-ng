@@ -97,6 +97,7 @@ Persistency::GraphNodePtrNN makeNewTree4(void);
 //                   root1       root2
 //             node1       node2
 //       leaf1       leaf2       leaf3
+// TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
 std::vector<Persistency::GraphNodePtrNN> makeNewTree5(void);
 } // namespace Postgres
 } // namespace IO
