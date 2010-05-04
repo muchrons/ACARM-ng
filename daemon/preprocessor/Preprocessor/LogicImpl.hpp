@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "ConfigIO/Preprocessor/Config.hpp"
+#include "Logger/Node.hpp"
 #include "Persistency/Alert.hpp"
 #include "Preprocessor/Section.hpp"
 
@@ -31,7 +32,9 @@ public:
 
 private:
   typedef std::vector<Section> SectionSet;
-  SectionSet ss_;
+
+  Logger::Node log_;
+  SectionSet   ss_;
 }; // class LogicImpl
 
 } // namespace Preprocessor
