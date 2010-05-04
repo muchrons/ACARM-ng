@@ -4,7 +4,7 @@
  */
 
 #include "Input/Prelude/Client.hpp"
-
+#include <iostream>
 namespace Input
 {
 namespace Prelude

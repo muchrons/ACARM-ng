@@ -124,7 +124,7 @@ Alert::SourceAnalyzers EntryReader::getAnalyzers(DataBaseID alertID)
 
   Alert::SourceAnalyzers analyzers( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_analyzer"]) ) );
 
-  for(size_t i=0; i<r.size(); ++i)
+  for(size_t i=1; i<r.size(); ++i)
     analyzers.push_back( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_analyzer"]) ) );
   return analyzers;
 }
@@ -170,7 +170,7 @@ HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID *refID)
                                      getReportedProcesses( hostID ),
                                      ReaderHelper<Persistency::Host::Name>::readAs(r[0]["name"]) ) );
   // add host to cache
-  dbh_.getIDCache()->add(host , hostID);
+  addIfNew(host, hostID);
   return host;
 }
 
@@ -364,6 +364,14 @@ DataBaseID EntryReader::getAlertIDAssociatedWithMetaAlert(DataBaseID malertID)
   return ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_alert"]);
 }
 
+template<typename T>
+void EntryReader::addIfNew(T e, DataBaseID id)
+{
+  if(!dbh_.getIDCache()->has(e))
+    dbh_.getIDCache()->add(e, id);
+  else
+    assert(id == dbh_.getIDCache()->get(e));
+}
 } // namespace detail
 } // namespace Postgres
 } // namespace IO

@@ -156,18 +156,58 @@ GraphNodePtrNN makeNewTree2(void)
                         makeNewNode( makeNewLeaf(), node1 ), node1 ) );
 }
 
-/*
-GraphNodePtrNN makeNewTree3(void)
+std::vector<GraphNodePtrNN> makeNewTree3(void)
 {
-  GraphNodePtrNN node6 = makeNewNode();
-  GraphNodePtrNN node7 = makeNewNode();
-  GraphNodePtrNN node8 = makeNewLeaf();
-  GraphNodePtrNN node5 = makeNewLeaf();
+  std::vector<GraphNodePtrNN> vec;
+  GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
+  GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+  vec.push_back(leaf1);
+  vec.push_back(leaf2);
+  GraphNodePtrNN node1 = makeNewNode(leaf1,
+                                     leaf2,
+                                     "node1");
+  vec.push_back(node1);
 
-  GraphNodePtrNN node6 = makeNewNode();
+  GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
+  GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+  vec.push_back(leaf3);
+  vec.push_back(leaf4);
+  GraphNodePtrNN node2 = makeNewNode(leaf3,
+                                     leaf4,
+                                     "node2");
+  vec.push_back(node2);
 
+  GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
+  GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
+  vec.push_back(leaf5);
+  vec.push_back(leaf6);
+  GraphNodePtrNN node3 = makeNewNode(leaf5,
+                                     leaf6,
+                                     "node3");
+
+  vec.push_back(node3);
+  GraphNodePtrNN root1 = makeNewNode(node1,
+                                     node2,
+                                     "root1");
+  vec.push_back(root1);
+  GraphNodePtrNN root2 = makeNewNode(node2,
+                                     node3,
+                                     "root2");
+  vec.push_back(root2);
+  return vec;
 }
-*/
+
+Persistency::GraphNodePtrNN makeNewTree4(void)
+{
+  return makeNewNode( makeNewNode(makeNewLeaf("leaf1"), makeNewLeaf("leaf2"), "node1" ),
+                      makeNewNode(
+                         makeNewNode(makeNewLeaf("leaf3"),
+                                     makeNewLeaf("leaf4"),
+                                     "node3"),
+                         makeNewNode(makeNewLeaf("leaf5"),
+                                     makeNewLeaf("leaf6"),
+                                     "node4"), "node2"), "root" );
+}
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency

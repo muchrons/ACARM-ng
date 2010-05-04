@@ -34,7 +34,8 @@ public:
 private:
   /** \brief data type which stores tree nodes of class Tree
    */
-  typedef std::map<DataBaseID, TreePtr> NodesMap;
+  typedef std::map<DataBaseID, TreePtr>        NodesMap;
+  typedef std::map<DataBaseID, GraphNodePtrNN> GraphNodesMap;
   virtual void restoreAllInUseImpl(Transaction &t, NodesVector &out);
   virtual void restoreBetweenImpl(Transaction     &t,
                                   NodesVector     &out,
@@ -42,6 +43,19 @@ private:
                                   const Timestamp &to);
   BackendFactory::FactoryPtr createStubIO(void);
   TreePtr getNode(DataBaseID id);
+  bool isInCache(DataBaseID id);
+  GraphNodePtrNN getFromCache(DataBaseID id);
+  void addToCache(DataBaseID id, GraphNodePtrNN node);
+
+  GraphNodePtrNN getNode(DataBaseID          id,
+                         AlertPtrNN          aPtr,
+                         IO::ConnectionPtrNN connStubIO,
+                         IO::Transaction     &tStubIO);
+  GraphNodePtrNN getNode(DataBaseID          id,
+                         MetaAlertPtrNN      maPtr,
+                         NodeChildrenVector  &vec,
+                         IO::ConnectionPtrNN connStubIO,
+                         IO::Transaction     &tStubIO);
   GraphNodePtrNN deepFirstSearch(DataBaseID                                      id,
                                  NodesVector                                    &out,
                                  Persistency::IO::Postgres::detail::EntryReader &er,
@@ -55,6 +69,7 @@ private:
   void addIfNew(T e, DataBaseID id);
 
   DBHandlerPtrNN  dbHandler_;
+  GraphNodesMap   graphCache_;
   NodesMap        treeNodes_;
 }; // class Restorer
 

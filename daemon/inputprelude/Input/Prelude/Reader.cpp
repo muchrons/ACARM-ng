@@ -13,9 +13,7 @@ namespace Input
 {
 namespace Prelude
 {
-
-// TODO: fix indentation
-  Reader::Reader(const std::string profile, const std::string config):
+Reader::Reader(const std::string profile, const std::string config):
   Input::Reader(profile),
   // TODO: logger is not used here
   preludeLogger_("input.prelude.reader.preludelog"),

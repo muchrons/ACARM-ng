@@ -3,7 +3,8 @@
  *
  */
 #include <cassert>
-
+#include <iostream>
+#include <cstring>
 // TODO: "prelude.h"
 #include <prelude.h>
 #include "System/Threads/SafeInitLocking.hpp"
@@ -22,7 +23,7 @@ namespace
 int  g_counter       =0;
 bool g_wasInitialized=false;
 bool g_end           =false;
-
+char **argv          =NULL;
 // mutex protecting operations on global types
 SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_mutex);
 
@@ -56,8 +57,11 @@ struct Releaser
     assert(g_end==false);
 
     int argc=1;
-    char a1[]="name";
-    char *argv[]={a1};
+    argv=new char*[1];
+    //if exception was not thrown memory is allocated
+    argv[0]=new char[10];
+    strcpy(argv[0],"name");
+
     if ( prelude_init(&argc, argv) < 0 )
       throw Input::Exception(SYSTEM_SAVE_LOCATION, "Unable to initialize prelude library.");
   }
@@ -71,6 +75,8 @@ struct Releaser
     try
     {
       prelude_deinit();
+      delete[] argv[0];
+      delete[] argv;
     }
     catch(...)
     {
