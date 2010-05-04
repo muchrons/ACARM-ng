@@ -4,6 +4,8 @@
  */
 #include <tut.h>
 
+#include "Base/ViaPointer.hpp"
+#include "Commons/ViaUnorderedCollection.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
@@ -30,22 +32,39 @@ struct TestClass
     tdba_.removeAllData();
   }
 
-  void deepSearch(GraphNodePtrNN node)
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
+  void deepSearch(GraphNodePtrNN node, std::vector<GraphNodePtrNN> &outVec)
   {
+    // TODO: remove extra brackets
     if( node->isLeaf())
     {
-      Persistency::AlertPtrNN alert( node->getAlert() );
+      outVec.push_back(node);
     }
     else
     {
-      Persistency::MetaAlertPtrNN malert( node->getMetaAlert() );
+      outVec.push_back(node);
+      // TODO: remove extra brackets
       for(GraphNode::iterator it = node->begin(); it != node->end(); ++it)
       {
-        deepSearch(*it);
+        deepSearch(*it, outVec);
       }
     }
     return;
   }
+
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
+  void checkCache(std::vector<GraphNodePtrNN> &out)
+  {
+    // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
+    for(std::vector<GraphNodePtrNN>::iterator it = out.begin(); it !=out.end(); ++it)
+    {
+      if( (*it)->isLeaf() )
+        tut::ensure("alert shoud be in cache", idCache_->has( (*it)->getAlert()) );
+      else
+        tut::ensure("meta alert shoud be in cache", idCache_->has( (*it)->getMetaAlert()) );
+    }
+  }
+
   TestDBAccess            tdba_;
   IDCachePtrNN            idCache_;
   DBHandlerPtrNN          dbh_;
@@ -64,51 +83,98 @@ namespace tut
 {
 
 // trying restore all in use
+//
+//                root
+//     node1               node2
+//  leaf1 leaf2      node3      leaf5
+//                leaf3 leaf4
+//
 template<>
 template<>
 void testObj::test<1>(void)
 {
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
   std::vector<GraphNodePtrNN> out;
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
+  // TODO: this collection should be const
+  std::vector<GraphNodePtrNN> outVec;
   // create tree and save data to the data base
   GraphNodePtrNN tree = makeNewTree1();
   // create restorer
   Restorer r(t_, dbh_);
   // restore data from data base
   r.restoreAllInUse(out);
-  // check if restored meta alerts exist in cache
-  for(std::vector<GraphNodePtrNN>::iterator it = out.begin(); it !=out.end(); ++it)
-  {
-    ensure("meta alert shoud be in cache", idCache_->has( (*it)->getMetaAlert()) );
-    for(GraphNode::iterator git = (*it)->begin(); git != (*it)->end(); ++git)
-    {
-      if( (*git)->isLeaf() )
-        ensure("alert shoud be in cache", idCache_->has( (*git)->getAlert()) );
-    }
-  }
-  //deepSearch(tree);
-  // TODO: check if readed data (alerts and meta alerts) are the same
-  //       as writed before
-  //       there should be test which writes differents alerts, meta alerts to the data base
+  // put tree in vector
+  deepSearch(tree, outVec);
+
+  ensure_equals("invalid size", out.size(), outVec.size());
+  ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
+  // check if restored alerts and meta alerts exist in cache
+  checkCache(out);
 }
 
-//TODO: trying restore between
+// trying restoring tree
+//
+//                   root1       root2
+//             node1       node2       node3
+//       leaf1       leaf2       leaf3       leaf4
+//
 template<>
 template<>
 void testObj::test<2>(void)
 {
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
+  std::vector<GraphNodePtrNN> out;
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
+  // TODO: this collection should be const
+  std::vector<GraphNodePtrNN> outVec = makeNewTree3();
+  // create restorer
+  Restorer r(t_, dbh_);
+  // restore data from data base
+  r.restoreAllInUse(out);
+  ensure_equals("invalid size", out.size(), outVec.size());
+  ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
+  // check if restored alerts and meta alerts exist in cache
+  checkCache(out);
 }
 
-// TODO: try restoring few non-trivial test cases
+// trying restoring tree
+//
+//                root
+//     node1               node2
+//  leaf1 leaf2      node3       node4
+//                leaf3 leaf4 leaf5 leaf6
+//
 template<>
 template<>
 void testObj::test<3>(void)
 {
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
+  std::vector<GraphNodePtrNN> out;
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
+  // TODO: this collection should be const
+  std::vector<GraphNodePtrNN> outVec;
+  // create tree and save data to the data base
+  GraphNodePtrNN tree = makeNewTree4();
+  // create restorer
+  Restorer r(t_, dbh_);
+  // restore data from data base
+  r.restoreAllInUse(out);
+  // put tree in vector
+  deepSearch(tree, outVec);
+
+  ensure_equals("invalid size", out.size(), outVec.size());
+  ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
+  // check if restored alerts and meta alerts exist in cache
+  checkCache(out);
 }
+
 // try restoring empty set
 template<>
 template<>
 void testObj::test<4>(void)
 {
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
   std::vector<GraphNodePtrNN> out;
   // create restorer
   Restorer r(t_, dbh_);
@@ -123,4 +189,9 @@ template<>
 void testObj::test<5>(void)
 {
 }
+
+// TODO: try restoring treees that have common parts
+
+// TODO: try restoring trees that are invalid. ex: not enought children
+
 } // namespace tut

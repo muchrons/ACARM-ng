@@ -34,14 +34,43 @@ public:
 private:
   /** \brief data type which stores tree nodes of class Tree
    */
-  typedef std::map<DataBaseID, TreePtr> NodesMap;
+  // TODO: make template class to hold map<ID,T> inside and provided
+  //       proper API. this will make this class much shorter and
+  //       more readable. remember "single responsibility rule", i.e.
+  //       one-class -> one-responsibility.
+  //       btw: there was funny picture about this rule:
+  //       http://blackbeltreview.files.wordpress.com/2009/12/singleresponsibilityprinciple2_71060858.jpg
+  typedef std::map<DataBaseID, TreePtr>        NodesMap;
+  typedef std::map<DataBaseID, GraphNodePtrNN> GraphNodesMap;
+
   virtual void restoreAllInUseImpl(Transaction &t, NodesVector &out);
   virtual void restoreBetweenImpl(Transaction     &t,
                                   NodesVector     &out,
                                   const Timestamp &from,
                                   const Timestamp &to);
+
   BackendFactory::FactoryPtr createStubIO(void);
+  // TODO: this method should be const
   TreePtr getNode(DataBaseID id);
+  // TODO: this method should be const
+  bool isInCache(DataBaseID id);
+  // TODO: this method should be const
+  GraphNodePtrNN getFromCache(DataBaseID id);
+  void addToCache(DataBaseID id, GraphNodePtrNN node);
+
+  // TODO: this method should be const
+  // TODO: proper name for this methods is makeLeaf()
+  GraphNodePtrNN getNode(DataBaseID          id,
+                         AlertPtrNN          aPtr,
+                         IO::ConnectionPtrNN connStubIO,
+                         IO::Transaction     &tStubIO);
+  // TODO: this method should be const
+  // TODO: proper name for this methods is makeNode()
+  GraphNodePtrNN getNode(DataBaseID          id,
+                         MetaAlertPtrNN      maPtr,
+                         NodeChildrenVector  &vec,
+                         IO::ConnectionPtrNN connStubIO,
+                         IO::Transaction     &tStubIO);
   GraphNodePtrNN deepFirstSearch(DataBaseID                                      id,
                                  NodesVector                                    &out,
                                  Persistency::IO::Postgres::detail::EntryReader &er,
@@ -55,6 +84,7 @@ private:
   void addIfNew(T e, DataBaseID id);
 
   DBHandlerPtrNN  dbHandler_;
+  GraphNodesMap   graphCache_;
   NodesMap        treeNodes_;
 }; // class Restorer
 

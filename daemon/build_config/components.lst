@@ -21,7 +21,6 @@ logger
 system
 base
 curlpp
-prelude
 
 inputprelude
 inputfile

@@ -43,22 +43,40 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  // TODO
   Client("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
-  //Client("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
 }
 
+// Create and destroy several clients
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  // TODO
-  //Client client("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
-  //client.start();
+  Client("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
+  Client("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
+  Client("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
+  Client("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
 }
 
-// TODO: add test for double init prelude one after another (situation that now causes abort()).
+// Create two clients at a time
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  Client a("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
+  Client b("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
+}
 
-// TODO: add test for double init prelude at one time (i.e. two instances running).
+
+// Create and start client
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  Client client("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
+  client.start();
+}
+
+
+
 
 } // namespace tut

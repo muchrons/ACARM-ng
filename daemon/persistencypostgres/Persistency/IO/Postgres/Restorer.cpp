@@ -2,10 +2,22 @@
  * Restorer.cpp
  *
  */
+#include <set>
 #include "Persistency/IO/Postgres/Restorer.hpp"
 #include "Persistency/IO/Postgres/ExceptionBadNumberOfNodeChildren.hpp"
 using namespace Persistency::IO::Postgres::detail;
 using namespace std;
+
+namespace
+{
+template<typename T>
+void removeDuplicates(std::vector<T> &out)
+{
+  std::set<T> s( out.begin(), out.end() );
+  out.erase( out.begin(), out.end() );
+  out.assign( s.begin(), s.end() );
+} // removeDuplicates()
+} // unnamed namespace
 
 namespace Persistency
 {
@@ -45,7 +57,6 @@ BackendFactory::FactoryPtr Restorer::createStubIO(void)
   return BackendFactory::create(name, options);
 }
 
-
 TreePtr Restorer::getNode(DataBaseID id )
 {
   if(treeNodes_.count(id) > 0)
@@ -54,6 +65,46 @@ TreePtr Restorer::getNode(DataBaseID id )
     return TreePtr();
 }
 
+bool Restorer::isInCache(DataBaseID id)
+{
+  if(graphCache_.count(id) > 0)
+    return true;
+  return false;
+}
+GraphNodePtrNN Restorer::getFromCache(DataBaseID id)
+{
+  return graphCache_.find(id)->second;
+}
+void Restorer::addToCache(DataBaseID id, GraphNodePtrNN node)
+{
+  pair<DataBaseID, GraphNodePtrNN> tmp(id, node );
+    graphCache_.insert(tmp);
+}
+
+GraphNodePtrNN Restorer::getNode(DataBaseID           id,
+                                 AlertPtrNN           aPtr,
+                                 IO::ConnectionPtrNN  connStubIO,
+                                 IO::Transaction     &tStubIO)
+{
+  if( isInCache(id) )
+    return getFromCache(id);
+  GraphNodePtrNN leaf( new GraphNode( aPtr, connStubIO, tStubIO ) );
+  addToCache(id, leaf);
+  return leaf;
+}
+
+GraphNodePtrNN Restorer::getNode(DataBaseID           id,
+                                 MetaAlertPtrNN       maPtr,
+                                 NodeChildrenVector  &vec,
+                                 IO::ConnectionPtrNN  connStubIO,
+                                 IO::Transaction     &tStubIO)
+{
+  if( isInCache(id) )
+    return getFromCache(id);
+  GraphNodePtrNN node( new GraphNode( maPtr, connStubIO, tStubIO, vec ) );
+  addToCache(id, node);
+  return node;
+}
 GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                                      id,
                                          NodesVector                                    &out,
                                          Persistency::IO::Postgres::detail::EntryReader &er,
@@ -64,13 +115,21 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   // check if there are no children (i.e. is leaf)
   if( node->getChildrenNumber() == 0 )
   {
+    // TODO: make content of this if() separate method/function
     // read Alert from data base
     AlertPtrNN alertPtr( er.getLeaf(id) );
     const DataBaseID alertID = er.getAlertIDAssociatedWithMetaAlert(id);
     // add Alert to cache
     addIfNew(alertPtr, alertID);
-    return GraphNodePtrNN( new GraphNode( alertPtr, connStubIO, tStubIO ) );
+    GraphNodePtr gr;    // TODO: unused variable
+    GraphNodePtrNN graphNodeLeaf( getNode( alertID, alertPtr, connStubIO, tStubIO ) );
+    out.push_back(graphNodeLeaf);
+    return graphNodeLeaf;
   }
+
+  // TODO: make this separeta method/function
+  // NOTE: for performance reasons you can make output vector<> non-const paramter to call
+  // TODO: start...
   vector<GraphNodePtrNN>  tmpNodes;
   const Tree::IDsVector  &nodeChildren = node->getChildren();
   tmpNodes.reserve( nodeChildren.size() );
@@ -84,12 +143,16 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   NodeChildrenVector vec(tmpNodes[0], tmpNodes[1]);
   for(size_t i = 2; i<tmpNodes.size(); ++i)
     vec.push_back(tmpNodes[i]);
+  // TODO: ...stop
+
   // read Meta Alert from data base
   MetaAlertPtrNN malertPtr( er.readMetaAlert(id) );
   // add Meta Alert to cache
   addIfNew(malertPtr, id);
-  GraphNodePtrNN graphNode(new GraphNode( malertPtr,
-                                          connStubIO, tStubIO, vec ));
+  GraphNodePtrNN graphNode( getNode( id, malertPtr,
+                                         vec,
+                                         connStubIO,
+                                         tStubIO ));
   out.push_back(graphNode);
   return graphNode;
 }
@@ -111,8 +174,10 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
 
   const Tree::IDsVector &roots = er.readRoots();
   for(Tree::IDsVector::const_iterator it = roots.begin(); it != roots.end(); ++it)
-    out.push_back(deepFirstSearch(*it, out, er, connStubIO, tStubIO));
-  //TODO: try - catch
+    deepFirstSearch(*it, out, er, connStubIO, tStubIO);
+  // TODO: try - catch
+  // remove doplicates from out vector
+  removeDuplicates(out);
 }
 
 template<typename T>

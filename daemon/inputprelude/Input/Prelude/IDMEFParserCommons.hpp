@@ -21,6 +21,8 @@ namespace Prelude
 class IDMEFParserCommons : public Persistency::IPTypes<IDMEFParserCommons>
 {
 public:
+  // TODO: this call may return uninitialized value - use Base::NullValue<IP> as
+  //       the return type here.
   /**
    * @brief get IP address from idmef_node_t object
    * @param idmef_node object to parse
