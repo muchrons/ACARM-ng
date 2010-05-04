@@ -74,6 +74,7 @@ Persistency::Analyzer::OperatingSystem IDMEFParserAnalyzer::parseOS(idmef_analyz
 
 std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_analyzer_t *ptr) const
 {
+  // TODO: consider using Base::NullValue instead of auto_ptr<> here.
   std::auto_ptr<Persistency::Analyzer::IP> ip;
   idmef_node_t *idmef_node = idmef_analyzer_get_node(ptr);
 
@@ -82,6 +83,7 @@ std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_anal
     {
       ip.reset(new Analyzer::IP(IDMEFParserCommons::getIPfromIdmefNode(idmef_node)));
     }
+  // TODO: const reference must be taken here
   catch(ParseException &)
     {
       // TODO: this should be logged
