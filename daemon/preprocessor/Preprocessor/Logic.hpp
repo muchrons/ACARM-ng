@@ -5,13 +5,17 @@
 #ifndef INCLUDE_PREPROCESSOR_LOGIC_HPP_FILE
 #define INCLUDE_PREPROCESSOR_LOGIC_HPP_FILE
 
+/* public header */
+
 #include <boost/scoped_ptr.hpp>
 
 #include "Persistency/Alert.hpp"
-#include "Preprocessor/LogicImpl.hpp"
 
 namespace Preprocessor
 {
+
+// forward declaration of implementation
+class LogicImpl;
 
 /** \brief main preprocessor's logic - interface.
  */
