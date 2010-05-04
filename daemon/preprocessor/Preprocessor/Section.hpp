@@ -56,8 +56,8 @@ private:
   Expressions::BasePtrNN create(const ConfigIO::Preprocessor::Expression &cfg) const;
   Expressions::BasePtrNN create(const ConfigIO::Preprocessor::Rule &cfg) const;
 
-  const bool                   isAcceptType_;
-  const Expressions::BasePtrNN expr_;
+  bool                   isAcceptType_;
+  Expressions::BasePtrNN expr_;
 }; // class LogicImpl
 
 } // namespace Preprocessor
