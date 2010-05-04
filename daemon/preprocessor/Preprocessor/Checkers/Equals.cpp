@@ -19,7 +19,7 @@ Equals::Equals(const std::string &str):
 bool Equals::check(const std::string &str) const
 {
   const bool  ret=str_==str;
-  const char *msg=(ret?"not ":" ");
+  const char *msg=(ret?"":"not ");
   LOGMSG_DEBUG_S(log_)<<"'"<<str_<<"' does "<<msg<<"equal '"<<str<<"'";
   return ret;
 }
