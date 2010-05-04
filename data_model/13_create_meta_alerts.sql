@@ -11,7 +11,7 @@ CREATE TABLE    meta_alerts
   name             varchar(256) NOT NULL,
   severity_delta   real         NOT NULL
                                 DEFAULT 0,
-  certanity_delta  real         NOT NULL
+  certainty_delta  real         NOT NULL
                                 DEFAULT 0,
   id_ref           int          NULL
                                 REFERENCES reference_urls(id)
