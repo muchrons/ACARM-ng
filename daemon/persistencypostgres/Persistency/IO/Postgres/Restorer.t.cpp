@@ -37,8 +37,10 @@ struct TestClass
     tdba_.removeAllData();
   }
 
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
   void deepSearch(GraphNodePtrNN node, std::vector<GraphNodePtrNN> &outVec)
   {
+    // TODO: remove extra brackets
     if( node->isLeaf())
     {
       outVec.push_back(node);
@@ -46,6 +48,7 @@ struct TestClass
     else
     {
       outVec.push_back(node);
+      // TODO: remove extra brackets
       for(GraphNode::iterator it = node->begin(); it != node->end(); ++it)
       {
         deepSearch(*it, outVec);
@@ -53,8 +56,11 @@ struct TestClass
     }
     return;
   }
+
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
   void checkCache(std::vector<GraphNodePtrNN> &out)
   {
+    // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
     for(std::vector<GraphNodePtrNN>::iterator it = out.begin(); it !=out.end(); ++it)
     {
       if( (*it)->isLeaf() )
@@ -63,6 +69,7 @@ struct TestClass
         tut::ensure("meta alert shoud be in cache", idCache_->has( (*it)->getMetaAlert()) );
     }
   }
+
   TestDBAccess            tdba_;
   IDCachePtrNN            idCache_;
   DBHandlerPtrNN          dbh_;
@@ -91,7 +98,10 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
   std::vector<GraphNodePtrNN> out;
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
+  // TODO: this collection should be const
   std::vector<GraphNodePtrNN> outVec;
   // create tree and save data to the data base
   GraphNodePtrNN tree = makeNewTree1();
@@ -119,7 +129,10 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
   std::vector<GraphNodePtrNN> out;
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
+  // TODO: this collection should be const
   std::vector<GraphNodePtrNN> outVec = makeNewTree3();
   // create restorer
   Restorer r(t_, dbh_);
@@ -143,7 +156,10 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
   std::vector<GraphNodePtrNN> out;
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
+  // TODO: this collection should be const
   std::vector<GraphNodePtrNN> outVec;
   // create tree and save data to the data base
   GraphNodePtrNN tree = makeNewTree4();
@@ -166,6 +182,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
   std::vector<GraphNodePtrNN> out;
   // create restorer
   Restorer r(t_, dbh_);
@@ -246,5 +263,9 @@ void testObj::test<6>(void)
   }
   t_.commit();
 }
+
+// TODO: try restoring treees that have common parts
+
+// TODO: try restoring trees that are invalid. ex: not enought children
 
 } // namespace tut

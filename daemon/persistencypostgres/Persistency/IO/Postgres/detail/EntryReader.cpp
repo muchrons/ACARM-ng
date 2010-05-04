@@ -123,7 +123,8 @@ Alert::SourceAnalyzers EntryReader::getAnalyzers(DataBaseID alertID)
   const result r = execSQL(t_, ss);
 
   Alert::SourceAnalyzers analyzers( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_analyzer"]) ) );
-
+  // TODO: add short comment why you start enumerating form '1' - there was bug with this once
+  //       so it's better to comments it right.
   for(size_t i=1; i<r.size(); ++i)
     analyzers.push_back( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_analyzer"]) ) );
   return analyzers;
@@ -369,7 +370,8 @@ void EntryReader::addIfNew(T e, DataBaseID id)
 {
   if(!dbh_.getIDCache()->has(e))
     dbh_.getIDCache()->add(e, id);
-  else
+  else  // TODO: notice that by removing this else you'll assert all situations,
+        //       therefore introducing common post-condition.
     assert(id == dbh_.getIDCache()->get(e));
 }
 } // namespace detail

@@ -156,8 +156,10 @@ GraphNodePtrNN makeNewTree2(void)
                         makeNewNode( makeNewLeaf(), node1 ), node1 ) );
 }
 
+// TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
 std::vector<GraphNodePtrNN> makeNewTree3(void)
 {
+  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
   std::vector<GraphNodePtrNN> vec;
   GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
   GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");

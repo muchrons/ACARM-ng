@@ -89,6 +89,7 @@ struct TestClass
     return out;
   }
 
+  // TODO: notice that Host::Name is NULLString by itself
   Base::NullValue<Host::Name> testHostName(DataBaseID hostID)
   {
     stringstream ss;

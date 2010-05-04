@@ -17,7 +17,7 @@ using boost::asio::ip::address_v6;
 
 IDMEFParserCommons::IP IDMEFParserCommons::getIPfromIdmefNode(idmef_node_t * idmef_node)
 {
-  IP ip;
+  IP ip;    // TODO: unused variable
   if (idmef_node==NULL)
     throw ParseException(SYSTEM_SAVE_LOCATION, "Idmef Node is empty.");
 
@@ -49,6 +49,13 @@ IDMEFParserCommons::IP IDMEFParserCommons::getIPfromIdmefNode(idmef_node_t * idm
 Persistency::ServicePtr IDMEFParserCommons::getServicefromIdmefService(idmef_service_t * idmef_service)
 {
   Persistency::ServicePtr service;
+  // TODO: use non-nested version, i.e.
+  //       if(error1)
+  //         return NULL;
+  //       if(error2)
+  //         return NULL;
+  //       // ...
+  //       return SomeValue(...);
   if (idmef_service)
   {
     prelude_string_t *idmef_service_name = idmef_service_get_name(idmef_service);
@@ -72,10 +79,14 @@ Persistency::ServicePtr IDMEFParserCommons::getServicefromIdmefService(idmef_ser
 
 Persistency::ProcessPtr IDMEFParserCommons::getProcessfromIdmefProcess(idmef_process_t * idmef_process, idmef_user_t * idmef_user)
 {
-  //when there is no user empty username is inserted
+  // TODO: make this separate method.
+  // TODO: when username is not set, NULL should be apssed as an argument
+  //       to Process() c-tor, not "" value.
+  // when there is no user empty username is inserted
   Persistency::Process::Username username="";
   if (idmef_user!=NULL)
-  {//get the first available user from the list if there's any
+  {
+    // get the first available user from the list if there's any
     idmef_user_id_t *idmef_user_id = idmef_user_get_next_user_id(idmef_user, NULL);
     if (idmef_user_id!=NULL)
     {
@@ -98,10 +109,12 @@ Persistency::ProcessPtr IDMEFParserCommons::getProcessfromIdmefProcess(idmef_pro
   prelude_string_t *idmef_process_str = idmef_process_get_name(idmef_process);
   if (idmef_process_str)
   {
-    const Persistency::Process::Name name=prelude_string_get_string(idmef_process_str);
-    const uint32_t *pid=idmef_process_get_pid(idmef_process);
+    const Persistency::Process::Name  name=prelude_string_get_string(idmef_process_str);
+    const uint32_t                   *pid =idmef_process_get_pid(idmef_process);
+    // TODO: use Base::NullValue<> for this - pid CAN be NULL.
+    // TODO: use ternarry operator for this and make this variable const.
     pid_t pidt;
-    //pid is set to 0 if there is no pid in idmef
+    // pid is set to 0 if there is no pid in idmef
     if (pid==NULL)
       pidt=0;
     else
