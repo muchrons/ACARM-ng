@@ -98,18 +98,22 @@ void testObj::test<8>(void)
   ensure("invalid severity", r.compute( *makeAlert() )==true );
 }
 
-// 
+// test description
 template<>
 template<>
 void testObj::test<9>(void)
 {
+  const Rule r( Path("alert.description"), Rule::Mode::EQUALS, "some test allert" );
+  ensure("invalid description", r.compute( *makeAlert() )==true );
 }
 
-// 
+// test analyzer.name
 template<>
 template<>
 void testObj::test<10>(void)
 {
+  const Rule r( Path("alert.analyzers.*.name"), Rule::Mode::EQUALS, "some analyzer" );
+  ensure("invalid analyzer's name", r.compute( *makeAlert() )==true );
 }
 
 // 

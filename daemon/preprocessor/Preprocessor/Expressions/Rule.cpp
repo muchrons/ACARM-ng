@@ -72,7 +72,7 @@ bool Rule::compute(const Persistency::Alert &alert) const
   assert( checker_.get()!=NULL );
   PathCit it=path_.begin();
   if(*it!="alert")
-    throwInvalid(it);
+    throwInvalid(SYSTEM_SAVE_LOCATION, it);
   return check( alert, it+1);
 }
 
@@ -84,7 +84,7 @@ bool Rule::processCollection(PathCit t, const T &col) const
   if(*t=="$")
     return matchAny( t+1, col.begin(), col.end() );
 
-  throwInvalid(t);
+  throwInvalid(SYSTEM_SAVE_LOCATION, t);
   return false; // code never reaches here
 }
 
@@ -131,7 +131,7 @@ bool Rule::check(const T *e, PathCit t) const
 
 bool Rule::check(const Persistency::Alert &e, const PathCit t) const
 {
-  throwIfEnd(t);
+  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
 
   // direct elements
   if(*t=="name")
@@ -154,21 +154,19 @@ bool Rule::check(const Persistency::Alert &e, const PathCit t) const
   if(*t=="target")
     return check( e.getReportedTargetHosts(), t+1);
 
-  throwInvalid(t);
+  throwInvalid(SYSTEM_SAVE_LOCATION, t);
   return false;         // we never reach here
 }
 
 bool Rule::check(const Persistency::Alert::SourceAnalyzers &e, PathCit t) const
 {
-  throwIfEnd(t);
-  processCollection(t, e);
-  throwInvalid(t);
-  return false;         // we never reach here
+  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
+  return processCollection(t, e);
 }
 
 bool Rule::check(const Persistency::Analyzer &e, PathCit t) const
 {
-  throwIfEnd(t);
+  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
 
   if(*t=="name")
     return check( cast( e.getName().get() ), t+1 );
@@ -179,34 +177,32 @@ bool Rule::check(const Persistency::Analyzer &e, PathCit t) const
   if(*t=="ip")
     return check( cast( (e.getIP()==NULL)?NULL:e.getIP() ), t+1 );
 
-  throwInvalid(t);
+  throwInvalid(SYSTEM_SAVE_LOCATION, t);
   return false;         // we never reach here
 }
 
 bool Rule::check(const Persistency::Alert::ReportedHosts &e, PathCit t) const
 {
-  throwIfEnd(t);
-  processCollection(t, e);
-  throwInvalid(t);
-  return false;         // we never reach here
+  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
+  return processCollection(t, e);
 }
 
 bool Rule::check(const Persistency::ReferenceURL &e, PathCit t) const
 {
-  throwIfEnd(t);
+  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
 
   if(*t=="name")
     return check( cast( e.getName().get() ), t+1 );
   if(*t=="url")
     return check( cast( e.getURL().get() ), t+1 );
 
-  throwInvalid(t);
+  throwInvalid(SYSTEM_SAVE_LOCATION, t);
   return false;         // we never reach here
 }
 
 bool Rule::check(const Persistency::Host &e, PathCit t) const
 {
-  throwIfEnd(t);
+  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
 
   if(*t=="ip")
     return check( cast( e.getIP() ), t+1 );
@@ -219,21 +215,19 @@ bool Rule::check(const Persistency::Host &e, PathCit t) const
   if(*t=="name")
     return check( cast( e.getName().get() ), t+1 );
 
-  throwInvalid(t);
+  throwInvalid(SYSTEM_SAVE_LOCATION, t);
   return false;         // we never reach here
 }
 
 bool Rule::check(const Persistency::Host::ReportedServices &e, PathCit t) const
 {
-  throwIfEnd(t);
-  processCollection(t, e);
-  throwInvalid(t);
-  return false;         // we never reach here
+  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
+  return processCollection(t, e);
 }
 
 bool Rule::check(const Persistency::Service &e, PathCit t) const
 {
-  throwIfEnd(t);
+  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
 
   if(*t=="name")
     return check( cast( e.getName().get() ), t+1 );
@@ -244,21 +238,19 @@ bool Rule::check(const Persistency::Service &e, PathCit t) const
   if(*t=="url")
     return check( e.getReferenceURL(), t+1 );
 
-  throwInvalid(t);
+  throwInvalid(SYSTEM_SAVE_LOCATION, t);
   return false;         // we never reach here
 }
 
 bool Rule::check(const Persistency::Host::ReportedProcesses &e, PathCit t) const
 {
-  throwIfEnd(t);
-  processCollection(t, e);
-  throwInvalid(t);
-  return false;         // we never reach here
+  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
+  return processCollection(t, e);
 }
 
 bool Rule::check(const Persistency::Process &e, PathCit t) const
 {
-  throwIfEnd(t);
+  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
 
   if(*t=="path")
     return check( cast( e.getPath().get() ), t+1 );
@@ -277,7 +269,7 @@ bool Rule::check(const Persistency::Process &e, PathCit t) const
   if(*t=="url")
     return check( e.getReferenceURL(), t+1 );
 
-  throwInvalid(t);
+  throwInvalid(SYSTEM_SAVE_LOCATION, t);
   return false;         // we never reach here
 }
 
@@ -288,26 +280,26 @@ bool Rule::check(const Persistency::MD5Sum &e, PathCit t) const
 
 bool Rule::check(const std::string &e, PathCit t) const
 {
-  throwIfNotEnd(t);
+  throwIfNotEnd(SYSTEM_SAVE_LOCATION, t);
   assert( checker_.get()!=NULL );
   return checker_->check(e);
 }
 
-void Rule::throwIfEnd(PathCit t) const
+void Rule::throwIfEnd(const Exception::Location &where, PathCit t) const
 {
   if( t==path_.end() )
-    throw ExceptionInvalidPath(SYSTEM_SAVE_LOCATION, path_.get(), *t);
+    throw ExceptionInvalidPath(where, path_.get(), *t);
 }
 
-void Rule::throwIfNotEnd(PathCit t) const
+void Rule::throwIfNotEnd(const Exception::Location &where, PathCit t) const
 {
   if( t!=path_.end() )
-    throw ExceptionInvalidPath(SYSTEM_SAVE_LOCATION, path_.get(), *t);
+    throw ExceptionInvalidPath(where, path_.get(), *t);
 }
 
-void Rule::throwInvalid(PathCit t) const
+void Rule::throwInvalid(const Exception::Location &where, PathCit t) const
 {
-  throw ExceptionInvalidPath(SYSTEM_SAVE_LOCATION, path_.get(), *t);
+  throw ExceptionInvalidPath(where, path_.get(), *t);
 }
 
 } // namespace Expressions
