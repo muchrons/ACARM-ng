@@ -214,6 +214,10 @@ bool Rule::check(const Persistency::Host &e, PathCit t) const
     return check( e.getReferenceURL(), t+1 );
   if(*t=="name")
     return check( cast( e.getName().get() ), t+1 );
+  if(*t=="services")
+    return check( e.getReportedServices(), t+1 );
+  if(*t=="processes")
+    return check( e.getReportedProcesses(), t+1 );
 
   throwInvalid(SYSTEM_SAVE_LOCATION, t);
   return false;         // we never reach here
