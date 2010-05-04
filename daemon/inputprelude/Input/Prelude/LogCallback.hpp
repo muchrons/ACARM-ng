@@ -21,9 +21,8 @@ class LogCallback: private boost::noncopyable
 {
 public:
   /** \brief registers prelude's callback.
-   *  \param node name of node to log messages to.
    */
-  LogCallback(const char *node);
+  LogCallback(void);
   /** \brief unrsgister callback.
    *  \note after this call has been made, all logs from prelude++
    *        will be ignored.

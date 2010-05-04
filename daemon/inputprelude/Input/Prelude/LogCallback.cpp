@@ -16,7 +16,8 @@ using namespace Base::Threads;
 namespace
 {
 SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_mutex);
-const Logger::Node *g_node=NULL;
+const Logger::Node *g_node   =NULL;
+unsigned int        g_counter=0;
 } // unnamed namespace
 
 extern "C"
@@ -71,31 +72,53 @@ namespace Input
 namespace Prelude
 {
 
-LogCallback::LogCallback(const char *node):
-  log_(node)
+LogCallback::LogCallback(void):
+  log_("input.prelude.preludelog")
 {
+  SafeInitLock lock(g_mutex);
+
+  if(g_counter>0)
+  {
+    LOGMSG_DEBUG(log_, "another registration - skipping it");
+    ++g_counter;
+    return;
+  }
+
   LOGMSG_INFO(log_, "registering callback to use common logger in system");
+  assert( g_node==NULL && "LogCallback - more instances to be created!");
 
-  assert( g_node ==NULL && "LogCallback - more instances have been created!");
-
-  g_node =&log_;
+  g_node=&log_;
   // register callback to prelude
   prelude_log_set_callback( wrp_Input_Prelude_loggerCallback );
   // set other options
   //::Prelude::PreludeLog::SetFlags(0);   // disable loffing to syslog and quiet mode
+
+  assert(g_counter==0 && "something registerd in between");
+  ++g_counter;
 }
 
 LogCallback::~LogCallback(void)
 {
-  LOGMSG_WARN(log_, "disconnecting from Prelude++ logger - all logs from "
-                    "Prelude++ will be ignored from now on");
-
   SafeInitLock lock(g_mutex);
-  g_node =NULL;
+
+  assert( g_counter>0 && "no instances regiustered?!" );
+  --g_counter;
+
+  if(g_counter>0)
+  {
+    LOGMSG_DEBUG(log_, "not last deregistraion - skipping it");
+    return;
+  }
+
+  LOGMSG_WARN(log_, "disconnecting from prelude's logger - all logs from "
+                    "prelude will be ignored from now on");
+  g_node=NULL;
 
   // after d-tor is called we may no loger provide loggin environment, so
   // we switch logging off to prevent illegal accesses.
   prelude_log_set_callback( wrp_Input_Prelude_ignore );
+
+  assert(g_counter==0 && "invalid unregistration - something's wrong");
 }
 
 } // namespace Prelude

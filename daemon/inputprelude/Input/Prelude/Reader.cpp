@@ -17,8 +17,6 @@ namespace Prelude
 // TODO: const references should be taken as arguments here
 Reader::Reader(const std::string profile, const std::string config):
   Input::Reader(profile),
-  // TODO: logger is not used here
-  preludeLogger_("input.prelude.reader.preludelog"),
   client_( new Client(profile, config, PRELUDE_CONNECTION_PERMISSION_IDMEF_READ) )
 {
   assert( client_.get()!=NULL );

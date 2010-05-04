@@ -31,7 +31,7 @@ public:
   typedef Commons::LimitedString<32>     Name;
   /** \brief port number.
    */
-  typedef uint16_t                      Port;
+  typedef uint16_t                       Port;
   /** \brief protocol used by sevice.
    */
   typedef Commons::LimitedNULLString<32> Protocol;

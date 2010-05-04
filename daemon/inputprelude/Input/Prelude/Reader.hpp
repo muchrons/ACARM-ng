@@ -10,7 +10,6 @@
 
 #include "Input/Reader.hpp"
 #include "Input/Prelude/Client.hpp"
-#include "Input/Prelude/LogCallback.hpp"
 
 // TODO: implement
 // TODO: test
@@ -36,7 +35,6 @@ public:
   virtual DataPtr read(unsigned int timeout);
 
 private:
-  LogCallback               preludeLogger_;
   boost::scoped_ptr<Client> client_;
 }; // class Reader
 
