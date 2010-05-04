@@ -10,6 +10,7 @@
 #include "Logger/Node.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/IO/Connection.hpp"
+#include "Preprocessor/Logic.hpp"
 #include "Core/Types/AlertsFifo.hpp"
 #include "Input/Factory.hpp"
 
@@ -33,10 +34,13 @@ public:
   Persistency::GraphNodePtrNN read(void);
 
 private:
+  Persistency::AlertPtrNN readAlert(void);
+
   Logger::Node                     log_;
   Persistency::IO::ConnectionPtrNN conn_;
   Core::Types::AlertsFifo          queue_;
   Input::InputsCollection          inputs_;
+  Preprocessor::Logic              preproc_;
 }; // class Sources
 
 } // namespace Core
