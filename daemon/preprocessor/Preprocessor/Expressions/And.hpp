@@ -5,9 +5,8 @@
 #ifndef INCLUDE_PREPROCESSOR_EXPRESSIONS_AND_HPP_FILE
 #define INCLUDE_PREPROCESSOR_EXPRESSIONS_AND_HPP_FILE
 
-#include <vector>
-
 #include "Preprocessor/Expressions/Base.hpp"
+#include "Preprocessor/Expressions/Set.hpp"
 
 namespace Preprocessor
 {
@@ -20,7 +19,7 @@ class And: public Base
 {
 public:
   /** \brief expressions to be ANDed. */
-  typedef std::vector<BasePtrNN> Expressions;
+  typedef Set Expressions;
 
   /** \brief create instance.
    *  \param e expressions to be ANDed.

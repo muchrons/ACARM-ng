@@ -112,6 +112,7 @@ private:
     rules_(rules),
     expressions_(expressions)
   {
+    assert( getRules().size()==0 || getExpressions().size()==0 );
   }
 
   Type        type_;
