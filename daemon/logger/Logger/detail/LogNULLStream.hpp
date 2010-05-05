@@ -25,7 +25,6 @@ class LogNULLStream: private boost::noncopyable
 {
 public:
   /** \brief add next log part.
-   *  \param t next message part.
    *  \return self-reference to further logging.
    *  \note call never throws.
    */
