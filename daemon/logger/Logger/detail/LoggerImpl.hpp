@@ -49,10 +49,15 @@ namespace detail
 #else  // else: NDEBUG
 
 // log given message to given facility - debug macro
+// note: do{}while(false) must stay here to prevent supprises in construcitons
+//       like if(...) LOG(); doSth();
 #define LOGMSG_PRI_INTERNAL_IMPLEMENTATION_DEBUG(where, msg) \
             do { } while(false)
 
 // log message in stream-like manier - debug macro
+// note: while(false) at the begining of the strucutre gives good results giving
+//       obvious clue to the compiler, that this part of code should be compiled-out
+//       therefore skipping computation of log messages arguments.
 #define LOGMSG_PRI_INTERNAL_STREAM_IMPLEMENTATION_DEBUG(id, method) \
             while(false) ::Logger::detail::LogNULLStream()
 
