@@ -92,13 +92,12 @@ void testObj::test<3>(void)
 namespace
 {
 
-struct TestReader: public Reader
+struct TestReaderName: public Reader
 {
-  TestReader(void):
+  TestReaderName(void):
     Reader("INVALID-chars-42")
   {
   }
-
   virtual DataPtr read(unsigned int)
   {
     return TestHelpers::Persistency::makeNewAlert();
@@ -112,7 +111,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  TestReader tr;    // should not throw
+  TestReaderName tr;    // should not throw
 }
 
 } // namespace tut
