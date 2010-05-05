@@ -24,6 +24,14 @@ NodeName::NodeName(const NodeName &parentNode, const char *surfix):
 {
 }
 
+namespace
+{
+bool isCharValid(const char c)
+{
+  return isdigit(c) || islower(c) || c=='.';
+} // isCharValid()
+} // unnamed namespace
+
 std::string NodeName::removeInvalidChars(const std::string &name)
 {
   stringstream ss;
@@ -36,7 +44,7 @@ std::string NodeName::removeInvalidChars(const std::string &name)
     if( isupper(c) )
       c=tolower(c);
     // check validity
-    if( isdigit(c) || islower(c) )
+    if( isCharValid(c) )
       ss<<c;
   }
 
@@ -56,7 +64,7 @@ const char *NodeName::validate(const char *name)
   // check for lower case, numbers and '.' - nothing more is allowed
   const int len=strlen(name);
   for(int i=0; i<len; ++i)
-    if( !islower(name[i]) && !isdigit(name[i]) && name[i]!='.' )
+    if( !isCharValid(name[i]) )
       throw ExceptionInvalidNodeName(SYSTEM_SAVE_LOCATION, name);
 
   return name;
