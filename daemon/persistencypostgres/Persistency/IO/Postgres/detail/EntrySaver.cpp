@@ -6,6 +6,7 @@
 #include <cassert>
 
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
+#include "Persistency/IO/Postgres/ReaderHelper.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 #include "Persistency/IO/Postgres/detail/Appender.hpp"
 
@@ -75,9 +76,18 @@ DataBaseID EntrySaver::getID(const std::string &seqName)
 
 DataBaseID EntrySaver::getSeverityID(const Alert &a)
 {
-  const DataBaseID id = a.getSeverity().getLevel().toInt();
-  assert(id >= 0 && id <= 6);
-  return id;
+  // get direct mapping form enum to 'level' column.
+  const int level=a.getSeverity().getLevel().toInt();
+  assert(level >= 0 && level <= 6);
+  // prepare SQL query
+  stringstream ss;
+  ss<<"SELECT id FROM severities WHERE level="<<level;
+  // execute it
+  const result r=t_.getAPI<Postgres::TransactionAPI>().exec(ss);
+  if( r.size()!=1 )
+    throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str() );
+  // return read value as a number
+  return ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id"]);
 }
 
 void EntrySaver::addReferenceURL(std::stringstream &ss, const ReferenceURL *url)

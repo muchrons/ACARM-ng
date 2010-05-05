@@ -99,6 +99,15 @@ struct TestClass
     return ReaderHelper<Base::NullValue<Host::Name> >::readAs(r[0]["name"]);
   }
 
+  DataBaseID getID(const Severity s)
+  {
+    stringstream ss;
+    ss<<"SELECT id FROM severities WHERE level="<<s.getLevel().toInt();
+    const result r=t_.getAPI<TransactionAPI>().exec(ss);
+    tut::ensure_equals("invalid size", r.size(), 1u);
+    return ReaderHelper<DataBaseID>::readAs(r[0]["id"]);
+  }
+
   const Alert::Name          name_;
   const AnalyzerPtrNN        analyzer_;
   Alert::SourceAnalyzers     analyzers_;
@@ -229,6 +238,9 @@ void testObj::test<4>(void)
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
 
+  // TODO: sytax is: ensure_equals(message, computedValue, expectedValue);
+  //       in most casese computed and expected values are swapped - please fix this.
+
   ensure_equals("invalid name",
                 name_.get(),
                 ReaderHelper<string>::readAsNotNull(r[0]["name"]));
@@ -242,8 +254,8 @@ void testObj::test<4>(void)
                 timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["create_time"]) ));
 
   ensure_equals("invalid severity ID",
-                a.getSeverity().getLevel().toInt(),
-                ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_severity"]));
+                ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_severity"]),
+                getID( a.getSeverity() ) );
 
   ensure_equals("invalid certanity",
                 certanity_.get(),
@@ -477,7 +489,7 @@ void testObj::test<11>(void)
   ensure_equals("invalid create time", created_, timestampFromString(time) );
 
   r[0]["id_severity"].to(id);
-  ensure_equals("invalid severity ID",a.getSeverity().getLevel().toInt(),id);
+  ensure_equals("invalid severity ID", id, getID( a.getSeverity() ) );
 
   r[0]["certanity"].to(certanity);
   ensure_equals("invalid certanity",certanity_.get(),certanity);

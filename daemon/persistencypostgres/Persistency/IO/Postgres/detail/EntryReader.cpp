@@ -34,8 +34,19 @@ namespace detail
 namespace
 {
 
-SeverityLevel severityFromInt(int level)
+SeverityLevel severityFromInt(Transaction &t, const DataBaseID id)
 {
+  // prepare SQL query
+  stringstream ss;
+  ss<<"SELECT level FROM severities WHERE id="<<id;
+  // execute it
+  const result r=t.getAPI<Postgres::TransactionAPI>().exec(ss);
+  if( r.size()!=1 )
+    throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str() );
+  // return read value as a number
+  const int level=ReaderHelper<int>::readAsNotNull(r[0]["level"]);
+
+  // translate to enum
   switch(level)
   {
     case 0: return SeverityLevel::DEBUG;
@@ -78,7 +89,7 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
                               getAnalyzers( alertID ),
                               ReaderHelper< Base::NullValue<Timestamp> >::readAs(r[0]["detect_time"]).get(),
                               timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["create_time"]) ),
-                              Severity( severityFromInt( ReaderHelper<int>::readAsNotNull(r[0]["id_severity"]) ) ),
+                              Severity( severityFromInt(t_, ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_severity"]) ) ),
                               Certainty( ReaderHelper<double>::readAsNotNull(r[0]["certanity"]) ),
                               ReaderHelper<string>::readAsNotNull(r[0]["description"]),
                               getSourceHosts( alertID ),

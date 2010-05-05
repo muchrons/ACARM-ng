@@ -18,6 +18,7 @@
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
+#include "Persistency/IO/Postgres/ExceptionNoEntries.hpp"
 
 // TODO: add loging here:
 //         - debug logs while saving each element
