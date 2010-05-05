@@ -89,4 +89,30 @@ void testObj::test<3>(void)
   ensure("NULL pointer", ptr.get()!=NULL );
 }
 
+namespace
+{
+
+struct TestReader: public Reader
+{
+  TestReader(void):
+    Reader("INVALID-chars-42")
+  {
+  }
+
+  virtual DataPtr read(unsigned int)
+  {
+    return TestHelpers::Persistency::makeNewAlert();
+  }
+};
+
+} // unnamed namespace
+
+// test if not-allowed chars for logger name are accepted as name
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  TestReader tr;    // should not throw
+}
+
 } // namespace tut
