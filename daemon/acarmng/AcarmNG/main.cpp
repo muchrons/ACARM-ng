@@ -74,5 +74,7 @@ int main(int /*argc*/, const char **argv)
   }
 
   (ret==0?cout:cerr)<<argv[0]<<": exiting with return code "<<ret<<endl;
+  if(ret!=0)
+    cerr<<argv[0]<<": see logs for more details"<<endl;
   return ret;
 }
