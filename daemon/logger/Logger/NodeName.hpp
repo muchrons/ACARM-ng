@@ -56,6 +56,12 @@ public:
     return name_;
   }
 
+  /** \brief removes chars that cannot be in name from input string.
+   *  \param name name to be processed.
+   *  \return name without invalid chars.
+   */
+  static std::string removeInvalidChars(const std::string &name);
+
 private:
   const char *validate(const char *name);
 

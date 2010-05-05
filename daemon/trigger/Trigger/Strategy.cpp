@@ -49,7 +49,7 @@ namespace
 {
 inline Logger::NodeName makeNodeName(const string &name)
 {
-  const string &out="trigger." + name;
+  const string &out="trigger." + Logger::NodeName::removeInvalidChars(name);
   return Logger::NodeName( out.c_str() );
 } // makeNodeName()
 } // unnamed namespace
