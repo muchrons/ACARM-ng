@@ -83,4 +83,17 @@ void testObj::test<3>(void)
   m.waitUntilDone();
 }
 
+// test for bug - when exception is thrown when second
+// threads poll is being created, then d-tor is NOT called
+// and conditional is being destroyed in main thread, though
+// other thread is already running. to enforce this situation special
+// config file has been provided.
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  readConfigFile("testdata/two_threads_exception_bug.xml");
+  WorkThreads m;    // this should NOT SEGV!
+}
+
 } // namespace tut
