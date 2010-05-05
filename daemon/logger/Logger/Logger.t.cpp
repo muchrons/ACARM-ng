@@ -336,4 +336,32 @@ void testObj::test<22>(void)
   ensureLoggedPart(msg);
 }
 
+// test if/else for simple logging macro
+template<>
+template<>
+void testObj::test<23>(void)
+{
+  if(true)
+    LOGMSG_FATAL(n_, "true logged 1");
+  else
+    LOGMSG_FATAL(n_, "false logged 1");
+
+  ensureLoggedPart("true logged 1");
+  ensureNotLoggedPart("false logged 1");
+}
+
+// test if/else for stream logging macro
+template<>
+template<>
+void testObj::test<24>(void)
+{
+  if(true)
+    LOGMSG_FATAL_S(n_)<<"true logged 2";
+  else
+    LOGMSG_FATAL_S(n_)<<"false logged 2";
+
+  ensureLoggedPart("true logged 2");
+  ensureNotLoggedPart("false logged 2");
+}
+
 } // namespace tut

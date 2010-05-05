@@ -24,19 +24,15 @@
 namespace Logger
 {
 
-//
-// TODO: make debug logs disappear in release mode.
-//
-
 /** \brief log debug message to a given node.
  *  \param id  logger node.
  *  \param msg message to log.
  */
-#define LOGMSG_DEBUG(id, msg) LOGMSG_PRI_INTERNAL_IMPLEMENTATION( (id).debug, (msg) )
+#define LOGMSG_DEBUG(id, msg) LOGMSG_PRI_INTERNAL_IMPLEMENTATION_DEBUG( (id).debug, (msg) )
 /** \brief log debug message to a given node.
  *  \param id  logger node.
  */
-#define LOGMSG_DEBUG_S(id) LOGMSG_PRI_INTERNAL_STREAM_IMPLEMENTATION( (id), debug )
+#define LOGMSG_DEBUG_S(id) LOGMSG_PRI_INTERNAL_STREAM_IMPLEMENTATION_DEBUG( (id), debug )
 
 
 /** \brief log info message to a given node.
