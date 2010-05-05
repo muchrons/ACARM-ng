@@ -57,54 +57,29 @@ BackendFactory::FactoryPtr Restorer::createStubIO(void)
   return BackendFactory::create(name, options);
 }
 
-TreePtr Restorer::getNode(DataBaseID id )
-{
-  if(treeNodes_.count(id) > 0)
-    return treeNodes_.find(id)->second;
-  else
-    return TreePtr();
-}
 
-bool Restorer::isInCache(DataBaseID id)
-{
-  if(graphCache_.count(id) > 0)
-    return true;
-  return false;
-}
-
-GraphNodePtrNN Restorer::getFromCache(DataBaseID id)
-{
-  return graphCache_.find(id)->second;
-}
-
-void Restorer::addToCache(DataBaseID id, GraphNodePtrNN node)
-{
-  pair<DataBaseID, GraphNodePtrNN> tmp(id, node );
-    graphCache_.insert(tmp);
-}
-
-GraphNodePtrNN Restorer::getNode(DataBaseID           id,
+GraphNodePtrNN Restorer::makeLeaf(DataBaseID           id,
                                  AlertPtrNN           aPtr,
                                  IO::ConnectionPtrNN  connStubIO,
                                  IO::Transaction     &tStubIO)
 {
-  if( isInCache(id) )
-    return getFromCache(id);
+  if( graphCache_.isInCache(id) )
+    return graphCache_.getFromCacheNotNull(id);
   GraphNodePtrNN leaf( new GraphNode( aPtr, connStubIO, tStubIO ) );
-  addToCache(id, leaf);
+  graphCache_.addToCache(id, leaf);
   return leaf;
 }
 
-GraphNodePtrNN Restorer::getNode(DataBaseID           id,
+GraphNodePtrNN Restorer::makeNode(DataBaseID           id,
                                  MetaAlertPtrNN       maPtr,
                                  NodeChildrenVector  &vec,
                                  IO::ConnectionPtrNN  connStubIO,
                                  IO::Transaction     &tStubIO)
 {
-  if( isInCache(id) )
-    return getFromCache(id);
+  if( graphCache_.isInCache(id) )
+    return graphCache_.getFromCacheNotNull(id);
   GraphNodePtrNN node( new GraphNode( maPtr, connStubIO, tStubIO, vec ) );
-  addToCache(id, node);
+  graphCache_.addToCache(id, node);
   return node;
 }
 GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                                      id,
@@ -113,7 +88,7 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
                                          IO::ConnectionPtrNN                             connStubIO,
                                          IO::Transaction                                &tStubIO)
 {
-  TreePtrNN node = getNode(id);
+  TreePtrNN node = treeNodes_.getFromCache(id);
   // check if there are no children (i.e. is leaf)
   if( node->getChildrenNumber() == 0 )
   {
@@ -123,8 +98,7 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
     const DataBaseID alertID = er.getAlertIDAssociatedWithMetaAlert(id);
     // add Alert to cache
     addIfNew(alertPtr, alertID);
-    GraphNodePtr gr;    // TODO: unused variable
-    GraphNodePtrNN graphNodeLeaf( getNode( alertID, alertPtr, connStubIO, tStubIO ) );
+    const GraphNodePtrNN graphNodeLeaf( makeLeaf( alertID, alertPtr, connStubIO, tStubIO ) );
     out.push_back(graphNodeLeaf);
     return graphNodeLeaf;
   }
@@ -151,7 +125,7 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   MetaAlertPtrNN malertPtr( er.readMetaAlert(id) );
   // add Meta Alert to cache
   addIfNew(malertPtr, id);
-  GraphNodePtrNN graphNode( getNode( id, malertPtr,
+  GraphNodePtrNN graphNode( makeNode( id, malertPtr,
                                          vec,
                                          connStubIO,
                                          tStubIO ));
@@ -167,8 +141,7 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
   {
     const Tree::IDsVector &malertChildren = er.readMetaAlertChildren( (*it) );
     // put this data to the tree which represents meta alerts tree structure
-    pair<DataBaseID, TreePtr> tmp(*it, TreePtr(new Tree(*it, malertChildren) ) );
-    treeNodes_.insert(tmp);
+    treeNodes_.addToCache(*it, TreePtr(new Tree(*it, malertChildren) ));
   }
 
   IO::ConnectionPtrNN connStubIO( createStubIO() );
@@ -176,7 +149,16 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
 
   const Tree::IDsVector &roots = er.readRoots();
   for(Tree::IDsVector::const_iterator it = roots.begin(); it != roots.end(); ++it)
-    deepFirstSearch(*it, out, er, connStubIO, tStubIO);
+  {
+    try
+    {
+      deepFirstSearch(*it, out, er, connStubIO, tStubIO);
+    }
+    catch(const ExceptionBadNumberOfNodeChildren &)
+    {
+
+    }
+  }
   // TODO: try - catch
   // remove doplicates from out vector
   removeDuplicates(out);

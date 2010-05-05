@@ -156,11 +156,9 @@ GraphNodePtrNN makeNewTree2(void)
                         makeNewNode( makeNewLeaf(), node1 ), node1 ) );
 }
 
-// TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-std::vector<GraphNodePtrNN> makeNewTree3(void)
+Restorer::NodesVector makeNewTree3(void)
 {
-  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-  std::vector<GraphNodePtrNN> vec;
+  Restorer::NodesVector vec;
   GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
   GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
   vec.push_back(leaf1);
@@ -211,9 +209,9 @@ Persistency::GraphNodePtrNN makeNewTree4(void)
                                      "node4"), "node2"), "root" );
 }
 
-std::vector<GraphNodePtrNN> makeNewTree5(void)
+Restorer::NodesVector makeNewTree5(void)
 {
-  std::vector<GraphNodePtrNN> vec;
+  Restorer::NodesVector vec;
   GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
   GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
   vec.push_back(leaf1);
@@ -257,6 +255,59 @@ std::vector<GraphNodePtrNN> makeNewTree5(void)
                                      node2,
                                      "root");
   vec.push_back(root);
+  return vec;
+}
+Restorer::NodesVector makeNewTree6(void)
+{
+  Restorer::NodesVector vec;
+  GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
+  GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+
+  GraphNodePtrNN node1 = makeNewNode(leaf1,
+                                     leaf2,
+                                     "node1");
+
+  GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
+  GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+
+  GraphNodePtrNN node2 = makeNewNode(leaf3,
+                                     leaf4,
+                                     "node2");
+
+  GraphNodePtrNN root1 = makeNewNode(node1,
+                                     node2,
+                                     "root1");
+
+  GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
+  GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
+
+  vec.push_back(leaf5);
+  vec.push_back(leaf6);
+
+  GraphNodePtrNN node3 = makeNewNode(leaf5,
+                                     leaf6,
+                                     "node3");
+
+  vec.push_back(node3);
+
+  GraphNodePtrNN leaf7 = makeNewLeaf("leaf7");
+  GraphNodePtrNN leaf8 = makeNewLeaf("leaf8");
+
+  vec.push_back(leaf7);
+  vec.push_back(leaf8);
+
+  GraphNodePtrNN node4 = makeNewNode(leaf7,
+                                     leaf8,
+                                     "node4");
+
+  vec.push_back(node4);
+
+  GraphNodePtrNN root2 = makeNewNode(node3,
+                                    node4,
+                                    "root2");
+
+  vec.push_back(root2);
+
   return vec;
 }
 } // namespace Postgres

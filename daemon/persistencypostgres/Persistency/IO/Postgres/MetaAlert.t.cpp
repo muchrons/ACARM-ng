@@ -242,7 +242,7 @@ template<>
 void testObj::test<8>(void)
 {
   // making timestamp for all calls prevents timing issues.
-  const Timestamp now=Timestamp();
+  const Timestamp now=Timestamp(123456);
   Persistency::MetaAlertPtrNN maPtrNode( new Persistency::MetaAlert( Persistency::MetaAlert::Name("meta alert node"),
                                                                      0.1, 0.2,
                                                                      makeNewReferenceURL(),

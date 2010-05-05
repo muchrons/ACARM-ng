@@ -3,6 +3,7 @@
  *
  */
 #include <tut.h>
+#include <set>
 
 #include "Base/ViaPointer.hpp"
 #include "Commons/ViaUnorderedCollection.hpp"
@@ -14,6 +15,7 @@
 #include "Persistency/IO/Postgres/Restorer.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
 #include "Persistency/IO/Postgres/ReaderHelper.hpp"
+#include "Persistency/IO/Postgres/ExceptionBadNumberOfNodeChildren.hpp"
 #include "Persistency/IO/Postgres/detail/Appender.hpp"
 
 using Persistency::IO::Transaction;
@@ -37,31 +39,22 @@ struct TestClass
     tdba_.removeAllData();
   }
 
-  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-  void deepSearch(GraphNodePtrNN node, std::vector<GraphNodePtrNN> &outVec)
+  void deepSearch(GraphNodePtrNN node, Restorer::NodesVector &outVec)
   {
-    // TODO: remove extra brackets
     if( node->isLeaf())
-    {
       outVec.push_back(node);
-    }
     else
     {
       outVec.push_back(node);
-      // TODO: remove extra brackets
       for(GraphNode::iterator it = node->begin(); it != node->end(); ++it)
-      {
         deepSearch(*it, outVec);
-      }
     }
     return;
   }
 
-  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-  void checkCache(std::vector<GraphNodePtrNN> &out)
+  void checkCache(Restorer::NodesVector &out)
   {
-    // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-    for(std::vector<GraphNodePtrNN>::iterator it = out.begin(); it !=out.end(); ++it)
+    for(Restorer::NodesVector::iterator it = out.begin(); it !=out.end(); ++it)
     {
       if( (*it)->isLeaf() )
         tut::ensure("alert shoud be in cache", idCache_->has( (*it)->getAlert()) );
@@ -69,6 +62,13 @@ struct TestClass
         tut::ensure("meta alert shoud be in cache", idCache_->has( (*it)->getMetaAlert()) );
     }
   }
+  template<typename T>
+  void removeDuplicates(vector<T> &out)
+  {
+    set<T> s( out.begin(), out.end() );
+    out.erase( out.begin(), out.end() );
+    out.assign( s.begin(), s.end() );
+  } // removeDuplicates()
 
   TestDBAccess            tdba_;
   IDCachePtrNN            idCache_;
@@ -98,19 +98,17 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-  std::vector<GraphNodePtrNN> out;
-  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-  // TODO: this collection should be const
-  std::vector<GraphNodePtrNN> outVec;
+  Restorer::NodesVector out;
+  Restorer::NodesVector outVec;
   // create tree and save data to the data base
-  GraphNodePtrNN tree = makeNewTree1();
+  const GraphNodePtrNN tree = makeNewTree1();
   // create restorer
   Restorer r(t_, dbh_);
   // restore data from data base
   r.restoreAllInUse(out);
   // put tree in vector
   deepSearch(tree, outVec);
+  //removeDuplicates(outVec);
 
   ensure_equals("invalid size", out.size(), outVec.size());
   ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
@@ -129,11 +127,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-  std::vector<GraphNodePtrNN> out;
-  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-  // TODO: this collection should be const
-  std::vector<GraphNodePtrNN> outVec = makeNewTree3();
+  Restorer::NodesVector out;
+  const Restorer::NodesVector outVec = makeNewTree3();
   // create restorer
   Restorer r(t_, dbh_);
   // restore data from data base
@@ -156,13 +151,10 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-  std::vector<GraphNodePtrNN> out;
-  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-  // TODO: this collection should be const
-  std::vector<GraphNodePtrNN> outVec;
+  Restorer::NodesVector out;
+  Restorer::NodesVector outVec;
   // create tree and save data to the data base
-  GraphNodePtrNN tree = makeNewTree4();
+  const GraphNodePtrNN tree = makeNewTree4();
   // create restorer
   Restorer r(t_, dbh_);
   // restore data from data base
@@ -182,8 +174,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-  std::vector<GraphNodePtrNN> out;
+  Restorer::NodesVector out;
   // create restorer
   Restorer r(t_, dbh_);
   // restore data from data base
@@ -203,8 +194,8 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  std::vector<GraphNodePtrNN> out;
-  std::vector<GraphNodePtrNN> outVec = makeNewTree5();
+  Restorer::NodesVector out;
+  const Restorer::NodesVector outVec = makeNewTree5();
   // create restorer
   Restorer r(t_, dbh_);
   // restore data from data base
@@ -227,8 +218,8 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  std::vector<GraphNodePtrNN> out;
-  std::vector<GraphNodePtrNN> outVec = makeNewTree5();
+  Restorer::NodesVector out;
+  const Restorer::NodesVector outVec = makeNewTree5();
   stringstream ss;
   DataBaseID nodeID, childID;
   {
@@ -247,8 +238,10 @@ void testObj::test<6>(void)
     result r = t_.getAPI<TransactionAPI>().exec(ss);
     r[0]["id"].to(childID);
   }
-  ss << "DELETE FROM meta_alerts_tree WHERE id_node = " << nodeID << " AND id_child = " << childID << ";";
-  t_.getAPI<TransactionAPI>().exec(ss);
+  {
+    ss << "DELETE FROM meta_alerts_tree WHERE id_node = " << nodeID << " AND id_child = " << childID << ";";
+    t_.getAPI<TransactionAPI>().exec(ss);
+  }
   // create restorer
   Restorer r(t_, dbh_);
   try
@@ -257,15 +250,109 @@ void testObj::test<6>(void)
     r.restoreAllInUse(out);
     fail("restoring didn't failed for invalid data");
   }
-  catch(...)
+  catch(ExceptionBadNumberOfNodeChildren &)
   {
-    // this is expected
+    //  TODO: catch proper exceprion
+    //  this is expected
+  }
+  {
+    // ss << "INSERT INTO meta_alerts_tree(id_node, id_child) VALUES(" << nodeID << " ," << childID << ");";
+    // t_.getAPI<TransactionAPI>().exec(ss);
   }
   t_.commit();
 }
 
-// TODO: try restoring treees that have common parts
+// try restoring invalid data
 
-// TODO: try restoring trees that are invalid. ex: not enought children
+//
+//                  root1                      root2
+//                        node2          node3       node4
+//                     leaf3  leaf4   leaf5 leaf6 leaf7  leaf8
+//
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  Restorer::NodesVector out;
+  const Restorer::NodesVector outVec = makeNewTree6();
+  stringstream ss;
+  DataBaseID nodeID, childID;
+  {
+    const MetaAlert::Name node("root1");
+    ss << "SELECT * FROM meta_alerts WHERE name = ";
+    Appender::append(ss, node.get());
+    ss << ";";
+    result r = t_.getAPI<TransactionAPI>().exec(ss);
+    r[0]["id"].to(nodeID);
+  }
+  {
+    const MetaAlert::Name node("node1");
+    ss << "SELECT * FROM meta_alerts WHERE name = ";
+    Appender::append(ss, node.get());
+    ss << ";";
+    result r = t_.getAPI<TransactionAPI>().exec(ss);
+    r[0]["id"].to(childID);
+  }
+  {
+    ss << "DELETE FROM meta_alerts_tree WHERE id_node = " << nodeID << " AND id_child = " << childID << ";";
+    t_.getAPI<TransactionAPI>().exec(ss);
+  }
+  // create restorer
+  Restorer r(t_, dbh_);
+  // restore data from data base
+  r.restoreAllInUse(out);
+  ensure_equals("invalid size", out.size(), outVec.size());
+  ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
+  // check if restored alerts and meta alerts exist in cache
+  checkCache(out);
+  t_.commit();
 
+}
+
+// try restoring invalid data
+
+//
+//                  root1                      root2
+//             node1                     node3       node4
+//          leaf1 leaf2               leaf5 leaf6 leaf7  leaf8
+//
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  Restorer::NodesVector out;
+  const Restorer::NodesVector outVec = makeNewTree6();
+  stringstream ss;
+  DataBaseID nodeID, childID;
+  {
+    const MetaAlert::Name node("root1");
+    ss << "SELECT * FROM meta_alerts WHERE name = ";
+    Appender::append(ss, node.get());
+    ss << ";";
+    result r = t_.getAPI<TransactionAPI>().exec(ss);
+    r[0]["id"].to(nodeID);
+  }
+  {
+    const MetaAlert::Name node("node2");
+    ss << "SELECT * FROM meta_alerts WHERE name = ";
+    Appender::append(ss, node.get());
+    ss << ";";
+    result r = t_.getAPI<TransactionAPI>().exec(ss);
+    r[0]["id"].to(childID);
+  }
+  {
+    ss << "DELETE FROM meta_alerts_tree WHERE id_node = " << nodeID << " AND id_child = " << childID << ";";
+    t_.getAPI<TransactionAPI>().exec(ss);
+  }
+  // create restorer
+  Restorer r(t_, dbh_);
+  // restore data from data base
+  r.restoreAllInUse(out);
+  ensure_equals("invalid size", out.size(), outVec.size());
+  ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
+  // check if restored alerts and meta alerts exist in cache
+  checkCache(out);
+  t_.commit();
+
+}
 } // namespace tut
