@@ -127,17 +127,17 @@ WorkThreads::~WorkThreads(void)
 void WorkThreads::waitUntilDone(void)
 {
   LOGMSG_INFO(log_, "stopping until threads finish");
-  srcs_.join();
+  srcs_->join();
   LOGMSG_INFO(log_, "Sources thread joined");
-  procs_.join();
+  procs_->join();
   LOGMSG_INFO(log_, "Processors thread joined");
 }
 
 void WorkThreads::stop(void)
 {
   LOGMSG_INFO(log_, "interrupting threads");
-  srcs_.interrupt();
-  procs_.interrupt();
+  srcs_->interrupt();
+  procs_->interrupt();
 }
 
 } // namespace Core

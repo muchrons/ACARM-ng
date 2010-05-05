@@ -93,7 +93,15 @@ template<>
 void testObj::test<4>(void)
 {
   readConfigFile("testdata/two_threads_exception_bug.xml");
-  WorkThreads m;    // this should NOT SEGV!
+  try
+  {
+    WorkThreads m;    // test's core - this must not SEGV!
+    fail("WorkThreads' c-tor didn't throw on invalid configuration");
+  }
+  catch(const Commons::Exception &)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut
