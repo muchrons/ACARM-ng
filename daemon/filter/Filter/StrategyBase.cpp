@@ -24,7 +24,7 @@ namespace
 {
 inline Logger::NodeName makeNodeName(const string &name)
 {
-  const string &out="filter." + name;
+  const string &out="filter." + Logger::NodeName::removeInvalidChars(name);
   return Logger::NodeName( out.c_str() );
 } // makeNodeName()
 } // unnamed namespace
