@@ -2,9 +2,17 @@
  * TestHelpers.t.cpp
  *
  */
+#include "Persistency/MetaAlert.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
+#include "Persistency/IO/Postgres/TransactionAPI.hpp"
+#include "Persistency/IO/Postgres/detail/Appender.hpp"
 
+using namespace std;
+using namespace pqxx;
+
+using namespace Persistency::IO::Postgres::detail;
+using namespace Persistency;
 
 namespace Persistency
 {
@@ -23,6 +31,35 @@ IO::ConnectionPtrNN makeConnection(void)
   opts["pass"]  ="test.daemon";
   return IO::ConnectionPtrNN(
         Persistency::IO::BackendFactory::create("postgres", opts) );
+}
+void removeData(const std::string name1, const std::string name2)
+{
+  Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
+  IO::Transaction t( conn->createNewTransaction("delete_data_transaction") );
+
+  stringstream ss;
+  DataBaseID nodeID, childID;
+  {
+    const Persistency::MetaAlert::Name node(name1);
+    ss << "SELECT * FROM meta_alerts WHERE name = ";
+    Appender::append(ss, node.get());
+    ss << ";";
+    result r = t.getAPI<TransactionAPI>().exec(ss);
+    r[0]["id"].to(nodeID);
+  }
+  {
+    const Persistency::MetaAlert::Name node(name2);
+    ss << "SELECT * FROM meta_alerts WHERE name = ";
+    Appender::append(ss, node.get());
+    ss << ";";
+    result r = t.getAPI<TransactionAPI>().exec(ss);
+    r[0]["id"].to(childID);
+  }
+  {
+    ss << "DELETE FROM meta_alerts_tree WHERE id_node = " << nodeID << " AND id_child = " << childID << ";";
+    t.getAPI<TransactionAPI>().exec(ss);
+  }
+  t.commit();
 }
 
 AlertPtr makeNewAlert(const char *name)
@@ -257,7 +294,8 @@ Restorer::NodesVector makeNewTree5(void)
   vec.push_back(root);
   return vec;
 }
-Restorer::NodesVector makeNewTree6(void)
+
+Restorer::NodesVector makeNewTree7(void)
 {
   Restorer::NodesVector vec;
   GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
@@ -266,47 +304,9 @@ Restorer::NodesVector makeNewTree6(void)
   GraphNodePtrNN node1 = makeNewNode(leaf1,
                                      leaf2,
                                      "node1");
-
-  GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
-  GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
-
-  GraphNodePtrNN node2 = makeNewNode(leaf3,
-                                     leaf4,
-                                     "node2");
-
-  GraphNodePtrNN root1 = makeNewNode(node1,
-                                     node2,
-                                     "root1");
-
-  GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
-  GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
-
-  vec.push_back(leaf5);
-  vec.push_back(leaf6);
-
-  GraphNodePtrNN node3 = makeNewNode(leaf5,
-                                     leaf6,
-                                     "node3");
-
-  vec.push_back(node3);
-
-  GraphNodePtrNN leaf7 = makeNewLeaf("leaf7");
-  GraphNodePtrNN leaf8 = makeNewLeaf("leaf8");
-
-  vec.push_back(leaf7);
-  vec.push_back(leaf8);
-
-  GraphNodePtrNN node4 = makeNewNode(leaf7,
-                                     leaf8,
-                                     "node4");
-
-  vec.push_back(node4);
-
-  GraphNodePtrNN root2 = makeNewNode(node3,
-                                    node4,
-                                    "root2");
-
-  vec.push_back(root2);
+  vec.push_back(leaf1);
+  vec.push_back(leaf2);
+  vec.push_back(node1);
 
   return vec;
 }

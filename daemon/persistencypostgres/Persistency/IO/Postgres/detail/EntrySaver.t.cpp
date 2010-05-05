@@ -762,6 +762,7 @@ void testObj::test<21>(void)
   ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
   const result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(), 1u);
+  t_.commit();
 }
 
 // trying save MetaAlert as unused

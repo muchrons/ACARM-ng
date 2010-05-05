@@ -30,6 +30,7 @@ namespace Postgres
 {
 
 IO::ConnectionPtrNN makeConnection(void);
+void removeData(const std::string name1, const std::string name2);
 Persistency::AlertPtr makeNewAlert(const char *name="some alert");
 
 Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert");
@@ -100,10 +101,9 @@ Persistency::GraphNodePtrNN makeNewTree4(void);
 //
 Restorer::NodesVector makeNewTree5(void);
 //
-//                  root1                      root2
-//            node1       node2          node3       node4
-//         leaf1 leaf2 leaf3  leaf4   leaf5 leaf6 leaf7  leaf8
-Restorer::NodesVector makeNewTree6(void);
+//     node1
+//  leaf1  leaf2
+Restorer::NodesVector makeNewTree7(void);
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency

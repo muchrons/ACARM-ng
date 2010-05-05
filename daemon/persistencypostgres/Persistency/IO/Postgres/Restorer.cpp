@@ -108,14 +108,14 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   // TODO: start...
   vector<GraphNodePtrNN>  tmpNodes;
   const Tree::IDsVector  &nodeChildren = node->getChildren();
+  if(nodeChildren.size() < 2)
+    throw ExceptionBadNumberOfNodeChildren(SYSTEM_SAVE_LOCATION, id );
   tmpNodes.reserve( nodeChildren.size() );
   for(Tree::IDsVector::const_iterator it = nodeChildren.begin();
       it != nodeChildren.end(); ++it)
   {
     tmpNodes.push_back( deepFirstSearch( *it, out, er, connStubIO, tStubIO ) );
   }
-  if(tmpNodes.size() < 2)
-    throw ExceptionBadNumberOfNodeChildren(SYSTEM_SAVE_LOCATION, id );
   NodeChildrenVector vec(tmpNodes[0], tmpNodes[1]);
   for(size_t i = 2; i<tmpNodes.size(); ++i)
     vec.push_back(tmpNodes[i]);
@@ -132,7 +132,7 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   out.push_back(graphNode);
   return graphNode;
 }
-
+// todo add class with lists of errors
 void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
                        NodesVector                                    &out,
                        Tree::IDsVector                                &malerts)
@@ -156,10 +156,9 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
     }
     catch(const ExceptionBadNumberOfNodeChildren &)
     {
-
+      // todo: logs
     }
   }
-  // TODO: try - catch
   // remove doplicates from out vector
   removeDuplicates(out);
 }
