@@ -96,14 +96,23 @@ void testObj::test<6>(void)
   ensureLoggedPart("FATAL@");
 }
 
+
+namespace
+{
+int throwWhenCalled(void)
+{
+  fail("throwWhenCalled() has not been compiled-out - debug calls are left in code");
+  return 42;        // note: we never reach here
+} // throwWhenCalled()
+} // unnamed namespace
+
 // test compiling out debug stream's content
 template<>
 template<>
 void testObj::test<7>(void)
 {
-  // TODO
-  LOGMSG_DEBUG_S(n_)<<"some debug";
-  ensureNotLoggedPart("some debug");
+  LOGMSG_DEBUG_S(n_)<<"test compiling-out "<<throwWhenCalled();
+  ensureNotLoggedPart("test compiling-out");
 }
 
 // test if/else for simple logging macro
