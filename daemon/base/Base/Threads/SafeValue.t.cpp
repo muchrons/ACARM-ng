@@ -10,6 +10,7 @@
 #include <unistd.h>
 
 #include "Base/Threads/SafeValue.hpp"
+#include "Base/Threads/ThreadJoiner.hpp"
 
 using namespace std;
 using namespace Base::Threads;
@@ -87,14 +88,14 @@ void testObj::test<3>(void)
   TestWriter tl3(&tmp);
 
   // start two threads
-  boost::thread th1(tl1);
-  boost::thread th2(tl2);
-  boost::thread th3(tl3);
+  Base::Threads::ThreadJoiner th1(tl1);
+  Base::Threads::ThreadJoiner th2(tl2);
+  Base::Threads::ThreadJoiner th3(tl3);
 
   // and join them
-  th1.join();
-  th2.join();
-  th3.join();
+  th1->join();
+  th2->join();
+  th3->join();
 }
 
 // test copy-ctor

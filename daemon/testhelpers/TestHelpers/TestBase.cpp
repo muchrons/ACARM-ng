@@ -43,14 +43,19 @@ TestBase::~TestBase(void)
 
 void TestBase::defaultConfig(void)
 {
+  readConfigFile(NULL);
+}
+
+void TestBase::readConfigFile(const char *path)
+{
   // force rereading default configuration
   try
   {
-    ConfigIO::Singleton::get()->rereadConfig(NULL);
+    ConfigIO::Singleton::get()->rereadConfig(path);
   }
   catch(...)
   {
-    assert(!"unable to read default configuration file");
+    assert(!"unable to read configuration file for tests");
   }
 }
 

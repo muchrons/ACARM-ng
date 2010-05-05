@@ -115,10 +115,10 @@ Processor::~Processor(void)
   do
   {
     // interrupt and signal conditionals.
-    th_.interrupt();
+    th_->interrupt();
     inputQueue_.signalAll();
   }
-  while( th_.timed_join( boost::posix_time::millisec(200) )==false );
+  while( th_->timed_join( boost::posix_time::millisec(200) )==false );
   LOGMSG_INFO(log_, "processor stopped");
 }
 

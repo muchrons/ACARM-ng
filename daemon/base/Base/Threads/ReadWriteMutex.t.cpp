@@ -12,6 +12,7 @@
 #include "Base/Threads/ReadWriteMutex.hpp"
 #include "Base/Threads/ReadLock.hpp"
 #include "Base/Threads/WriteLock.hpp"
+#include "Base/Threads/ThreadJoiner.hpp"
 
 using namespace Base::Threads;
 
@@ -108,15 +109,15 @@ void testObj::test<2>(void)
   TestWriter     tl4(&mutex, data);
 
   // start two threads
-  boost::thread th1(tl1);
-  boost::thread th2(tl2);
-  boost::thread th3(tl3);
-  boost::thread th4(tl4);
+  Base::Threads::ThreadJoiner th1(tl1);
+  Base::Threads::ThreadJoiner th2(tl2);
+  Base::Threads::ThreadJoiner th3(tl3);
+  Base::Threads::ThreadJoiner th4(tl4);
   // and join them
-  th1.join();
-  th2.join();
-  th3.join();
-  th4.join();
+  th1->join();
+  th2->join();
+  th3->join();
+  th4->join();
 }
 
 
@@ -245,9 +246,9 @@ void testObj::test<3>(void)
   TestReader2    tl3(&mutex, &state[2], &ok[2]);
 
   // start two threads
-  boost::thread th1(tl1);
-  boost::thread th2(tl2);
-  boost::thread th3(tl3);
+  Base::Threads::ThreadJoiner th1(tl1);
+  Base::Threads::ThreadJoiner th2(tl2);
+  Base::Threads::ThreadJoiner th3(tl3);
 
   // wait until reading mutexes are locked
   waitForStates(1, 1, 1, state, ok);
@@ -261,9 +262,9 @@ void testObj::test<3>(void)
   waitForStates(5, 5, 5, state, ok);
 
   // and join them
-  th1.join();
-  th2.join();
-  th3.join();
+  th1->join();
+  th2->join();
+  th3->join();
 }
 
 } // namespace tut

@@ -22,7 +22,7 @@ Interface::~Interface(void)
   {
     stop();
     LOGMSG_INFO(log_, "joining thread");
-    thread_.join();
+    thread_->join();
     LOGMSG_INFO(log_, "thread stopped");
   }
   catch(...)
@@ -35,7 +35,7 @@ Interface::~Interface(void)
 void Interface::stop(void)
 {
   LOGMSG_INFO(log_, "interrupting thread");
-  thread_.interrupt();
+  thread_->interrupt();
 }
 
 } // namespace Input

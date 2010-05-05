@@ -5,6 +5,7 @@
 #include <tut/tut.hpp>
 #include <boost/thread.hpp>
 
+#include "Base/Threads/ThreadJoiner.hpp"
 #include "Core/WorkThreads.hpp"
 #include "TestHelpers/TestBase.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
@@ -78,9 +79,30 @@ void testObj::test<3>(void)
 {
   volatile bool ready=false;
   WorkThreads          m;
-  boost::thread th( Stopper(&ready, &m) );
+  Base::Threads::ThreadJoiner th( Stopper(&ready, &m) );
   ready=true;
   m.waitUntilDone();
+}
+
+// test for bug - when exception is thrown when second
+// threads poll is being created, then d-tor is NOT called
+// and conditional is being destroyed in main thread, though
+// other thread is already running. to enforce this situation special
+// config file has been provided.
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  readConfigFile("testdata/two_threads_exception_bug.xml");
+  try
+  {
+    WorkThreads m;    // test's core - this must not SEGV!
+    fail("WorkThreads' c-tor didn't throw on invalid configuration");
+  }
+  catch(const Commons::Exception &)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut

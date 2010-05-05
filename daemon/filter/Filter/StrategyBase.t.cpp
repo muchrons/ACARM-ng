@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <boost/thread.hpp>
 
+#include "Base/Threads/ThreadJoiner.hpp"
 #include "Filter/StrategyBase.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -90,9 +91,9 @@ template<>
 void testObj::test<3>(void)
 {
   CallableLF clf;
-  boost::thread th(clf);
-  th.interrupt();
-  th.join();
+  Base::Threads::ThreadJoiner th(clf);
+  th->interrupt();
+  th->join();
 }
 
 // test persistency connection

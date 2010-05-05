@@ -93,6 +93,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
+  // TODO: this test sometimes fail!
+
   // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
   std::vector<GraphNodePtrNN> out;
   // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
@@ -149,6 +151,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
+  // TODO: this test sometimes fail!
+
   // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
   std::vector<GraphNodePtrNN> out;
   // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector

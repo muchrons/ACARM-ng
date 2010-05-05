@@ -10,6 +10,7 @@
 #include <cassert>
 
 #include "Base/Threads/FifoQueue.hpp"
+#include "Base/Threads/ThreadJoiner.hpp"
 
 using namespace std;
 using namespace Base::Threads;
@@ -101,10 +102,10 @@ template<>
 void testObj::test<4>(void)
 {
   int state=0;
-  boost::thread th( CollectionWriter(&q_, &state) );
+  Base::Threads::ThreadJoiner th( CollectionWriter(&q_, &state) );
   state=1;
   const string &tmp=q_.pop();   // should block for a while
-  th.join();
+  th->join();
   ensure_equals("invalid state", state, 2);
   ensure_equals("invalid message", tmp, "new data");
 }
@@ -159,15 +160,15 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  boost::thread th1( (Getter(&q_))   );
-  boost::thread th2( (Getter(&q_))   );
-  boost::thread th3( (Inserter(&q_)) );
-  boost::thread th4( (Inserter(&q_)) );
+  Base::Threads::ThreadJoiner th1( (Getter(&q_))   );
+  Base::Threads::ThreadJoiner th2( (Getter(&q_))   );
+  Base::Threads::ThreadJoiner th3( (Inserter(&q_)) );
+  Base::Threads::ThreadJoiner th4( (Inserter(&q_)) );
   // wait for them to finish
-  th1.join();
-  th2.join();
-  th3.join();
-  th4.join();
+  th1->join();
+  th2->join();
+  th3->join();
+  th4->join();
 }
 
 namespace
@@ -209,17 +210,17 @@ template<>
 void testObj::test<6>(void)
 {
   int state=0;
-  boost::thread th( Signaller(&q_, &state) );
+  Base::Threads::ThreadJoiner th( Signaller(&q_, &state) );
   // wait until thread is ready
   while( state!=1 )
     boost::this_thread::yield();
   // wait a while to ensure other thread is waiting
   usleep(30*1000);
   // switch state and interrupt thread
-  th.interrupt();
+  th->interrupt();
   q_.signalAll();
   // check if everything's fine.
-  th.join();
+  th->join();
   ensure_equals("invalid state", state, 2);
 }
 
