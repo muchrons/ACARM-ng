@@ -7,6 +7,7 @@
 #include "Preprocessor/Expressions/Rule.hpp"
 #include "Preprocessor/Expressions/TestsCommon.t.hpp"
 
+using Base::NullValue;
 using Persistency::Alert;
 using Preprocessor::Path;
 using namespace TestHelpers::Persistency;
@@ -19,7 +20,7 @@ struct TestClass
   TestClass(void):
     alert_("alert name",
            Alert::SourceAnalyzers( makeAnalyzer() ),
-           ::Base::NullValue<Persistency::Timestamp>( Persistency::Timestamp(123) ).get(),
+           NullValue<Persistency::Timestamp>( Persistency::Timestamp(123) ).get(),
            Persistency::Timestamp(12345),
            Persistency::Severity(Persistency::SeverityLevel::INFO),
            Persistency::Certainty(0.42),
