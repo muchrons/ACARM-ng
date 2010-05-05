@@ -34,6 +34,7 @@ struct SourcesThread
       {
         boost::this_thread::interruption_point();
         assert(queue_!=NULL);
+        assert(srcs_.get()!=NULL);
         // forward all read data to main queue.
         queue_->push( srcs_->read() );
       }
