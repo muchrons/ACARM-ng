@@ -96,7 +96,7 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
   const string CreateTime( ReaderHelper<string>::readAsNotNull(r[0]["create_time"]) );
   MetaAlertPtrNN malert( new Persistency::MetaAlert( ReaderHelper<string>::readAsNotNull(r[0]["name"]),
                                           ReaderHelper<double>::readAsNotNull(r[0]["severity_delta"]),
-                                          ReaderHelper<double>::readAsNotNull(r[0]["certanity_delta"]),
+                                          ReaderHelper<double>::readAsNotNull(r[0]["certainty_delta"]),
                                           getReferenceURL( ReaderHelper< NullValue<DataBaseID> >::readAs(r[0]["id_ref"]).get() ),
                                           timestampFromString( CreateTime ) ) );
   return malert;
@@ -280,7 +280,7 @@ double EntryReader::getCertaintyDelta(DataBaseID malertID)
   const result r = execSQL(t_, ss);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
-  return ReaderHelper<double>::readAsNotNull(r[0]["certanity_delta"]);
+  return ReaderHelper<double>::readAsNotNull(r[0]["certainty_delta"]);
 }
 
 Persistency::AlertPtrNN EntryReader::getLeaf(DataBaseID malertID)

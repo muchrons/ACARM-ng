@@ -20,6 +20,9 @@ namespace Commons
 class Exception: public System::Exceptions::RuntimeError<Exception>
 {
 public:
+  /** \brief declaration fo helper typedef as public. */
+  typedef Location Location;
+
   /** \brief create execption with given message.
    *  \param where place where exception has been rised.
    *  \param msg   message to represent.

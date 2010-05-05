@@ -69,9 +69,9 @@ private:
   // final point
   bool check(const std::string                          &e, PathCit t) const;
 
-  void throwIfEnd(PathCit t) const;
-  void throwIfNotEnd(PathCit t) const;
-  void throwInvalid(PathCit t) const;
+  void throwIfEnd(const Exception::Location &where, PathCit t) const;
+  void throwIfNotEnd(const Exception::Location &where, PathCit t) const;
+  void throwInvalid(const Exception::Location &where, PathCit t) const;
 
   const Path                        path_;
   boost::scoped_ptr<Checkers::Mode> checker_;

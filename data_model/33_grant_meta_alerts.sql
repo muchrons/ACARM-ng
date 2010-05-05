@@ -27,7 +27,9 @@ GRANT UPDATE
 
 
 -- daemon may update selected columns
-GRANT UPDATE(last_update_time)
+GRANT UPDATE(last_update_time,
+             severity_delta,
+             certainty_delta)
   ON TABLE meta_alerts
   TO "acarm-ng-daemon";
 

@@ -10,6 +10,7 @@
 #include <prelude-client.h>
 #include <prelude.h>
 #include "Input/Prelude/GlobalLibPreludeInit.hpp"
+#include "Input/Prelude/LogCallback.hpp"
 #include "Input/Exception.hpp"
 
 namespace Input
@@ -54,6 +55,7 @@ public:
 
 private:
   GlobalLibPreludeInit      g_;
+  LogCallback               preludeLogger_;
   prelude_client_t         *client_;
   prelude_client_profile_t *profile_;   // TODO: unused variable
 }; // class Client

@@ -293,7 +293,7 @@ DataBaseID EntrySaver::saveService(DataBaseID reportedHostID, const Service &s)
 DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
 {
   stringstream ss;
-  ss << "INSERT INTO meta_alerts(name, severity_delta, certanity_delta, id_ref, create_time, last_update_time) VALUES (";
+  ss << "INSERT INTO meta_alerts(name, severity_delta, certainty_delta, id_ref, create_time, last_update_time) VALUES (";
   Appender::append(ss, ma.getName().get() );
   ss << ",";
   Appender::append(ss, ma.getSeverityDelta() );
@@ -382,7 +382,7 @@ void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
 void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta)
 {
   stringstream ss;
-  ss << "UPDATE meta_alerts SET certanity_delta = certanity_delta + ";
+  ss << "UPDATE meta_alerts SET certainty_delta = certainty_delta + ";
   Appender::append(ss, certanityDelta);
   ss << " WHERE id = " << malertID << ";";
   t_.getAPI<Postgres::TransactionAPI>().exec(ss);

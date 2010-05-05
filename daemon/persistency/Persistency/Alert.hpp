@@ -48,7 +48,7 @@ public:
    *  \param detected    time when alert has been detected.
    *  \param created     time of creation of this alert.
    *  \param severity    severity of alert reported.
-   *  \param certanity   certanity about given report.
+   *  \param certainty   certainty about given report.
    *  \param description textual description, if needed.
    *  \param sourceHosts source hosts (attack came from them).
    *  \param targetHosts targeted hosts.
@@ -58,7 +58,7 @@ public:
         const Timestamp     *detected,
         const Timestamp     &created,
         Severity             severity,
-        Certainty            certanity,
+        Certainty            certainty,
         const std::string   &description,
         const ReportedHosts &sourceHosts,
         const ReportedHosts &targetHosts);
@@ -83,8 +83,8 @@ public:
    *  \return sererity of alert.
    */
   const Severity &getSeverity(void) const;
-  /** \brief gets certanity of alert.
-   *  \return certanity, i.e. probability that given alert is valid/real
+  /** \brief gets certainty of alert.
+   *  \return certainty, i.e. probability that given alert is valid/real
    *          (not a mistaken).
    */
   Certainty getCertainty(void) const;
@@ -113,7 +113,7 @@ private:
   boost::scoped_ptr<Timestamp> detected_;
   Timestamp                    created_;
   Severity                     severity_;
-  Certainty                    certanity_;
+  Certainty                    certainty_;
   std::string                  description_;
   ReportedHosts                sourceHosts_;
   ReportedHosts                targetHosts_;

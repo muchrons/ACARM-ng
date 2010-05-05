@@ -432,7 +432,7 @@ void testObj::test<10>(void)
   r[0]["severity_delta"].to(delta);
   ensure_equals("invalid severity delta",0.22,delta);
 
-  r[0]["certanity_delta"].to(delta);
+  r[0]["certainty_delta"].to(delta);
   ensure_equals("invalid certanity delta",0.23,delta);
 
   r[0]["name"].to(mAlertName);

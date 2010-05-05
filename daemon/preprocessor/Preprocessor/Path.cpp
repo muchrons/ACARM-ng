@@ -22,7 +22,7 @@ Path::Path(const std::string &path):
 
   // too many elements?
   assert( e_.size()>=2u );
-  if( e_.size()>6u )
+  if( e_.size()>7u )
     throw ExceptionInvalidPath(SYSTEM_SAVE_LOCATION, path_, e_.back() );
 
   assert(path_==path);  // sanity check

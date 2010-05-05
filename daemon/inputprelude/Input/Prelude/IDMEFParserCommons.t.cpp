@@ -50,7 +50,7 @@ struct TestClass : IPTypes<TestClass>
     prelude_string_new_dup(&proc_str,process_name.c_str());
 
     prelude_string_t *proc_name;
-    prelude_string_new_dup(&proc_name,process_user.c_str());
+    prelude_string_new_dup(&proc_name,process_user.c_str());    // TODO: resource not freed - memory leak
 
     idmef_process_new(&proc);
     idmef_process_set_name(proc,proc_str);
@@ -129,12 +129,12 @@ void testObj::test<2>(void)
 {
   char addrv6[]="2001:0db8:0000:0000:0000:0000:1428:57ab";
   idmef_source_t *source6;
-  idmef_source_new(&source6);
+  idmef_source_new(&source6);   // TODO: resource not freed - memory leak
   prelude_string_t *addr_str;
   prelude_string_new_dup(&addr_str,addrv6);
 
   idmef_address_t *addr;
-  idmef_address_new(&addr);
+  idmef_address_new(&addr); // TODO: resource not freed - memory leak
   idmef_address_set_category(addr,IDMEF_ADDRESS_CATEGORY_IPV6_ADDR);
   idmef_address_set_address(addr,addr_str);
 

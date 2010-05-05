@@ -82,7 +82,7 @@ void testObj::test<1>(void)
   ensure_equals("invalid size",r.size(), 1u);
   ensure_equals("invalid name", ReaderHelper<string>::readAsNotNull(r[0]["name"]), name_);
   ensure_equals("invalid severity delta", ReaderHelper<double>::readAsNotNull(r[0]["severity_delta"]), 0.1);
-  ensure_equals("invalid certanity delta", ReaderHelper<double>::readAsNotNull(r[0]["certanity_delta"]), 0.2);
+  ensure_equals("invalid certanity delta", ReaderHelper<double>::readAsNotNull(r[0]["certainty_delta"]), 0.2);
   t_.commit();
 }
 
@@ -194,14 +194,14 @@ void testObj::test<6>(void)
   {
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
-    ensure_equals("invalid certanity delta", ReaderHelper<double>::readAsNotNull(r[0]["certanity_delta"]), 0.2);
+    ensure_equals("invalid certanity delta", ReaderHelper<double>::readAsNotNull(r[0]["certainty_delta"]), 0.2);
   }
   malert.updateCertaintyDelta(delta);
   {
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
     ensure("invalid certanity delta",
-           ( ReaderHelper<double>::readAsNotNull(r[0]["certanity_delta"]) - (0.2+delta) ) < 0.01 );
+           ( ReaderHelper<double>::readAsNotNull(r[0]["certainty_delta"]) - (0.2+delta) ) < 0.01 );
   }
   t_.commit();
 }
