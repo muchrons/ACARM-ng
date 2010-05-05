@@ -9,6 +9,7 @@
 #include <cassert>
 
 #include "Base/Threads/GrowingVector.hpp"
+#include "Base/Threads/ThreadJoiner.hpp"
 
 using namespace Base::Threads;
 
@@ -154,16 +155,16 @@ void testObj::test<6>(void)
   GVPtr            data(new GV);
   CollectionWriter cw(data);
   // run writings to the same collection from multiple threads
-  boost::thread th1(cw);
-  boost::thread th2(cw);
-  boost::thread th3(cw);
-  boost::thread th4(cw);
+  Base::Threads::ThreadJoiner th1(cw);
+  Base::Threads::ThreadJoiner th2(cw);
+  Base::Threads::ThreadJoiner th3(cw);
+  Base::Threads::ThreadJoiner th4(cw);
 
   // wait for them
-  th1.join();
-  th2.join();
-  th3.join();
-  th4.join();
+  th1->join();
+  th2->join();
+  th3->join();
+  th4->join();
 }
 
 // test copy c-tor.

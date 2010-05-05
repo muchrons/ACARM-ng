@@ -5,6 +5,7 @@
 #include <tut/tut.hpp>
 #include <boost/thread.hpp>
 
+#include "Base/Threads/ThreadJoiner.hpp"
 #include "Core/WorkThreads.hpp"
 #include "TestHelpers/TestBase.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
@@ -78,7 +79,7 @@ void testObj::test<3>(void)
 {
   volatile bool ready=false;
   WorkThreads          m;
-  boost::thread th( Stopper(&ready, &m) );
+  Base::Threads::ThreadJoiner th( Stopper(&ready, &m) );
   ready=true;
   m.waitUntilDone();
 }

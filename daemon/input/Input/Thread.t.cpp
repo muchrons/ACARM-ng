@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <unistd.h>
 
+#include "Base/Threads/ThreadJoiner.hpp"
 #include "Input/Thread.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
@@ -75,12 +76,12 @@ void testObj::test<2>(void)
   ensure_equals("pre-condition 1 failed", tr_->count_, 0u);
   ensure_equals("pre-condition 2 failed", output_.size(), 0u);
   {
-    boost::thread th( Thread(r_, output_) );
+    Base::Threads::ThreadJoiner th( Thread(r_, output_) );
     // run ~2-3 times
     while(tr_->count_==0 || tr_->count_==1 || tr_->count_==2)
       usleep(10*1000);
-    th.interrupt();
-    th.join();
+    th->interrupt();
+    th->join();
   }
   const size_t count=tr_->count_;
   usleep(100*1000);
@@ -96,12 +97,12 @@ void testObj::test<3>(void)
   ensure_equals("pre-condition failed", tr_->count_, 0u);
   tr_->justThrow_=true;
   {
-    boost::thread th( Thread(r_, output_) );
+    Base::Threads::ThreadJoiner th( Thread(r_, output_) );
     // run ~2-3 times
     while(tr_->count_==0 || tr_->count_==1 || tr_->count_==2)
       usleep(10*1000);
-    th.interrupt();
-    th.join();
+    th->interrupt();
+    th->join();
   }
   const size_t count=tr_->count_;
   ensure("thread didn't run at all", count>0);
@@ -164,21 +165,21 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  bool                   done=false;
-  ReaderPtrNN            r(new TestWaitingReader);
-  const Thread           pt(r, output_);
-  const WaitForInterrupt wfi(&output_, &done);
-  boost::thread          thInt(wfi);    // run waiting thread
-  boost::thread          th(pt);        // run generating thread.
+  bool                        done=false;
+  ReaderPtrNN                 r(new TestWaitingReader);
+  const Thread                pt(r, output_);
+  const WaitForInterrupt      wfi(&output_, &done);
+  Base::Threads::ThreadJoiner thInt(wfi);       // run waiting thread
+  Base::Threads::ThreadJoiner th(pt);           // run generating thread.
 
   ensure("oops - thread that supposed to wait finised earlier", done==false);
 
   // now check...
-  th.interrupt();   // stop processing thread
-  thInt.interrupt();// mark thread as ready-to-exit
-  thInt.join();     // wait until thread waiting for data is done.
+  th->interrupt();      // stop processing thread
+  thInt->interrupt();   // mark thread as ready-to-exit
+  thInt->join();        // wait until thread waiting for data is done.
   ensure("thread didn't join?!", done==true);
-  th.join();        // wait for ptocessing thread
+  th->join();           // wait for ptocessing thread
 }
 
 } // namespace tut
