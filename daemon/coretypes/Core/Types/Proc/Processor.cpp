@@ -23,7 +23,7 @@ Logger::Node makeNodeName(const char *prefix, const Interface *interface)
   if(interface==NULL)
     throw ExceptionInvalidInterface(SYSTEM_SAVE_LOCATION, "NULL");
 
-  const string str=prefix + interface->getName();
+  const string str=prefix + Logger::NodeName::removeInvalidChars( interface->getName() );
   return Logger::Node( str.c_str() );
 } // makeNodeName()
 
@@ -115,10 +115,10 @@ Processor::~Processor(void)
   do
   {
     // interrupt and signal conditionals.
-    th_.interrupt();
+    th_->interrupt();
     inputQueue_.signalAll();
   }
-  while( th_.timed_join( boost::posix_time::millisec(200) )==false );
+  while( th_->timed_join( boost::posix_time::millisec(200) )==false );
   LOGMSG_INFO(log_, "processor stopped");
 }
 

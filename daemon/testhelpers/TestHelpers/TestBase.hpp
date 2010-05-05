@@ -22,6 +22,8 @@ public:
 
   void defaultConfig(void);
 
+  void readConfigFile(const char *path);
+
 private:
   const char *defaultFile_;
 }; // struct TestBase

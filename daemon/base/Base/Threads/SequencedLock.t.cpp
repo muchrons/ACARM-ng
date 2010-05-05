@@ -8,6 +8,7 @@
 #include <unistd.h>
 
 #include "Base/Threads/SequencedLock.hpp"
+#include "Base/Threads/ThreadJoiner.hpp"
 
 using namespace Base::Threads;
 
@@ -101,11 +102,11 @@ void testObj::test<3>(void)
   TestLocker tl2(&mutex[0], &mutex[1], data);
 
   // start two threads
-  boost::thread th1(tl1);
-  boost::thread th2(tl2);
+  Base::Threads::ThreadJoiner th1(tl1);
+  Base::Threads::ThreadJoiner th2(tl2);
   // and join them
-  th1.join();
-  th2.join();
+  th1->join();
+  th2->join();
 }
 
 } // namespace tut

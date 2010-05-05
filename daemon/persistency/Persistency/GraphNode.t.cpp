@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <boost/thread.hpp>
 
+#include "Base/Threads/ThreadJoiner.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/IO/IOStubs.t.hpp"
 #include "Persistency/TestHelpers.t.hpp"
@@ -363,11 +364,11 @@ template<>
 void testObj::test<17>(void)
 {
   // run writes from 2 threads
-  boost::thread th1( NodeAdder(this, node_) );
-  boost::thread th2( NodeAdder(this, node_) );
+  Base::Threads::ThreadJoiner th1( NodeAdder(this, node_) );
+  Base::Threads::ThreadJoiner th2( NodeAdder(this, node_) );
   // wait till threads exit.
-  th1.join();
-  th2.join();
+  th1->join();
+  th2->join();
 }
 
 // test self-comparison
@@ -485,17 +486,17 @@ void testObj::test<25>(void)
     // this is expected
   }
 
-  GraphNodePtrNN top=makeNode();
+  GraphNodePtrNN              top=makeNode();
   // run some other addition in separte thread
-  BigThread      bt(node_, *this);
-  boost::thread  th(bt);                // start thread
+  BigThread                   bt(node_, *this);
+  Base::Threads::ThreadJoiner th(bt);   // start thread
   boost::thread::yield();               // go to thread
 
   // this call must not throw nor hung
   top->addChild(node_, *makeIO(node_) );
 
   // join thread
-  th.join();
+  th->join();
 }
 
 } // namespace tut

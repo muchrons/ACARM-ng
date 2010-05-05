@@ -13,7 +13,8 @@ namespace Input
 Thread::Thread(ReaderPtrNN reader, Core::Types::AlertsFifo &output):
   reader_(reader),
   output_(&output),
-  log_( Logger::NodeName("input.thread", reader_->getName().c_str() ) )
+  log_( Logger::NodeName( "input.thread",
+                          Logger::NodeName::removeInvalidChars( reader->getName() ).c_str() ) )
 {
 }
 

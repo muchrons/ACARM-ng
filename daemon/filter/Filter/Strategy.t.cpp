@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <boost/thread.hpp>
 
+#include "Base/Threads/ThreadJoiner.hpp"
 #include "Filter/Strategy.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
@@ -124,9 +125,9 @@ template<>
 void testObj::test<3>(void)
 {
   CallableLF clf;
-  boost::thread th( boost::ref(clf) );
-  th.interrupt();
-  th.join();
+  Base::Threads::ThreadJoiner th( boost::ref(clf) );
+  th->interrupt();
+  th->join();
 }
 
 // check if NodeEntry with different nodes differ template<>

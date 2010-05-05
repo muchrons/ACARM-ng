@@ -15,7 +15,8 @@ Mode::~Mode(void)
 }
 
 Mode::Mode(const std::string &name):
-  log_( Logger::NodeName("preprocessor.checkers.mode", name.c_str() ) )
+  log_( Logger::NodeName( "preprocessor.checkers.mode",
+                          Logger::NodeName::removeInvalidChars(name).c_str() ) )
 {
 }
 

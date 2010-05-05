@@ -9,6 +9,7 @@
 
 #include <boost/noncopyable.hpp>
 
+#include "Base/Threads/ThreadJoiner.hpp"
 #include "Logger/Node.hpp"
 #include "Core/Types/NodesFifo.hpp"
 
@@ -42,10 +43,10 @@ public:
   void stop(void);
 
 private:
-  Logger::Node           log_;
-  Core::Types::NodesFifo queue_;
-  boost::thread          procs_;
-  boost::thread          srcs_;
+  Logger::Node                log_;
+  Core::Types::NodesFifo      queue_;
+  Base::Threads::ThreadJoiner procs_;
+  Base::Threads::ThreadJoiner srcs_;
 }; // class WorkThreads
 
 } // namespace Core

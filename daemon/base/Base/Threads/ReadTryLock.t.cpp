@@ -8,6 +8,7 @@
 
 #include "Base/Threads/WriteLock.hpp"
 #include "Base/Threads/ReadTryLock.hpp"
+#include "Base/Threads/ThreadJoiner.hpp"
 
 using namespace std;
 using namespace Base::Threads;
@@ -92,15 +93,15 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  double                v=666;
+  double                      v=666;
   auto_ptr<ReadTryLock> lock( new ReadTryLock(m_) );
   ensure("ubale to lock mutex by reader", lock->ownsLock() );
-  TestWriter            tw(&m_, &v);
-  boost::thread         th(tw); // run thread
+  TestWriter                  tw(&m_, &v);
+  Base::Threads::ThreadJoiner th(tw);   // run thread
   boost::thread::yield();       // give it some time
   ensure_equals("value changed - lock does not work", v, 666);
   lock.reset();                 // release lock
-  th.join();                    // wait until thread's done
+  th->join();                   // wait until thread's done
   ensure_equals("value not changed", v, 42);
 }
 

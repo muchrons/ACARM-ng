@@ -255,6 +255,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
+  // TODO: this test sometimes fail!
+
   Restorer::NodesVector out;
   Restorer::NodesVector outVec;
   // create tree and save data to the data base
@@ -308,6 +310,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
+  // TODO: this test sometimes fail!
+
   Restorer::NodesVector out;
   Restorer::NodesVector outVec;
   // create tree and save data to the data base

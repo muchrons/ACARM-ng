@@ -288,6 +288,9 @@ void testObj::test<9>(void)
       IDMEFParserAnalyzer an(analyzer);
       fail("Exception was not thrown.");
     }
+  // TODO: check if this exception can be replaced with something supported by olde boost
+  //       versions - as for now this seems to be the only dependency on boost 1.39+ therefore
+  //       it would be good to cut this.
   catch(boost::exception &e)
     {
       //expected

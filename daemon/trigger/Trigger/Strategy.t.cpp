@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <boost/thread.hpp>
 
+#include "Base/Threads/ThreadJoiner.hpp"
 #include "Trigger/Strategy.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
@@ -136,9 +137,9 @@ template<>
 void testObj::test<3>(void)
 {
   CallableLT clt;
-  boost::thread th( boost::ref(clt) );
-  th.interrupt();
-  th.join();
+  Base::Threads::ThreadJoiner th( boost::ref(clt) );
+  th->interrupt();
+  th->join();
 }
 
 // check if process calls trigger() when criteria is met

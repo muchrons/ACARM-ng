@@ -10,8 +10,8 @@
 #include <memory>
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
-#include <boost/thread.hpp>
 
+#include "Base/Threads/ThreadJoiner.hpp"
 #include "Logger/Node.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Core/Types/NodesFifo.hpp"
@@ -59,7 +59,7 @@ private:
   Core::Types::NodesFifo        inputQueue_;
   Logger::Node                  log_;
   boost::scoped_ptr<Interface>  interface_;
-  boost::thread                 th_;
+  Base::Threads::ThreadJoiner   th_;
 }; // class Processor
 
 
