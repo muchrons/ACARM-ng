@@ -7,13 +7,27 @@
 #include "TestHelpers/TestBase.hpp"
 #include "Logger/NodeName.hpp"
 
+using namespace Logger;
+
 namespace
 {
-struct NodeNameTestClass: private TestHelpers::TestBase
+struct TestClass: private TestHelpers::TestBase
 {
+  void testRemovingChars(const char *msg, const std::string &in, const std::string &out) const
+  {
+    tut::ensure_equals(msg, NodeName::removeInvalidChars(in), out);
+    try
+    {
+      NodeName nn( NodeName::removeInvalidChars(in).c_str() );
+    }
+    catch(...)
+    {
+      // just convert to more readable version
+      tut::fail( ("invalid string has been generated for input: " + in).c_str() );
+    }
+  }
 };
 
-typedef NodeNameTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -23,8 +37,6 @@ factory tf("Logger/NodeName");
 
 namespace tut
 {
-
-using namespace Logger;
 
 // normal c-tor (smoke test - should not throw)
 template<>
@@ -142,6 +154,38 @@ void testObj::test<10>(void)
 {
   const NodeName n1("abc.def");
   const NodeName n2(n1);
+}
+
+// test removing invalid chars from valid string
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  testRemovingChars("valid string changed", "allok", "allok");
+}
+
+// test removing invalid chars
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  testRemovingChars("invalid string parsing failed", "/ot&0k", "ot0k");
+}
+
+// test when all chars are invalid
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  testRemovingChars("invalid string w/out valid chars", "!@#", "unnamed");
+}
+
+// test replacing upper-case letters with lower-case equivalents
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  testRemovingChars("case-convertion failed", "ALICEhasAcat", "alicehasacat");
 }
 
 } // namespace tut

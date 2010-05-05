@@ -2,10 +2,14 @@
  * NodeName.cpp
  *
  */
+#include <string>
+#include <sstream>
 #include <cctype>
 #include <cstring>
 
 #include "Logger/NodeName.hpp"
+
+using namespace std;
 
 namespace Logger
 {
@@ -18,6 +22,29 @@ NodeName::NodeName(const char *name):
 NodeName::NodeName(const NodeName &parentNode, const char *surfix):
   name_( parentNode.get() + '.' + validate(surfix) )
 {
+}
+
+std::string NodeName::removeInvalidChars(const std::string &name)
+{
+  stringstream ss;
+
+  // allow only basic chars - skip the rest
+  for(string::const_iterator it=name.begin(); it!=name.end(); ++it)
+  {
+    char c=*it;
+    // lower-case by default
+    if( isupper(c) )
+      c=tolower(c);
+    // check validity
+    if( isdigit(c) || islower(c) )
+      ss<<c;
+  }
+
+  // return response
+  const string &str=ss.str();
+  if( str.size()==0 )
+    return "unnamed";
+  return str;
 }
 
 const char *NodeName::validate(const char *name)
