@@ -50,7 +50,7 @@ private:
                          IO::Transaction     &tStubIO);
   GraphNodePtrNN makeNode(DataBaseID          id,
                          MetaAlertPtrNN      maPtr,
-                         NodeChildrenVector  &vec,
+                         NodeChildrenVector  vec,
                          IO::ConnectionPtrNN connStubIO,
                          IO::Transaction     &tStubIO);
   GraphNodePtrNN deepFirstSearch(DataBaseID                                      id,
@@ -58,12 +58,26 @@ private:
                                  Persistency::IO::Postgres::detail::EntryReader &er,
                                  IO::ConnectionPtrNN                             connStubIO,
                                  IO::Transaction                                &tStubIO);
+
   void restore(Persistency::IO::Postgres::detail::EntryReader &er,
                NodesVector                                    &out,
                Tree::IDsVector                                &malerts);
 
   template<typename T>
   void addIfNew(T e, DataBaseID id);
+
+  GraphNodePtrNN restoreLeaf(DataBaseID                                      id,
+                             NodesVector                                    &out,
+                             Persistency::IO::Postgres::detail::EntryReader &er,
+                             IO::ConnectionPtrNN                             connStubIO,
+                             IO::Transaction                                &tStubIO);
+
+  NodeChildrenVector restoreNodeChildren(TreePtrNN                                       node,
+                                         DataBaseID                                      id,
+                                         NodesVector                                    &out,
+                                         Persistency::IO::Postgres::detail::EntryReader &er,
+                                         IO::ConnectionPtrNN                             connStubIO,
+                                         IO::Transaction                                &tStubIO);
 
   DBHandlerPtrNN        dbHandler_;
   Cache<GraphNodePtrNN> graphCache_;

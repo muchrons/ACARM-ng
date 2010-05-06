@@ -3,7 +3,6 @@
  *
  */
 #include <tut.h>
-#include <set>
 
 #include "Base/ViaPointer.hpp"
 #include "Commons/ViaUnorderedCollection.hpp"
@@ -51,13 +50,21 @@ struct TestClass
     }
     return;
   }
-  // TODO: check if Hosts are in cache
+
   void checkCache(Restorer::NodesVector &out)
   {
     for(Restorer::NodesVector::iterator it = out.begin(); it !=out.end(); ++it)
     {
       if( (*it)->isLeaf() )
+      {
         tut::ensure("alert shoud be in cache", idCache_->has( (*it)->getAlert()) );
+        const Alert::ReportedHosts sourceHosts = (*it)->getAlert()->getReportedSourceHosts();
+        const Alert::ReportedHosts targetHosts = (*it)->getAlert()->getReportedTargetHosts();
+        for(Alert::ReportedHosts::const_iterator hi = sourceHosts.begin(); hi != sourceHosts.end(); ++hi)
+          tut::ensure("alert shoud be in cache", idCache_->has( (*hi) ) );
+        for(Alert::ReportedHosts::const_iterator hi = targetHosts.begin(); hi != targetHosts.end(); ++hi)
+          tut::ensure("alert shoud be in cache", idCache_->has( (*hi) ) );
+      }
       else
         tut::ensure("meta alert shoud be in cache", idCache_->has( (*it)->getMetaAlert()) );
     }

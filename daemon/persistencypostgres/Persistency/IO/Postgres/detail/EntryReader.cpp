@@ -122,9 +122,9 @@ Alert::SourceAnalyzers EntryReader::getAnalyzers(DataBaseID alertID)
   ss << "SELECT * FROM alert_analyzers WHERE id_alert = " << alertID <<";";
   const result r = execSQL(t_, ss);
 
+  // add first element to the Analyzers
   Alert::SourceAnalyzers analyzers( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_analyzer"]) ) );
-  // TODO: add short comment why you start enumerating form '1' - there was bug with this once
-  //       so it's better to comments it right.
+  // enumerating starts from '1' because first element was added to the Analyzers above
   for(size_t i=1; i<r.size(); ++i)
     analyzers.push_back( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_analyzer"]) ) );
   return analyzers;
@@ -276,7 +276,7 @@ double EntryReader::getSeverityDelta(DataBaseID malertID)
 double EntryReader::getCertaintyDelta(DataBaseID malertID)
 {
   stringstream ss;
-  ss << "SELECT caertanity_delta FROM meta_alerts WHERE id = " << malertID << ";";
+  ss << "SELECT certainty_delta FROM meta_alerts WHERE id = " << malertID << ";";
   const result r = execSQL(t_, ss);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
@@ -370,9 +370,7 @@ void EntryReader::addIfNew(T e, DataBaseID id)
 {
   if(!dbh_.getIDCache()->has(e))
     dbh_.getIDCache()->add(e, id);
-  else  // TODO: notice that by removing this else you'll assert all situations,
-        //       therefore introducing common post-condition.
-    assert(id == dbh_.getIDCache()->get(e));
+  assert(id == dbh_.getIDCache()->get(e));
 }
 } // namespace detail
 } // namespace Postgres
