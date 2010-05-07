@@ -62,13 +62,13 @@ void removeData(const std::string name1, const std::string name2)
   t.commit();
 }
 
-AlertPtr makeNewAlert(const char *name)
+AlertPtr makeNewAlert(const char *name, const Timestamp &t)
 {
   const Persistency::Alert::SourceAnalyzers sa( makeNewAnalyzer() );
   return AlertPtr( new Persistency::Alert(name,
                              sa,
                              NULL,
-                             Timestamp(444),
+                             t,
                              Severity(SeverityLevel::INFO),
                              Certainty(0.42),
                              "some test allert",
@@ -76,13 +76,14 @@ AlertPtr makeNewAlert(const char *name)
                              Persistency::Alert::ReportedHosts() ) );
 }
 
-MetaAlertPtr makeNewMetaAlert(const char *name)
+MetaAlertPtr makeNewMetaAlert(const char *name, const Timestamp &t)
 {
   return MetaAlertPtrNN( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name),
                                         0.1, 0.2,
                                         makeNewReferenceURL(),
-                                        Persistency::Timestamp(444) ) );
+                                        t ) );
 }
+
 
 AnalyzerPtrNN makeNewAnalyzer(const char *name)
 {
@@ -280,7 +281,6 @@ Restorer::NodesVector makeNewTree5(void)
   GraphNodePtrNN node1 = makeNewNode(node3,
                                      node4,
                                      "node1");
-
   vec.push_back(node1);
 
   GraphNodePtrNN node2 = makeNewNode(node4,
@@ -332,7 +332,6 @@ Restorer::NodesVector makeNewTree7(void)
   vec.push_back(leaf1);
   vec.push_back(leaf2);
   vec.push_back(node1);
-
   return vec;
 }
 } // namespace Postgres

@@ -30,10 +30,13 @@ namespace Postgres
 {
 
 IO::ConnectionPtrNN makeConnection(void);
-void removeData(const std::string name1, const std::string name2);
-Persistency::AlertPtr makeNewAlert(const char *name="some alert");
 
-Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert");
+void removeData(const std::string name1, const std::string name2);
+
+Persistency::AlertPtr makeNewAlert(const char *name="some alert", const Timestamp &t = Timestamp(444) );
+
+Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert", const Timestamp &t = Timestamp(444));
+
 
 Persistency::AnalyzerPtrNN makeNewAnalyzer(const char *name="some analyzer");
 

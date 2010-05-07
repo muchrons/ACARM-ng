@@ -502,7 +502,7 @@ void testObj::test<14>(void)
                                          alertPtr->getReportedSourceHosts().size() );
 }
 
-// trying read roots
+// trying read roots in use
 template<>
 template<>
 void testObj::test<15>(void)
@@ -512,7 +512,7 @@ void testObj::test<15>(void)
   ensure_equals("invalid number of roots", roots.size(), 1u);
 }
 
-// trying read roots
+// trying read roots in use
 template<>
 template<>
 void testObj::test<16>(void)
@@ -520,5 +520,71 @@ void testObj::test<16>(void)
   const Restorer::NodesVector outVec = makeNewTree6();
   vector<DataBaseID> roots = er_.readRoots();
   ensure_equals("invalid number of roots", roots.size(), 2u);
+}
+
+// trying read Meta Alert children
+template<>
+template<>
+void testObj::test<17>(void)
+{
+
+  const std::string malertName("meta alert name");
+  Timestamp t1( timestampFromString("1970-01-15 07:56:07") );
+  Timestamp t2( timestampFromString("1999-10-10 17:56:07") );
+  Timestamp t3( timestampFromString("2010-04-22 07:56:07") );
+
+  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  Persistency::MetaAlertPtrNN maPtr1(
+      new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
+                                  0.1, 0.2,
+                                  refURL,
+                                  t1 ) );
+  Persistency::IO::Postgres::MetaAlert malert1(maPtr1, t_, dbh_);
+  Persistency::MetaAlertPtrNN maPtr2(
+      new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
+                                  0.1, 0.2,
+                                  refURL,
+                                  t2 ) );
+  Persistency::IO::Postgres::MetaAlert malert2(maPtr2, t_, dbh_);
+  Persistency::MetaAlertPtrNN maPtr3(
+      new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
+                                  0.1, 0.2,
+                                  refURL,
+                                  t3 ) );
+  Persistency::IO::Postgres::MetaAlert malert3(maPtr3, t_, dbh_);
+  malert1.save();
+  malert2.save();
+  malert3.save();
+  DataBaseID malertID1 = dbh_->getIDCache()->get(maPtr1);
+  DataBaseID malertID2 = dbh_->getIDCache()->get(maPtr2);
+  DataBaseID malertID3 = dbh_->getIDCache()->get(maPtr3);
+  vector<DataBaseID> children;
+  children.push_back(malertID2);
+  children.push_back(malertID3);
+  malert1.addChild(maPtr2);
+  malert1.addChild(maPtr3);
+  vector<DataBaseID> maChildren = er_.readMetaAlertChildren(malertID1);
+  ensure_equals("invalid number of children", maChildren.size(), children.size());
+  ensure("invalid children", Commons::ViaUnorderedCollection::equal(maChildren, children) );
+}
+
+// trying read Meta Alert children (no children)
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  const std::string malertName("meta alert name");
+  Timestamp t( timestampFromString("1970-01-15 07:56:07") );
+  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  Persistency::MetaAlertPtrNN maPtr(
+      new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
+                                  0.1, 0.2,
+                                  refURL,
+                                  t ) );
+  Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
+  malert.save();
+  DataBaseID malertID = dbh_->getIDCache()->get(maPtr);
+  vector<DataBaseID> maChildren = er_.readMetaAlertChildren(malertID);
+  ensure_equals("invalid number of children", maChildren.size(), 0);
 }
 } // namespace tut

@@ -38,19 +38,6 @@ struct TestClass
     tdba_.removeAllData();
   }
 
-  void deepSearch(GraphNodePtrNN node, Restorer::NodesVector &outVec)
-  {
-    if( node->isLeaf())
-      outVec.push_back(node);
-    else
-    {
-      outVec.push_back(node);
-      for(GraphNode::iterator it = node->begin(); it != node->end(); ++it)
-        deepSearch(*it, outVec);
-    }
-    return;
-  }
-
   void checkCache(Restorer::NodesVector &out)
   {
     for(Restorer::NodesVector::iterator it = out.begin(); it !=out.end(); ++it)
@@ -234,6 +221,83 @@ struct TestClass
     first.push_back(root2);
 
   }
+  Restorer::NodesVector makeNewTreeD(void)
+  {
+    Restorer::NodesVector vec;
+    GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
+    GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+    vec.push_back(leaf1);
+    vec.push_back(leaf2);
+
+    GraphNodePtrNN node1 = makeNewNode(leaf1,
+        leaf2,
+        "node1");
+    vec.push_back(node1);
+
+    GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
+    GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+    vec.push_back(leaf3);
+    vec.push_back(leaf4);
+
+    GraphNodePtrNN node3 = makeNewNode(leaf3,
+        leaf4,
+        "node3");
+    vec.push_back(node3);
+    GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
+    vec.push_back(leaf5);
+    GraphNodePtrNN node2 = makeNewNode(node3,
+        leaf5,
+        "node2");
+    vec.push_back(node2);
+    GraphNodePtrNN root = makeNewNode(node1,
+        node2,
+        "root");
+    vec.push_back(root);
+    return vec;
+  }
+
+  Restorer::NodesVector makeNewTreeE(void)
+  {
+    Restorer::NodesVector vec;
+    GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
+    GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+    vec.push_back(leaf1);
+    vec.push_back(leaf2);
+
+    GraphNodePtrNN node1 = makeNewNode(leaf1,
+        leaf2,
+        "node1");
+    vec.push_back(node1);
+
+    GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
+    GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+    vec.push_back(leaf3);
+    vec.push_back(leaf4);
+
+    GraphNodePtrNN node3 = makeNewNode(leaf3,
+        leaf4,
+        "node3");
+    vec.push_back(node3);
+    GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
+    GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
+    vec.push_back(leaf5);
+    vec.push_back(leaf6);
+    GraphNodePtrNN node4 = makeNewNode(leaf5,
+        leaf6,
+        "node4");
+    vec.push_back(node4);
+
+    GraphNodePtrNN node2 = makeNewNode(node3,
+        node4,
+        "node2");
+    vec.push_back(node2);
+    GraphNodePtrNN root = makeNewNode(node1,
+        node2,
+        "root");
+    vec.push_back(root);
+    return vec;
+  }
+
   TestDBAccess            tdba_;
   IDCachePtrNN            idCache_;
   DBHandlerPtrNN          dbh_;
@@ -262,18 +326,15 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  // TODO: this test sometimes fail!
 
   Restorer::NodesVector out;
-  Restorer::NodesVector outVec;
   // create tree and save data to the data base
-  const GraphNodePtrNN tree = makeNewTree1();
+  Restorer::NodesVector outVec = makeNewTreeD();
   // create restorer
   Restorer r(t_, dbh_);
   // restore data from data base
   r.restoreAllInUse(out);
   // put tree in vector
-  deepSearch(tree, outVec);
   //removeDuplicates(outVec);
 
   ensure_equals("invalid size", out.size(), outVec.size());
@@ -317,18 +378,14 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  // TODO: this test sometimes fail!
-
   Restorer::NodesVector out;
-  Restorer::NodesVector outVec;
   // create tree and save data to the data base
-  const GraphNodePtrNN tree = makeNewTree4();
+  Restorer::NodesVector outVec = makeNewTreeD();
   // create restorer
   Restorer r(t_, dbh_);
   // restore data from data base
   r.restoreAllInUse(out);
   // put tree in vector
-  deepSearch(tree, outVec);
 
   ensure_equals("invalid size", out.size(), outVec.size());
   ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
