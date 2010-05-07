@@ -111,7 +111,7 @@ public:
    *  \return vector of IDs
    */
   std::vector<DataBaseID> readRoots(const Timestamp &from, const Timestamp &to);
-  
+
   /** \brief get ID of Alert asssiciated with Meata Alert
    *  \param malertID ID of Meta Alert
    */
