@@ -47,7 +47,7 @@ void Restorer::restoreBetweenImpl(Transaction     &t,
 {
   EntryReader er(t, *dbHandler_);
   Tree::IDsVector maBetween( er.readIDsMalertsBetween(from, to) );
-  restore(er, out, maBetween);
+  restore(er, out, maBetween, from, to);
 }
 
 BackendFactory::FactoryPtr Restorer::createStubIO(void)
@@ -104,17 +104,13 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   out.push_back(graphNode);
   return graphNode;
 }
-// todo add class with lists of errors
+
+// TODO: add class with lists of errors
 void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
                        NodesVector                                    &out,
                        Tree::IDsVector                                &malerts)
 {
-  for(Tree::IDsVector::const_iterator it = malerts.begin(); it != malerts.end(); ++it)
-  {
-    const Tree::IDsVector &malertChildren = er.readMetaAlertChildren( (*it) );
-    // put this data to the tree which represents meta alerts tree structure
-    treeNodes_.addToCache(*it, TreePtr(new Tree(*it, malertChildren) ));
-  }
+  addTreeNodesToCache(er, malerts);
 
   IO::ConnectionPtrNN connStubIO( createStubIO() );
   IO::Transaction     tStubIO( connStubIO->createNewTransaction("stub transaction") );
@@ -135,6 +131,33 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
   removeDuplicates(out);
 }
 
+// TODO: reorganize this code
+void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
+                       NodesVector                                    &out,
+                       Tree::IDsVector                                &malerts,
+                       const Timestamp                                &from,
+                       const Timestamp                                &to)
+{
+  addTreeNodesToCache(er, malerts);
+
+  IO::ConnectionPtrNN connStubIO( createStubIO() );
+  IO::Transaction     tStubIO( connStubIO->createNewTransaction("stub transaction") );
+
+  const Tree::IDsVector &roots = er.readRoots(from, to);
+  for(Tree::IDsVector::const_iterator it = roots.begin(); it != roots.end(); ++it)
+  {
+    try
+    {
+      deepFirstSearch(*it, out, er, connStubIO, tStubIO);
+    }
+    catch(const ExceptionBadNumberOfNodeChildren &)
+    {
+      // TODO: logs
+    }
+  }
+  // remove doplicates from out vector
+  removeDuplicates(out);
+}
 template<typename T>
 void Restorer::addIfNew(T e, DataBaseID id)
 {
@@ -181,6 +204,16 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
   for(size_t i = 2; i<tmpNodes.size(); ++i)
     vec.push_back(tmpNodes[i]);
   return vec;
+}
+
+void Restorer::addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er, Tree::IDsVector &malerts)
+{
+  for(Tree::IDsVector::const_iterator it = malerts.begin(); it != malerts.end(); ++it)
+  {
+    const Tree::IDsVector &malertChildren = er.readMetaAlertChildren( (*it) );
+    // put this data to the tree which represents meta alerts tree structure
+    treeNodes_.addToCache(*it, TreePtr(new Tree(*it, malertChildren) ));
+  }
 }
 } // namespace Postgres
 } // namespace IO

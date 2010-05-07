@@ -329,6 +329,7 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
   Appender::append(ss, from);
   ss << " <= create_time AND create_time <=";
   Appender::append(ss, to);
+  ss << ";";
   const result r = execSQL(t_, ss);
   malertsBetween.reserve( r.size() );
   for(size_t i=0; i<r.size(); ++i)
@@ -338,21 +339,28 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
 
 std::vector<DataBaseID> EntryReader::readRoots()
 {
-  vector<DataBaseID> roots;
   execSQL(t_,"CREATE TEMP TABLE tmp ON COMMIT DROP AS SELECT id_node, id_child FROM meta_alerts_tree"
              " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);");
 
   const result r = execSQL(t_, "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
                          "SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );");
 
-  roots.reserve( r.size() );
-  for(size_t i=0; i<r.size(); ++i)
-  {
-    // assert to ensure value is not null
-    assert(!r[i]["id_node"].is_null());
-    roots.push_back( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_node"]) );
-  }
-  return roots;
+  return getRoots(r);
+}
+
+std::vector<DataBaseID> EntryReader::readRoots(const Timestamp &from, const Timestamp &to)
+{
+  stringstream ss;
+  ss << "CREATE TEMP TABLE tmp ON COMMIT DROP AS SELECT id_node, id_child FROM meta_alerts_tree WHERE ";
+  Appender::append(ss, from);
+  ss << " <= create_time AND create_time <=";
+  Appender::append(ss, to);
+  ss << ";";
+  execSQL(t_, ss);
+  const result r = execSQL(t_, "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
+                         "SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );");
+
+  return getRoots(r);
 }
 
 DataBaseID EntryReader::getAlertIDAssociatedWithMetaAlert(DataBaseID malertID)
@@ -371,6 +379,19 @@ void EntryReader::addIfNew(T e, DataBaseID id)
   if(!dbh_.getIDCache()->has(e))
     dbh_.getIDCache()->add(e, id);
   assert(id == dbh_.getIDCache()->get(e));
+}
+
+std::vector<DataBaseID> EntryReader::getRoots(const pqxx::result &r)
+{
+  vector<DataBaseID> roots;
+  roots.reserve( r.size() );
+  for(size_t i=0; i<r.size(); ++i)
+  {
+    // assert to ensure value is not null
+    assert(!r[i]["id_node"].is_null());
+    roots.push_back( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_node"]) );
+  }
+  return roots;
 }
 } // namespace detail
 } // namespace Postgres

@@ -105,6 +105,13 @@ public:
    */
   std::vector<DataBaseID> readRoots();
 
+  /** \brief read IDs of root nodes
+   *  \param  from begin of time interval
+   *  \param  to end of time interval
+   *  \return vector of IDs
+   */
+  std::vector<DataBaseID> readRoots(const Timestamp &from, const Timestamp &to);
+  
   /** \brief get ID of Alert asssiciated with Meata Alert
    *  \param malertID ID of Meta Alert
    */
@@ -125,6 +132,7 @@ private:
   Persistency::Alert::ReportedHosts getTargetHosts(DataBaseID alertID);
   template<typename T>
   void addIfNew(T e, DataBaseID id);
+  std::vector<DataBaseID> getRoots(const pqxx::result &r);
 
   DBHandler   &dbh_;
   Transaction &t_;

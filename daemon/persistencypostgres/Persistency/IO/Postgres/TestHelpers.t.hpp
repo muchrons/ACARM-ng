@@ -101,6 +101,10 @@ Persistency::GraphNodePtrNN makeNewTree4(void);
 //
 Restorer::NodesVector makeNewTree5(void);
 //
+//     node1         node2
+//  leaf1 leaf2   leaf3 leaf4
+Restorer::NodesVector makeNewTree6(void);
+//
 //     node1
 //  leaf1  leaf2
 Restorer::NodesVector makeNewTree7(void);

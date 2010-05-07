@@ -63,6 +63,12 @@ private:
                NodesVector                                    &out,
                Tree::IDsVector                                &malerts);
 
+  void restore(Persistency::IO::Postgres::detail::EntryReader &er,
+               NodesVector                                    &out,
+               Tree::IDsVector                                &malerts,
+               const Timestamp                                &from,
+               const Timestamp                                &to);
+
   template<typename T>
   void addIfNew(T e, DataBaseID id);
 
@@ -78,6 +84,7 @@ private:
                                          Persistency::IO::Postgres::detail::EntryReader &er,
                                          IO::ConnectionPtrNN                             connStubIO,
                                          IO::Transaction                                &tStubIO);
+  void addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er, Tree::IDsVector &malerts);
 
   DBHandlerPtrNN        dbHandler_;
   Cache<GraphNodePtrNN> graphCache_;

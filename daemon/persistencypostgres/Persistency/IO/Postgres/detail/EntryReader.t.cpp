@@ -15,6 +15,7 @@
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/Postgres/Alert.hpp"
 #include "Persistency/IO/Postgres/MetaAlert.hpp"
+#include "Persistency/IO/Postgres/Restorer.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
 #include "Persistency/IO/Postgres/ExceptionNoEntries.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
@@ -499,5 +500,25 @@ void testObj::test<14>(void)
   ensure_equals("invalid caertainty", a->getCertainty().get(), certanity_.get());
   ensure_equals("vectors are different", a->getReportedSourceHosts().size(),
                                          alertPtr->getReportedSourceHosts().size() );
+}
+
+// trying read roots
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  const Restorer::NodesVector outVec = makeNewTree7();
+  vector<DataBaseID> roots = er_.readRoots();
+  ensure_equals("invalid number of roots", roots.size(), 1u);
+}
+
+// trying read roots
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  const Restorer::NodesVector outVec = makeNewTree6();
+  vector<DataBaseID> roots = er_.readRoots();
+  ensure_equals("invalid number of roots", roots.size(), 2u);
 }
 } // namespace tut

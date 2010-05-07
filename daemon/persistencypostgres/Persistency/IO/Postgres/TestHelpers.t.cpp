@@ -295,6 +295,31 @@ Restorer::NodesVector makeNewTree5(void)
   return vec;
 }
 
+Restorer::NodesVector makeNewTree6(void)
+{
+  Restorer::NodesVector vec;
+  GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
+  GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+
+  GraphNodePtrNN node1 = makeNewNode(leaf1,
+                                     leaf2,
+                                     "node1");
+  vec.push_back(leaf1);
+  vec.push_back(leaf2);
+  vec.push_back(node1);
+
+  GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
+  GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+
+  GraphNodePtrNN node2 = makeNewNode(leaf3,
+                                     leaf4,
+                                     "node2");
+  vec.push_back(leaf3);
+  vec.push_back(leaf4);
+  vec.push_back(node2);
+  return vec;
+}
+
 Restorer::NodesVector makeNewTree7(void)
 {
   Restorer::NodesVector vec;
