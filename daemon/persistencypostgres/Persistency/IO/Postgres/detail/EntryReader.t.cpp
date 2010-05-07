@@ -6,6 +6,7 @@
 #include <tut.h>
 #include <boost/algorithm/string.hpp>
 
+#include "Commons/ViaUnorderedCollection.hpp"
 #include "TestHelpers/checkEquality.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
@@ -147,6 +148,8 @@ void testObj::test<3>(void)
   ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(),
                                     severity_.getLevel().toInt());
   ensure_equals("invalid caertainty", a->getCertainty().get(), certanity_.get());
+  ensure_equals("vectors are different", (a->getReportedSourceHosts()).size(),
+                                         (alertPtr->getReportedSourceHosts()).size() );
   t_.commit();
 }
 
@@ -392,7 +395,7 @@ void testObj::test<11>(void)
   try
   {
     er_.getAlertIDAssociatedWithMetaAlert(malertID);
-    fail("");
+    fail("reading didn't failed for no entries");
   }
   catch(const ExceptionNoEntries &)
   {
@@ -430,5 +433,71 @@ void testObj::test<12>(void)
 
   ensure_equals("invalid ID of Alert associated with Meta Alert",
                 er_.getAlertIDAssociatedWithMetaAlert(malertID), alertID );
+}
+
+// trying restoring Leaf
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  const std::string malertName("meta alert name");
+  Timestamp t( timestampFromString("1970-01-15 07:56:07") );
+  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  Persistency::MetaAlertPtrNN maPtr(
+      new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
+                                  0.1, 0.2,
+                                  refURL,
+                                  t ) );
+  Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
+  malert.save();
+  DataBaseID malertID = dbh_->getIDCache()->get(maPtr);
+
+  try
+  {
+    er_.getLeaf(malertID);
+    fail("reading didn't failed for no entries");
+  }
+  catch(const ExceptionNoEntries &)
+  {
+    // this is expected
+  }
+}
+
+// trying restoring Leaf
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  const std::string malertName("meta alert name");
+  Timestamp t( timestampFromString("1970-01-15 07:56:07") );
+  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  Persistency::MetaAlertPtrNN maPtr(
+      new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
+                                  0.1, 0.2,
+                                  refURL,
+                                  t ) );
+  Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
+  malert.save();
+  DataBaseID malertID = dbh_->getIDCache()->get(maPtr);
+
+  Persistency::AlertPtrNN alertPtr (
+        new Persistency::Alert(name_, analyzers_, &detected_,
+                               created_,
+                               severity_, certanity_,description_,
+                               sourceHosts_, targetHosts_) );
+  // save alert
+  Persistency::IO::Postgres::Alert alert(alertPtr, t_, dbh_ );
+  alert.save();
+  malert.associateWithAlert(alertPtr);
+  Persistency::AlertPtrNN a( er_.getLeaf(malertID) );
+  ensure("invalid name", alertPtr->getName() == a->getName() );
+  ensure_equals("invalid description", a->getDescription() , description_ );
+  ensure_equals("invalid detected time", *a->getDetectionTime(), detected_);
+  ensure_equals("invalid create time", a->getCreationTime(), created_);
+  ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(),
+                                    severity_.getLevel().toInt());
+  ensure_equals("invalid caertainty", a->getCertainty().get(), certanity_.get());
+  ensure_equals("vectors are different", a->getReportedSourceHosts().size(),
+                                         alertPtr->getReportedSourceHosts().size() );
 }
 } // namespace tut
