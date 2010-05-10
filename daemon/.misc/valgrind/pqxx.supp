@@ -1,0 +1,19 @@
+# there are some very stringe leaks form pqxx library.
+
+{
+   pqxx_connect_leak_malloc
+   Memcheck:Leak
+   fun:malloc
+   ...
+   fun:PQconnectPoll
+   ...
+}
+
+{
+   pqxx_connect_leak_remalloc
+   Memcheck:Leak
+   fun:realloc
+   ...
+   fun:PQconnectPoll
+   ...
+}

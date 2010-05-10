@@ -3,7 +3,7 @@
  *
  */
 #include <tut.h>
-#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string.hpp>   // TODO: use trim.hpp include directly, since this is tha only algorithm in use here
 
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
@@ -89,14 +89,14 @@ struct TestClass
     return out;
   }
 
-  // TODO: notice that Host::Name is NULLString by itself
-  Base::NullValue<Host::Name> testHostName(DataBaseID hostID)
+  // TODO: readHostName() whould be more meaningful here
+  Host::Name testHostName(DataBaseID hostID)
   {
     stringstream ss;
     ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     tut::ensure_equals("invalid size", r.size(), 1u);
-    return ReaderHelper<Base::NullValue<Host::Name> >::readAs(r[0]["name"]);
+    return ReaderHelper<Host::Name>::readAs(r[0]["name"]);
   }
 
   DataBaseID getID(const Severity s)
@@ -127,17 +127,16 @@ struct TestClass
   Transaction         t_;
   EntrySaver          es_;
 
-  const pid_t       pid_;
-  const int         uid_;
-  ReferenceURLPtrNN url_;
+  const pid_t        pid_;
+  const int          uid_;
+  ReferenceURLPtrNN  url_;
   const char        *md5Str_;
-  const MD5Sum      md5_;
-  const Process     proc_;
-  const Process     procnn_;
+  const MD5Sum       md5_;
+  const Process      proc_;
+  const Process      procnn_;
 
   const Host::Netmask_v4 mask4_;
   const Host::Netmask_v6 mask6_;
-
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -774,6 +773,7 @@ void testObj::test<21>(void)
   ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
   const result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(), 1u);
+  t_.commit();
 }
 
 // trying save MetaAlert as unused
@@ -806,7 +806,8 @@ template<>
 template<>
 void testObj::test<23>(void)
 {
-  const Host::Name hostName("some.host.com");
+  const string hname("some.host.com");
+  const Host::Name hostName(hname);
   const Host       h( Host::IPv4::from_string("1.2.3.4"),
                       &mask4_,
                       "myos",
@@ -818,9 +819,9 @@ void testObj::test<23>(void)
   ensure("Host name is not NULL", testHostName(hostID).get() == NULL );
   // trying set Host name
   es_.setHostName(hostID, hostName);
-  // TODO: SEGV when testHostName(hostID).get()==NULL
-  Host::Name name( testHostName(hostID).get()->get() );
-  //ensure_equals("invalid host name",  name.get(), hostName.get());
+  string name( testHostName(hostID).get() );
+  trim(name);
+  ensure_equals("invalid host name",  name, hname);
   t_.commit();
 }
 

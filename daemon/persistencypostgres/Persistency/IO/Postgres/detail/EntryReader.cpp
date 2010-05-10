@@ -133,9 +133,9 @@ Alert::SourceAnalyzers EntryReader::getAnalyzers(DataBaseID alertID)
   ss << "SELECT * FROM alert_analyzers WHERE id_alert = " << alertID <<";";
   const result r = execSQL(t_, ss);
 
+  // add first element to the Analyzers
   Alert::SourceAnalyzers analyzers( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_analyzer"]) ) );
-  // TODO: add short comment why you start enumerating form '1' - there was bug with this once
-  //       so it's better to comments it right.
+  // enumerating starts from '1' because first element was added to the Analyzers above
   for(size_t i=1; i<r.size(); ++i)
     analyzers.push_back( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_analyzer"]) ) );
   return analyzers;
@@ -146,7 +146,7 @@ Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::strin
   stringstream ss;
   ss << "SELECT * FROM reported_hosts WHERE id_alert = "<< alertID <<" AND role = ";
   Appender::append(ss, hostType);
-  ss << ";";
+  ss << ";";    // TODO: when executing single query with exec() ending semicolon is not needed.
   const result r = execSQL(t_, ss);
   Alert::ReportedHosts hosts;
   for(size_t i=0; i<r.size(); ++i)
@@ -287,7 +287,7 @@ double EntryReader::getSeverityDelta(DataBaseID malertID)
 double EntryReader::getCertaintyDelta(DataBaseID malertID)
 {
   stringstream ss;
-  ss << "SELECT caertanity_delta FROM meta_alerts WHERE id = " << malertID << ";";
+  ss << "SELECT certainty_delta FROM meta_alerts WHERE id = " << malertID << ";";
   const result r = execSQL(t_, ss);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
@@ -340,6 +340,7 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
   Appender::append(ss, from);
   ss << " <= create_time AND create_time <=";
   Appender::append(ss, to);
+  ss << ";";
   const result r = execSQL(t_, ss);
   malertsBetween.reserve( r.size() );
   for(size_t i=0; i<r.size(); ++i)
@@ -349,21 +350,31 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
 
 std::vector<DataBaseID> EntryReader::readRoots()
 {
-  vector<DataBaseID> roots;
   execSQL(t_,"CREATE TEMP TABLE tmp ON COMMIT DROP AS SELECT id_node, id_child FROM meta_alerts_tree"
              " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);");
 
   const result r = execSQL(t_, "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
-                         "SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );");
+                               // TODO: "select 1"? given name explicit here
+                               "SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );");
 
-  roots.reserve( r.size() );
-  for(size_t i=0; i<r.size(); ++i)
-  {
-    // assert to ensure value is not null
-    assert(!r[i]["id_node"].is_null());
-    roots.push_back( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_node"]) );
-  }
-  return roots;
+  return getRoots(r);
+}
+
+std::vector<DataBaseID> EntryReader::readRoots(const Timestamp &from, const Timestamp &to)
+{
+  stringstream ss;
+  ss << "CREATE TEMP TABLE tmp ON COMMIT DROP AS SELECT id_node, id_child FROM meta_alerts_tree WHERE ";
+  Appender::append(ss, from);
+  ss << " <= create_time AND create_time <=";
+  Appender::append(ss, to);
+  ss << ";";
+  execSQL(t_, ss);
+
+  const result r = execSQL(t_, "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
+                               // TODO: "select 1"? given name explicit here
+                               "SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );");
+
+  return getRoots(r);
 }
 
 DataBaseID EntryReader::getAlertIDAssociatedWithMetaAlert(DataBaseID malertID)
@@ -381,10 +392,22 @@ void EntryReader::addIfNew(T e, DataBaseID id)
 {
   if(!dbh_.getIDCache()->has(e))
     dbh_.getIDCache()->add(e, id);
-  else  // TODO: notice that by removing this else you'll assert all situations,
-        //       therefore introducing common post-condition.
-    assert(id == dbh_.getIDCache()->get(e));
+  assert(id == dbh_.getIDCache()->get(e));
 }
+
+std::vector<DataBaseID> EntryReader::getRoots(const pqxx::result &r)
+{
+  vector<DataBaseID> roots;
+  roots.reserve( r.size() );
+  for(size_t i=0; i<r.size(); ++i)
+  {
+    // assert to ensure value is not null
+    assert(!r[i]["id_node"].is_null());
+    roots.push_back( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_node"]) );
+  }
+  return roots;
+}
+
 } // namespace detail
 } // namespace Postgres
 } // namespace IO

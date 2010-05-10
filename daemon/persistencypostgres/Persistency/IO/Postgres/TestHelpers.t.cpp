@@ -2,9 +2,17 @@
  * TestHelpers.t.cpp
  *
  */
+#include "Persistency/MetaAlert.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
+#include "Persistency/IO/Postgres/TransactionAPI.hpp"
+#include "Persistency/IO/Postgres/detail/Appender.hpp"
 
+using namespace std;
+using namespace pqxx;
+
+using namespace Persistency::IO::Postgres::detail;
+using namespace Persistency;
 
 namespace Persistency
 {
@@ -21,17 +29,51 @@ IO::ConnectionPtrNN makeConnection(void)
   opts["dbname"]="acarm_ng_test";
   opts["user"]  ="acarm-ng-daemon";
   opts["pass"]  ="test.daemon";
-  return IO::ConnectionPtrNN(
-        Persistency::IO::BackendFactory::create("postgres", opts) );
+  return IO::ConnectionPtrNN( Persistency::IO::BackendFactory::create("postgres", opts) );
 }
 
-AlertPtr makeNewAlert(const char *name)
+void removeData(const std::string name1, const std::string name2)
+{
+  Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
+  IO::Transaction t( conn->createNewTransaction("delete_data_transaction") );
+
+  stringstream ss;
+  DataBaseID nodeID, childID;
+  {
+    const Persistency::MetaAlert::Name node(name1);
+    ss << "SELECT * FROM meta_alerts WHERE name = ";
+    Appender::append(ss, node.get());
+    ss << ";";
+    // TODO: this variable should be const
+    result r = t.getAPI<TransactionAPI>().exec(ss);
+    // TODO: SEGV when no result returned
+    r[0]["id"].to(nodeID);
+  }
+  {
+    // TODO: c&p code
+    const Persistency::MetaAlert::Name node(name2);
+    ss << "SELECT * FROM meta_alerts WHERE name = ";
+    Appender::append(ss, node.get());
+    ss << ";";
+    // TODO: this variable should be const
+    result r = t.getAPI<TransactionAPI>().exec(ss);
+    // TODO: SEGV when no result returned
+    r[0]["id"].to(childID);
+  }
+  {
+    ss << "DELETE FROM meta_alerts_tree WHERE id_node = " << nodeID << " AND id_child = " << childID << ";";
+    t.getAPI<TransactionAPI>().exec(ss);
+  }
+  t.commit();
+}
+
+AlertPtr makeNewAlert(const char *name, const Timestamp &t)
 {
   const Persistency::Alert::SourceAnalyzers sa( makeNewAnalyzer() );
   return AlertPtr( new Persistency::Alert(name,
                              sa,
                              NULL,
-                             Timestamp(444),
+                             t,
                              Severity(SeverityLevel::INFO),
                              Certainty(0.42),
                              "some test allert",
@@ -39,13 +81,14 @@ AlertPtr makeNewAlert(const char *name)
                              Persistency::Alert::ReportedHosts() ) );
 }
 
-MetaAlertPtr makeNewMetaAlert(const char *name)
+MetaAlertPtr makeNewMetaAlert(const char *name, const Timestamp &t)
 {
   return MetaAlertPtrNN( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name),
                                         0.1, 0.2,
                                         makeNewReferenceURL(),
-                                        Persistency::Timestamp(444) ) );
+                                        t ) );
 }
+
 
 AnalyzerPtrNN makeNewAnalyzer(const char *name)
 {
@@ -156,11 +199,9 @@ GraphNodePtrNN makeNewTree2(void)
                         makeNewNode( makeNewLeaf(), node1 ), node1 ) );
 }
 
-// TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-std::vector<GraphNodePtrNN> makeNewTree3(void)
+Restorer::NodesVector makeNewTree3(void)
 {
-  // TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-  std::vector<GraphNodePtrNN> vec;
+  Restorer::NodesVector vec;
   GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
   GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
   vec.push_back(leaf1);
@@ -209,6 +250,94 @@ Persistency::GraphNodePtrNN makeNewTree4(void)
                          makeNewNode(makeNewLeaf("leaf5"),
                                      makeNewLeaf("leaf6"),
                                      "node4"), "node2"), "root" );
+}
+
+Restorer::NodesVector makeNewTree5(void)
+{
+  Restorer::NodesVector vec;
+  GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
+  GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+  vec.push_back(leaf1);
+  vec.push_back(leaf2);
+  GraphNodePtrNN node3 = makeNewNode(leaf1,
+                                     leaf2,
+                                     "node3");
+  vec.push_back(node3);
+
+  GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
+  GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+  vec.push_back(leaf3);
+  vec.push_back(leaf4);
+  GraphNodePtrNN node4 = makeNewNode(leaf3,
+                                     leaf4,
+                                     "node4");
+  vec.push_back(node4);
+
+  GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
+  GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
+  vec.push_back(leaf5);
+  vec.push_back(leaf6);
+  GraphNodePtrNN node5 = makeNewNode(leaf5,
+                                     leaf6,
+                                     "node5");
+
+  vec.push_back(node5);
+
+  GraphNodePtrNN node1 = makeNewNode(node3,
+                                     node4,
+                                     "node1");
+  vec.push_back(node1);
+
+  GraphNodePtrNN node2 = makeNewNode(node4,
+                                     node5,
+                                     "node2");
+
+  vec.push_back(node2);
+  GraphNodePtrNN root = makeNewNode(node1,
+                                     node2,
+                                     "root");
+  vec.push_back(root);
+  return vec;
+}
+
+Restorer::NodesVector makeNewTree6(void)
+{
+  Restorer::NodesVector vec;
+  GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
+  GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+
+  GraphNodePtrNN node1 = makeNewNode(leaf1,
+                                     leaf2,
+                                     "node1");
+  vec.push_back(leaf1);
+  vec.push_back(leaf2);
+  vec.push_back(node1);
+
+  GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
+  GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+
+  GraphNodePtrNN node2 = makeNewNode(leaf3,
+                                     leaf4,
+                                     "node2");
+  vec.push_back(leaf3);
+  vec.push_back(leaf4);
+  vec.push_back(node2);
+  return vec;
+}
+
+Restorer::NodesVector makeNewTree7(void)
+{
+  Restorer::NodesVector vec;
+  GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
+  GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+
+  GraphNodePtrNN node1 = makeNewNode(leaf1,
+                                     leaf2,
+                                     "node1");
+  vec.push_back(leaf1);
+  vec.push_back(leaf2);
+  vec.push_back(node1);
+  return vec;
 }
 } // namespace Postgres
 } // namespace IO
