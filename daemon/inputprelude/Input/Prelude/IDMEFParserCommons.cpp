@@ -18,6 +18,8 @@ using boost::asio::ip::address_v6;
 IDMEFParserCommons::IP IDMEFParserCommons::getIPfromIdmefNode(idmef_node_t * idmef_node)
 {
   IP ip;    // TODO: unused variable
+  // TODO: following condition fails most of the time - check if code is really valid.
+  //       maby heartbeats are apssed here as well?
   if (idmef_node==NULL)
     throw ParseException(SYSTEM_SAVE_LOCATION, "Idmef Node is empty.");
 

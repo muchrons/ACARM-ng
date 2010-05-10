@@ -2,6 +2,7 @@
  * IDMEFParser.hpp
  *
  */
+#include <cassert>
 
 #include "Input/Exception.hpp"
 #include "IDMEFParserAnalyzer.hpp"
@@ -91,23 +92,31 @@ Persistency::Alert::ReportedHosts IDMEFParser::parseTargets(idmef_alert_t *alert
   return rh;
 }
 
+
+namespace
+{
+Persistency::AnalyzerPtrNN makeAnalyzer(idmef_analyzer_t *elem)
+{
+  assert(elem!=NULL);
+  const IDMEFParserAnalyzer an(elem);
+  return Persistency::AnalyzerPtrNN( new Persistency::Analyzer( an.getName(),
+                                                                an.getVersion(),
+                                                                an.getOS(),
+                                                                an.getIP() ) );
+} // makeAnalyzer()
+} // unnamed namespace
+
 Persistency::Alert::SourceAnalyzers IDMEFParser::parseAnalyzers(idmef_alert_t *alert) const
 {
   idmef_analyzer_t *elem = idmef_alert_get_next_analyzer(alert, NULL);
 
   if(elem==NULL)
     throw Exception(SYSTEM_SAVE_LOCATION, "No obligatory field \"Analyzer\" in this Alert!");
-
-  const IDMEFParserAnalyzer  an(elem);
-  Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
-  Alert::SourceAnalyzers     analyzers(ptr);
-
+  // create output structure
+  Alert::SourceAnalyzers analyzers( makeAnalyzer(elem) );
+  // add more analyzers, if needed
   while( (elem = idmef_alert_get_next_analyzer(alert, elem))!=NULL )
-  {
-    const IDMEFParserAnalyzer  an2(elem);
-    Persistency::AnalyzerPtrNN ptr(new Persistency::Analyzer(an.getName(),an.getVersion(),an.getOS(),an.getIP()));
-    analyzers.push_back(ptr);
-  }
+    analyzers.push_back( makeAnalyzer(elem) );
 
   return analyzers;
 }
