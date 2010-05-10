@@ -102,7 +102,9 @@ void Connection::removeExtraMetaAlertsEntries(Transaction &t) const
     execSQL(t, "DELETE FROM meta_alerts WHERE id "
                " NOT IN (SELECT id_node  FROM meta_alerts_tree) "
                " AND id "
-               " NOT IN (SELECT id_child FROM meta_alerts_tree)");
+               " NOT IN (SELECT id_child FROM meta_alerts_tree)"
+               " AND id "
+               " NOT IN (SELECT id_meta_alert FROM alert_to_meta_alert_map)");
 
     // move tmp_ma_swap's content to tmp_ma
     execSQL(t, "DELETE FROM tmp_ma");
@@ -147,9 +149,9 @@ void Connection::removeAnalyzers(Transaction &t) const
 
 size_t Connection::removeAlerts(Transaction &t) const
 {
-  // finaly remove all alerts, that are not used
   execSQL(t, "DELETE FROM alert_to_meta_alert_map WHERE id_alert "
              " IN (SELECT id FROM tmp)");
+  // finaly remove all alerts, that are not used
   const size_t removed=execSQL(t, "DELETE FROM alerts WHERE id "
                                   " IN (SELECT id FROM tmp)").affected_rows();
   return removed;
