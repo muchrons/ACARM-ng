@@ -38,6 +38,8 @@ struct TestClass
     tdba_.removeAllData();
   }
 
+  // TODO: 'out' should be const-ref.
+  // TODO: this methods hsould be const
   void checkCache(Restorer::NodesVector &out)
   {
     for(Restorer::NodesVector::iterator it = out.begin(); it !=out.end(); ++it)
@@ -57,53 +59,43 @@ struct TestClass
     }
   }
 
+  // TODO: add simple ASCII-art drawing of how this graph looks like
   void makeNewTreeA(Restorer::NodesVector &first, Restorer::NodesVector &second)
   {
     GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
     GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
     first.push_back(leaf1);
     first.push_back(leaf2);
-    GraphNodePtrNN node3 = makeNewNode(leaf1,
-        leaf2,
-        "node3");
+    GraphNodePtrNN node3 = makeNewNode(leaf1, leaf2, "node3");
     first.push_back(node3);
 
     GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
     GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
     second.push_back(leaf3);
     second.push_back(leaf4);
-    GraphNodePtrNN node4 = makeNewNode(leaf3,
-        leaf4,
-        "node4");
+    GraphNodePtrNN node4 = makeNewNode(leaf3, leaf4, "node4");
     second.push_back(node4);
 
     GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
     GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
     second.push_back(leaf5);
     second.push_back(leaf6);
-    GraphNodePtrNN node5 = makeNewNode(leaf5,
-        leaf6,
-        "node5");
+    GraphNodePtrNN node5 = makeNewNode(leaf5, leaf6, "node5");
 
     second.push_back(node5);
 
-    GraphNodePtrNN node1 = makeNewNode(node3,
-        node4,
-        "node1");
+    GraphNodePtrNN node1 = makeNewNode(node3, node4, "node1");
     second.push_back(node1);
 
 
-    GraphNodePtrNN node2 = makeNewNode(node4,
-        node5,
-        "node2");
+    GraphNodePtrNN node2 = makeNewNode(node4, node5, "node2");
     second.push_back(node2);
 
-    GraphNodePtrNN root = makeNewNode(node1,
-        node2,
-        "root");
+    GraphNodePtrNN root = makeNewNode(node1, node2, "root");
     second.push_back(root);
   }
 
+  // TODO: add simple ASCII-art drawing of how this graph looks like
   void makeNewTreeB(Restorer::NodesVector &first, Restorer::NodesVector &second)
   {
     GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
@@ -121,14 +113,10 @@ struct TestClass
     second.push_back(leaf3);
     second.push_back(leaf4);
 
-    GraphNodePtrNN node2 = makeNewNode(leaf3,
-        leaf4,
-        "node2");
+    GraphNodePtrNN node2 = makeNewNode(leaf3, leaf4, "node2");
     second.push_back(node2);
 
-    GraphNodePtrNN root1 = makeNewNode(node1,
-        node2,
-        "root1");
+    GraphNodePtrNN root1 = makeNewNode(node1, node2, "root1");
     second.push_back(root1);
 
     GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
@@ -137,9 +125,7 @@ struct TestClass
     first.push_back(leaf5);
     first.push_back(leaf6);
 
-    GraphNodePtrNN node3 = makeNewNode(leaf5,
-        leaf6,
-        "node3");
+    GraphNodePtrNN node3 = makeNewNode(leaf5, leaf6, "node3");
 
     first.push_back(node3);
 
@@ -149,20 +135,17 @@ struct TestClass
     first.push_back(leaf7);
     first.push_back(leaf8);
 
-    GraphNodePtrNN node4 = makeNewNode(leaf7,
-        leaf8,
-        "node4");
+    GraphNodePtrNN node4 = makeNewNode(leaf7, leaf8, "node4");
 
     first.push_back(node4);
 
-    GraphNodePtrNN root2 = makeNewNode(node3,
-        node4,
-        "root2");
+    GraphNodePtrNN root2 = makeNewNode(node3, node4, "root2");
 
     first.push_back(root2);
 
   }
 
+  // TODO: add simple ASCII-art drawing of how this graph looks like
   void makeNewTreeC(Restorer::NodesVector &first, Restorer::NodesVector &second)
   {
     GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
@@ -170,9 +153,7 @@ struct TestClass
     second.push_back(leaf1);
     second.push_back(leaf2);
 
-    GraphNodePtrNN node1 = makeNewNode(leaf1,
-        leaf2,
-        "node1");
+    GraphNodePtrNN node1 = makeNewNode(leaf1, leaf2, "node1");
     second.push_back(node1);
 
     GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
@@ -180,14 +161,10 @@ struct TestClass
     first.push_back(leaf3);
     first.push_back(leaf4);
 
-    GraphNodePtrNN node2 = makeNewNode(leaf3,
-        leaf4,
-        "node2");
+    GraphNodePtrNN node2 = makeNewNode(leaf3, leaf4, "node2");
     first.push_back(node2);
 
-    GraphNodePtrNN root1 = makeNewNode(node1,
-        node2,
-        "root1");
+    GraphNodePtrNN root1 = makeNewNode(node1, node2, "root1");
     second.push_back(root1);
 
     GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
@@ -196,9 +173,7 @@ struct TestClass
     first.push_back(leaf5);
     first.push_back(leaf6);
 
-    GraphNodePtrNN node3 = makeNewNode(leaf5,
-        leaf6,
-        "node3");
+    GraphNodePtrNN node3 = makeNewNode(leaf5, leaf6, "node3");
 
     first.push_back(node3);
 
@@ -208,19 +183,17 @@ struct TestClass
     first.push_back(leaf7);
     first.push_back(leaf8);
 
-    GraphNodePtrNN node4 = makeNewNode(leaf7,
-        leaf8,
-        "node4");
+    GraphNodePtrNN node4 = makeNewNode(leaf7, leaf8, "node4");
 
     first.push_back(node4);
 
-    GraphNodePtrNN root2 = makeNewNode(node3,
-        node4,
-        "root2");
+    GraphNodePtrNN root2 = makeNewNode(node3, node4, "root2");
 
     first.push_back(root2);
 
   }
+
+  // TODO: add simple ASCII-art drawing of how this graph looks like
   Restorer::NodesVector makeNewTreeD(void)
   {
     Restorer::NodesVector vec;
@@ -229,9 +202,7 @@ struct TestClass
     vec.push_back(leaf1);
     vec.push_back(leaf2);
 
-    GraphNodePtrNN node1 = makeNewNode(leaf1,
-        leaf2,
-        "node1");
+    GraphNodePtrNN node1 = makeNewNode(leaf1, leaf2, "node1");
     vec.push_back(node1);
 
     GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
@@ -239,23 +210,18 @@ struct TestClass
     vec.push_back(leaf3);
     vec.push_back(leaf4);
 
-    GraphNodePtrNN node3 = makeNewNode(leaf3,
-        leaf4,
-        "node3");
+    GraphNodePtrNN node3 = makeNewNode(leaf3, leaf4, "node3");
     vec.push_back(node3);
     GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
     vec.push_back(leaf5);
-    GraphNodePtrNN node2 = makeNewNode(node3,
-        leaf5,
-        "node2");
+    GraphNodePtrNN node2 = makeNewNode(node3, leaf5, "node2");
     vec.push_back(node2);
-    GraphNodePtrNN root = makeNewNode(node1,
-        node2,
-        "root");
+    GraphNodePtrNN root = makeNewNode(node1, node2, "root");
     vec.push_back(root);
     return vec;
   }
 
+  // TODO: add simple ASCII-art drawing of how this graph looks like
   Restorer::NodesVector makeNewTreeE(void)
   {
     Restorer::NodesVector vec;
@@ -264,9 +230,7 @@ struct TestClass
     vec.push_back(leaf1);
     vec.push_back(leaf2);
 
-    GraphNodePtrNN node1 = makeNewNode(leaf1,
-        leaf2,
-        "node1");
+    GraphNodePtrNN node1 = makeNewNode(leaf1, leaf2, "node1");
     vec.push_back(node1);
 
     GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
@@ -274,35 +238,27 @@ struct TestClass
     vec.push_back(leaf3);
     vec.push_back(leaf4);
 
-    GraphNodePtrNN node3 = makeNewNode(leaf3,
-        leaf4,
-        "node3");
+    GraphNodePtrNN node3 = makeNewNode(leaf3, leaf4, "node3");
     vec.push_back(node3);
     GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
     GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
     vec.push_back(leaf5);
     vec.push_back(leaf6);
-    GraphNodePtrNN node4 = makeNewNode(leaf5,
-        leaf6,
-        "node4");
+    GraphNodePtrNN node4 = makeNewNode(leaf5, leaf6, "node4");
     vec.push_back(node4);
 
-    GraphNodePtrNN node2 = makeNewNode(node3,
-        node4,
-        "node2");
+    GraphNodePtrNN node2 = makeNewNode(node3, node4, "node2");
     vec.push_back(node2);
-    GraphNodePtrNN root = makeNewNode(node1,
-        node2,
-        "root");
+    GraphNodePtrNN root = makeNewNode(node1, node2, "root");
     vec.push_back(root);
     return vec;
   }
 
-  TestDBAccess            tdba_;
-  IDCachePtrNN            idCache_;
-  DBHandlerPtrNN          dbh_;
-  IO::ConnectionPtrNN     conn_;
-  Transaction             t_;
+  TestDBAccess        tdba_;
+  IDCachePtrNN        idCache_;
+  DBHandlerPtrNN      dbh_;
+  IO::ConnectionPtrNN conn_;
+  Transaction         t_;
 
 };
 
@@ -326,9 +282,10 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-
+  // TODO: c&p code - make this test-class' method, parametrized with outVec.
   Restorer::NodesVector out;
   // create tree and save data to the data base
+  // TODO: this variable should be const
   Restorer::NodesVector outVec = makeNewTreeD();
   // create restorer
   Restorer r(t_, dbh_);
@@ -354,6 +311,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  // TODO: c&p code - make this test-class' method, parametrized with outVec.
   Restorer::NodesVector out;
   const Restorer::NodesVector outVec = makeNewTree3();
   // create restorer
@@ -378,6 +336,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
+  // TODO: c&p code - make this test-class' method, parametrized with outVec.
   Restorer::NodesVector out;
   // create tree and save data to the data base
   Restorer::NodesVector outVec = makeNewTreeD();
@@ -399,6 +358,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
+  // TODO: c&p code - make this test-class' method, parametrized with outVec.
   Restorer::NodesVector out;
   // create restorer
   Restorer r(t_, dbh_);
@@ -419,6 +379,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
+  // TODO: c&p code - make this test-class' method, parametrized with outVec.
   Restorer::NodesVector out;
   const Restorer::NodesVector outVec = makeNewTree5();
   // create restorer
@@ -443,6 +404,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
+  // TODO: c&p code - make this test-class' method, parametrized with outVec and nodes to be removed.
   Restorer::NodesVector out;
   Restorer::NodesVector outVec;
   Restorer::NodesVector tmp;
@@ -459,7 +421,6 @@ void testObj::test<6>(void)
 }
 
 // try restoring invalid data
-
 //
 //                  root1                      root2
 //                        node2          node3       node4
@@ -469,6 +430,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
+  // TODO: c&p code - make this test-class' method, parametrized with outVec and nodes to be removed.
   Restorer::NodesVector out;
   Restorer::NodesVector outVec;
   Restorer::NodesVector tmp;
@@ -487,7 +449,6 @@ void testObj::test<7>(void)
 }
 
 // try restoring invalid data
-
 //
 //                  root1                      root2
 //             node1                     node3       node4
@@ -497,6 +458,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
+  // TODO: c&p code - make this test-class' method, parametrized with outVec and nodes to be removed.
   Restorer::NodesVector out;
   Restorer::NodesVector outVec;
   Restorer::NodesVector tmp;
@@ -522,6 +484,7 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
+  // TODO: c&p code - make this test-class' method, parametrized with outVec.
   Restorer::NodesVector out;
   const Restorer::NodesVector outVec = makeNewTree7();
   // create restorer
@@ -534,5 +497,8 @@ void testObj::test<9>(void)
   checkCache(out);
   t_.commit();
 }
+
+// TODO: try restoring valid data with restore(..., from, to) where some sub-tree part
+//       is in use, but does not fit into [from, to] range.
 
 } // namespace tut

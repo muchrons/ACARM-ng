@@ -1,0 +1,9 @@
+# backtrace() system call does leak as well
+{
+   system_lib_backtrace_leak_suppress
+   Memcheck:Leak
+   fun:malloc
+   ...
+   fun:backtrace
+   ...
+}

@@ -45,14 +45,14 @@ private:
   BackendFactory::FactoryPtr createStubIO(void);
 
   GraphNodePtrNN makeLeaf(DataBaseID          id,
-                         AlertPtrNN          aPtr,
-                         IO::ConnectionPtrNN connStubIO,
-                         IO::Transaction     &tStubIO);
+                          AlertPtrNN          aPtr,
+                          IO::ConnectionPtrNN connStubIO,
+                          IO::Transaction     &tStubIO);
   GraphNodePtrNN makeNode(DataBaseID          id,
-                         MetaAlertPtrNN      maPtr,
-                         NodeChildrenVector  vec,
-                         IO::ConnectionPtrNN connStubIO,
-                         IO::Transaction     &tStubIO);
+                          MetaAlertPtrNN      maPtr,
+                          NodeChildrenVector  vec,
+                          IO::ConnectionPtrNN connStubIO,
+                          IO::Transaction     &tStubIO);
   GraphNodePtrNN deepFirstSearch(DataBaseID                                      id,
                                  NodesVector                                    &out,
                                  Persistency::IO::Postgres::detail::EntryReader &er,
@@ -84,10 +84,15 @@ private:
                                          Persistency::IO::Postgres::detail::EntryReader &er,
                                          IO::ConnectionPtrNN                             connStubIO,
                                          IO::Transaction                                &tStubIO);
-  void addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er, Tree::IDsVector &malerts);
+
+  void addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er,
+                           Tree::IDsVector                                &malerts);
 
   DBHandlerPtrNN        dbHandler_;
-  Cache<GraphNodePtrNN> graphCache_;
+  Cache<GraphNodePtrNN> graphCache_;    // TODO: it might be good idea to split this into 2 separete caches
+                                        //       for leafs and nodes, and map IDs from alerts and meta-laerts
+                                        //       respectively. this should bee good for avoiding some issues
+                                        //       marked as TODOs in the implementation part.
   Cache<TreePtr>        treeNodes_;
 }; // class Restorer
 

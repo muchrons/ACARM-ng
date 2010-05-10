@@ -45,11 +45,13 @@ struct TestThread
 
   ~TestThread(void)
   {
+    assert(state_!=NULL);
     *state_=2;
   }
 
   void operator()(void)
   {
+    assert(state_!=NULL);
     *state_=1;
     while(true)
     {
@@ -102,8 +104,15 @@ void testObj::test<4>(void)
   {
     ThreadJoiner thj( (TestThread(&state_)) );
     // wait for state flip
+    const time_t now=time(NULL);
     while(state_!=1)
-      usleep(10*1000);
+    {
+      // timeout if nothing happens
+      if( time(NULL)>now+5 )
+        fail("timeout while waiting for thread (thread not started?)");
+      // prevent 100%-time busy-loop
+      usleep(11*1000);
+    }
     // if state is reached, join thread
   }
   // here thread should be already joined
