@@ -391,6 +391,7 @@ void EntrySaver::markMetaAlertAsTriggered(DataBaseID malertID, const std::string
 void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
 {
   stringstream ss;
+  // TODO: last_update_time columnt should be updated as well here
   ss << "UPDATE meta_alerts SET severity_delta = severity_delta + ";
   Appender::append(ss, severityDelta);
   ss << " WHERE id = " << malertID << ";";
@@ -400,6 +401,7 @@ void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
 void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta)
 {
   stringstream ss;
+  // TODO: last_update_time columnt should be updated as well here
   ss << "UPDATE meta_alerts SET certainty_delta = certainty_delta + ";
   Appender::append(ss, certanityDelta);
   ss << " WHERE id = " << malertID << ";";
