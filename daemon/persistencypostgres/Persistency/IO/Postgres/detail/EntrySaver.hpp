@@ -8,6 +8,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "Base/NullValue.hpp"
+#include "Logger/Node.hpp"
 #include "Persistency/Process.hpp"
 #include "Persistency/Service.hpp"
 #include "Persistency/ReferenceURL.hpp"
@@ -153,7 +154,7 @@ private:
 
   DataBaseID saveReportedHostData(DataBaseID               alertID,
                                   DataBaseID               hostID,
-                                  const std::string        role,
+                                  const std::string        role,    // TODO: const char * is fine here - this is implementation detail
                                   const Persistency::Host &h);
 
   DataBaseID saveServiceData(const Service &s);
@@ -163,8 +164,11 @@ private:
   void addReferenceURL(std::stringstream &ss, const ReferenceURL *url);
   bool isHostNameNull(DataBaseID hostID);
 
-  DBHandler   &dbh_;
-  Transaction &t_;
+  pqxx::result execSQL(const std::string &sql);
+
+  Logger::Node  log_;
+  DBHandler    &dbh_;
+  Transaction  &t_;
 }; // class EntrySaver
 
 } // namespace detail

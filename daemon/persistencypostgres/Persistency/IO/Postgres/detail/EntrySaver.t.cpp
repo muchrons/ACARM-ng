@@ -849,4 +849,37 @@ void testObj::test<24>(void)
   t_.commit();
 }
 
+// test for bug when trying to save NULL reference URL
+template<>
+template<>
+void testObj::test<25>(void)
+{
+  HostPtrNN h( new Host( Host::IPv4::from_string("1.2.3.4"),
+                         NULL,
+                         "myos",
+                         ReferenceURLPtr(),
+                         Host::ReportedServices(),
+                         Host::ReportedProcesses(),
+                         NULL ) );
+  Alert::ReportedHosts sh;
+  sh.push_back(h);
+  // save some alert
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+                description_, sh, targetHosts_);
+  const DataBaseID hostID  = es_.saveHostData(*h);
+  const DataBaseID alertID = es_.saveAlert(a);
+  // save data in table alert_analyzers
+  const DataBaseID thostID = es_.saveSourceHost(hostID, alertID, *h);   // original bug throw here
+
+  // check if entry is really there
+  stringstream ss;
+  ss << "SELECT * FROM reported_hosts WHERE"
+     << " id_host = " << hostID
+     << " AND id_alert =  " << alertID
+     << " AND id =  " << thostID;
+  const result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size", r.size(), 1u);
+  t_.commit();
+}
+
 } // namespace tut
