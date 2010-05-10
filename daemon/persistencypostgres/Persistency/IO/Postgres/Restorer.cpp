@@ -3,7 +3,7 @@
  *
  */
 #include <set>
-// TODO: cassert is not included, but assert() is used
+#include <cassert>
 
 #include "Persistency/IO/Postgres/Restorer.hpp"
 #include "Persistency/IO/Postgres/ExceptionBadNumberOfNodeChildren.hpp"
@@ -40,8 +40,9 @@ Restorer::Restorer(Transaction    &t,
 void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &out)
 {
   EntryReader er(t, *dbHandler_);
-  Tree::IDsVector maInUse( er.readIDsMalertsInUse() );
-  restore(er, out, maInUse);
+  const Tree::IDsVector maInUse( er.readIDsMalertsInUse() );
+  const Tree::IDsVector roots( er.readRoots());
+  restore(er, out, maInUse, roots);
 }
 
 void Restorer::restoreBetweenImpl(Transaction     &t,
@@ -50,8 +51,9 @@ void Restorer::restoreBetweenImpl(Transaction     &t,
                                   const Timestamp &to)
 {
   EntryReader er(t, *dbHandler_);
-  Tree::IDsVector maBetween( er.readIDsMalertsBetween(from, to) );
-  restore(er, out, maBetween, from, to);
+  const Tree::IDsVector maBetween( er.readIDsMalertsBetween(from, to) );
+  const Tree::IDsVector &roots = er.readRoots(from, to);
+  restore(er, out, maBetween, roots);
 }
 
 BackendFactory::FactoryPtr Restorer::createStubIO(void)
@@ -67,23 +69,23 @@ GraphNodePtrNN Restorer::makeLeaf(DataBaseID           id,
                                  IO::ConnectionPtrNN  connStubIO,
                                  IO::Transaction     &tStubIO)
 {
-  if( graphCache_.isInCache(id) )
-    return graphCache_.getFromCacheNotNull(id);
+  if( graphCache_.has(id) )
+    return graphCache_.getNotNull(id);
   GraphNodePtrNN leaf( new GraphNode( aPtr, connStubIO, tStubIO ) );
-  graphCache_.addToCache(id, leaf);
+  graphCache_.add(id, leaf);
   return leaf;
 }
 
-GraphNodePtrNN Restorer::makeNode(DataBaseID           id,
-                                  MetaAlertPtrNN       maPtr,
-                                  NodeChildrenVector   vec,          // TODO: const-ref here
-                                  IO::ConnectionPtrNN  connStubIO,
-                                  IO::Transaction     &tStubIO)
+GraphNodePtrNN Restorer::makeNode(DataBaseID                 id,
+                                  MetaAlertPtrNN             maPtr,
+                                  const NodeChildrenVector  &vec,
+                                  IO::ConnectionPtrNN        connStubIO,
+                                  IO::Transaction            &tStubIO)
 {
-  if( graphCache_.isInCache(id) )
-    return graphCache_.getFromCacheNotNull(id);
+  if( graphCache_.has(id) )
+    return graphCache_.getNotNull(id);
   GraphNodePtrNN node( new GraphNode( maPtr, connStubIO, tStubIO, vec ) );
-  graphCache_.addToCache(id, node);
+  graphCache_.add(id, node);
   return node;
 }
 
@@ -93,37 +95,24 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
                                          IO::ConnectionPtrNN                             connStubIO,
                                          IO::Transaction                                &tStubIO)
 {
-  TreePtrNN node = treeNodes_.getFromCache(id);
+  TreePtrNN node = treeNodes_.getNotNull(id);
   // check if there are no children (i.e. is leaf)
   if( node->getChildrenNumber() == 0 )
     return restoreLeaf(id, out, er, connStubIO, tStubIO);
-  // TODO: id' suggest making below code resotreNode() method, for consistency and readability
-  // read Meta Alert from data base
-  MetaAlertPtrNN malertPtr( er.readMetaAlert(id) );
-  // add Meta Alert to cache
-  addIfNew(malertPtr, id);
-  GraphNodePtrNN graphNode( makeNode( id, malertPtr,
-                                         restoreNodeChildren(node, id, out, er, connStubIO, tStubIO),
-                                         connStubIO,
-                                         tStubIO ));
-  out.push_back(graphNode);
-  return graphNode;
+  return restoreNode(node, id, out, er, connStubIO, tStubIO);
 }
 
 // TODO: add class with lists of errors
 void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
                        NodesVector                                    &out,
-                       Tree::IDsVector                                &malerts)
+                       const Tree::IDsVector                                &malerts,
+                       const Tree::IDsVector                                &roots)
 {
-  // TODO: this method's implemenation is identical with restore(..., from, to).
-  //       make this common code, that takes Tree::IDsVector as a parameter - this
-  //       will give you single implementation with two one-line API calls.
   addTreeNodesToCache(er, malerts);
 
   IO::ConnectionPtrNN connStubIO( createStubIO() );
   IO::Transaction     tStubIO( connStubIO->createNewTransaction("stub transaction") );
 
-  const Tree::IDsVector &roots = er.readRoots();
   for(Tree::IDsVector::const_iterator it = roots.begin(); it != roots.end(); ++it)
   {
     try
@@ -139,42 +128,11 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
   removeDuplicates(out);
 }
 
-// TODO: reorganize this code
-void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
-                       NodesVector                                    &out,
-                       Tree::IDsVector                                &malerts,
-                       const Timestamp                                &from,
-                       const Timestamp                                &to)
-{
-  // TODO: see comment to restore(..., from, to)
-  addTreeNodesToCache(er, malerts);
-
-  IO::ConnectionPtrNN connStubIO( createStubIO() );
-  IO::Transaction     tStubIO( connStubIO->createNewTransaction("stub transaction") );
-
-  const Tree::IDsVector &roots = er.readRoots(from, to);
-  for(Tree::IDsVector::const_iterator it = roots.begin(); it != roots.end(); ++it)
-  {
-    try
-    {
-      deepFirstSearch(*it, out, er, connStubIO, tStubIO);
-    }
-    catch(const ExceptionBadNumberOfNodeChildren &)
-    {
-      // TODO: logs
-    }
-  }
-  // remove doplicates from out vector
-  removeDuplicates(out);
-}
-
-
-// TODO: take T as const-reference - it can be gib object after all
 // TODO: consider returing element from cache, if addition has not been made or
 //       'e' when new one has been added - it's trivial to implement and makes
 //       API more robust.
 template<typename T>
-void Restorer::addIfNew(T e, DataBaseID id)
+void Restorer::addIfNew(const T &e, DataBaseID id)
 {
   if(!dbHandler_->getIDCache()->has(e))
     dbHandler_->getIDCache()->add(e, id);
@@ -188,20 +146,37 @@ GraphNodePtrNN Restorer::restoreLeaf(DataBaseID                                 
                                      IO::ConnectionPtrNN                             connStubIO,
                                      IO::Transaction                                &tStubIO)
 {
-  // TODO: fix indentation
-    // read Alert from data base
-    AlertPtrNN alertPtr( er.getLeaf(id) );
-    const DataBaseID alertID = er.getAlertIDAssociatedWithMetaAlert(id);
-    // add Alert to cache
-   addIfNew(alertPtr, alertID);
+  // read Alert from data base
+  AlertPtrNN alertPtr( er.getLeaf(id) );
+  const DataBaseID alertID = er.getAlertIDAssociatedWithMetaAlert(id);
+  // add Alert to cache
+  addIfNew(alertPtr, alertID);
   // TODO: creating new graph node/leaf, when alert was already processed is not valid since
   //       it makes double instances of object repreesnting the same elements.
   //       graph nodes probably should be cached as well, indexed by alerts' ID and nodes' ID.
-    const GraphNodePtrNN graphNodeLeaf( makeLeaf( alertID, alertPtr, connStubIO, tStubIO ) );
-    out.push_back(graphNodeLeaf);
-    return graphNodeLeaf;
+  const GraphNodePtrNN graphNodeLeaf( makeLeaf( alertID, alertPtr, connStubIO, tStubIO ) );
+  out.push_back(graphNodeLeaf);
+  return graphNodeLeaf;
 }
 
+GraphNodePtrNN Restorer::restoreNode(TreePtrNN                                       node,
+                                     DataBaseID                                      id,
+                                     NodesVector                                    &out,
+                                     Persistency::IO::Postgres::detail::EntryReader &er,
+                                     IO::ConnectionPtrNN                             connStubIO,
+                                     IO::Transaction                                &tStubIO)
+{
+  // read Meta Alert from data base
+  MetaAlertPtrNN malertPtr( er.readMetaAlert(id) );
+  // add Meta Alert to cache
+  addIfNew(malertPtr, id);
+  GraphNodePtrNN graphNode( makeNode( id, malertPtr,
+                                         restoreNodeChildren(node, id, out, er, connStubIO, tStubIO),
+                                         connStubIO,
+                                         tStubIO ));
+  out.push_back(graphNode);
+  return graphNode;
+}
 NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                                       node,
                                                  DataBaseID                                      id,
                                                  NodesVector                                    &out,
@@ -220,23 +195,24 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
   {
     tmpNodes.push_back( deepFirstSearch( *it, out, er, connStubIO, tStubIO ) );
   }
-  // TODO: assert on tmpNodes' size would be nice here
+  assert(tmpNodes.size() >= 2);
+  // add first two children to the node children vector
   NodeChildrenVector vec(tmpNodes[0], tmpNodes[1]);
-  // TODO: comment this code a bit, i.e. why indexing is started with 2
+  // add rest of children (indexing is started with 2 becouse node should have at least two children)
   for(size_t i = 2; i<tmpNodes.size(); ++i)
     vec.push_back(tmpNodes[i]);
   return vec;
 }
 
-// TODO: 'malerts' is not changed here - it should be const-ref.
 // TODO: can 'er' be const-ref too?
-void Restorer::addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er, Tree::IDsVector &malerts)
+void Restorer::addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er,
+                                   const Tree::IDsVector &malerts)
 {
   for(Tree::IDsVector::const_iterator it = malerts.begin(); it != malerts.end(); ++it)
   {
     const Tree::IDsVector &malertChildren = er.readMetaAlertChildren( (*it) );
     // put this data to the tree which represents meta alerts tree structure
-    treeNodes_.addToCache(*it, TreePtr(new Tree(*it, malertChildren) ));
+    treeNodes_.add(*it, TreePtr(new Tree(*it, malertChildren) ));
   }
 }
 

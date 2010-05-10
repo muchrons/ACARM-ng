@@ -39,8 +39,7 @@ struct TestClass
   }
 
   // TODO: 'out' should be const-ref.
-  // TODO: this methods hsould be const
-  void checkCache(Restorer::NodesVector &out)
+  void checkCache(Restorer::NodesVector &out) const
   {
     for(Restorer::NodesVector::iterator it = out.begin(); it !=out.end(); ++it)
     {
@@ -58,8 +57,34 @@ struct TestClass
         tut::ensure("meta alert shoud be in cache", idCache_->has( (*it)->getMetaAlert()) );
     }
   }
+  void check(const Restorer::NodesVector &outVec)
+  {
+    Restorer::NodesVector out;
+    // create restorer
+    Restorer r(t_, dbh_);
+    // restore data from data base
+    r.restoreAllInUse(out);
+    // put tree in vector
 
-  // TODO: add simple ASCII-art drawing of how this graph looks like
+    tut::ensure_equals("invalid size", out.size(), outVec.size());
+    tut::ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
+    // check if restored alerts and meta alerts exist in cache
+    checkCache(out);
+    t_.commit();
+  }
+
+  void check(const Restorer::NodesVector &outVec, const std::string &node, const std::string &child)
+  {
+    removeNodeConnection(node, child);
+    check(outVec);
+  }
+
+  //
+  //                   root1
+  //             node1       node2
+  //                   node4       node5
+  //                leaf3 leaf4 leaf5 leaf6
+  //
   void makeNewTreeA(Restorer::NodesVector &first, Restorer::NodesVector &second)
   {
     GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
@@ -95,7 +120,11 @@ struct TestClass
     second.push_back(root);
   }
 
-  // TODO: add simple ASCII-art drawing of how this graph looks like
+  //
+  //                  root1                      root2
+  //                        node2          node3       node4
+  //                     leaf3  leaf4   leaf5 leaf6 leaf7  leaf8
+  //
   void makeNewTreeB(Restorer::NodesVector &first, Restorer::NodesVector &second)
   {
     GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
@@ -145,7 +174,11 @@ struct TestClass
 
   }
 
-  // TODO: add simple ASCII-art drawing of how this graph looks like
+  //
+  //                  root1                      root2
+  //             node1                     node3       node4
+  //          leaf1 leaf2               leaf5 leaf6 leaf7  leaf8
+  //
   void makeNewTreeC(Restorer::NodesVector &first, Restorer::NodesVector &second)
   {
     GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
@@ -193,7 +226,12 @@ struct TestClass
 
   }
 
-  // TODO: add simple ASCII-art drawing of how this graph looks like
+  //
+  //                root
+  //     node1               node2
+  //  leaf1 leaf2      node3      leaf5
+  //                leaf3 leaf4
+  //
   Restorer::NodesVector makeNewTreeD(void)
   {
     Restorer::NodesVector vec;
@@ -221,7 +259,12 @@ struct TestClass
     return vec;
   }
 
-  // TODO: add simple ASCII-art drawing of how this graph looks like
+  //
+  //                root
+  //     node1               node2
+  //  leaf1 leaf2      node3       node4
+  //                leaf3 leaf4 leaf5 leaf6
+  //
   Restorer::NodesVector makeNewTreeE(void)
   {
     Restorer::NodesVector vec;
@@ -282,23 +325,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  // TODO: c&p code - make this test-class' method, parametrized with outVec.
-  Restorer::NodesVector out;
   // create tree and save data to the data base
-  // TODO: this variable should be const
-  Restorer::NodesVector outVec = makeNewTreeD();
-  // create restorer
-  Restorer r(t_, dbh_);
-  // restore data from data base
-  r.restoreAllInUse(out);
-  // put tree in vector
-  //removeDuplicates(outVec);
-
-  ensure_equals("invalid size", out.size(), outVec.size());
-  ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
-  // check if restored alerts and meta alerts exist in cache
-  checkCache(out);
-  t_.commit();
+  const Restorer::NodesVector outVec = makeNewTreeD();
+  check(outVec);
 }
 
 // trying restoring tree
@@ -311,18 +340,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  // TODO: c&p code - make this test-class' method, parametrized with outVec.
-  Restorer::NodesVector out;
   const Restorer::NodesVector outVec = makeNewTree3();
-  // create restorer
-  Restorer r(t_, dbh_);
-  // restore data from data base
-  r.restoreAllInUse(out);
-  ensure_equals("invalid size", out.size(), outVec.size());
-  ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
-  // check if restored alerts and meta alerts exist in cache
-  checkCache(out);
-  t_.commit();
+  check(outVec);
 }
 
 // trying restoring tree
@@ -336,21 +355,9 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  // TODO: c&p code - make this test-class' method, parametrized with outVec.
-  Restorer::NodesVector out;
   // create tree and save data to the data base
-  Restorer::NodesVector outVec = makeNewTreeD();
-  // create restorer
-  Restorer r(t_, dbh_);
-  // restore data from data base
-  r.restoreAllInUse(out);
-  // put tree in vector
-
-  ensure_equals("invalid size", out.size(), outVec.size());
-  ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
-  // check if restored alerts and meta alerts exist in cache
-  checkCache(out);
-  t_.commit();
+  const Restorer::NodesVector outVec = makeNewTreeE();
+  check(outVec);
 }
 
 // try restoring empty set
@@ -358,7 +365,6 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  // TODO: c&p code - make this test-class' method, parametrized with outVec.
   Restorer::NodesVector out;
   // create restorer
   Restorer r(t_, dbh_);
@@ -379,18 +385,8 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  // TODO: c&p code - make this test-class' method, parametrized with outVec.
-  Restorer::NodesVector out;
   const Restorer::NodesVector outVec = makeNewTree5();
-  // create restorer
-  Restorer r(t_, dbh_);
-  // restore data from data base
-  r.restoreAllInUse(out);
-  ensure_equals("invalid size", out.size(), outVec.size());
-  ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
-  // check if restored alerts and meta alerts exist in cache
-  checkCache(out);
-  t_.commit();
+  check(outVec);
 }
 
 // try restoring invalid data
@@ -404,20 +400,10 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  // TODO: c&p code - make this test-class' method, parametrized with outVec and nodes to be removed.
-  Restorer::NodesVector out;
   Restorer::NodesVector outVec;
   Restorer::NodesVector tmp;
   makeNewTreeA(outVec, tmp);
-  removeData("node1", "node3");
-  // create restorer
-  Restorer r(t_, dbh_);
-  r.restoreAllInUse(out);
-  ensure_equals("invalid size", out.size(), outVec.size());
-  ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
-  // check if restored alerts and meta alerts exist in cache
-  checkCache(out);
-  t_.commit();
+  check(outVec, "node1", "node3");
 }
 
 // try restoring invalid data
@@ -430,22 +416,10 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  // TODO: c&p code - make this test-class' method, parametrized with outVec and nodes to be removed.
-  Restorer::NodesVector out;
   Restorer::NodesVector outVec;
   Restorer::NodesVector tmp;
   makeNewTreeB(outVec, tmp);
-  removeData("root1", "node1");
-  // create restorer
-  Restorer r(t_, dbh_);
-  // restore data from data base
-  r.restoreAllInUse(out);
-  ensure_equals("invalid size", out.size(), outVec.size());
-  ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
-  // check if restored alerts and meta alerts exist in cache
-  checkCache(out);
-  t_.commit();
-
+  check(outVec, "root1", "node1");
 }
 
 // try restoring invalid data
@@ -458,22 +432,10 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  // TODO: c&p code - make this test-class' method, parametrized with outVec and nodes to be removed.
-  Restorer::NodesVector out;
   Restorer::NodesVector outVec;
   Restorer::NodesVector tmp;
   makeNewTreeC(outVec, tmp);
-  removeData("root1", "node2");
-  // create restorer
-  Restorer r(t_, dbh_);
-  // restore data from data base
-  r.restoreAllInUse(out);
-  ensure_equals("invalid size", out.size(), outVec.size());
-  ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
-  // check if restored alerts and meta alerts exist in cache
-  checkCache(out);
-  t_.commit();
-
+  check(outVec, "root1", "node2");
 }
 
 //
@@ -484,18 +446,8 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  // TODO: c&p code - make this test-class' method, parametrized with outVec.
-  Restorer::NodesVector out;
   const Restorer::NodesVector outVec = makeNewTree7();
-  // create restorer
-  Restorer r(t_, dbh_);
-  // restore data from data base
-  r.restoreAllInUse(out);
-  ensure_equals("invalid size", out.size(), outVec.size());
-  ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
-  // check if restored alerts and meta alerts exist in cache
-  checkCache(out);
-  t_.commit();
+  check(outVec);
 }
 
 // TODO: try restoring valid data with restore(..., from, to) where some sub-tree part
