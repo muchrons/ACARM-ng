@@ -164,7 +164,7 @@ private:
   void addReferenceURL(std::stringstream &ss, const ReferenceURL *url);
   bool isHostNameNull(DataBaseID hostID);
 
-  pqxx::result execSQL(const std::string &sql);
+  pqxx::result execSQL(const std::string &sql, int line);
 
   Logger::Node  log_;
   DBHandler    &dbh_;
