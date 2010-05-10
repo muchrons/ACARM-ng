@@ -31,19 +31,19 @@ void Alert::saveImpl(Transaction &t)
   //add Alert to cache
   dbHandler_->getIDCache()->add(get() , alertID);
   //save source hosts
-  Persistency::Alert::ReportedHosts      SourceHosts(a.getReportedSourceHosts() );
+  Persistency::Alert::ReportedHosts SourceHosts( a.getReportedSourceHosts() );
   saveHosts(es, alertID, HostType::SRC, SourceHosts);
   //save target hosts
-  Persistency::Alert::ReportedHosts      TargetHosts(a.getReportedTargetHosts() );
+  Persistency::Alert::ReportedHosts TargetHosts( a.getReportedTargetHosts() );
   saveHosts(es, alertID, HostType::DST, TargetHosts);
   //get Analyzers from Alert
-  Persistency::Alert::SourceAnalyzers    analyzers(a.getSourceAnalyzers() );
+  Persistency::Alert::SourceAnalyzers analyzers( a.getSourceAnalyzers() );
   //save Analyzers
   for(Persistency::Alert::SourceAnalyzers::iterator it = analyzers.begin(); it != analyzers.end(); ++it)
   {
-    const Persistency::Analyzer &analyzer = *it->get();
     //save Analyzer
-    const DataBaseID            anlzID = es.saveAnalyzer(analyzer );
+    const Persistency::Analyzer &analyzer = *it->get();
+    const DataBaseID             anlzID = es.saveAnalyzer(analyzer);
     es.saveAlertToAnalyzers(alertID, anlzID);
   }
 
