@@ -2,14 +2,19 @@
 
 RET=0
 
+# get component names from cmd-line, or run all if nothing given explicit
+COMPONENTS="$*"
+[ "$#" -eq 0 ] && COMPONENTS="`cat build_config/components{.,_test.}lst | sort | uniq | grep -v '^prelude$' | grep -v '^curlpp$'`"
+
 # iterata through all build components
-for d in `cat build_config/components{.,_test.}lst | sort | uniq | grep -v '^prelude$' | grep -v '^curlpp$'`
+for d in $COMPONENTS
 do
   echo "----------------------------"
   echo "testing $d:"
+  SUPPS="`( for f in .misc/valgrind/*.supp ; do readlink -f "$f" | sed 's:^ *:--suppressions=:' ; done )`"
   ( ulimit -c unlimited && \
     cd gen/test_local_normal_default/$d && \
-    LD_LIBRARY_PATH=../libs/ valgrind --leak-check=full --show-reachable=yes ./$d.t ) || RET=1
+    LD_LIBRARY_PATH=../libs/ valgrind --leak-check=full --show-reachable=yes $SUPPS --gen-suppressions=all  ./$d.t 2>&1 | tee valgrind.log ) || RET=1
 done
 
 echo

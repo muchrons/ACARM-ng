@@ -1,0 +1,12 @@
+# there are some very stringe leaks form pqxx library.
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Leak
+   fun:malloc
+   fun:CRYPTO_malloc
+   ...
+   fun:PQconnectPoll
+   ...
+   fun:PQconnectdb
+   ...
+}
