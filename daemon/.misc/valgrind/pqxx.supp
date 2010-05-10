@@ -1,12 +1,19 @@
 # there are some very stringe leaks form pqxx library.
+
 {
-   <insert_a_suppression_name_here>
+   pqxx_connect_leak_malloc
    Memcheck:Leak
    fun:malloc
-   fun:CRYPTO_malloc
    ...
    fun:PQconnectPoll
    ...
-   fun:PQconnectdb
+}
+
+{
+   pqxx_connect_leak_remalloc
+   Memcheck:Leak
+   fun:realloc
+   ...
+   fun:PQconnectPoll
    ...
 }
