@@ -7,7 +7,7 @@
 #include <boost/algorithm/string.hpp>
 
 #include "Commons/ViaUnorderedCollection.hpp"
-#include "TestHelpers/checkEquality.hpp"
+#include "TestHelpers/checkEquality.hpp"    // TODO: always use test includes as the last ones
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
@@ -242,7 +242,7 @@ void testObj::test<6>(void)
   t_.commit();
 }
 
-// trying restoring MetaAlerts between
+// trying to restore MetaAlerts between
 template<>
 template<>
 void testObj::test<7>(void)
@@ -289,13 +289,13 @@ void testObj::test<7>(void)
   ensure_equals("invalid size", malertsBetween.size(), 0);
 }
 
-// trying restoring MetaAlerts in use
+// trying to restore MetaAlerts in use
 template<>
 template<>
 void testObj::test<8>(void)
 {
-
   const std::string malertName("meta alert name");
+  // TODO: these variables should be const
   Timestamp t1( timestampFromString("1970-01-15 07:56:07") );
   Timestamp t2( timestampFromString("1999-10-10 17:56:07") );
   Timestamp t3( timestampFromString("2010-04-22 07:56:07") );
@@ -339,7 +339,7 @@ void testObj::test<8>(void)
   ensure_equals("invalid size", malertsBetween.size(), 3);
 }
 
-// trying read severity delta
+// trying to read severity delta
 template<>
 template<>
 void testObj::test<9>(void)
@@ -358,7 +358,7 @@ void testObj::test<9>(void)
   ensure_equals("invalid severity delta", er_.getSeverityDelta(malertID), 0.1);
 }
 
-// trying read certainty delta
+// trying to read certainty delta
 template<>
 template<>
 void testObj::test<10>(void)
@@ -377,14 +377,16 @@ void testObj::test<10>(void)
   ensure_equals("invalid cartainty delta", er_.getCertaintyDelta(malertID), 0.2);
 }
 
-// trying read Alert associated with Meta Alert
+// trying to read Alert associated with Meta Alert - negative case
 template<>
 template<>
 void testObj::test<11>(void)
 {
   const std::string malertName("meta alert name");
+  // TODO: this variable should be const
   Timestamp t( timestampFromString("1970-01-15 07:56:07") );
   ReferenceURLPtr refURL( makeNewReferenceURL() );
+  // TODO: consider using makeNewMetaAlert() here.
   Persistency::MetaAlertPtrNN maPtr(
       new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                   0.1, 0.2,
@@ -392,6 +394,7 @@ void testObj::test<11>(void)
                                   t ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
+  // TODO: this variable should be const
   DataBaseID malertID = dbh_->getIDCache()->get(maPtr);
   try
   {
@@ -404,14 +407,16 @@ void testObj::test<11>(void)
   }
 }
 
-// trying read Alert associated with Meta Alert
+// trying to read Alert associated with Meta Alert
 template<>
 template<>
 void testObj::test<12>(void)
 {
   const std::string malertName("meta alert name");
+  // TODO: this variable should be const
   Timestamp t( timestampFromString("1970-01-15 07:56:07") );
   ReferenceURLPtr refURL( makeNewReferenceURL() );
+  // TODO: consider using makeNewMetaAlert() here.
   Persistency::MetaAlertPtrNN maPtr(
       new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                   0.1, 0.2,
@@ -419,8 +424,10 @@ void testObj::test<12>(void)
                                   t ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
+  // TODO: this variable should be const
   DataBaseID malertID = dbh_->getIDCache()->get(maPtr);
 
+  // TODO: consider using makeNewAlert() here.
   Persistency::AlertPtrNN alertPtr (
         new Persistency::Alert(name_, analyzers_, &detected_,
                                created_,
@@ -429,6 +436,7 @@ void testObj::test<12>(void)
   // save alert
   Persistency::IO::Postgres::Alert alert(alertPtr, t_, dbh_ );
   alert.save();
+  // TODO: this variabel should be const
   DataBaseID alertID = dbh_->getIDCache()->get(alertPtr);
   malert.associateWithAlert(alertPtr);
 
@@ -436,14 +444,16 @@ void testObj::test<12>(void)
                 er_.getAlertIDAssociatedWithMetaAlert(malertID), alertID );
 }
 
-// trying restoring Leaf
+// trying to restore Leaf - negative case
 template<>
 template<>
 void testObj::test<13>(void)
 {
   const std::string malertName("meta alert name");
+  // TODO: this variabel should be const
   Timestamp t( timestampFromString("1970-01-15 07:56:07") );
   ReferenceURLPtr refURL( makeNewReferenceURL() );
+  // TODO: consider using makeNewMetaAlert() here.
   Persistency::MetaAlertPtrNN maPtr(
       new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                   0.1, 0.2,
@@ -451,6 +461,7 @@ void testObj::test<13>(void)
                                   t ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
+  // TODO: this variabel should be const
   DataBaseID malertID = dbh_->getIDCache()->get(maPtr);
 
   try
@@ -464,14 +475,16 @@ void testObj::test<13>(void)
   }
 }
 
-// trying restoring Leaf
+// trying to restore Leaf
 template<>
 template<>
 void testObj::test<14>(void)
 {
   const std::string malertName("meta alert name");
+  // TODO: this variable shoudl be const
   Timestamp t( timestampFromString("1970-01-15 07:56:07") );
   ReferenceURLPtr refURL( makeNewReferenceURL() );
+  // TODO: consider using makeNewMetaAlert() here.
   Persistency::MetaAlertPtrNN maPtr(
       new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                   0.1, 0.2,
@@ -479,8 +492,10 @@ void testObj::test<14>(void)
                                   t ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
+  // TODO: this variable shoudl be const
   DataBaseID malertID = dbh_->getIDCache()->get(maPtr);
 
+  // TODO: consider using makeNewAlert() here.
   Persistency::AlertPtrNN alertPtr (
         new Persistency::Alert(name_, analyzers_, &detected_,
                                created_,
@@ -502,7 +517,7 @@ void testObj::test<14>(void)
                                          alertPtr->getReportedSourceHosts().size() );
 }
 
-// trying read roots in use
+// trying to read roots in use
 template<>
 template<>
 void testObj::test<15>(void)
@@ -512,7 +527,7 @@ void testObj::test<15>(void)
   ensure_equals("invalid number of roots", roots.size(), 1u);
 }
 
-// trying read roots in use
+// trying to read roots in use
 template<>
 template<>
 void testObj::test<16>(void)
@@ -522,30 +537,36 @@ void testObj::test<16>(void)
   ensure_equals("invalid number of roots", roots.size(), 2u);
 }
 
-// trying read Meta Alert children
+// trying to read Meta Alert children
 template<>
 template<>
 void testObj::test<17>(void)
 {
-
   const std::string malertName("meta alert name");
+  // TODO: these variables should be const
   Timestamp t1( timestampFromString("1970-01-15 07:56:07") );
   Timestamp t2( timestampFromString("1999-10-10 17:56:07") );
   Timestamp t3( timestampFromString("2010-04-22 07:56:07") );
 
   ReferenceURLPtr refURL( makeNewReferenceURL() );
+
+  // TODO: consider using makeNewMetaAlert() here.
   Persistency::MetaAlertPtrNN maPtr1(
       new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                   0.1, 0.2,
                                   refURL,
                                   t1 ) );
   Persistency::IO::Postgres::MetaAlert malert1(maPtr1, t_, dbh_);
+
+  // TODO: consider using makeNewMetaAlert() here.
   Persistency::MetaAlertPtrNN maPtr2(
       new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                   0.1, 0.2,
                                   refURL,
                                   t2 ) );
   Persistency::IO::Postgres::MetaAlert malert2(maPtr2, t_, dbh_);
+
+  // TODO: consider using makeNewMetaAlert() here.
   Persistency::MetaAlertPtrNN maPtr3(
       new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                   0.1, 0.2,
@@ -555,6 +576,7 @@ void testObj::test<17>(void)
   malert1.save();
   malert2.save();
   malert3.save();
+  // TODO: these variables should be const
   DataBaseID malertID1 = dbh_->getIDCache()->get(maPtr1);
   DataBaseID malertID2 = dbh_->getIDCache()->get(maPtr2);
   DataBaseID malertID3 = dbh_->getIDCache()->get(maPtr3);
@@ -563,19 +585,22 @@ void testObj::test<17>(void)
   children.push_back(malertID3);
   malert1.addChild(maPtr2);
   malert1.addChild(maPtr3);
+  // TODO: this variable should be const
   vector<DataBaseID> maChildren = er_.readMetaAlertChildren(malertID1);
   ensure_equals("invalid number of children", maChildren.size(), children.size());
   ensure("invalid children", Commons::ViaUnorderedCollection::equal(maChildren, children) );
 }
 
-// trying read Meta Alert children (no children)
+// trying to read Meta Alert children (no children)
 template<>
 template<>
 void testObj::test<18>(void)
 {
   const std::string malertName("meta alert name");
+  // TODO: this variabel should be const
   Timestamp t( timestampFromString("1970-01-15 07:56:07") );
   ReferenceURLPtr refURL( makeNewReferenceURL() );
+  // TODO: consider using makeNewMetaAlert() here.
   Persistency::MetaAlertPtrNN maPtr(
       new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                   0.1, 0.2,
@@ -583,8 +608,11 @@ void testObj::test<18>(void)
                                   t ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
+  // TODO: this variabel should be const
   DataBaseID malertID = dbh_->getIDCache()->get(maPtr);
+  // TODO: this variabel should be const
   vector<DataBaseID> maChildren = er_.readMetaAlertChildren(malertID);
   ensure_equals("invalid number of children", maChildren.size(), 0);
 }
+
 } // namespace tut

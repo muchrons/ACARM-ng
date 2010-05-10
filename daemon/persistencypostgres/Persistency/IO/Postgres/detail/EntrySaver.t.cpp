@@ -3,7 +3,7 @@
  *
  */
 #include <tut.h>
-#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string.hpp>   // TODO: use trim.hpp include directly, since this is tha only algorithm in use here
 
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
@@ -89,6 +89,7 @@ struct TestClass
     return out;
   }
 
+  // TODO: readHostName() whould be more meaningful here
   Host::Name testHostName(DataBaseID hostID)
   {
     stringstream ss;
@@ -117,17 +118,16 @@ struct TestClass
   Transaction         t_;
   EntrySaver          es_;
 
-  const pid_t       pid_;
-  const int         uid_;
-  ReferenceURLPtrNN url_;
+  const pid_t        pid_;
+  const int          uid_;
+  ReferenceURLPtrNN  url_;
   const char        *md5Str_;
-  const MD5Sum      md5_;
-  const Process     proc_;
-  const Process     procnn_;
+  const MD5Sum       md5_;
+  const Process      proc_;
+  const Process      procnn_;
 
   const Host::Netmask_v4 mask4_;
   const Host::Netmask_v6 mask6_;
-
 };
 
 typedef tut::test_group<TestClass> factory;

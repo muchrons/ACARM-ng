@@ -29,9 +29,9 @@ IO::ConnectionPtrNN makeConnection(void)
   opts["dbname"]="acarm_ng_test";
   opts["user"]  ="acarm-ng-daemon";
   opts["pass"]  ="test.daemon";
-  return IO::ConnectionPtrNN(
-        Persistency::IO::BackendFactory::create("postgres", opts) );
+  return IO::ConnectionPtrNN( Persistency::IO::BackendFactory::create("postgres", opts) );
 }
+
 void removeData(const std::string name1, const std::string name2)
 {
   Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
@@ -44,15 +44,20 @@ void removeData(const std::string name1, const std::string name2)
     ss << "SELECT * FROM meta_alerts WHERE name = ";
     Appender::append(ss, node.get());
     ss << ";";
+    // TODO: this variable should be const
     result r = t.getAPI<TransactionAPI>().exec(ss);
+    // TODO: SEGV when no result returned
     r[0]["id"].to(nodeID);
   }
   {
+    // TODO: c&p code
     const Persistency::MetaAlert::Name node(name2);
     ss << "SELECT * FROM meta_alerts WHERE name = ";
     Appender::append(ss, node.get());
     ss << ";";
+    // TODO: this variable should be const
     result r = t.getAPI<TransactionAPI>().exec(ss);
+    // TODO: SEGV when no result returned
     r[0]["id"].to(childID);
   }
   {
