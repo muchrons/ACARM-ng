@@ -89,14 +89,13 @@ struct TestClass
     return out;
   }
 
-  // TODO: notice that Host::Name is NULLString by itself
-  Base::NullValue<Host::Name> testHostName(DataBaseID hostID)
+  Host::Name testHostName(DataBaseID hostID)
   {
     stringstream ss;
     ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     tut::ensure_equals("invalid size", r.size(), 1u);
-    return ReaderHelper<Base::NullValue<Host::Name> >::readAs(r[0]["name"]);
+    return ReaderHelper<Host::Name>::readAs(r[0]["name"]);
   }
 
   const Alert::Name          name_;
@@ -762,6 +761,7 @@ void testObj::test<21>(void)
   ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
   const result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(), 1u);
+  t_.commit();
 }
 
 // trying save MetaAlert as unused
@@ -794,7 +794,8 @@ template<>
 template<>
 void testObj::test<23>(void)
 {
-  const Host::Name hostName("some.host.com");
+  const string hname("some.host.com");
+  const Host::Name hostName(hname);
   const Host       h( Host::IPv4::from_string("1.2.3.4"),
                       &mask4_,
                       "myos",
@@ -806,9 +807,9 @@ void testObj::test<23>(void)
   ensure("Host name is not NULL", testHostName(hostID).get() == NULL );
   // trying set Host name
   es_.setHostName(hostID, hostName);
-  // TODO: SEGV when testHostName(hostID).get()==NULL
-  Host::Name name( testHostName(hostID).get()->get() );
-  //ensure_equals("invalid host name",  name.get(), hostName.get());
+  string name( testHostName(hostID).get() );
+  trim(name);
+  ensure_equals("invalid host name",  name, hname);
   t_.commit();
 }
 

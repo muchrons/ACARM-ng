@@ -30,9 +30,13 @@ namespace Postgres
 {
 
 IO::ConnectionPtrNN makeConnection(void);
-Persistency::AlertPtr makeNewAlert(const char *name="some alert");
 
-Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert");
+void removeData(const std::string name1, const std::string name2);
+
+Persistency::AlertPtr makeNewAlert(const char *name="some alert", const Timestamp &t = Timestamp(444) );
+
+Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert", const Timestamp &t = Timestamp(444));
+
 
 Persistency::AnalyzerPtrNN makeNewAnalyzer(const char *name="some analyzer");
 
@@ -84,7 +88,7 @@ Persistency::GraphNodePtrNN makeNewTree2(void);
 //                   root1       root2
 //             node1       node2       node3
 //       leaf1       leaf2       leaf3       leaf4
-std::vector<Persistency::GraphNodePtrNN> makeNewTree3(void);
+Restorer::NodesVector makeNewTree3(void);
 
 //
 //                root
@@ -94,11 +98,19 @@ std::vector<Persistency::GraphNodePtrNN> makeNewTree3(void);
 //
 Persistency::GraphNodePtrNN makeNewTree4(void);
 //
-//                   root1       root2
+//                   root1
 //             node1       node2
-//       leaf1       leaf2       leaf3
-// TODO: std::vector<GraphNodePtrNN> is Restorer::NodesVector
-std::vector<Persistency::GraphNodePtrNN> makeNewTree5(void);
+//       node3       node4       node5
+//
+Restorer::NodesVector makeNewTree5(void);
+//
+//     node1         node2
+//  leaf1 leaf2   leaf3 leaf4
+Restorer::NodesVector makeNewTree6(void);
+//
+//     node1
+//  leaf1  leaf2
+Restorer::NodesVector makeNewTree7(void);
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency

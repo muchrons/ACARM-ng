@@ -24,7 +24,7 @@ void MetaAlert::saveImpl(Transaction &t)
 {
   EntrySaver                    es(t, *dbHandler_);
   const Persistency::MetaAlert &ma = *get();
-  const DataBaseID                    maID = es.saveMetaAlert(ma);
+  const DataBaseID              maID = es.saveMetaAlert(ma);
   dbHandler_->getIDCache()->add(get() , maID);
 }
 
