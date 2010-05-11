@@ -91,10 +91,8 @@ private:
                            const Tree::IDsVector                          &malerts);
 
   DBHandlerPtrNN                 dbHandler_;
-  ReverseIDCache<GraphNodePtrNN> graphCache_;    // TODO: it might be good idea to split this into 2 separete caches
-                                        //       for leafs and nodes, and map IDs from alerts and meta-laerts
-                                        //       respectively. this should bee good for avoiding some issues
-                                        //       marked as TODOs in the implementation part.
+  ReverseIDCache<GraphNodePtrNN> nodeCache_;
+  ReverseIDCache<GraphNodePtrNN> leafCache_;
   ReverseIDCache<TreePtr>        treeNodes_;
 }; // class Restorer
 

@@ -38,14 +38,13 @@ struct TestClass
     tdba_.removeAllData();
   }
 
-  // TODO: 'out' should be const-ref.
   void checkCache(Restorer::NodesVector &out) const
   {
     for(Restorer::NodesVector::iterator it = out.begin(); it !=out.end(); ++it)
     {
       if( (*it)->isLeaf() )
       {
-        tut::ensure("alert shoud be in cache", idCache_->has( (*it)->getAlert()) );
+        tut::ensure("alert shoud be in cache", idCache_->has( (*it)->getAlert() ) );
         const Alert::ReportedHosts sourceHosts = (*it)->getAlert()->getReportedSourceHosts();
         const Alert::ReportedHosts targetHosts = (*it)->getAlert()->getReportedTargetHosts();
         for(Alert::ReportedHosts::const_iterator hi = sourceHosts.begin(); hi != sourceHosts.end(); ++hi)
@@ -453,4 +452,9 @@ void testObj::test<9>(void)
 // TODO: try restoring valid data with restore(..., from, to) where some sub-tree part
 //       is in use, but does not fit into [from, to] range.
 
+template<>
+template<>
+void testObj::test<10>(void)
+{
+}
 } // namespace tut
