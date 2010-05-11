@@ -12,6 +12,8 @@
 
 using namespace Persistency::IO::Postgres::detail;
 
+// TODO: add logging
+
 namespace Persistency
 {
 namespace IO

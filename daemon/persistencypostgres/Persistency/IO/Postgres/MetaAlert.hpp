@@ -10,6 +10,8 @@
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 
+// TODO: add logging
+
 namespace Persistency
 {
 namespace IO

@@ -251,5 +251,19 @@ void testObj::test<6>(void)
   ensure_equals("invalid meta alerts' size", count("meta_alerts"), 3u);
 }
 
-} // namespace tut
+// test removing alert that is associated with meta-alert, that are not within a tree,
+// when are still other meta-alerts marked as the ones being used.
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  makeAlert(1);
+  makeAlert(2, false);  // this entry caused problems
+  makeAlert(3);
 
+  ensure_equals("invalid number of entries removed", conn_->removeEntriesOlderThan(9, t_), 2u);
+  ensure_equals("invalid alerts' size",      count("alerts"), 1u);
+  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 1u);
+}
+
+} // namespace tut

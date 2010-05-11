@@ -98,6 +98,15 @@ struct TestClass
     return ReaderHelper<Host::Name>::readAs(r[0]["name"]);
   }
 
+  DataBaseID getID(const Severity s)
+  {
+    stringstream ss;
+    ss<<"SELECT id FROM severities WHERE level="<<s.getLevel().toInt();
+    const result r=t_.getAPI<TransactionAPI>().exec(ss);
+    tut::ensure_equals("invalid size", r.size(), 1u);
+    return ReaderHelper<DataBaseID>::readAs(r[0]["id"]);
+  }
+
   const Alert::Name          name_;
   const AnalyzerPtrNN        analyzer_;
   Alert::SourceAnalyzers     analyzers_;
@@ -227,6 +236,9 @@ void testObj::test<4>(void)
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
 
+  // TODO: sytax is: ensure_equals(message, computedValue, expectedValue);
+  //       in most casese computed and expected values are swapped - please fix this.
+
   ensure_equals("invalid name",
                 name_.get(),
                 ReaderHelper<string>::readAsNotNull(r[0]["name"]));
@@ -240,8 +252,8 @@ void testObj::test<4>(void)
                 timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["create_time"]) ));
 
   ensure_equals("invalid severity ID",
-                a.getSeverity().getLevel().toInt(),
-                ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_severity"]));
+                ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_severity"]),
+                getID( a.getSeverity() ) );
 
   ensure_equals("invalid certanity",
                 certanity_.get(),
@@ -475,7 +487,7 @@ void testObj::test<11>(void)
   ensure_equals("invalid create time", created_, timestampFromString(time) );
 
   r[0]["id_severity"].to(id);
-  ensure_equals("invalid severity ID",a.getSeverity().getLevel().toInt(),id);
+  ensure_equals("invalid severity ID", id, getID( a.getSeverity() ) );
 
   r[0]["certanity"].to(certanity);
   ensure_equals("invalid certanity",certanity_.get(),certanity);
@@ -833,6 +845,39 @@ void testObj::test<24>(void)
 
   ensure("Host name is not NULL",r[0]["name"].is_null() );
   ensure("Mask is not NULL",r[0]["mask"].is_null() );
+  t_.commit();
+}
+
+// test for bug when trying to save NULL reference URL
+template<>
+template<>
+void testObj::test<25>(void)
+{
+  HostPtrNN h( new Host( Host::IPv4::from_string("1.2.3.4"),
+                         NULL,
+                         "myos",
+                         ReferenceURLPtr(),
+                         Host::ReportedServices(),
+                         Host::ReportedProcesses(),
+                         NULL ) );
+  Alert::ReportedHosts sh;
+  sh.push_back(h);
+  // save some alert
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+                description_, sh, targetHosts_);
+  const DataBaseID hostID  = es_.saveHostData(*h);
+  const DataBaseID alertID = es_.saveAlert(a);
+  // save data in table alert_analyzers
+  const DataBaseID thostID = es_.saveSourceHost(hostID, alertID, *h);   // original bug throw here
+
+  // check if entry is really there
+  stringstream ss;
+  ss << "SELECT * FROM reported_hosts WHERE"
+     << " id_host = " << hostID
+     << " AND id_alert =  " << alertID
+     << " AND id =  " << thostID;
+  const result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size", r.size(), 1u);
   t_.commit();
 }
 
