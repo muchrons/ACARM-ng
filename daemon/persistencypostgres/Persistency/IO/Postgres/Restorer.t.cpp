@@ -57,6 +57,7 @@ struct TestClass
         tut::ensure("meta alert shoud be in cache", idCache_->has( (*it)->getMetaAlert()) );
     }
   }
+
   void check(const Restorer::NodesVector &outVec)
   {
     Restorer::NodesVector out;
@@ -73,6 +74,7 @@ struct TestClass
     t_.commit();
   }
 
+  // TODO: this method does more than checking - consider name like removeAndCheck()
   void check(const Restorer::NodesVector &outVec, const std::string &node, const std::string &child)
   {
     removeNodeConnection(node, child);

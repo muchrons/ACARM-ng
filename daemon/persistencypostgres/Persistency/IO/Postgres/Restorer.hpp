@@ -61,8 +61,8 @@ private:
 
   void restore(Persistency::IO::Postgres::detail::EntryReader &er,
                NodesVector                                    &out,
-               const Tree::IDsVector                                &malerts,
-               const Tree::IDsVector                                &roots);
+               const Tree::IDsVector                          &malerts,
+               const Tree::IDsVector                          &roots);
 
   template<typename T>
   void addIfNew(const T &e, DataBaseID id);
@@ -73,7 +73,7 @@ private:
                              IO::ConnectionPtrNN                             connStubIO,
                              IO::Transaction                                &tStubIO);
 
-  GraphNodePtrNN restoreNode(TreePtrNN                                      node,
+  GraphNodePtrNN restoreNode(TreePtrNN                                       node,
                              DataBaseID                                      id,
                              NodesVector                                    &out,
                              Persistency::IO::Postgres::detail::EntryReader &er,
@@ -92,9 +92,9 @@ private:
 
   DBHandlerPtrNN                 dbHandler_;
   ReverseIDCache<GraphNodePtrNN> graphCache_;    // TODO: it might be good idea to split this into 2 separete caches
-                                        //       for leafs and nodes, and map IDs from alerts and meta-laerts
-                                        //       respectively. this should bee good for avoiding some issues
-                                        //       marked as TODOs in the implementation part.
+                                                 //       for leafs and nodes, and map IDs from alerts and meta-laerts
+                                                 //       respectively. this should bee good for avoiding some issues
+                                                 //       marked as TODOs in the implementation part.
   ReverseIDCache<TreePtr>        treeNodes_;
 }; // class Restorer
 
