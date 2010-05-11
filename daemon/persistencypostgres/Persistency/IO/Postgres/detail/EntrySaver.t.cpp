@@ -3,7 +3,7 @@
  *
  */
 #include <tut.h>
-#include <boost/algorithm/string.hpp>   // TODO: use trim.hpp include directly, since this is tha only algorithm in use here
+#include <boost/algorithm/string/trim.hpp>
 
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
@@ -89,8 +89,7 @@ struct TestClass
     return out;
   }
 
-  // TODO: readHostName() whould be more meaningful here
-  Host::Name testHostName(DataBaseID hostID)
+  Host::Name readHostName(DataBaseID hostID)
   {
     stringstream ss;
     ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
@@ -816,10 +815,10 @@ void testObj::test<23>(void)
                       Host::ReportedProcesses(),
                       NULL );
   const DataBaseID hostID = es_.saveHostData(h);
-  ensure("Host name is not NULL", testHostName(hostID).get() == NULL );
+  ensure("Host name is not NULL", readHostName(hostID).get() == NULL );
   // trying set Host name
   es_.setHostName(hostID, hostName);
-  string name( testHostName(hostID).get() );
+  string name( readHostName(hostID).get() );
   trim(name);
   ensure_equals("invalid host name",  name, hname);
   t_.commit();

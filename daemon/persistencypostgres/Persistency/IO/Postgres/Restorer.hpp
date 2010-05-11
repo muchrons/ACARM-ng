@@ -10,7 +10,7 @@
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 #include "Persistency/IO/Postgres/Tree.hpp"
-#include "Persistency/IO/Postgres/Cache.hpp"
+#include "Persistency/IO/Postgres/ReverseIDCache.hpp"
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 
 namespace Persistency
@@ -48,11 +48,11 @@ private:
                           AlertPtrNN          aPtr,
                           IO::ConnectionPtrNN connStubIO,
                           IO::Transaction     &tStubIO);
-  GraphNodePtrNN makeNode(DataBaseID          id,
-                          MetaAlertPtrNN      maPtr,
-                          NodeChildrenVector  vec,
-                          IO::ConnectionPtrNN connStubIO,
-                          IO::Transaction     &tStubIO);
+  GraphNodePtrNN makeNode(DataBaseID                id,
+                          MetaAlertPtrNN            maPtr,
+                          const NodeChildrenVector &vec,
+                          IO::ConnectionPtrNN       connStubIO,
+                          IO::Transaction          &tStubIO);
   GraphNodePtrNN deepFirstSearch(DataBaseID                                      id,
                                  NodesVector                                    &out,
                                  Persistency::IO::Postgres::detail::EntryReader &er,
@@ -61,18 +61,20 @@ private:
 
   void restore(Persistency::IO::Postgres::detail::EntryReader &er,
                NodesVector                                    &out,
-               Tree::IDsVector                                &malerts);
-
-  void restore(Persistency::IO::Postgres::detail::EntryReader &er,
-               NodesVector                                    &out,
-               Tree::IDsVector                                &malerts,
-               const Timestamp                                &from,
-               const Timestamp                                &to);
+               const Tree::IDsVector                                &malerts,
+               const Tree::IDsVector                                &roots);
 
   template<typename T>
-  void addIfNew(T e, DataBaseID id);
+  void addIfNew(const T &e, DataBaseID id);
 
   GraphNodePtrNN restoreLeaf(DataBaseID                                      id,
+                             NodesVector                                    &out,
+                             Persistency::IO::Postgres::detail::EntryReader &er,
+                             IO::ConnectionPtrNN                             connStubIO,
+                             IO::Transaction                                &tStubIO);
+
+  GraphNodePtrNN restoreNode(TreePtrNN                                      node,
+                             DataBaseID                                      id,
                              NodesVector                                    &out,
                              Persistency::IO::Postgres::detail::EntryReader &er,
                              IO::ConnectionPtrNN                             connStubIO,
@@ -86,14 +88,14 @@ private:
                                          IO::Transaction                                &tStubIO);
 
   void addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er,
-                           Tree::IDsVector                                &malerts);
+                           const Tree::IDsVector                          &malerts);
 
-  DBHandlerPtrNN        dbHandler_;
-  Cache<GraphNodePtrNN> graphCache_;    // TODO: it might be good idea to split this into 2 separete caches
+  DBHandlerPtrNN                 dbHandler_;
+  ReverseIDCache<GraphNodePtrNN> graphCache_;    // TODO: it might be good idea to split this into 2 separete caches
                                         //       for leafs and nodes, and map IDs from alerts and meta-laerts
                                         //       respectively. this should bee good for avoiding some issues
                                         //       marked as TODOs in the implementation part.
-  Cache<TreePtr>        treeNodes_;
+  ReverseIDCache<TreePtr>        treeNodes_;
 }; // class Restorer
 
 } // namespace Postgres
