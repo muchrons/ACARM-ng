@@ -40,8 +40,8 @@ Restorer::Restorer(Transaction    &t,
 void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &out)
 {
   EntryReader er(t, *dbHandler_);
-  const Tree::IDsVector maInUse( er.readIDsMalertsInUse() );
-  const Tree::IDsVector roots( er.readRoots());
+  const Tree::IDsVector &maInUse=er.readIDsMalertsInUse();
+  const Tree::IDsVector &roots  =er.readRoots();
   restore(er, out, maInUse, roots);
 }
 
@@ -51,8 +51,8 @@ void Restorer::restoreBetweenImpl(Transaction     &t,
                                   const Timestamp &to)
 {
   EntryReader er(t, *dbHandler_);
-  const Tree::IDsVector maBetween( er.readIDsMalertsBetween(from, to) );
-  const Tree::IDsVector &roots = er.readRoots(from, to);
+  const Tree::IDsVector  maBetween=er.readIDsMalertsBetween(from, to);
+  const Tree::IDsVector &roots    =er.readRoots(from, to);
   restore(er, out, maBetween, roots);
 }
 
@@ -76,11 +76,11 @@ GraphNodePtrNN Restorer::makeLeaf(DataBaseID           id,
   return leaf;
 }
 
-GraphNodePtrNN Restorer::makeNode(DataBaseID                 id,
-                                  MetaAlertPtrNN             maPtr,
-                                  const NodeChildrenVector  &vec,
-                                  IO::ConnectionPtrNN        connStubIO,
-                                  IO::Transaction            &tStubIO)
+GraphNodePtrNN Restorer::makeNode(DataBaseID                id,
+                                  MetaAlertPtrNN            maPtr,
+                                  const NodeChildrenVector &vec,
+                                  IO::ConnectionPtrNN       connStubIO,
+                                  IO::Transaction          &tStubIO)
 {
   if( graphCache_.has(id) )
     return graphCache_.getNotNull(id);
@@ -105,8 +105,8 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
 // TODO: add class with lists of errors
 void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
                        NodesVector                                    &out,
-                       const Tree::IDsVector                                &malerts,
-                       const Tree::IDsVector                                &roots)
+                       const Tree::IDsVector                          &malerts,
+                       const Tree::IDsVector                          &roots)
 {
   addTreeNodesToCache(er, malerts);
 
@@ -206,7 +206,7 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
 
 // TODO: can 'er' be const-ref too?
 void Restorer::addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er,
-                                   const Tree::IDsVector &malerts)
+                                   const Tree::IDsVector                          &malerts)
 {
   for(Tree::IDsVector::const_iterator it = malerts.begin(); it != malerts.end(); ++it)
   {
