@@ -19,7 +19,7 @@ namespace Proc
 {
 
 BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-                           const std::string                &processorName):
+                             const std::string                &processorName):
   processorName_(processorName),
   conn_(conn)
 {
