@@ -4,6 +4,7 @@
  */
 #include <cstring>
 #include <cstdio>
+#include <cctype>
 #include <cassert>
 
 #include "Logger/Formatter.hpp"
@@ -44,8 +45,9 @@ void Formatter::format(std::stringstream &ssOut,
        <<nn.get()<<" "
        <<file<<":"
        <<line<<" "
-       <<call<<": "
-       <<msg;
+       <<call<<": ";
+  // append message to stream, ensuring that special chars will be removed
+  appendValidMessage(ssOut, msg);
 }
 
 
@@ -77,6 +79,32 @@ const char *Formatter::strFix(const char *str) const
   if(str==NULL)
     return "NULL";
   return str;
+}
+
+void Formatter::appendValidMessage(std::stringstream &ssOut, const char *msg) const
+{
+  assert(msg!=NULL);
+  char buf[64];
+  int  i=0;
+  for(const char *it=msg; *it!=0; ++it)
+  {
+    // append
+    if( *it!='\n' && isprint(*it) && *it!='\t' )
+      buf[i]=*it;
+    else
+      buf[i]='.';
+    ++i;
+    // buffer is full?
+    if( i==sizeof(buf)-1 )
+    {
+      buf[i]=0;     // null-terminate string
+      ssOut<<buf;   // flush
+      i=0;          // reset counter
+    }
+  } // for(msg)
+  // final flush on oed of string
+  buf[i]=0;         // null-terminate string if not already done
+  ssOut<<buf;       // flush
 }
 
 } // namespace Logger

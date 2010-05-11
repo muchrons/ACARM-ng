@@ -28,9 +28,9 @@ IDMEFParser::IDMEFParser(idmef_message_t * msg):
 
 idmef_alert_t* IDMEFParser::extractAlert(idmef_message_t *msg) const
 {
-  if(!msg)
+  if(msg==NULL)
     throw Exception(SYSTEM_SAVE_LOCATION, "Message is null");
-  if (idmef_message_get_type(msg)!=IDMEF_MESSAGE_TYPE_ALERT)
+  if( idmef_message_get_type(msg)!=IDMEF_MESSAGE_TYPE_ALERT )
     throw Exception(SYSTEM_SAVE_LOCATION, "Heartbeats are not supported");
   return idmef_message_get_alert(msg);
 }
@@ -39,7 +39,7 @@ Persistency::Alert::Name IDMEFParser::parseName(idmef_alert_t *alert) const
 {
   const prelude_string_t *idmef_name = idmef_alert_get_messageid(alert);
   // TODO: throw on error
-  if (idmef_name)
+  if(idmef_name!=NULL)
     return prelude_string_get_string(idmef_name);
   return "Unknown";
 }

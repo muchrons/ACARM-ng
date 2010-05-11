@@ -3,9 +3,12 @@
  *
  */
 #include <tut.h>
+#include <sstream>
 
 #include "TestHelpers/TestBase.hpp"
 #include "Logger/Formatter.hpp"
+
+using namespace Logger;
 
 namespace
 {
@@ -25,6 +28,23 @@ struct FormatterTestClass: private TestHelpers::TestBase
                        priStr + "@4.002/node.1 file:123 call: hello log!");
   }
 
+  std::string makeStr(const size_t len) const
+  {
+    std::stringstream ss;
+    for(size_t i=0; i<len; ++i)
+      ss<<"x";
+    return ss.str();
+  }
+
+  void testValidForBufferSize(const size_t len) const
+  {
+    std::stringstream ss;
+    const std::string str=makeStr(len);
+    const timeb       ts={4,2,0,0};
+    fmt_.format(ss, ts, "node.1", Priority::DEBUG, NULL, NULL, 123, str.c_str() );
+    tut::ensure_equals("invalid message content", ss.str(), "DEBUG@4.002/node.1 NULL:123 NULL: "+str);
+  }
+
   const Logger::Formatter fmt_;
 };
 
@@ -38,8 +58,6 @@ factory tf("Logger/Formatter");
 
 namespace tut
 {
-
-using namespace Logger;
 
 // test for debug
 template<>
@@ -86,11 +104,11 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-    std::stringstream ss;
-    timeb             ts={4,2,0,0};
-    fmt_.format(ss, ts, "node.1", Priority::DEBUG, NULL, NULL, 123, NULL);
-    tut::ensure_equals("invalid format", ss.str(),
-                       "DEBUG@4.002/node.1 NULL:123 NULL: NULL");
+  std::stringstream ss;
+  const timeb       ts={4,2,0,0};
+  fmt_.format(ss, ts, "node.1", Priority::DEBUG, NULL, NULL, 123, NULL);
+  tut::ensure_equals("invalid format", ss.str(),
+                     "DEBUG@4.002/node.1 NULL:123 NULL: NULL");
 }
 
 // smoke test for swap()
@@ -102,6 +120,61 @@ void testObj::test<7>(void)
   Formatter f2;
 
   f1.swap(f2);
+}
+
+// test replacing special chars with '.'
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  std::stringstream ss;
+  const timeb       ts={4,2,0,0};
+  fmt_.format(ss, ts, "node.1", Priority::DEBUG, NULL, NULL, 123, "A \n6\tc/\\?<,.>:;\"'[{]}+=_-)(*&^%$#@!~`\x07");
+  tut::ensure_equals("special chars not removed", ss.str(),
+                     "DEBUG@4.002/node.1 NULL:123 NULL: A .6.c/\\?<,.>:;\"'[{]}+=_-)(*&^%$#@!~`.");
+}
+
+// test formatting empty (but not NULL!) message
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  std::stringstream ss;
+  const timeb       ts={4,2,0,0};
+  fmt_.format(ss, ts, "node.1", Priority::DEBUG, NULL, NULL, 123, "");
+  tut::ensure_equals("special chars not removed", ss.str(), "DEBUG@4.002/node.1 NULL:123 NULL: ");
+}
+
+// test message of a buffer size
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  testValidForBufferSize(64);
+}
+
+// test message of a buffer size-1
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  testValidForBufferSize(64-1);
+}
+
+// test message of a little size (less the buffer)
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  testValidForBufferSize(5);
+}
+
+// test large message (over buffer size)
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  testValidForBufferSize(543);
 }
 
 } // namespace tut
