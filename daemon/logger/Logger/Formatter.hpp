@@ -47,6 +47,7 @@ public:
 private:
   const char *pri2str(Priority pri) const;
   const char *strFix(const char *str) const;
+  void appendValidMessage(std::stringstream &ssOut, const char *msg) const;
 }; // class Formatter
 
 } // namespace Logger
