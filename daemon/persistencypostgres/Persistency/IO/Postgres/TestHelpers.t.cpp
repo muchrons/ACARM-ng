@@ -32,7 +32,7 @@ IO::ConnectionPtrNN makeConnection(void)
   return IO::ConnectionPtrNN( Persistency::IO::BackendFactory::create("postgres", opts) );
 }
 
-void removeData(const std::string name1, const std::string name2)
+void removeNodeConnection(const std::string &parentName, const std::string &childName)
 {
   Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
   IO::Transaction t( conn->createNewTransaction("delete_data_transaction") );
@@ -40,23 +40,21 @@ void removeData(const std::string name1, const std::string name2)
   stringstream ss;
   DataBaseID nodeID, childID;
   {
-    const Persistency::MetaAlert::Name node(name1);
+    const Persistency::MetaAlert::Name node(parentName);
     ss << "SELECT * FROM meta_alerts WHERE name = ";
     Appender::append(ss, node.get());
     ss << ";";
-    // TODO: this variable should be const
-    result r = t.getAPI<TransactionAPI>().exec(ss);
+    const result r = t.getAPI<TransactionAPI>().exec(ss);
     // TODO: SEGV when no result returned
     r[0]["id"].to(nodeID);
   }
   {
     // TODO: c&p code
-    const Persistency::MetaAlert::Name node(name2);
+    const Persistency::MetaAlert::Name node(childName);
     ss << "SELECT * FROM meta_alerts WHERE name = ";
     Appender::append(ss, node.get());
     ss << ";";
-    // TODO: this variable should be const
-    result r = t.getAPI<TransactionAPI>().exec(ss);
+    const result r = t.getAPI<TransactionAPI>().exec(ss);
     // TODO: SEGV when no result returned
     r[0]["id"].to(childID);
   }

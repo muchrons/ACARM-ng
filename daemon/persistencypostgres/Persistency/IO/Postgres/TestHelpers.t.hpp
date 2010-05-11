@@ -31,10 +31,7 @@ namespace Postgres
 
 IO::ConnectionPtrNN makeConnection(void);
 
-// TODO: const-ref should be taken as a parameter.
-// TODO: name1/name2 should be more meaningfull, i.e. parentName and childName
-// TODO: function's name should be more meaningfull, i.e. removeNodeConnection()
-void removeData(const std::string name1, const std::string name2);
+void removeNodeConnection(const std::string &parentName, const std::string &childName);
 
 Persistency::AlertPtr makeNewAlert(const char *name="some alert", const Timestamp &t = Timestamp(444) );
 

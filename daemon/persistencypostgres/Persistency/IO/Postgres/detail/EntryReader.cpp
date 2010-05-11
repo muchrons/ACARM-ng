@@ -146,7 +146,6 @@ Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::strin
   stringstream ss;
   ss << "SELECT * FROM reported_hosts WHERE id_alert = "<< alertID <<" AND role = ";
   Appender::append(ss, hostType);
-  ss << ";";    // TODO: when executing single query with exec() ending semicolon is not needed.
   const result r = execSQL(t_, ss);
   Alert::ReportedHosts hosts;
   for(size_t i=0; i<r.size(); ++i)
@@ -354,8 +353,7 @@ std::vector<DataBaseID> EntryReader::readRoots()
              " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);");
 
   const result r = execSQL(t_, "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
-                               // TODO: "select 1"? given name explicit here
-                               "SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );");
+                               "SELECT id_node FROM tmp S WHERE T.id_node=S.id_child );");
 
   return getRoots(r);
 }
@@ -371,8 +369,7 @@ std::vector<DataBaseID> EntryReader::readRoots(const Timestamp &from, const Time
   execSQL(t_, ss);
 
   const result r = execSQL(t_, "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
-                               // TODO: "select 1"? given name explicit here
-                               "SELECT 1 FROM tmp S WHERE T.id_node=S.id_child );");
+                               "SELECT id_node FROM tmp S WHERE T.id_node=S.id_child );");
 
   return getRoots(r);
 }
