@@ -150,4 +150,8 @@ void testObj::test<2>(void)
 
 // TODO: test multiple target hosts
 
+// TODO: test when no services are prensent in alert (this was a bug in previous versions)
+
+// TODO: test when no processes are prensent in alert (this was a bug in previous versions)
+
 } // namespace tut
