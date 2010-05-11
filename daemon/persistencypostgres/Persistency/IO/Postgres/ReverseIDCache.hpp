@@ -25,6 +25,7 @@ class ReverseIDCache
 public:
   /** \brief type of cache. */
   typedef std::map<DataBaseID, T> RevIDCache;
+
   /** \brief check if element with id is in cache
    *  \param id    id of checked element.
    */
