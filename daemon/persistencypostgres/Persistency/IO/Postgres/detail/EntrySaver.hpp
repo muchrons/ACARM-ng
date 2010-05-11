@@ -154,7 +154,7 @@ private:
 
   DataBaseID saveReportedHostData(DataBaseID               alertID,
                                   DataBaseID               hostID,
-                                  const std::string        role,    // TODO: const char * is fine here - this is implementation detail
+                                  const char               *role,
                                   const Persistency::Host &h);
 
   DataBaseID saveServiceData(const Service &s);

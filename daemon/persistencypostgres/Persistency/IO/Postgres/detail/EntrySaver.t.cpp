@@ -236,32 +236,30 @@ void testObj::test<4>(void)
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
 
-  // TODO: sytax is: ensure_equals(message, computedValue, expectedValue);
-  //       in most casese computed and expected values are swapped - please fix this.
-
   ensure_equals("invalid name",
-                name_.get(),
-                ReaderHelper<string>::readAsNotNull(r[0]["name"]));
+                ReaderHelper<string>::readAsNotNull(r[0]["name"]),
+                name_.get());
 
   ensure_equals("invalid detect time",
-                detected_,
-                timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["detect_time"]) ));
+                timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["detect_time"]) ),
+                detected_);
 
   ensure_equals("invalid create time",
-                created_,
-                timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["create_time"]) ));
+                timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["create_time"]) ),
+                created_
+                );
 
   ensure_equals("invalid severity ID",
                 ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_severity"]),
                 getID( a.getSeverity() ) );
 
   ensure_equals("invalid certanity",
-                certanity_.get(),
-                ReaderHelper<double>::readAsNotNull(r[0]["certanity"]) );
+                ReaderHelper<double>::readAsNotNull(r[0]["certanity"]),
+                certanity_.get());
 
   ensure_equals("invalid description",
-                description_,
-                ReaderHelper<string>::readAsNotNull(r[0]["description"]));
+                ReaderHelper<string>::readAsNotNull(r[0]["description"]),
+                description_);
 
   t_.commit();
 }
