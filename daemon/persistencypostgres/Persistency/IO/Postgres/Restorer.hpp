@@ -92,9 +92,6 @@ private:
 
   DBHandlerPtrNN                 dbHandler_;
   ReverseIDCache<GraphNodePtrNN> nodeCache_;
-                                                 //       for leafs and nodes, and map IDs from alerts and meta-laerts
-                                                 //       respectively. this should bee good for avoiding some issues
-                                                 //       marked as TODOs in the implementation part.
   ReverseIDCache<GraphNodePtrNN> leafCache_;
   ReverseIDCache<TreePtr>        treeNodes_;
 }; // class Restorer
