@@ -73,8 +73,7 @@ struct TestClass
     t_.commit();
   }
 
-  // TODO: this method does more than checking - consider name like removeAndCheck()
-  void check(const Restorer::NodesVector &outVec, const std::string &node, const std::string &child)
+  void removeAndCheck(const Restorer::NodesVector &outVec, const std::string &node, const std::string &child)
   {
     removeNodeConnection(node, child);
     check(outVec);
@@ -404,7 +403,7 @@ void testObj::test<6>(void)
   Restorer::NodesVector outVec;
   Restorer::NodesVector tmp;
   makeNewTreeA(outVec, tmp);
-  check(outVec, "node1", "node3");
+  removeAndCheck(outVec, "node1", "node3");
 }
 
 // try restoring invalid data
@@ -420,7 +419,7 @@ void testObj::test<7>(void)
   Restorer::NodesVector outVec;
   Restorer::NodesVector tmp;
   makeNewTreeB(outVec, tmp);
-  check(outVec, "root1", "node1");
+  removeAndCheck(outVec, "root1", "node1");
 }
 
 // try restoring invalid data
@@ -436,7 +435,7 @@ void testObj::test<8>(void)
   Restorer::NodesVector outVec;
   Restorer::NodesVector tmp;
   makeNewTreeC(outVec, tmp);
-  check(outVec, "root1", "node2");
+ removeAndCheck(outVec, "root1", "node2");
 }
 
 //
