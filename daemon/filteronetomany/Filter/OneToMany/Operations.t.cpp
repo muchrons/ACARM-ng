@@ -36,7 +36,7 @@ template<>
 void testObj::test<1>(void)
 {
   const string n=Operations::getMetaAlertName( makeNewHost() ).get();
-  ensure_equals("invlaid name", n, "Multiple attacks from host 1.2.3.4 (dns.org)");
+  ensure_equals("invlaid name", n, "[one2many] multiple attacks from host 1.2.3.4 (dns.org)");
 }
 
 // test getting meta alert name from host without dns name
@@ -46,7 +46,7 @@ void testObj::test<2>(void)
 {
   HostPtrNN h( makeNewHost("1.2.3.4", NULL) );
   const string n=Operations::getMetaAlertName(h).get();
-  ensure_equals("invlaid name", n, "Multiple attacks from host 1.2.3.4");
+  ensure_equals("invlaid name", n, "[one2many] multiple attacks from host 1.2.3.4");
 }
 
 // getting repoted hosts smoke test
