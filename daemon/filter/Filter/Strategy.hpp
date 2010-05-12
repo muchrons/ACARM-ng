@@ -41,8 +41,7 @@ public:
     assert( changed.size()==0 && "non-empty output collection received");
     BackendFacade bf( conn_, changed, getFilterName() );
     processImpl(n, ntq_, bf);
-    // TODO: why system sometimes segvs when this line is not commented?!
-    //bf.commitChanges();
+    bf.commitChanges();         // if there was no exception, commit changes made (if any)
   }
 
 protected:
