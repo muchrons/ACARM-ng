@@ -2,6 +2,7 @@
  * Strategy.cpp
  *
  */
+#include <algorithm>
 #include <boost/thread.hpp>
 #include <cassert>
 
@@ -10,6 +11,27 @@
 #include "Trigger/Strategy.hpp"
 
 using namespace std;
+
+
+namespace
+{
+struct FindGivenNode
+{
+  explicit FindGivenNode(Persistency::GraphNodePtrNN n):
+    n_(n)
+  {
+  }
+
+  bool operator()(const boost::weak_ptr<Persistency::GraphNode> &w) const
+  {
+    return n_.get()==w.lock().get();
+  }
+
+private:
+  Persistency::GraphNodePtrNN n_;
+}; // struct FindGivenNode
+} // unnamed namespace
+
 
 namespace Trigger
 {
@@ -26,6 +48,15 @@ void Strategy::process(Persistency::GraphNodePtrNN n)
   // clean-up old entries
   nos_.prune();
 
+  // check nos_ cache - maybe entry has been already triggered before?
+  if( find_if( nos_.begin(), nos_.end(), FindGivenNode(n) )!=nos_.end() )
+  {
+    LOGMSG_DEBUG_S(log_)<<"node at address 0x"
+                        <<static_cast<void*>( n.get() )
+                        <<" matches criteria but was already triggered before";
+    return;
+  }
+
   // check if node should be processed at all
   if( !matchesCriteria(*n) )
   {
@@ -40,8 +71,15 @@ void Strategy::process(Persistency::GraphNodePtrNN n)
   LOGMSG_INFO_S(log_)<<"calling trigger for node at address 0x"
                      <<static_cast<void*>( n.get() );
   trigger(*n);
+
   // if it succeeded, mark it as triggered
-  bf_.markAsTriggered( n->getMetaAlert() );
+  BackendFacade bf(conn_, name_);
+  bf.markAsTriggered( n->getMetaAlert() );
+  bf.commitChanges();
+
+  LOGMSG_DEBUG_S(log_)<<"triggering node at address 0x"
+                      <<static_cast<void*>( n.get() )
+                      <<" finished successfully";
 }
 
 
@@ -57,8 +95,7 @@ inline Logger::NodeName makeNodeName(const string &name)
 Strategy::Strategy(const std::string &name):
   log_( makeNodeName(name) ),
   name_(name),
-  conn_( Persistency::IO::create() ),
-  bf_(conn_, name_)
+  conn_( Persistency::IO::create() )
 {
   LOGMSG_INFO(log_, "trigger created");
 }

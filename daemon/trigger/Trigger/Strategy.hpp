@@ -86,7 +86,6 @@ private:
   const std::string                name_;
   Base::ObservingSet<NodeType>     nos_;
   Persistency::IO::ConnectionPtrNN conn_;
-  BackendFacade                    bf_;
 }; // class Strategy
 
 } // namespace Trigger

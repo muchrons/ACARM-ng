@@ -81,18 +81,14 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("invalid initial number of calls to matchesCriteria",
-                tt_.callsCriteria_, 0);
-  ensure_equals("invalid initial number of calls to trigger",
-                tt_.callsTrigger_, 0);
+  ensure_equals("invalid initial number of calls to matchesCriteria", tt_.callsCriteria_, 0);
+  ensure_equals("invalid initial number of calls to trigger", tt_.callsTrigger_, 0);
   // call
   tt_.criteria_=false;
   tt_.process(tt_.node_);
   // check
-  ensure_equals("invalid number of calls to matchesCriteria",
-                tt_.callsCriteria_, 1);
-  ensure_equals("invalid number of calls to trigger",
-                tt_.callsTrigger_, 0);
+  ensure_equals("invalid number of calls to matchesCriteria", tt_.callsCriteria_, 1);
+  ensure_equals("invalid number of calls to trigger", tt_.callsTrigger_, 0);
 }
 
 
@@ -147,18 +143,36 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure_equals("invalid initial number of calls to matchesCriteria",
-                tt_.callsCriteria_, 0);
-  ensure_equals("invalid initial number of calls to trigger",
-                tt_.callsTrigger_, 0);
+  ensure_equals("invalid initial number of calls to matchesCriteria", tt_.callsCriteria_, 0);
+  ensure_equals("invalid initial number of calls to trigger", tt_.callsTrigger_, 0);
   // call
   tt_.criteria_=true;
   tt_.process(tt_.node_);
   // check
-  ensure_equals("invalid number of calls to matchesCriteria",
-                tt_.callsCriteria_, 1);
-  ensure_equals("invalid number of calls to trigger",
-                tt_.callsTrigger_, 1);
+  ensure_equals("invalid number of calls to matchesCriteria", tt_.callsCriteria_, 1);
+  ensure_equals("invalid number of calls to trigger", tt_.callsTrigger_, 1);
+}
+
+// check if the same nod is not triggered more than once
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  tt_.criteria_=true;
+  // pre-conditions
+  ensure_equals("invalid initial number of calls to matchesCriteria", tt_.callsCriteria_, 0);
+  ensure_equals("invalid initial number of calls to trigger", tt_.callsTrigger_, 0);
+
+  tt_.process(tt_.node_);       // first call
+  // sanity check
+  ensure_equals("matchesCriteria not called at all", tt_.callsCriteria_, 1);
+  ensure_equals("trigger not called at all", tt_.callsTrigger_, 1);
+
+  tt_.process(tt_.node_);       // second call
+  // check - if element was already triggered, it should not be event checked for
+  // maching predefined criterias.
+  ensure_equals("invalid number of calls to matchesCriteria", tt_.callsCriteria_, 1);
+  ensure_equals("invalid number of calls to trigger", tt_.callsTrigger_, 1);
 }
 
 } // namespace tut
