@@ -6,9 +6,11 @@
 #include <boost/numeric/conversion/cast.hpp>
 #include <cassert>
 
-#include "Trigger/ThresholdConfig.hpp"
+#include "Trigger/Simple/ThresholdConfig.hpp"
 
 namespace Trigger
+{
+namespace Simple
 {
 
 namespace
@@ -23,6 +25,7 @@ double parseAsDouble(const char *str)
   }
   catch(const std::exception &ex)
   {
+    // re-throw library-dependent exception
     throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "severity", str, ex.what() );
   }
 } // parseAsDouble()
@@ -38,6 +41,7 @@ size_t parseAsSizeT(const char *str)
   }
   catch(const std::exception &ex)
   {
+    // re-throw library-dependent exception
     throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "count", str, ex.what() );
   }
 } // parseAsSizeT()
@@ -54,4 +58,5 @@ ThresholdConfig::ThresholdConfig(const char *severity, const char *count)
     cnt_=AlertCountThreshold( parseAsSizeT(count) );
 }
 
+} // namespace Simple
 } // namespace Trigger

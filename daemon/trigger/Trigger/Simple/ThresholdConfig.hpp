@@ -12,6 +12,8 @@
 
 namespace Trigger
 {
+namespace Simple
+{
 
 // TODO: comment
 
@@ -40,6 +42,7 @@ private:
   AlertCountThreshold cnt_;
 }; // class ThresholdConfig
 
+} // namespace Simple
 } // namespace Trigger
 
 #endif

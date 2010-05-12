@@ -4,9 +4,9 @@
  */
 #include <tut.h>
 
-#include "Trigger/ThresholdConfig.hpp"
+#include "Trigger/Simple/ThresholdConfig.hpp"
 
-using namespace Trigger;
+using namespace Trigger::Simple;
 
 namespace
 {
@@ -20,7 +20,7 @@ struct TestClass
       const ThresholdConfig tc(sev, cnt);
       tut::fail("c-tor didn't throw on invalid data");
     }
-    catch(const ExceptionInvalidValue &)
+    catch(const Trigger::ExceptionInvalidValue &)
     {
       // this is expected
     }
