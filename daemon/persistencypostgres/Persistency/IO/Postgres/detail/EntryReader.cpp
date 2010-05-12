@@ -361,7 +361,8 @@ std::vector<DataBaseID> EntryReader::readRoots()
 std::vector<DataBaseID> EntryReader::readRoots(const Timestamp &from, const Timestamp &to)
 {
   stringstream ss;
-  ss << "CREATE TEMP TABLE tmp ON COMMIT DROP AS SELECT id_node, id_child FROM meta_alerts_tree WHERE ";
+  ss << "CREATE TEMP TABLE tmp ON COMMIT DROP AS SELECT id_node, id_child FROM meta_alerts_tree"
+        " INNER JOIN meta_alerts ON(meta_alerts_tree.id_node=meta_alerts.id) WHERE ";
   Appender::append(ss, from);
   ss << " <= create_time AND create_time <=";
   Appender::append(ss, to);

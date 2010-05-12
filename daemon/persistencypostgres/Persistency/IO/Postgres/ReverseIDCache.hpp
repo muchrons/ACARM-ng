@@ -8,6 +8,7 @@
 #include <map>
 
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
+#include "Persistency/IO/Postgres/ExceptionNoSuchEntry.hpp"
 
 namespace Persistency
 {
@@ -33,14 +34,13 @@ public:
   {
     return cache_.find(id) != cache_.end();
   }
-  // TODO: since T may not be smart_ptr here, consider name like getExisiting() that would throw
-  //       in case element would not exist.
   /** \brief get element with id from cache
    *  \param id    id of element.
    */
-  T getNotNull(DataBaseID id) const
+  T getExisting(DataBaseID id) const
   {
-    // TODO: SEGV when find() returns cache_.end()
+    if( cache_.find(id) == cache_.end() )
+      throw ExceptionNoSuchEntry(SYSTEM_SAVE_LOCATION);
     return cache_.find(id)->second;
   }
   /** \brief get element with id from cache

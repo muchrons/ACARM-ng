@@ -4,7 +4,7 @@
  */
 #include <tut.h>
 
-// TODO: inclusion of ReverseIDCache is missing
+#include "Persistency/IO/Postgres/ReverseIDCache.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"

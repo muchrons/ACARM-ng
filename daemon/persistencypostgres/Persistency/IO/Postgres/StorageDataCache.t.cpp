@@ -62,7 +62,7 @@ struct TestClass
       ts_.get(e);
       return true;
     }
-    catch(const TestStorage::ExceptionNoSuchEntry&)
+    catch(const ExceptionNoSuchEntry&)
     {
       return false;
     }
@@ -100,7 +100,7 @@ void testObj::test<2>(void)
     ts_.get( data_[0] );
     fail("get() didn't throw for nonexisitng pointer");
   }
-  catch(const TestStorage::ExceptionNoSuchEntry&)
+  catch(const ExceptionNoSuchEntry&)
   {
     // this is expected
   }

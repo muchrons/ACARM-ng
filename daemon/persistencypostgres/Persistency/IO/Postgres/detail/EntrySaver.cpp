@@ -212,9 +212,7 @@ DataBaseID EntrySaver::saveReportedHostData(DataBaseID               alertID,
   ss << "INSERT INTO reported_hosts(id_alert, id_host, role, id_ref) VALUES (";
   ss << alertID << ",";
   ss << hostID << ",";
-  // TODO: avoid implicit convertions of numbers to boolean values - it decreases
-  //       readability. use diurect comparison with given value(s) instead.
-  assert(!strcmp(role, "src") || !strcmp(role, "dst"));
+  assert(strcmp(role, "src") == 0 || strcmp(role, "dst") == 0);
   Appender::append(ss, role);
   ss << ",";
   addReferenceURL(ss, h.getReferenceURL() );
@@ -395,11 +393,7 @@ void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
   stringstream ss;
   ss << "UPDATE meta_alerts SET severity_delta = severity_delta + ";
   Appender::append(ss, severityDelta);
-  ss << " WHERE id = " << malertID << ";";
-  EXEC_SQL( ss.str() );
-  // TODO: i think this can be done in a single UPDATE query
-  ss.str("");
-  ss << "UPDATE meta_alerts SET last_update_time = now() ";
+  ss << ", last_update_time = now() ";
   ss << " WHERE id = " << malertID << ";";
   EXEC_SQL( ss.str() );
 }
@@ -409,11 +403,7 @@ void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta
   stringstream ss;
   ss << "UPDATE meta_alerts SET certainty_delta = certainty_delta + ";
   Appender::append(ss, certanityDelta);
-  ss << " WHERE id = " << malertID << ";";
-  EXEC_SQL( ss.str() );
-  // TODO: i think this can be done in a single UPDATE query
-  ss.str("");
-  ss << "UPDATE meta_alerts SET last_update_time = now() ";
+  ss << ", last_update_time = now() ";
   ss << " WHERE id = " << malertID << ";";
   EXEC_SQL( ss.str() );
 }
