@@ -212,6 +212,8 @@ DataBaseID EntrySaver::saveReportedHostData(DataBaseID               alertID,
   ss << "INSERT INTO reported_hosts(id_alert, id_host, role, id_ref) VALUES (";
   ss << alertID << ",";
   ss << hostID << ",";
+  // TODO: avoid implicit convertions of numbers to boolean values - it decreases
+  //       readability. use diurect comparison with given value(s) instead.
   assert(!strcmp(role, "src") || !strcmp(role, "dst"));
   Appender::append(ss, role);
   ss << ",";
@@ -395,6 +397,7 @@ void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
   Appender::append(ss, severityDelta);
   ss << " WHERE id = " << malertID << ";";
   EXEC_SQL( ss.str() );
+  // TODO: i think this can be done in a single UPDATE query
   ss.str("");
   ss << "UPDATE meta_alerts SET last_update_time = now() ";
   ss << " WHERE id = " << malertID << ";";
@@ -408,6 +411,7 @@ void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta
   Appender::append(ss, certanityDelta);
   ss << " WHERE id = " << malertID << ";";
   EXEC_SQL( ss.str() );
+  // TODO: i think this can be done in a single UPDATE query
   ss.str("");
   ss << "UPDATE meta_alerts SET last_update_time = now() ";
   ss << " WHERE id = " << malertID << ";";
