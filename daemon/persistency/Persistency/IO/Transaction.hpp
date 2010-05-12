@@ -63,7 +63,6 @@ public:
 
 private:
   bool isActive(void) const;
-  void logMsg(const char *str);
 
   boost::scoped_ptr<TransactionAPI> transaction_;
   bool                              isActive_;

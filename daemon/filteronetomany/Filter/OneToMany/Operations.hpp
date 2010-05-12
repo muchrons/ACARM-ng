@@ -37,7 +37,7 @@ struct Operations
   static Persistency::MetaAlert::Name getMetaAlertName(const Persistency::HostPtrNN h)
   {
     std::stringstream ss;
-    ss << "Multiple attacks from host " << h->getIP();
+    ss << "[one2many] multiple attacks from host " << h->getIP();
     if( h->getName().get()!=NULL )
       ss << " (" << h->getName().get() << ")";
     return ss.str();

@@ -19,7 +19,7 @@ namespace Proc
 {
 
 BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-                           const std::string                &processorName):
+                             const std::string                &processorName):
   processorName_(processorName),
   conn_(conn)
 {
@@ -45,8 +45,7 @@ void BackendFacade::beginTransaction(void)
 {
   if( transaction_.get()==NULL )    // new transaction
   {
-    TransactionAPIAutoPtr api=conn_->createNewTransaction(
-                                "transaction_for_proc_" + getName() );
+    TransactionAPIAutoPtr api=conn_->createNewTransaction( "transaction_for_proc_" + getName() );
     transaction_.reset( new Transaction(api) );
   }
   // if begin has been requested, transaction must always be valid

@@ -26,10 +26,9 @@ public:
   ExceptionCycleDetected(const Location &where,
                          const char     *parentName,
                          const char     *childName):
-    Exception(where,
-              std::string("addition node '") + ensureString(childName) +
-              "' as a child of node '"       + ensureString(parentName) +
-              "' would cause a cycle")
+    Exception( where,
+               cc("addition node '", childName, "' as a child of node '",
+                  parentName, "' would cause a cycle") )
   {
   }
 }; // class ExceptionCycleDetected

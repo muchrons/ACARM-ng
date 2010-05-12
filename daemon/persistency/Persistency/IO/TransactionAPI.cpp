@@ -16,7 +16,7 @@ namespace IO
 
 TransactionAPI::~TransactionAPI(void)
 {
-  logMsg("transaction is being destroyed");
+  LOGMSG_DEBUG_S(log_)<<name_<<": transaction is being destroyed";
 }
 
 const std::string TransactionAPI::getName(void) const
@@ -30,25 +30,19 @@ TransactionAPI::TransactionAPI(Base::Threads::Mutex &mutex,
   name_(name),
   log_("persistency.io.transactionapi")
 {
-  logMsg("starting transaction");
+  LOGMSG_DEBUG_S(log_)<<name_<<": starting transaction";
 }
 
 void TransactionAPI::commit(void)
 {
-  logMsg("commiting transaction");
+  LOGMSG_DEBUG_S(log_)<<name_<<": commiting transaction";
   commitImpl();
 }
 
 void TransactionAPI::rollback(void)
 {
-  logMsg("transaction rollback requested");
+  LOGMSG_DEBUG_S(log_)<<name_<<": transaction rollback requested";
   rollbackImpl();
-}
-
-void TransactionAPI::logMsg(const char *msg)
-{
-  assert(msg!=NULL);
-  LOGMSG_INFO_S(log_)<<name_<<": "<<msg;
 }
 
 } // namespace IO

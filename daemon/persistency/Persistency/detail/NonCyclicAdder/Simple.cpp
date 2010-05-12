@@ -79,11 +79,11 @@ void NonCyclicAdder::addChildImpl(GraphNode           &parent,
   System::Threads::SafeInitLock lock(g_additionMutex);
 
   // check for cycle
-  if( parentPtr==childPtr           ||      // instant-cycle
-      hasCycle(childPtr, parentPtr)    )    // is it possible to access self through child
-    throw ExceptionCycleDetected(SYSTEM_SAVE_LOCATION,
-                                 childPtr->getMetaAlert().getName().get(),
-                                 parentPtr->getMetaAlert().getName().get() );
+  if( parentPtr==childPtr           ||      // instant-cycle?
+      hasCycle(childPtr, parentPtr)    )    // is it possible to access self through child?
+    throw ExceptionCycleDetected( SYSTEM_SAVE_LOCATION,
+                                  parentPtr->getMetaAlert().getName().get(),
+                                  childPtr->getMetaAlert().getName().get() );
 
   // if there is no cycle, add new child
   iap.addChildToChildrenVector(parent, child);
