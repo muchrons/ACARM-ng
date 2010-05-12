@@ -96,10 +96,14 @@ private:
     // check if it can be correlated with other nodes
     for(typename NodesTimeoutQueue::iterator it=ntq.begin(); it!=ntq.end(); ++it)
     {
+      // TODO: this solution is ugly - think of some smarter code reorganization...
+      // protection against exceptions
+      bool iteratorsInvalidated=false;
+
       try
       {
         // stop after first successful correlation.
-        if( tryCorrelate(ntq, bf, thisEntry, it) )
+        if( tryCorrelate(ntq, bf, thisEntry, it, iteratorsInvalidated) )
           return;
       }
       catch(const Commons::Exception &ex)
@@ -116,6 +120,14 @@ private:
                                   << "' - proceeding with processing next element";
         // on error, continue with next element...
       }
+
+      // this is fallback in case of exception after iterators have been invalidated
+      if(iteratorsInvalidated==true)
+      {
+        LOGMSG_DEBUG(Base::log_, "iterators have been already invalidated - "
+                                 "exiting from processing of this node");
+        return;
+      }
     } // for(nodes in timeout queue)
 
     // if element cannot be correlated at the moment, add it to queue - maybe
@@ -126,8 +138,10 @@ private:
   bool tryCorrelate(NodesTimeoutQueue                    &ntq,
                     BackendFacade                         &bf,
                     const NodeEntry                      &thisEntry,
-                    typename NodesTimeoutQueue::iterator  it)
+                    typename NodesTimeoutQueue::iterator  it,
+                    bool                                 &iteratorsInvalidated)
   {
+    assert(iteratorsInvalidated==false);
     // skip self
     if( *it==thisEntry )
       return false;
@@ -140,32 +154,32 @@ private:
     // if node's leaf, create new node and correlate leafs there.
     if( it->node_->isLeaf() )
     {
-      LOGMSG_DEBUG_S(Base::log_)
-        << "correlating '" << it->node_->getMetaAlert()->getName().get()
-        << "' with '" << thisEntry.node_->getMetaAlert().getName().get()
-        << "' as a new node";
+      // create new meta-alert and one in queue
+      LOGMSG_DEBUG_S(Base::log_)<< "correlating '" << it->node_->getMetaAlert()->getName().get()
+                                << "' with '" << thisEntry.node_->getMetaAlert().getName().get()
+                                << "' as a new node";
       const BackendFacade::ChildrenVector cv(it->node_, thisEntry.node_);
-      const Persistency::MetaAlertPtrNN ma(
+      const Persistency::MetaAlertPtrNN   ma(
                   new Persistency::MetaAlert( getMetaAlertName(thisEntry, *it),
                                               Persistency::MetaAlert::SeverityDelta(0),
                                               Persistency::MetaAlert::CertaintyDelta(0),
                                               Persistency::ReferenceURLPtr(),
                                               Persistency::Timestamp() ) );
-      // TODO: rework this in order to be able to continue correlating after
-      //       removal of sample element.
-      ntq.dismiss(it);                                // mark source element as already used
-      Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv); // add new, correlated element
-      const NodeEntry newEntry(newNode, thisEntry.t_);// use the same reported host entry
-      ntq.update(newEntry, getTimeout() );            // add newly correlated entry
+      Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv); // add new, correlated element.
+      const NodeEntry newEntry(newNode, thisEntry.t_);// use the same reported host entry.
+      iteratorsInvalidated=true;            // from now on iterators cannot be used any more
+      ntq.dismiss(it);                      // if element has been already correlated
+                                            // it should not be used any more.
+      ntq.update(newEntry, getTimeout() );  // add newly correlated entry.
     }
     else
     {
-      LOGMSG_DEBUG_S(Base::log_)
-        << "adding node '" << thisEntry.node_->getMetaAlert().getName().get()
-        << "' to already correlated '"
-        << it->node_->getMetaAlert()->getName().get() << "'";
-      bf.addChild(it->node_, thisEntry.node_);      // add new alert to already
-    }                                               // correlated in one set
+      // append new meta-alert to a set of already correlated ones
+      LOGMSG_DEBUG_S(Base::log_)<< "adding node '" << thisEntry.node_->getMetaAlert().getName().get()
+                                << "' to already correlated '"
+                                << it->node_->getMetaAlert()->getName().get() << "'";
+      bf.addChild(it->node_, thisEntry.node_);      // add new alert to already correlated in one set
+    }
 
     // if we're here, it means that we were able to correlate and may exit
     // in glory now.
