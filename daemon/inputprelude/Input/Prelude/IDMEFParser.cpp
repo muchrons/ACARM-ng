@@ -82,10 +82,17 @@ Persistency::Alert::ReportedHosts IDMEFParser::parseTargets(idmef_alert_t *alert
   while( (tar = idmef_alert_get_next_target(alert, tar))!=NULL )
   {
     const IDMEFParserTarget tr(tar);
+
     Host::ReportedServices  rs;
-    rs.push_back(tr.getService());
+    ServicePtr tmpService=tr.getService();
+    if( tmpService.get()!=NULL )
+      rs.push_back(tmpService);
+
     Host::ReportedProcesses rp;
-    rp.push_back(tr.getProcess());
+    ProcessPtr tmpProcess=tr.getProcess();
+    if( tmpProcess.get()!=NULL )
+      rp.push_back(tmpProcess);
+
     HostPtrNN ptr(new Host(tr.getAddress(),NULL,NULL,ReferenceURLPtr(),rs,rp,NULL));
     rh.push_back(ptr);
   }

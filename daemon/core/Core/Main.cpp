@@ -19,6 +19,7 @@ Main::Main(void):
   // (non-explicit initialization is being done here)
   signals_(&threads_)   // after all initialization is done, register real handlers
 {
+  // TODO: add reading state from persistency here.
   LOGMSG_INFO(log_, "core is up and running");
 }
 

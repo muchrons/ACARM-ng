@@ -51,7 +51,7 @@ void Strategy::processImpl(Node               n,
       BlackListPtr        ptr( new BlackList( dsp.begin(), dsp.end() ) );
       // if new list is available - save it!
       bl_.swap(ptr);
-      LOGMSG_ERROR_S(log_)<<"update's done - next one on "<<deadline_;
+      LOGMSG_INFO_S(log_)<<"update's done - next one on "<<deadline_;
     }
     catch(const Filter::Exception &ex)
     {

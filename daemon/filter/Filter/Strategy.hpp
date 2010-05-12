@@ -38,9 +38,10 @@ public:
   {
     LOGMSG_DEBUG_S(log_)<<"processing node at address 0x"
                         <<static_cast<void*>( n.get() );
-    BackendFacade bf( conn_, changed, getFilterName() );
     assert( changed.size()==0 && "non-empty output collection received");
+    BackendFacade bf( conn_, changed, getFilterName() );
     processImpl(n, ntq_, bf);
+    bf.commitChanges();         // if there was no exception, commit changes made (if any)
   }
 
 protected:
