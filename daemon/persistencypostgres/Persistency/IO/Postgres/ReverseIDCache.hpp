@@ -16,8 +16,6 @@ namespace IO
 namespace Postgres
 {
 
-// TODO: test for this class are missing.
-
 
 /** \brief cache which stores elements with IDs.
  */
