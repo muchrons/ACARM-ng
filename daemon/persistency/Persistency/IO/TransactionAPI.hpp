@@ -62,8 +62,6 @@ private:
 
   friend class detail::TransactionAPIOperations;
 
-  void logMsg(const char *str);
-
   Base::Threads::Lock lock_;
   const std::string   name_;
   Logger::Node        log_;

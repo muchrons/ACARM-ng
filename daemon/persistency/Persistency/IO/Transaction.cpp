@@ -25,7 +25,7 @@ Transaction::Transaction(TransactionAPIAutoPtr transaction):
     throw ExceptionNULLParameter(SYSTEM_SAVE_LOCATION, "NULL transaction's API");
   assert( transaction_.get()!=NULL );
   assert( isActive() );
-  logMsg("transaction object created with proper API");
+  LOGMSG_DEBUG_S(log_)<<transaction_->getName()<<": transaction object created with proper API";
 }
 
 Transaction::~Transaction(void)
@@ -77,8 +77,8 @@ void Transaction::ensureIsActive(void) const
 {
   if( !isActive() )
   {
-    LOGMSG_ERROR_S(log_)<<transaction_->getName()<<": "
-                        <<"operation called on inactive transaction";
+    LOGMSG_ERROR_S(log_)<<transaction_->getName()
+                        <<": operation called on inactive transaction";
     throw ExceptionTransactionNotActive(SYSTEM_SAVE_LOCATION,
                                         transaction_->getName().c_str() );
   }
@@ -88,12 +88,6 @@ bool Transaction::isActive(void) const
 {
   assert( transaction_.get()!=NULL );
   return isActive_;
-}
-
-void Transaction::logMsg(const char *str)
-{
-  assert(str!=NULL);
-  LOGMSG_INFO_S(log_)<<transaction_->getName()<<": "<<str;
 }
 
 } // namespace IO
