@@ -69,10 +69,10 @@ GraphNodePtrNN Restorer::makeLeaf(DataBaseID           id,
                                  IO::ConnectionPtrNN  connStubIO,
                                  IO::Transaction     &tStubIO)
 {
-  if( graphCache_.has(id) )
-    return graphCache_.getNotNull(id);
+  if( leafCache_.has(id) )
+    return leafCache_.getNotNull(id);
   GraphNodePtrNN leaf( new GraphNode( aPtr, connStubIO, tStubIO ) );
-  graphCache_.add(id, leaf);
+  leafCache_.add(id, leaf);
   return leaf;
 }
 
@@ -82,10 +82,10 @@ GraphNodePtrNN Restorer::makeNode(DataBaseID                id,
                                   IO::ConnectionPtrNN       connStubIO,
                                   IO::Transaction          &tStubIO)
 {
-  if( graphCache_.has(id) )
-    return graphCache_.getNotNull(id);
+  if( nodeCache_.has(id) )
+    return nodeCache_.getNotNull(id);
   GraphNodePtrNN node( new GraphNode( maPtr, connStubIO, tStubIO, vec ) );
-  graphCache_.add(id, node);
+  nodeCache_.add(id, node);
   return node;
 }
 
@@ -128,9 +128,6 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
   removeDuplicates(out);
 }
 
-// TODO: consider returing element from cache, if addition has not been made or
-//       'e' when new one has been added - it's trivial to implement and makes
-//       API more robust.
 template<typename T>
 void Restorer::addIfNew(const T &e, DataBaseID id)
 {
@@ -151,9 +148,6 @@ GraphNodePtrNN Restorer::restoreLeaf(DataBaseID                                 
   const DataBaseID alertID = er.getAlertIDAssociatedWithMetaAlert(id);
   // add Alert to cache
   addIfNew(alertPtr, alertID);
-  // TODO: creating new graph node/leaf, when alert was already processed is not valid since
-  //       it makes double instances of object repreesnting the same elements.
-  //       graph nodes probably should be cached as well, indexed by alerts' ID and nodes' ID.
   const GraphNodePtrNN graphNodeLeaf( makeLeaf( alertID, alertPtr, connStubIO, tStubIO ) );
   out.push_back(graphNodeLeaf);
   return graphNodeLeaf;

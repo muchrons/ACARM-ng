@@ -205,14 +205,14 @@ DataBaseID EntrySaver::saveHostData(const Persistency::Host &h)
 
 DataBaseID EntrySaver::saveReportedHostData(DataBaseID               alertID,
                                             DataBaseID               hostID,
-                                            const std::string        role,
+                                            const char               *role,
                                             const Persistency::Host &h)
 {
   stringstream ss;
   ss << "INSERT INTO reported_hosts(id_alert, id_host, role, id_ref) VALUES (";
   ss << alertID << ",";
   ss << hostID << ",";
-  assert(role=="src" || role=="dst");
+  assert(!strcmp(role, "src") || !strcmp(role, "dst"));
   Appender::append(ss, role);
   ss << ",";
   addReferenceURL(ss, h.getReferenceURL() );
@@ -391,9 +391,12 @@ void EntrySaver::markMetaAlertAsTriggered(DataBaseID malertID, const std::string
 void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
 {
   stringstream ss;
-  // TODO: last_update_time columnt should be updated as well here
   ss << "UPDATE meta_alerts SET severity_delta = severity_delta + ";
   Appender::append(ss, severityDelta);
+  ss << " WHERE id = " << malertID << ";";
+  EXEC_SQL( ss.str() );
+  ss.str("");
+  ss << "UPDATE meta_alerts SET last_update_time = now() ";
   ss << " WHERE id = " << malertID << ";";
   EXEC_SQL( ss.str() );
 }
@@ -401,9 +404,12 @@ void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
 void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta)
 {
   stringstream ss;
-  // TODO: last_update_time columnt should be updated as well here
   ss << "UPDATE meta_alerts SET certainty_delta = certainty_delta + ";
   Appender::append(ss, certanityDelta);
+  ss << " WHERE id = " << malertID << ";";
+  EXEC_SQL( ss.str() );
+  ss.str("");
+  ss << "UPDATE meta_alerts SET last_update_time = now() ";
   ss << " WHERE id = " << malertID << ";";
   EXEC_SQL( ss.str() );
 }
