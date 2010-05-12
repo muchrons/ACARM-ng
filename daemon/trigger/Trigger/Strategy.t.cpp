@@ -28,7 +28,7 @@ struct TestTrigger: public Strategy
   {
   }
 
-  virtual bool matchesCriteria(const NodeType &n)
+  virtual bool matchesCriteria(const NodeType &n) const
   {
     ++callsCriteria_;
     checkNode(n);
@@ -46,7 +46,7 @@ struct TestTrigger: public Strategy
     tut::ensure("invalid node", &n==node_.get() );
   }
 
-  int            callsCriteria_;
+  mutable int    callsCriteria_;
   int            callsTrigger_;
   bool           criteria_;
   GraphNodePtrNN node_;
@@ -101,7 +101,7 @@ struct TestLoopTrigger: public Strategy
   {
   }
 
-  virtual bool matchesCriteria(const NodeType&)
+  virtual bool matchesCriteria(const NodeType&) const
   {
     return true;
   }

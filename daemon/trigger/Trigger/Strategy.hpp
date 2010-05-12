@@ -64,11 +64,12 @@ private:
   /** \brief user-provided implementation of trigger condition.
    *  \param n added/changed node to be checked.
    *  \return true if node matches criteria, false otherwise.
+   *  \note call is called only ig given nod was not previously reported.
    *
-   *  if given node does not meet trigger criteria, method returns true
+   *  if given node meets trigger's criteria, method returns true
    *  and interface runs trigger() procedure.
    */
-  virtual bool matchesCriteria(const NodeType &n) = 0;
+  virtual bool matchesCriteria(const NodeType &n) const = 0;
 
   /** \brief user-provided implementation of node trigger.
    *  \param n added/changed node to be processed by trigger.
