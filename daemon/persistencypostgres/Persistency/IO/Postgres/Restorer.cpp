@@ -194,6 +194,10 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
     {
       // TODO: log
     }
+    catch(const ExceptionBadNumberOfNodeChildren &)
+    {
+      // TODO: log
+    }
   }
   if(tmpNodes.size() < 2)
     throw ExceptionBadNumberOfNodeChildren(SYSTEM_SAVE_LOCATION, id );

@@ -112,25 +112,25 @@ struct TestClass
 
     GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
     GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
-    second.push_back(leaf3);
-    second.push_back(leaf4);
+    first.push_back(leaf3);
+    first.push_back(leaf4);
     GraphNodePtrNN node4 = makeNewNode(leaf3, leaf4, "node4");
-    second.push_back(node4);
+    first.push_back(node4);
 
     GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
     GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
-    second.push_back(leaf5);
-    second.push_back(leaf6);
+    first.push_back(leaf5);
+    first.push_back(leaf6);
     GraphNodePtrNN node5 = makeNewNode(leaf5, leaf6, "node5");
 
-    second.push_back(node5);
+    first.push_back(node5);
 
     GraphNodePtrNN node1 = makeNewNode(node3, node4, "node1");
     second.push_back(node1);
 
 
     GraphNodePtrNN node2 = makeNewNode(node4, node5, "node2");
-    second.push_back(node2);
+    first.push_back(node2);
 
     GraphNodePtrNN root = makeNewNode(node1, node2, "root");
     second.push_back(root);
@@ -366,19 +366,19 @@ struct TestClass
     const Timestamp t3( timestampFromString("2010-04-22 07:56:07") );
     GraphNodePtrNN leaf1 = makeNewLeaf("leaf1", t2);
     GraphNodePtrNN leaf2 = makeNewLeaf("leaf2", t2);
-    second.push_back(leaf1);
-    second.push_back(leaf2);
+    first.push_back(leaf1);
+    first.push_back(leaf2);
 
     GraphNodePtrNN node1 = makeNewNode(leaf1, leaf2, "node1", t2);
-    second.push_back(node1);
+    first.push_back(node1);
 
     GraphNodePtrNN leaf3 = makeNewLeaf("leaf3", t1);
     GraphNodePtrNN leaf4 = makeNewLeaf("leaf4", t1);
-    first.push_back(leaf3);
-    first.push_back(leaf4);
+    second.push_back(leaf3);
+    second.push_back(leaf4);
 
     GraphNodePtrNN node2 = makeNewNode(leaf3, leaf4, "node2", t1);
-    first.push_back(node2);
+    second.push_back(node2);
 
     GraphNodePtrNN root1 = makeNewNode(node1, node2, "root1", t2);
     second.push_back(root1);
