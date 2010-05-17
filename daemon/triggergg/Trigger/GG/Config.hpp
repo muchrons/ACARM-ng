@@ -14,12 +14,10 @@ namespace GG
 
 // TODO: comment this code
 
-class AccountConfig
+class Config
 {
 public:
-  typedef uint32_t UserID;
-
-  AccountConfig(UserID uid, const std::string &password):
+  Config(const AccountConfig &ac, const double severityThreshold
     uid_(uid),
     password_(password)
   {
