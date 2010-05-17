@@ -44,7 +44,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const LoginParameters lp( getConfig() );
+  const LoginParameters lp( getTestConfig() );
   AutoSession           ags( gg_login( &lp.get() ) );
   ensure("conneciton error", ags.get()!=NULL );
 }
@@ -54,7 +54,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const LoginParameters lp( getConfig() );
+  const LoginParameters lp( getTestConfig() );
   AutoSession           ags( gg_login( &lp.get() ) );
   ensure("conneciton error", ags.get()!=NULL );
   AutoSession           out;

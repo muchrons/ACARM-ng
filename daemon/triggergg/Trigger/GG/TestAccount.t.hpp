@@ -10,7 +10,7 @@
 namespace
 {
 
-Trigger::GG::AccountConfig getConfig(void)
+Trigger::GG::AccountConfig getTestConfig(void)
 {
   return Trigger::GG::AccountConfig(23436545, "testowekonto");
 }
