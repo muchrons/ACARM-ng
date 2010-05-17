@@ -17,8 +17,10 @@ class ExceptionInvalidValue: public Exception
 {
 public:
   /** \brief create execption with given message.
-   *  \param where place where exception has been thrown.
-   *  \param extra extra pieces of information, if present
+   *  \param where     place where exception has been thrown.
+   *  \param parameter parameter that has invalid value assigned.
+   *  \param value     assigned value, that is invalid.
+   *  \param extra     extra pieces of information, if present
    */
   ExceptionInvalidValue(const Location &where,
                         const char     *parameter,
