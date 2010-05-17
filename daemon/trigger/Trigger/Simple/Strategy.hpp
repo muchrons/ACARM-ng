@@ -8,6 +8,7 @@
 /* public header */
 
 #include "Trigger/Strategy.hpp"
+#include "Trigger/Simple/ThresholdConfig.hpp"
 
 
 namespace Trigger
@@ -22,11 +23,14 @@ class Strategy: public Trigger::Strategy
 protected:
   /** \brief create instance.
    *  \param name name of given trigger type.
+   *  \param cfg  config to be used for this trigger.
    */
-  explicit Strategy(const std::string &name);
+  Strategy(const std::string &name, const ThresholdConfig &cfg);
 
 private:
-  virtual bool matchesCriteria(const NodeType &n) const;
+  virtual bool matchesCriteria(const Persistency::GraphNodePtrNN &n) const;
+
+  const ThresholdConfig cfg_;
 }; // class Strategy
 
 } // namespace Simple

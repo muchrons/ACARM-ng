@@ -18,12 +18,12 @@ namespace
 struct TestTrigger: public Strategy
 {
   TestTrigger(void):
-    Strategy("testtrigger"),
+    Strategy("testtrigger", ThresholdConfig("1.2", "4") ),
     callsTrigger_(0)
   {
   }
 
-  virtual void trigger(const NodeType &/*n*/)
+  virtual void trigger(const Persistency::GraphNodePtrNN &/*n*/)
   {
     ++callsTrigger_;
   }
