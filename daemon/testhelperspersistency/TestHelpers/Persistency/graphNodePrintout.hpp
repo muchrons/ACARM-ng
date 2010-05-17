@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <vector>
+
 #include "Persistency/GraphNodePtr.hpp"
 
 
@@ -15,7 +17,7 @@ namespace TestHelpers
 namespace Persistency
 {
 
-// TODO: add version opperating on vector instead of single object.
+void graphNodePrintout(const std::vector< ::Persistency::GraphNodePtr > &v);
 
 void graphNodePrintout(::Persistency::GraphNodePtr n);
 
