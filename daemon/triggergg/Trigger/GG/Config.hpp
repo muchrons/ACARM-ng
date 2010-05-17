@@ -14,11 +14,16 @@ namespace Trigger
 namespace GG
 {
 
-// TODO: comment this code
-
+/** \brief whole module's configuration representation.
+ */
 class Config
 {
 public:
+  /** \brief create configration description.
+   *  \param ac       account's config to be used for connection (account must exist).
+   *  \param receiver notification receiver.
+   *  \param th       threshold configuration - informs when run trigger.
+   */
   Config(const AccountConfig &ac, const UserID receiver, const Simple::ThresholdConfig &th):
     ac_(ac),
     th_(th),
@@ -26,16 +31,23 @@ public:
   {
   }
 
+  /** \brief get configuration for account.
+   *  \return account's config.
+   */
   const AccountConfig &getAccountConfig(void) const
   {
     return ac_;
   }
-
+  /** \brief get thresholds configuration.
+   *  \return threshold's config.
+   */
   const Simple::ThresholdConfig getThresholdConfig(void) const
   {
     return th_;
   }
-
+  /** \brief gets receiver's data.
+   *  \return receiver's UID.
+   */
   UserID getReceiver(void) const
   {
     return receiver_;

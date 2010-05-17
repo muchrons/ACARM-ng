@@ -19,7 +19,8 @@ namespace GG
 class Strategy: public Trigger::Simple::Strategy
 {
 public:
-  /** brief create strategy instance.
+  /** \brief create strategy instance.
+   *  \param cfg configuration to be applied.
    */
   explicit Strategy(const Config &cfg);
 
