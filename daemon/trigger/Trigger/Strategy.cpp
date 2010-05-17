@@ -58,7 +58,7 @@ void Strategy::process(Persistency::GraphNodePtrNN n)
   }
 
   // check if node should be processed at all
-  if( !matchesCriteria(*n) )
+  if( !matchesCriteria(n) )
   {
     LOGMSG_DEBUG_S(log_)<<"node at address 0x"
                         <<static_cast<void*>( n.get() )
@@ -70,7 +70,7 @@ void Strategy::process(Persistency::GraphNodePtrNN n)
   nos_.add(n);
   LOGMSG_INFO_S(log_)<<"calling trigger for node at address 0x"
                      <<static_cast<void*>( n.get() );
-  trigger(*n);
+  trigger(n);
 
   // if it succeeded, mark it as triggered
   BackendFacade bf(conn_, name_);

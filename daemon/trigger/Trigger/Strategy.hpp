@@ -69,7 +69,7 @@ private:
    *  if given node meets trigger's criteria, method returns true
    *  and interface runs trigger() procedure.
    */
-  virtual bool matchesCriteria(const NodeType &n) const = 0;
+  virtual bool matchesCriteria(const Persistency::GraphNodePtrNN &n) const = 0;
 
   /** \brief user-provided implementation of node trigger.
    *  \param n added/changed node to be processed by trigger.
@@ -82,7 +82,7 @@ private:
    *  for each node that matches criteria of trigger (matchCriteria()==true for
    *  this node).
    */
-  virtual void trigger(const NodeType &n) = 0;
+  virtual void trigger(const Persistency::GraphNodePtrNN &n) = 0;
 
   const std::string                name_;
   Base::ObservingSet<NodeType>     nos_;
