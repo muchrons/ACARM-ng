@@ -2,6 +2,8 @@
  * Strategy.cpp
  *
  */
+#include <iostream>
+
 #include "Algo/computeSeverity.hpp"
 #include "Algo/countCorrelatedAlerts.hpp"
 #include "Trigger/Simple/Strategy.hpp"
@@ -23,12 +25,12 @@ bool Strategy::matchesCriteria(const Persistency::GraphNodePtrNN &n) const
 {
   // check severity
   if( cfg_.getSeverityThreshold().get()!=NULL )
-    if( *cfg_.getSeverityThreshold().get() >= Algo::computeSeverity(n) )
+    if( *cfg_.getSeverityThreshold().get() <= Algo::computeSeverity(n) )
       return true;
 
   // check alerts count
   if( cfg_.getAlertCountThreshold().get()!=NULL )
-    if( *cfg_.getAlertCountThreshold().get() >= Algo::countCorrelatedAlerts(n) )
+    if( *cfg_.getAlertCountThreshold().get() <= Algo::countCorrelatedAlerts(n) )
       return true;
 
   // if no criteria matches, report does not match.
