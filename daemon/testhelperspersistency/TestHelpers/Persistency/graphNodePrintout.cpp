@@ -32,10 +32,21 @@ void graphNodePrintoutImpl(::Persistency::GraphNodePtr n, const string &prefix)
 
 } // unnamed namespace
 
+
+
+void graphNodePrintout(const std::vector< ::Persistency::GraphNodePtr > &v)
+{
+  for(std::vector< ::Persistency::GraphNodePtr >::const_iterator it=v.begin(); it!=v.end(); ++it)
+  {
+    cout << "-------------- " << static_cast<void*>( it->get() ) << " --------------" << endl;
+    graphNodePrintout(*it);
+  }
+} // graphNodePrintout()
+
 void graphNodePrintout(::Persistency::GraphNodePtr n)
 {
   graphNodePrintoutImpl(n, "");
-}
+} // graphNodePrintout()
 
 } // namespace Persistency
 } // namespace TestHelpers
