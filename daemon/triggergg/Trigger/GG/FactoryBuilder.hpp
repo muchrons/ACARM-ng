@@ -2,20 +2,20 @@
  * ConnectionBuilder.hpp
  *
  */
-#ifndef INCLUDE_FILTER__DNSRESOLVER_FACTORYBUILDER_HPP_FILE
-#define INCLUDE_FILTER_DNSRESOLVER_FACTORYBUILDER_HPP_FILE
+#ifndef INCLUDE_TRIGGER_GG_FACTORYBUILDER_HPP_FILE
+#define INCLUDE_TRIGGER_GG_FACTORYBUILDER_HPP_FILE
 
 #include <string>
 
 #include "Logger/Logger.hpp"
-#include "Filter/Factory.hpp"
+#include "Trigger/Factory.hpp"
 
-namespace Filter
+namespace Trigger
 {
-namespace DNSResolver
+namespace GG
 {
 
-/** \brief builds dns-resolving filter
+/** \brief builds Gadu-Gadu notifier trigger.
  */
 class FactoryBuilder: public Factory::TFactoryBuilderBase
 {
@@ -32,7 +32,7 @@ private:
   const Logger::Node log_;
 }; // class FactoryBuilder
 
-} // namespace DNSResolver
-} // namespace Filter
+} // namespace GG
+} // namespace Trigger
 
 #endif

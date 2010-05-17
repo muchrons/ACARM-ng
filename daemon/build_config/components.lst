@@ -8,6 +8,7 @@ filterhostcommon
 filterdnsresolver
 filteripblacklist
 filter
+triggergg
 trigger
 persistencystubs
 persistency
