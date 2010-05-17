@@ -15,6 +15,8 @@ namespace TestHelpers
 namespace Persistency
 {
 
+// TODO: add version opperating on vector instead of single object.
+
 void graphNodePrintout(::Persistency::GraphNodePtr n);
 
 } // namespace Persistency
