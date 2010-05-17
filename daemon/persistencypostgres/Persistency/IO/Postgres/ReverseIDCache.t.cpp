@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+// TODO: inclusion of ReverseIDCache is missing
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
@@ -19,18 +20,18 @@ struct TestClass
 {
   TestClass(void):
     idCache_(new IDCache),
-    dbh_(DBHandlerPtrNN(new DBHandler(TestConnection::makeParams(), idCache_) ) ),
-    conn_(makeConnection() ),
+    dbh_( DBHandlerPtrNN( new DBHandler(TestConnection::makeParams(), idCache_) ) ),
+    conn_( makeConnection() ),
     t_( conn_->createNewTransaction("restore_tests") )
   {
     tdba_.removeAllData();
   }
+
   TestDBAccess        tdba_;
   IDCachePtrNN        idCache_;
   DBHandlerPtrNN      dbh_;
   IO::ConnectionPtrNN conn_;
   Transaction         t_;
-
 };
 
 typedef tut::test_group<TestClass> factory;
