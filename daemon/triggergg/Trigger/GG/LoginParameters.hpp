@@ -23,14 +23,14 @@ class LoginParameters
 public:
   explicit LoginParameters(const AccountConfig &cfg);
 
-  const gg_login_params *get(void) const
+  const gg_login_params &get(void) const
   {
-    return &p_;
+    return p_;
   }
 
-  gg_login_params *get(void)
+  gg_login_params &get(void)
   {
-    return &p_;
+    return p_;
   }
 
 private:
