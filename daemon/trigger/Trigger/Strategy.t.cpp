@@ -28,25 +28,25 @@ struct TestTrigger: public Strategy
   {
   }
 
-  virtual bool matchesCriteria(const NodeType &n)
+  virtual bool matchesCriteria(const Persistency::GraphNodePtrNN &n) const
   {
     ++callsCriteria_;
     checkNode(n);
     return criteria_;
   }
 
-  virtual void trigger(const NodeType &n)
+  virtual void trigger(const Persistency::GraphNodePtrNN &n)
   {
     ++callsTrigger_;
     checkNode(n);
   }
 
-  void checkNode(const NodeType &n) const
+  void checkNode(const Persistency::GraphNodePtrNN &n) const
   {
-    tut::ensure("invalid node", &n==node_.get() );
+    tut::ensure("invalid node", n.get()==node_.get() );
   }
 
-  int            callsCriteria_;
+  mutable int    callsCriteria_;
   int            callsTrigger_;
   bool           criteria_;
   GraphNodePtrNN node_;
@@ -55,7 +55,8 @@ struct TestTrigger: public Strategy
 
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
-  TestTrigger tt_;
+  TestTrigger::ChangedNodes cn_;
+  TestTrigger               tt_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -81,18 +82,14 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("invalid initial number of calls to matchesCriteria",
-                tt_.callsCriteria_, 0);
-  ensure_equals("invalid initial number of calls to trigger",
-                tt_.callsTrigger_, 0);
+  ensure_equals("invalid initial number of calls to matchesCriteria", tt_.callsCriteria_, 0);
+  ensure_equals("invalid initial number of calls to trigger", tt_.callsTrigger_, 0);
   // call
   tt_.criteria_=false;
-  tt_.process(tt_.node_);
+  tt_.process(tt_.node_, cn_);
   // check
-  ensure_equals("invalid number of calls to matchesCriteria",
-                tt_.callsCriteria_, 1);
-  ensure_equals("invalid number of calls to trigger",
-                tt_.callsTrigger_, 0);
+  ensure_equals("invalid number of calls to matchesCriteria", tt_.callsCriteria_, 1);
+  ensure_equals("invalid number of calls to trigger", tt_.callsTrigger_, 0);
 }
 
 
@@ -105,12 +102,12 @@ struct TestLoopTrigger: public Strategy
   {
   }
 
-  virtual bool matchesCriteria(const NodeType&)
+  virtual bool matchesCriteria(const Persistency::GraphNodePtrNN &) const
   {
     return true;
   }
 
-  virtual void trigger(const NodeType&)
+  virtual void trigger(const Persistency::GraphNodePtrNN &)
   {
     for(;;)
     {
@@ -124,10 +121,13 @@ struct CallableLT
 {
   void operator()(void)
   {
-    tlt_.process( makeNewLeaf() );
+    assert( cn_.size()==0 );
+    tlt_.process( makeNewLeaf(), cn_);
+    assert( cn_.size()==0 );
   }
 
-  TestLoopTrigger tlt_;
+  TestLoopTrigger::ChangedNodes cn_;
+  TestLoopTrigger               tlt_;
 }; // struct CollableLT
 } // unnmaed namespace
 
@@ -147,18 +147,36 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure_equals("invalid initial number of calls to matchesCriteria",
-                tt_.callsCriteria_, 0);
-  ensure_equals("invalid initial number of calls to trigger",
-                tt_.callsTrigger_, 0);
+  ensure_equals("invalid initial number of calls to matchesCriteria", tt_.callsCriteria_, 0);
+  ensure_equals("invalid initial number of calls to trigger", tt_.callsTrigger_, 0);
   // call
   tt_.criteria_=true;
-  tt_.process(tt_.node_);
+  tt_.process(tt_.node_, cn_);
   // check
-  ensure_equals("invalid number of calls to matchesCriteria",
-                tt_.callsCriteria_, 1);
-  ensure_equals("invalid number of calls to trigger",
-                tt_.callsTrigger_, 1);
+  ensure_equals("invalid number of calls to matchesCriteria", tt_.callsCriteria_, 1);
+  ensure_equals("invalid number of calls to trigger", tt_.callsTrigger_, 1);
+}
+
+// check if the same nod is not triggered more than once
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  tt_.criteria_=true;
+  // pre-conditions
+  ensure_equals("invalid initial number of calls to matchesCriteria", tt_.callsCriteria_, 0);
+  ensure_equals("invalid initial number of calls to trigger", tt_.callsTrigger_, 0);
+
+  tt_.process(tt_.node_, cn_);       // first call
+  // sanity check
+  ensure_equals("matchesCriteria not called at all", tt_.callsCriteria_, 1);
+  ensure_equals("trigger not called at all", tt_.callsTrigger_, 1);
+
+  tt_.process(tt_.node_, cn_);       // second call
+  // check - if element was already triggered, it should not be event checked for
+  // maching predefined criterias.
+  ensure_equals("invalid number of calls to matchesCriteria", tt_.callsCriteria_, 1);
+  ensure_equals("invalid number of calls to trigger", tt_.callsTrigger_, 1);
 }
 
 } // namespace tut

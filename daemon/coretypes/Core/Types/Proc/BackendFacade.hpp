@@ -48,7 +48,7 @@ protected:
    *  \param processorName name of processor this object is created for.
    */
   BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-               const std::string                &processorName);
+                const std::string                &processorName);
   /** \brief ensure transaction is in progress (by running new, if needed).
    *  \note if transaciton is started, call does nothing. otherwise starts
    *        new one.

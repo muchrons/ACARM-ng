@@ -9,6 +9,7 @@
 
 #include "Persistency/GraphNode.hpp"
 #include "Core/Types/Proc/BackendFacade.hpp"
+#include "Core/Types/Proc/Interface.hpp"
 #include "Filter/Exception.hpp"
 
 
@@ -40,11 +41,11 @@ public:
   }; // struct ExceptionChangedNodesNoteEmpty
 
   /** \brief forward of type definition (for simplified usage). */
-  typedef Persistency::NodeChildrenVector ChildrenVector;
+  typedef Persistency::NodeChildrenVector            ChildrenVector;
   /** \brief helper typedef for GraphNode pointer. */
-  typedef Persistency::GraphNodePtrNN     Node;
+  typedef Core::Types::Proc::Interface::Node         Node;
   /** \brief helper typedef for list of chenged nodes. */
-  typedef std::vector<Node>               ChangedNodes;
+  typedef Core::Types::Proc::Interface::ChangedNodes ChangedNodes;
 
 
   /** \brief create object's instance.
@@ -53,8 +54,8 @@ public:
    *  \param filterName name of filter this object is created for.
    */
   BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-               ChangedNodes                     &changed,
-               const std::string                &filterName);
+                ChangedNodes                     &changed,
+                const std::string                &filterName);
 
   /** \brief set name of a given host.
    *  \param node node given host name is part of.

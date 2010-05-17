@@ -66,6 +66,17 @@ public:
       throw ExceptionNoSuchParameter(SYSTEM_SAVE_LOCATION, param);
     return it->second;
   }
+  /** \brief access specific option and return it's value or NULL if entry does not exist.
+   *  \param param parameter's name.
+   *  \return value corresponding to given parmater. may be NULL, if value is not set.
+   */
+  const char *get(const char *param) const
+  {
+    Options::const_iterator it=options_.find(param);
+    if( it==options_.end() )
+      return NULL;
+    return it->second.c_str();
+  }
 
 protected:
   /** \brief creates persistency configuration.
@@ -81,7 +92,7 @@ protected:
 
   /** \brief ensure it's not possible to destroy this class via base.
    *
-   *  it is doen this way to avoid virtual d-tors.
+   *  it is done this way to avoid virtual d-tors.
    */
   ~Config(void)
   {
