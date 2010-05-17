@@ -9,12 +9,12 @@
 #include <libgadu.h>
 #include <cassert>
 
+#include "Logger/Node.hpp"
 #include "Trigger/GG/LoginParameters.hpp"
 #include "Trigger/GG/AccountConfig.hpp"
 #include "Trigger/GG/AutoSession.hpp"
 #include "Trigger/GG/ExceptionConnectionError.hpp"
 
-// TODO: tests
 // TODO: comments
 
 namespace Trigger
@@ -26,6 +26,7 @@ class Connection: private boost::noncopyable
 {
 public:
   Connection(const AccountConfig &cfg);
+  ~Connection(void);
 
   const gg_session *get(void) const
   {
@@ -40,6 +41,7 @@ public:
   }
 
 private:
+  Logger::Node          log_;
   const LoginParameters params_;
   AutoSession           sess_;
 }; // class Connection
