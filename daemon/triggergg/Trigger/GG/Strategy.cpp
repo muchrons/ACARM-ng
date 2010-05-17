@@ -20,7 +20,7 @@ Strategy::Strategy(const Config &cfg):
 {
 }
 
-void Strategy::trigger(const Node &n)
+void Strategy::trigger(const Node &/*n*/)
 {
   // TODO
 }
