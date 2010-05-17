@@ -6,6 +6,7 @@
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
+#include "Persistency/IO/Postgres/ExceptionNoEntries.hpp"
 #include "Persistency/IO/Postgres/detail/Appender.hpp"
 
 using namespace std;
@@ -41,7 +42,8 @@ DataBaseID getID(IO::Transaction &t, const std::string &name)
   Appender::append(ss, node.get());
   ss << ";";
   const result r = t.getAPI<TransactionAPI>().exec(ss);
-  // TODO: SEGV when no result returned
+  if(r.size() != 1)
+    throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
   r[0]["id"].to(id);
   return id;
 }

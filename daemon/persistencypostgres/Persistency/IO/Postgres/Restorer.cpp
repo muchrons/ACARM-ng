@@ -33,6 +33,7 @@ namespace Postgres
 Restorer::Restorer(Transaction    &t,
                    DBHandlerPtrNN  dbHandler):
   IO::Restorer(t),
+  log_("persistency.io.postgres.restorer"),
   dbHandler_(dbHandler)
 {
 }
@@ -70,7 +71,7 @@ GraphNodePtrNN Restorer::makeLeaf(DataBaseID           id,
                                  IO::Transaction     &tStubIO)
 {
   if( leafCache_.has(id) )
-    return leafCache_.getExisting(id);
+    return leafCache_.get(id);
   GraphNodePtrNN leaf( new GraphNode( aPtr, connStubIO, tStubIO ) );
   leafCache_.add(id, leaf);
   return leaf;
@@ -83,7 +84,7 @@ GraphNodePtrNN Restorer::makeNode(DataBaseID                id,
                                   IO::Transaction          &tStubIO)
 {
   if( nodeCache_.has(id) )
-    return nodeCache_.getExisting(id);
+    return nodeCache_.get(id);
   GraphNodePtrNN node( new GraphNode( maPtr, connStubIO, tStubIO, vec ) );
   nodeCache_.add(id, node);
   return node;
@@ -95,7 +96,7 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
                                          IO::ConnectionPtrNN                             connStubIO,
                                          IO::Transaction                                &tStubIO)
 {
-  TreePtrNN node = treeNodes_.getExisting(id);
+  TreePtrNN node = treeNodes_.get(id);
   // check if there are no children (i.e. is leaf)
   if( node->getChildrenNumber() == 0 )
     return restoreLeaf(id, out, er, connStubIO, tStubIO);
@@ -121,7 +122,7 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
     }
     catch(const ExceptionBadNumberOfNodeChildren &)
     {
-      // TODO: logs
+      LOGMSG_WARN_S(log_)<<"root with id "<< *it << " has bad number of children";
     }
   }
   // remove doplicates from out vector
@@ -192,11 +193,11 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
     }
     catch(const ExceptionNoSuchEntry &)
     {
-      // TODO: log
+      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " does'n exist";
     }
     catch(const ExceptionBadNumberOfNodeChildren &)
     {
-      // TODO: log
+      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " has bad number of children";
     }
   }
   if(tmpNodes.size() < 2)

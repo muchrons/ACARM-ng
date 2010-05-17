@@ -11,6 +11,7 @@
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
 #include "Persistency/IO/Postgres/ReaderHelper.hpp"
+#include "Persistency/IO/Postgres/SQLHelper.hpp"
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 #include "Persistency/IO/Postgres/detail/Appender.hpp"
 
@@ -21,6 +22,9 @@ using boost::algorithm::trim;
 using namespace Persistency;
 using namespace Base;
 using Persistency::IO::Transaction;
+
+// this is helper macro for calling f-cjtion that saves line number and calls given sql statement (with log)
+#define SQL(sql,log) SQLHelper(__FILE__, __LINE__, sql, log)
 
 namespace Persistency
 {
@@ -62,16 +66,11 @@ SeverityLevel severityFromInt(Transaction &t, const DataBaseID id)
   return SeverityLevel::CRITICAL;
 }
 
-template <typename T>
-inline pqxx::result execSQL(Transaction &t, const T &sql)
-{
-  return t.getAPI<TransactionAPI>().exec(sql);
-} // execSQL()
-
 } // unnamed namespace
 
 
 EntryReader::EntryReader(Transaction &t, DBHandler &dbh):
+  log_("persistency.io.postgres.detail.entryreader"),
   dbh_(dbh),
   t_(t)
 {
@@ -82,7 +81,7 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
 {
   stringstream ss;
   ss << "SELECT * FROM alerts WHERE id = " << alertID << ";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
   AlertPtrNN alert( new Alert(ReaderHelper<string>::readAsNotNull(r[0]["name"]),
@@ -101,7 +100,7 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
 {
   stringstream ss;
   ss << "SELECT * FROM meta_alerts WHERE id = " << malertID << ";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
   const string CreateTime( ReaderHelper<string>::readAsNotNull(r[0]["create_time"]) );
@@ -117,7 +116,7 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
 {
   stringstream sa;
   sa << "SELECT * FROM analyzers WHERE id = " << anlzID << ";";
-  const result ra = execSQL(t_, sa);
+  const result ra = SQL( sa.str(), log_ ).exec(t_);
   if(ra.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, sa.str());
   AnalyzerPtrNN anlz(new Analyzer( Analyzer::Name( ReaderHelper<string>::readAsNotNull(ra[0]["name"]) ),
@@ -131,7 +130,7 @@ Alert::SourceAnalyzers EntryReader::getAnalyzers(DataBaseID alertID)
 {
   stringstream ss;
   ss << "SELECT * FROM alert_analyzers WHERE id_alert = " << alertID <<";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
 
   // add first element to the Analyzers
   Alert::SourceAnalyzers analyzers( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_analyzer"]) ) );
@@ -146,7 +145,7 @@ Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::strin
   stringstream ss;
   ss << "SELECT * FROM reported_hosts WHERE id_alert = "<< alertID <<" AND role = ";
   Appender::append(ss, hostType);
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
   Alert::ReportedHosts hosts;
   for(size_t i=0; i<r.size(); ++i)
   {
@@ -171,7 +170,7 @@ HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID *refID)
 {
   stringstream ss;
   ss << "SELECT * FROM hosts WHERE id = "<< hostID <<";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
 
   HostPtr host(new Persistency::Host(ReaderHelper<Persistency::Host::IP>::readAsNotNull(r[0]["ip"]),
                                      ReaderHelper< Base::NullValue<Persistency::Host::Netmask> >::readAs(r[0]["mask"]).get(),
@@ -189,7 +188,7 @@ Persistency::Host::ReportedServices EntryReader::getReportedServices(DataBaseID 
 {
   stringstream ss;
   ss << "SELECT * FROM reported_services WHERE id_reported_host = " << hostID << ";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
 
   Persistency::Host::ReportedServices services;
   for(size_t i = 0;i < r.size(); ++i)
@@ -206,7 +205,7 @@ Persistency::Host::ReportedProcesses EntryReader::getReportedProcesses(DataBaseI
 {
   stringstream ss;
   ss << "SELECT * FROM reported_procs WHERE id_reported_host = " << hostID << ";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
 
   Persistency::Host::ReportedProcesses processes;
   DataBaseID idProcess, idRef;
@@ -223,7 +222,7 @@ Persistency::ServicePtrNN EntryReader::getService(DataBaseID servID, DataBaseID 
 {
   stringstream ss;
   ss << "SELECT * FROM services WHERE id = " << servID << ";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
   ServicePtrNN service(new Service(ReaderHelper<string>::readAsNotNull(r[0]["name"]),
@@ -237,14 +236,14 @@ ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
 {
   stringstream ss;
   ss << "SELECT * FROM processes WHERE id = " << procID << ";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
 
   stringstream sr;
   sr << "SELECT * FROM reported_procs WHERE id_proc = " << procID << ";";
-  const result rr = execSQL(t_, sr);
-  if(r.size() != 1)
+  const result rr = SQL( sr.str(), log_ ).exec(t_);
+  if(rr.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
   const NullValue<string> params=ReaderHelper< NullValue<string> >::readAs(rr[0]["arguments"]);
   Persistency::ProcessPtr process( new Process( ReaderHelper<Process::Path>::readAs(r[0]["path"]),
@@ -265,7 +264,7 @@ ReferenceURLPtr EntryReader::getReferenceURL(const DataBaseID *refID)
     return refURLPtr;
   stringstream ss;
   ss << "SELECT * FROM reference_urls WHERE id = " << *refID << ";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
 
@@ -278,7 +277,7 @@ double EntryReader::getSeverityDelta(DataBaseID malertID)
 {
   stringstream ss;
   ss << "SELECT severity_delta FROM meta_alerts WHERE id = " << malertID << ";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
   return ReaderHelper<double>::readAsNotNull(r[0]["severity_delta"]);
@@ -287,7 +286,7 @@ double EntryReader::getCertaintyDelta(DataBaseID malertID)
 {
   stringstream ss;
   ss << "SELECT certainty_delta FROM meta_alerts WHERE id = " << malertID << ";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
   return ReaderHelper<double>::readAsNotNull(r[0]["certainty_delta"]);
@@ -297,7 +296,7 @@ Persistency::AlertPtrNN EntryReader::getLeaf(DataBaseID malertID)
 {
   stringstream ss;
   ss << "SELECT id_alert FROM alert_to_meta_alert_map WHERE id_meta_alert = " << malertID << ";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
   return Persistency::AlertPtrNN( readAlert( ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_alert"]) ) );
@@ -308,7 +307,7 @@ vector<DataBaseID> EntryReader::readMetaAlertChildren(DataBaseID malertID)
   vector<DataBaseID> childrenIDs;
   stringstream ss;
   ss << "SELECT id_child FROM meta_alerts_tree WHERE id_node = " << malertID << ";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
   childrenIDs.reserve( r.size() );
   for(size_t i=0; i<r.size(); ++i)
     childrenIDs.push_back( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_child"]) );
@@ -320,7 +319,7 @@ vector<DataBaseID> EntryReader::readIDsMalertsInUse()
   vector<DataBaseID> malertsInUse;
   stringstream ss;
   ss << "SELECT id_meta_alert FROM meta_alerts_in_use;";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
   malertsInUse.reserve( r.size() );
   for(size_t i=0; i<r.size(); ++i)
   {
@@ -340,7 +339,7 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
   ss << " <= create_time AND create_time <=";
   Appender::append(ss, to);
   ss << ";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
   malertsBetween.reserve( r.size() );
   for(size_t i=0; i<r.size(); ++i)
     malertsBetween.push_back( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id"]) );
@@ -349,11 +348,11 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
 
 std::vector<DataBaseID> EntryReader::readRoots()
 {
-  execSQL(t_,"CREATE TEMP TABLE tmp ON COMMIT DROP AS SELECT id_node, id_child FROM meta_alerts_tree"
-             " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);");
+  SQL("CREATE TEMP TABLE tmp ON COMMIT DROP AS SELECT id_node, id_child FROM meta_alerts_tree"
+      " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);", log_).exec(t_);
 
-  const result r = execSQL(t_, "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
-                               "SELECT id_node FROM tmp S WHERE T.id_node=S.id_child );");
+  const result r = SQL("SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
+                       "SELECT id_node FROM tmp S WHERE T.id_node=S.id_child );", log_).exec(t_);
 
   return getRoots(r);
 }
@@ -367,10 +366,10 @@ std::vector<DataBaseID> EntryReader::readRoots(const Timestamp &from, const Time
   ss << " <= create_time AND create_time <=";
   Appender::append(ss, to);
   ss << ";";
-  execSQL(t_, ss);
+  SQL( ss.str(), log_ ).exec(t_);
 
-  const result r = execSQL(t_, "SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
-                               "SELECT id_node FROM tmp S WHERE T.id_node=S.id_child );");
+  const result r = SQL("SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
+                       "SELECT id_node FROM tmp S WHERE T.id_node=S.id_child );", log_).exec(t_);
 
   return getRoots(r);
 }
@@ -379,7 +378,7 @@ DataBaseID EntryReader::getAlertIDAssociatedWithMetaAlert(DataBaseID malertID)
 {
   stringstream ss;
   ss << "SELECT id_alert FROM alert_to_meta_alert_map WHERE id_meta_alert = " << malertID << ";";
-  const result r = execSQL(t_, ss);
+  const result r = SQL( ss.str(), log_ ).exec(t_);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
   return ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_alert"]);

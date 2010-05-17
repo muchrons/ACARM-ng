@@ -37,7 +37,7 @@ public:
   /** \brief get element with id from cache
    *  \param id    id of element.
    */
-  T getExisting(DataBaseID id) const
+  T get(DataBaseID id) const
   {
     if( cache_.find(id) == cache_.end() )
       throw ExceptionNoSuchEntry(SYSTEM_SAVE_LOCATION);
