@@ -21,7 +21,8 @@ class Config
 public:
   Config(const AccountConfig &ac, const UserID receiver, const Simple::ThresholdConfig &th):
     ac_(ac),
-    th_(th)
+    th_(th),
+    receiver_(receiver)
   {
   }
 

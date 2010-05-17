@@ -5,7 +5,7 @@
 #ifndef INCLUDE_TRIGGER_GG_USERID_HPP_FILE
 #define INCLUDE_TRIGGER_GG_USERID_HPP_FILE
 
-#include <cinttypes>
+#include <inttypes.h>
 
 namespace Trigger
 {

@@ -6,7 +6,6 @@
 #define INCLUDE_TRIGGER_GG_ACCOUNTCONFIG_HPP_FILE
 
 #include <string>
-#include <cinttypes>
 
 #include "Trigger/GG/UserID.hpp"
 

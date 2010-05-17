@@ -3,14 +3,12 @@
  *
  */
 #include <tut.h>
-#include <boost/thread.hpp>
 
-#include "Base/Threads/ThreadJoiner.hpp"
-#include "Trigger/Strategy.hpp"
+#include "Trigger/GG/Strategy.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
-using namespace Trigger;
+using namespace Trigger::GG;
 using namespace Persistency;
 using namespace TestHelpers::Persistency;
 
@@ -19,6 +17,12 @@ namespace
 
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
+  TestClass(void):
+    cfg_( AccountConfig(1234, "secr3t"), 997, Trigger::Simple::ThresholdConfig("1.2", "3") )
+  {
+  }
+
+  const Config cfg_;    // default config
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -36,7 +40,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid name", tt_.getTriggerName(), "gg");
+  Strategy s(cfg_);
+  ensure_equals("invalid name", s.getTriggerName(), "gg");
 }
 
 // 

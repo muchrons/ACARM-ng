@@ -13,18 +13,14 @@ namespace Trigger
 namespace GG
 {
 
-Strategy::Strategy(void):
-  Trigger::Strategy("gg")
+Strategy::Strategy(const Config &cfg):
+  Trigger::Simple::Strategy("gg", cfg.getThresholdConfig() ),
+  ggCfg_( cfg.getAccountConfig() ),
+  receiver_( cfg.getReceiver() )
 {
 }
 
-bool Strategy::matchesCriteria(const NodeType &n) const
-{
-  // TODO
-  return false;
-}
-
-void Strategy::trigger(const NodeType &n)
+void Strategy::trigger(const Node &n)
 {
   // TODO
 }

@@ -58,7 +58,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  FactoryBuilder::FactoryPtr ptr=build(opts_);
+  FactoryBuilder::FactoryPtr ptr=fb_.build(opts_);
   ensure("NULL pointere returned", ptr.get()!=NULL );
 }
 
