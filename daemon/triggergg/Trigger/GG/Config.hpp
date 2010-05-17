@@ -5,6 +5,8 @@
 #ifndef INCLUDE_TRIGGER_GG_CONFIG_HPP_FILE
 #define INCLUDE_TRIGGER_GG_CONFIG_HPP_FILE
 
+#include "Trigger/Simple/ThresholdConfig.hpp"
+#include "Trigger/GG/UserID.hpp"
 #include "Trigger/GG/AccountConfig.hpp"
 
 namespace Trigger
@@ -17,25 +19,31 @@ namespace GG
 class Config
 {
 public:
-  Config(const AccountConfig &ac, const double severityThreshold
-    uid_(uid),
-    password_(password)
+  Config(const AccountConfig &ac, const UserID receiver, const Simple::ThresholdConfig &th):
+    ac_(ac),
+    th_(th)
   {
   }
 
-  UserID getUserID(void) const
+  const AccountConfig &getAccountConfig(void) const
   {
-    return uid_;
+    return ac_;
   }
 
-  const std::string &getPassword(void) const
+  const Simple::ThresholdConfig getThresholdConfig(void) const
   {
-    return password_;
+    return th_;
+  }
+
+  UserID getReceiver(void) const
+  {
+    return receiver_;
   }
 
 private:
-  UserID      uid_;
-  std::string password_;
+  AccountConfig           ac_;
+  Simple::ThresholdConfig th_;
+  UserID                  receiver_;
 }; // class AccountConfig
 
 } // namespace GG

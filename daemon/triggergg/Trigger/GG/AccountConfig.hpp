@@ -8,6 +8,8 @@
 #include <string>
 #include <cinttypes>
 
+#include "Trigger/GG/UserID.hpp"
+
 namespace Trigger
 {
 namespace GG
@@ -18,8 +20,6 @@ namespace GG
 class AccountConfig
 {
 public:
-  typedef uint32_t UserID;
-
   AccountConfig(UserID uid, const std::string &password):
     uid_(uid),
     password_(password)
