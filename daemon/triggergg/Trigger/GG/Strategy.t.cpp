@@ -44,7 +44,7 @@ void testObj::test<1>(void)
   ensure_equals("invalid name", s.getTriggerName(), "gg");
 }
 
-// 
+//
 template<>
 template<>
 void testObj::test<2>(void)
@@ -52,7 +52,7 @@ void testObj::test<2>(void)
   // TODO
 }
 
-// 
+//
 template<>
 template<>
 void testObj::test<3>(void)
@@ -60,7 +60,7 @@ void testObj::test<3>(void)
   // TODO
 }
 
-// 
+//
 template<>
 template<>
 void testObj::test<4>(void)
@@ -68,7 +68,7 @@ void testObj::test<4>(void)
   // TODO
 }
 
-// 
+//
 template<>
 template<>
 void testObj::test<5>(void)
