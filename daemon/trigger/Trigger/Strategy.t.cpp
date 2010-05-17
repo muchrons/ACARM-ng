@@ -55,7 +55,8 @@ struct TestTrigger: public Strategy
 
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
-  TestTrigger tt_;
+  TestTrigger::ChangedNodes cn_;
+  TestTrigger               tt_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -85,7 +86,7 @@ void testObj::test<2>(void)
   ensure_equals("invalid initial number of calls to trigger", tt_.callsTrigger_, 0);
   // call
   tt_.criteria_=false;
-  tt_.process(tt_.node_);
+  tt_.process(tt_.node_, cn_);
   // check
   ensure_equals("invalid number of calls to matchesCriteria", tt_.callsCriteria_, 1);
   ensure_equals("invalid number of calls to trigger", tt_.callsTrigger_, 0);
@@ -120,10 +121,13 @@ struct CallableLT
 {
   void operator()(void)
   {
-    tlt_.process( makeNewLeaf() );
+    assert( cn_.size()==0 );
+    tlt_.process( makeNewLeaf(), cn_);
+    assert( cn_.size()==0 );
   }
 
-  TestLoopTrigger tlt_;
+  TestLoopTrigger::ChangedNodes cn_;
+  TestLoopTrigger               tlt_;
 }; // struct CollableLT
 } // unnmaed namespace
 
@@ -147,7 +151,7 @@ void testObj::test<4>(void)
   ensure_equals("invalid initial number of calls to trigger", tt_.callsTrigger_, 0);
   // call
   tt_.criteria_=true;
-  tt_.process(tt_.node_);
+  tt_.process(tt_.node_, cn_);
   // check
   ensure_equals("invalid number of calls to matchesCriteria", tt_.callsCriteria_, 1);
   ensure_equals("invalid number of calls to trigger", tt_.callsTrigger_, 1);
@@ -163,12 +167,12 @@ void testObj::test<5>(void)
   ensure_equals("invalid initial number of calls to matchesCriteria", tt_.callsCriteria_, 0);
   ensure_equals("invalid initial number of calls to trigger", tt_.callsTrigger_, 0);
 
-  tt_.process(tt_.node_);       // first call
+  tt_.process(tt_.node_, cn_);       // first call
   // sanity check
   ensure_equals("matchesCriteria not called at all", tt_.callsCriteria_, 1);
   ensure_equals("trigger not called at all", tt_.callsTrigger_, 1);
 
-  tt_.process(tt_.node_);       // second call
+  tt_.process(tt_.node_, cn_);       // second call
   // check - if element was already triggered, it should not be event checked for
   // maching predefined criterias.
   ensure_equals("invalid number of calls to matchesCriteria", tt_.callsCriteria_, 1);

@@ -9,6 +9,7 @@
 #include "Logger/Logger.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Trigger/Strategy.hpp"
+#include "Trigger/BackendFacade.hpp"
 
 using namespace std;
 
@@ -41,7 +42,8 @@ Strategy::~Strategy(void)
   LOGMSG_INFO(log_, "deallocating trigger");
 }
 
-void Strategy::process(Persistency::GraphNodePtrNN n)
+
+void Strategy::process(Node n, ChangedNodes &/*changed*/)
 {
   LOGMSG_DEBUG_S(log_)<<"processing node at address 0x"
                       <<static_cast<void*>( n.get() );

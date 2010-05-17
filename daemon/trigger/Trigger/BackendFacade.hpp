@@ -29,7 +29,7 @@ public:
    *  \param triggerName name of trigger this object is created for.
    */
   BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-               const std::string                &triggerName);
+                const std::string                &triggerName);
 
   /** \brief saves information that given meta-alert has been already
    *         triggered by this trigger.

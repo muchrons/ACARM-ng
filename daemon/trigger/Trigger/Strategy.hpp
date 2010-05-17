@@ -15,7 +15,7 @@
 #include "Logger/Node.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/IO/Connection.hpp"
-#include "Trigger/BackendFacade.hpp"
+#include "Core/Types/Proc/Interface.hpp"
 
 
 namespace Trigger
@@ -26,14 +26,20 @@ namespace Trigger
 class Strategy: private boost::noncopyable
 {
 public:
+  /** \brief helper typedef for GraphNode pointer. */
+  typedef Core::Types::Proc::Interface::Node         Node;
+  /** \brief helper typedef for list of chenged nodes. */
+  typedef Core::Types::Proc::Interface::ChangedNodes ChangedNodes;
+
   /** \brief deallocate object.
    */
   virtual ~Strategy(void);
 
   /** \brief processes given meta-alert.
-   *  \param n node to be processed.
+   *  \param n       node to be processed.
+   *  \param changed not used in this implemention.
    */
-  void process(Persistency::GraphNodePtrNN n);
+  void process(Node n, ChangedNodes &changed);
   /** \brief gets filter name.
    *  \return name of implemented filter.
    */
@@ -43,9 +49,6 @@ public:
   }
 
 protected:
-  /** \brief type reprenseting GraphNode (i.e. Persistency::GraphNode). */
-  typedef Persistency::GraphNodePtrNN::element_type NodeType;
-
   /** \brief create instance.
    *  \param name name of given trigger type.
    */
@@ -69,7 +72,7 @@ private:
    *  if given node meets trigger's criteria, method returns true
    *  and interface runs trigger() procedure.
    */
-  virtual bool matchesCriteria(const Persistency::GraphNodePtrNN &n) const = 0;
+  virtual bool matchesCriteria(const Node &n) const = 0;
 
   /** \brief user-provided implementation of node trigger.
    *  \param n added/changed node to be processed by trigger.
@@ -82,11 +85,13 @@ private:
    *  for each node that matches criteria of trigger (matchCriteria()==true for
    *  this node).
    */
-  virtual void trigger(const Persistency::GraphNodePtrNN &n) = 0;
+  virtual void trigger(const Node &n) = 0;
 
-  const std::string                name_;
-  Base::ObservingSet<NodeType>     nos_;
-  Persistency::IO::ConnectionPtrNN conn_;
+  typedef Persistency::GraphNodePtrNN::element_type NodeElementType;
+
+  const std::string                   name_;
+  Base::ObservingSet<NodeElementType> nos_;
+  Persistency::IO::ConnectionPtrNN    conn_;
 }; // class Strategy
 
 } // namespace Trigger

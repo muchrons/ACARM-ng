@@ -37,9 +37,11 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   void check(TestTrigger &tt, const Persistency::GraphNodePtrNN n, const size_t cnt)
   {
     tut::ensure_equals("pre-condition failed", tt.callsTrigger_, 0);
-    tt.process(n);
+    TestTrigger::ChangedNodes cn;
+    tt.process(n, cn);
     tut::ensure_equals("trigger called invalid number of times", tt.callsTrigger_, cnt);
   }
+
 };
 
 typedef tut::test_group<TestClass> factory;
