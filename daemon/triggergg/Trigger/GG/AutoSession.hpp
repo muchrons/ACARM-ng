@@ -5,7 +5,6 @@
 #ifndef INCLUDE_TRIGGER_GG_AUTOSESSION_HPP_FILE
 #define INCLUDE_TRIGGER_GG_AUTOSESSION_HPP_FILE
 
-#include <boost/noncopyable.hpp>
 #include <libgadu.h>
 
 #include "System/AutoVariable.hpp"
@@ -53,7 +52,10 @@ public:
   void deallocate(void)
   {
     if(v_!=NULL)
+    {
+      gg_logoff(v_);
       gg_free_session(v_);
+    }
   }
 
 private:
