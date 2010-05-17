@@ -11,7 +11,6 @@
 #include "Trigger/GG/AccountConfig.hpp"
 
 // TODO: comments
-// TODO: tests
 
 namespace Trigger
 {
