@@ -85,4 +85,20 @@ void testObj::test<4>(void)
   }
 }
 
+// test get() for existing value
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ensure_equals("invalid value for 'abc'", cfg_.get("abc"), std::string("def") );
+}
+
+// test get() for non-exisitng value
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  ensure("non-NULL value returned for nonexisitng element", cfg_.get("idontexist")==NULL );
+}
+
 } // namespace tut
