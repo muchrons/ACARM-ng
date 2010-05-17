@@ -9,6 +9,7 @@
 #include <libgadu.h>
 
 #include "Trigger/GG/AccountConfig.hpp"
+#include "Trigger/GG/EditableCString.hpp"
 
 // TODO: comments
 
@@ -33,8 +34,8 @@ public:
   }
 
 private:
-  boost::scoped_array<char> pass_;
-  gg_login_params           p_;
+  EditableCString pass_;
+  gg_login_params p_;
 }; // class LoginParameters
 
 } // namespace GG

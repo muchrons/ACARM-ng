@@ -12,18 +12,11 @@ namespace Trigger
 namespace GG
 {
 
-LoginParameters::LoginParameters(const AccountConfig &cfg)
+LoginParameters::LoginParameters(const AccountConfig &cfg):
+  pass_( cfg.getPassword() )
 {
   // zero whole structure
   memset(&p_, 0, sizeof(p_) );
-
-  // save password in editable form (GG does not have const here)
-  const std::string &pass=cfg.getPassword();
-  const size_t       len =pass.length();
-  pass_.reset(new char[len+1]);
-  strcpy(pass_.get(), pass.c_str() );
-  assert( strlen( pass_.get() )==len ); // ensure NULL-termination
-  assert( pass==pass_.get() );          // ensure identical content
 
   // set explicitly required parameters
   p_.uin      =cfg.getUserID();
