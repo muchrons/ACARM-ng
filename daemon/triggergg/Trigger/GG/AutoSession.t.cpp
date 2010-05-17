@@ -1,10 +1,10 @@
 /*
- * AutoGGSession.t.cpp
+ * AutoSession.t.cpp
  *
  */
 #include <tut.h>
 
-#include "Trigger/GG/AutoGGSession.hpp"
+#include "Trigger/GG/AutoSession.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Trigger::GG;
@@ -20,7 +20,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Trigger/GG/AutoGGSession");
+factory tf("Trigger/GG/AutoSession");
 } // unnamed namespace
 
 
@@ -32,7 +32,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  AutoGGSession ags;
+  AutoSession ags;
   ensure("NULL not created by default", ags.get()==NULL );
 }
 

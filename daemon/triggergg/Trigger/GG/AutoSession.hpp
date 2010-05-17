@@ -1,9 +1,9 @@
 /*
- * AutoGGSession.hpp
+ * AutoSession.hpp
  *
  */
-#ifndef INCLUDE_TRIGGER_GG_AUTOGGSESSION_HPP_FILE
-#define INCLUDE_TRIGGER_GG_AUTOGGSESSION_HPP_FILE
+#ifndef INCLUDE_TRIGGER_GG_AUTOSESSION_HPP_FILE
+#define INCLUDE_TRIGGER_GG_AUTOSESSION_HPP_FILE
 
 #include <boost/noncopyable.hpp>
 #include <libgadu.h>
@@ -63,7 +63,7 @@ private:
 
 
 /** \brief session object implementation. */
-typedef System::AutoVariable<detail::SessionAutoHolder> AutoGGSession;
+typedef System::AutoVariable<detail::SessionAutoHolder> AutoSession;
 
 } // namespace GG
 } // namespace Trigger
