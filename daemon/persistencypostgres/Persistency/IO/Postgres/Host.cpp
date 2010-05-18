@@ -26,6 +26,7 @@ void Host::setNameImpl(Transaction &t, const Persistency::Host::Name &name)
 {
   EntrySaver es(t, *dbHandler_);
   DataBaseID hostID = dbHandler_->getIDCache()->get( get() );
+  LOGMSG_DEBUG_S(log_)<<"set name "<<name.get()<<" for Host with ID: "<<hostID;
   es.setHostName(hostID, name);
 }
 

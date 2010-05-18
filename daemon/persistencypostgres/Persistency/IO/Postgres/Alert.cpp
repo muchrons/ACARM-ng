@@ -62,15 +62,18 @@ void Alert::saveHosts(EntrySaver                        &es,
   for(Persistency::Alert::ReportedHosts::iterator it = hosts.begin(); it!=hosts.end() ; ++it)
   {
     const DataBaseID hostID = es.saveHostData(*it->get() );
+    dbHandler_->getIDCache()->add(*it , hostID);
     DataBaseID       reportedHostID;
     // save reported host
     switch( type.toInt() )
     {
       case HostType::SRC:
+        LOGMSG_DEBUG_S(log_)<<"save source host with ID: "<<hostID;
         reportedHostID = es.saveSourceHost(hostID, alertID, *it->get() );
       break;
 
       case HostType::DST:
+        LOGMSG_DEBUG_S(log_)<<"save target host with ID: "<<hostID;
         reportedHostID = es.saveTargetHost(hostID, alertID, *it->get() );
       break;
       default:
@@ -81,11 +84,13 @@ void Alert::saveHosts(EntrySaver                        &es,
 
     // get reported services from host
     const Persistency::Host::ReportedServices  &services( (*it->get()).getReportedServices() );
+    LOGMSG_DEBUG_S(log_)<<"save reported services for alert with ID: "<<alertID;
     for(Persistency::Host::ReportedServices::const_iterator it_s = services.begin(); it_s!=services.end(); ++it_s)
       es.saveService(reportedHostID, *it_s->get() );
 
     // get reported processes from host
     const Persistency::Host::ReportedProcesses &processes((*it->get()).getReportedProcesses() );
+    LOGMSG_DEBUG_S(log_)<<"save reported processes for alert with ID: "<<alertID;
     for(Persistency::Host::ReportedProcesses::const_iterator it_p = processes.begin(); it_p!=processes.end(); ++it_p)
       es.saveProcess(reportedHostID, *it_p->get());
   }

@@ -211,7 +211,6 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
   return vec;
 }
 
-// TODO: can 'er' be const-ref too?
 void Restorer::addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er,
                                    const Tree::IDsVector                          &malerts)
 {
