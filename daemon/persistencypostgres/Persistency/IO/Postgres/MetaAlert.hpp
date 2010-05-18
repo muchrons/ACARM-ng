@@ -5,6 +5,7 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_METAALERT_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_METAALERT_HPP_FILE
 
+#include "Logger/Node.hpp"
 #include "Persistency/IO/MetaAlert.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
@@ -44,6 +45,7 @@ private:
   virtual void associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN alert);
   DataBaseID getID();
 
+  Logger::Node   log_;
   DBHandlerPtrNN dbHandler_;
 }; // class MetaAlert
 

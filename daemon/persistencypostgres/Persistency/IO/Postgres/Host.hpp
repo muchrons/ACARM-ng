@@ -5,6 +5,7 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_HOST_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_HOST_HPP_FILE
 
+#include "Logger/Node.hpp"
 #include "Persistency/IO/Host.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 
@@ -34,6 +35,7 @@ public:
 private:
   virtual void setNameImpl(Transaction &t, const Persistency::Host::Name &name);
 
+  Logger::Node   log_;
   DBHandlerPtrNN dbHandler_;
 }; // class Host
 

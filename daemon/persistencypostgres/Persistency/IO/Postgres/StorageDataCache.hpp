@@ -15,6 +15,7 @@
 #include "Base/Threads/Lock.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 #include "Persistency/IO/Postgres/Exception.hpp"
+#include "Persistency/IO/Postgres/ExceptionNoSuchEntry.hpp"
 
 namespace Persistency
 {
@@ -57,18 +58,6 @@ private:
 
 
 public:
-  /** \brief exception thrown when entry does not exist.
-   */
-  struct ExceptionNoSuchEntry: public Exception
-  {
-    /** \brief c-tor with proper error message.
-     *  \param where place where exception has been raised.
-     */
-    explicit ExceptionNoSuchEntry(const Location &where):
-      Exception(where, "entry to be read does not exist")
-    {
-    }
-  }; // struct ExceptionEntryAlreadyExist
 
   /** \brief gets ID for a given object.
    *  \param ptr pointer to object to check.

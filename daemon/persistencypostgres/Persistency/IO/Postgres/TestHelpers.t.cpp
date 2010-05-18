@@ -6,6 +6,7 @@
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
+#include "Persistency/IO/Postgres/ExceptionNoEntries.hpp"
 #include "Persistency/IO/Postgres/detail/Appender.hpp"
 
 using namespace std;
@@ -32,36 +33,28 @@ IO::ConnectionPtrNN makeConnection(void)
   return IO::ConnectionPtrNN( Persistency::IO::BackendFactory::create("postgres", opts) );
 }
 
+DataBaseID getID(IO::Transaction &t, const std::string &name)
+{
+  DataBaseID id;
+  const Persistency::MetaAlert::Name node(name);
+  stringstream ss;
+  ss << "SELECT * FROM meta_alerts WHERE name = ";
+  Appender::append(ss, node.get());
+  ss << ";";
+  const result r = t.getAPI<TransactionAPI>().exec(ss);
+  if(r.size() != 1)
+    throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
+  r[0]["id"].to(id);
+  return id;
+}
 void removeNodeConnection(const std::string &parentName, const std::string &childName)
 {
   Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
   IO::Transaction t( conn->createNewTransaction("delete_data_transaction") );
 
   stringstream ss;
-  DataBaseID nodeID, childID;
-  {
-    const Persistency::MetaAlert::Name node(parentName);
-    ss << "SELECT * FROM meta_alerts WHERE name = ";
-    Appender::append(ss, node.get());
-    ss << ";";
-    const result r = t.getAPI<TransactionAPI>().exec(ss);
-    // TODO: SEGV when no result returned
-    r[0]["id"].to(nodeID);
-  }
-  {
-    // TODO: c&p code
-    const Persistency::MetaAlert::Name node(childName);
-    ss << "SELECT * FROM meta_alerts WHERE name = ";
-    Appender::append(ss, node.get());
-    ss << ";";
-    const result r = t.getAPI<TransactionAPI>().exec(ss);
-    // TODO: SEGV when no result returned
-    r[0]["id"].to(childID);
-  }
-  {
-    ss << "DELETE FROM meta_alerts_tree WHERE id_node = " << nodeID << " AND id_child = " << childID << ";";
-    t.getAPI<TransactionAPI>().exec(ss);
-  }
+  ss << "DELETE FROM meta_alerts_tree WHERE id_node = " << getID(t, parentName) << " AND id_child = " << getID(t, childName)<< ";";
+  t.getAPI<TransactionAPI>().exec(ss);
   t.commit();
 }
 
@@ -144,11 +137,12 @@ ReferenceURLPtr makeNewReferenceURL(const char *url)
   return ReferenceURLPtr( new Persistency::ReferenceURL("some name", url) );
 }
 
-GraphNodePtrNN makeNewLeaf(const char *name)
+GraphNodePtrNN makeNewLeaf(const char      *name,
+                           const Timestamp &time)
 {
   Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
   IO::Transaction t( conn->createNewTransaction("make_leaf_transaction") );
-  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewAlert(name), conn, t) );
+  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewAlert(name, time), conn, t) );
   t.commit();
   return graphNode;
 }
@@ -158,23 +152,16 @@ GraphNodePtrNN makeNewNode(void)
   return makeNewNode( makeNewLeaf("some name 1"), makeNewLeaf("some name 2"), "another meta alert name");
 }
 
-GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
-{
-  Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
-  IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
-  const Persistency::NodeChildrenVector ncv(child1, child2);
-  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewMetaAlert("bla"),
-                                                     conn, t, ncv) );
-  t.commit();
-  return graphNode;
-}
 
-GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2, const char *name)
+GraphNodePtrNN makeNewNode(GraphNodePtrNN child1,
+                           GraphNodePtrNN child2,
+                           const char *name,
+                           const Timestamp &time)
 {
   Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
   IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
   const Persistency::NodeChildrenVector ncv(child1, child2);
-  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewMetaAlert(name),
+  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewMetaAlert(name, time),
                                                      conn, t, ncv) );
   t.commit();
   return graphNode;

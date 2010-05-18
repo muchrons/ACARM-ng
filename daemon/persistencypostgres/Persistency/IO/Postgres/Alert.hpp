@@ -5,6 +5,7 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_ALERT_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_ALERT_HPP_FILE
 
+#include "Logger/Node.hpp"
 #include "System/Enum.hpp"
 #include "Persistency/IO/Alert.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
@@ -57,7 +58,7 @@ private:
                  DataBaseID                        alertID,
                  HostType                          type,
                  Persistency::Alert::ReportedHosts &hosts);
-
+  Logger::Node   log_;
   DBHandlerPtrNN dbHandler_;
 }; // class Alert
 

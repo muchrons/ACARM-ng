@@ -17,6 +17,7 @@ Host::Host(Persistency::HostPtrNN  host,
            Transaction            &t,
            DBHandlerPtrNN          dbHandler):
   IO::Host(host, t),
+  log_("persistency.io.postgres.host"),
   dbHandler_(dbHandler)
 {
 }

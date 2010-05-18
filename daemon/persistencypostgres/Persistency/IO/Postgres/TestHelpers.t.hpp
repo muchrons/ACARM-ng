@@ -21,6 +21,8 @@
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/GraphNode.hpp"
 
+#include "Persistency/IO/Postgres/DataBaseID.hpp"
+
 
 namespace Persistency
 {
@@ -31,12 +33,13 @@ namespace Postgres
 
 IO::ConnectionPtrNN makeConnection(void);
 
+DataBaseID getID(IO::Transaction &t, const std::string &name);
+
 void removeNodeConnection(const std::string &parentName, const std::string &childName);
 
 Persistency::AlertPtr makeNewAlert(const char *name="some alert", const Timestamp &t = Timestamp(444) );
 
 Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert", const Timestamp &t = Timestamp(444));
-
 
 Persistency::AnalyzerPtrNN makeNewAnalyzer(const char *name="some analyzer");
 
@@ -60,13 +63,16 @@ Persistency::HostPtr makeNewHost6(const char             *ip,
 Persistency::ProcessPtr makeNewProcess(const char *name="process name");
 
 Persistency::ReferenceURLPtr makeNewReferenceURL(const char *url="http://gnu.org");
-Persistency::GraphNodePtrNN makeNewLeaf(const char *name="some name");
+
+Persistency::GraphNodePtrNN makeNewLeaf(const char *name="some name",
+                                        const Timestamp &time = Timestamp(444));
+
 Persistency::GraphNodePtrNN makeNewNode(void);
-Persistency::GraphNodePtrNN makeNewNode(Persistency::GraphNodePtrNN child1,
-                                        Persistency::GraphNodePtrNN child2);
+
 Persistency::GraphNodePtrNN makeNewNode(Persistency::GraphNodePtrNN child1,
                                         Persistency::GraphNodePtrNN child2,
-                                        const char *name);
+                                        const char *name="some node",
+                                        const Timestamp &time = Timestamp(444));
 
 //
 //                root
