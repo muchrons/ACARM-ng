@@ -97,6 +97,7 @@ void testObj::test<1>(void)
                                                          certainty_, description_, sourceHosts_, targetHosts_));
   Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
   alert.save();
+  // TODO: uncomment this when code is fixed.
   //host.setName("new host name");
 }
 
