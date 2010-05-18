@@ -159,7 +159,11 @@ general layout of triggers' configuration looks simillar to filters' configurati
 
 below are listed implemented triggers along with their implementation.
 
-<!-- Gadu-Gadu instant messanger notification -->
+<!-- Gadu-Gadu instant messanger notification
+     NOTE: you must create separate account for sending messages with this
+           trigger, otherwise it may not work as expected, due to Gadu-Gadu
+           protocol specific details.
+-->
 <gg>
   <uin>23436545</uin>                                 <!-- GG account number -->
   <password>testowekonto</password>                   <!-- password for this account-->
