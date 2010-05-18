@@ -57,7 +57,7 @@ private:
 }; // struct EventWrapper
 
 
-std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account)
+std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, const Trigger::GG::UserID sender)
 {
   Trigger::GG::Connection conn(account);
   for(;;)
@@ -95,7 +95,7 @@ std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account)
     // get reference to message
     gg_event_msg &m=e.get()->event.msg;
     // only messages from given UID are interesting for us
-    if( m.sender!=account.getUserID() )
+    if(m.sender!=sender)
       continue;
 
     // ok - this is our message!

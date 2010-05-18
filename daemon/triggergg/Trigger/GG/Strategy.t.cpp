@@ -55,9 +55,10 @@ void testObj::test<2>(void)
   Strategy               s(cfg_);
   Strategy::ChangedNodes nc;
   s.process( makeNewNode(), nc );
-  const std::string      str=getMessageFromAccount( getTestConfig2() );
+  const std::string      str=getMessageFromAccount( getTestConfig2(),
+                                                    cfg_.getAccountConfig().getUserID() );
   ensure_equals("invalid repot generated", str,
-                "TODO");
+                "reporting triggered for meta-alert 'some meta-alert' (2 correlated alerts; severity is 1.1)");
 }
 
 } // namespace tut

@@ -23,7 +23,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 
   std::string getMessageFromAccount2(void) const
   {
-    return getMessageFromAccount( getTestConfig2() );
+    return getMessageFromAccount( getTestConfig2(), getTestConfig1().getUserID() );
   }
 
   Connection conn1_;
