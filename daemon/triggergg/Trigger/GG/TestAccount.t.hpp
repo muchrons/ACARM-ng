@@ -6,6 +6,7 @@
 #define INCLUDE_TRIGGER_GG_TESTACCOUNT_T_HPP_FILE
 
 #include <string>
+#include <sys/select.h>
 #include <libgadu.h>
 
 #include "Trigger/GG/AccountConfig.hpp"
@@ -61,6 +62,29 @@ std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account)
   Trigger::GG::Connection conn(account);
   for(;;)
   {
+    // wait for something
+    fd_set desc;
+    FD_ZERO(&desc);
+    FD_SET(conn.get()->fd, &desc);
+
+    timeval timeout={3, 0}; // timeout is 3[s]
+    switch( select(conn.get()->fd + 1, &desc, NULL, NULL, &timeout) )
+    {
+      case 0:   // timeout
+        throw std::runtime_error("waiting for messages timeouted");
+
+      case -1:  // error
+        throw std::runtime_error("select() returned error");
+
+      default:  // OK
+        if( !FD_ISSET(conn.get()->fd, &desc) )
+          throw std::runtime_error("descriptor is not set - something's wrong");
+        break;
+    } // switch( select() )
+
+    // ok - we have some data to be read
+
+    // read data
     EventWrapper e( gg_watch_fd( conn.get() ) );    // read event
     // skip errors
     if( e.get()==NULL )
