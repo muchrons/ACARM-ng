@@ -16,6 +16,8 @@ using namespace Persistency::IO::Postgres;
 namespace
 {
 
+// TODO: c&p code from StorageDataCache.t.cpp - make common code common.
+
 // strict weak ordering for std::sort()
 struct SWO
 {

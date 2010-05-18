@@ -23,6 +23,8 @@ namespace Postgres
 class SQLHelper
 {
 public:
+  // TODO: 'log' should be const-ref.
+  // TODO: class does have references as a memebers and so must be non-copyable
   /** \brief create helper.
    *  \param file file name.
    *  \param line line number.
@@ -50,7 +52,7 @@ private:
   int                line_;
   const std::string &sql_;
   Logger::Node       log_;
-};
+}; // class SQLHelper
 
 } // namespace Postgres
 } // namespace IO

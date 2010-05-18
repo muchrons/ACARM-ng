@@ -2,9 +2,14 @@
  * Strategy.cpp
  *
  */
+#include <sstream>
 #include <cassert>
 
+#include "Algo/countCorrelatedAlerts.hpp"
+#include "Algo/computeSeverity.hpp"
 #include "Trigger/GG/Strategy.hpp"
+#include "Trigger/GG/Connection.hpp"
+#include "Trigger/GG/MessageSender.hpp"
 
 using namespace std;
 
@@ -20,9 +25,17 @@ Strategy::Strategy(const Config &cfg):
 {
 }
 
-void Strategy::trigger(const Node &/*n*/)
+void Strategy::trigger(const Node &n)
 {
-  // TODO
+  stringstream ss;
+  ss << "reporting triggered for meta-alert '"
+     << n->getMetaAlert().getName().get()
+     << "' (" << Algo::countCorrelatedAlerts(n)
+     << " correlated alerts; severity is "
+     << Algo::computeSeverity(n) << ")";
+  Connection    conn(ggCfg_);
+  MessageSender ms(conn);
+  ms.send(receiver_, ss.str() );
 }
 
 } // namespace GG

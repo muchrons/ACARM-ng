@@ -8,7 +8,6 @@
 #include "Trigger/Simple/Strategy.hpp"
 #include "Trigger/GG/Config.hpp"
 
-
 namespace Trigger
 {
 namespace GG
