@@ -122,6 +122,7 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
     }
     catch(const ExceptionBadNumberOfNodeChildren &)
     {
+      // TODO: add note that this subtree is being skipped.
       LOGMSG_WARN_S(log_)<<"root with id "<< *it << " has bad number of children";
     }
   }
@@ -193,7 +194,7 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
     }
     catch(const ExceptionNoSuchEntry &)
     {
-      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " does'n exist";
+      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " doesn't exist";
     }
     catch(const ExceptionBadNumberOfNodeChildren &)
     {
@@ -211,7 +212,6 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
   return vec;
 }
 
-// TODO: can 'er' be const-ref too?
 void Restorer::addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er,
                                    const Tree::IDsVector                          &malerts)
 {

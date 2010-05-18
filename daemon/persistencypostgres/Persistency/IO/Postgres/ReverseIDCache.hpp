@@ -39,6 +39,7 @@ public:
    */
   T get(DataBaseID id) const
   {
+    // TODO: use temporary variable (const_iterator) in order to avoid 2 find() calls
     if( cache_.find(id) == cache_.end() )
       throw ExceptionNoSuchEntry(SYSTEM_SAVE_LOCATION);
     return cache_.find(id)->second;

@@ -86,10 +86,10 @@ AnalyzerPtrNN makeNewAnalyzer(const char *name)
   return AnalyzerPtrNN( new Persistency::Analyzer(name, NULL, NULL, NULL) );
 }
 
-HostPtr makeNewHost(void)
+HostPtr makeNewHost(const char *name)
 {
   const Persistency::Host::Netmask_v4 mask(mask4_bytes);
-  return makeNewHost4("1.2.3.4", &mask, "linux");
+  return makeNewHost4("1.2.3.4", &mask, name);
 }
 
 HostPtr makeNewHost4(const char             *ip,
