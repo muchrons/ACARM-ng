@@ -16,21 +16,7 @@ namespace
 
 Trigger::GG::AccountConfig getTestConfig1(void)
 {
-  // Gadu-Gadu server blocks when there are too many connections in short
-  // time to the same UID and so we use poll of test accounts that are
-  // used in different order, though always in the same (tests must be
-  // repeatable!) - random numbers are not welcomed here.
-  static size_t index=0;
-  const Trigger::GG::UserID uids[]= {
-                                      23436545,
- //                                     23461854,
-                                      23462737,
-                                      23462745,
-                                      23461875,
-                                      23462759
-                                    };
-  const size_t pos=( index++ )%( sizeof(uids)/sizeof(uids[0]) );
-  return Trigger::GG::AccountConfig(uids[pos], "testowekonto");
+  return Trigger::GG::AccountConfig(23436545, "testowekonto");
 }
 
 Trigger::GG::AccountConfig getTestConfig2(void)
