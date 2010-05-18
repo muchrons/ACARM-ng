@@ -73,6 +73,22 @@ struct TestClass
     t_.commit();
   }
 
+  void checkBetween(const Restorer::NodesVector &outVec, const Timestamp &from, const Timestamp &to)
+  {
+    Restorer::NodesVector out;
+    // create restorer
+    Restorer r(t_, dbh_);
+    // restore data from data base
+    r.restoreBetween(out, from, to);
+    // put tree in vector
+
+    tut::ensure_equals("invalid size", out.size(), outVec.size());
+    tut::ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
+    // check if restored alerts and meta alerts exist in cache
+    checkCache(out);
+    t_.commit();
+  }
+
   void removeAndCheck(const Restorer::NodesVector &outVec, const std::string &node, const std::string &child)
   {
     removeNodeConnection(node, child);
@@ -96,25 +112,25 @@ struct TestClass
 
     GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
     GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
-    second.push_back(leaf3);
-    second.push_back(leaf4);
+    first.push_back(leaf3);
+    first.push_back(leaf4);
     GraphNodePtrNN node4 = makeNewNode(leaf3, leaf4, "node4");
-    second.push_back(node4);
+    first.push_back(node4);
 
     GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
     GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
-    second.push_back(leaf5);
-    second.push_back(leaf6);
+    first.push_back(leaf5);
+    first.push_back(leaf6);
     GraphNodePtrNN node5 = makeNewNode(leaf5, leaf6, "node5");
 
-    second.push_back(node5);
+    first.push_back(node5);
 
     GraphNodePtrNN node1 = makeNewNode(node3, node4, "node1");
     second.push_back(node1);
 
 
     GraphNodePtrNN node2 = makeNewNode(node4, node5, "node2");
-    second.push_back(node2);
+    first.push_back(node2);
 
     GraphNodePtrNN root = makeNewNode(node1, node2, "root");
     second.push_back(root);
@@ -139,11 +155,11 @@ struct TestClass
 
     GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
     GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
-    second.push_back(leaf3);
-    second.push_back(leaf4);
+    first.push_back(leaf3);
+    first.push_back(leaf4);
 
     GraphNodePtrNN node2 = makeNewNode(leaf3, leaf4, "node2");
-    second.push_back(node2);
+    first.push_back(node2);
 
     GraphNodePtrNN root1 = makeNewNode(node1, node2, "root1");
     second.push_back(root1);
@@ -183,11 +199,11 @@ struct TestClass
   {
     GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
     GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
-    second.push_back(leaf1);
-    second.push_back(leaf2);
+    first.push_back(leaf1);
+    first.push_back(leaf2);
 
     GraphNodePtrNN node1 = makeNewNode(leaf1, leaf2, "node1");
-    second.push_back(node1);
+    first.push_back(node1);
 
     GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
     GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
@@ -295,6 +311,102 @@ struct TestClass
     GraphNodePtrNN root = makeNewNode(node1, node2, "root");
     vec.push_back(root);
     return vec;
+  }
+
+  //
+  //                root
+  //     node1               node2
+  //  leaf1 leaf2      node3       node4
+  //                leaf3 leaf4 leaf5 leaf6
+  //
+  Restorer::NodesVector makeNewTreeF(void)
+  {
+    Restorer::NodesVector vec;
+    const Timestamp t1( timestampFromString("1999-10-10 17:56:07") );
+    const Timestamp t2( timestampFromString("2010-04-22 07:56:07") );
+
+    GraphNodePtrNN leaf1 = makeNewLeaf("leaf1", t1);
+    GraphNodePtrNN leaf2 = makeNewLeaf("leaf2", t1);
+    vec.push_back(leaf1);
+    vec.push_back(leaf2);
+
+    GraphNodePtrNN node1 = makeNewNode(leaf1, leaf2, "node1", t1);
+    vec.push_back(node1);
+
+    GraphNodePtrNN leaf3 = makeNewLeaf("leaf3", t2);
+    GraphNodePtrNN leaf4 = makeNewLeaf("leaf4", t2);
+    vec.push_back(leaf3);
+    vec.push_back(leaf4);
+
+    GraphNodePtrNN node3 = makeNewNode(leaf3, leaf4, "node3", t2);
+    vec.push_back(node3);
+    GraphNodePtrNN leaf5 = makeNewLeaf("leaf5", t1);
+    GraphNodePtrNN leaf6 = makeNewLeaf("leaf6", t1);
+    vec.push_back(leaf5);
+    vec.push_back(leaf6);
+    GraphNodePtrNN node4 = makeNewNode(leaf5, leaf6, "node4", t1);
+    vec.push_back(node4);
+
+    GraphNodePtrNN node2 = makeNewNode(node3, node4, "node2", t1);
+    vec.push_back(node2);
+    GraphNodePtrNN root = makeNewNode(node1, node2, "root", t1);
+    vec.push_back(root);
+    return vec;
+  }
+
+  //
+  //                  root1                      root2
+  //             node1                     node3       node4
+  //          leaf1 leaf2               leaf5 leaf6 leaf7  leaf8
+  //
+  void makeNewTreeG(Restorer::NodesVector &first, Restorer::NodesVector &second)
+  {
+    const Timestamp t1( timestampFromString("1999-10-10 17:56:07") );
+    const Timestamp t2( timestampFromString("2010-01-22 07:56:07") );
+    const Timestamp t3( timestampFromString("2010-04-22 07:56:07") );
+    GraphNodePtrNN leaf1 = makeNewLeaf("leaf1", t2);
+    GraphNodePtrNN leaf2 = makeNewLeaf("leaf2", t2);
+    first.push_back(leaf1);
+    first.push_back(leaf2);
+
+    GraphNodePtrNN node1 = makeNewNode(leaf1, leaf2, "node1", t2);
+    first.push_back(node1);
+
+    GraphNodePtrNN leaf3 = makeNewLeaf("leaf3", t1);
+    GraphNodePtrNN leaf4 = makeNewLeaf("leaf4", t1);
+    second.push_back(leaf3);
+    second.push_back(leaf4);
+
+    GraphNodePtrNN node2 = makeNewNode(leaf3, leaf4, "node2", t1);
+    second.push_back(node2);
+
+    GraphNodePtrNN root1 = makeNewNode(node1, node2, "root1", t2);
+    second.push_back(root1);
+
+    GraphNodePtrNN leaf5 = makeNewLeaf("leaf5", t3);
+    GraphNodePtrNN leaf6 = makeNewLeaf("leaf6", t3);
+
+    first.push_back(leaf5);
+    first.push_back(leaf6);
+
+    GraphNodePtrNN node3 = makeNewNode(leaf5, leaf6, "node3", t3);
+
+    first.push_back(node3);
+
+    GraphNodePtrNN leaf7 = makeNewLeaf("leaf7", t3);
+    GraphNodePtrNN leaf8 = makeNewLeaf("leaf8", t3);
+
+    first.push_back(leaf7);
+    first.push_back(leaf8);
+
+    GraphNodePtrNN node4 = makeNewNode(leaf7, leaf8, "node4", t3);
+
+    first.push_back(node4);
+
+    GraphNodePtrNN root2 = makeNewNode(node3, node4, "root2", t3);
+
+    first.push_back(root2);
+
   }
 
   TestDBAccess        tdba_;
@@ -435,7 +547,7 @@ void testObj::test<8>(void)
   Restorer::NodesVector outVec;
   Restorer::NodesVector tmp;
   makeNewTreeC(outVec, tmp);
- removeAndCheck(outVec, "root1", "node2");
+  removeAndCheck(outVec, "root1", "node2");
 }
 
 //
@@ -450,12 +562,46 @@ void testObj::test<9>(void)
   check(outVec);
 }
 
-// TODO: try restoring valid data with restore(..., from, to) where some sub-tree part
-//       is in use, but does not fit into [from, to] range.
-
+// trying restoring between
 template<>
 template<>
 void testObj::test<10>(void)
 {
+  const Restorer::NodesVector outVec = makeNewTreeF();
+  const Timestamp from( timestampFromString("1999-10-10 17:56:07") );
+  const Timestamp to( timestampFromString("2010-04-22 07:56:07") );
+  checkBetween(outVec, from, to);
+}
+
+// try restoring empty set
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  Restorer::NodesVector out;
+  makeNewTreeF();
+  const Timestamp from( timestampFromString("2011-10-10 17:56:07") );
+  const Timestamp to( timestampFromString("2012-04-22 07:56:07") );
+  // create restorer
+  Restorer r(t_, dbh_);
+  // restore data from data base
+  r.restoreBetween(out, from, to);
+  ensure_equals("invalid size", out.size(), 0);
+  t_.commit();
+}
+
+// try restoring valid data with restore(..., from, to) where some sub-tree part
+// is in use, but does not fit into [from, to] range.
+
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const Timestamp from( timestampFromString("2010-01-22 07:56:07") );
+  const Timestamp to( timestampFromString("2010-04-22 07:56:07") );
+  Restorer::NodesVector outVec;
+  Restorer::NodesVector tmp;
+  makeNewTreeG(outVec, tmp);
+  checkBetween(outVec, from, to);
 }
 } // namespace tut

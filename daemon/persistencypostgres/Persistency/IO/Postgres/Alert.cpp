@@ -17,6 +17,7 @@ Alert::Alert(Persistency::AlertPtrNN  alert,
              Transaction             &t,
              DBHandlerPtrNN           dbHandler):
   IO::Alert(alert, t),
+  log_("persistency.io.postgres.alert"),
   dbHandler_(dbHandler)
 {
 }

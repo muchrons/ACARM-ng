@@ -90,6 +90,7 @@ private:
   void addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er,
                            const Tree::IDsVector                          &malerts);
 
+  Logger::Node                   log_;
   DBHandlerPtrNN                 dbHandler_;
   ReverseIDCache<GraphNodePtrNN> nodeCache_;
   ReverseIDCache<GraphNodePtrNN> leafCache_;

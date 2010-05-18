@@ -33,6 +33,7 @@ namespace Postgres
 Restorer::Restorer(Transaction    &t,
                    DBHandlerPtrNN  dbHandler):
   IO::Restorer(t),
+  log_("persistency.io.postgres.restorer"),
   dbHandler_(dbHandler)
 {
 }
@@ -70,7 +71,7 @@ GraphNodePtrNN Restorer::makeLeaf(DataBaseID           id,
                                  IO::Transaction     &tStubIO)
 {
   if( leafCache_.has(id) )
-    return leafCache_.getNotNull(id);
+    return leafCache_.get(id);
   GraphNodePtrNN leaf( new GraphNode( aPtr, connStubIO, tStubIO ) );
   leafCache_.add(id, leaf);
   return leaf;
@@ -83,7 +84,7 @@ GraphNodePtrNN Restorer::makeNode(DataBaseID                id,
                                   IO::Transaction          &tStubIO)
 {
   if( nodeCache_.has(id) )
-    return nodeCache_.getNotNull(id);
+    return nodeCache_.get(id);
   GraphNodePtrNN node( new GraphNode( maPtr, connStubIO, tStubIO, vec ) );
   nodeCache_.add(id, node);
   return node;
@@ -95,7 +96,7 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
                                          IO::ConnectionPtrNN                             connStubIO,
                                          IO::Transaction                                &tStubIO)
 {
-  TreePtrNN node = treeNodes_.getNotNull(id);
+  TreePtrNN node = treeNodes_.get(id);
   // check if there are no children (i.e. is leaf)
   if( node->getChildrenNumber() == 0 )
     return restoreLeaf(id, out, er, connStubIO, tStubIO);
@@ -121,7 +122,7 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
     }
     catch(const ExceptionBadNumberOfNodeChildren &)
     {
-      // TODO: logs
+      LOGMSG_WARN_S(log_)<<"root with id "<< *it << " has bad number of children";
     }
   }
   // remove doplicates from out vector
@@ -178,19 +179,31 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
                                                  IO::ConnectionPtrNN                             connStubIO,
                                                  IO::Transaction                                &tStubIO)
 {
-  // TODO: comment 3 main parts/blocks of this method
   vector<GraphNodePtrNN>  tmpNodes;
+  // get children IDs vector for given node
   const Tree::IDsVector  &nodeChildren = node->getChildren();
-  if(nodeChildren.size() < 2)
-    throw ExceptionBadNumberOfNodeChildren(SYSTEM_SAVE_LOCATION, id );
   tmpNodes.reserve( nodeChildren.size() );
+  // restore children
   for(Tree::IDsVector::const_iterator it = nodeChildren.begin();
       it != nodeChildren.end(); ++it)
   {
-    tmpNodes.push_back( deepFirstSearch( *it, out, er, connStubIO, tStubIO ) );
+    try
+    {
+      tmpNodes.push_back( deepFirstSearch( *it, out, er, connStubIO, tStubIO ) );
+    }
+    catch(const ExceptionNoSuchEntry &)
+    {
+      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " does'n exist";
+    }
+    catch(const ExceptionBadNumberOfNodeChildren &)
+    {
+      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " has bad number of children";
+    }
   }
-  assert(tmpNodes.size() >= 2);
+  if(tmpNodes.size() < 2)
+    throw ExceptionBadNumberOfNodeChildren(SYSTEM_SAVE_LOCATION, id );
   // add first two children to the node children vector
+  assert(tmpNodes.size() >= 2);
   NodeChildrenVector vec(tmpNodes[0], tmpNodes[1]);
   // add rest of children (indexing is started with 2 becouse node should have at least two children)
   for(size_t i = 2; i<tmpNodes.size(); ++i)

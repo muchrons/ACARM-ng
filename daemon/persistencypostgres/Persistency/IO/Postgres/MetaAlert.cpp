@@ -16,6 +16,7 @@ MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
                      Transaction                 &t,
                      DBHandlerPtrNN               dbHandler):
   IO::MetaAlert(ma, t),
+  log_("persistency.io.postgres.metaalert"),
   dbHandler_(dbHandler)
 {
 }

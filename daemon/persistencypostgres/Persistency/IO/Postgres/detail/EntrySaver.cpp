@@ -8,6 +8,7 @@
 #include "Logger/Logger.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
 #include "Persistency/IO/Postgres/ReaderHelper.hpp"
+#include "Persistency/IO/Postgres/SQLHelper.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 #include "Persistency/IO/Postgres/detail/Appender.hpp"
 
@@ -15,8 +16,7 @@ using namespace std;
 using namespace pqxx;
 
 // this is helper macro for calling f-cjtion that saves line number and calls given sql statement (with log)
-#define EXEC_SQL(sql) execSQL(sql, __LINE__)
-
+#define SQL(sql,log) SQLHelper(__FILE__, __LINE__, sql, log)
 namespace Persistency
 {
 namespace IO
@@ -71,7 +71,7 @@ DataBaseID EntrySaver::getID(const std::string &seqName)
   assert( seqName==pqxx::sqlesc(seqName) && "invalid sequence name" );
 
   const std::string sql="SELECT currval('" + seqName + "') as id;";
-  const result r=EXEC_SQL(sql);
+  const result r=SQL(sql, log_).exec(t_);
   assert( r.size()==1 && "unable to read current sequence number" );
 
   DataBaseID id;
@@ -88,7 +88,7 @@ DataBaseID EntrySaver::getSeverityID(const Alert &a)
   stringstream ss;
   ss<<"SELECT id FROM severities WHERE level="<<level;
   // execute it
-  const result r=EXEC_SQL( ss.str() );
+  const result r=SQL( ss.str(), log_ ).exec(t_);
   if( r.size()!=1 )
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str() );
   // return read value as a number
@@ -119,7 +119,7 @@ Base::NullValue<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   ss << " AND ip";
   addToSelect(ss, a.getIP() );
   ss << ";";
-  const result r=EXEC_SQL( ss.str() );
+  const result r=SQL( ss.str(), log_ ).exec(t_);
   if( r.empty() )
   {
     LOGMSG_DEBUG_S(log_)<<"analyzer '"<<a.getName().get()<<"' not found in data base";
@@ -141,7 +141,7 @@ DataBaseID EntrySaver::saveProcessData(const Process &p)
   Appender::append(ss, (p.getMD5())?p.getMD5()->get():NULL);
   ss << ");";
   // insert object to data base.
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 
   return getID("procs_id_seq");
 }
@@ -167,7 +167,7 @@ DataBaseID EntrySaver::saveReportedProcessData(DataBaseID     reportedHostID,
   addReferenceURL(ss, p.getReferenceURL() );
   ss << ");";
   // insert object to data base.
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 
   return getID("reported_procs_id_seq");
 }
@@ -181,7 +181,7 @@ DataBaseID EntrySaver::saveReferenceURL(const ReferenceURL &url)
   Appender::append(ss, url.getURL().get() );
   ss << ");";
   // insert object to data base.
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 
   return getID("reference_urls_id_seq");
 }
@@ -198,7 +198,7 @@ DataBaseID EntrySaver::saveHostData(const Persistency::Host &h)
   ss << ",";
   Appender::append(ss, h.getName().get() );
   ss << ");";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 
   return getID("hosts_id_seq");
 }
@@ -212,14 +212,12 @@ DataBaseID EntrySaver::saveReportedHostData(DataBaseID               alertID,
   ss << "INSERT INTO reported_hosts(id_alert, id_host, role, id_ref) VALUES (";
   ss << alertID << ",";
   ss << hostID << ",";
-  // TODO: avoid implicit convertions of numbers to boolean values - it decreases
-  //       readability. use diurect comparison with given value(s) instead.
-  assert(!strcmp(role, "src") || !strcmp(role, "dst"));
+  assert(strcmp(role, "src") == 0 || strcmp(role, "dst") == 0);
   Appender::append(ss, role);
   ss << ",";
   addReferenceURL(ss, h.getReferenceURL() );
   ss << ");";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
   return getID("reported_hosts_id_seq");
 }
 
@@ -250,7 +248,7 @@ DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
   ss << ",";
   Appender::append(ss, a.getDescription() );
   ss << ");";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
   return getID("alerts_id_seq");
 }
 
@@ -270,7 +268,7 @@ DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
   ss << ",";
   Appender::append(ss, a.getIP()?( a.getIP()->to_string().c_str() ):NULL);
   ss << ");";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
   return getID("analyzers_id_seq");
 }
 
@@ -284,7 +282,7 @@ DataBaseID EntrySaver::saveServiceData(const Service &s)
   ss <<",";
   Appender::append(ss, s.getProtocol().get() );
   ss << ");";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 
   return getID("services_id_seq");
 
@@ -300,7 +298,7 @@ void EntrySaver::saveReportedServiceData(DataBaseID     reportedHostID,
   ss << serID << ",";
   addReferenceURL(ss, s.getReferenceURL() );
   ss << ");";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 }
 
 DataBaseID EntrySaver::saveService(DataBaseID reportedHostID, const Service &s)
@@ -326,7 +324,7 @@ DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
   ss << ",";
   Appender::append(ss, "now()");
   ss << ");";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 
   return getID("meta_alerts_id_seq");
 }
@@ -339,7 +337,7 @@ void EntrySaver::saveAlertToMetaAlertMap(DataBaseID alertID, DataBaseID malertID
   ss << ",";
   Appender::append(ss, malertID);
   ss << ");";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 }
 
 void EntrySaver::saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID)
@@ -350,7 +348,7 @@ void EntrySaver::saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID)
   ss << ",";
   Appender::append(ss, anlzID);
   ss << ");";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 }
 
 
@@ -362,21 +360,21 @@ void EntrySaver::saveMetaAlertsTree(DataBaseID nodeID, DataBaseID childID)
   ss << ",";
   Appender::append(ss, childID);
   ss << ");";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 }
 
 void EntrySaver::markMetaAlertAsUsed(DataBaseID malertID)
 {
   stringstream ss;
   ss << "INSERT INTO meta_alerts_in_use(id_meta_alert) VALUES (" << malertID << ");";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 }
 
 void EntrySaver::markMetaAlertAsUnused(DataBaseID malertID)
 {
   stringstream ss;
   ss << "DELETE FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 }
 
 void EntrySaver::markMetaAlertAsTriggered(DataBaseID malertID, const std::string &name)
@@ -387,7 +385,7 @@ void EntrySaver::markMetaAlertAsTriggered(DataBaseID malertID, const std::string
   ss << ",";
   Appender::append(ss, name);
   ss << ");";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 }
 
 void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
@@ -395,13 +393,9 @@ void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
   stringstream ss;
   ss << "UPDATE meta_alerts SET severity_delta = severity_delta + ";
   Appender::append(ss, severityDelta);
+  ss << ", last_update_time = now() ";
   ss << " WHERE id = " << malertID << ";";
-  EXEC_SQL( ss.str() );
-  // TODO: i think this can be done in a single UPDATE query
-  ss.str("");
-  ss << "UPDATE meta_alerts SET last_update_time = now() ";
-  ss << " WHERE id = " << malertID << ";";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 }
 
 void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta)
@@ -409,20 +403,16 @@ void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta
   stringstream ss;
   ss << "UPDATE meta_alerts SET certainty_delta = certainty_delta + ";
   Appender::append(ss, certanityDelta);
+  ss << ", last_update_time = now() ";
   ss << " WHERE id = " << malertID << ";";
-  EXEC_SQL( ss.str() );
-  // TODO: i think this can be done in a single UPDATE query
-  ss.str("");
-  ss << "UPDATE meta_alerts SET last_update_time = now() ";
-  ss << " WHERE id = " << malertID << ";";
-  EXEC_SQL( ss.str() );
+  SQL( ss.str(), log_ ).exec(t_);
 }
 
 bool EntrySaver::isHostNameNull(DataBaseID hostID)
 {
   stringstream ss;
   ss << "SELECT name FROM hosts WHERE id = " << hostID << ";";
-  const result r=EXEC_SQL( ss.str() );
+  const result r=SQL( ss.str(), log_ ).exec(t_);
   return r[0]["name"].is_null();
 }
 void EntrySaver::setHostName(DataBaseID hostID, const Persistency::Host::Name &name)
@@ -432,13 +422,7 @@ void EntrySaver::setHostName(DataBaseID hostID, const Persistency::Host::Name &n
   ss << "UPDATE hosts SET name = ";
   Appender::append(ss, name.get());
   ss << " WHERE id = " << hostID << ";";
-  EXEC_SQL( ss.str() );
-}
-
-pqxx::result EntrySaver::execSQL(const std::string &sql, int line)
-{
-  LOGMSG_DEBUG_S(log_)<<"line "<<line<<" [SQL-exec]: "<<sql;
-  return t_.getAPI<Postgres::TransactionAPI>().exec(sql);
+  SQL( ss.str(), log_ ).exec(t_);
 }
 
 } // namespace detail

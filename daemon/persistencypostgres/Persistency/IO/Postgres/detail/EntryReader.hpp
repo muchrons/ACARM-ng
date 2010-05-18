@@ -7,6 +7,7 @@
 
 #include <boost/noncopyable.hpp>
 
+#include "Logger/Node.hpp"
 #include "Persistency/IPTypes.hpp"
 #include "Persistency/Process.hpp"
 #include "Persistency/Service.hpp"
@@ -134,6 +135,7 @@ private:
   void addIfNew(T e, DataBaseID id);
   std::vector<DataBaseID> getRoots(const pqxx::result &r);
 
+  Logger::Node log_;
   DBHandler   &dbh_;
   Transaction &t_;
 }; // class EntryReader
