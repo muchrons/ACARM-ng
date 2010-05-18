@@ -592,7 +592,6 @@ void testObj::test<11>(void)
 
 // try restoring valid data with restore(..., from, to) where some sub-tree part
 // is in use, but does not fit into [from, to] range.
-
 template<>
 template<>
 void testObj::test<12>(void)

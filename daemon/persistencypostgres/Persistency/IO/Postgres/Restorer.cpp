@@ -122,6 +122,7 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
     }
     catch(const ExceptionBadNumberOfNodeChildren &)
     {
+      // TODO: add note that this subtree is being skipped.
       LOGMSG_WARN_S(log_)<<"root with id "<< *it << " has bad number of children";
     }
   }
