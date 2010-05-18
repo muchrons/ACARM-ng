@@ -88,8 +88,8 @@ example configuration may look like this:
 TODO: describe appenders.
 
 
-filter configuration
-====================
+filters configuration
+=====================
 
 in filters' configuration subtree there are set of filter entries that are to
 be configured. each entry consists of required field 'type' that determines
@@ -133,7 +133,53 @@ following filters and paramters are available:
 
 TODO: describe missing filters.
 
-TODO: describe triggers
+
+triggers configuration
+======================
+
+triggers are provided in order to be able to react on events reported by filters.
+though triggers are generic mechanisms, basically there are two use cases:
+reporting problem to human (administrator) and/or taking autonomous actions
+(ex. prohibitting problematic host on the firewall).
+there are ready-to-go triggers provided with ACARM-ng described in this section,
+though users can easily implement more of them via generic registration mechanism.
+
+general layout of triggers' configuration looks simillar to filters' configuration:
+<triggers>
+  <trigger1>
+    <opt1>...</opt1>
+    <opt2>...</opt2>
+  </trigger1>
+  <trigger2>
+    <opt1>...</opt1>
+    <opt2>...</opt2>
+    <opt3>...</opt3>
+  </trigger2>
+</triggers>
+
+below are listed implemented triggers along with their implementation.
+
+<!-- Gadu-Gadu instant messanger notification -->
+<gg>
+  <uin>23436545</uin>                                 <!-- GG account number -->
+  <password>testowekonto</password>                   <!-- password for this account-->
+  <receiver_uin>23461426</receiver_uin>               <!-- GG account to notify -->
+  <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
+  <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
+</gg>
+
+TODO: describe missing triggers
+
+note that severity_threshold and alerts_count_threshold are OR'ek, i.e. if
+any one of them is reached, meta-alert is reported. they are both optional
+parameters as well, i.e. they may be skipped in configuration, that will
+result in not checking given criteria. so if user would like to be informed
+about all meta-alerts that correlate at least N alerts, (s)he should set
+alerts_count_threshold to N and skip severity_threshold parameter at all.
+
+
+inputs configuration
+====================
 
 TODO: describe inputs
 
