@@ -5,6 +5,7 @@
 #include <tut.h>
 
 #include "Trigger/GG/Strategy.hpp"
+#include "Trigger/GG/TestAccount.t.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -18,7 +19,9 @@ namespace
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    cfg_( AccountConfig(1234, "secr3t"), 997, Trigger::Simple::ThresholdConfig("1.2", "3") )
+    cfg_( getTestConfig1(),
+          getTestConfig2().getUserID(),
+          Trigger::Simple::ThresholdConfig("1.2", "2") )
   {
   }
 
@@ -44,36 +47,18 @@ void testObj::test<1>(void)
   ensure_equals("invalid name", s.getTriggerName(), "gg");
 }
 
-//
+// test sending report
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  // TODO
-}
-
-//
-template<>
-template<>
-void testObj::test<3>(void)
-{
-  // TODO
-}
-
-//
-template<>
-template<>
-void testObj::test<4>(void)
-{
-  // TODO
-}
-
-//
-template<>
-template<>
-void testObj::test<5>(void)
-{
-  // TODO
+  Strategy               s(cfg_);
+  Strategy::ChangedNodes nc;
+  s.process( makeNewNode(), nc );
+  const std::string      str=getMessageFromAccount( getTestConfig2(),
+                                                    cfg_.getAccountConfig().getUserID() );
+  ensure_equals("invalid repot generated", str,
+                "reporting triggered for meta-alert 'some meta-alert' (2 correlated alerts; severity is 1.1)");
 }
 
 } // namespace tut
