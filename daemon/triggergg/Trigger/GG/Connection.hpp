@@ -14,6 +14,7 @@
 #include "Trigger/GG/AccountConfig.hpp"
 #include "Trigger/GG/AutoSession.hpp"
 #include "Trigger/GG/ExceptionConnectionError.hpp"
+#include "Trigger/GG/ExceptionSendingError.hpp"
 
 // TODO: comments
 
@@ -41,6 +42,9 @@ public:
   }
 
 private:
+  gg_session *connect(void) const;
+  void sendContactsList(void);
+
   Logger::Node          log_;
   const LoginParameters params_;
   AutoSession           sess_;
