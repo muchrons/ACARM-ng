@@ -9,8 +9,6 @@
 
 #include "System/AutoVariable.hpp"
 
-// TODO: tests
-
 namespace Trigger
 {
 namespace GG

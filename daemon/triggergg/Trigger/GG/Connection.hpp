@@ -16,25 +16,37 @@
 #include "Trigger/GG/ExceptionConnectionError.hpp"
 #include "Trigger/GG/ExceptionSendingError.hpp"
 
-// TODO: comments
-
 namespace Trigger
 {
 namespace GG
 {
 
+/** \brief class representing (estabilished) connection to GG server.
+ */
 class Connection: private boost::noncopyable
 {
 public:
-  Connection(const AccountConfig &cfg);
+  /** \brief connect to GG-server with given acount.
+   *  \param cfg account's configuration to use when connecting.
+   */
+  explicit Connection(const AccountConfig &cfg);
+  /** \brief disconnect from server.
+   */
   ~Connection(void);
 
+  /** \brief get session structure - const version.
+   *  \return session pointer.
+   *  \note pointer is guaranteed to be non-NULL.
+   */
   const gg_session *get(void) const
   {
     assert( sess_.get()!=NULL );
     return sess_.get();
   }
-
+  /** \brief get session structure - non-const version.
+   *  \return session pointer.
+   *  \note pointer is guaranteed to be non-NULL.
+   */
   gg_session *get(void)
   {
     assert( sess_.get()!=NULL );
