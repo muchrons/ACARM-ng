@@ -22,7 +22,7 @@ int main(int argc, char **argv)
   const UserID   receiver=atoi(argv[1]);
   const char    *msg     =argv[2];
 
-  cout<<"connectiong..."<<endl;
+  cout<<"connecting..."<<endl;
   Connection     conn( getTestConfig() );
   MessageSender  ms(conn);
 
