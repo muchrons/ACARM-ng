@@ -86,6 +86,7 @@ template<>
 inline void Appender::append<Persistency::Timestamp>(std::stringstream            &ss,
                                                      const Persistency::Timestamp &t)
 {
+  // this long lithany ensures that timestamp (already in UTC) is saved in UTC as well.
   ss << t.get() << "::abstime::timestamp WITH TIME ZONE AT TIME ZONE 'UTC'";
 }
 
