@@ -84,12 +84,19 @@ inline void Appender::append<std::string>(std::stringstream &ss, const std::stri
 
 template<>
 inline void Appender::append<Persistency::Timestamp>(std::stringstream            &ss,
+                                                     const Persistency::Timestamp &t)
+{
+  ss << t.get() << "::abstime::timestamp WITH TIME ZONE AT TIME ZONE 'UTC'";
+}
+
+template<>
+inline void Appender::append<Persistency::Timestamp>(std::stringstream            &ss,
                                                      const Persistency::Timestamp *t)
 {
   if(t==NULL)
     ss << "NULL";
   else
-    ss << t->get() << "::abstime::timestamp";
+    append(ss, *t);
 }
 
 template<typename T>
@@ -102,13 +109,6 @@ template<>
 inline void Appender::append<std::string>(std::stringstream &ss, const std::string &t)
 {
   appendEscape(ss, t.c_str() );
-}
-
-template<>
-inline void Appender::append<Persistency::Timestamp>(std::stringstream            &ss,
-                                                     const Persistency::Timestamp &t)
-{
-  append(ss, &t);
 }
 
 } // namespace detail
