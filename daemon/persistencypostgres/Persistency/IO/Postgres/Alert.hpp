@@ -9,6 +9,7 @@
 #include "System/Enum.hpp"
 #include "Persistency/IO/Alert.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
+#include "Persistency/IO/Postgres/ExceptionPQXX.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 
 using namespace Persistency::IO::Postgres::detail;

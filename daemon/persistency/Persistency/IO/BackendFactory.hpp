@@ -9,6 +9,7 @@
 
 #include "Commons/Factory/AbstractFactorySingleton.hpp"
 #include "Persistency/IO/Connection.hpp"
+#include "Persistency/IO/Exception.hpp"
 
 
 namespace Persistency

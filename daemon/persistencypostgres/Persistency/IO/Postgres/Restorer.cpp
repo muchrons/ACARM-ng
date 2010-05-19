@@ -7,6 +7,7 @@
 
 #include "Persistency/IO/Postgres/Restorer.hpp"
 #include "Persistency/IO/Postgres/ExceptionBadNumberOfNodeChildren.hpp"
+#include "Persistency/IO/Postgres/TryCatchInAPI.hpp"
 
 using namespace Persistency::IO::Postgres::detail;
 using namespace std;
@@ -40,10 +41,12 @@ Restorer::Restorer(Transaction    &t,
 
 void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &out)
 {
-  EntryReader er(t, *dbHandler_);
-  const Tree::IDsVector &maInUse=er.readIDsMalertsInUse();
-  const Tree::IDsVector &roots  =er.readRoots();
-  restore(er, out, maInUse, roots);
+  TRYCATCH_BEGIN
+    EntryReader er(t, *dbHandler_);
+    const Tree::IDsVector &maInUse=er.readIDsMalertsInUse();
+    const Tree::IDsVector &roots  =er.readRoots();
+    restore(er, out, maInUse, roots);
+  TRYCATCH_END
 }
 
 void Restorer::restoreBetweenImpl(Transaction     &t,
@@ -51,10 +54,12 @@ void Restorer::restoreBetweenImpl(Transaction     &t,
                                   const Timestamp &from,
                                   const Timestamp &to)
 {
-  EntryReader er(t, *dbHandler_);
-  const Tree::IDsVector  maBetween=er.readIDsMalertsBetween(from, to);
-  const Tree::IDsVector &roots    =er.readRoots(from, to);
-  restore(er, out, maBetween, roots);
+  TRYCATCH_BEGIN
+    EntryReader er(t, *dbHandler_);
+    const Tree::IDsVector  maBetween=er.readIDsMalertsBetween(from, to);
+    const Tree::IDsVector &roots    =er.readRoots(from, to);
+    restore(er, out, maBetween, roots);
+  TRYCATCH_END
 }
 
 BackendFactory::FactoryPtr Restorer::createStubIO(void)
