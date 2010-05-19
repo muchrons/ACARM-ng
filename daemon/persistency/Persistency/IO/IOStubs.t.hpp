@@ -1,5 +1,5 @@
 /*
- * IOStubs.t.hpp
+ * IOStubs.t.cpp
  *
  */
 #ifndef INCLUDE_IOSTUBS_T_HPP_FILE

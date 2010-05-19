@@ -11,7 +11,6 @@
 #include "Base/Threads/Mutex.hpp"
 #include "Persistency/MetaAlert.hpp"
 #include "Persistency/IO/Connection.hpp"
-#include "Persistency/IO/Exception.hpp"
 
 
 namespace Persistency

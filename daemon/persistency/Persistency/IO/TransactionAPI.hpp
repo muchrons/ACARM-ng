@@ -14,7 +14,6 @@
 #include "Base/Threads/Mutex.hpp"
 #include "Base/Threads/Lock.hpp"
 #include "Logger/Logger.hpp"
-#include "Persistency/IO/Exception.hpp"
 
 
 namespace Persistency

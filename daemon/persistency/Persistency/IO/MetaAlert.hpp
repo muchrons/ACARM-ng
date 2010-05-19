@@ -15,7 +15,6 @@
 #include "Persistency/MetaAlert.hpp"
 #include "Persistency/ExceptionNULLParameter.hpp"
 #include "Persistency/IO/Transaction.hpp"
-#include "Persistency/IO/Exception.hpp"
 
 namespace Persistency
 {
