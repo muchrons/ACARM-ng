@@ -91,13 +91,14 @@ void testObj::test<1>(void)
 {
   Persistency::HostPtrNN hostPtr( makeNewHost() );
   sourceHosts_.push_back(hostPtr);
+  cout << hostPtr->getName().get() << endl;
   Persistency::IO::Postgres::Host host(hostPtr, t_, dbh_);
 
   Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, analyzers_, &detected_, created_, severity_,
                                                          certainty_, description_, sourceHosts_, targetHosts_));
   Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
   alert.save();
-  //host.setName("new host name");
+  //host.setName("new.host.name.org");
 }
 
 } // namespace tut
