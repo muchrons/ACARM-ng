@@ -153,7 +153,7 @@ template<>
 void testObj::test<13>(void)
 {
   const Persistency::Timestamp tmp(42);
-  checkRef(tmp, "42::abstime::timestamp");
+  checkRef(tmp, "42::abstime::timestamp WITH TIME ZONE AT TIME ZONE 'UTC'");
 }
 
 // test appending timestamp as pointer
@@ -162,7 +162,7 @@ template<>
 void testObj::test<14>(void)
 {
   const Persistency::Timestamp tmp(42);
-  check(&tmp, "42::abstime::timestamp");
+  check(&tmp, "42::abstime::timestamp WITH TIME ZONE AT TIME ZONE 'UTC'");
 }
 
 // test appending timestamp as NULL pointer

@@ -48,6 +48,8 @@ void MetaAlert::markAsUnusedImpl(Transaction &t)
 {
   EntrySaver                    es(t, *dbHandler_);
   LOGMSG_DEBUG_S(log_)<<"mark Meta Alert with ID: "<<getID()<<" as unused";
+  // TODO: before m-a can be marked as unused, it has to be removed from set of
+  //       already triggered elements. otherwise foregin key constraint is not met.
   es.markMetaAlertAsUnused( getID() );
 }
 

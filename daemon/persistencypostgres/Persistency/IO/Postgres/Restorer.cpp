@@ -194,7 +194,7 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
     }
     catch(const ExceptionNoSuchEntry &)
     {
-      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " does'n exist";
+      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " doesn't exist";
     }
     catch(const ExceptionBadNumberOfNodeChildren &)
     {

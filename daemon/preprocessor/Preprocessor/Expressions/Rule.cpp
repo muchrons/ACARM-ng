@@ -236,7 +236,7 @@ bool Rule::check(const Persistency::Service &e, PathCit t) const
   if(*t=="name")
     return check( cast( e.getName().get() ), t+1 );
   if(*t=="port")
-    return check( cast( e.getPort() ), t+1 );
+    return check( cast( e.getPort().get() ), t+1 );
   if(*t=="protocol")
     return check( cast( e.getProtocol().get() ), t+1 );
   if(*t=="url")

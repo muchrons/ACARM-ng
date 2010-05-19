@@ -4,7 +4,12 @@
  */
 #include "Persistency/IO/Postgres/Host.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
+
 using namespace Persistency::IO::Postgres::detail;
+
+// TODO: always write logs about something in method doing it, instead of line before call
+//       to this method. logining at the begining of the method ensures that ALL calls will
+//       be logged. this makes code easier to write, read and maintain.
 
 namespace Persistency
 {

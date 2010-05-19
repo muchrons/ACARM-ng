@@ -8,15 +8,16 @@
 namespace Persistency
 {
 
-Service::Service(const Name      &name,
-                 const Port      &port,
-                 const Protocol  &protocol,
-                 ReferenceURLPtr  url):
+Service::Service(const Name       &name,
+                 const PortNumber &port,
+                 const Protocol   &protocol,
+                 ReferenceURLPtr   url):
   name_(name),
   port_(port),
   protocol_(protocol),
   url_(url)
 {
+  // TODO: port==0 is invalid and must not be allowed - add exception here.
 }
 
 const Service::Name &Service::getName(void) const
@@ -24,7 +25,7 @@ const Service::Name &Service::getName(void) const
   return name_;
 }
 
-Service::Port Service::getPort(void) const
+PortNumber Service::getPort(void) const
 {
   return port_;
 }

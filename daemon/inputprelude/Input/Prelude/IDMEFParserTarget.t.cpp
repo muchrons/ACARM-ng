@@ -200,7 +200,7 @@ void testObj::test<7>(void)
   // TODO: this variable should be const
   IDMEFParserTarget ips(getTarget());
   ensure("Target service is null",ips.getService()!=NULL);
-  ensure_equals("Service Port",ips.getService()->getPort(),service_port);
+  ensure_equals("Service Port", ips.getService()->getPort().get(), service_port);
 }
 
 } // namespace tut
