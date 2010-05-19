@@ -5,9 +5,8 @@
 #include <cassert>
 
 #include "Base/Threads/Lock.hpp"
-#include "Logger/Logger.hpp"
-#include "Persistency/IO/GlobalConnection.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
+#include "Persistency/IO/GlobalConnection.hpp"
 
 using namespace Base::Threads;
 

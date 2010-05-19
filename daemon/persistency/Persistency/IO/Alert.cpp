@@ -5,7 +5,6 @@
 #include <cassert>
 
 #include "Persistency/IO/Alert.hpp"
-#include "Persistency/IO/TryCatchInAPI.hpp"
 
 namespace Persistency
 {
@@ -26,10 +25,8 @@ Alert::~Alert(void)
 
 void Alert::save(void)
 {
-  TRYCATCH_BEGIN
-    t_.ensureIsActive();
-    saveImpl(t_);
-  TRYCATCH_END
+  t_.ensureIsActive();
+  saveImpl(t_);
 }
 
 Persistency::AlertPtrNN Alert::get(void)

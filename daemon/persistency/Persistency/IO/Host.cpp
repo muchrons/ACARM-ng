@@ -4,7 +4,6 @@
  */
 #include <cassert>
 
-#include "Logger/Logger.hpp"
 #include "Persistency/IO/Host.hpp"
 
 namespace Persistency
