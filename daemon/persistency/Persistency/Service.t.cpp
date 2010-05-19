@@ -40,7 +40,7 @@ template<>
 void testObj::test<1>(void)
 {
   ensure_equals("invalid name",    custom_.getName().get(),     string("mail daemon") );
-  ensure_equals("invalid port",    custom_.getPort(),           25                    );
+  ensure_equals("invalid port",    custom_.getPort().get(),     25u                   );
   ensure_equals("invalid service", custom_.getProtocol().get(), string("smtp")        );
   ensure("invalid url",            custom_.getReferenceURL()!=NULL);
 }
@@ -52,7 +52,7 @@ void testObj::test<2>(void)
 {
   const Service ti("mail daemon", 25, NULL, makeNewReferenceURL() );
   ensure_equals("invalid name",    ti.getName().get(),     string("mail daemon") );
-  ensure_equals("invalid port",    ti.getPort(),           25                    );
+  ensure_equals("invalid port",    ti.getPort().get(),     25u                   );
   ensure("invalid service",        ti.getProtocol().get()==NULL                  );
   ensure("invalid url",            ti.getReferenceURL()!=NULL);
 }
@@ -64,7 +64,7 @@ void testObj::test<3>(void)
 {
   const Service ti("mail daemon", 25, "smtp", ReferenceURLPtr() );
   ensure_equals("invalid name",    ti.getName().get(),     string("mail daemon") );
-  ensure_equals("invalid port",    ti.getPort(),           25                    );
+  ensure_equals("invalid port",    ti.getPort().get(),     25u                   );
   ensure_equals("invalid service", ti.getProtocol().get(), string("smtp")        );
   ensure("invalid url",            ti.getReferenceURL()==NULL);
 }

@@ -15,6 +15,7 @@
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/Exception.hpp"
+#include "Persistency/IO/Exception.hpp"
 
 namespace Persistency
 {

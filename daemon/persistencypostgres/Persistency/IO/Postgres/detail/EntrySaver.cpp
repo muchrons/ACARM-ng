@@ -278,7 +278,7 @@ DataBaseID EntrySaver::saveServiceData(const Service &s)
   ss << "INSERT INTO services(name, port, protocol) VALUES (";
   Appender::append(ss, s.getName().get() );
   ss << ",";
-  Appender::append(ss, s.getPort() );
+  Appender::append(ss, s.getPort().get() );
   ss <<",";
   Appender::append(ss, s.getProtocol().get() );
   ss << ");";

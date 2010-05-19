@@ -56,7 +56,6 @@ private:
 
   typedef typename ObjectIDMapping::const_iterator ObjectIDMappingIt;
 
-
 public:
 
   /** \brief gets ID for a given object.
@@ -72,7 +71,6 @@ public:
     return it->second.id_;
   }
 
-  //       element - it's class's interface.
   /** \brief check if given object is in cache
    *  \param ptr pointer to object to check
    *  \return true if given object is in cache

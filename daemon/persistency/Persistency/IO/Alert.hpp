@@ -12,6 +12,7 @@
 
 #include "Persistency/Alert.hpp"
 #include "Persistency/IO/Transaction.hpp"
+#include "Persistency/IO/Exception.hpp"
 
 namespace Persistency
 {

@@ -2,21 +2,22 @@
  * Exception.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_EXCEPTION_HPP_FILE
-#define INCLUDE_PERSISTENCY_IO_POSTGRES_EXCEPTION_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_IO_EXCEPTION_HPP_FILE
+#define INCLUDE_PERSISTENCY_IO_EXCEPTION_HPP_FILE
 
+/* public header */
+
+#include "Persistency/Exception.hpp"
 #include "Persistency/IO/Exception.hpp"
 
 namespace Persistency
 {
 namespace IO
 {
-namespace Postgres
-{
 
-/** \brief base for all persistency::postgres-related exceptions.
+/** \brief base for all IO-related exceptions.
  */
-class Exception: public Persistency::IO::Exception
+class Exception: public Persistency::Exception
 {
 public:
   /** \brief create execption with given message.
@@ -25,12 +26,11 @@ public:
    */
   template<typename T>
   Exception(const Location &where, const T &msg):
-    Persistency::IO::Exception(where, cc("PostgreSQL peristency exception: ", msg) )
+    Persistency::Exception(where, msg)
   {
   }
 }; // class Exception
 
-} // namespace Postgres
 } // namespace IO
 } // namespace Persistency
 

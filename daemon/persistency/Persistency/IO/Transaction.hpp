@@ -12,9 +12,9 @@
 #include <boost/noncopyable.hpp>
 
 #include "Logger/Logger.hpp"
+#include "Persistency/ExceptionNULLParameter.hpp"
 #include "Persistency/IO/ExceptionTransactionNotActive.hpp"
 #include "Persistency/IO/TransactionAPI.hpp"
-#include "Persistency/ExceptionNULLParameter.hpp"
 
 namespace Persistency
 {

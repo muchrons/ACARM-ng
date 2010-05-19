@@ -290,7 +290,7 @@ void testObj::test<5>(void)
   trim(name);
   ensure_equals("invalid name",ti.getName().get()  ,name );
 
-  ensure_equals("invalid port",ti.getPort(),ReaderHelper<int>::readAsNotNull(r[0]["port"]));
+  ensure_equals("invalid port", ti.getPort().get() ,ReaderHelper<uint16_t>::readAsNotNull(r[0]["port"]) );
 
   r[0]["protocol"].to(protocol);
   trim(protocol);
