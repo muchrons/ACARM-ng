@@ -53,7 +53,8 @@ public:
   }
 
   /** \brief less-than comparison.
-   *
+   *  \param other element to compare with
+   *  \return true if this object's port number is less than other's, false otherwise.
    */
   bool operator<(const PortNumber &other) const
   {

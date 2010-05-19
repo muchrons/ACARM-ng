@@ -122,4 +122,13 @@ void testObj::test<8>(void)
   ensure("greater than doesn't fail for false", !(pn1>pn2) );
 }
 
+// test comparison with implicit convertion - this test must compile
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const PortNumber pn(10);
+  ensure("comparison iwht instant value fails", pn<42 );
+}
+
 } // namespace tut
