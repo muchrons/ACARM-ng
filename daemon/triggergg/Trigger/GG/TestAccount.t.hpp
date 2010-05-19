@@ -67,7 +67,7 @@ std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, con
     FD_ZERO(&desc);
     FD_SET(conn.get()->fd, &desc);
 
-    timeval timeout={3, 0}; // timeout is 3[s]
+    timeval timeout={9, 0}; // timeout is 9[s]
     switch( select(conn.get()->fd+1, &desc, NULL, NULL, &timeout) )
     {
       case 0:   // timeout
