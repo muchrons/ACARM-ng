@@ -48,6 +48,7 @@ public:
    */
   double get(void) const
   {
+    assert( leafsCount_>0 );
     // arithmetic average of all severities modified by delta.
     return (0.0+leafsSeveritySum_)/leafsCount_ + delta_;
   }
