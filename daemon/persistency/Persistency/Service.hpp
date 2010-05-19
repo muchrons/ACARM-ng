@@ -16,6 +16,7 @@
 #include "Commons/LimitedString.hpp"
 #include "Commons/LimitedNULLString.hpp"
 #include "Persistency/ReferenceURL.hpp"
+#include "Persistency/PortNumber.hpp"
 
 namespace Persistency
 {
@@ -29,9 +30,6 @@ public:
   /** \brief name of the service.
    */
   typedef Commons::LimitedString<32>     Name;
-  /** \brief port number.
-   */
-  typedef uint16_t                       Port;
   /** \brief protocol used by sevice.
    */
   typedef Commons::LimitedNULLString<32> Protocol;
@@ -42,10 +40,10 @@ public:
    *  \param protocol communication protocol.
    *  \param url      reference url of thie service.
    */
-  Service(const Name      &name,
-          const Port      &port,
-          const Protocol  &protocol,
-          ReferenceURLPtr  url);
+  Service(const Name       &name,
+          const PortNumber &port,
+          const Protocol   &protocol,
+          ReferenceURLPtr   url);
 
   /** \brief gets service name.
    *  \return name of the service.
@@ -54,7 +52,7 @@ public:
   /** \brief get port number.
    *  \return port number service is running on.
    */
-  Port getPort(void) const;
+  PortNumber getPort(void) const;
   /** \brief protocol used for communication.
    *  \return prorocol name.
    */
@@ -71,7 +69,7 @@ public:
 
 private:
   Name            name_;
-  Port            port_;
+  PortNumber      port_;
   Protocol        protocol_;
   ReferenceURLPtr url_;
 }; // class Service
