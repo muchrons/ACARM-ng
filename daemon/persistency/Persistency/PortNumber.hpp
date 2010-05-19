@@ -17,7 +17,9 @@ namespace Persistency
 
 /** \brief representation of port number
  */
-class PortNumber: public boost::equality_comparable<PortNumber>
+class PortNumber: public boost::less_than_comparable<PortNumber>,
+                  public boost::equivalent<PortNumber>,
+                  public boost::equality_comparable<PortNumber>
 {
 public:
   struct ExceptionInvalidPort: public Exception
@@ -38,7 +40,7 @@ public:
   PortNumber(const uint16_t port):
     port_(port)
   {
-    if(port_==0)
+    if(port_==0u)
       throw ExceptionInvalidPort(SYSTEM_SAVE_LOCATION, port_);
   }
 
@@ -48,6 +50,14 @@ public:
   uint16_t get(void) const
   {
     return port_;
+  }
+
+  /** \brief less-than comparison.
+   *
+   */
+  bool operator<(const PortNumber &other) const
+  {
+    return get() < other.get();
   }
 
 private:

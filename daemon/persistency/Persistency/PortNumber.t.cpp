@@ -55,7 +55,7 @@ namespace
 {
 void makeNumber(const PortNumber &pn)
 {
-  ensure_equals("invalid port", pn.get(), 123);
+  ensure_equals("invalid port", pn.get(), 123u);
 } // makeNumber()
 } // unnamed namespace
 
@@ -65,6 +65,61 @@ template<>
 void testObj::test<3>(void)
 {
   makeNumber(123);
+}
+
+// test copyability
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  const PortNumber pn1(1);
+  PortNumber       pn2(2);
+  pn2=pn1;
+  ensure_equals("invalid port number", pn2.get(), 1u);
+}
+
+// test equality
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const PortNumber pn1(1);
+  const PortNumber pn2(2);
+  ensure("self-comaprison with == fails", pn1==pn1);
+  ensure("!(==) fails", !(pn1==pn2) );
+}
+
+// test inequality
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const PortNumber pn1(1);
+  const PortNumber pn2(2);
+  ensure("self-comaprison with != does not fail", !(pn1!=pn1) );
+  ensure("!= fails", pn1!=pn2);
+}
+
+// test less-than
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const PortNumber pn1(1);
+  const PortNumber pn2(2);
+  ensure("less than fails", pn1<pn2);
+  ensure("less than doesn't fail for false", !(pn2<pn1) );
+}
+
+// test greater-than
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const PortNumber pn1(1);
+  const PortNumber pn2(2);
+  ensure("greater than fails", !(pn1>pn2) );
+  ensure("greater than doesn't fail for false", !(pn1>pn2) );
 }
 
 } // namespace tut
