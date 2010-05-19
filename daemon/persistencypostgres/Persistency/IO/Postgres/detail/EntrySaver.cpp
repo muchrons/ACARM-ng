@@ -417,7 +417,8 @@ bool EntrySaver::isHostNameNull(DataBaseID hostID)
 }
 void EntrySaver::setHostName(DataBaseID hostID, const Persistency::Host::Name &name)
 {
-  assert( isHostNameNull(hostID) );
+  if(isHostNameNull(hostID) == false)
+    throw ExceptionHostNameAlreadySaved(SYSTEM_SAVE_LOCATION);
   stringstream ss;
   ss << "UPDATE hosts SET name = ";
   Appender::append(ss, name.get());

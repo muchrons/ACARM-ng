@@ -20,18 +20,16 @@ namespace Postgres
 {
 /** \brief helper class to exec SQL query and write logs.
  */
-class SQLHelper
+class SQLHelper: private boost::noncopyable
 {
 public:
-  // TODO: 'log' should be const-ref.
-  // TODO: class does have references as a memebers and so must be non-copyable
   /** \brief create helper.
    *  \param file file name.
    *  \param line line number.
    *  \param sql  SQL query.
    *  \param log  logger object.
    */
-  SQLHelper(const char *file, int line, const std::string &sql, Logger::Node &log):
+  SQLHelper(const char *file, int line, const std::string &sql, const Logger::Node &log):
     file_(file),
     line_(line),
     sql_(sql),
