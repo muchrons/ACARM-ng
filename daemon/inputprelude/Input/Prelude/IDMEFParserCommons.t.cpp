@@ -174,7 +174,7 @@ void testObj::test<5>(void)
 {
   ServicePtr srv=IDMEFParserCommons::getServicefromIdmefService(service);
   ensure("Source service is null",srv!=NULL);
-  ensure_equals("Service Port",srv->getPort(),service_port);
+  ensure_equals("Service Port", srv->getPort().get(), service_port);
 }
 
 //Check process name
