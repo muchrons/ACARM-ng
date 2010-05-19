@@ -5,6 +5,7 @@
 #include <sstream>
 
 #include "Persistency/IO/Postgres/Connection.hpp"
+#include "Persistency/IO/Postgres/TryCatchInAPI.hpp"
 
 using namespace std;
 
@@ -31,14 +32,16 @@ inline pqxx::result execSQL(Transaction &t, const char *sql)
 
 size_t Connection::removeEntriesOlderThanImpl(size_t days, Transaction &t)
 {
-  createTemporaryTables(days, t);
-  removeReportedServices(t);
-  removeReportedProcs(t);
-  removeReportedHosts(t);
-  removeAnalyzers(t);
-  const size_t removed=removeAlerts(t);
-  removeExtraMetaAlertsEntries(t);
-  return removed;
+  TRYCATCH_BEGIN
+    createTemporaryTables(days, t);
+    removeReportedServices(t);
+    removeReportedProcs(t);
+    removeReportedHosts(t);
+    removeAnalyzers(t);
+    const size_t removed=removeAlerts(t);
+    removeExtraMetaAlertsEntries(t);
+    return removed;
+  TRYCATCH_END
 }
 
 

@@ -3,6 +3,7 @@
  *
  */
 #include "Persistency/IO/Postgres/Alert.hpp"
+#include "Persistency/IO/Postgres/TryCatchInAPI.hpp"
 
 using namespace Persistency::IO::Postgres::detail;
 
@@ -28,34 +29,35 @@ Alert::Alert(Persistency::AlertPtrNN  alert,
 
 void Alert::saveImpl(Transaction &t)
 {
-  EntrySaver                 es(t,*dbHandler_);
-  //get Alert
-  const Persistency::Alert  &a=*get();
-  //save Alert
-  DataBaseID                 alertID=es.saveAlert(a);
-  //add Alert to cache
-  dbHandler_->getIDCache()->add(get() , alertID);
-  //save source hosts
-  Persistency::Alert::ReportedHosts SourceHosts( a.getReportedSourceHosts() );
-  LOGMSG_DEBUG_S(log_)<<"save source hosts for alert with ID: "<<alertID;
-  saveHosts(es, alertID, HostType::SRC, SourceHosts);
-  //save target hosts
-  Persistency::Alert::ReportedHosts TargetHosts( a.getReportedTargetHosts() );
-  LOGMSG_DEBUG_S(log_)<<"save target hosts for alert with ID: "<<alertID;
-  saveHosts(es, alertID, HostType::DST, TargetHosts);
-  //get Analyzers from Alert
-  LOGMSG_DEBUG_S(log_)<<"get source analyzers for alert with ID: "<<alertID;
-  Persistency::Alert::SourceAnalyzers analyzers( a.getSourceAnalyzers() );
-  //save Analyzers
-  for(Persistency::Alert::SourceAnalyzers::iterator it = analyzers.begin(); it != analyzers.end(); ++it)
-  {
-    //save Analyzer
-    const Persistency::Analyzer &analyzer = *it->get();
-    const DataBaseID             anlzID = es.saveAnalyzer(analyzer);
-    LOGMSG_DEBUG_S(log_)<<"save analyzer with ID: "<<anlzID<<" (alert ID: "<<alertID<<")";
-    es.saveAlertToAnalyzers(alertID, anlzID);
-  }
-
+  TRYCATCH_BEGIN
+    EntrySaver                 es(t,*dbHandler_);
+    //get Alert
+    const Persistency::Alert  &a=*get();
+    //save Alert
+    DataBaseID                 alertID=es.saveAlert(a);
+    //add Alert to cache
+    dbHandler_->getIDCache()->add(get() , alertID);
+    //save source hosts
+    Persistency::Alert::ReportedHosts SourceHosts( a.getReportedSourceHosts() );
+    LOGMSG_DEBUG_S(log_)<<"save source hosts for alert with ID: "<<alertID;
+    saveHosts(es, alertID, HostType::SRC, SourceHosts);
+    //save target hosts
+    Persistency::Alert::ReportedHosts TargetHosts( a.getReportedTargetHosts() );
+    LOGMSG_DEBUG_S(log_)<<"save target hosts for alert with ID: "<<alertID;
+    saveHosts(es, alertID, HostType::DST, TargetHosts);
+    //get Analyzers from Alert
+    LOGMSG_DEBUG_S(log_)<<"get source analyzers for alert with ID: "<<alertID;
+    Persistency::Alert::SourceAnalyzers analyzers( a.getSourceAnalyzers() );
+    //save Analyzers
+    for(Persistency::Alert::SourceAnalyzers::iterator it = analyzers.begin(); it != analyzers.end(); ++it)
+    {
+      //save Analyzer
+      const Persistency::Analyzer &analyzer = *it->get();
+      const DataBaseID             anlzID = es.saveAnalyzer(analyzer);
+      LOGMSG_DEBUG_S(log_)<<"save analyzer with ID: "<<anlzID<<" (alert ID: "<<alertID<<")";
+      es.saveAlertToAnalyzers(alertID, anlzID);
+    }
+  TRYCATCH_END
 }
 
 void Alert::saveHosts(EntrySaver                        &es,
