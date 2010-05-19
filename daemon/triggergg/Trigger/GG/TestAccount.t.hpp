@@ -8,6 +8,7 @@
 #include <string>
 #include <sys/select.h>
 #include <libgadu.h>
+#include <cassert>
 
 #include "Trigger/GG/AccountConfig.hpp"
 #include "Trigger/GG/Connection.hpp"
@@ -60,6 +61,7 @@ private:
 std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, const Trigger::GG::UserID sender)
 {
   Trigger::GG::Connection conn(account);
+  timeval                 timeout={9, 0};   // timeout is 9[s]
   for(;;)
   {
     // wait for something
@@ -67,7 +69,9 @@ std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, con
     FD_ZERO(&desc);
     FD_SET(conn.get()->fd, &desc);
 
-    timeval timeout={9, 0}; // timeout is 9[s]
+    // note that we assume running on linux here - other implementations
+    // can do random changes to timeout
+    const timeval previousTimeout=timeout;
     switch( select(conn.get()->fd+1, &desc, NULL, NULL, &timeout) )
     {
       case 0:   // timeout
@@ -81,6 +85,10 @@ std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, con
           throw std::runtime_error("descriptor is not set - something's wrong");
         break;
     } // switch( select() )
+    assert( previousTimeout.tv_sec>=timeout.tv_sec &&
+            "non-linux implementation of select() - move 'timeout' "
+            "variable declaration inside the loop (note: this may cause "
+            "terribly long timeouts!)" );
 
     // ok - we have some data to be read
 
