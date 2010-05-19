@@ -17,7 +17,6 @@ Service::Service(const Name       &name,
   protocol_(protocol),
   url_(url)
 {
-  // TODO: port==0 is invalid and must not be allowed - add exception here.
 }
 
 const Service::Name &Service::getName(void) const
