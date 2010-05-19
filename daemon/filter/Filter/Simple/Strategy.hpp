@@ -106,6 +106,8 @@ private:
         if( tryCorrelate(ntq, bf, thisEntry, it, iteratorsInvalidated) )
           return;
       }
+      // TODO: persistency-related exceptions should be forwarded - they prohibit
+      //       later commision on transaction.
       catch(const Commons::Exception &ex)
       {
         LOGMSG_INFO_S(Base::log_) << "exception (" << ex.getTypeName()
