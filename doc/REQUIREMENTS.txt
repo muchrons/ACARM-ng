@@ -1,0 +1,13 @@
+below is list of external libraries and applications required to compile/run
+ACARM-ng. some of them are optional (i.e. they provide extra functionality,
+not required by the core system). compilation (build) requirements are marked
+with [b] prefix, runtime requirements are marked with [r], optional elements are
+marked with [o].
+
+[br-] boost libraries >= 1.35
+[br-] libxml++ >= 2.6
+[-ro] postgresql-server       (used by: persistencypostgres)
+[bro] libpqxx                 (used by: persistencypostgres)
+[bro] libcurl                 (used by: filteripblacklist)
+[bro] libprelude >= 1.0.0     (used by: inputprelude)
+[bro] libgadu >= 1.8          (used by: triggergg)
