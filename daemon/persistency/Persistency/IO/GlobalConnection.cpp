@@ -4,8 +4,9 @@
  */
 #include <cassert>
 
-#include "Persistency/IO/GlobalConnection.hpp"
 #include "Base/Threads/Lock.hpp"
+#include "Logger/Logger.hpp"
+#include "Persistency/IO/GlobalConnection.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 
 using namespace Base::Threads;

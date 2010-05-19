@@ -5,6 +5,7 @@
 #include <cassert>
 
 #include "Persistency/IO/Connection.hpp"
+#include "Persistency/IO/TryCatchInAPI.hpp"
 
 namespace Persistency
 {
@@ -17,42 +18,54 @@ Connection::~Connection(void)
 
 TransactionAPIAutoPtr Connection::createNewTransaction(const std::string &name)
 {
-  TransactionAPIAutoPtr ptr=createNewTransactionImpl(mutex_, name);
-  assert( ptr.get()!=NULL );
-  return ptr;
+  TRYCATCH_BEGIN
+    TransactionAPIAutoPtr ptr=createNewTransactionImpl(mutex_, name);
+    assert( ptr.get()!=NULL );
+    return ptr;
+  TRYCATCH_END
 }
 
 AlertAutoPtr Connection::alert(AlertPtrNN alert, Transaction &t)
 {
-  AlertAutoPtr ptr=alertImpl(alert, t);
-  assert( ptr.get()!=NULL );
-  return ptr;
+  TRYCATCH_BEGIN
+    AlertAutoPtr ptr=alertImpl(alert, t);
+    assert( ptr.get()!=NULL );
+    return ptr;
+  TRYCATCH_END
 }
 
 HostAutoPtr Connection::host(HostPtrNN host, Transaction &t)
 {
-  HostAutoPtr ptr=hostImpl(host, t);
-  assert( ptr.get()!=NULL );
-  return ptr;
+  TRYCATCH_BEGIN
+    HostAutoPtr ptr=hostImpl(host, t);
+    assert( ptr.get()!=NULL );
+    return ptr;
+  TRYCATCH_END
 }
 
 MetaAlertAutoPtr Connection::metaAlert(MetaAlertPtrNN ma, Transaction &t)
 {
-  MetaAlertAutoPtr ptr=metaAlertImpl(ma, t);
-  assert( ptr.get()!=NULL );
-  return ptr;
+  TRYCATCH_BEGIN
+    MetaAlertAutoPtr ptr=metaAlertImpl(ma, t);
+    assert( ptr.get()!=NULL );
+    return ptr;
+  TRYCATCH_END
 }
 
 RestorerAutoPtr Connection::restorer(Transaction &t)
 {
-  RestorerAutoPtr ptr=restorerImpl(t);
-  assert( ptr.get()!=NULL );
-  return ptr;
+  TRYCATCH_BEGIN
+    RestorerAutoPtr ptr=restorerImpl(t);
+    assert( ptr.get()!=NULL );
+    return ptr;
+  TRYCATCH_END
 }
 
 size_t Connection::removeEntriesOlderThan(size_t days, Transaction &t)
 {
-  return removeEntriesOlderThanImpl(days, t);
+  TRYCATCH_BEGIN
+    return removeEntriesOlderThanImpl(days, t);
+  TRYCATCH_END
 }
 
 } // namespace IO

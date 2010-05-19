@@ -4,6 +4,7 @@
  */
 #include <cassert>
 
+#include "Logger/Logger.hpp"
 #include "Persistency/IO/MetaAlert.hpp"
 
 namespace Persistency

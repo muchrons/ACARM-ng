@@ -2,6 +2,7 @@
  * Restorer.cpp
  *
  */
+#include "Logger/Logger.hpp"
 #include "Persistency/IO/Restorer.hpp"
 
 namespace Persistency

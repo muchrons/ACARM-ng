@@ -1,5 +1,5 @@
 /*
- * TestTransactionAPI.t.cpp
+ * TestTransactionAPI.t.hpp
  *
  */
 #ifndef INCLUDE_TESTTRANSACTIONAPI_T_HPP_FILE

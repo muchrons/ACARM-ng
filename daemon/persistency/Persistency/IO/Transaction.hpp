@@ -15,6 +15,7 @@
 #include "Persistency/IO/ExceptionTransactionNotActive.hpp"
 #include "Persistency/IO/TransactionAPI.hpp"
 #include "Persistency/ExceptionNULLParameter.hpp"
+#include "Persistency/IO/Exception.hpp"
 
 namespace Persistency
 {
