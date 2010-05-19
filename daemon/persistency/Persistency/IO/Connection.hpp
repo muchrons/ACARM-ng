@@ -18,6 +18,7 @@
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/TransactionAPI.hpp"
 #include "Persistency/IO/Restorer.hpp"
+#include "Persistency/IO/Exception.hpp"
 
 namespace Persistency
 {

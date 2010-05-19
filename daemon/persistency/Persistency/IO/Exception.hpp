@@ -8,6 +8,7 @@
 /* public header */
 
 #include "Persistency/Exception.hpp"
+#include "Persistency/IO/Exception.hpp"
 
 namespace Persistency
 {
