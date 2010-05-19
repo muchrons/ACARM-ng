@@ -4,7 +4,7 @@ not required by the core system). compilation (build) requirements are marked
 with [b] prefix, runtime requirements are marked with [r], optional elements are
 marked with [o].
 
-[br-] boost libraries >= 1.35
+[br-] boost libraries >= 1.40
 [br-] libxml++ >= 2.6
 [-ro] postgresql-server       (used by: persistencypostgres)
 [bro] libpqxx                 (used by: persistencypostgres)
