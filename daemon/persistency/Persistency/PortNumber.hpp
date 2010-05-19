@@ -22,6 +22,8 @@ class PortNumber: public boost::less_than_comparable<PortNumber>,
                   public boost::equality_comparable<PortNumber>
 {
 public:
+  /** \brief exception thrown when invalid port number is provided.
+   */
   struct ExceptionInvalidPort: public Exception
   {
     /** \brief create execption with given message.
