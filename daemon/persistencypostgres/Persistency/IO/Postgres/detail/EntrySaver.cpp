@@ -388,6 +388,13 @@ void EntrySaver::markMetaAlertAsTriggered(DataBaseID malertID, const std::string
   SQL( ss.str(), log_ ).exec(t_);
 }
 
+void EntrySaver::removeMetaAlertFromTriggered(DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "DELETE FROM  meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
+  SQL( ss.str(), log_ ).exec(t_);
+}
+
 void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
 {
   stringstream ss;

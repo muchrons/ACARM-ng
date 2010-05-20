@@ -22,10 +22,6 @@
 #include "Persistency/IO/Postgres/ExceptionNoEntries.hpp"
 #include "Persistency/IO/Postgres/ExceptionHostNameAlreadySaved.hpp"
 
-// TODO: add loging here:
-//         - debug logs while saving each element
-//         - info logs while in main algorithm parts
-//         - detailed errors while error conditions are detected.
 
 namespace Persistency
 {
@@ -119,6 +115,11 @@ public:
    *  \param name
    */
   void markMetaAlertAsTriggered(DataBaseID malertID, const std::string &name);
+
+  /** \brief remove Meta Alert from triggered
+   *  \param malertID ID of Meta Alert
+   */
+  void removeMetaAlertFromTriggered(DataBaseID malertID);
 
   /** \brief update Meta Alert severity delta
    *  \param malertID ID   of Meta Alert to update
