@@ -9,4 +9,5 @@ filtermanytoone
 filtermanytomany
 filterdnsresolver
 filteripblacklist
+triggermail
 triggergg
