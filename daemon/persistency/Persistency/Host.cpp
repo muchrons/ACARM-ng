@@ -151,11 +151,8 @@ void Host::setName(const Name &name)
   }
 
   Base::Threads::WriteLock lock(mutex_);
-  // NOTE: checking for not-setting multiple times is crutial here, since
-  //       getName() returns pointer to local variable and therefor it must
-  //       be asured it never changes.
   if( name_.get()!=NULL )
-    throw Exception(SYSTEM_SAVE_LOCATION, "host's name already resolved");
+    throw ExceptionHostNameAlreadySet(SYSTEM_SAVE_LOCATION, name_.get() );
 
   // add new host entry
   name_=name;
