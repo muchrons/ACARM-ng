@@ -8,6 +8,7 @@
 #include <cassert>
 
 #include "Persistency/IO/Postgres/StorageDataCache.hpp"
+#include "Persistency/IO/Postgres/TestCache.t.hpp"
 
 using namespace std;
 using namespace Persistency::IO::Postgres;
@@ -25,10 +26,8 @@ struct SWO
   }
 }; // struct SWO
 
-struct TestClass
+struct TestClass: public TestCache< StorageDataCache<double>, boost::shared_ptr<double> >
 {
-  typedef StorageDataCache<double> TestStorage;
-
   TestClass(void)
   {
     data_.push_back( makeDouble(4.2) );
@@ -44,32 +43,6 @@ struct TestClass
   {
     return boost::shared_ptr<double>( new double(v) );
   }
-
-  void fill(void)
-  {
-    int id=420;
-    for(size_t i=0; i<data_.size(); ++i)
-    {
-      ts_.add(data_[i], id);
-      ++id;
-    }
-  }
-
-  bool hasElement(boost::shared_ptr<double> e)
-  {
-    try
-    {
-      ts_.get(e);
-      return true;
-    }
-    catch(const ExceptionNoSuchEntry&)
-    {
-      return false;
-    }
-  }
-
-  std::vector< boost::shared_ptr<double> > data_;
-  TestStorage                              ts_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -87,7 +60,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  TestStorage ts;
+  Cache ts;
 }
 
 // test getting from empty set
@@ -97,7 +70,7 @@ void testObj::test<2>(void)
 {
   try
   {
-    ts_.get( data_[0] );
+    tc_.get( data_[0] );
     fail("get() didn't throw for nonexisitng pointer");
   }
   catch(const ExceptionNoSuchEntry&)
@@ -111,8 +84,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  fill();
-  ensure_equals("invalid ID", ts_.get( data_[1] ), 420+1);
+  fill(420);
+  ensure_equals("invalid ID", tc_.get( data_[1] ), 420+1);
 }
 
 // test adding an entry
@@ -121,9 +94,9 @@ template<>
 void testObj::test<4>(void)
 {
   ensure("pre-failed", !hasElement(data_[2]) );
-  ts_.add(data_[2], 123);
+  tc_.add(data_[2], 123);
   ensure("element not added", hasElement(data_[2]) );
-  ensure_equals("invalid ID", ts_.get(data_[2]), 123);
+  ensure_equals("invalid ID", tc_.get(data_[2]), 123);
 }
 
 // test prunning empty tree
@@ -131,7 +104,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ts_.prune();
+  tc_.prune();
 }
 
 // test prunning when no NULLs are present
@@ -139,11 +112,11 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  fill();
-  ts_.prune();
+  fill(420);
+  tc_.prune();
   // check if all elements are present and valid
   for(size_t i=0; i<data_.size(); ++i)
-    ensure_equals("invalid element", ts_.get(data_[i]), 420+static_cast<int>(i) );
+    ensure_equals("invalid element", tc_.get(data_[i]), 420+static_cast<int>(i) );
 }
 
 // test prunning when NULL is present
@@ -151,13 +124,13 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  fill();
+  fill(420);
   data_.erase( data_.begin() );
   assert( data_.size()==2 );
-  ts_.prune();
+  tc_.prune();
   // check if all elements are present and valid
   for(size_t i=0; i<data_.size(); ++i)
-    ensure_equals("invalid element", ts_.get(data_[i]), 420+static_cast<int>(i)+1);
+    ensure_equals("invalid element", tc_.get(data_[i]), 420+static_cast<int>(i)+1);
 }
 
 // test prunning when all elements are NULLs
@@ -165,13 +138,13 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  fill();
+  fill(420);
   // remove all elements
   while( data_.size()>0 )
     data_.erase( data_.begin() );
   // test
-  ts_.prune();
-  ensure_equals("invalid output size", ts_.size(), 0u);
+  tc_.prune();
+  ensure_equals("invalid output size", tc_.size(), 0u);
 }
 
 // test size of collection
@@ -179,8 +152,8 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  fill();
-  ensure_equals("invalid size", ts_.size(), 3u);
+  fill(420);
+  ensure_equals("invalid size", tc_.size(), 3u);
 }
 
 // test adding dupliacete entry
@@ -188,13 +161,13 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  fill();
+  fill(420);
   try
   {
-    ts_.add(data_[0], 123);
+    tc_.add(data_[0], 123);
     fail("add() didn't throw for duplicated entry");
   }
-  catch(const TestStorage::ExceptionEntryAlreadyExist&)
+  catch(const Cache::ExceptionEntryAlreadyExist&)
   {
     // this is expected
   }
@@ -205,8 +178,8 @@ template<>
 template<>
 void testObj::test<11>(void)
 {
-  fill();
-  const TestStorage &cRef=ts_;
+  fill(420);
+  const Cache &cRef=tc_;
   ensure_equals("invalid data", cRef.get(data_[0]), 420);
 }
 
@@ -215,7 +188,7 @@ template<>
 template<>
 void testObj::test<12>(void)
 {
-  const TestStorage &cRef=ts_;
+  const Cache &cRef=tc_;
   ensure("invalid data", cRef.has(data_[0]) == false);
 }
 } // namespace tut

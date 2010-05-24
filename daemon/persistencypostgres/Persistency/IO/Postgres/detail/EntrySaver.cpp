@@ -17,6 +17,7 @@ using namespace pqxx;
 
 // this is helper macro for calling f-cjtion that saves line number and calls given sql statement (with log)
 #define SQL(sql,log) SQLHelper(__FILE__, __LINE__, sql, log)
+
 namespace Persistency
 {
 namespace IO
@@ -388,6 +389,13 @@ void EntrySaver::markMetaAlertAsTriggered(DataBaseID malertID, const std::string
   SQL( ss.str(), log_ ).exec(t_);
 }
 
+void EntrySaver::removeMetaAlertFromTriggered(DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "DELETE FROM  meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
+  SQL( ss.str(), log_ ).exec(t_);
+}
+
 void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
 {
   stringstream ss;
@@ -413,11 +421,14 @@ bool EntrySaver::isHostNameNull(DataBaseID hostID)
   stringstream ss;
   ss << "SELECT name FROM hosts WHERE id = " << hostID << ";";
   const result r=SQL( ss.str(), log_ ).exec(t_);
+  // TODO: segv when no elements in returned set
   return r[0]["name"].is_null();
 }
+
 void EntrySaver::setHostName(DataBaseID hostID, const Persistency::Host::Name &name)
 {
-  assert( isHostNameNull(hostID) );
+  if(isHostNameNull(hostID) == false)
+    throw ExceptionHostNameAlreadySaved(SYSTEM_SAVE_LOCATION);
   stringstream ss;
   ss << "UPDATE hosts SET name = ";
   Appender::append(ss, name.get());

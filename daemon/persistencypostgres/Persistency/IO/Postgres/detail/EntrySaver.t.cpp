@@ -879,4 +879,45 @@ void testObj::test<25>(void)
   t_.commit();
 }
 
+// trying save MetaAlert as triggered and then remove saved Meta Alert from triggered
+template<>
+template<>
+void testObj::test<26>(void)
+{
+  // align variable names in columns
+  const string TriggerName("some trigger name");    // TODO: use lowercase for variables' names
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
+  // TODO: describe following parts of code
+  // TODO: todo keep descriptions in ensures() different to make locating of them
+  //       easier in case of error message.
+  es_.markMetaAlertAsUsed(malertID);
+  stringstream ss;
+  {
+    ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    // TODO: make 'invalid size' comment more descriptive; ex.: 'invalid number of trigered meta-alerts in data base'
+    ensure_equals("invalid size", r.size(), 1u);
+  }
+  es_.markMetaAlertAsTriggered(malertID, TriggerName);
+  ss.str("");
+  {
+    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
+    // TODO: this variable should be const
+    result r = t_.getAPI<TransactionAPI>().exec(ss);
+    // TODO: make 'invalid size' comment more descriptive
+    ensure_equals("invalid size", r.size(), 1u);
+    ensure_equals("invalid trigger name", ReaderHelper<string>::readAsNotNull(r[0]["trigger_name"]), TriggerName);
+  }
+  es_.removeMetaAlertFromTriggered(malertID);
+  ss.str("");
+  {
+    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
+    // TODO: this variable should be const
+    result r = t_.getAPI<TransactionAPI>().exec(ss);
+    // TODO: make 'invalid size' comment more descriptive
+    ensure_equals("invalid size", r.size(), 0u);
+  }
+}
 } // namespace tut

@@ -2,8 +2,6 @@
  * Host.cpp
  *
  */
-#include <cassert>
-
 #include "Persistency/IO/Host.hpp"
 
 namespace Persistency
@@ -26,10 +24,12 @@ Host::~Host(void)
 void Host::setName(const Persistency::Host::Name &name)
 {
   t_.ensureIsActive();
-  setNameImpl(t_, name);
-
-  assert(host_.get()!=NULL);
+  // set name in memeory and then save it to persistent storage. this allows
+  // to throw exception when trying to set already set name in the saving
+  // implementaiton not the data base backend and so is more generic and
+  // consistent with reast of the code.
   host_->setName(name);
+  setNameImpl(t_, name);
 }
 
 Persistency::HostPtrNN Host::get(void)
