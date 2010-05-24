@@ -13,7 +13,6 @@
 
 #include "Logger/Node.hpp"
 
-// TODO: test
 
 namespace Persistency
 {

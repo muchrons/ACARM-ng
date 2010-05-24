@@ -16,7 +16,7 @@ using namespace std;
 using namespace pqxx;
 
 // this is helper macro for calling f-cjtion that saves line number and calls given sql statement (with log)
-#define SQL(sql,log) SQLHelper(__FILE__, __LINE__, sql, log)
+#define SQL(sql,log) SQLHelper((__FILE__), (__LINE__), (sql), (log))
 namespace Persistency
 {
 namespace IO

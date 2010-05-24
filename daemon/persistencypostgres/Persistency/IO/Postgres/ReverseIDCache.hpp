@@ -17,7 +17,6 @@ namespace IO
 namespace Postgres
 {
 
-
 /** \brief cache which stores elements with IDs.
  */
 template<typename T>
@@ -26,7 +25,6 @@ class ReverseIDCache
 public:
   /** \brief type of cache. */
   typedef std::map<DataBaseID, T> RevIDCache;
-
   /** \brief check if element with id is in cache
    *  \param id    id of checked element.
    */
@@ -39,10 +37,10 @@ public:
    */
   T get(DataBaseID id) const
   {
-    // TODO: use temporary variable (const_iterator) in order to avoid 2 find() calls
-    if( cache_.find(id) == cache_.end() )
+    typename std::map<DataBaseID, T>::const_iterator it = cache_.find(id);
+    if( it == cache_.end() )
       throw ExceptionNoSuchEntry(SYSTEM_SAVE_LOCATION);
-    return cache_.find(id)->second;
+    return it->second;
   }
   /** \brief get element with id from cache
    *  \param id    id of element.
