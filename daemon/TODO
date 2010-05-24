@@ -8,4 +8,5 @@
 15 update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
 17 GraphNode (MetaAlert?) should have some unique identifier in the system, that can be reported.
 18 wrap all Persistency::IO::Postgres top-level calls so that pxqq-related exceptions will not pass higher.
-19
+19 logger should append thread-IDs to logs.
+20
