@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "Persistency/IO/Postgres/TestCache.t.hpp"
 #include "Persistency/IO/Postgres/ReverseIDCache.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
@@ -16,8 +17,6 @@ using namespace Persistency::IO::Postgres;
 namespace
 {
 
-// TODO: c&p code from StorageDataCache.t.cpp - make common code common.
-
 // strict weak ordering for std::sort()
 struct SWO
 {
@@ -28,11 +27,8 @@ struct SWO
   }
 }; // struct SWO
 
-struct TestClass
+struct TestClass: public TestCache< ReverseIDCache<double> , double>
 {
-
-  typedef ReverseIDCache<double> TestCache;
-
   TestClass(void)
   {
     data_.push_back( 42 );
@@ -43,33 +39,6 @@ struct TestClass
     assert( data_[0]<data_[1] );
     assert( data_[1]<data_[2] );
   }
-
-
-  void fill(void)
-  {
-    double val=2.8;
-    for(size_t i=0; i<data_.size(); ++i)
-    {
-      tc_.add(data_[i], val);
-      ++val;
-    }
-  }
-
-  bool hasElement(DataBaseID id)
-  {
-    try
-    {
-      tc_.get(id);
-      return true;
-    }
-    catch(const ExceptionNoSuchEntry&)
-    {
-      return false;
-    }
-  }
-
-  std::vector<DataBaseID> data_;
-  TestCache           tc_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -86,9 +55,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  TestCache tc;
+  Cache tc;
 }
-
 // test getting from empty set
 template<>
 template<>
@@ -110,7 +78,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  fill();
+  fill(2.8);
   ensure_equals("invalid value", tc_.get( data_[1] ), 2.8 + 1.0 );
 }
 
@@ -130,8 +98,8 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  fill();
-  const TestCache &cRef=tc_;
+  fill(2.8);
+  const Cache &cRef=tc_;
   ensure_equals("invalid data", cRef.get(data_[0]), 2.8);
 }
 
@@ -140,7 +108,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  const TestCache &cRef=tc_;
+  const Cache &cRef=tc_;
   ensure("invalid data", cRef.has(data_[0]) == false);
 }
 } // namespace tut

@@ -388,6 +388,13 @@ void EntrySaver::markMetaAlertAsTriggered(DataBaseID malertID, const std::string
   SQL( ss.str(), log_ ).exec(t_);
 }
 
+void EntrySaver::removeMetaAlertFromTriggered(DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "DELETE FROM  meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
+  SQL( ss.str(), log_ ).exec(t_);
+}
+
 void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
 {
   stringstream ss;
@@ -417,7 +424,8 @@ bool EntrySaver::isHostNameNull(DataBaseID hostID)
 }
 void EntrySaver::setHostName(DataBaseID hostID, const Persistency::Host::Name &name)
 {
-  assert( isHostNameNull(hostID) );
+  if(isHostNameNull(hostID) == false)
+    throw ExceptionHostNameAlreadySaved(SYSTEM_SAVE_LOCATION);
   stringstream ss;
   ss << "UPDATE hosts SET name = ";
   Appender::append(ss, name.get());

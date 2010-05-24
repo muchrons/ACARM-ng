@@ -879,4 +879,36 @@ void testObj::test<25>(void)
   t_.commit();
 }
 
+// trying save MetaAlert as triggered and then remove saved Meta Alert from triggered
+template<>
+template<>
+void testObj::test<26>(void)
+{
+  const string TriggerName("some trigger name");
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
+  es_.markMetaAlertAsUsed(malertID);
+  stringstream ss;
+  {
+    ss << "SELECT * FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid size",r.size(), 1u);
+  }
+  es_.markMetaAlertAsTriggered(malertID, TriggerName);
+  ss.str("");
+  {
+    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
+    result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid size",r.size(), 1u);
+    ensure_equals("invalid trigger name", ReaderHelper<string>::readAsNotNull(r[0]["trigger_name"]), TriggerName);
+  }
+  es_.removeMetaAlertFromTriggered(malertID);
+  ss.str("");
+  {
+    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
+    result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid size",r.size(), 0);
+  }
+}
 } // namespace tut

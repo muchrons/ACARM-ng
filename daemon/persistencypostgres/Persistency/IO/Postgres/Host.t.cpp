@@ -13,8 +13,6 @@
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
 #include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
 
-// TODO: tests
-
 using namespace std;
 using namespace Persistency;
 using namespace Persistency::IO::Postgres;
@@ -54,6 +52,18 @@ struct TestClass
     return out;
   }
 
+  HostPtr makeNewHostWithNullName(void)
+  {
+    const Persistency::Host::Netmask_v4 mask(mask4_bytes);
+    return HostPtr( new Persistency::Host( Persistency::Host::IPv4::from_string("1.2.3.4"),
+          &mask,
+          "linux",
+          makeNewReferenceURL(),
+          Persistency::Host::ReportedServices(),
+          Persistency::Host::ReportedProcesses(),
+          NULL ) );
+  }
+
   const Persistency::Alert::Name          name_;
   const AnalyzerPtrNN                     analyzer_;
   Persistency::Alert::SourceAnalyzers     analyzers_;
@@ -84,10 +94,26 @@ factory tf("Persistency/IO/Postgres/Host");
 namespace tut
 {
 
-//
+// trying set name for host
 template<>
 template<>
 void testObj::test<1>(void)
+{
+  Persistency::HostPtrNN hostPtr( makeNewHostWithNullName() );
+  sourceHosts_.push_back(hostPtr);
+  Persistency::IO::Postgres::Host host(hostPtr, t_, dbh_);
+
+  Persistency::AlertPtr alertPtr_(new Persistency::Alert(name_, analyzers_, &detected_, created_, severity_,
+                                                         certainty_, description_, sourceHosts_, targetHosts_));
+  Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
+  alert.save();
+  host.setName("new host name");
+}
+
+// trying set name for host with alredy saved name
+template<>
+template<>
+void testObj::test<2>(void)
 {
   Persistency::HostPtrNN hostPtr( makeNewHost() );
   sourceHosts_.push_back(hostPtr);
@@ -97,8 +123,14 @@ void testObj::test<1>(void)
                                                          certainty_, description_, sourceHosts_, targetHosts_));
   Persistency::IO::Postgres::Alert alert(alertPtr_, t_, dbh_);
   alert.save();
-  // TODO: uncomment this when code is fixed.
-  //host.setName("new host name");
+  try
+  {
+    host.setName("new host name");
+  }
+  catch(const ExceptionHostNameAlreadySaved &)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut
