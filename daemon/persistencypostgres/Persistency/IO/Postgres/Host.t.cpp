@@ -54,6 +54,7 @@ struct TestClass
 
   HostPtr makeNewHostWithNullName(void)
   {
+    // TODO: TestHelpers::Persistency::makeNewHost("1.2.3.4", NULL) does that.
     const Persistency::Host::Netmask_v4 mask(mask4_bytes);
     return HostPtr( new Persistency::Host( Persistency::Host::IPv4::from_string("1.2.3.4"),
           &mask,
@@ -125,9 +126,16 @@ void testObj::test<2>(void)
   alert.save();
   try
   {
-    host.setName("new host name");
+    host.setName("new host name");  // there can be 2 exceptions thrown here, depending
+                                    // on implementation call order. it does not matter
+                                    // which will be thrown in fact.
+    // TODO: fail() missing
   }
   catch(const ExceptionHostNameAlreadySaved &)
+  {
+    // this is expected
+  }
+  catch(const ExceptionHostNameAlreadySet &)
   {
     // this is expected
   }

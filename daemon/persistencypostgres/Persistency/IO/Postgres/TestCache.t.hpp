@@ -29,6 +29,7 @@ struct TestCache
     }
   }
 
+  // TODO: this methdos should be const
   template<typename T>
   bool hasElement(T t)
   {
@@ -42,8 +43,9 @@ struct TestCache
       return false;
     }
   }
+
   std::vector<R> data_;
-  Cache tc_;
+  Cache          tc_;
 }; // struct TestCache
 
 } // namespace Postgres

@@ -43,7 +43,6 @@ struct TestClass: public TestCache< StorageDataCache<double>, boost::shared_ptr<
   {
     return boost::shared_ptr<double>( new double(v) );
   }
-
 };
 
 typedef tut::test_group<TestClass> factory;

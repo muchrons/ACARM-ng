@@ -17,6 +17,7 @@ using namespace pqxx;
 
 // this is helper macro for calling f-cjtion that saves line number and calls given sql statement (with log)
 #define SQL(sql,log) SQLHelper(__FILE__, __LINE__, sql, log)
+
 namespace Persistency
 {
 namespace IO
@@ -420,8 +421,10 @@ bool EntrySaver::isHostNameNull(DataBaseID hostID)
   stringstream ss;
   ss << "SELECT name FROM hosts WHERE id = " << hostID << ";";
   const result r=SQL( ss.str(), log_ ).exec(t_);
+  // TODO: segv when no elements in returned set
   return r[0]["name"].is_null();
 }
+
 void EntrySaver::setHostName(DataBaseID hostID, const Persistency::Host::Name &name)
 {
   if(isHostNameNull(hostID) == false)
