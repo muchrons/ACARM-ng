@@ -22,6 +22,7 @@
 #include "Persistency/Service.hpp"
 #include "Persistency/Process.hpp"
 #include "Persistency/IPTypes.hpp"
+#include "Persistency/ExceptionHostNameAlreadySet.hpp"
 
 namespace Persistency
 {

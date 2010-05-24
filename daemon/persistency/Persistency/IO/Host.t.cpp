@@ -149,7 +149,7 @@ void testObj::test<6>(void)
     h.setName("xyz");
     fail("setName() didn't failed for already set entry");
   }
-  catch(const Persistency::Exception &)
+  catch(const Persistency::ExceptionHostNameAlreadySet &)
   {
     // this is expected
   }
