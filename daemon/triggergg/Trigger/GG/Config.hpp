@@ -41,7 +41,7 @@ public:
   /** \brief get thresholds configuration.
    *  \return threshold's config.
    */
-  const Simple::ThresholdConfig getThresholdConfig(void) const
+  const Simple::ThresholdConfig &getThresholdConfig(void) const
   {
     return th_;
   }
@@ -57,7 +57,7 @@ private:
   AccountConfig           ac_;
   Simple::ThresholdConfig th_;
   UserID                  receiver_;
-}; // class AccountConfig
+}; // class Config
 
 } // namespace GG
 } // namespace Trigger
