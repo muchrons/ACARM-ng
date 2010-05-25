@@ -24,8 +24,8 @@ inline std::string addHeaders(const std::string &content,
                               const std::string &from,
                               const std::string &to)
 {
-  // NOTE: this is a bit hardcore, but it's fast and fine for now.
-  // NOTE: see libetpan/tests/compose-msg.c for details how to do this.
+  // TODO: this is a bit hardcore, but it's fast and fine for now.
+  //       see libetpan/tests/compose-msg.c for details how to do this.
   const char *eol="\r\n";
   std::stringstream ss;
   ss<<"Subject: [acarmng] "<<subject<<eol;
