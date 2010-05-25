@@ -9,4 +9,6 @@
 17 GraphNode (MetaAlert?) should have some unique identifier in the system, that can be reported.
 18 wrap all Persistency::IO::Postgres top-level calls so that pxqq-related exceptions will not pass higher.
 19 logger should append thread-IDs to logs.
-20
+20 make logger's file names less verbose (component path is present in log-path any way).
+21 separate GG and e-mail test account's config into separate file, with proper defines/constants so that there will be just one place to remove them from code before the release.
+22
