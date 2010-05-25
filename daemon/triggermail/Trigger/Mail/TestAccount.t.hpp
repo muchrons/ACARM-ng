@@ -17,7 +17,8 @@ namespace
 
 Trigger::Mail::Config getTestConfig1(const char *to="acarmng.test.account2@gmail.com")
 {
-  const Trigger::Mail::Config::Authorization auth("acarmng.test.account1", "testowekonto");
+  const Trigger::Mail::Config::Authorization auth("acarmng.test.account1@gmail.com",
+                                                  "testowekonto");
   const Trigger::Mail::Config::Server        srv("acarmng.test.account1@gmail.com",
                                                  "smtp.googlemail.com",
                                                  25,
@@ -28,7 +29,8 @@ Trigger::Mail::Config getTestConfig1(const char *to="acarmng.test.account2@gmail
 
 Trigger::Mail::Config getTestConfig2(void)
 {
-  const Trigger::Mail::Config::Authorization auth("acarmng.test.account2", "testowekonto");
+  const Trigger::Mail::Config::Authorization auth("acarmng.test.account2@gmail.com",
+                                                  "testowekonto");
   const Trigger::Mail::Config::Server        srv("acarmng.test.account2@gmail.com",
                                                  "smtp.googlemail.com",
                                                  25,
