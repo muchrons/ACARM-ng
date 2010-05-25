@@ -56,16 +56,16 @@ uint16_t getPort(const std::string &v)
   }
 } // getPort()
 
-bool getTLS(const std::string &v)
+Config::Server::Security getSecurity(const std::string &v)
 {
-  if(v=="true")
-    return true;
-  if(v=="false")
-    return false;
+  if(v=="ssl")
+    return Config::Server::Security::SSL;
+  if(v=="starttls")
+    return Config::Server::Security::STARTTLS;
 
   // ok - we have invalid value here...
-  throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "tls", v.c_str() );
-} // getTLS()
+  throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "security", v.c_str() );
+} // getSecurity()
 } // unnamed namespace
 
 
@@ -77,15 +77,15 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   const TriggerConfig fc(name_, options);
 
   // gather required config
-  const std::string &server=fc["server"];
+  const std::string              &server=fc["server"];
   LOGMSG_INFO_S(log_)<<"setting server to "<<server;
-  const uint16_t     port  =getPort(fc["port"]);
+  const uint16_t                  port  =getPort(fc["port"]);
   LOGMSG_INFO_S(log_)<<"setting port to "<<port;
-  const bool         tls   =getTLS(fc["tls"]);
-  LOGMSG_INFO_S(log_)<<"setting tls to "<<tls;
-  const std::string &from  =fc["from"];
+  const Config::Server::Security  sec   =getSecurity(fc["security"]);
+  LOGMSG_INFO_S(log_)<<"setting security to "<<sec.toInt();
+  const std::string              &from  =fc["from"];
   LOGMSG_INFO_S(log_)<<"setting from-address to "<<from;
-  const Config::Server serverCfg(from, server, port, tls);
+  const Config::Server            serverCfg(from, server, port, sec);
 
   // thresholds' config
   const char *sevTh=fc.get("severity_threshold");

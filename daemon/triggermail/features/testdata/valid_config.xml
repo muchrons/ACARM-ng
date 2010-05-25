@@ -26,7 +26,7 @@
       <to>admin@e.mail.org</to>        <!-- e-mail to send reports to -->
       <server>smtp.e.mail.org</server> <!-- server's address -->
       <port>25</port>                  <!-- port server's listening on -->
-      <tls>true</tls>                  <!-- flag for usage secure connection (true/false) -->
+      <security>ssl</security>         <!-- secure conection type (ssl/starttls) -->
       <user>robot</user>               <!-- username to authenticate with (optional) -->
       <password>topsi-kret</password>  <!-- password for username (required when 'user' is set) -->
 

@@ -39,7 +39,7 @@ struct TestClass
     opts_["to"]      ="to@address";
     opts_["server"]  ="server.address";
     opts_["port"]    ="69";
-    opts_["tls"]     ="false";
+    opts_["security"]="ssl";
 
     opts_["user"]    ="narf";
     opts_["password"]="fran";
@@ -113,33 +113,33 @@ void testObj::test<5>(void)
   ensureThrow(opts_);
 }
 
-// test when TLS is 'true'
+// test when security is 'ssl'
 template<>
 template<>
 void testObj::test<6>(void)
 {
   setValid();
-  opts_["tls"]="true";
+  opts_["security"]="ssl";
   fb_.build(opts_);     // must not throw
 }
 
-// test TLS 'false'
+// test when security is 'starttls'
 template<>
 template<>
 void testObj::test<7>(void)
 {
   setValid();
-  opts_["tls"]="false";
+  opts_["security"]="starttls";
   fb_.build(opts_);     // must not throw
 }
 
-// test throw on invalid TLS value
+// test throw on invalid security value
 template<>
 template<>
 void testObj::test<8>(void)
 {
   setValid();
-  opts_["tls"]="faLSE";
+  opts_["security"]="none";
   ensureThrow(opts_);
 }
 

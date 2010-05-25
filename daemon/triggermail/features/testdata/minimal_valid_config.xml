@@ -26,7 +26,7 @@
       <to>admin@e.mail.org</to>
       <server>smtp.e.mail.org</server>
       <port>25</port>
-      <tls>true</tls>
+      <security>ssl</security>
 <!--
       <user>robot</user>
       <password>topsi-kret</password>

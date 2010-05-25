@@ -22,6 +22,8 @@ void MailSender::send(const std::string &subject, const std::string &content)
   const Config::Authorization *auth=cfg_.getAuthorizationConfig();
   MailSmtp                     ms;
 
+  // TODO: add switching between ssl/raw connection
+
   // connect to server
   if( isError( mailsmtp_socket_connect( ms.get(), srv.server_.c_str(), srv.port_ ) ) )
   {
@@ -30,7 +32,7 @@ void MailSender::send(const std::string &subject, const std::string &content)
   }
   // proceed with protocol:
   errorHandler( mailesmtp_ehlo( ms.get() ), "mailesmtp_ehlo" ); // EHLO
-  if(srv.useTLS_)                                               // TLS?
+  if(srv.sec_==Config::Server::Security::STARTTLS)              // STARTTLS?
     errorHandler( mailsmtp_socket_starttls( ms.get() ), "mailsmtp_socket_starttls");
   if(auth!=NULL)                                                // require authorization?
     errorHandler( mailsmtp_auth( ms.get(), auth->user_.c_str(), auth->pass_.c_str() ), "mailsmtp_auth" );

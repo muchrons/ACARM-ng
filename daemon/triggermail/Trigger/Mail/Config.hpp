@@ -8,6 +8,7 @@
 #include <string>
 #include <inttypes.h>
 
+#include "System/Enum.hpp"
 #include "Trigger/Simple/ThresholdConfig.hpp"
 
 // TODO: comments
@@ -16,6 +17,19 @@ namespace Trigger
 {
 namespace Mail
 {
+namespace detail
+{
+struct SecurityEnum
+{
+  typedef enum
+  {
+    //NONE, // NOTE: no secure connection is NOT allowed for security reasons
+    STARTTLS,
+    SSL
+  } Type;
+}; // struct Security
+
+} // namespace detail
 
 /** \brief whole module's configuration representation.
  */
@@ -24,21 +38,23 @@ class Config
 public:
   struct Server
   {
+    typedef System::Enum<detail::SecurityEnum> Security;
+
     Server(const std::string &from,
            const std::string &server,
            const uint16_t     port,
-           bool               useTLS):
+           Security           sec):
       from_(from),
       server_(server),
       port_(port),
-      useTLS_(useTLS)
+      sec_(sec)
     {
     }
 
     const std::string from_;
     const std::string server_;
     const uint16_t    port_;
-    bool              useTLS_;
+    const Security    sec_;
   }; // struct Server
 
   struct Authorization
