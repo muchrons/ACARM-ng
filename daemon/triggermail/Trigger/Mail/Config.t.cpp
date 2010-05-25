@@ -15,14 +15,16 @@ struct TestClass
 {
   TestClass(void):
     th_("1", "2"),
-    req_("from", "to", "server", 1234, true),
-    auth_("john", "doe")
+    srv_("from", "server", 1234, true),
+    auth_("john", "doe"),
+    to_("to")
   {
   }
 
   const Trigger::Simple::ThresholdConfig th_;
-  const Config::Required                 req_;
+  const Config::Server                   srv_;
   const Config::Authorization            auth_;
+  const std::string                      to_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -40,7 +42,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Config c(th_, req_);
+  const Config c(th_, to_, srv_);
   ensure("authorization required", c.getAuthorizationConfig()==NULL );
 }
 
@@ -49,7 +51,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Config c(th_, req_, auth_);
+  const Config c(th_, to_, srv_, auth_);
   ensure("authorization not required", c.getAuthorizationConfig()!=NULL );
 }
 
@@ -58,11 +60,10 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensure_equals("invalid from address", req_.from_, "from");
-  ensure_equals("invalid to address", req_.to_, "to");
-  ensure_equals("invalid server address", req_.server_, "server");
-  ensure_equals("invalid port number", req_.port_, 1234u);
-  ensure_equals("invalid TLS setting", req_.useTLS_, true);
+  ensure_equals("invalid from address", srv_.from_, "from");
+  ensure_equals("invalid server address", srv_.server_, "server");
+  ensure_equals("invalid port number", srv_.port_, 1234u);
+  ensure_equals("invalid TLS setting", srv_.useTLS_, true);
 }
 
 // test authorization config

@@ -22,15 +22,13 @@ namespace Mail
 class Config
 {
 public:
-  struct Required
+  struct Server
   {
-    Required(const std::string &from,
-             const std::string &to,
-             const std::string &server,
-             const uint16_t     port,
-             bool               useTLS):
+    Server(const std::string &from,
+           const std::string &server,
+           const uint16_t     port,
+           bool               useTLS):
       from_(from),
-      to_(to),
       server_(server),
       port_(port),
       useTLS_(useTLS)
@@ -38,11 +36,10 @@ public:
     }
 
     const std::string from_;
-    const std::string to_;
     const std::string server_;
     const uint16_t    port_;
     bool              useTLS_;
-  }; // struct Required
+  }; // struct Server
 
   struct Authorization
   {
@@ -59,26 +56,32 @@ public:
 
   /** \brief create configration description, without authorization.
    *  \param th  threshold configuration - informs when run trigger.
-   *  \param req set of required parameters.
+   *  \param to  recipient address.
+   *  \param srv server to connect to.
    */
   Config(const Simple::ThresholdConfig &th,
-         const Required                &req):
+         const std::string             &to,
+         const Server                  &srv):
     th_(th),
-    req_(req),
+    to_(to),
+    srv_(srv),
     useAuth_(false),
     auth_("", "")
   {
   }
   /** \brief create configration description, with authorization request.
    *  \param th   threshold configuration - informs when run trigger.
-   *  \param req  set of required parameters.
+   *  \param to  recipient address.
+   *  \param srv server to connect to.
    *  \param auth parameters required for authorization.
    */
   Config(const Simple::ThresholdConfig &th,
-         const Required                &req,
+         const std::string             &to,
+         const Server                  &srv,
          const Authorization           &auth):
     th_(th),
-    req_(req),
+    to_(to),
+    srv_(srv),
     useAuth_(true),
     auth_(auth)
   {
@@ -100,17 +103,25 @@ public:
       return &auth_;
     return NULL;
   }
-  /** \brief get required configuration part.
-   *  \return required parameters from the configuration.
+  /** \brief get server configuration part.
+   *  \return parameters to connect to SMTP server.
    */
-  const Required &getRequiredConfig(void) const
+  const Server &getServerConfig(void) const
   {
-    return req_;
+    return srv_;
+  }
+  /** \brief get recipient e-mail address.
+   *  \return address of e-mail recipient.
+   */
+  const std::string &getRecipientAddress(void) const
+  {
+    return to_;
   }
 
 private:
   Simple::ThresholdConfig th_;
-  Required                req_;
+  std::string             to_;
+  Server                  srv_;
   bool                    useAuth_;
   Authorization           auth_;
 }; // class Config

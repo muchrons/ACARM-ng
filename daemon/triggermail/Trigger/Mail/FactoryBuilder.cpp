@@ -85,9 +85,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO_S(log_)<<"setting tls to "<<tls;
   const std::string &from  =fc["from"];
   LOGMSG_INFO_S(log_)<<"setting from-address to "<<from;
-  const std::string &to    =fc["to"];
-  LOGMSG_INFO_S(log_)<<"setting to-address to "<<to;
-  const Config::Required required(from, to, server, port, tls);
+  const Config::Server serverCfg(from, server, port, tls);
 
   // thresholds' config
   const char *sevTh=fc.get("severity_threshold");
@@ -97,6 +95,10 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   if(cntTh!=NULL)
     LOGMSG_INFO_S(log_)<<"setting alerts count threshold to "<<cntTh;
   const ThresholdConfig thCfg(sevTh, cntTh);
+
+  // recipient address
+  const std::string &to    =fc["to"];
+  LOGMSG_INFO_S(log_)<<"setting to-address to "<<to;
 
   // defile output type
   typedef InterfaceImpl<Mail::Strategy, Mail::Config> Impl;
@@ -111,7 +113,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
     const Config::Authorization  auth(user, pass);
     // create and return new handler, with configured authorization
     LOGMSG_INFO(log_, "account configured with authorization required");
-    return OutPtr( new Impl( name_, Mail::Config(thCfg, required, auth) ) );
+    return OutPtr( new Impl( name_, Mail::Config(thCfg, to, serverCfg, auth) ) );
   } // if(use_auth)
   else
     if( fc.get("password")!=NULL )
@@ -119,7 +121,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // create and return new handler, with config without authorization
   LOGMSG_INFO(log_, "account configured without authorization required");
-  return OutPtr( new Impl( name_, Mail::Config(thCfg, required) ) );
+  return OutPtr( new Impl( name_, Mail::Config(thCfg, to, serverCfg) ) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const
