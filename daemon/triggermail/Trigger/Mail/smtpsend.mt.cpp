@@ -98,17 +98,31 @@ int collect(struct mem_message *message) {
   }
   message->len = 0;
 
+  {
+    const char *tmpStr="Alice has a Cat";
+    len=strlen(tmpStr);
+    strcpy(message->mstring->str+message->len, tmpStr);
+    message->len+=len;
+    if ((mmap_string_set_size(message->mstring,
+			      message->len + BLOCKSIZE)) == NULL) {
+      perror("mmap_string_set_size");
+      goto error;
+    }
+    len=0;
+  }
+  /*
   printf("type in message:\n");
   while ((len = read(STDIN_FILENO,
 		     message->mstring->str + message->len, BLOCKSIZE)) > 0) {
     message->len += len;
-    /* reserve room for next block */
+    // reserve room for next block
     if ((mmap_string_set_size(message->mstring,
 			      message->len + BLOCKSIZE)) == NULL) {
       perror("mmap_string_set_size");
       goto error;
     }
   }
+  */
 
   if (len == 0) {
     message->data = message->mstring->str;
