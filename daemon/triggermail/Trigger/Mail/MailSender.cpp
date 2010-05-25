@@ -25,11 +25,25 @@ void MailSender::send(const std::string &subject, const std::string &content)
   // TODO: add switching between ssl/raw connection
 
   // connect to server
-  if( isError( mailsmtp_socket_connect( ms.get(), srv.server_.c_str(), srv.port_ ) ) )
+  switch( srv.sec_.toInt() )
   {
-    const Base::StrError se;
-    throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, srv.server_.c_str(), se.get().c_str() );
-  }
+    case Config::Server::Security::STARTTLS:
+      connectionErrorHandler( ( mailsmtp_socket_connect( ms.get(), srv.server_.c_str(), srv.port_ ) ),
+                                "mailsmtp_socket_connect" );
+      break;
+
+    case Config::Server::Security::SSL:
+      connectionErrorHandler( ( mailsmtp_ssl_connect( ms.get(), srv.server_.c_str(), srv.port_ ) ),
+                                "mailsmtp_ssl_connect" );
+      break;
+
+    default:
+      assert(!"invalid/unknown security type - code must be updated first");
+      throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, srv.server_.c_str(),
+                                     "unknown security mode requested");
+      break;
+  } // switch(security_type)
+
   // proceed with protocol:
   errorHandler( mailesmtp_ehlo( ms.get() ), "mailesmtp_ehlo" ); // EHLO
   if(srv.sec_==Config::Server::Security::STARTTLS)              // STARTTLS?
@@ -44,6 +58,22 @@ void MailSender::send(const std::string &subject, const std::string &content)
   errorHandler( mailsmtp_data_message( ms.get(), content.c_str(), content.length() ),
                 "mailsmtp_data_message" );
   // TODO: setup subject too
+}
+
+void MailSender::connectionErrorHandler(int ret, const char *call) const
+{
+  if( !isError(ret) )
+    return;
+  // oops - we have a problem
+  std::string err(call);
+  err.append("(): ");
+  err.append( mailsmtp_strerror(ret) );
+  const Base::StrError se;
+  err.append("; ");
+  err.append( se.get() );
+  throw ExceptionConnectionError( SYSTEM_SAVE_LOCATION,
+                                  cfg_.getServerConfig().server_.c_str(),
+                                  se.get().c_str() );
 }
 
 void MailSender::errorHandler(const int ret, const char *call) const

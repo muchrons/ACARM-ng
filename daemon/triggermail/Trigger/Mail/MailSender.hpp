@@ -24,6 +24,7 @@ public:
   void send(const std::string &subject, const std::string &content);
 
 private:
+  void connectionErrorHandler(int ret, const char *call) const;
   void errorHandler(int ret, const char *call) const;
   bool isError(int ret) const;
 
