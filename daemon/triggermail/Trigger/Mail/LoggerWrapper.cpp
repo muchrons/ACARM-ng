@@ -79,6 +79,9 @@ LoggerWrapper::LoggerWrapper(void)
     // assign proper variables
     mailstream_debug =1;
     mailstream_logger=loggerCCall;
+
+    assert(g_log!=NULL);
+    LOG_DEBUG(*g_log, "wrapper registered");
   }
 
   // mark new user
@@ -103,6 +106,9 @@ LoggerWrapper::~LoggerWrapper(void)
   // should we deallocate?
   if(g_count==0)
   {
+    assert(g_log!=NULL);
+    LOG_DEBUG(*g_log, "unregistering wrapper");
+
     mailstream_debug =0;
     mailstream_logger=loggerCIgnore;
     boost::checked_delete(g_log);
