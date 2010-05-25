@@ -17,11 +17,12 @@ class ExceptionConnectionError: public Exception
 {
 public:
   /** \brief create execption with given message.
-   *  \param where place where exception has been thrown.
-   *  \param what  more detailed message.
+   *  \param where  place where exception has been thrown.
+   *  \param server server address, connecting to failed.
+   *  \param reason problem description.
    */
-  ExceptionConnectionError(const Location &where, const char *what):
-    Exception(where, cc("connection to e-mail server error: ", what) )
+  ExceptionConnectionError(const Location &where, const char *server, const char *reason):
+    Exception(where, cc("connection to e-mail server '", server, "' error: ", reason) )
   {
   }
 }; // class ExceptionConnectionError

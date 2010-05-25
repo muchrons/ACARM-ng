@@ -20,10 +20,14 @@ public:
    *  \param where    place where exception has been thrown.
    *  \param sender   mail of the sending account.
    *  \param receiver mail of the receiver.
+   *  \param error    error message.
    */
-  ExceptionSendingError(const Location &where, const char *sender, const char *receiver):
+  ExceptionSendingError(const Location &where,
+                        const char     *sender,
+                        const char     *receiver,
+                        const char     *error):
     Exception(where, cc("unable to send message to '",
-                        receiver, "' from '", sender, "': error is: ") )
+                        receiver, "' from '", sender, "': error is: ", error) )
   {
   }
 }; // class ExceptionConnectionError
