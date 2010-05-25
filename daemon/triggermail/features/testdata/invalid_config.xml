@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+
+  <persistency>
+    <type>stubs</type>
+  </persistency>
+
+  <logger>
+    <appenders>
+      <File name="default">
+        <output>loggerfile.log</output>
+      </File>
+    </appenders>
+
+    <nodes appender="default" threshold="debug">
+    </nodes>
+  </logger>
+
+  <preprocessor/>
+
+  <filters/>
+
+  <triggers>
+    <mail>
+      <from>robot@e.mail.org</from>
+<!--
+      <to>admin@e.mail.org</to>
+-->
+      <server>smtp.e.mail.org</server>
+      <port>42</port>
+      <tls>true</tls>
+<!--
+      <user>robot</user>
+      <password>topsi-kret</password>
+-->
+
+<!--
+      <severity_threshold>3.14</severity_threshold>
+      <alerts_count_threshold>42</alerts_count_threshold>
+-->
+    </mail>
+  </triggers>
+
+  <inputs/>
+
+</acarm_ng>
