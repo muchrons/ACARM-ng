@@ -6,8 +6,6 @@
 
 #include "Trigger/Mail/FactoryBuilder.hpp"
 
-// TODO
-
 using namespace std;
 using namespace Trigger::Mail;
 
@@ -37,13 +35,17 @@ struct TestClass
 
   void setValid(void)
   {
-    /*
-    opts_["uin"]                   ="123";
-    opts_["password"]              ="secr3t";
-    opts_["receiver_uin"]          ="69";
+    opts_["from"]    ="from@address";
+    opts_["to"]      ="to@address";
+    opts_["server"]  ="server.address";
+    opts_["port"]    ="69";
+    opts_["tls"]     ="false";
+
+    opts_["user"]    ="narf";
+    opts_["password"]="fran";
+
     opts_["severity_threshold"]    ="4.2";
     opts_["alerts_count_threshold"]="42";
-    */
   }
 
   FactoryBuilder fb_;
@@ -60,88 +62,85 @@ factory tf("Trigger/Mail/FactoryBuilder");
 namespace tut
 {
 
-//
+// test creation with valid config
 template<>
 template<>
 void testObj::test<1>(void)
 {
+  setValid();
+  fb_.build(opts_); // must not throw
 }
 
-//
+// test creation with valid config, w-out thresholds
 template<>
 template<>
 void testObj::test<2>(void)
 {
+  setValid();
+  opts_.erase("severity_threshold");
+  opts_.erase("alerts_count_threshold");
+  fb_.build(opts_); // must not throw
 }
 
-//
+// test creating valid config, w-out authorization
 template<>
 template<>
 void testObj::test<3>(void)
 {
+  setValid();
+  opts_.erase("user");
+  opts_.erase("password");
+  fb_.build(opts_); // must not throw
 }
 
-//
+// test for error when password is not set, but authorization is required
 template<>
 template<>
 void testObj::test<4>(void)
 {
+  setValid();
+  opts_.erase("password");
+  ensureThrow(opts_);
 }
 
-//
+// test exception when port is invalid
 template<>
 template<>
 void testObj::test<5>(void)
 {
+  setValid();
+  opts_["port"]="-11";
+  ensureThrow(opts_);
 }
 
-//
+// test when TLS is 'true'
 template<>
 template<>
 void testObj::test<6>(void)
 {
+  setValid();
+  opts_["tls"]="true";
+  fb_.build(opts_);     // must not throw
 }
 
-//
+// test TLS 'false'
 template<>
 template<>
 void testObj::test<7>(void)
 {
+  setValid();
+  opts_["tls"]="false";
+  fb_.build(opts_);     // must not throw
 }
 
-//
+// test throw on invalid TLS value
 template<>
 template<>
 void testObj::test<8>(void)
 {
-}
-
-//
-template<>
-template<>
-void testObj::test<9>(void)
-{
-}
-
-//
-template<>
-template<>
-void testObj::test<10>(void)
-{
-}
-
-//
-template<>
-template<>
-void testObj::test<11>(void)
-{
-}
-
-//
-template<>
-template<>
-void testObj::test<12>(void)
-{
+  setValid();
+  opts_["tls"]="faLSE";
+  ensureThrow(opts_);
 }
 
 } // namespace tut
