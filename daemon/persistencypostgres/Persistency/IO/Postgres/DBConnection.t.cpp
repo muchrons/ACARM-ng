@@ -34,7 +34,6 @@ void testObj::test<1>(void)
 {
   DBConnection::Parameters params("localhost", "5432", "acarm_ng_test", "acarm-ng-daemon", "test.daemon");
   DBConnection dbconn(params);
-
 }
 
 // try create connection with invalid port number

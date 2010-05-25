@@ -12,8 +12,6 @@
 #include "Persistency/IO/Postgres/IDCache.hpp"
 
 
-// TODO: test
-
 namespace Persistency
 {
 namespace IO

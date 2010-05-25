@@ -29,9 +29,8 @@ struct TestCache
     }
   }
 
-  // TODO: this methdos should be const
   template<typename T>
-  bool hasElement(T t)
+  bool hasElement(T t) const
   {
     try
     {

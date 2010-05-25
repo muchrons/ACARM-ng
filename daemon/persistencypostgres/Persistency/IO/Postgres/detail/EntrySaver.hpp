@@ -116,11 +116,6 @@ public:
    */
   void markMetaAlertAsTriggered(DataBaseID malertID, const std::string &name);
 
-  /** \brief remove Meta Alert from triggered
-   *  \param malertID ID of Meta Alert
-   */
-  void removeMetaAlertFromTriggered(DataBaseID malertID);
-
   /** \brief update Meta Alert severity delta
    *  \param malertID ID   of Meta Alert to update
    *  \param severityDelta value of severity delta to write in data base
@@ -165,6 +160,11 @@ private:
                                const Service &s);
   void addReferenceURL(std::stringstream &ss, const ReferenceURL *url);
   bool isHostNameNull(DataBaseID hostID);
+
+  /** \brief remove Meta Alert from triggered
+   *  \param malertID ID of Meta Alert
+   */
+  void removeMetaAlertFromTriggered(DataBaseID malertID);
 
   Logger::Node  log_;
   DBHandler    &dbh_;

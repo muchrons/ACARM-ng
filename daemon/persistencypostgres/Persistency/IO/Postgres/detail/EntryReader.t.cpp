@@ -115,7 +115,7 @@ void testObj::test<2>(void)
   const Analyzer::OperatingSystem anlzOS("wiendols");
   const Analyzer                  a("analyzer2", anlzVersion, anlzOS, NULL);
   const DataBaseID                anlzID = es_.saveAnalyzer(a);
-  const AnalyzerPtrNN             readAnalyzer =  er_.getAnalyzer(anlzID);  // TODO: what if Analyzer is NULL?
+  const AnalyzerPtrNN             readAnalyzer =  er_.getAnalyzer(anlzID);
   string                          version(readAnalyzer->getVersion().get());
   const string                    os(readAnalyzer->getOperatingSystem().get());
   trim(version);

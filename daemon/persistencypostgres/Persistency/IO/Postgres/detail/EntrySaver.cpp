@@ -373,6 +373,7 @@ void EntrySaver::markMetaAlertAsUsed(DataBaseID malertID)
 
 void EntrySaver::markMetaAlertAsUnused(DataBaseID malertID)
 {
+  removeMetaAlertFromTriggered(malertID);
   stringstream ss;
   ss << "DELETE FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
   SQL( ss.str(), log_ ).exec(t_);
@@ -421,7 +422,8 @@ bool EntrySaver::isHostNameNull(DataBaseID hostID)
   stringstream ss;
   ss << "SELECT name FROM hosts WHERE id = " << hostID << ";";
   const result r=SQL( ss.str(), log_ ).exec(t_);
-  // TODO: segv when no elements in returned set
+  if(r.size() != 1)
+    throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
   return r[0]["name"].is_null();
 }
 
