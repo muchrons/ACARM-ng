@@ -8,33 +8,36 @@
 #include <string>
 #include <cassert>
 
-/*
-#include "Trigger/Mail/AccountConfig.hpp"
-#include "Trigger/Mail/Connection.hpp"
-*/
+#include "Trigger/Mail/Config.hpp"
 
 // TODO
 
 namespace
 {
 
+Trigger::Mail::Config getTestConfig1(const char *to="acarmng.test.account2@gmail.com")
+{
+  const Trigger::Mail::Config::Authorization auth("acarmng.test.account1", "testowekonto");
+  const Trigger::Mail::Config::Server        srv("acarmng.test.account1@gmail.com",
+                                                 "smtp.googlemail.com",
+                                                 25,
+                                                 true);
+  const Trigger::Simple::ThresholdConfig     th(NULL, NULL);
+  return Trigger::Mail::Config(th, to, srv, auth);
+}
+
+Trigger::Mail::Config getTestConfig2(void)
+{
+  const Trigger::Mail::Config::Authorization auth("acarmng.test.account2", "testowekonto");
+  const Trigger::Mail::Config::Server        srv("acarmng.test.account2@gmail.com",
+                                                 "smtp.googlemail.com",
+                                                 25,
+                                                 true);
+  const Trigger::Simple::ThresholdConfig     th(NULL, NULL);
+  return Trigger::Mail::Config(th, "acarmng.test.account1@gmail.com", srv, auth);
+}
+
 /*
-Trigger::GG::AccountConfig getTestConfig1(void)
-{
-  return Trigger::GG::AccountConfig(23436545, "testowekonto");
-}
-
-Trigger::GG::AccountConfig getTestConfig2(void)
-{
-  return Trigger::GG::AccountConfig(23461426, "testowekonto");
-}
-
-// helper for backward compatibility
-Trigger::GG::AccountConfig getTestConfig(void)
-{
-  return getTestConfig1();
-}
-
 std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, const Trigger::GG::UserID sender)
 {
   Trigger::GG::Connection conn(account);
