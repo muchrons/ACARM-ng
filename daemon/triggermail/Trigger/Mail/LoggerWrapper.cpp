@@ -81,7 +81,7 @@ LoggerWrapper::LoggerWrapper(void)
     mailstream_logger=loggerCCall;
 
     assert(g_log!=NULL);
-    LOG_DEBUG(*g_log, "wrapper registered");
+    LOGMSG_DEBUG(*g_log, "wrapper registered");
   }
 
   // mark new user
@@ -107,7 +107,7 @@ LoggerWrapper::~LoggerWrapper(void)
   if(g_count==0)
   {
     assert(g_log!=NULL);
-    LOG_DEBUG(*g_log, "unregistering wrapper");
+    LOGMSG_DEBUG(*g_log, "unregistering wrapper");
 
     mailstream_debug =0;
     mailstream_logger=loggerCIgnore;
