@@ -11,16 +11,17 @@
 #include "System/Enum.hpp"
 #include "Trigger/Simple/ThresholdConfig.hpp"
 
-// TODO: comments
-
 namespace Trigger
 {
 namespace Mail
 {
 namespace detail
 {
+/** \brief implemenation helper.
+ */
 struct SecurityEnum
 {
+  /** \brief enum for security types declaration. */
   typedef enum
   {
     //NONE, // NOTE: no secure connection is NOT allowed for security reasons
@@ -36,10 +37,19 @@ struct SecurityEnum
 class Config
 {
 public:
+  /** \brief server's configuration.
+   */
   struct Server
   {
+    /** \brief security enum - user-level class. */
     typedef System::Enum<detail::SecurityEnum> Security;
 
+    /** \brief create configuration from given paramters.
+     *  \param from   sender's e-mail address.
+     *  \param server server address.
+     *  \param port   port to connect to.
+     *  \param sec    security type.
+     */
     Server(const std::string &from,
            const std::string &server,
            const uint16_t     port,
@@ -51,14 +61,20 @@ public:
     {
     }
 
-    const std::string from_;
-    const std::string server_;
-    const uint16_t    port_;
-    const Security    sec_;
+    const std::string from_;        ///< sender's e-mail.
+    const std::string server_;      ///< server's addres.
+    const uint16_t    port_;        ///< port server's listening on.
+    const Security    sec_;         ///< security type to be used.
   }; // struct Server
 
+  /** \brief authorization settings.
+   */
   struct Authorization
   {
+    /** \brief create authroization configuration.
+     *  \param user user's name.
+     *  \param pass user's password.
+     */
     Authorization(const std::string user,
                   const std::string pass):
       user_(user),
@@ -66,8 +82,8 @@ public:
     {
     }
 
-    const std::string user_;
-    const std::string pass_;
+    const std::string user_;    ///< user name.
+    const std::string pass_;    ///< password for given user name.
   }; // struct Authorization
 
   /** \brief create configration description, without authorization.

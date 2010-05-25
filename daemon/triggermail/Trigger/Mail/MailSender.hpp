@@ -9,18 +9,26 @@
 #include "Trigger/Mail/ExceptionConnectionError.hpp"
 #include "Trigger/Mail/ExceptionSendingError.hpp"
 
-// TODO: comments
-
 namespace Trigger
 {
 namespace Mail
 {
 
+/** \brief wrapper for sending messages to destination.
+ */
 class MailSender
 {
 public:
+  /** \brief create sender with given configuration.
+   *  \param cfg configuration to be used.
+   */
   explicit MailSender(const Config &cfg);
 
+  /** \brief send message to configured recipient.
+   *  \param subject message's subject (note that '[acarmng]' prefix will be
+   *         added in from of it automaticaly).
+   *  \param content message's content.
+   */
   void send(const std::string &subject, const std::string &content);
 
 private:
