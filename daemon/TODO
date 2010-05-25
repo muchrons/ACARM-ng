@@ -11,4 +11,5 @@
 19 logger should append thread-IDs to logs.
 20 make logger's file names less verbose (component path is present in log-path any way).
 21 separate GG and e-mail test account's config into separate file, with proper defines/constants so that there will be just one place to remove them from code before the release.
-22
+22 rework trigger::mail::mailsender to create message's content from parameters, instead of doing it manually.
+23

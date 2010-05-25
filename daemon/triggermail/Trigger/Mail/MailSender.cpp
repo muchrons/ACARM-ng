@@ -24,12 +24,13 @@ inline std::string addHeaders(const std::string &content,
                               const std::string &from,
                               const std::string &to)
 {
+  // NOTE: this is a bit hardcore, but it's fast and fine for now.
   const char *eol="\r\n";
   std::stringstream ss;
   ss<<"Subject: [acarmng] "<<subject<<eol;
   ss<<"From: "<<from<<eol;
   ss<<"To: "  <<to  <<eol;
-  ss<<content;
+  ss<<content<<eol;
   return ss.str();
 } // addHeaders()
 } // unnamed namespace
