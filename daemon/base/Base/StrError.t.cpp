@@ -39,7 +39,6 @@ void testObj::test<1>(void)
   void *mem=malloc(42);
   free(mem);
   const StrError se;
-  std::cerr<<"\n"<<se.get()<<"\n";
   ensure("error string too short", se.get().length() > 6 );
 }
 
@@ -56,7 +55,6 @@ void testObj::test<2>(void)
   }
 
   const StrError se;
-  std::cerr<<"\n"<<se.get()<<"\n";
   ensure("error string too short", se.get().length() > 6 );
 }
 
