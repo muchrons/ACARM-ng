@@ -193,7 +193,9 @@ int send_message(char *data, size_t len, char**rcpts) {
   }
 
   /* first open the stream */
-  if ((ret = mailsmtp_socket_connect(smtp,
+  // NOTE: ssl vs raw version.
+  if ((ret = mailsmtp_ssl_connect(smtp,
+  //if ((ret = mailsmtp_socket_connect(smtp,
 				     (smtp_server != NULL ? smtp_server : "localhost"),
 				     smtp_port)) != MAILSMTP_NO_ERROR) {
     fprintf(stderr, "mailsmtp_socket_connect: %s\n", mailsmtp_strerror(ret));
