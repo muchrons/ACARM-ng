@@ -9,6 +9,7 @@
 
 #include "Logger/Logger.hpp"
 #include "Trigger/Factory.hpp"
+#include "Trigger/Mail/ExceptionInvalidConfig.hpp"
 
 namespace Trigger
 {

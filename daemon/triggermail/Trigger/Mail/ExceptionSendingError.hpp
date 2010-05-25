@@ -6,7 +6,6 @@
 #define INCLUDE_TRIGGER_MAIL_EXCEPTIONSENDINGERROR_HPP_FILE
 
 #include "Trigger/Mail/Exception.hpp"
-#include "Trigger/Mail/UserID.hpp"
 
 namespace Trigger
 {
