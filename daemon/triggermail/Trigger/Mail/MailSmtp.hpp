@@ -9,6 +9,7 @@
 #include <libetpan/libetpan.h>
 #include <cassert>
 
+#include "Trigger/Mail/LoggerWrapper.hpp"
 #include "Trigger/Mail/Exception.hpp"
 
 // TODO: comments
@@ -36,7 +37,8 @@ public:
   }
 
 private:
-  mailsmtp *ms_;
+  const LoggerWrapper  lw_;
+  mailsmtp            *ms_;
 }; // class MailSmtp
 
 } // namespace Mail
