@@ -6,6 +6,7 @@
 #define INCLUDE_TRIGGER_MAIL_MAILSENDER_HPP_FILE
 
 #include "Trigger/Mail/Config.hpp"
+#include "Trigger/Mail/LoggerWrapper.hpp"
 #include "Trigger/Mail/ExceptionConnectionError.hpp"
 #include "Trigger/Mail/ExceptionSendingError.hpp"
 
@@ -27,7 +28,8 @@ private:
   void errorHandler(int ret, const char *call) const;
   bool isError(int ret) const;
 
-  const Config cfg_;
+  const Config        cfg_;
+  const LoggerWrapper lw_;
 }; // class MailSmtp
 
 } // namespace Mail
