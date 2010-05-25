@@ -5,7 +5,6 @@
 
 /*
  * Simple Mail Submission Agent using SMTP with libEtPan!
- * TODO: Full sendmail like interface
  */
 
 #ifdef HAVE_CONFIG_H
