@@ -13,19 +13,13 @@ namespace Mail
 {
 
 MailSmtp::MailSmtp(void):
-  ms_( mailsmtp_new(0, NULL) )
+  System::ScopedPtrCustom<mailsmtp, mailsmtp_free>( mailsmtp_new(0, NULL) )
 {
-  if(ms_==NULL)
+  if( get()==NULL )
   {
     const Base::StrError se;
     throw Exception(SYSTEM_SAVE_LOCATION, se.get() );
   }
-}
-
-MailSmtp::~MailSmtp(void)
-{
-  assert(ms_!=NULL);
-  mailsmtp_free(ms_);
 }
 
 } // namespace Mail
