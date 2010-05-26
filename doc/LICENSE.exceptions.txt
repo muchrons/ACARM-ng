@@ -1,0 +1,9 @@
+Code provided by WCSS in ACARM-ng project is licensed as described in
+LICENSE.txt file. There are however pieces of code used and build with its
+build system, that use different licenses (i.e. external pieces of code).
+
+These components are:
+  -> 'curlpp'
+
+You can check license details for them in documentation from their authors,
+placed in components' folders.
