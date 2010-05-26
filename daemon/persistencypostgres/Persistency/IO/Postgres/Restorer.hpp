@@ -57,12 +57,14 @@ private:
                                  NodesVector                                    &out,
                                  Persistency::IO::Postgres::detail::EntryReader &er,
                                  IO::ConnectionPtrNN                             connStubIO,
-                                 IO::Transaction                                &tStubIO);
+                                 IO::Transaction                                &tStubIO,
+                                 Tree::IDsVector                                &restoredIDs);
 
   void restore(Persistency::IO::Postgres::detail::EntryReader &er,
                NodesVector                                    &out,
                const Tree::IDsVector                          &malerts,
-               const Tree::IDsVector                          &roots);
+               const Tree::IDsVector                          &roots,
+               Tree::IDsVector                                &restoredIDs);
 
   template<typename T>
   void addIfNew(const T &e, DataBaseID id);
@@ -78,14 +80,16 @@ private:
                              NodesVector                                    &out,
                              Persistency::IO::Postgres::detail::EntryReader &er,
                              IO::ConnectionPtrNN                             connStubIO,
-                             IO::Transaction                                &tStubIO);
+                             IO::Transaction                                &tStubIO,
+                             Tree::IDsVector                                &restoredIDs);
 
   NodeChildrenVector restoreNodeChildren(TreePtrNN                                       node,
                                          DataBaseID                                      id,
                                          NodesVector                                    &out,
                                          Persistency::IO::Postgres::detail::EntryReader &er,
                                          IO::ConnectionPtrNN                             connStubIO,
-                                         IO::Transaction                                &tStubIO);
+                                         IO::Transaction                                &tStubIO,
+                                         Tree::IDsVector                                &restoredIDs);
 
   void addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er,
                            const Tree::IDsVector                          &malerts);
