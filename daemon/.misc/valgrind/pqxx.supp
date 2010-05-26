@@ -8,11 +8,18 @@
    fun:PQconnectPoll
    ...
 }
-
 {
-   pqxx_connect_leak_remalloc
+   pqxx_connect_leak_realloc
    Memcheck:Leak
    fun:realloc
+   ...
+   fun:PQconnectPoll
+   ...
+}
+{
+   pqxx_connect_leak_calloc
+   Memcheck:Leak
+   fun:calloc
    ...
    fun:PQconnectPoll
    ...
