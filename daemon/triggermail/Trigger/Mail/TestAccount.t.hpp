@@ -25,7 +25,7 @@ Trigger::Mail::Config getTestConfig1(const char *to="acarmng.test.account2@gmail
                                                  "smtp.googlemail.com",
                                                  465,
                                                  Trigger::Mail::Config::Server::Security::SSL);
-  const Trigger::Simple::ThresholdConfig     th(NULL, NULL);
+  const Trigger::Simple::ThresholdConfig     th("0", "0");
   return Trigger::Mail::Config(th, to, srv, auth);
 }
 
@@ -37,7 +37,7 @@ Trigger::Mail::Config getTestConfig2(void)
                                                  "smtp.googlemail.com",
                                                  465,
                                                  Trigger::Mail::Config::Server::Security::SSL);
-  const Trigger::Simple::ThresholdConfig     th(NULL, NULL);
+  const Trigger::Simple::ThresholdConfig     th("0", "0");
   return Trigger::Mail::Config(th, "acarmng.test.account1@gmail.com", srv, auth);
 }
 
