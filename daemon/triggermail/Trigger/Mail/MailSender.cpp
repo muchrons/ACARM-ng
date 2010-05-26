@@ -124,6 +124,7 @@ struct mailmime *buildBodyText(const std::string &text)
 
   if( mailmime_set_body_text( mimeSub.get(), textPtr.get(), strlen( textPtr.get() ) ) != MAILIMF_NO_ERROR )
     throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, "mailmime_set_body_text() failed");
+  textPtr.release();
 
   return mimeSub.release();
 } // buildBodyText()
