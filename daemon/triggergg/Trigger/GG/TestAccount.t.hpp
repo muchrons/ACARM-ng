@@ -1,5 +1,5 @@
 /*
- * TestAccount.hpp
+ * TestAccount.t.hpp
  *
  */
 #ifndef INCLUDE_TRIGGER_GG_TESTACCOUNT_T_HPP_FILE

@@ -25,6 +25,8 @@ public:
 
 private:
   virtual void trigger(const Node &n);
+
+  const Config cfg_;
 }; // class Strategy
 
 } // namespace Mail

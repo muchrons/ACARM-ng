@@ -1,16 +1,18 @@
 /*
- * TestAccount.hpp
+ * TestAccount.t.hpp
  *
  */
 #ifndef INCLUDE_TRIGGER_MAIL_TESTACCOUNT_T_HPP_FILE
 #define INCLUDE_TRIGGER_MAIL_TESTACCOUNT_T_HPP_FILE
 
 #include <string>
+#include <boost/noncopyable.hpp>
+#include <unistd.h>
+#include <libetpan/libetpan.h>
 #include <cassert>
 
 #include "Trigger/Mail/Config.hpp"
-
-// TODO
+#include "Trigger/Mail/LoggerWrapper.hpp"
 
 namespace
 {
@@ -39,62 +41,105 @@ Trigger::Mail::Config getTestConfig2(void)
   return Trigger::Mail::Config(th, "acarmng.test.account1@gmail.com", srv, auth);
 }
 
-/*
-std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, const Trigger::GG::UserID sender)
+
+struct StorageHolderHelper: private boost::noncopyable
 {
-  Trigger::GG::Connection conn(account);
-  timeval                 timeout={9, 0};   // timeout is 9[s]
-  for(;;)
+  explicit StorageHolderHelper(mailstorage *storage):
+    storage_(storage)
   {
-    // wait for something
-    fd_set desc;
-    FD_ZERO(&desc);
-    FD_SET(conn.get()->fd, &desc);
+  }
 
-    // note that we assume running on linux here - other implementations
-    // can do random changes to timeout
-    const timeval previousTimeout=timeout;
-    switch( select(conn.get()->fd+1, &desc, NULL, NULL, &timeout) )
+  ~StorageHolderHelper(void)
+  {
+    if(storage_!=NULL)
+      mailstorage_free(storage_);
+  }
+
+  mailstorage *storage_;
+}; // struct StorageHolderHelper
+
+struct FolderHolderHelper: private boost::noncopyable
+{
+  explicit FolderHolderHelper(mailfolder *folder):
+    folder_(folder)
+  {
+  }
+
+  ~FolderHolderHelper(void)
+  {
+    if(folder_!=NULL)
     {
-      case 0:   // timeout
-        throw std::runtime_error("waiting for messages timeouted");
+      mailfolder_disconnect(folder_);
+      mailfolder_free(folder_);
+    }
+  }
 
-      case -1:  // error
-        throw std::runtime_error("select() returned error");
+  mailfolder *folder_;
+}; // struct FolderHolderHelper
 
-      default:  // OK
-        if( !FD_ISSET(conn.get()->fd, &desc) )
-          throw std::runtime_error("descriptor is not set - something's wrong");
-        break;
-    } // switch( select() )
-    assert( previousTimeout.tv_sec>=timeout.tv_sec &&
-            "non-linux implementation of select() - move 'timeout' "
-            "variable declaration inside the loop (note: this may cause "
-            "terribly long timeouts!)" );
 
-    // ok - we have some data to be read
+// internal (helper) implementation
+int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
+{
+  StorageHolderHelper storage( mailstorage_new(NULL) );             // create storage
+  if(storage.storage_==NULL)
+    throw std::runtime_error("storage() allocation error");
+  assert( cfg.getAuthorizationConfig()!=NULL );
+  if( pop3_mailstorage_init(storage.storage_,
+                            "pop.gmail.com",
+                            995,
+                            NULL,
+                            CONNECTION_TYPE_TLS,
+                            POP3_AUTH_TYPE_PLAIN,
+                            cfg.getAuthorizationConfig()->user_.c_str(),
+                            cfg.getAuthorizationConfig()->pass_.c_str(),
+                            0, NULL,
+                            NULL) != MAIL_NO_ERROR )                // init POP3 storage
+    throw std::runtime_error("pop3_mailstorage_init() unable to init POP3 storage");
+  FolderHolderHelper folder( mailfolder_new(storage.storage_, "/a/b/c/d", NULL) );  // create folder
+  if( mailfolder_connect(folder.folder_) != MAIL_NO_ERROR )         // connect to folder
+    throw std::runtime_error("mailfolder_connect() unable to connect to folder");
 
-    // read data
-    EventWrapper e( gg_watch_fd( conn.get() ) );    // read event
-    // skip errors
-    if( e.get()==NULL )
-      continue;
-    // we wait for message
-    if( e.get()->type!=GG_EVENT_MSG )
-      continue;
-    // get reference to message
-    gg_event_msg &m=e.get()->event.msg;
-    // only messages from given UID are interesting for us
-    if(m.sender!=sender)
-      continue;
+  // loop to read (and delete messages)
+  int count=0;
+  for(uint32_t index=1; /* break inside the loop */; ++index)
+  {
+    {
+      mailmessage *msg;
+      if( mailsession_get_message(folder.folder_->fld_session, index, &msg) != MAIL_NO_ERROR )
+        break;                  // no more messages
+      mailmessage_free(msg);    // we don't actually need this message :)
+    }
 
-    // ok - this is our message!
-    const char *msg=reinterpret_cast<const char*>(m.message);
-    return msg;
-  } // for(events)
+    ++count;                    // ok - one more message
+
+    // remove message from server
+    if( mailsession_remove_message(folder.folder_->fld_session, index) != MAIL_NO_ERROR )
+      throw std::runtime_error("mailsession_remove_message(): unable to remove message");
+  } // for(all_messages)
+
+  return count;
 } // getMessageFromAccount()
 
-*/
+
+// returns number of removed messages.
+int removeMessagesFromAccount(const Trigger::Mail::Config &cfg, int minCount=0)
+{
+  Trigger::Mail::LoggerWrapper logWrp;                  // add logs to log file
+  const time_t                 deadline=time(NULL)+10;  // give it 10[s] timeout
+  int                          count   =0;              // no elements removed yet
+  // check until timeout's reached, or minimal value is reached
+  for(;;)
+  {
+    count+=removeMessagesFromAccountImpl(cfg);          // test account's content
+    if( deadline<time(NULL) || count>=minCount )        // timeout or got expected count?
+      break;
+    usleep(500*1000);                                   // wait 0.5[s] not to make heavy-busy-loop
+                                                        // on fast connections
+  }
+
+  return count;
+}
 
 } // unnamed namespace
 

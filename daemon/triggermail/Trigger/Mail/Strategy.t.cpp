@@ -13,8 +13,6 @@ using namespace Trigger::Mail;
 using namespace Persistency;
 using namespace TestHelpers::Persistency;
 
-// TODO
-
 namespace
 {
 
@@ -37,10 +35,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  /*
-  Strategy s(cfg_);
+  Strategy s( getTestConfig1() );
   ensure_equals("invalid name", s.getTriggerName(), "mail");
-  */
 }
 
 // test sending report
@@ -48,15 +44,15 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  /*
-  Strategy               s(cfg_);
+  // wipe-out account's content
+  removeMessagesFromAccount( getTestConfig2() );
+  // send report
+  Strategy               s( getTestConfig1() );
   Strategy::ChangedNodes nc;
   s.process( makeNewNode(), nc );
-  const std::string      str=getMessageFromAccount( getTestConfig2(),
-                                                    cfg_.getAccountConfig().getUserID() );
-  ensure_equals("invalid repot generated", str,
-                "reporting triggered for meta-alert 'some meta-alert' (2 correlated alerts; severity is 1.1)");
-  */
+  // check results
+  const int count=removeMessagesFromAccount( getTestConfig2(), 1 );
+  ensure_equals("invalid number of messages removed", count, 1);
 }
 
 } // namespace tut
