@@ -22,9 +22,9 @@ Logger::Node *g_log  =NULL;
 
 inline std::string cutIfNeeded(const char *str, const size_t size)
 {
-  if( strlen(str)>size )
-    return std::string(str, str+size);
-  return str;
+  if(str==NULL)
+    return "";
+  return std::string(str, str+size);
 } // cutIfNeeded()
 } // unnamed namespace
 
