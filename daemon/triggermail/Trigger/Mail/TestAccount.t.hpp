@@ -126,7 +126,7 @@ int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
 int removeMessagesFromAccount(const Trigger::Mail::Config &cfg, int minCount=0)
 {
   Trigger::Mail::LoggerWrapper logWrp;                  // add logs to log file
-  const time_t                 deadline=time(NULL)+10;  // give it 10[s] timeout
+  const time_t                 deadline=time(NULL)+15;  // give it 15[s] timeout
   int                          count   =0;              // no elements removed yet
   // check until timeout's reached, or minimal value is reached
   for(;;)
