@@ -5,6 +5,8 @@
 #ifndef INCLUDE_SYSTEM_SCOPEDPTRCUSTOM_HPP_FILE
 #define INCLUDE_SYSTEM_SCOPEDPTRCUSTOM_HPP_FILE
 
+/* public header */
+
 #include <boost/noncopyable.hpp>
 #include <boost/operators.hpp>
 #include <boost/type_traits/add_const.hpp>
