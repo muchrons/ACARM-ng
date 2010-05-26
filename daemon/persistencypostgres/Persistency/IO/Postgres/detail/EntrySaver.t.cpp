@@ -40,6 +40,7 @@ inline pqxx::result execSQL(Transaction &t, const T &sql)
 {
     return t.getAPI<TransactionAPI>().exec(sql);
 } // execSQL()
+
 struct TestClass
 {
   TestClass(void):
@@ -120,14 +121,14 @@ struct TestClass
   void CreateTempTable()
   {
     execSQL(t_, "CREATE TEMP TABLE tmp"
-        "("
-        "  s3   char(3)    NULL,"
-        "  s16  char(16)   NULL,"
-        "  s32  char(32)   NULL,"
-        "  s64  char(64)   NULL,"
-        "  s128 char(128)  NULL,"
-        "  s256 char(256)  NULL"
-        ") ON COMMIT DROP;");
+                "("
+                "  s3   char(3)    NULL,"
+                "  s16  char(16)   NULL,"
+                "  s32  char(32)   NULL,"
+                "  s64  char(64)   NULL,"
+                "  s128 char(128)  NULL,"
+                "  s256 char(256)  NULL"
+                ") ON COMMIT DROP;" );
   }
 
 
@@ -670,6 +671,10 @@ void testObj::test<15>(void)
   t_.commit();
 }
 
+// TODO: test description's missing
+// TODO: note that it is perfectly ok to use just 1, max 2 sizes here, since code
+//       is generic, so there is no point in checking explicitly that many situations
+//       (it only makes test longer to read/understand).
 template<>
 template<>
 void testObj::test<16>(void)
@@ -966,4 +971,5 @@ void testObj::test<26>(void)
     ensure_equals("invalid number of trigered meta-alerts in data base", r.size(), 0u);
   }
 }
+
 } // namespace tut

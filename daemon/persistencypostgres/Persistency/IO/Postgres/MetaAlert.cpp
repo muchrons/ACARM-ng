@@ -69,6 +69,7 @@ void MetaAlert::updateSeverityDeltaImpl(Transaction &t, double delta)
   TRYCATCH_BEGIN
     EntrySaver       es(t, *dbHandler_);
     const DataBaseID malertID = getID();
+    // TODO: comment is not precise - update here is "by" not "to"
     LOGMSG_DEBUG_S(log_)<<"update severity delta for Meta Alert with ID: "<<malertID
                         <<" to: "<<delta;
     es.updateSeverityDelta(malertID, delta);
@@ -80,6 +81,7 @@ void MetaAlert::updateCertaintyDeltaImpl(Transaction &t, double delta)
   TRYCATCH_BEGIN
     EntrySaver       es(t, *dbHandler_);
     const DataBaseID malertID = getID();
+    // TODO: comment is not precise - update here is "by" not "to"
     LOGMSG_DEBUG_S(log_)<<"update certainty delta for Meta Alert with ID: "<<malertID
                         <<" to: "<<delta;
     es.updateCertaintyDelta(malertID, delta);

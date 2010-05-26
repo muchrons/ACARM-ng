@@ -47,7 +47,7 @@ void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &out)
     const Tree::IDsVector &roots  =er.readRoots();
     // vector<DataBaseID> badIDs;
     restore(er, out, maInUse, roots/*, basIds*/);
-    // mark bad IDs as unused
+    // TODO: mark bad IDs as unused
   TRYCATCH_END
 }
 
@@ -132,7 +132,7 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
     catch(const ExceptionBadNumberOfNodeChildren &e)
     {
       LOGMSG_WARN_S(log_)<<"root with id "<< *it << " has bad number of children"
-                                                    " this subtree is being skipped, exception message: "<< e.what();
+                                                    " this subtree is being skipped; exception message: "<< e.what();
     }
   }
   // remove duplicates from out vector
@@ -203,11 +203,11 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
     }
     catch(const ExceptionNoSuchEntry &e)
     {
-      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " doesn't exist, exception message: "<< e.what();
+      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " doesn't exist; exception message: "<< e.what();
     }
     catch(const ExceptionBadNumberOfNodeChildren &e)
     {
-      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " has bad number of children, exception message: "<< e.what();
+      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " has bad number of children; exception message: "<< e.what();
     }
   }
   if(tmpNodes.size() < 2)
