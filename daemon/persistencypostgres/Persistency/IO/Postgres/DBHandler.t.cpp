@@ -38,6 +38,7 @@ factory tf("Persistency/IO/Postgres/DBHandler");
 namespace tut
 {
 
+// TODO: this is not default c-tor being tested here
 // default constructor
 template<>
 template<>
