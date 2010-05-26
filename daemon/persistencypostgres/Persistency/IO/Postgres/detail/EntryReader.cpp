@@ -23,9 +23,8 @@ using namespace Persistency;
 using namespace Base;
 using Persistency::IO::Transaction;
 
-// TODO: arguments given to macro must be always taken between brackets.
 // this is helper macro for calling f-cjtion that saves line number and calls given sql statement (with log)
-#define SQL(sql,log) SQLHelper(__FILE__, __LINE__, sql, log)
+#define SQL(sql, log) SQLHelper((__FILE__), (__LINE__), (sql), (log))
 
 namespace Persistency
 {
@@ -77,7 +76,6 @@ EntryReader::EntryReader(Transaction &t, DBHandler &dbh):
 {
 }
 
-//TODO: write tests
 Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
 {
   stringstream ss;

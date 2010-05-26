@@ -45,7 +45,9 @@ void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &out)
     EntryReader er(t, *dbHandler_);
     const Tree::IDsVector &maInUse=er.readIDsMalertsInUse();
     const Tree::IDsVector &roots  =er.readRoots();
-    restore(er, out, maInUse, roots);
+    // vector<DataBaseID> badIDs;
+    restore(er, out, maInUse, roots/*, basIds*/);
+    // mark bad IDs as unused
   TRYCATCH_END
 }
 
@@ -108,7 +110,9 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   return restoreNode(node, id, out, er, connStubIO, tStubIO);
 }
 
-// TODO: add class with lists of errors
+// TODO: add class with lists of invalid nodes (IDs)
+// store invalid nodes
+// after restoring mark this nodes as unused
 void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
                        NodesVector                                    &out,
                        const Tree::IDsVector                          &malerts,
@@ -125,13 +129,13 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
     {
       deepFirstSearch(*it, out, er, connStubIO, tStubIO);
     }
-    catch(const ExceptionBadNumberOfNodeChildren &)
+    catch(const ExceptionBadNumberOfNodeChildren &e)
     {
       LOGMSG_WARN_S(log_)<<"root with id "<< *it << " has bad number of children"
-                                                    " this subtree is being skipped";
+                                                    " this subtree is being skipped, exception message: "<< e.what();
     }
   }
-  // remove doplicates from out vector
+  // remove duplicates from out vector
   removeDuplicates(out);
 }
 
@@ -197,13 +201,13 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
     {
       tmpNodes.push_back( deepFirstSearch( *it, out, er, connStubIO, tStubIO ) );
     }
-    catch(const ExceptionNoSuchEntry &)
+    catch(const ExceptionNoSuchEntry &e)
     {
-      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " doesn't exist";
+      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " doesn't exist, exception message: "<< e.what();
     }
-    catch(const ExceptionBadNumberOfNodeChildren &)
+    catch(const ExceptionBadNumberOfNodeChildren &e)
     {
-      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " has bad number of children";
+      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " has bad number of children, exception message: "<< e.what();
     }
   }
   if(tmpNodes.size() < 2)
