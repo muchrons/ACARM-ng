@@ -8,7 +8,7 @@
  */
 
 #ifdef HAVE_CONFIG_H
-#	include <config.h>
+#  include <config.h>
 #endif
 
 #include <libetpan/libetpan.h>
@@ -19,24 +19,24 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #ifdef WIN32
-#	include "win_etpan.h"
+#  include "win_etpan.h"
 #ifdef _MSC_VER
-#	include "../src/bsd/getopt.h"
-#	define STDIN_FILENO _fileno(stdin)
+#  include "../src/bsd/getopt.h"
+#  define STDIN_FILENO _fileno(stdin)
 #else
-#	include <getopt.h>
+#  include <getopt.h>
 #endif
 #else
-#	include <netdb.h>
-#	include <netinet/in.h>
-#	include <sys/socket.h>
-#	include <sys/mman.h>
-#	include <unistd.h>
-#	include <sys/ioctl.h>
-#	include <pwd.h>
+#  include <netdb.h>
+#  include <netinet/in.h>
+#  include <sys/socket.h>
+#  include <sys/mman.h>
+#  include <unistd.h>
+#  include <sys/ioctl.h>
+#  include <pwd.h>
 
-//#	define _GNU_SOURCE
-#	include <getopt.h>
+//#  define _GNU_SOURCE
+#  include <getopt.h>
 #endif
 
 /* direction is 1 for send, 0 for receive, -1 when it does not apply */
@@ -85,7 +85,7 @@ int collect(struct mem_message *message) {
   if (!fstat(0, &sb) && S_ISREG(sb.st_mode) && sb.st_size >= 0) {
     message->len = sb.st_size;
     if ((message->data = (char*)mmap(NULL, message->len, PROT_READ, MAP_SHARED,
-			      STDIN_FILENO, 0)) != MAP_FAILED)
+            STDIN_FILENO, 0)) != MAP_FAILED)
       return 0;
   }
 #endif
@@ -104,38 +104,38 @@ int collect(struct mem_message *message) {
     strcpy(message->mstring->str+message->len, tmpStr);
     message->len+=len;
     if ((mmap_string_set_size(message->mstring,
-			      message->len + BLOCKSIZE)) == NULL) {
+            message->len + BLOCKSIZE)) == NULL) {
       perror("mmap_string_set_size");
       goto error;
     }
     len=0;
   }
   /*
-  printf("type in message:\n");
-  while ((len = read(STDIN_FILENO,
-		     message->mstring->str + message->len, BLOCKSIZE)) > 0) {
-    message->len += len;
-    // reserve room for next block
-    if ((mmap_string_set_size(message->mstring,
-			      message->len + BLOCKSIZE)) == NULL) {
-      perror("mmap_string_set_size");
-      goto error;
-    }
-  }
-  */
-
-  if (len == 0) {
-    message->data = message->mstring->str;
-    return 0; /* OK */
-  }
-
-  perror("read");
-
- error:
-  if (message->mstring != NULL)
-    mmap_string_free(message->mstring);
-  return -1;
+     printf("type in message:\n");
+     while ((len = read(STDIN_FILENO,
+     message->mstring->str + message->len, BLOCKSIZE)) > 0) {
+     message->len += len;
+// reserve room for next block
+if ((mmap_string_set_size(message->mstring,
+message->len + BLOCKSIZE)) == NULL) {
+perror("mmap_string_set_size");
+goto error;
 }
+}
+   */
+
+if (len == 0) {
+  message->data = message->mstring->str;
+  return 0; /* OK */
+}
+
+perror("read");
+
+error:
+if (message->mstring != NULL)
+  mmap_string_free(message->mstring);
+  return -1;
+  }
 
 char *guessfrom(void) {
 #ifndef WIN32
@@ -167,18 +167,18 @@ char *guessfrom(void) {
     snprintf(gfrom, len, "#%u@%s", uid, hostname);
   return gfrom;
 #else
-	return NULL;
+  return NULL;
 #endif
 }
 
-void release(struct mem_message *message) {
-  if (message->mstring != NULL)
-    mmap_string_free(message->mstring);
+  void release(struct mem_message *message) {
+    if (message->mstring != NULL)
+      mmap_string_free(message->mstring);
 #ifndef MMAP_UNAVAILABLE
-  else if (message->data != NULL)
-    munmap(message->data, message->len);
+    else if (message->data != NULL)
+      munmap(message->data, message->len);
 #endif
-}
+  }
 
 int send_message(char *data, size_t len, char**rcpts) {
   int s = -1;
@@ -195,75 +195,75 @@ int send_message(char *data, size_t len, char**rcpts) {
   /* first open the stream */
   // NOTE: ssl vs raw version.
   if ((ret = mailsmtp_ssl_connect(smtp,
-  //if ((ret = mailsmtp_socket_connect(smtp,
-				     (smtp_server != NULL ? smtp_server : "localhost"),
-				     smtp_port)) != MAILSMTP_NO_ERROR) {
-    fprintf(stderr, "mailsmtp_socket_connect: %s\n", mailsmtp_strerror(ret));
-    goto error;
-  }
+          //if ((ret = mailsmtp_socket_connect(smtp,
+    (smtp_server != NULL ? smtp_server : "localhost"),
+      smtp_port)) != MAILSMTP_NO_ERROR) {
+          fprintf(stderr, "mailsmtp_socket_connect: %s\n", mailsmtp_strerror(ret));
+          goto error;
+          }
 
-  /* then introduce ourselves */
-  if (smtp_esmtp && (ret = mailesmtp_ehlo(smtp)) == MAILSMTP_NO_ERROR)
-    esmtp = 1;
-  else if (!smtp_esmtp || ret == MAILSMTP_ERROR_NOT_IMPLEMENTED)
-    ret = mailsmtp_helo(smtp);
-  if (ret != MAILSMTP_NO_ERROR) {
-    fprintf(stderr, "mailsmtp_helo: %s\n", mailsmtp_strerror(ret));
-    goto error;
-  }
+          /* then introduce ourselves */
+          if (smtp_esmtp && (ret = mailesmtp_ehlo(smtp)) == MAILSMTP_NO_ERROR)
+          esmtp = 1;
+          else if (!smtp_esmtp || ret == MAILSMTP_ERROR_NOT_IMPLEMENTED)
+          ret = mailsmtp_helo(smtp);
+          if (ret != MAILSMTP_NO_ERROR) {
+          fprintf(stderr, "mailsmtp_helo: %s\n", mailsmtp_strerror(ret));
+          goto error;
+          }
 
-  if (esmtp && smtp_tls &&
-      (ret = mailsmtp_socket_starttls(smtp)) != MAILSMTP_NO_ERROR) {
-    fprintf(stderr, "mailsmtp_starttls: %s\n", mailsmtp_strerror(ret));
-    goto error;
-  }
+          if (esmtp && smtp_tls &&
+            (ret = mailsmtp_socket_starttls(smtp)) != MAILSMTP_NO_ERROR) {
+          fprintf(stderr, "mailsmtp_starttls: %s\n", mailsmtp_strerror(ret));
+          goto error;
+          }
 
-  if (esmtp && smtp_user != NULL &&
-      (ret = mailsmtp_auth(smtp, smtp_user,
-			   (smtp_password != NULL) ? smtp_password : ""))
-      != MAILSMTP_NO_ERROR) {
-    fprintf(stderr, "mailsmtp_auth: %s: %s\n", smtp_user, mailsmtp_strerror(ret));
-    goto error;
-  }
+          if (esmtp && smtp_user != NULL &&
+              (ret = mailsmtp_auth(smtp, smtp_user,
+                                   (smtp_password != NULL) ? smtp_password : ""))
+              != MAILSMTP_NO_ERROR) {
+            fprintf(stderr, "mailsmtp_auth: %s: %s\n", smtp_user, mailsmtp_strerror(ret));
+            goto error;
+          }
 
-  /* source */
-  if ((ret = (esmtp ?
-	      mailesmtp_mail(smtp, smtp_from, 1, "etPanSMTPTest") :
-	      mailsmtp_mail(smtp, smtp_from))) != MAILSMTP_NO_ERROR) {
-    fprintf(stderr, "mailsmtp_mail: %s, %s\n", smtp_from, mailsmtp_strerror(ret));
-    goto error;
-  }
+          /* source */
+          if ((ret = (esmtp ?
+                  mailesmtp_mail(smtp, smtp_from, 1, "etPanSMTPTest") :
+                  mailsmtp_mail(smtp, smtp_from))) != MAILSMTP_NO_ERROR) {
+            fprintf(stderr, "mailsmtp_mail: %s, %s\n", smtp_from, mailsmtp_strerror(ret));
+            goto error;
+          }
 
-  /* recipients */
-  for (r = rcpts; *r != NULL; r++) {
-    if ((ret = (esmtp ?
-		mailesmtp_rcpt(smtp, *r,
-			       MAILSMTP_DSN_NOTIFY_FAILURE|MAILSMTP_DSN_NOTIFY_DELAY,
-			       NULL) :
-		mailsmtp_rcpt(smtp, *r))) != MAILSMTP_NO_ERROR) {
-      fprintf(stderr, "mailsmtp_rcpt: %s: %s\n", *r, mailsmtp_strerror(ret));
-      goto error;
-    }
-  }
+          /* recipients */
+          for (r = rcpts; *r != NULL; r++) {
+            if ((ret = (esmtp ?
+                    mailesmtp_rcpt(smtp, *r,
+                      MAILSMTP_DSN_NOTIFY_FAILURE|MAILSMTP_DSN_NOTIFY_DELAY,
+                      NULL) :
+                    mailsmtp_rcpt(smtp, *r))) != MAILSMTP_NO_ERROR) {
+              fprintf(stderr, "mailsmtp_rcpt: %s: %s\n", *r, mailsmtp_strerror(ret));
+              goto error;
+            }
+          }
 
-  /* message */
-  if ((ret = mailsmtp_data(smtp)) != MAILSMTP_NO_ERROR) {
-    fprintf(stderr, "mailsmtp_data: %s\n", mailsmtp_strerror(ret));
-    goto error;
-  }
-  if ((ret = mailsmtp_data_message(smtp, data, len)) != MAILSMTP_NO_ERROR) {
-    fprintf(stderr, "mailsmtp_data_message: %s\n", mailsmtp_strerror(ret));
-    goto error;
-  }
-  mailsmtp_free(smtp);
-  return 0;
+          /* message */
+          if ((ret = mailsmtp_data(smtp)) != MAILSMTP_NO_ERROR) {
+            fprintf(stderr, "mailsmtp_data: %s\n", mailsmtp_strerror(ret));
+            goto error;
+          }
+          if ((ret = mailsmtp_data_message(smtp, data, len)) != MAILSMTP_NO_ERROR) {
+            fprintf(stderr, "mailsmtp_data_message: %s\n", mailsmtp_strerror(ret));
+            goto error;
+          }
+          mailsmtp_free(smtp);
+          return 0;
 
- error:
-  if (smtp != NULL)
-    mailsmtp_free(smtp);
-  if (s >= 0)
-    close(s);
-  return -1;
+error:
+          if (smtp != NULL)
+            mailsmtp_free(smtp);
+          if (s >= 0)
+            close(s);
+          return -1;
 }
 
 int main(int argc, char **argv) {
@@ -283,49 +283,49 @@ int main(int argc, char **argv) {
   };
 #endif
 
-mailstream_debug = 1;
-mailstream_logger = logger;
+  mailstream_debug = 1;
+  mailstream_logger = logger;
 
 
 
   while(1) {
 #if HAVE_GETOPT_LONG
-	r = getopt_long(argc, argv, "s:p:u:v:f:SE", long_options, &indx);
+    r = getopt_long(argc, argv, "s:p:u:v:f:SE", long_options, &indx);
 #else
-	r = getopt(argc, argv, "s:p:u:v:f:SE");
+    r = getopt(argc, argv, "s:p:u:v:f:SE");
 #endif
     if (r < 0)
       break;
     switch (r) {
-    case 's':
-      if (smtp_server != NULL)
-	free(smtp_server);
-      smtp_server = strdup(optarg);
-      break;
-    case 'p':
-      smtp_port = (uint16_t) strtoul(optarg, NULL, 10);
-      break;
-    case 'u':
-      if (smtp_user != NULL)
-	free(smtp_user);
-      smtp_user = strdup(optarg);
-      break;
-    case 'v':
-      if (smtp_password != NULL)
-	free(smtp_password);
-      smtp_password = strdup(optarg);
-      break;
-    case 'f':
-      if (smtp_from != NULL)
-	free(smtp_from);
-      smtp_from = strdup(optarg);
-      break;
-    case 'S':
-      smtp_tls = 1;
-      break;
-    case 'E':
-      smtp_esmtp = 0;
-      break;
+      case 's':
+        if (smtp_server != NULL)
+          free(smtp_server);
+        smtp_server = strdup(optarg);
+        break;
+      case 'p':
+        smtp_port = (uint16_t) strtoul(optarg, NULL, 10);
+        break;
+      case 'u':
+        if (smtp_user != NULL)
+          free(smtp_user);
+        smtp_user = strdup(optarg);
+        break;
+      case 'v':
+        if (smtp_password != NULL)
+          free(smtp_password);
+        smtp_password = strdup(optarg);
+        break;
+      case 'f':
+        if (smtp_from != NULL)
+          free(smtp_from);
+        smtp_from = strdup(optarg);
+        break;
+      case 'S':
+        smtp_tls = 1;
+        break;
+      case 'E':
+        smtp_esmtp = 0;
+        break;
     }
   }
 
