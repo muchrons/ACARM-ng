@@ -12,6 +12,8 @@
 #include "Trigger/Mail/MailSmtp.hpp"
 #include "Trigger/Mail/MailSender.hpp"
 
+// TODO: fix mem-leaks in this file
+
 using namespace System;
 
 namespace Trigger
@@ -138,7 +140,7 @@ mailmime *buildMessage(mailimf_fields *fields)
   if( mime.get()==NULL )
     throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, "mailmime_new_message_data() failed");
 
-  mailmime_set_imf_fields( mime.get(), fields );
+  mailmime_set_imf_fields( mime.get(), fieldsPtr.release() );
   return mime.release();
 } // buildMessage()
 
@@ -161,11 +163,16 @@ std::string createMimeMessage(const std::string &from,
     throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, "mailmime_smart_add_part() failed");
   textPart.release();
 
+  // TODO: this is temporary code
   int col=0;
   mailmime_write( stdout, &col, message.get() );
 
-  // TODO
-  return "";
+  // TODO: do something to return real message instead of this hardcoded stuff...
+  return "From: <acarmng.test.account1@gmail.com>\r\n"
+         "To: acarmng.test.account2@gmail.com\r\n"
+         "Subject: kszy\r\n"
+         "ala ma kota\r\n"
+         ;
 } // createMimeMessage()
 
 } // unnamed namespace
