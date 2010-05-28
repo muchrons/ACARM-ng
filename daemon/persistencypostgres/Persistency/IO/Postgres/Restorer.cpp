@@ -247,7 +247,6 @@ void Restorer::markInvalidIDsAsUnused(Persistency::IO::Postgres::detail::EntrySa
   sort(maInUse.begin(), maInUse.end());
   sort(restoredIDs.begin(), restoredIDs.end());
 
-  cout << maInUse.size() - restoredIDs.size() << endl;
   Tree::IDsVector removed(maInUse.size() - restoredIDs.size());
   Tree::IDsVector::iterator end = set_difference(maInUse.begin(), maInUse.end(),
                                                 restoredIDs.begin(), restoredIDs.end(), removed.begin());
