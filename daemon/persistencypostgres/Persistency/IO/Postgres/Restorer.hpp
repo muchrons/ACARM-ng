@@ -12,6 +12,7 @@
 #include "Persistency/IO/Postgres/Tree.hpp"
 #include "Persistency/IO/Postgres/ReverseIDCache.hpp"
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
+#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 
 namespace Persistency
 {
@@ -93,6 +94,11 @@ private:
 
   void addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er,
                            const Tree::IDsVector                          &malerts);
+
+  void markInvalidIDsAsUnused(Persistency::IO::Postgres::detail::EntrySaver  &es,
+                              Tree::IDsVector                                maInUse,
+                              Tree::IDsVector                                restoredIDs);
+
 
   Logger::Node                   log_;
   DBHandlerPtrNN                 dbHandler_;

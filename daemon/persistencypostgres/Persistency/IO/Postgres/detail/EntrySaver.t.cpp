@@ -123,11 +123,7 @@ struct TestClass
     execSQL(t_, "CREATE TEMP TABLE tmp"
                 "("
                 "  s3   char(3)    NULL,"
-                "  s16  char(16)   NULL,"
-                "  s32  char(32)   NULL,"
-                "  s64  char(64)   NULL,"
-                "  s128 char(128)  NULL,"
-                "  s256 char(256)  NULL"
+                "  s16  char(16)   NULL"
                 ") ON COMMIT DROP;" );
   }
 
@@ -671,10 +667,7 @@ void testObj::test<15>(void)
   t_.commit();
 }
 
-// TODO: test description's missing
-// TODO: note that it is perfectly ok to use just 1, max 2 sizes here, since code
-//       is generic, so there is no point in checking explicitly that many situations
-//       (it only makes test longer to read/understand).
+// trying save max value length to the data base
 template<>
 template<>
 void testObj::test<16>(void)
@@ -682,18 +675,10 @@ void testObj::test<16>(void)
   CreateTempTable();
   stringstream ss;
   string s;
-  ss << "INSERT INTO tmp(s3, s16, s32, s64, s128, s256) VALUES(";
+  ss << "INSERT INTO tmp(s3, s16) VALUES(";
   Appender::append(ss, createString(3) );
   ss << ", ";
   Appender::append(ss, createString(16) );
-  ss << ", ";
-  Appender::append(ss, createString(32) );
-  ss << ", ";
-  Appender::append(ss, createString(64) );
-  ss << ", ";
-  Appender::append(ss, createString(128) );
-  ss << ", ";
-  Appender::append(ss, createString(256) );
   ss << ")";
   t_.getAPI<TransactionAPI>().exec(ss);
   ss.str("");
@@ -702,15 +687,6 @@ void testObj::test<16>(void)
   r[0]["s3"].to(s);
   ensure_equals("invalid size", s.size(), 3u);
   r[0]["s16"].to(s);
-  ensure_equals("invalid size", s.size(), 16u);
-  r[0]["s32"].to(s);
-  ensure_equals("invalid size", s.size(), 32u);
-  r[0]["s64"].to(s);
-  ensure_equals("invalid size", s.size(), 64u);
-  r[0]["s128"].to(s);
-  ensure_equals("invalid size", s.size(), 128u);
-  r[0]["s256"].to(s);
-  ensure_equals("invalid size", s.size(), 256u);
 }
 
 // try save service with NULL reference URL

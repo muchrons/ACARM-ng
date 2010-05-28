@@ -43,11 +43,12 @@ void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &out)
 {
   TRYCATCH_BEGIN
     EntryReader er(t, *dbHandler_);
+    EntrySaver  es(t, *dbHandler_);
     const Tree::IDsVector &maInUse=er.readIDsMalertsInUse();
     const Tree::IDsVector &roots  =er.readRoots();
     Tree::IDsVector restoredIDs;
     restore(er, out, maInUse, roots, restoredIDs);
-    // markBadIDsAsUnused(er, maInUse, restoredIDs);
+    markInvalidIDsAsUnused(es, maInUse, restoredIDs);
   TRYCATCH_END
 }
 
@@ -112,9 +113,6 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
   return restoreNode(node, id, out, er, connStubIO, tStubIO, restoredIDs);
 }
 
-// TODO: add class with lists of invalid nodes (IDs)
-// store invalid nodes
-// after restoring mark this nodes as unused
 void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
                        NodesVector                                    &out,
                        const Tree::IDsVector                          &malerts,
@@ -141,6 +139,8 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
   }
   // remove duplicates from out vector
   removeDuplicates(out);
+
+  removeDuplicates(restoredIDs);
 }
 
 template<typename T>
@@ -239,6 +239,23 @@ void Restorer::addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReade
   }
 }
 
+void Restorer::markInvalidIDsAsUnused(Persistency::IO::Postgres::detail::EntrySaver  &es,
+                                      Tree::IDsVector                                maInUse,
+                                      Tree::IDsVector                                restoredIDs)
+{
+  removeDuplicates(maInUse);
+  sort(maInUse.begin(), maInUse.end());
+  sort(restoredIDs.begin(), restoredIDs.end());
+
+  cout << maInUse.size() - restoredIDs.size() << endl;
+  Tree::IDsVector removed(maInUse.size() - restoredIDs.size());
+  Tree::IDsVector::iterator end = set_difference(maInUse.begin(), maInUse.end(),
+                                                restoredIDs.begin(), restoredIDs.end(), removed.begin());
+  for(Tree::IDsVector::iterator it = removed.begin(); it != end; ++it)
+  {
+    es.markMetaAlertAsUnused(*it);
+  }
+}
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency
