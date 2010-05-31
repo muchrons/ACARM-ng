@@ -69,12 +69,13 @@ void Strategy::process(Node n, ChangedNodes &/*changed*/)
   }
 
   // process node
-  nos_.add(n);
   LOGMSG_INFO_S(log_)<<"calling trigger for node at address 0x"
                      <<static_cast<void*>( n.get() );
   trigger(n);
 
   // if it succeeded, mark it as triggered
+  nos_.add(n);
+  // and save it to persistency storage
   BackendFacade bf(conn_, name_);
   bf.markAsTriggered( n->getMetaAlert() );
   bf.commitChanges();
