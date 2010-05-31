@@ -27,13 +27,12 @@ factory tf("Persistency/IO/Postgres/DBConnection");
 namespace tut
 {
 
-// TODO: this is not default c-tor being tested here
-// default constructor
+// testing constructor
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  DBConnection::Parameters params("localhost", "5432", "acarm_ng_test", "acarm-ng-daemon", "test.daemon");
+  const DBConnection::Parameters params("localhost", "5432", "acarm_ng_test", "acarm-ng-daemon", "test.daemon");
   DBConnection dbconn(params);
 }
 

@@ -200,17 +200,13 @@ Restorer::NodesVector makeNewTree3(void)
   GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
   vec.push_back(leaf3);
   vec.push_back(leaf4);
-  GraphNodePtrNN node2 = makeNewNode(leaf3,
-                                     leaf4,
+  GraphNodePtrNN node2 = makeNewNode(leaf2,
+                                     leaf3,
                                      "node2");
   vec.push_back(node2);
 
-  GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
-  GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
-  vec.push_back(leaf5);
-  vec.push_back(leaf6);
-  GraphNodePtrNN node3 = makeNewNode(leaf5,
-                                     leaf6,
+  GraphNodePtrNN node3 = makeNewNode(leaf3,
+                                     leaf4,
                                      "node3");
 
   vec.push_back(node3);

@@ -24,6 +24,7 @@ using namespace Persistency::IO::Postgres::detail;
 using namespace std;
 using namespace pqxx;
 
+// TODO: check if invalid meta alerts are deleted from data base after restore
 namespace
 {
 
@@ -65,7 +66,6 @@ struct TestClass
     // restore data from data base
     r.restoreAllInUse(out);
     // put tree in vector
-
     tut::ensure_equals("invalid size", out.size(), outVec.size());
     tut::ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
     // check if restored alerts and meta alerts exist in cache
