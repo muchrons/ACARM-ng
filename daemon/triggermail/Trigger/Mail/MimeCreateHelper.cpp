@@ -26,8 +26,8 @@ namespace Mail
 namespace
 {
 
+// helper typedef to make code shorter
 typedef ScopedPtrCustom<mailmime, mailmime_free> MailMime;
-
 
 // helper that returns malloc'ed string that is non-const
 AutoCptr<char> getString(const std::string &in)
@@ -37,16 +37,6 @@ AutoCptr<char> getString(const std::string &in)
     throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, "strdup() failed");
   return out;
 } // getString()
-
-// TODO: remove this is not needed
-/*
-template<typename T>
-void setCString(T &out, const char *in)
-{
-  assert( sizeof(out)>strlen(in) && "given stirng is too long to fit in buffer" );
-  strcpy(out, in);
-} // setCString()
-*/
 
 } // unnamed namespace
 
@@ -62,30 +52,22 @@ MimeCreateHelper::MimeCreateHelper(const std::string &from,
 {
 }
 
-MimeCreateHelper::~MimeCreateHelper(void)
-{
-  //from_.release();
-  //to_.release();
-  //subject_.release();
-  //content_.release();
-}
-
 
 std::string MimeCreateHelper::createMimeMessage(void)
 {
-  // make local copies of these fields
+  // make local copies of these fields - they have to be passed as 'char*', since
+  // lietpan is not const-correct, but ownership is not taken, so they have to be
+  // released here anyhow.
   System::AutoCptr<char> from( getString(fromSrc_) );
   System::AutoCptr<char> to( getString(toSrc_) );
-  System::AutoCptr<char> subject( getString(subjectSrc_) );
   System::AutoCptr<char> content( getString(contentSrc_) );
   // use these instead of normal 'const char*' since libetpan is not const-correct
   char                   charsetStr[] ="charset";
   char                   charsetType[]="utf-8";
 
   {
-    ScopedPtrCustom<mailimf_fields, mailimf_fields_free> fields( buildFields( from.get(), to.get(), subject.get() ) );
+    ScopedPtrCustom<mailimf_fields, mailimf_fields_free> fields( buildFields( from.get(), to.get() ) );
     assert( fields.get()!=NULL );
-  subject.release();                        
 
     MailMime message( buildMessage( fields.release() ) );
     assert( message.get()!=NULL );
@@ -98,8 +80,10 @@ std::string MimeCreateHelper::createMimeMessage(void)
     textPart.release();
 
     // TODO: this is temporary code
+    /*
     int col=0;
     mailmime_write( stdout, &col, message.get() );
+    */
   }
 
   // TODO: do something to return real message instead of this hardcoded stuff...
@@ -111,7 +95,7 @@ std::string MimeCreateHelper::createMimeMessage(void)
 }
 
 
-mailimf_fields *MimeCreateHelper::buildFields(char *fromPtr, char *toPtr, char *subjectPtr)
+mailimf_fields *MimeCreateHelper::buildFields(char *fromPtr, char *toPtr)
 {
   // from field: init
   ScopedPtrCustom<mailimf_mailbox_list, mailimf_mailbox_list_free> from( mailimf_mailbox_list_new_empty() );
@@ -121,7 +105,6 @@ mailimf_fields *MimeCreateHelper::buildFields(char *fromPtr, char *toPtr, char *
   assert( fromPtr!=NULL );
   if( mailimf_mailbox_list_add_parse( from.get(), fromPtr ) != MAILIMF_NO_ERROR )
     throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, "mailimf_mailbox_list_add_parse() failed");
-  //from_.release();      // NOTE: this will be deallocated along with 'from' object.           
 
   // to field: init
   ScopedPtrCustom<mailimf_address_list, mailimf_address_list_free> to( mailimf_address_list_new_empty() );
@@ -131,10 +114,10 @@ mailimf_fields *MimeCreateHelper::buildFields(char *fromPtr, char *toPtr, char *
   assert( toPtr!=NULL );
   if( mailimf_address_list_add_parse( to.get(), toPtr ) != MAILIMF_NO_ERROR )
     throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, "mailimf_address_list_add_parse() failed");
-  //to_.release();        // NOTE: this will be deallocated along with 'to' object.
 
   // make common structure allocation all parts
-  assert( subjectPtr!=NULL );
+  System::AutoCptr<char> subject( getString(subjectSrc_) );
+  assert( subject.get()!=NULL );
   mailimf_fields *newFields=mailimf_fields_new_with_data( from.get(),   // from,
                                                           NULL,         // sender,
                                                           NULL,         // reply-to,
@@ -143,11 +126,11 @@ mailimf_fields *MimeCreateHelper::buildFields(char *fromPtr, char *toPtr, char *
                                                           NULL,         // bcc,
                                                           NULL,         // in-reply-to,
                                                           NULL,         // references,
-                                                          subjectPtr );
+                                                          subject.get() );
   if(newFields==NULL)
     throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, "mailimf_fields_new_with_data() failed");
   // if allocation succedded, ensure elements are not deallocated
-  //subject_.release();   // NOTE: this will be deallocated along with 'newFields' object.
+  subject.release();   // NOTE: this will be deallocated along with 'newFields' object.
   from.release();
   to.release();
 
@@ -167,6 +150,8 @@ mailmime *MimeCreateHelper::buildBodyText(char *contentPtr, char *charsetStr, ch
   if( content.get()==NULL )
     throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, "mailmime_content_new_with_str() failed");
 
+  assert( charsetStr !=NULL );
+  assert( charsetType!=NULL );
   ScopedPtrCustom<mailmime_parameter, mailmime_parameter_free> param( mailmime_param_new_with_data(charsetStr, charsetType) );
   if( param.get()==NULL )
     throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, "mailmime_param_new_with_data() failed");
@@ -181,9 +166,9 @@ mailmime *MimeCreateHelper::buildBodyText(char *contentPtr, char *charsetStr, ch
   content.release();
   mimeFields.release();
 
+  assert( contentPtr!=NULL );
   if( mailmime_set_body_text( mimeSub.get(), contentPtr, strlen(contentPtr) ) != MAILIMF_NO_ERROR )
     throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, "mailmime_set_body_text() failed");
-  //content_.release();       // NOTE: this will be deallocated along with 'mimeSub' object.
 
   return mimeSub.release();
 }
@@ -196,8 +181,7 @@ mailmime *MimeCreateHelper::buildMessage(mailimf_fields *fields)
   if( mime.get()==NULL )
     throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, "mailmime_new_message_data() failed");
 
-  mailmime_set_imf_fields( mime.get(), fieldsPtr.release() );
-  // TODO: check if error checking is really not needed here.
+  mailmime_set_imf_fields( mime.get(), fieldsPtr.release() );   // this call always succeeds
   return mime.release();
 }
 

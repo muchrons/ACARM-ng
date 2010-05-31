@@ -24,7 +24,6 @@ public:
                    const std::string &to,
                    const std::string &subject,
                    const std::string &content);
-  ~MimeCreateHelper(void);
 
   /** \brief construct message and return it as a string.
    *  \return mime-formatted message.
@@ -33,7 +32,7 @@ public:
 
 private:
   // NOTE: call returns pointer along with ownership.
-  mailimf_fields *buildFields(char *fromPtr, char *toPtr, char *subjectPtr);
+  mailimf_fields *buildFields(char *fromPtr, char *toPtr);
 
   // text is a string, build a mime part containing this string
   // NOTE: call returns pointer along with ownership.
@@ -43,10 +42,10 @@ private:
   // NOTE: call returns pointer along with ownership.
   mailmime *buildMessage(mailimf_fields *fields);
 
-  const std::string      fromSrc_;
-  const std::string      toSrc_;
-  const std::string      subjectSrc_;
-  const std::string      contentSrc_;
+  const std::string fromSrc_;
+  const std::string toSrc_;
+  const std::string subjectSrc_;
+  const std::string contentSrc_;
 }; // class MimeCreateHelper
 
 } // namespace Mail
