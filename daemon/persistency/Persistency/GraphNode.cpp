@@ -101,7 +101,6 @@ GraphNode::const_iterator GraphNode::end(void) const
 
 void GraphNode::addChild(GraphNodePtrNN child, IO::MetaAlert &maIO)
 {
-  // TODO: code must check if given child is not already added first!
   ensureIsNode();
   // check if addition will not cause cycle
   detail::InternalAccessProxy iap;
