@@ -11,6 +11,8 @@ namespace Trigger
 namespace Mail
 {
 
+/** \brief class wrapping aroung all libetpan-specific elements creating mime message.
+ */
 class MimeCreateHelper: private boost::noncopyable
 {
 public:
