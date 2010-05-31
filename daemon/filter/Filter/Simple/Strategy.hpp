@@ -81,6 +81,19 @@ private:
   virtual bool canCorrelate(const NodeEntry thisEntry,
                             const NodeEntry otherEntry) const = 0;
 
+  // internal exception, throw when error occured after iterators have been
+  // invalidated
+  struct ExceptionIteratorsInvalidated: public Exception
+  {
+  public:
+    ExceptionIteratorsInvalidated(const Location &where,
+                                  const char     *name,
+                                  const char     *what):
+      Exception(where, name, what)
+    {
+    }
+  }; // struct ExceptionIteratorsInvalidated
+
 
   // this is the core - do NOT overwrite this method
   virtual void processImpl(Node               n,
@@ -96,15 +109,19 @@ private:
     // check if it can be correlated with other nodes
     for(typename NodesTimeoutQueue::iterator it=ntq.begin(); it!=ntq.end(); ++it)
     {
-      // TODO: this solution is ugly - think of some smarter code reorganization...
-      // protection against exceptions
-      bool iteratorsInvalidated=false;
-
       try
       {
         // stop after first successful correlation.
-        if( tryCorrelate(ntq, bf, thisEntry, it, iteratorsInvalidated) )
+        if( tryCorrelate(ntq, bf, thisEntry, it) )
           return;
+      }
+      catch(const ExceptionIteratorsInvalidated &ex)
+      {
+        // this protectes agains exceptions thrown after invalidating
+        // iterators inside tryCorrelate() call.
+        LOGMSG_INFO_S(Base::log_) << "exception: iterators invalidated - stopping; "
+                                     "original exception was: " << ex.what();
+        break;  // exit loop - since iterators are invalid now
       }
       catch(const Persistency::IO::Exception &ex)
       {
@@ -123,18 +140,11 @@ private:
       }
       catch(const std::exception &ex)
       {
-        LOGMSG_INFO_S(Base::log_) << "exception (std::exception) has been thrown: '"
+        LOGMSG_INFO_S(Base::log_) << "exception " << typeid(ex).name()
+                                  << " has been thrown: '"
                                   << ex.what()
                                   << "' - proceeding with processing next element";
         // on error, continue with next element...
-      }
-
-      // this is fallback in case of exception after iterators have been invalidated
-      if(iteratorsInvalidated==true)
-      {
-        LOGMSG_DEBUG(Base::log_, "iterators have been already invalidated - "
-                                 "exiting from processing of this node");
-        return;
       }
     } // for(nodes in timeout queue)
 
@@ -146,10 +156,8 @@ private:
   bool tryCorrelate(NodesTimeoutQueue                    &ntq,
                     BackendFacade                         &bf,
                     const NodeEntry                      &thisEntry,
-                    typename NodesTimeoutQueue::iterator  it,
-                    bool                                 &iteratorsInvalidated)
+                    typename NodesTimeoutQueue::iterator  it)
   {
-    assert(iteratorsInvalidated==false);
     // skip self
     if( *it==thisEntry )
       return false;
@@ -175,12 +183,29 @@ private:
                                               Persistency::Timestamp() ) );
       Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv);     // add new, correlated element.
       const NodeEntry             newEntry(newNode, thisEntry.t_);  // use the same reported host entry.
-      iteratorsInvalidated=true;            // from now on iterators cannot be used any more
-      ntq.dismiss(it);                      // if element has been already correlated
+      // this section has to be checked for presence of error in special way,
+      // since since this place iterators are invalidated.
+      try
+      {
+        ntq.dismiss(it);                    // if element has been already correlated
                                             // it should not be used any more.
-      ntq.update(newEntry, getTimeout() );  // add newly correlated entry.
+        ntq.update(newEntry, getTimeout() );// add newly correlated entry.
+      }
+      catch(const std::exception &ex)
+      {
+        throw ExceptionIteratorsInvalidated(SYSTEM_SAVE_LOCATION,
+                                            StrategyBase::getFilterName().c_str(),
+                                            ex.what() );
+      }
+      catch(...)
+      {
+        assert(!"non-standard exception has been caught");
+        throw ExceptionIteratorsInvalidated(SYSTEM_SAVE_LOCATION,
+                                            StrategyBase::getFilterName().c_str(),
+                                            "INVALID EXCEPTION THROWN - CHECK CODE!");
+      }
     }
-    else
+    else    // i.e.: is node
     {
       // append new meta-alert to a set of already correlated ones
       LOGMSG_DEBUG_S(Base::log_)<< "adding node '" << thisEntry.node_->getMetaAlert().getName().get()
