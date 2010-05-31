@@ -34,16 +34,16 @@ typedef factory::object testObj;
 factory tf("Persistency/IO/Postgres/DBHandler");
 } // unnamed namespace
 
-// TODO: tests
 namespace tut
 {
 
-// default constructor
+// testing constructor
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  DBHandler dbh(TestConnection::makeParams(), idCache_);
+  const DBConnection::Parameters params("localhost", "5432", "acarm_ng_test", "acarm-ng-daemon", "test.daemon");
+  DBHandler dbh(params, idCache_);
 }
 
 // trying get cache

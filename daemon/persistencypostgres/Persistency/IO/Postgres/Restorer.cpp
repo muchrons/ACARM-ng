@@ -43,11 +43,12 @@ void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &out)
 {
   TRYCATCH_BEGIN
     EntryReader er(t, *dbHandler_);
+    EntrySaver  es(t, *dbHandler_);
     const Tree::IDsVector &maInUse=er.readIDsMalertsInUse();
     const Tree::IDsVector &roots  =er.readRoots();
-    // vector<DataBaseID> badIDs;
-    restore(er, out, maInUse, roots/*, basIds*/);
-    // mark bad IDs as unused
+    Tree::IDsVector restoredIDs;
+    restore(er, out, maInUse, roots, restoredIDs);
+    markInvalidIDsAsUnused(es, maInUse, restoredIDs);
   TRYCATCH_END
 }
 
@@ -60,7 +61,8 @@ void Restorer::restoreBetweenImpl(Transaction     &t,
     EntryReader er(t, *dbHandler_);
     const Tree::IDsVector  maBetween=er.readIDsMalertsBetween(from, to);
     const Tree::IDsVector &roots    =er.readRoots(from, to);
-    restore(er, out, maBetween, roots);
+    Tree::IDsVector restoredIDs;
+    restore(er, out, maBetween, roots, restoredIDs);
   TRYCATCH_END
 }
 
@@ -101,22 +103,21 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
                                          NodesVector                                    &out,
                                          Persistency::IO::Postgres::detail::EntryReader &er,
                                          IO::ConnectionPtrNN                             connStubIO,
-                                         IO::Transaction                                &tStubIO)
+                                         IO::Transaction                                &tStubIO,
+                                         Tree::IDsVector                               &restoredIDs)
 {
   TreePtrNN node = treeNodes_.get(id);
   // check if there are no children (i.e. is leaf)
   if( node->getChildrenNumber() == 0 )
     return restoreLeaf(id, out, er, connStubIO, tStubIO);
-  return restoreNode(node, id, out, er, connStubIO, tStubIO);
+  return restoreNode(node, id, out, er, connStubIO, tStubIO, restoredIDs);
 }
 
-// TODO: add class with lists of invalid nodes (IDs)
-// store invalid nodes
-// after restoring mark this nodes as unused
 void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
                        NodesVector                                    &out,
                        const Tree::IDsVector                          &malerts,
-                       const Tree::IDsVector                          &roots)
+                       const Tree::IDsVector                          &roots,
+                       Tree::IDsVector                                &restoredIDs)
 {
   addTreeNodesToCache(er, malerts);
 
@@ -127,16 +128,19 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
   {
     try
     {
-      deepFirstSearch(*it, out, er, connStubIO, tStubIO);
+      deepFirstSearch(*it, out, er, connStubIO, tStubIO, restoredIDs);
+      restoredIDs.push_back(*it);
     }
     catch(const ExceptionBadNumberOfNodeChildren &e)
     {
       LOGMSG_WARN_S(log_)<<"root with id "<< *it << " has bad number of children"
-                                                    " this subtree is being skipped, exception message: "<< e.what();
+                                                    " this subtree is being skipped; exception message: "<< e.what();
     }
   }
   // remove duplicates from out vector
   removeDuplicates(out);
+
+  removeDuplicates(restoredIDs);
 }
 
 template<typename T>
@@ -169,14 +173,15 @@ GraphNodePtrNN Restorer::restoreNode(TreePtrNN                                  
                                      NodesVector                                    &out,
                                      Persistency::IO::Postgres::detail::EntryReader &er,
                                      IO::ConnectionPtrNN                             connStubIO,
-                                     IO::Transaction                                &tStubIO)
+                                     IO::Transaction                                &tStubIO,
+                                     Tree::IDsVector                               &restoredIDs)
 {
   // read Meta Alert from data base
   MetaAlertPtrNN malertPtr( er.readMetaAlert(id) );
   // add Meta Alert to cache
   addIfNew(malertPtr, id);
   GraphNodePtrNN graphNode( makeNode( id, malertPtr,
-                                         restoreNodeChildren(node, id, out, er, connStubIO, tStubIO),
+                                         restoreNodeChildren(node, id, out, er, connStubIO, tStubIO, restoredIDs),
                                          connStubIO,
                                          tStubIO ));
   out.push_back(graphNode);
@@ -187,7 +192,8 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
                                                  NodesVector                                    &out,
                                                  Persistency::IO::Postgres::detail::EntryReader &er,
                                                  IO::ConnectionPtrNN                             connStubIO,
-                                                 IO::Transaction                                &tStubIO)
+                                                 IO::Transaction                                &tStubIO,
+                                                 Tree::IDsVector                                &restoredIDs)
 {
   vector<GraphNodePtrNN>  tmpNodes;
   // get children IDs vector for given node
@@ -199,15 +205,16 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
   {
     try
     {
-      tmpNodes.push_back( deepFirstSearch( *it, out, er, connStubIO, tStubIO ) );
+      tmpNodes.push_back( deepFirstSearch( *it, out, er, connStubIO, tStubIO, restoredIDs ) );
+      restoredIDs.push_back(*it);
     }
     catch(const ExceptionNoSuchEntry &e)
     {
-      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " doesn't exist, exception message: "<< e.what();
+      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " doesn't exist; exception message: "<< e.what();
     }
     catch(const ExceptionBadNumberOfNodeChildren &e)
     {
-      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " has bad number of children, exception message: "<< e.what();
+      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " has bad number of children; exception message: "<< e.what();
     }
   }
   if(tmpNodes.size() < 2)
@@ -232,6 +239,25 @@ void Restorer::addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReade
   }
 }
 
+void Restorer::markInvalidIDsAsUnused(Persistency::IO::Postgres::detail::EntrySaver  &es,
+                                      Tree::IDsVector                                maInUse,
+                                      Tree::IDsVector                                restoredIDs)
+{
+  // TODO: comment what parts of this method do
+  removeDuplicates(maInUse);
+  sort(maInUse.begin(), maInUse.end());
+  sort(restoredIDs.begin(), restoredIDs.end());
+
+  // TODO: add assertion here - maInUse-restoredIDs>=0 (this is obvious from
+  //       the logic, but must be ensured when running in debug mode).
+  Tree::IDsVector removed( maInUse.size() - restoredIDs.size() );
+  Tree::IDsVector::iterator end = set_difference( maInUse.begin(),     maInUse.end(),
+                                                  restoredIDs.begin(), restoredIDs.end(),
+                                                  removed.begin() );
+  // TODO: assert size of output collection is equal to returned by set_difference()
+  for(Tree::IDsVector::iterator it = removed.begin(); it != end; ++it)
+    es.markMetaAlertAsUnused(*it);
+}
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency

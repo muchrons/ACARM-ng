@@ -70,7 +70,7 @@ void MetaAlert::updateSeverityDeltaImpl(Transaction &t, double delta)
     EntrySaver       es(t, *dbHandler_);
     const DataBaseID malertID = getID();
     LOGMSG_DEBUG_S(log_)<<"update severity delta for Meta Alert with ID: "<<malertID
-                        <<" to: "<<delta;
+                        <<" by: "<<delta;
     es.updateSeverityDelta(malertID, delta);
   TRYCATCH_END
 }
@@ -81,7 +81,7 @@ void MetaAlert::updateCertaintyDeltaImpl(Transaction &t, double delta)
     EntrySaver       es(t, *dbHandler_);
     const DataBaseID malertID = getID();
     LOGMSG_DEBUG_S(log_)<<"update certainty delta for Meta Alert with ID: "<<malertID
-                        <<" to: "<<delta;
+                        <<" by: "<<delta;
     es.updateCertaintyDelta(malertID, delta);
   TRYCATCH_END
 }

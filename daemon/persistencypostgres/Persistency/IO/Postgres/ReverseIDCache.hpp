@@ -22,9 +22,10 @@ namespace Postgres
 template<typename T>
 class ReverseIDCache
 {
-public:
+private:
   /** \brief type of cache. */
   typedef std::map<DataBaseID, T> RevIDCache;
+public:
   /** \brief check if element with id is in cache
    *  \param id    id of checked element.
    */
@@ -37,7 +38,7 @@ public:
    */
   T get(DataBaseID id) const
   {
-    typename std::map<DataBaseID, T>::const_iterator it = cache_.find(id);
+    typename RevIDCache::const_iterator it = cache_.find(id);
     if( it == cache_.end() )
       throw ExceptionNoSuchEntry(SYSTEM_SAVE_LOCATION);
     return it->second;
@@ -46,9 +47,9 @@ public:
    *  \param id    id of element.
    *  \param t     added element.
    */
-  void add(DataBaseID id, T t)
+  void add(DataBaseID id, const T &t)
   {
-    cache_.insert( std::make_pair<DataBaseID, T>(id, t) );
+    cache_.insert( typename RevIDCache::value_type(id, t) );
   }
 
 private:
