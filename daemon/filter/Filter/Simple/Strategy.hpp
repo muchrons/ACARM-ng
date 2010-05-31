@@ -106,8 +106,14 @@ private:
         if( tryCorrelate(ntq, bf, thisEntry, it, iteratorsInvalidated) )
           return;
       }
-      // TODO: persistency-related exceptions should be forwarded - they prohibit
-      //       later commision on transaction.
+      catch(const Persistency::IO::Exception &ex)
+      {
+        // persistency-related exceptions are forwarded since they prohibit
+        // later commision on transaction.
+        LOGMSG_INFO_S(Base::log_) << "Persistency::IO exception cought (" << ex.getTypeName()
+                                  << ") - transaction is invalidated; forwarding exception";
+        throw;  // re-throw
+      }
       catch(const Commons::Exception &ex)
       {
         LOGMSG_INFO_S(Base::log_) << "exception (" << ex.getTypeName()
@@ -167,8 +173,8 @@ private:
                                               Persistency::MetaAlert::CertaintyDelta(0),
                                               Persistency::ReferenceURLPtr(),
                                               Persistency::Timestamp() ) );
-      Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv); // add new, correlated element.
-      const NodeEntry newEntry(newNode, thisEntry.t_);// use the same reported host entry.
+      Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv);     // add new, correlated element.
+      const NodeEntry             newEntry(newNode, thisEntry.t_);  // use the same reported host entry.
       iteratorsInvalidated=true;            // from now on iterators cannot be used any more
       ntq.dismiss(it);                      // if element has been already correlated
                                             // it should not be used any more.
