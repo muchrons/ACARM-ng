@@ -80,9 +80,9 @@ void Strategy::process(Node n, ChangedNodes &/*changed*/)
   bf.markAsTriggered( n->getMetaAlert() );
   bf.commitChanges();
 
-  LOGMSG_DEBUG_S(log_)<<"triggering node at address 0x"
-                      <<static_cast<void*>( n.get() )
-                      <<" finished successfully";
+  LOGMSG_INFO_S(log_)<<"triggering node at address 0x"
+                     <<static_cast<void*>( n.get() )
+                     <<" finished successfully";
 }
 
 
