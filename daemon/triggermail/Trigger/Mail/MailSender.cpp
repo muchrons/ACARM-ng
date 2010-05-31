@@ -9,7 +9,7 @@
 #include "Base/StrError.hpp"
 #include "Trigger/Mail/MailSmtp.hpp"
 #include "Trigger/Mail/MailSender.hpp"
-#include "Trigger/Mail/mimeCreateHelpers.hpp"
+#include "Trigger/Mail/MimeCreateHelper.hpp"
 
 // TODO: fix mem-leaks in this file
 
@@ -65,7 +65,8 @@ void MailSender::send(const std::string &subject, const std::string &content)
                 "mailesmtp_rcpt" );                             // TO
   errorHandler( mailsmtp_data( ms.get() ), "mailsmtp_data" );   // DATA
   // data-part headers and stuff...
-  const std::string &whole=createMimeMessage(srv.from_, cfg_.getRecipientAddress(), subject, content);
+  MimeCreateHelper   mch(srv.from_, cfg_.getRecipientAddress(), subject, content);
+  const std::string &whole=mch.createMimeMessage();
   errorHandler( mailsmtp_data_message( ms.get(), whole.c_str(), whole.length() ),
                 "mailsmtp_data_message" );                      // message body goes here
 
