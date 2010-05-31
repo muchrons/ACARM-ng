@@ -243,17 +243,20 @@ void Restorer::markInvalidIDsAsUnused(Persistency::IO::Postgres::detail::EntrySa
                                       Tree::IDsVector                                maInUse,
                                       Tree::IDsVector                                restoredIDs)
 {
+  // TODO: comment what parts of this method do
   removeDuplicates(maInUse);
   sort(maInUse.begin(), maInUse.end());
   sort(restoredIDs.begin(), restoredIDs.end());
 
-  Tree::IDsVector removed(maInUse.size() - restoredIDs.size());
-  Tree::IDsVector::iterator end = set_difference(maInUse.begin(), maInUse.end(),
-                                                restoredIDs.begin(), restoredIDs.end(), removed.begin());
+  // TODO: add assertion here - maInUse-restoredIDs>=0 (this is obvious from
+  //       the logic, but must be ensured when running in debug mode).
+  Tree::IDsVector removed( maInUse.size() - restoredIDs.size() );
+  Tree::IDsVector::iterator end = set_difference( maInUse.begin(),     maInUse.end(),
+                                                  restoredIDs.begin(), restoredIDs.end(),
+                                                  removed.begin() );
+  // TODO: assert size of output collection is equal to returned by set_difference()
   for(Tree::IDsVector::iterator it = removed.begin(); it != end; ++it)
-  {
     es.markMetaAlertAsUnused(*it);
-  }
 }
 } // namespace Postgres
 } // namespace IO

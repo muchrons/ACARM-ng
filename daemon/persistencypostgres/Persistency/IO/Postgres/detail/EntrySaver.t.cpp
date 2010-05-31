@@ -674,7 +674,7 @@ void testObj::test<16>(void)
 {
   CreateTempTable();
   stringstream ss;
-  string s;
+  string       s;
   ss << "INSERT INTO tmp(s3, s16) VALUES(";
   Appender::append(ss, createString(3) );
   ss << ", ";
@@ -683,10 +683,13 @@ void testObj::test<16>(void)
   t_.getAPI<TransactionAPI>().exec(ss);
   ss.str("");
   ss << "SELECT * FROM tmp;";
+  // TODO: this variable should be const
   result r = t_.getAPI<TransactionAPI>().exec(ss);
+  // TODO: segv. when no records are returned.
   r[0]["s3"].to(s);
   ensure_equals("invalid size", s.size(), 3u);
   r[0]["s16"].to(s);
+  // TODO: missing size-check for 16-bytes long string - add it or remove this string as well
 }
 
 // try save service with NULL reference URL
