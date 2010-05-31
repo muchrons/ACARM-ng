@@ -42,6 +42,8 @@ private:
   // NOTE: call returns pointer along with ownership.
   mailmime *buildMessage(mailimf_fields *fields);
 
+  std::string convertToString(mailmime *msg);
+
   const std::string fromSrc_;
   const std::string toSrc_;
   const std::string subjectSrc_;

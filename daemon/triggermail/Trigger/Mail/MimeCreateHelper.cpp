@@ -14,8 +14,6 @@
 #include "Trigger/Mail/MailSender.hpp"
 #include "Trigger/Mail/MimeCreateHelper.hpp"
 
-// TODO: fix mem-leaks in this file
-
 using namespace System;
 
 namespace Trigger
@@ -65,33 +63,21 @@ std::string MimeCreateHelper::createMimeMessage(void)
   char                   charsetStr[] ="charset";
   char                   charsetType[]="utf-8";
 
-  {
-    ScopedPtrCustom<mailimf_fields, mailimf_fields_free> fields( buildFields( from.get(), to.get() ) );
-    assert( fields.get()!=NULL );
+  ScopedPtrCustom<mailimf_fields, mailimf_fields_free> fields( buildFields( from.get(), to.get() ) );
+  assert( fields.get()!=NULL );
 
-    MailMime message( buildMessage( fields.release() ) );
-    assert( message.get()!=NULL );
+  MailMime message( buildMessage( fields.release() ) );
+  assert( message.get()!=NULL );
 
-    MailMime textPart( buildBodyText( content.get(), charsetStr, charsetType ) );
-    assert( textPart.get()!=NULL );
+  MailMime textPart( buildBodyText( content.get(), charsetStr, charsetType ) );
+  assert( textPart.get()!=NULL );
 
-    if( mailmime_smart_add_part( message.get(), textPart.get() ) != MAILIMF_NO_ERROR )
-      throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, "mailmime_smart_add_part() failed");
-    textPart.release();
+  if( mailmime_smart_add_part( message.get(), textPart.get() ) != MAILIMF_NO_ERROR )
+    throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, "mailmime_smart_add_part() failed");
+  textPart.release();
 
-    // TODO: this is temporary code
-    /*
-    int col=0;
-    mailmime_write( stdout, &col, message.get() );
-    */
-  }
-
-  // TODO: do something to return real message instead of this hardcoded stuff...
-  return "From: <acarmng.test.account1@gmail.com>\r\n"
-         "To: acarmng.test.account2@gmail.com\r\n"
-         "Subject: kszy\r\n"
-         "ala ma kota\r\n"
-         ;
+  // convert outptu to string and return to the user
+  return convertToString( message.get() );
 }
 
 
@@ -183,6 +169,20 @@ mailmime *MimeCreateHelper::buildMessage(mailimf_fields *fields)
 
   mailmime_set_imf_fields( mime.get(), fieldsPtr.release() );   // this call always succeeds
   return mime.release();
+}
+
+
+std::string MimeCreateHelper::convertToString(mailmime *msg)
+{
+  assert(msg!=NULL);
+  ScopedPtrCustom<MMAPString, mmap_string_free> mmstr( mmap_string_new("") );
+  if( mmstr.get()==NULL )
+    throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, "mmap_string_new() failed");
+
+  int col=0;
+  mailmime_write_mem( mmstr.get(), &col, msg );
+
+  return mmstr->str;
 }
 
 } // namespace Mail
