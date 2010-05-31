@@ -6,8 +6,6 @@
 #include <boost/noncopyable.hpp>
 #include <libetpan/libetpan.h>
 
-#include "System/AutoCptr.hpp"
-
 namespace Trigger
 {
 namespace Mail
@@ -34,14 +32,12 @@ public:
   std::string createMimeMessage(void);
 
 private:
-  void initData(void);
-
   // NOTE: call returns pointer along with ownership.
-  mailimf_fields *buildFields(void);
+  mailimf_fields *buildFields(char *fromPtr, char *toPtr, char *subjectPtr);
 
   // text is a string, build a mime part containing this string
   // NOTE: call returns pointer along with ownership.
-  mailmime *buildBodyText(void);
+  mailmime *buildBodyText(char *contentPtr, char *charsetStr, char *charsetType);
 
   // build an empty message
   // NOTE: call returns pointer along with ownership.
@@ -51,14 +47,6 @@ private:
   const std::string      toSrc_;
   const std::string      subjectSrc_;
   const std::string      contentSrc_;
-
-  System::AutoCptr<char> from_;
-  System::AutoCptr<char> to_;
-  System::AutoCptr<char> subject_;
-  System::AutoCptr<char> content_;
-
-  char                   charsetStr_[8];
-  char                   charsetType_[8];
 }; // class MimeCreateHelper
 
 } // namespace Mail

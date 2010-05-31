@@ -42,9 +42,20 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  const char *mimeOutput="Date: Mon, 31 May 2010 10:58:50 +0200\r\n"
+                         "From: a@b.c\r\n"
+                         "To: d@e.f\r\n"
+                         "Message-ID: <etPan.4c037a4a.643c9869.4eab@pinky>\r\n"
+                         "Subject: re: stuff\r\n"
+                         "MIME-Version: 1.0\r\n"
+                         "Content-Type: text/plain; charset=\"utf-8\"\r\n"
+                         "Content-Transfer-Encoding: 8bit\r\n"
+                         "\r\n"
+                         "hello world.\r\n";
+
   MimeCreateHelper  mch("a@b.c", "d@e.f", "re: stuff", "hello world");
   const std::string mime=mch.createMimeMessage();
-  ensure_equals("invalid mime's content", mime, "");
+  ensure_equals("invalid mime's content", mime, mimeOutput);
 }
 
 // test if multiple calls to createMimeMessage() return the same results
