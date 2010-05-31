@@ -26,13 +26,13 @@ NonCyclicAdder::~NonCyclicAdder(void)
   // NOTE: this generates valid d-tor for PImpl'ed class.
 }
 
-void NonCyclicAdder::addChildImpl(GraphNode           &parent,
+bool NonCyclicAdder::addChildImpl(GraphNode           &parent,
                                   InternalAccessProxy &iap,
                                   GraphNodePtrNN       child)
 {
   assert( data_.get()!=NULL );
   // forward call to class that can have independent interface
-  data_->addChild(iap, parent, child);
+  return data_->addChild(iap, parent, child);
 }
 
 } // namespace detail

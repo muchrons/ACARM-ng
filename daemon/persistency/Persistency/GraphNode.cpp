@@ -105,7 +105,10 @@ void GraphNode::addChild(GraphNodePtrNN child, IO::MetaAlert &maIO)
   ensureIsNode();
   // check if addition will not cause cycle
   detail::InternalAccessProxy iap;
-  nca_.addChildImpl(*this, iap, child);
+  // if node has not been added (i.e.: is already present as a child), just
+  // skip this call and do not try to save anything in data base.
+  if( !nca_.addChildImpl(*this, iap, child) )
+    return;
   // persistency save
   maIO.addChild( child->getMetaAlert() );
 }

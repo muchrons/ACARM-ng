@@ -24,7 +24,7 @@ struct NonCyclicAdder::InternalImplementation
    *  \param parent parent node to add child to.
    *  \param child  child to be added to parent.
    */
-  void addChild(InternalAccessProxy &iap,
+  bool addChild(InternalAccessProxy &iap,
                 GraphNode           &parent,
                 GraphNodePtrNN       child);
 

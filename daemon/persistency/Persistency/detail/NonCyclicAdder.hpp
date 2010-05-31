@@ -36,8 +36,10 @@ public:
    *  \param parent node to add child to.
    *  \param iap    helper object that allows extra access to some of GraphNode's internal parts
    *  \param child  node to be added as a child.
+   *  \return true if child has been added (i.e. is unique), false otherwise.
+   *  \note call throws when cycle has been detected.
    */
-  void addChildImpl(GraphNode           &parent,
+  bool addChildImpl(GraphNode           &parent,
                     InternalAccessProxy &iap,
                     GraphNodePtrNN       child);
 
