@@ -22,9 +22,9 @@ Logger::Node *g_log  =NULL;
 
 inline std::string cutIfNeeded(const char *str, const size_t size)
 {
-  if( strlen(str)>size )
-    return std::string(str, str+size);
-  return str;
+  if(str==NULL)
+    return "";
+  return std::string(str, str+size);
 } // cutIfNeeded()
 } // unnamed namespace
 
@@ -39,7 +39,7 @@ static void loggerCIgnore(const int /*direction*/, const char * /*str*/, const s
 static void loggerCCall(const int direction, const char *str, const size_t size)
 {
   const std::string &tmp=cutIfNeeded(str, size);
-  assert( tmp.length()<=size );
+  assert( tmp.length()==size );
   assert(g_log!=NULL && "logger function not unregistred after deinitialization");
 
   switch(direction)

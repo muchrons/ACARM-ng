@@ -11,6 +11,7 @@
 #include <libetpan/libetpan.h>
 #include <cassert>
 
+#include "System/ScopedPtrCustom.hpp"
 #include "Trigger/Mail/Config.hpp"
 #include "Trigger/Mail/LoggerWrapper.hpp"
 
@@ -42,50 +43,17 @@ Trigger::Mail::Config getTestConfig2(void)
 }
 
 
-struct StorageHolderHelper: private boost::noncopyable
-{
-  explicit StorageHolderHelper(mailstorage *storage):
-    storage_(storage)
-  {
-  }
-
-  ~StorageHolderHelper(void)
-  {
-    if(storage_!=NULL)
-      mailstorage_free(storage_);
-  }
-
-  mailstorage *storage_;
-}; // struct StorageHolderHelper
-
-struct FolderHolderHelper: private boost::noncopyable
-{
-  explicit FolderHolderHelper(mailfolder *folder):
-    folder_(folder)
-  {
-  }
-
-  ~FolderHolderHelper(void)
-  {
-    if(folder_!=NULL)
-    {
-      mailfolder_disconnect(folder_);
-      mailfolder_free(folder_);
-    }
-  }
-
-  mailfolder *folder_;
-}; // struct FolderHolderHelper
-
+typedef System::ScopedPtrCustom<mailstorage, mailstorage_free> StorageHolderHelper;
+typedef System::ScopedPtrCustom<mailfolder,  mailfolder_free>  FolderHolderHelper;
 
 // internal (helper) implementation
 int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
 {
   StorageHolderHelper storage( mailstorage_new(NULL) );             // create storage
-  if(storage.storage_==NULL)
+  if(storage.get()==NULL)
     throw std::runtime_error("storage() allocation error");
   assert( cfg.getAuthorizationConfig()!=NULL );
-  if( pop3_mailstorage_init(storage.storage_,
+  if( pop3_mailstorage_init(storage.get(),
                             "pop.gmail.com",
                             995,
                             NULL,
@@ -96,8 +64,8 @@ int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
                             0, NULL,
                             NULL) != MAIL_NO_ERROR )                // init POP3 storage
     throw std::runtime_error("pop3_mailstorage_init() unable to init POP3 storage");
-  FolderHolderHelper folder( mailfolder_new(storage.storage_, "/a/b/c/d", NULL) );  // create folder
-  if( mailfolder_connect(folder.folder_) != MAIL_NO_ERROR )         // connect to folder
+  FolderHolderHelper folder( mailfolder_new(storage.get(), "/a/b/c/d", NULL) ); // create folder
+  if( mailfolder_connect( folder.get() ) != MAIL_NO_ERROR )         // connect to folder
     throw std::runtime_error("mailfolder_connect() unable to connect to folder");
 
   // loop to read (and delete messages)
@@ -106,7 +74,7 @@ int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
   {
     {
       mailmessage *msg;
-      if( mailsession_get_message(folder.folder_->fld_session, index, &msg) != MAIL_NO_ERROR )
+      if( mailsession_get_message(folder->fld_session, index, &msg) != MAIL_NO_ERROR )
         break;                  // no more messages
       mailmessage_free(msg);    // we don't actually need this message :)
     }
@@ -114,7 +82,7 @@ int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
     ++count;                    // ok - one more message
 
     // remove message from server
-    if( mailsession_remove_message(folder.folder_->fld_session, index) != MAIL_NO_ERROR )
+    if( mailsession_remove_message(folder->fld_session, index) != MAIL_NO_ERROR )
       throw std::runtime_error("mailsession_remove_message(): unable to remove message");
   } // for(all_messages)
 
@@ -126,7 +94,7 @@ int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
 int removeMessagesFromAccount(const Trigger::Mail::Config &cfg, int minCount=0)
 {
   Trigger::Mail::LoggerWrapper logWrp;                  // add logs to log file
-  const time_t                 deadline=time(NULL)+10;  // give it 10[s] timeout
+  const time_t                 deadline=time(NULL)+15;  // give it 15[s] timeout
   int                          count   =0;              // no elements removed yet
   // check until timeout's reached, or minimal value is reached
   for(;;)

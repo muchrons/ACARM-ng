@@ -10,6 +10,7 @@
 #include <memory>
 #include <boost/shared_ptr.hpp>
 #include <boost/operators.hpp>
+#include <boost/type_traits/add_const.hpp>
 #include <cassert>
 
 #include "System/ExceptionPointerIsNULL.hpp"
@@ -31,6 +32,8 @@ public:
   /** \brief type used as boost::shared_ptr<>. */
   typedef boost::shared_ptr<T> PtrT;
 
+  /** \brief type of this object. */
+  typedef SharedPtrNotNULL<T>         this_type;
   /** \brief type of element held inside (for compatibility with boost::shared_ptr). */
   typedef typename PtrT::element_type element_type;
   /** \brief type of element held inside (for compatibility with boost::shared_ptr). */
@@ -43,7 +46,7 @@ public:
   /** \brief create class from raw-pointer.
    *  \param t pointer to take ownership of.
    */
-  explicit SharedPtrNotNULL(T *t):
+  explicit SharedPtrNotNULL(pointer t):
     ptr_(t)
   {
     ensure();
@@ -51,7 +54,7 @@ public:
   /** \brief copy c-tor.
    *  \param other object to copy from.
    */
-  SharedPtrNotNULL(const SharedPtrNotNULL &other)
+  SharedPtrNotNULL(const this_type &other)
   {
     ptr_=other.ptr_;
     assert( ptr_.get()!=NULL );
@@ -83,7 +86,7 @@ public:
   /** \brief less-then compare
    *  \param other element to compare with.
    */
-  inline bool operator<(const SharedPtrNotNULL<T> &other) const
+  inline bool operator<(const this_type &other) const
   {
     return ptr_<other.ptr_;
   }
@@ -91,7 +94,7 @@ public:
    *  \param other object to assigne from.
    *  \return const-reference to this object.
    */
-  const SharedPtrNotNULL<T> &operator=(const SharedPtrNotNULL<T> &other)
+  typename boost::add_const<this_type>::type &operator=(const this_type &other)
   {
     if(&other!=this)
       ptr_=other.ptr_;
@@ -100,35 +103,35 @@ public:
   /** \brief arrow operator.
    *  \return const pointer to this.
    */
-  const T *operator->(void) const
+  typename boost::add_const<pointer>::type operator->(void) const
   {
     return get();
   }
   /** \brief arror operator.
    *  \return pointer to this.
    */
-  T *operator->(void)
+  pointer operator->(void)
   {
     return get();
   }
   /** \brief dereference operator.
    *  \return const reference to this.
    */
-  const T &operator*(void) const
+  typename boost::add_const<reference>::type operator*(void) const
   {
     return *get();
   }
   /** \brief dereference operator.
    *  \return reference to this.
    */
-  T &operator*(void)
+  reference operator*(void)
   {
     return *get();
   }
   /** \brief test getter.
    *  \return direct pointer value.
    */
-  const T *get(void) const
+  typename boost::add_const<pointer>::type get(void) const
   {
     assert( ptr_.get()!=NULL );
     return ptr_.get();
@@ -136,7 +139,7 @@ public:
   /** \brief test const getter.
    *  \return direct pointer value.
    */
-  T *get(void)
+  pointer get(void)
   {
     assert( ptr_.get()!=NULL );
     return ptr_.get();
@@ -147,7 +150,7 @@ public:
    *        if this call is to be used, whole access has to be carefully
    *        mutexed, allong with all places given object is used in.
    */
-  void swap(SharedPtrNotNULL<T> &other)
+  void swap(this_type &other)
   {
     assert( get()!=NULL );
     ptr_.swap(other.ptr_);
@@ -159,7 +162,7 @@ private:
   {
     ensure( ptr_.get() );
   }
-  void ensure(const T *t) const
+  void ensure(const typename boost::add_const<pointer>::type t) const
   {
     if(t==NULL)
       throw ExceptionPointerIsNULL(SYSTEM_SAVE_LOCATION, "t");
