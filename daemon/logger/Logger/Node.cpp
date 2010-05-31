@@ -58,7 +58,8 @@ void Node::log(Priority      pri,
 
     // format string
     stringstream ss;
-    nc_->getFormatter().format(ss, ts, nn_, pri, file, call, line, msg);
+    assert( nc_->getFormatter().get()!=NULL );
+    nc_->getFormatter()->format(ss, ts, nn_, pri, file, call, line, msg);
     // append it to configured appender
     nc_->getAppender()->append( ss.str() );
   }
