@@ -27,6 +27,8 @@ struct CUrlUninit: public System::AtExitResourceDeallocator
   virtual void deallocate(void)
   {
     System::Threads::SafeInitLock lock(mutex);
+    // TODO: this assertion sometimes fails - add mechanism that after exit() las user
+    //       will release CURL's data.
     assert(count==0 && "ooops - someone is still using cURL++...");
     curlpp::terminate();
   }
