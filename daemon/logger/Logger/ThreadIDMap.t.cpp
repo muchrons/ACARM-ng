@@ -60,7 +60,7 @@ namespace
 // helper class for checking IDs in test.
 struct IDGetter
 {
-  IDGetter(ThreadIDMap *tim, unsigned int id, volatile int *state=NULL):
+  IDGetter(ThreadIDMap *tim, const unsigned int *id, volatile int *state=NULL):
     state_(state),
     tim_(tim),
     id_(id)
@@ -71,7 +71,10 @@ struct IDGetter
   void operator()(void)
   {
     assert(tim_!=NULL);
-    ensure_equals("invalid ID returned for thread / 1", tim_->getThreadID(), id_);  // add
+    const int id=tim_->getThreadID();
+    if(id_!=NULL)
+      ensure_equals("invalid ID value returned when adding", id, *id_);
+
     // extra wait requested?
     if(state_!=NULL)
     {
@@ -79,13 +82,14 @@ struct IDGetter
       while(*state_!=2)
         usleep(10*1000);
     }
-    ensure_equals("invalid ID returned for thread / 2", tim_->getThreadID(), id_);  // get
+
+    ensure_equals("invalid ID returned for thread", tim_->getThreadID(), id);  // get
   }
 
-  volatile int *state_;
+  volatile int       *state_;
 private:
-  ThreadIDMap  *tim_;
-  unsigned int  id_;
+  ThreadIDMap        *tim_;
+  const unsigned int *id_;
 }; // struct IDGetter
 
 void waitState(volatile int *state)
@@ -96,16 +100,18 @@ void waitState(volatile int *state)
 } // waitState()
 } // unnamed namespace
 
+
 // test "get" from different thread
 template<>
 template<>
 void testObj::test<4>(void)
 {
-  ThreadIDMap tim;
+  ThreadIDMap        tim;
   ensure_equals("invalid ID returned / 1", tim.getThreadID(), 0u);  // add
   ensure_equals("invalid ID returned / 2", tim.getThreadID(), 0u);  // get
   // now do the same within a thread
-  Base::Threads::ThreadJoiner tj( (IDGetter(&tim, 1u)) );
+  const unsigned int id=1u;
+  Base::Threads::ThreadJoiner tj( (IDGetter(&tim, &id)) );
   tj->join();
 }
 
@@ -117,13 +123,13 @@ void testObj::test<5>(void)
   volatile int state[4]={0};
   ThreadIDMap  tim;
   // run multiple threads
-  Base::Threads::ThreadJoiner tj1( (IDGetter(&tim, 0u, &state[0])) );
+  Base::Threads::ThreadJoiner tj1( (IDGetter(&tim, NULL, &state[0])) );
   waitState(&state[0]);
-  Base::Threads::ThreadJoiner tj2( (IDGetter(&tim, 1u, &state[1])) );
+  Base::Threads::ThreadJoiner tj2( (IDGetter(&tim, NULL, &state[1])) );
   waitState(&state[1]);
-  Base::Threads::ThreadJoiner tj3( (IDGetter(&tim, 2u, &state[2])) );
+  Base::Threads::ThreadJoiner tj3( (IDGetter(&tim, NULL, &state[2])) );
   waitState(&state[2]);
-  Base::Threads::ThreadJoiner tj4( (IDGetter(&tim, 3u, &state[3])) );
+  Base::Threads::ThreadJoiner tj4( (IDGetter(&tim, NULL, &state[3])) );
   waitState(&state[3]);
   // proceed with next checks
   state[0]=2;
