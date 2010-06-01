@@ -16,7 +16,8 @@ namespace Logger
 {
 
 NodeConfReader::NodeConfReader(void):
-  appMap_( ConfigIO::Singleton::get()->loggerConfig().getAppenders() )
+  appMap_( ConfigIO::Singleton::get()->loggerConfig().getAppenders() ),
+  formatter_(new Formatter)
 {
 }
 
@@ -94,7 +95,7 @@ NodeConfPtr NodeConfReader::read(const NodeName &nn) const
       threshold=parsePriority( itCfg->getThresholdValue() );
   }
 
-  return NodeConfPtr( new NodeConf(appender, threshold) );
+  return NodeConfPtr( new NodeConf(appender, formatter_, threshold) );
 }
 
 } // namespace Logger

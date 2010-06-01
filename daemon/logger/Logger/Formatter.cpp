@@ -5,6 +5,7 @@
 #include <cstring>
 #include <cstdio>
 #include <cctype>
+#include <boost/thread.hpp>
 #include <cassert>
 
 #include "Logger/Formatter.hpp"
@@ -22,7 +23,7 @@ void Formatter::format(std::stringstream &ssOut,
                        const char        *file,
                        const char        *call,
                        unsigned int       line,
-                       const char        *msg) const
+                       const char        *msg)
 {
   // get priority as string
   const char *priStr=pri2str(pri);
@@ -42,19 +43,13 @@ void Formatter::format(std::stringstream &ssOut,
   // format string
   ssOut<<priStr<<"@"
        <<ts.time<<"."<<tmp<<"/"
-       <<nn.get()<<" "
+       <<nn.get()<<" ["
+       <<idMap_.getThreadID()<<"] "
        <<file<<":"
        <<line<<" "
        <<call<<": ";
   // append message to stream, ensuring that special chars will be removed
   appendValidMessage(ssOut, msg);
-}
-
-
-void Formatter::swap(Formatter &)
-{
-  // note: implementation is empty, since format does not have any
-  //       fields as for now.
 }
 
 
@@ -105,6 +100,13 @@ void Formatter::appendValidMessage(std::stringstream &ssOut, const char *msg) co
   // final flush on oed of string
   buf[i]=0;         // null-terminate string if not already done
   ssOut<<buf;       // flush
+}
+
+unsigned int Formatter::getThreadID(void) const
+{
+  const boost::thread::id id=boost::this_thread::get_id();
+  // TODO
+  return 42;
 }
 
 } // namespace Logger

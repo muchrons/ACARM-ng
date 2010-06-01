@@ -15,16 +15,6 @@ namespace Persistency
 namespace IO
 {
 
-void GlobalConnectionImpl::markAsTriggered(MetaAlertPtrNN ma, const std::string &name)
-{
-  Lock lock(mutex_);
-  Transaction t( conn_->createNewTransaction("global_connection_impl_markastriggered") );
-  MetaAlertAutoPtr maio=conn_->metaAlert(ma, t);
-  assert( maio.get()!=NULL );
-  maio->markAsTriggered(name);
-  t.commit();
-}
-
 void GlobalConnectionImpl::markAsUnused(MetaAlertPtrNN ma)
 {
   Lock lock(mutex_);

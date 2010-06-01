@@ -8,14 +8,16 @@
 namespace Logger
 {
 
-NodeConf::NodeConf(Appenders::BasePtr appender, Priority threshold):
+NodeConf::NodeConf(Appenders::BasePtr appender, FormatterPtr formatter, Priority threshold):
   appender_(appender),
-  threshold_(threshold)
+  threshold_(threshold),
+  formatter_(formatter)
 {
 }
 
 void NodeConf::swap(NodeConf &other)
 {
+  // TODO: other's lock must be locked for writing here as well
   Base::Threads::WriteLock lock(mutex_);
   appender_.swap(other.appender_);
   formatter_.swap(other.formatter_);

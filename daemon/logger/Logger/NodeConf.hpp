@@ -24,9 +24,10 @@ class NodeConf: private boost::noncopyable
 public:
   /** \brief create configariotn with a given appender and default formatter.
    *  \param appender  appender to be in node configuration.
+   *  \param formatter formatter to be used for this config.
    *  \param threshold minimum level that has to be reported to be logged.
    */
-  NodeConf(Appenders::BasePtr appender, Priority threshold);
+  NodeConf(Appenders::BasePtr appender, FormatterPtr formatter, Priority threshold);
   /** \brief swaps contents of this node conf and one given as parameter.
    *  \param other node conf to swap content with.
    */
@@ -42,7 +43,7 @@ public:
   /** \brief gives access to formatter.
    *  \return formatter.
    */
-  Formatter getFormatter(void) const
+  FormatterPtr getFormatter(void) const
   {
     Base::Threads::ReadLock lock(mutex_);
     return formatter_;
@@ -60,10 +61,7 @@ private:
   mutable Base::Threads::ReadWriteMutex mutex_;
   Appenders::BasePtr                    appender_;
   Priority                              threshold_;
-  Formatter                             formatter_;  // note: formatter is held by value since
-                                                     //       at this moment it has just one
-                                                     //       possible instance and is not planned
-                                                     //       to expand like appenders' case.
+  FormatterPtr                          formatter_;
 }; // class NodeConf
 
 } // namespace Logger

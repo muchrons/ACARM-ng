@@ -6,6 +6,7 @@
 
 #include "Base/Threads/WriteLock.hpp"
 #include "Persistency/GraphNode.hpp"
+#include "Persistency/detail/isChildUnique.hpp"
 #include "Persistency/detail/InternalAccessProxy.hpp"
 #include "Persistency/detail/NonCyclicAdder/LockOnWrite_InternalImplementation.hpp"
 
@@ -19,7 +20,7 @@ namespace Persistency
 namespace detail
 {
 
-void NonCyclicAdder::InternalImplementation::addChild(InternalAccessProxy &iap,
+bool NonCyclicAdder::InternalImplementation::addChild(InternalAccessProxy &iap,
                                                       GraphNode           &parent,
                                                       GraphNodePtrNN       child)
 {
@@ -38,6 +39,10 @@ void NonCyclicAdder::InternalImplementation::addChild(InternalAccessProxy &iap,
     WriteLock                        parentLock(nca.data_->mutexRW_);    // exclusive access to root
     WaitingLockData::ResetOnRelease  reset(nca.data_->wld_);
 
+    // skip addition if child's not unique.
+    if( !isChildUnique(parent, child) )
+      return false;
+
     // look for cycle in structure and throw on error
     LockingSession ls;
     checkForCycle(ls, iap, parent, child, &parent);
@@ -47,6 +52,7 @@ void NonCyclicAdder::InternalImplementation::addChild(InternalAccessProxy &iap,
   } // helper scope - releases all locks and objects
 
   assert( nca.data_->wld_.getPtr().get()==NULL );
+  return true;
 }
 
 void NonCyclicAdder::InternalImplementation::checkForCycle(LockingSession            &ls,

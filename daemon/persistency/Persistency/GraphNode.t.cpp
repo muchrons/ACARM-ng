@@ -499,4 +499,21 @@ void testObj::test<25>(void)
   th->join();
 }
 
+// test not-adding when child is not unique
+template<>
+template<>
+void testObj::test<26>(void)
+{
+  // create parent
+  GraphNodePtrNN gn   =makeNode();
+  ensure_equals("invalid children count", childrenCount(*gn), 2);
+  GraphNodePtrNN child=makeNode();
+  // add child for the first time
+  gn->addChild(child, *makeIO(child) );
+  ensure_equals("child not added", childrenCount(*gn), 3);
+  // now try adding second time - nothing should happen
+  gn->addChild(child, *makeIO(child) );
+  ensure_equals("duplicate child has been added", childrenCount(*gn), 3);
+}
+
 } // namespace tut

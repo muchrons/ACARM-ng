@@ -200,6 +200,7 @@ template<>
 void testObj::test<5>(void)
 {
   ThrowStrategy ts;
+  ts.throwCount_=99999999;      // just to be sure :)
   // add two elements
   for(int i=0; i<2; ++i)
   {
@@ -213,6 +214,7 @@ void testObj::test<5>(void)
 
   // this time exception should be thrown only for the first element, it should
   // be logged and then next element should be correlated.
+  ts.throwCount_=1;
   ts.process( makeNewLeaf(), changed_ );
   ensure_equals("correlation failed", changed_.size(), 1u);
 }

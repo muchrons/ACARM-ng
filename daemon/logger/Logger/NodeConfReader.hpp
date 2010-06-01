@@ -57,6 +57,7 @@ public:
 
 private:
   const AppenderMap appMap_;
+  FormatterPtr      formatter_;
 }; // class NodeConfReader
 
 } // namespace Logger

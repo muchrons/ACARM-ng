@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <cassert>
+
 #include "Filter/Strategy.hpp"
 
 
@@ -81,7 +83,6 @@ private:
   virtual bool canCorrelate(const NodeEntry thisEntry,
                             const NodeEntry otherEntry) const = 0;
 
-
   // this is the core - do NOT overwrite this method
   virtual void processImpl(Node               n,
                            NodesTimeoutQueue &ntq,
@@ -94,56 +95,81 @@ private:
       return;
 
     // check if it can be correlated with other nodes
-    for(typename NodesTimeoutQueue::iterator it=ntq.begin(); it!=ntq.end(); ++it)
+    // (loop here ensures that correlation will proceed desipte of errors)
+    int skip=0;
+    for(;;)
     {
-      // TODO: this solution is ugly - think of some smarter code reorganization...
-      // protection against exceptions
-      bool iteratorsInvalidated=false;
+      // skip initial number of elements
+      typename NodesTimeoutQueue::iterator begin=ntq.begin();
+      for(int i=0; i<skip && begin!=ntq.end(); ++i)
+        ++begin;
 
-      try
+      const int ret=processLoopHelper(begin, thisEntry, ntq, bf);
+      assert(ret!=0);
+      if(ret<0)     // nothing more to be done.
+        return;
+      if(ret>0)     // error, so skip some of the elements in future
+        skip+=ret;
+    } // for(process_elements)
+  }
+
+
+  // implementation part of the loop. returns number of elements to skip, on
+  // error or <0 to signal that processing has been done
+  int processLoopHelper(typename NodesTimeoutQueue::iterator  begin,
+                        const NodeEntry                      &thisEntry,
+                        NodesTimeoutQueue                    &ntq,
+                        BackendFacade                        &bf)
+  {
+    int skip=1;
+    try
+    {
+      // check if it can be correlated with other nodes
+      for(typename NodesTimeoutQueue::iterator it=begin; it!=ntq.end(); ++it)
       {
         // stop after first successful correlation.
-        if( tryCorrelate(ntq, bf, thisEntry, it, iteratorsInvalidated) )
-          return;
-      }
-      // TODO: persistency-related exceptions should be forwarded - they prohibit
-      //       later commision on transaction.
-      catch(const Commons::Exception &ex)
-      {
-        LOGMSG_INFO_S(Base::log_) << "exception (" << ex.getTypeName()
-                                  << ") has been thrown: '" << ex.what()
-                                  << "' - proceeding with processing next element";
-        // on error, continue with next element...
-      }
-      catch(const std::exception &ex)
-      {
-        LOGMSG_INFO_S(Base::log_) << "exception (std::exception) has been thrown: '"
-                                  << ex.what()
-                                  << "' - proceeding with processing next element";
-        // on error, continue with next element...
-      }
+        if( tryCorrelate(ntq, bf, thisEntry, it) )
+          return -1;
 
-      // this is fallback in case of exception after iterators have been invalidated
-      if(iteratorsInvalidated==true)
-      {
-        LOGMSG_DEBUG(Base::log_, "iterators have been already invalidated - "
-                                 "exiting from processing of this node");
-        return;
-      }
-    } // for(nodes in timeout queue)
+        ++skip;                 // enlarge skip-elements count
+      } // for(nodes in timeout queue)
+    }
+    catch(const Persistency::IO::Exception &ex)
+    {
+      // persistency-related exceptions are forwarded since they prohibit
+      // later commision on transaction.
+      LOGMSG_INFO_S(Base::log_) << "Persistency::IO exception cought (" << ex.getTypeName()
+                                << ") - transaction is invalidated; forwarding exception";
+      throw;  // this one's permanent in this context - re-throw
+    }
+    catch(const Commons::Exception &ex)
+    {
+      LOGMSG_INFO_S(Base::log_) << "exception (" << ex.getTypeName()
+                                << ") has been thrown: '" << ex.what()
+                                << "' - proceeding with processing next element";
+      return skip;  // on error, continue with next element...
+    }
+    catch(const std::exception &ex)
+    {
+      LOGMSG_INFO_S(Base::log_) << "exception " << typeid(ex).name()
+                                << " has been thrown: '"
+                                << ex.what()
+                                << "' - proceeding with processing next element";
+      return skip;  // on error, continue with next element...
+    }
 
     // if element cannot be correlated at the moment, add it to queue - maybe
     // we'll have better luck next time...
     ntq.update(thisEntry, getTimeout() );
+    return -2;
   }
+
 
   bool tryCorrelate(NodesTimeoutQueue                    &ntq,
                     BackendFacade                         &bf,
                     const NodeEntry                      &thisEntry,
-                    typename NodesTimeoutQueue::iterator  it,
-                    bool                                 &iteratorsInvalidated)
+                    typename NodesTimeoutQueue::iterator  it)
   {
-    assert(iteratorsInvalidated==false);
     // skip self
     if( *it==thisEntry )
       return false;
@@ -167,14 +193,13 @@ private:
                                               Persistency::MetaAlert::CertaintyDelta(0),
                                               Persistency::ReferenceURLPtr(),
                                               Persistency::Timestamp() ) );
-      Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv); // add new, correlated element.
-      const NodeEntry newEntry(newNode, thisEntry.t_);// use the same reported host entry.
-      iteratorsInvalidated=true;            // from now on iterators cannot be used any more
-      ntq.dismiss(it);                      // if element has been already correlated
-                                            // it should not be used any more.
-      ntq.update(newEntry, getTimeout() );  // add newly correlated entry.
+      Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv);     // add new, correlated element.
+      const NodeEntry             newEntry(newNode, thisEntry.t_);  // use the same reported host entry.
+      ntq.dismiss(it);                    // if element has been already correlated
+                                          // it should not be used any more.
+      ntq.update(newEntry, getTimeout() );// add newly correlated entry.
     }
-    else
+    else    // i.e.: is node
     {
       // append new meta-alert to a set of already correlated ones
       LOGMSG_DEBUG_S(Base::log_)<< "adding node '" << thisEntry.node_->getMetaAlert().getName().get()

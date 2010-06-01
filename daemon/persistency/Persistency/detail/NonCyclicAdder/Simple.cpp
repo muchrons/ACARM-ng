@@ -6,6 +6,7 @@
 
 #include "System/Threads/SafeInitLocking.hpp"
 #include "Persistency/GraphNode.hpp"
+#include "Persistency/detail/isChildUnique.hpp"
 #include "Persistency/detail/NonCyclicAdder.hpp"
 #include "Persistency/detail/InternalAccessProxy.hpp"
 
@@ -65,7 +66,7 @@ SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_additionMutex);
 
 } // unnamed namespace
 
-void NonCyclicAdder::addChildImpl(GraphNode           &parent,
+bool NonCyclicAdder::addChildImpl(GraphNode           &parent,
                                   InternalAccessProxy &iap,
                                   GraphNodePtrNN       child)
 {
@@ -78,6 +79,10 @@ void NonCyclicAdder::addChildImpl(GraphNode           &parent,
   // only one addition at a time!
   System::Threads::SafeInitLock lock(g_additionMutex);
 
+  // skip addition if child's alreadypresent
+  if( !isChildUnique(parent, child) )
+    return false;
+
   // check for cycle
   if( parentPtr==childPtr           ||      // instant-cycle?
       hasCycle(childPtr, parentPtr)    )    // is it possible to access self through child?
@@ -87,6 +92,7 @@ void NonCyclicAdder::addChildImpl(GraphNode           &parent,
 
   // if there is no cycle, add new child
   iap.addChildToChildrenVector(parent, child);
+  return true;
 }
 
 } // namespace detail

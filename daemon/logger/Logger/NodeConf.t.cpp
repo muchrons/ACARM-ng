@@ -30,11 +30,13 @@ struct NodeConfTestClass
 {
   NodeConfTestClass():
     app_(new TestAppender),
-    nc_(app_, Priority::INFO)
+    formatter_(new Formatter),
+    nc_(app_, formatter_, Priority::INFO)
   {
   }
 
   Appenders::BasePtr app_;
+  FormatterPtr       formatter_;
   NodeConf           nc_;
 };
 
@@ -58,12 +60,12 @@ void testObj::test<1>(void)
   ensure("invalid instance returned", tmp.get()==app_.get() );
 }
 
-// test getting formatter (smoke test, since formatter is held as a value)
+// test getting formatter
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  nc_.getFormatter();
+  ensure("invalid formatter", nc_.getFormatter().get()==formatter_.get() );
 }
 
 // test swapping
@@ -72,7 +74,7 @@ template<>
 void testObj::test<3>(void)
 {
   Appenders::BasePtr app2(new TestAppender);
-  NodeConf           nc2(app2, Priority::WARN);
+  NodeConf           nc2(app2, formatter_, Priority::WARN);
 
   nc_.swap(nc2);
 
@@ -90,7 +92,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  NodeConfPtr ncp( new NodeConf(app_, Priority::INFO) );
+  NodeConfPtr ncp( new NodeConf(app_, formatter_, Priority::INFO) );
   NodeConfPtr tmp;
   tmp=ncp;
 }

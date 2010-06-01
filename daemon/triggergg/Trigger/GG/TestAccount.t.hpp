@@ -61,7 +61,7 @@ private:
 std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, const Trigger::GG::UserID sender)
 {
   Trigger::GG::Connection conn(account);
-  timeval                 timeout={9, 0};   // timeout is 9[s]
+  timeval                 timeout={20, 0};      // timeout is 20[s]
   for(;;)
   {
     // wait for something
