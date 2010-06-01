@@ -11,16 +11,23 @@
 
 #include "Base/Threads/Mutex.hpp"
 
-// TODO: comment
-
 namespace Logger
 {
-
+/** \brief class mapping getween system-specific thread::id and interers.
+ *
+ *  each thread getThreadID() is called in gets unique, next in line ID number.
+ *  numbering starts with 0.
+ */
 class ThreadIDMap: private boost::noncopyable
 {
 public:
+  /** \brief create class.
+   */
   ThreadIDMap(void);
 
+  /** \brief get current thread number (ID).
+   *  \return thread identifier as unsigned integer.
+   */
   unsigned int getThreadID(void);
 
 private:
