@@ -31,7 +31,7 @@ struct CUrlUninit: public System::AtExitResourceDeallocator
   {
     Logger::Node log("filter.ipblacklist.curluninit");
     System::Threads::SafeInitLock lock(mutex);
-    LOGMSG_INFO(log, "termination called from AtExit");
+    LOGMSG_DEBUG(log, "termination called from AtExit");
     assert(g_terminated==false && "termination called before deallocate()");
     g_exitIsDone=true;
     // terminate ONLY if there are no more instances of CUrlInit present
@@ -65,13 +65,13 @@ CUrlInit::CUrlInit(void):
     // create deinitializer to AtExit, if it has not been reviously created.
     if(g_exitIsDone==false)
     {
-      LOGMSG_INFO(log_, "registering automatic deallocator uppon exit");
+      LOGMSG_DEBUG(log_, "registering automatic deallocator uppon exit");
       System::AtExit::TDeallocPtr ptr(new CUrlUninit);
       System::AtExit::registerDeallocator(ptr);
     }
     else
     {
-      LOGMSG_INFO(log_, "re-registration of curl - skipping AtExit registration");
+      LOGMSG_DEBUG(log_, "re-registration of curl - skipping AtExit registration");
       g_terminated=false;
     }
   } // if(intialize)
@@ -88,7 +88,7 @@ CUrlInit::~CUrlInit(void)
   // we have to do clean-up ourselfs
   if(g_count==0 && g_exitIsDone==true)
   {
-    LOGMSG_INFO(log_, "we're the last instance - calling termination");
+    LOGMSG_DEBUG(log_, "we're the last instance - calling termination");
     CUrlUninit::terminate();
   }
   else
