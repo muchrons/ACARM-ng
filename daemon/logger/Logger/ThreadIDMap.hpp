@@ -11,7 +11,6 @@
 
 #include "Base/Threads/Mutex.hpp"
 
-// TODO: test
 // TODO: comment
 
 namespace Logger
