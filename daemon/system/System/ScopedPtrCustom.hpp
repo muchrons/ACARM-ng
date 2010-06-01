@@ -9,7 +9,6 @@
 
 #include <boost/noncopyable.hpp>
 #include <boost/operators.hpp>
-#include <boost/type_traits/add_const.hpp>
 #include <cassert>
 
 namespace System
@@ -76,7 +75,7 @@ public:
   /** \brief arrow operator.
    *  \return const pointer to this.
    */
-  typename boost::add_const<pointer>::type operator->(void) const
+  pointer operator->(void) const
   {
     return get();
   }
@@ -113,7 +112,7 @@ public:
   /** \brief gets pointer held inside - const version.
    *  \return owned pointer.
    */
-  typename boost::add_const<pointer>::type get(void) const
+  pointer get(void) const
   {
     return t_;
   }
