@@ -22,15 +22,15 @@ namespace IO
 /** \brief class representing globaly accessable persistency-conneciton.
  *
  *  this solution provides thread-safe connection to persistency for small
- *  operations int the system, that are not normally associated with any
- *  particular thread, or are not known priory when/where will they be executer
+ *  operations in the system, that are not normally associated with any
+ *  particular thread, or are not known a priory when/where will they be executer
  *  thus they cannot be assigned to thread's conneciton explicitly.
  *
  *  example of such operations are destructors of shared objects.
  *
  *  note that all of calls to methods of this class are synchronized and cannot
  *  be executed as a part of external transaction - they provide single,
- *  per-call transaction that is commited string away. this does not make it
+ *  per-call transaction that is commited stright away. this does not make it
  *  very efficient, when calling often from multiple threads, but it is
  *  thread-safe this way and does not require esabilishing new connecitons
  *  each time small, rare opration has to be performed.
@@ -38,11 +38,6 @@ namespace IO
 class GlobalConnectionImpl: private boost::noncopyable
 {
 public:
-  /** \brief marks given meta-alert as triggered.
-   *  \param ma   meta alert to be marked as triggered.
-   *  \param name name of processor marking element as triggered.
-   */
-  void markAsTriggered(MetaAlertPtrNN ma, const std::string &name);
   /** \brief marks given element as unused.
    *  \param ma meta alert to be marked as unused.
    */

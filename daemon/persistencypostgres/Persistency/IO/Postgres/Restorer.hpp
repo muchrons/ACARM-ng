@@ -95,7 +95,7 @@ private:
   void addTreeNodesToCache(Persistency::IO::Postgres::detail::EntryReader &er,
                            const Tree::IDsVector                          &malerts);
 
-  void markInvalidIDsAsUnused(Persistency::IO::Postgres::detail::EntrySaver  &es,
+  void markInvalidIDsAsUnused(Persistency::IO::Postgres::detail::EntrySaver &es,
                               Tree::IDsVector                                maInUse,
                               Tree::IDsVector                                restoredIDs);
 

@@ -1,0 +1,25 @@
+# libetpan leaks as well...
+{
+   etpan_leaks_realloc_from_mailsmtp_auth_type
+   Memcheck:Leak
+   fun:malloc
+   ...
+   fun:mailsmtp_auth_type
+   ...
+}
+{
+   etpan_leaks_realloc_from_mailsmtp_auth_type
+   Memcheck:Leak
+   fun:realloc
+   ...
+   fun:mailsmtp_auth_type
+   ...
+}
+{
+   etpan_leaks_calloc_from_mailsmtp_auth_type
+   Memcheck:Leak
+   fun:calloc
+   ...
+   fun:mailsmtp_auth_type
+   ...
+}

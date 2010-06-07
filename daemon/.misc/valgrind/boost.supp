@@ -7,3 +7,11 @@
    fun:_ZN5boost6detail25get_once_per_thread_epochEv
    ...
 }
+{
+   boost_thread_leak_get_id
+   Memcheck:Leak
+   fun:malloc
+   ...
+   fun:_ZN5boost11this_thread6get_idEv
+   ...
+}

@@ -1,0 +1,25 @@
+# gnutls leaks as well...
+{
+   gnutls_leak_malloc_from_gnutls_global_init
+   Memcheck:Leak
+   fun:malloc
+   ...
+   fun:gnutls_global_init
+   ...
+}
+{
+   gnutls_leak_calloc_from_gnutls_global_init
+   Memcheck:Leak
+   fun:calloc
+   ...
+   fun:gnutls_global_init
+   ...
+}
+{
+   gnutls_leak_realloc_from_gnutls_global_init
+   Memcheck:Leak
+   fun:realloc
+   ...
+   fun:gnutls_global_init
+   ...
+}

@@ -2,9 +2,18 @@
  * MailSender.cpp
  *
  */
+#include <cstring>
+
+#include "System/ScopedPtrCustom.hpp"
+#include "System/AutoCptr.hpp"
 #include "Base/StrError.hpp"
 #include "Trigger/Mail/MailSmtp.hpp"
 #include "Trigger/Mail/MailSender.hpp"
+#include "Trigger/Mail/MimeCreateHelper.hpp"
+
+// TODO: fix mem-leaks in this file
+
+using namespace System;
 
 namespace Trigger
 {
@@ -15,27 +24,6 @@ MailSender::MailSender(const Config &cfg):
   cfg_(cfg)
 {
 }
-
-
-namespace
-{
-inline std::string addHeaders(const std::string &content,
-                              const std::string &subject,
-                              const std::string &from,
-                              const std::string &to)
-{
-  // TODO: this is a bit hardcore, but it's fast and fine for now.
-  //       see libetpan/tests/compose-msg.c for details how to do this.
-  const char *eol="\r\n";
-  std::stringstream ss;
-  ss<<"Subject: [acarmng] "<<subject<<eol;
-  ss<<"From: "<<from<<eol;
-  ss<<"To: "  <<to  <<eol;
-  ss<<content<<eol;
-  return ss.str();
-} // addHeaders()
-} // unnamed namespace
-
 
 void MailSender::send(const std::string &subject, const std::string &content)
 {
@@ -77,7 +65,8 @@ void MailSender::send(const std::string &subject, const std::string &content)
                 "mailesmtp_rcpt" );                             // TO
   errorHandler( mailsmtp_data( ms.get() ), "mailsmtp_data" );   // DATA
   // data-part headers and stuff...
-  const std::string &whole=addHeaders(content, subject, srv.from_, cfg_.getRecipientAddress() );
+  MimeCreateHelper   mch(srv.from_, cfg_.getRecipientAddress(), subject, content);
+  const std::string &whole=mch.createMimeMessage();
   errorHandler( mailsmtp_data_message( ms.get(), whole.c_str(), whole.length() ),
                 "mailsmtp_data_message" );                      // message body goes here
 

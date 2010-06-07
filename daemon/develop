@@ -2,7 +2,7 @@
 
 if [ "$#" -lt 1 ]
 then
-  echo "$0 <component> [ <flag1> <flag2> ... ]" >&2
+  echo "$0 <component> [ <test_flag1> <test_flag2> ... ]" >&2
   exit 1
 fi
 
@@ -10,4 +10,4 @@ C="$1"
 shift
 
 clear
-time make "$C" WITHOUT_DEPS=1 "$@" && ( cd gen/test_local_normal_default/$C/ && LD_LIBRARY_PATH="$LD_LIBRARY_PATH:../libs" time ./$C.t )
+time make "$C" WITHOUT_DEPS=1 && ( cd gen/test_local_normal_default/$C/ && LD_LIBRARY_PATH="$LD_LIBRARY_PATH:../libs" time ./$C.t "$@" )

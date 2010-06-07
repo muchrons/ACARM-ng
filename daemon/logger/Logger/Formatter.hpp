@@ -6,8 +6,11 @@
 #define INCLUDE_LOGGER_FORMATTER_HPP_FILE
 
 #include <sstream>
+#include <boost/noncopyable.hpp>
+#include <boost/shared_ptr.hpp>
 #include <sys/timeb.h>
 
+#include "Logger/ThreadIDMap.hpp"
 #include "Logger/NodeName.hpp"
 #include "Logger/Priority.hpp"
 
@@ -17,7 +20,7 @@ namespace Logger
 
 /** \brief class representing functionality of log messages formatting.
  */
-class Formatter
+class Formatter: private boost::noncopyable
 {
 public:
   /** \brief method for formatting messages.
@@ -37,18 +40,20 @@ public:
               const char        *file,
               const char        *call,
               unsigned int       line,
-              const char        *msg) const;
-
-  /** \brief swaps contents of two instances.
-   *  \param other object to swap content with.
-   */
-  void swap(Formatter &other);
+              const char        *msg);
 
 private:
   const char *pri2str(Priority pri) const;
   const char *strFix(const char *str) const;
   void appendValidMessage(std::stringstream &ssOut, const char *msg) const;
+  unsigned int getThreadID(void) const;
+
+  ThreadIDMap idMap_;
 }; // class Formatter
+
+
+/** \brief pointer to formatter. */
+typedef boost::shared_ptr<Formatter> FormatterPtr;
 
 } // namespace Logger
 

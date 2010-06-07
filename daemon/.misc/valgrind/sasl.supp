@@ -1,0 +1,25 @@
+# sasl leaks as well...
+{
+   sasl_init_leak_malloc_from_sasl_client_init
+   Memcheck:Leak
+   fun:malloc
+   ...
+   fun:sasl_client_init
+   ...
+}
+{
+   sasl_init_leak_realloc_from_sasl_client_init
+   Memcheck:Leak
+   fun:realloc
+   ...
+   fun:sasl_client_init
+   ...
+}
+{
+   sasl_init_leak_calloc_from_sasl_client_init
+   Memcheck:Leak
+   fun:calloc
+   ...
+   fun:sasl_client_init
+   ...
+}

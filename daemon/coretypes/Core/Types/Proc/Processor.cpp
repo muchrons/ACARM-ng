@@ -2,8 +2,8 @@
  * Processor.cpp
  *
  */
-#include "Core/Types/Proc/Processor.hpp"
 #include "Logger/Logger.hpp"
+#include "Core/Types/Proc/Processor.hpp"
 
 using namespace std;
 
@@ -51,8 +51,9 @@ public:
 
     LOGMSG_INFO(log_, "thread started");
 
-    // loop forever
-    for(;;)
+    // loop until exit not requested
+    bool quit=false;
+    while(!quit)
     {
       try
       {
@@ -63,15 +64,19 @@ public:
 
         // process new data
         LOGMSG_DEBUG(log_, "data recieved - processing");
-        Interface::ChangedNodes changed;
-        interface_->process(node, changed);
-        LOGMSG_DEBUG(log_, "data processing done");
+        Interface::ChangedNodes changed;                        // output collection
+        processNode(node, changed);                             // process node, ignoring errors
+        LOGMSG_DEBUG_S(log_)<<"total of "<<changed.size()<<" nods were changed";
 
-        boost::this_thread::interruption_point();             // allow interrupts
+        LOGMSG_DEBUG(log_, "notifing others about changed nodes");
         // signal others about changes made
-        for(Interface::ChangedNodes::iterator it=changed.begin();
-            it!=changed.end(); ++it)
+        for(Interface::ChangedNodes::iterator it=changed.begin(); it!=changed.end(); ++it)
           outputQueue_->push(*it);
+      }
+      catch(const boost::thread_interrupted &)
+      {
+        LOGMSG_INFO(log_, "interruption requested - stopping thread");
+        quit=true;
       }
       catch(const Core::Types::Proc::Exception &ex)
       {
@@ -83,10 +88,30 @@ public:
         LOGMSG_ERROR_S(log_)<<"exception ("<< typeid(ex).name()
                             <<") cought in thread: "<<ex.what();
       }
-    } // for(;;)
+    } // while(!quit)
+
+    LOGMSG_INFO(log_, "thread - exiting");
   }
 
 private:
+  void processNode(Persistency::GraphNodePtrNN &node, Interface::ChangedNodes &changed)
+  {
+    try
+    {
+      interface_->process(node, changed);
+      LOGMSG_DEBUG(log_, "data processing done");
+    }
+    catch(const std::exception &ex)
+    {
+      // exceptions at this point are ignored, since changed nodes must
+      // be forwarded to other processors anyhow, thus we proceed with execution.
+      LOGMSG_ERROR_S(log_)<<"exception ("<< typeid(ex).name()
+                          <<") cought in thread, while processing node; "
+                            "proceeding with forwarding notifications; "
+                            "exception was: "<<ex.what();
+    }
+  }
+
   Logger::Node            log_;
   Core::Types::NodesFifo *outputQueue_;
   Core::Types::NodesFifo *inputQueue_;
