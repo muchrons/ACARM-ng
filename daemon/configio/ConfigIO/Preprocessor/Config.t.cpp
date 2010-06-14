@@ -39,6 +39,7 @@ template<>
 void testObj::test<1>(void)
 {
   const Config c( makeSections() );
+  // TODO: misspell 'elements'
   ensure_equals("invalid elemsnts count", c.getSections().size(), 0u);
 }
 
@@ -48,6 +49,7 @@ template<>
 void testObj::test<2>(void)
 {
   const Config c( makeSections(42) );
+  // TODO: misspell 'elements'
   ensure_equals("invalid elemsnts count", c.getSections().size(), 42u);
 }
 
