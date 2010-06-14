@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <cassert>
 
+#include "Logger/Logger.hpp"
 #include "Core/SignalToStop.hpp"
 
 using namespace Logger;
