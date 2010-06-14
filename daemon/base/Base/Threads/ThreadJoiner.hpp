@@ -8,7 +8,7 @@
 /* public header */
 
 #include <boost/thread.hpp>
-#include <boost/scoped_ptr.hpp>
+#include <boost/any.hpp>            // TODO: think of smarter way of doing this
 #include <boost/noncopyable.hpp>
 #include <cassert>
 
@@ -32,9 +32,11 @@ public:
    */
   template<typename T>
   explicit ThreadJoiner(const T &t):
-    holder_( new Holder<T>(t) ),
-    th_( Operate<T>( &static_cast< Holder<T>* >(holder_.get())->t_ ) )
+    holder_(t),
+    th_( Operate<T>( boost::any_cast<T>(&holder_) ) )
   {
+    // ensure pointers are valid (i.e. from the same object)
+    assert( boost::any_cast<T>(&holder_)==boost::any_cast<T>(&holder_) );
   }
   /** \brief interrupr and join thread.
    *
@@ -58,42 +60,26 @@ public:
   }
 
 private:
-  struct HolderBase
-  {
-    virtual ~HolderBase(void)
-    {
-    }
-  }; // 
-
-  template<typename T>
-  struct Holder: public HolderBase
-  {
-    explicit Holder(const T &t):
-      t_(t)
-    {
-    }
-
-    T t_;
-  }; // 
-
   template<typename T>
   struct Operate
   {
     explicit Operate(T *t):
       t_(t)
     {
+      assert(t_!=NULL);
     }
-
     void operator()(void)
     {
+      assert(t_!=NULL);
       (*t_)();
     }
 
+  private:
     T *t_;
-  }; // 
+  }; // struct Operate
 
-  boost::scoped_ptr<HolderBase> holder_;
-  boost::thread                 th_;
+  boost::any    holder_;
+  boost::thread th_;
 }; // class ThreadJoiner
 
 } // namespace Threads
