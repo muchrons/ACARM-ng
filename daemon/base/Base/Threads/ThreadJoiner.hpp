@@ -33,9 +33,8 @@ public:
   template<typename T>
   explicit ThreadJoiner(const T &t):
     holder_(t),
-    unused_(false),
-    //th_(t)
-    th_( Operate<T>( boost::any_cast<T>(&holder_), &unused_ ) )
+    //th_(t)    // TODO: why this variant's not always working?
+    th_( Operate<T>( boost::any_cast<T>(&holder_) ) )
   {
     // ensure pointers are valid (i.e. from the same object)
     assert( boost::any_cast<T>(&holder_)==boost::any_cast<T>(&holder_) );
@@ -50,7 +49,6 @@ public:
     assert( boost::this_thread::get_id()!=th_.get_id() );   // sanity check
     th_.interrupt();
     th_.join();
-    assert(unused_==true && "thread's still running");
   }
 
   /** \brief arrow operator to access underlying thread directly.
@@ -66,28 +64,22 @@ private:
   template<typename T>
   struct Operate
   {
-    Operate(T *t, bool *unused):
-      t_(t),
-      unused_(unused)
+    explicit Operate(T *t):
+      t_(t)
     {
-      assert(t_     !=NULL);
-      assert(unused_!=NULL);
-      assert(*unused_==false);
+      assert(t_!=NULL);
     }
     void operator()(void)
     {
       assert(t_!=NULL);
       (*t_)();
-      *unused_=true;
     }
 
   private:
-    T    *t_;
-    bool *unused_;
+    T *t_;
   }; // struct Operate
 
   boost::any    holder_;
-  bool          unused_;
   boost::thread th_;
 }; // class ThreadJoiner
 
