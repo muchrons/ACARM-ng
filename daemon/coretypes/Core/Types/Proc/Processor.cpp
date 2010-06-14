@@ -51,8 +51,9 @@ public:
 
     LOGMSG_INFO(log_, "thread started");
 
-    // loop forever
-    for(;;)
+    // loop until exit not requested
+    bool quit=false;
+    while(!quit)
     {
       try
       {
@@ -72,6 +73,11 @@ public:
         for(Interface::ChangedNodes::iterator it=changed.begin(); it!=changed.end(); ++it)
           outputQueue_->push(*it);
       }
+      catch(const boost::thread_interrupted &)
+      {
+        LOGMSG_INFO(log_, "interruption requested - stopping thread");
+        quit=true;
+      }
       catch(const Core::Types::Proc::Exception &ex)
       {
         LOGMSG_ERROR_S(log_)<<"Core::Types::Proc::Exception ("<< typeid(ex).name()
@@ -82,7 +88,9 @@ public:
         LOGMSG_ERROR_S(log_)<<"exception ("<< typeid(ex).name()
                             <<") cought in thread: "<<ex.what();
       }
-    } // for(;;)
+    } // while(!quit)
+
+    LOGMSG_INFO(log_, "thread - exiting");
   }
 
 private:
