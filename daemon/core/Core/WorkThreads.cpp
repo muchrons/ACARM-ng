@@ -4,10 +4,12 @@
  */
 #include <cassert>
 
+#include "Base/Threads/ThreadJoiner.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Core/Processors.hpp"
 #include "Core/Sources.hpp"
+#include "Core/Types/NodesFifo.hpp"
 #include "Core/WorkThreads.hpp"
 
 namespace Core
@@ -64,6 +66,11 @@ struct ProcessorsThread
   {
   }
 
+  ~ProcessorsThread(void)
+  {
+    LOGMSG_DEBUG(log_, "stopping processors' thread");
+  }
+
   void operator()(void)
   {
     LOGMSG_INFO(log_, "thread started");
@@ -93,13 +100,61 @@ struct ProcessorsThread
   Logger::Node                          log_;
   Commons::SharedPtrNotNULL<Processors> procs_;
 }; // struct ProcessorsThread
+
+
+template<typename T>
+struct ThreadOwner
+{
+  explicit ThreadOwner(const T &t):
+    t_(t),
+    thread_(t_)
+  {
+  }
+
+  ~ThreadOwner(void)
+  {
+    try
+    {
+      thread_->interrupt();
+      thread_->join();
+    }
+    catch(...)
+    {
+      // nothing can be done here
+    }
+  }
+
+private:
+  // TODO: describe this
+  const T t_;
+
+public:
+  Base::Threads::ThreadJoiner thread_;
+}; // struct ThreadOwner
 } // unnamed namespace
+
+
+struct WorkThreads::InternalData: private boost::noncopyable
+{
+public:
+  InternalData(void):
+    procs_( ProcessorsThread(queue_) ),
+    srcs_( SourcesThread(queue_) )
+  {
+  }
+
+  Core::Types::NodesFifo        queue_;
+  ThreadOwner<ProcessorsThread> procs_;
+  ThreadOwner<SourcesThread>    srcs_;
+}; // struct WorkThreads::InternalData
+
+
 
 WorkThreads::WorkThreads(void):
   log_("core.workthreads"),
-  procs_( ProcessorsThread(queue_) ),
-  srcs_( SourcesThread(queue_) )
+  data_(new InternalData)
 {
+  assert( data_.get()!=NULL );
   LOGMSG_INFO(log_, "up and running");
 }
 
@@ -126,18 +181,20 @@ WorkThreads::~WorkThreads(void)
 
 void WorkThreads::waitUntilDone(void)
 {
+  assert( data_.get()!=NULL );
   LOGMSG_INFO(log_, "stopping until threads finish");
-  srcs_->join();
+  data_->srcs_.thread_->join();
   LOGMSG_INFO(log_, "Sources thread joined");
-  procs_->join();
+  data_->procs_.thread_->join();
   LOGMSG_INFO(log_, "Processors thread joined");
 }
 
 void WorkThreads::stop(void)
 {
+  assert( data_.get()!=NULL );
   LOGMSG_INFO(log_, "interrupting threads");
-  srcs_->interrupt();
-  procs_->interrupt();
+  data_->srcs_.thread_->interrupt();
+  data_->procs_.thread_->interrupt();
 }
 
 } // namespace Core

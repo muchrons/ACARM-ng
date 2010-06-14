@@ -8,10 +8,9 @@
 /* public header */
 
 #include <boost/noncopyable.hpp>
+#include <boost/scoped_ptr.hpp>
 
-#include "Base/Threads/ThreadJoiner.hpp"
 #include "Logger/Node.hpp"
-#include "Core/Types/NodesFifo.hpp"
 
 namespace Core
 {
@@ -43,10 +42,11 @@ public:
   void stop(void);
 
 private:
-  Logger::Node                log_;
-  Core::Types::NodesFifo      queue_;
-  Base::Threads::ThreadJoiner procs_;
-  Base::Threads::ThreadJoiner srcs_;
+  // forward declaration for pimpl
+  class InternalData;
+
+  Logger::Node                    log_;
+  boost::scoped_ptr<InternalData> data_;
 }; // class WorkThreads
 
 } // namespace Core
