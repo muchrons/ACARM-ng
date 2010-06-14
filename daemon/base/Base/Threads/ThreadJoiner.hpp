@@ -8,6 +8,8 @@
 /* public header */
 
 #include <boost/thread.hpp>
+#include <boost/scoped_ptr.hpp>
+#include <cassert>
 
 namespace Base
 {
@@ -29,7 +31,8 @@ public:
    */
   template<typename T>
   explicit ThreadJoiner(const T &t):
-    th_(t)
+    holder_( new Holder<T>(t) ),
+    th_( Operate<T>( &static_cast< Holder<T>* >(holder_.get())->t_ ) )
   {
   }
   /** \brief interrupr and join thread.
@@ -39,6 +42,7 @@ public:
    */
   ~ThreadJoiner(void)
   {
+    assert( boost::this_thread::get_id()!=th_.get_id() );   // sanity check
     th_.interrupt();
     th_.join();
   }
@@ -53,7 +57,42 @@ public:
   }
 
 private:
-  boost::thread th_;
+  struct HolderBase
+  {
+    virtual ~HolderBase(void)
+    {
+    }
+  }; // 
+
+  template<typename T>
+  struct Holder: public HolderBase
+  {
+    explicit Holder(const T &t):
+      t_(t)
+    {
+    }
+
+    T t_;
+  }; // 
+
+  template<typename T>
+  struct Operate
+  {
+    explicit Operate(T *t):
+      t_(t)
+    {
+    }
+
+    void operator()(void)
+    {
+      (*t_)();
+    }
+
+    T *t_;
+  }; // 
+
+  boost::scoped_ptr<HolderBase> holder_;
+  boost::thread                 th_;
 }; // class ThreadJoiner
 
 } // namespace Threads
