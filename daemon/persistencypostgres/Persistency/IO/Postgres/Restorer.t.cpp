@@ -24,7 +24,6 @@ using namespace Persistency::IO::Postgres::detail;
 using namespace std;
 using namespace pqxx;
 
-// TODO: check if invalid meta alerts are deleted from data base after restore
 namespace
 {
 
@@ -70,7 +69,6 @@ struct TestClass
     tut::ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
     // check if restored alerts and meta alerts exist in cache
     checkCache(out);
-    t_.commit();
   }
 
   void checkBetween(const Restorer::NodesVector &outVec, const Timestamp &from, const Timestamp &to)
@@ -86,7 +84,6 @@ struct TestClass
     tut::ensure("vectors are different", Commons::ViaUnorderedCollection::equal(out, outVec) );
     // check if restored alerts and meta alerts exist in cache
     checkCache(out);
-    t_.commit();
   }
 
   void removeAndCheck(const Restorer::NodesVector &outVec, const std::string &node, const std::string &child)
@@ -483,7 +480,6 @@ void testObj::test<4>(void)
   // restore data from data base
   r.restoreAllInUse(out);
   ensure_equals("invalid size", out.size(), 0);
-  t_.commit();
 }
 
 // trying restoring tree
@@ -516,6 +512,7 @@ void testObj::test<6>(void)
   Restorer::NodesVector tmp;
   makeNewTreeA(outVec, tmp);
   removeAndCheck(outVec, "node1", "node3");
+  t_.commit();
 }
 
 // try restoring invalid data
@@ -532,6 +529,7 @@ void testObj::test<7>(void)
   Restorer::NodesVector tmp;
   makeNewTreeB(outVec, tmp);
   removeAndCheck(outVec, "root1", "node1");
+  t_.commit();
 }
 
 // try restoring invalid data
@@ -548,6 +546,7 @@ void testObj::test<8>(void)
   Restorer::NodesVector tmp;
   makeNewTreeC(outVec, tmp);
   removeAndCheck(outVec, "root1", "node2");
+  t_.commit();
 }
 
 //
@@ -587,7 +586,6 @@ void testObj::test<11>(void)
   // restore data from data base
   r.restoreBetween(out, from, to);
   ensure_equals("invalid size", out.size(), 0);
-  t_.commit();
 }
 
 // try restoring valid data with restore(..., from, to) where some sub-tree part
@@ -602,5 +600,24 @@ void testObj::test<12>(void)
   Restorer::NodesVector tmp;
   makeNewTreeG(outVec, tmp);
   checkBetween(outVec, from, to);
+}
+
+// try restoring invalid data
+//
+//                   root1
+//             node1       node2
+//                   node4       node5
+//                leaf3 leaf4 leaf5 leaf6
+//
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  Restorer::NodesVector outVec;
+  Restorer::NodesVector tmp;
+  makeNewTreeA(outVec, tmp);
+  removeAndCheck(outVec, "node1", "node3");
+  t_.commit();
+  ensure_equals("invalid number of meta alerts in use", getNoOfMetaAlertsInUse(), 10u);
 }
 } // namespace tut
