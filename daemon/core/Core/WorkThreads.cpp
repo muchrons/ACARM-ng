@@ -95,6 +95,7 @@ struct ProcessorsThread
 }; // struct ProcessorsThread
 } // unnamed namespace
 
+
 WorkThreads::WorkThreads(void):
   log_("core.workthreads"),
   procs_( ProcessorsThread(queue_) ),

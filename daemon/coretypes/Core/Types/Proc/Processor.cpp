@@ -123,7 +123,7 @@ private:
 Processor::Processor(Core::Types::NodesFifo &outputQueue,
                      InterfaceAutoPtr        interface):
   outputQueue_(outputQueue),
-  log_( makeNodeName("core.types.proc..processor.", interface.get() ) ),
+  log_( makeNodeName("core.types.proc.processor.", interface.get() ) ),
   interface_( interface.release() ),
   th_( ThreadImpl(outputQueue_, inputQueue_, interface_.get() ) )
 {

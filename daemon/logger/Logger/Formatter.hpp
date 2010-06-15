@@ -46,7 +46,6 @@ private:
   const char *pri2str(Priority pri) const;
   const char *strFix(const char *str) const;
   void appendValidMessage(std::stringstream &ssOut, const char *msg) const;
-  unsigned int getThreadID(void) const;
 
   ThreadIDMap idMap_;
 }; // class Formatter
