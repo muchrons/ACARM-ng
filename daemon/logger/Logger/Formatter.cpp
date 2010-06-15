@@ -102,11 +102,4 @@ void Formatter::appendValidMessage(std::stringstream &ssOut, const char *msg) co
   ssOut<<buf;       // flush
 }
 
-unsigned int Formatter::getThreadID(void) const
-{
-  const boost::thread::id id=boost::this_thread::get_id();
-  // TODO
-  return 42;
-}
-
 } // namespace Logger
