@@ -47,8 +47,11 @@ public:
   ~ThreadJoiner(void)
   {
     assert( boost::this_thread::get_id()!=th_.get_id() );   // sanity check
-    th_.interrupt();
-    th_.join();
+    if( th_.joinable() )
+    {
+      th_.interrupt();
+      th_.join();
+    }
   }
 
   /** \brief arrow operator to access underlying thread directly.
