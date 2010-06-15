@@ -16,19 +16,6 @@ ThreadIDMap::ThreadIDMap(void):
 {
 }
 
-namespace
-{
-// strict-weak ordering
-template<typename T>
-struct SWO
-{
-  inline bool operator()(const T &left, const T &right) const
-  {
-    return left.first < right.first;
-  }
-}; // SWO
-} // unnamed namespace
-
 unsigned int ThreadIDMap::getThreadID(void)
 {
   const boost::thread::id id=boost::this_thread::get_id();
