@@ -3,9 +3,7 @@
  *
  */
 #include <cassert>
-#include <iostream> // TODO: remove this header - libs are not allowed to output anything in screen
 #include <cstring>
-// TODO: "prelude.h"
 #include <prelude.h>
 #include "System/Threads/SafeInitLocking.hpp"
 #include "Input/Prelude/GlobalLibPreludeInit.hpp"

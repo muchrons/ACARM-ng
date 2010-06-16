@@ -6,7 +6,7 @@
 #define INCLUDE_INPUT_PRELUDE_IDMEFPARSERCOMMONS_HPP_FILE
 
 #include <prelude.h>
-#include "Input/Prelude/ParseException.hpp"
+#include "Input/Prelude/ExceptionParse.hpp"
 #include "Persistency/IPTypes.hpp"
 #include "Persistency/Alert.hpp"
 

@@ -2,7 +2,7 @@
  * IDMEFParserTarget.cpp
  *
  */
-#include "Input/Prelude/ParseException.hpp"
+#include "Input/Prelude/ExceptionParse.hpp"
 #include "Input/Prelude/IDMEFParserCommons.hpp"
 #include "Input/Prelude/IDMEFParserTarget.hpp"
 #include "Persistency/Process.hpp"
@@ -26,7 +26,7 @@ IDMEFParserTarget::IDMEFParserTarget(idmef_target_t *ptr):
 idmef_target_t * IDMEFParserTarget::getNotNull(idmef_target_t *ptr) const
 {
   if (!ptr)
-    throw ParseException(SYSTEM_SAVE_LOCATION, "Idmef Target is empty.");
+    throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Idmef Target is empty.");
   return ptr;
 }
 

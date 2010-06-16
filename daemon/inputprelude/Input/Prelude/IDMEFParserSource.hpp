@@ -7,7 +7,7 @@
 
 #include <prelude.h>
 
-#include "Input/Prelude/ParseException.hpp"
+#include "Input/Prelude/ExceptionParse.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/IPTypes.hpp"
 

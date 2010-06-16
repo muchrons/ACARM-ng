@@ -2,7 +2,7 @@
  * IDMEFParserAnalyzer.cpp
  *
  */
-#include "Input/Prelude/ParseException.hpp"
+#include "Input/Prelude/ExceptionParse.hpp"
 #include "Input/Prelude/IDMEFParserCommons.hpp"
 #include "Input/Prelude/IDMEFParserAnalyzer.hpp"
 
@@ -26,7 +26,7 @@ IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):
 idmef_analyzer_t * IDMEFParserAnalyzer::getNonNull(idmef_analyzer_t *ptr) const
 {
   if(ptr==NULL)
-    throw ParseException(SYSTEM_SAVE_LOCATION, "Idmef Analyzer is empty.");
+    throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Idmef Analyzer is empty.");
   return ptr;
 }
 
@@ -57,8 +57,7 @@ Persistency::Analyzer::OperatingSystem IDMEFParserAnalyzer::parseOS(idmef_analyz
   const prelude_string_t *idmef_ostype = idmef_analyzer_get_ostype(ptr);
   const prelude_string_t *idmef_osversion = idmef_analyzer_get_osversion(ptr);
 
-  // TODO: can't prelude_string_get_string_or_default() be used directly here?
-  std::string osname="";
+  std::string osname;
 
   if (idmef_ostype!=NULL)
     osname=std::string(prelude_string_get_string_or_default(idmef_ostype, ""));
@@ -78,17 +77,16 @@ std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_anal
   std::auto_ptr<Persistency::Analyzer::IP> ip;
   idmef_node_t *idmef_node = idmef_analyzer_get_node(ptr);
 
-  // TODO: fix brackets indentation
   try
-    {
-      ip.reset(new Analyzer::IP(IDMEFParserCommons::getIPfromIdmefNode(idmef_node)));
-    }
+  {
+    ip.reset(new Analyzer::IP(IDMEFParserCommons::getIPfromIdmefNode(idmef_node)));
+  }
   // TODO: const reference must be taken here
-  catch(ParseException &)
-    {
-      // TODO: this should be logged
-      //there is no IP, but we can carry on
-    }
+  catch(ExceptionParse &)
+  {
+    // TODO: this should be logged
+    //there is no IP, but we can carry on
+  }
   return ip;
 }
 

@@ -47,11 +47,10 @@ struct TestClass
     prelude_string_t *ps_osversion;
     prelude_string_t *ps_address;
 
-    // TODO: these should be const variables
-    std::string name("The Analyzer of Luke Skywaker");
-    std::string ostype("Wojtek linux");
-    std::string osversion("2.6.129 gr-sec");
-    std::string address("156.117.92.22");
+    const std::string name("The Analyzer of Luke Skywaker");
+    const std::string ostype("Wojtek linux");
+    const std::string osversion("2.6.129 gr-sec");
+    const std::string address("156.117.92.22");
 
     prelude_string_new_dup(&ps_name,name.c_str());
     prelude_string_new_dup(&ps_ostype,ostype.c_str());
@@ -111,11 +110,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  // TODO: this should be const (thatnks to this you'd test if method
-  //       is const as well)
   const IDMEFParser ip(getMessage());
-  // TODO: use ensure_equals for string somparison
-  ensure(ip.getName()==Persistency::Alert::Name(getName()));
+  ensure_equals(ip.getName(),Persistency::Alert::Name(getName()));
 }
 
 // TODO: test name description's missing
@@ -130,11 +126,9 @@ void testObj::test<2>(void)
   idmef_alert_t *alert=getAlert();
   idmef_time_new_from_time(&idmeftime, &tt);
 
-
   idmef_alert_set_create_time(alert, idmeftime);
 
   const IDMEFParser ip( getMessage() );
-  // TODO: string( someMakeStringCall().c_str() ) does not make sense
   ensure_equals("Something broken with time", ip.getCreateTime(), time);
 }
 
