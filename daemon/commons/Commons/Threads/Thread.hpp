@@ -57,6 +57,10 @@ private:
         t_();   // run user's code
         LOGMSG_DEBUG(log_, "user's thread function finished without error");
       }
+      catch(const boost::thread_interrupted &ex)
+      {
+        LOGMSG_WARN(log_, "unhandled thread interruption caught: - aborting...");
+      }
       catch(const Commons::Exception &ex)
       {
         LOGMSG_FATAL_S(log_)<<"unexpected Commons::Exception caught: "<<ex.what()<<" - aborting...";
