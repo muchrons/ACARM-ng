@@ -2,11 +2,9 @@
  * Strategy.cpp
  *
  */
-//#include <sstream>
 #include <cassert>
 
-//#include "Algo/countCorrelatedAlerts.hpp"
-//#include "Algo/computeSeverity.hpp"
+//#include "Trigger/Compose/Summary.hpp"
 #include "Trigger/File/Strategy.hpp"
 
 using namespace std;
