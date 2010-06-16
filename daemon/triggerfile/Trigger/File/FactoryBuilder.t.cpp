@@ -25,7 +25,7 @@ struct TestClass
     {
       fb_.build(opts);
       thrown=true;
-      tut::fail("build() didn't throw on missing paramter");
+      tut::fail("build() didn't throw on missing/invalid paramter");
     }
     catch(const std::exception&)
     {
@@ -37,7 +37,7 @@ struct TestClass
 
   void setValid(void)
   {
-    opts_["file"]                  ="/tmp/";
+    opts_["outdir"]                ="/tmp/";
     opts_["severity_threshold"]    ="4.2";
     opts_["alerts_count_threshold"]="42";
   }
