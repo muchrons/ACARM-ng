@@ -44,12 +44,12 @@ void Thread::operator()(void)
     }
     catch(const Commons::Exception &ex)
     {
-      LOGMSG_ERROR_S(log_)<<"exception ("<< ex.getTypeName() <<")cought: '"
+      LOGMSG_ERROR_S(log_)<<"exception ("<< ex.getTypeName() <<")caught: '"
                           << ex.what() <<"' - proceeding with work";
     }
     catch(const std::exception &ex)
     {
-      LOGMSG_ERROR_S(log_)<<"exception cought: '"<<ex.what()
+      LOGMSG_ERROR_S(log_)<<"exception caught: '"<<ex.what()
                           <<"' - proceeding with work";
     }
 

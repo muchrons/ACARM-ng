@@ -81,12 +81,12 @@ public:
       catch(const Core::Types::Proc::Exception &ex)
       {
         LOGMSG_ERROR_S(log_)<<"Core::Types::Proc::Exception ("<< typeid(ex).name()
-                            <<") cought in thread: "<<ex.what();
+                            <<") caught in thread: "<<ex.what();
       }
       catch(const std::exception &ex)
       {
         LOGMSG_ERROR_S(log_)<<"exception ("<< typeid(ex).name()
-                            <<") cought in thread: "<<ex.what();
+                            <<") caught in thread: "<<ex.what();
       }
     } // while(!quit)
 
@@ -106,7 +106,7 @@ private:
       // exceptions at this point are ignored, since changed nodes must
       // be forwarded to other processors anyhow, thus we proceed with execution.
       LOGMSG_ERROR_S(log_)<<"exception ("<< typeid(ex).name()
-                          <<") cought in thread, while processing node; "
+                          <<") caught in thread, while processing node; "
                             "proceeding with forwarding notifications; "
                             "exception was: "<<ex.what();
     }

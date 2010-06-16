@@ -53,12 +53,12 @@ int main(const int argc, const char *const * const argv)
   }
   catch(const std::exception &ex)
   {
-    cerr<<argv[0]<<": TUT execption cought: "<< ex.what() <<endl;
+    cerr<<argv[0]<<": TUT execption caught: "<< ex.what() <<endl;
     return 1;
   }
   catch(...)
   {
-    cerr<<argv[0]<<": unknown exception cought"<<endl;
+    cerr<<argv[0]<<": unknown exception caught"<<endl;
     return 2;
   };
 
