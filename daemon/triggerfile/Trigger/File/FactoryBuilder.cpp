@@ -45,6 +45,8 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   const TriggerConfig   fc(name_, options);
   // output direcotry
   const string &outdir=fc["outdir"];
+  if( outdir.length()==0 )
+    throw ExceptionInvalidDirectory(SYSTEM_SAVE_LOCATION, outdir);
   // thresholds' config
   const char   *sevTh =fc.get("severity_threshold");
   if(sevTh!=NULL)
