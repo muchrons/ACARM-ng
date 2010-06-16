@@ -10,9 +10,9 @@
 #include <boost/noncopyable.hpp>
 #include <boost/thread.hpp>
 
-#include "Base/Threads/ThreadJoiner.hpp"
 #include "Logger/Node.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "Commons/Threads/Thread.hpp"
 #include "Core/Types/AlertsFifo.hpp"
 #include "Input/Reader.hpp"
 
@@ -39,8 +39,8 @@ public:
   void stop(void);
 
 private:
-  Logger::Node                log_;
-  Base::Threads::ThreadJoiner thread_;
+  Logger::Node             log_;
+  Commons::Threads::Thread thread_;
 }; // class Interface
 
 
