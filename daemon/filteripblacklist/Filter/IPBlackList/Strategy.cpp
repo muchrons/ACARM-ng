@@ -55,7 +55,7 @@ void Strategy::processImpl(Node               n,
     }
     catch(const Filter::Exception &ex)
     {
-      LOGMSG_ERROR_S(log_)<<"Filter::Exception cought while downloading new "
+      LOGMSG_ERROR_S(log_)<<"Filter::Exception caught while downloading new "
                             "block list from dshiled: '"
                           <<ex.what()
                           <<"' - skipping until next refresh";

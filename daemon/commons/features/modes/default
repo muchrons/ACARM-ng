@@ -1,4 +1,5 @@
 Commons/*.[ch]pp
 Commons/detail/*.[ch]pp
+Commons/Threads/*.[ch]pp
 Commons/Factory/*.[ch]pp
 Commons/Factory/detail/*.[ch]pp

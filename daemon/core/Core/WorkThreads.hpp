@@ -9,8 +9,8 @@
 
 #include <boost/noncopyable.hpp>
 
-#include "Base/Threads/ThreadJoiner.hpp"
 #include "Logger/Node.hpp"
+#include "Commons/Threads/Thread.hpp"
 #include "Core/Types/NodesFifo.hpp"
 
 namespace Core
@@ -43,10 +43,10 @@ public:
   void stop(void);
 
 private:
-  Logger::Node                log_;
-  Core::Types::NodesFifo      queue_;
-  Base::Threads::ThreadJoiner procs_;
-  Base::Threads::ThreadJoiner srcs_;
+  Logger::Node             log_;
+  Core::Types::NodesFifo   queue_;
+  Commons::Threads::Thread procs_;
+  Commons::Threads::Thread srcs_;
 }; // class WorkThreads
 
 } // namespace Core
