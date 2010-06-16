@@ -36,7 +36,7 @@ IO::ConnectionPtrNN makeConnection(void);
 DataBaseID getID(IO::Transaction &t, const std::string &name);
 
 void removeNodeConnection(const std::string &parentName, const std::string &childName);
-
+size_t getNoOfMetaAlertsInUse();
 Persistency::AlertPtr makeNewAlert(const char *name="some alert", const Timestamp &t = Timestamp(444) );
 
 Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert", const Timestamp &t = Timestamp(444));

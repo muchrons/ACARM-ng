@@ -683,13 +683,15 @@ void testObj::test<16>(void)
   t_.getAPI<TransactionAPI>().exec(ss);
   ss.str("");
   ss << "SELECT * FROM tmp;";
-  // TODO: this variable should be const
-  result r = t_.getAPI<TransactionAPI>().exec(ss);
-  // TODO: segv. when no records are returned.
+  const result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size", r.size() ,1u);
   r[0]["s3"].to(s);
-  ensure_equals("invalid size", s.size(), 3u);
+  // TODO: 'read' is irregular verb (see: http://www.sciaga.pl/tekst/4472-5-95_nieregularnych_czasownikow_angielskich)
+  //       'invalid data size has been read'
+  ensure_equals("invalid readed data size", s.size(), 3u);
+  s.clear();
   r[0]["s16"].to(s);
-  // TODO: missing size-check for 16-bytes long string - add it or remove this string as well
+  ensure_equals("invalid readed data size", s.size(), 16u);
 }
 
 // try save service with NULL reference URL

@@ -57,7 +57,15 @@ void removeNodeConnection(const std::string &parentName, const std::string &chil
   t.getAPI<TransactionAPI>().exec(ss);
   t.commit();
 }
-
+size_t getNoOfMetaAlertsInUse()
+{
+  Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
+  IO::Transaction t( conn->createNewTransaction("delete_data_transaction") );
+  stringstream ss;
+  ss << "SELECT * FROM meta_alerts_in_use;";
+  const result r = t.getAPI<TransactionAPI>().exec(ss);
+  return r.size();
+}
 AlertPtr makeNewAlert(const char *name, const Timestamp &t)
 {
   const Persistency::Alert::SourceAnalyzers sa( makeNewAnalyzer() );

@@ -8,6 +8,8 @@
 /* public header */
 
 #include <boost/thread.hpp>
+#include <boost/noncopyable.hpp>
+#include <cassert>
 
 namespace Base
 {
@@ -17,10 +19,10 @@ namespace Threads
 /** \brief wrapper for boost::thread that ensures thread is interrupted
  *         and joined when d-tor is called.
  *
- *  thanks to this class threads are known to be nterrupted and joined even
+ *  thanks to this class threads are known to be interrupted and joined even
  *  when normal flow (i.e. non-exception one) would not allow this.
  */
-class ThreadJoiner
+class ThreadJoiner: private boost::noncopyable
 {
 public:
   /** \brief create and start thread from any object that would be accepted
@@ -39,8 +41,10 @@ public:
    */
   ~ThreadJoiner(void)
   {
+    assert( boost::this_thread::get_id()!=th_.get_id() );   // sanity check
     th_.interrupt();
-    th_.join();
+    if( th_.joinable() )
+      th_.join();
   }
 
   /** \brief arrow operator to access underlying thread directly.

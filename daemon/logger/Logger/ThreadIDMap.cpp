@@ -2,7 +2,6 @@
  * ThreadIDMap.cpp
  *
  */
-#include <algorithm>
 #include <cassert>
 
 #include "Base/Threads/Lock.hpp"
@@ -16,36 +15,18 @@ ThreadIDMap::ThreadIDMap(void):
 {
 }
 
-namespace
-{
-// strict-weak ordering
-template<typename T>
-struct SWO
-{
-  inline bool operator()(const T &left, const T &right) const
-  {
-    return left.first < right.first;
-  }
-}; // SWO
-} // unnamed namespace
-
 unsigned int ThreadIDMap::getThreadID(void)
 {
-  const boost::thread::id id=boost::this_thread::get_id();
-
-  Base::Threads::Lock lock(mutex_);
-
-  // has entry in "map"? (NOTE: lower_boundis used here, since it has O(logn) on sorted data.
-  IDMap::iterator it=std::lower_bound( m_.begin(), m_.end(), Mapping(id, 0u) );
-  if( it!=m_.end() && it->first==id)
+  // we can use id_ in thread-safe way without mutexes, since it is
+  // thread-local-storage and so is not shared between threads.
+  if( id_.get()==NULL )
   {
-    assert( std::find( m_.begin(), m_.end(), Mapping(id, it->second) )==it );
-    return it->second;
+    // lock is needed here to read/increment nextFreeID_ member, which is shared.
+    Base::Threads::Lock lock(mutex_);
+    id_.reset( new unsigned int(nextFreeID_++) );
   }
-  // else - add new entry, using lower_bound's result.
-  const Mapping tmp(id, nextFreeID_++);
-  m_.insert(it, tmp);
-  return tmp.second;
+  assert( id_.get()!=NULL );
+  return *id_;
 }
 
 } // namespace Logger
