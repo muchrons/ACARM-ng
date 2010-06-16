@@ -9,4 +9,5 @@
 17 GraphNode (MetaAlert?) should have some unique identifier in the system, that can be reported.
 20 make logger's file names less verbose (component path is present in log-path any way).
 21 separate GG and e-mail test account's config into separate file, with proper defines/constants so that there will be just one place to remove them from code before the release.
-24
+24 make formatting trigger's output separate namespace within Trigger, to reuse code.
+25
