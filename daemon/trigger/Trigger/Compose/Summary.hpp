@@ -23,6 +23,7 @@ class Summary: private boost::noncopyable
 {
 public:
   /** \brief append report to stream.
+   *  \param ss   stream to append report to.
    *  \param node node to be reported.
    */
   static void append(std::stringstream &ss, const Persistency::GraphNodePtrNN &node);
