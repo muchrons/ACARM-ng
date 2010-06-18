@@ -1,5 +1,5 @@
 /*
- * MessageSender.t.cpp
+ * Strategy.t.cpp
  *
  */
 #include <iostream>

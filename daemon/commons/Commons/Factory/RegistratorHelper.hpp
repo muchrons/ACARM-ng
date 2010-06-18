@@ -69,7 +69,7 @@ private:
       }
       catch(const std::exception &ex)
       {
-        LOGMSG_FATAL_S(node) << "exception cought while registering: "
+        LOGMSG_FATAL_S(node) << "exception caught while registering: "
                              << builderName << ": " << ex.what();
       }
       catch(...)

@@ -28,7 +28,7 @@ Interface::~Interface(void)
   }
   catch(...)
   {
-    LOGMSG_FATAL(log_, "exception cought while stopping thread - "
+    LOGMSG_FATAL(log_, "exception caught while stopping thread - "
                        "exiting any way...");
   }
 }

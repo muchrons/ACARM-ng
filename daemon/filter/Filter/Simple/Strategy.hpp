@@ -138,7 +138,7 @@ private:
     {
       // persistency-related exceptions are forwarded since they prohibit
       // later commision on transaction.
-      LOGMSG_INFO_S(Base::log_) << "Persistency::IO exception cought (" << ex.getTypeName()
+      LOGMSG_INFO_S(Base::log_) << "Persistency::IO exception caught (" << ex.getTypeName()
                                 << ") - transaction is invalidated; forwarding exception";
       throw;  // this one's permanent in this context - re-throw
     }

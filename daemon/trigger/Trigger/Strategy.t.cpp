@@ -119,15 +119,22 @@ struct TestLoopTrigger: public Strategy
 
 struct CallableLT
 {
-  void operator()(void)
+  CallableLT(TestLoopTrigger::ChangedNodes *cn,
+             TestLoopTrigger               *tlt):
+    cn_(cn),
+    tlt_(tlt)
   {
-    assert( cn_.size()==0 );
-    tlt_.process( makeNewLeaf(), cn_);
-    assert( cn_.size()==0 );
   }
 
-  TestLoopTrigger::ChangedNodes cn_;
-  TestLoopTrigger               tlt_;
+  void operator()(void)
+  {
+    assert( cn_->size()==0 );
+    tlt_->process( makeNewLeaf(), *cn_);
+    assert( cn_->size()==0 );
+  }
+
+  TestLoopTrigger::ChangedNodes *cn_;
+  TestLoopTrigger               *tlt_;
 }; // struct CollableLT
 } // unnmaed namespace
 
@@ -136,8 +143,9 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  CallableLT clt;
-  Base::Threads::ThreadJoiner th( boost::ref(clt) );
+  TestLoopTrigger::ChangedNodes cn;
+  TestLoopTrigger               tlt;
+  Base::Threads::ThreadJoiner th( (CallableLT(&cn, &tlt)) );
   th->interrupt();
   th->join();
 }

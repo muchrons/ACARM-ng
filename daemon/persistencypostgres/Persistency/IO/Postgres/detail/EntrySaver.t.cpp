@@ -686,6 +686,8 @@ void testObj::test<16>(void)
   const result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size() ,1u);
   r[0]["s3"].to(s);
+  // TODO: 'read' is irregular verb (see: http://www.sciaga.pl/tekst/4472-5-95_nieregularnych_czasownikow_angielskich)
+  //       'invalid data size has been read'
   ensure_equals("invalid readed data size", s.size(), 3u);
   s.clear();
   r[0]["s16"].to(s);

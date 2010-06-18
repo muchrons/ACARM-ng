@@ -89,10 +89,12 @@ CREATE TABLE    alerts
                            DEFAULT now(),
   id_severity int          NOT NULL
                            REFERENCES severities(id),
+  -- TODO: typo in name
   certanity   real         NOT NULL
                            DEFAULT 1.0,
   description text         NOT NULL,
 
+  -- TODO: typo in name
   CONSTRAINT certanity_check      CHECK ( 0<=certanity AND certanity<=1 ),
   CONSTRAINT dates_relation_check CHECK ( detect_time IS NULL OR
                                           detect_time<=create_time ),

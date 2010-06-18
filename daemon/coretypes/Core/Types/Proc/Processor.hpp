@@ -11,9 +11,9 @@
 #include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
-#include "Base/Threads/ThreadJoiner.hpp"
 #include "Logger/Node.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "Commons/Threads/Thread.hpp"
 #include "Core/Types/NodesFifo.hpp"
 #include "Core/Types/Proc/Interface.hpp"
 #include "Core/Types/Proc/ExceptionInvalidInterface.hpp"
@@ -59,7 +59,7 @@ private:
   Core::Types::NodesFifo        inputQueue_;
   Logger::Node                  log_;
   boost::scoped_ptr<Interface>  interface_;
-  Base::Threads::ThreadJoiner   th_;
+  Commons::Threads::Thread      th_;
 }; // class Processor
 
 

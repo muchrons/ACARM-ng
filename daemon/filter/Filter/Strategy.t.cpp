@@ -109,13 +109,18 @@ struct TestLoopFilter: public Strategy<char>
 
 struct CallableLF
 {
+  CallableLF(TestLoopFilter *tlf):
+    tlf_(tlf)
+  {
+  }
+
   void operator()(void)
   {
     Strategy<char>::ChangedNodes cn;
-    tlf_.process( TestFilter::makeGraphLeaf(), cn );
+    tlf_->process( TestFilter::makeGraphLeaf(), cn );
   }
 
-  TestLoopFilter tlf_;
+  TestLoopFilter *tlf_;
 }; // struct CollableLF
 } // unnmaed namespace
 
@@ -124,8 +129,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  CallableLF clf;
-  Base::Threads::ThreadJoiner th( boost::ref(clf) );
+  TestLoopFilter tlf;
+  Base::Threads::ThreadJoiner th( (CallableLF(&tlf)) );
   th->interrupt();
   th->join();
 }
