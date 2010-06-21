@@ -8,6 +8,7 @@
 /* public header */
 
 #include "Core/SignalToStop.hpp"
+#include "Core/IgnoreSignal.hpp"
 
 namespace Core
 {
@@ -25,7 +26,8 @@ public:
 private:
   SignalToStop sigINT_;
   SignalToStop sigTERM_;
-  SignalToStop sigPIPE_;
+  IgnoreSignal sigPIPE_;
+  IgnoreSignal sigHUP_;
 }; // class HandleSignals
 
 } // namespace Core

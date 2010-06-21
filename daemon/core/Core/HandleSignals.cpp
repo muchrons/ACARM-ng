@@ -12,7 +12,8 @@ namespace Core
 HandleSignals::HandleSignals(WorkThreads *wt):
   sigINT_ (SIGINT,  wt),
   sigTERM_(SIGTERM, wt),
-  sigPIPE_(SIGPIPE, wt)
+  sigPIPE_(SIGPIPE),
+  sigHUP_(SIGHUP)
 {
 }
 
