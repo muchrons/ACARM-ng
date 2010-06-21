@@ -13,6 +13,7 @@
 #include "Core/WorkThreads.hpp"
 #include "Core/PersistencyCleanup.hpp"
 #include "Core/HandleSignals.hpp"
+#include "Core/SanityCheck.hpp"
 
 namespace Core
 {
@@ -44,6 +45,9 @@ public:
   void stop(void);
 
 private:
+  void ensureNotRoot(void);
+
+  SanityCheck        sanity_;       // checks if (basic) environment is sane
   Logger::Node       log_;
   HandleSignals      nullSignals_;  // initially register empty handlers
                                     // (will be overwritten later on)

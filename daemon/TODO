@@ -9,6 +9,5 @@
 25 add messages buffering before doing actuall send in triggers - this will prevent message lost, when server is temporary not available; note: buffering can be done at least in memory; buffering shall be done on trigger's API level.
 26 create XML schema for config file.
 27 add parse-at-read feature to configio - config should be accepted or rejected when running application, not delayed until acctuall usage (note: this task is connected with config's refactoring to register parsers).
-28 add safety precaution not to allow running software as root.
 29 add timestamps to triggered reports (to know when it has been triggered).
 30
