@@ -18,14 +18,6 @@ namespace
 
 struct TestClass
 {
-  // TODO: do not use explicit c-tor/d-tor when not needed
-  TestClass()
-  {
-  }
-  // TODO: do not use explicit c-tor/d-tor when not needed
-  ~TestClass()
-  {
-  }
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -65,18 +57,6 @@ void testObj::test<3>(void)
   Client a("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
   Client b("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
 }
-
-
-// Create and start client
-template<>
-template<>
-void testObj::test<4>(void)
-{
-  Client client("profile","/etc/prelude/default/client.conf",PRELUDE_CONNECTION_PERMISSION_IDMEF_READ);
-  client.start();
-}
-
-
 
 
 } // namespace tut
