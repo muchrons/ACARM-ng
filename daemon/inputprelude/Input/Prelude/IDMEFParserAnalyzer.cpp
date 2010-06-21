@@ -34,7 +34,6 @@ Persistency::Analyzer::Name IDMEFParserAnalyzer::parseName(idmef_analyzer_t *ptr
 {
   // TODO: c&p code
   const prelude_string_t *idmef_name = idmef_analyzer_get_name(ptr);
-  // TODO: throw on error
   if (idmef_name)
     return prelude_string_get_string(idmef_name);
   return "Unknown";
@@ -81,8 +80,7 @@ std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_anal
   {
     ip.reset(new Analyzer::IP(IDMEFParserCommons::getIPfromIdmefNode(idmef_node)));
   }
-  // TODO: const reference must be taken here
-  catch(ExceptionParse &)
+  catch(const ExceptionParse &)
   {
     // TODO: this should be logged
     //there is no IP, but we can carry on

@@ -21,6 +21,7 @@ template<typename T>
 class NullValue: public boost::equality_comparable< NullValue<T> >
 {
 public:
+  //TODO consider using initialization lists
   /** \brief create class from pointer.
    *  \param value pointer to create from.
    */

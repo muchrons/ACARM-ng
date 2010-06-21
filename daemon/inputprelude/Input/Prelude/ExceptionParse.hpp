@@ -25,8 +25,7 @@ public:
    */
   template<typename T>
   ExceptionParse(const Location &where, const T &msg):
-  // TODO: notice that there is cc() set of methods for concatenating elements in strings.
-    Input::Exception(where, std::string("parse exception: ") + msg)
+    Input::Exception(where, cc("parse exception: ",msg))
   {
   }
 }; // class Exception

@@ -6,6 +6,7 @@
 #include <cstring>
 #include <memory>
 #include <string>
+#include <iostream>
 
 #include "Input/Prelude/Reader.hpp"
 

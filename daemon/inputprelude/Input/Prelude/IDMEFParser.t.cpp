@@ -6,8 +6,10 @@
 #include <cstring>
 #include <memory>
 #include <string>
+#include <iostream>
 
 #include "Input/Exception.hpp"
+#include "Input/Prelude/ExceptionParse.hpp"
 #include "Input/Prelude/IDMEFParser.hpp"
 
 using namespace std;
@@ -111,7 +113,7 @@ template<>
 void testObj::test<1>(void)
 {
   const IDMEFParser ip(getMessage());
-  ensure_equals(ip.getName(),Persistency::Alert::Name(getName()));
+  ensure_equals("IP",ip.getName().get(),getName());
 }
 
 // TODO: test name description's missing

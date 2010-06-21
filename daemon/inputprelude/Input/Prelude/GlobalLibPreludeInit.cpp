@@ -21,7 +21,9 @@ namespace
 int  g_counter       =0;
 bool g_wasInitialized=false;
 bool g_end           =false;
-char **argv          =NULL;
+char g_appName[]       ="ACARM-ng";
+char *g_argv[2]={ g_appName, NULL };
+int g_argc=1;
 // mutex protecting operations on global types
 SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_mutex);
 
@@ -54,15 +56,7 @@ struct Releaser
     assert(g_wasInitialized==false);
     assert(g_end==false);
 
-    int argc=1;
-    // TODO: why allocating new memory? use global char arrays for this.
-    argv=new char*[1];
-    // if exception was not thrown memory is allocated
-    // TODO: memory leak if second new throws
-    argv[0]=new char[10];
-    strcpy(argv[0],"name");
-
-    if ( prelude_init(&argc, argv) < 0 )
+    if ( prelude_init(&g_argc, g_argv) < 0 )
       throw Input::Exception(SYSTEM_SAVE_LOCATION, "Unable to initialize prelude library.");
   }
 
@@ -75,8 +69,6 @@ struct Releaser
     try
     {
       prelude_deinit();
-      delete[] argv[0];
-      delete[] argv;
     }
     catch(...)
     {
