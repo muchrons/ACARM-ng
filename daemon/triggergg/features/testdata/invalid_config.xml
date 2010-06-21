@@ -22,10 +22,10 @@
 
   <triggers>
     <gg>
-      <uin>23436545</uin>
-      <password>testowekonto</password>
+      <uin>12345</uin>
+      <password>secret</password>
 <!--
-      <receiver_uin>23461426</receiver_uin>
+      <receiver_uin>4321</receiver_uin>
 -->
     </gg>
   </triggers>

@@ -12,18 +12,20 @@
 
 #include "Trigger/GG/AccountConfig.hpp"
 #include "Trigger/GG/Connection.hpp"
+#include "TestHelpers/Data/gg1.hpp"
+#include "TestHelpers/Data/gg2.hpp"
 
 namespace
 {
 
 Trigger::GG::AccountConfig getTestConfig1(void)
 {
-  return Trigger::GG::AccountConfig(23436545, "testowekonto");
+  return Trigger::GG::AccountConfig(GG1_TEST_ACCOUNT_UIN, GG1_TEST_ACCOUNT_PASS);
 }
 
 Trigger::GG::AccountConfig getTestConfig2(void)
 {
-  return Trigger::GG::AccountConfig(23461426, "testowekonto");
+  return Trigger::GG::AccountConfig(GG2_TEST_ACCOUNT_UIN, GG2_TEST_ACCOUNT_PASS);
 }
 
 // helper for backward compatibility
