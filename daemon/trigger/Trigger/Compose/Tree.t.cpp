@@ -1,10 +1,10 @@
 /*
- * Summary.t.cpp
+ * Tree.t.cpp
  *
  */
 #include <tut.h>
 
-#include "Trigger/Compose/Summary.hpp"
+#include "Trigger/Compose/Tree.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -22,7 +22,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Trigger/Compose/Summary");
+factory tf("Trigger/Compose/Tree");
 } // unnamed namespace
 
 
@@ -35,9 +35,12 @@ template<>
 void testObj::test<1>(void)
 {
   std::stringstream ss;
-  Summary::append( ss, makeNewNode() );
-  ensure_equals("invalid report", ss.str(),
-                "reporting triggered for meta-alert \"some meta-alert\" (2 correlated alerts; severity is 1.1)\n");
+  Tree::append( ss, makeNewNode() );
+  ensure_equals("invalid report",
+                ss.str(),
+                "some meta-alert\n"
+                "  some alert\n"
+                "  some alert\n");
 }
 
 } // namespace tut
