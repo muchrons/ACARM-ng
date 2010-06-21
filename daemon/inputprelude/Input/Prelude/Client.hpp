@@ -26,6 +26,11 @@ class Client
 {
 public:
   /**
+   * Auto variable to deallocate idmef_message_t in case of exception
+   */
+  typedef System::AutoVariable<detail::IdmefMessageHolder> IdmefMessageAutoPtr;
+
+  /**
    * \brief c-tor, creates a prelude client with given profile.
    * \param profile profile to be used.
    * \param config path to a config file.
@@ -46,8 +51,6 @@ public:
   IdmefMessageAutoPtr recvMessage(int timeout=-1);
 
 private:
-  typedef System::AutoVariable<detail::IdmefMessageHolder> IdmefMessageAutoPtr;
-
   GlobalLibPreludeInit      g_;
   LogCallback               preludeLogger_;
   prelude_client_t         *client_;
