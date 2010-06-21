@@ -30,6 +30,7 @@ void Strategy::trigger(const Node &n)
   Compose::Full::append(ss, n);
   // open output
   const string path=createOutputPath();
+  LOGMSG_DEBUG_S(log_)<<"output file is: "<<path;
   ofstream     file( path.c_str() );
   if( !file.is_open() )
     throw ExceptionCantOpenFile(SYSTEM_SAVE_LOCATION, path);

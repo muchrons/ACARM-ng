@@ -44,7 +44,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
           error="no such file";
           break;
         case 2:
-          error="file's too small (empty?)";
+          error="file's size is invalid (empty?)";
           break;
         default:
           assert(!"unhandled return code");
@@ -63,37 +63,9 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     struct stat buf;
     if( stat( ss.str().c_str(), &buf )!=0 )
       return 1;
-    if( buf.st_size<40 )
+    if( buf.st_size!=135 )
       return 2;
     // all ok!
-    return 0;
-  }
-
-  int testMultipleWrites(void) const
-  {
-    Strategy               s(cfg_);
-    Strategy::ChangedNodes nc;
-    GraphNodePtrNN         node=makeNewNode();
-
-    // wait until seconds just changed - to make event as probable as possible
-    // (yes - this is busy loop...)
-    {
-      time_t start=time(NULL);
-      while( start==time(NULL) ) {}
-    }
-
-    // no make double write
-    const time_t start=time(NULL);
-    s.process(node, nc);
-    s.process(node, nc);
-    const time_t stop =time(NULL);
-    // if second elapsed there is nothing that can be done
-    if(start!=stop)
-      return -1;
-
-    // check for output files
-    testFile(".", start, 0);
-    testFile(".", start, 1);
     return 0;
   }
 
@@ -157,8 +129,33 @@ void testObj::test<4>(void)
   // this test main part has to fit in <1[s] window - retru 5 times
   // if it does not happen
   for(int i=0; i<5; ++i)
-    if( testMultipleWrites()==0 )   // ok - we're done now
-      return;
+  {
+    Strategy               s(cfg_);
+    Strategy::ChangedNodes nc;
+
+    // wait until seconds just changed - to make event as probable as possible
+    // (yes - this is busy loop...)
+    {
+      time_t start=time(NULL);
+      while( start==time(NULL) ) {}
+    }
+
+    // no make double write
+    const time_t start=time(NULL);
+    s.process( makeNewNode(), nc );
+    s.process( makeNewNode(), nc );
+    const time_t stop =time(NULL);
+    // if second elapsed there is nothing that can be done
+    if(start!=stop)
+      continue;
+
+    // check for output files
+    ensure("first output file does not exist",  testFile(".", start, 0)==0 );
+    ensure("second output file does not exist", testFile(".", start, 1)==0 );
+    // ok - if we're here, test succeeded.
+    return;
+  }
+
   // 5 fails means FAIL...
   fail("this test's main part has to fit in <1[s] time window and failed "
        "to do so 5 times. looks like your machine is to slow to perform "
