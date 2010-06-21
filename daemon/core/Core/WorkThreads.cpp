@@ -45,7 +45,7 @@ struct SourcesThread
       }
       catch(const std::exception &ex)
       {
-        LOGMSG_ERROR_S(log_)<<"exception cought: '"<<ex.what()<<"' - ignoring";
+        LOGMSG_ERROR_S(log_)<<"exception caught: '"<<ex.what()<<"' - ignoring";
       }
     }
     LOGMSG_INFO(log_, "thread ends");
@@ -84,7 +84,7 @@ struct ProcessorsThread
       }
       catch(const std::exception &ex)
       {
-        LOGMSG_ERROR_S(log_)<<"exception cought: '"<<ex.what()<<"' - ignoring";
+        LOGMSG_ERROR_S(log_)<<"exception caught: '"<<ex.what()<<"' - ignoring";
       }
     }
     LOGMSG_INFO(log_, "thread ends");

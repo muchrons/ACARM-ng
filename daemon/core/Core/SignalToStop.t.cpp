@@ -5,8 +5,6 @@
 #include <tut.h>
 #include <sys/types.h>
 #include <signal.h>
-#include <unistd.h>
-#include <boost/thread.hpp>
 #include <cassert>
 
 #include "Core/SignalToStop.hpp"

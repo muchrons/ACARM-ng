@@ -58,7 +58,7 @@ void testObj::test<2>(void)
   const std::string      str=getMessageFromAccount( getTestConfig2(),
                                                     cfg_.getAccountConfig().getUserID() );
   ensure_equals("invalid repot generated", str,
-                "reporting triggered for meta-alert 'some meta-alert' (2 correlated alerts; severity is 1.1)");
+                "reporting triggered for meta-alert \"some meta-alert\" (2 correlated alerts; severity is 1.1)\n");
 }
 
 } // namespace tut

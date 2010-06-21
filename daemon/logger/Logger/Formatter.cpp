@@ -12,6 +12,41 @@
 
 using namespace std;
 
+namespace
+{
+const char *skipFirstDir(const char *in)
+{
+  const char *out=in;
+  while(*out!=0 && *out!='/')
+    ++out;
+
+  // end of string?
+  if(*out==0)
+    return in;
+  // skip '/'
+  return out+1;
+} // skipFirstDir()
+
+// this f-ction uses little trick, knowing constant paths part in build process...
+const char *truncatePath(const char *in)
+{
+  assert(in!=NULL);
+  const char *out;
+
+  // skip header's paths
+  out=strstr(in, "/includes/");
+  if(out!=NULL)
+    return skipFirstDir(out+10);
+
+  // skip sources paths
+  out=strstr(in, "/daemon/");
+  if(out!=NULL)
+    return skipFirstDir(out+8);
+
+  // nothing can be done (?)
+  return in;
+} // truncatePath()
+} // unnamed namespace
 
 namespace Logger
 {
@@ -39,6 +74,8 @@ void Formatter::format(std::stringstream &ssOut,
   file=strFix(file);
   call=strFix(call);
   msg =strFix(msg);
+  // make path less verbose
+  file=truncatePath(file);
 
   // format string
   ssOut<<priStr<<"@"

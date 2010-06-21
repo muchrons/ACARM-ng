@@ -8,23 +8,30 @@
 /* public header */
 
 #include "System/SignalRegistrator.hpp"
+#include "Logger/Node.hpp"
 #include "Core/WorkThreads.hpp"
 
 namespace Core
 {
-/** \brief handles INT signal registration and unregistration.
+/** \brief handles given signal's registration and unregistration.
+ *
+ *  when given signal is received system is triggered to stop.
  */
 class SignalToStop: public System::SignalRegistrator
 {
 public:
   /** \brief registers handler for INT signal.
-   *  \param signum signal number to be sent.
+   *  \param signum signal number to be handled.
    *  \param wt     main system threads. if NULL, signal is ignored.
    */
   SignalToStop(int signum, WorkThreads *wt);
-  /** \brief unregisters INT signal handler.
+  /** \brief unregisters signal handler.
    */
   ~SignalToStop(void);
+
+private:
+  int          signum_;
+  Logger::Node log_;
 }; // class SignalToStop
 } // namespace Core
 
