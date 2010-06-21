@@ -14,17 +14,19 @@
 #include "System/ScopedPtrCustom.hpp"
 #include "Trigger/Mail/Config.hpp"
 #include "Trigger/Mail/LoggerWrapper.hpp"
+#include "TestHelpers/Data/mail1.hpp"
+#include "TestHelpers/Data/mail2.hpp"
 
 namespace
 {
 
-Trigger::Mail::Config getTestConfig1(const char *to="acarmng.test.account2@gmail.com")
+Trigger::Mail::Config getTestConfig1(const char *to=MAIL2_TEST_ACCOUNT_ADDRESS)
 {
-  const Trigger::Mail::Config::Authorization auth("acarmng.test.account1@gmail.com",
-                                                  "testowekonto");
-  const Trigger::Mail::Config::Server        srv("acarmng.test.account1@gmail.com",
-                                                 "smtp.googlemail.com",
-                                                 465,
+  const Trigger::Mail::Config::Authorization auth(MAIL1_TEST_ACCOUNT_LOGIN,
+                                                  MAIL1_TEST_ACCOUNT_PASS);
+  const Trigger::Mail::Config::Server        srv(MAIL1_TEST_ACCOUNT_ADDRESS,
+                                                 MAIL1_TEST_ACCOUNT_SERVER,
+                                                 MAIL1_TEST_ACCOUNT_PORT,
                                                  Trigger::Mail::Config::Server::Security::SSL);
   const Trigger::Simple::ThresholdConfig     th("0", "0");
   return Trigger::Mail::Config(th, to, srv, auth);
@@ -32,14 +34,14 @@ Trigger::Mail::Config getTestConfig1(const char *to="acarmng.test.account2@gmail
 
 Trigger::Mail::Config getTestConfig2(void)
 {
-  const Trigger::Mail::Config::Authorization auth("acarmng.test.account2@gmail.com",
-                                                  "testowekonto");
-  const Trigger::Mail::Config::Server        srv("acarmng.test.account2@gmail.com",
-                                                 "smtp.googlemail.com",
-                                                 465,
+  const Trigger::Mail::Config::Authorization auth(MAIL2_TEST_ACCOUNT_LOGIN,
+                                                  MAIL2_TEST_ACCOUNT_PASS);
+  const Trigger::Mail::Config::Server        srv(MAIL2_TEST_ACCOUNT_ADDRESS,
+                                                 MAIL2_TEST_ACCOUNT_SERVER,
+                                                 MAIL2_TEST_ACCOUNT_PORT,
                                                  Trigger::Mail::Config::Server::Security::SSL);
   const Trigger::Simple::ThresholdConfig     th("0", "0");
-  return Trigger::Mail::Config(th, "acarmng.test.account1@gmail.com", srv, auth);
+  return Trigger::Mail::Config(th, MAIL1_TEST_ACCOUNT_ADDRESS, srv, auth);
 }
 
 
@@ -54,8 +56,8 @@ int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
     throw std::runtime_error("storage() allocation error");
   assert( cfg.getAuthorizationConfig()!=NULL );
   if( pop3_mailstorage_init(storage.get(),
-                            "pop.gmail.com",
-                            995,
+                            MAIL2_TEST_ACCOUNT_POP_SERVER,
+                            MAIL2_TEST_ACCOUNT_POP_PORT,
                             NULL,
                             CONNECTION_TYPE_TLS,
                             POP3_AUTH_TYPE_PLAIN,
