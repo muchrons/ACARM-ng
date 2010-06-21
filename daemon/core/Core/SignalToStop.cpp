@@ -20,17 +20,18 @@ WorkThreads *g_wt=NULL;
 
 extern "C"
 {
-static void handle(int)
+static void handle(int signum)
 {
   try
   {
     const Logger::Node log("core.handle");
     try
     {
+      LOGMSG_INFO_S(log) << "received signal " << signum;
       // ignore if nothing is registered
       if(g_wt==NULL)
       {
-        LOGMSG_WARN(log, "no handler registered");
+        LOGMSG_WARN(log, "no WorkThreads pointer registered - ignoring");
         return;
       }
       // send abort
@@ -46,19 +47,24 @@ static void handle(int)
   {
     // logger initialization failed - nothing more we can do...
   }
+  assert(g_wt!=NULL && "g_wt changed in run time - something's wrong...");
 } // handle()
 } // extern "C"
 
 SignalToStop::SignalToStop(int signum, WorkThreads *wt):
-  SignalRegistrator(signum, handle)
+  SignalRegistrator(signum, handle),
+  signum_(signum),
+  log_("core.signaltostop")
 {
   // NOTE: wt CAN be NULL!
   g_wt=wt;
+  LOGMSG_DEBUG_S(log_)<<"registered handle for signal "<<signum_<<" - handle at address "<<wt;
 }
 
 SignalToStop::~SignalToStop(void)
 {
   g_wt=NULL;
+  LOGMSG_DEBUG_S(log_)<<"unregistered handle for signal "<<signum_;
 }
 
 } // namespace Core
