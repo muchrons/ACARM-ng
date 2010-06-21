@@ -4,7 +4,6 @@
 11 think how to overcome lack of additional data assigned for observed graph nodes in filters during normal run - they will not be present after reading from persistency.
 15 update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
 17 GraphNode (MetaAlert?) should have some unique identifier in the system, that can be reported.
-20 make logger's file names less verbose (component path is present in log-path any way).
 21 separate GG and e-mail test account's config into separate file, with proper defines/constants so that there will be just one place to remove them from code before the release.
 24 make formatting trigger's output separate namespace within Trigger, to reuse code.
 25 add messages buffering before doing actuall send in triggers - this will prevent message lost, when server is temporary not available; note: buffering can be done at least in memory; buffering shall be done on trigger's API level.
