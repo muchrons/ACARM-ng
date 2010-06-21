@@ -19,31 +19,49 @@ namespace Prelude
 namespace detail
 {
 
+/**
+ * @brief Helper class to provide automatic deallocation of idmef_message_t
+ */
 class IdmefMessageHolder
 {
 public:
+  /**
+   * @brief local typedef
+   */
   typedef idmef_message_t* TValue;
 
+  /**
+   * @brief c-tor Creates object from idmef_message_t
+   */
   explicit IdmefMessageHolder(TValue v):
     v_(v)
   {
   }
 
+  /**
+   * @brief default c-tor, initializes to null
+   */
   IdmefMessageHolder(void):
     v_(NULL)
   {
   }
 
+  /**
+   * @brief get value without ownership
+   */
   TValue get(void) const
   {
     return v_;
   }
 
+  /**
+   * @brief deallocate idmef_message_t object
+   */
   void deallocate(void)
   {
     if (v_==NULL)
       return;
-    //refcount<-1
+    //TODO: refcount<-1
     idmef_message_destroy(v_);
   }
 
