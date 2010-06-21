@@ -1,15 +1,15 @@
 /*
- * HandleStopSignals.cpp
+ * HandleSignals.cpp
  *
  */
 #include <signal.h>
 
-#include "Core/HandleStopSignals.hpp"
+#include "Core/HandleSignals.hpp"
 
 namespace Core
 {
 
-HandleStopSignals::HandleStopSignals(WorkThreads *wt):
+HandleSignals::HandleSignals(WorkThreads *wt):
   sigINT_ (SIGINT,  wt),
   sigTERM_(SIGTERM, wt),
   sigPIPE_(SIGPIPE, wt)
