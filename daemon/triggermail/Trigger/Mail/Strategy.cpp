@@ -4,7 +4,7 @@
  */
 #include <cassert>
 
-#include "Trigger/Compose/Summary.hpp"
+#include "Trigger/Compose/Full.hpp"
 #include "Trigger/Mail/Strategy.hpp"
 #include "Trigger/Mail/MailSender.hpp"
 
@@ -30,7 +30,7 @@ void Strategy::trigger(const Node &n)
   // prepare message's content
   stringstream ss;
   // TODO: use more verbose Compose variant here - mails can be longger.
-  Compose::Summary::append(ss, n);
+  Compose::Full::append(ss, n);
 
   // send message
   MailSender ms(cfg_);
