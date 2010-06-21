@@ -5,8 +5,11 @@
 #ifndef INCLUDE_TRIGGER_FILE_STRATEGY_HPP_FILE
 #define INCLUDE_TRIGGER_FILE_STRATEGY_HPP_FILE
 
+#include <ctime>
+
 #include "Trigger/Simple/Strategy.hpp"
 #include "Trigger/File/Config.hpp"
+#include "Trigger/File/ExceptionCantOpenFile.hpp"
 
 namespace Trigger
 {
@@ -26,7 +29,11 @@ public:
 private:
   virtual void trigger(const Node &n);
 
+  std::string createOutputPath(void);
+
   const std::string outdir_;
+  time_t            lastWrite_;
+  unsigned int      lastIndex_;
 }; // class Strategy
 
 } // namespace File
