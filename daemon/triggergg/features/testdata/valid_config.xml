@@ -22,9 +22,9 @@
 
   <triggers>
     <gg>
-      <uin>23436545</uin>
-      <password>testowekonto</password>
-      <receiver_uin>23461426</receiver_uin>
+      <uin>1234</uin>
+      <password>secret</password>
+      <receiver_uin>4321</receiver_uin>
       <severity_threshold>3.14</severity_threshold>
       <alerts_count_threshold>42</alerts_count_threshold>
     </gg>
