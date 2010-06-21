@@ -2,7 +2,7 @@
  * IDMEFParserCommons.cpp
  *
  */
-#include "Input/Prelude/ParseException.hpp"
+#include "Input/Prelude/ExceptionParse.hpp"
 #include "Input/Prelude/IDMEFParserCommons.hpp"
 #include "Persistency/Process.hpp"
 
@@ -17,19 +17,18 @@ using boost::asio::ip::address_v6;
 
 IDMEFParserCommons::IP IDMEFParserCommons::getIPfromIdmefNode(idmef_node_t * idmef_node)
 {
-  IP ip;    // TODO: unused variable
   // TODO: following condition fails most of the time - check if code is really valid.
   //       maby heartbeats are apssed here as well?
   if (idmef_node==NULL)
-    throw ParseException(SYSTEM_SAVE_LOCATION, "Idmef Node is empty.");
+    throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Idmef Node is empty.");
 
   idmef_address_t *idmef_node_addr = idmef_node_get_next_address(idmef_node, NULL);
   if (idmef_node_addr==NULL)
-    throw ParseException(SYSTEM_SAVE_LOCATION, "Idmef Node->address is empty.");
+    throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Idmef Node->address is empty.");
 
   const prelude_string_t *idmef_node_address = idmef_address_get_address(idmef_node_addr);
   if (idmef_node_address==NULL)
-    throw ParseException(SYSTEM_SAVE_LOCATION, "String parse error, no address extracted.");
+    throw ExceptionParse(SYSTEM_SAVE_LOCATION, "String parse error, no address extracted.");
 
   const char * tmp=prelude_string_get_string(idmef_node_address);
   switch (idmef_address_get_category(idmef_node_addr))
@@ -43,21 +42,14 @@ IDMEFParserCommons::IP IDMEFParserCommons::getIPfromIdmefNode(idmef_node_t * idm
       return address_v6::from_string(tmp);
 
     default:
-      throw ParseException(SYSTEM_SAVE_LOCATION, "Wrong address type.");
+      throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Wrong address type.");
   }
-  return ip;
+  return IP();
 }
 
 Persistency::ServicePtr IDMEFParserCommons::getServicefromIdmefService(idmef_service_t * idmef_service)
 {
   Persistency::ServicePtr service;
-  // TODO: use non-nested version, i.e.
-  //       if(error1)
-  //         return NULL;
-  //       if(error2)
-  //         return NULL;
-  //       // ...
-  //       return SomeValue(...);
   if (idmef_service)
   {
     prelude_string_t *idmef_service_name = idmef_service_get_name(idmef_service);
@@ -81,11 +73,7 @@ Persistency::ServicePtr IDMEFParserCommons::getServicefromIdmefService(idmef_ser
 
 Persistency::ProcessPtr IDMEFParserCommons::getProcessfromIdmefProcess(idmef_process_t * idmef_process, idmef_user_t * idmef_user)
 {
-  // TODO: make this separate method.
-  // TODO: when username is not set, NULL should be apssed as an argument
-  //       to Process() c-tor, not "" value.
-  // when there is no user empty username is inserted
-  Persistency::Process::Username username="";
+  Persistency::Process::Username username;
   if (idmef_user!=NULL)
   {
     // get the first available user from the list if there's any
@@ -113,14 +101,8 @@ Persistency::ProcessPtr IDMEFParserCommons::getProcessfromIdmefProcess(idmef_pro
   {
     const Persistency::Process::Name  name=prelude_string_get_string(idmef_process_str);
     const uint32_t                   *pid =idmef_process_get_pid(idmef_process);
-    // TODO: use Base::NullValue<> for this - pid CAN be NULL.
-    // TODO: use ternarry operator for this and make this variable const.
-    pid_t pidt;
+    const pid_t pidt=(pid==NULL)?0:*pid;;
     // pid is set to 0 if there is no pid in idmef
-    if (pid==NULL)
-      pidt=0;
-    else
-      pidt=*pid;
     process.reset(new Persistency::Process(path,name,NULL,&pidt,NULL,username,NULL,Persistency::ReferenceURLPtr()));
   }
 

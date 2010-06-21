@@ -18,7 +18,8 @@ void Summary::append(std::stringstream &ss, const Persistency::GraphNodePtrNN &n
      << node->getMetaAlert().getName().get()
      << "\" (" << Algo::countCorrelatedAlerts(node)
      << " correlated alerts; severity is "
-     << Algo::computeSeverity(node) << ")";
+     << Algo::computeSeverity(node) << ")"
+     << std::endl;
 }
 
 } // namespace Compose

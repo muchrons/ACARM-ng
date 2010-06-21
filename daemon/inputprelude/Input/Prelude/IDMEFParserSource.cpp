@@ -2,7 +2,7 @@
  * IDMEFParserSource.cpp
  *
  */
-#include "Input/Prelude/ParseException.hpp"
+#include "Input/Prelude/ExceptionParse.hpp"
 #include "Input/Prelude/IDMEFParserCommons.hpp"
 #include "Input/Prelude/IDMEFParserSource.hpp"
 #include "Persistency/Process.hpp"
@@ -26,7 +26,7 @@ IDMEFParserSource::IDMEFParserSource(idmef_source_t *ptr):
 idmef_source_t * IDMEFParserSource::getNotNull(idmef_source_t *ptr) const
 {
   if (!ptr)
-    throw ParseException(SYSTEM_SAVE_LOCATION, "Idmef Source is empty.");
+    throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Idmef Source is empty.");
   return ptr;
 }
 

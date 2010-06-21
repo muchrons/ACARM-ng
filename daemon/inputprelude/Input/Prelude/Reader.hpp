@@ -11,9 +11,6 @@
 #include "Input/Reader.hpp"
 #include "Input/Prelude/Client.hpp"
 
-// TODO: implement
-// TODO: test
-
 namespace Input
 {
 namespace Prelude
@@ -27,7 +24,7 @@ public:
   // TODO: add default value for config (/etc/...)
   /** \brief create prelud reader.
    */
-  Reader(const std::string profile, const std::string config);
+  Reader(const std::string & profile, const std::string & config);
   /** \brief reads data from input from prelude-manager.
    *  \param timeout milliseconds to wait before timeout occures.
    *  \return pointer to newly allocated strucutre or NULL on timeout.
