@@ -25,7 +25,6 @@ namespace Prelude
 class Client
 {
 public:
-  typedef System::AutoVariable<detail::IdmefMessageHolder> IdmefMessageAutoPtr;
   /**
    * \brief c-tor, creates a prelude client with given profile.
    * \param profile profile to be used.
@@ -47,6 +46,8 @@ public:
   IdmefMessageAutoPtr recvMessage(int timeout=-1);
 
 private:
+  typedef System::AutoVariable<detail::IdmefMessageHolder> IdmefMessageAutoPtr;
+
   GlobalLibPreludeInit      g_;
   LogCallback               preludeLogger_;
   prelude_client_t         *client_;
