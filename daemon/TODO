@@ -10,4 +10,7 @@
 20 make logger's file names less verbose (component path is present in log-path any way).
 21 separate GG and e-mail test account's config into separate file, with proper defines/constants so that there will be just one place to remove them from code before the release.
 24 make formatting trigger's output separate namespace within Trigger, to reuse code.
-25
+25 add messages buffering before doing actuall send in triggers - this will prevent message lost, when server is temporary not available; note: buffering can be done at least in memory; buffering shall be done on trigger's API level.
+26 create XML schema for config file.
+27 add parse-at-read feature to configio - config should be accepted or rejected when running application, not delayed until acctuall usage (note: this task is connected with config's refactoring to register parsers).
+28
