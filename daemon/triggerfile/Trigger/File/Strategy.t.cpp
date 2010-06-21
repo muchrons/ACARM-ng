@@ -3,6 +3,7 @@
  *
  */
 #include <tut.h>
+#include <stack>
 #include <sstream>
 #include <ctime>
 #include <sys/types.h>
@@ -29,7 +30,24 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   {
   }
 
-  void testFileInRange(const char *root, const time_t from, const time_t to) const
+  ~TestClass(void)
+  {
+    try
+    {
+      while( rmThis_.size()!=0 )
+      {
+        unlink( rmThis_.top().c_str() );
+        rmdir ( rmThis_.top().c_str() );
+        rmThis_.pop();
+      }
+    }
+    catch(...)
+    {
+      assert(!"exception in d-tor");
+    }
+  }
+
+  void testFileInRange(const char *root, const time_t from, const time_t to)
   {
     const char *error="no elements in range";
     for(time_t t=from; t<=to; ++t)
@@ -55,11 +73,13 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
       tut::fail(error);
   }
 
-  int testFile(const char *root, const time_t ts, unsigned int index) const
+  int testFile(const char *root, const time_t ts, unsigned int index)
   {
     assert(root!=NULL);
     stringstream ss;
     ss<<root<<"/"<<ts<<"_"<<index<<".txt";
+    rmThis_.push( root     );
+    rmThis_.push( ss.str() );
     struct stat buf;
     if( stat( ss.str().c_str(), &buf )!=0 )
       return 1;
@@ -69,7 +89,8 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     return 0;
   }
 
-  const Config cfg_;    // default config
+  const Config   cfg_;      // default config
+  stack<string> rmThis_;   // list of elements to be removed after test finishes
 };
 
 typedef tut::test_group<TestClass> factory;
