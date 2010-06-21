@@ -18,7 +18,7 @@ class IgnoreSignal: public System::SignalRegistrator
 {
 public:
   /** \brief registers given signal as ignored.
-   *  \param signum signal number to be sent.
+   *  \param signum signal number to be ignored.
    */
   explicit IgnoreSignal(int signum);
   /** \brief unregisters signal handler.
