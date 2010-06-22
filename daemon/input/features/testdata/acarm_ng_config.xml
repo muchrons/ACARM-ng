@@ -12,9 +12,9 @@
 
   <logger>
     <appenders>
-      <File name="default">
+      <file name="default">
         <output>loggerfile.log</output>
-      </File>
+      </file>
     </appenders>
 
     <nodes appender="default" threshold="debug">

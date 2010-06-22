@@ -36,19 +36,19 @@ Appenders::BasePtr AppenderMap::configureNew(const ConfigIO::LoggerAppenderConfi
   //
   // TODO: this should be reworked somehow - it doesn't look nice...
   //
-  if( cfg.getType()=="Console" )
+  if( cfg.getType()=="console" )
   {
     return Appenders::BasePtr(new Appenders::Console);
   }
-  else if( cfg.getType()=="File" )
+  else if( cfg.getType()=="file" )
   {
     return Appenders::BasePtr( new Appenders::File( cfg["output"].at(0) ) );
   }
-  else if( cfg.getType()=="Syslog" )
+  else if( cfg.getType()=="syslog" )
   {
     return Appenders::BasePtr(new Appenders::Syslog);
   }
-  else if( cfg.getType()=="MultiAppender" )
+  else if( cfg.getType()=="multiappender" )
   {
     typedef ConfigIO::LoggerAppenderConfig::ParameterValues PV; // short for type
     const PV                         &names=cfg["forward"];
@@ -62,7 +62,7 @@ Appenders::BasePtr AppenderMap::configureNew(const ConfigIO::LoggerAppenderConfi
     // create new multi appender's instance
     return Appenders::BasePtr( new Appenders::MultiAppender(apps) );
   }
-  else if( cfg.getType()=="Null" )
+  else if( cfg.getType()=="null" )
   {
     return Appenders::BasePtr(new Appenders::Null);
   }

@@ -38,7 +38,7 @@ public:
    */
   static const char *getThisTypeName(void)
   {
-    return "MultiAppender";
+    return "multiappender";
   }
 
 private:

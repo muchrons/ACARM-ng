@@ -29,7 +29,7 @@ public:
    */
   static const char *getThisTypeName(void)
   {
-    return "Console";
+    return "console";
   }
 }; // class Console
 

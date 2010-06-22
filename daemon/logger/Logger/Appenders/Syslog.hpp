@@ -22,7 +22,7 @@ public:
    */
   static const char *getThisTypeName(void)
   {
-    return "Syslog";
+    return "syslog";
   }
 
 private:

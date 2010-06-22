@@ -44,7 +44,7 @@ void testObj::test<2>(void)
   const NodeName nn("subtree1.subappender");
   NodeConfPtr    nc=detail::ConfigSetSingleton::get()->getNodeConfiguration(nn);
   ensure_equals("invalid appender",
-                nc->getAppender()->getTypeName(), string("Null") );
+                nc->getAppender()->getTypeName(), string("null") );
 }
 
 } // namespace tut

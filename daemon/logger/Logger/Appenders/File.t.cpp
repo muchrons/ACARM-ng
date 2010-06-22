@@ -47,7 +47,7 @@ template<>
 void testObj::test<1>(void)
 {
   ensure_equals("invalid name returned",
-                File::getThisTypeName(), string("File") );
+                File::getThisTypeName(), string("file") );
 }
 
 // test getting name from dynamic interface
