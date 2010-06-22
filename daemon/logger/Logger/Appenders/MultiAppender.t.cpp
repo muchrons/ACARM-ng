@@ -77,7 +77,7 @@ template<>
 void testObj::test<1>(void)
 {
   ensure_equals("invalid name returned",
-                MultiAppender::getThisTypeName(), string("MultiAppender") );
+                MultiAppender::getThisTypeName(), string("multiappender") );
 }
 
 // test getting name from dynamic interface

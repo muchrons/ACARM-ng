@@ -16,10 +16,11 @@ namespace Core
 Main::Main(void):
   log_("core.main"),
   nullSignals_(NULL),   // ignore all interruptions at the begining
+  restorer_(queue_),    // restore data content
+  threads_(queue_),     // run processing threads
   // (non-explicit initialization is being done here)
   signals_(&threads_)   // after all initialization is done, register real handlers
 {
-  // TODO: add reading state from persistency here.
   LOGMSG_INFO(log_, "core is up and running");
 }
 

@@ -5,6 +5,7 @@ inputprelude
 persistencystubs
 persistencypostgres
 
+filtersamename
 filteronetoone
 filteronetomany
 filtermanytoone

@@ -96,8 +96,9 @@ struct ProcessorsThread
 } // unnamed namespace
 
 
-WorkThreads::WorkThreads(void):
+WorkThreads::WorkThreads(Core::Types::NodesFifo &queue):
   log_("core.workthreads"),
+  queue_(queue),
   procs_( ProcessorsThread(queue_) ),
   srcs_( SourcesThread(queue_) )
 {

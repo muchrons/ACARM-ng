@@ -16,6 +16,7 @@ namespace
 {
 struct TestClass: public TestHelpers::TestBase
 {
+  Core::Types::NodesFifo queue_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -33,7 +34,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  WorkThreads m;
+  WorkThreads m(queue_);
 }
 
 // test stopping request and joining
@@ -41,7 +42,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  WorkThreads m;
+  WorkThreads m(queue_);
   m.stop();
   m.waitUntilDone();
 }
@@ -77,8 +78,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  volatile bool ready=false;
-  WorkThreads          m;
+  volatile bool               ready=false;
+  WorkThreads                 m(queue_);
   Base::Threads::ThreadJoiner th( Stopper(&ready, &m) );
   ready=true;
   m.waitUntilDone();
@@ -96,7 +97,7 @@ void testObj::test<4>(void)
   readConfigFile("testdata/two_threads_exception_bug.xml");
   try
   {
-    WorkThreads m;    // test's core - this must not SEGV!
+    WorkThreads m(queue_);  // test's core - this must not SEGV!
     fail("WorkThreads' c-tor didn't throw on invalid configuration");
   }
   catch(const Commons::Exception &)

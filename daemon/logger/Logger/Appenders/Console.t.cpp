@@ -35,7 +35,7 @@ template<>
 void testObj::test<1>(void)
 {
   ensure_equals("invalid name returned",
-               Console::getThisTypeName(), string("Console") );
+               Console::getThisTypeName(), string("console") );
 }
 
 // test getting name from dynamic interface

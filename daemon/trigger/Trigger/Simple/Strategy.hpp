@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <queue>
+
 #include "Trigger/Strategy.hpp"
 #include "Trigger/Simple/ThresholdConfig.hpp"
 
@@ -17,6 +19,11 @@ namespace Simple
 {
 
 /** \brief common interface for most of the triggers.
+ *
+ *  wrapps typical trigger's parts into common code. user only have to implement
+ *  triggerImpl() call, for handling sending message. this class performs messages
+ *  buffering for user - if triggerImpl() throws, message will be retried next
+ *  time trigger is called.
  */
 class Strategy: public Trigger::Strategy
 {
@@ -29,7 +36,13 @@ protected:
 
 private:
   virtual bool matchesCriteria(const Persistency::GraphNodePtrNN &n) const;
+  virtual void trigger(const Node &n);
 
+  virtual void triggerImpl(const Node &n) = 0;
+
+  typedef std::queue<Node> NodesWaitingRoom;
+
+  NodesWaitingRoom      fifo_;
   const ThresholdConfig cfg_;
 }; // class Strategy
 

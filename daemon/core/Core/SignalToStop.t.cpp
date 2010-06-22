@@ -24,11 +24,13 @@ struct SignalHUP: public SignalToStop
 
 struct TestClass
 {
-  TestClass(void)
+  TestClass(void):
+    wt_(queue_)
   {
   }
 
-  WorkThreads wt_;
+  Core::Types::NodesFifo queue_;
+  WorkThreads            wt_;
 };
 
 typedef tut::test_group<TestClass> factory;

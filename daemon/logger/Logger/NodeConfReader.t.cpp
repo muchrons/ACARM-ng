@@ -38,7 +38,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Logger/nodeConfReader");
+factory tf("Logger/NodeConfReader");
 } // unnamed namespace
 
 
@@ -111,7 +111,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  checkConfig("somenotconfiguredone", "File", Priority::DEBUG);
+  checkConfig("somenotconfiguredone", "file", Priority::DEBUG);
 }
 
 // test deriving (witout change)
@@ -119,7 +119,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  checkConfig("subtree1", "File", Priority::DEBUG);
+  checkConfig("subtree1", "file", Priority::DEBUG);
 }
 
 // test deriving with changed appender
@@ -127,7 +127,7 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  checkConfig("subtree1.subappender", "Null", Priority::DEBUG);
+  checkConfig("subtree1.subappender", "null", Priority::DEBUG);
 }
 
 // test deriving with changed threshold
@@ -135,7 +135,7 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  checkConfig("subtree1.subthreshold", "File", Priority::WARN);
+  checkConfig("subtree1.subthreshold", "file", Priority::WARN);
 }
 
 // test changing appender and threshold
@@ -143,7 +143,7 @@ template<>
 template<>
 void testObj::test<11>(void)
 {
-  checkConfig("subtree1.both", "Null", Priority::FATAL);
+  checkConfig("subtree1.both", "null", Priority::FATAL);
 }
 
 // check deriving after a change
@@ -151,7 +151,7 @@ template<>
 template<>
 void testObj::test<12>(void)
 {
-  checkConfig("subtree1.both.derivedend", "Null", Priority::FATAL);
+  checkConfig("subtree1.both.derivedend", "null", Priority::FATAL);
 }
 
 // check overwritten derived options
@@ -159,7 +159,7 @@ template<>
 template<>
 void testObj::test<13>(void)
 {
-  checkConfig("subtree1.both.updatethr", "Null", Priority::INFO);
+  checkConfig("subtree1.both.updatethr", "null", Priority::INFO);
 }
 
 // check deeper derive (nodes not listed in)
@@ -167,7 +167,7 @@ template<>
 template<>
 void testObj::test<14>(void)
 {
-  checkConfig("subtree1.both.updatethr.notdefined", "Null", Priority::INFO);
+  checkConfig("subtree1.both.updatethr.notdefined", "null", Priority::INFO);
 }
 
 } // namespace tut
