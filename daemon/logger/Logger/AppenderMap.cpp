@@ -6,6 +6,7 @@
 
 #include "Logger/AppenderMap.hpp"
 #include "Logger/Appenders/Console.hpp"
+#include "Logger/Appenders/Syslog.hpp"
 #include "Logger/Appenders/File.hpp"
 #include "Logger/Appenders/MultiAppender.hpp"
 #include "Logger/Appenders/Null.hpp"
@@ -42,6 +43,10 @@ Appenders::BasePtr AppenderMap::configureNew(const ConfigIO::LoggerAppenderConfi
   else if( cfg.getType()=="File" )
   {
     return Appenders::BasePtr( new Appenders::File( cfg["output"].at(0) ) );
+  }
+  else if( cfg.getType()=="Syslog" )
+  {
+    return Appenders::BasePtr(new Appenders::Syslog);
   }
   else if( cfg.getType()=="MultiAppender" )
   {
