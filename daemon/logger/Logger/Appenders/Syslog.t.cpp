@@ -35,7 +35,7 @@ template<>
 void testObj::test<1>(void)
 {
   ensure_equals("invalid name returned",
-               Syslog::getThisTypeName(), string("Syslog") );
+               Syslog::getThisTypeName(), string("syslog") );
 }
 
 // test getting name from dynamic interface

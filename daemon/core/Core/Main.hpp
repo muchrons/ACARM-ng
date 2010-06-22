@@ -10,9 +10,11 @@
 #include <boost/noncopyable.hpp>
 
 #include "Logger/Node.hpp"
+#include "Core/QueueRestorer.hpp"
 #include "Core/WorkThreads.hpp"
 #include "Core/PersistencyCleanup.hpp"
-#include "Core/HandleStopSignals.hpp"
+#include "Core/HandleSignals.hpp"
+#include "Core/SanityCheck.hpp"
 
 namespace Core
 {
@@ -44,15 +46,20 @@ public:
   void stop(void);
 
 private:
-  Logger::Node       log_;
-  HandleStopSignals  nullSignals_;  // initially register empty handlers
-                                    // (will be overwritten later on)
-  PersistencyCleanup cleanup_;      // cleanup has to be here, since it should
-                                    // be called before any threads are started
-  WorkThreads        threads_;
-  HandleStopSignals  signals_;      // this element must be initialized after
-                                    // creating threads - it expects them to
-                                    // be valid objects.
+  void ensureNotRoot(void);
+
+  SanityCheck            sanity_;       // checks if (basic) environment is sane
+  Logger::Node           log_;
+  HandleSignals          nullSignals_;  // ignore signals at this moment
+                                        // (will be overwritten later on)
+  PersistencyCleanup     cleanup_;      // cleanup has to be here, since it should
+                                        // be called before any threads are started
+  Core::Types::NodesFifo queue_;        // main system graphnodes queue
+  QueueRestorer          restorer_;     // reader for initial queue's state from Persistency.
+  WorkThreads            threads_;      // main processing part
+  HandleSignals          signals_;      // this element must be initialized after
+                                        // creating threads - it expects them to
+                                        // be valid objects.
 }; // class Main
 
 } // namespace Core

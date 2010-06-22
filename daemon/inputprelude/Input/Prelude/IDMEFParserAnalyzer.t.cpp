@@ -8,7 +8,7 @@
 #include <string>
 
 #include "prelude-client.h"
-#include "Input/Prelude/ParseException.hpp"
+#include "Input/Prelude/ExceptionParse.hpp"
 #include "Input/Prelude/IDMEFParserAnalyzer.hpp"
 
 using namespace std;
@@ -151,16 +151,15 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  // TODO: fix indentation
   try
-    {
-      IDMEFParserAnalyzer an(NULL);
-      fail("Exception was not thrown.");
-    }
-  catch(ParseException &e)
-    {
-      //expected
-    }
+  {
+    IDMEFParserAnalyzer an(NULL);
+    fail("Exception was not thrown.");
+  }
+  catch(ExceptionParse &e)
+  {
+    //expected
+  }
 }
 
 // analyzer without a name
@@ -282,16 +281,13 @@ void testObj::test<9>(void)
   idmef_address_set_address(addr,ps_address);
   idmef_address_set_category(addr,IDMEF_ADDRESS_CATEGORY_IPV6_ADDR);
 
-  // TODO: fix indentation
   try
-    {
-      IDMEFParserAnalyzer an(analyzer);
-      fail("Exception was not thrown.");
-    }
-  // TODO: check if this exception can be replaced with something supported by olde boost
-  //       versions - as for now this seems to be the only dependency on boost 1.39+ therefore
-  //       it would be good to cut this.
-  catch(boost::exception &e)
+  {
+    IDMEFParserAnalyzer an(analyzer);
+    fail("Exception was not thrown.");
+  }
+
+  catch(...)
     {
       //expected
     }

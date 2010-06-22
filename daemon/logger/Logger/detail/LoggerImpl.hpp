@@ -15,8 +15,9 @@ namespace Logger
 namespace detail
 {
 
-// for gcc use pretty function, otherwise just standard __func__
-#ifdef __GNUC__
+// in debug mode, for gcc use pretty function. otherwise just standard __func__
+// that's always present (C99 standard) and much less verbose (especially for templates)
+#if defined(__GNUC__) && !defined(NDEBUG)
 #  define PRETTY_FUNCTION_WRAPPER __PRETTY_FUNCTION__
 #else
 #  define PRETTY_FUNCTION_WRAPPER __func__

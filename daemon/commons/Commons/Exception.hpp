@@ -29,15 +29,14 @@ public:
    */
   template<typename T>
   Exception(const Location &where, const T &msg):
-    System::Exceptions::RuntimeError<Exception>(where, msg),
-    log_("commons.exception")
+    System::Exceptions::RuntimeError<Exception>(where, msg)
   {
-    LOGMSG_ERROR_S(log_) << "exception ("
-                         << getTypeName()
-                         << ") rised in "
-                         << where.getStr()
-                         << ": "
-                         << what();
+    LOGMSG_DEBUG_S( Logger::Node("commons.exception") ) << "exception ("
+                                                        << getTypeName()
+                                                        << ") rised in "
+                                                        << where.getStr()
+                                                        << ": "
+                                                        << what();
   }
 
   /** \brief dealocates object in inheritance-secure way.
@@ -58,9 +57,6 @@ protected:
       return "<NULL>";
     return str;
   }
-
-private:
-  Logger::Node log_;
 }; // class Exception
 
 } // namespace Commons

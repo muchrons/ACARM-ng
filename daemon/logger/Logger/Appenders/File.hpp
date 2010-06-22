@@ -32,7 +32,7 @@ public:
    */
   static const char *getThisTypeName(void)
   {
-    return "File";
+    return "file";
   }
 
 private:
