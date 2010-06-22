@@ -12,7 +12,6 @@
 #include "Logger/Node.hpp"
 #include "Commons/Threads/Thread.hpp"
 #include "Core/Types/NodesFifo.hpp"
-#include "Core/QueueRestorer.hpp"
 
 namespace Core
 {
@@ -26,8 +25,9 @@ class WorkThreads: private boost::noncopyable
 {
 public:
   /** \brief create object and start all threads.
+   *  \param queue queue to be used for data processing (it's held by reference inside).
    */
-  WorkThreads(void);
+  explicit WorkThreads(Core::Types::NodesFifo &queue);
   /** \brief stop all threads and deallocate resources.
    *  \note d-tor will block until all threads are stopped, which may
    *        take some time.
@@ -44,11 +44,10 @@ public:
   void stop(void);
 
 private:
-  Logger::Node             log_;
-  Core::Types::NodesFifo   queue_;
-  QueueRestorer            restorer_;
-  Commons::Threads::Thread procs_;
-  Commons::Threads::Thread srcs_;
+  Logger::Node              log_;
+  Core::Types::NodesFifo   &queue_;
+  Commons::Threads::Thread  procs_;
+  Commons::Threads::Thread  srcs_;
 }; // class WorkThreads
 
 } // namespace Core
