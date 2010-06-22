@@ -12,6 +12,7 @@
 #include "Logger/Node.hpp"
 #include "Commons/Threads/Thread.hpp"
 #include "Core/Types/NodesFifo.hpp"
+#include "Core/QueueRestorer.hpp"
 
 namespace Core
 {
@@ -45,6 +46,7 @@ public:
 private:
   Logger::Node             log_;
   Core::Types::NodesFifo   queue_;
+  QueueRestorer            restorer_;
   Commons::Threads::Thread procs_;
   Commons::Threads::Thread srcs_;
 }; // class WorkThreads

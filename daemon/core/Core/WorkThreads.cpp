@@ -98,6 +98,7 @@ struct ProcessorsThread
 
 WorkThreads::WorkThreads(void):
   log_("core.workthreads"),
+  restorer_(queue_),
   procs_( ProcessorsThread(queue_) ),
   srcs_( SourcesThread(queue_) )
 {
