@@ -31,6 +31,7 @@ QueueRestorer::QueueRestorer(Core::Types::NodesFifo &queue)
     Restorer::NodesVector      tmp;
     LOGMSG_DEBUG(log, "reading meta-alerts");
     rest->restoreAllInUse(tmp);
+    t.commit();
     // add all elements to queue
     LOGMSG_DEBUG_S(log)<<tmp.size()<<" meta-alerts read from persistency; appending to queue";
     for(Restorer::NodesVector::const_iterator it=tmp.begin(); it!=tmp.end(); ++it)
