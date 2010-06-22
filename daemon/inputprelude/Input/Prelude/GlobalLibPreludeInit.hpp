@@ -5,6 +5,8 @@
 #ifndef INCLUDE_INPUT_PRELUDE_GLOBALLIBPRELUDEINIT_HPP_FILE
 #define INCLUDE_INPUT_PRELUDE_GLOBALLIBPRELUDEINIT_HPP_FILE
 
+#include <boost/noncopyable.hpp>
+
 namespace Input
 {
 namespace Prelude
@@ -19,7 +21,7 @@ namespace Prelude
  *
  *  \note class is thread safe.
  */
-class GlobalLibPreludeInit
+class GlobalLibPreludeInit: private boost::noncopyable
 {
 public:
   /** \brief initialize prelude, if not already initialized.

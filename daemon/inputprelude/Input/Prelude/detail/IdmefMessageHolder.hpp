@@ -63,6 +63,7 @@ public:
       return;
     //TODO: refcount<-1
     idmef_message_destroy(v_);
+    // TODO: deallocate() can be called multiple times - NULL pointer when released.
   }
 
 private:
