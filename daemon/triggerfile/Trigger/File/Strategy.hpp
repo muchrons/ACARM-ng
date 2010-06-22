@@ -27,7 +27,7 @@ public:
   explicit Strategy(const Config &cfg);
 
 private:
-  virtual void trigger(const Node &n);
+  virtual void triggerImpl(const Node &n);
 
   std::string createOutputPath(void);
 

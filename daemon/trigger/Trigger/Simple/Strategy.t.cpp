@@ -23,7 +23,7 @@ struct TestTrigger: public Strategy
   {
   }
 
-  virtual void trigger(const Persistency::GraphNodePtrNN &/*n*/)
+  virtual void triggerImpl(const Persistency::GraphNodePtrNN &/*n*/)
   {
     ++callsTrigger_;
   }

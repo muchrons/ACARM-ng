@@ -21,7 +21,7 @@ Strategy::Strategy(const Config &cfg):
 {
 }
 
-void Strategy::trigger(const Node &n)
+void Strategy::triggerImpl(const Node &n)
 {
   // preapre message's subject
   string subject("triggered report: ");
