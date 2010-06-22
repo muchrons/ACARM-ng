@@ -64,25 +64,25 @@ example configuration may look like this:
 
 <logger>
   <appenders>
-    <File name="file_app1">
+    <file name="file_app1">
       <output>myoutputfile.log</output>
-    </File>
+    </file>
 
     <console name="stdout"/>
 
     <syslog name="systemlog"/>
 
-    <multi name="everywhere">
+    <multiappender name="everywhere">
       <appender>file_app1</appender>
       <appender>stdout</appender>
-    </multi>
+    </multiappender>
   </appenders>
 
   <nodes appender="everywhere" threshold="info"> <!-- default is everywhere/info -->
-    <someChild appender="console"/> <!-- console/info -->
-    <otherChild>                    <!-- console/info -->
-      <subChild1 appender="file"/>  <!-- file/info -->
-      <subChild2 threshold="warn"/> <!-- console/warn -->
+    <someChild appender="console"/>                       <!-- console/info -->
+    <otherChild>                                          <!-- console/info -->
+      <subChild1 appender="file_app1"/>                   <!-- file_app1/info -->
+      <subChild2 threshold="warn"/>                       <!-- console/warn -->
       <subChild2 threshold="fatal" appender="systemlog"/> <!-- systemlog/fatal -->
     </otherChild>
   </nodes>
