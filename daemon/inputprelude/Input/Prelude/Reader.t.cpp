@@ -3,10 +3,11 @@
  *
  */
 #include <tut.h>
+// TODO: what are these headers for?
 #include <cstring>
 #include <memory>
 #include <string>
-#include <iostream>
+#include <iostream> // TODO: direct output on the screen must not be used
 
 #include "Input/Prelude/Reader.hpp"
 

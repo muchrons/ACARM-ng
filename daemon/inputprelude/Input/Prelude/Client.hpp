@@ -6,9 +6,11 @@
 #define INCLUDE_INPUT_PRELUDE_CLIENT_HPP_FILE
 
 #include <string>
+#include <boost/noncopyable.hpp>
 #include <prelude.h>
 #include <prelude-client.h>
-#include <System/AutoVariable.hpp>
+
+#include "System/AutoVariable.hpp"
 #include "Input/Prelude/detail/IdmefMessageHolder.hpp"
 #include "Input/Prelude/GlobalLibPreludeInit.hpp"
 #include "Input/Prelude/LogCallback.hpp"
@@ -22,7 +24,7 @@ namespace Prelude
 /**
  * \brief prelude_client_t wrapper
  */
-class Client
+class Client: private boost::noncopyable
 {
 public:
   /**
