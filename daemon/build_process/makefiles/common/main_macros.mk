@@ -5,12 +5,12 @@ define build-this-component
 	+$(MAKE) $(MFLAGS) -C "$(COMPONENT_DIR)" \
 		LINK_LIBS="$(LINK_LIBS)" \
 		DEP_LIBS_WC="$(DEP_LIBS_WC)" \
-		COMPONENT_PART=$(COMPONENT_PART) \
-		$(PROFILE)
+		COMPONENT_PART="$(COMPONENT_PART)" \
+		DEP_WLD_COMPILE="$(DEP_WLD_COMPILE)" \
+		DEP_WLD_LINK="$(DEP_WLD_LINK)" \
+		"$(PROFILE)"
 
 endef
-
-
 #
 # automatization of dependencies generation
 #
@@ -21,6 +21,3 @@ COMPONENT_DEPS_REL_PATH=$(SRC_FEATURES_DEPS_FULL_SURFIX)/$(PROFILE)
 # shell expanding variable to find deps
 FIND_DEPS_FOR_THIS_COMPONENT=$(shell \
     $(GETDEPS_SCRIPT) $(THIS_COMPONENT) $(COMPONENT_DEPS_REL_PATH))
-# components list file
-COMPONENTS_LISTS:=$(BUILD_CONFIG_BASE_DIR)/components.lst \
-                  $(BUILD_CONFIG_BASE_DIR)/components_$(PROFILE).lst
