@@ -25,7 +25,7 @@ public:
    */
   static const char *getThisTypeName(void)
   {
-    return "Null";
+    return "null";
   }
 
 private:

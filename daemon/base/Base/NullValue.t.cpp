@@ -105,7 +105,7 @@ template<>
 void testObj::test<8>(void)
 {
   NullValue<int> nv2;
-  nv2.get();
+  ensure("value's not NULL for default c-tor", nv2.get()==NULL );
 }
 
 } // namespace tut

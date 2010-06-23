@@ -21,25 +21,21 @@ template<typename T>
 class NullValue: public boost::equality_comparable< NullValue<T> >
 {
 public:
-  //TODO consider using initialization lists
   /** \brief create class from pointer.
    *  \param value pointer to create from.
    */
   explicit NullValue(const T *value=NULL):
-    isNull_(value==NULL)
+    isNull_(value==NULL),
+    value_( IfNeeded<T, boost::is_arithmetic<T>::value>::getDefault(value) )
   {
-    if(!isNull_)
-      value_=*value;
-    else
-      IfNeeded<T, boost::is_arithmetic<T>::value>::assign(value_);
   }
   /** \brief create class from copy.
    *  \param value value to represent
    */
   explicit NullValue(const T &value):
-    isNull_(false)
+    isNull_(false),
+    value_(value)
   {
-    value_=value;
   }
   /** \brief get pointer value (may be NULL).
    */
@@ -61,19 +57,23 @@ public:
 private:
   // simple meta-program for automatic zeroing numbers
   template<typename V, bool IsNumber>
-  struct IfNeeded
+  struct IfNeeded           // number
   {
-    static void assign(V &v)
+    static V getDefault(const V *v)
     {
-      v=0;
+      if(v==NULL)
+        return 0;
+      return *v;
     }
   }; // struct IfNeeded
   template<typename V>
-  struct IfNeeded<V, false>
+  struct IfNeeded<V, false> // non-number
   {
-    static void assign(V &/*v*/)
+    static V getDefault(const V *v)
     {
-      // if NotNumber it probably has c-tor and should be left alone
+      if(v==NULL)
+        return V();
+      return *v;
     }
   }; // struct IfNeeded
 

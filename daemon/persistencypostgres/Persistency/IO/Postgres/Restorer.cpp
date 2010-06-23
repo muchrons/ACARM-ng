@@ -133,8 +133,10 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
     }
     catch(const ExceptionBadNumberOfNodeChildren &e)
     {
-      LOGMSG_WARN_S(log_)<<"root with id "<< *it << " has bad number of children"
-                                                    " this subtree is being skipped; exception message: "<< e.what();
+      LOGMSG_WARN_S(log_) << "root with id " << *it
+                          << " has bad number of children"
+                             " this subtree is being skipped; exception message: "
+                          << e.what();
     }
   }
   // remove duplicates from out vector

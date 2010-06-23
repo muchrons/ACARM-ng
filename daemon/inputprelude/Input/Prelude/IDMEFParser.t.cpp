@@ -6,7 +6,7 @@
 #include <cstring>
 #include <memory>
 #include <string>
-#include <iostream>
+#include <iostream>     // TODO: direct output on the screen must not be used in tests
 
 #include "Input/Exception.hpp"
 #include "Input/Prelude/ExceptionParse.hpp"

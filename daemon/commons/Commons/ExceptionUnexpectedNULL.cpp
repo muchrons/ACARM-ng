@@ -15,8 +15,8 @@ namespace Commons
 
 ExceptionUnexpectedNULL::ExceptionUnexpectedNULL(const Location &where):
   Exception(where,
-            string("unexpected NULL pointer received; stactrace is: ") +
-              System::Backtrace().toString() )  // log call-stack as well.
+            cc("unexpected NULL pointer received; stactrace is: ",
+               System::Backtrace().toString() ) )   // log call-stack as well.
 {
 }
 
