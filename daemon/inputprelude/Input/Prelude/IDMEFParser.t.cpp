@@ -18,6 +18,7 @@ using namespace boost::posix_time;
 namespace
 {
 
+// TODO: this class must be non-copyable
 class MessageWrapper
 {
 public:
@@ -34,6 +35,7 @@ public:
 
   idmef_message_t * get()
   {
+    // TODO: add assert on message_!=NULL
     return message_;
   }
 
@@ -48,6 +50,7 @@ struct TestClass
   TestClass():
     name_("A stupid string to test ID")
   {
+    // TODO: possible mem-leaks uppon exceptions (strings, etc...) - use System::ScopedPtrCustom to prevent them
     int ret;
     idmef_alert_t *alert;
 
@@ -114,6 +117,7 @@ struct TestClass
   }
 
 private:
+  // TODO: fix indentation
   MessageWrapper message_;
   const std::string name_;
 };

@@ -20,6 +20,7 @@ using namespace Persistency;
 namespace
 {
 
+// TODO: this class must be noncopyable
 class SourceWrapper
 {
 public:
@@ -36,6 +37,7 @@ public:
 
   idmef_source_t * get()
   {
+    // TODO: assert ptr!=NULL
     return source_;
   }
 
@@ -99,6 +101,7 @@ struct TestClass : IPTypes<TestClass>
 
   ~TestClass()
   {
+    // TODO: dead code
   }
 
   idmef_source_t * getSource()
@@ -148,7 +151,7 @@ template<>
 void testObj::test<2>(void)
 {
   char addrv6[]="2001:0db8:0000:0000:0000:0000:1428:57ab";
-  idmef_source_t *source6;
+  idmef_source_t *source6;  // TODO: memory leak if exception is thrown
   idmef_source_new(&source6);
   prelude_string_t *addr_str;
   prelude_string_new_dup(&addr_str,addrv6);
@@ -159,7 +162,7 @@ void testObj::test<2>(void)
   idmef_address_set_address(addr,addr_str);
 
   idmef_node_t *node;
-  idmef_source_new_node(source6, &node);
+  idmef_source_new_node(source6, &node);    // TODO: memory leak
 
   idmef_node_set_address(node,addr,IDMEF_LIST_APPEND);
 
