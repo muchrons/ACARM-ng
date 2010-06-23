@@ -100,6 +100,12 @@ HostPtr makeNewHost(void)
   return makeNewHost4("1.2.3.4", &mask, "linux");
 }
 
+HostPtr makeNewHostWithNullRefUrl(void)
+{
+  const Persistency::Host::Netmask_v4 mask(mask4_bytes);
+  return makeNewHost4("1.2.3.4", &mask, "linux", true);
+}
+
 HostPtr makeNewHost4(const char             *ip,
                      const Persistency::Host::Netmask_v4 *mask,
                      const char             *os,

@@ -115,7 +115,7 @@ public:
 
 private:
   Persistency::Alert::ReportedHosts getReporteHosts(DataBaseID alertID, std::string hostType);
-  HostPtr getHost(DataBaseID hostID, DataBaseID *refID);
+  HostPtr getHost(DataBaseID hostID, const DataBaseID *refID);
 
   Persistency::Host::ReportedServices  getReportedServices(DataBaseID hostID);
   Persistency::Host::ReportedProcesses getReportedProcesses(DataBaseID hostID);

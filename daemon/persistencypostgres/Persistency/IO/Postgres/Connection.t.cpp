@@ -265,5 +265,4 @@ void testObj::test<7>(void)
   ensure_equals("invalid alerts' size",      count("alerts"), 1u);
   ensure_equals("invalid meta alerts' size", count("meta_alerts"), 1u);
 }
-// TODO: how about removing when data in data base are invalid ?
 } // namespace tut
