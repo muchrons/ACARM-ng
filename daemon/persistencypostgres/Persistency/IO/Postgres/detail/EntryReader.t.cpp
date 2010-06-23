@@ -63,6 +63,14 @@ struct TestClass
     return out;
   }
 
+  Persistency::Alert::ReportedHosts generateNULLReportedHosts(unsigned int size) const
+  {
+    Persistency::Alert::ReportedHosts out;
+    for(unsigned int i=0; i<size; ++i)
+      out.push_back( makeNewHostWithNullRefUrl() );
+    return out;
+  }
+
   const Persistency::Alert::Name          name_;
   const AnalyzerPtrNN                     analyzer_;
   Persistency::Alert::SourceAnalyzers     analyzers_;
@@ -546,4 +554,32 @@ void testObj::test<18>(void)
   ensure_equals("invalid number of children", maChildren.size(), 0);
 }
 
+// restore Alert with null reported hosts
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  Persistency::AlertPtrNN alertPtr (
+        new Persistency::Alert(name_, analyzers_, &detected_,
+                               created_,
+                               severity_, certanity_,description_,
+                               generateNULLReportedHosts(2), generateReportedHosts(3)) );
+  // save alert
+  Persistency::IO::Postgres::Alert alert(alertPtr, t_, dbh_ );
+  alert.save();
+  DataBaseID alertID = dbh_->getIDCache()->get(alertPtr);
+
+  Persistency::AlertPtrNN a( er_.readAlert( alertID ) );
+  TestHelpers::checkEquality(alertPtr, a);
+  ensure("invalid name", alertPtr->getName() == a->getName() );
+  ensure_equals("invalid description", a->getDescription() , description_ );
+  ensure_equals("invalid detected time", *a->getDetectionTime(), detected_);
+  ensure_equals("invalid create time", a->getCreationTime(), created_);
+  ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(),
+                                    severity_.getLevel().toInt());
+  ensure_equals("invalid caertainty", a->getCertainty().get(), certanity_.get());
+  ensure_equals("vectors are different", (a->getReportedSourceHosts()).size(),
+                                         (alertPtr->getReportedSourceHosts()).size() );
+  t_.commit();
+}
 } // namespace tut

@@ -148,9 +148,8 @@ Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::strin
   Alert::ReportedHosts hosts;
   for(size_t i=0; i<r.size(); ++i)
   {
-    DataBaseID idRefURL = ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_ref"]);
-    hosts.push_back(getHost( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_host"]),
-                             &idRefURL));
+    hosts.push_back( getHost( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_host"]),
+                              ReaderHelper<NullValue<DataBaseID> >::readAs(r[i]["id_ref"]).get()) );
   }
   return hosts;
 }
@@ -165,7 +164,7 @@ Alert::ReportedHosts EntryReader::getTargetHosts(DataBaseID alertID)
   return getReporteHosts(alertID, "dst");
 }
 
-HostPtr EntryReader::getHost(DataBaseID hostID, DataBaseID *refID)
+HostPtr EntryReader::getHost(DataBaseID hostID, const DataBaseID *refID)
 {
   stringstream ss;
   ss << "SELECT * FROM hosts WHERE id = "<< hostID <<";";
