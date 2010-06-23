@@ -87,8 +87,7 @@ template<>
 void testObj::test<1>(void)
 {
   IDMEFParserAnalyzer an(getAnalyzer());
-  // TODO: use ensure_equals here
-  ensure(an.getName()==Persistency::Analyzer::Name(name_));
+  ensure_equals("Analyzer name:",an.getName().get(),name_);
 }
 
 // OS extraction test

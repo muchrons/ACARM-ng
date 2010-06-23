@@ -19,12 +19,16 @@ Client::Client(const std::string& profile, const std::string& config, int permis
 
   prelude_client_set_required_permission(client_, (prelude_connection_permission_t) permission);
 
-  int ret = prelude_client_init(client_);
-  if ( ret < 0 )
+  if ( prelude_client_set_flags(client_, static_cast<prelude_client_flags_t>(prelude_client_get_flags(client_) | PRELUDE_CLIENT_FLAGS_ASYNC_TIMER)) < 0 )
+    throw Exception(SYSTEM_SAVE_LOCATION, "Cannot set ASYNC TIMER.");
+  /*
+  prelude_client_profile_set_uid(prelude_client_get_profile(client_),getuid());
+  prelude_client_profile_set_gid(prelude_client_get_profile(client_),getgid());
+  */
+  if ( prelude_client_init(client_) < 0 )
     throw Exception(SYSTEM_SAVE_LOCATION, "Cannot initialize prelude client.");
 
-  ret = prelude_client_start(client_);
-  if ( ret < 0 )
+  if ( prelude_client_start(client_) < 0 )
     throw Exception(SYSTEM_SAVE_LOCATION, "Cannot start prelude client.");
 }
 
