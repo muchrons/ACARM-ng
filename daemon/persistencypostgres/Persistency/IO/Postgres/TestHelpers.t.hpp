@@ -51,6 +51,7 @@ const Persistency::Host::Netmask_v6::bytes_type mask6_bytes={ {
                                                   0x00, 0x00, 0x00, 0x00,
                                                  } };
 Persistency::HostPtr makeNewHost(void);
+Persistency::HostPtr makeNewHostWithNullRefUrl(void);
 Persistency::HostPtr makeNewHost4(const char             *ip,
                                   const Persistency::Host::Netmask_v4 *mask,
                                   const char             *os,
