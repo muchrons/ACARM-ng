@@ -123,6 +123,7 @@ $C-LINK:: LINK_LIBS:=`reduce_deps $LINK_FLAGS`
 $C-LINK:: DEP_LIBS_WC:=$DEP_LIBS_WC
 $C-LINK:: COMPONENT_DIR:=$C
 $C-LINK:: COMPONENT_PART:=LINK
+$C-LINK:: DEP_WLD_LINK:=\$(shell ls $ROOT/*_dynamic_link* 2>/dev/null | while read file ; do echo "\$\$file" | xargs readlink -f ; done )
 ifeq (,\$(WITHOUT_DEPS))
 $C-LINK:: `test -z "$RDEPS" || echo "$RDEPS " | sed 's: \+:-LINK :g'` $C-OBJECTS
 else
@@ -134,6 +135,7 @@ $C-OBJECTS:: CXXFLAGS:=\$(CXXFLAGS) $COMPILE_FLAGS
 $C-OBJECTS:: CFLAGS:=\$(CFLAGS) $COMPILE_FLAGS
 $C-OBJECTS:: COMPONENT_DIR:=$C
 $C-OBJECTS:: COMPONENT_PART:=OBJECTS
+$C-OBJECTS:: DEP_WLD_COMPILE:=\$(shell ls $ROOT/*_dynamic_compile* 2>/dev/null | while read file ; do echo "\$\$file" | xargs readlink -f ; done )
 $C-OBJECTS:: $C-MKPUBLIC
 	@\$(build-this-component)
 
