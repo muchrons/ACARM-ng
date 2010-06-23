@@ -6,7 +6,6 @@
 #include <cstring>
 #include <memory>
 #include <string>
-#include <iostream>     // TODO: direct output on the screen must not be used in tests
 
 #include "Input/Exception.hpp"
 #include "Input/Prelude/ExceptionParse.hpp"
@@ -19,6 +18,31 @@ using namespace boost::posix_time;
 namespace
 {
 
+class MessageWrapper
+{
+public:
+  MessageWrapper()
+  {
+    if (idmef_message_new(&message_)<0)
+      tut::fail("Unable to create message object.");
+  }
+
+  ~MessageWrapper()
+  {
+    idmef_message_destroy(message_);
+  }
+
+  idmef_message_t * get()
+  {
+    return message_;
+  }
+
+private:
+  idmef_message_t *message_;
+};
+
+
+
 struct TestClass
 {
   TestClass():
@@ -27,19 +51,17 @@ struct TestClass
     int ret;
     idmef_alert_t *alert;
 
-    ret = idmef_message_new(&message_);
-    if ( ret < 0 )
-      throw Input::Exception(SYSTEM_SAVE_LOCATION,"Cannot create new IDMEF message.");
-
-    ret = idmef_message_new_alert(message_, &alert);
+    ret = idmef_message_new_alert(message_.get(), &alert);
     if ( ret < 0 )
       throw Input::Exception(SYSTEM_SAVE_LOCATION,"Cannot create new ALERT.");
-
     prelude_string_t *string1;
     prelude_string_t *string2;
     idmef_alert_new_messageid(alert,&string1);
     prelude_string_new_ref(&string2,name_.c_str());
-    idmef_alert_set_messageid(alert,string2);
+
+    idmef_classification_t *classif;
+    idmef_alert_new_classification(alert,&classif);
+    idmef_classification_set_text(classif,string2);
 
     idmef_analyzer_t *analyzer;
     idmef_alert_new_analyzer(alert,&analyzer,IDMEF_LIST_APPEND);
@@ -74,17 +96,16 @@ struct TestClass
 
   ~TestClass()
   {
-    idmef_message_destroy(message_);
   }
 
   idmef_message_t * getMessage()
   {
-    return message_;
+    return message_.get();
   }
 
   idmef_alert_t * getAlert()
   {
-    return idmef_message_get_alert(message_);
+    return idmef_message_get_alert(message_.get());
   }
 
   const std::string & getName()
@@ -93,7 +114,7 @@ struct TestClass
   }
 
 private:
-  idmef_message_t *message_;
+  MessageWrapper message_;
   const std::string name_;
 };
 
@@ -135,6 +156,41 @@ void testObj::test<2>(void)
 }
 
 // TODO: test parsing when heart beat is passed
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  const time_t                  tt=54321;
+  const Persistency::Timestamp  time(tt);
+
+  MessageWrapper msg;
+  idmef_message_t *message=msg.get();
+  idmef_heartbeat_t *heartbeat;
+  //prelude_string_t *str;
+
+  if ( idmef_message_new_heartbeat(message, &heartbeat) < 0 )
+    tut::fail("error creating new heartbeat");
+
+  //if ( prelude_string_new_constant(&str, "Analyzer status") < 0 )
+  //tut::fail("error creating new prelude_string");
+
+  //add_hb_data(heartbeat, str, "some data");
+
+  idmef_time_t  *idmeftime=NULL;
+
+  idmef_time_new_from_time(&idmeftime, &tt);
+  idmef_heartbeat_set_create_time(heartbeat, idmeftime);
+
+  try
+  {
+    const IDMEFParser ip( message );
+  }
+  catch(ExceptionParse &)
+  {
+    //expected
+  }
+}
+
 
 // TODO: test alert without analyzer
 

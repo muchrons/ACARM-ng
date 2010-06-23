@@ -11,6 +11,7 @@
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/ReferenceURL.hpp"
+#include "Logger/Node.hpp"
 
 namespace Input
 {
@@ -56,6 +57,7 @@ private:
   Persistency::Analyzer::OperatingSystem parseOS(idmef_analyzer_t *ptr) const;
   std::auto_ptr<Persistency::Analyzer::IP> parseIP(idmef_analyzer_t *ptr) const;
 
+  const Logger::Node                       log_;
   Persistency::Analyzer::Name              name_;
   Persistency::Analyzer::Version           version_;
   Persistency::Analyzer::OperatingSystem   os_;
