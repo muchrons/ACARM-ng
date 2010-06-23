@@ -114,6 +114,13 @@ fi
 # base components as first, so that linking won't group at the compilation's end.
 RDEPS="`echo "$DEPS" | awk '{ for(i=NF; i>0; --i) printf("%s ", $i) ; print "" }'`"
 
+#SHELL_DEPS="`sed -e "s:^ *:{$C,:" -e 's: *$:,}:' -e 's: \+:,:g' -e 's:,\+:,:g' <<< "$DEPS"`"
+SHELL_DEPS_COMPILE="`echo "$C $DEPS " | sed -e "s: \+:/$BASE_PATH_DIR/*_dynamic_link* :g"   `"
+SHELL_DEPS_LINK="`   echo "$C $DEPS " | sed -e "s: \+:/$BASE_PATH_DIR/*_dynamic_compile* :g"`"
+#echo "S_DEPS $C: $DEPS  --- $SHELL_DEPS_COMPILE" >&2
+#echo $C:: DEP_WLD_LINK:=\$(shell ls $ROOT/*_dynamic_link* 2>/dev/null | while read file ; do echo "\$\$file" | xargs readlink -f ; done ) >&2
+#exit 1
+
 # write to file
 cat<<EOF > "$out"
 .PHONY: $C
@@ -123,17 +130,24 @@ $C-LINK:: LINK_LIBS:=`reduce_deps $LINK_FLAGS`
 $C-LINK:: DEP_LIBS_WC:=$DEP_LIBS_WC
 $C-LINK:: COMPONENT_DIR:=$C
 $C-LINK:: COMPONENT_PART:=LINK
+$C-LINK:: DEP_WLD_LINK_LIST:=\$(shell echo "$C $DEPS " | sed -e "s: \+:/$BASE_PATH_DIR/*_dynamic_link* :g" )
+$C-LINK:: DEP_WLD_LINK:=\$(shell ls \$(DEP_WLD_LINK_LIST) 2>/dev/null | while read file ; do echo "\$\$file" | xargs readlink -f ; done )
 ifeq (,\$(WITHOUT_DEPS))
 $C-LINK:: `test -z "$RDEPS" || echo "$RDEPS " | sed 's: \+:-LINK :g'` $C-OBJECTS
 else
 $C-LINK:: $C-OBJECTS
 endif
+#	echo YYY \$(DEP_WLD_LINK_LIST) / \$(DEP_WLD_LINK)
+#	echo "XX $C-LINK:: $SHELL_DEPS/$BASE_PATH_DIR/*_dynamic_link* 2>/dev/null | while read file ; do echo \"\$\$file\" | xargs readlink -f ; done"
+#	echo XX $C-LINK:: DEP_WLD_LINK:=\$(DEP_WLD_LINK)
 	@\$(build-this-component)
 
 $C-OBJECTS:: CXXFLAGS:=\$(CXXFLAGS) $COMPILE_FLAGS
 $C-OBJECTS:: CFLAGS:=\$(CFLAGS) $COMPILE_FLAGS
 $C-OBJECTS:: COMPONENT_DIR:=$C
 $C-OBJECTS:: COMPONENT_PART:=OBJECTS
+$C-OBJECTS:: DEP_WLD_COMPILE_LIST:=\$(shell echo "$C $DEPS " | sed -e "s: \+:/$BASE_PATH_DIR/*_dynamic_compile* :g" )
+$C-OBJECTS:: DEP_WLD_COMPILE:=\$(shell ls \$(DEP_WLD_COMPILE_LIST) 2>/dev/null | while read file ; do echo "\$\$file" | xargs readlink -f ; done )
 $C-OBJECTS:: $C-MKPUBLIC
 	@\$(build-this-component)
 

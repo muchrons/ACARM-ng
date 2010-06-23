@@ -36,3 +36,12 @@ ifneq (,$(WITH_CCACHE))
  $(shell echo "-----------------------------------------------------------------------------------" >&2)
 endif
 endif
+
+#
+# does given features exist?
+#
+ALL_EXISTING_FEATURES_LIST:=$(shell for c in `cat $(COMPONENTS_LISTS) 2>/dev/null` ; do ls "$$c/features/modes/features" 2>/dev/null ; done )
+NON_EXISTING_FEATURES_LIST:=$(filter-out $(ALL_EXISTING_FEATURES_LIST),$(FEATURES))
+ifneq ($(NON_EXISTING_FEATURES_LIST),)
+$(error following features does NOT exist: $(NON_EXISTING_FEATURES_LIST) (NOTE: available are: $(ALL_EXISTING_FEATURES_LIST)))
+endif
