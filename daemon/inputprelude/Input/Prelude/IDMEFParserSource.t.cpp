@@ -18,6 +18,32 @@ using namespace Persistency;
 
 namespace
 {
+// TODO: this class must be non-copyable
+// TODO: c&p code - consider making it 3-arg template and reuse
+class SourceWrapper
+{
+public:
+  SourceWrapper()
+  {
+    if (idmef_source_new(&source_)<0)
+      tut::fail("Unable to create source obcject.");
+  }
+
+  ~SourceWrapper()
+  {
+    idmef_source_destroy(source_);
+  }
+
+  idmef_source_t * get()
+  {
+    // TODO: assert ptr!=NULL
+    return source_;
+  }
+
+private:
+  idmef_source_t *source_;
+};
+
 
 struct TestClass
 {
@@ -29,8 +55,7 @@ struct TestClass
     service_port(27600),
     addressv4("192.168.55.54")
   {
-    if (idmef_source_new(&source_)<0)
-      tut::fail("Unable to create source obcject.");
+    idmef_source_t *source=source_.get();
 
     prelude_string_t *addr_str;
     prelude_string_new_dup(&addr_str,addressv4.c_str());
@@ -41,7 +66,7 @@ struct TestClass
     idmef_address_set_address(addr,addr_str);
 
     idmef_node_t *node;
-    idmef_source_new_node(source_, &node);
+    idmef_source_new_node(source, &node);
 
     idmef_node_set_address(node,addr,IDMEF_LIST_APPEND);
 
@@ -53,7 +78,7 @@ struct TestClass
     idmef_process_set_name(proc,proc_str);
 
     idmef_user_t *user;
-    idmef_source_new_user(source_,&user);
+    idmef_source_new_user(source,&user);
 
     idmef_user_id_t* userid;
     idmef_user_new_user_id(user,&userid,IDMEF_LIST_APPEND);
@@ -62,10 +87,10 @@ struct TestClass
     prelude_string_new_dup(&username,process_user.c_str());
     idmef_user_id_set_name(userid,username);
 
-    idmef_source_set_process(source_,proc);
+    idmef_source_set_process(source,proc);
 
     idmef_service_t * service;
-    idmef_source_new_service(source_,&service);
+    idmef_source_new_service(source,&service);
 
     prelude_string_t *servicename;
     prelude_string_new_dup(&servicename,service_name.c_str());
@@ -80,16 +105,15 @@ struct TestClass
 
   ~TestClass()
   {
-    idmef_source_destroy(source_);
   }
 
   idmef_source_t * getSource()
   {
-    return source_;
+    return source_.get();
   }
 
 protected:
-  idmef_source_t *source_;
+  SourceWrapper source_;
   std::string process_name;
   std::string process_user;
   std::string service_name;
@@ -123,8 +147,7 @@ template<>
 void testObj::test<2>(void)
 {
   char addrv6[]="2001:0db8:0000:0000:0000:0000:1428:57ab";
-  idmef_source_t *source6;
-  idmef_source_new(&source6);
+  SourceWrapper source6;
   prelude_string_t *addr_str6;
   prelude_string_new_dup(&addr_str6,addrv6);
 
@@ -134,14 +157,12 @@ void testObj::test<2>(void)
   idmef_address_set_address(addr6,addr_str6);
 
   idmef_node_t *node6;
-  idmef_source_new_node(source6, &node6);
+  idmef_source_new_node(source6.get(), &node6);
 
   idmef_node_set_address(node6,addr6,IDMEF_LIST_APPEND);
 
-  const IDMEFParserSource ips(source6);
-  // TODO: source6 leaks when ensure_equals() throws
+  const IDMEFParserSource ips(source6.get());
   ensure_equals("Address IPv6",ips.getAddress(),Analyzer::IP(boost::asio::ip::address_v6::from_string(addrv6)));
-  idmef_source_destroy(source6);
 }
 
 // Check process name

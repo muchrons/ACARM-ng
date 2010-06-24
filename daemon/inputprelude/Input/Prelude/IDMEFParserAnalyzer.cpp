@@ -16,6 +16,7 @@ using boost::asio::ip::address_v6;
 using Persistency::Analyzer;
 
 IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):
+  log_("input.prelude.ipa"),
   name_(parseName(getNonNull(ptr))),
   version_(parseVersion(getNonNull(ptr))),
   os_(parseOS(getNonNull(ptr))),
@@ -32,7 +33,6 @@ idmef_analyzer_t * IDMEFParserAnalyzer::getNonNull(idmef_analyzer_t *ptr) const
 
 Persistency::Analyzer::Name IDMEFParserAnalyzer::parseName(idmef_analyzer_t *ptr) const
 {
-  // TODO: c&p code
   const prelude_string_t *idmef_name = idmef_analyzer_get_name(ptr);
   if (idmef_name)
     return prelude_string_get_string(idmef_name);
@@ -82,8 +82,7 @@ std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_anal
   }
   catch(const ExceptionParse &)
   {
-    // TODO: this should be logged
-    //there is no IP, but we can carry on
+    LOGMSG_WARN(log_, "No IP but we can carry on");
   }
   return ip;
 }
