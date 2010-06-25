@@ -83,7 +83,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     struct stat buf;
     if( stat( ss.str().c_str(), &buf )!=0 )
       return 1;
-    if( buf.st_size!=135 )
+    if( buf.st_size<135 )
       return 2;
     // all ok!
     return 0;

@@ -18,6 +18,8 @@ using namespace Persistency;
 
 namespace
 {
+// TODO: this class must be non-copyable
+// TODO: c&p code - consider making it 3-arg template and reuse
 class SourceWrapper
 {
 public:
@@ -34,6 +36,7 @@ public:
 
   idmef_source_t * get()
   {
+    // TODO: assert ptr!=NULL
     return source_;
   }
 

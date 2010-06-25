@@ -2,7 +2,7 @@
  * computeSeverity.cpp
  *
  */
-#include <set>
+#include <cmath>
 #include <cassert>
 
 #include "Algo/computeSeverity.hpp"
@@ -15,12 +15,12 @@ namespace
 {
 /** \brief helper object computing severity.
  */
-class SeverComput
+class SeveritComput
 {
 public:
   /** \brief initialize object.
    */
-  SeverComput(void):
+  SeveritComput(void):
     delta_(0),
     leafsCount_(0),
     leafsSeveritySum_(0)
@@ -50,20 +50,23 @@ public:
   {
     assert( leafsCount_>0 );
     // arithmetic average of all severities modified by delta.
-    return (0.0+leafsSeveritySum_)/leafsCount_ + delta_;
+    const double aver      =(0.0+leafsSeveritySum_)/leafsCount_;
+    const double countBonus=log(10+leafsCount_)/log(10) - 1;
+    assert( countBonus>=0 && "logarithm went out of scope" );
+    return countBonus + aver + delta_;
   }
 
 private:
   double delta_;
   int    leafsCount_;
   int    leafsSeveritySum_;
-}; // struct SeverComput
+}; // struct SeveritComput
 } // unnamed namespace
 
 
 double computeSeverity(Persistency::GraphNodePtrNN root)
 {
-  return forEachUniqueInTree(root, SeverComput() ).get();
+  return forEachUniqueInTree(root, SeveritComput() ).get();
 } // computeSeverity()
 
 } // namespace Algo
