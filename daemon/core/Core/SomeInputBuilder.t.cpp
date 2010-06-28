@@ -25,7 +25,7 @@ struct SomeInput: public Reader
   {
   }
 
-  virtual DataPtr read(unsigned int)
+  virtual DataPtr read(BackendFacade &, unsigned int)
   {
     if(!firstRun_)
       usleep(50*1000);  // limit created objects count a little...

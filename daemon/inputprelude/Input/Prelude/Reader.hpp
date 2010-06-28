@@ -25,11 +25,13 @@ public:
   /** \brief create prelud reader.
    */
   Reader(const std::string & profile, const std::string & config);
+
   /** \brief reads data from input from prelude-manager.
+   *  \param bf      backend facade to use for processing.
    *  \param timeout milliseconds to wait before timeout occures.
    *  \return pointer to newly allocated strucutre or NULL on timeout.
    */
-  virtual DataPtr read(unsigned int timeout);
+  virtual DataPtr read(BackendFacade &bf, unsigned int timeout);
 
 private:
   boost::scoped_ptr<Client> client_;
