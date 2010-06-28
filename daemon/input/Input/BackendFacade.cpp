@@ -22,11 +22,11 @@ BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
 {
 }
 
-Persistency::AnalyzerPtrNN BackendFacade::get(const std::string                            &/*originalID*/,
-                                              const Persistency::Analyzer::Name            &name,
-                                              const Persistency::Analyzer::Version         &version,
-                                              const Persistency::Analyzer::OperatingSystem &os,
-                                              const Persistency::Analyzer::IP              *ip)
+Persistency::AnalyzerPtrNN BackendFacade::getAnalyzer(const std::string                            &/*originalID*/,
+                                                      const Persistency::Analyzer::Name            &name,
+                                                      const Persistency::Analyzer::Version         &version,
+                                                      const Persistency::Analyzer::OperatingSystem &os,
+                                                      const Persistency::Analyzer::IP              *ip)
 {
   // TODO
   return Persistency::AnalyzerPtrNN( new Persistency::Analyzer(name, version, os, ip) );

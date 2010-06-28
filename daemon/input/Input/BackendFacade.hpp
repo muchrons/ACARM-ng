@@ -40,11 +40,11 @@ public:
    *  \param ip         analyzer's IP.
    *  \return analyzer's object instance.
    */
-  Persistency::AnalyzerPtrNN get(const std::string                            &originalID,
-                                 const Persistency::Analyzer::Name            &name,
-                                 const Persistency::Analyzer::Version         &version,
-                                 const Persistency::Analyzer::OperatingSystem &os,
-                                 const Persistency::Analyzer::IP              *ip);
+  Persistency::AnalyzerPtrNN getAnalyzer(const std::string                            &originalID,
+                                         const Persistency::Analyzer::Name            &name,
+                                         const Persistency::Analyzer::Version         &version,
+                                         const Persistency::Analyzer::OperatingSystem &os,
+                                         const Persistency::Analyzer::IP              *ip);
 
 private:
 }; // class BackendFacade
