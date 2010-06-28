@@ -46,8 +46,6 @@ public:
   void stop(void);
 
 private:
-  void ensureNotRoot(void);
-
   SanityCheck            sanity_;       // checks if (basic) environment is sane
   Logger::Node           log_;
   HandleSignals          nullSignals_;  // ignore signals at this moment
