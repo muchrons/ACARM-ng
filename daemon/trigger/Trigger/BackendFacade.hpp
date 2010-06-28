@@ -8,7 +8,7 @@
 /* public header */
 
 #include "Persistency/GraphNode.hpp"
-#include "Core/Types/Proc/BackendFacade.hpp"
+#include "Core/Types/BackendFacade.hpp"
 
 
 namespace Trigger
@@ -21,7 +21,7 @@ namespace Trigger
  * \note this object allows transaction's to take place, but only on persistent
  *       level, i.e. rollbacking transaction does not change user objects.
  */
-class BackendFacade: public Core::Types::Proc::BackendFacade
+class BackendFacade: public Core::Types::BackendFacade
 {
 public:
   /** \brief create object's instance.
