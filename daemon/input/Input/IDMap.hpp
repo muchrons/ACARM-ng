@@ -19,12 +19,24 @@
 namespace Input
 {
 
+/** \brief mapping of input-specific analyzers' IDs to common analyzers' ID scheme.
+ */
 class IDMap: private boost::noncopyable
 {
 public:
   // TODO: config should be passed as an parameters
+  /** \brief constructs instance.
+   */
   IDMap(void);
 
+  /** \brief performs mapping from given ID to system-specific one.
+   *  \param originalID external ID to be mapped.
+   *  \return assigned ID.
+   *
+   *  if given originalID is already mapped, exisitng value is returned. if
+   *  new assignment has been created, new, free ID value is returned and
+   *  entry is saved to persistent storage.
+   */
   Persistency::Analyzer::ID operator[](const std::string &originalID);
 
 private:
