@@ -19,17 +19,21 @@ class Thread
 public:
   /** \brief create object.
    *  \param reader reader to run in background.
+   *  \param conn   data base connection to be used.
    *  \param output queue to output data to.
    */
-  Thread(ReaderPtrNN reader, Core::Types::AlertsFifo &output);
+  Thread(ReaderPtrNN                       reader,
+         Persistency::IO::ConnectionPtrNN  conn,
+         Core::Types::AlertsFifo          &output);
   /** \brief thread loop implementation.
    */
   void operator()(void);
 
 private:
-  ReaderPtrNN              reader_;
-  Core::Types::AlertsFifo *output_;
-  Logger::Node             log_;
+  ReaderPtrNN                       reader_;
+  Persistency::IO::ConnectionPtrNN  conn_;
+  Core::Types::AlertsFifo          *output_;
+  Logger::Node                      log_;
 }; // class Thread
 
 } // namespace Input

@@ -6,7 +6,9 @@
 #include <unistd.h>
 
 #include "Input/Interface.hpp"
+#include "Persistency/IO/create.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace std;
 using namespace Input;
@@ -21,24 +23,26 @@ struct TestReader: public Reader
   {
   }
 
-  virtual DataPtr read(unsigned int)
+  virtual DataPtr read(BackendFacade &, unsigned int)
   {
     usleep(50*1000);   // limit output a little...
     return TestHelpers::Persistency::makeNewAlert();
   }
 }; // struct TestReader
 
-struct TestClass
+struct TestClass: public TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     tr_(new TestReader),
-    r_(tr_)
+    r_(tr_),
+    conn_( Persistency::IO::create().release() )
   {
   }
 
-  TestReader              *tr_;
-  ReaderPtrNN              r_;
-  Core::Types::AlertsFifo  output_;
+  TestReader                       *tr_;
+  ReaderPtrNN                       r_;
+  Core::Types::AlertsFifo           output_;
+  Persistency::IO::ConnectionPtrNN  conn_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -57,7 +61,7 @@ template<>
 void testObj::test<1>(void)
 {
   {
-    Interface iface(r_, output_);
+    Interface iface(r_, conn_, output_);
     while( output_.size()<2 )   // wait for few elements on output
       usleep(1*1000);
   }
@@ -71,7 +75,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Interface iface(r_, output_);
+  Interface iface(r_, conn_, output_);
   while( output_.size()<2 )   // wait for few elements on output
     usleep(1*1000);
   iface.stop();
@@ -86,7 +90,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  InterfacePtrNN iface( new Interface(r_, output_) );
+  InterfacePtrNN iface( new Interface(r_, conn_, output_) );
 }
 
 
@@ -99,7 +103,7 @@ struct TestReaderName: public Reader
   {
   }
 
-  virtual DataPtr read(unsigned int)
+  virtual DataPtr read(BackendFacade &, unsigned int)
   {
     usleep(50*1000);   // limit output a little...
     return TestHelpers::Persistency::makeNewAlert();
@@ -113,7 +117,7 @@ template<>
 void testObj::test<4>(void)
 {
   ReaderPtrNN trn(new TestReaderName);
-  Interface   iface(trn, output_);      // should not throw
+  Interface   iface(trn, conn_, output_);      // should not throw
 }
 
 } // namespace tut

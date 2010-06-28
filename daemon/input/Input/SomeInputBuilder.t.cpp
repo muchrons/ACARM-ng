@@ -1,5 +1,5 @@
 /*
- * SomeInputBuilder.cpp
+ * SomeInputBuilder.t.cpp
  *
  */
 #include <tut/tut.hpp>
@@ -10,6 +10,7 @@
 #include "ConfigIO/InputConfig.hpp"
 #include "Commons/Factory/RegistratorHelper.hpp"
 #include "Input/Factory.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace std;
 using namespace Input;
@@ -24,7 +25,7 @@ struct SomeInput: public Reader
   {
   }
 
-  virtual DataPtr read(unsigned int)
+  virtual DataPtr read(BackendFacade &, unsigned int)
   {
     return DataPtr();
   }

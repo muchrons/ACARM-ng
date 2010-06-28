@@ -32,6 +32,19 @@ public:
   BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
                 const std::string                &name);
 
+  /** \brief gets mapping from given originalID to analyzer. if ID's not mapped, new entry's added.
+   *  \param originalID ID returned by input.
+   *  \param name       analyzer's name.
+   *  \param version    analyzer's version.
+   *  \param os         analyzer's OS.
+   *  \param ip         analyzer's IP.
+   *  \return analyzer's object instance.
+   */
+  Persistency::AnalyzerPtrNN get(const std::string                            &originalID,
+                                 const Persistency::Analyzer::Name            &name,
+                                 const Persistency::Analyzer::Version         &version,
+                                 const Persistency::Analyzer::OperatingSystem &os,
+                                 const Persistency::Analyzer::IP              *ip);
 
 private:
 }; // class BackendFacade
