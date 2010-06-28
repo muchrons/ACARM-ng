@@ -31,7 +31,7 @@ public:
      *  \param port  port number that has been found invalid.
      */
     ExceptionInvalidPort(const Location &where, uint16_t port):
-        Exception(where, cc("ginve port number is invalid: ", port) )
+        Exception(where, cc("given port number is invalid: ", port) )
     {
     }
   }; // struct ExceptionInvalidPort
