@@ -39,11 +39,14 @@ public:
     }
   }; // struct ExceptionNoSuchParamter
 
+
   /** \brief helper typedef for string that can be NULL. */
   typedef Base::NullValue<std::string> StringNULL;
 
   /** \brief create meta-alert persistency proxy.
    *  \param owner owner's name of a configuration to work on (NULL means common config).
+   *               each owner has separate 'namespace', i.e. the same keys may repeat for
+   *               different owners and they won't interfere.
    *  \param t     active transaction.
    */
   DynamicConfig(const char *owner, Transaction &t);
@@ -65,6 +68,7 @@ public:
   /** \brief read given read-only configuration paramter.
    *  \param key name of the paramter to read.
    *  \return paramter's value.
+   *  \note const-paramters are common for all owners (since noone can write them anyway).
    */
   std::string readConst(const std::string &key);
 
