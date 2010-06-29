@@ -7,37 +7,49 @@
 
 /* public header */
 
+#include <map>
 #include <string>
 #include <boost/noncopyable.hpp>
 
 #include "Persistency/Analyzer.hpp"
+#include "Input/Exception.hpp"
 
 // TODO
 
 namespace Input
 {
 
-/** \brief main mapping object - maps 
+/** \brief main mapping object - maps input's IDs to objects.
  */
 class AnalyzersMap: private boost::noncopyable
 {
 public:
-  /** \brief gets mapping from given originalID to analyzer. if ID's not mapped, new entry's added.
-   *  \param originalID ID returned by input.
-   *  \param name       analyzer's name.
-   *  \param version    analyzer's version.
-   *  \param os         analyzer's OS.
-   *  \param ip         analyzer's IP.
-   *  \return analyzer's object instance.
+  struct ExceptionAddingAlreadyExistingKey: public Exception
+  {
+    ExceptionAddingAlreadyExistingKey(const Location                   &where,
+                                      const std::string                &id,
+                                      const Persistency::AnalyzerPtrNN  analyzer):
+      Exception(where, cc("trying to add duplicate entry - input ID '",
+                          id, "', analyzer '", analyzer->getName().get(), "'") )
+    {
+    }
+  }; // struct ExceptionAddingAlreadyExistingKey
+
+  /** \brief gets mapping from given input's ID to analyzer. if ID's not mapped NULL is retunred.
+   *  \param id ID returned by input (mixed with input name).
+   *  \return analyzer's object instance or NULL.
    */
-  Persistency::AnalyzerPtrNN get(const std::string                            &originalID,
-                                 const Persistency::Analyzer::Name            &name,
-                                 const Persistency::Analyzer::Version         &version,
-                                 const Persistency::Analyzer::OperatingSystem &os,
-                                 const Persistency::Analyzer::IP              *ip);
+  Persistency::AnalyzerPtrNN::SharedPtr get(const std::string &id) const;
+  /** \brief adds new mapping.
+   *  \param id      id to map from (key).
+   *  \param analzer analyzer to map to (value).
+   */
+  void add(const std::string &id, Persistency::AnalyzerPtrNN analyzer);
 
 private:
-  const std::string inputName_;
+  typedef std::map<std::string, Persistency::AnalyzerPtrNN> InputIDMap;
+
+  InputIDMap map_;
 }; // class AnalyzersMap
 
 } // namespace Input

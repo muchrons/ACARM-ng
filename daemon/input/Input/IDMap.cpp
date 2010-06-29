@@ -8,14 +8,12 @@
 namespace Input
 {
 
-IDMap::IDMap(const Persistency::Analyzer::ID  nextFreeID,
-             PersistencyProxy                &pp):
-  nextFreeID_(nextFreeID),
-  pp_(pp)
+IDMap::IDMap(const Persistency::Analyzer::ID nextFreeID):
+  nextFreeID_(nextFreeID)
 {
 }
 
-Persistency::Analyzer::ID IDMap::get(const std::string &inputID)
+Persistency::Analyzer::ID IDMap::get(PersistencyProxy &pp, const std::string &inputID)
 {
   Base::Threads::Lock lock(mutex_);
   // has already this entry?
@@ -28,7 +26,7 @@ Persistency::Analyzer::ID IDMap::get(const std::string &inputID)
   const Persistency::Analyzer::ID id=nextFreeID_++; // switch to next id stright away
                                                     // to ensure fast recovery from
                                                     // persistency inconsistent errors.
-  pp_.saveMapping(inputID, id);     // save mapping to persistent storage
+  pp.saveMapping(inputID, id);      // save mapping to persistent storage
   map_[inputID]=id;                 // add run-time mapping
   return id;                        // return newly added ID
 }
