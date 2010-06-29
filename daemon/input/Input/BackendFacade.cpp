@@ -8,6 +8,7 @@
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/Connection.hpp"
 
+using namespace std;
 using namespace Persistency;
 using namespace Persistency::IO;
 
@@ -28,6 +29,7 @@ Persistency::AnalyzerPtrNN BackendFacade::getAnalyzer(const std::string         
                                                       const Persistency::Analyzer::OperatingSystem &os,
                                                       const Persistency::Analyzer::IP              *ip)
 {
+  //const string mixedID=getName() + "::" + iriginalID;
   // TODO
   return Persistency::AnalyzerPtrNN( new Persistency::Analyzer(name, version, os, ip) );
 }
