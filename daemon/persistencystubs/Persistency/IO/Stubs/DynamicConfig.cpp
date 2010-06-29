@@ -11,7 +11,7 @@ namespace IO
 namespace Stubs
 {
 
-DynamicConfig::DynamicConfig(const char *owner, Persistency::IO::Transaction &t):
+DynamicConfig::DynamicConfig(const Owner &owner, Persistency::IO::Transaction &t):
   Persistency::IO::DynamicConfig(owner, t),
   callsWrite_(0),
   callsRead_(0),
@@ -19,18 +19,18 @@ DynamicConfig::DynamicConfig(const char *owner, Persistency::IO::Transaction &t)
 {
 }
 
-void DynamicConfig::writeImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/, const std::string &/*value*/)
+void DynamicConfig::writeImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/, const Value &/*value*/)
 {
   ++callsWrite_;
 }
 
-DynamicConfig::StringNULL DynamicConfig::readImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/)
+DynamicConfig::ValueNULL DynamicConfig::readImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/)
 {
   ++callsRead_;
-  return StringNULL("alice has a wonderland");
+  return ValueNULL( Value("alice has a wonderland") );
 }
 
-std::string DynamicConfig::readConstImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/)
+DynamicConfig::Value DynamicConfig::readConstImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/)
 {
   ++callsReadConst_;
   return "i'm const";

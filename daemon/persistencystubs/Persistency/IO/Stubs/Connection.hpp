@@ -73,7 +73,7 @@ private:
   virtual AlertAutoPtr alertImpl(AlertPtrNN alert, Transaction &t);
   virtual HostAutoPtr hostImpl(HostPtrNN host, Transaction &t);
   virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, Transaction &t);
-  virtual DynamicConfigAutoPtr dynamicConfigImpl(const char *owner, Transaction &t);
+  virtual DynamicConfigAutoPtr dynamicConfigImpl(const DynamicConfig::Owner &owner, Transaction &t);
   virtual RestorerAutoPtr restorerImpl(Transaction &t);
   virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t);
 

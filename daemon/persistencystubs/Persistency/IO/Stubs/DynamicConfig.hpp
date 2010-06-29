@@ -23,16 +23,16 @@ public:
    *  \param owner owner's name.
    *  \param t     transaction to use.
    */
-  DynamicConfig(const char *owner, Persistency::IO::Transaction &t);
+  DynamicConfig(const Owner &owner, Persistency::IO::Transaction &t);
 
   int callsWrite_;      ///< calls to write()
   int callsRead_;       ///< calls to read()
   int callsReadConst_;  ///< calls to readConst()
 
 private:
-  virtual void writeImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/, const std::string &/*value*/);
-  virtual StringNULL readImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/);
-  virtual std::string readConstImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/);
+  virtual void writeImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/, const Value &/*value*/);
+  virtual ValueNULL readImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/);
+  virtual Value readConstImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/);
 }; // class DynamicConfig
 
 } // namespace Stubs

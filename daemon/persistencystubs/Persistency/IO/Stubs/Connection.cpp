@@ -47,7 +47,7 @@ MetaAlertAutoPtr Connection::metaAlertImpl(MetaAlertPtrNN ma, Transaction &t)
   return impl_.metaAlert(ma, t);
 }
 
-DynamicConfigAutoPtr Connection::dynamicConfigImpl(const char *owner, Transaction &t)
+DynamicConfigAutoPtr Connection::dynamicConfigImpl(const DynamicConfig::Owner &owner, Transaction &t)
 {
   ++dynamicConfigCalls_;
   return impl_.dynamicConfig(owner, t);
