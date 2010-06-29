@@ -9,6 +9,7 @@
 
 #include <boost/noncopyable.hpp>
 #include <boost/operators.hpp>
+#include <inttypes.h>
 
 #include "Base/NullValue.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
@@ -25,6 +26,8 @@ class Analyzer: private boost::noncopyable,
                 public  IPTypes<Analyzer>
 {
 public:
+  /** \brief object-id type. */
+  typedef uint64_t                        ID;
   /** \brief name of an analyzer. */
   typedef Commons::LimitedString<128>     Name;
   /** \brief analyzer's version. */

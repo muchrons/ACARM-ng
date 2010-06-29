@@ -6,6 +6,7 @@
 
 #include "ConfigIO/Singleton.hpp"
 #include "Input/Factory.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace std;
 using namespace Input;
@@ -13,7 +14,7 @@ using namespace Input;
 namespace
 {
 
-struct TestClass
+struct TestClass: public TestHelpers::Persistency::TestStubs
 {
 };
 

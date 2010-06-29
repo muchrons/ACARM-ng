@@ -6,7 +6,9 @@
 #include <memory>
 
 #include "Input/Reader.hpp"
+#include "Persistency/IO/create.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace std;
 using namespace Input;
@@ -29,7 +31,7 @@ struct TestReader: public Reader
     i_=true;
   }
 
-  virtual DataPtr read(unsigned int)
+  virtual DataPtr read(BackendFacade &, unsigned int)
   {
     return TestHelpers::Persistency::makeNewAlert();
   }
@@ -37,9 +39,9 @@ struct TestReader: public Reader
   bool &i_;
 };
 
-struct ReaderTestClass
+struct TestClass: public TestHelpers::Persistency::TestStubs
 {
-  ReaderTestClass(void):
+  TestClass(void):
     i_(false),
     r_( new TestReader(i_) )
   {
@@ -49,7 +51,6 @@ struct ReaderTestClass
   auto_ptr<Reader> r_;
 };
 
-typedef ReaderTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -75,8 +76,10 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Reader::DataPtr     tmp  =r_->read();
-  Persistency::Alert *alert=tmp.get();
+  Persistency::IO::ConnectionPtrNN  conn( Persistency::IO::create().release() );
+  BackendFacade                     bf(conn, "testemall");
+  Reader::DataPtr                   tmp  =r_->read(bf);
+  Persistency::Alert               *alert=tmp.get();
   ensure("NULL pointer returned", alert!=NULL);
 }
 
@@ -98,7 +101,7 @@ struct TestReaderName: public Reader
     Reader("INVALID-chars-42")
   {
   }
-  virtual DataPtr read(unsigned int)
+  virtual DataPtr read(BackendFacade &, unsigned int)
   {
     return TestHelpers::Persistency::makeNewAlert();
   }

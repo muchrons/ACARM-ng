@@ -108,4 +108,14 @@ void testObj::test<8>(void)
   ensure("value's not NULL for default c-tor", nv2.get()==NULL );
 }
 
+// test pointer-like access (arrow operator)
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const std::string      str("hello world");
+  NullValue<std::string> nv(str);
+  ensure_equals("invalid value", nv->c_str(), str);
+}
+
 } // namespace tut

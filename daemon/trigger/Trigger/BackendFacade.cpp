@@ -17,7 +17,7 @@ namespace Trigger
 
 BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
                            const std::string                &triggerName):
-  Core::Types::Proc::BackendFacade(conn, triggerName)
+  Core::Types::BackendFacade(conn, triggerName)
 {
 }
 

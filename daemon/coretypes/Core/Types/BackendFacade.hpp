@@ -2,8 +2,8 @@
  * BackendFacade.hpp
  *
  */
-#ifndef INCLUDE_CORE_TYPES_PROC_BACKENDFACADE_HPP_FILE
-#define INCLUDE_CORE_TYPES_PROC_BACKENDFACADE_HPP_FILE
+#ifndef INCLUDE_CORE_TYPES_BACKENDFACADE_HPP_FILE
+#define INCLUDE_CORE_TYPES_BACKENDFACADE_HPP_FILE
 
 /* public header */
 
@@ -17,8 +17,6 @@
 namespace Core
 {
 namespace Types
-{
-namespace Proc
 {
 /** \brief persistent storage communication simplification layer.
  *
@@ -44,11 +42,11 @@ public:
 
 protected:
   /** \brief create object's instance.
-   *  \param conn          connection object to use.
-   *  \param processorName name of processor this object is created for.
+   *  \param conn connection object to use.
+   *  \param name name of element this object is created for (i.e.: filter/trigger/input name).
    */
   BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-                const std::string                &processorName);
+                const std::string                &name);
   /** \brief ensure transaction is in progress (by running new, if needed).
    *  \note if transaciton is started, call does nothing. otherwise starts
    *        new one.
@@ -62,20 +60,19 @@ protected:
    *  \return connection object.
    */
   Persistency::IO::ConnectionPtrNN getConnection(void);
-  /** \brief gets name of this processor.
-   *  \return processor name.
+  /** \brief gets name of this element.
+   *  \return elements name.
    */
   const std::string &getName(void) const;
 
 private:
   typedef boost::scoped_ptr<Persistency::IO::Transaction> TransactionScPtr;
 
-  std::string                      processorName_;
+  std::string                      name_;
   Persistency::IO::ConnectionPtrNN conn_;
   TransactionScPtr                 transaction_;
 }; // class BackendFacade
 
-} // namespace Proc
 } // namespace Types
 } // namespace Core
 

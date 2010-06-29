@@ -4,7 +4,7 @@
  */
 #include <cassert>
 
-#include "Core/Types/Proc/BackendFacade.hpp"
+#include "Core/Types/BackendFacade.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/Connection.hpp"
 
@@ -15,12 +15,10 @@ namespace Core
 {
 namespace Types
 {
-namespace Proc
-{
 
 BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-                             const std::string                &processorName):
-  processorName_(processorName),
+                             const std::string                &name):
+  name_(name),
   conn_(conn)
 {
   // transaction is not started here yet - it will be initialized when needed
@@ -45,7 +43,7 @@ void BackendFacade::beginTransaction(void)
 {
   if( transaction_.get()==NULL )    // new transaction
   {
-    TransactionAPIAutoPtr api=conn_->createNewTransaction( "transaction_for_proc_" + getName() );
+    TransactionAPIAutoPtr api=conn_->createNewTransaction( "transaction_for_" + getName() );
     transaction_.reset( new Transaction(api) );
   }
   // if begin has been requested, transaction must always be valid
@@ -65,9 +63,8 @@ Persistency::IO::ConnectionPtrNN BackendFacade::getConnection(void)
 
 const std::string &BackendFacade::getName(void) const
 {
-  return processorName_;
+  return name_;
 }
 
-} // namespace Proc
 } // namespace Types
 } // namespace Core

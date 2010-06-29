@@ -56,6 +56,13 @@ void TestDBAccess::fillWithContent1(void)
   assert(ret==0 && "ooops - filling data base with tst content failed");
 }
 
+void TestDBAccess::execSQL(const char *sql)
+{
+  pqxx::work t(conn_.get(), "exec_sql");
+  t.exec(sql);
+  t.commit();
+}
+
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency

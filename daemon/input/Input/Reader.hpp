@@ -12,6 +12,7 @@
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Logger/Logger.hpp"
 #include "Persistency/Alert.hpp"
+#include "Input/BackendFacade.hpp"
 
 namespace Input
 {
@@ -38,13 +39,14 @@ public:
   }
 
   /** \brief reads data from input or returns if timeouted.
+   *  \param bf      backend faced to be used.
    *  \param timeout milliseconds to wait before timeout occures. timeout=0
    *                 means infinity.
    *  \return pointer to newly allocated strucutre or NULL on timeout.
    *  \note method in non-const on purpose, to allow internal buffering and
    *        doing actual reading in separate thread.
    */
-  virtual DataPtr read(unsigned int timeout=0) = 0;
+  virtual DataPtr read(BackendFacade &bf, unsigned int timeout=0) = 0;
 
 protected:
   /** \brief create base objects.

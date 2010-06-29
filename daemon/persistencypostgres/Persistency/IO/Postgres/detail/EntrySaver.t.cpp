@@ -951,4 +951,36 @@ void testObj::test<26>(void)
   }
 }
 
+// try saving new value with saveConfigParameter
+template<>
+template<>
+void testObj::test<27>(void)
+{
+  // save
+  es_.saveConfigParameter("owner1", "key1", "value1");
+  // check
+  {
+    stringstream ss;
+    ss << "SELECT * FROM config WHERE owner='owner1' AND key='key1' AND value='value1'";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("entry not saved", r.size(), 1u);
+  }
+}
+
+// try saving new value with saveConfigParameter - NULL owner
+template<>
+template<>
+void testObj::test<28>(void)
+{
+  // save
+  es_.saveConfigParameter(NULL, "key1", "value1");
+  // check
+  {
+    stringstream ss;
+    ss << "SELECT * FROM config WHERE owner IS NULL AND key='key1' AND value='value1'";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("entry not saved", r.size(), 1u);
+  }
+}
+
 } // namespace tut

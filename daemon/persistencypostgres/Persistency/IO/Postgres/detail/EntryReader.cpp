@@ -382,6 +382,48 @@ DataBaseID EntryReader::getAlertIDAssociatedWithMetaAlert(DataBaseID malertID)
   return ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_alert"]);
 }
 
+DynamicConfig::ValueNULL EntryReader::readConfigParameter(const DynamicConfig::Owner &owner,
+                                                          const DynamicConfig::Key   &key)
+{
+  return readConfigParameterCommon("config", owner, key);
+}
+
+DynamicConfig::Value EntryReader::readConstConfigParameter(const DynamicConfig::Owner &owner,
+                                                           const DynamicConfig::Key   &key)
+{
+  const DynamicConfig::ValueNULL tmp=readConfigParameterCommon("config_rdonly", owner, key);
+  // if no value - rise an error
+  if( tmp.get()==NULL )
+    throw DynamicConfig::ExceptionNoSuchParameter(SYSTEM_SAVE_LOCATION, owner, key);
+  // if there is any entry, return its value.
+  return *tmp.get();
+}
+
+DynamicConfig::ValueNULL EntryReader::readConfigParameterCommon(const char                 *table,
+                                                                const DynamicConfig::Owner &owner,
+                                                                const DynamicConfig::Key   &key)
+{
+  assert(table!=NULL);
+  stringstream ss;
+  ss << "SELECT value FROM "<<table<<" WHERE owner=";
+  Appender::append(ss, owner.get() );
+  ss << " AND key=";
+  Appender::append(ss, key.get() );
+  const result r = SQL( ss.str(), log_ ).exec(t_);
+  // no entry? return NULL.
+  if( r.size()!=1 )
+  {
+    if( r.size()>1 )
+      LOGMSG_ERROR_S(log_)<<"in table '"<<table<<"' key '"<<key.get()<<"' has "<<r.size()
+                          <<" entries - returning NULL as there were none...";
+    return DynamicConfig::ValueNULL();
+  }
+  // if there is any entry, return its value.
+  assert( r.size()==1 );
+  const string &value=ReaderHelper<string>::readAsNotNull(r[0]["value"]);
+  return DynamicConfig::ValueNULL(value);
+}
+
 template<typename T>
 void EntryReader::addIfNew(T e, DataBaseID id)
 {

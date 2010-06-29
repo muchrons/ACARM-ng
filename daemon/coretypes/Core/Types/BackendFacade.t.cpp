@@ -7,12 +7,12 @@
 #include <memory>
 #include <cassert>
 
-#include "Core/Types/Proc/BackendFacade.hpp"
+#include "Core/Types/BackendFacade.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Persistency;
-using namespace Core::Types::Proc;
+using namespace Core::Types;
 
 namespace
 {
@@ -56,7 +56,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Core/Types/Proc/BackendFacade");
+factory tf("Core/Types/BackendFacade");
 } // unnamed namespace
 
 
