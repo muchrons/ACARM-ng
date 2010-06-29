@@ -42,10 +42,12 @@ public:
   {
     /** \brief create error message.
      *  \param where place where exception has been risen.
+     *  \param owner parameter's owner.
      *  \param key   parameter name that is not set.
      */
-    ExceptionNoSuchParameter(const Location &where, const Key &key):
-      Exception(where, cc("no such read-only parameter: '", key.get(), "'") )
+    ExceptionNoSuchParameter(const Location &where, const Owner &owner, const Key &key):
+      Exception(where, cc("no such read-only parameter: '", key.get(),
+                          "' for user '", owner.get(), "'") )
     {
     }
   }; // struct ExceptionNoSuchParamter
