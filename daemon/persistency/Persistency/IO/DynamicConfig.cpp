@@ -9,8 +9,18 @@ namespace Persistency
 namespace IO
 {
 
+namespace
+{
+inline DynamicConfig::StringNULL makeOwner(const char *owner)
+{
+  if(owner==NULL)
+    return DynamicConfig::StringNULL();
+  return DynamicConfig::StringNULL( std::string(owner) );
+} // makeOwner()
+}
+
 DynamicConfig::DynamicConfig(const char *owner, Transaction &t):
-  owner_(owner),
+  owner_( makeOwner(owner) ),
   t_(t)
 {
 }
