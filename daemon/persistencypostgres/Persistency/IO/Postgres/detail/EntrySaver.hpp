@@ -17,6 +17,7 @@
 #include "Persistency/Alert.hpp"
 #include "Persistency/MetaAlert.hpp"
 #include "Persistency/IO/Transaction.hpp"
+#include "Persistency/IO/DynamicConfig.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 #include "Persistency/IO/Postgres/ExceptionNoEntries.hpp"
@@ -138,7 +139,9 @@ public:
    *  \param key   paramter's name.
    *  \param value paramter's value.
    */
-  void saveConfigParameter(const char *owner, const std::string &key, const std::string &value);
+  void saveConfigParameter(const DynamicConfig::Owner &owner,
+                           const DynamicConfig::Key   &key,
+                           const DynamicConfig::Value &value);
 
 private:
   DataBaseID getID(const std::string &seqName);

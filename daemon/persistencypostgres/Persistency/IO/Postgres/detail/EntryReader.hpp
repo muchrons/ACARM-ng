@@ -18,6 +18,7 @@
 #include "Persistency/MetaAlert.hpp"
 #include "Persistency/GraphNodePtr.hpp"
 #include "Persistency/IO/Transaction.hpp"
+#include "Persistency/IO/DynamicConfig.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 #include "Persistency/IO/Postgres/ExceptionNoEntries.hpp"
@@ -113,7 +114,27 @@ public:
    */
   DataBaseID getAlertIDAssociatedWithMetaAlert(DataBaseID malertID);
 
+  /** \brief get configuration paramter.
+   *  \param owner owner of the entry.
+   *  \param key   key to read value from.
+   *  \return value corresponding to given entry or NULL.
+   */
+  DynamicConfig::ValueNULL readConfigParameter(const DynamicConfig::Owner &owner,
+                                               const DynamicConfig::Key   &key);
+
+  /** \brief get configuration paramter.
+   *  \param owner owner of the entry.
+   *  \param key   key to read value from.
+   *  \return value corresponding to given entry.
+   */
+  DynamicConfig::Value readConstConfigParameter(const DynamicConfig::Owner &owner,
+                                                const DynamicConfig::Key   &key);
+
 private:
+  DynamicConfig::ValueNULL readConfigParameterCommon(const char                 *table,
+                                                     const DynamicConfig::Owner &owner,
+                                                     const DynamicConfig::Key   &key);
+
   Persistency::Alert::ReportedHosts getReporteHosts(DataBaseID alertID, std::string hostType);
   HostPtr getHost(DataBaseID hostID, const DataBaseID *refID);
 

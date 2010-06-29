@@ -438,26 +438,28 @@ void EntrySaver::setHostName(DataBaseID hostID, const Persistency::Host::Name &n
   SQL( ss.str(), log_ ).exec(t_);
 }
 
-void EntrySaver::saveConfigParameter(const char *owner, const std::string &key, const std::string &value)
+void EntrySaver::saveConfigParameter(const DynamicConfig::Owner &owner,
+                                     const DynamicConfig::Key   &key,
+                                     const DynamicConfig::Value &value)
 {
   // first, delete given key if entry's present
   {
     stringstream ss;
     ss << "DELETE FROM config WHERE owner = ";
-    Appender::append(ss, owner);
+    Appender::append(ss, owner.get());
     ss << " AND key = ";
-    Appender::append(ss, key);
+    Appender::append(ss, key.get());
     SQL( ss.str().c_str(), log_ ).exec(t_);
   }
   // now add entry
   {
     stringstream ss;
     ss << "INSERT INTO config (owner, key, value) VALUES (";
-    Appender::append(ss, owner);
+    Appender::append(ss, owner.get());
     ss << ",";
-    Appender::append(ss, key);
+    Appender::append(ss, key.get());
     ss << ",";
-    Appender::append(ss, value);
+    Appender::append(ss, value.get());
     ss << ")";
     SQL( ss.str().c_str(), log_ ).exec(t_);
   }

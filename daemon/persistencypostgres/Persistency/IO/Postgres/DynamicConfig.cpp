@@ -45,7 +45,7 @@ DynamicConfig::Value DynamicConfig::readConstImpl(Persistency::IO::Transaction &
 {
   TRYCATCH_BEGIN
     // TODO
-    throw ExceptionNoSuchParameter(SYSTEM_SAVE_LOCATION, key);
+    throw ExceptionNoSuchParameter(SYSTEM_SAVE_LOCATION, getOwner(), key);
     return "";
   TRYCATCH_END
 }
