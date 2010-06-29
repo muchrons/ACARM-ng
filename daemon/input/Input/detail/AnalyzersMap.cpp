@@ -2,9 +2,11 @@
  * AnalyzersMap.cpp
  *
  */
-#include "Input/AnalyzersMap.hpp"
+#include "Input/detail/AnalyzersMap.hpp"
 
 namespace Input
+{
+namespace detail
 {
 
 Persistency::AnalyzerPtrNN::SharedPtr AnalyzersMap::get(const std::string &id) const
@@ -25,4 +27,5 @@ void AnalyzersMap::add(const std::string &id, Persistency::AnalyzerPtrNN analyze
   assert( get(id)==analyzer && "entry not added" );
 }
 
+} // namespace detail
 } // namespace Input

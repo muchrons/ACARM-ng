@@ -2,8 +2,8 @@
  * AnalyzersMap.hpp
  *
  */
-#ifndef INCLUDE_INPUT_ANALYZERSMAP_HPP_FILE
-#define INCLUDE_INPUT_ANALYZERSMAP_HPP_FILE
+#ifndef INCLUDE_INPUT_DETAIL_ANALYZERSMAP_HPP_FILE
+#define INCLUDE_INPUT_DETAIL_ANALYZERSMAP_HPP_FILE
 
 /* public header */
 
@@ -17,6 +17,8 @@
 // TODO
 
 namespace Input
+{
+namespace detail
 {
 
 /** \brief main mapping object - maps input's IDs to objects.
@@ -52,6 +54,7 @@ private:
   InputIDMap map_;
 }; // class AnalyzersMap
 
+} // namespace detail
 } // namespace Input
 
 #endif

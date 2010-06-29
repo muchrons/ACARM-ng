@@ -3,9 +3,11 @@
  *
  */
 #include "Base/Threads/Lock.hpp"
-#include "Input/IDMap.hpp"
+#include "Input/detail/IDMap.hpp"
 
 namespace Input
+{
+namespace detail
 {
 
 IDMap::IDMap(const Persistency::Analyzer::ID nextFreeID):
@@ -31,4 +33,5 @@ Persistency::Analyzer::ID IDMap::get(PersistencyProxy &pp, const std::string &in
   return id;                        // return newly added ID
 }
 
+} // namespace detail
 } // namespace Input

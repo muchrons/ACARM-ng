@@ -2,8 +2,8 @@
  * IDMap.hpp
  *
  */
-#ifndef INCLUDE_INPUT_IDMAP_HPP_FILE
-#define INCLUDE_INPUT_IDMAP_HPP_FILE
+#ifndef INCLUDE_INPUT_DETAIL_IDMAP_HPP_FILE
+#define INCLUDE_INPUT_DETAIL_IDMAP_HPP_FILE
 
 /* public header */
 
@@ -17,6 +17,8 @@
 // TODO
 
 namespace Input
+{
+namespace detail
 {
 
 /** \brief mapping of input-specific analyzers' IDs to common analyzers' ID scheme.
@@ -59,6 +61,7 @@ private:
   MapType                   map_;
 }; // class IDMap
 
+} // namespace detail
 } // namespace Input
 
 #endif
