@@ -26,8 +26,15 @@ namespace detail
 class AnalyzersMap: private boost::noncopyable
 {
 public:
+  /** \brief exception thrown when key already exists.
+   */
   struct ExceptionAddingAlreadyExistingKey: public Exception
   {
+    /** \brief create instance.
+     *  \param where    place where location has been raised.
+     *  \param id       id to be mapped
+     *  \param analyzer analyzer to be assigned for given mapping.
+     */
     ExceptionAddingAlreadyExistingKey(const Location                   &where,
                                       const std::string                &id,
                                       const Persistency::AnalyzerPtrNN  analyzer):
@@ -43,8 +50,8 @@ public:
    */
   Persistency::AnalyzerPtrNN::SharedPtr get(const std::string &id) const;
   /** \brief adds new mapping.
-   *  \param id      id to map from (key).
-   *  \param analzer analyzer to map to (value).
+   *  \param id       id to map from (key).
+   *  \param analyzer analyzer to map to (value).
    */
   void add(const std::string &id, Persistency::AnalyzerPtrNN analyzer);
 
