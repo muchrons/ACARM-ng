@@ -5,6 +5,7 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_DYNAMICCONFIG_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_DYNAMICCONFIG_HPP_FILE
 
+#include "Logger/Node.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
 
 namespace Persistency
@@ -23,12 +24,14 @@ public:
    *  \param owner owner's name.
    *  \param t     transaction to use.
    */
-  DynamicConfig(const char *owner, Persistency::IO::Transaction &t);
+  DynamicConfig(const Owner &owner, Persistency::IO::Transaction &t);
 
 private:
-  virtual void writeImpl(Persistency::IO::Transaction &t, const std::string &key, const std::string &value);
-  virtual StringNULL readImpl(Persistency::IO::Transaction &t, const std::string &key);
-  virtual std::string readConstImpl(Persistency::IO::Transaction &t, const std::string &key);
+  virtual void writeImpl(Persistency::IO::Transaction &t, const Key &key, const Value &value);
+  virtual ValueNULL readImpl(Persistency::IO::Transaction &t, const Key &key);
+  virtual Value readConstImpl(Persistency::IO::Transaction &t, const Key &key);
+
+  Logger::Node log_;
 }; // class DynamicConfig
 
 } // namespace Postgres

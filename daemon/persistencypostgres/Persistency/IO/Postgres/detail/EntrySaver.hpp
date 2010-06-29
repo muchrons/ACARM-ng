@@ -133,6 +133,12 @@ public:
    *  \param name   name of Host
    */
   void setHostName(DataBaseID hostID, const Persistency::Host::Name &name);
+  /** \brief saves given config paramter entry.
+   *  \param owner owner name of given config.
+   *  \param key   paramter's name.
+   *  \param value paramter's value.
+   */
+  void saveConfigParameter(const char *owner, const std::string &key, const std::string &value);
 
 private:
   DataBaseID getID(const std::string &seqName);

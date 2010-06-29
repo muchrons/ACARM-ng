@@ -438,6 +438,31 @@ void EntrySaver::setHostName(DataBaseID hostID, const Persistency::Host::Name &n
   SQL( ss.str(), log_ ).exec(t_);
 }
 
+void EntrySaver::saveConfigParameter(const char *owner, const std::string &key, const std::string &value)
+{
+  // first, delete given key if entry's present
+  {
+    stringstream ss;
+    ss << "DELETE FROM config WHERE owner = ";
+    Appender::append(ss, owner);
+    ss << " AND key = ";
+    Appender::append(ss, key);
+    SQL( ss.str().c_str(), log_ ).exec(t_);
+  }
+  // now add entry
+  {
+    stringstream ss;
+    ss << "INSERT INTO config (owner, key, value) VALUES (";
+    Appender::append(ss, owner);
+    ss << ",";
+    Appender::append(ss, key);
+    ss << ",";
+    Appender::append(ss, value);
+    ss << ")";
+    SQL( ss.str().c_str(), log_ ).exec(t_);
+  }
+}
+
 } // namespace detail
 } // namespace Postgres
 } // namespace IO

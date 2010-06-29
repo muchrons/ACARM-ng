@@ -2,7 +2,11 @@
  * DynamicConfig.cpp
  *
  */
+#include "Logger/Logger.hpp"
 #include "Persistency/IO/Postgres/DynamicConfig.hpp"
+#include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
+#include "Persistency/IO/Postgres/detail/EntryReader.hpp"
+#include "Persistency/IO/Postgres/TryCatchInAPI.hpp"
 
 namespace Persistency
 {
@@ -11,27 +15,39 @@ namespace IO
 namespace Postgres
 {
 
-DynamicConfig::DynamicConfig(const char *owner, Persistency::IO::Transaction &t):
-  Persistency::IO::DynamicConfig(owner, t)
+// this is helper macro for calling f-cjtion that saves line number and calls given sql statement (with log)
+#define SQL(sql, log) SQLHelper(__FILE__, __LINE__, (sql), (log))
+
+
+DynamicConfig::DynamicConfig(const Owner &owner, Persistency::IO::Transaction &t):
+  Persistency::IO::DynamicConfig(owner, t),
+  log_("persisntecy.io.postgres.dynamicconfig")
 {
+  LOGMSG_DEBUG_S(log_)<<"creating dynamic configuration for owner: "<<owner.get();
 }
 
-void DynamicConfig::writeImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/, const std::string &/*value*/)
+void DynamicConfig::writeImpl(Persistency::IO::Transaction &t, const Key &key, const Value &value)
 {
+  TRYCATCH_BEGIN
   // TODO
+  TRYCATCH_END
 }
 
-DynamicConfig::StringNULL DynamicConfig::readImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/)
+DynamicConfig::ValueNULL DynamicConfig::readImpl(Persistency::IO::Transaction &t, const Key &key)
 {
-  // TODO
-  return StringNULL();
+  TRYCATCH_BEGIN
+    // TODO
+    return ValueNULL();
+  TRYCATCH_END
 }
 
-std::string DynamicConfig::readConstImpl(Persistency::IO::Transaction &/*t*/, const std::string &key)
+DynamicConfig::Value DynamicConfig::readConstImpl(Persistency::IO::Transaction &t, const Key &key)
 {
-  // TODO
-  throw ExceptionNoSuchParameter(SYSTEM_SAVE_LOCATION, key);
-  return "";
+  TRYCATCH_BEGIN
+    // TODO
+    throw ExceptionNoSuchParameter(SYSTEM_SAVE_LOCATION, key);
+    return "";
+  TRYCATCH_END
 }
 
 } // namespace Postgres
