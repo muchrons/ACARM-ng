@@ -2,40 +2,38 @@
  * DynamicConfig.cpp
  *
  */
-#include "Persistency/IO/Stubs/DynamicConfig.hpp"
+#include "Persistency/IO/Postgres/DynamicConfig.hpp"
 
 namespace Persistency
 {
 namespace IO
 {
-namespace Stubs
+namespace Postgres
 {
 
 DynamicConfig::DynamicConfig(const char *owner, Persistency::IO::Transaction &t):
-  Persistency::IO::DynamicConfig(owner, t),
-  callsWrite_(0),
-  callsRead_(0),
-  callsReadConst_(0)
+  Persistency::IO::DynamicConfig(owner, t)
 {
 }
 
 void DynamicConfig::writeImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/, const std::string &/*value*/)
 {
-  ++callsWrite_;
+  // TODO
 }
 
 DynamicConfig::StringNULL DynamicConfig::readImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/)
 {
-  ++callsRead_;
-  return StringNULL("alice has a wonderland");
+  // TODO
+  return StringNULL();
 }
 
-std::string DynamicConfig::readConstImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/)
+std::string DynamicConfig::readConstImpl(Persistency::IO::Transaction &/*t*/, const std::string &key)
 {
-  ++callsReadConst_;
-  return "i'm const";
+  // TODO
+  throw ExceptionNoSuchParameter(SYSTEM_SAVE_LOCATION, key);
+  return "";
 }
 
-} // namespace Stubs
+} // namespace Postgres
 } // namespace IO
 } // namespace Persistency

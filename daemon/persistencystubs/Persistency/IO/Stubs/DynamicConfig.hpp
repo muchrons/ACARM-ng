@@ -1,5 +1,5 @@
 /*
- * DynamicConfig.t.cpp
+ * DynamicConfig.hpp
  *
  */
 #ifndef INCLUDE_PERSISTENCY_IO_STUBS_DYNAMICCONFIG_HPP_FILE

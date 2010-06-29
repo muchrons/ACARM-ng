@@ -25,7 +25,23 @@ namespace IO
 class DynamicConfig: private boost::noncopyable
 {
 public:
+  /** \brief exception thrown when given paramter does not exist.
+   */
+  struct ExceptionNoSuchParameter: public Exception
+  {
+    /** \brief create error message.
+     *  \param where place where exception has been risen.
+     *  \param key   parameter name that is not set.
+     */
+    ExceptionNoSuchParameter(const Location &where, const std::string &key):
+      Exception(where, cc("no such read-only parameter: '", key, "'") )
+    {
+    }
+  }; // struct ExceptionNoSuchParamter
+
+  /** \brief helper typedef for string that can be NULL. */
   typedef Base::NullValue<std::string> StringNULL;
+
   /** \brief create meta-alert persistency proxy.
    *  \param owner owner's name of a configuration to work on (NULL means common config).
    *  \param t     active transaction.
