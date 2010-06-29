@@ -13,6 +13,7 @@
 #include "Base/Threads/Mutex.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Analyzer.hpp"
+#include "Input/PersistencyProxy.hpp"
 
 // TODO
 
@@ -26,15 +27,6 @@ namespace detail
 class IDMap: private boost::noncopyable
 {
 public:
-  /** \brief object to forward mapping saving to persistency.
-   */
-  struct PersistencyProxy
-  {
-    virtual ~PersistencyProxy(void);
-
-    virtual void saveMapping(const std::string &inputID, Persistency::Analyzer::ID id) = 0;
-  }; // struct PersistencyProxy
-
   /** \brief constructs instance.
    *  \param nextFreeID next ID that can be used for mapping.
    */
@@ -43,8 +35,6 @@ public:
   /** \brief performs mapping from given ID to system-specific one.
    *  \param inputID input-relevant ID to be mapped to our own system's ID.
    *  \param pp      object responsible for saving given mapping to persistent storage.
-   *                 note that this object is held by reference and so given object must
-   *                 live at least as long as this object's instance.
    *  \return assigned ID.
    *
    *  if given originalID is already mapped, exisitng value is returned. if

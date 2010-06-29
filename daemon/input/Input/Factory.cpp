@@ -10,7 +10,7 @@ namespace Input
 
 InputsCollection create(Core::Types::AlertsFifo &output)
 {
-  InputsCollection              out;
+  InputsCollection out;
 
   // create each input and configure it
   const InputsConfigCollection &inputs=Singleton::get()->inputsConfig();
