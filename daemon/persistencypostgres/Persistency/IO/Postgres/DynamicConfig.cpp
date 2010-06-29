@@ -19,9 +19,12 @@ namespace Postgres
 #define SQL(sql, log) SQLHelper(__FILE__, __LINE__, (sql), (log))
 
 
-DynamicConfig::DynamicConfig(const Owner &owner, Persistency::IO::Transaction &t):
+DynamicConfig::DynamicConfig(const Owner                  &owner,
+                             Persistency::IO::Transaction &t,
+                             DBHandlerPtrNN                dbHandler):
   Persistency::IO::DynamicConfig(owner, t),
-  log_("persisntecy.io.postgres.dynamicconfig")
+  log_("persisntecy.io.postgres.dynamicconfig"),
+  dbHandler_(dbHandler)
 {
   LOGMSG_DEBUG_S(log_)<<"creating dynamic configuration for owner: "<<owner.get();
 }
@@ -29,24 +32,24 @@ DynamicConfig::DynamicConfig(const Owner &owner, Persistency::IO::Transaction &t
 void DynamicConfig::writeImpl(Persistency::IO::Transaction &t, const Key &key, const Value &value)
 {
   TRYCATCH_BEGIN
-  // TODO
+    detail::EntrySaver es(t, *dbHandler_);
+    es.saveConfigParameter( getOwner(), key, value );
   TRYCATCH_END
 }
 
 DynamicConfig::ValueNULL DynamicConfig::readImpl(Persistency::IO::Transaction &t, const Key &key)
 {
   TRYCATCH_BEGIN
-    // TODO
-    return ValueNULL();
+    detail::EntryReader er(t, *dbHandler_);
+    return er.readConfigParameter( getOwner(), key );
   TRYCATCH_END
 }
 
 DynamicConfig::Value DynamicConfig::readConstImpl(Persistency::IO::Transaction &t, const Key &key)
 {
   TRYCATCH_BEGIN
-    // TODO
-    throw ExceptionNoSuchParameter(SYSTEM_SAVE_LOCATION, getOwner(), key);
-    return "";
+    detail::EntryReader er(t, *dbHandler_);
+    return er.readConstConfigParameter( getOwner(), key );
   TRYCATCH_END
 }
 

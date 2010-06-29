@@ -11,7 +11,7 @@ namespace IO
 namespace Stubs
 {
 
-DynamicConfig::DynamicConfig(const Owner &owner, Persistency::IO::Transaction &t):
+DynamicConfig::DynamicConfig(const Owner &owner, Persistency::IO::Transaction &t, int /*handle*/):
   Persistency::IO::DynamicConfig(owner, t),
   callsWrite_(0),
   callsRead_(0),

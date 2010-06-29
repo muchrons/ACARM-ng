@@ -20,10 +20,11 @@ struct DynamicConfig: public Persistency::IO::DynamicConfig
 {
 public:
   /** \brief create instance.
-   *  \param owner owner's name.
-   *  \param t     transaction to use.
+   *  \param owner  owner's name.
+   *  \param t      transaction to use.
+   *  \param handle persistency handle.
    */
-  DynamicConfig(const Owner &owner, Persistency::IO::Transaction &t);
+  DynamicConfig(const Owner &owner, Persistency::IO::Transaction &t, int handle);
 
   int callsWrite_;      ///< calls to write()
   int callsRead_;       ///< calls to read()

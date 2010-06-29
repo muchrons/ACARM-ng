@@ -62,7 +62,7 @@ private:
 
   virtual DynamicConfigAutoPtr dynamicConfigImpl(const DynamicConfig::Owner &owner, Transaction &t)
   {
-    return DynamicConfigAutoPtr( new TDynamicConfig(owner, t) );
+    return DynamicConfigAutoPtr( new TDynamicConfig(owner, t, ph_) );
   }
 
   virtual RestorerAutoPtr restorerImpl(Transaction &t)
