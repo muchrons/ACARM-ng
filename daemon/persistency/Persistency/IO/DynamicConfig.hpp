@@ -28,7 +28,7 @@ public:
   typedef Base::NullValue<std::string> StringNULL;
   /** \brief create meta-alert persistency proxy.
    *  \param owner owner's name of a configuration to work on (NULL means common config).
-   *  \param t  active transaction.
+   *  \param t     active transaction.
    */
   DynamicConfig(const char *owner, Transaction &t);
   /** \brief virtual d-tor for polymorphic base class.

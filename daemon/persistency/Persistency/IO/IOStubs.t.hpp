@@ -110,6 +110,37 @@ public:
   int                       called_[8];
 }; // class MetaAlert
 
+
+struct IODynamicConfig: public Persistency::IO::DynamicConfig
+{
+public:
+  IODynamicConfig(const char *owner, Persistency::IO::Transaction &t):
+    Persistency::IO::DynamicConfig(owner, t)
+  {
+    memset(calls_, 0, sizeof(calls_));
+  }
+
+  virtual void writeImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/, const std::string &/*value*/)
+  {
+    ++calls_[0];
+  }
+
+  virtual StringNULL readImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/)
+  {
+    ++calls_[1];
+    return StringNULL("alice has a wonderland");
+  }
+
+  virtual std::string readConstImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/)
+  {
+    ++calls_[2];
+    return "i'm const";
+  }
+
+  int calls_[3];
+}; // class IODynamicConfig
+
+
 class IORestorer: public Persistency::IO::Restorer
 {
 public:
@@ -175,6 +206,13 @@ struct TestIOConnection: public Persistency::IO::Connection
     return Persistency::IO::MetaAlertAutoPtr( new IOMetaAlert(ma, t) );
   }
 
+  virtual Persistency::IO::DynamicConfigAutoPtr dynamicConfigImpl(const char                   *owner,
+                                                                  Persistency::IO::Transaction &t)
+  {
+    ++called_[6];
+    return Persistency::IO::DynamicConfigAutoPtr( new IODynamicConfig(owner, t) );
+  }
+
   virtual Persistency::IO::RestorerAutoPtr restorerImpl(
                                         Persistency::IO::Transaction &t)
   {
@@ -189,7 +227,7 @@ struct TestIOConnection: public Persistency::IO::Connection
     return 42;
   }
 
-  int called_[6];
+  int called_[7];
 }; // struct TestIOConnection
 
 } // unnamed namespace

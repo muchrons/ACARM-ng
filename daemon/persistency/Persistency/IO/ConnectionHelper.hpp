@@ -21,6 +21,7 @@ template<typename TPersistencyHandler,
          typename TAlertIO,
          typename THostIO,
          typename TMetaAlertIO,
+         typename TDynamicConfig,
          typename TRestorerIO>
 class ConnectionHelper: public Connection
 {
@@ -57,6 +58,11 @@ private:
   virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, Transaction &t)
   {
     return MetaAlertAutoPtr( new TMetaAlertIO(ma, t, ph_) );
+  }
+
+  virtual DynamicConfigAutoPtr dynamicConfigImpl(const char *owner, Transaction &t)
+  {
+    return DynamicConfigAutoPtr( new TDynamicConfig(owner, t) );
   }
 
   virtual RestorerAutoPtr restorerImpl(Transaction &t)

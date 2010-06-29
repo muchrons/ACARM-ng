@@ -8,6 +8,7 @@
 
 #include "Persistency/IO/DynamicConfig.hpp"
 #include "Persistency/IO/TestTransactionAPI.t.hpp"
+#include "Persistency/IO/IOStubs.t.hpp"
 #include "Persistency/TestHelpers.t.hpp"
 
 using namespace std;
@@ -15,37 +16,6 @@ using namespace Persistency::IO;
 
 namespace
 {
-
-struct TestDynamicConfig: public DynamicConfig
-{
-public:
-  TestDynamicConfig(const char  *owner,
-                    Transaction &t):
-    DynamicConfig(owner, t)
-  {
-    memset(calls_, 0, sizeof(calls_));
-  }
-
-  virtual void writeImpl(Transaction &/*t*/, const std::string &/*key*/, const std::string &/*value*/)
-  {
-    ++calls_[0];
-  }
-
-  virtual StringNULL readImpl(Transaction &/*t*/, const std::string &/*key*/)
-  {
-    ++calls_[1];
-    return StringNULL("alice has a wonderland");
-  }
-
-  virtual std::string readConstImpl(Transaction &/*t*/, const std::string &/*key*/)
-  {
-    ++calls_[2];
-    return "i'm const";
-  }
-
-  int calls_[3];
-}; // class MetaAlert
-
 
 struct TestClass: private Persistency::TestBase
 {
@@ -67,7 +37,7 @@ struct TestClass: private Persistency::TestBase
 
   TransactionAPIAutoPtr tapi_;
   Transaction           t_;
-  TestDynamicConfig     tdc_;
+  IODynamicConfig       tdc_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -85,7 +55,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  TestDynamicConfig tdc(NULL, t_);
+  IODynamicConfig tdc(NULL, t_);
 }
 
 // test writing parameter
@@ -121,7 +91,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  TestDynamicConfig tdc("some owner", t_);
+  IODynamicConfig tdc("some owner", t_);
 }
 
 } // namespace tut
