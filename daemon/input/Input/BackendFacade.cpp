@@ -34,4 +34,9 @@ Persistency::AnalyzerPtrNN BackendFacade::getAnalyzer(const std::string         
   return Persistency::AnalyzerPtrNN( new Persistency::Analyzer(name, version, os, ip) );
 }
 
+void BackendFacade::saveMapping(const std::string &/*inputID*/, Persistency::Analyzer::ID /*id*/)
+{
+  // TODO
+}
+
 } // namespace Input
