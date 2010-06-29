@@ -29,16 +29,16 @@ class SharedPtrNotNULL: public boost::less_than_comparable< SharedPtrNotNULL<T> 
 {
 public:
   /** \brief type used as boost::shared_ptr<>. */
-  typedef boost::shared_ptr<T> PtrT;
-
+  typedef boost::shared_ptr<T>             SharedPtr;
+  // NOTE: following declarations are here for compatibility with other smart-ptr types:
   /** \brief type of element held inside (for compatibility with boost::shared_ptr). */
-  typedef typename PtrT::element_type element_type;
+  typedef typename SharedPtr::element_type element_type;
   /** \brief type of element held inside (for compatibility with boost::shared_ptr). */
-  typedef typename PtrT::value_type   value_type;
+  typedef typename SharedPtr::value_type   value_type;
   /** \brief type of pointer to element held inside (for compatibility with boost::shared_ptr). */
-  typedef typename PtrT::pointer      pointer;
+  typedef typename SharedPtr::pointer      pointer;
   /** \brief type of reference to element held inside (for compatibility with boost::shared_ptr). */
-  typedef typename PtrT::reference    reference;
+  typedef typename SharedPtr::reference    reference;
 
   /** \brief create class from raw-pointer.
    *  \param t pointer to take ownership of.
@@ -59,7 +59,7 @@ public:
   /** \brief create object from boost::shared_ptr<>.
    *  \param p pointer to share.
    */
-  SharedPtrNotNULL(PtrT p):
+  SharedPtrNotNULL(SharedPtr p):
     ptr_(p)
   {
     ensure();
@@ -75,7 +75,7 @@ public:
   /** \brief convertion operator.
    *  \return boost::shared_ptr<> for a given value.
    */
-  operator PtrT(void) const
+  operator SharedPtr(void) const
   {
     assert( ptr_.get()!=NULL );
     return ptr_;
@@ -165,7 +165,7 @@ private:
       throw ExceptionUnexpectedNULL(SYSTEM_SAVE_LOCATION);
   }
 
-  PtrT ptr_;
+  SharedPtr ptr_;
 }; // struct SharedPtrNotNULL
 
 } // namespace Commons
