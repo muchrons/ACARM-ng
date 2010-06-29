@@ -206,8 +206,8 @@ struct TestIOConnection: public Persistency::IO::Connection
     return Persistency::IO::MetaAlertAutoPtr( new IOMetaAlert(ma, t) );
   }
 
-  virtual Persistency::IO::DynamicConfigAutoPtr dynamicConfigImpl(const char                   *owner,
-                                                                  Persistency::IO::Transaction &t)
+  virtual Persistency::IO::DynamicConfigAutoPtr dynamicConfigImpl(const Persistency::IO::DynamicConfig::Owner &owner,
+                                                                  Persistency::IO::Transaction                &t)
   {
     ++called_[6];
     return Persistency::IO::DynamicConfigAutoPtr( new IODynamicConfig(owner, t) );

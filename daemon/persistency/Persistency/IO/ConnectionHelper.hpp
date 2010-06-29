@@ -60,7 +60,7 @@ private:
     return MetaAlertAutoPtr( new TMetaAlertIO(ma, t, ph_) );
   }
 
-  virtual DynamicConfigAutoPtr dynamicConfigImpl(const char *owner, Transaction &t)
+  virtual DynamicConfigAutoPtr dynamicConfigImpl(const DynamicConfig::Owner &owner, Transaction &t)
   {
     return DynamicConfigAutoPtr( new TDynamicConfig(owner, t) );
   }

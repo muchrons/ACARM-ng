@@ -65,7 +65,7 @@ public:
    *  \param owner owner's name of a configuration to work on (NULL means common config).
    *  \param t     active transaction.
    */
-  DynamicConfigAutoPtr dynamicConfig(const char *owner, Transaction &t);
+  DynamicConfigAutoPtr dynamicConfig(const DynamicConfig::Owner &owner, Transaction &t);
   /** \brief create restorer object.
    *  \param t transaction to be used for restoring data.
    *  \return non-NULL restorer persistency proxy.
@@ -86,7 +86,8 @@ private:
   virtual AlertAutoPtr alertImpl(AlertPtrNN alert, Transaction &t) = 0;
   virtual HostAutoPtr hostImpl(HostPtrNN host, Transaction &t) = 0;
   virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, Transaction &t) = 0;
-  virtual DynamicConfigAutoPtr dynamicConfigImpl(const char *owner, Transaction &t) = 0;
+  virtual DynamicConfigAutoPtr dynamicConfigImpl(const DynamicConfig::Owner &owner,
+                                                 Transaction                &t) = 0;
   virtual RestorerAutoPtr restorerImpl(Transaction &t) = 0;
   virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t) = 0;
 
