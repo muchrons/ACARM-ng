@@ -114,27 +114,27 @@ public:
 struct IODynamicConfig: public Persistency::IO::DynamicConfig
 {
 public:
-  IODynamicConfig(const char *owner, Persistency::IO::Transaction &t):
+  IODynamicConfig(const Owner &owner, Persistency::IO::Transaction &t):
     Persistency::IO::DynamicConfig(owner, t)
   {
     memset(calls_, 0, sizeof(calls_));
   }
 
-  virtual void writeImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/, const std::string &/*value*/)
+  virtual void writeImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/, const Value &/*value*/)
   {
     ++calls_[0];
   }
 
-  virtual StringNULL readImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/)
+  virtual ValueNULL readImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/)
   {
     ++calls_[1];
-    return StringNULL("alice has a wonderland");
+    return ValueNULL("alice has a wonderland");
   }
 
-  virtual std::string readConstImpl(Persistency::IO::Transaction &/*t*/, const std::string &/*key*/)
+  virtual Value readConstImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/)
   {
     ++calls_[2];
-    return "i'm const";
+    return Value("i'm const");
   }
 
   int calls_[3];

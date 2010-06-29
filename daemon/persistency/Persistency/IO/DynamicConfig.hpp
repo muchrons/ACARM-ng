@@ -12,6 +12,8 @@
 #include <boost/noncopyable.hpp>
 
 #include "Base/NullValue.hpp"
+#include "Commons/LimitedString.hpp"
+#include "Commons/LimitedNULLString.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/Exception.hpp"
 
@@ -39,9 +41,14 @@ public:
     }
   }; // struct ExceptionNoSuchParamter
 
-
-  /** \brief helper typedef for string that can be NULL. */
-  typedef Base::NullValue<std::string> StringNULL;
+  /** \brief owner type. */
+  typedef Commons::LimitedNULLString<64>  Owner;
+  /** \brief string representing key. */
+  typedef Commons::LimitedString<64>      Key;
+  /** \brief string representing value. */
+  typedef Commons::LimitedString<256>     Value;
+  /** \brief string to be read - can be NULL. */
+  typedef Base::NullValue<Value>          ValueNULL;
 
   /** \brief create meta-alert persistency proxy.
    *  \param owner owner's name of a configuration to work on (NULL means common config).
@@ -49,7 +56,7 @@ public:
    *               different owners and they won't interfere.
    *  \param t     active transaction.
    */
-  DynamicConfig(const char *owner, Transaction &t);
+  DynamicConfig(const Owner &owner, Transaction &t);
   /** \brief virtual d-tor for polymorphic base class.
    */
   virtual ~DynamicConfig(void);
@@ -59,31 +66,31 @@ public:
    *  \param value parameter's value.
    *  \note if given parameter already exists, it will be overwritten.
    */
-  void write(const std::string &key, const std::string &value);
+  void write(const Key &key, const Value &value);
   /** \brief read given configuration paramter.
    *  \param key name of the paramter to read.
    *  \return paramter's value, if it does exist, NULL otherwise.
    */
-  StringNULL read(const std::string &key);
+  ValueNULL read(const Key &key);
   /** \brief read given read-only configuration paramter.
    *  \param key name of the paramter to read.
    *  \return paramter's value.
    *  \note const-paramters are common for all owners (since noone can write them anyway).
    */
-  std::string readConst(const std::string &key);
+  Value readConst(const Key &key);
 
 protected:
   /** \brief gets owner's name.
    *  \return owner's name (can be NULL).
    */
-  const char *getOwner(void) const;
+  const Owner &getOwner(void) const;
 
 private:
-  virtual void writeImpl(Transaction &t, const std::string &key, const std::string &value) = 0;
-  virtual StringNULL readImpl(Transaction &t, const std::string &key) = 0;
-  virtual std::string readConstImpl(Transaction &t, const std::string &key) = 0;
+  virtual void writeImpl(Transaction &t, const Key &key, const Value &value) = 0;
+  virtual ValueNULL readImpl(Transaction &t, const Key &key) = 0;
+  virtual Value readConstImpl(Transaction &t, const Key &key) = 0;
 
-  StringNULL   owner_;
+  Owner        owner_;
   Transaction &t_;
 }; // class DynamicConfig
 

@@ -74,7 +74,7 @@ void testObj::test<3>(void)
 {
   ensure("NULL value read", tdc_.read("xyz").get()!=NULL );
   ensureCalls(1);
-  ensure_equals("non-NULL value read", *tdc_.read("xyz").get(), std::string("alice has a wonderland") );
+  ensure_equals("non-NULL value read", tdc_.read("xyz").get()->get(), std::string("alice has a wonderland") );
 }
 
 // test marking as used
@@ -82,7 +82,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure_equals("invalid const-parameter read", tdc_.readConst("pinky"), "i'm const");
+  ensure_equals("invalid const-parameter read", tdc_.readConst("pinky").get(), std::string("i'm const") );
   ensureCalls(2);
 }
 
