@@ -77,7 +77,8 @@ template<>
 void testObj::test<2>(void)
 {
   Persistency::IO::ConnectionPtrNN  conn( Persistency::IO::create().release() );
-  BackendFacade                     bf(conn, "testemall");
+  detail::AnalyzersMap              am;
+  BackendFacade                     bf(conn, "testemall", am);
   Reader::DataPtr                   tmp  =r_->read(bf);
   Persistency::Alert               *alert=tmp.get();
   ensure("NULL pointer returned", alert!=NULL);

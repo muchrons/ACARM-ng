@@ -2,6 +2,7 @@
  * BackendFacade.cpp
  *
  */
+#include <boost/lexical_cast.hpp>
 #include <cassert>
 
 #include "Input/BackendFacade.hpp"
@@ -18,9 +19,13 @@ namespace Input
 {
 
 BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-                             const std::string                &name):
-  Core::Types::BackendFacade(conn, name)
+                             const std::string                &name,
+                             detail::AnalyzersMap             &analyzersMap):
+  Core::Types::BackendFacade(conn, "Input::"+name),
+  analyzersMap_(analyzersMap)
 {
+  // TODO: external map of IDs must be priovided; each input should take it as a paramter
+  //       during creation (create()) so that it could be external element.
 }
 
 Persistency::AnalyzerPtrNN BackendFacade::getAnalyzer(const std::string                            &/*originalID*/,
@@ -34,9 +39,11 @@ Persistency::AnalyzerPtrNN BackendFacade::getAnalyzer(const std::string         
   return Persistency::AnalyzerPtrNN( new Persistency::Analyzer(name, version, os, ip) );
 }
 
-void BackendFacade::saveMapping(const std::string &/*inputID*/, Persistency::Analyzer::ID /*id*/)
+void BackendFacade::saveMapping(const std::string &inputID, Persistency::Analyzer::ID id)
 {
-  // TODO
+  DynamicConfigAutoPtr dc=getConnection()->dynamicConfig( getName(), getTransaction() );
+  assert( dc.get()!=NULL );
+  dc->write( inputID, boost::lexical_cast<string>(id) );
 }
 
 } // namespace Input

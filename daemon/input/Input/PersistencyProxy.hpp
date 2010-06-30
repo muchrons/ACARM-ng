@@ -12,8 +12,6 @@
 
 #include "Persistency/Analyzer.hpp"
 
-// TODO
-
 namespace Input
 {
 

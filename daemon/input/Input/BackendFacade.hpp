@@ -10,6 +10,7 @@
 #include "Persistency/GraphNode.hpp"
 #include "Core/Types/BackendFacade.hpp"
 #include "Input/PersistencyProxy.hpp"
+#include "Input/detail/AnalyzersMap.hpp"
 
 // TODO
 
@@ -28,11 +29,13 @@ class BackendFacade: public  Core::Types::BackendFacade,
 {
 public:
   /** \brief create object's instance.
-   *  \param conn connection object to use.
-   *  \param name name of filter this object is created for.
+   *  \param conn         connection object to use.
+   *  \param name         name of filter this object is created for.
+   *  \param analyzersMap map of ID->analyzer (internal input's cache).
    */
   BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-                const std::string                &name);
+                const std::string                &name,
+                detail::AnalyzersMap             &analyzersMap);
 
   /** \brief gets mapping from given originalID to analyzer. if ID's not mapped, new entry's added.
    *  \param originalID ID returned by input.
@@ -51,6 +54,8 @@ public:
 private:
   // PersistencyProxy's method implementation
   virtual void saveMapping(const std::string &inputID, Persistency::Analyzer::ID id);
+
+  detail::AnalyzersMap &analyzersMap_;
 }; // class BackendFacade
 
 } // namespace Input
