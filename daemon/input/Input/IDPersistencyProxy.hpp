@@ -17,12 +17,20 @@
 
 namespace Input
 {
+namespace detail
+{
 
 /** \brief object responsible for I/O operations related to mappings.
  */
 class IDPersistencyProxy: private boost::noncopyable
 {
 public:
+  /** \brief create object that operates on default.
+   *  \param conn connection to persistency, to be used.
+   *  \param t    transaction to operate on.
+   */
+  IDPersistencyProxy(Persistency::IO::ConnectionPtrNN  conn,
+                     Persistency::IO::Transaction     &t);
   /** \brief create object.
    *  \param conn connection to persistency, to be used.
    *  \param t    transaction to operate on.
@@ -51,6 +59,7 @@ private:
   Persistency::IO::Transaction     &t_;
 }; // class IDPersistencyProxy
 
+} // namespace detail
 } // namespace Input
 
 #endif
