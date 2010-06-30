@@ -16,6 +16,8 @@ using namespace Core;
 
 namespace
 {
+// TODO: this has to be fixed - non-postgres components cannot use postgres for tests!
+//       consider overloading some parts of the Persistency::Stubs according to needs.
 struct TestClass: public TestHelpers::Persistency::TestPostgres
 {
   TestClass(void)

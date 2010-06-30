@@ -18,4 +18,5 @@
 37 add extra check while running ACARM-ng, if last run finished successfully or not (ex.: via DynamicConfig entry, changed uppon normal exit).
 38 consider running persistency cleanup in a separate thread - it takes a lot of time...
 39 consider some soft of mchanism to prevent crashes when connection lives shorter than transaction (ex.: keeping connection in transaction?).
-40
+40 fix TODOs in QueueRestorer - structure is broken now...
+41

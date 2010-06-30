@@ -17,6 +17,7 @@ namespace Core
 class QueueRestorer: private boost::noncopyable
 {
 public:
+  // TODO: this class should take IO::Connection and IO::Transaction as parameters!
   /** \brief restores data base content.
    *  \param queue output queue to write read meta-alerts to.
    */
