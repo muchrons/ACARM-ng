@@ -16,4 +16,5 @@
 35 consider reimplementing connections as a connecitons poll.
 36 fix multiple typos: dbhandleR -> dbhandle
 37 add extra check while running ACARM-ng, if last run finished successfully or not (ex.: via DynamicConfig entry, changed uppon normal exit).
-38
+38 consider running persistency cleanup in a separate thread - it takes a lot of time...
+39
