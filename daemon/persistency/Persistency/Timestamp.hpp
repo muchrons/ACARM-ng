@@ -7,8 +7,11 @@
 
 /* public header */
 
+#include <string>
 #include <ostream>
 #include <boost/operators.hpp>
+
+#include "Persistency/ExceptionConvertionError.hpp"
 
 namespace Persistency
 {
@@ -36,6 +39,11 @@ public:
   {
     return ts_;
   }
+
+  /** \brief outputs timestamp as human-readable string.
+   *  \return human-readable string with date and time.
+   */
+  std::string str(void) const;
 
   /** \brief compare two timestamps.
    *  \param other timestamp to compare with.
