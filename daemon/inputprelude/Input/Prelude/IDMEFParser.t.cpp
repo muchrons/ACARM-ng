@@ -1,3 +1,4 @@
+
 /*
  * IDMEFParser.t.cpp
  *
@@ -6,6 +7,7 @@
 #include <cstring>
 #include <memory>
 #include <string>
+#include <boost/noncopyable.hpp>
 
 #include "Input/Exception.hpp"
 #include "Input/Prelude/ExceptionParse.hpp"
@@ -18,8 +20,7 @@ using namespace boost::posix_time;
 namespace
 {
 
-// TODO: this class must be non-copyable
-class MessageWrapper
+class MessageWrapper :  public boost::noncopyable
 {
 public:
   MessageWrapper()
@@ -35,7 +36,7 @@ public:
 
   idmef_message_t * get()
   {
-    // TODO: add assert on message_!=NULL
+    assert(message_!=NULL);
     return message_;
   }
 

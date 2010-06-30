@@ -25,7 +25,6 @@ struct TestClass
     name_("The Analyzer of Luke Skywaker"),
     ostype_("Wojtek linux"),
     osversion_("2.6.129 gr-sec"),
-    id_("12345678901234567890"),
     address_("156.117.92.22")
   {
     if (idmef_analyzer_new(&analyzer_)<0)
@@ -34,19 +33,16 @@ struct TestClass
     prelude_string_t *ps_name;
     prelude_string_t *ps_ostype;
     prelude_string_t *ps_osversion;
-    prelude_string_t *ps_id;
     prelude_string_t *ps_address;
 
     prelude_string_new_dup(&ps_name,name_.c_str());
     prelude_string_new_dup(&ps_ostype,ostype_.c_str());
     prelude_string_new_dup(&ps_osversion,osversion_.c_str());
     prelude_string_new_dup(&ps_address,address_.c_str());
-    prelude_string_new_dup(&ps_id,id_.c_str());
 
     idmef_analyzer_set_name(analyzer_,ps_name);
     idmef_analyzer_set_ostype(analyzer_,ps_ostype);
     idmef_analyzer_set_osversion(analyzer_,ps_osversion);
-    idmef_analyzer_set_analyzerid(analyzer_,ps_id);
 
     idmef_node_t *node;
     idmef_analyzer_new_node(analyzer_, &node);
@@ -72,7 +68,6 @@ protected:
   std::string name_;
   std::string ostype_;
   std::string osversion_;
-  std::string id_;
   std::string address_;
 };
 
@@ -95,19 +90,10 @@ void testObj::test<1>(void)
   ensure_equals("Analyzer name:",an.getName().get(),name_);
 }
 
-// ID extraction from Analyzer
-template<>
-template<>
-void testObj::test<2>(void)
-{
-  IDMEFParserAnalyzer an(getAnalyzer());
-  ensure_equals("Analyzer name:",an.getID(),id_);
-}
-
 // OS extraction test
 template<>
 template<>
-void testObj::test<3>(void)
+void testObj::test<2>(void)
 {
   IDMEFParserAnalyzer an(getAnalyzer());
   ensure_equals("OS version:", std::string(an.getOS().get()),ostype_+osversion_);
@@ -116,7 +102,7 @@ void testObj::test<3>(void)
 // address extracion (IPv4)
 template<>
 template<>
-void testObj::test<4>(void)
+void testObj::test<3>(void)
 {
   IDMEFParserAnalyzer an(getAnalyzer());
   ensure_equals("IP address",*an.getIP(),boost::asio::ip::address_v4::from_string(address_));
@@ -125,7 +111,7 @@ void testObj::test<4>(void)
 // address extracion (IPv6)
 template<>
 template<>
-void testObj::test<5>(void)
+void testObj::test<4>(void)
 {
   idmef_analyzer_t *analyzer;
   if (idmef_analyzer_new(&analyzer)<0)
@@ -135,18 +121,15 @@ void testObj::test<5>(void)
   prelude_string_t *ps_ostype;
   prelude_string_t *ps_osversion;
   prelude_string_t *ps_address;
-  prelude_string_t *ps_id;
 
   prelude_string_new_dup(&ps_name,name_.c_str());
   prelude_string_new_dup(&ps_ostype,ostype_.c_str());
   prelude_string_new_dup(&ps_osversion,osversion_.c_str());
   prelude_string_new_dup(&ps_address,"::1");
-  prelude_string_new_dup(&ps_id,"12345678901234567890");
 
   idmef_analyzer_set_name(analyzer,ps_name);
   idmef_analyzer_set_ostype(analyzer,ps_ostype);
   idmef_analyzer_set_osversion(analyzer,ps_osversion);
-  idmef_analyzer_set_analyzerid(analyzer,ps_id);
 
   idmef_node_t *node;
   idmef_analyzer_new_node(analyzer, &node);
@@ -165,7 +148,7 @@ void testObj::test<5>(void)
 // NULL pointer test
 template<>
 template<>
-void testObj::test<6>(void)
+void testObj::test<5>(void)
 {
   try
   {
@@ -181,7 +164,7 @@ void testObj::test<6>(void)
 // analyzer without a name
 template<>
 template<>
-void testObj::test<7>(void)
+void testObj::test<6>(void)
 {
   idmef_analyzer_t *analyzer;
   if (idmef_analyzer_new(&analyzer)<0)
@@ -190,16 +173,13 @@ void testObj::test<7>(void)
   prelude_string_t *ps_ostype;
   prelude_string_t *ps_osversion;
   prelude_string_t *ps_address;
-  prelude_string_t *ps_id;
 
   prelude_string_new_dup(&ps_ostype,ostype_.c_str());
   prelude_string_new_dup(&ps_osversion,osversion_.c_str());
   prelude_string_new_dup(&ps_address,address_.c_str());
-  prelude_string_new_dup(&ps_id,"12345678901234567890");
 
   idmef_analyzer_set_ostype(analyzer,ps_ostype);
   idmef_analyzer_set_osversion(analyzer,ps_osversion);
-  idmef_analyzer_set_analyzerid(analyzer,ps_id);
 
   idmef_node_t *node;
   idmef_analyzer_new_node(analyzer, &node);
@@ -217,7 +197,7 @@ void testObj::test<7>(void)
 //analyser without an osversion or ostype
 template<>
 template<>
-void testObj::test<8>(void)
+void testObj::test<7>(void)
 {
   idmef_analyzer_t *analyzer;
   if (idmef_analyzer_new(&analyzer)<0)
@@ -225,11 +205,9 @@ void testObj::test<8>(void)
 
   prelude_string_t *ps_name;
   prelude_string_t *ps_address;
-  prelude_string_t *ps_id;
 
   prelude_string_new_dup(&ps_name,name_.c_str());
   prelude_string_new_dup(&ps_address,address_.c_str());
-  prelude_string_new_dup(&ps_id,"12345678901234567890");
 
   idmef_analyzer_set_name(analyzer,ps_name);
 
@@ -240,7 +218,6 @@ void testObj::test<8>(void)
   idmef_node_new_address(node,&addr,IDMEF_LIST_APPEND);
   idmef_address_set_address(addr,ps_address);
   idmef_address_set_category(addr,IDMEF_ADDRESS_CATEGORY_IPV4_ADDR);
-  idmef_analyzer_set_analyzerid(analyzer,ps_id);
 
   IDMEFParserAnalyzer an(analyzer);
   ensure(an.getOS()==NULL);
@@ -248,6 +225,31 @@ void testObj::test<8>(void)
 }
 
 // analyzer without an address
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  idmef_analyzer_t *analyzer;
+  if (idmef_analyzer_new(&analyzer)<0)
+    tut::fail("Unable to create analyzer object.");
+
+  prelude_string_t *ps_name;
+  prelude_string_t *ps_ostype;
+  prelude_string_t *ps_osversion;
+
+  prelude_string_new_dup(&ps_name,name_.c_str());
+  prelude_string_new_dup(&ps_ostype,ostype_.c_str());
+  prelude_string_new_dup(&ps_osversion,osversion_.c_str());
+
+  idmef_analyzer_set_name(analyzer,ps_name);
+  idmef_analyzer_set_ostype(analyzer,ps_ostype);
+  idmef_analyzer_set_osversion(analyzer,ps_osversion);
+
+  IDMEFParserAnalyzer an(analyzer);
+  idmef_analyzer_destroy(analyzer);
+}
+
+// wrong address specification
 template<>
 template<>
 void testObj::test<9>(void)
@@ -259,47 +261,16 @@ void testObj::test<9>(void)
   prelude_string_t *ps_name;
   prelude_string_t *ps_ostype;
   prelude_string_t *ps_osversion;
-  prelude_string_t *ps_id;
-
-  prelude_string_new_dup(&ps_name,name_.c_str());
-  prelude_string_new_dup(&ps_ostype,ostype_.c_str());
-  prelude_string_new_dup(&ps_osversion,osversion_.c_str());
-  prelude_string_new_dup(&ps_id,"12345678901234567890");
-
-  idmef_analyzer_set_name(analyzer,ps_name);
-  idmef_analyzer_set_ostype(analyzer,ps_ostype);
-  idmef_analyzer_set_osversion(analyzer,ps_osversion);
-  idmef_analyzer_set_analyzerid(analyzer,ps_id);
-
-  IDMEFParserAnalyzer an(analyzer);
-  idmef_analyzer_destroy(analyzer);
-}
-
-// wrong address specification
-template<>
-template<>
-void testObj::test<10>(void)
-{
-  idmef_analyzer_t *analyzer;
-  if (idmef_analyzer_new(&analyzer)<0)
-    tut::fail("Unable to create analyzer object.");
-
-  prelude_string_t *ps_name;
-  prelude_string_t *ps_ostype;
-  prelude_string_t *ps_osversion;
   prelude_string_t *ps_address;
-  prelude_string_t *ps_id;
 
   prelude_string_new_dup(&ps_name,name_.c_str());
   prelude_string_new_dup(&ps_ostype,ostype_.c_str());
   prelude_string_new_dup(&ps_osversion,osversion_.c_str());
   prelude_string_new_dup(&ps_address,address_.c_str());
-  prelude_string_new_dup(&ps_id,"12345678901234567890");
 
   idmef_analyzer_set_name(analyzer,ps_name);
   idmef_analyzer_set_ostype(analyzer,ps_ostype);
   idmef_analyzer_set_osversion(analyzer,ps_osversion);
-  idmef_analyzer_set_analyzerid(analyzer,ps_id);
 
   idmef_node_t *node;
   idmef_analyzer_new_node(analyzer, &node);

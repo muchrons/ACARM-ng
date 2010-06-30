@@ -20,7 +20,6 @@ IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):
   name_(parseName(getNonNull(ptr))),
   version_(parseVersion(getNonNull(ptr))),
   os_(parseOS(getNonNull(ptr))),
-  id_(parseID(getNonNull(ptr))),
   ip_(parseIP(getNonNull(ptr)))
 {
 }
@@ -38,12 +37,6 @@ Persistency::Analyzer::Name IDMEFParserAnalyzer::parseName(idmef_analyzer_t *ptr
   if(idmef_name)
     return prelude_string_get_string(idmef_name);
   return "Unknown";
-}
-
-std::string IDMEFParserAnalyzer::parseID(idmef_analyzer_t *ptr) const
-{
-  const prelude_string_t *idmef_id = idmef_analyzer_get_analyzerid(ptr);
-  return prelude_string_get_string_or_default(idmef_id,"Unknown ID"); //TODO: this should be a mandatory field
 }
 
 Persistency::Analyzer::Version IDMEFParserAnalyzer::parseVersion(idmef_analyzer_t *ptr) const
@@ -107,11 +100,6 @@ const Persistency::Analyzer::Version &IDMEFParserAnalyzer::getVersion() const
 const Persistency::Analyzer::OperatingSystem &IDMEFParserAnalyzer::getOS() const
 {
   return os_;
-}
-
-const std::string &IDMEFParserAnalyzer::getID() const
-{
-  return id_;
 }
 
 const Persistency::Analyzer::IP* IDMEFParserAnalyzer::getIP() const
