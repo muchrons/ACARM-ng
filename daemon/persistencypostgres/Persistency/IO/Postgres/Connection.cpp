@@ -26,9 +26,16 @@ Connection::Connection(DBHandlerPtrNN handler):
 
 namespace
 {
+// passing anything to this call ignores argument
+template<typename T>
+inline void ignore(const T &)
+{
+} // ignore()
+
 inline pqxx::result execSQL(const Logger::Node &log, Transaction &t, const char *sql)
 {
   LOGMSG_DEBUG_S(log)<<"calling SQL statement: "<<sql;
+  ignore(log);      // this suppresses warning in release mode about unsued parameter
   return t.getAPI<TransactionAPI>().exec(sql);
 } // execSQL()
 } // unnamed namespace
