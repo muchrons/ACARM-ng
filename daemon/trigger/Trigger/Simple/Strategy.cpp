@@ -21,6 +21,14 @@ Strategy::Strategy(const std::string &name, const ThresholdConfig &cfg):
 {
 }
 
+Strategy::~Strategy(void)
+{
+  const size_t cnt=fifo_.size();
+  if(cnt>0)
+    LOGMSG_WARN_S(log_)<<"trigger killed while having "<<cnt
+                       <<" alerts in sending queue - discarding them permanently";
+}
+
 bool Strategy::matchesCriteria(const Persistency::GraphNodePtrNN &n) const
 {
   // check severity
