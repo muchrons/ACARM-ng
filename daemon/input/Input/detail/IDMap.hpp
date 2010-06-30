@@ -13,7 +13,8 @@
 #include "Base/Threads/Mutex.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Analyzer.hpp"
-#include "Input/IDPersistencyProxy.hpp"
+#include "Input/IDPersistencyProxyCommon.hpp"
+#include "Input/IDPersistencyProxySpecific.hpp"
 
 // TODO
 
@@ -34,14 +35,17 @@ public:
 
   /** \brief performs mapping from given ID to system-specific one.
    *  \param inputID input-relevant ID to be mapped to our own system's ID.
-   *  \param pp      object responsible for saving given mapping to persistent storage.
+   *  \param ppc     object responsible for saving next free id mapping to persistent storage.
+   *  \param pps     object responsible for saving input-spcific object mappings.
    *  \return assigned ID.
    *
    *  if given originalID is already mapped, exisitng value is returned. if
    *  new assignment has been created, new, free ID value is returned and
    *  entry is saved to persistent storage.
    */
-  Persistency::Analyzer::ID get(IDPersistencyProxy &pp, const std::string &inputID);
+  Persistency::Analyzer::ID get(IDPersistencyProxyCommon   &ppc,
+                                IDPersistencyProxySpecific &pps,
+                                const std::string          &inputID);
 
 private:
   typedef std::map<std::string, Persistency::Analyzer::ID> MapType;
