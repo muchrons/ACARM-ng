@@ -5,6 +5,7 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_CONNECTION_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_CONNECTION_HPP_FILE
 
+#include "Logger/Node.hpp"
 #include "Persistency/IO/ConnectionHelper.hpp"
 #include "Persistency/IO/Postgres/TransactionAPI.hpp"
 #include "Persistency/IO/Postgres/Alert.hpp"
@@ -53,6 +54,8 @@ private:
   void removeReportedHosts(Transaction &t) const;
   void removeAnalyzers(Transaction &t) const;
   size_t removeAlerts(Transaction &t) const;
+
+  Logger::Node log_;
 }; // class Connection
 
 } // namespace Postgres
