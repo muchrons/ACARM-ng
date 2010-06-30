@@ -21,7 +21,7 @@ namespace Input
 BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
                              const std::string                &name,
                              detail::AnalyzersMap             &analyzersMap):
-  Core::Types::BackendFacade(conn, "Input::"+name),
+  Core::Types::BackendFacade(conn, name),
   analyzersMap_(analyzersMap)
 {
   // TODO: external map of IDs must be priovided; each input should take it as a paramter

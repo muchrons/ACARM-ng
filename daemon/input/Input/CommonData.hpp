@@ -22,9 +22,20 @@ namespace Input
 class CommonData: private boost::noncopyable
 {
 public:
+  /** \brief create common data; read required paramters from persistency.
+   *  \param conn connetion to be used for reading.
+   *  \param t    transaction to use for persistency I/O.
+   *
+   *  this object is to be used with different inputs at the same time
+   *  and so does not keep given connection inside, but just uses it to
+   *  read parameters and then releases back. the same gos for the transaction.
+   */
   CommonData(Persistency::IO::ConnectionPtrNN  conn,
              Persistency::IO::Transaction     &t);
 
+  /** \brief get common IDMap object's instance.
+   *  \return object's reference.
+   */
   detail::IDMap &getIDMap(void)
   {
     return idMap_;

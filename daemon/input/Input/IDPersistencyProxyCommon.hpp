@@ -15,8 +15,8 @@
 namespace Input
 {
 
-/** \brief object responsible for I/O operations related to
- *         speicifc inputs (i.e. non-common settings).
+/** \brief object responsible for I/O operations NOT related to
+ *         any speicifc inputs (i.e. common settings).
  */
 class IDPersistencyProxyCommon: private detail::IDPersistencyProxyBase
 {
@@ -24,7 +24,6 @@ public:
   /** \brief create object that operates on given input's paramters.
    *  \param conn      connection to persistency, to be used.
    *  \param t         transaction to operate on.
-   *  \param inputName name of the input to work for.
    */
   IDPersistencyProxyCommon(Persistency::IO::ConnectionPtrNN  conn,
                            Persistency::IO::Transaction     &t);
