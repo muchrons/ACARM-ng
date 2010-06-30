@@ -8,6 +8,7 @@
 #include "Logger/Logger.hpp"
 #include "Core/Types/AlertsFifo.hpp"
 #include "Input/Reader.hpp"
+#include "Input/CommonData.hpp"
 
 namespace Input
 {
@@ -24,16 +25,19 @@ public:
    */
   Thread(ReaderPtrNN                       reader,
          Persistency::IO::ConnectionPtrNN  conn,
-         Core::Types::AlertsFifo          &output);
+         Core::Types::AlertsFifo          &output,
+         CommonDataPtrNN                   commonData);
+
   /** \brief thread loop implementation.
    */
   void operator()(void);
 
 private:
   ReaderPtrNN                       reader_;
+  Logger::Node                      log_;
   Persistency::IO::ConnectionPtrNN  conn_;
   Core::Types::AlertsFifo          *output_;
-  Logger::Node                      log_;
+  CommonDataPtrNN                   commonData_;
 }; // class Thread
 
 } // namespace Input

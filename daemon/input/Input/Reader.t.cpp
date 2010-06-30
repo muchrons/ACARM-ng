@@ -77,8 +77,10 @@ template<>
 void testObj::test<2>(void)
 {
   Persistency::IO::ConnectionPtrNN  conn( Persistency::IO::create().release() );
+  Persistency::IO::Transaction      t( conn->createNewTransaction("test_reader") );
   detail::AnalyzersMap              am;
-  BackendFacade                     bf(conn, "testemall", am);
+  CommonDataPtrNN                   cd( new CommonData(conn, t) );
+  BackendFacade                     bf(conn, "testemall", am, cd);
   Reader::DataPtr                   tmp  =r_->read(bf);
   Persistency::Alert               *alert=tmp.get();
   ensure("NULL pointer returned", alert!=NULL);

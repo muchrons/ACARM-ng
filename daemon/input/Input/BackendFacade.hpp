@@ -9,6 +9,7 @@
 
 #include "Persistency/GraphNode.hpp"
 #include "Core/Types/BackendFacade.hpp"
+#include "Input/CommonData.hpp"
 #include "Input/detail/AnalyzersMap.hpp"
 
 // TODO
@@ -30,10 +31,12 @@ public:
    *  \param conn         connection object to use.
    *  \param name         name of filter this object is created for.
    *  \param analyzersMap map of ID->analyzer (internal input's cache).
+   *  \param commonData   common data, shared between all inputs.
    */
   BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
                 const std::string                &name,
-                detail::AnalyzersMap             &analyzersMap);
+                detail::AnalyzersMap             &analyzersMap,
+                CommonDataPtrNN                   commonData);
 
   /** \brief gets mapping from given originalID to analyzer. if ID's not mapped, new entry's added.
    *  \param originalID ID returned by input.
@@ -51,6 +54,7 @@ public:
 
 private:
   detail::AnalyzersMap &analyzersMap_;
+  CommonDataPtrNN       commonData_;
 }; // class BackendFacade
 
 } // namespace Input
