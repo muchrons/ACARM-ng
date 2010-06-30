@@ -52,8 +52,10 @@ public:
                                          const Persistency::Analyzer::IP              *ip);
 
 private:
-  // PersistencyProxy's method implementation
+  // PersistencyProxy's methods implementation
   virtual void saveMapping(const std::string &inputID, Persistency::Analyzer::ID id);
+  virtual Persistency::Analyzer::ID readNextFreeID(void);
+  virtual void saveNextFreeID(Persistency::Analyzer::ID nextFreeID);
 
   detail::AnalyzersMap &analyzersMap_;
 }; // class BackendFacade

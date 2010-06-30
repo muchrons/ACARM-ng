@@ -28,6 +28,7 @@ Persistency::Analyzer::ID IDMap::get(PersistencyProxy &pp, const std::string &in
   const Persistency::Analyzer::ID id=nextFreeID_++; // switch to next id stright away
                                                     // to ensure fast recovery from
                                                     // persistency inconsistent errors.
+  pp.saveNextFreeID(nextFreeID_);   // save new value of next free ID
   pp.saveMapping(inputID, id);      // save mapping to persistent storage
   map_[inputID]=id;                 // add run-time mapping
   return id;                        // return newly added ID

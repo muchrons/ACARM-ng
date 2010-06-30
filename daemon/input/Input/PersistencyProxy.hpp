@@ -28,6 +28,15 @@ struct PersistencyProxy
    *  \param id      value of mapping.
    */
   virtual void saveMapping(const std::string &inputID, Persistency::Analyzer::ID id) = 0;
+
+  /** \brief read next free ID.
+   *  \return ID saved as a last free one.
+   */
+  virtual Persistency::Analyzer::ID readNextFreeID(void) = 0;
+  /** \brief save next free ID.
+   *  \param nextFreeID free ID to be saved.
+   */
+  virtual void saveNextFreeID(Persistency::Analyzer::ID nextFreeID) = 0;
 }; // struct PersistencyProxy
 
 } // namespace Input
