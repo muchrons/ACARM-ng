@@ -15,7 +15,7 @@ IDMap::IDMap(const Persistency::Analyzer::ID nextFreeID):
 {
 }
 
-Persistency::Analyzer::ID IDMap::get(PersistencyProxy &pp, const std::string &inputID)
+Persistency::Analyzer::ID IDMap::get(IDPersistencyProxy &pp, const std::string &inputID)
 {
   Base::Threads::Lock lock(mutex_);
   // has already this entry?

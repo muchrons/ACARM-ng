@@ -10,7 +10,8 @@
 #include <boost/noncopyable.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
-#include "Persistency/IO/DynamicConfig.hpp"
+#include "Persistency/IO/Connection.hpp"
+#include "Persistency/IO/Transaction.hpp"
 #include "Input/detail/IDMap.hpp"
 
 namespace Input
@@ -21,7 +22,8 @@ namespace Input
 class CommonData: private boost::noncopyable
 {
 public:
-  explicit CommonData(Persistency::IO::DynamicConfig &dynConf);
+  CommonData(Persistency::IO::ConnectionPtrNN  conn,
+             Persistency::IO::Transaction     &t);
 
   detail::IDMap &getIDMap(void)
   {

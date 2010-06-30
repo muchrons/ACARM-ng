@@ -13,7 +13,7 @@
 #include "Base/Threads/Mutex.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Analyzer.hpp"
-#include "Input/PersistencyProxy.hpp"
+#include "Input/IDPersistencyProxy.hpp"
 
 // TODO
 
@@ -41,7 +41,7 @@ public:
    *  new assignment has been created, new, free ID value is returned and
    *  entry is saved to persistent storage.
    */
-  Persistency::Analyzer::ID get(PersistencyProxy &pp, const std::string &inputID);
+  Persistency::Analyzer::ID get(IDPersistencyProxy &pp, const std::string &inputID);
 
 private:
   typedef std::map<std::string, Persistency::Analyzer::ID> MapType;

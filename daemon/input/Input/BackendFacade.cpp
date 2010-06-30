@@ -39,31 +39,4 @@ Persistency::AnalyzerPtrNN BackendFacade::getAnalyzer(const std::string         
   return Persistency::AnalyzerPtrNN( new Persistency::Analyzer(name, version, os, ip) );
 }
 
-void BackendFacade::saveMapping(const std::string &inputID, Persistency::Analyzer::ID id)
-{
-  DynamicConfigAutoPtr dc=getConnection()->dynamicConfig( getName(), getTransaction() );
-  assert( dc.get()!=NULL );
-  dc->write( inputID, boost::lexical_cast<string>(id) );
-}
-
-Persistency::Analyzer::ID BackendFacade::readNextFreeID(void)
-{
-  DynamicConfigAutoPtr     dc =getConnection()->dynamicConfig( "Input", getTransaction() );
-  assert( dc.get()!=NULL );
-  DynamicConfig::ValueNULL tmp=dc->read("next free ID");
-  // no value set? assume counter has ust started.
-  if( tmp.get()==NULL )
-    return 0;
-  // parse input value and return to caller
-  const Persistency::Analyzer::ID out=boost::lexical_cast<Persistency::Analyzer::ID>( tmp.get()->get() );
-  return out;
-}
-
-void BackendFacade::saveNextFreeID(Persistency::Analyzer::ID nextFreeID)
-{
-  DynamicConfigAutoPtr dc=getConnection()->dynamicConfig( "Input", getTransaction() );
-  assert( dc.get()!=NULL );
-  dc->write( "next free ID", boost::lexical_cast<string>(nextFreeID) );
-}
-
 } // namespace Input

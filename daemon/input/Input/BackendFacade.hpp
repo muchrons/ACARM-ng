@@ -9,7 +9,6 @@
 
 #include "Persistency/GraphNode.hpp"
 #include "Core/Types/BackendFacade.hpp"
-#include "Input/PersistencyProxy.hpp"
 #include "Input/detail/AnalyzersMap.hpp"
 
 // TODO
@@ -24,8 +23,7 @@ namespace Input
  * \note this object allows transaction's to take place, but only on persistent
  *       level, i.e. rollbacking transaction does not change user objects.
  */
-class BackendFacade: public  Core::Types::BackendFacade,
-                     private PersistencyProxy
+class BackendFacade: public Core::Types::BackendFacade
 {
 public:
   /** \brief create object's instance.
@@ -52,11 +50,6 @@ public:
                                          const Persistency::Analyzer::IP              *ip);
 
 private:
-  // PersistencyProxy's methods implementation
-  virtual void saveMapping(const std::string &inputID, Persistency::Analyzer::ID id);
-  virtual Persistency::Analyzer::ID readNextFreeID(void);
-  virtual void saveNextFreeID(Persistency::Analyzer::ID nextFreeID);
-
   detail::AnalyzersMap &analyzersMap_;
 }; // class BackendFacade
 
