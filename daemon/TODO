@@ -15,4 +15,5 @@
 34 consider using -fstack-protector-all for compilation (check performance).
 35 consider reimplementing connections as a connecitons poll.
 36 fix multiple typos: dbhandleR -> dbhandle
-37
+37 add extra check while running ACARM-ng, if last run finished successfully or not (ex.: via DynamicConfig entry, changed uppon normal exit).
+38
