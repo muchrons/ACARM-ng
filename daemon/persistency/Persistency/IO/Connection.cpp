@@ -11,43 +11,48 @@ namespace Persistency
 namespace IO
 {
 
+namespace
+{
+template<typename T>
+std::auto_ptr<T> getNonNullAutoPtr(std::auto_ptr<T> ptr)
+{
+  assert( ptr.get()!=NULL && "call returned NULL pointer unexpectedly");
+  return ptr;
+} // getNonNullAutoPtr()
+} // unnamed namespace
+
 Connection::~Connection(void)
 {
 }
 
 TransactionAPIAutoPtr Connection::createNewTransaction(const std::string &name)
 {
-  TransactionAPIAutoPtr ptr=createNewTransactionImpl(mutex_, name);
-  assert( ptr.get()!=NULL );
-  return ptr;
+  return getNonNullAutoPtr( createNewTransactionImpl(mutex_, name) );
 }
 
 AlertAutoPtr Connection::alert(AlertPtrNN alert, Transaction &t)
 {
-  AlertAutoPtr ptr=alertImpl(alert, t);
-  assert( ptr.get()!=NULL );
-  return ptr;
+  return getNonNullAutoPtr( alertImpl(alert, t) );
 }
 
 HostAutoPtr Connection::host(HostPtrNN host, Transaction &t)
 {
-  HostAutoPtr ptr=hostImpl(host, t);
-  assert( ptr.get()!=NULL );
-  return ptr;
+  return getNonNullAutoPtr( hostImpl(host, t) );
 }
 
 MetaAlertAutoPtr Connection::metaAlert(MetaAlertPtrNN ma, Transaction &t)
 {
-  MetaAlertAutoPtr ptr=metaAlertImpl(ma, t);
-  assert( ptr.get()!=NULL );
-  return ptr;
+  return getNonNullAutoPtr( metaAlertImpl(ma, t) );
+}
+
+DynamicConfigAutoPtr Connection::dynamicConfig(const DynamicConfig::Owner &owner, Transaction &t)
+{
+  return getNonNullAutoPtr( dynamicConfigImpl(owner, t) );
 }
 
 RestorerAutoPtr Connection::restorer(Transaction &t)
 {
-  RestorerAutoPtr ptr=restorerImpl(t);
-  assert( ptr.get()!=NULL );
-  return ptr;
+  return getNonNullAutoPtr( restorerImpl(t) );
 }
 
 size_t Connection::removeEntriesOlderThan(size_t days, Transaction &t)

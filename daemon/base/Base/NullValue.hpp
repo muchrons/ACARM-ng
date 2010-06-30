@@ -45,6 +45,13 @@ public:
       return NULL;
     return &value_;
   }
+  /** \brief gives pointer-like access to object held inside.
+   */
+  const T *operator->(void) const
+  {
+    assert( get()!=NULL );
+    return get();
+  }
   /** \brief check if classes are equal.
    *  \param other element to compare with.
    *  \return true if elements are equal, false otherwise.

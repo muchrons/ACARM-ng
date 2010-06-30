@@ -71,6 +71,11 @@ struct TestClass
     return out;
   }
 
+  void execSQL(const char *sql)
+  {
+    tdba_.execSQL(sql);
+  }
+
   const Persistency::Alert::Name          name_;
   const AnalyzerPtrNN                     analyzer_;
   Persistency::Alert::SourceAnalyzers     analyzers_;
@@ -583,4 +588,52 @@ void testObj::test<19>(void)
                                          (alertPtr->getReportedSourceHosts()).size() );
   t_.commit();
 }
+
+// try reading existing entry from config
+template<>
+template<>
+void testObj::test<20>(void)
+{
+  execSQL("INSERT INTO config VALUES ('owner', 'key', 'val')");
+  Persistency::IO::DynamicConfig::ValueNULL v=er_.readConfigParameter("owner", "key");
+  ensure("NULL value returned", v.get()!=NULL );
+  ensure_equals("invalid value read", v.get()->get(), string("val") );
+}
+
+// try reading non-existing entry from config
+template<>
+template<>
+void testObj::test<21>(void)
+{
+  execSQL("INSERT INTO config VALUES ('owner', 'key', 'val')");
+  Persistency::IO::DynamicConfig::ValueNULL v=er_.readConfigParameter("owner", "key2");
+  ensure("something has been read for non-exisiting key", v.get()==NULL );
+}
+
+// try reading existing entry from read-only config
+template<>
+template<>
+void testObj::test<22>(void)
+{
+  execSQL("INSERT INTO config_rdonly VALUES ('owner', 'key', 'val')");
+  Persistency::IO::DynamicConfig::Value v=er_.readConstConfigParameter("owner", "key");
+  ensure_equals("invalid value read", v.get(), string("val") );
+}
+
+// try reading non-existing entry from read-only config
+template<>
+template<>
+void testObj::test<23>(void)
+{
+  try
+  {
+    er_.readConstConfigParameter("owner", "key");
+    fail("readConstConfigParameter() didn't throw on non-exisitng paramter");
+  }
+  catch(const Persistency::IO::DynamicConfig::ExceptionNoSuchParameter &)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut

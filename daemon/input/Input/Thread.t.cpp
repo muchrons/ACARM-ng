@@ -6,8 +6,10 @@
 #include <unistd.h>
 
 #include "Base/Threads/ThreadJoiner.hpp"
+#include "Persistency/IO/create.hpp"
 #include "Input/Thread.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace std;
 using namespace Input;
@@ -24,7 +26,7 @@ struct TestReader: public Reader
   {
   }
 
-  virtual DataPtr read(unsigned int)
+  virtual DataPtr read(BackendFacade &, unsigned int)
   {
     usleep(10*1000);   // limit output a little...
     ++count_;
@@ -37,17 +39,19 @@ struct TestReader: public Reader
   bool   justThrow_;
 }; // struct TestReader
 
-struct TestClass
+struct TestClass: public TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     tr_(new TestReader),
-    r_(tr_)
+    r_(tr_),
+    conn_( Persistency::IO::create().release() )
   {
   }
 
-  TestReader              *tr_;
-  ReaderPtrNN              r_;
-  Core::Types::AlertsFifo  output_;
+  TestReader                       *tr_;
+  ReaderPtrNN                       r_;
+  Core::Types::AlertsFifo           output_;
+  Persistency::IO::ConnectionPtrNN  conn_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -65,7 +69,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Thread t(r_, output_);
+  Thread t(r_, conn_, output_);
 }
 
 // test running opertator() in separate thread and stopping it here
@@ -76,7 +80,7 @@ void testObj::test<2>(void)
   ensure_equals("pre-condition 1 failed", tr_->count_, 0u);
   ensure_equals("pre-condition 2 failed", output_.size(), 0u);
   {
-    Base::Threads::ThreadJoiner th( Thread(r_, output_) );
+    Base::Threads::ThreadJoiner th( Thread(r_, conn_, output_) );
     // run ~2-3 times
     while(tr_->count_==0 || tr_->count_==1 || tr_->count_==2)
       usleep(10*1000);
@@ -97,7 +101,7 @@ void testObj::test<3>(void)
   ensure_equals("pre-condition failed", tr_->count_, 0u);
   tr_->justThrow_=true;
   {
-    Base::Threads::ThreadJoiner th( Thread(r_, output_) );
+    Base::Threads::ThreadJoiner th( Thread(r_, conn_, output_) );
     // run ~2-3 times
     while(tr_->count_==0 || tr_->count_==1 || tr_->count_==2)
       usleep(10*1000);
@@ -121,7 +125,7 @@ struct TestWaitingReader: public Reader
   {
   }
 
-  virtual DataPtr read(unsigned int)
+  virtual DataPtr read(BackendFacade &, unsigned int)
   {
     usleep(10*1000);    // limit output a little...
     return DataPtr();   // return no results, so that read() on a thread will not exit
@@ -167,7 +171,7 @@ void testObj::test<4>(void)
 {
   bool                        done=false;
   ReaderPtrNN                 r(new TestWaitingReader);
-  const Thread                pt(r, output_);
+  const Thread                pt(r, conn_, output_);
   const WaitForInterrupt      wfi(&output_, &done);
   Base::Threads::ThreadJoiner thInt(wfi);       // run waiting thread
   Base::Threads::ThreadJoiner th(pt);           // run generating thread.

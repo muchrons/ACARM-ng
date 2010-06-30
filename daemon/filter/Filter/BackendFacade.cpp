@@ -18,7 +18,7 @@ namespace Filter
 BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
                            ChangedNodes                     &changed,
                            const std::string                &filterName):
-  Core::Types::Proc::BackendFacade(conn, filterName),
+  Core::Types::BackendFacade(conn, filterName),
   changed_(changed)
 {
   if( changed_.size()!=0 )

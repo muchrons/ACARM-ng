@@ -26,9 +26,12 @@ class Interface: private boost::noncopyable
 public:
   /** \brief create thread running reader in background.
    *  \param reader reader to run in background.
+   *  \param conn   connection to be used
    *  \param output queue to output data to.
    */
-  Interface(ReaderPtrNN reader, Core::Types::AlertsFifo &output);
+  Interface(ReaderPtrNN                       reader,
+            Persistency::IO::ConnectionPtrNN  conn,
+            Core::Types::AlertsFifo          &output);
   /** \brief deactivate thread and do the cleanup.
    */
   ~Interface(void);

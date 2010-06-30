@@ -10,6 +10,7 @@
 #include "Persistency/IO/Postgres/Alert.hpp"
 #include "Persistency/IO/Postgres/MetaAlert.hpp"
 #include "Persistency/IO/Postgres/Host.hpp"
+#include "Persistency/IO/Postgres/DynamicConfig.hpp"
 #include "Persistency/IO/Postgres/Restorer.hpp"
 #include "Persistency/IO/Postgres/DBHandler.hpp"
 
@@ -27,7 +28,8 @@ typedef IO::ConnectionHelper<DBHandlerPtrNN,
                              Alert,
                              Host,
                              MetaAlert,
-                             Restorer>   ConnectionBase;
+                             DynamicConfig,
+                             Restorer>      ConnectionBase;
 } // namespace Base
 
 

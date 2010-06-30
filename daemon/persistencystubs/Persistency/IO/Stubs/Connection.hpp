@@ -10,6 +10,7 @@
 #include "Persistency/IO/Stubs/Alert.hpp"
 #include "Persistency/IO/Stubs/Host.hpp"
 #include "Persistency/IO/Stubs/MetaAlert.hpp"
+#include "Persistency/IO/Stubs/DynamicConfig.hpp"
 #include "Persistency/IO/Stubs/Restorer.hpp"
 
 namespace Persistency
@@ -27,6 +28,7 @@ class ConnectionImpl: public IO::ConnectionHelper<int,   // connection handler -
                                                   Stubs::Alert,
                                                   Stubs::Host,
                                                   Stubs::MetaAlert,
+                                                  Stubs::DynamicConfig,
                                                   Stubs::Restorer>
 {
 public:
@@ -36,6 +38,7 @@ public:
                          Stubs::Alert,
                          Stubs::Host,
                          Stubs::MetaAlert,
+                         Stubs::DynamicConfig,
                          Stubs::Restorer>(42)
   {
   }
@@ -60,6 +63,7 @@ public:
   size_t alertCalls_;               ///< number of calls to create alerts.
   size_t hostCalls_;                ///< number of calls to create hosts.
   size_t metaAlertCalls_;           ///< number of calls to create metaAlerts.
+  size_t dynamicConfigCalls_;       ///< number of calls to create dynamicConfig
   size_t restorerCalls_;            ///< number of calls to create restorers.
   size_t removeOldCalls_;           ///< number of calls to removing old entries.
 
@@ -69,6 +73,7 @@ private:
   virtual AlertAutoPtr alertImpl(AlertPtrNN alert, Transaction &t);
   virtual HostAutoPtr hostImpl(HostPtrNN host, Transaction &t);
   virtual MetaAlertAutoPtr metaAlertImpl(MetaAlertPtrNN ma, Transaction &t);
+  virtual DynamicConfigAutoPtr dynamicConfigImpl(const DynamicConfig::Owner &owner, Transaction &t);
   virtual RestorerAutoPtr restorerImpl(Transaction &t);
   virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t);
 

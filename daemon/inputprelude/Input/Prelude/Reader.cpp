@@ -23,7 +23,8 @@ Reader::Reader(const std::string& profile, const std::string& config):
   assert( client_.get()!=NULL );
 }
 
-Reader::DataPtr Reader::read(const unsigned int timeout)
+// TODO: use backend facade to get/create analyzer(s)
+Reader::DataPtr Reader::read(BackendFacade &/*bf*/, const unsigned int timeout)
 {
   DataPtr tmp;
   assert(tmp.get()==NULL);

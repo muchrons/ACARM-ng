@@ -22,6 +22,8 @@ struct TestDBAccess
 
   void fillWithContent1(void);
 
+  void execSQL(const char *sql);
+
 private:
   DBConnection conn_;
 }; // struct TestDBAccess
