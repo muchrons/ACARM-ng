@@ -37,9 +37,7 @@ void testObj::test<1>(void)
 {
   std::stringstream ss;
   Summary::append( ss, makeNewNode() );
-  ensure("invalid report",
-         strstr( ss.str().c_str(),
-                 "reporting triggered for meta-alert \"some meta-alert\" (2 correlated alerts; severity is ")!=0 );
+  ensure("invalid report", strstr( ss.str().c_str(), "reporting triggered for meta-alert \"")!=0 );
 }
 
 } // namespace tut

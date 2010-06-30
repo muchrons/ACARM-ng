@@ -58,9 +58,7 @@ void testObj::test<2>(void)
   s.process( makeNewNode(), nc );
   const std::string      str=getMessageFromAccount( getTestConfig2(),
                                                     cfg_.getAccountConfig().getUserID() );
-  ensure("invalid repot generated",
-         strstr( str.c_str(),
-                 "reporting triggered for meta-alert \"some meta-alert\" (2 correlated alerts; severity is ")!=0 );
+  ensure("invalid repot generated", strstr( str.c_str(), "reporting triggered for meta-alert \"")!=0 );
 }
 
 } // namespace tut
