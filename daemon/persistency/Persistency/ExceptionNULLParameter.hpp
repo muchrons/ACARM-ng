@@ -22,7 +22,7 @@ public:
    *  \param name  paramter name.
    */
   ExceptionNULLParameter(const Location &where, const char *name):
-    Exception(where, std::string("paramter is NULL: ") + ensureString(name) )
+    Exception(where, cc("paramter is NULL: ", name) )
   {
   }
 }; // class ExceptionNULLParameter
