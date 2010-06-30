@@ -17,6 +17,7 @@ Connection::Connection(void):
   alertCalls_(0),
   hostCalls_(0),
   metaAlertCalls_(0),
+  dynamicConfigCalls_(0),
   restorerCalls_(0)
 {
 }
@@ -44,6 +45,12 @@ MetaAlertAutoPtr Connection::metaAlertImpl(MetaAlertPtrNN ma, Transaction &t)
 {
   ++metaAlertCalls_;
   return impl_.metaAlert(ma, t);
+}
+
+DynamicConfigAutoPtr Connection::dynamicConfigImpl(const DynamicConfig::Owner &owner, Transaction &t)
+{
+  ++dynamicConfigCalls_;
+  return impl_.dynamicConfig(owner, t);
 }
 
 RestorerAutoPtr Connection::restorerImpl(Transaction &t)

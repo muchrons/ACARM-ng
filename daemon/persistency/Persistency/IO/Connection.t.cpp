@@ -115,4 +115,15 @@ void testObj::test<6>(void)
   ensureCalls(5);
 }
 
+// test creating dyncami config
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  Transaction          t( c_.createNewTransaction("abc") );
+  DynamicConfigAutoPtr ptr=c_.dynamicConfig("me & i", t);
+  ensure("NULL pointer received", ptr.get()!=NULL );
+  ensureCalls(6);
+}
+
 } // namespace tut

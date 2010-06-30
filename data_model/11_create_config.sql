@@ -5,7 +5,7 @@
 -- config_rdonly
 CREATE TABLE config_rdonly
 (
-  owner varchar(64)  NOT NULL,  -- name of one who owns the entry
+  owner varchar(64)  NULL,      -- name of one who owns the entry
   key   varchar(64)  NOT NULL,
   value varchar(256) NOT NULL,
 
@@ -16,7 +16,7 @@ CREATE TABLE config_rdonly
 -- config
 CREATE TABLE config
 (
-  owner varchar(64)  NOT NULL,  -- name of one who owns the entry
+  owner varchar(64)  NULL,      -- name of one who owns the entry
   key   varchar(64)  NOT NULL,
   value varchar(256) NOT NULL,
 

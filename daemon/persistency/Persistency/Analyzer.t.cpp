@@ -162,4 +162,12 @@ void testObj::test<9>(void)
   TestHelpers::checkEquality(a1, a2);
 }
 
+// test if size is reasonable
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  ensure_equals("size of output object is not reasonable big", sizeof(Analyzer::ID), 8);
+}
+
 } // namespace tut

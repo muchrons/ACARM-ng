@@ -9,10 +9,12 @@
 namespace Input
 {
 
-Interface::Interface(ReaderPtrNN reader, Core::Types::AlertsFifo &output):
+Interface::Interface(ReaderPtrNN                       reader,
+                     Persistency::IO::ConnectionPtrNN  conn,
+                     Core::Types::AlertsFifo          &output):
   log_( Logger::NodeName( "input.interface",
                           Logger::NodeName::removeInvalidChars( reader->getName() ).c_str() ) ),
-  thread_( Thread(reader, output) )
+  thread_( Thread(reader, conn, output) )
 {
   LOGMSG_INFO(log_, "reader's thread started");
 }
