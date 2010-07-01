@@ -37,9 +37,7 @@ void testObj::test<1>(void)
 {
   std::stringstream ss;
   Full::append( ss, makeNewNode() );
-  ensure("invalid report /1",
-         strstr( ss.str().c_str(),
-                 "reporting triggered for meta-alert \"some meta-alert\" (2 correlated alerts; severity is " )!=0 );
+  ensure("invalid report /1", strstr( ss.str().c_str(), "reporting triggered for meta-alert \"")!=0 );
   ensure("invalid report /2",
          strstr( ss.str().c_str(), "\n"
                                    "some meta-alert\n"
