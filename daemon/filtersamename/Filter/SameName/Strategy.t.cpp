@@ -40,12 +40,12 @@ namespace tut
 {
 
 
-// TODO: test canCorelate method
+// test canCorelate method
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlert("some name") ) );
+  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlert("some alert") ) );
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed", changed_.size(), 0u);
 
@@ -58,6 +58,12 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlert("some other alert") ) );
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed / 1", changed_.size(), 0u);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("some nodes have been changed / 2", changed_.size(), 0u);
 }
 
 // TODO: test getting name of meta alert

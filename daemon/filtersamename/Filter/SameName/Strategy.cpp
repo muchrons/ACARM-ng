@@ -37,6 +37,7 @@ Persistency::MetaAlert::Name Strategy::getMetaAlertName(
                                               const NodeEntry /*thisEntry*/,
                                               const NodeEntry /*otherEntry*/) const
 {
+  // TODO: set meta alert name
   return "[samename] atacks from ...";
 }
 
