@@ -37,6 +37,7 @@ public:
     {
     }
 
+    // TODO: this paramter must be unsigned.
     const int cacheTimeout_;    ///< timeout for cache entries.
   }; // struct Parameters
 
