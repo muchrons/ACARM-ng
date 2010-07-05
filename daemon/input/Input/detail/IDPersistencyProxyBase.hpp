@@ -9,6 +9,7 @@
 
 #include <string>
 #include <boost/noncopyable.hpp>
+#include <cassert>
 
 #include "Logger/Node.hpp"
 #include "Persistency/Analyzer.hpp"
