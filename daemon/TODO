@@ -4,7 +4,6 @@
 11 think how to overcome lack of additional data assigned for observed graph nodes in filters during normal run - they will not be present after reading from persistency.
 15 update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
 17 GraphNode (MetaAlert?) should have some unique identifier in the system, that can be reported.
-25 add messages buffering before doing actuall send in triggers - this will prevent message lost, when server is temporary not available; note: buffering can be done at least in memory; buffering shall be done on trigger's API level.
 26 create XML schema for config file.
 27 add parse-at-read feature to configio - config should be accepted or rejected when running application, not delayed until acctuall usage (note: this task is connected with config's refactoring to register parsers).
 29 add timestamps to triggered reports (to know when it has been triggered).
@@ -17,7 +16,8 @@
 36 fix multiple typos: dbhandleR -> dbhandle
 37 add extra check while running ACARM-ng, if last run finished successfully or not (ex.: via DynamicConfig entry, changed uppon normal exit).
 38 consider running persistency cleanup in a separate thread - it takes a lot of time...
-39 consider some soft of mchanism to prevent crashes when connection lives shorter than transaction (ex.: keeping connection in transaction?).
+39 consider some sort of mchanism to prevent crashes when connection lives shorter than transaction (ex.: keeping connection in transaction?).
 40 fix TODOs in QueueRestorer - structure is broken now...
 41 consider adding 'descrioption' to meta-alert to reflect extra correlation pieces of information (like details on what bases these alerts have been correlated).
-42
+42 messages buffering in triggers should have some size limit (not to crash applicaiton when destination sertvice is permanently down).
+43
