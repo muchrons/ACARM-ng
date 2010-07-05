@@ -14,8 +14,6 @@
 #include "Persistency/Analyzer.hpp"
 #include "Input/Exception.hpp"
 
-// TODO
-
 namespace Input
 {
 namespace detail

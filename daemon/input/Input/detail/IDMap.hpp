@@ -16,7 +16,6 @@
 #include "Input/IDPersistencyProxyCommon.hpp"
 #include "Input/IDPersistencyProxySpecific.hpp"
 
-// TODO: tests
 // TODO: add protection so that this class is known not to exist in more than 2 instances at once.
 
 namespace Input

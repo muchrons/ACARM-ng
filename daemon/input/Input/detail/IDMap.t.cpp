@@ -39,7 +39,6 @@ typedef factory::object testObj;
 factory tf("Input/detail/IDMap");
 } // unnamed namespace
 
-// TODO
 
 namespace tut
 {
