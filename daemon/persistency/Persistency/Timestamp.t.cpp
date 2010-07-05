@@ -80,4 +80,13 @@ void testObj::test<5>(void)
   ensure_equals("invalid value", ts2.get(), 111);
 }
 
+// testy convertion to string
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const Timestamp ts(9*3600 + 2*60 + 3);
+  ensure_equals("invalid string", ts.str(), "1970.01.01 09:02:03");
+}
+
 } // namespace tut

@@ -74,7 +74,7 @@ private:
         LOGMSG_FATAL(log_, "unexpected, unknown exception caught - aborting...");
         assert(!"unexpected, unknown exception caught");
       }
-      LOGMSG_DEBUG(log_, "starting user's thread function");
+      LOGMSG_DEBUG(log_, "exiting from user's thread function");
     }
 
   private:

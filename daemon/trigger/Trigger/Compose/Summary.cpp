@@ -16,7 +16,9 @@ void Summary::append(std::stringstream &ss, const Persistency::GraphNodePtrNN &n
 {
   ss << "reporting triggered for meta-alert \""
      << node->getMetaAlert().getName().get()
-     << "\" (" << Algo::countCorrelatedAlerts(node)
+     << "\", created on "
+     << node->getMetaAlert().getCreateTime().str()
+     << " (" << Algo::countCorrelatedAlerts(node)
      << " correlated alerts; severity is "
      << Algo::computeSeverity(node) << ")"
      << std::endl;

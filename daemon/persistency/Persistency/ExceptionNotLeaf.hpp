@@ -23,7 +23,7 @@ public:
    *  \param name  name of the node (leaf).
    */
   ExceptionNotLeaf(const Location &where, const char *name):
-    Exception(where, std::string("element is not leaf: ") + ensureString(name) )
+    Exception(where, cc("element is not leaf: ", name) )
   {
   }
 }; // class ExceptionNotNode
