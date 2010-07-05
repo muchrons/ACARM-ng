@@ -2,6 +2,7 @@
  * Strategy.cpp
  *
  */
+#include <sstream>
 #include <vector>
 #include <algorithm>
 #include <cassert>
@@ -30,15 +31,19 @@ Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
 
 bool Strategy::isEntryInteresting(const NodeEntry /*thisEntry*/) const
 {
+  // return true beacause Alert name is always not null
   return true;
 }
 
 Persistency::MetaAlert::Name Strategy::getMetaAlertName(
-                                              const NodeEntry /*thisEntry*/,
-                                              const NodeEntry /*otherEntry*/) const
+                                              const NodeEntry thisEntry,
+                                              const NodeEntry otherEntry) const
 {
-  // TODO: set meta alert name
-  return "[samename] atacks from ...";
+  // thisEntry and otherEntry must containt the same Alert name
+  assert( canCorrelate(thisEntry, otherEntry) );
+  stringstream ss;
+  ss << "[samename] " << thisEntry.node_->getMetaAlert().getName().get();
+  return ss.str();
 }
 
 bool Strategy::canCorrelate(const NodeEntry thisEntry,
@@ -48,7 +53,7 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   assert( isEntryInteresting(thisEntry)  );
   assert( isEntryInteresting(otherEntry) );
   // ok - both names are the same
-  if(thisEntry.node_->getAlert().getName() == otherEntry.node_->getAlert().getName() )
+  if(thisEntry.node_->getMetaAlert().getName() == otherEntry.node_->getMetaAlert().getName() )
     return true;
 
   return false;

@@ -53,7 +53,7 @@ void testObj::test<1>(void)
   ensure_equals("no nodes changed", changed_.size(), 1u);
 }
 
-// TODO: test if can correltate will return false for non-overlaping entries
+// test if can correltate will return false for defferent names
 template<>
 template<>
 void testObj::test<2>(void)
@@ -66,10 +66,19 @@ void testObj::test<2>(void)
   ensure_equals("some nodes have been changed / 2", changed_.size(), 0u);
 }
 
-// TODO: test getting name of meta alert
+// test getting name of meta alert
 template<>
 template<>
 void testObj::test<5>(void)
 {
+  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlert("some alert") ) );
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("no nodes changed", changed_.size(), 1u);
+  const string resp("[samename] some alert");
+  ensure_equals("invalid name",
+                changed_[0]->getMetaAlert()->getName().get(), resp);
 }
 } // namespace tut
