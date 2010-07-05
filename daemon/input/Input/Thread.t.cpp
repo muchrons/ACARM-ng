@@ -8,6 +8,7 @@
 #include "Base/Threads/ThreadJoiner.hpp"
 #include "Persistency/IO/create.hpp"
 #include "Input/Thread.hpp"
+#include "Input/TestConnection.t.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -44,7 +45,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   TestClass(void):
     tr_(new TestReader),
     r_(tr_),
-    conn_( Persistency::IO::create().release() ),
+    conn_( createUserStub() ),
     t_( conn_->createNewTransaction("test_thread") ),
     cd_( new CommonData(conn_, t_) )
   {

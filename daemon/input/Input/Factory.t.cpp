@@ -8,6 +8,7 @@
 #include "Persistency/IO/create.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Input/Factory.hpp"
+#include "Input/TestConnection.t.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace std;
@@ -19,16 +20,16 @@ namespace
 struct TestClass: public TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    conn_( Persistency::IO::create() ),
+    conn_( createUserStub() ),
     t_( conn_->createNewTransaction("factory_test") ),
     cd_( new CommonData(conn_, t_) )
   {
   }
 
-  Core::Types::AlertsFifo                    q_;
-  std::auto_ptr<Persistency::IO::Connection> conn_;
-  Persistency::IO::Transaction               t_;
-  CommonDataPtrNN                            cd_;
+  Core::Types::AlertsFifo          q_;
+  Persistency::IO::ConnectionPtrNN conn_;
+  Persistency::IO::Transaction     t_;
+  CommonDataPtrNN                  cd_;
 };
 
 typedef tut::test_group<TestClass> factory;
