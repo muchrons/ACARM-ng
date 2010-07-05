@@ -73,4 +73,18 @@ void testObj::test<3>(void)
   ensure_equals("invalid ID1 returned (call 2)", m.get(ppc_, pps_, "some new entry 1"), 666u);
 }
 
+// test if instances one-after-another are allowed (two at once are NOT)
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  {
+    IDMap m1(42);
+  }
+  // and second instance...
+  {
+    IDMap m2(42);
+  }
+}
+
 } // namespace tut

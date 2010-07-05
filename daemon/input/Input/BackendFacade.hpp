@@ -12,8 +12,6 @@
 #include "Input/CommonData.hpp"
 #include "Input/detail/AnalyzersMap.hpp"
 
-// TODO
-
 namespace Input
 {
 /** \brief persistent storage communication simplification layer.
@@ -29,7 +27,7 @@ class BackendFacade: public Core::Types::BackendFacade
 public:
   /** \brief create object's instance.
    *  \param conn         connection object to use.
-   *  \param name         name of filter this object is created for.
+   *  \param name         name of input this object is created for.
    *  \param analyzersMap map of ID->analyzer (internal input's cache).
    *  \param commonData   common data, shared between all inputs.
    */
