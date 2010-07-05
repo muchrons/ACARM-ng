@@ -19,4 +19,5 @@
 38 consider running persistency cleanup in a separate thread - it takes a lot of time...
 39 consider some soft of mchanism to prevent crashes when connection lives shorter than transaction (ex.: keeping connection in transaction?).
 40 fix TODOs in QueueRestorer - structure is broken now...
-41
+41 consider adding 'descrioption' to meta-alert to reflect extra correlation pieces of information (like details on what bases these alerts have been correlated).
+42
