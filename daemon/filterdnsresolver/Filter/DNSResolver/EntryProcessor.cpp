@@ -32,8 +32,10 @@ void EntryProcessor::processHosts(Persistency::GraphNodePtrNN              leaf,
   typedef Persistency::Alert::ReportedHosts::const_iterator ConstIterator;
   for(ConstIterator it=rh.begin(); it!=rh.end(); ++it)
   {
+    // TODO: body of this loop has to be try-catched, so that single unknown host
+    //       will not block resolving others (and not flood log!)
     HostPtrNN host=*it;             // non-const pointer to set host name
-    if( host->getName()!=NULL )     // if host laready have DNS name skip it
+    if( host->getName()!=NULL )     // if host already have DNS name skip it
       continue;
 
     // if no entry, try getting one
