@@ -5,6 +5,9 @@
 #ifndef INCLUDE_PERSISTENCY_IO_STUBS_DYNAMICCONFIG_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_STUBS_DYNAMICCONFIG_HPP_FILE
 
+#include <map>
+#include <string>
+
 #include "Persistency/IO/DynamicConfig.hpp"
 
 namespace Persistency
@@ -31,9 +34,14 @@ public:
   int callsReadConst_;  ///< calls to readConst()
 
 private:
-  virtual void writeImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/, const Value &/*value*/);
-  virtual ValueNULL readImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/);
-  virtual Value readConstImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/);
+  virtual void writeImpl(Persistency::IO::Transaction &t, const Key &key, const Value &value);
+  virtual ValueNULL readImpl(Persistency::IO::Transaction &t, const Key &key);
+  virtual Value readConstImpl(Persistency::IO::Transaction &t, const Key &key);
+
+  typedef std::map<std::string, std::string> DataMap;
+  typedef std::map<std::string, DataMap>     OwnerMap;
+
+  OwnerMap owner_;
 }; // class DynamicConfig
 
 } // namespace Stubs

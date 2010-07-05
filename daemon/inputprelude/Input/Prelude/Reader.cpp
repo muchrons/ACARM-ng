@@ -17,7 +17,7 @@ namespace Prelude
 {
 
 Reader::Reader(const std::string& profile, const std::string& config):
-  Input::Reader(profile),
+  Input::Reader(profile), // TODO: this should be "prelude"
   client_( new Client(profile, config, PRELUDE_CONNECTION_PERMISSION_IDMEF_READ) )
 {
   assert( client_.get()!=NULL );

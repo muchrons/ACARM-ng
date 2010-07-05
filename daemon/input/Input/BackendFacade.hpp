@@ -9,9 +9,8 @@
 
 #include "Persistency/GraphNode.hpp"
 #include "Core/Types/BackendFacade.hpp"
-#include "Input/PersistencyProxy.hpp"
-
-// TODO
+#include "Input/CommonData.hpp"
+#include "Input/detail/AnalyzersMap.hpp"
 
 namespace Input
 {
@@ -23,16 +22,19 @@ namespace Input
  * \note this object allows transaction's to take place, but only on persistent
  *       level, i.e. rollbacking transaction does not change user objects.
  */
-class BackendFacade: public  Core::Types::BackendFacade,
-                     private PersistencyProxy
+class BackendFacade: public Core::Types::BackendFacade
 {
 public:
   /** \brief create object's instance.
-   *  \param conn connection object to use.
-   *  \param name name of filter this object is created for.
+   *  \param conn         connection object to use.
+   *  \param name         name of input this object is created for.
+   *  \param analyzersMap map of ID->analyzer (internal input's cache).
+   *  \param commonData   common data, shared between all inputs.
    */
   BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-                const std::string                &name);
+                const std::string                &name,
+                detail::AnalyzersMap             &analyzersMap,
+                CommonDataPtrNN                   commonData);
 
   /** \brief gets mapping from given originalID to analyzer. if ID's not mapped, new entry's added.
    *  \param originalID ID returned by input.
@@ -49,8 +51,8 @@ public:
                                          const Persistency::Analyzer::IP              *ip);
 
 private:
-  // PersistencyProxy's method implementation
-  virtual void saveMapping(const std::string &inputID, Persistency::Analyzer::ID id);
+  detail::AnalyzersMap &analyzersMap_;
+  CommonDataPtrNN       commonData_;
 }; // class BackendFacade
 
 } // namespace Input

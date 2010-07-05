@@ -33,6 +33,9 @@ idmef_alert_t* IDMEFParser::extractAlert(idmef_message_t *msg) const
   if(msg==NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Message is null");
   if( idmef_message_get_type(msg)!=IDMEF_MESSAGE_TYPE_ALERT )
+    // TODO: make this exception a separate type, so that it can be ignored later on,
+    //       since logs are flooded with error messages about heartbeats, which is
+    //       irrelevant for user.
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Heartbeats are not supported");
   return idmef_message_get_alert(msg);
 }
