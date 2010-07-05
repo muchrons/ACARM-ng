@@ -42,7 +42,8 @@ Persistency::MetaAlert::Name Strategy::getMetaAlertName(
   // thisEntry and otherEntry must containt the same Alert name
   assert( canCorrelate(thisEntry, otherEntry) );
   stringstream ss;
-  ss << "[samename] " << thisEntry.node_->getMetaAlert().getName().get();
+  ss << "[samename] this entry: " << thisEntry.node_->getMetaAlert().getName().get()
+     << ", other entry: " << otherEntry.node_->getMetaAlert().getName().get();
   return ss.str();
 }
 
