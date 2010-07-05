@@ -18,10 +18,11 @@ namespace Input
 class Thread
 {
 public:
-  /** \brief create object.
-   *  \param reader reader to run in background.
-   *  \param conn   data base connection to be used.
-   *  \param output queue to output data to.
+  /** \brief create object for thread.
+   *  \param reader     reader to run in background.
+   *  \param conn       data base connection to be used.
+   *  \param output     queue to output data to.
+   *  \param commonData common data, shared between all inputs.
    */
   Thread(ReaderPtrNN                       reader,
          Persistency::IO::ConnectionPtrNN  conn,
