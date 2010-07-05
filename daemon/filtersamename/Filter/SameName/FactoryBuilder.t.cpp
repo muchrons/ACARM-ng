@@ -65,7 +65,7 @@ template<>
 void testObj::test<2>(void)
 {
   FactoryBuilder::FactoryPtr ptr=build();
-  ensure("NULL pointere returned", ptr.get()!=NULL );
+  ensure("NULL pointer returned", ptr.get()!=NULL );
 }
 
 // test throw on missing timeout

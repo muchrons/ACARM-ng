@@ -23,13 +23,14 @@ struct Data
 }; // struct Data
 
 
+// TODO: doxygen to be fixed.
 /** \brief filter detecting multiple attacks from multiple hosts implementation.
  */
 class Strategy: public Filter::Simple::Strategy<Data>
 {
 public:
   /** \brief create instance.
-   *  \param timeout time observed node shoudl be in queue.
+   *  \param timeout time observed node should be in queue.
    */
   explicit Strategy(unsigned int timeout);
 

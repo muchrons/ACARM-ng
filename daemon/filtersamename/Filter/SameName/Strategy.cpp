@@ -31,6 +31,7 @@ Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
 
 bool Strategy::isEntryInteresting(const NodeEntry /*thisEntry*/) const
 {
+  // TODO: meta-alert, not alert
   // return true beacause Alert name is always not null
   return true;
 }
@@ -42,6 +43,8 @@ Persistency::MetaAlert::Name Strategy::getMetaAlertName(
   // thisEntry and otherEntry must containt the same Alert name
   assert( canCorrelate(thisEntry, otherEntry) );
   stringstream ss;
+  // TODO: notice that you correlate m-as with with same name, so description
+  //       is now redundant - should be '[samename] <...getName()...>'.
   ss << "[samename] this entry: " << thisEntry.node_->getMetaAlert().getName().get()
      << ", other entry: " << otherEntry.node_->getMetaAlert().getName().get();
   return ss.str();
@@ -54,9 +57,8 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   assert( isEntryInteresting(thisEntry)  );
   assert( isEntryInteresting(otherEntry) );
   // ok - both names are the same
-  if(thisEntry.node_->getMetaAlert().getName() == otherEntry.node_->getMetaAlert().getName() )
+  if( thisEntry.node_->getMetaAlert().getName() == otherEntry.node_->getMetaAlert().getName() )
     return true;
-
   return false;
 }
 
