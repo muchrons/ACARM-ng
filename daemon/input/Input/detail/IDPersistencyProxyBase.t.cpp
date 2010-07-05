@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <string>
 
+#include "Logger/Logger.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Input/detail/IDPersistencyProxyBase.hpp"
 #include "Input/TestConnection.t.hpp"
@@ -22,6 +23,7 @@ struct TestProxy: public IDPersistencyProxyBase
                      Persistency::IO::Transaction     &t):
     IDPersistencyProxyBase("TestOwner", conn, t)
   {
+    LOGMSG_DEBUG(log_, "hello test! (compile-test for logger presence");
   }
 
   Persistency::IO::DynamicConfig &get(void)
