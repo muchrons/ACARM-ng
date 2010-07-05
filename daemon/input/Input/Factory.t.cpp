@@ -5,7 +5,6 @@
 #include <tut.h>
 
 #include "ConfigIO/Singleton.hpp"
-#include "Persistency/IO/create.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Input/Factory.hpp"
 #include "Input/TestConnection.t.hpp"

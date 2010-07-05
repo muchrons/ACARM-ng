@@ -4,7 +4,6 @@
  */
 #include <tut.h>
 
-#include "Persistency/IO/create.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Input/IDPersistencyProxyCommon.hpp"
 #include "Input/TestConnection.t.hpp"
