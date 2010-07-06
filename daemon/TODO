@@ -20,5 +20,5 @@
 40 fix TODOs in QueueRestorer - structure is broken now...
 41 consider adding 'descrioption' to meta-alert to reflect extra correlation pieces of information (like details on what bases these alerts have been correlated).
 42 messages buffering in triggers should have some size limit (not to crash applicaiton when destination sertvice is permanently down).
-43 consider creating OID (ObjectID<>) template to have generic ID for identifiers in the system (Analyzers, MetaAlerts, etc...).
-44
+44 logs are sometimes flooded with reports about trying to create a cycle in meta-alerts - looks like some "prerequisites" are required...
+45
