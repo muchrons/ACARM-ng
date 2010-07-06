@@ -21,8 +21,7 @@ public:
    *  \param name  name of the processor.
    *  \param msg   message to represent.
    */
-  template<typename T>
-  Exception(const Location &where, const char *name, const T &msg):
+  Exception(const Location &where, const std::string &name, const std::string &msg):
     Core::Types::Proc::Exception(where, name, msg)
   {
   }
