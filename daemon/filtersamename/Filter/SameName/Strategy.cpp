@@ -14,6 +14,14 @@
 using namespace std;
 using namespace Persistency;
 
+namespace
+{
+template<typename T>
+void ignore(const T&)
+{
+
+}
+}
 namespace Filter
 {
 namespace SameName
@@ -31,8 +39,7 @@ Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
 
 bool Strategy::isEntryInteresting(const NodeEntry /*thisEntry*/) const
 {
-  // TODO: meta-alert, not alert
-  // return true beacause Alert name is always not null
+  // return true beacause meta-alert name is always not null
   return true;
 }
 
@@ -40,13 +47,11 @@ Persistency::MetaAlert::Name Strategy::getMetaAlertName(
                                               const NodeEntry thisEntry,
                                               const NodeEntry otherEntry) const
 {
-  // thisEntry and otherEntry must containt the same Alert name
+  // thisEntry and otherEntry must containt the same meta-alert name
   assert( canCorrelate(thisEntry, otherEntry) );
+  ignore(otherEntry);
   stringstream ss;
-  // TODO: notice that you correlate m-as with with same name, so description
-  //       is now redundant - should be '[samename] <...getName()...>'.
-  ss << "[samename] this entry: " << thisEntry.node_->getMetaAlert().getName().get()
-     << ", other entry: " << otherEntry.node_->getMetaAlert().getName().get();
+  ss << "[samename] " << thisEntry.node_->getMetaAlert().getName().get();
   return ss.str();
 }
 

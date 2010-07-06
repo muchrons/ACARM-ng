@@ -77,7 +77,7 @@ void testObj::test<5>(void)
 
   s_.process(sampleLeaf_, changed_);
   ensure_equals("no nodes changed", changed_.size(), 1u);
-  const string resp("[samename] this entry: some alert, other entry: some alert");
+  const string resp("[samename] some alert");
   ensure_equals("invalid name",
                 changed_[0]->getMetaAlert()->getName().get(), resp);
 }
