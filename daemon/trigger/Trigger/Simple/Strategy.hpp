@@ -33,6 +33,9 @@ protected:
    *  \param cfg  config to be used for this trigger.
    */
   Strategy(const std::string &name, const ThresholdConfig &cfg);
+  /** \brief deallocate object and log it's state uppon exit.
+   */
+  ~Strategy(void);
 
 private:
   virtual bool matchesCriteria(const Persistency::GraphNodePtrNN &n) const;

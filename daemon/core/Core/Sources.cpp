@@ -11,10 +11,22 @@ using namespace Persistency;
 namespace Core
 {
 
+namespace
+{
+Input::CommonDataPtrNN createInputsCommonData(Persistency::IO::ConnectionPtrNN conn)
+{
+  // in a signle transaction read content required for common data and return created object
+  Persistency::IO::Transaction t( conn->createNewTransaction("input_commondata_read") );
+  Input::CommonDataPtrNN       cdPtr( new Input::CommonData(conn, t) );
+  t.commit();           // commit transaction to prevent strange warnings in logs.
+  return cdPtr;
+} // createInputsCommonData()
+} // unnamed namespace
+
 Sources::Sources(void):
   log_("core.sources"),
   conn_( IO::create() ),
-  inputs_( Input::create(queue_) )
+  inputs_( Input::create( queue_, createInputsCommonData(conn_) ) )
 {
   LOGMSG_INFO(log_, "created");
 }

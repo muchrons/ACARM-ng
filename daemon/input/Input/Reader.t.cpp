@@ -6,7 +6,7 @@
 #include <memory>
 
 #include "Input/Reader.hpp"
-#include "Persistency/IO/create.hpp"
+#include "Input/TestConnection.t.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -76,8 +76,11 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Persistency::IO::ConnectionPtrNN  conn( Persistency::IO::create().release() );
-  BackendFacade                     bf(conn, "testemall");
+  Persistency::IO::ConnectionPtrNN  conn( createUserStub() );
+  Persistency::IO::Transaction      t( conn->createNewTransaction("test_reader") );
+  detail::AnalyzersMap              am;
+  CommonDataPtrNN                   cd( new CommonData(conn, t) );
+  BackendFacade                     bf(conn, "testemall", am, cd);
   Reader::DataPtr                   tmp  =r_->read(bf);
   Persistency::Alert               *alert=tmp.get();
   ensure("NULL pointer returned", alert!=NULL);

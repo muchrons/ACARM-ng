@@ -25,9 +25,11 @@ typedef Commons::Factory::AbstractFactorySingleton<Reader> Factory;
 typedef std::vector<InterfacePtrNN>                        InputsCollection;
 
 /** \brief creates all inputs configured in config file.
+ *  \param output     output queue to write to.
+ *  \param commonData data shared between inputs.
  *  \return collection of inputs.
  */
-InputsCollection create(Core::Types::AlertsFifo &output);
+InputsCollection create(Core::Types::AlertsFifo &output, CommonDataPtrNN commonData);
 
 } // namespace Input
 

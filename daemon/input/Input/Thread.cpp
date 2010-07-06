@@ -7,23 +7,29 @@
 
 #include "Input/Thread.hpp"
 #include "Input/BackendFacade.hpp"
+#include "Input/detail/AnalyzersMap.hpp"
 
 namespace Input
 {
 
 Thread::Thread(ReaderPtrNN                       reader,
                Persistency::IO::ConnectionPtrNN  conn,
-               Core::Types::AlertsFifo          &output):
+               Core::Types::AlertsFifo          &output,
+               CommonDataPtrNN                   commonData):
   reader_(reader),
+  log_( Logger::NodeName( "input.thread",
+                          Logger::NodeName::removeInvalidChars( reader->getName() ).c_str() ) ),
   conn_(conn),
   output_(&output),
-  log_( Logger::NodeName( "input.thread",
-                          Logger::NodeName::removeInvalidChars( reader->getName() ).c_str() ) )
+  commonData_(commonData)
 {
 }
 
 void Thread::operator()(void)
 {
+  // cache to be used internaly (that's why i does not need to be class' field)
+  detail::AnalyzersMap analyzersMap;
+
   while(true)
   {
     assert( output_!=NULL );
@@ -31,11 +37,11 @@ void Thread::operator()(void)
 
     try
     {
-      boost::this_thread::interruption_point();         // check for interruption
-      BackendFacade   bf( conn_, reader_->getName() );  // create backedn facade for this run
-      Reader::DataPtr ptr=reader_->read(bf, 30);        // timeout every 30[s]
-      bf.commitChanges();                               // accept changes introduced by facede
-      if( ptr.get()!=NULL )                             // if data is valid, forward it
+      boost::this_thread::interruption_point();                                 // check for interruption
+      BackendFacade   bf(conn_, reader_->getName(), analyzersMap, commonData_); // create backedn facade for this run
+      Reader::DataPtr ptr=reader_->read(bf, 30);                                // timeout every 30[s]
+      bf.commitChanges();                                                       // accept changes introduced by facede
+      if( ptr.get()!=NULL )                                                     // if data is valid, forward it
       {
         LOGMSG_DEBUG(log_, "got new alert");
         output_->push(ptr);
