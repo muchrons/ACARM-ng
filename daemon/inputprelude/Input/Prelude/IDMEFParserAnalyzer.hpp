@@ -31,7 +31,6 @@ public:
   {
     /** \brief create execption with given message.
      *  \param where place where exception has been thrown.
-     *  \param msg   message to represent.
      */
     explicit ExceptionMissingID(const Location &where):
       Exception(where, "analyzer ID is not present in data")
