@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <boost/scoped_ptr.hpp>
+
 #include "TestHelpers/Persistency/TestStubs.hpp"
 #include "TestHelpers/Input/BackendFacadeStub.hpp"
 
@@ -19,9 +21,11 @@ struct TestBase: public Persistency::TestStubs
 {
   TestBase(void);
 
-  ::Persistency::IO::ConnectionPtrNN conn_;
-  ::Persistency::IO::Transaction     t_;
-  BackendFacadeStub                  bf_;
+  ::Persistency::IO::ConnectionPtrNN                  conn_;
+private:
+  boost::scoped_ptr< ::Persistency::IO::Transaction > trans_;
+public:
+  BackendFacadeStub                                   bf_;
 };
 
 } // namespace Input
