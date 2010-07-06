@@ -9,7 +9,7 @@ namespace Persistency
 
 AnalyzerPtrNN makeNewAnalyzer(const char *name)
 {
-  return AnalyzerPtrNN( new Analyzer(name, NULL, NULL, NULL) );
+  return AnalyzerPtrNN( new Analyzer(42u, name, NULL, NULL, NULL) );
 }
 
 AlertPtrNN makeNewAlert(void)

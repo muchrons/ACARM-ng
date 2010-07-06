@@ -9,10 +9,12 @@
 namespace Persistency
 {
 
-Analyzer::Analyzer(const Name            &name,
+Analyzer::Analyzer(const ID               id,
+                   const Name            &name,
                    const Version         &version,
                    const OperatingSystem &os,
                    const IP              *ip):
+  id_(id),
   name_(name),
   version_(version),
   os_(os),
@@ -40,11 +42,18 @@ const Analyzer::IP *Analyzer::getIP(void) const
   return ip_.get();
 }
 
+Analyzer::ID Analyzer::getID(void) const
+{
+  return id_;
+}
+
 bool Analyzer::operator==(const Analyzer &other) const
 {
   if(this==&other)
     return true;
 
+  if( getID()!=other.getID() )
+    return false;
   if( getName()!=other.getName() )
     return false;
   if( getVersion()!=other.getVersion() )

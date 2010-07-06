@@ -20,7 +20,7 @@ struct TestClass: private TestBase
 {
   TestClass(void):
     name_("some name"),
-    analyzer_( new Analyzer("analyzer name", NULL, NULL, NULL) ),
+    analyzer_( new Analyzer(99, "analyzer name", NULL, NULL, NULL) ),
     analyzers_(analyzer_),
     detected_(),
     created_(),
@@ -104,14 +104,14 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const AnalyzerPtrNN          analyzer1( new Analyzer("analyzer name",
+  const AnalyzerPtrNN          analyzer1( new Analyzer(11u, "analyzer name",
                                                        NULL, NULL, NULL) );
   const Alert::SourceAnalyzers anlzs1(analyzer1);
   const Alert::ReportedHosts hosts1( generateReportedHosts(1) );
   const Alert a1(name_, anlzs1, &detected_, created_, severity_,
                  certanity_, description_, hosts1, targetHosts_);
 
-  const AnalyzerPtrNN          analyzer2( new Analyzer("analyzer name",
+  const AnalyzerPtrNN          analyzer2( new Analyzer(11u, "analyzer name",
                                                        NULL, NULL, NULL) );
   const Alert::SourceAnalyzers anlzs2(analyzer2);
   const Alert::ReportedHosts hosts2( generateReportedHosts(1) );
@@ -136,7 +136,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const AnalyzerPtrNN          tmp( new Analyzer("different", NULL, NULL, NULL) );
+  const AnalyzerPtrNN          tmp( new Analyzer(123u, "different", NULL, NULL, NULL) );
   const Alert::SourceAnalyzers sa(tmp);
   const Alert                  a(name_, sa, &detected_, created_,
                                  severity_, certanity_, description_,
