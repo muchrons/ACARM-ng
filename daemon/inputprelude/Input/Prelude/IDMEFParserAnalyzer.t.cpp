@@ -6,10 +6,11 @@
 #include <string>
 #include <memory>
 #include <string>
+#include <prelude-client.h>
 
-#include "prelude-client.h"
 #include "Input/Prelude/ExceptionParse.hpp"
 #include "Input/Prelude/IDMEFParserAnalyzer.hpp"
+#include "TestHelpers/Input/TestBase.hpp"
 
 using namespace std;
 using namespace Input::Prelude;
@@ -19,7 +20,7 @@ using namespace Persistency;
 namespace
 {
 
-struct TestClass
+struct TestClass: TestHelpers::Input::TestBase
 {
   TestClass():
     id_("Death/Star/id/42"),
@@ -122,19 +123,22 @@ void testObj::test<4>(void)
   if (idmef_analyzer_new(&analyzer)<0)
     tut::fail("Unable to create analyzer object.");
 
+  prelude_string_t *ps_id;
   prelude_string_t *ps_name;
   prelude_string_t *ps_ostype;
   prelude_string_t *ps_osversion;
   prelude_string_t *ps_address;
 
-  prelude_string_new_dup(&ps_name,name_.c_str());
-  prelude_string_new_dup(&ps_ostype,ostype_.c_str());
-  prelude_string_new_dup(&ps_osversion,osversion_.c_str());
-  prelude_string_new_dup(&ps_address,"::1");
+  prelude_string_new_dup(&ps_id, id_.c_str() );
+  prelude_string_new_dup(&ps_name, name_.c_str() );
+  prelude_string_new_dup(&ps_ostype, ostype_.c_str() );
+  prelude_string_new_dup(&ps_osversion, osversion_.c_str() );
+  prelude_string_new_dup(&ps_address, "::1");
 
-  idmef_analyzer_set_name(analyzer,ps_name);
-  idmef_analyzer_set_ostype(analyzer,ps_ostype);
-  idmef_analyzer_set_osversion(analyzer,ps_osversion);
+  idmef_analyzer_set_analyzerid(analyzer, ps_id);
+  idmef_analyzer_set_name(analyzer, ps_name);
+  idmef_analyzer_set_ostype(analyzer, ps_ostype);
+  idmef_analyzer_set_osversion(analyzer, ps_osversion);
 
   idmef_node_t *node;
   idmef_analyzer_new_node(analyzer, &node);
@@ -175,16 +179,19 @@ void testObj::test<6>(void)
   if (idmef_analyzer_new(&analyzer)<0)
     tut::fail("Unable to create analyzer object.");
 
+  prelude_string_t *ps_id;
   prelude_string_t *ps_ostype;
   prelude_string_t *ps_osversion;
   prelude_string_t *ps_address;
 
-  prelude_string_new_dup(&ps_ostype,ostype_.c_str());
-  prelude_string_new_dup(&ps_osversion,osversion_.c_str());
-  prelude_string_new_dup(&ps_address,address_.c_str());
+  prelude_string_new_dup(&ps_id, id_.c_str() );
+  prelude_string_new_dup(&ps_ostype, ostype_.c_str() );
+  prelude_string_new_dup(&ps_osversion, osversion_.c_str() );
+  prelude_string_new_dup(&ps_address, address_.c_str() );   // TODO: memleak
 
-  idmef_analyzer_set_ostype(analyzer,ps_ostype);
-  idmef_analyzer_set_osversion(analyzer,ps_osversion);
+  idmef_analyzer_set_analyzerid(analyzer, ps_id);
+  idmef_analyzer_set_ostype(analyzer, ps_ostype);
+  idmef_analyzer_set_osversion(analyzer, ps_osversion);
 
   idmef_node_t *node;
   idmef_analyzer_new_node(analyzer, &node);
@@ -199,7 +206,7 @@ void testObj::test<6>(void)
   idmef_analyzer_destroy(analyzer);
 }
 
-//analyser without an osversion or ostype
+// analyser without an osversion or ostype
 template<>
 template<>
 void testObj::test<7>(void)
@@ -208,13 +215,16 @@ void testObj::test<7>(void)
   if (idmef_analyzer_new(&analyzer)<0)
     tut::fail("Unable to create analyzer object.");
 
+  prelude_string_t *ps_id;
   prelude_string_t *ps_name;
   prelude_string_t *ps_address;
 
-  prelude_string_new_dup(&ps_name,name_.c_str());
-  prelude_string_new_dup(&ps_address,address_.c_str());
+  prelude_string_new_dup(&ps_id, id_.c_str() );
+  prelude_string_new_dup(&ps_name, name_.c_str() );
+  prelude_string_new_dup(&ps_address, address_.c_str() );   // TODO: mem-leak
 
-  idmef_analyzer_set_name(analyzer,ps_name);
+  idmef_analyzer_set_analyzerid(analyzer, ps_id);
+  idmef_analyzer_set_name(analyzer, ps_name);
 
   idmef_node_t *node;
   idmef_analyzer_new_node(analyzer, &node);
@@ -238,17 +248,20 @@ void testObj::test<8>(void)
   if (idmef_analyzer_new(&analyzer)<0)
     tut::fail("Unable to create analyzer object.");
 
+  prelude_string_t *ps_id;
   prelude_string_t *ps_name;
   prelude_string_t *ps_ostype;
   prelude_string_t *ps_osversion;
 
-  prelude_string_new_dup(&ps_name,name_.c_str());
-  prelude_string_new_dup(&ps_ostype,ostype_.c_str());
-  prelude_string_new_dup(&ps_osversion,osversion_.c_str());
+  prelude_string_new_dup(&ps_id, id_.c_str() );
+  prelude_string_new_dup(&ps_name, name_.c_str() );
+  prelude_string_new_dup(&ps_ostype, ostype_.c_str() );
+  prelude_string_new_dup(&ps_osversion, osversion_.c_str() );
 
-  idmef_analyzer_set_name(analyzer,ps_name);
-  idmef_analyzer_set_ostype(analyzer,ps_ostype);
-  idmef_analyzer_set_osversion(analyzer,ps_osversion);
+  idmef_analyzer_set_analyzerid(analyzer, ps_id);
+  idmef_analyzer_set_name(analyzer, ps_name);
+  idmef_analyzer_set_ostype(analyzer, ps_ostype);
+  idmef_analyzer_set_osversion(analyzer, ps_osversion);
 
   IDMEFParserAnalyzer an(analyzer);
   idmef_analyzer_destroy(analyzer);
