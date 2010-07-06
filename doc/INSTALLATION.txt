@@ -67,7 +67,7 @@ PostgreSQL
 ----------
  1. create 'acarm_ng' data base on the server.
  2. create valid data base schema for this data base:
-    $ cd acarmng/data_model
+    $ cd acarmng/data_model/<database>
     $ ./init_db
 
 note: if you want to run tests create 'acarm_ng_test' data base and use
