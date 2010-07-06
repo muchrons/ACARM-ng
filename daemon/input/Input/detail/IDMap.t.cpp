@@ -49,7 +49,7 @@ template<>
 void testObj::test<1>(void)
 {
   IDMap m(666);
-  ensure_equals("invalid ID returned", m.get(ppc_, pps_, "some new entry"), 666u);
+  ensure_equals("invalid ID returned", m.get(ppc_, pps_, "some new entry").get(), 666u);
 }
 
 // test getting new ID multiple times
@@ -58,8 +58,8 @@ template<>
 void testObj::test<2>(void)
 {
   IDMap m(666);
-  ensure_equals("invalid ID1 returned", m.get(ppc_, pps_, "some new entry 1"), 666u);
-  ensure_equals("invalid ID2 returned", m.get(ppc_, pps_, "some new entry 2"), 667u);
+  ensure_equals("invalid ID1 returned", m.get(ppc_, pps_, "some new entry 1").get(), 666u);
+  ensure_equals("invalid ID2 returned", m.get(ppc_, pps_, "some new entry 2").get(), 667u);
 }
 
 // test getting ID for existing entry
@@ -68,9 +68,9 @@ template<>
 void testObj::test<3>(void)
 {
   IDMap m(666);
-  ensure_equals("invalid ID1 returned (call 1)", m.get(ppc_, pps_, "some new entry 1"), 666u);
-  ensure_equals("invalid ID2 returned (call 1)", m.get(ppc_, pps_, "some new entry 2"), 667u);
-  ensure_equals("invalid ID1 returned (call 2)", m.get(ppc_, pps_, "some new entry 1"), 666u);
+  ensure_equals("invalid ID1 returned (call 1)", m.get(ppc_, pps_, "some new entry 1").get(), 666u);
+  ensure_equals("invalid ID2 returned (call 1)", m.get(ppc_, pps_, "some new entry 2").get(), 667u);
+  ensure_equals("invalid ID1 returned (call 2)", m.get(ppc_, pps_, "some new entry 1").get(), 666u);
 }
 
 // test if instances one-after-another are allowed (two at once are NOT)

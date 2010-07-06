@@ -23,8 +23,7 @@ Reader::Reader(const std::string& profile, const std::string& config):
   assert( client_.get()!=NULL );
 }
 
-// TODO: use backend facade to get/create analyzer(s)
-Reader::DataPtr Reader::read(BackendFacade &/*bf*/, const unsigned int timeout)
+Reader::DataPtr Reader::read(BackendFacade &bf, const unsigned int timeout)
 {
   DataPtr tmp;
   assert(tmp.get()==NULL);
@@ -35,7 +34,7 @@ Reader::DataPtr Reader::read(BackendFacade &/*bf*/, const unsigned int timeout)
   if (!message.get())
     return tmp;
 
-  const IDMEFParser ip(message.get());
+  const IDMEFParser ip( message.get(), bf );
   tmp.reset(new Persistency::Alert(ip.getName(),
                                    ip.getAnalyzers(),
                                    NULL,

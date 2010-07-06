@@ -11,6 +11,7 @@
 #include <boost/operators.hpp>
 #include <inttypes.h>
 
+#include "Base/ObjectID.hpp"
 #include "Base/NullValue.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/LimitedString.hpp"
@@ -27,7 +28,7 @@ class Analyzer: private boost::noncopyable,
 {
 public:
   /** \brief object-id type. */
-  typedef uint64_t                        ID;
+  typedef Base::ObjectID<Analyzer>        ID;
   /** \brief name of an analyzer. */
   typedef Commons::LimitedString<128>     Name;
   /** \brief analyzer's version. */
@@ -36,12 +37,14 @@ public:
   typedef Commons::LimitedNULLString<128> OperatingSystem;
 
   /** \brief creates analyzer.
+   *  \param id      object's ID.
    *  \param name    name of an analyzer.
    *  \param version analyzer's version.
    *  \param os      operating system name/version.
    *  \param ip      IP analyzer's running on.
    */
-  Analyzer(const Name            &name,
+  Analyzer(const ID               id,
+           const Name            &name,
            const Version         &version,
            const OperatingSystem &os,
            const IP              *ip);
@@ -62,6 +65,10 @@ public:
    *  \return IP of analyzer or NULL.
    */
   const IP *getIP(void) const;
+  /** \brief gets object ID.
+   *  \return ID assigned to this object.
+   */
+  ID getID(void) const;
   /** \brief check if classes are equal.
    *  \param other element to compare with.
    *  \return true if elements are equal, false otherwise.
@@ -69,6 +76,7 @@ public:
   bool operator==(const Analyzer &other) const;
 
 private:
+  ID                  id_;
   Name                name_;
   Version             version_;
   OperatingSystem     os_;
