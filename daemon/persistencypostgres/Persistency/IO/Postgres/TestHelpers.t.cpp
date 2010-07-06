@@ -91,7 +91,7 @@ MetaAlertPtr makeNewMetaAlert(const char *name, const Timestamp &t)
 
 AnalyzerPtrNN makeNewAnalyzer(const char *name)
 {
-  return AnalyzerPtrNN( new Persistency::Analyzer(name, NULL, NULL, NULL) );
+  return AnalyzerPtrNN( new Persistency::Analyzer(42u, name, NULL, NULL, NULL) );
 }
 
 HostPtr makeNewHost(void)

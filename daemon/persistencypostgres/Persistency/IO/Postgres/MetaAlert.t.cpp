@@ -249,7 +249,7 @@ void testObj::test<8>(void)
                                                                      now ) );
   Persistency::IO::Postgres::MetaAlert malertNode(maPtrNode, t_, dbh_);
 
-  Persistency::Alert::SourceAnalyzers sa( AnalyzerPtrNN( new Analyzer("analyzer name", NULL, NULL, NULL) ) );
+  Persistency::Alert::SourceAnalyzers sa( AnalyzerPtrNN( new Analyzer(42u, "analyzer name", NULL, NULL, NULL) ) );
   Persistency::AlertPtr alertPtr(new Persistency::Alert("abc",
                                                         sa,
                                                         NULL,

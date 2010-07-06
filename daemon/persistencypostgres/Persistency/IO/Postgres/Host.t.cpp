@@ -25,9 +25,9 @@ struct TestClass
 {
   TestClass(void):
     name_("some name"),
-    analyzer_( new Analyzer("analyzer name", NULL, NULL, NULL ) ),
+    analyzer_( new Analyzer(42u, "analyzer name", NULL, NULL, NULL ) ),
     analyzers_( analyzer_ ),
-    analyzerWithNull_( new Analyzer("analyzer name", NULL, NULL, NULL )),
+    analyzerWithNull_( new Analyzer(42u, "analyzer name", NULL, NULL, NULL )),
     analyzersWithNull_( analyzerWithNull_ ),
     detected_(123444),
     created_(123555),
