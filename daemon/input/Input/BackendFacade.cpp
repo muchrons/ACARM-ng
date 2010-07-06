@@ -40,10 +40,8 @@ Persistency::AnalyzerPtrNN BackendFacade::getAnalyzer(const std::string         
   beginTransaction();
   IDPersistencyProxyCommon   idppc( getConnection(), getTransaction() );
   IDPersistencyProxySpecific idpps( getConnection(), getTransaction(), getName() );
-  // TODO: this unique ID should be created and added as a parameter to analyzer's c-tor.
-  commonData_->getIDMap().get(idppc, idpps, originalID);  // TODO...
-  //const Analyzer::ID         id=commonData_->getIDMap().get(idppc, idpps, originalID);  // assign some ID
-  AnalyzerPtrNN              analyzer( new Analyzer(name, version, os, ip) );           // create new instance
+  const Analyzer::ID         id=commonData_->getIDMap().get(idppc, idpps, originalID);  // assign some ID
+  AnalyzerPtrNN              analyzer( new Analyzer(id, name, version, os, ip) );       // create new instance
   analyzersMap_.add(originalID, analyzer);                                              // add to cache
 
   // that's it!

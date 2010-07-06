@@ -1,5 +1,5 @@
 /*
- * IDMEFParserSource.t.cpp
+ * IDMEFParserCommons.t.cpp
  *
  */
 #include <tut.h>

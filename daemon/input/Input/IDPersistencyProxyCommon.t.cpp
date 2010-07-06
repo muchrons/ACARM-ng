@@ -44,7 +44,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid deafult value", idppc_.readNextFreeID(), 0u);
+  ensure_equals("invalid deafult value", idppc_.readNextFreeID().get(), 0u);
 }
 
 // test getting paramter when it was already changed/set
@@ -53,7 +53,7 @@ template<>
 void testObj::test<2>(void)
 {
   idppc_.saveNextFreeID(31u);
-  ensure_equals("invalid deafult value", idppc_.readNextFreeID(), 31u);
+  ensure_equals("invalid deafult value", idppc_.readNextFreeID().get(), 31u);
 }
 
 // test getting paramter when it already existst
@@ -61,8 +61,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensure_equals("invalid value (create)", idppc_.readNextFreeID(), 0u);
-  ensure_equals("invalid value (read)",   idppc_.readNextFreeID(), 0u);
+  ensure_equals("invalid value (create)", idppc_.readNextFreeID().get(), 0u);
+  ensure_equals("invalid value (read)",   idppc_.readNextFreeID().get(), 0u);
 }
 
 } // namespace tut

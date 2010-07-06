@@ -114,4 +114,31 @@ void testObj::test<7>(void)
   TYPE_ASSERT(Type<MD5Ptr>::ReadProxy, std::string);
 }
 
+// test uint64_t
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const string   str="1234";
+  const uint64_t val=Type<uint64_t>::convert(str);
+  ensure_equals("invalid value", boost::lexical_cast<string>(val), str);
+  TYPE_ASSERT(Type<uint64_t>::ReadProxy, std::string);
+}
+
+// test uint64_t - negative value
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  try
+  {
+    Type<uint64_t>::convert("-123");
+    fail("convert() didn't throw on negative value");
+  }
+  catch(const std::runtime_error &ex)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut

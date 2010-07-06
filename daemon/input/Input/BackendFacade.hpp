@@ -36,7 +36,8 @@ public:
                 detail::AnalyzersMap             &analyzersMap,
                 CommonDataPtrNN                   commonData);
 
-  /** \brief gets mapping from given originalID to analyzer. if ID's not mapped, new entry's added.
+  /** \brief gets mapping from given originalID to analyzer. if ID's not mapped,
+   *         new entry's created and returned.
    *  \param originalID ID returned by input.
    *  \param name       analyzer's name.
    *  \param version    analyzer's version.

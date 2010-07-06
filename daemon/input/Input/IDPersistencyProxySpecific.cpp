@@ -21,7 +21,7 @@ IDPersistencyProxySpecific::IDPersistencyProxySpecific(Persistency::IO::Connecti
 
 void IDPersistencyProxySpecific::saveMapping(const std::string &inputID, Persistency::Analyzer::ID id)
 {
-  dynConf_.write( inputID, boost::lexical_cast<string>(id) );
+  dynConf_.write( inputID, boost::lexical_cast<string>( id.get() ) );
 }
 
 } // namespace Input

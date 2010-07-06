@@ -58,6 +58,7 @@ CREATE TABLE    analyzers
 (
   id      int          PRIMARY KEY
                        DEFAULT nextval('analyzers_id_seq'),
+  sys_id  bigint       NOT NULL,
   name    varchar(128) NOT NULL,
   version char(16)     NULL,
   os      varchar(128) NULL,

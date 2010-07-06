@@ -8,7 +8,9 @@
 
 #include <string>
 #include <memory>
+#include <inttypes.h>
 #include <boost/asio/ip/address.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include "Base/NullValue.hpp"
 #include "Commons/LimitedNULLString.hpp"
@@ -162,6 +164,27 @@ public:
   {
     MD5Ptr ret( new MD5( MD5::createFromString( f.c_str() ) ) );
     return ret;
+  }
+}; // struct TypeConvert
+
+
+/** \brief specialization for uint64_t.
+ *
+ *   required on 32-bit machines, since libpqxx does not provide that.
+ */
+template<>
+struct Type<uint64_t>
+{
+  /** \brief helper proxy object to read data to. */
+  typedef std::string ReadProxy;
+
+  /** \brief converting function.
+   *  \param f value to convert from.
+   *  \return destination value type.
+   */
+  static inline uint64_t convert(const ReadProxy &f)
+  {
+    return boost::lexical_cast<uint64_t>(f);
   }
 }; // struct TypeConvert
 

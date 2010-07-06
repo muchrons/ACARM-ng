@@ -10,6 +10,7 @@
 #include "Input/Exception.hpp"
 #include "Input/Prelude/ExceptionParse.hpp"
 #include "Input/Prelude/IDMEFParser.hpp"
+#include "TestHelpers/Input/TestBase.hpp"
 
 using namespace std;
 using namespace Input::Prelude;
@@ -45,7 +46,7 @@ private:
 
 
 
-struct TestClass
+struct TestClass: public TestHelpers::Input::TestBase
 {
   TestClass():
     name_("A stupid string to test ID")
@@ -55,8 +56,7 @@ struct TestClass
     idmef_alert_t *alert;
 
     ret = idmef_message_new_alert(message_.get(), &alert);
-    if ( ret < 0 )
-      throw Input::Exception(SYSTEM_SAVE_LOCATION,"Cannot create new ALERT.");
+    tut::ensure("cannot create new alert", ret>=0);
     prelude_string_t *string1;
     prelude_string_t *string2;
     idmef_alert_new_messageid(alert,&string1);
@@ -69,24 +69,22 @@ struct TestClass
     idmef_analyzer_t *analyzer;
     idmef_alert_new_analyzer(alert,&analyzer,IDMEF_LIST_APPEND);
 
+    prelude_string_t *ps_id;
     prelude_string_t *ps_name;
     prelude_string_t *ps_ostype;
     prelude_string_t *ps_osversion;
     prelude_string_t *ps_address;
 
-    const std::string name("The Analyzer of Luke Skywaker");
-    const std::string ostype("Wojtek linux");
-    const std::string osversion("2.6.129 gr-sec");
-    const std::string address("156.117.92.22");
+    prelude_string_new_dup(&ps_id, "DEath/STar/id/42");
+    prelude_string_new_dup(&ps_name, "Analyzer Of Luke");
+    prelude_string_new_dup(&ps_ostype, "linux");
+    prelude_string_new_dup(&ps_osversion, "2.6.129 gr-sec");
+    prelude_string_new_dup(&ps_address, "1.2.3.4");
 
-    prelude_string_new_dup(&ps_name,name.c_str());
-    prelude_string_new_dup(&ps_ostype,ostype.c_str());
-    prelude_string_new_dup(&ps_osversion,osversion.c_str());
-    prelude_string_new_dup(&ps_address,address.c_str());
-
-    idmef_analyzer_set_name(analyzer,ps_name);
-    idmef_analyzer_set_ostype(analyzer,ps_ostype);
-    idmef_analyzer_set_osversion(analyzer,ps_osversion);
+    idmef_analyzer_set_analyzerid(analyzer, ps_id);
+    idmef_analyzer_set_name(analyzer, ps_name);
+    idmef_analyzer_set_ostype(analyzer, ps_ostype);
+    idmef_analyzer_set_osversion(analyzer, ps_osversion);
 
     idmef_node_t *node;
     idmef_analyzer_new_node(analyzer, &node);
@@ -117,8 +115,7 @@ struct TestClass
   }
 
 private:
-  // TODO: fix indentation
-  MessageWrapper message_;
+  MessageWrapper    message_;
   const std::string name_;
 };
 
@@ -137,7 +134,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const IDMEFParser ip(getMessage());
+  const IDMEFParser ip( getMessage(), bf_);
   ensure_equals("IP",ip.getName().get(),getName());
 }
 
@@ -155,7 +152,7 @@ void testObj::test<2>(void)
 
   idmef_alert_set_create_time(alert, idmeftime);
 
-  const IDMEFParser ip( getMessage() );
+  const IDMEFParser ip( getMessage(), bf_ );
   ensure_equals("Something broken with time", ip.getCreateTime(), time);
 }
 
@@ -187,7 +184,7 @@ void testObj::test<3>(void)
 
   try
   {
-    const IDMEFParser ip( message );
+    const IDMEFParser ip(message, bf_);
   }
   catch(ExceptionParse &)
   {

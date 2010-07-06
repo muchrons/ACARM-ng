@@ -19,7 +19,7 @@ Persistency::Analyzer::ID readNextFreeID(Persistency::IO::ConnectionPtrNN  conn,
   LOGMSG_DEBUG(log, "reading next free ID from data base");
   IDPersistencyProxyCommon        ppc(conn, t);
   const Persistency::Analyzer::ID out=ppc.readNextFreeID();
-  LOGMSG_DEBUG_S(log)<<"read 'next free ID' paramter's value: "<<out;
+  LOGMSG_DEBUG_S(log)<<"read 'next free ID' paramter's value: "<<out.get();
   return out;
 } // readNextFreeID()
 } // namespace

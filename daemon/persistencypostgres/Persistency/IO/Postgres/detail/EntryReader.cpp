@@ -118,7 +118,8 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
   const result ra = SQL( sa.str(), log_ ).exec(t_);
   if(ra.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, sa.str());
-  AnalyzerPtrNN anlz(new Analyzer( Analyzer::Name( ReaderHelper<string>::readAsNotNull(ra[0]["name"]) ),
+  AnalyzerPtrNN anlz(new Analyzer( ReaderHelper<Analyzer::ID::Numeric>::readAsNotNull(ra[0]["sys_id"]),
+                                   Analyzer::Name( ReaderHelper<string>::readAsNotNull(ra[0]["name"]) ),
                                    ReaderHelper<Analyzer::Version>::readAs(ra[0]["version"]),
                                    ReaderHelper<Analyzer::OperatingSystem>::readAs(ra[0]["os"]),
                                    ReaderHelper< Base::NullValue<Analyzer::IP> >::readAs(ra[0]["ip"]).get() ));
