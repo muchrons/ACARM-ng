@@ -10,14 +10,23 @@
 #include <inttypes.h>
 #include <boost/operators.hpp>
 
-// TODO: tests
-
 namespace Base
 {
 
 /** \brief object representing ID of a ginven object type.
  *  \param TOwner type that will be using specialization as its ID. this ensures
  *                IDs from different types will not mess together.
+ *  \code
+ *    class MyClass
+ *    {
+ *    public:
+ *      typedef ObjectID<MyClass> ID;
+ *      // ...
+ *    };
+ *    // ...
+ *    MyClass::ID id(42u);
+ *    // ...
+ *  \endcode
  */
 template<typename TOwner>
 class ObjectID: public boost::equivalent< ObjectID<TOwner> >,
@@ -32,7 +41,7 @@ public:
    *  \param id ID to be assigned.
    *  \note c-tor is implicit on purpose.
    */
-  ObjectID(Numeric id):
+  ObjectID(const Numeric id):
     id_(id)
   {
   }
