@@ -11,6 +11,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/operators.hpp>
 
+#include "Base/ObjectID.hpp"
 #include "Base/Threads/ReadWriteMutex.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/LimitedString.hpp"
@@ -33,34 +34,40 @@ class MetaAlert: private boost::noncopyable,
                  public  boost::equality_comparable<MetaAlert>
 {
 public:
-  /** \brief name for meta alert.
-   */
+  /** \brief ID of a given meta-alert. */
+  typedef Base::ObjectID<MetaAlert>   ID;
+  /** \brief name for meta alert. */
   typedef Commons::LimitedString<256> Name;
-  /** \brief severity difference type.
-   */
+  /** \brief severity difference type. */
   typedef double                      SeverityDelta;
-  /** \brief certanity difference type.
-   */
+  /** \brief certanity difference type. */
   typedef double                      CertaintyDelta;
 
   /** \brief creates meta alert based on exisitng alert.
+   *  \param id    this object's ID.
    *  \param alert to corelate meta-alert with.
    */
-  explicit MetaAlert(AlertPtrNN alert);
+  MetaAlert(const ID id, AlertPtrNN alert);
 
   /** \brief create new meta-alert.
+   *  \param id             this object's ID.
    *  \param name           name for meta alert.
    *  \param severityDelta  initial severity difference.
    *  \param certanityDelta initial certanity difference.
    *  \param url            reference URL, if present.
    *  \param created        creation time.
    */
-  MetaAlert(const Name      &name,
+  MetaAlert(const ID         id,
+            const Name      &name,
             SeverityDelta    severityDelta,
             CertaintyDelta   certanityDelta,
             ReferenceURLPtr  url,
             Timestamp        created);
 
+  /** \brief gets meta-alert's ID.
+   *  \return ID of meta alert.
+   */
+  ID getID(void) const;
   /** \brief gets meta-alert's name.
    *  \return name of meta alert.
    */
@@ -93,6 +100,7 @@ private:
   void updateCertaintyDelta(double delta);
 
   mutable Base::Threads::ReadWriteMutex mutex_;
+  ID                                    id_;
   Name                                  name_;
   SeverityDelta                         severityDelta_;
   CertaintyDelta                        certanityDelta_;

@@ -53,15 +53,23 @@ public:
             IO::ConnectionPtrNN  connection,
             IO::Transaction     &t);
   /** \brief create new node by correlating given ones.
-   *  \param ma         meta alert's data to be used as this one.
-   *  \param connection connection to persistency module.
-   *  \param t          transaction to use for connecting.
-   *  \param children   list of node's children.
+   *  \param name           name of the meta alert to be created.
+   *  \param severityDelta  initial severity delta of meta-alert
+   *  \param certanityDelta initial certanity delta for meta-alert.
+   *  \param url            reference URL (if needed).
+   *  \param created        creation time.
+   *  \param connection     connection to persistency module.
+   *  \param t              transaction to use for connecting.
+   *  \param children       list of node's children.
    */
-  GraphNode(MetaAlertPtrNN            ma,
-            IO::ConnectionPtrNN       connection,
-            IO::Transaction          &t,
-            const NodeChildrenVector &children);
+  GraphNode(const MetaAlert::Name     &name,
+            MetaAlert::SeverityDelta   severityDelta,
+            MetaAlert::CertaintyDelta  certanityDelta,
+            ReferenceURLPtr            url,
+            Timestamp                  created
+            IO::ConnectionPtrNN        connection,
+            IO::Transaction           &t,
+            const NodeChildrenVector  &children);
   /** \brief deallocates object and its resources.
    *
    *  as a part of deallocation process object meta-alert is marked as not
