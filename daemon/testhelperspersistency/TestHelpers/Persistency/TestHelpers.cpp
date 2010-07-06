@@ -47,7 +47,7 @@ MetaAlertPtr makeNewMetaAlert(const char *name)
 
 AnalyzerPtrNN makeNewAnalyzer(const char *name)
 {
-  return AnalyzerPtrNN( new Analyzer(name, NULL, NULL, NULL) );
+  return AnalyzerPtrNN( new Analyzer(42u, name, NULL, NULL, NULL) );
 }
 
 HostPtr makeNewHost(const char *ip, const char *dns)
