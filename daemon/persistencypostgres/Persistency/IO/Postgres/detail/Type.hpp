@@ -45,7 +45,7 @@ struct Type
   {
     return To(f);
   }
-}; // struct TypeConvert
+}; // struct Type
 
 
 /** \brief specialization for LimitedNULLString<>.
@@ -64,7 +64,7 @@ struct Type< Commons::LimitedNULLString<N> >
   {
     return Commons::LimitedNULLString<N>(f);
   }
-}; // struct TypeConvert
+}; // struct Type
 
 
 /** \brief specialization for LimitedString<>.
@@ -83,7 +83,7 @@ struct Type< Commons::LimitedString<N> >
   {
     return Commons::LimitedString<N>(f);
   }
-}; // struct TypeConvert
+}; // struct Type
 
 
 /** \brief specialization for NullValue<>.
@@ -102,7 +102,7 @@ struct Type< Base::NullValue<T> >
   {
     return Base::NullValue<T>( Type<T>::convert(f) );
   }
-}; // struct TypeConvert
+}; // struct Type
 
 
 /** \brief specialization for IP address.
@@ -121,7 +121,7 @@ struct Type<boost::asio::ip::address>
   {
     return boost::asio::ip::address::from_string(f);
   }
-}; // struct TypeConvert
+}; // struct Type
 
 
 /** \brief specialization for timestamp.
@@ -140,7 +140,7 @@ struct Type<Persistency::Timestamp>
   {
     return timestampFromString(f);
   }
-}; // struct TypeConvert
+}; // struct Type
 
 
 /** \brief specialization for auto_pointer to MD5.
@@ -165,12 +165,13 @@ public:
     MD5Ptr ret( new MD5( MD5::createFromString( f.c_str() ) ) );
     return ret;
   }
-}; // struct TypeConvert
+}; // struct Type
 
 
 /** \brief specialization for uint64_t.
  *
- *   required on 32-bit machines, since libpqxx does not provide that.
+ *  this is a work-around for bug in older versions of libpqxx that made
+ *  it impossible to link when convertion to uint64_t was requested.
  */
 template<>
 struct Type<uint64_t>
@@ -186,7 +187,7 @@ struct Type<uint64_t>
   {
     return boost::lexical_cast<uint64_t>(f);
   }
-}; // struct TypeConvert
+}; // struct Type
 
 } // namespace detail
 } // namespace Postgres
