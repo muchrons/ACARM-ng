@@ -17,10 +17,11 @@ using Persistency::Analyzer;
 
 IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):
   log_("input.prelude.ipa"),
-  name_(parseName(getNonNull(ptr))),
-  version_(parseVersion(getNonNull(ptr))),
-  os_(parseOS(getNonNull(ptr))),
-  ip_(parseIP(getNonNull(ptr)))
+  preludeID_( parsePreludeID( getNonNull(ptr) ) ),
+  name_( parseName( getNonNull(ptr) ) ),
+  version_( parseVersion( getNonNull(ptr) ) ),
+  os_( parseOS( getNonNull(ptr) ) ),
+  ip_( parseIP( getNonNull(ptr) ) )
 {
 }
 
@@ -29,6 +30,14 @@ idmef_analyzer_t * IDMEFParserAnalyzer::getNonNull(idmef_analyzer_t *ptr) const
   if(ptr==NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Idmef Analyzer is empty.");
   return ptr;
+}
+
+std::string IDMEFParserAnalyzer::parsePreludeID(idmef_analyzer_t *ptr) const
+{
+  const prelude_string_t *idmef_id = idmef_analyzer_get_analyzerid(ptr);
+  if(idmef_id==NULL)
+    throw ExceptionMissingID(SYSTEM_SAVE_LOCATION);
+  return prelude_string_get_string(idmef_id);
 }
 
 Persistency::Analyzer::Name IDMEFParserAnalyzer::parseName(idmef_analyzer_t *ptr) const
@@ -85,6 +94,11 @@ std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_anal
     LOGMSG_WARN(log_, "No IP but we can carry on");
   }
   return ip;
+}
+
+const std::string &IDMEFParserAnalyzer::getPreludeID() const
+{
+  return preludeID_;
 }
 
 const Persistency::Analyzer::Name& IDMEFParserAnalyzer::getName() const

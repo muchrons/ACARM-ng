@@ -17,12 +17,13 @@ namespace Prelude
 
 using namespace Persistency;
 
-IDMEFParser::IDMEFParser(idmef_message_t * msg):
-  name_(        parseName(      extractAlert(msg) ) ),
-  ctime_(       parseCtime(     extractAlert(msg) ) ),
-  analyzers_(   parseAnalyzers( extractAlert(msg) ) ),
-  sourceHosts_( parseSources(   extractAlert(msg) ) ),
-  targetHosts_( parseTargets(   extractAlert(msg) ) ),
+IDMEFParser::IDMEFParser(idmef_message_t * msg, BackendFacade &bf):
+  bf_(bf),
+  name_( parseName( extractAlert(msg) ) ),
+  ctime_( parseCtime( extractAlert(msg) ) ),
+  analyzers_( parseAnalyzers( extractAlert(msg) ) ),
+  sourceHosts_( parseSources( extractAlert(msg) ) ),
+  targetHosts_( parseTargets( extractAlert(msg) ) ),
   description_( parseDescription( extractAlert(msg) ) ),
   severity_( parseSeverity( extractAlert(msg) ) )
 {
@@ -130,14 +131,15 @@ Persistency::Alert::ReportedHosts IDMEFParser::parseTargets(idmef_alert_t *alert
 
 namespace
 {
-Persistency::AnalyzerPtrNN makeAnalyzer(idmef_analyzer_t *elem)
+Persistency::AnalyzerPtrNN makeAnalyzer(idmef_analyzer_t *elem, BackendFacade &bf)
 {
   assert(elem!=NULL);
   const IDMEFParserAnalyzer an(elem);
-  return Persistency::AnalyzerPtrNN( new Persistency::Analyzer( an.getName(),
-                                                                an.getVersion(),
-                                                                an.getOS(),
-                                                                an.getIP() ) );
+  return bf.getAnalyzer( an.getPreludeID(),
+                         an.getName(),
+                         an.getVersion(),
+                         an.getOS(),
+                         an.getIP() );
 } // makeAnalyzer()
 } // unnamed namespace
 
@@ -148,10 +150,10 @@ Persistency::Alert::SourceAnalyzers IDMEFParser::parseAnalyzers(idmef_alert_t *a
   if(elem==NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "No obligatory field \"Analyzer\" in this Alert!");
   // create output structure
-  Alert::SourceAnalyzers analyzers( makeAnalyzer(elem) );
+  Alert::SourceAnalyzers analyzers( makeAnalyzer(elem, bf_) );
   // add more analyzers, if needed
   while( (elem = idmef_alert_get_next_analyzer(alert, elem))!=NULL )
-    analyzers.push_back( makeAnalyzer(elem) );
+    analyzers.push_back( makeAnalyzer(elem, bf_) );
 
   return analyzers;
 }

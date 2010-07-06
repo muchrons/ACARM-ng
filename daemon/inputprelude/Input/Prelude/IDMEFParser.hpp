@@ -5,11 +5,13 @@
 #ifndef INCLUDE_INPUT_PRELUDE_IDMEFPARSER_HPP_FILE
 #define INCLUDE_INPUT_PRELUDE_IDMEFPARSER_HPP_FILE
 
+#include <boost/noncopyable.hpp>
 #include <prelude.h>
 
 #include "Persistency/Alert.hpp"
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/Host.hpp"
+#include "Input/BackendFacade.hpp"
 
 namespace Input
 {
@@ -17,16 +19,16 @@ namespace Prelude
 {
 /**
  * @brief Allows to extract information from IDMEF Messages
- *
  */
-class IDMEFParser
+class IDMEFParser: private boost::noncopyable
 {
 public:
   /**
    * @brief c-tor creates parser object from idmef_message_t
    * \param msg idmef_message_t object to parse
+   * \param bf  backend facade to be used for when parsing.
    */
-  explicit IDMEFParser(idmef_message_t *msg);
+  IDMEFParser(idmef_message_t *msg, BackendFacade &bf);
 
   /**
    * @brief gets host name
@@ -73,13 +75,14 @@ private:
   std::string parseDescription(idmef_alert_t *alert) const;
   Persistency::SeverityLevel parseSeverity(idmef_alert_t *alert) const;
 
-  Persistency::Alert::Name            name_;
-  Persistency::Timestamp              ctime_;
-  Persistency::Alert::SourceAnalyzers analyzers_;
-  Persistency::Alert::ReportedHosts   sourceHosts_;
-  Persistency::Alert::ReportedHosts   targetHosts_;
-  std::string description_;
-  Persistency::SeverityLevel severity_;
+  BackendFacade                       &bf_;
+  Persistency::Alert::Name             name_;
+  Persistency::Timestamp               ctime_;
+  Persistency::Alert::SourceAnalyzers  analyzers_;
+  Persistency::Alert::ReportedHosts    sourceHosts_;
+  Persistency::Alert::ReportedHosts    targetHosts_;
+  std::string                          description_;
+  Persistency::SeverityLevel           severity_;
 }; //class IDMEFParser
 
 } // namespace Prelude

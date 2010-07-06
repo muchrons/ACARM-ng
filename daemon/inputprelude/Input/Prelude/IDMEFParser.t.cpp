@@ -10,6 +10,7 @@
 #include "Input/Exception.hpp"
 #include "Input/Prelude/ExceptionParse.hpp"
 #include "Input/Prelude/IDMEFParser.hpp"
+#include "TestHelpers/Input/TestBase.hpp"
 
 using namespace std;
 using namespace Input::Prelude;
@@ -45,7 +46,7 @@ private:
 
 
 
-struct TestClass
+struct TestClass: public TestHelpers::Input::TestBase
 {
   TestClass():
     name_("A stupid string to test ID")
@@ -117,8 +118,7 @@ struct TestClass
   }
 
 private:
-  // TODO: fix indentation
-  MessageWrapper message_;
+  MessageWrapper    message_;
   const std::string name_;
 };
 
@@ -137,7 +137,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const IDMEFParser ip(getMessage());
+  const IDMEFParser ip( getMessage(), bf_);
   ensure_equals("IP",ip.getName().get(),getName());
 }
 
@@ -155,7 +155,7 @@ void testObj::test<2>(void)
 
   idmef_alert_set_create_time(alert, idmeftime);
 
-  const IDMEFParser ip( getMessage() );
+  const IDMEFParser ip( getMessage(), bf_ );
   ensure_equals("Something broken with time", ip.getCreateTime(), time);
 }
 
@@ -187,7 +187,7 @@ void testObj::test<3>(void)
 
   try
   {
-    const IDMEFParser ip( message );
+    const IDMEFParser ip(message, bf_);
   }
   catch(ExceptionParse &)
   {
