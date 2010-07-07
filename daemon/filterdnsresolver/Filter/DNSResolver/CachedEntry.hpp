@@ -8,7 +8,7 @@
 #include <ctime>
 
 #include "Persistency/Host.hpp"
-
+#include "Filter/DNSResolver/ExceptionUnableToResolve.hpp"
 
 namespace Filter
 {

@@ -135,7 +135,7 @@ void testObj::test<9>(void)
     Type<uint64_t>::convert("-123");
     fail("convert() didn't throw on negative value");
   }
-  catch(const std::runtime_error &ex)
+  catch(const boost::numeric::negative_overflow &)
   {
     // this is expected
   }

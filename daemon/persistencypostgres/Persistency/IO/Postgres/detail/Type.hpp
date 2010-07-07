@@ -11,6 +11,7 @@
 #include <inttypes.h>
 #include <boost/asio/ip/address.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/numeric/conversion/cast.hpp>
 
 #include "Base/NullValue.hpp"
 #include "Commons/LimitedNULLString.hpp"
@@ -45,7 +46,7 @@ struct Type
   {
     return To(f);
   }
-}; // struct TypeConvert
+}; // struct Type
 
 
 /** \brief specialization for LimitedNULLString<>.
@@ -64,7 +65,7 @@ struct Type< Commons::LimitedNULLString<N> >
   {
     return Commons::LimitedNULLString<N>(f);
   }
-}; // struct TypeConvert
+}; // struct Type
 
 
 /** \brief specialization for LimitedString<>.
@@ -83,7 +84,7 @@ struct Type< Commons::LimitedString<N> >
   {
     return Commons::LimitedString<N>(f);
   }
-}; // struct TypeConvert
+}; // struct Type
 
 
 /** \brief specialization for NullValue<>.
@@ -102,7 +103,7 @@ struct Type< Base::NullValue<T> >
   {
     return Base::NullValue<T>( Type<T>::convert(f) );
   }
-}; // struct TypeConvert
+}; // struct Type
 
 
 /** \brief specialization for IP address.
@@ -121,7 +122,7 @@ struct Type<boost::asio::ip::address>
   {
     return boost::asio::ip::address::from_string(f);
   }
-}; // struct TypeConvert
+}; // struct Type
 
 
 /** \brief specialization for timestamp.
@@ -140,7 +141,7 @@ struct Type<Persistency::Timestamp>
   {
     return timestampFromString(f);
   }
-}; // struct TypeConvert
+}; // struct Type
 
 
 /** \brief specialization for auto_pointer to MD5.
@@ -165,12 +166,13 @@ public:
     MD5Ptr ret( new MD5( MD5::createFromString( f.c_str() ) ) );
     return ret;
   }
-}; // struct TypeConvert
+}; // struct Type
 
 
 /** \brief specialization for uint64_t.
  *
- *   required on 32-bit machines, since libpqxx does not provide that.
+ *  this is a work-around for bug in older versions of libpqxx that made
+ *  it impossible to link when convertion to uint64_t was requested.
  */
 template<>
 struct Type<uint64_t>
@@ -184,9 +186,15 @@ struct Type<uint64_t>
    */
   static inline uint64_t convert(const ReadProxy &f)
   {
-    return boost::lexical_cast<uint64_t>(f);
+    // note that following convertion is not fully correct, since ranges of int64_t and
+    // uint64_t differ (who would expect?). it is reasonably good aproximation though
+    // and can stay for some time, until bronen versions of libpqxx will be dead-and-gone
+    // for long, long time... ;)
+    const int64_t  tmp=boost::lexical_cast<int64_t>(f);
+    const uint64_t out=boost::numeric_cast<uint64_t>(tmp);
+    return out;
   }
-}; // struct TypeConvert
+}; // struct Type
 
 } // namespace detail
 } // namespace Postgres
