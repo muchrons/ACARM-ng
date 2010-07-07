@@ -28,6 +28,13 @@ Strategy::Strategy(const Parameters &params):
 {
 }
 
+Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
+{
+  Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
+  ecl.add("*input*");   // TODO: magic value
+  return ecl;
+}
+
 void Strategy::processImpl(Node               n,
                            NodesTimeoutQueue &/*ntq*/,
                            BackendFacade     &bf)

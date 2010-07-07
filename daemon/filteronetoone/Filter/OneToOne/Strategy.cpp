@@ -22,6 +22,13 @@ Strategy::Strategy(unsigned int timeout):
 {
 }
 
+Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
+{
+  Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
+  ecl.add("*input*");   // TODO: magic value
+  return ecl;
+}
+
 Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
 {
   const Algo::GatherHosts gh(n);

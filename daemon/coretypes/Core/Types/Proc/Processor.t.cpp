@@ -153,4 +153,28 @@ void testObj::test<5>(void)
   ensure("NULL pointer received", p.get()!=NULL );  // could be assert as well
 }
 
+// test if ECL works - reject test
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  fail("TODO: implement test for ECL in Processor");
+}
+
+// test if ECL works - accept test
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  fail("TODO: implement test for ECL in Processor");
+}
+
+// test if ECL works - reject self test
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  fail("TODO: implement test for ECL in Processor");
+}
+
 } // namespace tut

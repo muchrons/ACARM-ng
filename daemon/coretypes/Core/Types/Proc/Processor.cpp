@@ -150,6 +150,8 @@ Processor::~Processor(void)
 void Processor::process(const Core::Types::SignedNode &node)
 {
   // if entry from given processor is not allowed for this one, skip this call
+  // TODO: skip also if reporter-name is the same os this one, i.e. do not re-process
+  //       entries reported by ourselfs.
   if( !interface_->getECL().isAcceptable( node.getReporterName() ) )
   {
     LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName()<<"' has been rejected...";

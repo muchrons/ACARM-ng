@@ -79,7 +79,7 @@ namespace
 struct TestInterface: public Interface
 {
   TestInterface(void):
-    Interface("narf")
+    Interface( "narf", EntryControlList::createDefaultAccept() )
   {
   }
 

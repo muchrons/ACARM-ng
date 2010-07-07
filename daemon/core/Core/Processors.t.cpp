@@ -53,7 +53,7 @@ int filterCalls_=0;
 struct TestFilterInterface: public Core::Types::Proc::Interface
 {
   TestFilterInterface(void):
-    Core::Types::Proc::Interface("somefilter")
+    Core::Types::Proc::Interface( "somefilter", Types::Proc::EntryControlList::createDefaultAccept() )
   {
   }
 
@@ -95,7 +95,7 @@ int triggerCalls_=0;
 struct TestTriggerInterface: public Core::Types::Proc::Interface
 {
   TestTriggerInterface(void):
-    Core::Types::Proc::Interface("sometrigger")
+    Core::Types::Proc::Interface( "sometrigger", Types::Proc::EntryControlList::createDefaultAccept() )
   {
   }
 
