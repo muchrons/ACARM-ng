@@ -52,6 +52,7 @@ public:
 protected:
   /** \brief creates object with a given name.
    *  \param name name for this processing unit.
+   *  \param ecl  control list that determines what source of alerts are (dis)allowed.
    */
   Interface(const std::string &name, const EntryControlList &ecl);
 
