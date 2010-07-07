@@ -2,9 +2,13 @@
  * IDMEFParserAnalyzer.cpp
  *
  */
+#include <sstream>
+
 #include "Input/Prelude/ExceptionParse.hpp"
 #include "Input/Prelude/IDMEFParserCommons.hpp"
 #include "Input/Prelude/IDMEFParserAnalyzer.hpp"
+
+using namespace std;
 
 namespace Input
 {
@@ -17,11 +21,11 @@ using Persistency::Analyzer;
 
 IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):
   log_("input.prelude.ipa"),
-  preludeID_( parsePreludeID( getNonNull(ptr) ) ),
   name_( parseName( getNonNull(ptr) ) ),
   version_( parseVersion( getNonNull(ptr) ) ),
   os_( parseOS( getNonNull(ptr) ) ),
-  ip_( parseIP( getNonNull(ptr) ) )
+  ip_( parseIP( getNonNull(ptr) ) ),
+  preludeID_( parsePreludeID( getNonNull(ptr) ) )
 {
 }
 
@@ -32,11 +36,35 @@ idmef_analyzer_t * IDMEFParserAnalyzer::getNonNull(idmef_analyzer_t *ptr) const
   return ptr;
 }
 
+namespace
+{
+const char *nonNULL(const char *str)
+{
+  if(str==NULL)
+    return "NULLSTR";
+  return str;
+} // nonNULL()
+string nonNULL(const Persistency::Analyzer::IP *ip)
+{
+  if(ip==NULL)
+    return "NULLIP";
+  return ip->to_string();
+} // nonNULL()
+} // unnamed namespace
+
 std::string IDMEFParserAnalyzer::parsePreludeID(idmef_analyzer_t *ptr) const
 {
   const prelude_string_t *idmef_id = idmef_analyzer_get_analyzerid(ptr);
   if(idmef_id==NULL)
-    throw ExceptionMissingID(SYSTEM_SAVE_LOCATION);
+  {
+    // if id's not set directly, create some string out of what we have...
+    stringstream ss;
+    ss << "UnknownID/" << nonNULL( getName().get() )
+       << "/" << nonNULL( getVersion().get() )
+       << "/" << nonNULL( getOS().get() )
+       << "/" << nonNULL( getIP() );
+    return ss.str();
+  }
   return prelude_string_get_string(idmef_id);
 }
 
