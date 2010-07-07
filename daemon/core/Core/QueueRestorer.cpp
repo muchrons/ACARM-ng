@@ -15,7 +15,7 @@ using namespace Persistency::IO;
 namespace Core
 {
 
-QueueRestorer::QueueRestorer(Core::Types::NodesFifo &queue)
+QueueRestorer::QueueRestorer(Core::Types::UniqueNodesFifo &queue)
 {
   const Logger::Node log("core.queuerestorer");
   try

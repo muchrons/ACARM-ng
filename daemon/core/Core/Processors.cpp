@@ -14,7 +14,7 @@ using namespace Core::Types::Proc;
 namespace Core
 {
 
-Processors::Processors(Core::Types::NodesFifo &queue):
+Processors::Processors(Core::Types::UniqueNodesFifo &queue):
   log_("core.processors"),
   queue_(queue)
 {

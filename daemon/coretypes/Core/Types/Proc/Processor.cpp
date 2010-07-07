@@ -31,9 +31,9 @@ Logger::Node makeNodeName(const char *prefix, const Interface *interface)
 class ThreadImpl
 {
 public:
-  ThreadImpl(Core::Types::NodesFifo &outputQueue,
-             Core::Types::NodesFifo &inputQueue,
-             Interface              *interface):
+  ThreadImpl(Core::Types::UniqueNodesFifo &outputQueue,
+             Core::Types::UniqueNodesFifo &inputQueue,
+             Interface                    *interface):
     log_( makeNodeName("core.types.proc.processor.threadimpl.", interface) ),
     outputQueue_(&outputQueue),
     inputQueue_(&inputQueue),
@@ -112,16 +112,16 @@ private:
     }
   }
 
-  Logger::Node            log_;
-  Core::Types::NodesFifo *outputQueue_;
-  Core::Types::NodesFifo *inputQueue_;
-  Interface              *interface_;
+  Logger::Node                  log_;
+  Core::Types::UniqueNodesFifo *outputQueue_;
+  Core::Types::UniqueNodesFifo *inputQueue_;
+  Interface                    *interface_;
 }; // class ThreadImpl
 } // unnamed namespace
 
 
-Processor::Processor(Core::Types::NodesFifo &outputQueue,
-                     InterfaceAutoPtr        interface):
+Processor::Processor(Core::Types::UniqueNodesFifo &outputQueue,
+                     InterfaceAutoPtr              interface):
   outputQueue_(outputQueue),
   log_( makeNodeName("core.types.proc.processor.", interface.get() ) ),
   interface_( interface.release() ),

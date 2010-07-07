@@ -7,7 +7,7 @@ using namespace ConfigIO;
 namespace Filter
 {
 
-FiltersCollection create(Core::Types::NodesFifo &outputQueue)
+FiltersCollection create(Core::Types::UniqueNodesFifo &outputQueue)
 {
   const FiltersConfigCollection &c=Singleton::get()->filtersConfig();
   FiltersCollection              out;

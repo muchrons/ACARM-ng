@@ -53,8 +53,8 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   {
   }
 
-  Core::Types::NodesFifo      mainQueue_;
-  Processor::InterfaceAutoPtr interface_;
+  Core::Types::UniqueNodesFifo mainQueue_;
+  Processor::InterfaceAutoPtr  interface_;
 };
 
 typedef tut::test_group<TestClass> factory;

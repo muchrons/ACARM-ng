@@ -27,7 +27,7 @@ typedef Core::Types::Proc::ProcessorsCollection FiltersCollection;
  *  \param outputQueue queue to be used as processors' output.
  *  \return newly created input. each call returns new instance.
  */
-FiltersCollection create(Core::Types::NodesFifo &outputQueue);
+FiltersCollection create(Core::Types::UniqueNodesFifo &outputQueue);
 
 } // namespace Filter
 

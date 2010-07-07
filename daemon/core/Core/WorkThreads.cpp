@@ -17,7 +17,7 @@ namespace
 {
 struct SourcesThread
 {
-  explicit SourcesThread(Core::Types::NodesFifo &queue):
+  explicit SourcesThread(Core::Types::UniqueNodesFifo &queue):
     log_("core.workthreads.sourcesthread"),
     srcs_(new Sources),
     queue_(&queue)
@@ -53,12 +53,12 @@ struct SourcesThread
 
   Logger::Node                        log_;
   Commons::SharedPtrNotNULL<Sources>  srcs_;
-  Core::Types::NodesFifo             *queue_;
+  Core::Types::UniqueNodesFifo       *queue_;
 }; // struct SourcesThread
 
 struct ProcessorsThread
 {
-  explicit ProcessorsThread(Core::Types::NodesFifo &queue):
+  explicit ProcessorsThread(Core::Types::UniqueNodesFifo &queue):
     log_("core.workthreads.processorsthread"),
     procs_( new Processors(queue) )
   {
@@ -96,7 +96,7 @@ struct ProcessorsThread
 } // unnamed namespace
 
 
-WorkThreads::WorkThreads(Core::Types::NodesFifo &queue):
+WorkThreads::WorkThreads(Core::Types::UniqueNodesFifo &queue):
   log_("core.workthreads"),
   queue_(queue),
   procs_( ProcessorsThread(queue_) ),

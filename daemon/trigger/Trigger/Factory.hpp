@@ -27,7 +27,7 @@ typedef Core::Types::Proc::ProcessorsCollection TriggersCollection;
  *  \param outputQueue queue to be used as processors' output.
  *  \return newly created input. each call returns new instance.
  */
-TriggersCollection create(Core::Types::NodesFifo &outputQueue);
+TriggersCollection create(Core::Types::UniqueNodesFifo &outputQueue);
 
 } // namespace Trigger
 

@@ -7,7 +7,7 @@
 
 /* public header */
 
-#include "Core/Types/NodesFifo.hpp"
+#include "Core/Types/UniqueNodesFifo.hpp"
 
 namespace Core
 {
@@ -21,7 +21,7 @@ public:
   /** \brief restores data base content.
    *  \param queue output queue to write read meta-alerts to.
    */
-  explicit QueueRestorer(Core::Types::NodesFifo &queue);
+  explicit QueueRestorer(Core::Types::UniqueNodesFifo &queue);
 }; // class QueueRestorer
 
 } // namespace Core

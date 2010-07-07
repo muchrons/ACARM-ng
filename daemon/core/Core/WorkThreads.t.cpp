@@ -16,7 +16,7 @@ namespace
 {
 struct TestClass: public TestHelpers::TestBase
 {
-  Core::Types::NodesFifo queue_;
+  Core::Types::UniqueNodesFifo queue_;
 };
 
 typedef tut::test_group<TestClass> factory;

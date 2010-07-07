@@ -25,7 +25,7 @@ struct TestClass: public TestHelpers::Persistency::TestPostgres
     tdba_.removeAllData();
   }
 
-  Core::Types::NodesFifo                 queue_;
+  Core::Types::UniqueNodesFifo           queue_;
   TestHelpers::Persistency::TestDBAccess tdba_;
 };
 

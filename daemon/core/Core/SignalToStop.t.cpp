@@ -29,8 +29,8 @@ struct TestClass
   {
   }
 
-  Core::Types::NodesFifo queue_;
-  WorkThreads            wt_;
+  Core::Types::UniqueNodesFifo queue_;
+  WorkThreads                  wt_;
 };
 
 typedef tut::test_group<TestClass> factory;
