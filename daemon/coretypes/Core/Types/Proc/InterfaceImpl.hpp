@@ -29,7 +29,7 @@ public:
    *  \param name name for this processing unit.
    */
   explicit InterfaceImpl(const std::string &name):
-    Interface(name)
+    Interface( name, TStrategy::createEntryControlList() )
   {
   }
   /** \brief creates object with a given name and properties.
@@ -38,7 +38,7 @@ public:
    */
   InterfaceImpl(const std::string &name,
                 const TParam      &param):
-    Interface(name),
+    Interface( name, TStrategy::createEntryControlList() ),
     strategy_(param)
   {
   }

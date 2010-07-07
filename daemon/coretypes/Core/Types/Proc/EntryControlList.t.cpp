@@ -87,4 +87,14 @@ void testObj::test<6>(void)
   ensure("entry dropped but not listed", ecl.isAcceptable("42") );
 }
 
+// test copyablility
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  EntryControlList ecl1=EntryControlList::createDefaultReject();
+  EntryControlList ecl2=ecl1;       // copy-c-tor
+  ecl1=ecl2;                        // assignment
+}
+
 } // namespace tut

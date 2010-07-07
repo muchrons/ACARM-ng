@@ -20,7 +20,7 @@ namespace
 struct TestInterface: public Interface
 {
   TestInterface(void):
-    Interface("testinterface"),
+    Interface( "testinterface", EntryControlList::createDefaultAccept() ),
     calls_(0),
     node_( makeNewLeaf() ),
     node2_( makeNewLeaf() )
