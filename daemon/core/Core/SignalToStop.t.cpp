@@ -29,7 +29,7 @@ struct TestClass
   {
   }
 
-  Core::Types::UniqueNodesFifo queue_;
+  Core::Types::SignedNodesFifo queue_;
   WorkThreads                  wt_;
 };
 

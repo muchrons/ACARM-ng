@@ -9,7 +9,7 @@
 
 #include "Logger/Node.hpp"
 #include "Persistency/GraphNode.hpp"
-#include "Core/Types/UniqueNodesFifo.hpp"
+#include "Core/Types/SignedNodesFifo.hpp"
 #include "Core/Types/Proc/ProcessorsCollection.hpp"
 
 namespace Core
@@ -23,7 +23,7 @@ public:
   /** \brief create all processors and runs them.
    *  \param queue queue to process (i.e. to work on).
    */
-  explicit Processors(Core::Types::UniqueNodesFifo &queue);
+  explicit Processors(Core::Types::SignedNodesFifo &queue);
   /** \brief clean-up data.
    */
   ~Processors(void);
@@ -40,7 +40,7 @@ private:
   void append(const Core::Types::Proc::ProcessorsCollection &newProcs);
 
   Logger::Node                             log_;
-  Core::Types::UniqueNodesFifo            &queue_;
+  Core::Types::SignedNodesFifo            &queue_;
   Core::Types::Proc::ProcessorsCollection  procs_;
 }; // class Source
 

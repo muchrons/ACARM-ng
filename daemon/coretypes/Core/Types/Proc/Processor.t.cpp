@@ -12,6 +12,7 @@
 using namespace Core::Types::Proc;
 using namespace Persistency;
 using namespace TestHelpers::Persistency;
+using Core::Types::SignedNode;
 
 namespace
 {
@@ -53,7 +54,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   {
   }
 
-  Core::Types::UniqueNodesFifo mainQueue_;
+  Core::Types::SignedNodesFifo mainQueue_;
   Processor::InterfaceAutoPtr  interface_;
 };
 
@@ -104,9 +105,9 @@ void testObj::test<3>(void)
   // process data
   TestInterface &ti=dynamic_cast<TestInterface&>(*interface_);
   Processor      p(mainQueue_, interface_);
-  p.process(ti.node_);  // this call should add 1 element to 'changed'
-                        // elements set, and processor should forward it
-                        // to the main queue.
+  p.process( SignedNode(ti.node_, "me") ); // this call should add 1 element to 'changed'
+                                           // elements set, and processor should forward it
+                                           // to the main queue.
   // wait for the results
   for(int i=0; i<10; ++i)
     if( mainQueue_.size()==1 )
@@ -115,7 +116,9 @@ void testObj::test<3>(void)
       usleep(50*1000);
   // check results
   ensure_equals("invalid number of elements", mainQueue_.size(), 1u);
-  ensure("requested element not found", mainQueue_.pop().get()==ti.node_.get() );
+  Core::Types::SignedNode sn=mainQueue_.pop();
+  ensure("requested element not found", sn.getNode().get()==ti.node_.get() );
+  ensure("invalid sign in entry", sn.getReporter()==ti.getName() );
 }
 
 // test if multiple calls to process() does not break anything
@@ -128,9 +131,9 @@ void testObj::test<4>(void)
   // process data
   TestInterface &ti=dynamic_cast<TestInterface&>(*interface_);
   Processor      p(mainQueue_, interface_);
-  p.process(ti.node_);          // this call should add 2 elements to 'changed'
-  p.process(ti.node2_);         // elements set, and processor should forward it
-                                // to the main queue.
+  p.process( SignedNode(ti.node_,  "me") ); // this call should add 2 elements to 'changed'
+  p.process( SignedNode(ti.node2_, "me") ); // elements set, and processor should forward it
+                                            // to the main queue.
   // wait for the results
   for(int i=0; i<10; ++i)
     if( mainQueue_.size()==2 )

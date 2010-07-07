@@ -31,7 +31,7 @@ Logger::Node makeNodeName(const char *prefix, const Interface *interface)
 class ThreadImpl
 {
 public:
-  ThreadImpl(Core::Types::UniqueNodesFifo &outputQueue,
+  ThreadImpl(Core::Types::SignedNodesFifo &outputQueue,
              Core::Types::UniqueNodesFifo &inputQueue,
              Interface                    *interface):
     log_( makeNodeName("core.types.proc.processor.threadimpl.", interface) ),
@@ -69,9 +69,9 @@ public:
         LOGMSG_DEBUG_S(log_)<<"total of "<<changed.size()<<" nods were changed";
 
         LOGMSG_DEBUG(log_, "notifing others about changed nodes");
-        // signal others about changes made
+        // signal others about changes we made (we sign this with a name)
         for(Interface::ChangedNodes::iterator it=changed.begin(); it!=changed.end(); ++it)
-          outputQueue_->push(*it);
+          outputQueue_->push( SignedNode(*it, interface_->getName()) );
       }
       catch(const boost::thread_interrupted &)
       {
@@ -113,14 +113,14 @@ private:
   }
 
   Logger::Node                  log_;
-  Core::Types::UniqueNodesFifo *outputQueue_;
+  Core::Types::SignedNodesFifo *outputQueue_;
   Core::Types::UniqueNodesFifo *inputQueue_;
   Interface                    *interface_;
 }; // class ThreadImpl
 } // unnamed namespace
 
 
-Processor::Processor(Core::Types::UniqueNodesFifo &outputQueue,
+Processor::Processor(Core::Types::SignedNodesFifo &outputQueue,
                      InterfaceAutoPtr              interface):
   outputQueue_(outputQueue),
   log_( makeNodeName("core.types.proc.processor.", interface.get() ) ),
@@ -147,10 +147,13 @@ Processor::~Processor(void)
   LOGMSG_INFO(log_, "processor stopped");
 }
 
-void Processor::process(Persistency::GraphNodePtrNN node)
+void Processor::process(const Core::Types::SignedNode &node)
 {
+  // TODO: checking if given node can(not) be processed must be done here,
+  //       most likely via 'interface_'.
+
   // it will be processed in separate thread
-  inputQueue_.push(node);
+  inputQueue_.push( node.getNode() );
 }
 
 } // namespace Proc

@@ -33,7 +33,7 @@ struct TestClass
     }
   }
 
-  Core::Types::UniqueNodesFifo queue_;
+  Core::Types::SignedNodesFifo queue_;
 };
 
 typedef tut::test_group<TestClass> factory;

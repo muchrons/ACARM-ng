@@ -24,7 +24,7 @@ struct TestClass: public TestHelpers::TestBase
     ConfigIO::Singleton::get()->rereadConfig(path);
   }
 
-  Core::Types::UniqueNodesFifo queue_;
+  Core::Types::SignedNodesFifo queue_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -147,7 +147,7 @@ void testObj::test<2>(void)
   ensure_equals("trigger has been called too fast", triggerCalls_, 0);
 
   // test example call
-  queue_.push( TestHelpers::Persistency::makeNewNode() );
+  queue_.push( Core::Types::SignedNode( TestHelpers::Persistency::makeNewNode(), "me" ) );
   p.process();  // this enqueues node in every filters
 
   // wait until everything's processed

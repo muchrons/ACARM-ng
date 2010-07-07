@@ -11,7 +11,7 @@
 
 #include "Logger/Node.hpp"
 #include "Commons/Threads/Thread.hpp"
-#include "Core/Types/UniqueNodesFifo.hpp"
+#include "Core/Types/SignedNodesFifo.hpp"
 
 namespace Core
 {
@@ -27,7 +27,7 @@ public:
   /** \brief create object and start all threads.
    *  \param queue queue to be used for data processing (it's held by reference inside).
    */
-  explicit WorkThreads(Core::Types::UniqueNodesFifo &queue);
+  explicit WorkThreads(Core::Types::SignedNodesFifo &queue);
   /** \brief stop all threads and deallocate resources.
    *  \note d-tor will block until all threads are stopped, which may
    *        take some time.
@@ -45,7 +45,7 @@ public:
 
 private:
   Logger::Node                  log_;
-  Core::Types::UniqueNodesFifo &queue_;
+  Core::Types::SignedNodesFifo &queue_;
   Commons::Threads::Thread      procs_;
   Commons::Threads::Thread      srcs_;
 }; // class WorkThreads

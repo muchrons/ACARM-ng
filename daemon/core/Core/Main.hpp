@@ -55,7 +55,7 @@ private:
   //       acarm-ng itself, or made a separate application to be run by user.
   //PersistencyCleanup     cleanup_;        // cleanup has to be here, since it should
                                             // be called before any threads are started
-  Core::Types::UniqueNodesFifo queue_;      // main system graphnodes queue
+  Core::Types::SignedNodesFifo queue_;      // main system graphnodes' queue (signed by modifiers)
   QueueRestorer                restorer_;   // reader for initial queue's state from Persistency.
   WorkThreads                  threads_;    // main processing part
   HandleSignals                signals_;    // this element must be initialized after
