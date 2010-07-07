@@ -43,10 +43,7 @@ struct TestData
 
   System::ScopedPtrCustom<idmef_message_t,        idmef_message_destroy>        message_;
   System::ScopedPtrCustom<prelude_string_t,       prelude_string_destroy>       string_;
-  //System::ScopedPtrCustom<idmef_alert_t,          idmef_alert_destroy>          alert_;
-  //System::ScopedPtrCustom<idmef_classification_t, idmef_classification_destroy> classification_;
   System::ScopedPtrCustom<idmef_time_t,           idmef_time_destroy>           time_;
-  //System::ScopedPtrCustom<idmef_heartbeat_t,      idmef_heartbeat_destroy>      heartbeat_;
 }; // struct TestData
 
 } // namespace Prelude

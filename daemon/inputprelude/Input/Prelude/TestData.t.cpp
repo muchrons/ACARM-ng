@@ -73,8 +73,6 @@ idmef_alert_t *TestData::makeAlert(void)
   idmef_message_t *message=makeMessage();
   idmef_alert_t   *tmp    =NULL;
   tut::ensure("unable to create alert", idmef_message_new_alert(message, &tmp)>=0 );
-  //prelude_string_t *string1;
-  //idmef_alert_new_messageid(alert,&string1);
 
   idmef_classification_t *classif=NULL;
   idmef_alert_new_classification(tmp, &classif);
