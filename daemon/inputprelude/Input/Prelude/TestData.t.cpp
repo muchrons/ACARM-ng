@@ -1,51 +1,122 @@
 /*
- * IDMEFParser.t.cpp
+ * TestData.t.cpp
  *
  */
 #include <tut.h>
-#include <cstring>
-#include <memory>
-#include <string>
 
-#include "Input/Exception.hpp"
-#include "Input/Prelude/ExceptionParse.hpp"
-#include "Input/Prelude/IDMEFParser.hpp"
-#include "TestHelpers/Input/TestBase.hpp"
+#include "Input/Prelude/TestData.t.hpp"
 
-using namespace std;
-using namespace Input::Prelude;
-using namespace boost::posix_time;
-
-namespace
+namespace Input
+{
+namespace Prelude
 {
 
-// TODO: this class must be non-copyable
-class MessageWrapper
+idmef_message_t *TestData::makeMessage(void)
 {
-public:
-  MessageWrapper()
-  {
-    if (idmef_message_new(&message_)<0)
-      tut::fail("Unable to create message object.");
-  }
+  idmef_message_t *tmp=NULL;
+  tut::ensure("unable to create message", idmef_message_new(&tmp)<0 );
+  message_.reset(tmp);
+  return tmp;
+}
 
-  ~MessageWrapper()
-  {
-    idmef_message_destroy(message_);
-  }
+idmef_analyzer_t *TestData::makeAnalyzerForAlert(idmef_alert_t *alert)
+{
+  if(alert==NULL)
+    return NULL;
+  idmef_analyzer_t *tmp=NULL;
+  idmef_alert_new_analyzer(alert, &tmp, IDMEF_LIST_APPEND);
+  return tmp;
+}
 
-  idmef_message_t * get()
-  {
-    // TODO: add assert on message_!=NULL
-    return message_;
-  }
+idmef_analyzer_t *TestData::makeAnalyzerForHeartbeat(idmef_heartbeat_t *heartbeat)
+{
+  if(heartbeat==NULL)
+    return NULL;
+  idmef_analyzer_t *tmp=NULL;
+  idmef_heartbeat_new_analyzer(heartbeat, &tmp, IDMEF_LIST_APPEND);
+  return tmp;
+}
 
-private:
-  idmef_message_t *message_;
-};
+void TestData::fillAnalyzer(idmef_analyzer_t *analyzer,
+                            const char       *id,
+                            const char       *name,
+                            const char       *osType,
+                            const char       *osVersion,
+                            const char       *address)
+{
+  tut::ensure("analyzer cannot be NULL", analyzer!=NULL);
 
+  idmef_analyzer_set_analyzerid(analyzer, makeString(id) );
+  string_.release();
+  idmef_analyzer_set_name(analyzer, makeString(name) );
+  string_.release();
+  idmef_analyzer_set_ostype(analyzer, makeString(osType) );
+  string_.release();
+  idmef_analyzer_set_osversion(analyzer, makeString(osVersion) );
+  string_.release();
 
+  makeAndFillNodeForAnalyzer(analyzer, address);
+}
 
+prelude_string_t *TestData::makeString(const char *str)
+{
+  if(str==NULL)
+    return NULL;
+  prelude_string_t *tmp=NULL;
+  prelude_string_new_dup(&tmp, str);
+  string_.reset(tmp);
+  return tmp;
+}
+
+idmef_alert_t *TestData::makeAlert(void)
+{
+  idmef_message_t *message=makeMessage();
+  idmef_alert_t   *tmp    =NULL;
+  tut::ensure("unable to create alert", idmef_message_new_alert(message, &tmp)>=0 );
+  //prelude_string_t *string1;
+  //idmef_alert_new_messageid(alert,&string1);
+
+  idmef_classification_t *classif=NULL;
+  idmef_alert_new_classification(tmp, &classif);
+  idmef_classification_set_text(classif, makeString("some classifiction") );
+  string_.release();
+
+  return tmp;
+}
+
+void TestData::makeAndFillNodeForAnalyzer(idmef_analyzer_t *analyzer, const char *address)
+{
+  tut::ensure("analyzer cannot be NULL", analyzer!=NULL);
+  idmef_node_t *node=NULL;
+  idmef_analyzer_new_node(analyzer, &node);
+  // fill node
+  idmef_address_t *addr=NULL;
+  idmef_node_new_address(node, &addr, IDMEF_LIST_APPEND);
+  idmef_address_set_address(addr, makeString(address) );
+  string_.release();
+  idmef_address_set_category(addr, IDMEF_ADDRESS_CATEGORY_IPV4_ADDR);
+}
+
+idmef_time_t *TestData::makeTime(time_t time)
+{
+  idmef_time_t  *tmp=NULL;
+  idmef_time_new_from_time(&tmp, &time);
+  time_.reset(tmp);
+  return tmp;
+}
+
+idmef_heartbeat_t *TestData::makeHeartbeat(void)
+{
+  idmef_message_t   *message=makeMessage();
+  idmef_heartbeat_t *tmp    =NULL;
+  tut::ensure("unable to create heartbeat", idmef_message_new_heartbeat(message, &tmp)>=0 );
+  return tmp;
+}
+
+} // namespace Prelude
+} // namespace Input
+
+/*
 struct TestClass: public TestHelpers::Input::TestBase
 {
   TestClass():
@@ -185,26 +256,12 @@ void testObj::test<3>(void)
   try
   {
     const IDMEFParser ip(message, bf_);
-    fail("parser didn't throw on unexpected message type - heartbeat");
   }
-  catch(const ExceptionUnsupportedFeature &)
+  catch(ExceptionParse &)
   {
     //expected
   }
 }
 
-// TODO: test alert without analyzer
-
-// TODO: test no source hosts
-
-// TODO: test multiple source hosts
-
-// TODO: test no target hosts
-
-// TODO: test multiple target hosts
-
-// TODO: test when no services are prensent in alert (this was a bug in previous versions)
-
-// TODO: test when no processes are prensent in alert (this was a bug in previous versions)
-
 } // namespace tut
+*/
