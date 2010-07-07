@@ -50,7 +50,10 @@ private:
   Logger::Node           log_;
   HandleSignals          nullSignals_;  // ignore signals at this moment
                                         // (will be overwritten later on)
-  PersistencyCleanup     cleanup_;      // cleanup has to be here, since it should
+  // TODO: persistency cleanup takes enormous ammount of time na dmust be run from time to time,
+  //       not only when starting application. it must be added to a sort of "crontab" inside
+  //       acarm-ng itself, or made a separate application to be run by user.
+  //PersistencyCleanup     cleanup_;      // cleanup has to be here, since it should
                                         // be called before any threads are started
   Core::Types::NodesFifo queue_;        // main system graphnodes queue
   QueueRestorer          restorer_;     // reader for initial queue's state from Persistency.

@@ -19,4 +19,5 @@
 41 consider adding 'descrioption' to meta-alert to reflect extra correlation pieces of information (like details on what bases these alerts have been correlated).
 42 messages buffering in triggers should have some size limit (not to crash applicaiton when destination sertvice is permanently down).
 44 add names for triggers so that multiple triggers of the same time can be used.
-45
+45 logs are sometimes flooded with reports about trying to create a cycle in meta-alerts - looks like some "prerequisites" are required...
+46
