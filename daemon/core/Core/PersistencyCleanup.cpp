@@ -26,7 +26,7 @@ void PersistencyCleanup::cleanup(void)
   Transaction     t( conn->createNewTransaction("cleanup_procedure") );
   const size_t    removed=conn->removeEntriesOlderThan(limit, t);
   t.commit();
-  LOGMSG_WARN_S(log_)<<"cleanup done - "<<removed<<" alerts removed";
+  LOGMSG_INFO_S(log_)<<"cleanup done - "<<removed<<" alerts removed";
 }
 
 } // namespace Core
