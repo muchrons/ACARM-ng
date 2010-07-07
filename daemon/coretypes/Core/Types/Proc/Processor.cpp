@@ -149,16 +149,20 @@ Processor::~Processor(void)
 
 void Processor::process(const Core::Types::SignedNode &node)
 {
-  // if entry from given processor is not allowed for this one, skip this call
-  // TODO: skip also if reporter-name is the same os this one, i.e. do not re-process
-  //       entries reported by ourselfs.
-  if( !interface_->getECL().isAcceptable( node.getReporterName() ) )
+  // skip if we were the ones that reported this
+  if( interface_->getName()==node.getReporterName() )
   {
-    LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName()<<"' has been rejected...";
+    LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName()<<"' has been rejected since it comes out from this processor";
     return;
   }
+  // if entry from given processor is not allowed for this one, skip this call
+  if( !interface_->getECL().isAcceptable( node.getReporterName() ) )
+  {
+    LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName()<<"' has been rejected by ECL...";
+    return;
+  }
+  // if everything's fine - accept this.
   LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName()<<"' has been accepted - adding to queue";
-  // it will be processed in separate thread
   inputQueue_.push( node.getNode() );
 }
 

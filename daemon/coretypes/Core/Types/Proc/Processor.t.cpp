@@ -19,8 +19,8 @@ namespace
 
 struct TestInterface: public Interface
 {
-  TestInterface(void):
-    Interface( "testinterface", EntryControlList::createDefaultAccept() ),
+  explicit TestInterface(const EntryControlList &ecl=EntryControlList::createDefaultAccept() ):
+    Interface("testinterface", ecl),
     calls_(0),
     node_( makeNewLeaf() ),
     node2_( makeNewLeaf() )
@@ -52,6 +52,31 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   TestClass(void):
     interface_(new TestInterface)
   {
+  }
+
+  void waitForResponse(void)
+  {
+    // wait for the results up to 2[s]
+    for(int i=0; i<200; ++i)
+      if( mainQueue_.size() > 0 )
+        return;
+      else
+        usleep(10*1000);
+    tut::fail("timed out while waiting for response from processor");
+  }
+
+  void checkECL(const EntryControlList &ecl, const std::string &caller, bool shouldPass)
+  {
+    TestInterface *ti=new TestInterface(ecl);
+    interface_.reset(ti);
+    ProcessorPtrNN p( new Processor(mainQueue_, interface_) );
+    p->process( SignedNode(ti->node_, caller) );    // this call should add 1 element to 'changed'
+    if(shouldPass)                                  // should we wait for entry?
+      waitForResponse();                            // wait for other thread
+    else
+      usleep(150*1000);                             // do not wait too long if entry is NOT to come
+    // check response:
+    tut::ensure_equals("invalid collection size", mainQueue_.size(), shouldPass?1u:0u);
   }
 
   Core::Types::SignedNodesFifo mainQueue_;
@@ -109,11 +134,7 @@ void testObj::test<3>(void)
                                            // elements set, and processor should forward it
                                            // to the main queue.
   // wait for the results
-  for(int i=0; i<10; ++i)
-    if( mainQueue_.size()==1 )
-      break;
-    else
-      usleep(50*1000);
+  waitForResponse();
   // check results
   ensure_equals("invalid number of elements", mainQueue_.size(), 1u);
   Core::Types::SignedNode sn=mainQueue_.pop();
@@ -158,7 +179,9 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  fail("TODO: implement test for ECL in Processor");
+  EntryControlList ecl=EntryControlList::createDefaultAccept();
+  ecl.add("myexception");
+  checkECL(ecl, "myexception", false);
 }
 
 // test if ECL works - accept test
@@ -166,7 +189,9 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  fail("TODO: implement test for ECL in Processor");
+  EntryControlList ecl=EntryControlList::createDefaultReject();
+  ecl.add("myexception");
+  checkECL(ecl, "myexception", true);
 }
 
 // test if ECL works - reject self test
@@ -174,7 +199,8 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  fail("TODO: implement test for ECL in Processor");
+  EntryControlList ecl=EntryControlList::createDefaultAccept();
+  checkECL(ecl, "testinterface", false);
 }
 
 } // namespace tut
