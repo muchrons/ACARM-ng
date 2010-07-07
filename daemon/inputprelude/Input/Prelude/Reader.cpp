@@ -17,7 +17,7 @@ namespace Prelude
 {
 
 Reader::Reader(const std::string& profile, const std::string& config):
-  Input::Reader(profile), // TODO: this should be "prelude"
+  Input::Reader("prelude"),
   client_( new Client(profile, config, PRELUDE_CONNECTION_PERMISSION_IDMEF_READ) )
 {
   assert( client_.get()!=NULL );
@@ -28,7 +28,7 @@ Reader::DataPtr Reader::read(BackendFacade &bf, const unsigned int timeout)
   DataPtr tmp;
   assert(tmp.get()==NULL);
 
-  System::AutoVariable<detail::IdmefMessageHolder> message(client_->recvMessage(timeout));
+  System::AutoVariable<detail::IdmefMessageHolder> message( client_->recvMessage(timeout) );
 
   // in case of timeout 'message' equals to null
   if (!message.get())
@@ -49,11 +49,9 @@ Reader::DataPtr Reader::read(BackendFacade &bf, const unsigned int timeout)
   }
   catch(const ExceptionUnsupportedFeature &ex)
   {
-//  TODO: test this code                                                                                                                                
     LOGMSG_DEBUG_S(log_)<<"exception uppon unsupported feature request: "<<ex.what();
     // we can ignore this and return NULL
     assert( tmp.get()==NULL );
-    throw;
   }
 
   return tmp;
