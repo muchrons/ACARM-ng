@@ -16,6 +16,8 @@ using namespace Input::Prelude;
 using namespace boost::posix_time;
 using namespace Persistency;
 
+// TODO: rework this code using Input::Prelude::TestData
+
 namespace
 {
 // TODO: this class must be non-copyable
