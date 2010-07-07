@@ -149,9 +149,13 @@ Processor::~Processor(void)
 
 void Processor::process(const Core::Types::SignedNode &node)
 {
-  // TODO: checking if given node can(not) be processed must be done here,
-  //       most likely via 'interface_'.
-
+  // if entry from given processor is not allowed for this one, skip this call
+  if( !interface_->getECL().isAcceptable( node.getReporterName() ) )
+  {
+    LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName()<<"' has been rejected...";
+    return;
+  }
+  LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName()<<"' has been accepted - adding to queue";
   // it will be processed in separate thread
   inputQueue_.push( node.getNode() );
 }
