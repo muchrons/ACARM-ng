@@ -34,16 +34,28 @@ Reader::DataPtr Reader::read(BackendFacade &bf, const unsigned int timeout)
   if (!message.get())
     return tmp;
 
-  const IDMEFParser ip( message.get(), bf );
-  tmp.reset(new Persistency::Alert(ip.getName(),
-                                   ip.getAnalyzers(),
-                                   NULL,
-                                   ip.getCreateTime(),
-                                   ip.getSeverity(),
-                                   Persistency::Certainty(1.0),
-                                   ip.getDescription(),
-                                   ip.getSources(),
-                                   ip.getTargets()));
+  try
+  {
+    const IDMEFParser ip( message.get(), bf );
+    tmp.reset(new Persistency::Alert(ip.getName(),
+                                     ip.getAnalyzers(),
+                                     NULL,
+                                     ip.getCreateTime(),
+                                     ip.getSeverity(),
+                                     Persistency::Certainty(1.0),
+                                     ip.getDescription(),
+                                     ip.getSources(),
+                                     ip.getTargets()));
+  }
+  catch(const ExceptionUnsupportedFeature &ex)
+  {
+//  TODO: test this code                                                                                                                                
+    LOGMSG_DEBUG_S(log_)<<"exception uppon unsupported feature request: "<<ex.what();
+    // we can ignore this and return NULL
+    assert( tmp.get()==NULL );
+    throw;
+  }
+
   return tmp;
 }
 
