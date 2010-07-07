@@ -43,9 +43,9 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Persistency::GraphNodePtrNN node=makeNewLeaf();
-  SignedNode sn(node, "abc");
-  ensure_equals("invalid name returned", sn.getReporter(), "abc");
+  const SignedNode::ReporterName name("abc");
+  SignedNode sn( makeNewLeaf(), name );
+  ensure_equals("invalid name returned", sn.getReporterName(), name);
 }
 
 } // namespace tut

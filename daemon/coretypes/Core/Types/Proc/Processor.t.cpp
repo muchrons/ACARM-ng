@@ -118,7 +118,7 @@ void testObj::test<3>(void)
   ensure_equals("invalid number of elements", mainQueue_.size(), 1u);
   Core::Types::SignedNode sn=mainQueue_.pop();
   ensure("requested element not found", sn.getNode().get()==ti.node_.get() );
-  ensure("invalid sign in entry", sn.getReporter()==ti.getName() );
+  ensure("invalid sign in entry", sn.getReporterName()==ti.getName() );
 }
 
 // test if multiple calls to process() does not break anything

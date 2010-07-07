@@ -21,12 +21,15 @@ namespace Types
 class SignedNode
 {
 public:
+  /** \brief class representing reporter's name. */
+  typedef std::string ReporterName;
+
   /** \brief create instance.
    *  \param node     node to be signed.
    *  \param reporter creator's/last modifier's (component) name.
    */
   SignedNode(Persistency::GraphNodePtrNN  node,
-             const std::string           &reporter):
+             const ReporterName          &reporter):
     node_(node),
     reporter_(reporter)
   {
@@ -42,14 +45,14 @@ public:
   /** \brief gets reporter's name.
    *  \return name of the reporter.
    */
-  const std::string &getReporter(void) const
+  const ReporterName &getReporterName(void) const
   {
     return reporter_;
   }
 
 private:
   Persistency::GraphNodePtrNN node_;
-  std::string                 reporter_;
+  ReporterName                reporter_;
 }; // class SignedNode
 
 } // namespace Types
