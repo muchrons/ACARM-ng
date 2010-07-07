@@ -17,7 +17,7 @@ namespace Types
 
 /** \brief fifo queue holding nodes allong with additional data.
  */
-typedef Base::Threads::UniqueFifoQueue<SignedNode> SignedNodesFifo;
+typedef Base::Threads::FifoQueue<SignedNode> SignedNodesFifo;
 
 } // namespace Types
 } // namespace Core
