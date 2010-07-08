@@ -5,7 +5,7 @@
 #include <tut.h>
 #include <string>
 #include <memory>
-#include <string>
+#include <cstring>
 #include <prelude-client.h>
 
 #include "Input/Prelude/ExceptionParse.hpp"
@@ -16,6 +16,8 @@ using namespace std;
 using namespace Input::Prelude;
 using namespace boost::posix_time;
 using namespace Persistency;
+
+// TODO: rework this code using Input::Prelude::TestData
 
 namespace
 {
@@ -322,7 +324,7 @@ void testObj::test<10>(void)
   ensure_equals("invalid ID", an.getPreludeID(), id_);
 }
 
-// test for exception when ID's not set
+// test for fallback when ID's not set
 template<>
 template<>
 void testObj::test<11>(void)
@@ -341,27 +343,23 @@ void testObj::test<11>(void)
   prelude_string_new_dup(&ps_osversion, osversion_.c_str() );
   prelude_string_new_dup(&ps_address, address_.c_str() );
 
-  idmef_analyzer_set_name(analyzer_, ps_name);
-  idmef_analyzer_set_ostype(analyzer_, ps_ostype);
-  idmef_analyzer_set_osversion(analyzer_, ps_osversion);
+  idmef_analyzer_set_name(analyzer, ps_name);
+  idmef_analyzer_set_ostype(analyzer, ps_ostype);
+  idmef_analyzer_set_osversion(analyzer, ps_osversion);
 
   idmef_node_t *node=NULL;
-  idmef_analyzer_new_node(analyzer_, &node);
+  idmef_analyzer_new_node(analyzer, &node);
 
   idmef_address_t *addr=NULL;
   idmef_node_new_address(node, &addr, IDMEF_LIST_APPEND);
   idmef_address_set_address(addr, ps_address);
   idmef_address_set_category(addr, IDMEF_ADDRESS_CATEGORY_IPV4_ADDR);
 
-  try
-  {
-    IDMEFParserAnalyzer an(analyzer);
-    fail("Exception was not thrown.");
-  }
-  catch(const IDMEFParserAnalyzer::ExceptionMissingID &)
-  {
-    //expected
-  }
+  IDMEFParserAnalyzer an(analyzer);
+  ensure_equals("invalid value returned",
+                an.getPreludeID(),
+                "UnknownID/The Analyzer of Luke Skywaker/NULLSTR/Wojtek linux2.6.129 gr-sec/156.117.92.22");
+
   idmef_analyzer_destroy(analyzer);
 }
 

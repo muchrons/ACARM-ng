@@ -33,6 +33,11 @@ struct TestStrategy
     ++p_.calls_;
   }
 
+  static EntryControlList createEntryControlList(void)
+  {
+    return EntryControlList::createDefaultAccept();
+  }
+
   const TestStrategyParams &p_;
 };
 
@@ -52,6 +57,11 @@ struct TestStrategyNoParm
   void process(GraphNodePtrNN, Interface::ChangedNodes&)
   {
     ++testStrategyNoParmCalls;
+  }
+
+  static EntryControlList createEntryControlList(void)
+  {
+    return EntryControlList::createDefaultAccept();
   }
 };
 

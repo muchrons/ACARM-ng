@@ -47,6 +47,11 @@ public:
   virtual const Persistency::Alert::ReportedHosts &getReportedHostsArray(
                                                     const Node node) const = 0;
 
+  /** \brief create ECL for this filter.
+   *  \return ECL for filter.
+   */
+  static Core::Types::Proc::EntryControlList createEntryControlList(void);
+
 protected:
   /** \brief create instance.
    *  \param name    name to assign.

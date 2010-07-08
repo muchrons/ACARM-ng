@@ -14,7 +14,7 @@ using namespace Core::Types::Proc;
 namespace Core
 {
 
-Processors::Processors(Core::Types::NodesFifo &queue):
+Processors::Processors(Core::Types::SignedNodesFifo &queue):
   log_("core.processors"),
   queue_(queue)
 {
@@ -31,7 +31,7 @@ Processors::~Processors(void)
 
 void Processors::process(void)
 {
-  GraphNodePtrNN node=queue_.pop(); // wait for next element
+  Core::Types::SignedNode node=queue_.pop(); // wait for next element
 
   // process it with all the processors
   for(ProcessorsCollection::iterator it=procs_.begin(); it!=procs_.end(); ++it)

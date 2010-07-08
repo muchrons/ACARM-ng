@@ -32,6 +32,13 @@ Strategy::Strategy(unsigned int timeout):
 {
 }
 
+Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
+{
+  Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultAccept();
+  ecl.add("manytomany");
+  return ecl;
+}
+
 Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
 {
   return NodeEntry( n, Data() );

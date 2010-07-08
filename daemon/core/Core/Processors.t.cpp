@@ -24,7 +24,7 @@ struct TestClass: public TestHelpers::TestBase
     ConfigIO::Singleton::get()->rereadConfig(path);
   }
 
-  Core::Types::NodesFifo queue_;
+  Core::Types::SignedNodesFifo queue_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -53,7 +53,7 @@ int filterCalls_=0;
 struct TestFilterInterface: public Core::Types::Proc::Interface
 {
   TestFilterInterface(void):
-    Core::Types::Proc::Interface("somefilter")
+    Core::Types::Proc::Interface( "somefilter", Types::Proc::EntryControlList::createDefaultAccept() )
   {
   }
 
@@ -95,7 +95,7 @@ int triggerCalls_=0;
 struct TestTriggerInterface: public Core::Types::Proc::Interface
 {
   TestTriggerInterface(void):
-    Core::Types::Proc::Interface("sometrigger")
+    Core::Types::Proc::Interface( "sometrigger", Types::Proc::EntryControlList::createDefaultAccept() )
   {
   }
 
@@ -147,7 +147,7 @@ void testObj::test<2>(void)
   ensure_equals("trigger has been called too fast", triggerCalls_, 0);
 
   // test example call
-  queue_.push( TestHelpers::Persistency::makeNewNode() );
+  queue_.push( Core::Types::SignedNode( TestHelpers::Persistency::makeNewNode(), "me" ) );
   p.process();  // this enqueues node in every filters
 
   // wait until everything's processed

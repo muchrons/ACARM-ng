@@ -7,7 +7,7 @@ using namespace ConfigIO;
 namespace Trigger
 {
 
-TriggersCollection create(Core::Types::NodesFifo &outputQueue)
+TriggersCollection create(Core::Types::SignedNodesFifo &outputQueue)
 {
   const TriggersConfigCollection &c=Singleton::get()->triggersConfig();
   TriggersCollection              out;

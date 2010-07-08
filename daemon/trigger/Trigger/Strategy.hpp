@@ -47,6 +47,14 @@ public:
   {
     return name_;
   }
+  /** \brief create ECL for all triggers.
+   *  \return ECL for triggers.
+   */
+  static Core::Types::Proc::EntryControlList createEntryControlList(void)
+  {
+    // triggers always accept all entries, regardless of their's origin.
+    return Core::Types::Proc::EntryControlList::createDefaultAccept();
+  }
 
 protected:
   /** \brief create instance.

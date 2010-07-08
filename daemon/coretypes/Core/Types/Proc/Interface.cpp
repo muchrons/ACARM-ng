@@ -20,8 +20,14 @@ const std::string &Interface::getName(void) const
   return name_;
 }
 
-Interface::Interface(const std::string &name):
-  name_(name)
+const EntryControlList &Interface::getECL(void) const
+{
+  return ecl_;
+}
+
+Interface::Interface(const std::string &name, const EntryControlList &ecl):
+  name_(name),
+  ecl_(ecl)
 {
 }
 

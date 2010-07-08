@@ -15,7 +15,7 @@ using namespace Persistency::IO;
 namespace Core
 {
 
-QueueRestorer::QueueRestorer(Core::Types::NodesFifo &queue)
+QueueRestorer::QueueRestorer(Core::Types::SignedNodesFifo &queue)
 {
   const Logger::Node log("core.queuerestorer");
   try
@@ -35,7 +35,8 @@ QueueRestorer::QueueRestorer(Core::Types::NodesFifo &queue)
     // add all elements to queue
     LOGMSG_DEBUG_S(log)<<tmp.size()<<" meta-alerts read from persistency; appending to queue";
     for(Restorer::NodesVector::const_iterator it=tmp.begin(); it!=tmp.end(); ++it)
-      queue.push(*it);
+      // TODO: this is hardcoded value of unknown origin of the alert - it should be rethought...
+      queue.push( Types::SignedNode(*it, "*unknown*") );
 
     LOGMSG_INFO_S(log)<<"restoring "<<tmp.size()<<" elements successful";
   }

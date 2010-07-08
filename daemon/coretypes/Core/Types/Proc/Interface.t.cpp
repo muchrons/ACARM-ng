@@ -20,7 +20,7 @@ namespace
 struct TestInterface: public Interface
 {
   explicit TestInterface(bool *dtor):
-    Interface("testinterface"),
+    Interface("testinterface", EntryControlList::createDefaultAccept() ),
     calls_(0),
     dtor_(dtor)
   {

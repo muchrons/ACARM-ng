@@ -12,14 +12,15 @@
 using namespace Core::Types::Proc;
 using namespace Persistency;
 using namespace TestHelpers::Persistency;
+using Core::Types::SignedNode;
 
 namespace
 {
 
 struct TestInterface: public Interface
 {
-  TestInterface(void):
-    Interface("testinterface"),
+  explicit TestInterface(const EntryControlList &ecl=EntryControlList::createDefaultAccept() ):
+    Interface("testinterface", ecl),
     calls_(0),
     node_( makeNewLeaf() ),
     node2_( makeNewLeaf() )
@@ -53,8 +54,33 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   {
   }
 
-  Core::Types::NodesFifo      mainQueue_;
-  Processor::InterfaceAutoPtr interface_;
+  void waitForResponse(void)
+  {
+    // wait for the results up to 2[s]
+    for(int i=0; i<200; ++i)
+      if( mainQueue_.size() > 0 )
+        return;
+      else
+        usleep(10*1000);
+    tut::fail("timed out while waiting for response from processor");
+  }
+
+  void checkECL(const EntryControlList &ecl, const std::string &caller, bool shouldPass)
+  {
+    TestInterface *ti=new TestInterface(ecl);
+    interface_.reset(ti);
+    ProcessorPtrNN p( new Processor(mainQueue_, interface_) );
+    p->process( SignedNode(ti->node_, caller) );    // this call should add 1 element to 'changed'
+    if(shouldPass)                                  // should we wait for entry?
+      waitForResponse();                            // wait for other thread
+    else
+      usleep(150*1000);                             // do not wait too long if entry is NOT to come
+    // check response:
+    tut::ensure_equals("invalid collection size", mainQueue_.size(), shouldPass?1u:0u);
+  }
+
+  Core::Types::SignedNodesFifo mainQueue_;
+  Processor::InterfaceAutoPtr  interface_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -104,18 +130,16 @@ void testObj::test<3>(void)
   // process data
   TestInterface &ti=dynamic_cast<TestInterface&>(*interface_);
   Processor      p(mainQueue_, interface_);
-  p.process(ti.node_);  // this call should add 1 element to 'changed'
-                        // elements set, and processor should forward it
-                        // to the main queue.
+  p.process( SignedNode(ti.node_, "me") ); // this call should add 1 element to 'changed'
+                                           // elements set, and processor should forward it
+                                           // to the main queue.
   // wait for the results
-  for(int i=0; i<10; ++i)
-    if( mainQueue_.size()==1 )
-      break;
-    else
-      usleep(50*1000);
+  waitForResponse();
   // check results
   ensure_equals("invalid number of elements", mainQueue_.size(), 1u);
-  ensure("requested element not found", mainQueue_.pop().get()==ti.node_.get() );
+  Core::Types::SignedNode sn=mainQueue_.pop();
+  ensure("requested element not found", sn.getNode().get()==ti.node_.get() );
+  ensure("invalid sign in entry", sn.getReporterName()==ti.getName() );
 }
 
 // test if multiple calls to process() does not break anything
@@ -128,9 +152,9 @@ void testObj::test<4>(void)
   // process data
   TestInterface &ti=dynamic_cast<TestInterface&>(*interface_);
   Processor      p(mainQueue_, interface_);
-  p.process(ti.node_);          // this call should add 2 elements to 'changed'
-  p.process(ti.node2_);         // elements set, and processor should forward it
-                                // to the main queue.
+  p.process( SignedNode(ti.node_,  "me") ); // this call should add 2 elements to 'changed'
+  p.process( SignedNode(ti.node2_, "me") ); // elements set, and processor should forward it
+                                            // to the main queue.
   // wait for the results
   for(int i=0; i<10; ++i)
     if( mainQueue_.size()==2 )
@@ -148,6 +172,35 @@ void testObj::test<5>(void)
 {
   ProcessorPtrNN p( new Processor(mainQueue_, interface_) );
   ensure("NULL pointer received", p.get()!=NULL );  // could be assert as well
+}
+
+// test if ECL works - reject test
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  EntryControlList ecl=EntryControlList::createDefaultAccept();
+  ecl.add("myexception");
+  checkECL(ecl, "myexception", false);
+}
+
+// test if ECL works - accept test
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  EntryControlList ecl=EntryControlList::createDefaultReject();
+  ecl.add("myexception");
+  checkECL(ecl, "myexception", true);
+}
+
+// test if ECL works - reject self test
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  EntryControlList ecl=EntryControlList::createDefaultAccept();
+  checkECL(ecl, "testinterface", false);
 }
 
 } // namespace tut

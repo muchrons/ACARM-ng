@@ -3,6 +3,7 @@
  *
  */
 #include <tut.h>
+
 #include "Input/Prelude/Reader.hpp"
 
 using namespace std;
@@ -31,12 +32,12 @@ factory tf("Input/Prelude/Reader");
 namespace tut
 {
 
-// TODO
+// test if name is valid
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  // TODO
+  ensure_equals("invalid name", r_.getName(), "prelude");
 }
 
 } // namespace tut

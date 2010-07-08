@@ -33,7 +33,7 @@ struct TestClass
     }
   }
 
-  Core::Types::NodesFifo queue_;
+  Core::Types::SignedNodesFifo queue_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -79,7 +79,7 @@ namespace
 struct TestInterface: public Interface
 {
   TestInterface(void):
-    Interface("narf")
+    Interface( "narf", EntryControlList::createDefaultAccept() )
   {
   }
 

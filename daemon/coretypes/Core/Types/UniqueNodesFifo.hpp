@@ -1,9 +1,9 @@
 /*
- * NodesFifo.hpp
+ * UniqueNodesFifo.hpp
  *
  */
-#ifndef INCLUDE_CORE_TYPES_NODESFIFLO_HPP_FILE
-#define INCLUDE_CORE_TYPES_NODESFIFLO_HPP_FILE
+#ifndef INCLUDE_CORE_TYPES_UNIQUENODESFIFLO_HPP_FILE
+#define INCLUDE_CORE_TYPES_UNIQUENODESFIFLO_HPP_FILE
 
 /* public header */
 
@@ -17,7 +17,7 @@ namespace Types
 
 /** \brief fifo queue holding graph nodes.
  */
-typedef Base::Threads::UniqueFifoQueue<Persistency::GraphNodePtrNN> NodesFifo;
+typedef Base::Threads::UniqueFifoQueue<Persistency::GraphNodePtrNN> UniqueNodesFifo;
 
 } // namespace Types
 } // namespace Core

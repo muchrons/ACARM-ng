@@ -33,6 +33,11 @@ public:
    */
   explicit Strategy(unsigned int timeout);
 
+  /** \brief create ECL for this filter.
+   *  \return ECL for filter.
+   */
+  static Core::Types::Proc::EntryControlList createEntryControlList(void);
+
 private:
   //
   // Simple::Strategy implementation
