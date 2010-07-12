@@ -74,7 +74,7 @@ void Strategy::processImpl(Node               n,
     return;
 
   assert( bl_.get()!=NULL );
-  const EntryProcessor ep(bl_.get(), &bf, params_.priDelta_);
+  const EntryProcessor ep(bl_.get(), &bf, &processed_, params_.priDelta_);
   Algo::forEachUniqueLeaf(n, ep);
 }
 

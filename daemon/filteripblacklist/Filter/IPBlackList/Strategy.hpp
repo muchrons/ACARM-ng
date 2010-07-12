@@ -11,6 +11,7 @@
 #include "Filter/Strategy.hpp"
 #include "Filter/IPBlackList/BlackList.hpp"
 #include "Filter/IPBlackList/Downloader.hpp"
+#include "Filter/IPBlackList/ProcessedSet.hpp"
 
 
 namespace Filter
@@ -74,6 +75,7 @@ private:
   time_t           deadline_;
   BlackListPtr     bl_;
   Downloader       dwnl_;
+  ProcessedSet     processed_;
 }; // class Strategy
 
 } // namespace IPBlackList
