@@ -59,7 +59,7 @@ public:
    *        so pop() cannot be stopped, when run from main thread (only by
    *        adding new element).
    */
-  value_type top(void)
+  value_type top(void) const
   {
     // wait for data, if not present
     Lock lock(mutex_);

@@ -231,9 +231,10 @@ void testObj::test<7>(void)
 {
   q_.push("str1");
   q_.push("str2");
+  const FQ &q=q_;       // used to check for const top()
   // check
-  ensure_equals("invalid stirng 1/1", q_.top(), "str1");
-  ensure_equals("invalid stirng 1/2", q_.top(), "str1");
+  ensure_equals("invalid stirng 1/1", q.top(), "str1");
+  ensure_equals("invalid stirng 1/2", q.top(), "str1");
   q_.pop();
   ensure_equals("invalid stirng 2",   q_.pop(), "str2");
 }
