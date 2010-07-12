@@ -109,4 +109,15 @@ void testObj::test<3>(void)
   ensure_equals("invalida data", d1_.begin()->data_, 11);
 }
 
+// test test adding entry with different data (additional data must be
+// compared as well).
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  empty_.add(ptr1_, 1);
+  empty_.add(ptr1_, 2);
+  ensure_equals("invalid initial size", size(d1_), 2);
+}
+
 } // namespace tut
