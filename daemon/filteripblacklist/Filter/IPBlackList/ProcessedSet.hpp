@@ -15,13 +15,25 @@ namespace Filter
 namespace IPBlackList
 {
 
-/** \brief 
+/** \brief local cache of which leaf:host pairs have been already processed (i.e. severity
+ *         has been increased).
  */
 class ProcessedSet
 {
 public:
+  /** \brief checks if given pair has been alrady processed or not.
+   *  \param leaf leaf from which host is from.
+   *  \param host host assigned to given leaf.
+   *  \return true if pair has been already reported, false otherwise.
+   */
   bool isProcessed(Persistency::GraphNodePtrNN leaf, Persistency::HostPtrNN host) const;
+  /** \brief marks given pair as already processed.
+   *  \param leaf leaf from which host is from.
+   *  \param host host assigned to given leaf.
+   */
   void markAsProcessed(Persistency::GraphNodePtrNN leaf, Persistency::HostPtrNN host);
+  /** \brief removes entries corresponding to graph nodes not held in memory any more.
+   */
   void prune(void);
 
 private:

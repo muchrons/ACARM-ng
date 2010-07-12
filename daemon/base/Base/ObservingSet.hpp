@@ -37,12 +37,7 @@ public:
   typedef boost::shared_ptr<T> SharedPtr;
 
   /** \brief add element to observed queue.
-   *  \param t element to be added.
-   *
-   *  if elements does not exist in queue, new entry is added. if such element
-   *  already exists call is ignored (double elements are not inserted).
-   *
-   *  \note order of elements after update is not guaranteed.
+   *  \param e element to be added.
    */
   void add(const SharedPtr &e)
   {
