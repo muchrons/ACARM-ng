@@ -28,6 +28,9 @@ template<typename T, typename AddPolicy=FifoAcceptAllPolicy>
 class FifoQueue
 {
 public:
+  /** \brief type of values held inside. */
+  typedef T value_type;
+
   /** \brief gets first element out and removes it from queue.
    *  \return element from the begin of the queue (oldest).
    *

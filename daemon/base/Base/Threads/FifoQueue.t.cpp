@@ -238,4 +238,14 @@ void testObj::test<7>(void)
   ensure_equals("invalid stirng 2",   q_.pop(), "str2");
 }
 
+// test for value_type typedef's presence
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  q_.push("str1");
+  FQ::value_type v=q_.pop();
+  ensure_equals("invalid stirng", v, "str1");
+}
+
 } // namespace tut
