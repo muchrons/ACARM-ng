@@ -24,15 +24,15 @@ ifneq ($(TC),intel)
 export WITH_CCACHE:=1
 endif
 
-TMP:=
+TMP:=-fstack-protector-all
 TMPLD:=
 
 # determine architecture to compile for
 ARCH_STR:=$(shell uname -m)
 ifeq ($(ARCH_STR),x86_64)
-TMP:=-m64
+TMP+=-m64
 else
-TMP:=-m32
+TMP+=-m32
 endif
 
 # project-specific flags
