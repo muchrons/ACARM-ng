@@ -35,7 +35,7 @@ public:
    *  \return element from the begin of the queue (oldest).
    *
    *  \note this call returns element by value AND removes it from the
-   *        queue. this means that copy constructor of type T may NOT
+   *        queue. this means that copy constructor of type value_type may NOT
    *        throw - otherwise element might be lost. if this is not the
    *        case use top() call instead.
    *
@@ -43,11 +43,11 @@ public:
    *        so pop() cannot be stopped, when run from main thread (only by
    *        adding new element).
    */
-  T pop(void)
+  value_type pop(void)
   {
     // wait for data, if not present
     Lock lock(mutex_);
-    const T tmp=popImpl(lock);
+    const value_type tmp=popImpl(lock);
     q_.pop_front();
     return tmp;
   }
@@ -59,7 +59,7 @@ public:
    *        so pop() cannot be stopped, when run from main thread (only by
    *        adding new element).
    */
-  T top(void)
+  value_type top(void)
   {
     // wait for data, if not present
     Lock lock(mutex_);
@@ -74,16 +74,16 @@ public:
   }
 
   /** \brief adds new element to queue.
-   *  \param t element to be added.
+   *  \param e element to be added.
    */
-  void push(const T &t)
+  void push(const value_type &e)
   {
     {
       const AddPolicy ap=AddPolicy();
       const Lock      lock(mutex_);
-      if( !ap(q_, t) )      // element should not be added?
+      if( !ap(q_, e) )      // element should not be added?
         return;
-      q_.push_back(t);      // add element to queue
+      q_.push_back(e);      // add element to queue
     }
     cond_.notify_one();     // signal presence of new entry
   }
@@ -102,7 +102,7 @@ public:
   }
 
 private:
-  const T &popImpl(Lock &lock) const
+  const value_type &popImpl(Lock &lock) const
   {
     // wait for data, if not present
     while( q_.size()<1 )
@@ -118,7 +118,7 @@ private:
 
   // NOTE: std::deque is used here instead of std::queue since deque has begin/end
   //       iterators required in some circumstances.
-  typedef std::deque<T> Queue;
+  typedef std::deque<value_type> Queue;
 
   mutable Mutex       mutex_;
   mutable Conditional cond_;
