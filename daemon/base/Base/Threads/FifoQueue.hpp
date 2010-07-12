@@ -28,12 +28,13 @@ template<typename T, typename AddPolicy=FifoAcceptAllPolicy>
 class FifoQueue
 {
 public:
-  /** \brief gets first element out.
+  /** \brief gets first element out and removes it from queue.
    *  \return element from the begin of the queue (oldest).
    *
    *  \note this call returns element by value AND removes it from the
    *        queue. this means that copy constructor of type T may NOT
-   *        throw - otherwise element might be lost.
+   *        throw - otherwise element might be lost. if this is not the
+   *        case use top() call instead.
    *
    *  \note interruption point works ONLY if it if run in a separate thread,
    *        so pop() cannot be stopped, when run from main thread (only by
@@ -43,17 +44,23 @@ public:
   {
     // wait for data, if not present
     Lock lock(mutex_);
-    while( q_.size()<1 )
-    {
-      boost::this_thread::interruption_point();
-      cond_.wait(lock);
-    }
-
-    // take one element and return it
-    assert( q_.size()>0 );
-    const T tmp=q_.front();
+    const T tmp=popImpl(lock);
     q_.pop_front();
     return tmp;
+  }
+
+  /** \brief gets first element (does not remove it from queue).
+   *  \return element from the begin of the queue (oldest).
+   *
+   *  \note interruption point works ONLY if it if run in a separate thread,
+   *        so pop() cannot be stopped, when run from main thread (only by
+   *        adding new element).
+   */
+  T top(void)
+  {
+    // wait for data, if not present
+    Lock lock(mutex_);
+    return popImpl(lock);
   }
 
   /** \brief signals all threads waiting on pop().
@@ -92,13 +99,27 @@ public:
   }
 
 private:
+  const T &popImpl(Lock &lock) const
+  {
+    // wait for data, if not present
+    while( q_.size()<1 )
+    {
+      boost::this_thread::interruption_point();
+      cond_.wait(lock);
+    }
+
+    // take one element and return it
+    assert( q_.size()>0 );
+    return q_.front();
+  }
+
   // NOTE: std::deque is used here instead of std::queue since deque has begin/end
   //       iterators required in some circumstances.
   typedef std::deque<T> Queue;
 
-  mutable Mutex mutex_;
-  Conditional   cond_;
-  Queue         q_;
+  mutable Mutex       mutex_;
+  mutable Conditional cond_;
+  Queue               q_;
 }; // class FifoQueue
 
 } // namespace Threads

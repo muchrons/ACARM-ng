@@ -224,4 +224,18 @@ void testObj::test<6>(void)
   ensure_equals("invalid state", state, 2);
 }
 
+// test top() call
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  q_.push("str1");
+  q_.push("str2");
+  // check
+  ensure_equals("invalid stirng 1/1", q_.top(), "str1");
+  ensure_equals("invalid stirng 1/2", q_.top(), "str1");
+  q_.pop();
+  ensure_equals("invalid stirng 2",   q_.pop(), "str2");
+}
+
 } // namespace tut
