@@ -5,8 +5,6 @@
 #ifndef INCLUDE_FILTER_IPBLACKLIST_ENTRYPROCESSOR_HPP_FILE
 #define INCLUDE_FILTER_IPBLACKLIST_ENTRYPROCESSOR_HPP_FILE
 
-#include <cassert>
-
 #include "Persistency/GraphNode.hpp"
 #include "Filter/BackendFacade.hpp"
 #include "Filter/IPBlackList/BlackList.hpp"
