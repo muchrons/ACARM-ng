@@ -19,4 +19,5 @@
 47 fix message buffering issue in triggers - when messages are buffered, they are not marked as already triggered, thus the same report may arrive multiple times (making queue unique should solve this issue).
 49 fix logger to continue logging to file after disk space is out and then freed again.
 50 move connection with gg server to separate thread (keep connection alive all the time, since reconnecting does not always work - server has flood-protection).
-51
+51 ipblackfilter does not save paramters in data base - after restart the same alerts will get severity incremetned once more; soncider saving MetaAlertID->done/notdone as a config paramter.
+52
