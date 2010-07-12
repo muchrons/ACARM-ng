@@ -22,8 +22,6 @@ template<typename TQueue, size_t N>
 class TruncatingQueue
 {
 public:
-  BOOST_STATIC_ASSERT( N>0 );
-
   /** \brief forward typedef from collection. */
   typedef typename TQueue::value_type value_type;
 
@@ -66,6 +64,8 @@ public:
   }
 
 private:
+  BOOST_STATIC_ASSERT( N>0 );
+
   TQueue q_;
 }; // class TruncatingQueue
 
