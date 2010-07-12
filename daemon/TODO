@@ -7,17 +7,12 @@
 26 create XML schema for config file.
 27 add parse-at-read feature to configio - config should be accepted or rejected when running application, not delayed until acctuall usage (note: this task is connected with config's refactoring to register parsers).
 30 trigger for ICQ or jabber messages.
-31 remplace queues from input to queues with limited number of entries, to quench inputs from flooding with data faster, than it can be processed.
 32 add names to inputs, so that multiple instances of the same input types are possible.
 37 add extra check while running ACARM-ng, if last run finished successfully or not (ex.: via DynamicConfig entry, changed uppon normal exit).
 38 consider running persistency cleanup in a separate thread - it takes a lot of time... it could be also run in background onec a day by system, to ensure quick starting of acarm.
-39 consider some sort of mchanism to prevent crashes when connection lives shorter than transaction (ex.: keeping connection in transaction?).
+39 consider some sort of mechanism to prevent crashes when connection lives shorter than transaction (ex.: keeping connection in transaction?).
 40 fix TODOs in QueueRestorer - structure is broken now...
 41 consider adding 'descrioption' to meta-alert to reflect extra correlation pieces of information (like details on what bases these alerts have been correlated).
-42 messages buffering in triggers should have some size limit (not to crash applicaiton when destination sertvice is permanently down).
 46 if filters' prerequisites are not enought consider adding userd-defined rules in config file as well.
-47 fix message buffering issue in triggers - when messages are buffered, they are not marked as already triggered, thus the same report may arrive multiple times (making queue unique should solve this issue).
-49 fix logger to continue logging to file after disk space is out and then freed again.
-50 move connection with gg server to separate thread (keep connection alive all the time, since reconnecting does not always work - server has flood-protection).
 51 ipblackfilter does not save paramters in data base - after restart the same alerts will get severity incremetned once more; soncider saving MetaAlertID->done/notdone as a config paramter.
 52
