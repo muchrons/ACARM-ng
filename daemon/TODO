@@ -1,5 +1,5 @@
 2 rereading configuration from file (note: not all configuration may change at runtime).
-8 refactor ConfigIO - it should read configuration file and keep it in memory. proper handlers for specific parts of configuration file should be implemented by interested components.
+8 refactor ConfigIO - it should read configuration file and keep it in memory. proper handles for specific parts of configuration file should be implemented by interested components.
 9 think what can be done about libprelude's GPL license (others are commercial) - move it to separate process or buy LGPG/BSD?
 11 think how to overcome lack of additional data assigned for observed graph nodes in filters during normal run - they will not be present after reading from persistency.
 15 update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
@@ -9,7 +9,6 @@
 30 trigger for ICQ or jabber messages.
 31 remplace queues from input to queues with limited number of entries, to quench inputs from flooding with data faster, than it can be processed.
 32 add names to inputs, so that multiple instances of the same input types are possible.
-36 fix multiple typos: dbhandleR -> dbhandle
 37 add extra check while running ACARM-ng, if last run finished successfully or not (ex.: via DynamicConfig entry, changed uppon normal exit).
 38 consider running persistency cleanup in a separate thread - it takes a lot of time... it could be also run in background onec a day by system, to ensure quick starting of acarm.
 39 consider some sort of mchanism to prevent crashes when connection lives shorter than transaction (ex.: keeping connection in transaction?).
