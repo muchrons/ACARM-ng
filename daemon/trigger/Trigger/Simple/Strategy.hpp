@@ -7,8 +7,7 @@
 
 /* public header */
 
-#include <queue>
-
+#include "Base/Threads/UniqueFifoQueue.hpp"
 #include "Trigger/Strategy.hpp"
 #include "Trigger/Simple/ThresholdConfig.hpp"
 
@@ -43,7 +42,7 @@ private:
 
   virtual void triggerImpl(const Node &n) = 0;
 
-  typedef std::queue<Node> NodesWaitingRoom;
+  typedef Base::Threads::UniqueFifoQueue<Node> NodesWaitingRoom;
 
   NodesWaitingRoom      fifo_;
   const ThresholdConfig cfg_;

@@ -221,4 +221,56 @@ void testObj::test<9>(void)
   tut::ensure_equals("messages are not removed?", tt.callsTrigger_, 0+2+1);
 }
 
+// test if the same messages are not bufferend multiple times.
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  TestBufferTrigger tt(2);
+  GraphNodePtrNN    node=makeNewLeaf();
+
+  // first run - throw
+  {
+    TestBufferTrigger::ChangedNodes cn;
+    try
+    {
+      tt.process(node, cn);
+      // fail not needed here - it doesn't matter it this call throws or not...
+    }
+    catch(const std::runtime_error &)
+    {
+      // this is expected
+    }
+  }
+  // test first call
+  tut::ensure_equals("trigger not called at all", tt.counter_, 1);
+  tut::ensure_equals("trigger called after exception", tt.callsTrigger_, 0);
+
+  // second run - throw
+  {
+    TestBufferTrigger::ChangedNodes cn;
+    try
+    {
+      tt.process(node, cn);
+      // fail not needed here - it doesn't matter it this call throws or not...
+    }
+    catch(const std::runtime_error &)
+    {
+      // this is expected
+    }
+  }
+  // test second call
+  tut::ensure_equals("trigger not called (2nd run)", tt.counter_, 1+1);
+  tut::ensure_equals("trigger called after 2nd exception", tt.callsTrigger_, 0+0);
+
+  // third call - success
+  {
+    TestBufferTrigger::ChangedNodes cn;
+    tt.process( makeNewLeaf(), cn );        // add some other message
+  }
+  // test third call
+  tut::ensure_equals("trigger not called (3rd run) / the same message buffered multiple times", tt.counter_, 1+1+2);
+  tut::ensure_equals("messages not sent", tt.callsTrigger_, 0+0+2);
+}
+
 } // namespace tut
