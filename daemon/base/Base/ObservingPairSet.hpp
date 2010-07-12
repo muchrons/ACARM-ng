@@ -35,6 +35,19 @@ struct ObservingPairSetData
   {
   }
 
+  /** \brief compares entries with each other.
+   *  \param other object to compare with.
+   *  \return true if object are equal, false otherwise.
+   */
+  bool operator==(const ObservingPairSetData<T, TUserData> &other) const
+  {
+    if( ptr_.lock().get()!=other.ptr_.lock().get() )
+      return false;
+    if( data_!=other.data_ )
+      return false;
+    return true;
+  }
+
   WeakPtr   ptr_;   ///< pointer to be observed
   TUserData data_;  ///< data associated with the pointer
 }; // struct ObservingPairSetData
@@ -72,11 +85,7 @@ private:
   }
   static bool areEqual(const Data &e1, const Data &e2)
   {
-    if( e1.ptr_.lock().get()!=e2.ptr_.lock().get() )
-      return false;
-    if( e1.data_!=e2.data_ )
-      return false;
-    return true;
+    return e1==e2;
   }
 }; // class ObservingSet
 

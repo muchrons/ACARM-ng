@@ -120,4 +120,34 @@ void testObj::test<4>(void)
   ensure_equals("invalid initial size", size(d1_), 2);
 }
 
+// test comparison of data - positive test
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  OSet::Data d1(ptr1_, 1);
+  OSet::Data d2(ptr1_, 1);
+  ensure("comparison failed", d1==d2);
+}
+
+// test comparison of data - negative test 1
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  OSet::Data d1(ptr1_, 1);
+  OSet::Data d2(ptr1_, 2);
+  ensure("comparison didn't failed", !(d1==d2) );
+}
+
+// test comparison of data - negative test 2
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  OSet::Data d1(ptr1_, 1);
+  OSet::Data d2(ptr2_, 1);
+  ensure("comparison didn't failed", !(d1==d2) );
+}
+
 } // namespace tut
