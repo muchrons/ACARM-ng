@@ -92,6 +92,8 @@ public:
   }
 
 private:
+  // NOTE: std::deque is used here instead of std::queue since deque has begin/end
+  //       iterators required in some circumstances.
   typedef std::deque<T> Queue;
 
   mutable Mutex mutex_;
