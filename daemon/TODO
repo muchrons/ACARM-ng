@@ -15,4 +15,5 @@
 41 consider adding 'descrioption' to meta-alert to reflect extra correlation pieces of information (like details on what bases these alerts have been correlated).
 46 if filters' prerequisites are not enought consider adding userd-defined rules in config file as well.
 51 ipblackfilter does not save paramters in data base - after restart the same alerts will get severity incremetned once more; soncider saving MetaAlertID->done/notdone as a config paramter.
-52
+52 implement common configuration module for compile-time constants used in code.
+53
