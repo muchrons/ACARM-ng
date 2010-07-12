@@ -9,7 +9,6 @@
 30 trigger for ICQ or jabber messages.
 31 remplace queues from input to queues with limited number of entries, to quench inputs from flooding with data faster, than it can be processed.
 32 add names to inputs, so that multiple instances of the same input types are possible.
-34 consider using -fstack-protector-all for compilation (check performance).
 36 fix multiple typos: dbhandleR -> dbhandle
 37 add extra check while running ACARM-ng, if last run finished successfully or not (ex.: via DynamicConfig entry, changed uppon normal exit).
 38 consider running persistency cleanup in a separate thread - it takes a lot of time... it could be also run in background onec a day by system, to ensure quick starting of acarm.
@@ -21,4 +20,5 @@
 47 fix message buffering issue in triggers - when messages are buffered, they are not marked as already triggered, thus the same report may arrive multiple times (making queue unique should solve this issue).
 48 fix bug in ipblacklist - it have to remember which alerts have been alrady correlated - otherwise it adds +1.3 up to infinity and alerts get some weird severities like 212314, etc...
 49 fix logger to continue logging to file after disk space is out and then freed again.
-50
+50 move connection with gg server to separate thread (keep connection alive all the time, since reconnecting does not always work - server has flood-protection).
+51
