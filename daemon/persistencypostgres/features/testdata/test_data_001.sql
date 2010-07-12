@@ -62,10 +62,10 @@ INSERT INTO hosts VALUES
   (3, '127.0.0.3', NULL,            NULL,    NULL)
 ;
 INSERT INTO analyzers VALUES
-  (1, 'analyzer 1', '1.2.3', 'Linux', '127.0.0.1'),
-  (2, 'analyzer 2', '2.2.3', 'Linux', '127.0.0.3'),
-  (3, 'analyzer 3', '1.3.3', 'Linux', '127.0.0.2'),
-  (4, 'analyzer 4', '1.2.3', 'Linux', '127.0.0.1')
+  (1, 11, 'analyzer 1', '1.2.3', 'Linux', '127.0.0.1'),
+  (2, 12, 'analyzer 2', '2.2.3', 'Linux', '127.0.0.3'),
+  (3, 10, 'analyzer 3', '1.3.3', 'Linux', '127.0.0.2'),
+  (4, 44, 'analyzer 4', '1.2.3', 'Linux', '127.0.0.1')
 ;
 INSERT INTO severities VALUES
   (7, 0, 'level 1'),

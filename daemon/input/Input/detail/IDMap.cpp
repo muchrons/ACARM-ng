@@ -15,7 +15,9 @@ IDMap::IDMap(const Persistency::Analyzer::ID nextFreeID):
 {
 }
 
-Persistency::Analyzer::ID IDMap::get(PersistencyProxy &pp, const std::string &inputID)
+Persistency::Analyzer::ID IDMap::get(IDPersistencyProxyCommon   &ppc,
+                                     IDPersistencyProxySpecific &pps,
+                                     const std::string          &inputID)
 {
   Base::Threads::Lock lock(mutex_);
   // has already this entry?
@@ -25,12 +27,13 @@ Persistency::Analyzer::ID IDMap::get(PersistencyProxy &pp, const std::string &in
       return it->second;
   }
   // new entry has to be added then!
-  const Persistency::Analyzer::ID id=nextFreeID_++; // switch to next id stright away
-                                                    // to ensure fast recovery from
-                                                    // persistency inconsistent errors.
-  pp.saveMapping(inputID, id);      // save mapping to persistent storage
-  map_[inputID]=id;                 // add run-time mapping
-  return id;                        // return newly added ID
+  const Persistency::Analyzer::ID id=nextFreeID_;               // switch to next id stright away
+  nextFreeID_=Persistency::Analyzer::ID(nextFreeID_.get()+1);   // to ensure fast recovery from
+                                                                // persistency inconsistent errors.
+  ppc.saveNextFreeID(nextFreeID_);                  // save new value of next free ID
+  pps.saveMapping(inputID, id);                     // save mapping to persistent storage
+  map_.insert( MapType::value_type(inputID, id) );  // add run-time mapping
+  return id;                                        // return newly added ID
 }
 
 } // namespace detail

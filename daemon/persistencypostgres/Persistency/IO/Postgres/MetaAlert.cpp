@@ -103,7 +103,7 @@ void MetaAlert::associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN a
     EntrySaver       es(t, *dbHandler_);
     const DataBaseID alertID = dbHandler_->getIDCache()->get( alert );
     const DataBaseID malertID = getID();
-    LOGMSG_DEBUG_S(log_)<<"associate ALert with ID: "<<alertID<<"with Meta Alert with ID: "<<malertID;
+    LOGMSG_DEBUG_S(log_)<<"associate ALert with ID: "<<alertID<<" with Meta Alert with ID: "<<malertID;
     es.saveAlertToMetaAlertMap(alertID, malertID );
   TRYCATCH_END
 }

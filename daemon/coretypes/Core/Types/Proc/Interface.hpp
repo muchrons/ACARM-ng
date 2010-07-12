@@ -12,6 +12,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "Persistency/GraphNode.hpp"
+#include "Core/Types/Proc/EntryControlList.hpp"
 
 
 namespace Core
@@ -43,15 +44,21 @@ public:
    *  \return returns processing unit's name.
    */
   const std::string &getName(void) const;
+  /** \brief gets entry control list object.
+   *  \return reference to object.
+   */
+  const EntryControlList &getECL(void) const;
 
 protected:
   /** \brief creates object with a given name.
    *  \param name name for this processing unit.
+   *  \param ecl  control list that determines what source of alerts are (dis)allowed.
    */
-  explicit Interface(const std::string &name);
+  Interface(const std::string &name, const EntryControlList &ecl);
 
 private:
-  const std::string name_;
+  const std::string      name_;
+  const EntryControlList ecl_;
 }; // class Interface
 
 } // namespace Proc

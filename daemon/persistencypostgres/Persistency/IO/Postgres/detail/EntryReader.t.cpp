@@ -36,7 +36,7 @@ struct TestClass
 {
   TestClass(void):
     name_("some name"),
-    analyzer_( new Analyzer("analyzer name", NULL, NULL, NULL) ),
+    analyzer_( new Analyzer(112233u, "analyzer name", NULL, NULL, NULL) ),
     analyzers_(analyzer_),
     detected_(1000),
     created_(1010),
@@ -105,11 +105,12 @@ factory tf("Persistency/IO/Postgres/detail/EntryReader");
 namespace tut
 {
 
+// test for saving NULLS
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Analyzer      a("analyzer2", NULL, NULL, NULL);
+  const Analyzer      a(123u, "analyzer2", NULL, NULL, NULL);
   const DataBaseID    anlzID       = es_.saveAnalyzer(a);
   const AnalyzerPtrNN readAnalyzer = er_.getAnalyzer(anlzID) ;
 
@@ -126,14 +127,15 @@ void testObj::test<2>(void)
 {
   const Analyzer::Version         anlzVersion("v0.1.0");
   const Analyzer::OperatingSystem anlzOS("wiendols");
-  const Analyzer                  a("analyzer2", anlzVersion, anlzOS, NULL);
+  const Analyzer                  a(123u, "analyzer2", anlzVersion, anlzOS, NULL);
   const DataBaseID                anlzID = es_.saveAnalyzer(a);
   const AnalyzerPtrNN             readAnalyzer =  er_.getAnalyzer(anlzID);
   string                          version(readAnalyzer->getVersion().get());
   const string                    os(readAnalyzer->getOperatingSystem().get());
   trim(version);
-  ensure_equals("wrong version",version, string(anlzVersion.get()) );
-  ensure("ip is not null",readAnalyzer.get()->getIP()==NULL);
+  ensure_equals("wrong ID", readAnalyzer->getID().get(), 123u);
+  ensure_equals("wrong version", version, string(anlzVersion.get()) );
+  ensure("ip is not null", readAnalyzer.get()->getIP()==NULL);
   ensure_equals("wrong os", os, string( anlzOS.get()) );
   t_.commit();
 }

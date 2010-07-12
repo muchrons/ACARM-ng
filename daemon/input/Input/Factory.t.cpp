@@ -5,7 +5,9 @@
 #include <tut.h>
 
 #include "ConfigIO/Singleton.hpp"
+#include "Persistency/IO/Transaction.hpp"
 #include "Input/Factory.hpp"
+#include "Input/TestConnection.t.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace std;
@@ -16,6 +18,17 @@ namespace
 
 struct TestClass: public TestHelpers::Persistency::TestStubs
 {
+  TestClass(void):
+    conn_( createUserStub() ),
+    t_( conn_->createNewTransaction("factory_test") ),
+    cd_( new CommonData(conn_, t_) )
+  {
+  }
+
+  Core::Types::AlertsFifo          q_;
+  Persistency::IO::ConnectionPtrNN conn_;
+  Persistency::IO::Transaction     t_;
+  CommonDataPtrNN                  cd_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -33,8 +46,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Core::Types::AlertsFifo q;
-  InputsCollection        c=create(q);
+  InputsCollection        c=create(q_, cd_);
   ensure_equals("some elements are found", c.size(), 0u);
 }
 
@@ -44,8 +56,7 @@ template<>
 void testObj::test<2>(void)
 {
   ConfigIO::Singleton::get()->rereadConfig("testdata/valid_input.xml");
-  Core::Types::AlertsFifo q;
-  InputsCollection        c=create(q);
+  InputsCollection c=create(q_, cd_);
   ensure_equals("invalid number of entries read", c.size(), 1u);
 }
 
@@ -55,10 +66,9 @@ template<>
 void testObj::test<3>(void)
 {
   ConfigIO::Singleton::get()->rereadConfig("testdata/invalid_input.xml");
-  Core::Types::AlertsFifo q;
   try
   {
-    InputsCollection c=create(q);
+    InputsCollection c=create(q_, cd_);
     fail("create() didn't throw when requested non-existing input");
   }
   catch(const std::runtime_error &)

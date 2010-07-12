@@ -14,7 +14,8 @@
 #include "Logger/Node.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/Threads/Thread.hpp"
-#include "Core/Types/NodesFifo.hpp"
+#include "Core/Types/SignedNodesFifo.hpp"
+#include "Core/Types/UniqueNodesFifo.hpp"
 #include "Core/Types/Proc/Interface.hpp"
 #include "Core/Types/Proc/ExceptionInvalidInterface.hpp"
 
@@ -43,8 +44,8 @@ public:
    *        ensures user does not reimplement process() call, if further virtual
    *        calls are used.
    */
-  Processor(Core::Types::NodesFifo &outputQueue,
-            InterfaceAutoPtr        interface);
+  Processor(Core::Types::SignedNodesFifo &outputQueue,
+            InterfaceAutoPtr              interface);
   /** \brief stops background thread and deallocates internal data.
    */
   ~Processor(void);
@@ -52,11 +53,11 @@ public:
   /** \brief processes given graph node (meta-alert).
    *  \param node node to be processed.
    */
-  void process(Persistency::GraphNodePtrNN node);
+  void process(const Core::Types::SignedNode &node);
 
 private:
-  Core::Types::NodesFifo       &outputQueue_;
-  Core::Types::NodesFifo        inputQueue_;
+  Core::Types::SignedNodesFifo &outputQueue_;
+  Core::Types::UniqueNodesFifo  inputQueue_;
   Logger::Node                  log_;
   boost::scoped_ptr<Interface>  interface_;
   Commons::Threads::Thread      th_;

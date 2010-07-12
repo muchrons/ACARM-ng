@@ -12,6 +12,9 @@
 
 #include "Logger/Node.hpp"
 #include "Persistency/GraphNode.hpp"
+// this header is not used directly, but it is required for the derived
+// classes to implement special, satic method.
+#include "Core/Types/Proc/EntryControlList.hpp"
 
 
 namespace Filter

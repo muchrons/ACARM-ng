@@ -35,7 +35,8 @@ struct TestClass
   Persistency::AnalyzerPtrNN makeAnalyzer(void) const
   {
     const Persistency::Analyzer::IP ip=Persistency::Host::IPv4::from_string("6.6.6.0");
-    return Persistency::AnalyzerPtrNN( new Persistency::Analyzer("analyzer",
+    return Persistency::AnalyzerPtrNN( new Persistency::Analyzer(42u,
+                                                                 "analyzer",
                                                                  "v1.2.3",
                                                                  "Linux!",
                                                                  &ip) );

@@ -16,6 +16,8 @@ using namespace Core;
 
 namespace
 {
+// TODO: this has to be fixed - non-postgres components cannot use postgres for tests!
+//       consider overloading some parts of the Persistency::Stubs according to needs.
 struct TestClass: public TestHelpers::Persistency::TestPostgres
 {
   TestClass(void)
@@ -23,7 +25,7 @@ struct TestClass: public TestHelpers::Persistency::TestPostgres
     tdba_.removeAllData();
   }
 
-  Core::Types::NodesFifo                 queue_;
+  Core::Types::SignedNodesFifo           queue_;
   TestHelpers::Persistency::TestDBAccess tdba_;
 };
 

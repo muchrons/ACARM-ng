@@ -25,7 +25,7 @@ public:
    *  \param name  name of the processor.
    *  \param msg   message to represent.
    */
-  Exception(const Location &where, const std::string &name, const char *msg):
+  Exception(const Location &where, const std::string &name, const std::string &msg):
     Core::Types::Exception(where, "processor '" + name + "': " + msg)
   {
   }

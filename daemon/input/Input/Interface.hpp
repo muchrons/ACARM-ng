@@ -15,6 +15,7 @@
 #include "Commons/Threads/Thread.hpp"
 #include "Core/Types/AlertsFifo.hpp"
 #include "Input/Reader.hpp"
+#include "Input/CommonData.hpp"
 
 namespace Input
 {
@@ -25,13 +26,15 @@ class Interface: private boost::noncopyable
 {
 public:
   /** \brief create thread running reader in background.
-   *  \param reader reader to run in background.
-   *  \param conn   connection to be used
-   *  \param output queue to output data to.
+   *  \param reader     reader to run in background.
+   *  \param conn       connection to be used
+   *  \param output     queue to output data to.
+   *  \param commonData data common to all inputs.
    */
   Interface(ReaderPtrNN                       reader,
             Persistency::IO::ConnectionPtrNN  conn,
-            Core::Types::AlertsFifo          &output);
+            Core::Types::AlertsFifo          &output,
+            CommonDataPtrNN                   commonData);
   /** \brief deactivate thread and do the cleanup.
    */
   ~Interface(void);

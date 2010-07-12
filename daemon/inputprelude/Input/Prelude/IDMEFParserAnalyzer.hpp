@@ -5,13 +5,15 @@
 #ifndef INCLUDE_INPUT_PRELUDE_IDMEFPARSERANALYZER_HPP_FILE
 #define INCLUDE_INPUT_PRELUDE_IDMEFPARSERANALYZER_HPP_FILE
 
-#include "prelude.h"
+#include <string>
+#include <prelude.h>
 
 #include "Persistency/Alert.hpp"
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/ReferenceURL.hpp"
 #include "Logger/Node.hpp"
+#include "Input/Prelude/Exception.hpp"
 
 namespace Input
 {
@@ -29,6 +31,10 @@ public:
    */
   explicit IDMEFParserAnalyzer(idmef_analyzer_t *ptr);
 
+  /**
+   * @brief gets ID assigned to this analyzer by prelude.
+   */
+  const std::string &getPreludeID() const;
   /**
    * @brief gets name of an analyzer
    */
@@ -52,6 +58,7 @@ public:
 private:
   idmef_analyzer_t * getNonNull(idmef_analyzer_t *ptr) const;
   Persistency::Analyzer::Name parseName(idmef_analyzer_t *ptr) const;
+  std::string parsePreludeID(idmef_analyzer_t *ptr) const;
   Persistency::Analyzer::Version parseVersion(idmef_analyzer_t *ptr) const;
   Persistency::Analyzer::OperatingSystem parseOS(idmef_analyzer_t *ptr) const;
   std::auto_ptr<Persistency::Analyzer::IP> parseIP(idmef_analyzer_t *ptr) const;
@@ -62,6 +69,7 @@ private:
   Persistency::Analyzer::OperatingSystem   os_;
   // TODO: auto_ptr is over kill here - consider using Base::NullValue<> for this
   std::auto_ptr<Persistency::Analyzer::IP> ip_;
+  std::string                              preludeID_;
 }; // class IDMEFParserAnalyzer
 
 } // namespace Prelude

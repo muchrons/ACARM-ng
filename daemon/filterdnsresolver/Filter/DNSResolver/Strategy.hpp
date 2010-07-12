@@ -37,6 +37,7 @@ public:
     {
     }
 
+    // TODO: this paramter must be unsigned.
     const int cacheTimeout_;    ///< timeout for cache entries.
   }; // struct Parameters
 
@@ -44,6 +45,11 @@ public:
    *  \param params paramters for dns resolver.
    */
   explicit Strategy(const Parameters &params);
+
+  /** \brief create ECL for this filter.
+   *  \return ECL for filter.
+   */
+  static Core::Types::Proc::EntryControlList createEntryControlList(void);
 
 private:
   virtual void processImpl(Node               n,

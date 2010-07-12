@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "Persistency/IO/create.hpp"
 #include "Algo/computeSeverity.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
@@ -66,6 +67,22 @@ template<>
 void testObj::test<3>(void)
 {
   checkMatch( computeSeverity( makeNewTree2() ), 1.51, 0.05);
+}
+
+// test for bug (failing assertion)
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  GraphNodePtrNN                leaf=makeNewLeaf();
+  std::auto_ptr<IO::Connection> conn=IO::create();
+  ensure("NULL-connection", conn.get()!=NULL );
+  IO::TransactionAPIAutoPtr     tApi=conn->createNewTransaction("leaf_update_severity");
+  IO::Transaction               t(tApi);
+  conn->metaAlert(leaf->getMetaAlert(), t)->updateSeverityDelta(0.1);
+  t.commit();
+  // following code must not crash
+  checkMatch( computeSeverity(leaf), 1.14, 0.05);
 }
 
 } // namespace tut

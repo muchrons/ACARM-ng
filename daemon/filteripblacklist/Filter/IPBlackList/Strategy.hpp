@@ -58,6 +58,11 @@ public:
    */
   explicit Strategy(const Parameters &params);
 
+  /** \brief create ECL for this filter.
+   *  \return ECL for filter.
+   */
+  static Core::Types::Proc::EntryControlList createEntryControlList(void);
+
 private:
   typedef boost::scoped_ptr<BlackList> BlackListPtr;
 

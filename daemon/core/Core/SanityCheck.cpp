@@ -43,7 +43,7 @@ void SanityCheck::logSystemInfo(void)
 
 void SanityCheck::ensureNotRoot(void)
 {
-  LOGMSG_DEBUG(log_, "checking if system's not running by root (UID==0)");
+  LOGMSG_DEBUG(log_, "checking if system's not running by root (UID!=0)");
   if( getuid()==0 )
     throw ExceptionRunningAsRoot(SYSTEM_SAVE_LOCATION);
   LOGMSG_DEBUG_S(log_)<<"system running as UID=="<<getuid();

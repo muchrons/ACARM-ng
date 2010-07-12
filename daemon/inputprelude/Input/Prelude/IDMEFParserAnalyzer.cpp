@@ -2,9 +2,13 @@
  * IDMEFParserAnalyzer.cpp
  *
  */
+#include <sstream>
+
 #include "Input/Prelude/ExceptionParse.hpp"
 #include "Input/Prelude/IDMEFParserCommons.hpp"
 #include "Input/Prelude/IDMEFParserAnalyzer.hpp"
+
+using namespace std;
 
 namespace Input
 {
@@ -17,10 +21,11 @@ using Persistency::Analyzer;
 
 IDMEFParserAnalyzer::IDMEFParserAnalyzer(idmef_analyzer_t *ptr):
   log_("input.prelude.ipa"),
-  name_(parseName(getNonNull(ptr))),
-  version_(parseVersion(getNonNull(ptr))),
-  os_(parseOS(getNonNull(ptr))),
-  ip_(parseIP(getNonNull(ptr)))
+  name_( parseName( getNonNull(ptr) ) ),
+  version_( parseVersion( getNonNull(ptr) ) ),
+  os_( parseOS( getNonNull(ptr) ) ),
+  ip_( parseIP( getNonNull(ptr) ) ),
+  preludeID_( parsePreludeID( getNonNull(ptr) ) )
 {
 }
 
@@ -29,6 +34,38 @@ idmef_analyzer_t * IDMEFParserAnalyzer::getNonNull(idmef_analyzer_t *ptr) const
   if(ptr==NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Idmef Analyzer is empty.");
   return ptr;
+}
+
+namespace
+{
+const char *nonNULL(const char *str)
+{
+  if(str==NULL)
+    return "NULLSTR";
+  return str;
+} // nonNULL()
+string nonNULL(const Persistency::Analyzer::IP *ip)
+{
+  if(ip==NULL)
+    return "NULLIP";
+  return ip->to_string();
+} // nonNULL()
+} // unnamed namespace
+
+std::string IDMEFParserAnalyzer::parsePreludeID(idmef_analyzer_t *ptr) const
+{
+  const prelude_string_t *idmef_id = idmef_analyzer_get_analyzerid(ptr);
+  if(idmef_id==NULL)
+  {
+    // if id's not set directly, create some string out of what we have...
+    stringstream ss;
+    ss << "UnknownID/" << nonNULL( getName().get() )
+       << "/" << nonNULL( getVersion().get() )
+       << "/" << nonNULL( getOS().get() )
+       << "/" << nonNULL( getIP() );
+    return ss.str();
+  }
+  return prelude_string_get_string(idmef_id);
 }
 
 Persistency::Analyzer::Name IDMEFParserAnalyzer::parseName(idmef_analyzer_t *ptr) const
@@ -85,6 +122,11 @@ std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_anal
     LOGMSG_WARN(log_, "No IP but we can carry on");
   }
   return ip;
+}
+
+const std::string &IDMEFParserAnalyzer::getPreludeID() const
+{
+  return preludeID_;
 }
 
 const Persistency::Analyzer::Name& IDMEFParserAnalyzer::getName() const

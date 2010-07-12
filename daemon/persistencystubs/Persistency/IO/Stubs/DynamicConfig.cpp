@@ -19,15 +19,19 @@ DynamicConfig::DynamicConfig(const Owner &owner, Persistency::IO::Transaction &t
 {
 }
 
-void DynamicConfig::writeImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/, const Value &/*value*/)
+void DynamicConfig::writeImpl(Persistency::IO::Transaction &/*t*/, const Key &key, const Value &value)
 {
   ++callsWrite_;
+  owner_[ getOwner().get() ][ key.get() ]=value.get();
 }
 
-DynamicConfig::ValueNULL DynamicConfig::readImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/)
+DynamicConfig::ValueNULL DynamicConfig::readImpl(Persistency::IO::Transaction &/*t*/, const Key &key)
 {
   ++callsRead_;
-  return ValueNULL( Value("alice has a wonderland") );
+  DataMap &data=owner_[ getOwner().get() ];
+  if( data.find( key.get() )==data.end() )
+    return ValueNULL();
+  return ValueNULL( data[ key.get() ] );
 }
 
 DynamicConfig::Value DynamicConfig::readConstImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/)

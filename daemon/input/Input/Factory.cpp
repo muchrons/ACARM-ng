@@ -8,7 +8,7 @@ using namespace ConfigIO;
 namespace Input
 {
 
-InputsCollection create(Core::Types::AlertsFifo &output)
+InputsCollection create(Core::Types::AlertsFifo &output, CommonDataPtrNN commonData)
 {
   InputsCollection out;
 
@@ -23,7 +23,7 @@ InputsCollection create(Core::Types::AlertsFifo &output)
     Factory::FactoryPtr               tmp    =Factory::create(name, options);
     ReaderPtrNN                       reader( tmp.release() );
     Persistency::IO::ConnectionPtrNN  conn( Persistency::IO::create().release() );
-    InterfacePtrNN                    iface( new Interface(reader, conn, output) );
+    InterfacePtrNN                    iface( new Interface(reader, conn, output, commonData) );
     // add input to collection
     out.push_back(iface);
   }

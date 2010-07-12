@@ -119,6 +119,8 @@ Base::NullValue<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   addToSelect(ss, &a.getOperatingSystem() );
   ss << " AND ip";
   addToSelect(ss, a.getIP() );
+  ss << " AND sys_id=";
+  Appender::append(ss, a.getID().get() );
   ss << ";";
   const result r=SQL( ss.str(), log_ ).exec(t_);
   if( r.empty() )
@@ -260,7 +262,9 @@ DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
     return *id.get();
   // if not present, add it
   stringstream ss;
-  ss << "INSERT INTO analyzers(name, version, os, ip) VALUES (";
+  ss << "INSERT INTO analyzers(sys_id, name, version, os, ip) VALUES (";
+  Appender::append(ss, a.getID().get() );
+  ss << ",";
   Appender::append(ss, a.getName().get() );
   ss << ",";
   Appender::append(ss, a.getVersion().get() );

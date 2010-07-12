@@ -45,7 +45,7 @@ struct TestClass
 {
   TestClass(void):
     name_("some name"),
-    analyzer_( new Analyzer("analyzer name", NULL, NULL, NULL) ),
+    analyzer_( new Analyzer(321u, "analyzer name", NULL, NULL, NULL) ),
     analyzers_(analyzer_),
     detected_(1500),
     created_(2900),
@@ -177,7 +177,7 @@ void testObj::test<1>(void)
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
-  const Analyzer anlz("analyzer1", NULL, NULL, NULL);
+  const Analyzer anlz(112u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -211,7 +211,7 @@ void testObj::test<2>(void)
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
-  const Analyzer anlz("analyzer1", NULL, NULL, NULL);
+  const Analyzer anlz(303u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -247,7 +247,7 @@ void testObj::test<4>(void)
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
 
-  const Analyzer anlz("analyzer1", NULL, NULL, NULL);
+  const Analyzer anlz(102u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID anlzID = es_.saveAnalyzer(anlz);
   const DataBaseID alrtID = es_.saveAlert(a);
   es_.saveAlertToAnalyzers(alrtID, anlzID);
@@ -294,7 +294,7 @@ void testObj::test<5>(void)
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
-  const Analyzer anlz("analyzer1", NULL, NULL, NULL);
+  const Analyzer anlz(101u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -325,23 +325,25 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  const Analyzer   a("analyzer2", NULL, NULL, NULL);
+  const Analyzer   a(999u, "analyzer2", NULL, NULL, NULL);
   const DataBaseID anlzID = es_.saveAnalyzer(a);
 
   stringstream ss;
-  string       name;
+  string       tmp;
   ss << "SELECT * FROM analyzers WHERE id = " << anlzID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
 
-  r[0]["name"].to(name);
-  ensure_equals("invalid Analyzer name",name,"analyzer2");
+  r[0]["sys_id"].to(tmp);
+  ensure_equals("invalid ID", tmp, "999");
+  r[0]["name"].to(tmp);
+  ensure_equals("invalid Analyzer name", tmp, "analyzer2");
 
-  ensure("Analyzer Version is not NULL",r[0]["version"].is_null());
+  ensure("Analyzer Version is not NULL", r[0]["version"].is_null() );
 
-  ensure("Analyzer OS is not NULL",r[0]["os"].is_null());
+  ensure("Analyzer OS is not NULL", r[0]["os"].is_null() );
 
-  ensure("Analyzer IP is not NULL",r[0]["ip"].is_null());
+  ensure("Analyzer IP is not NULL", r[0]["ip"].is_null() );
   t_.commit();
 }
 
@@ -354,18 +356,20 @@ void testObj::test<7>(void)
   const Analyzer::Version         ver("v1.2.3");
   const Analyzer::OperatingSystem os("Linux 2.6.66");
   const Analyzer::IP              ip( Analyzer::IPv4::from_string("1.2.3.4") );
-  const Analyzer                  a(anlzName, ver, os, &ip);
+  const Analyzer                  a(262u, anlzName, ver, os, &ip);
   const DataBaseID                anlzID = es_.saveAnalyzer(a);
 
   stringstream ss;
-  string name, version, os_name, ip_adress;
+  string tmp, version, os_name, ip_adress;
 
   ss << "SELECT * FROM analyzers WHERE id = " << anlzID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
 
-  r[0]["name"].to(name);
-  ensure_equals("invalid Analyzer name",name,anlzName);
+  r[0]["sys_id"].to(tmp);
+  ensure_equals("invalid Analyzer's ID", tmp, "262");
+  r[0]["name"].to(tmp);
+  ensure_equals("invalid Analyzer's name", tmp, anlzName);
 
   r[0]["version"].to(version);
   trim(version);
@@ -389,7 +393,7 @@ void testObj::test<8>(void)
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
-  const Analyzer anlz("analyzer1", NULL, NULL, NULL);
+  const Analyzer anlz(22u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -419,7 +423,7 @@ void testObj::test<9>(void)
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
-  const Analyzer anlz("analyzer1", NULL, NULL, NULL);
+  const Analyzer anlz(88u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -481,7 +485,7 @@ void testObj::test<11>(void)
   const Alert a(name_, analyzers_, NULL, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
 
-  const Analyzer anlz("analyzer1", NULL, NULL, NULL);
+  const Analyzer anlz(123u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID anlzID = es_.saveAnalyzer(anlz);
   const DataBaseID alrtID = es_.saveAlert(a);
   // save data in alert_analyzers
@@ -525,7 +529,7 @@ void testObj::test<12>(void)
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
-  const Analyzer anlz("analyzer1", NULL, NULL, NULL);
+  const Analyzer anlz(123u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -563,7 +567,7 @@ void testObj::test<13>(void)
   HostPtr host=makeNewHost();
   ReferenceURLPtr url;
   const Process proc("/a/b/c/d", "some.proc", NULL, &pid_, &uid_, "johndoe", "-a -b -c", url);
-  const Analyzer anlz("analyzer1", NULL, NULL, NULL);
+  const Analyzer anlz(1111u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -607,7 +611,7 @@ void testObj::test<14>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Process proc("/a/b/c/d", "some.proc", &md5_, &pid_, &uid_, "johndoe", "-a -b -c", url_);
-  const Analyzer anlz("analyzer1", NULL, NULL, NULL);
+  const Analyzer anlz(66u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -702,7 +706,7 @@ void testObj::test<17>(void)
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
-  const Analyzer anlz("analyzer1", NULL, NULL, NULL);
+  const Analyzer anlz(123u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -747,17 +751,20 @@ template<>
 void testObj::test<19>(void)
 {
   const string                    anlzName("analyzer3");
+  const Analyzer::ID              id(987654321u);
   const Analyzer::Version         ver("v1.2.3");
   const Analyzer::OperatingSystem os("Linux 2.6.66");
   const Analyzer::IP              ip( Analyzer::IPv4::from_string("1.2.3.4") );
-  const Analyzer                  a1(anlzName, ver, os, &ip);
-  const Analyzer                  a2(anlzName, ver, os, &ip);
+  const Analyzer                  a1(id, anlzName, ver, os, &ip);
+  const Analyzer                  a2(id, anlzName, ver, os, &ip);
   es_.saveAnalyzer(a1);
   es_.saveAnalyzer(a2);
 
   stringstream ss;
   ss << "SELECT * FROM analyzers WHERE name = ";
   Appender::append(ss, anlzName );
+  ss << "AND sys_id = ";
+  Appender::append(ss, id.get() );
   ss << "AND version = ";
   Appender::append(ss, ver.get() );
   ss << "AND os = ";

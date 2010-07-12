@@ -33,15 +33,11 @@ public:
   {
     if( node->isLeaf() )
     {
-      assert( node->getMetaAlert()->getSeverityDelta()==0 &&
-              "non-zero severity delta for leaf detected" );
       ++leafsCount_;
       leafsSeveritySum_+=node->getAlert()->getSeverity().getLevel().toInt();
     }
-    else // node
-    {
-      delta_+=node->getMetaAlert()->getSeverityDelta();
-    }
+    // add severity delta for both node and leafs
+    delta_+=node->getMetaAlert()->getSeverityDelta();
   }
   /** \brief gets the computed value.
    *  \return total (sub)tree severity.

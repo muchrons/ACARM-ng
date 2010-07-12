@@ -2,12 +2,12 @@
  * ExceptionParse.hpp
  *
  */
-#ifndef INCLUDE_INPUT_PRELUDE_PARSEEXCEPTION_HPP_FILE
-#define INCLUDE_INPUT_PRELUDE_PARSEEXCEPTION_HPP_FILE
+#ifndef INCLUDE_INPUT_PRELUDE_EXCEPTIONPARSE_HPP_FILE
+#define INCLUDE_INPUT_PRELUDE_EXCEPTIONPARSE_HPP_FILE
 
 #include <string>
 
-#include "Input/Exception.hpp"
+#include "Input/Prelude/Exception.hpp"
 
 namespace Input
 {
@@ -16,7 +16,7 @@ namespace Prelude
 
 /** \brief parse exception
  */
-class ExceptionParse: public Input::Exception
+class ExceptionParse: public Exception
 {
 public:
   /** \brief create execption with given message.
@@ -25,10 +25,10 @@ public:
    */
   template<typename T>
   ExceptionParse(const Location &where, const T &msg):
-    Input::Exception(where, cc("parse exception: ",msg))
+    Exception(where, cc("parse exception: ", msg) )
   {
   }
-}; // class Exception
+}; // class ExceptionParse
 
 } // namespace Prelude
 } // namespace Input

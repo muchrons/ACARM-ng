@@ -7,6 +7,7 @@
 
 #include <cassert>
 
+#include "Logger/Node.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Filter/BackendFacade.hpp"
 #include "Filter/DNSResolver/CachedDNS.hpp"
@@ -38,6 +39,7 @@ private:
   void processHosts(Persistency::GraphNodePtrNN              leaf,
                     const Persistency::Alert::ReportedHosts &rh);
 
+  Logger::Node   log_;
   CachedDNS     *cache_;
   BackendFacade *bf_;
 }; // class EntryProcessor

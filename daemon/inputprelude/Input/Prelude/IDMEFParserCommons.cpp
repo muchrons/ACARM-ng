@@ -63,6 +63,9 @@ Persistency::ServicePtr IDMEFParserCommons::getServicefromIdmefService(idmef_ser
       protocol=prelude_string_get_string(idmef_protocol_str);
 
     const uint16_t *idmef_port = idmef_service_get_port(idmef_service);
+    // TODO: port==0 is invalid (many exceptions are thrown when trying to create Persistency::Service
+    //       later on). throw dedicated exception here, so that error could be safely ignored and not
+    //       flood logs.
     uint16_t port=0;
     if (idmef_port)
       port=*idmef_port;

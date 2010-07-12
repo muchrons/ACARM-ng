@@ -1,5 +1,5 @@
 /*
- * IDMEFParserSource.t.cpp
+ * IDMEFParserCommons.t.cpp
  *
  */
 #include <tut.h>
@@ -16,6 +16,8 @@ using namespace std;
 using namespace Input::Prelude;
 using namespace boost::posix_time;
 using namespace Persistency;
+
+// TODO: rework this code using Input::Prelude::TestData
 
 namespace
 {
