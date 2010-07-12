@@ -9,18 +9,21 @@ namespace Filter
 namespace IPBlackList
 {
 
-bool ProcessedSet::isProcessed(Persistency::GraphNodePtrNN leaf) const
+bool ProcessedSet::isProcessed(Persistency::GraphNodePtrNN leaf, Persistency::HostPtrNN host) const
 {
+  const PtrSet::Data tmp( static_cast<Persistency::GraphNodePtrNN::SharedPtr>(leaf), host );
+  // notice that only linear search can be used here, since weak_ptrs might
+  // become NULL instantly (other processors can free them in a mean time).
   for(PtrSet::const_iterator it=set_.begin(); it!=set_.end(); ++it)
-    if( it->lock().get()==leaf.get() )  // object already processed?
+    if(*it==tmp)
       return true;
   // ok - object not found
   return false;
 }
 
-void ProcessedSet::markAsProcessed(Persistency::GraphNodePtrNN leaf)
+void ProcessedSet::markAsProcessed(Persistency::GraphNodePtrNN leaf, Persistency::HostPtrNN host)
 {
-  set_.add(leaf);
+  set_.add( static_cast<Persistency::GraphNodePtrNN::SharedPtr>(leaf), host );
 }
 
 void ProcessedSet::prune(void)
