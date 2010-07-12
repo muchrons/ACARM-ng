@@ -69,7 +69,7 @@ SeverityLevel severityFromInt(Transaction &t, const DataBaseID id)
 } // unnamed namespace
 
 
-EntryReader::EntryReader(Transaction &t, DBHandler &dbh):
+EntryReader::EntryReader(Transaction &t, DBHandle &dbh):
   log_("persistency.io.postgres.detail.entryreader"),
   dbh_(dbh),
   t_(t)

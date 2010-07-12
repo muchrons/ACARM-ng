@@ -111,7 +111,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
     LOGMSG_INFO_S(log_)<<"setting user to "<<user;
     const std::string           &pass=fc["password"];
     const Config::Authorization  auth(user, pass);
-    // create and return new handler, with configured authorization
+    // create and return new handle, with configured authorization
     LOGMSG_INFO(log_, "account configured with authorization required");
     return OutPtr( new Impl( name_, Mail::Config(thCfg, to, serverCfg, auth) ) );
   } // if(use_auth)
@@ -119,7 +119,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
     if( fc.get("password")!=NULL )
       LOGMSG_WARN(log_, "user not configured, but password provided - skipping any way");
 
-  // create and return new handler, with config without authorization
+  // create and return new handle, with config without authorization
   LOGMSG_INFO(log_, "account configured without authorization required");
   return OutPtr( new Impl( name_, Mail::Config(thCfg, to, serverCfg) ) );
 }

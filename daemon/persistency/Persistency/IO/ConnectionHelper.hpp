@@ -16,7 +16,7 @@ namespace IO
 
 /** \brief Helper class for easier creating basic implementations of derived ones.
  */
-template<typename TPersistencyHandler,
+template<typename TPersistencyHandle,
          typename TTransactionAPIIO,
          typename TAlertIO,
          typename THostIO,
@@ -26,14 +26,14 @@ template<typename TPersistencyHandler,
 class ConnectionHelper: public Connection
 {
 public:
-  /** \brief create connection helper with a given persistency handler.
+  /** \brief create connection helper with a given persistency handle.
    *
    *  creates persistency connection creator, with given arguments that
    *  will be passed to each execution of transaction creation.
    *
-   *  \param ph user-defined persistency handler.
+   *  \param ph user-defined persistency handle.
    */
-  explicit ConnectionHelper(const TPersistencyHandler &ph):
+  explicit ConnectionHelper(const TPersistencyHandle &ph):
     ph_(ph)
   {
   }
@@ -74,7 +74,7 @@ private:
   // implemented separately for each backend.
   virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t) = 0;
 
-  TPersistencyHandler ph_;
+  TPersistencyHandle ph_;
 }; // class ConnectionHelper
 
 } // namespace IO

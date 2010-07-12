@@ -20,13 +20,13 @@ class MetaAlert: public IO::MetaAlert
 {
 public:
   /** \brief meta alert persistency IO.
-   *  \param ma      meta alert to work on.
-   *  \param t       active transaction.
-   *  \param handler persistency handler.
+   *  \param ma     meta alert to work on.
+   *  \param t      active transaction.
+   *  \param handle persistency handle.
    */
   MetaAlert(Persistency::MetaAlertPtrNN  ma,
             Transaction                 &t,
-            int                          handler);
+            int                          handle);
 
   size_t saveCalls_;                    ///< calss count to save().
   size_t markAsTriggeredCalls_;         ///< calss count to markAsTriggered().

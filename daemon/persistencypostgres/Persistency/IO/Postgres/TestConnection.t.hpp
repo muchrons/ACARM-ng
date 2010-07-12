@@ -5,7 +5,7 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_TESTCONNECTION_T_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_TESTCONNECTION_T_HPP_FILE
 
-#include "Persistency/IO/Postgres/DBHandler.hpp"
+#include "Persistency/IO/Postgres/DBHandle.hpp"
 
 namespace Persistency
 {
@@ -19,7 +19,7 @@ struct TestConnection
   TestConnection(void):
     connParams_( makeParams() ),
     idCache_(new IDCache),
-    dbHandler_(connParams_, idCache_)
+    dbHandle_(connParams_, idCache_)
   {
   }
 
@@ -34,7 +34,7 @@ struct TestConnection
 
   DBConnection::Parameters connParams_;
   IDCachePtrNN             idCache_;
-  DBHandler                dbHandler_;
+  DBHandle                 dbHandle_;
 }; // struct TestConnection
 
 } // namespace Postgres

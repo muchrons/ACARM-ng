@@ -21,13 +21,13 @@ class TransactionAPI: public IO::TransactionAPI
 {
 public:
   /** \brief open transaction.
-   *  \param mutex              mutex that data base connection is protected with.
-   *  \param name               name of transaction.
-   *  \param persistencyHandler persistency handler.
+   *  \param mutex             mutex that data base connection is protected with.
+   *  \param name              name of transaction.
+   *  \param persistencyHandle persistency handle.
    */
   TransactionAPI(Base::Threads::Mutex &mutex,
                  const std::string    &name,
-                 int                   persistencyHandler);
+                 int                   persistencyHandle);
 
   size_t commitCalls_;      ///< number of times commit was called.
   size_t rollbackCalls_;    ///< number of times rollback was called.

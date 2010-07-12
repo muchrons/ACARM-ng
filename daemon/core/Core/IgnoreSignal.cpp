@@ -40,7 +40,7 @@ IgnoreSignal::IgnoreSignal(int signum):
 
 IgnoreSignal::~IgnoreSignal(void)
 {
-  LOGMSG_DEBUG_S(log_) << "signal " << signum_ << " - original handler restored";
+  LOGMSG_DEBUG_S(log_) << "signal " << signum_ << " - original handle restored";
 }
 
 } // namespace Core

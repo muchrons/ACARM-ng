@@ -31,19 +31,19 @@ namespace IO
 namespace Postgres
 {
 
-Restorer::Restorer(Transaction    &t,
-                   DBHandlerPtrNN  dbHandler):
+Restorer::Restorer(Transaction   &t,
+                   DBHandlePtrNN  dbHandle):
   IO::Restorer(t),
   log_("persistency.io.postgres.restorer"),
-  dbHandler_(dbHandler)
+  dbHandle_(dbHandle)
 {
 }
 
 void Restorer::restoreAllInUseImpl(Transaction &t, NodesVector &out)
 {
   TRYCATCH_BEGIN
-    EntryReader er(t, *dbHandler_);
-    EntrySaver  es(t, *dbHandler_);
+    EntryReader er(t, *dbHandle_);
+    EntrySaver  es(t, *dbHandle_);
     const Tree::IDsVector &maInUse=er.readIDsMalertsInUse();
     const Tree::IDsVector &roots  =er.readRoots();
     Tree::IDsVector restoredIDs;
@@ -58,7 +58,7 @@ void Restorer::restoreBetweenImpl(Transaction     &t,
                                   const Timestamp &to)
 {
   TRYCATCH_BEGIN
-    EntryReader er(t, *dbHandler_);
+    EntryReader er(t, *dbHandle_);
     const Tree::IDsVector  maBetween=er.readIDsMalertsBetween(from, to);
     const Tree::IDsVector &roots    =er.readRoots(from, to);
     Tree::IDsVector restoredIDs;
@@ -148,10 +148,10 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
 template<typename T>
 void Restorer::addIfNew(const T &e, DataBaseID id)
 {
-  if(!dbHandler_->getIDCache()->has(e))
-    dbHandler_->getIDCache()->add(e, id);
+  if(!dbHandle_->getIDCache()->has(e))
+    dbHandle_->getIDCache()->add(e, id);
   else
-    assert(id == dbHandler_->getIDCache()->get(e));
+    assert(id == dbHandle_->getIDCache()->get(e));
 }
 
 GraphNodePtrNN Restorer::restoreLeaf(DataBaseID                                      id,

@@ -47,7 +47,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   const unsigned int timeout   =boost::numeric_cast<unsigned int>(timeoutInt);
   LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";
 
-  // create and return new handler.
+  // create and return new handle.
   typedef InterfaceImpl<Strategy, unsigned int> Impl;
   return FactoryBuilder::FactoryPtr( new Impl(name_, timeout) );
 }

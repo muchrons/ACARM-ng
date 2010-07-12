@@ -1,10 +1,10 @@
 /*
- * DBHandler.t.cpp
+ * DBHandle.t.cpp
  *
  */
 #include <tut.h>
 
-#include "Persistency/IO/Postgres/DBHandler.hpp"
+#include "Persistency/IO/Postgres/DBHandle.hpp"
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
 
@@ -24,14 +24,14 @@ struct TestClass
   {
   }
 
-  IDCachePtrNN          idCache_;
-  DBHandler             dbh_;
+  IDCachePtrNN idCache_;
+  DBHandle     dbh_;
 };
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/IO/Postgres/DBHandler");
+factory tf("Persistency/IO/Postgres/DBHandle");
 } // unnamed namespace
 
 namespace tut
@@ -43,7 +43,7 @@ template<>
 void testObj::test<1>(void)
 {
   const DBConnection::Parameters params("localhost", "5432", "acarm_ng_test", "acarm-ng-daemon", "test.daemon");
-  DBHandler dbh(params, idCache_);
+  DBHandle dbh(params, idCache_);
 }
 
 // trying get cache

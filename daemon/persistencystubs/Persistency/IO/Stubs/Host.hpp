@@ -20,13 +20,13 @@ class Host: public IO::Host
 {
 public:
   /** \brief create hosts's persistency IO.
-   *  \param host    host object to handle.
-   *  \param t       active transaction.
-   *  \param handler persistency handler.
+   *  \param host   host object to handle.
+   *  \param t      active transaction.
+   *  \param handle persistency handle.
    */
   Host(Persistency::HostPtrNN  host,
        Transaction            &t,
-       int                     handler);
+       int                     handle);
 
   /** number of times setting name has been called. */
   size_t setNameCalls_;
