@@ -273,4 +273,40 @@ void testObj::test<10>(void)
   tut::ensure_equals("messages not sent", tt.callsTrigger_, 0+0+2);
 }
 
+// test if messages queue does have maximum size and discards extra messages
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  const int bufferSize =1024;
+  const int initialFill=bufferSize+10;
+
+  TestBufferTrigger tt(initialFill);
+  for(int i=0; i<initialFill; ++i)
+  {
+    TestBufferTrigger::ChangedNodes cn;
+    try
+    {
+      tt.process( makeNewLeaf(), cn );
+      fail("test stub of process() didn't throw as expected");
+    }
+    catch(const std::runtime_error &)
+    {
+      // this is expected
+    }
+  }
+  // check if everything goes fine
+  tut::ensure_equals("invalid number of calls to trigger", tt.counter_, initialFill);
+  tut::ensure_equals("some messages have been sent", tt.callsTrigger_, 0);
+
+  // now send some message (+all buffered)
+  {
+    TestBufferTrigger::ChangedNodes cn;
+    tt.process( makeNewLeaf(), cn );        // add message (no throwing here)
+  }
+  // test third call
+  tut::ensure_equals("trigger called invalid number of times", tt.counter_, initialFill+bufferSize);
+  tut::ensure_equals("invalid number of sent messages", tt.callsTrigger_, bufferSize);
+}
+
 } // namespace tut
