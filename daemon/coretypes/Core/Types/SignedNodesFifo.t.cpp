@@ -1,10 +1,10 @@
 /*
- * NodesFifo.t.cpp
+ * SignedNodesFifo.t.cpp
  *
  */
 #include <tut.h>
 
-#include "Core/Types/NodesFifo.hpp"
+#include "Core/Types/SignedNodesFifo.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Core::Types;
@@ -19,7 +19,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Core/Types/NodesFifo");
+factory tf("Core/Types/SignedNodesFifo");
 } // unnamed namespace
 
 
@@ -31,7 +31,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  NodesFifo nf;
+  SignedNodesFifo snf;
 }
 
 } // namespace tut

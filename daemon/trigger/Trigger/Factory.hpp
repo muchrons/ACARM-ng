@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "Commons/Factory/AbstractFactorySingleton.hpp"
+#include "Core/Types/SignedNodesFifo.hpp"
 #include "Core/Types/Proc/Interface.hpp"
 #include "Core/Types/Proc/ProcessorsCollection.hpp"
 
@@ -27,7 +28,7 @@ typedef Core::Types::Proc::ProcessorsCollection TriggersCollection;
  *  \param outputQueue queue to be used as processors' output.
  *  \return newly created input. each call returns new instance.
  */
-TriggersCollection create(Core::Types::NodesFifo &outputQueue);
+TriggersCollection create(Core::Types::SignedNodesFifo &outputQueue);
 
 } // namespace Trigger
 

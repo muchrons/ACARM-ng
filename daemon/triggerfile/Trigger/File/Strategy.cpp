@@ -47,6 +47,7 @@ std::string Strategy::createOutputPath(void)
     lastWrite_=now;
     lastIndex_=0;
   }
+  // TODO: this should be fixed - it should use mktemp() call with proper parameter
   // compose final path
   stringstream path;
   path << outdir_ << "/" << now << "_" << lastIndex_ << ".txt";

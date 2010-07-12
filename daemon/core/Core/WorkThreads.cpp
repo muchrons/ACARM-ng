@@ -17,7 +17,7 @@ namespace
 {
 struct SourcesThread
 {
-  explicit SourcesThread(Core::Types::NodesFifo &queue):
+  explicit SourcesThread(Core::Types::SignedNodesFifo &queue):
     log_("core.workthreads.sourcesthread"),
     srcs_(new Sources),
     queue_(&queue)
@@ -36,7 +36,9 @@ struct SourcesThread
         assert(queue_!=NULL);
         assert(srcs_.get()!=NULL);
         // forward all read data to main queue.
-        queue_->push( srcs_->read() );
+        // TODO: this is hardcoded string representing generic input - it  should
+        //       be refactored in order to remove hardcoded value.
+        queue_->push( Types::SignedNode(srcs_->read(), "*input*") );
       }
       catch(const boost::thread_interrupted &)
       {
@@ -53,12 +55,12 @@ struct SourcesThread
 
   Logger::Node                        log_;
   Commons::SharedPtrNotNULL<Sources>  srcs_;
-  Core::Types::NodesFifo             *queue_;
+  Core::Types::SignedNodesFifo       *queue_;
 }; // struct SourcesThread
 
 struct ProcessorsThread
 {
-  explicit ProcessorsThread(Core::Types::NodesFifo &queue):
+  explicit ProcessorsThread(Core::Types::SignedNodesFifo &queue):
     log_("core.workthreads.processorsthread"),
     procs_( new Processors(queue) )
   {
@@ -96,7 +98,7 @@ struct ProcessorsThread
 } // unnamed namespace
 
 
-WorkThreads::WorkThreads(Core::Types::NodesFifo &queue):
+WorkThreads::WorkThreads(Core::Types::SignedNodesFifo &queue):
   log_("core.workthreads"),
   queue_(queue),
   procs_( ProcessorsThread(queue_) ),

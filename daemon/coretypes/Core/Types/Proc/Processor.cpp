@@ -31,9 +31,9 @@ Logger::Node makeNodeName(const char *prefix, const Interface *interface)
 class ThreadImpl
 {
 public:
-  ThreadImpl(Core::Types::NodesFifo &outputQueue,
-             Core::Types::NodesFifo &inputQueue,
-             Interface              *interface):
+  ThreadImpl(Core::Types::SignedNodesFifo &outputQueue,
+             Core::Types::UniqueNodesFifo &inputQueue,
+             Interface                    *interface):
     log_( makeNodeName("core.types.proc.processor.threadimpl.", interface) ),
     outputQueue_(&outputQueue),
     inputQueue_(&inputQueue),
@@ -69,9 +69,9 @@ public:
         LOGMSG_DEBUG_S(log_)<<"total of "<<changed.size()<<" nods were changed";
 
         LOGMSG_DEBUG(log_, "notifing others about changed nodes");
-        // signal others about changes made
+        // signal others about changes we made (we sign this with a name)
         for(Interface::ChangedNodes::iterator it=changed.begin(); it!=changed.end(); ++it)
-          outputQueue_->push(*it);
+          outputQueue_->push( SignedNode(*it, interface_->getName()) );
       }
       catch(const boost::thread_interrupted &)
       {
@@ -112,16 +112,16 @@ private:
     }
   }
 
-  Logger::Node            log_;
-  Core::Types::NodesFifo *outputQueue_;
-  Core::Types::NodesFifo *inputQueue_;
-  Interface              *interface_;
+  Logger::Node                  log_;
+  Core::Types::SignedNodesFifo *outputQueue_;
+  Core::Types::UniqueNodesFifo *inputQueue_;
+  Interface                    *interface_;
 }; // class ThreadImpl
 } // unnamed namespace
 
 
-Processor::Processor(Core::Types::NodesFifo &outputQueue,
-                     InterfaceAutoPtr        interface):
+Processor::Processor(Core::Types::SignedNodesFifo &outputQueue,
+                     InterfaceAutoPtr              interface):
   outputQueue_(outputQueue),
   log_( makeNodeName("core.types.proc.processor.", interface.get() ) ),
   interface_( interface.release() ),
@@ -147,10 +147,23 @@ Processor::~Processor(void)
   LOGMSG_INFO(log_, "processor stopped");
 }
 
-void Processor::process(Persistency::GraphNodePtrNN node)
+void Processor::process(const Core::Types::SignedNode &node)
 {
-  // it will be processed in separate thread
-  inputQueue_.push(node);
+  // skip if we were the ones that reported this
+  if( interface_->getName()==node.getReporterName() )
+  {
+    LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName()<<"' has been rejected since it comes out from this processor";
+    return;
+  }
+  // if entry from given processor is not allowed for this one, skip this call
+  if( !interface_->getECL().isAcceptable( node.getReporterName() ) )
+  {
+    LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName()<<"' has been rejected by ECL...";
+    return;
+  }
+  // if everything's fine - accept this.
+  LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName()<<"' has been accepted - adding to queue";
+  inputQueue_.push( node.getNode() );
 }
 
 } // namespace Proc
