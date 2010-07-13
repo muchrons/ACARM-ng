@@ -31,7 +31,7 @@ FORCE_LINK_THIS_OBJECT(Filter_DNSResolver_FactoryBuilder)
 
 
 FactoryBuilder::FactoryBuilder(void):
-  name_("dnsresolver"),
+  type_("dnsresolver"),
   log_("filter.dnsresolver.factorybuilder")
 {
 }
@@ -41,19 +41,19 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO(log_, "building filter's instance");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  const FilterConfig         fc(name_, options);
+  const FilterConfig         fc(type_, options);
   const int                  timeout=boost::lexical_cast<int>( fc["cachetimeout"] );
   LOGMSG_INFO_S(log_)<<"setting cache timeout to "<<timeout<<"[s]";
   const Strategy::Parameters params(timeout);
 
   // create and return new handle.
   typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl(name_, params) );
+  return FactoryBuilder::FactoryPtr( new Impl(type_, type_, params) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const
 {
-  return name_;
+  return type_;
 }
 
 } // namespace DNSResolver

@@ -200,7 +200,7 @@ template<>
 void testObj::test<8>(void)
 {
   EntryControlList ecl=EntryControlList::createDefaultAccept();
-  checkECL(ecl, "testinterface", false);
+  checkECL(ecl, "testinterfacename", false);
 }
 
 } // namespace tut

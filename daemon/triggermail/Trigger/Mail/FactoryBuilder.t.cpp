@@ -35,6 +35,7 @@ struct TestClass
 
   void setValid(void)
   {
+    opts_["name"]    ="triggername";
     opts_["from"]    ="from@address";
     opts_["to"]      ="to@address";
     opts_["server"]  ="server.address";

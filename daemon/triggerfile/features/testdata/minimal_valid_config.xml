@@ -21,7 +21,7 @@
   <filters/>
 
   <triggers>
-    <file>
+    <file name="somename">
       <outdir>.</outdir>
 <!--
 these parameters are optional:

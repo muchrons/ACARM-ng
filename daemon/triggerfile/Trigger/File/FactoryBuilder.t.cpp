@@ -37,6 +37,7 @@ struct TestClass
 
   void setValid(void)
   {
+    opts_["name"]                  ="somename";
     opts_["outdir"]                ="/tmp/";
     opts_["severity_threshold"]    ="4.2";
     opts_["alerts_count_threshold"]="42";

@@ -32,7 +32,7 @@ FORCE_LINK_THIS_OBJECT(Trigger_File_FactoryBuilder)
 
 
 FactoryBuilder::FactoryBuilder(void):
-  name_("file"),
+  type_("file"),
   log_("trigger.file.factorybuilder")
 {
 }
@@ -42,11 +42,15 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO(log_, "building trigger's instance");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  const TriggerConfig   fc(name_, options);
+  const TriggerConfig   fc(type_, options);
   // output direcotry
   const string &outdir=fc["outdir"];
   if( outdir.length()==0 )
     throw ExceptionInvalidDirectory(SYSTEM_SAVE_LOCATION, outdir);
+  // name
+  const string &name=fc["name"];
+  //if( outdir.length()==0 )
+  //  throw ExceptionInvalidDirectory(SYSTEM_SAVE_LOCATION, outdir);
   // thresholds' config
   const char   *sevTh =fc.get("severity_threshold");
   if(sevTh!=NULL)
@@ -58,12 +62,12 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // create and return new handle.
   typedef InterfaceImpl<File::Strategy, File::Config> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl( name_, File::Config(outdir, thCfg) ) );
+  return FactoryBuilder::FactoryPtr( new Impl( type_, name, File::Config(outdir, thCfg) ) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const
 {
-  return name_;
+  return type_;
 }
 
 } // namespace File

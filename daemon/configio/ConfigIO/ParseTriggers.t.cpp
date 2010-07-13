@@ -28,7 +28,7 @@ struct TestClass
   }
 
   // return copyied persistency config
-  ParseTriggers getConf(const char *xml="testdata/new_sample_config.xml") const
+  ParseTriggers getConf(const char *xml="testdata/sample_config.xml") const
   {
     assert(xml!=NULL);
     FileReader             fr(xml);
@@ -87,9 +87,10 @@ void testObj::test<4>(void)
   const TriggersConfigCollection &cfg =pp.getConfig();
   ensure_equals("invalid number of entries", cfg.size(), 2u);
   ensure_equals("invalid type", cfg[1].getType(), "something");
-  ensure_equals("invalid number of options", cfg[1].getOptions().size(), 2u);
+  ensure_equals("invalid number of options", cfg[1].getOptions().size(), 3u);
   ensure_equals("invalid option's 1 value", cfg[1]["opt4"], "alice");
   ensure_equals("invalid option's 2 value", cfg[1]["opt7"], "cat");
+  ensure_equals("invalid option's 3 value", cfg[1]["name"], "someothername");
 }
 
 } // namespace tut
