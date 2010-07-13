@@ -67,9 +67,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  //getConf();
+  getConf();
 }
-/*
+
 // test if all config sets are there
 template<>
 template<>
@@ -79,7 +79,7 @@ void testObj::test<2>(void)
   const TestConfigCollection &cfg=pp.getConfig();
   ensure_equals("invalid number of entries", cfg.size(), 2u);
 }
-
+/*
 // check set with no options
 template<>
 template<>
@@ -91,7 +91,7 @@ void testObj::test<3>(void)
   ensure_equals("invalid type", cfg.at(0).getType(), "noopts");
   ensure_equals("invalid number of options", cfg.at(0).getOptions().size(), 0u);
 }
-
+*/
 // check set with options
 template<>
 template<>
@@ -105,5 +105,4 @@ void testObj::test<4>(void)
   ensure_equals("invalid option's 1 value", cfg.at(1)["opt4"], "alice");
   ensure_equals("invalid option's 2 value", cfg.at(1)["opt7"], "cat");
 }
-*/
 } // namespace tut

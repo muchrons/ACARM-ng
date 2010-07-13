@@ -52,7 +52,8 @@ private:
         options[ it->getName() ] = it->getValuesString();
 
       // add new entry
-      cc_.push_back( TConfig(type, options) );
+      cc_.push_back( TConfig::create(*eit, type, options) );
+      //cc_.push_back( TConfig(type, options) );
     }
   }
 

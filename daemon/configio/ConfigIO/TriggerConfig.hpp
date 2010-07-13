@@ -9,14 +9,14 @@
 
 #include <vector>
 
-#include "ConfigIO/Generic/Config.hpp"
+#include "ConfigIO/Generic/NamedConfig.hpp"
 
 namespace ConfigIO
 {
 
 /** \brief class representing configuration of trigger.
  */
-class TriggerConfig: public Generic::Config<TriggerConfig>
+class TriggerConfig: public Generic::NamedConfig<TriggerConfig>
 {
 public:
   /** \brief creates trigger's configuration.
@@ -24,8 +24,9 @@ public:
    *  \param options options for given trigger.
    */
   TriggerConfig(const TypeName &type,
+                const TypeName &name,
                 const Options  &options):
-    Generic::Config<TriggerConfig>(type, options)
+    Generic::NamedConfig<TriggerConfig>(type, name, options)
   {
   }
 }; // class TriggerConfig

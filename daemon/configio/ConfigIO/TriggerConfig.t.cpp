@@ -30,10 +30,12 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const TriggerConfig::TypeName name("sometrigger");
+  const TriggerConfig::TypeName type("sometrigger");
+  const TriggerConfig::TypeName name("somename");
   const TriggerConfig::Options  opts;
-  const TriggerConfig pc(name, opts);
+  const TriggerConfig pc(type,name, opts);
   ensure_equals("invalid type", pc.getType(), "sometrigger");
+  ensure_equals("invalid name", pc.getName(), "somename");
 }
 
 } // namespace tut

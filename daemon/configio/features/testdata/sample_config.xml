@@ -34,10 +34,13 @@
   </filters>
 
   <triggers>
-    <noopts>
-    </noopts>
 
-    <something>
+    <something name="somename">
+      <opt7>cat</opt7>
+      <opt4>alice</opt4>
+    </something>
+
+    <something name="someothername">
       <opt7>cat</opt7>
       <opt4>alice</opt4>
     </something>

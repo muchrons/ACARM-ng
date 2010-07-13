@@ -8,6 +8,10 @@
       <opt4>alice</opt4>
     </something>
 
+    <something name="other name">
+      <opt7>cat</opt7>
+      <opt4>alice</opt4>
+    </something>
   </whatever>
 
 </acarm_ng>

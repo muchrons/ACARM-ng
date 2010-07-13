@@ -28,7 +28,7 @@ struct TestClass
   }
 
   // return copyied persistency config
-  ParseTriggers getConf(const char *xml="testdata/sample_config.xml") const
+  ParseTriggers getConf(const char *xml="testdata/new_sample_config.xml") const
   {
     assert(xml!=NULL);
     FileReader             fr(xml);
@@ -65,7 +65,7 @@ void testObj::test<2>(void)
   const TriggersConfigCollection &cfg =pp.getConfig();
   ensure_equals("invalid number of entries", cfg.size(), 2u);
 }
-
+/*
 // check filter with no options
 template<>
 template<>
@@ -77,7 +77,7 @@ void testObj::test<3>(void)
   ensure_equals("invalid type", cfg[0].getType(), "noopts");
   ensure_equals("invalid number of options", cfg[0].getOptions().size(), 0u);
 }
-
+*/
 // check filter with options
 template<>
 template<>

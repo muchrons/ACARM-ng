@@ -10,6 +10,7 @@
 #include <string>
 #include <map>
 
+#include "XML/Node.hpp"
 #include "ConfigIO/ExceptionNoSuchParameter.hpp"
 
 
@@ -78,6 +79,10 @@ public:
     return it->second.c_str();
   }
 
+  static CRTP create(const XML::Node &, const TypeName &type, const Options &options)
+  {
+    return CRTP(type, options);
+  }
 protected:
   /** \brief creates persistency configuration.
    *  \param type    persistency type.
