@@ -20,7 +20,7 @@ namespace Base
 {
 namespace Threads
 {
-/** \brief queue of limited size, blocking next addition if full.
+/** \brief FIFO queue of limited size, blocking next addition if full.
  */
 template<typename T, size_t N>
 class LimitedQueue
@@ -51,7 +51,7 @@ public:
     return tmp;
   }
 
-  /** \brief signals all threads waiting on push().
+  /** \brief signals all threads waiting on push()/pop().
    */
   void signalAll(void)
   {
@@ -62,7 +62,7 @@ public:
 
   /** \brief adds new element to collection.
    *  \param e element to be added.
-   *  \note if collection is full (in terms of N) single element is pop'ed.
+   *  \note if collection is full (in terms of N) this call blocks
    */
   void push(const value_type &e)
   {
