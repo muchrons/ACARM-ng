@@ -328,4 +328,12 @@ void testObj::test<10>(void)
   ensure_equals("invalid stirng", v, "str1");
 }
 
+// test for maxSize()
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  ensure_equals("invalid maximum size", q_.maxSize(), 4u);
+}
+
 } // namespace tut

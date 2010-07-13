@@ -63,6 +63,14 @@ public:
     return q_.size();
   }
 
+  /** \brief returns maximum sie of the collection.
+   *  \return size given as a template paramter.
+   */
+  size_t maxSize(void) const
+  {
+    return N;
+  }
+
 private:
   BOOST_STATIC_ASSERT( N>0 );
 
