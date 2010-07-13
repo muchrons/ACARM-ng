@@ -1,5 +1,5 @@
 /*
- * MessageSender.cpp
+ * MessageIO.cpp
  *
  */
 #include <sys/select.h>
@@ -8,23 +8,22 @@
 
 #include "System/ScopedPtrCustom.hpp"
 #include "Logger/Logger.hpp"
-#include "Trigger/GG/MessageSender.hpp"
+#include "Trigger/GG/MessageIO.hpp"
 
 namespace Trigger
 {
 namespace GG
 {
 
-MessageSender::MessageSender(Connection &conn):
+MessageIO::MessageIO(Connection &conn):
+  log_("trigger.gg.messageio"),
   conn_(conn)
 {
 }
 
-void MessageSender::send(const UserID receiver, const std::string &msg)
+void MessageIO::send(const UserID receiver, const std::string &msg)
 {
-  Logger::Node log("trigger.gg.messagesender");
-  discardIncommingMessages(log);
-  LOGMSG_INFO_S(log)<<"sending message to user "<<receiver;
+  LOGMSG_INFO_S(log_)<<"sending message to user "<<receiver;
   // const char * -> const UNSIGNED char *
   const unsigned char *tmp=reinterpret_cast<const unsigned char*>( msg.c_str() );
   assert(tmp!=NULL);
@@ -34,12 +33,12 @@ void MessageSender::send(const UserID receiver, const std::string &msg)
   if(ret==-1)
     throw ExceptionSendingError(SYSTEM_SAVE_LOCATION, receiver, ret);
   // all done
-  LOGMSG_DEBUG_S(log)<<"message to user "<<receiver<<" sent";
+  LOGMSG_DEBUG_S(log_)<<"message to user "<<receiver<<" sent";
 }
 
-void MessageSender::discardIncommingMessages(Logger::Node log)
+void MessageIO::discardIncommingMessages(void)
 {
-  LOGMSG_DEBUG(log, "discarding all incomming messages");
+  LOGMSG_DEBUG(log_, "discarding all incomming messages");
 
   while(true)
   {
@@ -58,21 +57,24 @@ void MessageSender::discardIncommingMessages(Logger::Node log)
         return;
 
       case -1:  // error - error while READING message is not critical, thus can be ignored
-        LOGMSG_DEBUG(log, "error while receiving message (to be discarded) - ignoring");
-        return;
+        LOGMSG_DEBUG(log_, "error while receiving message (to be discarded)");
+        throw ExceptionReceivingError(SYSTEM_SAVE_LOCATION, "select() returned error");
 
       default:  // OK
         if( !FD_ISSET(conn_.get()->fd, &desc) )
         {
-          LOGMSG_DEBUG(log, "something's wrong with descriptor's setting - check this; problem ignored");
+          LOGMSG_DEBUG(log_, "something's wrong with descriptor's setting - check this; problem ignored");
+          throw ExceptionReceivingError(SYSTEM_SAVE_LOCATION, "receive descriptor not set");
           return;
         }
         // read event
         System::ScopedPtrCustom<gg_event, gg_event_free> e( gg_watch_fd( conn_.get() ) );
-        LOGMSG_DEBUG(log, "discarding received message...");
+        LOGMSG_DEBUG(log_, "discarding received message...");
         break;
     } // switch( select() )
   } // while(has_messages)
+
+  LOGMSG_DEBUG(log_, "all messages have been discarded");
 }
 
 } // namespace GG

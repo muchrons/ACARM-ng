@@ -7,7 +7,7 @@
 #include "Base/Threads/Lock.hpp"
 #include "Trigger/Compose/Summary.hpp"
 #include "Trigger/GG/Strategy.hpp"
-#include "Trigger/GG/MessageSender.hpp"
+#include "Trigger/GG/MessageIO.hpp"
 
 using namespace std;
 using namespace Base::Threads;
@@ -85,7 +85,7 @@ void Strategy::triggerImpl(const Node &n)
 
   // send message
   assert( conn.get()!=NULL );
-  MessageSender ms( *conn.get() );
+  MessageIO ms( *conn.get() );
   ms.send(receiver_, ss.str() );
 
   // save opened connection for later usage
