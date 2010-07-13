@@ -79,6 +79,11 @@ public:
     return it->second.c_str();
   }
 
+  /** \brief creates persistency configuration.
+   *  \param node    parsed node
+   *  \param type    persistency type.
+   *  \param options options for persistency.
+   */
   static CRTP create(const XML::Node &, const TypeName &type, const Options &options)
   {
     return CRTP(type, options);

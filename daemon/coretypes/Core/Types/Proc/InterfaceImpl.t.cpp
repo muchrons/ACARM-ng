@@ -69,7 +69,7 @@ struct TestStrategyNoParm
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    impl_("somename", params_)
+    impl_("sometype", "somename", params_)
   {
   }
 
@@ -87,10 +87,17 @@ factory tf("Core/Types/Proc/InterfaceImpl");
 namespace tut
 {
 
-// test getting name
+// test getting type
 template<>
 template<>
 void testObj::test<1>(void)
+{
+  ensure_equals("invalid name set", impl_.getType(), "sometype");
+}
+// test getting name
+template<>
+template<>
+void testObj::test<2>(void)
 {
   ensure_equals("invalid name set", impl_.getName(), "somename");
 }
@@ -98,7 +105,7 @@ void testObj::test<1>(void)
 // test passing call to process
 template<>
 template<>
-void testObj::test<2>(void)
+void testObj::test<3>(void)
 {
   ensure_equals("pre-condition failed", params_.calls_, 0);
   Interface::ChangedNodes changed;
@@ -106,20 +113,20 @@ void testObj::test<2>(void)
   ensure_equals("process() is not virtual", params_.calls_, 1);
 }
 
-// test test 1-arg c-tor (should compile)
+// test test 2-arg c-tor (should compile)
 template<>
 template<>
-void testObj::test<3>(void)
+void testObj::test<4>(void)
 {
-  InterfaceImpl<TestStrategyNoParm> tmp("sometest");
+  InterfaceImpl<TestStrategyNoParm> tmp("sometype", "somename");
 }
 
 // test process() on non-param strategy object
 template<>
 template<>
-void testObj::test<4>(void)
+void testObj::test<5>(void)
 {
-  InterfaceImpl<TestStrategyNoParm> tmp("sometest");
+  InterfaceImpl<TestStrategyNoParm> tmp("sometype", "somename");
   ensure_equals("pre-condition failed", testStrategyNoParmCalls, 0);
   Interface::ChangedNodes changed;
   tmp.process( makeNewLeaf(), changed );

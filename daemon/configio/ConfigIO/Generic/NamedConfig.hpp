@@ -48,6 +48,11 @@ public:
     return name_;
   }
 
+  /** \brief creates persistency configuration.
+   *  \param node    parsed node
+   *  \param type    persistency type.
+   *  \param options options for persistency.
+   */
   static CRTP create(const XML::Node &node, const TypeName &type, const Options &options)
   {
     return CRTP(type, node.getAttributesList().getAttribute("name").getValue(), options);
