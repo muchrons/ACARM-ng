@@ -10,6 +10,7 @@
 #include <libgadu.h>
 #include <cassert>
 
+#include "System/ScopedPtrCustom.hpp"
 #include "Trigger/GG/AccountConfig.hpp"
 #include "Trigger/GG/Connection.hpp"
 #include "TestHelpers/Data/gg1.hpp"
@@ -37,28 +38,7 @@ Trigger::GG::AccountConfig getTestConfig(void)
 
 
 // helper class that protects event from possible exceptions
-struct EventWrapper: private boost::noncopyable
-{
-  explicit EventWrapper(gg_event *e):
-    e_(e)
-  {
-  }
-
-  ~EventWrapper(void)
-  {
-    if(e_!=NULL)
-      gg_event_free(e_);
-  }
-
-  gg_event *get(void)
-  {
-    return e_;
-  }
-
-private:
-  gg_event *e_;
-}; // struct EventWrapper
-
+typedef System::ScopedPtrCustom<gg_event, gg_event_free> EventWrapper;
 
 std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, const Trigger::GG::UserID sender)
 {
