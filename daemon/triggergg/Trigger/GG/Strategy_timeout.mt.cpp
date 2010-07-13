@@ -31,9 +31,9 @@ int main(int argc, char **argv)
     cerr<<"waiting some time ("<<init/60<<"[m]) - if pings does not work, it will timeout..."<<endl;
     for(int left=init; left>0; --left)
     {
-      cerr<<"                                  ";
-      cerr<<"\r"<<left<<"[s]...";
       sleep(1);
+      cerr<<"                                  ";
+      cerr<<"\r"<<left-1<<"[s]...";
     }
     cerr<<endl;
     cerr<<"ok - now trying to send message to "<<receiver<<endl;
