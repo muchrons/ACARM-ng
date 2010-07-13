@@ -1,5 +1,5 @@
 /*
- * Strategy.t.cpp
+ * Strategy.mt.cpp
  *
  */
 #include <iostream>
