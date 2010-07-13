@@ -25,6 +25,8 @@ StrategyIO::StrategyIO(const Config &cfg):
   ggCfg_( cfg.getAccountConfig() ),
   receiver_( cfg.getReceiver() )
 {
+  // NOTE: do NOT connect in c-tor - object must be created first and connection
+  //       will then be estabilished uppon first usage.
 }
 
 void StrategyIO::send(const std::string &msg)
