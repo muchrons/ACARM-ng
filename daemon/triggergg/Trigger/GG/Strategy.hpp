@@ -5,8 +5,11 @@
 #ifndef INCLUDE_TRIGGER_GG_STRATEGY_HPP_FILE
 #define INCLUDE_TRIGGER_GG_STRATEGY_HPP_FILE
 
+#include <memory>
+
 #include "Trigger/Simple/Strategy.hpp"
 #include "Trigger/GG/Config.hpp"
+#include "Trigger/GG/Connection.hpp"
 
 namespace Trigger
 {
@@ -26,8 +29,11 @@ public:
 private:
   virtual void triggerImpl(const Node &n);
 
-  const AccountConfig ggCfg_;
-  const UserID        receiver_;
+  typedef std::auto_ptr<Connection> ConnectionAutoPtr;
+
+  const AccountConfig  ggCfg_;
+  const UserID         receiver_;
+  ConnectionAutoPtr    conn_;
 }; // class Strategy
 
 } // namespace GG
