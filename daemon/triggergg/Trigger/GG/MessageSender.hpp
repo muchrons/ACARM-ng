@@ -8,6 +8,7 @@
 #include <string>
 #include <boost/noncopyable.hpp>
 
+#include "Logger/Node.hpp"
 #include "Trigger/GG/Connection.hpp"
 #include "Trigger/GG/UserID.hpp"
 #include "Trigger/GG/ExceptionSendingError.hpp"
@@ -35,6 +36,8 @@ public:
   void send(UserID receiver, const std::string &msg);
 
 private:
+  void discardIncommingMessages(Logger::Node log);
+
   Connection &conn_;
 }; // class MessageSender
 
