@@ -89,4 +89,12 @@ void testObj::test<5>(void)
   ensure_equals("invalid element 4", q_.pop(), "a");
 }
 
+// test for maxSize()
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  ensure_equals("invalid maxumum size", q_.maxSize(), 4u);
+}
+
 } // namespace tut

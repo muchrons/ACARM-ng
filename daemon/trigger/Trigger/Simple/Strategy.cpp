@@ -48,6 +48,8 @@ bool Strategy::matchesCriteria(const Persistency::GraphNodePtrNN &n) const
 void Strategy::trigger(const Node &n)
 {
   // add new element to queue
+  if( fifo_.maxSize()==fifo_.size() )
+    LOGMSG_WARN(log_, "queue has reached maximum size - the oldest message is being lost...");
   fifo_.push(n);
 
   // send all enqueued messages
