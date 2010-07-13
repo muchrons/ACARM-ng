@@ -6,6 +6,7 @@
 #define INCLUDE_TRIGGER_GG_STRATEGY_HPP_FILE
 
 #include <memory>
+#include <boost/noncopyable.hpp>
 
 #include "Base/Threads/Mutex.hpp"
 #include "Commons/Threads/Thread.hpp"
@@ -17,6 +18,30 @@ namespace Trigger
 {
 namespace GG
 {
+namespace detail
+{
+/** \brief helper object holding connection.
+ */
+struct StrategyIO: private boost::noncopyable
+{
+  /** \brief connection auto pointer. */
+  typedef std::auto_ptr<Connection> ConnectionAutoPtr;
+  /** \brief create object.
+   */
+  StrategyIO(void):
+    log_("trigger.gg.detail.strategyio")
+  {
+  }
+
+  /** \brief ping gg server.
+   */
+  void ping(void);
+
+  mutable Base::Threads::Mutex      mutex_; ///< mutex for thread-safety
+  const Logger::Node                log_;   ///< used for logging
+  ConnectionAutoPtr                 conn_;  ///< connection to be used
+}; // struct StrategyIO
+} // namespace detail
 
 /** \brief Gadu-Gadu triggering strategy
  */
@@ -28,20 +53,13 @@ public:
    */
   explicit Strategy(const Config &cfg);
 
-  /** \brief ping gg server.
-   */
-  void ping(void);
-
 private:
   virtual void triggerImpl(const Node &n);
 
-  typedef std::auto_ptr<Connection> ConnectionAutoPtr;
-
-  const AccountConfig          ggCfg_;
-  const UserID                 receiver_;
-  ConnectionAutoPtr            conn_;
-  mutable Base::Threads::Mutex mutex_;
-  Commons::Threads::Thread     pingThread_; // keep this element as a last one!
+  const AccountConfig      ggCfg_;
+  const UserID             receiver_;
+  detail::StrategyIO       io_;
+  Commons::Threads::Thread pingThread_;
 }; // class Strategy
 
 } // namespace GG
