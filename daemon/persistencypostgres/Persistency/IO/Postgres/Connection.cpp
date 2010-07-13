@@ -18,8 +18,8 @@ namespace IO
 namespace Postgres
 {
 
-Connection::Connection(DBHandlerPtrNN handler):
-  detail::ConnectionBase(handler),
+Connection::Connection(DBHandlePtrNN handle):
+  detail::ConnectionBase(handle),
   log_("persistency.io.postgres.connection")
 {
 }

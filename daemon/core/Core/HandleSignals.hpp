@@ -13,12 +13,12 @@
 namespace Core
 {
 
-/** \brief class setting up handlers for all requested signals.
+/** \brief class setting up handles for all requested signals.
  */
 class HandleSignals
 {
 public:
-  /** \brief create handlers for all signals.
+  /** \brief create handles for all signals.
    *  \param wt element ot be stopped uppon signal arrival. can be NULL.
    */
   explicit HandleSignals(WorkThreads *wt);

@@ -19,7 +19,7 @@ Main::Main(void):
   restorer_(queue_),    // restore data content
   threads_(queue_),     // run processing threads
   // (non-explicit initialization is being done here)
-  signals_(&threads_)   // after all initialization is done, register real handlers
+  signals_(&threads_)   // after all initialization is done, register real handles
 {
   LOGMSG_INFO(log_, "core is up and running");
 }

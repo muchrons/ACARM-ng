@@ -142,7 +142,7 @@ struct TestClass
 
   TestDBAccess        tdba_;
   IDCachePtrNN        idCache_;
-  DBHandler           dbh_;
+  DBHandle            dbh_;
   IO::ConnectionPtrNN conn_;
   Transaction         t_;
   EntrySaver          es_;

@@ -17,18 +17,18 @@ namespace Postgres
 
 Host::Host(Persistency::HostPtrNN  host,
            Transaction            &t,
-           DBHandlerPtrNN          dbHandler):
+           DBHandlePtrNN           dbHandle):
   IO::Host(host, t),
   log_("persistency.io.postgres.host"),
-  dbHandler_(dbHandler)
+  dbHandle_(dbHandle)
 {
 }
 
 void Host::setNameImpl(Transaction &t, const Persistency::Host::Name &name)
 {
   TRYCATCH_BEGIN
-    EntrySaver es(t, *dbHandler_);
-    DataBaseID hostID = dbHandler_->getIDCache()->get( get() );
+    EntrySaver es(t, *dbHandle_);
+    DataBaseID hostID = dbHandle_->getIDCache()->get( get() );
     es.setHostName(hostID, name);
   TRYCATCH_END
 }

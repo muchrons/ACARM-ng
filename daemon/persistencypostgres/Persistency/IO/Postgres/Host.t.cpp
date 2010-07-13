@@ -37,7 +37,7 @@ struct TestClass
     sourceHosts_( generateReportedHosts(2) ),
     targetHosts_( generateReportedHosts(5) ),
     idCache_(new IDCache),
-    dbh_(DBHandlerPtrNN(new DBHandler(TestConnection::makeParams(), idCache_) ) ),
+    dbh_(DBHandlePtrNN(new DBHandle(TestConnection::makeParams(), idCache_) ) ),
     conn_(makeConnection() ),
     t_( conn_->createNewTransaction("host_test") )
   {
@@ -79,7 +79,7 @@ struct TestClass
 
   TestDBAccess        tdba_;
   IDCachePtrNN        idCache_;
-  DBHandlerPtrNN      dbh_;
+  DBHandlePtrNN       dbh_;
   IO::ConnectionPtrNN conn_;
   Transaction         t_;
 };

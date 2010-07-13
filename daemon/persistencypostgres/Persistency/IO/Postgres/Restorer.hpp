@@ -8,7 +8,7 @@
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Connection.hpp"
-#include "Persistency/IO/Postgres/DBHandler.hpp"
+#include "Persistency/IO/Postgres/DBHandle.hpp"
 #include "Persistency/IO/Postgres/Tree.hpp"
 #include "Persistency/IO/Postgres/ReverseIDCache.hpp"
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
@@ -27,11 +27,11 @@ class Restorer: public IO::Restorer
 {
 public:
   /** \brief create restore from persistency proxy object
-   *  \param t         active transaction.
-   *  \param dbHandler shared connection to data base.
+   *  \param t        active transaction.
+   *  \param dbHandle shared connection to data base.
    */
-  Restorer(Transaction    &t,
-           DBHandlerPtrNN  dbHandler);
+  Restorer(Transaction   &t,
+           DBHandlePtrNN  dbHandle);
 
 private:
   /** \brief data type which stores tree nodes of class Tree
@@ -101,7 +101,7 @@ private:
 
 
   Logger::Node                   log_;
-  DBHandlerPtrNN                 dbHandler_;
+  DBHandlePtrNN                  dbHandle_;
   ReverseIDCache<GraphNodePtrNN> nodeCache_;
   ReverseIDCache<GraphNodePtrNN> leafCache_;
   ReverseIDCache<TreePtr>        treeNodes_;

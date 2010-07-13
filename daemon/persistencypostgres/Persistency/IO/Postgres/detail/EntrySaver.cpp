@@ -54,7 +54,7 @@ void addToSelect<Persistency::Analyzer::IP>(std::stringstream &ss, const Persist
 }
 } //unnamed namespace
 
-EntrySaver::EntrySaver(Transaction &t, DBHandler &dbh):
+EntrySaver::EntrySaver(Transaction &t, DBHandle &dbh):
   log_("persistency.io.postgres.detail.entrysaver"),
   dbh_(dbh),
   t_(t)

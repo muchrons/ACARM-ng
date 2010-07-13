@@ -27,7 +27,7 @@ struct TestClass
 {
   TestClass(void):
     idCache_(new IDCache),
-    dbh_( DBHandlerPtrNN(new DBHandler(TestConnection::makeParams(), idCache_) ) ),
+    dbh_( DBHandlePtrNN(new DBHandle(TestConnection::makeParams(), idCache_) ) ),
     conn_( makeConnection() ),
     t_( conn_->createNewTransaction("dynamic_config_test") ),
     dc_( conn_->dynamicConfig("dynamic_config_test_owner", t_) )
@@ -38,7 +38,7 @@ struct TestClass
 
   TestDBAccess             tdba_;
   IDCachePtrNN             idCache_;
-  DBHandlerPtrNN           dbh_;
+  DBHandlePtrNN            dbh_;
   IO::ConnectionPtrNN      conn_;
   Transaction              t_;
   IO::DynamicConfigAutoPtr dc_;

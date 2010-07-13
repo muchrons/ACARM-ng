@@ -28,32 +28,42 @@ template<typename T, typename AddPolicy=FifoAcceptAllPolicy>
 class FifoQueue
 {
 public:
-  /** \brief gets first element out.
+  /** \brief type of values held inside. */
+  typedef T value_type;
+
+  /** \brief gets first element out and removes it from queue.
    *  \return element from the begin of the queue (oldest).
    *
    *  \note this call returns element by value AND removes it from the
-   *        queue. this means that copy constructor of type T may NOT
-   *        throw - otherwise element might be lost.
+   *        queue. this means that copy constructor of type value_type may NOT
+   *        throw - otherwise element might be lost. if this is not the
+   *        case use top() call instead.
    *
    *  \note interruption point works ONLY if it if run in a separate thread,
    *        so pop() cannot be stopped, when run from main thread (only by
    *        adding new element).
    */
-  T pop(void)
+  value_type pop(void)
   {
     // wait for data, if not present
     Lock lock(mutex_);
-    while( q_.size()<1 )
-    {
-      boost::this_thread::interruption_point();
-      cond_.wait(lock);
-    }
-
-    // take one element and return it
-    assert( q_.size()>0 );
-    const T tmp=q_.front();
+    const value_type tmp=popImpl(lock);
     q_.pop_front();
     return tmp;
+  }
+
+  /** \brief gets first element (does not remove it from queue).
+   *  \return element from the begin of the queue (oldest).
+   *
+   *  \note interruption point works ONLY if it if run in a separate thread,
+   *        so pop() cannot be stopped, when run from main thread (only by
+   *        adding new element).
+   */
+  value_type top(void) const
+  {
+    // wait for data, if not present
+    Lock lock(mutex_);
+    return popImpl(lock);
   }
 
   /** \brief signals all threads waiting on pop().
@@ -64,16 +74,16 @@ public:
   }
 
   /** \brief adds new element to queue.
-   *  \param t element to be added.
+   *  \param e element to be added.
    */
-  void push(const T &t)
+  void push(const value_type &e)
   {
     {
       const AddPolicy ap=AddPolicy();
       const Lock      lock(mutex_);
-      if( !ap(q_, t) )      // element should not be added?
+      if( !ap(q_, e) )      // element should not be added?
         return;
-      q_.push_back(t);      // add element to queue
+      q_.push_back(e);      // add element to queue
     }
     cond_.notify_one();     // signal presence of new entry
   }
@@ -92,11 +102,27 @@ public:
   }
 
 private:
-  typedef std::deque<T> Queue;
+  const value_type &popImpl(Lock &lock) const
+  {
+    // wait for data, if not present
+    while( q_.size()<1 )
+    {
+      boost::this_thread::interruption_point();
+      cond_.wait(lock);
+    }
 
-  mutable Mutex mutex_;
-  Conditional   cond_;
-  Queue         q_;
+    // take one element and return it
+    assert( q_.size()>0 );
+    return q_.front();
+  }
+
+  // NOTE: std::deque is used here instead of std::queue since deque has begin/end
+  //       iterators required in some circumstances.
+  typedef std::deque<value_type> Queue;
+
+  mutable Mutex       mutex_;
+  mutable Conditional cond_;
+  Queue               q_;
 }; // class FifoQueue
 
 } // namespace Threads

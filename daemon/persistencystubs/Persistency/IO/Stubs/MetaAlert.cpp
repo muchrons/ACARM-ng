@@ -15,7 +15,7 @@ namespace Stubs
 
 MetaAlert::MetaAlert(Persistency::MetaAlertPtrNN  ma,
                      Transaction                 &t,
-                     int                          /*handler*/):
+                     int                          /*handle*/):
   IO::MetaAlert(ma, t),
   saveCalls_(0),
   markAsTriggeredCalls_(0),

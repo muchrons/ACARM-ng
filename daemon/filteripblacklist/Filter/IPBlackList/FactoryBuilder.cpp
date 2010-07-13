@@ -60,7 +60,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO_S(log_)<<"setting entries limit to "<<limit;
   Strategy::Parameters params(refresh, limit, priDelta);
 
-  // create and return new handler.
+  // create and return new handle.
   typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;
   return FactoryBuilder::FactoryPtr( new Impl(name_, params) );
 }

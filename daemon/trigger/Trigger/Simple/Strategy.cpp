@@ -56,7 +56,7 @@ void Strategy::trigger(const Node &n)
   {
     LOGMSG_DEBUG(log_, "sending next message...");
     // sending itself
-    triggerImpl( fifo_.front() );   // process
+    triggerImpl( fifo_.top() );     // process
     fifo_.pop();                    // if no problems were reported, remove it from queue
     LOGMSG_DEBUG(log_, "message send successfuly - removed from queue");
   }

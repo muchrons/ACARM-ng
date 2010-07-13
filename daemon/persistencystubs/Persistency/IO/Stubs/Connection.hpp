@@ -23,7 +23,7 @@ namespace detail
 {
 /** \brief helper typedef to make names shorter.
  */
-class ConnectionImpl: public IO::ConnectionHelper<int,   // connection handler - anything...
+class ConnectionImpl: public IO::ConnectionHelper<int,   // connection handle - anything...
                                                   Stubs::TransactionAPI,
                                                   Stubs::Alert,
                                                   Stubs::Host,

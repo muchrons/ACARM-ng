@@ -7,7 +7,7 @@
 
 #include "Logger/Node.hpp"
 #include "Persistency/IO/MetaAlert.hpp"
-#include "Persistency/IO/Postgres/DBHandler.hpp"
+#include "Persistency/IO/Postgres/DBHandle.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 #include "Persistency/IO/Postgres/detail/EntryReader.hpp"
 
@@ -24,13 +24,13 @@ class MetaAlert: public IO::MetaAlert
 {
 public:
   /** \brief create meta-alert persistency proxy.
-   *  \param ma        meta alert to work on.
-   *  \param t         active transaction.
-   *  \param dbHandler shared connection ot be used for communication.
+   *  \param ma       meta alert to work on.
+   *  \param t        active transaction.
+   *  \param dbHandle shared connection ot be used for communication.
    */
   MetaAlert(Persistency::MetaAlertPtrNN  ma,
             Transaction                 &t,
-            DBHandlerPtrNN               dbHandler);
+            DBHandlePtrNN                dbHandle);
 
 private:
   virtual void saveImpl(Transaction &t);
@@ -43,8 +43,8 @@ private:
   virtual void associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN alert);
   DataBaseID getID();
 
-  Logger::Node   log_;
-  DBHandlerPtrNN dbHandler_;
+  Logger::Node  log_;
+  DBHandlePtrNN dbHandle_;
 }; // class MetaAlert
 
 } // namespace Postgres

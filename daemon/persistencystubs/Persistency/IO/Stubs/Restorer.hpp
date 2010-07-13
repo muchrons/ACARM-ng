@@ -20,11 +20,10 @@ class Restorer: public IO::Restorer
 {
 public:
   /** \brief create stub.
-   *  \param t       active transaction.
-   *  \param handler persistency handler.
+   *  \param t      active transaction.
+   *  \param handle persistency handle.
    */
-  Restorer(Transaction &t,
-           int          handler);
+  Restorer(Transaction &t, int handle);
 
   /** number of times 'restoreAllInUseImpl()' has been called. */
   size_t restoreAllCalls_;
