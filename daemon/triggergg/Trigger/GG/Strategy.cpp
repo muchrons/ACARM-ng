@@ -53,8 +53,11 @@ struct PingThread
       // ping server every 60[s]
       while(true)
       {
-        sleep(60);
-        boost::this_thread::interruption_point();
+        for(int i=0; i<60; ++i)
+        {
+          boost::this_thread::interruption_point();
+          sleep(1);
+        }
         assert(s_!=NULL);
         s_->ping();
       } // while(true)
