@@ -60,9 +60,10 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO_S(log_)<<"setting UIN to "<<uid;
   const std::string    &pass=fc["password"];
   LOGMSG_INFO_S(log_)<<"setting password ******** for UIN";
-  const std::string    &name=fc["name"];
-  LOGMSG_INFO_S(log_)<<"trigger name "<<name;
   const AccountConfig   account(uid, pass);
+  // triggergg name
+  const std::string    &name=fc["name"];
+  LOGMSG_INFO_S(log_)<<"setting trigger gg name "<<name;
   // receiver's UID
   const UserID          receiverUid=getID( fc["receiver_uin"] );
   LOGMSG_INFO_S(log_)<<"setting receiver UIN to "<<receiverUid;

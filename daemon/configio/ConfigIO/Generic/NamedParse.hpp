@@ -6,7 +6,7 @@
 #define INCLUDE_CONFIGIO_GENERIC_NAMEDPARSE_HPP_FILE
 
 #include "XML/Node.hpp"
-
+// TODO: reorganize code to use Parse class
 namespace ConfigIO
 {
 namespace Generic

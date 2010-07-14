@@ -3,10 +3,8 @@
 
   <whatever>
 
-    <something name="name">
-      <opt7>cat</opt7>
-      <opt4>alice</opt4>
-    </something>
+    <noopts name="noopts">
+    </noopts>
 
     <something name="other name">
       <opt7>cat</opt7>

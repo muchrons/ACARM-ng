@@ -102,7 +102,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // trigger name
   const std::string &name    =fc["name"];
-  LOGMSG_INFO_S(log_)<<"trigger name "<<name;
+  LOGMSG_INFO_S(log_)<<"setting triggermail name "<<name;
 
   // defile output type
   typedef InterfaceImpl<Mail::Strategy, Mail::Config> Impl;
