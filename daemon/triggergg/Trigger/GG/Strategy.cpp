@@ -37,6 +37,7 @@ struct PingThread
     {
       try
       {
+        boost::this_thread::interruption_point();   // this i.p. is needed in case ping/discrad throws
         assert(s_!=NULL);
         s_->ping();                         // ping
         s_->discardIncommingMessages();     // throw away anything that might have arrived
