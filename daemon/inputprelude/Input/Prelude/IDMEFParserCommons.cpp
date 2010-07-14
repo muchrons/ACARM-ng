@@ -16,10 +16,8 @@ using boost::asio::ip::address_v4;
 using boost::asio::ip::address_v6;
 
 
-IDMEFParserCommons::IP IDMEFParserCommons::getIPfromIdmefNode(idmef_node_t * idmef_node)
+Base::NullValue<IDMEFParserCommons::IP> IDMEFParserCommons::getIPfromIdmefNode(idmef_node_t * idmef_node)
 {
-  // TODO: following condition fails most of the time - check if code is really valid.
-  //       maby heartbeats are apssed here as well?
   if (idmef_node==NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Idmef Node is empty.");
 
@@ -36,16 +34,16 @@ IDMEFParserCommons::IP IDMEFParserCommons::getIPfromIdmefNode(idmef_node_t * idm
   {
     case IDMEF_ADDRESS_CATEGORY_IPV4_ADDR:
     case IDMEF_ADDRESS_CATEGORY_IPV4_NET:
-      return address_v4::from_string(tmp);
+      return Base::NullValue<IDMEFParserCommons::IP>(address_v4::from_string(tmp));
 
     case IDMEF_ADDRESS_CATEGORY_IPV6_ADDR:
     case IDMEF_ADDRESS_CATEGORY_IPV6_NET:
-      return address_v6::from_string(tmp);
+      return Base::NullValue<IDMEFParserCommons::IP>(address_v6::from_string(tmp));
 
     default:
       throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Wrong address type.");
   }
-  return IP();
+  return Base::NullValue<IDMEFParserCommons::IP>(NULL);
 }
 
 Persistency::ServicePtr IDMEFParserCommons::getServicefromIdmefService(idmef_service_t * idmef_service)
