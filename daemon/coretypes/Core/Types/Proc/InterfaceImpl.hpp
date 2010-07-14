@@ -26,6 +26,7 @@ class InterfaceImpl: public Interface
 {
 public:
   /** \brief creates object with a given name.
+   *  \param type type for this processing unit.
    *  \param name name for this processing unit.
    */
   explicit InterfaceImpl(const std::string &type, const std::string &name):
