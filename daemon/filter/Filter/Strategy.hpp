@@ -26,9 +26,13 @@ class Strategy: public StrategyBase
 {
 public:
   /** \brief helper typedef for GraphNode pointer. */
-  typedef BackendFacade::Node         Node;
+  typedef BackendFacade::Node           Node;
   /** \brief helper typedef for list of chenged nodes. */
-  typedef BackendFacade::ChangedNodes ChangedNodes;
+  typedef BackendFacade::ChangedNodes   ChangedNodes;
+
+  struct NodeEntry; ///< forward declaration to keep code easier to read.
+  /** \brief timeouting queue colleciton type. */
+  typedef Base::TimeoutQueue<NodeEntry> NodesTimeoutQueue;
 
   /** \brief processes given meta-alert.
    *  \param n       node to be processed.
@@ -39,12 +43,12 @@ public:
     LOGMSG_DEBUG_S(log_)<<"processing node at address 0x"
                         <<static_cast<void*>( n.get() );
     assert( changed.size()==0 && "non-empty output collection received");
+    ntq_.prune();               // do periodical queue's clean-up
     BackendFacade bf( conn_, changed, getFilterName() );
     processImpl(n, ntq_, bf);
     bf.commitChanges();         // if there was no exception, commit changes made (if any)
   }
 
-protected:
   /** \brief helper structure with user-provided data associated with
    *         node's entry.
    */
@@ -74,9 +78,7 @@ protected:
     T    t_;        ///< user data, associated with node.
   }; // struct NodeEntry
 
-  /** \brief timeouting queue colleciton type. */
-  typedef Base::TimeoutQueue<NodeEntry> NodesTimeoutQueue;
-
+protected:
   /** \brief create instance.
    */
   explicit Strategy(const std::string &name):
