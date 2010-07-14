@@ -33,6 +33,7 @@ public:
   {
   }
   /** \brief creates object with a given name and properties.
+   *  \param type  type for this processing unit.
    *  \param name  name for this processing unit.
    *  \param param paramter to eb given when constructing strategy.
    */
