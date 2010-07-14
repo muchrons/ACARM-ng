@@ -25,11 +25,17 @@ protected:
   explicit Stream(std::ostream &os):
     os_(os)
   {
+    // NOTE: os_ might not be initialized at this point yet!
   }
 
 private:
   virtual void appendImpl(const std::string &str)
   {
+    if( os_.bad() )
+    {
+      os_.clear();              // clear error flags
+      reinitAlreadyLocked();    // try reinitializing stream
+    }
     os_<<str<<std::endl;
   }
 

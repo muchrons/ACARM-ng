@@ -60,4 +60,13 @@ void testObj::test<3>(void)
          b.getTypeName()==Syslog::getThisTypeName() );
 }
 
+// reinit() smoke test
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  Syslog sapp;
+  sapp.reinit();
+}
+
 } // namespace tut

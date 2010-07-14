@@ -19,8 +19,13 @@ struct StreamTestClass: public  Stream<StreamTestClass>,
                         private TestHelpers::TestBase
 {
   StreamTestClass(void):
-    Stream<StreamTestClass>(ss_)
+    Stream<StreamTestClass>(ss_),
+    reinitCalls_(0)
   {
+  }
+  virtual void reinitImpl(void)
+  {
+    ++reinitCalls_;
   }
   static const char *getThisTypeName(void)
   {
@@ -28,6 +33,7 @@ struct StreamTestClass: public  Stream<StreamTestClass>,
   }
 
   stringstream ss_;
+  int          reinitCalls_;
 };
 
 typedef StreamTestClass TestClass;
@@ -68,6 +74,21 @@ void testObj::test<3>(void)
   this->append("log 1");
   this->append("log 2");
   ensure_equals("invalid message appended", ss_.str(), "log 1\nlog 2\n");
+}
+
+// test automatic reinit() when stream is bad
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  ss_.setstate(stringstream::badbit);
+  ensure("pre-condition failed", ss_.bad() );
+  ensure_equals("reinit() already called", reinitCalls_, 0);
+  // run
+  this->append("hello reinit");
+  // check
+  ensure_equals("reinit() not called", reinitCalls_, 1);
+  ensure_equals("message not appended", ss_.str(), "hello reinit\n");
 }
 
 } // namespace tut
