@@ -13,7 +13,7 @@ namespace Stubs
 
 Alert::Alert(Persistency::AlertPtrNN  alert,
              Transaction             &t,
-             int                      /*handler*/):
+             int                      /*handle*/):
   IO::Alert(alert, t),
   saveCalls_(0)
 {

@@ -47,9 +47,9 @@ ConnectionBuilder::FactoryPtr ConnectionBuilder::buildImpl(const Options &option
                                          getOption(options, "user"),
                                          getOption(options, "pass")  );
 
-  // create and return new handler.
-  DBHandlerPtrNN handler( new DBHandler(params, idCache_) );
-  return ConnectionBuilder::FactoryPtr( new Postgres::Connection(handler) );
+  // create and return new handle.
+  DBHandlePtrNN handle( new DBHandle(params, idCache_) );
+  return ConnectionBuilder::FactoryPtr( new Postgres::Connection(handle) );
 }
 
 const ConnectionBuilder::FactoryTypeName &ConnectionBuilder::getTypeNameImpl(void) const

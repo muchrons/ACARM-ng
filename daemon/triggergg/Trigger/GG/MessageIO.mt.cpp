@@ -1,11 +1,11 @@
 /*
- * MessageSender.t.cpp
+ * MessageIO.mt.cpp
  *
  */
 #include <iostream>
 #include <cstdlib>
 
-#include "Trigger/GG/MessageSender.hpp"
+#include "Trigger/GG/MessageIO.hpp"
 #include "Trigger/GG/TestAccount.t.hpp"
 
 using namespace std;
@@ -23,8 +23,8 @@ int main(int argc, char **argv)
   const char    *msg     =argv[2];
 
   cout<<"connecting..."<<endl;
-  Connection     conn( getTestConfig() );
-  MessageSender  ms(conn);
+  Connection conn( getTestConfig() );
+  MessageIO  ms(conn);
 
   cout<<"sending message..."<<endl;
   ms.send(receiver, msg);

@@ -9,7 +9,7 @@
 #include <pqxx/pqxx>
 
 #include "Persistency/IO/TransactionAPI.hpp"
-#include "Persistency/IO/Postgres/DBHandler.hpp"
+#include "Persistency/IO/Postgres/DBHandle.hpp"
 
 
 namespace Persistency
@@ -26,14 +26,14 @@ class TransactionAPI: public Persistency::IO::TransactionAPI
 {
 public:
   /** \brief open transaction.
-   *  \param mutex     mutex protecting connection object.
-   *  \param name      name of transaction.
-   *  \param dbHandler data base handler object.
+   *  \param mutex    mutex protecting connection object.
+   *  \param name     name of transaction.
+   *  \param dbHandle data base handle object.
    */
   TransactionAPI(Base::Threads::Mutex &mutex,
                  const std::string    &name,
-                 DBHandlerPtrNN        dbHandler);
-  /** \brief executes statement on handler
+                 DBHandlePtrNN         dbHandle);
+  /** \brief executes statement on handle.
    *  \param sql SQL statement to be executed.
    *  \return query results.
    */

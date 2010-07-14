@@ -224,4 +224,29 @@ void testObj::test<6>(void)
   ensure_equals("invalid state", state, 2);
 }
 
+// test top() call
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  q_.push("str1");
+  q_.push("str2");
+  const FQ &q=q_;       // used to check for const top()
+  // check
+  ensure_equals("invalid stirng 1/1", q.top(), "str1");
+  ensure_equals("invalid stirng 1/2", q.top(), "str1");
+  q_.pop();
+  ensure_equals("invalid stirng 2",   q_.pop(), "str2");
+}
+
+// test for value_type typedef's presence
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  q_.push("str1");
+  FQ::value_type v=q_.pop();
+  ensure_equals("invalid stirng", v, "str1");
+}
+
 } // namespace tut

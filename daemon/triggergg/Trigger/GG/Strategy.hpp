@@ -5,8 +5,10 @@
 #ifndef INCLUDE_TRIGGER_GG_STRATEGY_HPP_FILE
 #define INCLUDE_TRIGGER_GG_STRATEGY_HPP_FILE
 
+#include "Commons/Threads/Thread.hpp"
 #include "Trigger/Simple/Strategy.hpp"
 #include "Trigger/GG/Config.hpp"
+#include "Trigger/GG/detail/StrategyIO.hpp"
 
 namespace Trigger
 {
@@ -26,8 +28,8 @@ public:
 private:
   virtual void triggerImpl(const Node &n);
 
-  const AccountConfig ggCfg_;
-  const UserID        receiver_;
+  detail::StrategyIO       io_;
+  Commons::Threads::Thread pingThread_;
 }; // class Strategy
 
 } // namespace GG

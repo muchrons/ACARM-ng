@@ -1,10 +1,10 @@
 /*
- * MessageSender.t.cpp
+ * MessageIO.t.cpp
  *
  */
 #include <tut.h>
 
-#include "Trigger/GG/MessageSender.hpp"
+#include "Trigger/GG/MessageIO.hpp"
 #include "Trigger/GG/TestAccount.t.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -32,7 +32,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Trigger/GG/MessageSender");
+factory tf("Trigger/GG/MessageIO");
 } // unnamed namespace
 
 
@@ -44,7 +44,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  MessageSender ms(conn1_);
+  MessageIO ms(conn1_);
 }
 
 // test sending message from one account to another.
@@ -52,7 +52,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  MessageSender     ms(conn1_);
+  MessageIO         ms(conn1_);
   const std::string msg("alice has a cat");
   ms.send( getTestConfig2().getUserID(), msg );
   const std::string recv=getMessageFromAccount2();
@@ -64,11 +64,20 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  MessageSender     ms(conn1_);
+  MessageIO         ms(conn1_);
   const std::string msg("łączność UTF-8");
   ms.send( getTestConfig2().getUserID(), msg );
   const std::string recv=getMessageFromAccount2();
   ensure_equals("invalid message received", recv, msg);
+}
+
+// test discarding messages (smoke test)
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  MessageIO ms(conn1_);
+  ms.discardIncommingMessages();
 }
 
 } // namespace tut

@@ -31,7 +31,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure("not connected", tc_.dbHandler_.getConnection().get().is_open() );
+  ensure("not connected", tc_.dbHandle_.getConnection().get().is_open() );
 }
 
 // ensure cache is not NULL
@@ -39,7 +39,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure("NULL ID cache", tc_.dbHandler_.getIDCache().get()!=NULL );
+  ensure("NULL ID cache", tc_.dbHandle_.getIDCache().get()!=NULL );
 }
 
 } // namespace tut

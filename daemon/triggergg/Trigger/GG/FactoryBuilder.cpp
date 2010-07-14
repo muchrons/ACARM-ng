@@ -73,7 +73,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
     LOGMSG_INFO_S(log_)<<"setting alerts count threshold to "<<cntTh;
   const ThresholdConfig thCfg(sevTh, cntTh);
 
-  // create and return new handler.
+  // create and return new handle.
   typedef InterfaceImpl<GG::Strategy, GG::Config> Impl;
   return FactoryBuilder::FactoryPtr( new Impl( name_, GG::Config(account, receiverUid, thCfg) ) );
 }

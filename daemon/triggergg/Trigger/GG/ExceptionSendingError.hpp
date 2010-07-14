@@ -26,7 +26,7 @@ public:
     Exception(where, cc("unable to send message to user ", receiver, " - error code was ", ret) )
   {
   }
-}; // class ExceptionConnectionError
+}; // class ExceptionSendingError
 
 } // namespace GG
 } // namespace Trigger

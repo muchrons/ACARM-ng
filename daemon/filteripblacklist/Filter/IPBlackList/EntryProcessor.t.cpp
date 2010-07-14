@@ -28,7 +28,7 @@ struct TestClass: private TestStubs
     dsp_("084.109.175.233 687     352     2009-12-31      2010-03-12"),
     bl_( dsp_.begin(), dsp_.end() ),
     bf_(conn_, changed_, "testdipblacklist"),
-    ep_(&bl_, &bf_, 0.3)
+    ep_(&bl_, &bf_, &ps_, 0.3)
   {
     assert( changed_.size()==0 );
   }
@@ -38,6 +38,7 @@ struct TestClass: private TestStubs
   BlackList                        bl_;
   BackendFacade::ChangedNodes      changed_;
   BackendFacade                    bf_;
+  ProcessedSet                     ps_;
   EntryProcessor                   ep_;
 };
 
@@ -74,6 +75,20 @@ void testObj::test<2>(void)
   ep_(leaf);
   const double   pri2=leaf->getMetaAlert()->getSeverityDelta();
   ensure_equals("priority changed", pri1+0.3, pri2);
+  ensure_equals("some node marked as changed", changed_.size(), 1u);
+}
+
+// test if hosts are not taken into account more than once
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  GraphNodePtrNN leaf=makeNewLeaf("84.109.175.233", "1.2.3.5");
+  const double   pri1=leaf->getMetaAlert()->getSeverityDelta();
+  ep_(leaf);
+  ep_(leaf);        // second call should not make a difference
+  const double   pri2=leaf->getMetaAlert()->getSeverityDelta();
+  ensure_equals("priority changed", pri2, pri1+0.3);
   ensure_equals("some node marked as changed", changed_.size(), 1u);
 }
 

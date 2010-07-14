@@ -35,7 +35,7 @@ struct TestClass
 
   TestClass(void):
     idCache_(new IDCache),
-    dbh_(DBHandlerPtrNN(new DBHandler(TestConnection::makeParams(), idCache_) ) ),
+    dbh_(DBHandlePtrNN(new DBHandle(TestConnection::makeParams(), idCache_) ) ),
     conn_(makeConnection() ),
     t_( conn_->createNewTransaction("reader_helper_tests") ),
     name_("some name")
@@ -57,7 +57,7 @@ struct TestClass
 
   TestDBAccess        tdba_;
   IDCachePtrNN        idCache_;
-  DBHandlerPtrNN      dbh_;
+  DBHandlePtrNN       dbh_;
   IO::ConnectionPtrNN conn_;
   Transaction         t_;
   Name                name_;

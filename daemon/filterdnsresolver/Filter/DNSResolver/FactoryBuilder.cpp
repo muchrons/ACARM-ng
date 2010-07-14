@@ -46,7 +46,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO_S(log_)<<"setting cache timeout to "<<timeout<<"[s]";
   const Strategy::Parameters params(timeout);
 
-  // create and return new handler.
+  // create and return new handle.
   typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;
   return FactoryBuilder::FactoryPtr( new Impl(name_, params) );
 }
