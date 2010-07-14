@@ -20,7 +20,7 @@ namespace
 struct TestInterface: public Interface
 {
   explicit TestInterface(bool *dtor):
-    Interface("testinterface", EntryControlList::createDefaultAccept() ),
+    Interface("testinterfacetype", "testinterfacename", EntryControlList::createDefaultAccept() ),
     calls_(0),
     dtor_(dtor)
   {
@@ -71,13 +71,20 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid name set", ti_->getName(), "testinterface");
+  ensure_equals("invalid name set", ti_->getName(), "testinterfacename");
 }
 
-// test if d-tor is virtual
+// test getting type
 template<>
 template<>
 void testObj::test<2>(void)
+{
+  ensure_equals("invalid name set", ti_->getType(), "testinterfacetype");
+}
+// test if d-tor is virtual
+template<>
+template<>
+void testObj::test<3>(void)
 {
   ensure("pre failed", dtor_==false);
   ti_.reset();
@@ -87,7 +94,7 @@ void testObj::test<2>(void)
 // test if process() is virtual
 template<>
 template<>
-void testObj::test<3>(void)
+void testObj::test<4>(void)
 {
   ensure_equals("pre-condition failed", ptr_->calls_, 0);
   Interface::ChangedNodes changed;

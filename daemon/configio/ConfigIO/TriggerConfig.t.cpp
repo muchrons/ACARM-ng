@@ -30,9 +30,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const TriggerConfig::TypeName name("sometrigger");
+  const TriggerConfig::TypeName type("sometrigger");
   const TriggerConfig::Options  opts;
-  const TriggerConfig pc(name, opts);
+  const TriggerConfig pc(type, opts);
   ensure_equals("invalid type", pc.getType(), "sometrigger");
 }
 

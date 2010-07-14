@@ -10,6 +10,7 @@
 #include <string>
 #include <map>
 
+#include "XML/Node.hpp"
 #include "ConfigIO/ExceptionNoSuchParameter.hpp"
 
 

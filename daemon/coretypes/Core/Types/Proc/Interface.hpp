@@ -40,6 +40,10 @@ public:
    *                      during this call. initially list is empty.
    */
   virtual void process(Node node, ChangedNodes &changedNodes) = 0;
+  /** \brief gets type of this processing unit.
+   *  \return returns processing unit's type.
+   */
+  const std::string &getType(void) const;
   /** \brief gets name of this processing unit.
    *  \return returns processing unit's name.
    */
@@ -51,12 +55,14 @@ public:
 
 protected:
   /** \brief creates object with a given name.
+   *  \param type type for this processing unit.
    *  \param name name for this processing unit.
    *  \param ecl  control list that determines what source of alerts are (dis)allowed.
    */
-  Interface(const std::string &name, const EntryControlList &ecl);
+  Interface(const std::string &type, const std::string &name, const EntryControlList &ecl);
 
 private:
+  const std::string      type_;
   const std::string      name_;
   const EntryControlList ecl_;
 }; // class Interface

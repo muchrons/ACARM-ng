@@ -79,7 +79,7 @@ namespace
 struct TestInterface: public Interface
 {
   TestInterface(void):
-    Interface( "narf", EntryControlList::createDefaultAccept() )
+    Interface( "narf", "narf", EntryControlList::createDefaultAccept() )
   {
   }
 
@@ -101,6 +101,10 @@ private:
   {
     Options::const_iterator it=options.begin();
     ensure("empty collection", it!=options.end() );
+
+    ensure_equals("invalid option 1 key",   it->first,  "name");
+    ensure_equals("invalid option 1 value", it->second, "triggername");
+    ++it;
 
     ensure_equals("invalid option 1 key",   it->first,  "opt1");
     ensure_equals("invalid option 1 value", it->second, "kszy");

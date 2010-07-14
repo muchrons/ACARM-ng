@@ -32,7 +32,7 @@ FORCE_LINK_THIS_OBJECT(Filter_IPBlackList_FactoryBuilder)
 
 
 FactoryBuilder::FactoryBuilder(void):
-  name_("ipblacklist"),
+  type_("ipblacklist"),
   log_("filter.ipblacklist.factorybuilder")
 {
 }
@@ -52,7 +52,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO(log_, "building filter's instance");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  const FilterConfig fc(name_, options);
+  const FilterConfig fc(type_, options);
   const unsigned int refresh =parseUnsignedInt( fc["refresh"] );
   const unsigned int limit   =parseUnsignedInt( fc["limit"] );
   const double       priDelta=boost::lexical_cast<double>( fc["priorityDelta"] );
@@ -62,12 +62,12 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // create and return new handle.
   typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl(name_, params) );
+  return FactoryBuilder::FactoryPtr( new Impl(type_, type_, params) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const
 {
-  return name_;
+  return type_;
 }
 
 } // namespace IPBlackList

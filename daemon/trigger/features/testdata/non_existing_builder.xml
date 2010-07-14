@@ -21,7 +21,7 @@
   <filters/>
 
   <triggers>
-    <thisbuilderdoesnotexist/>
+    <thisbuilderdoesnotexist name="nonexist"/>
   </triggers>
 
   <inputs/>

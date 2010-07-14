@@ -21,7 +21,7 @@
   <filters/>
 
   <triggers>
-    <mail>
+    <mail name="inform admin">
       <from>robot@e.mail.org</from>
       <to>admin@e.mail.org</to>
       <server>smtp.e.mail.org</server>

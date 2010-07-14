@@ -21,7 +21,7 @@
   <filters/>
 
   <triggers>
-    <gg>
+    <gg name="inform user">
       <uin>1234</uin>
       <password>secret</password>
       <receiver_uin>4321</receiver_uin>
