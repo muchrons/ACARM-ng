@@ -23,7 +23,7 @@
   </filters>
 
   <triggers>
-    <sometrigger/>
+    <sometrigger name="somename"/>
   </triggers>
 
   <inputs/>

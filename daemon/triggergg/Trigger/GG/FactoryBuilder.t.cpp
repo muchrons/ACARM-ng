@@ -37,6 +37,7 @@ struct TestClass
 
   void setValid(void)
   {
+    opts_["name"]                  ="somename";
     opts_["uin"]                   ="123";
     opts_["password"]              ="secr3t";
     opts_["receiver_uin"]          ="69";
