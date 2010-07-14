@@ -69,6 +69,11 @@ void MessageIO::discardIncommingMessages(void)
         }
         // read event
         System::ScopedPtrCustom<gg_event, gg_event_free> e( gg_watch_fd( conn_.get() ) );
+        if( e.get()==NULL )
+        {
+          LOGMSG_DEBUG(log_, "NULL pointer read - looks like we're done");
+          return;
+        }
         LOGMSG_DEBUG(log_, "discarding received message...");
         break;
     } // switch( select() )
