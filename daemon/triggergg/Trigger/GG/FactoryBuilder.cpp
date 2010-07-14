@@ -34,7 +34,7 @@ FORCE_LINK_THIS_OBJECT(Trigger_GG_FactoryBuilder)
 
 
 FactoryBuilder::FactoryBuilder(void):
-  name_("gg"),
+  type_("gg"),
   log_("trigger.gg.factorybuilder")
 {
 }
@@ -54,12 +54,14 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO(log_, "building trigger's instance");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  const TriggerConfig   fc(name_, options);
+  const TriggerConfig   fc(type_, options);
   // account's config
   const UserID          uid =getID( fc["uin"] );
   LOGMSG_INFO_S(log_)<<"setting UIN to "<<uid;
   const std::string    &pass=fc["password"];
   LOGMSG_INFO_S(log_)<<"setting password ******** for UIN";
+  const std::string    &name=fc["name"];
+  LOGMSG_INFO_S(log_)<<"trigger name "<<name;
   const AccountConfig   account(uid, pass);
   // receiver's UID
   const UserID          receiverUid=getID( fc["receiver_uin"] );
@@ -75,12 +77,12 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // create and return new handle.
   typedef InterfaceImpl<GG::Strategy, GG::Config> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl( name_, GG::Config(account, receiverUid, thCfg) ) );
+  return FactoryBuilder::FactoryPtr( new Impl( type_, name, GG::Config(account, receiverUid, thCfg) ) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const
 {
-  return name_;
+  return type_;
 }
 
 } // namespace GG
