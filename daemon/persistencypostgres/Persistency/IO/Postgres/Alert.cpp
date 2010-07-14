@@ -16,23 +16,23 @@ namespace Postgres
 
 Alert::Alert(Persistency::AlertPtrNN  alert,
              Transaction             &t,
-             DBHandlerPtrNN           dbHandler):
+             DBHandlePtrNN            dbHandle):
   IO::Alert(alert, t),
   log_("persistency.io.postgres.alert"),
-  dbHandler_(dbHandler)
+  dbHandle_(dbHandle)
 {
 }
 
 void Alert::saveImpl(Transaction &t)
 {
   TRYCATCH_BEGIN
-    EntrySaver                 es(t,*dbHandler_);
+    EntrySaver                 es(t,*dbHandle_);
     //get Alert
     const Persistency::Alert  &a=*get();
     //save Alert
     DataBaseID                 alertID=es.saveAlert(a);
     //add Alert to cache
-    dbHandler_->getIDCache()->add(get() , alertID);
+    dbHandle_->getIDCache()->add(get() , alertID);
     //save source hosts
     Persistency::Alert::ReportedHosts SourceHosts( a.getReportedSourceHosts() );
     saveHosts(es, alertID, HostType::SRC, SourceHosts);
@@ -60,7 +60,7 @@ void Alert::saveHosts(EntrySaver                        &es,
   for(Persistency::Alert::ReportedHosts::iterator it = hosts.begin(); it!=hosts.end() ; ++it)
   {
     const DataBaseID hostID = es.saveHostData(*it->get() );
-    dbHandler_->getIDCache()->add(*it , hostID);
+    dbHandle_->getIDCache()->add(*it , hostID);
     DataBaseID       reportedHostID;
     // save reported host
     switch( type.toInt() )

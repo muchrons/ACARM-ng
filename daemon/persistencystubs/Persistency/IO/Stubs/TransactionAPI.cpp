@@ -16,13 +16,13 @@ namespace Stubs
 
 TransactionAPI::TransactionAPI(Base::Threads::Mutex &mutex,
                                const std::string    &name,
-                               int                   persistencyHandler):
+                               int                   persistencyHandle):
   IO::TransactionAPI(mutex, name),
   commitCalls_(0),
   rollbackCalls_(0)
 {
-  assert(persistencyHandler==42 && "invalid handler value received");
-  persistencyHandler=0;
+  assert(persistencyHandle==42 && "invalid handle value received");
+  persistencyHandle=0;
 }
 
 void TransactionAPI::commitImpl(void)

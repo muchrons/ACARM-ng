@@ -20,13 +20,13 @@ class Alert: public IO::Alert
 {
 public:
   /** \brief create stub.
-   *  \param alert   alert to create IO for.
-   *  \param t       active transaction.
-   *  \param handler persistency handler.
+   *  \param alert  alert to create IO for.
+   *  \param t      active transaction.
+   *  \param handle persistency handle.
    */
   Alert(Persistency::AlertPtrNN  alert,
         Transaction             &t,
-        int                      handler);
+        int                      handle);
 
   /** number of times 'saveImpl()' has been called. */
   size_t saveCalls_;

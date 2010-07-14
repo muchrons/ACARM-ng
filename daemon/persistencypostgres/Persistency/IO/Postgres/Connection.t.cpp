@@ -23,8 +23,8 @@ struct TestClass
 {
   TestClass(void):
     idCache_(new IDCache),
-    dbh_( DBHandlerPtrNN(new DBHandler(TestConnection::makeParams(),
-                                       idCache_) ) ),
+    dbh_( DBHandlePtrNN(new DBHandle(TestConnection::makeParams(),
+                                     idCache_) ) ),
     conn_( makeConnection() ),
     t_( conn_->createNewTransaction("save_alert_tests") )
   {
@@ -92,7 +92,7 @@ struct TestClass
   }
 
   IDCachePtrNN        idCache_;
-  DBHandlerPtrNN      dbh_;
+  DBHandlePtrNN       dbh_;
   IO::ConnectionPtrNN conn_;
   TestDBAccess        tdba_;
   TestConnection      tc_;

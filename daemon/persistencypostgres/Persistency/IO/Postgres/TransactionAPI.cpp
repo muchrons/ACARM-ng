@@ -16,9 +16,9 @@ namespace Postgres
 
 TransactionAPI::TransactionAPI(Base::Threads::Mutex &mutex,
                                const std::string    &name,
-                               DBHandlerPtrNN        dbHandler):
+                               DBHandlePtrNN         dbHandle):
   Persistency::IO::TransactionAPI(mutex, name),
-  t_( dbHandler->getConnection().get(), name ),
+  t_( dbHandle->getConnection().get(), name ),
   rollback_(false)
 {
 }

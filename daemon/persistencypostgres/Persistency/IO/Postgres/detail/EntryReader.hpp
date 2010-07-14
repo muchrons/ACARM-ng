@@ -20,7 +20,7 @@
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
-#include "Persistency/IO/Postgres/DBHandler.hpp"
+#include "Persistency/IO/Postgres/DBHandle.hpp"
 #include "Persistency/IO/Postgres/ExceptionNoEntries.hpp"
 
 namespace Persistency
@@ -39,9 +39,9 @@ class EntryReader: private boost::noncopyable
 public:
   /** \brief create reader
    *  \param t   transaction to be used for reading.
-   *  \param dbh data base handler object.
+   *  \param dbh data base handle object.
    */
-  EntryReader(Transaction &t, DBHandler &dbh);
+  EntryReader(Transaction &t, DBHandle &dbh);
 
   /** \brief read Alert data from data base
    *  \param alertID ID of Alert in data base
@@ -152,7 +152,7 @@ private:
   std::vector<DataBaseID> getRoots(const pqxx::result &r);
 
   Logger::Node log_;
-  DBHandler   &dbh_;
+  DBHandle    &dbh_;
   Transaction &t_;
 }; // class EntryReader
 

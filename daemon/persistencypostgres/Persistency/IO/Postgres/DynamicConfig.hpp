@@ -7,7 +7,7 @@
 
 #include "Logger/Node.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
-#include "Persistency/IO/Postgres/DBHandler.hpp"
+#include "Persistency/IO/Postgres/DBHandle.hpp"
 
 namespace Persistency
 {
@@ -22,21 +22,21 @@ struct DynamicConfig: public Persistency::IO::DynamicConfig
 {
 public:
   /** \brief create instance for a given owner.
-   *  \param owner     owner's name.
-   *  \param t         transaction to use.
-   *  \param dbHandler data base handler.
+   *  \param owner    owner's name.
+   *  \param t        transaction to use.
+   *  \param dbHandle data base handle.
    */
   DynamicConfig(const Owner                  &owner,
                 Persistency::IO::Transaction &t,
-                DBHandlerPtrNN                dbHandler);
+                DBHandlePtrNN                 dbHandle);
 
 private:
   virtual void writeImpl(Persistency::IO::Transaction &t, const Key &key, const Value &value);
   virtual ValueNULL readImpl(Persistency::IO::Transaction &t, const Key &key);
   virtual Value readConstImpl(Persistency::IO::Transaction &t, const Key &key);
 
-  Logger::Node   log_;
-  DBHandlerPtrNN dbHandler_;
+  Logger::Node  log_;
+  DBHandlePtrNN dbHandle_;
 }; // class DynamicConfig
 
 } // namespace Postgres

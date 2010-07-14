@@ -31,7 +31,7 @@ gg_session *Connection::connect(void) const
 
   // sanity check
   if( sess==NULL )
-    throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "NULL structure received");
+    throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "NULL structure received (login failed)");
 
   // check if state is: connected
   if( sess->state!=GG_STATE_CONNECTED )

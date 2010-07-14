@@ -1,9 +1,9 @@
 /*
- * DBHandler.hpp
+ * DBHandle.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_DBHANDLER_HPP_FILE
-#define INCLUDE_PERSISTENCY_IO_POSTGRES_DBHANDLER_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_DBHANDLE_HPP_FILE
+#define INCLUDE_PERSISTENCY_IO_POSTGRES_DBHANDLE_HPP_FILE
 
 #include <boost/noncopyable.hpp>
 
@@ -21,15 +21,15 @@ namespace Postgres
 
 /** \brief class reprenseting all data required to work with data base.
  */
-class DBHandler: private boost::noncopyable
+class DBHandle: private boost::noncopyable
 {
 public:
-  /** \brief create data base handler.
+  /** \brief create data base handle.
    *  \param connParams parameters for DBConnection object.
    *  \param idCache    cache for ID in data base.
    */
-  DBHandler(const DBConnection::Parameters &connParams,
-            IDCachePtrNN                    idCache):
+  DBHandle(const DBConnection::Parameters &connParams,
+           IDCachePtrNN                    idCache):
     conn_(connParams),
     idCache_(idCache)
   {
@@ -52,11 +52,11 @@ public:
 private:
   DBConnection conn_;
   IDCachePtrNN idCache_;
-}; // class DBHandler
+}; // class DBHandle
 
 
 
-typedef Commons::SharedPtrNotNULL<DBHandler> DBHandlerPtrNN;
+typedef Commons::SharedPtrNotNULL<DBHandle> DBHandlePtrNN;
 
 } // namespace Postgres
 } // namespace IO

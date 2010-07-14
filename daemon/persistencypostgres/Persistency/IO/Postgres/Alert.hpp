@@ -8,7 +8,7 @@
 #include "Logger/Node.hpp"
 #include "System/Enum.hpp"
 #include "Persistency/IO/Alert.hpp"
-#include "Persistency/IO/Postgres/DBHandler.hpp"
+#include "Persistency/IO/Postgres/DBHandle.hpp"
 #include "Persistency/IO/Postgres/ExceptionPQXX.hpp"
 #include "Persistency/IO/Postgres/detail/EntrySaver.hpp"
 
@@ -27,13 +27,13 @@ class Alert: public IO::Alert
 {
 public:
   /** \brief create alert persistency object for given alert.
-   *  \param alert     alert to create object for.
-   *  \param t         associated transaction.
-   *  \param dbHandler shared connection to data base.
+   *  \param alert    alert to create object for.
+   *  \param t        associated transaction.
+   *  \param dbHandle shared connection to data base.
    */
   Alert(Persistency::AlertPtrNN  alert,
         Transaction             &t,
-        DBHandlerPtrNN           dbHandler);
+        DBHandlePtrNN            dbHandle);
 
 private:
   /** \brief save alert
@@ -57,8 +57,8 @@ private:
                  DataBaseID                        alertID,
                  HostType                          type,
                  Persistency::Alert::ReportedHosts &hosts);
-  Logger::Node   log_;
-  DBHandlerPtrNN dbHandler_;
+  Logger::Node  log_;
+  DBHandlePtrNN dbHandle_;
 }; // class Alert
 
 } // namespace Postgres

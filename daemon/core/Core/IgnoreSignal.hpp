@@ -21,7 +21,7 @@ public:
    *  \param signum signal number to be ignored.
    */
   explicit IgnoreSignal(int signum);
-  /** \brief unregisters signal handler.
+  /** \brief unregisters signal handle.
    */
   ~IgnoreSignal(void);
 

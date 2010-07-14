@@ -35,13 +35,13 @@ void MailSender::send(const std::string &subject, const std::string &content)
   switch( srv.sec_.toInt() )
   {
     case Config::Server::Security::STARTTLS:
-      connectionErrorHandler( ( mailsmtp_socket_connect( ms.get(), srv.server_.c_str(), srv.port_ ) ),
-                                "mailsmtp_socket_connect" );
+      connectionErrorHandle( ( mailsmtp_socket_connect( ms.get(), srv.server_.c_str(), srv.port_ ) ),
+                               "mailsmtp_socket_connect" );
       break;
 
     case Config::Server::Security::SSL:
-      connectionErrorHandler( ( mailsmtp_ssl_connect( ms.get(), srv.server_.c_str(), srv.port_ ) ),
-                                "mailsmtp_ssl_connect" );
+      connectionErrorHandle( ( mailsmtp_ssl_connect( ms.get(), srv.server_.c_str(), srv.port_ ) ),
+                               "mailsmtp_ssl_connect" );
       break;
 
     default:
@@ -52,28 +52,28 @@ void MailSender::send(const std::string &subject, const std::string &content)
   } // switch(security_type)
 
   // proceed with protocol:
-  errorHandler( mailesmtp_ehlo( ms.get() ), "mailesmtp_ehlo" ); // EHLO
+  errorHandle( mailesmtp_ehlo( ms.get() ), "mailesmtp_ehlo" ); // EHLO
   if(srv.sec_==Config::Server::Security::STARTTLS)              // STARTTLS?
-    errorHandler( mailsmtp_socket_starttls( ms.get() ), "mailsmtp_socket_starttls");
+    errorHandle( mailsmtp_socket_starttls( ms.get() ), "mailsmtp_socket_starttls");
   if(auth!=NULL)                                                // require authorization?
-    errorHandler( mailsmtp_auth( ms.get(), auth->user_.c_str(), auth->pass_.c_str() ),
+    errorHandle( mailsmtp_auth( ms.get(), auth->user_.c_str(), auth->pass_.c_str() ),
                   "mailsmtp_auth" );                            // AUTH
-  errorHandler( mailesmtp_mail( ms.get(), srv.from_.c_str(), 0, NULL ),
+  errorHandle( mailesmtp_mail( ms.get(), srv.from_.c_str(), 0, NULL ),
                 "mailesmtp_mail" );                             // FROM
-  errorHandler( mailesmtp_rcpt( ms.get(), cfg_.getRecipientAddress().c_str(),
+  errorHandle( mailesmtp_rcpt( ms.get(), cfg_.getRecipientAddress().c_str(),
                                 MAILSMTP_DSN_NOTIFY_FAILURE|MAILSMTP_DSN_NOTIFY_DELAY, NULL ),
                 "mailesmtp_rcpt" );                             // TO
-  errorHandler( mailsmtp_data( ms.get() ), "mailsmtp_data" );   // DATA
+  errorHandle( mailsmtp_data( ms.get() ), "mailsmtp_data" );   // DATA
   // data-part headers and stuff...
   MimeCreateHelper   mch(srv.from_, cfg_.getRecipientAddress(), subject, content);
   const std::string &whole=mch.createMimeMessage();
-  errorHandler( mailsmtp_data_message( ms.get(), whole.c_str(), whole.length() ),
+  errorHandle( mailsmtp_data_message( ms.get(), whole.c_str(), whole.length() ),
                 "mailsmtp_data_message" );                      // message body goes here
 
-  errorHandler( mailsmtp_quit( ms.get() ), "mailsmtp_quit" );   // QUIT
+  errorHandle( mailsmtp_quit( ms.get() ), "mailsmtp_quit" );   // QUIT
 }
 
-void MailSender::connectionErrorHandler(int ret, const char *call) const
+void MailSender::connectionErrorHandle(int ret, const char *call) const
 {
   if( !isError(ret) )
     return;
@@ -89,7 +89,7 @@ void MailSender::connectionErrorHandler(int ret, const char *call) const
                                   se.get().c_str() );
 }
 
-void MailSender::errorHandler(const int ret, const char *call) const
+void MailSender::errorHandle(const int ret, const char *call) const
 {
   if( !isError(ret) )
     return;

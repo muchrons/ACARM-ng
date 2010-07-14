@@ -31,7 +31,7 @@ struct TestClass
 {
   TestClass(void):
     idCache_(new IDCache),
-    dbh_(DBHandlerPtrNN(new DBHandler(TestConnection::makeParams(), idCache_) ) ),
+    dbh_(DBHandlePtrNN(new DBHandle(TestConnection::makeParams(), idCache_) ) ),
     conn_(makeConnection() ),
     t_( conn_->createNewTransaction("restore_tests") )
   {
@@ -408,7 +408,7 @@ struct TestClass
 
   TestDBAccess        tdba_;
   IDCachePtrNN        idCache_;
-  DBHandlerPtrNN      dbh_;
+  DBHandlePtrNN       dbh_;
   IO::ConnectionPtrNN conn_;
   Transaction         t_;
 

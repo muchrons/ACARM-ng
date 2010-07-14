@@ -7,10 +7,10 @@
 
 /* public header */
 
-#include <vector>
-#include <algorithm>
 #include <boost/shared_ptr.hpp>
 #include <boost/weak_ptr.hpp>
+
+#include "Base/ObservingSetBase.hpp"
 
 namespace Base
 {
@@ -28,7 +28,7 @@ namespace Base
  *  after doing any operation, that change its content.
  */
 template<typename T>
-class ObservingSet
+class ObservingSet: public ObservingSetBase< boost::weak_ptr<T>, ObservingSet<T> >
 {
 public:
   /** \brief weak pointer to data. */
@@ -36,87 +36,26 @@ public:
   /** \brief shared pointer to data. */
   typedef boost::shared_ptr<T> SharedPtr;
 
-private:
-  typedef std::vector<WeakPtr> Data;
-
-public:
-  /** \brief collection's iterator. */
-  typedef typename Data::iterator       iterator;
-  /** \brief collection's const iterator. */
-  typedef typename Data::const_iterator const_iterator;
-
-  /** \brief returns iterator to begin of the collection.
-   *  \return begin iterator to collection.
-   */
-  iterator begin(void)
-  {
-    return d_.begin();
-  }
-  /** \brief returns iterator to end of the collection.
-   *  \return end iterator to collection.
-   */
-  iterator end(void)
-  {
-    return d_.end();
-  }
-
-  /** \brief returns const iterator to begin of the collection.
-   *  \return begin const iterator to collection.
-   */
-  const_iterator begin(void) const
-  {
-    return d_.begin();
-  }
-  /** \brief returns const iterator to end of the collection.
-   *  \return end const iterator to collection.
-   */
-  const_iterator end(void) const
-  {
-    return d_.end();
-  }
-
-  /** \brief removes already deleted elements from queue.
-   *  \note order of elements after pruning is not guaranteed.
-   */
-  void prune(void)
-  {
-    // find matchich
-    // NOTE: std::remove_if<> is stable, but it does not have to be. if this is
-    //       will be time-critical, custom algorithm may be introduced here.
-    iterator new_end=std::remove_if( begin(), end(), IsNULL() );
-    // remove them
-    d_.erase(new_end, end() );
-  }
-
   /** \brief add element to observed queue.
-   *  \param sp element to be added.
-   *
-   *  if elements does not exist in queue, new entry is added. if such element
-   *  already exists call is ignored (double elements are not inserted).
-   *
-   *  \note order of elements after update is not guaranteed.
+   *  \param e element to be added.
    */
-  void add(SharedPtr sp)
+  void add(const SharedPtr &e)
   {
-    // go through all elements to find matching
-    for(const_iterator it=begin(); it!=end(); ++it)
-      if( it->lock().get()==sp.get() )
-        return;                 // do not duplicate elements
-    // if entry not found, insert new
-    d_.push_back(sp);
+    ObservingSetBase< boost::weak_ptr<T>, ObservingSet<T> >::add( WeakPtr(e) );
   }
 
 private:
-  // helper class for finiding already removed elements
-  struct IsNULL
-  {
-    bool operator()(const WeakPtr &e) const
-    {
-      return e.expired();
-    }
-  }; // struct IsNULL
+  // give access to special, private methods for base
+  friend class ObservingSetBase< boost::weak_ptr<T>, ObservingSet<T> >;
 
-  Data d_;
+  static bool isUnused(const WeakPtr &e)
+  {
+    return e.expired();
+  }
+  static bool areEqual(const WeakPtr &e1, const WeakPtr &e2)
+  {
+    return e1.lock().get()==e2.lock().get();
+  }
 }; // class ObservingSet
 
 } // namespace Base

@@ -21,10 +21,10 @@ namespace Mail
  */
 struct LoggerWrapper: private boost::noncopyable
 {
-  /** \brief register logger handler.
+  /** \brief register logger handle.
    */
   LoggerWrapper(void);
-  /** \brief unregister logger handler.
+  /** \brief unregister logger handle.
    */
   ~LoggerWrapper(void);
 }; // struct LoggerWrapper

@@ -19,7 +19,7 @@
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
-#include "Persistency/IO/Postgres/DBHandler.hpp"
+#include "Persistency/IO/Postgres/DBHandle.hpp"
 #include "Persistency/IO/Postgres/ExceptionNoEntries.hpp"
 #include "Persistency/IO/Postgres/ExceptionHostNameAlreadySaved.hpp"
 
@@ -40,9 +40,9 @@ class EntrySaver: private boost::noncopyable
 public:
   /** \brief create saver.
    *  \param t   transaction to be used for saving.
-   *  \param dbh data base handler object.
+   *  \param dbh data base handle object.
    */
-  EntrySaver(Transaction &t, DBHandler &dbh);
+  EntrySaver(Transaction &t, DBHandle &dbh);
 
   /** \brief saves process data to data base.
    *  \param reportedHostID ID of reported host, that this Process should be assigned to.
@@ -176,7 +176,7 @@ private:
   void removeMetaAlertFromTriggered(DataBaseID malertID);
 
   Logger::Node  log_;
-  DBHandler    &dbh_;
+  DBHandle     &dbh_;
   Transaction  &t_;
 }; // class EntrySaver
 

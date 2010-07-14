@@ -20,7 +20,7 @@ int main(int argc, char **argv)
   }
 
   TestConnection tc;
-  work           t( tc.dbHandler_.getConnection().get() );
+  work           t( tc.dbHandle_.getConnection().get() );
   const result   r=t.exec(argv[1]);
   cout<<"affected rows: "<<r.affected_rows()<<endl;
   t.commit();

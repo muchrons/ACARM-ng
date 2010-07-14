@@ -22,7 +22,7 @@ namespace Mail
 class MailSmtp: public System::ScopedPtrCustom<mailsmtp, mailsmtp_free>
 {
 public:
-  /** \brief create handler.
+  /** \brief create handle.
    */
   MailSmtp(void);
 

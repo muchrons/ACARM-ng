@@ -13,7 +13,7 @@
 #include "Persistency/IO/Postgres/Host.hpp"
 #include "Persistency/IO/Postgres/DynamicConfig.hpp"
 #include "Persistency/IO/Postgres/Restorer.hpp"
-#include "Persistency/IO/Postgres/DBHandler.hpp"
+#include "Persistency/IO/Postgres/DBHandle.hpp"
 
 namespace Persistency
 {
@@ -24,7 +24,7 @@ namespace Postgres
 namespace detail
 {
 /** \brief helper typedef to make declaraionts shorter. */
-typedef IO::ConnectionHelper<DBHandlerPtrNN,
+typedef IO::ConnectionHelper<DBHandlePtrNN,
                              TransactionAPI,
                              Alert,
                              Host,
@@ -40,9 +40,9 @@ class Connection: public detail::ConnectionBase
 {
 public:
   /** \brief create instance.
-   *  \param handler data base handler to use.
+   *  \param handle data base handle to use.
    */
-  explicit Connection(DBHandlerPtrNN handler);
+  explicit Connection(DBHandlePtrNN handle);
 
 private:
   virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t);

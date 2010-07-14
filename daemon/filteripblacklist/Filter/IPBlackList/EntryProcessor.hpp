@@ -5,11 +5,10 @@
 #ifndef INCLUDE_FILTER_IPBLACKLIST_ENTRYPROCESSOR_HPP_FILE
 #define INCLUDE_FILTER_IPBLACKLIST_ENTRYPROCESSOR_HPP_FILE
 
-#include <cassert>
-
 #include "Persistency/GraphNode.hpp"
 #include "Filter/BackendFacade.hpp"
 #include "Filter/IPBlackList/BlackList.hpp"
+#include "Filter/IPBlackList/ProcessedSet.hpp"
 
 namespace Filter
 {
@@ -27,9 +26,10 @@ public:
   /** \brief create instance.
    *  \param bl       black list of hosts.
    *  \param bf       facade for writing new names of hosts to persistency.
+   *  \param ps       set of already processed elements.
    *  \param priDelta change of priority when black-listed host is found.
    */
-  EntryProcessor(const BlackList *bl, BackendFacade *bf, double priDelta);
+  EntryProcessor(const BlackList *bl, BackendFacade *bf, ProcessedSet *ps, double priDelta);
   /** \brief method responsible for doing all the job.
    *  \param leaf leaft to be processed.
    */
@@ -41,6 +41,7 @@ private:
 
   const BlackList *bl_;
   BackendFacade   *bf_;
+  ProcessedSet    *ps_;
   double           priDelta_;
 }; // class EntryProcessor
 
