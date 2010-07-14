@@ -21,7 +21,7 @@
   <filters/>
 
   <triggers>
-    <sometrigger>
+    <sometrigger name="triggername">
       <opt1>kszy</opt1>
       <opt2>narf</opt2>
     </sometrigger>

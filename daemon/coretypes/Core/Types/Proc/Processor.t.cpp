@@ -20,7 +20,7 @@ namespace
 struct TestInterface: public Interface
 {
   explicit TestInterface(const EntryControlList &ecl=EntryControlList::createDefaultAccept() ):
-    Interface("testinterface", ecl),
+    Interface("testinterfacetype", "testinterfacename", ecl),
     calls_(0),
     node_( makeNewLeaf() ),
     node2_( makeNewLeaf() )
@@ -200,7 +200,7 @@ template<>
 void testObj::test<8>(void)
 {
   EntryControlList ecl=EntryControlList::createDefaultAccept();
-  checkECL(ecl, "testinterface", false);
+  checkECL(ecl, "testinterfacename", false);
 }
 
 } // namespace tut
