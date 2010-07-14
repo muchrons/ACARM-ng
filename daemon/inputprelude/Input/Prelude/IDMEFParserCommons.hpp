@@ -9,7 +9,7 @@
 #include "Input/Prelude/ExceptionParse.hpp"
 #include "Persistency/IPTypes.hpp"
 #include "Persistency/Alert.hpp"
-
+#include "Logger/Logger.hpp"
 
 namespace Input
 {

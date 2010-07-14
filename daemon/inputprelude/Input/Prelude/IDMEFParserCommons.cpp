@@ -5,6 +5,7 @@
 #include "Input/Prelude/ExceptionParse.hpp"
 #include "Input/Prelude/IDMEFParserCommons.hpp"
 #include "Persistency/Process.hpp"
+#include "Logger/Logger.hpp"
 
 namespace Input
 {
@@ -63,12 +64,19 @@ Persistency::ServicePtr IDMEFParserCommons::getServicefromIdmefService(idmef_ser
       protocol=prelude_string_get_string(idmef_protocol_str);
 
     const uint16_t *idmef_port = idmef_service_get_port(idmef_service);
-    // TODO: port==0 is invalid (many exceptions are thrown when trying to create Persistency::Service
-    //       later on). throw dedicated exception here, so that error could be safely ignored and not
-    //       flood logs.
+
     uint16_t port=0;
-    if (idmef_port)
+    if (idmef_port!=NULL)
       port=*idmef_port;
+
+    if (port==0)
+      {
+        //logger node is created here because this is a static method and no constructor is ever called
+        Logger::Node log_( Logger::NodeName( "input.prelude.idmefparsercommons") );
+        LOGMSG_DEBUG_S(log_)<<"No port specified in a service";
+        return service;
+      }
+
     service.reset(new Persistency::Service(name,port,protocol,Persistency::ReferenceURLPtr()));
   }
   return service;

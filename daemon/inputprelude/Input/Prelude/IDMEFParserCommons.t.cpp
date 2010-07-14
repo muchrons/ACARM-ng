@@ -39,7 +39,7 @@ public:
 
   idmef_source_t * get()
   {
-    // TODO: assert ptr!=NULL
+    assert(source_!=NULL);
     return source_;
   }
 
@@ -99,11 +99,6 @@ struct TestClass : IPTypes<TestClass>
     idmef_service_set_protocol(service,protocol);
 
     idmef_service_set_port(service,27600);
-  }
-
-  ~TestClass()
-  {
-    // TODO: dead code
   }
 
   idmef_source_t * getSource()
