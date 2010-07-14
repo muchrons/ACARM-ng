@@ -92,6 +92,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
+  // TODO: invalid TYPE set
   ensure_equals("invalid name set", impl_.getType(), "sometype");
 }
 // test getting name
