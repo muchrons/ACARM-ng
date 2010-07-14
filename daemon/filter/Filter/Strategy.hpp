@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <ctime>
 #include <boost/operators.hpp>
 
 #include "Base/TimeoutQueue.hpp"
@@ -43,7 +44,7 @@ public:
     LOGMSG_DEBUG_S(log_)<<"processing node at address 0x"
                         <<static_cast<void*>( n.get() );
     assert( changed.size()==0 && "non-empty output collection received");
-    ntq_.prune();               // do periodical queue's clean-up
+    pruneNTQ();                 // clean queue's content.
     BackendFacade bf( conn_, changed, getFilterName() );
     processImpl(n, ntq_, bf);
     bf.commitChanges();         // if there was no exception, commit changes made (if any)
@@ -82,7 +83,8 @@ protected:
   /** \brief create instance.
    */
   explicit Strategy(const std::string &name):
-    StrategyBase(name)
+    StrategyBase(name),
+    nextPrune_(0)
   {
   }
 
@@ -103,7 +105,21 @@ private:
                            NodesTimeoutQueue &ntq,
                            BackendFacade      &bf) = 0;
 
+  void pruneNTQ(void)
+  {
+    // do this only once per some time
+    const time_t now=time(NULL);
+    if(nextPrune_>now)
+      return;
+    LOGMSG_DEBUG(log_, "prunning time has come");
+    ntq_.prune();               // do periodical queue's clean-up
+    nextPrune_=now+1;           // it does not make sense to make it more often than
+                                // once per 1[s]
+    LOGMSG_DEBUG_S(log_)<<"nest prunning on "<<nextPrune_;
+  }
+
   NodesTimeoutQueue ntq_;
+  time_t            nextPrune_;
 }; // class Strategy
 
 } // namespace Filter
