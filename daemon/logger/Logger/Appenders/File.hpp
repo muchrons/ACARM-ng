@@ -36,7 +36,10 @@ public:
   }
 
 private:
-  std::ofstream out_;
+  virtual void reinitImpl(void);
+
+  const std::string path_;
+  std::ofstream     out_;
 }; // class Console
 
 } // namespace Appenders

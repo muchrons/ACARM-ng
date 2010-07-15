@@ -11,6 +11,8 @@
 #include "ConfigIO/Generic/Config.hpp"
 #include "ConfigIO/Generic/NamedParse.hpp"
 
+// TODO: update this after making common code out of Parse and NamedParse.
+
 using namespace std;
 using namespace XML;
 using namespace ConfigIO::Generic;

@@ -6,6 +6,7 @@
 #define INCLUDE_CONFIGIO_GENERIC_PARSE_HPP_FILE
 
 #include "XML/Node.hpp"
+#include "ConfigIO/ExceptionParseError.hpp"
 
 namespace ConfigIO
 {
@@ -43,6 +44,7 @@ private:
         eit!=elements.end(); ++eit)
     {
       const typename TConfig::TypeName &type=eit->getName();
+      // TODO: do not keep dead code here - use version control system instead.
       //const typename TConfig::TypeName &name=eit->getAttributesList().getAttribute("name").getValue();
       typename TConfig::Options         options;
 
@@ -51,6 +53,7 @@ private:
       for(XML::Node::TNodesList::const_iterator it=children.begin();
           it!=children.end(); ++it)
         options[ it->getName() ] = it->getValuesString();
+      // TODO: do not keep dead code here - use version control system instead.
       //options[ "name" ] = name;
       // add new entry
       cc_.push_back( TConfig(type, options) );

@@ -60,4 +60,13 @@ void testObj::test<3>(void)
          b.getTypeName()==Console::getThisTypeName() );
 }
 
+// smoke test for reinit();
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  Console capp;
+  capp.reinit();
+}
+
 } // namespace tut

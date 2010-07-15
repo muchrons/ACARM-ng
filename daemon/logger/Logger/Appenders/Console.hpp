@@ -31,6 +31,9 @@ public:
   {
     return "console";
   }
+
+private:
+  virtual void reinitImpl(void);
 }; // class Console
 
 } // namespace Appenders
