@@ -138,12 +138,12 @@ public:
    */
   void prune(void)
   {
-    // find matchich
+    // find matching (i.e. timeouted) elements
     // NOTE: std::remove_if<> is stable, but it does not have to be. if this is
     //       will be time-critical, custom algorithm may be introduced here.
     ImplIter new_end=std::remove_if( q_.begin(), q_.end(), TimeoutPred() );
     // remove them
-    q_.erase(new_end, q_.end() );
+    q_.erase( new_end, q_.end() );
   }
 
   /** \brief remove given element from queue.

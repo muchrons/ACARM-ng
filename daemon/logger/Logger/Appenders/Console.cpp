@@ -16,5 +16,10 @@ Console::Console(void):
 {
 }
 
+void Console::reinitImpl(void)
+{
+  std::cout.clear();    // removed error markers
+}
+
 } // namespace Appenders
 } // namespace Logger
