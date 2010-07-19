@@ -24,9 +24,18 @@ MultiAppender::MultiAppender(const AppVec &apps):
 
 void MultiAppender::appendImpl(const std::string &str)
 {
-  // output to all registered appenders.
+  // output to all registered appenders
   for(AppVec::const_iterator it=apps_.begin(); it!=apps_.end(); ++it)
     (*it)->append(str);
+}
+
+void MultiAppender::reinitImpl(void)
+{
+  // reinit all registered appenders - notice that reinit() is called here,
+  // not reinitAlreadyLocked(), since each element is a separate appender
+  // that has own lock.
+  for(AppVec::const_iterator it=apps_.begin(); it!=apps_.end(); ++it)
+    (*it)->reinit();
 }
 
 const char *MultiAppender::getTypeNameImpl(void) const

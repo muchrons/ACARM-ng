@@ -36,6 +36,8 @@ struct TestFilter: public Strategy<int>
     bf.commitChanges();
     // ntq should be empty by default
     tut::ensure("NTQ not empty", ntq.begin()==ntq.end() );
+    // now add something
+    ntq.update( NodeEntry(n, 0), 1 );
   }
 
   static GraphNodePtrNN makeGraphLeaf(void)
@@ -56,7 +58,7 @@ struct TestFilter: public Strategy<int>
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   BackendFacade::ChangedNodes changed_;
-  TestFilter                 tf_;
+  TestFilter                  tf_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -205,6 +207,26 @@ void testObj::test<10>(void)
   TestFilter::Node n=TestFilter::makeGraphLeaf();
   ensure("user-value is taken into account in comparison",
          TestFilter::makeNodeEntry(n, 1)==TestFilter::makeNodeEntry(n, 2) );
+}
+
+// test timeouting and cleanup after that
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  // prepare data and save weak pointer to it
+  boost::weak_ptr<TestFilter::Node::value_type> weakNode( static_cast<TestFilter::Node::SharedPtr>(tf_.node_) );
+  ensure("weak pointer is invalid", weakNode.lock().get()==tf_.node_.get() );
+  // create and run strategy that will save this node inside
+  {
+    TestFilter::ChangedNodes changed;
+    tf_.process(tf_.node_, changed);        // save it internally for later correlation
+  }
+  tf_.node_=makeNewLeaf();                  // remove old pointer (by overwiriting, since it cannot be NULL)
+  ensure("node has not been saved - probably bug in a test case", weakNode.lock().get()!=NULL );
+  sleep(2);                                 // timeout for tests
+  tf_.process(tf_.node_, changed_);         // run process() again to remove timeouted entries
+  ensure("node has not been removed - queue's not cleared", weakNode.lock().get()==NULL );
 }
 
 } // namespace tut

@@ -21,14 +21,22 @@ struct TestAppender: public  Stream<TestAppender>,
                      private TestHelpers::TestBase
 {
   explicit TestAppender(stringstream &ss):
-    Stream<TestAppender>(ss)
+    Stream<TestAppender>(ss),
+    reinitCount_(0)
   {
+  }
+
+  virtual void reinitImpl(void)
+  {
+    ++reinitCount_;
   }
 
   static const char *getThisTypeName(void)
   {
     return "TestAppender";
   }
+
+  int reinitCount_;
 }; // struct TestAppender
 
 struct MultiAppenderTestClass
@@ -136,6 +144,27 @@ void testObj::test<6>(void)
   {
     // this is expected
   }
+}
+
+// test reinit()
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  MultiAppender::AppVec out;
+  TestAppender *a1=new TestAppender(ss_[0]);
+  out.push_back( BasePtr(a1) );
+  TestAppender *a2=new TestAppender(ss_[1]);
+  out.push_back( BasePtr(a2) );
+  MultiAppender ma(out);
+  // sanity check
+  ensure_equals("reinit/1 called", a1->reinitCount_, 0);
+  ensure_equals("reinit/2 called", a2->reinitCount_, 0);
+  // go
+  ma.reinit();
+  // check
+  ensure_equals("reinit/1 not called", a1->reinitCount_, 1);
+  ensure_equals("reinit/2 not called", a2->reinitCount_, 1);
 }
 
 } // namespace tut

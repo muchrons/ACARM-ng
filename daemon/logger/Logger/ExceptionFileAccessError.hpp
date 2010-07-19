@@ -24,9 +24,8 @@ public:
    *  \param where place where exception was rised.
    *  \param path  file that caused error.
    */
-  explicit ExceptionFileAccessError(const Location &where, const char *path):
-    Exception(where, std::string(": unable to access file: '") +
-                     ensureValidString(path) + "' - " + strerror(errno) )
+  explicit ExceptionFileAccessError(const Location &where, const std::string &path):
+    Exception(where, cc( ": unable to access file: '", path, "' - ", strerror(errno) ) )
   {
   }
 }; // class Exception

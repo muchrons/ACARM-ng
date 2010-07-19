@@ -4,6 +4,9 @@
  */
 #include <tut.h>
 #include <cstdlib>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "TestHelpers/TestBase.hpp"
 #include "Logger/Appenders/File.hpp"
@@ -104,6 +107,50 @@ void testObj::test<5>(void)
   {
     // this is expected
   }
+}
+
+namespace
+{
+struct DirOwner: private boost::noncopyable
+{
+  explicit DirOwner(const char *path):
+    path_(path)
+  {
+  }
+  ~DirOwner(void)
+  {
+    rmdir(path_);   // in case it's directory
+    unlink(path_);  // in case it's file
+  }
+
+private:
+  const char *path_;
+}; // struct DirOwner
+} // unnamed namespace
+
+// test reinit() call
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const char *name="output.txt";
+  DirOwner    dir(name);    // ensure test will do proper cleanup
+  File f(name);
+
+  unlink(name);             // remove file
+  mkdir(name, 0755);        // make directory to block file opening
+  try
+  {
+    f.reinit();             // should throw
+    fail("reinit() didn't throw when file cannot be accessed");
+  }
+  catch(const ExceptionFileAccessError &)
+  {
+    // this is exected
+  }
+
+  rmdir(name);              // ok - now free this name
+  f.reinit();               // this call must pass
 }
 
 } // namespace tut

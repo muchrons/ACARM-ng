@@ -38,6 +38,15 @@ public:
     appendImpl(str);
   }
 
+  /** \brief reinits the appender (ex. closes and opens output once again).
+   *  \note call is thread-safe.
+   */
+  void reinit(void)
+  {
+    ::Base::Threads::Lock lock(mutex_);
+    reinitAlreadyLocked();
+  }
+
   /** \brief returns name of this appenders type.
    *  \return compile-time known string representing appender's type.
    */
@@ -48,11 +57,27 @@ public:
     return name;
   }
 
+protected:
+  /** \brief runs reinitImpl() without closing mutex.
+   *
+   *  this call is mostly needed when user wants to call reinit from appendImpl(),
+   *  since reinit() uses the same mutex and it would cause hang. use with care!
+   */
+  void reinitAlreadyLocked(void)
+  {
+    assert( ::Base::Threads::Mutex::scoped_try_lock(mutex_).owns_lock()==false &&
+            "mutex is NOT locked - you probably wanted to run reinit() here" );
+    reinitImpl();
+  }
+
 private:
   /** \brief template-method pattern - user implements this call.
    *  \param str message to be appended.
    */
   virtual void appendImpl(const std::string &str) = 0;
+  /** \brief template-method pattern - user implements this call.
+   */
+  virtual void reinitImpl(void) = 0;
 
   /** \brief retruns name of a given type.
    *  \return type name for a given appender.
@@ -61,7 +86,7 @@ private:
    */
   virtual const char *getTypeNameImpl(void) const = 0;
 
-  ::Base::Threads::Mutex mutex_;
+  mutable ::Base::Threads::Mutex mutex_;
 }; // class Base
 
 

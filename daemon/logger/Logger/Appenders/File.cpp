@@ -14,18 +14,28 @@ namespace Appenders
 {
 
 File::File(const std::string &path):
-  Stream<File>(out_)
+  Stream<File>(out_),
+  path_(path)
 {
   // this is a bit ctricky, since first opeartion is passing reference to an
   // object in derived class to its base and then object is initialized.
   // though strange it is fine, since object is not used in a c-tor of base
   // class and reference will not change anyway (object is part of a class).
 
-  // open file and check if it succedded.
-  out_.open(path.c_str(), ios_base::out | ios_base::app | ios_base::binary);
-  if( !out_.is_open() )
-    throw ExceptionFileAccessError(SYSTEM_SAVE_LOCATION, path.c_str() );
+  reinit();
+}
 
+void File::reinitImpl(void)
+{
+  // close file first, if needed
+  if( out_.is_open() )
+    out_.close();
+
+  // open file and check if it succedded.
+  out_.open(path_.c_str(), ios_base::out | ios_base::app | ios_base::binary);
+  if( !out_.is_open() )
+    throw ExceptionFileAccessError(SYSTEM_SAVE_LOCATION, path_);
+  // sanity check
   assert( out_.is_open() );
 }
 

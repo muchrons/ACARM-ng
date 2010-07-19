@@ -30,6 +30,7 @@ public:
 
 private:
   virtual void appendImpl(const std::string &str);
+  virtual void reinitImpl(void);
   virtual const char *getTypeNameImpl(void) const;
 }; // class Null
 
