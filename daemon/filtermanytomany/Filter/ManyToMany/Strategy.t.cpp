@@ -23,7 +23,7 @@ struct TestClass: public TestStubs
   TestClass(void):
     sampleLeaf_( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "2.3.4.5",
                                                     "1.2.3.4", "9.8.7.6") ) ),
-    s_(997)
+    s_( Strategy::Params(997, 0.42) )
   {
   }
 
@@ -115,6 +115,48 @@ void testObj::test<5>(void)
                     "multiple hosts detected");
   ensure_equals("invalid name",
                 changed_[0]->getMetaAlert()->getName().get(), resp);
+}
+
+// test creating config paramters
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const Strategy::Params p(123, 0.11);
+  ensure_equals("invalid timeout",   p.timeout_,    123);
+  ensure_equals("invalid threshold", p.similarity_, 0.11);
+}
+
+// test throw on too low threshold
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  try
+  {
+    Strategy::Params(123, 0.0);
+    fail("params didn't throw on too low threshold");
+  }
+  catch(const ExceptionInvalidParameter &)
+  {
+    // this is expected
+  }
+}
+
+// test throw on too high threshold
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  try
+  {
+    Strategy::Params(123, 1.01);
+    fail("params didn't throw on too high threshold");
+  }
+  catch(const ExceptionInvalidParameter &)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut

@@ -2,13 +2,11 @@
  * Strategy.cpp
  *
  */
-#include <vector>
 #include <algorithm>
 #include <cassert>
 
 #include "Filter/ManyToMany/Strategy.hpp"
-#include "Algo/forEachUniqueLeaf.hpp"
-#include "Algo/GatherHosts.hpp"
+#include "Algo/GatherIPs.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -18,8 +16,21 @@ namespace Filter
 namespace ManyToMany
 {
 
-Strategy::Strategy(unsigned int timeout):
-  Filter::Simple::Strategy<Data>("manytomany", timeout)
+Strategy::Params::Params(unsigned int timeout, double similarity):
+  timeout_(timeout),
+  similarity_(similarity)
+{
+  if(similarity_<=0)
+    throw ExceptionInvalidParameter(SYSTEM_SAVE_LOCATION, "similarity",
+                                    "negative value does not make sense");
+  if(similarity_>1)
+    throw ExceptionInvalidParameter(SYSTEM_SAVE_LOCATION, "similarity",
+                                    "similarity above 100% (i.e. 1) is invalid");
+}
+
+Strategy::Strategy(const Params &params):
+  Filter::Simple::Strategy<Data>("manytomany", params.timeout_),
+  params_(params)
 {
 }
 
@@ -40,9 +51,9 @@ Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
 
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
 {
-  const Algo::GatherHosts gh(thisEntry.node_);
-  return gh.getSourceHosts().size()>0 &&
-         gh.getTargetHosts().size()>0;
+  const Algo::GatherIPs gip(thisEntry.node_);
+  return gip.getSourceIPs().size()>0 &&
+         gip.getTargetIPs().size()>0;
 }
 
 Persistency::MetaAlert::Name Strategy::getMetaAlertName(
@@ -55,13 +66,14 @@ Persistency::MetaAlert::Name Strategy::getMetaAlertName(
 
 namespace
 {
-/** \brief helper that determines if collection created out of the
- *         reults assigned to this iterator would be empty or not.
+/** \brief helper that determines count of elements of output collection.
  */
 struct IntersectionOutputIterator
 {
+  typedef Algo::GatherIPs::IPSet::value_type IPCountPair;
+
   IntersectionOutputIterator(void):
-    empty_(true)
+    count_(0)
   {
   }
 
@@ -76,20 +88,54 @@ struct IntersectionOutputIterator
     return *this;
   }
 
-  inline const HostPtrNN &operator=(const HostPtrNN &other)
+  inline const IPCountPair &operator=(const IPCountPair &other)
   {
-    empty_=false;
+    count_+=other.second.get();
     return other;
   }
 
-  bool isEmpty(void) const
+  size_t getCount(void) const
   {
-    return empty_;
+    return count_;
   }
 
 private:
-  bool empty_;
+  size_t count_;
 }; // struct IntersectionOutputIterator
+
+
+/** \brief SWO for elements in map, ordered by the key.
+ */
+bool ipSWO(const Algo::GatherIPs::IPSet::value_type &left,
+           const Algo::GatherIPs::IPSet::value_type &right)
+{
+  return left.first<right.first;
+} // ipSWO()
+
+
+/** \brief return count of IPs from given set's intersection.
+ */
+size_t intersectionCount(const Algo::GatherIPs::IPSet &s1, const Algo::GatherIPs::IPSet &s2)
+{
+  IntersectionOutputIterator tmp;
+  // perform set intersection on source hosts
+  tmp=set_intersection( s1.begin(), s1.end(),
+                        s2.begin(), s2.end(),
+                        IntersectionOutputIterator(),
+                        ipSWO );
+  return tmp.getCount();
+} // intersectionCount()
+
+
+/** \brief count all IPs (i.e. number of their instances).
+ */
+size_t ipsCount(const Algo::GatherIPs::IPSet &s)
+{
+  size_t cnt=0;
+  for(Algo::GatherIPs::IPSet::const_iterator it=s.begin(); it!=s.end(); ++it)
+    cnt+=it->second.get();
+  return cnt;
+} // ipsCount()
 } // unnamed namespace
 
 
@@ -99,33 +145,32 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   // sanityt check
   assert( isEntryInteresting(thisEntry)  );
   assert( isEntryInteresting(otherEntry) );
-  // compute unique hosts
-  const Algo::GatherHosts ghThis (thisEntry.node_);
-  const Algo::GatherHosts ghOther(otherEntry.node_);
 
-  IntersectionOutputIterator tmp;
-  // perform set intersection on source hosts
-  tmp=set_intersection( ghThis.getSourceHosts().begin(),
-                        ghThis.getSourceHosts().end(),
-                        ghOther.getSourceHosts().begin(),
-                        ghOther.getSourceHosts().end(),
-                        IntersectionOutputIterator(),
-                        Algo::GatherHosts::HostSWO() );
-  if( tmp.isEmpty() )
-      return false;
+  // compute IPs counts
+  const Algo::GatherIPs gipThis (thisEntry.node_);
+  const Algo::GatherIPs gipOther(otherEntry.node_);
 
-  // perform set intersection on target hosts
-  tmp=set_intersection( ghThis.getTargetHosts().begin(),
-                        ghThis.getTargetHosts().end(),
-                        ghOther.getTargetHosts().begin(),
-                        ghOther.getTargetHosts().end(),
-                        IntersectionOutputIterator(),
-                        Algo::GatherHosts::HostSWO() );
-  if( tmp.isEmpty() )
-      return false;
+  // sum IPs counts
+  const size_t thisSourceCount =ipsCount( gipThis.getSourceIPs() );
+  const size_t thisTargetCount =ipsCount( gipThis.getTargetIPs() );
+  const size_t otherSourceCount=ipsCount( gipOther.getSourceIPs() );
+  const size_t otherTargetCount=ipsCount( gipOther.getTargetIPs() );
+  const size_t totalCount      =thisSourceCount + thisTargetCount +
+                                otherSourceCount + otherTargetCount;
+  assert( totalCount>0 );
 
-  // ok - both intersections are non-empty
-  return true;
+  // compute intersection's count
+  const size_t intSourceCount  =intersectionCount( gipThis.getSourceIPs(), gipOther.getSourceIPs() );
+  const size_t intTargetCount  =intersectionCount( gipThis.getTargetIPs(), gipOther.getTargetIPs() );
+  const size_t totalIntCount   =intSourceCount + intTargetCount;
+
+  // compute similarity level
+  const double similarity      =totalIntCount/totalCount;
+
+  // return final response
+  assert( 0<params_.similarity_    );
+  assert(   params_.similarity_<=1 );
+  return similarity >= params_.similarity_;
 }
 
 } // namespace ManyToMany
