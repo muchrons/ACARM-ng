@@ -8,6 +8,7 @@
 #include <string>
 
 #include <prelude-client.h>
+#include <boost/noncopyable.hpp>
 #include "Input/Exception.hpp"
 #include "Input/Prelude/IDMEFParserCommons.hpp"
 #include "Persistency/IPTypes.hpp"
@@ -23,7 +24,7 @@ namespace
 {
 
 // TODO: this class must be noncopyable
-class SourceWrapper
+class SourceWrapper : public boost::noncopyable
 {
 public:
   SourceWrapper()
@@ -138,8 +139,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  IP ip=IDMEFParserCommons::getIPfromIdmefNode(node);
-  ensure_equals("Address IPv4",ip,Analyzer::IP(boost::asio::ip::address_v4::from_string(addressv4)));
+  const IP *ip=IDMEFParserCommons::getIPfromIdmefNode(node).get();
+  ensure_equals("Address IPv4",*ip,Analyzer::IP(boost::asio::ip::address_v4::from_string(addressv4)));
 }
 
 // Check address (IPv6)
@@ -163,8 +164,8 @@ void testObj::test<2>(void)
 
   idmef_node_set_address(node,addr,IDMEF_LIST_APPEND);
 
-  IP ip=IDMEFParserCommons::getIPfromIdmefNode(node);
-  ensure_equals("Address IPv6",ip,Analyzer::IP(boost::asio::ip::address_v6::from_string(addrv6)));
+  const IP *ip=IDMEFParserCommons::getIPfromIdmefNode(node).get();
+  ensure_equals("Address IPv6",*ip,Analyzer::IP(boost::asio::ip::address_v6::from_string(addrv6)));
   idmef_source_destroy(source6);
 }
 
