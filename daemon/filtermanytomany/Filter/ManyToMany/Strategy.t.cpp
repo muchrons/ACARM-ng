@@ -159,4 +159,18 @@ void testObj::test<8>(void)
   }
 }
 
+// test if correlation will NOT take place when similarity is too low
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.4", "6.6.6.6",
+                                                         "6.6.3.4", "9.8.7.6") ) );
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("correlation below threshold took place", changed_.size(), 0u);
+}
+
 } // namespace tut

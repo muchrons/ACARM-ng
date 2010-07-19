@@ -2,6 +2,7 @@
  * Strategy.cpp
  *
  */
+#include <iostream>                 
 #include <algorithm>
 #include <cassert>
 
@@ -68,11 +69,14 @@ namespace
 {
 /** \brief helper that determines count of elements of output collection.
  */
-struct IntersectionOutputIterator
+class IntersectionOutputIterator
 {
+public:
   typedef Algo::GatherIPs::IPSet::value_type IPCountPair;
 
-  IntersectionOutputIterator(void):
+  IntersectionOutputIterator(const Algo::GatherIPs::IPSet &s1, const Algo::GatherIPs::IPSet &s2):
+    s1_(&s1),
+    s2_(&s2),
     count_(0)
   {
   }
@@ -90,7 +94,16 @@ struct IntersectionOutputIterator
 
   inline const IPCountPair &operator=(const IPCountPair &other)
   {
-    count_+=other.second.get();
+    // add counts from first collection
+    assert( s1_!=NULL );
+    assert( s1_->find(other.first)!=s1_->end() );
+    count_+=s1_->find(other.first)->second.get();
+
+    // add counts from second collection
+    assert( s2_!=NULL );
+    assert( s2_->find(other.first)!=s2_->end() );
+    count_+=s2_->find(other.first)->second.get();
+
     return other;
   }
 
@@ -100,8 +113,10 @@ struct IntersectionOutputIterator
   }
 
 private:
-  size_t count_;
-}; // struct IntersectionOutputIterator
+  const Algo::GatherIPs::IPSet *s1_;
+  const Algo::GatherIPs::IPSet *s2_;
+  size_t                        count_;
+}; // class IntersectionOutputIterator
 
 
 /** \brief SWO for elements in map, ordered by the key.
@@ -117,12 +132,11 @@ bool ipSWO(const Algo::GatherIPs::IPSet::value_type &left,
  */
 size_t intersectionCount(const Algo::GatherIPs::IPSet &s1, const Algo::GatherIPs::IPSet &s2)
 {
-  IntersectionOutputIterator tmp;
   // perform set intersection on source hosts
-  tmp=set_intersection( s1.begin(), s1.end(),
-                        s2.begin(), s2.end(),
-                        IntersectionOutputIterator(),
-                        ipSWO );
+  IntersectionOutputIterator tmp=set_intersection( s1.begin(), s1.end(),
+                                                   s2.begin(), s2.end(),
+                                                   IntersectionOutputIterator(s1, s2),
+                                                   ipSWO );
   return tmp.getCount();
 } // intersectionCount()
 
@@ -163,9 +177,10 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   const size_t intSourceCount  =intersectionCount( gipThis.getSourceIPs(), gipOther.getSourceIPs() );
   const size_t intTargetCount  =intersectionCount( gipThis.getTargetIPs(), gipOther.getTargetIPs() );
   const size_t totalIntCount   =intSourceCount + intTargetCount;
+  assert( totalIntCount<=totalCount );
 
   // compute similarity level
-  const double similarity      =totalIntCount/totalCount;
+  const double similarity      =static_cast<double>(totalIntCount)/totalCount;
 
   // return final response
   assert( 0<params_.similarity_    );
