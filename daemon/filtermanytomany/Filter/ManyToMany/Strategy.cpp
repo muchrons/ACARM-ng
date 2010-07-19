@@ -184,7 +184,11 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   // return final response
   assert( 0<params_.similarity_    );
   assert(   params_.similarity_<=1 );
-  return similarity >= params_.similarity_;
+  const bool result=(similarity >= params_.similarity_);
+  LOGMSG_DEBUG_S(log_)<<"similarity: "<<similarity*100
+                      <<"%; threshold: "<<params_.similarity_*100
+                      <<"%; decision: "<<(result?"":"not ")<<"correlating";
+  return result;
 }
 
 } // namespace ManyToMany
