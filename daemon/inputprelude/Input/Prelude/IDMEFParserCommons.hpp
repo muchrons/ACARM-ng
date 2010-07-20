@@ -6,10 +6,11 @@
 #define INCLUDE_INPUT_PRELUDE_IDMEFPARSERCOMMONS_HPP_FILE
 
 #include <prelude.h>
+#include "Base/NullValue.hpp"
 #include "Input/Prelude/ExceptionParse.hpp"
 #include "Persistency/IPTypes.hpp"
 #include "Persistency/Alert.hpp"
-
+#include "Logger/Logger.hpp"
 
 namespace Input
 {
@@ -21,13 +22,11 @@ namespace Prelude
 class IDMEFParserCommons : public Persistency::IPTypes<IDMEFParserCommons>
 {
 public:
-  // TODO: this call may return uninitialized value - use Base::NullValue<IP> as
-  //       the return type here.
   /**
    * @brief get IP address from idmef_node_t object
    * @param idmef_node object to parse
    */
-  static IP getIPfromIdmefNode(idmef_node_t * idmef_node);
+  static Base::NullValue<IP> getIPfromIdmefNode(idmef_node_t * idmef_node);
 
   /**
    * @brief get Service from idmef_service_t object

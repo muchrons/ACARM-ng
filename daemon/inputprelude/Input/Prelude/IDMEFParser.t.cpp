@@ -41,11 +41,14 @@ template<>
 void testObj::test<1>(void)
 {
   td_.makeAlert();
+  td_.addClassificationToAlert("some classification");
+  td_.addAnalyzerToAlert();
+
   const IDMEFParser ip(td_.message_.get(), bf_);
   ensure_equals("invalid IP", ip.getName().get(), string("some classification") );
 }
 
-// test name description's missing
+// test alert create time
 template<>
 template<>
 void testObj::test<2>(void)
@@ -53,9 +56,10 @@ void testObj::test<2>(void)
   const time_t                  tt=54321;
   const Persistency::Timestamp  time(tt);
 
-  idmef_alert_t *alert=td_.makeAlert();
-  idmef_alert_set_create_time(alert, td_.makeTime(tt) );
-  td_.time_.release();
+  td_.makeAlert();
+  td_.addClassificationToAlert("some classification");
+  td_.addAnalyzerToAlert();
+  td_.addTimeToAlert(tt);
 
   const IDMEFParser ip(td_.message_.get(), bf_);
   ensure_equals("Something broken with time", ip.getCreateTime(), time);
@@ -78,18 +82,85 @@ void testObj::test<3>(void)
   }
 }
 
-// TODO: test alert without analyzer
+// test alert without analyzer
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  td_.makeAlert();
+  td_.addClassificationToAlert("some classification");
 
-// TODO: test no source hosts
+  try
+    {
+      const IDMEFParser ip(td_.message_.get(), bf_);
+    }
+  catch(const ExceptionParse &)
+  {
+    //expected
+  }
+}
 
-// TODO: test multiple source hosts
+// test alert without classification
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  td_.makeAlert();
+  td_.addAnalyzerToAlert();
 
-// TODO: test no target hosts
+  try
+    {
+      const IDMEFParser ip(td_.message_.get(), bf_);
+    }
+  catch(const ExceptionParse &)
+  {
+    //expected
+  }
+}
 
-// TODO: test multiple target hosts
+// multiple source hosts
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  td_.makeAlert();
+  td_.addClassificationToAlert("some classification");
+  td_.addAnalyzerToAlert();
+  {
+    idmef_source_t * src=td_.addSourceToAlert();
+    td_.addAddressv4ToSource(src,"192.168.1.1");
+  }
+  {
+    idmef_source_t * src=td_.addSourceToAlert();
+    td_.addAddressv6ToSource(src,"::1");
+  }
+  const IDMEFParser ip(td_.message_.get(), bf_);
+}
+
+// multiple target hosts
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  td_.makeAlert();
+  td_.addClassificationToAlert("some classification");
+  td_.addAnalyzerToAlert();
+  {
+    idmef_target_t * src=td_.addTargetToAlert();
+    td_.addAddressv4ToTarget(src,"192.168.1.1");
+  }
+  {
+    idmef_target_t * src=td_.addTargetToAlert();
+    td_.addAddressv6ToTarget(src,"::1");
+  }
+  const IDMEFParser ip(td_.message_.get(), bf_);
+}
+
 
 // TODO: test when no services are prensent in alert (this was a bug in previous versions)
+// There can be no service, everything is fine. This test is moved to IDMEFParserSource/Target
 
 // TODO: test when no processes are prensent in alert (this was a bug in previous versions)
+// The same as with service
 
 } // namespace tut

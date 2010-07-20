@@ -40,14 +40,22 @@ idmef_alert_t* IDMEFParser::extractAlert(idmef_message_t *msg) const
 
 Persistency::Alert::Name IDMEFParser::parseName(idmef_alert_t *alert) const
 {
+  assert(alert!=NULL);
   idmef_classification_t * classification = idmef_alert_get_classification(alert);
-  if (classification==NULL)
+
+  if (classification == NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Mandatory IDMEF field \"Classification\" is missing.");
+
   const prelude_string_t *idmef_name = idmef_classification_get_text(classification);
-  if (idmef_name==NULL)
+  if (idmef_name == NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Mandatory IDMEF field \"Classification\" is present but unreadable.");
 
-  return prelude_string_get_string(idmef_name);
+  const char * workaround=prelude_string_get_string(idmef_name);
+
+  if (workaround==NULL)
+    throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Mandatory IDMEF field \"Classification\" is present but unreadable.");
+
+  return workaround;
 }
 
 std::string IDMEFParser::parseDescription(idmef_alert_t *alert) const

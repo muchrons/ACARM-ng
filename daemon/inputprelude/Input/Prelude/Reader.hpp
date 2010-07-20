@@ -21,10 +21,9 @@ namespace Prelude
 class Reader: public Input::Reader
 {
 public:
-  // TODO: add default value for config (/etc/...)
-  /** \brief create prelud reader.
+  /** \brief create prelude reader.
    */
-  Reader(const std::string & profile, const std::string & config);
+  Reader(const std::string & profile, const std::string & config="/etc/prelude/default/client.conf");
 
   /** \brief reads data from input from prelude-manager.
    *  \param bf      backend facade to use for processing.
