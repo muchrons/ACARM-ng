@@ -1,11 +1,23 @@
 <com:TContent ID="content">
 
-TODO: analyzers page content here
+Analyzers that have reported something:
 
   <com:TDataGrid
     ID="DataGrid"
-    DataKeyField="UserId"
+    DataKeyField="sys_id"
+    AllowPaging="true"
+    PageSize="50"
+    PagerStyle.Mode="Numeric"
+    PagerStyle.HorizontalAlign="Center"
     AutoGenerateColumns="false"
+    CellPadding="2"
+    HeaderStyle.BackColor="black"
+    HeaderStyle.ForeColor="white"
+    ItemStyle.BackColor="#BFCFFF"
+    ItemStyle.Font.Italic="true"
+    AlternatingItemStyle.BackColor="#E6ECFF"
+    OnPageIndexChanged="changePage"
+    OnPagerCreated="pagerCreated"
     >
 
     <com:TBoundColumn
