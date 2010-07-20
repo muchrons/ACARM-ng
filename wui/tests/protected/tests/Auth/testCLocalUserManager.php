@@ -4,8 +4,8 @@ class testCLocalUserManager extends UnitTestCase
 {
   private function cleanTable()
   {
-    CTestSQLHelper::execSQL('DELETE FROM users');
-    $cnt=CTestSQLHelper::getEntryCount('users');
+    CTestSQLHelper::execSQL('DELETE FROM wui_users');
+    $cnt=CTestSQLHelper::getEntryCount('wui_users');
     $this->assertTrue($cnt===0, "users not remvoed - still $cnt users in data base");
   }
 
@@ -13,8 +13,8 @@ class testCLocalUserManager extends UnitTestCase
   private function createUser($name, $password)
   {
     $ur=new CUserRecord();
-    $ur->username=$name;
-    $ur->password=md5($password);
+    $ur->login  =$name;
+    $ur->pwdhash=md5($password);
     $ur->save();
     return $ur;
   }

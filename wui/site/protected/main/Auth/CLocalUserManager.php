@@ -39,7 +39,7 @@ class CLocalUserManager extends TModule implements IUserManager
   {
     $finder=CUserRecord::finder();
     // TODO: this query throws when non-ASCI chers (i.e. UTF-8) are spotted...
-    $tab   =$finder->find('username=? AND password=?', $username, $password);
+    $tab   =$finder->find('login=? AND pwdhash=?', $username, $password);
     if($tab===null)
       return false;
     return true;
