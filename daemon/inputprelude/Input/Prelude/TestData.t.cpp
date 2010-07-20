@@ -85,6 +85,7 @@ void TestData::addOsVersionToAnalyzer(idmef_analyzer_t * analyzer, const char * 
   idmef_analyzer_set_osversion(analyzer, makeString(value) );
 }
 
+// TODO: c&p from addAddressv6ToAnalyzer - make it common code.
 void TestData::addAddressv4ToAnalyzer(idmef_analyzer_t * analyzer, const char * address)
 {
   tut::ensure("analyzer cannot be NULL", analyzer!=NULL);
@@ -133,6 +134,7 @@ idmef_heartbeat_t *TestData::makeHeartbeat(void)
   idmef_heartbeat_t *tmp    =NULL;
   tut::ensure("unable to create heartbeat", idmef_message_new_heartbeat(message, &tmp)>=0 );
 
+  // TODO: remove dead code
   //idmef_analyzer_t *analyzer=makeAnalyzerForHeartbeat(tmp);
   //fillAnalyzer(analyzer);
 
@@ -179,6 +181,7 @@ void TestData::addServiceToSource(idmef_source_t * source, const char * service_
   idmef_service_t * service;
   idmef_source_new_service(source,&service);
 
+  // TODO: fix indentation
   if (service_name!=NULL)
     {
       prelude_string_t *servicename;
@@ -186,6 +189,7 @@ void TestData::addServiceToSource(idmef_source_t * source, const char * service_
       idmef_service_set_name(service,servicename);
     }
 
+  // TODO: fix indentation
   if (service_protocol!=NULL)
     {
       prelude_string_t *protocol;
@@ -197,6 +201,7 @@ void TestData::addServiceToSource(idmef_source_t * source, const char * service_
     idmef_service_set_port(service,port);
 }
 
+// TODO: c&p from addAddressv6ToSource() - make this implementation common
 void TestData::addAddressv4ToSource(idmef_source_t * source, const char * address)
 {
   tut::ensure("source cannot be NULL", source!=NULL);
@@ -232,6 +237,7 @@ idmef_target_t * TestData::addTargetToAlert()
   return target;
 }
 
+// TODO: c&p from addUserToSource() - make these implementaitons common code
 void TestData::addUserToTarget(idmef_target_t * target, const char * user_name)
 {
   idmef_user_t *user;
@@ -245,6 +251,7 @@ void TestData::addUserToTarget(idmef_target_t * target, const char * user_name)
   idmef_user_id_set_name(userid,username);
 }
 
+// TODO: c&p from addProcessToSource() - make these implementaitons common code
 void TestData::addProcessToTarget(idmef_target_t * target, const char * process_name)
 {
   prelude_string_t *proc_str;
@@ -257,11 +264,13 @@ void TestData::addProcessToTarget(idmef_target_t * target, const char * process_
 }
 
 
+// TODO: c&p from addServiceToSource - make these two templates (2 template arguments)
 void TestData::addServiceToTarget(idmef_target_t * target, const char * service_name, const char * service_protocol, uint port)
 {
   idmef_service_t * service;
   idmef_target_new_service(target,&service);
 
+  // TODO: fix indentation
   if (service_name!=NULL)
     {
       prelude_string_t *servicename;
@@ -269,6 +278,7 @@ void TestData::addServiceToTarget(idmef_target_t * target, const char * service_
       idmef_service_set_name(service,servicename);
     }
 
+  // TODO: fix indentation
   if (service_protocol!=NULL)
     {
       prelude_string_t *protocol;
@@ -280,6 +290,7 @@ void TestData::addServiceToTarget(idmef_target_t * target, const char * service_
     idmef_service_set_port(service,port);
 }
 
+// TODO: c&p from addAddressv6ToTarget() - make commn implementation for these two calls
 void TestData::addAddressv4ToTarget(idmef_target_t * target, const char * address)
 {
   tut::ensure("target cannot be NULL", target!=NULL);
