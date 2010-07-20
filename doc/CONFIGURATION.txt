@@ -119,7 +119,9 @@ following filters and paramters are available:
 
   <!-- correlates multiple atacks directed on many host -->
   <manytomany>
-    <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+    <timeout>42</timeout>         <!-- timeout for observing entry, in seconds -->
+    <similarity>0.75</similarity> <!-- minimum similarity between meta-alerts to
+                                       correlate them (valid values are from (0;1] range) -->
   </manytomany>
 
   <!-- performs reverse-DNS mapping on hosts that do not have DNS name set -->

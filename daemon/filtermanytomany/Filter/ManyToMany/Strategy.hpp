@@ -9,6 +9,7 @@
 
 #include "Persistency/Host.hpp"
 #include "Filter/Simple/Strategy.hpp"
+#include "Filter/ManyToMany/ExceptionInvalidParameter.hpp"
 
 
 namespace Filter
@@ -22,16 +23,29 @@ struct Data
 {
 }; // struct Data
 
-
 /** \brief filter detecting multiple attacks from multiple hosts implementation.
  */
 class Strategy: public Filter::Simple::Strategy<Data>
 {
 public:
-  /** \brief create instance.
-   *  \param timeout time observed node shoudl be in queue.
+  /** \brief strategy's paramters.
    */
-  explicit Strategy(unsigned int timeout);
+  struct Params
+  {
+    /** \brief create configuration parameters from given values.
+     *  \param timeout    ammount of time to keep observed nodes for.
+     *  \param similarity threshold value, when reached elements cna be correlated.
+     */
+    Params(unsigned int timeout, double similarity);
+
+    const unsigned int timeout_;        ///< timeout value (in [s]).
+    const double       similarity_;     ///< similarity threshold.
+  }; // struct Params
+
+  /** \brief create instance.
+   *  \param params paramters for the strategy.
+   */
+  explicit Strategy(const Params &params);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.
@@ -50,6 +64,8 @@ private:
                                               const NodeEntry otherEntry) const;
   virtual bool canCorrelate(const NodeEntry thisEntry,
                             const NodeEntry otherEntry) const;
+
+  const Params params_;
 }; // class Strategy
 
 } // namespace ManyToMany
