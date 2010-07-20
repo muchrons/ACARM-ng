@@ -2,4 +2,38 @@
 
 TODO: analyzers page content here
 
+  <com:TDataGrid
+    ID="DataGrid"
+    DataKeyField="UserId"
+    AutoGenerateColumns="false"
+    >
+
+    <com:TBoundColumn
+        ID="IDColumn"
+        HeaderText="ID"
+        DataField="sys_id"
+        />
+    <com:TBoundColumn
+        ID="NameColumn"
+        HeaderText="Name"
+        DataField="name"
+        />
+    <com:TBoundColumn
+        ID="VersionColumn"
+        HeaderText="Version"
+        DataField="version"
+        />
+    <com:TBoundColumn
+        ID="OSColumn"
+        HeaderText="OS"
+        DataField="os"
+        />
+    <com:TBoundColumn
+        ID="IPColumn"
+        HeaderText="IP"
+        DataField="ip"
+        />
+  </com:TDataGrid>
+
+
 </com:TContent>

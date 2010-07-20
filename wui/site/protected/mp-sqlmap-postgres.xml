@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <sqlMapConfig>
 
-    <select id="SelectUsers" resultClass="CUserRecord">
-        SELECT * FROM wui_users ORDER BY login ASC
-    </select>
+    <select id="SelectUsers" resultClass="CUserRecord"> SELECT * FROM wui_users ORDER BY login ASC </select>
+
+    <select id="SelectAnalyzers" resultClass="CAnalyzerRecord"> SELECT * FROM analyzers ORDER BY name,ip ASC </select>
 
 <!--
     <select id="SelectUsers" resultClass="CUserRecord">

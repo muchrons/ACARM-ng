@@ -27,7 +27,7 @@ class CSQLMap
     return $sqlmap;
   }
 
-  // starts new transaction and returns handler to it.
+  // starts new transaction and returns handle to it.
   public static function beginTransaction()
   {
     return TActiveRecordManager::getInstance()->getDbConnection()->beginTransaction();
