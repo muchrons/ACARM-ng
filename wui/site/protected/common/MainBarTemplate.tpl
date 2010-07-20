@@ -1,12 +1,12 @@
 <div id="headDiv">
-  TODO: in-page header<br/>
+  ACARM-ng<br/>
 </div>
 <!-- end of HeadDiv  -->
 
 <div id="logoImageDiv">
   <com:TImage
     ID="MainImage"
-    ImageUrl="pics/upper_logo.gif"
+    ImageUrl="pics/acarm_banner.png"
   />
 </div>
 <!-- end of ImageDiv -->

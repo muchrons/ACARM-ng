@@ -24,7 +24,7 @@
         <td id="sideMenuPart">
           <!-- MENU HEADER -->
           <div id="lefthead">
-          TODO: menu header
+          MENU
           </div>
           <!-- MENU ITSELF -->
           <com:MainMenuTemplate />
@@ -50,8 +50,8 @@
              src="http://jigsaw.w3.org/css-validator/images/vcss-blue"
              alt="Valid CSS!"/></a>
         </td>
-        <td id="explicoSoftLogo">
-          <a href="http://www.explicosoft.pl" target="new_window_explicosoft"><img src="pics/logo_small.png" class="FooterLogoImage" alt="Preapred by ExplicoSoft"/></a>
+        <td id="wcssLogo">
+          <a href="http://www.wcss.wroc.pl" target="new_window_wcss"><img src="pics/logo_small.png" class="FooterLogoImage" alt="Wrocław Centre for Networking and Supercomputing"/></a>
         </td>
       </tr>
     </table>

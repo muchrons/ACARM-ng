@@ -21,11 +21,13 @@
 
     <module id="response" class="THttpResponse" Charset="UTF-8" />
 
-    <module class="TActiveRecordConfig" EnableCache="false" Database.ConnectionString="sqlite:protected/db/sqlite3.db" />
-
-    <module id="mp-sqlmap" class="System.Data.SqlMap.TSqlMapConfig" EnableCache="false" ConfigFile="protected/mp-sqlmap.xml" >
-      <database charset="utf8" ConnectionString="sqlite:protected/db/sqlite3.db" Username="" Password="" />
+    <module class="System.Data.TDataSourceConfig" id="db_conn">
+      <database ConnectionString="pgsql:host=localhost;dbname=acarm_ng_test" Username="acarm-ng-tests" Password="test.password" />
     </module>
+
+    <module class="TActiveRecordConfig" EnableCache="false" ConnectionID="db_conn" />
+
+    <module id="mp-sqlmap" class="System.Data.SqlMap.TSqlMapConfig" EnableCache="false" ConfigFile="protected/mp-sqlmap.xml" ConnectionID="db_conn" />
 
     <!-- Remove this comment mark to enable caching
     <module id="cache" class="System.Caching.TDbCache" />
