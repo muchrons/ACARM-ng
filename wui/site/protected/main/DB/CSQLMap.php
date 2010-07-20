@@ -15,6 +15,7 @@ class CSQLMap
     $conn=TActiveRecordManager::getInstance()->getDbConnection();
     if($conn===null)
       throw new TInvalidDataValueException("unable to create connection object");
+    $conn->Active=true;     // ensure connection is established
 
     $manager=new TSqlMapManager($conn);
     if($manager===null)
@@ -30,7 +31,9 @@ class CSQLMap
   // starts new transaction and returns handle to it.
   public static function beginTransaction()
   {
-    return TActiveRecordManager::getInstance()->getDbConnection()->beginTransaction();
+    $conn=TActiveRecordManager::getInstance()->getDbConnection();
+    $conn->Active=true;     // ensure connection is established
+    return $conn->beginTransaction();
   }
 }
 
