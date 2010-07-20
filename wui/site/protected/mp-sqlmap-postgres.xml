@@ -2,7 +2,7 @@
 <sqlMapConfig>
 
     <select id="SelectUsers" resultClass="CUserRecord">
-        SELECT * FROM users ORDER BY username ASC
+        SELECT * FROM wui_users ORDER BY login ASC
     </select>
 
 <!--

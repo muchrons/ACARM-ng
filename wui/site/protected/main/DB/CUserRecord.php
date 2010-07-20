@@ -2,11 +2,11 @@
 
 class CUserRecord extends TActiveRecord
 {
-  const TABLE='users';
+  const TABLE='wui_users';
 
   public $id;
-  public $username;
-  public $password;
+  public $login;
+  public $pwdhash;
 
   public static function finder($className=__CLASS__)
   {
