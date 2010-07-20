@@ -49,6 +49,7 @@ factory tf("Input/Prelude/IDMEFParserAnalyzer");
 namespace tut
 {
 
+// TODO: remove dead code
   /*
    void addAnalyzeridToAnalyzer(idmef_analyzer_t * analyzer, const char * value);
 
@@ -88,6 +89,7 @@ void testObj::test<3>(void)
 {
   td_.addAddressv4ToAnalyzer(analyzer_,"1.2.3.4");
   IDMEFParserAnalyzer an(analyzer_);
+  // TODO: SEGV if getIP() is NULL
   ensure_equals("IP address",*an.getIP(),boost::asio::ip::address_v4::from_string("1.2.3.4"));
 }
 
@@ -98,6 +100,7 @@ void testObj::test<4>(void)
 {
   td_.addAddressv6ToAnalyzer(analyzer_,"2001:0db8:0000:0000:0000:0000:1428:57ab");
   IDMEFParserAnalyzer an(analyzer_);
+  // TODO: SEGV if getIP() is NULL
   ensure_equals("IP address",*an.getIP(),boost::asio::ip::address_v6::from_string("2001:0db8:0000:0000:0000:0000:1428:57ab"));
 }
 
@@ -114,7 +117,7 @@ void testObj::test<5>(void)
   }
   catch(const ExceptionParse &e)
   {
-    //expected
+    // expected
   }
 }
 
@@ -151,6 +154,7 @@ void testObj::test<9>(void)
 {
   td_.addAddressv4ToAnalyzer(analyzer_,"Ala ma kota");
 
+  // TODO: fix indentation
   try
     {
       IDMEFParserAnalyzer an(analyzer_);

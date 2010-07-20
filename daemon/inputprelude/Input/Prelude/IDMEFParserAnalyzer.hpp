@@ -61,6 +61,7 @@ private:
   std::string parsePreludeID(idmef_analyzer_t *ptr) const;
   Persistency::Analyzer::Version parseVersion(idmef_analyzer_t *ptr) const;
   Persistency::Analyzer::OperatingSystem parseOS(idmef_analyzer_t *ptr) const;
+  // TODO: make Base::NullValue<IP> a typedef - it's used multiple times
   Base::NullValue<Persistency::Analyzer::IP> parseIP(idmef_analyzer_t *ptr) const;
 
   const Logger::Node                       log_;

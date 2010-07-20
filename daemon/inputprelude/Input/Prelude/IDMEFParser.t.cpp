@@ -90,9 +90,11 @@ void testObj::test<4>(void)
   td_.makeAlert();
   td_.addClassificationToAlert("some classification");
 
+  // TODO: fix indentation
   try
     {
       const IDMEFParser ip(td_.message_.get(), bf_);
+      // TODO: missing fail("...") part
     }
   catch(const ExceptionParse &)
   {
@@ -108,9 +110,11 @@ void testObj::test<5>(void)
   td_.makeAlert();
   td_.addAnalyzerToAlert();
 
+  // TODO: fix indentation
   try
     {
       const IDMEFParser ip(td_.message_.get(), bf_);
+      // TODO: missing fail("...") part
     }
   catch(const ExceptionParse &)
   {
@@ -135,6 +139,7 @@ void testObj::test<6>(void)
     td_.addAddressv6ToSource(src,"::1");
   }
   const IDMEFParser ip(td_.message_.get(), bf_);
+  // TODO: test parsing results
 }
 
 // multiple target hosts
@@ -154,13 +159,16 @@ void testObj::test<7>(void)
     td_.addAddressv6ToTarget(src,"::1");
   }
   const IDMEFParser ip(td_.message_.get(), bf_);
+  // TODO: test parsing results
 }
 
 
 // TODO: test when no services are prensent in alert (this was a bug in previous versions)
 // There can be no service, everything is fine. This test is moved to IDMEFParserSource/Target
+// TODO: make this smoke test to check if nothing wrong happens
 
 // TODO: test when no processes are prensent in alert (this was a bug in previous versions)
 // The same as with service
+// TODO: make this smoke test to check if nothing wrong happens
 
 } // namespace tut
