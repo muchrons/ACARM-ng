@@ -157,7 +157,7 @@ void testObj::test<7>(void)
 }
 
 
-// TODO: test when no services are prensent in alert (this was a bug in previous versions) 
+// TODO: test when no services are prensent in alert (this was a bug in previous versions)
 // There can be no service, everything is fine. This test is moved to IDMEFParserSource/Target
 
 // TODO: test when no processes are prensent in alert (this was a bug in previous versions)
