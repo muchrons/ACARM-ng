@@ -1,0 +1,7 @@
+<?
+
+class Layout extends TTemplateControl
+{
+}
+
+?>

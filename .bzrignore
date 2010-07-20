@@ -1,3 +1,10 @@
 daemon/gen
 doc/acarm-ng/*.session
 .~lock.*
+bzr_team.conf
+wui/site/assets/*
+wui/site/protected/runtime/*
+wui/site/protected/db/*.db
+wui/tests/assets/*
+wui/tests/protected/runtime/*
+wui/tests/protected/db/*.db

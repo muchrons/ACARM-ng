@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<application id="site" mode="Debug">
+  <paths>
+<!--    <alias id="myalias" path="./lib" /> -->
+    <using namespace="Application.common.*" />
+    <using namespace="Application.main.*" />
+    <using namespace="Application.main.Utils.*" />
+    <using namespace="Application.main.Auth.*" />
+    <using namespace="Application.main.DB.*" />
+
+    <using namespace="Application.tests.*" />
+
+    <using namespace="System.Data.*" />
+    <using namespace="System.Data.ActiveRecord.*" />
+    <using namespace="System.Security.*" />
+  </paths>
+
+  <!-- configurations for modules -->
+  <modules>
+
+    <module id="response" class="THttpResponse" Charset="UTF-8" />
+
+    <module class="TActiveRecordConfig" EnableCache="false" Database.ConnectionString="sqlite:protected/db/sqlite3.db" />
+
+    <module id="mp-sqlmap" class="System.Data.SqlMap.TSqlMapConfig" EnableCache="false" ConfigFile="protected/mp-sqlmap.xml" >
+      <database charset="utf8" ConnectionString="sqlite:protected/db/sqlite3.db" Username="" Password="" />
+    </module>
+
+    <!-- Remove this comment mark to enable caching
+    <module id="cache" class="System.Caching.TDbCache" />
+    -->
+
+    <!-- Remove this comment mark to enable PATH url format
+    <module id="request" class="THttpRequest" UrlFormat="Path" />
+    -->
+
+    <!-- Remove this comment mark to enable logging
+    <module id="log" class="System.Util.TLogRouter">
+      <route class="TBrowserLogRoute" Categories="System" />
+    </module>
+    -->
+  </modules>
+
+  <!-- configuration for available services -->
+  <services>
+    <service id="page" class="TPageService" DefaultPage="Home" />
+  </services>
+
+  <!-- application parameters
+  <parameters>
+    <parameter id="param1" value="value1" />
+    <parameter id="param2" value="value2" />
+  </parameters>
+  -->
+</application>
