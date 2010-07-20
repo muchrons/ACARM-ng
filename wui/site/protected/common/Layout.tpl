@@ -3,7 +3,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl">
 <head>
-  <title>TODO: page title</title>
+  <title>ACARM-ng</title>
   <link href="style.css" rel="stylesheet" type="text/css"/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
@@ -50,8 +50,9 @@
              src="http://jigsaw.w3.org/css-validator/images/vcss-blue"
              alt="Valid CSS!"/></a>
         </td>
-        <td id="wcssLogo">
-          <a href="http://www.wcss.wroc.pl" target="new_window_wcss"><img src="pics/logo_small.png" class="FooterLogoImage" alt="Wrocław Centre for Networking and Supercomputing"/></a>
+        <td id="logos">
+          <a href="http://www.acarm.wcss.wroc.pl" target="new_window_acarmng"><img src="pics/acarm-ng_logo.png" class="FooterLogoImage" alt="ACARM-ng project's page"/></a>
+          <a href="http://www.wcss.wroc.pl"       target="new_window_wcss">   <img src="pics/logo_small.png"    class="FooterLogoImage" alt="Wrocław Centre for Networking and Supercomputing"/></a>
         </td>
       </tr>
     </table>
