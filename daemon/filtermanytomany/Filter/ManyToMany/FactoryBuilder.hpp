@@ -9,6 +9,7 @@
 
 #include "Logger/Logger.hpp"
 #include "Filter/Factory.hpp"
+#include "Filter/ManyToMany/ExceptionInvalidParameter.hpp"
 
 namespace Filter
 {

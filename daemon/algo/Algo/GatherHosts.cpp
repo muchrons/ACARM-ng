@@ -5,7 +5,7 @@
 #include <cassert>
 
 #include "Algo/GatherHosts.hpp"
-
+#include "Algo/forEachUniqueLeaf.hpp"
 
 namespace Algo
 {
@@ -30,11 +30,8 @@ void GatherHosts::operator()(Persistency::GraphNodePtrNN node)
 
 void GatherHosts::addHosts(HostSetPtr out, const Persistency::Alert::ReportedHosts &in)
 {
-  for(Persistency::Alert::ReportedHosts::const_iterator it=in.begin();
-      it!=in.end(); ++it)
-  {
+  for(Persistency::Alert::ReportedHosts::const_iterator it=in.begin(); it!=in.end(); ++it)
     out->insert(*it);
-  } // for(hosts)
 }
 
 } // namespace Algo
