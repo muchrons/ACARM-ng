@@ -57,19 +57,19 @@ public:
 
 private:
   idmef_analyzer_t * getNonNull(idmef_analyzer_t *ptr) const;
-
   Persistency::Analyzer::Name parseName(idmef_analyzer_t *ptr) const;
   std::string parsePreludeID(idmef_analyzer_t *ptr) const;
   Persistency::Analyzer::Version parseVersion(idmef_analyzer_t *ptr) const;
   Persistency::Analyzer::OperatingSystem parseOS(idmef_analyzer_t *ptr) const;
-  std::auto_ptr<Persistency::Analyzer::IP> parseIP(idmef_analyzer_t *ptr) const;
+  // TODO: make Base::NullValue<IP> a typedef - it's used multiple times
+  Base::NullValue<Persistency::Analyzer::IP> parseIP(idmef_analyzer_t *ptr) const;
 
   const Logger::Node                       log_;
   Persistency::Analyzer::Name              name_;
   Persistency::Analyzer::Version           version_;
   Persistency::Analyzer::OperatingSystem   os_;
-  // TODO: auto_ptr is over kill here - consider using Base::NullValue<> for this
-  std::auto_ptr<Persistency::Analyzer::IP> ip_;
+
+  Base::NullValue<Persistency::Analyzer::IP> ip_;
   std::string                              preludeID_;
 }; // class IDMEFParserAnalyzer
 
