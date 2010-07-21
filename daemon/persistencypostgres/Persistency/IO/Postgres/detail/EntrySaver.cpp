@@ -35,12 +35,23 @@ void addToSelect(std::stringstream &ss, const T *ptr)
   if(ptr!=NULL)
   {
     ss << " = ";
-    Appender::append(ss, ptr->get() );
+    Appender::append(ss, ptr );
   }
   else
     ss << " IS NULL";
 }
 
+template <typename T>
+void addToSelect(std::stringstream &ss, const T &ptr)
+{
+  if(ptr.get()!=NULL)
+  {
+    ss << " = ";
+    Appender::append(ss, ptr.get() );
+  }
+  else
+    ss << " IS NULL";
+}
 template <>
 void addToSelect<Persistency::Analyzer::IP>(std::stringstream &ss, const Persistency::Analyzer::IP *ptr)
 {
@@ -114,9 +125,9 @@ Base::NullValue<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   ss << "SELECT * FROM analyzers WHERE name = ";
   Appender::append(ss, a.getName().get() );
   ss << " AND version ";
-  addToSelect(ss, &a.getVersion() );
+  addToSelect(ss, a.getVersion() );
   ss << " AND os";
-  addToSelect(ss, &a.getOperatingSystem() );
+  addToSelect(ss, a.getOperatingSystem() );
   ss << " AND ip";
   addToSelect(ss, a.getIP() );
   ss << " AND sys_id=";
@@ -449,9 +460,10 @@ void EntrySaver::saveConfigParameter(const DynamicConfig::Owner &owner,
   // first, delete given key if entry's present
   {
     stringstream ss;
-    ss << "DELETE FROM config WHERE owner = ";
-    Appender::append(ss, owner.get());
-    ss << " AND key = ";
+    ss << "DELETE FROM config WHERE owner ";
+    addToSelect(ss, owner);
+    ss << " AND key = ";    // '=' here is ok - key cannot be NULL
+    assert( key.get()!=NULL );
     Appender::append(ss, key.get());
     SQL( ss.str().c_str(), log_ ).exec(t_);
   }

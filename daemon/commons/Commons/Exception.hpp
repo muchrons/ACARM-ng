@@ -9,6 +9,7 @@
 
 #include <string>
 
+#include "System/Backtrace.hpp"
 #include "System/Exceptions/RuntimeError.hpp"
 #include "Logger/Logger.hpp"
 
@@ -36,7 +37,9 @@ public:
                                                         << ") rised in "
                                                         << where.getStr()
                                                         << ": "
-                                                        << what();
+                                                        << what()
+                                                        << "; stack trace is: "
+                                                        << System::Backtrace().toString();
   }
 
   /** \brief dealocates object in inheritance-secure way.
