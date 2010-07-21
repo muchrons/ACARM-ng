@@ -7,6 +7,12 @@
     <select id="SelectAlert" resultClass="CAlertEntry" parameterClass="int">
         SELECT a.id AS id, a.name AS name, a.detect_time AS detect, a.create_time AS create, s.name AS severity, a.certanity AS certainty, a.description AS description FROM alerts AS a LEFT JOIN severities AS s ON a.id_severity=s.id WHERE a.id=#value#
     </select>
+    <select id="SelectReportedHost" resultClass="CReportedHostEntry" parameterClass="int">
+        SELECT r.id AS id, r.role AS role, h.ip AS ip, h.mask AS mask, h.os AS os, h.name AS name, u.name as ref_name, u.url AS ref_url FROM ( reported_hosts as r LEFT JOIN hosts as h ON r.id_host=h.id ) LEFT JOIN reference_urls as u ON r.id_ref=u.id WHERE r.id=#value#
+    </select>
+    <select id="SelectReportedService" resultClass="CReportedServiceEntry" parameterClass="int">
+        SELECT s.id AS id, s.name AS name, s.port AS port, s.protocol AS protocol, u.name AS ref_name, u.url AS ref_url FROM ( reported_services AS r LEFT JOIN services AS s ON r.id_service=s.id ) LEFT JOIN reference_urls AS u ON r.id_ref=u.id WHERE s.id=#value#
+    </select>
 
 <!--
     <select id="SelectUsers" resultClass="CUserRecord">
