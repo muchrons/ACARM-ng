@@ -29,6 +29,16 @@ Host's details:<br/>
     </tr>
 
     <tr>
+      <td>Processes:</td>
+      <td> <com:TLiteral ID="ReportedHostProcesses" Text="" Encode="false"/> </td>
+    </tr>
+
+    <tr>
+      <td>Services:</td>
+      <td> <com:TLiteral ID="ReportedHostServices" Text="" Encode="false"/> </td>
+    </tr>
+
+    <tr>
       <td>Reference:</td>
       <td> <com:TLiteral ID="ReportedHostRefName" Text="" Encode="true"/> </td>
     </tr>
