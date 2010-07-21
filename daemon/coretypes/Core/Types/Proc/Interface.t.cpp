@@ -79,8 +79,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  // TODO: invalid TYPE set
-  ensure_equals("invalid name set", ti_->getType(), "testinterfacetype");
+  ensure_equals("invalid type set", ti_->getType(), "testinterfacetype");
 }
 // test if d-tor is virtual
 template<>

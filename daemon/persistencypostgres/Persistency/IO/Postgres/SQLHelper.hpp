@@ -43,6 +43,7 @@ public:
   inline pqxx::result exec(Transaction &t)
   {
     LOGMSG_DEBUG_S(log_)<<"file "<<file_<<" line "<<line_<<" [SQL-exec]: "<<sql_;
+    assert(sql_.find("=NULL") || sql_.find("= NULL"));
     return t.getAPI<Postgres::TransactionAPI>().exec(sql_);
   }
 private:

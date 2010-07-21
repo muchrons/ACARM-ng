@@ -35,12 +35,23 @@ void addToSelect(std::stringstream &ss, const T *ptr)
   if(ptr!=NULL)
   {
     ss << " = ";
-    Appender::append(ss, ptr->get() );
+    Appender::append(ss, ptr );
   }
   else
     ss << " IS NULL";
 }
 
+template <typename T>
+void addToSelect(std::stringstream &ss, const T &ptr)
+{
+  if(ptr.get()!=NULL)
+  {
+    ss << " = ";
+    Appender::append(ss, ptr.get() );
+  }
+  else
+    ss << " IS NULL";
+}
 template <>
 void addToSelect<Persistency::Analyzer::IP>(std::stringstream &ss, const Persistency::Analyzer::IP *ptr)
 {
@@ -114,9 +125,9 @@ Base::NullValue<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   ss << "SELECT * FROM analyzers WHERE name = ";
   Appender::append(ss, a.getName().get() );
   ss << " AND version ";
-  addToSelect(ss, &a.getVersion() );
+  addToSelect(ss, a.getVersion() );
   ss << " AND os";
-  addToSelect(ss, &a.getOperatingSystem() );
+  addToSelect(ss, a.getOperatingSystem() );
   ss << " AND ip";
   addToSelect(ss, a.getIP() );
   ss << " AND sys_id=";
