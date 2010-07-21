@@ -17,10 +17,10 @@
 
 namespace Trigger
 {
-
+//TODO: inadequate comment
 /** \brief abstract factory producing filters. */
 typedef Commons::Factory::AbstractFactorySingleton<Core::Types::Proc::Interface> Factory;
-
+//TODO: inadequate comment
 /** \brief collection of created filters. */
 typedef Core::Types::Proc::ProcessorsCollection TriggersCollection;
 
