@@ -38,13 +38,13 @@ struct TestClass: public TestHelpers::Input::TestBase
   void addAddressv4(const char * addr)
   {
     assert(source_!=NULL);
-    td_.addAddressv4ToSource(source_,addr);
+    td_.addAddressToSource(source_,addr,false);
   }
 
   void addAddressv6(const char * addr)
   {
     assert(source_!=NULL);
-    td_.addAddressv6ToSource(source_,addr);
+    td_.addAddressToSource(source_,addr,true);
   }
 
   idmef_node_t * getNode()
@@ -72,9 +72,9 @@ template<>
 void testObj::test<1>(void)
 {
   addAddressv4("1.2.3.4");
-  // TODO: SEGV if getIP() is NULL
-  ensure_equals("Address IPv4",*IDMEFParserCommons::getIPfromIdmefNode(getNode()).get(),
-                Analyzer::IP(boost::asio::ip::address_v4::from_string("1.2.3.4")));
+  const boost::asio::ip::address *ip=IDMEFParserCommons::getIPfromIdmefNode(getNode()).get();
+  assert(ip!=NULL);
+  ensure_equals("Address IPv4",*ip, Analyzer::IP(boost::asio::ip::address_v4::from_string("1.2.3.4")));
 }
 
 // Check address (IPv6)
@@ -84,21 +84,9 @@ void testObj::test<2>(void)
 {
   char addrv6[]="2001:0db8:0000:0000:0000:0000:1428:57ab";
   addAddressv6(addrv6);
-
-  // TODO: SEGV if getIP() is NULL
-  ensure_equals("Address IPv6",*IDMEFParserCommons::getIPfromIdmefNode(getNode()).get(),
-                Analyzer::IP(boost::asio::ip::address_v6::from_string(addrv6)));
+  const boost::asio::ip::address *ip=IDMEFParserCommons::getIPfromIdmefNode(getNode()).get();
+  assert(ip!=NULL);
+  ensure_equals("Address IPv6",*ip, Analyzer::IP(boost::asio::ip::address_v6::from_string(addrv6)));
 }
-
-// TODO: what does it mean?
-
-//Check service name
-//Check service protocol
-//Check service port
-//Check process name
-//Check process user
-
-//all moved to IDMEFParserSource/Target
-
 
 } // namespace tut

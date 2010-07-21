@@ -107,7 +107,7 @@ Persistency::Analyzer::OperatingSystem IDMEFParserAnalyzer::parseOS(idmef_analyz
   return os;
 }
 
-Base::NullValue<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_analyzer_t *ptr) const
+IDMEFParserAnalyzer::NullIP IDMEFParserAnalyzer::parseIP(idmef_analyzer_t *ptr) const
 {
   idmef_node_t *idmef_node = idmef_analyzer_get_node(ptr);
 
@@ -119,7 +119,7 @@ Base::NullValue<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_an
   {
     LOGMSG_DEBUG(log_, "No IP address in analyzer but we can carry on");
   }
-  return Base::NullValue<Persistency::Analyzer::IP>(NULL);
+  return NullIP(NULL);
 }
 
 const std::string &IDMEFParserAnalyzer::getPreludeID() const

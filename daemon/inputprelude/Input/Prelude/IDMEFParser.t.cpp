@@ -90,12 +90,11 @@ void testObj::test<4>(void)
   td_.makeAlert();
   td_.addClassificationToAlert("some classification");
 
-  // TODO: fix indentation
   try
-    {
-      const IDMEFParser ip(td_.message_.get(), bf_);
-      // TODO: missing fail("...") part
-    }
+  {
+    const IDMEFParser ip(td_.message_.get(), bf_);
+    tut::fail("No analyzer. Shouldn't parse.");
+  }
   catch(const ExceptionParse &)
   {
     //expected
@@ -110,12 +109,11 @@ void testObj::test<5>(void)
   td_.makeAlert();
   td_.addAnalyzerToAlert();
 
-  // TODO: fix indentation
   try
-    {
-      const IDMEFParser ip(td_.message_.get(), bf_);
-      // TODO: missing fail("...") part
-    }
+  {
+    const IDMEFParser ip(td_.message_.get(), bf_);
+    tut::fail("No mandatory field classification. Shouldn't parse.");
+  }
   catch(const ExceptionParse &)
   {
     //expected
@@ -132,14 +130,17 @@ void testObj::test<6>(void)
   td_.addAnalyzerToAlert();
   {
     idmef_source_t * src=td_.addSourceToAlert();
-    td_.addAddressv4ToSource(src,"192.168.1.1");
+    td_.addAddressToSource(src,"192.168.1.1",false);
   }
   {
     idmef_source_t * src=td_.addSourceToAlert();
-    td_.addAddressv6ToSource(src,"::1");
+    td_.addAddressToSource(src,"::1",true);
   }
   const IDMEFParser ip(td_.message_.get(), bf_);
-  // TODO: test parsing results
+
+  Persistency::Alert::ReportedHosts src=ip.getSources();
+  ensure_equals("invalid Source 1", src.at(0)->getIP(), boost::asio::ip::address_v4::from_string("192.168.1.1"));
+  ensure_equals("invalid Source 1", src.at(1)->getIP(), boost::asio::ip::address_v6::from_string("::1"));
 }
 
 // multiple target hosts
@@ -152,23 +153,17 @@ void testObj::test<7>(void)
   td_.addAnalyzerToAlert();
   {
     idmef_target_t * src=td_.addTargetToAlert();
-    td_.addAddressv4ToTarget(src,"192.168.1.1");
+    td_.addAddressToTarget(src,"192.168.1.1",false);
   }
   {
     idmef_target_t * src=td_.addTargetToAlert();
-    td_.addAddressv6ToTarget(src,"::1");
+    td_.addAddressToTarget(src,"::1",true);
   }
   const IDMEFParser ip(td_.message_.get(), bf_);
-  // TODO: test parsing results
+
+  Persistency::Alert::ReportedHosts src=ip.getTargets();
+  ensure_equals("invalid Source 1", src.at(0)->getIP(), boost::asio::ip::address_v4::from_string("192.168.1.1"));
+  ensure_equals("invalid Source 1", src.at(1)->getIP(), boost::asio::ip::address_v6::from_string("::1"));
 }
-
-
-// TODO: test when no services are prensent in alert (this was a bug in previous versions)
-// There can be no service, everything is fine. This test is moved to IDMEFParserSource/Target
-// TODO: make this smoke test to check if nothing wrong happens
-
-// TODO: test when no processes are prensent in alert (this was a bug in previous versions)
-// The same as with service
-// TODO: make this smoke test to check if nothing wrong happens
 
 } // namespace tut

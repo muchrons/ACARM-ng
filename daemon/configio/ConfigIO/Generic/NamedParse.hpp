@@ -47,8 +47,9 @@ private:
     {
       const typename TConfig::TypeName &type=eit->getName();
       const typename TConfig::TypeName &name=eit->getAttributesList().getAttribute("name").getValue();
+      if(isNameUnique(elements, name) != true)
+        throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "name: " + name + " is not unique");
       typename TConfig::Options         options;
-
       // get all options to a single collection
       const XML::Node::TNodesList &children=eit->getChildrenList();
       for(XML::Node::TNodesList::const_iterator it=children.begin();
@@ -58,6 +59,22 @@ private:
       // add new entry
       cc_.push_back( TConfig(type, options) );
     }
+  }
+
+  bool isNameUnique(const XML::Node::TNodesList &elements, const std::string &name)
+  {
+    unsigned int cnt = 0;
+    for(XML::Node::TNodesList::const_iterator eit=elements.begin();
+        eit!=elements.end(); ++eit)
+    {
+      const std::string tmpName = eit->getAttributesList().getAttribute("name").getValue();
+      if(name == tmpName)
+        // TODO: why not simply 'return false'?
+        cnt++;
+    }
+    if(cnt > 1)
+      return false;
+    return true;
   }
 
   TConfigCollection cc_;

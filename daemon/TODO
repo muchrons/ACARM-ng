@@ -1,20 +1,20 @@
-2 rereading configuration from file (note: not all configuration may change at runtime).
-8 refactor ConfigIO - it should read configuration file and keep it in memory. proper handles for specific parts of configuration file should be implemented by interested components.
-9 think what can be done about libprelude's GPL license (others are commercial) - move it to separate process or buy LGPG/BSD?
-11 think how to overcome lack of additional data assigned for observed graph nodes in filters during normal run - they will not be present after reading from persistency.
-15 update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
-17 GraphNode (MetaAlert?) should have some unique identifier in the system, that can be reported.
-26 create XML schema for config file.
-27 add parse-at-read feature to configio - config should be accepted or rejected when running application, not delayed until acctuall usage (note: this task is connected with config's refactoring to register parsers).
-30 trigger for ICQ or jabber messages.
-32 add names to inputs, so that multiple instances of the same input types are possible.
-37 add extra check while running ACARM-ng, if last run finished successfully or not (ex.: via DynamicConfig entry, changed uppon normal exit).
-38 consider running persistency cleanup in a separate thread - it takes a lot of time... it could be also run in background onec a day by system, to ensure quick starting of acarm.
-39 consider some sort of mechanism to prevent crashes when connection lives shorter than transaction (ex.: keeping connection in transaction?).
-40 fix TODOs in QueueRestorer - structure is broken now...
-41 consider adding 'descrioption' to meta-alert to reflect extra correlation pieces of information (like details on what bases these alerts have been correlated).
-46 if filters' prerequisites are not enought consider adding userd-defined rules in config file as well.
-51 ipblackfilter does not save paramters in data base - after restart the same alerts will get severity incremetned once more; soncider saving MetaAlertID->done/notdone as a config paramter.
-52 implement common configuration module for compile-time constants used in code.
-53 implement helper component for making pipe-line processing in filters.
-54
+* rereading configuration from file (note: not all configuration may change at runtime).
+* refactor ConfigIO - it should read configuration file and keep it in memory. proper handles for specific parts of configuration file should be implemented by interested components.
+* think what can be done about libprelude's GPL license (others are commercial) - move it to separate process or buy LGPG/BSD?
+* think how to overcome lack of additional data assigned for observed graph nodes in filters during normal run - they will not be present after reading from persistency.
+* update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
+* GraphNode (MetaAlert?) should have some unique identifier in the system, that can be reported.
+* create XML schema for config file.
+* add parse-at-read feature to configio - config should be accepted or rejected when running application, not delayed until acctuall usage (note: this task is connected with config's refactoring to register parsers).
+* trigger for ICQ or jabber messages.
+* add names to inputs, so that multiple instances of the same input types are possible.
+* add extra check while running ACARM-ng, if last run finished successfully or not (ex.: via DynamicConfig entry, changed uppon normal exit).
+* consider running persistency cleanup in a separate thread - it takes a lot of time... it could be also run in background onec a day by system, to ensure quick starting of acarm.
+* consider some sort of mechanism to prevent crashes when connection lives shorter than transaction (ex.: keeping connection in transaction?).
+* fix TODOs in QueueRestorer - structure is broken now...
+* consider adding 'descrioption' to meta-alert to reflect extra correlation pieces of information (like details on what bases these alerts have been correlated).
+* if filters' prerequisites are not enought consider adding userd-defined rules in config file as well.
+* ipblackfilter does not save paramters in data base - after restart the same alerts will get severity incremetned once more; soncider saving MetaAlertID->done/notdone as a config paramter.
+* implement common configuration module for compile-time constants used in code.
+* implement helper component for making pipe-line processing in filters.
+* filter that increases priority for hosts that are out of defined set (i.e. from external network).

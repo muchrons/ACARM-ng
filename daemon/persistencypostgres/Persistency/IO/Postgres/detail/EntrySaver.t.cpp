@@ -767,7 +767,7 @@ void testObj::test<19>(void)
   Appender::append(ss, id.get() );
   ss << "AND version = ";
   Appender::append(ss, ver.get() );
-  ss << "AND os = ";
+  ss << " AND os = ";
   Appender::append(ss, os.get() );
   ss << "AND ip = ";
   Appender::append(ss, ip.to_string() );
@@ -990,4 +990,29 @@ void testObj::test<28>(void)
   }
 }
 
+//test saving two identical Analyzers with NULLs
+template<>
+template<>
+void testObj::test<29>(void)
+{
+  const string                    anlzName("analyzer3");
+  const Analyzer::ID              id(987654321u);
+  const Analyzer                  a1(id, anlzName, NULL, NULL, NULL);
+  const Analyzer                  a2(id, anlzName, NULL, NULL, NULL);
+  es_.saveAnalyzer(a1);
+  es_.saveAnalyzer(a2);
+
+  stringstream ss;
+  ss << "SELECT * FROM analyzers WHERE name = ";
+  Appender::append(ss, anlzName );
+  ss << "AND sys_id = ";
+  Appender::append(ss, id.get() );
+  ss << "AND version IS NULL ";
+  ss << "AND os IS NULL ";
+  ss << "AND ip IS NULL";
+  ss << ";";
+  result r = t_.getAPI<TransactionAPI>().exec(ss);
+  ensure_equals("invalid size", r.size(), 1u);
+  t_.commit();
+}
 } // namespace tut
