@@ -30,17 +30,17 @@ Alert details:<br/>
 
     <tr>
       <td>Analyzers:</td>
-      <td> <com:TLiteral ID="AlertAnalyzers" Text="" Encode="true"/> </td>
+      <td> <com:TLiteral ID="AlertAnalyzers" Text="" Encode="false"/> </td>
     </tr>
 
     <tr>
       <td>Source:</td>
-      <td> <com:TLiteral ID="AlertSource" Text="" Encode="true"/> </td>
+      <td> <com:TLiteral ID="AlertSource" Text="" Encode="false"/> </td>
     </tr>
 
     <tr>
       <td>Destination:</td>
-      <td> <com:TLiteral ID="AlertDestination" Text="" Encode="true"/> </td>
+      <td> <com:TLiteral ID="AlertDestination" Text="" Encode="false"/> </td>
     </tr>
 
     <tr>
