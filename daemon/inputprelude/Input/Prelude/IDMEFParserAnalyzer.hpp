@@ -26,6 +26,10 @@ class IDMEFParserAnalyzer
 {
 public:
   /**
+   * @brief IP address
+   */
+  typedef Base::NullValue<Persistency::Analyzer::IP> NullIP;
+  /**
    * @brief c-tor
    * \param ptr idmef_analyzer_t structure to parse
    */
@@ -61,15 +65,13 @@ private:
   std::string parsePreludeID(idmef_analyzer_t *ptr) const;
   Persistency::Analyzer::Version parseVersion(idmef_analyzer_t *ptr) const;
   Persistency::Analyzer::OperatingSystem parseOS(idmef_analyzer_t *ptr) const;
-  // TODO: make Base::NullValue<IP> a typedef - it's used multiple times
-  Base::NullValue<Persistency::Analyzer::IP> parseIP(idmef_analyzer_t *ptr) const;
+  NullIP parseIP(idmef_analyzer_t *ptr) const;
 
   const Logger::Node                       log_;
   Persistency::Analyzer::Name              name_;
   Persistency::Analyzer::Version           version_;
   Persistency::Analyzer::OperatingSystem   os_;
-
-  Base::NullValue<Persistency::Analyzer::IP> ip_;
+  NullIP                                   ip_;
   std::string                              preludeID_;
 }; // class IDMEFParserAnalyzer
 

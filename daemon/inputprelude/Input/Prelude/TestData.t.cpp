@@ -85,8 +85,7 @@ void TestData::addOsVersionToAnalyzer(idmef_analyzer_t * analyzer, const char * 
   idmef_analyzer_set_osversion(analyzer, makeString(value) );
 }
 
-// TODO: c&p from addAddressv6ToAnalyzer - make it common code.
-void TestData::addAddressv4ToAnalyzer(idmef_analyzer_t * analyzer, const char * address)
+void TestData::addAddressToAnalyzer(idmef_analyzer_t * analyzer, const char * address, bool v6)
 {
   tut::ensure("analyzer cannot be NULL", analyzer!=NULL);
   idmef_node_t *node=NULL;
@@ -95,21 +94,11 @@ void TestData::addAddressv4ToAnalyzer(idmef_analyzer_t * analyzer, const char * 
   idmef_address_t *addr=NULL;
   idmef_node_new_address(node, &addr, IDMEF_LIST_APPEND);
   idmef_address_set_address(addr, makeString(address) );
-  idmef_address_set_category(addr, IDMEF_ADDRESS_CATEGORY_IPV4_ADDR);
+  if (v6)
+    idmef_address_set_category(addr, IDMEF_ADDRESS_CATEGORY_IPV6_ADDR);
+  else
+    idmef_address_set_category(addr, IDMEF_ADDRESS_CATEGORY_IPV4_ADDR);
 }
-
-void TestData::addAddressv6ToAnalyzer(idmef_analyzer_t * analyzer, const char * address)
-{
-  tut::ensure("analyzer cannot be NULL", analyzer!=NULL);
-  idmef_node_t *node=NULL;
-  idmef_analyzer_new_node(analyzer, &node);
-  // fill node
-  idmef_address_t *addr=NULL;
-  idmef_node_new_address(node, &addr, IDMEF_LIST_APPEND);
-  idmef_address_set_address(addr, makeString(address) );
-  idmef_address_set_category(addr, IDMEF_ADDRESS_CATEGORY_IPV6_ADDR);
-}
-
 
 prelude_string_t *TestData::makeString(const char *str)
 {
@@ -133,11 +122,6 @@ idmef_heartbeat_t *TestData::makeHeartbeat(void)
   idmef_message_t   *message=makeMessage();
   idmef_heartbeat_t *tmp    =NULL;
   tut::ensure("unable to create heartbeat", idmef_message_new_heartbeat(message, &tmp)>=0 );
-
-  // TODO: remove dead code
-  //idmef_analyzer_t *analyzer=makeAnalyzerForHeartbeat(tmp);
-  //fillAnalyzer(analyzer);
-
   return tmp;
 }
 
@@ -155,77 +139,41 @@ void TestData::addUserToSource(idmef_source_t * source, const char * user_name)
 {
   idmef_user_t *user;
   idmef_source_new_user(source,&user);
-
-  idmef_user_id_t* userid;
-  idmef_user_new_user_id(user,&userid,IDMEF_LIST_APPEND);
-
-  prelude_string_t *username;
-  prelude_string_new_dup(&username,user_name);
-  idmef_user_id_set_name(userid,username);
+  fillUser(user, user_name);
 }
 
 void TestData::addProcessToSource(idmef_source_t * source, const char * process_name)
 {
-  prelude_string_t *proc_str;
-  prelude_string_new_dup(&proc_str,process_name);
-
-  idmef_process_t *proc;
-  idmef_process_new(&proc);
-  idmef_process_set_name(proc,proc_str);
+  idmef_process_t *proc=fillProcess(process_name);
   idmef_source_set_process(source,proc);
 }
 
-
-void TestData::addServiceToSource(idmef_source_t * source, const char * service_name, const char * service_protocol, uint port)
+void TestData::fillNode(idmef_node_t * node, const char * address, bool v6)
 {
-  idmef_service_t * service;
-  idmef_source_new_service(source,&service);
-
-  // TODO: fix indentation
-  if (service_name!=NULL)
-    {
-      prelude_string_t *servicename;
-      prelude_string_new_dup(&servicename,service_name);
-      idmef_service_set_name(service,servicename);
-    }
-
-  // TODO: fix indentation
-  if (service_protocol!=NULL)
-    {
-      prelude_string_t *protocol;
-      prelude_string_new_dup(&protocol,service_protocol);
-      idmef_service_set_protocol(service,protocol);
-    }
-
-  if (port!=0)
-    idmef_service_set_port(service,port);
+  idmef_address_t *addr=NULL;
+  idmef_node_new_address(node, &addr, IDMEF_LIST_APPEND);
+  idmef_address_set_address(addr, makeString(address) );
+  if (v6)
+    idmef_address_set_category(addr, IDMEF_ADDRESS_CATEGORY_IPV6_ADDR);
+  else
+    idmef_address_set_category(addr, IDMEF_ADDRESS_CATEGORY_IPV4_ADDR);
 }
 
-// TODO: c&p from addAddressv6ToSource() - make this implementation common
-void TestData::addAddressv4ToSource(idmef_source_t * source, const char * address)
+void TestData::addAddressToSource(idmef_source_t * source, const char * address, bool v6)
 {
   tut::ensure("source cannot be NULL", source!=NULL);
   idmef_node_t *node=NULL;
   idmef_source_new_node(source, &node);
-  // fill node
-  idmef_address_t *addr=NULL;
-  idmef_node_new_address(node, &addr, IDMEF_LIST_APPEND);
-  idmef_address_set_address(addr, makeString(address) );
-  idmef_address_set_category(addr, IDMEF_ADDRESS_CATEGORY_IPV4_ADDR);
+  fillNode(node,address,v6);
 }
 
-void TestData::addAddressv6ToSource(idmef_source_t * source, const char * address)
+void TestData::addAddressToTarget(idmef_target_t * target, const char * address, bool v6)
 {
-  tut::ensure("source cannot be NULL", source!=NULL);
+  tut::ensure("target cannot be NULL", target!=NULL);
   idmef_node_t *node=NULL;
-  idmef_source_new_node(source, &node);
-  // fill node
-  idmef_address_t *addr=NULL;
-  idmef_node_new_address(node, &addr, IDMEF_LIST_APPEND);
-  idmef_address_set_address(addr, makeString(address) );
-  idmef_address_set_category(addr, IDMEF_ADDRESS_CATEGORY_IPV6_ADDR);
+  idmef_target_new_node(target, &node);
+  fillNode(node,address,v6);
 }
-
 
 idmef_target_t * TestData::addTargetToAlert()
 {
@@ -237,12 +185,70 @@ idmef_target_t * TestData::addTargetToAlert()
   return target;
 }
 
-// TODO: c&p from addUserToSource() - make these implementaitons common code
 void TestData::addUserToTarget(idmef_target_t * target, const char * user_name)
 {
   idmef_user_t *user;
   idmef_target_new_user(target,&user);
+  fillUser(user, user_name);
+}
 
+void TestData::addProcessToTarget(idmef_target_t * target, const char * process_name)
+{
+  idmef_process_t *proc=fillProcess(process_name);
+  idmef_target_set_process(target,proc);
+}
+
+idmef_process_t * TestData::fillProcess(const char * process_name)
+{
+  prelude_string_t *proc_str;
+  prelude_string_new_dup(&proc_str,process_name);
+
+  idmef_process_t *proc;
+  idmef_process_new(&proc);
+  idmef_process_set_name(proc,proc_str);
+
+  return proc;
+}
+
+
+void TestData::addServiceToSource(idmef_source_t * source, const char * service_name, const char * service_protocol, uint port)
+{
+  idmef_service_t * service;
+  idmef_source_new_service(source,&service);
+  fillService(service, service_name, service_protocol, port);
+}
+
+void TestData::addServiceToTarget(idmef_target_t * target, const char * service_name, const char * service_protocol, uint port)
+{
+  idmef_service_t * service;
+  idmef_target_new_service(target,&service);
+  fillService(service, service_name, service_protocol, port);
+}
+
+void TestData::fillService(idmef_service_t * service, const char * service_name, const char * service_protocol, uint port)
+{
+  assert(service!=NULL);
+
+  if (service_name!=NULL)
+  {
+    prelude_string_t *servicename;
+    prelude_string_new_dup(&servicename,service_name);
+    idmef_service_set_name(service,servicename);
+  }
+
+  if (service_protocol!=NULL)
+  {
+    prelude_string_t *protocol;
+    prelude_string_new_dup(&protocol,service_protocol);
+    idmef_service_set_protocol(service,protocol);
+  }
+
+  if (port!=0)
+    idmef_service_set_port(service,port);
+}
+
+void TestData::fillUser(idmef_user_t * user, const char * user_name)
+{
   idmef_user_id_t* userid;
   idmef_user_new_user_id(user,&userid,IDMEF_LIST_APPEND);
 
@@ -251,69 +257,6 @@ void TestData::addUserToTarget(idmef_target_t * target, const char * user_name)
   idmef_user_id_set_name(userid,username);
 }
 
-// TODO: c&p from addProcessToSource() - make these implementaitons common code
-void TestData::addProcessToTarget(idmef_target_t * target, const char * process_name)
-{
-  prelude_string_t *proc_str;
-  prelude_string_new_dup(&proc_str,process_name);
-
-  idmef_process_t *proc;
-  idmef_process_new(&proc);
-  idmef_process_set_name(proc,proc_str);
-  idmef_target_set_process(target,proc);
-}
-
-
-// TODO: c&p from addServiceToSource - make these two templates (2 template arguments)
-void TestData::addServiceToTarget(idmef_target_t * target, const char * service_name, const char * service_protocol, uint port)
-{
-  idmef_service_t * service;
-  idmef_target_new_service(target,&service);
-
-  // TODO: fix indentation
-  if (service_name!=NULL)
-    {
-      prelude_string_t *servicename;
-      prelude_string_new_dup(&servicename,service_name);
-      idmef_service_set_name(service,servicename);
-    }
-
-  // TODO: fix indentation
-  if (service_protocol!=NULL)
-    {
-      prelude_string_t *protocol;
-      prelude_string_new_dup(&protocol,service_protocol);
-      idmef_service_set_protocol(service,protocol);
-    }
-
-  if (port!=0)
-    idmef_service_set_port(service,port);
-}
-
-// TODO: c&p from addAddressv6ToTarget() - make commn implementation for these two calls
-void TestData::addAddressv4ToTarget(idmef_target_t * target, const char * address)
-{
-  tut::ensure("target cannot be NULL", target!=NULL);
-  idmef_node_t *node=NULL;
-  idmef_target_new_node(target, &node);
-  // fill node
-  idmef_address_t *addr=NULL;
-  idmef_node_new_address(node, &addr, IDMEF_LIST_APPEND);
-  idmef_address_set_address(addr, makeString(address) );
-  idmef_address_set_category(addr, IDMEF_ADDRESS_CATEGORY_IPV4_ADDR);
-}
-
-void TestData::addAddressv6ToTarget(idmef_target_t * target, const char * address)
-{
-  tut::ensure("target cannot be NULL", target!=NULL);
-  idmef_node_t *node=NULL;
-  idmef_target_new_node(target, &node);
-  // fill node
-  idmef_address_t *addr=NULL;
-  idmef_node_new_address(node, &addr, IDMEF_LIST_APPEND);
-  idmef_address_set_address(addr, makeString(address) );
-  idmef_address_set_category(addr, IDMEF_ADDRESS_CATEGORY_IPV6_ADDR);
-}
 
 
 } // namespace Prelude
