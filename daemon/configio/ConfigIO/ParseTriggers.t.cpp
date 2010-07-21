@@ -66,8 +66,6 @@ void testObj::test<2>(void)
   ensure_equals("invalid number of entries", cfg.size(), 2u);
 }
 
-/*
-// TODO: fix this test
 // check filter with no options
 template<>
 template<>
@@ -77,9 +75,9 @@ void testObj::test<3>(void)
   const TriggersConfigCollection &cfg =pp.getConfig();
   ensure_equals("invalid number of entries", cfg.size(), 2u);
   ensure_equals("invalid type", cfg[0].getType(), "noopts");
-  ensure_equals("invalid number of options", cfg[0].getOptions().size(), 0u);
+  ensure_equals("invalid number of options", cfg[0].getOptions().size(), 1u);
+  ensure_equals("invalid option's 1 value", cfg[0]["name"], "noopts");
 }
-*/
 
 // check filter with options
 template<>
