@@ -48,6 +48,7 @@ private:
       const typename TConfig::TypeName &type=eit->getName();
       const typename TConfig::TypeName &name=eit->getAttributesList().getAttribute("name").getValue();
       if(isNameUnique(elements, name) != true)
+        // TODO: add name of the non-unique element for user's conveniance
         throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "name is not unique");
       typename TConfig::Options         options;
 
@@ -70,6 +71,7 @@ private:
     {
       const std::string tmpName = eit->getAttributesList().getAttribute("name").getValue();
       if(name == tmpName)
+        // TODO: why not simply 'return false'?
         cnt++;
     }
     if(cnt > 1)
