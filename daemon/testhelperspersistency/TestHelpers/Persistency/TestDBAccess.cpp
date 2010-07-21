@@ -37,8 +37,8 @@ void TestDBAccess::removeAllData(void)
   t.exec("DELETE FROM procs");
   t.exec("DELETE FROM config");
   t.exec("DELETE FROM config_rdonly");
-  t.exec("DELETE FROM logger_logs");
-  t.exec("DELETE FROM logger_nodes");
+  t.exec("DELETE FROM logs");
+  t.exec("DELETE FROM wui_users");
   t.commit();
 }
 
