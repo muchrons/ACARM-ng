@@ -33,7 +33,10 @@ idmef_target_t * IDMEFParserTarget::getNotNull(idmef_target_t *ptr) const
 IDMEFParserTarget::IP IDMEFParserTarget::parseIP(idmef_target_t *ptr) const
 {
   idmef_node_t *idmef_node = idmef_target_get_node(ptr);
-  return IDMEFParserCommons::getIPfromIdmefNode(idmef_node);
+  const IDMEFParserTarget::IP *ip=IDMEFParserCommons::getIPfromIdmefNode(idmef_node).get();
+  if (ip==NULL)
+    throw ExceptionParse(SYSTEM_SAVE_LOCATION, "No IP in source");
+  return *ip;
 }
 
 Persistency::ProcessPtr IDMEFParserTarget::parseProcess(idmef_target_t * ptr) const

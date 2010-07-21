@@ -3,7 +3,7 @@
  *
  */
 #include <sstream>
-
+#include "Base/NullValue.hpp"
 #include "Input/Prelude/ExceptionParse.hpp"
 #include "Input/Prelude/IDMEFParserCommons.hpp"
 #include "Input/Prelude/IDMEFParserAnalyzer.hpp"
@@ -71,7 +71,7 @@ std::string IDMEFParserAnalyzer::parsePreludeID(idmef_analyzer_t *ptr) const
 Persistency::Analyzer::Name IDMEFParserAnalyzer::parseName(idmef_analyzer_t *ptr) const
 {
   const prelude_string_t *idmef_name = idmef_analyzer_get_name(ptr);
-  if (idmef_name)
+  if(idmef_name)
     return prelude_string_get_string(idmef_name);
   return "Unknown";
 }
@@ -107,21 +107,19 @@ Persistency::Analyzer::OperatingSystem IDMEFParserAnalyzer::parseOS(idmef_analyz
   return os;
 }
 
-std::auto_ptr<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_analyzer_t *ptr) const
+Base::NullValue<Persistency::Analyzer::IP> IDMEFParserAnalyzer::parseIP(idmef_analyzer_t *ptr) const
 {
-  // TODO: consider using Base::NullValue instead of auto_ptr<> here.
-  std::auto_ptr<Persistency::Analyzer::IP> ip;
   idmef_node_t *idmef_node = idmef_analyzer_get_node(ptr);
 
   try
   {
-    ip.reset(new Analyzer::IP(IDMEFParserCommons::getIPfromIdmefNode(idmef_node)));
+    return IDMEFParserCommons::getIPfromIdmefNode(idmef_node);
   }
   catch(const ExceptionParse &)
   {
-    LOGMSG_WARN(log_, "No IP but we can carry on");
+    LOGMSG_DEBUG(log_, "No IP address in analyzer but we can carry on");
   }
-  return ip;
+  return Base::NullValue<Persistency::Analyzer::IP>(NULL);
 }
 
 const std::string &IDMEFParserAnalyzer::getPreludeID() const

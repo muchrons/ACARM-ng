@@ -6,7 +6,6 @@
 #define INCLUDE_LOGGER_APPENDERS_BASE_HPP_FILE
 
 #include <boost/shared_ptr.hpp>
-#include <cassert>
 
 #include "Base/Threads/Mutex.hpp"
 #include "Base/Threads/Lock.hpp"
@@ -24,38 +23,23 @@ class Base
 public:
   /** \brief ensure polymorphic destruction.
    */
-  virtual ~Base(void)
-  {
-  }
+  virtual ~Base(void);
 
   /** \brief appends given string (calls appender) implenetation.
    *  \param str message to be appended.
    *  \note call is thread-safe.
    */
-  void append(const std::string &str)
-  {
-    ::Base::Threads::Lock lock(mutex_);
-    appendImpl(str);
-  }
+  void append(const std::string &str);
 
   /** \brief reinits the appender (ex. closes and opens output once again).
    *  \note call is thread-safe.
    */
-  void reinit(void)
-  {
-    ::Base::Threads::Lock lock(mutex_);
-    reinitAlreadyLocked();
-  }
+  void reinit(void);
 
   /** \brief returns name of this appenders type.
    *  \return compile-time known string representing appender's type.
    */
-  virtual const char *getTypeName(void) const
-  {
-    const char *name=getTypeNameImpl();
-    assert(name!=NULL);
-    return name;
-  }
+  const char *getTypeName(void) const;
 
 protected:
   /** \brief runs reinitImpl() without closing mutex.
@@ -63,12 +47,7 @@ protected:
    *  this call is mostly needed when user wants to call reinit from appendImpl(),
    *  since reinit() uses the same mutex and it would cause hang. use with care!
    */
-  void reinitAlreadyLocked(void)
-  {
-    assert( ::Base::Threads::Mutex::scoped_try_lock(mutex_).owns_lock()==false &&
-            "mutex is NOT locked - you probably wanted to run reinit() here" );
-    reinitImpl();
-  }
+  void reinitAlreadyLocked(void);
 
 private:
   /** \brief template-method pattern - user implements this call.

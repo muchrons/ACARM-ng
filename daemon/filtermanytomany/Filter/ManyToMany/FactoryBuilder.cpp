@@ -37,19 +37,57 @@ FactoryBuilder::FactoryBuilder(void):
 {
 }
 
+namespace
+{
+unsigned int getTimeout(const FilterConfig &fc)
+{
+  try
+  {
+    const int          timeoutInt=boost::lexical_cast<int>( fc["timeout"] );
+    const unsigned int timeout   =boost::numeric_cast<unsigned int>(timeoutInt);
+    return timeout;
+  }
+  catch(const std::exception &ex)
+  {
+    // rethrow as more reasonable exception time
+    throw ExceptionInvalidParameter( SYSTEM_SAVE_LOCATION, "timeout", ex.what() );
+  }
+  assert(!"code never reaches here");
+} // getTimeout()
+
+double getSimilarity(const FilterConfig &fc)
+{
+  try
+  {
+    const double similarity=boost::lexical_cast<double>( fc["similarity"] );
+    return similarity;
+  }
+  catch(const std::exception &ex)
+  {
+    // rethrow as more reasonable exception time
+    throw ExceptionInvalidParameter( SYSTEM_SAVE_LOCATION, "similarity", ex.what() );
+  }
+  assert(!"code never reaches here");
+} // getSimilarity()
+} // unnamed namespace
+
 FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) const
 {
   LOGMSG_INFO(log_, "building filter's instance");
-  assert(g_rh.isRegistered() && "oops - registration failed");
+  assert( g_rh.isRegistered() && "oops - registration failed" );
 
   const FilterConfig fc(type_, options);
-  const int          timeoutInt=boost::lexical_cast<int>( fc["timeout"] );
-  const unsigned int timeout   =boost::numeric_cast<unsigned int>(timeoutInt);
+  // read timeout
+  const unsigned int timeout   =getTimeout(fc);
   LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";
+  // read similarity threshold
+  const double       similarity=getSimilarity(fc);
+  LOGMSG_INFO_S(log_)<<"setting similarity threshold to "<<similarity*100<<"%";
 
   // create and return new handle.
-  typedef InterfaceImpl<Strategy, unsigned int> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl(type_, type_, timeout) );
+  typedef InterfaceImpl<Strategy, Strategy::Params> Impl;
+  const Strategy::Params params(timeout, similarity);
+  return FactoryBuilder::FactoryPtr( new Impl(type_, type_, params) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

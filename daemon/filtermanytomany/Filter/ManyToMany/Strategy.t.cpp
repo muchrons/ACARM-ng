@@ -23,7 +23,7 @@ struct TestClass: public TestStubs
   TestClass(void):
     sampleLeaf_( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "2.3.4.5",
                                                     "1.2.3.4", "9.8.7.6") ) ),
-    s_(997)
+    s_( Strategy::Params(997, 0.42) )
   {
   }
 
@@ -115,6 +115,62 @@ void testObj::test<5>(void)
                     "multiple hosts detected");
   ensure_equals("invalid name",
                 changed_[0]->getMetaAlert()->getName().get(), resp);
+}
+
+// test creating config paramters
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const Strategy::Params p(123, 0.11);
+  ensure_equals("invalid timeout",   p.timeout_,    123);
+  ensure_equals("invalid threshold", p.similarity_, 0.11);
+}
+
+// test throw on too low threshold
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  try
+  {
+    Strategy::Params(123, 0.0);
+    fail("params didn't throw on too low threshold");
+  }
+  catch(const ExceptionInvalidParameter &)
+  {
+    // this is expected
+  }
+}
+
+// test throw on too high threshold
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  try
+  {
+    Strategy::Params(123, 1.01);
+    fail("params didn't throw on too high threshold");
+  }
+  catch(const ExceptionInvalidParameter &)
+  {
+    // this is expected
+  }
+}
+
+// test if correlation will NOT take place when similarity is too low
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.4", "6.6.6.6",
+                                                         "6.6.3.4", "9.8.7.6") ) );
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("correlation below threshold took place", changed_.size(), 0u);
 }
 
 } // namespace tut

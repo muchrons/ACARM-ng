@@ -16,4 +16,5 @@
 46 if filters' prerequisites are not enought consider adding userd-defined rules in config file as well.
 51 ipblackfilter does not save paramters in data base - after restart the same alerts will get severity incremetned once more; soncider saving MetaAlertID->done/notdone as a config paramter.
 52 implement common configuration module for compile-time constants used in code.
-53
+53 implement helper component for making pipe-line processing in filters.
+54

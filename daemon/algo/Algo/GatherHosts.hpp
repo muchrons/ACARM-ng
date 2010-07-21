@@ -12,7 +12,6 @@
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/Host.hpp"
-#include "Algo/forEachUniqueLeaf.hpp"
 
 namespace Algo
 {
@@ -76,7 +75,7 @@ private:
 
   HostSetPtr source_;
   HostSetPtr target_;
-}; // struct CheckHosts
+}; // struct GatherHosts
 
 } // namespace Algo
 

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<configuration>
+
+<!--
+  <modules>
+    <module id="users" class="CLocalUserManager" />
+    <module id="auth"  class="TAuthManager" UserManager="users" LoginPage="Login" />
+  </modules>
+
+  <authorization>
+    <allow users="*"      pages="Home,Login,Logout,Photos,Cruises,Contact" />
+    <allow roles="normal" />
+    <deny  users="*" />
+  </authorization>
+-->
+
+  <pages MasterClass="Application.common.Layout" />
+
+</configuration>
