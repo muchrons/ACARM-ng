@@ -13,6 +13,9 @@
     <select id="SelectReportedService" resultClass="CReportedServiceEntry" parameterClass="int">
         SELECT s.id AS id, s.name AS name, s.port AS port, s.protocol AS protocol, u.name AS ref_name, u.url AS ref_url FROM ( reported_services AS r LEFT JOIN services AS s ON r.id_service=s.id ) LEFT JOIN reference_urls AS u ON r.id_ref=u.id WHERE s.id=#value#
     </select>
+    <select id="SelectReportedProcess" resultClass="CReportedProcessEntry" parameterClass="int">
+        SELECT r.id AS id, p.name AS name, p.path AS path, p.md5 AS md5, r.pid AS pid, r.uid AS uid, r.username AS username, r.arguments AS arguments, u.name AS ref_name, u.url AS ref_url FROM ( reported_procs AS r LEFT JOIN procs AS p ON r.id_proc=p.id ) LEFT JOIN reference_urls AS u ON r.id_ref=u.id WHERE r.id=#value#
+    </select>
 
 <!--
     <select id="SelectUsers" resultClass="CUserRecord">
