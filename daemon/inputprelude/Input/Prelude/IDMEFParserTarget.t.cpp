@@ -52,7 +52,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  td_.addAddressv4ToTarget(target_,"192.168.0.4");
+  td_.addAddressToTarget(target_,"192.168.0.4",false);
   const IDMEFParserTarget ips(target_);
   ensure_equals("Address IPv4",ips.getAddress(),Analyzer::IP(boost::asio::ip::address_v4::from_string("192.168.0.4")));
 }
@@ -62,7 +62,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  td_.addAddressv6ToTarget(target_,"2001:0db8:0000:0000:0000:0000:1428:57ab");
+  td_.addAddressToTarget(target_,"2001:0db8:0000:0000:0000:0000:1428:57ab",true);
   const IDMEFParserTarget ips(target_);
   ensure_equals("Address IPv4",ips.getAddress(),Analyzer::IP(boost::asio::ip::address_v6::from_string("2001:0db8:0000:0000:0000:0000:1428:57ab")));
 }
@@ -72,7 +72,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  td_.addAddressv4ToTarget(target_,"192.168.0.4");
+  td_.addAddressToTarget(target_,"192.168.0.4",false);
   td_.addProcessToTarget(target_,"foooood");
   const IDMEFParserTarget ips(target_);
   ensure("Target process is null",ips.getProcess()!=NULL);
@@ -85,7 +85,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  td_.addAddressv4ToTarget(target_,"192.168.0.4");
+  td_.addAddressToTarget(target_,"192.168.0.4",false);
   td_.addProcessToTarget(target_,"foooood");
   td_.addUserToTarget(target_,"Alf");
 
@@ -99,7 +99,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  td_.addAddressv4ToTarget(target_,"192.168.0.4");
+  td_.addAddressToTarget(target_,"192.168.0.4",false);
   td_.addServiceToTarget(target_,"nazwa",NULL,80);
 
   const IDMEFParserTarget ips(target_);
@@ -112,7 +112,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  td_.addAddressv4ToTarget(target_,"192.168.0.4");
+  td_.addAddressToTarget(target_,"192.168.0.4",false);
   td_.addServiceToTarget(target_,"nazwa","proto",80);
 
   const IDMEFParserTarget ips(target_);
@@ -125,7 +125,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  td_.addAddressv4ToTarget(target_,"192.168.0.4");
+  td_.addAddressToTarget(target_,"192.168.0.4",false);
   td_.addServiceToTarget(target_,"nazwa","proto",0);
 
   const IDMEFParserTarget ips(target_);
@@ -137,7 +137,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  td_.addAddressv4ToTarget(target_,"192.168.0.4");
+  td_.addAddressToTarget(target_,"192.168.0.4",false);
   td_.addServiceToTarget(target_,"nazwa","proto",42);
 
   const IDMEFParserTarget ips(target_);
