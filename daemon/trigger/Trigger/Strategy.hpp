@@ -39,6 +39,7 @@ public:
    *  \param n       node to be processed.
    *  \param changed not used in this implemention.
    */
+  //TODO: using empty variable name is advised.
   void process(Node n, ChangedNodes &changed);
   /** \brief gets filter name.
    *  \return name of implemented filter.

@@ -105,7 +105,8 @@ private:
     ensure_equals("invalid option 1 key",   it->first,  "name");
     ensure_equals("invalid option 1 value", it->second, "triggername");
     ++it;
-
+    //TODO: There's some inconisistency with respect to the numbering. Emptyness is checked before
+    //a first and a third block but bnot the second. Iterator is moved after first block but there are still 1s in the text.
     ensure_equals("invalid option 1 key",   it->first,  "opt1");
     ensure_equals("invalid option 1 value", it->second, "kszy");
     ++it;
