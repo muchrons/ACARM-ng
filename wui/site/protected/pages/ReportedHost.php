@@ -18,7 +18,7 @@ class ReportedHost extends TPage
     if(!$this->IsPostBack)
     {
       // fill fileds with avlues
-      $this->ReportedHostRole->Text   =$this->repHost_->role;
+      $this->ReportedHostRole->Text   =($this->repHost_->role==='src')?'source':'destination';
       $this->ReportedHostIP->Text     =$this->repHost_->ip;
       $this->ReportedHostMask->Text   =$this->repHost_->mask;
       $this->ReportedHostOS->Text     =$this->repHost_->os;
