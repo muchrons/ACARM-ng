@@ -17,3 +17,4 @@
 * ipblackfilter does not save paramters in data base - after restart the same alerts will get severity incremetned once more; soncider saving MetaAlertID->done/notdone as a config paramter.
 * implement common configuration module for compile-time constants used in code.
 * implement helper component for making pipe-line processing in filters.
+* filter that increases priority for hosts that are out of defined set (i.e. from external network).
