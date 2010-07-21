@@ -2,8 +2,8 @@
 <sqlMapConfig>
 
     <select id="SelectUsers" resultClass="CUserRecord"> SELECT * FROM wui_users ORDER BY login ASC </select>
-
     <select id="SelectAnalyzers" resultClass="CAnalyzerRecord"> SELECT * FROM analyzers ORDER BY name,ip ASC </select>
+    <select id="SelectWUILogs" resultClass="CLogEntry"> SELECT u.id AS id, u.login AS login, l.ctime AS ctime, l.msg AS msg FROM logs AS l LEFT JOIN wui_users AS u ON l.id_wui_user=u.id ORDER BY ctime DESC </select>
 
 <!--
     <select id="SelectUsers" resultClass="CUserRecord">
