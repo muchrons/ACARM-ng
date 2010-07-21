@@ -28,6 +28,14 @@ public:
     Generic::Config<TriggerConfig>(type, options)
   {
   }
+
+  /** \brief gets trigger's name.
+   *  \return trigger's name.
+   */
+  const std::string getTriggerName(void) const
+  {
+    return get("name");
+  }
 }; // class TriggerConfig
 
 } // namespace ConfigIO
