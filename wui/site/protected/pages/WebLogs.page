@@ -1,0 +1,41 @@
+<com:TContent ID="content">
+
+Web User Interface (WUI) logs:
+
+  <com:TDataGrid
+    ID="DataGrid"
+    DataKeyField="id"
+    AllowPaging="true"
+    PageSize="100"
+    PagerStyle.Mode="Numeric"
+    PagerStyle.HorizontalAlign="Center"
+    AutoGenerateColumns="false"
+    CellPadding="2"
+    HeaderStyle.BackColor="black"
+    HeaderStyle.ForeColor="white"
+    ItemStyle.BackColor="#BFCFFF"
+    ItemStyle.Font.Italic="true"
+    AlternatingItemStyle.BackColor="#E6ECFF"
+    OnPageIndexChanged="changePage"
+    OnPagerCreated="pagerCreated"
+    >
+
+    <com:TBoundColumn
+        ID="CtimeColumn"
+        HeaderText="Time/Date"
+        DataField="ctime"
+        />
+    <com:TBoundColumn
+        ID="LoginColumn"
+        HeaderText="Login"
+        DataField="login"
+        />
+    <com:TBoundColumn
+        ID="MsgColumn"
+        HeaderText="Message"
+        DataField="msg"
+        />
+  </com:TDataGrid>
+
+
+</com:TContent>

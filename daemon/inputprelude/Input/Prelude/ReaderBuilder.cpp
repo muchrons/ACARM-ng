@@ -43,8 +43,6 @@ ReaderBuilder::FactoryPtr ReaderBuilder::buildImpl(const Options &opt) const
   LOGMSG_INFO(log_, "building Input::Reader");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  // TODO: implement this
-
   const ConfigIO::InputConfig ic(name_, opt);
 
   const std::string &pprofile=ic["profile"];

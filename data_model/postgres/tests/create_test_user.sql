@@ -3,8 +3,8 @@ GRANT ALL ON DATABASE acarm_ng_test TO "acarm-ng-tests";
 GRANT ALL ON TABLE
     config_rdonly,
     config,
-    logger_nodes,
-    logger_logs,
+    wui_users,
+    logs,
     procs,
     services,
     reference_urls,
@@ -24,8 +24,7 @@ GRANT ALL ON TABLE
     TO "acarm-ng-tests";
 
 GRANT ALL ON SEQUENCE
-    logger_nodes_id_seq,
---    logger_logs_id_seq,
+    wui_users_id_seq,
     procs_id_seq,
     services_id_seq,
     reference_urls_id_seq,

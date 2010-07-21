@@ -26,20 +26,48 @@ namespace Prelude
 struct TestData
 {
   idmef_message_t *makeMessage(void);
-  idmef_analyzer_t *makeAnalyzerForAlert(idmef_alert_t *alert);
   idmef_analyzer_t *makeAnalyzerForHeartbeat(idmef_heartbeat_t *heartbeat);
-  void fillAnalyzer(idmef_analyzer_t *analyzer,
-                    const char       *id="Death/Star/ID/42",
-                    const char       *name="Analyzer Of Luke Skywalker",
-                    const char       *osType="Linux",
-                    const char       *osVersion="2.6.129 gr-sec",
-                    const char       *address="1.2.3.4");
-  prelude_string_t *makeString(const char *str);
-  idmef_alert_t *makeAlert(void);
-  void makeAndFillNodeForAnalyzer(idmef_analyzer_t *analyzer,
-                                  const char       *address);
-  idmef_time_t *makeTime(time_t time);
+
+  //Heartbeat
   idmef_heartbeat_t *makeHeartbeat(void);
+
+
+  //Alert
+  void makeAlert(void);
+  void addClassificationToAlert(const char * classification);
+  void addTimeToAlert(time_t time);
+
+  idmef_analyzer_t *addAnalyzerToAlert();
+
+  //Analyzer
+  void addNameToAnalyzer(idmef_analyzer_t * analyzer, const char * name);
+  void addAnalyzeridToAnalyzer(idmef_analyzer_t * analyzer, const char * value);
+  void addOsTypeToAnalyzer(idmef_analyzer_t * analyzer, const char * value);
+  void addOsVersionToAnalyzer(idmef_analyzer_t * analyzer, const char * value);
+  void addAddressToAnalyzer(idmef_analyzer_t * analyzer, const char * address, bool v6=false);
+
+  //Source
+  idmef_source_t *addSourceToAlert();
+  void addUserToSource(idmef_source_t * source, const char * user_name);
+  void addProcessToSource(idmef_source_t * source, const char * process_name);
+  void addServiceToSource(idmef_source_t * source, const char * service_name=NULL, const char * service_protocol=NULL, uint port=0);
+  void addAddressToSource(idmef_source_t * analyzer, const char * address,bool v6);
+
+  //Target
+  idmef_target_t *addTargetToAlert();
+  void addUserToTarget(idmef_target_t * target, const char * user_name);
+  void addProcessToTarget(idmef_target_t * target, const char * process_name);
+  void addServiceToTarget(idmef_target_t * target, const char * service_name=NULL, const char * service_protocol=NULL, uint port=0);
+  void addAddressToTarget(idmef_target_t * analyzer, const char * address, bool v6);
+
+
+  prelude_string_t *makeString(const char *str);
+  idmef_time_t *makeTime(time_t time);
+  void fillNode(idmef_node_t * node, const char * address, bool v6);
+  void fillService(idmef_service_t * service, const char * service_name=NULL, const char * service_protocol=NULL, uint port=0);
+  idmef_process_t * fillProcess(const char * process_name);
+  void fillUser(idmef_user_t * user, const char * user_name);
+
 
   System::ScopedPtrCustom<idmef_message_t,        idmef_message_destroy>        message_;
   System::ScopedPtrCustom<prelude_string_t,       prelude_string_destroy>       string_;
