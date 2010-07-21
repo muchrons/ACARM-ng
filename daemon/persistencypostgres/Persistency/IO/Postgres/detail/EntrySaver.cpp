@@ -460,9 +460,10 @@ void EntrySaver::saveConfigParameter(const DynamicConfig::Owner &owner,
   // first, delete given key if entry's present
   {
     stringstream ss;
-    ss << "DELETE FROM config WHERE owner = ";
-    Appender::append(ss, owner.get());
-    ss << " AND key = ";
+    ss << "DELETE FROM config WHERE owner ";
+    addToSelect(ss, owner);
+    ss << " AND key = ";    // '=' here is ok - key cannot be NULL
+    assert( key.get()!=NULL );
     Appender::append(ss, key.get());
     SQL( ss.str().c_str(), log_ ).exec(t_);
   }
