@@ -24,7 +24,7 @@
         <td id="sideMenuPart">
           <!-- MENU HEADER -->
           <div id="lefthead">
-          MENU
+          <!-- MENU -->
           </div>
           <!-- MENU ITSELF -->
           <com:MainMenuTemplate />
