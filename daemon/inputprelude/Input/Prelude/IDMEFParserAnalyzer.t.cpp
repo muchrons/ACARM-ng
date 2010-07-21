@@ -49,15 +49,6 @@ factory tf("Input/Prelude/IDMEFParserAnalyzer");
 namespace tut
 {
 
-// TODO: remove dead code
-  /*
-   void addAnalyzeridToAnalyzer(idmef_analyzer_t * analyzer, const char * value);
-
-  void addAddressv4ToAnalyzer(idmef_analyzer_t * analyzer, const char * address);
-  void addAddressv6ToAnalyzer(idmef_analyzer_t * a
-
-   */
-
 // Name extraction from Analyzer
 template<>
 template<>
@@ -87,10 +78,12 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  td_.addAddressv4ToAnalyzer(analyzer_,"1.2.3.4");
+  td_.addAddressToAnalyzer(analyzer_,"1.2.3.4",false);
   IDMEFParserAnalyzer an(analyzer_);
-  // TODO: SEGV if getIP() is NULL
-  ensure_equals("IP address",*an.getIP(),boost::asio::ip::address_v4::from_string("1.2.3.4"));
+
+  const boost::asio::ip::address *ip=an.getIP();
+  assert(ip!=NULL);
+  ensure_equals("IP address",*ip,boost::asio::ip::address_v4::from_string("1.2.3.4"));
 }
 
 // address extracion (IPv6)
@@ -98,10 +91,12 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  td_.addAddressv6ToAnalyzer(analyzer_,"2001:0db8:0000:0000:0000:0000:1428:57ab");
+  td_.addAddressToAnalyzer(analyzer_,"2001:0db8:0000:0000:0000:0000:1428:57ab",true);
   IDMEFParserAnalyzer an(analyzer_);
-  // TODO: SEGV if getIP() is NULL
-  ensure_equals("IP address",*an.getIP(),boost::asio::ip::address_v6::from_string("2001:0db8:0000:0000:0000:0000:1428:57ab"));
+
+  const boost::asio::ip::address *ip=an.getIP();
+  assert(ip!=NULL);
+  ensure_equals("IP address",*ip,boost::asio::ip::address_v6::from_string("2001:0db8:0000:0000:0000:0000:1428:57ab"));
 }
 
 
@@ -152,14 +147,13 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  td_.addAddressv4ToAnalyzer(analyzer_,"Ala ma kota");
+  td_.addAddressToAnalyzer(analyzer_,"Ala ma kota",false);
 
-  // TODO: fix indentation
   try
-    {
-      IDMEFParserAnalyzer an(analyzer_);
-      fail("Exception was not thrown.");
-    }
+  {
+    IDMEFParserAnalyzer an(analyzer_);
+    fail("Exception was not thrown.");
+  }
   catch(const tut::tut_error)
   {
     throw;
@@ -187,7 +181,7 @@ void testObj::test<11>(void)
 {
   td_.addNameToAnalyzer(analyzer_,"The Analyzer of Luke Skywaker");
   td_.addOsTypeToAnalyzer(analyzer_,"Wojtek linux2.6.129 gr-sec");
-  td_.addAddressv4ToAnalyzer(analyzer_,"156.117.92.22");
+  td_.addAddressToAnalyzer(analyzer_,"156.117.92.22",false);
   IDMEFParserAnalyzer an(analyzer_);
   ensure_equals("invalid value returned",
                 an.getPreludeID(),
