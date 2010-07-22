@@ -1,0 +1,32 @@
+<com:TContent ID="content">
+
+Analyzer's details:<br/>
+
+  <table>
+    <tr>
+      <td>ID:</td>
+      <td> <com:TLiteral ID="AnalyzerID" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Name:</td>
+      <td> <com:TLiteral ID="AnalyzerName" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Version:</td>
+      <td> <com:TLiteral ID="AnalyzerVersion" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Operating system:</td>
+      <td> <com:TLiteral ID="AnalyzerOS" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>IP:</td>
+      <td> <com:TLiteral ID="AnalyzerIP" Text="" Encode="true"/> </td>
+    </tr>
+  </table>
+
+</com:TContent>
