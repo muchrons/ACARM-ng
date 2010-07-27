@@ -17,11 +17,9 @@
 
 namespace Trigger
 {
-
-/** \brief abstract factory producing filters. */
+/** \brief abstract factory producting triggers. */
 typedef Commons::Factory::AbstractFactorySingleton<Core::Types::Proc::Interface> Factory;
-
-/** \brief collection of created filters. */
+/** \brief collection of created triggers. */
 typedef Core::Types::Proc::ProcessorsCollection TriggersCollection;
 
 /** \brief creates new input.

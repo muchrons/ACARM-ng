@@ -1,0 +1,32 @@
+<com:TContent ID="content">
+
+Service's details:<br/>
+
+  <table>
+    <tr>
+      <td>Name:</td>
+      <td> <com:TLiteral ID="ReportedServiceName" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Port:</td>
+      <td> <com:TLiteral ID="ReportedServicePort" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Protocol:</td>
+      <td> <com:TLiteral ID="ReportedServiceProtocol" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Reference:</td>
+      <td> <com:TLiteral ID="ReportedServiceRefName" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>URL:</td>
+      <td> <com:TLiteral ID="ReportedServiceRefURL" Text="" Encode="true"/> </td>
+    </tr>
+  </table>
+
+</com:TContent>

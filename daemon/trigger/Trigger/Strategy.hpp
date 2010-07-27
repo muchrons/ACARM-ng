@@ -37,9 +37,8 @@ public:
 
   /** \brief processes given meta-alert.
    *  \param n       node to be processed.
-   *  \param changed not used in this implemention.
    */
-  void process(Node n, ChangedNodes &changed);
+  void process(Node n, ChangedNodes &/*changed*/);
   /** \brief gets filter name.
    *  \return name of implemented filter.
    */

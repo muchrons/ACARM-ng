@@ -1,0 +1,52 @@
+<com:TContent ID="content">
+
+Host's details:<br/>
+
+  <table>
+    <tr>
+      <td>Role:</td>
+      <td> <com:TLiteral ID="ReportedHostRole" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>IP:</td>
+      <td> <com:TLiteral ID="ReportedHostIP" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Mask:</td>
+      <td> <com:TLiteral ID="ReportedHostMask" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>OS:</td>
+      <td> <com:TLiteral ID="ReportedHostOS" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Name:</td>
+      <td> <com:TLiteral ID="ReportedHostName" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Processes:</td>
+      <td> <com:TLiteral ID="ReportedHostProcesses" Text="" Encode="false"/> </td>
+    </tr>
+
+    <tr>
+      <td>Services:</td>
+      <td> <com:TLiteral ID="ReportedHostServices" Text="" Encode="false"/> </td>
+    </tr>
+
+    <tr>
+      <td>Reference:</td>
+      <td> <com:TLiteral ID="ReportedHostRefName" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>URL:</td>
+      <td> <com:TLiteral ID="ReportedHostRefURL" Text="" Encode="true"/> </td>
+    </tr>
+  </table>
+
+</com:TContent>

@@ -4,24 +4,32 @@
     <select id="SelectUsers" resultClass="CUserRecord"> SELECT * FROM wui_users ORDER BY login ASC </select>
     <select id="SelectAnalyzers" resultClass="CAnalyzerRecord"> SELECT * FROM analyzers ORDER BY name,ip ASC </select>
     <select id="SelectWUILogs" resultClass="CLogEntry"> SELECT u.id AS id, u.login AS login, l.ctime AS ctime, l.msg AS msg FROM logs AS l LEFT JOIN wui_users AS u ON l.id_wui_user=u.id ORDER BY ctime DESC </select>
-
-<!--
-    <select id="SelectUsers" resultClass="CUserRecord">
-        SELECT * FROM users
-            ORDER BY surname,name ASC
+    <select id="SelectAlert" resultClass="CAlertEntry" parameterClass="int">
+        SELECT a.id AS id, a.name AS name, a.detect_time AS detect, a.create_time AS create, s.name AS severity, a.certanity AS certainty, a.description AS description FROM alerts AS a LEFT JOIN severities AS s ON a.id_severity=s.id WHERE a.id=#value#
     </select>
-
-    <delete>
-        DELETE FROM users
-            WHERE id=2
-    </delete>
-
-    <select id="SelectCruiseAttenders" resultClass="CCruiseUserRecord" parameterClass="int">
-        SELECT a.id as id, u.id as id_user, u.name as name, u.surname as surname FROM
-            ( SELECT * FROM cruise_attenders WHERE id_cruise=#value# ) as a LEFT JOIN users as u
-            ON a.id_user=u.id
-            ORDER BY surname,name ASC
+    <select id="SelectReportedHost" resultClass="CReportedHostEntry" parameterClass="int">
+        SELECT r.id AS id, r.role AS role, h.ip AS ip, h.mask AS mask, h.os AS os, h.name AS name, u.name as ref_name, u.url AS ref_url FROM ( reported_hosts as r LEFT JOIN hosts as h ON r.id_host=h.id ) LEFT JOIN reference_urls as u ON r.id_ref=u.id WHERE r.id=#value#
     </select>
--->
+    <select id="SelectReportedService" resultClass="CReportedServiceEntry" parameterClass="int">
+        SELECT s.id AS id, s.name AS name, s.port AS port, s.protocol AS protocol, u.name AS ref_name, u.url AS ref_url FROM ( reported_services AS r LEFT JOIN services AS s ON r.id_service=s.id ) LEFT JOIN reference_urls AS u ON r.id_ref=u.id WHERE s.id=#value# ORDER BY name
+    </select>
+    <select id="SelectReportedProcess" resultClass="CReportedProcessEntry" parameterClass="int">
+        SELECT r.id AS id, p.name AS name, p.path AS path, p.md5 AS md5, r.pid AS pid, r.uid AS uid, r.username AS username, r.arguments AS arguments, u.name AS ref_name, u.url AS ref_url FROM ( reported_procs AS r LEFT JOIN procs AS p ON r.id_proc=p.id ) LEFT JOIN reference_urls AS u ON r.id_ref=u.id WHERE r.id=#value# ORDER BY name
+    </select>
+    <select id="SelectAlertAnalyzers" resultClass="CLinkPair" parameterClass="int">
+        SELECT aa.id_analyzer AS id, an.name AS name FROM alert_analyzers AS aa LEFT JOIN analyzers AS an ON aa.id_analyzer=an.id WHERE aa.id_alert=#value#
+    </select>
+    <select id="SelectAlertSourceHosts" resultClass="CLinkPair" parameterClass="int">
+        SELECT r.id AS id, h.ip AS name FROM reported_hosts AS r LEFT JOIN hosts AS h ON r.id_host=h.id WHERE r.id_alert=#value# AND r.role='src' ORDER BY name
+    </select>
+    <select id="SelectAlertDestinationHosts" resultClass="CLinkPair" parameterClass="int">
+        SELECT r.id AS id, h.ip AS name FROM reported_hosts AS r LEFT JOIN hosts AS h ON r.id_host=h.id WHERE r.id_alert=#value# AND r.role='dst' ORDER BY name
+    </select>
+    <select id="SelectReportedHostsProcesses" resultClass="CLinkPair" parameterClass="int">
+        SELECT r.id AS id, p.name AS name FROM reported_procs AS r LEFT JOIN procs as p ON r.id_proc=p.id WHERE r.id_reported_host=#value# ORDER BY name
+    </select>
+    <select id="SelectReportedHostsServices" resultClass="CLinkPair" parameterClass="int">
+        SELECT r.id_service AS id, s.name AS name FROM reported_services AS r LEFT JOIN services as s ON r.id_service=s.id WHERE r.id_reported_host=#value# ORDER BY name
+    </select>
 
 </sqlMapConfig>
