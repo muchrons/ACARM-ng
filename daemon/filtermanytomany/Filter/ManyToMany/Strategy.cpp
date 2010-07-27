@@ -38,9 +38,6 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
   ecl.add("*input*");   // TODO: magic value
-  ecl.add("onetoone");  // TODO: magic value
-  ecl.add("onetomany"); // TODO: magic value
-  ecl.add("manytoone"); // TODO: magic value
   return ecl;
 }
 
