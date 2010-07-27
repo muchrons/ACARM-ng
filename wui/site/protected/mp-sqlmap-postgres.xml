@@ -34,5 +34,8 @@
     <select id="SelectAlertsSummary" resultClass="CAlertSummaryEntry">
         SELECT a.id AS id, a.name AS name, a.create_time AS create_time, s.name || ' (' || s.level || ')' AS severity FROM alerts AS a LEFT JOIN severities AS s ON a.id_severity=s.id ORDER BY create_time DESC
     </select>
+    <select id="SelectMetaAlertsSummary" resultClass="CMetaAlertSummaryEntry">
+        SELECT id, name, create_time FROM meta_alerts ORDER BY create_time DESC
+    </select>
 
 </sqlMapConfig>
