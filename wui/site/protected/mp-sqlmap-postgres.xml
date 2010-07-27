@@ -31,5 +31,8 @@
     <select id="SelectReportedHostsServices" resultClass="CLinkPair" parameterClass="int">
         SELECT r.id_service AS id, s.name AS name FROM reported_services AS r LEFT JOIN services as s ON r.id_service=s.id WHERE r.id_reported_host=#value# ORDER BY name
     </select>
+    <select id="SelectAlertsSummary" resultClass="CAlertSummaryEntry">
+        SELECT a.id AS id, a.name AS name, a.create_time AS create_time, s.name || ' (' || s.level || ')' AS severity FROM alerts AS a LEFT JOIN severities AS s ON a.id_severity=s.id ORDER BY create_time DESC
+    </select>
 
 </sqlMapConfig>
