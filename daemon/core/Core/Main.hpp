@@ -49,7 +49,7 @@ private:
   SanityCheck                  sanity_;     // checks if (basic) environment is sane
   Logger::Node                 log_;
   HandleSignals                nullSignals_;// ignore signals at this moment
-                                        // (will be overwritten later on)
+                                            // (will be overwritten later on)
   // TODO: persistency cleanup takes enormous ammount of time na dmust be run from time to time,
   //       not only when starting application. it must be added to a sort of "crontab" inside
   //       acarm-ng itself, or made a separate application to be run by user.
