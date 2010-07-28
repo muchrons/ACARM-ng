@@ -61,4 +61,20 @@ void testObj::test<2>(void)
   ensure("invalid repot generated", strstr( str.c_str(), "reporting triggered for meta-alert \"")!=0 );
 }
 
+// test if joing thread does not take too much time (i.e. if interruption of boost::thread::sleep()
+// works as expected.
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  time_t start, stop;
+  {
+    const Strategy s(cfg_);
+    start=time(NULL);
+    usleep(100*1000);                 // give time for backend thread to start
+  } // thread interruption and joining goes here
+  stop=time(NULL);
+  ensure("joining took too long - interruption while asleep does not work properly", stop-start<10);
+}
+
 } // namespace tut

@@ -18,8 +18,6 @@ class PersistencyCleanup
 {
 public:
   /** \brief creates instance.
-   *
-   *  when creating cleanup run by default.
    */
   PersistencyCleanup(void);
   /** \brief run cleanup manually.
