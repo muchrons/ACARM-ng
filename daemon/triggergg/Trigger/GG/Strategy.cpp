@@ -42,7 +42,8 @@ struct PingThread
         s_->ping();                         // ping
         s_->discardIncommingMessages();     // throw away anything that might have arrived
 
-        // wait a while...
+        // wait a while... (note: busy loop here makes system more responsive for
+        // interruptions - it's important when shutting down the system)
         for(int i=0; i<60; ++i)
         {
           boost::this_thread::interruption_point();
