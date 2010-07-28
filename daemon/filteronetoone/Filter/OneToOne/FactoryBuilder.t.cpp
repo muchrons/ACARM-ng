@@ -32,7 +32,7 @@ struct TestClass
       build(timeout);
       tut::fail("build() didn't throw on missing paramter");
     }
-    catch(const std::runtime_error&)
+    catch(const std::runtime_error&) //TODO if this is the only exception we are looking forward to, why not incorporate it to IPBlacklist -> Tests -> ensureThrow
     {
       // this is expected
     }
