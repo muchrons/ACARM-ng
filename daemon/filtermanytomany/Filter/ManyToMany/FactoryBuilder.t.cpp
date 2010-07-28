@@ -6,6 +6,7 @@
 #include <cstring>
 #include <memory>
 
+#include "ConfigIO/Exception.hpp"
 #include "Filter/ManyToMany/FactoryBuilder.hpp"
 
 using namespace std;
@@ -35,6 +36,14 @@ struct TestClass
       tut::fail("build() didn't throw on missing paramter");
     }
     catch(const ExceptionInvalidParameter &)
+    {
+      // this is expected
+    }
+    catch(const Commons::Exception &)
+    {
+      // this is expected
+    }
+    catch(const ConfigIO::Exception &)
     {
       // this is expected
     }

@@ -2,9 +2,9 @@
  * Rule.cpp
  *
  */
-#include <boost/lexical_cast.hpp>
 #include <cassert>
 
+#include "Commons/Convert.hpp"
 #include "Preprocessor/Checkers/Equals.hpp"
 #include "Preprocessor/Checkers/Contains.hpp"
 #include "Preprocessor/Expressions/Rule.hpp"
@@ -23,7 +23,7 @@ namespace
 template<typename T>
 string cast(const T &t)
 {
-  return boost::lexical_cast<string>(t);
+  return Commons::Convert::to<string>(t);
 } // cast()
 
 template<typename T>

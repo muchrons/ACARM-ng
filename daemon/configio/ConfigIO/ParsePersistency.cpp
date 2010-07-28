@@ -20,7 +20,7 @@ ParsePersistency::ParsePersistency(const XML::Node &node):
 
 PersistencyConfig ParsePersistency::parse(const XML::Node &node) const
 {
-  // this will be checed before this call happens anyway
+  // this will be checked before this call happens anyway
   assert( node.getName()=="persistency" );
 
   const PersistencyConfig::TypeName type=node.getChild("type").getValuesString();

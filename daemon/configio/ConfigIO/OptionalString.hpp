@@ -11,6 +11,7 @@
 
 #include "ConfigIO/Exception.hpp"
 
+// TODO: consider poritng this code to Base component, since it's generic (Exception can be a problem here, though).
 
 namespace ConfigIO
 {
