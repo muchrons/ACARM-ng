@@ -72,7 +72,7 @@ template<>
 void testObj::test<4>(void)
 {
   const LoggerNodeConfig lnc("node");
-  ensure("appender is set",  lnc.hasAppender()==false);
+  ensure("appender is set",  lnc.hasAppender()==false); //TODO: "appender not set" just as in <2> ?
   ensure("threshold is set", lnc.hasThreshold()==false);
 }
 
