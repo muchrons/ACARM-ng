@@ -84,7 +84,7 @@ public:
 
   IntersectionOutputIterator &operator*(void)
   {
-    // return ourselfs to make space for assignment operator.
+    // return ourselves to make space for assignment operator.
     return *this;
   }
 
