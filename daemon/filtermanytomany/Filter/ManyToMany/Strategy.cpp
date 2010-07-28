@@ -20,14 +20,12 @@ Strategy::Params::Params(unsigned int timeout, double similarity):
   timeout_(timeout),
   similarity_(similarity)
 {
-  //TODO 0 is not a negative value. Fix a condition or comment.
   if(similarity_<=0)
     throw ExceptionInvalidParameter(SYSTEM_SAVE_LOCATION, "similarity",
-                                    "negative value does not make sense");
-  //TODO above 100% (i.e. 1) sounds like 1 is more than 100%
+                                    "non-positive value does not make sense");
   if(similarity_>1)
     throw ExceptionInvalidParameter(SYSTEM_SAVE_LOCATION, "similarity",
-                                    "similarity above 100% (i.e. 1) is invalid");
+                                    "values above 100% (i.e. 1) are invalid");
 }
 
 Strategy::Strategy(const Params &params):
