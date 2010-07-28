@@ -77,7 +77,7 @@ struct NumericConvertionProxy
   }
 }; // struct NumericConvertionProxy
 
-/** \brief converting from non-number to number
+/** \brief converting from non-int to int
  */
 template<bool FisIntegral>
 struct NumericConvertionProxy<true, FisIntegral>
@@ -93,7 +93,7 @@ struct NumericConvertionProxy<true, FisIntegral>
   }
 }; // struct NumericConvertionProxy
 
-/** \brief specialization converting between two number types.
+/** \brief specialization converting between two integer number types.
  */
 template<>
 struct NumericConvertionProxy<true, true>

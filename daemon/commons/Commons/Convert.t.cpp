@@ -137,11 +137,36 @@ void testObj::test<12>(void)
   ensure_equals("string->string failed", Convert::to<string, string>("1.2"), "1.2");
 }
 
-// 
+// test converting bigger integral type to smaller one
 template<>
 template<>
 void testObj::test<13>(void)
 {
+  ensureThrow<char, long>(303);
+}
+
+// test no throwing when element fits the smaller type.
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  ensure_equals("convertion failed", Convert::to<char, long>(42), 42);
+}
+
+// test converting to unsigned type
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  ensure_equals("convertion failed", Convert::to<unsigned char, long>(42), 42);
+}
+
+// test throw when converting string (negative number) to unsigned number
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  ensureThrow<unsigned char, string>("-11");
 }
 
 } // namespace tut
