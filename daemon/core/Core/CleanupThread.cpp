@@ -2,6 +2,9 @@
  * CleanupThread.cpp
  *
  */
+#include <cassert>
+
+#include "Logger/Logger.hpp"
 #include "Core/CleanupThread.hpp"
 
 namespace Core
@@ -20,36 +23,41 @@ struct PeriodicalCleanup
   void operator()(void)
   {
     LOGMSG_DEBUG(log_, "thread is up");
-    bool quit=cleanup();    // run initial cleanup
-    while(!quit)
+
+    try
     {
-      // TODO: make this sleep time compile-time configuration
-      boost::this_thread::sleep( boost::posix_time::seconds(24*3600) ); // sleep one day
-      quit=cleanup();                                                   // run cleanup
-    } // while(!quit)
-    LOGMSG_DEBUG(log_, "thread is exiting normally");
+      cleanup();              // run initial cleanup
+
+      const size_t hours=24;  // TODO: magic value
+      while(true)
+      {
+        LOGMSG_INFO_S(log_)<<"next cleanup in "<<hours<<" hours";
+        boost::this_thread::sleep( boost::posix_time::seconds(hours*3600) );  // sleep until next cleanup
+        LOGMSG_INFO(log_, "cleanup time has come");
+        cleanup();
+      } // while(true)
+    }
+    catch(const boost::thread_interrupted &)
+    {
+      // interrupting on user's request
+      LOGMSG_INFO(log_, "interrupting on user's request");
+    }
+
+    LOGMSG_DEBUG(log_, "exiting thread noramlly");
   }
 
 private:
-  bool cleanup(void)
+  void cleanup(void)
   {
     try
     {
       assert(pc_!=NULL);
       pc_->cleanup();
     }
-    catch(const boost::thread_interrupted &)
-    {
-      // interrupting on user's request
-      LOGMSG_INFO(log_, "interrupting on user's request");
-      return true;
-    }
     catch(const std::exception &ex)
     {
       LOGMSG_ERROR_S(log_)<<"exception cought: '"<<ex.what()<<"' - ignoring it...";
     }
-    // continue work
-    return false;
   }
 
   Logger::Node        log_;
