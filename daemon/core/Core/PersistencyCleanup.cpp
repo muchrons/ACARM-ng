@@ -15,7 +15,6 @@ PersistencyCleanup::PersistencyCleanup(void):
   log_("core.persistencycleanup")
 {
   LOGMSG_INFO(log_, "created");
-  cleanup();
 }
 
 void PersistencyCleanup::cleanup(void)

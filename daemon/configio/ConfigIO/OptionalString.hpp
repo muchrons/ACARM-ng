@@ -11,6 +11,7 @@
 
 #include "ConfigIO/Exception.hpp"
 
+//TODO LimitedNullString can't be used instead of creating a new entity?
 
 namespace ConfigIO
 {
