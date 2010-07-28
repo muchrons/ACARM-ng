@@ -32,8 +32,7 @@ void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
 {
   assert( leaf->isLeaf() && "wrong graph-passing algorithm choosen" );
   processHosts(leaf, leaf->getAlert()->getReportedSourceHosts() );
-  //TODO: dead code
-  //processHosts(leaf, leaf->getAlert()->getReportedTargetHosts() );
+  processHosts(leaf, leaf->getAlert()->getReportedTargetHosts() );
 }
 
 void EntryProcessor::processHosts(Persistency::GraphNodePtrNN              leaf,
