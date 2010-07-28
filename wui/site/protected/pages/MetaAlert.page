@@ -1,0 +1,37 @@
+<com:TContent ID="content">
+
+Meta-alert details:<br/>
+
+  <table>
+    <tr>
+      <td>Name:</td>
+      <td> <com:TLiteral ID="MetaAlertName" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Created:</td>
+      <td> <com:TLiteral ID="MetaAlertCreateTime" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Last update:</td>
+      <td> <com:TLiteral ID="MetaAlertLastUpdateTime" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Severity delta:</td>
+      <td> <com:TLiteral ID="MetaAlertSeverityDelta" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Certainty delta:</td>
+      <td> <com:TLiteral ID="MetaAlertCertaintyDelta" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td> <com:TLiteral ID="MetaAlertLinksName" Text="" Encode="true"/>: </td>
+      <td> <com:TLiteral ID="MetaAlertLinks"     Text="" Encode="false"/> </td>
+    </tr>
+  </table>
+
+</com:TContent>

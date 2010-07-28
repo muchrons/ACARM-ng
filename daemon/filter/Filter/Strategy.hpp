@@ -115,7 +115,7 @@ private:
     ntq_.prune();               // do periodical queue's clean-up
     nextPrune_=now+1;           // it does not make sense to make it more often than
                                 // once per 1[s]
-    LOGMSG_DEBUG_S(log_)<<"nest prunning on "<<nextPrune_;
+    LOGMSG_DEBUG_S(log_)<<"next prunning on "<<nextPrune_;
   }
 
   NodesTimeoutQueue ntq_;

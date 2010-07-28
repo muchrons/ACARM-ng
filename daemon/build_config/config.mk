@@ -17,7 +17,7 @@ export TC=local
 
 # features to build with
 export FEATURES= \
-                 simple_graph_add
+                 lock_on_write_graph_add
 
 # enable ccache, if not using intel's toolchain
 ifneq ($(TC),intel)
