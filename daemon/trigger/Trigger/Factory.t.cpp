@@ -100,20 +100,20 @@ private:
   virtual FactoryPtr buildImpl(const Options &options) const
   {
     Options::const_iterator it=options.begin();
-    ensure("empty collection", it!=options.end() );
 
+    ensure("empty collection", it!=options.end() );
     ensure_equals("invalid option 1 key",   it->first,  "name");
     ensure_equals("invalid option 1 value", it->second, "triggername");
     ++it;
-    //TODO: There's some inconisistency with respect to the numbering. Emptyness is checked before
-    //a first and a third block but bnot the second. Iterator is moved after first block but there are still 1s in the text.
-    ensure_equals("invalid option 1 key",   it->first,  "opt1");
-    ensure_equals("invalid option 1 value", it->second, "kszy");
+    //a first and a third block but not the second. Iterator is moved after first block but there are still 1s in the text.
+    ensure("just one element in collection", it!=options.end() );
+    ensure_equals("invalid option 2 key",   it->first,  "opt1");
+    ensure_equals("invalid option 2 value", it->second, "kszy");
     ++it;
 
-    ensure("just one element in collection", it!=options.end() );
-    ensure_equals("invalid option 2 key",   it->first,  "opt2");
-    ensure_equals("invalid option 2 value", it->second, "narf");
+    ensure("not enought elements in collection", it!=options.end() );
+    ensure_equals("invalid option 3 key",   it->first,  "opt2");
+    ensure_equals("invalid option 3 value", it->second, "narf");
     ++it;
 
     ensure("too many elements in collection", it==options.end() );

@@ -85,7 +85,7 @@ CUrlInit::~CUrlInit(void)
   System::Threads::SafeInitLock lock(mutex);
   --g_count;
   // if we're the last instance and AtExit() has already finished,
-  // we have to do clean-up ourselfs
+  // we have to do clean-up ourselves
   if(g_count==0 && g_exitIsDone==true)
   {
     LOGMSG_DEBUG(log_, "we're the last instance - calling termination");
