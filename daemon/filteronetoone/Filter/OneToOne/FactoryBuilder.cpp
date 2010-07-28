@@ -44,7 +44,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   const FilterConfig fc(type_, options);
   const int          timeoutInt=boost::lexical_cast<int>( fc["timeout"] );
-  const unsigned int timeout   =boost::numeric_cast<unsigned int>(timeoutInt);
+  const unsigned int timeout   =boost::numeric_cast<unsigned int>(timeoutInt); //TODO this double casting is being used in every filter, a helper function is suggested
   LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";
 
   // create and return new handle.

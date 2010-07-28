@@ -25,7 +25,7 @@ struct Data
 {
 }; // struct Data
 
-
+  //TODO inadequate comment
 /** \brief filter detecting multiple attacks from multiple hosts implementation.
  */
 class Strategy: public Filter::Strategy<Data>
