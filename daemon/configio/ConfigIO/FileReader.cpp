@@ -37,8 +37,7 @@ FileReader::FileReader(const std::string &path)
       throw ExceptionFileAccessError(SYSTEM_SAVE_LOCATION, path.c_str() );
     // mark last byte as terminating zero, in case of text files, so that
     // it could be read as regular string.
-    //TODO: Use of '\0' is advised.
-    data_[size_]=0;
+    data_[size_]='\0';
   }
 }
 
