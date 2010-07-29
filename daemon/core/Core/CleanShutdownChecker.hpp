@@ -14,19 +14,19 @@
 namespace Core
 {
 
-/** \brief 
+/** \brief helper object that checks if applicaiton's last run went fine.
  */
 class CleanShutdownChecker: private boost::noncopyable
 {
 public:
-  /** \brief 
+  /** \brief check last run and create guard object.
    */
   CleanShutdownChecker(void);
-  /** \brief 
+  /** \brief perform marking on shutdown.
    */
   ~CleanShutdownChecker(void);
 
-  /** \brief 
+  /** \brief mark this run as clean.
    */
   void confirmCleanShutdown(void);
 
