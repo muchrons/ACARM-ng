@@ -20,6 +20,8 @@ void printBanner(const char *app)
   cout << app << ":   Bartosz 'BaSz' Szurgot (bartosz.szurgot@pwr.wroc.pl)" << endl;
   cout << app << ":   Mariusz 'Muchrons' Uchroński (mariusz.uchronski@pwr.wroc.pl)" << endl;
   cout << app << ":   Wojciech 'Wojek' Waga (wojciech.waga@pwr.wroc.pl)" << endl;
+  cout << app << ":" << endl;
+  cout << app << ": (see logs for details on application's current status/run)" << endl;
 } // printBanner()
 
 
