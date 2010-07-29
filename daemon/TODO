@@ -6,7 +6,6 @@
 * create XML schema for config file.
 * add parse-at-read feature to configio - config should be accepted or rejected when running application, not delayed until acctuall usage (note: this task is connected with config's refactoring to register parsers).
 * add extra check while running ACARM-ng, if last run finished successfully or not (ex.: via DynamicConfig entry, changed uppon normal exit).
-* consider some sort of mechanism to prevent crashes when connection lives shorter than transaction (ex.: keeping connection in transaction?).
 * consider adding 'description' to meta-alert to reflect extra correlation pieces of information (like details on what bases these alerts have been correlated).
 * if filters' prerequisites are not enought consider adding userd-defined rules in config file as well.
 * ipblackfilter does not save paramters in data base - after restart the same alerts will get severity incremetned once more; soncider saving MetaAlertID->done/notdone as a config paramter.
