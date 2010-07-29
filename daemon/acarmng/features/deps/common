@@ -13,6 +13,7 @@ filtermanytomany
 filterdnsresolver
 filteripblacklist
 
+triggerjabber
 triggerfile
 triggermail
 triggergg

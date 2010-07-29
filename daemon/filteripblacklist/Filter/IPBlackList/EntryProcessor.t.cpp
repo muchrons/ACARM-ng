@@ -57,7 +57,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  GraphNodePtrNN leaf=makeNewLeaf("1.2.3.4", "84.109.175.233");
+  GraphNodePtrNN leaf=makeNewLeaf("1.2.3.4", "5.6.7.8");
   const double   pri1=leaf->getMetaAlert()->getSeverityDelta();
   ep_(leaf);
   const double   pri2=leaf->getMetaAlert()->getSeverityDelta();

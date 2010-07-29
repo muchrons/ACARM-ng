@@ -22,10 +22,10 @@ Strategy::Params::Params(unsigned int timeout, double similarity):
 {
   if(similarity_<=0)
     throw ExceptionInvalidParameter(SYSTEM_SAVE_LOCATION, "similarity",
-                                    "negative value does not make sense");
+                                    "non-positive value does not make sense");
   if(similarity_>1)
     throw ExceptionInvalidParameter(SYSTEM_SAVE_LOCATION, "similarity",
-                                    "similarity above 100% (i.e. 1) is invalid");
+                                    "values above 100% (i.e. 1) are invalid");
 }
 
 Strategy::Strategy(const Params &params):
@@ -84,7 +84,7 @@ public:
 
   IntersectionOutputIterator &operator*(void)
   {
-    // return ourselfs to make space for assignment operator.
+    // return ourselves to make space for assignment operator.
     return *this;
   }
 

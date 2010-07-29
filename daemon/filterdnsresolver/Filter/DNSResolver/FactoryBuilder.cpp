@@ -2,11 +2,11 @@
  * FactoryBuilder.cpp
  *
  */
-#include <boost/lexical_cast.hpp>
 #include <cassert>
 
 #include "BuildProcess/ForceLink.hpp"
 #include "ConfigIO/FilterConfig.hpp"
+#include "Commons/Convert.hpp"
 #include "Commons/Factory/RegistratorHelper.hpp"
 #include "Core/Types/Proc/InterfaceImpl.hpp"
 #include "Filter/DNSResolver/FactoryBuilder.hpp"
@@ -42,7 +42,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   assert(g_rh.isRegistered() && "oops - registration failed");
 
   const FilterConfig         fc(type_, options);
-  const int                  timeout=boost::lexical_cast<int>( fc["cachetimeout"] );
+  const unsigned int         timeout=Commons::Convert::to<unsigned int>( fc["cachetimeout"] );
   LOGMSG_INFO_S(log_)<<"setting cache timeout to "<<timeout<<"[s]";
   const Strategy::Parameters params(timeout);
 

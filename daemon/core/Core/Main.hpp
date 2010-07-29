@@ -12,7 +12,7 @@
 #include "Logger/Node.hpp"
 #include "Core/QueueRestorer.hpp"
 #include "Core/WorkThreads.hpp"
-#include "Core/PersistencyCleanup.hpp"
+#include "Core/CleanupThread.hpp"
 #include "Core/HandleSignals.hpp"
 #include "Core/SanityCheck.hpp"
 
@@ -49,18 +49,14 @@ private:
   SanityCheck                  sanity_;     // checks if (basic) environment is sane
   Logger::Node                 log_;
   HandleSignals                nullSignals_;// ignore signals at this moment
-                                        // (will be overwritten later on)
-  // TODO: persistency cleanup takes enormous ammount of time na dmust be run from time to time,
-  //       not only when starting application. it must be added to a sort of "crontab" inside
-  //       acarm-ng itself, or made a separate application to be run by user.
-  //PersistencyCleanup     cleanup_;        // cleanup has to be here, since it should
-                                            // be called before any threads are started
+                                            // (will be overwritten later on)
   Core::Types::SignedNodesFifo queue_;      // main system graphnodes' queue (signed by modifiers)
   QueueRestorer                restorer_;   // reader for initial queue's state from Persistency.
   WorkThreads                  threads_;    // main processing part
   HandleSignals                signals_;    // this element must be initialized after
                                             // creating threads - it expects them to
                                             // be valid objects.
+  CleanupThread                clenaup_;    // thread doing periodical cleanup of persistency
 }; // class Main
 
 } // namespace Core

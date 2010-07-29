@@ -189,7 +189,7 @@ struct Type<uint64_t>
     // note that following convertion is not fully correct, since ranges of int64_t and
     // uint64_t differ (who would expect?). it is reasonably good aproximation though
     // and can stay for some time, until bronen versions of libpqxx will be dead-and-gone
-    // for long, long time... ;)
+    // for a long, long time... ;)
     const int64_t  tmp=boost::lexical_cast<int64_t>(f);
     const uint64_t out=boost::numeric_cast<uint64_t>(tmp);
     return out;
