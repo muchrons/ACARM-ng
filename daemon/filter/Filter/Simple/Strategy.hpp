@@ -90,6 +90,7 @@ private:
   {
     // prepare entry to compare with
     const NodeEntry thisEntry( makeThisEntry(n) );
+    assert( thisEntry.isSelfCorrelated()==false );
     // make a quick test, if this entry is interesting for a given filter at all
     if( !isEntryInteresting(thisEntry) )
       return;
@@ -179,8 +180,8 @@ private:
 
     // ok - we've got a match!
 
-    // if node's leaf, create new node and correlate leafs there.
-    if( it->node_->isLeaf() )
+    // if node's leaf or is node from another filter, create new node and correlate nodes there.
+    if( it->node_->isLeaf() || it->isSelfCorrelated()==false )
     {
       // create new meta-alert and one in queue
       LOGMSG_DEBUG_S(Base::log_)<< "correlating '" << it->node_->getMetaAlert()->getName().get()
@@ -193,8 +194,9 @@ private:
                                               Persistency::MetaAlert::CertaintyDelta(0),
                                               Persistency::ReferenceURLPtr(),
                                               Persistency::Timestamp() ) );
-      Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv);     // add new, correlated element.
-      const NodeEntry             newEntry(newNode, thisEntry.t_);  // use the same reported host entry.
+      Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv);                                     // add new, correlated element.
+      const NodeEntry             newEntry=NodeEntry::makeCorrelatedEntry(newNode, thisEntry.t_);   // use the same reported host entry.
+      assert( newEntry.isSelfCorrelated()==true );
       ntq.dismiss(it);                    // if element has been already correlated
                                           // it should not be used any more.
       ntq.update(newEntry, getTimeout() );// add newly correlated entry.

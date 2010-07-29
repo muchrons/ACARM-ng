@@ -91,6 +91,7 @@ private:
   virtual RestorerAutoPtr restorerImpl(Transaction &t) = 0;
   virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t) = 0;
 
+  // mutex is used to ensure only one transaction can be created at a time.
   Base::Threads::Mutex mutex_;
 }; // class Connection
 

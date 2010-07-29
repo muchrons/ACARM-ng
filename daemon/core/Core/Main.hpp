@@ -15,6 +15,7 @@
 #include "Core/CleanupThread.hpp"
 #include "Core/HandleSignals.hpp"
 #include "Core/SanityCheck.hpp"
+#include "Core/CleanShutdownChecker.hpp"
 
 namespace Core
 {
@@ -46,6 +47,7 @@ public:
   void stop(void);
 
 private:
+  CleanShutdownChecker         csc_;        // checks and reports problems with previous runs of acarm-ng
   SanityCheck                  sanity_;     // checks if (basic) environment is sane
   Logger::Node                 log_;
   HandleSignals                nullSignals_;// ignore signals at this moment
@@ -56,7 +58,10 @@ private:
   HandleSignals                signals_;    // this element must be initialized after
                                             // creating threads - it expects them to
                                             // be valid objects.
-  CleanupThread                clenaup_;    // thread doing periodical cleanup of persistency
+  CleanupThread                clenaup_;    // thread doing periodical cleanup of persistency. note that
+                                            // cleanup can go in parallel with queue restoring, since first
+                                            // one operates only on records being used, while second one
+                                            // can remove only unsed elements, thus race is not possible.
 }; // class Main
 
 } // namespace Core

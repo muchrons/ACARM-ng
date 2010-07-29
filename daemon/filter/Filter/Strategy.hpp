@@ -61,9 +61,21 @@ public:
      */
     NodeEntry(Node node, const T &t):
       node_(node),
-      t_(t)
+      t_(t),
+      isSelfCorrelated_(false)
     {
     }
+    /** \brief named c-tor for creating correlated node.
+     *  \param node node to create.
+     *  \param t    data to be asociated with node.
+     */
+    static NodeEntry makeCorrelatedEntry(Node node, const T &t)
+    {
+      NodeEntry ne(node, t);
+      ne.isSelfCorrelated_=true;
+      return ne;
+    }
+
     /** \brief check if given two entries correspond to the same node.
      *  \param other node to compare with.
      *  \return true if given entries correspond to the same node, false otherwise.
@@ -74,9 +86,19 @@ public:
         return true;
       return node_.get()==other.node_.get();
     }
+    /** \brief tells if entry has been correlated by this filter.
+     *  \return true if this filter correlated this entry, false otherwise.
+     */
+    bool isSelfCorrelated(void) const
+    {
+      return isSelfCorrelated_;
+    }
 
     Node node_;     ///< node itself.
     T    t_;        ///< user data, associated with node.
+
+  private:
+    bool isSelfCorrelated_; // true when this filter correlated this entry
   }; // struct NodeEntry
 
 protected:
