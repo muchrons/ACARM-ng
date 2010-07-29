@@ -5,28 +5,56 @@
 #include <tut/tut.hpp>
 #include <cassert>
 
-#include "Persistency/IO/Connection.hpp"
-#include "Persistency/IO/BackendFactory.hpp"
 #include "Core/QueueRestorer.hpp"
-#include "TestHelpers/Persistency/TestPostgres.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
-#include "TestHelpers/Persistency/TestDBAccess.hpp"
+#include "TestHelpers/Persistency/ConnectionUserStubBase.hpp"
 
 using namespace Core;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
-// TODO: this has to be fixed - non-postgres components cannot use postgres for tests!
-//       consider overloading some parts of the Persistency::Stubs according to needs.
-struct TestClass: public TestHelpers::Persistency::TestPostgres
+
+struct TestRestorer: public Persistency::IO::Restorer
 {
-  TestClass(void)
+  explicit TestRestorer(::Persistency::IO::Transaction &t):
+    Persistency::IO::Restorer(t)
   {
-    tdba_.removeAllData();
   }
 
-  Core::Types::SignedNodesFifo           queue_;
-  TestHelpers::Persistency::TestDBAccess tdba_;
+  virtual void restoreAllInUseImpl(::Persistency::IO::Transaction &/*t*/, NodesVector &out)
+  {
+    out.push_back( makeNewNode() );
+    out.push_back( makeNewLeaf() );
+  }
+
+  virtual void restoreBetweenImpl(::Persistency::IO::Transaction &/*t*/,
+                                  NodesVector                    &/*out*/,
+                                  const ::Persistency::Timestamp &/*from*/,
+                                  const ::Persistency::Timestamp &/*to*/)
+  {
+    throw std::logic_error("this method should NOT be called here at all");
+  }
+}; // struct TestRestorer
+
+struct ConnectionTestRestorer: public ConnectionUserStubBase
+{
+  virtual ::Persistency::IO::RestorerAutoPtr restorerImpl(::Persistency::IO::Transaction &t)
+  {
+    return ::Persistency::IO::RestorerAutoPtr( new TestRestorer(t) );
+  }
+}; // struct ConnectionTestRestorer
+
+
+struct TestClass
+{
+  TestClass(void):
+    conn_(new ConnectionTestRestorer)
+  {
+  }
+
+  Core::Types::SignedNodesFifo     queue_;
+  Persistency::IO::ConnectionPtrNN conn_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -39,35 +67,13 @@ factory tf("Core/QueueRestorer");
 namespace tut
 {
 
-// test reading 0 elements
+// test reading some elements
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  QueueRestorer rq(queue_);
-  ensure_equals("some elements have been read", queue_.size(), 0u);
-}
-
-// test reading more elements from data base
-template<>
-template<>
-void testObj::test<2>(void)
-{
-  Persistency::GraphNodePtr node=TestHelpers::Persistency::makeNewNode();
-  QueueRestorer             rq(queue_);
-  ensure_equals("invalid elements count has been read", queue_.size(), 3u);
-}
-
-// test reading from data base when some elements are unused
-template<>
-template<>
-void testObj::test<3>(void)
-{
-  TestHelpers::Persistency::makeNewNode();
-  tdba_.markAllUnused();
-  Persistency::GraphNodePtr node=TestHelpers::Persistency::makeNewNode();
-  QueueRestorer             rq(queue_);
-  ensure_equals("invalid elements count has been read", queue_.size(), 3u);
+  QueueRestorer rq(conn_, queue_);
+  ensure_equals("invalid number of elements restored", queue_.size(), 2u);
 }
 
 } // namespace tut

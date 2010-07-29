@@ -56,7 +56,10 @@ private:
   HandleSignals                signals_;    // this element must be initialized after
                                             // creating threads - it expects them to
                                             // be valid objects.
-  CleanupThread                clenaup_;    // thread doing periodical cleanup of persistency
+  CleanupThread                clenaup_;    // thread doing periodical cleanup of persistency. note that
+                                            // cleanup can go in parallel with queue restoring, since first
+                                            // one operates only on records being used, while second one
+                                            // can remove only unsed elements, thus race is not possible.
 }; // class Main
 
 } // namespace Core
