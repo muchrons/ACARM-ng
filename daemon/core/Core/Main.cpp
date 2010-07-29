@@ -43,7 +43,9 @@ Main::~Main(void)
 
 void Main::waitUntilDone(void)
 {
-  threads_.waitUntilDone();
+  threads_.waitUntilDone();                 // wait while threads are working
+  csc_.confirmCleanShutdown();              // mark this as clean exit (i.e. no exception, no
+                                            // segv, no power cut, etc...)
 }
 
 void Main::stop(void)
