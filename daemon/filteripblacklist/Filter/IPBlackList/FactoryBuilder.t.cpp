@@ -33,17 +33,13 @@ struct TestClass
                    const char *limit  ="42",
                    const char *priDelta="0.1") const
   {
-    bool ok=true;
     try
     {
       build(refresh, limit, priDelta);
-      ok=false;
       tut::fail("build() didn't throw on missing paramter");
     }
-    catch(const std::exception&)
+    catch(const std::runtime_error&)
     {
-      if(!ok)
-        throw;
       // this is expected
     }
   }
