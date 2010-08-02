@@ -27,17 +27,13 @@ struct TestClass
 
   void ensureThrow(const char *timeout) const
   {
-    bool ok=true;
     try
     {
       build(timeout);
-      ok=false;
       tut::fail("build() didn't throw on missing paramter");
     }
-    catch(const std::exception &)
+    catch(const std::runtime_error &)
     {
-      if(!ok)
-        throw;
       // this is expected
     }
   }

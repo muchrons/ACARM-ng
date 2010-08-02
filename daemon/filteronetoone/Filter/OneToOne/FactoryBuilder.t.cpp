@@ -32,7 +32,7 @@ struct TestClass
       build(timeout);
       tut::fail("build() didn't throw on missing paramter");
     }
-    catch(const std::runtime_error&) //TODO if this is the only exception we are looking forward to, why not incorporate it to IPBlacklist -> Tests -> ensureThrow
+    catch(const std::runtime_error&)
     {
       // this is expected
     }
@@ -81,19 +81,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  bool ok=true;
-  try
-  {
-    build("-12");
-    ok=false;
-    tut::fail("build() didn't throw on invalid timeout");
-  }
-  catch(const std::exception &)
-  {
-    if(!ok)
-      throw;
-    // this is expected
-  }
+  ensureThrow("-12");
 }
 
 // test throw on invalid timeout type
@@ -101,19 +89,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  bool ok=true;
-  try
-  {
-    build("not a number");
-    ok=false;
-    tut::fail("build() didn't throw on invalid timeout");
-  }
-  catch(const std::exception &)
-  {
-    if(!ok)
-      throw;
-    // this is expected
-  }
+  ensureThrow("not a number");
 }
 
 } // namespace tut

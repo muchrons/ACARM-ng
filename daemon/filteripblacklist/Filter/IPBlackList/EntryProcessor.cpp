@@ -31,9 +31,8 @@ EntryProcessor::EntryProcessor(const BlackList *bl,
 void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
 {
   assert( leaf->isLeaf() && "wrong graph-passing algorithm choosen" );
-  processHosts(leaf, leaf->getAlert()->getReportedSourceHosts() );
-  //TODO: dead code
-  //processHosts(leaf, leaf->getAlert()->getReportedTargetHosts() );
+  processHosts(leaf, leaf->getAlert()->getReportedSourceHosts() );  // we may be under attack
+  processHosts(leaf, leaf->getAlert()->getReportedTargetHosts() );  // zombie host may be contacting C&C
 }
 
 void EntryProcessor::processHosts(Persistency::GraphNodePtrNN              leaf,

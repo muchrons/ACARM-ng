@@ -2,8 +2,7 @@
  * IDPersistencyProxySpecific.cpp
  *
  */
-#include <boost/lexical_cast.hpp>
-
+#include "Commons/Convert.hpp"
 #include "Input/IDPersistencyProxySpecific.hpp"
 
 using namespace std;
@@ -21,7 +20,7 @@ IDPersistencyProxySpecific::IDPersistencyProxySpecific(Persistency::IO::Connecti
 
 void IDPersistencyProxySpecific::saveMapping(const std::string &inputID, Persistency::Analyzer::ID id)
 {
-  dynConf_.write( inputID, boost::lexical_cast<string>( id.get() ) );
+  dynConf_.write( inputID, Commons::Convert::to<string>( id.get() ) );
 }
 
 } // namespace Input

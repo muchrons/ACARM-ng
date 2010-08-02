@@ -151,7 +151,7 @@ void testObj::test<3>(void)
   ensure("too many children", it==end);
 }
 
-// correlate to already exisitng node
+// correlate new node, when not owning one
 template<>
 template<>
 void testObj::test<4>(void)
@@ -164,10 +164,10 @@ void testObj::test<4>(void)
   ensure_equals("some nodes have been changed in first run", changed_.size(), 0u);
 
   ts.process(n2, changed_);
-  ensure_equals("correlation ot already existing node failed", changed_.size(), 1u);
+  ensure_equals("correlation new node failed", changed_.size(), 1u);
 
-  // check if changed node is first one.
-  ensure("node different than node1 returned", n1.get()==changed_.at(0).get() );
+  // check if changed node is new one
+  ensure("node1 returned instead of newly correlated one", n1.get()!=changed_.at(0).get() );
 }
 
 namespace
@@ -245,6 +245,31 @@ void testObj::test<7>(void)
     ts.process( makeNewLeaf(), changed_ );
     ensure_equals("something has cahnged", changed_.size(), 0u);
   }
+}
+
+// correlate to already exisitng node
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  TestStrategy       ts;
+  TestStrategy::Node n1=makeNewNode();
+  TestStrategy::Node n2=makeNewLeaf();
+  TestStrategy::Node n3=makeNewNode();
+
+  ts.process(n1, changed_);
+  ensure_equals("some nodes have been changed in first run", changed_.size(), 0u);
+
+  ts.process(n2, changed_);
+  ensure_equals("correlation failed", changed_.size(), 1u);
+  TestStrategy::Node tmp=changed_.at(0);
+
+  changed_.clear();
+  ts.process(n3, changed_);
+  ensure_equals("correlation to alrady existing node failed", changed_.size(), 1u);
+
+  // check if changed node is new one
+  ensure("node1 returned instead of newly correlated one", tmp.get()==changed_.at(0).get() );
 }
 
 } // namespace tut
