@@ -1,5 +1,45 @@
 <com:TContent ID="content">
 
-TODO: input alerts page content here
+The most recent alerts:
+
+  <com:TDataGrid
+    ID="DataGrid"
+    DataKeyField="id"
+    AllowPaging="true"
+    PageSize="100"
+    PagerStyle.Mode="Numeric"
+    PagerStyle.HorizontalAlign="Center"
+    AutoGenerateColumns="false"
+    CellPadding="2"
+    HeaderStyle.BackColor="black"
+    HeaderStyle.ForeColor="white"
+    ItemStyle.BackColor="#BFCFFF"
+    ItemStyle.Font.Italic="true"
+    AlternatingItemStyle.BackColor="#E6ECFF"
+    OnPageIndexChanged="changePage"
+    OnPagerCreated="pagerCreated"
+    >
+
+    <com:TBoundColumn
+        ID="LinkColumn"
+        HeaderText="Details"
+        DataField="link"
+        />
+    <com:TBoundColumn
+        ID="CreateTimeColumn"
+        HeaderText="Created"
+        DataField="create_time"
+        />
+    <com:TBoundColumn
+        ID="SeverityColumn"
+        HeaderText="Severity"
+        DataField="severity"
+        />
+    <com:TBoundColumn
+        ID="NameColumn"
+        HeaderText="Name"
+        DataField="name"
+        />
+  </com:TDataGrid>
 
 </com:TContent>

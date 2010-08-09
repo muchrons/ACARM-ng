@@ -2,10 +2,9 @@
  * ThresholdConfig.cpp
  *
  */
-#include <boost/lexical_cast.hpp>
-#include <boost/numeric/conversion/cast.hpp>
 #include <cassert>
 
+#include "Commons/Convert.hpp"
 #include "Trigger/Simple/ThresholdConfig.hpp"
 
 namespace Trigger
@@ -21,7 +20,7 @@ double parseAsDouble(const char *str)
   assert(str!=NULL);
   try
   {
-    return boost::lexical_cast<double>(str);
+    return Commons::Convert::to<double>(str);
   }
   catch(const std::exception &ex)
   {
@@ -35,9 +34,7 @@ size_t parseAsSizeT(const char *str)
   assert(str!=NULL);
   try
   {
-    const long   tmpLong=boost::lexical_cast<long>(str);
-    const size_t tmp    =boost::numeric_cast<size_t>(tmpLong);
-    return tmp;
+    return Commons::Convert::to<size_t>(str);
   }
   catch(const std::exception &ex)
   {

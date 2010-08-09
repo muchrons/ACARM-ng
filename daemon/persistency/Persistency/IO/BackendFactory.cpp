@@ -1,7 +1,3 @@
-#include <string>
-#include <sstream>
-#include <boost/lexical_cast.hpp>
-
 #include "Persistency/IO/BackendFactory.hpp"
 #include "ConfigIO/Singleton.hpp"
 

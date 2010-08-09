@@ -32,13 +32,12 @@ public:
     /** \brief create entry.
      *  \param cacheTimeout timeout of cache entries.
      */
-    explicit Parameters(const int cacheTimeout):
+    explicit Parameters(const unsigned int cacheTimeout):
       cacheTimeout_(cacheTimeout)
     {
     }
 
-    // TODO: this paramter must be unsigned.
-    const int cacheTimeout_;    ///< timeout for cache entries.
+    const unsigned int cacheTimeout_;   ///< timeout for cache entries.
   }; // struct Parameters
 
   /** \brief create instance.

@@ -2,12 +2,11 @@
  * FactoryBuilder.cpp
  *
  */
-#include <boost/lexical_cast.hpp>
-#include <boost/numeric/conversion/cast.hpp>
 #include <cassert>
 
 #include "BuildProcess/ForceLink.hpp"
 #include "ConfigIO/TriggerConfig.hpp"
+#include "Commons/Convert.hpp"
 #include "Commons/Factory/RegistratorHelper.hpp"
 #include "Core/Types/Proc/InterfaceImpl.hpp"
 #include "Trigger/GG/Config.hpp"
@@ -39,16 +38,6 @@ FactoryBuilder::FactoryBuilder(void):
 {
 }
 
-namespace
-{
-UserID getID(const std::string &v)
-{
-  const long   tmp=boost::lexical_cast<long>(v);
-  const UserID uid=boost::numeric_cast<UserID>(tmp);
-  return uid;
-} // getID()
-} // unnamed namespace
-
 FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) const
 {
   LOGMSG_INFO(log_, "building trigger's instance");
@@ -56,7 +45,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   const TriggerConfig   fc(type_, options);
   // account's config
-  const UserID          uid =getID( fc["uin"] );
+  const UserID          uid =Commons::Convert::to<UserID>( fc["uin"] );
   LOGMSG_INFO_S(log_)<<"setting UIN to "<<uid;
   const std::string    &pass=fc["password"];
   LOGMSG_INFO_S(log_)<<"setting password ******** for UIN";
@@ -65,7 +54,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   const std::string    &name=fc["name"];
   LOGMSG_INFO_S(log_)<<"setting trigger gg name "<<name;
   // receiver's UID
-  const UserID          receiverUid=getID( fc["receiver_uin"] );
+  const UserID          receiverUid=Commons::Convert::to<UserID>( fc["receiver_uin"] );
   LOGMSG_INFO_S(log_)<<"setting receiver UIN to "<<receiverUid;
   // thresholds' config
   const char *sevTh=fc.get("severity_threshold");

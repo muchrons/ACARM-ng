@@ -45,7 +45,7 @@ template<>
 void testObj::test<2>(void)
 {
   const LoggerNodeConfig lnc("node", OptionalString(), OptionalString() );
-  ensure("appender not set", !lnc.hasAppender() );
+  ensure("appender is set", !lnc.hasAppender() );
   ensure_equals("invlaid node name", lnc.getNodeName(), "node");
 }
 
@@ -72,7 +72,7 @@ template<>
 void testObj::test<4>(void)
 {
   const LoggerNodeConfig lnc("node");
-  ensure("appender is set",  lnc.hasAppender()==false);
+  ensure("appender is set",  lnc.hasAppender() ==false);
   ensure("threshold is set", lnc.hasThreshold()==false);
 }
 

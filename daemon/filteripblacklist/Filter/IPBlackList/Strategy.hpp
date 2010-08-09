@@ -25,8 +25,7 @@ struct Data
 {
 }; // struct Data
 
-
-/** \brief filter detecting multiple attacks from multiple hosts implementation.
+/** \brief filter updating priority of an alert, that includes IP from black list.
  */
 class Strategy: public Filter::Strategy<Data>
 {

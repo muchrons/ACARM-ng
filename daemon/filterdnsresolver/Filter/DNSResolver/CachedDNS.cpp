@@ -31,7 +31,7 @@ CachedDNS::Entry CachedDNS::operator[](const IP &ip)
                         <<ip<<"' for "<<timeout_<<"[s]";
     // if entry does not exist yet, add it
     const CachedEntry ce(ip, timeout_);     // translate DNS
-    it=cache_.insert( Cache::value_type(ip, ce) ).first;
+    it=cache_.insert( Cache::value_type(ip, ce) ).first; //TODO, dlaczego tu jest .first, chyba nie kumam tej linijki
     LOGMSG_DEBUG_S(log_)<<it->first<<" maps to '"<<it->second.name_.get()<<"'";
   }
 
@@ -52,7 +52,7 @@ void CachedDNS::prune(void)
       if(it->second.time_<now)
         outdated.push_back(it->first);
   }
-
+//TODO: Why there's an extra collection of elements due to deletion instead of deleting them on the spot?
   LOGMSG_DEBUG_S(log_)<<outdated.size()<<" entries to be removed";
   // remove outdated entries
   for(OutdatedList::const_iterator it=outdated.begin(); it!=outdated.end(); ++it)

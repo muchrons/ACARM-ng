@@ -59,7 +59,7 @@ public:
       {
         // get new data
         boost::this_thread::interruption_point();               // allow interrupts
-        LOGMSG_DEBUG(log_, "waiting for data");
+        LOGMSG_DEBUG_S(log_)<<"waiting for data (current queue size is: "<<inputQueue_->size()<<" element(s))";
         Persistency::GraphNodePtrNN node=inputQueue_->pop();    // wait for data
 
         // process new data

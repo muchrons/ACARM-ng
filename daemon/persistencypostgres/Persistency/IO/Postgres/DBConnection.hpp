@@ -7,11 +7,11 @@
 
 #include <string>
 #include <boost/noncopyable.hpp>
-#include <boost/lexical_cast.hpp>
 #include <pqxx/pqxx>
 #include <stdint.h>
 
 #include "Logger/Node.hpp"
+#include "Commons/Convert.hpp"
 
 
 namespace Persistency
@@ -43,7 +43,7 @@ public:
                const std::string &username,
                const std::string &password):
       host_(host),
-      port_( boost::lexical_cast<uint16_t>(port) ),
+      port_( Commons::Convert::to<uint16_t>(port) ),
       dbname_(dbname),
       username_(username),
       password_(password)

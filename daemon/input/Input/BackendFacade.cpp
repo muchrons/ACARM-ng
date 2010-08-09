@@ -2,12 +2,7 @@
  * BackendFacade.cpp
  *
  */
-#include <boost/lexical_cast.hpp>
-#include <cassert>
-
 #include "Input/BackendFacade.hpp"
-#include "Persistency/IO/Transaction.hpp"
-#include "Persistency/IO/Connection.hpp"
 
 using namespace Persistency;
 
