@@ -23,7 +23,7 @@
   <triggers/>
 
   <inputs>
-    <prelude>
+    <prelude name="prelude">
       <profile>acarm-ng</profile>
       <!-- parameter is missing here and so exception will be throw when creating inputs. -->
     </prelude>

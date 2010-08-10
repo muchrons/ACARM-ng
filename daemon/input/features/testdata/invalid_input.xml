@@ -23,7 +23,7 @@
   <triggers/>
 
   <inputs>
-    <nonexisting/>
+    <nonexisting name="nonexisting"/>
   </inputs>
 
 </acarm_ng>
