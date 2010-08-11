@@ -28,6 +28,7 @@ private:
 public:
   /** \brief check if element with id is in cache
    *  \param id    id of checked element.
+   *  \return return true if element with given ID is in cache.
    */
   bool has(DataBaseID id) const
   {
@@ -35,6 +36,7 @@ public:
   }
   /** \brief get element with id from cache
    *  \param id    id of element.
+   *  \return return entry with given ID.
    */
   T get(DataBaseID id) const
   {

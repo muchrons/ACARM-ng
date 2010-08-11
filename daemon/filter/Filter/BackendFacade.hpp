@@ -84,6 +84,7 @@ public:
   /** \brief correlate set of children creating new meta-alert's node as a parent.
    *  \param ma       meta alert data of which to create node from.
    *  \param children list of childrent to be correlated into new node.
+   *  \return return meta-alert's node.
    */
   Persistency::GraphNodePtrNN correlate(Persistency::MetaAlertPtrNN  ma,
                                         const ChildrenVector        &children);
