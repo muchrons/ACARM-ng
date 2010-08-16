@@ -63,7 +63,7 @@ public:
   }
   /** \brief allow copy from assignment.
    *  \param other object to copy from.
-   *  \return TODO: comment this
+   *  \return const reference to self.
    */
   const GrowingVector<T> &operator=(const GrowingVector<T> &other)
   {
