@@ -32,6 +32,7 @@ struct InternalAccessProxy: private boost::noncopyable
   }
   /** \brief gives non-const access to implementation helper object.
    *  \param node note to get implementation helper's instance from.
+   *  \return non-cyclic adder's implementaion reference.
    */
   detail::NonCyclicAdder &getNonCyclicAdderFromNode(GraphNode &node)
   {

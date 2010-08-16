@@ -7,7 +7,7 @@
 
 #include "System/Timer.hpp"
 #include "Filter/DNSResolver/CachedDNS.hpp"
-#include "Filter/DNSResolver/TestIsValid.t.hpp"
+#include "Filter/DNSResolver/TestIsValidLocalhost.t.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace std;
@@ -47,7 +47,7 @@ template<>
 void testObj::test<1>(void)
 {
   const CachedEntry::Name &name=cache_[ ip("127.0.0.1") ].second;
-  ensure("invalid name", isValid( name.get() ) );
+  ensure("invalid name", isValidLocalhost( name.get() ) );
 }
 
 // test pruning
@@ -59,11 +59,11 @@ void testObj::test<2>(void)
   // create new entry
   cache_[ ip("127.0.0.1") ];
   // remove entry
-  sleep(1);
+  sleep(2);
   cache_.prune();
   // add entry once more
   const CachedEntry::Name &name=cache_[ ip("127.0.0.1") ].second;
-  ensure("invalid name", isValid( name.get() ) );
+  ensure("invalid name", isValidLocalhost( name.get() ) );
 }
 
 // test resolving non-exisiting entry
@@ -126,9 +126,9 @@ void testObj::test<6>(void)
   cache_[ ip("74.125.39.104") ];
   cache_[ ip("74.125.39.105") ];
   // timeout
-  sleep(1);
-  cache_[ ip("127.0.0.1") ];
+  sleep(2);
   // add some new
+  cache_[ ip("127.0.0.1") ];
   // remove entries - smoke test
   cache_.prune();
 }

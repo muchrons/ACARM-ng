@@ -42,6 +42,9 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   assert( g_rh.isRegistered() && "oops - registration failed" );
 
   const FilterConfig fc(type_, options);
+  // filter manytomany name
+  const std::string    &name=fc["name"];
+  LOGMSG_INFO_S(log_)<<"setting filter mamytomany name "<<name;
   // read timeout
   const unsigned int timeout   =Commons::Convert::to<unsigned int>(fc["timeout"]);
   LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";
@@ -52,7 +55,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   // create and return new handle.
   typedef InterfaceImpl<Strategy, Strategy::Params> Impl;
   const Strategy::Params params(timeout, similarity);
-  return FactoryBuilder::FactoryPtr( new Impl(type_, type_, params) );
+  return FactoryBuilder::FactoryPtr( new Impl(type_, name, params) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

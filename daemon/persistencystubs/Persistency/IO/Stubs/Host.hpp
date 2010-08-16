@@ -28,7 +28,7 @@ public:
        Transaction            &t,
        int                     handle);
 
-  /** number of times setting name has been called. */
+  /** \brief number of times setting name has been called. */
   size_t setNameCalls_;
 
 private:

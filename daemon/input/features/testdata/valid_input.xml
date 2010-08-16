@@ -23,7 +23,7 @@
   <triggers/>
 
   <inputs>
-    <someinput>
+    <someinput name="someinput">
       <opt1>the answer is: 42</opt1>
     </someinput>
   </inputs>

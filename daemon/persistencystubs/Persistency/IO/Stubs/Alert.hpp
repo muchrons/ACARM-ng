@@ -28,7 +28,7 @@ public:
         Transaction             &t,
         int                      handle);
 
-  /** number of times 'saveImpl()' has been called. */
+  /** \brief number of times 'saveImpl()' has been called. */
   size_t saveCalls_;
 
 private:

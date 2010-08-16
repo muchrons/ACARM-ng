@@ -10,7 +10,7 @@ namespace ConfigIO
 {
 
 ParseInputs::ParseInputs(const XML::Node &node):
-  Generic::Parse<InputConfig, InputsConfigCollection>(node)
+  Generic::NamedParse<InputConfig, InputsConfigCollection>(node)
 {
   assert( node.getName()=="inputs" );
 }

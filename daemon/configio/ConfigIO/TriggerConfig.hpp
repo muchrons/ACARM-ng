@@ -32,8 +32,7 @@ public:
   /** \brief gets trigger's name.
    *  \return trigger's name.
    */
-  // TODO: const's not needed when returning by value.
-  const std::string getTriggerName(void) const
+  std::string getTriggerName(void)
   {
     return get("name");
   }

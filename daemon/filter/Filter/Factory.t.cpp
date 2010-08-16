@@ -102,13 +102,17 @@ private:
     Options::const_iterator it=options.begin();
     ensure("empty collection", it!=options.end() );
 
-    ensure_equals("invalid option 1 key",   it->first,  "opt1");
-    ensure_equals("invalid option 1 value", it->second, "kszy");
+    ensure_equals("invalid option 1 key",   it->first,  "name");
+    ensure_equals("invalid option 1 value", it->second, "somefilter");
+    ++it;
+
+    ensure_equals("invalid option 2 key",   it->first,  "opt1");
+    ensure_equals("invalid option 2 value", it->second, "kszy");
     ++it;
 
     ensure("just one element in collection", it!=options.end() );
-    ensure_equals("invalid option 2 key",   it->first,  "opt2");
-    ensure_equals("invalid option 2 value", it->second, "narf");
+    ensure_equals("invalid option 3 key",   it->first,  "opt2");
+    ensure_equals("invalid option 3 value", it->second, "narf");
     ++it;
 
     ensure("too many elements in collection", it==options.end() );

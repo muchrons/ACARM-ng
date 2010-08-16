@@ -75,7 +75,7 @@ public:
   {
     ensure();
   }
-  /** \brief convertion operator.
+  /** \brief conversion operator.
    *  \return boost::shared_ptr<> for a given value.
    */
   operator PtrT(void) const
@@ -85,6 +85,7 @@ public:
   }
   /** \brief less-then compare
    *  \param other element to compare with.
+   *  \return true if this<other, false otherwise.
    */
   inline bool operator<(const this_type &other) const
   {

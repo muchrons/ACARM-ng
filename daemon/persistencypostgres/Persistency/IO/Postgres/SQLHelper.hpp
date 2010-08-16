@@ -41,6 +41,7 @@ public:
   }
   /** \brief execute SQL query
    *  \param t associated transaction.
+   *  \return return sql result.
    */
   inline pqxx::result exec(Transaction &t)
   {

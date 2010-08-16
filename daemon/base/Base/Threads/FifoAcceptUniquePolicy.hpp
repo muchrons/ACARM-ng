@@ -21,6 +21,7 @@ struct FifoAcceptUniquePolicy
   /** \brief policy for accepting (enqueuing) unique elements in fifo queue.
    *  \param c collection to check against.
    *  \param e element to be checked.
+   *  \return return true if element was found, false otherwise.
    */
   template<typename TCollection, typename TElement>
   inline bool operator()(const TCollection &c, const TElement &e) const

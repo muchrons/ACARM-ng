@@ -30,8 +30,8 @@ public:
   typedef BackendFacade::Node           Node;
   /** \brief helper typedef for list of chenged nodes. */
   typedef BackendFacade::ChangedNodes   ChangedNodes;
-
-  struct NodeEntry; ///< forward declaration to keep code easier to read.
+  /** \briefforward declaration to keep code easier to read. */
+  struct NodeEntry;
   /** \brief timeouting queue colleciton type. */
   typedef Base::TimeoutQueue<NodeEntry> NodesTimeoutQueue;
 
@@ -50,8 +50,7 @@ public:
     bf.commitChanges();         // if there was no exception, commit changes made (if any)
   }
 
-  /** \brief helper structure with user-provided data associated with
-   *         node's entry.
+  /** \brief helper structure with user-provided data associated with node's entry.
    */
   struct NodeEntry: public boost::equality_comparable<NodeEntry>
   {
@@ -68,6 +67,7 @@ public:
     /** \brief named c-tor for creating correlated node.
      *  \param node node to create.
      *  \param t    data to be asociated with node.
+     *  \return return correlated node.
      */
     static NodeEntry makeCorrelatedEntry(Node node, const T &t)
     {

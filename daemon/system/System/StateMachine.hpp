@@ -61,7 +61,7 @@ public:
 
 /** \brief class implementing the state machine itself.
  *
- *  this class should be deriven from. handlers
+ *  this class should be deriven from. handles
  *  for ALL states must be given in constructor
  *  of derived class via addState() method.
  *  notice that each enum must have uniq value,
@@ -141,16 +141,16 @@ protected:
   /** \brief add state to state-set.
    *
    *  this should be used by derived class to add
-   *  handlers for a given states. it will not allow to pass
+   *  handles for a given states. it will not allow to pass
    *  incorrect values to state-set.
    *
-   *  \param state   state to be added.
-   *  \param handler object to handle given state. ownership must be
+   *  \param state  state to be added.
+   *  \param handle object to handle given state. ownership must be
    *         held in derived class throught whole life-cycle. it
    *         is quaratneed that pointers will not be used in
    *         destructor.
    */
-  inline void addState(const TEnum state, StateType *handler)
+  inline void addState(const TEnum state, StateType *handle)
   {
     assert( state.toInt()>=0 );
     const unsigned long stateInt=state.toInt();
@@ -158,7 +158,7 @@ protected:
             !"index out of bounds - possibly number of enries is too small" );
     assert( _states[stateInt]==NULL ||
             !"given state is already handled");     // no overwriting
-    _states[stateInt]=handler;
+    _states[stateInt]=handle;
   }
 
 private:

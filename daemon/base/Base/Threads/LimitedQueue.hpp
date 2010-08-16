@@ -70,7 +70,7 @@ public:
     // wait for queue to be processed
     while( q_.size()==N )
     {
-      boost::this_thread::interruption_point();
+      // wait on condition variable is an interruption point itself, thus no explicit check is needed here.
       notFull_.wait(lock);
     }
 
@@ -107,7 +107,7 @@ private:
     // wait for queue to have at least one element
     while( q_.size()==0 )
     {
-      boost::this_thread::interruption_point();
+      boost::this_thread::interruption_point(); //TODO: same as above
       notEmpty_.wait(lock);
     }
     // ok - we have at least one element

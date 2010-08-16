@@ -23,7 +23,7 @@
   <triggers/>
 
   <inputs>
-    <someinput/>
+    <someinput name="someinput"/>
   </inputs>
 
 </acarm_ng>

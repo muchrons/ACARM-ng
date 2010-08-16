@@ -28,7 +28,7 @@ namespace Postgres
 namespace detail
 {
 
-/** \brief type convertion mechanism.
+/** \brief type conversion mechanism.
  *
  *  this is helper code for ReaderHelper<> template.
  */
@@ -172,7 +172,7 @@ public:
 /** \brief specialization for uint64_t.
  *
  *  this is a work-around for bug in older versions of libpqxx that made
- *  it impossible to link when convertion to uint64_t was requested.
+ *  it impossible to link when conversion to uint64_t was requested.
  */
 template<>
 struct Type<uint64_t>
@@ -186,7 +186,7 @@ struct Type<uint64_t>
    */
   static inline uint64_t convert(const ReadProxy &f)
   {
-    // note that following convertion is not fully correct, since ranges of int64_t and
+    // note that following conversion is not fully correct, since ranges of int64_t and
     // uint64_t differ (who would expect?). it is reasonably good aproximation though
     // and can stay for some time, until bronen versions of libpqxx will be dead-and-gone
     // for a long, long time... ;)
