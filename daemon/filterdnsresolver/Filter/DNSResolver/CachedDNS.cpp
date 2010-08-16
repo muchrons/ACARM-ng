@@ -31,7 +31,7 @@ CachedDNS::Entry CachedDNS::operator[](const IP &ip)
                         <<ip<<"' for "<<timeout_<<"[s]";
     // if entry does not exist yet, add it
     const CachedEntry ce(ip, timeout_);     // translate DNS
-    it=cache_.insert( Cache::value_type(ip, ce) ).first; //TODO, dlaczego tu jest .first, chyba nie kumam tej linijki
+    it=cache_.insert( Cache::value_type(ip, ce) ).first;
     LOGMSG_DEBUG_S(log_)<<it->first<<" maps to '"<<it->second.name_.get()<<"'";
   }
 

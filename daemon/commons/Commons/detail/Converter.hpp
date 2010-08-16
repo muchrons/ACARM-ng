@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <stdexcept>
 #include <boost/static_assert.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/type_traits/is_signed.hpp>
@@ -53,8 +54,9 @@ struct UnsignedNumericConvertionProxy<true>
   template<typename T, typename F>
   static T convert(const F &f)
   {
-    BOOST_STATIC_ASSERT( boost::is_unsigned<T>::value==true );
-    const long long tmp=Converter<long long, F>::convert(f); //TODO: In the evil universe long long can be of the same size as int then miss some positive range of unsigned, maybe BOOST_STATIC_ASSERT and crash compilation is a sufficient prevention. When using long long "ago" seems to be a good temporary variable's name ;)
+    BOOST_STATIC_ASSERT( boost::is_unsigned<T>::value==true );  // sanity check
+    BOOST_STATIC_ASSERT( sizeof(long long)>=sizeof(T) );        // number should not be longer than long long
+    const long long tmp=Converter<long long, F>::convert(f);    // will throw if source cannot be interpreted as a target
     return Converter<T, long long>::convert(tmp);
   }
 }; // struct UnsignedNumericConvertionProxy

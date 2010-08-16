@@ -4,6 +4,8 @@
  */
 #include <tut.h>
 #include <string>
+#include <limits>
+#include <sstream>
 #include <cmath>
 
 #include "Commons/Convert.hpp"
@@ -167,6 +169,17 @@ template<>
 void testObj::test<16>(void)
 {
   ensureThrow<unsigned char, string>("-11");
+}
+
+// test throw when converting too large number unsigned long long
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  unsigned long long tooLong=std::numeric_limits<unsigned long long>::max();
+  stringstream ss;
+  ss<<tooLong;
+  ensureThrow<unsigned long long, string>( ss.str() );
 }
 
 } // namespace tut
