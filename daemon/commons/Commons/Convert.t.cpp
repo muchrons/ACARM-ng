@@ -179,6 +179,9 @@ void testObj::test<17>(void)
   unsigned long long tooLong=std::numeric_limits<unsigned long long>::max();
   stringstream ss;
   ss<<tooLong;
+  // NOTE: this is test for implementation-specific behaviour - normally this test should fail,
+  //       but due to limited range of temporary varible it does not. this test only checks if error
+  //       is risen when error condition is spotted in this implementation...
   ensureThrow<unsigned long long, string>( ss.str() );
 }
 
