@@ -54,7 +54,7 @@ struct UnsignedNumericConvertionProxy<true>
   static T convert(const F &f)
   {
     BOOST_STATIC_ASSERT( boost::is_unsigned<T>::value==true );
-    const long long tmp=Converter<long long, F>::convert(f);
+    const long long tmp=Converter<long long, F>::convert(f); //TODO: In the evil universe long long can be of the same size as int then miss some positive range of unsigned, maybe BOOST_STATIC_ASSERT and crash compilation is a sufficient prevention. When using long long "ago" seems to be a good temporary variable's name ;)
     return Converter<T, long long>::convert(tmp);
   }
 }; // struct UnsignedNumericConvertionProxy
