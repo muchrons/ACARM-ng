@@ -25,9 +25,9 @@ public:
    */
   Restorer(Transaction &t, int handle);
 
-  /** number of times 'restoreAllInUseImpl()' has been called. */
+  /** \brief number of times 'restoreAllInUseImpl()' has been called. */
   size_t restoreAllCalls_;
-  /** number of times 'restoreBetweenImpl()' has been called. */
+  /** \brief number of times 'restoreBetweenImpl()' has been called. */
   size_t restoreBetweenCalls_;
 
 private:

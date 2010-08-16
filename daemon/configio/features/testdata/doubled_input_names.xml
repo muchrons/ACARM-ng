@@ -18,15 +18,15 @@
 
   <preprocessor/>
 
-  <filters/>
+  <filters>
+  </filters>
 
-  <triggers/>
+  <triggers>
+  </triggers>
 
   <inputs>
-    <prelude name="prelude">
-      <profile>profile</profile>
-      <config>/etc/prelude/default/client.conf</config>
-    </prelude>
+    <something name="nonuniquename" />
+    <something name="nonuniquename" />
   </inputs>
 
 </acarm_ng>
