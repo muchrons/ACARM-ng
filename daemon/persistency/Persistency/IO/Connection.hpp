@@ -64,6 +64,7 @@ public:
   /** \brief create meta-alert persistency proxy.
    *  \param owner owner's name of a configuration to work on (NULL means common config).
    *  \param t     active transaction.
+   *  \return return ...
    */
   DynamicConfigAutoPtr dynamicConfig(const DynamicConfig::Owner &owner, Transaction &t);
   /** \brief create restorer object.

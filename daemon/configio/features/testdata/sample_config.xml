@@ -24,10 +24,10 @@
   <preprocessor/>
 
   <filters>
-    <noopts>
+    <noopts name="noopts">
     </noopts>
 
-    <something>
+    <something name="something">
       <opt2>abc</opt2>
       <opt1>narf</opt1>
     </something>
@@ -45,10 +45,10 @@
   </triggers>
 
   <inputs>
-    <noopts>
+    <noopts name="noopts">
     </noopts>
 
-    <something>
+    <something name="something">
       <opt9>XOR</opt9>
       <opt6>or</opt6>
     </something>

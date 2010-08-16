@@ -19,7 +19,7 @@
   <preprocessor/>
 
   <filters>
-    <somefilter>
+    <somefilter name="somefilter">
       <opt1>kszy</opt1>
       <opt2>narf</opt2>
     </somefilter>

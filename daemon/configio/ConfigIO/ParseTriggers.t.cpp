@@ -97,7 +97,7 @@ void testObj::test<4>(void)
 // test if duplicate names are not allowed
 template<>
 template<>
-void testObj::test<6>(void)
+void testObj::test<5>(void)
 {
   try
   {
