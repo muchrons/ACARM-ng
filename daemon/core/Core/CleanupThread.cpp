@@ -32,7 +32,7 @@ struct PeriodicalCleanup
       while(true)
       {
         LOGMSG_INFO_S(log_)<<"next cleanup in "<<hours<<" hours";
-        boost::this_thread::sleep( boost::posix_time::seconds(hours*3600) );  // sleep until next cleanup
+        boost::this_thread::sleep( boost::posix_time::seconds(hours*3600) );  // sleep until next cleanup //TODO: another magic value
         LOGMSG_INFO(log_, "cleanup time has come");
         cleanup();
       } // while(true)
