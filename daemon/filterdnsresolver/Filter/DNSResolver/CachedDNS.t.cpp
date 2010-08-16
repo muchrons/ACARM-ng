@@ -59,7 +59,7 @@ void testObj::test<2>(void)
   // create new entry
   cache_[ ip("127.0.0.1") ];
   // remove entry
-  sleep(1);
+  sleep(2);
   cache_.prune();
   // add entry once more
   const CachedEntry::Name &name=cache_[ ip("127.0.0.1") ].second;
@@ -126,9 +126,9 @@ void testObj::test<6>(void)
   cache_[ ip("74.125.39.104") ];
   cache_[ ip("74.125.39.105") ];
   // timeout
-  sleep(1);
-  cache_[ ip("127.0.0.1") ];
+  sleep(2);
   // add some new
+  cache_[ ip("127.0.0.1") ];
   // remove entries - smoke test
   cache_.prune();
 }
