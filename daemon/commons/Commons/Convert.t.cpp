@@ -24,9 +24,9 @@ struct TestClass
     try
     {
       Convert::to<T>(f);    // should throw
-      tut::fail("convertion didn't throw, as expected");
+      tut::fail("conversion didn't throw, as expected");
     }
-    catch(const Convert::ExceptionConvertionError &)
+    catch(const Convert::ExceptionConversionError &)
     {
       // this is expected
     }
@@ -152,7 +152,7 @@ template<>
 template<>
 void testObj::test<14>(void)
 {
-  ensure_equals("convertion failed", Convert::to<char, long>(42), 42);
+  ensure_equals("conversion failed", Convert::to<char, long>(42), 42);
 }
 
 // test converting to unsigned type
@@ -160,7 +160,7 @@ template<>
 template<>
 void testObj::test<15>(void)
 {
-  ensure_equals("convertion failed", Convert::to<unsigned char, long>(42), 42);
+  ensure_equals("conversion failed", Convert::to<unsigned char, long>(42), 42);
 }
 
 // test throw when converting string (negative number) to unsigned number
