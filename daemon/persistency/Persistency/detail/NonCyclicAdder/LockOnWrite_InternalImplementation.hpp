@@ -23,7 +23,7 @@ struct NonCyclicAdder::InternalImplementation
    *  \param iap    helper object to get acces to some of GraphNode's internals
    *  \param parent parent node to add child to.
    *  \param child  child to be added to parent.
-   *  \return return false if child's not unique.
+   *  \return return false if child's not unique, false otherwise.
    */
   bool addChild(InternalAccessProxy &iap,
                 GraphNode           &parent,
