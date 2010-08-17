@@ -151,3 +151,24 @@ For each feature (ex. each: trigger, filter, input, persistency) repeat test:
 }
 {All logged messages must be present in the syslog's log.}
 {Welcome banner is not logged, but always displayed on the screen.}
+
+
+\testCase
+{f-10}
+{Proper signal handling.}
+{System must correctly handle incoming signals.}
+{System is running.}
+{
+Following signals must be ignored:
+\begin{enumerate*}
+\item PIPE
+\item HUP
+\end{enumerate*}
+Following signals must stop application (aka: normal shutdown):
+\begin{enumerate*}
+\item TERM
+\item INT
+\end{enumerate*}
+}
+{All signals are handled properly.}
+{Welcome banner is not logged, but always displayed on the screen.}
