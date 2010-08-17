@@ -104,7 +104,7 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
                                          Persistency::IO::Postgres::detail::EntryReader &er,
                                          IO::ConnectionPtrNN                             connStubIO,
                                          IO::Transaction                                &tStubIO,
-                                         Tree::IDsVector                               &restoredIDs)
+                                         Tree::IDsVector                                &restoredIDs)
 {
   TreePtrNN node = treeNodes_.get(id);
   // check if there are no children (i.e. is leaf)
@@ -176,16 +176,17 @@ GraphNodePtrNN Restorer::restoreNode(TreePtrNN                                  
                                      Persistency::IO::Postgres::detail::EntryReader &er,
                                      IO::ConnectionPtrNN                             connStubIO,
                                      IO::Transaction                                &tStubIO,
-                                     Tree::IDsVector                               &restoredIDs)
+                                     Tree::IDsVector                                &restoredIDs)
 {
   // read Meta Alert from data base
   MetaAlertPtrNN malertPtr( er.readMetaAlert(id) );
   // add Meta Alert to cache
   addIfNew(malertPtr, id);
-  GraphNodePtrNN graphNode( makeNode( id, malertPtr,
-                                         restoreNodeChildren(node, id, out, er, connStubIO, tStubIO, restoredIDs),
-                                         connStubIO,
-                                         tStubIO ));
+  GraphNodePtrNN graphNode( makeNode( id,
+                                      malertPtr,
+                                      restoreNodeChildren(node, id, out, er, connStubIO, tStubIO, restoredIDs),
+                                      connStubIO,
+                                      tStubIO ) );
   out.push_back(graphNode);
   return graphNode;
 }
