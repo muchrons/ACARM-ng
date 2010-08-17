@@ -1,0 +1,20 @@
+% create new history entry
+\newcommand{\historyEntry}[3]
+{
+#1 & #2 & #3 \\ \hline
+}
+
+% create new test case
+\newcommand{\testCase}[6]
+{
+  \subsubsection{#1: #2}
+  \begin{tabular}{ | p{3.5cm} | p{9cm} | }
+    \hline
+    \textbf{Reference} & #1 \\ \hline
+    \textbf{Summary} & #2 \\ \hline
+    \textbf{Description} & #3 \\ \hline
+    \textbf{Preconditions} & #4 \\ \hline
+    \textbf{Plan} & #5 \\ \hline
+    \textbf{Post conditions} & #6 \\ \hline
+  \end{tabular}
+}
