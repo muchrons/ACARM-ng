@@ -29,3 +29,76 @@
 }
 {New alerts are gathered by the system.}
 {Post condition can be easily checked with a trigger or data base content's inspection.}
+
+
+\testCase
+{f-3}
+{Reconnecting to prelude-manager.}
+{ACARM-ng must reconnect in case connection to prelude manager is lost.}
+{System is configured with prelude's input.}
+{
+\begin{enumerate*}
+\item Run Prelude-Manager.
+\item Run ACARM-ng
+\item Wait until they are connected.
+\item Turn off Prelude-Manager.
+\item Wait until ACARM-ng notices dead connection (see logs).
+\item Turn on Prelude-Manager.
+\end{enumerate*}
+}
+{ACARM-ng must reconnect to Prelude-Manager.}
+{See logs for details on what's going on.}
+
+
+\testCase
+{f-4}
+{Connect to PotgreSQL.}
+{ACARM-ng supports writing data to PostgreSQL data base.}
+{System is configured with postgres persistency module.}
+{
+\begin{enumerate*}
+\item Turn PostgreSQL server on.
+\item Run ACARM-ng.
+\item Generate some alerts and send it to ACARM-ng.
+\end{enumerate*}
+}
+{New entries should appear in data base.}
+{}
+
+
+\testCase
+{f-5}
+{Reconnecting to PostgreSQL.}
+{ACARM-ng must reconnect in case connection to data base is lost.}
+{System is configured with postgres persistency module.}
+{
+\begin{enumerate*}
+\item Run PostgreSQL server.
+\item Run ACARM-ng
+\item Wait until they are connected.
+\item Turn off PostgreSQL.
+\item Wait until ACARM-ng notices dead connection (see logs).
+\item Turn on PostgreSQL.
+\end{enumerate*}
+}
+{ACARM-ng must reconnect to PostgreSQL.}
+{See logs for details on what's going on.}
+
+
+\testCase
+{f-6}
+{Trigger reports buffering.}
+{When standard trigger failed to send message it is buffered internally and sending is retried next time it is activated. Messages must not be lost, due to temporal failures of external services.}
+{System is configured with buffering trigger configured (ex. are: gg, mail).}
+{
+\begin{enumerate*}
+\item Put internet connection up.
+\item Run ACARM-ng.
+\item item Verify that messages are being sent from system.
+\item item Put internet connection down.
+\item item Verify that new messages are created and sending failed.
+\item item Put internet connection up again.
+\end{enumerate*}
+}
+{Ensure all buffered messages are being sent.}
+{See logs for details on what's going on. Notice that message buffer is of a finite length, thus when too many reports are to be sent oldes ones are truncated.}
