@@ -12,3 +12,4 @@
 * implement helper wrapper for making pipe-line processing in filters.
 * filter that increases priority for hosts that are out of defined set (i.e. from external network).
 * optimize data base cleanup somehow - it takes far too much time...
+* test if ACARM-ng deals fine with loosing connection to data base.
