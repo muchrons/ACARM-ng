@@ -12,3 +12,4 @@ wui/tests/protected/db/*.db
 *.log
 *.out
 *.toc
+acceptance_tests_plan.pdf
