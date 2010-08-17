@@ -1,0 +1,37 @@
+This document describes testing plan (i.e. test cases to be executed) for the ACARM-ng application
+(\url{http://www.acarm.wcss.wroc.pl}). Document has been organized in set of test cases that are to be performed.
+
+
+
+\subsection{Test cases}
+Each test case is described with the following fields:
+\begin{itemize}
+  \item reference number -- unique signature assigned to this test -- once assigned it cannot change later on.
+  \item summary -- short summary of test (test name).
+  \item description -- long description of test case -- what is it testing, what is it needed, etc...
+  \item preconditions -- conditions that have to be met before executing test plan.
+  \item plan -- steps, point-by-point to be executed in order to perform scan.
+  \item post conditions -- final state that should be reached.
+\end{itemize}
+
+
+
+\subsection{Running tests}
+For pieces of information on how to install, configure and run ACARM-ng application refer to system's documentation.
+
+In general, all tests presented in this document should be run in ACARM-ng buil with following profiles:
+\begin{itemize}
+\item release (make PROFILE=release)
+\item debug (make PROFILE=debug)
+\item debug with memory checking (make PROFILE=debug MEM\_DEBUG=1)
+\end{itemize}
+Notice however that some of them are not relevant in some of the modes. For example it does not make sense
+to measure throughput in other build than 'release'.
+
+
+
+\subsection{Versioning notes}
+When changing this document always change version number and append proper comment into change history.
+Version number is organized as follows: X.Y.Z where X is release version indicating big changes in document,
+Y is major version number indicating extending document's content (i.e. adding new test cases), Z is minor
+version number indicating small fixes in document (typos, updating descriptions of test cases, etc...).

@@ -1,8 +1,26 @@
 \testCase
-{ref1}
-{summary}
-{desc}
-{pre}
-{plan}
-{post}
+{nf-1}
+{Basic throughput}
+{Test maximal number of alerts that can be accepted by the system in a second (assuming that it will be removed straight away).}
+{System is up and running, configured without any filters and triggers.}
+{
+\begin{enumerate}
+\item{Start alerts generation}
+\item{Measure number of alerts accepted in a given amount of time}
+\end{enumerate}
+}
+{Minimum reasonable number of alerts on a single-core machine is 1000.}
 
+
+\testCase
+{nf-2}
+{Proper memory management}
+{Check if application does not leak memory when running.}
+{System is up and running, configured with filters having minimum allowed time for buffering alerts for correlation.}
+{
+\begin{enumerate}
+\item{Start alerts generation}
+\item{Measure number of alerts accepted in a given amount of time}
+\end{enumerate}
+}
+{Minimum reasonable number of alerts on a single-core machine is 1000.}

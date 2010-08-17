@@ -30,62 +30,26 @@
 
 %\setlength{\textheight}{20cm}
 
-\title{Acceptance Tests Plan for ACARM-ng project\\(version 0.1.0)}
+% macros
+\input{macros.tex}
+
+\title{Acceptance Tests Plan for ACARM-ng project\\( version \versionNumber{})}
 \author{Bartosz 'BaSz' Szurgot (bartosz.szurgot@pwr.wroc.pl)}
 
 \begin{document}
-
-%
-% macros
-%
-\input{macros.tex}
 
 %
 % document's content
 %
 \maketitle
 
-
 \tableofcontents
 
-
 \section{Introduction}
-
-This document describes testing plan (i.e. test cases to be executed) for the ACARM-ng application
-(\url{http://www.acarm.wcss.wroc.pl}). Document has been organized in set of test cases that are to be performed.
-
-
-
-\subsection{Test cases}
-Each test case is described with the following fields:
-\begin{itemize}
-  \item reference number -- unique signature assigned to this test -- once assigned it cannot change later on.
-  \item summary -- short summary of test (test name).
-  \item description -- long description of test case -- what is it testing, what is it needed, etc...
-  \item preconditions -- conditions that have to be met before executing test plan.
-  \item plan -- steps, point-by-point to be executed in order to perform scan.
-  \item post conditions -- final state that should be reached.
-\end{itemize}
-
-
-
-\subsection{Versioning notes}
-When changing this document always change version number and append proper comment into change history.
-Version number is organized as follows: X.Y.Z where X is release version indicating big changes in document,
-Y is major version number indicating extending document's content (i.e. adding new test cases), Z is minor
-version number indicating small fixes in document (typos, updating descriptions of test cases, etc...).
-
-
+\input{introduction.tex}
 
 \section{Change history}
-\begin{tabular}{ | c | c | l | }
-  \hline
-  \textbf{Date} & \textbf{Version} & \textbf{Changes} \\ \hline
-  % entries goes here - keep them sorted: most recent on the top
-  \historyEntry{2010.08.17}{0.1.0}{document creation}
-\end{tabular}
-
-
+\input{change_history.tex}
 
 \section{Test cases}
 \input{test_cases.tex}
