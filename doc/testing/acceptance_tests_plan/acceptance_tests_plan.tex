@@ -1,0 +1,107 @@
+% A4==21x29.7[cm]
+\documentclass[a4paper,12pt]{article}
+% PL version encoded in UTF-8
+%\usepackage{polski}
+\usepackage[utf8]{inputenc}
+%\usepackage{fancyhdr}
+%\usepackage{longtable}
+
+% setup margins
+\usepackage{geometry}
+%\geometry{verbose,a4paper,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+
+% page numbering off
+%\pagestyle{empty}
+
+% make text nicely justified
+%\sloppy
+% do not leave small pieces on new sides
+%\clubpenalty=10000
+%\widowpenalty=10000
+
+\usepackage{hyperref}
+
+% use polish indentaion style
+\usepackage{indentfirst}
+% we'll use graphics
+%\usepackage{graphicx}
+
+%\pagestyle{fancy}
+
+%\setlength{\textheight}{20cm}
+
+\title{Acceptance Tests Plan for ACARM-ng project\\(version 0.1.0)}
+\author{Bartosz 'BaSz' Szurgot (bartosz.szurgot@pwr.wroc.pl)}
+
+\begin{document}
+
+%
+% macros
+%
+
+% create new history entry
+\newcommand{\historyEntry}[3]
+{
+#1 & #2 & #3 \\ \hline
+}
+
+% create new test case
+\newcommand{\testCase}[6]
+{
+  \subsection{#1: #2}
+  \begin{tabular}{ | p{3.5cm} | p{9cm} | }
+    \hline
+    \textbf{Reference} & #1 \\ \hline
+    \textbf{Summary} & #2 \\ \hline
+    \textbf{Description} & #3 \\ \hline
+    \textbf{Preconditions} & #4 \\ \hline
+    \textbf{Plan} & #5 \\ \hline
+    \textbf{Post conditions} & #6 \\ \hline
+  \end{tabular}
+}
+
+%
+% document's content
+%
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+
+This document describes testing plan (i.e. test cases to be executed) for the ACARM-ng application
+(\url{http://www.acarm.wcss.wroc.pl}). Document has been organized in set of test cases that are to be performed.
+
+\subsection{Test cases}
+Each test case is described with the following fields:
+\begin{itemize}
+  \item reference number -- unique signature assigned to this test -- once assigned it cannot change later on.
+  \item summary -- short summary of test (test name).
+  \item description -- long description of test case -- what is it testing, what is it needed, etc...
+  \item preconditions -- conditions that have to be met before executing test plan.
+  \item plan -- steps, point-by-point to be executed in order to perform scan.
+  \item post conditions -- final state that should be reached.
+\end{itemize}
+
+
+\subsection{Versioning notes}
+When changing this document always change version number and append proper comment into change history.
+Version number is organized as follows: X.Y.Z where X is release version indicating big changes in document,
+Y is major version number indicating extending document's content (i.e. adding new test cases), Z is minor
+version number indicating small fixes in document (typos, updating descriptions of test cases, etc...).
+
+
+
+\section{Change history}
+\begin{tabular}{ | c | c | l | }
+  \hline
+  \textbf{Date} & \textbf{Version} & \textbf{Changes} \\ \hline
+  % entries goes here - keep them sorted: most recent on the top
+  \historyEntry{2010.08.17}{0.1.0}{document creation}
+\end{tabular}
+
+
+
+\section{Test cases}
+\input{test_cases.tex}
+\end{document}
