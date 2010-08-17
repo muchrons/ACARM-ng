@@ -20,4 +20,4 @@ $(PDF): $(shell find -type f -name '*.tex')
 
 .PHONY: clean
 clean:
-	rm -fv *.pdf *.aux *bak *.log
+	rm -fv *.pdf *.aux *bak *.log *.out *.toc
