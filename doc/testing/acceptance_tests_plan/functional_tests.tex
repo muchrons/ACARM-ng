@@ -4,12 +4,12 @@
 {Correlating alerts origin from and send to the same host (IP).}
 {System is configured wilt all the filters.}
 {
-\begin{enumerate}
+\begin{enumerate*}
 \item Generate 150 alerts with the same source IP.
 \item Send them to the system.
 \item Generate 150 alerts with the same target IP.
 \item Send them to the system.
-\end{enumerate}
+\end{enumerate*}
 }
 {New meta-alert aggregating all the alerts from/to the same host is created for each unique host.}
 {Post condition can be easily checked with a trigger or data base content's inspection.}
@@ -21,11 +21,11 @@
 {Prelude-manager is one of the possible alert sources. Alerts gathered by it should be accessed by ACARM-ng as well.}
 {System is configured with prelude's input.}
 {
-\begin{enumerate}
+\begin{enumerate*}
 \item Register new sensor for prelude-manager, to be used by ACARM-ng.
 \item Configure prelude's input module of ACARM-ng to use newly registered profile.
 \item Run ACARM-ng and wait for data from prelude-manager.
-\end{enumerate}
+\end{enumerate*}
 }
 {New alerts are gathered by the system.}
 {Post condition can be easily checked with a trigger or data base content's inspection.}

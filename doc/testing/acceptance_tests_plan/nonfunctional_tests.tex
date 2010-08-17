@@ -4,10 +4,10 @@
 {Test maximal number of alerts that can be accepted by the system in a second (assuming that it will be removed straight away).}
 {System is up and running, configured without any filters and triggers.}
 {
-\begin{enumerate}
+\begin{enumerate*}
 \item{Start alerts generation}
 \item{Measure number of alerts accepted in a given amount of time}
-\end{enumerate}
+\end{enumerate*}
 }
 {Minimum reasonable number of alerts on a single-core machine is 1000.}
 {}
@@ -19,10 +19,10 @@
 {Check if application does not leak memory when running.}
 {System is up and running, configured with filters having minimum allowed time for buffering alerts for correlation.}
 {
-\begin{enumerate}
+\begin{enumerate*}
 \item{Start alerts generation}
 \item{Assuming each alert requires 10kB of memory send alerts count that would use at least 10000 times more than total system memory, adding some time spaces to allow old entries to be removed from the queues.}
-\end{enumerate}
+\end{enumerate*}
 }
 {System must not leak any memory}
 {For testing purposes valgrind tool can be used.}
@@ -34,15 +34,15 @@
 {Test if application does not access memory not assigned to it.}
 {System is configured using all available features.}
 {
-\begin{enumerate}
+\begin{enumerate*}
 \item{Test application using valgrind.}
 \item{Test application using memory-debuging library like DUMA or Electric-Fence with:}
-  \begin{enumerate}
+  \begin{enumerate*}
   \item aligning memory to the end of the page
   \item aligning memory to the begin of the page
   \item with checking for access to (recently) released memory pages
-  \end{enumerate}
-\end{enumerate}
+  \end{enumerate*}
+\end{enumerate*}
 }
 {System cannot access memory it does not own.}
 {You can switch dynamic libraries with LD\_PRELOAD variable when running application.}
@@ -54,10 +54,10 @@
 {Test number of alerts that can be accepted by the system in a second (assuming tey will be buffered for some time).}
 {System is up and running, configured with all features turned on.}
 {
-\begin{enumerate}
+\begin{enumerate*}
 \item{Start alerts generation}
 \item{Measure number of alerts accepted in a given amount of time}
-\end{enumerate}
+\end{enumerate*}
 }
 {Minimum reasonable number of alerts on a single-core machine is 100.}
 {Since alerts are buffered internally it is required to ensure proper amount of memory, given number of alerts passed to the system.}
