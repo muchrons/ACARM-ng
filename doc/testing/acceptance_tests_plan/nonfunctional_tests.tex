@@ -5,8 +5,8 @@
 {System is up and running, configured without any filters and triggers. Persistency is configured to stubs.}
 {
 \begin{enumerate*}
-\item{Start alerts generation}
-\item{Measure number of alerts accepted in a given amount of time}
+\item Start alerts generation.
+\item Measure number of alerts accepted in a given amount of time.
 \end{enumerate*}
 }
 {Minimum reasonable number of alerts on a single-core machine is 1000.}
@@ -20,8 +20,8 @@
 {System is up and running, configured with filters having minimum allowed time for buffering alerts for correlation.}
 {
 \begin{enumerate*}
-\item{Start alerts generation}
-\item{Assuming each alert requires 10kB of memory send alerts count that would use at least 10000 times more than total system memory, adding some time spaces to allow old entries to be removed from the queues.}
+\item Start alerts generation.
+\item Assuming each alert requires 10kB of memory send alerts count that would use at least 10000 times more than total system memory, adding some time spaces to allow old entries to be removed from the queues.
 \end{enumerate*}
 }
 {System must not leak any memory}
@@ -35,8 +35,8 @@
 {System is configured using all available features.}
 {
 \begin{enumerate*}
-\item{Test application using valgrind.}
-\item{Test application using memory-debuging library like DUMA or Electric-Fence with:}
+\item Test application using valgrind.
+\item Test application using memory-debuging library like DUMA or Electric-Fence with:
   \begin{enumerate*}
   \item aligning memory to the end of the page
   \item aligning memory to the begin of the page
@@ -55,9 +55,29 @@
 {System is up and running, configured with all features turned on.}
 {
 \begin{enumerate*}
-\item{Start alerts generation}
-\item{Measure number of alerts accepted in a given amount of time}
+\item Start alerts generation.
+\item Measure number of alerts accepted in a given amount of time.
 \end{enumerate*}
 }
 {Minimum reasonable number of alerts on a single-core machine is 100.}
 {Since alerts are buffered internally it is required to ensure proper amount of memory, given number of alerts passed to the system.}
+
+
+\testCase
+{nf-5}
+{Documentation usefulness.}
+{ACARM-ng installation and configuration is describe in documentation. It should be checked if it's up to date and is readable.}
+{System is in compressed form, no component is installed nor configured yet.}
+{
+\begin{enumerate*}
+\item Extract ACARM-ng from archive.
+\item Open installation documentation (doc/INSTALL.txt) and follow instruction step by step.
+\item Verify that system is installed and able to operate.
+\item Open configuration documentation (doc/CONFIGURATION.txt) and follow instruction step by step, configuring all the features available.
+\item Verify that all features present in the release are described in configuration.
+\item Verify that installed and configured system is running correctly.
+\item Check if minimal requirements (doc/REQUIREMENTS.txt) list is complete and non-redundant.
+\end{enumerate*}
+}
+{System is installed, configured and running.}
+{}

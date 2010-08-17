@@ -89,7 +89,7 @@
 {f-6}
 {Trigger reports buffering.}
 {When standard trigger failed to send message it is buffered internally and sending is retried next time it is activated. Messages must not be lost, due to temporal failures of external services.}
-{System is configured with buffering trigger configured (ex. are: gg, mail).}
+{System is configured with buffering trigger configured (some examples are: gg, mail).}
 {
 \begin{enumerate*}
 \item Put internet connection up.
@@ -102,3 +102,52 @@
 }
 {Ensure all buffered messages are being sent.}
 {See logs for details on what's going on. Notice that message buffer is of a finite length, thus when too many reports are to be sent oldes ones are truncated.}
+
+
+\testCase
+{f-7}
+{Configuration error handling.}
+{In case configuration is invalid error should be reported by application. Error must be readable enough for user to understand what is the problem.}
+{System has proper configuration with all features enabled.}
+{
+For each feature (ex. each: trigger, filter, input, persistency) repeat test:
+\begin{enumerate*}
+\item Use generic configuration.
+\item Remove one of required parameters from tested feature (configuration details can be found in ACARM-ng's configuration manual).
+\item Run ACARM-ng.
+\item Check for error message.
+\item See if message gives the point on error situation.
+\end{enumerate*}
+}
+{All error conditions must be reported on the screen in the readable form.}
+{}
+
+
+\testCase
+{f-8}
+{Logging to file.}
+{Logger is able to log to a disk file.}
+{Logger is configured to write logs to file.}
+{
+\begin{enumerate*}
+\item Run ACARM-ng.
+\item Turn off ACARM-ng.
+\end{enumerate*}
+}
+{All logged messages must be present in the log file.}
+{Welcome banner is not logged, but always displayed on the screen.}
+
+
+\testCase
+{f-9}
+{Logging to syslog.}
+{Logger is able to log to a system's syslog.}
+{Logger is configured to send logs to syslog.}
+{
+\begin{enumerate*}
+\item Run ACARM-ng.
+\item Turn off ACARM-ng.
+\end{enumerate*}
+}
+{All logged messages must be present in the syslog's log.}
+{Welcome banner is not logged, but always displayed on the screen.}
