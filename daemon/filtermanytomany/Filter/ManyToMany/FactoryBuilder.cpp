@@ -44,7 +44,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   const FilterConfig fc(type_, options);
   // filter manytomany name
   const std::string    &name=fc["name"];
-  LOGMSG_INFO_S(log_)<<"setting filter mamytomany name "<<name;
+  LOGMSG_INFO_S(log_)<<"setting filter \""<<getTypeName()<<"\" name to \""<<name<<"\"";
   // read timeout
   const unsigned int timeout   =Commons::Convert::to<unsigned int>(fc["timeout"]);
   LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";

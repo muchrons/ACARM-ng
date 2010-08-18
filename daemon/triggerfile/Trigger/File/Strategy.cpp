@@ -15,8 +15,8 @@ namespace Trigger
 namespace File
 {
 
-Strategy::Strategy(const Config &cfg):
-  Trigger::Simple::Strategy("file", cfg.getThresholdConfig() ),
+Strategy::Strategy(const std::string &name, const Config &cfg):
+  Trigger::Simple::Strategy("file", name, cfg.getThresholdConfig() ),
   outdir_( cfg.getOutputDirectory() ),
   lastWrite_(0),
   lastIndex_(0)

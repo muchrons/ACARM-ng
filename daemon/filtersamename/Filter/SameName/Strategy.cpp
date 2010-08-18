@@ -27,8 +27,8 @@ namespace Filter
 namespace SameName
 {
 
-Strategy::Strategy(unsigned int timeout):
-  Filter::Simple::Strategy<Data>("samename", timeout)
+Strategy::Strategy(const std::string &name, unsigned int timeout):
+  Filter::Simple::Strategy<Data>("samename", name, timeout)
 {
 }
 

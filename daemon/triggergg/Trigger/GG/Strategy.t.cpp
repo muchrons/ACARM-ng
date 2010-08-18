@@ -39,13 +39,13 @@ factory tf("Trigger/GG/Strategy");
 namespace tut
 {
 
-// check if name has been saved correctly
+// check if type has been saved correctly
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  Strategy s(cfg_);
-  ensure_equals("invalid name", s.getTriggerName(), "gg");
+  Strategy s("mygginformer", cfg_);
+  ensure_equals("invalid type", s.getTriggerType(), "gg");
 }
 
 // test sending report
@@ -53,7 +53,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Strategy               s(cfg_);
+  Strategy               s("mygginformer", cfg_);
   Strategy::ChangedNodes nc;
   s.process( makeNewNode(), nc );
   const std::string      str=getMessageFromAccount( getTestConfig2(),
@@ -69,7 +69,7 @@ void testObj::test<3>(void)
 {
   time_t start, stop;
   {
-    const Strategy s(cfg_);
+    const Strategy s("mygginformer", cfg_);
     start=time(NULL);
     usleep(100*1000);                 // give time for backend thread to start
   } // thread interruption and joining goes here

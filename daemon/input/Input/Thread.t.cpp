@@ -20,7 +20,7 @@ namespace
 struct TestReader: public Reader
 {
   TestReader(void):
-    Reader("testreader"),
+    Reader("testreader", "testreadername"),
     count_(0),
     justThrow_(false)
   {
@@ -125,7 +125,7 @@ namespace
 struct TestWaitingReader: public Reader
 {
   TestWaitingReader(void):
-    Reader("testwaitingreader")
+    Reader("testwaitingreader", "testwaitingreadername")
   {
   }
 

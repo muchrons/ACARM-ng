@@ -23,7 +23,7 @@ namespace
 struct TestStrategy: public Strategy
 {
   TestStrategy(void):
-    Strategy("teststrategy", 42)
+    Strategy("teststrategy", "teststrategyname", 42)
   {
   }
 

@@ -76,7 +76,7 @@ void Strategy::process(Node n, ChangedNodes &/*changed*/)
   // if it succeeded, mark it as triggered
   nos_.add(n);
   // and save it to persistency storage
-  BackendFacade bf(conn_, name_);
+  BackendFacade bf(conn_, type_);
   bf.markAsTriggered( n->getMetaAlert() );
   bf.commitChanges();
 
@@ -88,16 +88,17 @@ void Strategy::process(Node n, ChangedNodes &/*changed*/)
 
 namespace
 {
-inline Logger::NodeName makeNodeName(const string &name)
+inline Logger::NodeName makeNodeName(const string &type, const string &name)
 {
-  const string &out="trigger." + Logger::NodeName::removeInvalidChars(name);
+  const string &out="trigger." + Logger::NodeName::removeInvalidChars(type)
+                               + "." + Logger::NodeName::removeInvalidChars(name);
   return Logger::NodeName( out.c_str() );
 } // makeNodeName()
 } // unnamed namespace
 
-Strategy::Strategy(const std::string &name):
-  log_( makeNodeName(name) ),
-  name_(name),
+Strategy::Strategy(const std::string &type, const std::string &name):
+  log_( makeNodeName(type, name) ),
+  type_(type),
   conn_( Persistency::IO::create() )
 {
   LOGMSG_INFO(log_, "trigger created");

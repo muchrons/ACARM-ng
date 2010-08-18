@@ -20,7 +20,7 @@ namespace
 struct TestFilter: public Strategy<int>
 {
   TestFilter(void):
-    Strategy<int>("testfilter"),
+    Strategy<int>("testfilter", "testfiltername"),
     calls_(0),
     node_( makeGraphLeaf() )
   {
@@ -76,7 +76,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid name", tf_.getFilterName(), "testfilter");
+  ensure_equals("invalid name", tf_.getFilterType(), "testfilter");
 }
 
 // check if process() calls implementation (with valid arguments)
@@ -95,7 +95,7 @@ namespace
 struct TestLoopFilter: public Strategy<char>
 {
   TestLoopFilter(void):
-    Strategy<char>("testloopfilter")
+    Strategy<char>("testloopfilter", "testloopfiltername")
   {
   }
 
