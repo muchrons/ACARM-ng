@@ -10,6 +10,7 @@
 #include "Base/Threads/WriteLock.hpp"
 #include "Persistency/detail/NonCyclicAdder/WaitingLockData.hpp"
 #include "Persistency/GraphNode.hpp"
+#include "Persistency/IDAssignerDynamic.hpp"
 #include "Persistency/IO/IOStubs.t.hpp"
 #include "Persistency/TestHelpers.t.hpp"
 
@@ -27,7 +28,7 @@ struct TestClass
   TestClass(void):
     ma1_( new MetaAlert( makeNewAlert() ) ),
     ma2_( new MetaAlert( makeNewAlert() ) ),
-    conn_(new TestIOConnection),
+    conn_(new TestIOConnectionCounter),
     t_( conn_->createNewTransaction("gn_test") ),
     leaf_( makeLeaf() )
   {
@@ -35,13 +36,14 @@ struct TestClass
 
   GraphNodePtrNN makeLeaf(void)
   {
-    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, t_) );
+    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, t_, idad_) );
   }
 
   MetaAlertPtrNN      ma1_;
   MetaAlertPtrNN      ma2_;
   IO::ConnectionPtrNN conn_;
   IO::Transaction     t_;
+  IDAssignerDynamic   idad_;
 
   GraphNodePtrNN      leaf_;
 
