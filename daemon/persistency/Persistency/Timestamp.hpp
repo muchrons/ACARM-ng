@@ -11,7 +11,7 @@
 #include <ostream>
 #include <boost/operators.hpp>
 
-#include "Persistency/ExceptionConvertionError.hpp"
+#include "Persistency/ExceptionConversionError.hpp"
 
 namespace Persistency
 {

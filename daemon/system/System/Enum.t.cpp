@@ -95,7 +95,7 @@ void testObj::test<3>(void)
           other1==other2 );
 }
 
-// convertion to long
+// conversion to long
 template<>
 template<>
 void testObj::test<4>(void)
@@ -119,7 +119,7 @@ void testObj::test<5>(void)
   ensure( !(_te!=_te) );
 }
 
-// convertion to int (old, depracticated call)
+// conversion to int (old, depracticated call)
 template<>
 template<>
 void testObj::test<6>(void)

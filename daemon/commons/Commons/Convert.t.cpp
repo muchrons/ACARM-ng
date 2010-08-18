@@ -4,6 +4,8 @@
  */
 #include <tut.h>
 #include <string>
+#include <limits>
+#include <sstream>
 #include <cmath>
 
 #include "Commons/Convert.hpp"
@@ -22,9 +24,9 @@ struct TestClass
     try
     {
       Convert::to<T>(f);    // should throw
-      tut::fail("convertion didn't throw, as expected");
+      tut::fail("conversion didn't throw, as expected");
     }
-    catch(const Convert::ExceptionConvertionError &)
+    catch(const Convert::ExceptionConversionError &)
     {
       // this is expected
     }
@@ -150,7 +152,7 @@ template<>
 template<>
 void testObj::test<14>(void)
 {
-  ensure_equals("convertion failed", Convert::to<char, long>(42), 42);
+  ensure_equals("conversion failed", Convert::to<char, long>(42), 42);
 }
 
 // test converting to unsigned type
@@ -158,7 +160,7 @@ template<>
 template<>
 void testObj::test<15>(void)
 {
-  ensure_equals("convertion failed", Convert::to<unsigned char, long>(42), 42);
+  ensure_equals("conversion failed", Convert::to<unsigned char, long>(42), 42);
 }
 
 // test throw when converting string (negative number) to unsigned number
@@ -167,6 +169,20 @@ template<>
 void testObj::test<16>(void)
 {
   ensureThrow<unsigned char, string>("-11");
+}
+
+// test throw when converting too large number unsigned long long
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  unsigned long long tooLong=std::numeric_limits<unsigned long long>::max();
+  stringstream ss;
+  ss<<tooLong;
+  // NOTE: this is test for implementation-specific behaviour - normally this test should fail,
+  //       but due to limited range of temporary varible it does not. this test only checks if error
+  //       is risen when error condition is spotted in this implementation...
+  ensureThrow<unsigned long long, string>( ss.str() );
 }
 
 } // namespace tut
