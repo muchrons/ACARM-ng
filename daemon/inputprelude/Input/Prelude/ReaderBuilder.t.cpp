@@ -31,7 +31,7 @@ factory tf("Input/Prelude/ReaderBuilder");
 namespace tut
 {
 
-// tets getting type
+// test getting type
 template<>
 template<>
 void testObj::test<1>(void)

@@ -49,6 +49,7 @@ public:
   virtual DataPtr read(BackendFacade &bf, unsigned int timeout=0) = 0;
 
 protected:
+  // TODO: explicit is not needed here.
   /** \brief create base objects.
    *  \param type type of this reader.
    *  \param name name of this reader.

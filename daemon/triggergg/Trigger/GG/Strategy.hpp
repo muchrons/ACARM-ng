@@ -20,6 +20,7 @@ namespace GG
 class Strategy: public Trigger::Simple::Strategy
 {
 public:
+  // TODO: explicit not needed here.
   /** \brief create strategy instance.
    *  \param name name of trigger.
    *  \param cfg configuration to be applied.

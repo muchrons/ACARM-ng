@@ -56,6 +56,7 @@ public:
   }
 
 protected:
+  // TODO: explicit is not needed here.
   /** \brief create instance.
    *  \param type type of given trigger.
    *  \param name name of given trigger.

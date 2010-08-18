@@ -53,6 +53,7 @@ public:
     const double       priDelta_;       ///< priority increase
   }; // struct Parameters
 
+  // TODO: explicit is not needed here.
   /** \brief create instance.
    *  \param name  name for dns resolver.
    *  \param params paramters for dns resolver.

@@ -42,6 +42,7 @@ public:
     const double       similarity_;     ///< similarity threshold.
   }; // struct Params
 
+  // TODO: explicit is not needed here.
   /** \brief create instance.
    *  \param name name for the strategy.
    *  \param params paramters for the strategy.
