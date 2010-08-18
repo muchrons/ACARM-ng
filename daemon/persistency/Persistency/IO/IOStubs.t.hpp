@@ -277,6 +277,18 @@ struct TestIOConnection: public Persistency::IO::Connection
   int called_[7];
 }; // struct TestIOConnection
 
+
+struct TestIOConnectionCounter: public TestIOConnection
+{
+  virtual Persistency::IO::DynamicConfigAutoPtr dynamicConfigImpl(const Persistency::IO::DynamicConfig::Owner &owner,
+                                                                  Persistency::IO::Transaction                &t)
+  {
+    tut::ensure_equals("invalid owner", owner.get(), std::string("persistency") );
+    ++called_[6];
+    return Persistency::IO::DynamicConfigAutoPtr( new IODynamicConfigCounter(t, "next free GraphNode's ID") );
+  }
+}; // struct TestIOConnectionCounter
+
 } // unnamed namespace
 
 #endif

@@ -65,20 +65,24 @@ public:
    *  \param alert      alert to create leaf from.
    *  \param connection connection to use for persistency writes.
    *  \param t          current transaction.
+   *  \param idAssigner class that assigns new ID to graph node.
    */
   GraphNode(AlertPtrNN           alert,
             IO::ConnectionPtrNN  connection,
-            IO::Transaction     &t);
+            IO::Transaction     &t,
+            IDAssigner          &idAssigner);
   /** \brief create new node by correlating given ones.
    *  \param ma         meta alert's data to be used as this one.
    *  \param connection connection to persistency module.
    *  \param t          transaction to use for connecting.
    *  \param children   list of node's children.
+   *  \param idAssigner class that assigns new ID to graph node.
    */
   GraphNode(MetaAlertPtrNN            ma,
             IO::ConnectionPtrNN       connection,
             IO::Transaction          &t,
-            const NodeChildrenVector &children);
+            const NodeChildrenVector &children,
+            IDAssigner               &idAssigner);
   /** \brief deallocates object and its resources.
    *
    *  as a part of deallocation process object meta-alert is marked as not
@@ -109,6 +113,11 @@ public:
    *  \param maIO  persistency access element for this node.
    */
   void addChild(GraphNodePtrNN child, IO::MetaAlert &maIO);
+
+  /** \brief returns ID of a current object.
+   *  \return object's ID.
+   */
+  ID getID(void) const;
 
   /** \brief checks if given graph part is leaf or not.
    *  \return true if this is leaf, false if this is node.
@@ -143,6 +152,7 @@ private:
 
   void ensureIsNode(void) const;
 
+  const ID               id_;
   MetaAlertPtrNN         self_;
   GraphNodesList         children_;
   AlertPtr               leaf_;

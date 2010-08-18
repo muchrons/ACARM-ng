@@ -7,6 +7,7 @@
 
 #include "Base/Threads/ThreadJoiner.hpp"
 #include "Persistency/GraphNode.hpp"
+#include "Persistency/IDAssignerDynamic.hpp"
 #include "Persistency/IO/IOStubs.t.hpp"
 #include "Persistency/TestHelpers.t.hpp"
 #include "TestHelpers/checkEquality.hpp"
@@ -17,24 +18,12 @@ using namespace Persistency;
 namespace
 {
 
-struct TestIOConnectionCounter: public TestIOConnection
-{
-  virtual Persistency::IO::DynamicConfigAutoPtr dynamicConfigImpl(const Persistency::IO::DynamicConfig::Owner &owner,
-                                                                  Persistency::IO::Transaction                &t)
-  {
-    tut::ensure_equals("invalid owner", owner.get(), string("persistency") );
-    ++called_[6];
-    return Persistency::IO::DynamicConfigAutoPtr( new IODynamicConfigCounter(t, "next free GraphNode's ID") );
-  }
-}; // struct TestIOConnectionCounter
-
-
 struct TestClass: private TestBase
 {
   TestClass(void):
     ma1_( new MetaAlert( makeNewAlert() ) ),
     ma2_( new MetaAlert( makeNewAlert() ) ),
-    conn_(new TestIOConnection),
+    conn_(new TestIOConnectionCounter),
     t_( conn_->createNewTransaction("gn_test") ),
     leaf_( makeLeaf() ),
     node_( makeNode() )
@@ -52,12 +41,12 @@ struct TestClass: private TestBase
     for(int i=0; i<extraNodes; ++i)
       vec.push_back( makeLeaf() );
 
-    return GraphNodePtrNN( new GraphNode(ma, conn_, t_, vec) );
+    return GraphNodePtrNN( new GraphNode(ma, conn_, t_, vec, idad_) );
   }
 
   GraphNodePtrNN makeLeaf(void)
   {
-    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, t_) );
+    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, t_, idad_) );
   }
 
   int childrenCount(const GraphNode &gn) const
@@ -83,6 +72,7 @@ struct TestClass: private TestBase
   MetaAlertPtrNN      ma2_;
   IO::ConnectionPtrNN conn_;
   IO::Transaction     t_;
+  IDAssignerDynamic   idad_;
 
   GraphNodePtrNN      leaf_;
   GraphNodePtrNN      node_;
@@ -226,7 +216,7 @@ void testObj::test<9>(void)
                                    makeNewReferenceURL(),
                                    Timestamp() ) );
   const NodeChildrenVector vec( makeLeaf(), makeLeaf() );
-  const GraphNode          gn(ma, conn_, t_, vec);
+  const GraphNode          gn(ma, conn_, t_, vec, idad_);
   ensure_equals("invalid children count", childrenCount(gn), 2);
 }
 
