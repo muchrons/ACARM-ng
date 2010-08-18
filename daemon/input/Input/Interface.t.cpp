@@ -19,7 +19,7 @@ namespace
 struct TestReader: public Reader
 {
   TestReader(void):
-    Reader("testreader")
+    Reader("testreader", "testreadername")
   {
   }
 
@@ -103,7 +103,7 @@ namespace
 struct TestReaderName: public Reader
 {
   TestReaderName(void):
-    Reader("INVALID-42-chars_NARF")
+    Reader("INVALID-42-chars_NARF", "somename")
   {
   }
 

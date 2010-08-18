@@ -10,8 +10,8 @@ namespace Filter
 namespace OneToMany
 {
 
-Strategy::Strategy(unsigned int timeout):
-  Filter::HostCommon::Strategy("onetomany", timeout)
+Strategy::Strategy(const std::string &name, unsigned int timeout):
+  Filter::HostCommon::Strategy("onetomany", name, timeout)
 {
 }
 

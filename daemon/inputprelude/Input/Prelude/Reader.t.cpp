@@ -15,7 +15,7 @@ namespace
 struct TestClass
 {
   TestClass():
-    r_("profile","/etc/prelude/default/client.conf")
+    r_("profile", "somename", "/etc/prelude/default/client.conf")
   {
   }
 
@@ -32,12 +32,12 @@ factory tf("Input/Prelude/Reader");
 namespace tut
 {
 
-// test if name is valid
+// test if type is valid
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid name", r_.getName(), "prelude");
+  ensure_equals("invalid type", r_.getType(), "prelude");
 }
 
 } // namespace tut

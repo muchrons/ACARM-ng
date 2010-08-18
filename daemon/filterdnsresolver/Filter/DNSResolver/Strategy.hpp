@@ -41,9 +41,10 @@ public:
   }; // struct Parameters
 
   /** \brief create instance.
+   *  \param name name for dns resolver.
    *  \param params paramters for dns resolver.
    */
-  explicit Strategy(const Parameters &params);
+  explicit Strategy(const std::string &name, const Parameters &params);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.

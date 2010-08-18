@@ -30,12 +30,12 @@ public:
    */
   virtual ~Reader(void);
 
-  /** \brief gets name of this reader.
-   *  \return reader's name.
+  /** \brief gets type of this reader.
+   *  \return reader's type.
    */
-  const std::string &getName(void) const
+  const std::string &getType(void) const
   {
-    return name_;
+    return type_;
   }
 
   /** \brief reads data from input or returns if timeouted.
@@ -50,14 +50,15 @@ public:
 
 protected:
   /** \brief create base objects.
+   *  \param type type of this reader.
    *  \param name name of this reader.
    */
-  explicit Reader(const std::string &name);
+  explicit Reader(const std::string &type, const std::string &name);
 
   Logger::Node log_;    ///< logger node to log messages to.
 
 private:
-  const std::string name_;
+  const std::string type_;
 }; // class Reader
 
 

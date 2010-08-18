@@ -25,7 +25,7 @@ int main(int argc, char **argv)
     const Config cfg( getTestConfig1(),
         receiver,
         Trigger::Simple::ThresholdConfig("0.0", "0") );
-    Strategy     s(cfg);
+    Strategy     s("ggmtesttimeout", cfg);
 
     const int init=5*60;
     cerr<<"waiting some time ("<<init/60<<"[m]) - if pings does not work, it will timeout..."<<endl;

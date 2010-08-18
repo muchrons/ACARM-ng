@@ -28,7 +28,7 @@ struct TestStrategy: public Strategy<TestData>
   TestStrategy(bool isInteresting=true,
                bool canCorrelate =true,
                int  skipCorrelations=0):
-    Strategy<TestData>("teststrategy", 42),
+    Strategy<TestData>("teststrategy", "teststrategyname", 42),
     isInteresting_(isInteresting),
     canCorrelate_(canCorrelate),
     skipCorrelations_(skipCorrelations)

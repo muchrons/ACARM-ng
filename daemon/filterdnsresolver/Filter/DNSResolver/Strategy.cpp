@@ -15,8 +15,8 @@ namespace Filter
 namespace DNSResolver
 {
 
-Strategy::Strategy(const Parameters &params):
-  Filter::Strategy<Data>("dnsresolver"),
+Strategy::Strategy(const std::string &name, const Parameters &params):
+  Filter::Strategy<Data>("dnsresolver", name),
   cache_(params.cacheTimeout_)
 {
 }

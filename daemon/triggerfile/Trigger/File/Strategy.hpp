@@ -22,9 +22,10 @@ class Strategy: public Trigger::Simple::Strategy
 {
 public:
   /** \brief create strategy instance.
+   *  \param name name to be applied.
    *  \param cfg configuration to be applied.
    */
-  explicit Strategy(const Config &cfg);
+  explicit Strategy(const std::string &name, const Config &cfg);
 
 private:
   virtual void triggerImpl(const Node &n);

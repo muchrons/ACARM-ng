@@ -15,8 +15,8 @@ namespace Trigger
 namespace Mail
 {
 
-Strategy::Strategy(const Config &cfg):
-  Trigger::Simple::Strategy("mail", cfg.getThresholdConfig() ),
+Strategy::Strategy(const std::string &name, const Config &cfg):
+  Trigger::Simple::Strategy("mail", name, cfg.getThresholdConfig() ),
   cfg_(cfg)
 {
 }

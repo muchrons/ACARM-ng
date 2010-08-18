@@ -20,8 +20,8 @@ namespace Filter
 namespace IPBlackList
 {
 
-Strategy::Strategy(const Parameters &params):
-  Filter::Strategy<Data>("ipblacklist"),
+Strategy::Strategy(const std::string &name, const Parameters &params):
+  Filter::Strategy<Data>("ipblacklist", name),
   params_(params),
   deadline_(0),
   dwnl_(params_.limit_)
