@@ -72,7 +72,7 @@ public:
   {
     ensure();
   }
-  /** \brief convertion operator.
+  /** \brief conversion operator.
    *  \return boost::shared_ptr<> for a given value.
    */
   operator SharedPtr(void) const

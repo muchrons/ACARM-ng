@@ -1,0 +1,58 @@
+% A4==21x29.7[cm]
+\documentclass[a4paper,12pt]{article}
+% PL version encoded in UTF-8
+%\usepackage{polski}
+\usepackage[utf8]{inputenc}
+%\usepackage{fancyhdr}
+%\usepackage{longtable}
+
+% setup margins
+\usepackage{geometry}
+\geometry{verbose,a4paper,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+
+% page numbering off
+%\pagestyle{empty}
+
+\usepackage{mdwlist}
+
+% make text nicely justified
+%\sloppy
+% do not leave small pieces on new sides
+%\clubpenalty=10000
+%\widowpenalty=10000
+
+\usepackage{hyperref}
+
+% use polish indentaion style
+\usepackage{indentfirst}
+% we'll use graphics
+%\usepackage{graphicx}
+
+%\pagestyle{fancy}
+
+%\setlength{\textheight}{20cm}
+
+% macros
+\input{macros.tex}
+
+\title{Acceptance Tests Plan for ACARM-ng project\\( version \versionNumber{})}
+\author{Bartosz 'BaSz' Szurgot (bartosz.szurgot@pwr.wroc.pl)}
+
+\begin{document}
+
+%
+% document's content
+%
+\maketitle
+
+\tableofcontents
+
+\section{Introduction}
+\input{introduction.tex}
+
+\section{Change history}
+\input{change_history.tex}
+
+\section{Test cases}
+\input{test_cases.tex}
+\end{document}

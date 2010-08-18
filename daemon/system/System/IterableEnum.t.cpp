@@ -97,7 +97,7 @@ void testObj::test<3>(void)
           other1==other2 );
 }
 
-// convertion to long
+// conversion to long
 template<>
 template<>
 void testObj::test<4>(void)

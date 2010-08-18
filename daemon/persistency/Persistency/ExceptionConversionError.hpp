@@ -1,5 +1,5 @@
 /*
- * ExceptionConvertionError.hpp
+ * ExceptionConversionError.hpp
  *
  */
 #ifndef INCLUDE_PERSISTENCY_EXCEPTIONCONVERTIONERROR_HPP_FILE
@@ -12,20 +12,20 @@
 namespace Persistency
 {
 
-/** \brief exception thorw on convertion error.
+/** \brief exception thorw on conversion error.
  */
-class ExceptionConvertionError: public Exception
+class ExceptionConversionError: public Exception
 {
 public:
   /** \brief create execption with given message.
    *  \param where   place where exception has been rised.
-   *  \param details details of convertion problem.
+   *  \param details details of conversion problem.
    */
-  ExceptionConvertionError(const Location &where, const std::string &details):
-    Exception(where, cc("convertion failed: ", details) )
+  ExceptionConversionError(const Location &where, const std::string &details):
+    Exception(where, cc("conversion failed: ", details) )
   {
   }
-}; // class ExceptionConvertionError
+}; // class ExceptionConversionError
 
 } // namespace Persistency
 

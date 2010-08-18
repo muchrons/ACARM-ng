@@ -2,10 +2,10 @@
  * CachedDNS.cpp
  *
  */
-#include "Filter/DNSResolver/CachedDNS.hpp"
-#include <deque>
 #include <cassert>
+
 #include "Logger/Logger.hpp"
+#include "Filter/DNSResolver/CachedDNS.hpp"
 
 using namespace std;
 
@@ -31,7 +31,7 @@ CachedDNS::Entry CachedDNS::operator[](const IP &ip)
                         <<ip<<"' for "<<timeout_<<"[s]";
     // if entry does not exist yet, add it
     const CachedEntry ce(ip, timeout_);     // translate DNS
-    it=cache_.insert( Cache::value_type(ip, ce) ).first; //TODO, dlaczego tu jest .first, chyba nie kumam tej linijki
+    it=cache_.insert( Cache::value_type(ip, ce) ).first;
     LOGMSG_DEBUG_S(log_)<<it->first<<" maps to '"<<it->second.name_.get()<<"'";
   }
 
@@ -42,21 +42,19 @@ CachedDNS::Entry CachedDNS::operator[](const IP &ip)
 void CachedDNS::prune(void)
 {
   LOGMSG_DEBUG(log_, "prunning cache");
-  typedef deque<IP> OutdatedList;
-  OutdatedList outdated;
+  const time_t now=time(NULL);
 
-  // gather keys of outdated entries
+  Cache::iterator it=cache_.begin();
+  while( it!=cache_.end() )
   {
-    const time_t now=time(NULL);
-    for(Cache::const_iterator it=cache_.begin(); it!=cache_.end(); ++it)
-      if(it->second.time_<now)
-        outdated.push_back(it->first);
-  }
-//TODO: Why there's an extra collection of elements due to deletion instead of deleting them on the spot?
-  LOGMSG_DEBUG_S(log_)<<outdated.size()<<" entries to be removed";
-  // remove outdated entries
-  for(OutdatedList::const_iterator it=outdated.begin(); it!=outdated.end(); ++it)
-    cache_.erase(*it);
+    Cache::iterator tmp=it++;       // move to next entry but save current one temporary
+    if(tmp->second.time_<now)       // check if entry is not outdated
+    {
+      LOGMSG_DEBUG_S(log_)<<"removing entry for IP "<<tmp->first<<" ("<<tmp->second.name_.get()
+                          <<") outdated after "<<tmp->second.time_;
+      cache_.erase(tmp);            // if yes, remove it.
+    }
+  } // while(!end)
 }
 
 } // namespace DNSResolver

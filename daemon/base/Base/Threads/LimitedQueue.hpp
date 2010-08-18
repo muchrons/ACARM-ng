@@ -53,7 +53,7 @@ public:
 
   /** \brief signals all threads waiting on push()/pop().
    */
-  void signalAll(void) //TODO: is this really neccessary, seems to be breaking encapsulation?
+  void signalAll(void)
   {
     assert( q_.size()<=N && "collection oversized");
     notFull_.notify_all();
@@ -70,7 +70,7 @@ public:
     // wait for queue to be processed
     while( q_.size()==N )
     {
-      boost::this_thread::interruption_point(); //TODO: this is redundant, because wait on condition variable is an interruption point itself
+      // wait on condition variable is an interruption point itself, thus no explicit check is needed here.
       notFull_.wait(lock);
     }
 
