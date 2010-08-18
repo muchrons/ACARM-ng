@@ -17,6 +17,18 @@ using namespace Persistency;
 namespace
 {
 
+struct TestIOConnectionCounter: public TestIOConnection
+{
+  virtual Persistency::IO::DynamicConfigAutoPtr dynamicConfigImpl(const Persistency::IO::DynamicConfig::Owner &owner,
+                                                                  Persistency::IO::Transaction                &t)
+  {
+    tut::ensure_equals("invalid owner", owner.get(), string("persistency") );
+    ++called_[6];
+    return Persistency::IO::DynamicConfigAutoPtr( new IODynamicConfigCounter(t, "next free GraphNode's ID") );
+  }
+}; // struct TestIOConnectionCounter
+
+
 struct TestClass: private TestBase
 {
   TestClass(void):

@@ -6,7 +6,10 @@
 #define INCLUDE_IOSTUBS_T_HPP_FILE
 
 #include <tut.h>
+#include <string>
 
+#include "Commons/Convert.hpp"
+#include "Persistency/GraphNode.hpp"
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/TestTransactionAPI.t.hpp"
@@ -139,6 +142,50 @@ public:
 
   int calls_[3];
 }; // class IODynamicConfig
+
+
+struct IODynamicConfigCounter: public Persistency::IO::DynamicConfig
+{
+public:
+  IODynamicConfigCounter(Persistency::IO::Transaction &t, const std::string &keyValue):
+    Persistency::IO::DynamicConfig("some owner", t),
+    keyValue_(keyValue),
+    isNull_(true),
+    id_(1234567890)
+  {
+  }
+
+  virtual void writeImpl(Persistency::IO::Transaction &/*t*/, const Key &key, const Value &value)
+  {
+    tut::ensure_equals("invalid key to be written", key.get(), keyValue_);
+    typedef Persistency::GraphNode::ID::Numeric NumericID;
+    const NumericID newID=Commons::Convert::to<NumericID>( value.get() );
+    if(isNull_)
+      tut::ensure_equals("invalid initial value to be written", newID, 1u);
+    else
+      tut::ensure_equals("invalid new ID to be written", newID, id_+1);
+    id_    =newID;
+    isNull_=false;
+  }
+
+  virtual ValueNULL readImpl(Persistency::IO::Transaction &/*t*/, const Key &key)
+  {
+    tut::ensure_equals("invalid key to be read", key.get(), keyValue_);
+    if(isNull_)
+      return ValueNULL();
+    return ValueNULL( Commons::Convert::to<std::string>(id_) );
+  }
+
+  virtual Value readConstImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/)
+  {
+    tut::fail("readConst() should NOT be called at all");
+    return Value("???");
+  }
+
+  const std::string                   keyValue_;
+  bool                                isNull_;
+  Persistency::GraphNode::ID::Numeric id_;
+}; // class IODynamicConfigCounter
 
 
 class IORestorer: public Persistency::IO::Restorer

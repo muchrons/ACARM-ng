@@ -30,6 +30,7 @@ GraphNode::ID IDAssignerDynamic::assign(IO::DynamicConfig &dc)
   // save next free ID
   dc.write(key, Commons::Convert::to<std::string>( freeID.get()+1u ) );
 
+  // return final value.
   return freeID;
 }
 

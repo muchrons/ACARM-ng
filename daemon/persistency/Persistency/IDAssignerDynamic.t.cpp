@@ -14,57 +14,18 @@ using namespace Persistency;
 namespace
 {
 
-
-struct TestDynamicConfig: public Persistency::IO::DynamicConfig
-{
-public:
-  explicit TestDynamicConfig(Persistency::IO::Transaction &t):
-    Persistency::IO::DynamicConfig("some owner", t),
-    keyValue_("next free GraphNode's ID"),
-    isNull_(true),
-    id_(1234567890)
-  {
-  }
-
-  virtual void writeImpl(Persistency::IO::Transaction &/*t*/, const Key &key, const Value &value)
-  {
-    tut::ensure_equals("invalid key", key.get(), keyValue_);
-    id_    =Commons::Convert::to<GraphNode::ID::Numeric>( value.get() );
-    isNull_=false;
-  }
-
-  virtual ValueNULL readImpl(Persistency::IO::Transaction &/*t*/, const Key &key)
-  {
-    tut::ensure_equals("invalid key", key.get(), keyValue_);
-    if(isNull_)
-      return ValueNULL();
-    return ValueNULL( Commons::Convert::to<std::string>(id_) );
-  }
-
-  virtual Value readConstImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/)
-  {
-    tut::fail("this call should NOT be used at all in this context");
-    return Value("???");
-  }
-
-  const std::string      keyValue_;
-  bool                   isNull_;
-  GraphNode::ID::Numeric id_;
-}; // class TestDynamicConfig
-
-
 struct TestClass
 {
   TestClass(void):
     t_( tioc_.createNewTransaction("test_assigner") ),
-    dc_(t_)
+    dc_(t_, "next free GraphNode's ID")
   {
   }
 
-  TestIOConnection  tioc_;
-  IO::Transaction   t_;
-  TestDynamicConfig dc_;
-  IDAssignerDynamic ad_;
+  TestIOConnection       tioc_;
+  IO::Transaction        t_;
+  IODynamicConfigCounter dc_;
+  IDAssignerDynamic      ad_;
 };
 
 typedef tut::test_group<TestClass> factory;
