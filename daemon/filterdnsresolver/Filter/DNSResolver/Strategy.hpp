@@ -40,12 +40,11 @@ public:
     const unsigned int cacheTimeout_;   ///< timeout for cache entries.
   }; // struct Parameters
 
-  // TODO: explicit is not needed here.
   /** \brief create instance.
    *  \param name name for dns resolver.
    *  \param params paramters for dns resolver.
    */
-  explicit Strategy(const std::string &name, const Parameters &params);
+  Strategy(const std::string &name, const Parameters &params);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.

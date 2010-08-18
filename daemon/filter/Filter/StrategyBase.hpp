@@ -29,9 +29,8 @@ public:
    */
   virtual ~StrategyBase(void);
 
-  // TODO: update comments to implementation
-  /** \brief gets filter name.
-   *  \return name of implemented filter.
+  /** \brief gets filter type.
+   *  \return type of implemented filter.
    */
   const std::string &getFilterType(void) const
   {

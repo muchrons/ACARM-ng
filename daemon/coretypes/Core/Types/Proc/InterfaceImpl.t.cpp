@@ -22,8 +22,7 @@ struct TestStrategyParams
 
 struct TestStrategy
 {
-  // TODO: explicit is not needed here
-  explicit TestStrategy(const std::string &/*name*/, const TestStrategyParams &p):
+  TestStrategy(const std::string &/*name*/, const TestStrategyParams &p):
     p_(p)
   {
     p_.calls_=0;

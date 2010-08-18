@@ -42,12 +42,11 @@ public:
     const double       similarity_;     ///< similarity threshold.
   }; // struct Params
 
-  // TODO: explicit is not needed here.
   /** \brief create instance.
    *  \param name name for the strategy.
    *  \param params paramters for the strategy.
    */
-  explicit Strategy(const std::string &name, const Params &params);
+  Strategy(const std::string &name, const Params &params);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.

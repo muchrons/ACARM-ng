@@ -102,10 +102,9 @@ public:
   }; // struct NodeEntry
 
 protected:
-  // TODO: explicit is redundant here.
   /** \brief create instance.
    */
-  explicit Strategy(const std::string &type, const std::string &name):
+  Strategy(const std::string &type, const std::string &name):
     StrategyBase(type, name),
     nextPrune_(0)
   {
