@@ -49,6 +49,7 @@ struct Data
 class Strategy: public Filter::Simple::Strategy<Data>
 {
 public:
+  // TODO: explicit is not needed here.
   /** \brief create instance.
    *  \name name name for strategy.
    *  \param timeout time observed node should be in queue.

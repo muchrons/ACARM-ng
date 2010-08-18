@@ -29,6 +29,7 @@ public:
    */
   virtual ~StrategyBase(void);
 
+  // TODO: update comments to implementation
   /** \brief gets filter name.
    *  \return name of implemented filter.
    */

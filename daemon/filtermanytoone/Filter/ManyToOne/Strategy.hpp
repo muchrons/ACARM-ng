@@ -18,6 +18,7 @@ namespace ManyToOne
 class Strategy: public Filter::HostCommon::Strategy
 {
 public:
+  // TODO: explicit is not needed here.
   /** \brief create instance.
    *  \param name name for strategy
    *  \param timeout timeout (in seconds) for observed node to be in queue.

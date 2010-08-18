@@ -18,6 +18,7 @@ namespace Mail
 class Strategy: public Trigger::Simple::Strategy
 {
 public:
+  // TODO: explicit is not needed here.
   /** \brief create strategy instance.
    *  \param name name to be applied.
    *  \param cfg configuration to be applied.

@@ -18,6 +18,7 @@ namespace OneToMany
 class Strategy: public Filter::HostCommon::Strategy
 {
 public:
+  // TODO: explicit is not needed here.
   /** \brief create instance.
    *  \param name name for strategy.
    *  \param timeout timeout value for observed nod to be in queue.

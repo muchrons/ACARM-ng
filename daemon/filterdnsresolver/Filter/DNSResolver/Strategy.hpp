@@ -40,6 +40,7 @@ public:
     const unsigned int cacheTimeout_;   ///< timeout for cache entries.
   }; // struct Parameters
 
+  // TODO: explicit is not needed here.
   /** \brief create instance.
    *  \param name name for dns resolver.
    *  \param params paramters for dns resolver.
