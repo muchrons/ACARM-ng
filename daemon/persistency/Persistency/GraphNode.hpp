@@ -19,6 +19,7 @@
 #include "Persistency/NodeChildrenVector.hpp"
 #include "Persistency/detail/NonCyclicAdder.hpp"
 #include "Persistency/IO/Connection.hpp"
+#include "Persistency/IO/DynamicConfig.hpp"
 #include "Persistency/ExceptionNotLeaf.hpp"
 #include "Persistency/ExceptionNotNode.hpp"
 
@@ -57,7 +58,7 @@ public:
     /** \brief assign ID for the newly created object.
      *  \return ID for the newly assigned object.
      */
-    virtual GraphNode::ID assign(void) = 0;
+    virtual GraphNode::ID assign(IO::DynamicConfig &dc) = 0;
   }; // struct IDAssigner
 
   /** \brief create graph's leaf from a given alert.
