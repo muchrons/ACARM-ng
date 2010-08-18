@@ -47,6 +47,19 @@ public:
   /** \brief const iterator to colection. */
   typedef GraphNodesList::const_iterator const_iterator;
 
+  /** \brief helper interface to assign ID for newly created object.
+   */
+  struct IDAssigner: private boost::noncopyable
+  {
+    /** \brief ensure proper destruction.
+     */
+    virtual ~IDAssigner(void);
+    /** \brief assign ID for the newly created object.
+     *  \return ID for the newly assigned object.
+     */
+    virtual GraphNode::ID assign(void) = 0;
+  }; // struct IDAssigner
+
   /** \brief create graph's leaf from a given alert.
    *  \param alert      alert to create leaf from.
    *  \param connection connection to use for persistency writes.

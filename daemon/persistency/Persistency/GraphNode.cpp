@@ -14,6 +14,10 @@
 namespace Persistency
 {
 
+GraphNode::IDAssigner::~IDAssigner(void)
+{
+}
+
 GraphNode::GraphNode(AlertPtrNN           alert,
                      IO::ConnectionPtrNN  connection,
                      IO::Transaction     &t):
