@@ -10,6 +10,7 @@
 #include <boost/noncopyable.hpp>
 #include <boost/operators.hpp>
 
+#include "Base/ObjectID.hpp"
 #include "Base/Threads/GrowingVector.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Alert.hpp"
@@ -39,6 +40,8 @@ private:
   typedef Base::Threads::GrowingVector<GraphNodePtrNN> GraphNodesList;
 
 public:
+  /** \brief object's ID type. */
+  typedef Base::ObjectID<GraphNode>      ID;
   /** \brief non-const iterator to collection. */
   typedef GraphNodesList::iterator       iterator;
   /** \brief const iterator to colection. */

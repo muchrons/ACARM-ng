@@ -516,4 +516,13 @@ void testObj::test<26>(void)
   ensure_equals("duplicate child has been added", childrenCount(*gn), 3);
 }
 
+// test presence of ID typedef
+template<>
+template<>
+void testObj::test<27>(void)
+{
+  const GraphNode::ID id(42u);
+  ensure_equals("invalid ID", id.get(), 42u);
+}
+
 } // namespace tut
