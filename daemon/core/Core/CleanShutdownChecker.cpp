@@ -76,11 +76,11 @@ CleanShutdownChecker::CleanShutdownChecker(void):
   else
   {
     assert( prev.get()->get()!=NULL );
-    if( strstr(prev.get()->get(), "confirmed exit")==0 )
+    if( strcmp(prev.get()->get(), "confirmed exit")==0 )
       LOGMSG_DEBUG(log_, "last run finished without errors");
     else
-      LOGMSG_WARN_S(log_)<<"last run did NOT finished successfully - last satatus was: '"<<prev.get()->get()<<
-                           "' - if this is not due to power/hardware failure you should report this problem";
+      LOGMSG_ERROR_S(log_)<<"last run did NOT finished successfully - last satatus was: '"<<prev.get()->get()<<
+                            "' - if this is not due to power/hardware failure you should report this problem";
   }
   // write new state
   pio.write("started");
