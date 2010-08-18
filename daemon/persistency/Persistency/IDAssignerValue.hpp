@@ -25,7 +25,7 @@ struct IDAssignerValue: public GraphNode::IDAssigner
   /** \brief get assigned value.
    *  \return pre-defined value.
    */
-  virtual GraphNode::ID assign(void)
+  virtual GraphNode::ID assign(IO::DynamicConfig &/*dc*/)
   {
     return id_;
   }
