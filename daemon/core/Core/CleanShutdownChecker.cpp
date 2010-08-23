@@ -72,15 +72,22 @@ CleanShutdownChecker::CleanShutdownChecker(void):
   if( prev.get()==NULL )
   {
     LOGMSG_DEBUG(log_, "previous value is NULL (i.e. first run)");
+    lastRunSuccessful_=true;
   }
   else
   {
     assert( prev.get()->get()!=NULL );
     if( strcmp(prev.get()->get(), "confirmed exit")==0 )
+    {
       LOGMSG_DEBUG(log_, "last run finished without errors");
+      lastRunSuccessful_=true;
+    }
     else
+    {
       LOGMSG_ERROR_S(log_)<<"last run did NOT finished successfully - last satatus was: '"<<prev.get()->get()<<
                             "' - if this is not due to power/hardware failure you should report this problem";
+      lastRunSuccessful_=false;
+    }
   }
   // write new state
   pio.write("started");
@@ -119,6 +126,11 @@ void CleanShutdownChecker::confirmCleanShutdown(void)
   confirmed_=true;
   pio.commit();
   LOGMSG_DEBUG(log_, "exit confirmed");
+}
+
+bool CleanShutdownChecker::wasLastRunSuccessful(void) const
+{
+  return lastRunSuccessful_;
 }
 
 } // namespace Core
