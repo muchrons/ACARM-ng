@@ -18,7 +18,7 @@ struct TestClass
 {
   TestClass(void):
     t_( tioc_.createNewTransaction("test_assigner") ),
-    dc_(t_, "next free GraphNode's ID")
+    dc_(t_, "next free MetaAlert's ID")
   {
   }
 

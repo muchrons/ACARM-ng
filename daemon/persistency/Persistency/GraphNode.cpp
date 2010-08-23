@@ -14,29 +14,9 @@
 namespace Persistency
 {
 
-GraphNode::IDAssigner::~IDAssigner(void)
-{
-}
-
-
-namespace
-{
-GraphNode::ID getAssignedID(IO::ConnectionPtrNN    connection,
-                            IO::Transaction       &t,
-                            GraphNode::IDAssigner &idAssigner)
-{
-  IO::DynamicConfigAutoPtr dc=connection->dynamicConfig("persistency", t);
-  assert( dc.get()!=NULL );
-  return idAssigner.assign(*dc);
-} // getAssignedID()
-} // unnamed namespace
-
-
 GraphNode::GraphNode(AlertPtrNN           alert,
                      IO::ConnectionPtrNN  connection,
-                     IO::Transaction     &t,
-                     IDAssigner          &idAssigner):
-  id_( getAssignedID(connection, t, idAssigner) ),
+                     IO::Transaction     &t):
   self_( new MetaAlert(alert) ),
   leaf_(alert)
 {
@@ -57,9 +37,7 @@ GraphNode::GraphNode(AlertPtrNN           alert,
 GraphNode::GraphNode(MetaAlertPtrNN            ma,
                      IO::ConnectionPtrNN       connection,
                      IO::Transaction          &t,
-                     const NodeChildrenVector &children,
-                     IDAssigner               &idAssigner):
-  id_( getAssignedID(connection, t, idAssigner) ),
+                     const NodeChildrenVector &children):
   self_(ma),
   leaf_()
 {
@@ -134,11 +112,6 @@ void GraphNode::addChild(GraphNodePtrNN child, IO::MetaAlert &maIO)
   maIO.addChild( child->getMetaAlert() );
 }
 
-GraphNode::ID GraphNode::getID(void) const
-{
-  return id_;
-}
-
 bool GraphNode::isLeaf(void) const
 {
   if( leaf_.get()!=NULL )
@@ -187,11 +160,6 @@ bool GraphNode::operator==(const GraphNode &other) const
     return true;
   assert( self_.get()!=other.self_.get() );
 
-  // compare IDs
-  if( getID()!=other.getID() )
-    return false;
-
-  // TODO: following content is in fact redundant and probably should be replaced with asserts
   // compare content
   if( isLeaf()!=other.isLeaf() )
     return false;

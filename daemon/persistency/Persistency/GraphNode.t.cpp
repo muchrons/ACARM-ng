@@ -7,7 +7,6 @@
 
 #include "Base/Threads/ThreadJoiner.hpp"
 #include "Persistency/GraphNode.hpp"
-#include "Persistency/IDAssignerDynamic.hpp"
 #include "Persistency/IO/IOStubs.t.hpp"
 #include "Persistency/TestHelpers.t.hpp"
 #include "TestHelpers/checkEquality.hpp"
@@ -23,7 +22,7 @@ struct TestClass: private TestBase
   TestClass(void):
     ma1_( new MetaAlert( makeNewAlert() ) ),
     ma2_( new MetaAlert( makeNewAlert() ) ),
-    conn_(new TestIOConnectionCounter),
+    conn_(new TestIOConnection),
     t_( conn_->createNewTransaction("gn_test") ),
     leaf_( makeLeaf() ),
     node_( makeNode() )
@@ -41,12 +40,12 @@ struct TestClass: private TestBase
     for(int i=0; i<extraNodes; ++i)
       vec.push_back( makeLeaf() );
 
-    return GraphNodePtrNN( new GraphNode(ma, conn_, t_, vec, idad_) );
+    return GraphNodePtrNN( new GraphNode(ma, conn_, t_, vec) );
   }
 
   GraphNodePtrNN makeLeaf(void)
   {
-    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, t_, idad_) );
+    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, t_) );
   }
 
   int childrenCount(const GraphNode &gn) const
@@ -72,7 +71,6 @@ struct TestClass: private TestBase
   MetaAlertPtrNN      ma2_;
   IO::ConnectionPtrNN conn_;
   IO::Transaction     t_;
-  IDAssignerDynamic   idad_;
 
   GraphNodePtrNN      leaf_;
   GraphNodePtrNN      node_;
@@ -216,7 +214,7 @@ void testObj::test<9>(void)
                                    makeNewReferenceURL(),
                                    Timestamp() ) );
   const NodeChildrenVector vec( makeLeaf(), makeLeaf() );
-  const GraphNode          gn(ma, conn_, t_, vec, idad_);
+  const GraphNode          gn(ma, conn_, t_, vec);
   ensure_equals("invalid children count", childrenCount(gn), 2);
 }
 

@@ -19,7 +19,6 @@
 #include "Persistency/NodeChildrenVector.hpp"
 #include "Persistency/detail/NonCyclicAdder.hpp"
 #include "Persistency/IO/Connection.hpp"
-#include "Persistency/IO/DynamicConfig.hpp"
 #include "Persistency/ExceptionNotLeaf.hpp"
 #include "Persistency/ExceptionNotNode.hpp"
 
@@ -48,41 +47,24 @@ public:
   /** \brief const iterator to colection. */
   typedef GraphNodesList::const_iterator const_iterator;
 
-  /** \brief helper interface to assign ID for newly created object.
-   */
-  struct IDAssigner: private boost::noncopyable
-  {
-    /** \brief ensure proper destruction.
-     */
-    virtual ~IDAssigner(void);
-    /** \brief assign ID for the newly created object.
-     *  \return ID for the newly assigned object.
-     */
-    virtual GraphNode::ID assign(IO::DynamicConfig &dc) = 0;
-  }; // struct IDAssigner
-
   /** \brief create graph's leaf from a given alert.
    *  \param alert      alert to create leaf from.
    *  \param connection connection to use for persistency writes.
    *  \param t          current transaction.
-   *  \param idAssigner class that assigns new ID to graph node.
    */
   GraphNode(AlertPtrNN           alert,
             IO::ConnectionPtrNN  connection,
-            IO::Transaction     &t,
-            IDAssigner          &idAssigner);
+            IO::Transaction     &t);
   /** \brief create new node by correlating given ones.
    *  \param ma         meta alert's data to be used as this one.
    *  \param connection connection to persistency module.
    *  \param t          transaction to use for connecting.
    *  \param children   list of node's children.
-   *  \param idAssigner class that assigns new ID to graph node.
    */
   GraphNode(MetaAlertPtrNN            ma,
             IO::ConnectionPtrNN       connection,
             IO::Transaction          &t,
-            const NodeChildrenVector &children,
-            IDAssigner               &idAssigner);
+            const NodeChildrenVector &children);
   /** \brief deallocates object and its resources.
    *
    *  as a part of deallocation process object meta-alert is marked as not
@@ -113,11 +95,6 @@ public:
    *  \param maIO  persistency access element for this node.
    */
   void addChild(GraphNodePtrNN child, IO::MetaAlert &maIO);
-
-  /** \brief returns ID of a current object.
-   *  \return object's ID.
-   */
-  ID getID(void) const;
 
   /** \brief checks if given graph part is leaf or not.
    *  \return true if this is leaf, false if this is node.
@@ -152,7 +129,6 @@ private:
 
   void ensureIsNode(void) const;
 
-  const ID               id_;
   MetaAlertPtrNN         self_;
   GraphNodesList         children_;
   AlertPtr               leaf_;

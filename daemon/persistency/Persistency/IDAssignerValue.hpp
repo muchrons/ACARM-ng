@@ -7,31 +7,31 @@
 
 /* public header */
 
-#include "Persistency/GraphNode.hpp"
+#include "Persistency/MetaAlert.hpp"
 
 namespace Persistency
 {
 
 /** \brief implementation that returns always pre-defined value.
  */
-struct IDAssignerValue: public GraphNode::IDAssigner
+struct IDAssignerValue: public MetaAlert::IDAssigner
 {
   /** \brief assigne value to be returned.
    */
-  explicit IDAssignerValue(const GraphNode::ID id):
+  explicit IDAssignerValue(const MetaAlert::ID id):
     id_(id)
   {
   }
   /** \brief get assigned value.
    *  \return pre-defined value.
    */
-  virtual GraphNode::ID assign(IO::DynamicConfig &/*dc*/)
+  virtual MetaAlert::ID assign(IO::DynamicConfig &/*dc*/)
   {
     return id_;
   }
 
 private:
-  const GraphNode::ID id_;
+  const MetaAlert::ID id_;
 }; // struct IDAssignerValue
 
 } // namespace Persistency

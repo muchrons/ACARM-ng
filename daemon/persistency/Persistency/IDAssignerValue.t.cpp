@@ -47,8 +47,8 @@ void testObj::test<2>(void)
   TestIOConnection         tioc;
   IO::Transaction          t( tioc.createNewTransaction("test_assigner") );
   IO::DynamicConfigAutoPtr dc=tioc.dynamicConfig("someone", t);
-  const GraphNode::ID      id1=av.assign(*dc);
-  const GraphNode::ID      id2=av.assign(*dc);
+  const MetaAlert::ID      id1=av.assign(*dc);
+  const MetaAlert::ID      id2=av.assign(*dc);
   ensure_equals("invalid value returned in 2nd read", id2.get(), id1.get() );
 }
 

@@ -13,6 +13,10 @@ using Base::Threads::WriteLock;
 namespace Persistency
 {
 
+MetaAlert::IDAssigner::~IDAssigner(void)
+{
+}
+
 MetaAlert::MetaAlert(AlertPtrNN alert):
   name_( alert->getName() ),
   severityDelta_(0),

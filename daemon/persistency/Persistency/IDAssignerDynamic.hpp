@@ -7,20 +7,20 @@
 
 /* public header */
 
-#include "Persistency/GraphNode.hpp"
+#include "Persistency/MetaAlert.hpp"
 
 namespace Persistency
 {
 
 /** \brief implementation that uses DynamicConfig to communicate with persistent storage.
  */
-struct IDAssignerDynamic: public GraphNode::IDAssigner
+struct IDAssignerDynamic: public MetaAlert::IDAssigner
 {
   /** \brief get next ID value to be used
    *  \param dc dynamic configuration reader/writer to be used.
-   *  \return free ID value, that can be used for new GraphNode.
+   *  \return free ID value, that can be used for new MetaAlert.
    */
-  virtual GraphNode::ID assign(IO::DynamicConfig &dc);
+  virtual MetaAlert::ID assign(IO::DynamicConfig &dc);
 }; // struct IDAssignerDynamic
 
 } // namespace Persistency

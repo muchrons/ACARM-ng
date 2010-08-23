@@ -7,7 +7,6 @@
 
 #include "Persistency/NodeChildrenVector.hpp"
 #include "Persistency/GraphNode.hpp"
-#include "Persistency/IDAssignerDynamic.hpp"
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/IOStubs.t.hpp"
@@ -22,7 +21,7 @@ namespace
 struct TestClass: private TestBase
 {
   TestClass(void):
-    conn_(new TestIOConnectionCounter),
+    conn_(new TestIOConnection),
     t_( conn_->createNewTransaction("gn_test") ),
     leaf1_( makeLeaf() ),
     leaf2_( makeLeaf() ),
@@ -32,12 +31,11 @@ struct TestClass: private TestBase
 
   GraphNodePtrNN makeLeaf(void)
   {
-    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, t_, idad_) );
+    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, t_) );
   }
 
   IO::ConnectionPtrNN conn_;
   IO::Transaction     t_;
-  IDAssignerDynamic   idad_;
 
   GraphNodePtrNN      leaf1_;
   GraphNodePtrNN      leaf2_;

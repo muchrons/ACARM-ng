@@ -11,12 +11,14 @@
 #include <boost/noncopyable.hpp>
 #include <boost/operators.hpp>
 
+#include "Base/ObjectID.hpp"
 #include "Base/Threads/ReadWriteMutex.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/LimitedString.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/ReferenceURL.hpp"
+#include "Persistency/IO/DynamicConfig.hpp"
 
 
 namespace Persistency
@@ -27,21 +29,35 @@ namespace IO
 class MetaAlert;
 } // namespace IO
 
+
 /** \brief meta-alert representation
  */
 class MetaAlert: private boost::noncopyable,
                  public  boost::equality_comparable<MetaAlert>
 {
 public:
-  /** \brief name for meta alert.
-   */
+  /** \brief Object's ID. */
+  typedef Base::ObjectID<MetaAlert>   ID;
+  /** \brief name for meta alert. */
   typedef Commons::LimitedString<256> Name;
-  /** \brief severity difference type.
-   */
+  /** \brief severity difference type. */
   typedef double                      SeverityDelta;
-  /** \brief certanity difference type.
-   */
+  /** \brief certanity difference type. */
   typedef double                      CertaintyDelta;
+
+  /** \brief helper interface to assign ID for newly created MetaAlerts.
+   */
+  struct IDAssigner: private boost::noncopyable
+  {
+    /** \brief ensure proper destruction.
+     */
+    virtual ~IDAssigner(void);
+    /** \brief assign ID for the newly created object.
+     *  \return ID for the newly assigned object.
+     */
+    virtual MetaAlert::ID assign(IO::DynamicConfig &dc) = 0;
+  }; // struct IDAssigner
+
 
   /** \brief creates meta alert based on exisitng alert.
    *  \param alert to corelate meta-alert with.
