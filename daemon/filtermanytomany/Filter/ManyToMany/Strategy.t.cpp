@@ -23,7 +23,7 @@ struct TestClass: public TestStubs
   TestClass(void):
     sampleLeaf_( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "2.3.4.5",
                                                     "1.2.3.4", "9.8.7.6") ) ),
-    s_( Strategy::Params(997, 0.42) )
+    s_( "somename", Strategy::Params(997, 0.42) )
   {
   }
 

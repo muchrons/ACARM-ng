@@ -29,7 +29,7 @@ private:
   virtual FactoryPtr buildImpl(const Options &options) const;
   virtual const FactoryTypeName &getTypeNameImpl(void) const;
 
-  const std::string  name_;
+  const std::string  type_;
   const Logger::Node log_;
 }; // class ReaderBuilder
 

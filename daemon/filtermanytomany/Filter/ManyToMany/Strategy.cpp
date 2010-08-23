@@ -28,8 +28,8 @@ Strategy::Params::Params(unsigned int timeout, double similarity):
                                     "values above 100% (i.e. 1) are invalid");
 }
 
-Strategy::Strategy(const Params &params):
-  Filter::Simple::Strategy<Data>("manytomany", params.timeout_),
+Strategy::Strategy(const std::string &name, const Params &params):
+  Filter::Simple::Strategy<Data>("manytomany", name, params.timeout_),
   params_(params)
 {
 }

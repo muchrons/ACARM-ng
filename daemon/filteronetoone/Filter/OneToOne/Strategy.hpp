@@ -50,9 +50,10 @@ class Strategy: public Filter::Simple::Strategy<Data>
 {
 public:
   /** \brief create instance.
+   *  \name name name for strategy.
    *  \param timeout time observed node should be in queue.
    */
-  explicit Strategy(unsigned int timeout);
+  Strategy(const std::string &name, unsigned int timeout);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.

@@ -21,7 +21,7 @@ namespace
 struct SomeInput: public Reader
 {
   SomeInput(void):
-    Reader("someinput")
+    Reader("someinput", "someinputname")
   {
   }
 

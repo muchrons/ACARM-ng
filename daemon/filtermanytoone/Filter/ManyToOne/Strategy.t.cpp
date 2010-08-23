@@ -36,7 +36,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Strategy s(13);
+  const Strategy s("somename", 13);
   ignore(s);
 }
 

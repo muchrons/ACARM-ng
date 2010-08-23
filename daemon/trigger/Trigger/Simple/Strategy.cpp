@@ -15,8 +15,8 @@ namespace Trigger
 namespace Simple
 {
 
-Strategy::Strategy(const std::string &name, const ThresholdConfig &cfg):
-  Trigger::Strategy(name),
+Strategy::Strategy(const std::string &type, const std::string &name, const ThresholdConfig &cfg):
+  Trigger::Strategy(type, name),
   cfg_(cfg)
 {
 }
