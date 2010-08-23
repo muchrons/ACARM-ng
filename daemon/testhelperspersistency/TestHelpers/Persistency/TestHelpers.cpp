@@ -42,7 +42,8 @@ MetaAlertPtr makeNewMetaAlert(const char *name)
   return MetaAlertPtrNN( new MetaAlert( MetaAlert::Name(name),
                                         0.1, 0.2,
                                         makeNewReferenceURL(),
-                                        Timestamp() ) );
+                                        Timestamp(),
+                                        42u ) );
 }
 
 AnalyzerPtrNN makeNewAnalyzer(const char *name)
@@ -174,7 +175,7 @@ GraphNodePtrNN makeNewLeaf(AlertPtrNN alert)
 {
   IO::ConnectionPtrNN conn( IO::create() );
   IO::Transaction     t( conn->createNewTransaction("make_leaf_trans") );
-  GraphNodePtrNN graphNode( new GraphNode(alert, conn, t) );
+  GraphNodePtrNN graphNode( new GraphNode(alert, 303u, conn, t) );
   t.commit();
   return graphNode;
 }
