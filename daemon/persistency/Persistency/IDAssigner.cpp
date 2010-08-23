@@ -1,9 +1,9 @@
 /*
- * IDAssignerDynamic.cpp
+ * IDAssigner.cpp
  *
  */
 #include "Commons/Convert.hpp"
-#include "Persistency/IDAssignerDynamic.hpp"
+#include "Persistency/IDAssigner.hpp"
 
 using Persistency::IO::DynamicConfig;
 
@@ -15,7 +15,7 @@ const char *key="next free MetaAlert's ID";
 namespace Persistency
 {
 
-MetaAlert::ID IDAssignerDynamic::assign(IO::DynamicConfig &dc)
+MetaAlert::ID IDAssigner::assign(IO::DynamicConfig &dc)
 {
   MetaAlert::ID                  freeID(0u);
   const DynamicConfig::ValueNULL r=dc.read(key);

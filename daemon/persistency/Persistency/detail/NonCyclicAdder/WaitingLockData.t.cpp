@@ -25,8 +25,8 @@ namespace
 struct TestClass
 {
   TestClass(void):
-    ma1_( new MetaAlert( makeNewAlert() ) ),
-    ma2_( new MetaAlert( makeNewAlert() ) ),
+    ma1_( new MetaAlert( makeNewAlert(), 111u ) ),
+    ma2_( new MetaAlert( makeNewAlert(), 111u ) ),
     conn_(new TestIOConnection),
     t_( conn_->createNewTransaction("gn_test") ),
     leaf_( makeLeaf() )
@@ -35,7 +35,7 @@ struct TestClass
 
   GraphNodePtrNN makeLeaf(void)
   {
-    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, t_) );
+    return GraphNodePtrNN( new GraphNode( makeNewAlert(), 111u, conn_, t_) );
   }
 
   MetaAlertPtrNN      ma1_;

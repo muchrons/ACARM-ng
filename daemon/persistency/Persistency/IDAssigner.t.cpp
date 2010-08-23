@@ -1,12 +1,12 @@
 /*
- * IDAssignerDynamic.t.cpp
+ * IDAssigner.t.cpp
  *
  */
 #include <tut.h>
 #include <string>
 
 #include "Commons/Convert.hpp"
-#include "Persistency/IDAssignerDynamic.hpp"
+#include "Persistency/IDAssigner.hpp"
 #include "Persistency/IO/IOStubs.t.hpp"
 
 using namespace Persistency;
@@ -25,13 +25,13 @@ struct TestClass
   TestIOConnection       tioc_;
   IO::Transaction        t_;
   IODynamicConfigCounter dc_;
-  IDAssignerDynamic      ad_;
+  IDAssigner             ad_;
 };
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/IDAssignerDynamic");
+factory tf("Persistency/IDAssigner");
 } // unnamed namespace
 
 

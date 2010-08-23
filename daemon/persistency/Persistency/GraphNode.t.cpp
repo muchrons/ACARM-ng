@@ -20,8 +20,8 @@ namespace
 struct TestClass: private TestBase
 {
   TestClass(void):
-    ma1_( new MetaAlert( makeNewAlert() ) ),
-    ma2_( new MetaAlert( makeNewAlert() ) ),
+    ma1_( new MetaAlert( makeNewAlert(), 42u ) ),
+    ma2_( new MetaAlert( makeNewAlert(), 42u ) ),
     conn_(new TestIOConnection),
     t_( conn_->createNewTransaction("gn_test") ),
     leaf_( makeLeaf() ),
@@ -35,7 +35,8 @@ struct TestClass: private TestBase
                                      42,
                                      0,
                                      makeNewReferenceURL(),
-                                     Timestamp() ) );
+                                     Timestamp(),
+                                     13u ) );
     NodeChildrenVector vec( makeLeaf(), makeLeaf() );
     for(int i=0; i<extraNodes; ++i)
       vec.push_back( makeLeaf() );
@@ -45,7 +46,7 @@ struct TestClass: private TestBase
 
   GraphNodePtrNN makeLeaf(void)
   {
-    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, t_) );
+    return GraphNodePtrNN( new GraphNode( makeNewAlert(), 666u, conn_, t_) );
   }
 
   int childrenCount(const GraphNode &gn) const
@@ -212,7 +213,8 @@ void testObj::test<9>(void)
                                    42,
                                    0,
                                    makeNewReferenceURL(),
-                                   Timestamp() ) );
+                                   Timestamp(),
+                                   123u ) );
   const NodeChildrenVector vec( makeLeaf(), makeLeaf() );
   const GraphNode          gn(ma, conn_, t_, vec);
   ensure_equals("invalid children count", childrenCount(gn), 2);

@@ -15,9 +15,10 @@ namespace Persistency
 {
 
 GraphNode::GraphNode(AlertPtrNN           alert,
+                     MetaAlert::ID        id,
                      IO::ConnectionPtrNN  connection,
                      IO::Transaction     &t):
-  self_( new MetaAlert(alert) ),
+  self_( new MetaAlert(alert, id) ),
   leaf_(alert)
 {
   assert( leaf_.get()!=NULL );

@@ -45,24 +45,11 @@ public:
   /** \brief certanity difference type. */
   typedef double                      CertaintyDelta;
 
-  /** \brief helper interface to assign ID for newly created MetaAlerts.
-   */
-  struct IDAssigner: private boost::noncopyable
-  {
-    /** \brief ensure proper destruction.
-     */
-    virtual ~IDAssigner(void);
-    /** \brief assign ID for the newly created object.
-     *  \return ID for the newly assigned object.
-     */
-    virtual MetaAlert::ID assign(IO::DynamicConfig &dc) = 0;
-  }; // struct IDAssigner
-
-
   /** \brief creates meta alert based on exisitng alert.
    *  \param alert to corelate meta-alert with.
+   *  \param id    ID for this object.
    */
-  explicit MetaAlert(AlertPtrNN alert);
+  MetaAlert(AlertPtrNN alert, ID id);
 
   /** \brief create new meta-alert.
    *  \param name           name for meta alert.
@@ -70,12 +57,19 @@ public:
    *  \param certanityDelta initial certanity difference.
    *  \param url            reference URL, if present.
    *  \param created        creation time.
+   *  \param id             ID for this object.
    */
   MetaAlert(const Name      &name,
             SeverityDelta    severityDelta,
             CertaintyDelta   certanityDelta,
             ReferenceURLPtr  url,
-            Timestamp        created);
+            Timestamp        created,
+            ID               id);
+
+  /** \brief get ID of this object.
+   *  \return object's ID.
+   */
+  ID getID(void) const;
 
   /** \brief gets meta-alert's name.
    *  \return name of meta alert.
@@ -109,11 +103,12 @@ private:
   void updateCertaintyDelta(double delta);
 
   mutable Base::Threads::ReadWriteMutex mutex_;
-  Name                                  name_;
+  const ID                              id_;
+  const Name                            name_;
   SeverityDelta                         severityDelta_;
   CertaintyDelta                        certanityDelta_;
-  ReferenceURLPtr                       url_;
-  Timestamp                             created_;
+  const ReferenceURLPtr                 url_;
+  const Timestamp                       created_;
 }; // class MetaAlert
 
 

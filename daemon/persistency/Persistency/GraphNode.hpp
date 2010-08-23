@@ -49,10 +49,12 @@ public:
 
   /** \brief create graph's leaf from a given alert.
    *  \param alert      alert to create leaf from.
+   *  \param id         ID to be assigned to new meta-alert.
    *  \param connection connection to use for persistency writes.
    *  \param t          current transaction.
    */
   GraphNode(AlertPtrNN           alert,
+            MetaAlert::ID        id,
             IO::ConnectionPtrNN  connection,
             IO::Transaction     &t);
   /** \brief create new node by correlating given ones.
