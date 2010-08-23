@@ -72,7 +72,7 @@ struct TestClass
     stringstream ss;
     ss<<"INSERT INTO meta_alerts VALUES("
       <<id
-      <<", 'name', DEFAULT, DEFAULT, DEFAULT, now(), DEFAULT)";
+      <<", 123, 'name', DEFAULT, DEFAULT, DEFAULT, now(), DEFAULT)";
     t_.getAPI<TransactionAPI>().exec( ss.str() );
   }
 

@@ -5,6 +5,7 @@
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_RESTORER_HPP_FILE
 #define INCLUDE_PERSISTENCY_IO_POSTGRES_RESTORER_HPP_FILE
 
+#include "Persistency/MetaAlert.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Connection.hpp"
@@ -45,10 +46,11 @@ private:
 
   BackendFactory::FactoryPtr createStubIO(void);
 
-  GraphNodePtrNN makeLeaf(DataBaseID          id,
-                          AlertPtrNN          aPtr,
-                          IO::ConnectionPtrNN connStubIO,
-                          IO::Transaction     &tStubIO);
+  GraphNodePtrNN makeLeaf(DataBaseID                  id,
+                          AlertPtrNN                  aPtr,
+                          Persistency::MetaAlert::ID  sysID,
+                          IO::ConnectionPtrNN         connStubIO,
+                          IO::Transaction            &tStubIO);
   GraphNodePtrNN makeNode(DataBaseID                id,
                           MetaAlertPtrNN            maPtr,
                           const NodeChildrenVector &vec,

@@ -85,7 +85,8 @@ MetaAlertPtr makeNewMetaAlert(const char *name, const Timestamp &t)
   return MetaAlertPtrNN( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name),
                                         0.1, 0.2,
                                         makeNewReferenceURL(),
-                                        t ) );
+                                        t,
+                                        999u ) );
 }
 
 
@@ -156,7 +157,7 @@ GraphNodePtrNN makeNewLeaf(const char      *name,
 {
   Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
   IO::Transaction t( conn->createNewTransaction("make_leaf_transaction") );
-  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewAlert(name, time), conn, t) );
+  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewAlert(name, time), 512u, conn, t) );
   t.commit();
   return graphNode;
 }

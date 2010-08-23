@@ -620,4 +620,8 @@ void testObj::test<13>(void)
   t_.commit();
   ensure_equals("invalid number of meta alerts in use", getNoOfMetaAlertsInUse(), 10u);
 }
+
+// TODO: test restoring MetaAlert::ID() for leaf
+// TODO: test restoring MetaAlert::ID() for node
+
 } // namespace tut

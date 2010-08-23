@@ -104,10 +104,11 @@ Persistency::MetaAlertPtrNN EntryReader::readMetaAlert(DataBaseID malertID)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
   const string CreateTime( ReaderHelper<string>::readAsNotNull(r[0]["create_time"]) );
   MetaAlertPtrNN malert( new Persistency::MetaAlert( ReaderHelper<string>::readAsNotNull(r[0]["name"]),
-                                          ReaderHelper<double>::readAsNotNull(r[0]["severity_delta"]),
-                                          ReaderHelper<double>::readAsNotNull(r[0]["certainty_delta"]),
-                                          getReferenceURL( ReaderHelper< NullValue<DataBaseID> >::readAs(r[0]["id_ref"]).get() ),
-                                          timestampFromString( CreateTime ) ) );
+                                                     ReaderHelper<double>::readAsNotNull(r[0]["severity_delta"]),
+                                                     ReaderHelper<double>::readAsNotNull(r[0]["certainty_delta"]),
+                                                     getReferenceURL( ReaderHelper< NullValue<DataBaseID> >::readAs(r[0]["id_ref"]).get() ),
+                                                     timestampFromString( CreateTime ),
+                                                     ReaderHelper<Persistency::MetaAlert::ID::Numeric>::readAsNotNull(r[0]["sys_id"]) ) );
   return malert;
 }
 
@@ -381,6 +382,16 @@ DataBaseID EntryReader::getAlertIDAssociatedWithMetaAlert(DataBaseID malertID)
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
   return ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_alert"]);
+}
+
+Persistency::MetaAlert::ID EntryReader::getSystemIDOfMetaAlert(DataBaseID malertID)
+{
+  stringstream ss;
+  ss << "SELECT sys_id FROM meta_alerts WHERE id = " << malertID;
+  const result r = SQL( ss.str(), log_ ).exec(t_);
+  if(r.size() != 1)
+    throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str() );
+  return ReaderHelper<Persistency::MetaAlert::ID::Numeric>::readAsNotNull(r[0]["sys_id"]);
 }
 
 DynamicConfig::ValueNULL EntryReader::readConfigParameter(const DynamicConfig::Owner &owner,
