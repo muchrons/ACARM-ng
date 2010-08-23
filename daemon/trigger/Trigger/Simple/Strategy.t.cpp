@@ -18,7 +18,7 @@ namespace
 struct TestTrigger: public Strategy
 {
   TestTrigger(const char *severity, const char *count):
-    Strategy("testtrigger", ThresholdConfig(severity, count) ),
+    Strategy("testtrigger", "testtriggername", ThresholdConfig(severity, count) ),
     callsTrigger_(0)
   {
   }
@@ -54,13 +54,13 @@ factory tf("Trigger/Simple/Strategy");
 namespace tut
 {
 
-// check if name has been saved correctly
+// check if type has been saved correctly
 template<>
 template<>
 void testObj::test<1>(void)
 {
   TestTrigger tt(NULL, NULL);
-  ensure_equals("invalid name", tt.getTriggerName(), "testtrigger");
+  ensure_equals("invalid trigger type", tt.getTriggerType(), "testtrigger");
 }
 
 // test trigger when alerts count is above threshold
@@ -122,7 +122,7 @@ namespace
 struct TestBufferTrigger: public Strategy
 {
   explicit TestBufferTrigger(int skip):
-    Strategy("testbuffertrigger", ThresholdConfig("0", "0") ),
+    Strategy("testbuffertrigger", "testbuffertriggername", ThresholdConfig("0", "0") ),
     skip_(skip),
     callsTrigger_(0),
     counter_(0)

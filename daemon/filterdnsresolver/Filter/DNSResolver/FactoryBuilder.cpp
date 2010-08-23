@@ -44,7 +44,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   const FilterConfig         fc(type_, options);
   // filterdnsresolver name
   const std::string    &name=fc["name"];
-  LOGMSG_INFO_S(log_)<<"setting filter dnsresolver name "<<name;
+  LOGMSG_INFO_S(log_)<<"setting filter \""<<getTypeName()<<"\" name to \""<<name<<"\"";
   const unsigned int         timeout=Commons::Convert::to<unsigned int>( fc["cachetimeout"] );
   LOGMSG_INFO_S(log_)<<"setting cache timeout to "<<timeout<<"[s]";
   const Strategy::Parameters params(timeout);

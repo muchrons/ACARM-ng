@@ -44,7 +44,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   const FilterConfig fc(type_, options);
   // filter ipblacklist name
   const std::string    &name=fc["name"];
-  LOGMSG_INFO_S(log_)<<"setting filter ipblacklist name "<<name;
+  LOGMSG_INFO_S(log_)<<"setting filter \""<<getTypeName()<<"\" name to \""<<name<<"\"";;
   const unsigned int refresh =Commons::Convert::to<unsigned int>( fc["refresh"] );
   const unsigned int limit   =Commons::Convert::to<unsigned int>( fc["limit"] );
   const double       priDelta=Commons::Convert::to<double>( fc["priorityDelta"] );

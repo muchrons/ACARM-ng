@@ -12,10 +12,9 @@ Reader::~Reader(void)
   LOGMSG_INFO(log_, "quiting");
 }
 
-Reader::Reader(const std::string &name):
-  log_( Logger::NodeName( "input.reader",
-                          Logger::NodeName::removeInvalidChars(name).c_str() ) ),
-  name_(name)
+Reader::Reader(const std::string &type, const std::string &name):
+  log_( Logger::NodeName( "input.reader", Logger::NodeName::removeInvalidChars(type + "." + name).c_str() ) ),
+  type_(type)
 {
   LOGMSG_INFO(log_, "creating");
 }

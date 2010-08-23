@@ -13,7 +13,7 @@ using namespace Trigger::File;
 int main(void)
 {
   const Config           cfg( ".", Trigger::Simple::ThresholdConfig("0.0", "0") );
-  Strategy               s(cfg);
+  Strategy               s("myfiletrigger", cfg);
   Strategy::ChangedNodes nc;
   s.process( TestHelpers::Persistency::makeNewNode(), nc ); // trigger and send
   return 0;

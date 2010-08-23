@@ -22,7 +22,7 @@ struct TestStrategyParams
 
 struct TestStrategy
 {
-  explicit TestStrategy(const TestStrategyParams &p):
+  TestStrategy(const std::string &/*name*/, const TestStrategyParams &p):
     p_(p)
   {
     p_.calls_=0;

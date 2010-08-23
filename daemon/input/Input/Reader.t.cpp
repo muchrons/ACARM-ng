@@ -21,7 +21,7 @@ struct TestReader: public Reader
   typedef Reader::DataPtr DataPtr;
 
   explicit TestReader(bool &i):
-    Reader("testreader"),
+    Reader("testreader", "testreadername"),
     i_(i)
   {
   }
@@ -101,7 +101,7 @@ namespace
 struct TestReaderName: public Reader
 {
   TestReaderName(void):
-    Reader("INVALID-chars-42")
+    Reader("INVALID-chars-42","readername")
   {
   }
   virtual DataPtr read(BackendFacade &, unsigned int)

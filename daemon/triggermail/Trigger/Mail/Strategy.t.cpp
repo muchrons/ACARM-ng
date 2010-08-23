@@ -30,13 +30,13 @@ factory tf("Trigger/Mail/Strategy");
 namespace tut
 {
 
-// check if name has been saved correctly
+// check if trigger type has been saved correctly
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  Strategy s( getTestConfig1() );
-  ensure_equals("invalid name", s.getTriggerName(), "mail");
+  Strategy s("mymailtrigger", getTestConfig1() );
+  ensure_equals("invalid trigger type", s.getTriggerType(), "mail");
 }
 
 // test sending report
@@ -47,7 +47,7 @@ void testObj::test<2>(void)
   // wipe-out account's content
   removeMessagesFromAccount( getTestConfig2() );
   // send report
-  Strategy               s( getTestConfig1() );
+  Strategy               s( "mymailtrigger", getTestConfig1() );
   Strategy::ChangedNodes nc;
   s.process( makeNewNode(), nc );
   // check results

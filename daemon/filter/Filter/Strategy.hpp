@@ -45,7 +45,7 @@ public:
                         <<static_cast<void*>( n.get() );
     assert( changed.size()==0 && "non-empty output collection received");
     pruneNTQ();                 // clean queue's content.
-    BackendFacade bf( conn_, changed, getFilterName() );
+    BackendFacade bf( conn_, changed, getFilterType() );
     processImpl(n, ntq_, bf);
     bf.commitChanges();         // if there was no exception, commit changes made (if any)
   }
@@ -104,8 +104,8 @@ public:
 protected:
   /** \brief create instance.
    */
-  explicit Strategy(const std::string &name):
-    StrategyBase(name),
+  Strategy(const std::string &type, const std::string &name):
+    StrategyBase(type, name),
     nextPrune_(0)
   {
   }
