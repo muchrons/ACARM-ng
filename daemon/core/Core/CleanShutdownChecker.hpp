@@ -30,8 +30,14 @@ public:
    */
   void confirmCleanShutdown(void);
 
+  /** \brief checks if last lunch finished successfull.
+   *  \return true if last lunch was successful, false otherwise.
+   */
+  bool wasLastRunSuccessful(void) const;
+
 private:
   Logger::Node log_;
+  bool         lastRunSuccessful_;
   bool         confirmed_;
 }; // class CleanShutdownChecker
 

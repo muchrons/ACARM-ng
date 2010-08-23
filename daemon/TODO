@@ -13,3 +13,4 @@
 * filter that increases priority for hosts that are out of defined set (i.e. from external network).
 * optimize data base cleanup somehow - it takes far too much time...
 * test if ACARM-ng deals fine with loosing connection to data base.
+* add handle for out-of-memory problem (i.e. using own wrapper for memory manager).
