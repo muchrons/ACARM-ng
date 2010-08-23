@@ -49,12 +49,11 @@ public:
   virtual DataPtr read(BackendFacade &bf, unsigned int timeout=0) = 0;
 
 protected:
-  // TODO: explicit is not needed here.
   /** \brief create base objects.
    *  \param type type of this reader.
    *  \param name name of this reader.
    */
-  explicit Reader(const std::string &type, const std::string &name);
+  Reader(const std::string &type, const std::string &name);
 
   Logger::Node log_;    ///< logger node to log messages to.
 

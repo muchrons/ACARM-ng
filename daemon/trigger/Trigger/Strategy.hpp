@@ -56,12 +56,11 @@ public:
   }
 
 protected:
-  // TODO: explicit is not needed here.
   /** \brief create instance.
    *  \param type type of given trigger.
    *  \param name name of given trigger.
    */
-  explicit Strategy(const std::string &type, const std::string &name);
+  Strategy(const std::string &type, const std::string &name);
 
   /** \brief call allows interruption of call sequence.
    *
