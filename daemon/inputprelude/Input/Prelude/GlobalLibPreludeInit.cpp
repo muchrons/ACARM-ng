@@ -18,12 +18,12 @@ namespace
 {
 
 // these are language-guaranteed to be initialized in compile-time
-int  g_counter       =0;
-bool g_wasInitialized=false;
-bool g_end           =false;
-char g_appName[]       ="ACARM-ng";
-char *g_argv[2]={ g_appName, NULL };
-int g_argc=1;
+int   g_counter       =0;
+bool  g_wasInitialized=false;
+bool  g_end           =false;
+char  g_appName[]     ="ACARM-ng";
+char *g_argv[2]       ={ g_appName, NULL };
+int   g_argc          =1;
 // mutex protecting operations on global types
 SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_mutex);
 
@@ -45,6 +45,7 @@ struct Releaser
       g_end=true;   // force GlobalLibPreludeInit to perform release
       return;
     }
+
     // ok - release!
     uninit();
   }

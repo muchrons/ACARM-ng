@@ -31,12 +31,12 @@ factory tf("Input/Prelude/ReaderBuilder");
 namespace tut
 {
 
-// tets getting name
+// test getting type
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid name", rb_.getTypeName(), "prelude");
+  ensure_equals("invalid type", rb_.getTypeName(), "prelude");
 }
 
 // test creating some reader
@@ -44,6 +44,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  opts_["name"]="somereadername";
   opts_["profile"]="profile";
   opts_["config"]="/etc/prelude/default/client.conf";
   ReaderBuilder::FactoryPtr ptr=rb_.build(opts_);

@@ -2,12 +2,11 @@
  * FactoryBuilder.cpp
  *
  */
-#include <boost/lexical_cast.hpp>
-#include <boost/numeric/conversion/cast.hpp>
 #include <cassert>
 
 #include "BuildProcess/ForceLink.hpp"
 #include "ConfigIO/FilterConfig.hpp"
+#include "Commons/Convert.hpp"
 #include "Commons/Factory/RegistratorHelper.hpp"
 #include "Core/Types/Proc/InterfaceImpl.hpp"
 #include "Filter/IPBlackList/FactoryBuilder.hpp"
@@ -37,32 +36,25 @@ FactoryBuilder::FactoryBuilder(void):
 {
 }
 
-namespace
-{
-unsigned int parseUnsignedInt(const string &str)
-{
-  const int          i =boost::lexical_cast<int>(str);
-  const unsigned int ui=boost::numeric_cast<unsigned int>(i);
-  return ui;
-} // parseUnsignedInt()
-} // unnamed namespace
-
 FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) const
 {
   LOGMSG_INFO(log_, "building filter's instance");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
   const FilterConfig fc(type_, options);
-  const unsigned int refresh =parseUnsignedInt( fc["refresh"] );
-  const unsigned int limit   =parseUnsignedInt( fc["limit"] );
-  const double       priDelta=boost::lexical_cast<double>( fc["priorityDelta"] );
+  // filter ipblacklist name
+  const std::string    &name=fc["name"];
+  LOGMSG_INFO_S(log_)<<"setting filter \""<<getTypeName()<<"\" name to \""<<name<<"\"";;
+  const unsigned int refresh =Commons::Convert::to<unsigned int>( fc["refresh"] );
+  const unsigned int limit   =Commons::Convert::to<unsigned int>( fc["limit"] );
+  const double       priDelta=Commons::Convert::to<double>( fc["priorityDelta"] );
   LOGMSG_INFO_S(log_)<<"setting refresh interval to "<<refresh<<"[s]";
   LOGMSG_INFO_S(log_)<<"setting entries limit to "<<limit;
   Strategy::Parameters params(refresh, limit, priDelta);
 
   // create and return new handle.
   typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl(type_, type_, params) );
+  return FactoryBuilder::FactoryPtr( new Impl(type_, name, params) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

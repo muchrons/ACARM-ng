@@ -37,17 +37,12 @@ struct PingThread
     {
       try
       {
-        boost::this_thread::interruption_point();   // this i.p. is needed in case ping/discrad throws
+        // wait a while before next polling (NOTE: this try{}catch MUST start with
+        // interruptable event, in case pinging or discarding messages would throw).
+        boost::this_thread::sleep( boost::posix_time::seconds(60) );
         assert(s_!=NULL);
-        s_->ping();                         // ping
-        s_->discardIncommingMessages();     // throw away anything that might have arrived
-
-        // wait a while...
-        for(int i=0; i<60; ++i)
-        {
-          boost::this_thread::interruption_point();
-          sleep(1);
-        }
+        s_->ping();                             // ping server
+        s_->discardIncommingMessages();         // throw away anything that might have arrived
       }
       catch(const boost::thread_interrupted &)
       {
@@ -73,8 +68,8 @@ private:
 } // unnamed namespace
 
 
-Strategy::Strategy(const Config &cfg):
-  Trigger::Simple::Strategy("gg", cfg.getThresholdConfig() ),
+Strategy::Strategy(const std::string &name, const Config &cfg):
+  Trigger::Simple::Strategy("gg", name, cfg.getThresholdConfig() ),
   io_(cfg),
   pingThread_( PingThread(io_) )
 {

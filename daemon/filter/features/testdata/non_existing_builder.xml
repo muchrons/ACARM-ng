@@ -19,7 +19,7 @@
   <preprocessor/>
 
   <filters>
-    <thisbuilderdoesnotexist/>
+    <thisbuilderdoesnotexist name="nonexisting"/>
   </filters>
 
   <triggers/>

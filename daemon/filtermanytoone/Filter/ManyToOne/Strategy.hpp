@@ -19,9 +19,10 @@ class Strategy: public Filter::HostCommon::Strategy
 {
 public:
   /** \brief create instance.
+   *  \param name name for strategy.
    *  \param timeout timeout (in seconds) for observed node to be in queue.
    */
-  explicit Strategy(unsigned int timeout);
+  Strategy(const std::string &name, unsigned int timeout);
 
 private:
   virtual const Persistency::Alert::ReportedHosts &getReportedHostsArray(

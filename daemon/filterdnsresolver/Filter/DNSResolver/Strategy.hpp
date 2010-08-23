@@ -32,19 +32,19 @@ public:
     /** \brief create entry.
      *  \param cacheTimeout timeout of cache entries.
      */
-    explicit Parameters(const int cacheTimeout):
+    explicit Parameters(const unsigned int cacheTimeout):
       cacheTimeout_(cacheTimeout)
     {
     }
 
-    // TODO: this paramter must be unsigned.
-    const int cacheTimeout_;    ///< timeout for cache entries.
+    const unsigned int cacheTimeout_;   ///< timeout for cache entries.
   }; // struct Parameters
 
   /** \brief create instance.
+   *  \param name name for dns resolver.
    *  \param params paramters for dns resolver.
    */
-  explicit Strategy(const Parameters &params);
+  Strategy(const std::string &name, const Parameters &params);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.

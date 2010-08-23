@@ -19,7 +19,7 @@
   <preprocessor/>
 
   <filters>
-    <somefilter/>
+    <somefilter name="somefilter"/>
   </filters>
 
   <triggers>

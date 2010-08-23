@@ -29,18 +29,18 @@ public:
    */
   virtual ~StrategyBase(void);
 
-  /** \brief gets filter name.
-   *  \return name of implemented filter.
+  /** \brief gets filter type.
+   *  \return type of implemented filter.
    */
-  const std::string &getFilterName(void) const
+  const std::string &getFilterType(void) const
   {
-    return name_;
+    return type_;
   }
 
 protected:
   /** \brief create instance.
    */
-  explicit StrategyBase(const std::string &name);
+  explicit StrategyBase(const std::string &type, const std::string &name);
 
   /** \brief call allows interruption of call sequence.
    *
@@ -53,7 +53,7 @@ protected:
   Persistency::IO::ConnectionPtrNN conn_;   ///< connection to persistency
 
 private:
-  const std::string                name_;
+  const std::string                type_;
 }; // class StrategyBase
 
 } // namespace Filter

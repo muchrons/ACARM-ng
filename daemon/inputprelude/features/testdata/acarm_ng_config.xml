@@ -23,7 +23,7 @@
   <triggers/>
 
   <inputs>
-    <prelude>
+    <prelude name="prelude">
       <profile>profile</profile>
       <config>/etc/prelude/default/client.conf</config>
     </prelude>

@@ -117,7 +117,7 @@ void testObj::test<6>(void)
   }
 }
 
-// test convertion operator
+// test conversion operator
 template<>
 template<>
 void testObj::test<7>(void)
@@ -343,7 +343,7 @@ void testObj::test<29>(void)
          boost::mpl::equal<int&, PtrNN::reference>::type::value);
 }
 
-// test convertion operator for constness
+// test conversion operator for constness
 template<>
 template<>
 void testObj::test<30>(void)
@@ -354,7 +354,7 @@ void testObj::test<30>(void)
   ensure("invalid pointer value", bp.get()==nn.get() );
 }
 
-// test convertion from auto_ptr<>.
+// test conversion from auto_ptr<>.
 template<>
 template<>
 void testObj::test<31>(void)

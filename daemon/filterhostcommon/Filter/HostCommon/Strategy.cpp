@@ -14,8 +14,8 @@ namespace Filter
 namespace HostCommon
 {
 
-Strategy::Strategy(const std::string &name, unsigned int timeout):
-  Filter::Simple::Strategy<Data>(name, timeout)
+Strategy::Strategy(const std::string &type, const std::string &name, unsigned int timeout):
+  Filter::Simple::Strategy<Data>(type, name, timeout)
 {
 }
 
@@ -23,7 +23,6 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
   ecl.add("*input*");   // TODO: magic value
-  ecl.add("onetoone");  // TODO: magic value
   return ecl;
 }
 

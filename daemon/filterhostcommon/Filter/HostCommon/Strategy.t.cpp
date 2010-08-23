@@ -23,7 +23,7 @@ namespace
 struct TestStrategy: public Strategy
 {
   TestStrategy(void):
-    Strategy("teststrategy", 42)
+    Strategy("teststrategy", "teststrategyname", 42)
   {
   }
 
@@ -183,8 +183,8 @@ void testObj::test<6>(void)
   TestStrategy::Node l=makeLeaf("1.2.3.4");
   ts_.process(l, changed_);
   ensure_equals("nodes not changed", changed_.size(), 1u);
-  // check pointers
-  ensure("invalid node has been changed", changed_.begin()->get()==n.get() );
+  // check pointers - according to rules, new entry should be created in this context
+  ensure("invalid node has been changed", changed_.begin()->get()!=n.get() );
 }
 
 } // namespace tut

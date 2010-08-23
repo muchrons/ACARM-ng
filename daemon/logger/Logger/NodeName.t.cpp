@@ -185,7 +185,7 @@ template<>
 template<>
 void testObj::test<14>(void)
 {
-  testRemovingChars("case-convertion failed", "ALICEhasAcat", "alicehasacat");
+  testRemovingChars("case-conversion failed", "ALICEhasAcat", "alicehasacat");
 }
 
 // test string with dots inside
@@ -193,7 +193,7 @@ template<>
 template<>
 void testObj::test<15>(void)
 {
-  testRemovingChars("convertion with dots failed", "I.want.F00D", "i.want.f00d");
+  testRemovingChars("conversion with dots failed", "I.want.F00D", "i.want.f00d");
 }
 
 } // namespace tut

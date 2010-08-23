@@ -113,7 +113,7 @@ public:
     return p;
   }
 
-  /** \brief convertion operator to helper object.
+  /** \brief conversion operator to helper object.
    *  \returns temporary object with ownership.
    */
   operator Helper(void)

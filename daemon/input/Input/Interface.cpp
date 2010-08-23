@@ -14,7 +14,7 @@ Interface::Interface(ReaderPtrNN                       reader,
                      Core::Types::AlertsFifo          &output,
                      CommonDataPtrNN                   commonData):
   log_( Logger::NodeName( "input.interface",
-                          Logger::NodeName::removeInvalidChars( reader->getName() ).c_str() ) ),
+                          Logger::NodeName::removeInvalidChars( reader->getType() ).c_str() ) ),
   thread_( Thread(reader, conn, output, commonData) )
 {
   LOGMSG_INFO(log_, "reader's thread started");

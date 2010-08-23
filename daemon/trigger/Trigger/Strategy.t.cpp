@@ -20,7 +20,7 @@ namespace
 struct TestTrigger: public Strategy
 {
   TestTrigger(void):
-    Strategy("testtrigger"),
+    Strategy("testtrigger", "triggername"),
     callsCriteria_(0),
     callsTrigger_(0),
     criteria_(false),
@@ -69,12 +69,12 @@ factory tf("Trigger/Strategy");
 namespace tut
 {
 
-// check if name has been saved correctly
+// check if type has been saved correctly
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid name", tt_.getTriggerName(), "testtrigger");
+  ensure_equals("invalid type", tt_.getTriggerType(), "testtrigger");
 }
 
 // check if process skips trigger() when criteria is not met
@@ -98,7 +98,7 @@ namespace
 struct TestLoopTrigger: public Strategy
 {
   TestLoopTrigger(void):
-    Strategy("testlooptrigger")
+    Strategy("testlooptrigger", "triggername")
   {
   }
 

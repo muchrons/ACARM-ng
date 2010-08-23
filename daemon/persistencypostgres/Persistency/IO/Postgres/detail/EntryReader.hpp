@@ -45,31 +45,37 @@ public:
 
   /** \brief read Alert data from data base
    *  \param alertID ID of Alert in data base
+   *  \return return alert.
    */
   Persistency::AlertPtrNN readAlert(DataBaseID alertID);
 
   /** \brief read Meta Alert data from data base
    *  \param malertID ID of Meta Alert in data base
+   *  \return return meta alert.
    */
   Persistency::MetaAlertPtrNN readMetaAlert(DataBaseID malertID);
 
-  /** \brief read Analyzers assiociated with Alert from data base
-   *  \param alertID ID of Alert in data base
+  /** \brief read Analyzers assiociated with Alert from data base.
+   *  \param alertID ID of Alert in data base.
+   *  \return return source analyzers.
    */
   Persistency::Alert::SourceAnalyzers getAnalyzers(DataBaseID alertID);
 
   /** \brief read value of Meta Alert severity delta
    *  \param malertID ID of Meta Alert
+   *  \return return severity delta.
    */
   double getSeverityDelta(DataBaseID malertID);
 
   /** \brief read value of Meta Alert certainty delta
    *  \param malertID ID of Meta Alert
+   *  \return return certainty delta.
    */
   double getCertaintyDelta(DataBaseID malertID);
 
   /** \brief read data associated with leafs in meta alerts tree
    *  \param malertID ID of Meta Alert associated with Alert
+   *  \return return leaf.
    */
   Persistency::AlertPtrNN getLeaf(DataBaseID malertID);
 
@@ -111,6 +117,7 @@ public:
 
   /** \brief get ID of Alert asssiciated with Meata Alert
    *  \param malertID ID of Meta Alert
+   *  \return return alert ID.
    */
   DataBaseID getAlertIDAssociatedWithMetaAlert(DataBaseID malertID);
 

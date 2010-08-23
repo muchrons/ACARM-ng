@@ -47,39 +47,47 @@ public:
   /** \brief saves process data to data base.
    *  \param reportedHostID ID of reported host, that this Process should be assigned to.
    *  \param p              Process to be saved.
+   *  \return return data base ID for given process.
    */
   DataBaseID saveProcess(DataBaseID reportedHostID, const Process &p);
   /** \brief saves alert data to data base
    *  \param a          Alert to be saved.
+   *  \return return data base ID for given alert.
    */
   DataBaseID saveAlert(const Persistency::Alert &a);
   /** \brief saves  analyzer data to data base
    *  \param a      Analyzer to be saved.
+   *  \return return data base ID for given analyzer.
    */
   DataBaseID saveAnalyzer(const Analyzer &a);
   /** \brief save destination host data to data base
    *  \param hostID  ID of Host,
    *  \param alertID ID of Alert, that destination Host shoul be assigned to.
    *  \param h       Destination Host to be saved.
+   *  \return return data base ID for given source host.
    */
   DataBaseID saveSourceHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h);
   /** \brief save target host data to data base
    *  \param hostID  ID of Host,
    *  \param alertID ID of Alert, that source Host shoul be assigned to.
    *  \param h       Target Host to be saved.
+   *  \return return data base ID for given target host.
    */
   DataBaseID saveTargetHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h);
   /** \brief save service data to data base
    *  \param reportedHostID ID of reported host, that this Process should be assigned to.
    *  \param s              Service to be saved.
+   *  \return return data base ID for given service.
    */
   DataBaseID saveService(DataBaseID reportedHostID, const Service &s);
   /** \brief save host data to data base
    *  \param h host to be saved
+   *  \return return data base ID for given host.
    */
   DataBaseID saveHostData(const Persistency::Host &h);
   /**\brief save Meta Alert data to data base
    * \param ma Meta Alert to be saved
+   *  \return return data base ID for given meta alert.
    */
   DataBaseID saveMetaAlert(const Persistency::MetaAlert &ma);
 

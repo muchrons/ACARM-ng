@@ -37,15 +37,14 @@ public:
 
   /** \brief processes given meta-alert.
    *  \param n       node to be processed.
-   *  \param changed not used in this implemention.
    */
-  void process(Node n, ChangedNodes &changed);
+  void process(Node n, ChangedNodes &/*changed*/);
   /** \brief gets filter name.
    *  \return name of implemented filter.
    */
-  const std::string &getTriggerName(void) const
+  const std::string &getTriggerType(void) const
   {
-    return name_;
+    return type_;
   }
   /** \brief create ECL for all triggers.
    *  \return ECL for triggers.
@@ -58,9 +57,10 @@ public:
 
 protected:
   /** \brief create instance.
-   *  \param name name of given trigger type.
+   *  \param type type of given trigger.
+   *  \param name name of given trigger.
    */
-  explicit Strategy(const std::string &name);
+  Strategy(const std::string &type, const std::string &name);
 
   /** \brief call allows interruption of call sequence.
    *
@@ -97,7 +97,7 @@ private:
 
   typedef Persistency::GraphNodePtrNN::element_type NodeElementType;
 
-  const std::string                   name_;
+  const std::string                   type_;
   Base::ObservingSet<NodeElementType> nos_;
   Persistency::IO::ConnectionPtrNN    conn_;
 }; // class Strategy

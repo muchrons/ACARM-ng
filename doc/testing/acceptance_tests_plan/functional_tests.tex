@@ -1,0 +1,174 @@
+\testCase
+{f-1}
+{IP correlation.}
+{Correlating alerts origin from and send to the same host (IP).}
+{System is configured wilt all the filters.}
+{
+\begin{enumerate*}
+\item Generate 150 alerts with the same source IP.
+\item Send them to the system.
+\item Generate 150 alerts with the same target IP.
+\item Send them to the system.
+\end{enumerate*}
+}
+{New meta-alert aggregating all the alerts from/to the same host is created for each unique host.}
+{Post condition can be easily checked with a trigger or data base content's inspection.}
+
+
+\testCase
+{f-2}
+{Reading alerts from prelude-manager.}
+{Prelude-manager is one of the possible alert sources. Alerts gathered by it should be accessed by ACARM-ng as well.}
+{System is configured with prelude's input.}
+{
+\begin{enumerate*}
+\item Register new sensor for prelude-manager, to be used by ACARM-ng.
+\item Configure prelude's input module of ACARM-ng to use newly registered profile.
+\item Run ACARM-ng and wait for data from prelude-manager.
+\end{enumerate*}
+}
+{New alerts are gathered by the system.}
+{Post condition can be easily checked with a trigger or data base content's inspection.}
+
+
+\testCase
+{f-3}
+{Reconnecting to prelude-manager.}
+{ACARM-ng must reconnect in case connection to prelude manager is lost.}
+{System is configured with prelude's input.}
+{
+\begin{enumerate*}
+\item Run Prelude-Manager.
+\item Run ACARM-ng
+\item Wait until they are connected.
+\item Turn off Prelude-Manager.
+\item Wait until ACARM-ng notices dead connection (see logs).
+\item Turn on Prelude-Manager.
+\end{enumerate*}
+}
+{ACARM-ng must reconnect to Prelude-Manager.}
+{See logs for details on what's going on.}
+
+
+\testCase
+{f-4}
+{Connect to PotgreSQL.}
+{ACARM-ng supports writing data to PostgreSQL data base.}
+{System is configured with postgres persistency module.}
+{
+\begin{enumerate*}
+\item Turn PostgreSQL server on.
+\item Run ACARM-ng.
+\item Generate some alerts and send it to ACARM-ng.
+\end{enumerate*}
+}
+{New entries should appear in data base.}
+{}
+
+
+\testCase
+{f-5}
+{Reconnecting to PostgreSQL.}
+{ACARM-ng must reconnect in case connection to data base is lost.}
+{System is configured with postgres persistency module.}
+{
+\begin{enumerate*}
+\item Run PostgreSQL server.
+\item Run ACARM-ng
+\item Wait until they are connected.
+\item Turn off PostgreSQL.
+\item Wait until ACARM-ng notices dead connection (see logs).
+\item Turn on PostgreSQL.
+\end{enumerate*}
+}
+{ACARM-ng must reconnect to PostgreSQL.}
+{See logs for details on what's going on.}
+
+
+\testCase
+{f-6}
+{Trigger reports buffering.}
+{When standard trigger failed to send message it is buffered internally and sending is retried next time it is activated. Messages must not be lost, due to temporal failures of external services.}
+{System is configured with buffering trigger configured (some examples are: gg, mail).}
+{
+\begin{enumerate*}
+\item Put internet connection up.
+\item Run ACARM-ng.
+\item item Verify that messages are being sent from system.
+\item item Put internet connection down.
+\item item Verify that new messages are created and sending failed.
+\item item Put internet connection up again.
+\end{enumerate*}
+}
+{Ensure all buffered messages are being sent.}
+{See logs for details on what's going on. Notice that message buffer is of a finite length, thus when too many reports are to be sent oldes ones are truncated.}
+
+
+\testCase
+{f-7}
+{Configuration error handling.}
+{In case configuration is invalid error should be reported by application. Error must be readable enough for user to understand what is the problem.}
+{System has proper configuration with all features enabled.}
+{
+For each feature (ex. each: trigger, filter, input, persistency) repeat test:
+\begin{enumerate*}
+\item Use generic configuration.
+\item Remove one of required parameters from tested feature (configuration details can be found in ACARM-ng's configuration manual).
+\item Run ACARM-ng.
+\item Check for error message.
+\item See if message gives the point on error situation.
+\end{enumerate*}
+}
+{All error conditions must be reported on the screen in the readable form.}
+{}
+
+
+\testCase
+{f-8}
+{Logging to file.}
+{Logger is able to log to a disk file.}
+{Logger is configured to write logs to file.}
+{
+\begin{enumerate*}
+\item Run ACARM-ng.
+\item Turn off ACARM-ng.
+\end{enumerate*}
+}
+{All logged messages must be present in the log file.}
+{Welcome banner is not logged, but always displayed on the screen.}
+
+
+\testCase
+{f-9}
+{Logging to syslog.}
+{Logger is able to log to a system's syslog.}
+{Logger is configured to send logs to syslog.}
+{
+\begin{enumerate*}
+\item Run ACARM-ng.
+\item Turn off ACARM-ng.
+\end{enumerate*}
+}
+{All logged messages must be present in the syslog's log.}
+{Welcome banner is not logged, but always displayed on the screen.}
+
+
+\testCase
+{f-10}
+{Proper signal handling.}
+{System must correctly handle incoming signals.}
+{System is running.}
+{
+Following signals must be ignored:
+\begin{enumerate*}
+\item PIPE
+\item HUP
+\end{enumerate*}
+Following signals must stop application (aka: normal shutdown):
+\begin{enumerate*}
+\item TERM
+\item INT
+\end{enumerate*}
+}
+{All signals are handled properly.}
+{Welcome banner is not logged, but always displayed on the screen.}

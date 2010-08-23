@@ -18,7 +18,7 @@ namespace
 struct TestFilter: public StrategyBase
 {
   TestFilter(void):
-    StrategyBase("testfilter")
+    StrategyBase("testfilter", "testfiltername")
   {
   }
 
@@ -54,12 +54,12 @@ factory tf("Filter/StrategyBase");
 namespace tut
 {
 
-// check if name has been saved correctly
+// check if type has been saved correctly
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid name", tf_.getFilterName(), "testfilter");
+  ensure_equals("invalid type", tf_.getFilterType(), "testfilter");
 }
 
 // test logging (smoke test)

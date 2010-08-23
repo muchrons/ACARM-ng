@@ -22,17 +22,17 @@ StrategyBase::~StrategyBase(void)
 
 namespace
 {
-inline Logger::NodeName makeNodeName(const string &name)
+inline Logger::NodeName makeNodeName(const string &type, const string &name)
 {
-  const string &out="filter." + Logger::NodeName::removeInvalidChars(name);
+  const string &out="filter." + Logger::NodeName::removeInvalidChars(type + "." + name);
   return Logger::NodeName( out.c_str() );
 } // makeNodeName()
 } // unnamed namespace
 
-StrategyBase::StrategyBase(const std::string &name):
-  log_( makeNodeName(name) ),
+StrategyBase::StrategyBase(const std::string &type, const std::string &name):
+  log_( makeNodeName(type, name) ),
   conn_( Persistency::IO::create() ),
-  name_(name)
+  type_(type)
 {
   LOGMSG_INFO(log_, "creating filter");
 }

@@ -19,7 +19,7 @@
   <preprocessor/>
 
   <filters>
-    <ipblacklist>
+    <ipblacklist name="ipblacklist">
       <refresh>36000</refresh>
       <limit>10000</limit>
     </ipblacklist>

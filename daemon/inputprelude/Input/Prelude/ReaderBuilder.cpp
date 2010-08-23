@@ -33,7 +33,7 @@ FORCE_LINK_THIS_OBJECT(Input_Prelude_ReaderBuilder)
 
 
 ReaderBuilder::ReaderBuilder(void):
-  name_("prelude"),
+  type_("prelude"),
   log_("input.prelude")
 {
 }
@@ -43,17 +43,18 @@ ReaderBuilder::FactoryPtr ReaderBuilder::buildImpl(const Options &opt) const
   LOGMSG_INFO(log_, "building Input::Reader");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  const ConfigIO::InputConfig ic(name_, opt);
+  const ConfigIO::InputConfig ic(type_, opt);
 
+  const std::string &pname=ic["name"];
   const std::string &pprofile=ic["profile"];
   const std::string &pconfig=ic["config"];
 
-  return ReaderBuilder::FactoryPtr( new Reader(pprofile, pconfig) );
+  return ReaderBuilder::FactoryPtr( new Reader(pprofile, pname, pconfig) );
 }
 
 const ReaderBuilder::FactoryTypeName &ReaderBuilder::getTypeNameImpl(void) const
 {
-  return name_;
+  return type_;
 }
 
 } // namespace Prelude

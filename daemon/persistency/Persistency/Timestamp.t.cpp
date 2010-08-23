@@ -80,7 +80,7 @@ void testObj::test<5>(void)
   ensure_equals("invalid value", ts2.get(), 111);
 }
 
-// testy convertion to string
+// testy conversion to string
 template<>
 template<>
 void testObj::test<6>(void)

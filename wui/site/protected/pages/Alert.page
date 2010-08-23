@@ -1,0 +1,52 @@
+<com:TContent ID="content">
+
+Alert details:<br/>
+
+  <table>
+    <tr>
+      <td>Name:</td>
+      <td> <com:TLiteral ID="AlertName" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Detected:</td>
+      <td> <com:TLiteral ID="AlertDetectTime" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Created:</td>
+      <td> <com:TLiteral ID="AlertCreateTime" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Severity:</td>
+      <td> <com:TLiteral ID="AlertSeverity" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Certainty:</td>
+      <td> <com:TLiteral ID="AlertCertainty" Text="" Encode="true"/> </td>
+    </tr>
+
+    <tr>
+      <td>Analyzers:</td>
+      <td> <com:TLiteral ID="AlertAnalyzers" Text="" Encode="false"/> </td>
+    </tr>
+
+    <tr>
+      <td>Source:</td>
+      <td> <com:TLiteral ID="AlertSource" Text="" Encode="false"/> </td>
+    </tr>
+
+    <tr>
+      <td>Destination:</td>
+      <td> <com:TLiteral ID="AlertDestination" Text="" Encode="false"/> </td>
+    </tr>
+
+    <tr>
+      <td>Description:</td>
+      <td> <com:TLiteral ID="AlertDescription" Text="" Encode="true"/> </td>
+    </tr>
+  </table>
+
+</com:TContent>

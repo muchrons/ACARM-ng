@@ -19,10 +19,19 @@ std::auto_ptr<T> getNonNullAutoPtr(std::auto_ptr<T> ptr)
   assert( ptr.get()!=NULL && "call returned NULL pointer unexpectedly");
   return ptr;
 } // getNonNullAutoPtr()
+
+bool isLocked(::Base::Threads::Mutex &m)
+{
+  const bool locked=m.try_lock();
+  if(locked)
+    m.unlock();
+  return !locked;
+} // isLocked()
 } // unnamed namespace
 
 Connection::~Connection(void)
 {
+  assert( isLocked(mutex_)==false && "connection is being destroyed while some transaction is still open" );
 }
 
 TransactionAPIAutoPtr Connection::createNewTransaction(const std::string &name)

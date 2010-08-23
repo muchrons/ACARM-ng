@@ -64,6 +64,7 @@ public:
   /** \brief create meta-alert persistency proxy.
    *  \param owner owner's name of a configuration to work on (NULL means common config).
    *  \param t     active transaction.
+   *  \return return non-NULL dynamic configuration proxy.
    */
   DynamicConfigAutoPtr dynamicConfig(const DynamicConfig::Owner &owner, Transaction &t);
   /** \brief create restorer object.
@@ -91,6 +92,7 @@ private:
   virtual RestorerAutoPtr restorerImpl(Transaction &t) = 0;
   virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t) = 0;
 
+  // mutex is used to ensure only one transaction can be created at a time.
   Base::Threads::Mutex mutex_;
 }; // class Connection
 

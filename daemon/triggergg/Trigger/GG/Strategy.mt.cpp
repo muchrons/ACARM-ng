@@ -23,7 +23,7 @@ int main(int argc, char **argv)
   const Config           cfg( getTestConfig1(),
                               receiver,
                               Trigger::Simple::ThresholdConfig("0.0", "0") );
-  Strategy               s(cfg);
+  Strategy               s("ggmtest", cfg);
   Strategy::ChangedNodes nc;
   s.process( TestHelpers::Persistency::makeNewNode(), nc ); // trigger and send
   return 0;

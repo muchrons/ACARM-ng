@@ -28,8 +28,7 @@ namespace XMLpp
 class SaxParser: private xmlpp::SaxParser
 {
 public:
-  /**
-   * type of error list.
+  /** \brief type of error list.
    */
   typedef std::list<std::string> TErrorList;
   /**

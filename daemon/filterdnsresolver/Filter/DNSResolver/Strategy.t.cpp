@@ -22,7 +22,7 @@ namespace
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    s_( Strategy::Parameters(42) )
+    s_( "strategyname", Strategy::Parameters(42) )
   {
   }
 

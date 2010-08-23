@@ -30,6 +30,7 @@ private:
 public:
   /** \brief check if SQL query is null, if not return proper value.
    *  \param r SQL result field
+   *  \return data get from SQL result field.
    *  \note default c-tor for T is expected to accept NULL paramter.
    */
   static T readAs(const pqxx::result::field &r)

@@ -1,0 +1,24 @@
+% version number
+\newcommand{\versionNumber}[0]{\input{version.tex}}
+
+% create new history entry
+\newcommand{\historyEntry}[4]
+{
+#1 & #2 & #3 & #4 \\ \hline
+}
+
+% create new test case
+\newcommand{\testCase}[7]
+{
+  \subsubsection{#1: #2}
+  \begin{tabular}{ | p{3.5cm} | p{9cm} | }
+    \hline
+    \textbf{Reference} & #1 \\ \hline
+    \textbf{Summary} & #2 \\ \hline
+    \textbf{Description} & #3 \\ \hline
+    \textbf{Preconditions} & #4 \\ \hline
+    \textbf{Plan} & #5 \\ \hline
+    \textbf{Post conditions} & #6 \\ \hline
+    \textbf{Notes} & #7 \\ \hline
+  \end{tabular}
+}

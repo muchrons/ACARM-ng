@@ -25,8 +25,7 @@ struct Data
 {
 }; // struct Data
 
-
-/** \brief filter detecting multiple attacks from multiple hosts implementation.
+/** \brief filter updating priority of an alert, that includes IP from black list.
  */
 class Strategy: public Filter::Strategy<Data>
 {
@@ -55,9 +54,10 @@ public:
   }; // struct Parameters
 
   /** \brief create instance.
+   *  \param name  name for dns resolver.
    *  \param params paramters for dns resolver.
    */
-  explicit Strategy(const Parameters &params);
+  Strategy(const std::string &name, const Parameters &params);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.

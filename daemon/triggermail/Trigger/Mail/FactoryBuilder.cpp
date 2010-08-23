@@ -2,12 +2,11 @@
  * FactoryBuilder.cpp
  *
  */
-#include <boost/lexical_cast.hpp>
-#include <boost/numeric/conversion/cast.hpp>
 #include <cassert>
 
 #include "BuildProcess/ForceLink.hpp"
 #include "ConfigIO/TriggerConfig.hpp"
+#include "Commons/Convert.hpp"
 #include "Commons/Factory/RegistratorHelper.hpp"
 #include "Core/Types/Proc/InterfaceImpl.hpp"
 #include "Trigger/Mail/Strategy.hpp"
@@ -45,9 +44,7 @@ uint16_t getPort(const std::string &v)
 {
   try
   {
-    const long     tmp=boost::lexical_cast<long>(v);
-    const uint16_t out=boost::numeric_cast<uint16_t>(tmp);
-    return out;
+    return Commons::Convert::to<uint16_t>(v);;
   }
   catch(const std::exception &ex)
   {
@@ -102,7 +99,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // trigger name
   const std::string &name    =fc["name"];
-  LOGMSG_INFO_S(log_)<<"setting triggermail name "<<name;
+  LOGMSG_INFO_S(log_)<<"setting trigger \""<<getTypeName()<<"\" name to \""<<name<<"\"";
 
   // defile output type
   typedef InterfaceImpl<Mail::Strategy, Mail::Config> Impl;
