@@ -20,6 +20,8 @@ const char *key  ="next free MetaAlert's ID";
 
 namespace Persistency
 {
+namespace detail
+{
 
 IDAssigner::IDAssigner(IO::ConnectionPtrNN conn, IO::Transaction &t):
   log_("persistency.idassigner")
@@ -63,4 +65,16 @@ MetaAlert::ID IDAssigner::assign(IO::ConnectionPtrNN conn, IO::Transaction &t)
   return assignedID;
 }
 
+
+
+MetaAlert::ID IDAssignerWrapper::assign(IO::ConnectionPtrNN conn, IO::Transaction &t)
+{
+  Base::Threads::Lock lock(mutex_);
+  if( impl_.get()==NULL )
+    impl_.reset( new IDAssigner(conn, t) );
+  assert( impl_.get()!=NULL );
+  return impl_->assign(conn, t);
+}
+
+} // namespace detail
 } // namespace Persistency
