@@ -18,7 +18,7 @@ struct TestClass
   TestClass(void):
     host_( makeNewHost() ),
     alert_( makeNewAlert() ),
-    metaAlert_( makeNewMetaAlert() )
+    metaAlert_( makeNewMetaAlert(100u) )
   {
   }
 
@@ -93,7 +93,7 @@ void testObj::test<5>(void)
   fill();
   host_     =makeNewHost();
   alert_    =makeNewAlert();
-  metaAlert_=makeNewMetaAlert();
+  metaAlert_=makeNewMetaAlert(200u);
 }
 
 // test creating instance of IDCachePtrNN - smoke test.

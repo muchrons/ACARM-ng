@@ -100,36 +100,36 @@ struct TestClass
   //
   void makeNewTreeA(Restorer::NodesVector &first, Restorer::NodesVector &second)
   {
-    GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
-    GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+    GraphNodePtrNN leaf1 = makeNewLeaf(100u, "leaf1");
+    GraphNodePtrNN leaf2 = makeNewLeaf(101u, "leaf2");
     first.push_back(leaf1);
     first.push_back(leaf2);
-    GraphNodePtrNN node3 = makeNewNode(leaf1, leaf2, "node3");
+    GraphNodePtrNN node3 = makeNewNode(102u, leaf1, leaf2, "node3");
     first.push_back(node3);
 
-    GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
-    GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+    GraphNodePtrNN leaf3 = makeNewLeaf(104u, "leaf3");
+    GraphNodePtrNN leaf4 = makeNewLeaf(105u, "leaf4");
     first.push_back(leaf3);
     first.push_back(leaf4);
-    GraphNodePtrNN node4 = makeNewNode(leaf3, leaf4, "node4");
+    GraphNodePtrNN node4 = makeNewNode(106u, leaf3, leaf4, "node4");
     first.push_back(node4);
 
-    GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
-    GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
+    GraphNodePtrNN leaf5 = makeNewLeaf(107u, "leaf5");
+    GraphNodePtrNN leaf6 = makeNewLeaf(108u, "leaf6");
     first.push_back(leaf5);
     first.push_back(leaf6);
-    GraphNodePtrNN node5 = makeNewNode(leaf5, leaf6, "node5");
+    GraphNodePtrNN node5 = makeNewNode(109u, leaf5, leaf6, "node5");
 
     first.push_back(node5);
 
-    GraphNodePtrNN node1 = makeNewNode(node3, node4, "node1");
+    GraphNodePtrNN node1 = makeNewNode(110u, node3, node4, "node1");
     second.push_back(node1);
 
 
-    GraphNodePtrNN node2 = makeNewNode(node4, node5, "node2");
+    GraphNodePtrNN node2 = makeNewNode(111u, node4, node5, "node2");
     first.push_back(node2);
 
-    GraphNodePtrNN root = makeNewNode(node1, node2, "root");
+    GraphNodePtrNN root = makeNewNode(112u, node1, node2, "root");
     second.push_back(root);
   }
 
@@ -140,48 +140,46 @@ struct TestClass
   //
   void makeNewTreeB(Restorer::NodesVector &first, Restorer::NodesVector &second)
   {
-    GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
-    GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+    GraphNodePtrNN leaf1 = makeNewLeaf(100u, "leaf1");
+    GraphNodePtrNN leaf2 = makeNewLeaf(101u, "leaf2");
     first.push_back(leaf1);
     first.push_back(leaf2);
 
-    GraphNodePtrNN node1 = makeNewNode(leaf1,
-        leaf2,
-        "node1");
+    GraphNodePtrNN node1 = makeNewNode(102u, leaf1, leaf2, "node1");
     first.push_back(node1);
 
-    GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
-    GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+    GraphNodePtrNN leaf3 = makeNewLeaf(103u, "leaf3");
+    GraphNodePtrNN leaf4 = makeNewLeaf(104u, "leaf4");
     first.push_back(leaf3);
     first.push_back(leaf4);
 
-    GraphNodePtrNN node2 = makeNewNode(leaf3, leaf4, "node2");
+    GraphNodePtrNN node2 = makeNewNode(105u, leaf3, leaf4, "node2");
     first.push_back(node2);
 
-    GraphNodePtrNN root1 = makeNewNode(node1, node2, "root1");
+    GraphNodePtrNN root1 = makeNewNode(106u, node1, node2, "root1");
     second.push_back(root1);
 
-    GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
-    GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
+    GraphNodePtrNN leaf5 = makeNewLeaf(107u, "leaf5");
+    GraphNodePtrNN leaf6 = makeNewLeaf(108u, "leaf6");
 
     first.push_back(leaf5);
     first.push_back(leaf6);
 
-    GraphNodePtrNN node3 = makeNewNode(leaf5, leaf6, "node3");
+    GraphNodePtrNN node3 = makeNewNode(109u, leaf5, leaf6, "node3");
 
     first.push_back(node3);
 
-    GraphNodePtrNN leaf7 = makeNewLeaf("leaf7");
-    GraphNodePtrNN leaf8 = makeNewLeaf("leaf8");
+    GraphNodePtrNN leaf7 = makeNewLeaf(110u, "leaf7");
+    GraphNodePtrNN leaf8 = makeNewLeaf(111u, "leaf8");
 
     first.push_back(leaf7);
     first.push_back(leaf8);
 
-    GraphNodePtrNN node4 = makeNewNode(leaf7, leaf8, "node4");
+    GraphNodePtrNN node4 = makeNewNode(112u, leaf7, leaf8, "node4");
 
     first.push_back(node4);
 
-    GraphNodePtrNN root2 = makeNewNode(node3, node4, "root2");
+    GraphNodePtrNN root2 = makeNewNode(113u, node3, node4, "root2");
 
     first.push_back(root2);
 
@@ -194,46 +192,46 @@ struct TestClass
   //
   void makeNewTreeC(Restorer::NodesVector &first, Restorer::NodesVector &second)
   {
-    GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
-    GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+    GraphNodePtrNN leaf1 = makeNewLeaf(100u, "leaf1");
+    GraphNodePtrNN leaf2 = makeNewLeaf(101u, "leaf2");
     first.push_back(leaf1);
     first.push_back(leaf2);
 
-    GraphNodePtrNN node1 = makeNewNode(leaf1, leaf2, "node1");
+    GraphNodePtrNN node1 = makeNewNode(102u, leaf1, leaf2, "node1");
     first.push_back(node1);
 
-    GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
-    GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+    GraphNodePtrNN leaf3 = makeNewLeaf(103u, "leaf3");
+    GraphNodePtrNN leaf4 = makeNewLeaf(104u, "leaf4");
     first.push_back(leaf3);
     first.push_back(leaf4);
 
-    GraphNodePtrNN node2 = makeNewNode(leaf3, leaf4, "node2");
+    GraphNodePtrNN node2 = makeNewNode(105u, leaf3, leaf4, "node2");
     first.push_back(node2);
 
-    GraphNodePtrNN root1 = makeNewNode(node1, node2, "root1");
+    GraphNodePtrNN root1 = makeNewNode(106u, node1, node2, "root1");
     second.push_back(root1);
 
-    GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
-    GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
+    GraphNodePtrNN leaf5 = makeNewLeaf(107u, "leaf5");
+    GraphNodePtrNN leaf6 = makeNewLeaf(108u, "leaf6");
 
     first.push_back(leaf5);
     first.push_back(leaf6);
 
-    GraphNodePtrNN node3 = makeNewNode(leaf5, leaf6, "node3");
+    GraphNodePtrNN node3 = makeNewNode(109u, leaf5, leaf6, "node3");
 
     first.push_back(node3);
 
-    GraphNodePtrNN leaf7 = makeNewLeaf("leaf7");
-    GraphNodePtrNN leaf8 = makeNewLeaf("leaf8");
+    GraphNodePtrNN leaf7 = makeNewLeaf(110u, "leaf7");
+    GraphNodePtrNN leaf8 = makeNewLeaf(111u, "leaf8");
 
     first.push_back(leaf7);
     first.push_back(leaf8);
 
-    GraphNodePtrNN node4 = makeNewNode(leaf7, leaf8, "node4");
+    GraphNodePtrNN node4 = makeNewNode(112u, leaf7, leaf8, "node4");
 
     first.push_back(node4);
 
-    GraphNodePtrNN root2 = makeNewNode(node3, node4, "root2");
+    GraphNodePtrNN root2 = makeNewNode(113u, node3, node4, "root2");
 
     first.push_back(root2);
 
@@ -248,26 +246,26 @@ struct TestClass
   Restorer::NodesVector makeNewTreeD(void)
   {
     Restorer::NodesVector vec;
-    GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
-    GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+    GraphNodePtrNN leaf1 = makeNewLeaf(100u, "leaf1");
+    GraphNodePtrNN leaf2 = makeNewLeaf(101u, "leaf2");
     vec.push_back(leaf1);
     vec.push_back(leaf2);
 
-    GraphNodePtrNN node1 = makeNewNode(leaf1, leaf2, "node1");
+    GraphNodePtrNN node1 = makeNewNode(102u, leaf1, leaf2, "node1");
     vec.push_back(node1);
 
-    GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
-    GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+    GraphNodePtrNN leaf3 = makeNewLeaf(103u, "leaf3");
+    GraphNodePtrNN leaf4 = makeNewLeaf(104u, "leaf4");
     vec.push_back(leaf3);
     vec.push_back(leaf4);
 
-    GraphNodePtrNN node3 = makeNewNode(leaf3, leaf4, "node3");
+    GraphNodePtrNN node3 = makeNewNode(105u, leaf3, leaf4, "node3");
     vec.push_back(node3);
-    GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
+    GraphNodePtrNN leaf5 = makeNewLeaf(106u, "leaf5");
     vec.push_back(leaf5);
-    GraphNodePtrNN node2 = makeNewNode(node3, leaf5, "node2");
+    GraphNodePtrNN node2 = makeNewNode(107u, node3, leaf5, "node2");
     vec.push_back(node2);
-    GraphNodePtrNN root = makeNewNode(node1, node2, "root");
+    GraphNodePtrNN root = makeNewNode(108u, node1, node2, "root");
     vec.push_back(root);
     return vec;
   }
@@ -281,31 +279,31 @@ struct TestClass
   Restorer::NodesVector makeNewTreeE(void)
   {
     Restorer::NodesVector vec;
-    GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
-    GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+    GraphNodePtrNN leaf1 = makeNewLeaf(100u, "leaf1");
+    GraphNodePtrNN leaf2 = makeNewLeaf(101u, "leaf2");
     vec.push_back(leaf1);
     vec.push_back(leaf2);
 
-    GraphNodePtrNN node1 = makeNewNode(leaf1, leaf2, "node1");
+    GraphNodePtrNN node1 = makeNewNode(102u, leaf1, leaf2, "node1");
     vec.push_back(node1);
 
-    GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
-    GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+    GraphNodePtrNN leaf3 = makeNewLeaf(103u, "leaf3");
+    GraphNodePtrNN leaf4 = makeNewLeaf(104u, "leaf4");
     vec.push_back(leaf3);
     vec.push_back(leaf4);
 
-    GraphNodePtrNN node3 = makeNewNode(leaf3, leaf4, "node3");
+    GraphNodePtrNN node3 = makeNewNode(105u, leaf3, leaf4, "node3");
     vec.push_back(node3);
-    GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
-    GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
+    GraphNodePtrNN leaf5 = makeNewLeaf(106u, "leaf5");
+    GraphNodePtrNN leaf6 = makeNewLeaf(107u, "leaf6");
     vec.push_back(leaf5);
     vec.push_back(leaf6);
-    GraphNodePtrNN node4 = makeNewNode(leaf5, leaf6, "node4");
+    GraphNodePtrNN node4 = makeNewNode(108u, leaf5, leaf6, "node4");
     vec.push_back(node4);
 
-    GraphNodePtrNN node2 = makeNewNode(node3, node4, "node2");
+    GraphNodePtrNN node2 = makeNewNode(109u, node3, node4, "node2");
     vec.push_back(node2);
-    GraphNodePtrNN root = makeNewNode(node1, node2, "root");
+    GraphNodePtrNN root = makeNewNode(110u, node1, node2, "root");
     vec.push_back(root);
     return vec;
   }
@@ -322,31 +320,31 @@ struct TestClass
     const Timestamp t1( timestampFromString("1999-10-10 17:56:07") );
     const Timestamp t2( timestampFromString("2010-04-22 07:56:07") );
 
-    GraphNodePtrNN leaf1 = makeNewLeaf("leaf1", t1);
-    GraphNodePtrNN leaf2 = makeNewLeaf("leaf2", t1);
+    GraphNodePtrNN leaf1 = makeNewLeaf(100u, "leaf1", t1);
+    GraphNodePtrNN leaf2 = makeNewLeaf(101u, "leaf2", t1);
     vec.push_back(leaf1);
     vec.push_back(leaf2);
 
-    GraphNodePtrNN node1 = makeNewNode(leaf1, leaf2, "node1", t1);
+    GraphNodePtrNN node1 = makeNewNode(102u, leaf1, leaf2, "node1", t1);
     vec.push_back(node1);
 
-    GraphNodePtrNN leaf3 = makeNewLeaf("leaf3", t2);
-    GraphNodePtrNN leaf4 = makeNewLeaf("leaf4", t2);
+    GraphNodePtrNN leaf3 = makeNewLeaf(103u, "leaf3", t2);
+    GraphNodePtrNN leaf4 = makeNewLeaf(104u, "leaf4", t2);
     vec.push_back(leaf3);
     vec.push_back(leaf4);
 
-    GraphNodePtrNN node3 = makeNewNode(leaf3, leaf4, "node3", t2);
+    GraphNodePtrNN node3 = makeNewNode(105u, leaf3, leaf4, "node3", t2);
     vec.push_back(node3);
-    GraphNodePtrNN leaf5 = makeNewLeaf("leaf5", t1);
-    GraphNodePtrNN leaf6 = makeNewLeaf("leaf6", t1);
+    GraphNodePtrNN leaf5 = makeNewLeaf(106u, "leaf5", t1);
+    GraphNodePtrNN leaf6 = makeNewLeaf(107u, "leaf6", t1);
     vec.push_back(leaf5);
     vec.push_back(leaf6);
-    GraphNodePtrNN node4 = makeNewNode(leaf5, leaf6, "node4", t1);
+    GraphNodePtrNN node4 = makeNewNode(108u, leaf5, leaf6, "node4", t1);
     vec.push_back(node4);
 
-    GraphNodePtrNN node2 = makeNewNode(node3, node4, "node2", t1);
+    GraphNodePtrNN node2 = makeNewNode(109u, node3, node4, "node2", t1);
     vec.push_back(node2);
-    GraphNodePtrNN root = makeNewNode(node1, node2, "root", t1);
+    GraphNodePtrNN root = makeNewNode(110u, node1, node2, "root", t1);
     vec.push_back(root);
     return vec;
   }
@@ -361,49 +359,48 @@ struct TestClass
     const Timestamp t1( timestampFromString("1999-10-10 17:56:07") );
     const Timestamp t2( timestampFromString("2010-01-22 07:56:07") );
     const Timestamp t3( timestampFromString("2010-04-22 07:56:07") );
-    GraphNodePtrNN leaf1 = makeNewLeaf("leaf1", t2);
-    GraphNodePtrNN leaf2 = makeNewLeaf("leaf2", t2);
+    GraphNodePtrNN leaf1 = makeNewLeaf(100u, "leaf1", t2);
+    GraphNodePtrNN leaf2 = makeNewLeaf(101u, "leaf2", t2);
     first.push_back(leaf1);
     first.push_back(leaf2);
 
-    GraphNodePtrNN node1 = makeNewNode(leaf1, leaf2, "node1", t2);
+    GraphNodePtrNN node1 = makeNewNode(102u, leaf1, leaf2, "node1", t2);
     first.push_back(node1);
 
-    GraphNodePtrNN leaf3 = makeNewLeaf("leaf3", t1);
-    GraphNodePtrNN leaf4 = makeNewLeaf("leaf4", t1);
+    GraphNodePtrNN leaf3 = makeNewLeaf(103u, "leaf3", t1);
+    GraphNodePtrNN leaf4 = makeNewLeaf(104u, "leaf4", t1);
     second.push_back(leaf3);
     second.push_back(leaf4);
 
-    GraphNodePtrNN node2 = makeNewNode(leaf3, leaf4, "node2", t1);
+    GraphNodePtrNN node2 = makeNewNode(105u, leaf3, leaf4, "node2", t1);
     second.push_back(node2);
 
-    GraphNodePtrNN root1 = makeNewNode(node1, node2, "root1", t2);
+    GraphNodePtrNN root1 = makeNewNode(106u, node1, node2, "root1", t2);
     second.push_back(root1);
 
-    GraphNodePtrNN leaf5 = makeNewLeaf("leaf5", t3);
-    GraphNodePtrNN leaf6 = makeNewLeaf("leaf6", t3);
+    GraphNodePtrNN leaf5 = makeNewLeaf(107u, "leaf5", t3);
+    GraphNodePtrNN leaf6 = makeNewLeaf(108u, "leaf6", t3);
 
     first.push_back(leaf5);
     first.push_back(leaf6);
 
-    GraphNodePtrNN node3 = makeNewNode(leaf5, leaf6, "node3", t3);
+    GraphNodePtrNN node3 = makeNewNode(109u, leaf5, leaf6, "node3", t3);
 
     first.push_back(node3);
 
-    GraphNodePtrNN leaf7 = makeNewLeaf("leaf7", t3);
-    GraphNodePtrNN leaf8 = makeNewLeaf("leaf8", t3);
+    GraphNodePtrNN leaf7 = makeNewLeaf(110u, "leaf7", t3);
+    GraphNodePtrNN leaf8 = makeNewLeaf(111u, "leaf8", t3);
 
     first.push_back(leaf7);
     first.push_back(leaf8);
 
-    GraphNodePtrNN node4 = makeNewNode(leaf7, leaf8, "node4", t3);
+    GraphNodePtrNN node4 = makeNewNode(112u, leaf7, leaf8, "node4", t3);
 
     first.push_back(node4);
 
-    GraphNodePtrNN root2 = makeNewNode(node3, node4, "root2", t3);
+    GraphNodePtrNN root2 = makeNewNode(113u, node3, node4, "root2", t3);
 
     first.push_back(root2);
-
   }
 
   TestDBAccess        tdba_;
