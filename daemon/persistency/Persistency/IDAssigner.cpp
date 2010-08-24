@@ -2,6 +2,8 @@
  * IDAssigner.cpp
  *
  */
+#include <cassert>
+
 #include "Commons/Convert.hpp"
 #include "Persistency/IDAssigner.hpp"
 
@@ -15,10 +17,18 @@ const char *key="next free MetaAlert's ID";
 namespace Persistency
 {
 
-MetaAlert::ID IDAssigner::assign(IO::DynamicConfig &dc)
+IDAssigner::IDAssigner(IO::ConnectionPtrNN conn, IO::Transaction &t):
+  conn_(conn),
+  t_(t),
+  dc_( conn_->dynamicConfig("Persistency::IDAssigner", t_) )
+{
+  assert( dc_.get()!=NULL );
+}
+
+MetaAlert::ID IDAssigner::assign(void)
 {
   MetaAlert::ID                  freeID(0u);
-  const DynamicConfig::ValueNULL r=dc.read(key);
+  const DynamicConfig::ValueNULL r=dc_->read(key);
   // if value is set, counter is already started
   if( r.get()!=NULL )
   {
@@ -28,7 +38,7 @@ MetaAlert::ID IDAssigner::assign(IO::DynamicConfig &dc)
   }
 
   // save next free ID
-  dc.write(key, Commons::Convert::to<std::string>( freeID.get()+1u ) );
+  dc_->write(key, Commons::Convert::to<std::string>( freeID.get()+1u ) );
 
   // return final value.
   return freeID;
