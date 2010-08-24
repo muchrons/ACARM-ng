@@ -122,7 +122,7 @@ public:
   DataBaseID getAlertIDAssociatedWithMetaAlert(DataBaseID malertID);
 
   /** \brief reads system-ID of metal alert of given database-ID.
-   *  \param id ID in data base.
+   *  \param malertID database-ID of meta-alert to read system-ID for.
    *  \return system-ID of a given meta-alert.
    */
   Persistency::MetaAlert::ID getSystemIDOfMetaAlert(DataBaseID malertID);
