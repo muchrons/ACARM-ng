@@ -8,7 +8,8 @@ CREATE TABLE    meta_alerts
 (
   id               int          PRIMARY KEY
                                 DEFAULT nextval('meta_alerts_id_seq'),
-  sys_id           int          NOT NULL,
+  sys_id           int          NOT NULL
+                                UNIQUE,
   name             varchar(256) NOT NULL,
   severity_delta   real         NOT NULL
                                 DEFAULT 0,
