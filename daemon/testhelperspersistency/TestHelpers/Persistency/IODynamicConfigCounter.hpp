@@ -5,6 +5,8 @@
 #ifndef INCLUDE_TESTHELPERS_PERSISTENCY_IODYNAMICCONFIGCOUNTER_HPP
 #define INCLUDE_TESTHELPERS_PERSISTENCY_IODYNAMICCONFIGCOUNTER_HPP
 
+/* public header */
+
 #include <string>
 
 #include "Persistency/MetaAlert.hpp"
