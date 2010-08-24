@@ -49,9 +49,6 @@ IDAssigner::IDAssigner(IO::ConnectionPtrNN conn, IO::Transaction &t):
 MetaAlert::ID IDAssigner::assign(IO::ConnectionPtrNN conn, IO::Transaction &t)
 {
   LOGMSG_DEBUG(log_, "assigning next ID value");
-  // prevent data races
-  Base::Threads::Lock lock(mutex_);
-
   const MetaAlert::ID assignedID=nextFreeID_;   // save assigned value
   ++nextFreeID_;                                // move to next one
   IO::DynamicConfigAutoPtr dc=conn->dynamicConfig(owner, t);
