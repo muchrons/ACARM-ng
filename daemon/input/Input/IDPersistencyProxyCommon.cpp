@@ -2,8 +2,7 @@
  * IDPersistencyProxyCommon.cpp
  *
  */
-#include <boost/lexical_cast.hpp>
-
+#include "Commons/Convert.hpp"
 #include "Input/IDPersistencyProxyCommon.hpp"
 
 using namespace std;
@@ -30,13 +29,13 @@ Persistency::Analyzer::ID IDPersistencyProxyCommon::readNextFreeID(void)
     return 0;
   // parse input value and return to caller
   typedef Persistency::Analyzer::ID::Numeric NumericID;
-  const Persistency::Analyzer::ID out=boost::lexical_cast<NumericID>( tmp.get()->get() );
+  const Persistency::Analyzer::ID out=Commons::Convert::to<NumericID>( tmp.get()->get() );
   return out;
 }
 
 void IDPersistencyProxyCommon::saveNextFreeID(Persistency::Analyzer::ID nextFreeID)
 {
-  dynConf_.write( nextFreeIDParam, boost::lexical_cast<string>( nextFreeID.get() ) );
+  dynConf_.write( nextFreeIDParam, Commons::Convert::to<string>( nextFreeID.get() ) );
 }
 
 } // namespace Input

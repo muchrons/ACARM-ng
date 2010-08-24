@@ -451,28 +451,33 @@ template<>
 void testObj::test<10>(void)
 {
   const MetaAlert::Name name("meta alert");
-  MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL(), created_, 42u);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
 
-  stringstream ss;
-  double delta;
-  string mAlertName;
-  string time;
+  Persistency::MetaAlert::ID::Numeric numericID;
+  double                              delta;
+  string                              mAlertName;
+  string                              time;
+  stringstream                        ss;
+
   ss << "SELECT * FROM meta_alerts WHERE id = " << malertID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
 
+  r[0]["sys_id"].to(numericID);
+  ensure_equals("invalid system-ID", numericID, 42u);
+
   r[0]["severity_delta"].to(delta);
-  ensure_equals("invalid severity delta",0.22,delta);
+  ensure_equals("invalid severity delta", delta, 0.22);
 
   r[0]["certainty_delta"].to(delta);
-  ensure_equals("invalid certanity delta",0.23,delta);
+  ensure_equals("invalid certanity delta", delta, 0.23);
 
   r[0]["name"].to(mAlertName);
-  ensure_equals("invalid name","meta alert",mAlertName);
+  ensure_equals("invalid name", mAlertName, "meta alert");
 
   r[0]["create_time"].to(time);
-  ensure_equals("invalid created time", created_, timestampFromString(time) );
+  ensure_equals("invalid created time", timestampFromString(time), created_);
 
   t_.commit();
 }
@@ -731,7 +736,7 @@ void testObj::test<18>(void)
 {
   const MetaAlert::Name name("meta alert");
   ReferenceURLPtr url;
-  MetaAlert ma(name, 0.22,0.23, url , created_);
+  MetaAlert ma(name, 0.22,0.23, url , created_, 913u);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
 
   stringstream ss;
@@ -784,7 +789,7 @@ void testObj::test<20>(void)
 {
   const string TriggerName("some trigger name");
   const MetaAlert::Name name("meta alert");
-  MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL(), created_, 555u);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
   es_.markMetaAlertAsUsed(malertID);
   stringstream ss;
@@ -809,7 +814,7 @@ template<>
 void testObj::test<21>(void)
 {
   const MetaAlert::Name name("meta alert");
-  MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL(), created_, 23u);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
   es_.markMetaAlertAsUsed(malertID);
   stringstream ss;
@@ -825,7 +830,7 @@ template<>
 void testObj::test<22>(void)
 {
   const MetaAlert::Name name("meta alert");
-  MetaAlert ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL(), created_, 404u);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
   es_.markMetaAlertAsUsed(malertID);
   stringstream ss;
@@ -932,7 +937,7 @@ void testObj::test<26>(void)
 {
   const string          triggerName("some trigger name");
   const MetaAlert::Name name("meta alert");
-  MetaAlert             ma(name,0.22,0.23,makeNewReferenceURL(),created_);
+  MetaAlert             ma(name, 0.22, 0.23, makeNewReferenceURL(), created_, 101u);
   const DataBaseID      malertID = es_.saveMetaAlert(ma);
   es_.markMetaAlertAsUsed(malertID);
   stringstream ss;

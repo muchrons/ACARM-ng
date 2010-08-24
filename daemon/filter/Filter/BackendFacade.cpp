@@ -5,11 +5,9 @@
 #include <cassert>
 
 #include "Filter/BackendFacade.hpp"
-#include "Persistency/IO/Transaction.hpp"
-#include "Persistency/IO/Connection.hpp"
+#include "Persistency/IDAssigner.hpp"
 
 using namespace Persistency;
-using namespace Persistency::IO;
 
 
 namespace Filter
@@ -104,6 +102,13 @@ Persistency::GraphNodePtrNN BackendFacade::correlate(
   Node ptr( new GraphNode(ma, getConnection(), getTransaction(), children) );
   changed_.push_back(ptr);
   return ptr;
+}
+
+Persistency::MetaAlert::ID BackendFacade::getNextFreeID(void)
+{
+  beginTransaction();
+  IDAssigner idas( getConnection(), getTransaction() );
+  return idas.assign();
 }
 
 } // namespace Filter
