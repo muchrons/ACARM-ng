@@ -94,7 +94,7 @@ template<>
 void testObj::test<1>(void)
 {
   ensure("initial value is NOT null", getDC()->read("next free MetaAlert's ID").get()==NULL );
-  ensure_equals("invalid value returned", ad_.assign().get(), 0u);
+  ensure_equals("invalid value returned", ad_.assign(conn_, t_).get(), 0u);
 }
 
 // test reading multiple times
@@ -103,8 +103,8 @@ template<>
 void testObj::test<2>(void)
 {
   ensure("initial value is NOT null", getDC()->read("next free MetaAlert's ID").get()==NULL );
-  ensure_equals("invalid value 1 returned", ad_.assign().get(), 0u);
-  ensure_equals("invalid value 2 returned", ad_.assign().get(), 1u);
+  ensure_equals("invalid value 1 returned", ad_.assign(conn_, t_).get(), 0u);
+  ensure_equals("invalid value 2 returned", ad_.assign(conn_, t_).get(), 1u);
 }
 
 } // namespace tut
