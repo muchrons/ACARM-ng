@@ -5,11 +5,10 @@
 #include <cassert>
 
 #include "Filter/BackendFacade.hpp"
-#include "Persistency/IO/Transaction.hpp"
-#include "Persistency/IO/Connection.hpp"
+#include "System/Threads/SafeInitLocking.hpp"
+#include "Persistency/IDAssigner.hpp"
 
 using namespace Persistency;
-using namespace Persistency::IO;
 
 
 namespace Filter
@@ -104,6 +103,20 @@ Persistency::GraphNodePtrNN BackendFacade::correlate(
   Node ptr( new GraphNode(ma, getConnection(), getTransaction(), children) );
   changed_.push_back(ptr);
   return ptr;
+}
+
+Persistency::MetaAlert::ID BackendFacade::getNextFreeID(void)
+{
+  // this is nasty global mutex, that ensures this method will be called by at most one
+  // instance at a time this is important at this point, since non-atomic operations (add/del)
+  // could lead to inconsistentcy in persistency storage (i.e. the same value could be assigned
+  // to more than one meta-alert).
+  SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(mutex);
+  System::Threads::SafeInitLock lock(mutex);
+  // here goes "real" code:
+  beginTransaction();
+  IDAssigner idas( getConnection(), getTransaction() );
+  return idas.assign();
 }
 
 } // namespace Filter

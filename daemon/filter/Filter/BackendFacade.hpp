@@ -88,6 +88,10 @@ public:
    */
   Persistency::GraphNodePtrNN correlate(Persistency::MetaAlertPtrNN  ma,
                                         const ChildrenVector        &children);
+  /** \brief generate next, unique ID for the new meta-alert.
+   *  \return unique ID for the meta-alert.
+   */
+  Persistency::MetaAlert::ID getNextFreeID(void);
 
 private:
   ChangedNodes &changed_;

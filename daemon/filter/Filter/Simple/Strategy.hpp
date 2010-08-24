@@ -194,7 +194,8 @@ private:
                                               Persistency::MetaAlert::SeverityDelta(0),
                                               Persistency::MetaAlert::CertaintyDelta(0),
                                               Persistency::ReferenceURLPtr(),
-                                              Persistency::Timestamp() ) );
+                                              Persistency::Timestamp(),
+                                              bf.getNextFreeID() ) );
       Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv);                                     // add new, correlated element.
       const NodeEntry             newEntry=NodeEntry::makeCorrelatedEntry(newNode, thisEntry.t_);   // use the same reported host entry.
       assert( newEntry.isSelfCorrelated()==true );
