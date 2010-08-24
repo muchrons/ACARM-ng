@@ -459,18 +459,20 @@ void EntrySaver::saveConfigParameter(const DynamicConfig::Owner &owner,
                                      const DynamicConfig::Key   &key,
                                      const DynamicConfig::Value &value)
 {
-  // first, delete given key if entry's present
+#warning TODO: update code to previous implementation, without singleton, ASAP (i.e. when this code will work)!
+
+  // if it's not present, add new one
+  stringstream ss;
+  ss << "UPDATE config SET value = ";
+  Appender::append(ss, value.get());
+  ss << " WHERE owner = ";
+  Appender::append(ss, owner.get());
+  ss << " AND key = ";
+  Appender::append(ss, key.get());
+  // try updating and see how many rows have chenged - if none, add new one
+  if( SQL( ss.str().c_str(), log_ ).exec(t_).affected_rows()==0 )
   {
-    stringstream ss;
-    ss << "DELETE FROM config WHERE owner ";
-    addToSelect(ss, owner);
-    ss << " AND key = ";    // '=' here is ok - key cannot be NULL
-    assert( key.get()!=NULL );
-    Appender::append(ss, key.get());
-    SQL( ss.str().c_str(), log_ ).exec(t_);
-  }
-  // now add entry
-  {
+    // if it's not present, add new one
     stringstream ss;
     ss << "INSERT INTO config (owner, key, value) VALUES (";
     Appender::append(ss, owner.get());

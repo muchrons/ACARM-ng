@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <boost/algorithm/string/trim.hpp>
 
+#include "Commons/Threads/Thread.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/timestampFromString.hpp"
 #include "Persistency/IO/Postgres/TestConnection.t.hpp"
@@ -1020,4 +1021,71 @@ void testObj::test<29>(void)
   ensure_equals("invalid size", r.size(), 1u);
   t_.commit();
 }
+
+
+namespace
+{
+struct WriterThread
+{
+  explicit WriterThread(std::string *out):
+    out_(out)
+  {
+    tut::ensure("NULL output", out_!=NULL);
+    tut::ensure("invalid initial value", *out_=="");
+  }
+
+  void operator()(void)
+  {
+    try
+    {
+      IDCachePtrNN        idCache(new IDCache);
+      DBHandle            dbh(TestConnection::makeParams(), idCache);
+      IO::ConnectionPtrNN conn( makeConnection() );
+
+      for(int i=0; i<300; ++i)
+      {
+        Transaction t( conn->createNewTransaction("read_write_stress_test") );
+        EntrySaver  es(t, dbh);
+        es.saveConfigParameter( "some owner", "some key", "some value: " + Commons::Convert::to<std::string>(i) );
+        t.commit();
+      }
+    }
+    catch(const std::exception &ex)
+    {
+      *out_=ex.what();
+    }
+  }
+
+  std::string *out_;
+}; // struct WriterThread
+
+} // unnamed namespace
+
+// test if there is no races when multiple write from multiple threads occures
+// at the same time (this checks how write is organized).
+// NOTE: this code tests for a bug that caused unique constraint volation.
+template<>
+template<>
+void testObj::test<30>(void)
+{
+  std::string              out[5];
+  Commons::Threads::Thread th1( (WriterThread(&out[0])) );
+  Commons::Threads::Thread th2( (WriterThread(&out[1])) );
+  Commons::Threads::Thread th3( (WriterThread(&out[2])) );
+  Commons::Threads::Thread th4( (WriterThread(&out[3])) );
+  Commons::Threads::Thread th5( (WriterThread(&out[4])) );
+  // wait until they finish
+  th1->join();
+  th2->join();
+  th3->join();
+  th4->join();
+  th5->join();
+  // check output
+  ensure_equals("thread 1 failed", out[0], "");
+  ensure_equals("thread 2 failed", out[1], "");
+  ensure_equals("thread 3 failed", out[2], "");
+  ensure_equals("thread 4 failed", out[3], "");
+  ensure_equals("thread 5 failed", out[4], "");
+}
+
 } // namespace tut
