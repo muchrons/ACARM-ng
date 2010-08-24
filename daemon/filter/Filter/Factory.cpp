@@ -1,8 +1,12 @@
+/*
+ * Factory.cpp
+ *
+ */
 #include "Filter/Factory.hpp"
 #include "ConfigIO/Singleton.hpp"
 
-using namespace Core::Types::Proc;
 using namespace ConfigIO;
+using namespace Core::Types::Proc;
 
 namespace Filter
 {

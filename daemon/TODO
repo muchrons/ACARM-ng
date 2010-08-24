@@ -16,3 +16,4 @@
 * after adding IDs to MetaAlert replace all logs' "names" and "addresses" to IDs.
 * after adding IDs to MetaAlert add formatter for triggers that will form link to show given meta-alert.
 * update cleanu to first sleep, then cleanup - this way cleanup will not overlap with startup, which is time-consumming by default.
+* think how to overcome IDAssignment passing to build objects issue, that forces us to use singleton here...
