@@ -33,8 +33,6 @@ struct IDAssigner: private boost::noncopyable
   MetaAlert::ID assign(void);
 
 private:
-  // TODO: add protection against multiple copyies of this object existing at
-  //       the same time in program.
   IO::ConnectionPtrNN       conn_;
   IO::Transaction          &t_;
   IO::DynamicConfigAutoPtr  dc_;

@@ -4,6 +4,7 @@
  */
 #include <cassert>
 
+#include "System/Threads/SafeInitLocking.hpp"
 #include "Commons/Convert.hpp"
 #include "Persistency/IDAssigner.hpp"
 
@@ -27,6 +28,14 @@ IDAssigner::IDAssigner(IO::ConnectionPtrNN conn, IO::Transaction &t):
 
 MetaAlert::ID IDAssigner::assign(void)
 {
+  // this is nasty global mutex, that ensures this method will be called by at most one
+  // instance at a time this is important at this point, since non-atomic operations (add/del)
+  // could lead to inconsistentcy in persistency storage (i.e. the same value could be assigned
+  // to more than one meta-alert).
+  SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(mutex);
+  System::Threads::SafeInitLock lock(mutex);
+
+  // here goes "real" code:
   MetaAlert::ID                  freeID(0u);
   const DynamicConfig::ValueNULL r=dc_->read(key);
   // if value is set, counter is already started
