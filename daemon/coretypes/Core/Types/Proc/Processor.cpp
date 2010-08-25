@@ -105,7 +105,7 @@ private:
     {
       // exceptions at this point are ignored, since changed nodes must
       // be forwarded to other processors anyhow, thus we proceed with execution.
-      LOGMSG_ERROR_S(log_)<<"exception ("<< typeid(ex).name()
+      LOGMSG_ERROR_S(log_)<<"exception ("<<typeid(ex).name()
                           <<") caught in thread, while processing node; "
                             "proceeding with forwarding notifications; "
                             "exception was: "<<ex.what();

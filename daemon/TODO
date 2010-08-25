@@ -2,10 +2,8 @@
 * refactor ConfigIO - it should read configuration file and keep it in memory. proper handles for specific parts of configuration file should be implemented by interested components.
 * think how to overcome lack of additional data assigned for observed graph nodes in filters during normal run - they will not be present after reading from persistency.
 * update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
-* GraphNode (MetaAlert?) should have some unique identifier in the system, that can be reported.
 * create XML schema for config file.
 * add parse-at-read feature to configio - config should be accepted or rejected when running application, not delayed until acctuall usage (note: this task is connected with config's refactoring to register parsers).
-* consider adding 'description' to meta-alert to reflect extra correlation pieces of information (like details on what bases these alerts have been correlated).
 * if filters' prerequisites are not enought consider adding userd-defined rules in config file as well.
 * ipblackfilter does not save paramters in data base - after restart the same alerts will get severity incremetned once more; soncider saving MetaAlertID->done/notdone as a config paramter.
 * implement common configuration module for compile-time constants used in code.
@@ -13,4 +11,9 @@
 * filter that increases priority for hosts that are out of defined set (i.e. from external network).
 * optimize data base cleanup somehow - it takes far too much time...
 * test if ACARM-ng deals fine with loosing connection to data base.
+* add automatic queue reduction to triggers - before sending check if some of the alerts are not part of others.
 * add handle for out-of-memory problem (i.e. using own wrapper for memory manager).
+* after adding IDs to MetaAlert replace all logs' "names" and "addresses" to IDs.
+* after adding IDs to MetaAlert add formatter for triggers that will form link to show given meta-alert.
+* update cleanu to first sleep, then cleanup - this way cleanup will not overlap with startup, which is time-consumming by default.
+* think how to overcome IDAssignment passing to build objects issue, that forces us to use singleton here...

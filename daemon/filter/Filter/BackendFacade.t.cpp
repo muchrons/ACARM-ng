@@ -8,8 +8,9 @@
 #include <cassert>
 
 #include "Filter/BackendFacade.hpp"
-#include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/ConnectionIOCounter.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 
 using namespace Filter;
@@ -22,7 +23,7 @@ namespace
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    conn_( IO::create() ),
+    conn_( new ConnectionIOCounter("Persistency::IDAssigner", "next free MetaAlert's ID") ),
     bf_( new BackendFacade(conn_, changed_, "sometest") )
   {
     assert( bf_.get()!=NULL );
@@ -79,7 +80,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
                                           Alert::ReportedHosts() ) );
     Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
     IO::Transaction      t( conn->createNewTransaction("make_leaf_transaction") );
-    GraphNodePtrNN       node( new GraphNode(alert, conn, t) );
+    GraphNodePtrNN       node( new GraphNode(alert, 11u, conn, t) );
     bf_->setHostName(node, h, name);
 
     return h;
@@ -224,6 +225,15 @@ void testObj::test<10>(void)
   {
     // this is expected
   }
+}
+
+// test assigning new IDs
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  ensure_equals("invalid ID assigned for element 1", bf_->getNextFreeID().get(), 0u);
+  ensure_equals("invalid ID assigned for element 2", bf_->getNextFreeID().get(), 1u);
 }
 
 } // namespace tut

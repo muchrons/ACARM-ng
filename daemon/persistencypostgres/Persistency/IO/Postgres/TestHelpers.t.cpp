@@ -80,12 +80,13 @@ AlertPtr makeNewAlert(const char *name, const Timestamp &t)
                              Persistency::Alert::ReportedHosts() ) );
 }
 
-MetaAlertPtr makeNewMetaAlert(const char *name, const Timestamp &t)
+MetaAlertPtr makeNewMetaAlert(const unsigned int id, const char *name, const Timestamp &t)
 {
   return MetaAlertPtrNN( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name),
-                                        0.1, 0.2,
-                                        makeNewReferenceURL(),
-                                        t ) );
+                                                     0.1, 0.2,
+                                                     makeNewReferenceURL(),
+                                                     t,
+                                                     id ) );
 }
 
 
@@ -106,10 +107,10 @@ HostPtr makeNewHostWithNullRefUrl(void)
   return makeNewHost4("1.2.3.4", &mask, "linux", true);
 }
 
-HostPtr makeNewHost4(const char             *ip,
+HostPtr makeNewHost4(const char                          *ip,
                      const Persistency::Host::Netmask_v4 *mask,
-                     const char             *os,
-                     bool                    nullRef)
+                     const char                          *os,
+                     bool                                 nullRef)
 {
   return HostPtr( new Persistency::Host( Persistency::Host::IPv4::from_string(ip),
                             mask,
@@ -151,146 +152,125 @@ ReferenceURLPtr makeNewReferenceURL(const char *url)
   return ReferenceURLPtr( new Persistency::ReferenceURL("some name", url) );
 }
 
-GraphNodePtrNN makeNewLeaf(const char      *name,
-                           const Timestamp &time)
+GraphNodePtrNN makeNewLeaf(const unsigned int  id,
+                           const char         *name,
+                           const Timestamp    &time)
 {
   Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
   IO::Transaction t( conn->createNewTransaction("make_leaf_transaction") );
-  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewAlert(name, time), conn, t) );
+  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewAlert(name, time), id, conn, t) );
   t.commit();
   return graphNode;
 }
 
 GraphNodePtrNN makeNewNode(void)
 {
-  return makeNewNode( makeNewLeaf("some name 1"), makeNewLeaf("some name 2"), "another meta alert name");
+  return makeNewNode( 102u, makeNewLeaf(100u, "some name 1"), makeNewLeaf(101u, "some name 2"), "another meta alert name");
 }
 
 
-GraphNodePtrNN makeNewNode(GraphNodePtrNN child1,
-                           GraphNodePtrNN child2,
-                           const char *name,
-                           const Timestamp &time)
+GraphNodePtrNN makeNewNode(const unsigned int  id,
+                           GraphNodePtrNN      child1,
+                           GraphNodePtrNN      child2,
+                           const char         *name,
+                           const Timestamp    &time)
 {
   Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
   IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
   const Persistency::NodeChildrenVector ncv(child1, child2);
-  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewMetaAlert(name, time),
-                                                     conn, t, ncv) );
+  GraphNodePtrNN graphNode( new Persistency::GraphNode( makeNewMetaAlert(id, name, time),
+                                                        conn, t, ncv) );
   t.commit();
   return graphNode;
 }
 
 GraphNodePtrNN makeNewTree1(void)
 {
-  return makeNewNode( makeNewNode(makeNewLeaf("leaf1"), makeNewLeaf("leaf2"), "node1" ),
-                      makeNewNode(
-                         makeNewNode(makeNewLeaf("leaf3"),
-                                     makeNewLeaf("leaf4"),
-                                     "node3"), makeNewLeaf("leaf5"), "node2"), "root" );
+  return makeNewNode( 99u, makeNewNode( 100u, makeNewLeaf(101u, "leaf1"), makeNewLeaf(102u, "leaf2"), "node1" ),
+                           makeNewNode( 103u,
+                                        makeNewNode( 104u, makeNewLeaf(105u, "leaf3"), makeNewLeaf(106u, "leaf4"), "node3" ),
+                                        makeNewLeaf(107u, "leaf5"),
+                                        "node2"),
+                      "root" );
 }
 
 GraphNodePtrNN makeNewTree2(void)
 {
   GraphNodePtrNN node1=makeNewNode();
-  return makeNewNode( node1,
-                      makeNewNode(
-                        makeNewNode( makeNewLeaf(), node1 ), node1 ) );
+  return makeNewNode( 100u, node1,
+                      makeNewNode( 101u, makeNewNode( 102u, makeNewLeaf(103u), node1 ), node1 ) );
 }
 
 Restorer::NodesVector makeNewTree3(void)
 {
   Restorer::NodesVector vec;
-  GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
-  GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+  GraphNodePtrNN leaf1 = makeNewLeaf(100u, "leaf1");
+  GraphNodePtrNN leaf2 = makeNewLeaf(101u, "leaf2");
   vec.push_back(leaf1);
   vec.push_back(leaf2);
-  GraphNodePtrNN node1 = makeNewNode(leaf1,
-                                     leaf2,
-                                     "node1");
+  GraphNodePtrNN node1 = makeNewNode(102u, leaf1, leaf2, "node1");
   vec.push_back(node1);
 
-  GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
-  GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+  GraphNodePtrNN leaf3 = makeNewLeaf(103u, "leaf3");
+  GraphNodePtrNN leaf4 = makeNewLeaf(104u, "leaf4");
   vec.push_back(leaf3);
   vec.push_back(leaf4);
-  GraphNodePtrNN node2 = makeNewNode(leaf2,
-                                     leaf3,
-                                     "node2");
+  GraphNodePtrNN node2 = makeNewNode(105u, leaf2, leaf3, "node2");
   vec.push_back(node2);
 
-  GraphNodePtrNN node3 = makeNewNode(leaf3,
-                                     leaf4,
-                                     "node3");
+  GraphNodePtrNN node3 = makeNewNode(106u, leaf3, leaf4, "node3");
 
   vec.push_back(node3);
-  GraphNodePtrNN root1 = makeNewNode(node1,
-                                     node2,
-                                     "root1");
+  GraphNodePtrNN root1 = makeNewNode(107u, node1, node2, "root1");
   vec.push_back(root1);
-  GraphNodePtrNN root2 = makeNewNode(node2,
-                                     node3,
-                                     "root2");
+  GraphNodePtrNN root2 = makeNewNode(108u, node2, node3, "root2");
   vec.push_back(root2);
   return vec;
 }
 
 Persistency::GraphNodePtrNN makeNewTree4(void)
 {
-  return makeNewNode( makeNewNode(makeNewLeaf("leaf1"), makeNewLeaf("leaf2"), "node1" ),
-                      makeNewNode(
-                         makeNewNode(makeNewLeaf("leaf3"),
-                                     makeNewLeaf("leaf4"),
-                                     "node3"),
-                         makeNewNode(makeNewLeaf("leaf5"),
-                                     makeNewLeaf("leaf6"),
-                                     "node4"), "node2"), "root" );
+  return makeNewNode( 100u,
+                      makeNewNode(101u, makeNewLeaf(102u, "leaf1"), makeNewLeaf(103u, "leaf2"), "node1" ),
+                      makeNewNode(104u,
+                                  makeNewNode(105u, makeNewLeaf(106u, "leaf3"), makeNewLeaf(107u, "leaf4"), "node3"),
+                                  makeNewNode(108u, makeNewLeaf(109u, "leaf5"), makeNewLeaf(110u, "leaf6"), "node4"),
+                                  "node2"),
+                      "root" );
 }
 
 Restorer::NodesVector makeNewTree5(void)
 {
   Restorer::NodesVector vec;
-  GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
-  GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+  GraphNodePtrNN leaf1 = makeNewLeaf(100u, "leaf1");
+  GraphNodePtrNN leaf2 = makeNewLeaf(101u, "leaf2");
   vec.push_back(leaf1);
   vec.push_back(leaf2);
-  GraphNodePtrNN node3 = makeNewNode(leaf1,
-                                     leaf2,
-                                     "node3");
+  GraphNodePtrNN node3 = makeNewNode(102u, leaf1, leaf2, "node3");
   vec.push_back(node3);
 
-  GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
-  GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+  GraphNodePtrNN leaf3 = makeNewLeaf(103u, "leaf3");
+  GraphNodePtrNN leaf4 = makeNewLeaf(104u, "leaf4");
   vec.push_back(leaf3);
   vec.push_back(leaf4);
-  GraphNodePtrNN node4 = makeNewNode(leaf3,
-                                     leaf4,
-                                     "node4");
+  GraphNodePtrNN node4 = makeNewNode(105u, leaf3, leaf4, "node4");
   vec.push_back(node4);
 
-  GraphNodePtrNN leaf5 = makeNewLeaf("leaf5");
-  GraphNodePtrNN leaf6 = makeNewLeaf("leaf6");
+  GraphNodePtrNN leaf5 = makeNewLeaf(106u, "leaf5");
+  GraphNodePtrNN leaf6 = makeNewLeaf(107u, "leaf6");
   vec.push_back(leaf5);
   vec.push_back(leaf6);
-  GraphNodePtrNN node5 = makeNewNode(leaf5,
-                                     leaf6,
-                                     "node5");
+  GraphNodePtrNN node5 = makeNewNode(108u, leaf5, leaf6, "node5");
 
   vec.push_back(node5);
 
-  GraphNodePtrNN node1 = makeNewNode(node3,
-                                     node4,
-                                     "node1");
+  GraphNodePtrNN node1 = makeNewNode(109u, node3, node4, "node1");
   vec.push_back(node1);
 
-  GraphNodePtrNN node2 = makeNewNode(node4,
-                                     node5,
-                                     "node2");
+  GraphNodePtrNN node2 = makeNewNode(110u, node4, node5, "node2");
 
   vec.push_back(node2);
-  GraphNodePtrNN root = makeNewNode(node1,
-                                     node2,
-                                     "root");
+  GraphNodePtrNN root = makeNewNode(111u, node1, node2, "root");
   vec.push_back(root);
   return vec;
 }
@@ -298,22 +278,18 @@ Restorer::NodesVector makeNewTree5(void)
 Restorer::NodesVector makeNewTree6(void)
 {
   Restorer::NodesVector vec;
-  GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
-  GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+  GraphNodePtrNN leaf1 = makeNewLeaf(100u, "leaf1");
+  GraphNodePtrNN leaf2 = makeNewLeaf(101u, "leaf2");
 
-  GraphNodePtrNN node1 = makeNewNode(leaf1,
-                                     leaf2,
-                                     "node1");
+  GraphNodePtrNN node1 = makeNewNode(102u, leaf1, leaf2, "node1");
   vec.push_back(leaf1);
   vec.push_back(leaf2);
   vec.push_back(node1);
 
-  GraphNodePtrNN leaf3 = makeNewLeaf("leaf3");
-  GraphNodePtrNN leaf4 = makeNewLeaf("leaf4");
+  GraphNodePtrNN leaf3 = makeNewLeaf(103u, "leaf3");
+  GraphNodePtrNN leaf4 = makeNewLeaf(104u, "leaf4");
 
-  GraphNodePtrNN node2 = makeNewNode(leaf3,
-                                     leaf4,
-                                     "node2");
+  GraphNodePtrNN node2 = makeNewNode(105u, leaf3, leaf4, "node2");
   vec.push_back(leaf3);
   vec.push_back(leaf4);
   vec.push_back(node2);
@@ -323,12 +299,10 @@ Restorer::NodesVector makeNewTree6(void)
 Restorer::NodesVector makeNewTree7(void)
 {
   Restorer::NodesVector vec;
-  GraphNodePtrNN leaf1 = makeNewLeaf("leaf1");
-  GraphNodePtrNN leaf2 = makeNewLeaf("leaf2");
+  GraphNodePtrNN leaf1 = makeNewLeaf(100u, "leaf1");
+  GraphNodePtrNN leaf2 = makeNewLeaf(101u, "leaf2");
 
-  GraphNodePtrNN node1 = makeNewNode(leaf1,
-                                     leaf2,
-                                     "node1");
+  GraphNodePtrNN node1 = makeNewNode(102u, leaf1, leaf2, "node1");
   vec.push_back(leaf1);
   vec.push_back(leaf2);
   vec.push_back(node1);

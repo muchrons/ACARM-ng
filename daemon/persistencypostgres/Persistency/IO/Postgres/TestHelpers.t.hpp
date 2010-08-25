@@ -39,7 +39,7 @@ void removeNodeConnection(const std::string &parentName, const std::string &chil
 size_t getNoOfMetaAlertsInUse();
 Persistency::AlertPtr makeNewAlert(const char *name="some alert", const Timestamp &t = Timestamp(444) );
 
-Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert", const Timestamp &t = Timestamp(444));
+Persistency::MetaAlertPtr makeNewMetaAlert(const unsigned int id, const char *name="some meta-alert", const Timestamp &t=Timestamp(444));
 
 Persistency::AnalyzerPtrNN makeNewAnalyzer(const char *name="some analyzer");
 
@@ -65,15 +65,17 @@ Persistency::ProcessPtr makeNewProcess(const char *name="process name");
 
 Persistency::ReferenceURLPtr makeNewReferenceURL(const char *url="http://gnu.org");
 
-Persistency::GraphNodePtrNN makeNewLeaf(const char *name="some name",
-                                        const Timestamp &time = Timestamp(444));
+Persistency::GraphNodePtrNN makeNewLeaf(const unsigned int  id,
+                                        const char         *name="some name",
+                                        const Timestamp    &time=Timestamp(444));
 
 Persistency::GraphNodePtrNN makeNewNode(void);
 
-Persistency::GraphNodePtrNN makeNewNode(Persistency::GraphNodePtrNN child1,
-                                        Persistency::GraphNodePtrNN child2,
-                                        const char *name="some node",
-                                        const Timestamp &time = Timestamp(444));
+Persistency::GraphNodePtrNN makeNewNode(const unsigned int           id,
+                                        Persistency::GraphNodePtrNN  child1,
+                                        Persistency::GraphNodePtrNN  child2,
+                                        const char                  *name="some node",
+                                        const Timestamp             &time=Timestamp(444));
 
 //
 //                root
