@@ -74,14 +74,15 @@ BackendFactory::FactoryPtr Restorer::createStubIO(void)
 }
 
 
-GraphNodePtrNN Restorer::makeLeaf(DataBaseID           id,
-                                 AlertPtrNN           aPtr,
-                                 IO::ConnectionPtrNN  connStubIO,
-                                 IO::Transaction     &tStubIO)
+GraphNodePtrNN Restorer::makeLeaf(DataBaseID                  id,
+                                  AlertPtrNN                  aPtr,
+                                  Persistency::MetaAlert::ID  sysID,
+                                  IO::ConnectionPtrNN         connStubIO,
+                                  IO::Transaction            &tStubIO)
 {
   if( leafCache_.has(id) )
     return leafCache_.get(id);
-  GraphNodePtrNN leaf( new GraphNode( aPtr, connStubIO, tStubIO ) );
+  GraphNodePtrNN leaf( new GraphNode( aPtr, sysID, connStubIO, tStubIO ) );
   leafCache_.add(id, leaf);
   return leaf;
 }
@@ -104,7 +105,7 @@ GraphNodePtrNN Restorer::deepFirstSearch(DataBaseID                             
                                          Persistency::IO::Postgres::detail::EntryReader &er,
                                          IO::ConnectionPtrNN                             connStubIO,
                                          IO::Transaction                                &tStubIO,
-                                         Tree::IDsVector                               &restoredIDs)
+                                         Tree::IDsVector                                &restoredIDs)
 {
   TreePtrNN node = treeNodes_.get(id);
   // check if there are no children (i.e. is leaf)
@@ -161,11 +162,12 @@ GraphNodePtrNN Restorer::restoreLeaf(DataBaseID                                 
                                      IO::Transaction                                &tStubIO)
 {
   // read Alert from data base
-  AlertPtrNN alertPtr( er.getLeaf(id) );
-  const DataBaseID alertID = er.getAlertIDAssociatedWithMetaAlert(id);
+  AlertPtrNN                       alertPtr( er.getLeaf(id) );
+  const DataBaseID                 alertID = er.getAlertIDAssociatedWithMetaAlert(id);
+  const Persistency::MetaAlert::ID sysID   = er.getSystemIDOfMetaAlert(id);
   // add Alert to cache
   addIfNew(alertPtr, alertID);
-  const GraphNodePtrNN graphNodeLeaf( makeLeaf( alertID, alertPtr, connStubIO, tStubIO ) );
+  const GraphNodePtrNN graphNodeLeaf( makeLeaf( alertID, alertPtr, sysID, connStubIO, tStubIO ) );
   out.push_back(graphNodeLeaf);
   return graphNodeLeaf;
 }
@@ -176,16 +178,17 @@ GraphNodePtrNN Restorer::restoreNode(TreePtrNN                                  
                                      Persistency::IO::Postgres::detail::EntryReader &er,
                                      IO::ConnectionPtrNN                             connStubIO,
                                      IO::Transaction                                &tStubIO,
-                                     Tree::IDsVector                               &restoredIDs)
+                                     Tree::IDsVector                                &restoredIDs)
 {
   // read Meta Alert from data base
   MetaAlertPtrNN malertPtr( er.readMetaAlert(id) );
   // add Meta Alert to cache
   addIfNew(malertPtr, id);
-  GraphNodePtrNN graphNode( makeNode( id, malertPtr,
-                                         restoreNodeChildren(node, id, out, er, connStubIO, tStubIO, restoredIDs),
-                                         connStubIO,
-                                         tStubIO ));
+  GraphNodePtrNN graphNode( makeNode( id,
+                                      malertPtr,
+                                      restoreNodeChildren(node, id, out, er, connStubIO, tStubIO, restoredIDs),
+                                      connStubIO,
+                                      tStubIO ) );
   out.push_back(graphNode);
   return graphNode;
 }

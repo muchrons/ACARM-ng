@@ -327,7 +327,9 @@ DataBaseID EntrySaver::saveService(DataBaseID reportedHostID, const Service &s)
 DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
 {
   stringstream ss;
-  ss << "INSERT INTO meta_alerts(name, severity_delta, certainty_delta, id_ref, create_time, last_update_time) VALUES (";
+  ss << "INSERT INTO meta_alerts(sys_id, name, severity_delta, certainty_delta, id_ref, create_time, last_update_time) VALUES (";
+  Appender::append(ss, ma.getID().get() );
+  ss << ",";
   Appender::append(ss, ma.getName().get() );
   ss << ",";
   Appender::append(ss, ma.getSeverityDelta() );

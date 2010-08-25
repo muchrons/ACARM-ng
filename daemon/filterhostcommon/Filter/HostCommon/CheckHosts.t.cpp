@@ -63,12 +63,12 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
                                  Alert::ReportedHosts() ) );
   }
 
-  TestStrategy::Node makeLeaf(const char *host, const char *os="Linux") const
+  TestStrategy::Node makeLeaf(const unsigned int id, const char *host, const char *os="Linux") const
   {
     assert(host!=NULL);
     IO::ConnectionPtrNN conn( IO::create() );
     IO::Transaction     t( conn->createNewTransaction("make_leaf_trans") );
-    return GraphNodePtrNN( new GraphNode( makeAlertWithHost(host, os), conn, t) );
+    return GraphNodePtrNN( new GraphNode( makeAlertWithHost(host, os), id, conn, t) );
   }
 
   const Persistency::Host::IP &getHostIP(const Persistency::GraphNodePtrNN &leaf) const
@@ -104,7 +104,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const GraphNodePtrNN leaf=makeLeaf("1.2.3.4");
+  const GraphNodePtrNN leaf=makeLeaf(1, "1.2.3.4");
   ch_(leaf);
   ensure("no host selected", ch_.out_.get()!=NULL );
   ensure("invalid host selected", ch_.out_->getIP()==getHostIP(leaf) );
@@ -118,7 +118,7 @@ void testObj::test<3>(void)
   ch_( makeNewLeaf() );
   ensure("initial response is not empty", ch_.out_.get()==NULL );
   // now try setting it
-  const GraphNodePtrNN leaf=makeLeaf("1.2.3.4");
+  const GraphNodePtrNN leaf=makeLeaf(1, "1.2.3.4");
   ch_(leaf);
   ensure("no host selected", ch_.out_.get()!=NULL );
   ensure("invalid host selected", ch_.out_->getIP()==getHostIP(leaf) );
@@ -129,9 +129,9 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ch_( makeLeaf("1.2.3.4") );
+  ch_( makeLeaf(1, "1.2.3.4") );
   ensure("no host selected", ch_.out_.get()!=NULL );
-  ch_( makeLeaf("9.8.7.6") );
+  ch_( makeLeaf(2, "9.8.7.6") );
   ensure("host not de-sepected", ch_.out_.get()==NULL );
 }
 
@@ -140,9 +140,9 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ch_( makeLeaf("1.2.3.4") );
+  ch_( makeLeaf(1, "1.2.3.4") );
   ensure("no host selected", ch_.out_.get()!=NULL );
-  ch_( makeLeaf("1.2.3.4") );
+  ch_( makeLeaf(1, "1.2.3.4") );
   ensure("host de-sepected", ch_.out_.get()!=NULL );
 }
 
@@ -151,14 +151,14 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  ch_( makeLeaf("1.2.3.4") );
+  ch_( makeLeaf(1, "1.2.3.4") );
   ensure("no host selected", ch_.out_.get()!=NULL );
-  ch_( makeLeaf("9.8.7.6") );
+  ch_( makeLeaf(2, "9.8.7.6") );
   ensure("host not de-sepected", ch_.out_.get()==NULL );
   // check after de-seelction
-  ch_( makeLeaf("1.2.3.4") );
+  ch_( makeLeaf(1, "1.2.3.4") );
   ensure("re-selection for 1.2.3.4", ch_.out_.get()==NULL );
-  ch_( makeLeaf("9.8.7.6") );
+  ch_( makeLeaf(2, "9.8.7.6") );
   ensure("re-selection for 9.8.7.6", ch_.out_.get()==NULL );
 }
 

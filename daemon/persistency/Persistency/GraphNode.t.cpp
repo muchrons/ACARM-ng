@@ -20,8 +20,8 @@ namespace
 struct TestClass: private TestBase
 {
   TestClass(void):
-    ma1_( new MetaAlert( makeNewAlert() ) ),
-    ma2_( new MetaAlert( makeNewAlert() ) ),
+    ma1_( new MetaAlert( makeNewAlert(), 42u ) ),
+    ma2_( new MetaAlert( makeNewAlert(), 42u ) ),
     conn_(new TestIOConnection),
     t_( conn_->createNewTransaction("gn_test") ),
     leaf_( makeLeaf() ),
@@ -35,7 +35,8 @@ struct TestClass: private TestBase
                                      42,
                                      0,
                                      makeNewReferenceURL(),
-                                     Timestamp() ) );
+                                     Timestamp(),
+                                     13u ) );
     NodeChildrenVector vec( makeLeaf(), makeLeaf() );
     for(int i=0; i<extraNodes; ++i)
       vec.push_back( makeLeaf() );
@@ -45,7 +46,7 @@ struct TestClass: private TestBase
 
   GraphNodePtrNN makeLeaf(void)
   {
-    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, t_) );
+    return GraphNodePtrNN( new GraphNode( makeNewAlert(), 666u, conn_, t_) );
   }
 
   int childrenCount(const GraphNode &gn) const
@@ -212,7 +213,8 @@ void testObj::test<9>(void)
                                    42,
                                    0,
                                    makeNewReferenceURL(),
-                                   Timestamp() ) );
+                                   Timestamp(),
+                                   123u ) );
   const NodeChildrenVector vec( makeLeaf(), makeLeaf() );
   const GraphNode          gn(ma, conn_, t_, vec);
   ensure_equals("invalid children count", childrenCount(gn), 2);
@@ -514,6 +516,15 @@ void testObj::test<26>(void)
   // now try adding second time - nothing should happen
   gn->addChild(child, *makeIO(child) );
   ensure_equals("duplicate child has been added", childrenCount(*gn), 3);
+}
+
+// test presence of ID typedef
+template<>
+template<>
+void testObj::test<27>(void)
+{
+  const GraphNode::ID id(42u);
+  ensure_equals("invalid ID", id.get(), 42u);
 }
 
 } // namespace tut

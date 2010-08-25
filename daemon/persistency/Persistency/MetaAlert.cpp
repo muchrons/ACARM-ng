@@ -13,7 +13,8 @@ using Base::Threads::WriteLock;
 namespace Persistency
 {
 
-MetaAlert::MetaAlert(AlertPtrNN alert):
+MetaAlert::MetaAlert(AlertPtrNN alert, const ID id):
+  id_(id),
   name_( alert->getName() ),
   severityDelta_(0),
   certanityDelta_(0),
@@ -22,17 +23,25 @@ MetaAlert::MetaAlert(AlertPtrNN alert):
 {
 }
 
-MetaAlert::MetaAlert(const Name      &name,
-                     SeverityDelta    severityDelta,
-                     CertaintyDelta   certanityDelta,
-                     ReferenceURLPtr  url,
-                     Timestamp        created):
+MetaAlert::MetaAlert(const Name            &name,
+                     const SeverityDelta    severityDelta,
+                     const CertaintyDelta   certanityDelta,
+                     const ReferenceURLPtr  url,
+                     const Timestamp        created,
+                     const ID               id):
+  id_(id),
   name_(name),
   severityDelta_(severityDelta),
   certanityDelta_(certanityDelta),
   url_(url),
   created_(created)
 {
+}
+
+
+MetaAlert::ID MetaAlert::getID(void) const
+{
+  return id_;
 }
 
 const MetaAlert::Name &MetaAlert::getName(void) const
@@ -80,6 +89,8 @@ bool MetaAlert::operator==(const MetaAlert &other) const
   if(this==&other)
     return true;
 
+  if( getID()!=other.getID() )
+    return false;
   if( getName()!=other.getName() )
     return false;
   if( getSeverityDelta()!=other.getSeverityDelta() )
