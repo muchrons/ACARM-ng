@@ -492,8 +492,9 @@ void EntrySaver::saveConfigParameter(const DynamicConfig::Owner &owner,
   // if multiple threads were addining the data. to avoid this explicit table
   // locking is required (note: lock will be autoamatically released uppon
   // transaction end (commit/rollback)).
-  // 'EXCLUSIVE' mode means that no one can write to this table, but everyone
-  // can read from it.
+  // 'SHARE UPDATE EXCLUSIVE' mode means that no one can do concurrent updates to
+  // this table, but everyone can read from it
+  // (see http://www.postgresql.org/docs/8.4/interactive/explicit-locking.html for details).
   LOGMSG_DEBUG(log_, "update didn't changed any records - locking 'config' table explicitly");
   SQL("LOCK TABLE config IN SHARE UPDATE EXCLUSIVE MODE", log_).exec(t_);
   // now, having the lock aquired, we can ensure, that value we try to add is
