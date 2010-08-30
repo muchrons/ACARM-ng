@@ -30,7 +30,7 @@ namespace detail
 namespace
 {
 template <typename T>
-void addToSelect(std::stringstream &ss, const T *ptr)
+void addEqualityComparison(std::stringstream &ss, const T *ptr)
 {
   if(ptr!=NULL)
   {
@@ -42,7 +42,7 @@ void addToSelect(std::stringstream &ss, const T *ptr)
 }
 
 template <typename T>
-void addToSelect(std::stringstream &ss, const T &ptr)
+void addEqualityComparison(std::stringstream &ss, const T &ptr)
 {
   if(ptr.get()!=NULL)
   {
@@ -53,7 +53,7 @@ void addToSelect(std::stringstream &ss, const T &ptr)
     ss << " IS NULL";
 }
 template <>
-void addToSelect<Persistency::Analyzer::IP>(std::stringstream &ss, const Persistency::Analyzer::IP *ptr)
+void addEqualityComparison<Persistency::Analyzer::IP>(std::stringstream &ss, const Persistency::Analyzer::IP *ptr)
 {
   if(ptr!=NULL)
   {
@@ -125,11 +125,11 @@ Base::NullValue<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   ss << "SELECT * FROM analyzers WHERE name = ";
   Appender::append(ss, a.getName().get() );
   ss << " AND version ";
-  addToSelect(ss, a.getVersion() );
+  addEqualityComparison(ss, a.getVersion() );
   ss << " AND os";
-  addToSelect(ss, a.getOperatingSystem() );
+  addEqualityComparison(ss, a.getOperatingSystem() );
   ss << " AND ip";
-  addToSelect(ss, a.getIP() );
+  addEqualityComparison(ss, a.getIP() );
   ss << " AND sys_id=";
   Appender::append(ss, a.getID().get() );
   ss << ";";
@@ -455,34 +455,67 @@ void EntrySaver::setHostName(DataBaseID hostID, const Persistency::Host::Name &n
   SQL( ss.str(), log_ ).exec(t_);
 }
 
+
+// helpers call updating given config entry
+namespace
+{
+int updateConfigValue(const DynamicConfig::Owner &owner,
+                      const DynamicConfig::Key   &key,
+                      const DynamicConfig::Value &value,
+                      const Logger::Node         &log,
+                      Transaction                &t)
+{
+  stringstream ss;
+  ss << "UPDATE config SET value = ";
+  Appender::append(ss, value.get());
+  ss << " WHERE owner";
+  addEqualityComparison( ss, owner.get() );
+  ss << " AND key = ";
+  Appender::append(ss, key.get());
+  // update entry and return number of affected rows
+  return SQL( ss.str().c_str(), log ).exec(t).affected_rows();
+} // updateConfigValue()
+} // unnamed namespace
+
 void EntrySaver::saveConfigParameter(const DynamicConfig::Owner &owner,
                                      const DynamicConfig::Key   &key,
                                      const DynamicConfig::Value &value)
 {
-#warning TODO: update code to previous implementation, without singleton, ASAP (i.e. when this code will work)!
-
   // if it's not present, add new one
-  stringstream ss;
-  ss << "UPDATE config SET value = ";
-  Appender::append(ss, value.get());
-  ss << " WHERE owner = ";
-  Appender::append(ss, owner.get());
-  ss << " AND key = ";
-  Appender::append(ss, key.get());
-  // try updating and see how many rows have chenged - if none, add new one
-  if( SQL( ss.str().c_str(), log_ ).exec(t_).affected_rows()==0 )
+  if( updateConfigValue(owner, key, value, log_, t_)!=0 )
   {
-    // if it's not present, add new one
-    stringstream ss;
-    ss << "INSERT INTO config (owner, key, value) VALUES (";
-    Appender::append(ss, owner.get());
-    ss << ",";
-    Appender::append(ss, key.get());
-    ss << ",";
-    Appender::append(ss, value.get());
-    ss << ")";
-    SQL( ss.str().c_str(), log_ ).exec(t_);
+    LOGMSG_DEBUG(log_, "update changed record in first run - entry has been updated");
+    return;
   }
+  // if the value was NOT updated, it appears that proper entry does not exist
+  // in data base yet, thou it must be added, BUT here we have race condition
+  // if multiple threads were addining the data. to avoid this explicit table
+  // locking is required (note: lock will be autoamatically released uppon
+  // transaction end (commit/rollback)).
+  // 'EXCLUSIVE' mode means that no one can write to this table, but everyone
+  // can read from it.
+  LOGMSG_DEBUG(log_, "update didn't changed any records - locking 'config' table explicitly");
+  SQL("LOCK TABLE config IN SHARE UPDATE EXCLUSIVE MODE", log_).exec(t_);
+  // now, having the lock aquired, we can ensure, that value we try to add is
+  // truely exclisive - run 'UPDATE' once more and check the output.
+  if( updateConfigValue(owner, key, value, log_, t_)==1 )
+  {
+    LOGMSG_DEBUG(log_, "second call to update changed 1 entry - nothing more to be done");
+    return;
+  }
+  // if second update didn't change any value, after the table has been locked,
+  // it means that we're the very first thread to add this to the data base.
+  LOGMSG_DEBUG(log_, "second call to update didn't changed any entry - new one must be added instead");
+  stringstream ss;
+  ss << "INSERT INTO config (owner, key, value) VALUES (";
+  Appender::append(ss, owner.get());
+  ss << ",";
+  Appender::append(ss, key.get());
+  ss << ",";
+  Appender::append(ss, value.get());
+  ss << ")";
+  SQL( ss.str().c_str(), log_ ).exec(t_);
+  LOGMSG_DEBUG(log_, "new entry has been added");
 }
 
 } // namespace detail

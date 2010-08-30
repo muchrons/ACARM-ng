@@ -1027,7 +1027,8 @@ namespace
 {
 struct WriterThread
 {
-  explicit WriterThread(std::string *out):
+  explicit WriterThread(std::string *out, const char *key="some key"):
+    key_(key),
     out_(out)
   {
     tut::ensure("NULL output", out_!=NULL);
@@ -1042,11 +1043,12 @@ struct WriterThread
       DBHandle            dbh(TestConnection::makeParams(), idCache);
       IO::ConnectionPtrNN conn( makeConnection() );
 
-      for(int i=0; i<300; ++i)
+      for(int i=0; i<200; ++i)
       {
         Transaction t( conn->createNewTransaction("read_write_stress_test") );
         EntrySaver  es(t, dbh);
-        es.saveConfigParameter( "some owner", "some key", "some value: " + Commons::Convert::to<std::string>(i) );
+        es.saveConfigParameter( "some owner", key_, "some value: " + Commons::Convert::to<std::string>(i) );
+        boost::this_thread::yield();        // increase risk of race condition, if present
         t.commit();
       }
     }
@@ -1056,6 +1058,7 @@ struct WriterThread
     }
   }
 
+  const char  *key_;
   std::string *out_;
 }; // struct WriterThread
 
@@ -1086,6 +1089,36 @@ void testObj::test<30>(void)
   ensure_equals("thread 3 failed", out[2], "");
   ensure_equals("thread 4 failed", out[3], "");
   ensure_equals("thread 5 failed", out[4], "");
+}
+
+// test if there is no races when multiple write from multiple threads occures
+// at the same time, but to different keys (i.e. entries).
+// NOTE: this code tests for a bug that can appear in implementation from 2010.08.30.
+template<>
+template<>
+void testObj::test<31>(void)
+{
+  std::string              out[6];
+  Commons::Threads::Thread th1( (WriterThread(&out[0], "k1")) );
+  Commons::Threads::Thread th2( (WriterThread(&out[1], "k2")) );
+  Commons::Threads::Thread th3( (WriterThread(&out[2], "k3")) );
+  Commons::Threads::Thread th4( (WriterThread(&out[3], "k4")) );
+  Commons::Threads::Thread th5( (WriterThread(&out[4], "k5")) );
+  Commons::Threads::Thread th6( (WriterThread(&out[5], "k6")) );
+  // wait until they finish
+  th1->join();
+  th2->join();
+  th3->join();
+  th4->join();
+  th5->join();
+  th6->join();
+  // check output
+  ensure_equals("thread 1 failed", out[0], "");
+  ensure_equals("thread 2 failed", out[1], "");
+  ensure_equals("thread 3 failed", out[2], "");
+  ensure_equals("thread 4 failed", out[3], "");
+  ensure_equals("thread 5 failed", out[4], "");
+  ensure_equals("thread 6 failed", out[5], "");
 }
 
 } // namespace tut
