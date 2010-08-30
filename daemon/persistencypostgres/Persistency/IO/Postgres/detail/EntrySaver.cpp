@@ -136,11 +136,13 @@ Base::NullValue<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   const result r=SQL( ss.str(), log_ ).exec(t_);
   if( r.empty() )
   {
-    LOGMSG_DEBUG_S(log_)<<"analyzer '"<<a.getName().get()<<"' not found in data base";
+    LOGMSG_DEBUG_S(log_)<< "analyzer " << a.getID().get() << " ('"<<a.getName().get()
+                        << "') not found in data base";
     return Base::NullValue<DataBaseID>();
   }
   r[0]["id"].to(id);
-  LOGMSG_DEBUG_S(log_)<<"analyzer '"<<a.getName().get()<<"' found in data base - id=="<<id;
+  LOGMSG_DEBUG_S(log_)<< "analyzer " << a.getID().get() << " ('" << a.getName().get()
+                      << "') found in data base (db-ID is " << id << ")";
   return Base::NullValue<DataBaseID>( id );
 }
 

@@ -28,7 +28,7 @@ CachedDNS::Entry CachedDNS::operator[](const IP &ip)
   if( it==cache_.end() )
   {
     LOGMSG_DEBUG_S(log_)<<"adding new mapping for '"
-                        <<ip<<"' for "<<timeout_<<"[s]";
+                        <<ip<<"' with timeout "<<timeout_<<"[s]";
     // if entry does not exist yet, add it
     const CachedEntry ce(ip, timeout_);     // translate DNS
     it=cache_.insert( Cache::value_type(ip, ce) ).first;
