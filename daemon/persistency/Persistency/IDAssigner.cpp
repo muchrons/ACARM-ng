@@ -5,6 +5,8 @@
 #include <cassert>
 
 #include "System/Threads/SafeInitLocking.hpp"
+#include "Base/Threads/Lock.hpp"
+#include "Logger/Logger.hpp"
 #include "Commons/Convert.hpp"
 #include "Persistency/IDAssigner.hpp"
 
@@ -12,45 +14,64 @@ using Persistency::IO::DynamicConfig;
 
 namespace
 {
-const char *key="next free MetaAlert's ID";
+const char *owner="Persistency::IDAssigner";
+const char *key  ="next free MetaAlert's ID";
 } // unnamed namespace
 
 namespace Persistency
 {
+namespace detail
+{
 
 IDAssigner::IDAssigner(IO::ConnectionPtrNN conn, IO::Transaction &t):
-  conn_(conn),
-  t_(t),
-  dc_( conn_->dynamicConfig("Persistency::IDAssigner", t_) )
+  log_("persistency.idassigner")
 {
-  assert( dc_.get()!=NULL );
-}
+  IO::DynamicConfigAutoPtr dc=conn->dynamicConfig(owner, t);
+  assert( dc.get()!=NULL );
 
-MetaAlert::ID IDAssigner::assign(void)
-{
-  // this is nasty global mutex, that ensures this method will be called by at most one
-  // instance at a time this is important at this point, since non-atomic operations (add/del)
-  // could lead to inconsistentcy in persistency storage (i.e. the same value could be assigned
-  // to more than one meta-alert).
-  SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(mutex);
-  System::Threads::SafeInitLock lock(mutex);
-
-  // here goes "real" code:
-  MetaAlert::ID                  freeID(0u);
-  const DynamicConfig::ValueNULL r=dc_->read(key);
+  // read last value from data base
+  nextFreeID_=0u;
+  LOGMSG_DEBUG(log_, "reading last value of counter");
+  const DynamicConfig::ValueNULL r=dc->read(key);
   // if value is set, counter is already started
   if( r.get()!=NULL )
   {
+    LOGMSG_DEBUG_S(log_)<<"value already set to: "<<r.get()->get();
     // parse input value and return to caller
     typedef MetaAlert::ID::Numeric NumericID;
-    freeID=Commons::Convert::to<NumericID>( r.get()->get() );
+    nextFreeID_=Commons::Convert::to<NumericID>( r.get()->get() );
   }
-
-  // save next free ID
-  dc_->write(key, Commons::Convert::to<std::string>( freeID.get()+1u ) );
-
-  // return final value.
-  return freeID;
+  else
+    LOGMSG_DEBUG(log_, "value not set yet - starting counting with 0");
+  LOGMSG_DEBUG_S(log_)<<"first free meta-alert ID is "<<nextFreeID_;
 }
 
+MetaAlert::ID IDAssigner::assign(IO::ConnectionPtrNN conn, IO::Transaction &t)
+{
+  LOGMSG_DEBUG(log_, "assigning next ID value");
+  const MetaAlert::ID assignedID=nextFreeID_;   // save assigned value
+  ++nextFreeID_;                                // move to next one
+  IO::DynamicConfigAutoPtr dc=conn->dynamicConfig(owner, t);
+  assert( dc.get()!=NULL );
+  // save next free ID
+  dc->write(key, Commons::Convert::to<std::string>(nextFreeID_) );
+  LOGMSG_DEBUG_S(log_)<<"assigned value is "<<assignedID.get();
+  LOGMSG_DEBUG_S(log_)<<"next free value is "<<nextFreeID_;
+
+  // return assigned value
+  return assignedID;
+}
+
+
+
+MetaAlert::ID IDAssignerWrapper::assign(IO::ConnectionPtrNN conn, IO::Transaction &t)
+{
+  Base::Threads::Lock lock(mutex_);
+  if( impl_.get()==NULL )
+    impl_.reset( new IDAssigner(conn, t) );
+  assert( impl_.get()!=NULL );
+  return impl_->assign(conn, t);
+}
+
+} // namespace detail
 } // namespace Persistency

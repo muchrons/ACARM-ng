@@ -59,23 +59,24 @@ struct TestIOConnectionCounter: public TestIOConnection
   boost::scoped_ptr<IODynamicConfigCounter> ioCounter_;
 }; // struct TestIOConnectionCounter
 
+
+IO::ConnectionPtrNN::SharedPtr g_conn(new TestIOConnectionCounter);
+
 struct TestClass
 {
   TestClass(void):
-    conn_(new TestIOConnectionCounter),
-    t_( conn_->createNewTransaction("test_assigner") ),
-    ad_(conn_, t_)
+    t_( g_conn->createNewTransaction("test_assigner") ),
+    startID_( IDAssigner::get()->assign(g_conn, t_).get() )
   {
   }
 
   Persistency::IO::DynamicConfigAutoPtr getDC(void)
   {
-    return conn_->dynamicConfig("Persistency::IDAssigner", t_);
+    return g_conn->dynamicConfig("Persistency::IDAssigner", t_);
   }
 
-  IO::ConnectionPtrNN conn_;
-  IO::Transaction     t_;
-  IDAssigner          ad_;
+  IO::Transaction        t_;
+  MetaAlert::ID::Numeric startID_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -93,8 +94,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure("initial value is NOT null", getDC()->read("next free MetaAlert's ID").get()==NULL );
-  ensure_equals("invalid value returned", ad_.assign().get(), 0u);
+  ensure_equals("invalid value returned", IDAssigner::get()->assign(g_conn, t_).get(), startID_+1u);
 }
 
 // test reading multiple times
@@ -102,9 +102,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure("initial value is NOT null", getDC()->read("next free MetaAlert's ID").get()==NULL );
-  ensure_equals("invalid value 1 returned", ad_.assign().get(), 0u);
-  ensure_equals("invalid value 2 returned", ad_.assign().get(), 1u);
+  ensure_equals("invalid value 1 returned", IDAssigner::get()->assign(g_conn, t_).get(), startID_+1u);
+  ensure_equals("invalid value 2 returned", IDAssigner::get()->assign(g_conn, t_).get(), startID_+2u);
 }
 
 } // namespace tut

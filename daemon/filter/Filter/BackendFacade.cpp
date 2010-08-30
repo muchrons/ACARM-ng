@@ -107,8 +107,7 @@ Persistency::GraphNodePtrNN BackendFacade::correlate(
 Persistency::MetaAlert::ID BackendFacade::getNextFreeID(void)
 {
   beginTransaction();
-  IDAssigner idas( getConnection(), getTransaction() );
-  return idas.assign();
+  return IDAssigner::get()->assign( getConnection(), getTransaction() );
 }
 
 } // namespace Filter
