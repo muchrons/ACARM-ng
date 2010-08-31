@@ -1,15 +1,13 @@
 /*
- * EnsureFile.t.cpp
+ * EnsureNewFile.t.cpp
  *
  */
 #include <tut.h>
 
-#include "Trigger/File/EnsureFile.hpp"
+#include "Trigger/File/EnsureNewFile.hpp"
 
 using namespace std;
 using namespace Trigger::File;
-using namespace Persistency;
-using namespace TestHelpers::Persistency;
 
 namespace
 {
@@ -21,7 +19,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Trigger/File/EnsureFile");
+factory tf("Trigger/File/EnsureNewFile");
 } // unnamed namespace
 
 

@@ -1,5 +1,5 @@
 /*
- * EnsureFile.cpp
+ * EnsureNewFile.cpp
  *
  */
 #include <sys/types.h>
@@ -8,14 +8,14 @@
 #include <fcntl.h>
 
 #include "Logger/Logger.hpp"
-#include "Trigger/File/EnsureFile.hpp"
+#include "Trigger/File/EnsureNewFile.hpp"
 
 namespace Trigger
 {
 namespace File
 {
 
-EnsureFile::EnsureFile(const std::string &path):
+EnsureNewFile::EnsureNewFile(const std::string &path):
   log_("trigger.file.ensurefile"),
   fd_( open( path.c_str(), O_CREAT|O_EXCL, 0600 ) )
 {
