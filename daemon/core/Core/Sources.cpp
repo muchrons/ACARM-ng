@@ -3,6 +3,7 @@
  *
  */
 #include "Logger/Logger.hpp"
+#include "Persistency/IDAssigner.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Core/Sources.hpp"
 
@@ -46,7 +47,7 @@ Persistency::GraphNodePtrNN Sources::read(void)
   // write it to data base along with creating proper graph-node object.
   IO::Transaction t( conn_->createNewTransaction("core_save_graphnode") );
   LOGMSG_DEBUG(log_, "new transaction opened");
-  GraphNodePtrNN  leaf( new GraphNode(alert, conn_, t) );
+  GraphNodePtrNN  leaf( new GraphNode(alert, IDAssigner::get()->assign(conn_, t), conn_, t) );
   LOGMSG_DEBUG(log_, "creating object done - commiting transaction");
   t.commit();
   LOGMSG_INFO(log_, "alert and meta-alert successfuly written to data base");

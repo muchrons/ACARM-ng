@@ -10,6 +10,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "System/Singleton.hpp"
+#include "ConfigIO/GeneralConfig.hpp"
 #include "ConfigIO/PersistencyConfig.hpp"
 #include "ConfigIO/FiltersConfigCollection.hpp"
 #include "ConfigIO/TriggersConfigCollection.hpp"
@@ -64,6 +65,10 @@ public:
    *  \return preprocessor's configuration.
    */
   const Preprocessor::Config &preprocessorConfig(void) const;
+  /** \brief gets general cofnig paramters.
+   *  \return general config.
+   */
+  const GeneralConfig &generalConfig(void) const;
 
 private:
   friend class System::Singleton<SingletonImpl>;

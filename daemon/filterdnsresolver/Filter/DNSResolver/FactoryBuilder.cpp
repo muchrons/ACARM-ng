@@ -41,14 +41,17 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO(log_, "building filter's instance");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  const FilterConfig         fc(type_, options);
-  const unsigned int         timeout=Commons::Convert::to<unsigned int>( fc["cachetimeout"] );
+  const FilterConfig  fc(type_, options);
+  // filterdnsresolver name
+  const std::string  &name=fc["name"];
+  LOGMSG_INFO_S(log_)<<"setting filter \""<<getTypeName()<<"\" name to \""<<name<<"\"";
+  const unsigned int  timeout=Commons::Convert::to<unsigned int>( fc["cachetimeout"] );
   LOGMSG_INFO_S(log_)<<"setting cache timeout to "<<timeout<<"[s]";
   const Strategy::Parameters params(timeout);
 
   // create and return new handle.
   typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl(type_, type_, params) );
+  return FactoryBuilder::FactoryPtr( new Impl(type_, name, params) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

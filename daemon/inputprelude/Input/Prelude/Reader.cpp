@@ -16,8 +16,8 @@ namespace Input
 namespace Prelude
 {
 
-Reader::Reader(const std::string& profile, const std::string& config):
-  Input::Reader("prelude"),
+Reader::Reader(const std::string& profile, const std::string &name, const std::string& config):
+  Input::Reader("prelude", name),
   client_( new Client(profile, config, PRELUDE_CONNECTION_PERMISSION_IDMEF_READ) )
 {
   assert( client_.get()!=NULL );

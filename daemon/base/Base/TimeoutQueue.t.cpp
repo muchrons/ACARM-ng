@@ -28,7 +28,7 @@ struct TestClass
     q1_.update("world",  8);
   }
 
-  // quick convertion to const
+  // quick conversion to const
   const Queue &qc(Queue &q) const
   {
     return q;

@@ -122,7 +122,7 @@ void testObj::test<8>(void)
   ensure("greater than doesn't fail for false", !(pn1>pn2) );
 }
 
-// test comparison with implicit convertion - this test must compile
+// test comparison with implicit conversion - this test must compile
 template<>
 template<>
 void testObj::test<9>(void)

@@ -47,11 +47,12 @@ public:
 
 protected:
   /** \brief create instance.
+   *  \param type    type to assign.
    *  \param name    name to assign.
    *  \param timeout maximum time for node to be in timeout queue.
    */
-  Strategy(const std::string &name, unsigned int timeout):
-    Base(name),
+  Strategy(const std::string &type, const std::string &name, unsigned int timeout):
+    Base(type, name),
     timeout_(timeout)
   {
   }
@@ -90,6 +91,7 @@ private:
   {
     // prepare entry to compare with
     const NodeEntry thisEntry( makeThisEntry(n) );
+    assert( thisEntry.isSelfCorrelated()==false );
     // make a quick test, if this entry is interesting for a given filter at all
     if( !isEntryInteresting(thisEntry) )
       return;
@@ -179,22 +181,25 @@ private:
 
     // ok - we've got a match!
 
-    // if node's leaf, create new node and correlate leafs there.
-    if( it->node_->isLeaf() )
+    // if node's leaf or is node from another filter, create new node and correlate nodes there.
+    if( it->node_->isLeaf() || it->isSelfCorrelated()==false )
     {
       // create new meta-alert and one in queue
-      LOGMSG_DEBUG_S(Base::log_)<< "correlating '" << it->node_->getMetaAlert()->getName().get()
-                                << "' with '" << thisEntry.node_->getMetaAlert().getName().get()
-                                << "' as a new node";
+      LOGMSG_DEBUG_S(Base::log_)<< "correlating " << it->node_->getMetaAlert()->getID().get() << " ('"
+                                << it->node_->getMetaAlert()->getName().get() << "') with "
+                                << thisEntry.node_->getMetaAlert().getID().get() << " ('"
+                                << thisEntry.node_->getMetaAlert().getName().get() << "') as a new node";
       const BackendFacade::ChildrenVector cv(it->node_, thisEntry.node_);
       const Persistency::MetaAlertPtrNN   ma(
                   new Persistency::MetaAlert( getMetaAlertName(thisEntry, *it),
                                               Persistency::MetaAlert::SeverityDelta(0),
                                               Persistency::MetaAlert::CertaintyDelta(0),
                                               Persistency::ReferenceURLPtr(),
-                                              Persistency::Timestamp() ) );
-      Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv);     // add new, correlated element.
-      const NodeEntry             newEntry(newNode, thisEntry.t_);  // use the same reported host entry.
+                                              Persistency::Timestamp(),
+                                              bf.getNextFreeID() ) );
+      Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv);                                     // add new, correlated element.
+      const NodeEntry             newEntry=NodeEntry::makeCorrelatedEntry(newNode, thisEntry.t_);   // use the same reported host entry.
+      assert( newEntry.isSelfCorrelated()==true );
       ntq.dismiss(it);                    // if element has been already correlated
                                           // it should not be used any more.
       ntq.update(newEntry, getTimeout() );// add newly correlated entry.
@@ -202,9 +207,10 @@ private:
     else    // i.e.: is node
     {
       // append new meta-alert to a set of already correlated ones
-      LOGMSG_DEBUG_S(Base::log_)<< "adding node '" << thisEntry.node_->getMetaAlert().getName().get()
-                                << "' to already correlated '"
-                                << it->node_->getMetaAlert()->getName().get() << "'";
+      LOGMSG_DEBUG_S(Base::log_)<< "adding node " << thisEntry.node_->getMetaAlert().getID().get() << " ('"
+                                << thisEntry.node_->getMetaAlert().getName().get() << "') to already correlated "
+                                << it->node_->getMetaAlert()->getID().get() << " ('"
+                                << it->node_->getMetaAlert()->getName().get() << "')";
       bf.addChild(it->node_, thisEntry.node_);      // add new alert to already correlated in one set
     }
 

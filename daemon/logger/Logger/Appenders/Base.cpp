@@ -19,7 +19,7 @@ bool isLocked(::Base::Threads::Mutex &m)
   if(locked)
     m.unlock();
   return !locked;
-}
+} // isLocked()
 } // unnamed namespace
 
 Base::~Base(void)

@@ -68,8 +68,8 @@ private:
 } // unnamed namespace
 
 
-Strategy::Strategy(const Config &cfg):
-  Trigger::Simple::Strategy("gg", cfg.getThresholdConfig() ),
+Strategy::Strategy(const std::string &name, const Config &cfg):
+  Trigger::Simple::Strategy("gg", name, cfg.getThresholdConfig() ),
   io_(cfg),
   pingThread_( PingThread(io_) )
 {

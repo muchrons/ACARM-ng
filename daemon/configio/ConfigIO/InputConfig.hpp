@@ -28,6 +28,14 @@ public:
     Generic::Config<InputConfig>(type, options)
   {
   }
+
+  /** \brief gets input's name.
+   *  \return inputs's name.
+   */
+  std::string getInputName(void)
+  {
+    return get("name");
+  }
 }; // class InputConfig
 
 } // namespace ConfigIO

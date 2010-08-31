@@ -87,7 +87,7 @@ void testObj::test<4>(void)
 {
   Transaction  t( c_.createNewTransaction("abc") );
   AlertPtrNN   alert=makeNewAlert();
-  MetaAlertPtr ma( new Persistency::MetaAlert(alert) );
+  MetaAlertPtr ma( new Persistency::MetaAlert(alert, 123u) );
   MetaAlertAutoPtr ptr=c_.metaAlert(ma, t);
   ensure("NULL pointer received", ptr.get()!=NULL );
   ensureCalls(3);

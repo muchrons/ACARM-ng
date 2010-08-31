@@ -6,7 +6,7 @@
 #include <string>
 
 #include "Filter/DNSResolver/CachedEntry.hpp"
-#include "Filter/DNSResolver/TestIsValid.t.hpp"
+#include "Filter/DNSResolver/TestIsValidLocalhost.t.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace std;
@@ -49,7 +49,7 @@ void testObj::test<2>(void)
 {
   const CachedEntry ce( ip("127.0.0.1"), 21);
   ensure("reverse DNS for localhost failed", ce.hasName() );
-  ensure("invalid name", isValid( ce.name_.get() ) );
+  ensure("invalid name", isValidLocalhost( ce.name_.get() ) );
 }
 
 // reverse-dns for unexisting entry

@@ -42,6 +42,8 @@ inline pqxx::result execSQL(const Logger::Node &log, Transaction &t, const char 
 
 size_t Connection::removeEntriesOlderThanImpl(size_t days, Transaction &t)
 {
+  // TODO: this while statement can be refactored to use 'IN' instead of 'NOT IN' in statements,
+  //       which is MUCH faster, plus adding extra indexes if needed.
   TRYCATCH_BEGIN
     createTemporaryTables(days, t);
     removeReportedServices(t);

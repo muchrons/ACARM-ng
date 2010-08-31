@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <stdexcept>
 #include <boost/static_assert.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/type_traits/is_signed.hpp>
@@ -24,10 +25,10 @@ template<typename T, typename F>
 struct Converter;
 
 
-/** \brief generic case - non-number to signed-number convertion.
+/** \brief generic case - non-number to signed-number conversion.
  */
 template<bool TisUnsigned>
-struct UnsignedNumericConvertionProxy
+struct UnsignedNumericConversionProxy
 {
   /** \brief convert F to T.
    *  \param f value to convert.
@@ -39,12 +40,12 @@ struct UnsignedNumericConvertionProxy
     BOOST_STATIC_ASSERT( boost::is_signed<T>::value==true );
     return boost::lexical_cast<T>(f);
   }
-}; // struct UnsignedNumericConvertionProxy
+}; // struct UnsignedNumericConversionProxy
 
 /** \brief specialization for signed numeric output type.
  */
 template<>
-struct UnsignedNumericConvertionProxy<true>
+struct UnsignedNumericConversionProxy<true>
 {
   /** \brief convert F to T.
    *  \param f value to convert.
@@ -53,18 +54,19 @@ struct UnsignedNumericConvertionProxy<true>
   template<typename T, typename F>
   static T convert(const F &f)
   {
-    BOOST_STATIC_ASSERT( boost::is_unsigned<T>::value==true );
-    const long long tmp=Converter<long long, F>::convert(f);
+    BOOST_STATIC_ASSERT( boost::is_unsigned<T>::value==true );  // sanity check
+    BOOST_STATIC_ASSERT( sizeof(long long)>=sizeof(T) );        // number should not be longer than long long
+    const long long tmp=Converter<long long, F>::convert(f);    // will throw if source cannot be interpreted as a target
     return Converter<T, long long>::convert(tmp);
   }
-}; // struct UnsignedNumericConvertionProxy
+}; // struct UnsignedNumericConversionProxy
 
 
 
 /** \brief generic case - normal cast.
  */
 template<bool TisIntegral, bool FisIntegral>
-struct NumericConvertionProxy
+struct NumericConversionProxy
 {
   /** \brief convert F to T.
    *  \param f value to convert.
@@ -75,12 +77,12 @@ struct NumericConvertionProxy
   {
     return boost::lexical_cast<T>(f);
   }
-}; // struct NumericConvertionProxy
+}; // struct NumericConversionProxy
 
 /** \brief converting from non-int to int
  */
 template<bool FisIntegral>
-struct NumericConvertionProxy<true, FisIntegral>
+struct NumericConversionProxy<true, FisIntegral>
 {
   /** \brief convert F to T.
    *  \param f value to convert.
@@ -89,14 +91,14 @@ struct NumericConvertionProxy<true, FisIntegral>
   template<typename T, typename F>
   static T convert(const F &f)
   {
-    return UnsignedNumericConvertionProxy< boost::is_unsigned<T>::value >::template convert<T,F>(f);
+    return UnsignedNumericConversionProxy< boost::is_unsigned<T>::value >::template convert<T,F>(f);
   }
-}; // struct NumericConvertionProxy
+}; // struct NumericConversionProxy
 
 /** \brief specialization converting between two integer number types.
  */
 template<>
-struct NumericConvertionProxy<true, true>
+struct NumericConversionProxy<true, true>
 {
   /** \brief convert F to T.
    *  \param f value to convert.
@@ -107,7 +109,7 @@ struct NumericConvertionProxy<true, true>
   {
     return boost::numeric_cast<T>(f);
   }
-}; // struct NumericConvertionProxy
+}; // struct NumericConversionProxy
 
 
 
@@ -123,7 +125,7 @@ struct Converter
    */
   static T convert(const F &f)
   {
-    return NumericConvertionProxy< boost::is_integral<T>::value,
+    return NumericConversionProxy< boost::is_integral<T>::value,
                                    boost::is_integral<F>::value  >::template convert<T,F>(f);
   }
 }; // struct Converter

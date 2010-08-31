@@ -1,9 +1,9 @@
 /*
- * TestIsValid.t.hpp
+ * TestIsValidLocalhost.t.hpp
  *
  */
-#ifndef INCLUDE_TESTISVALID_T_HPP_FILE
-#define INCLUDE_TESTISVALID_T_HPP_FILE
+#ifndef INCLUDE_TESTISVALIDLOCALHOST_T_HPP_FILE
+#define INCLUDE_TESTISVALIDLOCALHOST_T_HPP_FILE
 
 #include <cstring>
 #include <sys/utsname.h>
@@ -11,7 +11,7 @@
 
 namespace
 {
-bool isValid(const char *name)
+bool isValidLocalhost(const char *name)
 {
   assert(name!=NULL);
   // localhost?
@@ -25,7 +25,7 @@ bool isValid(const char *name)
   if(ret!=0)
     return false;
   return strstr(name, tmp.nodename)!=0;
-} // isValid()
+} // isValidLocalhost()
 } // unnamed namesapce
 
 #endif

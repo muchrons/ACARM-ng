@@ -72,7 +72,8 @@ void testObj::test<1>(void)
   Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name_),
                                                                  0.1, 0.2,
                                                                  makeNewReferenceURL(),
-                                                                 Timestamp() ) );
+                                                                 Timestamp(),
+                                                                 666u ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
   const DataBaseID malertID = dbh_->getIDCache()->get( maPtr );
@@ -83,6 +84,7 @@ void testObj::test<1>(void)
   ensure_equals("invalid name", ReaderHelper<string>::readAsNotNull(r[0]["name"]), name_);
   ensure_equals("invalid severity delta", ReaderHelper<double>::readAsNotNull(r[0]["severity_delta"]), 0.1);
   ensure_equals("invalid certanity delta", ReaderHelper<double>::readAsNotNull(r[0]["certainty_delta"]), 0.2);
+  ensure_equals("invalid system-ID", ReaderHelper<Persistency::MetaAlert::ID::Numeric>::readAsNotNull(r[0]["sys_id"]), 666u);
   t_.commit();
 }
 
@@ -94,7 +96,8 @@ void testObj::test<2>(void)
   Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name_),
                                                                  0.1, 0.2,
                                                                  makeNewReferenceURL(),
-                                                                 Timestamp() ) );
+                                                                 Timestamp(),
+                                                                 303u ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
   malert.markAsUsed();
@@ -111,7 +114,8 @@ void testObj::test<3>(void)
   Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name_),
                                                                  0.1, 0.2,
                                                                  makeNewReferenceURL(),
-                                                                 Timestamp() ) );
+                                                                 Timestamp(),
+                                                                 102u ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
   malert.markAsUsed();
@@ -134,7 +138,8 @@ void testObj::test<4>(void)
   Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name_),
                                                                  0.1, 0.2,
                                                                  makeNewReferenceURL(),
-                                                                 Timestamp() ) );
+                                                                 Timestamp(),
+                                                                 42u ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
   malert.markAsUsed();
@@ -154,7 +159,8 @@ void testObj::test<5>(void)
   Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name_),
                                                                  0.1, 0.2,
                                                                  makeNewReferenceURL(),
-                                                                 Timestamp() ) );
+                                                                 Timestamp(),
+                                                                 69u ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
   const  DataBaseID malertID = dbh_->getIDCache()->get( maPtr );
@@ -184,7 +190,8 @@ void testObj::test<6>(void)
   Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name_),
                                                                  0.1, 0.2,
                                                                  makeNewReferenceURL(),
-                                                                 Timestamp() ) );
+                                                                 Timestamp(),
+                                                                 42u ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
   const  DataBaseID malertID = dbh_->getIDCache()->get( maPtr );
@@ -212,14 +219,16 @@ template<>
 void testObj::test<7>(void)
 {
   Persistency::MetaAlertPtrNN maPtrNode( new Persistency::MetaAlert( Persistency::MetaAlert::Name("meta alert node"),
-                                                                 0.1, 0.2,
-                                                                 makeNewReferenceURL(),
-                                                                 Timestamp() ) );
+                                                                     0.1, 0.2,
+                                                                     makeNewReferenceURL(),
+                                                                     Timestamp(),
+                                                                     42u ) );
   Persistency::IO::Postgres::MetaAlert malertNode(maPtrNode, t_, dbh_);
   Persistency::MetaAlertPtrNN maPtrChild( new Persistency::MetaAlert( Persistency::MetaAlert::Name("meta alert child"),
-                                                                 0.1, 0.2,
-                                                                 makeNewReferenceURL(),
-                                                                 Timestamp() ) );
+                                                                      0.1, 0.2,
+                                                                      makeNewReferenceURL(),
+                                                                      Timestamp(),
+                                                                      43u ) );
   Persistency::IO::Postgres::MetaAlert malertChild(maPtrChild, t_, dbh_);
   malertNode.save();
   malertChild.save();
@@ -246,7 +255,8 @@ void testObj::test<8>(void)
   Persistency::MetaAlertPtrNN maPtrNode( new Persistency::MetaAlert( Persistency::MetaAlert::Name("meta alert node"),
                                                                      0.1, 0.2,
                                                                      makeNewReferenceURL(),
-                                                                     now ) );
+                                                                     now,
+                                                                     1410u ) );
   Persistency::IO::Postgres::MetaAlert malertNode(maPtrNode, t_, dbh_);
 
   Persistency::Alert::SourceAnalyzers sa( AnalyzerPtrNN( new Analyzer(42u, "analyzer name", NULL, NULL, NULL) ) );

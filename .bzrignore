@@ -8,3 +8,8 @@ wui/site/protected/db/*.db
 wui/tests/assets/*
 wui/tests/protected/runtime/*
 wui/tests/protected/db/*.db
+*.aux
+*.log
+*.out
+*.toc
+acceptance_tests_plan.pdf

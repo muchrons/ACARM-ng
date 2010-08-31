@@ -42,7 +42,7 @@ public:
                 const std::string &name,
                 const TParam      &param):
     Interface( type, name, TStrategy::createEntryControlList() ),
-    strategy_(param)
+    strategy_(name, param)
   {
   }
 

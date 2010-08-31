@@ -24,46 +24,40 @@ namespace XML
 class Node
 {
 public:
-  /**
-   * list type holding child nodes.
+  /** \brief list type holding child nodes.
    */
   typedef std::list<Node>  TNodesList;
-  /**
-   * list type holding values.
+  /** \brief list type holding values.
    */
   typedef std::list<Value> TValuesList;
 
-  /**
-   * creates new node.
-   * \param name name of current node.
+  /** \brief creates new node.
+   *  \param name name of current node.
    */
   explicit Node(const std::string &name):
     name_(name)
   {
   }
 
-  /**
-   * gets name of the node element.
-   * \return name of a node.
+  /** \brief gets name of the node element.
+   *  \return name of a node.
    */
   const std::string &getName(void) const
   {
     return name_;
   }
-  /**
-   * adds new child to current parrent and returns
-   * reference to newly added element.
-   * \param node node to be added.
-   * \return reference to newly added node.
+  /** \brief adds new child to current parrent and returns
+   *  reference to newly added element.
+   *  \param node node to be added.
+   *  \return reference to newly added node.
    */
   Node *addChild(const Node &node)
   {
     children_.push_back(node);
     return &( *children_.rbegin() );
   }
-  /**
-   * gives read-only access to children nodes.
-   * \return const reference to children list.
+  /** \brief gives read-only access to children nodes.
+   *  \return const reference to children list.
    */
   const TNodesList &getChildrenList(void) const
   {

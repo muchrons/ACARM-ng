@@ -11,12 +11,14 @@
 #include <boost/noncopyable.hpp>
 #include <boost/operators.hpp>
 
+#include "Base/ObjectID.hpp"
 #include "Base/Threads/ReadWriteMutex.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/LimitedString.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/ReferenceURL.hpp"
+#include "Persistency/IO/DynamicConfig.hpp"
 
 
 namespace Persistency
@@ -27,26 +29,27 @@ namespace IO
 class MetaAlert;
 } // namespace IO
 
+
 /** \brief meta-alert representation
  */
 class MetaAlert: private boost::noncopyable,
                  public  boost::equality_comparable<MetaAlert>
 {
 public:
-  /** \brief name for meta alert.
-   */
+  /** \brief Object's ID. */
+  typedef Base::ObjectID<MetaAlert>   ID;
+  /** \brief name for meta alert. */
   typedef Commons::LimitedString<256> Name;
-  /** \brief severity difference type.
-   */
+  /** \brief severity difference type. */
   typedef double                      SeverityDelta;
-  /** \brief certanity difference type.
-   */
+  /** \brief certanity difference type. */
   typedef double                      CertaintyDelta;
 
   /** \brief creates meta alert based on exisitng alert.
    *  \param alert to corelate meta-alert with.
+   *  \param id    ID for this object.
    */
-  explicit MetaAlert(AlertPtrNN alert);
+  MetaAlert(AlertPtrNN alert, ID id);
 
   /** \brief create new meta-alert.
    *  \param name           name for meta alert.
@@ -54,12 +57,19 @@ public:
    *  \param certanityDelta initial certanity difference.
    *  \param url            reference URL, if present.
    *  \param created        creation time.
+   *  \param id             ID for this object.
    */
   MetaAlert(const Name      &name,
             SeverityDelta    severityDelta,
             CertaintyDelta   certanityDelta,
             ReferenceURLPtr  url,
-            Timestamp        created);
+            Timestamp        created,
+            ID               id);
+
+  /** \brief get ID of this object.
+   *  \return object's ID.
+   */
+  ID getID(void) const;
 
   /** \brief gets meta-alert's name.
    *  \return name of meta alert.
@@ -93,11 +103,12 @@ private:
   void updateCertaintyDelta(double delta);
 
   mutable Base::Threads::ReadWriteMutex mutex_;
-  Name                                  name_;
+  const ID                              id_;
+  const Name                            name_;
   SeverityDelta                         severityDelta_;
   CertaintyDelta                        certanityDelta_;
-  ReferenceURLPtr                       url_;
-  Timestamp                             created_;
+  const ReferenceURLPtr                 url_;
+  const Timestamp                       created_;
 }; // class MetaAlert
 
 

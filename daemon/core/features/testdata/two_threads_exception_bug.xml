@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <acarm_ng>
 
+  <general>
+    <url>http://test.url</url>
+    <cleanupInterval>42</cleanupInterval>
+  </general>
+
   <persistency>
     <type>stubs</type>
   </persistency>
@@ -23,7 +28,7 @@
   <triggers/>
 
   <inputs>
-    <prelude>
+    <prelude name="prelude">
       <profile>acarm-ng</profile>
       <!-- parameter is missing here and so exception will be throw when creating inputs. -->
     </prelude>

@@ -70,7 +70,7 @@ public:
 struct TestClass: private TestBase
 {
   TestClass(void):
-    ma_( new Persistency::MetaAlert( makeNewAlert() ) ),
+    ma_( new Persistency::MetaAlert( makeNewAlert(), 666u ) ),
     tapi_( new TestTransactionAPI() ),
     t_(tapi_),
     ioma_(ma_, t_)
@@ -291,7 +291,7 @@ template<>
 void testObj::test<15>(void)
 {
   t_.rollback();
-  MetaAlertPtrNN mapnn( new Persistency::MetaAlert( makeNewAlert() ) );
+  MetaAlertPtrNN mapnn( new Persistency::MetaAlert( makeNewAlert(), 1111u ) );
   try
   {
     ioma_.addChild(mapnn);

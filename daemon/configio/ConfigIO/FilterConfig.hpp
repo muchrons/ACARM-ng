@@ -28,6 +28,13 @@ public:
     Generic::Config<FilterConfig>(type, options)
   {
   }
+  /** \brief gets filter's name.
+   *  \return filter's name.
+   */
+  std::string getFilterName(void)
+  {
+    return get("name");
+  }
 }; // class FilterConfig
 
 } // namespace ConfigIO

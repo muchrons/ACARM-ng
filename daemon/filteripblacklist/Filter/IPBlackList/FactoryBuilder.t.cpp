@@ -16,7 +16,8 @@ struct TestClass
 {
   FactoryBuilder::FactoryPtr build(const char *refresh ="666",
                                    const char *limit   ="42",
-                                   const char *priDelta="0.1") const
+                                   const char *priDelta="0.1",
+                                   const char *name="somename") const
   {
     FactoryBuilder::Options opts;
     if(refresh!=NULL)
@@ -25,17 +26,20 @@ struct TestClass
       opts["limit"]=limit;
     if(priDelta!=NULL)
       opts["priorityDelta"]=priDelta;
+    if(name!=NULL)
+      opts["name"]=name;
 
     return fb_.build(opts);
   }
 
   void ensureThrow(const char *refresh="666",
                    const char *limit  ="42",
-                   const char *priDelta="0.1") const
+                   const char *priDelta="0.1",
+                   const char *name="somename") const
   {
     try
     {
-      build(refresh, limit, priDelta);
+      build(refresh, limit, priDelta, name);
       tut::fail("build() didn't throw on missing paramter");
     }
     catch(const std::runtime_error&)
@@ -57,12 +61,12 @@ factory tf("Filter/IPBlackList/FactoryBuilder");
 namespace tut
 {
 
-// tets getting name
+// tets getting type name
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid name", fb_.getTypeName(), "ipblacklist");
+  ensure_equals("invalid type", fb_.getTypeName(), "ipblacklist");
 }
 
 // test creating object factory
@@ -127,7 +131,14 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  ensureThrow("111", "222", "not a number");
+  ensureThrow("111", "222", "not a number", "name");
 }
 
+// test throw on missing name
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  ensureThrow("111", "222", "0.2", NULL);
+}
 } // namespace tut

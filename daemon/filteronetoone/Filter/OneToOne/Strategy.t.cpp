@@ -23,7 +23,7 @@ struct TestClass: public TestStubs
   TestClass(void):
     sampleLeaf_( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL,
                                                     "2.3.4.5", NULL) ) ),
-    s_(997)
+    s_("somename", 997)
   {
   }
 

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <acarm_ng>
 
+  <general>
+    <url>http://test.url</url>
+    <cleanupInterval>42</cleanupInterval>
+  </general>
+
   <persistency>
     <type>postgres</type>
     <user>john</user>
@@ -24,10 +29,10 @@
   <preprocessor/>
 
   <filters>
-    <noopts>
+    <noopts name="noopts">
     </noopts>
 
-    <something>
+    <something name="something">
       <opt2>abc</opt2>
       <opt1>narf</opt1>
     </something>
@@ -45,10 +50,10 @@
   </triggers>
 
   <inputs>
-    <noopts>
+    <noopts name="noopts">
     </noopts>
 
-    <something>
+    <something name="something">
       <opt9>XOR</opt9>
       <opt6>or</opt6>
     </something>

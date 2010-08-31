@@ -23,7 +23,7 @@ namespace
 struct TestStrategy: public Strategy
 {
   TestStrategy(void):
-    Strategy("teststrategy", 42)
+    Strategy("teststrategy", "teststrategyname", 42)
   {
   }
 
@@ -60,17 +60,17 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
                                  Alert::ReportedHosts() ) );
   }
 
-  TestStrategy::Node makeLeaf(const char *host, const char *os="Linux") const
+  TestStrategy::Node makeLeaf(const unsigned int id, const char *host, const char *os="Linux") const
   {
     assert(host!=NULL);
     IO::ConnectionPtrNN conn( IO::create() );
     IO::Transaction     t( conn->createNewTransaction("make_leaf_trans") );
-    return GraphNodePtrNN( new GraphNode( makeAlertWithHost(host, os), conn, t) );
+    return GraphNodePtrNN( new GraphNode( makeAlertWithHost(host, os), id, conn, t) );
   }
 
   TestStrategy::Node makeNode(void) const
   {
-    return makeNewNode( makeLeaf("1.2.3.4"), makeLeaf("1.2.3.4") );
+    return makeNewNode( makeLeaf(1, "1.2.3.4"), makeLeaf(2, "1.2.3.4") );
   }
 
   TestStrategy::ChangedNodes changed_;
@@ -95,7 +95,7 @@ void testObj::test<1>(void)
   const char *tab[]={"1.2.3.4", "2.3.4.5"};
   for(int i=0; i<2; ++i)
   {
-    const TestStrategy::Node tmp=makeLeaf(tab[i]);
+    const TestStrategy::Node tmp=makeLeaf(i+10, tab[i]);
     ts_.process(tmp, changed_);
     ensure_equals("some nodes have been changed", changed_.size(), 0u);
   }
@@ -106,7 +106,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  TestStrategy::Node n=makeLeaf("6.6.6.6");
+  TestStrategy::Node n=makeLeaf(1, "6.6.6.6");
   for(int i=0; i<2; ++i)
   {
     ts_.process(n, changed_);
@@ -131,11 +131,11 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  TestStrategy::Node l1=makeLeaf("1.2.3.4", "os2");
+  TestStrategy::Node l1=makeLeaf(1, "1.2.3.4", "os1");
   ts_.process(l1, changed_);
   ensure_equals("some nodes have been changed", changed_.size(), 0u);
 
-  TestStrategy::Node l2=makeLeaf("1.2.3.4", "os2");
+  TestStrategy::Node l2=makeLeaf(1, "1.2.3.4", "os2");
   ts_.process(l2, changed_);
   ensure_equals("no correlation has been done", changed_.size(), 1u);
   // comapre pointers - new node should have been created here
@@ -165,9 +165,9 @@ template<>
 void testObj::test<5>(void)
 {
   ThrowStrategy ts;
-  ts.process( makeLeaf("1.2.3.4", "os1"), changed_);
+  ts.process( makeLeaf(1, "1.2.3.4", "os1"), changed_);
   ensure_equals("some nodes have been changed / 1", changed_.size(), 0u);
-  ts.process( makeLeaf("1.2.3.4", "os2"), changed_);    // nothing should happen here
+  ts.process( makeLeaf(2, "1.2.3.4", "os2"), changed_);    // nothing should happen here
   ensure_equals("some nodes have been changed / 2", changed_.size(), 0u);
 }
 
@@ -180,11 +180,11 @@ void testObj::test<6>(void)
   ts_.process(n, changed_);
   ensure_equals("some nodes have been changed", changed_.size(), 0u);
 
-  TestStrategy::Node l=makeLeaf("1.2.3.4");
+  TestStrategy::Node l=makeLeaf(1, "1.2.3.4");
   ts_.process(l, changed_);
   ensure_equals("nodes not changed", changed_.size(), 1u);
-  // check pointers
-  ensure("invalid node has been changed", changed_.begin()->get()==n.get() );
+  // check pointers - according to rules, new entry should be created in this context
+  ensure("invalid node has been changed", changed_.begin()->get()!=n.get() );
 }
 
 } // namespace tut

@@ -22,7 +22,7 @@ struct TestClass: public TestStubs
 {
   TestClass(void):
     sampleLeaf_( makeNewLeaf( makeNewAlert("some alert") ) ),
-    s_(997)
+    s_("somename", 997)
   {
   }
   GraphNodePtrNN         sampleLeaf_;

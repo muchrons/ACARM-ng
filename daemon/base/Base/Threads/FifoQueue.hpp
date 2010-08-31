@@ -107,7 +107,7 @@ private:
     // wait for data, if not present
     while( q_.size()<1 )
     {
-      boost::this_thread::interruption_point();
+      // interruption point is already in condition variable
       cond_.wait(lock);
     }
 

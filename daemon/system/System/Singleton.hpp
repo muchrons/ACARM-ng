@@ -168,7 +168,7 @@ public:
       assert( mutex_   !=NULL );
       return sp_.get();
     }
-    /** \brief convertion operator to user raw pointer.
+    /** \brief conversion operator to user raw pointer.
      *  \return raw poitner to user data.
      */
     operator T*(void)

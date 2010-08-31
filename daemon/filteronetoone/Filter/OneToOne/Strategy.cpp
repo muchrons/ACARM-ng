@@ -17,8 +17,8 @@ namespace Filter
 namespace OneToOne
 {
 
-Strategy::Strategy(unsigned int timeout):
-  Filter::Simple::Strategy<Data>("onetoone", timeout)
+Strategy::Strategy(const std::string &name, unsigned int timeout):
+  Filter::Simple::Strategy<Data>("onetoone", name, timeout)
 {
 }
 

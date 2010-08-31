@@ -28,7 +28,7 @@ class Client: private boost::noncopyable
 {
 public:
   /**
-   * Auto variable to deallocate idmef_message_t in case of exception
+   * \brief Auto variable to deallocate idmef_message_t in case of exception
    */
   typedef System::AutoVariable<detail::IdmefMessageHolder> IdmefMessageAutoPtr;
 

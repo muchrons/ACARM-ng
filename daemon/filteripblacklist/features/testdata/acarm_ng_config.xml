@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <acarm_ng>
 
+  <general>
+    <url>http://test.url</url>
+    <cleanupInterval>42</cleanupInterval>
+  </general>
+
   <persistency>
     <type>stubs</type>
   </persistency>
@@ -19,7 +24,7 @@
   <preprocessor/>
 
   <filters>
-    <ipblacklist>
+    <ipblacklist name="ipblacklist">
       <refresh>36000</refresh>
       <limit>10000</limit>
     </ipblacklist>
