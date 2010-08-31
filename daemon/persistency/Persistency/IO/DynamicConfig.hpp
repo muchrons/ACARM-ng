@@ -92,7 +92,7 @@ private:
   virtual ValueNULL readImpl(Transaction &t, const Key &key) = 0;
   virtual Value readConstImpl(Transaction &t, const Key &key) = 0;
 
-  Owner        owner_;
+  const Owner  owner_;
   Transaction &t_;
 }; // class DynamicConfig
 

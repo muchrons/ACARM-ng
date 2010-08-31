@@ -38,7 +38,7 @@ void MetaAlert::markAsTriggeredImpl(Transaction &t, const std::string &name)
   TRYCATCH_BEGIN
     EntrySaver       es(t, *dbHandle_);
     const DataBaseID malertID = getID();
-    LOGMSG_DEBUG_S(log_)<<"mark Meta Alert with ID: "
+    LOGMSG_DEBUG_S(log_)<<"mark Meta Alert with db-ID: "
                         <<malertID<<" as triggered, trigger name: " <<name;
     es.markMetaAlertAsTriggered(malertID, name);
   TRYCATCH_END
@@ -49,7 +49,7 @@ void MetaAlert::markAsUsedImpl(Transaction &t)
   TRYCATCH_BEGIN
     EntrySaver       es(t, *dbHandle_);
     const DataBaseID malertID = getID();
-    LOGMSG_DEBUG_S(log_)<<"mark Meta Alert with ID: "<<malertID<<" as used";
+    LOGMSG_DEBUG_S(log_)<<"mark Meta Alert with db-ID: "<<malertID<<" as used";
     es.markMetaAlertAsUsed( malertID );
   TRYCATCH_END
 }
@@ -59,7 +59,7 @@ void MetaAlert::markAsUnusedImpl(Transaction &t)
   TRYCATCH_BEGIN
     EntrySaver       es(t, *dbHandle_);
     const DataBaseID malertID = getID();
-    LOGMSG_DEBUG_S(log_)<<"mark Meta Alert with ID: "<<malertID<<" as unused";
+    LOGMSG_DEBUG_S(log_)<<"mark Meta Alert with db-ID: "<<malertID<<" as unused";
     es.markMetaAlertAsUnused( malertID );
   TRYCATCH_END
 }
@@ -69,7 +69,7 @@ void MetaAlert::updateSeverityDeltaImpl(Transaction &t, double delta)
   TRYCATCH_BEGIN
     EntrySaver       es(t, *dbHandle_);
     const DataBaseID malertID = getID();
-    LOGMSG_DEBUG_S(log_)<<"update severity delta for Meta Alert with ID: "<<malertID
+    LOGMSG_DEBUG_S(log_)<<"update severity delta for Meta Alert with db-ID: "<<malertID
                         <<" by: "<<delta;
     es.updateSeverityDelta(malertID, delta);
   TRYCATCH_END
@@ -80,7 +80,7 @@ void MetaAlert::updateCertaintyDeltaImpl(Transaction &t, double delta)
   TRYCATCH_BEGIN
     EntrySaver       es(t, *dbHandle_);
     const DataBaseID malertID = getID();
-    LOGMSG_DEBUG_S(log_)<<"update certainty delta for Meta Alert with ID: "<<malertID
+    LOGMSG_DEBUG_S(log_)<<"update certainty delta for Meta Alert with db-ID: "<<malertID
                         <<" by: "<<delta;
     es.updateCertaintyDelta(malertID, delta);
   TRYCATCH_END
@@ -92,7 +92,7 @@ void MetaAlert::addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child)
     EntrySaver       es(t, *dbHandle_);
     const DataBaseID childID = dbHandle_->getIDCache()->get( child );
     const DataBaseID malertID = getID();
-    LOGMSG_DEBUG_S(log_)<<"add child with ID: "<<childID<<" to Meta Alert with ID: "<<malertID;
+    LOGMSG_DEBUG_S(log_)<<"add child with db-ID: "<<childID<<" to Meta Alert with db-ID: "<<malertID;
     es.saveMetaAlertsTree(malertID, childID);
   TRYCATCH_END
 }
@@ -103,7 +103,7 @@ void MetaAlert::associateWithAlertImpl(Transaction &t, Persistency::AlertPtrNN a
     EntrySaver       es(t, *dbHandle_);
     const DataBaseID alertID = dbHandle_->getIDCache()->get( alert );
     const DataBaseID malertID = getID();
-    LOGMSG_DEBUG_S(log_)<<"associate ALert with ID: "<<alertID<<" with Meta Alert with ID: "<<malertID;
+    LOGMSG_DEBUG_S(log_)<<"associate ALert with db-ID: "<<alertID<<" with Meta Alert with db-ID: "<<malertID;
     es.saveAlertToMetaAlertMap(alertID, malertID );
   TRYCATCH_END
 }

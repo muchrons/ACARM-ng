@@ -167,4 +167,20 @@ void testObj::test<10>(void)
   p.getPreprocessorConfig();
 }
 
+// test exception when 'general' section is missing
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  try
+  {
+    Parser p("testdata/missing_general_section.xml");
+    fail("parsing didn't failed on missing 'general' section");
+  }
+  catch(const XML::Exception &)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut

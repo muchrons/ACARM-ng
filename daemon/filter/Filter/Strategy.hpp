@@ -41,8 +41,7 @@ public:
    */
   void process(Node n, ChangedNodes &changed)
   {
-    LOGMSG_DEBUG_S(log_)<<"processing node at address 0x"
-                        <<static_cast<void*>( n.get() );
+    LOGMSG_DEBUG_S(log_)<<"processing node "<< n->getMetaAlert()->getID().get();
     assert( changed.size()==0 && "non-empty output collection received");
     pruneNTQ();                 // clean queue's content.
     BackendFacade bf( conn_, changed, getFilterType() );

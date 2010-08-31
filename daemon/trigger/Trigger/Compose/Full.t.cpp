@@ -37,12 +37,9 @@ void testObj::test<1>(void)
 {
   std::stringstream ss;
   Full::append( ss, makeNewNode() );
-  ensure("invalid report /1", strstr( ss.str().c_str(), "reporting triggered for meta-alert \"")!=0 );
-  ensure("invalid report /2",
-         strstr( ss.str().c_str(), "\n"
-                                   "some meta-alert\n"
-                                   "  some alert\n"
-                                   "  some alert\n" )!=0 );
+  ensure("invalid report /1", strstr( ss.str().c_str(), "reporting triggered for meta-alert \"")!=NULL );
+  ensure("invalid report /2", strstr( ss.str().c_str(), "\nsome meta-alert\n  some alert\n  some alert\n" )!=NULL );
+  ensure("invalid report /3", strstr( ss.str().c_str(), "details: http://test.url/index.php?page=MetaAlertReport&id=42" )!=NULL );
 }
 
 } // namespace tut

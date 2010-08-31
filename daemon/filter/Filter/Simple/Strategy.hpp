@@ -185,16 +185,18 @@ private:
     if( it->node_->isLeaf() || it->isSelfCorrelated()==false )
     {
       // create new meta-alert and one in queue
-      LOGMSG_DEBUG_S(Base::log_)<< "correlating '" << it->node_->getMetaAlert()->getName().get()
-                                << "' with '" << thisEntry.node_->getMetaAlert().getName().get()
-                                << "' as a new node";
+      LOGMSG_DEBUG_S(Base::log_)<< "correlating " << it->node_->getMetaAlert()->getID().get() << " ('"
+                                << it->node_->getMetaAlert()->getName().get() << "') with "
+                                << thisEntry.node_->getMetaAlert().getID().get() << " ('"
+                                << thisEntry.node_->getMetaAlert().getName().get() << "') as a new node";
       const BackendFacade::ChildrenVector cv(it->node_, thisEntry.node_);
       const Persistency::MetaAlertPtrNN   ma(
                   new Persistency::MetaAlert( getMetaAlertName(thisEntry, *it),
                                               Persistency::MetaAlert::SeverityDelta(0),
                                               Persistency::MetaAlert::CertaintyDelta(0),
                                               Persistency::ReferenceURLPtr(),
-                                              Persistency::Timestamp() ) );
+                                              Persistency::Timestamp(),
+                                              bf.getNextFreeID() ) );
       Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv);                                     // add new, correlated element.
       const NodeEntry             newEntry=NodeEntry::makeCorrelatedEntry(newNode, thisEntry.t_);   // use the same reported host entry.
       assert( newEntry.isSelfCorrelated()==true );
@@ -205,9 +207,10 @@ private:
     else    // i.e.: is node
     {
       // append new meta-alert to a set of already correlated ones
-      LOGMSG_DEBUG_S(Base::log_)<< "adding node '" << thisEntry.node_->getMetaAlert().getName().get()
-                                << "' to already correlated '"
-                                << it->node_->getMetaAlert()->getName().get() << "'";
+      LOGMSG_DEBUG_S(Base::log_)<< "adding node " << thisEntry.node_->getMetaAlert().getID().get() << " ('"
+                                << thisEntry.node_->getMetaAlert().getName().get() << "') to already correlated "
+                                << it->node_->getMetaAlert()->getID().get() << " ('"
+                                << it->node_->getMetaAlert()->getName().get() << "')";
       bf.addChild(it->node_, thisEntry.node_);      // add new alert to already correlated in one set
     }
 

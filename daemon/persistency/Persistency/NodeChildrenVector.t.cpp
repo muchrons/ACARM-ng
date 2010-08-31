@@ -31,7 +31,7 @@ struct TestClass: private TestBase
 
   GraphNodePtrNN makeLeaf(void)
   {
-    return GraphNodePtrNN( new GraphNode( makeNewAlert(), conn_, t_) );
+    return GraphNodePtrNN( new GraphNode( makeNewAlert(), 42u, conn_, t_) );
   }
 
   IO::ConnectionPtrNN conn_;

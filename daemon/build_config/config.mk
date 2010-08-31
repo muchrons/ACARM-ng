@@ -19,13 +19,18 @@ export TC=local
 export FEATURES= \
                  lock_on_write_graph_add
 
+TMP:=
+TMPLD:=
+
 # enable ccache, if not using intel's toolchain
 ifneq ($(TC),intel)
 export WITH_CCACHE:=1
 endif
 
-TMP:=-fstack-protector-all
-TMPLD:=
+# enable stack-protector, if not using intel's toolchain
+ifneq ($(TC),intel)
+TMP+=-fstack-protector-all
+endif
 
 # determine architecture to compile for
 ARCH_STR:=$(shell uname -m)

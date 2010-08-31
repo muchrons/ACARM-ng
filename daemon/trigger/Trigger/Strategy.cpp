@@ -45,32 +45,26 @@ Strategy::~Strategy(void)
 
 void Strategy::process(Node n, ChangedNodes &/*changed*/)
 {
-  LOGMSG_DEBUG_S(log_)<<"processing node at address 0x"
-                      <<static_cast<void*>( n.get() );
+  LOGMSG_DEBUG_S(log_)<<"processing node "<<n->getMetaAlert()->getID().get();
   // clean-up old entries
   nos_.prune();
 
   // check nos_ cache - maybe entry has been already triggered before?
   if( find_if( nos_.begin(), nos_.end(), FindGivenNode(n) )!=nos_.end() )
   {
-    LOGMSG_DEBUG_S(log_)<<"node at address 0x"
-                        <<static_cast<void*>( n.get() )
-                        <<" matches criteria but was already triggered before";
+    LOGMSG_DEBUG_S(log_)<<"node "<<n->getMetaAlert()->getID().get()<<" matches criteria but was already triggered before";
     return;
   }
 
   // check if node should be processed at all
   if( !matchesCriteria(n) )
   {
-    LOGMSG_DEBUG_S(log_)<<"node at address 0x"
-                        <<static_cast<void*>( n.get() )
-                        <<" does not match criteria";
+    LOGMSG_DEBUG_S(log_)<<"node "<<n->getMetaAlert()->getID().get()<<" does not match criteria";
     return;
   }
 
   // process node
-  LOGMSG_INFO_S(log_)<<"calling trigger for node at address 0x"
-                     <<static_cast<void*>( n.get() );
+  LOGMSG_INFO_S(log_)<<"calling trigger for node "<<n->getMetaAlert()->getID().get();
   trigger(n);
 
   // if it succeeded, mark it as triggered
@@ -80,9 +74,7 @@ void Strategy::process(Node n, ChangedNodes &/*changed*/)
   bf.markAsTriggered( n->getMetaAlert() );
   bf.commitChanges();
 
-  LOGMSG_INFO_S(log_)<<"triggering node at address 0x"
-                     <<static_cast<void*>( n.get() )
-                     <<" finished successfully";
+  LOGMSG_INFO_S(log_)<<"triggering node "<<n->getMetaAlert()->getID().get()<<" finished successfully";
 }
 
 
