@@ -146,4 +146,12 @@ void testObj::test<10>(void)
   Singleton::get()->preprocessorConfig();
 }
 
+// test getting general config
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  Singleton::get()->generalConfig();
+}
+
 } // namespace tut
