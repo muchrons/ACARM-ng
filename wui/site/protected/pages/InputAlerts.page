@@ -20,6 +20,13 @@ The most recent alerts:
     OnPagerCreated="pagerCreated"
     >
 
+
+    <com:TBoundColumn
+        ID="BajuBaju"
+        HeaderText="Baju"
+        DataField="baju"
+        />
+
     <com:TBoundColumn
         ID="LinkColumn"
         HeaderText="Details"
