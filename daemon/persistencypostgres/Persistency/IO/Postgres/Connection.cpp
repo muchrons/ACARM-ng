@@ -114,6 +114,8 @@ void Connection::removeExtraMetaAlertsEntries(Transaction &t) const
                " IN (SELECT id_meta_alert FROM tmp_ma)");
 
     // remove meta alerts that are not referenced from tree any more
+    // TODO: this is the most evil query out of all here - it is the longest one and is
+    //       unaccetably long one - the first one to be optimized.
     execSQL(log_, t, "DELETE FROM meta_alerts WHERE id "
                " NOT IN (SELECT id_node  FROM meta_alerts_tree) "
                " AND id "
@@ -150,6 +152,7 @@ void Connection::removeReportedHosts(Transaction &t) const
 {
   execSQL(log_, t, "DELETE FROM reported_hosts WHERE id "
              " IN (SELECT id FROM tmp_rh)");
+  // TODO: following query takes extreamly long
   execSQL(log_, t, "DELETE FROM hosts          WHERE id "
              " NOT IN (SELECT id_host FROM reported_hosts)");
 }
@@ -158,6 +161,7 @@ void Connection::removeAnalyzers(Transaction &t) const
 {
   execSQL(log_, t, "DELETE FROM alert_analyzers WHERE id_alert "
              " IN (SELECT id FROM tmp)");
+  // TODO: following query takes a lot of time
   execSQL(log_, t, "DELETE FROM analyzers       WHERE id "
              " NOT IN (SELECT id_analyzer FROM alert_analyzers)");
 }
