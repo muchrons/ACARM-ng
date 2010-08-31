@@ -12,6 +12,7 @@
 #include "System/Exception.hpp" // may be thrown by implementation
 #include "ConfigIO/LoggerConfig.hpp"
 #include "ConfigIO/PersistencyConfig.hpp"
+#include "ConfigIO/ParseGeneralConfig.hpp"
 #include "ConfigIO/ParseLoggerNodes.hpp"
 #include "ConfigIO/ParseLoggerAppenders.hpp"
 #include "ConfigIO/ParsePersistency.hpp"
@@ -58,9 +59,14 @@ public:
    *  \return preprocessor's configuration.
    */
   const Preprocessor::Config &getPreprocessorConfig(void) const;
+  /** \brief gets general configuration options.
+   *  \return general configuration.
+   */
+  const GeneralConfig &getGeneralConfig(void) const;
 
 private:
   XML::Tree            tree_;
+  ParseGeneralConfig   parseGeneralConfig_;
   ParsePersistency     parsePersistency_;
   ParseFilters         parseFilters_;
   ParseTriggers        parseTriggers_;

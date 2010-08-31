@@ -1,11 +1,10 @@
 /*
- * Full.t.cpp
+ * LinkWUI.t.cpp
  *
  */
 #include <tut.h>
-#include <cstring>
 
-#include "Trigger/Compose/Full.hpp"
+#include "Trigger/Compose/LinkWUI.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -23,7 +22,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Trigger/Compose/Full");
+factory tf("Trigger/Compose/LinkWUI");
 } // unnamed namespace
 
 
@@ -36,10 +35,8 @@ template<>
 void testObj::test<1>(void)
 {
   std::stringstream ss;
-  Full::append( ss, makeNewNode() );
-  ensure("invalid report /1", strstr( ss.str().c_str(), "reporting triggered for meta-alert \"")!=NULL );
-  ensure("invalid report /2", strstr( ss.str().c_str(), "\nsome meta-alert\n  some alert\n  some alert\n" )!=NULL );
-  ensure("invalid report /3", strstr( ss.str().c_str(), "details: http://test.url/index.php?page=MetaAlertReport&id=42" )!=NULL );
+  LinkWUI::append( ss, makeNewLeaf() );
+  ensure_equals("invalid report", ss.str(), "http://test.url/index.php?page=MetaAlertReport&id=303");
 }
 
 } // namespace tut

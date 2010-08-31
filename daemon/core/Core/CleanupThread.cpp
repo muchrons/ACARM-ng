@@ -4,6 +4,7 @@
  */
 #include <cassert>
 
+#include "ConfigIO/Singleton.hpp"
 #include "Logger/Logger.hpp"
 #include "Core/CleanupThread.hpp"
 
@@ -26,11 +27,12 @@ struct PeriodicalCleanup
 
     try
     {
-      cleanup();              // run initial cleanup
+      cleanup();            // run initial cleanup
 
-      const size_t hours=24;  // TODO: magic value
       while(true)
       {
+        const size_t hours=ConfigIO::Singleton::get()->generalConfig().getCleanupInterval();
+        assert(hours>0);    // prevent busy-loops (this condition should be already enforced by the config)
         LOGMSG_INFO_S(log_)<<"next cleanup in "<<hours<<" hours";
         const unsigned int oneHour=60*60;                                       // length of one our in seconds
         boost::this_thread::sleep( boost::posix_time::seconds(hours*oneHour) ); // sleep until next cleanup

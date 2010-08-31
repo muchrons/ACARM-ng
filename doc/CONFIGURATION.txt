@@ -7,6 +7,10 @@ example may look like this:
 
 <?xml version="1.0" encoding="UTF-8"?>
 <acarm_ng>
+  <general>
+    <!-- general configuration options -->
+  </general>
+
   <persistency>
     <!-- persistency specific options -->
   </persistency>
@@ -32,6 +36,20 @@ example may look like this:
 
 in the following sections only subtrees specific for given components will
 be shown in the example, for sake of document's simplicity.
+
+
+general configuration
+=====================
+
+general configuration is set of common, config paramters that are not specific
+for any of the main system parts.
+following options are supported:
+  <general>
+    <url>http://my.web.server</url> <!-- link to WUI interface -->
+    <cleanupInterval>24</cleanupInterval> <!-- clean-up procedure running interval
+                                               measured in hours. note that clean-up
+                                               is NOT run during program startup. -->
+  </general>
 
 
 persistency configuration

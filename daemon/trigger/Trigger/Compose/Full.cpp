@@ -7,6 +7,7 @@
 // parts to compose from:
 #include "Trigger/Compose/Summary.hpp"
 #include "Trigger/Compose/Tree.hpp"
+#include "Trigger/Compose/LinkWUI.hpp"
 
 namespace Trigger
 {
@@ -16,8 +17,12 @@ namespace Compose
 void Full::append(std::stringstream &ss, const Persistency::GraphNodePtrNN &node)
 {
   Summary::append(ss, node);
+
   ss << std::endl;
   Tree::append(ss, node);
+
+  ss << std::endl << "details: ";
+  LinkWUI::append(ss, node);
 }
 
 } // namespace Compose
