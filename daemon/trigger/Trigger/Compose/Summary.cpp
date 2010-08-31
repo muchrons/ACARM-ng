@@ -6,6 +6,7 @@
 #include "Algo/countCorrelatedAlerts.hpp"
 #include "Algo/computeSeverity.hpp"
 #include "Trigger/Compose/Summary.hpp"
+#include "Trigger/Compose/LinkWUI.hpp"
 
 namespace Trigger
 {
@@ -22,6 +23,10 @@ void Summary::append(std::stringstream &ss, const Persistency::GraphNodePtrNN &n
      << " correlated alerts; severity is "
      << Algo::computeSeverity(node) << ")"
      << std::endl;
+
+  ss << "details: ";
+  LinkWUI::append(ss, node);
+  ss << std::endl;
 }
 
 } // namespace Compose
