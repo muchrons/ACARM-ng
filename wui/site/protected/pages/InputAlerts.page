@@ -21,6 +21,7 @@ The most recent alerts:
     >
 
 
+    <!-- TODO: test columnt, to be removed -->
     <com:TBoundColumn
         ID="BajuBaju"
         HeaderText="Baju"

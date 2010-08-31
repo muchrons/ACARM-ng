@@ -33,7 +33,7 @@ public:
    */
   std::string getFilterName(void)
   {
-    return get("name"); //TODO: What does it do?
+    return get("name");
   }
 }; // class FilterConfig
 
