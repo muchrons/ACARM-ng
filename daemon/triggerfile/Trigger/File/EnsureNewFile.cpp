@@ -40,8 +40,8 @@ EnsureNewFile::EnsureNewFile(const std::string &path):
     LOGMSG_ERROR_S(log_)<<"file's size is non-zero '"<<path<<"'";
     throw ExceptionCannotOpenFile(SYSTEM_SAVE_LOCATION, path, "file's size is non-zero");
   }
-  // check if file has NO hard-links
-  if(st.st_nlink!=0)
+  // check if file has NO hard-links (1==self)
+  if(st.st_nlink!=1)
   {
     LOGMSG_ERROR_S(log_)<<"file has hard-link(s) '"<<path<<"' - looks suspicious - aborting...";
     throw ExceptionCannotOpenFile(SYSTEM_SAVE_LOCATION, path, "file has hard-link(s) to it");
