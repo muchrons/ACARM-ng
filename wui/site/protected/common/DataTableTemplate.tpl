@@ -1,6 +1,6 @@
-
 <div width=100%>
 <table border=0 width=100%>
+<!-- TODO: i think this header should not be the part of this control -->
 <tr><td><b>The most recent alerts:</b></td><td align=right>Per page:
 <com:TDropDownList
     AutoPostBack="true"
@@ -26,14 +26,14 @@ Page: <com:TPager ID="Pager"
     DataKeyField="id"
     AllowPaging="true"
     AllowCustomPaging="true"
-    PageSize="10"    
+    PageSize="10"
     AutoGenerateColumns="false"
     CellPadding="2"
     HeaderStyle.BackColor="black"
     HeaderStyle.ForeColor="white"
     ItemStyle.BackColor="#BFCFFF"
     ItemStyle.Font.Italic="true"
-    AlternatingItemStyle.BackColor="#E6ECFF"    
+    AlternatingItemStyle.BackColor="#E6ECFF"
     >
 
     <com:TBoundColumn
