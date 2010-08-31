@@ -63,7 +63,7 @@ public:
         Persistency::GraphNodePtrNN node=inputQueue_->pop();    // wait for data
 
         // process new data
-        LOGMSG_DEBUG(log_, "data recieved - processing");
+        LOGMSG_DEBUG_S(log_)<<"data recieved - processing node " << node->getMetaAlert()->getID().get();
         Interface::ChangedNodes changed;                        // output collection
         processNode(node, changed);                             // process node, ignoring errors
         LOGMSG_DEBUG_S(log_)<<"total of "<<changed.size()<<" nods were changed";
@@ -71,7 +71,10 @@ public:
         LOGMSG_DEBUG(log_, "notifing others about changed nodes");
         // signal others about changes we made (we sign this with a name)
         for(Interface::ChangedNodes::iterator it=changed.begin(); it!=changed.end(); ++it)
+        {
+          LOGMSG_DEBUG_S(log_)<<"node " << (*it)->getMetaAlert()->getID().get() << " has been changed";
           outputQueue_->push( SignedNode(*it, interface_->getName()) );
+        }
       }
       catch(const boost::thread_interrupted &)
       {
@@ -149,6 +152,8 @@ Processor::~Processor(void)
 
 void Processor::process(const Core::Types::SignedNode &node)
 {
+  LOGMSG_DEBUG_S(log_)<<"processing node "<< node.getNode()->getMetaAlert()->getID().get()
+                      <<" from filter '"<<node.getReporterName()<<"'";
   // skip if we were the ones that reported this
   if( interface_->getName()==node.getReporterName() )
   {
@@ -162,7 +167,8 @@ void Processor::process(const Core::Types::SignedNode &node)
     return;
   }
   // if everything's fine - accept this.
-  LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName()<<"' has been accepted - adding to queue";
+  LOGMSG_DEBUG_S(log_)<<"node "<< node.getNode()->getMetaAlert()->getID().get()
+                      <<" from filter '"<<node.getReporterName()<<"' has been accepted - adding to queue";
   inputQueue_.push( node.getNode() );
 }
 

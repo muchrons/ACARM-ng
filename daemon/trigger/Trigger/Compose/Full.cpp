@@ -17,7 +17,9 @@ void Full::append(std::stringstream &ss, const Persistency::GraphNodePtrNN &node
 {
   Summary::append(ss, node);
   ss << std::endl;
+
   Tree::append(ss, node);
+  ss << std::endl;
 }
 
 } // namespace Compose
