@@ -24,7 +24,7 @@ struct TestClass
       GeneralConfig tmp(url, 42u);
       tut::fail("c-tor didn't throw on invalid URL");
     }
-    catch(const ExceptionParseError &)
+    catch(const ExceptionInvalidValue &)
     {
       // this is expected
     }

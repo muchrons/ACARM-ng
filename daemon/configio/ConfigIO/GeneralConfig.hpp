@@ -9,7 +9,7 @@
 
 #include <string>
 
-#include "ConfigIO/ExceptionParseError.hpp"
+#include "ConfigIO/ExceptionInvalidValue.hpp"
 
 namespace ConfigIO
 {

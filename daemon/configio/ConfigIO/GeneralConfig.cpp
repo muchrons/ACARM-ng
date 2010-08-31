@@ -34,11 +34,11 @@ std::string fixURL(const std::string &url)
 {
   // empty string?!
   if( url.begin()==url.end() )
-    throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "URL cannot be empty");
+    throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "WUI-URL", url, "URL cannot be empty");
   // non-http(s)?
   if( strstr( url.c_str(), "http://"  )!=url.c_str() &&
       strstr( url.c_str(), "https://" )!=url.c_str()    )
-    throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "'http(s)://' surfix's missing");
+    throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "WUI-URL", url, "'http(s)://' surfix's missing");
 
   return removeTrailingSlashes(url);
 } // fixURL()
@@ -48,6 +48,8 @@ GeneralConfig::GeneralConfig(const URL &wuiUrl, Interval cleanupInterval):
   wuiUrl_( fixURL(wuiUrl) ),
   cleanupInterval_(cleanupInterval)
 {
+  if(cleanupInterval_<1)
+    throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "cleanup-interval", cleanupInterval, "interval is too small");
 }
 
 } // namespace ConfigIO
