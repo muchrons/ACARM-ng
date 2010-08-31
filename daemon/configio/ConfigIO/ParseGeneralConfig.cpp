@@ -48,7 +48,7 @@ ParseGeneralConfig::ParseGeneralConfig(const XML::Node &node):
   gc_( parseConfig(node) )
 {
   // this should be already checked higher
-  assert( node.getName()=="generic" );
+  assert( node.getName()=="general" );
 }
 
 } // namespace ConfigIO
