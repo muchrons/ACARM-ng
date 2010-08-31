@@ -9,7 +9,7 @@
 
 #include "Trigger/Simple/Strategy.hpp"
 #include "Trigger/File/Config.hpp"
-#include "Trigger/File/ExceptionCantOpenFile.hpp"
+#include "Trigger/File/ExceptionCannotOpenFile.hpp"
 
 namespace Trigger
 {

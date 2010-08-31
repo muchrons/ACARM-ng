@@ -33,7 +33,7 @@ void Strategy::triggerImpl(const Node &n)
   LOGMSG_DEBUG_S(log_)<<"output file is: "<<path;
   ofstream     file( path.c_str() );
   if( !file.is_open() )
-    throw ExceptionCantOpenFile(SYSTEM_SAVE_LOCATION, path);
+    throw ExceptionCannotOpenFile(SYSTEM_SAVE_LOCATION, path, "couldn't open output file");
   // write data
   file << ss.str();
 }
