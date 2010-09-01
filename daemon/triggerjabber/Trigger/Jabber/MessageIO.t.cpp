@@ -20,12 +20,13 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     conn1_( getTestConfig1() )
   {
   }
-/*
+
   std::string getMessageFromAccount2(void) const
   {
-    return getMessageFromAccount( getTestConfig2(), getTestConfig1().getUserID() );
+    return getMessageFromAccount( getTestConfig2(),
+                                  getTestConfig1().getServer() + "@" + getTestConfig1().getLogin() );
   }
-*/
+
   Connection conn1_;
 };
 
@@ -67,7 +68,7 @@ void testObj::test<3>(void)
   MessageIO         ms(conn1_);
   const std::string msg("łączność UTF-8");
   ms.send( getTestConfig2().getLogin()+"@"+getTestConfig2().getServer() , msg );
-  //const std::string recv=getMessageFromAccount2();
+  const std::string recv=getMessageFromAccount2();
   //ensure_equals("invalid message received", recv, msg);
 }
 
