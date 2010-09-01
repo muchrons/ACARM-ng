@@ -96,11 +96,11 @@ void removeExtraMetaAlertsEntries(Transaction &t, const Logger::Node &log)
     // TODO: this is the most evil query out of all here - it is the longest one and is
     //       unaccetably long one - the first one to be optimized.
     execSQL(log, t, "DELETE FROM meta_alerts WHERE id "
-                    " NOT IN (SELECT id_node  FROM meta_alerts_tree) "
+                    " NOT IN (SELECT id_node  FROM meta_alerts_tree ORDER BY id_node) "
                     " AND id "
-                    " NOT IN (SELECT id_child FROM meta_alerts_tree)"
+                    " NOT IN (SELECT id_child FROM meta_alerts_tree ORDER BY id_child)"
                     " AND id "
-                    " NOT IN (SELECT id_meta_alert FROM alert_to_meta_alert_map)");
+                    " NOT IN (SELECT id_meta_alert FROM alert_to_meta_alert_map ORDER BY id_meta_alert)");
 
     // move tmp_ma_swap's content to tmp_ma
     execSQL(log, t, "DELETE FROM tmp_ma");
@@ -124,7 +124,7 @@ void removeReportedProcs(Transaction &t, const Logger::Node &log)
   execSQL(log, t, "DELETE FROM reported_procs WHERE id_reported_host "
                   " IN (SELECT id FROM tmp_rh)");
   execSQL(log, t, "DELETE FROM procs          WHERE id "
-                  " NOT IN (SELECT id_proc FROM reported_procs)");
+                  " NOT IN (SELECT id_proc FROM reported_procs ORDER BY id_proc)");
 }
 
 void removeReportedHosts(Transaction &t, const Logger::Node &log)
@@ -133,7 +133,7 @@ void removeReportedHosts(Transaction &t, const Logger::Node &log)
                   " IN (SELECT id FROM tmp_rh)");
   // TODO: following query takes extreamly long
   execSQL(log, t, "DELETE FROM hosts          WHERE id "
-                  " NOT IN (SELECT id_host FROM reported_hosts)");
+                  " NOT IN (SELECT id_host FROM reported_hosts ORDER BY id_host)");
 }
 
 void removeAnalyzers(Transaction &t, const Logger::Node &log)
@@ -142,7 +142,7 @@ void removeAnalyzers(Transaction &t, const Logger::Node &log)
                   " IN (SELECT id FROM tmp)");
   // TODO: following query takes a lot of time
   execSQL(log, t, "DELETE FROM analyzers       WHERE id "
-                  " NOT IN (SELECT id_analyzer FROM alert_analyzers)");
+                  " NOT IN (SELECT id_analyzer FROM alert_analyzers ORDER BY id_analyzer)");
 }
 
 size_t removeAlerts(Transaction &t, const Logger::Node &log)
