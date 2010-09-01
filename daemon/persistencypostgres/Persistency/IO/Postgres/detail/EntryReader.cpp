@@ -150,9 +150,6 @@ Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::strin
   Alert::ReportedHosts hosts;
   for(size_t i=0; i<r.size(); ++i)
   {
-// TODO: temp code              
-//    hosts.push_back( getHost( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_host"]),
-//                              ReaderHelper<NullValue<DataBaseID> >::readAs(r[i]["id_ref"]).get()) );
     const DataBaseID hostID=ReaderHelper<DataBaseID>::readAsNotNull( r[i]["id"] );
     HostPtr host(new Persistency::Host( ReaderHelper<Persistency::Host::IP>::readAsNotNull(r[0]["ip"]),
                                         ReaderHelper< Base::NullValue<Persistency::Host::Netmask> >::readAs(r[0]["mask"]).get(),
@@ -177,26 +174,6 @@ Alert::ReportedHosts EntryReader::getTargetHosts(DataBaseID alertID)
 {
   return getReporteHosts(alertID, "dst");
 }
-
-/*
-HostPtr EntryReader::getHost(DataBaseID hostID, const DataBaseID *refID)
-{
-  stringstream ss;
-  ss << "SELECT * FROM hosts WHERE id = "<< hostID <<";";
-  const result r = SQL( ss.str(), log_ ).exec(t_);
-
-  HostPtr host(new Persistency::Host(ReaderHelper<Persistency::Host::IP>::readAsNotNull(r[0]["ip"]),
-                                     ReaderHelper< Base::NullValue<Persistency::Host::Netmask> >::readAs(r[0]["mask"]).get(),
-                                     ReaderHelper<Persistency::Host::OperatingSystem>::readAs(r[0]["os"]),
-                                     getReferenceURL(refID),
-                                     getReportedServices( hostID ),
-                                     getReportedProcesses( hostID ),
-                                     ReaderHelper<Persistency::Host::Name>::readAs(r[0]["name"]) ) );
-  // add host to cache
-  addIfNew(host, hostID);
-  return host;
-}
-*/
 
 Persistency::Host::ReportedServices EntryReader::getReportedServices(DataBaseID hostID)
 {
@@ -243,51 +220,6 @@ Persistency::Host::ReportedProcesses EntryReader::getReportedProcesses(DataBaseI
   }
   return processes;
 }
-
-// TODO: temporary code                 
-/*
-Persistency::ServicePtrNN EntryReader::getService(DataBaseID servID, DataBaseID *refID)
-{
-  stringstream ss;
-  ss << "SELECT * FROM services WHERE id = " << servID << ";";
-  const result r = SQL( ss.str(), log_ ).exec(t_);
-  if(r.size() != 1)
-    throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
-  ServicePtrNN service(new Service(ReaderHelper<string>::readAsNotNull(r[0]["name"]),
-                                   ReaderHelper<DataBaseID>::readAsNotNull(r[0]["port"]),
-                                   ReaderHelper<Service::Protocol>::readAs(r[0]["protocol"]),
-                                   getReferenceURL( refID )));
-  return service;
-}
-*/
-
-// TODO: temporary code                 
-/*
-ProcessPtr EntryReader::getProcess(DataBaseID procID, DataBaseID *refID)
-{
-  stringstream ss;
-  ss << "SELECT * FROM processes WHERE id = " << procID << ";";
-  const result r = SQL( ss.str(), log_ ).exec(t_);
-  if(r.size() != 1)
-    throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
-
-  stringstream sr;
-  sr << "SELECT * FROM reported_procs WHERE id_proc = " << procID << ";";
-  const result rr = SQL( sr.str(), log_ ).exec(t_);
-  if(rr.size() != 1)
-    throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());
-  const NullValue<string> params=ReaderHelper< NullValue<string> >::readAs(rr[0]["arguments"]);
-  Persistency::ProcessPtr process( new Process( ReaderHelper<Process::Path>::readAs(r[0]["path"]),
-                                                ReaderHelper<string>::readAsNotNull(r[0]["name"]),
-                                                ReaderHelper< std::auto_ptr<MD5Sum> >::readAs(r[0]["md5"]).get(),
-                                                ReaderHelper< NullValue<pid_t> >::readAs(rr[0]["pid"]).get(),
-                                                ReaderHelper< NullValue<int> >::readAs(rr[0]["uid"]).get(),
-                                                ReaderHelper<string>::readAsNotNull(rr[0]["username"]),
-                                                (params.get()==NULL)?NULL:params.get()->c_str(),
-                                                getReferenceURL( refID )) );
-  return process;
-}
-*/
 
 ReferenceURLPtr EntryReader::getReferenceURL(const DataBaseID *refID)
 {
