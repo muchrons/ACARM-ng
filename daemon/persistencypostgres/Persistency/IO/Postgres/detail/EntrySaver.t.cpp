@@ -572,7 +572,7 @@ void testObj::test<13>(void)
   stringstream ss;
   string username, arguments;
   int pid, uid;
-  ss << "SELECT * FROM reported_procs WHERE id_proc = " << procID << ";";
+  ss << "SELECT * FROM procs WHERE id = " << procID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
 
@@ -615,7 +615,7 @@ void testObj::test<14>(void)
   stringstream ss;
   string username, arguments, url_name, url_str;
   int pid, uid;
-  ss << "SELECT * FROM reported_procs WHERE id = " << procID << ";";
+  ss << "SELECT * FROM procs WHERE id = " << procID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
 
@@ -710,7 +710,7 @@ void testObj::test<17>(void)
 
   stringstream ss;
 
-  ss << "SELECT * FROM reported_services WHERE id_service = " << servID << ";";
+  ss << "SELECT * FROM services WHERE id = " << servID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   ensure("reference URL is not NULL", r[0]["id_ref"].is_null() );
