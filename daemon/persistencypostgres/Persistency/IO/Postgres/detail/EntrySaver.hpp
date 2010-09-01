@@ -61,14 +61,12 @@ public:
    */
   DataBaseID saveAnalyzer(const Analyzer &a);
   /** \brief save destination host data to data base
-   *  \param hostID  ID of Host,
    *  \param alertID ID of Alert, that destination Host shoul be assigned to.
    *  \param h       Destination Host to be saved.
    *  \return return data base ID for given source host.
    */
   DataBaseID saveSourceHost(DataBaseID alertID, const Persistency::Host &h);
   /** \brief save target host data to data base
-   *  \param hostID  ID of Host,
    *  \param alertID ID of Alert, that source Host shoul be assigned to.
    *  \param h       Target Host to be saved.
    *  \return return data base ID for given target host.
