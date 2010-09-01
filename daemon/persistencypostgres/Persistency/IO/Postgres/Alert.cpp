@@ -79,7 +79,7 @@ void Alert::saveHosts(EntrySaver                        &es,
         assert(!"we should never reach here! invalid unknwon host type - update the code!");
       break;
     } // switch(host_type)
-    //dbHandle_->getIDCache()->add(*it , hostID); // TODO: unneeded line? whole cache should be probably removed for hosts.
+    dbHandle_->getIDCache()->add(*it , hostID);
     LOGMSG_DEBUG_S(log_)<<"saved host with ID "<<hostID;
 
     // get reported services from host

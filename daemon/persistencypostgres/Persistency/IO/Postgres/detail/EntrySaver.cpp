@@ -396,16 +396,16 @@ DataBaseID EntrySaver::saveService(DataBaseID hostID, const Service &s)
 DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
 {
   stringstream ss;
-  ss << "INSERT INTO meta_alerts(sys_id, name, severity_delta, certainty_delta, id_ref, create_time, last_update_time) VALUES (";
+  ss << "INSERT INTO meta_alerts(sys_id, id_ref, name, severity_delta, certainty_delta, create_time, last_update_time) VALUES (";
   Appender::append(ss, ma.getID().get() );
+  ss << ",";
+  addReferenceURL(ss, ma.getReferenceURL() );
   ss << ",";
   Appender::append(ss, ma.getName().get() );
   ss << ",";
   Appender::append(ss, ma.getSeverityDelta() );
   ss << ",";
   Appender::append(ss, ma.getCertaintyDelta() );
-  ss << ",";
-  addReferenceURL(ss, ma.getReferenceURL() );
   ss << ",";
   Appender::append(ss, ma.getCreateTime() );
   ss << ",";
