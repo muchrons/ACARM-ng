@@ -6,31 +6,23 @@
 CREATE SEQUENCE meta_alerts_id_seq;
 CREATE TABLE    meta_alerts
 (
-  id               int          PRIMARY KEY
-                                DEFAULT nextval('meta_alerts_id_seq'),
-  sys_id           int          NOT NULL
-                                UNIQUE,
+  id               int          PRIMARY KEY DEFAULT nextval('meta_alerts_id_seq'),
+  id_ref           int          NULL REFERENCES reference_urls(id) DEFAULT NULL,
+  sys_id           int          NOT NULL UNIQUE,
   name             varchar(256) NOT NULL,
-  severity_delta   real         NOT NULL
-                                DEFAULT 0,
-  certainty_delta  real         NOT NULL
-                                DEFAULT 0,
-  id_ref           int          NULL
-                                REFERENCES reference_urls(id)
-                                DEFAULT NULL,
+  severity_delta   real         NOT NULL DEFAULT 0,
+  certainty_delta  real         NOT NULL DEFAULT 0,
   create_time      timestamp    NOT NULL,
-  last_update_time timestamp    NOT NULL
-                                DEFAULT now()
+  last_update_time timestamp    NOT NULL DEFAULT now()
 );
+CREATE INDEX meta_alerts_sys_id_index ON meta_alerts(sys_id);
 
 
 -- alert to meta-alert mapping table
 CREATE TABLE alert_to_meta_alert_map
 (
-  id_alert      int NOT NULL
-                REFERENCES alerts(id),
-  id_meta_alert int NOT NULL
-                REFERENCES meta_alerts(id),
+  id_alert      int NOT NULL REFERENCES alerts(id),
+  id_meta_alert int NOT NULL REFERENCES meta_alerts(id),
 
   UNIQUE(id_alert, id_meta_alert)
 );
@@ -81,13 +73,13 @@ CREATE TABLE alert_to_meta_alert_map
 -- meta alerts tree
 CREATE TABLE meta_alerts_tree
 (
-  id_node  int NOT NULL
-           REFERENCES meta_alerts(id),
-  id_child int NOT NULL
-           REFERENCES meta_alerts(id),
+  id_node  int NOT NULL REFERENCES meta_alerts(id),
+  id_child int NOT NULL REFERENCES meta_alerts(id),
 
   UNIQUE(id_node, id_child)
 );
+CREATE INDEX meta_alerts_tree_id_node_index  ON meta_alerts_tree(id_node);
+CREATE INDEX meta_alerts_tree_id_child_index ON meta_alerts_tree(id_child);
 
 
 

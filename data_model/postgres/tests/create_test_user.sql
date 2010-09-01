@@ -13,9 +13,6 @@ GRANT ALL ON TABLE
     severities,
     alerts,
     alert_analyzers,
-    reported_hosts,
-    reported_services,
-    reported_procs,
     meta_alerts,
     alert_to_meta_alert_map,
     meta_alerts_tree,
@@ -32,8 +29,5 @@ GRANT ALL ON SEQUENCE
     analyzers_id_seq,
 --    severities_id_seq,
     alerts_id_seq,
-    reported_hosts_id_seq,
---    reported_services_id_seq,
-    reported_procs_id_seq,
     meta_alerts_id_seq
     TO "acarm-ng-tests";
