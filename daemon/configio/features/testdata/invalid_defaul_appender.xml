@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <acarm_ng>
 
+  <general>
+    <url>http://test.url</url>
+    <cleanupInterval>42</cleanupInterval>
+  </general>
+
   <persistency>
     <type>PostgreSQL</type>
     <user>john</user>

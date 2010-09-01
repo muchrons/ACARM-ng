@@ -45,7 +45,6 @@ private:
 
   // TODO: add check if there is at most one instance of this object created
   //       at a given time.
-  Base::Threads::Mutex   mutex_;
   Logger::Node           log_;
   MetaAlert::ID::Numeric nextFreeID_;
 }; // class IDAssigner

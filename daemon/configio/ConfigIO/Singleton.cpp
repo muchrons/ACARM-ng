@@ -61,6 +61,12 @@ const Preprocessor::Config &SingletonImpl::preprocessorConfig(void) const
   return p_->getPreprocessorConfig();
 }
 
+const GeneralConfig &SingletonImpl::generalConfig(void) const
+{
+  assert( p_.get()!=NULL );
+  return p_->getGeneralConfig();
+}
+
 SingletonImpl::SingletonImpl(void):
   p_(new Parser)
 {

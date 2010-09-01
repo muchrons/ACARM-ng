@@ -20,6 +20,14 @@ The most recent alerts:
     OnPagerCreated="pagerCreated"
     >
 
+
+    <!-- TODO: test columnt, to be removed -->
+    <com:TBoundColumn
+        ID="BajuBaju"
+        HeaderText="Baju"
+        DataField="baju"
+        />
+
     <com:TBoundColumn
         ID="LinkColumn"
         HeaderText="Details"

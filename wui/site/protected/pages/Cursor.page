@@ -1,0 +1,10 @@
+<!-- TODO: test code to be removed -->
+<com:TContent ID="content">
+
+<div width="800px">
+<com:DataTableTemplate
+        ID="DataGrid"
+/>
+</div>
+
+</com:TContent>
