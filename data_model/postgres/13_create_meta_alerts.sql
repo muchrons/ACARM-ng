@@ -7,8 +7,8 @@ CREATE SEQUENCE meta_alerts_id_seq;
 CREATE TABLE    meta_alerts
 (
   id               int          PRIMARY KEY DEFAULT nextval('meta_alerts_id_seq'),
-  id_ref           int          NULL REFERENCES reference_urls(id) DEFAULT NULL,
   sys_id           int          NOT NULL UNIQUE,
+  id_ref           int          NULL REFERENCES reference_urls(id) DEFAULT NULL,
   name             varchar(256) NOT NULL,
   severity_delta   real         NOT NULL DEFAULT 0,
   certainty_delta  real         NOT NULL DEFAULT 0,
