@@ -158,6 +158,7 @@ size_t removeAlerts(Transaction &t, const Logger::Node &log)
 } // unnamed namespace
 
 
+
 Connection::Connection(DBHandlePtrNN handle):
   detail::ConnectionBase(handle),
   log_("persistency.io.postgres.connection")
@@ -166,6 +167,10 @@ Connection::Connection(DBHandlePtrNN handle):
 
 size_t Connection::removeEntriesOlderThanImpl(size_t days, Transaction &t)
 {
+// TODO: THIS IS TEMPORARY WORKAROUND - THIS HAS TO BE RE-IMPLEMENTED!
+return 0;           
+
+
   // TODO: this while statement can be refactored to use 'IN' instead of 'NOT IN' in statements,
   //       which is MUCH faster, plus adding extra indexes if needed.
   TRYCATCH_BEGIN
