@@ -106,7 +106,7 @@ CREATE TABLE    analyzers
   ip      inet         NULL,
 
   UNIQUE(sys_id),
-  UNIQUE(sys_id, name, version, os, ip)  -- this is test for uniqueness in fact
+  UNIQUE(sys_id, name, version, os, ip)  -- this will make analyzers' scanning faster
 );
 
 
