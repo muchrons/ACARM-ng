@@ -14,3 +14,4 @@
 * add automatic queue reduction to triggers - before sending check if some of the alerts are not part of others.
 * add handle for out-of-memory problem (i.e. using own wrapper for memory manager).
 * confidder adding per-requisites for triggers, i.e. to trigger only reports of some specific content (preprocessor-like style).
+* update Persistency::IO::Connection::remove...() API to take hours instead of days, between cleanups (update config as well).
