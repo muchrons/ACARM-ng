@@ -16,3 +16,4 @@
 * confidder adding per-requisites for triggers, i.e. to trigger only reports of some specific content (preprocessor-like style).
 * update Persistency::IO::Connection::remove...() API to take hours instead of days, between cleanups (update config as well).
 * add possibility to turn-off persistency cleanup.
+* add information to logs, that if cleanup takes more than ??% of waiting time, interval should be decreased.
