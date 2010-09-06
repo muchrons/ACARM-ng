@@ -15,3 +15,4 @@
 * add handle for out-of-memory problem (i.e. using own wrapper for memory manager).
 * confidder adding per-requisites for triggers, i.e. to trigger only reports of some specific content (preprocessor-like style).
 * update Persistency::IO::Connection::remove...() API to take hours instead of days, between cleanups (update config as well).
+* add possibility to turn-off persistency cleanup.
