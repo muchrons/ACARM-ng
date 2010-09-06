@@ -22,7 +22,7 @@ void graphNodePrintoutImpl(::Persistency::GraphNodePtr n, const string &prefix)
 {
   // print this node's name
   cout << prefix << "> " << n->getMetaAlert()->getName().get()
-       << "  (" << static_cast<void*>( n.get() ) << ")" << endl;
+       << "  (" << static_cast<const void*>( n.get() ) << ")" << endl;
 
   // if it has childrent, print them too
   if( n->isLeaf()==false )
@@ -30,20 +30,36 @@ void graphNodePrintoutImpl(::Persistency::GraphNodePtr n, const string &prefix)
       graphNodePrintoutImpl(*it, prefix+"  ");
 } // graphNodePrintoutImpl()
 
+template<typename TCol>
+void graphNodePrintoutCollecitonImpl(const TCol &c)
+{
+  for(typename TCol::const_iterator it=c.begin(); it!=c.end(); ++it)
+  {
+    cout << "-------------- " << static_cast<const void*>( it->get() ) << " --------------" << endl;
+    graphNodePrintout(*it);
+  }
+} // graphNodePrintoutCollecitonImpl()
+
 } // unnamed namespace
 
 
 
 void graphNodePrintout(const std::vector< ::Persistency::GraphNodePtr > &v)
 {
-  for(std::vector< ::Persistency::GraphNodePtr >::const_iterator it=v.begin(); it!=v.end(); ++it)
-  {
-    cout << "-------------- " << static_cast<void*>( it->get() ) << " --------------" << endl;
-    graphNodePrintout(*it);
-  }
+  graphNodePrintoutCollecitonImpl(v);
+} // graphNodePrintout()
+
+void graphNodePrintout(const std::vector< ::Persistency::GraphNodePtrNN > &v)
+{
+  graphNodePrintoutCollecitonImpl(v);
 } // graphNodePrintout()
 
 void graphNodePrintout(::Persistency::GraphNodePtr n)
+{
+  graphNodePrintoutImpl(n, "");
+} // graphNodePrintout()
+
+void graphNodePrintout(::Persistency::GraphNodePtrNN n)
 {
   graphNodePrintoutImpl(n, "");
 } // graphNodePrintout()
