@@ -29,10 +29,10 @@ struct TestClass: private TestBase
   {
   }
 
-  GraphNodePtrNN makeNode(int extraNodes=0)
+  GraphNodePtrNN makeNode(int extraNodes=0, unsigned int id=42)
   {
     MetaAlertPtrNN ma( new MetaAlert("meta alert x",
-                                     42,
+                                     id,
                                      0,
                                      makeNewReferenceURL(),
                                      Timestamp(),
@@ -403,7 +403,7 @@ template<>
 template<>
 void testObj::test<21>(void)
 {
-  GraphNodePtrNN node  =makeNode();
+  GraphNodePtrNN node =makeNode();
   GraphNodePtrNN child=makeNode();
   node->addChild(child, *makeIO(node) );
   TestHelpers::checkEquality(*node, *makeNode() );
@@ -525,6 +525,25 @@ void testObj::test<27>(void)
 {
   const GraphNode::ID id(42u);
   ensure_equals("invalid ID", id.get(), 42u);
+}
+
+// test comparison when order of children differ
+template<>
+template<>
+void testObj::test<28>(void)
+{
+  GraphNodePtrNN node1 =makeNode();
+  GraphNodePtrNN node2 =makeNode();
+  GraphNodePtrNN child1=makeNode(0, 10);
+  GraphNodePtrNN child2=makeNode(0, 20);
+
+  node1->addChild(child1, *makeIO(node1) );
+  node1->addChild(child2, *makeIO(node1) );
+
+  node2->addChild(child2, *makeIO(node2) );
+  node2->addChild(child1, *makeIO(node2) );
+
+  ensure("compariosn of nodes with children in different order failed", *node1==*node2);
 }
 
 } // namespace tut

@@ -6,7 +6,7 @@
 
 #include "Persistency/Alert.hpp"
 #include "Base/ViaPointer.hpp"
-#include "Commons/ViaCollection.hpp"
+#include "Commons/ViaUnorderedCollection.hpp"
 
 using namespace std;
 
@@ -87,7 +87,7 @@ bool Alert::operator==(const Alert &other) const
 
   if( getName()!=other.getName() )
     return false;
-  if( !Commons::ViaCollection::equal( getSourceAnalyzers(), other.getSourceAnalyzers() ) )
+  if( !Commons::ViaUnorderedCollection::equal( getSourceAnalyzers(), other.getSourceAnalyzers() ) )
     return false;
   if( !Base::ViaPointer::equal( getDetectionTime(), other.getDetectionTime() ) )
     return false;
@@ -99,11 +99,9 @@ bool Alert::operator==(const Alert &other) const
     return false;
   if( getDescription()!=other.getDescription() )
     return false;
-  if( !Commons::ViaCollection::equal( getReportedSourceHosts(),
-                                      other.getReportedSourceHosts() ) )
+  if( !Commons::ViaUnorderedCollection::equal( getReportedSourceHosts(), other.getReportedSourceHosts() ) )
     return false;
-  if( !Commons::ViaCollection::equal( getReportedTargetHosts(),
-                                      other.getReportedTargetHosts() ) )
+  if( !Commons::ViaUnorderedCollection::equal( getReportedTargetHosts(), other.getReportedTargetHosts() ) )
     return false;
   // if all fields are equal, objects are equal too.
   return true;

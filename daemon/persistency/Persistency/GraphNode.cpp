@@ -5,7 +5,7 @@
 #include <exception>
 #include <cassert>
 
-#include "Commons/ViaCollection.hpp"
+#include "Commons/ViaUnorderedCollection.hpp"
 #include "Logger/Logger.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/detail/InternalAccessProxy.hpp"
@@ -156,7 +156,7 @@ const Alert &GraphNode::getAlert(void) const
 
 bool GraphNode::operator==(const GraphNode &other) const
 {
-  // check if comparing to self
+  // check comparing to self
   if(this==&other)
     return true;
   assert( self_.get()!=other.self_.get() );
@@ -173,8 +173,8 @@ bool GraphNode::operator==(const GraphNode &other) const
       return false;
   }
 
-  // if nodes itself are identical, ensure all subtrees are identical too
-  return Commons::ViaCollection::equal(children_, other.children_);
+  // check children, but skip the order, since it may differ in general case
+  return Commons::ViaUnorderedCollection::equal(children_, other.children_);
 }
 
 void GraphNode::ensureIsNode(void) const
