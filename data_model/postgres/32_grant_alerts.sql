@@ -11,10 +11,7 @@ GRANT SELECT
            alert_analyzers,
            reference_urls,
            services,
-           severities,
-           reported_hosts,
-           reported_procs,
-           reported_services
+           severities
   TO "acarm-ng-ui",
      "acarm-ng-daemon";
 GRANT SELECT
@@ -24,9 +21,7 @@ GRANT SELECT
            procs_id_seq,
            analyzers_id_seq,
            reference_urls_id_seq,
-           services_id_seq,
-           reported_hosts_id_seq,
-           reported_procs_id_seq
+           services_id_seq
   TO "acarm-ng-ui",
      "acarm-ng-daemon";
 
@@ -39,10 +34,7 @@ GRANT INSERT
            analyzers,
            alert_analyzers,
            reference_urls,
-           services,
-           reported_hosts,
-           reported_procs,
-           reported_services
+           services
   TO "acarm-ng-daemon";
 GRANT UPDATE
   ON SEQUENCE
@@ -51,9 +43,7 @@ GRANT UPDATE
            procs_id_seq,
            analyzers_id_seq,
            reference_urls_id_seq,
-           services_id_seq,
-           reported_hosts_id_seq,
-           reported_procs_id_seq
+           services_id_seq
   TO "acarm-ng-daemon";
 
 
@@ -71,8 +61,5 @@ GRANT DELETE
            analyzers,
            alert_analyzers,
            reference_urls,
-           services,
-           reported_hosts,
-           reported_procs,
-           reported_services
+           services
   TO "acarm-ng-daemon";

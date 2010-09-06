@@ -11,7 +11,7 @@ class DataTableTemplate extends TTemplateControl
   }
 
   private function getRowCount()
-  {    
+  {
     return CSQLMap::get()->queryForObject('SelectAlertsSummaryCount');
   }
 
@@ -45,7 +45,7 @@ class DataTableTemplate extends TTemplateControl
     $this->DataGrid->DataSource=$this->getDataRows($this->DataGrid->PageSize,$this->DataGrid->CurrentPageIndex);
     $this->DataGrid->dataBind();
   }
-  
+
   public function pagerCreated($sender, $param)
   {
     $param->Pager->Controls->insertAt(0, 'Page: ');

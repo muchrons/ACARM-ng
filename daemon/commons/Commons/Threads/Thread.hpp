@@ -57,7 +57,7 @@ private:
         t_();   // run user's code
         LOGMSG_DEBUG(log_, "user's thread function finished without error");
       }
-      catch(const boost::thread_interrupted &ex) //TODO: ex never used
+      catch(const boost::thread_interrupted &/*ex*/)
       {
         LOGMSG_WARN(log_, "unhandled thread interruption caught: - aborting...");
       }

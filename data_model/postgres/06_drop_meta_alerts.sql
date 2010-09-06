@@ -2,8 +2,6 @@
 -- drop_correlated_alerts.sql
 --
 
--- TODO: drop meta-alerts
-
 DROP TABLE    alert_to_meta_alert_map;
 
 DROP TRIGGER  ensure_leafs_are_unique_trigger ON meta_alerts_tree;

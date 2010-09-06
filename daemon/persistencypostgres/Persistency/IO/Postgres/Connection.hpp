@@ -47,14 +47,6 @@ public:
 private:
   virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t);
 
-  void createTemporaryTables(size_t days, Transaction &t) const;
-  void removeExtraMetaAlertsEntries(Transaction &t) const;
-  void removeReportedServices(Transaction &t) const;
-  void removeReportedProcs(Transaction &t) const;
-  void removeReportedHosts(Transaction &t) const;
-  void removeAnalyzers(Transaction &t) const;
-  size_t removeAlerts(Transaction &t) const;
-
   Logger::Node log_;
 }; // class Connection
 

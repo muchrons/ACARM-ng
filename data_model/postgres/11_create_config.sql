@@ -2,6 +2,8 @@
 -- create_config.sql
 --
 
+-- TODO: consider making owner non-NULL as well...
+
 -- config_rdonly
 CREATE TABLE config_rdonly
 (

@@ -72,10 +72,33 @@ EntrySaver::EntrySaver(Transaction &t, DBHandle &dbh):
 {
 }
 
-DataBaseID EntrySaver::saveProcess(DataBaseID reportedHostID, const Process &p)
+DataBaseID EntrySaver::saveProcess(DataBaseID hostID, const Process &p)
 {
-  const DataBaseID procID=saveProcessData(p);
-  return saveReportedProcessData(reportedHostID, procID, p);
+  stringstream ss;
+  ss << "INSERT INTO procs("
+        "id_host, id_ref, path, name, md5, pid, uid, username, arguments"
+        ") VALUES (";
+  ss << hostID << ",";
+  addReferenceURL(ss, p.getReferenceURL() );
+  ss << ",";
+  Appender::append(ss, p.getPath().get() );
+  ss << ",";
+  Appender::append(ss, p.getName().get() );
+  ss << ",";
+  Appender::append(ss, (p.getMD5())?p.getMD5()->get():NULL);
+  ss << ",";
+  Appender::append(ss, p.getPID() );
+  ss << ",";
+  Appender::append(ss, p.getUID() );
+  ss << ",";
+  Appender::append(ss, p.getUsername().get() );
+  ss << ",";
+  Appender::append(ss, p.getParameters() );
+  ss << ");";
+  // insert object to data base.
+  SQL( ss.str(), log_ ).exec(t_);
+
+  return getID("procs_id_seq");
 }
 
 DataBaseID EntrySaver::getID(const std::string &seqName)
@@ -146,48 +169,6 @@ Base::NullValue<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
   return Base::NullValue<DataBaseID>( id );
 }
 
-DataBaseID EntrySaver::saveProcessData(const Process &p)
-{
-  stringstream ss;
-  ss << "INSERT INTO procs(path, name, md5) VALUES (";
-  Appender::append(ss, p.getPath().get() );
-  ss << ",";
-  Appender::append(ss, p.getName().get() );
-  ss << ",";
-  Appender::append(ss, (p.getMD5())?p.getMD5()->get():NULL);
-  ss << ");";
-  // insert object to data base.
-  SQL( ss.str(), log_ ).exec(t_);
-
-  return getID("procs_id_seq");
-}
-
-DataBaseID EntrySaver::saveReportedProcessData(DataBaseID     reportedHostID,
-                                               DataBaseID     procID,
-                                               const Process &p)
-{
-  stringstream ss;
-  ss << "INSERT INTO reported_procs("
-        "id_reported_host, id_proc, pid, uid, username, arguments, id_ref"
-        ") VALUES (";
-  ss << reportedHostID << ",";
-  ss << procID << ",";
-  Appender::append(ss, p.getPID() );
-  ss << ",";
-  Appender::append(ss, p.getUID() );
-  ss << ",";
-  Appender::append(ss, p.getUsername().get() );
-  ss << ",";
-  Appender::append(ss, p.getParameters() );
-  ss << ",";
-  addReferenceURL(ss, p.getReferenceURL() );
-  ss << ");";
-  // insert object to data base.
-  SQL( ss.str(), log_ ).exec(t_);
-
-  return getID("reported_procs_id_seq");
-}
-
 DataBaseID EntrySaver::saveReferenceURL(const ReferenceURL &url)
 {
   stringstream ss;
@@ -202,10 +183,18 @@ DataBaseID EntrySaver::saveReferenceURL(const ReferenceURL &url)
   return getID("reference_urls_id_seq");
 }
 
-DataBaseID EntrySaver::saveHostData(const Persistency::Host &h)
+DataBaseID EntrySaver::saveHostGeneric(DataBaseID alertID, const Persistency::Host &h, const char *role)
 {
+  assert(role!=NULL);
+  assert(strcmp(role, "src") == 0 || strcmp(role, "dst") == 0);
+
   stringstream ss;
-  ss << "INSERT INTO hosts(ip, mask, os, name) VALUES (";
+  ss << "INSERT INTO hosts(id_alert, id_ref, role, ip, mask, os, name) VALUES (";
+  ss << alertID << ",";
+  addReferenceURL(ss, h.getReferenceURL() );
+  ss << ",";
+  Appender::append(ss, role);
+  ss << ",";
   Appender::append(ss, h.getIP().to_string() );
   ss << ",";
   Appender::append(ss, h.getNetmask()?h.getNetmask()->to_string().c_str():NULL );
@@ -215,36 +204,17 @@ DataBaseID EntrySaver::saveHostData(const Persistency::Host &h)
   Appender::append(ss, h.getName().get() );
   ss << ");";
   SQL( ss.str(), log_ ).exec(t_);
-
   return getID("hosts_id_seq");
 }
 
-DataBaseID EntrySaver::saveReportedHostData(DataBaseID               alertID,
-                                            DataBaseID               hostID,
-                                            const char               *role,
-                                            const Persistency::Host &h)
+DataBaseID EntrySaver::saveTargetHost(DataBaseID alertID, const Persistency::Host &h)
 {
-  stringstream ss;
-  ss << "INSERT INTO reported_hosts(id_alert, id_host, role, id_ref) VALUES (";
-  ss << alertID << ",";
-  ss << hostID << ",";
-  assert(strcmp(role, "src") == 0 || strcmp(role, "dst") == 0);
-  Appender::append(ss, role);
-  ss << ",";
-  addReferenceURL(ss, h.getReferenceURL() );
-  ss << ");";
-  SQL( ss.str(), log_ ).exec(t_);
-  return getID("reported_hosts_id_seq");
+  return saveHostGeneric(alertID, h, "dst");
 }
 
-DataBaseID EntrySaver::saveTargetHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h)
+DataBaseID EntrySaver::saveSourceHost(DataBaseID alertID, const Persistency::Host &h)
 {
-  return saveReportedHostData(alertID, hostID, "dst", h);
-}
-
-DataBaseID EntrySaver::saveSourceHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h)
-{
-  return saveReportedHostData(alertID, hostID, "src", h);
+  return saveHostGeneric(alertID, h, "src");
 }
 
 DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
@@ -290,10 +260,13 @@ DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
   return getID("analyzers_id_seq");
 }
 
-DataBaseID EntrySaver::saveServiceData(const Service &s)
+DataBaseID EntrySaver::saveService(DataBaseID hostID, const Service &s)
 {
   stringstream ss;
-  ss << "INSERT INTO services(name, port, protocol) VALUES (";
+  ss << "INSERT INTO services(id_host, id_ref, name, port, protocol) VALUES (";
+  ss << hostID << ",";
+  addReferenceURL(ss, s.getReferenceURL() );
+  ss << ",";
   Appender::append(ss, s.getName().get() );
   ss << ",";
   Appender::append(ss, s.getPort().get() );
@@ -303,42 +276,21 @@ DataBaseID EntrySaver::saveServiceData(const Service &s)
   SQL( ss.str(), log_ ).exec(t_);
 
   return getID("services_id_seq");
-
-}
-
-void EntrySaver::saveReportedServiceData(DataBaseID     reportedHostID,
-                                         DataBaseID     serID,
-                                         const Service &s)
-{
-  stringstream ss;
-  ss << "INSERT INTO reported_services(id_reported_host, id_service, id_ref) VALUES (";
-  ss << reportedHostID << ",";
-  ss << serID << ",";
-  addReferenceURL(ss, s.getReferenceURL() );
-  ss << ");";
-  SQL( ss.str(), log_ ).exec(t_);
-}
-
-DataBaseID EntrySaver::saveService(DataBaseID reportedHostID, const Service &s)
-{
-  DataBaseID serID = saveServiceData(s);
-  saveReportedServiceData(reportedHostID, serID, s);
-  return serID;
 }
 
 DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
 {
   stringstream ss;
-  ss << "INSERT INTO meta_alerts(sys_id, name, severity_delta, certainty_delta, id_ref, create_time, last_update_time) VALUES (";
+  ss << "INSERT INTO meta_alerts(sys_id, id_ref, name, severity_delta, certainty_delta, create_time, last_update_time) VALUES (";
   Appender::append(ss, ma.getID().get() );
+  ss << ",";
+  addReferenceURL(ss, ma.getReferenceURL() );
   ss << ",";
   Appender::append(ss, ma.getName().get() );
   ss << ",";
   Appender::append(ss, ma.getSeverityDelta() );
   ss << ",";
   Appender::append(ss, ma.getCertaintyDelta() );
-  ss << ",";
-  addReferenceURL(ss, ma.getReferenceURL() );
   ss << ",";
   Appender::append(ss, ma.getCreateTime() );
   ss << ",";
