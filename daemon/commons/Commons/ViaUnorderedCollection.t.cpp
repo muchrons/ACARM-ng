@@ -132,7 +132,7 @@ void testObj::test<7>(void)
     l2.push_back( LongPtr( new long(42+i) ) );
   }
   // check
-  ensure("lists of different smart pointers to same values differ",
+  ensure("lists of different smart pointers to the same values differ",
          ViaUnorderedCollection::equal(l1, l2) );
 }
 

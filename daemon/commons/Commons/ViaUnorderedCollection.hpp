@@ -7,12 +7,12 @@
 
 /* public header */
 
-#include <vector>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_same.hpp>
 #include <cassert>
 
-#include "Commons/detail/ElementCompare.hpp"
+#include "Commons/ViaCollection.hpp"
+#include "Commons/detail/SortedVector.hpp"
 
 namespace Commons
 {
@@ -44,37 +44,15 @@ struct ViaUnorderedCollection
     // quick test - check sizes
     if( c1.size()!=c2.size() )
       return false;
+    typedef detail::SortedVector<T1> SortedInput1;
+    typedef detail::SortedVector<T2> SortedInput2;
 
-    // temporary markers for elements that have been already matched
-    std::vector<bool> done(c1.size(), false);   // full size of falses
-    assert( done.size()==c1.size() );
+    // sort each input collection - O(log(n)*n)
+    const SortedInput1 si1(c1);
+    const SortedInput2 si2(c2);
 
-    // test each element agains each unmached in other collection
-    for(typename T1::const_iterator it1=c1.begin(); it1!=c1.end(); ++it1)
-    {
-      bool                        hasMatch=false;
-      std::vector<bool>::iterator doneIt  =done.begin();
-      for(typename T2::const_iterator it2=c2.begin(); it2!=c2.end(); ++it2, ++doneIt)
-      {
-        assert( doneIt!=done.end() );
-        if(*doneIt)     // skip elements that are already matched
-          continue;
-        // do we have a match?
-        if( detail::ElementCompare<TValue>::equal(*it1, *it2) )
-        {
-          hasMatch=true;    // save that we've found something
-          *doneIt =true;    // mark this element as already used
-          break;            // finish this run
-        }
-      } // for(c2)
-
-      // exit if found element without the match
-      if(!hasMatch)
-        return false;
-    } // for(c1)
-
-    // if no inequalities are found, collections are equal
-    return true;
+    // no we have already known problem, we can solve easily in O(n)
+    return ViaCollection::equal( si1.get(), si2.get() );
   }
 
 private:
