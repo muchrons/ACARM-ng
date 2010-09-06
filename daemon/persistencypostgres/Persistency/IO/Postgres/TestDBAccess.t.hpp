@@ -28,6 +28,16 @@ private:
   DBConnection conn_;
 }; // struct TestDBAccess
 
+
+// helper that creates TestDBAccess and cleans-up data base stright away
+struct DataCleaner: public TestDBAccess
+{
+  DataCleaner(void)
+  {
+    removeAllData();
+  }
+}; // struct DataCleaner
+
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency

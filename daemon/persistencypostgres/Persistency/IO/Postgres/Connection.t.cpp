@@ -28,7 +28,6 @@ struct TestClass
     conn_( makeConnection() ),
     t_( conn_->createNewTransaction("save_alert_tests") )
   {
-    tdba_.removeAllData();
   }
 
   IO::ConnectionPtrNN makeConnection(void) const
@@ -91,10 +90,10 @@ struct TestClass
     return t_.getAPI<TransactionAPI>().exec( ss.str() ).size();
   }
 
+  DataCleaner         dc_;
   IDCachePtrNN        idCache_;
   DBHandlePtrNN       dbh_;
   IO::ConnectionPtrNN conn_;
-  TestDBAccess        tdba_;
   TestConnection      tc_;
   Transaction         t_;
 };
@@ -114,7 +113,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  tdba_.fillWithContent1();
+  dc_.fillWithContent1();
   ensure_equals("some entries have been deleted",
                 conn_->removeEntriesOlderThan(9999, t_), 0u);
 }
@@ -124,7 +123,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  tdba_.fillWithContent1();
+  dc_.fillWithContent1();
   ensure_equals("invalid number of entries removed",
                 conn_->removeEntriesOlderThan(0, t_), 2u);
 }

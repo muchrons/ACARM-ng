@@ -35,7 +35,6 @@ struct TestClass
     conn_(makeConnection() ),
     t_( conn_->createNewTransaction("restore_tests") )
   {
-    tdba_.removeAllData();
   }
 
   void checkCache(Restorer::NodesVector &out) const
@@ -403,7 +402,7 @@ struct TestClass
     first.push_back(root2);
   }
 
-  TestDBAccess        tdba_;
+  DataCleaner         dc_;
   IDCachePtrNN        idCache_;
   DBHandlePtrNN       dbh_;
   IO::ConnectionPtrNN conn_;

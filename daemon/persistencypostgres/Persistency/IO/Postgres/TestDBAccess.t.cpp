@@ -67,7 +67,6 @@ void TestDBAccess::removeAllData(void)
 
 void TestDBAccess::fillWithContent1(void)
 {
-  pqxx::work t(conn_.get(), "fill_with_content1");
   const int  ret=system("psql -d acarm_ng_test -f testdata/test_data_001.sql "
                         "> /dev/null");
   assert(ret==0 && "ooops - filling data base with tst content failed");

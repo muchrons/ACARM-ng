@@ -39,7 +39,6 @@ struct TestClass
     conn_(makeConnection() ),
     t_( conn_->createNewTransaction("save_alert_tests") )
   {
-    tdba_.removeAllData();
   }
 
   Persistency::Alert::ReportedHosts generateReportedHosts(unsigned int size) const
@@ -63,7 +62,7 @@ struct TestClass
   const Persistency::Alert::ReportedHosts sourceHosts_;
   const Persistency::Alert::ReportedHosts targetHosts_;
 
-  TestDBAccess            tdba_;
+  DataCleaner             dc_;
   IDCachePtrNN            idCache_;
   DBHandlePtrNN           dbh_;
   IO::ConnectionPtrNN     conn_;

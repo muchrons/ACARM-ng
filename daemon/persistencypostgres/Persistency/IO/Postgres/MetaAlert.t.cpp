@@ -34,7 +34,6 @@ struct TestClass
     conn_(makeConnection() ),
     t_( conn_->createNewTransaction("save_alert_tests") )
   {
-    tdba_.removeAllData();
   }
 
 
@@ -47,7 +46,7 @@ struct TestClass
   }
 
   const string        name_;
-  TestDBAccess        tdba_;
+  DataCleaner         dc_;
   IDCachePtrNN        idCache_;
   DBHandlePtrNN       dbh_;
   IO::ConnectionPtrNN conn_;
