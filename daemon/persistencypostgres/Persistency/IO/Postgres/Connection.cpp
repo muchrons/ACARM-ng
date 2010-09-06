@@ -134,32 +134,39 @@ void removeExtraMetaAlertsEntries(Transaction &t, const Logger::Node &log)
   // filled up with leafs to be deleted.
   createTempTable(t, log, "cleanup_new_to_remove_ma_ids", "SELECT * FROM cleanup_meta_alerts_ids");
 
-#warning THIS CODE DOES NOT WORK AS IT SHOULD YET...
+  // loot pruning unneeded elements from tree up to the roots
   size_t affected;
-  bool   firstRun=true;
   do
   {
+    // clean-up candidates list before proceeding
+    execSQL(log, t, "DELETE FROM cleanup_candidates_to_remove_ma_ids");
     // save all parents of childrent to be removed - if they stay empty, they are to be removed as well!
     execSQL(log, t, "INSERT INTO cleanup_candidates_to_remove_ma_ids"
                     "  SELECT id_node AS id FROM meta_alerts_tree WHERE id_child IN"
                     "    (SELECT id FROM cleanup_new_to_remove_ma_ids)");
+
     // remove all tree entries, related to meta-alerts to be removed
     execSQL(log, t, "DELETE FROM meta_alerts_tree WHERE id_child IN (SELECT id FROM cleanup_new_to_remove_ma_ids)");
-    // preapre table to accept new data
+    execSQL(log, t, "DELETE FROM meta_alerts_tree WHERE id_node  IN (SELECT id FROM cleanup_new_to_remove_ma_ids)");
+
+    // preapre temporary helper tables to accept new data
     execSQL(log, t, "DELETE FROM cleanup_new_to_remove_ma_ids");
     // check which parents are no longer in use, thus should be marked for removal
-    affected=execSQL(log, t, "INSERT INTO cleanup_new_to_remove_ma_ids"
-                             "  SELECT id FROM cleanup_candidates_to_remove_ma_ids WHERE"
-                             "    id NOT IN (SELECT id_node  FROM meta_alerts_tree ORDER BY id_node)"
-                             "    AND"
-                             "    id NOT IN (SELECT id_child FROM meta_alerts_tree ORDER BY id_child)").affected_rows();
-    // after the first run is done copy new IDs to be removed to main table. we skip this step
-    // the first time, since cleanup_new_to_remove_ma_ids has initial value of cleanup_meta_alerts_ids
-    // thus it makes no sense to copy data again.
-    if(!firstRun)
-      execSQL(log, t, "INSERT INTO cleanup_meta_alerts_ids SELECT id FROM cleanup_new_to_remove_ma_ids");
-    else
-      firstRun=false;
+    affected =execSQL(log, t, "INSERT INTO cleanup_new_to_remove_ma_ids"
+                              "  SELECT id FROM cleanup_candidates_to_remove_ma_ids WHERE"
+                              "    id NOT IN (SELECT id_node FROM meta_alerts_tree ORDER BY id_node)").affected_rows();
+    LOGMSG_DEBUG_S(log)<<"selected "<<affected<<" rows from candidates set";
+
+    // remove roots that have only one child - they are invalid
+    affected+=execSQL(log, t, "INSERT INTO cleanup_new_to_remove_ma_ids"
+                              "  SELECT id_node AS id FROM"
+                              "    (SELECT id_node, count(id_child) AS cnt FROM meta_alerts_tree GROUP BY id_node) AS s WHERE s.cnt=1").affected_rows();
+    LOGMSG_DEBUG_S(log)<<"selected "<<affected<<" rows in total (i.e. parent nodes having only one child left)";
+
+    // after the first run is done copy new IDs to be removed to main table
+    execSQL(log, t, "INSERT INTO cleanup_meta_alerts_ids SELECT id FROM cleanup_new_to_remove_ma_ids");
+    // add extra debugging info
+    LOGMSG_DEBUG_S(log)<<"affected "<<affected<<" entries in total - "<<((affected>0)?"continuing interation":"loop's done");
   }
   while(affected>0);
 

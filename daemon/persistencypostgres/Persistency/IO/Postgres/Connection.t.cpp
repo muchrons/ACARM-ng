@@ -155,7 +155,7 @@ void testObj::test<3>(void)
   ensure_equals("invalid number of entries removed",
                 conn_->removeEntriesOlderThan(9, t_), 2u);
   ensure_equals("invalid alerts' size",      count("alerts"), 3u);
-  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 3u+3u);
+  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 3u+1u);
 }
 
 // test removing parent, when no more children are present
@@ -184,7 +184,7 @@ void testObj::test<4>(void)
   ensure_equals("invalid number of entries removed",
                 conn_->removeEntriesOlderThan(9, t_), 3u);
   ensure_equals("invalid alerts' size",      count("alerts"), 2u);
-  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 2u+2u);
+  ensure_equals("invalid meta alerts' size", count("meta_alerts"), 2u+1u);
 }
 
 // test removing all elements
