@@ -107,10 +107,14 @@ void removeReportedHosts(Transaction &t, const Logger::Node &log)
 
 void removeAnalyzers(Transaction &t, const Logger::Node &log)
 {
+  // analyzers to check for removal
+  createTempTable(t, log, "cleanup_candidates_to_remove_analyzers_ids",
+                  "SELECT id_analyzer AS id FROM alert_analyzers WHERE id_alert IN (SELECT id FROM cleanup_alerts_ids ORDER BY id)");
+  // remove mappings
   execSQL(log, t, "DELETE FROM alert_analyzers WHERE id_alert IN (SELECT id FROM cleanup_alerts_ids ORDER BY id)");
   // removes analyzers, but only those that belonged to removed alerts and are not used by others any more
   execSQL(log, t, "DELETE FROM analyzers WHERE"
-                  "  id IN (SELECT id FROM cleanup_alerts_ids ORDER BY id)"
+                  "  id IN (SELECT id FROM cleanup_candidates_to_remove_analyzers_ids ORDER BY id)"
                   "  AND"
                   "  id NOT IN (SELECT id_analyzer FROM alert_analyzers ORDER BY id_analyzer)");
 }
@@ -154,8 +158,8 @@ void removeExtraMetaAlertsEntries(Transaction &t, const Logger::Node &log)
     execSQL(log, t, "DELETE FROM cleanup_new_to_remove_ma_ids");
     // check which parents are no longer in use, thus should be marked for removal
     affected =execSQL(log, t, "INSERT INTO cleanup_new_to_remove_ma_ids"
-                              "  SELECT id FROM cleanup_candidates_to_remove_ma_ids WHERE"
-                              "    id NOT IN (SELECT id_node FROM meta_alerts_tree ORDER BY id_node)").affected_rows();
+                              "  SELECT c.id FROM cleanup_candidates_to_remove_ma_ids AS c"
+                              "    LEFT JOIN meta_alerts_tree AS t ON c.id=t.id_node").affected_rows();
     LOGMSG_DEBUG_S(log)<<"selected "<<affected<<" rows from candidates set";
 
     // remove roots that have only one child - they are invalid
