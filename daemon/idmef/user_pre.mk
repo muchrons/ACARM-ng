@@ -1,3 +1,4 @@
+#CONFIGURE_OPTIONS:=--enable-shared --disable-static
 CONFIGURE_OPTIONS:=
 MAKE_OPTIONS:=
 MAKE_INSTALL_OPTIONS:=
