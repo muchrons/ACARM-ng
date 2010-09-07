@@ -297,4 +297,52 @@ void testObj::test<15>(void)
          !ViaUnorderedSortableCollection::equal(c2, c1) );
 }
 
+// test sorting pointers list when addresses does not overlap with elements order
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  list<const long*> l1;
+  list<const long*> l2;
+
+  const long e1=10;
+  const long e2=20;
+  const long e3=20;
+  const long e4=10;
+
+  l1.push_back(&e1);
+  l1.push_back(&e2);
+
+  l2.push_back(&e3);
+  l2.push_back(&e4);
+
+  // check
+  ensure("lists of pointers to the same values differ", ViaUnorderedSortableCollection::equal(l1, l2) );
+}
+
+// test sorting pointers list witch NULLs present
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  list<const long*> l1;
+  list<const long*> l2;
+
+  const long e1=10;
+  const long e2=20;
+  const long e3=20;
+  const long e4=10;
+
+  l1.push_back(&e1);
+  l1.push_back(NULL);
+  l1.push_back(&e2);
+
+  l2.push_back(NULL);
+  l2.push_back(&e3);
+  l2.push_back(&e4);
+
+  // check
+  ensure("lists of pointers with NULLs to the same values differ", ViaUnorderedSortableCollection::equal(l1, l2) );
+}
+
 } // namespace tut

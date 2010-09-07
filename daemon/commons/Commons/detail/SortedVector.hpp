@@ -12,6 +12,8 @@
 #include <algorithm>
 #include <cassert>
 
+#include "Base/ViaPointer.hpp"
+
 namespace Commons
 {
 namespace detail
@@ -74,9 +76,7 @@ private:
     typedef boost::shared_ptr<T> E;
     bool operator()(const E &e1, const E &e2) const
     {
-      if( e1.get()==NULL || e2.get()==NULL )
-        return e1.get()<e2.get();
-      return *e1<*e2;
+      return Base::ViaPointer::lessThan( e1.get(), e2.get() );
     }
   }; // struct SWO
 
@@ -86,9 +86,17 @@ private:
     typedef SharedPtrNotNULL<T> E;
     bool operator()(const E &e1, const E &e2) const
     {
-      if( e1.get()==NULL || e2.get()==NULL )
-        return e1.get()<e2.get();
-      return *e1<*e2;
+      return Base::ViaPointer::lessThan( e1.get(), e2.get() );
+    }
+  }; // struct SWO
+
+  template<typename T>
+  struct SWO<T*>
+  {
+    typedef T* E;
+    bool operator()(const E &e1, const E &e2) const
+    {
+      return Base::ViaPointer::lessThan(e1, e2);
     }
   }; // struct SWO
 
