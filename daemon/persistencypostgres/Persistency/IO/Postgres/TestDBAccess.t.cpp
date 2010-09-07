@@ -26,21 +26,38 @@ TestDBAccess::TestDBAccess(void):
 void TestDBAccess::removeAllData(void)
 {
   pqxx::work t(conn_.get(), "remove_all_data");
+  /*
+  // TRUNCATE is MUCH faster than DELETE, but pqxx displays some messages on the screen
+  // when doing it making tests unreadable... :(
+  t.exec("TRUNCATE meta_alerts_already_triggered CASCADE");
+  t.exec("TRUNCATE meta_alerts_in_use CASCADE");
+  t.exec("TRUNCATE alert_to_meta_alert_map CASCADE");
+  t.exec("TRUNCATE meta_alerts_tree CASCADE");
+  t.exec("TRUNCATE meta_alerts CASCADE");
+  t.exec("TRUNCATE alert_analyzers CASCADE");
+  t.exec("TRUNCATE alerts CASCADE");
+  t.exec("TRUNCATE analyzers CASCADE");
+  t.exec("TRUNCATE hosts CASCADE");
+  t.exec("TRUNCATE reference_urls CASCADE");
+  t.exec("TRUNCATE services CASCADE");
+  t.exec("TRUNCATE procs CASCADE");
+  t.exec("TRUNCATE config CASCADE");
+  t.exec("TRUNCATE config_rdonly CASCADE");
+  t.exec("TRUNCATE logs CASCADE");
+  t.exec("TRUNCATE wui_users CASCADE");
+  */
   t.exec("DELETE FROM meta_alerts_already_triggered");
   t.exec("DELETE FROM meta_alerts_in_use");
   t.exec("DELETE FROM alert_to_meta_alert_map");
   t.exec("DELETE FROM meta_alerts_tree");
   t.exec("DELETE FROM meta_alerts");
-  t.exec("DELETE FROM reported_procs");
-  t.exec("DELETE FROM reported_services");
-  t.exec("DELETE FROM reported_hosts");
-  t.exec("DELETE FROM alert_analyzers");
-  t.exec("DELETE FROM alerts");
-  t.exec("DELETE FROM analyzers");
-  t.exec("DELETE FROM hosts");
-  t.exec("DELETE FROM reference_urls");
-  t.exec("DELETE FROM services");
   t.exec("DELETE FROM procs");
+  t.exec("DELETE FROM services");
+  t.exec("DELETE FROM hosts");
+  t.exec("DELETE FROM alert_analyzers");
+  t.exec("DELETE FROM analyzers");
+  t.exec("DELETE FROM alerts");
+  t.exec("DELETE FROM reference_urls");
   t.exec("DELETE FROM config");
   t.exec("DELETE FROM config_rdonly");
   t.exec("DELETE FROM logs");
@@ -50,7 +67,6 @@ void TestDBAccess::removeAllData(void)
 
 void TestDBAccess::fillWithContent1(void)
 {
-  pqxx::work t(conn_.get(), "fill_with_content1");
   const int  ret=system("psql -d acarm_ng_test -f testdata/test_data_001.sql "
                         "> /dev/null");
   assert(ret==0 && "ooops - filling data base with tst content failed");

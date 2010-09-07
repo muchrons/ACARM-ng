@@ -40,7 +40,6 @@ struct TestClass
     t_( conn_->createNewTransaction("reader_helper_tests") ),
     name_("some name")
   {
-    tdba_.removeAllData();
   }
 
   void CreateTempTable()
@@ -55,7 +54,7 @@ struct TestClass
                 ") ON COMMIT DROP;");
   }
 
-  TestDBAccess        tdba_;
+  DataCleaner         dc_;
   IDCachePtrNN        idCache_;
   DBHandlePtrNN       dbh_;
   IO::ConnectionPtrNN conn_;
