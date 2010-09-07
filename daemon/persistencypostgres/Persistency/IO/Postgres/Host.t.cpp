@@ -63,6 +63,8 @@ struct TestClass
           NULL ) );
   }
 
+  DataCleaner                             dc_;
+
   const Persistency::Alert::Name          name_;
   const AnalyzerPtrNN                     analyzer_;
   Persistency::Alert::SourceAnalyzers     analyzers_;
@@ -73,14 +75,13 @@ struct TestClass
   const Severity                          severity_;
   const Certainty                         certainty_;
   const std::string                       description_;
-  Persistency::Alert::ReportedHosts sourceHosts_;
+  Persistency::Alert::ReportedHosts       sourceHosts_;
   const Persistency::Alert::ReportedHosts targetHosts_;
 
-  DataCleaner         dc_;
-  IDCachePtrNN        idCache_;
-  DBHandlePtrNN       dbh_;
-  IO::ConnectionPtrNN conn_;
-  Transaction         t_;
+  IDCachePtrNN                            idCache_;
+  DBHandlePtrNN                           dbh_;
+  IO::ConnectionPtrNN                     conn_;
+  Transaction                             t_;
 };
 
 typedef tut::test_group<TestClass> factory;

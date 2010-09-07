@@ -75,6 +75,8 @@ struct TestClass
     dc_.execSQL(sql);
   }
 
+  DataCleaner                             dc_;
+
   const Persistency::Alert::Name          name_;
   const AnalyzerPtrNN                     analyzer_;
   Persistency::Alert::SourceAnalyzers     analyzers_;
@@ -86,13 +88,12 @@ struct TestClass
   const Persistency::Alert::ReportedHosts sourceHosts_;
   const Persistency::Alert::ReportedHosts targetHosts_;
 
-  DataCleaner         dc_;
-  IDCachePtrNN        idCache_;
-  DBHandlePtrNN       dbh_;
-  IO::ConnectionPtrNN conn_;
-  Transaction         t_;
-  EntrySaver          es_;
-  EntryReader         er_;
+  IDCachePtrNN                            idCache_;
+  DBHandlePtrNN                           dbh_;
+  IO::ConnectionPtrNN                     conn_;
+  Transaction                             t_;
+  EntrySaver                              es_;
+  EntryReader                             er_;
 };
 
 typedef tut::test_group<TestClass> factory;

@@ -6,7 +6,6 @@
 #include <cstring>
 #include <memory>
 
-//#include "Persistency/TestHelpers.t.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/MetaAlert.hpp"
 #include "Persistency/IO/Postgres/Alert.hpp"
@@ -45,8 +44,8 @@ struct TestClass
     tut::ensure_equals("invalid size",r.size(), size);
   }
 
-  const string        name_;
   DataCleaner         dc_;
+  const string        name_;
   IDCachePtrNN        idCache_;
   DBHandlePtrNN       dbh_;
   IO::ConnectionPtrNN conn_;
