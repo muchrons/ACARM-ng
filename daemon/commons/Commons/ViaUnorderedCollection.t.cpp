@@ -297,4 +297,61 @@ void testObj::test<15>(void)
          !ViaUnorderedCollection::equal(c2, c1) );
 }
 
+
+namespace
+{
+struct NotSWO
+{
+  explicit NotSWO(int v):
+    v_(v)
+  {
+  }
+
+  bool operator==(const NotSWO &other) const
+  {
+    return v_==other.v_;
+  }
+
+  int v_;
+}; // struct NotSWO
+} // unnamed namespace
+
+// test comapring elements that does not have operator< defined - negative test.
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  typedef boost::shared_ptr<NotSWO> NotSWOPtr;
+  list<NotSWOPtr> l1;
+  list<NotSWOPtr> l2;
+
+  for(int i=0; i<3; ++i)
+  {
+    l1.push_back( NotSWOPtr( new NotSWO(42+i) ) );
+    l2.push_back( NotSWOPtr( new NotSWO(42-i) ) );
+  }
+  // check
+  ensure("lists of different smart pointers to different values reported equal",
+         !ViaUnorderedCollection::equal(l1, l2) );
+}
+
+// test comapring elements that does not have operator< defined - positive test.
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  typedef boost::shared_ptr<NotSWO> NotSWOPtr;
+  list<NotSWOPtr> l1;
+  list<NotSWOPtr> l2;
+
+  for(int i=0; i<3; ++i)
+  {
+    l1.push_back( NotSWOPtr( new NotSWO(42+i) ) );
+    l2.push_back( NotSWOPtr( new NotSWO(42+i) ) );
+  }
+  // check
+  ensure("lists of different smart pointers to the same values reported not equal",
+         ViaUnorderedCollection::equal(l1, l2) );
+}
+
 } // namespace tut
