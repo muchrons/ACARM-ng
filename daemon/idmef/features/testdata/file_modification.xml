@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<idmef:IDMEF-Message version="1.0"
+                     xmlns:idmef="http://iana.org/idmef">
+  <idmef:Alert>
+    <idmef:Analyzer analyzerid="bids-192.0.2.1"
+                    ostype="Linux"
+                    osversion="2.2.16-3">
+      <idmef:Node category="hosts">
+        <idmef:name>etude</idmef:name>
+        <idmef:Address category="ipv4-addr">
+          <idmef:address>192.0.2.1</idmef:address>
+        </idmef:Address>
+      </idmef:Node>
+    </idmef:Analyzer>
+    <idmef:CreateTime ntpstamp="0xbc71e980.0x00000000">2000-03-09T08:12:32-01:00</idmef:CreateTime>
+    <idmef:Source spoofed="no">
+      <idmef:Node>
+        <idmef:location>console</idmef:location>
+        <idmef:Address category="ipv4-addr">
+          <idmef:address>192.0.2.1</idmef:address>
+        </idmef:Address>
+        </idmef:Node>
+    </idmef:Source>
+    <idmef:Target decoy="no">
+      <idmef:Node>
+        <idmef:location>local</idmef:location>
+        <idmef:Address category="ipv4-addr">
+          <idmef:address>192.0.2.1</idmef:address>
+        </idmef:Address>
+      </idmef:Node>
+      <idmef:User category="os-device">
+        <idmef:UserId type="original-user">
+          <idmef:number>456</idmef:number>
+        </idmef:UserId>
+        <idmef:UserId type="current-user">
+          <idmef:name>fred</idmef:name>
+          <idmef:number>456</idmef:number>
+        </idmef:UserId>
+        <idmef:UserId type="user-privs">
+          <idmef:number>456</idmef:number>
+        </idmef:UserId>
+      </idmef:User>
+      <idmef:File category="current" fstype="tmpfs">
+        <idmef:name>xxx000238483</idmef:name>
+        <idmef:path>/tmp/xxx000238483</idmef:path>
+        <idmef:FileAccess>
+          <idmef:UserId type="user-privs">
+            <idmef:name>alice</idmef:name>
+            <idmef:number>777</idmef:number>
+          </idmef:UserId>
+          <idmef:permission perms="read" />
+          <idmef:permission perms="write" />
+          <idmef:permission perms="delete" />
+          <idmef:permission perms="changePermissions" />
+        </idmef:FileAccess>
+        <idmef:FileAccess>
+          <idmef:UserId type="group-privs">
+            <idmef:name>user</idmef:name>
+            <idmef:number>42</idmef:number>
+          </idmef:UserId>
+          <idmef:permission perms="read" />
+          <idmef:permission perms="write" />
+          <idmef:permission perms="delete" />
+        </idmef:FileAccess>
+        <idmef:FileAccess>
+          <idmef:UserId type="other-privs">
+            <idmef:name>world</idmef:name>
+          </idmef:UserId>
+          <idmef:permission perms="noAccess" />
+        </idmef:FileAccess>
+        <idmef:Linkage category="symbolic-link">
+          <idmef:name>passwd</idmef:name>
+          <idmef:path>/etc/passwd</idmef:path>
+        </idmef:Linkage>
+      </idmef:File>
+    </idmef:Target>
+    <idmef:Classification text="DOM race condition">
+      <idmef:Reference origin="vendor-specific">
+        <idmef:name>DOM race condition</idmef:name>
+        <idmef:url>file://attack-info/race.html
+        </idmef:url>
+      </idmef:Reference>
+    </idmef:Classification>
+  </idmef:Alert>
+</idmef:IDMEF-Message>

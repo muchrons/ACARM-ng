@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<idmef:IDMEF-Message version="1.0"
+               xmlns:idmef="http://iana.org/idmef">
+  <idmef:Heartbeat messageid="abc123456789">
+    <idmef:Analyzer analyzerid="hq-dmz-analyzer01">
+      <idmef:Node category="dns">
+        <idmef:location>Headquarters DMZ Network</idmef:location>
+        <idmef:name>analyzer01.example.com</idmef:name>
+      </idmef:Node>
+    </idmef:Analyzer>
+    <idmef:CreateTime ntpstamp="0xbc722ebe.0x00000000">2000-03-09T14:07:58Z</idmef:CreateTime>
+    <idmef:AdditionalData type="real" meaning="%memused">
+      <idmef:real>62.5</idmef:real>
+    </idmef:AdditionalData>
+    <idmef:AdditionalData type="real" meaning="%diskused">
+      <idmef:real>87.1</idmef:real>
+    </idmef:AdditionalData>
+  </idmef:Heartbeat>
+</idmef:IDMEF-Message>
