@@ -70,7 +70,7 @@ void createTemporaryTables(size_t days, Transaction &t, const Logger::Node &log)
     ss << "SELECT id FROM alerts WHERE create_time < now() - interval '"
        << days << " day' AND id NOT IN"
           "      ( SELECT id_alert FROM alert_to_meta_alert_map WHERE id_meta_alert IN"
-          "        ( SELECT id_meta_alert FROM meta_alerts_in_use ) ORDER BY id_alert"
+          "        ( SELECT id_meta_alert FROM meta_alerts_in_use )"
           "      )";
     createTempTable(t, log, "cleanup_alerts_ids", ss.str().c_str() );
   }
@@ -89,19 +89,19 @@ void createTemporaryTables(size_t days, Transaction &t, const Logger::Node &log)
 
 void removeReportedServices(Transaction &t, const Logger::Node &log)
 {
-  execSQL(log, t, "DELETE FROM services WHERE id_host IN (SELECT id FROM cleanup_hosts_ids ORDER BY id)");
+  execSQL(log, t, "DELETE FROM services WHERE id_host IN (SELECT id FROM cleanup_hosts_ids)");
 }
 
 
 void removeReportedProcs(Transaction &t, const Logger::Node &log)
 {
-  execSQL(log, t, "DELETE FROM procs WHERE id_host IN (SELECT id FROM cleanup_hosts_ids ORDER BY id)");
+  execSQL(log, t, "DELETE FROM procs WHERE id_host IN (SELECT id FROM cleanup_hosts_ids)");
 }
 
 
 void removeReportedHosts(Transaction &t, const Logger::Node &log)
 {
-  execSQL(log, t, "DELETE FROM hosts WHERE id IN (SELECT id FROM cleanup_hosts_ids ORDER BY id)");
+  execSQL(log, t, "DELETE FROM hosts WHERE id IN (SELECT id FROM cleanup_hosts_ids)");
 }
 
 
@@ -109,24 +109,23 @@ void removeAnalyzers(Transaction &t, const Logger::Node &log)
 {
   // analyzers to check for removal
   createTempTable(t, log, "cleanup_candidates_to_remove_analyzers_ids",
-                  "SELECT id_analyzer AS id FROM alert_analyzers WHERE id_alert IN (SELECT id FROM cleanup_alerts_ids ORDER BY id)");
+                  "SELECT id_analyzer AS id FROM alert_analyzers WHERE id_alert IN (SELECT id FROM cleanup_alerts_ids)");
   // remove mappings
-  execSQL(log, t, "DELETE FROM alert_analyzers WHERE id_alert IN (SELECT id FROM cleanup_alerts_ids ORDER BY id)");
+  execSQL(log, t, "DELETE FROM alert_analyzers WHERE id_alert IN (SELECT id FROM cleanup_alerts_ids)");
   // removes analyzers, but only those that belonged to removed alerts and are not used by others any more
   execSQL(log, t, "DELETE FROM analyzers WHERE"
-                  "  id IN (SELECT id FROM cleanup_candidates_to_remove_analyzers_ids ORDER BY id)"
-                  "  AND"
-                  "  id NOT IN (SELECT id_analyzer FROM alert_analyzers ORDER BY id_analyzer)");
+                  "  id IN (SELECT id FROM cleanup_candidates_to_remove_analyzers_ids WHERE"
+                  "           id NOT IN (SELECT id_analyzer FROM alert_analyzers))");
 }
 
 
 size_t removeAlerts(Transaction &t, const Logger::Node &log)
 {
   execSQL(log, t, "DELETE FROM alert_to_meta_alert_map WHERE id_alert "
-                  " IN (SELECT id FROM cleanup_alerts_ids ORDER BY id)");
+                  " IN (SELECT id FROM cleanup_alerts_ids)");
   // finaly remove all alerts, that are not used
   const size_t removed=execSQL(log, t, "DELETE FROM alerts WHERE id "
-                                       " IN (SELECT id FROM cleanup_alerts_ids ORDER BY id)").affected_rows();
+                                       " IN (SELECT id FROM cleanup_alerts_ids)").affected_rows();
   return removed;
 }
 
@@ -148,11 +147,11 @@ void removeExtraMetaAlertsEntries(Transaction &t, const Logger::Node &log)
     // save all parents of childrent to be removed - if they stay empty, they are to be removed as well!
     execSQL(log, t, "INSERT INTO cleanup_candidates_to_remove_ma_ids"
                     "  SELECT id_node AS id FROM meta_alerts_tree WHERE id_child IN"
-                    "    (SELECT id FROM cleanup_new_to_remove_ma_ids ORDER BY id)");
+                    "    (SELECT id FROM cleanup_new_to_remove_ma_ids)");
 
     // remove all tree entries, related to meta-alerts to be removed
-    execSQL(log, t, "DELETE FROM meta_alerts_tree WHERE id_child IN (SELECT id FROM cleanup_new_to_remove_ma_ids ORDER BY id)");
-    execSQL(log, t, "DELETE FROM meta_alerts_tree WHERE id_node  IN (SELECT id FROM cleanup_new_to_remove_ma_ids ORDER BY id)");
+    execSQL(log, t, "DELETE FROM meta_alerts_tree WHERE id_child IN (SELECT id FROM cleanup_new_to_remove_ma_ids)");
+    execSQL(log, t, "DELETE FROM meta_alerts_tree WHERE id_node  IN (SELECT id FROM cleanup_new_to_remove_ma_ids)");
 
     // preapre temporary helper tables to accept new data
     execSQL(log, t, "DELETE FROM cleanup_new_to_remove_ma_ids");
@@ -176,7 +175,7 @@ void removeExtraMetaAlertsEntries(Transaction &t, const Logger::Node &log)
   while(affected>0);
 
   // when no more IDs are to be removed from tree, remove meta-alerts them selfes
-  execSQL(log, t, "DELETE FROM meta_alerts WHERE id IN (SELECT id FROM cleanup_meta_alerts_ids ORDER BY id)");
+  execSQL(log, t, "DELETE FROM meta_alerts WHERE id IN (SELECT id FROM cleanup_meta_alerts_ids)");
 }
 
 } // unnamed namespace
