@@ -1,4 +1,4 @@
-* rereading configuration from file (note: not all configuration may change at runtime).
+* re-reading configuration from file (note: not all configuration may change at runtime).
 * refactor ConfigIO - it should read configuration file and keep it in memory. proper handles for specific parts of configuration file should be implemented by interested components.
 * think how to overcome lack of additional data assigned for observed graph nodes in filters during normal run - they will not be present after reading from persistency.
 * update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
@@ -9,11 +9,9 @@
 * implement common configuration module for compile-time constants used in code.
 * implement helper wrapper for making pipe-line processing in filters.
 * filter that increases priority for hosts that are out of defined set (i.e. from external network).
-* optimize data base cleanup somehow - it takes far too much time...
 * test if ACARM-ng deals fine with loosing connection to data base.
 * add automatic queue reduction to triggers - before sending check if some of the alerts are not part of others.
 * add handle for out-of-memory problem (i.e. using own wrapper for memory manager).
-* confidder adding per-requisites for triggers, i.e. to trigger only reports of some specific content (preprocessor-like style).
-* update Persistency::IO::Connection::remove...() API to take hours instead of days, between cleanups (update config as well).
+* consider adding per-requisites for triggers, i.e. to trigger only reports of some specific content (preprocessor-like style).
 * add possibility to turn-off persistency cleanup.
 * add information to logs, that if cleanup takes more than ??% of waiting time, interval should be decreased.
