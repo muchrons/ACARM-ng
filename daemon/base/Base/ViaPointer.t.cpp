@@ -17,14 +17,16 @@ struct TestClass
     i1_(4),
     i2_(4),
     i3_(9),
-    null_(NULL)
+    null_(NULL),
+    nullStr_(NULL)
   {
   }
 
-  const int  i1_;
-  const int  i2_;
-  const int  i3_;
-  const int *null_;
+  const int   i1_;
+  const int   i2_;
+  const int   i3_;
+  const int  *null_;
+  const char *nullStr_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -99,10 +101,10 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  const char *a="a";
-  const char *b="b";
+  const char a[]="a";
+  const char b[]="a";
   ensure("pre-condition failed", a!=b);
-  ensure("same C-strings not recognized", !ViaPointer::equal(a, b) );
+  ensure("same C-strings not recognized", ViaPointer::equal(a, b) );
 }
 
 // test passing two NULL chars*
@@ -110,8 +112,7 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  const char *p=NULL;
-  ensure("NULL C-strings not equals", ViaPointer::equal(p, p) );
+  ensure("NULL C-strings not equals", ViaPointer::equal(nullStr_, nullStr_) );
 }
 
 // test passing one NULL chars*
@@ -119,8 +120,110 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  const char *p=NULL;
-  ensure("NULL equals C-string", !ViaPointer::equal("abc", p) );
+  ensure("NULL equals C-string", !ViaPointer::equal("abc", nullStr_) );
+}
+
+// test comparing two NULLs
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  ensure("NULLs are in wrong order", ViaPointer::lessThan(nullStr_, nullStr_) );
+}
+
+// test comparing two NULL with non-NULL
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  ensure("NULL and non-NULL are in wrong order", ViaPointer::lessThan(nullStr_, "abc") );
+}
+
+// test comparing two non-NULL with NULL
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  ensure("non-NULL and NULL are in wrong order", !ViaPointer::lessThan("abc", nullStr_) );
+}
+
+// test comparing two NULL with non-NULL
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  ensure("NULL and non-NULL are in wrong order", ViaPointer::lessThan(null_, &i1_) );
+}
+
+// test comparing two non-NULL with NULL
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  ensure("non-NULL and NULL are in wrong order", !ViaPointer::lessThan(&i1_, null_) );
+}
+
+// test comparing two NULLs
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  ensure("NULLs are in wrong order", ViaPointer::lessThan(null_, null_) );
+}
+
+// check C-string specialization for the same strings
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  const char a[]="a";
+  const char b[]="a";
+  ensure("pre-condition failed", a!=b);
+  ensure("same C-strings not recognized", !ViaPointer::lessThan(a, b) );
+}
+
+// check C-string specialization for less-than strings
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  const char a[]="a";
+  const char b[]="bc";
+  ensure("same C-strings not recognized", ViaPointer::lessThan(a, b) );
+}
+
+// check C-string specialization for not-less-than strings
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  const char a[]="a";
+  const char b[]="bc";
+  ensure("different C-strings not recognized", !ViaPointer::lessThan(b, a) );
+}
+
+// check equal values via different pointers
+template<>
+template<>
+void testObj::test<20>(void)
+{
+  ensure("equal values does not match", !ViaPointer::lessThan(&i1_, &i2_) );
+}
+
+// check less-than values
+template<>
+template<>
+void testObj::test<21>(void)
+{
+  ensure("less-than values sorted wrong way", ViaPointer::lessThan(&i1_, &i3_) );
+}
+
+// check not-less-than values
+template<>
+template<>
+void testObj::test<22>(void)
+{
+  ensure("not-less-than values sorted wrong way", !ViaPointer::lessThan(&i3_, &i1_) );
 }
 
 } // namespace tut
