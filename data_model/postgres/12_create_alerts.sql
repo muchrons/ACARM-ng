@@ -49,7 +49,7 @@ CREATE SEQUENCE hosts_id_seq;
 CREATE TABLE    hosts
 (
   id       int      PRIMARY KEY DEFAULT nextval('hosts_id_seq'),
-  id_alert int      REFERENCES alerts(id),
+  id_alert int      NOT NULL REFERENCES alerts(id),
   id_ref   int      NULL REFERENCES reference_urls(id),
   role     char(3)  NOT NULL,
   ip       inet     NOT NULL,
