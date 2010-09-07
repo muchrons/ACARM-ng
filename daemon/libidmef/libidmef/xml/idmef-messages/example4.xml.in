@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE IDMEF-Message PUBLIC "-//IETF//DTD RFC XXXX IDMEF v1.0//EN" "@inst_dtd_dir@/idmef-message.dtd">
+   <IDMEF-Message version="1.0">
+     <Alert messageid="abc123456789">
+       <Analyzer analyzerid="hq-dmz-analyzer62">
+         <Node category="dns">
+           <location>Headquarters Web Server</location>
+           <name>analyzer62.bigcompany.com</name>
+         </Node>
+       </Analyzer>
+       <CreateTime ntpstamp="0xbc72b2b4.0x00000000">
+         2000-03-09T15:31:00-08:00
+       </CreateTime>
+       <Source ident="abc01">
+         <Node ident="abc01-01">
+           <Address ident="abc01-02" category="ipv4-addr">
+             <address>222.121.111.112</address>
+           </Address>
+         </Node>
+       </Source>
+       <Target ident="def01">
+         <Node ident="def01-01" category="dns">
+           <name>www.bigcompany.com</name>
+           <Address ident="def01-02" category="ipv4-addr">
+             <address>123.234.231.121</address>
+           </Address>
+         </Node>
+         <Service ident="def01-03">
+           <portlist>5-25,37,42,43,53,69-119,123-514</portlist>
+         </Service>
+       </Target>
+       <Classification text="portscan">
+       <Reference origin="vendor-specific">
+         <name>portscan</name>
+         <url>http://www.vendor.com/portscan</url>
+       </Reference>
+       </Classification>
+     </Alert>
+   </IDMEF-Message>

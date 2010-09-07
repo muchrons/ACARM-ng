@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE IDMEF-Message PUBLIC "-//IETF//DTD RFC XXXX IDMEF v1.0//EN" "@inst_dtd_dir@/idmef-message.dtd">
+<IDMEF-Message version="1.0" xmlns="urn:iana:xml:ns:idmef">
+<Alert messageid="abc123456789">
+  <Analyzer analyzerid="bc-sensor01">
+    <Node category="dns">
+      <name>sensor.example.com</name>
+    </Node>
+  </Analyzer>
+  <CreateTime ntpstamp="0xbc72541d.0x00000000">
+    2000-03-09T18:47:25+02:00
+  </CreateTime>
+  <Source ident="a123">
+    <Node ident="a123-01">
+      <Address ident="a123-02" category="ipv4-addr">
+        <address>192.0.2.200</address>
+      </Address>
+    </Node>
+    <User ident="q987-03" category="os-device">
+      <UserId ident="q987-04" type="target-user">
+        <name>badguy</name>
+      </UserId>
+    </User>
+    <Service ident="a123-03">
+      <port>31532</port>
+    </Service>
+  </Source>
+  <Target ident="z456">
+    <Node ident="z456-01" category="nis">
+      <name>myhost</name>
+      <Address ident="z456-02" category="ipv4-addr">
+        <address>192.0.2.50</address>
+      </Address>
+    </Node>
+    <Service ident="z456-03">
+      <name>finger</name>
+      <port>79</port>
+    </Service>
+  </Target>
+  <Classification text="Portscan">
+    <Reference origin="vendor-specific">
+      <name>finger</name>
+      <url>http://www.vendor.com/finger</url>
+    </Reference>
+    <Reference origin="vendor-specific" meaning="general documentation">
+      <name>Distributed attack</name>
+   <url>http://www.vendor.com/distributed</url>
+    </Reference>
+  </Classification>
+</Alert>
+</IDMEF-Message>

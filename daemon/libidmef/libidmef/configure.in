@@ -1,0 +1,181 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ(2.57)
+AC_INIT
+
+AM_CONFIG_HEADER(config.h)
+
+AM_INIT_AUTOMAKE(libidmef, $VERSION)
+
+# Checks for programs.
+AC_PROG_CXX
+AC_PROG_CC
+AC_PROG_CPP
+AC_PROG_INSTALL
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_AWK
+
+AM_PROG_LIBTOOL
+
+AC_PATH_PROGS(SED, sed)
+
+if test -z "$SED"; then
+	AC_MSG_ERROR($PACKAGE requires sed for build)
+fi
+
+AC_PATH_PROGS(PERL, perl)
+
+if test -z "$PERL"; then
+	AC_MSG_ERROR($PACKAGE requires perl for build)
+fi
+
+AC_PATH_PROGS(CAT, cat)
+
+if test -z "$CAT"; then
+	AC_MSG_ERROR($PACKAGE requires cat for build)
+fi
+
+# Fixup and declare version.
+LIBIDMEF_MAJOR_VERSION=1
+LIBIDMEF_MINOR_VERSION=0
+LIBIDMEF_MICRO_VERSION=3
+LIBIDMEF_TAG_VERSION=
+LIBIDMEF_VERSION=$LIBIDMEF_MAJOR_VERSION.$LIBIDMEF_MINOR_VERSION.$LIBIDMEF_MICRO_VERSION
+LIBIDMEF_VERSION_INFO=`expr $LIBIDMEF_MAJOR_VERSION + $LIBIDMEF_MINOR_VERSION`:$LIBIDMEF_MICRO_VERSION:$LIBIDMEF_MINOR_VERSION
+LIBIDMEF_VERSION_NUMBER=`expr $LIBIDMEF_MAJOR_VERSION \* 10000 + $LIBIDMEF_MINOR_VERSION \* 100 + $LIBIDMEF_MICRO_VERSION`
+
+AC_SUBST(LIBIDMEF_VERSION)
+AC_SUBST(LIBIDMEF_MAJOR_VERSION)
+AC_SUBST(LIBIDMEF_MINOR_VERSION)
+AC_SUBST(LIBIDMEF_MICRO_VERSION)
+AC_SUBST(LIBIDMEF_VERSION_INFO)
+AC_SUBST(LIBIDMEF_VERSION_NUMBER)
+
+test -n "$LIBIDMEF_TAG_VERSION" && \
+	LIBIDMEF_VERSION="$LIBIDMEF_VERSION-$LIBIDMEF_TAG_VERSION"
+
+VERSION=${LIBIDMEF_VERSION}
+
+# Debug switch 
+AC_ARG_ENABLE(debug,
+[  --enable-debug  	  enable debugging options (for developement use only)],
+	[
+		AC_DEFINE(IDMEF_DEBUG, 1,
+			  Define to 1 if building with debugging enabled)
+	],
+)
+
+# experimental feature switch for asset includion in IDMEF (not yet in the draft)
+AC_ARG_ENABLE(asset,
+[  --enable-asset         enable asset inclusion in IDMEF (not yet in the draft)],
+        [
+                AC_DEFINE(IDMEF_ASSET, 1,
+                          Define to 1 if asset inclusion is enabled)
+		IDMEF_ASSET="1"
+		AC_SUBST(IDMEF_ASSET)
+		$CAT libidmef-functions-rfc.map libidmef-functions-asset.map > libidmef-functions.map
+        ],
+	[
+		$CAT libidmef-functions-rfc.map > libidmef-functions.map
+	]
+)
+
+inst_idmef_dtd_dir=$datadir
+inst_idmef_messages_dir=$datadir/idmef-messages
+
+AC_ARG_WITH(dtd-dir,
+[  --with-dtd-dir  	IDMEF DTD install directory (default: PREFIX/share)],
+	[
+		inst_idmef_dtd_dir=$withval
+	],
+)
+
+AC_ARG_WITH(examples-dir,
+[  --with-examples-dir  	IDMEF examples messages install directory (default: PREFIX/share/idmef-messages)],
+	[
+		inst_idmef_messages_dir=$withval
+	],
+)
+
+AC_SUBST(inst_idmef_dtd_dir)
+AC_SUBST(inst_idmef_messages_dir)
+
+# Set some OS specific variables
+case "$host" in
+  *-freebsd*)
+    AC_DEFINE(FREEBSD, 1, Define to 1 if building on FreeBSD)
+    ;;
+  *-linux*)
+    AC_DEFINE(LINUX, 1, Define to 1 if building on Linux)
+    ;;
+  *-openbsd*)
+    AC_DEFINE(OPENBSD, 1, Define to 1 if building on OpenBSD)
+    ;;
+  *-solaris*)
+    AC_DEFINE(SOLARIS, 1, Define to 1 if building on Solaris)
+    CPPFLAGS="${CPPFLAGS} -DBSD_COMP"
+    AC_SUBST(CPPFLAGS)
+    ;;
+esac
+
+# Checks for libraries.
+
+AM_PATH_XML2(2.5.10, [
+libidmef_cflags="`xml2-config --cflags` ${libidmef_cflags## }"
+libidmef_libs="`xml2-config --libs` ${libidmef_libs## }"
+CFLAGS="`xml2-config --cflags` ${CFLAGS## }"
+CPPFLAGS="`xml2-config --cflags` ${CFLAGS## }"
+LDFLAGS="`xml2-config --libs` ${LDFLAGS## }"
+])
+
+#PKG_CHECK_MODULES(XML2, libxml2 >= 2.5.10,
+#[libidmef_cflags="$XML2_CFLAGS ${libidmef_cflags## }"
+#libidmef_libs="$XML2_LIBS ${libidmef_libs## }"
+#CFLAGS="$XML2_CFLAGS ${CFLAGS## }"
+#CPPFLAGS="$XML2_CFLAGS ${CFLAGS## }"
+#LDFLAGS="$XML2_LIBS ${LDFLAGS## }"
+#])
+
+
+AC_SUBST(CFLAGS)
+AC_SUBST(CPPFLAGS)
+AC_SUBST(LDFLAGS)
+
+libidmef_cflags="${libidmef_cflags%% } -I$includedir/libidmef"
+libidmef_libs="${libidmef_libs%% } -L$libdir -lidmef"
+
+AC_SUBST(libidmef_cflags)
+AC_SUBST(libidmef_libs)
+
+# Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS([netdb.h stdlib.h stdarg.h string.h sys/time.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+AC_HEADER_TIME
+AC_STRUCT_TM
+
+# Checks for library functions.
+# commented out AC_FUNC_MALLOC since it doesn't work on Fedora Core 3
+# AC_FUNC_MALLOC
+AC_FUNC_STRFTIME
+AC_CHECK_FUNCS([floor gettimeofday memset strcasecmp strdup strrchr strtoul])
+
+AC_CONFIG_FILES([Makefile
+                 examples/Makefile
+                 include/Makefile
+                 src/Makefile
+                 xml/Makefile
+                 xml/idmef-messages/Makefile
+                 libidmef.pc
+                 libidmef-config])
+
+AC_CONFIG_COMMANDS(
+		   [default],
+		   [[test -f libidmef-config && chmod +x libidmef-config]],
+		   [[]])
+
+AC_OUTPUT

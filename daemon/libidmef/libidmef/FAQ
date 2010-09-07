@@ -1,0 +1,157 @@
+IDMEF XML Library version 0.7.3
+
+Frequently Asked Questions
+--------------------------
+
+1. Q: How do I output my IDMEF XML messages with visually appealing 
+      indentations?
+
+   A: Before you print, call the libxml function xmlKeepBlanksDefault(0).
+      This sets an internal variable that will insert blanks into the XML
+      tree for indentations.  All IDMEF XML messages from that point forward
+      will be printed in the same manner unless the same function is called
+      again with a "1" argument passed in.
+
+      Keep in mind, blank spaces are significant in XML.  If you try to
+      validate a IDMEF XML message with spaces imbedded in it (without
+      calling xmlKeepBlanksDefault(0) beforehand) you will get errors.
+
+2. Q: How can I transport IDMEF XML messages over IAP?
+
+   A: IAP functionality is not included in libidmef.  The IDXP transport
+      protocol was chosen by the IDWG as the standard for transporting
+      IDMEF messages.  An IDXP c library is available at 
+      http://idxp.codefactory.se/
+
+3. Q: I am getting errors in libxml when I compile.  What do I do?
+
+   A: Try upgrading to the latest version at http://www.xmlsoft.org
+
+4. Q: My application needs to do additional things to the IDMEF XML message,
+      i.e., specialized traversing of the tree, saving the tree to a memory
+      buffer, compress the document, etc.  How can I do this?
+
+   A: Some libidmef functions are merely front-ends to ones to libxml.  Mainly
+      for the purpose of maintaining consistency among terms in the IDMEF
+      XML specification.  There is a wide range of functions in libxml that
+      a developer will find useful.  Look at the API for libxml, and find the
+      functions that you need.  If there are compatibility problems with those
+      functions and libidmef, let me know and we'll work something out.
+
+5. Q: My application needs to output additional packet header information that
+      IDMEF does not support.  What do I do?
+
+   A: Use the AdditionalData element. Efforts have been made to allow 
+      additional elements to exist as subelements of AdditionalData.
+      See the IDMEF XML plugin for more information.
+      http://www.silicondefense.com/idwg/snort-idmef/
+
+6. Q: When I try to compile something using libidmef, I get errors telling
+      me that the header libraries are not found.  I can confirm that they do
+      exist in the directory it is looking in.
+
+   A: Make sure you are linking to the -lxml2 library instead of the -lxml
+      library.  Many systems have both libxml and libxml2 installed.  Using
+      libxml can cause unknown behavior. :-)
+
+7. Q: When I run configure, I get this message:
+
+        configure: error: ntp source directory not provided.  Rerun configure 
+        using --with-ntp-source=DIR
+
+   A: You are using an older version of libidmef that requires libntp
+      libraries.  That has been removed in recent versions.
+
+8. Q: When I try to compile on my Solaris machine, I get this error:
+	
+	rm -fr .libs/libidmef.la .libs/libidmef.* .libs/libidmef.*
+	gcc -shared  idmefxml.lo  -Wl,--rpath -Wl,/usr/local/lib -Wl,--rpath -Wl,/usr/local/lib  -L/usr/local/lib /usr/local/lib/libxml2.so  -Wl,-soname -Wl,libidmef.so.0 -o .libs/libidmef.so.0.6.3
+	/usr/ccs/bin/ld: illegal option -- -
+	/usr/ccs/bin/ld: illegal option -- -
+	ld: warning: option -o appears more than once, first setting taken
+	collect2: ld returned 1 exit status
+	*** Error code 1
+	make: Fatal error: Command failed for target `libidmef.la'
+	Current working directory /export/home/joey/src/libidmef-0.6.3
+	*** Error code 1
+	make: Fatal error: Command failed for target `all-recursive'
+	Current working directory /export/home/joey/src/libidmef-0.6.3
+	*** Error code 1
+	make: Fatal error: Command failed for target `all-recursive-am'
+	#
+
+    A: You are most likely using an older version of libidmef.  This was
+       a know issue, and has since been solved.
+
+9.  Q: I am getting linking errors on Solaris, what do I do?
+
+    A: This is an issue with ldconfig.  Basically, Solaris does not have it
+       (anymore?), and the developers are trying to move away from the
+       LD_LIBRARY_PATH variable.  See: 
+
+	  http://supportforum.sun.com/solaris/solaris3057.html
+
+       The replacement is "crle".  Run crle like so, and try again:
+
+	  # crle -l /usr/lib -l /usr/local/lib
+
+10. Q: I do not know how many "Alert" elements will be included in my
+       IDMEF messages at compile time.  How can I acheive this?
+
+    A: Create an empty IDMEF_Message, and add your Alerts with a loop:
+ 
+	xmlNodePtr myIDMEF_Message;
+
+	myIDMEF_Message = newIDMEF_Message(NULL); /* Empty IDMEF Message */
+
+	for(i = 0; i < message->nalerts; i++) {   /* Cycle through and add
+						     Alerts */
+            addElement(myIDMEF_Message, build_alert(message->alerts[i]));
+        }
+
+	/* at this point, the "doc" contains your complete IDMEF message */
+
+	validateCurrentDoc();
+	printCurrentMessage(some_file);
+
+11. Q: When compiling a program using libidmef, I receive errors stating that
+       various libxml header files are not found.  For example:
+
+       [joey@zephir libidmef]$ gcc -o example1 example1.c -lidmef -lm -lxml2
+       In file included from example1.c:31:
+       /usr/local/include/libidmef/idmefxml.h:22:25: libxml/tree.h: No such file or directory
+       /usr/local/include/libidmef/idmefxml.h:23:27: libxml/parser.h: No such file or directory
+       /usr/local/include/libidmef/idmefxml.h:24:26: libxml/valid.h: No such file or directory
+       /usr/local/include/libidmef/idmefxml.h:25:29: libxml/entities.h: No such file or directory
+       /usr/local/include/libidmef/idmefxml.h:26:30: libxml/xmlmemory.h: No such file or directory
+       /usr/local/include/libidmef/idmefxml.h:27:29: libxml/debugXML.h: No such file or directory
+       /usr/local/include/libidmef/idmefxml.h:28:26: libxml/xmlIO.h: No such file or directory
+       /usr/local/include/libidmef/idmefxml.h:29:29: libxml/xmlerror.h: No such file or directory
+
+    A: You can locate the location of your libxml header files using the
+       command:
+
+ 	    xml2-config --cflags
+
+       libxml header files are located under /usr/local/include/libxml2/libxml
+       by default (Except for RedHat RPM's).  This means you will have to 
+       include the path when compiling any program using libidmef.  Add the 
+       following compiler flag to your command line:
+
+            -I/usr/local/include/libxml2
+
+       You can also just imbed the xml2-config --cflags return values in
+       your command:
+
+	   gcc `xml2-config --cflags` -o example1 example1.c -lidmef -lm -lxml2
+
+       There are other methods (hacks?) to work around this, but we leave it 
+       as an exercise to the user to figure out.
+
+12: Q: I'm compiling libidmef on Redhat and the configure script states that
+       it can not find libxml2 header file (tree.h).  Where is it?
+
+    A: You most likely used the libxml2 RPM's to install.  You must install
+       the libxml2-devel RPM as well.  This will place the libxml2 headers
+       under /usr/include (as of libxml2 2.4.17).  Remove the config.cache
+       file under the libidmef source directory and rerun configure.

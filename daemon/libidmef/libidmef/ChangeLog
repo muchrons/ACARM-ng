@@ -1,0 +1,263 @@
+08-30-2009 libidmef-1.0.3 Sandro Poppi <spoppi@gmx.net>
+	- incorporated patches from Thomas Biege, Novell
+	  Thanks Thomas!
+	- configure.in
+	-- version now is 1.0.3
+	-- removed PKG_CHECK_MODULES for libxml2 and added AM_PATH_XML instead
+	   and make use of xml2-config to handle different distros
+	-- added check for perl since we now need it (see below)
+	- added include/gen.pl from Thomas Biege replacing shellscript
+	  in include/Makefile.am
+	- include/Makefile.am
+	-- relaced shellscript with perl gen.pl
+	- parser.c
+	-- removed exit() calls which shouldn't occur in a library
+	   (patch from Thomas Biege)
+	-- adjusted internal functions to return errno:
+	   idmef_parser_start_document(), idmef_parser_start_element(),
+	   idmef_parser_fatal_error()
+	- cleaned up directories in tarball
+
+02-15-2009 libidmef-1.0.2 Sandro Poppi <spoppi@gmx.net>
+           - added experimental feature for Assets, use --enable-asset with
+             configure [NOTE: DON'T USE! IT'S BROKEN!]
+           - fixed a segfault issue when a tag <IDMEF-Message> was given
+             without attributes and idmefp should be generated
+           - fixed an implementation issue regarding analyzer path tracking:
+             now more than 2 nested <Analyzer> tags are possible conforming to
+             the current draft/rfc
+             Thanks to Joel Winteregg for reporting and support
+           - create.c.tmpl, helpers.c, parser.c, global.c, ilist.c:
+             Fixed compile time warnings with gcc 4.x
+           - fixed an issue in libidmef_idmefp_destroy(): now recursive
+             behaviour of libxml2 in xmlFreeNode() is reflected as well as a
+             segfault issue when deleting IDMEFmessage.
+             Thanks to Joel Winteregg and Gregoire Kraehenbuehl for the hint
+           - libidmef-functions.map
+           -- now reflects change in AdditionalData element of draft 16
+           - parser.c
+           -- cleaned up code from commented out test code
+           -- now reflects change in AdditionalData element of draft 16
+           -- fixed issues when calling new... functions which may result in
+              "unusual behaviour" (missing closing NULL)
+           -- fixed issues which could lead to segfaults (Thanks to Joel
+              Winteregg for reporting)
+           - idmef-messages.dtd updated to last draft
+           - updated the example*.xml files
+           
+07-17-2005 libidmef-1.0.2-beta1 Sandro Poppi <spoppi@gmx.net>
+	   - configure.in: version updated to beta1
+	   - removed glib.h requirement in idmef_parser.h
+           - added idmef_message.h/message.c for functions handling IDMEFmessage
+             Thanks to Jidong Long for pointing this out
+           - examples/example[13].c: added freeing of generated IDMEFPtr
+           - examples/example2.c: added freeing of generated IDMEFmesages
+           - parser.c:
+           -- cleaned up code from irrelevant additions in
+              idmef_parser_start_element()
+           -- fixed missing checks for memory allocation errrors
+           - ilist.c: added function libidmef_list_delete() for deleting nodes
+             from the list
+04-23-2005 libidmef-1.0.2-alpha Sandro Poppi <spoppi@gmx.net>
+	   - added ilist.c/idmef_list.h for additional double linked lists in
+             IDMEF type to have a chance to free all unused memory
+           - removed idmef_create_helpers.h/create-helpers.h and moved and
+             renamed the functions to ilist.c/idmef_list.h
+	   - parser.c
+           -- fixed missing creation of content of Impact class
+           -- fixed missing handling of
+              PARSER_ALERT_TARGET_FILE_FILEACCESS_USERID_NAME
+              PARSER_ALERT_TARGET_FILE_FILEACCESS_USERID_NUMBER
+              PARSER_HEARTBEAT_HEARTBEATINTERVAL
+              in idmef_parser_start_element()
+           -- fixed missing handling of
+              PARSER_HEARTBEAT_HEARTBEATINTERVAL
+              in idmef_parser_end_element()
+           -- added #include <idmef_create_helpers.h>
+           -- added #include <stdlib.h>
+           - libidmef-functions.map
+           -- switched from NODE to CONTENT for newAdditionalData, newImpact,
+              newAction, newConfidence
+           - helpers.c: additions for snort-idmef plugin
+           -- copied functions getStoredAlertID(),saveAlertID(),ulongToString()
+              intToString(), timevalToNtpTimestamp(), timevalToDatetime()
+              from libidmef-0.7.3
+           -- in getStoredAlertID() free the read string when no longer needed
+              and switched from atol() to strtoul()
+           -- in saveAlertID(): free the temporary string when no longer needed
+           -- intToString(), ulongToString(): switched from sprintf() to
+              snprintf()
+           -- added #include <math.h>
+           -- added #include <string.h>
+           - configure.in
+           -- removed AC_FUNC_MALLOC since it seems to be  broken at least on
+              Fedora Core 3
+           -- switched from AM_PATH_XML2 to PKG_CHECK_MODULES
+           - create-helpers.c
+           -- added #include <string.h>
+           - global.c
+           -- added #include <string.h>
+           -- added checks for missing arguments in libidmef_idmefp_destroy() and
+              libidmef_idmefp_lock_op()
+           -- libidmef_idmefp_destroy() now adds a new parameter "recursive" for
+              the newly added IDMEFPtr list to free the list recursivly
+           - strings.c
+           -- fixed a missing return in get_checksum_algorithm()
+           - create.c.tmpl
+           -- removed unused xmlNodePtr nodePtr; definition
+           -- added case IDMEF_Type_DOC in switch in for loop to get rid of
+              compiler warnings
+           -- added linked list handling for newly created  IDMEFPtr's
+           -- removed xmlFreeNode() call in for loop in case of an attribute
+
+03-21-2005 libidmef-1.0.2-alpha Sandro Poppi <spoppi@gmx.net>
+	   - corrected path to idmef_types.h in include/idmef_parser_helpers.h
+           - added tty attribute to UserID which has been forgotten ;)
+           - added newUserId_tty to libidmef-functions.map
+           - fixed various segfault issues (NULL pointer dereference) in
+             parser.c when debugging was enabled AND gen_idmefp was set to TRUE
+           - added in parser.c::idmef_parser_end_element missing
+             process args PARSER_ALERT_TARGET_PROCESS_ARG
+             service protocol PARSER_ALERT_TARGET_SERVICE_PROTOCOL
+           - fixed in parser.c::idmef_parser_end_element
+             PARSER_ALERT_TARGET_PROCESS_ENV
+           - changed attribute file fstype from char to IDMEFfstype
+           - changed confidence data from char* to float
+           - idmef_string.h/strings.c:
+             added get_file_fstype()/file_fstype_as_string()
+           - fixed an issue in configure.in where the libidmef include dir
+             was not set correctly for libidmef.pc.in
+02-22-2005 libidmef-1.0.2-alpha Sandro Poppi <spoppi@gmx.net>
+           - libidmef-functions.map now reflects draft 14
+           - added SAX parser for IDMEF messages in src/parser.c,
+             include/idmef_parser.h
+           - configure.in:
+             reflects now version 1.0.2-alpha
+             added glib as requirement used in sax  parser
+           - added examples/example2.c for sax-parser tests
+           - added examples/example3.c
+           - idmef_types.h
+             in struct _IDMEFanalyzer changed char *class to
+             char *analyzer_class because class is a reserved word in C++
+             in IDMEFalert renamed IDMEFclassification *classifications to
+             IDMEFclassification *classification since there is only 1
+             classifiction per alert
+             renamed IDMEFUserId_type to IDMEFuserid_type to match other
+             definitions
+             in IDMEFservice changed short protocol to char *protocol to
+             conform with draft 12
+             added struct _IDMEFattlist_global for global attributes in nearly
+             all IDMEF classes (see IDMEF DTD)
+             added the above struct as member of various IDMEF class structs
+             added IDMEFPtr member to each struct for linking libxml nodes
+           - idmef_strings.h/strings.c
+             renamed IDMEFUserId_type to IDMEFuserid_type to match other
+             definitions
+           - new files idmef_create_helpers.h/create_helpers.c
+             added functions from libidmef 0.7.3:
+             	addElement()
+             	addElements()
+             	setAttribute()
+             	setAttributes()
+             	getElement()
+             	hasElement()
+             and adjusted slightly
+           - idmef_global.h.in
+             added conveniance macros for memory allocation inspired by GLIB
+             added global variables for DTD validation
+           - src/create.c.tmpl, src/Makefile.am, include/Makefile.am:
+             fixed an issue where idmef_create.h and create.c
+             function definitions didn't fit
+           - src/create.c.tmpl
+             added possibility to allow creation of IDMEFPtr even if the first
+             argument is NULL AND the type is NODE or CONTENT
+           - src/Makefile.am
+             added additional generation for attlist.global definitions for
+             DOC/NODE types
+           - libidmef-functions.map
+             added functions for attlist.global attributes
+             added newToolAlert_analyzerid, newCorrelationAlert_analyzerid
+             changed newAnalyzer_id to newAnalyzer_analyzerid
+             changed type from CONTENT to ATTRIBUTE for
+             	newImpact_severity
+             	newImpact_completion
+             	newImpact_type
+           - global.c
+             added libidmef_init() for global initialization
+           - adjusted example9.xml.in to reflect draft 14
+             
+12-28-2004 libidmef-1.0.1-alpha Sandro Poppi <spoppi@gmx.net>
+           - libidmef-functions.map now reflects draft 12
+           - configure.in:
+             reflects now version 1.0.1
+           - strings.c/idmef_types.h adjusted for draft 12
+           - libidmef.spec: added Changelog to devel docs
+           - added xml examples 14-18 from draft 12
+           - changed exapmle1.c to reflect draft 12
+           - changed idmef-message.dtd with draft 12 one
+           - added src/helpers.c, include/idmef_helpers.h holding
+             some useful helper functions (I think ;)
+05-10-2004 - Add libidmef.spec file.
+           - Code reorganization.
+           - Addition of locking code.
+04-16-2004 - Add support for pkgconfig.
+           - Install example IDMEF messages.
+           - Add options to choose installation location for DTD and example
+             messages.
+04-14-2004 - Update the `configure' and `automake' scripts.
+           - Update some header file magic.
+           - Minor changes for *BSD compatibility.
+03-16-2004 - Install the DTD in the ${prefix}/share
+           - Fix up example message files so that they include the path to
+             to the DTD.
+03-09-2004 - Numerous changes in support of laying out the source tree with
+             sub directories for src, xml, etc.
+           - Numerous changes to use newer version of GNU autoconf (2.57).
+           - Introduction of libidmef-config script.
+06-06-2002 - Fixed mem leak in idmefxml.c found by Marko Jahnke
+03-01-2002 - Finished the updates to IDMEF 0.7.  Documentation upgrades.
+	     Fixed library issues with Solaris.  Release as
+	     libidmef 0.7.1
+02-07-2002 - Finished the updates to IDMEF 0.6.  Documentation upgrades.
+01-17-2002 - Removed the libntp dependency.
+11-30-2001 - Compliance with IDMEF 0.5.  Put enumerations back in for parsing
+	     code... Oopse.
+11-08-2001 - Updated code to comply with IDMEF 0.4.  Removed enumerations.
+08-22-2001 - Fixed ntptimestamp format bug.  Changes for libxml 2.4.x
+	     General cleanup.  Corrected libtool library version, as
+	     pointed out by Adam Migus. Release as 0.6.3
+06-25-2001 - Added Solaris support.  Release as 0.6.2
+05-24-2001 - Changed UserID to UserId, as defined in the DTD.  Thanks to
+	     Joshua Haines for pointing it out.
+05-21-2001 - Finished updating the Documentation.  Release as Beta (0.6).
+05-09-2001 - Updated the example1.c program.  Added new I/O functions to 
+	     conform with libxml2 2.3.x.
+05-07-2001 - Added configuration and Makefile support.  Libidmef can now
+ 	     be installed as a shared library.  General updates of functions
+	     to conform with libxml2 2.3.x and version 0.3 of the IDMEF spec.
+04-25-2001 - Updated the Time function to conform to the latest spec.  The
+	     ntptimestamp is now accurate.  Changed cleanup functions to
+	     remove the DTD as well.  The previous practice of maintaining
+             the DTD did not conform with XML validity.
+02-07-2001 - Changed xmlMaloc() call to calloc() in intToString()
+01-02-2001 - Removed unused data structures. Release as alpha, version 0.5
+12-18-2000 - Libidmef is now licensed under GPL and a BSD style license.
+             (COPYING and COPYING.BSD)
+12-12-2000 - Included the !DOCUMENT document type declaration tag in the
+             xml document.
+12-08-2000 - Changed the printCurrentMessage function to include
+             the XML declaration.
+11-30-2000 - Added a quick fix that allows for Windows support.
+             Thanks to Dan Schnackenberg for pointing it out.
+             Now example1.c has an "indented output" option.
+             Release as alpha, version 0.4
+10-11-2000 - Removed the functionality that required an element to be built
+             with at least one child or attribute.  Various bug fixes.
+             Release as alpha, version 0.3
+10-01-2000 - Added character escaping to various functions
+09-20-2000 - Additional documentation, porting issues to BSD, additional
+             functions added for time data and alert ID management, other
+             bug fixes. Release as alpha, version 0.2
+08-28-2000 - Initial alpha release of libidmef (0.1)
+
+	

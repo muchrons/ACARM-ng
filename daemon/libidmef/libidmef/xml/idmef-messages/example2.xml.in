@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE IDMEF-Message PUBLIC "-//IETF//DTD RFC XXXX IDMEF v1.0//EN" "@inst_dtd_dir@/idmef-message.dtd">
+   <IDMEF-Message version="1.0">
+     <Alert messageid="abc123456789">
+       <Analyzer analyzerid="bc-sensor01">
+         <Node category="dns">
+           <name>sensor.bigcompany.com</name>
+         </Node>
+       </Analyzer>
+       <CreateTime ntpstamp="0xbc71f4f5.0xef449129">
+         2000-03-09T10:01:25.93464Z
+       </CreateTime>
+       <Source ident="a1a2" spoofed="yes">
+         <Node ident="a1a2-1">
+           <Address ident="a1a2-2" category="ipv4-addr">
+             <address>222.121.111.112</address>
+           </Address>
+         </Node>
+       </Source>
+       <Target ident="b3b4">
+         <Node>
+           <Address ident="b3b4-1" category="ipv4-addr">
+             <address>123.234.231.121</address>
+           </Address>
+         </Node>
+       </Target>
+       <Target ident="c5c6">
+         <Node ident="c5c6-1" category="nisplus">
+           <name>lollipop</name>
+         </Node>
+       </Target>
+       <Target ident="d7d8">
+         <Node ident="d7d8-1">
+           <location>Cabinet B10</location>
+           <name>Cisco.router.b10</name>
+         </Node>
+       </Target>
+       <Classification>
+         <Reference origin="cve">
+           <name>CVE-1999-128</name>
+           <url>http://www.cve.mitre.org/</url>
+         </Reference>
+       </Classification>
+     </Alert>
+   </IDMEF-Message>

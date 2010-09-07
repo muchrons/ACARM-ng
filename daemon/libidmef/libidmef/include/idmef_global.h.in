@@ -1,0 +1,46 @@
+/*
+Author: Adam C. Migus <adam@migus.org>
+
+Copyright (c) 2004 Adam C. Migus.  All rights reserved
+
+This library is released under the GNU GPL and BSD software licenses.
+You may choose to use one or the other, BUT NOT BOTH.  The GNU GPL
+license is located in the file named COPYING.  The BSD license is located
+in the file named COPYING.BSD.  Please contact us if there are any
+questions.
+
+$Id: idmef_global.h.in,v 1.7 2005/07/10 09:38:51 alcapone Exp $
+*/
+
+#ifndef	_IDMEFXML_GLOBAL_H
+#define	_IDMEFXML_GLOBAL_H 1
+
+#define	IDMEF_MESSAGE_VERSION 	"1.0"
+#define	IDMEF_DTD_NAME 		"IDMEF-Message"
+#define	IDMEF_DTD_EXTERNAL_ID 	"-//IETF//DTD RFC XXXX IDMEF v1.0//EN"
+#define IDMEF_DTD_PATH		"@inst_dtd_dir@/idmef-message.dtd"
+
+#include <libxml/parser.h>
+#include <libxml/threads.h>
+#include <stdlib.h>
+
+/* global variables */
+xmlDtdPtr dtd;
+xmlValidCtxtPtr vctxt;
+
+/* convenience macros (inspired by GLIB) */
+#define i_new(struct_type, n_structs)           \
+    ((struct_type *) malloc (((int) sizeof (struct_type)) * ((int) (n_structs))))
+#define i_new0(struct_type, n_structs)          \
+    ((struct_type *) calloc (1,((int) sizeof (struct_type)) * ((int) (n_structs))))
+#define i_renew(struct_type, mem, n_structs)    \
+    ((struct_type *) realloc ((mem), ((int) sizeof (struct_type)) * ((int) (n_structs))))
+
+#define TRUE 1
+#define FALSE 0
+
+IDMEFPtr	libidmef_idmefp_create(IDMEF_Type, xmlChar *);
+void		libidmef_idmefp_destroy(IDMEFPtr, int);
+__inline void	libidmef_idmefp_lock_op(IDMEFPtr, IDMEF_Lock_Op);
+
+#endif /* _IDMEFXML_GLOBAL_H */

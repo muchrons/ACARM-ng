@@ -33,6 +33,8 @@ system
 base
 algo
 preprocessor
+
+libidmef
 curlpp
 
 acarmng

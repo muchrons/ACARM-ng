@@ -1,5 +1,6 @@
 build_process.tar.bz2 -> 1.4.0
 curlpp.tar.gz         -> 0.7.3 (http://curlpp.org/index.php/download)
+libidmef.tar.gz       -> 1.0.3 (http://libidmef.sourceforge.net)
 prado.zip             -> 3.1.7.r2783
 system.tar.bz2        -> development
 team_tools.tar.bz2    -> v0.3.0

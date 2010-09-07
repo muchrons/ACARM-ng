@@ -1,0 +1,57 @@
+#
+# $Id$
+#
+# (c) 2005 Sandro Poppi
+#
+newAsset			Asset			NODE
+newAsset_ident			ident			ATTRIBUTE
+newTool				Tool			NODE
+newTool_name			name			ATTRIBUTE
+newTool_manufacturer		manufacturer		ATTRIBUTE
+newTool_model			model			ATTRIBUTE
+newTool_version			version			ATTRIBUTE
+newTool_class			class			ATTRIBUTE
+newTool_ostype			ostype			ATTRIBUTE
+newTool_osversion		osversion		ATTRIBUTE
+newTool_url			url			CONTENT
+newTool_arg			arg			CONTENT
+newResult			Result			NODE
+newResult_ident			ident			ATTRIBUTE
+newResult_severity		severity		ATTRIBUTE
+newResult_version		version			ATTRIBUTE
+newResult_category		category		ATTRIBUTE
+newResult_type			type			ATTRIBUTE
+newResult_banner		banner			CONTENT
+newResult_summary		summary			CONTENT
+newResult_description		description		CONTENT
+newVulnerability		Vulnerability		NODE
+newVulnerability_ident		ident			ATTRIBUTE
+newVulnerability_exploitable	exploitable		ATTRIBUTE
+newVulnerability_location	location		ATTRIBUTE
+newVulnerability_attacktype	attacktype		ATTRIBUTE
+newVulnerability_attackimpact	attackimpact		ATTRIBUTE
+newVulnerability_grade		grade			ATTRIBUTE
+newVulnerability_web		web			ATTRIBUTE
+newVulnerability_exploit	exploit			CONTENT
+newOS				OS			NODE
+newOS_arch			arch			ATTRIBUTE
+newOS_vendor			vendor			ATTRIBUTE
+newOS_family			family			ATTRIBUTE
+newOS_version			version			ATTRIBUTE
+newOS_name			name			ATTRIBUTE
+newOS_patchlevel		patchlevel		CONTENT
+newOS_hotfix			hotfix			CONTENT
+newRule				Rule			NODE
+newRule_ident			ident			ATTRIBUTE
+newRule_log			log			ATTRIBUTE
+newRule_action			action			ATTRIBUTE
+newRule_interface		interface		ATTRIBUTE
+newRule_fwtype			fwtype			CONTENT
+newRule_fwversion		fwversion		CONTENT
+newNat				Nat			NODE
+newNat_ident			ident			ATTRIBUTE
+newOrgSrc			OrgSrc			NODE
+newOrgTgt			OrgTgt			NODE
+newTransSrc			TransSrc		NODE
+newTransTgt			TransTgt		NODE
+

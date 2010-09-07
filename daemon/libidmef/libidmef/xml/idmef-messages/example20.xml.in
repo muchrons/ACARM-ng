@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE IDMEF-Message PUBLIC "-//IETF//DTD RFC XXXX IDMEF v1.0//EN" "@inst_dtd_dir@/idmef-message.dtd">
+   <idmef:IDMEF-Message xmlns:idmef="http://iana.org/idmef"
+                        version="1.0">
+     <idmef:Alert messageid="abc123456789">
+       <idmef:Analyzer analyzerid="hq-dmz-analyzer01">
+         <idmef:Node category="dns">
+           <idmef:location>Headquarters DMZ Network</idmef:location>
+           <idmef:name>analyzer01.example.com</idmef:name>
+         </idmef:Node>
+       </idmef:Analyzer>
+       <idmef:CreateTime ntpstamp="0xbc723b45.0xef449129">
+         2000-03-09T10:01:25.93464-05:00
+       </idmef:CreateTime>
+       <idmef:Source ident="a1b2c3d4">
+         <idmef:Node ident="a1b2c3d4-001" category="dns">
+           <idmef:name>badguy.example.net</idmef:name>
+           <idmef:Address ident="a1b2c3d4-002"
+                          category="ipv4-net-mask">
+             <idmef:address>192.0.2.50</idmef:address>
+             <idmef:netmask>255.255.255.255</idmef:netmask>
+           </idmef:Address>
+         </idmef:Node>
+       </idmef:Source>
+       <idmef:Target ident="d1c2b3a4">
+         <idmef:Node ident="d1c2b3a4-001" category="dns">
+           <idmef:Address category="ipv4-addr-hex">
+             <idmef:address>0xde796f70</idmef:address>
+           </idmef:Address>
+         </idmef:Node>
+       </idmef:Target>
+       <idmef:Classification text="Teardrop detected">
+         <idmef:Reference origin="bugtraqid">
+           <idmef:name>124</idmef:name>
+           <idmef:url>http://www.securityfocus.com/bid/124</idmef:url>
+         </idmef:Reference>
+       </idmef:Classification>
+     </idmef:Alert>
+   </idmef:IDMEF-Message>

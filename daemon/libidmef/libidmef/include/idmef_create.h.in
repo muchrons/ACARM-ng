@@ -1,0 +1,20 @@
+/*
+Author: Adam C. Migus <adam@migus.org>
+
+Copyright (c) 2004 Adam C. Migus.  All rights reserved.
+
+This library is released under the GNU GPL and BSD software licenses.
+You may choose to use one or the other, BUT NOT BOTH.  The GNU GPL
+license is located in the file named COPYING.  The BSD license is located
+in the file named COPYING.BSD.  Please contact us if there are any
+questions.
+
+$Id: idmef_create.h.in,v 1.1 2004/03/15 12:07:02 amigus Exp $
+*/
+
+#ifndef _IDMEF_CREATE_H
+#define _IDMEF_CREATE_H 1
+
+@input@
+
+#endif /* _IDMEF_CREATE_H */
