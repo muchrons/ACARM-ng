@@ -24,7 +24,7 @@ input
 
 core
 coretypes
-idmef
+idmefio
 xml
 configio
 commons
@@ -34,7 +34,7 @@ base
 algo
 preprocessor
 
-libidmef
+idmef
 curlpp
 
 acarmng

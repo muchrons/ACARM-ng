@@ -35,20 +35,12 @@
       <idmef:Node ident="z3z4-01" category="dns">
         <idmef:name>fileserver.example.com</idmef:name>
       </idmef:Node>
-      <idmef:User ident="z3z4-02" category="os-device">
-        <idmef:UserId ident="z3z4-03" type="target-user">
-          <idmef:name>root</idmef:name>
-          <idmef:number>0</idmef:number>
-        </idmef:UserId>
-      </idmef:User>
-      <idmef:Process ident="z3z4-04">
-        <idmef:name>sh</idmef:name>
-        <idmef:pid>25134</idmef:pid>
-        <idmef:path>/bin/sh</idmef:path>
-      </idmef:Process>
     </idmef:Target>
-    <idmef:Classification text="Loadmodule attack"
-                          ident="loadmodule">
+    <idmef:Classification text="Loadmodule attack" ident="loadmodule">
+      <idmef:Reference origin="bugtraqid">
+        <idmef:name>33</idmef:name>
+        <idmef:url>http://www.securityfocus.com</idmef:url>
+      </idmef:Reference>
     </idmef:Classification>
   </idmef:Alert>
 </idmef:IDMEF-Message>

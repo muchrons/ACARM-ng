@@ -25,8 +25,7 @@
         </idmef:Address>
       </idmef:Node>
       <idmef:Service ident="def01-03">
-        <idmef:portlist>5-25 37 42 43 53 69-119 123-514
-        </idmef:portlist>
+        <idmef:portlist>5-25 37 42 43 53 69-119 123-514</idmef:portlist>
       </idmef:Service>
     </idmef:Target>
     <idmef:Classification text="simple portscan">

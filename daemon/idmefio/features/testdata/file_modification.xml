@@ -78,8 +78,7 @@
     <idmef:Classification text="DOM race condition">
       <idmef:Reference origin="vendor-specific">
         <idmef:name>DOM race condition</idmef:name>
-        <idmef:url>file://attack-info/race.html
-        </idmef:url>
+        <idmef:url>file://attack-info/race.html</idmef:url>
       </idmef:Reference>
     </idmef:Classification>
   </idmef:Alert>

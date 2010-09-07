@@ -21,8 +21,7 @@
     <idmef:CreateTime ntpstamp="0xbc7221c0.0x4ccccccc">2000-03-09T08:12:32.3-05:00</idmef:CreateTime>
     <idmef:Source ident="a1a2">
       <idmef:User ident="a1a2-01" category="os-device">
-        <idmef:UserId ident="a1a2-02"
-                      type="original-user">
+        <idmef:UserId ident="a1a2-02" type="original-user">
           <idmef:name>joe</idmef:name>
           <idmef:number>13243</idmef:number>
         </idmef:UserId>
@@ -36,13 +35,19 @@
       <idmef:Node ident="z3z4-01" category="dns">
         <idmef:name>fileserver.example.com</idmef:name>
       </idmef:Node>
+      <idmef:User ident="z3z4-02" category="os-device">
+        <idmef:UserId ident="z3z4-03" type="target-user">
+          <idmef:name>root</idmef:name>
+          <idmef:number>0</idmef:number>
+        </idmef:UserId>
+      </idmef:User>
+      <idmef:Process ident="z3z4-04">
+        <idmef:name>sh</idmef:name>
+        <idmef:pid>25134</idmef:pid>
+        <idmef:path>/bin/sh</idmef:path>
+      </idmef:Process>
     </idmef:Target>
-    <idmef:Classification text="Loadmodule attack"
-                          ident="loadmodule">
-      <idmef:Reference origin="bugtraqid">
-        <idmef:name>33</idmef:name>
-        <idmef:url>http://www.securityfocus.com</idmef:url>
-      </idmef:Reference>
+    <idmef:Classification text="Loadmodule attack" ident="loadmodule">
     </idmef:Classification>
   </idmef:Alert>
 </idmef:IDMEF-Message>

@@ -41,10 +41,8 @@
       <idmef:alertident>123456784</idmef:alertident>
       <idmef:alertident>123456785</idmef:alertident>
       <idmef:alertident>123456786</idmef:alertident>
-      <idmef:alertident analyzerid="a1b2c3d4">987654321
-      </idmef:alertident>
-      <idmef:alertident analyzerid="a1b2c3d4">987654322
-      </idmef:alertident>
+      <idmef:alertident analyzerid="a1b2c3d4">987654321</idmef:alertident>
+      <idmef:alertident analyzerid="a1b2c3d4">987654322</idmef:alertident>
     </idmef:CorrelationAlert>
   </idmef:Alert>
 </idmef:IDMEF-Message>

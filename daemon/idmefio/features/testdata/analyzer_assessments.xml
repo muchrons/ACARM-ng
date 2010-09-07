@@ -40,25 +40,17 @@
         <idmef:arg>\x90\x80\x3f\xff...\x08/bin/sh</idmef:arg>
       </idmef:Process>
     </idmef:Target>
-    <idmef:Classification
-        text="Unauthorized administrative access">
+    <idmef:Classification text="Unauthorized administrative access">
       <idmef:Reference origin="vendor-specific">
         <idmef:name>Unauthorized user to superuser</idmef:name>
         <idmef:url>file://attack-info/u2s.html</idmef:url>
       </idmef:Reference>
     </idmef:Classification>
     <idmef:Assessment>
-      <idmef:Impact severity="high" completion="succeeded"
-              type="admin"/>
-      <idmef:Action category="notification-sent">
-        page
-        </idmef:Action>
-      <idmef:Action category="block-installed">
-        disabled user (fred)
-      </idmef:Action>
-      <idmef:Action category="taken-offline">
-        logout user (fred)
-      </idmef:Action>
+      <idmef:Impact severity="high" completion="succeeded" type="admin"/>
+      <idmef:Action category="notification-sent">page</idmef:Action>
+      <idmef:Action category="block-installed">disabled user (fred)</idmef:Action>
+      <idmef:Action category="taken-offline">logout user (fred)</idmef:Action>
       <idmef:Confidence rating="high"/>
     </idmef:Assessment>
   </idmef:Alert>

@@ -13,8 +13,7 @@
     <idmef:Source ident="a1b2c3d4">
       <idmef:Node ident="a1b2c3d4-001" category="dns">
         <idmef:name>badguy.example.net</idmef:name>
-        <idmef:Address ident="a1b2c3d4-002"
-                       category="ipv4-net-mask">
+        <idmef:Address ident="a1b2c3d4-002" category="ipv4-net-mask">
           <idmef:address>192.0.2.50</idmef:address>
           <idmef:netmask>255.255.255.255</idmef:netmask>
         </idmef:Address>

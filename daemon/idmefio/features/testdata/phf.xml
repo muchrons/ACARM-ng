@@ -11,8 +11,7 @@
     <idmef:CreateTime ntpstamp="0xbc71e980.0x00000000">2000-03-09T08:12:32-01:00</idmef:CreateTime>
     <idmef:Source ident="abc123">
       <idmef:Node ident="abc123-001">
-        <idmef:Address ident="abc123-002"
-                       category="ipv4-addr">
+        <idmef:Address ident="abc123-002" category="ipv4-addr">
           <idmef:address>192.0.2.200</idmef:address>
         </idmef:Address>
       </idmef:Node>
@@ -23,17 +22,14 @@
     <idmef:Target ident="xyz789">
       <idmef:Node ident="xyz789-001" category="dns">
         <idmef:name>www.example.com</idmef:name>
-        <idmef:Address ident="xyz789-002"
-                       category="ipv4-addr">
+        <idmef:Address ident="xyz789-002" category="ipv4-addr">
           <idmef:address>192.0.2.100</idmef:address>
         </idmef:Address>
       </idmef:Node>
       <idmef:Service>
         <idmef:port>8080</idmef:port>
         <idmef:WebService>
-          <idmef:url>
-          http://www.example.com/cgi-bin/phf?/etc/group
-          </idmef:url>
+          <idmef:url>http://www.example.com/cgi-bin/phf?/etc/group</idmef:url>
           <idmef:cgi>/cgi-bin/phf</idmef:cgi>
           <idmef:http-method>GET</idmef:http-method>
         </idmef:WebService>
@@ -42,9 +38,7 @@
     <idmef:Classification text="phf attack">
       <idmef:Reference origin="bugtraqid">
         <idmef:name>629</idmef:name>
-        <idmef:url>
-        http://www.securityfocus.com/bid/629
-        </idmef:url>
+        <idmef:url>http://www.securityfocus.com/bid/629</idmef:url>
       </idmef:Reference>
     </idmef:Classification>
   </idmef:Alert>

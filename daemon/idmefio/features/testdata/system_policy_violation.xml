@@ -37,16 +37,13 @@
     <idmef:Classification text="Login policy violation">
       <idmef:Reference origin="user-specific">
         <idmef:name>out-of-hours activity</idmef:name>
-        <idmef:url>http://my.company.com/policies
-        </idmef:url>
+        <idmef:url>http://my.company.com/policies</idmef:url>
       </idmef:Reference>
     </idmef:Classification>
-    <idmef:AdditionalData type="date-time"
-                          meaning="start-time">
+    <idmef:AdditionalData type="date-time" meaning="start-time">
       <idmef:date-time>2000-03-09T07:00:00-05:00</idmef:date-time>
     </idmef:AdditionalData>
-    <idmef:AdditionalData type="date-time"
-                          meaning="stop-time">
+    <idmef:AdditionalData type="date-time" meaning="stop-time">
       <idmef:date-time>2000-03-09T19:30:00-05:00</idmef:date-time>
     </idmef:AdditionalData>
   </idmef:Alert>
