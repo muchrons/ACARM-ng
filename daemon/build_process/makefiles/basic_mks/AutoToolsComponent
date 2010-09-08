@@ -31,8 +31,6 @@ doc:
 .PHONY: all test mtest
 all test mtest: post_install.dep
 
-post_install.dep: copy_headers_time_stamp copy_libs_time_stamp
-
 copy_headers_time_stamp: install_time_stamp
 	touch copy_headers.log
 	@echo "BUILD $(COMPONENT_NAME)/copy-headers (`readlink -f copy_headers.log`)"
@@ -74,6 +72,9 @@ copy_time_stamp: $(shell find "$(THIS_SRC_BASE_DIR)" -type f)
 	cp -ruav "`ls $(THIS_SRC_BASE_DIR)/*/configure | head -1 | xargs dirname`"/* "ext_sources" > copy.log 2>&1
 	date > "$@"
 
+# reasonable dependencies
+pre_configure.dep: copy_time_stamp
+post_install.dep: copy_headers_time_stamp copy_libs_time_stamp
 
 # do not require user-provided rules by default
 %.dep:

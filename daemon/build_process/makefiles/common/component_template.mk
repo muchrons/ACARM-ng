@@ -20,7 +20,7 @@ else
 
 include $(MAKEFILES_COMMON_BASE_DIR)/$(COMPONENT_TYPE).mk
 
-# add ourselfs to VPATH
+# add ourselves to VPATH
 VPATH+=$(THIS_SRC_BASE_DIR)
 
 include $(MAKEFILES_COMMON_BASE_DIR)/build_macros.mk
