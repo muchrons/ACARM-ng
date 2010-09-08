@@ -15,3 +15,4 @@
 * consider adding per-requisites for triggers, i.e. to trigger only reports of some specific content (preprocessor-like style).
 * add possibility to turn-off persistency cleanup.
 * add information to logs, that if cleanup takes more than ??% of waiting time, interval should be decreased.
+* moved maximum time in DB from code to config file (consider special section general/cleanup/...).
