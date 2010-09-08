@@ -10,23 +10,6 @@ namespace RFCIO
 {
 namespace XML
 {
-namespace detail
-{
-
-void DomHelper::on_validity_error(const Glib::ustring &message)
-{
-}
-
-void DomHelper::on_validity_warning(const Glib::ustring &message)
-{
-}
-
-void DomHelper::handleException(const xmlpp::exception &e)
-{
-}
-
-} // namespace detail
-
 
 Reader::Reader(void)
 {
