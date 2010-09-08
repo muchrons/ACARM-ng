@@ -24,6 +24,7 @@ input
 
 core
 coretypes
+rfcio
 xml
 configio
 commons
@@ -32,6 +33,7 @@ system
 base
 algo
 preprocessor
+
 curlpp
 
 acarmng
