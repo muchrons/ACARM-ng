@@ -24,7 +24,7 @@ input
 
 core
 coretypes
-idmef
+rfcio
 xml
 configio
 commons
