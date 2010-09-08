@@ -24,7 +24,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   std::string getMessageFromAccount2(void) const
   {
     return getMessageFromAccount( getTestConfig2(),
-                                  getTestConfig1().getServer() + "@" + getTestConfig1().getLogin() );
+                                  getTestConfig1().getLogin() + "@" + getTestConfig1().getServer() );
   }
 
   Connection conn1_;
@@ -56,8 +56,8 @@ void testObj::test<2>(void)
   MessageIO         ms(conn1_);
   const std::string msg("alice has a cat");
   ms.send( getTestConfig2().getLogin()+"@"+getTestConfig2().getServer() , msg );
-  //const std::string recv=getMessageFromAccount2();
-  //ensure_equals("invalid message received", recv, msg);
+  const std::string recv=getMessageFromAccount2();
+  ensure_equals("invalid message received", recv, msg);
 }
 
 // test sending UTF8 message
@@ -69,7 +69,7 @@ void testObj::test<3>(void)
   const std::string msg("łączność UTF-8");
   ms.send( getTestConfig2().getLogin()+"@"+getTestConfig2().getServer() , msg );
   const std::string recv=getMessageFromAccount2();
-  //ensure_equals("invalid message received", recv, msg);
+  ensure_equals("invalid message received", recv, msg);
 }
 
 // test discarding messages (smoke test)
