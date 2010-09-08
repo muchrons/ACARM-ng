@@ -9,6 +9,8 @@
 #include <boost/noncopyable.hpp>
 #include <libxml++/libxml++.h>
 
+#include "RFCIO/XML/Exception.hpp"
+
 namespace RFCIO
 {
 namespace XML

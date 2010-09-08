@@ -40,7 +40,7 @@ void testObj::test<1>(void)
 {
   Writer w(doc_);
   w.write(ss_);
-  ensure_equals("invalid XML", ss_.str(), "<?xml version=\"1.0\" encoding=\"\"?>\n");
+  ensure_equals("invalid XML", ss_.str(), "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n");
 }
 
 // test writing some XML
@@ -51,7 +51,7 @@ void testObj::test<2>(void)
   doc_.create_root_node("hello_test");
   Writer w(doc_);
   w.write(ss_);
-  ensure_equals("invalid XML", ss_.str(), "<?xml version=\"1.0\" encoding=\"\"?>\n<hello_test/>\n");
+  ensure_equals("invalid XML", ss_.str(), "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<hello_test/>\n");
 }
 
 } // namespace tut
