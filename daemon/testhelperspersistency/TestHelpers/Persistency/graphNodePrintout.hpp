@@ -18,8 +18,9 @@ namespace Persistency
 {
 
 void graphNodePrintout(const std::vector< ::Persistency::GraphNodePtr > &v);
-
+void graphNodePrintout(const std::vector< ::Persistency::GraphNodePtrNN > &v);
 void graphNodePrintout(::Persistency::GraphNodePtr n);
+void graphNodePrintout(::Persistency::GraphNodePtrNN n);
 
 } // namespace Persistency
 } // namespace TestHelpers

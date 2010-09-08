@@ -84,7 +84,6 @@ struct TestClass
     mask4_( Host::Netmask_v4(mask4_bytes) ),
     mask6_( Host::Netmask_v6(mask6_bytes) )
   {
-    tdba_.removeAllData();
   }
 
   Alert::ReportedHosts generateReportedHosts(unsigned int size) const
@@ -128,6 +127,7 @@ struct TestClass
                 ") ON COMMIT DROP;" );
   }
 
+  DataCleaner                dc_;
 
   const Alert::Name          name_;
   const AnalyzerPtrNN        analyzer_;
@@ -141,23 +141,22 @@ struct TestClass
   const Alert::ReportedHosts targetHosts_;
 
 
-  TestDBAccess        tdba_;
-  IDCachePtrNN        idCache_;
-  DBHandle            dbh_;
-  IO::ConnectionPtrNN conn_;
-  Transaction         t_;
-  EntrySaver          es_;
+  IDCachePtrNN               idCache_;
+  DBHandle                   dbh_;
+  IO::ConnectionPtrNN        conn_;
+  Transaction                t_;
+  EntrySaver                 es_;
 
-  const pid_t        pid_;
-  const int          uid_;
-  ReferenceURLPtrNN  url_;
-  const char        *md5Str_;
-  const MD5Sum       md5_;
-  const Process      proc_;
-  const Process      procnn_;
+  const pid_t                pid_;
+  const int                  uid_;
+  ReferenceURLPtrNN          url_;
+  const char                *md5Str_;
+  const MD5Sum               md5_;
+  const Process              proc_;
+  const Process              procnn_;
 
-  const Host::Netmask_v4 mask4_;
-  const Host::Netmask_v6 mask6_;
+  const Host::Netmask_v4     mask4_;
+  const Host::Netmask_v6     mask6_;
 };
 
 typedef tut::test_group<TestClass> factory;

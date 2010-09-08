@@ -1,5 +1,5 @@
 /*
- * ViaUnorderedCollection.t.cpp
+ * ViaUnorderedSortableCollection.t.cpp
  *
  */
 #include <tut.h>
@@ -7,7 +7,7 @@
 #include <vector>
 #include <boost/static_assert.hpp>
 
-#include "Commons/ViaUnorderedCollection.hpp"
+#include "Commons/ViaUnorderedSortableCollection.hpp"
 
 using namespace std;
 using namespace Commons;
@@ -22,7 +22,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Commons/ViaUnorderedCollection");
+factory tf("Commons/ViaUnorderedSortableCollection");
 } // unnamed namespace
 
 
@@ -35,7 +35,7 @@ template<>
 void testObj::test<1>(void)
 {
   const list<int> l;
-  ensure("empty lists appear as different", ViaUnorderedCollection::equal(l, l) );
+  ensure("empty lists appear as different", ViaUnorderedSortableCollection::equal(l, l) );
 }
 
 // test lists of different sizes
@@ -46,7 +46,7 @@ void testObj::test<2>(void)
   const list<int> l1;
   const list<int> l2(142);
   ensure("lists of different sizes appeared as the same",
-         !ViaUnorderedCollection::equal(l1, l2) );
+         !ViaUnorderedSortableCollection::equal(l1, l2) );
 }
 
 // test vector of identical values
@@ -58,7 +58,7 @@ void testObj::test<3>(void)
   for(int i=0; i<4; ++i)
     l1.push_back(12-i);
   list<int> l2=l1;
-  ensure("lists of the same values differ", ViaUnorderedCollection::equal(l1, l2) );
+  ensure("lists of the same values differ", ViaUnorderedSortableCollection::equal(l1, l2) );
 }
 
 // test lists of pointers
@@ -70,7 +70,7 @@ void testObj::test<4>(void)
   const long values[]={5, 10, 15};
   for(unsigned int i=0; i<sizeof(values)/sizeof(values[0]); ++i)
     l.push_back( &values[i] );
-  ensure("lists of pointers differ", ViaUnorderedCollection::equal(l, l) );
+  ensure("lists of pointers differ", ViaUnorderedSortableCollection::equal(l, l) );
 }
 
 // test lists of different pointers, with the same values
@@ -92,7 +92,7 @@ void testObj::test<5>(void)
   }
   // check
   ensure("lists of different pointers to same values differ",
-         ViaUnorderedCollection::equal(l1, l2) );
+         ViaUnorderedSortableCollection::equal(l1, l2) );
 }
 
 // test lists of different pointers to different values
@@ -114,7 +114,7 @@ void testObj::test<6>(void)
   }
   // check
   ensure("lists of pointers to different values reported to be equal",
-         !ViaUnorderedCollection::equal(l1, l2) );
+         !ViaUnorderedSortableCollection::equal(l1, l2) );
 }
 
 // test lists of boost::shared_ptr<> to the same values
@@ -133,7 +133,7 @@ void testObj::test<7>(void)
   }
   // check
   ensure("lists of different smart pointers to the same values differ",
-         ViaUnorderedCollection::equal(l1, l2) );
+         ViaUnorderedSortableCollection::equal(l1, l2) );
 }
 
 // test lists of boost::shared_ptr<> of different values
@@ -152,7 +152,7 @@ void testObj::test<8>(void)
   }
   // check
   ensure("lists of different smart pointers to different values reported equal",
-         !ViaUnorderedCollection::equal(l1, l2) );
+         !ViaUnorderedSortableCollection::equal(l1, l2) );
 }
 
 // test lists of SharedPtrNotNULL<> of the same values
@@ -171,7 +171,7 @@ void testObj::test<9>(void)
   }
   // check
   ensure("lists of different smart pointers to the same values are not equal",
-         ViaUnorderedCollection::equal(l1, l2) );
+         ViaUnorderedSortableCollection::equal(l1, l2) );
 }
 
 // test lists of SharedPtrNotNULL<> to different values
@@ -190,7 +190,7 @@ void testObj::test<10>(void)
   }
   // check
   ensure("lists of different smart pointers to different values reported equal",
-         !ViaUnorderedCollection::equal(l1, l2) );
+         !ViaUnorderedSortableCollection::equal(l1, l2) );
 }
 
 // test different collection types for inequality
@@ -208,7 +208,7 @@ void testObj::test<11>(void)
   }
   // check
   ensure("different collections of different values reported equal",
-         !ViaUnorderedCollection::equal(c1, c2) );
+         !ViaUnorderedSortableCollection::equal(c1, c2) );
 }
 
 // test different collection types for equality
@@ -226,7 +226,7 @@ void testObj::test<12>(void)
   }
   // check
   ensure("different collections of the same values reported equal",
-         ViaUnorderedCollection::equal(c1, c2) );
+         ViaUnorderedSortableCollection::equal(c1, c2) );
 }
 
 // test collection of elements in different order
@@ -248,7 +248,7 @@ void testObj::test<13>(void)
 
   // check
   ensure("colection of the same values in different order does not match",
-         ViaUnorderedCollection::equal(c1, c2) );
+         ViaUnorderedSortableCollection::equal(c1, c2) );
 }
 
 // test collections with values that repeats
@@ -270,7 +270,7 @@ void testObj::test<14>(void)
 
   // check
   ensure("collection with repetitions does not match",
-         ViaUnorderedCollection::equal(c1, c2) );
+         ViaUnorderedSortableCollection::equal(c1, c2) );
 }
 
 // test for negative match, when elements repeat
@@ -292,72 +292,15 @@ void testObj::test<15>(void)
 
   // check (in both orders)
   ensure("match didn't failed when elements repeat (order 1)",
-         !ViaUnorderedCollection::equal(c1, c2) );
+         !ViaUnorderedSortableCollection::equal(c1, c2) );
   ensure("match didn't failed when elements repeat (order 2)",
-         !ViaUnorderedCollection::equal(c2, c1) );
-}
-
-
-namespace
-{
-struct NotSWO
-{
-  explicit NotSWO(int v):
-    v_(v)
-  {
-  }
-
-  bool operator==(const NotSWO &other) const
-  {
-    return v_==other.v_;
-  }
-
-  int v_;
-}; // struct NotSWO
-} // unnamed namespace
-
-// test comapring elements that does not have operator< defined - negative test.
-template<>
-template<>
-void testObj::test<16>(void)
-{
-  typedef boost::shared_ptr<NotSWO> NotSWOPtr;
-  list<NotSWOPtr> l1;
-  list<NotSWOPtr> l2;
-
-  for(int i=0; i<3; ++i)
-  {
-    l1.push_back( NotSWOPtr( new NotSWO(42+i) ) );
-    l2.push_back( NotSWOPtr( new NotSWO(42-i) ) );
-  }
-  // check
-  ensure("lists of different smart pointers to different values reported equal",
-         !ViaUnorderedCollection::equal(l1, l2) );
-}
-
-// test comapring elements that does not have operator< defined - positive test.
-template<>
-template<>
-void testObj::test<17>(void)
-{
-  typedef boost::shared_ptr<NotSWO> NotSWOPtr;
-  list<NotSWOPtr> l1;
-  list<NotSWOPtr> l2;
-
-  for(int i=0; i<3; ++i)
-  {
-    l1.push_back( NotSWOPtr( new NotSWO(42+i) ) );
-    l2.push_back( NotSWOPtr( new NotSWO(42+i) ) );
-  }
-  // check
-  ensure("lists of different smart pointers to the same values reported not equal",
-         ViaUnorderedCollection::equal(l1, l2) );
+         !ViaUnorderedSortableCollection::equal(c2, c1) );
 }
 
 // test sorting pointers list when addresses does not overlap with elements order
 template<>
 template<>
-void testObj::test<18>(void)
+void testObj::test<16>(void)
 {
   list<const long*> l1;
   list<const long*> l2;
@@ -374,13 +317,13 @@ void testObj::test<18>(void)
   l2.push_back(&e4);
 
   // check
-  ensure("lists of pointers to the same values differ", ViaUnorderedCollection::equal(l1, l2) );
+  ensure("lists of pointers to the same values differ", ViaUnorderedSortableCollection::equal(l1, l2) );
 }
 
 // test sorting pointers list witch NULLs present
 template<>
 template<>
-void testObj::test<19>(void)
+void testObj::test<17>(void)
 {
   list<const long*> l1;
   list<const long*> l2;
@@ -399,7 +342,7 @@ void testObj::test<19>(void)
   l2.push_back(&e4);
 
   // check
-  ensure("lists of pointers with NULLs to the same values differ", ViaUnorderedCollection::equal(l1, l2) );
+  ensure("lists of pointers with NULLs to the same values differ", ViaUnorderedSortableCollection::equal(l1, l2) );
 }
 
 } // namespace tut
