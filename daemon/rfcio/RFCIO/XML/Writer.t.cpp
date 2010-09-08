@@ -15,12 +15,8 @@ namespace
 
 struct TestClass
 {
-  TestClass(void)
-  {
-  }
-
-  std::stringstream ss_;
-  xmlpp::Document   doc_;
+  stringstream    ss_;
+  xmlpp::Document doc_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -52,6 +48,19 @@ void testObj::test<2>(void)
   Writer w(doc_);
   w.write(ss_);
   ensure_equals("invalid XML", ss_.str(), "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<hello_test/>\n");
+}
+
+// test writing multiple XMLs
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  doc_.create_root_node("hello_test");
+  Writer w(doc_);
+  stringstream ss2;
+  w.write(ss_);
+  w.write(ss2);
+  ensure_equals("invalid XML", ss2.str(), ss_.str() );
 }
 
 } // namespace tut
