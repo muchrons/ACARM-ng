@@ -123,7 +123,7 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
   addTreeNodesToCache(er, malerts);
 
   IO::ConnectionPtrNN connStubIO( createStubIO() );
-  IO::Transaction     tStubIO( connStubIO->createNewTransaction("stub transaction") );
+  IO::Transaction     tStubIO( connStubIO->createNewTransaction("stub_transaction") );
 
   for(Tree::IDsVector::const_iterator it = roots.begin(); it != roots.end(); ++it)
   {
@@ -140,9 +140,13 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
                           << e.what();
     }
   }
+
+  // though this is only a stub, it is better to commit it since automatic
+  // rollback leaves ugly warning in log file.
+  tStubIO.commit();
+
   // remove duplicates from out vector
   removeDuplicates(out);
-
   removeDuplicates(restoredIDs);
 }
 
