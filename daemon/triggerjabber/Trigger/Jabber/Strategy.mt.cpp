@@ -19,7 +19,7 @@ int main(int argc, char **argv)
     return 1;
   }
 
-  const UserID           receiver=atoi(argv[1]);
+  const std::string      receiver(argv[1]);
   const Config           cfg( getTestConfig1(),
                               receiver,
                               Trigger::Simple::ThresholdConfig("0.0", "0") );

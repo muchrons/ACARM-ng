@@ -22,7 +22,7 @@ namespace
 struct PingThread
 {
   explicit PingThread(detail::StrategyIO &s):
-    log_("trigger.gg.pingthread"),
+    log_("trigger.jabber.pingthread"),
     s_(&s)
   {
   }

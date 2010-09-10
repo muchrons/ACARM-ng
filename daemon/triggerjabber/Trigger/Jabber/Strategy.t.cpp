@@ -44,7 +44,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Strategy s("mygginformer", cfg_);
+  Strategy s("myjabberinformer", cfg_);
   ensure_equals("invalid type", s.getTriggerType(), "jabber");
 }
 
