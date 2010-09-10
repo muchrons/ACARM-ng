@@ -42,7 +42,10 @@ void MessageIO::send(const std::string &receiver, const std::string &msg)
 
 void MessageIO::discardIncommingMessages(void)
 {
+  LOGMSG_DEBUG(log_, "discarding all incomming messages");
   // TODO
+  assert( conn_.get()!=NULL );
+  LOGMSG_DEBUG(log_, "all messages have been discarded");
 }
 
 } // namespace Jabber

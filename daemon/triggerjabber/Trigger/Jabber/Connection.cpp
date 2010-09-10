@@ -38,6 +38,10 @@ LmConnection *Connection::connect(void) const
   // check user authentivation
   if( !lm_connection_is_authenticated(sess) )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "not authenticate");
+  // send presence message to jabber server (this is needed for eceive messages)
+  LmMessage *m = lm_message_new(NULL, LM_MESSAGE_TYPE_PRESENCE);
+  lm_connection_send(sess, m, NULL);
+  lm_message_unref(m);
   // looks like everything's done
   LOGMSG_INFO_S(log_) << "connected as: " << cfg_.getLogin() << " to Jabber server " << cfg_.getServer();
 

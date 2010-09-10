@@ -28,7 +28,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Trigger/GG/Config");
+factory tf("Trigger/Jabber/Config");
 } // unnamed namespace
 
 

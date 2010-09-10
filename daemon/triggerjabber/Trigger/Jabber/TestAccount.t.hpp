@@ -77,8 +77,9 @@ std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account,
   {
     g_main_context_iteration(NULL, FALSE);
     replace_last(mh.sender_, "/acarm-ng", "");
-    if(mh.sender_ == sender)
-      return mh.msg_;
+    if(mh.sender_ != sender)
+      continue;
+    return mh.msg_;
   }
 }
 
