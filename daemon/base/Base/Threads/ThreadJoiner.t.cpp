@@ -109,7 +109,7 @@ void testObj::test<4>(void)
     {
       // timeout if nothing happens
       if( time(NULL)>now+5 )
-        fail("timeout while waiting for thread (thread not started?)");
+        ensure_equals("timeout while waiting for thread (thread not started?)", state_, 1);
       // prevent 100%-time busy-loop
       usleep(11*1000);
     }

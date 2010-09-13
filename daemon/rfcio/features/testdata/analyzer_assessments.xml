@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<idmef:IDMEF-Message version="1.0"
+                     xmlns:idmef="http://iana.org/idmef">
+  <idmef:Alert>
+    <idmef:Analyzer analyzerid="bids-192.0.2.1">
+    </idmef:Analyzer>
+    <idmef:CreateTime ntpstamp="0xbc71e980.0x00000000">2000-03-09T08:12:32-01:00</idmef:CreateTime>
+    <idmef:Source spoofed="no">
+      <idmef:Node>
+        <idmef:location>console</idmef:location>
+        <idmef:Address category="ipv4-addr">
+          <idmef:address>192.0.2.1</idmef:address>
+        </idmef:Address>
+      </idmef:Node>
+    </idmef:Source>
+    <idmef:Target decoy="no">
+      <idmef:Node>
+        <idmef:location>local</idmef:location>
+        <idmef:Address category="ipv4-addr">
+          <idmef:address>192.0.2.1</idmef:address>
+        </idmef:Address>
+      </idmef:Node>
+      <idmef:User category="os-device">
+        <idmef:UserId type="original-user">
+          <idmef:number>456</idmef:number>
+        </idmef:UserId>
+        <idmef:UserId type="current-user">
+          <idmef:name>root</idmef:name>
+          <idmef:number>0</idmef:number>
+        </idmef:UserId>
+        <idmef:UserId type="user-privs">
+          <idmef:number>0</idmef:number>
+        </idmef:UserId>
+      </idmef:User>
+      <idmef:Process>
+        <idmef:name>eject</idmef:name>
+        <idmef:pid>32451</idmef:pid>
+        <idmef:path>/usr/bin/eject</idmef:path>
+        <idmef:arg>\x90\x80\x3f\xff...\x08/bin/sh</idmef:arg>
+      </idmef:Process>
+    </idmef:Target>
+    <idmef:Classification text="Unauthorized administrative access">
+      <idmef:Reference origin="vendor-specific">
+        <idmef:name>Unauthorized user to superuser</idmef:name>
+        <idmef:url>file://attack-info/u2s.html</idmef:url>
+      </idmef:Reference>
+    </idmef:Classification>
+    <idmef:Assessment>
+      <idmef:Impact severity="high" completion="succeeded" type="admin"/>
+      <idmef:Action category="notification-sent">page</idmef:Action>
+      <idmef:Action category="block-installed">disabled user (fred)</idmef:Action>
+      <idmef:Action category="taken-offline">logout user (fred)</idmef:Action>
+      <idmef:Confidence rating="high"/>
+    </idmef:Assessment>
+  </idmef:Alert>
+</idmef:IDMEF-Message>

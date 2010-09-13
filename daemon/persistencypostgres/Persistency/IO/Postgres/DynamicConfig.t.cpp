@@ -33,10 +33,9 @@ struct TestClass
     dc_( conn_->dynamicConfig("dynamic_config_test_owner", t_) )
   {
     tut::ensure("DynamicConfig is NULL", dc_.get()!=NULL);
-    tdba_.removeAllData();
   }
 
-  TestDBAccess             tdba_;
+  DataCleaner              dataCleaner_;
   IDCachePtrNN             idCache_;
   DBHandlePtrNN            dbh_;
   IO::ConnectionPtrNN      conn_;
@@ -107,7 +106,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  tdba_.execSQL("INSERT INTO config_rdonly VALUES ('dynamic_config_test_owner', 'kk', 'vv')");
+  dataCleaner_.execSQL("INSERT INTO config_rdonly VALUES ('dynamic_config_test_owner', 'kk', 'vv')");
   IO::DynamicConfig::Value v=dc_->readConst("kk");
   ensure_equals("invalid value", v.get(), string("vv") );
 }

@@ -52,7 +52,6 @@ struct TestClass
     es_(t_, *dbh_),
     er_(t_, *dbh_)
   {
-    tdba_.removeAllData();
   }
 
   Persistency::Alert::ReportedHosts generateReportedHosts(unsigned int size) const
@@ -73,8 +72,10 @@ struct TestClass
 
   void execSQL(const char *sql)
   {
-    tdba_.execSQL(sql);
+    dc_.execSQL(sql);
   }
+
+  DataCleaner                             dc_;
 
   const Persistency::Alert::Name          name_;
   const AnalyzerPtrNN                     analyzer_;
@@ -87,13 +88,12 @@ struct TestClass
   const Persistency::Alert::ReportedHosts sourceHosts_;
   const Persistency::Alert::ReportedHosts targetHosts_;
 
-  TestDBAccess        tdba_;
-  IDCachePtrNN        idCache_;
-  DBHandlePtrNN       dbh_;
-  IO::ConnectionPtrNN conn_;
-  Transaction         t_;
-  EntrySaver          es_;
-  EntryReader         er_;
+  IDCachePtrNN                            idCache_;
+  DBHandlePtrNN                           dbh_;
+  IO::ConnectionPtrNN                     conn_;
+  Transaction                             t_;
+  EntrySaver                              es_;
+  EntryReader                             er_;
 };
 
 typedef tut::test_group<TestClass> factory;

@@ -6,7 +6,6 @@
 #include <cstring>
 #include <memory>
 
-//#include "Persistency/TestHelpers.t.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/MetaAlert.hpp"
 #include "Persistency/IO/Postgres/Alert.hpp"
@@ -34,7 +33,6 @@ struct TestClass
     conn_(makeConnection() ),
     t_( conn_->createNewTransaction("save_alert_tests") )
   {
-    tdba_.removeAllData();
   }
 
 
@@ -46,8 +44,8 @@ struct TestClass
     tut::ensure_equals("invalid size",r.size(), size);
   }
 
+  DataCleaner         dc_;
   const string        name_;
-  TestDBAccess        tdba_;
   IDCachePtrNN        idCache_;
   DBHandlePtrNN       dbh_;
   IO::ConnectionPtrNN conn_;

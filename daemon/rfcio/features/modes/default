@@ -1,0 +1,4 @@
+RFCIO/*.?pp
+RFCIO/XML/*.?pp
+RFCIO/IDMEF/*.?pp
+RFCIO/IODEF/*.?pp
