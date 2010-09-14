@@ -2,11 +2,11 @@
 
 class ComputeLinkForAnalyzers
 {
-  function __construct($service) 
+  function __construct($service)
   {
     $this->service_=$service;
   }
-  
+
   public function computeLink($data_row)
   {
     $url    =$this->service_->constructUrl( 'Analyzer', array('id' => $data_row->id) );
@@ -14,8 +14,7 @@ class ComputeLinkForAnalyzers
   }
 
   private $service_;
-}  
-
+}
 
 class Analyzers extends TPage
 {

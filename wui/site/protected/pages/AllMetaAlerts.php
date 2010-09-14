@@ -2,11 +2,11 @@
 
 class ComputeLinkForMetaAlerts
 {
-  function __construct($service) 
+  function __construct($service)
   {
     $this->service_=$service;
   }
-  
+
   public function computeLink($data_row)
   {
     $url    =$this->service_->constructUrl( 'MetaAlert', array('id' => $data_row->id) );
@@ -15,7 +15,7 @@ class ComputeLinkForMetaAlerts
 
   private $service_;
 }
-  
+
 
 class AllMetaAlerts extends TPage
 {

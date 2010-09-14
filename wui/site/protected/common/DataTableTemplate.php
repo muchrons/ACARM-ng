@@ -2,7 +2,7 @@
 
 class DataTableTemplate extends TTemplateControl
 {
-  function __construct() 
+  function __construct()
   {
     parent::__construct();
   }
@@ -12,7 +12,7 @@ class DataTableTemplate extends TTemplateControl
     parent::onLoad($param);
     if ($this->DataGrid === null)
      return;
-    
+
     $this->DataGrid->DataSource=$this->getDataRows($this->DataGrid->PageSize,$this->DataGrid->CurrentPageIndex);
     $this->DataGrid->VirtualItemCount=$this->getRowCount();
     $this->DataGrid->dataBind();
@@ -32,10 +32,10 @@ class DataTableTemplate extends TTemplateControl
 
     foreach($data as $e)
       $e->link=$this->computation_->computeLink($e);
-    
+
     return $data;
-  }  
-    
+  }
+
   public function selectionChanged($sender, $param)
   {
     $this->DataGrid->PageSize=$sender->SelectedValue;
@@ -55,14 +55,14 @@ class DataTableTemplate extends TTemplateControl
   {
     $param->Pager->Controls->insertAt(0, 'Page: ');
   }
-  
-  public function getDataGrid() 
+
+  public function getDataGrid()
   {
     $this->ensureChildControls();
     return $this->getRegisteredObject('DataGrid');
   }
 
-  public function getTopCaption() 
+  public function getTopCaption()
   {
     $this->ensureChildControls();
     return $this->getRegisteredObject('TopCaption');
@@ -82,7 +82,7 @@ class DataTableTemplate extends TTemplateControl
   {
     $this->TopCaption->text=$param;
   }
-  
+
   public $computation_;
   public $query_;
 }

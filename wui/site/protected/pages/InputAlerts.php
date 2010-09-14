@@ -2,11 +2,11 @@
 
 class ComputeLinkForAlerts
 {
-  function __construct($service) 
+  function __construct($service)
   {
     $this->service_=$service;
   }
-  
+
   public function computeLink($data_row)
   {
     $url    =$this->service_->constructUrl( 'Alert', array('id' => $data_row->id) );
@@ -15,7 +15,7 @@ class ComputeLinkForAlerts
 
   private $service_;
 }
-  
+
 
 
 class InputAlerts extends TPage
