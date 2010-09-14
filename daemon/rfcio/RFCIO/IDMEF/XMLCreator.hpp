@@ -7,7 +7,7 @@
 
 #include <libxml++/libxml++.h>
 
-#include "Persistency/Alert.hpp"
+#include "Persistency/GraphNode.hpp"
 #include "RFCIO/IDMEF/Exception.hpp"
 
 namespace RFCIO
@@ -15,13 +15,19 @@ namespace RFCIO
 namespace IDMEF
 {
 
-/** \brief create XML document from Persistency::Alert.
+/** \brief create XML document from Persistency::GraphNode representing alert (i.e. leaf).
  */
 class XMLCreator
 {
 public:
-  explicit XMLCreator(const Persistency::Alert &a);
+  /** \brief create XML from given alert.
+   *  \param leaf leaf to create graph node from.
+   */
+  explicit XMLCreator(const Persistency::GraphNode &leaf);
 
+  /** \brief gets fererence to created document.
+   *  \return reference to created XML document.
+   */
   const xmlpp::Document &getDocument(void) const;
 
 private:
