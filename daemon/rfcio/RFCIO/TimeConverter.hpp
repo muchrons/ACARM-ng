@@ -52,14 +52,39 @@ public:
   }; // class ExceptionInvalidTime
 
 
+  /** \brief return value from convertion string to timestamp.
+   *
+   *  first element is regular timestamp, used internally by system. second
+   *  element is fraction of second, that did not fit into timestamp. fraction
+   *  is ensured to be in [0; 1) range.
+   *  \return ?return required because of doyxgen bug?
+   */
   typedef std::pair<Persistency::Timestamp, double> ExactTimestamp;
 
+  /** \brief create object and initialize data.
+   */
   TimeConverter(void);
 
+  /** \brief create string representation in RFC-1305 ntpstamp format.
+   *  \param t timestamp to create ntpstamp from.
+   *  \return string representation of a given timestamp.
+   */
   std::string toNtpStamp(const Persistency::Timestamp &t) const;
+  /** \brief create human-readable string representation in format required by IDMEF.
+   *  \param t timestamp to create ntpstamp from.
+   *  \return string representation of a given timestamp.
+   */
   std::string toString(const Persistency::Timestamp &t) const;
 
+  /** \brief create ExactTimestamp representation from RFC-1305 ntpstamp format.
+   *  \param str string containing ntpstamp.
+   *  \return ExactTimestamp converted from ntpstamp.
+   */
   ExactTimestamp fromNtpStamp(const std::string &str) const;
+  /** \brief create ExactTimestamp representation from format required by IDMEF.
+   *  \param str string to convert timestamp from.
+   *  \return ExactTimestamp converted from string.
+   */
   ExactTimestamp fromString(const std::string &str) const;
 
 private:
