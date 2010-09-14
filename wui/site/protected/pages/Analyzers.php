@@ -1,36 +1,30 @@
 <?php
 
+class ComputeLinkForAnalyzers
+{
+  function __construct($service) 
+  {
+    $this->service_=$service;
+  }
+  
+  public function computeLink($data_row)
+  {
+    $url    =$this->service_->constructUrl( 'Analyzer', array('id' => $data_row->id) );
+    return "<a href=\"$url\">details</a>";
+  }
+
+  private $service_;
+}  
+
+
 class Analyzers extends TPage
 {
-  public function __construct()
+  public function onLoad($param)
   {
-    parent::__construct();
-    $this->data_=CSQLMap::get()->queryForList('SelectAnalyzers');
+    parent::onLoad($param);
+    $this->Analyzers->computation_=new ComputeLinkForAnalyzers($this->Service);
   }
-
-  public function onLoad()
-  {
-    // initialization of GridData
-    if(!$this->IsPostBack)
-    {
-      $this->DataGrid->DataSource=$this->data_;
-      $this->DataGrid->dataBind();
-    }
-  }
-
-  public function changePage($sender, $param)
-  {
-    $this->DataGrid->CurrentPageIndex=$param->NewPageIndex;
-    $this->DataGrid->DataSource      =$this->data_;
-    $this->DataGrid->dataBind();
-  }
-
-  public function pagerCreated($sender, $param)
-  {
-    $param->Pager->Controls->insertAt(0, 'Page: ');
-  }
-
-  private $data_;
 }
+
 
 ?>
