@@ -19,15 +19,27 @@ struct TestClass
   TestClass(void)
   {
     doc_.create_root_node("IDMEF-Message", "http://iana.org/idmef", "idmef");
+    rootPtr_=doc_.get_root_node();
+    assert(rootPtr_!=NULL);
+  }
+
+  void check(const Persistency::Timestamp &t, const char *expectedXML)
+  {
+    // add as a part of XML
+    ToXML toXML(*rootPtr_);
+    toXML.addCreateTime(t);
+
+    // conver to string
+    RFCIO::XML::Writer w(doc_);
+    std::stringstream  ss;
+    w.write(ss);
+    tut::ensure_equals("invalid XML", ss.str(), expectedXML);
   }
 
   void check(const Persistency::Analyzer &a, const char *expectedXML)
   {
     // add as a part of XML
-    xmlpp::Element *rootPtr=doc_.get_root_node();
-    assert(rootPtr!=NULL);
-    xmlpp::Element &root=*rootPtr;
-    ToXML           toXML(root);
+    ToXML toXML(*rootPtr_);
     toXML.addAnalyzer(a);
 
     // conver to string
@@ -38,6 +50,7 @@ struct TestClass
   }
 
   xmlpp::Document  doc_;
+  xmlpp::Element  *rootPtr_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -146,11 +159,17 @@ void testObj::test<5>(void)
                   "</idmef:IDMEF-Message>\n");
 }
 
-// 
+// test adding creation time
 template<>
 template<>
 void testObj::test<6>(void)
 {
+  // Fri Feb 13 23:31:30 UTC 2009
+  const Persistency::Timestamp ts(1234567890u);
+  check(ts, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+            "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+              "<idmef:CreateTime ntpstamp=\"0xABCDEF01.0x012345\">2009-02-13T23:31:30.0Z</idmef:CreateTime>"
+            "</idmef:IDMEF-Message>\n");
 }
 
 // 

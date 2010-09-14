@@ -2,8 +2,8 @@
  * ToXML.hpp
  *
  */
-#ifndef INCLUDE_RFCIO_XMLCREATOR_HPP_FILE
-#define INCLUDE_RFCIO_XMLCREATOR_HPP_FILE
+#ifndef INCLUDE_RFCIO_TOXML_HPP_FILE
+#define INCLUDE_RFCIO_TOXML_HPP_FILE
 
 #include <string>
 #include <boost/noncopyable.hpp>
@@ -45,6 +45,12 @@ public:
    */
   xmlpp::Element &addAnalyzer(const Persistency::Analyzer &a);
 
+  /** \brief adds creation time to XML.
+   *  \param t timestamp to be added.
+   *  \return reference to nwly added element.
+   */
+  xmlpp::Element &addCreateTime(const Persistency::Timestamp &t);
+
   /** \brief returns parent node's reference.
    *  \return reference to node given as a parent in c-tor.
    */
@@ -75,6 +81,7 @@ private:
 
   void addParameterIfNotNULL(const char *name, const char *value);
   void addParameter(const char *name, const char *value);
+  xmlpp::Element &addTimestamp(const Persistency::Timestamp &t, const char *name);
 
   Logger::Node    log_;
   xmlpp::Element &parent_;
