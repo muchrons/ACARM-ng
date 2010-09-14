@@ -18,9 +18,9 @@ int main(void)
   assert(root!=NULL);
 
   // convert alert to XML
-  RFCIO::ToXML          toxml(*root);
-  Persistency::AlertPtr alert=TestHelpers::Persistency::makeNewAlert();
-  toxml.addAlert(*alert);
+  RFCIO::ToXML              toxml(*root);
+  Persistency::GraphNodePtr leaf=TestHelpers::Persistency::makeNewLeaf();
+  toxml.addAlert(*leaf);
 
   // output results on the screen
   RFCIO::XML::Writer w(doc);
