@@ -6,6 +6,7 @@
 #define INCLUDE_RFCIO_XMLCREATOR_HPP_FILE
 
 #include <string>
+#include <utility>
 
 #include "Persistency/Timestamp.hpp"
 #include "RFCIO/Exception.hpp"
@@ -50,13 +51,16 @@ public:
     }
   }; // class ExceptionInvalidTime
 
+
+  typedef std::pair<Persistency::Timestamp, double> ExactTimestamp;
+
   TimeConverter(void);
 
   std::string toNtpStamp(const Persistency::Timestamp &t) const;
   std::string toString(const Persistency::Timestamp &t) const;
 
-  Persistency::Timestamp fromNtpStamp(const std::string &str) const;
-  Persistency::Timestamp fromString(const std::string &str) const;
+  ExactTimestamp fromNtpStamp(const std::string &str) const;
+  ExactTimestamp fromString(const std::string &str) const;
 
 private:
   const long the1900_;

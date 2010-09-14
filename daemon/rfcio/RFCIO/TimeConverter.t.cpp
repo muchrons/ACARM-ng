@@ -3,6 +3,7 @@
  *
  */
 #include <tut.h>
+#include <cmath>
 
 #include "RFCIO/TimeConverter.hpp"
 
@@ -14,6 +15,11 @@ namespace
 
 struct TestClass
 {
+  TestClass(void):
+    eps_(0.01)          // precision is set to 1%
+  {
+  }
+
   Persistency::Timestamp ts(const time_t t) const
   {
     return Persistency::Timestamp(t);
@@ -45,7 +51,14 @@ struct TestClass
     }
   }
 
+  void ensure_double(const char *message, const double got, const double expected) const
+  {
+    if( fabs(got-expected)>eps_ )
+      tut::ensure_equals(message, got, expected);   // always fails
+  }
+
   const TimeConverter tc_;
+  const double        eps_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -63,7 +76,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("conver to ntpstamp failed", tc_.toNtpStamp( ts(952591045) ), "0xBC71F4F5.0x00000000");
+  ensure_equals("conver to ntpstamp failed", tc_.toNtpStamp( ts(952596085u) ), "0xBC71F4F5.0x00000000");
 }
 
 // test invalid convertion to ntpstamp when overflow occures
@@ -98,7 +111,9 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ensure_equals("conver from ntpstamp failed", tc_.fromNtpStamp("0xBC71F4F5.0x00000000").get(), 952591045u);
+  const TimeConverter::ExactTimestamp et=tc_.fromNtpStamp("0xBC71F4F5.0x7FFFFFFF");
+  ensure_equals("conver from ntpstamp failed - invalid ts", et.first.get(), 952596085u);
+  ensure_double("conver from ntpstamp failed - invalid fraction", et.second, 0.5);
 }
 
 // test if convertion discards minor part
@@ -106,7 +121,9 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  ensure_equals("conver from ntpstamp failed", tc_.fromNtpStamp("0xBC71F4F5.0xFFAABBCC").get(), 952591045u);
+  const TimeConverter::ExactTimestamp et=tc_.fromNtpStamp("0xBC71F4F5.0xFFAABBCC");
+  ensure_equals("conver from ntpstamp failed", et.first.get(), 952591045u);
+  ensure_double("conver from ntpstamp failed - invalid fraction", et.second, 0.99869893793917701997);
 }
 
 // test on throw on totally invalid string
@@ -146,7 +163,9 @@ template<>
 template<>
 void testObj::test<11>(void)
 {
-  ensure_equals("invalid time from string", tc_.fromString("2009-02-13T23:31:30Z").get(), 1234567890u);
+  const TimeConverter::ExactTimestamp et=tc_.fromString("2009-02-13T23:31:30Z");
+  ensure_equals("invalid time from string - bad timestamp", et.first.get(), 1234567890u);
+  ensure_double("invalid time from string - bad fraction", et.second, 0.0);
 }
 
 // test skipping second fraction
@@ -154,7 +173,9 @@ template<>
 template<>
 void testObj::test<12>(void)
 {
-  ensure_equals("invalid time from string", tc_.fromString("2009-02-13T23:31:30.666Z").get(), 1234567890u);
+  const TimeConverter::ExactTimestamp et=tc_.fromString("2009-02-13T23:31:30.666Z");
+  ensure_equals("invalid time from string - bad timestamp", et.first.get(), 1234567890u);
+  ensure_double("invalid time from string - bad fraction", et.second, 0.666);
 }
 
 // test different time zone
@@ -162,7 +183,9 @@ template<>
 template<>
 void testObj::test<13>(void)
 {
-  ensure_equals("invalid time from string", tc_.fromString("2009-02-13T20:31:30-03:00").get(), 1234567890u);
+  const TimeConverter::ExactTimestamp et=tc_.fromString("2009-02-13T20:31:30-03:00");
+  ensure_equals("invalid time from string - bad timestamp", et.first.get(), 1234567890u);
+  ensure_double("invalid time from string - bad fraction", et.second, 0.0);
 }
 
 // test missing timezone
@@ -186,35 +209,17 @@ template<>
 template<>
 void testObj::test<16>(void)
 {
-  ensure_equals("invalid time from string", tc_.fromString("2009-02-14T03:31:30.666+04:00").get(), 1234567890u);
+  const TimeConverter::ExactTimestamp et=tc_.fromString("2009-02-14T03:31:30.666+04:00");
+  ensure_equals("invalid time from string - bad timestamp", et.first.get(), 1234567890u);
+  ensure_double("invalid time from string - bad fraction", et.second, 0.666);
 }
 
-// 
+// test throw when sign is invalid
 template<>
 template<>
 void testObj::test<17>(void)
 {
-}
-
-// 
-template<>
-template<>
-void testObj::test<18>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<19>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<20>(void)
-{
+  testThrowFromString("2009-02-13T20:31:30/01:00");
 }
 
 } // namespace tut
