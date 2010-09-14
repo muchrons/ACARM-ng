@@ -222,4 +222,26 @@ void testObj::test<17>(void)
   testThrowFromString("2009-02-13T20:31:30/01:00");
 }
 
+// test ntpstamp parsing of self-generated string
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  const time_t                        in=234893241u;    // anything between 1970 and 2036 is fine
+  const TimeConverter::ExactTimestamp et=tc_.fromNtpStamp( tc_.toNtpStamp( Persistency::Timestamp(in) ) );
+  ensure_equals("self-generated ntpstamp is not parsed correctly - bad timestamp", et.first.get(), in);
+  ensure_double("self-generated ntpstamp is not parsed correctly - bad fraction", et.second, 0);
+}
+
+// test human-readable string parsing of self-generated string
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  const time_t                        in=234893241u;    // anything between 1970 and 2036 is fine
+  const TimeConverter::ExactTimestamp et=tc_.fromString( tc_.toString( Persistency::Timestamp(in) ) );
+  ensure_equals("self-generated string is not parsed correctly - bad timestamp", et.first.get(), in);
+  ensure_double("self-generated string is not parsed correctly - bad fraction", et.second, 0);
+}
+
 } // namespace tut
