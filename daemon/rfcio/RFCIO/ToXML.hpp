@@ -81,7 +81,6 @@ private:
 
   void addParameterIfNotNULL(const char *name, const char *value);
   void addParameter(const char *name, const char *value);
-  xmlpp::Element &addTimestamp(const Persistency::Timestamp &t, const char *name);
 
   Logger::Node    log_;
   xmlpp::Element &parent_;

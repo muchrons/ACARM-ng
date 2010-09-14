@@ -168,7 +168,7 @@ void testObj::test<6>(void)
   const Persistency::Timestamp ts(1234567890u);
   check(ts, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
             "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
-              "<idmef:CreateTime ntpstamp=\"0xABCDEF01.0x012345\">2009-02-13T23:31:30.0Z</idmef:CreateTime>"
+              "<idmef:CreateTime ntpstamp=\"0xCD408152.0x00000000\">2009-02-13T23:31:30Z</idmef:CreateTime>"
             "</idmef:IDMEF-Message>\n");
 }
 
