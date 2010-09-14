@@ -112,18 +112,18 @@ template<>
 void testObj::test<5>(void)
 {
   const TimeConverter::ExactTimestamp et=tc_.fromNtpStamp("0xBC71F4F5.0x7FFFFFFF");
-  ensure_equals("conver from ntpstamp failed - invalid ts", et.first.get(), 952596085u);
-  ensure_double("conver from ntpstamp failed - invalid fraction", et.second, 0.5);
+  ensure_equals("conver from ntpstamp failed - bad timestamp", et.first.get(), 952596085u);
+  ensure_double("conver from ntpstamp failed - bad fraction", et.second, 0.5);
 }
 
-// test if convertion discards minor part
+// test if convertion for "non-round" minor part
 template<>
 template<>
 void testObj::test<6>(void)
 {
   const TimeConverter::ExactTimestamp et=tc_.fromNtpStamp("0xBC71F4F5.0xFFAABBCC");
-  ensure_equals("conver from ntpstamp failed", et.first.get(), 952591045u);
-  ensure_double("conver from ntpstamp failed - invalid fraction", et.second, 0.99869893793917701997);
+  ensure_equals("conver from ntpstamp failed - bad timestamp", et.first.get(), 952596085u);
+  ensure_double("conver from ntpstamp failed - bad fraction", et.second, 0.99869893793917701997);
 }
 
 // test on throw on totally invalid string
