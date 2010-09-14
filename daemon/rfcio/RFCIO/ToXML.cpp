@@ -57,16 +57,8 @@ xmlpp::Element &ToXML::addAnalyzer(const Persistency::Analyzer &a)
     node.addString("name", a.getName() );
     if( a.getIP()!=NULL )
     {
-      ToXML address( addChild( node.getParent(), "Address" ) );
-      const char *ipType=NULL;
-      if( a.getIP()->is_v4() )
-        ipType="ipv4-addr";
-      else
-        if( a.getIP()->is_v6() )
-          ipType="ipv6-addr";
-      assert(ipType!=NULL && "unknown address type - update the code!");
-      address.addParameter("category", ipType);
-      address.addString("address", a.getIP()->to_string().c_str() );
+      ToXML tmp( node.getParent() );
+      tmp.addAddress( *a.getIP() );
     } // if(ip!=NULL)
   } // node
   return analyzer.getParent();
@@ -79,6 +71,24 @@ xmlpp::Element &ToXML::addCreateTime(const Persistency::Timestamp &t)
   ToXML                tmp(e);
   tmp.addParameter( "ntpstamp", tc.toNtpStamp(t).c_str() );
   return e;
+}
+
+xmlpp::Element &ToXML::addAddress(const IP &ip)
+{
+  ToXML address( addChild( getParent(), "Address" ) );
+  // determine IP version
+  const char *ipType=NULL;
+  if( ip.is_v4() )
+    ipType="ipv4-addr";
+  else
+    if( ip.is_v6() )
+      ipType="ipv6-addr";
+  assert(ipType!=NULL && "unknown address type - update the code!");
+  // add proper elements
+  address.addParameter("category", ipType);
+  address.addString("address", ip.to_string().c_str() );
+  // return reference
+  return address.getParent();
 }
 
 xmlpp::Element &ToXML::addString(const char *name, const char *str)

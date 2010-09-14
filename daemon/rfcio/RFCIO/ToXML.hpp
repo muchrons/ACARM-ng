@@ -13,6 +13,7 @@
 #include "Commons/LimitedString.hpp"
 #include "Commons/LimitedNULLString.hpp"
 #include "Logger/Node.hpp"
+#include "Persistency/IPTypes.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "RFCIO/Exception.hpp"
 #include "RFCIO/ExceptionUnexpectedNULL.hpp"
@@ -25,7 +26,11 @@ namespace RFCIO
  */
 class ToXML: private boost::noncopyable
 {
+  typedef Persistency::IPTypes<ToXML> IPTypesBase;
 public:
+  /** \brief type representing IP. */
+  typedef IPTypesBase::IP             IP;
+
   /** \brief create class adding elements to XML tree of a specified parent.
    *  \param parent node to add elements to.
    *  \note parent node is taken via reference and held this way, thus object it
@@ -47,9 +52,16 @@ public:
 
   /** \brief adds creation time to XML.
    *  \param t timestamp to be added.
-   *  \return reference to nwly added element.
+   *  \return reference to newly added element.
    */
   xmlpp::Element &addCreateTime(const Persistency::Timestamp &t);
+
+  /** \brief adds IP address to XML.
+   *  \param ip IP address to be added.
+   *  \return reference to newly added element.
+   */
+
+  xmlpp::Element &addAddress(const IP &ip);
 
   /** \brief returns parent node's reference.
    *  \return reference to node given as a parent in c-tor.

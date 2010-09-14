@@ -28,12 +28,7 @@ struct TestClass
     // add as a part of XML
     ToXML toXML(*rootPtr_);
     toXML.addCreateTime(t);
-
-    // conver to string
-    RFCIO::XML::Writer w(doc_);
-    std::stringstream  ss;
-    w.write(ss);
-    tut::ensure_equals("invalid XML", ss.str(), expectedXML);
+    writeAndCompare(expectedXML);
   }
 
   void check(const Persistency::Analyzer &a, const char *expectedXML)
@@ -41,7 +36,19 @@ struct TestClass
     // add as a part of XML
     ToXML toXML(*rootPtr_);
     toXML.addAnalyzer(a);
+    writeAndCompare(expectedXML);
+  }
 
+  void check(const ToXML::IP &ip, const char *expectedXML)
+  {
+    // add as a part of XML
+    ToXML toXML(*rootPtr_);
+    toXML.addAddress(ip);
+    writeAndCompare(expectedXML);
+  }
+
+  void writeAndCompare(const char *expectedXML)
+  {
     // conver to string
     RFCIO::XML::Writer w(doc_);
     std::stringstream  ss;
@@ -172,18 +179,32 @@ void testObj::test<6>(void)
             "</idmef:IDMEF-Message>\n");
 }
 
-// 
+// test adding IPv4
 template<>
 template<>
 void testObj::test<7>(void)
 {
+  const ToXML::IP ip=ToXML::IP::from_string("1.2.3.4");
+  check(ip, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+            "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+              "<idmef:Address category=\"ipv4-addr\">"
+                "<idmef:address>1.2.3.4</idmef:address>"
+              "</idmef:Address>"
+            "</idmef:IDMEF-Message>\n");
 }
 
-// 
+// test adding IPv6
 template<>
 template<>
 void testObj::test<8>(void)
 {
+  const ToXML::IP ip=ToXML::IP::from_string("::1");
+  check(ip, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+            "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+              "<idmef:Address category=\"ipv6-addr\">"
+                "<idmef:address>::1</idmef:address>"
+              "</idmef:Address>"
+            "</idmef:IDMEF-Message>\n");
 }
 
 // 
