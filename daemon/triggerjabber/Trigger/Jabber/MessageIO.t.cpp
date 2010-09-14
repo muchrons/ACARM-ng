@@ -77,10 +77,8 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  /*
   MessageIO ms(conn1_);
   ms.discardIncommingMessages();
-  */
 }
 
 } // namespace tut

@@ -6,6 +6,7 @@
 #define INCLUDE_TRIGGER_JABBER_MESSAGEIO_HPP_FILE
 
 #include <string>
+#include <glib.h>
 #include <boost/noncopyable.hpp>
 
 #include "Logger/Node.hpp"
@@ -41,6 +42,7 @@ public:
   void discardIncommingMessages(void);
 
 private:
+
   Logger::Node  log_;
   Connection   &conn_;
 }; // class MessageIO

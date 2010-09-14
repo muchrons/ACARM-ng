@@ -63,9 +63,9 @@ handleMessages (LmMessageHandler * /*handler*/,
 std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account, const std::string sender)
 {
   Trigger::Jabber::Connection conn(account);
-  MessageHandler mh;
-  LmMessage *m = lm_message_new(NULL, LM_MESSAGE_TYPE_PRESENCE);
-  LmMessageHandler *handler = lm_message_handler_new ((LmHandleMessageFunction)handleMessages, &mh, NULL);
+  MessageHandler              mh;
+  LmMessage                   *m = lm_message_new(NULL, LM_MESSAGE_TYPE_PRESENCE);
+  LmMessageHandler            *handler = lm_message_handler_new((LmHandleMessageFunction)handleMessages, &mh, NULL);
   lm_connection_register_message_handler(conn.get(), handler,
                                          LM_MESSAGE_TYPE_MESSAGE,
                                          LM_HANDLER_PRIORITY_NORMAL);

@@ -44,8 +44,8 @@ template<>
 void testObj::test<2>(void)
 {
   const AccountConfig ac( getTestConfig() );
-  //AutoSession           ags( gg_login( &lp.get() ) );
-  //ensure("conneciton error", ags.get()!=NULL );
+  AutoSession           ags( lm_connection_new( ac.getServer().c_str() ) );
+  ensure("conneciton error", ags.get()!=NULL );
 }
 
 // test ownership passing
@@ -53,16 +53,14 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  /*
-  const LoginParameters lp( getTestConfig() );
-  AutoSession           ags( gg_login( &lp.get() ) );
+  const AccountConfig ac( getTestConfig() );
+  AutoSession           ags( lm_connection_new( ac.getServer().c_str() ) );
   ensure("conneciton error", ags.get()!=NULL );
   AutoSession           out;
   ensure("NULL-initialization failed", out.get()==NULL );
   out=ags;      // move ownership
   ensure("source not NULLed", ags.get()==NULL );
   ensure("out not set", out.get()!=NULL );
-  */
 }
 
 } // namespace tut

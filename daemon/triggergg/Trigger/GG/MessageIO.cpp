@@ -65,7 +65,6 @@ void MessageIO::discardIncommingMessages(void)
         {
           LOGMSG_DEBUG(log_, "something's wrong with descriptor's setting - check this; problem ignored");
           throw ExceptionReceivingError(SYSTEM_SAVE_LOCATION, "receive descriptor not set");
-          return;
         }
         // read event
         System::ScopedPtrCustom<gg_event, gg_event_free> e( gg_watch_fd( conn_.get() ) );
