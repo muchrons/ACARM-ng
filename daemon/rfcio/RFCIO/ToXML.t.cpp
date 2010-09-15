@@ -23,6 +23,14 @@ struct TestClass
     assert(rootPtr_!=NULL);
   }
 
+  void checkDetectTime(const Persistency::Timestamp &t, const char *expectedXML)
+  {
+    // add as a part of XML
+    ToXML toXML(*rootPtr_);
+    toXML.addDetectTime(t);
+    writeAndCompare(expectedXML);
+  }
+
   void check(const Persistency::Timestamp &t, const char *expectedXML)
   {
     // add as a part of XML
@@ -207,11 +215,17 @@ void testObj::test<8>(void)
             "</idmef:IDMEF-Message>\n");
 }
 
-// TODO
+// test adding detection tine
 template<>
 template<>
 void testObj::test<9>(void)
 {
+  // Fri Feb 13 23:31:30 UTC 2009
+  const Persistency::Timestamp ts(1234567890u);
+  checkDetectTime(ts, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                      "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                        "<idmef:DetectTime ntpstamp=\"0xCD408152.0x00000000\">2009-02-13T23:31:30Z</idmef:DetectTime>"
+                      "</idmef:IDMEF-Message>\n");
 }
 
 // TODO

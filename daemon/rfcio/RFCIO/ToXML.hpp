@@ -55,6 +55,11 @@ public:
    *  \return reference to newly added element.
    */
   xmlpp::Element &addCreateTime(const Persistency::Timestamp &t);
+  /** \brief adds detection time to XML.
+   *  \param t timestamp to be added.
+   *  \return reference to newly added element.
+   */
+  xmlpp::Element &addDetectTime(const Persistency::Timestamp &t);
 
   /** \brief adds IP address to XML.
    *  \param ip IP address to be added.
@@ -93,6 +98,8 @@ private:
 
   void addParameterIfNotNULL(const char *name, const char *value);
   void addParameter(const char *name, const char *value);
+
+  xmlpp::Element &addTimestamp(const char *name, const Persistency::Timestamp &t);
 
   Logger::Node    log_;
   xmlpp::Element &parent_;

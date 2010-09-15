@@ -66,11 +66,12 @@ xmlpp::Element &ToXML::addAnalyzer(const Persistency::Analyzer &a)
 
 xmlpp::Element &ToXML::addCreateTime(const Persistency::Timestamp &t)
 {
-  const TimeConverter  tc;
-  xmlpp::Element      &e=addString( "CreateTime", tc.toString(t).c_str() );
-  ToXML                tmp(e);
-  tmp.addParameter( "ntpstamp", tc.toNtpStamp(t).c_str() );
-  return e;
+  return addTimestamp("CreateTime", t);
+}
+
+xmlpp::Element &ToXML::addDetectTime(const Persistency::Timestamp &t)
+{
+  return addTimestamp("DetectTime", t);
 }
 
 xmlpp::Element &ToXML::addAddress(const IP &ip)
@@ -131,6 +132,16 @@ void ToXML::addParameter(const char *name, const char *value)
   }
   LOGMSG_DEBUG_S(log_)<<"setting paramter '"<<name<<"' to "<<value;
   parent_.set_attribute(name, value);
+}
+
+xmlpp::Element &ToXML::addTimestamp(const char *name, const Persistency::Timestamp &t)
+{
+  assert(name!=NULL);
+  const TimeConverter  tc;
+  xmlpp::Element      &e=addString( name, tc.toString(t).c_str() );
+  ToXML                tmp(e);
+  tmp.addParameter( "ntpstamp", tc.toNtpStamp(t).c_str() );
+  return e;
 }
 
 } // namespace RFCIO
