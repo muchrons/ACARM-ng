@@ -15,3 +15,10 @@
    fun:_ZN5boost11this_thread6get_idEv
    ...
 }
+{
+   boost_thread_leak_local_storage_id
+   Memcheck:Leak
+   ...
+   fun:_ZN5boost19thread_specific_ptrIjE5resetEPj
+   ...
+}
