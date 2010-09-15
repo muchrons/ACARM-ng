@@ -31,6 +31,14 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     assert(rootPtr_!=NULL);
   }
 
+  void checkClassification(const Persistency::GraphNode &leaf, const char *expectedXML)
+  {
+    // add as a part of XML
+    ToXML toXML(*rootPtr_);
+    toXML.addClassification(leaf);
+    writeAndCompare(expectedXML);
+  }
+
   void checkAssessment(const Persistency::GraphNode &leaf, const double confidence, const char *severity)
   {
     // add as a part of XML
@@ -348,10 +356,118 @@ void testObj::test<15>(void)
   checkAssessment(*leaf, 0.42, "high");
 }
 
-// TODO
+// test adding reference URL
 template<>
 template<>
 void testObj::test<16>(void)
+{
+  const Persistency::ReferenceURLPtr ref=TestHelpers::Persistency::makeNewReferenceURL();
+  assert( ref.get()!=NULL );
+  ToXML toXML(*rootPtr_);
+  toXML.addReference(*ref);
+  writeAndCompare("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                  "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                    "<idmef:Reference origin=\"unknown\">"
+                      "<idmef:name>some name</idmef:name>"
+                      "<idmef:url>http://gnu.org</idmef:url>"
+                    "</idmef:Reference>"
+                  "</idmef:IDMEF-Message>\n");
+}
+
+// test leaf with reference URL set
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  const Persistency::NodeChildrenVector ncv( severityLeaf(0), severityLeaf(1) );
+  const Persistency::MetaAlertPtrNN     ma=TestHelpers::Persistency::makeNewMetaAlert();
+  Persistency::IO::ConnectionPtrNN      conn( Persistency::IO::create() );
+  Persistency::IO::Transaction          t( conn->createNewTransaction("leaf_with_ref_url") );
+  const Persistency::GraphNodePtrNN     node( new Persistency::GraphNode(ma, conn, t, ncv) );
+  t.commit();
+  checkClassification(*node, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                             "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                               "<idmef:Classification text=\"some meta-alert\">"
+                                 "<idmef:Reference origin=\"unknown\">"
+                                    "<idmef:name>some name</idmef:name>"
+                                    "<idmef:url>http://gnu.org</idmef:url>"
+                                 "</idmef:Reference>"
+                               "</idmef:Classification>"
+                             "</idmef:IDMEF-Message>\n");
+}
+
+// test leaf without reference URL
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  const Persistency::GraphNodePtrNN leaf=TestHelpers::Persistency::makeNewLeaf();
+  checkClassification(*leaf, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                             "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                               "<idmef:Classification text=\"some alert\"/>"
+                             "</idmef:IDMEF-Message>\n");
+}
+
+// TODO
+template<>
+template<>
+void testObj::test<19>(void)
+{
+}
+
+// TODO
+template<>
+template<>
+void testObj::test<20>(void)
+{
+}
+
+// TODO
+template<>
+template<>
+void testObj::test<21>(void)
+{
+}
+
+// TODO
+template<>
+template<>
+void testObj::test<22>(void)
+{
+}
+
+// TODO
+template<>
+template<>
+void testObj::test<23>(void)
+{
+}
+
+// TODO
+template<>
+template<>
+void testObj::test<24>(void)
+{
+}
+
+// TODO
+template<>
+template<>
+void testObj::test<25>(void)
+{
+}
+
+// TODO
+template<>
+template<>
+void testObj::test<26>(void)
+{
+}
+
+// TODO
+template<>
+template<>
+void testObj::test<27>(void)
 {
 }
 

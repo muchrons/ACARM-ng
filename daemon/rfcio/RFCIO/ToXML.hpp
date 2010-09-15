@@ -65,6 +65,16 @@ public:
    *  \return reference to newly added element.
    */
   xmlpp::Element &addAssessment(const Persistency::GraphNode &leaf);
+  /** \brief adds classification information to XML.
+   *  \param leaf leaf to add classification information from.
+   *  \return reference to newly added element.
+   */
+  xmlpp::Element &addClassification(const Persistency::GraphNode &leaf);
+  /** \brief adds reference information to XML.
+   *  \param ref reference informatin to be added.
+   *  \return reference to newly added element.
+   */
+  xmlpp::Element &addReference(const Persistency::ReferenceURL &ref);
 
   /** \brief adds IP address to XML.
    *  \param ip IP address to be added.

@@ -117,6 +117,26 @@ xmlpp::Element &ToXML::addAssessment(const Persistency::GraphNode &leaf)
   return assessment.getParent();
 }
 
+xmlpp::Element &ToXML::addClassification(const Persistency::GraphNode &leaf)
+{
+  ToXML classif( addChild( getParent(), "Classification" ) );
+  classif.addParameter( "text", leaf.getMetaAlert().getName().get() );
+  const Persistency::ReferenceURL *ref=leaf.getMetaAlert().getReferenceURL();
+  if(ref!=NULL)
+    classif.addReference(*ref);
+  // return reference to newly-created sub-tree
+  return classif.getParent();
+}
+
+xmlpp::Element &ToXML::addReference(const Persistency::ReferenceURL &ref)
+{
+  ToXML refElem( addChild( getParent(), "Reference" ) );
+  refElem.addParameter("origin", "unknown");
+  refElem.addString("name", ref.getName().get() );
+  refElem.addString("url",  ref.getURL().get()  );
+  return refElem.getParent();
+}
+
 xmlpp::Element &ToXML::addAddress(const IP &ip)
 {
   ToXML address( addChild( getParent(), "Address" ) );
