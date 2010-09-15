@@ -3,10 +3,14 @@
  *
  */
 #include <tut.h>
+#include <string>
 #include <sstream>
+#include <cstring>
+#include <cmath>
 
 #include "RFCIO/ToXML.hpp"
 #include "RFCIO/XML/Writer.hpp"
+#include "Commons/Convert.hpp"
 #include "Persistency/IO/create.hpp"
 #include "Persistency/IO/Connection.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
@@ -27,24 +31,48 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     assert(rootPtr_!=NULL);
   }
 
-  void checkAssessment(const Persistency::GraphNode &leaf, const double expectedValue)
+  void checkAssessment(const Persistency::GraphNode &leaf, const double confidence, const char *severity)
   {
     // add as a part of XML
     ToXML toXML(*rootPtr_);
     toXML.addAssessment(leaf);
-    const string  str  =write();
-    const char   *begin="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                        "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
-                          "<idmef:Assessment>"
-                            "<idmef:Confidence rating=\"numeric\">";
-                            // value goes here
-    const char   *end  =    "</idmef:Confidence>"
-                          "</idmef:Assessment>"
-                        "</idmef:IDMEF-Message>\n";
+    const char *sec1="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                     "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                       "<idmef:Assessment>"
+                         "<idmef:Impact severity=\"";
+    const char *sec2=    "\"/>"
+                         "<idmef:Confidence rating=\"numeric\">";
+    const char *sec3=    "</idmef:Confidence>"
+                       "</idmef:Assessment>"
+                     "</idmef:IDMEF-Message>\n";
     stringstream ss;
-    ss << begin << expectedValue << end;
-    // test value
-    tut::ensure_equals("invalid XML", str, ss.str());
+    ss << sec1 << severity << sec2 << confidence << sec3;
+    const string expected=ss.str();
+    const string actual  =write();
+    // it may happen that these strings are identical
+    if(expected==actual)
+      return;
+    // if they are not, it may mean that confidence is not precise (double...)
+    if( strstr( actual.c_str(), sec1 )!=actual.c_str() )    // doesn't start with sec1?
+      tut::ensure_equals("invalid XML/1", actual, expected);
+    // check second part
+    stringstream ss2;
+    ss2 << sec1 << severity << sec2;
+    const char *posSec2=strstr( actual.c_str(), ss2.str().c_str() );
+    if(posSec2==NULL)                                       // no match for ending?
+      tut::ensure_equals("invalid XML/2", actual, expected);
+    // test double value by converting it back to double
+    const char   *posSec3=strstr( actual.c_str(), sec3 );
+    if(posSec3==NULL)
+      tut::ensure_equals("invalid XML/3", actual, expected);
+    // conver to double
+    const char   *begin=actual.c_str()+ss2.str().length();
+    const char   *end  =posSec3;
+    const string  confStr(begin, end);
+    const double  confVal=Commons::Convert::to<double>(confStr);
+    if( fabs(confVal-confidence)>0.01 )
+      tut::ensure_equals("invalid XML/4", actual, expected);
+    // ok - no problem deteceted
   }
 
   void check(const Persistency::Analyzer &a, const char *expectedXML)
@@ -65,12 +93,21 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
 
   Persistency::GraphNodePtrNN certaintyLeaf(const double delta) const
   {
+    return certaintySeverityLeaf(delta, 0);
+  }
+  Persistency::GraphNodePtrNN severityLeaf(const double delta) const
+  {
+    return certaintySeverityLeaf(0, delta);
+  }
+  Persistency::GraphNodePtrNN certaintySeverityLeaf(const double certDif, const double sevDif) const
+  {
     Persistency::IO::ConnectionPtrNN  conn( Persistency::IO::create().release() );
     Persistency::IO::Transaction      t( conn->createNewTransaction("change_cert_delta") );
     Persistency::GraphNodePtrNN       leaf=TestHelpers::Persistency::makeNewLeaf();
     Persistency::IO::MetaAlertAutoPtr maIO=conn->metaAlert( leaf->getMetaAlert(), t );
     assert( maIO.get()!=NULL );
-    maIO->updateCertaintyDelta(delta);
+    maIO->updateCertaintyDelta(certDif);
+    maIO->updateSeverityDelta(sevDif);
     t.commit(); // do not log automatic rollback
     return leaf;
   }
@@ -263,7 +300,7 @@ template<>
 void testObj::test<10>(void)
 {
   const Persistency::GraphNodePtrNN leaf=certaintyLeaf(0.2);
-  checkAssessment(*leaf, 0.42+0.2);
+  checkAssessment(*leaf, 0.42+0.2, "low");
 }
 
 // test certainty<0
@@ -272,7 +309,7 @@ template<>
 void testObj::test<11>(void)
 {
   const Persistency::GraphNodePtrNN leaf=certaintyLeaf(-0.9);
-  checkAssessment(*leaf, 0);
+  checkAssessment(*leaf, 0, "low");
 }
 
 // test certainty>1
@@ -281,28 +318,34 @@ template<>
 void testObj::test<12>(void)
 {
   const Persistency::GraphNodePtrNN leaf=certaintyLeaf(0.9);
-  checkAssessment(*leaf, 1);
+  checkAssessment(*leaf, 1, "low");
 }
 
-// TODO
+// test some random severity
 template<>
 template<>
 void testObj::test<13>(void)
 {
+  const Persistency::GraphNodePtrNN leaf=severityLeaf(2);
+  checkAssessment(*leaf, 0.42, "medium");
 }
 
-// TODO
+// test severity<0
 template<>
 template<>
 void testObj::test<14>(void)
 {
+  const Persistency::GraphNodePtrNN leaf=severityLeaf(-9);
+  checkAssessment(*leaf, 0.42, "info");
 }
 
-// TODO
+// test deverity>1
 template<>
 template<>
 void testObj::test<15>(void)
 {
+  const Persistency::GraphNodePtrNN leaf=severityLeaf(9);
+  checkAssessment(*leaf, 0.42, "high");
 }
 
 // TODO
