@@ -17,7 +17,8 @@ IDs="`pv "$LOG" | sed -e 's:^[^/]*/::' -e 's:^[^ ]* ::' -e 's:^\[::' -e 's:\].*:
 # select separate ids into separete files
 for id in $IDs
 do
-  grep " \[$id\] " < "$LOG" > "$OUTDIR/thread_$id.log" || exit $?
+  echo "separating thread $id..."
+  pv "$LOG" | grep " \[$id\] " > "$OUTDIR/thread_$id.log" || exit $?
 done
 
 exit 0
