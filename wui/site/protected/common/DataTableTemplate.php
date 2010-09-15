@@ -2,9 +2,17 @@
 
 class DataTableTemplate extends TTemplateControl
 {
-  public function onLoad()
+  function __construct()
   {
-    //TODO: usunalem ispostback bo nie dzialalo
+    parent::__construct();
+  }
+
+  public function onLoad($param)
+  {
+    parent::onLoad($param);
+    if ($this->DataGrid === null)
+     return;
+
     $this->DataGrid->DataSource=$this->getDataRows($this->DataGrid->PageSize,$this->DataGrid->CurrentPageIndex);
     $this->DataGrid->VirtualItemCount=$this->getRowCount();
     $this->DataGrid->dataBind();
@@ -12,7 +20,7 @@ class DataTableTemplate extends TTemplateControl
 
   private function getRowCount()
   {
-    return CSQLMap::get()->queryForObject('SelectAlertsSummaryCount');
+    return CSQLMap::get()->queryForObject($this->query_.'Count');
   }
 
   private function getDataRows($perPage, $pageNumber)
@@ -20,14 +28,11 @@ class DataTableTemplate extends TTemplateControl
     $sqlmap_param=new CParamLimitOffset;
     $sqlmap_param->limit=$perPage;
     $sqlmap_param->offset=$perPage*$pageNumber;
-    $data=CSQLMap::get()->queryForList('SelectAlertsSummaryRange',$sqlmap_param);
+    $data=CSQLMap::get()->queryForList($this->query_,$sqlmap_param);
 
     foreach($data as $e)
-    {
-      $url    =$this->Service->constructUrl( 'Alert', array('id' => $e->id) );
-      $href   ="<a href=\"$url\">see</a>";
-      $e->link=$href;
-    }
+      $e->link=$this->computation_->computeLink($e);
+
     return $data;
   }
 
@@ -50,6 +55,37 @@ class DataTableTemplate extends TTemplateControl
   {
     $param->Pager->Controls->insertAt(0, 'Page: ');
   }
+
+  public function getDataGrid()
+  {
+    $this->ensureChildControls();
+    return $this->getRegisteredObject('DataGrid');
+  }
+
+  public function getTopCaption()
+  {
+    $this->ensureChildControls();
+    return $this->getRegisteredObject('TopCaption');
+  }
+
+  public function setcomputation_($param)
+  {
+    $this->computation_=$param;
+  }
+
+  public function setquery_($param)
+  {
+    $this->query_=$param;
+  }
+
+  public function settext_($param)
+  {
+    $this->TopCaption->text=$param;
+  }
+
+  // TODO: check if these can be private
+  public $computation_;
+  public $query_;
 }
 
 ?>
