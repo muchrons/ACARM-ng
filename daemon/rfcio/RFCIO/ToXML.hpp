@@ -43,13 +43,11 @@ public:
    *  \return reference to newly added element.
    */
   xmlpp::Element &addAlert(const Persistency::GraphNode &leaf);
-
   /** \brief add analyzer's node and return reference to it.
    *  \param a analyzer to be added.
    *  \return reference to newly added element.
    */
   xmlpp::Element &addAnalyzer(const Persistency::Analyzer &a);
-
   /** \brief adds creation time to XML.
    *  \param t timestamp to be added.
    *  \return reference to newly added element.
@@ -75,12 +73,15 @@ public:
    *  \return reference to newly added element.
    */
   xmlpp::Element &addReference(const Persistency::ReferenceURL &ref);
-
+  /** \brief adds additinal data to XML.
+   *  \param leaf leaf to take additinal data from.
+   *  \return reference to newly added element.
+   */
+  xmlpp::Element &addAdditionalData(const Persistency::GraphNode &leaf);
   /** \brief adds IP address to XML.
    *  \param ip IP address to be added.
    *  \return reference to newly added element.
    */
-
   xmlpp::Element &addAddress(const IP &ip);
 
   /** \brief returns parent node's reference.

@@ -41,7 +41,7 @@ xmlpp::Element &ToXML::addAlert(const Persistency::GraphNode &leaf)
   assert( a.getSourceAnalyzers().begin()!=a.getSourceAnalyzers().end() );
   assert( a.getSourceAnalyzers().begin()->get()!=NULL );
   alert.addAnalyzer( *a.getSourceAnalyzers().begin()->get() );
-  // TODO
+  // TODO: add rest of the fields
   return alert.getParent();
 }
 
@@ -135,6 +135,15 @@ xmlpp::Element &ToXML::addReference(const Persistency::ReferenceURL &ref)
   refElem.addString("name", ref.getName().get() );
   refElem.addString("url",  ref.getURL().get()  );
   return refElem.getParent();
+}
+
+xmlpp::Element &ToXML::addAdditionalData(const Persistency::GraphNode &leaf)
+{
+  ToXML data( addChild( getParent(), "AdditionalData" ) );
+  data.addParameter("type", "string");
+  data.addParameter("meaning", "description");
+  data.addString("string", leaf.getAlert().getDescription().c_str() );
+  return data.getParent();
 }
 
 xmlpp::Element &ToXML::addAddress(const IP &ip)

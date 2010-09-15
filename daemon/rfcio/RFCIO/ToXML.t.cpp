@@ -31,6 +31,14 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     assert(rootPtr_!=NULL);
   }
 
+  void checkAdditionalData(const Persistency::GraphNode &leaf, const char *expectedXML)
+  {
+    // add as a part of XML
+    ToXML toXML(*rootPtr_);
+    toXML.addAdditionalData(leaf);
+    writeAndCompare(expectedXML);
+  }
+
   void checkClassification(const Persistency::GraphNode &leaf, const char *expectedXML)
   {
     // add as a part of XML
@@ -408,11 +416,18 @@ void testObj::test<18>(void)
                              "</idmef:IDMEF-Message>\n");
 }
 
-// TODO
+// test adding additional section
 template<>
 template<>
 void testObj::test<19>(void)
 {
+  const Persistency::GraphNodePtrNN leaf=TestHelpers::Persistency::makeNewLeaf();
+  checkAdditionalData(*leaf, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                             "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                               "<idmef:AdditionalData type=\"string\" meaning=\"description\">"
+                                 "<idmef:string>some test alert</idmef:string>"
+                               "</idmef:AdditionalData>"
+                             "</idmef:IDMEF-Message>\n");
 }
 
 // TODO
