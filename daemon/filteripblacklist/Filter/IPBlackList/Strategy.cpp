@@ -42,7 +42,9 @@ void Strategy::processImpl(Node               n,
 {
   const time_t now=time(NULL);
   // ensure prunning once a while
-  pruneIfNeeded(now);
+  if(nextPrune_<now)
+    pruneProcessedSet(now);
+  assert(nextPrune_>=now);
 
   //
   // this set of 'if's is important, since it prevents connection flood
@@ -54,11 +56,13 @@ void Strategy::processImpl(Node               n,
   // refresh list if timeout already passed
   if(deadline_<now)
     updateBlackList(now);
+  assert(deadline_>=now);
 
   // if there is no list read, we can only skip this call...
   if( bl_.get()==NULL )
   {
     handleNoBlackList(now, n);
+    assert(deadline_>=now);
     return;
   }
 
@@ -68,11 +72,8 @@ void Strategy::processImpl(Node               n,
   Algo::forEachUniqueLeaf(n, ep);
 }
 
-void Strategy::pruneIfNeeded(const time_t now)
+void Strategy::pruneProcessedSet(const time_t now)
 {
-  // time has not come yet?
-  if(nextPrune_>now)
-    return;
   LOGMSG_DEBUG(log_, "prunning time has come");
   processed_.prune();   // call prune method
   nextPrune_=now+10;    // schedule prunning every 10[s]

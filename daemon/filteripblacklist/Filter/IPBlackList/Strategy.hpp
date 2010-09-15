@@ -71,7 +71,7 @@ private:
                            NodesTimeoutQueue &ntq,
                            BackendFacade     &bf);
 
-  void pruneIfNeeded(time_t now);
+  void pruneProcessedSet(time_t now);
   void updateBlackList(time_t now);
   void handleNoBlackList(time_t now, Node n);
 
