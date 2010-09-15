@@ -60,6 +60,11 @@ public:
    *  \return reference to newly added element.
    */
   xmlpp::Element &addDetectTime(const Persistency::Timestamp &t);
+  /** \brief adds assessment information to XML.
+   *  \param leaf leaf to add assessment information from.
+   *  \return reference to newly added element.
+   */
+  xmlpp::Element &addAssessment(const Persistency::GraphNode &leaf);
 
   /** \brief adds IP address to XML.
    *  \param ip IP address to be added.

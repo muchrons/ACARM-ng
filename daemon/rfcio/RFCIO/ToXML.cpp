@@ -10,6 +10,7 @@
 #include "RFCIO/ToXML.hpp"
 #include "RFCIO/TimeConverter.hpp"
 
+using namespace std;
 using namespace Persistency;
 
 namespace RFCIO
@@ -18,9 +19,9 @@ namespace RFCIO
 namespace
 {
 template<typename T>
-std::string toStr(const T &t)
+string toStr(const T &t)
 {
-  return Commons::Convert::to<std::string>(t);
+  return Commons::Convert::to<string>(t);
 } // toStr()
 } // unnamed namespace
 
@@ -72,6 +73,19 @@ xmlpp::Element &ToXML::addCreateTime(const Persistency::Timestamp &t)
 xmlpp::Element &ToXML::addDetectTime(const Persistency::Timestamp &t)
 {
   return addTimestamp("DetectTime", t);
+}
+
+xmlpp::Element &ToXML::addAssessment(const Persistency::GraphNode &leaf)
+{
+  ToXML assessment( addChild( getParent(), "Assessment" ) );
+  const double tmp =leaf.getAlert().getCertainty().get() + leaf.getMetaAlert().getCertaintyDelta();
+  const double prob=min(1.0, max(0.0, tmp));    // normalize probability to [0;1] range
+  // add to XML
+  {
+    ToXML confid( assessment.addString( "Confidence", toStr(prob).c_str() ) );
+    confid.addParameter("rating", "numeric");
+  }
+  return assessment.getParent();
 }
 
 xmlpp::Element &ToXML::addAddress(const IP &ip)

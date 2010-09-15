@@ -7,6 +7,10 @@
 
 #include "RFCIO/ToXML.hpp"
 #include "RFCIO/XML/Writer.hpp"
+#include "Persistency/IO/create.hpp"
+#include "Persistency/IO/Connection.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace std;
 using namespace RFCIO;
@@ -14,7 +18,7 @@ using namespace RFCIO;
 namespace
 {
 
-struct TestClass
+struct TestClass: public TestHelpers::Persistency::TestStubs
 {
   TestClass(void)
   {
@@ -23,20 +27,24 @@ struct TestClass
     assert(rootPtr_!=NULL);
   }
 
-  void checkDetectTime(const Persistency::Timestamp &t, const char *expectedXML)
+  void checkAssessment(const Persistency::GraphNode &leaf, const double expectedValue)
   {
     // add as a part of XML
     ToXML toXML(*rootPtr_);
-    toXML.addDetectTime(t);
-    writeAndCompare(expectedXML);
-  }
-
-  void check(const Persistency::Timestamp &t, const char *expectedXML)
-  {
-    // add as a part of XML
-    ToXML toXML(*rootPtr_);
-    toXML.addCreateTime(t);
-    writeAndCompare(expectedXML);
+    toXML.addAssessment(leaf);
+    const string  str  =write();
+    const char   *begin="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                        "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                          "<idmef:Assessment>"
+                            "<idmef:Confidence rating=\"numeric\">";
+                            // value goes here
+    const char   *end  =    "</idmef:Confidence>"
+                          "</idmef:Assessment>"
+                        "</idmef:IDMEF-Message>\n";
+    stringstream ss;
+    ss << begin << expectedValue << end;
+    // test value
+    tut::ensure_equals("invalid XML", str, ss.str());
   }
 
   void check(const Persistency::Analyzer &a, const char *expectedXML)
@@ -55,13 +63,30 @@ struct TestClass
     writeAndCompare(expectedXML);
   }
 
+  Persistency::GraphNodePtrNN certaintyLeaf(const double delta) const
+  {
+    Persistency::IO::ConnectionPtrNN  conn( Persistency::IO::create().release() );
+    Persistency::IO::Transaction      t( conn->createNewTransaction("change_cert_delta") );
+    Persistency::GraphNodePtrNN       leaf=TestHelpers::Persistency::makeNewLeaf();
+    Persistency::IO::MetaAlertAutoPtr maIO=conn->metaAlert( leaf->getMetaAlert(), t );
+    assert( maIO.get()!=NULL );
+    maIO->updateCertaintyDelta(delta);
+    t.commit(); // do not log automatic rollback
+    return leaf;
+  }
+
   void writeAndCompare(const char *expectedXML)
   {
+    assert(expectedXML!=NULL);
     // conver to string
+    tut::ensure_equals("invalid XML", write(), expectedXML);
+  }
+  string write(void)
+  {
     RFCIO::XML::Writer w(doc_);
     std::stringstream  ss;
     w.write(ss);
-    tut::ensure_equals("invalid XML", ss.str(), expectedXML);
+    return ss.str();
   }
 
   xmlpp::Document  doc_;
@@ -181,10 +206,12 @@ void testObj::test<6>(void)
 {
   // Fri Feb 13 23:31:30 UTC 2009
   const Persistency::Timestamp ts(1234567890u);
-  check(ts, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-            "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
-              "<idmef:CreateTime ntpstamp=\"0xCD408152.0x00000000\">2009-02-13T23:31:30Z</idmef:CreateTime>"
-            "</idmef:IDMEF-Message>\n");
+  ToXML toXML(*rootPtr_);
+  toXML.addCreateTime(ts);
+  writeAndCompare("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                  "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                    "<idmef:CreateTime ntpstamp=\"0xCD408152.0x00000000\">2009-02-13T23:31:30Z</idmef:CreateTime>"
+                  "</idmef:IDMEF-Message>\n");
 }
 
 // test adding IPv4
@@ -222,31 +249,39 @@ void testObj::test<9>(void)
 {
   // Fri Feb 13 23:31:30 UTC 2009
   const Persistency::Timestamp ts(1234567890u);
-  checkDetectTime(ts, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                      "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
-                        "<idmef:DetectTime ntpstamp=\"0xCD408152.0x00000000\">2009-02-13T23:31:30Z</idmef:DetectTime>"
-                      "</idmef:IDMEF-Message>\n");
+  ToXML toXML(*rootPtr_);
+  toXML.addDetectTime(ts);
+  writeAndCompare("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                  "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                    "<idmef:DetectTime ntpstamp=\"0xCD408152.0x00000000\">2009-02-13T23:31:30Z</idmef:DetectTime>"
+                  "</idmef:IDMEF-Message>\n");
 }
 
-// TODO
+// test certainty addition
 template<>
 template<>
 void testObj::test<10>(void)
 {
+  const Persistency::GraphNodePtrNN leaf=certaintyLeaf(0.2);
+  checkAssessment(*leaf, 0.42+0.2);
 }
 
-// TODO
+// test certainty<0
 template<>
 template<>
 void testObj::test<11>(void)
 {
+  const Persistency::GraphNodePtrNN leaf=certaintyLeaf(-0.9);
+  checkAssessment(*leaf, 0);
 }
 
-// TODO
+// test certainty>1
 template<>
 template<>
 void testObj::test<12>(void)
 {
+  const Persistency::GraphNodePtrNN leaf=certaintyLeaf(0.9);
+  checkAssessment(*leaf, 1);
 }
 
 // TODO
