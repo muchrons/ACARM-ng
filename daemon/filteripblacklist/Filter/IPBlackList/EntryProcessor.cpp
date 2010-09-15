@@ -17,6 +17,7 @@ EntryProcessor::EntryProcessor(const BlackList *bl,
                                BackendFacade   *bf,
                                ProcessedSet    *ps,
                                const double     priDelta):
+  log_("filter.ipblacklist"),
   bl_(bl),
   bf_(bf),
   ps_(ps),
@@ -31,7 +32,9 @@ EntryProcessor::EntryProcessor(const BlackList *bl,
 void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
 {
   assert( leaf->isLeaf() && "wrong graph-passing algorithm choosen" );
+  LOGMSG_DEBUG(log_, "processing source hosts");
   processHosts(leaf, leaf->getAlert()->getReportedSourceHosts() );  // we may be under attack
+  LOGMSG_DEBUG(log_, "processing target hosts");
   processHosts(leaf, leaf->getAlert()->getReportedTargetHosts() );  // zombie host may be contacting C&C
 }
 
@@ -49,8 +52,15 @@ void EntryProcessor::processHosts(Persistency::GraphNodePtrNN              leaf,
     {
       assert(ps_!=NULL);
       if( ps_->isProcessed(leaf, host) )    // skip already checked host
+      {
+        LOGMSG_DEBUG_S(log_)<<"host "<<host->getIP()<<" from (meta-)alert "<<leaf->getMetaAlert()->getID().get()
+                            <<" is blacklisted, but has been already processed - skipping";
         continue;
+      }
+      // new host from black list - increase priority of the (meta-)alert
       assert(bf_!=NULL);
+      LOGMSG_INFO_S(log_)<<"host "<<host->getIP()<<" from (meta-)alert "<<leaf->getMetaAlert()->getID().get()
+                         <<" is blacklisted - adding "<<priDelta_<<" to priority";
       bf_->updateSeverityDelta(leaf, priDelta_);
       ps_->markAsProcessed(leaf, host);     // mark change in cache to avoid doing it again.
     }
