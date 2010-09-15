@@ -4,6 +4,7 @@ filteronetomany
 filtermanytoone
 filtermanytomany
 filterhostcommon
+filterescalation
 filterdnsresolver
 filteripblacklist
 filter
