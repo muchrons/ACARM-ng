@@ -71,7 +71,12 @@ private:
                            NodesTimeoutQueue &ntq,
                            BackendFacade     &bf);
 
+  void pruneProcessedSet(time_t now);
+  void updateBlackList(time_t now);
+  void handleNoBlackList(time_t now, Node n);
+
   const Parameters params_;
+  time_t           nextPrune_;
   time_t           deadline_;
   BlackListPtr     bl_;
   Downloader       dwnl_;

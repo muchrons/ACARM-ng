@@ -28,6 +28,7 @@ public:
   /** \brief read, validate and parse given stream.
    *  \param is stream to read from.
    *  \return parsed document.
+   *  \note object returned in the reference is valid until next call to read().
    */
   const xmlpp::Document &read(std::istream &is);
 
