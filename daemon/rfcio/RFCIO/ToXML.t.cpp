@@ -207,56 +207,56 @@ void testObj::test<8>(void)
             "</idmef:IDMEF-Message>\n");
 }
 
-// 
+// TODO
 template<>
 template<>
 void testObj::test<9>(void)
 {
 }
 
-// 
+// TODO
 template<>
 template<>
 void testObj::test<10>(void)
 {
 }
 
-// 
+// TODO
 template<>
 template<>
 void testObj::test<11>(void)
 {
 }
 
-// 
+// TODO
 template<>
 template<>
 void testObj::test<12>(void)
 {
 }
 
-// 
+// TODO
 template<>
 template<>
 void testObj::test<13>(void)
 {
 }
 
-// 
+// TODO
 template<>
 template<>
 void testObj::test<14>(void)
 {
 }
 
-// 
+// TODO
 template<>
 template<>
 void testObj::test<15>(void)
 {
 }
 
-// 
+// TODO
 template<>
 template<>
 void testObj::test<16>(void)
