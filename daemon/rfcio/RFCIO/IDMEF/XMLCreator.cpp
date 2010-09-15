@@ -9,7 +9,7 @@ namespace RFCIO
 namespace IDMEF
 {
 
-XMLCreator::XMLCreator(const Persistency::GraphNode &leaf)
+XMLCreator::XMLCreator(const Persistency::GraphNode &/*leaf*/)
 {
   // TODO
 }
