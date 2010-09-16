@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     Strategy     s("jabbermtesttimeout", cfg);
 
     const int init=15*60;
-    cerr<<"waiting some time ("<<init/60<<"[m]) - if pings does not work, it will timeout..."<<endl;
+    cerr<<"waiting some time ("<<init/60<<"[m]) - if sending keep alive message doesn't work, it will timeout..."<<endl;
     for(int left=init; left>0; --left)
     {
       sleep(1);

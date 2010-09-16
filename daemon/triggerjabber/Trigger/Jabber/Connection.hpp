@@ -13,7 +13,6 @@
 #include "Trigger/Jabber/AccountConfig.hpp"
 #include "Trigger/Jabber/AutoSession.hpp"
 #include "Trigger/Jabber/ExceptionConnectionError.hpp"
-//#include "Trigger/GG/ExceptionSendingError.hpp"
 
 namespace Trigger
 {

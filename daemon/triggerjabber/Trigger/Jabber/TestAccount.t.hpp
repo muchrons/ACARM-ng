@@ -75,6 +75,8 @@ std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account,
   lm_message_unref(m);
   for(;;)
   {
+    // wait for something
+    // TODO: timeout should be added
     g_main_context_iteration(NULL, FALSE);
     replace_last(mh.sender_, "/acarm-ng", "");
     if(mh.sender_ != sender)
