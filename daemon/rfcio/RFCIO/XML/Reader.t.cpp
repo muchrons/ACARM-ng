@@ -15,8 +15,8 @@ namespace
 
 struct TestClass
 {
-  std::stringstream ss_;
-  Reader            r_;
+  stringstream ss_;
+  Reader       r_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -57,6 +57,26 @@ void testObj::test<2>(void)
   ss_<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>"<<endl;
   ss_<<"<hello_test/>"<<endl;
   r_.read(ss_);
+}
+
+// rest reading multiple XMLs
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  ss_<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>"<<endl;
+  ss_<<"<hello_test/>"<<endl;
+  r_.read(ss_);
+
+  stringstream ss2;
+  ss2<<"<?xml version=\"1.0\" encoding=\"utf-8\"?>"<<endl;
+  ss2<<"<hello_other_test/>"<<endl;
+  const xmlpp::Document &d=r_.read(ss2);
+
+  // check
+  const xmlpp::Element *r=d.get_root_node();
+  ensure("NULL root", r!=NULL);
+  ensure_equals("invalid root", r->get_name(), "hello_other_test");
 }
 
 } // namespace tut

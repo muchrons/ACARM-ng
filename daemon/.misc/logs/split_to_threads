@@ -12,12 +12,15 @@ shift
 OUTDIR="$1"
 shift
 
-IDs="`sed 's:^[^\[]*\[\([0-9]\+\)\].*:\1:' "$LOG" | uniq | sort | uniq`"
+echo "checking for threads' marks in log..."
+IDs="`pv "$LOG" | cut -b20- | sed -e 's:^[^ ]* \[::' -e 's:\].*::' | uniq | sort -n | uniq`"
+echo "threads found: `xargs echo -n <<< "$IDs"`"
 
 # select separate ids into separete files
 for id in $IDs
 do
-  grep " \[$id\] " < "$LOG" > "$OUTDIR/thread_$id.log" || exit $?
+  echo "separating thread $id..."
+  pv "$LOG" | grep " \[$id\] " > "$OUTDIR/thread_$id.log" || exit $?
 done
 
 exit 0
