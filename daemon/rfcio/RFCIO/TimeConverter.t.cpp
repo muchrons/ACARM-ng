@@ -93,8 +93,9 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const long the1900=-2208993840;
-  const long past   =the1900-1000;  // move before the minimum, supported period
+  const int64_t the1900=-2208993840ll;
+  const int64_t past   =the1900-1000;   // move before the minimum, supported period
+  // TODO: following line on 32-bit machine shows: warning: overflow in implicit constant conversion
   ensure_equals("invalid convertion didn't failed", tc_.toNtpStamp( ts(past) ), "0x00000000.0x00000000");
 }
 
