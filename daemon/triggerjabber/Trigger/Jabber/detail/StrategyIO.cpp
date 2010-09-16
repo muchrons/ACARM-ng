@@ -49,11 +49,6 @@ void StrategyIO::send(const std::string &msg)
   assert( conn_.get()!=NULL );
 }
 
-void StrategyIO::ping(void)
-{
- //TODO: consider if ping is needed for jabber connection
-}
-
 void StrategyIO::discardIncommingMessages(void)
 {
   Lock lock(mutex_);

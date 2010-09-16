@@ -13,10 +13,10 @@
 namespace
 {
 
-static LmHandlerResult handleMessages (LmMessageHandler * /*handler*/,
-                                           LmConnection     * /*connection*/,
-                                           LmMessage        *m,
-                                           gpointer         userData)
+static LmHandlerResult handleMessages(LmMessageHandler * /*handler*/,
+                                     LmConnection      * /*connection*/,
+                                     LmMessage         *m,
+                                     gpointer          /*userData*/)
 {
   if ((lm_message_get_sub_type (m) != LM_MESSAGE_SUB_TYPE_CHAT &&
        lm_message_get_sub_type (m) != LM_MESSAGE_SUB_TYPE_NORMAL)) {

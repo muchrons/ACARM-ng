@@ -37,10 +37,6 @@ struct StrategyIO: private boost::noncopyable
    */
   void send(const std::string &msg);
 
-  /** \brief ping gg server.
-   */
-  void ping(void);
-
   /** \brief discard all messages that could have arrived.
    */
   void discardIncommingMessages(void);

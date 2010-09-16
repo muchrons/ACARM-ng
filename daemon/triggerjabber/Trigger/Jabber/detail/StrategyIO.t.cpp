@@ -39,18 +39,10 @@ factory tf("Trigger/Jabber/detail/StrategyIO");
 namespace tut
 {
 
-// smoke test for ping()
-template<>
-template<>
-void testObj::test<1>(void)
-{
-  // TODO
-}
-
 // test sending message
 template<>
 template<>
-void testObj::test<2>(void)
+void testObj::test<1>(void)
 {
   io_.send("hello world");
   const std::string str=getMessageFromAccount( getTestConfig2(), cfg_.getAccountConfig().getLogin() + "@" + cfg_.getAccountConfig().getServer());
@@ -60,7 +52,7 @@ void testObj::test<2>(void)
 // test discarding all incomming messages - smoke test
 template<>
 template<>
-void testObj::test<3>(void)
+void testObj::test<2>(void)
 {
   io_.discardIncommingMessages();
 }
