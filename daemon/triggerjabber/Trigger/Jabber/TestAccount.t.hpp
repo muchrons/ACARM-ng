@@ -6,6 +6,7 @@
 #define INCLUDE_TRIGGER_JABBER_TESTACCOUNT_T_HPP_FILE
 
 #include <glib.h>
+#include<sys/time.h>
 #include <boost/algorithm/string.hpp>
 using namespace boost;
 
@@ -42,6 +43,23 @@ struct MessageHandler
   std::string sender_;
 };
 
+void setTimer(struct timeval &tv, const time_t timeout)
+{
+  gettimeofday(&tv, NULL);
+  tv.tv_sec+=timeout;
+}
+
+int checkTimer(struct timeval &tv)
+{
+  struct timeval ctv;
+  gettimeofday(&ctv, NULL);
+  if( ctv.tv_sec >= tv.tv_sec )
+  {
+    return 1;
+  }
+  return 0;
+}
+
 static LmHandlerResult
 handleMessages (LmMessageHandler * /*handler*/,
                 LmConnection     * /*connection*/,
@@ -73,10 +91,14 @@ std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account,
   lm_message_handler_unref (handler);
   lm_connection_send(conn.get(), m, NULL);
   lm_message_unref(m);
+  const time_t timeout = 20;      // timeout is 20[s]
+  timeval tv;
+  setTimer(tv, timeout);
   for(;;)
   {
     // wait for something
-    // TODO: timeout should be added
+    if(checkTimer(tv)==1)
+      throw std::runtime_error("waiting for messages timeouted");
     g_main_context_iteration(NULL, FALSE);
     replace_last(mh.sender_, "/acarm-ng", "");
     if(mh.sender_ != sender)
