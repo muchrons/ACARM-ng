@@ -443,11 +443,11 @@ void testObj::test<10>(void)
   MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL(), created_, 42u);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
 
-  Persistency::MetaAlert::ID::Numeric numericID;
-  double                              delta;
-  string                              mAlertName;
-  string                              time;
-  stringstream                        ss;
+  int           numericID;
+  double        delta;
+  string        mAlertName;
+  string        time;
+  stringstream  ss;
 
   ss << "SELECT * FROM meta_alerts WHERE id = " << malertID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);

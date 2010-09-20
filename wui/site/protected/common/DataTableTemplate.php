@@ -83,6 +83,7 @@ class DataTableTemplate extends TTemplateControl
     $this->TopCaption->text=$param;
   }
 
+  // TODO: check if these can be private
   public $computation_;
   public $query_;
 }
