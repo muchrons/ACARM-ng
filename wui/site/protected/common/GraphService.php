@@ -22,7 +22,7 @@ class GraphService extends TService
   public function init($config)
   {
     $request = Prado::getApplication()->getRequest();
- 
+
     if ($request->contains('graph')) {
       $this->type = TPropertyValue::ensureString($request['graph']);
     } else {
