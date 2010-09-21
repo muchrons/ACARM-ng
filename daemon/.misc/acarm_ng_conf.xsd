@@ -1,4 +1,154 @@
 <?xml version="1.0"?>
 
    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
-   </xsd:schema>
+
+   <xsd:complexType name = "">
+     <xsd:sequence>
+       <xsd:element name = ""
+                    type = ""/>
+     </xsd:sequence>
+   </xsd:complexType>
+
+   <xsd:complexType name = "acarm_ng">
+     <xsd:sequence>
+       <xsd:element name = "general"
+                    type = "generalType"/>
+       <xsd:element name = "persistency"
+                    type = "persistencyType"/>
+       <xsd:element name = "logger"
+                    type = "loggerType"/>
+       <xsd:element name = "filters"
+                    type = "filterType"/>
+       <xsd:element name = "triggers"
+                    type = "triggerType"/>
+       <xsd:element name = "preprocessor"
+                    type = "preprocessorType"/>
+     </xsd:sequence>
+   </xsd:complexType>
+
+   <xsd:complexType name = "generalType">
+     <xsd:sequence>
+       <xsd:element name = "url"
+                    type = "xsd:string"/>
+       <xsd:element name = "cleanupInterval"
+                    type = "xsd:unsignedInt"/>
+     </xsd:sequence>
+   </xsd:complexType>
+
+   <xsd:complexType name = "persistencyType">
+     <xsd:sequence>
+       <xsd:element name = "type"
+                    type = "xsd:string"/>
+       <xsd:element name = "dbname"
+                    type = "xsd:string"/>
+       <xsd:element name = "user"
+                    type = "xsd:string"/>
+       <xsd:element name = "pass"
+                    type = "xsd:string"/>
+       <xsd:element name = "host"
+                    type = "xsd:string"/>
+       <xsd:element name = "port"
+                    type = "xsd:unsignedInt"/>
+     </xsd:sequence>
+   </xsd:complexType>
+
+   <xsd:complexType name = "loggerType">
+     <xsd:sequence>
+       <xsd:element name = "gg"
+                    type = "ggType"/>
+       <xsd:element name = "mail"
+                    type = "mailType"/>
+       <xsd:element name = "jabber"
+                    type = "jabberType"/>
+       <xsd:element name = "file"
+                    type = "fileType"/>
+     </xsd:sequence>
+   </xsd:complexType>
+
+   <xsd:complexType name = "ggType">
+   <xsd:attribute name = "name" type = "xsd:string"/>
+     <xsd:sequence>
+       <xsd:element name = "uin"
+                    type = ""/>
+       <xsd:element name = "password"
+                    type = ""/>
+       <xsd:element name = "receiver_uin"
+                    type = ""/>
+       <xsd:element name = "severity_threshold"
+                    type = ""/>
+       <xsd:element name = "alerts_count_threshold"
+                    type = ""/>
+     </xsd:sequence>
+   </xsd:complexType>
+
+   <xsd:complexType name = "jabberType">
+   <xsd:attribute name = "name" type = "xsd:string"/>
+     <xsd:sequence>
+       <xsd:element name = "login"
+                    type = ""/>
+       <xsd:element name = "password"
+                    type = ""/>
+       <xsd:element name = "server"
+                    type = ""/>
+       <xsd:element name = "receiver"
+                    type = ""/>
+       <xsd:element name = "severity_threshold"
+                    type = ""/>
+       <xsd:element name = "alerts_count_threshold"
+                    type = ""/>
+     </xsd:sequence>
+   </xsd:complexType>
+
+   <xsd:complexType name = "mailType">
+   <xsd:attribute name = "name" type = "xsd:string"/>
+     <xsd:sequence>
+       <xsd:element name = "from"
+                    type = "xsd:string">
+       <xsd:element name = "to"
+                    type = "xsd:string"/>
+       <xsd:element name = "server"
+                    type = "xsd:string"/>
+       <xsd:element name = "port"
+                    type = ""/>
+       <xsd:element name = "security"
+                    type = ""/>
+       <xsd:element name = "ssl"
+                    type = ""/>
+       <xsd:element name = "user"
+                    type = ""/>
+       <xsd:element name = "password"
+                    type = ""/>
+       <xsd:element name = "severity_threshold"
+                    type = ""/>
+       <xsd:element name = "alerts_count_threshold"
+                    type = ""/>
+     </xsd:sequence>
+   </xsd:complexType>
+
+   <xsd:complexType name = "fileType">
+   <xsd:attribute name = "name" type = "xsd:string"/>
+     <xsd:sequence>
+       <xsd:element name = "outdir"
+                    type = "xsd:string"/>
+       <xsd:element name = "severity_threshold"
+                    type = ""/>
+       <xsd:element name = "alerts_count_threshold"
+                    type = ""/>
+     </xsd:sequence>
+   </xsd:complexType>
+
+   <xsd:complexType name = "filterType">
+   <xsd:attribute name = "name" type = "xsd:string"/>
+     <xsd:sequence>
+       <xsd:element name = ""
+                    type = ""/>
+     </xsd:sequence>
+   </xsd:complexType>
+
+  <xsd:complexType name = "triggerType">
+     <xsd:sequence>
+       <xsd:element name = ""
+                    type = ""/>
+     </xsd:sequence>
+   </xsd:complexType>
+  </xsd:schema>
