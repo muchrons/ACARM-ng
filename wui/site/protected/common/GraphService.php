@@ -8,8 +8,8 @@ include_once('lib/jpgraph/jpgraph_line.php');
 include_once('lib/jpgraph/jpgraph_pie.php');
 include_once('lib/jpgraph/jpgraph_pie3d.php');
 
- 
-class GraphService extends TService 
+
+class GraphService extends TService
 {
   private $type;
   private $xdata = null;
@@ -18,8 +18,8 @@ class GraphService extends TService
   private $ytitle = null;
   private $width = 500;
   private $height = 400;
- 
-  public function init($config) 
+
+  public function init($config)
   {
     $request = Prado::getApplication()->getRequest();
  
@@ -28,64 +28,64 @@ class GraphService extends TService
     } else {
       throw new TConfigurationException('You must specify the type of the graph');
     }
- 
+
     if ($request->contains('xdata')) {
       $this->xdata = explode( ',', TPropertyValue::ensureString($request['xdata']));
     } else {
       throw new TConfigurationException('You must specify the x data for the graph');
     }
- 
+
     if ($request->contains('ydata')) {
       $this->ydata = explode( ',', TPropertyValue::ensureString($request['ydata']));
     } else {
       throw new TConfigurationException('You must specify the y data for the graph');
-    } 
- 
+    }
+
     if ($request->contains('ytitle')) {
       $this->ytitle = TPropertyValue::ensureString($request['ytitle']);
     } else {
       throw new TConfigurationException('You must specify the y title for the graph.');
     }
   }
- 
-  public function getWidth() 
+
+  public function getWidth()
   {
     return $this->width;
   }
-  
+
   public function setWidth($value)
   {
     $this->width = TPropertyValue::ensureInteger($value);
   }
-  
-  public function getHeight() 
+
+  public function getHeight()
   {
     return $this->height;
   }
-  
-  public function setHeight($value) 
+
+  public function setHeight($value)
   {
     $this->height = TPropertyValue::ensureInteger($value);
   }
- 
-  public function getShadow() 
+
+  public function getShadow()
   {
     return $this->shadow;
   }
-  
-  public function setShadow($value) 
+
+  public function setShadow($value)
   {
     $this->shadow = TPropertyValue::ensureBoolean($value);
   }
- 
-  public function run() 
+
+  public function run()
   {
-    switch( $this->type ) 
+    switch( $this->type )
       {
       case 1:
         $graph = $this->createStackedBarGraph($this->xdata, $this->ydata, $this->ydata2, $this->ytitle);
         break;
- 
+
       case "AlertTimeSeries":
         $graph = $this->createAlertTimeSeries($this->xdata, $this->ydata, $this->ytitle);
         break;
@@ -101,9 +101,9 @@ class GraphService extends TService
         $led->SetSupersampling(5);
         $led->StrokeNumber(' WRONG GRAPH TYPE ',LEDC_YELLOW);
         return;
-      }    
+      }
 
-    header("Content-type: image/png");    
+    header("Content-type: image/png");
     $graph->Stroke();
   }
 
@@ -122,7 +122,7 @@ class GraphService extends TService
     $p1 = new PiePlot3D($y);
     $p1->SetLabels($x);
     $p1->SetLabelPos(1);
-    $p1->SetLabelType(PIE_VALUE_PER);    
+    $p1->SetLabelType(PIE_VALUE_PER);
     $p1->value->SetFont(FF_ARIAL,FS_NORMAL,12);
 
     $p1->SetTheme("sand");
@@ -139,7 +139,7 @@ class GraphService extends TService
   {
     // Setup the graph.
     $graph = new Graph(800,800);
-    $graph->img->SetMargin(40,35,45,25);    
+    $graph->img->SetMargin(40,35,45,25);
     $graph->SetScale("textlog");
     $graph->SetAngle(90);
     $graph->SetMarginColor("white");
@@ -189,7 +189,7 @@ class GraphService extends TService
   {
     // Setup the graph.
     $graph = new Graph(800,800);
-    $graph->img->SetMargin(40,35,45,25);    
+    $graph->img->SetMargin(40,35,45,25);
     $graph->SetScale("textlin");
     //$graph->SetAngle(90);
     $graph->SetMarginColor("white");
@@ -234,12 +234,12 @@ class GraphService extends TService
     // Set color for the frame of each bar
     //$bplot->SetColor("white");
     $graph->Add($line);
-    
+
     return $graph;
   }
 
 
 
 }
- 
+
 ?>
