@@ -42,14 +42,17 @@ MessageIO::MessageIO(Connection &conn):
 void MessageIO::send(const std::string &receiver, const std::string &msg)
 {
   LOGMSG_INFO_S(log_)<<"sending message to user "<<receiver;
+  // TODO: do NOT use reinterpret-cast. note that gchar is typedefed char, thus
+  //       direct assignment should do the trick.
   const gchar *tmp=reinterpret_cast<const gchar*>( msg.c_str() );
   assert(tmp!=NULL);
   // sending itself
-  assert( conn_.get()!=NULL );
   LmMessage *m = lm_message_new_with_sub_type(receiver.c_str(),
                                               LM_MESSAGE_TYPE_MESSAGE,
                                               LM_MESSAGE_SUB_TYPE_CHAT);
+  // TODO: segv if m==NULL
   lm_message_node_add_child (m->node, "body", tmp);
+  assert( conn_.get()!=NULL );
   const bool ret=lm_connection_send( conn_.get(), m, NULL);
   lm_message_unref (m);
   if(ret==false)
@@ -70,8 +73,10 @@ void MessageIO::discardIncommingMessages(void)
   // TODO
   while(true)
   {
+    // TODO: conn_ nto used inside the loop
     assert( conn_.get()!=NULL );
-    if(g_main_context_iteration(NULL, FALSE))
+    // TODO: busy loop when connection error occures
+    if( g_main_context_iteration(NULL, FALSE) )
       return;
   }
   LOGMSG_DEBUG(log_, "all messages have been discarded");

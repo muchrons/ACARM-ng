@@ -18,6 +18,7 @@ namespace Jabber
 class Config
 {
 public:
+  // TODO: 'receiver' should be const-ref.
   /** \brief create configration description.
    *  \param ac       account's config to be used for connection (account must exist).
    *  \param receiver notification receiver.
@@ -44,6 +45,7 @@ public:
   {
     return th_;
   }
+  // TODO: const-ref should be returned
   /** \brief gets receiver's data.
    *  \return receiver's name.
    */

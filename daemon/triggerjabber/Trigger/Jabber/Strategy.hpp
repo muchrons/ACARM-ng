@@ -29,7 +29,7 @@ public:
 private:
   virtual void triggerImpl(const Node &n);
 
-  detail::StrategyIO       io_;
+  detail::StrategyIO io_;
 }; // class Strategy
 
 } // namespace Jabber
