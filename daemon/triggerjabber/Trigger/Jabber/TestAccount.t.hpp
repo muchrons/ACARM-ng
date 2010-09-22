@@ -6,8 +6,9 @@
 #define INCLUDE_TRIGGER_JABBER_TESTACCOUNT_T_HPP_FILE
 
 #include <glib.h>
-#include<sys/time.h>
-#include <boost/algorithm/string.hpp>
+#include <sys/time.h>
+#include <boost/algorithm/string.hpp>   // TODO: is it used anywhere here?
+// TODO never use 'using namespace' inside headers!
 using namespace boost;
 
 #include "System/ScopedPtrCustom.hpp"
@@ -43,6 +44,9 @@ struct MessageHandler
   std::string sender_;
 };
 
+// TODO: following two functions should be class instead. consider using System::Timer (for Wall time)
+//       or boost::timer (for CPU time).
+
 void setTimer(struct timeval &tv, const time_t timeout)
 {
   gettimeofday(&tv, NULL);
@@ -60,30 +64,39 @@ int checkTimer(struct timeval &tv)
   return 0;
 }
 
+// TODO: move following code to CPP file
+
+// TODO: static is not needed here - unnamed namespace is enough
 static LmHandlerResult
 handleMessages (LmMessageHandler * /*handler*/,
                 LmConnection     * /*connection*/,
                 LmMessage        *m,
                 MessageHandler   *mh)
 {
+  // TODO: check for NULLs. since this is test code feel free to use tut::ensure() for this
   if ((lm_message_get_sub_type (m) != LM_MESSAGE_SUB_TYPE_CHAT &&
        lm_message_get_sub_type (m) != LM_MESSAGE_SUB_TYPE_NORMAL)) {
 
     return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
   }
+  // TODO: temporary variable not needed here
   std::string sender(lm_message_node_get_attribute (m->node, "from"));
   mh->sender_ = sender;
+  // TODO: temporary variable not needed here
   std::string msg(lm_message_node_get_value( lm_message_node_get_child(m->node, "body") ));
   mh->msg_ = msg;
   return LM_HANDLER_RESULT_REMOVE_MESSAGE;
 }
 
+// TODO: 'sender' should be const-reference
 std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account, const std::string sender)
 {
   Trigger::Jabber::Connection conn(account);
   MessageHandler              mh;
   LmMessage                   *m = lm_message_new(NULL, LM_MESSAGE_TYPE_PRESENCE);
+  // TODO: check for NULLs. since this is test code feel free to use tut::ensure() for this
   LmMessageHandler            *handler = lm_message_handler_new((LmHandleMessageFunction)handleMessages, &mh, NULL);
+  // TODO: check for NULLs. since this is test code feel free to use tut::ensure() for this
   lm_connection_register_message_handler(conn.get(), handler,
                                          LM_MESSAGE_TYPE_MESSAGE,
                                          LM_HANDLER_PRIORITY_NORMAL);
@@ -96,9 +109,10 @@ std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account,
   setTimer(tv, timeout);
   for(;;)
   {
+    // TODO: consider putting some short sleep or CPU yielding here not to waste CPU too much
     // wait for something
     if(checkTimer(tv)==1)
-      throw std::runtime_error("waiting for messages timeouted");
+      throw std::runtime_error("waiting for messages timeouted");   // TODO: tut::fail()  seems to be more aproperiate here
     g_main_context_iteration(NULL, FALSE);
     replace_last(mh.sender_, "/acarm-ng", "");
     if(mh.sender_ != sender)

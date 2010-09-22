@@ -2,6 +2,7 @@
 
 class DataMiningSeverity extends TPage
 {
+  // TODO: fix brackets
   public function onLoad($param) {
     parent::onLoad($param);
 
@@ -16,6 +17,7 @@ class DataMiningSeverity extends TPage
     $ydata = array();
     $xdata = array();
 
+    // TODO: fix indentation
     foreach( $pairs as $e )
       {
         $xdata[] = trim($e->key)." (%d)";

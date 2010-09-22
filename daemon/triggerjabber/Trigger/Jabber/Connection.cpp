@@ -38,9 +38,9 @@ LmConnection *Connection::connect(void) const
   // check user authentivation
   if( !lm_connection_is_authenticated(sess) )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "not authenticate");
-  // send presence message to jabber server (this is needed for eceive messages)
+  // send presence message to jabber server (this is needed in order to receive messages)
   LmMessage *m = lm_message_new_with_sub_type(NULL, LM_MESSAGE_TYPE_PRESENCE, LM_MESSAGE_SUB_TYPE_AVAILABLE);
-  lm_connection_send(sess, m, NULL);
+  lm_connection_send(sess, m, NULL);    // TODO: can this call fail?
   lm_message_unref(m);
   /* setup the connection to send keep alive messages every 60 seconds */
   lm_connection_set_keep_alive_rate(sess, 60);
