@@ -69,13 +69,13 @@
    <xsd:attribute name = "name" type = "xsd:string"/>
      <xsd:sequence>
        <xsd:element name = "uin"
-                    type = ""/>
+                    type = "xsd:unsignedInt"/>
        <xsd:element name = "password"
-                    type = ""/>
+                    type = "xsd:string"/>
        <xsd:element name = "receiver_uin"
-                    type = ""/>
+                    type = "xsd:unsignedInt"/>
        <xsd:element name = "severity_threshold"
-                    type = ""/>
+                    type = "xsd:decimal"/>
        <xsd:element name = "alerts_count_threshold"
                     type = ""/>
      </xsd:sequence>
@@ -85,15 +85,15 @@
    <xsd:attribute name = "name" type = "xsd:string"/>
      <xsd:sequence>
        <xsd:element name = "login"
-                    type = ""/>
+                    type = "xsd:string"/>
        <xsd:element name = "password"
-                    type = ""/>
+                    type = "xsd:string"/>
        <xsd:element name = "server"
-                    type = ""/>
+                    type = "xsd:string"/>
        <xsd:element name = "receiver"
-                    type = ""/>
+                    type = "xsd:string"/>
        <xsd:element name = "severity_threshold"
-                    type = ""/>
+                    type = "xsd:decimal"/>
        <xsd:element name = "alerts_count_threshold"
                     type = ""/>
      </xsd:sequence>
@@ -109,17 +109,17 @@
        <xsd:element name = "server"
                     type = "xsd:string"/>
        <xsd:element name = "port"
-                    type = ""/>
+                    type = "xsd:unsignedInt"/>
        <xsd:element name = "security"
                     type = ""/>
        <xsd:element name = "ssl"
                     type = ""/>
        <xsd:element name = "user"
-                    type = ""/>
+                    type = "xsd:string"/>
        <xsd:element name = "password"
-                    type = ""/>
+                    type = "xsd:string"/>
        <xsd:element name = "severity_threshold"
-                    type = ""/>
+                    type = "xsd:decimal"/>
        <xsd:element name = "alerts_count_threshold"
                     type = ""/>
      </xsd:sequence>
@@ -131,7 +131,7 @@
        <xsd:element name = "outdir"
                     type = "xsd:string"/>
        <xsd:element name = "severity_threshold"
-                    type = ""/>
+                    type = "xsd:decimal"/>
        <xsd:element name = "alerts_count_threshold"
                     type = ""/>
      </xsd:sequence>
