@@ -92,7 +92,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  DBConnection::Parameters params("localhost", "5432", "acarm_ng", "acarm-ng-daemon", "test.daemon");
+  DBConnection::Parameters params("localhost", "5432", "no-such-data-base", "acarm-ng-daemon", "test.daemon");
   try
   {
     DBConnection dbconn(params);

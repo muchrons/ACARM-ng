@@ -12,6 +12,9 @@ class CSQLMap
   {
     // TODO: i don't like this implementation - it gives config file name explicitly.
     //       it should not be done this way. to be fixed later on.
+    // TODO: I've found a different syntax for obtaining SQLMap:
+    // $this->sqlmap = $this->Application->Modules['sqlmap']->Client;
+    // what's the difference?
     $conn=TActiveRecordManager::getInstance()->getDbConnection();
     if($conn===null)
       throw new TInvalidDataValueException("unable to create connection object");

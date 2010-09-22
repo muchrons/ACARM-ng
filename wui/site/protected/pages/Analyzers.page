@@ -1,51 +1,12 @@
 <com:TContent ID="content">
 
-Analyzers that have reported something:
+<div width="800px">
 
-  <com:TDataGrid
-    ID="DataGrid"
-    DataKeyField="sys_id"
-    AllowPaging="true"
-    PageSize="50"
-    PagerStyle.Mode="Numeric"
-    PagerStyle.HorizontalAlign="Center"
-    AutoGenerateColumns="false"
-    CellPadding="2"
-    HeaderStyle.BackColor="black"
-    HeaderStyle.ForeColor="white"
-    ItemStyle.BackColor="#BFCFFF"
-    ItemStyle.Font.Italic="true"
-    AlternatingItemStyle.BackColor="#E6ECFF"
-    OnPageIndexChanged="changePage"
-    OnPagerCreated="pagerCreated"
-    >
+<com:DataTableTemplate
+        ID="Analyzers"
+        text_="The most recent analyzers:"
+        query_="SelectAnalyzers"/>
 
-    <com:TBoundColumn
-        ID="IDColumn"
-        HeaderText="ID"
-        DataField="sys_id"
-        />
-    <com:TBoundColumn
-        ID="NameColumn"
-        HeaderText="Name"
-        DataField="name"
-        />
-    <com:TBoundColumn
-        ID="VersionColumn"
-        HeaderText="Version"
-        DataField="version"
-        />
-    <com:TBoundColumn
-        ID="OSColumn"
-        HeaderText="OS"
-        DataField="os"
-        />
-    <com:TBoundColumn
-        ID="IPColumn"
-        HeaderText="IP"
-        DataField="ip"
-        />
-  </com:TDataGrid>
-
+</div>
 
 </com:TContent>

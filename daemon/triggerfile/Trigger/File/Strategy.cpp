@@ -7,6 +7,7 @@
 
 #include "Trigger/Compose/Full.hpp"
 #include "Trigger/File/Strategy.hpp"
+#include "Trigger/File/EnsureNewFile.hpp"
 
 using namespace std;
 
@@ -26,14 +27,19 @@ Strategy::Strategy(const std::string &name, const Config &cfg):
 void Strategy::triggerImpl(const Node &n)
 {
   // prepare data
-  stringstream ss;
+  stringstream  ss;
   Compose::Full::append(ss, n);
   // open output
-  const string path=createOutputPath();
+  const string  path=createOutputPath();
   LOGMSG_DEBUG_S(log_)<<"output file is: "<<path;
-  ofstream     file( path.c_str() );
+  // create file in secure way with EnsureNewFile and then open it via stream.
+  // since after (safe) creation file still exists and is owned by the process owner
+  // we can assume noone will be able to switch it, thus we can open in with stream
+  // safely, even though stream does not provide such an option itself.
+  EnsureNewFile enf(path);
+  ofstream      file( path.c_str() );
   if( !file.is_open() )
-    throw ExceptionCantOpenFile(SYSTEM_SAVE_LOCATION, path);
+    throw ExceptionCannotOpenFile(SYSTEM_SAVE_LOCATION, path, "couldn't open output file");
   // write data
   file << ss.str();
 }
@@ -47,7 +53,6 @@ std::string Strategy::createOutputPath(void)
     lastWrite_=now;
     lastIndex_=0;
   }
-  // TODO: this should be fixed - it should use mktemp() call with proper parameter
   // compose final path
   stringstream path;
   path << outdir_ << "/" << now << "_" << lastIndex_ << ".txt";

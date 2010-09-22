@@ -1,6 +1,6 @@
 <?php
 
-class CAlertSummaryEntry
+class CAlertListEntry
 {
   public $id;
   public $link;

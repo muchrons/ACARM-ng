@@ -84,7 +84,6 @@ struct TestClass
     mask4_( Host::Netmask_v4(mask4_bytes) ),
     mask6_( Host::Netmask_v6(mask6_bytes) )
   {
-    tdba_.removeAllData();
   }
 
   Alert::ReportedHosts generateReportedHosts(unsigned int size) const
@@ -128,6 +127,7 @@ struct TestClass
                 ") ON COMMIT DROP;" );
   }
 
+  DataCleaner                dc_;
 
   const Alert::Name          name_;
   const AnalyzerPtrNN        analyzer_;
@@ -141,23 +141,22 @@ struct TestClass
   const Alert::ReportedHosts targetHosts_;
 
 
-  TestDBAccess        tdba_;
-  IDCachePtrNN        idCache_;
-  DBHandle            dbh_;
-  IO::ConnectionPtrNN conn_;
-  Transaction         t_;
-  EntrySaver          es_;
+  IDCachePtrNN               idCache_;
+  DBHandle                   dbh_;
+  IO::ConnectionPtrNN        conn_;
+  Transaction                t_;
+  EntrySaver                 es_;
 
-  const pid_t        pid_;
-  const int          uid_;
-  ReferenceURLPtrNN  url_;
-  const char        *md5Str_;
-  const MD5Sum       md5_;
-  const Process      proc_;
-  const Process      procnn_;
+  const pid_t                pid_;
+  const int                  uid_;
+  ReferenceURLPtrNN          url_;
+  const char                *md5Str_;
+  const MD5Sum               md5_;
+  const Process              proc_;
+  const Process              procnn_;
 
-  const Host::Netmask_v4 mask4_;
-  const Host::Netmask_v6 mask6_;
+  const Host::Netmask_v4     mask4_;
+  const Host::Netmask_v6     mask6_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -179,13 +178,12 @@ void testObj::test<1>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz(112u, "analyzer1", NULL, NULL, NULL);
-  const DataBaseID hostID  = es_.saveHostData(*host);
-  const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
+  const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   // save data in table alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
-  const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
-  const DataBaseID procID  = es_.saveProcess(thostID, proc_);
+  const DataBaseID hostID  = es_.saveTargetHost(alertID, *host);
+  const DataBaseID procID  = es_.saveProcess(hostID, proc_);
 
   stringstream ss;
   string path, name;
@@ -213,14 +211,13 @@ void testObj::test<2>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz(303u, "analyzer1", NULL, NULL, NULL);
-  const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
   // save data in table alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
-  const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
-  const DataBaseID id1=es_.saveProcess(thostID, proc_);
-  const DataBaseID id2=es_.saveProcess(thostID, proc_);
+  const DataBaseID hostID  = es_.saveTargetHost(alertID, *host);
+  const DataBaseID id1=es_.saveProcess(hostID, proc_);
+  const DataBaseID id2=es_.saveProcess(hostID, proc_);
   ensure("invalid ids returned", id1<id2);
 }
 
@@ -296,12 +293,11 @@ void testObj::test<5>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz(101u, "analyzer1", NULL, NULL, NULL);
-  const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
   es_.saveAlertToAnalyzers(alertID, anlzID);
-  const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
-  const DataBaseID servID = es_.saveService(thostID,ti);
+  const DataBaseID hostID  = es_.saveTargetHost(alertID, *host);
+  const DataBaseID servID  = es_.saveService(hostID, ti);
 
   stringstream ss;
   string protocol, name;
@@ -395,20 +391,16 @@ void testObj::test<8>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz(22u, "analyzer1", NULL, NULL, NULL);
-  const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
   es_.saveAlertToAnalyzers(alertID, anlzID);
-  const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
+  const DataBaseID hostID = es_.saveTargetHost(alertID, *host);
 
   stringstream ss;
   DataBaseID id;
-  ss << "SELECT * FROM reported_hosts WHERE id = " << thostID << ";";
+  ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
-
-  r[0]["id_host"].to(id);
-  ensure_equals("invalid Host ID",id,hostID);
 
   r[0]["id_alert"].to(id);
   ensure_equals("invalid Alert ID",id,alertID);
@@ -425,20 +417,16 @@ void testObj::test<9>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz(88u, "analyzer1", NULL, NULL, NULL);
-  const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
   es_.saveAlertToAnalyzers(alertID, anlzID);
-  const DataBaseID dhostID = es_.saveSourceHost(hostID,alertID,*host);
+  const DataBaseID dhostID = es_.saveSourceHost(alertID, *host);
 
   stringstream ss;
   DataBaseID id;
-  ss << "SELECT * FROM reported_hosts WHERE id = " << dhostID << ";";
+  ss << "SELECT * FROM hosts WHERE id = " << dhostID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
-
-  r[0]["id_host"].to(id);
-  ensure_equals("invalid Host ID",id,hostID);
 
   r[0]["id_alert"].to(id);
   ensure_equals("invalid Alert ID",id,alertID);
@@ -455,11 +443,11 @@ void testObj::test<10>(void)
   MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL(), created_, 42u);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
 
-  Persistency::MetaAlert::ID::Numeric numericID;
-  double                              delta;
-  string                              mAlertName;
-  string                              time;
-  stringstream                        ss;
+  int           numericID;
+  double        delta;
+  string        mAlertName;
+  string        time;
+  stringstream  ss;
 
   ss << "SELECT * FROM meta_alerts WHERE id = " << malertID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
@@ -536,12 +524,11 @@ void testObj::test<12>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz(123u, "analyzer1", NULL, NULL, NULL);
-  const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
   // save data in alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
-  const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
+  const DataBaseID thostID = es_.saveTargetHost(alertID, *host);
   const DataBaseID procID  = es_.saveProcess(thostID, procnn_);
 
   stringstream ss;
@@ -574,18 +561,17 @@ void testObj::test<13>(void)
   ReferenceURLPtr url;
   const Process proc("/a/b/c/d", "some.proc", NULL, &pid_, &uid_, "johndoe", "-a -b -c", url);
   const Analyzer anlz(1111u, "analyzer1", NULL, NULL, NULL);
-  const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
   // save data in alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
-  const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
+  const DataBaseID thostID = es_.saveTargetHost(alertID, *host);
   const DataBaseID procID  = es_.saveProcess(thostID, proc);
 
   stringstream ss;
   string username, arguments;
   int pid, uid;
-  ss << "SELECT * FROM reported_procs WHERE id_proc = " << procID << ";";
+  ss << "SELECT * FROM procs WHERE id = " << procID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
 
@@ -618,18 +604,17 @@ void testObj::test<14>(void)
   HostPtr host=makeNewHost();
   const Process proc("/a/b/c/d", "some.proc", &md5_, &pid_, &uid_, "johndoe", "-a -b -c", url_);
   const Analyzer anlz(66u, "analyzer1", NULL, NULL, NULL);
-  const DataBaseID hostID  = es_.saveHostData(*host);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
   // save data in alert_analyzers
   es_.saveAlertToAnalyzers(alertID, anlzID);
-  const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
+  const DataBaseID thostID = es_.saveTargetHost(alertID, *host);
   const DataBaseID procID  = es_.saveProcess(thostID, proc);
 
   stringstream ss;
   string username, arguments, url_name, url_str;
   int pid, uid;
-  ss << "SELECT * FROM reported_procs WHERE id = " << procID << ";";
+  ss << "SELECT * FROM procs WHERE id = " << procID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
 
@@ -656,14 +641,17 @@ template<>
 template<>
 void testObj::test<15>(void)
 {
-  const Host h(  Host::IPv4::from_string("1.2.3.4"),
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  const Host  h(  Host::IPv4::from_string("1.2.3.4"),
                  &mask4_,
-                 "myos",
-                 makeNewReferenceURL(),
-                 Host::ReportedServices(),
-                 Host::ReportedProcesses(),
-                 NULL );
-  const DataBaseID hostID = es_.saveHostData(h);
+                  "myos",
+                  makeNewReferenceURL(),
+                  Host::ReportedServices(),
+                  Host::ReportedProcesses(),
+                  NULL );
+  const DataBaseID alertID = es_.saveAlert(a);
+  const DataBaseID hostID  = es_.saveSourceHost(alertID, h);
 
   stringstream ss;
 
@@ -713,16 +701,15 @@ void testObj::test<17>(void)
                 description_, sourceHosts_, targetHosts_);
   HostPtr host=makeNewHost();
   const Analyzer anlz(123u, "analyzer1", NULL, NULL, NULL);
-  const DataBaseID hostID  = es_.saveHostData(*host);
-  const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
+  const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   es_.saveAlertToAnalyzers(alertID, anlzID);
-  const DataBaseID thostID = es_.saveTargetHost(hostID,alertID,*host);
-  const DataBaseID servID = es_.saveService(thostID,ti);
+  const DataBaseID thostID = es_.saveTargetHost(alertID, *host);
+  const DataBaseID servID = es_.saveService(thostID, ti);
 
   stringstream ss;
 
-  ss << "SELECT * FROM reported_services WHERE id_service = " << servID << ";";
+  ss << "SELECT * FROM services WHERE id = " << servID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
 
   ensure("reference URL is not NULL", r[0]["id_ref"].is_null() );
@@ -855,7 +842,7 @@ template<>
 template<>
 void testObj::test<23>(void)
 {
-  const string hname("some.host.com");
+  const string     hname("some.host.com");
   const Host::Name hostName(hname);
   const Host       h( Host::IPv4::from_string("1.2.3.4"),
                       &mask4_,
@@ -864,7 +851,10 @@ void testObj::test<23>(void)
                       Host::ReportedServices(),
                       Host::ReportedProcesses(),
                       NULL );
-  const DataBaseID hostID = es_.saveHostData(h);
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  const DataBaseID alertID = es_.saveAlert(a);
+  const DataBaseID hostID  = es_.saveSourceHost(alertID, h);
   ensure("Host name is not NULL", readHostName(hostID).get() == NULL );
   // trying set Host name
   es_.setHostName(hostID, hostName);
@@ -886,7 +876,10 @@ void testObj::test<24>(void)
                  Host::ReportedServices(),
                  Host::ReportedProcesses(),
                  NULL );
-  const DataBaseID hostID = es_.saveHostData(h);
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+                description_, sourceHosts_, targetHosts_);
+  const DataBaseID alertID = es_.saveAlert(a);
+  const DataBaseID hostID  = es_.saveSourceHost(alertID, h);
 
   stringstream ss;
   ss << "SELECT * FROM hosts WHERE id = " << hostID << ";";
@@ -915,17 +908,15 @@ void testObj::test<25>(void)
   // save some alert
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sh, targetHosts_);
-  const DataBaseID hostID  = es_.saveHostData(*h);
   const DataBaseID alertID = es_.saveAlert(a);
   // save data in table alert_analyzers
-  const DataBaseID thostID = es_.saveSourceHost(hostID, alertID, *h);   // original bug throw here
+  const DataBaseID thostID = es_.saveSourceHost(alertID, *h);   // original bug thrown here
 
   // check if entry is really there
   stringstream ss;
-  ss << "SELECT * FROM reported_hosts WHERE"
-     << " id_host = " << hostID
-     << " AND id_alert =  " << alertID
-     << " AND id =  " << thostID;
+  ss << "SELECT * FROM hosts WHERE"
+     << " id = " << thostID
+     << " AND id_alert =  " << alertID;
   const result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
   t_.commit();

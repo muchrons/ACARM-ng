@@ -4,6 +4,7 @@ filteronetomany
 filtermanytoone
 filtermanytomany
 filterhostcommon
+filterescalation
 filterdnsresolver
 filteripblacklist
 filter
@@ -24,6 +25,7 @@ input
 
 core
 coretypes
+rfcio
 xml
 configio
 commons
@@ -32,6 +34,7 @@ system
 base
 algo
 preprocessor
+
 curlpp
 
 acarmng

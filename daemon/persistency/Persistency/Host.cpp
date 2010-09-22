@@ -9,7 +9,7 @@
 #include "Base/Threads/ReadLock.hpp"
 #include "Base/Threads/WriteLock.hpp"
 #include "Base/ViaPointer.hpp"
-#include "Commons/ViaCollection.hpp"
+#include "Commons/ViaUnorderedCollection.hpp"
 #include "Logger/Logger.hpp"
 
 using std::stringstream;
@@ -130,11 +130,9 @@ bool Host::operator==(const Host &other) const
     return false;
   if( !Base::ViaPointer::equal( getReferenceURL(), other.getReferenceURL() ) )
     return false;
-  if( !Commons::ViaCollection::equal( getReportedServices(),
-                                      other.getReportedServices() ) )
+  if( !Commons::ViaUnorderedCollection::equal( getReportedServices(), other.getReportedServices() ) )
     return false;
-  if( !Commons::ViaCollection::equal( getReportedProcesses(),
-                                      other.getReportedProcesses() ) )
+  if( !Commons::ViaUnorderedCollection::equal( getReportedProcesses(), other.getReportedProcesses() ) )
     return false;
   // if everything's the same, return.
   return true;

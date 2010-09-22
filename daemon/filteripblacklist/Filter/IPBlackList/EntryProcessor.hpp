@@ -5,6 +5,7 @@
 #ifndef INCLUDE_FILTER_IPBLACKLIST_ENTRYPROCESSOR_HPP_FILE
 #define INCLUDE_FILTER_IPBLACKLIST_ENTRYPROCESSOR_HPP_FILE
 
+#include "Logger/Node.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Filter/BackendFacade.hpp"
 #include "Filter/IPBlackList/BlackList.hpp"
@@ -39,6 +40,7 @@ private:
   void processHosts(Persistency::GraphNodePtrNN              leaf,
                     const Persistency::Alert::ReportedHosts &rh);
 
+  Logger::Node     log_;
   const BlackList *bl_;
   BackendFacade   *bf_;
   ProcessedSet    *ps_;

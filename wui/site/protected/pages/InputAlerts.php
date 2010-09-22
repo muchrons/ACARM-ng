@@ -1,43 +1,31 @@
 <?php
 
+class ComputeLinkForAlerts
+{
+  function __construct($service)
+  {
+    $this->service_=$service;
+  }
+
+  public function computeLink($data_row)
+  {
+    $url    =$this->service_->constructUrl( 'Alert', array('id' => $data_row->id) );
+    return "<a href=\"$url\">details</a>";
+  }
+
+  private $service_;
+}
+
+
+
 class InputAlerts extends TPage
 {
-  public function __construct()
+  public function onLoad($param)
   {
-    parent::__construct();
-    $this->data_=CSQLMap::get()->queryForList('SelectAlertsSummary');
-    // add link field
-    foreach($this->data_ as $e)
-    {
-      $url    =$this->Service->constructUrl( 'Alert', array('id' => $e->id) );
-      $href   ="<a href=\"$url\">see</a>";
-      $e->link=$href;
-    }
+    parent::onLoad($param);
+    $this->Alerts->computation_=new ComputeLinkForAlerts($this->Service);
   }
-
-  public function onLoad()
-  {
-    // initialization of GridData
-    if(!$this->IsPostBack)
-    {
-      $this->DataGrid->DataSource=$this->data_;
-      $this->DataGrid->dataBind();
-    }
-  }
-
-  public function changePage($sender, $param)
-  {
-    $this->DataGrid->CurrentPageIndex=$param->NewPageIndex;
-    $this->DataGrid->DataSource      =$this->data_;
-    $this->DataGrid->dataBind();
-  }
-
-  public function pagerCreated($sender, $param)
-  {
-    $param->Pager->Controls->insertAt(0, 'Page: ');
-  }
-
-  private $data_;
 }
+
 
 ?>

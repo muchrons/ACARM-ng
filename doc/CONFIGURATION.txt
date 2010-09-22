@@ -118,7 +118,7 @@ what type of filter is to be created and optional, filter-specific fields.
 example configuration may look like this:
 
 <filters>
-  <onetomany>
+  <onetomany name="o2m">
     <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
   </onetomany>
 </filters>
@@ -126,33 +126,38 @@ example configuration may look like this:
 following filters and paramters are available:
 
   <!-- correlates multiple atacks originated from single host -->
-  <onetomany>
+  <onetomany name="o2m">
     <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
   </onetomany>
 
   <!-- correlates multiple atacks originated from single host -->
-  <manytoone>
+  <manytoone name="m2m">
     <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
   </manytoone>
 
   <!-- correlates multiple atacks directed on many host -->
-  <manytomany>
+  <manytomany name="m2m">
     <timeout>42</timeout>         <!-- timeout for observing entry, in seconds -->
     <similarity>0.75</similarity> <!-- minimum similarity between meta-alerts to
                                        correlate them (valid values are from (0;1] range) -->
   </manytomany>
 
   <!-- performs reverse-DNS mapping on hosts that do not have DNS name set -->
-  <dnsresolver>
+  <dnsresolver name="dns">
     <cachetimeout>3600</cachetimeout> <!-- time to keep cached DNS mappings -->
   </dnsresolver>
 
   <!-- updates severity of given meta-alert if it includes source-host that is blacklisted -->
-  <ipblacklist>
+  <ipblacklist name="ip_blacklist">
     <refresh>36000</refresh> <!-- how often refresh list of black-listed IPs in seconds -->
     <limit>10000</limit>     <!-- limits number of entries to be downloaded -->
     <priorityDelta>0.8</priorityDelta> <!-- amount to update priority by when black-listed IP's found -->
   </ipblacklist>
+
+  <!-- correlates multiple atacks with the name name (short description) -->
+  <samename name="same_name">
+    <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+  </samename>
 
 TODO: describe missing filters.
 
@@ -169,11 +174,11 @@ though users can easily implement more of them via generic registration mechanis
 
 general layout of triggers' configuration looks simillar to filters' configuration:
 <triggers>
-  <trigger1>
+  <trigger1 name="t1">
     <opt1>...</opt1>
     <opt2>...</opt2>
   </trigger1>
-  <trigger2>
+  <trigger2 name="t2">
     <opt1>...</opt1>
     <opt2>...</opt2>
     <opt3>...</opt3>
@@ -187,7 +192,7 @@ below are listed implemented triggers along with their implementation.
            trigger, otherwise it may not work as expected, due to Gadu-Gadu
            protocol specific details.
 -->
-<gg>
+<gg name="msg2bob">
   <uin>23436545</uin>                   <!-- GG account number -->
   <password>testowekonto</password>     <!-- password for this account-->
   <receiver_uin>23461426</receiver_uin> <!-- GG account to notify -->
@@ -196,8 +201,20 @@ below are listed implemented triggers along with their implementation.
   <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
 </gg>
 
+<!-- Jabber instant messanger notification -->
+<jabber name="msg2bob">
+  <login>acarm-ng1</login>                   <!-- login for Jabber account-->
+  <password>testowekonto</password>          <!-- password for this account-->
+  <server>jabber.org</server>                <!-- Jabber server-->
+  <password>testowekonto</password>          <!-- password for this account-->
+  <receiver>acarm-ng2@jabber.org</receiver>  <!-- Jabber account to notify -->
+
+  <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
+  <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
+</jabber>
+
 <!-- mail notification about security issue -->
-<mail>
+<mail name="email_admin">
   <from>robot@e.mail.org</from>    <!-- e-mail to send from -->
   <to>admin@e.mail.org</to>        <!-- e-mail to send reports to -->
   <server>smtp.e.mail.org</server> <!-- server's address -->
@@ -212,12 +229,12 @@ below are listed implemented triggers along with their implementation.
 </mail>
 
 <!-- trigger creating longer reports in files -->
-<mail>
+<file name="file_write">
   <outdir>/some/output/directory</outdir>             <!-- direcotry to write reports to -->
 
   <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
   <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
-</mail>
+</file>
 
 TODO: describe missing triggers
 

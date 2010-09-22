@@ -45,11 +45,11 @@ public:
   EntrySaver(Transaction &t, DBHandle &dbh);
 
   /** \brief saves process data to data base.
-   *  \param reportedHostID ID of reported host, that this Process should be assigned to.
-   *  \param p              Process to be saved.
+   *  \param hostID ID of reported host, that this Process should be assigned to.
+   *  \param p      Process to be saved.
    *  \return return data base ID for given process.
    */
-  DataBaseID saveProcess(DataBaseID reportedHostID, const Process &p);
+  DataBaseID saveProcess(DataBaseID hostID, const Process &p);
   /** \brief saves alert data to data base
    *  \param a          Alert to be saved.
    *  \return return data base ID for given alert.
@@ -61,30 +61,23 @@ public:
    */
   DataBaseID saveAnalyzer(const Analyzer &a);
   /** \brief save destination host data to data base
-   *  \param hostID  ID of Host,
    *  \param alertID ID of Alert, that destination Host shoul be assigned to.
    *  \param h       Destination Host to be saved.
    *  \return return data base ID for given source host.
    */
-  DataBaseID saveSourceHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h);
+  DataBaseID saveSourceHost(DataBaseID alertID, const Persistency::Host &h);
   /** \brief save target host data to data base
-   *  \param hostID  ID of Host,
    *  \param alertID ID of Alert, that source Host shoul be assigned to.
    *  \param h       Target Host to be saved.
    *  \return return data base ID for given target host.
    */
-  DataBaseID saveTargetHost(DataBaseID hostID, DataBaseID alertID, const Persistency::Host &h);
+  DataBaseID saveTargetHost(DataBaseID alertID, const Persistency::Host &h);
   /** \brief save service data to data base
-   *  \param reportedHostID ID of reported host, that this Process should be assigned to.
-   *  \param s              Service to be saved.
+   *  \param hostID ID of reported host, that this Process should be assigned to.
+   *  \param s      Service to be saved.
    *  \return return data base ID for given service.
    */
-  DataBaseID saveService(DataBaseID reportedHostID, const Service &s);
-  /** \brief save host data to data base
-   *  \param h host to be saved
-   *  \return return data base ID for given host.
-   */
-  DataBaseID saveHostData(const Persistency::Host &h);
+  DataBaseID saveService(DataBaseID hostID, const Service &s);
   /**\brief save Meta Alert data to data base
    * \param ma Meta Alert to be saved
    *  \return return data base ID for given meta alert.
@@ -157,24 +150,13 @@ private:
   Base::NullValue<DataBaseID> isAnalyzerInDataBase(const Analyzer &a);
   std::string addIPToSelect(const Analyzer::IP *ptr);
 
-  DataBaseID saveProcessData(const Process &p);
-  DataBaseID saveReportedProcessData(DataBaseID     reportedHostID,
-                                     DataBaseID     procID,
-                                     const Process &p);
   DataBaseID saveReferenceURL(const ReferenceURL &url);
+
+  DataBaseID saveHostGeneric(DataBaseID alertID, const Persistency::Host &h, const char *role);
 
   DataBaseID saveAlertData(const Alert &a);
   DataBaseID saveMetaAlertData(const MetaAlert &ma);
 
-  DataBaseID saveReportedHostData(DataBaseID               alertID,
-                                  DataBaseID               hostID,
-                                  const char               *role,
-                                  const Persistency::Host &h);
-
-  DataBaseID saveServiceData(const Service &s);
-  void saveReportedServiceData(DataBaseID     reportedHostID,
-                               DataBaseID     serID,
-                               const Service &s);
   void addReferenceURL(std::stringstream &ss, const ReferenceURL *url);
   bool isHostNameNull(DataBaseID hostID);
 

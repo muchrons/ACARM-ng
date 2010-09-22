@@ -1,2 +1,2 @@
 #!/bin/sh
-exec echo ""
+exec echo "-lloudmouth-1"

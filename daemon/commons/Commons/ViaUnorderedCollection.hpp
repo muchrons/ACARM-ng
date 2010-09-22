@@ -20,7 +20,9 @@ namespace Commons
 /** \brief performs certain checks on collections by comparing each element.
  *
  *  this is variation of ViaCollection comparer, but this one does not assume
- *  elements in collections are in exactly the same order.
+ *  elements in collections are in exactly the same order in O(n^2).
+ *  if elements can be sorted, considerd using faster ViaUnorderedSortableCollection
+ *  instead.
  */
 struct ViaUnorderedCollection
 {

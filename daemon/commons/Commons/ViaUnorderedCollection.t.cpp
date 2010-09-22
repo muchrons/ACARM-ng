@@ -132,7 +132,7 @@ void testObj::test<7>(void)
     l2.push_back( LongPtr( new long(42+i) ) );
   }
   // check
-  ensure("lists of different smart pointers to same values differ",
+  ensure("lists of different smart pointers to the same values differ",
          ViaUnorderedCollection::equal(l1, l2) );
 }
 
@@ -295,6 +295,111 @@ void testObj::test<15>(void)
          !ViaUnorderedCollection::equal(c1, c2) );
   ensure("match didn't failed when elements repeat (order 2)",
          !ViaUnorderedCollection::equal(c2, c1) );
+}
+
+
+namespace
+{
+struct NotSWO
+{
+  explicit NotSWO(int v):
+    v_(v)
+  {
+  }
+
+  bool operator==(const NotSWO &other) const
+  {
+    return v_==other.v_;
+  }
+
+  int v_;
+}; // struct NotSWO
+} // unnamed namespace
+
+// test comapring elements that does not have operator< defined - negative test.
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  typedef boost::shared_ptr<NotSWO> NotSWOPtr;
+  list<NotSWOPtr> l1;
+  list<NotSWOPtr> l2;
+
+  for(int i=0; i<3; ++i)
+  {
+    l1.push_back( NotSWOPtr( new NotSWO(42+i) ) );
+    l2.push_back( NotSWOPtr( new NotSWO(42-i) ) );
+  }
+  // check
+  ensure("lists of different smart pointers to different values reported equal",
+         !ViaUnorderedCollection::equal(l1, l2) );
+}
+
+// test comapring elements that does not have operator< defined - positive test.
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  typedef boost::shared_ptr<NotSWO> NotSWOPtr;
+  list<NotSWOPtr> l1;
+  list<NotSWOPtr> l2;
+
+  for(int i=0; i<3; ++i)
+  {
+    l1.push_back( NotSWOPtr( new NotSWO(42+i) ) );
+    l2.push_back( NotSWOPtr( new NotSWO(42+i) ) );
+  }
+  // check
+  ensure("lists of different smart pointers to the same values reported not equal",
+         ViaUnorderedCollection::equal(l1, l2) );
+}
+
+// test sorting pointers list when addresses does not overlap with elements order
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  list<const long*> l1;
+  list<const long*> l2;
+
+  const long e1=10;
+  const long e2=20;
+  const long e3=20;
+  const long e4=10;
+
+  l1.push_back(&e1);
+  l1.push_back(&e2);
+
+  l2.push_back(&e3);
+  l2.push_back(&e4);
+
+  // check
+  ensure("lists of pointers to the same values differ", ViaUnorderedCollection::equal(l1, l2) );
+}
+
+// test sorting pointers list witch NULLs present
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  list<const long*> l1;
+  list<const long*> l2;
+
+  const long e1=10;
+  const long e2=20;
+  const long e3=20;
+  const long e4=10;
+
+  l1.push_back(&e1);
+  l1.push_back(NULL);
+  l1.push_back(&e2);
+
+  l2.push_back(NULL);
+  l2.push_back(&e3);
+  l2.push_back(&e4);
+
+  // check
+  ensure("lists of pointers with NULLs to the same values differ", ViaUnorderedCollection::equal(l1, l2) );
 }
 
 } // namespace tut

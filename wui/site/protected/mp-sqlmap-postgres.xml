@@ -1,51 +1,122 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <sqlMapConfig>
 
-    <select id="SelectUsers" resultClass="CUserRecord"> SELECT * FROM wui_users ORDER BY login ASC </select>
-    <select id="SelectAnalyzers" resultClass="CAnalyzerRecord"> SELECT * FROM analyzers ORDER BY name,ip ASC </select>
-    <select id="SelectWUILogs" resultClass="CLogEntry"> SELECT u.id AS id, u.login AS login, l.ctime AS ctime, l.msg AS msg FROM logs AS l LEFT JOIN wui_users AS u ON l.id_wui_user=u.id ORDER BY ctime DESC </select>
-    <select id="SelectAlert" resultClass="CAlertEntry" parameterClass="int">
-        SELECT a.id AS id, a.name AS name, a.detect_time AS detect, a.create_time AS create, s.name AS severity, a.certanity AS certainty, a.description AS description FROM alerts AS a LEFT JOIN severities AS s ON a.id_severity=s.id WHERE a.id=#value#
-    </select>
-    <select id="SelectReportedHost" resultClass="CReportedHostEntry" parameterClass="int">
-        SELECT r.id AS id, r.role AS role, h.ip AS ip, h.mask AS mask, h.os AS os, h.name AS name, u.name as ref_name, u.url AS ref_url FROM ( reported_hosts as r LEFT JOIN hosts as h ON r.id_host=h.id ) LEFT JOIN reference_urls as u ON r.id_ref=u.id WHERE r.id=#value#
-    </select>
-    <select id="SelectReportedService" resultClass="CReportedServiceEntry" parameterClass="int">
-        SELECT s.id AS id, s.name AS name, s.port AS port, s.protocol AS protocol, u.name AS ref_name, u.url AS ref_url FROM ( reported_services AS r LEFT JOIN services AS s ON r.id_service=s.id ) LEFT JOIN reference_urls AS u ON r.id_ref=u.id WHERE s.id=#value# ORDER BY name
-    </select>
-    <select id="SelectReportedProcess" resultClass="CReportedProcessEntry" parameterClass="int">
-        SELECT r.id AS id, p.name AS name, p.path AS path, p.md5 AS md5, r.pid AS pid, r.uid AS uid, r.username AS username, r.arguments AS arguments, u.name AS ref_name, u.url AS ref_url FROM ( reported_procs AS r LEFT JOIN procs AS p ON r.id_proc=p.id ) LEFT JOIN reference_urls AS u ON r.id_ref=u.id WHERE r.id=#value# ORDER BY name
-    </select>
-    <select id="SelectAlertAnalyzers" resultClass="CLinkPair" parameterClass="int">
-        SELECT aa.id_analyzer AS id, an.name AS name FROM alert_analyzers AS aa LEFT JOIN analyzers AS an ON aa.id_analyzer=an.id WHERE aa.id_alert=#value#
-    </select>
-    <select id="SelectAlertSourceHosts" resultClass="CLinkPair" parameterClass="int">
-        SELECT r.id AS id, h.ip AS name FROM reported_hosts AS r LEFT JOIN hosts AS h ON r.id_host=h.id WHERE r.id_alert=#value# AND r.role='src' ORDER BY name
-    </select>
-    <select id="SelectAlertDestinationHosts" resultClass="CLinkPair" parameterClass="int">
-        SELECT r.id AS id, h.ip AS name FROM reported_hosts AS r LEFT JOIN hosts AS h ON r.id_host=h.id WHERE r.id_alert=#value# AND r.role='dst' ORDER BY name
-    </select>
-    <select id="SelectReportedHostsProcesses" resultClass="CLinkPair" parameterClass="int">
-        SELECT r.id AS id, p.name AS name FROM reported_procs AS r LEFT JOIN procs as p ON r.id_proc=p.id WHERE r.id_reported_host=#value# ORDER BY name
-    </select>
-    <select id="SelectReportedHostsServices" resultClass="CLinkPair" parameterClass="int">
-        SELECT r.id_service AS id, s.name AS name FROM reported_services AS r LEFT JOIN services as s ON r.id_service=s.id WHERE r.id_reported_host=#value# ORDER BY name
-    </select>
-    <select id="SelectAlertsSummary" resultClass="CAlertSummaryEntry">
-        SELECT a.id AS id, a.name AS name, a.create_time AS create_time, s.name || ' (' || s.level || ')' AS severity FROM alerts AS a LEFT JOIN severities AS s ON a.id_severity=s.id ORDER BY create_time DESC
-    </select>
-    <select id="SelectMetaAlertsSummary" resultClass="CMetaAlertSummaryEntry">
-        SELECT id, name, create_time FROM meta_alerts ORDER BY create_time DESC
-    </select>
-    <select id="MapSysIDtoDatabaseID" resultClass="int" parameterClass="int"> SELECT id FROM meta_alerts WHERE sys_id=#value# </select>
-    <select id="SelectMetaAlert" resultClass="CMetaAlertEntry" parameterClass="int">
-        SELECT ma.id AS id, ma.name AS name, ma.create_time AS create_time, ma.last_update_time AS last_update_time, ma.severity_delta AS severity_delta, ma.certainty_delta AS certainty_delta, m.id_alert AS id_alert FROM meta_alerts AS ma LEFT JOIN alert_to_meta_alert_map AS m ON m.id_meta_alert=ma.id WHERE id=#value#
-    </select>
-    <select id="SelectMetaAlertsChildren" resultClass="CLinkPair" parameterClass="int">
-        SELECT ma.id, ma.name FROM meta_alerts AS ma RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child WHERE t.id_node=#value#
-    </select>
-    <select id="SelectMetaAlertRoots" resultClass="CMetaAlertSummaryEntry">
-        SELECT id, name, create_time FROM meta_alerts WHERE id NOT IN ( SELECT id_child FROM meta_alerts_tree ) ORDER BY create_time DESC
-    </select>
+  <!-- Queries for single items -->
+
+  <select id="SelectReportedHost" resultClass="CReportedHostEntry" parameterClass="int">
+    SELECT r.id AS id, r.role AS role, h.ip AS ip, h.mask AS mask, h.os AS os, h.name AS name, u.name as ref_name, u.url AS ref_url FROM ( reported_hosts as r LEFT JOIN hosts as h ON r.id_host=h.id ) LEFT JOIN reference_urls as u ON r.id_ref=u.id WHERE r.id=#value#
+  </select>
+
+  <select id="SelectReportedService" resultClass="CReportedServiceEntry" parameterClass="int">
+    SELECT s.id AS id, s.name AS name, s.port AS port, s.protocol AS protocol, u.name AS ref_name, u.url AS ref_url FROM ( reported_services AS r LEFT JOIN services AS s ON r.id_service=s.id ) LEFT JOIN reference_urls AS u ON r.id_ref=u.id WHERE s.id=#value# ORDER BY name
+  </select>
+
+  <select id="SelectReportedProcess" resultClass="CReportedProcessEntry" parameterClass="int">
+    SELECT r.id AS id, p.name AS name, p.path AS path, p.md5 AS md5, r.pid AS pid, r.uid AS uid, r.username AS username, r.arguments AS arguments, u.name AS ref_name, u.url AS ref_url FROM ( reported_procs AS r LEFT JOIN procs AS p ON r.id_proc=p.id ) LEFT JOIN reference_urls AS u ON r.id_ref=u.id WHERE r.id=#value# ORDER BY name
+  </select>
+
+  <select id="SelectAlertAnalyzers" resultClass="CLinkPair" parameterClass="int">
+    SELECT aa.id_analyzer AS id, an.name AS name FROM alert_analyzers AS aa LEFT JOIN analyzers AS an ON aa.id_analyzer=an.id WHERE aa.id_alert=#value#
+  </select>
+
+  <select id="SelectAlertSourceHosts" resultClass="CLinkPair" parameterClass="int">
+    SELECT r.id AS id, h.ip AS name FROM reported_hosts AS r LEFT JOIN hosts AS h ON r.id_host=h.id WHERE r.id_alert=#value# AND r.role='src' ORDER BY name
+  </select>
+
+  <select id="SelectAlertDestinationHosts" resultClass="CLinkPair" parameterClass="int">
+    SELECT r.id AS id, h.ip AS name FROM reported_hosts AS r LEFT JOIN hosts AS h ON r.id_host=h.id WHERE r.id_alert=#value# AND r.role='dst' ORDER BY name
+  </select>
+
+  <select id="SelectReportedHostsProcesses" resultClass="CLinkPair" parameterClass="int">
+    SELECT r.id AS id, p.name AS name FROM reported_procs AS r LEFT JOIN procs as p ON r.id_proc=p.id WHERE r.id_reported_host=#value# ORDER BY name
+ </select>
+
+  <select id="SelectReportedHostsServices" resultClass="CLinkPair" parameterClass="int">
+    SELECT r.id_service AS id, s.name AS name FROM reported_services AS r LEFT JOIN services as s ON r.id_service=s.id WHERE r.id_reported_host=#value# ORDER BY name
+  </select>
+
+  <select id="SelectAlert" resultClass="CAlertEntry" parameterClass="int">
+    SELECT a.id AS id, a.name AS name, a.detect_time AS detect, a.create_time AS create, s.name AS severity, a.certanity AS certainty, a.description AS description FROM alerts AS a LEFT JOIN severities AS s ON a.id_severity=s.id WHERE a.id=#value#
+  </select>
+
+  <select id="SelectMetaAlert" resultClass="CMetaAlertEntry" parameterClass="int">
+    SELECT ma.id AS id, ma.name AS name, ma.create_time AS create_time, ma.last_update_time AS last_update_time, ma.severity_delta AS severity_delta, ma.certainty_delta AS certainty_delta, m.id_alert AS id_alert FROM meta_alerts AS ma LEFT JOIN alert_to_meta_alert_map AS m ON m.id_meta_alert=ma.id WHERE id=#value#
+  </select>
+
+  <select id="MapSysIDtoDatabaseID" resultClass="int" parameterClass="int">
+    SELECT id FROM meta_alerts WHERE sys_id=#value#
+  </select>
+
+  <select id="SelectMetaAlertsChildren" resultClass="CLinkPair" parameterClass="int">
+    SELECT ma.id, ma.name FROM meta_alerts AS ma RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child WHERE t.id_node=#value#
+  </select>
+
+  <!-- Queries for tables' sizes -->
+
+  <select id="SelectUsersCount" resultClass="int">
+    SELECT count(*) FROM wui_users
+  </select>
+
+  <select id="SelectAnalyzersCount" resultClass="int">
+    SELECT count(*) FROM analyzers
+  </select>
+
+  <select id="SelectWUILogsCount" resultClass="int">
+    SELECT count(*) FROM logs
+  </select>
+
+  <select id="SelectAlertsSummaryCount" resultClass="int">
+    SELECT count(*) FROM alerts
+  </select>
+
+  <select id="SelectMetaAlertsSummaryCount" resultClass="int">
+    SELECT count(*) FROM meta_alerts
+  </select>
+
+  <select id="SelectMetaAlertsRootsCount" resultClass="int">
+    SELECT count(*) FROM meta_alerts WHERE id NOT IN ( SELECT id_child FROM meta_alerts_tree ) ORDER BY create_time DESC limit #limit# offset #offset# <!--unsure-->
+  </select>
+
+  <!-- Queries for lists of items -->
+
+  <select id="SelectUsers" resultClass="CUserRecord" parameterClass="CParamLimitOffset">
+    SELECT * FROM wui_users ORDER BY login ASC limit #limit# offset #offset#
+  </select>
+
+  <select id="SelectAnalyzers" resultClass="CAnalyzerListEntry" parameterClass="CParamLimitOffset">
+    SELECT * FROM analyzers ORDER BY name,ip ASC limit #limit# offset #offset#
+  </select>
+
+  <select id="SelectWUILogs" resultClass="CLogEntry" parameterClass="CParamLimitOffset">
+    SELECT u.id AS id, u.login AS login, l.ctime AS ctime, l.msg AS msg FROM logs AS l LEFT JOIN wui_users AS u ON l.id_wui_user=u.id ORDER BY ctime DESC limit #limit# offset #offset#
+  </select>
+
+  <select id="SelectAlertsSummary" resultClass="CAlertListEntry" parameterClass="CParamLimitOffset">
+    SELECT a.id AS id, a.name AS name, a.create_time AS create_time, s.name || ' (' || s.level || ')' AS severity FROM alerts AS a LEFT JOIN severities AS s ON a.id_severity=s.id ORDER BY create_time DESC limit #limit# offset #offset#
+  </select>
+
+  <select id="SelectMetaAlertsSummary" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
+    SELECT id, name, create_time FROM meta_alerts ORDER BY create_time DESC limit #limit# offset #offset#
+  </select>
+
+  <select id="SelectMetaAlertRoots" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
+    SELECT id, name, create_time FROM meta_alerts WHERE id NOT IN ( SELECT id_child FROM meta_alerts_tree ) ORDER BY create_time DESC limit #limit# offset #offset#
+  </select>
+
+<!-- Queries for Data Mining -->
+
+  <select id="DMSeverities" resultClass="CDMPair">
+    SELECT name as key,count as value FROM (select id_severity,count(id_severity) FROM alerts GROUP BY id_severity) AS a LEFT JOIN severities ON a.id_severity=severities.id;
+  </select>
+
+  <select id="DMAlertTypes" resultClass="CDMPair">
+    select name as key,count(name) as value from Alerts group by name order by count(name) DESC;
+  </select>
+
+  <select id="DMAlertCountTimeSeries" resultClass="CDMPair">
+    select to_char(create_time,'YYYY-MM-DD') as key,count(*) as value from alerts where id_severity > 3 group by to_char(create_time,'YYYY-MM-DD');
+  </select>
+
+  
 
 </sqlMapConfig>
