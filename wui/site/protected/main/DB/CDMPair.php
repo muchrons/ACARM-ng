@@ -1,5 +1,6 @@
 <?php
 
+// TODO: CDM==?
 class CDMPair
 {
   public $key;

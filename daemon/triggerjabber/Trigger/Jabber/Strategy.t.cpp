@@ -67,6 +67,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
+  // TODO: use System::Timer for this.
   time_t start, stop;
   {
     const Strategy s("myjabberinformer", cfg_);

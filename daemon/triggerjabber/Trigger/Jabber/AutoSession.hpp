@@ -54,6 +54,7 @@ public:
       lm_connection_close (v_, NULL);
       lm_connection_unref (v_);
     }
+    // TODO: deallocate() is called just once, but it would be safe to NULL v_ anyway
   }
 
 private:

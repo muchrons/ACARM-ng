@@ -1,5 +1,6 @@
 <?php
 
+// TODO: 'jpgraph' should be moved somewhere to protected/ directory, where all the sources are (access to this dir is protected with .htaccess)
 include_once('lib/jpgraph/jpgraph.php');
 include_once('lib/jpgraph/jpgraph_bar.php');
 include_once('lib/jpgraph/jpgraph_log.php');
@@ -11,6 +12,7 @@ include_once('lib/jpgraph/jpgraph_pie3d.php');
 
 class GraphService extends TService
 {
+  // TODO: keep members at the bottom of the class
   private $type;
   private $xdata = null;
   private $ydata = null;
@@ -23,12 +25,18 @@ class GraphService extends TService
   {
     $request = Prado::getApplication()->getRequest();
 
-    if ($request->contains('graph')) {
+    if ($request->contains('graph'))
+    {
       $this->type = TPropertyValue::ensureString($request['graph']);
-    } else {
+    }
+    else
+    {
       throw new TConfigurationException('You must specify the type of the graph');
     }
 
+    // TODO: stick to the ocnvention of keeping brackets on the new line (see the above example),
+    //       or remove them totally for 1-line if's.
+    // NOTE: all of this situations can be handled with if(!something) throw ...; somecode; instead of if-then-else
     if ($request->contains('xdata')) {
       $this->xdata = explode( ',', TPropertyValue::ensureString($request['xdata']));
     } else {
@@ -203,6 +211,8 @@ class GraphService extends TService
     // Setup font for axis
     $graph->xaxis->SetFont(FF_VERDANA,FS_NORMAL,10);
     $graph->yaxis->SetFont(FF_VERDANA,FS_NORMAL,10);
+
+    // TODO: remove dead code
 
     // Show 0 label on Y-axis (default is not to show)
     //$graph->yscale->ticks->SupressZeroLabel(false);

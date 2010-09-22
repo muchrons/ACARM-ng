@@ -20,6 +20,10 @@ struct TestClass
 
   void ensureThrow(const Options &opts) const
   {
+    // TODO: i belive this bool-trick is not needed any more. it has been that way in the past, since
+    //       convertion mechanism from boost throw boost::detail::... exceptions that we could not catch.
+    //       now it is wrapped and all casts are done by Commons::Convert, thus "normal" exception-handling
+    //       should be done.
     bool thrown=false;
     try
     {
@@ -75,7 +79,7 @@ void testObj::test<2>(void)
 {
   setValid();
   FactoryBuilder::FactoryPtr ptr=fb_.build(opts_);
-  ensure("NULL pointere returned", ptr.get()!=NULL );
+  ensure("NULL pointer returned", ptr.get()!=NULL );
 }
 
 // test throw on missing login
