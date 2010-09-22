@@ -1,2 +1,2 @@
 #!/bin/sh
-echo "`pkg-config libxml++-2.6 --cflags`"
+exec pkg-config libxml++-2.6 --cflags
