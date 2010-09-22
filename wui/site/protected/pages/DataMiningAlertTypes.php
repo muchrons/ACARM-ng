@@ -2,6 +2,7 @@
 
 class DataMiningAlertTypes extends TPage
 {
+  // TODO: fix brackets
   public function onLoad($param) {
     parent::onLoad($param);
 
@@ -16,6 +17,7 @@ class DataMiningAlertTypes extends TPage
     $ydata = array();
     $xdata = array();
 
+    // TODO: fix indentation
     foreach( $pairs as $e )
       {
         $xdata[] = $e->key;
