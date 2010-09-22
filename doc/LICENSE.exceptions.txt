@@ -3,7 +3,22 @@ LICENSE.txt file. There are however pieces of code used and build with its
 build system, that use different licenses (i.e. external pieces of code).
 
 These components are:
-  -> 'curlpp'
+  -> curlpp (LGPL)
+  -> jpgraph (QPL 1.0)
+  -> prado (Revised BSD)
 
 You can check license details for them in documentation from their authors,
 placed in components' folders.
+
+There are also external components used (ex. linked with), that are not
+directly included in this package, that have following licenses:
+  -> boost libraries (Boost License)
+  -> curl (http://curl.haxx.se/docs/copyright.html (MIT/X-like)) /indirectly
+  -> etpan (Revised BSD)
+  -> gnutls (LGPL) /indirectly
+  -> libgadu (LGPL)
+  -> loudmouth (LGPL)
+  -> ltdl (LGPL) /indirectly
+  -> pqxx (Revised BSD)
+  -> libprelude (GPL)
+  -> xml++ (LGPL)
