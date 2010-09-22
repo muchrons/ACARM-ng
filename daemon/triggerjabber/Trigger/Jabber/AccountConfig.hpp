@@ -29,6 +29,7 @@ public:
   {
   }
 
+  // TODO: return favlue should be const-reference here
   /** \brief gets Jabber's server.
    *  \return Jaberr's server.
    */
@@ -36,6 +37,7 @@ public:
   {
     return server_;
   }
+  // TODO: return favlue should be const-reference here
   /** \brief gets user's login.
    *  \return user's login.
    */

@@ -54,9 +54,9 @@ template<>
 void testObj::test<3>(void)
 {
   const AccountConfig ac( getTestConfig() );
-  AutoSession           ags( lm_connection_new( ac.getServer().c_str() ) );
+  AutoSession         ags( lm_connection_new( ac.getServer().c_str() ) );
   ensure("conneciton error", ags.get()!=NULL );
-  AutoSession           out;
+  AutoSession         out;
   ensure("NULL-initialization failed", out.get()==NULL );
   out=ags;      // move ownership
   ensure("source not NULLed", ags.get()==NULL );

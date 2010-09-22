@@ -14,6 +14,8 @@
 #include "Trigger/Jabber/AutoSession.hpp"
 #include "Trigger/Jabber/ExceptionConnectionError.hpp"
 
+// TODO: fix comments
+
 namespace Trigger
 {
 namespace Jabber
@@ -56,7 +58,7 @@ private:
 
   Logger::Node          log_;
   const AccountConfig   cfg_;
-  AutoSession           sess_;
+  AutoSession           sess_;  // TODO: since class is non-copyable any way consider using System::ScopedPtrCustom for this
 }; // class Connection
 
 } // namespace Jabber

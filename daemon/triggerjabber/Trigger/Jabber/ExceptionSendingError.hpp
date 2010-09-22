@@ -16,10 +16,11 @@ namespace Jabber
 class ExceptionSendingError: public Exception
 {
 public:
+  // TODO: 'receive' should be const-ref
   /** \brief create execption with given message.
    *  \param where    place where exception has been thrown.
    *  \param receiver user that was suposed to receive message.
-   *  \param ret      core returned by library
+   *  \param ret      error code returned by library
    */
   ExceptionSendingError(const Location &where, const std::string receiver, const int ret):
     Exception(where, cc("unable to send message to user ", receiver, " - error code was ", ret) )
