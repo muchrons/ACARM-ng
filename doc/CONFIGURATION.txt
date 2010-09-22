@@ -201,6 +201,18 @@ below are listed implemented triggers along with their implementation.
   <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
 </gg>
 
+<!-- Jabber instant messanger notification -->
+<jabber name="msg2bob">
+  <login>acarm-ng1</login>                   <!-- login for Jabber account-->
+  <password>testowekonto</password>          <!-- password for this account-->
+  <server>jabber.org</server>                <!-- Jabber server-->
+  <password>testowekonto</password>          <!-- password for this account-->
+  <receiver>acarm-ng2@jabber.org</receiver>  <!-- Jabber account to notify -->
+
+  <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
+  <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
+</jabber>
+
 <!-- mail notification about security issue -->
 <mail name="email_admin">
   <from>robot@e.mail.org</from>    <!-- e-mail to send from -->
