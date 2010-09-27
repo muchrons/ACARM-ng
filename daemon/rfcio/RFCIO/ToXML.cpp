@@ -164,6 +164,14 @@ xmlpp::Element &ToXML::addAddress(const IP &ip)
   return address.getParent();
 }
 
+xmlpp::Element &ToXML::addService(const Persistency::Service &s)
+{
+  ToXML service( addChild( getParent(), "Service" ) );
+  service.addString( "name", s.getName().get() );
+  service.addString( "port", toStr( s.getPort().get() ).c_str() );
+  return service.getParent();
+}
+
 xmlpp::Element &ToXML::addString(const char *name, const char *str)
 {
   assert(name!=NULL);

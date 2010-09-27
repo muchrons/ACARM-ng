@@ -83,6 +83,11 @@ public:
    *  \return reference to newly added element.
    */
   xmlpp::Element &addAddress(const IP &ip);
+  /** \brief adds service to XML.
+   *  \param s service to be added.
+   *  \return reference to newly added element.
+   */
+  xmlpp::Element &addService(const Persistency::Service &s);
 
   /** \brief returns parent node's reference.
    *  \return reference to node given as a parent in c-tor.
