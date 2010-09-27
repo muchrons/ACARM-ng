@@ -2,8 +2,8 @@
  * ExceptionSendingError.hpp
  *
  */
-#ifndef INCLUDE_TRIGGER_JABBER_EXCEPTIONSENDINGERROR_HPP_FILE
-#define INCLUDE_TRIGGER_JABBER_EXCEPTIONSENDINGERROR_HPP_FILE
+#ifndef INCLUDE_TRIGGER_JABBER_EXCEPTIONCREATINGERROR_HPP_FILE
+#define INCLUDE_TRIGGER_JABBER_EXCEPTIONCREATINGERROR_HPP_FILE
 
 #include "Trigger/Jabber/Exception.hpp"
 
@@ -13,7 +13,7 @@ namespace Jabber
 {
 /** \brief exception thrown when sending message failed.
  */
-class ExceptionSendingError: public Exception
+class ExceptionCreatingError: public Exception
 {
 public:
   /** \brief create execption with given message.
@@ -21,11 +21,11 @@ public:
    *  \param receiver user that was suposed to receive message.
    *  \param ret      error code returned by library
    */
-  ExceptionSendingError(const Location &where, const std::string &receiver, const int ret):
-    Exception(where, cc("unable to send message to user ", receiver, " - error code was ", ret) )
+  ExceptionCreatingError(const Location &where, const std::string &receiver):
+    Exception(where, cc("unable to create message to user ", receiver) )
   {
   }
-}; // class ExceptionSendingError
+}; // class ExceptionCreatingError
 
 } // namespace Jabber
 } // namespace Trigger

@@ -20,21 +20,13 @@ struct TestClass
 
   void ensureThrow(const Options &opts) const
   {
-    // TODO: i belive this bool-trick is not needed any more. it has been that way in the past, since
-    //       convertion mechanism from boost throw boost::detail::... exceptions that we could not catch.
-    //       now it is wrapped and all casts are done by Commons::Convert, thus "normal" exception-handling
-    //       should be done.
-    bool thrown=false;
     try
     {
       fb_.build(opts);
-      thrown=true;
       tut::fail("build() didn't throw on missing paramter");
     }
     catch(const std::exception&)
     {
-      if(thrown)
-        throw;
       // this is expected
     }
   }
