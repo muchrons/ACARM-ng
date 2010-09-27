@@ -132,6 +132,10 @@ void Restorer::restore(Persistency::IO::Postgres::detail::EntryReader &er,
       deepFirstSearch(*it, out, er, connStubIO, tStubIO, restoredIDs);
       restoredIDs.push_back(*it);
     }
+    catch(const ExceptionNoSuchEntry &e)
+    {
+      LOGMSG_WARN_S(log_)<<"root with id "<< *it << " doesn't exist in cache; exception message: "<< e.what();
+    }
     catch(const ExceptionBadNumberOfNodeChildren &e)
     {
       LOGMSG_WARN_S(log_) << "root with id " << *it
@@ -219,7 +223,7 @@ NodeChildrenVector Restorer::restoreNodeChildren(TreePtrNN                      
     }
     catch(const ExceptionNoSuchEntry &e)
     {
-      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " doesn't exist; exception message: "<< e.what();
+      LOGMSG_WARN_S(log_)<<"child with id "<< *it << " doesn't exist in cache; exception message: "<< e.what();
     }
     catch(const ExceptionBadNumberOfNodeChildren &e)
     {
