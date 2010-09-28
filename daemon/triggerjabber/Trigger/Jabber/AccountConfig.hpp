@@ -17,13 +17,12 @@ namespace Jabber
 class AccountConfig
 {
 public:
-  // TODO: server and login should be passed via c-ref.
   /** \brief create configuration.
    *  \param server   Jabber server.
    *  \param login    user's Jabber login.
    *  \param password password used for authorization.
    */
-  AccountConfig(const std::string server, const std::string login, const std::string &password):
+  AccountConfig(const std::string &server, const std::string &login, const std::string &password):
     server_(server),
     login_(login),
     password_(password)

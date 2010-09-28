@@ -6,6 +6,7 @@
 #define INCLUDE_TRIGGER_JABBER_TESTACCOUNT_T_HPP_FILE
 
 #include <glib.h>
+#include <tut.h>
 #include <sys/time.h>
 #include <boost/timer.hpp>
 #include <boost/algorithm/string.hpp>
@@ -57,12 +58,8 @@ handleMessages (LmMessageHandler * /*handler*/,
 
     return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
   }
-  // TODO: temporary variable not needed here
-  std::string sender(lm_message_node_get_attribute (m->node, "from"));
-  mh->sender_ = sender;
-  // TODO: temporary variable not needed here
-  std::string msg(lm_message_node_get_value( lm_message_node_get_child(m->node, "body") ));
-  mh->msg_ = msg;
+  mh->sender_ = std::string(lm_message_node_get_attribute (m->node, "from"));
+  mh->msg_ = std::string(lm_message_node_get_value( lm_message_node_get_child(m->node, "body") ));
   return LM_HANDLER_RESULT_REMOVE_MESSAGE;
 }
 

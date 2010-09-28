@@ -53,6 +53,7 @@ public:
     {
       gg_logoff(v_);
       gg_free_session(v_);
+      v_=NULL;
     }
   }
 
