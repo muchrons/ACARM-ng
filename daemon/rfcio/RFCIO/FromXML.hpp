@@ -14,7 +14,7 @@
 #include "Logger/Node.hpp"
 #include "Persistency/IPTypes.hpp"
 #include "Persistency/GraphNode.hpp"
-#include "RFCIO/ExceptionMissingNode.hpp"
+#include "RFCIO/ExceptionMissingElement.hpp"
 #include "RFCIO/ExceptionInvalidElement.hpp"
 
 namespace RFCIO
@@ -34,7 +34,7 @@ public:
   Persistency::GraphNodePtrNN parseAlert(const xmlpp::Element &alert) const;
   Persistency::AnalyzerPtrNN parseAnalyzer(const xmlpp::Element &alert) const;
   Persistency::Timestamp parseCreateTime(const xmlpp::Element &createTime) const;
-  Persistency::Timestamp parseDetectTime(const xmlpp::Element &createTime) const;
+  Persistency::Timestamp parseDetectTime(const xmlpp::Element &detectTime) const;
   Assessment parseAssessment(const xmlpp::Element &assessment) const;
   std::string getClassification(const xmlpp::Element &classification) const;
   Persistency::ReferenceURLPtrNN parseReferenceURL(const xmlpp::Element &ref) const;
@@ -46,9 +46,10 @@ public:
   Persistency::HostPtrNN parseTarget(const xmlpp::Element &target) const;
 
 private:
-  Persistency::Timestamp parseTimestamp(const xmlpp::Element &ts) const;
+  Persistency::Timestamp parseTimestamp(const char *name, const xmlpp::Element &ts) const;
   std::string parseString(const xmlpp::Element &node) const;
   std::string parseParameter(const xmlpp::Element &node, const char *name) const;
+  const xmlpp::Element &findOneChild(const xmlpp::Element &parent, const char *name) const;
 }; // class FromXML
 
 } // namespace RFCIO
