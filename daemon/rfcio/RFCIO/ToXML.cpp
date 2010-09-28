@@ -23,6 +23,12 @@ string toStr(const T &t)
 {
   return Commons::Convert::to<string>(t);
 } // toStr()
+template<typename T>
+string toStr(const T *t)
+{
+  assert(t!=NULL);
+  return toStr(*t);
+} // toStr()
 } // unnamed namespace
 
 
@@ -52,16 +58,7 @@ xmlpp::Element &ToXML::addAnalyzer(const Persistency::Analyzer &a)
   analyzer.addParameter("analyzerid", toStr( a.getID().get() ).c_str() );
   analyzer.addParameter("ostype",     a.getOperatingSystem().get() );
   analyzer.addParameter("version",    a.getVersion().get() );
-  {
-    ToXML node( addChild( analyzer.getParent(), "Node" ) );
-    node.addParameter("category", "host");
-    node.addString("name", a.getName() );
-    if( a.getIP()!=NULL )
-    {
-      ToXML tmp( node.getParent() );
-      tmp.addAddress( *a.getIP() );
-    } // if(ip!=NULL)
-  } // node
+  analyzer.addNode( a.getName().get(), a.getIP() );
   return analyzer.getParent();
 }
 
@@ -172,6 +169,33 @@ xmlpp::Element &ToXML::addService(const Persistency::Service &s)
   return service.getParent();
 }
 
+xmlpp::Element &ToXML::addProcess(const Persistency::Process &p)
+{
+  ToXML process( addChild( getParent(), "Process") );
+  process.addString( "name", p.getName().get() );
+  if( p.getPath().get()!=NULL )
+    process.addString( "path", p.getPath().get() );
+  if( p.getParameters()!=NULL )
+    process.addString( "arg", p.getParameters()->c_str() );
+  if( p.getPID()!=NULL )
+    process.addString( "pid", toStr( p.getPID() ).c_str() );
+  return process.getParent();
+}
+
+xmlpp::Element &ToXML::addUser(const Persistency::Process &p)
+{
+  ToXML user( addChild( getParent(), "User") );
+  if( p.getUsername().get()==NULL && p.getUID()==NULL )
+    return user.getParent();
+  // add more data, only if available
+  ToXML userId( addChild( user.getParent(), "UserId") );
+  if( p.getUsername().get()!=NULL )
+    userId.addString("name", p.getUsername().get() );
+  if( p.getUID()!=NULL )
+    userId.addString("number", toStr( p.getUID() ).c_str() );
+  return user.getParent();
+}
+
 xmlpp::Element &ToXML::addString(const char *name, const char *str)
 {
   assert(name!=NULL);
@@ -212,6 +236,33 @@ void ToXML::addParameter(const char *name, const char *value)
   }
   LOGMSG_DEBUG_S(log_)<<"setting paramter '"<<name<<"' to "<<value;
   parent_.set_attribute(name, value);
+}
+
+xmlpp::Element &ToXML::addNode(const char *name, const IP *ip)
+{
+  ToXML node( addChild( getParent(), "Node" ) );
+  const char *category="unknown";
+  // add name if present
+  if(name!=NULL)
+  {
+    category="host";
+    node.addString("name", name);
+  }
+  else
+  {
+    // if name is not set, IP address must be present.
+    if(ip==NULL)
+      throw ExceptionUnexpectedNULL(SYSTEM_SAVE_LOCATION, "ip");
+  }
+  // add IP is present
+  if(ip!=NULL)
+  {
+    category="host";
+    node.addAddress(*ip);
+  }
+  // add proper
+  node.addParameter("category", category);
+  return node.getParent();;
 }
 
 xmlpp::Element &ToXML::addTimestamp(const char *name, const Persistency::Timestamp &t)

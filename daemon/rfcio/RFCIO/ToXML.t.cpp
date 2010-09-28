@@ -39,6 +39,22 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     writeAndCompare(expectedXML);
   }
 
+  void checkProcess(const Persistency::Process &p, const char *expectedXML)
+  {
+    // add as a part of XML
+    ToXML toXML(*rootPtr_);
+    toXML.addProcess(p);
+    writeAndCompare(expectedXML);
+  }
+
+  void checkUser(const Persistency::Process &p, const char *expectedXML)
+  {
+    // add as a part of XML
+    ToXML toXML(*rootPtr_);
+    toXML.addUser(p);
+    writeAndCompare(expectedXML);
+  }
+
   void checkAdditionalData(const Persistency::GraphNode &leaf, const char *expectedXML)
   {
     // add as a part of XML
@@ -452,46 +468,105 @@ void testObj::test<20>(void)
                              "</idmef:IDMEF-Message>\n");
 }
 
-// TODO
+// test adding user
 template<>
 template<>
 void testObj::test<21>(void)
 {
+  const pid_t                pid=42;
+  const int                  uid=666;
+  const Persistency::Process p( "/path/to/bin", "binary", NULL, &pid, &uid, "alucard", "-a -b -c", Persistency::ReferenceURLPtr() );
+  checkUser(p, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+               "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                 "<idmef:User>"
+                   "<idmef:UserId>"
+                     "<idmef:name>alucard</idmef:name>"
+                     "<idmef:number>666</idmef:number>"
+                   "</idmef:UserId>"
+                 "</idmef:User>"
+               "</idmef:IDMEF-Message>\n");
 }
 
-// TODO
+// test adding unser with no UID
 template<>
 template<>
 void testObj::test<22>(void)
 {
+  const pid_t                pid=42;
+  const Persistency::Process p( "/path/to/bin", "binary", NULL, &pid, NULL, "alucard", "-a -b -c", Persistency::ReferenceURLPtr() );
+  checkUser(p, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+               "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                 "<idmef:User>"
+                   "<idmef:UserId>"
+                     "<idmef:name>alucard</idmef:name>"
+                   "</idmef:UserId>"
+                 "</idmef:User>"
+               "</idmef:IDMEF-Message>\n");
 }
 
-// TODO
+// test adding user with no name
 template<>
 template<>
 void testObj::test<23>(void)
 {
+  const pid_t                pid=42;
+  const int                  uid=666;
+  const Persistency::Process p( "/path/to/bin", "binary", NULL, &pid, &uid, NULL, "-a -b -c", Persistency::ReferenceURLPtr() );
+  checkUser(p, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+               "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                 "<idmef:User>"
+                   "<idmef:UserId>"
+                     "<idmef:number>666</idmef:number>"
+                   "</idmef:UserId>"
+                 "</idmef:User>"
+               "</idmef:IDMEF-Message>\n");
 }
 
-// TODO
+// test adding user with no name nor UID
 template<>
 template<>
 void testObj::test<24>(void)
 {
+  const pid_t                pid=42;
+  const Persistency::Process p( "/path/to/bin", "binary", NULL, &pid, NULL, NULL, "-a -b -c", Persistency::ReferenceURLPtr() );
+  checkUser(p, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+               "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                 "<idmef:User/>"
+               "</idmef:IDMEF-Message>\n");
 }
 
-// TODO
+// test adding process
 template<>
 template<>
 void testObj::test<25>(void)
 {
+  const pid_t                pid=42;
+  const int                  uid=666;
+  const Persistency::Process p( "/path/to/bin", "binary", NULL, &pid, &uid, "alucard", "-a -b -c", Persistency::ReferenceURLPtr() );
+  checkProcess(p, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                  "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                    "<idmef:Process>"
+                      "<idmef:name>binary</idmef:name>"
+                      "<idmef:path>/path/to/bin</idmef:path>"
+                      "<idmef:arg>-a -b -c</idmef:arg>"
+                      "<idmef:pid>42</idmef:pid>"
+                    "</idmef:Process>"
+                  "</idmef:IDMEF-Message>\n");
 }
 
-// TODO
+// test adding process with NULLs
 template<>
 template<>
 void testObj::test<26>(void)
 {
+  const int                  uid=666;
+  const Persistency::Process p( NULL, "binary", NULL, NULL, &uid, "alucard", NULL, Persistency::ReferenceURLPtr() );
+  checkProcess(p, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                  "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                    "<idmef:Process>"
+                      "<idmef:name>binary</idmef:name>"
+                    "</idmef:Process>"
+                  "</idmef:IDMEF-Message>\n");
 }
 
 // TODO
