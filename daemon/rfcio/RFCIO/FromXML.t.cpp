@@ -54,13 +54,13 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const char *expected="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                       "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
-                         "<idmef:AdditionalData type=\"string\" meaning=\"description\">"
-                           "<idmef:string>some test alert</idmef:string>"
-                         "</idmef:AdditionalData>"
-                       "</idmef:IDMEF-Message>\n";
-  const string out=fx_.parseAdditionalData( parseXML(expected) );
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:AdditionalData type=\"string\" meaning=\"description\">"
+                     "<idmef:string>some test alert</idmef:string>"
+                   "</idmef:AdditionalData>"
+                 "</idmef:IDMEF-Message>\n";
+  const string out=fx_.parseAdditionalData( parseXML(in) );
   ensure_equals("invalid additional data", out, "some test alert");
 }
 
@@ -69,11 +69,11 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const char *expected="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                       "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
-                         "<idmef:CreateTime ntpstamp=\"0xCD408152.0x00000000\">2009-02-13T23:31:30Z</idmef:CreateTime>"
-                       "</idmef:IDMEF-Message>\n";
-  const Timestamp out=fx_.parseCreateTime( parseXML(expected) );
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:CreateTime ntpstamp=\"0xCD408152.0x00000000\">2009-02-13T23:31:30Z</idmef:CreateTime>"
+                 "</idmef:IDMEF-Message>\n";
+  const Timestamp out=fx_.parseCreateTime( parseXML(in) );
   ensure_equals("invalid create time", out.get(), 1234567890u);
 }
 
@@ -82,26 +82,42 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const char *expected="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                       "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
-                         "<idmef:DetectTime ntpstamp=\"0xCD408152.0x00000000\">2009-02-13T23:31:30Z</idmef:DetectTime>"
-                       "</idmef:IDMEF-Message>\n";
-  const Timestamp out=fx_.parseDetectTime( parseXML(expected) );
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:DetectTime ntpstamp=\"0xCD408152.0x00000000\">2009-02-13T23:31:30Z</idmef:DetectTime>"
+                 "</idmef:IDMEF-Message>\n";
+  const Timestamp out=fx_.parseDetectTime( parseXML(in) );
   ensure_equals("invalid detect time", out.get(), 1234567890u);
 }
 
-// 
+// parse IPv4
 template<>
 template<>
 void testObj::test<4>(void)
 {
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Address category=\"ipv4-addr\">"
+                     "<idmef:address>1.2.3.4</idmef:address>"
+                   "</idmef:Address>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::IP out=fx_.parseAddress( parseXML(in) );
+  ensure_equals("invalid IPv4 address", out.to_string(), "1.2.3.4");
 }
 
-// 
+// parse IPv6
 template<>
 template<>
 void testObj::test<5>(void)
 {
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Address category=\"ipv4-addr\">"
+                     "<idmef:address>::1</idmef:address>"
+                   "</idmef:Address>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::IP out=fx_.parseAddress( parseXML(in) );
+  ensure_equals("invalid IPv6 address", out.to_string(), "::1");
 }
 
 // 

@@ -58,11 +58,15 @@ std::string FromXML::parseAdditionalData(const xmlpp::Element &data) const
   return value;
 }
 
-/*
 FromXML::IP FromXML::parseAddress(const xmlpp::Element &address) const
 {
+  if( address.get_name()!="Address" )
+    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, address.get_path(), "expected 'Address' node");
+  const string ip=parseString( findOneChild(address, "address") );
+  return FromXML::IP::from_string(ip);
 }
 
+/*
 Persistency::ServicePtrNN FromXML::parseService(const xmlpp::Element &service) const
 {
 }
