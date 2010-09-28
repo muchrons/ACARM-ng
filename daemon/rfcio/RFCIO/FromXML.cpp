@@ -37,15 +37,27 @@ Persistency::Timestamp FromXML::parseDetectTime(const xmlpp::Element &detectTime
 FromXML::Assessment FromXML::parseAssessment(const xmlpp::Element &assessment) const
 {
 }
+*/
 
-std::string FromXML::getClassification(const xmlpp::Element &classification) const
+FromXML::Classification FromXML::parseClassification(const xmlpp::Element &classification) const
 {
+  if( classification.get_name()!="Classification" )
+    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, classification.get_path(), "expected 'Classification' node");
+  const string    description=parseParameter(classification, "text");
+  ReferenceURLPtr ref;
+  if( classification.get_children().size()>0 )
+    ref=parseReferenceURL( findOneChild(classification, "Reference") );
+  return FromXML::Classification(description, ref);
 }
 
 Persistency::ReferenceURLPtrNN FromXML::parseReferenceURL(const xmlpp::Element &ref) const
 {
+  if( ref.get_name()!="Reference" )
+    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, ref.get_path(), "expected 'Reference' node");
+  const string name=parseString( findOneChild(ref, "name") );
+  const string url =parseString( findOneChild(ref, "url") );
+  return ReferenceURLPtrNN( new ReferenceURL(name, url) );
 }
-*/
 
 std::string FromXML::parseAdditionalData(const xmlpp::Element &data) const
 {

@@ -120,25 +120,54 @@ void testObj::test<5>(void)
   ensure_equals("invalid IPv6 address", out.to_string(), "::1");
 }
 
-// 
+// parse classification with reference url
 template<>
 template<>
 void testObj::test<6>(void)
 {
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Classification text=\"some meta-alert\">"
+                     "<idmef:Reference origin=\"unknown\">"
+                       "<idmef:name>some name</idmef:name>"
+                       "<idmef:url>http://gnu.org</idmef:url>"
+                     "</idmef:Reference>"
+                   "</idmef:Classification>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::Classification out=fx_.parseClassification( parseXML(in) );
+  fail("TODO");
+  //ensure_equals("invalid IPv6 address", out.to_string(), "::1");
 }
 
-// 
+// parse classification w/out reference url
 template<>
 template<>
 void testObj::test<7>(void)
 {
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Classification text=\"some meta-alert\"/>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::Classification out=fx_.parseClassification( parseXML(in) );
+  fail("TODO");
+  //ensure_equals("invalid IPv6 address", out.to_string(), "::1");
 }
 
-// 
+// test parsing reference url
 template<>
 template<>
 void testObj::test<8>(void)
 {
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Reference origin=\"unknown\">"
+                     "<idmef:name>some name</idmef:name>"
+                     "<idmef:url>http://gnu.org</idmef:url>"
+                   "</idmef:Reference>"
+                 "</idmef:IDMEF-Message>\n";
+  const ReferenceURLPtrNN out=fx_.parseReferenceURL( parseXML(in) );
+  fail("TODO");
+  //ensure_equals("invalid IPv6 address", out.to_string(), "::1");
 }
 
 // 

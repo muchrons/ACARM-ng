@@ -28,15 +28,16 @@ class FromXML: private boost::noncopyable
   typedef Persistency::IPTypes<FromXML> IPTypesBase;
 public:
   /** \brief type representing IP. */
-  typedef IPTypesBase::IP                             IP;
-  typedef boost::tuple<Persistency::Severity, double> Assessment;
+  typedef IPTypesBase::IP                                         IP;
+  typedef boost::tuple<Persistency::Severity, double>             Assessment;
+  typedef boost::tuple<std::string, Persistency::ReferenceURLPtr> Classification;
 
   Persistency::GraphNodePtrNN parseAlert(const xmlpp::Element &alert) const;
   Persistency::AnalyzerPtrNN parseAnalyzer(const xmlpp::Element &alert) const;
   Persistency::Timestamp parseCreateTime(const xmlpp::Element &createTime) const;
   Persistency::Timestamp parseDetectTime(const xmlpp::Element &detectTime) const;
   Assessment parseAssessment(const xmlpp::Element &assessment) const;
-  std::string getClassification(const xmlpp::Element &classification) const;
+  Classification parseClassification(const xmlpp::Element &classification) const;
   Persistency::ReferenceURLPtrNN parseReferenceURL(const xmlpp::Element &ref) const;
   std::string parseAdditionalData(const xmlpp::Element &data) const;
   IP parseAddress(const xmlpp::Element &address) const;
