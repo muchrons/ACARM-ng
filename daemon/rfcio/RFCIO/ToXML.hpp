@@ -15,7 +15,6 @@
 #include "Logger/Node.hpp"
 #include "Persistency/IPTypes.hpp"
 #include "Persistency/GraphNode.hpp"
-#include "RFCIO/Exception.hpp"
 #include "RFCIO/ExceptionUnexpectedNULL.hpp"
 
 namespace RFCIO
