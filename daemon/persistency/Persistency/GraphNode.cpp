@@ -67,12 +67,12 @@ GraphNode::~GraphNode(void)
   catch(const std::exception &ex)
   {
     Logger::Node log("persistency.graphnode");
-    LOGMSG_ERROR_S(log)<<"unambe to mark meta alert as unused: "<<ex.what();
+    LOGMSG_ERROR_S(log)<<"unable to mark meta alert as unused: "<<ex.what();
   }
   catch(...)
   {
     Logger::Node log("persistency.graphnode");
-    LOGMSG_ERROR(log, "unambe to mark meta alert as unused (unknown exception)");
+    LOGMSG_ERROR(log, "unable to mark meta alert as unused (unknown exception)");
   }
 }
 

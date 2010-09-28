@@ -227,7 +227,7 @@ ReferenceURLPtr EntryReader::getReferenceURL(const DataBaseID *refID)
   if(refID == NULL)
     return refURLPtr;
   stringstream ss;
-  ss << "SELECT * FROM reference_urls WHERE id = " << *refID << ";";
+  ss << "SELECT * FROM reference_urls WHERE id = " << *refID;
   const result r = SQL( ss.str(), log_ ).exec(t_);
   if(r.size() != 1)
     throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str());

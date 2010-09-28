@@ -16,9 +16,11 @@
    ...
 }
 {
-   boost_thread_leak_local_storage_id
+   boost_thread_leak_tss_ptr_reset
    Memcheck:Leak
    ...
+   fun:_ZN5boost6detail16add_new_tss_nodeEPKvNS_10shared_ptrINS0_20tss_cleanup_functionEEEPv
+   fun:_ZN5boost6detail12set_tss_dataEPKvNS_10shared_ptrINS0_20tss_cleanup_functionEEEPvb
    fun:_ZN5boost19thread_specific_ptrIjE5resetEPj
    ...
 }

@@ -7,6 +7,7 @@
 
 #include <string>
 #include <utility>
+#include <inttypes.h>
 
 #include "Persistency/Timestamp.hpp"
 #include "RFCIO/Exception.hpp"
@@ -88,7 +89,7 @@ public:
   ExactTimestamp fromString(const std::string &str) const;
 
 private:
-  const long the1900_;
+  const int64_t the1900_;
 }; // class TimeConverter
 
 } // namespace RFCIO
