@@ -54,7 +54,6 @@ xmlpp::Element &ToXML::addAlert(const Persistency::GraphNode &leaf)
     alert.addTarget( *a.getReportedTargetHosts()[0] );
   alert.addClassification(leaf);
   alert.addAdditionalData(leaf);
-  // TODO: add rest of the fields
   return alert.getParent();
 }
 
