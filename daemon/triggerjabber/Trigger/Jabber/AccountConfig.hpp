@@ -17,6 +17,7 @@ namespace Jabber
 class AccountConfig
 {
 public:
+  // TODO: server and login should be passed via c-ref.
   /** \brief create configuration.
    *  \param server   Jabber server.
    *  \param login    user's Jabber login.

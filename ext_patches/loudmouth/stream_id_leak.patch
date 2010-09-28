@@ -1,0 +1,22 @@
+=== modified file 'loudmouth/lm-connection.c'
+--- loudmouth/lm-connection.c	2010-09-27 12:41:59 +0000
++++ loudmouth/lm-connection.c	2010-09-27 12:59:37 +0000
+@@ -728,6 +728,8 @@
+ 	g_return_if_fail (connection != NULL);
+ 	g_return_if_fail (m != NULL);
+ 	
++	if( connection->stream_id !=NULL )
++      g_free(connection->stream_id);
+ 	connection->stream_id = g_strdup (lm_message_node_get_attribute (m->node,
+ 									 "id"));;
+ 
+@@ -812,6 +814,8 @@
+ 
+ 	lm_verbose ("Stream error: Unrecognised error\n");
+ 	reason = LM_DISCONNECT_REASON_ERROR;
++	if( connection->stream_id !=NULL )
++      g_free(connection->stream_id);
+ 	connection->stream_id = g_strdup (lm_message_node_get_attribute (m->node,
+ 									 "id"));;
+ 	connection_do_close (connection);
+

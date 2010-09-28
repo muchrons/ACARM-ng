@@ -1,0 +1,33 @@
+=== modified file 'loudmouth/lm-sasl.c'
+--- loudmouth/lm-sasl.c	2010-09-27 12:41:59 +0000
++++ loudmouth/lm-sasl.c	2010-09-27 13:13:07 +0000
+@@ -810,24 +810,28 @@
+ 		lm_connection_unregister_message_handler (sasl->connection,
+ 							  sasl->features_cb, 
+ 							  LM_MESSAGE_TYPE_STREAM_FEATURES);
++        lm_message_handler_unref(sasl->features_cb);
+ 	}
+ 
+ 	if (sasl->challenge_cb) {
+ 		lm_connection_unregister_message_handler (sasl->connection,
+ 							  sasl->challenge_cb,
+ 							  LM_MESSAGE_TYPE_CHALLENGE);
++        lm_message_handler_unref(sasl->challenge_cb);
+ 	}
+ 
+ 	if (sasl->success_cb) {
+ 		lm_connection_unregister_message_handler (sasl->connection,
+ 							  sasl->success_cb,
+ 							  LM_MESSAGE_TYPE_SUCCESS);
++        lm_message_handler_unref(sasl->success_cb);
+ 	}
+ 
+ 	if (sasl->failure_cb) {
+ 		lm_connection_unregister_message_handler (sasl->connection,
+ 							  sasl->failure_cb,
+ 							  LM_MESSAGE_TYPE_FAILURE);
++        lm_message_handler_unref(sasl->failure_cb);
+ 	}
+ 
+ 	g_free (sasl);
+
