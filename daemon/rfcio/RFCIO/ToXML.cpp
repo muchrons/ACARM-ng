@@ -47,6 +47,13 @@ xmlpp::Element &ToXML::addAlert(const Persistency::GraphNode &leaf)
   assert( a.getSourceAnalyzers().begin()!=a.getSourceAnalyzers().end() );
   assert( a.getSourceAnalyzers().begin()->get()!=NULL );
   alert.addAnalyzer( *a.getSourceAnalyzers().begin()->get() );
+  alert.addCreateTime( a.getCreationTime() );
+  if( a.getReportedSourceHosts().size()>0 )
+    alert.addSource( *a.getReportedSourceHosts()[0] );
+  if( a.getReportedTargetHosts().size()>0 )
+    alert.addTarget( *a.getReportedTargetHosts()[0] );
+  alert.addClassification(leaf);
+  alert.addAdditionalData(leaf);
   // TODO: add rest of the fields
   return alert.getParent();
 }
@@ -196,6 +203,16 @@ xmlpp::Element &ToXML::addUser(const Persistency::Process &p)
   return user.getParent();
 }
 
+xmlpp::Element &ToXML::addSource(const Persistency::Host &s)
+{
+  return addHost("Source", s);
+}
+
+xmlpp::Element &ToXML::addTarget(const Persistency::Host &t)
+{
+  return addHost("Target", t);
+}
+
 xmlpp::Element &ToXML::addString(const char *name, const char *str)
 {
   assert(name!=NULL);
@@ -263,6 +280,25 @@ xmlpp::Element &ToXML::addNode(const char *name, const IP *ip)
   // add proper
   node.addParameter("category", category);
   return node.getParent();;
+}
+
+xmlpp::Element &ToXML::addHost(const char *rootName, const Persistency::Host &h)
+{
+  assert(rootName!=NULL);
+  ToXML root( addChild( getParent(), rootName ) );
+  // add node information
+  root.addNode( h.getName().get(), &h.getIP() );
+  // add first service, if present (note: IDMEF does not allow multiple services in a single report)
+  if( h.getReportedServices().size()>0 )
+    root.addService( *h.getReportedServices()[0] );
+  // add first process, if present (note: IDMEF does not allow multiple processes in a single report)
+  if( h.getReportedProcesses().size()>0 )
+  {
+    root.addUser( *h.getReportedProcesses()[0] );
+    root.addProcess( *h.getReportedProcesses()[0] );
+  }
+  // done
+  return root.getParent();
 }
 
 xmlpp::Element &ToXML::addTimestamp(const char *name, const Persistency::Timestamp &t)

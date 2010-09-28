@@ -39,6 +39,30 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     writeAndCompare(expectedXML);
   }
 
+  void checkAlert(const Persistency::GraphNode &leaf, const char *expectedXML)
+  {
+    // add as a part of XML
+    ToXML toXML(*rootPtr_);
+    toXML.addAlert(leaf);
+    writeAndCompare(expectedXML);
+  }
+
+  void checkTarget(const Persistency::Host &h, const char *expectedXML)
+  {
+    // add as a part of XML
+    ToXML toXML(*rootPtr_);
+    toXML.addTarget(h);
+    writeAndCompare(expectedXML);
+  }
+
+  void checkSource(const Persistency::Host &h, const char *expectedXML)
+  {
+    // add as a part of XML
+    ToXML toXML(*rootPtr_);
+    toXML.addSource(h);
+    writeAndCompare(expectedXML);
+  }
+
   void checkProcess(const Persistency::Process &p, const char *expectedXML)
   {
     // add as a part of XML
@@ -569,11 +593,162 @@ void testObj::test<26>(void)
                   "</idmef:IDMEF-Message>\n");
 }
 
-// TODO
+// test adding source host
 template<>
 template<>
 void testObj::test<27>(void)
 {
+  using namespace Persistency;
+  using namespace TestHelpers::Persistency;
+  // reported services
+  Host::ReportedServices rs;
+  rs.push_back( ServicePtr( new Service("name", 42, "proto", ReferenceURLPtr() ) ) );
+  // reported processes
+  Host::ReportedProcesses rp;
+  rp.push_back( makeNewProcess() );
+  // host itself
+  const Host h( Host::IP::from_string("1.2.3.4"), NULL, NULL, ReferenceURLPtr(), rs, rp, "a.b.c" );
+  // test
+  checkSource(h, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Source>"
+
+                     "<idmef:Node category=\"host\">"
+                       "<idmef:name>a.b.c</idmef:name>"
+                       "<idmef:Address category=\"ipv4-addr\">"
+                         "<idmef:address>1.2.3.4</idmef:address>"
+                       "</idmef:Address>"
+                     "</idmef:Node>"
+
+                     "<idmef:Service>"
+                       "<idmef:name>name</idmef:name>"
+                       "<idmef:port>42</idmef:port>"
+                     "</idmef:Service>"
+
+                     "<idmef:User/>"
+
+                     "<idmef:Process>"
+                       "<idmef:name>process name</idmef:name>"
+                       "<idmef:path>/path/to/bin</idmef:path>"
+                     "</idmef:Process>"
+
+                   "</idmef:Source>"
+                 "</idmef:IDMEF-Message>\n");
+}
+
+// test adding target host
+template<>
+template<>
+void testObj::test<28>(void)
+{
+  using namespace Persistency;
+  using namespace TestHelpers::Persistency;
+  // reported services
+  Host::ReportedServices rs;
+  rs.push_back( ServicePtr( new Service("name", 42, "proto", ReferenceURLPtr() ) ) );
+  // reported processes
+  Host::ReportedProcesses rp;
+  rp.push_back( makeNewProcess() );
+  // host itself
+  const Host h( Host::IP::from_string("1.2.3.4"), NULL, NULL, ReferenceURLPtr(), rs, rp, "a.b.c" );
+  // test
+  checkTarget(h, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Target>"
+
+                     "<idmef:Node category=\"host\">"
+                       "<idmef:name>a.b.c</idmef:name>"
+                       "<idmef:Address category=\"ipv4-addr\">"
+                         "<idmef:address>1.2.3.4</idmef:address>"
+                       "</idmef:Address>"
+                     "</idmef:Node>"
+
+                     "<idmef:Service>"
+                       "<idmef:name>name</idmef:name>"
+                       "<idmef:port>42</idmef:port>"
+                     "</idmef:Service>"
+
+                     "<idmef:User/>"
+
+                     "<idmef:Process>"
+                       "<idmef:name>process name</idmef:name>"
+                       "<idmef:path>/path/to/bin</idmef:path>"
+                     "</idmef:Process>"
+
+                   "</idmef:Target>"
+                 "</idmef:IDMEF-Message>\n");
+}
+
+// test creating XML with alert
+template<>
+template<>
+void testObj::test<29>(void)
+{
+  const Persistency::GraphNodePtrNN leaf=TestHelpers::Persistency::makeNewLeaf("6.6.6.9", "9.9.7.0", true);
+  checkAlert(*leaf, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                    "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                      "<idmef:Alert messageid=\"303\">"
+
+                        "<idmef:Analyzer analyzerid=\"42\">"
+                          "<idmef:Node category=\"host\">"
+                            "<idmef:name>some analyzer</idmef:name>"
+                          "</idmef:Node>"
+                        "</idmef:Analyzer>"
+
+                        "<idmef:CreateTime ntpstamp=\"0x83AAAEB9.0x00000000\">1970-01-01T03:25:45Z</idmef:CreateTime>"
+
+                        "<idmef:Source>"
+                          "<idmef:Node category=\"host\">"
+                            "<idmef:name>dns.org</idmef:name>"
+                            "<idmef:Address category=\"ipv4-addr\">"
+                              "<idmef:address>6.6.6.9</idmef:address>"
+                            "</idmef:Address>"
+                          "</idmef:Node>"
+                        "</idmef:Source>"
+
+                        "<idmef:Target>"
+                          "<idmef:Node category=\"host\">"
+                            "<idmef:name>dns.org</idmef:name>"
+                            "<idmef:Address category=\"ipv4-addr\">"
+                              "<idmef:address>9.9.7.0</idmef:address>"
+                            "</idmef:Address>"
+                          "</idmef:Node>"
+                        "</idmef:Target>"
+
+                        "<idmef:Classification text=\"some alert\"/>"
+
+                        "<idmef:AdditionalData type=\"string\" meaning=\"description\">"
+                          "<idmef:string>some test alert</idmef:string>"
+                        "</idmef:AdditionalData>"
+                      "</idmef:Alert>"
+                    "</idmef:IDMEF-Message>\n");
+}
+
+// test creating XML with no source/target hosts
+template<>
+template<>
+void testObj::test<30>(void)
+{
+  const Persistency::GraphNodePtrNN leaf=TestHelpers::Persistency::makeNewLeaf(NULL, NULL, false);
+  checkAlert(*leaf, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                    "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                      "<idmef:Alert messageid=\"303\">"
+
+                        "<idmef:Analyzer analyzerid=\"42\">"
+                          "<idmef:Node category=\"host\">"
+                            "<idmef:name>some analyzer</idmef:name>"
+                          "</idmef:Node>"
+                        "</idmef:Analyzer>"
+
+                        "<idmef:CreateTime ntpstamp=\"0x83AAAEB9.0x00000000\">1970-01-01T03:25:45Z</idmef:CreateTime>"
+
+                        "<idmef:Classification text=\"some alert\"/>"
+
+                        "<idmef:AdditionalData type=\"string\" meaning=\"description\">"
+                          "<idmef:string>some test alert</idmef:string>"
+                        "</idmef:AdditionalData>"
+                      "</idmef:Alert>"
+                    "</idmef:IDMEF-Message>\n");
 }
 
 } // namespace tut

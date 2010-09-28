@@ -98,6 +98,16 @@ public:
    *  \return reference to newly added element.
    */
   xmlpp::Element &addUser(const Persistency::Process &p);
+  /** \brief add source to XML.
+   *  \param s source to be added.
+   *  \return reference to newly added element.
+   */
+  xmlpp::Element &addSource(const Persistency::Host &s);
+  /** \brief add targetto XML.
+   *  \param t target to be added.
+   *  \return reference to newly added element.
+   */
+  xmlpp::Element &addTarget(const Persistency::Host &t);
 
   /** \brief returns parent node's reference.
    *  \return reference to node given as a parent in c-tor.
@@ -131,6 +141,8 @@ private:
   void addParameter(const char *name, const char *value);
 
   xmlpp::Element &addNode(const char *name, const IP *ip);
+
+  xmlpp::Element &addHost(const char *rootName, const Persistency::Host &h);
 
   xmlpp::Element &addTimestamp(const char *name, const Persistency::Timestamp &t);
 
