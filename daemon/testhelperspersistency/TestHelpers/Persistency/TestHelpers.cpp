@@ -32,7 +32,7 @@ AlertPtr makeNewAlert(const char *name,
                              Timestamp(12345),
                              Severity(SeverityLevel::INFO),
                              Certainty(0.42),
-                             "some test allert",
+                             "some test alert",
                              srcHosts,
                              tgtHosts) );
 }
