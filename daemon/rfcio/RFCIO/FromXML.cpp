@@ -4,14 +4,21 @@
  */
 #include <cassert>
 
+#include "Commons/Convert.hpp"
 #include "RFCIO/FromXML.hpp"
 #include "RFCIO/TimeConverter.hpp"
 
 using namespace std;
 using namespace Persistency;
+using Commons::Convert;
 
 namespace RFCIO
 {
+
+FromXML::FromXML(void):
+  log_("rfcio.fromxml")
+{
+}
 
 /*
 Persistency::GraphNodePtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
@@ -33,27 +40,65 @@ Persistency::Timestamp FromXML::parseDetectTime(const xmlpp::Element &detectTime
   return parseTimestamp("DetectTime", detectTime);
 }
 
-/*
+// unnamed namespace for helper calls
+namespace
+{
+SeverityLevel parseImpactValue(const string &imp)
+{
+  if(imp=="info")
+    return SeverityLevel::NOTICE;
+  if(imp=="low")
+    return SeverityLevel::INFO;
+  if(imp=="medium")
+    return SeverityLevel::PROBLEM;
+  if(imp=="high")
+    return SeverityLevel::CRITICAL;
+  // by default report parse error
+  throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, "Classification.Impact(severity)",
+                                "invalid imput value: " + imp);
+} // parseImpactValue()
+} // unnamed namespace
+
 FromXML::Assessment FromXML::parseAssessment(const xmlpp::Element &assessment) const
 {
+  ensureNode("Assessment", assessment);
+
+  // try parsing severity
+  const xmlpp::Element *severityElem=findOneChildIfHas(assessment, "Impact");
+  SeverityLevel         sl(SeverityLevel::DEBUG);
+  if(severityElem!=NULL)
+    sl=parseImpactValue( parseParameter(*severityElem, "severity") );
+  else
+    LOGMSG_WARN(log_, "missing 'Impact' section, while severity is required in the system. "
+                      "leaving DEBUG severity as the default for this report.");
+
+  // try parsing certainty
+  const xmlpp::Element *certaintyElem=findOneChildIfHas(assessment, "Confidence");
+  double                cert         =0.1;
+  if(certaintyElem!=NULL)
+    cert=parseConfidenceValue( parseParameter(*certaintyElem, "rating"), *certaintyElem );
+  else
+    LOGMSG_WARN(log_, "missing 'Confidence' section, while certainty is required in the system. "
+                      "leaving 10% confidence as the default");
+
+  // ok - return parsed value
+  return Assessment( Severity(sl), Certainty(cert) );
 }
-*/
 
 FromXML::Classification FromXML::parseClassification(const xmlpp::Element &classification) const
 {
-  if( classification.get_name()!="Classification" )
-    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, classification.get_path(), "expected 'Classification' node");
-  const string    description=parseParameter(classification, "text");
-  ReferenceURLPtr ref;
-  if( classification.get_children().size()>0 )
-    ref=parseReferenceURL( findOneChild(classification, "Reference") );
+  ensureNode("Classification", classification);
+  const string          description=parseParameter(classification, "text");
+  const xmlpp::Element *reference  =findOneChildIfHas(classification, "Reference");
+  ReferenceURLPtr       ref;
+  if(reference!=NULL)
+    ref=parseReferenceURL(*reference);
   return FromXML::Classification(description, ref);
 }
 
 Persistency::ReferenceURLPtrNN FromXML::parseReferenceURL(const xmlpp::Element &ref) const
 {
-  if( ref.get_name()!="Reference" )
-    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, ref.get_path(), "expected 'Reference' node");
+  ensureNode("Reference", ref);
   const string name=parseString( findOneChild(ref, "name") );
   const string url =parseString( findOneChild(ref, "url") );
   return ReferenceURLPtrNN( new ReferenceURL(name, url) );
@@ -61,8 +106,7 @@ Persistency::ReferenceURLPtrNN FromXML::parseReferenceURL(const xmlpp::Element &
 
 std::string FromXML::parseAdditionalData(const xmlpp::Element &data) const
 {
-  if( data.get_name()!="AdditionalData" )
-    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, data.get_path(), "expected 'AdditionalData' node");
+  ensureNode("AdditionalData", data);
   const string type =parseParameter(data, "type");
   const string value=parseString( findOneChild(data, type.c_str() ) );
   if(type!="string")
@@ -72,8 +116,7 @@ std::string FromXML::parseAdditionalData(const xmlpp::Element &data) const
 
 FromXML::IP FromXML::parseAddress(const xmlpp::Element &address) const
 {
-  if( address.get_name()!="Address" )
-    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, address.get_path(), "expected 'Address' node");
+  ensureNode("Address", address);
   const string ip=parseString( findOneChild(address, "address") );
   return FromXML::IP::from_string(ip);
 }
@@ -96,11 +139,19 @@ Persistency::HostPtrNN FromXML::parseTarget(const xmlpp::Element &target) const
 }
 */
 
-Persistency::Timestamp FromXML::parseTimestamp(const char *name, const xmlpp::Element &ts) const
+void FromXML::ensureNode(const char *name, const xmlpp::Element &node) const
 {
   assert(name!=NULL);
-  if( ts.get_name()!=name )
-    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, ts.get_name(), "unexpected name for timestamp");
+  LOGMSG_DEBUG_S(log_)<<"processing node '"<<name<<"'";
+  if( node.get_name()!=name )
+    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, node.get_path(), "unexpected name for timestamp");
+  LOGMSG_DEBUG_S(log_)<<"node '"<<name<<"' is valid as a given parser element";
+}
+
+Persistency::Timestamp FromXML::parseTimestamp(const char *name, const xmlpp::Element &ts) const
+{
+  ensureNode(name, ts);
+  assert(name!=NULL);
   // get string to convert
   const xmlpp::TextNode *txt=ts.get_child_text();
   if(txt==NULL)
@@ -129,13 +180,37 @@ std::string FromXML::parseParameter(const xmlpp::Element &node, const char *name
 
 const xmlpp::Element &FromXML::findOneChild(const xmlpp::Element &parent, const char *name) const
 {
+  const xmlpp::Element *ptr=findOneChildIfHas(parent, name);
+  if(ptr==NULL)
+    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, parent.get_path(), name);
+  return *ptr;
+}
+
+const xmlpp::Element *FromXML::findOneChildIfHas(const xmlpp::Element &parent, const char *name) const
+{
   assert(name!=NULL);
   const xmlpp::Element::NodeList nl=parent.get_children(name);
   if( nl.size()==0 )
-    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, parent.get_path(), name);
+    return NULL;
   if( nl.size()>1 )
     throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, parent.get_path(), "requested name is not unique: " + string(name) );
-  return dynamic_cast<const xmlpp::Element&>( **nl.begin() );
+  return dynamic_cast<const xmlpp::Element*>( *nl.begin() );
+}
+
+double FromXML::parseConfidenceValue(const std::string &rating, const xmlpp::Element &node) const
+{
+  // floating-point value?
+  if(rating=="numeric")
+    return Convert::to<double>( parseString(node) );
+  // discrete value?
+  if(rating=="low")
+    return 0.3;
+  if(rating=="medium")
+    return 0.6;
+  if(rating=="high")
+    return 1;
+  throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, "Classification.Confidence(rating)",
+                                "invalid value: " + rating);
 }
 
 } // namespace RFCIO

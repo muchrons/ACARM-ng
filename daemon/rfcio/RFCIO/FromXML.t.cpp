@@ -4,11 +4,9 @@
  */
 #include <tut.h>
 #include <string>
+#include <sstream>
 
 #include "RFCIO/FromXML.hpp"
-//#include "Commons/Convert.hpp"                            
-//#include "Persistency/IO/create.hpp"                      
-//#include "Persistency/IO/Connection.hpp"                  
 #include "TestHelpers/Persistency/TestStubs.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
@@ -33,6 +31,60 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     assert( nl.size()==1 );
     assert( *nl.begin()!=NULL );
     return dynamic_cast<const xmlpp::Element&>( **nl.begin() );
+  }
+
+  // confidence:[0;1], severity:{low,medium,info,high}
+  string assessmentXML(const char *confidence, const char *severity) const
+  {
+    stringstream ss;
+    ss << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+          "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+            "<idmef:Assessment>"
+              "<idmef:Impact severity=\"" << severity << "\"/>"
+              "<idmef:Confidence rating=\"numeric\">" << confidence << "</idmef:Confidence>"
+            "</idmef:Assessment>"
+          "</idmef:IDMEF-Message>\n";
+
+    return ss.str();
+  }
+
+  // confidence:[0;1], severity:{low,medium,info,high}
+  string assessmentXMLDiscreteRating(const char *confidence, const char *severity) const
+  {
+    stringstream ss;
+    ss << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+          "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+            "<idmef:Assessment>"
+              "<idmef:Impact severity=\"" << severity << "\"/>"
+              "<idmef:Confidence rating=\"" << confidence << "\"/>"
+            "</idmef:Assessment>"
+          "</idmef:IDMEF-Message>\n";
+
+    return ss.str();
+  }
+
+  template<typename T>
+  void testInvalidNodeName(T (FromXML::*method)(const xmlpp::Element &) const)
+  {
+    const char *invaldNodeNameXML="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                                  "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                                    "<idmef:InvalidNodeNameForIdmef/>"
+                                  "</idmef:IDMEF-Message>\n";
+    testInvalidNodeName<ExceptionInvalidElement>(method, invaldNodeNameXML);
+  }
+
+  template<typename TExc, typename T>
+  void testInvalidNodeName(T (FromXML::*method)(const xmlpp::Element &) const, const char *xml)
+  {
+    try
+    {
+      (fx_.*method)( parseXML(xml) );
+      tut::fail("method didn't throw on invalid XML");
+    }
+    catch(const TExc &)
+    {
+      // this is expected
+    }
   }
 
   xmlpp::DomParser dp_;
@@ -170,101 +222,217 @@ void testObj::test<8>(void)
   ensure_equals("invalid URL", out->getURL().get(), string("http://gnu.org") );
 }
 
-// 
+// check random values
 template<>
 template<>
 void testObj::test<9>(void)
 {
+  const string              in =assessmentXML("0.666", "info");
+  const FromXML::Assessment out=fx_.parseAssessment( parseXML( in.c_str() ) );
+  ensure_equals("invalid severity", out.get<0>().getName(), string("notice") );
+  ensure_equals("invalid certainty", out.get<1>().get(), 0.666);
 }
 
-// 
+// test low severity
 template<>
 template<>
 void testObj::test<10>(void)
 {
+  const string              in =assessmentXML("0.666", "low");
+  const FromXML::Assessment out=fx_.parseAssessment( parseXML( in.c_str() ) );
+  ensure_equals("invalid severity", out.get<0>().getName(), string("info") );
 }
 
-// 
+// test medium severity
 template<>
 template<>
 void testObj::test<11>(void)
 {
+  const string              in =assessmentXML("0.666", "medium");
+  const FromXML::Assessment out=fx_.parseAssessment( parseXML( in.c_str() ) );
+  ensure_equals("invalid severity", out.get<0>().getName(), string("problem") );
 }
 
-// 
+// test high severity
 template<>
 template<>
 void testObj::test<12>(void)
 {
+  const string              in =assessmentXML("0.666", "high");
+  const FromXML::Assessment out=fx_.parseAssessment( parseXML( in.c_str() ) );
+  ensure_equals("invalid severity", out.get<0>().getName(), string("critical") );
 }
 
-// 
+// test throw when additional data hets invalid node
 template<>
 template<>
 void testObj::test<13>(void)
 {
+  testInvalidNodeName(&FromXML::parseAdditionalData);
 }
 
-// 
+// test throw when create time gets invalid node
 template<>
 template<>
 void testObj::test<14>(void)
 {
+  testInvalidNodeName(&FromXML::parseCreateTime);
 }
 
-// 
+// test throw when detect time gets invalid node
 template<>
 template<>
 void testObj::test<15>(void)
 {
+  testInvalidNodeName(&FromXML::parseDetectTime);
 }
 
-// 
+// test throw on parsing address with invalid node
 template<>
 template<>
 void testObj::test<16>(void)
 {
+  testInvalidNodeName(&FromXML::parseAddress);
 }
 
-// 
+// test parsing invalid node as address
 template<>
 template<>
 void testObj::test<17>(void)
 {
+  testInvalidNodeName(&FromXML::parseAddress);
 }
 
-// 
+// test parsing classification when invalid node is given
 template<>
 template<>
 void testObj::test<18>(void)
 {
+  testInvalidNodeName(&FromXML::parseClassification);
 }
 
-// 
+// test parsing reference url when invalid node is given
 template<>
 template<>
 void testObj::test<19>(void)
 {
+  testInvalidNodeName(&FromXML::parseReferenceURL);
 }
 
-// 
+// test default values when impact and confidence are not set
 template<>
 template<>
 void testObj::test<20>(void)
 {
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Assessment/>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::Assessment out=fx_.parseAssessment( parseXML(in) );
+  ensure_equals("invalid severity", out.get<0>().getName(), string("debug") );
+}
+
+// test discrete certainty - low
+template<>
+template<>
+void testObj::test<21>(void)
+{
+  const string              in =assessmentXMLDiscreteRating("low", "info");
+  const FromXML::Assessment out=fx_.parseAssessment( parseXML( in.c_str() ) );
+  ensure_equals("invalid certainty", out.get<1>().get(), 0.3);
+}
+
+// test discrete certainty - medium
+template<>
+template<>
+void testObj::test<22>(void)
+{
+  const string              in =assessmentXMLDiscreteRating("medium", "info");
+  const FromXML::Assessment out=fx_.parseAssessment( parseXML( in.c_str() ) );
+  ensure_equals("invalid certainty", out.get<1>().get(), 0.6);
+}
+
+// test discrete certainty - high
+template<>
+template<>
+void testObj::test<23>(void)
+{
+  const string              in =assessmentXMLDiscreteRating("high", "info");
+  const FromXML::Assessment out=fx_.parseAssessment( parseXML( in.c_str() ) );
+  ensure_equals("invalid certainty", out.get<1>().get(), 1);
+}
+
+// test invalid rating in certainty
+template<>
+template<>
+void testObj::test<24>(void)
+{
+  const string in=assessmentXMLDiscreteRating("invalid", "info");
+  testInvalidNodeName<ExceptionInvalidElement>( &FromXML::parseAssessment, in.c_str() );
+}
+
+// test assessment parsing throw on invalid severity
+template<>
+template<>
+void testObj::test<25>(void)
+{
+  const string in=assessmentXML("0.1", "invalid");
+  testInvalidNodeName<ExceptionInvalidElement>( &FromXML::parseAssessment, in.c_str() );
 }
 
 // 
 template<>
 template<>
-void testObj::test<21>(void)
+void testObj::test<26>(void)
 {
 }
 
 // 
 template<>
 template<>
-void testObj::test<22>(void)
+void testObj::test<27>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<28>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<29>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<30>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<31>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<32>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<33>(void)
 {
 }
 

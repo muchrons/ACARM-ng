@@ -28,9 +28,11 @@ class FromXML: private boost::noncopyable
   typedef Persistency::IPTypes<FromXML> IPTypesBase;
 public:
   /** \brief type representing IP. */
-  typedef IPTypesBase::IP                                         IP;
-  typedef boost::tuple<Persistency::Severity, double>             Assessment;
-  typedef boost::tuple<std::string, Persistency::ReferenceURLPtr> Classification;
+  typedef IPTypesBase::IP                                             IP;
+  typedef boost::tuple<Persistency::Severity, Persistency::Certainty> Assessment;
+  typedef boost::tuple<std::string, Persistency::ReferenceURLPtr>     Classification;
+
+  FromXML(void);
 
   Persistency::GraphNodePtrNN parseAlert(const xmlpp::Element &alert) const;
   Persistency::AnalyzerPtrNN parseAnalyzer(const xmlpp::Element &alert) const;
@@ -47,10 +49,15 @@ public:
   Persistency::HostPtrNN parseTarget(const xmlpp::Element &target) const;
 
 private:
+  void ensureNode(const char *name, const xmlpp::Element &node) const;
   Persistency::Timestamp parseTimestamp(const char *name, const xmlpp::Element &ts) const;
   std::string parseString(const xmlpp::Element &node) const;
   std::string parseParameter(const xmlpp::Element &node, const char *name) const;
   const xmlpp::Element &findOneChild(const xmlpp::Element &parent, const char *name) const;
+  const xmlpp::Element *findOneChildIfHas(const xmlpp::Element &parent, const char *name) const;
+  double parseConfidenceValue(const std::string &rating, const xmlpp::Element &node) const;
+
+  Logger::Node log_;
 }; // class FromXML
 
 } // namespace RFCIO
