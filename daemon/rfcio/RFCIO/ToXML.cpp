@@ -181,6 +181,7 @@ xmlpp::Element &ToXML::addProcess(const Persistency::Process &p)
   process.addString( "name", p.getName().get() );
   if( p.getPath().get()!=NULL )
     process.addString( "path", p.getPath().get() );
+  // TODO: this should be tokenized and saved as series of arguments!
   if( p.getParameters()!=NULL )
     process.addString( "arg", p.getParameters()->c_str() );
   if( p.getPID()!=NULL )
