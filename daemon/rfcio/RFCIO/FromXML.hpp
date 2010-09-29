@@ -54,6 +54,7 @@ private:
   void ensureNode(const char *name, const xmlpp::Element &node) const;
   Persistency::Timestamp parseTimestamp(const char *name, const xmlpp::Element &ts) const;
   double parseConfidenceValue(const std::string &rating, const xmlpp::Element &node) const;
+  Persistency::HostPtrNN parseHost(const char *type, const xmlpp::Element &host) const;
 
   Logger::Node log_;
 }; // class FromXML

@@ -670,6 +670,7 @@ template<>
 template<>
 void testObj::test<39>(void)
 {
+  fail("TODO: test parsing source-host");
 }
 
 // 
@@ -677,6 +678,7 @@ template<>
 template<>
 void testObj::test<40>(void)
 {
+  fail("TODO: test parsing target-host");
 }
 
 // 

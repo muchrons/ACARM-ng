@@ -315,15 +315,15 @@ Persistency::ProcessPtrNN FromXML::parseProcessAndUser(const xmlpp::Element &pro
   return ProcessPtrNN( new Process(pathStr, name, NULL, pid.get(), uid.get(), username, argsStr, ref) );
 }
 
-/*
 Persistency::HostPtrNN FromXML::parseSource(const xmlpp::Element &source) const
 {
+  return parseHost("Source", source);
 }
 
 Persistency::HostPtrNN FromXML::parseTarget(const xmlpp::Element &target) const
 {
+  return parseHost("Target", target);
 }
-*/
 
 void FromXML::ensureNode(const char *name, const xmlpp::Element &node) const
 {
@@ -361,6 +361,12 @@ double FromXML::parseConfidenceValue(const std::string &rating, const xmlpp::Ele
     return 1;
   throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, "Classification.Confidence(rating)",
                                 "invalid value: " + rating);
+}
+
+Persistency::HostPtrNN FromXML::parseHost(const char *type, const xmlpp::Element &host) const
+{
+  assert(type!=NULL);
+  // TODO
 }
 
 } // namespace RFCIO
