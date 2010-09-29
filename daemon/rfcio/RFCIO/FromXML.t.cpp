@@ -655,8 +655,14 @@ void testObj::test<38>(void)
       "</idmef:SomeTestRoot>"
     "</idmef:IDMEF-Message>\n";
   const ProcessPtrNN out=fx_.parseProcessAndUser( parseXML(in) );
-  fail("TODO");
-  // TODO: ensure values are correct
+  // test process
+  ensure_equals("invalid process name", out->getName().get(), string("binary") );
+  ensure("path is not NULL", out->getPath().get()==NULL );
+  ensure("paramters are not NULL", out->getParameters()==NULL );
+  ensure("PID is not NULL", out->getPID()==NULL );
+  // test user
+  ensure_equals("invalid user name", out->getUsername().get(), string("alucard") );
+  ensure("UID is not NULL", out->getUID()==NULL );
 }
 
 // 
