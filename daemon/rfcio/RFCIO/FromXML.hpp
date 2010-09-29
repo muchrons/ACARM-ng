@@ -53,10 +53,6 @@ public:
 private:
   void ensureNode(const char *name, const xmlpp::Element &node) const;
   Persistency::Timestamp parseTimestamp(const char *name, const xmlpp::Element &ts) const;
-  std::string parseString(const xmlpp::Element &node) const;
-  std::string parseParameter(const xmlpp::Element &node, const char *name) const;
-  const xmlpp::Element &findOneChild(const xmlpp::Element &parent, const char *name) const;
-  const xmlpp::Element *findOneChildIfHas(const xmlpp::Element &parent, const char *name) const;
   double parseConfidenceValue(const std::string &rating, const xmlpp::Element &node) const;
 
   Logger::Node log_;

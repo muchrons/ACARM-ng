@@ -6,16 +6,67 @@
 #include <boost/tokenizer.hpp>
 #include <cassert>
 
+#include "Base/NullValue.hpp"
 #include "Commons/Convert.hpp"
 #include "RFCIO/FromXML.hpp"
 #include "RFCIO/TimeConverter.hpp"
 
 using namespace std;
 using namespace Persistency;
+using Base::NullValue;
 using Commons::Convert;
 
 namespace RFCIO
 {
+
+// helper, unnamed namespace
+namespace
+{
+std::string parseString(const xmlpp::Element &node)
+{
+  const xmlpp::TextNode *txt=node.get_child_text();
+  if(txt==NULL)
+    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, node.get_path(), "node is not text node");
+  return txt->get_content();
+}
+
+std::string parseParameter(const xmlpp::Element &node, const char *name)
+{
+  assert(name!=NULL);
+  const xmlpp::Attribute *tmp=node.get_attribute(name);
+  if(tmp==NULL)
+    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, node.get_path(), name);
+  return tmp->get_value();
+}
+
+const xmlpp::Element *findOneChildIfHas(const xmlpp::Element &parent, const char *name)
+{
+  assert(name!=NULL);
+  const xmlpp::Element::NodeList nl=parent.get_children(name);
+  if( nl.size()==0 )
+    return NULL;
+  if( nl.size()>1 )
+    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, parent.get_path(), "requested name is not unique: " + string(name) );
+  return dynamic_cast<const xmlpp::Element*>( *nl.begin() );
+}
+
+const xmlpp::Element &findOneChild(const xmlpp::Element &parent, const char *name)
+{
+  const xmlpp::Element *ptr=findOneChildIfHas(parent, name);
+  if(ptr==NULL)
+    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, parent.get_path(), name);
+  return *ptr;
+}
+
+template<typename T>
+Base::NullValue<T> parseChildIfHasAs(const xmlpp::Element &node, const char *name)
+{
+  const xmlpp::Element *e=findOneChildIfHas(node, name);
+  if(e==NULL)
+    return Base::NullValue<T>();
+  return Base::NullValue<T>( Commons::Convert::to<T>( parseString(*e) ) );
+}
+} // unnamed namespace
 
 FromXML::FromXML(void):
   log_("rfcio.fromxml")
@@ -211,11 +262,60 @@ FromXML::ServiceVector FromXML::parseService(const xmlpp::Element &service) cons
   return out;
 }
 
-/*
+
+namespace
+{
+NullValue<string> parseAndMergeArguments(const xmlpp::Element &parent)
+{
+  const xmlpp::Element::NodeList nl=parent.get_children("arg");
+  // if no such elements, no arguments are present
+  if( nl.size()==0 )
+    return NullValue<string>();
+  // merge all arguments
+  stringstream  ss;
+  const char   *sep="";
+  for(xmlpp::Element::NodeList::const_iterator it=nl.begin(); it!=nl.end(); ++it)
+  {
+    assert(*it!=NULL);
+    ss<<sep<<parseString( dynamic_cast<const xmlpp::Element&>(**it) );
+    sep=" ";
+  }
+  // return merged result
+  return NullValue<string>( ss.str() );
+}
+} // unnamed namespace
+
 Persistency::ProcessPtrNN FromXML::parseProcessAndUser(const xmlpp::Element &process) const
 {
+  // check for process
+  const xmlpp::Element *procElem=findOneChildIfHas(process, "Process");
+  if(procElem==NULL)
+    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, process.get_path(), "Process");
+
+  // check for user
+  const xmlpp::Element *userRootElem=findOneChildIfHas(process, "User");
+  if(userRootElem==NULL)
+    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, process.get_path(), "User");
+  const xmlpp::Element *userElem=findOneChildIfHas(*userRootElem, "UserId");
+  if(userElem==NULL)
+    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, userRootElem->get_path(), "UserId");
+
+  // prepare some elements
+  const NullValue<string> path    =parseChildIfHasAs<string>(*procElem, "path");
+  const Process::Name     name    =parseString( findOneChild(*procElem, "name") );
+  const NullValue<pid_t>  pid     =parseChildIfHasAs<pid_t>(*procElem, "pid");
+  const NullValue<string> args    =parseAndMergeArguments(*procElem);
+  const NullValue<int>    uid     =parseChildIfHasAs<int>(*userElem, "number");
+  const Process::Username username=parseString( findOneChild(*userElem, "name") );
+  const ReferenceURLPtr   ref;    // this is ACARM-ng's extension
+
+  // return parsed object
+  const char *argsStr=( args.get()==NULL )?NULL:args.get()->c_str();
+  const char *pathStr=( path.get()==NULL )?NULL:path.get()->c_str();
+  return ProcessPtrNN( new Process(pathStr, name, NULL, pid.get(), uid.get(), username, argsStr, ref) );
 }
 
+/*
 Persistency::HostPtrNN FromXML::parseSource(const xmlpp::Element &source) const
 {
 }
@@ -245,42 +345,6 @@ Persistency::Timestamp FromXML::parseTimestamp(const char *name, const xmlpp::El
   // convert to Timestamp
   TimeConverter tc;
   return tc.fromString( txt->get_content() ).first;
-}
-
-std::string FromXML::parseString(const xmlpp::Element &node) const
-{
-  const xmlpp::TextNode *txt=node.get_child_text();
-  if(txt==NULL)
-    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, node.get_path(), "node is not text node");
-  return txt->get_content();
-}
-
-std::string FromXML::parseParameter(const xmlpp::Element &node, const char *name) const
-{
-  assert(name!=NULL);
-  const xmlpp::Attribute *tmp=node.get_attribute(name);
-  if(tmp==NULL)
-    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, node.get_path(), name);
-  return tmp->get_value();
-}
-
-const xmlpp::Element &FromXML::findOneChild(const xmlpp::Element &parent, const char *name) const
-{
-  const xmlpp::Element *ptr=findOneChildIfHas(parent, name);
-  if(ptr==NULL)
-    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, parent.get_path(), name);
-  return *ptr;
-}
-
-const xmlpp::Element *FromXML::findOneChildIfHas(const xmlpp::Element &parent, const char *name) const
-{
-  assert(name!=NULL);
-  const xmlpp::Element::NodeList nl=parent.get_children(name);
-  if( nl.size()==0 )
-    return NULL;
-  if( nl.size()>1 )
-    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, parent.get_path(), "requested name is not unique: " + string(name) );
-  return dynamic_cast<const xmlpp::Element*>( *nl.begin() );
 }
 
 double FromXML::parseConfidenceValue(const std::string &rating, const xmlpp::Element &node) const

@@ -70,11 +70,11 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
                                   "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
                                     "<idmef:InvalidNodeNameForIdmef/>"
                                   "</idmef:IDMEF-Message>\n";
-    testInvalidNodeName<ExceptionInvalidElement>(method, invaldNodeNameXML);
+    testInvalidXML<ExceptionInvalidElement>(method, invaldNodeNameXML);
   }
 
   template<typename TExc, typename T>
-  void testInvalidNodeName(T (FromXML::*method)(const xmlpp::Element &) const, const char *xml)
+  void testInvalidXML(T (FromXML::*method)(const xmlpp::Element &) const, const char *xml)
   {
     try
     {
@@ -393,7 +393,7 @@ template<>
 void testObj::test<24>(void)
 {
   const string in=assessmentXMLDiscreteRating("invalid", "info");
-  testInvalidNodeName<ExceptionInvalidElement>( &FromXML::parseAssessment, in.c_str() );
+  testInvalidXML<ExceptionInvalidElement>( &FromXML::parseAssessment, in.c_str() );
 }
 
 // test assessment parsing throw on invalid severity
@@ -402,7 +402,7 @@ template<>
 void testObj::test<25>(void)
 {
   const string in=assessmentXML("0.1", "invalid");
-  testInvalidNodeName<ExceptionInvalidElement>( &FromXML::parseAssessment, in.c_str() );
+  testInvalidXML<ExceptionInvalidElement>( &FromXML::parseAssessment, in.c_str() );
 }
 
 // parse service with all data set
@@ -469,17 +469,270 @@ void testObj::test<31>(void)
   testInvalidNodeName(&FromXML::parseService);
 }
 
-// 
+// test throw when invalid node is given to be parsed by process/user
 template<>
 template<>
 void testObj::test<32>(void)
+{
+  // NOTE: this test is intentionally blank, since this code is used by multiple
+  //       other parts and merges different nodes, thus it cannot easily check
+  //       if it's called from a proper node itself.
+  //testInvalidNodeName(&FromXML::parseProcessAndUser);
+}
+
+// parse process and user - full version
+template<>
+template<>
+void testObj::test<33>(void)
+{
+  const char *in=
+  "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+      "<idmef:SomeTestRoot>"
+        "<idmef:Process>"
+          "<idmef:name>binary</idmef:name>"
+          "<idmef:path>/path/to/bin</idmef:path>"
+          "<idmef:arg>-a</idmef:arg>"
+          "<idmef:arg>-b</idmef:arg>"
+          "<idmef:arg>-c</idmef:arg>"
+          "<idmef:pid>42</idmef:pid>"
+        "</idmef:Process>"
+        "<idmef:User>"
+          "<idmef:UserId>"
+            "<idmef:name>alucard</idmef:name>"
+            "<idmef:number>666</idmef:number>"
+          "</idmef:UserId>"
+        "</idmef:User>"
+      "</idmef:SomeTestRoot>"
+    "</idmef:IDMEF-Message>\n";
+  const ProcessPtrNN out=fx_.parseProcessAndUser( parseXML(in) );
+  // test process
+  ensure_equals("invalid process name", out->getName().get(), string("binary") );
+  ensure_equals("invalid process path", out->getPath().get(), string("/path/to/bin") );
+  ensure("paramters are NULL", out->getParameters()!=NULL );
+  ensure_equals("invalid arguments", out->getParameters()->c_str(), string("-a -b -c") );
+  ensure("PID is NULL", out->getPID()!=NULL );
+  ensure_equals("invalid PID", *out->getPID(), 42u);
+  // test user
+  ensure_equals("invalid user name", out->getUsername().get(), string("alucard") );
+  ensure("UID is NULL", out->getUID()!=NULL );
+  ensure_equals("invalid UID", *out->getUID(), 666u);
+}
+
+// ensure throw on missing user section
+template<>
+template<>
+void testObj::test<34>(void)
+{
+  const char *in=
+  "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+      "<idmef:SomeTestRoot>"
+        "<idmef:Process>"
+          "<idmef:name>binary</idmef:name>"
+          "<idmef:path>/path/to/bin</idmef:path>"
+          "<idmef:arg>-a</idmef:arg>"
+          "<idmef:arg>-b</idmef:arg>"
+          "<idmef:arg>-c</idmef:arg>"
+          "<idmef:pid>42</idmef:pid>"
+        "</idmef:Process>"
+        /*
+        "<idmef:User>"
+          "<idmef:UserId>"
+            "<idmef:name>alucard</idmef:name>"
+            "<idmef:number>666</idmef:number>"
+          "</idmef:UserId>"
+        "</idmef:User>"
+        */
+      "</idmef:SomeTestRoot>"
+    "</idmef:IDMEF-Message>\n";
+  testInvalidXML<ExceptionMissingElement>(&FromXML::parseProcessAndUser, in);
+}
+
+// test throw on missing process section
+template<>
+template<>
+void testObj::test<35>(void)
+{
+  const char *in=
+  "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+      "<idmef:SomeTestRoot>"
+        /*
+        "<idmef:Process>"
+          "<idmef:name>binary</idmef:name>"
+          "<idmef:path>/path/to/bin</idmef:path>"
+          "<idmef:arg>-a</idmef:arg>"
+          "<idmef:arg>-b</idmef:arg>"
+          "<idmef:arg>-c</idmef:arg>"
+          "<idmef:pid>42</idmef:pid>"
+        "</idmef:Process>"
+        */
+        "<idmef:User>"
+          "<idmef:UserId>"
+            "<idmef:name>alucard</idmef:name>"
+            "<idmef:number>666</idmef:number>"
+          "</idmef:UserId>"
+        "</idmef:User>"
+      "</idmef:SomeTestRoot>"
+    "</idmef:IDMEF-Message>\n";
+  testInvalidXML<ExceptionMissingElement>(&FromXML::parseProcessAndUser, in);
+}
+
+// test throw when missing user name
+template<>
+template<>
+void testObj::test<36>(void)
+{
+  const char *in=
+  "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+      "<idmef:SomeTestRoot>"
+        "<idmef:Process>"
+          "<idmef:name>binary</idmef:name>"
+          "<idmef:path>/path/to/bin</idmef:path>"
+          "<idmef:arg>-a</idmef:arg>"
+          "<idmef:arg>-b</idmef:arg>"
+          "<idmef:arg>-c</idmef:arg>"
+          "<idmef:pid>42</idmef:pid>"
+        "</idmef:Process>"
+        "<idmef:User>"
+          "<idmef:UserId>"
+//            "<idmef:name>alucard</idmef:name>"
+            "<idmef:number>666</idmef:number>"
+          "</idmef:UserId>"
+        "</idmef:User>"
+      "</idmef:SomeTestRoot>"
+    "</idmef:IDMEF-Message>\n";
+  testInvalidXML<ExceptionMissingElement>(&FromXML::parseProcessAndUser, in);
+}
+
+// test throw when missing process name
+template<>
+template<>
+void testObj::test<37>(void)
+{
+  const char *in=
+  "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+      "<idmef:SomeTestRoot>"
+        "<idmef:Process>"
+//          "<idmef:name>binary</idmef:name>"
+          "<idmef:path>/path/to/bin</idmef:path>"
+          "<idmef:arg>-a</idmef:arg>"
+          "<idmef:arg>-b</idmef:arg>"
+          "<idmef:arg>-c</idmef:arg>"
+          "<idmef:pid>42</idmef:pid>"
+        "</idmef:Process>"
+        "<idmef:User>"
+          "<idmef:UserId>"
+            "<idmef:name>alucard</idmef:name>"
+            "<idmef:number>666</idmef:number>"
+          "</idmef:UserId>"
+        "</idmef:User>"
+      "</idmef:SomeTestRoot>"
+    "</idmef:IDMEF-Message>\n";
+  testInvalidXML<ExceptionMissingElement>(&FromXML::parseProcessAndUser, in);
+}
+
+// test minimal options set
+template<>
+template<>
+void testObj::test<38>(void)
+{
+  const char *in=
+  "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+      "<idmef:SomeTestRoot>"
+        "<idmef:Process>"
+          "<idmef:name>binary</idmef:name>"
+        "</idmef:Process>"
+        "<idmef:User>"
+          "<idmef:UserId>"
+            "<idmef:name>alucard</idmef:name>"
+          "</idmef:UserId>"
+        "</idmef:User>"
+      "</idmef:SomeTestRoot>"
+    "</idmef:IDMEF-Message>\n";
+  const ProcessPtrNN out=fx_.parseProcessAndUser( parseXML(in) );
+  fail("TODO");
+  // TODO: ensure values are correct
+}
+
+// 
+template<>
+template<>
+void testObj::test<39>(void)
 {
 }
 
 // 
 template<>
 template<>
-void testObj::test<33>(void)
+void testObj::test<40>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<41>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<42>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<43>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<44>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<45>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<46>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<47>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<48>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<49>(void)
 {
 }
 
