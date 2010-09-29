@@ -2,6 +2,8 @@
  * FromXML.cpp
  *
  */
+#include <utility>
+#include <boost/tokenizer.hpp>
 #include <cassert>
 
 #include "Commons/Convert.hpp"
@@ -121,11 +123,95 @@ FromXML::IP FromXML::parseAddress(const xmlpp::Element &address) const
   return FromXML::IP::from_string(ip);
 }
 
-/*
-Persistency::ServicePtrNN FromXML::parseService(const xmlpp::Element &service) const
+
+// unnamed namespace for parser helpers
+namespace
 {
+typedef vector<PortNumber::Numeric> PortList;
+
+void parseSinglePort(PortList &out, const string &in)
+{
+  out.push_back( Convert::to<PortNumber::Numeric>(in) );
+} // parseSinglePort()
+
+void parsePortRange(PortList &out, const string &in)
+{
+  // tokenize
+  typedef boost::char_separator<char> Separator;
+  typedef boost::tokenizer<Separator> Tokenizer;
+  const Separator sep("-");
+  const Tokenizer tokens(in, sep);
+
+  // parse tokens
+  PortNumber::Numeric nums[2];
+  int                 i=0;
+  for(Tokenizer::const_iterator it=tokens.begin(); it!=tokens.end(); ++it, ++i)
+  {
+    if(i==2)
+      throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, "portlist", "port range is invalid (too many tokens): " + in);
+    nums[i]=Convert::to<PortNumber::Numeric>(*it);
+  }
+  // check order
+  const PortNumber::Numeric from=nums[0];
+  const PortNumber::Numeric to  =nums[1];
+  if(from>to)
+    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, "portlist", "port range is invalid (reverse order): " + in);
+
+  // add all ports in range to the collection
+  for(PortNumber::Numeric i=from; i<=to; ++i)
+    out.push_back(i);
+} // parsePortRange()
+
+void parsePortList(PortList &out, const string &in)
+{
+  typedef boost::char_separator<char> Separator;
+  typedef boost::tokenizer<Separator> Tokenizer;
+  const Separator sep(" ");
+  const Tokenizer tokens(in, sep);
+  // got through all tokens
+  for(Tokenizer::const_iterator it=tokens.begin(); it!=tokens.end(); ++it)
+  {
+    if( strstr( it->c_str(), "-" )!=NULL )
+      parsePortRange(out, *it);
+    else
+      parseSinglePort(out, *it);
+  }
+} // parsePortList()
+} // unnamed namespace
+
+FromXML::ServiceVector FromXML::parseService(const xmlpp::Element &service) const
+{
+  ensureNode("Service", service);
+
+  // get name, if available
+  const xmlpp::Element *nameElem=findOneChildIfHas(service, "name");
+  const string name=(nameElem!=NULL)?( parseString(*nameElem).c_str() ):"unknown";
+
+  // read all ports
+  PortList portList;
+  const xmlpp::Element *portListElem=findOneChildIfHas(service, "portlist");
+  if(portListElem==NULL)
+    parseSinglePort(portList, parseString( findOneChild(service, "port") ) );
+  else
+    parsePortList(portList, parseString(*portListElem) );
+
+  // found anything?
+  if( portList.size()==0 )
+    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, service.get_path(), "port");
+
+  // produce output
+  const Service::Protocol protocol(NULL);
+  const ReferenceURLPtr   nullRef;
+  ServiceVector out( ServicePtrNN( new Service(name, portList[0], protocol, nullRef) ) );
+  // if multiple ports are specified, make multiple services
+  for(PortList::const_iterator it=portList.begin()+1 /* 0 is already added */; it!=portList.end(); ++it)
+    out.push_back( ServicePtrNN( new Service(name, *it, protocol, nullRef) ) );
+
+  // done
+  return out;
 }
 
+/*
 Persistency::ProcessPtrNN FromXML::parseProcessAndUser(const xmlpp::Element &process) const
 {
 }

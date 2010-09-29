@@ -87,6 +87,31 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     }
   }
 
+  template<size_t N>
+  void testServicePorts(const char *portsTag, const PortNumber::Numeric (&ports)[N])
+  {
+    assert(portsTag!=NULL);
+    stringstream ss;
+    ss << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+          "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+            "<idmef:Service>"
+              "<idmef:name>nameX</idmef:name>"
+       <<     portsTag
+       <<   "</idmef:Service>"
+          "</idmef:IDMEF-Message>\n";
+    const FromXML::ServiceVector out=fx_.parseService( parseXML( ss.str().c_str() ) );
+    tut::ensure_equals("invalid number of entries", out.size(), N);
+    size_t pos=0;
+    for(FromXML::ServiceVector::const_iterator it=out.begin(); it!=out.end(); ++it, ++pos)
+    {
+      assert(pos<N);
+      tut::ensure_equals("invalid name", (*it)->getName().get(), string("nameX") );
+      tut::ensure_equals("invalid port", (*it)->getPort().get(), ports[pos]);
+      tut::ensure("protocol is not NULL", (*it)->getProtocol().get()==NULL );
+      tut::ensure("reference URL is not NULL", (*it)->getReferenceURL()==NULL );
+    }
+  }
+
   xmlpp::DomParser dp_;
   FromXML          fx_;
 };
@@ -380,46 +405,68 @@ void testObj::test<25>(void)
   testInvalidNodeName<ExceptionInvalidElement>( &FromXML::parseAssessment, in.c_str() );
 }
 
-// 
+// parse service with all data set
 template<>
 template<>
 void testObj::test<26>(void)
 {
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Service>"
+                     "<idmef:name>nameX</idmef:name>"
+                     "<idmef:port>42</idmef:port>"
+                   "</idmef:Service>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::ServiceVector out=fx_.parseService( parseXML(in) );
+  ensure("empty collection", out.begin()!=out.end() );
+  ensure_equals("invalid name", (*out.begin())->getName().get(), string("nameX") );
+  ensure_equals("invalid port", (*out.begin())->getPort().get(), 42);
+  ensure("protocol is not NULL", (*out.begin())->getProtocol().get()==NULL );
+  ensure("reference URL is not NULL", (*out.begin())->getReferenceURL()==NULL );
 }
 
-// 
+// parse service that has not name set
 template<>
 template<>
 void testObj::test<27>(void)
 {
+  const PortNumber::Numeric ports[]={42u};
+  testServicePorts("<idmef:port>42</idmef:port>", ports);
 }
 
-// 
+// parse service with port range specified
 template<>
 template<>
 void testObj::test<28>(void)
 {
+  const PortNumber::Numeric ports[]={50u, 51u, 52u};
+  testServicePorts("<idmef:portlist>50-52</idmef:portlist>", ports);
 }
 
-// 
+// test parse service with multiple ports specified
 template<>
 template<>
 void testObj::test<29>(void)
 {
+  const PortNumber::Numeric ports[]={42u, 666u};
+  testServicePorts("<idmef:portlist>42 666</idmef:portlist>", ports);
 }
 
-// 
+// test mixture of port list and ports
 template<>
 template<>
 void testObj::test<30>(void)
 {
+  const PortNumber::Numeric ports[]={42u, 51u, 52u, 53u};
+  testServicePorts("<idmef:portlist>42 51-53</idmef:portlist>", ports);
 }
 
-// 
+// test throw on invalid node for services
 template<>
 template<>
 void testObj::test<31>(void)
 {
+  testInvalidNodeName(&FromXML::parseService);
 }
 
 // 
