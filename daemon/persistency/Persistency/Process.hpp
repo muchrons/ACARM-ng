@@ -84,6 +84,7 @@ public:
   /** \brief gets arguments passed to application.
    *  \return process parameters
    */
+  // TODO: return const char * here
   const std::string *getParameters(void) const;
   /** \brief gets reference URL.
    *  \return referenceu url for a given process.
