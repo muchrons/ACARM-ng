@@ -79,11 +79,11 @@ FromXML::FromXML(void):
 Persistency::GraphNodePtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
 {
 }
+*/
 
 Persistency::AnalyzerPtrNN FromXML::parseAnalyzer(const xmlpp::Element &alert) const
 {
 }
-*/
 
 Persistency::Timestamp FromXML::parseCreateTime(const xmlpp::Element &createTime) const
 {

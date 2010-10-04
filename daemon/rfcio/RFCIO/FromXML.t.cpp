@@ -819,24 +819,63 @@ void testObj::test<46>(void)
   testInvalidNodeName(&FromXML::parseTarget);
 }
 
-// 
+// test parsing minimal source host
 template<>
 template<>
 void testObj::test<47>(void)
 {
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Source>"
+                     "<idmef:Node category=\"host\">"
+                       "<idmef:Address category=\"ipv4-addr\">"
+                         "<idmef:address>1.2.3.4</idmef:address>"
+                       "</idmef:Address>"
+                     "</idmef:Node>"
+                   "</idmef:Source>"
+                 "</idmef:IDMEF-Message>\n";
+  const Persistency::HostPtrNN out=fx_.parseSource( parseXML(in) );
+  // test fileds
+  tut::ensure_equals("invalid IP", out->getIP().to_string(), "1.2.3.4");
+  tut::ensure("netmask is set", out->getNetmask()==NULL );
+  tut::ensure("operating system is set", out->getOperatingSystem().get()==NULL );
+  tut::ensure("ref. URL is set", out->getReferenceURL()==NULL );
+  tut::ensure_equals("invalid number of services", out->getReportedServices().size(), 0u);
+  tut::ensure_equals("invalid number of processes", out->getReportedProcesses().size(), 0u);
+  tut::ensure("name is set", out->getName().get()==NULL );
 }
 
-// 
+// parse analyzer
 template<>
 template<>
 void testObj::test<48>(void)
 {
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Analyzer analyzerid=\"123\" version=\"v1.2.3\">"
+                     "<idmef:Node category=\"host\">"
+                       "<idmef:name>some name</idmef:name>"
+                       "<idmef:Address category=\"ipv4-addr\">"
+                         "<idmef:address>1.2.3.4</idmef:address>"
+                       "</idmef:Address>"
+                     "</idmef:Node>"
+                   "</idmef:Analyzer>"
+                 "</idmef:IDMEF-Message>\n";
+  fail("TODO");
+  const Persistency::AnalyzerPtrNN out=fx_.parseAnalyzer( parseXML(in) );
 }
 
 // 
 template<>
 template<>
 void testObj::test<49>(void)
+{
+}
+
+// 
+template<>
+template<>
+void testObj::test<50>(void)
 {
 }
 
