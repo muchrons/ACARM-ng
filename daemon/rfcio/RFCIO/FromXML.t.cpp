@@ -681,46 +681,91 @@ void testObj::test<40>(void)
   fail("TODO: test parsing target-host");
 }
 
-// 
+// test parsing node
 template<>
 template<>
 void testObj::test<41>(void)
 {
+  const char *in="<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                 "<idmef:Node category=\"host\">"
+                   "<idmef:name>some name</idmef:name>"
+                   "<idmef:Address category=\"ipv4-addr\">"
+                     "<idmef:address>1.2.3.4</idmef:address>"
+                   "</idmef:Address>"
+                 "</idmef:Node>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::NodeData out=fx_.parseNode( parseXML(in) );
+  // test name
+  ensure("name is NULL", out.first.get()!=NULL );
+  ensure_equals("invalid name", out.first->c_str(), string("some name") );
+  // test ip
+  ensure_equals("invalid IP", out.second.to_string(), "1.2.3.4");
 }
 
-// 
+// test parsing when no name is present
 template<>
 template<>
 void testObj::test<42>(void)
 {
+  const char *in="<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                 "<idmef:Node category=\"host\">"
+                 //  "<idmef:name>some name</idmef:name>"
+                   "<idmef:Address category=\"ipv4-addr\">"
+                     "<idmef:address>1.2.3.4</idmef:address>"
+                   "</idmef:Address>"
+                 "</idmef:Node>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::NodeData out=fx_.parseNode( parseXML(in) );
+  // test name
+  ensure("name is not NULL", out.first.get()==NULL );
 }
 
-// 
+// test throw when IP's not specified
 template<>
 template<>
 void testObj::test<43>(void)
 {
+  const char *in="<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                 "<idmef:Node category=\"host\">"
+                   "<idmef:name>some name</idmef:name>"
+                 //  "<idmef:Address category=\"ipv4-addr\">"
+                 //    "<idmef:address>1.2.3.4</idmef:address>"
+                 //  "</idmef:Address>"
+                 "</idmef:Node>"
+                 "</idmef:IDMEF-Message>\n";
+  try
+  {
+    fx_.parseNode( parseXML(in) );
+    fail("parsing didn't failed on missing IP address");
+  }
+  catch(const ExceptionMissingElement &)
+  {
+    // this is expected
+  }
 }
 
-// 
+// test throw when invalid node is given as node
 template<>
 template<>
 void testObj::test<44>(void)
 {
+  testInvalidNodeName(&FromXML::parseNode);
 }
 
-// 
+// test thrown when invalid node is given as source
 template<>
 template<>
 void testObj::test<45>(void)
 {
+  testInvalidNodeName(&FromXML::parseSource);
 }
 
-// 
+// test thrown when invalid node is given as target
 template<>
 template<>
 void testObj::test<46>(void)
 {
+  testInvalidNodeName(&FromXML::parseTarget);
 }
 
 // 

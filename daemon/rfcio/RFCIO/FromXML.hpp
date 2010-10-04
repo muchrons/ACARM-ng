@@ -11,6 +11,7 @@
 #include <libxml++/libxml++.h>
 #include <cassert>
 
+#include "Base/NullValue.hpp"
 #include "Base/NonEmptyVector.hpp"
 #include "Logger/Node.hpp"
 #include "Persistency/IPTypes.hpp"
@@ -33,6 +34,8 @@ public:
   typedef boost::tuple<Persistency::Severity, Persistency::Certainty> Assessment;
   typedef boost::tuple<std::string, Persistency::ReferenceURLPtr>     Classification;
   typedef Base::NonEmptyVector<Persistency::ServicePtrNN>             ServiceVector;
+  typedef Base::NullValue<std::string>                                StringNull;
+  typedef std::pair<StringNull, IP>                                   NodeData;
 
   FromXML(void);
 
@@ -49,6 +52,7 @@ public:
   Persistency::ProcessPtrNN parseProcessAndUser(const xmlpp::Element &process) const;
   Persistency::HostPtrNN parseSource(const xmlpp::Element &source) const;
   Persistency::HostPtrNN parseTarget(const xmlpp::Element &target) const;
+  NodeData parseNode(const xmlpp::Element &node) const;
 
 private:
   void ensureNode(const char *name, const xmlpp::Element &node) const;

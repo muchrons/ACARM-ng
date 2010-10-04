@@ -325,6 +325,21 @@ Persistency::HostPtrNN FromXML::parseTarget(const xmlpp::Element &target) const
   return parseHost("Target", target);
 }
 
+FromXML::NodeData FromXML::parseNode(const xmlpp::Element &node) const
+{
+  ensureNode("Node", node);
+
+  // parse name, if present
+  StringNull name;
+  const xmlpp::Element *nameElem=findOneChildIfHas(node, "name");
+  if(nameElem!=NULL)
+    name=StringNull( parseString(*nameElem) );
+  // parse IP (must be present)
+  const xmlpp::Element &ipElem=findOneChild(node, "Address");
+
+  return NodeData( name, parseAddress(ipElem) );
+}
+
 void FromXML::ensureNode(const char *name, const xmlpp::Element &node) const
 {
   assert(name!=NULL);
@@ -366,6 +381,7 @@ double FromXML::parseConfidenceValue(const std::string &rating, const xmlpp::Ele
 Persistency::HostPtrNN FromXML::parseHost(const char *type, const xmlpp::Element &host) const
 {
   assert(type!=NULL);
+  ensureNode(type, host);
   // TODO
 }
 
