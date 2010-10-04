@@ -66,6 +66,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   template<typename T>
   void testInvalidNodeName(T (FromXML::*method)(const xmlpp::Element &) const)
   {
+    assert(method!=NULL);
     const char *invaldNodeNameXML="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                                   "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
                                     "<idmef:InvalidNodeNameForIdmef/>"
@@ -76,6 +77,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   template<typename TExc, typename T>
   void testInvalidXML(T (FromXML::*method)(const xmlpp::Element &) const, const char *xml)
   {
+    assert(method!=NULL);
     try
     {
       (fx_.*method)( parseXML(xml) );
@@ -110,6 +112,55 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
       tut::ensure("protocol is not NULL", (*it)->getProtocol().get()==NULL );
       tut::ensure("reference URL is not NULL", (*it)->getReferenceURL()==NULL );
     }
+  }
+
+  void testHostParsing(Persistency::HostPtrNN (FromXML::*method)(const xmlpp::Element &) const,
+                       const char *nodeName)
+  {
+    assert(method!=NULL);
+    assert(nodeName!=NULL);
+
+    stringstream ss;
+    ss << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+          "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+       <<   "<idmef:" << nodeName << ">"
+
+       <<     "<idmef:Node category=\"host\">"
+                "<idmef:name>a.b.c</idmef:name>"
+                "<idmef:Address category=\"ipv4-addr\">"
+                  "<idmef:address>1.2.3.4</idmef:address>"
+                "</idmef:Address>"
+              "</idmef:Node>"
+
+              "<idmef:Service>"
+                "<idmef:name>name</idmef:name>"
+                "<idmef:port>42</idmef:port>"
+              "</idmef:Service>"
+
+              "<idmef:User>"
+                "<idmef:UserId>"
+                  "<idmef:name>alucard</idmef:name>"
+                  "<idmef:number>666</idmef:number>"
+                "</idmef:UserId>"
+              "</idmef:User>"
+
+              "<idmef:Process>"
+                "<idmef:name>process name</idmef:name>"
+                "<idmef:path>/path/to/bin</idmef:path>"
+              "</idmef:Process>"
+
+       <<   "</idmef:" << nodeName << ">"
+          "</idmef:IDMEF-Message>\n";
+    const Persistency::HostPtrNN out=(fx_.*method)( parseXML( ss.str().c_str() ) );
+    // test fileds
+    tut::ensure_equals("invalid IP", out->getIP().to_string(), "1.2.3.4");
+    tut::ensure("netmask is set", out->getNetmask()==NULL );
+    tut::ensure("operating system is set", out->getOperatingSystem().get()==NULL );
+    tut::ensure("ref. URL is set", out->getReferenceURL()==NULL );
+    tut::ensure_equals("invalid number of services", out->getReportedServices().size(), 1u);
+    tut::ensure_equals("invalid number of processes", out->getReportedProcesses().size(), 1u);
+    tut::ensure("name is NULL", out->getName().get()!=NULL );
+    tut::ensure_equals("invalid name", out->getName().get(), string("a.b.c") );
   }
 
   xmlpp::DomParser dp_;
@@ -665,20 +716,20 @@ void testObj::test<38>(void)
   ensure("UID is not NULL", out->getUID()==NULL );
 }
 
-// 
+// test parsing source host
 template<>
 template<>
 void testObj::test<39>(void)
 {
-  fail("TODO: test parsing source-host");
+  testHostParsing(&FromXML::parseSource, "Source");
 }
 
-// 
+// test parsing target host
 template<>
 template<>
 void testObj::test<40>(void)
 {
-  fail("TODO: test parsing target-host");
+  testHostParsing(&FromXML::parseTarget, "Target");
 }
 
 // test parsing node

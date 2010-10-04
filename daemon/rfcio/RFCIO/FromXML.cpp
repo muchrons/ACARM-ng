@@ -3,6 +3,8 @@
  *
  */
 #include <utility>
+#include <iterator>
+#include <algorithm>
 #include <boost/tokenizer.hpp>
 #include <cassert>
 
@@ -345,7 +347,8 @@ void FromXML::ensureNode(const char *name, const xmlpp::Element &node) const
   assert(name!=NULL);
   LOGMSG_DEBUG_S(log_)<<"processing node '"<<name<<"'";
   if( node.get_name()!=name )
-    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, node.get_path(), "unexpected name for timestamp");
+    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, node.get_path(),
+                                  "unexpected name for " + string(name) );
   LOGMSG_DEBUG_S(log_)<<"node '"<<name<<"' is valid as a given parser element";
 }
 
@@ -382,7 +385,29 @@ Persistency::HostPtrNN FromXML::parseHost(const char *type, const xmlpp::Element
 {
   assert(type!=NULL);
   ensureNode(type, host);
-  // TODO
+
+  // get node data (ip/name)
+  const NodeData  nodeData=parseNode( findOneChild(host, "Node") );
+  const char     *name    =( nodeData.first.get()==NULL ) ? NULL : nodeData.first->c_str();
+
+  // get and copy reported services
+  Host::ReportedServices  rSrvs;
+  const xmlpp::Element   *srvNode=findOneChildIfHas(host, "Service");
+  if(srvNode!=NULL)
+  {
+    const ServiceVector                          tmp=parseService(*srvNode);
+    std::insert_iterator<Host::ReportedServices> insertIt( rSrvs, rSrvs.begin() );
+    std::copy( tmp.begin(), tmp.end(), insertIt );
+  } // if(srvNode!=NULL)
+
+  // get reported process
+  Host::ReportedProcesses rProcs;
+  if( findOneChildIfHas(host, "Process")!=NULL && findOneChildIfHas(host, "User")!=NULL )
+    rProcs.push_back( parseProcessAndUser(host) );
+
+  // return new object
+  return Persistency::HostPtrNN(
+      new Host( nodeData.second, NULL, NULL, ReferenceURLPtr(), rSrvs, rProcs, name ) );
 }
 
 } // namespace RFCIO
