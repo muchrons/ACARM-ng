@@ -136,8 +136,9 @@ private:
 
   xmlpp::Element &addChild(xmlpp::Element &parent, const char *name);
 
-  void addParameterIfNotNULL(const char *name, const char *value);
   void addParameter(const char *name, const char *value);
+
+  void addProcessArguments(const std::string &args);
 
   xmlpp::Element &addNode(const char *name, const IP *ip);
 

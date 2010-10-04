@@ -572,7 +572,9 @@ void testObj::test<25>(void)
                     "<idmef:Process>"
                       "<idmef:name>binary</idmef:name>"
                       "<idmef:path>/path/to/bin</idmef:path>"
-                      "<idmef:arg>-a -b -c</idmef:arg>"
+                      "<idmef:arg>-a</idmef:arg>"
+                      "<idmef:arg>-b</idmef:arg>"
+                      "<idmef:arg>-c</idmef:arg>"
                       "<idmef:pid>42</idmef:pid>"
                     "</idmef:Process>"
                   "</idmef:IDMEF-Message>\n");

@@ -3,6 +3,7 @@
  *
  */
 #include <algorithm>
+#include <boost/tokenizer.hpp>
 #include <cassert>
 
 #include "Commons/Convert.hpp"
@@ -181,9 +182,8 @@ xmlpp::Element &ToXML::addProcess(const Persistency::Process &p)
   process.addString( "name", p.getName().get() );
   if( p.getPath().get()!=NULL )
     process.addString( "path", p.getPath().get() );
-  // TODO: this should be tokenized and saved as series of arguments!
   if( p.getParameters()!=NULL )
-    process.addString( "arg", p.getParameters()->c_str() );
+    process.addProcessArguments( *p.getParameters() );
   if( p.getPID()!=NULL )
     process.addString( "pid", toStr( p.getPID() ).c_str() );
   return process.getParent();
@@ -253,6 +253,19 @@ void ToXML::addParameter(const char *name, const char *value)
   }
   LOGMSG_DEBUG_S(log_)<<"setting paramter '"<<name<<"' to "<<value;
   parent_.set_attribute(name, value);
+}
+
+void ToXML::addProcessArguments(const std::string &args)
+{
+  // TODO: this should be more clever - consider spaces inside the input string...
+  typedef boost::char_separator<char> Separator;
+  typedef boost::tokenizer<Separator> Tokenizer;
+  const Separator sep(" ");
+  const Tokenizer tokens(args, sep);
+
+  // make separate entry from each element
+  for(Tokenizer::const_iterator it=tokens.begin(); it!=tokens.end(); ++it)
+    addString( "arg", it->c_str() );
 }
 
 xmlpp::Element &ToXML::addNode(const char *name, const IP *ip)
