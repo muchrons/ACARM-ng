@@ -284,7 +284,7 @@ xmlpp::Element &ToXML::addNode(const char *name, const IP *ip)
     if(ip==NULL)
       throw ExceptionUnexpectedNULL(SYSTEM_SAVE_LOCATION, "ip");
   }
-  // add IP is present
+  // add IP if present
   if(ip!=NULL)
   {
     category="host";
