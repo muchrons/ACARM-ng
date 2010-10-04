@@ -31,10 +31,11 @@ void MessageIO::send(const std::string &receiver, const std::string &msg)
                                               LM_MESSAGE_SUB_TYPE_CHAT);
   if(m==NULL)
     throw ExceptionCreatingError(SYSTEM_SAVE_LOCATION, receiver);
-  lm_message_node_add_child (m->node, "body", msg.c_str());
+  lm_message_node_add_child (m->node, "body", msg.c_str()); // TODO: can this call fail?
   assert( conn_.get()!=NULL );
   const bool ret=lm_connection_send( conn_.get(), m, NULL);
-  lm_message_unref (m);
+  lm_message_unref (m);             // TODO: wrap 'm' with System::ScopedPtrCustom<> instead of manualy
+                                    //       deallocate - it's more error prone in case of future changes
   if(ret==false)
     throw ExceptionSendingError(SYSTEM_SAVE_LOCATION, receiver, ret);
   // all done
@@ -46,6 +47,9 @@ void MessageIO::discardIncommingMessages(void)
   assert( conn_.get()!=NULL );
   LOGMSG_DEBUG(log_, "discarding all incomming messages");
 
+  // TODO: refacto this code to loop while have messsages. currently it doesn't look
+  //       nice and last log in this call will never happen.
+  // TODO: comment this code, since it's non obvious at the first sight.
   while(true)
   {
     // TODO: test it for two triggers
