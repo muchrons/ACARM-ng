@@ -114,9 +114,12 @@
   </select>
 
   <select id="DMAlertCountTimeSeries" resultClass="CDMPair">
-    select to_char(create_time,'YYYY-MM-DD') as key,count(*) as value from alerts where id_severity > 3 group by to_char(create_time,'YYYY-MM-DD');
+    select to_char(create_time,'YYYY-MM-DD') as key,count(*) as value from alerts where id_severity > 3 group by key order by key;
   </select>
 
+  <select id="DMMetaAlertCountTimeSeries" resultClass="CDMPair">
+    select to_char(create_time,'YYYY-MM-DD') as key,count(*) as value from meta_alerts where severity_delta >0 group by key order by key;
+  </select>
   
 
 </sqlMapConfig>
