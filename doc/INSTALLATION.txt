@@ -22,6 +22,18 @@ build process used to build ACARM-ng ensures valid dependencies and so
 'make' can be run in paraller (-jN where N is number of CPUs in the system).
 
 
+external packages remarks
+=========================
+
+although ACARM-ng team put a lot of effort into prevent any resource leaks
+in the code, some of the external components does leak memory or introduce
+other 'artifacts'. if such a condition is found, is it reported to the
+authors, with proper patch, if possible. we collect these patches in the
+distribution as well however, in case your library has not yet been patched
+for a given issue. all of them can be found in 'ext_patches' directory,
+separated by the external components with directories.
+
+
 compiling without some features
 ===============================
 
@@ -67,7 +79,7 @@ PostgreSQL
 ----------
  1. create 'acarm_ng' data base on the server.
  2. create valid data base schema for this data base:
-    $ cd acarmng/data_model/<database>
+    $ cd acarmng/data_model/<database>/<version>
     $ ./init_db
 
 note: if you want to run tests create 'acarm_ng_test' data base and use

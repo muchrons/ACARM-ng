@@ -10,24 +10,6 @@
 #include "Logger/Logger.hpp"
 #include "Trigger/Jabber/MessageIO.hpp"
 
-namespace
-{
-
-static LmHandlerResult handleMessages(LmMessageHandler * /*handler*/,
-                                     LmConnection      * /*connection*/,
-                                     LmMessage         *m,
-                                     gpointer          /*userData*/)
-{
-  if ((lm_message_get_sub_type (m) != LM_MESSAGE_SUB_TYPE_CHAT &&
-       lm_message_get_sub_type (m) != LM_MESSAGE_SUB_TYPE_NORMAL)) {
-
-    return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
-  }
-  return LM_HANDLER_RESULT_REMOVE_MESSAGE;
-}
-
-}
-
 namespace Trigger
 {
 namespace Jabber
@@ -42,16 +24,14 @@ MessageIO::MessageIO(Connection &conn):
 void MessageIO::send(const std::string &receiver, const std::string &msg)
 {
   LOGMSG_INFO_S(log_)<<"sending message to user "<<receiver;
-  // TODO: do NOT use reinterpret-cast. note that gchar is typedefed char, thus
-  //       direct assignment should do the trick.
-  const gchar *tmp=reinterpret_cast<const gchar*>( msg.c_str() );
-  assert(tmp!=NULL);
+  assert(msg.c_str()!=NULL);
   // sending itself
   LmMessage *m = lm_message_new_with_sub_type(receiver.c_str(),
                                               LM_MESSAGE_TYPE_MESSAGE,
                                               LM_MESSAGE_SUB_TYPE_CHAT);
-  // TODO: segv if m==NULL
-  lm_message_node_add_child (m->node, "body", tmp);
+  if(m==NULL)
+    throw ExceptionCreatingError(SYSTEM_SAVE_LOCATION, receiver);
+  lm_message_node_add_child (m->node, "body", msg.c_str());
   assert( conn_.get()!=NULL );
   const bool ret=lm_connection_send( conn_.get(), m, NULL);
   lm_message_unref (m);
@@ -63,21 +43,17 @@ void MessageIO::send(const std::string &receiver, const std::string &msg)
 
 void MessageIO::discardIncommingMessages(void)
 {
+  assert( conn_.get()!=NULL );
   LOGMSG_DEBUG(log_, "discarding all incomming messages");
-  LmMessageHandler *handler = lm_message_handler_new(handleMessages, NULL, NULL);
-  lm_connection_register_message_handler(conn_.get(), handler,
-                                         LM_MESSAGE_TYPE_MESSAGE,
-                                         LM_HANDLER_PRIORITY_NORMAL);
 
-  lm_message_handler_unref (handler);
-  // TODO
   while(true)
   {
-    // TODO: conn_ nto used inside the loop
-    assert( conn_.get()!=NULL );
-    // TODO: busy loop when connection error occures
+    // TODO: test it for two triggers
     if( g_main_context_iteration(NULL, FALSE) )
+    {
+      LOGMSG_DEBUG(log_, "incomming message discarded");
       return;
+    }
   }
   LOGMSG_DEBUG(log_, "all messages have been discarded");
 }

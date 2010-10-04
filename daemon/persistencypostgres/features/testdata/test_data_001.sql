@@ -2,8 +2,6 @@
 -- test_data.sql
 --
 
--- TODO: remove teporary test comments
-
 --
 -- clean up any old entries
 --
@@ -87,40 +85,12 @@ INSERT INTO hosts VALUES
   (6, 4, NULL, 'src', '127.0.0.2', '255.255.255.0', 'Linux', NULL)
 ;
 
--- id_host, ....
---INSERT INTO hosts VALUES
--- id, ...
---  (1, '127.0.0.1', '255.255.255.0', 'Linux', 'localhost'),
---  (2, '127.0.0.2', '255.255.255.0', 'Linux', NULL),
---  (3, '127.0.0.3', NULL,            NULL,    NULL)
---;
---INSERT INTO reported_hosts VALUES
--- id, id_alert, id_host, role, id_ref
---  (1, 1, 1, 'dst', 3),
---  (2, 2, 1, 'dst', 1),
---  (3, 2, 2, 'src', NULL),
---  (4, 3, 3, 'dst', NULL),
---  (5, 3, 1, 'dst', NULL),
---  (6, 4, 2, 'src', NULL)
---;
 SELECT setval('services_id_seq', 3);
 INSERT INTO services VALUES
 -- id, id_host, id_ref, name, port, protocol
   (1, 4, 1,    'sendmail', 25, 'smtp'),
   (2, 5, NULL, 'apache',   80, 'www')
 ;
---INSERT INTO services VALUES
--- id, name, port, proto
---  (1, 'sendmail',     25, 'smtp' ),
---  (2, 'apache',       80, 'www'  ),
---  (3, 'apache',      443, 'https'),
---  (4, 'doom server', 443, NULL)
---;
---INSERT INTO reported_services VALUES
--- id_rep_host, id_service, id_ref
---  (4, 1, 1),
---  (5, 2, NULL)
---;
 SELECT setval('procs_id_seq', 5);
 INSERT INTO procs VALUES
 -- id, id_host, id_ref, path, name, md5, pid, uid, username, args
@@ -129,19 +99,6 @@ INSERT INTO procs VALUES
   (3, 2, NULL, '/some/path',  'binaryname', '01234567890123456789012345678912', 13,   997, 'norman', NULL),
   (4, 1, NULL, '/some/path',  'binaryname', '01234567890123456789012345678912', NULL, NULL, NULL,    NULL)
 ;
---INSERT INTO procs VALUES
--- id, path, name, md5
---  (1, '/some/path',  'binaryname', '01234567890123456789012345678912'),
---  (2, '/other/path', 'appname',    '012345678901234567890123456789ab'),
---  (3, NULL,          'doom.exe',   NULL)
---;
---INSERT INTO reported_procs VALUES
--- id, id_rep_host, id_proc, pid, uid, username, args, id_ref
---  (1, 6, 3, 42,   666, 'kain',   '-h -e -l', 2),
---  (2, 6, 3, 43,   666, 'kain',   '-h -e -l', 2),
---  (3, 2, 1, 13,   997, 'norman', NULL,       NULL),
---  (4, 1, 1, NULL, NULL, NULL,    NULL,       NULL)
---;
 SELECT setval('meta_alerts_id_seq', 8);
 INSERT INTO meta_alerts VALUES
   (1, 27, 3,    'meta/alert number 1', 0.5,  0.5, '1990-01-03 11:22:33', '1990-02-01 10:00:00'),

@@ -27,8 +27,9 @@ public:
 
   /** \brief gets fererence to created document.
    *  \return reference to created XML document.
+   *  \note this call cannot be const due to xmlpp-specific limitations.
    */
-  const xmlpp::Document &getDocument(void) const;
+  xmlpp::Document &getDocument(void);
 
 private:
   xmlpp::Document doc_;

@@ -13,20 +13,19 @@
 #include "Trigger/Jabber/AccountConfig.hpp"
 #include "Trigger/Jabber/AutoSession.hpp"
 #include "Trigger/Jabber/ExceptionConnectionError.hpp"
-
-// TODO: fix comments
+#include "Trigger/Jabber/ExceptionSendingError.hpp"
 
 namespace Trigger
 {
 namespace Jabber
 {
 
-/** \brief class representing (estabilished) connection to GG server.
+/** \brief class representing (estabilished) connection to Jabber server.
  */
 class Connection: private boost::noncopyable
 {
 public:
-  /** \brief connect to GG-server with given acount.
+  /** \brief connect to Jabber-server with given acount.
    *  \param cfg account's configuration to use when connecting.
    */
   explicit Connection(const AccountConfig &cfg);

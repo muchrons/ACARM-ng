@@ -1,0 +1,12 @@
+*** libgadu-1.9.0/src/events.c  2009-10-12 23:42:53.000000000 +0200
+--- ../libgadu-1.9.0/src/events.c       2010-05-18 13:15:41.000000000 +0200
+*************** void gg_event_free(struct gg_event *e)
+*** 69,74 ****
+--- 69,75 ----
+
+        switch (e->type) {
+                case GG_EVENT_MSG:
++                       free(e->event.msg.xhtml_message);
+                        free(e->event.msg.message);
+                        free(e->event.msg.formats);
+                        free(e->event.msg.recipients);

@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <cstring>
 
+#include "System/Timer.hpp"
 #include "Trigger/Jabber/Strategy.hpp"
 #include "Trigger/Jabber/TestAccount.t.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
@@ -67,15 +68,13 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  // TODO: use System::Timer for this.
-  time_t start, stop;
+  System::Timer t;
   {
     const Strategy s("myjabberinformer", cfg_);
-    start=time(NULL);
+    t.restart();
     usleep(100*1000);                 // give time for backend thread to start
   } // thread interruption and joining goes here
-  stop=time(NULL);
-  ensure("joining took too long - interruption while asleep does not work properly", stop-start<10);
+  ensure("joining took too long - interruption while asleep does not work properly", t.elapsed()<10.0f);
 }
 
 } // namespace tut
