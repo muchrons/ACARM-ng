@@ -28,6 +28,7 @@ coretypes
 rfcio
 xml
 configio
+commonspersistency
 commons
 logger
 system
