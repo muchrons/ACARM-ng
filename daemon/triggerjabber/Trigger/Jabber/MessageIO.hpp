@@ -12,7 +12,7 @@
 #include "Logger/Node.hpp"
 #include "Trigger/Jabber/Connection.hpp"
 #include "Trigger/Jabber/ExceptionSendingError.hpp"
-//#include "Trigger/GG/ExceptionReceivingError.hpp" // TODO: to be removed
+#include "Trigger/Jabber/ExceptionCreatingError.hpp"
 
 namespace Trigger
 {
