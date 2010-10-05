@@ -170,7 +170,7 @@ public:
 
   virtual ValueNULL readImpl(Persistency::IO::Transaction &/*t*/, const Key &key)
   {
-    tut::ensure_equals("invalid key to be read", key.get(), keyValue_);
+    tut::ensure_equals("invalid key to be read", keyValue_, key.get() );
     if(isNull_)
       return ValueNULL();
     return ValueNULL( Commons::Convert::to<std::string>(id_) );
