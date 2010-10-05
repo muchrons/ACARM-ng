@@ -8,11 +8,11 @@
 
 namespace
 {
-  void unrefConnection(LmConnection *conn)
-  {
-    lm_connection_close (conn, NULL);
-    lm_connection_unref (conn);
-  }
+void unrefConnection(LmConnection *conn)
+{
+  lm_connection_close (conn, NULL);
+  lm_connection_unref (conn);
+} // unrefConnection()
 } // unnamed namespace
 
 namespace Trigger

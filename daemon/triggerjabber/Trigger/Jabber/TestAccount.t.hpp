@@ -8,7 +8,7 @@
 #include <glib.h>
 #include <tut.h>
 #include <sys/time.h>
-#include <boost/timer.hpp>
+#include <boost/timer.hpp>                  // TODO: unused header
 #include <boost/algorithm/string.hpp>
 
 #include "System/ScopedPtrCustom.hpp"
@@ -45,6 +45,8 @@ struct MessageHandler
   std::string msg_;
   std::string sender_;
 };
+
+// TODO: move implementation of these function to .t.cpp file
 
 // TODO: this f-ction must be declared as 'extern "C"' in order to be passed to C code.
 LmHandlerResult
@@ -88,7 +90,7 @@ std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account,
   for(;;)
   {
     // short sleep here to avoid waste CPU too much
-    usleep(50);
+    usleep(50);                 // TODO: use 50[ms] - not 50[us]... ;)
     // wait for something
     if(t.elapsed() > timeout)
       tut::fail("waiting for messages timeouted");
