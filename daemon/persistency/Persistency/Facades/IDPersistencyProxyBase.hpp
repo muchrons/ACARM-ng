@@ -5,8 +5,6 @@
 #ifndef INCLUDE_INPUT_IDPERSISTENCYPROXYBASE_HPP_FILE
 #define INCLUDE_INPUT_IDPERSISTENCYPROXYBASE_HPP_FILE
 
-/* public header */
-
 #include <string>
 #include <boost/noncopyable.hpp>
 #include <cassert>

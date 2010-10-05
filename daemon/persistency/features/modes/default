@@ -1,4 +1,5 @@
 Persistency/*.?pp
+Persistency/Facades/*.?pp
 Persistency/IO/*.?pp
 Persistency/IO/detail/*.?pp
 Persistency/detail/*.?pp
