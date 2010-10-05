@@ -129,7 +129,7 @@ class GraphService extends TService
     $p1->SetLabelPos(1);
     $p1->SetLabelType(PIE_VALUE_PER);
     $p1->value->SetFont(FF_ARIAL,FS_NORMAL,12);
-    $p1->SetSliceColors(array('#ff0000','#ff00000','#b74700','#669900','#15eb00')); 
+    $p1->SetSliceColors(array('#ff0000','#ff00000','#b74700','#669900','#15eb00'));
     //    $p1->SetTheme("sand");
     $p1->SetLabelType(1);
     $p1->SetSize(0.50);
