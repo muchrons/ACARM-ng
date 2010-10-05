@@ -1,10 +1,10 @@
 /*
- * AnalyzersLocalCache.cpp
+ * AnalyzersMap.cpp
  *
  */
-#include "Persistency/Facade/AnalyzersLocalCache.hpp"
+#include "Input/detail/AnalyzersMap.hpp"
 
-namespace 
+namespace Input
 {
 namespace detail
 {

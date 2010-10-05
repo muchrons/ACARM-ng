@@ -5,6 +5,8 @@
 #ifndef INCLUDE_INPUT_DETAIL_ANALYZERSMAP_HPP_FILE
 #define INCLUDE_INPUT_DETAIL_ANALYZERSMAP_HPP_FILE
 
+/* public header */
+
 #include <map>
 #include <string>
 #include <boost/noncopyable.hpp>

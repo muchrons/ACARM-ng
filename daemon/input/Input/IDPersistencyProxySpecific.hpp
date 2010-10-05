@@ -5,6 +5,8 @@
 #ifndef INCLUDE_INPUT_IDPERSISTENCYPROXYSPECIFIC_HPP_FILE
 #define INCLUDE_INPUT_IDPERSISTENCYPROXYSPECIFIC_HPP_FILE
 
+/* public header */
+
 #include <string>
 
 #include "Persistency/Analyzer.hpp"
