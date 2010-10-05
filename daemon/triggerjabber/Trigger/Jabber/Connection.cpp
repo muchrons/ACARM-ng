@@ -12,8 +12,8 @@ void unrefConnection(LmConnection *conn)
 {
   if(conn!=NULL)
   {
-    lm_connection_close (conn, NULL);
-    lm_connection_unref (conn);
+    lm_connection_close(conn, NULL);
+    lm_connection_unref(conn);
   }
 } // unrefConnection()
 } // unnamed namespace
@@ -39,8 +39,9 @@ Connection::~Connection(void)
 // connection to server
 LmConnection *Connection::connect(void) const
 {
+  // TODO: always name types starting with uppercase
   typedef System::ScopedPtrCustom<LmConnection, unrefConnection> sessScopedPtr;
-  sessScopedPtr sessPtr(lm_connection_new( cfg_.getServer().c_str() ));
+  sessScopedPtr sessPtr( lm_connection_new( cfg_.getServer().c_str() ) );
   // sanity check
   if( sessPtr.get()==NULL )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "NULL structure received (connection creation failed)");
