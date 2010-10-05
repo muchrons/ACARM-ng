@@ -113,7 +113,7 @@ class GraphService extends TService
   private function createSeverityChart($q)
   {
     // Create the Pie Graph.
-    $graph = new PieGraph(800,600,'auto');  // TODO: widht/height?
+    $graph = new PieGraph(690,400,'auto');  // TODO: widht/height?
 
     // Set A title for the plot
     $graph->title->Set("Alert count by severity type");
@@ -129,10 +129,10 @@ class GraphService extends TService
     $p1->SetLabelPos(1);
     $p1->SetLabelType(PIE_VALUE_PER);
     $p1->value->SetFont(FF_ARIAL,FS_NORMAL,12);
-
-    $p1->SetTheme("sand");
+    $p1->SetSliceColors(array('#ff0000','#ff00000','#b74700','#669900','#15eb00'));
+    //    $p1->SetTheme("sand");
     $p1->SetLabelType(1);
-    $p1->SetSize(0.30);
+    $p1->SetSize(0.50);
     $p1->value->SetFormat("%d");
 
     $graph->SetAntiAliasing();

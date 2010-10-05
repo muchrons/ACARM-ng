@@ -1,5 +1,14 @@
 <com:TContent ID="content">
 
-TODO: main page content here
+<p><font color="white" size="+1">Current state:</font></p>
+<table width=200>
+<tr><td><b>ACARM-ng</b></td><td align=center bgcolor=green>Running</td></tr>
+<tr><td><b>memory used</b></td><td align=center bgcolor=orange>2123 MB</td></tr>
+<tr><td><b>Prelude Manager 1</b></td><td align=center bgcolor=green>Running</td></tr>
+<tr><td><b>Prelude Manager 2</b></td><td align=center bgcolor=green>Running</td></tr>
 
+</table>
+
+
+<com:TClientScript PradoScripts="effects" />
 </com:TContent>
