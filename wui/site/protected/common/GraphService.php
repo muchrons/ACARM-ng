@@ -113,7 +113,7 @@ class GraphService extends TService
   private function createSeverityChart($q)
   {
     // Create the Pie Graph.
-    $graph = new PieGraph(800,600,'auto');  // TODO: widht/height?
+    $graph = new PieGraph(690,400,'auto');  // TODO: widht/height?
 
     // Set A title for the plot
     $graph->title->Set("Alert count by severity type");
