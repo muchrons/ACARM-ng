@@ -9,14 +9,9 @@
 #include "Logger/Logger.hpp"
 #include "Commons/Convert.hpp"
 #include "Persistency/Facades/IDAssigner.hpp"
+#include "Persistency/IO/DynamicConfig.hpp"
 
 using Persistency::IO::DynamicConfig;
-
-namespace
-{
-const char *owner="Persistency::IDAssigner";
-const char *key  ="next free MetaAlert's ID";
-} // unnamed namespace
 
 namespace Persistency
 {
@@ -25,54 +20,143 @@ namespace Facades
 namespace detail
 {
 
-IDAssigner::IDAssigner(IO::ConnectionPtrNN conn, IO::Transaction &t):
-  log_("persistency.idassigner")
+namespace
 {
-  IO::DynamicConfigAutoPtr dc=conn->dynamicConfig(owner, t);
-  assert( dc.get()!=NULL );
+const char *g_owner       ="Persistency::IDAssigner";
+const char *g_keyMetaAlert="next free MetaAlert's ID";
+const char *g_keyAnalyzer ="next free Analyzer's ID";
+} // unnamed namespace
 
-  // read last value from data base
-  nextFreeID_=0u;
-  LOGMSG_DEBUG(log_, "reading last value of counter");
-  const DynamicConfig::ValueNULL r=dc->read(key);
-  // if value is set, counter is already started
-  if( r.get()!=NULL )
+
+/** \brief generic implementation for the assigner
+ */
+template<typename T>
+class IDAssignerHelper: private boost::noncopyable
+{
+public:
+  /** \brief ID type. */
+  typedef typename T::ID           IDType;
+  /** \brief numeric equivalent of ID type. */
+  typedef typename IDType::Numeric IDNumeric;
+
+  /** \brief create object instance and read initial value of the counter.
+   *  \param conn conneciton to use.
+   *  \param t    transaction to use.
+   */
+  IDAssignerHelper(IO::ConnectionPtrNN conn, IO::Transaction &t, const char *key):
+    log_("persistency.facades.idassigner.idassignerhelper"),
+    key_(key),
+    nextFreeID_(0u)
   {
-    LOGMSG_DEBUG_S(log_)<<"value already set to: "<<r.get()->get();
-    // parse input value and return to caller
-    typedef MetaAlert::ID::Numeric NumericID;
-    nextFreeID_=Commons::Convert::to<NumericID>( r.get()->get() );
+    IO::DynamicConfigAutoPtr dc=conn->dynamicConfig(g_owner, t);
+    assert( dc.get()!=NULL );
+
+    // read last value from data base
+    LOGMSG_DEBUG_S(log_)<<"reading last counter's value (key '"<<key<<"')";
+    assert(key_!=NULL);
+    const DynamicConfig::ValueNULL r=dc->read(key_);
+    // if value is set, counter is already started
+    if( r.get()!=NULL )
+    {
+      LOGMSG_DEBUG_S(log_)<<"value already set to: "<<r.get()->get();
+      // parse input value and return to caller
+      nextFreeID_=Commons::Convert::to<IDNumeric>( r.get()->get() );
+    }
+    else
+      LOGMSG_DEBUG(log_, "value not set yet - starting counting with 0");
+    LOGMSG_DEBUG_S(log_)<<"first free ID (for key '"<<key_<<"') is "<<nextFreeID_;
   }
-  else
-    LOGMSG_DEBUG(log_, "value not set yet - starting counting with 0");
-  LOGMSG_DEBUG_S(log_)<<"first free meta-alert ID is "<<nextFreeID_;
-}
 
-MetaAlert::ID IDAssigner::assign(IO::ConnectionPtrNN conn, IO::Transaction &t)
+  /** \brief get next ID value to be used
+   *  \param conn connection to persistent storage with counter.
+   *  \param t    transaction to use.
+   *  \return free ID value, that can be used for new T object.
+   */
+  IDType assignID(IO::ConnectionPtrNN conn, IO::Transaction &t)
+  {
+    LOGMSG_DEBUG(log_, "assigning next ID value");
+    const IDType assignedID=nextFreeID_;        // save assigned value
+    ++nextFreeID_;                              // move to next one
+    IO::DynamicConfigAutoPtr dc=conn->dynamicConfig(g_owner, t);
+    assert( dc.get()!=NULL );
+    // save next free ID
+    assert(key_!=NULL);
+    dc->write(key_, Commons::Convert::to<std::string>(nextFreeID_) );
+    LOGMSG_DEBUG_S(log_)<<"assigned value is "<<assignedID.get();
+    LOGMSG_DEBUG_S(log_)<<"next free value is "<<nextFreeID_;
+
+    // return assigned value
+    return assignedID;
+  }
+
+private:
+  // TODO: add check if there is at most one instance of this object created at a given time.
+
+  Logger::Node  log_;
+  const char   *key_;
+  IDNumeric     nextFreeID_;
+}; // class IDAssignerHelper
+
+
+
+struct IDAssigner::IDAssignerPimpl
 {
-  LOGMSG_DEBUG(log_, "assigning next ID value");
-  const MetaAlert::ID assignedID=nextFreeID_;   // save assigned value
-  ++nextFreeID_;                                // move to next one
-  IO::DynamicConfigAutoPtr dc=conn->dynamicConfig(owner, t);
-  assert( dc.get()!=NULL );
-  // save next free ID
-  dc->write(key, Commons::Convert::to<std::string>(nextFreeID_) );
-  LOGMSG_DEBUG_S(log_)<<"assigned value is "<<assignedID.get();
-  LOGMSG_DEBUG_S(log_)<<"next free value is "<<nextFreeID_;
+  IDAssignerPimpl(IO::ConnectionPtrNN conn, IO::Transaction &t):
+    ma_(conn, t, g_keyMetaAlert),
+    a_(conn, t, g_keyAnalyzer)
+  {
+  }
 
-  // return assigned value
-  return assignedID;
+  // NOTE: no default implementation can be provided
+  template<typename T>
+  IDAssignerHelper<T> &getAssigner(void);
+
+private:
+  IDAssignerHelper<MetaAlert> ma_;
+  IDAssignerHelper<Analyzer>  a_;
+}; // class IDAssigner::IDAssignerPimpl
+
+template<>
+IDAssignerHelper<MetaAlert> &IDAssigner::IDAssignerPimpl::getAssigner(void)
+{
+  return ma_;
+}
+template<>
+IDAssignerHelper<Analyzer> &IDAssigner::IDAssignerPimpl::getAssigner(void)
+{
+  return a_;
 }
 
 
+IDAssigner::~IDAssigner(void)
+{
+  // NOTE: this generates code for deallocating PIMPL in proper way.
+}
 
-MetaAlert::ID IDAssignerWrapper::assign(IO::ConnectionPtrNN conn, IO::Transaction &t)
+MetaAlert::ID IDAssigner::assignMetaAlertID(IO::ConnectionPtrNN conn, IO::Transaction &t)
+{
+  return assign<MetaAlert>(conn, t);
+}
+
+Analyzer::ID IDAssigner::assignAnalyzerID(IO::ConnectionPtrNN conn, IO::Transaction &t)
+{
+  return assign<Analyzer>(conn, t);
+}
+
+IDAssigner::IDAssigner(void):
+  pimpl_(NULL)
+{
+  // NOTE: generate valid c-tor
+}
+
+template<typename T>
+typename T::ID IDAssigner::assign(IO::ConnectionPtrNN conn, IO::Transaction &t)
 {
   Base::Threads::Lock lock(mutex_);
-  if( impl_.get()==NULL )
-    impl_.reset( new IDAssigner(conn, t) );
-  assert( impl_.get()!=NULL );
-  return impl_->assign(conn, t);
+  if( pimpl_.get()==NULL )
+    pimpl_.reset( new IDAssignerPimpl(conn, t) );
+  assert( pimpl_.get()!=NULL );
+  return pimpl_->getAssigner<T>().assignID(conn, t);
 }
 
 } // namespace detail

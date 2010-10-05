@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <string>
 #include <boost/scoped_ptr.hpp>
+#include <cassert>
 
 #include "Commons/Convert.hpp"
 #include "Persistency/Facades/IDAssigner.hpp"
@@ -15,6 +16,27 @@ using namespace Persistency::Facades;
 
 namespace
 {
+
+enum ExpectedKey
+{
+  EXPK_UNKNOWN  =0,
+  EXPK_METAALERT=1,
+  EXPK_ANALYZER =2
+};
+
+ExpectedKey g_expectedKey=EXPK_UNKNOWN;
+
+const char *toString(ExpectedKey e)
+{
+  switch(e)
+  {
+    case EXPK_METAALERT: return "next free MetaAlert's ID";
+    case EXPK_ANALYZER:  return "next free Analyzer's ID";
+    default:
+      assert(!"unknown ID string requsted - code not updated?");
+      break;
+  }
+} // toString()
 
 // counter that forwards all calls to other counter
 struct DynamicConfigCounter: public IO::DynamicConfig
@@ -47,37 +69,58 @@ struct DynamicConfigCounter: public IO::DynamicConfig
 // connection that returns different implementaitons of the same counter
 struct TestIOConnectionCounter: public TestIOConnection
 {
+  TestIOConnectionCounter(void):
+    cnt_(0)
+  {
+  }
+
   virtual Persistency::IO::DynamicConfigAutoPtr dynamicConfigImpl(const Persistency::IO::DynamicConfig::Owner &owner,
                                                                   Persistency::IO::Transaction                &t)
   {
     tut::ensure_equals("invalid owner", owner.get(), std::string("Persistency::IDAssigner") );
-    if( ioCounter_.get()==NULL )
-      ioCounter_.reset( new IODynamicConfigCounter(t, "next free MetaAlert's ID") );
-    tut::ensure("NULL ioCounter_ - logic error", ioCounter_.get()!=NULL );
-    return Persistency::IO::DynamicConfigAutoPtr( new DynamicConfigCounter(*ioCounter_, owner, t) );
+
+    if( ioCounterMetaAlert_.get()==NULL )
+      ioCounterMetaAlert_.reset( new IODynamicConfigCounter(t, toString(EXPK_METAALERT) ) );
+
+    if( ioCounterAnalyzer_.get()==NULL )
+      ioCounterAnalyzer_.reset( new IODynamicConfigCounter(t, toString(EXPK_ANALYZER) ) );
+
+    IODynamicConfigCounter *tmp=NULL;
+    switch(g_expectedKey)
+    {
+      case EXPK_METAALERT: tmp=ioCounterMetaAlert_.get(); break;
+      case EXPK_ANALYZER:  tmp=ioCounterAnalyzer_.get();  break;
+      default: tut::fail("expected key type is not set");
+    }
+    switch(++cnt_)
+    {
+      case 1: tmp=ioCounterMetaAlert_.get(); break;
+      case 2: tmp=ioCounterAnalyzer_.get();  break;
+      default:                               break;
+    }
+
+    tut::ensure("login error - 'tmp' is NULL", tmp!=NULL);
+    return Persistency::IO::DynamicConfigAutoPtr( new DynamicConfigCounter(*tmp, owner, t) );
   }
 
-  boost::scoped_ptr<IODynamicConfigCounter> ioCounter_;
+  int                                       cnt_;
+  boost::scoped_ptr<IODynamicConfigCounter> ioCounterMetaAlert_;
+  boost::scoped_ptr<IODynamicConfigCounter> ioCounterAnalyzer_;
 }; // struct TestIOConnectionCounter
 
 
-IO::ConnectionPtrNN::SharedPtr g_conn(new TestIOConnectionCounter);
 
 struct TestClass
 {
   TestClass(void):
-    t_( g_conn->createNewTransaction("test_assigner") ),
-    startID_( IDAssigner::get()->assign(g_conn, t_).get() )
+    conn_(new TestIOConnectionCounter),
+    t_( conn_->createNewTransaction("test_assigner") )
   {
   }
 
-  Persistency::IO::DynamicConfigAutoPtr getDC(void)
-  {
-    return g_conn->dynamicConfig("Persistency::IDAssigner", t_);
-  }
-
-  IO::Transaction        t_;
-  MetaAlert::ID::Numeric startID_;
+  IO::ConnectionPtrNN         conn_;
+  IO::Transaction             t_;
+  Facades::detail::IDAssigner ida_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -90,21 +133,51 @@ factory tf("Persistency/Facades/IDAssigner");
 namespace tut
 {
 
-// test getting when no value is set value
+// test getting some value from singleton (smoke-test)
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid value returned", IDAssigner::get()->assign(g_conn, t_).get(), startID_+1u);
+  g_expectedKey=EXPK_METAALERT;
+  ensure_equals("invalid value returned", IDAssigner::get()->assignMetaAlertID(conn_, t_).get(), 0u);
 }
 
-// test reading multiple times
+// test getting meta-alert's ID when no value is set value
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("invalid value 1 returned", IDAssigner::get()->assign(g_conn, t_).get(), startID_+1u);
-  ensure_equals("invalid value 2 returned", IDAssigner::get()->assign(g_conn, t_).get(), startID_+2u);
+  g_expectedKey=EXPK_METAALERT;
+  ensure_equals("invalid value returned", ida_.assignMetaAlertID(conn_, t_).get(), 0u);
+}
+
+// test assigning meta-alerts' ID multiple times
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  g_expectedKey=EXPK_METAALERT;
+  ensure_equals("invalid value 1 returned", ida_.assignMetaAlertID(conn_, t_).get(), 0u);
+  ensure_equals("invalid value 2 returned", ida_.assignMetaAlertID(conn_, t_).get(), 1u);
+}
+
+// test getting analyzer's id when no value is set value
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  g_expectedKey=EXPK_ANALYZER;
+  ensure_equals("invalid value returned", ida_.assignAnalyzerID(conn_, t_).get(), 0u);
+}
+
+// test assigning analyzers' ID multiple times
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  g_expectedKey=EXPK_ANALYZER;
+  ensure_equals("invalid value 1 returned", ida_.assignAnalyzerID(conn_, t_).get(), 0u);
+  ensure_equals("invalid value 2 returned", ida_.assignAnalyzerID(conn_, t_).get(), 1u);
 }
 
 } // namespace tut
