@@ -127,7 +127,7 @@ struct TestClass
                 ") ON COMMIT DROP;" );
   }
 
-  //DataCleaner                dc_;
+  DataCleaner                dc_;
 
   const Alert::Name          name_;
   const AnalyzerPtrNN        analyzer_;
