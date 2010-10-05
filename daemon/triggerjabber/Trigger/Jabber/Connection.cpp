@@ -3,7 +3,17 @@
  *
  */
 #include "Logger/Logger.hpp"
+#include "System/ScopedPtrCustom.hpp"
 #include "Trigger/Jabber/Connection.hpp"
+
+namespace
+{
+  void unrefConnection(LmConnection *conn)
+  {
+    lm_connection_close (conn, NULL);
+    lm_connection_unref (conn);
+  }
+} // unnamed namespace
 
 namespace Trigger
 {
@@ -27,27 +37,29 @@ Connection::~Connection(void)
 LmConnection *Connection::connect(void) const
 {
   LmConnection *sess=lm_connection_new( cfg_.getServer().c_str() );
+  System::ScopedPtrCustom<LmConnection, unrefConnection> sessPtr(sess);
   // sanity check
-  if( sess==NULL )
+  if( sessPtr.get()==NULL )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "NULL structure received (connection creation failed)");
-  // TODO: mem-leak of 'sess' if exception throw. use System::ScopedPtrCustom<> helper
   // check if state is: connected
-  if( !lm_connection_open_and_block(sess, NULL) )
+  if( !lm_connection_open_and_block(sessPtr.get(), NULL) )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "not connected to server");
-  lm_connection_authenticate_and_block(sess, cfg_.getLogin().c_str(), cfg_.getPassword().c_str(), "acarm-ng", NULL);
+  lm_connection_authenticate_and_block(sessPtr.get(),
+                                       cfg_.getLogin().c_str(),
+                                       cfg_.getPassword().c_str(),
+                                       "acarm-ng", NULL);
   // check user authentivation
-  if( !lm_connection_is_authenticated(sess) )
+  if( !lm_connection_is_authenticated(sessPtr.get()) )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "not authenticate");
   // send presence message to jabber server (this is needed in order to receive messages)
   LmMessage *m = lm_message_new_with_sub_type(NULL, LM_MESSAGE_TYPE_PRESENCE, LM_MESSAGE_SUB_TYPE_AVAILABLE);
+  System::ScopedPtrCustom<LmMessage, lm_message_unref> mPtr(m);
   // TODO: what if m==NULL?
-  const bool ret = lm_connection_send(sess, m, NULL);
-  // TODO: mem-leak of 'm' if exception throw. use System::ScopedPtrCustom<> helper
+  const bool ret = lm_connection_send(sessPtr.get(), mPtr.get(), NULL);
   if(ret==false)
     throw ExceptionSendingError(SYSTEM_SAVE_LOCATION, cfg_.getServer(), ret);
-  lm_message_unref(m);
   /* setup the connection to send keep alive messages every 60 seconds */
-  lm_connection_set_keep_alive_rate(sess, 60);
+  lm_connection_set_keep_alive_rate(sessPtr.get(), 60);
   // looks like everything's done
   LOGMSG_INFO_S(log_) << "connected as: " << cfg_.getLogin() << " to Jabber server " << cfg_.getServer();
 
