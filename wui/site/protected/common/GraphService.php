@@ -1,5 +1,6 @@
 <?php
 
+// TODO: i suggest using 'require_once' (stop on error) instead of 'include_once' (flood output with warnings on error)
 // TODO: 'jpgraph' should be moved somewhere to protected/ directory, where all the sources are (access to this dir is protected with .htaccess)
 include_once('lib/jpgraph/jpgraph.php');
 include_once('lib/jpgraph/jpgraph_bar.php');
@@ -8,7 +9,7 @@ include_once('lib/jpgraph/jpgraph_led.php');
 include_once('lib/jpgraph/jpgraph_line.php');
 include_once('lib/jpgraph/jpgraph_pie.php');
 include_once('lib/jpgraph/jpgraph_pie3d.php');
-include_once('lib/jpgraph/jpgraph_line.php');
+include_once('lib/jpgraph/jpgraph_line.php');   // TODO: this file is included twice
 include_once('lib/jpgraph/jpgraph_date.php');
 
 
@@ -17,8 +18,9 @@ class GraphService extends TService
   public function init($config)
   {
     $request = Prado::getApplication()->getRequest();
-    $this->Response->ContentType="image/png";
+    $this->Response->ContentType="image/png";   // TODO: move this line one line up - it interleaves assign/check sequence for $request
 
+    // TODO: refactor this logic to if(null) throw; do_the_thing(); instead of if/else
     if ($request->contains('graph'))
       $this->type = TPropertyValue::ensureString($request['graph']);
     else
@@ -64,6 +66,7 @@ class GraphService extends TService
       $graph = $this->createAlertTypeChart('DMAlertTypes');
       break;
     default:
+      // TODO: describe these calls and parameters - they are non-obvious
       $led = new DigitalLED74(4);
       $led->SetSupersampling(5);
       $led->StrokeNumber(' WRONG GRAPH TYPE ',LEDC_YELLOW);
@@ -91,6 +94,7 @@ class GraphService extends TService
 
   private function issueQuery2dTime($q)
   {
+    // TODO: use issueQuery2d() implementation here
     $pairs=CSQLMap::get()->queryForList($q);
 
     $xdata = array();
@@ -109,7 +113,7 @@ class GraphService extends TService
   private function createSeverityChart($q)
   {
     // Create the Pie Graph.
-    $graph = new PieGraph(680,400,'auto');
+    $graph = new PieGraph(800,600,'auto');  // TODO: widht/height?
 
     // Set A title for the plot
     $graph->title->Set("Alert count by severity type");
@@ -139,7 +143,7 @@ class GraphService extends TService
   private function createAlertTypeChart($q)
   {
     // Setup the graph.
-    $graph = new Graph(800,800);
+    $graph = new Graph(800,800);    // TODO: widht/height?
     $graph->img->SetMargin(40,35,45,25);
     $graph->SetScale("textlog");
     $graph->SetAngle(90);

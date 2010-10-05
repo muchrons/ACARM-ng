@@ -78,7 +78,7 @@ void testObj::test<3>(void)
   ensure_equals("no triggers created", fc.size(), 1u);
 }
 
-// test creating two trigger with valid configuration
+// test creating two triggers with valid configuration
 template<>
 template<>
 void testObj::test<4>(void)
@@ -87,4 +87,5 @@ void testObj::test<4>(void)
   const TriggersCollection fc=create(queue_);
   ensure_equals("no triggers created", fc.size(), 2u);
 }
+
 } // namespace tut

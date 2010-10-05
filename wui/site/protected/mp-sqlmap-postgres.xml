@@ -113,13 +113,14 @@
     select name as key,count(name) as value from Alerts group by name order by count(name) DESC;
   </select>
 
+<!-- TODO: why id_severity>3 ? note that id_severity!=severity.level ! -->
   <select id="DMAlertCountTimeSeries" resultClass="CDMPair">
     select to_char(create_time,'YYYY-MM-DD') as key,count(*) as value from alerts where id_severity > 3 group by key order by key;
   </select>
 
+<!-- TODO: why id_severity>0 ? note that id_severity!=severity.level ! -->
   <select id="DMMetaAlertCountTimeSeries" resultClass="CDMPair">
     select to_char(create_time,'YYYY-MM-DD') as key,count(*) as value from meta_alerts where severity_delta >0 group by key order by key;
   </select>
-  
 
 </sqlMapConfig>
