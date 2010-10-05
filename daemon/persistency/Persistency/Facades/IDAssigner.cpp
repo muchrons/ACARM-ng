@@ -8,7 +8,7 @@
 #include "Base/Threads/Lock.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/Convert.hpp"
-#include "Persistency/IDAssigner.hpp"
+#include "Persistency/Facades/IDAssigner.hpp"
 
 using Persistency::IO::DynamicConfig;
 
@@ -19,6 +19,8 @@ const char *key  ="next free MetaAlert's ID";
 } // unnamed namespace
 
 namespace Persistency
+{
+namespace Facades
 {
 namespace detail
 {
@@ -74,4 +76,5 @@ MetaAlert::ID IDAssignerWrapper::assign(IO::ConnectionPtrNN conn, IO::Transactio
 }
 
 } // namespace detail
+} // namespace Facades
 } // namespace Persistency

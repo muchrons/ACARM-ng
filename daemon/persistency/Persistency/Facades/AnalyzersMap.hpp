@@ -21,7 +21,17 @@ namespace Facades
 class AnalyzersMap: private boost::noncopyable
 {
 public:
-  // TODO   
+  /** \brief gets analyzer, based on provided data, or creates new, if it did not exist yet.
+   *  \param name       analyzer's name.
+   *  \param version    analyzer's version.
+   *  \param os         analyzer's OS.
+   *  \param ip         analyzer's IP.
+   *  \return analyzer's object instance.
+   */
+  AnalyzerPtrNN getAnalyzer(const Analyzer::Name            &name,
+                            const Analyzer::Version         &version,
+                            const Analyzer::OperatingSystem &os,
+                            const Analyzer::IP              *ip);
 }; // class Analyzer
 
 } // namespace Facades

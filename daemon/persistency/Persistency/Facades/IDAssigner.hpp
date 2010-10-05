@@ -2,8 +2,8 @@
  * IDAssigner.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_IDASSIGNER_HPP_FILE
-#define INCLUDE_PERSISTENCY_IDASSIGNER_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_FACADES_IDASSIGNER_HPP_FILE
+#define INCLUDE_PERSISTENCY_FACADES_IDASSIGNER_HPP_FILE
 
 /* public header */
 
@@ -20,6 +20,8 @@
 #include "Persistency/IO/DynamicConfig.hpp"
 
 namespace Persistency
+{
+namespace Facades
 {
 namespace detail
 {
@@ -79,6 +81,7 @@ private:
  */
 typedef System::Singleton<detail::IDAssignerWrapper> IDAssigner;
 
+} // namespace Facades
 } // namespace Persistency
 
 #endif

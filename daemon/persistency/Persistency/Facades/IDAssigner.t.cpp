@@ -7,10 +7,11 @@
 #include <boost/scoped_ptr.hpp>
 
 #include "Commons/Convert.hpp"
-#include "Persistency/IDAssigner.hpp"
+#include "Persistency/Facades/IDAssigner.hpp"
 #include "Persistency/IO/IOStubs.t.hpp"
 
 using namespace Persistency;
+using namespace Persistency::Facades;
 
 namespace
 {
@@ -82,7 +83,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/IDAssigner");
+factory tf("Persistency/Facades/IDAssigner");
 } // unnamed namespace
 
 
