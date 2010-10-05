@@ -29,13 +29,12 @@ void MessageIO::send(const std::string &receiver, const std::string &msg)
   LmMessage *m = lm_message_new_with_sub_type(receiver.c_str(),
                                               LM_MESSAGE_TYPE_MESSAGE,
                                               LM_MESSAGE_SUB_TYPE_CHAT);
-  if(m==NULL)
+  System::ScopedPtrCustom<LmMessage,lm_message_unref> mPtr(m);
+  if(mPtr.get()==NULL)
     throw ExceptionCreatingError(SYSTEM_SAVE_LOCATION, receiver);
-  lm_message_node_add_child (m->node, "body", msg.c_str()); // TODO: can this call fail?
+  lm_message_node_add_child (mPtr.get()->node, "body", msg.c_str()); // TODO: can this call fail?
   assert( conn_.get()!=NULL );
-  const bool ret=lm_connection_send( conn_.get(), m, NULL);
-  lm_message_unref (m);             // TODO: wrap 'm' with System::ScopedPtrCustom<> instead of manualy
-                                    //       deallocate - it's more error prone in case of future changes
+  const bool ret=lm_connection_send( conn_.get(), mPtr.get(), NULL);
   if(ret==false)
     throw ExceptionSendingError(SYSTEM_SAVE_LOCATION, receiver, ret);
   // all done
