@@ -17,6 +17,11 @@ using namespace Persistency::Facades;
 namespace
 {
 
+//
+// NOTE: there is a very ugly construction that ensures all conditions are passed during
+//       initialization of IDAssigner's object
+//
+
 enum ExpectedKey
 {
   EXPK_UNKNOWN  =0,
@@ -24,19 +29,9 @@ enum ExpectedKey
   EXPK_ANALYZER =2
 };
 
+// global value that reflects what request is expected during given run
 ExpectedKey g_expectedKey=EXPK_UNKNOWN;
 
-const char *toString(ExpectedKey e)
-{
-  switch(e)
-  {
-    case EXPK_METAALERT: return "next free MetaAlert's ID";
-    case EXPK_ANALYZER:  return "next free Analyzer's ID";
-    default:
-      assert(!"unknown ID string requsted - code not updated?");
-      break;
-  }
-} // toString()
 
 // counter that forwards all calls to other counter
 struct DynamicConfigCounter: public IO::DynamicConfig
@@ -74,24 +69,27 @@ struct TestIOConnectionCounter: public TestIOConnection
   {
   }
 
+  // initialize internal counters
   virtual Persistency::IO::DynamicConfigAutoPtr dynamicConfigImpl(const Persistency::IO::DynamicConfig::Owner &owner,
                                                                   Persistency::IO::Transaction                &t)
   {
     tut::ensure_equals("invalid owner", owner.get(), std::string("Persistency::IDAssigner") );
 
     if( ioCounterMetaAlert_.get()==NULL )
-      ioCounterMetaAlert_.reset( new IODynamicConfigCounter(t, toString(EXPK_METAALERT) ) );
+      ioCounterMetaAlert_.reset( new IODynamicConfigCounter(t, "next free MetaAlert's ID") );
 
     if( ioCounterAnalyzer_.get()==NULL )
-      ioCounterAnalyzer_.reset( new IODynamicConfigCounter(t, toString(EXPK_ANALYZER) ) );
+      ioCounterAnalyzer_.reset( new IODynamicConfigCounter(t, "next free Analyzer's ID") );
 
     IODynamicConfigCounter *tmp=NULL;
+    // return expected counter
     switch(g_expectedKey)
     {
       case EXPK_METAALERT: tmp=ioCounterMetaAlert_.get(); break;
       case EXPK_ANALYZER:  tmp=ioCounterAnalyzer_.get();  break;
       default: tut::fail("expected key type is not set");
     }
+    // first two runs are initializations doen in IDAnalyzerPimpl, in a given order
     switch(++cnt_)
     {
       case 1: tmp=ioCounterMetaAlert_.get(); break;
