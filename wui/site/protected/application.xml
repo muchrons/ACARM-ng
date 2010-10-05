@@ -47,7 +47,7 @@
   <!-- configuration for available services -->
   <services>
     <service id="page" class="TPageService" DefaultPage="Home" />
-    <service id="graph" class="Application.common.GraphService" Width="600" Height="400" Shadow="false" />
+    <service id="graph" class="Application.common.GraphService" Width="600" Height="400" />    
   </services>
 
   <!-- application parameters

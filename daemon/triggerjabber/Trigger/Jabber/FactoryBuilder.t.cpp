@@ -122,7 +122,7 @@ void testObj::test<6>(void)
   ensureThrow(opts_);
 }
 
-// set no-throw when severity_threshold is not set
+// test no-throw when severity_threshold is not set
 template<>
 template<>
 void testObj::test<7>(void)
