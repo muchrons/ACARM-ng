@@ -67,7 +67,6 @@ following persistencies are supported:
   <pass>$3cr3t</pass>
   <host>db.server.my.domain.org</host>
   <port>5432</port>
-  </persistencytype>
 </persistency>
 
 
@@ -131,7 +130,7 @@ following filters and paramters are available:
   </onetomany>
 
   <!-- correlates multiple atacks originated from single host -->
-  <manytoone name="m2m">
+  <manytoone name="m2o">
     <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
   </manytoone>
 

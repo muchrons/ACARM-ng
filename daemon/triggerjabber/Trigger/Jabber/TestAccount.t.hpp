@@ -38,13 +38,12 @@ Trigger::Jabber::AccountConfig getTestConfig(void)
 {
   return getTestConfig1();
 }
+
 struct MessageHandler
 {
   std::string msg_;
   std::string sender_;
 };
-
-// TODO: move following code to CPP file
 
 LmHandlerResult
 handleMessages (LmMessageHandler * /*handler*/,
