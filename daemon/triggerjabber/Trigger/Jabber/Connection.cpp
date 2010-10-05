@@ -10,8 +10,12 @@ namespace
 {
   void unrefConnection(LmConnection *conn)
   {
-    lm_connection_close (conn, NULL);
-    lm_connection_unref (conn);
+    if(conn!=NULL)
+    {
+      lm_connection_close (conn, NULL);
+      lm_connection_unref (conn);
+      conn=NULL;
+    }
   }
 } // unnamed namespace
 
