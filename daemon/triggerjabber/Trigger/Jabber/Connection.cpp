@@ -10,8 +10,11 @@ namespace
 {
 void unrefConnection(LmConnection *conn)
 {
-  lm_connection_close (conn, NULL);
-  lm_connection_unref (conn);
+  if(conn!=NULL)
+  {
+    lm_connection_close (conn, NULL);
+    lm_connection_unref (conn);
+  }
 } // unrefConnection()
 } // unnamed namespace
 
@@ -36,8 +39,8 @@ Connection::~Connection(void)
 // connection to server
 LmConnection *Connection::connect(void) const
 {
-  LmConnection *sess=lm_connection_new( cfg_.getServer().c_str() );
-  System::ScopedPtrCustom<LmConnection, unrefConnection> sessPtr(sess);
+  typedef System::ScopedPtrCustom<LmConnection, unrefConnection> sessScopedPtr;
+  sessScopedPtr sessPtr(lm_connection_new( cfg_.getServer().c_str() ));
   // sanity check
   if( sessPtr.get()==NULL )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "NULL structure received (connection creation failed)");
@@ -63,7 +66,7 @@ LmConnection *Connection::connect(void) const
   // looks like everything's done
   LOGMSG_INFO_S(log_) << "connected as: " << cfg_.getLogin() << " to Jabber server " << cfg_.getServer();
 
-  return sess;
+  return sessPtr.release();
 }
 
 } // namespace Jabber
