@@ -5,10 +5,10 @@
 #ifndef INCLUDE_TESTHELPERS_PERSISTENCY_IODYNAMICCONFIGMEMORY_HPP_FILE
 #define INCLUDE_TESTHELPERS_PERSISTENCY_IODYNAMICCONFIGMEMORY_HPP_FILE
 
-#include <tut/tut.hpp>
+/* public header */
+
 #include <map>
 #include <string>
-#include <cassert>
 
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
@@ -24,8 +24,8 @@ public:
   typedef std::map<std::string, std::string> Memory;
 
   IODynamicConfigMemory(const ::Persistency::IO::DynamicConfig::Owner &owner,
-                     ::Persistency::IO::Transaction                   &t,
-                     Memory                                           &mem);
+                        ::Persistency::IO::Transaction                &t,
+                        Memory                                        &mem);
 
   virtual void writeImpl(::Persistency::IO::Transaction &t, const Key &key, const Value &value);
   virtual ValueNULL readImpl(::Persistency::IO::Transaction &t, const Key &key);

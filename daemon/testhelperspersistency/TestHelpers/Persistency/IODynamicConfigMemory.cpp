@@ -3,7 +3,6 @@
  *
  */
 #include <tut/tut.hpp>
-#include <cassert>
 
 #include "TestHelpers/Persistency/IODynamicConfigMemory.hpp"
 
