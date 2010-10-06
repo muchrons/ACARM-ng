@@ -2,7 +2,6 @@
  * IDMEFParserAnalyzer.cpp
  *
  */
-#include <sstream>
 #include "Base/NullValue.hpp"
 #include "Input/Prelude/ExceptionParse.hpp"
 #include "Input/Prelude/IDMEFParserCommons.hpp"
@@ -56,24 +55,16 @@ std::string IDMEFParserAnalyzer::parsePreludeID(idmef_analyzer_t *ptr) const
 {
   const prelude_string_t *idmef_id = idmef_analyzer_get_analyzerid(ptr);
   if(idmef_id==NULL)
-  {
-    // if id's not set directly, create some string out of what we have...
-    stringstream ss;
-    ss << "UnknownID/" << nonNULL( getName().get() )
-       << "/" << nonNULL( getVersion().get() )
-       << "/" << nonNULL( getOS().get() )
-       << "/" << nonNULL( getIP() );
-    return ss.str();
-  }
+    return "";
   return prelude_string_get_string(idmef_id);
 }
 
 Persistency::Analyzer::Name IDMEFParserAnalyzer::parseName(idmef_analyzer_t *ptr) const
 {
   const prelude_string_t *idmef_name = idmef_analyzer_get_name(ptr);
-  if(idmef_name)
-    return prelude_string_get_string(idmef_name);
-  return "Unknown";
+  if(idmef_name==NULL)
+    return "Unknown";
+  return prelude_string_get_string(idmef_name);
 }
 
 Persistency::Analyzer::Version IDMEFParserAnalyzer::parseVersion(idmef_analyzer_t *ptr) const

@@ -140,8 +140,11 @@ Persistency::AnalyzerPtrNN makeAnalyzer(idmef_analyzer_t *elem, BackendFacade &b
 {
   assert(elem!=NULL);
   const IDMEFParserAnalyzer an(elem);
-  return bf.getAnalyzer( an.getPreludeID(),
-                         an.getName(),
+  std::stringstream         ss;
+  ss << an.getName().get();
+  if( an.getPreludeID()!="" )
+    ss << " (" << an.getPreludeID() << ")";
+  return bf.getAnalyzer( ss.str(),
                          an.getVersion(),
                          an.getOS(),
                          an.getIP() );
