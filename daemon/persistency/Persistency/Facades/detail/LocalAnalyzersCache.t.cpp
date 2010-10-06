@@ -32,8 +32,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Analyzer::IP ip=Analyzer::IP::from_string("1.2.3.4");
-  const std::string  h =lac_.makeHash("my name", "1.2.3", "linux rulez", &ip);
+  const Analyzer::IP              ip=Analyzer::IP::from_string("1.2.3.4");
+  const LocalAnalyzersCache::Hash h =lac_.makeHash("my name", "1.2.3", "linux rulez", &ip);
   ensure_equals("invalid hash", h, "my name/1.2.3/linux rulez/1.2.3.4");
 }
 
@@ -42,7 +42,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const std::string h=lac_.makeHash("my name", NULL, NULL, NULL);
+  const LocalAnalyzersCache::Hash h=lac_.makeHash("my name", NULL, NULL, NULL);
   ensure_equals("invalid hash", h, "my name/<NULL>/<NULL>/<NULL>");
 }
 

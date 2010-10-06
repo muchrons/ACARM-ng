@@ -22,10 +22,10 @@ const char *cstrHash(const char *in)
 } // cstrHash()
 } // unnamed namespace
 
-std::string LocalAnalyzersCache::makeHash(const Analyzer::Name            &name,
-                                          const Analyzer::Version         &version,
-                                          const Analyzer::OperatingSystem &os,
-                                          const Analyzer::IP              *ip) const
+LocalAnalyzersCache::Hash LocalAnalyzersCache::makeHash(const Analyzer::Name            &name,
+                                                        const Analyzer::Version         &version,
+                                                        const Analyzer::OperatingSystem &os,
+                                                        const Analyzer::IP              *ip) const
 {
   std::stringstream ss;
   ss << cstrHash( name.get() );

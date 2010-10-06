@@ -2,18 +2,21 @@
  * AnalyzersCreatorImpl.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_FACADES_DETAIL_ANALYZERSMAPIMPL_HPP_FILE
-#define INCLUDE_PERSISTENCY_FACADES_DETAIL_ANALYZERSMAPIMPL_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_FACADES_DETAIL_ANALYZERSCREATORIMPL_HPP_FILE
+#define INCLUDE_PERSISTENCY_FACADES_DETAIL_ANALYZERSCREATORIMPL_HPP_FILE
 
 #include <string>
 #include <boost/noncopyable.hpp>
 
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/IO/Connection.hpp"
+#include "Persistency/Facades/detail/LocalAnalyzersCache.hpp"
 
 namespace Persistency
 {
 namespace Facades
+{
+namespace detail
 {
 
 /** \brief implementation for AnalyzersCreator that simplifies API a bit.
@@ -34,16 +37,19 @@ public:
    *  \param ip      analyzer's IP.
    *  \return analyzer's object instance.
    */
-  AnalyzerPtrNN construct(const Analyzer::Name            &name,
+  AnalyzerPtrNN construct(const LocalAnalyzersCache::Hash &hash,
+                          const Analyzer::Name            &name,
                           const Analyzer::Version         &version,
                           const Analyzer::OperatingSystem &os,
                           const Analyzer::IP              *ip);
 
 private:
-  IO::ConnectionPtrNN  conn_;
-  IO::Transaction     &t_;
+  IO::ConnectionPtrNN       conn_;
+  IO::Transaction          &t_;
+  IO::DynamicConfigAutoPtr  dc_;
 }; // class AnalyzersCreatorImpl
 
+} // namespace detail
 } // namespace Facades
 } // namespace Persistency
 

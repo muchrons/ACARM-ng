@@ -23,6 +23,9 @@ namespace detail
  */
 struct LocalAnalyzersCache: public std::map<std::string, AnalyzerPtrNN>
 {
+  /** \brief hash value. */
+  typedef std::string Hash;
+
   /** \brief hash-computing function.
    *  \param name    analyzer's name.
    *  \param version analyzer's version.
@@ -30,10 +33,10 @@ struct LocalAnalyzersCache: public std::map<std::string, AnalyzerPtrNN>
    *  \param ip      analyzer's IP.
    *  \return hash of a given paramters.
    */
-  std::string makeHash(const Analyzer::Name            &name,
-                       const Analyzer::Version         &version,
-                       const Analyzer::OperatingSystem &os,
-                       const Analyzer::IP              *ip) const;
+  Hash makeHash(const Analyzer::Name            &name,
+                const Analyzer::Version         &version,
+                const Analyzer::OperatingSystem &os,
+                const Analyzer::IP              *ip) const;
 }; // struct LocalAnalyzersCache
 
 } // namespace detail
