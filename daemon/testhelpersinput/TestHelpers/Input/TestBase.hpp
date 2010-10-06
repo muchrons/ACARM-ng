@@ -21,11 +21,8 @@ struct TestBase: public Persistency::TestStubs
 {
   TestBase(void);
 
-  ::Persistency::IO::ConnectionPtrNN                  conn_;
-private:
-  boost::scoped_ptr< ::Persistency::IO::Transaction > trans_;
-public:
-  BackendFacadeStub                                   bf_;
+  ::Persistency::IO::ConnectionPtrNN conn_;
+  BackendFacadeStub                  bf_;
 };
 
 } // namespace Input
