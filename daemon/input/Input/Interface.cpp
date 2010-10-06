@@ -11,11 +11,9 @@ namespace Input
 
 Interface::Interface(ReaderPtrNN                       reader,
                      Persistency::IO::ConnectionPtrNN  conn,
-                     Core::Types::AlertsFifo          &output,
-                     CommonDataPtrNN                   commonData):
-  log_( Logger::NodeName( "input.interface",
-                          Logger::NodeName::removeInvalidChars( reader->getType() ).c_str() ) ),
-  thread_( Thread(reader, conn, output, commonData) )
+                     Core::Types::AlertsFifo          &output):
+  log_( Logger::NodeName( "input.interface", Logger::NodeName::removeInvalidChars( reader->getType() ).c_str() ) ),
+  thread_( Thread(reader, conn, output) )
 {
   LOGMSG_INFO(log_, "reader's thread started");
 }
