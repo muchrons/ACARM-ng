@@ -5,6 +5,7 @@
 #include <cassert>
 
 #include "Persistency/Facades/detail/AnalyzersCreatorImpl.hpp"
+#include "Commons/Convert.hpp"
 
 namespace Persistency
 {
@@ -28,6 +29,9 @@ AnalyzerPtrNN AnalyzersCreatorImpl::construct(const LocalAnalyzersCache::Hash &h
                                               const Analyzer::IP              *ip)
 {
   assert( dc_.get()!=NULL );
+
+  // read saved value
+
   // TODO: ...
   return AnalyzerPtrNN( new Analyzer(1111u, name, version, os, ip) );
 }

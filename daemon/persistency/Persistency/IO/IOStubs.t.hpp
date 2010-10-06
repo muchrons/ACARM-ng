@@ -188,6 +188,39 @@ public:
 }; // class IODynamicConfigCounter
 
 
+struct IODynamicConfigMap: public Persistency::IO::DynamicConfig
+{
+public:
+  typedef std::map<std::string, std::string> Memory;
+
+  IODynamicConfigMap(Persistency::IO::Transaction &t, Memory &mem):
+    Persistency::IO::DynamicConfig("some owner", t),
+    mem_(mem)
+  {
+  }
+
+  virtual void writeImpl(Persistency::IO::Transaction &/*t*/, const Key &key, const Value &value)
+  {
+    mem_[ key.get() ]=value.get();
+  }
+
+  virtual ValueNULL readImpl(Persistency::IO::Transaction &/*t*/, const Key &key)
+  {
+    if( mem_.find( key.get() )==mem_.end() )
+      return ValueNULL();
+    return ValueNULL( mem_[ key.get() ] );
+  }
+
+  virtual Value readConstImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/)
+  {
+    tut::fail("readConst() should NOT be called at all");
+    return Value("???");
+  }
+
+  Memory &mem_;
+}; // class IODynamicConfigMap
+
+
 class IORestorer: public Persistency::IO::Restorer
 {
 public:
