@@ -25,6 +25,8 @@ namespace detail
 {
 
 /** \brief wrapper for creating IDs.
+ *
+ *  \warning do NOT use this class directly. use singleton declared below instead!
  */
 class IDAssigner: private boost::noncopyable
 {
@@ -50,6 +52,7 @@ public:
   Analyzer::ID assignAnalyzerID(IO::ConnectionPtrNN conn, IO::Transaction &t);
 
 private:
+  // TODO: add protection os that only one instance of this class may exist at a time
   template<typename T>
   typename T::ID assign(IO::ConnectionPtrNN conn, IO::Transaction &t);
 
