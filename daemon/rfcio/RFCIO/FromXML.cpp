@@ -24,7 +24,7 @@ namespace RFCIO
 // helper, unnamed namespace
 namespace
 {
-std::string parseString(const xmlpp::Element &node)
+string parseString(const xmlpp::Element &node)
 {
   const xmlpp::TextNode *txt=node.get_child_text();
   if(txt==NULL)
@@ -32,13 +32,21 @@ std::string parseString(const xmlpp::Element &node)
   return txt->get_content();
 }
 
-std::string parseParameter(const xmlpp::Element &node, const char *name)
+NullValue<string> parseParameterIfHas(const xmlpp::Element &node, const char *name)
 {
   assert(name!=NULL);
   const xmlpp::Attribute *tmp=node.get_attribute(name);
   if(tmp==NULL)
+    return NullValue<string>();
+  return NullValue<string>( tmp->get_value() );
+}
+
+string parseParameter(const xmlpp::Element &node, const char *name)
+{
+  const NullValue<string> tmp=parseParameterIfHas(node, name);
+  if( tmp.get()==NULL )
     throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, node.get_path(), name);
-  return tmp->get_value();
+  return *tmp.get();
 }
 
 const xmlpp::Element *findOneChildIfHas(const xmlpp::Element &parent, const char *name)
@@ -61,17 +69,19 @@ const xmlpp::Element &findOneChild(const xmlpp::Element &parent, const char *nam
 }
 
 template<typename T>
-Base::NullValue<T> parseChildIfHasAs(const xmlpp::Element &node, const char *name)
+NullValue<T> parseChildIfHasAs(const xmlpp::Element &node, const char *name)
 {
   const xmlpp::Element *e=findOneChildIfHas(node, name);
   if(e==NULL)
-    return Base::NullValue<T>();
-  return Base::NullValue<T>( Commons::Convert::to<T>( parseString(*e) ) );
+    return NullValue<T>();
+  return NullValue<T>( Commons::Convert::to<T>( parseString(*e) ) );
 }
 } // unnamed namespace
 
-FromXML::FromXML(void):
-  log_("rfcio.fromxml")
+FromXML::FromXML(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t):
+  log_("rfcio.fromxml"),
+  conn_(conn),
+  t_(t)
 {
 }
 
@@ -81,8 +91,29 @@ Persistency::GraphNodePtrNN FromXML::parseAlert(const xmlpp::Element &alert) con
 }
 */
 
-Persistency::AnalyzerPtrNN FromXML::parseAnalyzer(const xmlpp::Element &alert) const
+Persistency::AnalyzerPtrNN FromXML::parseAnalyzer(const xmlpp::Element &analyzer) const
 {
+  ensureNode("Analyzer", analyzer);
+  const FromXML::NodeData  nodeData   =parseNode( findOneChild(analyzer, "Node") );
+  const char              *name       =(nodeData.first.get()==NULL)?NULL:nodeData.first->c_str();
+  const NullValue<string>  versionData=parseParameterIfHas(analyzer, "version");
+  const char              *version    =(versionData.get()==NULL)?NULL:versionData.get()->c_str();
+  const NullValue<string>  osData     =parseParameterIfHas(analyzer, "ostype");
+  const char              *os         =(osData.get()==NULL)?NULL:osData.get()->c_str();
+  Persistency::AnalyzerPtrNN out=analyzersCreator_.construct( conn_, t_, name, version, os, nodeData.second.get() );
+  // check if ID is assigned the same way the one in file was. if not, report an error and proceed.
+  const NullValue<string>  idData     =parseParameterIfHas(analyzer, "analyzerid");
+  const char              *id         =(idData.get()==NULL)?NULL:idData.get()->c_str();
+  if(id!=NULL)
+  {
+    if( Convert::to<string>( out->getID().get() )!=id )
+      LOGMSG_ERROR_S(log_) << "parsed analyzer has ID '" << id << "', but system assigned it ID "
+                           << out->getID().get() << "; this can happen if alert comes from different "
+                              "system that assignes IDs independently; proceeding with id "
+                           << out->getID().get();
+  }
+  // return the result
+  return out;
 }
 
 Persistency::Timestamp FromXML::parseCreateTime(const xmlpp::Element &createTime) const
@@ -336,10 +367,13 @@ FromXML::NodeData FromXML::parseNode(const xmlpp::Element &node) const
   const xmlpp::Element *nameElem=findOneChildIfHas(node, "name");
   if(nameElem!=NULL)
     name=StringNull( parseString(*nameElem) );
-  // parse IP (must be present)
-  const xmlpp::Element &ipElem=findOneChild(node, "Address");
+  // parse IP, if present
+  IPNull ip;
+  const xmlpp::Element *ipElem=findOneChildIfHas(node, "Address");
+  if(ipElem!=NULL)
+    ip=IPNull( parseAddress(*ipElem) );
 
-  return NodeData( name, parseAddress(ipElem) );
+  return NodeData(name, ip);
 }
 
 void FromXML::ensureNode(const char *name, const xmlpp::Element &node) const
@@ -389,6 +423,9 @@ Persistency::HostPtrNN FromXML::parseHost(const char *type, const xmlpp::Element
   // get node data (ip/name)
   const NodeData  nodeData=parseNode( findOneChild(host, "Node") );
   const char     *name    =( nodeData.first.get()==NULL ) ? NULL : nodeData.first->c_str();
+  // IP is obligatory here
+  if( nodeData.second.get()==NULL )
+    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, findOneChild(host, "Node").get_path(), "Address");
 
   // get and copy reported services
   Host::ReportedServices  rSrvs;
@@ -406,8 +443,9 @@ Persistency::HostPtrNN FromXML::parseHost(const char *type, const xmlpp::Element
     rProcs.push_back( parseProcessAndUser(host) );
 
   // return new object
+  assert( nodeData.second.get()!=NULL );
   return Persistency::HostPtrNN(
-      new Host( nodeData.second, NULL, NULL, ReferenceURLPtr(), rSrvs, rProcs, name ) );
+      new Host( *nodeData.second.get(), NULL, NULL, ReferenceURLPtr(), rSrvs, rProcs, name ) );
 }
 
 } // namespace RFCIO

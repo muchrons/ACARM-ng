@@ -16,6 +16,8 @@
 #include "Logger/Node.hpp"
 #include "Persistency/IPTypes.hpp"
 #include "Persistency/GraphNode.hpp"
+#include "Persistency/IO/Connection.hpp"
+#include "Persistency/Facades/AnalyzersCreator.hpp"
 #include "RFCIO/ExceptionMissingElement.hpp"
 #include "RFCIO/ExceptionInvalidElement.hpp"
 
@@ -31,13 +33,14 @@ class FromXML: private boost::noncopyable
 public:
   /** \brief type representing IP. */
   typedef IPTypesBase::IP                                             IP;
+  typedef Base::NullValue<IP>                                         IPNull;
   typedef boost::tuple<Persistency::Severity, Persistency::Certainty> Assessment;
   typedef boost::tuple<std::string, Persistency::ReferenceURLPtr>     Classification;
   typedef Base::NonEmptyVector<Persistency::ServicePtrNN>             ServiceVector;
   typedef Base::NullValue<std::string>                                StringNull;
-  typedef std::pair<StringNull, IP>                                   NodeData;
+  typedef std::pair<StringNull, IPNull>                               NodeData;
 
-  FromXML(void);
+  FromXML(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t);
 
   Persistency::GraphNodePtrNN parseAlert(const xmlpp::Element &alert) const;
   Persistency::AnalyzerPtrNN parseAnalyzer(const xmlpp::Element &alert) const;
@@ -60,7 +63,10 @@ private:
   double parseConfidenceValue(const std::string &rating, const xmlpp::Element &node) const;
   Persistency::HostPtrNN parseHost(const char *type, const xmlpp::Element &host) const;
 
-  Logger::Node log_;
+  Logger::Node                                    log_;
+  mutable Persistency::IO::ConnectionPtrNN        conn_;
+  mutable Persistency::IO::Transaction           &t_;
+  mutable Persistency::Facades::AnalyzersCreator  analyzersCreator_;
 }; // class FromXML
 
 } // namespace RFCIO

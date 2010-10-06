@@ -7,6 +7,7 @@
 #include <sstream>
 
 #include "RFCIO/FromXML.hpp"
+#include "Persistency/IO/create.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
@@ -19,6 +20,14 @@ namespace
 
 struct TestClass: public TestHelpers::Persistency::TestStubs
 {
+  TestClass(void):
+    conn_( IO::create() ),
+    t_( conn_->createNewTransaction("test_from_xml") ),
+    fx_(conn_, t_)
+  {
+  }
+
+
   const xmlpp::Element &parseXML(const char *xml)
   {
     assert(xml!=NULL);
@@ -163,8 +172,10 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     tut::ensure_equals("invalid name", out->getName().get(), string("a.b.c") );
   }
 
-  xmlpp::DomParser dp_;
-  FromXML          fx_;
+  IO::ConnectionPtrNN conn_;
+  IO::Transaction     t_;
+  FromXML             fx_;
+  xmlpp::DomParser    dp_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -750,10 +761,11 @@ void testObj::test<41>(void)
   ensure("name is NULL", out.first.get()!=NULL );
   ensure_equals("invalid name", out.first->c_str(), string("some name") );
   // test ip
-  ensure_equals("invalid IP", out.second.to_string(), "1.2.3.4");
+  ensure("IP is NULL", out.second.get()!=NULL );
+  ensure_equals("invalid IP", out.second->to_string(), "1.2.3.4");
 }
 
-// test parsing when no name is present
+// test parsing when no name nor IP is present
 template<>
 template<>
 void testObj::test<42>(void)
@@ -761,38 +773,15 @@ void testObj::test<42>(void)
   const char *in="<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
                  "<idmef:Node category=\"host\">"
                  //  "<idmef:name>some name</idmef:name>"
-                   "<idmef:Address category=\"ipv4-addr\">"
-                     "<idmef:address>1.2.3.4</idmef:address>"
-                   "</idmef:Address>"
-                 "</idmef:Node>"
-                 "</idmef:IDMEF-Message>\n";
-  const FromXML::NodeData out=fx_.parseNode( parseXML(in) );
-  // test name
-  ensure("name is not NULL", out.first.get()==NULL );
-}
-
-// test throw when IP's not specified
-template<>
-template<>
-void testObj::test<43>(void)
-{
-  const char *in="<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
-                 "<idmef:Node category=\"host\">"
-                   "<idmef:name>some name</idmef:name>"
                  //  "<idmef:Address category=\"ipv4-addr\">"
                  //    "<idmef:address>1.2.3.4</idmef:address>"
                  //  "</idmef:Address>"
                  "</idmef:Node>"
                  "</idmef:IDMEF-Message>\n";
-  try
-  {
-    fx_.parseNode( parseXML(in) );
-    fail("parsing didn't failed on missing IP address");
-  }
-  catch(const ExceptionMissingElement &)
-  {
-    // this is expected
-  }
+  const FromXML::NodeData out=fx_.parseNode( parseXML(in) );
+  // test name
+  ensure("name is not NULL", out.first.get()==NULL );
+  ensure("IP is not NULL", out.second.get()==NULL );
 }
 
 // test throw when invalid node is given as node
@@ -852,7 +841,7 @@ void testObj::test<48>(void)
 {
   const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                  "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
-                   "<idmef:Analyzer analyzerid=\"123\" version=\"v1.2.3\">"
+                   "<idmef:Analyzer analyzerid=\"12345678\" ostype=\"linux 2.6.32\" version=\"v1.2.3\">"
                      "<idmef:Node category=\"host\">"
                        "<idmef:name>some name</idmef:name>"
                        "<idmef:Address category=\"ipv4-addr\">"
@@ -861,21 +850,48 @@ void testObj::test<48>(void)
                      "</idmef:Node>"
                    "</idmef:Analyzer>"
                  "</idmef:IDMEF-Message>\n";
-  fail("TODO");
   const Persistency::AnalyzerPtrNN out=fx_.parseAnalyzer( parseXML(in) );
+  // NOTE: id MAY differ - it is set within the system
+  ensure_equals("invalid name", out->getName().get(), string("some name") );
+  ensure("IP not set", out->getIP()!=NULL );
+  ensure_equals("invalid IP", out->getIP()->to_string(), string("1.2.3.4") );
+  ensure_equals("invalid version", out->getVersion().get(), string("v1.2.3") );
+  ensure_equals("invalid OS", out->getOperatingSystem().get(), string("linux 2.6.32") );
 }
 
-// 
+// test parsing minimal analyzer
 template<>
 template<>
 void testObj::test<49>(void)
 {
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Analyzer>"
+                     "<idmef:Node category=\"host\">"
+                       "<idmef:name>some name</idmef:name>"
+                     "</idmef:Node>"
+                   "</idmef:Analyzer>"
+                 "</idmef:IDMEF-Message>\n";
+  const Persistency::AnalyzerPtrNN out=fx_.parseAnalyzer( parseXML(in) );
+  // NOTE: id MAY differ - it is set within the system
+  ensure_equals("invalid name", out->getName().get(), string("some name") );
+  ensure("IP is set", out->getIP()==NULL );
+  ensure("version is set", out->getVersion()==NULL );
+  ensure("OS is set", out->getOperatingSystem()==NULL );
+}
+
+// test if exception is thrown when invalid node is passed
+template<>
+template<>
+void testObj::test<50>(void)
+{
+  testInvalidNodeName(&FromXML::parseAnalyzer);
 }
 
 // 
 template<>
 template<>
-void testObj::test<50>(void)
+void testObj::test<43>(void)
 {
 }
 
