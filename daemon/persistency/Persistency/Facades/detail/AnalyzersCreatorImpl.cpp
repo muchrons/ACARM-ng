@@ -6,6 +6,7 @@
 
 #include "Persistency/Facades/detail/AnalyzersCreatorImpl.hpp"
 #include "Commons/Convert.hpp"
+#include "Persistency/Facades/IDAssigner.hpp"
 
 namespace Persistency
 {
@@ -30,10 +31,18 @@ AnalyzerPtrNN AnalyzersCreatorImpl::construct(const LocalAnalyzersCache::Hash &h
 {
   assert( dc_.get()!=NULL );
 
-  // read saved value
+  // read saved ID for a given analyzer
+  const IO::DynamicConfig::ValueNULL r=dc_->read(hash);
+  if( r.get()!=NULL )
+  {
+    const Analyzer::ID id( Commons::Convert::to<Analyzer::ID::Numeric>( r.get()->get() ) );
+    return AnalyzerPtrNN( new Analyzer(id, name, version, os, ip) );
+  }
 
-  // TODO: ...
-  return AnalyzerPtrNN( new Analyzer(1111u, name, version, os, ip) );
+  // if ID is not assigned to this object yet, assign one as save it
+  const Analyzer::ID id( Facades::IDAssigner::get()->assignAnalyzerID(conn_, t_) ); // assign
+  dc_->write( hash, Commons::Convert::to<std::string>( id.get() ) );                // save mapping
+  return AnalyzerPtrNN( new Analyzer(id, name, version, os, ip) );                  // return object
 }
 
 } // namespace detail
