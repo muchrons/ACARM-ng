@@ -8,6 +8,7 @@
 
 #include "Persistency/Facades/AnalyzersCreator.hpp"
 #include "Persistency/Facades/TestIOConnectionParamMap.t.hpp"
+#include "Persistency/Facades/IDAssigner.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -19,16 +20,14 @@ namespace
 struct TestClass
 {
   TestClass(void):
-    connMap_(new TestIOConnectionParamMap),
-    conn_(connMap_),
+    conn_(new TestIOConnectionParamMap),
     t_( conn_->createNewTransaction("test_analyzers_creator") )
   {
   }
 
-  TestIOConnectionParamMap  *connMap_;
-  IO::ConnectionPtrNN        conn_;
-  IO::Transaction            t_;
-  Facades::AnalyzersCreator  ac_;
+  IO::ConnectionPtrNN conn_;
+  IO::Transaction     t_;
+  AnalyzersCreator    ac_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -48,6 +47,7 @@ void testObj::test<1>(void)
 {
   const Analyzer::IP ip=Analyzer::IP::from_string("10.10.10.99");
   AnalyzerPtrNN      a =ac_.construct(conn_, t_, "Disturbed", "6.66", "mpg123", &ip);
+  ensure_equals("invalid ID", a->getID().get(), 0u);
   ensure_equals("invalid name", a->getName().get(), string("Disturbed") );
   ensure_equals("invalid version", a->getVersion().get(), string("6.66") );
   ensure_equals("invalid os", a->getOperatingSystem().get(), string("mpg123") );
@@ -70,10 +70,11 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  AnalyzerPtrNN a1=ac_.construct(conn_, t_, "Disturbed/1", "6.66", "mpg123", NULL);
-  AnalyzerPtrNN a2=ac_.construct(conn_, t_, "Disturbed/2", "6.66", "mpg123", NULL);
-  ensure_equals("invalid ID 1", a1->getID().get(), 0u);
-  ensure_equals("invalid ID 2", a2->getID().get(), 1u);
+  const Analyzer::ID::Numeric nextID=Facades::IDAssigner::get()->assignAnalyzerID(conn_, t_).get();
+  const AnalyzerPtrNN         a1    =ac_.construct(conn_, t_, "Disturbed/1", "6.66", "mpg123", NULL);
+  const AnalyzerPtrNN         a2    =ac_.construct(conn_, t_, "Disturbed/2", "6.66", "mpg123", NULL);
+  ensure_equals("invalid ID 1", a1->getID().get(), nextID+1u);
+  ensure_equals("invalid ID 2", a2->getID().get(), nextID+2u);
 }
 
 } // namespace tut
