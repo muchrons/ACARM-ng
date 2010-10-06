@@ -1,5 +1,5 @@
 /*
- * ToXML.t.cpp
+ * FromXML.t.cpp
  *
  */
 #include <tut.h>
@@ -7,8 +7,7 @@
 #include <sstream>
 
 #include "RFCIO/FromXML.hpp"
-#include "Persistency/IO/create.hpp"
-#include "TestHelpers/Persistency/TestStubs.hpp"
+#include "RFCIO/FromXML_tests_common.t.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace std;
@@ -18,7 +17,7 @@ using namespace Persistency;
 namespace
 {
 
-struct TestClass: public TestHelpers::Persistency::TestStubs
+struct TestClass: public TestClassFromXMLBase
 {
   TestClass(void):
     conn_( IO::create() ),
@@ -178,7 +177,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   xmlpp::DomParser    dp_;
 };
 
-typedef tut::test_group<TestClass> factory;
+typedef tut::test_group<TestClass, 60> factory;
 typedef factory::object testObj;
 
 factory tf("RFCIO/FromXML");
@@ -893,6 +892,14 @@ template<>
 template<>
 void testObj::test<43>(void)
 {
+}
+
+// 
+template<>
+template<>
+void testObj::test<51>(void)
+{
+  fail("AAAA");
 }
 
 } // namespace tut
