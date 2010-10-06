@@ -28,6 +28,7 @@ LocalAnalyzersCache::Hash LocalAnalyzersCache::makeHash(const Analyzer::Name    
                                                         const Analyzer::IP              *ip) const
 {
   std::stringstream ss;
+  ss << "Anlzr:HASH#";
   ss << cstrHash( name.get() );
   ss << "/";
   ss << cstrHash( version.get() );
