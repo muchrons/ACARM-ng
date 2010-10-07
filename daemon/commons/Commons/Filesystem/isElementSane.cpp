@@ -22,17 +22,24 @@ bool isElementSane(const boost::filesystem::path &p)
   const Logger::Node log("commons.filesystem.iselementsane");
   LOGMSG_DEBUG_S(log)<<"checking '"<<p<<"' (cannonical: '"<<system_complete(p)<<"')";
 
-  // perform stat
+  // check for existance of element at all
+  if( !exists(p) )
+  {
+    LOGMSG_WARN_S(log)<<"element '"<<p<<"' does not exist - aborting...";
+    throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "exists", "element does not exist");
+  }
+
+  // perform lstat (stat LINK, not place pointed to!)
   struct stat st;
-  if( stat( p.string().c_str(), &st )!=0 )
+  if( lstat( p.string().c_str(), &st )!=0 )
   {
     LOGMSG_ERROR_S(log)<<"unable to stat file '"<<p<<"' (connonical: '"<<system_complete(p)<<"')";
-    throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "stat",
-                                "unable to stat new file (required to verify file's details)");
+    throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "lstat",
+                                "unable to stat file (required to verify file's details)");
   }
 
   // symlinks are never allowed
-  if( symbolic_link_exists(p) )
+  if( S_ISLNK(st.st_mode) )
   {
     LOGMSG_WARN_S(log)<<"file '"<<p<<"' is a symlink - looks suspicious - aborting...";
     return false;
