@@ -15,6 +15,8 @@ namespace
 {
 GraphNodePtrNN parse(const xmlpp::Document &doc, IO::ConnectionPtrNN conn, IO::Transaction &t)
 {
+  // TODO: add autoamatic validation with XML-Schema and throw exception in case of error
+
   // get parent node
   const xmlpp::Element *root=doc.get_root_node();
   if(root==NULL)
