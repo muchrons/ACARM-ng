@@ -27,10 +27,11 @@ namespace TestHelpers
 namespace Persistency
 {
 
-::Persistency::AlertPtr makeNewAlert(const char *name="some alert",
-                                     const char *sip=NULL,
-                                     const char *tip=NULL,
-                                     const char *dns="dns.org");
+::Persistency::AlertPtr makeNewAlert(const char   *name="some alert",
+                                     const char   *sip=NULL,
+                                     const char   *tip=NULL,
+                                     const char   *dns="dns.org",
+                                     const double  certainty=0.42);
 
 ::Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert");
 
@@ -59,9 +60,10 @@ const ::Persistency::Host::Netmask_v6::bytes_type mask6_bytes={ {
 
 ::Persistency::ReferenceURLPtr makeNewReferenceURL(const char *url="http://gnu.org");
 
-::Persistency::GraphNodePtrNN makeNewLeaf(const char *sip=NULL,
-                                          const char *tip=NULL,
-                                          const bool  dns=true);
+::Persistency::GraphNodePtrNN makeNewLeaf(const char   *sip=NULL,
+                                          const char   *tip=NULL,
+                                          const bool    dns=true,
+                                          const double  certainty=0.42);
 ::Persistency::GraphNodePtrNN makeNewNode(void);
 ::Persistency::GraphNodePtrNN makeNewNode(::Persistency::GraphNodePtrNN child1,
                                           ::Persistency::GraphNodePtrNN child2);
