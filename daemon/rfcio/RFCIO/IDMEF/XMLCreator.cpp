@@ -18,6 +18,7 @@ XMLCreator::XMLCreator(const Persistency::GraphNode &leaf)
   assert( doc_.get_root_node()!=NULL );
   ToXML xml( *doc_.get_root_node() );
   xml.addAlert(leaf);
+  // TODO: add autoamatic validation with XML-Schema and throw exception in case of error
 }
 
 xmlpp::Document &XMLCreator::getDocument(void)

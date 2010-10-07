@@ -12,10 +12,11 @@ namespace TestHelpers
 namespace Persistency
 {
 
-AlertPtr makeNewAlert(const char *name,
-                      const char *sip,
-                      const char *tip,
-                      const char *dns)
+AlertPtr makeNewAlert(const char   *name,
+                      const char   *sip,
+                      const char   *tip,
+                      const char   *dns,
+                      const double  certainty)
 {
   const ::Persistency::Alert::SourceAnalyzers sa( makeNewAnalyzer() );
   Alert::ReportedHosts srcHosts;
@@ -31,7 +32,7 @@ AlertPtr makeNewAlert(const char *name,
                              NULL,
                              Timestamp(12345),
                              Severity(SeverityLevel::INFO),
-                             Certainty(0.42),
+                             Certainty(certainty),
                              "some test alert",
                              srcHosts,
                              tgtHosts) );
@@ -104,10 +105,10 @@ ReferenceURLPtr makeNewReferenceURL(const char *url)
   return ReferenceURLPtr( new ReferenceURL("some name", url) );
 }
 
-GraphNodePtrNN makeNewLeaf(const char *sip, const char *tip, const bool dns)
+GraphNodePtrNN makeNewLeaf(const char *sip, const char *tip, const bool dns, const double certainty)
 {
   const char *name=dns?"dns.org":NULL;
-  return makeNewLeaf( makeNewAlert("some alert", sip, tip, name) );
+  return makeNewLeaf( makeNewAlert("some alert", sip, tip, name, certainty) );
 }
 
 GraphNodePtrNN makeNewNode(void)

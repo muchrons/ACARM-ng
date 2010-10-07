@@ -36,8 +36,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     tr_(new TestReader),
     r_(tr_),
     conn_( createUserStub() ),
-    t_( conn_->createNewTransaction("test_interface") ),
-    cd_( new CommonData(conn_, t_) )
+    t_( conn_->createNewTransaction("test_interface") )
   {
   }
 
@@ -46,7 +45,6 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   Core::Types::AlertsFifo           output_;
   Persistency::IO::ConnectionPtrNN  conn_;
   Persistency::IO::Transaction      t_;
-  CommonDataPtrNN                   cd_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -65,7 +63,7 @@ template<>
 void testObj::test<1>(void)
 {
   {
-    Interface iface(r_, conn_, output_, cd_);
+    Interface iface(r_, conn_, output_);
     while( output_.size()<2 )   // wait for few elements on output
       usleep(1*1000);
   }
@@ -79,7 +77,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Interface iface(r_, conn_, output_, cd_);
+  Interface iface(r_, conn_, output_);
   while( output_.size()<2 )   // wait for few elements on output
     usleep(1*1000);
   iface.stop();
@@ -94,7 +92,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  InterfacePtrNN iface( new Interface(r_, conn_, output_, cd_) );
+  InterfacePtrNN iface( new Interface(r_, conn_, output_) );
 }
 
 
@@ -121,7 +119,7 @@ template<>
 void testObj::test<4>(void)
 {
   ReaderPtrNN trn(new TestReaderName);
-  Interface   iface(trn, conn_, output_, cd_);  // should not throw
+  Interface   iface(trn, conn_, output_);  // should not throw
 }
 
 } // namespace tut
