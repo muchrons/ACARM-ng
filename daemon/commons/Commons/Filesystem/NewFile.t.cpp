@@ -4,8 +4,6 @@
  */
 #include <tut.h>
 #include <fstream>
-#include <unistd.h>
-#include <stdlib.h>
 
 #include "Commons/Filesystem/NewFile.hpp"
 
@@ -17,17 +15,24 @@ namespace
 
 struct Unlinker
 {
-  explicit Unlinker(const string &path):
+  explicit Unlinker(const Path &path):
     path_(path)
   {
   }
   ~Unlinker(void)
   {
-    unlink( path_.c_str() );
+    try
+    {
+      boost::filesystem::remove(path_);
+    }
+    catch(...)
+    {
+      // nothing can be done here
+    }
   }
 
 private:
-  const string path_;
+  const Path path_;
 }; // struct Unlinker
 
 struct TestClass

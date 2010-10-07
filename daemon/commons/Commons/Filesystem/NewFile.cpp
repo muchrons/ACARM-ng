@@ -15,9 +15,9 @@ namespace Commons
 namespace Filesystem
 {
 
-NewFile::NewFile(const std::string &path):
+NewFile::NewFile(const Path &path):
   log_("trigger.file.ensurefile"),
-  fd_( open( path.c_str(), O_CREAT|O_EXCL, 0600 ) )
+  fd_( open( path.string().c_str(), O_CREAT|O_EXCL, 0600 ) )
 {
   // check if file has been opened
   if(fd_.get()==-1)

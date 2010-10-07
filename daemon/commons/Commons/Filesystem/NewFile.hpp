@@ -10,6 +10,7 @@
 
 #include "Logger/Node.hpp"
 #include "System/AutoDescriptor.hpp"
+#include "Commons/Filesystem/Path.hpp"
 #include "Commons/Filesystem/ExceptionFileIO.hpp"
 
 namespace Commons
@@ -27,7 +28,7 @@ public:
   /** \brief create new file.
    *  \param path path to file.
    */
-  explicit NewFile(const std::string &path);
+  explicit NewFile(const Path &path);
 
   /** \brief gives access to file descriptor.
    *  \return descriptor to opened file.

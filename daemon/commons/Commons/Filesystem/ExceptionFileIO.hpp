@@ -6,6 +6,7 @@
 #define INCLUDE_COMMONS_FILESYSTEM_EXCEPTIONFILEIO_HPP_FILE
 
 #include "Commons/Filesystem/Exception.hpp"
+#include "Commons/Filesystem/Path.hpp"
 
 namespace Commons
 {
@@ -22,7 +23,7 @@ public:
    *  \param op      operation that failed (ex.: open, close, create, etc...).
    *  \param details some details on error conditions.
    */
-  ExceptionFileIO(const Location &where, const std::string &path, const std::string &op, const std::string &details):
+  ExceptionFileIO(const Location &where, const Path &path, const std::string &op, const std::string &details):
     Exception(where, cc("error while performing '", op, "' operation on file '", path, "': ", details) )
   {
   }
