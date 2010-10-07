@@ -8,6 +8,7 @@
 
 #include "RFCIO/FromXML.hpp"
 #include "Persistency/IO/create.hpp"
+#include "Persistency/Facades/IDAssigner.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -953,8 +954,10 @@ void testObj::test<51>(void)
                      "</idmef:Assessment>"
                    "</idmef:Alert>"
                  "</idmef:IDMEF-Message>\n";
-  const Persistency::GraphNodePtrNN  out  =fx_.parseAlert( parseXML(in) );
-  const Persistency::Alert          &alert=out->getAlert();
+  const MetaAlert::ID   prevID=Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
+  const GraphNodePtrNN  out   =fx_.parseAlert( parseXML(in) );
+  ensure_equals("invalid ID assigned", out->getMetaAlert().getID().get(), prevID.get()+1u);
+  const Alert          &alert =out->getAlert();
   ensure_equals("invalid number of analyzers", alert.getSourceAnalyzers().size(), 1u);
   ensure_equals("invalid creation time", alert.getCreationTime().get(), 12345u);
   ensure("detection time not set", alert.getDetectionTime()!=NULL );
@@ -1002,8 +1005,10 @@ void testObj::test<53>(void)
                      "</idmef:Assessment>"
                    "</idmef:Alert>"
                  "</idmef:IDMEF-Message>\n";
-  const Persistency::GraphNodePtrNN  out  =fx_.parseAlert( parseXML(in) );
-  const Persistency::Alert          &alert=out->getAlert();
+  const MetaAlert::ID   prevID=Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
+  const GraphNodePtrNN  out   =fx_.parseAlert( parseXML(in) );
+  ensure_equals("invalid ID assigned", out->getMetaAlert().getID().get(), prevID.get()+1u);
+  const Alert          &alert =out->getAlert();
   ensure_equals("invalid number of analyzers", alert.getSourceAnalyzers().size(), 1u);
   ensure_equals("invalid creation time", alert.getCreationTime().get(), 12345u);
   ensure("detection time is set", alert.getDetectionTime()==NULL );
