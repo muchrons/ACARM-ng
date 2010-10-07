@@ -15,11 +15,11 @@ namespace Commons
 namespace Filesystem
 {
 
-NewFile::NewFile(const Path &path):
+NewFile::NewFile(const boost::filesystem::path &path):
   log_("trigger.file.ensurefile"),
   fd_( open( path.string().c_str(), O_CREAT|O_EXCL, 0600 ) )
 {
-  const Path full=boost::filesystem::system_complete(path);
+  const boost::filesystem::path full=boost::filesystem::system_complete(path);
   LOGMSG_DEBUG_S(log_)<<"opening file: "<<full;
   // check if file has been opened
   if(fd_.get()==-1)

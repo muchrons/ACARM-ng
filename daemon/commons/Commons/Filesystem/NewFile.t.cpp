@@ -15,7 +15,7 @@ namespace
 
 struct Unlinker
 {
-  explicit Unlinker(const Path &path):
+  explicit Unlinker(const boost::filesystem::path &path):
     path_(path)
   {
   }
@@ -32,7 +32,7 @@ struct Unlinker
   }
 
 private:
-  const Path path_;
+  const boost::filesystem::path path_;
 }; // struct Unlinker
 
 struct TestClass

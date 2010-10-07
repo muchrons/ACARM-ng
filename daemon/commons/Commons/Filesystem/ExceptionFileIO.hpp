@@ -5,8 +5,9 @@
 #ifndef INCLUDE_COMMONS_FILESYSTEM_EXCEPTIONFILEIO_HPP_FILE
 #define INCLUDE_COMMONS_FILESYSTEM_EXCEPTIONFILEIO_HPP_FILE
 
+#include <boost/filesystem.hpp>
+
 #include "Commons/Filesystem/Exception.hpp"
-#include "Commons/Filesystem/Path.hpp"
 
 namespace Commons
 {
@@ -23,7 +24,10 @@ public:
    *  \param op      operation that failed (ex.: open, close, create, etc...).
    *  \param details some details on error conditions.
    */
-  ExceptionFileIO(const Location &where, const Path &path, const std::string &op, const std::string &details):
+  ExceptionFileIO(const Location                &where,
+                  const boost::filesystem::path &path,
+                  const std::string             &op,
+                  const std::string             &details):
     Exception(where, cc("error while performing '", op, "' operation on file '",
                         boost::filesystem::system_complete(path), "': ", details) )
   {
