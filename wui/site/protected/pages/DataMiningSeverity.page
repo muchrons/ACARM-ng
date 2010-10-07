@@ -1,5 +1,8 @@
 <com:TContent ID="content">
 
+<table height=500 align=center>
+<tr><td>
 <com:TImage ID="SeveritiesImg" />
-
+</td></tr>
+</table>
 </com:TContent>

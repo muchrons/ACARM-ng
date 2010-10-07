@@ -32,9 +32,9 @@ Page: <com:TPager ID="Pager"
     CellPadding="2"
     HeaderStyle.BackColor="black"
     HeaderStyle.ForeColor="white"
-    ItemStyle.BackColor="#BFCFFF"
+    ItemStyle.BackColor="#8989a2"
     ItemStyle.Font.Italic="true"
-    AlternatingItemStyle.BackColor="#e6ECFF" >
+    AlternatingItemStyle.BackColor="#797992" >
 </com:TDataGrid>
 
 Choose page:

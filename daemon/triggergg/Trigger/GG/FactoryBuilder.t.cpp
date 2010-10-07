@@ -20,17 +20,21 @@ struct TestClass
 
   void ensureThrow(const Options &opts) const
   {
-    bool thrown=false;
     try
     {
       fb_.build(opts);
-      thrown=true;
       tut::fail("build() didn't throw on missing paramter");
     }
-    catch(const std::exception&)
+    catch(const Commons::Convert::ExceptionConversionError&)
     {
-      if(thrown)
-        throw;
+      // this is expected
+    }
+    catch(const ConfigIO::ExceptionNoSuchParameter&)
+    {
+      // this is expected
+    }
+    catch(const Trigger::ExceptionInvalidValue&)
+    {
       // this is expected
     }
   }

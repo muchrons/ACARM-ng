@@ -45,7 +45,7 @@ private:
     if(t==NULL)
       ss << "NULL";
     else
-      ss << "'" << pqxx::sqlesc(t) << "'";
+      ss << "E'" << pqxx::sqlesc(t) << "'";
   }
 
   template<typename T>

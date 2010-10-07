@@ -6,12 +6,13 @@
 #define INCLUDE_TRIGGER_JABBER_TESTACCOUNT_T_HPP_FILE
 
 #include <glib.h>
+#include <tut.h>
 #include <sys/time.h>
-#include <boost/algorithm/string.hpp>   // TODO: is it used anywhere here?
-// TODO never use 'using namespace' inside headers!
-using namespace boost;
+#include <boost/timer.hpp>                  // TODO: unused header
+#include <boost/algorithm/string.hpp>
 
 #include "System/ScopedPtrCustom.hpp"
+#include "System/Timer.hpp"
 #include "Trigger/Jabber/AccountConfig.hpp"
 #include "Trigger/Jabber/Connection.hpp"
 #include "TestHelpers/Data/jabber1.hpp"
@@ -38,83 +39,64 @@ Trigger::Jabber::AccountConfig getTestConfig(void)
 {
   return getTestConfig1();
 }
+
 struct MessageHandler
 {
   std::string msg_;
   std::string sender_;
 };
 
-// TODO: following two functions should be class instead. consider using System::Timer (for Wall time)
-//       or boost::timer (for CPU time).
+// TODO: move implementation of these function to .t.cpp file
 
-void setTimer(struct timeval &tv, const time_t timeout)
-{
-  gettimeofday(&tv, NULL);
-  tv.tv_sec+=timeout;
-}
-
-int checkTimer(struct timeval &tv)
-{
-  struct timeval ctv;
-  gettimeofday(&ctv, NULL);
-  if( ctv.tv_sec >= tv.tv_sec )
-  {
-    return 1;
-  }
-  return 0;
-}
-
-// TODO: move following code to CPP file
-
-// TODO: static is not needed here - unnamed namespace is enough
-static LmHandlerResult
+// TODO: this f-ction must be declared as 'extern "C"' in order to be passed to C code.
+LmHandlerResult
 handleMessages (LmMessageHandler * /*handler*/,
                 LmConnection     * /*connection*/,
                 LmMessage        *m,
                 MessageHandler   *mh)
 {
-  // TODO: check for NULLs. since this is test code feel free to use tut::ensure() for this
+  // TODO: throwing exceptions to C code (here - caller) is undefined behaviour
+  tut::ensure("message is NULL", m!=NULL);
   if ((lm_message_get_sub_type (m) != LM_MESSAGE_SUB_TYPE_CHAT &&
        lm_message_get_sub_type (m) != LM_MESSAGE_SUB_TYPE_NORMAL)) {
 
     return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
   }
-  // TODO: temporary variable not needed here
-  std::string sender(lm_message_node_get_attribute (m->node, "from"));
-  mh->sender_ = sender;
-  // TODO: temporary variable not needed here
-  std::string msg(lm_message_node_get_value( lm_message_node_get_child(m->node, "body") ));
-  mh->msg_ = msg;
+  tut::ensure("message handler is NULL", mh!=NULL);
+  mh->sender_ = std::string(lm_message_node_get_attribute (m->node, "from"));
+  mh->msg_ = std::string(lm_message_node_get_value( lm_message_node_get_child(m->node, "body") ));
   return LM_HANDLER_RESULT_REMOVE_MESSAGE;
 }
 
-// TODO: 'sender' should be const-reference
-std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account, const std::string sender)
+std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account, const std::string &sender)
 {
   Trigger::Jabber::Connection conn(account);
   MessageHandler              mh;
   LmMessage                   *m = lm_message_new(NULL, LM_MESSAGE_TYPE_PRESENCE);
-  // TODO: check for NULLs. since this is test code feel free to use tut::ensure() for this
+  System::ScopedPtrCustom<LmMessage, lm_message_unref> mPtr(m);
+  tut::ensure("message is NULL", mPtr.get()!=NULL);
+  // TODO: casting to function pointer to use arg void* with LmHandleMessageFunction is slippy (what if code changes?) - better
+  //       use explicit void* as argument to handleMessages() and cast inside the call and be on the safe side. :)
   LmMessageHandler            *handler = lm_message_handler_new((LmHandleMessageFunction)handleMessages, &mh, NULL);
-  // TODO: check for NULLs. since this is test code feel free to use tut::ensure() for this
+  tut::ensure("message handler is NULL", handler!=NULL);
   lm_connection_register_message_handler(conn.get(), handler,
                                          LM_MESSAGE_TYPE_MESSAGE,
                                          LM_HANDLER_PRIORITY_NORMAL);
 
   lm_message_handler_unref (handler);
-  lm_connection_send(conn.get(), m, NULL);
-  lm_message_unref(m);
-  const time_t timeout = 20;      // timeout is 20[s]
-  timeval tv;
-  setTimer(tv, timeout);
+  lm_connection_send(conn.get(), mPtr.get(), NULL);
+  const double timeout = 20.0f;      // timeout is 20[s]
+  System::Timer t;
   for(;;)
   {
-    // TODO: consider putting some short sleep or CPU yielding here not to waste CPU too much
+    // short sleep here to avoid waste CPU too much
+    usleep(50);                 // TODO: use 50[ms] - not 50[us]... ;)
     // wait for something
-    if(checkTimer(tv)==1)
-      throw std::runtime_error("waiting for messages timeouted");   // TODO: tut::fail()  seems to be more aproperiate here
+    if(t.elapsed() > timeout)
+      tut::fail("waiting for messages timeouted");
     g_main_context_iteration(NULL, FALSE);
-    replace_last(mh.sender_, "/acarm-ng", "");
+    // convert sender to format "login@server"
+    boost::replace_last(mh.sender_, "/acarm-ng", "");
     if(mh.sender_ != sender)
       continue;
     return mh.msg_;

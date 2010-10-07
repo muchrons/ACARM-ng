@@ -154,4 +154,20 @@ void testObj::test<11>(void)
   Singleton::get()->generalConfig();
 }
 
+// test throw on reading non-existing file
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  try
+  {
+    Singleton::get()->rereadConfig("file/that/does/not/exist");
+    fail("rereading non-exisitng file didn't failed");
+  }
+  catch(const System::Exception &)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut

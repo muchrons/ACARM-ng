@@ -9,6 +9,9 @@
 
 #include "Logger/Logger.hpp"
 #include "Trigger/Factory.hpp"
+#include "Trigger/ExceptionInvalidValue.hpp"
+#include "Commons/Convert.hpp"
+#include "ConfigIO/TriggerConfig.hpp"
 
 namespace Trigger
 {

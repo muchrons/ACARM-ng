@@ -2,32 +2,11 @@
 
 class DataMiningAlertTimeSeries extends TPage
 {
-  public function onLoad($param) {
-    parent::onLoad($param);
-
-    $this->generateGraph();
-  }
-
-
-  private function generateGraph()
+  public function onLoad($param)
   {
-    $pairs=CSQLMap::get()->queryForList('DMAlertCountTimeSeries');
-
-    $ydata = array();
-    $xdata = array();
-
-    foreach( $pairs as $e )
-      {
-        $xdata[] = $e->key;
-        $ydata[] = $e->value;
-      }
-
-    $ydata = implode(',', $ydata);
-    $xdata = implode(',', $xdata);
-
-    $this->AlertTimeSeries->ImageUrl = $this->getRequest()->constructUrl('graph', "AlertTimeSeries", array( 'xdata' => $xdata, 'ydata' => $ydata, 'ytitle' => 'title'), false);
+    parent::onLoad($param);
+    $this->AlertTimeSeries->ImageUrl = $this->getRequest()->constructUrl('graph', "AlertTimeSeries", array("query" => "DMAlertCountTimeSeries"));
   }
-
 }
 
 
