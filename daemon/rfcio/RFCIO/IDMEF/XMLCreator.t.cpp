@@ -3,10 +3,6 @@
  *
  */
 #include <tut.h>
-#include <string>
-#include <sstream>
-#include <cstring>
-#include <cmath>
 
 #include "RFCIO/IDMEF/XMLCreator.hpp"
 #include "RFCIO/XML/Writer.hpp"
@@ -45,26 +41,32 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Persistency::GraphNodePtrNN leaf=TestHelpers::Persistency::makeNewLeaf(NULL, NULL, false);
-  const char *expected="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                       "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
-                         "<idmef:Alert messageid=\"303\">"
+  const Persistency::GraphNodePtrNN leaf=TestHelpers::Persistency::makeNewLeaf(NULL, NULL, false, 1);
+  const char *expected=
+       "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+        "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+          "<idmef:Alert messageid=\"303\">"
 
-                           "<idmef:Analyzer analyzerid=\"42\">"
-                             "<idmef:Node category=\"host\">"
-                               "<idmef:name>some analyzer</idmef:name>"
-                             "</idmef:Node>"
-                           "</idmef:Analyzer>"
+            "<idmef:Analyzer analyzerid=\"42\">"
+              "<idmef:Node category=\"host\">"
+                "<idmef:name>some analyzer</idmef:name>"
+              "</idmef:Node>"
+            "</idmef:Analyzer>"
 
-                           "<idmef:CreateTime ntpstamp=\"0x83AAAEB9.0x00000000\">1970-01-01T03:25:45Z</idmef:CreateTime>"
+            "<idmef:CreateTime ntpstamp=\"0x83AAAEB9.0x00000000\">1970-01-01T03:25:45Z</idmef:CreateTime>"
 
-                           "<idmef:Classification text=\"some alert\"/>"
+            "<idmef:Classification text=\"some alert\"/>"
 
-                           "<idmef:AdditionalData type=\"string\" meaning=\"description\">"
-                             "<idmef:string>some test alert</idmef:string>"
-                           "</idmef:AdditionalData>"
-                         "</idmef:Alert>"
-                       "</idmef:IDMEF-Message>\n";
+            "<idmef:AdditionalData type=\"string\" meaning=\"description\">"
+              "<idmef:string>some test alert</idmef:string>"
+            "</idmef:AdditionalData>"
+
+            "<idmef:Assessment>"
+              "<idmef:Impact severity=\"low\"/>"
+              "<idmef:Confidence rating=\"numeric\">1</idmef:Confidence>"
+            "</idmef:Assessment>"
+          "</idmef:Alert>"
+        "</idmef:IDMEF-Message>\n";
   XMLCreator c(*leaf);
   ensure_equals("invalid XML", write(c), expected);
 }

@@ -49,12 +49,15 @@ xmlpp::Element &ToXML::addAlert(const Persistency::GraphNode &leaf)
   assert( a.getSourceAnalyzers().begin()->get()!=NULL );
   alert.addAnalyzer( *a.getSourceAnalyzers().begin()->get() );
   alert.addCreateTime( a.getCreationTime() );
+  if( a.getDetectionTime()!=NULL )
+    alert.addDetectTime( *a.getDetectionTime() );
   if( a.getReportedSourceHosts().size()>0 )
     alert.addSource( *a.getReportedSourceHosts()[0] );
   if( a.getReportedTargetHosts().size()>0 )
     alert.addTarget( *a.getReportedTargetHosts()[0] );
   alert.addClassification(leaf);
   alert.addAdditionalData(leaf);
+  alert.addAssessment(leaf);
   return alert.getParent();
 }
 
