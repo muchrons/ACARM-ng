@@ -42,6 +42,7 @@ public:
   /** \brief create object instance and read initial value of the counter.
    *  \param conn conneciton to use.
    *  \param t    transaction to use.
+   *  \param key  to to use for assigning values.
    */
   IDAssignerHelper(IO::ConnectionPtrNN conn, IO::Transaction &t, const char *key):
     log_("persistency.facades.idassigner.idassignerhelper"),
@@ -98,16 +99,24 @@ private:
 }; // class IDAssignerHelper
 
 
-
+/** \brief helper structure that agrtegates all the helpers.
+ */
 struct IDAssigner::IDAssignerPimpl
 {
+  /** \brief create object.
+   *  \param conn connection to be used.
+   *  \param t    transaction for initialization operations.
+   */
   IDAssignerPimpl(IO::ConnectionPtrNN conn, IO::Transaction &t):
     ma_(conn, t, g_keyMetaAlert),
     a_(conn, t, g_keyAnalyzer)
   {
   }
 
-  // NOTE: no default implementation can be provided
+  /** \brief template for getting assigner for a given ID type (T).
+   *  \return assigner helepr of a given type.
+   *  \note no default implementation can be provided.
+   */
   template<typename T>
   IDAssignerHelper<T> &getAssigner(void);
 

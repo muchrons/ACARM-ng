@@ -25,10 +25,9 @@ class BackendFacade: public Core::Types::BackendFacade
 {
 public:
   /** \brief create object's instance.
-   *  \param conn         connection object to use.
-   *  \param name         name of input this object is created for.
-   *  \param analyzersMap map of ID->analyzer (internal input's cache).
-   *  \param creator      creator of analyzers.
+   *  \param conn    connection object to use.
+   *  \param name    name of input this object is created for.
+   *  \param creator creator of analyzers.
    */
   BackendFacade(Persistency::IO::ConnectionPtrNN        conn,
                 const std::string                      &name,
