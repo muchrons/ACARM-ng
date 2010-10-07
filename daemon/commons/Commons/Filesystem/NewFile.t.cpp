@@ -1,5 +1,5 @@
 /*
- * EnsureNewFile.t.cpp
+ * NewFile.t.cpp
  *
  */
 #include <tut.h>
@@ -7,10 +7,10 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-#include "Trigger/File/EnsureNewFile.hpp"
+#include "Commons/Filesystem/NewFile.hpp"
 
 using namespace std;
-using namespace Trigger::File;
+using namespace Commons::Filesystem;
 
 namespace
 {
@@ -36,10 +36,10 @@ struct TestClass
   {
     try
     {
-      EnsureNewFile enf(path);
+      NewFile enf(path);
       tut::fail("c-tor didn't throw when conditions should not allow file opening");
     }
-    catch(const ExceptionCannotOpenFile &)
+    catch(const ExceptionFileIO &)
     {
       // this is expected...
     }
@@ -49,7 +49,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Trigger/File/EnsureNewFile");
+factory tf("Commons/Filesystem/NewFile");
 } // unnamed namespace
 
 
@@ -61,9 +61,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const char    *path("some_test_file_of_EnsureNewFile_class.txt");
+  const char    *path("some_test_file_of_NewFile_class.txt");
   Unlinker       u(path);
-  EnsureNewFile  enf(path);
+  NewFile  enf(path);
   ifstream       is(path, ios::binary);
   ensure("file does not exist", is.is_open() );
 }
@@ -73,9 +73,9 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const char    *path("some_test_source_to_link_of_EnsureNewFile_class.txt");
+  const char    *path("some_test_source_to_link_of_NewFile_class.txt");
   Unlinker       u(path);
-  EnsureNewFile  enf(path); // first instance
+  NewFile  enf(path); // first instance
   testThrow(path);
 }
 
@@ -84,11 +84,11 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const char    *path("some_test_source_to_link_of_EnsureNewFile_class.txt");
-  const char    *link("some_test_sym-link_of_EnsureNewFile_class.txt");
+  const char    *path("some_test_source_to_link_of_NewFile_class.txt");
+  const char    *link("some_test_sym-link_of_NewFile_class.txt");
   Unlinker       u1(path);
   Unlinker       u2(link);
-  EnsureNewFile  enf(path);
+  NewFile  enf(path);
   ensure("can't create sym-link", symlink(path, link)==0 );
   testThrow(link);
 }
@@ -98,11 +98,11 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const char    *path("some_test_source_to_link_of_EnsureNewFile_class.txt");
-  const char    *linkPath("some_test_hard-link_of_EnsureNewFile_class.txt");
+  const char    *path("some_test_source_to_link_of_NewFile_class.txt");
+  const char    *linkPath("some_test_hard-link_of_NewFile_class.txt");
   Unlinker       u1(path);
   Unlinker       u2(linkPath);
-  EnsureNewFile  enf(path);
+  NewFile  enf(path);
   ensure("can't create hard-link", link(path, linkPath)==0 );
   testThrow(linkPath);
 }
