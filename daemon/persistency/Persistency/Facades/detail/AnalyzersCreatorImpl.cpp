@@ -30,6 +30,7 @@ AnalyzerPtrNN AnalyzersCreatorImpl::construct(const LocalAnalyzersCache::Hash &h
                                               const Analyzer::IP              *ip)
 {
   assert( dc_.get()!=NULL );
+  assert( hash==LocalAnalyzersCache().makeHash(name, version, os, ip) );
 
   // read saved ID for a given analyzer
   const IO::DynamicConfig::ValueNULL r=dc_->read(hash);
