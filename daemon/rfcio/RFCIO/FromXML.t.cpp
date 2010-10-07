@@ -7,8 +7,9 @@
 #include <sstream>
 
 #include "RFCIO/FromXML.hpp"
-#include "RFCIO/FromXML_tests_common.t.hpp"
+#include "Persistency/IO/create.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace std;
 using namespace RFCIO;
@@ -17,7 +18,7 @@ using namespace Persistency;
 namespace
 {
 
-struct TestClass: public TestClassFromXMLBase
+struct TestClass: public TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     conn_( IO::create() ),
@@ -177,7 +178,7 @@ struct TestClass: public TestClassFromXMLBase
   xmlpp::DomParser    dp_;
 };
 
-typedef tut::test_group<TestClass, 60> factory;
+typedef tut::test_group<TestClass, 80> factory;
 typedef factory::object testObj;
 
 factory tf("RFCIO/FromXML");
@@ -887,19 +888,131 @@ void testObj::test<50>(void)
   testInvalidNodeName(&FromXML::parseAnalyzer);
 }
 
-// 
+// test parsing typical alert
 template<>
 template<>
 void testObj::test<43>(void)
 {
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Analyzer>"
+                     "<idmef:Node category=\"host\">"
+                       "<idmef:name>some name</idmef:name>"
+                     "</idmef:Node>"
+                   "</idmef:Analyzer>"
+                 "</idmef:IDMEF-Message>\n";
+  const Persistency::AnalyzerPtrNN out=fx_.parseAnalyzer( parseXML(in) );
 }
 
-// 
+// parse full alert
 template<>
 template<>
 void testObj::test<51>(void)
 {
-  fail("AAAA");
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Alert messageid=\"303\">"
+
+                     "<idmef:Analyzer analyzerid=\"42\">"
+                       "<idmef:Node category=\"host\">"
+                         "<idmef:name>some analyzer</idmef:name>"
+                       "</idmef:Node>"
+                     "</idmef:Analyzer>"
+
+                     "<idmef:CreateTime ntpstamp=\"0x83AAAEB9.0x00000000\">1970-01-01T03:25:45Z</idmef:CreateTime>"
+
+                     "<idmef:DetectTime ntpstamp=\"0x83AAAEBA.0x00000000\">1970-01-01T03:25:46Z</idmef:DetectTime>"
+
+                     "<idmef:Source>"
+                       "<idmef:Node category=\"host\">"
+                         "<idmef:name>dns.org</idmef:name>"
+                         "<idmef:Address category=\"ipv4-addr\">"
+                           "<idmef:address>6.6.6.9</idmef:address>"
+                         "</idmef:Address>"
+                       "</idmef:Node>"
+                     "</idmef:Source>"
+
+                     "<idmef:Target>"
+                       "<idmef:Node category=\"host\">"
+                         "<idmef:name>dns2.org</idmef:name>"
+                         "<idmef:Address category=\"ipv4-addr\">"
+                           "<idmef:address>9.9.7.0</idmef:address>"
+                         "</idmef:Address>"
+                       "</idmef:Node>"
+                     "</idmef:Target>"
+
+                     "<idmef:Classification text=\"some alert\"/>"
+
+                     "<idmef:AdditionalData type=\"string\" meaning=\"description\">"
+                       "<idmef:string>some test alert</idmef:string>"
+                     "</idmef:AdditionalData>"
+
+                     "<idmef:Assessment>"
+                       "<idmef:Impact severity=\"low\"/>"
+                       "<idmef:Confidence rating=\"numeric\">1</idmef:Confidence>"
+                     "</idmef:Assessment>"
+                   "</idmef:Alert>"
+                 "</idmef:IDMEF-Message>\n";
+  const Persistency::GraphNodePtrNN  out  =fx_.parseAlert( parseXML(in) );
+  const Persistency::Alert          &alert=out->getAlert();
+  ensure_equals("invalid number of analyzers", alert.getSourceAnalyzers().size(), 1u);
+  ensure_equals("invalid creation time", alert.getCreationTime().get(), 12345u);
+  ensure("detection time not set", alert.getDetectionTime()!=NULL );
+  ensure_equals("invalid detection time", alert.getDetectionTime()->get(), 12346u);
+  ensure_equals("invalid number of source hosts", alert.getReportedSourceHosts().size(), 1u);
+  ensure_equals("invalid IP of source host", (*alert.getReportedSourceHosts().begin())->getIP().to_string(), "6.6.6.9");
+  ensure_equals("invalid number of target hosts", alert.getReportedTargetHosts().size(), 1u);
+  ensure_equals("invalid IP of target host", (*alert.getReportedTargetHosts().begin())->getIP().to_string(), "9.9.7.0");
+  ensure_equals("invalid name", alert.getName().get(), string("some alert") );
+  ensure_equals("invalid description", alert.getDescription(), "some test alert");
+  ensure("invalid severity", alert.getSeverity().getLevel()==SeverityLevel::INFO);
+  ensure_equals("invalid certainty", alert.getCertainty().get(), 1);
+}
+
+// test if parsing fails on invalid node
+template<>
+template<>
+void testObj::test<52>(void)
+{
+  testInvalidNodeName(&FromXML::parseAlert);
+}
+
+// parse minimal alert
+template<>
+template<>
+void testObj::test<53>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Alert messageid=\"303\">"
+
+                     "<idmef:Analyzer analyzerid=\"42\">"
+                       "<idmef:Node category=\"host\">"
+                         "<idmef:name>some analyzer</idmef:name>"
+                       "</idmef:Node>"
+                     "</idmef:Analyzer>"
+
+                     "<idmef:CreateTime ntpstamp=\"0x83AAAEB9.0x00000000\">1970-01-01T03:25:45Z</idmef:CreateTime>"
+
+                     "<idmef:Classification text=\"some alert\"/>"
+
+                     "<idmef:Assessment>"
+                       "<idmef:Impact severity=\"low\"/>"
+                       "<idmef:Confidence rating=\"numeric\">1</idmef:Confidence>"
+                     "</idmef:Assessment>"
+                   "</idmef:Alert>"
+                 "</idmef:IDMEF-Message>\n";
+  const Persistency::GraphNodePtrNN  out  =fx_.parseAlert( parseXML(in) );
+  const Persistency::Alert          &alert=out->getAlert();
+  ensure_equals("invalid number of analyzers", alert.getSourceAnalyzers().size(), 1u);
+  ensure_equals("invalid creation time", alert.getCreationTime().get(), 12345u);
+  ensure("detection time is set", alert.getDetectionTime()==NULL );
+  ensure_equals("invalid number of source hosts", alert.getReportedSourceHosts().size(), 0u);
+  ensure_equals("invalid number of target hosts", alert.getReportedTargetHosts().size(), 0u);
+  ensure_equals("invalid name", alert.getName().get(), string("some alert") );
+  ensure_equals("invalid description", alert.getDescription(), "");
+  ensure("invalid severity", alert.getSeverity().getLevel()==SeverityLevel::INFO);
+  ensure_equals("invalid certainty", alert.getCertainty().get(), 1);
 }
 
 } // namespace tut

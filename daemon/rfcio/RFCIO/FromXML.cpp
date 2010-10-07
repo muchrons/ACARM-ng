@@ -10,6 +10,7 @@
 
 #include "Base/NullValue.hpp"
 #include "Commons/Convert.hpp"
+#include "Persistency/Facades/IDAssigner.hpp"
 #include "RFCIO/FromXML.hpp"
 #include "RFCIO/TimeConverter.hpp"
 
@@ -85,11 +86,62 @@ FromXML::FromXML(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transac
 {
 }
 
-/*
 Persistency::GraphNodePtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
 {
+  // sanity check
+  ensureNode("Alert", alert);
+  // analyzer (only one can be in XML)
+  const AnalyzerPtrNN          analyzer=parseAnalyzer( findOneChild(alert, "Analyzer") );
+  const Alert::SourceAnalyzers analyzers(analyzer);
+  // creation time
+  const Timestamp createTime=parseCreateTime( findOneChild(alert, "CreateTime") );
+  // detect time, if present
+  Timestamp             detectTimeValue(0);
+  const Timestamp      *detectTime    =NULL;
+  const xmlpp::Element *detectTimeNode=findOneChildIfHas(alert, "DetectTime");
+  if(detectTimeNode!=NULL)
+  {
+    detectTimeValue=parseDetectTime(*detectTimeNode);
+    detectTime     =&detectTimeValue;
+  }
+  // source host, if present
+  Alert::ReportedHosts  sourceHosts;
+  const xmlpp::Element *sourceNode=findOneChildIfHas(alert, "Source");
+  if(sourceNode!=NULL)
+    sourceHosts.push_back( parseSource(*sourceNode) );
+  // destination host, if present
+  Alert::ReportedHosts  targetHosts;
+  const xmlpp::Element *targetNode=findOneChildIfHas(alert, "Target");
+  if(targetNode!=NULL)
+    targetHosts.push_back( parseTarget(*targetNode) );
+  // classification -> alert's name
+  const Classification classification=parseClassification( findOneChild(alert, "Classification") );
+  const string         name          =classification.get<0>();
+  // note that ReferenceURL (aka: classification.get<1>()) is
+  // additional data -> description
+  string                description;
+  const xmlpp::Element *additionalData=findOneChildIfHas(alert, "AdditionalData");
+  if(additionalData!=NULL)
+    description=parseAdditionalData(*additionalData);
+  // assessment -> {severity, certainty}
+  const Assessment assessment=parseAssessment( findOneChild(alert, "Assessment") );
+  const Severity   severity  =assessment.get<0>();
+  const Certainty  certainty =assessment.get<1>();
+
+  // create alert
+  const AlertPtrNN alertPtr( new Alert(name, analyzers, detectTime, createTime, severity, certainty,
+                                       description, sourceHosts, targetHosts) );
+
+  // warn about not using ID from XML, if present
+  const NullValue<string> messageID=parseParameterIfHas(alert, "messageid");
+  const MetaAlert::ID     id       =Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
+  if( messageID.get()!=NULL )
+    LOGMSG_WARN_S(log_)<<"although alert's ID is set to '"<<*messageID.get()
+                       <<"' setting local (in system) ID to "<<id.get();
+
+  // return final result
+  return GraphNodePtrNN( new GraphNode(alertPtr, id, conn_, t_) );
 }
-*/
 
 Persistency::AnalyzerPtrNN FromXML::parseAnalyzer(const xmlpp::Element &analyzer) const
 {
