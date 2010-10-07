@@ -24,7 +24,8 @@ public:
    *  \param details some details on error conditions.
    */
   ExceptionFileIO(const Location &where, const Path &path, const std::string &op, const std::string &details):
-    Exception(where, cc("error while performing '", op, "' operation on file '", path, "': ", details) )
+    Exception(where, cc("error while performing '", op, "' operation on file '",
+                        boost::filesystem::system_complete(path), "': ", details) )
   {
   }
 }; // class ExceptionFileIO
