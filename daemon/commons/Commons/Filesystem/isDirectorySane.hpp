@@ -5,6 +5,8 @@
 #ifndef INCLUDE_COMMONS_FILESYSTEM_ISFILESANE_HPP_FILE
 #define INCLUDE_COMMONS_FILESYSTEM_ISFILESANE_HPP_FILE
 
+/* public header */
+
 #include <boost/filesystem.hpp>
 
 #include "Commons/Filesystem/ExceptionFilesystemIO.hpp"

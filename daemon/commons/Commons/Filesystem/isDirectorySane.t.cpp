@@ -40,68 +40,44 @@ factory tf("Commons/Filesystem/isDirectorySane");
 namespace tut
 {
 
-// test if saint dir is marked as such
+// test if sane dir is marked as such
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure("normal dir not sain", isDirectorySane("testdata") );
+  ensure("normal dir not sane", isDirectorySane("testdata") );
 }
 
-// 
+// test if check for non-exisitng directory fails
 template<>
 template<>
 void testObj::test<2>(void)
 {
+  ensureThrow<ExceptionFilesystemIO>("some/non/existing/dir");
 }
 
-// 
+// test id link to dir is not sane
 template<>
 template<>
 void testObj::test<3>(void)
 {
+  ensure("link dir marked sane", isDirectorySane("testdata/dirSymlink")==false );
 }
 
-// 
+// test if dongling symlink throws
 template<>
 template<>
 void testObj::test<4>(void)
 {
+  ensureThrow<ExceptionFilesystemIO>("testdata/donglingSymlink");
 }
 
-// 
+// test if throws on file
 template<>
 template<>
 void testObj::test<5>(void)
 {
-}
-
-// 
-template<>
-template<>
-void testObj::test<6>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<7>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<8>(void)
-{
-}
-
-// 
-template<>
-template<>
-void testObj::test<9>(void)
-{
+  ensureThrow<ExceptionFilesystemIO>("testdata/file");
 }
 
 } // namespace tut

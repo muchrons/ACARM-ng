@@ -5,6 +5,8 @@
 #ifndef INCLUDE_COMMONS_FILESYSTEM_EXCEPTIONSECURITYISSUE_HPP_FILE
 #define INCLUDE_COMMONS_FILESYSTEM_EXCEPTIONSECURITYISSUE_HPP_FILE
 
+/* public header */
+
 #include <boost/filesystem.hpp>
 
 #include "Commons/Filesystem/Exception.hpp"
