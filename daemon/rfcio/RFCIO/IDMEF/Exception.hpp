@@ -25,7 +25,7 @@ public:
    */
   template<typename T>
   Exception(const Location &where, const T &msg):
-    RFCIO::Exception(where, msg)
+    RFCIO::Exception(where, cc("IDMEF exception: ", msg) )
   {
   }
 }; // class Exception
