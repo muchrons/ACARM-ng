@@ -62,7 +62,7 @@ LmConnection *Connection::connect(void) const
   const bool ret = lm_connection_send(sessPtr.get(), mPtr.get(), NULL);
   if(ret==false)
     throw ExceptionSendingError(SYSTEM_SAVE_LOCATION, cfg_.getServer(), ret);
-  /* setup the connection to send keep alive messages every 60 seconds */
+  // setup the connection to send keep alive messages every 60 seconds
   lm_connection_set_keep_alive_rate(sessPtr.get(), 60);
   // looks like everything's done
   LOGMSG_INFO_S(log_) << "connected as: " << cfg_.getLogin() << " to Jabber server " << cfg_.getServer();
