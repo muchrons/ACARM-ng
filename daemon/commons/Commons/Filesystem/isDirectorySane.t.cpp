@@ -96,4 +96,12 @@ void testObj::test<7>(void)
   ensure("global directory not marked sane", isDirectorySane("/usr/lib") );
 }
 
+// test some relative directory path
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  ensure("relative directory not marked sane", isDirectorySane("testdata/dir") );
+}
+
 } // namespace tut
