@@ -7,9 +7,11 @@
 
 /* public header */
 
+#include <memory>
+#include <fstream>
 #include <boost/filesystem.hpp>
 
-#include "Commons/Filesystem/ExceptionFileIO.hpp"
+#include "Commons/Filesystem/ExceptionFilesystemIO.hpp"
 
 namespace Commons
 {
@@ -18,12 +20,12 @@ namespace Filesystem
 
 /** \brief create new, empty file.
  *  \param p path to create file in.
- *  \return full (cannonical) path to the created file.
+ *  \return open output stream to a file.
  *  \note always use cannonicalized path to open file!
  *
  *  creates given file, performing proper sanity-checks before doing so.
  */
-boost::filesystem::path createFile(const boost::filesystem::path &p);
+std::auto_ptr<std::fstream> createFile(const boost::filesystem::path &p);
 
 } // namespace Filesystem
 } // namespace Commons
