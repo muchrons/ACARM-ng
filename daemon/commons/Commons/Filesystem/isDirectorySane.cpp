@@ -5,6 +5,7 @@
 #include <cassert>
 
 #include "Commons/Filesystem/isDirectorySane.hpp"
+#include "Commons/Filesystem/isElementSane.hpp"
 
 using namespace boost::filesystem;
 
@@ -17,15 +18,20 @@ bool isDirectorySane(const boost::filesystem::path &p)
 {
   try
   {
-    if( !exists(p) )
-      throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "exist", "directory does not exist");
-    if( !is_directory(p) )
-      throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "is_directory", "not a directory");
-    // now check each element
-    for(boost::filesystem::path::const_iterator it=p.begin(); it!=p.end(); ++it)
+    path tmp=p;
+
+    // loop through all directories in the path
+    do
     {
-      // TODO
+      if( !isElementSane(tmp) )
+        return false;
+      if( !is_directory(tmp) )
+        return false;
+      tmp=tmp.parent_path();
     }
+    while( tmp.empty()!=true );
+
+    // if code gets here, it means it's fine
     return true;
   }
   catch(const filesystem_error &ex)

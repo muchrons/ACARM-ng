@@ -56,7 +56,7 @@ void testObj::test<2>(void)
   ensureThrow<ExceptionFilesystemIO>("some/non/existing/dir");
 }
 
-// test id link to dir is not sane
+// test if link to dir is not sane
 template<>
 template<>
 void testObj::test<3>(void)
@@ -77,7 +77,23 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ensureThrow<ExceptionFilesystemIO>("testdata/file");
+  ensure("file marked sane", isDirectorySane("testdata/file")==false );
+}
+
+// test if links in path are mathed as well
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  ensure("link inside path marked sane", isDirectorySane("testdata/dirSymlink/other_dir")==false );
+}
+
+// test some global directory
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  ensure("global directory not marked sane", isDirectorySane("/usr/lib") );
 }
 
 } // namespace tut
