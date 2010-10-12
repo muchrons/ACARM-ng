@@ -2,15 +2,15 @@
  * EditableCString.hpp
  *
  */
-#ifndef INCLUDE_TRIGGER_GG_EDITABLECSTRING_HPP_FILE
-#define INCLUDE_TRIGGER_GG_EDITABLECSTRING_HPP_FILE
+#ifndef INCLUDE_BASE_EDITABLECSTRING_HPP_FILE
+#define INCLUDE_BASE_EDITABLECSTRING_HPP_FILE
+
+/* public header */
 
 #include <string>
 #include <boost/scoped_array.hpp>
 
-namespace Trigger
-{
-namespace GG
+namespace Base
 {
 
 /** \brief holder that makes a copy of input string in local buffer.
@@ -53,7 +53,6 @@ private:
   boost::scoped_array<char> str_;
 }; // class LoginParameters
 
-} // namespace GG
-} // namespace Trigger
+} // namespace Base
 
 #endif
