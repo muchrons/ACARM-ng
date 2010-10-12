@@ -22,8 +22,9 @@ struct ModeEnum
   /** \brief enum representing modes. */
   typedef enum
   {
-    READ =1,
-    WRITE=2,
+    READ     =1,
+    WRITE    =2,
+    READWRITE=3,
   } Type;
 }; // struct ModeEnum
 } // namespace detail
