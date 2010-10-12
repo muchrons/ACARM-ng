@@ -83,4 +83,12 @@ void testObj::test<4>(void)
   ensureOk("testdata/dir/newFile.txt");
 }
 
+// test empty path
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ensureThrow<ExceptionFilesystemIO>( path() );
+}
+
 } // namespace tut
