@@ -15,8 +15,10 @@ namespace Base
 
 /** \brief holder that makes a copy of input string in local buffer.
  *
- *  saved string can be edited by other calls. it is required, since
- *  libgadu does not have consts in few places.
+ *  saved string can be edited by other calls. note that size of internal
+ *  buffer never grows. use with care.
+ *  this can be used to fix const-INcorrect code without const-casts or
+ *  to cooperate with some C libraries that changes their paramter.
  */
 class EditableCString
 {
