@@ -6,8 +6,8 @@
 <com:TDropDownList
     AutoPostBack="true"
     OnSelectedIndexChanged="selectionChanged">
-    <com:TListItem Value="10" Text="10" Selected="true"/>
-    <com:TListItem Value="20" Text="20"/>
+    <com:TListItem Value="10" Text="10" />
+    <com:TListItem Value="20" Text="20"Selected="true" />
     <com:TListItem Value="50" Text="50" />
     <com:TListItem Value="100" Text="100" />
     <com:TListItem Value="1000" Text="Jillion" />
@@ -27,7 +27,7 @@ Page: <com:TPager ID="Pager"
     DataKeyField="id"
     AllowPaging="true"
     AllowCustomPaging="true"
-    PageSize="10"
+    PageSize="20"
     AutoGenerateColumns="true"
     CellPadding="2"
     HeaderStyle.BackColor="black"
