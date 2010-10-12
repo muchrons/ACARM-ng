@@ -75,7 +75,7 @@ void testObj::test<3>(void)
   ensureOk("newFile.txt");
 }
 
-// test opening file within some dir
+// test creating file within some dir
 template<>
 template<>
 void testObj::test<4>(void)
