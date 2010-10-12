@@ -20,18 +20,18 @@ namespace Input
 namespace Prelude
 {
 /**
- * @brief Extracts Analyzer related data from Prelude IDMEF structures
+ * @brief Extracts Analyzer related data from Prelude IDMEF structures.
  */
 class IDMEFParserAnalyzer
 {
 public:
   /**
-   * @brief IP address
+   * @brief IP address.
    */
   typedef Base::NullValue<Persistency::Analyzer::IP> NullIP;
   /**
    * @brief c-tor
-   * \param ptr idmef_analyzer_t structure to parse
+   * \param ptr idmef_analyzer_t structure to parse.
    */
   explicit IDMEFParserAnalyzer(idmef_analyzer_t *ptr);
 
@@ -40,22 +40,22 @@ public:
    */
   const std::string &getPreludeID() const;
   /**
-   * @brief gets name of an analyzer
+   * @brief gets name of an analyzer.
    */
   const Persistency::Analyzer::Name& getName() const;
 
   /**
-   * @brief gets version of an analyzer
+   * @brief gets version of an analyzer.
    */
   const Persistency::Analyzer::Version &getVersion() const;
 
   /**
-   * @brief gets OS version this analyzer is running on
+   * @brief gets OS version this analyzer is running on.
    */
   const Persistency::Analyzer::OperatingSystem &getOS() const;
 
   /**
-   * @brief gets IP address of an analyzer
+   * @brief gets IP address of an analyzer.
    */
   const Persistency::Analyzer::IP* getIP() const;
 

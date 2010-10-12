@@ -22,6 +22,9 @@ class PortNumber: public boost::less_than_comparable<PortNumber>,
                   public boost::equality_comparable<PortNumber>
 {
 public:
+  /** \brief numeric representation of port number. */
+  typedef uint16_t Numeric;
+
   /** \brief exception thrown when invalid port number is provided.
    */
   struct ExceptionInvalidPort: public Exception
@@ -39,7 +42,7 @@ public:
   /** \brief create object.
    *  \param port port number to represent.
    */
-  PortNumber(const uint16_t port):
+  PortNumber(const Numeric port):
     port_(port)
   {
     if(port_==0u)
@@ -49,7 +52,7 @@ public:
   /** \brief gets saved port number.
    *  \return port number.
    */
-  uint16_t get(void) const
+  Numeric get(void) const
   {
     return port_;
   }
@@ -64,7 +67,7 @@ public:
   }
 
 private:
-  uint16_t port_;
+  Numeric port_;
 }; // class PortNumber
 
 } // namespace Persistency

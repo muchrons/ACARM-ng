@@ -18,6 +18,8 @@ namespace TestHelpers
 namespace Persistency
 {
 
+// TODO: refactor this using IODynamicConfigCounter
+
 // helper typedef
 typedef boost::shared_ptr<IODynamicConfigCounter> IODynamicConfigCounterPtr;
 

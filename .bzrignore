@@ -13,3 +13,4 @@ wui/tests/protected/db/*.db
 *.out
 *.toc
 acceptance_tests_plan.pdf
+*.orig

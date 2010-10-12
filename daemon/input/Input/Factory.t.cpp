@@ -20,15 +20,13 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     conn_( createUserStub() ),
-    t_( conn_->createNewTransaction("factory_test") ),
-    cd_( new CommonData(conn_, t_) )
+    t_( conn_->createNewTransaction("factory_test") )
   {
   }
 
   Core::Types::AlertsFifo          q_;
   Persistency::IO::ConnectionPtrNN conn_;
   Persistency::IO::Transaction     t_;
-  CommonDataPtrNN                  cd_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -46,7 +44,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  InputsCollection        c=create(q_, cd_);
+  InputsCollection c=create(q_);
   ensure_equals("some elements are found", c.size(), 0u);
 }
 
@@ -56,7 +54,7 @@ template<>
 void testObj::test<2>(void)
 {
   ConfigIO::Singleton::get()->rereadConfig("testdata/valid_input.xml");
-  InputsCollection c=create(q_, cd_);
+  InputsCollection c=create(q_);
   ensure_equals("invalid number of entries read", c.size(), 1u);
 }
 
@@ -68,7 +66,7 @@ void testObj::test<3>(void)
   ConfigIO::Singleton::get()->rereadConfig("testdata/invalid_input.xml");
   try
   {
-    InputsCollection c=create(q_, cd_);
+    InputsCollection c=create(q_);
     fail("create() didn't throw when requested non-existing input");
   }
   catch(const std::runtime_error &)

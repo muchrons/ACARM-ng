@@ -8,7 +8,6 @@
 #include "Logger/Logger.hpp"
 #include "Core/Types/AlertsFifo.hpp"
 #include "Input/Reader.hpp"
-#include "Input/CommonData.hpp"
 
 namespace Input
 {
@@ -22,12 +21,10 @@ public:
    *  \param reader     reader to run in background.
    *  \param conn       data base connection to be used.
    *  \param output     queue to output data to.
-   *  \param commonData common data, shared between all inputs.
    */
   Thread(ReaderPtrNN                       reader,
          Persistency::IO::ConnectionPtrNN  conn,
-         Core::Types::AlertsFifo          &output,
-         CommonDataPtrNN                   commonData);
+         Core::Types::AlertsFifo          &output);
 
   /** \brief thread loop implementation.
    */
@@ -38,7 +35,6 @@ private:
   Logger::Node                      log_;
   Persistency::IO::ConnectionPtrNN  conn_;
   Core::Types::AlertsFifo          *output_;
-  CommonDataPtrNN                   commonData_;
 }; // class Thread
 
 } // namespace Input

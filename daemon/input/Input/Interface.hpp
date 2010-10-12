@@ -15,7 +15,6 @@
 #include "Commons/Threads/Thread.hpp"
 #include "Core/Types/AlertsFifo.hpp"
 #include "Input/Reader.hpp"
-#include "Input/CommonData.hpp"
 
 namespace Input
 {
@@ -29,12 +28,10 @@ public:
    *  \param reader     reader to run in background.
    *  \param conn       connection to be used
    *  \param output     queue to output data to.
-   *  \param commonData data common to all inputs.
    */
   Interface(ReaderPtrNN                       reader,
             Persistency::IO::ConnectionPtrNN  conn,
-            Core::Types::AlertsFifo          &output,
-            CommonDataPtrNN                   commonData);
+            Core::Types::AlertsFifo          &output);
   /** \brief deactivate thread and do the cleanup.
    */
   ~Interface(void);
