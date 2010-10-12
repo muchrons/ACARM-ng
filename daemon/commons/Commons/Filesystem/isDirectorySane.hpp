@@ -1,9 +1,9 @@
 /*
- * isDirecotorySane.hpp
+ * isDirectorySane.hpp
  *
  */
-#ifndef INCLUDE_COMMONS_FILESYSTEM_ISFILESANE_HPP_FILE
-#define INCLUDE_COMMONS_FILESYSTEM_ISFILESANE_HPP_FILE
+#ifndef INCLUDE_COMMONS_FILESYSTEM_ISDIRECTORYSANE_HPP_FILE
+#define INCLUDE_COMMONS_FILESYSTEM_ISDIRECTORYSANE_HPP_FILE
 
 /* public header */
 
@@ -21,7 +21,7 @@ namespace Filesystem
  *  \param p path to some directory.
  *  \return false if path is suspisious, true otherwise.
  *
- *  call checks if non of path elements contains symbolic links, nor hardlinks.
+ *  call checks if non of path elements contains symbolic links.
  */
 bool isDirectorySane(const boost::filesystem::path &p);
 
