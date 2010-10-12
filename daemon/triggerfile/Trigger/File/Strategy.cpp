@@ -5,11 +5,13 @@
 #include <fstream>
 #include <cassert>
 
+#include "Commons/Filesystem/createFile.hpp"
 #include "Trigger/Compose/Full.hpp"
 #include "Trigger/File/Strategy.hpp"
-#include "Trigger/File/EnsureNewFile.hpp"
 
 using namespace std;
+using Commons::SharedPtrNotNULL;
+using Commons::Filesystem::createFile;
 
 namespace Trigger
 {
@@ -27,21 +29,16 @@ Strategy::Strategy(const std::string &name, const Config &cfg):
 void Strategy::triggerImpl(const Node &n)
 {
   // prepare data
-  stringstream  ss;
+  stringstream ss;
   Compose::Full::append(ss, n);
   // open output
-  const string  path=createOutputPath();
+  const string path=createOutputPath();
   LOGMSG_DEBUG_S(log_)<<"output file is: "<<path;
-  // create file in secure way with EnsureNewFile and then open it via stream.
-  // since after (safe) creation file still exists and is owned by the process owner
-  // we can assume noone will be able to switch it, thus we can open in with stream
-  // safely, even though stream does not provide such an option itself.
-  EnsureNewFile enf(path);
-  ofstream      file( path.c_str() );
-  if( !file.is_open() )
-    throw ExceptionCannotOpenFile(SYSTEM_SAVE_LOCATION, path, "couldn't open output file");
+  // create output file
+  Commons::SharedPtrNotNULL<fstream> file=Commons::Filesystem::createFile(path);
+  assert( file->is_open() );
   // write data
-  file << ss.str();
+  *file << ss.str();
 }
 
 std::string Strategy::createOutputPath(void)
