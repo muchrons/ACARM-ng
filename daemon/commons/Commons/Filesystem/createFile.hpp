@@ -7,10 +7,10 @@
 
 /* public header */
 
-#include <memory>
 #include <fstream>
 #include <boost/filesystem.hpp>
 
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/Filesystem/ExceptionFilesystemIO.hpp"
 
 namespace Commons
@@ -20,12 +20,13 @@ namespace Filesystem
 
 /** \brief create new, empty file.
  *  \param p path to create file in.
- *  \return open output stream to a file.
+ *  \return open output stream to a file. returned value is never NULL.
  *  \note always use cannonicalized path to open file!
  *
  *  creates given file, performing proper sanity-checks before doing so.
+ *  throws on error.
  */
-std::auto_ptr<std::fstream> createFile(const boost::filesystem::path &p);
+SharedPtrNotNULL<std::fstream> createFile(const boost::filesystem::path &p);
 
 } // namespace Filesystem
 } // namespace Commons

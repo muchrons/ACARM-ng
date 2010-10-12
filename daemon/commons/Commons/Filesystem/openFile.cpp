@@ -14,7 +14,7 @@ namespace Commons
 namespace Filesystem
 {
 
-std::auto_ptr<std::fstream> openFile(const boost::filesystem::path &p, const Mode mode)
+SharedPtrNotNULL<std::fstream> openFile(const boost::filesystem::path &p, const Mode mode)
 {
   // file cannot exist yet
   if( !exists(p) )
@@ -36,7 +36,7 @@ std::auto_ptr<std::fstream> openFile(const boost::filesystem::path &p, const Mod
   if( mode.toInt() & Mode::WRITE )
     openMode|=std::fstream::out;
   // open file
-  std::auto_ptr<std::fstream> out( new std::fstream(p.string().c_str(), openMode) );
+  SharedPtrNotNULL<std::fstream> out( new std::fstream(p.string().c_str(), openMode) );
   assert( out.get()!=NULL );
   if( out->is_open()==false )
     throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "fstream/open", "unable to open file");

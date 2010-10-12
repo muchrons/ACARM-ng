@@ -7,7 +7,6 @@
 
 /* public header */
 
-#include <memory>
 #include <boost/filesystem.hpp>
 
 #include "Commons/Filesystem/ExceptionFilesystemIO.hpp"
@@ -23,6 +22,7 @@ namespace Filesystem
  *  \note always use cannonicalized path to directory.
  *
  *  creates temp directory in given root, performing proper sanity-checks before doing so.
+ *  throws on error.
  */
 boost::filesystem::path createTempDirectory(const boost::filesystem::path &root=".");
 

@@ -23,6 +23,7 @@ namespace Filesystem
  *  \note always use cannonicalized path to direcotyr!
  *
  *  creates given directory, performing proper sanity-checks before doing so.
+ *  throws on error.
  */
 void createDirectory(const boost::filesystem::path &p);
 

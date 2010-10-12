@@ -12,7 +12,7 @@ namespace Commons
 namespace Filesystem
 {
 
-std::auto_ptr<std::fstream> createFile(const boost::filesystem::path &p)
+SharedPtrNotNULL<std::fstream> createFile(const boost::filesystem::path &p)
 {
   // file cannot exist yet
   if( exists(p) )
@@ -28,9 +28,9 @@ std::auto_ptr<std::fstream> createFile(const boost::filesystem::path &p)
   }
 
   // create new file
-  std::auto_ptr<std::fstream> out( new std::fstream( p.string().c_str(),
-                                                     std::fstream::in | std::fstream::out |
-                                                     std::fstream::binary | std::fstream::trunc ) );
+  SharedPtrNotNULL<std::fstream> out( new std::fstream( p.string().c_str(),
+                                                        std::fstream::in | std::fstream::out |
+                                                        std::fstream::binary | std::fstream::trunc ) );
   assert( out.get()!=NULL );
   if( out->is_open()==false )
     throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "fstream/open", "unable to create file");

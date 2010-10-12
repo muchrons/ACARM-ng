@@ -38,9 +38,8 @@ TempFile createTempFile(const boost::filesystem::path &root)
   close(fd);        // close valid descriptor, if opened
 
   // return final object
-  const path                      path( tmplStr.get() );
-  boost::shared_ptr<std::fstream> sharedFile( openFile(path).release() );
-  return TempFile(sharedFile, path);
+  const path file( tmplStr.get() );
+  return TempFile( openFile(file), file );
 }
 
 } // namespace Filesystem

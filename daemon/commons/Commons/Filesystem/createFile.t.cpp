@@ -8,6 +8,7 @@
 
 using namespace std;
 using namespace boost::filesystem;
+using namespace Commons;
 using namespace Commons::Filesystem;
 
 namespace
@@ -33,7 +34,7 @@ struct TestClass
   {
     remove(p);
     tut::ensure("file already exists", exists(p)==false );
-    std::auto_ptr<std::fstream> out=createFile(p);
+    SharedPtrNotNULL<std::fstream> out=createFile(p);
     tut::ensure("file not created", exists(p) );
     remove(p);
     tut::ensure("NULL pointer", out.get()!=NULL );

@@ -7,10 +7,10 @@
 
 /* public header */
 
-#include <memory>
 #include <fstream>
 #include <boost/filesystem.hpp>
 
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/Filesystem/Mode.hpp"
 #include "Commons/Filesystem/ExceptionFilesystemIO.hpp"
 
@@ -22,12 +22,13 @@ namespace Filesystem
 /** \brief opens file in a given mode.
  *  \param p    path to file.
  *  \param mode opening mode.
- *  \return open output stream to a file.
- *  \note always use cannonicalized path to open file!
+ *  \return open output stream to a file. stream is never NULL.
+ *  \note always use cannonicalized path to open file.
  *
  *  opens given file, performing proper sanity-checks before doing so.
+ *  throws on error.
  */
-std::auto_ptr<std::fstream> openFile(const boost::filesystem::path &p, const Mode mode=Mode::READWRITE);
+SharedPtrNotNULL<std::fstream> openFile(const boost::filesystem::path &p, const Mode mode=Mode::READWRITE);
 
 } // namespace Filesystem
 } // namespace Commons
