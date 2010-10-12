@@ -20,7 +20,7 @@ namespace Filesystem
  *  \param p path to file.
  *  \return false if path is suspisious, true otherwise.
  *
- *  call checks if element's not symbolic link nor hard link.
+ *  call checks if element's not symbolic link nor hard link (in case of files).
  */
 bool isElementSane(const boost::filesystem::path &p);
 
