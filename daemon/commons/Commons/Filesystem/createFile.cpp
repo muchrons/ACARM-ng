@@ -33,7 +33,7 @@ std::auto_ptr<std::fstream> createFile(const boost::filesystem::path &p)
                                                      std::fstream::binary | std::fstream::trunc ) );
   assert( out.get()!=NULL );
   if( out->is_open()==false )
-    throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "fstream/open", "unable to open file");
+    throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "fstream/open", "unable to create file");
   // return final object
   return out;
 }
