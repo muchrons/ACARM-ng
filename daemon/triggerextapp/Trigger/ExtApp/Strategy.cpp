@@ -102,7 +102,7 @@ struct FunctorIDMEF
     const path                out =root_ / file;
     SharedPtrNotNULL<fstream> strm=createFile(out);     // create file in the secure way
     holder_->push_back(out);                            // add file for removal
-    c.getDocument().write_to_stream(*strm);             // write XML to that file
+    c.getDocument().write_to_stream(*strm, "UTF-8");    // write XML to that file
   }
 
 private:
