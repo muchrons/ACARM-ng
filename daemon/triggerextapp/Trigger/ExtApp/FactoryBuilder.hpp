@@ -1,5 +1,5 @@
 /*
- * ConnectionBuilder.hpp
+ * FactoryBuilder.hpp
  *
  */
 #ifndef INCLUDE_TRIGGER_EXTAPP_FACTORYBUILDER_HPP_FILE

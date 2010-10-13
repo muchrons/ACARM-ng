@@ -14,8 +14,21 @@ namespace
 struct TestClass
 {
   TestClass(void):
-    cfg_( "/my/app.bin", Trigger::Simple::ThresholdConfig("1.2", "4") )
+    cfg_( "/bin/true", Trigger::Simple::ThresholdConfig("1.2", "4") )
   {
+  }
+
+  void ensureThrows(const boost::filesystem::path &p)
+  {
+    try
+    {
+      Config c(p, cfg_.getThresholdConfig() );      // should throw
+      tut::fail("config didn't failed on invalid path");
+    }
+    catch(const Exception &)
+    {
+      // this is expected
+    }
   }
 
   const Config cfg_;
@@ -36,7 +49,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid path", cfg_.getPath(), "/my/app.bin");
+  ensure_equals("invalid path", cfg_.getPath(), "/bin/true");
 }
 
 // get thresholds
@@ -58,6 +71,22 @@ void testObj::test<3>(void)
 {
   const Config tmp=cfg_;
   ensure_equals("configs do not match", tmp.getPath(), cfg_.getPath() );
+}
+
+// test exception when file does not exist
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  ensureThrows("/i/do/not/exist");
+}
+
+// test exception when file is not sane
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ensureThrows("testdata/symlink");
 }
 
 } // namespace tut

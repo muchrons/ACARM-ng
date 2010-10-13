@@ -42,7 +42,7 @@ struct TestClass
   void setValid(void)
   {
     opts_["name"]                  ="somename";
-    opts_["executable"]            ="/my/script/file";
+    opts_["executable"]            ="/bin/true";
     opts_["severity_threshold"]    ="4.2";
     opts_["alerts_count_threshold"]="42";
   }
