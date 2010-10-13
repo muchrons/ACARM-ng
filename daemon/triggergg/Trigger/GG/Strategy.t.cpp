@@ -53,6 +53,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  // TODO: something's wrong with this test - fix it!
   Strategy               s("mygginformer", cfg_);
   Strategy::ChangedNodes nc;
   s.process( makeNewNode(), nc );
