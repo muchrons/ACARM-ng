@@ -37,6 +37,7 @@ void findUniqueNodes(Persistency::GraphNodePtrNN root, NodesSet &ns);
 template<typename FuncObj>
 FuncObj forEachUniqueInTree(Persistency::GraphNodePtrNN root, FuncObj f)
 {
+  // TODO: optimize this to process while saving
   detail::NodesSet ns;
   detail::findUniqueNodes(root, ns);
   return forEach(ns.begin(), ns.end(), f);
