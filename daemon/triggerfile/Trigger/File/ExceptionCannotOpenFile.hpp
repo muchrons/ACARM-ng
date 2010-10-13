@@ -5,6 +5,8 @@
 #ifndef INCLUDE_TRIGGER_FILE_EXCEPTIONCANNOTOPENFILE_HPP_FILE
 #define INCLUDE_TRIGGER_FILE_EXCEPTIONCANNOTOPENFILE_HPP_FILE
 
+#include <boost/filesystem.hpp>
+
 #include "Trigger/File/Exception.hpp"
 
 namespace Trigger
@@ -21,8 +23,11 @@ public:
    *  \param path    path to file, that has been used.
    *  \param details some details on error conditions.
    */
-  ExceptionCannotOpenFile(const Location &where, const std::string &path, const std::string &details):
-    Exception(where, cc("error while opening/creating file for writing: '", path, "' - ", details) )
+  ExceptionCannotOpenFile(const Location                &where,
+                          const boost::filesystem::path &path,
+                          const std::string             &details):
+    Exception(where, cc("error while opening/creating file for writing: '",
+                        path, "' - ", details) )
   {
   }
 }; // class ExceptionCannotOpenFile

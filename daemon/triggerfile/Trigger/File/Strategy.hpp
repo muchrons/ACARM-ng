@@ -6,6 +6,7 @@
 #define INCLUDE_TRIGGER_FILE_STRATEGY_HPP_FILE
 
 #include <ctime>
+#include <boost/filesystem.hpp>
 
 #include "Trigger/Simple/Strategy.hpp"
 #include "Trigger/File/Config.hpp"
@@ -30,11 +31,11 @@ public:
 private:
   virtual void triggerImpl(const Node &n);
 
-  std::string createOutputPath(void);
+  boost::filesystem::path createOutputPath(void);
 
-  const std::string outdir_;
-  time_t            lastWrite_;
-  unsigned int      lastIndex_;
+  const boost::filesystem::path outdir_;
+  time_t                        lastWrite_;
+  unsigned int                  lastIndex_;
 }; // class Strategy
 
 } // namespace File

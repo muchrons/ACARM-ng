@@ -5,6 +5,8 @@
 #ifndef INCLUDE_TRIGGER_FILE_EXCEPTIONINVALIDDIRECTORY_HPP_FILE
 #define INCLUDE_TRIGGER_FILE_EXCEPTIONINVALIDDIRECTORY_HPP_FILE
 
+#include <boost/filesystem.hpp>
+
 #include "Trigger/File/Exception.hpp"
 
 namespace Trigger
@@ -20,7 +22,7 @@ public:
    *  \param where place where exception has been thrown.
    *  \param dir   path to directory.
    */
-  ExceptionInvalidDirectory(const Location &where, const std::string &dir):
+  ExceptionInvalidDirectory(const Location &where, const boost::filesystem::path &dir):
     Exception(where, cc("invalid or unwritable directory '", dir, "'") )
   {
   }

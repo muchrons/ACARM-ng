@@ -5,8 +5,7 @@
 #ifndef INCLUDE_APPENDERS_FILEUNLINKER_HPP_FILE
 #define INCLUDE_APPENDERS_FILEUNLINKER_HPP_FILE
 
-#include <string>
-#include <unistd.h>
+#include <boost/filesystem.hpp>
 
 namespace
 {
@@ -19,18 +18,18 @@ namespace
 class FileUnlinker
 {
 public:
-  FileUnlinker(const std::string &path):
+  FileUnlinker(const boost::filesystem::path &path):
     path_(path)
   {
   }
 
   ~FileUnlinker(void)
   {
-    unlink( path_.c_str() );
+    boost::filesystem::remove(path_);
   }
 
 private:
-  const std::string path_;
+  const boost::filesystem::path path_;
 }; // class FileUnlinker
 
 } // unnamed namespace

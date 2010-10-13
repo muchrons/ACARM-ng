@@ -32,7 +32,7 @@ void Strategy::triggerImpl(const Node &n)
   stringstream ss;
   Compose::Full::append(ss, n);
   // open output
-  const string path=createOutputPath();
+  const boost::filesystem::path path=createOutputPath();
   LOGMSG_DEBUG_S(log_)<<"output file is: "<<path;
   // create output file
   Commons::SharedPtrNotNULL<fstream> file=Commons::Filesystem::createFile(path);
@@ -41,7 +41,7 @@ void Strategy::triggerImpl(const Node &n)
   *file << ss.str();
 }
 
-std::string Strategy::createOutputPath(void)
+boost::filesystem::path Strategy::createOutputPath(void)
 {
   // check if something has been already written this second
   const time_t now=time(NULL);
@@ -51,12 +51,12 @@ std::string Strategy::createOutputPath(void)
     lastIndex_=0;
   }
   // compose final path
-  stringstream path;
-  path << outdir_ << "/" << now << "_" << lastIndex_ << ".txt";
+  stringstream fileName;
+  fileName << now << "_" << lastIndex_ << ".txt";
   // increment count
   ++lastIndex_;
   // return final response
-  return path.str();
+  return outdir_ / fileName.str();
 }
 
 } // namespace File

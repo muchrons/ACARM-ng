@@ -6,6 +6,7 @@
 #define INCLUDE_CONFIGIO_FILEREADER_HPP_FILE
 
 #include <string>
+#include <boost/filesystem.hpp>
 #include <boost/scoped_array.hpp>
 
 #include "System/Exception.hpp"
@@ -31,7 +32,7 @@ public:
    *        method). if file is binary, null terminator may appear before
    *        acctual end of data (use getSize() in case of binary data).
    */
-  explicit FileReader(const std::string &path);
+  explicit FileReader(const boost::filesystem::path &path);
 
   /** \brief returns pointer to byte array of read data.
    *  \return pointer to data read.

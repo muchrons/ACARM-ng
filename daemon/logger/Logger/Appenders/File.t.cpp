@@ -28,9 +28,9 @@ struct FileTestClass: private TestHelpers::TestBase
   {
   }
 
-  const string       path_;
-  File               file_;
-  const FileUnlinker unlinker_;
+  const boost::filesystem::path path_;
+  File                          file_;
+  const FileUnlinker            unlinker_;
 };
 
 typedef FileTestClass TestClass;
@@ -78,7 +78,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const string cmd="chmod 400 " + path_;
+  const string cmd="chmod 400 " + path_.string();
   const int    ret=system( cmd.c_str() );
   ensure_equals("unable to change file permission", ret, 0);
 

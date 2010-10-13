@@ -20,7 +20,7 @@ namespace
  *  \param path path to file to be parsed.
  *  \return parsed XML tree.
  */
-inline Tree getParsedTree(const string &path)
+inline Tree getParsedTree(const boost::filesystem::path &path)
 {
   FileReader       reader(path);
   XMLpp::SaxParser sax;
@@ -28,7 +28,7 @@ inline Tree getParsedTree(const string &path)
 } // getParsedTree()
 } // unnamed namespace
 
-Parser::Parser(const std::string &path):
+Parser::Parser(const boost::filesystem::path &path):
     tree_( getParsedTree(path) ),
     parseGeneralConfig_( tree_.getRoot().getChild("general") ),
     parsePersistency_(   tree_.getRoot().getChild("persistency") ),
