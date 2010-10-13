@@ -1,2 +1,12 @@
 #!/bin/sh
-exec echo "$0 with args: " "$@" > ext.log
+
+# log what has been done
+echo "$0" "$@" > ext.log
+
+# now ensure proper files count are present - this is required to check if trigger does
+# not release elements before script ends
+[ -d "$1" ] || exit 9
+[ "`ls "$1"/idmef_*.xml 2>/dev/null | wc -l`" -eq "$2" ] || exit 13
+
+# all ok
+exit 0

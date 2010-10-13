@@ -7,7 +7,7 @@
 
 #include "Trigger/Simple/Strategy.hpp"
 #include "Trigger/ExtApp/Config.hpp"
-#include "Trigger/ExtApp/Exception.hpp"
+#include "Trigger/ExtApp/ExceptionCommandError.hpp"
 
 namespace Trigger
 {
