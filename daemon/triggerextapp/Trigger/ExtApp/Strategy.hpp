@@ -18,14 +18,14 @@ namespace ExtApp
  *
  *  trigger running user's application/script when triggered. call loogs
  *  as follows:
- *    /some/user/app <dir> <count> <priority> <certainty>
+ *    /some/user/app [dir] [count] [priority] [certainty]
  *  where:
  *    /some/user/app is application that user specifies in config.
- *    <dir>          is output directory, where all correlated alerts are
+ *    [dir]          is output directory, where all correlated alerts are
  *                   saved in IDMEF format (idmef_<id>.xml file name).
- *    <count>        is a number of alerts (correlated).
- *    <priority>     is priority assigned to this (meta) alert (floating point value).
- *    <certainty>    is certainty level assigned for this meta alert, in [0;1] range.
+ *    [count]        is a number of alerts (correlated).
+ *    [priority]     is priority assigned to this (meta) alert (floating point value).
+ *    [certainty]    is certainty level assigned for this meta alert, in [0;1] range.
  */
 class Strategy: public Trigger::Simple::Strategy
 {
