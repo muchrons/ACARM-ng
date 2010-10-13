@@ -5,6 +5,8 @@
 #ifndef INCLUDE_RFCIO_IDMEF_XMLREADER_HPP_FILE
 #define INCLUDE_RFCIO_IDMEF_XMLREADER_HPP_FILE
 
+/* public header */
+
 #include <libxml++/libxml++.h>
 
 #include "Persistency/GraphNode.hpp"
