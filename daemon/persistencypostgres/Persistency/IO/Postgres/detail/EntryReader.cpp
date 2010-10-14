@@ -151,13 +151,13 @@ Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::strin
   for(size_t i=0; i<r.size(); ++i)
   {
     const DataBaseID hostID=ReaderHelper<DataBaseID>::readAsNotNull( r[i]["id"] );
-    HostPtr host(new Persistency::Host( ReaderHelper<Persistency::Host::IP>::readAsNotNull(r[0]["ip"]),
-                                        ReaderHelper< Base::NullValue<Persistency::Host::Netmask> >::readAs(r[0]["mask"]).get(),
-                                        ReaderHelper<Persistency::Host::OperatingSystem>::readAs(r[0]["os"]),
+    HostPtr host(new Persistency::Host( ReaderHelper<Persistency::Host::IP>::readAsNotNull(r[i]["ip"]),
+                                        ReaderHelper< Base::NullValue<Persistency::Host::Netmask> >::readAs(r[i]["mask"]).get(),
+                                        ReaderHelper<Persistency::Host::OperatingSystem>::readAs(r[i]["os"]),
                                         getReferenceURL( ReaderHelper<NullValue<DataBaseID> >::readAs( r[i]["id_ref"] ).get() ),
                                         getReportedServices(hostID),
                                         getReportedProcesses(hostID),
-                                        ReaderHelper<Persistency::Host::Name>::readAs(r[0]["name"]) ) );
+                                        ReaderHelper<Persistency::Host::Name>::readAs(r[i]["name"]) ) );
     // add host to cache
     addIfNew(host, hostID);
     hosts.push_back(host);
@@ -184,9 +184,9 @@ Persistency::Host::ReportedServices EntryReader::getReportedServices(DataBaseID 
   Persistency::Host::ReportedServices services;
   for(size_t i = 0;i < r.size(); ++i)
   {
-    ServicePtrNN service( new Service( ReaderHelper<string>::readAsNotNull(r[0]["name"]),
-                                       ReaderHelper<DataBaseID>::readAsNotNull(r[0]["port"]),
-                                       ReaderHelper<Service::Protocol>::readAs(r[0]["protocol"]),
+    ServicePtrNN service( new Service( ReaderHelper<string>::readAsNotNull(r[i]["name"]),
+                                       ReaderHelper<DataBaseID>::readAsNotNull(r[i]["port"]),
+                                       ReaderHelper<Service::Protocol>::readAs(r[i]["protocol"]),
                                        getReferenceURL( ReaderHelper<NullValue<DataBaseID> >::readAs( r[i]["id_ref"] ).get() ) ) );
     services.push_back(service);
   } // for(services)
@@ -202,13 +202,13 @@ Persistency::Host::ReportedProcesses EntryReader::getReportedProcesses(DataBaseI
   Persistency::Host::ReportedProcesses processes;
   for(size_t i = 0; i<r.size(); ++i)
   {
-    const NullValue<string> params=ReaderHelper< NullValue<string> >::readAs(r[0]["arguments"]);
-    Persistency::ProcessPtr process( new Process( ReaderHelper<Process::Path>::readAs(r[0]["path"]),
-                                                  ReaderHelper<string>::readAsNotNull(r[0]["name"]),
-                                                  ReaderHelper< std::auto_ptr<MD5Sum> >::readAs(r[0]["md5"]).get(),
-                                                  ReaderHelper< NullValue<pid_t> >::readAs(r[0]["pid"]).get(),
-                                                  ReaderHelper< NullValue<int> >::readAs(r[0]["uid"]).get(),
-                                                  ReaderHelper<string>::readAsNotNull(r[0]["username"]),
+    const NullValue<string> params=ReaderHelper< NullValue<string> >::readAs(r[i]["arguments"]);
+    Persistency::ProcessPtr process( new Process( ReaderHelper<Process::Path>::readAs(r[i]["path"]),
+                                                  ReaderHelper<string>::readAsNotNull(r[i]["name"]),
+                                                  ReaderHelper< std::auto_ptr<MD5Sum> >::readAs(r[i]["md5"]).get(),
+                                                  ReaderHelper< NullValue<pid_t> >::readAs(r[i]["pid"]).get(),
+                                                  ReaderHelper< NullValue<int> >::readAs(r[i]["uid"]).get(),
+                                                  ReaderHelper<string>::readAsNotNull(r[i]["username"]),
                                                   (params.get()==NULL)?NULL:params.get()->c_str(),
                                                   getReferenceURL( ReaderHelper<NullValue<DataBaseID> >::readAs( r[i]["id_ref"] ).get() ) ) );
     processes.push_back(process);
