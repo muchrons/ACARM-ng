@@ -40,10 +40,9 @@ Trigger::GG::AccountConfig getTestConfig(void)
 // helper class that protects event from possible exceptions
 typedef System::ScopedPtrCustom<gg_event, gg_event_free> EventWrapper;
 
-std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, const Trigger::GG::UserID sender)
+std::string getMessageFromAccount(Trigger::GG::Connection &conn, const Trigger::GG::UserID sender)
 {
-  Trigger::GG::Connection conn(account);
-  timeval                 timeout={20, 0};      // timeout is 20[s]
+  timeval timeout={20, 0};                          // timeout is 20[s]
   for(;;)
   {
     // wait for something
@@ -92,6 +91,12 @@ std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, con
     const char *msg=reinterpret_cast<const char*>(m.message);
     return msg;
   } // for(events)
+} // getMessageFromAccount()
+
+std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, const Trigger::GG::UserID sender)
+{
+  Trigger::GG::Connection conn(account);
+  return getMessageFromAccount(conn, sender);
 } // getMessageFromAccount()
 
 } // unnamed namespace
