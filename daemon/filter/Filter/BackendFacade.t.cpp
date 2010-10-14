@@ -10,7 +10,7 @@
 #include "Filter/BackendFacade.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
-#include "TestHelpers/Persistency/ConnectionIOCounter.hpp"
+#include "TestHelpers/Persistency/ConnectionIOMemory.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 
 using namespace Filter;
@@ -23,7 +23,7 @@ namespace
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    conn_( new ConnectionIOCounter("Persistency::IDAssigner", "next free MetaAlert's ID") ),
+    conn_(new ConnectionIOMemory),
     bf_( new BackendFacade(conn_, changed_, "sometest") )
   {
     assert( bf_.get()!=NULL );

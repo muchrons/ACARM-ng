@@ -19,11 +19,7 @@ namespace detail
 {
 struct BackendFacadeStubData
 {
-  BackendFacadeStubData(::Persistency::IO::ConnectionPtrNN  conn,
-                        ::Persistency::IO::Transaction     &t);
-
-  ::Input::detail::AnalyzersMap am_;
-  ::Input::CommonDataPtrNN      cd_;
+  ::Persistency::Facades::AnalyzersCreator ac_;
 }; // struct BackendFacadeStubData
 } // namespace detail
 
@@ -31,8 +27,7 @@ class BackendFacadeStub: private detail::BackendFacadeStubData,
                          public  ::Input::BackendFacade
 {
 public:
-  BackendFacadeStub(::Persistency::IO::ConnectionPtrNN  conn,
-                    ::Persistency::IO::Transaction     &t);
+  explicit BackendFacadeStub(::Persistency::IO::ConnectionPtrNN conn);
 }; // class BackendFacadeStub
 
 } // namespace Input

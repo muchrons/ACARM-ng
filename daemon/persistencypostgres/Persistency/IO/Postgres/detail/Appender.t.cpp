@@ -72,7 +72,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  check("abc", "'abc'");
+  check("abc", "E'abc'");
 }
 
 // test non-null std::string
@@ -81,7 +81,7 @@ template<>
 void testObj::test<5>(void)
 {
   const string tmp="abc";
-  check(&tmp, "'abc'");
+  check(&tmp, "E'abc'");
 }
 
 // test integer
@@ -117,7 +117,7 @@ template<>
 void testObj::test<9>(void)
 {
   const string tmp="abc";
-  checkRef(tmp, "'abc'");
+  checkRef(tmp, "E'abc'");
 }
 
 // test integer

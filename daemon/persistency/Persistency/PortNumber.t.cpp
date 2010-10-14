@@ -131,4 +131,14 @@ void testObj::test<9>(void)
   ensure("comparison iwht instant value fails", pn<42 );
 }
 
+// test if PortNumber::Numeric exists
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  const PortNumber::Numeric n=42;
+  const PortNumber          pn(n);
+  ensure_equals("invalid port number", pn.get(), n);
+}
+
 } // namespace tut

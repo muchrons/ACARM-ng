@@ -4,7 +4,15 @@ class MainMenuTemplate extends TTemplateControl
 {
   public function buttonClicked($sender,$param)
   {
-    $this->Result->Text="Command name: $param->CommandName, Command parameter: $param->CommandParameter";
+    $this->MultiView->setActiveViewIndex(2);
+    $sender->Text="I'm clicked";
+    echo "azsdasdasdasdAS";
+    //    die("O my god");
+  }
+
+  public function callback($param,$param2)
+  {
+    //die("O my god");
   }
 }
 

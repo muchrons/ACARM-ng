@@ -3,6 +3,7 @@
  *
  */
 #include <algorithm>
+#include <boost/tokenizer.hpp>
 #include <cassert>
 
 #include "Commons/Convert.hpp"
@@ -48,12 +49,15 @@ xmlpp::Element &ToXML::addAlert(const Persistency::GraphNode &leaf)
   assert( a.getSourceAnalyzers().begin()->get()!=NULL );
   alert.addAnalyzer( *a.getSourceAnalyzers().begin()->get() );
   alert.addCreateTime( a.getCreationTime() );
+  if( a.getDetectionTime()!=NULL )
+    alert.addDetectTime( *a.getDetectionTime() );
   if( a.getReportedSourceHosts().size()>0 )
     alert.addSource( *a.getReportedSourceHosts()[0] );
   if( a.getReportedTargetHosts().size()>0 )
     alert.addTarget( *a.getReportedTargetHosts()[0] );
   alert.addClassification(leaf);
   alert.addAdditionalData(leaf);
+  alert.addAssessment(leaf);
   return alert.getParent();
 }
 
@@ -182,7 +186,7 @@ xmlpp::Element &ToXML::addProcess(const Persistency::Process &p)
   if( p.getPath().get()!=NULL )
     process.addString( "path", p.getPath().get() );
   if( p.getParameters()!=NULL )
-    process.addString( "arg", p.getParameters()->c_str() );
+    process.addProcessArguments( *p.getParameters() );
   if( p.getPID()!=NULL )
     process.addString( "pid", toStr( p.getPID() ).c_str() );
   return process.getParent();
@@ -254,6 +258,19 @@ void ToXML::addParameter(const char *name, const char *value)
   parent_.set_attribute(name, value);
 }
 
+void ToXML::addProcessArguments(const std::string &args)
+{
+  // TODO: this should be more clever - consider spaces inside the input string...
+  typedef boost::char_separator<char> Separator;
+  typedef boost::tokenizer<Separator> Tokenizer;
+  const Separator sep(" ");
+  const Tokenizer tokens(args, sep);
+
+  // make separate entry from each element
+  for(Tokenizer::const_iterator it=tokens.begin(); it!=tokens.end(); ++it)
+    addString( "arg", it->c_str() );
+}
+
 xmlpp::Element &ToXML::addNode(const char *name, const IP *ip)
 {
   ToXML node( addChild( getParent(), "Node" ) );
@@ -270,7 +287,7 @@ xmlpp::Element &ToXML::addNode(const char *name, const IP *ip)
     if(ip==NULL)
       throw ExceptionUnexpectedNULL(SYSTEM_SAVE_LOCATION, "ip");
   }
-  // add IP is present
+  // add IP if present
   if(ip!=NULL)
   {
     category="host";

@@ -9,6 +9,7 @@
 
 #include <cerrno>
 #include <cstring>
+#include <boost/filesystem.hpp>
 
 #include "ConfigIO/Exception.hpp"
 
@@ -24,9 +25,8 @@ public:
    *  \param where place where exception was rised.
    *  \param path  file that caused error.
    */
-  ExceptionFileAccessError(const Location &where, const char *path):
-    Exception(where, std::string("unable to access file: '") +
-                     ensureValidString(path) + "' - " + strerror(errno) )
+  ExceptionFileAccessError(const Location &where, const boost::filesystem::path &path):
+    Exception(where, cc("unable to access file: '", path, "' - ", strerror(errno) ) )
   {
   }
 }; // class ExceptionFileAccessError

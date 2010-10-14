@@ -37,6 +37,7 @@ void BackendFacade::commitChanges(void)
     return;
 
   transaction_->commit();
+  transaction_.reset();
 }
 
 void BackendFacade::beginTransaction(void)

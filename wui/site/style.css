@@ -20,8 +20,7 @@ table td { border: 1px dotted gray; }
 div#mainDiv
 {
   color:        black;
-  background:   white;
-
+  background:   black;
   margin-left:  auto;
   margin-right: auto;
   width: 950px;
@@ -68,7 +67,7 @@ td.menuTd
 /* menu links */
 a.menuLink:visited
 {
-  color:           #4775a5;
+  color:           #eeeeee;
   font-size:       150%;
   text-decoration: none;
   letter-spacing:  2px;
@@ -76,7 +75,7 @@ a.menuLink:visited
 
 a.menuLink:link
 {
-  color:           #4775a5;
+  color:           white;
   font-size:       150%;
   text-decoration: none;
   letter-spacing:  2px;
@@ -84,7 +83,7 @@ a.menuLink:link
 
 a.menuLink:hover
 {
-  color:           #4775a5;
+  color:           #ff0000;
   font-size:       150%;
   border-bottom:   5px solid #84cbe3;
   letter-spacing:  2px;
@@ -96,7 +95,7 @@ td#mainContentPart
   width: 730px;
   text-align: justify;
   padding: 1em;
-  color: #4775a5;
+  color: #000000;
 }
 
 div#calendarDiv
@@ -108,7 +107,7 @@ td.calTh
 {
   width: 100px;
   color: #fff;
-  background-color: #4775a5;
+  background-color: #f775a5;
   text-align: center;
 }
 
@@ -126,17 +125,6 @@ td.calResTd
   border: 1px solid gray;
 }
 
-a.freeLink:visited, a.freeLink:link, a.freeLink:hover
-{
-  text-decoration: none;
-  color: #4775a5;
-}
-
-a.resLink:visited, a.resLink:link, a.resLink:hover
-{
-  text-decoration: none;
-  color: #fff;
-}
 
 td.pic
 {

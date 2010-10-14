@@ -572,7 +572,9 @@ void testObj::test<25>(void)
                     "<idmef:Process>"
                       "<idmef:name>binary</idmef:name>"
                       "<idmef:path>/path/to/bin</idmef:path>"
-                      "<idmef:arg>-a -b -c</idmef:arg>"
+                      "<idmef:arg>-a</idmef:arg>"
+                      "<idmef:arg>-b</idmef:arg>"
+                      "<idmef:arg>-c</idmef:arg>"
                       "<idmef:pid>42</idmef:pid>"
                     "</idmef:Process>"
                   "</idmef:IDMEF-Message>\n");
@@ -684,7 +686,7 @@ template<>
 template<>
 void testObj::test<29>(void)
 {
-  const Persistency::GraphNodePtrNN leaf=TestHelpers::Persistency::makeNewLeaf("6.6.6.9", "9.9.7.0", true);
+  const Persistency::GraphNodePtrNN leaf=TestHelpers::Persistency::makeNewLeaf("6.6.6.9", "9.9.7.0", true, 1);
   checkAlert(*leaf, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                     "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
                       "<idmef:Alert messageid=\"303\">"
@@ -720,6 +722,11 @@ void testObj::test<29>(void)
                         "<idmef:AdditionalData type=\"string\" meaning=\"description\">"
                           "<idmef:string>some test alert</idmef:string>"
                         "</idmef:AdditionalData>"
+
+                        "<idmef:Assessment>"
+                          "<idmef:Impact severity=\"low\"/>"
+                          "<idmef:Confidence rating=\"numeric\">1</idmef:Confidence>"
+                        "</idmef:Assessment>"
                       "</idmef:Alert>"
                     "</idmef:IDMEF-Message>\n");
 }
@@ -729,7 +736,7 @@ template<>
 template<>
 void testObj::test<30>(void)
 {
-  const Persistency::GraphNodePtrNN leaf=TestHelpers::Persistency::makeNewLeaf(NULL, NULL, false);
+  const Persistency::GraphNodePtrNN leaf=TestHelpers::Persistency::makeNewLeaf(NULL, NULL, false, 1);
   checkAlert(*leaf, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                     "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
                       "<idmef:Alert messageid=\"303\">"
@@ -747,6 +754,56 @@ void testObj::test<30>(void)
                         "<idmef:AdditionalData type=\"string\" meaning=\"description\">"
                           "<idmef:string>some test alert</idmef:string>"
                         "</idmef:AdditionalData>"
+
+                        "<idmef:Assessment>"
+                          "<idmef:Impact severity=\"low\"/>"
+                          "<idmef:Confidence rating=\"numeric\">1</idmef:Confidence>"
+                        "</idmef:Assessment>"
+                      "</idmef:Alert>"
+                    "</idmef:IDMEF-Message>\n");
+}
+
+// test adding DetectTime field, if present
+template<>
+template<>
+void testObj::test<31>(void)
+{
+  using namespace Persistency;
+  using namespace TestHelpers::Persistency;
+
+  const Alert::SourceAnalyzers srcAnalyzers( makeNewAnalyzer() );
+  const Timestamp              createTime(12345u);
+  const Timestamp              detectTime(12345u+1u);
+  const Severity               severity(SeverityLevel::PROBLEM);
+  const Certainty              certainty(1);
+  const Alert::ReportedHosts   rHosts;
+  const AlertPtrNN             alert( new Alert("NaMe", srcAnalyzers, &detectTime, createTime,
+                                                severity, certainty, "hello", rHosts, rHosts) );
+  const GraphNodePtrNN         leaf=makeNewLeaf(alert);
+  checkAlert(*leaf, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                    "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                      "<idmef:Alert messageid=\"303\">"
+
+                        "<idmef:Analyzer analyzerid=\"42\">"
+                          "<idmef:Node category=\"host\">"
+                            "<idmef:name>some analyzer</idmef:name>"
+                          "</idmef:Node>"
+                        "</idmef:Analyzer>"
+
+                        "<idmef:CreateTime ntpstamp=\"0x83AAAEB9.0x00000000\">1970-01-01T03:25:45Z</idmef:CreateTime>"
+
+                        "<idmef:DetectTime ntpstamp=\"0x83AAAEBA.0x00000000\">1970-01-01T03:25:46Z</idmef:DetectTime>"
+
+                        "<idmef:Classification text=\"NaMe\"/>"
+
+                        "<idmef:AdditionalData type=\"string\" meaning=\"description\">"
+                          "<idmef:string>hello</idmef:string>"
+                        "</idmef:AdditionalData>"
+
+                        "<idmef:Assessment>"
+                          "<idmef:Impact severity=\"medium\"/>"
+                          "<idmef:Confidence rating=\"numeric\">1</idmef:Confidence>"
+                        "</idmef:Assessment>"
                       "</idmef:Alert>"
                     "</idmef:IDMEF-Message>\n");
 }

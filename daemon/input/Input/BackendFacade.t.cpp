@@ -21,8 +21,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     name_("testinputbftest"),
     conn_( createUserStub() ),
     t_( new Persistency::IO::Transaction( conn_->createNewTransaction("backend_facade_trans") ) ),
-    cd_( new CommonData(conn_, *t_) ),
-    bf_(conn_, name_, am_, cd_)
+    bf_(conn_, name_, ac_)
   {
     t_->commit();
     t_.reset();     // disgard transaction
@@ -31,8 +30,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   const std::string                               name_;
   Persistency::IO::ConnectionPtrNN                conn_;
   boost::scoped_ptr<Persistency::IO::Transaction> t_;
-  detail::AnalyzersMap                            am_;
-  CommonDataPtrNN                                 cd_;
+  Persistency::Facades::AnalyzersCreator          ac_;
   BackendFacade                                   bf_;
 };
 
@@ -51,28 +49,17 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  bf_.getAnalyzer("SomeInputSpecific_ID_12345", "name", "1.2", "Linux", NULL);
+  bf_.getAnalyzer("name", "1.2", "Linux", NULL);
   bf_.commitChanges();
 }
 
-// test if getting the same data for different IDs produces different analyzers
+// test if getting multiple times the same analyzer does not fail
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  Persistency::AnalyzerPtrNN ptr1=bf_.getAnalyzer("SomeInputSpecific_ID_12345", "name", "1.2", "Linux", NULL);
-  Persistency::AnalyzerPtrNN ptr2=bf_.getAnalyzer("SomeInputSpecific_ID_54321", "name", "1.2", "Linux", NULL);
-  bf_.commitChanges();
-  ensure("pointers differ", ptr1.get()!=ptr2.get() );
-}
-
-// test if getting multiple times the same analyzer (via ID) does not fail
-template<>
-template<>
-void testObj::test<3>(void)
-{
-  Persistency::AnalyzerPtrNN ptr1=bf_.getAnalyzer("SomeInputSpecific_ID_12345", "name", "1.2", "Linux", NULL);
-  Persistency::AnalyzerPtrNN ptr2=bf_.getAnalyzer("SomeInputSpecific_ID_12345", "name", "1.2", "Linux", NULL);
+  Persistency::AnalyzerPtrNN ptr1=bf_.getAnalyzer("name", "1.2", "Linux", NULL);
+  Persistency::AnalyzerPtrNN ptr2=bf_.getAnalyzer("name", "1.2", "Linux", NULL);
   bf_.commitChanges();
   ensure("pointers differ", ptr1.get()==ptr2.get() );
 }
@@ -80,16 +67,16 @@ void testObj::test<3>(void)
 // test if 'common data' pass internal state indeed
 template<>
 template<>
-void testObj::test<4>(void)
+void testObj::test<3>(void)
 {
-  Persistency::AnalyzerPtrNN ptr1=bf_.getAnalyzer("SomeInputSpecific_ID_12345", "name", "1.2", "Linux", NULL);
+  Persistency::AnalyzerPtrNN ptr1=bf_.getAnalyzer("name", "1.2", "Linux", NULL);
   bf_.commitChanges();
 
-  BackendFacade              bfNew(conn_, name_, am_, cd_);
-  Persistency::AnalyzerPtrNN ptr2=bfNew.getAnalyzer("SomeInputSpecific_ID_12345", "name", "1.2", "Linux", NULL);
+  BackendFacade              bfNew(conn_, name_, ac_);
+  Persistency::AnalyzerPtrNN ptr2=bfNew.getAnalyzer("name", "1.2", "Linux", NULL);
   bfNew.commitChanges();
 
-  ensure("pointer differ (commons odes not work)", ptr1.get()==ptr2.get() );
+  ensure("pointer differ (caches does not work)", ptr1.get()==ptr2.get() );
 }
 
 } // namespace tut

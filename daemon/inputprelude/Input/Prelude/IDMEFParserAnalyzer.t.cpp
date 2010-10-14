@@ -183,9 +183,7 @@ void testObj::test<11>(void)
   td_.addOsTypeToAnalyzer(analyzer_,"Wojtek linux2.6.129 gr-sec");
   td_.addAddressToAnalyzer(analyzer_,"156.117.92.22",false);
   IDMEFParserAnalyzer an(analyzer_);
-  ensure_equals("invalid value returned",
-                an.getPreludeID(),
-                std::string("UnknownID/The Analyzer of Luke Skywaker/NULLSTR/Wojtek linux2.6.129 gr-sec/156.117.92.22"));
+  ensure_equals("invalid value returned", an.getPreludeID(), "");
 }
 
 } // namespace tut

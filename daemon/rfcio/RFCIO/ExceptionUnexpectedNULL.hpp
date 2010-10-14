@@ -12,7 +12,7 @@
 namespace RFCIO
 {
 
-/** \brief base for all RFCIO-related exceptions.
+/** \brief exception thrown when unexpected NULL value is found.
  */
 class ExceptionUnexpectedNULL: public Exception
 {

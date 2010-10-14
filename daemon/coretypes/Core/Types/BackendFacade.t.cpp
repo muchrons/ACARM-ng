@@ -104,4 +104,17 @@ void testObj::test<5>(void)
   ensure_equals("invalid name", bf_->getNamePublic(), "sometest");
 }
 
+// test if it is possible to reopn new transaction after commiting changes
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  // transaction 1
+  bf_->doSth();
+  bf_->commitChanges();
+  // transaction 2
+  bf_->doSth();
+  bf_->commitChanges();
+}
+
 } // namespace tut

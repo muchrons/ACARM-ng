@@ -166,4 +166,33 @@ void testObj::test<7>(void)
   ensure_equals("invalid Source 1", src.at(1)->getIP(), boost::asio::ip::address_v6::from_string("::1"));
 }
 
+// test if prelude's ID is added to name, when set.
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  td_.makeAlert();
+  idmef_analyzer_t *analyzer=td_.addAnalyzerToAlert();
+  td_.addAnalyzeridToAnalyzer(analyzer, "1234567890");
+  td_.addClassificationToAlert("some classification");
+
+  const IDMEFParser ip(td_.message_.get(), bf_);
+  ensure_equals("invalid number of analyzers", ip.getAnalyzers().size(), 1u);
+  ensure_equals("invalid name with ID", (*ip.getAnalyzers().begin())->getName().get(), string("Unknown (1234567890)") );
+}
+
+// test if only name is set when no PreludeID is set
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  td_.makeAlert();
+  td_.addAnalyzerToAlert();
+  td_.addClassificationToAlert("some classification");
+
+  const IDMEFParser ip(td_.message_.get(), bf_);
+  ensure_equals("invalid number of analyzers", ip.getAnalyzers().size(), 1u);
+  ensure_equals("invalid name without ID", (*ip.getAnalyzers().begin())->getName().get(), string("Unknown") );
+}
+
 } // namespace tut
