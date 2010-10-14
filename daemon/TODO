@@ -19,3 +19,4 @@
 * implement extra table for fast computing root meta-alerts.
 * encrypted connecitons in Trigger::GG.
 * consider splitig configuration into multiple files.
+* consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
