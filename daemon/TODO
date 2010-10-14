@@ -18,3 +18,5 @@
 * trigger reporting "the most important events" aiming to rise about N most important event in some ammount of time (thresholds are variable, depending on the input).
 * add support for specifying multiple receivers in triggers (consider comma/semicolon separated entries).
 * implement extra table for fast computing root meta-alerts.
+* encrypted connecitons in Trigger::GG.
+* consider splitig configuration into multiple files.
