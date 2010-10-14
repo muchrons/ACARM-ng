@@ -184,12 +184,10 @@ Persistency::Host::ReportedServices EntryReader::getReportedServices(DataBaseID 
   Persistency::Host::ReportedServices services;
   for(size_t i = 0;i < r.size(); ++i)
   {
-    DataBaseID refID;
-    r[i]["id_ref"].to(refID);
     ServicePtrNN service( new Service( ReaderHelper<string>::readAsNotNull(r[0]["name"]),
                                        ReaderHelper<DataBaseID>::readAsNotNull(r[0]["port"]),
                                        ReaderHelper<Service::Protocol>::readAs(r[0]["protocol"]),
-                                       getReferenceURL(&refID) ) );
+                                       getReferenceURL( ReaderHelper<NullValue<DataBaseID> >::readAs( r[i]["id_ref"] ).get() ) ) );
     services.push_back(service);
   } // for(services)
   return services;
@@ -204,9 +202,6 @@ Persistency::Host::ReportedProcesses EntryReader::getReportedProcesses(DataBaseI
   Persistency::Host::ReportedProcesses processes;
   for(size_t i = 0; i<r.size(); ++i)
   {
-    DataBaseID refID;
-    r[i]["id_ref"].to(refID);
-
     const NullValue<string> params=ReaderHelper< NullValue<string> >::readAs(r[0]["arguments"]);
     Persistency::ProcessPtr process( new Process( ReaderHelper<Process::Path>::readAs(r[0]["path"]),
                                                   ReaderHelper<string>::readAsNotNull(r[0]["name"]),
@@ -215,7 +210,7 @@ Persistency::Host::ReportedProcesses EntryReader::getReportedProcesses(DataBaseI
                                                   ReaderHelper< NullValue<int> >::readAs(r[0]["uid"]).get(),
                                                   ReaderHelper<string>::readAsNotNull(r[0]["username"]),
                                                   (params.get()==NULL)?NULL:params.get()->c_str(),
-                                                  getReferenceURL(&refID) ) );
+                                                  getReferenceURL( ReaderHelper<NullValue<DataBaseID> >::readAs( r[i]["id_ref"] ).get() ) ) );
     processes.push_back(process);
   }
   return processes;
