@@ -54,7 +54,7 @@ public:
   }
 
 private:
-  gg_session *connect(void) const;
+  AutoSession connect(void) const;
   void sendContactsList(void);
 
   Logger::Node          log_;

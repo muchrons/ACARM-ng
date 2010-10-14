@@ -91,7 +91,7 @@ template<>
 void testObj::test<4>(void)
 {
   setValid();
-  opts_["outdir"]="";   // this cannot be valid path
+  opts_["outdir"]="/i/do/not/exist";    // this cannot be valid path
   ensureThrow(opts_);
 }
 

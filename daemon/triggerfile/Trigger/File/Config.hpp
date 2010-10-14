@@ -5,7 +5,7 @@
 #ifndef INCLUDE_TRIGGER_FILE_CONFIG_HPP_FILE
 #define INCLUDE_TRIGGER_FILE_CONFIG_HPP_FILE
 
-#include <string>
+#include <boost/filesystem.hpp>
 
 #include "Trigger/Simple/ThresholdConfig.hpp"
 
@@ -23,7 +23,7 @@ public:
    *  \param outdir directory to output reports to.
    *  \param th     threshold configuration - informs when run trigger.
    */
-  Config(const std::string &outdir, const Simple::ThresholdConfig &th):
+  Config(const boost::filesystem::path &outdir, const Simple::ThresholdConfig &th):
     outdir_(outdir),
     th_(th)
   {
@@ -32,7 +32,7 @@ public:
   /** \brief get destination direcotry to write reports to.
    *  \return path to output direcotry.
    */
-  const std::string &getOutputDirectory(void) const
+  const boost::filesystem::path &getOutputDirectory(void) const
   {
     return outdir_;
   }
@@ -45,7 +45,7 @@ public:
   }
 
 private:
-  std::string             outdir_;
+  boost::filesystem::path outdir_;
   Simple::ThresholdConfig th_;
 }; // class Config
 

@@ -53,9 +53,11 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  // TODO: something's wrong with this test - fix it!
   Strategy               s("mygginformer", cfg_);
   Strategy::ChangedNodes nc;
   s.process( makeNewNode(), nc );
+  ensure_equals("some nodes have been changed", nc.size(), 0u);
   const std::string      str=getMessageFromAccount( getTestConfig2(),
                                                     cfg_.getAccountConfig().getUserID() );
   ensure("invalid repot generated", strstr( str.c_str(), "reporting triggered for meta-alert \"")!=0 );

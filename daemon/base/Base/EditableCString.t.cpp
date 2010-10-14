@@ -4,23 +4,21 @@
  */
 #include <tut.h>
 
-#include "Trigger/GG/EditableCString.hpp"
-#include "TestHelpers/Persistency/TestStubs.hpp"
+#include "Base/EditableCString.hpp"
 
-using namespace Trigger::GG;
-using namespace TestHelpers::Persistency;
+using namespace Base;
 
 namespace
 {
 
-struct TestClass: private TestHelpers::Persistency::TestStubs
+struct TestClass
 {
 };
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Trigger/GG/EditableCString");
+factory tf("Base/EditableCString");
 } // unnamed namespace
 
 

@@ -25,23 +25,23 @@ Connection::~Connection(void)
 }
 
 // connection to server
-gg_session *Connection::connect(void) const
+AutoSession Connection::connect(void) const
 {
-  gg_session *sess=gg_login( &params_.get() );
+  AutoSession sess( gg_login( &params_.get() ) );
 
   // sanity check
-  if( sess==NULL )
+  if( sess.get()==NULL )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "NULL structure received (login failed)");
 
   // check if state is: connected
-  if( sess->state!=GG_STATE_CONNECTED )
+  if( sess.get()->state!=GG_STATE_CONNECTED )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "not connected to server");
 
   // looks like everything's done
-  LOGMSG_INFO_S(log_) << "connected as " << sess->uin
+  LOGMSG_INFO_S(log_) << "connected as " << sess.get()->uin
                       << " to default Gadu-Gadu server; protocol version is "
-                      << sess->protocol_version;
-  LOGMSG_DEBUG_S(log_) << "current status is " << sess->status;
+                      << sess.get()->protocol_version;
+  LOGMSG_DEBUG_S(log_) << "current status is " << sess.get()->status;
 
   return sess;
 }

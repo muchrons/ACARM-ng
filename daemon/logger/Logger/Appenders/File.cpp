@@ -13,7 +13,7 @@ namespace Logger
 namespace Appenders
 {
 
-File::File(const std::string &path):
+File::File(const boost::filesystem::path &path):
   Stream<File>(out_),
   path_(path)
 {
@@ -32,7 +32,7 @@ void File::reinitImpl(void)
     out_.close();
 
   // open file and check if it succedded.
-  out_.open(path_.c_str(), ios_base::out | ios_base::app | ios_base::binary);
+  out_.open(path_.string().c_str(), ios_base::out | ios_base::app | ios_base::binary);
   if( !out_.is_open() )
     throw ExceptionFileAccessError(SYSTEM_SAVE_LOCATION, path_);
   // sanity check
