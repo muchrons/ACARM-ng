@@ -45,6 +45,7 @@ void Dumper::restoreBetween(const Persistency::Timestamp  from,
   IO::Transaction           t( conn->createNewTransaction("persistency_dumper") );
   IO::RestorerAutoPtr       restorer=conn->restorer(t);
   out_<<"restoring nodes between "<<from.str()<<" and "<<to.str()<<endl;
+  out_<<"(note: depending on alerts count this may take some time...)"<<endl;
   restorer->restoreBetween(nodesOut, from, to);
   out_<<"restoring's done"<<endl;
   t.commit();
