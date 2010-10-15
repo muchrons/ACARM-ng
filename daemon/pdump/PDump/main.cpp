@@ -1,19 +1,12 @@
 #include <iostream>
-#include <cstdio>
-#include <cstring>
 
 #include "Commons/Convert.hpp"
-#include "Commons/Filesystem/createFile.hpp"
 #include "Commons/Filesystem/isDirectorySane.hpp"
-#include "Persistency/GraphNode.hpp"
-#include "Persistency/IO/create.hpp"
-#include "Persistency/IO/Connection.hpp"
-#include "RFCIO/IDMEF/XMLCreator.hpp"
+#include "PDump/Dumper.hpp"
 
 using namespace std;
-using namespace boost::filesystem;
+using namespace PDump;
 using namespace Commons;
-using namespace Commons::Filesystem;
 using namespace Persistency;
 
 int main(int argc, const char **argv)
@@ -26,15 +19,14 @@ int main(int argc, const char **argv)
   }
 
   // start procedure
-  int    ret     =0;
-  size_t attempts=0;
-  size_t writes  =0;
+  int           ret=0;
+  pair<int,int> stats;
   try
   {
     // get input paramters
-    const path      root(argv[1]);
+    const boost::filesystem::path root(argv[1]);
     cout<<"dumping alerts to output directory "<<root<<endl;
-    if( isDirectorySane(root)==false )
+    if( Filesystem::isDirectorySane(root)==false )
     {
       cerr<<"directory '"<<root<<"' doesn't look sane - aboring"<<endl;
       return 2;
@@ -44,55 +36,25 @@ int main(int argc, const char **argv)
     const Timestamp to( Convert::to<time_t>(argv[3]) );
     cout<<"dumping alerts until "<<to.get()<<" ("<<to.str()<<")"<<endl;
 
-    // connect to persistency storage
-    cout<<"connecting to persistency storage"<<endl;
-    IO::ConnectionPtrNN conn( IO::create() );
-    cout<<"connected"<<endl;
+    // perform dumping itself
+    {
+      Dumper              d(cout, cerr);
+      Dumper::NodesVector nodes;
+      d.restoreBetween(from, to, nodes);
+      stats=d.writeToDir(nodes, root);
+    }
 
-    // dump data base content
-    cout<<"opening transaction"<<endl;
-    IO::Transaction           t( conn->createNewTransaction("persistency_dumper") );
-    IO::RestorerAutoPtr       restorer=conn->restorer(t);
-    IO::Restorer::NodesVector out;
-    cout<<"restoring nodes between "<<from.str()<<" and "<<to.str()<<endl;
-    restorer->restoreBetween(out, from, to);
-    cout<<"restoring's done"<<endl;
-    t.commit();
-
-    // save results to files
-    cout<<"writing all alerts to files"<<endl;
-    for(IO::Restorer::NodesVector::const_iterator it=out.begin(); it!=out.end(); ++it)
-      if( (*it)->isLeaf() )
-      {
-        try
-        {
-          ++attempts;
-          const MetaAlert::ID::Numeric id=(*it)->getMetaAlert().getID().get();
-          char                         percent[3+1+2+1]; // NNN.MM\0
-          sprintf(percent, "%3.2f", (100.0*attempts)/out.size() );
-          assert( strlen(percent)<sizeof(percent) );
-          cerr<<"\rwriting "<<percent<<"\% done (alert ID "<<id<<")";
-          RFCIO::IDMEF::XMLCreator     x(**it);
-          const path                   file ="idmef_" + Convert::to<string>(id) + ".xml";
-          SharedPtrNotNULL<fstream>    fstrm=createFile(root/file);
-          x.getDocument().write_to_stream(*fstrm, "UTF-8");
-          ++writes;
-        }
-        catch(const RFCIO::Exception &ex)
-        {
-          cerr<<"RFC I/O module expcetion: "<<ex.what()<<endl;
-          ret=10;
-        }
-        catch(const std::exception &ex)
-        {
-          cerr<<"expcetion: "<<ex.what()<<endl;
-          ret=20;
-        }
-      }
-
-    // all ok
-    cout<<endl;
-    ret=0;
+    // output some stats
+    const int writes  =stats.first;
+    const int attempts=stats.second;
+    if(writes==attempts)
+      cout<<"wrote "<<writes<<" alerts to disk"<<endl;
+    else
+    {
+      cerr<<"wrote "<<writes<<" of total "<<attempts<<" alerts to disk - THERE WHERE ERRORS"<<endl;
+      ret=10;
+      cout<<"returning with error code "<<ret<<endl;
+    }
   }
   catch(const Persistency::Exception &ex)
   {
@@ -110,13 +72,5 @@ int main(int argc, const char **argv)
     ret=50;
   }
 
-  // summary and exit
-  if(writes==attempts)
-    cout<<"wrote "<<writes<<" alerts to disk"<<endl;
-  else
-  {
-    cerr<<"wrote "<<writes<<" of total "<<attempts<<" alerts to disk - THERE WHERE ERRORS"<<endl;
-    cout<<"returning with error code "<<ret<<endl;
-  }
   return ret;
 }
