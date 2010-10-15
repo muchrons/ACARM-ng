@@ -3,6 +3,8 @@
  *
  */
 #include <sstream>
+#include <sha.h>
+#include <cstring>
 
 #include "Persistency/Facades/detail/LocalAnalyzersCache.hpp"
 
@@ -40,7 +42,13 @@ LocalAnalyzersCache::Hash LocalAnalyzersCache::makeHash(const Analyzer::Name    
   else
     ss << ip->to_string();
 
-  return ss.str();
+  SHA1 sha;
+  byte digest[ shad.DigestSize() +1 ];
+  memset(digest, 0, sizeof(digest) );
+  sha.CalculateDigest( digest, ss.str().c_str(), ss.str().length() );
+
+  assert( strlen(digest)<sizeof(digest) );
+  return digest;
 }
 
 } // namespace detail
