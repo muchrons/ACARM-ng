@@ -79,7 +79,7 @@ std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account,
   for(;;)
   {
     // short sleep here to avoid waste CPU too much
-    usleep(50);
+    usleep(5000);
     // wait for something
     if(t.elapsed() > timeout)
       tut::fail("waiting for messages timeouted");

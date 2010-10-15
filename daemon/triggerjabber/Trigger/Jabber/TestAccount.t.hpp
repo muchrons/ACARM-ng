@@ -27,10 +27,7 @@ AccountConfig getTestConfig2(void);
 // helper for backward compatibility
 AccountConfig getTestConfig(void);
 
-// TODO: move implementation of these function to .t.cpp file
-
-// TODO: this f-ction must be declared as 'extern "C"' in order to be passed to C code.
-LmHandlerResult
+extern "C" LmHandlerResult
 handleMessages (LmMessageHandler * /*handler*/,
                 LmConnection     * /*connection*/,
                 LmMessage        *m,
