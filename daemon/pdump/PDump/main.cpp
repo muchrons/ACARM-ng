@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdio>
+#include <cstring>
 
 #include "Commons/Convert.hpp"
 #include "Commons/Filesystem/createFile.hpp"
@@ -54,7 +56,7 @@ int main(int argc, const char **argv)
     IO::Restorer::NodesVector out;
     cout<<"restoring nodes between "<<from.str()<<" and "<<to.str()<<endl;
     restorer->restoreBetween(out, from, to);
-    cout<<"restoring's done"<<cout;
+    cout<<"restoring's done"<<endl;
     t.commit();
 
     // save results to files
@@ -66,11 +68,14 @@ int main(int argc, const char **argv)
         {
           ++attempts;
           const MetaAlert::ID::Numeric id=(*it)->getMetaAlert().getID().get();
-          cerr<<"\rwriting alert ID "<<id<<" / "<<(100.0*attempts)/out.size()<<"%% done...";
+          char                         percent[3+1+2+1]; // NNN.MM\0
+          sprintf(percent, "%3.2f", (100.0*attempts)/out.size() );
+          assert( strlen(percent)<sizeof(percent) );
+          cerr<<"\rwriting "<<percent<<"\% done (alert ID "<<id<<")";
           RFCIO::IDMEF::XMLCreator     x(**it);
           const path                   file ="idmef_" + Convert::to<string>(id) + ".xml";
           SharedPtrNotNULL<fstream>    fstrm=createFile(root/file);
-          x.getDocument().write_to_stream(*fstrm);
+          x.getDocument().write_to_stream(*fstrm, "UTF-8");
           ++writes;
         }
         catch(const RFCIO::Exception &ex)
@@ -86,6 +91,7 @@ int main(int argc, const char **argv)
       }
 
     // all ok
+    cout<<endl;
     ret=0;
   }
   catch(const Persistency::Exception &ex)
@@ -108,7 +114,9 @@ int main(int argc, const char **argv)
   if(writes==attempts)
     cout<<"wrote "<<writes<<" alerts to disk"<<endl;
   else
+  {
     cerr<<"wrote "<<writes<<" of total "<<attempts<<" alerts to disk - THERE WHERE ERRORS"<<endl;
-  cout<<"returning with error code "<<ret<<endl;
+    cout<<"returning with error code "<<ret<<endl;
+  }
   return ret;
 }
