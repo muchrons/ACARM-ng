@@ -141,4 +141,38 @@ void testObj::test<9>(void)
   }
 }
 
+// test limited NULL string - trimming
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  typedef Commons::LimitedNULLString<42> StrNULL;
+  const StrNULL &tmp=Type<StrNULL>::convert(" abc ");
+  ensure("NULL value returned", tmp.get()!=NULL );
+  ensure_equals("invalid value", tmp.get(), std::string("abc") );
+  TYPE_ASSERT(Type<StrNULL>::ReadProxy, std::string);
+}
+
+// test limnited string - trimming
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  typedef Commons::LimitedString<42> Str;
+  const Str &tmp=Type<Str>::convert(" abc ");
+  ensure_equals("invalid value", tmp.get(), std::string("abc") );
+  TYPE_ASSERT(Type<Str>::ReadProxy, std::string);
+}
+
+// test string - trimming
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  typedef string Str;
+  const Str &tmp=Type<Str>::convert(" abc ");
+  ensure_equals("invalid value", tmp, std::string("abc") );
+  TYPE_ASSERT(Type<Str>::ReadProxy, std::string);
+}
+
 } // namespace tut

@@ -53,7 +53,10 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  // TODO: something's wrong with this test - fix it!
+  // TODO: this test doe snot pass, since GG server drops this message (changing message
+  //       helps; verified with package sniffer). it apperars that the only way to overcome
+  //       GG-server issues is to add cryptographic communication, which is planned in the
+  //       future. for now test does not pass...
   Strategy               s("mygginformer", cfg_);
   Strategy::ChangedNodes nc;
   s.process( makeNewNode(), nc );
