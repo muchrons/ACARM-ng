@@ -53,10 +53,10 @@ private:
    *  \param type    type of saved Host (source or target).
    *  \param Hosts   Hosts to be saved.
    */
-  void saveHosts(EntrySaver                        &es,
-                 DataBaseID                        alertID,
-                 HostType                          type,
-                 Persistency::Alert::ReportedHosts &hosts);
+  void saveHosts(EntrySaver                &es,
+                 DataBaseID                 alertID,
+                 HostType                   type,
+                 Persistency::Alert::Hosts &hosts);
   Logger::Node  log_;
   DBHandlePtrNN dbHandle_;
 }; // class Alert

@@ -27,10 +27,9 @@ struct TestStrategy: public Strategy
   {
   }
 
-  virtual const Persistency::Alert::ReportedHosts &getReportedHostsArray(
-                                                          const Node node) const
+  virtual const Persistency::Alert::Hosts &getHostsArray(const Node node) const
   {
-    return node->getAlert().getReportedSourceHosts();
+    return node->getAlert().getSourceHosts();
   }
 
   virtual MetaAlert::Name getMetaAlertName(const HostPtrNN /*h*/) const
@@ -45,9 +44,9 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   AlertPtrNN makeAlertWithHost(const char *host, const char *os) const
   {
-    const Alert::SourceAnalyzers sa( makeNewAnalyzer() );
-    const Host::Netmask_v4       mask(mask4_bytes);
-    Alert::ReportedHosts         hosts;
+    const Alert::Analyzers sa( makeNewAnalyzer() );
+    const Host::Netmask_v4 mask(mask4_bytes);
+    Alert::Hosts           hosts;
     hosts.push_back( makeNewHost4(host, &mask, os) );
     return AlertPtrNN( new Alert("alert 123",
                                  sa,
@@ -57,7 +56,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
                                  Certainty(0.42),
                                  "some test allert",
                                  hosts,
-                                 Alert::ReportedHosts() ) );
+                                 Alert::Hosts() ) );
   }
 
   TestStrategy::Node makeLeaf(const unsigned int id, const char *host, const char *os="Linux") const

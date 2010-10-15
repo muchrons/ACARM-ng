@@ -48,8 +48,8 @@ void testObj::test<2>(void)
                             NULL,
                             "myos",
                             makeNewReferenceURL(),
-                            Host::ReportedServices(),
-                            Host::ReportedProcesses(),
+                            Host::Services(),
+                            Host::Processes(),
                             NULL ) );
   const string n=Operations::getMetaAlertName(h).get();
   ensure_equals("invlaid name", n, "[many2one] multiple attacks on host 1.2.3.4");
@@ -60,7 +60,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  Operations::getReportedHostsArray( makeNewLeaf() );
+  Operations::getHostsArray( makeNewLeaf() );
 }
 
 } // namespace tut

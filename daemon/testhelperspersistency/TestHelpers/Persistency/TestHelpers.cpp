@@ -18,9 +18,9 @@ AlertPtr makeNewAlert(const char   *name,
                       const char   *dns,
                       const double  certainty)
 {
-  const ::Persistency::Alert::SourceAnalyzers sa( makeNewAnalyzer() );
-  Alert::ReportedHosts srcHosts;
-  Alert::ReportedHosts tgtHosts;
+  const ::Persistency::Alert::Analyzers sa( makeNewAnalyzer() );
+  Alert::Hosts srcHosts;
+  Alert::Hosts tgtHosts;
 
   if(sip!=NULL)
     srcHosts.push_back( makeNewHost(sip, dns) );
@@ -68,8 +68,8 @@ HostPtr makeNewHost4(const char             *ip,
                             mask,
                             os,
                             (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL()),
-                            Host::ReportedServices(),
-                            Host::ReportedProcesses(),
+                            Host::Services(),
+                            Host::Processes(),
                             dns ) );
 }
 
@@ -83,8 +83,8 @@ HostPtr makeNewHost6(const char             *ip,
                             mask,
                             os,
                             (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL()),
-                            Host::ReportedServices(),
-                            Host::ReportedProcesses(),
+                            Host::Services(),
+                            Host::Processes(),
                             dns ) );
 }
 
@@ -147,9 +147,9 @@ AlertPtrNN makeNewAlertWithHosts(const char *hostSrc1,
                                  const char *hostDst1,
                                  const char *hostDst2)
 {
-  const Alert::SourceAnalyzers sa( makeNewAnalyzer() );
-  Alert::ReportedHosts         hostsSrc;
-  Alert::ReportedHosts         hostsDst;
+  const Alert::Analyzers sa( makeNewAnalyzer() );
+  Alert::Hosts           hostsSrc;
+  Alert::Hosts           hostsDst;
 
   if(hostSrc1!=NULL)
     hostsSrc.push_back( makeNewHost(hostSrc1) );

@@ -12,6 +12,7 @@
 #include <boost/asio/ip/address.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/numeric/conversion/cast.hpp>
+#include <boost/algorithm/string/trim.hpp>
 
 #include "Base/NullValue.hpp"
 #include "Commons/LimitedNULLString.hpp"
@@ -63,7 +64,7 @@ struct Type< Commons::LimitedNULLString<N> >
    */
   static inline Commons::LimitedNULLString<N> convert(const ReadProxy &f)
   {
-    return Commons::LimitedNULLString<N>(f);
+    return Commons::LimitedNULLString<N>( boost::algorithm::trim_copy(f) );
   }
 }; // struct Type
 
@@ -82,7 +83,26 @@ struct Type< Commons::LimitedString<N> >
    */
   static inline Commons::LimitedString<N> convert(const ReadProxy &f)
   {
-    return Commons::LimitedString<N>(f);
+    return Commons::LimitedString<N>( boost::algorithm::trim_copy(f) );
+  }
+}; // struct Type
+
+
+/** \brief specialization for std::string.
+ */
+template<>
+struct Type<std::string>
+{
+  /** \brief helper proxy object to read data to. */
+  typedef std::string ReadProxy;
+
+  /** \brief converting function.
+   *  \param f value to convert from.
+   *  \return destination value type.
+   */
+  static inline std::string convert(const ReadProxy &f)
+  {
+    return boost::algorithm::trim_copy(f);
   }
 }; // struct Type
 

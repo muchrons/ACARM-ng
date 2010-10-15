@@ -87,19 +87,19 @@ void createTemporaryTables(size_t days, Transaction &t, const Logger::Node &log)
 }
 
 
-void removeReportedServices(Transaction &t, const Logger::Node &log)
+void removeServices(Transaction &t, const Logger::Node &log)
 {
   execSQL(log, t, "DELETE FROM services WHERE id_host IN (SELECT id FROM cleanup_hosts_ids)");
 }
 
 
-void removeReportedProcs(Transaction &t, const Logger::Node &log)
+void removeProcs(Transaction &t, const Logger::Node &log)
 {
   execSQL(log, t, "DELETE FROM procs WHERE id_host IN (SELECT id FROM cleanup_hosts_ids)");
 }
 
 
-void removeReportedHosts(Transaction &t, const Logger::Node &log)
+void removeHosts(Transaction &t, const Logger::Node &log)
 {
   execSQL(log, t, "DELETE FROM hosts WHERE id IN (SELECT id FROM cleanup_hosts_ids)");
 }
@@ -192,9 +192,9 @@ size_t Connection::removeEntriesOlderThanImpl(size_t days, Transaction &t)
 {
   TRYCATCH_BEGIN
     createTemporaryTables(days, t, log_);
-    removeReportedServices(t, log_);
-    removeReportedProcs(t, log_);
-    removeReportedHosts(t, log_);
+    removeServices(t, log_);
+    removeProcs(t, log_);
+    removeHosts(t, log_);
     removeAnalyzers(t, log_);
     const size_t removed=removeAlerts(t, log_);
     removeExtraMetaAlertsEntries(t, log_);

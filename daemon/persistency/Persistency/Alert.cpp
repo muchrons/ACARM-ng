@@ -14,14 +14,14 @@ namespace Persistency
 {
 
 Alert::Alert(const Name          &name,
-             SourceAnalyzers      analyzers,
+             Analyzers           analyzers,
              const Timestamp     *detected,
              const Timestamp     &created,
              Severity             severity,
              Certainty            certainty,
              const std::string   &description,
-             const ReportedHosts &sourceHosts,
-             const ReportedHosts &targetHosts):
+             const Hosts         &sourceHosts,
+             const Hosts         &targetHosts):
   name_(name),
   analyzers_(analyzers),
   detected_( (detected!=NULL)?( new Timestamp(*detected) ):NULL ),
@@ -39,7 +39,7 @@ const Alert::Name &Alert::getName(void) const
   return name_;
 }
 
-const Alert::SourceAnalyzers &Alert::getSourceAnalyzers(void) const
+const Alert::Analyzers &Alert::getAnalyzers(void) const
 {
   assert( analyzers_.size()>0 );
   return analyzers_;
@@ -70,12 +70,12 @@ const std::string &Alert::getDescription(void) const
   return description_;
 }
 
-const Alert::ReportedHosts &Alert::getReportedSourceHosts(void) const
+const Alert::Hosts &Alert::getSourceHosts(void) const
 {
   return sourceHosts_;
 }
 
-const Alert::ReportedHosts &Alert::getReportedTargetHosts(void) const
+const Alert::Hosts &Alert::getTargetHosts(void) const
 {
   return targetHosts_;
 }
@@ -87,7 +87,7 @@ bool Alert::operator==(const Alert &other) const
 
   if( getName()!=other.getName() )
     return false;
-  if( !Commons::ViaUnorderedCollection::equal( getSourceAnalyzers(), other.getSourceAnalyzers() ) )
+  if( !Commons::ViaUnorderedCollection::equal( getAnalyzers(), other.getAnalyzers() ) )
     return false;
   if( !Base::ViaPointer::equal( getDetectionTime(), other.getDetectionTime() ) )
     return false;
@@ -99,9 +99,9 @@ bool Alert::operator==(const Alert &other) const
     return false;
   if( getDescription()!=other.getDescription() )
     return false;
-  if( !Commons::ViaUnorderedCollection::equal( getReportedSourceHosts(), other.getReportedSourceHosts() ) )
+  if( !Commons::ViaUnorderedCollection::equal( getSourceHosts(), other.getSourceHosts() ) )
     return false;
-  if( !Commons::ViaUnorderedCollection::equal( getReportedTargetHosts(), other.getReportedTargetHosts() ) )
+  if( !Commons::ViaUnorderedCollection::equal( getTargetHosts(), other.getTargetHosts() ) )
     return false;
   // if all fields are equal, objects are equal too.
   return true;

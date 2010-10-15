@@ -127,37 +127,37 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
   return anlz;
 }
 
-Alert::SourceAnalyzers EntryReader::getAnalyzers(DataBaseID alertID)
+Alert::Analyzers EntryReader::getAnalyzers(DataBaseID alertID)
 {
   stringstream ss;
   ss << "SELECT * FROM alert_analyzers WHERE id_alert = " << alertID <<";";
   const result r = SQL( ss.str(), log_ ).exec(t_);
 
   // add first element to the Analyzers
-  Alert::SourceAnalyzers analyzers( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_analyzer"]) ) );
+  Alert::Analyzers analyzers( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_analyzer"]) ) );
   // enumerating starts from '1' because first element was added to the Analyzers above
   for(size_t i=1; i<r.size(); ++i)
     analyzers.push_back( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_analyzer"]) ) );
   return analyzers;
 }
 
-Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::string hostType)
+Alert::Hosts EntryReader::getReporteHosts(DataBaseID alertID, std::string hostType)
 {
   stringstream ss;
   ss << "SELECT * FROM hosts WHERE id_alert = "<< alertID <<" AND role = ";
   Appender::append(ss, hostType);
   const result r = SQL( ss.str(), log_ ).exec(t_);
-  Alert::ReportedHosts hosts;
+  Alert::Hosts hosts;
   for(size_t i=0; i<r.size(); ++i)
   {
     const DataBaseID hostID=ReaderHelper<DataBaseID>::readAsNotNull( r[i]["id"] );
-    HostPtr host(new Persistency::Host( ReaderHelper<Persistency::Host::IP>::readAsNotNull(r[0]["ip"]),
-                                        ReaderHelper< Base::NullValue<Persistency::Host::Netmask> >::readAs(r[0]["mask"]).get(),
-                                        ReaderHelper<Persistency::Host::OperatingSystem>::readAs(r[0]["os"]),
+    HostPtr host(new Persistency::Host( ReaderHelper<Persistency::Host::IP>::readAsNotNull(r[i]["ip"]),
+                                        ReaderHelper< Base::NullValue<Persistency::Host::Netmask> >::readAs(r[i]["mask"]).get(),
+                                        ReaderHelper<Persistency::Host::OperatingSystem>::readAs(r[i]["os"]),
                                         getReferenceURL( ReaderHelper<NullValue<DataBaseID> >::readAs( r[i]["id_ref"] ).get() ),
-                                        getReportedServices(hostID),
-                                        getReportedProcesses(hostID),
-                                        ReaderHelper<Persistency::Host::Name>::readAs(r[0]["name"]) ) );
+                                        getServices(hostID),
+                                        getProcesses(hostID),
+                                        ReaderHelper<Persistency::Host::Name>::readAs(r[i]["name"]) ) );
     // add host to cache
     addIfNew(host, hostID);
     hosts.push_back(host);
@@ -165,57 +165,53 @@ Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::strin
   return hosts;
 }
 
-Alert::ReportedHosts EntryReader::getSourceHosts(DataBaseID alertID)
+Alert::Hosts EntryReader::getSourceHosts(DataBaseID alertID)
 {
   return getReporteHosts(alertID, "src");
 }
 
-Alert::ReportedHosts EntryReader::getTargetHosts(DataBaseID alertID)
+Alert::Hosts EntryReader::getTargetHosts(DataBaseID alertID)
 {
   return getReporteHosts(alertID, "dst");
 }
 
-Persistency::Host::ReportedServices EntryReader::getReportedServices(DataBaseID hostID)
+Persistency::Host::Services EntryReader::getServices(DataBaseID hostID)
 {
   stringstream ss;
   ss << "SELECT * FROM services WHERE id_host = " << hostID << ";";
   const result r = SQL( ss.str(), log_ ).exec(t_);
 
-  Persistency::Host::ReportedServices services;
+  Persistency::Host::Services services;
   for(size_t i = 0;i < r.size(); ++i)
   {
-    DataBaseID refID;
-    r[i]["id_ref"].to(refID);
-    ServicePtrNN service( new Service( ReaderHelper<string>::readAsNotNull(r[0]["name"]),
-                                       ReaderHelper<DataBaseID>::readAsNotNull(r[0]["port"]),
-                                       ReaderHelper<Service::Protocol>::readAs(r[0]["protocol"]),
-                                       getReferenceURL(&refID) ) );
+    ServicePtrNN service( new Service( ReaderHelper<string>::readAsNotNull(r[i]["name"]),
+                                       ReaderHelper<DataBaseID>::readAsNotNull(r[i]["port"]),
+                                       ReaderHelper<Service::Protocol>::readAs(r[i]["protocol"]),
+                                       getReferenceURL( ReaderHelper<NullValue<DataBaseID> >::readAs( r[i]["id_ref"] ).get() ) ) );
     services.push_back(service);
   } // for(services)
   return services;
 }
 
-Persistency::Host::ReportedProcesses EntryReader::getReportedProcesses(DataBaseID hostID)
+Persistency::Host::Processes EntryReader::getProcesses(DataBaseID hostID)
 {
   stringstream ss;
   ss << "SELECT * FROM procs WHERE id_host = " << hostID;
   const result r = SQL( ss.str(), log_ ).exec(t_);
 
-  Persistency::Host::ReportedProcesses processes;
+  Persistency::Host::Processes processes;
   for(size_t i = 0; i<r.size(); ++i)
   {
-    DataBaseID refID;
-    r[i]["id_ref"].to(refID);
-
-    const NullValue<string> params=ReaderHelper< NullValue<string> >::readAs(r[0]["arguments"]);
-    Persistency::ProcessPtr process( new Process( ReaderHelper<Process::Path>::readAs(r[0]["path"]),
-                                                  ReaderHelper<string>::readAsNotNull(r[0]["name"]),
-                                                  ReaderHelper< std::auto_ptr<MD5Sum> >::readAs(r[0]["md5"]).get(),
-                                                  ReaderHelper< NullValue<pid_t> >::readAs(r[0]["pid"]).get(),
-                                                  ReaderHelper< NullValue<int> >::readAs(r[0]["uid"]).get(),
-                                                  ReaderHelper<string>::readAsNotNull(r[0]["username"]),
+    const NullValue<string> params  =ReaderHelper< NullValue<string> >::readAs(r[i]["arguments"]);
+    const NullValue<string> username=ReaderHelper< NullValue<string> >::readAs(r[i]["username"]);
+    Persistency::ProcessPtr process( new Process( ReaderHelper<Process::Path>::readAs(r[i]["path"]),
+                                                  ReaderHelper<string>::readAsNotNull(r[i]["name"]),
+                                                  ReaderHelper< std::auto_ptr<MD5Sum> >::readAs(r[i]["md5"]).get(),
+                                                  ReaderHelper< NullValue<pid_t> >::readAs(r[i]["pid"]).get(),
+                                                  ReaderHelper< NullValue<int> >::readAs(r[i]["uid"]).get(),
+                                                  (username.get()==NULL)?NULL:username.get()->c_str(),
                                                   (params.get()==NULL)?NULL:params.get()->c_str(),
-                                                  getReferenceURL(&refID) ) );
+                                                  getReferenceURL( ReaderHelper<NullValue<DataBaseID> >::readAs( r[i]["id_ref"] ).get() ) ) );
     processes.push_back(process);
   }
   return processes;

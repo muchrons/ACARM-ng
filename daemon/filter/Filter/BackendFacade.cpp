@@ -27,9 +27,9 @@ BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
 namespace
 {
 
-bool hasHost(const Persistency::Alert::ReportedHosts &rh, HostPtrNN ptr)
+bool hasHost(const Persistency::Alert::Hosts &rh, HostPtrNN ptr)
 {
-  for(Persistency::Alert::ReportedHosts::const_iterator it=rh.begin();
+  for(Persistency::Alert::Hosts::const_iterator it=rh.begin();
       it!=rh.end(); ++it)
     if( it->get()==ptr.get() )
       return true;
@@ -45,8 +45,8 @@ bool isHostFromNode(GraphNodePtrNN node, HostPtrNN host)
   AlertPtrNN a=node->getAlert();
 
   // source or destination host?
-  if( hasHost( a->getReportedSourceHosts(), host) ||
-      hasHost( a->getReportedTargetHosts(), host)    )
+  if( hasHost( a->getSourceHosts(), host) ||
+      hasHost( a->getTargetHosts(), host)    )
     return true;
 
   return false;
