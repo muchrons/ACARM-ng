@@ -55,6 +55,7 @@ std::pair<int, int> Dumper::writeToDir(const NodesVector &nodes, const boost::fi
 {
   int writes  =0;
   int attempts=0;
+  int count   =0;
 
   if( !isDirectorySane(outDir) )
     throw std::runtime_error("output directory is NOT sane");
@@ -62,6 +63,7 @@ std::pair<int, int> Dumper::writeToDir(const NodesVector &nodes, const boost::fi
   out_<<"writing all alerts to files"<<endl;
   for(IO::Restorer::NodesVector::const_iterator it=nodes.begin(); it!=nodes.end(); ++it)
   {
+    ++count;
     if( !(*it)->isLeaf() )
       continue;
     try
@@ -69,7 +71,7 @@ std::pair<int, int> Dumper::writeToDir(const NodesVector &nodes, const boost::fi
       ++attempts;
       const MetaAlert::ID::Numeric id=(*it)->getMetaAlert().getID().get();
       char                         percent[3+1+2+1]; // NNN.MM\0
-      sprintf(percent, "%3.2f", (100.0*attempts)/nodes.size() );
+      sprintf(percent, "%3.2f", (100.0*count)/nodes.size() );
       assert( strlen(percent)<sizeof(percent) );
       errOut_<<"\rwriting "<<percent<<"\% done (alert ID "<<id<<")";
       RFCIO::IDMEF::XMLCreator     x(**it);
@@ -90,6 +92,8 @@ std::pair<int, int> Dumper::writeToDir(const NodesVector &nodes, const boost::fi
     }
   } // for(nodes)
   errOut_<<endl;
+
+  out_<<count-attempts<<" non-alerts skipped"<<endl;
 
   // summary and exit
   if(writes==attempts)
