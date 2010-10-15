@@ -91,10 +91,10 @@ Persistency::GraphNodePtrNN FromXML::parseAlert(const xmlpp::Element &alert) con
   // sanity check
   ensureNode("Alert", alert);
   // analyzer (only one can be in XML)
-  const AnalyzerPtrNN          analyzer=parseAnalyzer( findOneChild(alert, "Analyzer") );
-  const Alert::SourceAnalyzers analyzers(analyzer);
+  const AnalyzerPtrNN    analyzer=parseAnalyzer( findOneChild(alert, "Analyzer") );
+  const Alert::Analyzers analyzers(analyzer);
   // creation time
-  const Timestamp createTime=parseCreateTime( findOneChild(alert, "CreateTime") );
+  const Timestamp        createTime=parseCreateTime( findOneChild(alert, "CreateTime") );
   // detect time, if present
   Timestamp             detectTimeValue(0);
   const Timestamp      *detectTime    =NULL;
@@ -105,12 +105,12 @@ Persistency::GraphNodePtrNN FromXML::parseAlert(const xmlpp::Element &alert) con
     detectTime     =&detectTimeValue;
   }
   // source host, if present
-  Alert::ReportedHosts  sourceHosts;
+  Alert::Hosts  sourceHosts;
   const xmlpp::Element *sourceNode=findOneChildIfHas(alert, "Source");
   if(sourceNode!=NULL)
     sourceHosts.push_back( parseSource(*sourceNode) );
   // destination host, if present
-  Alert::ReportedHosts  targetHosts;
+  Alert::Hosts  targetHosts;
   const xmlpp::Element *targetNode=findOneChildIfHas(alert, "Target");
   if(targetNode!=NULL)
     targetHosts.push_back( parseTarget(*targetNode) );
@@ -480,17 +480,17 @@ Persistency::HostPtrNN FromXML::parseHost(const char *type, const xmlpp::Element
     throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, findOneChild(host, "Node").get_path(), "Address");
 
   // get and copy reported services
-  Host::ReportedServices  rSrvs;
+  Host::Services  rSrvs;
   const xmlpp::Element   *srvNode=findOneChildIfHas(host, "Service");
   if(srvNode!=NULL)
   {
     const ServiceVector                          tmp=parseService(*srvNode);
-    std::insert_iterator<Host::ReportedServices> insertIt( rSrvs, rSrvs.begin() );
+    std::insert_iterator<Host::Services> insertIt( rSrvs, rSrvs.begin() );
     std::copy( tmp.begin(), tmp.end(), insertIt );
   } // if(srvNode!=NULL)
 
   // get reported process
-  Host::ReportedProcesses rProcs;
+  Host::Processes rProcs;
   if( findOneChildIfHas(host, "Process")!=NULL && findOneChildIfHas(host, "User")!=NULL )
     rProcs.push_back( parseProcessAndUser(host) );
 

@@ -59,25 +59,25 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
                               NULL,
                               "os1",
                               makeNewReferenceURL(),
-                              Host::ReportedServices(),
-                              Host::ReportedProcesses(),
+                              Host::Services(),
+                              Host::Processes(),
                               NULL) );
   }
 
   HostPtrNN setName(const char *name)
   {
-    const HostPtrNN      h=makeHost();
-    Alert::ReportedHosts srcHosts;
+    const HostPtrNN h=makeHost();
+    Alert::Hosts    srcHosts;
     srcHosts.push_back(h);
-    AlertPtrNN           alert( new Alert("al1",
-                                          Alert::SourceAnalyzers( makeNewAnalyzer() ),
-                                          NULL,
-                                          Timestamp(),
-                                          Severity(SeverityLevel::DEBUG),
-                                          Certainty(0.1),
-                                          "sescription xyz",
-                                          srcHosts,
-                                          Alert::ReportedHosts() ) );
+    AlertPtrNN      alert( new Alert("al1",
+                                     Alert::Analyzers( makeNewAnalyzer() ),
+                                     NULL,
+                                     Timestamp(),
+                                     Severity(SeverityLevel::DEBUG),
+                                     Certainty(0.1),
+                                     "sescription xyz",
+                                     srcHosts,
+                                     Alert::Hosts() ) );
     Persistency::IO::ConnectionPtrNN conn( Persistency::IO::create() );
     IO::Transaction      t( conn->createNewTransaction("make_leaf_transaction") );
     GraphNodePtrNN       node( new GraphNode(alert, 11u, conn, t) );

@@ -65,7 +65,7 @@ void testObj::test<2>(void)
 {
   ep_( makeNewLeaf("127.0.0.1", NULL, false) );
   ensure_equals("nothing has been changed", changed_.size(), 1u);
-  const char *tmp=changed_.at(0)->getAlert()->getReportedSourceHosts().at(0)->getName().get();
+  const char *tmp=changed_.at(0)->getAlert()->getSourceHosts().at(0)->getName().get();
   ensure("invalid name", isValidLocalhost(tmp) );
 }
 
@@ -85,7 +85,7 @@ void testObj::test<4>(void)
 {
   ep_( makeNewLeaf(NULL, "127.0.0.1", false) );
   ensure_equals("nothing has been changed", changed_.size(), 1u);
-  const char *tmp=changed_.at(0)->getAlert()->getReportedTargetHosts().at(0)->getName().get();
+  const char *tmp=changed_.at(0)->getAlert()->getTargetHosts().at(0)->getName().get();
   ensure("invalid name", isValidLocalhost(tmp) );
 }
 

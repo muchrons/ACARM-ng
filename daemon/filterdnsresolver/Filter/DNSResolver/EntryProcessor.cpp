@@ -24,14 +24,14 @@ EntryProcessor::EntryProcessor(CachedDNS *cache, BackendFacade *bf):
 void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
 {
   assert( leaf->isLeaf() && "wrong graph-passing algorithm choosen" );
-  processHosts(leaf, leaf->getAlert()->getReportedSourceHosts() );
-  processHosts(leaf, leaf->getAlert()->getReportedTargetHosts() );
+  processHosts(leaf, leaf->getAlert()->getSourceHosts() );
+  processHosts(leaf, leaf->getAlert()->getTargetHosts() );
 }
 
-void EntryProcessor::processHosts(Persistency::GraphNodePtrNN              leaf,
-                                  const Persistency::Alert::ReportedHosts &rh)
+void EntryProcessor::processHosts(Persistency::GraphNodePtrNN      leaf,
+                                  const Persistency::Alert::Hosts &rh)
 {
-  typedef Persistency::Alert::ReportedHosts::const_iterator ConstIterator;
+  typedef Persistency::Alert::Hosts::const_iterator ConstIterator;
   for(ConstIterator it=rh.begin(); it!=rh.end(); ++it)
   {
     HostPtrNN host=*it;             // non-const pointer to set host name

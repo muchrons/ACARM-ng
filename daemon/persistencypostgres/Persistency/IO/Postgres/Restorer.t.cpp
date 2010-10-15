@@ -44,11 +44,11 @@ struct TestClass
       if( (*it)->isLeaf() )
       {
         tut::ensure("alert shoud be in cache", idCache_->has( (*it)->getAlert() ) );
-        const Alert::ReportedHosts sourceHosts = (*it)->getAlert()->getReportedSourceHosts();
-        const Alert::ReportedHosts targetHosts = (*it)->getAlert()->getReportedTargetHosts();
-        for(Alert::ReportedHosts::const_iterator hi = sourceHosts.begin(); hi != sourceHosts.end(); ++hi)
+        const Alert::Hosts sourceHosts = (*it)->getAlert()->getSourceHosts();
+        const Alert::Hosts targetHosts = (*it)->getAlert()->getTargetHosts();
+        for(Alert::Hosts::const_iterator hi = sourceHosts.begin(); hi != sourceHosts.end(); ++hi)
           tut::ensure("alert shoud be in cache", idCache_->has( (*hi) ) );
-        for(Alert::ReportedHosts::const_iterator hi = targetHosts.begin(); hi != targetHosts.end(); ++hi)
+        for(Alert::Hosts::const_iterator hi = targetHosts.begin(); hi != targetHosts.end(); ++hi)
           tut::ensure("alert shoud be in cache", idCache_->has( (*hi) ) );
       }
       else

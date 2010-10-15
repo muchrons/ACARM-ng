@@ -44,8 +44,7 @@ public:
    *  \param node node to get hosts from.
    *  \return array of reported hosts.
    */
-  virtual const Persistency::Alert::ReportedHosts &getReportedHostsArray(
-                                                    const Node node) const = 0;
+  virtual const Persistency::Alert::Hosts &getHostsArray(const Node node) const = 0;
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.
@@ -68,7 +67,7 @@ private:
   virtual Persistency::MetaAlert::Name getMetaAlertName(
                                     const Persistency::HostPtrNN h) const = 0;
 
-  Persistency::HostPtr getReportedHost(const Node node) const;
+  Persistency::HostPtr getHost(const Node node) const;
 
   //
   // Simple::Strategy implementation

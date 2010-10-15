@@ -37,8 +37,8 @@ public:
   void operator()(Persistency::GraphNodePtrNN leaf);
 
 private:
-  void processHosts(Persistency::GraphNodePtrNN              leaf,
-                    const Persistency::Alert::ReportedHosts &rh);
+  void processHosts(Persistency::GraphNodePtrNN      leaf,
+                    const Persistency::Alert::Hosts &rh);
 
   Logger::Node     log_;
   const BlackList *bl_;

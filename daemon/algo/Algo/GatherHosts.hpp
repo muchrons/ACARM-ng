@@ -71,7 +71,7 @@ public:
   }
 
 private:
-  void addHosts(HostSetPtr out, const Persistency::Alert::ReportedHosts &in);
+  void addHosts(HostSetPtr out, const Persistency::Alert::Hosts &in);
 
   HostSetPtr source_;
   HostSetPtr target_;

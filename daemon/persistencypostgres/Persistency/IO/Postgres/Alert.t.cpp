@@ -32,8 +32,8 @@ struct TestClass
     severity_(SeverityLevel::INFO),
     certainty_(0.42),
     description_("alert's description"),
-    sourceHosts_( generateReportedHosts(2) ),
-    targetHosts_( generateReportedHosts(5) ),
+    sourceHosts_( generateHosts(2) ),
+    targetHosts_( generateHosts(5) ),
     idCache_(new IDCache),
     dbh_(DBHandlePtrNN(new DBHandle(TestConnection::makeParams(), idCache_) ) ),
     conn_(makeConnection() ),
@@ -41,33 +41,33 @@ struct TestClass
   {
   }
 
-  Persistency::Alert::ReportedHosts generateReportedHosts(unsigned int size) const
+  Persistency::Alert::Hosts generateHosts(unsigned int size) const
   {
-    Persistency::Alert::ReportedHosts out;
+    Persistency::Alert::Hosts out;
     for(unsigned int i=0; i<size; ++i)
       out.push_back( makeNewHost() );
     return out;
   }
 
-  DataCleaner                             dc_;
+  DataCleaner                     dc_;
 
-  const Persistency::Alert::Name          name_;
-  const AnalyzerPtrNN                     analyzer_;
-  Persistency::Alert::SourceAnalyzers     analyzers_;
-  const AnalyzerPtrNN                     analyzerWithNull_;
-  Persistency::Alert::SourceAnalyzers     analyzersWithNull_;
-  const Timestamp                         detected_;
-  const Timestamp                         created_;
-  const Severity                          severity_;
-  const Certainty                         certainty_;
-  const std::string                       description_;
-  const Persistency::Alert::ReportedHosts sourceHosts_;
-  const Persistency::Alert::ReportedHosts targetHosts_;
+  const Persistency::Alert::Name  name_;
+  const AnalyzerPtrNN             analyzer_;
+  Persistency::Alert::Analyzers   analyzers_;
+  const AnalyzerPtrNN             analyzerWithNull_;
+  Persistency::Alert::Analyzers   analyzersWithNull_;
+  const Timestamp                 detected_;
+  const Timestamp                 created_;
+  const Severity                  severity_;
+  const Certainty                 certainty_;
+  const std::string               description_;
+  const Persistency::Alert::Hosts sourceHosts_;
+  const Persistency::Alert::Hosts targetHosts_;
 
-  IDCachePtrNN                            idCache_;
-  DBHandlePtrNN                           dbh_;
-  IO::ConnectionPtrNN                     conn_;
-  Transaction                             t_;
+  IDCachePtrNN                    idCache_;
+  DBHandlePtrNN                   dbh_;
+  IO::ConnectionPtrNN             conn_;
+  Transaction                     t_;
 
 };
 

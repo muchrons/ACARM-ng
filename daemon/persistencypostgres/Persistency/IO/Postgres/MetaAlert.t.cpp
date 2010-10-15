@@ -257,7 +257,7 @@ void testObj::test<8>(void)
                                                                      1410u ) );
   Persistency::IO::Postgres::MetaAlert malertNode(maPtrNode, t_, dbh_);
 
-  Persistency::Alert::SourceAnalyzers sa( AnalyzerPtrNN( new Analyzer(42u, "analyzer name", NULL, NULL, NULL) ) );
+  Persistency::Alert::Analyzers sa( AnalyzerPtrNN( new Analyzer(42u, "analyzer name", NULL, NULL, NULL) ) );
   Persistency::AlertPtr alertPtr(new Persistency::Alert("abc",
                                                         sa,
                                                         NULL,
@@ -265,8 +265,8 @@ void testObj::test<8>(void)
                                                         Severity(SeverityLevel::INFO),
                                                         Certainty(0.42),
                                                         "some description",
-                                                        Persistency::Alert::ReportedHosts(),
-                                                        Persistency::Alert::ReportedHosts()) );
+                                                        Persistency::Alert::Hosts(),
+                                                        Persistency::Alert::Hosts()) );
   Persistency::IO::Postgres::Alert alert(alertPtr, t_, dbh_);
   malertNode.save();
   alert.save();

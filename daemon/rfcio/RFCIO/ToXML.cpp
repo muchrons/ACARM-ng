@@ -45,16 +45,16 @@ xmlpp::Element &ToXML::addAlert(const Persistency::GraphNode &leaf)
   const Alert &a=leaf.getAlert();
   ToXML alert( addChild(parent_, "Alert") );
   alert.addParameter("messageid", toStr( leaf.getMetaAlert().getID().get() ).c_str() );
-  assert( a.getSourceAnalyzers().begin()!=a.getSourceAnalyzers().end() );
-  assert( a.getSourceAnalyzers().begin()->get()!=NULL );
-  alert.addAnalyzer( *a.getSourceAnalyzers().begin()->get() );
+  assert( a.getAnalyzers().begin()!=a.getAnalyzers().end() );
+  assert( a.getAnalyzers().begin()->get()!=NULL );
+  alert.addAnalyzer( *a.getAnalyzers().begin()->get() );
   alert.addCreateTime( a.getCreationTime() );
   if( a.getDetectionTime()!=NULL )
     alert.addDetectTime( *a.getDetectionTime() );
-  if( a.getReportedSourceHosts().size()>0 )
-    alert.addSource( *a.getReportedSourceHosts()[0] );
-  if( a.getReportedTargetHosts().size()>0 )
-    alert.addTarget( *a.getReportedTargetHosts()[0] );
+  if( a.getSourceHosts().size()>0 )
+    alert.addSource( *a.getSourceHosts()[0] );
+  if( a.getTargetHosts().size()>0 )
+    alert.addTarget( *a.getTargetHosts()[0] );
   alert.addClassification(leaf);
   alert.addAdditionalData(leaf);
   alert.addAssessment(leaf);
@@ -186,7 +186,7 @@ xmlpp::Element &ToXML::addProcess(const Persistency::Process &p)
   if( p.getPath().get()!=NULL )
     process.addString( "path", p.getPath().get() );
   if( p.getParameters()!=NULL )
-    process.addProcessArguments( *p.getParameters() );
+    process.addProcessArguments( p.getParameters() );
   if( p.getPID()!=NULL )
     process.addString( "pid", toStr( p.getPID() ).c_str() );
   return process.getParent();
@@ -305,13 +305,13 @@ xmlpp::Element &ToXML::addHost(const char *rootName, const Persistency::Host &h)
   // add node information
   root.addNode( h.getName().get(), &h.getIP() );
   // add first service, if present (note: IDMEF does not allow multiple services in a single report)
-  if( h.getReportedServices().size()>0 )
-    root.addService( *h.getReportedServices()[0] );
+  if( h.getServices().size()>0 )
+    root.addService( *h.getServices()[0] );
   // add first process, if present (note: IDMEF does not allow multiple processes in a single report)
-  if( h.getReportedProcesses().size()>0 )
+  if( h.getProcesses().size()>0 )
   {
-    root.addUser( *h.getReportedProcesses()[0] );
-    root.addProcess( *h.getReportedProcesses()[0] );
+    root.addUser( *h.getProcesses()[0] );
+    root.addProcess( *h.getProcesses()[0] );
   }
   // done
   return root.getParent();

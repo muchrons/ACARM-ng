@@ -127,27 +127,27 @@ AnalyzerPtrNN EntryReader::getAnalyzer(DataBaseID anlzID)
   return anlz;
 }
 
-Alert::SourceAnalyzers EntryReader::getAnalyzers(DataBaseID alertID)
+Alert::Analyzers EntryReader::getAnalyzers(DataBaseID alertID)
 {
   stringstream ss;
   ss << "SELECT * FROM alert_analyzers WHERE id_alert = " << alertID <<";";
   const result r = SQL( ss.str(), log_ ).exec(t_);
 
   // add first element to the Analyzers
-  Alert::SourceAnalyzers analyzers( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_analyzer"]) ) );
+  Alert::Analyzers analyzers( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_analyzer"]) ) );
   // enumerating starts from '1' because first element was added to the Analyzers above
   for(size_t i=1; i<r.size(); ++i)
     analyzers.push_back( getAnalyzer( ReaderHelper<DataBaseID>::readAsNotNull(r[i]["id_analyzer"]) ) );
   return analyzers;
 }
 
-Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::string hostType)
+Alert::Hosts EntryReader::getReporteHosts(DataBaseID alertID, std::string hostType)
 {
   stringstream ss;
   ss << "SELECT * FROM hosts WHERE id_alert = "<< alertID <<" AND role = ";
   Appender::append(ss, hostType);
   const result r = SQL( ss.str(), log_ ).exec(t_);
-  Alert::ReportedHosts hosts;
+  Alert::Hosts hosts;
   for(size_t i=0; i<r.size(); ++i)
   {
     const DataBaseID hostID=ReaderHelper<DataBaseID>::readAsNotNull( r[i]["id"] );
@@ -155,8 +155,8 @@ Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::strin
                                         ReaderHelper< Base::NullValue<Persistency::Host::Netmask> >::readAs(r[i]["mask"]).get(),
                                         ReaderHelper<Persistency::Host::OperatingSystem>::readAs(r[i]["os"]),
                                         getReferenceURL( ReaderHelper<NullValue<DataBaseID> >::readAs( r[i]["id_ref"] ).get() ),
-                                        getReportedServices(hostID),
-                                        getReportedProcesses(hostID),
+                                        getServices(hostID),
+                                        getProcesses(hostID),
                                         ReaderHelper<Persistency::Host::Name>::readAs(r[i]["name"]) ) );
     // add host to cache
     addIfNew(host, hostID);
@@ -165,23 +165,23 @@ Alert::ReportedHosts EntryReader::getReporteHosts(DataBaseID alertID, std::strin
   return hosts;
 }
 
-Alert::ReportedHosts EntryReader::getSourceHosts(DataBaseID alertID)
+Alert::Hosts EntryReader::getSourceHosts(DataBaseID alertID)
 {
   return getReporteHosts(alertID, "src");
 }
 
-Alert::ReportedHosts EntryReader::getTargetHosts(DataBaseID alertID)
+Alert::Hosts EntryReader::getTargetHosts(DataBaseID alertID)
 {
   return getReporteHosts(alertID, "dst");
 }
 
-Persistency::Host::ReportedServices EntryReader::getReportedServices(DataBaseID hostID)
+Persistency::Host::Services EntryReader::getServices(DataBaseID hostID)
 {
   stringstream ss;
   ss << "SELECT * FROM services WHERE id_host = " << hostID << ";";
   const result r = SQL( ss.str(), log_ ).exec(t_);
 
-  Persistency::Host::ReportedServices services;
+  Persistency::Host::Services services;
   for(size_t i = 0;i < r.size(); ++i)
   {
     ServicePtrNN service( new Service( ReaderHelper<string>::readAsNotNull(r[i]["name"]),
@@ -193,13 +193,13 @@ Persistency::Host::ReportedServices EntryReader::getReportedServices(DataBaseID 
   return services;
 }
 
-Persistency::Host::ReportedProcesses EntryReader::getReportedProcesses(DataBaseID hostID)
+Persistency::Host::Processes EntryReader::getProcesses(DataBaseID hostID)
 {
   stringstream ss;
   ss << "SELECT * FROM procs WHERE id_host = " << hostID;
   const result r = SQL( ss.str(), log_ ).exec(t_);
 
-  Persistency::Host::ReportedProcesses processes;
+  Persistency::Host::Processes processes;
   for(size_t i = 0; i<r.size(); ++i)
   {
     const NullValue<string> params  =ReaderHelper< NullValue<string> >::readAs(r[i]["arguments"]);

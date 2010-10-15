@@ -19,7 +19,7 @@ struct TestClass
 {
   TestClass(void):
     alert_("alert name",
-           Alert::SourceAnalyzers( makeAnalyzer() ),
+           Alert::Analyzers( makeAnalyzer() ),
            NullValue<Persistency::Timestamp>( Persistency::Timestamp(123) ).get(),
            Persistency::Timestamp(12345),
            Persistency::Severity(Persistency::SeverityLevel::INFO),
@@ -42,10 +42,10 @@ struct TestClass
                                                                  &ip) );
   }
 
-  Alert::ReportedHosts makeHosts(const char *ip1, const char *dns1,
-                                 const char *ip2, const char *dns2) const
+  Alert::Hosts makeHosts(const char *ip1, const char *dns1,
+                         const char *ip2, const char *dns2) const
   {
-    Alert::ReportedHosts hosts;
+    Alert::Hosts hosts;
     hosts.push_back( makeHost(ip1, dns1) );
     hosts.push_back( makeHost(ip2, dns2) );
     return hosts;
@@ -54,9 +54,9 @@ struct TestClass
   Persistency::HostPtrNN makeHost(const char *ip, const char *dns) const
   {
     const Persistency::Host::Netmask_v4  mask(mask4_bytes);
-    Persistency::Host::ReportedServices  services;
+    Persistency::Host::Services  services;
     services.push_back( makeService() );
-    Persistency::Host::ReportedProcesses procs;
+    Persistency::Host::Processes procs;
     procs.push_back( makeProcess() );
     return Persistency::HostPtrNN( new Persistency::Host( Persistency::Host::IPv4::from_string(ip),
                                                           &mask,
