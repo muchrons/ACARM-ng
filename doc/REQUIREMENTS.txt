@@ -6,6 +6,7 @@ marked with [o].
 
 [br-] boost libraries >= 1.40
 [br-] libxml++ >= 2.6
+[br-] openssl >= 4.0
 [-ro] postgresql-server       (used by: persistencypostgres)
 [bro] libpqxx                 (used by: persistencypostgres)
 [bro] libcurl                 (used by: filteripblacklist)
