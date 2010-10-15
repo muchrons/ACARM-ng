@@ -202,13 +202,14 @@ Persistency::Host::ReportedProcesses EntryReader::getReportedProcesses(DataBaseI
   Persistency::Host::ReportedProcesses processes;
   for(size_t i = 0; i<r.size(); ++i)
   {
-    const NullValue<string> params=ReaderHelper< NullValue<string> >::readAs(r[i]["arguments"]);
+    const NullValue<string> params  =ReaderHelper< NullValue<string> >::readAs(r[i]["arguments"]);
+    const NullValue<string> username=ReaderHelper< NullValue<string> >::readAs(r[i]["username"]);
     Persistency::ProcessPtr process( new Process( ReaderHelper<Process::Path>::readAs(r[i]["path"]),
                                                   ReaderHelper<string>::readAsNotNull(r[i]["name"]),
                                                   ReaderHelper< std::auto_ptr<MD5Sum> >::readAs(r[i]["md5"]).get(),
                                                   ReaderHelper< NullValue<pid_t> >::readAs(r[i]["pid"]).get(),
                                                   ReaderHelper< NullValue<int> >::readAs(r[i]["uid"]).get(),
-                                                  ReaderHelper<string>::readAsNotNull(r[i]["username"]),
+                                                  (username.get()==NULL)?NULL:username.get()->c_str(),
                                                   (params.get()==NULL)?NULL:params.get()->c_str(),
                                                   getReferenceURL( ReaderHelper<NullValue<DataBaseID> >::readAs( r[i]["id_ref"] ).get() ) ) );
     processes.push_back(process);

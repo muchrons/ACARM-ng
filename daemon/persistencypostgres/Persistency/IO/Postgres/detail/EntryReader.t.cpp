@@ -76,6 +76,7 @@ struct TestClass
   }
 
   DataCleaner                             dc_;
+  TestDBAccess                            tdba_;
 
   const Persistency::Alert::Name          name_;
   const AnalyzerPtrNN                     analyzer_;
@@ -648,6 +649,115 @@ void testObj::test<23>(void)
   {
     // this is expected
   }
+}
+
+// try reading serice without NULLS
+template<>
+template<>
+void testObj::test<24>(void)
+{
+  tdba_.fillWithContent1();
+  Persistency::AlertPtrNN                    a =er_.readAlert(3u);
+  const Persistency::Alert::ReportedHosts   &rh=a->getReportedTargetHosts();
+  ensure_equals("invalid hosts count", rh.size(), 2u);
+  Persistency::HostPtrNN                     host=( rh[0]->getIP().to_string()=="127.0.0.3" ? rh[0] : rh[1] );
+  const Persistency::Host::ReportedServices &rs  =host->getReportedServices();
+  ensure_equals("invalid number of services", rs.size(), 1u);
+  const Persistency::Service                &srv =*rs[0];
+  ensure("reference URL is NULL", srv.getReferenceURL()!=NULL );
+  ensure_equals("invalid reference URL name", srv.getReferenceURL()->getName().get(), string("some reference") );
+  ensure_equals("invalid reference URL URL", srv.getReferenceURL()->getURL().get(), string("http://abc.def.org") );
+  ensure_equals("invalid serice name", srv.getName().get(), string("sendmail") );
+  ensure_equals("invalid serice protocol", srv.getProtocol().get(), string("smtp") );
+  ensure_equals("invalid serice port", srv.getPort().get(), 25u);
+}
+
+// try reading serice with NULLS
+template<>
+template<>
+void testObj::test<25>(void)
+{
+  tdba_.fillWithContent1();
+  Persistency::AlertPtrNN                    a =er_.readAlert(3u);
+  const Persistency::Alert::ReportedHosts   &rh=a->getReportedTargetHosts();
+  ensure_equals("invalid hosts count", rh.size(), 2u);
+  Persistency::HostPtrNN                     host=( rh[0]->getIP().to_string()=="127.0.0.3" ? rh[1] : rh[0] );
+  const Persistency::Host::ReportedServices &rs  =host->getReportedServices();
+  ensure_equals("invalid number of services", rs.size(), 1u);
+  const Persistency::Service                &srv =*rs[0];
+  ensure("reference URL is not NULL", srv.getReferenceURL()==NULL );
+  ensure_equals("invalid serice name", srv.getName().get(), string("apache") );
+  ensure_equals("invalid serice protocol", srv.getProtocol().get(), string("www") );
+  ensure_equals("invalid serice port", srv.getPort().get(), 80u);
+}
+
+// try reading process 1
+template<>
+template<>
+void testObj::test<26>(void)
+{
+  tdba_.fillWithContent1();
+  Persistency::AlertPtrNN                     a =er_.readAlert(4u);
+  const Persistency::Alert::ReportedHosts    &rh=a->getReportedSourceHosts();
+  ensure_equals("invalid hosts count", rh.size(), 1u);
+  const Persistency::Host::ReportedProcesses &rp  =rh[0]->getReportedProcesses();
+  ensure_equals("invalid number of processes", rp.size(), 2u);
+  ensure("unexpected NULL", rp[0]->getPID()!=NULL );
+  const Persistency::Process                 &proc=*( *rp[0]->getPID()==42 ? rp[0] : rp[1] );
+
+  ensure("reference URL is NULL", proc.getReferenceURL()!=NULL );
+  ensure_equals("invalid reference URL name", proc.getReferenceURL()->getName().get(), string("other reference") );
+  ensure_equals("invalid reference URL URL", proc.getReferenceURL()->getURL().get(), string("https://xyz.org") );
+
+  ensure("path is not NULL", proc.getPath().get()==NULL );
+
+  ensure_equals("invalid name", proc.getName().get(), string("doom.exe") );
+
+  ensure("MD5 is not NULL", proc.getMD5()==NULL );
+
+  ensure("PID is NULL", proc.getPID()!=NULL );
+  ensure_equals("invalid PID", *proc.getPID(), 42u);
+
+  ensure("UID is NULL", proc.getUID()!=NULL );
+  ensure_equals("invalid UID", *proc.getUID(), 666u);
+
+  ensure("username is NULL", proc.getUsername().get()!=NULL );
+  ensure_equals("invalid username", proc.getUsername().get(), string("kain") );
+
+  ensure("params is NULL", proc.getParameters()!=NULL );
+  ensure_equals("invalid params", *proc.getParameters(), "-h -e -l");
+}
+
+// try reading process 2
+template<>
+template<>
+void testObj::test<27>(void)
+{
+  tdba_.fillWithContent1();
+  Persistency::AlertPtrNN                     a =er_.readAlert(1u);
+  const Persistency::Alert::ReportedHosts    &rh=a->getReportedTargetHosts();
+  ensure_equals("invalid hosts count", rh.size(), 1u);
+  const Persistency::Host::ReportedProcesses &rp  =rh[0]->getReportedProcesses();
+  ensure_equals("invalid number of processes", rp.size(), 1u);
+  const Persistency::Process                 &proc=*rp[0];
+
+  ensure("reference URL is not NULL", proc.getReferenceURL()==NULL );
+
+  ensure("path is NULL", proc.getPath().get()!=NULL );
+  ensure_equals("invalid path", proc.getPath().get(), string("/some/path") );
+
+  ensure_equals("invalid name", proc.getName().get(), string("binaryname") );
+
+  ensure("MD5 is NULL", proc.getMD5()!=NULL );
+  ensure_equals("invalid MD5", proc.getMD5()->get(), string("01234567890123456789012345678912") );
+
+  ensure("PID is not NULL", proc.getPID()==NULL );
+
+  ensure("UID is not NULL", proc.getUID()==NULL );
+
+  ensure("username is not NULL", proc.getUsername().get()==NULL );
+
+  ensure("params is not NULL", proc.getParameters()==NULL );
 }
 
 // TODO: test getSystemIDOfMetaAlert()
