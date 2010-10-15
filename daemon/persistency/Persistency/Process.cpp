@@ -60,9 +60,11 @@ const Process::Username &Process::getUsername(void) const
   return username_;
 }
 
-const std::string *Process::getParameters(void) const
+const char *Process::getParameters(void) const
 {
-  return arguments_.get();
+  if( arguments_.get()==NULL )
+    return NULL;
+  return arguments_->c_str();
 }
 
 const ReferenceURL *Process::getReferenceURL(void) const
