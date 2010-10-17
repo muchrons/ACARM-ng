@@ -21,3 +21,4 @@
 * consider splitig configuration into multiple files.
 * consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
 * filter rising priority for binaries that have MD5 of an expliot?
+* implement pointer-comparison for whole collections when comparing Via*Collection* -- if they are the same, it gives positive result in citou.
