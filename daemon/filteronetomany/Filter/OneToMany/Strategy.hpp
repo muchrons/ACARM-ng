@@ -25,10 +25,8 @@ public:
   Strategy(const std::string &name, unsigned int timeout);
 
 private:
-  virtual const Persistency::Alert::ReportedHosts &getReportedHostsArray(
-                                                   const Node node) const;
-  virtual Persistency::MetaAlert::Name getMetaAlertName(
-                                    const Persistency::HostPtrNN h) const;
+  virtual const Persistency::Alert::Hosts &getHostsArray(const Node node) const;
+  virtual Persistency::MetaAlert::Name getMetaAlertName(const Persistency::HostPtrNN h) const;
 }; // class Strategy
 
 } // namespace OneToMany

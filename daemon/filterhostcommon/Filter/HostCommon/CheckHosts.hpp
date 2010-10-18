@@ -37,8 +37,8 @@ struct CheckHosts
       return;
     // check each and every reported host
     assert(s_!=NULL);   // this is only internal implementation.
-    const Persistency::Alert::ReportedHosts &hs=s_->getReportedHostsArray(node);
-    for(Persistency::Alert::ReportedHosts::const_iterator it=hs.begin();
+    const Persistency::Alert::Hosts &hs=s_->getHostsArray(node);
+    for(Persistency::Alert::Hosts::const_iterator it=hs.begin();
         it!=hs.end(); ++it)
     {
       if( out_.get()==NULL )

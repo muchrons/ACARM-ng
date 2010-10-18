@@ -43,8 +43,8 @@ struct TestClass
     severity_(SeverityLevel::INFO),
     certanity_(0.42),
     description_("alert's description"),
-    sourceHosts_( generateReportedHosts(2) ),
-    targetHosts_( generateReportedHosts(5) ),
+    sourceHosts_( generateHosts(2) ),
+    targetHosts_( generateHosts(5) ),
     idCache_(new IDCache),
     dbh_(DBHandlePtrNN(new DBHandle(TestConnection::makeParams(), idCache_)) ),
     conn_( makeConnection() ),
@@ -54,17 +54,17 @@ struct TestClass
   {
   }
 
-  Persistency::Alert::ReportedHosts generateReportedHosts(unsigned int size) const
+  Persistency::Alert::Hosts generateHosts(unsigned int size) const
   {
-    Persistency::Alert::ReportedHosts out;
+    Persistency::Alert::Hosts out;
     for(unsigned int i=0; i<size; ++i)
       out.push_back( makeNewHost() );
     return out;
   }
 
-  Persistency::Alert::ReportedHosts generateNULLReportedHosts(unsigned int size) const
+  Persistency::Alert::Hosts generateNULLHosts(unsigned int size) const
   {
-    Persistency::Alert::ReportedHosts out;
+    Persistency::Alert::Hosts out;
     for(unsigned int i=0; i<size; ++i)
       out.push_back( makeNewHostWithNullRefUrl() );
     return out;
@@ -75,26 +75,26 @@ struct TestClass
     dc_.execSQL(sql);
   }
 
-  DataCleaner                             dc_;
-  TestDBAccess                            tdba_;
+  DataCleaner                     dc_;
+  TestDBAccess                    tdba_;
 
-  const Persistency::Alert::Name          name_;
-  const AnalyzerPtrNN                     analyzer_;
-  Persistency::Alert::SourceAnalyzers     analyzers_;
-  const Timestamp                         detected_;
-  const Timestamp                         created_;
-  const Severity                          severity_;
-  const Certainty                         certanity_;
-  const std::string                       description_;
-  const Persistency::Alert::ReportedHosts sourceHosts_;
-  const Persistency::Alert::ReportedHosts targetHosts_;
+  const Persistency::Alert::Name  name_;
+  const AnalyzerPtrNN             analyzer_;
+  Persistency::Alert::Analyzers   analyzers_;
+  const Timestamp                 detected_;
+  const Timestamp                 created_;
+  const Severity                  severity_;
+  const Certainty                 certanity_;
+  const std::string               description_;
+  const Persistency::Alert::Hosts sourceHosts_;
+  const Persistency::Alert::Hosts targetHosts_;
 
-  IDCachePtrNN                            idCache_;
-  DBHandlePtrNN                           dbh_;
-  IO::ConnectionPtrNN                     conn_;
-  Transaction                             t_;
-  EntrySaver                              es_;
-  EntryReader                             er_;
+  IDCachePtrNN                    idCache_;
+  DBHandlePtrNN                   dbh_;
+  IO::ConnectionPtrNN             conn_;
+  Transaction                     t_;
+  EntrySaver                      es_;
+  EntryReader                     er_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -165,8 +165,8 @@ void testObj::test<3>(void)
   ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(),
                                     severity_.getLevel().toInt());
   ensure_equals("invalid caertainty", a->getCertainty().get(), certanity_.get());
-  ensure_equals("vectors are different", (a->getReportedSourceHosts()).size(),
-                                         (alertPtr->getReportedSourceHosts()).size() );
+  ensure_equals("vectors are different", (a->getSourceHosts()).size(),
+                                         (alertPtr->getSourceHosts()).size() );
   t_.commit();
 }
 
@@ -500,8 +500,8 @@ void testObj::test<14>(void)
   ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(),
                                     alertPtr->getSeverity().getLevel().toInt());
   ensure_equals("invalid caertainty", a->getCertainty().get(), alertPtr->getCertainty().get());
-  ensure_equals("vectors are different", a->getReportedSourceHosts().size(),
-                                         alertPtr->getReportedSourceHosts().size() );
+  ensure_equals("vectors are different", a->getSourceHosts().size(),
+                                         alertPtr->getSourceHosts().size() );
 }
 
 // trying to read roots in use
@@ -583,7 +583,7 @@ void testObj::test<19>(void)
         new Persistency::Alert(name_, analyzers_, &detected_,
                                created_,
                                severity_, certanity_,description_,
-                               generateNULLReportedHosts(2), generateReportedHosts(3)) );
+                               generateNULLHosts(2), generateHosts(3)) );
   // save alert
   Persistency::IO::Postgres::Alert alert(alertPtr, t_, dbh_ );
   alert.save();
@@ -599,8 +599,8 @@ void testObj::test<19>(void)
   ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(),
                                     severity_.getLevel().toInt());
   ensure_equals("invalid caertainty", a->getCertainty().get(), certanity_.get());
-  ensure_equals("vectors are different", (a->getReportedSourceHosts()).size(),
-                                         (alertPtr->getReportedSourceHosts()).size() );
+  ensure_equals("vectors are different", (a->getSourceHosts()).size(),
+                                         (alertPtr->getSourceHosts()).size() );
   t_.commit();
 }
 
@@ -658,10 +658,10 @@ void testObj::test<24>(void)
 {
   tdba_.fillWithContent1();
   Persistency::AlertPtrNN                    a =er_.readAlert(3u);
-  const Persistency::Alert::ReportedHosts   &rh=a->getReportedTargetHosts();
+  const Persistency::Alert::Hosts           &rh=a->getTargetHosts();
   ensure_equals("invalid hosts count", rh.size(), 2u);
   Persistency::HostPtrNN                     host=( rh[0]->getIP().to_string()=="127.0.0.3" ? rh[0] : rh[1] );
-  const Persistency::Host::ReportedServices &rs  =host->getReportedServices();
+  const Persistency::Host::Services         &rs  =host->getServices();
   ensure_equals("invalid number of services", rs.size(), 1u);
   const Persistency::Service                &srv =*rs[0];
   ensure("reference URL is NULL", srv.getReferenceURL()!=NULL );
@@ -679,10 +679,10 @@ void testObj::test<25>(void)
 {
   tdba_.fillWithContent1();
   Persistency::AlertPtrNN                    a =er_.readAlert(3u);
-  const Persistency::Alert::ReportedHosts   &rh=a->getReportedTargetHosts();
+  const Persistency::Alert::Hosts           &rh=a->getTargetHosts();
   ensure_equals("invalid hosts count", rh.size(), 2u);
   Persistency::HostPtrNN                     host=( rh[0]->getIP().to_string()=="127.0.0.3" ? rh[1] : rh[0] );
-  const Persistency::Host::ReportedServices &rs  =host->getReportedServices();
+  const Persistency::Host::Services         &rs  =host->getServices();
   ensure_equals("invalid number of services", rs.size(), 1u);
   const Persistency::Service                &srv =*rs[0];
   ensure("reference URL is not NULL", srv.getReferenceURL()==NULL );
@@ -698,9 +698,9 @@ void testObj::test<26>(void)
 {
   tdba_.fillWithContent1();
   Persistency::AlertPtrNN                     a =er_.readAlert(4u);
-  const Persistency::Alert::ReportedHosts    &rh=a->getReportedSourceHosts();
+  const Persistency::Alert::Hosts            &rh=a->getSourceHosts();
   ensure_equals("invalid hosts count", rh.size(), 1u);
-  const Persistency::Host::ReportedProcesses &rp  =rh[0]->getReportedProcesses();
+  const Persistency::Host::Processes         &rp=rh[0]->getProcesses();
   ensure_equals("invalid number of processes", rp.size(), 2u);
   ensure("unexpected NULL", rp[0]->getPID()!=NULL );
   const Persistency::Process                 &proc=*( *rp[0]->getPID()==42 ? rp[0] : rp[1] );
@@ -725,7 +725,7 @@ void testObj::test<26>(void)
   ensure_equals("invalid username", proc.getUsername().get(), string("kain") );
 
   ensure("params is NULL", proc.getParameters()!=NULL );
-  ensure_equals("invalid params", *proc.getParameters(), "-h -e -l");
+  ensure_equals("invalid params", proc.getParameters(), string("-h -e -l") );
 }
 
 // try reading process 2
@@ -735,9 +735,9 @@ void testObj::test<27>(void)
 {
   tdba_.fillWithContent1();
   Persistency::AlertPtrNN                     a =er_.readAlert(1u);
-  const Persistency::Alert::ReportedHosts    &rh=a->getReportedTargetHosts();
+  const Persistency::Alert::Hosts            &rh=a->getTargetHosts();
   ensure_equals("invalid hosts count", rh.size(), 1u);
-  const Persistency::Host::ReportedProcesses &rp  =rh[0]->getReportedProcesses();
+  const Persistency::Host::Processes         &rp=rh[0]->getProcesses();
   ensure_equals("invalid number of processes", rp.size(), 1u);
   const Persistency::Process                 &proc=*rp[0];
 

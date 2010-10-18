@@ -14,7 +14,7 @@ AnalyzerPtrNN makeNewAnalyzer(const char *name)
 
 AlertPtrNN makeNewAlert(void)
 {
-  Alert::SourceAnalyzers sa( makeNewAnalyzer() );
+  Alert::Analyzers sa( makeNewAnalyzer() );
   return AlertPtrNN( new Persistency::Alert("abc",
                                             sa,
                                             NULL,
@@ -22,8 +22,8 @@ AlertPtrNN makeNewAlert(void)
                                             Severity(SeverityLevel::INFO),
                                             Certainty(0.42),
                                             "some description",
-                                            Persistency::Alert::ReportedHosts(),
-                                            Persistency::Alert::ReportedHosts()) );
+                                            Persistency::Alert::Hosts(),
+                                            Persistency::Alert::Hosts()) );
 }
 
 HostPtrNN makeNewHost(void)
@@ -45,8 +45,8 @@ HostPtrNN makeNewHost4(const char             *ip,
                               mask,
                               os,
                               ref,
-                              Host::ReportedServices(),
-                              Host::ReportedProcesses(),
+                              Host::Services(),
+                              Host::Processes(),
                               "dns.org" ) );
 }
 
@@ -63,8 +63,8 @@ HostPtrNN makeNewHost6(const char             *ip,
                               mask,
                               os,
                               ref,
-                              Host::ReportedServices(),
-                              Host::ReportedProcesses(),
+                              Host::Services(),
+                              Host::Processes(),
                               "dns.org" ) );
 }
 

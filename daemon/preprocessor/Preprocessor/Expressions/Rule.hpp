@@ -55,19 +55,19 @@ private:
   template<typename T>
   bool check(const T *e, PathCit t) const;
 
-  bool check(const Persistency::Alert                   &e, PathCit t) const;
-  bool check(const Persistency::Alert::SourceAnalyzers  &e, PathCit t) const;
-  bool check(const Persistency::Analyzer                &e, PathCit t) const;
-  bool check(const Persistency::Alert::ReportedHosts    &e, PathCit t) const;
-  bool check(const Persistency::ReferenceURL            &e, PathCit t) const;
-  bool check(const Persistency::Host                    &e, PathCit t) const;
-  bool check(const Persistency::Host::ReportedServices  &e, PathCit t) const;
-  bool check(const Persistency::Service                 &e, PathCit t) const;
-  bool check(const Persistency::Host::ReportedProcesses &e, PathCit t) const;
-  bool check(const Persistency::Process                 &e, PathCit t) const;
-  bool check(const Persistency::MD5Sum                  &e, PathCit t) const;
+  bool check(const Persistency::Alert            &e, PathCit t) const;
+  bool check(const Persistency::Alert::Analyzers &e, PathCit t) const;
+  bool check(const Persistency::Analyzer         &e, PathCit t) const;
+  bool check(const Persistency::Alert::Hosts     &e, PathCit t) const;
+  bool check(const Persistency::ReferenceURL     &e, PathCit t) const;
+  bool check(const Persistency::Host             &e, PathCit t) const;
+  bool check(const Persistency::Host::Services   &e, PathCit t) const;
+  bool check(const Persistency::Service          &e, PathCit t) const;
+  bool check(const Persistency::Host::Processes  &e, PathCit t) const;
+  bool check(const Persistency::Process          &e, PathCit t) const;
+  bool check(const Persistency::MD5Sum           &e, PathCit t) const;
   // final point
-  bool check(const std::string                          &e, PathCit t) const;
+  bool check(const std::string                   &e, PathCit t) const;
 
   void throwIfEnd(const Exception::Location &where, PathCit t) const;
   void throwIfNotEnd(const Exception::Location &where, PathCit t) const;

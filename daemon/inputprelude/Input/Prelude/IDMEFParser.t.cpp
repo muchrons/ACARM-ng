@@ -138,7 +138,7 @@ void testObj::test<6>(void)
   }
   const IDMEFParser ip(td_.message_.get(), bf_);
 
-  Persistency::Alert::ReportedHosts src=ip.getSources();
+  Persistency::Alert::Hosts src=ip.getSources();
   ensure_equals("invalid Source 1", src.at(0)->getIP(), boost::asio::ip::address_v4::from_string("192.168.1.1"));
   ensure_equals("invalid Source 1", src.at(1)->getIP(), boost::asio::ip::address_v6::from_string("::1"));
 }
@@ -161,7 +161,7 @@ void testObj::test<7>(void)
   }
   const IDMEFParser ip(td_.message_.get(), bf_);
 
-  Persistency::Alert::ReportedHosts src=ip.getTargets();
+  Persistency::Alert::Hosts src=ip.getTargets();
   ensure_equals("invalid Source 1", src.at(0)->getIP(), boost::asio::ip::address_v4::from_string("192.168.1.1"));
   ensure_equals("invalid Source 1", src.at(1)->getIP(), boost::asio::ip::address_v6::from_string("::1"));
 }

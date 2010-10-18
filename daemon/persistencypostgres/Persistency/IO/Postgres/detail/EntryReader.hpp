@@ -59,7 +59,7 @@ public:
    *  \param alertID ID of Alert in data base.
    *  \return return source analyzers.
    */
-  Persistency::Alert::SourceAnalyzers getAnalyzers(DataBaseID alertID);
+  Persistency::Alert::Analyzers getAnalyzers(DataBaseID alertID);
 
   /** \brief read value of Meta Alert severity delta
    *  \param malertID ID of Meta Alert
@@ -148,14 +148,14 @@ private:
                                                      const DynamicConfig::Owner &owner,
                                                      const DynamicConfig::Key   &key);
 
-  Persistency::Alert::ReportedHosts getReporteHosts(DataBaseID alertID, std::string hostType);
+  Persistency::Alert::Hosts getReporteHosts(DataBaseID alertID, std::string hostType);
 
-  Persistency::Host::ReportedServices  getReportedServices(DataBaseID hostID);
-  Persistency::Host::ReportedProcesses getReportedProcesses(DataBaseID hostID);
+  Persistency::Host::Services  getServices(DataBaseID hostID);
+  Persistency::Host::Processes getProcesses(DataBaseID hostID);
   ReferenceURLPtr getReferenceURL(const DataBaseID *refID);
 
-  Persistency::Alert::ReportedHosts getSourceHosts(DataBaseID alertID);
-  Persistency::Alert::ReportedHosts getTargetHosts(DataBaseID alertID);
+  Persistency::Alert::Hosts getSourceHosts(DataBaseID alertID);
+  Persistency::Alert::Hosts getTargetHosts(DataBaseID alertID);
   template<typename T>
   void addIfNew(T e, DataBaseID id);
   std::vector<DataBaseID> getRoots(const pqxx::result &r);

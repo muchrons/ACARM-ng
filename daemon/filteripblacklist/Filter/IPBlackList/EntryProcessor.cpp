@@ -33,17 +33,17 @@ void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
 {
   assert( leaf->isLeaf() && "wrong graph-passing algorithm choosen" );
   LOGMSG_DEBUG(log_, "processing source hosts");
-  processHosts(leaf, leaf->getAlert()->getReportedSourceHosts() );  // we may be under attack
+  processHosts(leaf, leaf->getAlert()->getSourceHosts() );  // we may be under attack
   LOGMSG_DEBUG(log_, "processing target hosts");
-  processHosts(leaf, leaf->getAlert()->getReportedTargetHosts() );  // zombie host may be contacting C&C
+  processHosts(leaf, leaf->getAlert()->getTargetHosts() );  // zombie host may be contacting C&C
 }
 
-void EntryProcessor::processHosts(Persistency::GraphNodePtrNN              leaf,
-                                  const Persistency::Alert::ReportedHosts &rh)
+void EntryProcessor::processHosts(Persistency::GraphNodePtrNN      leaf,
+                                  const Persistency::Alert::Hosts &rh)
 {
   assert( leaf->isLeaf() && "looks like called with wrong algorithm" );
   // process new entry
-  typedef Persistency::Alert::ReportedHosts::const_iterator ConstIterator;
+  typedef Persistency::Alert::Hosts::const_iterator ConstIterator;
   for(ConstIterator it=rh.begin(); it!=rh.end(); ++it)
   {
     const HostPtrNN host=*it;               // helper object

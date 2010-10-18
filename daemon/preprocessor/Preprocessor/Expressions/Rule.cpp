@@ -148,17 +148,17 @@ bool Rule::check(const Persistency::Alert &e, const PathCit t) const
     return check( cast( e.getDescription() ), t+1);
   // collections
   if(*t=="analyzers")
-    return check( e.getSourceAnalyzers(), t+1);
+    return check( e.getAnalyzers(), t+1);
   if(*t=="sources")
-    return check( e.getReportedSourceHosts(), t+1);
+    return check( e.getSourceHosts(), t+1);
   if(*t=="targets")
-    return check( e.getReportedTargetHosts(), t+1);
+    return check( e.getTargetHosts(), t+1);
 
   throwInvalid(SYSTEM_SAVE_LOCATION, t);
   return false;         // we never reach here
 }
 
-bool Rule::check(const Persistency::Alert::SourceAnalyzers &e, PathCit t) const
+bool Rule::check(const Persistency::Alert::Analyzers &e, PathCit t) const
 {
   throwIfEnd(SYSTEM_SAVE_LOCATION, t);
   return processCollection(t, e);
@@ -181,7 +181,7 @@ bool Rule::check(const Persistency::Analyzer &e, PathCit t) const
   return false;         // we never reach here
 }
 
-bool Rule::check(const Persistency::Alert::ReportedHosts &e, PathCit t) const
+bool Rule::check(const Persistency::Alert::Hosts &e, PathCit t) const
 {
   throwIfEnd(SYSTEM_SAVE_LOCATION, t);
   return processCollection(t, e);
@@ -215,15 +215,15 @@ bool Rule::check(const Persistency::Host &e, PathCit t) const
   if(*t=="name")
     return check( cast( e.getName().get() ), t+1 );
   if(*t=="services")
-    return check( e.getReportedServices(), t+1 );
+    return check( e.getServices(), t+1 );
   if(*t=="processes")
-    return check( e.getReportedProcesses(), t+1 );
+    return check( e.getProcesses(), t+1 );
 
   throwInvalid(SYSTEM_SAVE_LOCATION, t);
   return false;         // we never reach here
 }
 
-bool Rule::check(const Persistency::Host::ReportedServices &e, PathCit t) const
+bool Rule::check(const Persistency::Host::Services &e, PathCit t) const
 {
   throwIfEnd(SYSTEM_SAVE_LOCATION, t);
   return processCollection(t, e);
@@ -246,7 +246,7 @@ bool Rule::check(const Persistency::Service &e, PathCit t) const
   return false;         // we never reach here
 }
 
-bool Rule::check(const Persistency::Host::ReportedProcesses &e, PathCit t) const
+bool Rule::check(const Persistency::Host::Processes &e, PathCit t) const
 {
   throwIfEnd(SYSTEM_SAVE_LOCATION, t);
   return processCollection(t, e);

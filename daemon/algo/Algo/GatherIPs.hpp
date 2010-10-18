@@ -83,7 +83,7 @@ public:
   }
 
 private:
-  void addIPs(IPSetPtr out, const Persistency::Alert::ReportedHosts &in);
+  void addIPs(IPSetPtr out, const Persistency::Alert::Hosts &in);
 
   IPSetPtr source_;
   IPSetPtr target_;

@@ -24,13 +24,13 @@ void GatherHosts::operator()(Persistency::GraphNodePtrNN node)
 {
   // assert is fine here, since this is implementation internal.
   assert( node->isLeaf() );
-  addHosts( source_, node->getAlert()->getReportedSourceHosts() );
-  addHosts( target_, node->getAlert()->getReportedTargetHosts() );
+  addHosts( source_, node->getAlert()->getSourceHosts() );
+  addHosts( target_, node->getAlert()->getTargetHosts() );
 }
 
-void GatherHosts::addHosts(HostSetPtr out, const Persistency::Alert::ReportedHosts &in)
+void GatherHosts::addHosts(HostSetPtr out, const Persistency::Alert::Hosts &in)
 {
-  for(Persistency::Alert::ReportedHosts::const_iterator it=in.begin(); it!=in.end(); ++it)
+  for(Persistency::Alert::Hosts::const_iterator it=in.begin(); it!=in.end(); ++it)
     out->insert(*it);
 }
 

@@ -23,11 +23,10 @@ struct Operations
    *  \param node node to get hosts from.
    *  \return array of reported hosts.
    */
-  static const Persistency::Alert::ReportedHosts &getReportedHostsArray(
-                                        const Persistency::GraphNodePtrNN node)
+  static const Persistency::Alert::Hosts &getHostsArray(const Persistency::GraphNodePtrNN node)
   {
     assert( node->isLeaf() );
-    return node->getAlert().getReportedSourceHosts();
+    return node->getAlert().getSourceHosts();
   }
 
   /** \brief generates name for meta alert, based on given host name.

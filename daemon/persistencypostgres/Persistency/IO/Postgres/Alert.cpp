@@ -34,15 +34,15 @@ void Alert::saveImpl(Transaction &t)
     //add Alert to cache
     dbHandle_->getIDCache()->add(get() , alertID);
     //save source hosts
-    Persistency::Alert::ReportedHosts SourceHosts( a.getReportedSourceHosts() );
+    Persistency::Alert::Hosts SourceHosts( a.getSourceHosts() );
     saveHosts(es, alertID, HostType::SRC, SourceHosts);
     //save target hosts
-    Persistency::Alert::ReportedHosts TargetHosts( a.getReportedTargetHosts() );
+    Persistency::Alert::Hosts TargetHosts( a.getTargetHosts() );
     saveHosts(es, alertID, HostType::DST, TargetHosts);
     //get Analyzers from Alert
-    Persistency::Alert::SourceAnalyzers analyzers( a.getSourceAnalyzers() );
+    Persistency::Alert::Analyzers analyzers( a.getAnalyzers() );
     //save Analyzers
-    for(Persistency::Alert::SourceAnalyzers::iterator it = analyzers.begin(); it != analyzers.end(); ++it)
+    for(Persistency::Alert::Analyzers::iterator it = analyzers.begin(); it != analyzers.end(); ++it)
     {
       //save Analyzer
       const Persistency::Analyzer &analyzer = *it->get();
@@ -52,13 +52,13 @@ void Alert::saveImpl(Transaction &t)
   TRYCATCH_END
 }
 
-void Alert::saveHosts(EntrySaver                        &es,
-                      DataBaseID                         alertID,
-                      HostType                           type,
-                      Persistency::Alert::ReportedHosts &hosts)
+void Alert::saveHosts(EntrySaver                &es,
+                      DataBaseID                 alertID,
+                      HostType                   type,
+                      Persistency::Alert::Hosts &hosts)
 {
   // loop through all hosts
-  for(Persistency::Alert::ReportedHosts::iterator it = hosts.begin(); it!=hosts.end() ; ++it)
+  for(Persistency::Alert::Hosts::iterator it = hosts.begin(); it!=hosts.end() ; ++it)
   {
     DataBaseID hostID;
     // save reported host
@@ -83,15 +83,15 @@ void Alert::saveHosts(EntrySaver                        &es,
     LOGMSG_DEBUG_S(log_)<<"saved host with ID "<<hostID;
 
     // get reported services from host
-    const Persistency::Host::ReportedServices  &services( (*it->get()).getReportedServices() );
+    const Persistency::Host::Services &services( (*it->get()).getServices() );
     LOGMSG_DEBUG_S(log_)<<"save reported services for alert with ID: "<<alertID;
-    for(Persistency::Host::ReportedServices::const_iterator it_s = services.begin(); it_s!=services.end(); ++it_s)
+    for(Persistency::Host::Services::const_iterator it_s = services.begin(); it_s!=services.end(); ++it_s)
       es.saveService(hostID, *it_s->get() );
 
     // get reported processes from host
-    const Persistency::Host::ReportedProcesses &processes((*it->get()).getReportedProcesses() );
+    const Persistency::Host::Processes &processes((*it->get()).getProcesses() );
     LOGMSG_DEBUG_S(log_)<<"save reported processes for alert with ID: "<<alertID;
-    for(Persistency::Host::ReportedProcesses::const_iterator it_p = processes.begin(); it_p!=processes.end(); ++it_p)
+    for(Persistency::Host::Processes::const_iterator it_p = processes.begin(); it_p!=processes.end(); ++it_p)
       es.saveProcess(hostID, *it_p->get() );
   } // for(hosts)
 }

@@ -10,6 +10,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "System/Singleton.hpp"
+#include "System/OneInstanceAtOnce.hpp"
 #include "ConfigIO/GeneralConfig.hpp"
 #include "ConfigIO/PersistencyConfig.hpp"
 #include "ConfigIO/FiltersConfigCollection.hpp"
@@ -26,7 +27,7 @@ class Parser;
 
 /** \brief configuration access point.
  */
-class SingletonImpl: private boost::noncopyable
+class SingletonImpl: private System::OneInstanceAtOnce<SingletonImpl>
 {
 public:
   /** \brief deallocate object.

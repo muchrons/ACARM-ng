@@ -38,9 +38,9 @@ public:
   /** \brief name of the alert (aka: title). */
   typedef Commons::LimitedString<256>         Name;
   /** \brief vector of reported hosts. */
-  typedef std::vector<HostPtrNN>              ReportedHosts;
+  typedef std::vector<HostPtrNN>              Hosts;
   /** \brief vector of analyzers assigned to this alert. */
-  typedef Base::NonEmptyVector<AnalyzerPtrNN> SourceAnalyzers;
+  typedef Base::NonEmptyVector<AnalyzerPtrNN> Analyzers;
 
   /** \brief creates alert.
    *  \param name        name of an alert (~title).
@@ -53,15 +53,15 @@ public:
    *  \param sourceHosts source hosts (attack came from them).
    *  \param targetHosts targeted hosts.
    */
-  Alert(const Name          &name,
-        SourceAnalyzers      analyzers,
-        const Timestamp     *detected,
-        const Timestamp     &created,
-        Severity             severity,
-        Certainty            certainty,
-        const std::string   &description,
-        const ReportedHosts &sourceHosts,
-        const ReportedHosts &targetHosts);
+  Alert(const Name        &name,
+        Analyzers          analyzers,
+        const Timestamp   *detected,
+        const Timestamp   &created,
+        Severity           severity,
+        Certainty          certainty,
+        const std::string &description,
+        const Hosts       &sourceHosts,
+        const Hosts       &targetHosts);
 
   /** \brief gets name of alert.
    *  \return name of alert.
@@ -70,7 +70,7 @@ public:
   /** \brief get list of analyzers that reported alert.
    *  \return analyzers' data.
    */
-  const SourceAnalyzers &getSourceAnalyzers(void) const;
+  const Analyzers &getAnalyzers(void) const;
   /** \brief gets time alert has been detected.
    *  \return alert detection time.
    */
@@ -96,11 +96,11 @@ public:
   /** \brief gets vector of source hosts reported in this alert.
    *  \return vector of reported source hosts.
    */
-  const ReportedHosts &getReportedSourceHosts(void) const;
+  const Hosts &getSourceHosts(void) const;
   /** \brief gets vector of target hosts reported in this alert.
    *  \return vector of reported target hosts.
    */
-  const ReportedHosts &getReportedTargetHosts(void) const;
+  const Hosts &getTargetHosts(void) const;
   /** \brief check if classes are equal.
    *  \param other element to compare with.
    *  \return true if elements are equal, false otherwise.
@@ -109,14 +109,14 @@ public:
 
 private:
   Name                         name_;
-  SourceAnalyzers              analyzers_;
+  Analyzers                    analyzers_;
   boost::scoped_ptr<Timestamp> detected_;
   Timestamp                    created_;
   Severity                     severity_;
   Certainty                    certainty_;
   std::string                  description_;
-  ReportedHosts                sourceHosts_;
-  ReportedHosts                targetHosts_;
+  Hosts                        sourceHosts_;
+  Hosts                        targetHosts_;
 }; // class Alert
 
 

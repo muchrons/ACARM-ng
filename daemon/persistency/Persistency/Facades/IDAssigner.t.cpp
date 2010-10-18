@@ -21,13 +21,16 @@ struct TestClass
 {
   TestClass(void):
     conn_(new TestIOConnectionParamMap),
-    t_( conn_->createNewTransaction("test_assigner") )
+    t_( conn_->createNewTransaction("test_assigner") ),
+    maStart_( IDAssigner::get()->assignMetaAlertID(conn_, t_).get() ),
+    anlStart_( IDAssigner::get()->assignAnalyzerID(conn_, t_).get() )
   {
   }
 
-  IO::ConnectionPtrNN         conn_;
-  IO::Transaction             t_;
-  Facades::detail::IDAssigner ida_;
+  IO::ConnectionPtrNN    conn_;
+  IO::Transaction        t_;
+  MetaAlert::ID::Numeric maStart_;
+  Analyzer::ID::Numeric  anlStart_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -45,7 +48,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid value returned", IDAssigner::get()->assignMetaAlertID(conn_, t_).get(), 0u);
+  ensure_equals("invalid value returned", IDAssigner::get()->assignMetaAlertID(conn_, t_).get(), maStart_+1u);
 }
 
 // test getting meta-alert's ID when no value is set value
@@ -53,7 +56,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("invalid value returned", ida_.assignMetaAlertID(conn_, t_).get(), 0u);
+  ensure_equals("invalid value returned", IDAssigner::get()->assignMetaAlertID(conn_, t_).get(), maStart_+1u);
 }
 
 // test assigning meta-alerts' ID multiple times
@@ -61,8 +64,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensure_equals("invalid value 1 returned", ida_.assignMetaAlertID(conn_, t_).get(), 0u);
-  ensure_equals("invalid value 2 returned", ida_.assignMetaAlertID(conn_, t_).get(), 1u);
+  ensure_equals("invalid value 1 returned", IDAssigner::get()->assignMetaAlertID(conn_, t_).get(), maStart_+1u);
+  ensure_equals("invalid value 2 returned", IDAssigner::get()->assignMetaAlertID(conn_, t_).get(), maStart_+2u);
 }
 
 // test getting analyzer's id when no value is set value
@@ -70,7 +73,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure_equals("invalid value returned", ida_.assignAnalyzerID(conn_, t_).get(), 0u);
+  ensure_equals("invalid value returned", IDAssigner::get()->assignAnalyzerID(conn_, t_).get(), anlStart_+1u);
 }
 
 // test assigning analyzers' ID multiple times
@@ -78,8 +81,8 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ensure_equals("invalid value 1 returned", ida_.assignAnalyzerID(conn_, t_).get(), 0u);
-  ensure_equals("invalid value 2 returned", ida_.assignAnalyzerID(conn_, t_).get(), 1u);
+  ensure_equals("invalid value 1 returned", IDAssigner::get()->assignAnalyzerID(conn_, t_).get(), anlStart_+1u);
+  ensure_equals("invalid value 2 returned", IDAssigner::get()->assignAnalyzerID(conn_, t_).get(), anlStart_+2u);
 }
 
 } // namespace tut

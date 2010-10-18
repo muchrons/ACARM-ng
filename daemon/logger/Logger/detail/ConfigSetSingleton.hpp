@@ -8,6 +8,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "System/Singleton.hpp"
+#include "System/OneInstanceAtOnce.hpp"
 #include "Base/Threads/Mutex.hpp"
 #include "Logger/NodeName.hpp"
 #include "Logger/NodeConf.hpp"
@@ -20,7 +21,7 @@ namespace detail
 
 /** \brief implenentation of configuration singleton.
  */
-class ConfigSetImpl: private boost::noncopyable
+class ConfigSetImpl: private System::OneInstanceAtOnce<ConfigSetImpl>
 {
 public:
   /** \brief returns configariotn for a gienve node.

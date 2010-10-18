@@ -40,18 +40,14 @@ class Host: private boost::noncopyable,
             public  IPTypes<Host>
 {
 public:
-  /** \brief operation system name type.
-   */
+  /** \brief operation system name type. */
   typedef Commons::LimitedNULLString<32> OperatingSystem;
-  /** \brief host name (DNS entry).
-   */
+  /** \brief host name (DNS entry). */
   typedef Commons::LimitedNULLString<64> Name;
-  /** \brief services assigned to host.
-   */
-  typedef std::vector<ServicePtrNN>      ReportedServices;
-  /** \brief processes assigned to host.
-   */
-  typedef std::vector<ProcessPtrNN>      ReportedProcesses;
+  /** \brief services assigned to host. */
+  typedef std::vector<ServicePtrNN>      Services;
+  /** \brief processes assigned to host. */
+  typedef std::vector<ProcessPtrNN>      Processes;
 
   /** \brief create host entry of IPv4 address.
    *  \param ip        ip address.
@@ -62,13 +58,13 @@ public:
    *  \param processes processes reported on host.
    *  \param name      DNS name of this host (or NULL if not known).
    */
-  Host(const IPv4              &ip,
-       const Netmask_v4        *mask,
-       const OperatingSystem    os,
-       ReferenceURLPtr          url,
-       const ReportedServices  &services,
-       const ReportedProcesses &processes,
-       const Name              &name);
+  Host(const IPv4            &ip,
+       const Netmask_v4      *mask,
+       const OperatingSystem  os,
+       ReferenceURLPtr        url,
+       const Services        &services,
+       const Processes       &processes,
+       const Name            &name);
   /** \brief create host entry of IPv6 address.
    *  \param ip        ip address.
    *  \param mask      network maks of a given host.
@@ -78,13 +74,13 @@ public:
    *  \param processes processes reported on host.
    *  \param name      DNS name of this host (or NULL if not known).
    */
-  Host(const IPv6              &ip,
-       const Netmask_v6        *mask,
-       const OperatingSystem    os,
-       ReferenceURLPtr          url,
-       const ReportedServices  &services,
-       const ReportedProcesses &processes,
-       const Name              &name);
+  Host(const IPv6            &ip,
+       const Netmask_v6      *mask,
+       const OperatingSystem  os,
+       ReferenceURLPtr        url,
+       const Services        &services,
+       const Processes       &processes,
+       const Name            &name);
   /** \brief create host entry of IP address.
    *  \param ip        ip address.
    *  \param mask      network maks of a given host.
@@ -94,13 +90,13 @@ public:
    *  \param processes processes reported on host.
    *  \param name      DNS name of this host (or NULL if not known).
    */
-  Host(const IP                &ip,
-       const Netmask           *mask,
-       const OperatingSystem    os,
-       ReferenceURLPtr          url,
-       const ReportedServices  &services,
-       const ReportedProcesses &processes,
-       const Name              &name);
+  Host(const IP              &ip,
+       const Netmask         *mask,
+       const OperatingSystem  os,
+       ReferenceURLPtr        url,
+       const Services        &services,
+       const Processes       &processes,
+       const Name            &name);
 
   /** \brief gets IP address.
    *  \return IP address of host.
@@ -126,11 +122,11 @@ public:
   /** \brief gets reported services list.
    *  \return vector of reported services.
    */
-  const ReportedServices &getReportedServices(void) const;
+  const Services &getServices(void) const;
   /** \brief gets reported processes list.
    *  \return vector of reported processes.
    */
-  const ReportedProcesses &getReportedProcesses(void) const;
+  const Processes &getProcesses(void) const;
   /** \brief check if classes are equal.
    *  \param other element to compare with.
    *  \return true if elements are equal, false otherwise.
@@ -146,8 +142,8 @@ private:
   OperatingSystem                       os_;
   Name                                  name_;
   ReferenceURLPtr                       url_;
-  ReportedServices                      services_;
-  ReportedProcesses                     processes_;
+  Services                              services_;
+  Processes                             processes_;
   mutable Base::Threads::ReadWriteMutex mutex_;
 }; // class Host
 

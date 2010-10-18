@@ -24,6 +24,12 @@ namespace System
 namespace detail
 {
 /** \brief helper object implementing data holding logic in Singleton.
+ *  \param T type to be hold inside the singleton object.
+ *
+ *  in order to be on the safe side T must be noncopyable. it is also
+ *  good idea to make its c-tor private and add friend declaration
+ *  for Singleton<T>. to enusre all conditions are met user might want
+ *  to derive from System::OneInstanceAtOnde<> template.
  */
 template<typename T>
 class SingletonData: private boost::noncopyable

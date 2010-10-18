@@ -53,8 +53,8 @@ struct TestClass
     severity_(SeverityLevel::INFO),
     certanity_(0.42),
     description_("alert's description"),
-    sourceHosts_( generateReportedHosts(2) ),
-    targetHosts_( generateReportedHosts(5) ),
+    sourceHosts_( generateHosts(2) ),
+    targetHosts_( generateHosts(5) ),
     idCache_(new IDCache),
     dbh_(TestConnection::makeParams(), idCache_),
     conn_( makeConnection() ),
@@ -86,9 +86,9 @@ struct TestClass
   {
   }
 
-  Alert::ReportedHosts generateReportedHosts(unsigned int size) const
+  Alert::Hosts generateHosts(unsigned int size) const
   {
-    Alert::ReportedHosts out;
+    Alert::Hosts out;
     for(unsigned int i=0; i<size; ++i)
       out.push_back( makeNewHost() );
     return out;
@@ -127,36 +127,36 @@ struct TestClass
                 ") ON COMMIT DROP;" );
   }
 
-  DataCleaner                dc_;
+  DataCleaner         dc_;
 
-  const Alert::Name          name_;
-  const AnalyzerPtrNN        analyzer_;
-  Alert::SourceAnalyzers     analyzers_;
-  const Timestamp            detected_;
-  const Timestamp            created_;
-  const Severity             severity_;
-  const Certainty            certanity_;
-  const std::string          description_;
-  const Alert::ReportedHosts sourceHosts_;
-  const Alert::ReportedHosts targetHosts_;
+  const Alert::Name   name_;
+  const AnalyzerPtrNN analyzer_;
+  Alert::Analyzers    analyzers_;
+  const Timestamp     detected_;
+  const Timestamp     created_;
+  const Severity      severity_;
+  const Certainty     certanity_;
+  const std::string   description_;
+  const Alert::Hosts  sourceHosts_;
+  const Alert::Hosts  targetHosts_;
 
 
-  IDCachePtrNN               idCache_;
-  DBHandle                   dbh_;
-  IO::ConnectionPtrNN        conn_;
-  Transaction                t_;
-  EntrySaver                 es_;
+  IDCachePtrNN            idCache_;
+  DBHandle                dbh_;
+  IO::ConnectionPtrNN     conn_;
+  Transaction             t_;
+  EntrySaver              es_;
 
-  const pid_t                pid_;
-  const int                  uid_;
-  ReferenceURLPtrNN          url_;
-  const char                *md5Str_;
-  const MD5Sum               md5_;
-  const Process              proc_;
-  const Process              procnn_;
+  const pid_t             pid_;
+  const int               uid_;
+  ReferenceURLPtrNN       url_;
+  const char             *md5Str_;
+  const MD5Sum            md5_;
+  const Process           proc_;
+  const Process           procnn_;
 
-  const Host::Netmask_v4     mask4_;
-  const Host::Netmask_v6     mask6_;
+  const Host::Netmask_v4  mask4_;
+  const Host::Netmask_v6  mask6_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -577,19 +577,18 @@ void testObj::test<13>(void)
 
 
   r[0]["username"].to(username);
-  trim(username);
-  ensure_equals("invalid name", proc.getUsername().get() ,username);
+  ensure_equals("invalid name", username, proc.getUsername().get() );
 
   r[0]["arguments"].to(arguments);
-  ensure_equals("invalid arguments", *proc.getParameters(), arguments);
+  ensure_equals("invalid arguments", arguments, proc.getParameters() );
 
   ensure("non-NULL ReferenceURL",r[0]["id_ref"].is_null());
 
   r[0]["uid"].to(uid);
-  ensure_equals("invalid uid number",  *proc.getUID(), uid);
+  ensure_equals("invalid uid number",  uid, *proc.getUID() );
 
   r[0]["pid"].to(pid);
-  ensure_equals("invalid pid number",  *proc.getPID(), pid);
+  ensure_equals("invalid pid number",  pid, *proc.getPID() );
 
   t_.commit();
 }
@@ -623,7 +622,7 @@ void testObj::test<14>(void)
   ensure_equals("invalid name",proc.getUsername().get() ,username);
 
   r[0]["arguments"].to(arguments);
-  ensure_equals("invalid arguments", *proc.getParameters(), arguments);
+  ensure_equals("invalid arguments", arguments, proc.getParameters() );
 
   ensure("non-NULL ReferenceURL",!r[0]["id_ref"].is_null());
 
@@ -647,8 +646,8 @@ void testObj::test<15>(void)
                  &mask4_,
                   "myos",
                   makeNewReferenceURL(),
-                  Host::ReportedServices(),
-                  Host::ReportedProcesses(),
+                  Host::Services(),
+                  Host::Processes(),
                   NULL );
   const DataBaseID alertID = es_.saveAlert(a);
   const DataBaseID hostID  = es_.saveSourceHost(alertID, h);
@@ -848,8 +847,8 @@ void testObj::test<23>(void)
                       &mask4_,
                       "myos",
                       makeNewReferenceURL(),
-                      Host::ReportedServices(),
-                      Host::ReportedProcesses(),
+                      Host::Services(),
+                      Host::Processes(),
                       NULL );
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
@@ -873,8 +872,8 @@ void testObj::test<24>(void)
                  NULL,
                  "myos",
                  makeNewReferenceURL(),
-                 Host::ReportedServices(),
-                 Host::ReportedProcesses(),
+                 Host::Services(),
+                 Host::Processes(),
                  NULL );
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
@@ -900,10 +899,10 @@ void testObj::test<25>(void)
                          NULL,
                          "myos",
                          ReferenceURLPtr(),
-                         Host::ReportedServices(),
-                         Host::ReportedProcesses(),
+                         Host::Services(),
+                         Host::Processes(),
                          NULL ) );
-  Alert::ReportedHosts sh;
+  Alert::Hosts sh;
   sh.push_back(h);
   // save some alert
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
@@ -1130,8 +1129,8 @@ void testObj::test<32>(void)
                          NULL,
                          "myos",
                          url,
-                         Host::ReportedServices(),
-                         Host::ReportedProcesses(),
+                         Host::Services(),
+                         Host::Processes(),
                          NULL ) );
   const DataBaseID alertID = es_.saveAlert(a);
   const DataBaseID anlzID  = es_.saveAnalyzer(*analyzer_.get());
