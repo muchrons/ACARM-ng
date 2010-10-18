@@ -23,3 +23,4 @@
 * filter rising priority for binaries that have MD5 of an expliot?
 * implement pointer-comparison for whole collections when comparing Via*Collection* -- if they are the same, it gives positive result in citou.
 * conisder adding indexes to speed-up SQL queries like: select * from hosts where id_alert=42;
+* think about adding meta-alerts to correlation queue of a filters, baising on reported-time, not current time (to reduce overhead when system is started after some time).
