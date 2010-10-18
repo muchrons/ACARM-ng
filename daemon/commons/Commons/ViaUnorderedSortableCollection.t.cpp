@@ -393,7 +393,7 @@ void testObj::test<18>(void)
   l2.push_back( SomeTestData(2) );
 
   // check
-  const SomeTestDataSWO swo;
+  SomeTestDataSWO swo;
   ensure("comparing with own SWO failed", ViaUnorderedSortableCollection::equal(l1, l2, swo) );
 }
 
