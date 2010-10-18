@@ -5,6 +5,7 @@
 #include <cassert>
 
 #include "System/Threads/SafeInitLocking.hpp"
+#include "System/OneInstanceAtOnce.hpp"
 #include "Base/Threads/Lock.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/Convert.hpp"
@@ -31,7 +32,7 @@ const char *g_keyAnalyzer ="next free Analyzer's ID";
 /** \brief generic implementation for the assigner
  */
 template<typename T>
-class IDAssignerHelper: private boost::noncopyable
+class IDAssignerHelper: private System::OneInstanceAtOnce< IDAssignerHelper<T> >
 {
 public:
   /** \brief ID type. */
@@ -91,8 +92,6 @@ public:
   }
 
 private:
-  // TODO: add check if there is at most one instance of this object created at a given time.
-
   Logger::Node  log_;
   const char   *key_;
   IDNumeric     nextFreeID_;
