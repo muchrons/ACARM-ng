@@ -11,6 +11,7 @@
 #include <cassert>
 
 #include "System/Singleton.hpp"
+#include "System/OneInstanceAtOnce.hpp"
 #include "Commons/Factory/detail/AbstractFactory.hpp"
 
 
@@ -22,7 +23,7 @@ namespace Factory
 /** \brief abstract factory of factories of a given type.
  */
 template<typename TFactory>
-class AbstractFactorySingleton: private boost::noncopyable
+class AbstractFactorySingleton: private System::OneInstanceAtOnce< AbstractFactorySingleton<TFactory> >
 {
 private:
   // implementaiton's short name
