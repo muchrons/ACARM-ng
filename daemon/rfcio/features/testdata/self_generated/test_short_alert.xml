@@ -2,14 +2,19 @@
 <idmef:IDMEF-Message xmlns:idmef="http://iana.org/idmef">
   <idmef:Alert messageid="303">
     <idmef:Analyzer analyzerid="42">
-    <idmef:Node category="host">
-    <idmef:name>some analyzer</idmef:name>
-    </idmef:Node>
+      <idmef:Node category="host">
+        <idmef:name>some analyzer</idmef:name>
+      </idmef:Node>
     </idmef:Analyzer>
     <idmef:CreateTime ntpstamp="0x83AAAEB9.0x00000000">1970-01-01T03:25:45Z</idmef:CreateTime>
     <idmef:Classification text="some alert"/>
     <idmef:AdditionalData type="string" meaning="description">
       <idmef:string>some test alert</idmef:string>
     </idmef:AdditionalData>
+    <idmef:Assessment>
+      <idmef:Impact severity="low"/>
+      <idmef:Confidence rating="numeric">0.41999999999999998</idmef:Confidence>
+    </idmef:Assessment>
   </idmef:Alert>
 </idmef:IDMEF-Message>
+
