@@ -29,15 +29,9 @@ IStreamReader::Line IStreamReader::readLine(unsigned int timeout)
   {
     boost::this_thread::interruption_point();   // for beter responsivness in threads
 
-    // test if we have anything
-    if( ss_->str().find("\n")!=string::npos )   // we have line end!
-    {
-      string str;
-      getline(*ss_, str);                       // read whole line to temporary buffer
-      truncateStringstreamBy( str.length() );   // free extra resources allocated by stringstream
-      return Line(true, str);                   // return results
-    }
-
+    // check stream before read
+    if( !input_.good() )
+      throw Exception(SYSTEM_SAVE_LOCATION, "unknown input stream error");
     // read data in non-blocking manier
     const size_t size=input_.readsome( tmp_, sizeof(tmp_)-1 );
     tmp_[size]=0;
@@ -54,11 +48,16 @@ IStreamReader::Line IStreamReader::readLine(unsigned int timeout)
       *ss_<<tmp_;                               // add data to stream
     }
 
-    // check stream after read
-    if( !input_.good() )
-      throw Exception(SYSTEM_SAVE_LOCATION, "unknown input stream error");
+    // test if we have anything
+    if( ss_->str().find("\n")!=string::npos )   // we have line end!
+    {
+      string str;
+      getline(*ss_, str);                       // read whole line to temporary buffer
+      truncateStringstreamBy( str.length() );   // free extra resources allocated by stringstream
+      return Line(true, str);                   // return results
+    }
   }
-  while( time(NULL)<=deadline );
+  while( time(NULL)<deadline );
   // timeout occured - noting new has been read
   return Line(false, "");
 }
