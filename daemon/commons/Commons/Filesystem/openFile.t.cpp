@@ -1,10 +1,10 @@
 /*
- * openElement.t.cpp
+ * openFile.t.cpp
  *
  */
 #include <tut.h>
 
-#include "Commons/Filesystem/openElement.hpp"
+#include "Commons/Filesystem/openFile.hpp"
 
 using namespace std;
 using namespace boost::filesystem;
@@ -13,15 +13,6 @@ using namespace Commons::Filesystem;
 namespace
 {
 
-bool isSaneTrue(const path &)
-{
-  return true;
-}
-bool isSaneFalse(const path &)
-{
-  return false;
-}
-
 struct TestClass
 {
 };
@@ -29,7 +20,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Commons/Filesystem/openElement");
+factory tf("Commons/Filesystem/openFile");
 } // unnamed namespace
 
 
@@ -41,7 +32,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure("file not opened", openElement("testdata/file", Mode::READ, isSaneTrue).get()!=NULL );
+  ensure("file not opened", openFile("testdata/file").get()!=NULL );
 }
 
 // test if call throws on non-passing sanity check
@@ -51,13 +42,21 @@ void testObj::test<2>(void)
 {
   try
   {
-    openElement("testdata/file", Mode::READ, isSaneFalse);
+    openFile("testdata/dirSymlink/other_dir/some_file");
     fail("call didn't throw on error");
   }
   catch(const ExceptionFilesystemIO &)
   {
     // this is expected
   }
+}
+
+// test passing R/W mode explicit
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  ensure("file not opened", openFile("testdata/file", Mode::WRITE).get()!=NULL );
 }
 
 } // namespace tut

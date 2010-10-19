@@ -39,6 +39,7 @@ struct TestClass
 
   void makeFifo(const path &p)
   {
+    remove(p);
     tut::ensure_equals("unable to create fifo", mkfifo( p.string().c_str(), 0600 ), 0);
     tf_=p;
   }
