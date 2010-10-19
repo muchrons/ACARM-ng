@@ -40,10 +40,22 @@ public:
    */
   explicit SortedVector(const TCol &c)
   {
-    c_.reserve( c.size() );
-    std::copy( c.begin(), c.end(), std::insert_iterator<Collection>( c_, c_.begin() ) );
-    assert( c.size()==c_.size() );
+    prepare(c);
     std::sort( c_.begin(), c_.end(), (SWO<TValue>()) ); // sort using custom SWO<>
+  }
+
+  /** \brief create sorted vector.
+   *  \param c   collection to convert from.
+   *  \param swo object comparator.
+   *
+   *  creates internal, sorted vector of elements given in input collection.
+   *  sort by means of a given swo object.
+   */
+  template<typename TCmp>
+  SortedVector(const TCol &c, const TCmp &swo)
+  {
+    prepare(c);
+    std::sort(c_.begin(), c_.end(), swo);   // sort using user-defined SWO
   }
 
   /** \brief gets const-reference to internal, sorted collection.
@@ -100,6 +112,12 @@ private:
     }
   }; // struct SWO
 
+  void prepare(const TCol &c)
+  {
+    c_.reserve( c.size() );
+    std::copy( c.begin(), c.end(), std::insert_iterator<Collection>( c_, c_.begin() ) );
+    assert( c.size()==c_.size() );
+  }
 
   Collection c_;
 }; // class SortedVector

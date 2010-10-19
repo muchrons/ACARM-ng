@@ -345,4 +345,56 @@ void testObj::test<17>(void)
   ensure("lists of pointers with NULLs to the same values differ", ViaUnorderedSortableCollection::equal(l1, l2) );
 }
 
+
+namespace
+{
+struct SomeTestData
+{
+  explicit SomeTestData(const int &v):
+    v_(v)
+  {
+  }
+  int get(void) const
+  {
+    return v_;
+  }
+  bool operator==(const SomeTestData &other) const
+  {
+    return get()==other.get();
+  }
+
+private:
+  int v_;
+}; // struct SomeTestData
+
+struct SomeTestDataSWO
+{
+  bool operator()(const SomeTestData &e1, const SomeTestData &e2) const
+  {
+    return e1.get()<e2.get();
+  }
+}; // struct SomeTestDataSWO
+} // unnamed namespace
+
+// test sorting with own SWO
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  list<SomeTestData> l1;
+  list<SomeTestData> l2;
+
+  l1.push_back( SomeTestData(1) );
+  l1.push_back( SomeTestData(2) );
+  l1.push_back( SomeTestData(3) );
+
+  l2.push_back( SomeTestData(3) );
+  l2.push_back( SomeTestData(1) );
+  l2.push_back( SomeTestData(2) );
+
+  // check
+  SomeTestDataSWO swo;
+  ensure("comparing with own SWO failed", ViaUnorderedSortableCollection::equal(l1, l2, swo) );
+}
+
 } // namespace tut
