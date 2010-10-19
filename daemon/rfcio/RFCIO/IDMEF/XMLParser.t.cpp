@@ -197,6 +197,7 @@ void testObj::test<13>(void)
 {
   smokeTestParsing("testdata/official_examples/system_policy_violation.xml");
 }
+*/
 
 // smoke test reading IDMEF - self generated
 template<>
@@ -205,6 +206,5 @@ void testObj::test<14>(void)
 {
   smokeTestParsing("testdata/self_generated/test_short_alert.xml");
 }
-*/
 
 } // namespace tut
