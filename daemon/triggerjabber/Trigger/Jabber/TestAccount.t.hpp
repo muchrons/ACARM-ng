@@ -5,6 +5,7 @@
 #ifndef INCLUDE_TRIGGER_JABBER_TESTACCOUNT_T_HPP_FILE
 #define INCLUDE_TRIGGER_JABBER_TESTACCOUNT_T_HPP_FILE
 
+#include <glib.h>
 #include <tut.h>
 #include <loudmouth/loudmouth.h>
 #include <boost/algorithm/string.hpp>
@@ -12,6 +13,7 @@
 #include "System/ScopedPtrCustom.hpp"
 #include "System/Timer.hpp"
 #include "Trigger/Jabber/AccountConfig.hpp"
+#include "Trigger/Jabber/Connection.hpp"
 #include "TestHelpers/Data/jabber1.hpp"
 #include "TestHelpers/Data/jabber2.hpp"
 
