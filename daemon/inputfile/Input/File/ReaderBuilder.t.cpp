@@ -3,8 +3,7 @@
  *
  */
 #include <tut.h>
-#include <cstring>
-#include <memory>
+#include <boost/filesystem.hpp>
 
 #include "Input/File/ReaderBuilder.hpp"
 
@@ -14,13 +13,17 @@ using namespace Input::File;
 namespace
 {
 
-struct ReaderBuilderTestClass
+struct TestClass
 {
+  ~TestClass(void)
+  {
+    boost::filesystem::remove("some_fifo");
+  }
+
   ReaderBuilder          rb_;
   ReaderBuilder::Options opts_;
 };
 
-typedef ReaderBuilderTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
