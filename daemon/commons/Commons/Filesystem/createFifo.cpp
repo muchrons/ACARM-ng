@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 
 #include "Commons/Filesystem/createFifo.hpp"
-#include "Commons/Filesystem/openFile.hpp"
+#include "Commons/Filesystem/openFifo.hpp"
 #include "Commons/Filesystem/isDirectorySane.hpp"
 
 using namespace boost::filesystem;
