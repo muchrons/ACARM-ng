@@ -2,7 +2,6 @@
 * refactor ConfigIO - it should read configuration file and keep it in memory. proper handles for specific parts of configuration file should be implemented by interested components.
 * update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
 * add parse-at-read feature to configio - config should be accepted or rejected when running application, not delayed until acctuall usage (note: this task is connected with config's refactoring to register parsers).
-* if filters' prerequisites are not enought consider adding user-defined rules in config file as well.
 * ipblackfilter does not save paramters in data base - after restart the same alerts will get severity incremetned once more; soncider saving MetaAlertID->done/notdone as a config paramter.
 * implement common configuration module for compile-time constants used in code.
 * filter that increases priority for hosts that are out of defined set (i.e. from external network).
@@ -18,9 +17,10 @@
 * add support for specifying multiple receivers in triggers (consider comma/semicolon separated entries).
 * implement extra table for fast computing root meta-alerts.
 * encrypted connecitons in Trigger::GG.
+* encrypted connecitons in Trigger::Mail.
 * consider splitig configuration into multiple files.
 * consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
 * filter rising priority for binaries that have MD5 of an expliot?
 * implement pointer-comparison for whole collections when comparing Via*Collection* -- if they are the same, it gives positive result in citou.
 * conisder adding indexes to speed-up SQL queries like: select * from hosts where id_alert=42;
-* think about adding meta-alerts to correlation queue of a filters, baising on reported-time, not current time (to reduce overhead when system is started after some time).
+* think about adding meta-alerts to correlation queue of a filters with reported-time, not current time as a base (to reduce overhead when system is started after some time).

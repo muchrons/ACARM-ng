@@ -28,6 +28,8 @@ namespace Commons
  */
 struct ViaUnorderedSortableCollection
 {
+  // TODO: consider refactoring this code to make more common parts for both calls
+
   /** \brief checks if colections are equal, disregarding order of elements.
    *  \param c1 first collection.
    *  \param c2 second collection.
@@ -45,6 +47,9 @@ struct ViaUnorderedSortableCollection
     BOOST_STATIC_ASSERT( (boost::is_same<T1Value, T2Value>::value) );
     typedef T1Value                 TValue; // both are the same any way
 
+    // if collections are under the same addresses, they are the same for sure
+    if( static_cast<const void*>(&c1)==static_cast<const void*>(&c2) )
+      return true;
     // quick test - check sizes
     if( c1.size()!=c2.size() )
       return false;
@@ -54,6 +59,41 @@ struct ViaUnorderedSortableCollection
     // sort each input collection - O(log(n)*n)
     const SortedInput1 si1(c1);
     const SortedInput2 si2(c2);
+
+    // no we have already known problem, we can solve easily in O(n)
+    return ViaCollection::equal( si1.get(), si2.get() );
+  }
+
+  /** \brief checks if colections are equal, disregarding order of elements.
+   *  \param c1  first collection.
+   *  \param c2  second collection.
+   *  \param swo stric-weak-ordering object.
+   *  \return true if collections are identical, false otherwise.
+   *  \note collections are assumed to be STL-like; required methods are:
+   *        begin(), end(), size(). iterators must be at least forward
+   *        iterators for this algorithm to work.
+   */
+  template<typename T1, typename T2, typename TCmp>
+  static bool equal(const T1 &c1, const T2 &c2, const TCmp &swo)
+  {
+    // ensure both input value types are equal
+    typedef typename T1::value_type T1Value;
+    typedef typename T2::value_type T2Value;
+    BOOST_STATIC_ASSERT( (boost::is_same<T1Value, T2Value>::value) );
+    typedef T1Value                 TValue; // both are the same any way
+
+    // if collections are under the same addresses, they are the same for sure
+    if( static_cast<const void*>(&c1)==static_cast<const void*>(&c2) )
+      return true;
+    // quick test - check sizes
+    if( c1.size()!=c2.size() )
+      return false;
+    typedef detail::SortedVector<T1> SortedInput1;
+    typedef detail::SortedVector<T2> SortedInput2;
+
+    // sort each input collection with swo - O(log(n)*n)
+    const SortedInput1 si1(c1, swo);
+    const SortedInput2 si2(c2, swo);
 
     // no we have already known problem, we can solve easily in O(n)
     return ViaCollection::equal( si1.get(), si2.get() );

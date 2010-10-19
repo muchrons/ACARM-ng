@@ -7,6 +7,7 @@
 #include "Persistency/Alert.hpp"
 #include "Base/ViaPointer.hpp"
 #include "Commons/ViaUnorderedCollection.hpp"
+#include "Commons/ViaUnorderedSortableCollection.hpp"
 
 using namespace std;
 
@@ -80,6 +81,17 @@ const Alert::Hosts &Alert::getTargetHosts(void) const
   return targetHosts_;
 }
 
+namespace
+{
+struct AnalyzerSWO
+{
+  bool operator()(const AnalyzerPtrNN &a1, const AnalyzerPtrNN &a2) const
+  {
+    return a1->getID() < a2->getID();
+  }
+}; // struct AnalyzerSWO
+} // unnamed namespace
+
 bool Alert::operator==(const Alert &other) const
 {
   if(this==&other)
@@ -87,7 +99,7 @@ bool Alert::operator==(const Alert &other) const
 
   if( getName()!=other.getName() )
     return false;
-  if( !Commons::ViaUnorderedCollection::equal( getAnalyzers(), other.getAnalyzers() ) )
+  if( !Commons::ViaUnorderedSortableCollection::equal( getAnalyzers(), other.getAnalyzers(), AnalyzerSWO() ) )
     return false;
   if( !Base::ViaPointer::equal( getDetectionTime(), other.getDetectionTime() ) )
     return false;
