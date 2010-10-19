@@ -20,7 +20,6 @@ struct TestClass
   TestClass(void):
     fifo_("some_fifo")
   {
-    remove(fifo_);
     tut::ensure_equals("unable to create fifo", mkfifo( fifo_.string().c_str(), 0600 ), 0);
   }
   ~TestClass(void)
@@ -70,7 +69,9 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensure("fifo not opened", openFifo(fifo_, Mode::READ).get()!=NULL );
+  // NOTE: mode has to be R/W here, since otherwise other thread would have to
+  //       R or W to it in order to open it at all.
+  ensure("fifo not opened", openFifo(fifo_, Mode::READWRITE).get()!=NULL );
 }
 
 } // namespace tut
