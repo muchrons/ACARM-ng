@@ -190,6 +190,10 @@ below are listed implemented triggers along with their implementation.
      NOTE: you must create separate account for sending messages with this
            trigger, otherwise it may not work as expected, due to Gadu-Gadu
            protocol specific details.
+     NOTE: Gadu-Gadu server drops messages that contain URLs in them and are
+           send from accounts not reported to be known by the receiver,
+           therefore you must add ACARM-ng's GG account to users list in your
+           communicator in order to get messages.
 -->
 <gg name="msg2bob">
   <uin>23436545</uin>                   <!-- GG account number -->
