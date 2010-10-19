@@ -22,7 +22,11 @@ namespace Filesystem
  *  \param mode   opening mode.
  *  \param isSane sanity-checking functoon.
  *  \return open output stream to an element. stream is never NULL.
+ *
  *  \note always use cannonicalized path to open elements.
+ *
+ *  \warning this call does nearly non checks, except for user-provided
+ *           isSane call, this it must remain private, implementation call.
  *
  *  opens given element, performing proper sanity-checks (via user-provided
  *  function) before doing so. throws on error.
