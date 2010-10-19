@@ -6,9 +6,12 @@
 #define INCLUDE_INPUT_FILE_READER_HPP_FILE
 
 #include <string>
+#include <fstream>
 #include <boost/filesystem.hpp>
 
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Input/Reader.hpp"
+#include "Input/File/ExceptionFifoError.hpp"
 
 namespace Input
 {
@@ -30,6 +33,10 @@ public:
    *  \return pointer to newly allocated strucutre or NULL on timeout.
    */
   virtual DataPtr read(BackendFacade &bf, unsigned int timeout);
+
+private:
+  const boost::filesystem::path           fifoPath_;
+  Commons::SharedPtrNotNULL<std::fstream> fifo_;
 }; // class Reader
 
 } // namespace File
