@@ -9,7 +9,7 @@
 
 #include "Logger/Logger.hpp"
 #include "Input/Factory.hpp"
-#include "Input/Exception.hpp"
+#include "Input/Prelude/Exception.hpp"
 
 namespace Input
 {
