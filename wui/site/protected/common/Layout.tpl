@@ -3,11 +3,13 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl">
 
-<head>
+  
+<com:THead>
   <title>ACARM-ng</title>
   <link href="style.css" rel="stylesheet" type="text/css"/>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-</head>
+</com:THead>
+
 
 <body bgcolor="#7f7fa0">
 <br/><br/><br/><br/>

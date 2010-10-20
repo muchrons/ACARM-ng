@@ -5,15 +5,27 @@ class DataMiningSeverity extends TPage
   public function onLoad($param)
   {
     parent::onLoad($param);
-    $this->SeveritiesImg->ImageUrl = $this->getRequest()->constructUrl('graph', "SeverityPie");
-    if ( $this->getRegisteredObject('SeveritiesImg') ===null )
-      die("tralala"); //die
+    if ($this->SeveritiesImg->width == 0)
+      $this->SeveritiesImg->width=700;
+    if ($this->SeveritiesImg->height == 0)
+      $this->SeveritiesImg->height=800;
+    $this->generateGraph();
   }
 
-  public function getRoll()
+  private function constructUrl()
   {
-    return 2;
+    $linkdata=array( 'title' => 'Alert count by severity type',
+                     'width' => $this->SeveritiesImg->width,
+                     'height' => $this->SeveritiesImg->height);
+
+    return $this->getRequest()->constructUrl('graph', "SeverityPie", $linkdata, false);
   }
+
+  private function generateGraph()
+  {
+    $this->SeveritiesImg->ImageUrl = $this->constructUrl();
+  }
+
 
 }
 

@@ -1,5 +1,5 @@
 <com:TContent ID="content">
 
-<com:TImage ID="AlertTimeSeries" />
+<com:TImage ID="MetaAlertTS" />
 
 </com:TContent>

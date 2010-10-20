@@ -1,0 +1,6 @@
+<com:TContent ID="content">
+
+<h2>Settings:</h2>
+
+<com:TClientScript PradoScripts="effects" />
+</com:TContent>

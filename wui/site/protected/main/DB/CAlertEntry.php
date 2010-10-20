@@ -9,6 +9,8 @@ class CAlertEntry
   public $severity;
   public $certainty;
   public $description;
+  public $src_ip;
+  public $dst_ip;
 }
 
 ?>
