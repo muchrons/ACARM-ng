@@ -9,6 +9,7 @@
 #include "Commons/Convert.hpp"
 #include "Commons/Filesystem/createTempDirectory.hpp"
 #include "Commons/Filesystem/createFile.hpp"
+#include "RFCIO/XML/Writer.hpp"
 #include "RFCIO/IDMEF/XMLCreator.hpp"
 #include "Algo/forEachUniqueLeaf.hpp"
 #include "Algo/countCorrelatedAlerts.hpp"
@@ -102,7 +103,8 @@ struct FunctorIDMEF
     const path                out =root_ / file;
     SharedPtrNotNULL<fstream> strm=createFile(out);     // create file in the secure way
     holder_->push_back(out);                            // add file for removal
-    c.getDocument().write_to_stream(*strm, "UTF-8");    // write XML to that file
+    RFCIO::XML::Writer        writer( c.getDocument() );// XML writer object
+    writer.write(*strm);                                // write XML to that file
   }
 
 private:

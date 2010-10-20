@@ -55,7 +55,7 @@ protected:
    */
   Reader(const std::string &type, const std::string &name);
 
-  Logger::Node log_;    ///< logger node to log messages to.
+  const Logger::Node log_;  ///< logger node to log messages to.
 
 private:
   const std::string type_;

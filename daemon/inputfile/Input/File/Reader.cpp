@@ -10,6 +10,7 @@
 #include "Commons/Filesystem/createFifo.hpp"
 #include "Persistency/Alert.hpp"
 #include "RFCIO/IDMEF/XMLParser.hpp"
+#include "Input/File/ParserCallback.hpp"
 
 using namespace std;
 using namespace boost::filesystem;
@@ -42,20 +43,21 @@ Reader::Reader(const std::string &name, const boost::filesystem::path &fifoPath)
 {
 }
 
-Reader::DataPtr Reader::read(BackendFacade &/*bf*/, const unsigned int timeout)
+Reader::DataPtr Reader::read(BackendFacade &bf, const unsigned int timeout)
 {
-  DataPtr tmp;
-  assert(tmp.get()==NULL);
-
   // read data from input stream
+  LOGMSG_DEBUG_S(log_)<<"reading line from input queue (timeout set to "<<timeout<<"[s])";
   const IStreamReader::Line line=strmReader_.readLine(timeout);
   if(line.first==false)     // timeout occured?
-    return tmp;
+    return DataPtr();
 
-  //xmlpp::Document         doc;
-  //RFCIO::IDMEF::XMLParser xml(doc,
+  // open given file
+  LOGMSG_DEBUG_S(log_)<<"opening file '"<<line.second<<"'";
+  ParserCallback pc(line.second);
+  bf.performCustomIO(pc);
 
-  return tmp;
+  // return the result
+  return pc.getAlert()->getAlert();
 }
 
 } // namespace File
