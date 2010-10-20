@@ -15,6 +15,8 @@
 #include "Trigger/GG/Connection.hpp"
 #include "TestHelpers/Data/gg1.hpp"
 #include "TestHelpers/Data/gg2.hpp"
+#include "TestHelpers/Data/gg3.hpp"
+#include "TestHelpers/Data/gg4.hpp"
 
 namespace
 {
@@ -27,6 +29,16 @@ Trigger::GG::AccountConfig getTestConfig1(void)
 Trigger::GG::AccountConfig getTestConfig2(void)
 {
   return Trigger::GG::AccountConfig(GG2_TEST_ACCOUNT_UIN, GG2_TEST_ACCOUNT_PASS);
+}
+
+Trigger::GG::AccountConfig getTestConfig3(void)
+{
+  return Trigger::GG::AccountConfig(GG3_TEST_ACCOUNT_UIN, GG3_TEST_ACCOUNT_PASS);
+}
+
+Trigger::GG::AccountConfig getTestConfig4(void)
+{
+  return Trigger::GG::AccountConfig(GG4_TEST_ACCOUNT_UIN, GG4_TEST_ACCOUNT_PASS);
 }
 
 // helper for backward compatibility

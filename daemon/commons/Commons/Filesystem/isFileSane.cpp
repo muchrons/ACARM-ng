@@ -4,6 +4,7 @@
  */
 #include <cassert>
 
+#include "Logger/Logger.hpp"
 #include "Commons/Filesystem/isFileSane.hpp"
 #include "Commons/Filesystem/isElementSane.hpp"
 #include "Commons/Filesystem/isDirectorySane.hpp"
@@ -23,7 +24,11 @@ bool isFileSane(const boost::filesystem::path &p)
     if( !isElementSane(p) )
       return false;
     if( !is_regular_file(p) )
+    {
+      const Logger::Node log("commons.filesystem.isfilesane");
+      LOGMSG_WARN_S(log)<<"element '"<<p<<"' is not regular file - aborting...";
       return false;
+    }
 
     // test parent directories, if specified
     const path parent=p.parent_path();

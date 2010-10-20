@@ -19,7 +19,7 @@ namespace Filesystem
 {
 
 /** \brief create new, empty file.
- *  \param p path to create file in.
+ *  \param p path to file to be created.
  *  \return open output stream to a file. returned value is never NULL.
  *  \note always use cannonicalized path to open file!
  *

@@ -1,12 +1,12 @@
 /*
- * isFileSane.t.cpp
+ * isFifoSane.t.cpp
  *
  */
 #include <tut.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "Commons/Filesystem/isFileSane.hpp"
+#include "Commons/Filesystem/isFifoSane.hpp"
 
 using namespace std;
 using namespace boost::filesystem;
@@ -19,7 +19,8 @@ struct TestClass
 {
   ~TestClass(void)
   {
-    remove("test_fifo");
+    if( !tf_.empty() )
+      remove(tf_);
   }
 
   template<typename TEx>
@@ -27,7 +28,7 @@ struct TestClass
   {
     try
     {
-      isFileSane(p);   // should throw
+      isFifoSane(p);   // should throw
       tut::fail("call didn't throw on error");
     }
     catch(const TEx &)
@@ -35,24 +36,34 @@ struct TestClass
       // this is expected
     }
   }
+
+  void makeFifo(const path &p)
+  {
+    remove(p);
+    tut::ensure_equals("unable to create fifo", mkfifo( p.string().c_str(), 0600 ), 0);
+    tf_=p;
+  }
+
+  path tf_;     // TestFifo
 };
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Commons/Filesystem/isFileSane");
+factory tf("Commons/Filesystem/isFifoSane");
 } // unnamed namespace
 
 
 namespace tut
 {
 
-// test if sane file is marked as such
+// test if some fifo is sane
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure("normal file not sane", isFileSane("commons.t") );
+  makeFifo("some_fifo");
+  ensure("normal fifo not sane", isFifoSane("some_fifo") );
 }
 
 // test if check for non-exisitng file fails
@@ -63,12 +74,13 @@ void testObj::test<2>(void)
   ensureThrow<ExceptionFilesystemIO>("some/non/existing/file");
 }
 
-// test if link to file is not sane
+// test if link to fifo is not sane
 template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensure("link file marked sane", isFileSane("testdata/fileSymlink")==false );
+  makeFifo("testdata/fifo");
+  ensure("link marked sane", isFifoSane("testdata/fifoSymlink")==false );
 }
 
 // test if dongling symlink throws
@@ -84,7 +96,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ensure("dir marked sane", isFileSane("testdata/dir")==false );
+  ensure("dir marked sane", isFifoSane("testdata/dir")==false );
 }
 
 // test if links in path are mathed as well
@@ -92,32 +104,17 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  ensure("link inside path marked sane", isFileSane("testdata/dirSymlink/other_dir/some_file")==false );
-}
-
-// test some global file
-template<>
-template<>
-void testObj::test<7>(void)
-{
-  ensure("global file not marked sane", isFileSane("/etc/passwd") );
+  makeFifo("testdata/dirSymlink/other_dir/some_fifo");
+  ensure("link inside path marked sane", isFifoSane("testdata/dirSymlink/other_dir/some_fifo")==false );
 }
 
 // test some relative file path
 template<>
 template<>
-void testObj::test<8>(void)
+void testObj::test<7>(void)
 {
-  ensure("relative file not marked sane", isFileSane("testdata/file") );
-}
-
-// test if fifo is NOT sane file
-template<>
-template<>
-void testObj::test<9>(void)
-{
-  ensure_equals("unable to create fifo", mkfifo("test_fifo", 0600), 0);
-  ensure("fifo marked sane", isFileSane("test_fifo")==false );
+  makeFifo("testdata/fifo");
+  ensure("relative fifo not marked sane", isFifoSane("testdata/fifo") );
 }
 
 } // namespace tut
