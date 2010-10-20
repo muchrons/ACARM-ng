@@ -20,17 +20,23 @@ namespace Input
 namespace File
 {
 
-/** \brief input reader class
+/** \brief input (file) reader class.
  */
 class ParserCallback: public BackendFacade::CustomIOInterface
 {
 public:
-  /** \brief 
+  /** \brief open given input file.
+   *  \param inputPath path to file to be opened.
    */
   explicit ParserCallback(const boost::filesystem::path &inputPath);
-
+  /** \brief parse opened file and save result.
+   *  \param conn connection to be used by internal operations.
+   *  \param t    transaction to be used.
+   */
   virtual void customAction(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t);
-
+  /** \brief returns paresed alert.
+   *  \return alert parsed from file.
+   */
   Persistency::GraphNodePtrNN getAlert(void) const;
 
 private:
