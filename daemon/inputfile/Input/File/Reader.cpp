@@ -53,7 +53,7 @@ Reader::DataPtr Reader::read(BackendFacade &/*bf*/, const unsigned int timeout)
     return tmp;
 
   //xmlpp::Document         doc;
-  //RFCIO::IDMEF::XMLParser xml(doc, 
+  //RFCIO::IDMEF::XMLParser xml(doc,
 
   return tmp;
 }
