@@ -1,16 +1,14 @@
 <?php
 
-// TODO: i suggest using 'require_once' (stop on error) instead of 'include_once' (flood output with warnings on error)
 // TODO: 'jpgraph' should be moved somewhere to protected/ directory, where all the sources are (access to this dir is protected with .htaccess)
-include_once('lib/jpgraph/jpgraph.php');
-include_once('lib/jpgraph/jpgraph_bar.php');
-include_once('lib/jpgraph/jpgraph_log.php');
-include_once('lib/jpgraph/jpgraph_led.php');
-include_once('lib/jpgraph/jpgraph_line.php');
-include_once('lib/jpgraph/jpgraph_pie.php');
-include_once('lib/jpgraph/jpgraph_pie3d.php');
-include_once('lib/jpgraph/jpgraph_line.php');   // TODO: this file is included twice
-include_once('lib/jpgraph/jpgraph_date.php');
+require_once('lib/jpgraph/jpgraph.php');
+require_once('lib/jpgraph/jpgraph_bar.php');
+require_once('lib/jpgraph/jpgraph_log.php');
+require_once('lib/jpgraph/jpgraph_led.php');
+require_once('lib/jpgraph/jpgraph_pie.php');
+require_once('lib/jpgraph/jpgraph_pie3d.php');
+require_once('lib/jpgraph/jpgraph_line.php');
+require_once('lib/jpgraph/jpgraph_date.php');
 
 
 class GraphService extends TService
@@ -20,11 +18,22 @@ class GraphService extends TService
     $request = Prado::getApplication()->getRequest();
     $this->Response->ContentType="image/png";   // TODO: move this line one line up - it interleaves assign/check sequence for $request
 
-    // TODO: refactor this logic to if(null) throw; do_the_thing(); instead of if/else
-    if ($request->contains('graph'))
-      $this->type = TPropertyValue::ensureString($request['graph']);
-    else
+    if (!$request->contains('graph'))
       throw new TConfigurationException('You must specify the type of the graph');
+    $this->type = TPropertyValue::ensureString($request['graph']);
+
+    if (!$request->contains('width'))
+      throw new TConfigurationException('You must specify the width of the graph');
+    $this->width = TPropertyValue::ensureInteger($request['width']);
+
+    if (!$request->contains('height'))
+      throw new TConfigurationException('You must specify the height of the graph');
+    $this->height = TPropertyValue::ensureInteger($request['height']);
+
+    if ($request->contains('title'))
+      $this->title = TPropertyValue::ensureString($request['title']);
+    else
+      $this->title="No title";
 
     if ($request->contains('query'))
       $this->query = TPropertyValue::ensureString($request['query']);
@@ -57,7 +66,7 @@ class GraphService extends TService
     switch( $this->type )
     {
     case "AlertTimeSeries":
-      $graph = $this->createAlertTimeSeries($this->query);
+      $graph = $this->createAlertTimeSeries($this->query,$this->title);
       break;
     case "SeverityPie":
       $graph = $this->createSeverityChart('DMSeverities');
@@ -66,7 +75,7 @@ class GraphService extends TService
       $graph = $this->createAlertTypeChart('DMAlertTypes');
       break;
     default:
-      // TODO: describe these calls and parameters - they are non-obvious
+      // Display LED screen with an error message in place of a graph
       $led = new DigitalLED74(4);
       $led->SetSupersampling(5);
       $led->StrokeNumber(' WRONG GRAPH TYPE ',LEDC_YELLOW);
@@ -92,10 +101,9 @@ class GraphService extends TService
     return array($xdata, $ydata);
   }
 
-  private function issueQuery2dTime($q)
+  private function issueQuery2dTime($q,$severity)
   {
-    // TODO: use issueQuery2d() implementation here
-    $pairs=CSQLMap::get()->queryForList($q);
+    $pairs=CSQLMap::get()->queryForList($q,$severity);
 
     $xdata = array();
     $ydata = array();
@@ -103,7 +111,7 @@ class GraphService extends TService
     foreach( $pairs as $e )
     {
       $xdata[] = strtotime($e->key);
-      $ydata[] = $e->value;
+      $ydata[] = ($e->value===null)?0:$e->value;
     }
 
     return array($xdata, $ydata);
@@ -113,10 +121,10 @@ class GraphService extends TService
   private function createSeverityChart($q)
   {
     // Create the Pie Graph.
-    $graph = new PieGraph(690,400,'auto');  // TODO: widht/height?
+    $graph = new PieGraph($this->width,$this->height,'auto');
 
     // Set A title for the plot
-    $graph->title->Set("Alert count by severity type");
+    $graph->title->Set($this->title);
     $graph->title->SetMargin(8);
     $graph->title->SetFont(FF_VERDANA,FS_BOLD,12);
     $graph->title->SetColor("darkred");
@@ -143,8 +151,8 @@ class GraphService extends TService
   private function createAlertTypeChart($q)
   {
     // Setup the graph.
-    $graph = new Graph(800,800);    // TODO: widht/height?
-    $graph->img->SetMargin(40,35,45,25);
+    $graph = new Graph($this->width,$this->height);
+    $graph->img->SetMargin(60,55,95,95);
     $graph->SetScale("textlog");
     $graph->SetAngle(90);
     $graph->SetMarginColor("white");
@@ -193,13 +201,18 @@ class GraphService extends TService
   private function createAlertTimeSeries($q)
   {
     $graph = new Graph($this->width,$this->height);
-    $graph->SetMargin(40,40,30,130);
+    $graph->SetMargin(50,40,30,130);
     $graph->SetScale('datlin',0,100);
-    $graph->title->Set("Example on Date scale");
+    $graph->title->Set($this->title);
 
-    $data=$this->issueQuery2dTime($q);
+    $dataWarning=$this->issueQuery2dTime($q,'warning');
+    $dataCritical=$this->issueQuery2dTime($q,'critical');
+    $dataProblem=$this->issueQuery2dTime($q,'problem');
+    $dataError=$this->issueQuery2dTime($q,'error');
 
-    if (count($data[0])==0)
+    $maxval=max($dataWarning[1],$dataError[1],$dataProblem[1],$dataCritical[0]);
+
+    if (count($dataWarning[0])==0 && count($dataCritical[0])==0 )
       {
         $led = new DigitalLED74(2);
         $led->SetSupersampling(5);
@@ -207,12 +220,29 @@ class GraphService extends TService
         die();
       }
 
-    $graph->SetScale('datlin',0,max($data[1]));
+    $graph->SetScale('datlin',0,maxval);
     $graph->xaxis->SetLabelAngle(90);
 
-    $line = new LinePlot($data[1],$data[0]);
-    $line->SetFillColor('lightblue@0.5');
-    $graph->Add($line);
+    $line[] = new LinePlot($dataCritical[1],$dataCritical[0]);
+    end($line)->setLegend("Critical");
+    end($line)->SetFillColor('red');
+
+    $line[] = new LinePlot($dataError[1],$dataError[0]);
+    end($line)->setLegend("Error");
+    end($line)->SetFillColor('orange');
+
+    $line[] = new LinePlot($dataProblem[1],$dataProblem[0]);
+    end($line)->setLegend("Problem");
+    end($line)->SetFillColor('yellow');
+
+    $line[] = new LinePlot($dataWarning[1],$dataWarning[0]);
+    end($line)->setLegend("Warning");
+    end($line)->SetFillColor('lightblue@0.3');
+
+    $accplot = new AccLinePlot($line);
+
+    $graph->Add($accplot);
+    //$graph->Add($line[0]);
     return $graph;
   }
 
@@ -221,6 +251,7 @@ class GraphService extends TService
   private $type;
   private $width;
   private $height;
+  private $title;
 }
 
 ?>

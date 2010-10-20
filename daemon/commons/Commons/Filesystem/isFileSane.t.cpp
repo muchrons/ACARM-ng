@@ -3,6 +3,8 @@
  *
  */
 #include <tut.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 #include "Commons/Filesystem/isFileSane.hpp"
 
@@ -15,6 +17,11 @@ namespace
 
 struct TestClass
 {
+  ~TestClass(void)
+  {
+    remove("test_fifo");
+  }
+
   template<typename TEx>
   void ensureThrow(const path &p) const
   {
@@ -102,6 +109,15 @@ template<>
 void testObj::test<8>(void)
 {
   ensure("relative file not marked sane", isFileSane("testdata/file") );
+}
+
+// test if fifo is NOT sane file
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  ensure_equals("unable to create fifo", mkfifo("test_fifo", 0600), 0);
+  ensure("fifo marked sane", isFileSane("test_fifo")==false );
 }
 
 } // namespace tut

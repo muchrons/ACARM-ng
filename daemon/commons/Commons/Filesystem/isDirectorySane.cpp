@@ -18,15 +18,19 @@ bool isDirectorySane(const boost::filesystem::path &p)
 {
   try
   {
-    path tmp=p;
-
     // loop through all directories in the path
+    path tmp=p;
     do
     {
       if( !isElementSane(tmp) )
         return false;
       if( !is_directory(tmp) )
+      {
+        const Logger::Node log("commons.filesystem.isdirectorysane");
+        LOGMSG_WARN_S(log)<<"element '"<<p<<"' is not directory - aborting...";
         return false;
+      }
+      // proceed with parent directory
       tmp=tmp.parent_path();
     }
     while( tmp.empty()!=true );

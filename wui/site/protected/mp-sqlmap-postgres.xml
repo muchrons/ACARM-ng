@@ -29,18 +29,22 @@
 
   <select id="SelectReportedHostsProcesses" resultClass="CLinkPair" parameterClass="int">
     SELECT r.id AS id, p.name AS name FROM reported_procs AS r LEFT JOIN procs as p ON r.id_proc=p.id WHERE r.id_reported_host=#value# ORDER BY name
- </select>
+  </select>
 
   <select id="SelectReportedHostsServices" resultClass="CLinkPair" parameterClass="int">
     SELECT r.id_service AS id, s.name AS name FROM reported_services AS r LEFT JOIN services as s ON r.id_service=s.id WHERE r.id_reported_host=#value# ORDER BY name
   </select>
 
   <select id="SelectAlert" resultClass="CAlertEntry" parameterClass="int">
-    SELECT a.id AS id, a.name AS name, a.detect_time AS detect, a.create_time AS create, s.name AS severity, a.certanity AS certainty, a.description AS description FROM alerts AS a LEFT JOIN severities AS s ON a.id_severity=s.id WHERE a.id=#value#
+    SELECT a.name, a.detect_time AS detect, a.create_time AS create, a.description as description, a.certanity AS certainty, s.name AS severity, h1.ip AS src_ip, h2.ip AS dst_ip 
+      FROM alerts AS a,hosts AS h1,hosts AS h2, severities AS s
+      WHERE h1.id_alert=h2.id_alert AND h1.id_alert=a.id AND h1.role='src' AND h2.role='dst' AND s.id=a.id_severity AND a.id=#VALUE#;
   </select>
 
   <select id="SelectMetaAlert" resultClass="CMetaAlertEntry" parameterClass="int">
-    SELECT ma.id AS id, ma.name AS name, ma.create_time AS create_time, ma.last_update_time AS last_update_time, ma.severity_delta AS severity_delta, ma.certainty_delta AS certainty_delta, m.id_alert AS id_alert FROM meta_alerts AS ma LEFT JOIN alert_to_meta_alert_map AS m ON m.id_meta_alert=ma.id WHERE id=#value#
+    SELECT ma.id AS id, ma.name AS name, ma.create_time AS create_time, ma.last_update_time AS last_update_time, ma.severity_delta AS severity_delta, ma.certainty_delta AS certainty_delta, m.id_alert AS id_alert 
+      FROM meta_alerts AS ma LEFT JOIN alert_to_meta_alert_map AS m ON m.id_meta_alert=ma.id 
+      WHERE id=#value#
   </select>
 
   <select id="MapSysIDtoDatabaseID" resultClass="int" parameterClass="int">
@@ -87,6 +91,10 @@
     SELECT * FROM analyzers ORDER BY name,ip ASC limit #limit# offset #offset#
   </select>
 
+  <select id="SelectAnalyzersForAlert" resultClass="CAnalyzerListEntry" parameterClass="int">
+    SELECT name, ip, version, os FROM alert_analyzers JOIN analyzers ON alert_analyzers.id_analyzer=analyzers.id WHERE alert_analyzers.id_alert=#VALUE#
+  </select>
+
   <select id="SelectWUILogs" resultClass="CLogEntry" parameterClass="CParamLimitOffset">
     SELECT u.id AS id, u.login AS login, l.ctime AS ctime, l.msg AS msg FROM logs AS l LEFT JOIN wui_users AS u ON l.id_wui_user=u.id ORDER BY ctime DESC limit #limit# offset #offset#
   </select>
@@ -113,14 +121,15 @@
     select name as key,count(name) as value from Alerts group by name order by count(name) DESC;
   </select>
 
-<!-- TODO: why id_severity>3 ? note that id_severity!=severity.level ! -->
-  <select id="DMAlertCountTimeSeries" resultClass="CDMPair">
-    select to_char(create_time,'YYYY-MM-DD') as key,count(*) as value from alerts where id_severity > 3 group by key order by key;
+  <select id="DMAlertCountTimeSeries" resultClass="CDMPair" parameterClass="string">
+    select key,value from (select date_trunc('day', create_time) AS key from alerts group by key) as a
+    LEFT JOIN (select date_trunc('day', create_time) AS date2, count(*) as value from alerts LEFT JOIN severities AS s ON alerts.id_severity=s.id WHERE s.name=#value# group by date2) as b
+    on a.key=b.date2 order by key;
   </select>
 
 <!-- TODO: why id_severity>0 ? note that id_severity!=severity.level ! -->
   <select id="DMMetaAlertCountTimeSeries" resultClass="CDMPair">
-    select to_char(create_time,'YYYY-MM-DD') as key,count(*) as value from meta_alerts where severity_delta >0 group by key order by key;
+    select to_char(create_time,'YYYY-MM-DD') as key,count(*) as value from meta_alerts where severity_delta >=0 group by key order by key;
   </select>
 
 </sqlMapConfig>

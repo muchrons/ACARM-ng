@@ -18,8 +18,8 @@ namespace
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    cfg_( getTestConfig1(),
-          getTestConfig2().getUserID(),
+    cfg_( getTestConfig3(),
+          getTestConfig4().getUserID(),
           Trigger::Simple::ThresholdConfig("1.2", "2") ),
     io_(cfg_)
   {
@@ -53,7 +53,7 @@ template<>
 void testObj::test<2>(void)
 {
   io_.send("hello world");
-  const std::string str=getMessageFromAccount( getTestConfig2(), cfg_.getAccountConfig().getUserID() );
+  const std::string str=getMessageFromAccount( getTestConfig4(), cfg_.getAccountConfig().getUserID() );
   ensure_equals("invalid repot generated", str, "hello world");
 }
 

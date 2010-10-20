@@ -17,16 +17,16 @@ namespace
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    conn1_( getTestConfig1() )
+    conn3_( getTestConfig3() )
   {
   }
 
-  std::string getMessageFromAccount2(void) const
+  std::string getMessageFromAccount4(void) const
   {
-    return getMessageFromAccount( getTestConfig2(), getTestConfig1().getUserID() );
+    return getMessageFromAccount( getTestConfig4(), getTestConfig3().getUserID() );
   }
 
-  Connection conn1_;
+  Connection conn3_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -44,7 +44,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  MessageIO ms(conn1_);
+  MessageIO ms(conn3_);
 }
 
 // test sending message from one account to another.
@@ -52,10 +52,10 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  MessageIO         ms(conn1_);
+  MessageIO         ms(conn3_);
   const std::string msg("alice has a cat");
-  ms.send( getTestConfig2().getUserID(), msg );
-  const std::string recv=getMessageFromAccount2();
+  ms.send( getTestConfig4().getUserID(), msg );
+  const std::string recv=getMessageFromAccount4();
   ensure_equals("invalid message received", recv, msg);
 }
 
@@ -64,10 +64,10 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  MessageIO         ms(conn1_);
+  MessageIO         ms(conn3_);
   const std::string msg("łączność UTF-8");
-  ms.send( getTestConfig2().getUserID(), msg );
-  const std::string recv=getMessageFromAccount2();
+  ms.send( getTestConfig4().getUserID(), msg );
+  const std::string recv=getMessageFromAccount4();
   ensure_equals("invalid message received", recv, msg);
 }
 
@@ -76,7 +76,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  MessageIO ms(conn1_);
+  MessageIO ms(conn3_);
   ms.discardIncommingMessages();
 }
 
