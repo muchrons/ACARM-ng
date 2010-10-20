@@ -25,3 +25,4 @@
 * conisder adding indexes to speed-up SQL queries like: select * from hosts where id_alert=42;
 * think about adding meta-alerts to correlation queue of a filters with reported-time, not current time as a base (to reduce overhead when system is started after some time).
 * correlates alerts sequenction by nature.
+* fix issue with old boost libraries: 's:parent_path:branch_path:g' and 's:is_regular_file:is_regular:g' - probably adding "comparibility" component and a proper feature there should solve the problem.
