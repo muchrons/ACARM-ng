@@ -9,6 +9,7 @@
 #include "Commons/Filesystem/openFifo.hpp"
 #include "Commons/Filesystem/createFifo.hpp"
 #include "Persistency/Alert.hpp"
+#include "RFCIO/IDMEF/XMLParser.hpp"
 
 using namespace std;
 using namespace boost::filesystem;
@@ -36,16 +37,23 @@ SharedPtrNotNULL<fstream> createOrOpenFifo(const path &fifoPath)
 Reader::Reader(const std::string &name, const boost::filesystem::path &fifoPath):
   Input::Reader("file", name),
   fifoPath_(fifoPath),
-  fifo_( createOrOpenFifo(fifoPath_) )
+  fifo_( createOrOpenFifo(fifoPath_) ),
+  strmReader_(*fifo_)
 {
 }
 
-Reader::DataPtr Reader::read(BackendFacade &bf, const unsigned int timeout)
+Reader::DataPtr Reader::read(BackendFacade &/*bf*/, const unsigned int timeout)
 {
   DataPtr tmp;
   assert(tmp.get()==NULL);
 
-  // TODO
+  // read data from input stream
+  const IStreamReader::Line line=strmReader_.readLine(timeout);
+  if(line.first==false)     // timeout occured?
+    return tmp;
+
+  //xmlpp::Document         doc;
+  //RFCIO::IDMEF::XMLParser xml(doc, 
 
   return tmp;
 }

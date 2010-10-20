@@ -11,6 +11,7 @@
 
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Input/Reader.hpp"
+#include "Input/File/IStreamReader.hpp"
 #include "Input/File/ExceptionFifoError.hpp"
 
 namespace Input
@@ -37,6 +38,7 @@ public:
 private:
   const boost::filesystem::path           fifoPath_;
   Commons::SharedPtrNotNULL<std::fstream> fifo_;
+  IStreamReader                           strmReader_;
 }; // class Reader
 
 } // namespace File
