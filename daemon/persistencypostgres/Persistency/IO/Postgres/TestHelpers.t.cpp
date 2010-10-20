@@ -68,7 +68,7 @@ size_t getNoOfMetaAlertsInUse()
 }
 AlertPtr makeNewAlert(const char *name, const Timestamp &t)
 {
-  const Persistency::Alert::SourceAnalyzers sa( makeNewAnalyzer() );
+  const Persistency::Alert::Analyzers sa( makeNewAnalyzer() );
   return AlertPtr( new Persistency::Alert(name,
                              sa,
                              NULL,
@@ -76,8 +76,8 @@ AlertPtr makeNewAlert(const char *name, const Timestamp &t)
                              Severity(SeverityLevel::INFO),
                              Certainty(0.42),
                              "some test allert",
-                             Persistency::Alert::ReportedHosts(),
-                             Persistency::Alert::ReportedHosts() ) );
+                             Persistency::Alert::Hosts(),
+                             Persistency::Alert::Hosts() ) );
 }
 
 MetaAlertPtr makeNewMetaAlert(const unsigned int id, const char *name, const Timestamp &t)
@@ -116,8 +116,8 @@ HostPtr makeNewHost4(const char                          *ip,
                             mask,
                             os,
                             (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL()),
-                            Persistency::Host::ReportedServices(),
-                            Persistency::Host::ReportedProcesses(),
+                            Persistency::Host::Services(),
+                            Persistency::Host::Processes(),
                             "dns.org" ) );
 }
 
@@ -130,8 +130,8 @@ HostPtr makeNewHost6(const char             *ip,
                             mask,
                             os,
                             (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL()),
-                            Persistency::Host::ReportedServices(),
-                            Persistency::Host::ReportedProcesses(),
+                            Persistency::Host::Services(),
+                            Persistency::Host::Processes(),
                             "dns.org" ) );
 }
 

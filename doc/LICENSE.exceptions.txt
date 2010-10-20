@@ -19,6 +19,7 @@ directly included in this package, that have following licenses:
   -> libgadu (LGPL)
   -> loudmouth (LGPL)
   -> ltdl (LGPL) /indirectly
+  -> openssl (Apache-style)
   -> pqxx (Revised BSD)
   -> libprelude (GPL)
   -> xml++ (LGPL)

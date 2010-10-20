@@ -28,13 +28,13 @@ Base::NullValue<Host::Netmask> makeNetmask(const T *mask)
 } // makeNetmask()
 }
 
-Host::Host(const IPv4              &ip,
-           const Netmask_v4        *mask,
-           const OperatingSystem    os,
-           ReferenceURLPtr          url,
-           const ReportedServices  &services,
-           const ReportedProcesses &processes,
-           const Name              &name):
+Host::Host(const IPv4            &ip,
+           const Netmask_v4      *mask,
+           const OperatingSystem  os,
+           ReferenceURLPtr        url,
+           const Services        &services,
+           const Processes       &processes,
+           const Name            &name):
   ip_(ip),
   mask_( makeNetmask(mask) ),
   os_(os),
@@ -45,13 +45,13 @@ Host::Host(const IPv4              &ip,
 {
 }
 
-Host::Host(const IPv6              &ip,
-           const Netmask_v6        *mask,
-           const OperatingSystem    os,
-           ReferenceURLPtr          url,
-           const ReportedServices  &services,
-           const ReportedProcesses &processes,
-           const Name              &name):
+Host::Host(const IPv6            &ip,
+           const Netmask_v6      *mask,
+           const OperatingSystem  os,
+           ReferenceURLPtr        url,
+           const Services        &services,
+           const Processes       &processes,
+           const Name            &name):
   ip_(ip),
   mask_( makeNetmask(mask) ),
   os_(os),
@@ -62,13 +62,13 @@ Host::Host(const IPv6              &ip,
 {
 }
 
-Host::Host(const IP                &ip,
-           const Netmask           *mask,
-           const OperatingSystem    os,
-           ReferenceURLPtr          url,
-           const ReportedServices  &services,
-           const ReportedProcesses &processes,
-           const Name              &name):
+Host::Host(const IP              &ip,
+           const Netmask         *mask,
+           const OperatingSystem  os,
+           ReferenceURLPtr        url,
+           const Services        &services,
+           const Processes       &processes,
+           const Name            &name):
   ip_(ip),
   mask_(mask),
   os_(os),
@@ -105,12 +105,12 @@ const ReferenceURL *Host::getReferenceURL(void) const
   return url_.get();
 }
 
-const Host::ReportedServices &Host::getReportedServices(void) const
+const Host::Services &Host::getServices(void) const
 {
   return services_;
 }
 
-const Host::ReportedProcesses &Host::getReportedProcesses(void) const
+const Host::Processes &Host::getProcesses(void) const
 {
   return processes_;
 }
@@ -130,9 +130,9 @@ bool Host::operator==(const Host &other) const
     return false;
   if( !Base::ViaPointer::equal( getReferenceURL(), other.getReferenceURL() ) )
     return false;
-  if( !Commons::ViaUnorderedCollection::equal( getReportedServices(), other.getReportedServices() ) )
+  if( !Commons::ViaUnorderedCollection::equal( getServices(), other.getServices() ) )
     return false;
-  if( !Commons::ViaUnorderedCollection::equal( getReportedProcesses(), other.getReportedProcesses() ) )
+  if( !Commons::ViaUnorderedCollection::equal( getProcesses(), other.getProcesses() ) )
     return false;
   // if everything's the same, return.
   return true;

@@ -8,8 +8,8 @@
 #include <boost/scoped_array.hpp>
 #include <libgadu.h>
 
+#include "Base/EditableCString.hpp"
 #include "Trigger/GG/AccountConfig.hpp"
-#include "Trigger/GG/EditableCString.hpp"
 
 namespace Trigger
 {
@@ -42,8 +42,8 @@ public:
   }
 
 private:
-  EditableCString pass_;
-  gg_login_params p_;
+  Base::EditableCString pass_;
+  gg_login_params       p_;
 }; // class LoginParameters
 
 } // namespace GG

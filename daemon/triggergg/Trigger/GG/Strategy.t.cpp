@@ -53,15 +53,26 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  // NOTE: this part is very important - GG-server drops messages containing URLs
+  //       that are sent from users that do are not present on their contact list.
+  //       therefore we must report that we 'know' receiver in order to be notified.
+  Connection   conn2( getTestConfig2() );
+  const UserID receiver=cfg_.getAccountConfig().getUserID();
+  {
+    UserID       contacts[]={receiver};
+    ensure_equals("sending receivers list faild", gg_notify( conn2.get(), contacts, 1 ), 0);
+  }
+  // regular test flow goes here:
   Strategy               s("mygginformer", cfg_);
   Strategy::ChangedNodes nc;
   s.process( makeNewNode(), nc );
-  const std::string      str=getMessageFromAccount( getTestConfig2(),
-                                                    cfg_.getAccountConfig().getUserID() );
+  ensure_equals("some nodes have been changed", nc.size(), 0u);
+  // check if message has been received and is valid
+  const std::string      str=getMessageFromAccount(conn2, receiver);
   ensure("invalid repot generated", strstr( str.c_str(), "reporting triggered for meta-alert \"")!=0 );
 }
 
-// test if joing thread does not take too much time (i.e. if interruption of boost::thread::sleep()
+// test if joining thread does not take too much time (i.e. if interruption of boost::thread::sleep()
 // works as expected.
 template<>
 template<>

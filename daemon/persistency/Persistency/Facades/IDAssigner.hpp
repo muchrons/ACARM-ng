@@ -11,6 +11,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "System/Singleton.hpp"
+#include "System/OneInstanceAtOnce.hpp"
 #include "Base/Threads/Mutex.hpp"
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/MetaAlert.hpp"
@@ -28,7 +29,7 @@ namespace detail
  *
  *  \warning do NOT use this class directly. use singleton declared below instead!
  */
-class IDAssigner: private boost::noncopyable
+class IDAssigner: private System::OneInstanceAtOnce<IDAssigner>
 {
 public:
   /** \brief initialize object.
@@ -52,7 +53,6 @@ public:
   Analyzer::ID assignAnalyzerID(IO::ConnectionPtrNN conn, IO::Transaction &t);
 
 private:
-  // TODO: add protection os that only one instance of this class may exist at a time
   template<typename T>
   typename T::ID assign(IO::ConnectionPtrNN conn, IO::Transaction &t);
 

@@ -603,10 +603,10 @@ void testObj::test<27>(void)
   using namespace Persistency;
   using namespace TestHelpers::Persistency;
   // reported services
-  Host::ReportedServices rs;
+  Host::Services rs;
   rs.push_back( ServicePtr( new Service("name", 42, "proto", ReferenceURLPtr() ) ) );
   // reported processes
-  Host::ReportedProcesses rp;
+  Host::Processes rp;
   rp.push_back( makeNewProcess() );
   // host itself
   const Host h( Host::IP::from_string("1.2.3.4"), NULL, NULL, ReferenceURLPtr(), rs, rp, "a.b.c" );
@@ -646,10 +646,10 @@ void testObj::test<28>(void)
   using namespace Persistency;
   using namespace TestHelpers::Persistency;
   // reported services
-  Host::ReportedServices rs;
+  Host::Services rs;
   rs.push_back( ServicePtr( new Service("name", 42, "proto", ReferenceURLPtr() ) ) );
   // reported processes
-  Host::ReportedProcesses rp;
+  Host::Processes rp;
   rp.push_back( makeNewProcess() );
   // host itself
   const Host h( Host::IP::from_string("1.2.3.4"), NULL, NULL, ReferenceURLPtr(), rs, rp, "a.b.c" );
@@ -771,15 +771,15 @@ void testObj::test<31>(void)
   using namespace Persistency;
   using namespace TestHelpers::Persistency;
 
-  const Alert::SourceAnalyzers srcAnalyzers( makeNewAnalyzer() );
-  const Timestamp              createTime(12345u);
-  const Timestamp              detectTime(12345u+1u);
-  const Severity               severity(SeverityLevel::PROBLEM);
-  const Certainty              certainty(1);
-  const Alert::ReportedHosts   rHosts;
-  const AlertPtrNN             alert( new Alert("NaMe", srcAnalyzers, &detectTime, createTime,
+  const Alert::Analyzers srcAnalyzers( makeNewAnalyzer() );
+  const Timestamp        createTime(12345u);
+  const Timestamp        detectTime(12345u+1u);
+  const Severity         severity(SeverityLevel::PROBLEM);
+  const Certainty        certainty(1);
+  const Alert::Hosts     rHosts;
+  const AlertPtrNN       alert( new Alert("NaMe", srcAnalyzers, &detectTime, createTime,
                                                 severity, certainty, "hello", rHosts, rHosts) );
-  const GraphNodePtrNN         leaf=makeNewLeaf(alert);
+  const GraphNodePtrNN   leaf=makeNewLeaf(alert);
   checkAlert(*leaf, "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                     "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
                       "<idmef:Alert messageid=\"303\">"

@@ -33,7 +33,7 @@ namespace Persistency
                                      const char   *dns="dns.org",
                                      const double  certainty=0.42);
 
-::Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert");
+::Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert", unsigned int id=42);
 
 ::Persistency::AnalyzerPtrNN makeNewAnalyzer(const char *name="some analyzer");
 
@@ -66,7 +66,8 @@ const ::Persistency::Host::Netmask_v6::bytes_type mask6_bytes={ {
                                           const double  certainty=0.42);
 ::Persistency::GraphNodePtrNN makeNewNode(void);
 ::Persistency::GraphNodePtrNN makeNewNode(::Persistency::GraphNodePtrNN child1,
-                                          ::Persistency::GraphNodePtrNN child2);
+                                          ::Persistency::GraphNodePtrNN child2,
+                                          unsigned int                  id=42);
 
 //
 //                root
@@ -90,7 +91,7 @@ const ::Persistency::Host::Netmask_v6::bytes_type mask6_bytes={ {
                                                 const char *hostDst1,
                                                 const char *hostDst2);
 
-::Persistency::GraphNodePtrNN makeNewLeaf(::Persistency::AlertPtrNN alert);
+::Persistency::GraphNodePtrNN makeNewLeaf(::Persistency::AlertPtrNN alert, unsigned int id=303u);
 
 } // namespace Persistency
 } // namespace TestHelpers

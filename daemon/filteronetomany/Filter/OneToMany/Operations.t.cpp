@@ -54,7 +54,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  Operations::getReportedHostsArray( makeNewLeaf() );
+  Operations::getHostsArray( makeNewLeaf() );
 }
 
 } // namespace tut

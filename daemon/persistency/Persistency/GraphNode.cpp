@@ -5,7 +5,7 @@
 #include <exception>
 #include <cassert>
 
-#include "Commons/ViaUnorderedCollection.hpp"
+#include "Commons/ViaUnorderedSortableCollection.hpp"
 #include "Logger/Logger.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/detail/InternalAccessProxy.hpp"
@@ -154,6 +154,17 @@ const Alert &GraphNode::getAlert(void) const
   return *leaf_;
 }
 
+namespace
+{
+struct GraphNodeSWO
+{
+  bool operator()(const GraphNodePtrNN &n1, const GraphNodePtrNN &n2) const
+  {
+    return n1->getMetaAlert().getID() < n2->getMetaAlert().getID();
+  }
+}; // struct GraphNodeSWO
+} // unnamed namespace
+
 bool GraphNode::operator==(const GraphNode &other) const
 {
   // check comparing to self
@@ -174,7 +185,7 @@ bool GraphNode::operator==(const GraphNode &other) const
   }
 
   // check children, but skip the order, since it may differ in general case
-  return Commons::ViaUnorderedCollection::equal(children_, other.children_);
+  return Commons::ViaUnorderedSortableCollection::equal( children_, other.children_, (GraphNodeSWO()) );
 }
 
 void GraphNode::ensureIsNode(void) const

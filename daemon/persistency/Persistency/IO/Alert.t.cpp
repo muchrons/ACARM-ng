@@ -39,14 +39,14 @@ struct TestClass: private TestBase
 {
   TestClass(void):
     alert_( new Persistency::Alert("abc",
-                                   Persistency::Alert::SourceAnalyzers( makeNewAnalyzer() ),
+                                   Persistency::Alert::Analyzers( makeNewAnalyzer() ),
                                    NULL,
                                    Timestamp(),
                                    Severity(SeverityLevel::INFO),
                                    Certainty(0.42),
                                    "some description",
-                                   Persistency::Alert::ReportedHosts(),
-                                   Persistency::Alert::ReportedHosts()) ),
+                                   Persistency::Alert::Hosts(),
+                                   Persistency::Alert::Hosts()) ),
     tapi_( new TestTransactionAPI() ),
     t_(tapi_)
   {

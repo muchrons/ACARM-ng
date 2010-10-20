@@ -8,6 +8,7 @@
 #include <string>
 
 #include "System/Singleton.hpp"
+#include "System/OneInstanceAtOnce.hpp"
 #include "Base/Threads/Mutex.hpp"
 #include "Persistency/MetaAlert.hpp"
 #include "Persistency/IO/Connection.hpp"
@@ -35,7 +36,7 @@ namespace IO
  *  thread-safe this way and does not require esabilishing new connecitons
  *  each time small, rare opration has to be performed.
  */
-class GlobalConnectionImpl: private boost::noncopyable
+class GlobalConnectionImpl: private System::OneInstanceAtOnce<GlobalConnectionImpl>
 {
 public:
   /** \brief marks given element as unused.

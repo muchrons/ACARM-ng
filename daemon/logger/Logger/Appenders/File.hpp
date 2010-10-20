@@ -7,6 +7,7 @@
 
 #include <string>
 #include <fstream>
+#include <boost/filesystem.hpp>
 
 #include "Logger/Appenders/Stream.hpp"
 #include "Logger/ExceptionFileAccessError.hpp"
@@ -25,7 +26,7 @@ public:
   /** \brief creates appender that saves to a given file.
    *  \param path path to destination file.
    */
-  explicit File(const std::string &path);
+  explicit File(const boost::filesystem::path &path);
 
   /** \brief static method for getting type name.
    *  \return compile-time pointer to type name.
@@ -38,8 +39,8 @@ public:
 private:
   virtual void reinitImpl(void);
 
-  const std::string path_;
-  std::ofstream     out_;
+  const boost::filesystem::path path_;
+  std::ofstream                 out_;
 }; // class Console
 
 } // namespace Appenders

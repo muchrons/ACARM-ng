@@ -31,8 +31,8 @@ struct TestClass: private TestBase
              &mask4_,
               "myos",
               makeNewReferenceURL(),
-              Host::ReportedServices(),
-              Host::ReportedProcesses(),
+              Host::Services(),
+              Host::Processes(),
               "dns.org" )
   {
   }
@@ -123,8 +123,8 @@ void testObj::test<7>(void)
                 &mask4_,
                  "myos",
                  makeNewReferenceURL(),
-                 Host::ReportedServices(),
-                 Host::ReportedProcesses(),
+                 Host::Services(),
+                 Host::Processes(),
                  "dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
@@ -140,8 +140,8 @@ void testObj::test<8>(void)
                 &msk,
                  "myos",
                  makeNewReferenceURL(),
-                 Host::ReportedServices(),
-                 Host::ReportedProcesses(),
+                 Host::Services(),
+                 Host::Processes(),
                  "dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
@@ -155,8 +155,8 @@ void testObj::test<9>(void)
                 &mask4_,
                  "myos",
                  ReferenceURLPtr(),
-                 Host::ReportedServices(),
-                 Host::ReportedProcesses(),
+                 Host::Services(),
+                 Host::Processes(),
                  "dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
@@ -166,15 +166,15 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  Host::ReportedServices rs;
-  ServicePtrNN           serv( new Service("name", 42, "proto", ReferenceURLPtr() ) );
+  Host::Services rs;
+  ServicePtrNN   serv( new Service("name", 42, "proto", ReferenceURLPtr() ) );
   rs.push_back(serv);
   const Host h(  Host::IPv4::from_string("1.2.3.4"),
                 &mask4_,
                  "myos",
                  makeNewReferenceURL(),
                  rs,
-                 Host::ReportedProcesses(),
+                 Host::Processes(),
                  "dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
@@ -184,13 +184,13 @@ template<>
 template<>
 void testObj::test<11>(void)
 {
-  Host::ReportedProcesses rp;
+  Host::Processes rp;
   rp.push_back( makeNewProcess() );
   const Host h(  Host::IPv4::from_string("1.2.3.4"),
                 &mask4_,
                  "myos",
                  makeNewReferenceURL(),
-                 Host::ReportedServices(),
+                 Host::Services(),
                  rp,
                  "dns.org" );
   TestHelpers::checkEquality(custom_, h);
@@ -201,23 +201,23 @@ template<>
 template<>
 void testObj::test<12>(void)
 {
-  Host::ReportedProcesses rp1;
+  Host::Processes rp1;
   rp1.push_back( makeNewProcess() );
   const Host h1(  Host::IPv4::from_string("1.2.3.4"),
                  &mask4_,
                   "myos",
                   makeNewReferenceURL(),
-                  Host::ReportedServices(),
+                  Host::Services(),
                   rp1,
                   "dns.org" );
 
-  Host::ReportedProcesses rp2;
+  Host::Processes rp2;
   rp2.push_back( makeNewProcess() );
   const Host h2(  Host::IPv4::from_string("1.2.3.4"),
                  &mask4_,
                   "myos",
                   makeNewReferenceURL(),
-                  Host::ReportedServices(),
+                  Host::Services(),
                   rp2,
                   "dns.org" );
 
@@ -233,8 +233,8 @@ void testObj::test<13>(void)
                 &mask4_,
                  "myos",
                  makeNewReferenceURL(),
-                 Host::ReportedServices(),
-                 Host::ReportedProcesses(),
+                 Host::Services(),
+                 Host::Processes(),
                  "other.dns.org" );
   TestHelpers::checkEquality(custom_, h);
 }
@@ -248,8 +248,8 @@ void testObj::test<14>(void)
                 &mask4_,
                  "myos",
                  makeNewReferenceURL(),
-                 Host::ReportedServices(),
-                 Host::ReportedProcesses(),
+                 Host::Services(),
+                 Host::Processes(),
                  NULL );
   ensure("invalid dns name", h.getName().get()==NULL );
 }

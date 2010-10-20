@@ -18,9 +18,9 @@ AlertPtr makeNewAlert(const char   *name,
                       const char   *dns,
                       const double  certainty)
 {
-  const ::Persistency::Alert::SourceAnalyzers sa( makeNewAnalyzer() );
-  Alert::ReportedHosts srcHosts;
-  Alert::ReportedHosts tgtHosts;
+  const ::Persistency::Alert::Analyzers sa( makeNewAnalyzer() );
+  Alert::Hosts srcHosts;
+  Alert::Hosts tgtHosts;
 
   if(sip!=NULL)
     srcHosts.push_back( makeNewHost(sip, dns) );
@@ -38,13 +38,13 @@ AlertPtr makeNewAlert(const char   *name,
                              tgtHosts) );
 }
 
-MetaAlertPtr makeNewMetaAlert(const char *name)
+MetaAlertPtr makeNewMetaAlert(const char *name, const unsigned int id)
 {
   return MetaAlertPtrNN( new MetaAlert( MetaAlert::Name(name),
                                         0.1, 0.2,
                                         makeNewReferenceURL(),
                                         Timestamp(),
-                                        42u ) );
+                                        id ) );
 }
 
 AnalyzerPtrNN makeNewAnalyzer(const char *name)
@@ -68,8 +68,8 @@ HostPtr makeNewHost4(const char             *ip,
                             mask,
                             os,
                             (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL()),
-                            Host::ReportedServices(),
-                            Host::ReportedProcesses(),
+                            Host::Services(),
+                            Host::Processes(),
                             dns ) );
 }
 
@@ -83,8 +83,8 @@ HostPtr makeNewHost6(const char             *ip,
                             mask,
                             os,
                             (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL()),
-                            Host::ReportedServices(),
-                            Host::ReportedProcesses(),
+                            Host::Services(),
+                            Host::Processes(),
                             dns ) );
 }
 
@@ -116,12 +116,12 @@ GraphNodePtrNN makeNewNode(void)
   return makeNewNode( makeNewLeaf(), makeNewLeaf() );
 }
 
-GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2)
+GraphNodePtrNN makeNewNode(GraphNodePtrNN child1, GraphNodePtrNN child2, unsigned int id)
 {
   ::Persistency::IO::ConnectionPtrNN conn( ::Persistency::IO::create() );
   IO::Transaction t( conn->createNewTransaction("make_node_transaction") );
   const ::Persistency::NodeChildrenVector ncv(child1, child2);
-  GraphNodePtrNN graphNode( new GraphNode( makeNewMetaAlert(),
+  GraphNodePtrNN graphNode( new GraphNode( makeNewMetaAlert("some meta-alert", id),
                                            conn, t, ncv) );
   t.commit();
   return graphNode;
@@ -147,9 +147,9 @@ AlertPtrNN makeNewAlertWithHosts(const char *hostSrc1,
                                  const char *hostDst1,
                                  const char *hostDst2)
 {
-  const Alert::SourceAnalyzers sa( makeNewAnalyzer() );
-  Alert::ReportedHosts         hostsSrc;
-  Alert::ReportedHosts         hostsDst;
+  const Alert::Analyzers sa( makeNewAnalyzer() );
+  Alert::Hosts           hostsSrc;
+  Alert::Hosts           hostsDst;
 
   if(hostSrc1!=NULL)
     hostsSrc.push_back( makeNewHost(hostSrc1) );
@@ -172,11 +172,11 @@ AlertPtrNN makeNewAlertWithHosts(const char *hostSrc1,
                                hostsDst) );
 }
 
-GraphNodePtrNN makeNewLeaf(AlertPtrNN alert)
+GraphNodePtrNN makeNewLeaf(AlertPtrNN alert, const unsigned int id)
 {
   IO::ConnectionPtrNN conn( IO::create() );
   IO::Transaction     t( conn->createNewTransaction("make_leaf_trans") );
-  GraphNodePtrNN graphNode( new GraphNode(alert, 303u, conn, t) );
+  GraphNodePtrNN graphNode( new GraphNode(alert, id, conn, t) );
   t.commit();
   return graphNode;
 }

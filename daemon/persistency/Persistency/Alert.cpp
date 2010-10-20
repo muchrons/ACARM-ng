@@ -7,6 +7,7 @@
 #include "Persistency/Alert.hpp"
 #include "Base/ViaPointer.hpp"
 #include "Commons/ViaUnorderedCollection.hpp"
+#include "Commons/ViaUnorderedSortableCollection.hpp"
 
 using namespace std;
 
@@ -14,14 +15,14 @@ namespace Persistency
 {
 
 Alert::Alert(const Name          &name,
-             SourceAnalyzers      analyzers,
+             Analyzers           analyzers,
              const Timestamp     *detected,
              const Timestamp     &created,
              Severity             severity,
              Certainty            certainty,
              const std::string   &description,
-             const ReportedHosts &sourceHosts,
-             const ReportedHosts &targetHosts):
+             const Hosts         &sourceHosts,
+             const Hosts         &targetHosts):
   name_(name),
   analyzers_(analyzers),
   detected_( (detected!=NULL)?( new Timestamp(*detected) ):NULL ),
@@ -39,7 +40,7 @@ const Alert::Name &Alert::getName(void) const
   return name_;
 }
 
-const Alert::SourceAnalyzers &Alert::getSourceAnalyzers(void) const
+const Alert::Analyzers &Alert::getAnalyzers(void) const
 {
   assert( analyzers_.size()>0 );
   return analyzers_;
@@ -70,15 +71,26 @@ const std::string &Alert::getDescription(void) const
   return description_;
 }
 
-const Alert::ReportedHosts &Alert::getReportedSourceHosts(void) const
+const Alert::Hosts &Alert::getSourceHosts(void) const
 {
   return sourceHosts_;
 }
 
-const Alert::ReportedHosts &Alert::getReportedTargetHosts(void) const
+const Alert::Hosts &Alert::getTargetHosts(void) const
 {
   return targetHosts_;
 }
+
+namespace
+{
+struct AnalyzerSWO
+{
+  bool operator()(const AnalyzerPtrNN &a1, const AnalyzerPtrNN &a2) const
+  {
+    return a1->getID() < a2->getID();
+  }
+}; // struct AnalyzerSWO
+} // unnamed namespace
 
 bool Alert::operator==(const Alert &other) const
 {
@@ -87,7 +99,7 @@ bool Alert::operator==(const Alert &other) const
 
   if( getName()!=other.getName() )
     return false;
-  if( !Commons::ViaUnorderedCollection::equal( getSourceAnalyzers(), other.getSourceAnalyzers() ) )
+  if( !Commons::ViaUnorderedSortableCollection::equal( getAnalyzers(), other.getAnalyzers(), AnalyzerSWO() ) )
     return false;
   if( !Base::ViaPointer::equal( getDetectionTime(), other.getDetectionTime() ) )
     return false;
@@ -99,9 +111,9 @@ bool Alert::operator==(const Alert &other) const
     return false;
   if( getDescription()!=other.getDescription() )
     return false;
-  if( !Commons::ViaUnorderedCollection::equal( getReportedSourceHosts(), other.getReportedSourceHosts() ) )
+  if( !Commons::ViaUnorderedCollection::equal( getSourceHosts(), other.getSourceHosts() ) )
     return false;
-  if( !Commons::ViaUnorderedCollection::equal( getReportedTargetHosts(), other.getReportedTargetHosts() ) )
+  if( !Commons::ViaUnorderedCollection::equal( getTargetHosts(), other.getTargetHosts() ) )
     return false;
   // if all fields are equal, objects are equal too.
   return true;

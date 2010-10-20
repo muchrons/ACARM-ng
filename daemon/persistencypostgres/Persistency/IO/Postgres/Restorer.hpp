@@ -104,6 +104,7 @@ private:
 
   Logger::Node                   log_;
   DBHandlePtrNN                  dbHandle_;
+  // TODO: make this separate class derived from System::OneInstanceAtOnce
   ReverseIDCache<GraphNodePtrNN> nodeCache_;
   ReverseIDCache<GraphNodePtrNN> leafCache_;
   ReverseIDCache<TreePtr>        treeNodes_;

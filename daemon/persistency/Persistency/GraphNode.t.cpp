@@ -29,24 +29,24 @@ struct TestClass: private TestBase
   {
   }
 
-  GraphNodePtrNN makeNode(int extraNodes=0, unsigned int id=42)
+  GraphNodePtrNN makeNode(int extraNodes=0, unsigned int id=42u)
   {
     MetaAlertPtrNN ma( new MetaAlert("meta alert x",
-                                     id,
+                                     0,
                                      0,
                                      makeNewReferenceURL(),
                                      Timestamp(),
-                                     13u ) );
-    NodeChildrenVector vec( makeLeaf(), makeLeaf() );
+                                     id) );
+    NodeChildrenVector vec( makeLeaf(id+1u), makeLeaf(id+2u) );
     for(int i=0; i<extraNodes; ++i)
-      vec.push_back( makeLeaf() );
+      vec.push_back( makeLeaf(id+3u+i) );
 
     return GraphNodePtrNN( new GraphNode(ma, conn_, t_, vec) );
   }
 
-  GraphNodePtrNN makeLeaf(void)
+  GraphNodePtrNN makeLeaf(unsigned int id=666u)
   {
-    return GraphNodePtrNN( new GraphNode( makeNewAlert(), 666u, conn_, t_) );
+    return GraphNodePtrNN( new GraphNode( makeNewAlert(), id, conn_, t_) );
   }
 
   int childrenCount(const GraphNode &gn) const

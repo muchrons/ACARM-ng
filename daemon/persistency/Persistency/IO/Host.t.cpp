@@ -76,8 +76,8 @@ void testObj::test<2>(void)
                                          NULL,
                                          "some/os",
                                          Persistency::ReferenceURLPtr(),
-                                         Persistency::Host::ReportedServices(),
-                                         Persistency::Host::ReportedProcesses(),
+                                         Persistency::Host::Services(),
+                                         Persistency::Host::Processes(),
                                          NULL) );
 
   IOHost h(host, t_);

@@ -43,6 +43,9 @@ struct ViaUnorderedCollection
     BOOST_STATIC_ASSERT( (boost::is_same<T1Value, T2Value>::value) );
     typedef T1Value                 TValue; // both are the same any way
 
+    // if collections are under the same addresses, they are the same for sure
+    if( static_cast<const void*>(&c1)==static_cast<const void*>(&c2) )
+      return true;
     // quick test - check sizes
     if( c1.size()!=c2.size() )
       return false;

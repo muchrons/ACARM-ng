@@ -167,8 +167,8 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     tut::ensure("netmask is set", out->getNetmask()==NULL );
     tut::ensure("operating system is set", out->getOperatingSystem().get()==NULL );
     tut::ensure("ref. URL is set", out->getReferenceURL()==NULL );
-    tut::ensure_equals("invalid number of services", out->getReportedServices().size(), 1u);
-    tut::ensure_equals("invalid number of processes", out->getReportedProcesses().size(), 1u);
+    tut::ensure_equals("invalid number of services", out->getServices().size(), 1u);
+    tut::ensure_equals("invalid number of processes", out->getProcesses().size(), 1u);
     tut::ensure("name is NULL", out->getName().get()!=NULL );
     tut::ensure_equals("invalid name", out->getName().get(), string("a.b.c") );
   }
@@ -573,7 +573,7 @@ void testObj::test<33>(void)
   ensure_equals("invalid process name", out->getName().get(), string("binary") );
   ensure_equals("invalid process path", out->getPath().get(), string("/path/to/bin") );
   ensure("paramters are NULL", out->getParameters()!=NULL );
-  ensure_equals("invalid arguments", out->getParameters()->c_str(), string("-a -b -c") );
+  ensure_equals("invalid arguments", out->getParameters(), string("-a -b -c") );
   ensure("PID is NULL", out->getPID()!=NULL );
   ensure_equals("invalid PID", *out->getPID(), 42u);
   // test user
@@ -830,8 +830,8 @@ void testObj::test<47>(void)
   tut::ensure("netmask is set", out->getNetmask()==NULL );
   tut::ensure("operating system is set", out->getOperatingSystem().get()==NULL );
   tut::ensure("ref. URL is set", out->getReferenceURL()==NULL );
-  tut::ensure_equals("invalid number of services", out->getReportedServices().size(), 0u);
-  tut::ensure_equals("invalid number of processes", out->getReportedProcesses().size(), 0u);
+  tut::ensure_equals("invalid number of services", out->getServices().size(), 0u);
+  tut::ensure_equals("invalid number of processes", out->getProcesses().size(), 0u);
   tut::ensure("name is set", out->getName().get()==NULL );
 }
 
@@ -958,14 +958,14 @@ void testObj::test<51>(void)
   const GraphNodePtrNN  out   =fx_.parseAlert( parseXML(in) );
   ensure_equals("invalid ID assigned", out->getMetaAlert().getID().get(), prevID.get()+1u);
   const Alert          &alert =out->getAlert();
-  ensure_equals("invalid number of analyzers", alert.getSourceAnalyzers().size(), 1u);
+  ensure_equals("invalid number of analyzers", alert.getAnalyzers().size(), 1u);
   ensure_equals("invalid creation time", alert.getCreationTime().get(), 12345u);
   ensure("detection time not set", alert.getDetectionTime()!=NULL );
   ensure_equals("invalid detection time", alert.getDetectionTime()->get(), 12346u);
-  ensure_equals("invalid number of source hosts", alert.getReportedSourceHosts().size(), 1u);
-  ensure_equals("invalid IP of source host", (*alert.getReportedSourceHosts().begin())->getIP().to_string(), "6.6.6.9");
-  ensure_equals("invalid number of target hosts", alert.getReportedTargetHosts().size(), 1u);
-  ensure_equals("invalid IP of target host", (*alert.getReportedTargetHosts().begin())->getIP().to_string(), "9.9.7.0");
+  ensure_equals("invalid number of source hosts", alert.getSourceHosts().size(), 1u);
+  ensure_equals("invalid IP of source host", (*alert.getSourceHosts().begin())->getIP().to_string(), "6.6.6.9");
+  ensure_equals("invalid number of target hosts", alert.getTargetHosts().size(), 1u);
+  ensure_equals("invalid IP of target host", (*alert.getTargetHosts().begin())->getIP().to_string(), "9.9.7.0");
   ensure_equals("invalid name", alert.getName().get(), string("some alert") );
   ensure_equals("invalid description", alert.getDescription(), "some test alert");
   ensure("invalid severity", alert.getSeverity().getLevel()==SeverityLevel::INFO);
@@ -1009,11 +1009,11 @@ void testObj::test<53>(void)
   const GraphNodePtrNN  out   =fx_.parseAlert( parseXML(in) );
   ensure_equals("invalid ID assigned", out->getMetaAlert().getID().get(), prevID.get()+1u);
   const Alert          &alert =out->getAlert();
-  ensure_equals("invalid number of analyzers", alert.getSourceAnalyzers().size(), 1u);
+  ensure_equals("invalid number of analyzers", alert.getAnalyzers().size(), 1u);
   ensure_equals("invalid creation time", alert.getCreationTime().get(), 12345u);
   ensure("detection time is set", alert.getDetectionTime()==NULL );
-  ensure_equals("invalid number of source hosts", alert.getReportedSourceHosts().size(), 0u);
-  ensure_equals("invalid number of target hosts", alert.getReportedTargetHosts().size(), 0u);
+  ensure_equals("invalid number of source hosts", alert.getSourceHosts().size(), 0u);
+  ensure_equals("invalid number of target hosts", alert.getTargetHosts().size(), 0u);
   ensure_equals("invalid name", alert.getName().get(), string("some alert") );
   ensure_equals("invalid description", alert.getDescription(), "");
   ensure("invalid severity", alert.getSeverity().getLevel()==SeverityLevel::INFO);

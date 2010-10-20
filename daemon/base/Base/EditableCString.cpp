@@ -5,13 +5,10 @@
 #include <cstring>
 #include <cassert>
 
-#include "Trigger/GG/EditableCString.hpp"
+#include "Base/EditableCString.hpp"
 
-namespace Trigger
+namespace Base
 {
-namespace GG
-{
-
 
 EditableCString::EditableCString(const char *str)
 {
@@ -40,5 +37,4 @@ void EditableCString::makeFrom(const char *str)
   assert( std::string(str)==str_.get() );   // ensure identical content
 }
 
-} // namespace GG
-} // namespace Trigger
+} // namespace Base

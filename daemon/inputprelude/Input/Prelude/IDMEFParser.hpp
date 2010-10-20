@@ -44,17 +44,17 @@ public:
   /**
    * @brief gets list of analyzers
    */
-  const Persistency::Alert::SourceAnalyzers& getAnalyzers() const;
+  const Persistency::Alert::Analyzers& getAnalyzers() const;
 
   /**
    * @brief gets list of sources
    */
-  const Persistency::Alert::ReportedHosts& getSources() const;
+  const Persistency::Alert::Hosts& getSources() const;
 
   /**
    * @brief gets list of targets
    */
-  const Persistency::Alert::ReportedHosts& getTargets() const;
+  const Persistency::Alert::Hosts& getTargets() const;
 
   /**
    * @brief gets description of an alert (not mandatory)
@@ -70,20 +70,20 @@ private:
   idmef_alert_t *extractAlert(idmef_message_t *msg) const;
   Persistency::Alert::Name parseName(idmef_alert_t *alert) const;
   Persistency::Timestamp parseCtime(idmef_alert_t *alert) const;
-  Persistency::Alert::SourceAnalyzers parseAnalyzers(idmef_alert_t *alert) const;
-  Persistency::Alert::ReportedHosts parseSources(idmef_alert_t *alert) const;
-  Persistency::Alert::ReportedHosts parseTargets(idmef_alert_t *alert) const;
+  Persistency::Alert::Analyzers parseAnalyzers(idmef_alert_t *alert) const;
+  Persistency::Alert::Hosts parseSources(idmef_alert_t *alert) const;
+  Persistency::Alert::Hosts parseTargets(idmef_alert_t *alert) const;
   std::string parseDescription(idmef_alert_t *alert) const;
   Persistency::SeverityLevel parseSeverity(idmef_alert_t *alert) const;
 
-  BackendFacade                       &bf_;
-  Persistency::Alert::Name             name_;
-  Persistency::Timestamp               ctime_;
-  Persistency::Alert::SourceAnalyzers  analyzers_;
-  Persistency::Alert::ReportedHosts    sourceHosts_;
-  Persistency::Alert::ReportedHosts    targetHosts_;
-  std::string                          description_;
-  Persistency::SeverityLevel           severity_;
+  BackendFacade                 &bf_;
+  Persistency::Alert::Name       name_;
+  Persistency::Timestamp         ctime_;
+  Persistency::Alert::Analyzers  analyzers_;
+  Persistency::Alert::Hosts      sourceHosts_;
+  Persistency::Alert::Hosts      targetHosts_;
+  std::string                    description_;
+  Persistency::SeverityLevel     severity_;
 }; //class IDMEFParser
 
 } // namespace Prelude

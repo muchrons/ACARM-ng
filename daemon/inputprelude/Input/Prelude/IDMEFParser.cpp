@@ -85,21 +85,21 @@ Persistency::Timestamp IDMEFParser::parseCtime(idmef_alert_t* alert) const
   return Persistency::Timestamp(ctime_t);
 }
 
-Persistency::Alert::ReportedHosts IDMEFParser::parseSources(idmef_alert_t *alert) const
+Persistency::Alert::Hosts IDMEFParser::parseSources(idmef_alert_t *alert) const
 {
-  idmef_source_t                    *src = NULL;
-  Persistency::Alert::ReportedHosts  rh;
+  idmef_source_t            *src = NULL;
+  Persistency::Alert::Hosts  rh;
   while( (src = idmef_alert_get_next_source(alert, src))!=NULL )
   {
     const IDMEFParserSource sr(src);
 
-    Host::ReportedServices rs;
-    const ServicePtr       service=sr.getService();
+    Host::Services  rs;
+    const ServicePtr service=sr.getService();
     if(service!=NULL)
       rs.push_back(service);
 
-    Host::ReportedProcesses rp;
-    const ProcessPtr        proc=sr.getProcess();
+    Host::Processes  rp;
+    const ProcessPtr proc=sr.getProcess();
     if(proc!=NULL)
       rp.push_back(proc);
 
@@ -109,21 +109,21 @@ Persistency::Alert::ReportedHosts IDMEFParser::parseSources(idmef_alert_t *alert
   return rh;
 }
 
-Persistency::Alert::ReportedHosts IDMEFParser::parseTargets(idmef_alert_t *alert) const
+Persistency::Alert::Hosts IDMEFParser::parseTargets(idmef_alert_t *alert) const
 {
-  idmef_target_t                    *tar = NULL;
-  Persistency::Alert::ReportedHosts  rh;
+  idmef_target_t            *tar = NULL;
+  Persistency::Alert::Hosts  rh;
   while( (tar = idmef_alert_get_next_target(alert, tar))!=NULL )
   {
     const IDMEFParserTarget tr(tar);
 
-    Host::ReportedServices  rs;
-    ServicePtr tmpService=tr.getService();
+    Host::Services rs;
+    ServicePtr     tmpService=tr.getService();
     if( tmpService.get()!=NULL )
       rs.push_back(tmpService);
 
-    Host::ReportedProcesses rp;
-    ProcessPtr tmpProcess=tr.getProcess();
+    Host::Processes rp;
+    ProcessPtr      tmpProcess=tr.getProcess();
     if( tmpProcess.get()!=NULL )
       rp.push_back(tmpProcess);
 
@@ -151,14 +151,14 @@ Persistency::AnalyzerPtrNN makeAnalyzer(idmef_analyzer_t *elem, BackendFacade &b
 } // makeAnalyzer()
 } // unnamed namespace
 
-Persistency::Alert::SourceAnalyzers IDMEFParser::parseAnalyzers(idmef_alert_t *alert) const
+Persistency::Alert::Analyzers IDMEFParser::parseAnalyzers(idmef_alert_t *alert) const
 {
   idmef_analyzer_t *elem = idmef_alert_get_next_analyzer(alert, NULL);
 
   if(elem==NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "No obligatory field \"Analyzer\" in this Alert!");
   // create output structure
-  Alert::SourceAnalyzers analyzers( makeAnalyzer(elem, bf_) );
+  Alert::Analyzers analyzers( makeAnalyzer(elem, bf_) );
   // add more analyzers, if needed
   while( (elem = idmef_alert_get_next_analyzer(alert, elem))!=NULL )
     analyzers.push_back( makeAnalyzer(elem, bf_) );
@@ -208,17 +208,17 @@ const Persistency::Timestamp& IDMEFParser::getCreateTime() const
   return ctime_;
 }
 
-const Persistency::Alert::SourceAnalyzers& IDMEFParser::getAnalyzers() const
+const Persistency::Alert::Analyzers& IDMEFParser::getAnalyzers() const
 {
   return analyzers_;
 }
 
-const Persistency::Alert::ReportedHosts& IDMEFParser::getSources() const
+const Persistency::Alert::Hosts& IDMEFParser::getSources() const
 {
   return sourceHosts_;
 }
 
-const Persistency::Alert::ReportedHosts& IDMEFParser::getTargets() const
+const Persistency::Alert::Hosts& IDMEFParser::getTargets() const
 {
   return targetHosts_;
 }

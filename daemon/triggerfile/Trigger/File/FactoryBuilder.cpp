@@ -2,17 +2,20 @@
  * FactoryBuilder.cpp
  *
  */
+#include <boost/filesystem.hpp>
 #include <cassert>
 
 #include "BuildProcess/ForceLink.hpp"
 #include "ConfigIO/TriggerConfig.hpp"
 #include "Commons/Factory/RegistratorHelper.hpp"
+#include "Commons/Filesystem/isDirectorySane.hpp"
 #include "Core/Types/Proc/InterfaceImpl.hpp"
 #include "Trigger/File/Config.hpp"
 #include "Trigger/File/Strategy.hpp"
 #include "Trigger/File/FactoryBuilder.hpp"
 
 using namespace std;
+using namespace boost::filesystem;
 using namespace ConfigIO;
 using namespace Core::Types::Proc;
 using Trigger::Simple::ThresholdConfig;
@@ -44,8 +47,8 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   const TriggerConfig   fc(type_, options);
   // output direcotry
-  const string &outdir=fc["outdir"];
-  if( outdir.length()==0 )
+  const path &outdir=fc["outdir"];
+  if( Commons::Filesystem::isDirectorySane(outdir)==false )
     throw ExceptionInvalidDirectory(SYSTEM_SAVE_LOCATION, outdir);
   // triggerfile name
   const string &name=fc["name"];
