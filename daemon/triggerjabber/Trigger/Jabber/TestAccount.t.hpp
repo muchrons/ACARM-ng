@@ -99,6 +99,6 @@ std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account,
     return mh.msg_;
   }
 }
-}  // unnamed namespace
+} // unnamed namespace
 
 #endif

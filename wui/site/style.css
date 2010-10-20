@@ -134,6 +134,20 @@ td.pic
   vertical-align: middle;
 }
 
+#AlertTag
+{
+    background-color:  #8989a2;
+    font-size:       18px;
+}
+
+#AlertContent
+{
+  background-color: #a9a9c2;
+  font-size:        18px;
+  text-align:       center;
+}
+
+
 a.apic:link, a.apic:visited, a.apic:hover
 {
   border: none;
