@@ -27,5 +27,10 @@ void ParserCallback::customAction(Persistency::IO::ConnectionPtrNN conn, Persist
   node_=parser.getAlert();
 }
 
+Persistency::GraphNodePtrNN ParserCallback::getAlert(void) const
+{
+  return node_;
+}
+
 } // namespace File
 } // namespace Input

@@ -9,7 +9,10 @@
 #include <boost/filesystem.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
+#include "Commons/Filesystem/Exception.hpp"
 #include "Persistency/GraphNodePtr.hpp"
+#include "RFCIO/IDMEF/Exception.hpp"
+#include "RFCIO/XML/Exception.hpp"
 #include "Input/BackendFacade.hpp"
 
 namespace Input
@@ -27,6 +30,8 @@ public:
   explicit ParserCallback(const boost::filesystem::path &inputPath);
 
   virtual void customAction(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t);
+
+  Persistency::GraphNodePtrNN getAlert(void) const;
 
 private:
   Commons::SharedPtrNotNULL<std::fstream> input_;
