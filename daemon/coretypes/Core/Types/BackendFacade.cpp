@@ -16,6 +16,10 @@ namespace Core
 namespace Types
 {
 
+BackendFacade::CustomIOInterface::~CustomIOInterface(void)
+{
+}
+
 BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
                              const std::string                &name):
   name_(name),
@@ -38,6 +42,12 @@ void BackendFacade::commitChanges(void)
 
   transaction_->commit();
   transaction_.reset();
+}
+
+void BackendFacade::performCustomIO(CustomIOInterface &ci)
+{
+  beginTransaction();
+  ci.customAction( getConnection(), getTransaction() );
 }
 
 void BackendFacade::beginTransaction(void)

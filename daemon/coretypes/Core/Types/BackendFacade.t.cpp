@@ -117,4 +117,67 @@ void testObj::test<6>(void)
   bf_->commitChanges();
 }
 
+
+namespace
+{
+struct TestCustomActionRun: public BackendFacade::CustomIOInterface
+{
+  virtual void customAction(Persistency::IO::ConnectionPtrNN /*conn*/, Persistency::IO::Transaction &/*t*/)
+  {
+    ++count_;
+  }
+
+  int count_;
+};
+} // unnamed namespace
+
+// test performing custom IO operations
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  TestCustomActionRun tmp;
+  tmp.count_=0;
+  bf_->performCustomIO(tmp);
+  ensure_equals("invalid number of calls", tmp.count_, 1);
+}
+
+
+namespace
+{
+struct TestCustomActionDtor: public BackendFacade::CustomIOInterface
+{
+  explicit TestCustomActionDtor(bool &isRun):
+    isRun_(isRun)
+  {
+    isRun_=false;
+  }
+
+  ~TestCustomActionDtor(void)
+  {
+    isRun_=true;
+  }
+
+  virtual void customAction(Persistency::IO::ConnectionPtrNN /*conn*/, Persistency::IO::Transaction &/*t*/)
+  {
+  }
+
+private:
+  bool &isRun_;
+};
+} // unnamed namespace
+
+// test if d-tor of TestCustomActionRun is virtual
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  bool isRun=false;
+  {
+    boost::scoped_ptr<BackendFacade::CustomIOInterface> tmp(new TestCustomActionDtor(isRun) );
+    ensure("bug in test", isRun==false);
+  }
+  ensure("d-tor not run", isRun);
+}
+
 } // namespace tut

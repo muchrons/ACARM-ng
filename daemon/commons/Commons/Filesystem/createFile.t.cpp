@@ -91,5 +91,13 @@ void testObj::test<5>(void)
 {
   ensureThrow<ExceptionFilesystemIO>( path() );
 }
-//TODO: consider creating file in non existing directory
+
+// test creating file in non-existing directory
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  ensureThrow<ExceptionFilesystemIO>("testdata/nonexistigndirectory/somefile.txt");
+}
+
 } // namespace tut

@@ -12,6 +12,7 @@
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/IO/create.hpp"
 #include "Persistency/IO/Connection.hpp"
+#include "RFCIO/XML/Writer.hpp"
 #include "RFCIO/IDMEF/XMLCreator.hpp"
 #include "PDump/Dumper.hpp"
 
@@ -78,7 +79,8 @@ std::pair<int, int> Dumper::writeToDir(const NodesVector &nodes, const boost::fi
       RFCIO::IDMEF::XMLCreator     x(**it);
       const path                   file ="idmef_" + Convert::to<string>(id) + ".xml";
       SharedPtrNotNULL<fstream>    fstrm=createFile(outDir/file);
-      x.getDocument().write_to_stream(*fstrm, "UTF-8");
+      RFCIO::XML::Writer           writer( x.getDocument() );
+      writer.write(*fstrm);
       ++writes;
     }
     catch(const RFCIO::Exception &ex)
