@@ -24,12 +24,18 @@ namespace File
 class IStreamReader: private boost::noncopyable
 {
 public:
+  /** \brief response from stream. bool informs if read succeded and string gives read value. */
   typedef std::pair<bool, std::string> Line;
 
   /** \brief associate with input steram.
+   *  \param input stream to read from.
    */
   explicit IStreamReader(std::istream &input);
 
+  /** \brief read line from stream.
+   *  \param timeout maximum ammount of time to wait for data.
+   *  \return pair <true, line_content> on cussecc or <false, unset> on error.
+   */
   Line readLine(unsigned int timeout);
 
 private:

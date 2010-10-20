@@ -20,8 +20,9 @@ class ExceptionFifoError: public Input::File::Exception
 {
 public:
   /** \brief create execption with given message.
-   *  \param where place where exception has been thrown.
-   *  \param msg   message to represent.
+   *  \param where    place where exception has been thrown.
+   *  \param fifoPath path to fifo that caused an error.
+   *  \param msg      message to represent.
    */
   ExceptionFifoError(const Location &where, const boost::filesystem::path &fifoPath, const std::string &msg):
     Input::File::Exception(where, cc("fifo '", fifoPath, "' error: ", msg) )
