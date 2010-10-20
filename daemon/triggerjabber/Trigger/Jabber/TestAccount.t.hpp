@@ -7,8 +7,7 @@
 
 #include <glib.h>
 #include <tut.h>
-#include <sys/time.h>
-#include <boost/timer.hpp>                  // TODO: unused header
+#include <loudmouth/loudmouth.h>
 #include <boost/algorithm/string.hpp>
 
 #include "System/ScopedPtrCustom.hpp"
@@ -20,6 +19,7 @@
 
 namespace
 {
+
 Trigger::Jabber::AccountConfig getTestConfig1(void)
 {
   return Trigger::Jabber::AccountConfig(JABBER1_TEST_ACCOUNT_SERVER,
@@ -46,9 +46,6 @@ struct MessageHandler
   std::string sender_;
 };
 
-// TODO: move implementation of these function to .t.cpp file
-
-// TODO: this f-ction must be declared as 'extern "C"' in order to be passed to C code.
 LmHandlerResult
 handleMessages (LmMessageHandler * /*handler*/,
                 LmConnection     * /*connection*/,
@@ -90,19 +87,18 @@ std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account,
   for(;;)
   {
     // short sleep here to avoid waste CPU too much
-    usleep(50);                 // TODO: use 50[ms] - not 50[us]... ;)
+    usleep(5000);
     // wait for something
     if(t.elapsed() > timeout)
       tut::fail("waiting for messages timeouted");
     g_main_context_iteration(NULL, FALSE);
-    // convert sender to format "login@server"
+    // convert sender string to format "login@server"
     boost::replace_last(mh.sender_, "/acarm-ng", "");
     if(mh.sender_ != sender)
       continue;
     return mh.msg_;
   }
 }
-
-} // unnamed namespace
+}  // unnamed namespace
 
 #endif

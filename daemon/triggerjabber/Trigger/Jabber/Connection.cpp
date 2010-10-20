@@ -39,9 +39,8 @@ Connection::~Connection(void)
 // connection to server
 LmConnection *Connection::connect(void) const
 {
-  // TODO: always name types starting with uppercase
-  typedef System::ScopedPtrCustom<LmConnection, unrefConnection> sessScopedPtr;
-  sessScopedPtr sessPtr( lm_connection_new( cfg_.getServer().c_str() ) );
+  typedef System::ScopedPtrCustom<LmConnection, unrefConnection> SessScopedPtr;
+  SessScopedPtr sessPtr( lm_connection_new( cfg_.getServer().c_str() ) );
   // sanity check
   if( sessPtr.get()==NULL )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "NULL structure received (connection creation failed)");
@@ -57,12 +56,13 @@ LmConnection *Connection::connect(void) const
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "not authenticate");
   // send presence message to jabber server (this is needed in order to receive messages)
   LmMessage *m = lm_message_new_with_sub_type(NULL, LM_MESSAGE_TYPE_PRESENCE, LM_MESSAGE_SUB_TYPE_AVAILABLE);
+  if(m==NULL)
+    throw ExceptionCreatingError(SYSTEM_SAVE_LOCATION, cfg_.getServer());
   System::ScopedPtrCustom<LmMessage, lm_message_unref> mPtr(m);
-  // TODO: what if m==NULL?
   const bool ret = lm_connection_send(sessPtr.get(), mPtr.get(), NULL);
   if(ret==false)
     throw ExceptionSendingError(SYSTEM_SAVE_LOCATION, cfg_.getServer(), ret);
-  /* setup the connection to send keep alive messages every 60 seconds */
+  // setup the connection to send keep alive messages every 60 seconds
   lm_connection_set_keep_alive_rate(sessPtr.get(), 60);
   // looks like everything's done
   LOGMSG_INFO_S(log_) << "connected as: " << cfg_.getLogin() << " to Jabber server " << cfg_.getServer();

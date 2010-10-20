@@ -91,5 +91,5 @@ void testObj::test<5>(void)
 {
   ensureThrow<ExceptionFilesystemIO>( path() );
 }
-
+//TODO: consider creating file in non existing directory
 } // namespace tut
