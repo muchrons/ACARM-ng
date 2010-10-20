@@ -32,7 +32,8 @@ void MessageIO::send(const std::string &receiver, const std::string &msg)
   System::ScopedPtrCustom<LmMessage,lm_message_unref> mPtr(m);
   if(mPtr.get()==NULL)
     throw ExceptionCreatingError(SYSTEM_SAVE_LOCATION, receiver);
-  lm_message_node_add_child (mPtr.get()->node, "body", msg.c_str()); // TODO: can this call fail?
+  if(lm_message_node_add_child (mPtr.get()->node, "body", msg.c_str()) == NULL)
+    throw ExceptionCreatingError(SYSTEM_SAVE_LOCATION, receiver);
   assert( conn_.get()!=NULL );
   const bool ret=lm_connection_send( conn_.get(), mPtr.get(), NULL);
   if(ret==false)
@@ -46,17 +47,10 @@ void MessageIO::discardIncommingMessages(void)
   assert( conn_.get()!=NULL );
   LOGMSG_DEBUG(log_, "discarding all incomming messages");
 
-  // TODO: refacto this code to loop while have messsages. currently it doesn't look
-  //       nice and last log in this call will never happen.
   // TODO: comment this code, since it's non obvious at the first sight.
-  while(true)
+  while(g_main_context_iteration(NULL, FALSE))
   {
-    // TODO: test it for two triggers
-    if( g_main_context_iteration(NULL, FALSE) )
-    {
-      LOGMSG_DEBUG(log_, "incomming message discarded");
-      return;
-    }
+    LOGMSG_DEBUG(log_, "incomming message discarded");
   }
   LOGMSG_DEBUG(log_, "all messages have been discarded");
 }

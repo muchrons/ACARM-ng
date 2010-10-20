@@ -102,5 +102,6 @@ void testObj::test<6>(void)
 {
   ensureThrow<ExceptionFilesystemIO>( path() );
 }
-
+// TODO: consider add tests for throw situations (i.e. existed/opened file, non existed directory)
+// TODO: there is no tests for openFile(...) function
 } // namespace tut
