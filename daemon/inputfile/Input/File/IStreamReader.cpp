@@ -5,7 +5,6 @@
 #include <iostream>
 #include <unistd.h>
 #include <cassert>
-#include <boost/thread.hpp>
 
 #include "Input/File/IStreamReader.hpp"
 
@@ -35,8 +34,6 @@ IStreamReader::Line IStreamReader::readLine(unsigned int timeout)
     size_t size;
     do
     {
-      boost::this_thread::interruption_point();   // for beter responsivness in threads
-
       // before reading any data, test if we have something already in buffer
       if( ss_->str().find("\n")!=string::npos )   // we have line end!
       {
