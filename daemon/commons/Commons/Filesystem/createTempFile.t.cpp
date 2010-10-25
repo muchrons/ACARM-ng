@@ -5,6 +5,7 @@
 #include <tut.h>
 
 #include "Commons/Filesystem/createTempFile.hpp"
+#include "Commons/Filesystem/isFileSane.hpp"
 
 using namespace std;
 using namespace boost::filesystem;
@@ -33,7 +34,7 @@ struct TestClass
   {
     TempFile out=createTempFile(p);
     tut::ensure("not created", exists(out.second) );
-    tut::ensure("file not created", is_regular_file(out.second) );
+    tut::ensure("file not created", isFileSane(out.second) );
     remove(out.second);
     tut::ensure("NULL pointer", out.first.get()!=NULL );
     tut::ensure("stream is not opened", out.first->is_open() );
@@ -89,7 +90,7 @@ void testObj::test<5>(void)
 {
   TempFile out=createTempFile();
   tut::ensure("not created", exists(out.second) );
-  tut::ensure("file not created", is_regular_file(out.second) );
+  tut::ensure("file not created", isFileSane(out.second) );
   remove(out.second);
   tut::ensure("NULL pointer", out.first.get()!=NULL );
   tut::ensure("stream is not opened", out.first->is_open() );

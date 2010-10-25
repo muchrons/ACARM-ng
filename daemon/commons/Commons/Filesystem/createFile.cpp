@@ -4,6 +4,7 @@
  */
 #include "Commons/Filesystem/createFile.hpp"
 #include "Commons/Filesystem/isDirectorySane.hpp"
+#include "Commons/Filesystem/detail/BoostFSCompat.hpp"
 
 using namespace boost::filesystem;
 
@@ -19,7 +20,7 @@ SharedPtrNotNULL<std::fstream> createFile(const boost::filesystem::path &p)
     throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "exists", "file already exists");
 
   // directory path must be sane
-  const path parent=p.parent_path();
+  const path parent=detail::parentPath(p);
   if( parent.empty()==false )
   {
     if( isDirectorySane(parent)==false )

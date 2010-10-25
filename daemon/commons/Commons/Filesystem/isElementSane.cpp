@@ -9,6 +9,7 @@
 
 #include "Logger/Logger.hpp"
 #include "Commons/Filesystem/isElementSane.hpp"
+#include "Commons/Filesystem/detail/BoostFSCompat.hpp"
 
 using namespace boost::filesystem;
 
@@ -53,7 +54,7 @@ bool isElementSane(const boost::filesystem::path &p)
   }
 
   // check if file has NO hard-links (1==self)
-  if( is_regular_file(p) )
+  if( detail::isRegularFile(p) )
   {
     if(st.st_nlink!=1)
     {
