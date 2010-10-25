@@ -125,7 +125,7 @@ void testObj::test<5>(void)
   const pair<int, int> out=d_.writeToDir(nodes_, ".");
   ensure_equals("invalid number of attempts", out.first, 1);
   ensure_equals("invalid number of writes", out.second, 1);
-  ensure("alert not written", ifFileSane("idmef_123.xml") );
+  ensure("alert not written", Commons::Filesystem::isFileSane("idmef_123.xml") );
 }
 
 // test writing some nodes
