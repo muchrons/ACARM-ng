@@ -48,11 +48,11 @@ struct StrategyIO: private boost::noncopyable
 private:
   void reconnectIfNeeded(void);
 
-  mutable Base::Threads::Mutex      mutex_;     ///< mutex for thread-safety
-  const Logger::Node                log_;       ///< used for logging
-  const AccountConfig               ggCfg_;     ///< account's config
-  const UserID                      receiver_;  ///< UID or message receiver
-  ConnectionAutoPtr                 conn_;      ///< connection to be used
+  mutable Base::Threads::Mutex mutex_;      ///< mutex for thread-safety
+  const Logger::Node           log_;        ///< used for logging
+  const AccountConfig          ggCfg_;      ///< account's config
+  const Config::Receivers      receivers_;  ///< UID or message receiver
+  ConnectionAutoPtr            conn_;       ///< connection to be used
 }; // struct StrategyIO
 
 } // namespace detail

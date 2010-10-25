@@ -44,7 +44,7 @@ struct TestClass
     opts_["name"]                  ="somename";
     opts_["uin"]                   ="123";
     opts_["password"]              ="secr3t";
-    opts_["receiver_uin"]          ="69";
+    opts_["receivers"]             ="69";
     opts_["severity_threshold"]    ="4.2";
     opts_["alerts_count_threshold"]="42";
   }
@@ -117,7 +117,7 @@ template<>
 void testObj::test<6>(void)
 {
   setValid();
-  opts_.erase("receiver_uin");
+  opts_.erase("receivers");
   ensureThrow(opts_);
 }
 
@@ -127,7 +127,7 @@ template<>
 void testObj::test<7>(void)
 {
   setValid();
-  opts_["receiver_uin"]="-42";
+  opts_["receivers"]="-42";
   ensureThrow(opts_);
 }
 
@@ -179,6 +179,16 @@ void testObj::test<12>(void)
   setValid();
   opts_.erase("severity_threshold");
   opts_.erase("alerts_count_threshold");
+  fb_.build(opts_);     // must not throw
+}
+
+// test multiple receivers
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  setValid();
+  opts_["receivers"]="1234 5678";
   fb_.build(opts_);     // must not throw
 }
 
