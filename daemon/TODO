@@ -21,9 +21,6 @@
 * consider splitig configuration into multiple files.
 * consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
 * filter rising priority for binaries that have MD5 of an expliot?
-* implement pointer-comparison for whole collections when comparing Via*Collection* -- if they are the same, it gives positive result in citou.
 * conisder adding indexes to speed-up SQL queries like: select * from hosts where id_alert=42;
 * think about adding meta-alerts to correlation queue of a filters with reported-time, not current time as a base (to reduce overhead when system is started after some time).
-* correlates alerts sequenction by nature.
-* fix issue with old boost libraries: 's:parent_path:branch_path:g' and 's:is_regular_file:is_regular:g' - probably adding "comparibility" component and a proper feature there should solve the problem.
 * consider appending description to correlation of meta-alerts.
