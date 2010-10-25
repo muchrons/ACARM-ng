@@ -24,9 +24,9 @@ public:
   typedef Base::NonEmptyVector<UserID> Receivers;
 
   /** \brief create configration description.
-   *  \param ac       account's config to be used for connection (account must exist).
-   *  \param receiver notification receiver.
-   *  \param th       threshold configuration - informs when run trigger.
+   *  \param ac        account's config to be used for connection (account must exist).
+   *  \param receivers list of accounts that are to receive notifications.
+   *  \param th        threshold configuration - informs when run trigger.
    */
   Config(const AccountConfig &ac, const Receivers &receivers, const Simple::ThresholdConfig &th):
     ac_(ac),
