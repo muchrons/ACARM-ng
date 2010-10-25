@@ -1,6 +1,7 @@
 Commons/*.[ch]pp
 Commons/detail/*.[ch]pp
 Commons/Filesystem/*.[ch]pp
+Commons/Filesystem/detail/BoostFSCompat.*[ch]pp
 Commons/Threads/*.[ch]pp
 Commons/Factory/*.[ch]pp
 Commons/Factory/detail/*.[ch]pp

@@ -17,7 +17,8 @@ export TC=local
 
 # features to build with
 export FEATURES= \
-                 lock_on_write_graph_add
+                 lock_on_write_graph_add \
+                 use_new_boost_filesystem
 
 TMP:=
 TMP_OPT:=
