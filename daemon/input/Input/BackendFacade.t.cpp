@@ -79,4 +79,12 @@ void testObj::test<3>(void)
   ensure("pointer differ (caches does not work)", ptr1.get()==ptr2.get() );
 }
 
+// test commiting transaction when noting had happened
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  bf_.commitChanges();
+}
+
 } // namespace tut

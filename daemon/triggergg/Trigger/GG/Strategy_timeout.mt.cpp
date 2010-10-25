@@ -23,8 +23,8 @@ int main(int argc, char **argv)
 
     const UserID receiver=atoi(argv[1]);
     const Config cfg( getTestConfig1(),
-        receiver,
-        Trigger::Simple::ThresholdConfig("0.0", "0") );
+                      Config::Receivers(receiver),
+                      Trigger::Simple::ThresholdConfig("0.0", "0") );
     Strategy     s("ggmtesttimeout", cfg);
 
     const int init=5*60;

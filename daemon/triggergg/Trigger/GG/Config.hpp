@@ -5,6 +5,7 @@
 #ifndef INCLUDE_TRIGGER_GG_CONFIG_HPP_FILE
 #define INCLUDE_TRIGGER_GG_CONFIG_HPP_FILE
 
+#include "Base/NonEmptyVector.hpp"
 #include "Trigger/Simple/ThresholdConfig.hpp"
 #include "Trigger/GG/UserID.hpp"
 #include "Trigger/GG/AccountConfig.hpp"
@@ -19,15 +20,18 @@ namespace GG
 class Config
 {
 public:
+  /** \brief list of receivers. */
+  typedef Base::NonEmptyVector<UserID> Receivers;
+
   /** \brief create configration description.
-   *  \param ac       account's config to be used for connection (account must exist).
-   *  \param receiver notification receiver.
-   *  \param th       threshold configuration - informs when run trigger.
+   *  \param ac        account's config to be used for connection (account must exist).
+   *  \param receivers list of accounts that are to receive notifications.
+   *  \param th        threshold configuration - informs when run trigger.
    */
-  Config(const AccountConfig &ac, const UserID receiver, const Simple::ThresholdConfig &th):
+  Config(const AccountConfig &ac, const Receivers &receivers, const Simple::ThresholdConfig &th):
     ac_(ac),
     th_(th),
-    receiver_(receiver)
+    receivers_(receivers)
   {
   }
 
@@ -45,18 +49,18 @@ public:
   {
     return th_;
   }
-  /** \brief gets receiver's data.
-   *  \return receiver's UID.
+  /** \brief gets receivers' data.
+   *  \return receiver's UID list.
    */
-  UserID getReceiver(void) const
+  const Receivers &getReceivers(void) const
   {
-    return receiver_;
+    return receivers_;
   }
 
 private:
   AccountConfig           ac_;
   Simple::ThresholdConfig th_;
-  UserID                  receiver_;
+  Receivers               receivers_;
 }; // class Config
 
 } // namespace GG

@@ -52,8 +52,9 @@ Trigger::GG::AccountConfig getTestConfig(void)
 // helper class that protects event from possible exceptions
 typedef System::ScopedPtrCustom<gg_event, gg_event_free> EventWrapper;
 
-std::string getMessageFromAccount(Trigger::GG::Connection &conn, const Trigger::GG::UserID sender)
+std::string getMessageFromAccount(Trigger::GG::Connection &conn, const Trigger::GG::UserID sender, const std::string &opID="")
 {
+  // wait for mesages
   timeval timeout={20, 0};                          // timeout is 20[s]
   for(;;)
   {
@@ -68,14 +69,14 @@ std::string getMessageFromAccount(Trigger::GG::Connection &conn, const Trigger::
     switch( select(conn.get()->fd+1, &desc, NULL, NULL, &timeout) )
     {
       case 0:   // timeout
-        throw std::runtime_error("waiting for messages timeouted");
+        throw std::runtime_error("waiting for messages timeouted / " + opID);
 
       case -1:  // error
-        throw std::runtime_error("select() returned error");
+        throw std::runtime_error("select() returned error / " + opID);
 
       default:  // OK
         if( !FD_ISSET(conn.get()->fd, &desc) )
-          throw std::runtime_error("descriptor is not set - something's wrong");
+          throw std::runtime_error("descriptor is not set - something's wrong / " + opID);
         break;
     } // switch( select() )
     assert( previousTimeout.tv_sec>=timeout.tv_sec &&
@@ -105,10 +106,10 @@ std::string getMessageFromAccount(Trigger::GG::Connection &conn, const Trigger::
   } // for(events)
 } // getMessageFromAccount()
 
-std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, const Trigger::GG::UserID sender)
+std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, const Trigger::GG::UserID sender, const std::string &opID="")
 {
   Trigger::GG::Connection conn(account);
-  return getMessageFromAccount(conn, sender);
+  return getMessageFromAccount(conn, sender, opID);
 } // getMessageFromAccount()
 
 } // unnamed namespace
