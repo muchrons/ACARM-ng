@@ -18,6 +18,7 @@ struct TestClass
   {
   }
 
+  template<typename T>
   void ensureThrows(const boost::filesystem::path &p)
   {
     try
@@ -25,7 +26,7 @@ struct TestClass
       Config c(p, cfg_.getThresholdConfig() );      // should throw
       tut::fail("config didn't failed on invalid path");
     }
-    catch(const Exception &)
+    catch(const T &)
     {
       // this is expected
     }
@@ -78,7 +79,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensureThrows("/i/do/not/exist");
+  ensureThrows<Commons::Filesystem::Exception>("/i/do/not/exist");
 }
 
 // test exception when file is not sane
@@ -86,7 +87,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ensureThrows("testdata/symlink");
+  ensureThrows<Exception>("testdata/symlink");
 }
 
 } // namespace tut

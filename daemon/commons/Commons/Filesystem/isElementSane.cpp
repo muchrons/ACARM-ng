@@ -26,7 +26,7 @@ bool isElementSane(const boost::filesystem::path &p)
   if( !exists(p) )
   {
     LOGMSG_WARN_S(log)<<"element '"<<p<<"' does not exist - aborting...";
-    throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "exists", "element does not exist");
+    return false;
   }
 
   // perform lstat (stat LINK, not place pointed to!)
