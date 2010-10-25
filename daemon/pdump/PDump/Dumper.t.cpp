@@ -7,6 +7,7 @@
 #include <boost/filesystem.hpp>
 
 #include "Commons/Convert.hpp"
+#include "Commons/Filesystem/isFileSane.hpp"
 #include "PDump/Dumper.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
@@ -124,7 +125,7 @@ void testObj::test<5>(void)
   const pair<int, int> out=d_.writeToDir(nodes_, ".");
   ensure_equals("invalid number of attempts", out.first, 1);
   ensure_equals("invalid number of writes", out.second, 1);
-  ensure("alert not written", is_regular_file("idmef_123.xml") );
+  ensure("alert not written", ifFileSane("idmef_123.xml") );
 }
 
 // test writing some nodes
