@@ -9,6 +9,7 @@
 
 #include "Logger/Logger.hpp"
 #include "Commons/Filesystem/isElementSane.hpp"
+#include "Commons/Filesystem/detail/BoostFSCompat.hpp"
 
 using namespace boost::filesystem;
 
@@ -26,7 +27,7 @@ bool isElementSane(const boost::filesystem::path &p)
   if( !exists(p) )
   {
     LOGMSG_WARN_S(log)<<"element '"<<p<<"' does not exist - aborting...";
-    throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "exists", "element does not exist");
+    return false;
   }
 
   // perform lstat (stat LINK, not place pointed to!)
@@ -53,7 +54,7 @@ bool isElementSane(const boost::filesystem::path &p)
   }
 
   // check if file has NO hard-links (1==self)
-  if( is_regular_file(p) )
+  if( detail::isRegularFile(p) )
   {
     if(st.st_nlink!=1)
     {

@@ -11,6 +11,7 @@
 #include "Commons/Filesystem/isFifoSane.hpp"
 #include "Commons/Filesystem/isElementSane.hpp"
 #include "Commons/Filesystem/isDirectorySane.hpp"
+#include "Commons/Filesystem/detail/BoostFSCompat.hpp"
 
 using namespace boost::filesystem;
 
@@ -28,7 +29,7 @@ bool isFifoSane(const boost::filesystem::path &p)
     // loop through all directories in the path
     if( !isElementSane(p) )
       return false;
-    if( is_regular_file(p) )
+    if( detail::isRegularFile(p) )
     {
       LOGMSG_WARN_S(log)<<"element '"<<p<<"' is regular file - aborting...";
       return false;
@@ -40,7 +41,7 @@ bool isFifoSane(const boost::filesystem::path &p)
     }
 
     // test parent directories, if specified
-    const path parent=p.parent_path();
+    const path parent=detail::parentPath(p);
     if( parent.empty()==false )
       return isDirectorySane(parent);
 
