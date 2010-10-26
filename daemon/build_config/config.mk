@@ -62,10 +62,10 @@ endif
 
 # turn compiuler-specific optimizations
 ifeq ($(TC),gcc)
-TMP_OPT+=-march=native
+TMP_OPT+=
 endif
 ifeq ($(TC),intel)
-TMP_OPT+=-xhost
+TMP_OPT+=
 endif
 
 export USER_OPT_FLAGS:=$(TMP) $(TMP_OPT)
