@@ -69,7 +69,7 @@ void testObj::test<3>(void)
 {
   ParserCallback pc("testdata/test_short_alert.xml");
   pc.customAction(conn_, t_);
-  ensure_equals("invalid name", pc.getAlert()->getAlert()->getName().get(), std::string("some alert") );
+  ensure_equals("invalid name", pc.getAlert()->getName().get(), std::string("some alert") );
 }
 
 // test getting node w-out calling action first

@@ -24,12 +24,12 @@ void ParserCallback::customAction(Persistency::IO::ConnectionPtrNN conn, Persist
 {
   RFCIO::XML::Reader      reader;
   RFCIO::IDMEF::XMLParser parser( reader.read(*input_), conn, t );
-  node_=parser.getAlert();
+  alert_=parser.getAlert();
 }
 
-Persistency::GraphNodePtrNN ParserCallback::getAlert(void) const
+Persistency::AlertPtrNN ParserCallback::getAlert(void) const
 {
-  return node_;
+  return alert_;
 }
 
 } // namespace File
