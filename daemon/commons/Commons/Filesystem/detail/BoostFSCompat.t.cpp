@@ -34,7 +34,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure("normal file not marked regular", is_regular_file("commons.t") );
+  ensure("normal file not marked regular", isRegularFile("commons.t") );
 }
 
 // test getting parent of a given element
