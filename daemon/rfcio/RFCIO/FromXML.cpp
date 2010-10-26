@@ -29,7 +29,7 @@ string parseString(const xmlpp::Element &node)
 {
   const xmlpp::TextNode *txt=node.get_child_text();
   if(txt==NULL)
-    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, node.get_path(), "node is not text node");
+    return "";  // this is a special case - don't ask me why XMLpp parses it this way...
   return txt->get_content();
 }
 
@@ -368,20 +368,24 @@ Persistency::ProcessPtrNN FromXML::parseProcessAndUser(const xmlpp::Element &pro
     throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, process.get_path(), "Process");
 
   // check for user
+  NullValue<int>        uid;
+  Process::Username     username;
   const xmlpp::Element *userRootElem=findOneChildIfHas(process, "User");
-  if(userRootElem==NULL)
-    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, process.get_path(), "User");
-  const xmlpp::Element *userElem=findOneChildIfHas(*userRootElem, "UserId");
-  if(userElem==NULL)
-    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, userRootElem->get_path(), "UserId");
+  if(userRootElem!=NULL)
+  {
+    const xmlpp::Element *userElem=findOneChildIfHas(*userRootElem, "UserId");
+    if(userElem!=NULL)
+    {
+      uid     =parseChildIfHasAs<int>(*userElem, "number");
+      username=parseString( findOneChild(*userElem, "name") );
+    }
+  }
 
   // prepare some elements
-  const NullValue<string> path    =parseChildIfHasAs<string>(*procElem, "path");
-  const Process::Name     name    =parseString( findOneChild(*procElem, "name") );
-  const NullValue<pid_t>  pid     =parseChildIfHasAs<pid_t>(*procElem, "pid");
-  const NullValue<string> args    =parseAndMergeArguments(*procElem);
-  const NullValue<int>    uid     =parseChildIfHasAs<int>(*userElem, "number");
-  const Process::Username username=parseString( findOneChild(*userElem, "name") );
+  const NullValue<string> path=parseChildIfHasAs<string>(*procElem, "path");
+  const Process::Name     name=parseString( findOneChild(*procElem, "name") );
+  const NullValue<pid_t>  pid =parseChildIfHasAs<pid_t>(*procElem, "pid");
+  const NullValue<string> args=parseAndMergeArguments(*procElem);
   const ReferenceURLPtr   ref;    // this is ACARM-ng's extension
 
   // return parsed object

@@ -609,7 +609,8 @@ void testObj::test<34>(void)
         */
       "</idmef:SomeTestRoot>"
     "</idmef:IDMEF-Message>\n";
-  testInvalidXML<ExceptionMissingElement>(&FromXML::parseProcessAndUser, in);
+  // smoke test - user is not required.
+  fx_.parseProcessAndUser( parseXML(in) );
 }
 
 // test throw on missing process section
@@ -1016,6 +1017,27 @@ void testObj::test<53>(void)
   ensure_equals("invalid description", alert.getDescription(), "");
   ensure("invalid severity", alert.getSeverity().getLevel()==SeverityLevel::INFO);
   ensure_equals("invalid certainty", alert.getCertainty().get(), 1);
+}
+
+// test parsing process that has empty path set
+// NOTE: this tests for a bug in previous releases
+template<>
+template<>
+void testObj::test<54>(void)
+{
+  const char *in=
+  "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+      "<idmef:SomeTestRoot>"
+        "<idmef:Process>"
+          "<idmef:name>binary</idmef:name>"
+          "<idmef:path></idmef:path>"
+        "</idmef:Process>"
+      "</idmef:SomeTestRoot>"
+    "</idmef:IDMEF-Message>\n";
+  const ProcessPtrNN out=fx_.parseProcessAndUser( parseXML(in) );
+  // test if path ha sbeen sread correctly
+  ensure_equals("invalid process path", out->getPath().get(), string("") );
 }
 
 } // namespace tut

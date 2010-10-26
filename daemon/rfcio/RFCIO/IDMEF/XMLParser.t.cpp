@@ -197,6 +197,7 @@ void testObj::test<13>(void)
 {
   smokeTestParsing("testdata/official_examples/system_policy_violation.xml");
 }
+*/
 
 // test parsing when thereis empty node, that has ne context (instead of not being present at all)
 template<>
@@ -205,7 +206,6 @@ void testObj::test<14>(void)
 {
   smokeTestParsing("testdata/self_generated/idmef_with_empty_node.xml");
 }
-*/
 
 // smoke test reading IDMEF - self generated
 template<>
