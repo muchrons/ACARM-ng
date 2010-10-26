@@ -94,7 +94,11 @@ void testObj::test<8>(void)
   // probably expand in the future...
   vector<string> blockDevs;
   blockDevs.push_back("/dev/sda");
+  blockDevs.push_back("/dev/sda1");
+  blockDevs.push_back("/dev/sda5");
   blockDevs.push_back("/dev/hda");
+  blockDevs.push_back("/dev/hda1");
+  blockDevs.push_back("/dev/hda5");
 
   bool checked=false;
   for(vector<string>::const_iterator it=blockDevs.begin(); it!=blockDevs.end(); ++it)
