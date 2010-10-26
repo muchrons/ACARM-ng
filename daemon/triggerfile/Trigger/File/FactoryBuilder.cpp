@@ -49,7 +49,10 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   // output direcotry
   const path &outdir=fc["outdir"];
   if( Commons::Filesystem::isDirectorySane(outdir)==false )
+  {
+    LOGMSG_FATAL_S(log_)<<"destinaiton directory '"<<outdir<<"' does not exist";
     throw ExceptionInvalidDirectory(SYSTEM_SAVE_LOCATION, outdir);
+  }
   // triggerfile name
   const string &name=fc["name"];
   LOGMSG_INFO_S(log_)<<"setting trigger \""<<getTypeName()<<"\" name to \""<<name<<"\"";

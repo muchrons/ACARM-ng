@@ -29,7 +29,7 @@ string parseString(const xmlpp::Element &node)
 {
   const xmlpp::TextNode *txt=node.get_child_text();
   if(txt==NULL)
-    throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, node.get_path(), "node is not text node");
+    return "";  // this is a special case - don't ask me why XMLpp parses it this way...
   return txt->get_content();
 }
 
@@ -86,7 +86,7 @@ FromXML::FromXML(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transac
 {
 }
 
-Persistency::GraphNodePtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
+Persistency::AlertPtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
 {
   // sanity check
   ensureNode("Alert", alert);
@@ -129,18 +129,8 @@ Persistency::GraphNodePtrNN FromXML::parseAlert(const xmlpp::Element &alert) con
   const Certainty  certainty =assessment.get<1>();
 
   // create alert
-  const AlertPtrNN alertPtr( new Alert(name, analyzers, detectTime, createTime, severity, certainty,
-                                       description, sourceHosts, targetHosts) );
-
-  // warn about not using ID from XML, if present
-  const NullValue<string> messageID=parseParameterIfHas(alert, "messageid");
-  const MetaAlert::ID     id       =Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
-  if( messageID.get()!=NULL )
-    LOGMSG_WARN_S(log_)<<"although alert's ID is set to '"<<*messageID.get()
-                       <<"' setting local (in system) ID to "<<id.get();
-
-  // return final result
-  return GraphNodePtrNN( new GraphNode(alertPtr, id, conn_, t_) );
+  return AlertPtrNN( new Alert(name, analyzers, detectTime, createTime, severity, certainty,
+                               description, sourceHosts, targetHosts) );
 }
 
 Persistency::AnalyzerPtrNN FromXML::parseAnalyzer(const xmlpp::Element &analyzer) const
@@ -378,20 +368,24 @@ Persistency::ProcessPtrNN FromXML::parseProcessAndUser(const xmlpp::Element &pro
     throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, process.get_path(), "Process");
 
   // check for user
+  NullValue<int>        uid;
+  Process::Username     username;
   const xmlpp::Element *userRootElem=findOneChildIfHas(process, "User");
-  if(userRootElem==NULL)
-    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, process.get_path(), "User");
-  const xmlpp::Element *userElem=findOneChildIfHas(*userRootElem, "UserId");
-  if(userElem==NULL)
-    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, userRootElem->get_path(), "UserId");
+  if(userRootElem!=NULL)
+  {
+    const xmlpp::Element *userElem=findOneChildIfHas(*userRootElem, "UserId");
+    if(userElem!=NULL)
+    {
+      uid     =parseChildIfHasAs<int>(*userElem, "number");
+      username=parseString( findOneChild(*userElem, "name") );
+    }
+  }
 
   // prepare some elements
-  const NullValue<string> path    =parseChildIfHasAs<string>(*procElem, "path");
-  const Process::Name     name    =parseString( findOneChild(*procElem, "name") );
-  const NullValue<pid_t>  pid     =parseChildIfHasAs<pid_t>(*procElem, "pid");
-  const NullValue<string> args    =parseAndMergeArguments(*procElem);
-  const NullValue<int>    uid     =parseChildIfHasAs<int>(*userElem, "number");
-  const Process::Username username=parseString( findOneChild(*userElem, "name") );
+  const NullValue<string> path=parseChildIfHasAs<string>(*procElem, "path");
+  const Process::Name     name=parseString( findOneChild(*procElem, "name") );
+  const NullValue<pid_t>  pid =parseChildIfHasAs<pid_t>(*procElem, "pid");
+  const NullValue<string> args=parseAndMergeArguments(*procElem);
   const ReferenceURLPtr   ref;    // this is ACARM-ng's extension
 
   // return parsed object
