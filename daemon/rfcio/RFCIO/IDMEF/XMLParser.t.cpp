@@ -23,7 +23,7 @@ namespace
 
 struct TestClass: public TestHelpers::Persistency::TestStubs
 {
-  GraphNodePtrNN parse(const char *xml) const
+  AlertPtrNN parse(const char *xml) const
   {
     assert(xml!=NULL);
     stringstream        ss(xml);
@@ -34,7 +34,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     return p.getAlert();
   }
 
-  GraphNodePtrNN smokeTestParsing(const path &file) const
+  AlertPtrNN smokeTestParsing(const path &file) const
   {
     fstream in( file.string().c_str(), fstream::in|fstream::binary );
     tut::ensure("file not opened", in.is_open() );
@@ -87,9 +87,9 @@ void testObj::test<1>(void)
            "</idmef:Assessment>"
          "</idmef:Alert>"
        "</idmef:IDMEF-Message>\n";
-  const GraphNodePtrNN leaf=parse(xml);
+  const AlertPtrNN alert=parse(xml);
   // test some random field
-  ensure_equals("invalid name", leaf->getAlert().getName().get(), string("i work fine") );
+  ensure_equals("invalid name", alert->getName().get(), string("i work fine") );
 }
 
 // TODO: fix code to make these tests pass
@@ -197,12 +197,20 @@ void testObj::test<13>(void)
 {
   smokeTestParsing("testdata/official_examples/system_policy_violation.xml");
 }
+
+// test parsing when thereis empty node, that has ne context (instead of not being present at all)
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  smokeTestParsing("testdata/self_generated/idmef_with_empty_node.xml");
+}
 */
 
 // smoke test reading IDMEF - self generated
 template<>
 template<>
-void testObj::test<14>(void)
+void testObj::test<15>(void)
 {
   smokeTestParsing("testdata/self_generated/test_short_alert.xml");
 }

@@ -954,10 +954,9 @@ void testObj::test<51>(void)
                      "</idmef:Assessment>"
                    "</idmef:Alert>"
                  "</idmef:IDMEF-Message>\n";
-  const MetaAlert::ID   prevID=Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
-  const GraphNodePtrNN  out   =fx_.parseAlert( parseXML(in) );
-  ensure_equals("invalid ID assigned", out->getMetaAlert().getID().get(), prevID.get()+1u);
-  const Alert          &alert =out->getAlert();
+  const MetaAlert::ID  prevID=Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
+  const AlertPtrNN     out   =fx_.parseAlert( parseXML(in) );
+  const Alert         &alert =*out;
   ensure_equals("invalid number of analyzers", alert.getAnalyzers().size(), 1u);
   ensure_equals("invalid creation time", alert.getCreationTime().get(), 12345u);
   ensure("detection time not set", alert.getDetectionTime()!=NULL );
@@ -1005,10 +1004,9 @@ void testObj::test<53>(void)
                      "</idmef:Assessment>"
                    "</idmef:Alert>"
                  "</idmef:IDMEF-Message>\n";
-  const MetaAlert::ID   prevID=Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
-  const GraphNodePtrNN  out   =fx_.parseAlert( parseXML(in) );
-  ensure_equals("invalid ID assigned", out->getMetaAlert().getID().get(), prevID.get()+1u);
-  const Alert          &alert =out->getAlert();
+  const MetaAlert::ID  prevID=Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
+  const AlertPtrNN     out   =fx_.parseAlert( parseXML(in) );
+  const Alert         &alert =*out;
   ensure_equals("invalid number of analyzers", alert.getAnalyzers().size(), 1u);
   ensure_equals("invalid creation time", alert.getCreationTime().get(), 12345u);
   ensure("detection time is set", alert.getDetectionTime()==NULL );

@@ -86,7 +86,7 @@ FromXML::FromXML(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transac
 {
 }
 
-Persistency::GraphNodePtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
+Persistency::AlertPtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
 {
   // sanity check
   ensureNode("Alert", alert);
@@ -129,18 +129,8 @@ Persistency::GraphNodePtrNN FromXML::parseAlert(const xmlpp::Element &alert) con
   const Certainty  certainty =assessment.get<1>();
 
   // create alert
-  const AlertPtrNN alertPtr( new Alert(name, analyzers, detectTime, createTime, severity, certainty,
-                                       description, sourceHosts, targetHosts) );
-
-  // warn about not using ID from XML, if present
-  const NullValue<string> messageID=parseParameterIfHas(alert, "messageid");
-  const MetaAlert::ID     id       =Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
-  if( messageID.get()!=NULL )
-    LOGMSG_WARN_S(log_)<<"although alert's ID is set to '"<<*messageID.get()
-                       <<"' setting local (in system) ID to "<<id.get();
-
-  // return final result
-  return GraphNodePtrNN( new GraphNode(alertPtr, id, conn_, t_) );
+  return AlertPtrNN( new Alert(name, analyzers, detectTime, createTime, severity, certainty,
+                               description, sourceHosts, targetHosts) );
 }
 
 Persistency::AnalyzerPtrNN FromXML::parseAnalyzer(const xmlpp::Element &analyzer) const

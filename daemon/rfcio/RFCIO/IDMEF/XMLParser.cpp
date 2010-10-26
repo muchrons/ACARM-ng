@@ -13,7 +13,7 @@ namespace IDMEF
 {
 namespace
 {
-GraphNodePtrNN parse(const xmlpp::Document &doc, IO::ConnectionPtrNN conn, IO::Transaction &t)
+AlertPtrNN parse(const xmlpp::Document &doc, IO::ConnectionPtrNN conn, IO::Transaction &t)
 {
   // TODO: add autoamatic validation with XML-Schema and throw exception in case of error
 
@@ -46,7 +46,7 @@ XMLParser::XMLParser(const xmlpp::Document            &doc,
 {
 }
 
-Persistency::GraphNodePtrNN XMLParser::getAlert(void) const
+Persistency::AlertPtrNN XMLParser::getAlert(void) const
 {
   return alert_;
 }
