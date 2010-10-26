@@ -133,6 +133,7 @@ void testObj::test<6>(void)
 {
   smokeTestParsing("testdata/official_examples/file_modification.xml");
 }
+*/
 
 // test throw on reading heartbeat
 template<>
@@ -150,6 +151,8 @@ void testObj::test<7>(void)
   }
 }
 
+// TODO: fix code to make these tests pass
+/*
 // smoke test reading IDMEF
 template<>
 template<>
