@@ -24,3 +24,4 @@
 * conisder adding indexes to speed-up SQL queries like: select * from hosts where id_alert=42;
 * think about adding meta-alerts to correlation queue of a filters with reported-time, not current time as a base (to reduce overhead when system is started after some time).
 * consider appending description to correlation of meta-alerts.
+* persistency::postgres I/O has to be optimized - it takes 90% of wall time right now, thus is HUGE bottleneck of the whole system.
