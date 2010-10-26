@@ -99,17 +99,18 @@ void testObj::test<8>(void)
   blockDevs.push_back("/dev/hda");
   blockDevs.push_back("/dev/hda1");
   blockDevs.push_back("/dev/hda5");
+  blockDevs.push_back("/dev/loop");
+  blockDevs.push_back("/dev/loop0");
 
-  bool checked=false;
   for(vector<string>::const_iterator it=blockDevs.begin(); it!=blockDevs.end(); ++it)
     if( exists(*it) )
     {
-      checked=true;
+      // ok - device exists, so check it
       ensure("block device marked sane", isElementSane(*it)==false );
-      break;
+      return;
     }
 
-  ensure("no block device found - check the list in test case", checked);
+  fail("no known block device found - check the list in test case");
 }
 
 } // namespace tut
