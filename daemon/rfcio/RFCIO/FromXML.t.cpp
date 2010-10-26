@@ -609,7 +609,8 @@ void testObj::test<34>(void)
         */
       "</idmef:SomeTestRoot>"
     "</idmef:IDMEF-Message>\n";
-  testInvalidXML<ExceptionMissingElement>(&FromXML::parseProcessAndUser, in);
+  // smoke test - user is not required.
+  fx_.parseProcessAndUser( parseXML(in) );
 }
 
 // test throw on missing process section
@@ -954,10 +955,9 @@ void testObj::test<51>(void)
                      "</idmef:Assessment>"
                    "</idmef:Alert>"
                  "</idmef:IDMEF-Message>\n";
-  const MetaAlert::ID   prevID=Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
-  const GraphNodePtrNN  out   =fx_.parseAlert( parseXML(in) );
-  ensure_equals("invalid ID assigned", out->getMetaAlert().getID().get(), prevID.get()+1u);
-  const Alert          &alert =out->getAlert();
+  const MetaAlert::ID  prevID=Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
+  const AlertPtrNN     out   =fx_.parseAlert( parseXML(in) );
+  const Alert         &alert =*out;
   ensure_equals("invalid number of analyzers", alert.getAnalyzers().size(), 1u);
   ensure_equals("invalid creation time", alert.getCreationTime().get(), 12345u);
   ensure("detection time not set", alert.getDetectionTime()!=NULL );
@@ -1005,10 +1005,9 @@ void testObj::test<53>(void)
                      "</idmef:Assessment>"
                    "</idmef:Alert>"
                  "</idmef:IDMEF-Message>\n";
-  const MetaAlert::ID   prevID=Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
-  const GraphNodePtrNN  out   =fx_.parseAlert( parseXML(in) );
-  ensure_equals("invalid ID assigned", out->getMetaAlert().getID().get(), prevID.get()+1u);
-  const Alert          &alert =out->getAlert();
+  const MetaAlert::ID  prevID=Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
+  const AlertPtrNN     out   =fx_.parseAlert( parseXML(in) );
+  const Alert         &alert =*out;
   ensure_equals("invalid number of analyzers", alert.getAnalyzers().size(), 1u);
   ensure_equals("invalid creation time", alert.getCreationTime().get(), 12345u);
   ensure("detection time is set", alert.getDetectionTime()==NULL );
@@ -1018,6 +1017,27 @@ void testObj::test<53>(void)
   ensure_equals("invalid description", alert.getDescription(), "");
   ensure("invalid severity", alert.getSeverity().getLevel()==SeverityLevel::INFO);
   ensure_equals("invalid certainty", alert.getCertainty().get(), 1);
+}
+
+// test parsing process that has empty path set
+// NOTE: this tests for a bug in previous releases
+template<>
+template<>
+void testObj::test<54>(void)
+{
+  const char *in=
+  "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+      "<idmef:SomeTestRoot>"
+        "<idmef:Process>"
+          "<idmef:name>binary</idmef:name>"
+          "<idmef:path></idmef:path>"
+        "</idmef:Process>"
+      "</idmef:SomeTestRoot>"
+    "</idmef:IDMEF-Message>\n";
+  const ProcessPtrNN out=fx_.parseProcessAndUser( parseXML(in) );
+  // test if path ha sbeen sread correctly
+  ensure_equals("invalid process path", out->getPath().get(), string("") );
 }
 
 } // namespace tut

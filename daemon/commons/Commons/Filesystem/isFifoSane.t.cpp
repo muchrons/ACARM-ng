@@ -23,20 +23,6 @@ struct TestClass
       remove(tf_);
   }
 
-  template<typename TEx>
-  void ensureThrow(const path &p) const
-  {
-    try
-    {
-      isFifoSane(p);   // should throw
-      tut::fail("call didn't throw on error");
-    }
-    catch(const TEx &)
-    {
-      // this is expected
-    }
-  }
-
   void makeFifo(const path &p)
   {
     remove(p);
@@ -71,7 +57,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensureThrow<ExceptionFilesystemIO>("some/non/existing/file");
+  ensure("non-existing fifo marked sane", isFifoSane("some/non/existing/file")==false );
 }
 
 // test if link to fifo is not sane
@@ -88,7 +74,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensureThrow<ExceptionFilesystemIO>("testdata/donglingSymlink");
+  ensure("dongling symlink marked sane", isFifoSane("testdata/donglingSymlink")==false );
 }
 
 // test if throws on dir

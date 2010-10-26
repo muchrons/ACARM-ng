@@ -57,7 +57,7 @@ Reader::DataPtr Reader::read(BackendFacade &bf, const unsigned int timeout)
   bf.performCustomIO(pc);
 
   // return the result
-  return pc.getAlert()->getAlert();
+  return pc.getAlert();
 }
 
 } // namespace File

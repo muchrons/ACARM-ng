@@ -15,7 +15,7 @@
 #include "Base/NonEmptyVector.hpp"
 #include "Logger/Node.hpp"
 #include "Persistency/IPTypes.hpp"
-#include "Persistency/GraphNode.hpp"
+#include "Persistency/Alert.hpp"
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/Facades/AnalyzersCreator.hpp"
 #include "RFCIO/ExceptionMissingElement.hpp"
@@ -55,7 +55,7 @@ public:
    *  \param alert node to be parsed.
    *  \return parsed data.
    */
-  Persistency::GraphNodePtrNN parseAlert(const xmlpp::Element &alert) const;
+  Persistency::AlertPtrNN parseAlert(const xmlpp::Element &alert) const;
   /** \brief parse analyzer node.
    *  \param analyzer node to be parsed.
    *  \return parsed data.

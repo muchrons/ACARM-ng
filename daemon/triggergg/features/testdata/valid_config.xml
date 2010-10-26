@@ -29,7 +29,7 @@
     <gg name="inform user">
       <uin>1234</uin>
       <password>secret</password>
-      <receiver_uin>4321</receiver_uin>
+      <receivers>4321</receivers>
       <severity_threshold>3.14</severity_threshold>
       <alerts_count_threshold>42</alerts_count_threshold>
     </gg>

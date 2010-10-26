@@ -6,6 +6,7 @@
 
 #include "Commons/Filesystem/isDirectorySane.hpp"
 #include "Commons/Filesystem/isElementSane.hpp"
+#include "Commons/Filesystem/detail/BoostFSCompat.hpp"
 
 using namespace boost::filesystem;
 
@@ -31,7 +32,7 @@ bool isDirectorySane(const boost::filesystem::path &p)
         return false;
       }
       // proceed with parent directory
-      tmp=tmp.parent_path();
+      tmp=detail::parentPath(tmp);
     }
     while( tmp.empty()!=true );
 

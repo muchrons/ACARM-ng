@@ -10,7 +10,9 @@
 
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/Filesystem/Exception.hpp"
-#include "Persistency/GraphNodePtr.hpp"
+#include "Persistency/Alert.hpp"
+#include "Persistency/IO/Connection.hpp"
+#include "Persistency/IO/Transaction.hpp"
 #include "RFCIO/IDMEF/Exception.hpp"
 #include "RFCIO/XML/Exception.hpp"
 #include "Input/BackendFacade.hpp"
@@ -34,14 +36,14 @@ public:
    *  \param t    transaction to be used.
    */
   virtual void customAction(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t);
-  /** \brief returns paresed alert.
+  /** \brief returns parsed alert.
    *  \return alert parsed from file.
    */
-  Persistency::GraphNodePtrNN getAlert(void) const;
+  Persistency::AlertPtrNN getAlert(void) const;
 
 private:
   Commons::SharedPtrNotNULL<std::fstream> input_;
-  Persistency::GraphNodePtr               node_;
+  Persistency::AlertPtr                   alert_;
 }; // class ParserCallback
 
 } // namespace File

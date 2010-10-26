@@ -25,6 +25,33 @@ using namespace Persistency;
 namespace PDump
 {
 
+Dumper::Stats::Stats(size_t total, size_t attempts, size_t writes):
+  total_(total),
+  writes_(writes),
+  attempts_(attempts)
+{
+  if( getTotal()<getAttempts() )
+    throw std::logic_error("total count is less than attempts to write count");
+  if( getAttempts()<getWrites() )
+    throw std::logic_error("attempts count is less than write count");
+}
+
+size_t Dumper::Stats::getTotal(void) const
+{
+  return total_;
+}
+
+size_t Dumper::Stats::getWrites(void) const
+{
+  return writes_;
+}
+
+size_t Dumper::Stats::getAttempts(void) const
+{
+  return attempts_;
+}
+
+
 Dumper::Dumper(std::ostream &out, std::ostream &errOut):
   out_(out),
   errOut_(errOut)
@@ -53,7 +80,7 @@ void Dumper::restoreBetween(const Persistency::Timestamp  from,
 }
 
 
-std::pair<int, int> Dumper::writeToDir(const NodesVector &nodes, const boost::filesystem::path &outDir)
+Dumper::Stats Dumper::writeToDir(const NodesVector &nodes, const boost::filesystem::path &outDir)
 {
   int writes  =0;
   int attempts=0;
@@ -103,7 +130,7 @@ std::pair<int, int> Dumper::writeToDir(const NodesVector &nodes, const boost::fi
     out_<<"wrote "<<writes<<" alerts to disk"<<endl;
   else
     errOut_<<"wrote "<<writes<<" of total "<<attempts<<" alerts to disk - THERE WHERE ERRORS"<<endl;
-  return make_pair(writes, attempts);
+  return Stats(count, attempts, writes);
 }
 
 } // namespace PDump

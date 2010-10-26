@@ -19,8 +19,7 @@ int main(int argc, const char **argv)
   }
 
   // start procedure
-  int           ret=0;
-  pair<int,int> stats;
+  int ret=0;
   try
   {
     // get input paramters
@@ -37,6 +36,7 @@ int main(int argc, const char **argv)
     cout<<"dumping alerts until "<<to.get()<<" ("<<to.str()<<")"<<endl;
 
     // perform dumping itself
+    Dumper::Stats stats(0,0,0);
     {
       Dumper              d(cout, cerr);
       Dumper::NodesVector nodes;
@@ -45,8 +45,8 @@ int main(int argc, const char **argv)
     }
 
     // output some stats
-    const int writes  =stats.first;
-    const int attempts=stats.second;
+    const int writes  =stats.getWrites();
+    const int attempts=stats.getAttempts();
     if(writes==attempts)
       cout<<"wrote "<<writes<<" alerts to disk"<<endl;
     else
