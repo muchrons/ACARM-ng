@@ -36,8 +36,7 @@ public:
    *  \param t    transaction to be used.
    */
   virtual void customAction(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t);
-  //TODO: misspell in brief
-  /** \brief returns paresed alert.
+  /** \brief returns parsed alert.
    *  \return alert parsed from file.
    */
   Persistency::AlertPtrNN getAlert(void) const;
