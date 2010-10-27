@@ -6,7 +6,6 @@
 #define INCLUDE_PDUMP_DUMPER_HPP_FILE
 
 #include <iosfwd>
-#include <utility>
 #include <boost/filesystem.hpp>
 #include <boost/noncopyable.hpp>
 
@@ -21,6 +20,36 @@ namespace PDump
 class Dumper: private boost::noncopyable
 {
 public:
+  /** \brief stats after writing alerts to directory.
+   */
+  struct Stats
+  {
+    /** \brief create stats object from given values.
+     *  \param total    total number of processed elements.
+     *  \param attempts elements that were ment to be written.
+     *  \param writes   elements that have been acctually written.
+     */
+    Stats(size_t total, size_t attempts, size_t writes);
+
+    /** \brief gets total numer of processed elements.
+     *  \return count.
+     */
+    size_t getTotal(void) const;
+    /** \brief gets numer to writes performed.
+     *  \return count.
+     */
+    size_t getWrites(void) const;
+    /** \brief gets number of elements that were ment to be written.
+     *  \return count.
+     */
+    size_t getAttempts(void) const;
+
+  private:
+    size_t total_;
+    size_t writes_;
+    size_t attempts_;
+  }; // struct Stats
+
   /** \brief typedef on nodes vector. */
   typedef Persistency::IO::Restorer::NodesVector NodesVector;
 
@@ -42,9 +71,9 @@ public:
   /** \brief outputs nodes to a given directory.
    *  \param nodes  nodes to be saved as files.
    *  \param outDir output directory to use.
-   *  \return pair of counters: <written_count, total_alerts_count>.
+   *  \return statistics of operation.
    */
-  std::pair<int, int> writeToDir(const NodesVector &nodes, const boost::filesystem::path &outDir);
+  Stats writeToDir(const NodesVector &nodes, const boost::filesystem::path &outDir);
 
 private:
   std::ostream &out_;
