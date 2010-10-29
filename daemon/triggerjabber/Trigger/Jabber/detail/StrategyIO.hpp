@@ -47,7 +47,7 @@ private:
   mutable Base::Threads::Mutex mutex_;      ///< mutex for thread-safety
   const Logger::Node           log_;        ///< used for logging
   const AccountConfig          jabberCfg_;  ///< account's config
-  const std::string            receiver_;   ///< UID or message receiver
+  const Config::Receivers      receivers_;  ///< UID or message receiver
   ConnectionAutoPtr            conn_;       ///< connection to be used
 }; // struct StrategyIO
 

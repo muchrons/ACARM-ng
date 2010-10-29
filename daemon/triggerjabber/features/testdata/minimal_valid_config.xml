@@ -30,7 +30,7 @@
       <login>acarm-ng</login>
       <server>jabber.com</server>
       <password>secret</password>
-      <receiver>reciever</receiver>
+      <receivers>reciever</receivers>
 <!--
 these parameters are optional:
       <severity_threshold>3.14</severity_threshold>

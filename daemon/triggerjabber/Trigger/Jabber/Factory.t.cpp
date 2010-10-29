@@ -88,4 +88,13 @@ void testObj::test<4>(void)
   ensure_equals("no triggers created", fc.size(), 2u);
 }
 
+// test multiple receivers in config
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ConfigIO::Singleton::get()->rereadConfig("testdata/multiple_receivers.xml");
+  const TriggersCollection fc=create(queue_);
+  ensure_equals("no triggers created", fc.size(), 1u);
+}
 } // namespace tut

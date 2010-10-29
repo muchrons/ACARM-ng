@@ -23,7 +23,7 @@ namespace detail
 StrategyIO::StrategyIO(const Config &cfg):
   log_("trigger.jabber.detail.strategyio"),
   jabberCfg_( cfg.getAccountConfig() ),
-  receiver_( cfg.getReceiver() )
+  receivers_( cfg.getReceivers() )
 {
   // NOTE: do NOT connect in c-tor - object must be created first and connection
   //       will then be estabilished uppon first usage.
@@ -41,7 +41,22 @@ void StrategyIO::send(const std::string &msg)
 
   // send message
   MessageIO ms( *conn.get() );
-  ms.send(receiver_, msg);
+  int       sent=0;
+  for(Config::Receivers::const_iterator it=receivers_.begin(); it!=receivers_.end(); ++it)
+  {
+    try
+    {
+      ms.send(*it, msg);
+      ++sent;
+    }
+    catch(const Commons::Exception &ex)
+    {
+      LOGMSG_ERROR_S(log_)<<"sening message to "<<*it<<" failed; proceeding with next one...";
+    }
+  }
+  // test if any message has been sent at all
+  if(sent==0)
+    throw Exception(SYSTEM_SAVE_LOCATION, "filed to send messages to all recipient");
 
   // save opened connection for later usage
   conn_=conn;                                       // given ownership back
