@@ -45,7 +45,7 @@ struct TestClass
     opts_["login"]                 ="login";
     opts_["server"]                ="server.org";
     opts_["password"]              ="secr3t";
-    opts_["receiver"]              ="receiver@jabber.com";
+    opts_["receivers"]              ="receiver@jabber.com";
     opts_["severity_threshold"]    ="4.2";
     opts_["alerts_count_threshold"]="42";
   }
@@ -118,7 +118,7 @@ template<>
 void testObj::test<6>(void)
 {
   setValid();
-  opts_.erase("receiver");
+  opts_.erase("receivers");
   ensureThrow(opts_);
 }
 
@@ -173,4 +173,13 @@ void testObj::test<11>(void)
   fb_.build(opts_);     // must not throw
 }
 
+// test multiple receivers
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  setValid();
+  opts_["receivers"]="bob@jabber.org john@jabber.org";
+  fb_.build(opts_);     // must not throw
+}
 } // namespace tut

@@ -17,7 +17,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     cfg_( AccountConfig("server.com", "user", "abc"),
-          "reciver@server.com",
+          Config::Receivers("receiver@server.com"),
           Trigger::Simple::ThresholdConfig("1.2", "4") )
   {
   }
@@ -50,7 +50,9 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("invalid receiver's name", cfg_.getReceiver(), "reciver@server.com");
+  Config::Receivers::const_iterator it=cfg_.getReceivers().begin();
+  ensure("no elements saved", it!=cfg_.getReceivers().end() );
+  ensure_equals("invalid receiver's name", *it, "receiver@server.com");
 }
 
 // get severity threshold
@@ -73,4 +75,26 @@ void testObj::test<4>(void)
   const Config tmp=cfg_;
 }
 
+// test multiple receivers
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  Config::Receivers r("receiver1@jabber.org");
+  r.push_back("receiver2@jabber.org");
+  const Config c(AccountConfig("server.com", "user", "abc"), r, Trigger::Simple::ThresholdConfig("1.2", "4") );
+
+  ensure_equals("invalid receivers count", c.getReceivers().size(), 2u);
+  Config::Receivers::const_iterator it=c.getReceivers().begin();
+
+  ensure("no elements?", it!=c.getReceivers().end() );
+  ensure_equals("invalid receiver 1", *it, "receiver1@jabber.org");
+  ++it;
+
+  ensure("only one element?", it!=c.getReceivers().end() );
+  ensure_equals("invalid receiver 2", *it, "receiver2@jabber.org");
+  ++it;
+
+  ensure("too many elements?", it==c.getReceivers().end() );
+}
 } // namespace tut

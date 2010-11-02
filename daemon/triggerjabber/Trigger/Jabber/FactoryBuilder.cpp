@@ -2,6 +2,7 @@
  * FactoryBuilder.cpp
  *
  */
+#include <boost/tokenizer.hpp>
 #include <cassert>
 
 #include "BuildProcess/ForceLink.hpp"
@@ -38,6 +39,36 @@ FactoryBuilder::FactoryBuilder(void):
 {
 }
 
+namespace
+{
+Config::Receivers parseReceivers(const Logger::Node &log, const string &str)
+{
+  typedef boost::char_separator<char> Separator;
+  typedef boost::tokenizer<Separator> Tokenizer;
+  const Separator sep(" ");
+  const Tokenizer tokens(str, sep);
+
+  // go thought all receivers
+  Tokenizer::const_iterator it=tokens.begin();
+  if( it==tokens.end() )
+    throw Exception(SYSTEM_SAVE_LOCATION, "no receivers specified");
+  Config::Receivers r(*it);
+  LOGMSG_INFO_S(log)<<"adding receiver's UIN "<<*it;
+  ++it;
+
+  // all other receivers are optional
+  for(; it!=tokens.end(); ++it)
+  {
+    r.push_back(*it);
+    LOGMSG_INFO_S(log)<<"adding receiver's UIN "<<*it;
+  }
+
+  // return inal list
+  LOGMSG_DEBUG_S(log)<<"got total numer of "<< r.size() <<" receivers";
+  return r;
+} // parseReceivers()
+} // unnamed namespace
+
 FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) const
 {
   LOGMSG_INFO(log_, "building trigger's instance");
@@ -55,9 +86,8 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   // triggergg name
   const std::string    &name=fc["name"];
   LOGMSG_INFO_S(log_)<<"setting trigger \""<<getTypeName()<<"\" name to \""<<name<<"\"";
-  // receiver's UID
-  const std::string    &receiver=fc["receiver"];
-  LOGMSG_INFO_S(log_)<<"setting receiver to "<<receiver;
+  // receivers' names
+  const Config::Receivers receivers=parseReceivers(log_, fc["receivers"]);
   // thresholds' config
   const char *sevTh=fc.get("severity_threshold");
   if(sevTh!=NULL)
@@ -69,7 +99,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // create and return new handle.
   typedef InterfaceImpl<Jabber::Strategy, Jabber::Config> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl( type_, name, Jabber::Config(account, receiver, thCfg) ) );
+  return FactoryBuilder::FactoryPtr( new Impl( type_, name, Jabber::Config(account, receivers, thCfg) ) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const
