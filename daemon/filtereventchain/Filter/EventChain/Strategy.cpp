@@ -1,0 +1,75 @@
+/*
+ * Strategy.cpp
+ *
+ */
+#include <algorithm>
+#include <cassert>
+
+#include "Filter/EventChain/Strategy.hpp"
+#include "Algo/GatherIPs.hpp"
+
+using namespace std;
+using namespace Persistency;
+
+namespace Filter
+{
+namespace EventChain
+{
+
+Strategy::Params::Params(unsigned int timeout, double priDelta_):
+  timeout_(timeout),
+  priDelta_(priDelta_)
+{
+}
+
+Strategy::Strategy(const std::string &name, const Params &params):
+  Filter::Simple::Strategy<Data>("eventchain", name, params.timeout_),
+  params_(params)
+{
+}
+
+Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
+{
+  // accept ALL events on input
+  Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultAccept();
+  return ecl;
+}
+
+Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
+{
+  return NodeEntry( n, Data() );
+}
+
+bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
+{
+  const Algo::GatherIPs gip(thisEntry.node_);
+  return gip.getSourceIPs().size()>0 &&
+         gip.getTargetIPs().size()>0;
+}
+
+Persistency::MetaAlert::Name Strategy::getMetaAlertName(
+                                              const NodeEntry /*thisEntry*/,
+                                              const NodeEntry /*otherEntry*/) const
+{
+  return "[eventchain] chain of events detected";
+}
+
+
+bool Strategy::canCorrelate(const NodeEntry thisEntry,
+                            const NodeEntry otherEntry) const
+{
+  // sanityt check
+  assert( isEntryInteresting(thisEntry)  );
+  assert( isEntryInteresting(otherEntry) );
+
+  // compute IPs counts
+  const Algo::GatherIPs gipThis (thisEntry.node_);
+  const Algo::GatherIPs gipOther(otherEntry.node_);
+
+  // TODO
+
+  return false;
+}
+
+} // namespace EventChain
+} // namespace Filter
