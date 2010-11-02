@@ -21,7 +21,7 @@ int main(int argc, char **argv)
 
   const std::string receiver(argv[1]);
   const Config      cfg( getTestConfig1(),
-                         receiver,
+                         Config::Receivers(receiver),
                          Trigger::Simple::ThresholdConfig("0.0", "0") );
 
   cout<<"connecting..."<<endl;
