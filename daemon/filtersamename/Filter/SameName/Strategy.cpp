@@ -34,8 +34,8 @@ Strategy::Strategy(const std::string &name, unsigned int timeout):
 
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
-  Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultAccept();
-  ecl.add("manytomany");
+  Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
+  ecl.add("*input*");   // TODO: magic value
   return ecl;
 }
 
