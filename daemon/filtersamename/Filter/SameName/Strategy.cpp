@@ -17,7 +17,7 @@ using namespace Persistency;
 namespace
 {
 template<typename T>
-void ignore(const T&)
+void ignoreVariable(const T&)
 {
 
 }
@@ -34,8 +34,8 @@ Strategy::Strategy(const std::string &name, unsigned int timeout):
 
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
-  Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultAccept();
-  ecl.add("manytomany");
+  Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
+  ecl.add("*input*");   // TODO: magic value
   return ecl;
 }
 
@@ -56,7 +56,7 @@ Persistency::MetaAlert::Name Strategy::getMetaAlertName(
 {
   // thisEntry and otherEntry must containt the same meta-alert name
   assert( canCorrelate(thisEntry, otherEntry) );
-  ignore(otherEntry);
+  ignoreVariable(otherEntry);
   stringstream ss;
   ss << "[samename] " << thisEntry.node_->getMetaAlert().getName().get();
   return ss.str();

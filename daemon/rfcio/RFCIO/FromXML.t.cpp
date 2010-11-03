@@ -599,7 +599,6 @@ void testObj::test<34>(void)
           "<idmef:arg>-c</idmef:arg>"
           "<idmef:pid>42</idmef:pid>"
         "</idmef:Process>"
-        // TODO: remove dead code
         /*
         "<idmef:User>"
           "<idmef:UserId>"
@@ -623,7 +622,6 @@ void testObj::test<35>(void)
   "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
     "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
       "<idmef:SomeTestRoot>"
-        // TODO: remove dead code
         /*
         "<idmef:Process>"
           "<idmef:name>binary</idmef:name>"
@@ -664,7 +662,6 @@ void testObj::test<36>(void)
         "</idmef:Process>"
         "<idmef:User>"
           "<idmef:UserId>"
-        // TODO: remove dead code
 //            "<idmef:name>alucard</idmef:name>"
             "<idmef:number>666</idmef:number>"
           "</idmef:UserId>"
@@ -684,7 +681,6 @@ void testObj::test<37>(void)
     "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
       "<idmef:SomeTestRoot>"
         "<idmef:Process>"
-        // TODO: remove dead code
 //          "<idmef:name>binary</idmef:name>"
           "<idmef:path>/path/to/bin</idmef:path>"
           "<idmef:arg>-a</idmef:arg>"
@@ -778,7 +774,6 @@ void testObj::test<42>(void)
 {
   const char *in="<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
                  "<idmef:Node category=\"host\">"
-                 // TODO: remove dead code
                  //  "<idmef:name>some name</idmef:name>"
                  //  "<idmef:Address category=\"ipv4-addr\">"
                  //    "<idmef:address>1.2.3.4</idmef:address>"

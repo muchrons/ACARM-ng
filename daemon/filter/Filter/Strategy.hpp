@@ -47,6 +47,7 @@ public:
     BackendFacade bf( conn_, changed, getFilterType() );
     processImpl(n, ntq_, bf);
     bf.commitChanges();         // if there was no exception, commit changes made (if any)
+    LOGMSG_DEBUG_S(log_)<<"nodes timeout queue size is "<<ntq_.size()<<" elements";
   }
 
   /** \brief helper structure with user-provided data associated with node's entry.
@@ -133,10 +134,16 @@ private:
     if(nextPrune_>now)
       return;
     LOGMSG_DEBUG(log_, "prunning time has come");
-    ntq_.prune();               // do periodical queue's clean-up
-    nextPrune_=now+1;           // it does not make sense to make it more often than
-                                // once per 1[s]
+    const size_t pruned=ntq_.prune();   // do periodical queue's clean-up
+    ignore(pruned);
+    LOGMSG_DEBUG_S(log_)<<"pruned "<<pruned<<" elements";
+    nextPrune_=now+1;                   // it does not make sense to make it more often than once per 1[s]
     LOGMSG_DEBUG_S(log_)<<"next prunning on "<<nextPrune_;
+  }
+
+  template<typename TIgnored>
+  inline void ignore(const TIgnored &) const
+  {
   }
 
   NodesTimeoutQueue ntq_;
