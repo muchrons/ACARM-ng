@@ -30,7 +30,7 @@ public:
   typedef BackendFacade::Node           Node;
   /** \brief helper typedef for list of chenged nodes. */
   typedef BackendFacade::ChangedNodes   ChangedNodes;
-  /** \briefforward declaration to keep code easier to read. */
+  /** \brief forward declaration to keep code easier to read. */
   struct NodeEntry;
   /** \brief timeouting queue colleciton type. */
   typedef Base::TimeoutQueue<NodeEntry> NodesTimeoutQueue;

@@ -58,13 +58,16 @@ private:
   // Simple::Strategy implementation
   //
 
-  virtual NodeEntry makeThisEntry(const Node n) const;
+  virtual Data makeThisEntryUserData(const Node n) const;
   virtual bool isEntryInteresting(const NodeEntry thisEntry) const;
   virtual Persistency::MetaAlert::Name getMetaAlertName(
                                               const NodeEntry thisEntry,
                                               const NodeEntry otherEntry) const;
   virtual bool canCorrelate(const NodeEntry thisEntry,
                             const NodeEntry otherEntry) const;
+  virtual Data makeUserDataForNewNode(const NodeEntry &thisEntry,
+                                      const NodeEntry &otherEntry,
+                                      const Node       newNode) const;
 
   const Params params_;
 }; // class Strategy

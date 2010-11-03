@@ -35,9 +35,9 @@ struct TestStrategy: public Strategy<TestData>
   {
   }
 
-  virtual NodeEntry makeThisEntry(const Node n) const
+  virtual TestData makeThisEntryUserData(const Node /*n*/) const
   {
-    return NodeEntry(n, TestData() );
+    return TestData();
   }
 
   virtual bool isEntryInteresting(const NodeEntry /*thisEntry*/) const
@@ -58,6 +58,13 @@ struct TestStrategy: public Strategy<TestData>
     if( skipCorrelations_-- > 0 )
       return false;
     return canCorrelate_;
+  }
+
+  virtual TestData makeUserDataForNewNode(const NodeEntry &/*thisEntry*/,
+                                          const NodeEntry &/*otherEntry*/,
+                                          const Node       /*newNode*/) const
+  {
+    return TestData();
   }
 
   bool        isInteresting_;

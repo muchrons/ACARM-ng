@@ -33,11 +33,15 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
   // accept ALL events on input
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultAccept();
   return ecl;
+
+  // TODO: remove this code?
+  //Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
+  //ecl.add("*input*");   // TODO: magic value
 }
 
-Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
+Data Strategy::makeThisEntryUserData(const Node n) const
 {
-  return NodeEntry( n, Data() );
+  return Data();
 }
 
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
@@ -58,7 +62,7 @@ Persistency::MetaAlert::Name Strategy::getMetaAlertName(
 bool Strategy::canCorrelate(const NodeEntry thisEntry,
                             const NodeEntry otherEntry) const
 {
-  // sanityt check
+  // sanity check
   assert( isEntryInteresting(thisEntry)  );
   assert( isEntryInteresting(otherEntry) );
 
@@ -69,6 +73,14 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   // TODO
 
   return false;
+}
+
+Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
+                                      const NodeEntry &otherEntry,
+                                      const Node       newNode) const
+{
+  // TODO
+  return Data();
 }
 
 } // namespace EventChain
