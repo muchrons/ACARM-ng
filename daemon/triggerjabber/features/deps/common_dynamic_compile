@@ -1,2 +1,2 @@
 #!/bin/sh
-exec echo "-I /usr/include/loudmouth-1.0"
+exec echo "-I /usr/include/loudmouth-1.0 -I/usr/include/gloox"
