@@ -9,6 +9,7 @@
 #include <inttypes.h>
 
 #include "System/Enum.hpp"
+#include "Base/NonEmptyVector.hpp"
 #include "Trigger/Simple/ThresholdConfig.hpp"
 
 namespace Trigger
@@ -24,7 +25,7 @@ struct SecurityEnum
   /** \brief enum for security types declaration. */
   typedef enum
   {
-    //NONE, // NOTE: no secure connection is NOT allowed for security reasons
+    //NONE, // NOTE: non-secure connection is NOT allowed for security reasons
     STARTTLS,
     SSL
   } Type;
@@ -37,6 +38,9 @@ struct SecurityEnum
 class Config
 {
 public:
+  /** \brief lsit of message recipients. */
+  typedef Base::NonEmptyVector<std::string> Recipients;
+
   /** \brief server's configuration.
    */
   struct Server
@@ -92,7 +96,7 @@ public:
    *  \param srv server to connect to.
    */
   Config(const Simple::ThresholdConfig &th,
-         const std::string             &to,
+         const Recipients              &to,
          const Server                  &srv):
     th_(th),
     to_(to),
@@ -108,7 +112,7 @@ public:
    *  \param auth parameters required for authorization.
    */
   Config(const Simple::ThresholdConfig &th,
-         const std::string             &to,
+         const Recipients              &to,
          const Server                  &srv,
          const Authorization           &auth):
     th_(th),
@@ -142,17 +146,17 @@ public:
   {
     return srv_;
   }
-  /** \brief get recipient e-mail address.
-   *  \return address of e-mail recipient.
+  /** \brief get recipients e-mail addresses.
+   *  \return addresses (e-mails) of recipients.
    */
-  const std::string &getRecipientAddress(void) const
+  const Recipients &getRecipientsAddresses(void) const
   {
     return to_;
   }
 
 private:
   Simple::ThresholdConfig th_;
-  std::string             to_;
+  Recipients              to_;
   Server                  srv_;
   bool                    useAuth_;
   Authorization           auth_;

@@ -24,7 +24,7 @@ struct TestClass
   const Trigger::Simple::ThresholdConfig th_;
   const Config::Server                   srv_;
   const Config::Authorization            auth_;
-  const std::string                      to_;
+  const Config::Recipients               to_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -73,6 +73,16 @@ void testObj::test<4>(void)
 {
   ensure_equals("invalid user name", auth_.user_, "john");
   ensure_equals("invalid password", auth_.pass_, "doe");
+}
+
+// test recipients addresses list
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const Config c(th_, to_, srv_, auth_);
+  ensure_equals("invalid number of recipients", c.getRecipientsAddresses().size(), 1u);
+  ensure_equals("invalid recipient", c.getRecipientsAddresses()[0], "to");
 }
 
 } // namespace tut

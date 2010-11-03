@@ -52,7 +52,7 @@ void MailSender::send(const std::string &subject, const std::string &content)
   } // switch(security_type)
 
   // proceed with protocol:
-  errorHandle( mailesmtp_ehlo( ms.get() ), "mailesmtp_ehlo" ); // EHLO
+  errorHandle( mailesmtp_ehlo( ms.get() ), "mailesmtp_ehlo" );  // EHLO
   if(srv.sec_==Config::Server::Security::STARTTLS)              // STARTTLS?
     errorHandle( mailsmtp_socket_starttls( ms.get() ), "mailsmtp_socket_starttls");
   if(auth!=NULL)                                                // require authorization?
@@ -63,14 +63,14 @@ void MailSender::send(const std::string &subject, const std::string &content)
   errorHandle( mailesmtp_rcpt( ms.get(), cfg_.getRecipientAddress().c_str(),
                                 MAILSMTP_DSN_NOTIFY_FAILURE|MAILSMTP_DSN_NOTIFY_DELAY, NULL ),
                 "mailesmtp_rcpt" );                             // TO
-  errorHandle( mailsmtp_data( ms.get() ), "mailsmtp_data" );   // DATA
+  errorHandle( mailsmtp_data( ms.get() ), "mailsmtp_data" );    // DATA
   // data-part headers and stuff...
   MimeCreateHelper   mch(srv.from_, cfg_.getRecipientAddress(), subject, content);
   const std::string &whole=mch.createMimeMessage();
   errorHandle( mailsmtp_data_message( ms.get(), whole.c_str(), whole.length() ),
                 "mailsmtp_data_message" );                      // message body goes here
 
-  errorHandle( mailsmtp_quit( ms.get() ), "mailsmtp_quit" );   // QUIT
+  errorHandle( mailsmtp_quit( ms.get() ), "mailsmtp_quit" );    // QUIT
 }
 
 void MailSender::connectionErrorHandle(int ret, const char *call) const

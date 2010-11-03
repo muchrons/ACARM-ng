@@ -2,6 +2,7 @@
  * FactoryBuilder.cpp
  *
  */
+#include <boost/tokenizer.hpp>
 #include <cassert>
 
 #include "BuildProcess/ForceLink.hpp"
@@ -63,6 +64,34 @@ Config::Server::Security getSecurity(const std::string &v)
   // ok - we have invalid value here...
   throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "security", v.c_str() );
 } // getSecurity()
+
+Config::Recipients parseRecipients(const Logger::Node &log, const string &str)
+{
+  typedef boost::char_separator<char> Separator;
+  typedef boost::tokenizer<Separator> Tokenizer;
+  const Separator sep(" ");
+  const Tokenizer tokens(str, sep);
+
+  // go thought all receivers
+  Tokenizer::const_iterator it=tokens.begin();
+  if( it==tokens.end() )
+    throw Exception(SYSTEM_SAVE_LOCATION, "no receivers specified");
+  Config::Recipients r(*it);
+  LOGMSG_INFO_S(log)<<"adding receiver's e-mail "<<*it;
+  ++it;
+
+  // all other receivers are optional
+  for(; it!=tokens.end(); ++it)
+  {
+    r.push_back(*it);
+    LOGMSG_INFO_S(log)<<"adding receiver's e-mail "<<*it;
+  }
+
+  // return inal list
+  LOGMSG_DEBUG_S(log)<<"got total numer of "<< r.size() <<" receivers";
+  return r;
+} // parseRecipients()
+
 } // unnamed namespace
 
 
@@ -94,8 +123,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   const ThresholdConfig thCfg(sevTh, cntTh);
 
   // recipient address
-  const std::string &to    =fc["to"];
-  LOGMSG_INFO_S(log_)<<"setting to-address to "<<to;
+  const Config::Recipients to=parseRecipients(log_, fc["to"]);
 
   // trigger name
   const std::string &name    =fc["name"];
