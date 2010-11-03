@@ -63,8 +63,7 @@ Config::Receivers parseReceivers(const Logger::Node &log, const string &str)
     LOGMSG_INFO_S(log)<<"adding receiver's UIN "<<*it;
   }
 
-  // TODO: typo?
-  // return inal list
+  // return receivers list
   LOGMSG_DEBUG_S(log)<<"got total numer of "<< r.size() <<" receivers";
   return r;
 } // parseReceivers()
