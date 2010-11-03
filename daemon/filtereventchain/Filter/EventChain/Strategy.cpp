@@ -6,7 +6,6 @@
 #include <cassert>
 
 #include "Filter/EventChain/Strategy.hpp"
-#include "Algo/GatherIPs.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -41,7 +40,11 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 
 Data Strategy::makeThisEntryUserData(const Node n) const
 {
-  return Data();
+  // single node does not represent chain
+  Data d;
+  Algo::GatherIPs ips(n);
+  d.begin_=boost::shared_ptr<Algo::GatherIPs>( new Algo::GatherIPs::IPSet( ips.getSourceIPs() ) );
+  d.end_  =boost::shared_ptr<Algo::GatherIPs>( new Algo::GatherIPs::IPSet( ips.getTargetIPs() ) );
 }
 
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
@@ -77,7 +80,7 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
 
 Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
                                       const NodeEntry &otherEntry,
-                                      const Node       newNode) const
+                                      const Node       /*newNode*/) const
 {
   // TODO
   return Data();

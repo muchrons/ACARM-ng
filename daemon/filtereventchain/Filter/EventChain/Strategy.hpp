@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include "Algo/GatherIPs.hpp"
 #include "Persistency/Host.hpp"
 #include "Filter/Simple/Strategy.hpp"
 
@@ -25,9 +26,9 @@ struct Data
   {
   }
 
-  size_t                len_;   // length of the chain
-  Persistency::Host::IP begin_; // first IP of the chain
-  Persistency::Host::IP end_;   // last IP of the chain
+  size_t                                    len_;       ///< length of the chain
+  boost::shared_ptr<Algo::GatherIPs::IPSet> beginIPs_;  ///< ips of the chain begin
+  boost::shared_ptr<Algo::GatherIPs::IPSet> endIPs_;    ///< ips of the chain end
 }; // struct Data
 
 /** \brief filter detecting chain of events
