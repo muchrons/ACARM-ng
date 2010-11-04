@@ -16,6 +16,7 @@ directly included in this package, that have following licenses:
   -> build_process (Revised BSD)
   -> curl (http://curl.haxx.se/docs/copyright.html (MIT/X-like)) /indirectly
   -> etpan (Revised BSD)
+  -> gloox (GPL)
   -> gnutls (LGPL) /indirectly
   -> libgadu (LGPL)
   -> libprelude (GPL)
