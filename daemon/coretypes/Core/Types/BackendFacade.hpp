@@ -28,6 +28,23 @@ namespace Types
 class BackendFacade: private boost::noncopyable
 {
 public:
+  /** \brief base class for performCustomIO() operation.
+   *
+   *  note that this interface along with performCustomIO method
+   *  implements visitor design pattern.
+   */
+  struct CustomIOInterface: private boost::noncopyable
+  {
+    /** \brief destroy polymorphic class.
+     */
+    virtual ~CustomIOInterface(void);
+    /** \brief user defined action to occure.
+     *  \param conn connection to use for operation.
+     *  \param t    transaction to work in.
+     */
+    virtual void customAction(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t) = 0;
+  }; // struct CustomIOInterface
+
   /** \brief deallocates object's internal resources.
    */
   virtual ~BackendFacade(void);
@@ -39,6 +56,13 @@ public:
    *  \note calling another call after commitChanges will open new transaction.
    */
   void commitChanges(void);
+  /** \brief handle to perform implementation-spcific actions, not included in backend facades implementations.
+   *  \param ci interface to perform callback on.
+   *
+   *  this call can be used in specific implementations, that base (i.e. common) interface of
+   *  BackendFacade's derives does not handle, since they are specific per-instance.
+   */
+  void performCustomIO(CustomIOInterface &ci);
 
 protected:
   /** \brief create object's instance.

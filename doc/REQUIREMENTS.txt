@@ -13,3 +13,4 @@ marked with [o].
 [bro] libprelude >= 1.0.0     (used by: inputprelude)
 [bro] libgadu >= 1.8          (used by: triggergg)
 [bro] libetpan >= 0.54        (used by: triggermail)
+[bro] libloudmouth >= 1.4     (used by: triggerjabber)

@@ -13,6 +13,7 @@
 
 #include "Base/Threads/Mutex.hpp"
 #include "Base/Threads/Lock.hpp"
+#include "Logger/Node.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 #include "Persistency/IO/Postgres/Exception.hpp"
 #include "Persistency/IO/Postgres/ExceptionNoSuchEntry.hpp"
@@ -100,6 +101,8 @@ public:
    */
   void add(const TSharedPtr ptr, DataBaseID id)
   {
+    LOGMSG_DEBUG_S(Logger::Node("persistency.io.postgres.storagedatacache"))
+      <<"adding mapping "<< ptr.get() <<" -> "<<id<<" (obj type "<<typeid(ptr).name()<<")";
     const EntryID                      tmp(ptr, id);
     Base::Threads::Lock                lock(mutex_);
     typename ObjectIDMapping::iterator it=oidm_.find( ptr.get() );

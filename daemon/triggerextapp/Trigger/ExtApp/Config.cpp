@@ -16,9 +16,6 @@ namespace
 {
 path checkAndCannonicalizePath(const path &p)
 {
-  // check if file exists
-  if( is_regular_file(p)==false )
-    throw Exception(SYSTEM_SAVE_LOCATION, "executable not found: " + p.string() );
   // check if file is sane
   if( Commons::Filesystem::isFileSane(p)==false )
     throw Exception(SYSTEM_SAVE_LOCATION, "invalid executable path: " + p.string() );

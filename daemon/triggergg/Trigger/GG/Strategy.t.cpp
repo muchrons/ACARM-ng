@@ -21,7 +21,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     cfg_( getTestConfig1(),
-          getTestConfig2().getUserID(),
+          Config::Receivers( getTestConfig2().getUserID() ),
           Trigger::Simple::ThresholdConfig("1.2", "2") )
   {
   }

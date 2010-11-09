@@ -17,19 +17,6 @@ namespace
 
 struct TestClass
 {
-  template<typename TEx>
-  void ensureThrow(const path &p) const
-  {
-    try
-    {
-      isElementSane(p);   // should throw
-      tut::fail("call didn't throw on error");
-    }
-    catch(const TEx &)
-    {
-      // this is expected
-    }
-  }
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -55,7 +42,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensureThrow<ExceptionFilesystemIO>("some/non/existing/dir");
+  ensure("non-exisitng element marked sane", isElementSane("some/non/existing/dir")==false );
 }
 
 // test id link to dir is not sane
@@ -71,7 +58,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensureThrow<ExceptionFilesystemIO>("testdata/donglingSymlink");
+  ensure("dongling symlink marked sane", isElementSane("testdata/donglingSymlink")==false );
 }
 
 // cur-dir test
@@ -107,18 +94,23 @@ void testObj::test<8>(void)
   // probably expand in the future...
   vector<string> blockDevs;
   blockDevs.push_back("/dev/sda");
+  blockDevs.push_back("/dev/sda1");
+  blockDevs.push_back("/dev/sda5");
   blockDevs.push_back("/dev/hda");
+  blockDevs.push_back("/dev/hda1");
+  blockDevs.push_back("/dev/hda5");
+  blockDevs.push_back("/dev/loop");
+  blockDevs.push_back("/dev/loop0");
 
-  bool checked=false;
   for(vector<string>::const_iterator it=blockDevs.begin(); it!=blockDevs.end(); ++it)
     if( exists(*it) )
     {
-      checked=true;
+      // ok - device exists, so check it
       ensure("block device marked sane", isElementSane(*it)==false );
-      break;
+      return;
     }
 
-  ensure("no block device found - check the list in test case", checked);
+  fail("no known block device found - check the list in test case");
 }
 
 } // namespace tut

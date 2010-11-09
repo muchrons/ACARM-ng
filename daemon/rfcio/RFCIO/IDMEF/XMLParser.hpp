@@ -9,7 +9,9 @@
 
 #include <libxml++/libxml++.h>
 
-#include "Persistency/GraphNode.hpp"
+#include "Persistency/Alert.hpp"
+#include "Persistency/IO/Connection.hpp"
+#include "Persistency/IO/Transaction.hpp"
 #include "RFCIO/IDMEF/Exception.hpp"
 
 namespace RFCIO
@@ -17,14 +19,14 @@ namespace RFCIO
 namespace IDMEF
 {
 
-/** \brief create Persistency::GraphNode representing alert (i.e. leaf) from given XML.
+/** \brief create Persistency::Alert representing alert from given IDMEF XML.
  */
 class XMLParser
 {
 public:
   /** \brief creates alert from given document.
    *  \param doc  document to parse.
-   *  \param conn connection to use for creating GraphNode.
+   *  \param conn connection to use for communicationg with eprsistent storage.
    *  \param t    transaction to use for operations.
    */
   XMLParser(const xmlpp::Document            &doc,
@@ -34,10 +36,10 @@ public:
   /** \brief gets parsed alert.
    *  \return smart pointer to parsed alert.
    */
-  Persistency::GraphNodePtrNN getAlert(void) const;
+  Persistency::AlertPtrNN getAlert(void) const;
 
 private:
-  Persistency::GraphNodePtrNN alert_;
+  Persistency::AlertPtrNN alert_;
 }; // class XMLParser
 
 } // namespace IDMEF

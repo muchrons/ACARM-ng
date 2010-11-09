@@ -30,7 +30,7 @@
       <uin>12345</uin>
       <password>secret</password>
 <!--
-      <receiver_uin>4321</receiver_uin>
+      <receivers>4321</receivers>
 -->
     </gg>
   </triggers>

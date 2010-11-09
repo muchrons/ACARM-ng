@@ -38,7 +38,7 @@ Persistency::GraphNodePtrNN Sources::read(void)
   GraphNodePtrNN  leaf( new GraphNode(alert, Facades::IDAssigner::get()->assignMetaAlertID(conn_, t), conn_, t) );
   LOGMSG_DEBUG(log_, "creating object done - commiting transaction");
   t.commit();
-  LOGMSG_INFO(log_, "alert and meta-alert successfuly written to data base");
+  LOGMSG_DEBUG(log_, "alert and meta-alert successfuly written to data base");
 
   return leaf;
 }

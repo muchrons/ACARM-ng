@@ -103,6 +103,14 @@ public:
   /** \brief collection's const iterator. */
   typedef TimeoutQueueIterator<T const, ConstImplIter> const_iterator;
 
+  /** \brief return current queue size.
+   *  \return size of the queue.
+   */
+  size_t size(void) const
+  {
+    return q_.size();
+  }
+
   /** \brief returns iterator to begin of the collection.
    *  \return begin iterator to collection.
    */
@@ -135,15 +143,18 @@ public:
 
   /** \brief removes timeouted elements from queue.
    *  \note order of elements after pruning is not guaranteed.
+   *  \return number of elements pruned.
    */
-  void prune(void)
+  size_t prune(void)
   {
     // find matching (i.e. timeouted) elements
     // NOTE: std::remove_if<> is stable, but it does not have to be. if this is
     //       will be time-critical, custom algorithm may be introduced here.
     ImplIter new_end=std::remove_if( q_.begin(), q_.end(), TimeoutPred() );
     // remove them
+    const size_t count=q_.end()-new_end;
     q_.erase( new_end, q_.end() );
+    return count;
   }
 
   /** \brief remove given element from queue.

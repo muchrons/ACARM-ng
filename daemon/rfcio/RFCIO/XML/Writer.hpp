@@ -5,6 +5,8 @@
 #ifndef INCLUDE_RFCIO_XML_WRITER_HPP_FILE
 #define INCLUDE_RFCIO_XML_WRITER_HPP_FILE
 
+/* public header */
+
 #include <iosfwd>
 #include <boost/noncopyable.hpp>
 #include <libxml++/libxml++.h>
