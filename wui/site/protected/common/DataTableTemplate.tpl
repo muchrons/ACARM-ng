@@ -38,12 +38,7 @@ Page: <com:TPager ID="Pager"
     AlternatingItemStyle.BackColor="#b2b2d0" >
 </com:TDataGrid>
 
-Choose page:
-
-<com:TPager ID="Pager3"
-    ControlToPaginate="DataGrid"
-    Mode="DropDownList"
-    OnPageIndexChanged="changePage"/>
+Choose page: TODO: when this controll is in use out-of-memory soccuress for bigger data sets
 
 </td></tr>
 </table>
