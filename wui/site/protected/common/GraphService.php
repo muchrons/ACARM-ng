@@ -15,30 +15,27 @@ class GraphService extends TService
 {
   public function init($config)
   {
+    $this->Response->ContentType="image/png";
     $request = Prado::getApplication()->getRequest();
-    $this->Response->ContentType="image/png";   // TODO: move this line one line up - it interleaves assign/check sequence for $request
+    $this->type =  TPropertyValue::ensureString($this->getRequestOrDefault($request, 'graph', 'You must specify the type of the graph'));
+    $this->width = TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'width',  'You must specify the width of the graph'));
+    $this->height = TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'height', 'You must specify the height of the graph'));
+    $this->title=TPropertyValue::ensureString($this->getRequestOrDefault($request, 'title', 'No title'));
+    $this->query=TPropertyValue::ensureString($this->getRequestOrDefault($request, 'query', null));
+  }
 
-    if (!$request->contains('graph'))
-      throw new TConfigurationException('You must specify the type of the graph');
-    $this->type = TPropertyValue::ensureString($request['graph']);
+  private function getRequestOrDefault($request, $field, $value)
+  {
+    if ($request->contains($field))
+      return $request[$field];
+    return $value;
+  }
 
-    if (!$request->contains('width'))
-      throw new TConfigurationException('You must specify the width of the graph');
-    $this->width = TPropertyValue::ensureInteger($request['width']);
-
-    if (!$request->contains('height'))
-      throw new TConfigurationException('You must specify the height of the graph');
-    $this->height = TPropertyValue::ensureInteger($request['height']);
-
-    if ($request->contains('title'))
-      $this->title = TPropertyValue::ensureString($request['title']);
-    else
-      $this->title="No title";
-
-    if ($request->contains('query'))
-      $this->query = TPropertyValue::ensureString($request['query']);
-    else
-      $query=null;
+  private function getRequestOrThrow($request, $field, $text)
+  {
+    if (!$request->contains($field))
+      throw new TConfigurationException($text);
+    return $request[$field];
   }
 
   public function getWidth()
@@ -69,7 +66,14 @@ class GraphService extends TService
       $graph = $this->createAlertTimeSeries($this->query,$this->title);
       break;
     case "SeverityPie":
-      $graph = $this->createSeverityChart('DMSeverities');
+      $request = Prado::getApplication()->getRequest();
+      $src=$this->getRequestOrDefault($request, 'src', null);
+      $dst=$this->getRequestOrDefault($request, 'dst', null);
+      $from=$this->getRequestOrDefault($request, 'from', null);
+      $to=$this->getRequestOrDefault($request, 'to', null);
+      $severities=$this->getRequestOrDefault($request, 'severities', null);
+
+      $graph = $this->createSeverityChart('DMSeverities',$src,$dst,$from,$to,$severities);
       break;
     case "AlertTypes":
       $graph = $this->createAlertTypeChart('DMAlertTypes');
@@ -85,9 +89,12 @@ class GraphService extends TService
     $graph->Stroke();
   }
 
-  private function issueQuery2d($q,$append="")
+  private function issueQuery2d($q,$param,$append="")
   {
-    $pairs=CSQLMap::get()->queryForList($q);
+    if ($param === null)
+      $pairs=CSQLMap::get()->queryForList($q);
+    else
+      $pairs=CSQLMap::get()->queryForList($q,$param);
 
     $xdata = array();
     $ydata = array();
@@ -118,31 +125,100 @@ class GraphService extends TService
   }
 
 
-  private function createSeverityChart($q)
+  private function createSeverityChart($q,$src,$dst,$from,$to,$severities)
   {
-    // Create the Pie Graph.
-    $graph = new PieGraph($this->width,$this->height,'auto');
+    $CParamRange1 = new CParamRange();
 
-    // Set A title for the plot
-    $graph->title->Set($this->title);
-    $graph->title->SetMargin(8);
-    $graph->title->SetFont(FF_VERDANA,FS_BOLD,12);
-    $graph->title->SetColor("darkred");
+    if ($dst=='any')
+      {
+        $CParamRange1->dst='0.0.0.0';
+        $CParamRange1->ignoredst=1;
+      } else
+      {
+        $CParamRange1->dst=$dst;
+        $CParamRange1->ignoredst=0;
+      }
 
-    $data=$this->issueQuery2d($q," (%d)");
+    if ($src=='any')
+      {
+        $CParamRange1->src='0.0.0.0';
+        $CParamRange1->ignoresrc=1;
+      } else
+      {
+        $CParamRange1->src=$src;
+        $CParamRange1->ignoresrc=0;
+      }
 
-    // Create
+    $CParamRange1->date_from=$from;
+    $CParamRange1->date_to=$to;
+    $CParamRange1->severities=$severities;
+
+    $data=$this->issueQuery2d($q,$CParamRange1," (%d)");
+
+    if (count($data[0])==0)
+      {
+        $data[0]=array("");
+        $data[1]=array(1);
+        $empty=true;
+      }
+    else
+      $empty=false; //mark plot as empty for color proper color selection
+
+    // Create Plot
     $p1 = new PiePlot3D($data[1]);
     $p1->SetLabels($data[0]);
     $p1->SetLabelPos(1);
     $p1->SetLabelType(PIE_VALUE_PER);
     $p1->value->SetFont(FF_ARIAL,FS_NORMAL,12);
-    $p1->SetSliceColors(array('#ff0000','#ff00000','#b74700','#669900','#15eb00'));
-    //    $p1->SetTheme("sand");
+
+
+    foreach ($data[0] as $d)
+      {
+        $name=substr($d,0,4); //strip "(%d)"
+
+        switch ($name)
+          {
+          case 'prob':
+            $colors[]="#ff8800";
+            break;
+          case 'warn':
+            $colors[]="#ffee00";
+            break;
+          case 'erro':
+            $colors[]="#ff5500";
+            break;
+          case 'crit':
+            $colors[]="#ff0000";
+            break;
+          case 'info':
+            $colors[]="#00ff00";
+            break;
+          case 'debu':
+            $colors[]="#2d88ff";
+            break;
+          }
+      }
+
+    if ($empty)
+      $colors=array('#aaaaaa');
+
+    $p1->SetSliceColors($colors);
     $p1->SetLabelType(1);
     $p1->SetSize(0.50);
     $p1->value->SetFormat("%d");
 
+    // Create the Pie Graph.
+    $graph = new PieGraph($this->width,$this->height,'auto');
+
+    // Set different title for an empty plot
+    if ($empty)
+      $graph->title->Set("No data matching your criteria");
+    else
+      $graph->title->Set($this->title);
+
+    $graph->title->SetMargin(8);
+    $graph->title->SetFont(FF_VERDANA,FS_BOLD,12);
+    $graph->title->SetColor("darkred");
     $graph->SetAntiAliasing();
     $graph->Add($p1);
     return $graph;
@@ -170,7 +246,7 @@ class GraphService extends TService
     // Show 0 label on Y-axis (default is not to show)
     $graph->yscale->ticks->SupressZeroLabel(false);
 
-    $data=$this->issueQuery2d($q);
+    $data=$this->issueQuery2d($q,null);
 
     // Setup X-axis labels
     $graph->xaxis->SetTickLabels($data[0]);

@@ -1,0 +1,28 @@
+<com:TContent ID="content">
+
+  <script src="OpenLayers.js"></script>
+  <script>
+    function init() 
+    {
+    map = new OpenLayers.Map("basicMap");
+    var graphic = new OpenLayers.Layer.Image('heat map','http://localhost/test/heatmap.png', new OpenLayers.Bounds(0, 0, 700, 400), new OpenLayers.Size(700, 400), {numZoomLevels: 7});
+    map.addLayer(graphic);
+
+    //var overview1 = new OpenLayers.Control.OverviewMap({maximized: false});
+    //map.addControl(overview1);
+
+    //map.setCenter(new OpenLayers.LonLat(0,0), 2);
+    map.zoomToMaxExtent();
+    }
+  </script>
+<!--<com:TImageButton ID="HeatMap" OnClick="buttonClicked" />-->
+
+      
+<div id="basicMap" style="width:700; height:400;">
+
+<com:TPanel GroupingText="<font size=5 color=white>Data range</font>" Width="100%">
+  <com:TLabel ID="Result" />
+</com:TPanel>
+
+<com:TClientScript PradoScripts="effects" />
+</com:TContent>

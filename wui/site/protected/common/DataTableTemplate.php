@@ -31,9 +31,9 @@ class DataTableTemplate extends TTemplateControl
     $data=CSQLMap::get()->queryForList($this->query_,$sqlmap_param);
 
     foreach($data as $e)
-      $e->link=$this->computation_->computeLink($e);
+      $ret[]=$this->computation_->computeStructure($e);
 
-    return $data;
+    return $ret;
   }
 
   public function selectionChanged($sender, $param)

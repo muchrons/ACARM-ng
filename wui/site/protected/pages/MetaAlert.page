@@ -1,37 +1,38 @@
 <com:TContent ID="content">
-
-Meta-alert details:<br/>
-
-  <table>
-    <tr>
-      <td>Name:</td>
-      <td> <com:TLiteral ID="MetaAlertName" Text="" Encode="true"/> </td>
-    </tr>
-
-    <tr>
-      <td>Created:</td>
-      <td> <com:TLiteral ID="MetaAlertCreateTime" Text="" Encode="true"/> </td>
-    </tr>
-
-    <tr>
-      <td>Last update:</td>
-      <td> <com:TLiteral ID="MetaAlertLastUpdateTime" Text="" Encode="true"/> </td>
-    </tr>
-
-    <tr>
-      <td>Severity delta:</td>
-      <td> <com:TLiteral ID="MetaAlertSeverityDelta" Text="" Encode="true"/> </td>
-    </tr>
-
-    <tr>
-      <td>Certainty delta:</td>
-      <td> <com:TLiteral ID="MetaAlertCertaintyDelta" Text="" Encode="true"/> </td>
-    </tr>
-
-    <tr>
-      <td> <com:TLiteral ID="MetaAlertLinksName" Text="" Encode="true"/>: </td>
-      <td> <com:TLiteral ID="MetaAlertLinks"     Text="" Encode="false"/> </td>
-    </tr>
-  </table>
-
+<com:TPanel GroupingText="<font size=6 color=white>Meta-alert's Details</font>" Width="100%">
+<br/>
+<table border="1" width="100%" cellpadding="5">
+  <tr>
+    <td id="AlertTag" width="10%">Name</td>
+    <th id="AlertContent" colspan="3"><com:TLiteral ID="MetaAlertName" Text="&nbsp" Encode="true"/></th>
+  </tr>
+  <tr>
+    <td id="AlertTag" width="10%">Correlated by:</td>
+    <th id="AlertContent" colspan="3"><com:TLiteral ID="Correlated" Text="" Encode="false"/></th>
+  </tr>
+  <tr>
+    <td id="AlertTag" width="10%">Created:</td>
+    <td id="AlertContent" width="40%"><com:TLiteral ID="MetaAlertCreateTime" Text="&nbsp" Encode="true"/></td>
+    <td id="AlertTag" width="10%">Updated:</td>
+    <td id="AlertContent" width="40%"><com:TLiteral ID="MetaAlertUpdateTime" Text="&nbsp" Encode="true"/></td>
+  </tr>
+  <tr>
+    <td id="AlertTag" width="10%">Related alerts:</td>
+    <td id="AlertContent" colspan="3">
+      <com:TDataGrid
+         ID="RelatedAlerts"
+         WIDTH="100%"
+         EnableViewState="false"
+         CellPadding="2"
+         ShowHeader="false"
+         HeaderStyle.BackColor="black"
+         HeaderStyle.ForeColor="white"
+         ItemStyle.BackColor="#8989a2"
+         AlternatingItemStyle.BackColor="#b9b9d2"
+         />
+    </td> 
+  </tr>
+</table>
+</com:TPanel>
+<com:TClientScript PradoScripts="effects" />
 </com:TContent>

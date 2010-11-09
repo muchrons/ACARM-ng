@@ -96,14 +96,14 @@
   </tr> 
   <tr>
     <td align="right">
-      <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('InputAlerts') %>">
+      <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('Alerts') %>">
         <com:TImageButton ImageUrl="pics/buttons/buttDBSourcreAlertsD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDBSourcreAlertsU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDBSourcreAlertsD.png'"/>              
       </com:THyperLink>                
     </td>
   </tr>
   <tr>
     <td align="right">
-      <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('AllMetaAlerts') %>">
+      <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('MetaAlerts') %>">
         <com:TImageButton ImageUrl="pics/buttons/buttDBMetaAlertsD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDBMetaAlertsU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDBMetaAlertsD.png'"/>
       </com:THyperLink>                
     </td>
@@ -152,6 +152,13 @@
     <td align="right">
       <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('Settings') %>">
         <com:TImageButton ImageUrl="pics/buttons/buttSettingsD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttSettingsU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttSettingsD.png'"/>
+      </com:THyperLink>
+    </td>
+  </tr>
+  <tr>
+    <td align="right">
+      <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('DataMiningHeatMap') %>">
+        <com:TImageButton ImageUrl="pics/buttons/buttHeatmapD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttHeatmapU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttHeatmapD.png'"/>
       </com:THyperLink>
     </td>
   </tr>

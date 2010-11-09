@@ -1,17 +1,15 @@
 <?php
 ini_set("memory_limit","256M"); //override default memory settings
 
-class AnalyzerRecord
+class MetaAlertRecord
 {
   public $id;
   public $Link;
   public $Name;
-  public $Version;
-  public $OS;
-  public $IP;
-}
+  public $Created;
+};
 
-class ComputeLinkForAnalyzers
+class ComputeLinkForMetaAlerts
 {
   function __construct($service)
   {
@@ -20,33 +18,32 @@ class ComputeLinkForAnalyzers
 
   private function computeLink($id)
   {
-    $url    =$this->service_->constructUrl( 'Analyzer', array('id' => $id) );
+    $url=$this->service_->constructUrl( 'MetaAlert', array('id' => $id) );
     return "<a href=\"$url\">details</a>";
   }
 
   public function computeStructure($data_row)
   {
-    $ret=new AnalyzerRecord();
-    $ret->id=$data_row->sys_id;
+    $ret=new MetaAlertRecord();
+    $ret->id=$data_row->id;
     $ret->Link=$this->computeLink($data_row->id);
     $ret->Name=$data_row->name;
-    $ret->Version=$data_row->version;
-    $ret->OS=$data_row->os;
-    $ret->IP=$data_row->ip;
+    $ret->Created=$data_row->create_time;
     return $ret;
   }
 
   private $service_;
-}
+};
 
-class Analyzers extends TPage
+
+class MetaAlerts extends TPage
 {
   public function onLoad($param)
   {
     parent::onLoad($param);
-    $this->Analyzers->computation_=new ComputeLinkForAnalyzers($this->Service);
+    $this->MetaAlerts->computation_=new ComputeLinkForMetaAlerts($this->Service);
   }
-}
+};
 
 
 ?>

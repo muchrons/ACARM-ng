@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <sqlMapConfig>
 
+  <cacheModel id="querycache" implementation="LRU" >
+    <flushInterval hours="1"/>
+    <property name="CacheSize" value="100"/>
+  </cacheModel>
+
+
   <!-- Queries for single items -->
 
   <select id="SelectReportedHost" resultClass="CReportedHostEntry" parameterClass="int">
@@ -47,12 +53,17 @@
       WHERE id=#value#
   </select>
 
+  <select id="SelectAnalyzer" resultClass="CAnalyzerListEntry" parameterClass="int">
+    SELECT * FROM analyzers WHERE id=#value#
+  </select>
+
   <select id="MapSysIDtoDatabaseID" resultClass="int" parameterClass="int">
     SELECT id FROM meta_alerts WHERE sys_id=#value#
   </select>
 
-  <select id="SelectMetaAlertsChildren" resultClass="CLinkPair" parameterClass="int">
-    SELECT ma.id, ma.name FROM meta_alerts AS ma RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child WHERE t.id_node=#value#
+  <select id="SelectMetaAlertsChildren" resultClass="CLinkTriple" parameterClass="int">
+    <!--SELECT ma.id, ma.name FROM meta_alerts AS ma RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child WHERE t.id_node=#value#-->
+    SELECT ma.id as metaalertid, ma.name as name, g.id_alert as alertid FROM meta_alerts AS ma RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child LEFT JOIN alert_to_meta_alert_map as g ON g.id_meta_alert=ma.id WHERE t.id_node=#value#
   </select>
 
   <!-- Queries for tables' sizes -->
@@ -95,6 +106,10 @@
     SELECT name, ip, version, os FROM alert_analyzers JOIN analyzers ON alert_analyzers.id_analyzer=analyzers.id WHERE alert_analyzers.id_alert=#VALUE#
   </select>
 
+  <select id="SelectHostsForAlert" resultClass="CReportedHostEntry" parameterClass="int">
+    SELECT hosts.name,ip,role,os,hosts.id FROM alerts JOIN hosts ON hosts.id_alert=alerts.id WHERE alerts.id=#VALUE#
+  </select>
+
   <select id="SelectWUILogs" resultClass="CLogEntry" parameterClass="CParamLimitOffset">
     SELECT u.id AS id, u.login AS login, l.ctime AS ctime, l.msg AS msg FROM logs AS l LEFT JOIN wui_users AS u ON l.id_wui_user=u.id ORDER BY ctime DESC limit #limit# offset #offset#
   </select>
@@ -113,8 +128,23 @@
 
 <!-- Queries for Data Mining -->
 
-  <select id="DMSeverities" resultClass="CDMPair">
-    SELECT name as key,count as value FROM (select id_severity,count(id_severity) FROM alerts GROUP BY id_severity) AS a LEFT JOIN severities ON a.id_severity=severities.id;
+  <select id="DMSeverities" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
+    <![CDATA[
+    SELECT alerts.name as key,count(*) as value FROM
+      (SELECT a.id,name FROM
+         (select id,id_severity FROM alerts WHERE create_time<#date_to# AND create_time>#date_from#) AS a
+      JOIN severities ON a.id_severity=severities.id
+      WHERE (severities.name='critical' AND #severities# LIKE '%critical%')
+         OR (severities.name='error' AND #severities# LIKE '%error%')
+         OR (severities.name='problem' AND #severities# LIKE '%problem%')
+         OR (severities.name='warning' AND #severities# LIKE '%warning%')
+         OR (severities.name='debug' AND #severities# LIKE '%debug%')
+         OR (severities.name='info' AND #severities# LIKE '%info%')
+      )AS alerts
+    JOIN hosts as h1 ON alerts.id=h1.id_alert AND h1.role='src'
+    JOIN hosts as h2 ON alerts.id=h2.id_alert AND h2.role='dst'
+    WHERE (h1.ip=#src# OR 1=#ignoresrc#) AND (h2.ip=#dst# OR 1=#ignoredst#) GROUP BY (key);
+    ]]>
   </select>
 
   <select id="DMAlertTypes" resultClass="CDMPair">
@@ -130,6 +160,11 @@
 <!-- TODO: why id_severity>0 ? note that id_severity!=severity.level ! -->
   <select id="DMMetaAlertCountTimeSeries" resultClass="CDMPair">
     select to_char(create_time,'YYYY-MM-DD') as key,count(*) as value from meta_alerts where severity_delta >=0 group by key order by key;
+  </select>
+
+  <!-- HeatMap Query -->
+  <select id="DMHeatMap" resultClass="CDMHeatMap">
+    select a.ip as source, b.ip as destination, count(*) as count from hosts as a JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' group by a.ip, b.ip;
   </select>
 
 </sqlMapConfig>
