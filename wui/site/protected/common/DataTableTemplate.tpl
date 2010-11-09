@@ -30,11 +30,12 @@ Page: <com:TPager ID="Pager"
     PageSize="20"
     AutoGenerateColumns="true"
     CellPadding="2"
+    CellSpacing="0"
     HeaderStyle.BackColor="black"
     HeaderStyle.ForeColor="white"
-    ItemStyle.BackColor="#8989a2"
+    ItemStyle.BackColor="#c6c6d2"
     ItemStyle.Font.Italic="true"
-    AlternatingItemStyle.BackColor="#797992" >
+    AlternatingItemStyle.BackColor="#b2b2d0" >
 </com:TDataGrid>
 
 Choose page:

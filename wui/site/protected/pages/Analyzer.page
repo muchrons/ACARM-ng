@@ -1,32 +1,29 @@
 <com:TContent ID="content">
 
-Analyzer's details:<br/>
-
-  <table>
-    <tr>
-      <td>ID:</td>
-      <td> <com:TLiteral ID="AnalyzerID" Text="" Encode="true"/> </td>
-    </tr>
-
-    <tr>
-      <td>Name:</td>
-      <td> <com:TLiteral ID="AnalyzerName" Text="" Encode="true"/> </td>
-    </tr>
-
-    <tr>
-      <td>Version:</td>
-      <td> <com:TLiteral ID="AnalyzerVersion" Text="" Encode="true"/> </td>
-    </tr>
-
-    <tr>
-      <td>Operating system:</td>
-      <td> <com:TLiteral ID="AnalyzerOS" Text="" Encode="true"/> </td>
-    </tr>
-
-    <tr>
-      <td>IP:</td>
-      <td> <com:TLiteral ID="AnalyzerIP" Text="" Encode="true"/> </td>
-    </tr>
-  </table>
+<com:TPanel GroupingText="<font size=6 color=white>Analyzer's Details:</font>" Width="100%">
+<br/>
+<table border="1" width="100%" cellpadding="5">
+  <tr>
+    <td id="AlertTag" width="20%">System ID</td>
+    <td id="AlertContent" colspan="3"><com:TLiteral ID="AnalyzerID" Text="&nbsp" Encode="true"/></td>
+  </tr>
+  <tr>
+    <td id="AlertTag" width="20%">Name</td>
+    <td id="AlertContent"><com:TLiteral ID="AnalyzerName" Text="&nbsp" Encode="true"/></td>
+    <td id="AlertTag" width="20%">Version</td>
+    <td id="AlertContent"><com:TLiteral ID="AnalyzerVersion" Text="&nbsp" Encode="true"/></td>
+  </tr>
+  <tr>
+    <td id="AlertTag" width="20%">OS</td>
+    <td id="AlertContent" colspan="3"><com:TLiteral ID="AnalyzerOS" Text="&nbsp" Encode="true"/></td>
+  </tr>
+  <tr>
+    <td id="AlertTag" width="20%">IP</td>
+    <td id="AlertContent" colspan="3"><com:TLiteral ID="AnalyzerIP" Text="&nbsp" Encode="true"/></td>
+  </tr>
+</table>
+</com:TPanel>
 
 </com:TContent>
+
+

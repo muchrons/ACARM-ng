@@ -1,4 +1,6 @@
 <com:TContent ID="content">
 <com:TImage ID="SeveritiesImg" Height="400" />
 <com:RangeSelector ID="Range" />
+
+<com:TClientScript PradoScripts="effects" />
 </com:TContent>

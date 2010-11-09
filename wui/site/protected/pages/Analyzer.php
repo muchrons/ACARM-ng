@@ -7,23 +7,30 @@ class Analyzer extends TPage
     parent::__construct();
     $analyzerID=$this->Request->itemAt('id');
     assert( $analyzerID!==null );
-    $this->analyzer_=CAnalyzerRecord::finder()->findByPk($analyzerID);
+    $this->analyzer_=CSQLMap::get()->queryForObject('SelectAnalyzer', $analyzerID);
   }
 
   public function onLoad()
   {
     if( $this->analyzer_===null )
       die("invalid analyzer / analyzer not set");
-    // initialization of GridData
+
     if(!$this->IsPostBack)
     {
-      // fill fileds with avlues
-      $this->AnalyzerID->Text     =$this->analyzer_->sys_id;
-      $this->AnalyzerName->Text   =$this->analyzer_->name;
-      $this->AnalyzerVersion->Text=$this->analyzer_->version;
-      $this->AnalyzerOS->Text     =$this->analyzer_->os;
-      $this->AnalyzerIP->Text     =$this->analyzer_->ip;
+      $this->AnalyzerID->Text=$this->analyzer_->sys_id;
+
+      $this->AnalyzerName->Text  = $this->getValueOrNA($this->analyzer_->name);
+      $this->AnalyzerVersion->Text=$this->getValueOrNA($this->analyzer_->version);
+      $this->AnalyzerOS->Text   =  $this->getValueOrNA($this->analyzer_->os);
+      $this->AnalyzerIP->Text   =  $this->getValueOrNA($this->analyzer_->ip);
     }
+  }
+
+  private function getValueOrNA($value)
+  {
+    if ($value === null)
+      return "N/A";
+    return $value;
   }
 
   private $analyzer_;
