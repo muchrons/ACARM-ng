@@ -19,7 +19,7 @@ $ make PROFILE=release
 
 if make exited with no errors system compiler successfully.  note that
 build process used to build ACARM-ng ensures valid dependencies and so
-'make' can be run in paraller (-jN where N is number of CPUs in the system).
+'make' can be run in parallel (-jN where N is number of CPUs in the system).
 
 
 external packages remarks
@@ -38,9 +38,9 @@ compiling without some features
 ===============================
 
 there is an option of compilation without certain features, like some of the
-triggers, inputs, filters or persistnecy types.
+triggers, inputs, filters or persistency types.
 
-TODO: describe how to do this (note: script making this easire would be nice)
+TODO: describe how to do this (note: script making this easier would be nice)
 
 
 running automatic tests
@@ -69,9 +69,6 @@ CONFIGURATION.txt for details on setting up data base in config file.
 data base
 =========
 
-currently only PostgreSQL is supported, though persistency mechanism is generic
-and any engine (also non-data-base - as long as transactions are supported) can
-be implemented.
 there are just a few steps required to prepare data base server to run with
 ACARM-ng.
 
@@ -84,6 +81,11 @@ PostgreSQL
 
 note: if you want to run tests create 'acarm_ng_test' data base and use
       'init_test_db' script to fill it with data.
+
+Stubs:
+------
+there is no extra configuration required for this mechanism. it is just enough
+to enable it in config file (see CONFIGURATION.txt for details).
 
 preparing environment
 =====================
@@ -114,12 +116,12 @@ options.
 running
 =======
 
-assuming you have everything configuread as described above, switch to
+assuming you have everything configured as described above, switch to
 'acarm-ng' user and in the home directory run:
 $ LD_LIBRARY_PATH="$HOME/libs" ./acarmng
 
 system is now up and running! depending no how you configred logger, you can
-search in proper outputs (ex. file) logged messages to se what's up at the
+search in proper outputs (ex. file) logged messages to see what's up at the
 moment. feel free to run acarm-ng in background with nohup/screen/etc...
 
 
@@ -132,12 +134,14 @@ A: check if you have latest version of sources. check if you have all required
 
 Q: source compiles with warnings.
 A: send us report from compilation along with you environment details (compiler
-   type and version, libraries versions, configuration.
+   type and version, libraries versions, build configuration, system).
 
 Q: i've spotted runtime error not described anywhere - i think it's a bug.
 A: compile ACARM-ng in debug profile and check again - logging is much more
    verbose then and extra assertions are present in the code. to do this run:
    $ make PROFILE=debug
+   now you'll have full information on what is happening inside the system.
+   if what you have found appears to be a bug, please report it.
 
 Q: when running i get error about missing *.so objects.
 A: you don't have LD_LIBRARY_PATH set correctly - ACARM-ng uses libraries that
@@ -146,9 +150,14 @@ A: you don't have LD_LIBRARY_PATH set correctly - ACARM-ng uses libraries that
 Q: i have problems with configuration file's syntax.
 A: here is minimal, valid configuration. note: its useless for production,
    since it does nothing (except for logging to file), but can be easily
-   expanded, step by step, to help find what your problem is. file:
+   expanded, step by step, to help find what your problem is. file's content:
      <?xml version="1.0" encoding="UTF-8"?>
      <acarm_ng>
+
+       <general>
+         <url>https://url.to.wui</url>
+         <cleanupInterval>8</cleanupInterval>
+       </general>
 
        <persistency>
          <type>stubs</type>
@@ -172,7 +181,6 @@ A: here is minimal, valid configuration. note: its useless for production,
        <triggers/>
 
        <inputs>
-         <someinput/>
        </inputs>
 
      </acarm_ng>
