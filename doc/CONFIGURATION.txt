@@ -61,6 +61,7 @@ configuration of persistency requires only giving its type to use and options
 for it.
 
 following persistencies are supported:
+
   * PostgreSQL:
 <persistency>
   <type>postgres</type>
@@ -71,14 +72,22 @@ following persistencies are supported:
   <port>5432</port>
 </persistency>
 
+  * Stub (no persistent storage):
+<persistency>
+  <type>stubs</type>
+</persistency>
+
 
 
 logger configuration
 ====================
 
 logger's configuration consists of two parts: appenders configuration and
-logger nodes configuration.
-at this moment only appenders can be assigned to a particular nodes.
+logger nodes configuration. at first appenders are created and configured,
+then they are assigned to nodes. along with appenders threshold vaues can
+be assigned, i.e. given node can log when message priority is no less than
+a given value.
+
 example configuration may look like this:
 
 <logger>
@@ -97,7 +106,7 @@ example configuration may look like this:
     </multiappender>
   </appenders>
 
-  <nodes appender="everywhere" threshold="info"> <!-- default is everywhere/info -->
+  <nodes appender="everywhere" threshold="info"> <!-- root: default is everywhere/info -->
     <someChild appender="console"/>                       <!-- console/info -->
     <otherChild>                                          <!-- console/info -->
       <subChild1 appender="file_app1"/>                   <!-- file_app1/info -->
@@ -107,7 +116,53 @@ example configuration may look like this:
   </nodes>
 </logger>
 
-TODO: describe appenders.
+following appenders are available:
+  * file - writes logs to a given file
+<file name="filelog">
+  <output>system.log</output> <!-- file to write to -->
+</file>
+
+  * console - outputs to screen
+<console name="screenout"/>
+
+  * syslog - writes messages to syslog
+<syslog name="syslogout"/>
+
+  * multiappender - writes to given appenders (facade)
+<multiappender name="writetothem">
+  <appender>filelog</appender>
+  <!-- ... -->
+  <appender>stdout</appender>
+</multiappender>
+
+  * null - discards all logs, regardless of their priority
+<null name="discardall"/>
+
+nodes are configured in tree structure. root node is the default. each sub-node
+is separeted by dot ('.'). for example following tree:
+   node1
+   /   \
+node2 node3
+         \
+        node 4
+has following elements:
+  node1
+  node1.node2
+  node1.node3
+  node1.node3.node4
+and corresponding XML structure:
+  <node1>
+    <node2/>
+    <node3>
+      <node4/>
+    </node3>
+  </node1>
+
+notice that appenders and threshold are derived from parents to childrent,
+unless explicitly overwritten. thus the minimal, valid configuration for the
+whole free has form:
+  <nodes appender="..." threshold="..."/>
+since all children will simply derive this information from their parents.
 
 
 filters configuration
