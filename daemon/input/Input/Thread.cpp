@@ -36,7 +36,8 @@ void Thread::operator()(void)
     {
       boost::this_thread::interruption_point();                 // check for interruption
       BackendFacade   bf(conn_, reader_->getType(), creator);   // create backedn facade for this run
-      Reader::DataPtr ptr=reader_->read(bf, 30);                // timeout every 30[s]
+      // TODO: this value should be moved to const-config module.
+      Reader::DataPtr ptr=reader_->read(bf, 11);                // timeout every 11[s]
       bf.commitChanges();                                       // accept changes introduced by facede
       if( ptr.get()!=NULL )                                     // if data is valid, forward it
       {
