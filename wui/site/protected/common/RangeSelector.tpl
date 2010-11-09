@@ -13,8 +13,8 @@
           <com:TListItem ID="CBcritical" Value="critical" Text="Critical" Selected="true" />
           <com:TListItem ID="CBerror"  Value="error" Text="Error" Selected="true" />
           <com:TListItem ID="CBproblem"  Value="problem" Text="Problem" Selected="true" />
-          <com:TListItem ID="CBdebug"  Value="debug" Text="Debug" Selected="false" />
           <com:TListItem ID="CBwarning"  Value="warning" Text="Warning" Selected="true" />
+          <com:TListItem ID="CBdebug"  Value="debug" Text="Debug" Selected="false" />
           <com:TListItem ID="CBinfo"  Value="info" Text="Info" Selected="false" />
         </com:TCheckBoxList>
       </td>

@@ -12,7 +12,7 @@ class DataMiningSeverity extends TPage
 
     $from=$this->Range->From->Date;
     $to=$this->Range->To->Date;
-    $severities=implode($this->Range->CB->SelectedValues);
+    $severities=implode('.',$this->Range->CB->SelectedValues);
     $src=$this->Range->srcip->Text;
     $dst=$this->Range->dstip->Text;
 
@@ -25,8 +25,9 @@ class DataMiningSeverity extends TPage
   private function constructUrl($width,$height,$from,$to,$severities,$src,$dst)
   {
     $linkdata=array( 'title' => 'Alert count by severity type',
-                     'width' => $this->SeveritiesImg->width,
-                     'height' => $this->SeveritiesImg->height,
+                     'width' => $width,
+                     'height' => $height,
+                     'query' => 'DMSeverities',
                      'from' => $from,
                      'to' => $to,
                      'severities' => $severities,

@@ -147,19 +147,27 @@
     ]]>
   </select>
 
-  <select id="DMAlertTypes" resultClass="CDMPair">
-    select name as key,count(name) as value from Alerts group by name order by count(name) DESC;
+
+  <select id="DMAlertCountTimeSeries" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
+    <![CDATA[
+    SELECT key,value FROM 
+      (SELECT date_trunc('day', create_time) AS key FROM
+        alerts WHERE create_time>#date_from# AND create_time<#date_to# GROUP BY key) AS a
+        LEFT JOIN (SELECT date_trunc('day', create_time) AS date2, count(*) AS value FROM
+        alerts LEFT JOIN severities AS s ON alerts.id_severity=s.id WHERE s.name=#severities# GROUP BY date2) AS b ON a.key=b.date2 ORDER BY key;
+    ]]>
   </select>
 
-  <select id="DMAlertCountTimeSeries" resultClass="CDMPair" parameterClass="string">
-    select key,value from (select date_trunc('day', create_time) AS key from alerts group by key) as a
-    LEFT JOIN (select date_trunc('day', create_time) AS date2, count(*) as value from alerts LEFT JOIN severities AS s ON alerts.id_severity=s.id WHERE s.name=#value# group by date2) as b
-    on a.key=b.date2 order by key;
+  <select id="DMAlertTypes" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
+    <![CDATA[
+    SELECT name AS key,count(name) AS value FROM Alerts WHERE create_time<#date_to# AND create_time>#date_from# GROUP BY name ORDER BY count(name) DESC;
+    ]]>
   </select>
 
-<!-- TODO: why id_severity>0 ? note that id_severity!=severity.level ! -->
-  <select id="DMMetaAlertCountTimeSeries" resultClass="CDMPair">
-    select to_char(create_time,'YYYY-MM-DD') as key,count(*) as value from meta_alerts where severity_delta >=0 group by key order by key;
+  <select id="DMMetaAlertCountTimeSeries" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
+    <![CDATA[
+    SELECT date_trunc('day', create_time) AS key ,count(*) AS value FROM meta_alerts WHERE create_time<#date_to# AND create_time>#date_from# AND severity_delta>=0 GROUP BY key ORDER BY key;
+    ]]>
   </select>
 
   <!-- HeatMap Query -->

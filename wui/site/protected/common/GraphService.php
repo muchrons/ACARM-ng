@@ -10,18 +10,38 @@ require_once('lib/jpgraph/jpgraph_pie3d.php');
 require_once('lib/jpgraph/jpgraph_line.php');
 require_once('lib/jpgraph/jpgraph_date.php');
 
-
-class GraphService extends TService
+class GraphParams
 {
-  public function init($config)
+  function __construct($request)
   {
-    $this->Response->ContentType="image/png";
-    $request = Prado::getApplication()->getRequest();
-    $this->type =  TPropertyValue::ensureString($this->getRequestOrDefault($request, 'graph', 'You must specify the type of the graph'));
+    $this->type  = TPropertyValue::ensureString($this->getRequestOrDefault($request, 'graph', 'You must specify the type of the graph'));
     $this->width = TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'width',  'You must specify the width of the graph'));
-    $this->height = TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'height', 'You must specify the height of the graph'));
-    $this->title=TPropertyValue::ensureString($this->getRequestOrDefault($request, 'title', 'No title'));
-    $this->query=TPropertyValue::ensureString($this->getRequestOrDefault($request, 'query', null));
+    $this->height= TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'height', 'You must specify the height of the graph'));
+    $this->title = TPropertyValue::ensureString($this->getRequestOrDefault($request, 'title', 'No title'));
+    $this->query = TPropertyValue::ensureString($this->getRequestOrDefault($request, 'query', null));
+
+    $qparam=new CParamRange();
+
+    $this->qparam->src=$this->getRequestOrDefault($request, 'src', null);
+    $this->qparam->dst=$this->getRequestOrDefault($request, 'dst', null);
+
+    if ($this->qparam->dst=='any')
+      {
+        $this->qparam->dst='0.0.0.0';
+        $this->qparam->ignoredst=1;
+      } else
+      $this->qparam->ignoredst=0;
+
+    if ($this->qparam->src=='any')
+      {
+        $this->qparam->src='0.0.0.0';
+        $this->qparam->ignoresrc=1;
+      } else
+      $this->qparam->ignoresrc=0;
+
+    $this->qparam->date_from=$this->getRequestOrDefault($request, 'from', null);
+    $this->qparam->date_to=$this->getRequestOrDefault($request, 'to', null);
+    $this->qparam->severities=$this->getRequestOrDefault($request, 'severities', null);
   }
 
   private function getRequestOrDefault($request, $field, $value)
@@ -36,6 +56,24 @@ class GraphService extends TService
     if (!$request->contains($field))
       throw new TConfigurationException($text);
     return $request[$field];
+  }
+
+  public $type;  //type of the graph
+  public $width;
+  public $height;
+  public $title;
+  public $query; //DB query name
+  public $qparam; //parameters for queries
+}
+
+
+class GraphService extends TService
+{
+  public function init($config)
+  {
+    $this->Response->ContentType="image/png";
+    $request = Prado::getApplication()->getRequest();
+    $this->params=new GraphParams($request);
   }
 
   public function getWidth()
@@ -60,23 +98,19 @@ class GraphService extends TService
 
   public function run()
   {
-    switch( $this->type )
+    switch( $this->params->type )
     {
     case "AlertTimeSeries":
-      $graph = $this->createAlertTimeSeries($this->query,$this->title);
+      $graph = $this->createAlertTimeSeries();
       break;
     case "SeverityPie":
-      $request = Prado::getApplication()->getRequest();
-      $src=$this->getRequestOrDefault($request, 'src', null);
-      $dst=$this->getRequestOrDefault($request, 'dst', null);
-      $from=$this->getRequestOrDefault($request, 'from', null);
-      $to=$this->getRequestOrDefault($request, 'to', null);
-      $severities=$this->getRequestOrDefault($request, 'severities', null);
-
-      $graph = $this->createSeverityChart('DMSeverities',$src,$dst,$from,$to,$severities);
+      $graph = $this->createSeverityChart();
       break;
     case "AlertTypes":
-      $graph = $this->createAlertTypeChart('DMAlertTypes');
+      $graph = $this->createAlertTypeChart();
+      break;
+    case "MetaAlertTimeSeries":
+      $graph = $this->createAlertTimeSeries();
       break;
     default:
       // Display LED screen with an error message in place of a graph
@@ -85,19 +119,15 @@ class GraphService extends TService
       $led->StrokeNumber(' WRONG GRAPH TYPE ',LEDC_YELLOW);
       return;
     }
-
     $graph->Stroke();
   }
 
-  private function issueQuery2d($q,$param,$append="")
+  private function issueQuery2d($param,$append="")
   {
-    if ($param === null)
-      $pairs=CSQLMap::get()->queryForList($q);
+    if ($param->query->qparam === null)
+      $pairs=CSQLMap::get()->queryForList($param->query,$param->qparam);
     else
-      $pairs=CSQLMap::get()->queryForList($q,$param);
-
-    $xdata = array();
-    $ydata = array();
+      $pairs=CSQLMap::get()->queryForList($param->query,$param->qparam);
 
     foreach( $pairs as $e )
     {
@@ -108,12 +138,9 @@ class GraphService extends TService
     return array($xdata, $ydata);
   }
 
-  private function issueQuery2dTime($q,$severity)
+  private function issueQuery2dTime($param)
   {
-    $pairs=CSQLMap::get()->queryForList($q,$severity);
-
-    $xdata = array();
-    $ydata = array();
+    $pairs=CSQLMap::get()->queryForList($param->query,$param->qparam);
 
     foreach( $pairs as $e )
     {
@@ -121,39 +148,34 @@ class GraphService extends TService
       $ydata[] = ($e->value===null)?0:$e->value;
     }
 
-    return array($xdata, $ydata);
+    return array($xdata, $ydata, $param->qparam->severities);
   }
 
-
-  private function createSeverityChart($q,$src,$dst,$from,$to,$severities)
+  private function severityToColor($sev)
   {
-    $CParamRange1 = new CParamRange();
+    $name=substr($sev,0,4); //strip "(%d)"
 
-    if ($dst=='any')
+    switch ($name)
       {
-        $CParamRange1->dst='0.0.0.0';
-        $CParamRange1->ignoredst=1;
-      } else
-      {
-        $CParamRange1->dst=$dst;
-        $CParamRange1->ignoredst=0;
+      case 'prob':
+        return "#ff8800";
+      case 'warn':
+        return "#ffee00";
+      case 'erro':
+        return "#ff5500";
+      case 'crit':
+        return "#ff0000";
+      case 'info':
+        return "#00ff00";
+      case 'debu':
+        return "#2d88ff";
       }
+    return "#cccccc";
+  }
 
-    if ($src=='any')
-      {
-        $CParamRange1->src='0.0.0.0';
-        $CParamRange1->ignoresrc=1;
-      } else
-      {
-        $CParamRange1->src=$src;
-        $CParamRange1->ignoresrc=0;
-      }
-
-    $CParamRange1->date_from=$from;
-    $CParamRange1->date_to=$to;
-    $CParamRange1->severities=$severities;
-
-    $data=$this->issueQuery2d($q,$CParamRange1," (%d)");
+  private function createSeverityChart()
+  {
+    $data=$this->issueQuery2d($this->params," (%d)");
 
     if (count($data[0])==0)
       {
@@ -171,33 +193,8 @@ class GraphService extends TService
     $p1->SetLabelType(PIE_VALUE_PER);
     $p1->value->SetFont(FF_ARIAL,FS_NORMAL,12);
 
-
     foreach ($data[0] as $d)
-      {
-        $name=substr($d,0,4); //strip "(%d)"
-
-        switch ($name)
-          {
-          case 'prob':
-            $colors[]="#ff8800";
-            break;
-          case 'warn':
-            $colors[]="#ffee00";
-            break;
-          case 'erro':
-            $colors[]="#ff5500";
-            break;
-          case 'crit':
-            $colors[]="#ff0000";
-            break;
-          case 'info':
-            $colors[]="#00ff00";
-            break;
-          case 'debu':
-            $colors[]="#2d88ff";
-            break;
-          }
-      }
+      $colors[]=$this->severityToColor($d);
 
     if ($empty)
       $colors=array('#aaaaaa');
@@ -208,13 +205,13 @@ class GraphService extends TService
     $p1->value->SetFormat("%d");
 
     // Create the Pie Graph.
-    $graph = new PieGraph($this->width,$this->height,'auto');
+    $graph = new PieGraph($this->params->width,$this->params->height,'auto');
 
     // Set different title for an empty plot
     if ($empty)
       $graph->title->Set("No data matching your criteria");
     else
-      $graph->title->Set($this->title);
+      $graph->title->Set($this->params->title);
 
     $graph->title->SetMargin(8);
     $graph->title->SetFont(FF_VERDANA,FS_BOLD,12);
@@ -224,10 +221,10 @@ class GraphService extends TService
     return $graph;
   }
 
-  private function createAlertTypeChart($q)
+  private function createAlertTypeChart()
   {
     // Setup the graph.
-    $graph = new Graph($this->width,$this->height);
+    $graph = new Graph($this->params->width,$this->params->height);
     $graph->img->SetMargin(60,55,95,95);
     $graph->SetScale("textlog");
     $graph->SetAngle(90);
@@ -246,7 +243,7 @@ class GraphService extends TService
     // Show 0 label on Y-axis (default is not to show)
     $graph->yscale->ticks->SupressZeroLabel(false);
 
-    $data=$this->issueQuery2d($q,null);
+    $data=$this->issueQuery2d($this->params,null);
 
     // Setup X-axis labels
     $graph->xaxis->SetTickLabels($data[0]);
@@ -274,21 +271,31 @@ class GraphService extends TService
     return $graph;
   }
 
-  private function createAlertTimeSeries($q)
+  private function createAlertTimeSeries()
   {
-    $graph = new Graph($this->width,$this->height);
+    $graph = new Graph($this->params->width,$this->params->height);
     $graph->SetMargin(50,40,30,130);
     $graph->SetScale('datlin',0,100);
-    $graph->title->Set($this->title);
+    $graph->title->Set($params->title);
 
-    $dataWarning=$this->issueQuery2dTime($q,'warning');
-    $dataCritical=$this->issueQuery2dTime($q,'critical');
-    $dataProblem=$this->issueQuery2dTime($q,'problem');
-    $dataError=$this->issueQuery2dTime($q,'error');
+    $severities=explode(".",$this->params->qparam->severities);
 
-    $maxval=max($dataWarning[1],$dataError[1],$dataProblem[1],$dataCritical[0]);
+    $params=$this->params;
 
-    if (count($dataWarning[0])==0 && count($dataCritical[0])==0 )
+    foreach ($severities as $s)
+      {
+        $params->qparam->severities=$s;
+        $data[0][]=$this->issueQuery2dTime($params);
+        $data[1][]=$s;
+      }
+
+    $count=count($data[0]);
+
+    $maxval=0;
+    for ($i=0; $i<$count; $i++)
+      $maxval+=max($data[0][$i][1]);
+
+    if ($maxval==0)
       {
         $led = new DigitalLED74(2);
         $led->SetSupersampling(5);
@@ -296,38 +303,25 @@ class GraphService extends TService
         die();
       }
 
-    $graph->SetScale('datlin',0,maxval);
+    $graph->SetScale('datlin',0,$maxval);
     $graph->xaxis->SetLabelAngle(90);
 
-    $line[] = new LinePlot($dataCritical[1],$dataCritical[0]);
-    end($line)->setLegend("Critical");
-    end($line)->SetFillColor('red');
-
-    $line[] = new LinePlot($dataError[1],$dataError[0]);
-    end($line)->setLegend("Error");
-    end($line)->SetFillColor('orange');
-
-    $line[] = new LinePlot($dataProblem[1],$dataProblem[0]);
-    end($line)->setLegend("Problem");
-    end($line)->SetFillColor('yellow');
-
-    $line[] = new LinePlot($dataWarning[1],$dataWarning[0]);
-    end($line)->setLegend("Warning");
-    end($line)->SetFillColor('lightblue@0.3');
+    for ($i=0; $i<$count; $i++)
+      {
+        if (count($data[0][$i][1])==0)
+          continue;
+        $line[] = new LinePlot($data[0][$i][1],$data[0][$i][0]);
+        end($line)->setLegend($data[1][$i]);
+        end($line)->SetFillColor($this->severityToColor($data[1][$i]));
+      }
 
     $accplot = new AccLinePlot($line);
 
     $graph->Add($accplot);
-    //$graph->Add($line[0]);
     return $graph;
   }
 
-
-  private $query = null;
-  private $type;
-  private $width;
-  private $height;
-  private $title;
+  private $params;
 }
 
 ?>
