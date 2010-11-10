@@ -1,5 +1,4 @@
 <com:TContent ID="content">
-
-<com:TImage ID="MetaAlertTS" />
-
+<com:TImage ID="AlertTS" Height="400" />
+<com:RangeSelector ID="Range" />
 </com:TContent>

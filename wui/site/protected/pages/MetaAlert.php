@@ -16,40 +16,46 @@ class MetaAlert extends TPage
       die("invalid meta-alert / meta-alert not set");
     // initialization of GridData
     if(!$this->IsPostBack)
-    {
-      // fill fileds with avlues
-      $this->MetaAlertName->Text          =$this->metaAlert_->name;
-      $this->MetaAlertCreateTime->Text    =$this->metaAlert_->create_time;
-      $this->MetaAlertLastUpdateTime->Text=$this->metaAlert_->last_update_time;
-      $this->MetaAlertSeverityDelta->Text =$this->metaAlert_->severity_delta;
-      $this->MetaAlertCertaintyDelta->Text=$this->metaAlert_->certainty_delta;
-      // node or leaf?
-      if($this->metaAlert_->id_alert===null)
       {
-        // node
-        $this->MetaAlertLinksName->Text="Children";
-        $this->MetaAlertLinks->Text    =$this->makeChildrenLinkList($this->metaAlert_->id);
-      }
-      else
-      {
-        // leaf
-        $this->MetaAlertLinksName->Text="Associated alert";
-        $this->MetaAlertLinks->Text    =$this->makeLinkTo('Alert', $this->metaAlert_->id_alert, 'details');
-      }
-    } // if(!post_back)
+        $this->MetaAlertCreateTime->Text=$this->metaAlert_->create_time;
+        $this->MetaAlertUpdateTime->Text=$this->metaAlert_->last_update_time;
+        $idAlert=$this->metaAlert_->id;
+
+        $alerts=CSQLMap::get()->queryForList('SelectMetaAlertsChildren', $idAlert);
+
+        foreach ($alerts as $a)
+          if ($a->alertid === null)
+            $data[]=array('name'=>$this->makeLinkTo('MetaAlert', $a->metaalertid, $a->name));
+          else
+            $data[]=array('name'=>$this->makeLinkTo('Alert', $a->alertid, $a->name));
+
+        $this->RelatedAlerts->DataSource=$data;
+        $this->RelatedAlerts->dataBind();
+
+        $filters=preg_split('/\s+/', $this->metaAlert_->name);
+
+        $this->MetaAlertName->Text="";
+
+        foreach($filters as $f)
+          {
+            if ($f=='[many2one]')
+              $this->Correlated->Text.="<img src=\"pics/filters/MTO.png\" border=2>";
+            else
+            if ($f=='[one2many]')
+              $this->Correlated->Text.="<img src=\"pics/filters/OTM.png\" border=2>";
+            else
+            if ($f=='[samename]')
+              $this->Correlated->Text.="<img src=\"pics/filters/name.png\" border=2>";
+            else
+            if ($f=='[many2many]')
+              $this->Correlated->Text.="<img src=\"pics/filters/MTM.png\" border=2>";
+            else
+              $this->MetaAlertName->Text.=$f." ";
+          }
+
+      } // if(!post_back)
   }
 
-
-  private function makeChildrenLinkList($idAlert)
-  {
-    $pairs=CSQLMap::get()->queryForList('SelectMetaAlertsChildren', $idAlert);
-    $out  ="";
-    foreach($pairs as $e)
-    {
-      $out.=$this->makeLinkTo('MetaAlert', $e->id, $e->name) . '<br/>';
-    }
-    return $out;
-  }
 
   private function makeLinkTo($page, $id, $name)
   {

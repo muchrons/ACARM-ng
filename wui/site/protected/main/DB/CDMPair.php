@@ -1,6 +1,6 @@
 <?php
 
-// TODO: CDM==?
+  //DataMining pair
 class CDMPair
 {
   public $key;
