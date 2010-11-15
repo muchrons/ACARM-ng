@@ -75,10 +75,10 @@ public:
   {
     ensure();
   }
-  /** \brief conversion operator.
+  /** \brief conversion to boost::shared_ptr<>.
    *  \return boost::shared_ptr<> for a given value.
    */
-  operator PtrT(void) const
+  PtrT shared_ptr(void) const
   {
     assert( ptr_.get()!=NULL );
     return ptr_;

@@ -90,7 +90,7 @@ public:
   /** \brief dereference operator.
    *  \return const reference to this.
    */
-  const reference operator*(void) const //TODO warning #21: type qualifiers are meaningless in this declaration
+  const reference operator*(void) const
   {
     return *get();
   }
