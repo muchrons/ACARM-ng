@@ -36,7 +36,7 @@ void testObj::test<1>(void)
 {
   std::stringstream ss;
   LinkWUI::append( ss, makeNewLeaf() );
-  ensure_equals("invalid report", ss.str(), "http://test.url/index.php?page=MetaAlertReport&id=303");
+  ensure_equals("invalid report", ss.str(), "http://test.url/index.php?page=MetaAlert&id=303");
 }
 
 } // namespace tut
