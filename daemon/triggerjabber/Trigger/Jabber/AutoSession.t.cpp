@@ -3,7 +3,7 @@
  *
  */
 #include <tut.h>
-#include <loudmouth/loudmouth.h>
+#include <gloox/client.h>
 
 #include "Trigger/Jabber/AutoSession.hpp"
 #include "Trigger/Jabber/TestAccount.t.hpp"

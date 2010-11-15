@@ -6,7 +6,7 @@
 #define INCLUDE_TRIGGER_JABBER_CONNECTION_HPP_FILE
 
 #include <boost/noncopyable.hpp>
-#include <loudmouth/loudmouth.h>
+#include <gloox/client.h>
 #include <cassert>
 
 #include "Logger/Node.hpp"
@@ -38,7 +38,7 @@ public:
    *  \return session pointer.
    *  \note pointer is guaranteed to be non-NULL.
    */
-  const LmConnection *get(void) const
+  const gloox::Client *get(void) const
   {
     assert( sess_.get()!=NULL );
     return sess_.get();
@@ -47,14 +47,14 @@ public:
    *  \return session pointer.
    *  \note pointer is guaranteed to be non-NULL.
    */
-  LmConnection *get(void)
+  gloox::Client *get(void)
   {
     assert( sess_.get()!=NULL );
     return sess_.get();
   }
 
 private:
-  LmConnection *connect(void) const;
+  AutoSession connect(void) const;
 
   Logger::Node          log_;
   const AccountConfig   cfg_;

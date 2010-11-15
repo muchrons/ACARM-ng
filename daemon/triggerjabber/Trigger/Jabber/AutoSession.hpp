@@ -5,8 +5,8 @@
 #ifndef INCLUDE_TRIGGER_JABBER_AUTOSESSION_HPP_FILE
 #define INCLUDE_TRIGGER_JABBER_AUTOSESSION_HPP_FILE
 
-#include <loudmouth/loudmouth.h>
-
+//#include <loudmouth/loudmouth.h>
+#include <gloox/client.h>
 #include "System/AutoVariable.hpp"
 
 namespace Trigger
@@ -22,7 +22,7 @@ class SessionAutoHolder
 {
 public:
   /** \brief typedef for element held inside. */
-  typedef LmConnection* TValue;
+  typedef gloox::Client* TValue;
 
   /** \brief create object from given pointer.
    *  \param v value to be assigned.
@@ -51,8 +51,8 @@ public:
   {
     if(v_!=NULL)
     {
-      lm_connection_close (v_, NULL);
-      lm_connection_unref (v_);
+      //lm_connection_close (v_, NULL);
+      //lm_connection_unref (v_);
       v_=NULL;
     }
   }
