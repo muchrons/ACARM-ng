@@ -2,6 +2,8 @@
  * openElement.cpp
  *
  */
+#include <cerrno>
+#include <cstring>
 #include <cassert>
 
 #include "Commons/Filesystem/openElement.hpp"
@@ -34,7 +36,7 @@ SharedPtrNotNULL<std::fstream> openElement(const boost::filesystem::path &p,
   SharedPtrNotNULL<std::fstream> out( new std::fstream(p.string().c_str(), openMode) );
   assert( out.get()!=NULL );
   if( out->is_open()==false )
-    throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "fstream/open", "unable to open file");
+    throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "fstream/open", strerror(errno) );
   // return final object
   return out;
 }
