@@ -54,7 +54,7 @@ void Thread::operator()(void)
     }
     catch(const Commons::Exception &ex)
     {
-      LOGMSG_ERROR_S(log_)<<"exception ("<< ex.getTypeName() <<")caught: '"
+      LOGMSG_ERROR_S(log_)<<"exception ("<< ex.getTypeName() <<") caught: '"
                           << ex.what() <<"' - proceeding with work";
     }
     catch(const std::exception &ex)
