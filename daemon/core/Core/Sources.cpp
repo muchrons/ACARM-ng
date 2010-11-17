@@ -38,7 +38,8 @@ Persistency::GraphNodePtrNN Sources::read(void)
   GraphNodePtrNN  leaf( new GraphNode(alert, Facades::IDAssigner::get()->assignMetaAlertID(conn_, t), conn_, t) );
   LOGMSG_DEBUG(log_, "creating object done - commiting transaction");
   t.commit();
-  LOGMSG_DEBUG(log_, "alert and meta-alert successfuly written to data base");
+  LOGMSG_INFO_S(log_)<<"alert and meta-alert successfuly written to persistency (ID="
+                     <<leaf->getMetaAlert()->getID().get()<<")";
 
   return leaf;
 }
@@ -56,7 +57,7 @@ Persistency::AlertPtrNN Sources::readAlert(void)
       LOGMSG_DEBUG(log_, "alert accepted by preprocessor");
       return alert;
     }
-    LOGMSG_DEBUG(log_, "alert rejected by preprocessor - awaiting new one");
+    LOGMSG_INFO_S(log_)<<"alert '"<< alert->getName().get() <<"'rejected by preprocessor";
   } // for(true)
 }
 

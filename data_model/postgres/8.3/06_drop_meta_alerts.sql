@@ -9,13 +9,13 @@ DROP TABLE    meta_alerts_tree;
 
 DROP FUNCTION ensure_leafs_are_unique();
 
-DROP FUNCTION link_meta_alerts(int, int);
+DROP FUNCTION link_meta_alerts(bigint, bigint);
 
-DROP FUNCTION get_parents(int);
-DROP FUNCTION get_parents_impl(int);
+DROP FUNCTION get_parents(bigint);
+DROP FUNCTION get_parents_impl(bigint);
 
-DROP FUNCTION get_children(int);
-DROP FUNCTION get_children_impl(int);
+DROP FUNCTION get_children(bigint);
+DROP FUNCTION get_children_impl(bigint);
 
 DROP TABLE    meta_alerts;
 DROP SEQUENCE meta_alerts_id_seq;

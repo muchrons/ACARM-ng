@@ -6,9 +6,9 @@
 CREATE SEQUENCE meta_alerts_id_seq;
 CREATE TABLE    meta_alerts
 (
-  id               int          PRIMARY KEY DEFAULT nextval('meta_alerts_id_seq'),
-  sys_id           int          NOT NULL UNIQUE,
-  id_ref           int          NULL REFERENCES reference_urls(id) DEFAULT NULL,
+  id               bigint       PRIMARY KEY DEFAULT nextval('meta_alerts_id_seq'),
+  sys_id           bigint       NOT NULL UNIQUE,
+  id_ref           bigint       NULL REFERENCES reference_urls(id) DEFAULT NULL,
   name             varchar(256) NOT NULL,
   severity_delta   real         NOT NULL DEFAULT 0,
   certainty_delta  real         NOT NULL DEFAULT 0,
@@ -21,8 +21,8 @@ CREATE INDEX meta_alerts_sys_id_index ON meta_alerts(sys_id);
 -- alert to meta-alert mapping table
 CREATE TABLE alert_to_meta_alert_map
 (
-  id_alert      int NOT NULL REFERENCES alerts(id),
-  id_meta_alert int NOT NULL REFERENCES meta_alerts(id),
+  id_alert      bigint NOT NULL REFERENCES alerts(id),
+  id_meta_alert bigint NOT NULL REFERENCES meta_alerts(id),
 
   UNIQUE(id_alert, id_meta_alert)
 );
@@ -73,8 +73,8 @@ CREATE TABLE alert_to_meta_alert_map
 -- meta alerts tree
 CREATE TABLE meta_alerts_tree
 (
-  id_node  int NOT NULL REFERENCES meta_alerts(id),
-  id_child int NOT NULL REFERENCES meta_alerts(id),
+  id_node  bigint NOT NULL REFERENCES meta_alerts(id),
+  id_child bigint NOT NULL REFERENCES meta_alerts(id),
 
   UNIQUE(id_node, id_child)
 );
@@ -89,10 +89,10 @@ CREATE INDEX meta_alerts_tree_id_child_index ON meta_alerts_tree(id_child);
 --
 
 -- get_parents_impl()
-CREATE FUNCTION get_parents_impl(id int) RETURNS SETOF int AS
+CREATE FUNCTION get_parents_impl(id bigint) RETURNS SETOF bigint AS
 $$
 DECLARE
-  id_node_parent int;
+  id_node_parent bigint;
 BEGIN
   FOR id_node_parent IN SELECT id_node FROM meta_alerts_tree WHERE id_child=id
   LOOP
@@ -103,7 +103,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- get_parents()
-CREATE FUNCTION get_parents(id int) RETURNS SETOF int AS
+CREATE FUNCTION get_parents(id bigint) RETURNS SETOF bigint AS
 $$
 BEGIN
   -- empty set for NULLs
@@ -116,10 +116,10 @@ $$ LANGUAGE plpgsql;
 
 
 -- get_children_impl()
-CREATE FUNCTION get_children_impl(id int) RETURNS SETOF int AS
+CREATE FUNCTION get_children_impl(id bigint) RETURNS SETOF bigint AS
 $$
 DECLARE
-  id_node_child int;
+  id_node_child bigint;
 BEGIN
   FOR id_node_child IN SELECT id_child FROM meta_alerts_tree WHERE id_node=id AND id_child IS NOT NULL
   LOOP
@@ -130,7 +130,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- get_children()
-CREATE FUNCTION get_children(id int) RETURNS SETOF int AS
+CREATE FUNCTION get_children(id bigint) RETURNS SETOF bigint AS
 $$
 BEGIN
   -- empty set for NULLs
@@ -143,7 +143,7 @@ $$ LANGUAGE plpgsql;
 
 
 -- link_meta_alerts()
-CREATE FUNCTION link_meta_alerts(id_from int, id_to int) RETURNS void AS
+CREATE FUNCTION link_meta_alerts(id_from bigint, id_to bigint) RETURNS void AS
 $$
 BEGIN
   -- NULLs are not allowed

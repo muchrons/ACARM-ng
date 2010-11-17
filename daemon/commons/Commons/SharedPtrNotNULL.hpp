@@ -1,6 +1,9 @@
 /*
  * SharedPtrNotNull.hpp
  *
+ * this class is copy of System::SharedPtrNotNULL<> that throws difference exception
+ * that saves log message in case of error as well.
+ *
  */
 #ifndef INCLUDE_COMMONS_SHAREDPTRNOTNULL_HPP_FILE
 #define INCLUDE_COMMONS_SHAREDPTRNOTNULL_HPP_FILE
