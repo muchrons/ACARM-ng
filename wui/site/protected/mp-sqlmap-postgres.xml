@@ -47,10 +47,16 @@
       WHERE h1.id_alert=h2.id_alert AND h1.id_alert=a.id AND h1.role='src' AND h2.role='dst' AND s.id=a.id_severity AND a.id=#VALUE#;
   </select>
 
-  <select id="SelectMetaAlert" resultClass="CMetaAlertEntry" parameterClass="int">
+  <select id="SelectMetaAlertID" resultClass="CMetaAlertEntry" parameterClass="int">
     SELECT ma.id AS id, ma.name AS name, ma.create_time AS create_time, ma.last_update_time AS last_update_time, ma.severity_delta AS severity_delta, ma.certainty_delta AS certainty_delta, m.id_alert AS id_alert 
       FROM meta_alerts AS ma LEFT JOIN alert_to_meta_alert_map AS m ON m.id_meta_alert=ma.id 
       WHERE id=#value#
+  </select>
+
+  <select id="SelectMetaAlertSysID" resultClass="CMetaAlertEntry" parameterClass="int">
+    SELECT ma.id AS id, ma.name AS name, ma.create_time AS create_time, ma.last_update_time AS last_update_time, ma.severity_delta AS severity_delta, ma.certainty_delta AS certainty_delta, m.id_alert AS id_alert 
+      FROM meta_alerts AS ma LEFT JOIN alert_to_meta_alert_map AS m ON m.id_meta_alert=ma.id 
+      WHERE ma.sys_id=#value#
   </select>
 
   <select id="SelectAnalyzer" resultClass="CAnalyzerListEntry" parameterClass="int">
@@ -128,7 +134,7 @@
 
 <!-- Queries for Data Mining -->
 
-  <select id="DMSeverities" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
+  <select id="DMSeveritiesIP" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
     SELECT alerts.name as key,count(*) as value FROM
       (SELECT a.id,name FROM
@@ -143,7 +149,26 @@
       )AS alerts
     JOIN hosts as h1 ON alerts.id=h1.id_alert AND h1.role='src'
     JOIN hosts as h2 ON alerts.id=h2.id_alert AND h2.role='dst'
-    WHERE (h1.ip=#src# OR 1=#ignoresrc#) AND (h2.ip=#dst# OR 1=#ignoredst#) GROUP BY (key);
+    WHERE (h1.ip=#src# OR 1=#ignoresrc#) AND (h2.ip=#dst# OR 1=#ignoredst#)
+   GROUP BY (key);
+    ]]>
+  </select>
+
+<!-- The same query but with removed two joins for the sake of performance -->
+  <select id="DMSeverities" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
+    <![CDATA[
+    SELECT alerts.name as key,count(*) as value FROM
+      (SELECT a.id,name FROM
+         (select id,id_severity FROM alerts WHERE create_time<#date_to# AND create_time>#date_from#) AS a
+      JOIN severities ON a.id_severity=severities.id
+      WHERE (severities.name='critical' AND #severities# LIKE '%critical%')
+         OR (severities.name='error' AND #severities# LIKE '%error%')
+         OR (severities.name='problem' AND #severities# LIKE '%problem%')
+         OR (severities.name='warning' AND #severities# LIKE '%warning%')
+         OR (severities.name='debug' AND #severities# LIKE '%debug%')
+         OR (severities.name='info' AND #severities# LIKE '%info%')
+      )AS alerts
+    GROUP BY (key);
     ]]>
   </select>
 
@@ -171,8 +196,21 @@
   </select>
 
   <!-- HeatMap Query -->
+  <select id="DMHeatMapRange" resultClass="CDMHeatMap" parameterClass="CDMPair">
+    <![CDATA[
+       select a.ip as source, b.ip as destination, count(*) as count from hosts as a JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' AND a.id_alert>#key# AND a.id_alert<#value# group by a.ip, b.ip;
+     ]]>
+  </select>
+
   <select id="DMHeatMap" resultClass="CDMHeatMap">
-    select a.ip as source, b.ip as destination, count(*) as count from hosts as a JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' group by a.ip, b.ip;
+    <![CDATA[
+       select a.ip as source, b.ip as destination, count(*) as count from hosts as a JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' group by a.ip, b.ip;
+     ]]>
+  </select>
+
+
+  <select id="DMHeatMapHostcount" resultClass="CDMPair">
+    select min(id_alert) as key,max(id_alert) as value from hosts;
   </select>
 
 </sqlMapConfig>

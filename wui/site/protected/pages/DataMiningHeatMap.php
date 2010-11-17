@@ -12,6 +12,34 @@ class DataMiningHeatMap extends TPage
       $this->HeatMap->height=800;
     $this->generateGraph();
     */
+
+    //    if (!$this->IsPostBack)
+      {
+        $range=CSQLMap::get()->queryForObject("DMHeatMapHostcount");
+        $this->minAlert=$range->key;
+        $this->maxAlert=$range->value;
+
+        $data=CSQLMap::get()->queryForList("DMHeatMapRange",$range);
+
+        $src=0;
+        $dst=0;
+
+        //get arrays of sources and destinations
+        foreach( $data as $e )
+          {
+            if ($sources[$e->source] === null)
+              $sources[$e->source]=$src++;
+            if ($destinations[$e->destination] === null)
+              $destinations[$e->destination]=$dst++;
+          }
+
+        //change mapping from IP->number to number->IP
+        foreach ($sources as $k => $v)
+          $this->sources[$v]=$k;
+
+        foreach ($destinations as $k => $v)
+          $this->destinations[$v]=$k;
+      }
   }
 
   private function constructUrl()
@@ -29,18 +57,17 @@ class DataMiningHeatMap extends TPage
   }
 
 
-  public function buttonClicked($sender,$param)
+  public function clicked($sender,$param)
   {
-    if($param instanceof TCommandEventParameter)
-      {
-        $this->Result2->Text="Command name: $param->CommandName, Command parameter: $param->CommandParameter";
-      }
-    else
-      {
-        $this->Result->Text="You clicked at ($param->X,$param->Y)";
-      }
+    $this->SrcIP->Text=$this->sources[$this->longitude->Value];
+    $this->DstIP->Text=$this->destinations[$this->latitude->Value];
   }
 
+  private $minAlert;
+  private $maxAlert;
+
+  private $sources;
+  private $destinations;
 }
 
 ?>

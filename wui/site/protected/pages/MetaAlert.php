@@ -6,8 +6,17 @@ class MetaAlert extends TPage
   {
     parent::__construct();
     $id=$this->Request->itemAt('id');
-    assert( $id!==null );
-    $this->metaAlert_=CSQLMap::get()->queryForObject('SelectMetaAlert', $id);
+    $sysid=$this->Request->itemAt('sys_id');
+
+    assert($id!=null || $sysid!=null);
+
+    if ($id!=null)
+      $this->metaAlert_=CSQLMap::get()->queryForObject('SelectMetaAlertID', $id);
+    else
+      if ($sysid!=null)
+        $this->metaAlert_=CSQLMap::get()->queryForObject('SelectMetaAlertSysID', $sysid);
+      else
+        throw new TConfigurationException("SysID and ID are both null");
   }
 
   public function onLoad()
