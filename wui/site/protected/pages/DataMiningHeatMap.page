@@ -51,7 +51,7 @@
 
     var props = document.getElementById("props");
     var control;
-    for(var key in controls) 
+    for(var key in controls)
     {
       control = controls[key];
       control.key = key;
