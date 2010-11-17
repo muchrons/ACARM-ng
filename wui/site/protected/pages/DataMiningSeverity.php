@@ -19,15 +19,20 @@ class DataMiningSeverity extends TPage
     $width=$this->SeveritiesImg->width;
     $height=$this->SeveritiesImg->height;
 
-    $this->generateGraph($width,$height,$from,$to,$severities,$src,$dst);
+    if ($src=='any' && $dst=='any')
+      $query='DMSeverities';
+    else
+      $query='DMSeveritiesIP';
+
+    $this->generateGraph($width,$height,$query,$from,$to,$severities,$src,$dst);
   }
 
-  private function constructUrl($width,$height,$from,$to,$severities,$src,$dst)
+  private function constructUrl($width,$height,$query,$from,$to,$severities,$src,$dst)
   {
     $linkdata=array( 'title' => 'Alert count by severity type',
                      'width' => $width,
                      'height' => $height,
-                     'query' => 'DMSeverities',
+                     'query' => $query,
                      'from' => $from,
                      'to' => $to,
                      'severities' => $severities,
@@ -37,9 +42,9 @@ class DataMiningSeverity extends TPage
     return $this->getRequest()->constructUrl('graph', "SeverityPie", $linkdata, false);
   }
 
-  private function generateGraph($width,$height,$from,$to,$severities,$src,$dst)
+  private function generateGraph($width,$height,$query,$from,$to,$severities,$src,$dst)
   {
-    $this->SeveritiesImg->ImageUrl = $this->constructUrl($width,$height,$from,$to,$severities,$src,$dst);
+    $this->SeveritiesImg->ImageUrl = $this->constructUrl($width,$height,$query,$from,$to,$severities,$src,$dst);
   }
 
 

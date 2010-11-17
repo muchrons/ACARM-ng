@@ -1,49 +1,32 @@
 <?php
 ini_set("memory_limit","256M"); //override default memory limit
 
-class Pair
-{
-  public function __construct($f,$s)
-  {
-    $this->first=$f;
-    $this->second=$s;
-  }
-
-  public static function compare_rev($a, $b)
-  {
-    if ($a->second > $b->second) return -1;
-    else if($a->second == $b->second) return 0;
-    else return 1;
-  }
-
-  public $first;
-  public $second;
-};
-
 class ImageService extends TService
 {
   public function init($config)
   {
+    $this->Response->ContentType="image/png";
+
     $request = Prado::getApplication()->getRequest();
-    $this->Response->ContentType="image/png";   // TODO: move this line one line up - it interleaves assign/check sequence for $request
 
-    if (!$request->contains('width'))
-      throw new TConfigurationException('You must specify the width of the graph');
-    $this->width = TPropertyValue::ensureInteger($request['width']);
+    $this->width = TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'width',  'You must specify the width of the heatmap'));
+    $this->height= TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'height', 'You must specify the height of the heatmap'));
+    $this->from= TPropertyValue::ensureInteger($this->getRequestOrDefault($request, 'from',0));
+    $this->to= TPropertyValue::ensureInteger($this->getRequestOrDefault($request, 'to',0));
+  }
 
-    if (!$request->contains('height'))
-      throw new TConfigurationException('You must specify the height of the graph');
-    $this->height = TPropertyValue::ensureInteger($request['height']);
+  private function getRequestOrDefault($request, $field, $value)
+  {
+    if ($request->contains($field))
+      return $request[$field];
+    return $value;
+  }
 
-    if ($request->contains('title'))
-      $this->title = TPropertyValue::ensureString($request['title']);
-    else
-      $this->title="No title";
-
-    if ($request->contains('query'))
-      $this->query = TPropertyValue::ensureString($request['query']);
-    else
-      $query=null;
+  private function getRequestOrThrow($request, $field, $text)
+  {
+    if (!$request->contains($field))
+      throw new TConfigurationException($text);
+    return $request[$field];
   }
 
   public function getWidth()
@@ -68,22 +51,26 @@ class ImageService extends TService
 
   public function run()
   {
-    $img = $this->createHeatMap($this->query,$this->title);
+    $img = $this->createHeatMap();
     imagepng($img);
     imagedestroy($img);
-    //$this->sort_test();
   }
 
-  private function issueQuery2d()
+  private function issueQuery2d($from, $to)
   {
-    $data=CSQLMap::get()->queryForList("DMHeatMap");
-    return $data;
+    if ($from==0 && $to==0)
+      return CSQLMap::get()->queryForList("DMHeatMap");
+
+    $range=new CDMPair();
+    $range->key=$from;
+    $range->value=$to;
+    return CSQLMap::get()->queryForList("DMHeatMapRange",$range);
   }
 
-  private function createHeatMap($q)
+  private function createHeatMap()
   {
     //get data
-    $data=$this->issueQuery2d();
+    $data=$this->issueQuery2d($this->from, $this->to);
 
     $src=0;
     $dst=0;
@@ -145,24 +132,10 @@ class ImageService extends TService
 
     $f=$img_data_maxDst[1]->first;
 
-    //imagestring ($img, 2, 10, $img_h-30,  "Max alerts: $max_val", $sc);
-    //imagestring ($img, 2, 10, $img_h-50,  "-$f-", $sc);
-
+    //Print caption only if the image is big enough
+    if($img_w>200 && $img_h>40)
+      imagestring ($img, 2, 10, $img_h-30,  "Max alerts: $max_val", $sc);
     return $img;
-  }
-
-  private function sort_test()
-  {
-    $img_data_maxSrc[0]=5;
-    $img_data_maxSrc[1]=3;
-    $img_data_maxSrc[2]=7;
-    $img_data_maxSrc[3]=1;
-
-    asort($img_data_maxSrc);
-
-    foreach ($img_data_maxSrc as $key => $val) {
-      echo "$key = $val<br>";
-    }
   }
 
   private function color_map($img,$number,$max)
@@ -180,10 +153,10 @@ class ImageService extends TService
     return imagecolorallocate($img,0,0,0);
   }
 
-  private $query = null;
   private $width;
   private $height;
-  private $title;
+  private $from;
+  private $to;
 }
 
 ?>
