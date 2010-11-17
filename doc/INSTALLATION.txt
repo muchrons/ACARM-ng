@@ -87,6 +87,30 @@ Stubs:
 there is no extra configuration required for this mechanism. it is just enough
 to enable it in config file (see CONFIGURATION.txt for details).
 
+
+Web User Interface (WUI)
+========================
+
+NOTE: though ACARM-ng does not require any data base to be configured for
+      daemon to work, it is required if you want to have access to WUI.
+
+in order to be able to access processed data via web server it has to be
+configured to show directory containing required files. usually the default
+configuration is just fine, as long as you provided WUI files in default
+directory. assuming default directory to be (/var/www/default), in most cases
+this means following steps:
+ 0. cd <...>/acarm_sources_dir/
+ 1. cp -Lrv wui/site /var/www/default/acarm-ng/
+ 2. $EDITOR /var/www/default/acarm-ng/protected/application.xml
+ 3. find this line and replace uppercase values with your own:
+    <database ConnectionString="pgsql:host=localhost;dbname=DATABASENAME" Username="acarm-ng-ui" Password="PASSWORD" />
+ 4. access via http://localhost/acarm-ng (move around a little to see if
+    data base connections works fine)
+
+for more information about configuration web server (ex.: Apache2) refer
+to its configuration manual.
+
+
 preparing environment
 =====================
 
