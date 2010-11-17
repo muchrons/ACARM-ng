@@ -17,17 +17,17 @@
           OpenLayers.Control.prototype.initialize.apply(this, arguments);
           this.handler = new OpenLayers.Handler.Click(this, {'click': this.onClick}, this.handlerOptions);},
 
-        onClick: function(evt) 
+        onClick: function(evt)
         {
           var lon = document.getElementById("<%= $this->longitude->ClientID %>");
           var lat = document.getElementById("<%= $this->latitude->ClientID %>");
-          lonval=Math.floor(map.getLonLatFromViewPortPx(evt.xy).lon);          
+          lonval=Math.floor(map.getLonLatFromViewPortPx(evt.xy).lon);
           latval=Math.floor(map.getLonLatFromViewPortPx(evt.xy).lat);
 
           if (lonval>=0 && lonval<700)
             if (latval>=0 && latval<400)
              {
-              lon.value=lonval;    
+              lon.value=lonval;
               lat.value=latval;
               Prado.Callback("<%= $this->bt->UniqueID %>");
              }
