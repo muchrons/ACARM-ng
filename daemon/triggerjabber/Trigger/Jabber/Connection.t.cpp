@@ -37,14 +37,14 @@ void testObj::test<1>(void)
   ensure("get() returns error", conn.get()!=NULL );
 }
 
-// test throw on invalid config
+// test throw on invalid jabber server
 template<>
 template<>
 void testObj::test<2>(void)
 {
   try
   {
-    Connection conn( AccountConfig("jabber.org", "acarm-ng1", "invalidpassword") );
+    Connection conn( AccountConfig("jabber.wrong", "acarm-ng1", "testaccount") );
     fail("connectiong to invalid account didn't failed");
   }
   catch(const ExceptionConnectionError &)
@@ -53,4 +53,35 @@ void testObj::test<2>(void)
   }
 }
 
+// test throw on invalid password
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  try
+  {
+    Connection conn( AccountConfig("jabber.org", "acarm-ng1", "testaccoun") );
+    fail("connectiong to invalid account didn't failed");
+  }
+  catch(const ExceptionConnectionError &)
+  {
+    // this is expected
+  }
+}
+
+// test throw on invalid login
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  try
+  {
+    Connection conn( AccountConfig("jabber.org", "acarm-wrong", "testaccount") );
+    fail("connectiong to invalid account didn't failed");
+  }
+  catch(const ExceptionConnectionError &)
+  {
+    // this is expected
+  }
+}
 } // namespace tut

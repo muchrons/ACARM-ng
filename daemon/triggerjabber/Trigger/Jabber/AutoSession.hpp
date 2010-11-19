@@ -5,7 +5,6 @@
 #ifndef INCLUDE_TRIGGER_JABBER_AUTOSESSION_HPP_FILE
 #define INCLUDE_TRIGGER_JABBER_AUTOSESSION_HPP_FILE
 
-//#include <loudmouth/loudmouth.h>
 #include <gloox/client.h>
 #include "System/AutoVariable.hpp"
 
@@ -51,8 +50,7 @@ public:
   {
     if(v_!=NULL)
     {
-      //lm_connection_close (v_, NULL);
-      //lm_connection_unref (v_);
+      //v_->disconnect();
       v_=NULL;
     }
   }

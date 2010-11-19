@@ -39,9 +39,9 @@ Trigger::Jabber::AccountConfig getTestConfig(void)
   return getTestConfig1();
 }
 
-
-std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account, const std::string &sender)
+std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &/*account*/, const std::string &/*sender*/)
 {
+  // TODO
   return "";
 }
 } // unnamed namespace

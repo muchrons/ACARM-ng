@@ -10,6 +10,7 @@
 #include <cassert>
 
 #include "Logger/Node.hpp"
+#include "Commons/Threads/Thread.hpp"
 #include "Trigger/Jabber/AccountConfig.hpp"
 #include "Trigger/Jabber/AutoSession.hpp"
 #include "Trigger/Jabber/ExceptionConnectionError.hpp"
@@ -55,7 +56,6 @@ public:
 
 private:
   AutoSession connect(void) const;
-
   Logger::Node          log_;
   const AccountConfig   cfg_;
   AutoSession           sess_;  // TODO: since class is non-copyable any way consider using System::ScopedPtrCustom for this

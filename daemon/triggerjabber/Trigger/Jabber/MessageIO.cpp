@@ -3,7 +3,6 @@
  *
  */
 #include <sys/select.h>
-//#include <loudmouth/loudmouth.h>
 #include <gloox/message.h>
 #include <cassert>
 
@@ -27,8 +26,9 @@ void MessageIO::send(const std::string &receiver, const std::string &msg)
   LOGMSG_INFO_S(log_)<<"sending message to user "<<receiver;
   assert(msg.c_str()!=NULL);
   // sending itself
-  gloox::Message m(gloox::Message::Normal, gloox::JID(receiver), msg);
+  gloox::Message m(gloox::Message::Chat, gloox::JID(receiver), msg);
   assert( conn_.get()!=NULL );
+  conn_.get()->recv();
   conn_.get()->send(m);
   // all done
   LOGMSG_DEBUG_S(log_)<<"message to user "<<receiver<<" sent";
