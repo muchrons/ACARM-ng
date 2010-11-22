@@ -38,14 +38,7 @@ void MessageIO::discardIncommingMessages(void)
 {
   assert( conn_.get()!=NULL );
   LOGMSG_DEBUG(log_, "discarding all incomming messages");
-
-  // TODO: comment this code, since it's non obvious at the first sight.
-  /*
-  while(g_main_context_iteration(NULL, FALSE))
-  {
-    LOGMSG_DEBUG(log_, "incomming message discarded");
-  }
-  */
+  conn_.get()->recv();
   LOGMSG_DEBUG(log_, "all messages have been discarded");
 }
 
