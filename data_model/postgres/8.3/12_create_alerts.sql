@@ -18,7 +18,7 @@ CREATE TABLE    severities
 CREATE SEQUENCE alerts_id_seq;
 CREATE TABLE    alerts
 (
-  id          int          PRIMARY KEY DEFAULT nextval('alerts_id_seq'),
+  id          bigint       PRIMARY KEY DEFAULT nextval('alerts_id_seq'),
   name        varchar(256) NOT NULL,
   detect_time timestamp    NULL,
   create_time timestamp    NOT NULL DEFAULT now(),
@@ -38,7 +38,7 @@ CREATE TABLE    alerts
 CREATE SEQUENCE reference_urls_id_seq;
 CREATE TABLE    reference_urls
 (
-  id   int          PRIMARY KEY DEFAULT nextval('reference_urls_id_seq'),
+  id   bigint       PRIMARY KEY DEFAULT nextval('reference_urls_id_seq'),
   name varchar(128) NOT NULL,
   url  varchar(256) NOT NULL
 );
@@ -48,9 +48,9 @@ CREATE TABLE    reference_urls
 CREATE SEQUENCE hosts_id_seq;
 CREATE TABLE    hosts
 (
-  id       int      PRIMARY KEY DEFAULT nextval('hosts_id_seq'),
-  id_alert int      NOT NULL REFERENCES alerts(id),
-  id_ref   int      NULL REFERENCES reference_urls(id),
+  id       bigint   PRIMARY KEY DEFAULT nextval('hosts_id_seq'),
+  id_alert bigint   NOT NULL REFERENCES alerts(id),
+  id_ref   bigint   NULL REFERENCES reference_urls(id),
   role     char(3)  NOT NULL,
   ip       inet     NOT NULL,
   mask     inet     NULL,
@@ -65,9 +65,9 @@ CREATE TABLE    hosts
 CREATE SEQUENCE procs_id_seq;
 CREATE TABLE    procs
 (
-  id        int          PRIMARY KEY DEFAULT nextval('procs_id_seq'),
-  id_host   int          NOT NULL REFERENCES hosts(id),
-  id_ref    int          NULL REFERENCES reference_urls(id),
+  id        bigint       PRIMARY KEY DEFAULT nextval('procs_id_seq'),
+  id_host   bigint       NOT NULL REFERENCES hosts(id),
+  id_ref    bigint       NULL REFERENCES reference_urls(id),
   path      varchar(256) NULL,
   name      varchar(256) NOT NULL,
   md5       char(32)     NULL,
@@ -83,9 +83,9 @@ CREATE INDEX procs_id_host_index ON procs(id_host);
 CREATE SEQUENCE services_id_seq;
 CREATE TABLE    services
 (
-  id       int      PRIMARY KEY DEFAULT nextval('services_id_seq'),
-  id_host  int      NOT NULL REFERENCES hosts(id),
-  id_ref   int      NULL REFERENCES reference_urls(id),
+  id       bigint   PRIMARY KEY DEFAULT nextval('services_id_seq'),
+  id_host  bigint   NOT NULL REFERENCES hosts(id),
+  id_ref   bigint   NULL REFERENCES reference_urls(id),
   name     char(32) NOT NULL,
   port     int      NOT NULL,
   protocol char(32) NULL,
@@ -98,8 +98,8 @@ CREATE TABLE    services
 CREATE SEQUENCE analyzers_id_seq;
 CREATE TABLE    analyzers
 (
-  id      int          PRIMARY KEY DEFAULT nextval('analyzers_id_seq'),
-  sys_id  int          NOT NULL UNIQUE,
+  id      bigint       PRIMARY KEY DEFAULT nextval('analyzers_id_seq'),
+  sys_id  bigint       NOT NULL UNIQUE,
   name    varchar(128) NOT NULL,
   version char(16)     NULL,
   os      varchar(128) NULL,
@@ -113,8 +113,8 @@ CREATE TABLE    analyzers
 -- alerts<->analyzers
 CREATE TABLE alert_analyzers
 (
-  id_alert    int NOT NULL REFERENCES alerts(id),
-  id_analyzer int NOT NULL REFERENCES analyzers(id),
+  id_alert    bigint NOT NULL REFERENCES alerts(id),
+  id_analyzer bigint NOT NULL REFERENCES analyzers(id),
 
   UNIQUE(id_alert, id_analyzer)
 );

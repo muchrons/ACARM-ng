@@ -60,4 +60,20 @@ void testObj::test<2>(void)
   }
 }
 
+// test if call throws on file-opening error
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  try
+  {
+    openElement("/i/do/not/exist", Mode::READWRITE, isSaneTrue);
+    fail("call didn't throw on error");
+  }
+  catch(const ExceptionFilesystemIO &)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut
