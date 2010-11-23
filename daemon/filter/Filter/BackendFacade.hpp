@@ -94,6 +94,8 @@ public:
   Persistency::MetaAlert::ID getNextFreeID(void);
 
 private:
+  void markNodeAsChanged(Node node);
+
   ChangedNodes &changed_;
 }; // class BackendFacade
 

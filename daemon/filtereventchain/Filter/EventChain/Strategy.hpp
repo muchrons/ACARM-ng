@@ -2,28 +2,42 @@
  * Strategy.hpp
  *
  */
-#ifndef INCLUDE_FILTER_MANYTOMANY_STRATEGY_HPP_FILE
-#define INCLUDE_FILTER_MANYTOMANY_STRATEGY_HPP_FILE
+#ifndef INCLUDE_FILTER_EVENTCHAIN_STRATEGY_HPP_FILE
+#define INCLUDE_FILTER_EVENTCHAIN_STRATEGY_HPP_FILE
 
 /* public header */
 
+#include "Algo/GatherIPs.hpp"
 #include "Persistency/Host.hpp"
 #include "Filter/Simple/Strategy.hpp"
-#include "Filter/ManyToMany/ExceptionInvalidParameter.hpp"
 
 
 namespace Filter
 {
-namespace ManyToMany
+namespace EventChain
 {
 
-/** \brief this filter does not need to handle any data.
+/** \brief chain begin and end structure
  */
 struct Data
 {
+  /** \brief helper typedef to make declarations shorter. */
+  typedef boost::shared_ptr<Algo::GatherIPs::IPSet> SharedIPSet;
+
+  /** \brief create empty object.
+   */
+  Data(void):
+    len_(0u)
+  {
+  }
+
+  size_t      len_;         ///< length of the chain
+  SharedIPSet beginIPs_;    ///< ips of the chain begin
+  SharedIPSet endIPs_;      ///< ips of the chain end
 }; // struct Data
 
-/** \brief filter detecting multiple attacks from multiple hosts implementation.
+
+/** \brief filter detecting chain of events
  */
 class Strategy: public Filter::Simple::Strategy<Data>
 {
@@ -33,13 +47,13 @@ public:
   struct Params
   {
     /** \brief create configuration parameters from given values.
-     *  \param timeout    ammount of time to keep observed nodes for.
-     *  \param similarity threshold value, when reached elements cna be correlated.
+     *  \param timeout  ammount of time to keep observed nodes for.
+     *  \param priDelta priority to increase importance of alert by, if rule matched.
      */
-    Params(unsigned int timeout, double similarity);
+    Params(unsigned int timeout, double priDelta);
 
-    const unsigned int timeout_;        ///< timeout value (in [s]).
-    const double       similarity_;     ///< similarity threshold.
+    const unsigned int timeout_;    ///< timeout value (in [s]).
+    const double       priDelta_;   ///< priority delta for correlated events
   }; // struct Params
 
   /** \brief create instance.
@@ -73,7 +87,7 @@ private:
   const Params params_;
 }; // class Strategy
 
-} // namespace ManyToMany
+} // namespace EventChain
 } // namespace Filter
 
 #endif

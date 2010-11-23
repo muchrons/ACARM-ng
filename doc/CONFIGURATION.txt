@@ -220,6 +220,12 @@ following filters and parameters are available:
     <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
   </samename>
 
+  <!-- finds chains of events and updates severity delta by a given ammount -->
+  <eventchain name="event_chain">
+    <timeout>42</timeout>              <!-- timeout for observing entry, in seconds -->
+    <priorityDelta>0.8</priorityDelta> <!-- amount to update priority by when correlating -->
+  </eventchain>
+
 
 triggers configuration
 ======================
