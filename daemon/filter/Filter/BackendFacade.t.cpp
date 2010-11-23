@@ -236,4 +236,15 @@ void testObj::test<11>(void)
   ensure_equals("invalid ID assigned for element 2", bf_->getNextFreeID().get(), 1u);
 }
 
+// check if multiple calls with the same node does not increase their count
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  GraphNodePtrNN node=makeGraphNode();
+  bf_->updateSeverityDelta(node, 1.1);
+  bf_->updateSeverityDelta(node, 1.2);
+  ensure_equals("invalid number of changed nodes", changed_.size(), 1u);
+}
+
 } // namespace tut
