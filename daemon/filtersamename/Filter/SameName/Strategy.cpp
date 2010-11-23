@@ -39,7 +39,7 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
   return ecl;
 }
 
-Data Strategy::makeThisEntryUserData(const Node n) const
+Data Strategy::makeThisEntryUserData(const Node /*n*/) const
 {
   return Data();
 }
