@@ -69,5 +69,10 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
   return thisEntry.t_;
 }
 
+void Strategy::postProcessNode(Node &/*n*/, Filter::BackendFacade &/*bf*/) const
+{
+  // nothing to be done here
+}
+
 } // namespace HostCommon
 } // namespace Filter

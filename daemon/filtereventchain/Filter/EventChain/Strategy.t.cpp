@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 #include <string>
+#include <cmath>
 #include <cassert>
 
 #include "Filter/EventChain/Strategy.hpp"
@@ -199,6 +200,22 @@ void testObj::test<10>(void)
   s_.process(sampleLeaf_, changed_);
   ensure_equals("correlation of chain of length 3 failed", changed_.size(), 1u);
   ensure("old node not used for correlation", node.get()==changed_[0].get() );
+}
+
+// test if correlating changes priotity delta
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", NULL,
+                                                         "6.6.3.4", NULL ) ) );
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("no nodes changed", changed_.size(), 1u);
+
+  ensure("invalid priority delta", fabs(changed_[0]->getMetaAlert()->getSeverityDelta() - 0.42)<0.01 );
 }
 
 } // namespace tut

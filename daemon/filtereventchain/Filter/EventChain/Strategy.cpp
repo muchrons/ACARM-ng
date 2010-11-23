@@ -139,5 +139,11 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
   return d;
 }
 
+void Strategy::postProcessNode(Node &n, Filter::BackendFacade &bf) const
+{
+  // update severity delta by a given ammount
+  bf.updateSeverityDelta(n, params_.priDelta_);
+}
+
 } // namespace EventChain
 } // namespace Filter

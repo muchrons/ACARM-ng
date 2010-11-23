@@ -55,6 +55,7 @@ private:
   virtual Data makeUserDataForNewNode(const NodeEntry &thisEntry,
                                       const NodeEntry &otherEntry,
                                       const Node       newNode) const;
+  virtual void postProcessNode(Node &n, Filter::BackendFacade &bf) const;
 }; // class Strategy
 
 } // namespace SameName
