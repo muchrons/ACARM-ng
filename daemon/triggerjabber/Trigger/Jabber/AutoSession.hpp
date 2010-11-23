@@ -51,7 +51,7 @@ public:
     if(v_!=NULL)
     {
       //v_->disconnect();
-      //delete v_;
+      delete v_;
       v_=NULL;
     }
   }
