@@ -31,7 +31,7 @@ Connection::Connection(const AccountConfig &cfg):
 Connection::~Connection(void)
 {
   assert( sess_.get()!=NULL );
-  sess_.get()->disconnect();
+  //sess_.get()->disconnect();
   LOGMSG_INFO(log_, "disconnecting from Jabber server");
 }
 

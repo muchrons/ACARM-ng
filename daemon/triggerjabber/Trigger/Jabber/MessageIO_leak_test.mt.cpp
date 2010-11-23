@@ -15,10 +15,10 @@ int main(void)
   cout<<"*** run this test under valgrind and see if memory is leaking ***"<<endl;
   Connection conn( getTestConfig1() );
   MessageIO  mio(conn);
+  //for(int i=0; i<2; ++i)
+  //  mio.discardIncommingMessages();
   for(int i=0; i<2; ++i)
-    mio.discardIncommingMessages();
-  for(int i=0; i<2; ++i)
-    mio.send( getTestConfig2().getLogin(), "alice has a cat" );
+    mio.send( getTestConfig2().getLogin() + "@" + getTestConfig2().getServer(), "alice has a cat" );
 
   return 0;
 }
