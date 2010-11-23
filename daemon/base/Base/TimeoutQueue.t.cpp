@@ -36,10 +36,7 @@ struct TestClass
 
   int size(const Queue &q) const
   {
-    int cnt=0;
-    for(ConstIter it=q.begin(); it!=q.end(); ++it)
-      ++cnt;
-    return cnt;
+    return q.size();
   }
 
   Queue empty_;
@@ -215,6 +212,40 @@ void testObj::test<10>(void)
   ensure_equals("invalid element 1", *it, "e1");
   ++it;
   ensure_equals("invalid element 1", *it, "e3");
+}
+
+// test if empty queue's size is zero
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  ensure_equals("empty queue not empty", empty_.size(), 0u);
+}
+
+// test if size of queue with elements
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  empty_.update("e1", 2);
+  empty_.update("e2", 9);
+  ensure_equals("invalid queue size", empty_.size(), 2u);
+}
+
+// test if pruning returns number of elements pruned
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  ensure_equals("invalid size/1", empty_.size(), 0u);
+  empty_.update("111", 0);  // this should be timeouted strigh away
+  empty_.update("222", 0);  // this should be timeouted strigh away
+  empty_.update("333", 9);  // this one stays
+  ensure_equals("invalid size/2", empty_.size(), 3u);
+  sleep(1);                 // ensure timeout occures
+
+  ensure_equals("invalid number of elements removed", empty_.prune(), 2u);
+  ensure_equals("invalid number of elements left", empty_.size(), 1u);
 }
 
 } // namespace tut

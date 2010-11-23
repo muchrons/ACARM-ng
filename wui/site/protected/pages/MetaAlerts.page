@@ -1,0 +1,12 @@
+<com:TContent ID="content">
+
+<div width="800px">
+
+<com:DataTableTemplate
+        ID="MetaAlerts"
+        text_="The most recent meta-alerts:"
+        query_="SelectMetaAlertsSummary"/>
+
+</div>
+
+</com:TContent>

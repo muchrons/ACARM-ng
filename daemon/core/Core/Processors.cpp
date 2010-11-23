@@ -31,7 +31,7 @@ Processors::~Processors(void)
 
 void Processors::process(void)
 {
-  LOGMSG_DEBUG_S(log_)<<"waiting for nodes to process (current queue size is: "
+  LOGMSG_DEBUG_S(log_)<<"waiting for nodes to process (current main queue's size is: "
                       <<queue_.size()<<" element(s))";
   Core::Types::SignedNode node=queue_.pop(); // wait for next element
   LOGMSG_DEBUG(log_, "got node to process");
@@ -43,8 +43,7 @@ void Processors::process(void)
 
 void Processors::append(const Core::Types::Proc::ProcessorsCollection &newProcs)
 {
-  for(ProcessorsCollection::const_iterator it=newProcs.begin();
-      it!=newProcs.end(); ++it)
+  for(ProcessorsCollection::const_iterator it=newProcs.begin(); it!=newProcs.end(); ++it)
     procs_.push_back(*it);
 }
 

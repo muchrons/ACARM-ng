@@ -16,7 +16,7 @@ namespace File
 {
 
 ParserCallback::ParserCallback(const boost::filesystem::path &inputPath):
-  input_( openFile(inputPath) )
+  input_( openFile(inputPath, Mode::READ) )
 {
 }
 

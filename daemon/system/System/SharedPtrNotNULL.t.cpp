@@ -117,13 +117,13 @@ void testObj::test<6>(void)
   }
 }
 
-// test conversion operator
+// test conversion to shared_ptr
 template<>
 template<>
 void testObj::test<7>(void)
 {
   BoostPtr bp;
-  bp=nn_;
+  bp=nn_.shared_ptr();
   ensure("invalid pointer value", bp.get()==nn_.get() );
 }
 
@@ -249,7 +249,7 @@ template<>
 template<>
 void testObj::test<19>(void)
 {
-  BoostPtr other=nn_;
+  BoostPtr other=nn_.shared_ptr();
   ensure("the same pointer does not match", nn_==other);
 }
 
@@ -284,7 +284,7 @@ template<>
 template<>
 void testObj::test<23>(void)
 {
-  BoostPtr other=nn_;
+  BoostPtr other=nn_.shared_ptr();
   ensure("different pointers match", other==nn_);
 }
 
@@ -293,7 +293,7 @@ template<>
 template<>
 void testObj::test<24>(void)
 {
-  BoostPtr other=other_;
+  BoostPtr other=other_.shared_ptr();
   ensure("different pointers match", other!=nn_);
 }
 
@@ -350,7 +350,7 @@ void testObj::test<30>(void)
 {
   const PtrNN nn( new int(42) );
   BoostPtr    bp;
-  bp=nn;
+  bp=nn.shared_ptr();
   ensure("invalid pointer value", bp.get()==nn.get() );
 }
 

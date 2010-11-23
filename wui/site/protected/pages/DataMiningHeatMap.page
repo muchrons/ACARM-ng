@@ -1,0 +1,120 @@
+<com:TContent ID="content">
+
+  <link rel="stylesheet" href="styleOL.css" type="text/css" />
+
+  <com:TClientScript PradoScripts="effects" />
+
+  <script src="OpenLayers.js">
+  </script>
+
+  <com:TClientScript>
+    OpenLayers.Control.Click = OpenLayers.Class(OpenLayers.Control, {
+      defaultHandlerOptions: {'single': true, 'pixelTolerance': 0},
+
+        initialize: function(options) {
+          this.handlerOptions = OpenLayers.Util.extend({}, this.defaultHandlerOptions);
+
+          OpenLayers.Control.prototype.initialize.apply(this, arguments);
+          this.handler = new OpenLayers.Handler.Click(this, {'click': this.onClick}, this.handlerOptions);},
+
+        onClick: function(evt)
+        {
+          var lon = document.getElementById("<%= $this->longitude->ClientID %>");
+          var lat = document.getElementById("<%= $this->latitude->ClientID %>");
+          lonval=Math.floor(map.getLonLatFromViewPortPx(evt.xy).lon);
+          latval=Math.floor(map.getLonLatFromViewPortPx(evt.xy).lat);
+
+          if (lonval>=0 && lonval<700)
+            if (latval>=0 && latval<400)
+             {
+              lon.value=lonval;
+              lat.value=latval;
+              Prado.Callback("<%= $this->bt->UniqueID %>");
+             }
+        }
+    });
+
+    window.onload=function()
+    {
+     map = new OpenLayers.Map("basicMap", {
+            controls: [
+                new OpenLayers.Control.Navigation(),
+                new OpenLayers.Control.PanPanel(),
+                new OpenLayers.Control.ZoomPanel()
+            ]
+        });
+
+    var graphic = new OpenLayers.Layer.Image('heat map','http://www.wojek.net/ww/heatmap.png', new OpenLayers.Bounds(0, 0, 700, 400), new OpenLayers.Size(700, 400), {numZoomLevels: 7});
+    map.addLayer(graphic);
+
+    controls = {"single": new OpenLayers.Control.Click({handlerOptions: {"single": true} }) };
+
+    var props = document.getElementById("props");
+    var control;
+    for(var key in controls)
+    {
+      control = controls[key];
+      control.key = key;
+      map.addControl(control);
+      control.activate();
+    }
+
+    map.zoomToMaxExtent();
+    }
+</com:TClientScript>
+
+<style type="text/css">
+  .olControlZoomPanel
+  {
+    top: auto;
+    bottom: 70px;
+  }
+
+  .olControlPanPanel
+  {
+    top: auto;
+    bottom: 130px;
+  }
+</style>
+<!--
+<table border="0">
+<tr><td align="center" colspan="2"><font color="white" size="+1">Sources</font></td></tr>
+<tr><td width="16"><font color="white" size="+1">D<br/>e<br/>s<br/>t<br/>i<br/>n<br/>a<br/>t<br/>i<br/>o<br/>n<br/>s</font></td><td><div id="basicMap" style="border: 1px white solid; width:650; height:400;"></div></td></tr>
+</table>
+-->
+<div id="basicMap" style="border: 1px white solid; width:700; height:400;"></div>
+
+<com:TActiveHiddenField ID="longitude"/>
+<com:TActiveHiddenField ID="latitude"/>
+<com:TActiveHiddenField ID="bt" OnCallback="clicked"/>
+
+
+<com:TActiveLabel ID="Lon" Text=""/>
+<com:TActiveLabel ID="Lat" Text=""/>
+<br/>
+<com:TPanel GroupingText="<font size=5 color=white>Details</font>" Width="100%">
+<br/>
+<table border="1" width="100%" cellpadding="5">
+  <tr>
+    <td width="20%" id="AlertTag">Source:</td>
+    <td width="40%" id="AlertContent"><com:TActiveLabel ID="SrcIP" Text="&nbsp"/></td>
+    <td width="40%" id="AlertContent"><com:TActiveLabel ID="SrcName" Text="&nbsp"/></td>
+  </tr>
+  <tr>
+    <td id="AlertTag">Destination:</td>
+    <td id="AlertContent"><com:TActiveLabel ID="DstIP" Text="&nbsp"/></td>
+    <td id="AlertContent"><com:TActiveLabel ID="DstName" Text="&nbsp"/></td>
+  </tr>
+  <tr>
+    <td id="AlertTag" width="30%">Number of alerts:</td>
+    <td id="AlertContent" colspan="2"><com:TActiveLabel ID="NoAlerts" Text="&nbsp"/></td>
+  </tr>
+  <tr>
+    <td colspan="3"><com:TButton ID="b1" Text="Alerts"/>
+    <com:TButton ID="b2" Text="Severity Graph"/>
+    <com:TButton ID="b3" Text="Type Graph"/></td>
+  </tr>
+</table>
+
+</com:TPanel>
+</com:TContent>

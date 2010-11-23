@@ -106,4 +106,13 @@ void testObj::test<5>(void)
   }
 }
 
+// open file that is read-only
+// note: this is test for a bug from previous versions that opened input files r/w
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  ParserCallback pc("/etc/passwd"); // must not throw
+}
+
 } // namespace tut

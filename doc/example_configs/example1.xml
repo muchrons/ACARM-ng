@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+
+  <general>
+    <url>http://test.url</url>
+    <cleanupInterval>42</cleanupInterval>
+  </general>
+
+  <persistency>
+    <type>postgres</type>
+    <host>localhost</host>
+    <port>5432</port>
+    <dbname>acarm-db</dbname>
+    <user>acarm-user</user>
+    <pass>acarm-pass</pass>
+  </persistency>
+
+  <logger>
+    <appenders>
+      <file name="disk">
+        <output>loggerfile.log</output>
+      </file>
+      <console name="screen"/>
+      <multiappender name="all">
+        <forward>disk</forward>
+        <forward>screen</forward>
+      </multiappender>
+    </appenders>
+
+    <nodes appender="disk" threshold="debug">
+    </nodes>
+  </logger>
+
+  <preprocessor/>
+
+  <filters>
+    <onetomany name="o2m">
+      <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+    </onetomany>
+
+    <manytoone name="m2o">
+      <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+    </manytoone>
+
+    <manytomany name="m2m">
+      <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+      <similarity>0.75</similarity>
+    </manytomany>
+
+    <dnsresolver name="dnsresolver">
+      <cachetimeout>3600</cachetimeout> <!-- time to keep cached DNS mappings -->
+    </dnsresolver>
+
+    <ipblacklist name="ipblackilist">
+      <refresh>36000</refresh> <!-- how often refresh list of black-listed IPs in seconds -->
+      <limit>10000</limit>     <!-- limits number of entries to be downloaded -->
+      <priorityDelta>0.8</priorityDelta> <!-- amount to update priority by when black-listed IP's found -->
+    </ipblacklist>
+  </filters>
+
+  <triggers>
+    <gg name="inform">
+      <uin>1234567</uin>
+      <password>alicehasacat</password>
+      <receivers>987654321 999999</receivers>
+      <severity_threshold>6.8</severity_threshold>
+      <alerts_count_threshold>250</alerts_count_threshold>
+    </gg>
+  </triggers>
+
+  <inputs>
+    <prelude name="prelude">
+      <profile>profile</profile>
+      <config>/etc/prelude/default/client.conf</config>
+    </prelude>
+  </inputs>
+
+</acarm_ng>

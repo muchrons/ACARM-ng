@@ -2,6 +2,7 @@
  * IStreamReader.cpp
  *
  */
+#include <boost/thread.hpp>
 #include <iostream>
 #include <unistd.h>
 #include <cassert>
@@ -34,6 +35,8 @@ IStreamReader::Line IStreamReader::readLine(unsigned int timeout)
     size_t size;
     do
     {
+      boost::this_thread::interruption_point();
+
       // before reading any data, test if we have something already in buffer
       if( ss_->str().find("\n")!=string::npos )   // we have line end!
       {
@@ -61,7 +64,7 @@ IStreamReader::Line IStreamReader::readLine(unsigned int timeout)
       break;
 
     // if no data has been read and there is still no new line, wait a while
-    sleep(1);
+    boost::this_thread::sleep( boost::posix_time::seconds(1) );
   } // for(;;)
 
   // timeout occured - noting new has been read

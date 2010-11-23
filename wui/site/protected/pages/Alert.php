@@ -26,10 +26,6 @@ class Alert extends TPage
       if ($this->alert_->create !=null)
         $this->AlertCreateTime->Text =$this->alert_->create;
 
-      $this->AlertSource->Text=($this->alert_->src_ip === null) ? "N/A" : $this->alert_->src_ip;
-
-      $this->AlertDestination->Text=($this->alert_->dst_ip === null) ? "N/A" : $this->alert_->dst_ip;
-
       $this->AlertCertainty->Text=($this->alert_->certainty === null) ? "N/A" : $this->alert_->certainty;
 
       if($this->alert_->severity!= null)
@@ -66,6 +62,20 @@ class Alert extends TPage
 
       $this->AlertAnalyzers->DataSource=$data;
       $this->AlertAnalyzers->dataBind();
+
+      $hosts=CSQLMap::get()->queryForList('SelectHostsForAlert', $this->alertID_);
+
+      foreach ($hosts as $h)
+        if ($h->role == "src")
+          $sources[]=array('name'=>$h->name,'IP'=>$h->ip);
+        else
+          $destinations[]=array('name'=>$h->name,'IP'=>$h->ip);
+
+      $this->AlertSources->DataSource=$sources;
+      $this->AlertSources->dataBind();
+
+      $this->AlertDestinations->DataSource=$destinations;
+      $this->AlertDestinations->dataBind();
 
       $this->AlertDescription->Text=($this->alert_->description === null) ? "N/A" : $this->alert_->description;
       }
