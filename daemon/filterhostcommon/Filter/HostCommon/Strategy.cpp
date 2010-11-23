@@ -31,11 +31,11 @@ Persistency::HostPtr Strategy::getHost(const Node node) const
   return Algo::forEachUniqueLeaf( node, CheckHosts(this) ).out_;
 }
 
-Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
+Data Strategy::makeThisEntryUserData(const Node n) const
 {
   // get host from this node.
   HostPtr h=getHost(n);
-  return NodeEntry( n, Data(h) );
+  return Data(h);
 }
 
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
@@ -60,6 +60,13 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   assert( otherEntry.t_.host_.get()!=NULL );
   // common host entries must equal
   return thisEntry.t_.host_->getIP() == otherEntry.t_.host_->getIP();
+}
+
+Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
+                                      const NodeEntry &/*otherEntry*/,
+                                      const Node       /*newNode*/) const
+{
+  return thisEntry.t_;
 }
 
 } // namespace HostCommon
