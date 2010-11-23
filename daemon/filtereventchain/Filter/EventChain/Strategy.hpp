@@ -21,12 +21,15 @@ namespace EventChain
  */
 struct Data
 {
+  /** \brief helper typedef to make declarations shorter. */
+  typedef boost::shared_ptr<Algo::GatherIPs::IPSet> SharedIPSet;
+
+  /** \brief create empty object.
+   */
   Data(void):
     len_(0u)
   {
   }
-
-  typedef boost::shared_ptr<Algo::GatherIPs::IPSet> SharedIPSet;
 
   size_t      len_;         ///< length of the chain
   SharedIPSet beginIPs_;    ///< ips of the chain begin
