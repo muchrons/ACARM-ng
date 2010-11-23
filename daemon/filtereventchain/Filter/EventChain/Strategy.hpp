@@ -26,9 +26,11 @@ struct Data
   {
   }
 
-  size_t                                    len_;       ///< length of the chain
-  boost::shared_ptr<Algo::GatherIPs::IPSet> beginIPs_;  ///< ips of the chain begin
-  boost::shared_ptr<Algo::GatherIPs::IPSet> endIPs_;    ///< ips of the chain end
+  typedef boost::shared_ptr<Algo::GatherIPs::IPSet> SharedIPSet;
+
+  size_t      len_;         ///< length of the chain
+  SharedIPSet beginIPs_;    ///< ips of the chain begin
+  SharedIPSet endIPs_;      ///< ips of the chain end
 }; // struct Data
 
 /** \brief filter detecting chain of events

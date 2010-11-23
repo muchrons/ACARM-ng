@@ -111,7 +111,7 @@ void testObj::test<5>(void)
   s_.process(sampleLeaf_, changed_);
   ensure_equals("no nodes changed", changed_.size(), 1u);
 
-  const string resp("[eventchain] event chain detected");
+  const string resp("[eventchain] chain of events");
   ensure_equals("invalid name", changed_[0]->getMetaAlert()->getName().get(), resp);
 }
 
@@ -135,7 +135,7 @@ void testObj::test<7>(void)
   ensure_equals("invalid delta",   p.priDelta_, -0.11);
 }
 
-// test if correlation when multiple hosts are present
+// test correlation when multiple hosts are present
 template<>
 template<>
 void testObj::test<8>(void)
