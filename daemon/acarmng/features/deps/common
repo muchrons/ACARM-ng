@@ -11,7 +11,7 @@ filteronetoone
 filteronetomany
 filtermanytoone
 filtermanytomany
-filterescalation
+filtereventchain
 filterdnsresolver
 filteripblacklist
 

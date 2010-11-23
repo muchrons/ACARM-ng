@@ -19,6 +19,10 @@ example may look like this:
     <!-- logger specific options -->
   </logger>
 
+  <preprocessor>
+    <!-- alerts' preprocessor -->
+  </preprocessor>
+
   <filters>
     <!-- filters' configuration -->
   </filters>
@@ -27,21 +31,19 @@ example may look like this:
     <!-- triggers' configuration -->
   </triggers>
 
-  <preprocessor>
-    <!-- alerts' preprocessor -->
-  </preprocessor>
-
-  <!-- TODO -->
+  <inputs>
+    <!-- inputs' configuration -->
+  </inputs>
 </acarm_ng>
 
-in the following sections only subtrees specific for given components will
+in the following sections only sub-trees specific for given components will
 be shown in the example, for sake of document's simplicity.
 
 
 general configuration
 =====================
 
-general configuration is set of common, config paramters that are not specific
+general configuration is set of common, config parameters that are not specific
 for any of the main system parts.
 following options are supported:
   <general>
@@ -59,6 +61,7 @@ configuration of persistency requires only giving its type to use and options
 for it.
 
 following persistencies are supported:
+
   * PostgreSQL:
 <persistency>
   <type>postgres</type>
@@ -69,14 +72,22 @@ following persistencies are supported:
   <port>5432</port>
 </persistency>
 
+  * Stub (no persistent storage):
+<persistency>
+  <type>stubs</type>
+</persistency>
+
 
 
 logger configuration
 ====================
 
 logger's configuration consists of two parts: appenders configuration and
-logger nodes configuration.
-at this moment only appenders can be assigned to a particullar nodes.
+logger nodes configuration. at first appenders are created and configured,
+then they are assigned to nodes. along with appenders threshold vaues can
+be assigned, i.e. given node can log when message priority is no less than
+a given value.
+
 example configuration may look like this:
 
 <logger>
@@ -95,7 +106,7 @@ example configuration may look like this:
     </multiappender>
   </appenders>
 
-  <nodes appender="everywhere" threshold="info"> <!-- default is everywhere/info -->
+  <nodes appender="everywhere" threshold="info"> <!-- root: default is everywhere/info -->
     <someChild appender="console"/>                       <!-- console/info -->
     <otherChild>                                          <!-- console/info -->
       <subChild1 appender="file_app1"/>                   <!-- file_app1/info -->
@@ -105,13 +116,59 @@ example configuration may look like this:
   </nodes>
 </logger>
 
-TODO: describe appenders.
+following appenders are available:
+  * file - writes logs to a given file
+<file name="filelog">
+  <output>system.log</output> <!-- file to write to -->
+</file>
+
+  * console - outputs to screen
+<console name="screenout"/>
+
+  * syslog - writes messages to syslog
+<syslog name="syslogout"/>
+
+  * multiappender - writes to given appenders (facade)
+<multiappender name="writetothem">
+  <appender>filelog</appender>
+  <!-- ... -->
+  <appender>stdout</appender>
+</multiappender>
+
+  * null - discards all logs, regardless of their priority
+<null name="discardall"/>
+
+nodes are configured in tree structure. root node is the default. each sub-node
+is separeted by dot ('.'). for example following tree:
+   node1
+   /   \
+node2 node3
+         \
+        node 4
+has following elements:
+  node1
+  node1.node2
+  node1.node3
+  node1.node3.node4
+and corresponding XML structure:
+  <node1>
+    <node2/>
+    <node3>
+      <node4/>
+    </node3>
+  </node1>
+
+notice that appenders and threshold are derived from parents to childrent,
+unless explicitly overwritten. thus the minimal, valid configuration for the
+whole free has form:
+  <nodes appender="..." threshold="..."/>
+since all children will simply derive this information from their parents.
 
 
 filters configuration
 =====================
 
-in filters' configuration subtree there are set of filter entries that are to
+in filters' configuration sub-tree there are set of filter entries that are to
 be configured. each entry consists of required field 'type' that determines
 what type of filter is to be created and optional, filter-specific fields.
 example configuration may look like this:
@@ -122,19 +179,24 @@ example configuration may look like this:
   </onetomany>
 </filters>
 
-following filters and paramters are available:
+following filters and parameters are available:
 
-  <!-- correlates multiple atacks originated from single host -->
+  <!-- correlates attacks from one host to another -->
+  <onetoone name="o2o">
+    <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
+  </onetoone>
+
+  <!-- correlates multiple attacks originated from single host -->
   <onetomany name="o2m">
     <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
   </onetomany>
 
-  <!-- correlates multiple atacks originated from single host -->
+  <!-- correlates multiple attacks originated from single host -->
   <manytoone name="m2o">
     <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
   </manytoone>
 
-  <!-- correlates multiple atacks directed on many host -->
+  <!-- correlates multiple attacks directed on many host -->
   <manytomany name="m2m">
     <timeout>42</timeout>         <!-- timeout for observing entry, in seconds -->
     <similarity>0.75</similarity> <!-- minimum similarity between meta-alerts to
@@ -153,12 +215,16 @@ following filters and paramters are available:
     <priorityDelta>0.8</priorityDelta> <!-- amount to update priority by when black-listed IP's found -->
   </ipblacklist>
 
-  <!-- correlates multiple atacks with the name name (short description) -->
+  <!-- correlates multiple attacks with the name name (short description) -->
   <samename name="same_name">
     <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
   </samename>
 
-TODO: describe missing filters.
+  <!-- finds chains of events and updates severity delta by a given ammount -->
+  <eventchain name="event_chain">
+    <timeout>42</timeout>              <!-- timeout for observing entry, in seconds -->
+    <priorityDelta>0.8</priorityDelta> <!-- amount to update priority by when correlating -->
+  </eventchain>
 
 
 triggers configuration
@@ -167,11 +233,11 @@ triggers configuration
 triggers are provided in order to be able to react on events reported by filters.
 though triggers are generic mechanisms, basically there are two use cases:
 reporting problem to human (administrator) and/or taking autonomous actions
-(ex. prohibitting problematic host on the firewall).
+(ex. prohibiting problematic host on the firewall).
 there are ready-to-go triggers provided with ACARM-ng described in this section,
 though users can easily implement more of them via generic registration mechanism.
 
-general layout of triggers' configuration looks simillar to filters' configuration:
+general layout of triggers' configuration looks similar to filters' configuration:
 <triggers>
   <trigger1 name="t1">
     <opt1>...</opt1>
@@ -186,7 +252,7 @@ general layout of triggers' configuration looks simillar to filters' configurati
 
 below are listed implemented triggers along with their implementation.
 
-<!-- Gadu-Gadu instant messanger notification
+<!-- Gadu-Gadu instant messenger notification
      NOTE: you must create separate account for sending messages with this
            trigger, otherwise it may not work as expected, due to Gadu-Gadu
            protocol specific details.
@@ -196,21 +262,20 @@ below are listed implemented triggers along with their implementation.
            communicator in order to get messages.
 -->
 <gg name="msg2bob">
-  <uin>23436545</uin>                   <!-- GG account number -->
-  <password>testowekonto</password>     <!-- password for this account-->
-  <receiver_uin>23461426</receiver_uin> <!-- GG account to notify -->
+  <uin>12345</uin>                   <!-- GG account number -->
+  <password>my$3cr337</password>     <!-- password for this account-->
+  <receivers>12345 2334</receivers>  <!-- list of GG accounts to notify -->
 
   <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
   <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
 </gg>
 
-<!-- Jabber instant messanger notification -->
+<!-- Jabber instant messenger notification -->
 <jabber name="msg2bob">
-  <login>acarm-ng1</login>                   <!-- login for Jabber account-->
-  <password>testowekonto</password>          <!-- password for this account-->
-  <server>jabber.org</server>                <!-- Jabber server-->
-  <password>testowekonto</password>          <!-- password for this account-->
-  <receiver>acarm-ng2@jabber.org</receiver>  <!-- Jabber account to notify -->
+  <login>acarm-ng1</login>                            <!-- login for Jabber account-->
+  <password>my$3cr337</password>                      <!-- password for this account-->
+  <server>jabber.org</server>                         <!-- Jabber server-->
+  <receiver>me@jabber.org you@jabber.org</receiver>   <!-- list of Jabber accounts to notify -->
 
   <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
   <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
@@ -219,10 +284,11 @@ below are listed implemented triggers along with their implementation.
 <!-- mail notification about security issue -->
 <mail name="email_admin">
   <from>robot@e.mail.org</from>    <!-- e-mail to send from -->
+<!-- TODO: support for more than one account is in progress -->
   <to>admin@e.mail.org</to>        <!-- e-mail to send reports to -->
   <server>smtp.e.mail.org</server> <!-- server's address -->
   <port>465</port>                 <!-- port server's listening on -->
-  <security>ssl</security>         <!-- secure conection type (ssl/starttls) -->
+  <security>ssl</security>         <!-- secure connection type (ssl/starttls) -->
   <ssl>false</ssl>                 <!-- flag for usage secure connection over SSL (true/false) -->
   <user>robot</user>               <!-- username to authenticate with (optional) -->
   <password>topsi-kret</password>  <!-- password for username (required when 'user' is set) -->
@@ -233,7 +299,7 @@ below are listed implemented triggers along with their implementation.
 
 <!-- trigger creating longer reports in files -->
 <file name="file_write">
-  <outdir>/some/output/directory</outdir>             <!-- direcotry to write reports to -->
+  <outdir>/some/output/directory</outdir>             <!-- directory to write reports to -->
 
   <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
   <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
@@ -241,25 +307,23 @@ below are listed implemented triggers along with their implementation.
 
 <!-- trigger calling user's application -->
 <extapp name="call_my_scrpt">
-  <executable>/some/app</executable>                  <!-- applicaiton or script to run when threshold is reached.
-                                                           syntax of call is as follows:
-                                                             /some/app <dir> <count> <priority> <certainty>
-                                                           where:
-                                                             /some/app is application that user specifies in config.
-                                                             <dir>          is output directory, where all correlated alerts are
-                                                                            saved in IDMEF format (idmef_<id>.xml file name).
-                                                             <count>        is a number of alerts (correlated).
-                                                             <priority>     is priority assigned to this (meta) alert (floating point value).
-                                                             <certainty>    is certainty level assigned for this meta alert, in [0;1] range.
-                                                      -->
+  <executable>/some/app</executable> <!-- application or script to run when threshold is reached.
+                                          syntax of call is as follows:
+                                            /some/app <dir> <count> <priority> <certainty>
+                                          where:
+                                            /some/app is application that user specifies in config.
+                                            <dir>       is output directory, where all correlated alerts are
+                                                        saved in IDMEF format (idmef_<id>.xml file name).
+                                            <count>     is a number of alerts (correlated).
+                                            <priority>  is priority assigned to this (meta) alert (floating point value).
+                                            <certainty> is certainty level assigned for this meta alert, in [0;1] range.
+                                     -->
 
   <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
   <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
 </extapp>
 
-TODO: describe missing triggers
-
-note that severity_threshold and alerts_count_threshold are OR'ek, i.e. if
+note that severity_threshold and alerts_count_threshold are OR'ed, i.e. if
 any one of them is reached, meta-alert is reported. they are both optional
 parameters as well, i.e. they may be skipped in configuration, that will
 result in not checking given criteria. so if user would like to be informed
@@ -270,17 +334,35 @@ alerts_count_threshold to N and skip severity_threshold parameter at all.
 inputs configuration
 ====================
 
-TODO: describe inputs
+inputs are alerts-gathering mechanisms in ACARM-ng. each of them reads alerts
+and passess them to system for correlation and processing.
+
+following inputs are available:
+
+  * prelude - reads alerts from Prelude-Manager. for more pieces of information
+              regarding Prelude-Manager configuration and sensors registration
+              refer Prelude-Manager's manual.
+<prelude name="myprelude1">
+  <profile>acarm-ng_profile</profile>               <!-- profile created for prelude "reading-sensor": ACARM-ng -->
+  <config>/etc/prelude/default/client.conf</config> <!-- client config for prelude -->
+</prelude>
+
+  * file - reads alerts from files in IDMEF format. file names to read from are
+           given via fifo queue in the filesystem. if queue does not exist it
+           will be created. if it does exist it will be opened.
+<file name="idmef_files">
+  <fifo>/path/to/fifo/queue</fifo> <!-- queue to read files names from -->
+</file>
 
 
-preprocessor configiration
+preprocessor configuration
 ==========================
 
 preprocessor is a tool to allow removing certain alerts just after receiving them.
 this is useful when there are known facilities that generates useless alerts that
-are not to be correlated. droped alert are not saved in system's data base (only
+are not to be correlated. dropped alert are not saved in system's data base (only
 log is generated about this event).
-default behaviour is to accept alert (ex.: when this section is empty).
+default behavior is to accept alert (ex.: when this section is empty).
 
 top level structure looks like this:
 <preprocessor>
@@ -295,10 +377,10 @@ top level structure looks like this:
   <!-- ... -->
 </preprocessor>
 
-section(s) 'drop' and 'accept' contains sets of rules in form of logical extressins
+section(s) 'drop' and 'accept' contains sets of rules in form of logical expressions
 (they are described later on). if given expression is true, alert is accepted or
-dropped, respectively. if alert does not match rules specified in given secion
-then next section is pocessed. algorithm repeats until first section does match.
+dropped, respectively. if alert does not match rules specified in given section
+then next section is processed. algorithm repeats until first section does match.
 if no section match, alert is accepted by default.
 
 logical expression consists of 'and', 'or' and 'not' statements, that can be
@@ -326,8 +408,8 @@ assuming A,B,C,D,E,F are rules (rules are described later on in this section)
 logical condition is: ( A && B && (!C) && ( !D ) && !( E || F ) ).
 
 there are 3 possible rules: 'true', 'false' and 'rule'. 'true' is term indicating
-true. 'false' is term indicating false. 'rule' is rule to be avaluated for a given
-alert and may be true or false depending on alert's concent.
+true. 'false' is term indicating false. 'rule' is rule to be evaluated for a given
+alert and may be true or false depending on alert's content.
 'rule' have two parameters: 'path' and comparison mode ('equals' or 'contains' -
 they are described later on).
 example rules can look like this:
@@ -410,7 +492,7 @@ example configs along with description goes here:
   </drop>
 </preprocessor>
 accepts only alerts that name contains string 'ssh' and at least one target host
-is '1.2.3.4'. all other alerts will be droped.
+is '1.2.3.4'. all other alerts will be dropped.
 
 <preprocessor>
   <drop>
@@ -421,4 +503,4 @@ drops all alerts that were generated by source host whose name's
 "my.security.scanner.org". all other alerts will be accepted. notice
 that we use '*' here, so if alert will consist of reports generated
 by multiple hosts (including 'my.security.scanner.org') alert may still
-be accepted. this is safe aproach in this context.
+be accepted. this is safe approach in this context.

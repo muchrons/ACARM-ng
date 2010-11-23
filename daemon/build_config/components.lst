@@ -1,8 +1,8 @@
 filterdnsresolver
 filteripblacklist
+filtereventchain
 filtermanytomany
 filterhostcommon
-filterescalation
 filteronetomany
 filtermanytoone
 filtersamename

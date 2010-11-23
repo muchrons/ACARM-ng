@@ -7,9 +7,13 @@ marked with [o].
 [br-] boost libraries >= 1.40
 [br-] libxml++ >= 2.6
 [br-] openssl >= 4.0
+[-ro] apache2-server          (used by: Web User Interface)
 [-ro] postgresql-server       (used by: persistencypostgres)
 [bro] libpqxx                 (used by: persistencypostgres)
 [bro] libcurl                 (used by: filteripblacklist)
 [bro] libprelude >= 1.0.0     (used by: inputprelude)
 [bro] libgadu >= 1.8          (used by: triggergg)
-[bro] libetpan >= 0.54        (used by: triggermail)
+[bro] libloudmouth >= 1.4     (used by: triggerjabber) -- TODO: to be removed
+[bro] libgloox >= 1.0         (used by: triggerjabber)
+[bro] libetpan >= 0.54        (used by: triggermail) -- TODO: to be removed
+[bro] libvmime >= 0.9         (used by: triggermail)

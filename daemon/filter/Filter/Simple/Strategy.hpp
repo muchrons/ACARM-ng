@@ -59,10 +59,10 @@ protected:
 
 private:
   /** \brief creates NodeEntry form given node.
-   *  \param n node to create entry from.
-   *  \return node entry created from n.
+   *  \param n node to create entry for.
+   *  \return user data for given node.
    */
-  virtual NodeEntry makeThisEntry(const Node n) const = 0;
+  virtual TUserData makeThisEntryUserData(const Node n) const = 0;
   /** \brief checks if given entry is interesting for the filter on not.
    *  \param thisEntry entry to be checked.
    *  \return true if entry is interesting, false otherwise.
@@ -83,6 +83,21 @@ private:
    */
   virtual bool canCorrelate(const NodeEntry thisEntry,
                             const NodeEntry otherEntry) const = 0;
+  /** \brief creates node entry for newly correlated node.
+   *  \param thisEntry  entry created during this run.
+   *  \param otherEntry entry saved after previous runs.
+   *  \param newNode    newly correlated node.
+   *  \return user data entry for correlated element.
+   */
+  virtual TUserData makeUserDataForNewNode(const NodeEntry &thisEntry,
+                                           const NodeEntry &otherEntry,
+                                           const Node       newNode) const = 0;
+  /** \brief gives user a handle to postprocess node (new, or re-correlated).
+   *  \param n  node to be post processed.
+   *  \param bf backend facade to use during postprocessing.
+   */
+  virtual void postProcessNode(Node &n, BackendFacade &bf) const = 0;
+
 
   // this is the core - do NOT overwrite this method
   virtual void processImpl(Node               n,
@@ -90,7 +105,7 @@ private:
                            BackendFacade     &bf)
   {
     // prepare entry to compare with
-    const NodeEntry thisEntry( makeThisEntry(n) );
+    const NodeEntry thisEntry( n, makeThisEntryUserData(n) );
     assert( thisEntry.isSelfCorrelated()==false );
     // make a quick test, if this entry is interesting for a given filter at all
     if( !isEntryInteresting(thisEntry) )
@@ -185,10 +200,10 @@ private:
     if( it->node_->isLeaf() || it->isSelfCorrelated()==false )
     {
       // create new meta-alert and one in queue
-      LOGMSG_DEBUG_S(Base::log_)<< "correlating " << it->node_->getMetaAlert()->getID().get() << " ('"
-                                << it->node_->getMetaAlert()->getName().get() << "') with "
-                                << thisEntry.node_->getMetaAlert().getID().get() << " ('"
-                                << thisEntry.node_->getMetaAlert().getName().get() << "') as a new node";
+      LOGMSG_INFO_S(Base::log_)<< "correlating " << it->node_->getMetaAlert()->getID().get() << " ('"
+                               << it->node_->getMetaAlert()->getName().get() << "') with "
+                               << thisEntry.node_->getMetaAlert().getID().get() << " ('"
+                               << thisEntry.node_->getMetaAlert().getName().get() << "') as a new node";
       const BackendFacade::ChildrenVector cv(it->node_, thisEntry.node_);
       const Persistency::MetaAlertPtrNN   ma(
                   new Persistency::MetaAlert( getMetaAlertName(thisEntry, *it),
@@ -197,8 +212,10 @@ private:
                                               Persistency::ReferenceURLPtr(),
                                               Persistency::Timestamp(),
                                               bf.getNextFreeID() ) );
-      Persistency::GraphNodePtrNN newNode=bf.correlate(ma, cv);                                     // add new, correlated element.
-      const NodeEntry             newEntry=NodeEntry::makeCorrelatedEntry(newNode, thisEntry.t_);   // use the same reported host entry.
+      Persistency::GraphNodePtrNN newNode =bf.correlate(ma, cv);                                // add new, correlated element.
+      postProcessNode(newNode, bf);
+      const TUserData             userData=makeUserDataForNewNode(thisEntry, *it, newNode);     // create user's data
+      const NodeEntry             newEntry=NodeEntry::makeCorrelatedEntry(newNode, userData);   // create correlated entry
       assert( newEntry.isSelfCorrelated()==true );
       ntq.dismiss(it);                    // if element has been already correlated
                                           // it should not be used any more.
@@ -207,11 +224,12 @@ private:
     else    // i.e.: is node
     {
       // append new meta-alert to a set of already correlated ones
-      LOGMSG_DEBUG_S(Base::log_)<< "adding node " << thisEntry.node_->getMetaAlert().getID().get() << " ('"
-                                << thisEntry.node_->getMetaAlert().getName().get() << "') to already correlated "
-                                << it->node_->getMetaAlert()->getID().get() << " ('"
-                                << it->node_->getMetaAlert()->getName().get() << "')";
+      LOGMSG_INFO_S(Base::log_)<< "adding node " << thisEntry.node_->getMetaAlert().getID().get() << " ('"
+                               << thisEntry.node_->getMetaAlert().getName().get() << "') to already correlated "
+                               << it->node_->getMetaAlert()->getID().get() << " ('"
+                               << it->node_->getMetaAlert()->getName().get() << "')";
       bf.addChild(it->node_, thisEntry.node_);      // add new alert to already correlated in one set
+      postProcessNode(it->node_, bf);
     }
 
     // if we're here, it means that we were able to correlate and may exit

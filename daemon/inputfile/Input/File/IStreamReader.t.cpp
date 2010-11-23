@@ -5,6 +5,7 @@
 #include <tut.h>
 
 #include "Input/File/IStreamReader.hpp"
+#include "Commons/Threads/Thread.hpp"
 #include "System/Timer.hpp"
 
 using namespace std;
@@ -173,6 +174,57 @@ void testObj::test<9>(void)
     ensure_equals("invalid string 2", line.second, "cd");
   }
   ensure_equals("stream has been read without a point", ss_.tellg(), 6u);
+}
+
+namespace
+{
+struct DeadlineTestThread
+{
+  explicit DeadlineTestThread(volatile int &state):
+    state_(&state)
+  {
+  }
+
+  void operator()(void)
+  {
+    try
+    {
+      *state_=1;
+      stringstream  ss;
+      IStreamReader isr(ss);
+      isr.readLine(10u);    // should be interrupted
+      *state_=-1;           // error...
+    }
+    catch(const boost::thread_interrupted &)
+    {
+      *state_=2;            // ok - interruption works
+    }
+    catch(...)
+    {
+      *state_=-2;           // ?!
+    }
+  }
+
+private:
+  volatile int *state_;
+}; // struct DeadlineTestThread
+} // unnamed namespace
+
+// test interruption during timeout
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  volatile int state=0;
+  Commons::Threads::Thread th( (DeadlineTestThread(state)) );
+  // wait until thread is started
+  while(state==0)
+    boost::this_thread::yield();
+  // interrupt and join it
+  th->interrupt();
+  th->join();
+  // test if interruption works fine
+  ensure_equals("interruption failed", state, 2);
 }
 
 } // namespace tut

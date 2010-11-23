@@ -15,11 +15,12 @@ directly included in this package, that have following licenses:
   -> boost libraries (Boost License)
   -> build_process (Revised BSD)
   -> curl (http://curl.haxx.se/docs/copyright.html (MIT/X-like)) /indirectly
+  -> etpan (Revised BSD) -- TODO: to be removed
   -> gloox (GPL)
   -> gnutls (LGPL) /indirectly
   -> libgadu (LGPL)
   -> libprelude (GPL)
-  -> loudmouth (LGPL)
+  -> loudmouth (LGPL) -- TODO: to be removed
   -> ltdl (LGPL) /indirectly
   -> openssl (Apache-style)
   -> pqxx (Revised BSD)

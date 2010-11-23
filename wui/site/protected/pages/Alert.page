@@ -1,5 +1,5 @@
 <com:TContent ID="content">
-<com:TPanel GroupingText="<font size=6 color=white>Alert Details</font>" Width="100%">
+<com:TPanel GroupingText="<font size=6 color=white>Alert's Details</font>" Width="100%">
 <br/>
 <table border="1" width="100%" cellpadding="5">
   <tr>
@@ -12,15 +12,41 @@
     <td id="AlertTag" width="10%">Created:</td>
     <td id="AlertContent" width="40%"><com:TLiteral ID="AlertCreateTime" Text="&nbsp" Encode="true"/></td>
   </tr>
+</table>
+<table  border="1" width="100%" cellpadding="5">
   <tr>
     <td id="AlertTag" width="10%">Source:</td>
-    <td id="AlertContent" width="40%"> <com:TLiteral ID="AlertSource" Text="&nbsp" Encode="true"/></td>
-    <td id="AlertTag" width="10%">Destination:</td>
-    <td id="AlertContent" width="40%"> <com:TLiteral ID="AlertDestination" Text="&nbsp" Encode="true"/></td>
-  </tr>
-  <tr>
+    <td id="AlertContent" width="40%">
+      <com:TDataGrid
+         ID="AlertSources"
+         WIDTH="100%"
+         EnableViewState="false"
+         CellPadding="2"
+         ShowHeader="false"
+         HeaderStyle.BackColor="black"
+         HeaderStyle.ForeColor="white"
+         ItemStyle.BackColor="#cbcbd2"
+         AlternatingItemStyle.BackColor="#b9b9d2"
+         />
+    </td>
     <td id="AlertTag" width="10%">Severity:</td>
     <td id="AlertContent" width="40%"> <com:TLiteral ID="AlertSeverity" Text="&nbsp" Encode="false"/></td>
+  </tr>
+  <tr>
+    <td id="AlertTag" width="10%">Destination:</td>
+    <td id="AlertContent" width="40%">
+      <com:TDataGrid
+         ID="AlertDestinations"
+         WIDTH="100%"
+         EnableViewState="false"
+         CellPadding="2"
+         ShowHeader="false"
+         HeaderStyle.BackColor="black"
+         HeaderStyle.ForeColor="white"
+         ItemStyle.BackColor="#cbcbd2"
+         AlternatingItemStyle.BackColor="#b9b9d2"
+         />
+    </td>
     <td id="AlertTag" width="10%">Certainty:</td>
     <td id="AlertContent" width="40%"> <com:TLiteral ID="AlertCertainty" Text="&nbsp" Encode="true"/></td>
   </tr>
@@ -35,7 +61,7 @@
          ShowHeader="false"
          HeaderStyle.BackColor="black"
          HeaderStyle.ForeColor="white"
-         ItemStyle.BackColor="#8989a2"
+         ItemStyle.BackColor="#cbcbd2"
          AlternatingItemStyle.BackColor="#b9b9d2"
          />
     </td>
@@ -47,6 +73,6 @@
 </table>
 </com:TPanel>
 
-
+<com:TClientScript PradoScripts="effects" />
 
 </com:TContent>

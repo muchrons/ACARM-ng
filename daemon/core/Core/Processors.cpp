@@ -43,8 +43,7 @@ void Processors::process(void)
 
 void Processors::append(const Core::Types::Proc::ProcessorsCollection &newProcs)
 {
-  for(ProcessorsCollection::const_iterator it=newProcs.begin();
-      it!=newProcs.end(); ++it)
+  for(ProcessorsCollection::const_iterator it=newProcs.begin(); it!=newProcs.end(); ++it)
     procs_.push_back(*it);
 }
 

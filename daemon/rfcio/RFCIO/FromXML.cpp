@@ -149,10 +149,10 @@ Persistency::AnalyzerPtrNN FromXML::parseAnalyzer(const xmlpp::Element &analyzer
   if(id!=NULL)
   {
     if( Convert::to<string>( out->getID().get() )!=id )
-      LOGMSG_ERROR_S(log_) << "parsed analyzer has ID '" << id << "', but system assigned it ID "
-                           << out->getID().get() << "; this can happen if alert comes from different "
-                              "system that assignes IDs independently; proceeding with id "
-                           << out->getID().get();
+      LOGMSG_WARN_S(log_) << "parsed analyzer has ID '" << id << "', but system assigned it ID "
+                          << out->getID().get() << "; this can happen if alert comes from different "
+                             "system that assignes IDs independently; proceeding with id "
+                          << out->getID().get();
   }
   // return the result
   return out;
