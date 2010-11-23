@@ -68,7 +68,7 @@ struct TestStrategy: public Strategy<TestData>
     return TestData();
   }
 
-  virtual void postProcessNode(Node &/*n*/) const
+  virtual void postProcessNode(Node &/*n*/, Filter::BackendFacade &/*bf*/) const
   {
     ++postProcessCalled_;
   }

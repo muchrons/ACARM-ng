@@ -139,7 +139,7 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
   return d;
 }
 
-void Strategy::postProcessNode(Node &/*n*/) const
+void Strategy::postProcessNode(Node &/*n*/, Filter::BackendFacade &/*bf*/) const
 {
   // TODO
   // nothing to be done here
