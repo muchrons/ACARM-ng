@@ -55,8 +55,8 @@ bool isHostFromNode(GraphNodePtrNN node, HostPtrNN host)
 } // unnamed namespace
 
 void BackendFacade::setHostName(Node                    node,
-                               Persistency::HostPtrNN  host,
-                               const std::string      &name)
+                                Persistency::HostPtrNN  host,
+                                const std::string      &name)
 {
   assert( isHostFromNode(node, host) );
   beginTransaction();
@@ -66,7 +66,7 @@ void BackendFacade::setHostName(Node                    node,
 }
 
 void BackendFacade::updateSeverityDelta(Node         node,
-                                       const double delta)
+                                        const double delta)
 {
   beginTransaction();
   MetaAlertPtrNN       ma=node->getMetaAlert();
@@ -76,7 +76,7 @@ void BackendFacade::updateSeverityDelta(Node         node,
 }
 
 void BackendFacade::updateCertaintyDelta(Node         node,
-                                        const double delta)
+                                         const double delta)
 {
   beginTransaction();
   MetaAlertPtrNN       ma=node->getMetaAlert();
