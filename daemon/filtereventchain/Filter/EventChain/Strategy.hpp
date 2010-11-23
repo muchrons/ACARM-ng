@@ -36,6 +36,7 @@ struct Data
   SharedIPSet endIPs_;      ///< ips of the chain end
 }; // struct Data
 
+
 /** \brief filter detecting chain of events
  */
 class Strategy: public Filter::Simple::Strategy<Data>
