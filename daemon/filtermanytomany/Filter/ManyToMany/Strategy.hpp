@@ -68,6 +68,7 @@ private:
   virtual Data makeUserDataForNewNode(const NodeEntry &thisEntry,
                                       const NodeEntry &otherEntry,
                                       const Node       newNode) const;
+  virtual void postProcessNode(Node &n) const;
 
   const Params params_;
 }; // class Strategy

@@ -75,6 +75,7 @@ private:
   virtual Data makeUserDataForNewNode(const NodeEntry &thisEntry,
                                       const NodeEntry &otherEntry,
                                       const Node       newNode) const;
+  virtual void postProcessNode(Node &n) const;
 }; // class Strategy
 
 } // namespace OneToOne

@@ -139,5 +139,11 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
   return d;
 }
 
+void Strategy::postProcessNode(Node &/*n*/) const
+{
+  // TODO
+  // nothing to be done here
+}
+
 } // namespace EventChain
 } // namespace Filter

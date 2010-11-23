@@ -83,7 +83,6 @@ private:
    */
   virtual bool canCorrelate(const NodeEntry thisEntry,
                             const NodeEntry otherEntry) const = 0;
-
   /** \brief creates node entry for newly correlated node.
    *  \param thisEntry  entry created during this run.
    *  \param otherEntry entry saved after previous runs.
@@ -93,6 +92,11 @@ private:
   virtual TUserData makeUserDataForNewNode(const NodeEntry &thisEntry,
                                            const NodeEntry &otherEntry,
                                            const Node       newNode) const = 0;
+  /** \brief gives user a handle to postprocess node (new, or re-correlated).
+   *  \param n node to be post processed.
+   */
+  virtual void postProcessNode(Node &n) const = 0;
+
 
   // this is the core - do NOT overwrite this method
   virtual void processImpl(Node               n,
@@ -208,6 +212,7 @@ private:
                                               Persistency::Timestamp(),
                                               bf.getNextFreeID() ) );
       Persistency::GraphNodePtrNN newNode =bf.correlate(ma, cv);                                // add new, correlated element.
+      postProcessNode(newNode);
       const TUserData             userData=makeUserDataForNewNode(thisEntry, *it, newNode);     // create user's data
       const NodeEntry             newEntry=NodeEntry::makeCorrelatedEntry(newNode, userData);   // create correlated entry
       assert( newEntry.isSelfCorrelated()==true );
@@ -223,6 +228,7 @@ private:
                                << it->node_->getMetaAlert()->getID().get() << " ('"
                                << it->node_->getMetaAlert()->getName().get() << "')";
       bf.addChild(it->node_, thisEntry.node_);      // add new alert to already correlated in one set
+      postProcessNode(it->node_);
     }
 
     // if we're here, it means that we were able to correlate and may exit

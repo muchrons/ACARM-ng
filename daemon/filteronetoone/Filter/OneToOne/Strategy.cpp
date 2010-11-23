@@ -89,5 +89,10 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
   return thisEntry.t_;
 }
 
+void Strategy::postProcessNode(Node &/*n*/) const
+{
+  // nothing to be done here
+}
+
 } // namespace OneToOne
 } // namespace Filter

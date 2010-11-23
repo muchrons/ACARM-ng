@@ -197,5 +197,10 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &/*thisEntry*/,
   return Data();
 }
 
+void Strategy::postProcessNode(Node &/*n*/) const
+{
+  // nothing to be done here
+}
+
 } // namespace ManyToMany
 } // namespace Filter

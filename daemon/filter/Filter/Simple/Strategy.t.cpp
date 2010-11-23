@@ -31,7 +31,8 @@ struct TestStrategy: public Strategy<TestData>
     Strategy<TestData>("teststrategy", "teststrategyname", 42),
     isInteresting_(isInteresting),
     canCorrelate_(canCorrelate),
-    skipCorrelations_(skipCorrelations)
+    skipCorrelations_(skipCorrelations),
+    postProcessCalled_(0)
   {
   }
 
@@ -67,9 +68,15 @@ struct TestStrategy: public Strategy<TestData>
     return TestData();
   }
 
+  virtual void postProcessNode(Node &/*n*/) const
+  {
+    ++postProcessCalled_;
+  }
+
   bool        isInteresting_;
   bool        canCorrelate_;
   mutable int skipCorrelations_;
+  mutable int postProcessCalled_;
 }; // struct TestStrategy
 
 
@@ -277,6 +284,63 @@ void testObj::test<8>(void)
 
   // check if changed node is new one
   ensure("node1 returned instead of newly correlated one", tmp.get()==changed_.at(0).get() );
+}
+
+// test if post-process is called for a new node
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  TestStrategy       ts;
+  TestStrategy::Node n1=makeNewNode();
+  TestStrategy::Node n2=makeNewLeaf();
+
+  ts.process(n1, changed_);
+  ensure_equals("some nodes have been changed in first run", changed_.size(), 0u);
+
+  ts.process(n2, changed_);
+  ensure_equals("correlation new node failed", changed_.size(), 1u);
+  ensure_equals("node postprocessing not called", ts.postProcessCalled_, 1);
+}
+
+// test if post-process is called for a already correlated node
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  TestStrategy       ts;
+  TestStrategy::Node n1=makeNewNode();
+  TestStrategy::Node n2=makeNewLeaf();
+  TestStrategy::Node n3=makeNewLeaf();
+
+  ts.process(n1, changed_);
+  ensure_equals("some nodes have been changed in first run", changed_.size(), 0u);
+
+  ts.process(n2, changed_);
+  ensure_equals("correlation new node failed", changed_.size(), 1u);
+  TestStrategy::Node node=changed_[0];
+  changed_.clear();
+
+  ts.process(n3, changed_);
+  ensure_equals("correlation failed", changed_.size(), 1u);
+  ensure("correlation to existing node failed", node.get()==changed_[0].get() );
+
+  // first call to postprocessing has been done during previous correlation
+  ensure_equals("node postprocessing not called", ts.postProcessCalled_, 2);
+}
+
+// test if post-processing is not called when no corelation happens
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  TestStrategy ts(false);
+  for(int i=0; i<3; ++i)
+  {
+    ts.process( makeNewLeaf(), changed_ );
+    ensure_equals("something has cahnged", changed_.size(), 0u);
+    ensure_equals("post processing called when no correlation's done", ts.postProcessCalled_, 0);
+  }
 }
 
 } // namespace tut
