@@ -20,7 +20,7 @@ namespace Core
 class SignalToStop: public System::SignalRegistrator
 {
 public:
-  /** \brief registers handle for INT signal.
+  /** \brief registers handle for signal.
    *  \param signum signal number to be handled.
    *  \param wt     main system threads. if NULL, signal is ignored.
    */
