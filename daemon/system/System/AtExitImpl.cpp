@@ -7,6 +7,7 @@
 #include <stdlib.h>
 
 #include "System/AtExitImpl.hpp"
+#include "System/FunctionName.hpp"
 
 using namespace std;
 using namespace boost;
@@ -43,16 +44,19 @@ void AtExitImpl::deallocateAll(void)
       // free one more resource :)
       (*it)->deallocate();
     }
+    catch(const std::exception &ex)
+    {
+      cerr<<"EXCEPTION in "<<SYSTEM_FUNCTION_NAME<<"(): "<<ex.what()<<endl;
+      assert(!"fatal error - exception from AtExitResourceDeallocator::deallocate() has been thrown");
+      // following code should not be part of the library...
+      //abort();
+    }
     catch(...)
     {
-      assert(!"fatal error - exception from "
-              "AtExitResourceDeallocator::deallocate() has been thrown");
-      /*
+      cerr<<"fatal error - exception has been thrown in "<<SYSTEM_FUNCTION_NAME<<endl;;
+      assert(!"fatal error - exception from AtExitResourceDeallocator::deallocate() has been thrown");
       // following code should not be part of the library...
-      cerr<<"fatal error - exception from "
-            "AtExitResourceDeallocator::deallocate() has been thrown\n";
-      abort();
-      */
+      //abort();
     }
   }
   // ensure each dealocation will take place just once
