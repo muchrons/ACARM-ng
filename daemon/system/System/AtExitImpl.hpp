@@ -29,9 +29,9 @@ public:
    */
   ~AtExitImpl(void);
   /** \brief deallocates all registered resources.
-   *  \note this method shoul dbe called exactly once during lifetime
-   *        of created object. no regsters can be done after this method
-   *        has been called.
+   *  \note this method should be called exactly once during lifetime
+   *        of created object. no registerations can be done after this
+   *        method has been called.
    */
   void deallocateAll(void);
   /** \brief registers new deallocator.
