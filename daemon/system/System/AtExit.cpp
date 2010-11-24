@@ -45,8 +45,8 @@ extern "C"
 static void cStyleCallForAtExit(void)
 {
   // swap this queue with new (NULL - will be allocated, if needed) so
-  // that it is possible to register new handlers while processing
-  // other handlers.
+  // that it is possible to register new handles while processing
+  // other handles (deallocation).
   System::AtExitImpl *tmp=NULL;
   {
     SafeInitLock lock(g_mutex);
