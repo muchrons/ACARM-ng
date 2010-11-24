@@ -98,4 +98,9 @@ NodeConfPtr NodeConfReader::read(const NodeName &nn) const
   return NodeConfPtr( new NodeConf(appender, formatter_, threshold) );
 }
 
+void NodeConfReader::reinitAppenders(void)
+{
+  appMap_.reinitAll();
+}
+
 } // namespace Logger
