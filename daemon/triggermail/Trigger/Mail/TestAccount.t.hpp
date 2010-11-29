@@ -13,7 +13,6 @@
 
 #include "System/ScopedPtrCustom.hpp"
 #include "Trigger/Mail/Config.hpp"
-#include "Trigger/Mail/LoggerWrapper.hpp"
 #include "TestHelpers/Data/mail1.hpp"
 #include "TestHelpers/Data/mail2.hpp"
 
@@ -29,10 +28,10 @@ Trigger::Mail::Config getTestConfig1(const char *to=MAIL2_TEST_ACCOUNT_ADDRESS)
                                                  MAIL1_TEST_ACCOUNT_PORT,
                                                  Trigger::Mail::Config::Server::Security::SSL);
   const Trigger::Simple::ThresholdConfig     th("0", "0");
-  return Trigger::Mail::Config(th, to, srv, auth);
+  return Trigger::Mail::Config(th, Trigger::Mail::Config::Recipients(to), srv, auth);
 }
 
-Trigger::Mail::Config getTestConfig2(void)
+Trigger::Mail::Config getTestConfig2(const char *to=MAIL1_TEST_ACCOUNT_ADDRESS)
 {
   const Trigger::Mail::Config::Authorization auth(MAIL2_TEST_ACCOUNT_LOGIN,
                                                   MAIL2_TEST_ACCOUNT_PASS);
@@ -41,7 +40,7 @@ Trigger::Mail::Config getTestConfig2(void)
                                                  MAIL2_TEST_ACCOUNT_PORT,
                                                  Trigger::Mail::Config::Server::Security::SSL);
   const Trigger::Simple::ThresholdConfig     th("0", "0");
-  return Trigger::Mail::Config(th, MAIL1_TEST_ACCOUNT_ADDRESS, srv, auth);
+  return Trigger::Mail::Config(th, Trigger::Mail::Config::Recipients(to), srv, auth);
 }
 
 
@@ -51,6 +50,9 @@ typedef System::ScopedPtrCustom<mailfolder,  mailfolder_free>  FolderHolderHelpe
 // internal (helper) implementation
 int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
 {
+#warning TODO: this implementation does not work
+return 0;
+
   StorageHolderHelper storage( mailstorage_new(NULL) );             // create storage
   if(storage.get()==NULL)
     throw std::runtime_error("storage() allocation error");
@@ -95,7 +97,9 @@ int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
 // returns number of removed messages.
 int removeMessagesFromAccount(const Trigger::Mail::Config &cfg, int minCount=0)
 {
-  Trigger::Mail::LoggerWrapper logWrp;                  // add logs to log file
+#warning TODO: this implementation does not work
+return 0;
+
   const time_t                 deadline=time(NULL)+45;  // give it 45[s] timeout
   int                          count   =0;              // no elements removed yet
   // check until timeout's reached, or minimal value is reached

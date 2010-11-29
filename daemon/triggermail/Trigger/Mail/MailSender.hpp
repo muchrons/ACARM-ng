@@ -33,11 +33,6 @@ public:
   void send(const std::string &subject, const std::string &content);
 
 private:
-  void sendMail(const std::string &recipient, const std::string &subject, const std::string &content);
-  void connectionErrorHandle(int ret, const char *call) const;
-  void errorHandle(int ret, const char *call) const;
-  bool isError(int ret) const;
-
   const Config cfg_;
 }; // class MailSmtp
 

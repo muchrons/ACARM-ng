@@ -4,14 +4,8 @@
  */
 #include <cstring>
 
-#include "System/ScopedPtrCustom.hpp"
-#include "System/AutoCptr.hpp"
-#include "Base/StrError.hpp"
-#include "Trigger/Mail/MailSmtp.hpp"
 #include "Trigger/Mail/MailSender.hpp"
-#include "Trigger/Mail/MimeCreateHelper.hpp"
-
-// TODO: fix mem-leaks in this file
+#include "Trigger/Mail/MimeCreateHelper.hpp"    // TODO: needed?
 
 using namespace System;
 
@@ -29,19 +23,16 @@ void MailSender::send(const std::string &subject, const std::string &content)
 {
   const Config::Server        &srv =cfg_.getServerConfig();
   const Config::Authorization *auth=cfg_.getAuthorizationConfig();
-  MailSmtp                     ms;
 
   // connect to server
   switch( srv.sec_.toInt() )
   {
     case Config::Server::Security::STARTTLS:
-      connectionErrorHandle( ( mailsmtp_socket_connect( ms.get(), srv.server_.c_str(), srv.port_ ) ),
-                               "mailsmtp_socket_connect" );
+      // TODO
       break;
 
     case Config::Server::Security::SSL:
-      connectionErrorHandle( ( mailsmtp_ssl_connect( ms.get(), srv.server_.c_str(), srv.port_ ) ),
-                               "mailsmtp_ssl_connect" );
+      // TODO
       break;
 
     default:
@@ -51,61 +42,7 @@ void MailSender::send(const std::string &subject, const std::string &content)
       break;
   } // switch(security_type)
 
-  // proceed with protocol:
-  errorHandle( mailesmtp_ehlo( ms.get() ), "mailesmtp_ehlo" );  // EHLO
-  if(srv.sec_==Config::Server::Security::STARTTLS)              // STARTTLS?
-    errorHandle( mailsmtp_socket_starttls( ms.get() ), "mailsmtp_socket_starttls");
-  if(auth!=NULL)                                                // require authorization?
-    errorHandle( mailsmtp_auth( ms.get(), auth->user_.c_str(), auth->pass_.c_str() ),
-                  "mailsmtp_auth" );                            // AUTH
-  errorHandle( mailesmtp_mail( ms.get(), srv.from_.c_str(), 0, NULL ),
-                "mailesmtp_mail" );                             // FROM
-  errorHandle( mailesmtp_rcpt( ms.get(), cfg_.getRecipientAddress().c_str(),
-                                MAILSMTP_DSN_NOTIFY_FAILURE|MAILSMTP_DSN_NOTIFY_DELAY, NULL ),
-                "mailesmtp_rcpt" );                             // TO
-  errorHandle( mailsmtp_data( ms.get() ), "mailsmtp_data" );    // DATA
-  // data-part headers and stuff...
-  MimeCreateHelper   mch(srv.from_, cfg_.getRecipientAddress(), subject, content);
-  const std::string &whole=mch.createMimeMessage();
-  errorHandle( mailsmtp_data_message( ms.get(), whole.c_str(), whole.length() ),
-                "mailsmtp_data_message" );                      // message body goes here
-
-  errorHandle( mailsmtp_quit( ms.get() ), "mailsmtp_quit" );    // QUIT
-}
-
-void MailSender::connectionErrorHandle(int ret, const char *call) const
-{
-  if( !isError(ret) )
-    return;
-  // oops - we have a problem
-  std::string err(call);
-  err.append("(): ");
-  err.append( mailsmtp_strerror(ret) );
-  const Base::StrError se;
-  err.append("; ");
-  err.append( se.get() );
-  throw ExceptionConnectionError( SYSTEM_SAVE_LOCATION,
-                                  cfg_.getServerConfig().server_.c_str(),
-                                  se.get().c_str() );
-}
-
-void MailSender::errorHandle(const int ret, const char *call) const
-{
-  if( !isError(ret) )
-    return;
-  // oops - we have a problem
-  std::string err(call);
-  err.append("(): ");
-  err.append( mailsmtp_strerror(ret) );
-  throw ExceptionSendingError( SYSTEM_SAVE_LOCATION,
-                               cfg_.getServerConfig().from_.c_str(),
-                               cfg_.getRecipientAddress().c_str(),
-                               err.c_str() );
-}
-
-bool MailSender::isError(const int ret) const
-{
-  return ret!=MAILSMTP_NO_ERROR;
+  // TODO...
 }
 
 } // namespace Mail
