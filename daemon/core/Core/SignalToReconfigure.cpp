@@ -27,6 +27,7 @@ static void handle(int signum)
       LOGMSG_WARN(log, "signal received - calling Logger::Config::reinit()");
       // reconfigure appenders
       Logger::Config::reinitAppenders();
+      LOGMSG_DEBUG(log, "reinitialization has been done");
     }
     catch(const std::exception &ex)
     {

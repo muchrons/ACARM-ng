@@ -41,10 +41,18 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  // send proper signal
+  const fs::path now ="loggerfile.log";
+  const fs::path prev="loggerfile.log.prev";
+  fs::remove(prev);
+  fs::rename(now, prev);
+  ensure("file not renamed precondition renamed", !fs::exists(now) );
+  // send signale to reconfigure
   const int ret=kill( getpid(), SIGHUP );
   ensure_equals("sending signal failed", ret, 0);
-  // TODO: add check if reconfiguration has been called
+  // ensure some logging is done
+  LOGMSG_INFO( Logger::Node("core.signaltoreconfigure.tests"), "writing some log file" );
+  // check if reconfiguration has been done
+  ensure("reconfiguration does not work", fs::exists(now) );
 }
 
 } // namespace tut
