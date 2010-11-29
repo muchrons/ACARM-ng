@@ -259,7 +259,7 @@ below are listed implemented triggers along with their implementation.
      NOTE: Gadu-Gadu server drops messages that contain URLs in them and are
            send from accounts not reported to be known by the receiver,
            therefore you must add ACARM-ng's GG account to users list in your
-           communicator in order to get messages.
+           communicator in order to get any messages.
 -->
 <gg name="msg2bob">
   <uin>12345</uin>                   <!-- GG account number -->
@@ -284,13 +284,11 @@ below are listed implemented triggers along with their implementation.
 <!-- mail notification about security issue -->
 <mail name="email_admin">
   <from>robot@e.mail.org</from>    <!-- e-mail to send from -->
-<!-- TODO: support for more than one account is in progress -->
-  <to>admin@e.mail.org</to>        <!-- e-mail to send reports to -->
+  <to>admin@x.com me@x.com</to>    <!-- e-mail(s) to send reports to -->
   <server>smtp.e.mail.org</server> <!-- server's address -->
   <port>465</port>                 <!-- port server's listening on -->
   <protocol>smtp</protocol>        <!-- protocol type (smtp) -->
-  <security>ssl</security>         <!-- secure connection type (ssl/starttls) -->
-  <ssl>false</ssl>                 <!-- flag for usage secure connection over SSL (true/false) -->
+  <security>ssl</security>         <!-- secure connection type (ssl/tls) -->
   <user>robot</user>               <!-- username to authenticate with (optional) -->
   <password>topsi-kret</password>  <!-- password for username (required when 'user' is set) -->
 
