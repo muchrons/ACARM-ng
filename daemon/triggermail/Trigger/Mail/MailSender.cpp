@@ -21,6 +21,8 @@ MailSender::MailSender(const Config &cfg):
 
 void MailSender::send(const std::string &subject, const std::string &content)
 {
+  try
+  {
   const Config::Server        &srv =cfg_.getServerConfig();
   const Config::Authorization *auth=cfg_.getAuthorizationConfig();
 
@@ -43,6 +45,13 @@ void MailSender::send(const std::string &subject, const std::string &content)
   } // switch(security_type)
 
   // TODO...
+  }
+  catch(const vmime::exception &ex)
+  {
+    // TODO
+    // translate vmime-specific exception to project-wide exception
+    throw ;//ExceptionConnectionError
+  }
 }
 
 } // namespace Mail

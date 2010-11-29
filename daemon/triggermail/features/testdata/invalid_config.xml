@@ -33,6 +33,7 @@
 -->
       <server>smtp.e.mail.org</server>
       <port>42</port>
+      <protocol>smtp</protocol>
       <security>ssl</security>
 <!--
       <user>robot</user>

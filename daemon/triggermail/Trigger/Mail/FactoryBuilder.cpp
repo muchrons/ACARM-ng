@@ -54,6 +54,15 @@ uint16_t getPort(const std::string &v)
   }
 } // getPort()
 
+Config::Server::Protocol getProtocol(const std::string &v)
+{
+  if(v=="smtp")
+    return Config::Server::Protocol::SMTP;
+
+  // ok - we have invalid value here...
+  throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "protocol", v.c_str() );
+} // getSecurity()
+
 Config::Server::Security getSecurity(const std::string &v)
 {
   if(v=="ssl")
@@ -109,9 +118,11 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO_S(log_)<<"setting port to "<<port;
   const Config::Server::Security  sec   =getSecurity(fc["security"]);
   LOGMSG_INFO_S(log_)<<"setting security to "<<sec.toInt();
+  const Config::Server::Protocol  proto =getProtocol(fc["protocol"]);
+  LOGMSG_INFO_S(log_)<<"setting protocol to "<<proto.toInt();
   const std::string              &from  =fc["from"];
   LOGMSG_INFO_S(log_)<<"setting from-address to "<<from;
-  const Config::Server            serverCfg(from, server, port, sec);
+  const Config::Server            serverCfg(from, server, port, proto, sec);
 
   // thresholds' config
   const char *sevTh=fc.get("severity_threshold");

@@ -288,6 +288,7 @@ below are listed implemented triggers along with their implementation.
   <to>admin@e.mail.org</to>        <!-- e-mail to send reports to -->
   <server>smtp.e.mail.org</server> <!-- server's address -->
   <port>465</port>                 <!-- port server's listening on -->
+  <protocol>smtp</protocol>        <!-- protocol type (smtp) -->
   <security>ssl</security>         <!-- secure connection type (ssl/starttls) -->
   <ssl>false</ssl>                 <!-- flag for usage secure connection over SSL (true/false) -->
   <user>robot</user>               <!-- username to authenticate with (optional) -->

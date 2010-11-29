@@ -40,6 +40,7 @@ struct TestClass
     opts_["to"]      ="to@address";
     opts_["server"]  ="server.address";
     opts_["port"]    ="69";
+    opts_["protocol"]="smtp";
     opts_["security"]="ssl";
 
     opts_["user"]    ="narf";
@@ -141,6 +142,26 @@ void testObj::test<8>(void)
 {
   setValid();
   opts_["security"]="none";
+  ensureThrow(opts_);
+}
+
+// test throw on missing protocol
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  setValid();
+  opts_.erase("protocol");
+  ensureThrow(opts_);
+}
+
+// test throw on invalid protocol
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  setValid();
+  opts_["protocol"]="nonexisting";
   ensureThrow(opts_);
 }
 

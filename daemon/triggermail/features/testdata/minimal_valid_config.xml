@@ -31,6 +31,7 @@
       <to>admin@e.mail.org</to>
       <server>smtp.e.mail.org</server>
       <port>25</port>
+      <protocol>smtp</protocol>
       <security>ssl</security>
 <!--
       <user>robot</user>

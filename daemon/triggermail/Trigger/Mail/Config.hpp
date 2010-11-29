@@ -31,36 +31,52 @@ struct SecurityEnum
   } Type;
 }; // struct Security
 
+/** \brief implemenation helper.
+ */
+struct ProtocolEnum
+{
+  /** \brief enum for security types declaration. */
+  typedef enum
+  {
+    SMTP
+  } Type;
+}; // struct Security
 } // namespace detail
+
 
 /** \brief whole module's configuration representation.
  */
 class Config
 {
 public:
-  /** \brief lsit of message recipients. */
+  /** \brief list of message recipients. */
   typedef Base::NonEmptyVector<std::string> Recipients;
 
   /** \brief server's configuration.
    */
   struct Server
   {
-    /** \brief security enum - user-level class. */
+    /** \brief security type enum - user-level class. */
     typedef System::Enum<detail::SecurityEnum> Security;
+    /** \brief protocol type enum - user-level class. */
+    typedef System::Enum<detail::ProtocolEnum> Protocol;
 
     /** \brief create configuration from given paramters.
      *  \param from   sender's e-mail address.
      *  \param server server address.
      *  \param port   port to connect to.
+     *  \param proto  protocol type to use.
      *  \param sec    security type.
      */
     Server(const std::string &from,
            const std::string &server,
            const uint16_t     port,
+           Protocol           proto,
            Security           sec):
       from_(from),
       server_(server),
       port_(port),
+      proto_(proto),
       sec_(sec)
     {
     }
@@ -68,6 +84,7 @@ public:
     const std::string from_;        ///< sender's e-mail.
     const std::string server_;      ///< server's addres.
     const uint16_t    port_;        ///< port server's listening on.
+    const Protocol    proto_;       ///< protocol type to be used.
     const Security    sec_;         ///< security type to be used.
   }; // struct Server
 

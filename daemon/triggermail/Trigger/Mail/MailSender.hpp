@@ -6,6 +6,7 @@
 #define INCLUDE_TRIGGER_MAIL_MAILSENDER_HPP_FILE
 
 #include "Trigger/Mail/Config.hpp"
+#include "Trigger/Mail/VmimeHandleInit.hpp"
 #include "Trigger/Mail/ExceptionConnectionError.hpp"
 #include "Trigger/Mail/ExceptionSendingError.hpp"
 #include "Trigger/Mail/ExceptionUnableToCreateMessage.hpp"
@@ -33,7 +34,8 @@ public:
   void send(const std::string &subject, const std::string &content);
 
 private:
-  const Config cfg_;
+  VmimeHandleInit vhi_;
+  const Config    cfg_;
 }; // class MailSmtp
 
 } // namespace Mail
