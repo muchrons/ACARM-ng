@@ -14,6 +14,8 @@ namespace Logger
  */
 struct Config
 {
+  /** \brief reinitializes all appenders.
+   */
   static void reinitAppenders(void);
 }; // struct Config
 
