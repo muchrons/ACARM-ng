@@ -36,19 +36,27 @@ MimeCreateHelper::MimeCreateHelper(const std::string        &from,
 
 MimeCreateHelper::MessagePtr MimeCreateHelper::createMimeMessage(void)
 {
-  // prepare message builder
-  vmime::messageBuilder mb;
+  try
+  {
+    // prepare message builder
+    vmime::messageBuilder mb;
 
-  // fill out content
-  mb.setExpeditor( vmime::mailbox(from_) );                                         // set sender
-  for(Config::Recipients::const_iterator it=to_.begin(); it!=to_.end(); ++it)       // set recipients
-    mb.getRecipients().appendAddress( vmime::create<vmime::mailbox>(*it) );
-  mb.setSubject( *strUTF8(subject_) );                                              // set subject
-  mb.getTextPart()->setCharset(vmime::charsets::UTF_8);                             // set UTF-8 as charset
-  mb.getTextPart()->setText( vmime::create<vmime::stringContentHandler>(content_) );// set message part
+    // fill out content
+    mb.setExpeditor( vmime::mailbox(from_) );                                         // set sender
+    for(Config::Recipients::const_iterator it=to_.begin(); it!=to_.end(); ++it)       // set recipients
+      mb.getRecipients().appendAddress( vmime::create<vmime::mailbox>(*it) );
+    mb.setSubject( *strUTF8(subject_) );                                              // set subject
+    mb.getTextPart()->setCharset(vmime::charsets::UTF_8);                             // set UTF-8 as charset
+    mb.getTextPart()->setText( vmime::create<vmime::stringContentHandler>(content_) );// set message part
 
-  // get final message
-  return mb.construct();
+    // get final message
+    return mb.construct();
+  }
+  catch(const vmime::exception &ex)
+  {
+    // translate vmime-specific exception to project-specific one
+    throw ExceptionUnableToCreateMessage(SYSTEM_SAVE_LOCATION, ex.what() );
+  }
 }
 
 } // namespace Mail

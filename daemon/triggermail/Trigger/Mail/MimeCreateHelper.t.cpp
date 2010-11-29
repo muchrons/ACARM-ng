@@ -117,4 +117,21 @@ void testObj::test<5>(void)
   ensure("recipient 2 is missing", msg.find("r2@d2.org")!=std::string::npos );
 }
 
+// test if exceptions are translated as they should
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  MimeCreateHelper mch("", Config::Recipients(""), "", "");
+  try
+  {
+    mch.createMimeMessage();
+    fail("exception not thrown on empty from/to fields");
+  }
+  catch(const ExceptionUnableToCreateMessage &)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut

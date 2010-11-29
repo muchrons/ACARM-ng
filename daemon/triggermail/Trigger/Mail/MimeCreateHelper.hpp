@@ -8,6 +8,7 @@
 
 #include "Trigger/Mail/Config.hpp"
 #include "Trigger/Mail/VmimeHandleInit.hpp"
+#include "Trigger/Mail/ExceptionUnableToCreateMessage.hpp"
 
 namespace Trigger
 {
