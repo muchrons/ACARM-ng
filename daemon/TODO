@@ -26,3 +26,4 @@
 * consider appending description to correlation of meta-alerts.
 * persistency::postgres I/O has to be optimized - it takes 90% of wall time right now, thus is HUGE bottleneck of the whole system.
 * implement filter that gathers stats of source/destination IPs and reports the most problematic noes with higher priority.
+* rework severity computing algorithm to make higher priority for alerts with high-priority alerts (now main part is average...).
