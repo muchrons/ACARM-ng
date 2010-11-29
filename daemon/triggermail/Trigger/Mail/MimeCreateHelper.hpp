@@ -4,6 +4,10 @@
  */
 #include <string>
 #include <boost/noncopyable.hpp>
+#include <vmime/vmime.hpp>
+
+#include "Trigger/Mail/Config.hpp"
+#include "Trigger/Mail/VmimeHandleInit.hpp"
 
 namespace Trigger
 {
@@ -15,27 +19,30 @@ namespace Mail
 class MimeCreateHelper: private boost::noncopyable
 {
 public:
+  typedef vmime::ref<vmime::message> MessagePtr;
+
   /** \brief prepare data for creation of mime message.
    *  \param from    sender's e-mail.
    *  \param to      receiver's e-mail.
    *  \param subject message's subject.
    *  \param content message's content (aka: body part).
    */
-  MimeCreateHelper(const std::string &from,
-                   const std::string &to,
-                   const std::string &subject,
-                   const std::string &content);
+  MimeCreateHelper(const std::string        &from,
+                   const Config::Recipients &to,
+                   const std::string        &subject,
+                   const std::string        &content);
 
   /** \brief construct message and return it as a string.
    *  \return mime-formatted message.
    */
-  std::string createMimeMessage(void);
+  MessagePtr createMimeMessage(void);
 
 private:
-  const std::string fromSrc_;
-  const std::string toSrc_;
-  const std::string subjectSrc_;
-  const std::string contentSrc_;
+  VmimeHandleInit          vhi_;
+  const std::string        from_;
+  const Config::Recipients to_;
+  const std::string        subject_;
+  const std::string        content_;
 }; // class MimeCreateHelper
 
 } // namespace Mail
