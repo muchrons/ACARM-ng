@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include "Core/SignalToReconfigure.hpp"
 #include "Core/SignalToStop.hpp"
 #include "Core/IgnoreSignal.hpp"
 
@@ -24,10 +25,10 @@ public:
   explicit HandleSignals(WorkThreads *wt);
 
 private:
-  SignalToStop sigINT_;
-  SignalToStop sigTERM_;
-  IgnoreSignal sigPIPE_;
-  IgnoreSignal sigHUP_;
+  SignalToReconfigure sigHUP_;
+  SignalToStop        sigINT_;
+  SignalToStop        sigTERM_;
+  IgnoreSignal        sigPIPE_;
 }; // class HandleSignals
 
 } // namespace Core

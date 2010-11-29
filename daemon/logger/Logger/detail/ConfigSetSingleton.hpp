@@ -31,6 +31,9 @@ public:
    *        node's config, will return exactly the same structure.
    */
   NodeConfPtr getNodeConfiguration(const NodeName &nn);
+  /** \brief reinitialize all appenders.
+   */
+  void reinitAppenders(void);
 
 private:
   //

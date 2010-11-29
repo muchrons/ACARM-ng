@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <string>
 #include <unistd.h>
+#include <boost/filesystem.hpp>
 
 #include "Logger/AppenderMap.hpp"
 #include "Logger/Appenders/FileUnlinker.t.hpp"
@@ -13,6 +14,7 @@
 
 using namespace std;
 using namespace Logger;
+namespace fs=boost::filesystem;
 
 namespace
 {
@@ -235,6 +237,30 @@ void testObj::test<12>(void)
   ConfigIO::LoggerAppenders apps(list_);
   AppenderMap               am(apps);
   ensure_equals("invalid type", am["sysl"]->getTypeName(), string("syslog") );
+}
+
+// test reinitializing appenders
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  fs::remove("abc.txt");
+  FileUnlinker fu("abc.txt");
+  opts_["output"].push_back("abc.txt");
+  list_.push_back( ConfigIO::LoggerAppenderConfig("file", "log", opts_) );
+  ConfigIO::LoggerAppenders apps(list_);
+  AppenderMap               am(apps);
+  // write something
+  am["log"]->append("hello good");
+  // remove output file
+  fs::remove("abc.txt");
+  ensure("file still exists", fs::exists("abc.txt")==false );
+  // reinitialize appenders
+  am.reinitAll();
+  // add something
+  am["log"]->append("hello evil");
+  // ensure file exists
+  ensure("file does not exist", fs::exists("abc.txt") );
 }
 
 } // namespace tut
