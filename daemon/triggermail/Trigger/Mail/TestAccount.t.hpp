@@ -25,8 +25,8 @@ Trigger::Mail::Config getTestConfig1(const char *to=MAIL2_TEST_ACCOUNT_ADDRESS)
                                                   MAIL1_TEST_ACCOUNT_PASS);
   const Trigger::Mail::Config::Server        srv(MAIL1_TEST_ACCOUNT_SERVER,
                                                  MAIL1_TEST_ACCOUNT_PORT,
-                                                 Trigger::Mail::Config::Server::Protocol::SMTP,
-                                                 Trigger::Mail::Config::Server::Security::SSL);
+                                                 Trigger::Mail::Config::Server::Protocol::MAIL1_TEST_ACCOUNT_PROTOCOL,
+                                                 Trigger::Mail::Config::Server::Security::MAIL1_TEST_ACCOUNT_SECURITY);
   const Trigger::Simple::ThresholdConfig     th("0", "0");
   return Trigger::Mail::Config(th, MAIL1_TEST_ACCOUNT_ADDRESS, Trigger::Mail::Config::Recipients(to), srv, auth);
 }
@@ -37,8 +37,8 @@ Trigger::Mail::Config getTestConfig2(const char *to=MAIL1_TEST_ACCOUNT_ADDRESS)
                                                   MAIL2_TEST_ACCOUNT_PASS);
   const Trigger::Mail::Config::Server        srv(MAIL2_TEST_ACCOUNT_SERVER,
                                                  MAIL2_TEST_ACCOUNT_PORT,
-                                                 Trigger::Mail::Config::Server::Protocol::SMTP,
-                                                 Trigger::Mail::Config::Server::Security::SSL);
+                                                 Trigger::Mail::Config::Server::Protocol::MAIL2_TEST_ACCOUNT_PROTOCOL,
+                                                 Trigger::Mail::Config::Server::Security::MAIL2_TEST_ACCOUNT_SECURITY);
   const Trigger::Simple::ThresholdConfig     th("0", "0");
   return Trigger::Mail::Config(th, MAIL2_TEST_ACCOUNT_ADDRESS, Trigger::Mail::Config::Recipients(to), srv, auth);
 }
@@ -51,7 +51,6 @@ typedef System::ScopedPtrCustom<mailfolder,  mailfolder_free>  FolderHolderHelpe
 int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
 {
 #warning TODO: this implementation does not work
-return 0;
 
   StorageHolderHelper storage( mailstorage_new(NULL) );             // create storage
   if(storage.get()==NULL)
@@ -98,7 +97,6 @@ return 0;
 int removeMessagesFromAccount(const Trigger::Mail::Config &cfg, int minCount=0)
 {
 #warning TODO: this implementation does not work
-return 0;
 
   const time_t                 deadline=time(NULL)+45;  // give it 45[s] timeout
   int                          count   =0;              // no elements removed yet

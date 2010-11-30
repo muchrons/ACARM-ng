@@ -24,10 +24,10 @@ public:
    */
   ExceptionSendingError(const Location &where,
                         const char     *sender,
-                        const char     *receiver,
+                        const char     *receivers,
                         const char     *error):
     Exception(where, cc("unable to send message to '",
-                        receiver, "' from '", sender, "': error is: ", error) )
+                        receivers, "' from '", sender, "': error is: ", error) )
   {
   }
 }; // class ExceptionConnectionError

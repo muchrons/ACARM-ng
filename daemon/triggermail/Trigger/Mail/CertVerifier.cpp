@@ -14,7 +14,7 @@ namespace Mail
 
 
 CertVerifier::CertVerifier(const std::string &server):
-  log_("MailSender.Certs.AcceptAll"),
+  log_("trigger.mail.certverifier"),
   server_(server),
   defCertVer_( vmime::create<vmime::security::cert::defaultCertificateVerifier>() )
 {
@@ -31,7 +31,8 @@ void CertVerifier::verify(vmime::ref<vmime::security::cert::certificateChain> ce
   {
     LOGMSG_ERROR_S(log_)<<"certificate verification failed: "<<ex.what();
     // re-throw this in order to inform on error type
-    throw ExceptionInvalidCertificate( SYSTEM_SAVE_LOCATION, server_.c_str(), ex.what() );
+    //throw ExceptionInvalidCertificate( SYSTEM_SAVE_LOCATION, server_.c_str(), ex.what() );
+#warning TODO: implement real certificate validation
   }
   LOGMSG_INFO(log_, "certificate chain accepted");
 }

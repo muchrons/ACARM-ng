@@ -8,6 +8,7 @@
 #include <cassert>
 
 #include "Trigger/Mail/MailSender.hpp"
+#include "Trigger/Mail/CertVerifier.hpp"
 #include "Trigger/Mail/MimeCreateHelper.hpp"
 
 using namespace std;
@@ -19,6 +20,7 @@ namespace Mail
 {
 
 MailSender::MailSender(const Config &cfg):
+  log_("trigger.mail.mailsender"),
   cfg_(cfg)
 {
 }
@@ -67,7 +69,7 @@ std::string createURL(const Config::Server &srv)
 } // createURL()
 
 // configure additional options
-void configureOptions(const Config &cfg, vmime::ref<vmime::net::session> session)
+void configureOptions(const Logger::Node &log, const Config &cfg, vmime::ref<vmime::net::session> session)
 {
   assert( session.get()!=NULL );
   // setup authorization mode
@@ -76,15 +78,19 @@ void configureOptions(const Config &cfg, vmime::ref<vmime::net::session> session
     session->getProperties()["transport.smtp.options.need-authentication"]=(auth!=NULL)?"true":"false";
     if(auth)
     {
+      LOGMSG_DEBUG(log, "authentication is required");
       session->getProperties()["transport.smtp.auth.username"]=auth->user_;
       session->getProperties()["transport.smtp.auth.password"]=auth->pass_;
     }
+    else
+      LOGMSG_DEBUG(log, "authentication is NOT required");
   }
 
   const Config::Server &srv=cfg.getServerConfig();
 
   // setup server connection paramters
   {
+    LOGMSG_DEBUG_S(log)<<"connecting to "<<srv.server_<<":"<<srv.port_;
     session->getProperties()["transport.smtp.server.address"]=srv.server_;
     session->getProperties()["transport.smtp.server.port"   ]=boost::lexical_cast<string>(srv.port_);
   }
@@ -96,11 +102,26 @@ void configureOptions(const Config &cfg, vmime::ref<vmime::net::session> session
       tlsMode="true";
     else
       tlsMode="false";
+    LOGMSG_DEBUG_S(log)<<"use TLS: "<<tlsMode;
     // setup in options
     session->getProperties()["transport.smtp.connection.tls"         ]=tlsMode;
     session->getProperties()["transport.smtp.connection.tls.required"]=tlsMode;
   }
 } // configureOptions()
+
+
+// return all recipients as one string
+string toString(const Config::Recipients &r)
+{
+  stringstream ss;
+  for(Config::Recipients::const_iterator it=r.begin(); it!=r.end(); ++it)
+  {
+    if( it!=r.begin() )
+      ss<<" ";
+    ss<<*it;
+  }
+  return ss.str();
+} // toString()
 
 } // unnamed namespace
 
@@ -116,10 +137,15 @@ void MailSender::send(const std::string &subject, const std::string &content)
     // create session
     session=vmime::create<vmime::net::session>();
     assert( session.get()!=NULL );
+    configureOptions(log_, cfg_, session);
     // create transport
     const vmime::utility::url url( createURL( cfg_.getServerConfig() ) );
     transport=session->getTransport(url);
     assert( transport.get()!=NULL );
+    // set certificate verifier
+    typedef vmime::ref<vmime::security::cert::certificateVerifier> VerifierRef;
+    VerifierRef verifier=VerifierRef::fromPtr( new CertVerifier( cfg_.getServerConfig().server_ ) );
+    transport->setCertificateVerifier(verifier);
     // connect to server (certificate will be validatd along)
     if( !transport->isConnected() )
       transport->connect();
@@ -133,64 +159,16 @@ void MailSender::send(const std::string &subject, const std::string &content)
   // sending message part
   try
   {
-    // TODO
+    MimeCreateHelper             mch( cfg_.getSenderAddress(), cfg_.getRecipientsAddresses(), subject, content );
+    MimeCreateHelper::MessagePtr msg=mch.createMimeMessage();
+    transport->send(msg);
   }
   catch(const vmime::exception &ex)
   {
-    // TODO
     // translate vmime-specific exception to project-wide exception
-    //throw ExceptionSendingError(SYSTEM_SAVE_LOCATION, ex.what() );
+    throw ExceptionSendingError(SYSTEM_SAVE_LOCATION, cfg_.getSenderAddress().c_str(),
+                                toString( cfg_.getRecipientsAddresses() ).c_str(), ex.what() );
   }
-
-  // TODO....
-#if 0
-
-  // sending itself
-    transport_->send(msg);  // send message
-
-
-    /** \brief certificate verifier that accepts all certifiactes.
-     *  \note this verifier tries to verify certificate, but in case of failure
-     *        it accepts it anyhow, generating proper log entry onyl.
-     */
-    class AcceptAll: public vmime::security::cert::certificateVerifier
-  { 
-    public:
-      /** \brief construct certificate verifier.
-       */
-      AcceptAll(void);
-      /** \brief verify given certificate chain.
-       *  \param certs certificate chain to verify.
-       */
-      virtual void verify(vmime::ref<vmime::security::cert::certificateChain> certs);
-
-    private:
-      Logger::LoggerFac                                             log_;
-      vmime::ref<vmime::security::cert::defaultCertificateVerifier> defCertVer_;
-  }; // class AcceptAll
-
-    AcceptAll::AcceptAll(void):
-      log_("MailSender.Certs.AcceptAll"),
-      defCertVer_( vmime::create<vmime::security::cert::defaultCertificateVerifier>() )
-  {
-  }
-
-    void AcceptAll::verify(vmime::ref<vmime::security::cert::certificateChain> certs)
-    {
-      log_.info("verifying certificate with default verifier");
-      try
-      {
-        defCertVer_->verify(certs);
-      }
-      catch(const vmime::exceptions::certificate_verification_exception &ex)
-      {
-        log_.error("certificate verification failed - connection is NOT secure");
-        // due to nature of this verifier, we ignore error
-      }
-      log_.info("certificate accepted");
-    }
-
-#endif
 }
 
 } // namespace Mail

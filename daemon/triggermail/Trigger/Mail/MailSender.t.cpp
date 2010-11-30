@@ -41,4 +41,8 @@ void testObj::test<1>(void)
   ensure_equals("invalid number of messages removed", count, 1);
 }
 
+// TODO: test sending messages via SMTP/TLS
+
+// TODO: test sending messages via SMTP/SSL
+
 } // namespace tut
