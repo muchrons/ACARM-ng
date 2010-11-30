@@ -39,9 +39,9 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
   return ecl;
 }
 
-Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
+Data Strategy::makeThisEntryUserData(const Node /*n*/) const
 {
-  return NodeEntry( n, Data() );
+  return Data();
 }
 
 bool Strategy::isEntryInteresting(const NodeEntry /*thisEntry*/) const
@@ -72,6 +72,18 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   if( thisEntry.node_->getMetaAlert().getName() == otherEntry.node_->getMetaAlert().getName() )
     return true;
   return false;
+}
+
+Data Strategy::makeUserDataForNewNode(const NodeEntry &/*thisEntry*/,
+                                      const NodeEntry &/*otherEntry*/,
+                                      const Node       /*newNode*/) const
+{
+  return Data();
+}
+
+void Strategy::postProcessNode(Node &/*n*/, Filter::BackendFacade &/*bf*/) const
+{
+  // nothing to be done here
 }
 
 } // namespace SameName

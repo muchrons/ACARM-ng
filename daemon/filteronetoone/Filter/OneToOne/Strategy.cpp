@@ -29,18 +29,18 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
   return ecl;
 }
 
-Strategy::NodeEntry Strategy::makeThisEntry(const Node n) const
+Data Strategy::makeThisEntryUserData(const Node n) const
 {
   const Algo::GatherHosts gh(n);
   if( gh.getSourceHosts().size()!=1 ||
       gh.getTargetHosts().size()!=1    )
-    return NodeEntry( n, Data() );
+    return Data();
 
   // ok - entry is interesting
   assert( gh.getSourceHosts().size()==1 );
   assert( gh.getTargetHosts().size()==1 );
-  return NodeEntry( n, Data( (*gh.getSourceHosts().begin())->getIP(),
-                             (*gh.getTargetHosts().begin())->getIP() ) );
+  return Data( (*gh.getSourceHosts().begin())->getIP(),
+               (*gh.getTargetHosts().begin())->getIP() );
 }
 
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
@@ -80,6 +80,18 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
     return false;
   // if all entries are equal, we can correlate this one
   return true;
+}
+
+Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
+                                      const NodeEntry &/*otherEntry*/,
+                                      const Node       /*newNode*/) const
+{
+  return thisEntry.t_;
+}
+
+void Strategy::postProcessNode(Node &/*n*/, Filter::BackendFacade &/*bf*/) const
+{
+  // nothing to be done here
 }
 
 } // namespace OneToOne

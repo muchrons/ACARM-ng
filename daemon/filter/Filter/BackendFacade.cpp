@@ -2,6 +2,7 @@
  * BackendFacade.cpp
  *
  */
+#include <algorithm>
 #include <cassert>
 
 #include "Filter/BackendFacade.hpp"
@@ -20,8 +21,7 @@ BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
   changed_(changed)
 {
   if( changed_.size()!=0 )
-    throw ExceptionChangedNodesNotEmpty(SYSTEM_SAVE_LOCATION,
-                                        filterName.c_str() );
+    throw ExceptionChangedNodesNotEmpty(SYSTEM_SAVE_LOCATION, filterName.c_str() );
 }
 
 namespace
@@ -55,34 +55,34 @@ bool isHostFromNode(GraphNodePtrNN node, HostPtrNN host)
 } // unnamed namespace
 
 void BackendFacade::setHostName(Node                    node,
-                               Persistency::HostPtrNN  host,
-                               const std::string      &name)
+                                Persistency::HostPtrNN  host,
+                                const std::string      &name)
 {
   assert( isHostFromNode(node, host) );
   beginTransaction();
   IO::HostAutoPtr io=getConnection()->host(host, getTransaction() );
   io->setName(name);
-  changed_.push_back(node);
+  markNodeAsChanged(node);
 }
 
 void BackendFacade::updateSeverityDelta(Node         node,
-                                       const double delta)
-{
-  beginTransaction();
-  MetaAlertPtrNN       ma=node->getMetaAlert();
-  IO::MetaAlertAutoPtr io=getConnection()->metaAlert(ma, getTransaction() );
-  io->updateSeverityDelta(delta);
-  changed_.push_back(node);
-}
-
-void BackendFacade::updateCertaintyDelta(Node         node,
                                         const double delta)
 {
   beginTransaction();
   MetaAlertPtrNN       ma=node->getMetaAlert();
   IO::MetaAlertAutoPtr io=getConnection()->metaAlert(ma, getTransaction() );
+  io->updateSeverityDelta(delta);
+  markNodeAsChanged(node);
+}
+
+void BackendFacade::updateCertaintyDelta(Node         node,
+                                         const double delta)
+{
+  beginTransaction();
+  MetaAlertPtrNN       ma=node->getMetaAlert();
+  IO::MetaAlertAutoPtr io=getConnection()->metaAlert(ma, getTransaction() );
   io->updateCertaintyDelta(delta);
-  changed_.push_back(node);
+  markNodeAsChanged(node);
 }
 
 void BackendFacade::addChild(Node parent, Node child)
@@ -91,7 +91,7 @@ void BackendFacade::addChild(Node parent, Node child)
   MetaAlertPtrNN       ma=parent->getMetaAlert();
   IO::MetaAlertAutoPtr io=getConnection()->metaAlert(ma, getTransaction() );
   parent->addChild(child, *io);
-  changed_.push_back(parent);
+  markNodeAsChanged(parent);
 }
 
 Persistency::GraphNodePtrNN BackendFacade::correlate(
@@ -100,7 +100,7 @@ Persistency::GraphNodePtrNN BackendFacade::correlate(
 {
   beginTransaction();
   Node ptr( new GraphNode(ma, getConnection(), getTransaction(), children) );
-  changed_.push_back(ptr);
+  markNodeAsChanged(ptr);
   return ptr;
 }
 
@@ -108,6 +108,13 @@ Persistency::MetaAlert::ID BackendFacade::getNextFreeID(void)
 {
   beginTransaction();
   return Facades::IDAssigner::get()->assignMetaAlertID( getConnection(), getTransaction() );
+}
+
+void BackendFacade::markNodeAsChanged(Node node)
+{
+  // if node has not been reported, mark it as changed
+  if( std::find( changed_.begin(), changed_.end(), node )==changed_.end() )
+    changed_.push_back(node);
 }
 
 } // namespace Filter

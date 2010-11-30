@@ -170,7 +170,7 @@ public:
    *  \param seconds number of seconds before timeouting.
    *
    *  if elements does not exist in queue, new entry is added. if such element
-   *  already exists timeout is enlarged by a given value.
+   *  already exists timeout set to a given value.
    *
    *  \note order of elements after updating pruning is not guaranteed.
    */

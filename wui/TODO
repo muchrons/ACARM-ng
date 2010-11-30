@@ -1,2 +1,8 @@
-* make Alert.php::make* and ReportedHost::make* common code
 * optimize getting roots query - perhaps adding redundant table that will be updated when something's changed, or via a specialized view?
+* add view showing meta-alerts currently processed by the system (i.e. elements in use).
+* table of meta-alerts must be converted to new type.
+* when showing alert's count - conisder logarithmic scale.
+* add countsof meta alerts to pair with alerts count.
+* add processes and serices to alerts.
+* remove data base IDs from all tables.
+* analyzers should use table of new type.
