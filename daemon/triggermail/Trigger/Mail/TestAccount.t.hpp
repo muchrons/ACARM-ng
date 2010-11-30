@@ -49,25 +49,23 @@ Trigger::Mail::Config getTestConfig2(const char *to=MAIL1_TEST_ACCOUNT_ADDRESS)
 // internal (helper) implementation
 int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
 {
-#warning TODO: this implementation does not work
-
   //
   // conect
   //
   Trigger::Mail::VmimeHandleInit  init;
-  vmime::utility::url             url("pop3://" MAIL2_TEST_ACCOUNT_POP_SERVER);
+  vmime::utility::url             url("pop3s://" MAIL2_TEST_ACCOUNT_POP_SERVER);
   vmime::ref<vmime::net::session> session  =vmime::create<vmime::net::session>();
-//  session->getProperties()["store.pop3.connection.tls"         ]="true";
-//  session->getProperties()["store.pop3.connection.tls.required"]="true";
+  session->getProperties()["store.pop3s.connection.tls"         ]="false";
+  session->getProperties()["store.pop3s.connection.tls.required"]="false";
   const Trigger::Mail::Config::Authorization *auth=cfg.getAuthorizationConfig();
   if(auth!=NULL)
   {
-    session->getProperties()["store.pop3.options.need-authentication"]=auth->user_;
-    session->getProperties()["store.pop3.auth.username"]=auth->user_;
-    session->getProperties()["store.pop3.auth.password"]=auth->pass_;
+    session->getProperties()["store.pop3s.options.need-authentication"]="true";
+    session->getProperties()["store.pop3s.auth.username"]=auth->user_;
+    session->getProperties()["store.pop3s.auth.password"]=auth->pass_;
   }
-  session->getProperties()["store.pop3.server.address"]=MAIL2_TEST_ACCOUNT_POP_SERVER;
-  session->getProperties()["store.pop3.server.port"   ]=boost::lexical_cast<std::string>(MAIL2_TEST_ACCOUNT_POP_PORT);
+  session->getProperties()["store.pop3s.server.address"]=MAIL2_TEST_ACCOUNT_POP_SERVER;
+  session->getProperties()["store.pop3s.server.port"   ]=boost::lexical_cast<std::string>(MAIL2_TEST_ACCOUNT_POP_PORT);
   vmime::ref<vmime::net::store> store=session->getStore(url);
   typedef Trigger::Mail::CertVerifier CertVerif;
   vmime::ref<CertVerif>         cv=vmime::ref<CertVerif>::fromPtr( new CertVerif(MAIL2_TEST_ACCOUNT_POP_SERVER) );
@@ -80,7 +78,8 @@ int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
   const int count=fld->getMessageCount();
 
   // clean-up all messages
-  fld->deleteMessages(1, count);
+  if(count>0)
+    fld->deleteMessages(1, count);
 
   //
   // end session
@@ -93,8 +92,8 @@ int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
 // returns number of removed messages.
 int removeMessagesFromAccount(const Trigger::Mail::Config &cfg, int minCount=0)
 {
-  const time_t                 deadline=time(NULL)+45;  // give it 45[s] timeout
-  int                          count   =0;              // no elements removed yet
+  const time_t deadline=time(NULL)+45;                  // give it 45[s] timeout
+  int          count   =0;                              // no elements removed yet
   // check until timeout's reached, or minimal value is reached
   for(;;)
   {
