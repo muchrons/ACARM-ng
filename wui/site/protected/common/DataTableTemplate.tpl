@@ -38,8 +38,6 @@ Page: <com:TPager ID="Pager"
     AlternatingItemStyle.BackColor="#b2b2d0" >
 </com:TDataGrid>
 
-Choose page: TODO: when this controll is in use out-of-memory soccuress for bigger data sets
-
 </td></tr>
 </table>
 

@@ -4,6 +4,8 @@
 
   <com:TClientScript PradoScripts="effects" />
 
+  <com:HeatmapIPs />
+
   <script src="OpenLayers.js">
   </script>
 
@@ -19,17 +21,19 @@
 
         onClick: function(evt)
         {
-          var lon = document.getElementById("<%= $this->longitude->ClientID %>");
-          var lat = document.getElementById("<%= $this->latitude->ClientID %>");
           lonval=Math.floor(map.getLonLatFromViewPortPx(evt.xy).lon);
           latval=Math.floor(map.getLonLatFromViewPortPx(evt.xy).lat);
 
-          if (lonval>=0 && lonval<700)
-            if (latval>=0 && latval<400)
+          var basicMap = document.getElementById("basicMap");
+          var divWidth = parseInt(basicMap.style.width);
+          var divHeight = parseInt(basicMap.style.height);
+
+          if (lonval>=0 && lonval<divHeight)
+            if (latval>=0 && latval<divWidth)
              {
-              lon.value=lonval;
-              lat.value=latval;
-              Prado.Callback("<%= $this->bt->UniqueID %>");
+              lon=sources[lonval];
+              lat=destinations[divHeight-latval-1];
+              Prado.Callback("<%= $this->bt->UniqueID %>", {'longitude': lon, 'latitude': lat, 'minAlert': minAlert, 'maxAlert': maxAlert});
              }
         }
     });
@@ -44,7 +48,13 @@
             ]
         });
 
-    var graphic = new OpenLayers.Layer.Image('heat map','http://www.wojek.net/ww/heatmap.png', new OpenLayers.Bounds(0, 0, 700, 400), new OpenLayers.Size(700, 400), {numZoomLevels: 7});
+    var basicMap = document.getElementById("basicMap");
+    var divWidth = parseInt(basicMap.style.width);
+    var divHeight = parseInt(basicMap.style.height);
+
+    var url="/site/index.php?image=HeatMap&width="+divWidth+"&height="+divHeight+"&from="+minAlert+"&to="+maxAlert;
+
+    var graphic = new OpenLayers.Layer.Image('heat map',url, new OpenLayers.Bounds(0, 0, divWidth, divHeight), new OpenLayers.Size(divWidth, divHeight), {numZoomLevels: 7});
     map.addLayer(graphic);
 
     controls = {"single": new OpenLayers.Control.Click({handlerOptions: {"single": true} }) };
@@ -63,6 +73,7 @@
     }
 </com:TClientScript>
 
+
 <style type="text/css">
   .olControlZoomPanel
   {
@@ -76,21 +87,11 @@
     bottom: 130px;
   }
 </style>
-<!--
-<table border="0">
-<tr><td align="center" colspan="2"><font color="white" size="+1">Sources</font></td></tr>
-<tr><td width="16"><font color="white" size="+1">D<br/>e<br/>s<br/>t<br/>i<br/>n<br/>a<br/>t<br/>i<br/>o<br/>n<br/>s</font></td><td><div id="basicMap" style="border: 1px white solid; width:650; height:400;"></div></td></tr>
-</table>
--->
+
 <div id="basicMap" style="border: 1px white solid; width:700; height:400;"></div>
 
-<com:TActiveHiddenField ID="longitude"/>
-<com:TActiveHiddenField ID="latitude"/>
 <com:TActiveHiddenField ID="bt" OnCallback="clicked"/>
 
-
-<com:TActiveLabel ID="Lon" Text=""/>
-<com:TActiveLabel ID="Lat" Text=""/>
 <br/>
 <com:TPanel GroupingText="<font size=5 color=white>Details</font>" Width="100%">
 <br/>
@@ -110,11 +111,17 @@
     <td id="AlertContent" colspan="2"><com:TActiveLabel ID="NoAlerts" Text="&nbsp"/></td>
   </tr>
   <tr>
-    <td colspan="3"><com:TButton ID="b1" Text="Alerts"/>
-    <com:TButton ID="b2" Text="Severity Graph"/>
-    <com:TButton ID="b3" Text="Type Graph"/></td>
+    <td align="center" colspan="3">
+      <com:TActiveHyperLink ID="AlertsLink">
+        <com:TImageButton ImageUrl="pics/buttons/buttDBSourcreAlertsD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDBSourcreAlertsU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDBSourcreAlertsD.png'"/>              
+      </com:TActiveHyperLink>
+      <com:TActiveHyperLink  ID="SeveritiesLink">
+        <com:TImageButton ImageUrl="pics/buttons/buttDMSeverityD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDMSeverityU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDMSeverityD.png'"/>
+      </com:TActiveHyperLink>                
+    </td>
   </tr>
 </table>
+
 
 </com:TPanel>
 </com:TContent>

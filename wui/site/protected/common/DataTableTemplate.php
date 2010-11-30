@@ -10,25 +10,40 @@ class DataTableTemplate extends TTemplateControl
   public function onLoad($param)
   {
     parent::onLoad($param);
+
     if ($this->DataGrid === null)
      return;
 
     $this->DataGrid->DataSource=$this->getDataRows($this->DataGrid->PageSize,$this->DataGrid->CurrentPageIndex);
     $this->DataGrid->VirtualItemCount=$this->getRowCount();
     $this->DataGrid->dataBind();
+    if ($this->DataGrid->VirtualItemCount==0)
+      $this->DataGrid->reset();
   }
 
   private function getRowCount()
   {
-    return CSQLMap::get()->queryForObject($this->query_.'Count');
+    if ($this->params_===null)
+      return CSQLMap::get()->queryForObject($this->query_.'Count');
+    else
+      return CSQLMap::get()->queryForObject($this->query_.'RangeCount',$this->params_);
   }
 
   private function getDataRows($perPage, $pageNumber)
   {
-    $sqlmap_param=new CParamLimitOffset;
-    $sqlmap_param->limit=$perPage;
-    $sqlmap_param->offset=$perPage*$pageNumber;
-    $data=CSQLMap::get()->queryForList($this->query_,$sqlmap_param);
+    if ($this->params_===null)
+      {
+        $sqlmap_param=new CParamLimitOffset;
+        $sqlmap_param->limit=$perPage;
+        $sqlmap_param->offset=$perPage*$pageNumber;
+        $data=CSQLMap::get()->queryForList($this->query_,$sqlmap_param);
+      }
+    else
+      {
+        $this->params_->limit=$perPage;
+        $this->params_->offset=$perPage*$pageNumber;
+        $data=CSQLMap::get()->queryForList($this->query_.'Range',$this->params_);
+      }
 
     foreach($data as $e)
       $ret[]=$this->computation_->computeStructure($e);
@@ -86,6 +101,7 @@ class DataTableTemplate extends TTemplateControl
   // TODO: check if these can be private
   public $computation_;
   public $query_;
+  public $params_;
 }
 
 ?>
