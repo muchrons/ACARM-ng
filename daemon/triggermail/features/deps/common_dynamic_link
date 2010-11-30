@@ -1,2 +1,2 @@
 #!/bin/sh
-exec echo "-letpan -lvmime"
+exec echo "-lvmime"

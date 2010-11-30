@@ -123,6 +123,13 @@ string toString(const Config::Recipients &r)
   return ss.str();
 } // toString()
 
+string toString(const vmime::exception &ex)
+{
+  stringstream ss;
+  ss<<"("<<ex.name()<<") "<<ex.what();
+  return ss.str();
+}
+
 } // unnamed namespace
 
 
@@ -146,14 +153,15 @@ void MailSender::send(const std::string &subject, const std::string &content)
     typedef vmime::ref<vmime::security::cert::certificateVerifier> VerifierRef;
     VerifierRef verifier=VerifierRef::fromPtr( new CertVerifier( cfg_.getServerConfig().server_ ) );
     transport->setCertificateVerifier(verifier);
-    // connect to server (certificate will be validatd along)
-    if( !transport->isConnected() )
-      transport->connect();
+    // connect to server (certificate will be validated along)
+    transport->connect();
   }
   catch(const vmime::exception &ex)
   {
     // translate vmime-specific exception to project-wide exception
-    throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, cfg_.getServerConfig().server_.c_str(), ex.what() );
+    throw ExceptionConnectionError( SYSTEM_SAVE_LOCATION,
+                                    cfg_.getServerConfig().server_.c_str(),
+                                    toString(ex).c_str() );
   }
 
   // sending message part
@@ -166,8 +174,10 @@ void MailSender::send(const std::string &subject, const std::string &content)
   catch(const vmime::exception &ex)
   {
     // translate vmime-specific exception to project-wide exception
-    throw ExceptionSendingError(SYSTEM_SAVE_LOCATION, cfg_.getSenderAddress().c_str(),
-                                toString( cfg_.getRecipientsAddresses() ).c_str(), ex.what() );
+    throw ExceptionSendingError( SYSTEM_SAVE_LOCATION,
+                                 cfg_.getSenderAddress().c_str(),
+                                 toString( cfg_.getRecipientsAddresses() ).c_str(),
+                                 toString(ex).c_str() );
   }
 }
 
