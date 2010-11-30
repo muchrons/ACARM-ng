@@ -170,4 +170,13 @@ void testObj::test<14>(void)
   checkConfig("subtree1.both.updatethr.notdefined", "null", Priority::INFO);
 }
 
+// smoke test for appenders reinitialization
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  NodeConfReader ncr;
+  ncr.reinitAppenders();
+}
+
 } // namespace tut

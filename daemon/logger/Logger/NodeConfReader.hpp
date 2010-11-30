@@ -54,10 +54,13 @@ public:
    *  \return node's configuration description.
    */
   NodeConfPtr read(const NodeName &nn) const;
+  /** \brief reinitialize all appenders.
+   */
+  void reinitAppenders(void);
 
 private:
-  const AppenderMap appMap_;
-  FormatterPtr      formatter_;
+  AppenderMap  appMap_;
+  FormatterPtr formatter_;
 }; // class NodeConfReader
 
 } // namespace Logger

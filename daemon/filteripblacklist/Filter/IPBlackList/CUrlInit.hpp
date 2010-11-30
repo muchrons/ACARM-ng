@@ -5,28 +5,31 @@
 #ifndef INCLUDE_FILTER_IPBLACKLIST_CURLINIT_HPP_FILE
 #define INCLUDE_FILTER_IPBLACKLIST_CURLINIT_HPP_FILE
 
-#include "Logger/Node.hpp"
+#include "System/GlobalInit.hpp"
 
 namespace Filter
 {
 namespace IPBlackList
 {
-
-/** \brief class for initialization of CUrl++.
- */
-class CUrlInit
+namespace detail
 {
-public:
-  /** \brief initilize (if not already initialized).
+/** \brief implementation of CUrl++ init/uninit.
+ */
+struct CUrlInitImpl
+{
+  /** \brief initilize library.
    */
-  CUrlInit(void);
-  /** \brief mark as not used any more.
+  static void init(void);
+  /** \brief uninitialize library.
    */
-  ~CUrlInit(void);
+  static void uninit(void);
+}; // struct CUrlInitImpl
+} // namespace detail
 
-private:
-  Logger::Node log_;
-}; // class CUrlInit
+
+/** \brief class responsible for (re)initialization of CURL++ library.
+ */
+typedef System::GlobalInit<detail::CUrlInitImpl> CUrlInit;
 
 } // namespace IPBlackList
 } // namespace Filter

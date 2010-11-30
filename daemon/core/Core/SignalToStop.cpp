@@ -24,7 +24,7 @@ static void handle(int signum)
 {
   try
   {
-    const Logger::Node log("core.handle");
+    const Logger::Node log("core.signaltostop.handle");
     try
     {
       LOGMSG_INFO_S(log) << "received signal " << signum;

@@ -38,6 +38,11 @@ NodeConfPtr ConfigSetImpl::getNodeConfiguration(const NodeName &nn)
   return it->second;
 }
 
+void ConfigSetImpl::reinitAppenders(void)
+{
+  ncr_.reinitAppenders();
+}
+
 ConfigSetImpl::ConfigSetImpl(void)
 {
 }

@@ -63,6 +63,9 @@ public:
    *  \note if instance gy a given anme does not exist, call throws.
    */
   Appenders::BasePtr operator[](const std::string &name) const;
+  /** \brief reinitialize all appenders.
+   */
+  void reinitAll(void);
 
 private:
   Appenders::BasePtr configureNew(const ConfigIO::LoggerAppenderConfig &cfg);
