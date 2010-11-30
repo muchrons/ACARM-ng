@@ -23,26 +23,24 @@ Trigger::Mail::Config getTestConfig1(const char *to=MAIL2_TEST_ACCOUNT_ADDRESS)
 {
   const Trigger::Mail::Config::Authorization auth(MAIL1_TEST_ACCOUNT_LOGIN,
                                                   MAIL1_TEST_ACCOUNT_PASS);
-  const Trigger::Mail::Config::Server        srv(MAIL1_TEST_ACCOUNT_ADDRESS,
-                                                 MAIL1_TEST_ACCOUNT_SERVER,
+  const Trigger::Mail::Config::Server        srv(MAIL1_TEST_ACCOUNT_SERVER,
                                                  MAIL1_TEST_ACCOUNT_PORT,
                                                  Trigger::Mail::Config::Server::Protocol::SMTP,
                                                  Trigger::Mail::Config::Server::Security::SSL);
   const Trigger::Simple::ThresholdConfig     th("0", "0");
-  return Trigger::Mail::Config(th, Trigger::Mail::Config::Recipients(to), srv, auth);
+  return Trigger::Mail::Config(th, MAIL1_TEST_ACCOUNT_ADDRESS, Trigger::Mail::Config::Recipients(to), srv, auth);
 }
 
 Trigger::Mail::Config getTestConfig2(const char *to=MAIL1_TEST_ACCOUNT_ADDRESS)
 {
   const Trigger::Mail::Config::Authorization auth(MAIL2_TEST_ACCOUNT_LOGIN,
                                                   MAIL2_TEST_ACCOUNT_PASS);
-  const Trigger::Mail::Config::Server        srv(MAIL2_TEST_ACCOUNT_ADDRESS,
-                                                 MAIL2_TEST_ACCOUNT_SERVER,
+  const Trigger::Mail::Config::Server        srv(MAIL2_TEST_ACCOUNT_SERVER,
                                                  MAIL2_TEST_ACCOUNT_PORT,
                                                  Trigger::Mail::Config::Server::Protocol::SMTP,
                                                  Trigger::Mail::Config::Server::Security::SSL);
   const Trigger::Simple::ThresholdConfig     th("0", "0");
-  return Trigger::Mail::Config(th, Trigger::Mail::Config::Recipients(to), srv, auth);
+  return Trigger::Mail::Config(th, MAIL2_TEST_ACCOUNT_ADDRESS, Trigger::Mail::Config::Recipients(to), srv, auth);
 }
 
 

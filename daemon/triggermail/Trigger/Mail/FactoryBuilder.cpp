@@ -120,9 +120,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO_S(log_)<<"setting security to "<<sec.toInt();
   const Config::Server::Protocol  proto =getProtocol(fc["protocol"]);
   LOGMSG_INFO_S(log_)<<"setting protocol to "<<proto.toInt();
-  const std::string              &from  =fc["from"];
-  LOGMSG_INFO_S(log_)<<"setting from-address to "<<from;
-  const Config::Server            serverCfg(from, server, port, proto, sec);
+  const Config::Server            serverCfg(server, port, proto, sec);
 
   // thresholds' config
   const char *sevTh=fc.get("severity_threshold");
@@ -133,8 +131,11 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
     LOGMSG_INFO_S(log_)<<"setting alerts count threshold to "<<cntTh;
   const ThresholdConfig thCfg(sevTh, cntTh);
 
+  // sender's address
+  const std::string        &from=fc["from"];
+  LOGMSG_INFO_S(log_)<<"setting sender's address to "<<from;
   // recipient address
-  const Config::Recipients to=parseRecipients(log_, fc["to"]);
+  const Config::Recipients  to  =parseRecipients(log_, fc["to"]);
 
   // trigger name
   const std::string &name    =fc["name"];
@@ -153,7 +154,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
     const Config::Authorization  auth(user, pass);
     // create and return new handle, with configured authorization
     LOGMSG_INFO(log_, "account configured with authorization required");
-    return OutPtr( new Impl( type_, name, Mail::Config(thCfg, to, serverCfg, auth) ) );
+    return OutPtr( new Impl( type_, name, Mail::Config(thCfg, from, to, serverCfg, auth) ) );
   } // if(use_auth)
   else
     if( fc.get("password")!=NULL )
@@ -161,7 +162,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // create and return new handle, with config without authorization
   LOGMSG_INFO(log_, "account configured without authorization required");
-  return OutPtr( new Impl( type_, name, Mail::Config(thCfg, to, serverCfg) ) );
+  return OutPtr( new Impl( type_, name, Mail::Config(thCfg, from, to, serverCfg) ) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

@@ -62,18 +62,15 @@ public:
     typedef System::Enum<detail::ProtocolEnum> Protocol;
 
     /** \brief create configuration from given paramters.
-     *  \param from   sender's e-mail address.
      *  \param server server address.
      *  \param port   port to connect to.
      *  \param proto  protocol type to use.
      *  \param sec    security type.
      */
-    Server(const std::string &from,
-           const std::string &server,
+    Server(const std::string &server,
            const uint16_t     port,
            Protocol           proto,
            Security           sec):
-      from_(from),
       server_(server),
       port_(port),
       proto_(proto),
@@ -81,7 +78,6 @@ public:
     {
     }
 
-    const std::string from_;        ///< sender's e-mail.
     const std::string server_;      ///< server's addres.
     const uint16_t    port_;        ///< port server's listening on.
     const Protocol    proto_;       ///< protocol type to be used.
@@ -108,14 +104,17 @@ public:
   }; // struct Authorization
 
   /** \brief create configration description, without authorization.
-   *  \param th  threshold configuration - informs when run trigger.
-   *  \param to  recipient address.
-   *  \param srv server to connect to.
+   *  \param th   threshold configuration - informs when run trigger.
+   *  \param from sender's e-mail address.
+   *  \param to   recipient address.
+   *  \param srv  server to connect to.
    */
   Config(const Simple::ThresholdConfig &th,
+         const std::string             &from,
          const Recipients              &to,
          const Server                  &srv):
     th_(th),
+    from_(from),
     to_(to),
     srv_(srv),
     useAuth_(false),
@@ -124,15 +123,18 @@ public:
   }
   /** \brief create configration description, with authorization request.
    *  \param th   threshold configuration - informs when run trigger.
-   *  \param to  recipient address.
-   *  \param srv server to connect to.
+   *  \param from sender's e-mail address.
+   *  \param to   recipient address.
+   *  \param srv  server to connect to.
    *  \param auth parameters required for authorization.
    */
   Config(const Simple::ThresholdConfig &th,
+         const std::string             &from,
          const Recipients              &to,
          const Server                  &srv,
          const Authorization           &auth):
     th_(th),
+    from_(from),
     to_(to),
     srv_(srv),
     useAuth_(true),
@@ -163,6 +165,13 @@ public:
   {
     return srv_;
   }
+  /** \brief get sender's e-mail addresses.
+   *  \return e-mail address of the sender.
+   */
+  const std::string &getSenderAddress(void) const
+  {
+    return from_;
+  }
   /** \brief get recipients e-mail addresses.
    *  \return addresses (e-mails) of recipients.
    */
@@ -173,6 +182,7 @@ public:
 
 private:
   Simple::ThresholdConfig th_;
+  std::string             from_;
   Recipients              to_;
   Server                  srv_;
   bool                    useAuth_;

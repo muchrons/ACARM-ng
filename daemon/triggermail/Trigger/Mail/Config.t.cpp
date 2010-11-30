@@ -15,7 +15,7 @@ struct TestClass
 {
   TestClass(void):
     th_("1", "2"),
-    srv_("from", "server", 1234, Config::Server::Protocol::SMTP, Config::Server::Security::SSL),
+    srv_("server", 1234, Config::Server::Protocol::SMTP, Config::Server::Security::SSL),
     auth_("john", "doe"),
     to_("to")
   {
@@ -42,7 +42,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Config c(th_, to_, srv_);
+  const Config c(th_, "from", to_, srv_);
   ensure("authorization required", c.getAuthorizationConfig()==NULL );
 }
 
@@ -51,7 +51,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Config c(th_, to_, srv_, auth_);
+  const Config c(th_, "from", to_, srv_, auth_);
   ensure("authorization not required", c.getAuthorizationConfig()!=NULL );
 }
 
@@ -60,7 +60,6 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensure_equals("invalid from address", srv_.from_, "from");
   ensure_equals("invalid server address", srv_.server_, "server");
   ensure_equals("invalid port number", srv_.port_, 1234u);
   ensure("invalid TLS setting", srv_.sec_==Config::Server::Security::SSL);
@@ -81,7 +80,8 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const Config c(th_, to_, srv_, auth_);
+  const Config c(th_, "from", to_, srv_, auth_);
+  ensure_equals("invalid from address", c.getSenderAddress(), "from");
   ensure_equals("invalid number of recipients", c.getRecipientsAddresses().size(), 1u);
   ensure_equals("invalid recipient", c.getRecipientsAddresses()[0], "to");
 }
