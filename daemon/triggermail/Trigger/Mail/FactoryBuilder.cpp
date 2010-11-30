@@ -68,7 +68,7 @@ Config::Server::Security getSecurity(const std::string &v)
   if(v=="ssl")
     return Config::Server::Security::SSL;
   if(v=="starttls")
-    return Config::Server::Security::STARTTLS;
+    return Config::Server::Security::TLS;
 
   // ok - we have invalid value here...
   throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "security", v.c_str() );

@@ -26,7 +26,7 @@ struct SecurityEnum
   typedef enum
   {
     //NONE, // NOTE: non-secure connection is NOT allowed for security reasons
-    STARTTLS,
+    TLS,
     SSL
   } Type;
 }; // struct Security
