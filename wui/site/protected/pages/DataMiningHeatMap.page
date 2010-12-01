@@ -52,7 +52,7 @@
     var divWidth = parseInt(basicMap.style.width);
     var divHeight = parseInt(basicMap.style.height);
 
-    var url="/site/index.php?image=HeatMap&width="+divWidth+"&height="+divHeight+"&from="+minAlert+"&to="+maxAlert;
+    var url="index.php?image=HeatMap&width="+divWidth+"&height="+divHeight+"&from="+minAlert+"&to="+maxAlert;
 
     var graphic = new OpenLayers.Layer.Image('heat map',url, new OpenLayers.Bounds(0, 0, divWidth, divHeight), new OpenLayers.Size(divWidth, divHeight), {numZoomLevels: 7});
     map.addLayer(graphic);

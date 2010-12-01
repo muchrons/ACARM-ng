@@ -245,6 +245,12 @@ class GraphService extends TService
 
     $data=$this->issueQuery2d($this->params,null);
 
+    if (count($data[0]==0))
+      {
+        $data[0]=array("No data for given query, or empty database.");
+        $data[1]=array(1);
+      }
+
     // Setup X-axis labels
     $graph->xaxis->SetTickLabels($data[0]);
     $graph->xaxis->SetLabelAngle(0);
@@ -291,17 +297,17 @@ class GraphService extends TService
 
     $count=count($data[0]);
 
+    //if there is no data series or x-axis is empty (wrong data range)
+    if (($count==0) || ($count>0 && count($data[0][0][1])==0))
+      {
+        $data[0][0][1]=array(1);
+        $data[0][0][0]=array(1);
+        $data[1][0]="no data for given query";
+      }
+
     $maxval=0;
     for ($i=0; $i<$count; $i++)
       $maxval+=max($data[0][$i][1]);
-
-    if ($maxval==0)
-      {
-        $led = new DigitalLED74(2);
-        $led->SetSupersampling(5);
-        $led->StrokeNumber('NO DATA. Maybe database is empty?',LEDC_GREEN);
-        die();
-      }
 
     $graph->SetScale('datlin',0,$maxval);
     $graph->xaxis->SetLabelAngle(90);

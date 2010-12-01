@@ -38,6 +38,8 @@ class RangeSelector extends TTemplateControl
   public function onInit($param)
   {
     parent::onInit($param);
+    if($this->view!=null)
+      $this->MultiView->ActiveViewIndex=$this->view;
   }
 
   public function getFrom()
@@ -52,7 +54,12 @@ class RangeSelector extends TTemplateControl
     return $this->getRegisteredObject('To');
   }
 
+  public function setView($p)
+  {
+    $this->view=$p;
+  }
 
+  public $view;
 }
 
 ?>
