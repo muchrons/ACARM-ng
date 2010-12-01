@@ -28,8 +28,8 @@
           var divWidth = parseInt(basicMap.style.width);
           var divHeight = parseInt(basicMap.style.height);
 
-          if (lonval>=0 && lonval<divHeight)
-            if (latval>=0 && latval<divWidth)
+          if (lonval>=0 && lonval<divWidth)
+            if (latval>=0 && latval<divHeight)
              {
               lon=sources[lonval];
               lat=destinations[divHeight-latval-1];
