@@ -199,7 +199,7 @@
     <![CDATA[
     SELECT alerts.name as key,count(*) as value FROM
       (SELECT a.id,name FROM
-         (select id,id_severity FROM alerts WHERE create_time<=(date #date_to# + interval '23 hours 59minutes 59seconds') AND create_time>=#date_from#) AS a
+         (select id,id_severity FROM alerts WHERE create_time<=(#date_to# + interval '23 hours 59minutes 59seconds') AND create_time>=#date_from#) AS a
       JOIN severities ON a.id_severity=severities.id
       WHERE (severities.name='critical' AND #severities# LIKE '%critical%')
          OR (severities.name='error' AND #severities# LIKE '%error%')

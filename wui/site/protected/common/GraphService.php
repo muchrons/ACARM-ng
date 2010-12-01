@@ -245,7 +245,7 @@ class GraphService extends TService
 
     $data=$this->issueQuery2d($this->params,null);
 
-    if (count($data[0]==0))
+    if (count($data[0])==0)
       {
         $data[0]=array("No data for given query, or empty database.");
         $data[1]=array(1);
