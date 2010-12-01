@@ -53,15 +53,17 @@ public:
   /** \brief copy c-tor.
    *  \param other object to copy from.
    */
-  SharedPtrNotNULL(const this_type &other)
+  template<typename U>
+  SharedPtrNotNULL(const SharedPtrNotNULL<U> &other)
   {
-    ptr_=other.ptr_;
+    ptr_=other.shared_ptr();
     assert( ptr_.get()!=NULL );
   }
   /** \brief create object from boost::shared_ptr<>.
    *  \param p pointer to share.
    */
-  SharedPtrNotNULL(SharedPtr p):
+  template<typename U>
+  SharedPtrNotNULL(const boost::shared_ptr<U> &p):
     ptr_(p)
   {
     ensure();
@@ -69,7 +71,8 @@ public:
   /** \brief create object from std::auto_ptr<>.
    *  \param p pointer get ownership of.
    */
-  SharedPtrNotNULL(std::auto_ptr<T> p):
+  template<typename U>
+  SharedPtrNotNULL(std::auto_ptr<U> p):
     ptr_( p.release() )
   {
     ensure();
@@ -95,10 +98,11 @@ public:
    *  \param other object to assigne from.
    *  \return const-reference to this object.
    */
-  typename boost::add_const<this_type&>::type operator=(const this_type &other)
+  template<typename U>
+  typename boost::add_const<this_type&>::type operator=(const SharedPtrNotNULL<U> &other)
   {
-    if(&other!=this)
-      ptr_=other.ptr_;
+    if( other.get()!=this->get() )
+      ptr_=other.shared_ptr();
     return *this;
   }
   /** \brief arrow operator.
