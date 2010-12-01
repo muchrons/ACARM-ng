@@ -96,7 +96,7 @@
       (
           select ad.id AS id, ad.name AS name, ad.create_time AS create_time, s.name AS severity from  
           (
-              (select * from alerts WHERE create_time<#date_to# AND create_time>#date_from#) AS ad
+              (select * from alerts WHERE create_time<=(date #date_to# + interval '23 hours 59minutes 59seconds') AND create_time>=#date_from#) AS ad
               LEFT JOIN
               severities AS s
               ON s.id=ad.id_severity
@@ -159,7 +159,7 @@
       (
           select ad.id AS id, ad.name AS name, ad.create_time AS create_time, s.name AS severity from  
           (
-              (select * from alerts WHERE create_time<#date_to# AND create_time>#date_from#) AS ad
+              (select * from alerts WHERE create_time<=(date #date_to# + interval '23 hours 59minutes 59seconds')  AND create_time>=#date_from#) AS ad
               LEFT JOIN
               severities AS s
               ON s.id=ad.id_severity
@@ -199,7 +199,7 @@
     <![CDATA[
     SELECT alerts.name as key,count(*) as value FROM
       (SELECT a.id,name FROM
-         (select id,id_severity FROM alerts WHERE create_time<#date_to# AND create_time>#date_from#) AS a
+         (select id,id_severity FROM alerts WHERE create_time<=(date #date_to# + interval '23 hours 59minutes 59seconds') AND create_time>=#date_from#) AS a
       JOIN severities ON a.id_severity=severities.id
       WHERE (severities.name='critical' AND #severities# LIKE '%critical%')
          OR (severities.name='error' AND #severities# LIKE '%error%')
@@ -220,7 +220,7 @@
     <![CDATA[
     SELECT alerts.name as key,count(*) as value FROM
       (SELECT a.id,name FROM
-         (select id,id_severity FROM alerts WHERE create_time<#date_to# AND create_time>#date_from#) AS a
+         (select id,id_severity FROM alerts WHERE create_time<=(date #date_to# + interval '23 hours 59minutes 59seconds') AND create_time>=#date_from#) AS a
       JOIN severities ON a.id_severity=severities.id
       WHERE (severities.name='critical' AND #severities# LIKE '%critical%')
          OR (severities.name='error' AND #severities# LIKE '%error%')
@@ -238,7 +238,7 @@
     <![CDATA[
     SELECT key,value FROM 
       (SELECT date_trunc('day', create_time) AS key FROM
-        alerts WHERE create_time>#date_from# AND create_time<#date_to# GROUP BY key) AS a
+        alerts WHERE create_time>=#date_from# AND create_time<=(date #date_to# + interval '23 hours 59minutes 59seconds') GROUP BY key) AS a
         LEFT JOIN (SELECT date_trunc('day', create_time) AS date2, count(*) AS value FROM
         alerts LEFT JOIN severities AS s ON alerts.id_severity=s.id WHERE s.name=#severities# GROUP BY date2) AS b ON a.key=b.date2 ORDER BY key;
     ]]>
@@ -246,13 +246,13 @@
 
   <select id="DMAlertTypes" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
-    SELECT name AS key,count(name) AS value FROM Alerts WHERE create_time<#date_to# AND create_time>#date_from# GROUP BY name ORDER BY count(name) DESC;
+    SELECT name AS key,count(name) AS value FROM Alerts WHERE create_time<=(date #date_to# + interval '23 hours 59minutes 59seconds') AND create_time>=#date_from# GROUP BY name ORDER BY count(name) DESC;
     ]]>
   </select>
 
   <select id="DMMetaAlertCountTimeSeries" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
-    SELECT date_trunc('day', create_time) AS key ,count(*) AS value FROM meta_alerts WHERE create_time<#date_to# AND create_time>#date_from# AND severity_delta>=0 GROUP BY key ORDER BY key;
+    SELECT date_trunc('day', create_time) AS key ,count(*) AS value FROM meta_alerts WHERE create_time<=(date #date_to# + interval '23 hours 59minutes 59seconds') AND create_time>=#date_from# AND severity_delta>=0 GROUP BY key ORDER BY key;
     ]]>
   </select>
 
