@@ -10,6 +10,14 @@ class DataMiningSeverity extends TPage
     if ($this->SeveritiesImg->height == 0)
       $this->SeveritiesImg->height=800;
 
+    $srcip=$this->Request->itemAt('srcip');
+    if( $srcip!==null )
+      $this->Range->srcip->Text=$srcip;
+
+    $dstip=$this->Request->itemAt('dstip');
+    if( $dstip!==null )
+      $this->Range->dstip->Text=$dstip;
+
     $from=$this->Range->From->Date;
     $to=$this->Range->To->Date;
     $severities=implode('.',$this->Range->CB->SelectedValues);

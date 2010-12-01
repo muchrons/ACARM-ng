@@ -8,4 +8,6 @@
         query_="SelectAlertsSummary"/>
 </div>
 
+<com:RangeSelector ID="Range" />
+
 </com:TContent>

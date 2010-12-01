@@ -72,6 +72,15 @@ Appenders::BasePtr AppenderMap::configureNew(const ConfigIO::LoggerAppenderConfi
                                     cfg.getType().c_str() );
 }
 
+void AppenderMap::reinitAll(void)
+{
+  for(AppMap::iterator it=apps_.begin(); it!=apps_.end(); ++it)
+  {
+    assert( it->second.get()!=NULL );
+    it->second->reinit();
+  }
+}
+
 void AppenderMap::add(const std::string &name, Appenders::BasePtr ptr)
 {
   assert( ptr.get()!=NULL );

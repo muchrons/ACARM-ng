@@ -47,4 +47,12 @@ void testObj::test<2>(void)
                 nc->getAppender()->getTypeName(), string("null") );
 }
 
+// smoke test for appenders reinitialization
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  detail::ConfigSetSingleton::get()->reinitAppenders();
+}
+
 } // namespace tut

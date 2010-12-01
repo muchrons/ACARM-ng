@@ -13,33 +13,6 @@ class DataMiningHeatMap extends TPage
     $this->generateGraph();
     */
 
-    //    if (!$this->IsPostBack)
-      {
-        $range=CSQLMap::get()->queryForObject("DMHeatMapHostcount");
-        $this->minAlert=$range->key;
-        $this->maxAlert=$range->value;
-
-        $data=CSQLMap::get()->queryForList("DMHeatMapRange",$range);
-
-        $src=0;
-        $dst=0;
-
-        //get arrays of sources and destinations
-        foreach( $data as $e )
-          {
-            if ($sources[$e->source] === null)
-              $sources[$e->source]=$src++;
-            if ($destinations[$e->destination] === null)
-              $destinations[$e->destination]=$dst++;
-          }
-
-        //change mapping from IP->number to number->IP
-        foreach ($sources as $k => $v)
-          $this->sources[$v]=$k;
-
-        foreach ($destinations as $k => $v)
-          $this->destinations[$v]=$k;
-      }
   }
 
   private function constructUrl()
@@ -51,16 +24,57 @@ class DataMiningHeatMap extends TPage
     return $this->getRequest()->constructUrl('image', "HeatMap", $linkdata, false);
   }
 
+  private function constructUrlForCallbacks($type,$srcip,$dstip)
+  {
+    $linkdata=array( 'srcip' => $srcip,
+                     'dstip' => $dstip);
+
+    return $this->getRequest()->constructUrl('page', $type, $linkdata);
+  }
+
   private function generateGraph()
   {
     $this->HeatMap->ImageUrl = $this->constructUrl();
   }
 
+  public function getSrcIP()
+  {
+    $this->ensureChildControls();
+    return $this->getRegisteredObject('SrcIP');
+  }
+
+  public function setSrcIP()
+  {
+    $this->ensureChildControls();
+    return $this->getRegisteredObject('SrcIP');
+  }
 
   public function clicked($sender,$param)
   {
-    $this->SrcIP->Text=$this->sources[$this->longitude->Value];
-    $this->DstIP->Text=$this->destinations[$this->latitude->Value];
+    $longitude = $param->CallbackParameter->longitude;
+    $latitude = $param->CallbackParameter->latitude;
+
+    $this->SrcIP->Text=$longitude;
+    $this->DstIP->Text=$latitude;
+
+    $query_param=new CDMQuad();
+    $query_param->value1=$param->CallbackParameter->minAlert;
+    $query_param->value2=$param->CallbackParameter->maxAlert;
+    $query_param->value3=$param->CallbackParameter->longitude;
+    $query_param->value4=$param->CallbackParameter->latitude;
+
+    $data=CSQLMap::get()->queryForList("DMHeatMapNumAlerts",$query_param);
+
+    $this->NoAlerts->Text=$data;
+
+
+    $this->AlertsLink->NavigateUrl=$this->constructUrlForCallbacks("Alerts",$longitude,$latitude);
+    $this->SeveritiesLink->NavigateUrl=$this->constructUrlForCallbacks("DataMiningSeverity",$longitude,$latitude);
+  }
+
+  public function btn($sender,$param)
+  {
+    $this->SrcIP->Text=$this->longitude->Text;
   }
 
   private $minAlert;

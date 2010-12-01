@@ -1,9 +1,9 @@
 /*
- * SignalToStop.hpp
+ * SignalToReconfigure.hpp
  *
  */
-#ifndef INCLUDE_CORE_SIGNALTOSTOP_HPP_FILE
-#define INCLUDE_CORE_SIGNALTOSTOP_HPP_FILE
+#ifndef INCLUDE_CORE_SIGNALTORECONFIGURE_HPP_FILE
+#define INCLUDE_CORE_SIGNALTORECONFIGURE_HPP_FILE
 
 /* public header */
 
@@ -15,24 +15,23 @@ namespace Core
 {
 /** \brief handles given signal's registration and unregistration.
  *
- *  when given signal is received system is triggered to stop.
+ *  when given signal is received system is triggered reconfigure.
  */
-class SignalToStop: public System::SignalRegistrator
+class SignalToReconfigure: public System::SignalRegistrator
 {
 public:
   /** \brief registers handle for signal.
    *  \param signum signal number to be handled.
-   *  \param wt     main system threads. if NULL, signal is ignored.
    */
-  SignalToStop(int signum, WorkThreads *wt);
+  explicit SignalToReconfigure(int signum);
   /** \brief unregisters signal handle.
    */
-  ~SignalToStop(void);
+  ~SignalToReconfigure(void);
 
 private:
   int          signum_;
   Logger::Node log_;
-}; // class SignalToStop
+}; // class SignalToReconfigure
 } // namespace Core
 
 #endif
