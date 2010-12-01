@@ -20,6 +20,8 @@ namespace Mail
 class MimeCreateHelper: private boost::noncopyable
 {
 public:
+  /** \brief helper typedef for vmime-specific shared pointer implementation.
+   */
   typedef vmime::ref<vmime::message> MessagePtr;
 
   /** \brief prepare data for creation of mime message.

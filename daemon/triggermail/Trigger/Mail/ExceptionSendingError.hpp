@@ -17,10 +17,10 @@ class ExceptionSendingError: public Exception
 {
 public:
   /** \brief create execption with given message.
-   *  \param where    place where exception has been thrown.
-   *  \param sender   mail of the sending account.
-   *  \param receiver mail of the receiver.
-   *  \param error    error message.
+   *  \param where     place where exception has been thrown.
+   *  \param sender    mail of the sending account.
+   *  \param receivers mail of the receiver.
+   *  \param error     error message.
    */
   ExceptionSendingError(const Location &where,
                         const char     *sender,

@@ -15,12 +15,18 @@ namespace Mail
 {
 namespace detail
 {
+/** \brief helper, implementaion class.
+ */
 struct VmimeHandleRegistrator
 {
+  /** \brief initialize vmime.
+   */
   static void init(void)
   {
     vmime::platform::setHandler<vmime::platforms::posix::posixHandler>();
   }
+  /** \brief required by API; not needed for vmime.
+   */
   static void uninit(void)
   {
   }
@@ -28,6 +34,8 @@ struct VmimeHandleRegistrator
 } // namespace detail
 
 
+/** \brief object for vmime initialization.
+ */
 typedef System::GlobalInit<detail::VmimeHandleRegistrator> VmimeHandleInit;
 
 } // namespace Mail
