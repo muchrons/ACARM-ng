@@ -41,6 +41,8 @@ class GraphParams
     $this->qparam->date_from=$this->getRequestOrDefault($request, 'from', '1970-01-01');
     $this->qparam->date_to=$this->getRequestOrDefault($request, 'to', date("Y-m-d H:i:s"));
     $this->qparam->severities=$this->getRequestOrDefault($request, 'severities', null);
+    //set hour in date_to to 23:59:59 regardless of its actual value
+    $this->qparam->date_to=date("Y-m-d 23:59:59",strtotime($this->qparam->date_to));
   }
 
   private function getRequestOrDefault($request, $field, $value)
