@@ -19,7 +19,7 @@ GraphNode::GraphNode(AlertPtrNN           alert,
                      IO::ConnectionPtrNN  connection,
                      IO::Transaction     &t):
   self_( new MetaAlert(alert, id) ),
-  leaf_(alert)
+  leaf_( alert.shared_ptr() )
 {
   assert( leaf_.get()!=NULL );
   assert( self_.get()!=NULL );
@@ -129,6 +129,12 @@ MetaAlertPtrNN GraphNode::getMetaAlert(void)
   return self_;
 }
 
+ConstMetaAlertPtrNN GraphNode::getMetaAlert(void) const
+{
+  assert(self_.get()!=NULL);
+  return self_;
+}
+
 AlertPtrNN GraphNode::getAlert(void)
 {
   assert( getMetaAlert().get()!=NULL );
@@ -139,28 +145,22 @@ AlertPtrNN GraphNode::getAlert(void)
   return leaf_;
 }
 
-const MetaAlert &GraphNode::getMetaAlert(void) const
-{
-  assert(self_.get()!=NULL);
-  return *self_;
-}
-
-const Alert &GraphNode::getAlert(void) const
+ConstAlertPtrNN GraphNode::getAlert(void) const
 {
   if( !isLeaf() )
-    throw ExceptionNotLeaf(SYSTEM_SAVE_LOCATION, getMetaAlert().getName().get() );
+    throw ExceptionNotLeaf(SYSTEM_SAVE_LOCATION, getMetaAlert()->getName().get() );
 
   assert( leaf_.get()!=NULL );
-  return *leaf_;
+  return leaf_;
 }
 
 namespace
 {
 struct GraphNodeSWO
 {
-  bool operator()(const GraphNodePtrNN &n1, const GraphNodePtrNN &n2) const
+  bool operator()(const ConstGraphNodePtrNN &n1, const ConstGraphNodePtrNN &n2) const
   {
-    return n1->getMetaAlert().getID() < n2->getMetaAlert().getID();
+    return n1->getMetaAlert()->getID() < n2->getMetaAlert()->getID();
   }
 }; // struct GraphNodeSWO
 } // unnamed namespace
