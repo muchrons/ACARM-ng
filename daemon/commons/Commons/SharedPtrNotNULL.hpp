@@ -13,6 +13,7 @@
 #include <memory>
 #include <boost/shared_ptr.hpp>
 #include <boost/operators.hpp>
+#include <boost/type_traits/add_const.hpp>
 #include <cassert>
 
 #include "Commons/ExceptionUnexpectedNULL.hpp"
@@ -33,7 +34,8 @@ class SharedPtrNotNULL: public boost::less_than_comparable< SharedPtrNotNULL<T> 
 public:
   /** \brief type used as boost::shared_ptr<>. */
   typedef boost::shared_ptr<T>             SharedPtr;
-  // NOTE: following declarations are here for compatibility with other smart-ptr types:
+  /** \brief type of this object. */
+  typedef SharedPtrNotNULL<T>              this_type;
   /** \brief type of element held inside (for compatibility with boost::shared_ptr). */
   typedef typename SharedPtr::element_type element_type;
   /** \brief type of element held inside (for compatibility with boost::shared_ptr). */
@@ -46,7 +48,7 @@ public:
   /** \brief create class from raw-pointer.
    *  \param t pointer to take ownership of.
    */
-  explicit SharedPtrNotNULL(T *t):
+  explicit SharedPtrNotNULL(pointer t):
     ptr_(t)
   {
     ensure();
@@ -54,15 +56,17 @@ public:
   /** \brief copy c-tor.
    *  \param other object to copy from.
    */
-  SharedPtrNotNULL(const SharedPtrNotNULL &other)
+  template<typename U>
+  SharedPtrNotNULL(const SharedPtrNotNULL<U> &other)
   {
-    ptr_=other.ptr_;
+    ptr_=other.shared_ptr();
     assert( ptr_.get()!=NULL );
   }
   /** \brief create object from boost::shared_ptr<>.
    *  \param p pointer to share.
    */
-  SharedPtrNotNULL(SharedPtr p):
+  template<typename U>
+  SharedPtrNotNULL(const boost::shared_ptr<U> &p):
     ptr_(p)
   {
     ensure();
@@ -70,24 +74,26 @@ public:
   /** \brief create object from std::auto_ptr<>.
    *  \param p pointer get ownership of.
    */
-  SharedPtrNotNULL(std::auto_ptr<T> p):
+  template<typename U>
+  SharedPtrNotNULL(std::auto_ptr<U> p):
     ptr_( p.release() )
   {
     ensure();
+    assert( p.get()==NULL );
   }
-  /** \brief conversion operator.
+  /** \brief conversion to boost::shared_ptr<>.
    *  \return boost::shared_ptr<> for a given value.
    */
-  operator SharedPtr(void) const
+  SharedPtr shared_ptr(void) const
   {
     assert( ptr_.get()!=NULL );
     return ptr_;
   }
   /** \brief less-then compare
    *  \param other element to compare with.
-   *  \return return true if other element is greater.
+   *  \return true if this<other, false otherwise.
    */
-  inline bool operator<(const SharedPtrNotNULL<T> &other) const
+  inline bool operator<(const this_type &other) const
   {
     return ptr_<other.ptr_;
   }
@@ -95,44 +101,45 @@ public:
    *  \param other object to assigne from.
    *  \return const-reference to this object.
    */
-  const SharedPtrNotNULL<T> &operator=(const SharedPtrNotNULL<T> &other)
+  template<typename U>
+  typename boost::add_const<this_type&>::type operator=(const SharedPtrNotNULL<U> &other)
   {
-    if(&other!=this)
-      ptr_=other.ptr_;
+    if( other.get()!=this->get() )
+      ptr_=other.shared_ptr();
     return *this;
   }
   /** \brief arrow operator.
    *  \return const pointer to this.
    */
-  const T *operator->(void) const
+  typename boost::add_const<pointer>::type operator->(void) const
   {
     return get();
   }
   /** \brief arror operator.
    *  \return pointer to this.
    */
-  T *operator->(void)
+  pointer operator->(void)
   {
     return get();
   }
   /** \brief dereference operator.
    *  \return const reference to this.
    */
-  const T &operator*(void) const
+  typename boost::add_const<reference>::type operator*(void) const
   {
     return *get();
   }
   /** \brief dereference operator.
    *  \return reference to this.
    */
-  T &operator*(void)
+  reference operator*(void)
   {
     return *get();
   }
   /** \brief test getter.
    *  \return direct pointer value.
    */
-  const T *get(void) const
+  typename boost::add_const<pointer>::type get(void) const
   {
     assert( ptr_.get()!=NULL );
     return ptr_.get();
@@ -140,7 +147,7 @@ public:
   /** \brief test const getter.
    *  \return direct pointer value.
    */
-  T *get(void)
+  pointer get(void)
   {
     assert( ptr_.get()!=NULL );
     return ptr_.get();
@@ -151,7 +158,7 @@ public:
    *        if this call is to be used, whole access has to be carefully
    *        mutexed, allong with all places given object is used in.
    */
-  void swap(SharedPtrNotNULL<T> &other)
+  void swap(this_type &other)
   {
     assert( get()!=NULL );
     ptr_.swap(other.ptr_);
@@ -163,7 +170,7 @@ private:
   {
     ensure( ptr_.get() );
   }
-  void ensure(const T *t) const
+  void ensure(const typename boost::add_const<pointer>::type t) const
   {
     if(t==NULL)
       throw ExceptionUnexpectedNULL(SYSTEM_SAVE_LOCATION);
