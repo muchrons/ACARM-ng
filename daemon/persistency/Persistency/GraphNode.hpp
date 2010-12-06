@@ -107,18 +107,18 @@ public:
    *  \return meta-alert.
    */
   MetaAlertPtrNN getMetaAlert(void);
+  /** \brief returns meta-alert correspoiding to this leaf/node - const version.
+   *  \return meta-alert.
+   */
+  ConstMetaAlertPtrNN getMetaAlert(void) const;
   /** \brief returns alert correspoiding to this leaf.
    *  \return alert.
    */
   AlertPtrNN getAlert(void);
-  /** \brief returns meta-alert correspoiding to this leaf/node - const version.
-   *  \return meta-alert.
-   */
-  const MetaAlert &getMetaAlert(void) const;
   /** \brief returns alert correspoiding to this leaf - const version.
    *  \return alert.
    */
-  const Alert &getAlert(void) const;
+  ConstAlertPtrNN getAlert(void) const;
 
   /** \brief check if classes are equal.
    *  \param other element to compare with.

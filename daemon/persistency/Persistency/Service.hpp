@@ -76,10 +76,16 @@ private:
 
 
 /** \brief smart pointer to service type. */
-typedef boost::shared_ptr<Service>         ServicePtr;
+typedef boost::shared_ptr<Service>                                  ServicePtr;
+
+/** \brief smart pointer to service type. */
+typedef boost::shared_ptr<const ServicePtr::element_type>           ConstServicePtr;
 
 /** \brief smart pointer to service type, not NULL. */
-typedef Commons::SharedPtrNotNULL<Service> ServicePtrNN;
+typedef Commons::SharedPtrNotNULL<ServicePtr::element_type>         ServicePtrNN;
+
+/** \brief smart pointer to service type, not NULL. */
+typedef Commons::SharedPtrNotNULL<const ServicePtrNN::element_type> ConstServicePtrNN;
 
 } // namespace Persistency
 

@@ -84,7 +84,10 @@ private:
 }; // class Analyzer
 
 /** \brief smarth pointer to analyzer class, check not to be NULL. */
-typedef Commons::SharedPtrNotNULL<Analyzer> AnalyzerPtrNN;
+typedef Commons::SharedPtrNotNULL<Analyzer>                          AnalyzerPtrNN;
+
+/** \brief smarth pointer to analyzer class, check not to be NULL - const version. */
+typedef Commons::SharedPtrNotNULL<const AnalyzerPtrNN::element_type> ConstAnalyzerPtrNN;
 
 } // namespace Persistency
 

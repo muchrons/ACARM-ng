@@ -149,10 +149,16 @@ private:
 
 
 /** \brief smart pointer to host name. */
-typedef boost::shared_ptr<Host>         HostPtr;
+typedef boost::shared_ptr<Host>                                  HostPtr;
+
+/** \brief smart pointer to host name - const version. */
+typedef boost::shared_ptr<const HostPtr::element_type>           ConstHostPtr;
 
 /** \brief smart pointer to host name, checked not to be NULL. */
-typedef Commons::SharedPtrNotNULL<Host> HostPtrNN;
+typedef Commons::SharedPtrNotNULL<HostPtr::element_type>         HostPtrNN;
+
+/** \brief smart pointer to host name, checked not to be NULL - const version. */
+typedef Commons::SharedPtrNotNULL<const HostPtrNN::element_type> ConstHostPtrNN;
 
 } // namespace Persistency
 

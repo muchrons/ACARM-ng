@@ -108,10 +108,16 @@ private:
 
 
 /** \brief smart pointer to process type. */
-typedef boost::shared_ptr<Process>         ProcessPtr;
+typedef boost::shared_ptr<Process>                                  ProcessPtr;
+
+/** \brief smart pointer to process type - const version. */
+typedef boost::shared_ptr<const ProcessPtr::element_type>           ConstProcessPtr;
 
 /** \brief smart pointer to process type, checked not to be NULL. */
-typedef Commons::SharedPtrNotNULL<Process> ProcessPtrNN;
+typedef Commons::SharedPtrNotNULL<ProcessPtr::element_type>         ProcessPtrNN;
+
+/** \brief smart pointer to process type, checked not to be NULL. */
+typedef Commons::SharedPtrNotNULL<const ProcessPtrNN::element_type> ConstProcessPtrNN;
 
 } // namespace Persistency
 

@@ -113,10 +113,16 @@ private:
 
 
 /** \brief smart pointer to Alert type. */
-typedef boost::shared_ptr<MetaAlert>         MetaAlertPtr;
+typedef boost::shared_ptr<MetaAlert>                                  MetaAlertPtr;
+
+/** \brief smart pointer to Alert type - const version. */
+typedef boost::shared_ptr<const MetaAlertPtr::element_type>           ConstMetaAlertPtr;
 
 /** \brief smart pointer to Alert type, checked not to be NULL. */
-typedef Commons::SharedPtrNotNULL<MetaAlert> MetaAlertPtrNN;
+typedef Commons::SharedPtrNotNULL<MetaAlertPtr::element_type>         MetaAlertPtrNN;
+
+/** \brief smart pointer to Alert type, checked not to be NULL - const version. */
+typedef Commons::SharedPtrNotNULL<const MetaAlertPtrNN::element_type> ConstMetaAlertPtrNN;
 
 } // namespace Persistency
 
