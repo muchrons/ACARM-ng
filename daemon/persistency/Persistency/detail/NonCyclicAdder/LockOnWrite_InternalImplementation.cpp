@@ -89,7 +89,7 @@ void NonCyclicAdder::InternalImplementation::checkForCycle(LockingSession      &
   if( lockPtr->ownsLock()==false )
   {
     // save information on what node we're waiting
-    iap.getNonCyclicAdderFromNode(parent).data_->wld_.setPtr(node);
+    iap.getNonCyclicAdderFromNode(parent).data_->wld_.setPtr( node.shared_ptr() );
     WaitingLockData &wldNode=iap.getNonCyclicAdderFromNode(*node).data_->wld_;  // short name
     GraphNodePtr     waitFor=wldNode.getPtr();
     do
@@ -130,7 +130,7 @@ void NonCyclicAdder::InternalImplementation::throwIfDeadlock(InternalAccessProxy
     {
       // finding deadlock means that we're back to own node which is a cycle
       throw ExceptionCycleDetected(SYSTEM_SAVE_LOCATION,
-                                   rootToCheck->getMetaAlert().getName().get(),
+                                   rootToCheck->getMetaAlert()->getName().get(),
                                    node->getMetaAlert()->getName().get() );
     }
     // proceed with next element
