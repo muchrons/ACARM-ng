@@ -9,6 +9,8 @@ class CParamRange
   public $dst;
   public $ignoredst;
   public $severities;
+  public $limit;
+  public $offset;
 }
 
 ?>

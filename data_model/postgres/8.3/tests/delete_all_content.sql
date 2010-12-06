@@ -1,0 +1,17 @@
+TRUNCATE alert_analyzers CASCADE;
+TRUNCATE alert_to_meta_alert_map CASCADE;
+TRUNCATE alerts CASCADE;
+TRUNCATE analyzers CASCADE;
+TRUNCATE config CASCADE;
+TRUNCATE config_rdonly CASCADE;
+TRUNCATE hosts CASCADE;
+TRUNCATE logs CASCADE;
+TRUNCATE meta_alerts CASCADE;
+TRUNCATE meta_alerts_already_triggered CASCADE;
+TRUNCATE meta_alerts_in_use CASCADE;
+TRUNCATE meta_alerts_tree CASCADE;
+TRUNCATE procs CASCADE;
+TRUNCATE reference_urls CASCADE;
+TRUNCATE services CASCADE;
+TRUNCATE severities CASCADE;
+TRUNCATE wui_users CASCADE;

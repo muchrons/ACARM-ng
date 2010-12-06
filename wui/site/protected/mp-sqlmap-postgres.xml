@@ -90,6 +90,35 @@
     SELECT count(*) FROM alerts
   </select>
 
+  <select id="SelectAlertsSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
+    <![CDATA[
+      select count(*) from
+      (
+          select ad.id AS id, ad.name AS name, ad.create_time AS create_time, s.name AS severity from  
+          (
+              (select * from alerts WHERE create_time<=#date_to# AND create_time>=#date_from#) AS ad
+              LEFT JOIN
+              severities AS s
+              ON s.id=ad.id_severity
+          )  WHERE
+            (s.name='critical' AND #severities# LIKE '%critical%')
+         OR (s.name='error' AND #severities# LIKE '%error%')
+         OR (s.name='problem' AND #severities# LIKE '%problem%')
+         OR (s.name='warning' AND #severities# LIKE '%warning%')
+         OR (s.name='debug' AND #severities# LIKE '%debug%')
+         OR (s.name='info' AND #severities# LIKE '%info%')
+     ) AS x
+     JOIN
+     (SELECT h1.id_alert AS id_alert FROM
+         (select * FROM hosts WHERE (hosts.ip=#src# OR 1=#ignoresrc#) AND role='src') AS h1
+         JOIN
+         (select * FROM hosts WHERE (hosts.ip=#dst# OR 1=#ignoredst#) AND role='dst') AS h2
+         ON h1.id_alert=h2.id_alert
+     ) AS h
+     ON h.id_alert=x.id
+    ]]>
+  </select>
+
   <select id="SelectMetaAlertsSummaryCount" resultClass="int">
     SELECT count(*) FROM meta_alerts
   </select>
@@ -124,6 +153,38 @@
     SELECT a.id AS id, a.name AS name, a.create_time AS create_time, s.name || ' (' || s.level || ')' AS severity FROM alerts AS a LEFT JOIN severities AS s ON a.id_severity=s.id ORDER BY create_time DESC limit #limit# offset #offset#
   </select>
 
+  <select id="SelectAlertsSummaryRange" resultClass="CAlertListEntry" parameterClass="CParamRange">
+    <![CDATA[
+      select id, name, create_time, severity from
+      (
+          select ad.id AS id, ad.name AS name, ad.create_time AS create_time, s.name AS severity from  
+          (
+              (select * from alerts WHERE create_time<=#date_to#  AND create_time>=#date_from#) AS ad
+              LEFT JOIN
+              severities AS s
+              ON s.id=ad.id_severity
+          )  WHERE
+            (s.name='critical' AND #severities# LIKE '%critical%')
+         OR (s.name='error' AND #severities# LIKE '%error%')
+         OR (s.name='problem' AND #severities# LIKE '%problem%')
+         OR (s.name='warning' AND #severities# LIKE '%warning%')
+         OR (s.name='debug' AND #severities# LIKE '%debug%')
+         OR (s.name='info' AND #severities# LIKE '%info%')
+     ) AS x
+     JOIN
+     (SELECT h1.id_alert AS id_alert FROM
+         (select * FROM hosts WHERE (hosts.ip=#src# OR 1=#ignoresrc#) AND role='src') AS h1
+         JOIN
+         (select * FROM hosts WHERE (hosts.ip=#dst# OR 1=#ignoredst#) AND role='dst') AS h2
+         ON h1.id_alert=h2.id_alert
+     ) AS h
+     ON h.id_alert=x.id
+     ORDER BY x.create_time
+     LIMIT #limit#
+     OFFSET #offset#
+    ]]>
+  </select>
+
   <select id="SelectMetaAlertsSummary" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
     SELECT id, name, create_time FROM meta_alerts ORDER BY create_time DESC limit #limit# offset #offset#
   </select>
@@ -138,7 +199,7 @@
     <![CDATA[
     SELECT alerts.name as key,count(*) as value FROM
       (SELECT a.id,name FROM
-         (select id,id_severity FROM alerts WHERE create_time<#date_to# AND create_time>#date_from#) AS a
+         (select id,id_severity FROM alerts WHERE create_time<=#date_to# AND create_time>=#date_from#) AS a
       JOIN severities ON a.id_severity=severities.id
       WHERE (severities.name='critical' AND #severities# LIKE '%critical%')
          OR (severities.name='error' AND #severities# LIKE '%error%')
@@ -159,7 +220,7 @@
     <![CDATA[
     SELECT alerts.name as key,count(*) as value FROM
       (SELECT a.id,name FROM
-         (select id,id_severity FROM alerts WHERE create_time<#date_to# AND create_time>#date_from#) AS a
+         (select id,id_severity FROM alerts WHERE create_time<=#date_to# AND create_time>=#date_from#) AS a
       JOIN severities ON a.id_severity=severities.id
       WHERE (severities.name='critical' AND #severities# LIKE '%critical%')
          OR (severities.name='error' AND #severities# LIKE '%error%')
@@ -177,7 +238,7 @@
     <![CDATA[
     SELECT key,value FROM 
       (SELECT date_trunc('day', create_time) AS key FROM
-        alerts WHERE create_time>#date_from# AND create_time<#date_to# GROUP BY key) AS a
+        alerts WHERE create_time>=#date_from# AND create_time<=#date_to# GROUP BY key) AS a
         LEFT JOIN (SELECT date_trunc('day', create_time) AS date2, count(*) AS value FROM
         alerts LEFT JOIN severities AS s ON alerts.id_severity=s.id WHERE s.name=#severities# GROUP BY date2) AS b ON a.key=b.date2 ORDER BY key;
     ]]>
@@ -185,13 +246,13 @@
 
   <select id="DMAlertTypes" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
-    SELECT name AS key,count(name) AS value FROM Alerts WHERE create_time<#date_to# AND create_time>#date_from# GROUP BY name ORDER BY count(name) DESC;
+    SELECT name AS key,count(name) AS value FROM Alerts WHERE create_time<=#date_to# AND create_time>=#date_from# GROUP BY name ORDER BY count(name) DESC;
     ]]>
   </select>
 
   <select id="DMMetaAlertCountTimeSeries" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
-    SELECT date_trunc('day', create_time) AS key ,count(*) AS value FROM meta_alerts WHERE create_time<#date_to# AND create_time>#date_from# AND severity_delta>=0 GROUP BY key ORDER BY key;
+    SELECT date_trunc('day', create_time) AS key ,count(*) AS value FROM meta_alerts WHERE create_time<=#date_to# AND create_time>=#date_from# AND severity_delta>=0 GROUP BY key ORDER BY key;
     ]]>
   </select>
 
@@ -202,15 +263,14 @@
      ]]>
   </select>
 
-  <select id="DMHeatMap" resultClass="CDMHeatMap">
-    <![CDATA[
-       select a.ip as source, b.ip as destination, count(*) as count from hosts as a JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' group by a.ip, b.ip;
-     ]]>
-  </select>
-
-
   <select id="DMHeatMapHostcount" resultClass="CDMPair">
     select min(id_alert) as key,max(id_alert) as value from hosts;
+  </select>
+
+  <select id="DMHeatMapNumAlerts" resultClass="int" parameterClass="CDMQuadruple">
+    <![CDATA[
+       select count(*) as count from hosts as a JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' AND a.id_alert>#value1# AND a.id_alert<#value2# AND a.ip=#value3# AND b.ip=#value4#;
+     ]]>
   </select>
 
 </sqlMapConfig>
