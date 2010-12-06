@@ -56,8 +56,16 @@ public:
   /** \brief copy c-tor.
    *  \param other object to copy from.
    */
+  SharedPtrNotNULL(const SharedPtrNotNULL<T> &other)
+  {
+    ptr_=other.ptr_;
+    assert( ptr_.get()!=NULL );
+  }
+  /** \brief convertion c-tor (from related pointers).
+   *  \param other object to copy from.
+   */
   template<typename U>
-  SharedPtrNotNULL(const SharedPtrNotNULL<U> &other)
+  SharedPtrNotNULL(SharedPtrNotNULL<U> other)
   {
     ptr_=other.shared_ptr();
     assert( ptr_.get()!=NULL );
@@ -81,10 +89,18 @@ public:
     ensure();
     assert( p.get()==NULL );
   }
+  /** \brief conversion to boost::shared_ptr<const>.
+   *  \return boost::shared_ptr<const> for a given value.
+   */
+  boost::shared_ptr<const element_type> shared_ptr(void) const
+  {
+    assert( ptr_.get()!=NULL );
+    return ptr_;
+  }
   /** \brief conversion to boost::shared_ptr<>.
    *  \return boost::shared_ptr<> for a given value.
    */
-  SharedPtr shared_ptr(void) const
+  SharedPtr shared_ptr(void)
   {
     assert( ptr_.get()!=NULL );
     return ptr_;
@@ -102,7 +118,7 @@ public:
    *  \return const-reference to this object.
    */
   template<typename U>
-  typename boost::add_const<this_type&>::type operator=(const SharedPtrNotNULL<U> &other)
+  typename boost::add_const<this_type&>::type operator=(SharedPtrNotNULL<U> other)
   {
     if( other.get()!=this->get() )
       ptr_=other.shared_ptr();

@@ -99,8 +99,7 @@ void testObj::test<5>(void)
 {
   const BoostPtr bp(new int);
   const PtrNN    pnn(bp);
-  ensure("invalid pointer after creating form boost::shared_ptr",
-         pnn.get()==bp.get() );
+  ensure("invalid pointer after creating form boost::shared_ptr", pnn.get()==bp.get() );
 }
 
 // test throw on copying from boost::shared_ptr(NULL)
@@ -352,8 +351,8 @@ template<>
 template<>
 void testObj::test<30>(void)
 {
-  const PtrNN nn( new int(42) );
-  BoostPtr    bp;
+  const PtrNN   nn( new int(42) );
+  ConstBoostPtr bp;
   bp=nn.shared_ptr();
   ensure("invalid pointer value", bp.get()==nn.get() );
 }
@@ -488,6 +487,35 @@ void testObj::test<42>(void)
 {
   SharedPtrNotNULL<DerivedTest>    d(new DerivedTest);
   SharedPtrNotNULL<const BaseTest> b(d);
+}
+
+// test converting to shared_ptr - const version
+template<>
+template<>
+void testObj::test<43>(void)
+{
+  const PtrNN   a(new int(111));
+  ConstBoostPtr b=a.shared_ptr();
+}
+
+// test assignment to shared_ptr - const version
+template<>
+template<>
+void testObj::test<44>(void)
+{
+  const PtrNN   a(new int(111));
+  ConstBoostPtr b(new int(42));
+  b=a.shared_ptr();
+  ensure_equals("invalid value", *b, 111);
+}
+
+// test copy-ctor from self to self
+template<>
+template<>
+void testObj::test<45>(void)
+{
+  PtrNN a(new int(111));
+  PtrNN b(a);
 }
 
 } // namespace tut
