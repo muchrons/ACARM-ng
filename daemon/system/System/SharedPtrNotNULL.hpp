@@ -9,7 +9,6 @@
 
 #include <memory>
 #include <boost/shared_ptr.hpp>
-#include <boost/operators.hpp>
 #include <boost/type_traits/add_const.hpp>
 #include <cassert>
 
@@ -19,14 +18,10 @@ namespace System
 {
 
 /** \brief boost::shared_ptr-like class that does not permit NULLs.
- *  \note if NULL will be passed to this class it will throw
- *        ExceptionUnexpectedNULL.
+ *  \note if NULL will be passed to this class it will throw ExceptionPointerIsNULL.
  */
 template<typename T>
-class SharedPtrNotNULL: public boost::less_than_comparable< SharedPtrNotNULL<T> >,
-                        public boost::equivalent<           SharedPtrNotNULL<T> >,
-                        public boost::equality_comparable<  SharedPtrNotNULL<T> >,
-                        public boost::equality_comparable<  SharedPtrNotNULL<T>, boost::shared_ptr<T> >
+class SharedPtrNotNULL
 {
 public:
   /** \brief type used as boost::shared_ptr<>. */
@@ -53,8 +48,16 @@ public:
   /** \brief copy c-tor.
    *  \param other object to copy from.
    */
+  SharedPtrNotNULL(const SharedPtrNotNULL<T> &other)
+  {
+    ptr_=other.ptr_;
+    assert( ptr_.get()!=NULL );
+  }
+  /** \brief convertion c-tor (from related pointers).
+   *  \param other object to copy from.
+   */
   template<typename U>
-  SharedPtrNotNULL(const SharedPtrNotNULL<U> &other)
+  SharedPtrNotNULL(SharedPtrNotNULL<U> other)
   {
     ptr_=other.shared_ptr();
     assert( ptr_.get()!=NULL );
@@ -78,28 +81,28 @@ public:
     ensure();
     assert( p.get()==NULL );
   }
-  /** \brief conversion to boost::shared_ptr<>.
-   *  \return boost::shared_ptr<> for a given value.
+  /** \brief conversion to boost::shared_ptr<const>.
+   *  \return boost::shared_ptr<const> for a given value.
    */
-  SharedPtr shared_ptr(void) const
+  boost::shared_ptr<const element_type> shared_ptr(void) const
   {
     assert( ptr_.get()!=NULL );
     return ptr_;
   }
-  /** \brief less-then compare
-   *  \param other element to compare with.
-   *  \return true if this<other, false otherwise.
+  /** \brief conversion to boost::shared_ptr<>.
+   *  \return boost::shared_ptr<> for a given value.
    */
-  inline bool operator<(const this_type &other) const
+  SharedPtr shared_ptr(void)
   {
-    return ptr_<other.ptr_;
+    assert( ptr_.get()!=NULL );
+    return ptr_;
   }
   /** \brief assignmen of other instance.
    *  \param other object to assigne from.
    *  \return const-reference to this object.
    */
   template<typename U>
-  typename boost::add_const<this_type&>::type operator=(const SharedPtrNotNULL<U> &other)
+  typename boost::add_const<this_type&>::type operator=(SharedPtrNotNULL<U> other)
   {
     if( other.get()!=this->get() )
       ptr_=other.shared_ptr();
@@ -175,6 +178,113 @@ private:
 
   SharedPtr ptr_;
 }; // struct SharedPtrNotNULL
+
+
+
+
+//
+// NOTE: all operators must be externally defined in order to avoid disambiguation
+//       during calls like SPNN<X> == SPNN<const X>.
+//
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator<(const SharedPtrNotNULL<T> &left, const SharedPtrNotNULL<U> &right)
+{
+  return left.get()<right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator==(const SharedPtrNotNULL<T> &left, const SharedPtrNotNULL<U> &right)
+{
+  return left.get()==right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator!=(const SharedPtrNotNULL<T> &left, const SharedPtrNotNULL<U> &right)
+{
+  return left.get()!=right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator<(const boost::shared_ptr<T> &left, const SharedPtrNotNULL<U> &right)
+{
+  return left.get()<right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator==(const boost::shared_ptr<T> &left, const SharedPtrNotNULL<U> &right)
+{
+  return left.get()==right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator!=(const boost::shared_ptr<T> &left, const SharedPtrNotNULL<U> &right)
+{
+  return left.get()!=right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator<(const SharedPtrNotNULL<T> &left, const boost::shared_ptr<U> &right)
+{
+  return left.get()<right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator==(const SharedPtrNotNULL<T> &left, const boost::shared_ptr<U> &right)
+{
+  return left.get()==right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator!=(const SharedPtrNotNULL<T> &left, const boost::shared_ptr<U> &right)
+{
+  return left.get()!=right.get();
+}
 
 } // namespace System
 

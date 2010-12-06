@@ -230,30 +230,12 @@ void testObj::test<16>(void)
   ensure_equals("arrow operator failed", ptr->c_str(), tmp);
 }
 
-// compare with boost::shared_ptr pointer
-template<>
-template<>
-void testObj::test<17>(void)
-{
-  BoostPtr other( new int(*nn_) );
-  ensure("different pointers match", !(nn_==other) );
-}
-
 // compare with other wrapped-pointer
 template<>
 template<>
 void testObj::test<18>(void)
 {
   ensure("different pointers match", !(nn_==other_) );
-}
-
-// compare with the same boost::shared_ptr
-template<>
-template<>
-void testObj::test<19>(void)
-{
-  BoostPtr other=nn_.shared_ptr();
-  ensure("the same pointer does not match", nn_==other);
 }
 
 // compare the same wrapped pointers
@@ -265,39 +247,12 @@ void testObj::test<20>(void)
   ensure("the same pointer does not match", nn_==other_);
 }
 
-// compare with != of boost::shared_ptr
-template<>
-template<>
-void testObj::test<21>(void)
-{
-  BoostPtr other( new int(*nn_) );
-  ensure("different pointers match", nn_!=other);
-}
-
 // compare with != of wrapped ptr
 template<>
 template<>
 void testObj::test<22>(void)
 {
   ensure("different pointers match", nn_!=other_);
-}
-
-// compare boost with wrapped ptr (in reversed order)
-template<>
-template<>
-void testObj::test<23>(void)
-{
-  BoostPtr other=nn_.shared_ptr();
-  ensure("different pointers match", other==nn_);
-}
-
-// compare boost with wrapped ptr (in reversed order) with !=
-template<>
-template<>
-void testObj::test<24>(void)
-{
-  BoostPtr other=other_.shared_ptr();
-  ensure("different pointers match", other!=nn_);
 }
 
 // check less-than operator

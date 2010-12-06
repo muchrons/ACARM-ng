@@ -12,7 +12,6 @@
 
 #include <memory>
 #include <boost/shared_ptr.hpp>
-#include <boost/operators.hpp>
 #include <boost/type_traits/add_const.hpp>
 #include <cassert>
 
@@ -26,10 +25,7 @@ namespace Commons
  *        ExceptionUnexpectedNULL.
  */
 template<typename T>
-class SharedPtrNotNULL: public boost::less_than_comparable< SharedPtrNotNULL<T> >,
-                        public boost::equivalent<           SharedPtrNotNULL<T> >,
-                        public boost::equality_comparable<  SharedPtrNotNULL<T> >,
-                        public boost::equality_comparable<  SharedPtrNotNULL<T>, boost::shared_ptr<T> >
+class SharedPtrNotNULL
 {
 public:
   /** \brief type used as boost::shared_ptr<>. */
@@ -104,14 +100,6 @@ public:
   {
     assert( ptr_.get()!=NULL );
     return ptr_;
-  }
-  /** \brief less-then compare
-   *  \param other element to compare with.
-   *  \return true if this<other, false otherwise.
-   */
-  inline bool operator<(const this_type &other) const
-  {
-    return ptr_<other.ptr_;
   }
   /** \brief assignmen of other instance.
    *  \param other object to assigne from.
@@ -195,6 +183,113 @@ private:
   SharedPtr ptr_;
 }; // struct SharedPtrNotNULL
 
-} // namespace Commons
+
+
+
+//
+// NOTE: all operators must be externally defined in order to avoid disambiguation
+//       during calls like SPNN<X> == SPNN<const X>.
+//
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator<(const SharedPtrNotNULL<T> &left, const SharedPtrNotNULL<U> &right)
+{
+  return left.get()<right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator==(const SharedPtrNotNULL<T> &left, const SharedPtrNotNULL<U> &right)
+{
+  return left.get()==right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator!=(const SharedPtrNotNULL<T> &left, const SharedPtrNotNULL<U> &right)
+{
+  return left.get()!=right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator<(const boost::shared_ptr<T> &left, const SharedPtrNotNULL<U> &right)
+{
+  return left.get()<right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator==(const boost::shared_ptr<T> &left, const SharedPtrNotNULL<U> &right)
+{
+  return left.get()==right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator!=(const boost::shared_ptr<T> &left, const SharedPtrNotNULL<U> &right)
+{
+  return left.get()!=right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator<(const SharedPtrNotNULL<T> &left, const boost::shared_ptr<U> &right)
+{
+  return left.get()<right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator==(const SharedPtrNotNULL<T> &left, const boost::shared_ptr<U> &right)
+{
+  return left.get()==right.get();
+}
+
+/** \brief comapre pointers.
+ *  \param left  left side of the relation.
+ *  \param right right side of the relation.
+ *  \return result of corresponding operation on raw pointers.
+ */
+template<typename T, typename U>
+bool operator!=(const SharedPtrNotNULL<T> &left, const boost::shared_ptr<U> &right)
+{
+  return left.get()!=right.get();
+}
+
+} // namespace System
 
 #endif
