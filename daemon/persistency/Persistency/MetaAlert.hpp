@@ -86,7 +86,7 @@ public:
   /** \brief gets reference url.
    *  \return reference url.
    */
-  const ReferenceURL *getReferenceURL(void) const;
+  ConstReferenceURLPtr getReferenceURL(void) const;
   /** \brief gets creation time of this meta alert.
    *  \return time of creation of this meta alert.
    */
