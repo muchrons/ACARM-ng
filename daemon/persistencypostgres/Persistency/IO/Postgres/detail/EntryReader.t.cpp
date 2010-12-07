@@ -175,11 +175,10 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  Persistency::AlertPtr alertPtr (
-      new Persistency::Alert(name_, analyzers_, NULL,
-                             created_,
-                             severity_, certanity_,description_,
-                             sourceHosts_, targetHosts_) );
+  Persistency::AlertPtrNN alertPtr( new Persistency::Alert(name_, analyzers_, NULL,
+                                                           created_,
+                                                           severity_, certanity_,description_,
+                                                           sourceHosts_, targetHosts_) );
   // save alert
   Persistency::IO::Postgres::Alert alert(alertPtr, t_, dbh_ );
   alert.save();
@@ -203,7 +202,7 @@ void testObj::test<5>(void)
 {
 
   const std::string malertName("meta alert name");
-  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  ReferenceURLPtr refURL( makeNewReferenceURL().shared_ptr() );
   Persistency::MetaAlertPtrNN maPtr(
       new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                   0.1, 0.2,
@@ -273,7 +272,7 @@ void testObj::test<7>(void)
   Timestamp t2( timestampFromString("1999-10-10 17:56:07") );
   Timestamp t3( timestampFromString("2010-04-22 07:56:07") );
 
-  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  ReferenceURLPtr refURL( makeNewReferenceURL().shared_ptr() );
   Persistency::MetaAlertPtrNN maPtr1(
       new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                   0.1, 0.2,
@@ -322,7 +321,7 @@ void testObj::test<8>(void)
   const Timestamp t2( timestampFromString("1999-10-10 17:56:07") );
   const Timestamp t3( timestampFromString("2010-04-22 07:56:07") );
 
-  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  ReferenceURLPtr refURL( makeNewReferenceURL().shared_ptr() );
   Persistency::MetaAlertPtrNN maPtr1(
       new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                   0.1, 0.2,
@@ -371,7 +370,7 @@ void testObj::test<9>(void)
 {
   const std::string malertName("meta alert name");
   Timestamp t( timestampFromString("1970-01-15 07:56:07") );
-  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  ReferenceURLPtr refURL( makeNewReferenceURL().shared_ptr() );
   Persistency::MetaAlertPtrNN maPtr(
       new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                   0.1, 0.2,
@@ -391,7 +390,7 @@ void testObj::test<10>(void)
 {
   const std::string malertName("meta alert name");
   Timestamp t( timestampFromString("1970-01-15 07:56:07") );
-  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  ReferenceURLPtr refURL( makeNewReferenceURL().shared_ptr() );
   Persistency::MetaAlertPtrNN maPtr(
       new Persistency::MetaAlert( Persistency::MetaAlert::Name(malertName),
                                   0.1, 0.2,
@@ -411,7 +410,7 @@ void testObj::test<11>(void)
 {
   const std::string malertName("meta alert name");
   const Timestamp t( timestampFromString("1970-01-15 07:56:07") );
-  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  ReferenceURLPtr refURL( makeNewReferenceURL().shared_ptr() );
   Persistency::MetaAlertPtrNN maPtr( makeNewMetaAlert(100u) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
@@ -434,7 +433,7 @@ void testObj::test<12>(void)
 {
   const std::string malertName("meta alert name");
   const Timestamp t( timestampFromString("1970-01-15 07:56:07") );
-  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  ReferenceURLPtr refURL( makeNewReferenceURL().shared_ptr() );
   Persistency::MetaAlertPtrNN maPtr( makeNewMetaAlert(100u) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
@@ -457,7 +456,7 @@ template<>
 void testObj::test<13>(void)
 {
   const std::string malertName("meta alert name");
-  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  ReferenceURLPtr refURL( makeNewReferenceURL().shared_ptr() );
   Persistency::MetaAlertPtrNN maPtr( makeNewMetaAlert(100u) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
@@ -481,7 +480,7 @@ void testObj::test<14>(void)
 {
   const std::string malertName("meta alert name");
   const Timestamp t( timestampFromString("1970-01-15 07:56:07") );
-  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  ReferenceURLPtr refURL( makeNewReferenceURL().shared_ptr() );
   Persistency::MetaAlertPtrNN maPtr( makeNewMetaAlert(100u) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();
@@ -533,7 +532,7 @@ void testObj::test<17>(void)
   const Timestamp t2( timestampFromString("1999-10-10 17:56:07") );
   const Timestamp t3( timestampFromString("2010-04-22 07:56:07") );
 
-  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  ReferenceURLPtr refURL( makeNewReferenceURL().shared_ptr() );
 
   Persistency::MetaAlertPtrNN maPtr1( makeNewMetaAlert(100u) );
   Persistency::IO::Postgres::MetaAlert malert1(maPtr1, t_, dbh_);
@@ -565,7 +564,7 @@ template<>
 void testObj::test<18>(void)
 {
   const std::string malertName("meta alert name");
-  ReferenceURLPtr refURL( makeNewReferenceURL() );
+  ReferenceURLPtr refURL( makeNewReferenceURL().shared_ptr() );
   Persistency::MetaAlertPtrNN maPtr( makeNewMetaAlert(100u) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
   malert.save();

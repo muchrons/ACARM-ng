@@ -17,7 +17,7 @@ namespace
 struct TestClass: private TestBase
 {
   TestClass(void):
-    custom_("mail daemon", 25, "smtp", makeNewReferenceURL() )
+    custom_("mail daemon", 25, "smtp", makeNewReferenceURL().shared_ptr() )
   {
   }
 
@@ -50,7 +50,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Service ti("mail daemon", 25, NULL, makeNewReferenceURL() );
+  const Service ti("mail daemon", 25, NULL, makeNewReferenceURL().shared_ptr() );
   ensure_equals("invalid name",    ti.getName().get(),     string("mail daemon") );
   ensure_equals("invalid port",    ti.getPort().get(),     25u                   );
   ensure("invalid service",        ti.getProtocol().get()==NULL                  );
@@ -74,7 +74,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const Service ti("mail daemon", 25, "smtp", makeNewReferenceURL() );
+  const Service ti("mail daemon", 25, "smtp", makeNewReferenceURL().shared_ptr() );
   ensure("instances differ", custom_==ti);
 }
 
@@ -83,7 +83,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const Service ti("different mail daemon", 25, "smtp", makeNewReferenceURL() );
+  const Service ti("different mail daemon", 25, "smtp", makeNewReferenceURL().shared_ptr() );
   TestHelpers::checkEquality(custom_, ti);
 }
 
@@ -92,7 +92,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  const Service ti("mail daemon", 42, "smtp", makeNewReferenceURL() );
+  const Service ti("mail daemon", 42, "smtp", makeNewReferenceURL().shared_ptr() );
   TestHelpers::checkEquality(custom_, ti);
 }
 
@@ -101,7 +101,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const Service ti("mail daemon", 25, "narf", makeNewReferenceURL() );
+  const Service ti("mail daemon", 25, "narf", makeNewReferenceURL().shared_ptr() );
   TestHelpers::checkEquality(custom_, ti);
 }
 
@@ -110,8 +110,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  const Service ti( "mail daemon", 25, "smtp",
-                    makeNewReferenceURL("http://different.net") );
+  const Service ti( "mail daemon", 25, "smtp", makeNewReferenceURL("http://different.net").shared_ptr() );
   TestHelpers::checkEquality(custom_, ti);
 }
 

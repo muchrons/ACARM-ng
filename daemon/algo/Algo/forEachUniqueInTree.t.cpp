@@ -21,7 +21,7 @@ struct CountNodes: private TestHelpers::Persistency::TestStubs
     cnt_(0)
   {
   }
-  void operator()(Persistency::GraphNodePtrNN)
+  void operator()(Persistency::ConstGraphNodePtrNN)
   {
     ++cnt_;
   }
@@ -67,6 +67,16 @@ template<>
 void testObj::test<3>(void)
 {
   CountNodes cn=forEachUniqueInTree( makeNewTree2(), CountNodes() );
+  ensure_equals("invalid number of elements", cn.cnt_, 7);
+}
+
+// check const trees
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  const ConstGraphNodePtrNN node=makeNewTree2();
+  const CountNodes          cn  =forEachUniqueInTree( node, CountNodes() );
   ensure_equals("invalid number of elements", cn.cnt_, 7);
 }
 

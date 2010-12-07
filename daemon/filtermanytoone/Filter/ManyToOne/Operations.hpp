@@ -23,17 +23,17 @@ struct Operations
    *  \param node node to get hosts from.
    *  \return array of reported hosts.
    */
-  static const Persistency::Alert::Hosts &getHostsArray(const Persistency::GraphNodePtrNN node)
+  static const Persistency::Alert::Hosts &getHostsArray(Persistency::ConstGraphNodePtrNN node)
   {
     assert( node->isLeaf() );
-    return node->getAlert().getTargetHosts();
+    return node->getAlert()->getTargetHosts();
   }
 
   /** \brief generates name for meta alert, based on given host name.
    *  \param h host to generate name from.
    *  \return name for this alert.
    */
-  static Persistency::MetaAlert::Name getMetaAlertName(const Persistency::HostPtrNN h)
+  static Persistency::MetaAlert::Name getMetaAlertName(Persistency::ConstHostPtrNN h)
   {
     std::stringstream ss;
     ss << "[many2one] multiple attacks on host " << h->getIP();

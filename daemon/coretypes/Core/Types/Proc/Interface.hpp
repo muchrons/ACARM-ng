@@ -27,9 +27,11 @@ class Interface: private boost::noncopyable
 {
 public:
   /** \brief helper typedef for GraphNode pointer. */
-  typedef Persistency::GraphNodePtrNN Node;
+  typedef Persistency::GraphNodePtrNN      Node;
+  /** \brief helper typedef for GraphNode pointer - const version. */
+  typedef Persistency::ConstGraphNodePtrNN ConstNode;
   /** \brief helper typedef for list of chenged nodes. */
-  typedef std::vector<Node>           ChangedNodes;
+  typedef std::vector<Node>                ChangedNodes;
 
   /** \brief dealocates resources in polymorphic way.
    */

@@ -32,7 +32,7 @@ struct TestReader: public Reader
     ++count_;
     if(justThrow_)
       throw std::runtime_error("just-throw-test");
-    return TestHelpers::Persistency::makeNewAlert();
+    return TestHelpers::Persistency::makeNewAlert().shared_ptr();
   }
 
   size_t count_;

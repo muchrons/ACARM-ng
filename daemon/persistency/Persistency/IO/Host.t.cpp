@@ -32,8 +32,8 @@ public:
     tut::ensure("invalid pointer", get().get()==host_.get() );
   }
 
-  Persistency::HostPtr host_;
-  int                  calls_;
+  Persistency::HostPtrNN host_;
+  int                    calls_;
 }; // class Host
 
 

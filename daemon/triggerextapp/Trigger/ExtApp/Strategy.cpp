@@ -95,7 +95,7 @@ struct FunctorIDMEF
   {
   }
 
-  void operator()(Persistency::GraphNodePtrNN leaf)
+  void operator()(Persistency::ConstGraphNodePtrNN leaf)
   {
     assert( leaf->isLeaf() && "wrong algorithm selected?" );
     RFCIO::IDMEF::XMLCreator  c(*leaf);
@@ -116,7 +116,7 @@ private:
 } // unnamed namespace
 
 
-void Strategy::triggerImpl(const Node &n)
+void Strategy::triggerImpl(const ConstNode &n)
 {
   // prepare basic info
   const size_t count    =Algo::countCorrelatedAlerts(n);

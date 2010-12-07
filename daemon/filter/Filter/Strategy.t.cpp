@@ -215,7 +215,7 @@ template<>
 void testObj::test<11>(void)
 {
   // prepare data and save weak pointer to it
-  boost::weak_ptr<TestFilter::Node::value_type> weakNode( static_cast<TestFilter::Node::SharedPtr>(tf_.node_) );
+  boost::weak_ptr<TestFilter::Node::value_type> weakNode( tf_.node_.shared_ptr() );
   ensure("weak pointer is invalid", weakNode.lock().get()==tf_.node_.get() );
   // create and run strategy that will save this node inside
   {

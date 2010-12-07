@@ -36,7 +36,7 @@ public:
   /** \brief gets parsed alert.
    *  \return smart pointer to parsed alert.
    */
-  Persistency::AlertPtrNN getAlert(void) const;
+  Persistency::AlertPtrNN getAlert(void);
 
 private:
   Persistency::AlertPtrNN alert_;

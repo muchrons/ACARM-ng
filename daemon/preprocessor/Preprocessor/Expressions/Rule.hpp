@@ -6,6 +6,7 @@
 #define INCLUDE_PREPROCESSOR_EXPRESSIONS_RULE_HPP_FILE
 
 #include <boost/scoped_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 
 #include "ConfigIO/Preprocessor/Rule.hpp"
 #include "Preprocessor/Checkers/Mode.hpp"
@@ -54,6 +55,8 @@ private:
 
   template<typename T>
   bool check(const T *e, PathCit t) const;
+  template<typename T>
+  bool check(const boost::shared_ptr<T> e, PathCit t) const;
 
   bool check(const Persistency::Alert            &e, PathCit t) const;
   bool check(const Persistency::Alert::Analyzers &e, PathCit t) const;

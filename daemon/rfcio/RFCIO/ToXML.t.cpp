@@ -417,7 +417,7 @@ template<>
 template<>
 void testObj::test<16>(void)
 {
-  const Persistency::ReferenceURLPtr ref=TestHelpers::Persistency::makeNewReferenceURL();
+  const Persistency::ReferenceURLPtr ref=TestHelpers::Persistency::makeNewReferenceURL().shared_ptr();
   assert( ref.get()!=NULL );
   ToXML toXML(*rootPtr_);
   toXML.addReference(*ref);

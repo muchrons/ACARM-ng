@@ -8,7 +8,7 @@
 namespace Algo
 {
 
-GatherIPs::GatherIPs(Persistency::GraphNodePtrNN node):
+GatherIPs::GatherIPs(Persistency::ConstGraphNodePtrNN node):
   source_(new IPSet),
   target_(new IPSet)
 {
@@ -17,7 +17,7 @@ GatherIPs::GatherIPs(Persistency::GraphNodePtrNN node):
   forEachUniqueLeaf(node, *this);
 }
 
-void GatherIPs::operator()(Persistency::GraphNodePtrNN node)
+void GatherIPs::operator()(Persistency::ConstGraphNodePtrNN node)
 {
   assert( node->isLeaf() );
   addIPs( source_, node->getAlert()->getSourceHosts() );

@@ -9,6 +9,7 @@
 
 #include "Persistency/GraphNode.hpp"
 #include "Algo/forEachUniqueInTree.hpp"
+#include "Algo/MPL/EnsureNodePtrNotNULL.hpp"
 
 namespace Algo
 {
@@ -17,7 +18,7 @@ namespace detail
 {
 /** \brief helper object.
  */
-template<typename FuncObj>
+template<typename FuncObj, typename NodePtr>
 struct ForLeafsOnly
 {
   /** \brief create instance.
@@ -31,7 +32,7 @@ struct ForLeafsOnly
   /** \brief perform operation on node.
    *  \param node node to operate on.
    */
-  void operator()(Persistency::GraphNodePtrNN node)
+  void operator()(NodePtr node)
   {
     if( node->isLeaf() )
       fo_(node);
@@ -49,10 +50,11 @@ struct ForLeafsOnly
  *  \param f    function object to apply.
  *  \return copy of input function object, that traversed through all leafs.
  */
-template<typename FuncObj>
-FuncObj forEachUniqueLeaf(Persistency::GraphNodePtrNN root, const FuncObj &f)
+template<typename FuncObj, typename NodePtrType>
+FuncObj forEachUniqueLeaf(NodePtrType root, const FuncObj &f)
 {
-  return forEachUniqueInTree(root, detail::ForLeafsOnly<FuncObj>(f) ).fo_;
+  typedef typename MPL::EnsureNodePtrNotNULL<NodePtrType>::type NodePtr;
+  return forEachUniqueInTree( NodePtr(root), detail::ForLeafsOnly<FuncObj, NodePtr>(f) ).fo_;
 } // forEachUniqueInLeaf()
 
 } // namespace Algo

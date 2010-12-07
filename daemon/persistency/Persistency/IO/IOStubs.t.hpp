@@ -58,8 +58,8 @@ public:
     tut::ensure("invalid host", get().get()==host_.get() );
   }
 
-  Persistency::HostPtr host_;
-  int                  calls_;
+  Persistency::HostPtrNN host_;
+  int                    calls_;
 }; // class IOHost
 
 class IOMetaAlert: public Persistency::IO::MetaAlert
@@ -109,8 +109,8 @@ public:
     ++called_[6];
   }
 
-  Persistency::MetaAlertPtr ma_;
-  int                       called_[8];
+  Persistency::MetaAlertPtrNN ma_;
+  int                         called_[8];
 }; // class MetaAlert
 
 

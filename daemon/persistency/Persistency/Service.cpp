@@ -8,10 +8,10 @@
 namespace Persistency
 {
 
-Service::Service(const Name       &name,
-                 const PortNumber &port,
-                 const Protocol   &protocol,
-                 ReferenceURLPtr   url):
+Service::Service(const Name           &name,
+                 const PortNumber     &port,
+                 const Protocol       &protocol,
+                 ConstReferenceURLPtr  url):
   name_(name),
   port_(port),
   protocol_(protocol),
@@ -34,9 +34,9 @@ const Service::Protocol Service::getProtocol(void) const
   return protocol_;
 }
 
-const ReferenceURL *Service::getReferenceURL(void) const
+ConstReferenceURLPtr Service::getReferenceURL(void) const
 {
-  return url_.get();
+  return url_;
 }
 
 bool Service::operator==(const Service &other) const
@@ -50,7 +50,7 @@ bool Service::operator==(const Service &other) const
     return false;
   if( getProtocol()!=other.getProtocol() )
     return false;
-  if( !Base::ViaPointer::equal( getReferenceURL(), other.getReferenceURL() ) )
+  if( !Base::ViaPointer::equal( getReferenceURL().get(), other.getReferenceURL().get() ) )
     return false;
   // ok
   return true;

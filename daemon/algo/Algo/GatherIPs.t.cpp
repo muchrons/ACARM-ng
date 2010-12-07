@@ -62,7 +62,7 @@ void testObj::test<3>(void)
   ensure_equals("target IPs not found", gip.getTargetIPs().size(), 1u);
 }
 
-// tets if non-unique entries are saved
+// test if non-unique entries are saved
 template<>
 template<>
 void testObj::test<4>(void)
@@ -119,6 +119,18 @@ void testObj::test<8>(void)
   const size_t tmp=++c;
   ensure_equals("invalid increment", c.get(), 1u);
   ensure_equals("invalid value returned", tmp, c.get() );
+}
+
+// test const version
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const ConstGraphNodePtrNN root=makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "2.3.4.5",
+                                                                    "2.3.4.5", "1.2.3.4") );
+  const GatherIPs gip(root);
+  ensure_equals("source IPs not found", gip.getSourceIPs().size(), 2u);
+  ensure_equals("target IPs not found", gip.getTargetIPs().size(), 2u);
 }
 
 } // namespace tut

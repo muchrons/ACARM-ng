@@ -58,7 +58,7 @@ Persistency::MetaAlert::Name Strategy::getMetaAlertName(
   assert( canCorrelate(thisEntry, otherEntry) );
   ignoreVariable(otherEntry);
   stringstream ss;
-  ss << "[samename] " << thisEntry.node_->getMetaAlert().getName().get();
+  ss << "[samename] " << thisEntry.node_->getMetaAlert()->getName().get();
   return ss.str();
 }
 
@@ -69,7 +69,7 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   assert( isEntryInteresting(thisEntry)  );
   assert( isEntryInteresting(otherEntry) );
   // ok - both names are the same
-  if( thisEntry.node_->getMetaAlert().getName() == otherEntry.node_->getMetaAlert().getName() )
+  if( thisEntry.node_->getMetaAlert()->getName() == otherEntry.node_->getMetaAlert()->getName() )
     return true;
   return false;
 }

@@ -26,7 +26,7 @@ public:
    *  \param ss   stream to append report to.
    *  \param node node to be reported.
    */
-  static void append(std::stringstream &ss, const Persistency::GraphNodePtrNN &node);
+  static void append(std::stringstream &ss, const Persistency::ConstGraphNodePtrNN &node);
 }; // class Full
 
 } // namespace Compose

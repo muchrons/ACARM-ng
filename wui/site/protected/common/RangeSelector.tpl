@@ -6,24 +6,33 @@
       <td id="AlertTag">To date:</td>
       <td id="AlertContent"><com:TDatePicker DateFormat="yyyy-MM-dd" ID="To" InputMode="DropDownList"/></td>
     </tr>
-    <tr>
-      <td id="AlertTag" rowspan="2">Severity:</td>
-      <td id="AlertContent" rowspan="2">
-        <com:TCheckBoxList ID="CB" RepeatColumns="3">
-          <com:TListItem ID="CBcritical" Value="critical" Text="Critical" Selected="true" />
-          <com:TListItem ID="CBerror" Value="error" Text="Error" Selected="true" />
-          <com:TListItem ID="CBproblem" Value="problem" Text="Problem" Selected="true" />
-          <com:TListItem ID="CBwarning" Value="warning" Text="Warning" Selected="true" />
-          <com:TListItem ID="CBdebug" Value="debug" Text="Debug" Selected="false" />
-          <com:TListItem ID="CBinfo" Value="info" Text="Info" Selected="false" />
-        </com:TCheckBoxList>
-      </td>
-      <td id="AlertTag">src IP:</td><td id="AlertContent"><com:TTextBox ID="srcip" Text="any" /></td>
-    </tr>
-    <tr>
-      <td id="AlertTag">dst IP:</td><td id="AlertContent"><com:TTextBox ID="dstip" Text="any"/></td>
-    </tr>    
+    <com:TMultiView ID="MultiView" ActiveViewIndex="1">
+      <com:TView ID="View1">
+      </com:TView>
+      <com:TView ID="View2">
+        <tr>
+          <td id="AlertTag" rowspan="2">Severity:</td>
+          <td id="AlertContent" rowspan="2">
+            <com:TCheckBoxList ID="CB" RepeatColumns="3">
+              <com:TListItem ID="CBcritical" Value="critical" Text="Critical" Selected="true" />
+              <com:TListItem ID="CBerror" Value="error" Text="Error" Selected="true" />
+              <com:TListItem ID="CBproblem" Value="problem" Text="Problem" Selected="true" />
+              <com:TListItem ID="CBwarning" Value="warning" Text="Warning" Selected="true" />
+              <com:TListItem ID="CBdebug" Value="debug" Text="Debug" Selected="false" />
+              <com:TListItem ID="CBinfo" Value="info" Text="Info" Selected="false" />
+            </com:TCheckBoxList>
+          </td>
+          <td id="AlertTag">src IP:</td><td id="AlertContent"><com:TTextBox ID="srcip" Text="any" /></td>
+        </tr>
+        <tr>
+          <td id="AlertTag">dst IP:</td><td id="AlertContent"><com:TTextBox ID="dstip" Text="any"/></td>
+        </tr>    
+      </com:TView>
+    </com:TMultiView>
   </table>
-<com:TButton Text="show" />
+  <com:TButton Text="show" />
 </com:TPanel>
 <br/>
+
+
+

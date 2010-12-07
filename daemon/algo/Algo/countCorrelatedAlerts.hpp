@@ -17,7 +17,7 @@ namespace Algo
  *  \note call returns number of unique alerts (if given alert is in few
  *        subtrees it is counted as 1).
  */
-size_t countCorrelatedAlerts(Persistency::GraphNodePtrNN root);
+size_t countCorrelatedAlerts(Persistency::ConstGraphNodePtrNN root);
 
 } // namespace Algo
 

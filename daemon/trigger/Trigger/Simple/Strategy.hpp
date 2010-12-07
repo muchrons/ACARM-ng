@@ -39,12 +39,12 @@ protected:
   ~Strategy(void);
 
 private:
-  virtual bool matchesCriteria(const Persistency::GraphNodePtrNN &n) const;
-  virtual void trigger(const Node &n);
+  virtual bool matchesCriteria(const ConstNode &n) const;
+  virtual void trigger(const ConstNode &n);
 
-  virtual void triggerImpl(const Node &n) = 0;
+  virtual void triggerImpl(const ConstNode &n) = 0;
 
-  typedef Base::Threads::UniqueFifoQueue<Node>        UniqueFifoType;
+  typedef Base::Threads::UniqueFifoQueue<ConstNode>   UniqueFifoType;
   typedef Base::TruncatingQueue<UniqueFifoType, 1024> NodesWaitingRoom; // TODO: value should be moved to compile-time config
 
   NodesWaitingRoom      fifo_;

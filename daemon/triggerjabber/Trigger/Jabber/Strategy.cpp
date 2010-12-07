@@ -23,7 +23,7 @@ Strategy::Strategy(const std::string &name, const Config &cfg):
 {
 }
 
-void Strategy::triggerImpl(const Node &n)
+void Strategy::triggerImpl(const ConstNode &n)
 {
   // prepare data
   stringstream  ss;

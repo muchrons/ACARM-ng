@@ -23,7 +23,7 @@ struct TestClass: private TestBase
     uid_(13),
     user_("john"),
     args_("-a -b -c"),
-    url_( makeNewReferenceURL() ),
+    url_( makeNewReferenceURL().shared_ptr() ),
     custom_( "/path/to/file",
              "file",
             &md5_,
