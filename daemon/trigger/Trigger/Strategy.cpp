@@ -68,7 +68,7 @@ void Strategy::process(Node n, ChangedNodes &/*changed*/)
   trigger(n);
 
   // if it succeeded, mark it as triggered
-  nos_.add(n);
+  nos_.add( n.shared_ptr() );
   // and save it to persistency storage
   BackendFacade bf(conn_, type_);
   bf.markAsTriggered( n->getMetaAlert() );

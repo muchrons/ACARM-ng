@@ -14,10 +14,10 @@ namespace Compose
 
 namespace
 {
-void appendImpl(const std::string &indent, std::stringstream &ss, const Persistency::GraphNodePtrNN &node)
+void appendImpl(const std::string &indent, std::stringstream &ss, const Persistency::ConstGraphNodePtrNN &node)
 {
   // add this meta-alert's name
-  ss << indent << node->getMetaAlert().getName().get() << std::endl;
+  ss << indent << node->getMetaAlert()->getName().get() << std::endl;
   if( node->isLeaf() )
     return;
 
@@ -28,7 +28,7 @@ void appendImpl(const std::string &indent, std::stringstream &ss, const Persiste
 } // appendImpl()
 } // unnamed namespace
 
-void Tree::append(std::stringstream &ss, const Persistency::GraphNodePtrNN &node)
+void Tree::append(std::stringstream &ss, const Persistency::ConstGraphNodePtrNN &node)
 {
   appendImpl("", ss, node);
 }

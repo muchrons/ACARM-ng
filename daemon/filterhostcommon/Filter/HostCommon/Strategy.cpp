@@ -26,7 +26,7 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
   return ecl;
 }
 
-Persistency::HostPtr Strategy::getHost(const Node node) const
+Persistency::ConstHostPtr Strategy::getHost(const Node node) const
 {
   return Algo::forEachUniqueLeaf( node, CheckHosts(this) ).out_;
 }
@@ -34,7 +34,7 @@ Persistency::HostPtr Strategy::getHost(const Node node) const
 Data Strategy::makeThisEntryUserData(const Node n) const
 {
   // get host from this node.
-  HostPtr h=getHost(n);
+  ConstHostPtr h=getHost(n);
   return Data(h);
 }
 

@@ -47,7 +47,7 @@ void testObj::test<2>(void)
   HostPtrNN    h( new Host( Host::IPv4::from_string("1.2.3.4"),
                             NULL,
                             "myos",
-                            makeNewReferenceURL(),
+                            makeNewReferenceURL().shared_ptr(),
                             Host::Services(),
                             Host::Processes(),
                             NULL ) );

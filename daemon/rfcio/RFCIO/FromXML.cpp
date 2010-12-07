@@ -220,7 +220,7 @@ FromXML::Classification FromXML::parseClassification(const xmlpp::Element &class
   const xmlpp::Element *reference  =findOneChildIfHas(classification, "Reference");
   ReferenceURLPtr       ref;
   if(reference!=NULL)
-    ref=parseReferenceURL(*reference);
+    ref=parseReferenceURL(*reference).shared_ptr();
   return FromXML::Classification(description, ref);
 }
 

@@ -27,12 +27,12 @@ struct TestStrategy: public Strategy
   {
   }
 
-  virtual const Persistency::Alert::Hosts &getHostsArray(const Node node) const
+  virtual const Persistency::Alert::Hosts &getHostsArray(ConstNode node) const
   {
-    return node->getAlert().getSourceHosts();
+    return node->getAlert()->getSourceHosts();
   }
 
-  virtual MetaAlert::Name getMetaAlertName(const HostPtrNN /*h*/) const
+  virtual MetaAlert::Name getMetaAlertName(ConstHostPtrNN /*h*/) const
   {
     return Persistency::MetaAlert::Name("hakuna matata");
   }
