@@ -61,7 +61,7 @@ struct TestClass
     return Persistency::HostPtrNN( new Persistency::Host( Persistency::Host::IPv4::from_string(ip),
                                                           &mask,
                                                           "penguin",
-                                                          makeNewReferenceURL(),
+                                                          makeNewReferenceURL().shared_ptr(),
                                                           services,
                                                           procs,
                                                           dns) );
@@ -79,7 +79,7 @@ struct TestClass
                                                                 &uid,
                                                                  "looser",
                                                                  "-a -b -c",
-                                                                 makeNewReferenceURL() ) );
+                                                                 makeNewReferenceURL().shared_ptr() ) );
   }
 
   Persistency::ServicePtrNN makeService(void) const
@@ -87,7 +87,7 @@ struct TestClass
     return Persistency::ServicePtrNN( new Persistency::Service( "service name",
                                                                 42,
                                                                 "magic_proto",
-                                                                makeNewReferenceURL() ) );
+                                                                makeNewReferenceURL().shared_ptr() ) );
   }
 
   const Alert alert_;

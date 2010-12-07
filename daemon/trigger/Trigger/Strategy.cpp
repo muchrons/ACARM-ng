@@ -18,18 +18,18 @@ namespace
 {
 struct FindGivenNode
 {
-  explicit FindGivenNode(Persistency::GraphNodePtrNN n):
+  explicit FindGivenNode(Persistency::ConstGraphNodePtrNN n):
     n_(n)
   {
   }
 
-  bool operator()(const boost::weak_ptr<Persistency::GraphNode> &w) const
+  bool operator()(const boost::weak_ptr<const Persistency::GraphNode> &w) const
   {
     return n_.get()==w.lock().get();
   }
 
 private:
-  Persistency::GraphNodePtrNN n_;
+  Persistency::ConstGraphNodePtrNN n_;
 }; // struct FindGivenNode
 } // unnamed namespace
 

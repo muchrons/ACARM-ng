@@ -30,7 +30,7 @@ struct SomeInput: public Reader
     if(!firstRun_)
       usleep(50*1000);  // limit created objects count a little...
     firstRun_=false;
-    return TestHelpers::Persistency::makeNewAlert();
+    return TestHelpers::Persistency::makeNewAlert().shared_ptr();
   }
 
   bool firstRun_;

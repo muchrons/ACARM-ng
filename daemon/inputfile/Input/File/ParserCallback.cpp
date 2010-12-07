@@ -24,7 +24,7 @@ void ParserCallback::customAction(Persistency::IO::ConnectionPtrNN conn, Persist
 {
   RFCIO::XML::Reader      reader;
   RFCIO::IDMEF::XMLParser parser( reader.read(*input_), conn, t );
-  alert_=parser.getAlert();
+  alert_=parser.getAlert().shared_ptr();
 }
 
 Persistency::AlertPtrNN ParserCallback::getAlert(void) const
