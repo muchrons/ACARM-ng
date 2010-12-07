@@ -15,8 +15,8 @@ class GraphParams
   function __construct($request)
   {
     $this->type  = TPropertyValue::ensureString($this->getRequestOrDefault($request, 'graph', 'You must specify the type of the graph'));
-    $this->width = TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'width',  'You must specify the width of the graph'));
-    $this->height= TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'height', 'You must specify the height of the graph'));
+    $this->width = TPropertyValue::ensureInteger($this->getRequestOrDefault($request, 'width',  300));
+    $this->height= TPropertyValue::ensureInteger($this->getRequestOrDefault($request, 'height', 200));
     $this->title = TPropertyValue::ensureString($this->getRequestOrDefault($request, 'title', 'No title'));
     $this->query = TPropertyValue::ensureString($this->getRequestOrDefault($request, 'query', null));
 
@@ -38,10 +38,11 @@ class GraphParams
         $this->qparam->ignoresrc=1;
       } else
       $this->qparam->ignoresrc=0;
-
-    $this->qparam->date_from=$this->getRequestOrDefault($request, 'from', null);
-    $this->qparam->date_to=$this->getRequestOrDefault($request, 'to', null);
+    $this->qparam->date_from=$this->getRequestOrDefault($request, 'from', '1970-01-01');
+    $this->qparam->date_to=$this->getRequestOrDefault($request, 'to', date("Y-m-d H:i:s"));
     $this->qparam->severities=$this->getRequestOrDefault($request, 'severities', null);
+    //set hour in date_to to 23:59:59 regardless of its actual value
+    $this->qparam->date_to=date("Y-m-d 23:59:59",strtotime($this->qparam->date_to));
   }
 
   private function getRequestOrDefault($request, $field, $value)
@@ -113,21 +114,45 @@ class GraphService extends TService
       $graph = $this->createAlertTimeSeries();
       break;
     default:
-      // Display LED screen with an error message in place of a graph
-      $led = new DigitalLED74(4);
-      $led->SetSupersampling(5);
-      $led->StrokeNumber(' WRONG GRAPH TYPE ',LEDC_YELLOW);
+      $this->printError("Wrong graph type: ".$this->params->type);
       return;
     }
     $graph->Stroke();
   }
 
+  private function printError($message)
+  {
+    $fontnum=2;
+    $img = imagecreatetruecolor($this->params->width,$this->params->height);
+    $yellow = imagecolorallocate ($img, 0xFF, 0xFF, 0x00);
+    $red = imagecolorallocate ($img, 0xFF, 0x00, 0x00);
+    $fontw=imagefontwidth($fontnum);
+    assert($fontw!=0);
+    $numchars=(($this->params->width-5)/$fontw);
+    $msg=explode("\n",wordwrap($message,$numchars,"\n")); //wrap long messages
+
+    imagestring($img, 3, 3, 3, "Exception was thrown:", $red);
+
+    $hpos=imagefontwidth($fontnum)*4;
+    foreach ($msg as $m)
+      {
+        imagestring ($img, $fontnum, 5, $hpos, $m, $yellow);
+        $hpos+=imagefontwidth($fontnum)*2;
+      }
+
+    imagepng($img);
+    imagedestroy($img);
+  }
+
   private function issueQuery2d($param,$append="")
   {
-    if ($param->query->qparam === null)
+    try{
       $pairs=CSQLMap::get()->queryForList($param->query,$param->qparam);
-    else
-      $pairs=CSQLMap::get()->queryForList($param->query,$param->qparam);
+    } catch(Exception $e)
+        {
+          $this->printError($e->getMessage());
+          return;
+        }
 
     foreach( $pairs as $e )
     {
@@ -140,7 +165,13 @@ class GraphService extends TService
 
   private function issueQuery2dTime($param)
   {
-    $pairs=CSQLMap::get()->queryForList($param->query,$param->qparam);
+    try{
+      $pairs=CSQLMap::get()->queryForList($param->query,$param->qparam);
+    } catch(Exception $e)
+        {
+          $this->printError($e->getMessage());
+          return;
+        }
 
     foreach( $pairs as $e )
     {
