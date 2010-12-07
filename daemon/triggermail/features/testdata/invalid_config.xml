@@ -32,6 +32,7 @@
       <to>admin@e.mail.org</to>
 -->
       <server>smtp.e.mail.org</server>
+      <rootca>/path/to/cert.pem</rootca>
       <port>42</port>
       <protocol>smtp</protocol>
       <security>ssl</security>
