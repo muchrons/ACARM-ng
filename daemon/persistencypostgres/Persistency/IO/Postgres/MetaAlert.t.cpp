@@ -69,7 +69,7 @@ void testObj::test<1>(void)
 {
   Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name_),
                                                                  0.1, 0.2,
-                                                                 makeNewReferenceURL(),
+                                                                 makeNewReferenceURL().shared_ptr(),
                                                                  Timestamp(),
                                                                  666u ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
@@ -93,7 +93,7 @@ void testObj::test<2>(void)
 {
   Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name_),
                                                                  0.1, 0.2,
-                                                                 makeNewReferenceURL(),
+                                                                 makeNewReferenceURL().shared_ptr(),
                                                                  Timestamp(),
                                                                  303u ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
@@ -111,7 +111,7 @@ void testObj::test<3>(void)
 {
   Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name_),
                                                                  0.1, 0.2,
-                                                                 makeNewReferenceURL(),
+                                                                 makeNewReferenceURL().shared_ptr(),
                                                                  Timestamp(),
                                                                  102u ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
@@ -135,7 +135,7 @@ void testObj::test<4>(void)
 {
   Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name_),
                                                                  0.1, 0.2,
-                                                                 makeNewReferenceURL(),
+                                                                 makeNewReferenceURL().shared_ptr(),
                                                                  Timestamp(),
                                                                  42u ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
@@ -156,7 +156,7 @@ void testObj::test<5>(void)
 {
   Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name_),
                                                                  0.1, 0.2,
-                                                                 makeNewReferenceURL(),
+                                                                 makeNewReferenceURL().shared_ptr(),
                                                                  Timestamp(),
                                                                  69u ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
@@ -187,7 +187,7 @@ void testObj::test<6>(void)
 {
   Persistency::MetaAlertPtrNN maPtr( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name_),
                                                                  0.1, 0.2,
-                                                                 makeNewReferenceURL(),
+                                                                 makeNewReferenceURL().shared_ptr(),
                                                                  Timestamp(),
                                                                  42u ) );
   Persistency::IO::Postgres::MetaAlert malert(maPtr, t_, dbh_);
@@ -218,13 +218,13 @@ void testObj::test<7>(void)
 {
   Persistency::MetaAlertPtrNN maPtrNode( new Persistency::MetaAlert( Persistency::MetaAlert::Name("meta alert node"),
                                                                      0.1, 0.2,
-                                                                     makeNewReferenceURL(),
+                                                                     makeNewReferenceURL().shared_ptr(),
                                                                      Timestamp(),
                                                                      42u ) );
   Persistency::IO::Postgres::MetaAlert malertNode(maPtrNode, t_, dbh_);
   Persistency::MetaAlertPtrNN maPtrChild( new Persistency::MetaAlert( Persistency::MetaAlert::Name("meta alert child"),
                                                                       0.1, 0.2,
-                                                                      makeNewReferenceURL(),
+                                                                      makeNewReferenceURL().shared_ptr(),
                                                                       Timestamp(),
                                                                       43u ) );
   Persistency::IO::Postgres::MetaAlert malertChild(maPtrChild, t_, dbh_);
@@ -252,28 +252,28 @@ void testObj::test<8>(void)
   const Timestamp now=Timestamp(123456);
   Persistency::MetaAlertPtrNN maPtrNode( new Persistency::MetaAlert( Persistency::MetaAlert::Name("meta alert node"),
                                                                      0.1, 0.2,
-                                                                     makeNewReferenceURL(),
+                                                                     makeNewReferenceURL().shared_ptr(),
                                                                      now,
                                                                      1410u ) );
   Persistency::IO::Postgres::MetaAlert malertNode(maPtrNode, t_, dbh_);
 
   Persistency::Alert::Analyzers sa( AnalyzerPtrNN( new Analyzer(42u, "analyzer name", NULL, NULL, NULL) ) );
-  Persistency::AlertPtr alertPtr(new Persistency::Alert("abc",
-                                                        sa,
-                                                        NULL,
-                                                        now,
-                                                        Severity(SeverityLevel::INFO),
-                                                        Certainty(0.42),
-                                                        "some description",
-                                                        Persistency::Alert::Hosts(),
-                                                        Persistency::Alert::Hosts()) );
+  Persistency::AlertPtrNN alertPtr(new Persistency::Alert("abc",
+                                                          sa,
+                                                          NULL,
+                                                          now,
+                                                          Severity(SeverityLevel::INFO),
+                                                          Certainty(0.42),
+                                                          "some description",
+                                                          Persistency::Alert::Hosts(),
+                                                          Persistency::Alert::Hosts()) );
   Persistency::IO::Postgres::Alert alert(alertPtr, t_, dbh_);
   malertNode.save();
   alert.save();
   malertNode.associateWithAlert( alertPtr );
 
-  const  DataBaseID malertNodeID = dbh_->getIDCache()->get( maPtrNode );
-  const  DataBaseID alertID = dbh_->getIDCache()->get( alertPtr );
+  const DataBaseID malertNodeID=dbh_->getIDCache()->get( maPtrNode );
+  const DataBaseID alertID     =dbh_->getIDCache()->get( alertPtr );
   stringstream ss;
   ss << "SELECT * FROM alert_to_meta_alert_map WHERE id_alert = " << alertID << ";";
   const result r = t_.getAPI<TransactionAPI>().exec(ss);

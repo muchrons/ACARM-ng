@@ -151,13 +151,13 @@ Alert::Hosts EntryReader::getReporteHosts(DataBaseID alertID, std::string hostTy
   for(size_t i=0; i<r.size(); ++i)
   {
     const DataBaseID hostID=ReaderHelper<DataBaseID>::readAsNotNull( r[i]["id"] );
-    HostPtr host(new Persistency::Host( ReaderHelper<Persistency::Host::IP>::readAsNotNull(r[i]["ip"]),
-                                        ReaderHelper< Base::NullValue<Persistency::Host::Netmask> >::readAs(r[i]["mask"]).get(),
-                                        ReaderHelper<Persistency::Host::OperatingSystem>::readAs(r[i]["os"]),
-                                        getReferenceURL( ReaderHelper<NullValue<DataBaseID> >::readAs( r[i]["id_ref"] ).get() ),
-                                        getServices(hostID),
-                                        getProcesses(hostID),
-                                        ReaderHelper<Persistency::Host::Name>::readAs(r[i]["name"]) ) );
+    HostPtrNN host(new Persistency::Host( ReaderHelper<Persistency::Host::IP>::readAsNotNull(r[i]["ip"]),
+                                          ReaderHelper< Base::NullValue<Persistency::Host::Netmask> >::readAs(r[i]["mask"]).get(),
+                                          ReaderHelper<Persistency::Host::OperatingSystem>::readAs(r[i]["os"]),
+                                          getReferenceURL( ReaderHelper<NullValue<DataBaseID> >::readAs( r[i]["id_ref"] ).get() ),
+                                          getServices(hostID),
+                                          getProcesses(hostID),
+                                          ReaderHelper<Persistency::Host::Name>::readAs(r[i]["name"]) ) );
     // add host to cache
     addIfNew(host, hostID);
     hosts.push_back(host);

@@ -66,10 +66,10 @@ size_t getNoOfMetaAlertsInUse()
   const result r = t.getAPI<TransactionAPI>().exec(ss);
   return r.size();
 }
-AlertPtr makeNewAlert(const char *name, const Timestamp &t)
+AlertPtrNN makeNewAlert(const char *name, const Timestamp &t)
 {
   const Persistency::Alert::Analyzers sa( makeNewAnalyzer() );
-  return AlertPtr( new Persistency::Alert(name,
+  return AlertPtrNN( new Persistency::Alert(name,
                              sa,
                              NULL,
                              t,
@@ -80,11 +80,11 @@ AlertPtr makeNewAlert(const char *name, const Timestamp &t)
                              Persistency::Alert::Hosts() ) );
 }
 
-MetaAlertPtr makeNewMetaAlert(const unsigned int id, const char *name, const Timestamp &t)
+MetaAlertPtrNN makeNewMetaAlert(const unsigned int id, const char *name, const Timestamp &t)
 {
   return MetaAlertPtrNN( new Persistency::MetaAlert( Persistency::MetaAlert::Name(name),
                                                      0.1, 0.2,
-                                                     makeNewReferenceURL(),
+                                                     makeNewReferenceURL().shared_ptr(),
                                                      t,
                                                      id ) );
 }
@@ -95,49 +95,49 @@ AnalyzerPtrNN makeNewAnalyzer(const char *name)
   return AnalyzerPtrNN( new Persistency::Analyzer(42u, name, NULL, NULL, NULL) );
 }
 
-HostPtr makeNewHost(void)
+HostPtrNN makeNewHost(void)
 {
   const Persistency::Host::Netmask_v4 mask(mask4_bytes);
   return makeNewHost4("1.2.3.4", &mask, "linux");
 }
 
-HostPtr makeNewHostWithNullRefUrl(void)
+HostPtrNN makeNewHostWithNullRefUrl(void)
 {
   const Persistency::Host::Netmask_v4 mask(mask4_bytes);
   return makeNewHost4("1.2.3.4", &mask, "linux", true);
 }
 
-HostPtr makeNewHost4(const char                          *ip,
-                     const Persistency::Host::Netmask_v4 *mask,
-                     const char                          *os,
-                     bool                                 nullRef)
+HostPtrNN makeNewHost4(const char                          *ip,
+                       const Persistency::Host::Netmask_v4 *mask,
+                       const char                          *os,
+                       bool                                 nullRef)
 {
-  return HostPtr( new Persistency::Host( Persistency::Host::IPv4::from_string(ip),
+  return HostPtrNN( new Persistency::Host( Persistency::Host::IPv4::from_string(ip),
                             mask,
                             os,
-                            (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL()),
+                            (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL().shared_ptr()),
                             Persistency::Host::Services(),
                             Persistency::Host::Processes(),
                             "dns.org" ) );
 }
 
-HostPtr makeNewHost6(const char             *ip,
-                     const Persistency::Host::Netmask_v6 *mask,
-                     const char             *os,
-                     bool                    nullRef)
+HostPtrNN makeNewHost6(const char             *ip,
+                       const Persistency::Host::Netmask_v6 *mask,
+                       const char             *os,
+                       bool                    nullRef)
 {
-  return HostPtr( new Persistency::Host( Persistency::Host::IPv6::from_string(ip),
+  return HostPtrNN( new Persistency::Host( Persistency::Host::IPv6::from_string(ip),
                             mask,
                             os,
-                            (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL()),
+                            (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL().shared_ptr()),
                             Persistency::Host::Services(),
                             Persistency::Host::Processes(),
                             "dns.org" ) );
 }
 
-ProcessPtr makeNewProcess(const char *name)
+ProcessPtrNN makeNewProcess(const char *name)
 {
-  return ProcessPtr( new Persistency::Process( "/path/to/bin",
+  return ProcessPtrNN( new Persistency::Process( "/path/to/bin",
                                  name,
                                  NULL,
                                  NULL,
@@ -147,9 +147,9 @@ ProcessPtr makeNewProcess(const char *name)
                                  ReferenceURLPtr() ) );
 }
 
-ReferenceURLPtr makeNewReferenceURL(const char *url)
+ReferenceURLPtrNN makeNewReferenceURL(const char *url)
 {
-  return ReferenceURLPtr( new Persistency::ReferenceURL("some name", url) );
+  return ReferenceURLPtrNN( new Persistency::ReferenceURL("some name", url) );
 }
 
 GraphNodePtrNN makeNewLeaf(const unsigned int  id,

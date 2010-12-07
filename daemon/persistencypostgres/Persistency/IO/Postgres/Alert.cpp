@@ -32,7 +32,7 @@ void Alert::saveImpl(Transaction &t)
     //save Alert
     DataBaseID                 alertID=es.saveAlert(a);
     //add Alert to cache
-    dbHandle_->getIDCache()->add(get() , alertID);
+    dbHandle_->getIDCache()->add( get(), alertID );
     //save source hosts
     Persistency::Alert::Hosts SourceHosts( a.getSourceHosts() );
     saveHosts(es, alertID, HostType::SRC, SourceHosts);
