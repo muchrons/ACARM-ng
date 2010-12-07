@@ -122,31 +122,4 @@ void testObj::test<4>(void)
   Interface   iface(trn, conn_, output_);  // should not throw
 }
 
-
-namespace
-{
-struct TestReaderThrower: public Reader
-{
-  TestReaderThrower(void):
-    Reader("reader.thrower", "throwerinput")
-  {
-  }
-
-  virtual DataPtr read(BackendFacade &, unsigned int)
-  {
-    throw std::runtime_error("test exception: see what happens...");
-  }
-}; // struct TestReaderThrower
-} // unnamed namespace
-
-// test for old bug with name that is not valid logger name
-template<>
-template<>
-void testObj::test<5>(void)
-{
-  ReaderPtrNN trn(new TestReaderThrower);
-  Interface   iface(trn, conn_, output_);   // should not throw
-  usleep(250*1000);                         // give thread some time to work
-}
-
 } // namespace tut
