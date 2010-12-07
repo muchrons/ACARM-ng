@@ -13,7 +13,7 @@
 #include "Persistency/GraphNode.hpp"
 #include "Algo/forEach.hpp"
 #include "Algo/forEachInTree.hpp"
-#include "Algo/MPL/EnsureNode.hpp"
+#include "Algo/MPL/EnsureNodePtrNotNULL.hpp"
 
 namespace Algo
 {
@@ -75,7 +75,7 @@ template<typename FuncObj, typename NodePtrType>
 FuncObj forEachUniqueInTree(NodePtrType root, FuncObj f)
 {
   // TODO: optimize to use only forEachInTree<>
-  typedef typename MPL::EnsureNode<NodePtrType>::type Node;
+  typedef typename MPL::EnsureNodePtrNotNULL<NodePtrType>::type Node;
   typename detail::SaveUnique<Node>::NodesSet ns;
   detail::findUniqueNodes<Node>(root, ns);
   return forEach(ns.begin(), ns.end(), f);

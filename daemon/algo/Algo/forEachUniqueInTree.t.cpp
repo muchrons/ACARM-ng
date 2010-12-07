@@ -21,7 +21,7 @@ struct CountNodes: private TestHelpers::Persistency::TestStubs
     cnt_(0)
   {
   }
-  void operator()(Persistency::GraphNodePtrNN)
+  void operator()(Persistency::ConstGraphNodePtrNN)
   {
     ++cnt_;
   }
