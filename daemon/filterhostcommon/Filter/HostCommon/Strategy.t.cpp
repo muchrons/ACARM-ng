@@ -150,7 +150,7 @@ namespace
 {
 struct ThrowStrategy: public TestStrategy
 {
-  virtual MetaAlert::Name getMetaAlertName(const HostPtrNN /*h*/) const
+  virtual MetaAlert::Name getMetaAlertName(ConstHostPtrNN /*h*/) const
   {
     throw Filter::HostCommon::Exception(SYSTEM_SAVE_LOCATION, "just", "testing");
     return "alicehasacat";  // we never reach here
