@@ -286,6 +286,7 @@ below are listed implemented triggers along with their implementation.
   <from>robot@e.mail.org</from>    <!-- e-mail to send from -->
   <to>admin@x.com me@x.com</to>    <!-- e-mail(s) to send reports to -->
   <server>smtp.e.mail.org</server> <!-- server's address -->
+  <rootca>/my/root/ca.pem</rootca> <!-- certificate of root Certificate Authorith (PEM or DER format) of issuer for server's certificate -->
   <port>465</port>                 <!-- port server's listening on -->
   <protocol>smtp</protocol>        <!-- protocol type (smtp) -->
   <security>ssl</security>         <!-- secure connection type (ssl/tls) -->
