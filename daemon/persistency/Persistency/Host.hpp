@@ -61,7 +61,7 @@ public:
   Host(const IPv4            &ip,
        const Netmask_v4      *mask,
        const OperatingSystem  os,
-       ReferenceURLPtr        url,
+       ConstReferenceURLPtr   url,
        const Services        &services,
        const Processes       &processes,
        const Name            &name);
@@ -77,7 +77,7 @@ public:
   Host(const IPv6            &ip,
        const Netmask_v6      *mask,
        const OperatingSystem  os,
-       ReferenceURLPtr        url,
+       ConstReferenceURLPtr   url,
        const Services        &services,
        const Processes       &processes,
        const Name            &name);
@@ -93,7 +93,7 @@ public:
   Host(const IP              &ip,
        const Netmask         *mask,
        const OperatingSystem  os,
-       ReferenceURLPtr        url,
+       ConstReferenceURLPtr   url,
        const Services        &services,
        const Processes       &processes,
        const Name            &name);
@@ -118,7 +118,7 @@ public:
   /** \brief gets reference url for this host.
    *  \return reference url to get more info.
    */
-  const ReferenceURL *getReferenceURL(void) const;
+  ConstReferenceURLPtr getReferenceURL(void) const;
   /** \brief gets reported services list.
    *  \return vector of reported services.
    */
@@ -141,7 +141,7 @@ private:
   Base::NullValue<Netmask>              mask_;
   OperatingSystem                       os_;
   Name                                  name_;
-  ReferenceURLPtr                       url_;
+  ConstReferenceURLPtr                  url_;
   Services                              services_;
   Processes                             processes_;
   mutable Base::Threads::ReadWriteMutex mutex_;

@@ -31,7 +31,7 @@ Base::NullValue<Host::Netmask> makeNetmask(const T *mask)
 Host::Host(const IPv4            &ip,
            const Netmask_v4      *mask,
            const OperatingSystem  os,
-           ReferenceURLPtr        url,
+           ConstReferenceURLPtr   url,
            const Services        &services,
            const Processes       &processes,
            const Name            &name):
@@ -48,7 +48,7 @@ Host::Host(const IPv4            &ip,
 Host::Host(const IPv6            &ip,
            const Netmask_v6      *mask,
            const OperatingSystem  os,
-           ReferenceURLPtr        url,
+           ConstReferenceURLPtr   url,
            const Services        &services,
            const Processes       &processes,
            const Name            &name):
@@ -65,7 +65,7 @@ Host::Host(const IPv6            &ip,
 Host::Host(const IP              &ip,
            const Netmask         *mask,
            const OperatingSystem  os,
-           ReferenceURLPtr        url,
+           ConstReferenceURLPtr   url,
            const Services        &services,
            const Processes       &processes,
            const Name            &name):
@@ -100,9 +100,9 @@ Host::Name Host::getName(void) const
   return name_;
 }
 
-const ReferenceURL *Host::getReferenceURL(void) const
+ConstReferenceURLPtr Host::getReferenceURL(void) const
 {
-  return url_.get();
+  return url_;
 }
 
 const Host::Services &Host::getServices(void) const
@@ -128,7 +128,7 @@ bool Host::operator==(const Host &other) const
     return false;
   if( getName()!=other.getName() )
     return false;
-  if( !Base::ViaPointer::equal( getReferenceURL(), other.getReferenceURL() ) )
+  if( !Base::ViaPointer::equal( getReferenceURL().get(), other.getReferenceURL().get() ) )
     return false;
   if( !Commons::ViaUnorderedCollection::equal( getServices(), other.getServices() ) )
     return false;

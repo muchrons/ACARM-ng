@@ -40,10 +40,10 @@ public:
    *  \param protocol communication protocol.
    *  \param url      reference url of thie service.
    */
-  Service(const Name       &name,
-          const PortNumber &port,
-          const Protocol   &protocol,
-          ReferenceURLPtr   url);
+  Service(const Name           &name,
+          const PortNumber     &port,
+          const Protocol       &protocol,
+          ConstReferenceURLPtr  url);
 
   /** \brief gets service name.
    *  \return name of the service.
@@ -60,7 +60,7 @@ public:
   /** \brief gets reference url, if present.
    *  \return reference url to given service.
    */
-  const ReferenceURL *getReferenceURL(void) const;
+  ConstReferenceURLPtr getReferenceURL(void) const;
   /** \brief check if classes are equal.
    *  \param other element to compare with.
    *  \return true if elements are equal, false otherwise.
@@ -68,10 +68,10 @@ public:
   bool operator==(const Service &other) const;
 
 private:
-  Name            name_;
-  PortNumber      port_;
-  Protocol        protocol_;
-  ReferenceURLPtr url_;
+  Name                 name_;
+  PortNumber           port_;
+  Protocol             protocol_;
+  ConstReferenceURLPtr url_;
 }; // class Service
 
 
