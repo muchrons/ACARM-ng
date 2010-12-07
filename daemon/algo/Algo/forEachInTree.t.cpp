@@ -66,4 +66,14 @@ void testObj::test<2>(void)
   ensure_equals("invalid traversal count for leaf", out.cnt_, 1);
 }
 
+// check traversal for const object
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  const ConstGraphNodePtrNN cRoot=root_;
+  const FuncObj             out  =forEachInTree( cRoot, FuncObj() );
+  ensure_equals("invalid number of elements", out.cnt_, 9);
+}
+
 } // namespace tut

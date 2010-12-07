@@ -70,4 +70,14 @@ void testObj::test<3>(void)
   ensure_equals("invalid number of elements", cn.cnt_, 7);
 }
 
+// check const trees
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  const ConstGraphNodePtrNN node=makeNewTree2();
+  const CountNodes          cn  =forEachUniqueInTree( node, CountNodes() );
+  ensure_equals("invalid number of elements", cn.cnt_, 7);
+}
+
 } // namespace tut

@@ -10,7 +10,7 @@
 namespace Algo
 {
 
-GatherHosts::GatherHosts(Persistency::GraphNodePtrNN node):
+GatherHosts::GatherHosts(Persistency::ConstGraphNodePtrNN node):
   source_(new HostSet),
   target_(new HostSet)
 {
@@ -20,7 +20,7 @@ GatherHosts::GatherHosts(Persistency::GraphNodePtrNN node):
   Algo::forEachUniqueLeaf(node, *this);
 }
 
-void GatherHosts::operator()(Persistency::GraphNodePtrNN node)
+void GatherHosts::operator()(Persistency::ConstGraphNodePtrNN node)
 {
   // assert is fine here, since this is implementation internal.
   assert( node->isLeaf() );

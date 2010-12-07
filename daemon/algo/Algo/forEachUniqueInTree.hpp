@@ -8,22 +8,59 @@
 /* public header */
 
 #include <set>
+#include <cassert>
 
 #include "Persistency/GraphNode.hpp"
 #include "Algo/forEach.hpp"
+#include "Algo/forEachInTree.hpp"
+#include "Algo/MPL/EnsureNode.hpp"
 
 namespace Algo
 {
 
 namespace detail
 {
-/** \brief set of unique nodes. */
-typedef std::set<Persistency::GraphNodePtrNN> NodesSet;
+
+/** \brief helper saving unique nodes.
+ */
+template<typename NodePtrType>
+class SaveUnique
+{
+public:
+  /** \brief set of unique nodes. */
+  typedef std::set<NodePtrType> NodesSet;
+
+  /** \brief crate helper for a given set.
+   *  \param ns set to write to.
+   */
+  explicit SaveUnique(NodesSet *ns):
+    ns_(ns)
+  {
+    assert(ns_!=NULL);
+  }
+  /** \brief process each element.
+   *  \param node node to be processed.
+   */
+  void operator()(NodePtrType node)
+  {
+    assert(ns_!=NULL);
+    ns_->insert(node);
+  }
+
+private:
+  NodesSet *ns_;
+}; // struct TreeFuncObj
+
 /** \brief finds unique nodes in given tree.
  *  \param root root node to start from.
  *  \param ns   output set.
  */
-void findUniqueNodes(Persistency::GraphNodePtrNN root, NodesSet &ns);
+template<typename NodePtrType>
+void findUniqueNodes(NodePtrType root, typename SaveUnique<NodePtrType>::NodesSet &ns)
+{
+  assert( ns.size()==0 );
+  forEachInTree(root, SaveUnique<NodePtrType>(&ns) );
+} // findUniqueNodes()
 } // namespace detail
 
 
@@ -34,12 +71,13 @@ void findUniqueNodes(Persistency::GraphNodePtrNN root, NodesSet &ns);
  *  \param f    function object to apply.
  *  \return copy of input function object, that traversed through all elements.
  */
-template<typename FuncObj>
-FuncObj forEachUniqueInTree(Persistency::GraphNodePtrNN root, FuncObj f)
+template<typename FuncObj, typename NodePtrType>
+FuncObj forEachUniqueInTree(NodePtrType root, FuncObj f)
 {
-  // TODO: optimize this to process while saving
-  detail::NodesSet ns;
-  detail::findUniqueNodes(root, ns);
+  // TODO: optimize to use only forEachInTree<>
+  typedef typename MPL::EnsureNode<NodePtrType>::type Node;
+  typename detail::SaveUnique<Node>::NodesSet ns;
+  detail::findUniqueNodes<Node>(root, ns);
   return forEach(ns.begin(), ns.end(), f);
 } // forEachUniqueInTree()
 

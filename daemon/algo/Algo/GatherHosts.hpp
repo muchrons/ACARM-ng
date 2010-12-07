@@ -13,6 +13,8 @@
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/Host.hpp"
 
+// TODO: this algorithm should be fixed to be provide const and non-const support.
+
 namespace Algo
 {
 
@@ -33,27 +35,27 @@ public:
      *  \param right right operand of the operation.
      *  \return true if left operand is less then right one, false otherwise.
      */
-    bool operator()(const Persistency::HostPtrNN &left,
-                    const Persistency::HostPtrNN &right) const
+    bool operator()(const Persistency::ConstHostPtrNN &left,
+                    const Persistency::ConstHostPtrNN &right) const
     {
       return left->getIP() < right->getIP();
     }
   }; // sutrct HostSWO
 
   /** \brief set of hosts. */
-  typedef std::set<Persistency::HostPtrNN, HostSWO> HostSet;
+  typedef std::set<Persistency::ConstHostPtrNN, HostSWO> HostSet;
   /** \brief shared poitner to set to avoid copying. */
-  typedef Commons::SharedPtrNotNULL<HostSet>        HostSetPtr;
+  typedef Commons::SharedPtrNotNULL<HostSet>             HostSetPtr;
 
   /** \brief creates object's instance.
    *  \param node node to take hosts from;
    */
-  explicit GatherHosts(Persistency::GraphNodePtrNN node);
+  explicit GatherHosts(Persistency::ConstGraphNodePtrNN node);
 
   /** \brief adds unique source/target hosts to internall collection.
    *  \param node node (i.e. leaf) to be processed.
    */
-  void operator()(Persistency::GraphNodePtrNN node);
+  void operator()(Persistency::ConstGraphNodePtrNN node);
 
   /** \brief gets set of source hosts.
    *  \return hosts' set.

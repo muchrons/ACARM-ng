@@ -72,6 +72,10 @@ void testObj::test<4>(void)
   typedef EnsureNode<Tested>::type          Out;
   typedef SharedPtrNotNULL<const GraphNode> Expected;
   ensure("invalid type for SharedPtrNotNULL<const GraphNode>", mpl::equal<Out, Expected>::type::value);
+
+  // TODO: these should NOT compile
+  EnsureNode< std::auto_ptr<GraphNode> >::type;
+  EnsureNode< shared_ptr<double> >::type;
 }
 
 } // namespace tut

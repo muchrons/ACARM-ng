@@ -40,7 +40,7 @@ private:
   // check if type is correct
   typedef typename boost::remove_const<T>::type elem_non_const;
   typedef Persistency::GraphNode                elem_expected;
-  BOOST_STATIC_ASSERT( boost::mpl::equal<elem_non_const, elem_expected>::type::value );
+  BOOST_STATIC_ASSERT( ( boost::mpl::equal<elem_non_const, elem_expected>::type::value ) );
 }; // struct EnsureNode
 
 } // namespace MPL

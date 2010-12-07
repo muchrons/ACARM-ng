@@ -20,7 +20,7 @@ public:
   /** \brief work procedure itself.
    *  \param node node to count (if it is alert)
    */
-  void operator()(Persistency::GraphNodePtrNN node)
+  void operator()(Persistency::ConstGraphNodePtrNN node)
   {
     if( node->isLeaf() )
       set_.insert( node.get() );        // keep the pointer - it is unique.
@@ -39,7 +39,7 @@ private:
 } // unnamed namespace
 
 
-size_t countCorrelatedAlerts(Persistency::GraphNodePtrNN root)
+size_t countCorrelatedAlerts(Persistency::ConstGraphNodePtrNN root)
 {
   return forEachInTree(root, AlertsCounter() ).get();
 } // forEach()

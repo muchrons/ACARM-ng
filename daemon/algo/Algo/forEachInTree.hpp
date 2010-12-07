@@ -11,6 +11,7 @@
 
 #include "Persistency/GraphNode.hpp"
 #include "Algo/forEach.hpp"
+#include "Algo/MPL/EnsureNode.hpp"
 
 namespace Algo
 {
@@ -19,7 +20,7 @@ namespace detail
 {
 /** \brief helper object for algorithm forEachInTree.
  */
-template<typename FuncObj>
+template<typename FuncObj, typename NodePtrType>
 class TreeFuncObj
 {
 public:
@@ -34,7 +35,7 @@ public:
   /** \brief work procedure itself.
    *  \param node root to start search from.
    */
-  void operator()(Persistency::GraphNodePtrNN node)
+  void operator()(NodePtrType node)
   {
     assert(f_!=NULL);
     (*f_)(node);
@@ -55,10 +56,11 @@ private:
  *  \param f    function object to apply.
  *  \return copy of input function object, that traversed through all elements.
  */
-template<typename FuncObj>
-FuncObj forEachInTree(Persistency::GraphNodePtrNN root, FuncObj f)
+template<typename FuncObj, typename NodePtrType>
+FuncObj forEachInTree(NodePtrType root, FuncObj f)
 {
-  detail::TreeFuncObj<FuncObj> tfo(&f);
+  typedef MPL::EnsureNode<typename NodePtrType::type> Node;
+  detail::TreeFuncObj<FuncObj, Node> tfo(&f);
   tfo(root);
   return f;
 } // forEachInTree()
