@@ -3,7 +3,7 @@
  *
  */
 #include <tut.h>
-#include <boost/syhared_ptr.hpp>
+#include <boost/shared_ptr.hpp>
 #include <boost/mpl/equal.hpp>
 
 #include "Algo/MPL/EnsureNode.hpp"
@@ -38,7 +38,7 @@ void testObj::test<1>(void)
   typedef shared_ptr<GraphNode>       Tested;
   typedef EnsureNode<Tested>::type    Out;
   typedef SharedPtrNotNULL<GraphNode> Expected;
-  ensure("invalid type for shared_ptr<GraphNode>", mpl::equal<Out, Expected>::type::value);
+  ensure("invalid type for shared_ptr<GraphNode>", is_same<Out, Expected>::type::value);
 }
 
 // test shared_ptr with const
@@ -49,7 +49,7 @@ void testObj::test<2>(void)
   typedef shared_ptr<const GraphNode>       Tested;
   typedef EnsureNode<Tested>::type          Out;
   typedef SharedPtrNotNULL<const GraphNode> Expected;
-  ensure("invalid type for shared_ptr<const GraphNode>", mpl::equal<Out, Expected>::type::value);
+  ensure("invalid type for shared_ptr<const GraphNode>", is_same<Out, Expected>::type::value);
 }
 
 // test SharedPtrNotNULL<>
@@ -60,7 +60,7 @@ void testObj::test<3>(void)
   typedef SharedPtrNotNULL<GraphNode> Tested;
   typedef EnsureNode<Tested>::type    Out;
   typedef SharedPtrNotNULL<GraphNode> Expected;
-  ensure("invalid type for SharedPtrNotNULL<GraphNode>", mpl::equal<Out, Expected>::type::value);
+  ensure("invalid type for SharedPtrNotNULL<GraphNode>", is_same<Out, Expected>::type::value);
 }
 
 // test SharedPtrNotNULL<> with const
@@ -71,11 +71,15 @@ void testObj::test<4>(void)
   typedef SharedPtrNotNULL<const GraphNode> Tested;
   typedef EnsureNode<Tested>::type          Out;
   typedef SharedPtrNotNULL<const GraphNode> Expected;
-  ensure("invalid type for SharedPtrNotNULL<const GraphNode>", mpl::equal<Out, Expected>::type::value);
+  ensure("invalid type for SharedPtrNotNULL<const GraphNode>", is_same<Out, Expected>::type::value);
+}
 
-  // TODO: these should NOT compile
-  EnsureNode< std::auto_ptr<GraphNode> >::type;
-  EnsureNode< shared_ptr<double> >::type;
+// this test should NOT compile
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  //EnsureNode< shared_ptr<double> >::type b;   // error: invalid type in pointer
 }
 
 } // namespace tut
