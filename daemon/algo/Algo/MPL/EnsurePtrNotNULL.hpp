@@ -7,30 +7,25 @@
 
 /* public header */
 
-#include <boost/type_traits/remove_const.hpp>
-#include <boost/type_traits/is_same.hpp>
-#include <boost/static_assert.hpp>
-
 #include "Commons/SharedPtrNotNULL.hpp"
-#include "Persistency/GraphNode.hpp"
 
 namespace Algo
 {
 namespace MPL
 {
 
-/** \brief helper structure for checking if types are valid and converting to peroper form.
+/** \brief helper structure for checking if types are valid and converting to non-null smart ptr type.
  *
  *  converts given smart-pointer to some type to SharedPtrNotNULL<> of the same type,
  *  preserving CV qualifiers.
  *
  *  <code>
- *    typedef shared_ptr<GraphNode>       GraphNodePtr;
- *    typedef shared_ptr<const GraphNode> ConstGraphNodePtr;
- *    GraphNodePtr ptr(...);
+ *    typedef shared_ptr<double>       MyPtr;
+ *    typedef shared_ptr<const double> ConstMyPtr;
+ *    MyPtr ptr( new double(4.2) );
  *    // ..
- *    EnsurePtrNotNULL<GraphNodePtr>::type      s1(ptr); // 's1' is SharedPrtNotNULL<GraphNode>
- *    EnsurePtrNotNULL<ConstGraphNodePtr>::type s2(ptr); // 's2' is SharedPrtNotNULL<const GraphNode>
+ *    EnsurePtrNotNULL<MyPtr>::type      s1(ptr); // 's1' is SharedPrtNotNULL<double>
+ *    EnsurePtrNotNULL<ConstMyPtr>::type s2(ptr); // 's2' is SharedPrtNotNULL<const double>
  *  </code>
  */
 template<typename T>
@@ -39,12 +34,6 @@ struct EnsurePtrNotNULL
 private:
   // short cut :)
   typedef typename T::element_type elem;
-
-  // check if type is correct - helpers
-  typedef typename boost::remove_const<elem>::type                     elem_non_const;
-  typedef Persistency::GraphNode                                       elem_expected;
-  typedef typename boost::is_same<elem_non_const, elem_expected>::type Checker;
-  BOOST_STATIC_ASSERT( Checker::value );
 
 public:
   /** \brief non-null smart pointer type to a given element, respecting const and volatiles.
