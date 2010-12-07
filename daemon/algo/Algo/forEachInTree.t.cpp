@@ -21,7 +21,7 @@ struct FuncObj: private TestHelpers::Persistency::TestStubs
     cnt_(0)
   {
   }
-  void operator()(GraphNodePtrNN)
+  void operator()(ConstGraphNodePtrNN)
   {
     ++cnt_;
   }
@@ -53,7 +53,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  FuncObj out=forEachInTree(root_, FuncObj() );
+  const FuncObj out=forEachInTree(root_, FuncObj() );
   ensure_equals("invalid number of elements", out.cnt_, 9);
 }
 
@@ -62,7 +62,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  FuncObj out=forEachInTree( makeNewLeaf(), FuncObj() );
+  const FuncObj out=forEachInTree( makeNewLeaf(), FuncObj() );
   ensure_equals("invalid traversal count for leaf", out.cnt_, 1);
 }
 

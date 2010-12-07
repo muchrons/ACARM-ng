@@ -11,7 +11,7 @@
 
 #include "Persistency/GraphNode.hpp"
 #include "Algo/forEach.hpp"
-#include "Algo/MPL/EnsureNode.hpp"
+#include "Algo/MPL/EnsurePtrNotNULL.hpp"
 
 namespace Algo
 {
@@ -59,7 +59,7 @@ private:
 template<typename FuncObj, typename NodePtrType>
 FuncObj forEachInTree(NodePtrType root, FuncObj f)
 {
-  typedef MPL::EnsureNode<typename NodePtrType::type> Node;
+  typedef typename MPL::EnsurePtrNotNULL<NodePtrType>::type Node;
   detail::TreeFuncObj<FuncObj, Node> tfo(&f);
   tfo(root);
   return f;
