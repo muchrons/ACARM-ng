@@ -1,12 +1,12 @@
 /*
- * EnsureNode.t.cpp
+ * EnsurePtrNotNULL.t.cpp
  *
  */
 #include <tut.h>
 #include <boost/shared_ptr.hpp>
 #include <boost/mpl/equal.hpp>
 
-#include "Algo/MPL/EnsureNode.hpp"
+#include "Algo/MPL/EnsurePtrNotNULL.hpp"
 
 using namespace boost;
 using namespace Commons;
@@ -23,7 +23,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Algo/MPL/EnsureNode");
+factory tf("Algo/MPL/EnsurePtrNotNULL");
 } // unnamed namespace
 
 
@@ -35,9 +35,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  typedef shared_ptr<GraphNode>       Tested;
-  typedef EnsureNode<Tested>::type    Out;
-  typedef SharedPtrNotNULL<GraphNode> Expected;
+  typedef shared_ptr<GraphNode>          Tested;
+  typedef EnsurePtrNotNULL<Tested>::type Out;
+  typedef SharedPtrNotNULL<GraphNode>    Expected;
   ensure("invalid type for shared_ptr<GraphNode>", is_same<Out, Expected>::type::value);
 }
 
@@ -47,7 +47,7 @@ template<>
 void testObj::test<2>(void)
 {
   typedef shared_ptr<const GraphNode>       Tested;
-  typedef EnsureNode<Tested>::type          Out;
+  typedef EnsurePtrNotNULL<Tested>::type    Out;
   typedef SharedPtrNotNULL<const GraphNode> Expected;
   ensure("invalid type for shared_ptr<const GraphNode>", is_same<Out, Expected>::type::value);
 }
@@ -57,9 +57,9 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  typedef SharedPtrNotNULL<GraphNode> Tested;
-  typedef EnsureNode<Tested>::type    Out;
-  typedef SharedPtrNotNULL<GraphNode> Expected;
+  typedef SharedPtrNotNULL<GraphNode>    Tested;
+  typedef EnsurePtrNotNULL<Tested>::type Out;
+  typedef SharedPtrNotNULL<GraphNode>    Expected;
   ensure("invalid type for SharedPtrNotNULL<GraphNode>", is_same<Out, Expected>::type::value);
 }
 
@@ -69,7 +69,7 @@ template<>
 void testObj::test<4>(void)
 {
   typedef SharedPtrNotNULL<const GraphNode> Tested;
-  typedef EnsureNode<Tested>::type          Out;
+  typedef EnsurePtrNotNULL<Tested>::type    Out;
   typedef SharedPtrNotNULL<const GraphNode> Expected;
   ensure("invalid type for SharedPtrNotNULL<const GraphNode>", is_same<Out, Expected>::type::value);
 }
@@ -79,7 +79,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  //EnsureNode< shared_ptr<double> >::type b;   // error: invalid type in pointer
+  //EnsurePtrNotNULL< shared_ptr<double> >::type b;   // error: invalid type in pointer
 }
 
 } // namespace tut

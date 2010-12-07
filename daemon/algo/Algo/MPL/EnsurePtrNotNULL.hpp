@@ -1,9 +1,9 @@
 /*
- * EnsureNode.hpp
+ * EnsurePtrNotNULL.hpp
  *
  */
-#ifndef INCLUDE_ALGO_MPL_ENSURENODE_HPP_FILE
-#define INCLUDE_ALGO_MPL_ENSURENODE_HPP_FILE
+#ifndef INCLUDE_ALGO_MPL_ENSUREPTRNOTNULL_HPP_FILE
+#define INCLUDE_ALGO_MPL_ENSUREPTRNOTNULL_HPP_FILE
 
 /* public header */
 
@@ -29,12 +29,12 @@ namespace MPL
  *    typedef shared_ptr<const GraphNode> ConstGraphNodePtr;
  *    GraphNodePtr ptr(...);
  *    // ..
- *    EnsureNode<GraphNodePtr>::type      s1(ptr); // 's1' is SharedPrtNotNULL<GraphNode>
- *    EnsureNode<ConstGraphNodePtr>::type s2(ptr); // 's2' is SharedPrtNotNULL<const GraphNode>
+ *    EnsurePtrNotNULL<GraphNodePtr>::type      s1(ptr); // 's1' is SharedPrtNotNULL<GraphNode>
+ *    EnsurePtrNotNULL<ConstGraphNodePtr>::type s2(ptr); // 's2' is SharedPrtNotNULL<const GraphNode>
  *  </code>
  */
 template<typename T>
-struct EnsureNode
+struct EnsurePtrNotNULL
 {
 private:
   // short cut :)
@@ -53,8 +53,8 @@ public:
 
 private:
   // no instances needed
-  EnsureNode(void);
-}; // struct EnsureNode
+  EnsurePtrNotNULL(void);
+}; // struct EnsurePtrNotNULL
 
 } // namespace MPL
 } // namespace Algo
