@@ -28,7 +28,7 @@ struct CheckHosts
   /** \brief checks given leaf for uniqueness of Host entries.
    *  \param node node (i.e. leaf) to be checked.
    */
-  void operator()(Persistency::GraphNodePtrNN node)
+  void operator()(Persistency::ConstGraphNodePtrNN node)
   {
     // assert is fine here, since this is implementation internal.
     assert( node->isLeaf() );
@@ -38,11 +38,10 @@ struct CheckHosts
     // check each and every reported host
     assert(s_!=NULL);   // this is only internal implementation.
     const Persistency::Alert::Hosts &hs=s_->getHostsArray(node);
-    for(Persistency::Alert::Hosts::const_iterator it=hs.begin();
-        it!=hs.end(); ++it)
+    for(Persistency::Alert::Hosts::const_iterator it=hs.begin(); it!=hs.end(); ++it)
     {
       if( out_.get()==NULL )
-        out_=*it;                 // first entry is always a match
+        out_=it->shared_ptr();      // first entry is always a match
       else
         if( out_->getIP()!=(*it)->getIP() )
         {
@@ -54,7 +53,7 @@ struct CheckHosts
     } // for(reported hosts)
   }
 
-  Persistency::HostPtr  out_;       ///< output object
+  Persistency::ConstHostPtr  out_;  ///< output object
 
 private:
   bool                  noMatch_;   ///< helper flag

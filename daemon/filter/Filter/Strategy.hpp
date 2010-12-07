@@ -28,6 +28,8 @@ class Strategy: public StrategyBase
 public:
   /** \brief helper typedef for GraphNode pointer. */
   typedef BackendFacade::Node           Node;
+  /** \brief helper typedef for GraphNode pointer - const version. */
+  typedef BackendFacade::ConstNode      ConstNode;
   /** \brief helper typedef for list of chenged nodes. */
   typedef BackendFacade::ChangedNodes   ChangedNodes;
   /** \brief forward declaration to keep code easier to read. */

@@ -29,7 +29,7 @@ Strategy::~Strategy(void)
                        <<" alerts in sending queue - discarding them permanently";
 }
 
-bool Strategy::matchesCriteria(const Persistency::GraphNodePtrNN &n) const
+bool Strategy::matchesCriteria(const ConstNode &n) const
 {
   // check severity
   if( cfg_.getSeverityThreshold().get()!=NULL )
@@ -45,7 +45,7 @@ bool Strategy::matchesCriteria(const Persistency::GraphNodePtrNN &n) const
   return false;
 }
 
-void Strategy::trigger(const Node &n)
+void Strategy::trigger(const ConstNode &n)
 {
   // add new element to queue
   if( fifo_.maxSize()==fifo_.size() )

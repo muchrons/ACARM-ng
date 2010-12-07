@@ -91,7 +91,7 @@
   </tr>
   <tr>
     <td>
-      <com:TImageButton ImageUrl="pics/buttons/buttDBD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDBU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDBD.png'" CommandName="SwitchViewIndex" CommandParameter="1" />
+      <com:TImage ImageUrl="pics/buttons/buttDBD.png"/>
     </td>
   </tr> 
   <tr>
@@ -117,7 +117,7 @@
   </tr> 
   <tr>
     <td>
-      <com:TImageButton ImageUrl="pics/buttons/buttDMD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDMU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDMD.png'" CommandName="SwitchViewIndex" CommandParameter="2"/>
+      <com:TImage ImageUrl="pics/buttons/buttDMD.png"/>
     </td>
   </tr> 
   <tr>
@@ -149,11 +149,6 @@
     </td>
   </tr>
   <tr>
-    <td align="right">
-      <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('Settings') %>">
-        <com:TImageButton ImageUrl="pics/buttons/buttSettingsD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttSettingsU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttSettingsD.png'"/>
-      </com:THyperLink>
-    </td>
   </tr>
   <tr>
     <td align="right">

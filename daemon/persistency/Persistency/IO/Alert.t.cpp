@@ -17,8 +17,8 @@ namespace
 
 struct TestIOAlert: public Persistency::IO::Alert
 {
-  TestIOAlert(Persistency::AlertPtr  alert,
-              Transaction           &t):
+  TestIOAlert(Persistency::AlertPtrNN  alert,
+              Transaction             &t):
     Persistency::IO::Alert(alert, t),
     alert_(alert),
     called_(0)
@@ -31,8 +31,8 @@ struct TestIOAlert: public Persistency::IO::Alert
     tut::ensure("invalid pointer", get().get()==alert_.get() );
   }
 
-  Persistency::AlertPtr alert_;
-  int                   called_;
+  Persistency::AlertPtrNN alert_;
+  int                     called_;
 }; // struct TestIOAlert
 
 struct TestClass: private TestBase

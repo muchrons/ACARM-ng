@@ -62,9 +62,9 @@ MetaAlert::CertaintyDelta MetaAlert::getCertaintyDelta(void) const
   return certanityDelta_;
 }
 
-const ReferenceURL *MetaAlert::getReferenceURL(void) const
+ConstReferenceURLPtr MetaAlert::getReferenceURL(void) const
 {
-  return url_.get();
+  return url_;
 }
 
 Timestamp MetaAlert::getCreateTime(void) const
@@ -97,7 +97,7 @@ bool MetaAlert::operator==(const MetaAlert &other) const
     return false;
   if( getCertaintyDelta()!=other.getCertaintyDelta() )
     return false;
-  if( !Base::ViaPointer::equal( getReferenceURL(), other.getReferenceURL() ) )
+  if( !Base::ViaPointer::equal( getReferenceURL().get(), other.getReferenceURL().get() ) )
     return false;
   if( getCreateTime()!=other.getCreateTime() )
     return false;

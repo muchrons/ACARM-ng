@@ -40,10 +40,10 @@ public:
    *  \param protocol communication protocol.
    *  \param url      reference url of thie service.
    */
-  Service(const Name       &name,
-          const PortNumber &port,
-          const Protocol   &protocol,
-          ReferenceURLPtr   url);
+  Service(const Name           &name,
+          const PortNumber     &port,
+          const Protocol       &protocol,
+          ConstReferenceURLPtr  url);
 
   /** \brief gets service name.
    *  \return name of the service.
@@ -60,7 +60,7 @@ public:
   /** \brief gets reference url, if present.
    *  \return reference url to given service.
    */
-  const ReferenceURL *getReferenceURL(void) const;
+  ConstReferenceURLPtr getReferenceURL(void) const;
   /** \brief check if classes are equal.
    *  \param other element to compare with.
    *  \return true if elements are equal, false otherwise.
@@ -68,18 +68,24 @@ public:
   bool operator==(const Service &other) const;
 
 private:
-  Name            name_;
-  PortNumber      port_;
-  Protocol        protocol_;
-  ReferenceURLPtr url_;
+  Name                 name_;
+  PortNumber           port_;
+  Protocol             protocol_;
+  ConstReferenceURLPtr url_;
 }; // class Service
 
 
 /** \brief smart pointer to service type. */
-typedef boost::shared_ptr<Service>         ServicePtr;
+typedef boost::shared_ptr<Service>                                  ServicePtr;
+
+/** \brief smart pointer to service type. */
+typedef boost::shared_ptr<const ServicePtr::element_type>           ConstServicePtr;
 
 /** \brief smart pointer to service type, not NULL. */
-typedef Commons::SharedPtrNotNULL<Service> ServicePtrNN;
+typedef Commons::SharedPtrNotNULL<ServicePtr::element_type>         ServicePtrNN;
+
+/** \brief smart pointer to service type, not NULL. */
+typedef Commons::SharedPtrNotNULL<const ServicePtrNN::element_type> ConstServicePtrNN;
 
 } // namespace Persistency
 

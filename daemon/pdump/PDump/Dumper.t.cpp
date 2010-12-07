@@ -33,7 +33,7 @@ struct TestClass: public TestStubs
     for(Dumper::NodesVector::const_iterator it=nodes_.begin(); it!=nodes_.end(); ++it)
       try
       {
-        const MetaAlert::ID::Numeric id  =(*it)->getMetaAlert().getID().get();
+        const MetaAlert::ID::Numeric id  =(*it)->getMetaAlert()->getID().get();
         const path                   file="idmef_" + Commons::Convert::to<string>(id) + ".xml";
         remove(file);
       }

@@ -41,10 +41,10 @@ ToXML::ToXML(xmlpp::Element &parent):
 
 xmlpp::Element &ToXML::addAlert(const Persistency::GraphNode &leaf)
 {
-  LOGMSG_DEBUG_S(log_)<<"adding alert with ID="<<leaf.getMetaAlert().getID().get();
-  const Alert &a=leaf.getAlert();
+  LOGMSG_DEBUG_S(log_)<<"adding alert with ID="<<leaf.getMetaAlert()->getID().get();
+  const Alert &a=*leaf.getAlert();
   ToXML alert( addChild(parent_, "Alert") );
-  alert.addParameter("messageid", toStr( leaf.getMetaAlert().getID().get() ).c_str() );
+  alert.addParameter("messageid", toStr( leaf.getMetaAlert()->getID().get() ).c_str() );
   assert( a.getAnalyzers().begin()!=a.getAnalyzers().end() );
   assert( a.getAnalyzers().begin()->get()!=NULL );
   alert.addAnalyzer( *a.getAnalyzers().begin()->get() );
@@ -88,12 +88,12 @@ xmlpp::Element &ToXML::addAssessment(const Persistency::GraphNode &leaf)
   // add impact to XML
   {
     const int     minV =Persistency::SeverityLevel::Min;
-    const int     sevEn=leaf.getAlert().getSeverity().getLevel().toInt() - minV;    // ensure range starts with 0
-    const int     range=leaf.getAlert().getSeverity().getLevel().size()  - 1;       // range is now max value
+    const int     sevEn=leaf.getAlert()->getSeverity().getLevel().toInt() - minV;   // ensure range starts with 0
+    const int     range=leaf.getAlert()->getSeverity().getLevel().size()  - 1;      // range is now max value
     assert(range!=0);
     assert( (1.0*sevEn)/range>=0 );
     assert( (1.0*sevEn)/range<=1 );
-    const double  sevSm=sevEn + leaf.getMetaAlert().getSeverityDelta();
+    const double  sevSm=sevEn + leaf.getMetaAlert()->getSeverityDelta();
     const double  sevFl=sevSm/range;
     const double  sev  =min(1.0, max(0.0, sevFl));  // normalize severity to [0;1] range
     assert(sev>=0);
@@ -115,7 +115,7 @@ xmlpp::Element &ToXML::addAssessment(const Persistency::GraphNode &leaf)
   }
   // add confidence to XML
   {
-    const double tmp =leaf.getAlert().getCertainty().get() + leaf.getMetaAlert().getCertaintyDelta();
+    const double tmp =leaf.getAlert()->getCertainty().get() + leaf.getMetaAlert()->getCertaintyDelta();
     const double prob=min(1.0, max(0.0, tmp));          // normalize confidence to [0;1] range
     ToXML confid( assessment.addString( "Confidence", toStr(prob).c_str() ) );
     confid.addParameter("rating", "numeric");
@@ -127,8 +127,8 @@ xmlpp::Element &ToXML::addAssessment(const Persistency::GraphNode &leaf)
 xmlpp::Element &ToXML::addClassification(const Persistency::GraphNode &leaf)
 {
   ToXML classif( addChild( getParent(), "Classification" ) );
-  classif.addParameter( "text", leaf.getMetaAlert().getName().get() );
-  const Persistency::ReferenceURL *ref=leaf.getMetaAlert().getReferenceURL();
+  classif.addParameter( "text", leaf.getMetaAlert()->getName().get() );
+  const Persistency::ReferenceURL *ref=leaf.getMetaAlert()->getReferenceURL().get();
   if(ref!=NULL)
     classif.addReference(*ref);
   // return reference to newly-created sub-tree
@@ -149,7 +149,7 @@ xmlpp::Element &ToXML::addAdditionalData(const Persistency::GraphNode &leaf)
   ToXML data( addChild( getParent(), "AdditionalData" ) );
   data.addParameter("type", "string");
   data.addParameter("meaning", "description");
-  data.addString("string", leaf.getAlert().getDescription().c_str() );
+  data.addString("string", leaf.getAlert()->getDescription().c_str() );
   return data.getParent();
 }
 

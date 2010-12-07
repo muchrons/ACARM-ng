@@ -62,8 +62,8 @@ public:
     ++calls_[6];
   }
 
-  Persistency::MetaAlertPtr ma_;
-  int                       calls_[8];
+  Persistency::MetaAlertPtrNN ma_;
+  int                         calls_[8];
 }; // class MetaAlert
 
 

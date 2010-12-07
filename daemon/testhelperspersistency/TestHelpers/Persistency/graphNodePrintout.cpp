@@ -18,7 +18,7 @@ namespace Persistency
 namespace
 {
 
-void graphNodePrintoutImpl(::Persistency::GraphNodePtr n, const string &prefix)
+void graphNodePrintoutImpl(::Persistency::GraphNodePtrNN n, const string &prefix)
 {
   // print this node's name
   cout << prefix << "> " << n->getMetaAlert()->getName().get()

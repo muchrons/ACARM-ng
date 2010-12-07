@@ -11,7 +11,7 @@ namespace IPBlackList
 
 bool ProcessedSet::isProcessed(Persistency::GraphNodePtrNN leaf, Persistency::HostPtrNN host) const
 {
-  const PtrSet::Data tmp( static_cast<Persistency::GraphNodePtrNN::SharedPtr>(leaf), host );
+  const PtrSet::Data tmp( leaf.shared_ptr(), host );
   // notice that only linear search can be used here, since weak_ptrs might
   // become NULL instantly (other processors can free them in a mean time).
   for(PtrSet::const_iterator it=set_.begin(); it!=set_.end(); ++it)
@@ -23,7 +23,7 @@ bool ProcessedSet::isProcessed(Persistency::GraphNodePtrNN leaf, Persistency::Ho
 
 void ProcessedSet::markAsProcessed(Persistency::GraphNodePtrNN leaf, Persistency::HostPtrNN host)
 {
-  set_.add( static_cast<Persistency::GraphNodePtrNN::SharedPtr>(leaf), host );
+  set_.add( leaf.shared_ptr(), host );
 }
 
 void ProcessedSet::prune(void)

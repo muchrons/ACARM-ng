@@ -46,7 +46,7 @@ XMLParser::XMLParser(const xmlpp::Document            &doc,
 {
 }
 
-Persistency::AlertPtrNN XMLParser::getAlert(void) const
+Persistency::AlertPtrNN XMLParser::getAlert(void)
 {
   return alert_;
 }

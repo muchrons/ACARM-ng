@@ -21,11 +21,11 @@ Strategy::Strategy(const std::string &name, const Config &cfg):
 {
 }
 
-void Strategy::triggerImpl(const Node &n)
+void Strategy::triggerImpl(const ConstNode &n)
 {
   // preapre message's subject
   string subject("triggered report: ");
-  subject.append( n->getMetaAlert().getName().get() );
+  subject.append( n->getMetaAlert()->getName().get() );
 
   // prepare message's content
   stringstream ss;

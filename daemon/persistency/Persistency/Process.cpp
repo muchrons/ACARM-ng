@@ -18,7 +18,7 @@ Process::Process(const Process::Path     &path,
                  const int               *uid,
                  const Process::Username &username,
                  const char              *arguments,
-                 ReferenceURLPtr          url):
+                 ConstReferenceURLPtr     url):
   path_(path),
   name_(name),
   md5_( (md5!=NULL)?(new MD5Sum(*md5)):NULL ),
@@ -67,9 +67,9 @@ const char *Process::getParameters(void) const
   return arguments_->c_str();
 }
 
-const ReferenceURL *Process::getReferenceURL(void) const
+ConstReferenceURLPtr Process::getReferenceURL(void) const
 {
-  return url_.get();
+  return url_;
 }
 
 bool Process::operator==(const Process &other) const
@@ -91,7 +91,7 @@ bool Process::operator==(const Process &other) const
     return false;
   if( !Base::ViaPointer::equal( getParameters(), other.getParameters() ) )
     return false;
-  if( !Base::ViaPointer::equal( getReferenceURL(), other.getReferenceURL() ) )
+  if( !Base::ViaPointer::equal( getReferenceURL().get(), other.getReferenceURL().get() ) )
     return false;
   // if all fields are identical, Processes are identical too.
   return true;

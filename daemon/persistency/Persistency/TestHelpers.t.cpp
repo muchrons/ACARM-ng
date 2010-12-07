@@ -39,7 +39,7 @@ HostPtrNN makeNewHost4(const char             *ip,
 {
   ReferenceURLPtr ref;
   if(!nullRef)
-    ref=makeNewReferenceURL();
+    ref=makeNewReferenceURL().shared_ptr();
 
   return HostPtrNN( new Host( Host::IPv4::from_string(ip),
                               mask,
@@ -57,7 +57,7 @@ HostPtrNN makeNewHost6(const char             *ip,
 {
   ReferenceURLPtr ref;
   if(!nullRef)
-    ref=makeNewReferenceURL();
+    ref=makeNewReferenceURL().shared_ptr();
 
   return HostPtrNN( new Host( Host::IPv6::from_string(ip),
                               mask,

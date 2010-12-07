@@ -56,10 +56,16 @@ private:
 
 
 /** \brief smart pointer to reference url type. */
-typedef boost::shared_ptr<ReferenceURL>         ReferenceURLPtr;
+typedef boost::shared_ptr<ReferenceURL>                                  ReferenceURLPtr;
+
+/** \brief smart pointer to reference url type. */
+typedef boost::shared_ptr<const ReferenceURLPtr::element_type>           ConstReferenceURLPtr;
 
 /** \brief smart pointer to reference url type, not NULL. */
-typedef Commons::SharedPtrNotNULL<ReferenceURL> ReferenceURLPtrNN;
+typedef Commons::SharedPtrNotNULL<ReferenceURLPtr::element_type>         ReferenceURLPtrNN;
+
+/** \brief smart pointer to reference url type, not NULL. */
+typedef Commons::SharedPtrNotNULL<const ReferenceURLPtrNN::element_type> ConstReferenceURLPtrNN;
 
 } // namespace Persistency
 
