@@ -20,6 +20,18 @@ namespace MPL
 {
 
 /** \brief helper structure for checking if types are valid and converting to peroper form.
+ *
+ *  converts given smart-pointer to some type to SharedPtrNotNULL<> of the same type,
+ *  preserving CV qualifiers.
+ *
+ *  <code>
+ *    typedef shared_ptr<GraphNode>       GraphNodePtr;
+ *    typedef shared_ptr<const GraphNode> ConstGraphNodePtr;
+ *    GraphNodePtr ptr(...);
+ *    // ..
+ *    EnsureNode<GraphNodePtr>::type      s1(ptr); // 's1' is SharedPrtNotNULL<GraphNode>
+ *    EnsureNode<ConstGraphNodePtr>::type s2(ptr); // 's2' is SharedPrtNotNULL<const GraphNode>
+ *  </code>
  */
 template<typename T>
 struct EnsureNode
