@@ -34,7 +34,7 @@ public:
   }
 
 private:
-  std::set<void*> set_;
+  std::set<const void*> set_;
 }; // struct TreeFuncObj
 } // unnamed namespace
 

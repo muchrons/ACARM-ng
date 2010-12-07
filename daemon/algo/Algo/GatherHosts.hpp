@@ -13,7 +13,7 @@
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/Host.hpp"
 
-// TODO: this algorithm should be fixed to be provide const and non-const support.
+// TODO: this algorithm should be fixed to provide const and non-const support.
 
 namespace Algo
 {
