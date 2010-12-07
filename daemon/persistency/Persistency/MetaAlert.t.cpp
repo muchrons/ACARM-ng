@@ -19,7 +19,7 @@ struct TestClass: private TestBase
 {
   TestClass(void):
     url_( makeNewReferenceURL() ),
-    ma_( "name 1", 42, 4.2, url_, ts_, 23u )
+    ma_( "name 1", 42, 4.2, url_.shared_ptr(), ts_, 23u )
   {
   }
 
@@ -43,8 +43,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  AlertPtr  alert=makeNewAlert();
-  MetaAlert ma(alert, 11u);
+  AlertPtrNN  alert=makeNewAlert();
+  MetaAlert   ma(alert, 11u);
   ensure_equals("invalid ID", ma.getID().get(), 11u);
   ensure_equals("invalid name", string( ma.getName().get() ),
                                 alert->getName().get() );
@@ -84,7 +84,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ensure("invalid reference URL", ma_.getReferenceURL()==url_.get() );
+  ensure("invalid reference URL", ma_.getReferenceURL()==url_ );
 }
 
 // test creation time
@@ -100,7 +100,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const MetaAlert ma("different", 42, 4.2, url_, ts_, 23u);
+  const MetaAlert ma("different", 42, 4.2, url_.shared_ptr(), ts_, 23u);
   TestHelpers::checkEquality(ma, ma_);
 }
 
@@ -109,7 +109,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  const MetaAlert ma("name 1", 24, 4.2, url_, ts_, 23u);
+  const MetaAlert ma("name 1", 24, 4.2, url_.shared_ptr(), ts_, 23u);
   TestHelpers::checkEquality(ma, ma_);
 }
 
@@ -118,7 +118,7 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  const MetaAlert ma("name 1", 42, 2.4, url_, ts_, 23u);
+  const MetaAlert ma("name 1", 42, 2.4, url_.shared_ptr(), ts_, 23u);
   TestHelpers::checkEquality(ma, ma_);
 }
 
@@ -137,7 +137,7 @@ template<>
 void testObj::test<11>(void)
 {
   const Timestamp tmp(0);
-  const MetaAlert ma("name 1", 42, 4.2, url_, tmp, 23u);
+  const MetaAlert ma("name 1", 42, 4.2, url_.shared_ptr(), tmp, 23u);
   TestHelpers::checkEquality(ma, ma_);
 }
 
@@ -147,8 +147,8 @@ template<>
 void testObj::test<12>(void)
 {
   const Timestamp tmp(0);
-  const MetaAlert ma1("name 1", 42, 4.2, makeNewReferenceURL(), tmp, 23u);
-  const MetaAlert ma2("name 1", 42, 4.2, makeNewReferenceURL(), tmp, 23u);
+  const MetaAlert ma1("name 1", 42, 4.2, makeNewReferenceURL().shared_ptr(), tmp, 23u);
+  const MetaAlert ma2("name 1", 42, 4.2, makeNewReferenceURL().shared_ptr(), tmp, 23u);
   TestHelpers::checkEquality(ma1, ma2, ma_);
 }
 
@@ -157,7 +157,7 @@ template<>
 template<>
 void testObj::test<13>(void)
 {
-  const MetaAlert ma("name 1", 42, 4.2, url_, ts_, 12345u);
+  const MetaAlert ma("name 1", 42, 4.2, url_.shared_ptr(), ts_, 12345u);
   TestHelpers::checkEquality(ma, ma_);
 }
 

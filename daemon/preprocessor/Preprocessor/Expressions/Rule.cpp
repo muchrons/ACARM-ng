@@ -129,6 +129,13 @@ bool Rule::check(const T *e, PathCit t) const
   return check(*e, t);
 }
 
+template<typename T>
+bool Rule::check(const boost::shared_ptr<T> e, PathCit t) const
+{
+  // check the pointer beneath
+  return check(e.get(), t);
+}
+
 bool Rule::check(const Persistency::Alert &e, const PathCit t) const
 {
   throwIfEnd(SYSTEM_SAVE_LOCATION, t);

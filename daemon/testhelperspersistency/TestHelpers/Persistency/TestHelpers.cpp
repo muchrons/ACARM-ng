@@ -12,11 +12,11 @@ namespace TestHelpers
 namespace Persistency
 {
 
-AlertPtr makeNewAlert(const char   *name,
-                      const char   *sip,
-                      const char   *tip,
-                      const char   *dns,
-                      const double  certainty)
+AlertPtrNN makeNewAlert(const char   *name,
+                        const char   *sip,
+                        const char   *tip,
+                        const char   *dns,
+                        const double  certainty)
 {
   const ::Persistency::Alert::Analyzers sa( makeNewAnalyzer() );
   Alert::Hosts srcHosts;
@@ -27,22 +27,22 @@ AlertPtr makeNewAlert(const char   *name,
   if(tip!=NULL)
     tgtHosts.push_back( makeNewHost(tip, dns) );
 
-  return AlertPtr( new Alert(name,
-                             sa,
-                             NULL,
-                             Timestamp(12345),
-                             Severity(SeverityLevel::INFO),
-                             Certainty(certainty),
-                             "some test alert",
-                             srcHosts,
-                             tgtHosts) );
+  return AlertPtrNN( new Alert(name,
+                               sa,
+                               NULL,
+                               Timestamp(12345),
+                               Severity(SeverityLevel::INFO),
+                               Certainty(certainty),
+                               "some test alert",
+                               srcHosts,
+                               tgtHosts) );
 }
 
-MetaAlertPtr makeNewMetaAlert(const char *name, const unsigned int id)
+MetaAlertPtrNN makeNewMetaAlert(const char *name, const unsigned int id)
 {
   return MetaAlertPtrNN( new MetaAlert( MetaAlert::Name(name),
                                         0.1, 0.2,
-                                        makeNewReferenceURL(),
+                                        makeNewReferenceURL().shared_ptr(),
                                         Timestamp(),
                                         id ) );
 }
@@ -52,57 +52,57 @@ AnalyzerPtrNN makeNewAnalyzer(const char *name)
   return AnalyzerPtrNN( new Analyzer(42u, name, NULL, NULL, NULL) );
 }
 
-HostPtr makeNewHost(const char *ip, const char *dns)
+HostPtrNN makeNewHost(const char *ip, const char *dns)
 {
   const Host::Netmask_v4 mask(mask4_bytes);
   return makeNewHost4(ip, &mask, "linux", false, dns);
 }
 
-HostPtr makeNewHost4(const char             *ip,
+HostPtrNN makeNewHost4(const char             *ip,
                      const Host::Netmask_v4 *mask,
                      const char             *os,
                      bool                    nullRef,
                      const char             *dns)
 {
-  return HostPtr( new Host( Host::IPv4::from_string(ip),
-                            mask,
-                            os,
-                            (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL()),
-                            Host::Services(),
-                            Host::Processes(),
-                            dns ) );
+  return HostPtrNN( new Host( Host::IPv4::from_string(ip),
+                              mask,
+                              os,
+                             (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL().shared_ptr()),
+                              Host::Services(),
+                              Host::Processes(),
+                              dns ) );
 }
 
-HostPtr makeNewHost6(const char             *ip,
-                     const Host::Netmask_v6 *mask,
-                     const char             *os,
-                     bool                    nullRef,
-                     const char             *dns)
+HostPtrNN makeNewHost6(const char             *ip,
+                       const Host::Netmask_v6 *mask,
+                       const char             *os,
+                       bool                    nullRef,
+                       const char             *dns)
 {
-  return HostPtr( new Host( Host::IPv6::from_string(ip),
-                            mask,
-                            os,
-                            (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL()),
-                            Host::Services(),
-                            Host::Processes(),
-                            dns ) );
+  return HostPtrNN( new Host( Host::IPv6::from_string(ip),
+                              mask,
+                              os,
+                              (nullRef)?(ReferenceURLPtr()):(makeNewReferenceURL().shared_ptr()),
+                              Host::Services(),
+                              Host::Processes(),
+                              dns ) );
 }
 
-ProcessPtr makeNewProcess(const char *name)
+ProcessPtrNN makeNewProcess(const char *name)
 {
-  return ProcessPtr( new Process( "/path/to/bin",
-                                 name,
-                                 NULL,
-                                 NULL,
-                                 NULL,
-                                 NULL,
-                                 NULL,
-                                 ReferenceURLPtr() ) );
+  return ProcessPtrNN( new Process( "/path/to/bin",
+                                   name,
+                                   NULL,
+                                   NULL,
+                                   NULL,
+                                   NULL,
+                                   NULL,
+                                   ReferenceURLPtr() ) );
 }
 
-ReferenceURLPtr makeNewReferenceURL(const char *url)
+ReferenceURLPtrNN makeNewReferenceURL(const char *url)
 {
-  return ReferenceURLPtr( new ReferenceURL("some name", url) );
+  return ReferenceURLPtrNN( new ReferenceURL("some name", url) );
 }
 
 GraphNodePtrNN makeNewLeaf(const char *sip, const char *tip, const bool dns, const double certainty)

@@ -15,12 +15,12 @@ Strategy::Strategy(const std::string &name, unsigned int timeout):
 {
 }
 
-const Persistency::Alert::Hosts &Strategy::getHostsArray(const Node node) const
+const Persistency::Alert::Hosts &Strategy::getHostsArray(ConstNode node) const
 {
   return Operations::getHostsArray(node);
 }
 
-Persistency::MetaAlert::Name Strategy::getMetaAlertName(const Persistency::HostPtrNN h) const
+Persistency::MetaAlert::Name Strategy::getMetaAlertName(Persistency::ConstHostPtrNN h) const
 {
   return Operations::getMetaAlertName(h);
 }

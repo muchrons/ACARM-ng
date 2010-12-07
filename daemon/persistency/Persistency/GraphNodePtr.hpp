@@ -18,10 +18,16 @@ namespace Persistency
 class GraphNode;
 
 /** \brief pointer to single graph node. */
-typedef boost::shared_ptr<GraphNode> GraphNodePtr;
+typedef boost::shared_ptr<GraphNode>                                  GraphNodePtr;
+
+/** \brief pointer to single graph node - const version. */
+typedef boost::shared_ptr<const GraphNodePtr::element_type>           ConstGraphNodePtr;
 
 /** \brief non-null pointer to single graph node. */
-typedef Commons::SharedPtrNotNULL<GraphNode> GraphNodePtrNN;
+typedef Commons::SharedPtrNotNULL<GraphNodePtr::element_type>         GraphNodePtrNN;
+
+/** \brief non-null pointer to single graph node - const version. */
+typedef Commons::SharedPtrNotNULL<const GraphNodePtrNN::element_type> ConstGraphNodePtrNN;
 
 } // namespace Persistency
 

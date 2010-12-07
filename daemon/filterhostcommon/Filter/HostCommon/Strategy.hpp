@@ -24,13 +24,13 @@ struct Data
   /** \brief create instance.
    *  \param host host to insert into data.
    */
-  explicit Data(Persistency::HostPtr host):
+  explicit Data(Persistency::ConstHostPtr host):
     host_(host)
   {
   }
   /** \brief host for which correlation is being considered.
    */
-  Persistency::HostPtr host_;
+  Persistency::ConstHostPtr host_;
 }; // struct Data
 
 
@@ -44,7 +44,7 @@ public:
    *  \param node node to get hosts from.
    *  \return array of reported hosts.
    */
-  virtual const Persistency::Alert::Hosts &getHostsArray(const Node node) const = 0;
+  virtual const Persistency::Alert::Hosts &getHostsArray(ConstNode node) const = 0;
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.
@@ -64,10 +64,9 @@ private:
    *  \param h host that has been common part of correlation.
    *  \return name for the new, correlated meta-alert.
    */
-  virtual Persistency::MetaAlert::Name getMetaAlertName(
-                                    const Persistency::HostPtrNN h) const = 0;
+  virtual Persistency::MetaAlert::Name getMetaAlertName(Persistency::ConstHostPtrNN h) const = 0;
 
-  Persistency::HostPtr getHost(const Node node) const;
+  Persistency::ConstHostPtr getHost(const Node node) const;
 
   //
   // Simple::Strategy implementation

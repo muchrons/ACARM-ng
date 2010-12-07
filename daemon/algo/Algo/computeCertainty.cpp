@@ -29,7 +29,7 @@ public:
   /** \brief work procedure itself.
    *  \param node root node to start computation from.
    */
-  void operator()(Persistency::GraphNodePtrNN node)
+  void operator()(Persistency::ConstGraphNodePtrNN node)
   {
     if( node->isLeaf() )
     {
@@ -60,7 +60,7 @@ private:
 } // unnamed namespace
 
 
-double computeCertainty(Persistency::GraphNodePtrNN root)
+double computeCertainty(Persistency::ConstGraphNodePtrNN root)
 {
   return forEachUniqueInTree(root, CertComput() ).get();
 } // computeSeverity()

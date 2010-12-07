@@ -60,12 +60,12 @@ public:
   /** \brief creates object's instance.
    *  \param node node to take hosts from;
    */
-  explicit GatherIPs(Persistency::GraphNodePtrNN node);
+  explicit GatherIPs(Persistency::ConstGraphNodePtrNN node);
 
   /** \brief adds unique source/target IPs to internall collection.
    *  \param node node (i.e. leaf) to be processed.
    */
-  void operator()(Persistency::GraphNodePtrNN node);
+  void operator()(Persistency::ConstGraphNodePtrNN node);
 
   /** \brief gets set of source IPs.
    *  \return hosts' set.

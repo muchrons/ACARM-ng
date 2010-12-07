@@ -26,7 +26,7 @@ struct TestReader: public Reader
   virtual DataPtr read(BackendFacade &, unsigned int)
   {
     usleep(50*1000);   // limit output a little...
-    return TestHelpers::Persistency::makeNewAlert();
+    return TestHelpers::Persistency::makeNewAlert().shared_ptr();
   }
 }; // struct TestReader
 
@@ -108,7 +108,7 @@ struct TestReaderName: public Reader
   virtual DataPtr read(BackendFacade &, unsigned int)
   {
     usleep(50*1000);   // limit output a little...
-    return TestHelpers::Persistency::makeNewAlert();
+    return TestHelpers::Persistency::makeNewAlert().shared_ptr();
   }
 }; // struct TestReaderName
 } // unnamed namespace

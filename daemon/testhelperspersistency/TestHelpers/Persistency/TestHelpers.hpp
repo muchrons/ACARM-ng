@@ -27,13 +27,13 @@ namespace TestHelpers
 namespace Persistency
 {
 
-::Persistency::AlertPtr makeNewAlert(const char   *name="some alert",
-                                     const char   *sip=NULL,
-                                     const char   *tip=NULL,
-                                     const char   *dns="dns.org",
-                                     const double  certainty=0.42);
+::Persistency::AlertPtrNN makeNewAlert(const char   *name="some alert",
+                                       const char   *sip=NULL,
+                                       const char   *tip=NULL,
+                                       const char   *dns="dns.org",
+                                       const double  certainty=0.42);
 
-::Persistency::MetaAlertPtr makeNewMetaAlert(const char *name="some meta-alert", unsigned int id=42);
+::Persistency::MetaAlertPtrNN makeNewMetaAlert(const char *name="some meta-alert", unsigned int id=42);
 
 ::Persistency::AnalyzerPtrNN makeNewAnalyzer(const char *name="some analyzer");
 
@@ -44,21 +44,21 @@ const ::Persistency::Host::Netmask_v6::bytes_type mask6_bytes={ {
                                                   0x00, 0x00, 0x00, 0x00,
                                                   0x00, 0x00, 0x00, 0x00,
                                                  } };
-::Persistency::HostPtr makeNewHost(const char *ip="1.2.3.4", const char *dns="dns.org");
-::Persistency::HostPtr makeNewHost4(const char             *ip,
-                                    const ::Persistency::Host::Netmask_v4 *mask,
-                                    const char             *os,
-                                    bool                    nullRef=false,
-                                    const char             *dns="dns.org");
-::Persistency::HostPtr makeNewHost6(const char             *ip,
-                                    const ::Persistency::Host::Netmask_v6 *mask,
-                                    const char             *os,
-                                    bool                    nullRef=false,
-                                    const char             *dns="dns.org");
+::Persistency::HostPtrNN makeNewHost(const char *ip="1.2.3.4", const char *dns="dns.org");
+::Persistency::HostPtrNN makeNewHost4(const char             *ip,
+                                      const ::Persistency::Host::Netmask_v4 *mask,
+                                      const char             *os,
+                                      bool                    nullRef=false,
+                                      const char             *dns="dns.org");
+::Persistency::HostPtrNN makeNewHost6(const char             *ip,
+                                      const ::Persistency::Host::Netmask_v6 *mask,
+                                      const char             *os,
+                                      bool                    nullRef=false,
+                                      const char             *dns="dns.org");
 
-::Persistency::ProcessPtr makeNewProcess(const char *name="process name");
+::Persistency::ProcessPtrNN makeNewProcess(const char *name="process name");
 
-::Persistency::ReferenceURLPtr makeNewReferenceURL(const char *url="http://gnu.org");
+::Persistency::ReferenceURLPtrNN makeNewReferenceURL(const char *url="http://gnu.org");
 
 ::Persistency::GraphNodePtrNN makeNewLeaf(const char   *sip=NULL,
                                           const char   *tip=NULL,

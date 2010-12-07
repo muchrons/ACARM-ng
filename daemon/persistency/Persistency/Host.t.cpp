@@ -30,7 +30,7 @@ struct TestClass: private TestBase
     custom_(  Host::IPv4::from_string("1.2.3.4"),
              &mask4_,
               "myos",
-              makeNewReferenceURL(),
+              makeNewReferenceURL().shared_ptr(),
               Host::Services(),
               Host::Processes(),
               "dns.org" )
@@ -57,7 +57,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const HostPtr ti=makeNewHost4("1.2.3.4", &mask4_, "myOS");
+  const HostPtrNN ti=makeNewHost4("1.2.3.4", &mask4_, "myOS");
   ensure_equals("invalid IP",   ti->getIP().to_string(),        "1.2.3.4"         );
   ensure_equals("invalid mask", ti->getNetmask()->to_string(),  "255.255.0.0"     );
   ensure_equals("invalid OS",   ti->getOperatingSystem().get(), string("myOS")    );
@@ -70,7 +70,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const HostPtr ti=makeNewHost6("::1.2.3.4", &mask6_, "myOS");
+  const HostPtrNN ti=makeNewHost6("::1.2.3.4", &mask6_, "myOS");
   ensure_equals("invalid IP",   ti->getIP().to_string(),        "::1.2.3.4"             );
   ensure_equals("invalid mask", ti->getNetmask()->to_string(),  "ffff:ffff:ffff:ff00::" );
   ensure_equals("invalid OS",   ti->getOperatingSystem().get(), string("myOS")          );
@@ -83,7 +83,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const HostPtr ti=makeNewHost4("1.2.3.4", NULL, "myOS");
+  const HostPtrNN ti=makeNewHost4("1.2.3.4", NULL, "myOS");
   ensure("invalid mask", ti->getNetmask()==NULL);
 }
 
@@ -92,7 +92,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const HostPtr ti=makeNewHost6("::1.2.3.4", NULL, "myOS");
+  const HostPtrNN ti=makeNewHost6("::1.2.3.4", NULL, "myOS");
   ensure("invalid mask", ti->getNetmask()==NULL);
 }
 
@@ -101,7 +101,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const HostPtr ti=makeNewHost4("1.2.3.4", &mask4_, "myOS", true);
+  const HostPtrNN ti=makeNewHost4("1.2.3.4", &mask4_, "myOS", true);
   ensure("invalid URL", ti->getReferenceURL()==NULL);
 }
 
@@ -110,7 +110,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  const HostPtr ti=makeNewHost6("::1.2.3.4", &mask6_, "myOS", true);
+  const HostPtrNN ti=makeNewHost6("::1.2.3.4", &mask6_, "myOS", true);
   ensure("invalid URL", ti->getReferenceURL()==NULL);
 }
 
@@ -122,7 +122,7 @@ void testObj::test<7>(void)
   const Host h(  Host::IPv4::from_string("1.6.6.6"),
                 &mask4_,
                  "myos",
-                 makeNewReferenceURL(),
+                 makeNewReferenceURL().shared_ptr(),
                  Host::Services(),
                  Host::Processes(),
                  "dns.org" );
@@ -139,7 +139,7 @@ void testObj::test<8>(void)
   const Host h(  Host::IPv4::from_string("1.2.3.4"),
                 &msk,
                  "myos",
-                 makeNewReferenceURL(),
+                 makeNewReferenceURL().shared_ptr(),
                  Host::Services(),
                  Host::Processes(),
                  "dns.org" );
@@ -172,7 +172,7 @@ void testObj::test<10>(void)
   const Host h(  Host::IPv4::from_string("1.2.3.4"),
                 &mask4_,
                  "myos",
-                 makeNewReferenceURL(),
+                 makeNewReferenceURL().shared_ptr(),
                  rs,
                  Host::Processes(),
                  "dns.org" );
@@ -189,7 +189,7 @@ void testObj::test<11>(void)
   const Host h(  Host::IPv4::from_string("1.2.3.4"),
                 &mask4_,
                  "myos",
-                 makeNewReferenceURL(),
+                 makeNewReferenceURL().shared_ptr(),
                  Host::Services(),
                  rp,
                  "dns.org" );
@@ -206,7 +206,7 @@ void testObj::test<12>(void)
   const Host h1(  Host::IPv4::from_string("1.2.3.4"),
                  &mask4_,
                   "myos",
-                  makeNewReferenceURL(),
+                  makeNewReferenceURL().shared_ptr(),
                   Host::Services(),
                   rp1,
                   "dns.org" );
@@ -216,7 +216,7 @@ void testObj::test<12>(void)
   const Host h2(  Host::IPv4::from_string("1.2.3.4"),
                  &mask4_,
                   "myos",
-                  makeNewReferenceURL(),
+                  makeNewReferenceURL().shared_ptr(),
                   Host::Services(),
                   rp2,
                   "dns.org" );
@@ -232,7 +232,7 @@ void testObj::test<13>(void)
   const Host h(  Host::IPv4::from_string("1.2.3.4"),
                 &mask4_,
                  "myos",
-                 makeNewReferenceURL(),
+                 makeNewReferenceURL().shared_ptr(),
                  Host::Services(),
                  Host::Processes(),
                  "other.dns.org" );
@@ -247,7 +247,7 @@ void testObj::test<14>(void)
   const Host h(  Host::IPv4::from_string("1.2.3.4"),
                 &mask4_,
                  "myos",
-                 makeNewReferenceURL(),
+                 makeNewReferenceURL().shared_ptr(),
                  Host::Services(),
                  Host::Processes(),
                  NULL );

@@ -18,18 +18,18 @@ namespace
 {
 struct FindGivenNode
 {
-  explicit FindGivenNode(Persistency::GraphNodePtrNN n):
+  explicit FindGivenNode(Persistency::ConstGraphNodePtrNN n):
     n_(n)
   {
   }
 
-  bool operator()(const boost::weak_ptr<Persistency::GraphNode> &w) const
+  bool operator()(const boost::weak_ptr<const Persistency::GraphNode> &w) const
   {
     return n_.get()==w.lock().get();
   }
 
 private:
-  Persistency::GraphNodePtrNN n_;
+  Persistency::ConstGraphNodePtrNN n_;
 }; // struct FindGivenNode
 } // unnamed namespace
 
@@ -68,7 +68,7 @@ void Strategy::process(Node n, ChangedNodes &/*changed*/)
   trigger(n);
 
   // if it succeeded, mark it as triggered
-  nos_.add(n);
+  nos_.add( n.shared_ptr() );
   // and save it to persistency storage
   BackendFacade bf(conn_, type_);
   bf.markAsTriggered( n->getMetaAlert() );

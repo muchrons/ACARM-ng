@@ -15,7 +15,7 @@ namespace Algo
  *  \param root root node of the computation.
  *  \return computed certanity.
  */
-double computeCertainty(Persistency::GraphNodePtrNN root);
+double computeCertainty(Persistency::ConstGraphNodePtrNN root);
 
 } // namespace Algo
 

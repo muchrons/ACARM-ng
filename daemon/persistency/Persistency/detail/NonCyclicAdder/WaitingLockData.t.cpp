@@ -73,7 +73,7 @@ template<>
 void testObj::test<2>(void)
 {
   WaitingLockData wld;
-  wld.setPtr(leaf_);
+  wld.setPtr( leaf_.shared_ptr() );
   ensure("invalid pointer", leaf_==wld.getPtr() );
 }
 
@@ -85,10 +85,10 @@ void testObj::test<3>(void)
   WriteLock       lock(mutexRW_);
   WaitingLockData wld;
   GraphNodePtrNN  leaf2=makeLeaf();
-  wld.setPtr(leaf_);
+  wld.setPtr( leaf_.shared_ptr() );
   ReadTryLock     rtl(mutexRW_);
   ensure("locking for read only didn't failed", rtl.ownsLock()==false );
-  ensure("invalid pointer", wld.getWhenDifferOrLocked( makeLeaf(), rtl)==leaf_ );
+  ensure("invalid pointer", wld.getWhenDifferOrLocked( makeLeaf().shared_ptr(), rtl)==leaf_ );
 }
 
 // test getting when lock can be obtained
@@ -98,9 +98,9 @@ void testObj::test<4>(void)
 {
   WaitingLockData    wld;
   ReadTryLock        rtl(mutexRW_);
-  wld.setPtr(leaf_);
+  wld.setPtr( leaf_.shared_ptr() );
   ensure("locking for read only failed", rtl.ownsLock()==true );
-  ensure("invalid pointer", wld.getWhenDifferOrLocked(leaf_, rtl)==leaf_ );
+  ensure("invalid pointer", wld.getWhenDifferOrLocked( leaf_.shared_ptr(), rtl)==leaf_ );
 }
 
 
@@ -148,7 +148,7 @@ void testObj::test<5>(void)
   while(state!=1)
     boost::thread::yield();
   // release lock by setting new value
-  wld.setPtr(leaf_);
+  wld.setPtr( leaf_.shared_ptr() );
   // join - if call exited, thread will join cleanly
   th.join();
 }

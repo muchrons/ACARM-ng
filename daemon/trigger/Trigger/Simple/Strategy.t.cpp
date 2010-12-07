@@ -23,7 +23,7 @@ struct TestTrigger: public Strategy
   {
   }
 
-  virtual void triggerImpl(const Persistency::GraphNodePtrNN &/*n*/)
+  virtual void triggerImpl(const ConstNode &/*n*/)
   {
     ++callsTrigger_;
   }
@@ -129,7 +129,7 @@ struct TestBufferTrigger: public Strategy
   {
   }
 
-  virtual void triggerImpl(const Persistency::GraphNodePtrNN &/*n*/)
+  virtual void triggerImpl(const ConstNode &/*n*/)
   {
     ++counter_;
     if(counter_<=skip_)

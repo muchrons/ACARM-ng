@@ -28,6 +28,8 @@ class Strategy: private boost::noncopyable
 public:
   /** \brief helper typedef for GraphNode pointer. */
   typedef Core::Types::Proc::Interface::Node         Node;
+  /** \brief helper typedef for GraphNode pointer. */
+  typedef Core::Types::Proc::Interface::ConstNode    ConstNode;
   /** \brief helper typedef for list of chenged nodes. */
   typedef Core::Types::Proc::Interface::ChangedNodes ChangedNodes;
 
@@ -80,7 +82,7 @@ private:
    *  if given node meets trigger's criteria, method returns true
    *  and interface runs trigger() procedure.
    */
-  virtual bool matchesCriteria(const Node &n) const = 0;
+  virtual bool matchesCriteria(const ConstNode &n) const = 0;
 
   /** \brief user-provided implementation of node trigger.
    *  \param n added/changed node to be processed by trigger.
@@ -93,9 +95,9 @@ private:
    *  for each node that matches criteria of trigger (matchCriteria()==true for
    *  this node).
    */
-  virtual void trigger(const Node &n) = 0;
+  virtual void trigger(const ConstNode &n) = 0;
 
-  typedef Persistency::GraphNodePtrNN::element_type NodeElementType;
+  typedef ConstNode::element_type NodeElementType;
 
   const std::string                   type_;
   Base::ObservingSet<NodeElementType> nos_;

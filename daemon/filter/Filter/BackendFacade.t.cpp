@@ -45,7 +45,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     return makeNewNode();
   }
 
-  int childrenCount(const GraphNodePtrNN ptr) const
+  int childrenCount(ConstGraphNodePtrNN ptr) const
   {
     int              cnt=0;
     for(GraphNode::const_iterator it=ptr->begin(); it!=ptr->end(); ++it)
@@ -58,7 +58,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     return HostPtr( new Host( Host::IPv4::from_string("1.2.3.4"),
                               NULL,
                               "os1",
-                              makeNewReferenceURL(),
+                              makeNewReferenceURL().shared_ptr(),
                               Host::Services(),
                               Host::Processes(),
                               NULL) );

@@ -13,7 +13,7 @@ namespace Trigger
 namespace Compose
 {
 
-void Full::append(std::stringstream &ss, const Persistency::GraphNodePtrNN &node)
+void Full::append(std::stringstream &ss, const Persistency::ConstGraphNodePtrNN &node)
 {
   Summary::append(ss, node);
   ss << std::endl;

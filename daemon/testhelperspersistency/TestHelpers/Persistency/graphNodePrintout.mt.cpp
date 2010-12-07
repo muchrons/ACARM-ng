@@ -21,7 +21,7 @@ int main(void)
 
   {
     cout<<"graph vector printout:"<<endl;
-    std::vector< ::Persistency::GraphNodePtr > v;
+    std::vector< ::Persistency::GraphNodePtrNN > v;
     v.push_back( makeNewTree1() );
     v.push_back( makeNewTree2() );
     graphNodePrintout(v);

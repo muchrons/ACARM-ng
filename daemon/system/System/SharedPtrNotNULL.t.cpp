@@ -229,30 +229,12 @@ void testObj::test<16>(void)
   ensure_equals("arrow operator failed", ptr->c_str(), tmp);
 }
 
-// compare with boost::shared_ptr pointer
-template<>
-template<>
-void testObj::test<17>(void)
-{
-  BoostPtr other( new int(*nn_) );
-  ensure("different pointers match", !(nn_==other) );
-}
-
 // compare with other wrapped-pointer
 template<>
 template<>
 void testObj::test<18>(void)
 {
   ensure("different pointers match", !(nn_==other_) );
-}
-
-// compare with the same boost::shared_ptr
-template<>
-template<>
-void testObj::test<19>(void)
-{
-  BoostPtr other=nn_.shared_ptr();
-  ensure("the same pointer does not match", nn_==other);
 }
 
 // compare the same wrapped pointers
@@ -264,39 +246,12 @@ void testObj::test<20>(void)
   ensure("the same pointer does not match", nn_==other_);
 }
 
-// compare with != of boost::shared_ptr
-template<>
-template<>
-void testObj::test<21>(void)
-{
-  BoostPtr other( new int(*nn_) );
-  ensure("different pointers match", nn_!=other);
-}
-
 // compare with != of wrapped ptr
 template<>
 template<>
 void testObj::test<22>(void)
 {
   ensure("different pointers match", nn_!=other_);
-}
-
-// compare boost with wrapped ptr (in reversed order)
-template<>
-template<>
-void testObj::test<23>(void)
-{
-  BoostPtr other=nn_.shared_ptr();
-  ensure("different pointers match", other==nn_);
-}
-
-// compare boost with wrapped ptr (in reversed order) with !=
-template<>
-template<>
-void testObj::test<24>(void)
-{
-  BoostPtr other=other_.shared_ptr();
-  ensure("different pointers match", other!=nn_);
 }
 
 // check less-than operator
@@ -350,8 +305,8 @@ template<>
 template<>
 void testObj::test<30>(void)
 {
-  const PtrNN nn( new int(42) );
-  BoostPtr    bp;
+  const PtrNN   nn( new int(42) );
+  ConstBoostPtr bp;
   bp=nn.shared_ptr();
   ensure("invalid pointer value", bp.get()==nn.get() );
 }
@@ -486,6 +441,140 @@ void testObj::test<42>(void)
 {
   SharedPtrNotNULL<DerivedTest>    d(new DerivedTest);
   SharedPtrNotNULL<const BaseTest> b(d);
+}
+
+// test converting to shared_ptr - const version
+template<>
+template<>
+void testObj::test<43>(void)
+{
+  const PtrNN   a(new int(111));
+  ConstBoostPtr b=a.shared_ptr();
+}
+
+// test assignment to shared_ptr - const version
+template<>
+template<>
+void testObj::test<44>(void)
+{
+  const PtrNN   a(new int(111));
+  ConstBoostPtr b(new int(42));
+  b=a.shared_ptr();
+  ensure_equals("invalid value", *b, 111);
+}
+
+// test copy-ctor from self to self
+template<>
+template<>
+void testObj::test<45>(void)
+{
+  PtrNN a(new int(111));
+  PtrNN b(a);
+}
+
+// test compariosn of const and non-const pointers (compile test)
+template<>
+template<>
+void testObj::test<46>(void)
+{
+  PtrNN a(new int(111));
+
+  ConstPtrNN b(a);
+  a< b;
+  a==b;
+  a!=b;
+
+  b< a;
+  b==a;
+  b!=a;
+
+  BoostPtr c( a.shared_ptr() );
+  a< c;
+  a==c;
+  a!=c;
+
+  c< a;
+  c==a;
+  c!=a;
+
+  ConstBoostPtr d( a.shared_ptr() );
+  a< d;
+  a==d;
+  a!=d;
+
+  d< a;
+  d==a;
+  d!=a;
+}
+
+// test compariosn of base-derived pointers (compile test)
+template<>
+template<>
+void testObj::test<47>(void)
+{
+  SharedPtrNotNULL<DerivedTest> a(new DerivedTest);
+
+  SharedPtrNotNULL<BaseTest> b(a);
+  a< b;
+  a==b;
+  a!=b;
+
+  b< a;
+  b==a;
+  b!=a;
+
+  boost::shared_ptr<BaseTest> c( a.shared_ptr() );
+  a< c;
+  a==c;
+  a!=c;
+
+  c< a;
+  c==a;
+  c!=a;
+
+  boost::shared_ptr<BaseTest> d( a.shared_ptr() );
+  a< d;
+  a==d;
+  a!=d;
+
+  d< a;
+  d==a;
+  d!=a;
+}
+
+// test compariosn of base-derived pointers with NULLs (compile test)
+template<>
+template<>
+void testObj::test<48>(void)
+{
+  SharedPtrNotNULL<DerivedTest> a(new DerivedTest);
+
+  SharedPtrNotNULL<const BaseTest> b(a);
+  a< b;
+  a==b;
+  a!=b;
+
+  b< a;
+  b==a;
+  b!=a;
+
+  boost::shared_ptr<const BaseTest> c( a.shared_ptr() );
+  a< c;
+  a==c;
+  a!=c;
+
+  c< a;
+  c==a;
+  c!=a;
+
+  boost::shared_ptr<const BaseTest> d( a.shared_ptr() );
+  a< d;
+  a==d;
+  a!=d;
+
+  d< a;
+  d==a;
+  d!=a;
 }
 
 } // namespace tut
