@@ -48,14 +48,14 @@ public:
    *  \param arguments arguments to the application when running.
    *  \param url       reference URL.
    */
-  Process(const Path        &path,
-          const Name        &name,
-          const MD5Sum      *md5,
-          const pid_t       *pid,
-          const int         *uid,
-          const Username    &username,
-          const char        *arguments,
-          ReferenceURLPtr    url);
+  Process(const Path           &path,
+          const Name           &name,
+          const MD5Sum         *md5,
+          const pid_t          *pid,
+          const int            *uid,
+          const Username       &username,
+          const char           *arguments,
+          ConstReferenceURLPtr  url);
 
   /** \brief gets path to executable.
    *  \return path to executable process has been run from.
@@ -88,7 +88,7 @@ public:
   /** \brief gets reference URL.
    *  \return referenceu url for a given process.
    */
-  const ReferenceURL *getReferenceURL(void) const;
+  ConstReferenceURLPtr getReferenceURL(void) const;
   /** \brief check if classes are equal.
    *  \param other element to compare with.
    *  \return true if elements are equal, false otherwise.
@@ -103,7 +103,7 @@ private:
   Base::NullValue<int>           uid_;
   Username                       username_;
   boost::scoped_ptr<std::string> arguments_;
-  ReferenceURLPtr                url_;
+  ConstReferenceURLPtr           url_;
 }; // class Process
 
 
