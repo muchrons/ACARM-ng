@@ -12,8 +12,8 @@ class RangeSelector extends TTemplateControl
   public function getRangeData()
   {
     $range=new CParamRange();
-    $range->date_from=$this->From->Date;
-    $range->date_to=$this->To->Date;;
+    $range->date_from=date("Y-m-d 00:00:00",strtotime($this->From->Date));
+    $range->date_to=date("Y-m-d 23:59:59",strtotime($this->To->Date));
     $range->severities=implode('.',$this->CB->SelectedValues);
     $range->src=$this->srcip->Text;
     $range->dst=$this->dstip->Text;

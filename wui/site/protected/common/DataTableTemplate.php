@@ -16,9 +16,9 @@ class DataTableTemplate extends TTemplateControl
 
     $this->DataGrid->DataSource=$this->getDataRows($this->DataGrid->PageSize,$this->DataGrid->CurrentPageIndex);
     $this->DataGrid->VirtualItemCount=$this->getRowCount();
-    $this->DataGrid->dataBind();
     if ($this->DataGrid->VirtualItemCount==0)
       $this->DataGrid->reset();
+    $this->DataGrid->dataBind();
   }
 
   private function getRowCount()
