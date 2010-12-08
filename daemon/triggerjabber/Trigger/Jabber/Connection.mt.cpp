@@ -10,7 +10,7 @@
 using namespace std;
 using namespace Trigger::Jabber;
 
-int main(int argc, char **argv)
+int main(int /*argc*/, char** /*argv*/)
 {
 
   cout<<"connecting..."<<endl;

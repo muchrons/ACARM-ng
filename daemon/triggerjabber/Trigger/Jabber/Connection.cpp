@@ -30,8 +30,6 @@ Connection::Connection(const AccountConfig &cfg):
 
 Connection::~Connection(void)
 {
-  assert( sess_.get()!=NULL );
-  sess_.get()->disconnect();
   LOGMSG_INFO(log_, "disconnecting from Jabber server");
 }
 
@@ -40,14 +38,20 @@ AutoSession Connection::connect(void) const
 {
   gloox::JID jid(cfg_.getLogin() + "@" + cfg_.getServer() + "/acarm-ng");
   AutoSession sess(new gloox::Client(jid, cfg_.getPassword()));
+  // sanity check
+  if( sess.get()==NULL )
+    throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "NULL structure received (login failed)");
+  // check if connection is established
   if(!sess.get()->connect(false))
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "not connected to server");
   bool quit=false;
+  // login
   while(!quit)
   {
     gloox::ConnectionError ce = sess.get()->recv();
     if(ce == gloox::ConnNoError)
     {
+      // check if user is authorized
       if(sess.get()->authed())
         quit=true;
     }

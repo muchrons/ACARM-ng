@@ -5,7 +5,6 @@
 #ifndef INCLUDE_TRIGGER_JABBER_TESTACCOUNT_T_HPP_FILE
 #define INCLUDE_TRIGGER_JABBER_TESTACCOUNT_T_HPP_FILE
 
-#include <glib.h>
 #include <tut.h>
 #include <boost/algorithm/string.hpp>
 #include <gloox/message.h>
@@ -20,6 +19,7 @@
 #include "TestHelpers/Data/jabber2.hpp"
 
 using namespace gloox;
+using namespace System;
 namespace
 {
 
@@ -70,10 +70,10 @@ class Handler : public MessageSessionHandler, MessageHandler
 
     bool receiving()
     {
-        conn_.get()->recv();
-        if(msg_)
-          return true;
-        return false;
+      conn_.get()->recv();
+      if(msg_)
+        return true;
+      return false;
     }
 
     const std::string getMessage()
@@ -104,15 +104,24 @@ class Handler : public MessageSessionHandler, MessageHandler
 
 std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account, const std::string &sender)
 {
-  // TODO
   Trigger::Jabber::Connection conn(account);
   Handler h(conn);
+  Timer time;
+  const double timeout = 20.0;  // timeout is 20[s]
   while(1)
   {
+    // prevent high CPU usage
+    usleep(1000);
+    // timeout
+    if(time.elapsed() > timeout)
+      throw std::runtime_error("waiting for messages timeouted");
+    // get message
     if(!h.receiving())
       continue;
+    // only messages from given sender are intersting for us
     if(h.getSender() != sender)
       continue;
+    // ok - this is our message!
     return h.getMessage();
   }
 }
