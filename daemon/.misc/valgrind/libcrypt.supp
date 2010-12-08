@@ -1,0 +1,10 @@
+# libcrypt leaks as well...
+{
+   libcypt_leak_malloc_from_gcry_create_nonce
+   Memcheck:Leak
+   fun:malloc
+   ...
+   fun:gcry_create_nonce
+   ...
+}
+
