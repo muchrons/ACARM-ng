@@ -44,6 +44,8 @@ public:
   typedef Persistency::NodeChildrenVector            ChildrenVector;
   /** \brief helper typedef for GraphNode pointer. */
   typedef Core::Types::Proc::Interface::Node         Node;
+  /** \brief helper typedef for GraphNode pointer - const version. */
+  typedef Core::Types::Proc::Interface::ConstNode    ConstNode;
   /** \brief helper typedef for list of chenged nodes. */
   typedef Core::Types::Proc::Interface::ChangedNodes ChangedNodes;
 

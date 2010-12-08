@@ -15,7 +15,7 @@ namespace Algo
  *  \param root root node of the computation.
  *  \return computed severity.
  */
-double computeSeverity(Persistency::GraphNodePtrNN root);
+double computeSeverity(Persistency::ConstGraphNodePtrNN root);
 
 } // namespace Algo
 

@@ -14,6 +14,7 @@
 #include "Base/Threads/Mutex.hpp"
 #include "Base/Threads/Lock.hpp"
 #include "Logger/Node.hpp"
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 #include "Persistency/IO/Postgres/Exception.hpp"
 #include "Persistency/IO/Postgres/ExceptionNoSuchEntry.hpp"
@@ -31,17 +32,19 @@ class StorageDataCache: private boost::noncopyable
 {
 public:
   /** \brief type of pointer to a type. */
-  typedef T*                   TPtr;
+  typedef const T*                           TPtr;
   /** \brief type of shared pointer to a type. */
-  typedef boost::shared_ptr<T> TSharedPtr;
+  typedef Commons::SharedPtrNotNULL<const T> TSharedPtrNN;
+  /** \brief type of shared pointer to a type. */
+  typedef boost::shared_ptr<const T>         TSharedPtr;
   /** \brief type of weak pointer to a type. */
-  typedef boost::weak_ptr<T>   TWeakPtr;
+  typedef boost::weak_ptr<const T>           TWeakPtr;
 
 private:
   struct EntryID
   {
-    EntryID(TSharedPtr ptr, DataBaseID id):
-      ptr_(ptr),
+    EntryID(TSharedPtrNN ptr, DataBaseID id):
+      ptr_( ptr.shared_ptr() ),
       id_(id)
     {
     }
@@ -63,7 +66,7 @@ public:
    *  \param ptr pointer to object to check.
    *  \return id if given object in data base.
    */
-  DataBaseID get(TSharedPtr ptr) const
+  DataBaseID get(TSharedPtrNN ptr) const
   {
     Base::Threads::Lock lock(mutex_);
     ObjectIDMappingIt it=getImpl( ptr );
@@ -76,7 +79,7 @@ public:
    *  \param ptr pointer to object to check
    *  \return true if given object is in cache
    */
-  bool has(TSharedPtr ptr) const
+  bool has(TSharedPtrNN ptr) const
   {
     Base::Threads::Lock lock(mutex_);
     return getImpl(ptr)!=oidm_.end();
@@ -99,7 +102,7 @@ public:
    *  \param ptr pointer to be added (as a key).
    *  \param id  data base ID for this object.
    */
-  void add(const TSharedPtr ptr, DataBaseID id)
+  void add(const TSharedPtrNN ptr, DataBaseID id)
   {
     LOGMSG_DEBUG_S(Logger::Node("persistency.io.postgres.storagedatacache"))
       <<"adding mapping "<< ptr.get() <<" -> "<<id<<" (obj type "<<typeid(ptr).name()<<")";
@@ -163,7 +166,7 @@ public:
 
 private:
 
-  ObjectIDMappingIt getImpl(TSharedPtr ptr) const
+  ObjectIDMappingIt getImpl(TSharedPtrNN ptr) const
   {
     ObjectIDMappingIt it=oidm_.find( ptr.get() );
     if( it==oidm_.end() || it->second.ptr_.lock().get()==NULL )

@@ -13,12 +13,12 @@ namespace Trigger
 namespace Compose
 {
 
-void Summary::append(std::stringstream &ss, const Persistency::GraphNodePtrNN &node)
+void Summary::append(std::stringstream &ss, const Persistency::ConstGraphNodePtrNN &node)
 {
   ss << "reporting triggered for meta-alert \""
-     << node->getMetaAlert().getName().get()
+     << node->getMetaAlert()->getName().get()
      << "\", created on "
-     << node->getMetaAlert().getCreateTime().str()
+     << node->getMetaAlert()->getCreateTime().str()
      << " (" << Algo::countCorrelatedAlerts(node)
      << " correlated alerts; severity is "
      << Algo::computeSeverity(node) << ")"

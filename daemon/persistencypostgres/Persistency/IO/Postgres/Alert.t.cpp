@@ -10,6 +10,7 @@
 #include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/Postgres/Alert.hpp"
+#include "Persistency/IO/Postgres/TestDBAccess.t.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -39,6 +40,8 @@ struct TestClass
     conn_(makeConnection() ),
     t_( conn_->createNewTransaction("save_alert_tests") )
   {
+    tdba_.fillWithContent1();   // severities are required.
+    tdba_.removeAllData();      // remove all other entries
   }
 
   Persistency::Alert::Hosts generateHosts(unsigned int size) const
@@ -49,6 +52,7 @@ struct TestClass
     return out;
   }
 
+  TestDBAccess                    tdba_;
   DataCleaner                     dc_;
 
   const Persistency::Alert::Name  name_;

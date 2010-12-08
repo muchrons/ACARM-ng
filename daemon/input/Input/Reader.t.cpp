@@ -33,7 +33,7 @@ struct TestReader: public Reader
 
   virtual DataPtr read(BackendFacade &, unsigned int)
   {
-    return TestHelpers::Persistency::makeNewAlert();
+    return TestHelpers::Persistency::makeNewAlert().shared_ptr();
   }
 
   bool &i_;
@@ -105,7 +105,7 @@ struct TestReaderName: public Reader
   }
   virtual DataPtr read(BackendFacade &, unsigned int)
   {
-    return TestHelpers::Persistency::makeNewAlert();
+    return TestHelpers::Persistency::makeNewAlert().shared_ptr();
   }
 };
 

@@ -87,8 +87,8 @@ bool NonCyclicAdder::addChildImpl(GraphNode           &parent,
   if( parentPtr==childPtr           ||      // instant-cycle?
       hasCycle(childPtr, parentPtr)    )    // is it possible to access self through child?
     throw ExceptionCycleDetected( SYSTEM_SAVE_LOCATION,
-                                  parentPtr->getMetaAlert().getName().get(),
-                                  childPtr->getMetaAlert().getName().get() );
+                                  parentPtr->getMetaAlert()->getName().get(),
+                                  childPtr->getMetaAlert()->getName().get() );
 
   // if there is no cycle, add new child
   iap.addChildToChildrenVector(parent, child);

@@ -140,4 +140,16 @@ void testObj::test<9>(void)
   ensure("invalid equality compare 2", !swo(h2, h1) );
 }
 
+// test const version
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  ConstGraphNodePtrNN root=makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", "2.3.4.5",
+                                                              "2.3.4.5", "1.2.3.4") );
+  const GatherHosts gh(root);
+  ensure_equals("source hosts not found", gh.getSourceHosts().size(), 2u);
+  ensure_equals("target hosts not found", gh.getTargetHosts().size(), 2u);
+}
+
 } // namespace tut

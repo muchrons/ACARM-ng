@@ -55,12 +55,12 @@ struct TestClass
   {
     const Persistency::Host::Netmask_v4 mask(mask4_bytes);
     return HostPtr( new Persistency::Host( Persistency::Host::IPv4::from_string("1.2.3.4"),
-          &mask,
-          "linux",
-          makeNewReferenceURL(),
-          Persistency::Host::Services(),
-          Persistency::Host::Processes(),
-          NULL ) );
+                                           &mask,
+                                           "linux",
+                                           makeNewReferenceURL().shared_ptr(),
+                                           Persistency::Host::Services(),
+                                           Persistency::Host::Processes(),
+                                           NULL ) );
   }
 
   DataCleaner                     dc_;

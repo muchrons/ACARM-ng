@@ -157,7 +157,7 @@ private:
   DataBaseID saveAlertData(const Alert &a);
   DataBaseID saveMetaAlertData(const MetaAlert &ma);
 
-  void addReferenceURL(std::stringstream &ss, const ReferenceURL *url);
+  void addReferenceURL(std::stringstream &ss, ConstReferenceURLPtr url);
   bool isHostNameNull(DataBaseID hostID);
 
   /** \brief remove Meta Alert from triggered

@@ -37,9 +37,9 @@ DataBaseID getID(IO::Transaction &t, const std::string &name);
 
 void removeNodeConnection(const std::string &parentName, const std::string &childName);
 size_t getNoOfMetaAlertsInUse();
-Persistency::AlertPtr makeNewAlert(const char *name="some alert", const Timestamp &t = Timestamp(444) );
+Persistency::AlertPtrNN makeNewAlert(const char *name="some alert", const Timestamp &t = Timestamp(444) );
 
-Persistency::MetaAlertPtr makeNewMetaAlert(const unsigned int id, const char *name="some meta-alert", const Timestamp &t=Timestamp(444));
+Persistency::MetaAlertPtrNN makeNewMetaAlert(const unsigned int id, const char *name="some meta-alert", const Timestamp &t=Timestamp(444));
 
 Persistency::AnalyzerPtrNN makeNewAnalyzer(const char *name="some analyzer");
 
@@ -50,20 +50,20 @@ const Persistency::Host::Netmask_v6::bytes_type mask6_bytes={ {
                                                   0x00, 0x00, 0x00, 0x00,
                                                   0x00, 0x00, 0x00, 0x00,
                                                  } };
-Persistency::HostPtr makeNewHost(void);
-Persistency::HostPtr makeNewHostWithNullRefUrl(void);
-Persistency::HostPtr makeNewHost4(const char             *ip,
-                                  const Persistency::Host::Netmask_v4 *mask,
-                                  const char             *os,
-                                  bool                    nullRef=false);
-Persistency::HostPtr makeNewHost6(const char             *ip,
-                                  const Persistency::Host::Netmask_v6 *mask,
-                                  const char             *os,
-                                  bool                    nullRef=false);
+Persistency::HostPtrNN makeNewHost(void);
+Persistency::HostPtrNN makeNewHostWithNullRefUrl(void);
+Persistency::HostPtrNN makeNewHost4(const char             *ip,
+                                    const Persistency::Host::Netmask_v4 *mask,
+                                    const char             *os,
+                                    bool                    nullRef=false);
+Persistency::HostPtrNN makeNewHost6(const char             *ip,
+                                    const Persistency::Host::Netmask_v6 *mask,
+                                    const char             *os,
+                                    bool                    nullRef=false);
 
-Persistency::ProcessPtr makeNewProcess(const char *name="process name");
+Persistency::ProcessPtrNN makeNewProcess(const char *name="process name");
 
-Persistency::ReferenceURLPtr makeNewReferenceURL(const char *url="http://gnu.org");
+Persistency::ReferenceURLPtrNN makeNewReferenceURL(const char *url="http://gnu.org");
 
 Persistency::GraphNodePtrNN makeNewLeaf(const unsigned int  id,
                                         const char         *name="some name",

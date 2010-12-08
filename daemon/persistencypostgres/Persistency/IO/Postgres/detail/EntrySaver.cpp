@@ -130,7 +130,7 @@ DataBaseID EntrySaver::getSeverityID(const Alert &a)
   return ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id"]);
 }
 
-void EntrySaver::addReferenceURL(std::stringstream &ss, const ReferenceURL *url)
+void EntrySaver::addReferenceURL(std::stringstream &ss, ConstReferenceURLPtr url)
 {
   if( url!=NULL )
   {

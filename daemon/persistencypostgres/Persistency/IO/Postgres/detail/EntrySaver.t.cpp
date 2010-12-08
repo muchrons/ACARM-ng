@@ -72,7 +72,7 @@ struct TestClass
            &uid_,
            "johndoe",
            "-a -b -c",
-           url_ ),
+           url_.shared_ptr() ),
     procnn_( "/a/b/c/d",
             "some.proc",
             &md5_,
@@ -80,7 +80,7 @@ struct TestClass
             &uid_,
             "johndoe",
             "-a -b -c",
-            url_ ),
+            url_.shared_ptr() ),
     mask4_( Host::Netmask_v4(mask4_bytes) ),
     mask6_( Host::Netmask_v6(mask6_bytes) )
   {
@@ -176,7 +176,7 @@ void testObj::test<1>(void)
 {
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
-  HostPtr host=makeNewHost();
+  HostPtrNN host=makeNewHost();
   const Analyzer anlz(112u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID alertID = es_.saveAlert(a);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
@@ -209,7 +209,7 @@ void testObj::test<2>(void)
 {
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
-  HostPtr host=makeNewHost();
+  HostPtrNN host=makeNewHost();
   const Analyzer anlz(303u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -288,10 +288,10 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const Service ti("mail daemon", 25, "smtp", makeNewReferenceURL() );
+  const Service ti("mail daemon", 25, "smtp", makeNewReferenceURL().shared_ptr() );
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
-  HostPtr host=makeNewHost();
+  HostPtrNN host=makeNewHost();
   const Analyzer anlz(101u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -389,7 +389,7 @@ void testObj::test<8>(void)
 {
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
-  HostPtr host=makeNewHost();
+  HostPtrNN host=makeNewHost();
   const Analyzer anlz(22u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -415,7 +415,7 @@ void testObj::test<9>(void)
 {
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
-  HostPtr host=makeNewHost();
+  HostPtrNN host=makeNewHost();
   const Analyzer anlz(88u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -440,7 +440,7 @@ template<>
 void testObj::test<10>(void)
 {
   const MetaAlert::Name name("meta alert");
-  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL(), created_, 42u);
+  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL().shared_ptr(), created_, 42u);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
 
   int           numericID;
@@ -522,7 +522,7 @@ void testObj::test<12>(void)
 {
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
-  HostPtr host=makeNewHost();
+  HostPtrNN host=makeNewHost();
   const Analyzer anlz(123u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -557,7 +557,7 @@ void testObj::test<13>(void)
 {
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
-  HostPtr host=makeNewHost();
+  HostPtrNN host=makeNewHost();
   ReferenceURLPtr url;
   const Process proc("/a/b/c/d", "some.proc", NULL, &pid_, &uid_, "johndoe", "-a -b -c", url);
   const Analyzer anlz(1111u, "analyzer1", NULL, NULL, NULL);
@@ -600,8 +600,8 @@ void testObj::test<14>(void)
 {
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
-  HostPtr host=makeNewHost();
-  const Process proc("/a/b/c/d", "some.proc", &md5_, &pid_, &uid_, "johndoe", "-a -b -c", url_);
+  HostPtrNN host=makeNewHost();
+  const Process proc("/a/b/c/d", "some.proc", &md5_, &pid_, &uid_, "johndoe", "-a -b -c", url_.shared_ptr() );
   const Analyzer anlz(66u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
   const DataBaseID alertID = es_.saveAlert(a);
@@ -645,7 +645,7 @@ void testObj::test<15>(void)
   const Host  h(  Host::IPv4::from_string("1.2.3.4"),
                  &mask4_,
                   "myos",
-                  makeNewReferenceURL(),
+                  makeNewReferenceURL().shared_ptr(),
                   Host::Services(),
                   Host::Processes(),
                   NULL );
@@ -698,7 +698,7 @@ void testObj::test<17>(void)
   const Service ti("mail daemon", 25, "smtp", url );
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
-  HostPtr host=makeNewHost();
+  HostPtrNN host=makeNewHost();
   const Analyzer anlz(123u, "analyzer1", NULL, NULL, NULL);
   const DataBaseID alertID = es_.saveAlert(a);
   const DataBaseID anlzID  = es_.saveAnalyzer(anlz);
@@ -776,7 +776,7 @@ void testObj::test<20>(void)
 {
   const string TriggerName("some trigger name");
   const MetaAlert::Name name("meta alert");
-  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL(), created_, 555u);
+  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL().shared_ptr(), created_, 555u);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
   es_.markMetaAlertAsUsed(malertID);
   stringstream ss;
@@ -801,7 +801,7 @@ template<>
 void testObj::test<21>(void)
 {
   const MetaAlert::Name name("meta alert");
-  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL(), created_, 23u);
+  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL().shared_ptr(), created_, 23u);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
   es_.markMetaAlertAsUsed(malertID);
   stringstream ss;
@@ -817,7 +817,7 @@ template<>
 void testObj::test<22>(void)
 {
   const MetaAlert::Name name("meta alert");
-  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL(), created_, 404u);
+  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL().shared_ptr(), created_, 404u);
   const DataBaseID malertID = es_.saveMetaAlert(ma);
   es_.markMetaAlertAsUsed(malertID);
   stringstream ss;
@@ -846,7 +846,7 @@ void testObj::test<23>(void)
   const Host       h( Host::IPv4::from_string("1.2.3.4"),
                       &mask4_,
                       "myos",
-                      makeNewReferenceURL(),
+                      makeNewReferenceURL().shared_ptr(),
                       Host::Services(),
                       Host::Processes(),
                       NULL );
@@ -871,7 +871,7 @@ void testObj::test<24>(void)
   const Host h(  Host::IPv4::from_string("1.2.3.4"),
                  NULL,
                  "myos",
-                 makeNewReferenceURL(),
+                 makeNewReferenceURL().shared_ptr(),
                  Host::Services(),
                  Host::Processes(),
                  NULL );
@@ -928,7 +928,7 @@ void testObj::test<26>(void)
 {
   const string          triggerName("some trigger name");
   const MetaAlert::Name name("meta alert");
-  MetaAlert             ma(name, 0.22, 0.23, makeNewReferenceURL(), created_, 101u);
+  MetaAlert             ma(name, 0.22, 0.23, makeNewReferenceURL().shared_ptr(), created_, 101u);
   const DataBaseID      malertID = es_.saveMetaAlert(ma);
   es_.markMetaAlertAsUsed(malertID);
   stringstream ss;
@@ -1122,7 +1122,7 @@ template<>
 template<>
 void testObj::test<32>(void)
 {
-  ReferenceURLPtrNN url( new ReferenceURL("url1", "http://www.lmg'tfy.com\\") );
+  ReferenceURLPtr url( new ReferenceURL("url1", "http://www.lmg'tfy.com\\") );
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
                 description_, sourceHosts_, targetHosts_);
   HostPtrNN host( new Host( Host::IPv4::from_string("1.2.3.4"),

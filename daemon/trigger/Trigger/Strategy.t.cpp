@@ -28,20 +28,20 @@ struct TestTrigger: public Strategy
   {
   }
 
-  virtual bool matchesCriteria(const Persistency::GraphNodePtrNN &n) const
+  virtual bool matchesCriteria(const Persistency::ConstGraphNodePtrNN &n) const
   {
     ++callsCriteria_;
     checkNode(n);
     return criteria_;
   }
 
-  virtual void trigger(const Persistency::GraphNodePtrNN &n)
+  virtual void trigger(const Persistency::ConstGraphNodePtrNN &n)
   {
     ++callsTrigger_;
     checkNode(n);
   }
 
-  void checkNode(const Persistency::GraphNodePtrNN &n) const
+  void checkNode(const Persistency::ConstGraphNodePtrNN &n) const
   {
     tut::ensure("invalid node", n.get()==node_.get() );
   }
@@ -102,12 +102,12 @@ struct TestLoopTrigger: public Strategy
   {
   }
 
-  virtual bool matchesCriteria(const Persistency::GraphNodePtrNN &) const
+  virtual bool matchesCriteria(const Persistency::ConstGraphNodePtrNN &) const
   {
     return true;
   }
 
-  virtual void trigger(const Persistency::GraphNodePtrNN &)
+  virtual void trigger(const Persistency::ConstGraphNodePtrNN &)
   {
     for(;;)
     {

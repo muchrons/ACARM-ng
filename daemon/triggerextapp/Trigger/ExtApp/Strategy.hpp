@@ -37,7 +37,7 @@ public:
   Strategy(const std::string &name, const Config &cfg);
 
 private:
-  virtual void triggerImpl(const Node &n);
+  virtual void triggerImpl(const ConstNode &n);
 
   const Config cfg_;
 }; // class Strategy

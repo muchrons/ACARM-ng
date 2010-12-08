@@ -21,7 +21,7 @@ struct CountNodes: private TestHelpers::Persistency::TestStubs
     cnt_(0)
   {
   }
-  void operator()(Persistency::GraphNodePtrNN)
+  void operator()(Persistency::ConstGraphNodePtrNN)
   {
     ++cnt_;
   }
@@ -48,7 +48,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  CountNodes cn=forEachUniqueLeaf( makeNewTree1(), CountNodes() );
+  const CountNodes cn=forEachUniqueLeaf( makeNewTree1(), CountNodes() );
   ensure_equals("invalid number of elements", cn.cnt_, 5);
 }
 
@@ -57,7 +57,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  CountNodes cn=forEachUniqueLeaf( makeNewLeaf(), CountNodes() );
+  const CountNodes cn=forEachUniqueLeaf( makeNewLeaf(), CountNodes() );
   ensure_equals("invalid count for leaf", cn.cnt_, 1);
 }
 
@@ -66,7 +66,17 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  CountNodes cn=forEachUniqueLeaf( makeNewTree2(), CountNodes() );
+  const CountNodes cn=forEachUniqueLeaf( makeNewTree2(), CountNodes() );
+  ensure_equals("invalid number of elements", cn.cnt_, 3);
+}
+
+// check processing for consts
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  const ConstGraphNodePtrNN root=makeNewTree2();
+  const CountNodes cn=forEachUniqueLeaf( root, CountNodes() );
   ensure_equals("invalid number of elements", cn.cnt_, 3);
 }
 

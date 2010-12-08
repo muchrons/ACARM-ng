@@ -34,7 +34,7 @@ struct TestClass: private TestBase
     MetaAlertPtrNN ma( new MetaAlert("meta alert x",
                                      0,
                                      0,
-                                     makeNewReferenceURL(),
+                                     makeNewReferenceURL().shared_ptr(),
                                      Timestamp(),
                                      id) );
     NodeChildrenVector vec( makeLeaf(id+1u), makeLeaf(id+2u) );
@@ -212,7 +212,7 @@ void testObj::test<9>(void)
   MetaAlertPtrNN ma( new MetaAlert("meta alert x",
                                    42,
                                    0,
-                                   makeNewReferenceURL(),
+                                   makeNewReferenceURL().shared_ptr(),
                                    Timestamp(),
                                    123u ) );
   const NodeChildrenVector vec( makeLeaf(), makeLeaf() );
@@ -415,7 +415,7 @@ template<>
 void testObj::test<22>(void)
 {
   const GraphNodePtrNN  n =makeNode();
-  const MetaAlert      &ma=n->getMetaAlert();   // smoke test
+  const MetaAlertPtrNN &ma=n->getMetaAlert();   // smoke test
   ignore(ma);
 }
 
@@ -425,7 +425,7 @@ template<>
 void testObj::test<23>(void)
 {
   const GraphNodePtrNN  n=makeLeaf();
-  const Alert          &a=n->getAlert();        // smoke test
+  const AlertPtrNN     &a=n->getAlert();        // smoke test
   ignore(a);
 }
 
