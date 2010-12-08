@@ -1,5 +1,8 @@
 <com:TContent ID="content">
 <com:TImage ID="SeveritiesImg" Height="400" />
 <com:RangeSelector ID="Range" />
+<com:TActiveHyperLink ID="AlertsLink">
+  <com:TImageButton ImageUrl="pics/buttons/buttDBSourcreAlertsD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDBSourcreAlertsU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDBSourcreAlertsD.png'"/>
+</com:TActiveHyperLink>
 <com:TClientScript PradoScripts="effects" />
 </com:TContent>
