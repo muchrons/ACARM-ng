@@ -27,3 +27,4 @@
 * persistency::postgres I/O has to be optimized - it takes 90% of wall time right now, thus is HUGE bottleneck of the whole system.
 * implement filter that gathers stats of source/destination IPs and reports the most problematic noes with higher priority.
 * rework severity computing algorithm to make higher priority for alerts with high-priority alerts (now main part is average...).
+* add heartbeats for daemon, os that GUI will know when system is online and when it is not.
