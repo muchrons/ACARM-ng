@@ -28,3 +28,4 @@
 * implement filter that gathers stats of source/destination IPs and reports the most problematic noes with higher priority.
 * rework severity computing algorithm to make higher priority for alerts with high-priority alerts (now main part is average...).
 * add heartbeats for daemon, os that GUI will know when system is online and when it is not.
+* implement filter monitoring events in the system and learning from it, and correlating events that are different from expected behaviour.
