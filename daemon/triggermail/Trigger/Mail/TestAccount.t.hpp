@@ -7,13 +7,14 @@
 
 #include <string>
 #include <boost/noncopyable.hpp>
+#include <boost/lexical_cast.hpp>
 #include <unistd.h>
-#include <libetpan/libetpan.h>
 #include <cassert>
 
 #include "System/ScopedPtrCustom.hpp"
 #include "Trigger/Mail/Config.hpp"
-#include "Trigger/Mail/LoggerWrapper.hpp"
+#include "Trigger/Mail/CertVerifier.hpp"
+#include "Trigger/Mail/VmimeHandleInit.hpp"
 #include "TestHelpers/Data/mail1.hpp"
 #include "TestHelpers/Data/mail2.hpp"
 
@@ -24,70 +25,73 @@ Trigger::Mail::Config getTestConfig1(const char *to=MAIL2_TEST_ACCOUNT_ADDRESS)
 {
   const Trigger::Mail::Config::Authorization auth(MAIL1_TEST_ACCOUNT_LOGIN,
                                                   MAIL1_TEST_ACCOUNT_PASS);
-  const Trigger::Mail::Config::Server        srv(MAIL1_TEST_ACCOUNT_ADDRESS,
-                                                 MAIL1_TEST_ACCOUNT_SERVER,
+  const Trigger::Mail::Config::Server        srv(MAIL1_TEST_ACCOUNT_SERVER,
                                                  MAIL1_TEST_ACCOUNT_PORT,
-                                                 Trigger::Mail::Config::Server::Security::SSL);
+                                                 Trigger::Mail::Config::Server::Protocol::MAIL1_TEST_ACCOUNT_PROTOCOL,
+                                                 Trigger::Mail::Config::Server::Security::MAIL1_TEST_ACCOUNT_SECURITY,
+                                                 "testdata/smtp_gmails_root_ca.pem");
   const Trigger::Simple::ThresholdConfig     th("0", "0");
-  return Trigger::Mail::Config(th, to, srv, auth);
+  return Trigger::Mail::Config(th, MAIL1_TEST_ACCOUNT_ADDRESS, Trigger::Mail::Config::Recipients(to), srv, auth);
 }
 
-Trigger::Mail::Config getTestConfig2(void)
+Trigger::Mail::Config getTestConfig2(const char *to=MAIL1_TEST_ACCOUNT_ADDRESS)
 {
   const Trigger::Mail::Config::Authorization auth(MAIL2_TEST_ACCOUNT_LOGIN,
                                                   MAIL2_TEST_ACCOUNT_PASS);
-  const Trigger::Mail::Config::Server        srv(MAIL2_TEST_ACCOUNT_ADDRESS,
-                                                 MAIL2_TEST_ACCOUNT_SERVER,
+  const Trigger::Mail::Config::Server        srv(MAIL2_TEST_ACCOUNT_SERVER,
                                                  MAIL2_TEST_ACCOUNT_PORT,
-                                                 Trigger::Mail::Config::Server::Security::SSL);
+                                                 Trigger::Mail::Config::Server::Protocol::MAIL2_TEST_ACCOUNT_PROTOCOL,
+                                                 Trigger::Mail::Config::Server::Security::MAIL2_TEST_ACCOUNT_SECURITY,
+                                                 "testdata/smtp_gmails_root_ca.pem");
   const Trigger::Simple::ThresholdConfig     th("0", "0");
-  return Trigger::Mail::Config(th, MAIL1_TEST_ACCOUNT_ADDRESS, srv, auth);
+  return Trigger::Mail::Config(th, MAIL2_TEST_ACCOUNT_ADDRESS, Trigger::Mail::Config::Recipients(to), srv, auth);
 }
 
-
-typedef System::ScopedPtrCustom<mailstorage, mailstorage_free> StorageHolderHelper;
-typedef System::ScopedPtrCustom<mailfolder,  mailfolder_free>  FolderHolderHelper;
 
 // internal (helper) implementation
 int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
 {
-  StorageHolderHelper storage( mailstorage_new(NULL) );             // create storage
-  if(storage.get()==NULL)
-    throw std::runtime_error("storage() allocation error");
-  assert( cfg.getAuthorizationConfig()!=NULL );
-  if( pop3_mailstorage_init(storage.get(),
-                            MAIL2_TEST_ACCOUNT_POP_SERVER,
-                            MAIL2_TEST_ACCOUNT_POP_PORT,
-                            NULL,
-                            CONNECTION_TYPE_TLS,
-                            POP3_AUTH_TYPE_PLAIN,
-                            cfg.getAuthorizationConfig()->user_.c_str(),
-                            cfg.getAuthorizationConfig()->pass_.c_str(),
-                            0, NULL,
-                            NULL) != MAIL_NO_ERROR )                // init POP3 storage
-    throw std::runtime_error("pop3_mailstorage_init() unable to init POP3 storage");
-  FolderHolderHelper folder( mailfolder_new(storage.get(), "/a/b/c/d", NULL) ); // create folder
-  if( mailfolder_connect( folder.get() ) != MAIL_NO_ERROR )         // connect to folder
-    throw std::runtime_error("mailfolder_connect() unable to connect to folder");
-
-  // loop to read (and delete messages)
-  int count=0;
-  for(uint32_t index=1; /* break inside the loop */; ++index)
+  //
+  // conect
+  //
+  Trigger::Mail::VmimeHandleInit  init;
+  vmime::utility::url             url("pop3s://" MAIL2_TEST_ACCOUNT_POP_SERVER);
+  vmime::ref<vmime::net::session> session  =vmime::create<vmime::net::session>();
+  session->getProperties()["store.pop3s.connection.tls"         ]="false";
+  session->getProperties()["store.pop3s.connection.tls.required"]="false";
+  const Trigger::Mail::Config::Authorization *auth=cfg.getAuthorizationConfig();
+  if(auth!=NULL)
   {
-    {
-      mailmessage *msg;
-      if( mailsession_get_message(folder->fld_session, index, &msg) != MAIL_NO_ERROR )
-        break;                  // no more messages
-      mailmessage_free(msg);    // we don't actually need this message :)
-    }
+    session->getProperties()["store.pop3s.options.need-authentication"]="true";
+    session->getProperties()["store.pop3s.auth.username"]=auth->user_;
+    session->getProperties()["store.pop3s.auth.password"]=auth->pass_;
+  }
+  session->getProperties()["store.pop3s.server.address"]=MAIL2_TEST_ACCOUNT_POP_SERVER;
+  session->getProperties()["store.pop3s.server.port"   ]=boost::lexical_cast<std::string>(MAIL2_TEST_ACCOUNT_POP_PORT);
+  vmime::ref<vmime::net::store> store=session->getStore(url);
+  typedef Trigger::Mail::CertVerifier CertVerif;
+  const Trigger::Mail::Config::Server srvConfig(MAIL2_TEST_ACCOUNT_POP_SERVER,
+                                                MAIL2_TEST_ACCOUNT_POP_PORT,
+                                                Trigger::Mail::Config::Server::Protocol::MAIL2_TEST_ACCOUNT_PROTOCOL,
+                                                Trigger::Mail::Config::Server::Security::MAIL2_TEST_ACCOUNT_SECURITY,
+                                                "testdata/pop_gmails_root_ca.pem");
+  vmime::ref<CertVerif>         cv=vmime::ref<CertVerif>::fromPtr( new CertVerif(srvConfig) );
+  store->setCertificateVerifier(cv);
+  store->connect();
 
-    ++count;                    // ok - one more message
+  // get count
+  vmime::ref<vmime::net::folder> fld=store->getDefaultFolder();
+  fld->open(vmime::net::folder::MODE_READ_WRITE);
+  const int count=fld->getMessageCount();
 
-    // remove message from server
-    if( mailsession_remove_message(folder->fld_session, index) != MAIL_NO_ERROR )
-      throw std::runtime_error("mailsession_remove_message(): unable to remove message");
-  } // for(all_messages)
+  // clean-up all messages
+  if(count>0)
+    fld->deleteMessages(1, count);
 
+  //
+  // end session
+  //
+  store->disconnect();
   return count;
 } // getMessageFromAccount()
 
@@ -95,9 +99,8 @@ int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
 // returns number of removed messages.
 int removeMessagesFromAccount(const Trigger::Mail::Config &cfg, int minCount=0)
 {
-  Trigger::Mail::LoggerWrapper logWrp;                  // add logs to log file
-  const time_t                 deadline=time(NULL)+45;  // give it 45[s] timeout
-  int                          count   =0;              // no elements removed yet
+  const time_t deadline=time(NULL)+45;                  // give it 45[s] timeout
+  int          count   =0;                              // no elements removed yet
   // check until timeout's reached, or minimal value is reached
   for(;;)
   {
