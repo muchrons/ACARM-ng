@@ -28,7 +28,7 @@ void MessageIO::send(const std::string &receiver, const std::string &msg)
   // sending itself
   gloox::Message m(gloox::Message::Chat, gloox::JID(receiver), msg);
   assert( conn_.get()!=NULL );
-  conn_.get()->recv();
+  discardIncommingMessages();
   conn_.get()->send(m);
   // all done
   LOGMSG_DEBUG_S(log_)<<"message to user "<<receiver<<" sent";

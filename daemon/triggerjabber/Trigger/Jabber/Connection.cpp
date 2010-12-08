@@ -4,6 +4,7 @@
  */
 #include <gloox/message.h>
 #include <gloox/client.h>
+#include <gloox/presence.h>
 #include "Logger/Logger.hpp"
 #include "System/ScopedPtrCustom.hpp"
 #include "Trigger/Jabber/Connection.hpp"
@@ -30,6 +31,9 @@ Connection::Connection(const AccountConfig &cfg):
 
 Connection::~Connection(void)
 {
+  sess_.get()->recv();
+  // set status to unavailable
+  sess_.get()->setPresence(gloox::Presence::Unavailable, 100 );
   LOGMSG_INFO(log_, "disconnecting from Jabber server");
 }
 
@@ -41,7 +45,7 @@ AutoSession Connection::connect(void) const
   // sanity check
   if( sess.get()==NULL )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "NULL structure received (login failed)");
-  // check if connection is established
+  // check if connection was established
   if(!sess.get()->connect(false))
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "not connected to server");
   bool quit=false;
@@ -60,6 +64,10 @@ AutoSession Connection::connect(void) const
       throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
     }
   }
+  if( sess.get()->recv() )
+    throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
+  // set status to available
+  sess.get()->setPresence(gloox::Presence::Available, 100 );
   return sess;
 }
 
