@@ -7,6 +7,7 @@
 #include <boost/lexical_cast.hpp>
 #include <cassert>
 
+#include "System/ignore.hpp"
 #include "Trigger/Mail/MailSender.hpp"
 #include "Trigger/Mail/CertVerifier.hpp"
 #include "Trigger/Mail/MimeCreateHelper.hpp"
@@ -71,6 +72,7 @@ std::string createURL(const Config::Server &srv)
 // configure additional options
 void configureOptions(const Logger::Node &log, const Config &cfg, vmime::ref<vmime::net::session> session)
 {
+  System::ignore(log);
   assert( session.get()!=NULL );
   // setup authorization mode
   {
