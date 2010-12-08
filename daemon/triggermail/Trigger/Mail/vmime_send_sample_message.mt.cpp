@@ -1,8 +1,11 @@
+/*
+ * vmime_send_sample_message.mt.cpp
+ *
+ */
 #include <iostream>
 #include <boost/lexical_cast.hpp>
 #include <vmime/vmime.hpp>
 #include <vmime/platforms/posix/posixHandler.hpp>
-//#include "vmime/security/cert/X509Certificate.hpp"
 #include <cassert>
 
 #include "Trigger/Mail/TestAccount.t.hpp"
