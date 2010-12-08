@@ -89,6 +89,17 @@ public:
     return data_.end();
   }
 
+  /** \brief random access operator.
+   *  \param pos position to take element from.
+   *  \return element from a given position.
+   *  \note range is NOT checked when accessing element.
+   */
+  const T &operator[](const size_t pos) const
+  {
+    assert( pos<size() );
+    return data_[pos];
+  }
+
 private:
   CollectionType data_;
 }; // class NonEmptyVector

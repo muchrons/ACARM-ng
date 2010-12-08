@@ -41,4 +41,36 @@ void testObj::test<1>(void)
   ensure_equals("invalid number of messages removed", count, 1);
 }
 
+// test if sending with invalid certificate fails
+template<>
+template<>
+void testObj::test<2>(void)
+{
+  const Config::Authorization auth(MAIL1_TEST_ACCOUNT_LOGIN,
+                                   MAIL1_TEST_ACCOUNT_PASS);
+  const Config::Server        srv(MAIL1_TEST_ACCOUNT_SERVER,
+                                  MAIL1_TEST_ACCOUNT_PORT,
+                                  Trigger::Mail::Config::Server::Protocol::MAIL1_TEST_ACCOUNT_PROTOCOL,
+                                  Trigger::Mail::Config::Server::Security::MAIL1_TEST_ACCOUNT_SECURITY,
+                                  "testdata/invalid_cert.pem");
+  const Trigger::Simple::ThresholdConfig th("0", "0");
+  const Config cfg(th, MAIL1_TEST_ACCOUNT_ADDRESS, Config::Recipients(MAIL2_TEST_ACCOUNT_ADDRESS), srv, auth);
+
+  // send report
+  MailSender ms(cfg);
+  try
+  {
+    ms.send("subject", "content");  // should throw
+    fail("invalid certificate didn't raised an error");
+  }
+  catch(const ExceptionInvalidCertificate &)
+  {
+    // this is expected
+  }
+}
+
+// TODO: test sending messages via SMTP/TLS
+
+// TODO: test sending messages via SMTP/SSL
+
 } // namespace tut

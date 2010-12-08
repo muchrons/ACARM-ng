@@ -30,7 +30,7 @@
       </com:TView>
     </com:TMultiView>
   </table>
-  <com:TButton Text="show" />
+  <com:TButton ID="Submit" Text="show" />
 </com:TPanel>
 <br/>
 

@@ -111,4 +111,14 @@ void testObj::test<5>(void)
   ensure("copying failed", *c1.begin()==*c2.begin() );
 }
 
+// test random-access operator
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const NEV c(e1_);
+  ensure_equals("empty collection", c.size(), 1u);
+  ensure_equals("invalid element", c[0], e1_);
+}
+
 } // namespace tut

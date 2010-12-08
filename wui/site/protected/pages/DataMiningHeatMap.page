@@ -4,7 +4,7 @@
 
   <com:TClientScript PradoScripts="effects" />
 
-  <com:HeatmapIPs />
+  <com:HeatmapIPs ID="IPs"/>
 
   <script src="OpenLayers.js">
   </script>
@@ -88,30 +88,26 @@
   }
 </style>
 
-<div id="basicMap" style="border: 1px white solid; width:700; height:400;"></div>
-
+<div id="basicMap" style="border: 1px white solid; width:700; height:400;">
+</div>
 <com:TActiveHiddenField ID="bt" OnCallback="clicked"/>
 
 <br/>
+<com:RangeSelector ID="Range" view="0"/>
 <com:TPanel GroupingText="<font size=5 color=white>Details</font>" Width="100%">
-<br/>
 <table border="1" width="100%" cellpadding="5">
   <tr>
-    <td width="20%" id="AlertTag">Source:</td>
-    <td width="40%" id="AlertContent"><com:TActiveLabel ID="SrcIP" Text="&nbsp"/></td>
-    <td width="40%" id="AlertContent"><com:TActiveLabel ID="SrcName" Text="&nbsp"/></td>
-  </tr>
-  <tr>
+    <td id="AlertTag">Source:</td>
+    <td width="30%" id="AlertContent"><com:TActiveLabel ID="SrcIP" Text="&nbsp"/></td>
     <td id="AlertTag">Destination:</td>
-    <td id="AlertContent"><com:TActiveLabel ID="DstIP" Text="&nbsp"/></td>
-    <td id="AlertContent"><com:TActiveLabel ID="DstName" Text="&nbsp"/></td>
+    <td width="30%" id="AlertContent"><com:TActiveLabel ID="DstIP" Text="&nbsp"/></td>
   </tr>
   <tr>
-    <td id="AlertTag" width="30%">Number of alerts:</td>
-    <td id="AlertContent" colspan="2"><com:TActiveLabel ID="NoAlerts" Text="&nbsp"/></td>
+    <td id="AlertTag">Number of alerts:</td>
+    <td id="AlertContent" colspan="3"><com:TActiveLabel ID="NoAlerts" Text="&nbsp"/></td>
   </tr>
   <tr>
-    <td align="center" colspan="3">
+    <td align="center" colspan="4">
       <com:TActiveHyperLink ID="AlertsLink">
         <com:TImageButton ImageUrl="pics/buttons/buttDBSourcreAlertsD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttDBSourcreAlertsU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttDBSourcreAlertsD.png'"/>
       </com:TActiveHyperLink>
