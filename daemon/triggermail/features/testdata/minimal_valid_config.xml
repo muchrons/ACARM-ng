@@ -30,7 +30,9 @@
       <from>robot@e.mail.org</from>
       <to>admin@e.mail.org</to>
       <server>smtp.e.mail.org</server>
+      <rootca>/path/to/cert.pem</rootca>
       <port>25</port>
+      <protocol>smtp</protocol>
       <security>ssl</security>
 <!--
       <user>robot</user>

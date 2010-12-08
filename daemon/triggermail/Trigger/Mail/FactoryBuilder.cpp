@@ -2,6 +2,7 @@
  * FactoryBuilder.cpp
  *
  */
+#include <boost/tokenizer.hpp>
 #include <cassert>
 
 #include "BuildProcess/ForceLink.hpp"
@@ -53,16 +54,53 @@ uint16_t getPort(const std::string &v)
   }
 } // getPort()
 
+Config::Server::Protocol getProtocol(const std::string &v)
+{
+  if(v=="smtp")
+    return Config::Server::Protocol::SMTP;
+
+  // ok - we have invalid value here...
+  throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "protocol", v.c_str() );
+} // getSecurity()
+
 Config::Server::Security getSecurity(const std::string &v)
 {
   if(v=="ssl")
     return Config::Server::Security::SSL;
   if(v=="starttls")
-    return Config::Server::Security::STARTTLS;
+    return Config::Server::Security::TLS;
 
   // ok - we have invalid value here...
   throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "security", v.c_str() );
 } // getSecurity()
+
+Config::Recipients parseRecipients(const Logger::Node &log, const string &str)
+{
+  typedef boost::char_separator<char> Separator;
+  typedef boost::tokenizer<Separator> Tokenizer;
+  const Separator sep(" ");
+  const Tokenizer tokens(str, sep);
+
+  // go thought all receivers
+  Tokenizer::const_iterator it=tokens.begin();
+  if( it==tokens.end() )
+    throw Exception(SYSTEM_SAVE_LOCATION, "no receivers specified");
+  Config::Recipients r(*it);
+  LOGMSG_INFO_S(log)<<"adding receiver's e-mail "<<*it;
+  ++it;
+
+  // all other receivers are optional
+  for(; it!=tokens.end(); ++it)
+  {
+    r.push_back(*it);
+    LOGMSG_INFO_S(log)<<"adding receiver's e-mail "<<*it;
+  }
+
+  // return inal list
+  LOGMSG_DEBUG_S(log)<<"got total numer of "<< r.size() <<" receivers";
+  return r;
+} // parseRecipients()
+
 } // unnamed namespace
 
 
@@ -76,13 +114,15 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   // gather required config
   const std::string              &server=fc["server"];
   LOGMSG_INFO_S(log_)<<"setting server to "<<server;
+  const Config::Path              cert  =fc["rootca"];
+  LOGMSG_INFO_S(log_)<<"setting root's CA certificate path to "<<cert;
   const uint16_t                  port  =getPort(fc["port"]);
   LOGMSG_INFO_S(log_)<<"setting port to "<<port;
   const Config::Server::Security  sec   =getSecurity(fc["security"]);
   LOGMSG_INFO_S(log_)<<"setting security to "<<sec.toInt();
-  const std::string              &from  =fc["from"];
-  LOGMSG_INFO_S(log_)<<"setting from-address to "<<from;
-  const Config::Server            serverCfg(from, server, port, sec);
+  const Config::Server::Protocol  proto =getProtocol(fc["protocol"]);
+  LOGMSG_INFO_S(log_)<<"setting protocol to "<<proto.toInt();
+  const Config::Server            serverCfg(server, port, proto, sec, cert);
 
   // thresholds' config
   const char *sevTh=fc.get("severity_threshold");
@@ -93,9 +133,11 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
     LOGMSG_INFO_S(log_)<<"setting alerts count threshold to "<<cntTh;
   const ThresholdConfig thCfg(sevTh, cntTh);
 
+  // sender's address
+  const std::string        &from=fc["from"];
+  LOGMSG_INFO_S(log_)<<"setting sender's address to "<<from;
   // recipient address
-  const std::string &to    =fc["to"];
-  LOGMSG_INFO_S(log_)<<"setting to-address to "<<to;
+  const Config::Recipients  to  =parseRecipients(log_, fc["to"]);
 
   // trigger name
   const std::string &name    =fc["name"];
@@ -114,7 +156,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
     const Config::Authorization  auth(user, pass);
     // create and return new handle, with configured authorization
     LOGMSG_INFO(log_, "account configured with authorization required");
-    return OutPtr( new Impl( type_, name, Mail::Config(thCfg, to, serverCfg, auth) ) );
+    return OutPtr( new Impl( type_, name, Mail::Config(thCfg, from, to, serverCfg, auth) ) );
   } // if(use_auth)
   else
     if( fc.get("password")!=NULL )
@@ -122,7 +164,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // create and return new handle, with config without authorization
   LOGMSG_INFO(log_, "account configured without authorization required");
-  return OutPtr( new Impl( type_, name, Mail::Config(thCfg, to, serverCfg) ) );
+  return OutPtr( new Impl( type_, name, Mail::Config(thCfg, from, to, serverCfg) ) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

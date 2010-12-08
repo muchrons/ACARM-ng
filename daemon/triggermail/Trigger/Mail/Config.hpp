@@ -7,8 +7,10 @@
 
 #include <string>
 #include <inttypes.h>
+#include <boost/filesystem.hpp>
 
 #include "System/Enum.hpp"
+#include "Base/NonEmptyVector.hpp"
 #include "Trigger/Simple/ThresholdConfig.hpp"
 
 namespace Trigger
@@ -24,47 +26,69 @@ struct SecurityEnum
   /** \brief enum for security types declaration. */
   typedef enum
   {
-    //NONE, // NOTE: no secure connection is NOT allowed for security reasons
-    STARTTLS,
+    //NONE, // NOTE: non-secure connection is NOT allowed for security reasons
+    TLS,
     SSL
   } Type;
 }; // struct Security
 
+/** \brief implemenation helper.
+ */
+struct ProtocolEnum
+{
+  /** \brief enum for security types declaration. */
+  typedef enum
+  {
+    SMTP
+  } Type;
+}; // struct Security
 } // namespace detail
+
 
 /** \brief whole module's configuration representation.
  */
 class Config
 {
 public:
+  /** \brief list of message recipients. */
+  typedef Base::NonEmptyVector<std::string> Recipients;
+  /** \brief path in the filesystem. */
+  typedef boost::filesystem::path           Path;
+
   /** \brief server's configuration.
    */
   struct Server
   {
-    /** \brief security enum - user-level class. */
+    /** \brief security type enum - user-level class. */
     typedef System::Enum<detail::SecurityEnum> Security;
+    /** \brief protocol type enum - user-level class. */
+    typedef System::Enum<detail::ProtocolEnum> Protocol;
 
     /** \brief create configuration from given paramters.
-     *  \param from   sender's e-mail address.
-     *  \param server server address.
-     *  \param port   port to connect to.
-     *  \param sec    security type.
+     *  \param server         server address.
+     *  \param port           port to connect to.
+     *  \param proto          protocol type to use.
+     *  \param sec            security type.
+     *  \param rootCAcertPath path to file with root CA's certificate
      */
-    Server(const std::string &from,
-           const std::string &server,
+    Server(const std::string &server,
            const uint16_t     port,
-           Security           sec):
-      from_(from),
+           Protocol           proto,
+           Security           sec,
+           const Path        &rootCAcertPath):
       server_(server),
       port_(port),
-      sec_(sec)
+      proto_(proto),
+      sec_(sec),
+      rootCAcertPath_(rootCAcertPath)
     {
     }
 
-    const std::string from_;        ///< sender's e-mail.
-    const std::string server_;      ///< server's addres.
-    const uint16_t    port_;        ///< port server's listening on.
-    const Security    sec_;         ///< security type to be used.
+    const std::string server_;          ///< server's addres.
+    const uint16_t    port_;            ///< port server's listening on.
+    const Protocol    proto_;           ///< protocol type to be used.
+    const Security    sec_;             ///< security type to be used.
+    const Path        rootCAcertPath_;  ///< path to file with certificat of root CA
   }; // struct Server
 
   /** \brief authorization settings.
@@ -87,14 +111,17 @@ public:
   }; // struct Authorization
 
   /** \brief create configration description, without authorization.
-   *  \param th  threshold configuration - informs when run trigger.
-   *  \param to  recipient address.
-   *  \param srv server to connect to.
+   *  \param th   threshold configuration - informs when run trigger.
+   *  \param from sender's e-mail address.
+   *  \param to   recipient address.
+   *  \param srv  server to connect to.
    */
   Config(const Simple::ThresholdConfig &th,
-         const std::string             &to,
+         const std::string             &from,
+         const Recipients              &to,
          const Server                  &srv):
     th_(th),
+    from_(from),
     to_(to),
     srv_(srv),
     useAuth_(false),
@@ -103,15 +130,18 @@ public:
   }
   /** \brief create configration description, with authorization request.
    *  \param th   threshold configuration - informs when run trigger.
-   *  \param to  recipient address.
-   *  \param srv server to connect to.
+   *  \param from sender's e-mail address.
+   *  \param to   recipient address.
+   *  \param srv  server to connect to.
    *  \param auth parameters required for authorization.
    */
   Config(const Simple::ThresholdConfig &th,
-         const std::string             &to,
+         const std::string             &from,
+         const Recipients              &to,
          const Server                  &srv,
          const Authorization           &auth):
     th_(th),
+    from_(from),
     to_(to),
     srv_(srv),
     useAuth_(true),
@@ -142,17 +172,25 @@ public:
   {
     return srv_;
   }
-  /** \brief get recipient e-mail address.
-   *  \return address of e-mail recipient.
+  /** \brief get sender's e-mail addresses.
+   *  \return e-mail address of the sender.
    */
-  const std::string &getRecipientAddress(void) const
+  const std::string &getSenderAddress(void) const
+  {
+    return from_;
+  }
+  /** \brief get recipients e-mail addresses.
+   *  \return addresses (e-mails) of recipients.
+   */
+  const Recipients &getRecipientsAddresses(void) const
   {
     return to_;
   }
 
 private:
   Simple::ThresholdConfig th_;
-  std::string             to_;
+  std::string             from_;
+  Recipients              to_;
   Server                  srv_;
   bool                    useAuth_;
   Authorization           auth_;

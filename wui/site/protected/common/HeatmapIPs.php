@@ -2,16 +2,24 @@
 
 class HeatmapIPs extends TTemplateControl
 {
-  public function onLoad()
+  public function onInit($param)
   {
-    $range=CSQLMap::get()->queryForObject("DMHeatMapHostcount");
-    $this->minAlert=$range->key;
-    $this->maxAlert=$range->value;
+    parent::onInit($param);
+    $this->date_from='1970-01-01 00:00:00';
+    $this->date_to=date("Y-m-d H:i:s");
   }
 
   public function renderControl($param)
   {
     parent::renderControl($param);
+
+    $param=new CDMPair();
+    $param->key=$this->date_from;
+    $param->value=$this->date_to;
+
+    $range=CSQLMap::get()->queryForObject("DMHeatMapHostcount",$param);
+    $this->minAlert=$range->key;
+    $this->maxAlert=$range->value;
 
     $data=new HeatmapGetter($this->minAlert, $this->maxAlert);
 
@@ -38,5 +46,7 @@ class HeatmapIPs extends TTemplateControl
 
   private $maxAlert;
   private $minAlert;
+  public $date_from;
+  public $date_to;
 }
 ?>

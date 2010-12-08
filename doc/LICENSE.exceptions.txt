@@ -25,4 +25,5 @@ directly included in this package, that have following licenses:
   -> openssl (Apache-style)
   -> pqxx (Revised BSD)
   -> system library (Revised BSD)
+  -> vmime (GPL)
   -> xml++ (LGPL)
