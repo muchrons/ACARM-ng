@@ -8,11 +8,40 @@ class ImageService extends TService
     $this->Response->ContentType="image/png";
 
     $request = Prado::getApplication()->getRequest();
+    try {
+      $this->width = TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'width',  'You must specify the width of the heatmap'));
+      $this->height= TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'height', 'You must specify the height of the heatmap'));
+      $this->from= TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'from','You must specify the data range.'));
+      $this->to= TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'to','You must specify the data range.'));
+    } catch(Exception $e)
+        {
+          $this->printError($e->getMessage());
+          return;
+        }
+  }
 
-    $this->width = TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'width',  'You must specify the width of the heatmap'));
-    $this->height= TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'height', 'You must specify the height of the heatmap'));
-    $this->from= TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'from','You must specify the data range.'));
-    $this->to= TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'to','You must specify the data range.'));
+  private function printError($message)
+  {
+    $fontnum=2;
+    $img = imagecreatetruecolor(600,400);
+    $yellow = imagecolorallocate ($img, 0xFF, 0xFF, 0x00);
+    $red = imagecolorallocate ($img, 0xFF, 0x00, 0x00);
+    $fontw=imagefontwidth($fontnum);
+    assert($fontw!=0);
+    $numchars=((600-5)/$fontw);
+    $msg=explode("\n",wordwrap($message,$numchars,"\n")); //wrap long messages
+
+    imagestring($img, 3, 3, 3, "Exception was thrown:", $red);
+
+    $hpos=imagefontwidth($fontnum)*4;
+    foreach ($msg as $m)
+      {
+        imagestring ($img, $fontnum, 5, $hpos, $m, $yellow);
+        $hpos+=imagefontwidth($fontnum)*2;
+      }
+
+    imagepng($img);
+    imagedestroy($img);
   }
 
   private function getRequestOrThrow($request, $field, $text)
@@ -44,29 +73,31 @@ class ImageService extends TService
 
   public function run()
   {
-    $img = $this->createHeatMap();
-    imagepng($img);
-    imagedestroy($img);
+    try{
+      $img = $this->createHeatMap();
+      imagepng($img);
+      imagedestroy($img);
+    }catch(Exception $e)
+       {
+         $this->printError($e->getMessage());
+       }
   }
 
   private function createHeatMap()
   {
     $data=new HeatmapGetter($this->from, $this->to);
 
+    if ($data->isEmpty())
+      throw new Exception("No data. Datarange is invalid or database is empty.");
+
     $img_w=$this->width;
     $img_h=$this->height;
-
-    if($data->getNumSources() < $img_w)
-      $img_w=$data->getNumSources();
-
-    if($data->getNumDestinations() < $img_h)
-      $img_h=$data->getNumDestinations();
 
     $img = imagecreatetruecolor($img_w,$img_h);
     $sc = imagecolorallocate ($img, 0xFF, 0xFF, 0x00);
 
-    for ($s=0; $s<$img_w; $s++)
-      for ($d=0; $d<$img_h; $d++)
+    for ($s=0; $s<$data->getNumSources(); $s++)
+      for ($d=0; $d<$data->getNumDestinations(); $d++)
         imagesetpixel($img,$s,$d,$this->color_map($img,$data->getImgData($d,$s),$data->getMaxVal()));
 
     //Print caption only if the image is big enough

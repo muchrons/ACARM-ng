@@ -12,6 +12,8 @@ class HeatmapGetter
     $this->src=0;
     $this->dst=0;
 
+    $this->empty=($data[0]===null);
+
     //get arrays of sources and destinations
     foreach( $data as $e )
       {
@@ -52,9 +54,10 @@ class HeatmapGetter
       }
 
     //sort columns and rows by total number of alerts per host
-
-    usort($this->img_data_maxSrc, array("Pair", "compare_rev"));
-    usort($this->img_data_maxDst, array("Pair", "compare_rev"));
+    if ($this->img_data_maxSrc!=null)
+      usort($this->img_data_maxSrc, array("Pair", "compare_rev"));
+    if ($this->img_data_maxDst!=null)
+      usort($this->img_data_maxDst, array("Pair", "compare_rev"));
   }
 
   public function getImgData($d,$s)
@@ -87,6 +90,11 @@ class HeatmapGetter
     return $this->max_val;
   }
 
+  public function isEmpty()
+  {
+    return $this->empty;
+  }
+
   private $dst;
   private $src;
   private $sources;
@@ -95,6 +103,7 @@ class HeatmapGetter
   private $img_data_maxDst;
   private $img_data_maxSrc;
   private $max_val;
+  private $empty;
 }
 
 ?>
