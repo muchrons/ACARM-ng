@@ -110,12 +110,12 @@ void testObj::test<4>(void)
   // send to first account
   {
     const int count=removeMessagesFromAccount( getTestConfig1(), 1 );
-    ensure_equals("invalid number of messages removed", count, 1);
+    ensure_equals("invalid number of messages removed / account 1", count, 1);
   }
   // send to second account
   {
     const int count=removeMessagesFromAccount( getTestConfig2(), 1 );
-    ensure_equals("invalid number of messages removed", count, 1);
+    ensure_equals("invalid number of messages removed / account 2", count, 1);
   }
 }
 
