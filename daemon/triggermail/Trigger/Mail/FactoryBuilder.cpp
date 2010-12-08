@@ -114,13 +114,15 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   // gather required config
   const std::string              &server=fc["server"];
   LOGMSG_INFO_S(log_)<<"setting server to "<<server;
+  const Config::Path              cert  =fc["rootca"];
+  LOGMSG_INFO_S(log_)<<"setting root's CA certificate path to "<<cert;
   const uint16_t                  port  =getPort(fc["port"]);
   LOGMSG_INFO_S(log_)<<"setting port to "<<port;
   const Config::Server::Security  sec   =getSecurity(fc["security"]);
   LOGMSG_INFO_S(log_)<<"setting security to "<<sec.toInt();
   const Config::Server::Protocol  proto =getProtocol(fc["protocol"]);
   LOGMSG_INFO_S(log_)<<"setting protocol to "<<proto.toInt();
-  const Config::Server            serverCfg(server, port, proto, sec);
+  const Config::Server            serverCfg(server, port, proto, sec, cert);
 
   // thresholds' config
   const char *sevTh=fc.get("severity_threshold");

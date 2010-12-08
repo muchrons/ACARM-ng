@@ -151,7 +151,7 @@ void MailSender::send(const std::string &subject, const std::string &content)
     assert( transport.get()!=NULL );
     // set certificate verifier
     typedef vmime::ref<vmime::security::cert::certificateVerifier> VerifierRef;
-    VerifierRef verifier=VerifierRef::fromPtr( new CertVerifier( cfg_.getServerConfig().server_ ) );
+    VerifierRef verifier=VerifierRef::fromPtr( new CertVerifier( cfg_.getServerConfig() ) );
     transport->setCertificateVerifier(verifier);
     // connect to server (certificate will be validated along)
     transport->connect();

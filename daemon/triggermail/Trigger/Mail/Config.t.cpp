@@ -15,7 +15,7 @@ struct TestClass
 {
   TestClass(void):
     th_("1", "2"),
-    srv_("server", 1234, Config::Server::Protocol::SMTP, Config::Server::Security::SSL),
+    srv_("server", 1234, Config::Server::Protocol::SMTP, Config::Server::Security::SSL, "/cert/path"),
     auth_("john", "doe"),
     to_("to")
   {
@@ -64,6 +64,7 @@ void testObj::test<3>(void)
   ensure_equals("invalid port number", srv_.port_, 1234u);
   ensure("invalid TLS setting", srv_.sec_==Config::Server::Security::SSL);
   ensure("invalid TLS setting", srv_.proto_==Config::Server::Protocol::SMTP);
+  ensure_equals("invalid cert path", srv_.rootCAcertPath_, "/cert/path");
 }
 
 // test authorization config

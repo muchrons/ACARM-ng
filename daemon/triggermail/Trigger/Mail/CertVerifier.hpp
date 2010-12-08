@@ -8,6 +8,7 @@
 #include <vmime/vmime.hpp>
 
 #include "Logger/Node.hpp"
+#include "Trigger/Mail/Config.hpp"
 #include "Trigger/Mail/ExceptionInvalidCertificate.hpp"
 
 namespace Trigger
@@ -21,18 +22,19 @@ class CertVerifier: public vmime::security::cert::certificateVerifier
 {
 public:
   /** \brief construct certificate verifier.
-   *  \param server server address to connect to.
+   *  \param server server's configuration.
    */
-  explicit CertVerifier(const std::string &server);
+  explicit CertVerifier(const Config::Server &server);
   /** \brief verify given certificate chain.
    *  \param certs certificate chain to verify.
    */
   virtual void verify(vmime::ref<vmime::security::cert::certificateChain> certs);
 
 private:
-  Logger::Node                                           log_;
-  std::string                                            server_;
-  vmime::ref<vmime::security::cert::certificateVerifier> defCertVer_;
+  typedef vmime::security::cert::defaultCertificateVerifier Verifier;
+  Logger::Node         log_;
+  std::string          server_;
+  vmime::ref<Verifier> defCertVer_;
 }; // class CertVerifier
 
 } // namespace Mail

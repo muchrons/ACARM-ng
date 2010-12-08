@@ -28,7 +28,8 @@ Trigger::Mail::Config getTestConfig1(const char *to=MAIL2_TEST_ACCOUNT_ADDRESS)
   const Trigger::Mail::Config::Server        srv(MAIL1_TEST_ACCOUNT_SERVER,
                                                  MAIL1_TEST_ACCOUNT_PORT,
                                                  Trigger::Mail::Config::Server::Protocol::MAIL1_TEST_ACCOUNT_PROTOCOL,
-                                                 Trigger::Mail::Config::Server::Security::MAIL1_TEST_ACCOUNT_SECURITY);
+                                                 Trigger::Mail::Config::Server::Security::MAIL1_TEST_ACCOUNT_SECURITY,
+                                                 "testdata/smtp_gmails_root_ca.pem");
   const Trigger::Simple::ThresholdConfig     th("0", "0");
   return Trigger::Mail::Config(th, MAIL1_TEST_ACCOUNT_ADDRESS, Trigger::Mail::Config::Recipients(to), srv, auth);
 }
@@ -40,7 +41,8 @@ Trigger::Mail::Config getTestConfig2(const char *to=MAIL1_TEST_ACCOUNT_ADDRESS)
   const Trigger::Mail::Config::Server        srv(MAIL2_TEST_ACCOUNT_SERVER,
                                                  MAIL2_TEST_ACCOUNT_PORT,
                                                  Trigger::Mail::Config::Server::Protocol::MAIL2_TEST_ACCOUNT_PROTOCOL,
-                                                 Trigger::Mail::Config::Server::Security::MAIL2_TEST_ACCOUNT_SECURITY);
+                                                 Trigger::Mail::Config::Server::Security::MAIL2_TEST_ACCOUNT_SECURITY,
+                                                 "testdata/smtp_gmails_root_ca.pem");
   const Trigger::Simple::ThresholdConfig     th("0", "0");
   return Trigger::Mail::Config(th, MAIL2_TEST_ACCOUNT_ADDRESS, Trigger::Mail::Config::Recipients(to), srv, auth);
 }
@@ -68,7 +70,12 @@ int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
   session->getProperties()["store.pop3s.server.port"   ]=boost::lexical_cast<std::string>(MAIL2_TEST_ACCOUNT_POP_PORT);
   vmime::ref<vmime::net::store> store=session->getStore(url);
   typedef Trigger::Mail::CertVerifier CertVerif;
-  vmime::ref<CertVerif>         cv=vmime::ref<CertVerif>::fromPtr( new CertVerif(MAIL2_TEST_ACCOUNT_POP_SERVER) );
+  const Trigger::Mail::Config::Server srvConfig(MAIL2_TEST_ACCOUNT_POP_SERVER,
+                                                MAIL2_TEST_ACCOUNT_POP_PORT,
+                                                Trigger::Mail::Config::Server::Protocol::MAIL2_TEST_ACCOUNT_PROTOCOL,
+                                                Trigger::Mail::Config::Server::Security::MAIL2_TEST_ACCOUNT_SECURITY,
+                                                "testdata/pop_gmails_root_ca.pem");
+  vmime::ref<CertVerif>         cv=vmime::ref<CertVerif>::fromPtr( new CertVerif(srvConfig) );
   store->setCertificateVerifier(cv);
   store->connect();
 

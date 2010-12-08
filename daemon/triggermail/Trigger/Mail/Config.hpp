@@ -7,6 +7,7 @@
 
 #include <string>
 #include <inttypes.h>
+#include <boost/filesystem.hpp>
 
 #include "System/Enum.hpp"
 #include "Base/NonEmptyVector.hpp"
@@ -51,6 +52,8 @@ class Config
 public:
   /** \brief list of message recipients. */
   typedef Base::NonEmptyVector<std::string> Recipients;
+  /** \brief path in the filesystem. */
+  typedef boost::filesystem::path           Path;
 
   /** \brief server's configuration.
    */
@@ -62,26 +65,30 @@ public:
     typedef System::Enum<detail::ProtocolEnum> Protocol;
 
     /** \brief create configuration from given paramters.
-     *  \param server server address.
-     *  \param port   port to connect to.
-     *  \param proto  protocol type to use.
-     *  \param sec    security type.
+     *  \param server         server address.
+     *  \param port           port to connect to.
+     *  \param proto          protocol type to use.
+     *  \param sec            security type.
+     *  \param rootCAcertPath path to file with root CA's certificate
      */
     Server(const std::string &server,
            const uint16_t     port,
            Protocol           proto,
-           Security           sec):
+           Security           sec,
+           const Path        &rootCAcertPath):
       server_(server),
       port_(port),
       proto_(proto),
-      sec_(sec)
+      sec_(sec),
+      rootCAcertPath_(rootCAcertPath)
     {
     }
 
-    const std::string server_;      ///< server's addres.
-    const uint16_t    port_;        ///< port server's listening on.
-    const Protocol    proto_;       ///< protocol type to be used.
-    const Security    sec_;         ///< security type to be used.
+    const std::string server_;          ///< server's addres.
+    const uint16_t    port_;            ///< port server's listening on.
+    const Protocol    proto_;           ///< protocol type to be used.
+    const Security    sec_;             ///< security type to be used.
+    const Path        rootCAcertPath_;  ///< path to file with certificat of root CA
   }; // struct Server
 
   /** \brief authorization settings.
