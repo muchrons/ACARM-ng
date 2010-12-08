@@ -5,36 +5,19 @@ class DataMiningHeatMap extends TPage
   public function onLoad($param)
   {
     parent::onLoad($param);
-    /*
-    if ($this->HeatMap->width == 0)
-      $this->HeatMap->width=700;
-    if ($this->HeatMap->height == 0)
-      $this->HeatMap->height=800;
-    $this->generateGraph();
-    */
 
+    $this->IPs->date_from=$this->Range->getFrom()->Text;
+    $this->IPs->date_to=$this->Range->getTo()->Text;
   }
 
-  private function constructUrl()
-  {
-    $linkdata=array( 'title' => 'HeatMap',
-                     'width' => $this->HeatMap->width,
-                     'height' => $this->HeatMap->height);
-
-    return $this->getRequest()->constructUrl('image', "HeatMap", $linkdata, false);
-  }
-
-  private function constructUrlForCallbacks($type,$srcip,$dstip)
+  private function constructUrlForCallbacks($type,$srcip,$dstip,$from,$to)
   {
     $linkdata=array( 'srcip' => $srcip,
-                     'dstip' => $dstip);
+                     'dstip' => $dstip,
+                     'from' => $from,
+                     'to' => $to);
 
     return $this->getRequest()->constructUrl('page', $type, $linkdata);
-  }
-
-  private function generateGraph()
-  {
-    $this->HeatMap->ImageUrl = $this->constructUrl();
   }
 
   public function getSrcIP()
@@ -67,9 +50,8 @@ class DataMiningHeatMap extends TPage
 
     $this->NoAlerts->Text=$data;
 
-
-    $this->AlertsLink->NavigateUrl=$this->constructUrlForCallbacks("Alerts",$longitude,$latitude);
-    $this->SeveritiesLink->NavigateUrl=$this->constructUrlForCallbacks("DataMiningSeverity",$longitude,$latitude);
+    $this->AlertsLink->NavigateUrl=$this->constructUrlForCallbacks("Alerts",$longitude,$latitude,$this->Range->From->Text,$this->Range->To->Text);
+    $this->SeveritiesLink->NavigateUrl=$this->constructUrlForCallbacks("DataMiningSeverity",$longitude,$latitude,$this->Range->From->Text,$this->Range->To->Text);
   }
 
   public function btn($sender,$param)

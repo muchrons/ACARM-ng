@@ -5,8 +5,11 @@
 #ifndef INCLUDE_TRIGGER_MAIL_MAILSENDER_HPP_FILE
 #define INCLUDE_TRIGGER_MAIL_MAILSENDER_HPP_FILE
 
+#include "Logger/Node.hpp"
 #include "Trigger/Mail/Config.hpp"
+#include "Trigger/Mail/VmimeHandleInit.hpp"
 #include "Trigger/Mail/ExceptionConnectionError.hpp"
+#include "Trigger/Mail/ExceptionInvalidCertificate.hpp"
 #include "Trigger/Mail/ExceptionSendingError.hpp"
 #include "Trigger/Mail/ExceptionUnableToCreateMessage.hpp"
 
@@ -33,11 +36,9 @@ public:
   void send(const std::string &subject, const std::string &content);
 
 private:
-  void connectionErrorHandle(int ret, const char *call) const;
-  void errorHandle(int ret, const char *call) const;
-  bool isError(int ret) const;
-
-  const Config cfg_;
+  Logger::Node    log_;
+  VmimeHandleInit vhi_;
+  const Config    cfg_;
 }; // class MailSmtp
 
 } // namespace Mail

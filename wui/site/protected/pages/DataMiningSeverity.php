@@ -10,13 +10,24 @@ class DataMiningSeverity extends TPage
     if ($this->SeveritiesImg->height == 0)
       $this->SeveritiesImg->height=800;
 
-    $srcip=$this->Request->itemAt('srcip');
-    if( $srcip!==null )
-      $this->Range->srcip->Text=$srcip;
+    if (!$this->isPostBack)
+      {
+        $srcip=$this->Request->itemAt('srcip');
+        if( $srcip!==null )
+          $this->Range->srcip->Text=$srcip;
 
-    $dstip=$this->Request->itemAt('dstip');
-    if( $dstip!==null )
-      $this->Range->dstip->Text=$dstip;
+        $dstip=$this->Request->itemAt('dstip');
+        if( $dstip!==null )
+          $this->Range->dstip->Text=$dstip;
+
+        $date_from=$this->Request->itemAt('from');
+        if( $date_from!==null )
+          $this->Range->From->Text=$date_from;
+
+        $date_to=$this->Request->itemAt('to');
+        if( $date_to!==null )
+          $this->Range->To->Text=$date_to;
+      }
 
     $from=$this->Range->From->Date;
     $to=$this->Range->To->Date;
@@ -32,6 +43,7 @@ class DataMiningSeverity extends TPage
     else
       $query='DMSeveritiesIP';
 
+    $this->setCallback($from,$to,$src,$dst,$severities);
     $this->generateGraph($width,$height,$query,$from,$to,$severities,$src,$dst);
   }
 
@@ -48,6 +60,22 @@ class DataMiningSeverity extends TPage
                      'dst' => $dst);
 
     return $this->getRequest()->constructUrl('graph', "SeverityPie", $linkdata, false);
+  }
+
+  private function constructUrlForCallbacks($type,$from,$to,$srcip,$dstip,$severities)
+  {
+    $linkdata=array( 'srcip' => $srcip,
+                     'dstip' => $dstip,
+                     'from' => $from,
+                     'to' => $to,
+                     'severities' => $severities);
+
+    return $this->getRequest()->constructUrl('page', $type, $linkdata);
+  }
+
+  private function setCallback($from,$to,$srcip,$dstip,$severities)
+  {
+    $this->AlertsLink->NavigateUrl=$this->constructUrlForCallbacks("Alerts",$from,$to,$srcip,$dstip,$severities);
   }
 
   private function generateGraph($width,$height,$query,$from,$to,$severities,$src,$dst)

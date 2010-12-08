@@ -127,6 +127,19 @@
     SELECT count(*) FROM meta_alerts WHERE id NOT IN ( SELECT id_child FROM meta_alerts_tree ) ORDER BY create_time DESC limit #limit# offset #offset# <!--unsure-->
   </select>
 
+  <!-- Queries for statistics -->
+  <select id="SMetaAlertsInUse" resultClass="int">
+    SELECT count(*) FROM meta_alerts_in_use;
+  </select>
+
+  <select id="SAlertCount" resultClass="int">
+    SELECT count(*) FROM alerts;
+  </select>
+
+  <select id="SMetaAlertCount" resultClass="int">
+    SELECT count(*) FROM meta_alerts;
+  </select>
+
   <!-- Queries for lists of items -->
 
   <select id="SelectUsers" resultClass="CUserRecord" parameterClass="CParamLimitOffset">
@@ -179,7 +192,7 @@
          ON h1.id_alert=h2.id_alert
      ) AS h
      ON h.id_alert=x.id
-     ORDER BY x.create_time
+     ORDER BY x.create_time DESC
      LIMIT #limit#
      OFFSET #offset#
     ]]>
@@ -257,17 +270,19 @@
   </select>
 
   <!-- HeatMap Query -->
-  <select id="DMHeatMapRange" resultClass="CDMHeatMap" parameterClass="CDMPair">
+  <select id="DMHeatMapRange" resultClass="CDMHeatMap" parameterClass="CDMPair"  cacheModel="querycache">
     <![CDATA[
        select a.ip as source, b.ip as destination, count(*) as count from hosts as a JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' AND a.id_alert>#key# AND a.id_alert<#value# group by a.ip, b.ip;
      ]]>
   </select>
 
-  <select id="DMHeatMapHostcount" resultClass="CDMPair">
-    select min(id_alert) as key,max(id_alert) as value from hosts;
+  <select id="DMHeatMapHostcount" resultClass="CDMPair" parameterClass="CDMPair" cacheModel="querycache">
+    <![CDATA[
+    SELECT min(id) AS key,max(id) AS value FROM alerts WHERE create_time<=#value# AND create_time>=#key#;
+     ]]>
   </select>
 
-  <select id="DMHeatMapNumAlerts" resultClass="int" parameterClass="CDMQuadruple">
+  <select id="DMHeatMapNumAlerts" resultClass="int" parameterClass="CDMQuadruple" cacheModel="querycache">
     <![CDATA[
        select count(*) as count from hosts as a JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' AND a.id_alert>#value1# AND a.id_alert<#value2# AND a.ip=#value3# AND b.ip=#value4#;
      ]]>

@@ -2,17 +2,17 @@
  * MailSender.cpp
  *
  */
+#include <string>
 #include <cstring>
+#include <boost/lexical_cast.hpp>
+#include <cassert>
 
-#include "System/ScopedPtrCustom.hpp"
-#include "System/AutoCptr.hpp"
-#include "Base/StrError.hpp"
-#include "Trigger/Mail/MailSmtp.hpp"
+#include "System/ignore.hpp"
 #include "Trigger/Mail/MailSender.hpp"
+#include "Trigger/Mail/CertVerifier.hpp"
 #include "Trigger/Mail/MimeCreateHelper.hpp"
 
-// TODO: fix mem-leaks in this file
-
+using namespace std;
 using namespace System;
 
 namespace Trigger
@@ -21,91 +21,174 @@ namespace Mail
 {
 
 MailSender::MailSender(const Config &cfg):
+  log_("trigger.mail.mailsender"),
   cfg_(cfg)
 {
 }
 
+namespace
+{
+
+string createProtocolPrefix(const Config::Server::Protocol p, const Config::Server::Security s)
+{
+  string out;
+  // select protocol
+  switch( p.toInt() )
+  {
+    case Config::Server::Protocol::SMTP:
+      out+="smtp";
+      break;
+    default:
+      assert(!"unknown protocol - code is not updated");
+      break;
+  } // switch(protocol)
+
+  // select security
+  switch( s.toInt() )
+  {
+    case Config::Server::Security::TLS:
+      // TLS is configured in options
+      break;
+    case Config::Server::Security::SSL:
+      out+="s";
+      break;
+    default:
+      assert(!"unknown security option - code is not updated");
+      break;
+  } // switch(security)
+
+  // return response
+  return out;
+} // createProtocolPrefix()
+
+
+// create URL for vmime
+std::string createURL(const Config::Server &srv)
+{
+  const string proto=createProtocolPrefix(srv.proto_, srv.sec_);
+  return proto + "://" + srv.server_;
+} // createURL()
+
+// configure additional options
+void configureOptions(const Logger::Node &log, const Config &cfg, vmime::ref<vmime::net::session> session)
+{
+  System::ignore(log);
+  assert( session.get()!=NULL );
+  // setup authorization mode
+  {
+    const Config::Authorization *auth=cfg.getAuthorizationConfig();
+    session->getProperties()["transport.smtp.options.need-authentication"]=(auth!=NULL)?"true":"false";
+    if(auth)
+    {
+      LOGMSG_DEBUG(log, "authentication is required");
+      session->getProperties()["transport.smtp.auth.username"]=auth->user_;
+      session->getProperties()["transport.smtp.auth.password"]=auth->pass_;
+    }
+    else
+      LOGMSG_DEBUG(log, "authentication is NOT required");
+  }
+
+  const Config::Server &srv=cfg.getServerConfig();
+
+  // setup server connection paramters
+  {
+    LOGMSG_DEBUG_S(log)<<"connecting to "<<srv.server_<<":"<<srv.port_;
+    session->getProperties()["transport.smtp.server.address"]=srv.server_;
+    session->getProperties()["transport.smtp.server.port"   ]=boost::lexical_cast<string>(srv.port_);
+  }
+
+  // check if encryption is set to TLS
+  {
+    const char *tlsMode=NULL;
+    if( srv.sec_==Config::Server::Security::TLS )
+      tlsMode="true";
+    else
+      tlsMode="false";
+    LOGMSG_DEBUG_S(log)<<"use TLS: "<<tlsMode;
+    // setup in options
+    session->getProperties()["transport.smtp.connection.tls"         ]=tlsMode;
+    session->getProperties()["transport.smtp.connection.tls.required"]=tlsMode;
+  }
+} // configureOptions()
+
+
+// return all recipients as one string
+string toString(const Config::Recipients &r)
+{
+  stringstream ss;
+  for(Config::Recipients::const_iterator it=r.begin(); it!=r.end(); ++it)
+  {
+    if( it!=r.begin() )
+      ss<<" ";
+    ss<<*it;
+  }
+  return ss.str();
+} // toString()
+
+string toString(const vmime::exception &ex)
+{
+  stringstream ss;
+  ss<<"("<<ex.name()<<") "<<ex.what();
+  return ss.str();
+}
+
+} // unnamed namespace
+
+
 void MailSender::send(const std::string &subject, const std::string &content)
 {
-  const Config::Server        &srv =cfg_.getServerConfig();
-  const Config::Authorization *auth=cfg_.getAuthorizationConfig();
-  MailSmtp                     ms;
+  vmime::ref<vmime::net::session>   session;
+  vmime::ref<vmime::net::transport> transport;
 
-  // connect to server
-  switch( srv.sec_.toInt() )
+  // connection part
+  LOGMSG_DEBUG(log_, "connecting to server...");
+  try
   {
-    case Config::Server::Security::STARTTLS:
-      connectionErrorHandle( ( mailsmtp_socket_connect( ms.get(), srv.server_.c_str(), srv.port_ ) ),
-                               "mailsmtp_socket_connect" );
-      break;
+    // create session
+    session=vmime::create<vmime::net::session>();
+    assert( session.get()!=NULL );
+    configureOptions(log_, cfg_, session);
+    // create transport
+    const vmime::utility::url url( createURL( cfg_.getServerConfig() ) );
+    transport=session->getTransport(url);
+    assert( transport.get()!=NULL );
+    // set certificate verifier
+    typedef vmime::ref<vmime::security::cert::certificateVerifier> VerifierRef;
+    VerifierRef verifier=VerifierRef::fromPtr( new CertVerifier( cfg_.getServerConfig() ) );
+    transport->setCertificateVerifier(verifier);
+    // connect to server (certificate will be validated along)
+    LOGMSG_DEBUG_S(log_)<<"connecting to " << static_cast<std::string>(url);
+    transport->connect();
+    LOGMSG_DEBUG(log_, "connected!");
+  }
+  catch(const vmime::exception &ex)
+  {
+    // translate vmime-specific exception to project-wide exception
+    throw ExceptionConnectionError( SYSTEM_SAVE_LOCATION,
+                                    cfg_.getServerConfig().server_.c_str(),
+                                    toString(ex).c_str() );
+  }
 
-    case Config::Server::Security::SSL:
-      connectionErrorHandle( ( mailsmtp_ssl_connect( ms.get(), srv.server_.c_str(), srv.port_ ) ),
-                               "mailsmtp_ssl_connect" );
-      break;
-
-    default:
-      assert(!"invalid/unknown security type - code must be updated first");
-      throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, srv.server_.c_str(),
-                                     "unknown security mode requested");
-      break;
-  } // switch(security_type)
-
-  // proceed with protocol:
-  errorHandle( mailesmtp_ehlo( ms.get() ), "mailesmtp_ehlo" ); // EHLO
-  if(srv.sec_==Config::Server::Security::STARTTLS)              // STARTTLS?
-    errorHandle( mailsmtp_socket_starttls( ms.get() ), "mailsmtp_socket_starttls");
-  if(auth!=NULL)                                                // require authorization?
-    errorHandle( mailsmtp_auth( ms.get(), auth->user_.c_str(), auth->pass_.c_str() ),
-                  "mailsmtp_auth" );                            // AUTH
-  errorHandle( mailesmtp_mail( ms.get(), srv.from_.c_str(), 0, NULL ),
-                "mailesmtp_mail" );                             // FROM
-  errorHandle( mailesmtp_rcpt( ms.get(), cfg_.getRecipientAddress().c_str(),
-                                MAILSMTP_DSN_NOTIFY_FAILURE|MAILSMTP_DSN_NOTIFY_DELAY, NULL ),
-                "mailesmtp_rcpt" );                             // TO
-  errorHandle( mailsmtp_data( ms.get() ), "mailsmtp_data" );   // DATA
-  // data-part headers and stuff...
-  MimeCreateHelper   mch(srv.from_, cfg_.getRecipientAddress(), subject, content);
-  const std::string &whole=mch.createMimeMessage();
-  errorHandle( mailsmtp_data_message( ms.get(), whole.c_str(), whole.length() ),
-                "mailsmtp_data_message" );                      // message body goes here
-
-  errorHandle( mailsmtp_quit( ms.get() ), "mailsmtp_quit" );   // QUIT
-}
-
-void MailSender::connectionErrorHandle(int ret, const char *call) const
-{
-  if( !isError(ret) )
-    return;
-  // oops - we have a problem
-  std::string err(call);
-  err.append("(): ");
-  err.append( mailsmtp_strerror(ret) );
-  const Base::StrError se;
-  err.append("; ");
-  err.append( se.get() );
-  throw ExceptionConnectionError( SYSTEM_SAVE_LOCATION,
-                                  cfg_.getServerConfig().server_.c_str(),
-                                  se.get().c_str() );
-}
-
-void MailSender::errorHandle(const int ret, const char *call) const
-{
-  if( !isError(ret) )
-    return;
-  // oops - we have a problem
-  std::string err(call);
-  err.append("(): ");
-  err.append( mailsmtp_strerror(ret) );
-  throw ExceptionSendingError( SYSTEM_SAVE_LOCATION,
-                               cfg_.getServerConfig().from_.c_str(),
-                               cfg_.getRecipientAddress().c_str(),
-                               err.c_str() );
-}
-
-bool MailSender::isError(const int ret) const
-{
-  return ret!=MAILSMTP_NO_ERROR;
+  // sending message part
+  LOGMSG_DEBUG(log_, "sending e-mail...");
+  try
+  {
+    LOGMSG_DEBUG_S(log_)<<"sending to: "<<toString( cfg_.getRecipientsAddresses() );
+    MimeCreateHelper             mch( cfg_.getSenderAddress(), cfg_.getRecipientsAddresses(), subject, content );
+    MimeCreateHelper::MessagePtr msg=mch.createMimeMessage();
+    transport->send(msg);
+    LOGMSG_DEBUG(log_, "e-mail sent successfully");
+  }
+  catch(const vmime::exception &ex)
+  {
+    LOGMSG_ERROR_S(log_)<<"error sending message (to: "<<toString( cfg_.getRecipientsAddresses() )
+                        <<"): "<<toString(ex);
+    // translate vmime-specific exception to project-wide exception
+    throw ExceptionSendingError( SYSTEM_SAVE_LOCATION,
+                                 cfg_.getSenderAddress().c_str(),
+                                 toString( cfg_.getRecipientsAddresses() ).c_str(),
+                                 toString(ex).c_str() );
+  }
 }
 
 } // namespace Mail

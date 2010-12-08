@@ -23,14 +23,14 @@
     <module id="response" class="THttpResponse" Charset="UTF-8" />
 
     <module class="System.Data.TDataSourceConfig" id="db_conn">
-      <database ConnectionString="pgsql:host=localhost;dbname=testdb" Username="acarm-ng-ui" Password="test.ui" />
+      <database ConnectionString="pgsql:host=localhost;dbname=acarm_ng_test" Username="acarm-ng-ui" Password="test.ui" />
     </module>
 
     <module class="TActiveRecordConfig" EnableCache="false" ConnectionID="db_conn" />
 
-    <module id="mp-sqlmap" class="System.Data.SqlMap.TSqlMapConfig" EnableCache="false" ConfigFile="protected/mp-sqlmap.xml" ConnectionID="db_conn" />
+    <module id="mp-sqlmap" class="System.Data.SqlMap.TSqlMapConfig" EnableCache="true" ConfigFile="protected/mp-sqlmap.xml" ConnectionID="db_conn" />
 
-    <!-- Remove this comment mark to enable caching
+    <!--
     <module id="cache" class="System.Caching.TDbCache" />
     -->
 
