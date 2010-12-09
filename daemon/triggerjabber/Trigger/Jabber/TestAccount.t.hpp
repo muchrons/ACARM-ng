@@ -47,52 +47,52 @@ Trigger::Jabber::AccountConfig getTestConfig(void)
 
 class Handler : public MessageSessionHandler, MessageHandler
 {
-  public:
-    Handler(Trigger::Jabber::Connection &conn):
-      conn_(conn),
-      msg_(false),
-      message_(""),
-      sess_(0)
-    {
-      conn_.get()->registerMessageSessionHandler( this );
-    }
-    ~Handler()
-    {
-    }
+public:
+  Handler(Trigger::Jabber::Connection &conn):
+    conn_(conn),
+    msg_(false),
+    message_(""),
+    sess_(0)
+  {
+    conn_.get()->registerMessageSessionHandler( this );
+  }
+  ~Handler()
+  {
+  }
 
-    virtual void handleMessage(const Message &m, MessageSession *session)
-    {
-      msg_=true;
-      message_=m.body();
-      //TODO: check if session is not null
-      sender_ = session->target().username() + "@" + session->target().server();
-    }
+  virtual void handleMessage(const Message &m, MessageSession *session)
+  {
+    msg_=true;
+    message_=m.body();
+    //TODO: check if session is not null
+    sender_ = session->target().username() + "@" + session->target().server();
+  }
 
-    bool receiving()
-    {
-      conn_.get()->recv();
-      if(msg_)
-        return true;
-      return false;
-    }
+  bool receiving()
+  {
+    conn_.get()->recv();
+    if(msg_)
+      return true;
+    return false;
+  }
 
-    const std::string getMessage()
-    {
-      return message_;
-    }
+  const std::string getMessage()
+  {
+    return message_;
+  }
 
-    const std::string getSender()
-    {
-      return sender_;
-    }
+  const std::string getSender()
+  {
+    return sender_;
+  }
 
-    virtual void handleMessageSession( MessageSession *session )
-    {
-      if(session)
-        conn_.get()->disposeMessageSession( sess_ );
-      sess_ = session;
-      sess_->registerMessageHandler( this );
-    }
+  virtual void handleMessageSession( MessageSession *session )
+  {
+    if(session)
+      conn_.get()->disposeMessageSession( sess_ );
+    sess_ = session;
+    sess_->registerMessageHandler( this );
+  }
 
   private:
     Trigger::Jabber::Connection &conn_;

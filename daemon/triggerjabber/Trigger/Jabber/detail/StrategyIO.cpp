@@ -71,7 +71,7 @@ void StrategyIO::ping(void)
   reconnectIfNeeded();
   ConnectionAutoPtr conn=conn_;     // take connection
   assert( conn.get()!=NULL );
-  if(conn.get()->get()->recv() != gloox::ConnNoError)
+  if(conn.get()->get()->recv(1000) != gloox::ConnNoError)
   {
     LOGMSG_DEBUG(log_, "unable to send ping - unknown error while sending");
     return;

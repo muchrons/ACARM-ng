@@ -41,7 +41,6 @@ struct PingThread
         boost::this_thread::sleep( boost::posix_time::seconds(60) );
         assert(s_!=NULL);
         s_->ping();                             // ping server
-        s_->discardIncommingMessages();         // throw away anything that might have arrived
       }
       catch(const boost::thread_interrupted &)
       {

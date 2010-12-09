@@ -30,6 +30,7 @@ void MessageIO::send(const std::string &receiver, const std::string &msg)
   assert( conn_.get()!=NULL );
   discardIncommingMessages();
   conn_.get()->send(m);
+  discardIncommingMessages();
   // all done
   LOGMSG_DEBUG_S(log_)<<"message to user "<<receiver<<" sent";
 }
@@ -38,7 +39,7 @@ void MessageIO::discardIncommingMessages(void)
 {
   assert( conn_.get()!=NULL );
   LOGMSG_DEBUG(log_, "discarding all incomming messages");
-  conn_.get()->recv();
+  conn_.get()->recv(1000);
   LOGMSG_DEBUG(log_, "all messages have been discarded");
 }
 

@@ -31,7 +31,7 @@ Connection::Connection(const AccountConfig &cfg):
 
 Connection::~Connection(void)
 {
-  sess_.get()->recv();
+  sess_.get()->recv(1000);
   // set status to unavailable
   sess_.get()->setPresence(gloox::Presence::Unavailable, 100 );
   LOGMSG_INFO(log_, "disconnecting from Jabber server");
