@@ -61,7 +61,7 @@ AutoSession Connection::connect(void) const
     }
     else
     {
-      throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
+      throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "authentication error");
     }
   }
   if( sess.get()->recv() )
