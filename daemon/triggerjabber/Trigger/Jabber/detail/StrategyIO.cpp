@@ -64,6 +64,23 @@ void StrategyIO::send(const std::string &msg)
   assert( conn_.get()!=NULL );
 }
 
+void StrategyIO::ping(void)
+{
+  Lock lock(mutex_);
+  LOGMSG_DEBUG(log_, "sending ping to server");
+  reconnectIfNeeded();
+  ConnectionAutoPtr conn=conn_;     // take connection
+  assert( conn.get()!=NULL );
+  if(conn.get()->get()->recv(1000) != gloox::ConnNoError)
+  {
+    LOGMSG_DEBUG(log_, "unable to send ping - unknown error while sending");
+    return;
+  }
+  LOGMSG_DEBUG(log_, "ping sent");
+  conn_=conn;                       // give connection back
+  assert( conn_.get()!=NULL );
+}
+
 void StrategyIO::discardIncommingMessages(void)
 {
   Lock lock(mutex_);

@@ -57,4 +57,6 @@ void testObj::test<2>(void)
   io_.discardIncommingMessages();
 }
 
+// TODO: add smoke test for ping().
+
 } // namespace tut

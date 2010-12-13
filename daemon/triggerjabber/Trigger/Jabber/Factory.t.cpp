@@ -63,6 +63,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  // TODO: make this common code, with file name and output size a parameter.
   ConfigIO::Singleton::get()->rereadConfig("testdata/valid_config.xml");
   const TriggersCollection fc=create(queue_);
   ensure_equals("no triggers created", fc.size(), 1u);

@@ -29,7 +29,8 @@ public:
 private:
   virtual void triggerImpl(const ConstNode &n);
 
-  detail::StrategyIO io_;
+  detail::StrategyIO       io_;
+  Commons::Threads::Thread pingThread_;
 }; // class Strategy
 
 } // namespace Jabber
