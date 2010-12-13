@@ -5,6 +5,7 @@
 #include <gloox/message.h>
 #include <gloox/client.h>
 #include <gloox/presence.h>
+
 #include "Logger/Logger.hpp"
 #include "System/ScopedPtrCustom.hpp"
 #include "Trigger/Jabber/Connection.hpp"
@@ -26,14 +27,18 @@ Connection::Connection(const AccountConfig &cfg):
   cfg_(cfg),
   sess_( connect() )
 {
+  // TODO: header not included for assert()
   assert( sess_.get()!=NULL );
 }
 
 Connection::~Connection(void)
 {
+  // TODO: these calls could potentially throw - add proper protection.
   sess_.get()->recv(1000);
   // set status to unavailable
   sess_.get()->setPresence(gloox::Presence::Unavailable, 100 );
+  // TODO: this probaby should be the very first line in the d-tor, to see what happened
+  //       in case of error.
   LOGMSG_INFO(log_, "disconnecting from Jabber server");
 }
 
@@ -42,17 +47,22 @@ AutoSession Connection::connect(void) const
 {
   gloox::JID jid(cfg_.getLogin() + "@" + cfg_.getServer() + "/acarm-ng");
   AutoSession sess(new gloox::Client(jid, cfg_.getPassword()));
+  // TODO: sess.get()!=NULL can be asserter. in case of error exception will be thrown.
   // sanity check
   if( sess.get()==NULL )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "NULL structure received (login failed)");
   // check if connection was established
+  // TODO: AutoSession has arrow operatordefined
   if(!sess.get()->connect(false))
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "not connected to server");
+  // TODO: this loop (and maby more?) should be separate method, since it is long and does
+  //       separate sub-functionality.
   bool quit=false;
   // login
   while(!quit)
   {
     gloox::ConnectionError ce = sess.get()->recv();
+    // TODO: refactor to make code easier to read: if(error) throw; ...
     if(ce == gloox::ConnNoError)
     {
       // check if user is authorized

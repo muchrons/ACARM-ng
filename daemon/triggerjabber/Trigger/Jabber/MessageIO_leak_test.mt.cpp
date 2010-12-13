@@ -19,6 +19,7 @@ int main(void)
     mio.discardIncommingMessages();
   for(int i=0; i<2; ++i)
     mio.send( getTestConfig2().getLogin() + "@" + getTestConfig2().getServer(), "alice has a cat" );
+  // TODO: add reconnectiong test as well
 
   return 0;
 }

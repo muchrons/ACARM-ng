@@ -44,7 +44,6 @@ Trigger::Jabber::AccountConfig getTestConfig(void)
 }
 
 
-
 class Handler : public MessageSessionHandler, MessageHandler
 {
 public:
@@ -56,6 +55,7 @@ public:
   {
     conn_.get()->registerMessageSessionHandler( this );
   }
+  // TODO: do not write default c-tor if not needed
   ~Handler()
   {
   }
@@ -76,11 +76,13 @@ public:
     return false;
   }
 
+  // TODO: const-ref
   const std::string getMessage()
   {
     return message_;
   }
 
+  // TODO: const-ref
   const std::string getSender()
   {
     return sender_;

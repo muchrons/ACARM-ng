@@ -14,6 +14,7 @@ using namespace TestHelpers::Persistency;
 namespace
 {
 
+// TODO: since persistency is niot used here, TestStubs canbe removed
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
 };
@@ -42,6 +43,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  // TODO: this try{}catch() is common of r3 test cases - make this method of TestClass
+  //       parametrized with AccountConfig.
   try
   {
     Connection conn( AccountConfig("jabber.wrong", "acarm-ng1", "testaccount") );
