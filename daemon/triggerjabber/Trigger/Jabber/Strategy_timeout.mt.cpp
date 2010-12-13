@@ -26,7 +26,9 @@ int main(int argc, char **argv)
                       Config::Receivers(receiver),
                       Trigger::Simple::ThresholdConfig("0.0", "0") );
     Strategy     s("jabbermtesttimeout", cfg);
-
+    Strategy::ChangedNodes nc;
+    // send some message - connection should be initialized
+    s.process( TestHelpers::Persistency::makeNewNode(), nc ); // trigger and send
     const int init=15*60;
     cerr<<"waiting some time ("<<init/60<<"[m]) - if sending keep alive message doesn't work, it will timeout..."<<endl;
     for(int left=init; left>0; --left)
@@ -39,7 +41,6 @@ int main(int argc, char **argv)
     cerr<<"ok - now trying to send message to "<<receiver<<endl;
 
     // send some message - connection should still be available
-    Strategy::ChangedNodes nc;
     s.process( TestHelpers::Persistency::makeNewNode(), nc ); // trigger and send
     return 0;
   }

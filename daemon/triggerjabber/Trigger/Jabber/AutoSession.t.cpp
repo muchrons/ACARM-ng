@@ -3,7 +3,7 @@
  *
  */
 #include <tut.h>
-#include <loudmouth/loudmouth.h>
+#include <gloox/client.h>
 
 #include "Trigger/Jabber/AutoSession.hpp"
 #include "Trigger/Jabber/TestAccount.t.hpp"
@@ -44,7 +44,8 @@ template<>
 void testObj::test<2>(void)
 {
   const AccountConfig ac( getTestConfig() );
-  AutoSession           ags( lm_connection_new( ac.getServer().c_str() ) );
+  gloox::JID jid(ac.getLogin() + "@" + ac.getServer() + "/acarm-ng");
+  AutoSession           ags( new gloox::Client(jid, ac.getPassword()) );
   ensure("conneciton error", ags.get()!=NULL );
 }
 
@@ -54,7 +55,8 @@ template<>
 void testObj::test<3>(void)
 {
   const AccountConfig ac( getTestConfig() );
-  AutoSession         ags( lm_connection_new( ac.getServer().c_str() ) );
+  gloox::JID jid(ac.getLogin() + "@" + ac.getServer() + "/acarm-ng");
+  AutoSession         ags( new gloox::Client(jid, ac.getPassword()) );
   ensure("conneciton error", ags.get()!=NULL );
   AutoSession         out;
   ensure("NULL-initialization failed", out.get()==NULL );

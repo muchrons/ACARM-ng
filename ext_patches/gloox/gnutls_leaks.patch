@@ -1,0 +1,1021 @@
+Index: src/tlsgnutlsclient.cpp
+===================================================================
+--- src/tlsgnutlsclient.cpp	(wersja 4380)
++++ src/tlsgnutlsclient.cpp	(kopia robocza)
+@@ -13,7 +13,6 @@
+ 
+ 
+ #include "tlsgnutlsclient.h"
+-
+ #ifdef HAVE_GNUTLS
+ 
+ #include <errno.h>
+@@ -34,6 +33,8 @@
+ 
+   GnuTLSClient::~GnuTLSClient()
+   {
++    if( m_credentials )
++      gnutls_certificate_free_credentials( m_credentials );
+   }
+ 
+   void GnuTLSClient::cleanup()
+@@ -61,9 +62,6 @@
+     const int compPriority[]     = { GNUTLS_COMP_ZLIB, GNUTLS_COMP_NULL, 0 };
+     const int macPriority[]      = { GNUTLS_MAC_SHA, GNUTLS_MAC_MD5, 0 };
+ 
+-    if( m_initLib && gnutls_global_init() != 0 )
+-      return false;
+-
+     if( gnutls_certificate_allocate_credentials( &m_credentials ) < 0 )
+       return false;
+ 
+Index: src/tlsgnutlsserveranon.cpp
+===================================================================
+--- src/tlsgnutlsserveranon.cpp	(wersja 4380)
++++ src/tlsgnutlsserveranon.cpp	(kopia robocza)
+@@ -49,9 +49,6 @@
+     const int compPriority[]     = { GNUTLS_COMP_ZLIB, GNUTLS_COMP_NULL, 0 };
+     const int macPriority[]      = { GNUTLS_MAC_SHA, GNUTLS_MAC_MD5, 0 };
+ 
+-    if( m_initLib && gnutls_global_init() != 0 )
+-      return false;
+-
+     if( gnutls_anon_allocate_server_credentials( &m_anoncred ) < 0 )
+       return false;
+ 
+Index: src/AtExit.hpp
+===================================================================
+--- src/AtExit.hpp	(wersja 0)
++++ src/AtExit.hpp	(wersja 0)
+@@ -0,0 +1,64 @@
++/*
++ * AtExit.hpp
++ *
++ */
++#ifndef ATEXIT_HPP_FILE
++#define ATEXIT_HPP_FILE
++
++/* public header */
++
++#include <memory>
++#include <boost/noncopyable.hpp>
++
++#include "AtExitResourceDeallocator.hpp"
++
++
++namespace gloox
++{
++
++/**
++ * \brief object-oriented atexit() system call wrapper.
++ *
++ * when using atexit() it can be seen that it is problematic
++ * in 2 ways:
++ *   1) POSIX says that there has to be possibility to
++ *      register at least 32 handlers. this is not much...
++ *   2) it requires to register extern "C" function pointer which
++ *      is not scalable since it does not allow registration of
++ *      multiple handlers of the same type, but operating on
++ *      diffrent resources.
++ *
++ * in order to overcome this limitations OO AtExit has been provided.
++ * it allows to register as many structures as system memory can
++ * handle. it also gets object instance as argument, so it is simple
++ * to register calls for instances of other objects (not only types).
++ *
++ * class behaves as singleton (via registerDealocator() method)
++ * and is thread-safe through whole program life-time.
++ *
++ */
++class AtExit: private boost::noncopyable
++{
++public:
++  /** \brief pointer to be passed to register call.
++   */
++  typedef std::auto_ptr<AtExitResourceDeallocator> TDeallocPtr;
++  /** \brief registers next handler.
++   * registers inside internal structures object that will
++   * dealocate resource during application's exit. it takes
++   * ownership of dealocator.
++   * \param p smart pointer to dealocator to be registered.
++   */
++  static void registerDeallocator(TDeallocPtr p);
++
++private:
++  AtExit(void);
++
++  static void init(void);
++  static void registerInternal(TDeallocPtr p);
++}; // class AtExit
++
++} // namespace System
++
++#endif
++
+Index: src/GlobalInit.hpp
+===================================================================
+--- src/GlobalInit.hpp	(wersja 0)
++++ src/GlobalInit.hpp	(wersja 0)
+@@ -0,0 +1,208 @@
++/*
++ * GlobalInit.hpp
++ *
++ */
++#ifndef GLOBALINIT_HPP_FILE
++#define GLOBALINIT_HPP_FILE
++
++/* public header */
++
++#include "SafeInitLocking.hpp"
++#include "AtExit.hpp"
++#include "ignore.hpp"
++
++namespace gloox
++{
++
++namespace detail
++{
++/** \brief helper function giving access to global mutex.
++ *  \return reference to global mutex used for locking GlobalInit() internals.
++ */
++SafeInitLock::MutexType &getGlobalInitMutex(void);
++} // namespace detail
++
++/**
++ * \brief template wrapper for global (de)initilization oof data.
++ *
++ * number of libraries uses global data that are not initialized
++ * in the proper way, sometimes are not uninitializaed at all, initalizaiton
++ * is not thread safe, etc... this wrapper solves this issues.
++ *
++ * this class initializes user object in thread-safe way, and uninitializes
++ * it uppon program exit. when it is needed once more, it will be
++ * re-initialized and deallocated stright away.
++ *
++ * used-defined T type has to provide static methods init() and uninit()
++ * that performs as-is initialization (i.e. no locking, checks, etc... are
++ * required - it is all done by GlobalInit<> template) and uninitialization
++ * of given element, respecitively.
++ * when init() throws, uninit() is never called.  uninit() must NOT throw!
++ *
++ * init() is ensured to be called exactly once, during the first object's
++ * creation (thread safe, with valid object creation order preserved).
++ * uninit() is ensured to be called exactly once (if init() didn't throw)
++ * when program exits. it is ensured that uninit() will NOT be called
++ * until main() exits and last object holds GlobalInit<> copy. notice however
++ * that when new GlobalInit<> instances will be created after leaving main()
++ * it may happen that init()+uninit() sequence will be called more than once,
++ * in proper order.
++ *
++ * typical usage in code goes as follows:
++ * <code>
++ *   namespace detail
++ *   {
++ *     struct MyLibInitImpl
++ *     {
++ *       static void init(void)
++ *       {
++ *         // initialization code for MyLib here
++ *       }
++ *       static void uninit(void)
++ *       {
++ *         // uninitialization code for MyLib here
++ *       }
++ *     };
++ *   }
++ *   typedef System::GlobalInit<detail::MyLibInitImpl> MyLibInit;
++ *   // ...
++ *   MyLibInit mylibinit;
++ *   // from this point in time MyLib is initialized and can be used.
++ *   // ...
++ * </code>
++ *
++ * notice that it is good practice to keep GlobalInit<> instance as a private
++ * object member for those elements that relay on given library to be initialized.
++ */
++template<typename T>
++class GlobalInit
++{
++private:
++  typedef enum
++  {
++    STATE_UNINITIALIZED,    // not yet initialized
++    STATE_INITIALIZED,      // init() called
++    STATE_ATEXIT_END        // atexit() finished but was unable to uninit() (still in use)
++  } State;
++
++public:
++  /** \brief create handle object.
++   *
++   *  initializes library, if not already initialized. increases usage count.
++   */
++  GlobalInit(void)
++  {
++    SafeInitLock lock( mutex() );
++    if( mark(lock)==STATE_UNINITIALIZED )
++    {
++      assert( counter(lock)==0 );
++      GlobalUninit        *tmp=new GlobalUninit();
++      AtExit::TDeallocPtr  uninit(tmp);     // put to auto-ptr
++      AtExit::registerDeallocator(uninit);  // register uninitializer
++      T::init();                            // initialize user object
++      mark(lock)=STATE_INITIALIZED;         // mark successfull initialization
++    }
++    // mark usage
++    ++counter(lock);
++  }
++
++  /** \brief copy constructor.
++   *
++   *  increases reference count.
++   */
++  GlobalInit(const GlobalInit &/*other*/)
++  {
++    SafeInitLock lock( mutex() );
++    assert( counter(lock)>0 );
++    assert( mark(lock)!=STATE_UNINITIALIZED );
++    // mark usage
++    ++counter(lock);
++  }
++
++  /** \brief assignment operator.
++   *  \return const-reference to this object.
++   */
++  const GlobalInit &operator=(const GlobalInit &/*other*/)
++  {
++    SafeInitLock lock( mutex() );
++    assert( counter(lock)>0 );
++    assert( mark(lock)!=STATE_UNINITIALIZED );
++    // NOTE: nothing has to be done here, since each copy is equivalent to
++    //       other (no private fields) and overwriting one instance with
++    //       another does not change total objects count (i.e. object being
++    //       assigned to already exists).
++    return *this;
++  }
++
++  /** \brief destroy object being referenced.
++   *
++   *  decreases reference count. if this is last instance holding reference
++   *  and atexit() is already done, this will uninitialize library as well.
++   */
++  ~GlobalInit(void)
++  {
++    SafeInitLock lock( mutex() );
++    assert( counter(lock)>0 );
++    assert( mark(lock)!=STATE_UNINITIALIZED );
++    // mark usage
++    --counter(lock);
++    // if this is the last instance and atexit() has been already
++    // finished we have to deallocate ourselves
++    if( counter(lock)==0 && mark(lock)==STATE_ATEXIT_END )
++      uninit(lock);
++  }
++
++private:
++  // helper class to uninitialize given library
++  struct GlobalUninit: public AtExitResourceDeallocator
++  {
++    // deallocation itself
++    virtual void deallocate(void)
++    {
++      SafeInitLock lock( mutex() );
++      if( mark(lock)==STATE_UNINITIALIZED ) // something failed during initialization - do nothing
++        return;
++      if( counter(lock)==0 )                // only if no one is using this any more
++        uninit(lock);                       // if not used, uninitialize it
++      else
++        mark(lock)=STATE_ATEXIT_END;        // makr that atexit() didn't called uninit()
++    }
++  }; // struct GlobalUninit
++
++  // get per-instance mutex (required to allow chain-initialization)
++  static SafeInitLock::MutexType &mutex(void)
++  {
++    // it has to be locked by global mutex to ensure valid initialization
++    // before first usage
++    SafeInitLock lock( detail::getGlobalInitMutex() );
++    // this is static inside
++    SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(mutex);
++    return mutex;
++  }
++  // this must be done within a lock to ensure safe initialization
++  static unsigned long &counter(SafeInitLock &)
++  {
++    static unsigned long cnt=0;
++    return cnt;
++  }
++  // mark that atexit handle has already finished
++  static State &mark(SafeInitLock &)
++  {
++    static State mark=STATE_UNINITIALIZED;
++    return mark;
++  }
++  // performs deallocation
++  static void uninit(SafeInitLock &lock)
++  {
++    ignore(lock);
++    assert( counter(lock)==0 );
++    assert( mark(lock)!=STATE_UNINITIALIZED );
++
++    T::uninit();                        // not used, so can be uninitialized
++    mark(lock)=STATE_UNINITIALIZED;     // mark deallocation
++  }
++}; // class GlobalInit
++
++} // namespace gloox
++
++#endif
+Index: src/tlsgnutlsserveranon.h
+===================================================================
+--- src/tlsgnutlsserveranon.h	(wersja 4380)
++++ src/tlsgnutlsserveranon.h	(kopia robocza)
+@@ -16,6 +16,7 @@
+ #define TLSGNUTLSSERVERANON_H__
+ 
+ #include "tlsgnutlsbase.h"
++#include "TLSInit.hpp"
+ 
+ #include "config.h"
+ 
+@@ -61,6 +62,7 @@
+       virtual void getCertInfo();
+       void generateDH();
+ 
++      TLSInit tlsinit;
+       gnutls_anon_server_credentials_t m_anoncred;
+       gnutls_dh_params_t m_dhParams;
+ 
+Index: src/AtExitResourceDeallocator.hpp
+===================================================================
+--- src/AtExitResourceDeallocator.hpp	(wersja 0)
++++ src/AtExitResourceDeallocator.hpp	(wersja 0)
+@@ -0,0 +1,75 @@
++/*
++ * AtExitResourceDealocator.hpp
++ *
++ */
++#ifndef ATEXITRESOURCEDEALOCATOR_HPP_FILE
++#define ATEXITRESOURCEDEALOCATOR_HPP_FILE
++
++/* public header */
++
++#include <memory>
++#include <boost/noncopyable.hpp>
++#include <cassert>
++
++
++namespace gloox
++{
++
++/** \brief resource's deallocator interface.
++ *
++ * base class for all deallocators that are to be
++ * registered with AtExit class.
++ */
++struct AtExitResourceDeallocator: private boost::noncopyable
++{
++  /** \brief virtual destructor for polimorphic collections.
++   */
++  virtual ~AtExitResourceDeallocator(void)
++  {
++  }
++  /** \brief resource deallocating method.
++   *
++   * method that is called by AtExit when program quits.
++   * treat it the same way as destructors - it should NOT
++   * throw.
++   * it is guaranteed that AtExit will call this method
++   * exactly once for each object, when quiting.
++   */
++  virtual void deallocate(void)=0;
++}; // struct AtExitResourceDeallocator
++
++
++/** \brief template for dealocating pointers to classes.
++ */
++template<typename T>
++class AtExitMemoryDeallocator: public AtExitResourceDeallocator
++{
++public:
++  /** \brief creates dealocator from pointer.
++   *  \param t pointer to object to be deleted.
++   */
++  explicit AtExitMemoryDeallocator(T *t):
++    t_(t)
++  {
++  }
++  /** \brief creates dealocator from object's auto pointer.
++   *  \param ap auto pointer to object to be deleted.
++   */
++  explicit AtExitMemoryDeallocator(std::auto_ptr<T> ap):
++    t_(ap)
++  {
++  }
++  /** \brief deletes object.
++   */
++  virtual void deallocate(void)
++  {
++    t_.reset();
++  }
++private:
++  std::auto_ptr<T> t_;
++}; // class AtExitMemoryDeallocator
++
++} // namespace gloox
++
++#endif
++
+Index: src/Makefile.am
+===================================================================
+--- src/Makefile.am	(wersja 4380)
++++ src/Makefile.am	(kopia robocza)
+@@ -35,8 +35,9 @@
+                         shim.cpp softwareversion.cpp attention.cpp \
+                         tlsopensslclient.cpp tlsopensslbase.cpp \
+                         tlsopensslserver.cpp compressiondefault.cpp \
+-                        connectiontlsserver.cpp
++                        connectiontlsserver.cpp AtExit.cpp AtExitImpl.cpp GlobalInit.cpp SafeInitLocking.cpp
+ 
++
+ libgloox_la_LDFLAGS = -version-info 8:0:0 -no-undefined -no-allow-shlib-undefined
+ libgloox_la_LIBADD =
+ libgloox_la_CFLAGS = $(CPPFLAGS)
+@@ -96,7 +97,9 @@
+                    tlsgnutlsclient.h \
+                    tlsgnutlsbase.h tlsgnutlsclientanon.h tlsgnutlsserveranon.h tlsopensslbase.h tlsschannel.h \
+                    compressionzlib.h rosteritemdata.h tlsopensslclient.h \
+-                   tlsopensslserver.h
++                   tlsopensslserver.h \
++                            AtExit.hpp AtExitResourceDeallocator.hpp GlobalInit.hpp SafeInitLocking.hpp \
++                            AtExitImpl.hpp  FunctionName.hpp               ignore.hpp      TLSInit.hpp
+ 
+ EXTRA_DIST = version.rc
+ 
+Index: src/SafeInitLocking.cpp
+===================================================================
+--- src/SafeInitLocking.cpp	(wersja 0)
++++ src/SafeInitLocking.cpp	(wersja 0)
+@@ -0,0 +1,43 @@
++/*
++ * SafeInitLocking.cpp
++ *
++ */
++#include <iostream>
++#include <cassert>
++
++#include "SafeInitLocking.hpp"
++
++using namespace std;
++
++namespace gloox
++{
++
++//
++// NOTE: c-tor/d-tor only shows messages since in geneal it is a bad idea to
++//       close application from library level. though IF it will ever happen
++//       that any of these conditions will fail, application my become
++//       useless (hang, crash or simillar)...
++//
++
++SafeInitLock::SafeInitLock(pthread_mutex_t &mutex):
++  mutex_(mutex)
++{
++  if( pthread_mutex_lock(&mutex_)!=0 )
++  {
++    assert(!"SafeInitLock::SafeInitLock(): unable to lock mutex");
++    cerr<<"SafeInitLock::SafeInitLock(): unable to lock mutex - "
++          "critical section IS NOT PROTECTED!"<<endl;
++  }
++}
++
++SafeInitLock::~SafeInitLock(void)
++{
++  if( pthread_mutex_unlock(&mutex_)!=0 )
++  {
++    assert(!"SafeInitLock::~SafeInitLock(): unable to unlock mutex");
++    cerr<<"SafeInitLock::~SafeInitLock(): unable to unlock mutex - "
++          "critical section IS NOT RELEASED!"<<endl;
++  }
++}
++
++} // namespace gloox
+Index: src/TLSInit.hpp
+===================================================================
+--- src/TLSInit.hpp	(wersja 0)
++++ src/TLSInit.hpp	(wersja 0)
+@@ -0,0 +1,23 @@
++#ifndef TLSINIT_HPP
++#define TLSINIT_HPP
++
++#include <gnutls/gnutls.h>
++
++#include "GlobalInit.hpp"
++
++namespace gloox
++{
++  struct TLSInitImpl
++  {
++    static void init()
++    {
++      gnutls_global_init();
++    }
++    static void uninit()
++    {
++      gnutls_global_deinit();
++    }
++  };
++  typedef gloox::GlobalInit< gloox::TLSInitImpl > TLSInit;
++} // namespace gloox
++#endif
+Index: src/AtExitImpl.hpp
+===================================================================
+--- src/AtExitImpl.hpp	(wersja 0)
++++ src/AtExitImpl.hpp	(wersja 0)
+@@ -0,0 +1,52 @@
++/*
++ * AtExitImpl.hpp
++ *
++ */
++#ifndef ATEXITIMPL_HPP_FILE
++#define ATEXITIMPL_HPP_FILE
++
++#include <deque>
++#include <boost/shared_ptr.hpp>
++#include <boost/noncopyable.hpp>
++
++#include "AtExitResourceDeallocator.hpp"
++#include "AtExit.hpp"
++
++
++namespace gloox
++{
++
++/** \brief implementation class of AtExit.
++ *  \note since AtExit is thread-safe, this one is not.
++ */
++class AtExitImpl: private boost::noncopyable
++{
++public:
++  /** \brief create object.
++   */
++  AtExitImpl(void);
++  /** \brief destroy object and ensure deallocateAll() has been called.
++   */
++  ~AtExitImpl(void);
++  /** \brief deallocates all registered resources.
++   *  \note this method should be called exactly once during lifetime
++   *        of created object. no registerations can be done after this
++   *        method has been called.
++   */
++  void deallocateAll(void);
++  /** \brief registers new deallocator.
++   *  \param ptr deallocator to be registered.
++   */
++  void registerDeallocator(AtExit::TDeallocPtr ptr);
++
++private:
++  typedef boost::shared_ptr<AtExitResourceDeallocator> TElem;
++  typedef std::deque<TElem>                            TList;
++
++  TList deallocators_;
++  bool  deallocationDone_;
++}; // class AtExitImpl
++
++} // namespace System
++
++#endif
+Index: src/AtExit.cpp
+===================================================================
+--- src/AtExit.cpp	(wersja 0)
++++ src/AtExit.cpp	(wersja 0)
+@@ -0,0 +1,112 @@
++/*
++ * AtExit.cpp
++ *
++ */
++#include <iostream>
++#include <stdlib.h>     // atexit()
++#include <pthread.h>
++#include <boost/checked_delete.hpp>
++#include <cassert>
++
++#include "AtExit.hpp"
++#include "AtExitImpl.hpp"
++#include "SafeInitLocking.hpp"
++
++using namespace std;
++
++
++namespace
++{
++
++//
++// pointer to implementation class of AtExit. it is static, raw
++// pointer since it will be freed by AtExit() uppon application
++// termination.
++//
++// by default this pointer will be NULL when application starts.
++// destination object will be assigned uppon first AtExit class
++// usage (it registeres this pointer).
++//
++// compile-time initialized mutex ensures whole construction is
++// thread safe from the very begining (before any static constructors
++// are run), to the very end.
++//
++gloox::AtExitImpl *atExitImpl=NULL;
++SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_mutex);
++
++} // unnamed namespace
++
++
++// helper that will deallocate objects inside queue and AtExitImpl
++// class itself.
++extern "C"
++{
++static void cStyleCallForAtExit(void)
++{
++  // swap this queue with new (NULL - will be allocated, if needed) so
++  // that it is possible to register new handles while processing
++  // other handles (deallocation).
++  gloox::AtExitImpl *tmp=NULL;
++  {
++    gloox::SafeInitLock lock(g_mutex);
++    tmp       =atExitImpl;
++    atExitImpl=NULL;
++  }
++  // pointer can be null in case when this function has been already
++  // registered, but AtExitImpl's constructor thrown exception or when
++  // adding something to queue from queue itself (ex. Phoenix Singleton).
++  if(tmp!=NULL)
++  {
++    // run dealocation of registered elements
++    tmp->deallocateAll();
++    // free resource
++    boost::checked_delete(tmp);
++  }
++} // cStyleCallForAtExit()
++} // extern "C"
++
++
++namespace gloox
++{
++
++void AtExit::registerDeallocator(TDeallocPtr p)
++{
++  SafeInitLock lock(g_mutex);
++  if(atExitImpl==NULL)          // not initialized?
++    AtExit::init();             // will throw on failure
++  assert(atExitImpl!=NULL);
++
++  AtExit::registerInternal(p);  // forward call to implementation
++}
++
++void AtExit::init(void)
++{
++  // lock for this call is made in registerDeallocator()
++  assert(atExitImpl==NULL);
++
++  // this call, if there is a problem, can be registered/called
++  // multiple times...
++  if( atexit(cStyleCallForAtExit)!=0 )
++    throw "AtExit::AtExit(): "
++          "unable to register handler in atexit() syscall";
++
++  // sanity check
++  assert(atExitImpl==NULL);
++  // init global pointer
++  atExitImpl=new AtExitImpl;
++  // sanity check
++  assert(atExitImpl!=NULL);
++}
++
++void AtExit::registerInternal(TDeallocPtr p)
++{
++  // lock for this call is made in registerDeallocator()
++  if( p.get()==NULL )
++    throw "AtExit::registerInternal(): "
++          "NULL pointer recieved for registration";
++
++  assert(atExitImpl!=NULL);
++  atExitImpl->registerDeallocator(p);
++}
++
++} // namespace gloox
+Index: src/GlobalInit.cpp
+===================================================================
+--- src/GlobalInit.cpp	(wersja 0)
++++ src/GlobalInit.cpp	(wersja 0)
+@@ -0,0 +1,25 @@
++/*
++ * GlobalInit.cpp
++ *
++ */
++#include "GlobalInit.hpp"
++
++namespace
++{
++// gloabl mutex, initialized during program's compilation to be used
++// for all global init instances.
++SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_mutex);
++} // unnamed namespace
++
++namespace gloox
++{
++namespace detail
++{
++
++SafeInitLock::MutexType &getGlobalInitMutex(void)
++{
++  return g_mutex;
++}
++
++} // namespace detail
++} // namespace gloox
+Index: src/tlsgnutlsclientanon.cpp
+===================================================================
+--- src/tlsgnutlsclientanon.cpp	(wersja 4380)
++++ src/tlsgnutlsclientanon.cpp	(kopia robocza)
+@@ -48,9 +48,6 @@
+     const int compPriority[]     = { GNUTLS_COMP_ZLIB, GNUTLS_COMP_NULL, 0 };
+     const int macPriority[]      = { GNUTLS_MAC_SHA, GNUTLS_MAC_MD5, 0 };
+ 
+-    if( m_initLib && gnutls_global_init() != 0 )
+-      return false;
+-
+     if( gnutls_anon_allocate_client_credentials( &m_anoncred ) < 0 )
+       return false;
+ 
+Index: src/tlsgnutlsserver.cpp
+===================================================================
+--- src/tlsgnutlsserver.cpp	(wersja 4380)
++++ src/tlsgnutlsserver.cpp	(kopia robocza)
+@@ -53,9 +53,6 @@
+     const int compPriority[]     = { GNUTLS_COMP_ZLIB, GNUTLS_COMP_NULL, 0 };
+     const int macPriority[]      = { GNUTLS_MAC_SHA, GNUTLS_MAC_MD5, 0 };
+ 
+-    if( m_initLib && gnutls_global_init() != 0 )
+-      return false;
+-
+     if( gnutls_certificate_allocate_credentials( &m_x509cred ) < 0 )
+       return false;
+ 
+Index: src/tlsgnutlsclient.h
+===================================================================
+--- src/tlsgnutlsclient.h	(wersja 4380)
++++ src/tlsgnutlsclient.h	(kopia robocza)
+@@ -16,6 +16,7 @@
+ #define TLSGNUTLSCLIENT_H__
+ 
+ #include "tlsgnutlsbase.h"
++#include "TLSInit.hpp"
+ 
+ #include "config.h"
+ 
+@@ -71,6 +72,7 @@
+       bool verifyAgainst( gnutls_x509_crt_t cert, gnutls_x509_crt_t issuer );
+       bool verifyAgainstCAs( gnutls_x509_crt_t cert, gnutls_x509_crt_t *CAList, int CAListSize );
+ 
++      TLSInit tlsinit;
+       gnutls_certificate_credentials m_credentials;
+ 
+   };
+Index: src/AtExitImpl.cpp
+===================================================================
+--- src/AtExitImpl.cpp	(wersja 0)
++++ src/AtExitImpl.cpp	(wersja 0)
+@@ -0,0 +1,74 @@
++/*
++ * AtExitImpl.cpp
++ *
++ */
++#include <iostream>
++#include <cassert>
++#include <stdlib.h>
++
++#include "AtExitImpl.hpp"
++#include "FunctionName.hpp"
++
++using namespace std;
++using namespace boost;
++
++
++namespace gloox
++{
++
++AtExitImpl::AtExitImpl(void):
++  deallocationDone_(false)
++{
++}
++
++AtExitImpl::~AtExitImpl(void)
++{
++  assert(deallocationDone_ && "deallocateAll() has not been called. "
++                              "this suggest resource leak.");
++  assert(deallocators_.size()==0 && "something registered after "
++                                    "deallocateAll()");
++}
++
++void AtExitImpl::deallocateAll(void)
++{
++  assert(!deallocationDone_ && "deallocateAll() called more than once");
++  deallocationDone_=true;
++
++  // loop throught elements
++  for(TList::reverse_iterator it=deallocators_.rbegin();
++      it!=deallocators_.rend();
++      ++it)
++  {
++    try
++    {
++      // free one more resource :)
++      (*it)->deallocate();
++    }
++    catch(const std::exception &ex)
++    {
++      cerr<<"EXCEPTION in "<<SYSTEM_FUNCTION_NAME<<"(): "<<ex.what()<<endl;
++      assert(!"fatal error - exception from AtExitResourceDeallocator::deallocate() has been thrown");
++      // following code should not be part of the library...
++      //abort();
++    }
++    catch(...)
++    {
++      cerr<<"fatal error - exception has been thrown in "<<SYSTEM_FUNCTION_NAME<<endl;;
++      assert(!"fatal error - exception from AtExitResourceDeallocator::deallocate() has been thrown");
++      // following code should not be part of the library...
++      //abort();
++    }
++  }
++  // ensure each dealocation will take place just once
++  deallocators_.clear();
++}
++
++void AtExitImpl::registerDeallocator(AtExit::TDeallocPtr ptr)
++{
++  assert(!deallocationDone_ && "deallocateAll() already called");
++
++  TElem elem( ptr.release() );      // convert to container-safe ptr type
++  deallocators_.push_back(elem);    // add to container
++}
++
++} // namespace System
+Index: src/ignore.hpp
+===================================================================
+--- src/ignore.hpp	(wersja 0)
++++ src/ignore.hpp	(wersja 0)
+@@ -0,0 +1,31 @@
++/*
++ * ignore.hpp
++ *
++ * helper template to prevent warning from compilers about unused paramter
++ * in release mode (ex.: sometimes it is needed only in debug).
++ *
++ * <code>
++ *   const int count=doSth();
++ *   assert( count>=0 );    // in release this line is not present
++ *   System::ignore(count); // prevent warning - now variable is used
++ * </code>
++ *
++ */
++#ifndef IGNORE_HPP_FILE
++#define IGNORE_HPP_FILE
++
++/* public header */
++
++namespace gloox
++{
++
++/** \brief prevents warnings about unsused variable.
++ */
++template<typename T>
++inline void ignore(const T &/*t*/)
++{
++}
++
++} // namespace System
++
++#endif
+Index: src/client.cpp
+===================================================================
+--- src/client.cpp	(wersja 4380)
++++ src/client.cpp	(kopia robocza)
+@@ -129,7 +129,12 @@
+   {
+     delete m_rosterManager;
+     delete m_auth;
++    for(std::list<const StanzaExtension*>::iterator it = m_presenceExtensions.begin();
++                      it != m_presenceExtensions.end(); ++it)
++    {
++      delete *it;
+   }
++  }
+ 
+   void Client::init()
+   {
+Index: src/prep.cpp
+===================================================================
+--- src/prep.cpp	(wersja 4380)
++++ src/prep.cpp	(kopia robocza)
+@@ -103,6 +103,7 @@
+       if( rc == IDNA_SUCCESS )
+       {
+         out = prepped;
++        free(prepped);
+         return true;
+       }
+       if( rc != IDNA_MALLOC_ERROR )
+Index: src/SafeInitLocking.hpp
+===================================================================
+--- src/SafeInitLocking.hpp	(wersja 0)
++++ src/SafeInitLocking.hpp	(wersja 0)
+@@ -0,0 +1,69 @@
++/*
++ * SafeInitLocking.hpp
++ *
++ */
++#ifndef SAFEINITLOCKING_HPP_FILE
++#define SAFEINITLOCKING_HPP_FILE
++
++/* public header */
++
++#include <pthread.h>
++#include <boost/noncopyable.hpp>
++
++namespace gloox
++{
++
++/** \brief lock that allows thread-safe locking during initialization.
++ *
++ *  problem with common C++ wrappers is that they require c-tor to be run
++ *  before being used. this is problematic, when using global objects from
++ *  multiple threads, before main() since there is no guarantee that locks
++ *  are aldready initialized.
++ *
++ *  the same goes for global resources that are not guaranteed to be
++ *  initialized before being used (i.e. before entering main and after
++ *  leaving main).
++ *
++ *  <code>
++ *  // MyClass.cpp file
++ *
++ *
++ *  void MyClass::staticMethodUsedBeforeMain(void)
++ *  {
++ *    SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(myMutex);   // this (static) mutex is initialized
++ *                                                  // in compile-time.
++ *    SafeInitLock lock(myMutex);           // we can lock, since mutex is
++ *                                          // always valid
++ *    // [critical section goes here]
++ *  }
++ *  </code>
++ */
++class SafeInitLock: private boost::noncopyable
++{
++public:
++  /** \brief typedef to use for representation of mutex. */
++  typedef pthread_mutex_t MutexType;
++
++  /** \brief lock safely initialized mutex.
++   *  \param mutex mutex to be locked.
++   */
++  explicit SafeInitLock(pthread_mutex_t &mutex);
++  /** \brief unlock mutex.
++   */
++  ~SafeInitLock(void);
++
++private:
++  MutexType &mutex_;
++}; // class SafeInitLock
++
++
++/** \brief creates mutex type, that will be initialized during compile-time.
++ *  \param name name for this mutex.
++ *  \note variable defined by this macro is static.
++ *  \warning this macro MUST be places inside function, method or namespace scope.
++ */
++#define SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(name) static gloox::SafeInitLock::MutexType name=PTHREAD_MUTEX_INITIALIZER
++
++} // namespace gloox
++
++#endif
+Index: src/FunctionName.hpp
+===================================================================
+--- src/FunctionName.hpp	(wersja 0)
++++ src/FunctionName.hpp	(wersja 0)
+@@ -0,0 +1,17 @@
++/*
++ * FunctionName.hpp
++ *
++ */
++#ifndef INCLUDE_SYSTEM_FUNCTIONNAME_HPP_FILE
++#define INCLUDE_SYSTEM_FUNCTIONNAME_HPP_FILE
++
++/* public header */
++
++// defines SYSTEM_FUNCTION_NAME macro that gets funciton name.
++#if __GNUC__ >= 3
++  #define SYSTEM_FUNCTION_NAME __PRETTY_FUNCTION__
++#else
++  #define SYSTEM_FUNCTION_NAME __FUNCTION__
++#endif
++
++#endif

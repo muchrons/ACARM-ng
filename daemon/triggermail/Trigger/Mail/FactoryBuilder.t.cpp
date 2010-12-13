@@ -176,4 +176,5 @@ void testObj::test<11>(void)
   ensureThrow(opts_);
 }
 
+// TODO: test sending message to multiple receivers
 } // namespace tut
