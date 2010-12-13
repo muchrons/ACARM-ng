@@ -26,7 +26,7 @@ for f in "$@"
 do
   grep -q "\.page$" <<< "$f" && continue
   $GREP -e '^ *\([^ ]\+ *\)\+{' -e '}.' "$f" | \
-    grep -v -e '};$' -e ' //' -e '"[^"]*[{}]' | \
+    grep -v -e '};$' -e '^[^"]*//' -e '"[^"]*[{}]' -e '\*.*[{}]' -e '\\$' -e ' enum ' | \
     grep --color ': *\([^ ]\+ *\)\+[{}]' && \
     error 11 "bracekts must start/end in new line"
 done
