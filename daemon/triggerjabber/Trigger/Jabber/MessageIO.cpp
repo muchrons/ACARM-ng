@@ -29,6 +29,7 @@ void MessageIO::send(const std::string &receiver, const std::string &msg)
   gloox::Message m(gloox::Message::Chat, gloox::JID(receiver), msg);
   assert( conn_.get()!=NULL );
   discardIncommingMessages();
+  // TODO: use arrow operator instaed of explicitly calling get().
   conn_.get()->send(m);
   discardIncommingMessages();
   // all done
@@ -39,6 +40,7 @@ void MessageIO::discardIncommingMessages(void)
 {
   assert( conn_.get()!=NULL );
   LOGMSG_DEBUG(log_, "discarding all incomming messages");
+  // TODO: use arrow operator instaed of explicitly calling get().
   conn_.get()->recv(1000);
   LOGMSG_DEBUG(log_, "all messages have been discarded");
 }

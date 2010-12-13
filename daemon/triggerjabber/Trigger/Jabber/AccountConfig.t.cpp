@@ -14,6 +14,8 @@ namespace
 struct TestClass
 {
 };
+// TODO: const AccountConfig ac("server.com", "JabberUser", "TheAnswer");
+//       should ba TestClass' member, since it is used in every test case
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
