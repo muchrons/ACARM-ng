@@ -22,7 +22,8 @@ struct EnumTestData
       C=100,
       D=1000,
       E=10000
-    } Type;
+    }
+    Type;
   };
 
   typedef System::Enum<MyEnum> TestEnum;

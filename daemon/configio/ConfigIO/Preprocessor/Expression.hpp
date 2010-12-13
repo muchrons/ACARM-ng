@@ -29,7 +29,8 @@ struct ExpressionType
     OR,
     NOT,
     TERM
-  } Type;
+  }
+  Type;
 };
 } // namespace detail
 

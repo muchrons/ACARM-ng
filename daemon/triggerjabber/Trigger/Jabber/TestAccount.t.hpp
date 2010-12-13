@@ -55,7 +55,8 @@ handleMessages (LmMessageHandler * /*handler*/,
   // TODO: throwing exceptions to C code (here - caller) is undefined behaviour
   tut::ensure("message is NULL", m!=NULL);
   if ((lm_message_get_sub_type (m) != LM_MESSAGE_SUB_TYPE_CHAT &&
-       lm_message_get_sub_type (m) != LM_MESSAGE_SUB_TYPE_NORMAL)) {
+       lm_message_get_sub_type (m) != LM_MESSAGE_SUB_TYPE_NORMAL))
+  {
 
     return LM_HANDLER_RESULT_ALLOW_MORE_HANDLERS;
   }

@@ -1,0 +1,34 @@
+#!/bin/bash
+#
+# script for automated checking basic coding convention rules
+#
+export PATH="/bin:/usr/bin:/usr/local/bin"
+GREP="grep -Hn --color"
+
+function error
+{
+  echo "ERROR: $2" >&2
+  exit "$1"
+}
+
+# if no files, the skip
+[ "$#" -eq 0 ] && exit 0
+
+#
+# tests cases
+#
+
+# check for tabulators and trailing spaces
+$GREP -e $'\t' -e ' \+$' "$@" && error 10 "trailing spaces / tabulators found"
+
+# check for brackets in non-new lines
+for f in "$@"
+do
+  grep -q "\.page$" <<< "$f" && continue
+  $GREP -e '^ *\([^ ]\+ *\)\+{' -e '}.' "$f" | \
+    grep -v -e '};$' -e ' //' -e '"[^"]*[{}]' | \
+    grep --color ': *\([^ ]\+ *\)\+[{}]' && \
+    error 11 "bracekts must start/end in new line"
+done
+
+exit 0

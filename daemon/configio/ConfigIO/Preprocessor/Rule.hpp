@@ -27,7 +27,8 @@ struct RuleType
     RULE_TRUE,
     RULE_FALSE,
     RULE
-  } Type;
+  }
+  Type;
 };
 
 /** \brief implementation helper.
@@ -39,7 +40,8 @@ struct RuleMode
   {
     EQUALS,
     CONTAINS
-  } Type;
+  }
+  Type;
 };
 } // namespace detail
 

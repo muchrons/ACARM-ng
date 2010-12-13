@@ -25,7 +25,8 @@ struct ModeEnum
     READ     =1,
     WRITE    =2,
     READWRITE=3,
-  } Type;
+  }
+  Type;
 }; // struct ModeEnum
 } // namespace detail
 

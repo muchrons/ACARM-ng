@@ -84,7 +84,7 @@ private:
   Persistency::Alert::Hosts      targetHosts_;
   std::string                    description_;
   Persistency::SeverityLevel     severity_;
-}; //class IDMEFParser
+}; // class IDMEFParser
 
 } // namespace Prelude
 } // namespace Input

@@ -29,7 +29,8 @@ struct SecurityEnum
     //NONE, // NOTE: non-secure connection is NOT allowed for security reasons
     TLS,
     SSL
-  } Type;
+  }
+  Type;
 }; // struct Security
 
 /** \brief implemenation helper.
@@ -40,7 +41,8 @@ struct ProtocolEnum
   typedef enum
   {
     SMTP
-  } Type;
+  }
+  Type;
 }; // struct Security
 } // namespace detail
 

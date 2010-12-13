@@ -22,7 +22,8 @@ struct IterableEnumTestData
       C=12,
       D=13,
       E=14
-    } Type;
+    }
+    Type;
     enum { Min=A };
     enum { Max=E };
   };
@@ -296,7 +297,8 @@ namespace
     typedef enum
     {
       X
-    } Type;
+    }
+    Type;
     enum { Min=X };
     enum { Max=X };
   };
