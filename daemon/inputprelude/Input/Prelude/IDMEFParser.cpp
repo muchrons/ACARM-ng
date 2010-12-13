@@ -233,5 +233,5 @@ Persistency::Severity IDMEFParser::getSeverity() const
   return Severity(severity_);
 }
 
-} //namespace Prelude
-} //namespace Input
+} // namespace Prelude
+} // namespace Input

@@ -26,17 +26,19 @@ class GraphParams
     $this->qparam->dst=$this->getRequestOrDefault($request, 'dst', null);
 
     if ($this->qparam->dst=='any')
-      {
-        $this->qparam->dst='0.0.0.0';
-        $this->qparam->ignoredst=1;
-      } else
+    {
+      $this->qparam->dst='0.0.0.0';
+      $this->qparam->ignoredst=1;
+    }
+    else
       $this->qparam->ignoredst=0;
 
     if ($this->qparam->src=='any')
-      {
-        $this->qparam->src='0.0.0.0';
-        $this->qparam->ignoresrc=1;
-      } else
+    {
+      $this->qparam->src='0.0.0.0';
+      $this->qparam->ignoresrc=1;
+    }
+    else
       $this->qparam->ignoresrc=0;
     $this->qparam->date_from=$this->getRequestOrDefault($request, 'from', '1970-01-01');
     $this->qparam->date_to=$this->getRequestOrDefault($request, 'to', date("Y-m-d H:i:s"));
@@ -146,13 +148,15 @@ class GraphService extends TService
 
   private function issueQuery2d($param,$append="")
   {
-    try{
+    try
+    {
       $pairs=CSQLMap::get()->queryForList($param->query,$param->qparam);
-    } catch(Exception $e)
-        {
-          $this->printError($e->getMessage());
-          return;
-        }
+    }
+    catch(Exception $e)
+    {
+      $this->printError($e->getMessage());
+      return;
+    }
 
     foreach( $pairs as $e )
     {
@@ -165,13 +169,15 @@ class GraphService extends TService
 
   private function issueQuery2dTime($param)
   {
-    try{
+    try
+    {
       $pairs=CSQLMap::get()->queryForList($param->query,$param->qparam);
-    } catch(Exception $e)
-        {
-          $this->printError($e->getMessage());
-          return;
-        }
+    }
+    catch(Exception $e)
+    {
+      $this->printError($e->getMessage());
+      return;
+    }
 
     foreach( $pairs as $e )
     {

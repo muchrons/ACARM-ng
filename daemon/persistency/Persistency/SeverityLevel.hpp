@@ -28,7 +28,8 @@ struct SeverityLevelEnum
     PROBLEM =4,
     ERROR   =5,
     CRITICAL=6
-  } Type;
+  }
+  Type;
   /** \brief minimum value.
    */
   enum { Min=DEBUG    };

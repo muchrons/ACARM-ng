@@ -43,7 +43,7 @@ public:
    * \return return process
    */
   static Persistency::ProcessPtr getProcessfromIdmefProcess(idmef_process_t * idmef_process, idmef_user_t * idmef_user);
-};//class IDMEFParserCommons
+}; // class IDMEFParserCommons
 
 } // namespace Prelude
 } // namespace Input

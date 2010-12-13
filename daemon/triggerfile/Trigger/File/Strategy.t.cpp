@@ -158,7 +158,9 @@ void testObj::test<4>(void)
     // (yes - this is busy loop...)
     {
       time_t start=time(NULL);
-      while( start==time(NULL) ) {}
+      while( start==time(NULL) )
+      {
+      }
     }
 
     // no make double write

@@ -19,17 +19,19 @@ class RangeSelector extends TTemplateControl
     $range->dst=$this->dstip->Text;
 
     if ($range->dst=='any')
-      {
-        $range->dst='0.0.0.0';
-        $range->ignoredst=1;
-      } else
+    {
+      $range->dst='0.0.0.0';
+      $range->ignoredst=1;
+    }
+    else
       $range->ignoredst=0;
 
     if ($range->src=='any')
-      {
-        $range->src='0.0.0.0';
-        $range->ignoresrc=1;
-      } else
+    {
+      $range->src='0.0.0.0';
+      $range->ignoresrc=1;
+    }
+    else
       $range->ignoresrc=0;
 
     return $range;

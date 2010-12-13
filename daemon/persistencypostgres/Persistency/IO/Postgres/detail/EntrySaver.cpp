@@ -63,7 +63,7 @@ void addEqualityComparison<Persistency::Analyzer::IP>(std::stringstream &ss, con
   else
     ss << " IS NULL";
 }
-} //unnamed namespace
+} // unnamed namespace
 
 EntrySaver::EntrySaver(Transaction &t, DBHandle &dbh):
   log_("persistency.io.postgres.detail.entrysaver"),
