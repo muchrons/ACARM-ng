@@ -1,0 +1,85 @@
+=== modified file 'src/net/tls/TLSSocket.cpp'
+--- src/net/tls/TLSSocket.cpp	2010-12-13 15:59:30 +0000
++++ src/net/tls/TLSSocket.cpp	2010-12-13 16:38:04 +0000
+@@ -216,7 +216,7 @@
+ 	{
+ 		// Workaround for bad behaviour when throwing C++ exceptions
+ 		// from C functions (GNU TLS)
+-		sok->m_ex = e.clone();
++		sok->m_ex.reset( e.clone() );
+ 		return -1;
+ 	}
+ 
+@@ -280,7 +280,7 @@
+ 	{
+ 		// Workaround for bad behaviour when throwing C++ exceptions
+ 		// from C functions (GNU TLS)
+-		sok->m_ex = e.clone();
++		sok->m_ex.reset( e.clone() );
+ 		return -1;
+ 	}
+ }
+@@ -359,40 +359,10 @@
+ //
+ // gnutls_record_recv() calls TLSSocket::gnutlsPullFunc, and exceptions
+ // thrown by the socket can not be caught.
+-
+-#ifndef VMIME_BUILDING_DOC
+-
+-class TLSSocket_DeleteExWrapper : public object
+-{
+-public:
+-
+-	TLSSocket_DeleteExWrapper(exception* ex) : m_ex(ex) { }
+-	~TLSSocket_DeleteExWrapper() { delete m_ex; }
+-
+-private:
+-
+-	exception* m_ex;
+-};
+-
+-#endif // VMIME_BUILDING_DOC
+-
+-
+ void TLSSocket::internalThrow()
+ {
+-	static std::vector <ref <TLSSocket_DeleteExWrapper> > exToDelete;
+-
+ 	if (m_ex)
+-	{
+-		// Reset the current exception pointer to prevent the same
+-		// exception from being thrown again later
+-		exception* ex = m_ex;
+-		m_ex = NULL;
+-
+-		// To avoid memory leaks
+-		exToDelete.push_back(vmime::create <TLSSocket_DeleteExWrapper>(ex));
+-
+-		throw *ex;
+-	}
++		throw *m_ex;
+ }
+ 
+ 
+
+=== modified file 'vmime/net/tls/TLSSocket.hpp'
+--- vmime/net/tls/TLSSocket.hpp	2010-12-13 15:59:30 +0000
++++ vmime/net/tls/TLSSocket.hpp	2010-12-13 16:37:09 +0000
+@@ -25,6 +25,7 @@
+ #define VMIME_NET_TLS_TLSSOCKET_HPP_INCLUDED
+ 
+ 
++#include <boost/scoped_ptr.hpp>
+ #include "vmime/exception.hpp"
+ 
+ #include "vmime/net/socket.hpp"
+@@ -114,7 +115,7 @@
+ 	bool m_handshaking;
+ 	ref <timeoutHandler> m_toHandler;
+ 
+-	exception* m_ex;
++    boost::scoped_ptr<exception> m_ex;
+ };
+ 
+ 
+

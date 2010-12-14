@@ -1,0 +1,31 @@
+=== modified file 'vmime/net/socket.hpp'
+--- vmime/net/socket.hpp	2010-12-13 15:59:30 +0000
++++ vmime/net/socket.hpp	2010-12-13 16:36:31 +0000
+@@ -25,6 +25,7 @@
+ #define VMIME_NET_SOCKET_HPP_INCLUDED
+ 
+ 
++#include <boost/noncopyable.hpp>
+ #include "vmime/base.hpp"
+ 
+ #include "vmime/net/timeoutHandler.hpp"
+@@ -37,7 +38,8 @@
+ /** Interface for connecting to servers.
+   */
+ 
+-class socket : public object
++class socket : public object,
++               private boost::noncopyable
+ {
+ public:
+ 
+@@ -105,8 +107,6 @@
+ 	socket() { }
+ 
+ private:
+-
+-	socket(const socket&) : object() { }
+ };
+ 
+ 
+
