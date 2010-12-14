@@ -28,10 +28,11 @@ GeneralConfig parseConfig(const XML::Node &node)
 {
   try
   {
-    const std::string  url    =node.getChild("url").getValuesString();
-    const unsigned int cleanup=toUnsignedInt( node.getChild("cleanupInterval") );
+    const std::string  url            =node.getChild("url").getValuesString();
+    const unsigned int cleanupInterval=toUnsignedInt( node.getChild("cleanupInterval") );
+    const unsigned int cleanupOlder   =toUnsignedInt( node.getChild("cleanupOlder") );
     // return final object
-    return GeneralConfig(url, cleanup);
+    return GeneralConfig(url, cleanupInterval, cleanupOlder);
   }
   catch(const std::exception &ex)
   {

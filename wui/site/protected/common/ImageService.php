@@ -25,7 +25,9 @@ class ImageService extends TService
   private function printError($message)
   {
     $fontnum=2;
-    $img = imagecreatetruecolor(600,400);
+    $width=($this->width===null)?600:$this->width;
+    $height=($this->height===null)?600:$this->height;
+    $img = imagecreatetruecolor($width,$height);
     $yellow = imagecolorallocate ($img, 0xFF, 0xFF, 0x00);
     $red = imagecolorallocate ($img, 0xFF, 0x00, 0x00);
     $fontw=imagefontwidth($fontnum);
@@ -92,7 +94,7 @@ class ImageService extends TService
     $data=new HeatmapGetter($this->from, $this->to);
 
     if ($data->isEmpty())
-      throw new Exception("No data. Datarange is invalid or database is empty.");
+      throw new Exception("Your query returned no data. The data range is invalid or the database is empty.");
 
     $img_w=$this->width;
     $img_h=$this->height;

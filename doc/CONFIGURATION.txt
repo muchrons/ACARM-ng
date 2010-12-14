@@ -48,6 +48,8 @@ for any of the main system parts.
 following options are supported:
   <general>
     <url>http://my.web.server</url> <!-- link to WUI interface -->
+    <cleanupOlder>90</cleanupOlder> <!-- when doing cleanup removes entries older
+                                         then given number of days (0 means do NOT cleanup) -->
     <cleanupInterval>24</cleanupInterval> <!-- clean-up procedure running interval
                                                measured in hours. note that clean-up
                                                is NOT run during program startup. -->

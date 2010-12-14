@@ -28,12 +28,14 @@
           var divWidth = parseInt(basicMap.style.width);
           var divHeight = parseInt(basicMap.style.height);
 
-          if (lonval>=0 && lonval<divWidth)
-            if (latval>=0 && latval<divHeight)
+          if (lonval>=0 && lonval<sources.length && latval>=0 && latval<destinations.length)
              {
               lon=sources[lonval];
               lat=destinations[divHeight-latval-1];
               Prado.Callback("<%= $this->bt->UniqueID %>", {'longitude': lon, 'latitude': lat, 'minAlert': minAlert, 'maxAlert': maxAlert});
+             } else
+             {
+              //TODO set lon/lat fields to ""
              }
         }
     });

@@ -35,7 +35,15 @@
 
               <!-- MENU ITSELF -->
               <com:MainMenuTemplate ID="mainmenu"/>
-              <br/><br/><br/>
+              <br/><br/>
+
+              <div id="leftfooter" align="center">
+                <table border="0" width="100%">
+                  <td align="center">
+                    <a href="http://www.plgrid.pl" target="new_window_acarmng"><img src="pics/logo_plgrid.png" class="FooterLogoImage" alt="PlGrid main site"/></a>
+                  </td>
+                </table>
+              </div>
             </td>
             <!-- CONTENT -->
             <td id="mainContentPart">

@@ -11,19 +11,26 @@ using namespace Persistency::IO;
 namespace Core
 {
 
-PersistencyCleanup::PersistencyCleanup(void):
-  log_("core.persistencycleanup")
+PersistencyCleanup::PersistencyCleanup(ConfigIO::GeneralConfig::Timespan cleanupOlder):
+  log_("core.persistencycleanup"),
+  cleanupOlder_(cleanupOlder)
 {
-  LOGMSG_INFO(log_, "created");
+  LOGMSG_INFO_S(log_)<<"created with clenaup older than "<<cleanupOlder_<<" days"<<(cleanupOlder_==0?" (never)":"");
 }
 
 void PersistencyCleanup::cleanup(void)
 {
+  // check if we have to cleanup at all
+  if(cleanupOlder_==0u)
+  {
+    LOGMSG_INFO(log_, "cleanup procedure disabled, thus not called");
+    return;
+  }
+  // ok - cleanup!
   LOGMSG_WARN(log_, "calling cleanup procedure");
   ConnectionPtrNN conn   =static_cast<ConnectionPtrNN>( create() );
-  const size_t    limit  =3*31;     // TODO: this should be read from config file
   Transaction     t( conn->createNewTransaction("cleanup_procedure") );
-  const size_t    removed=conn->removeEntriesOlderThan(limit, t);
+  const size_t    removed=conn->removeEntriesOlderThan(cleanupOlder_, t);
   t.commit();
   LOGMSG_INFO_S(log_)<<"cleanup done - "<<removed<<" alerts removed";
 }
