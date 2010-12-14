@@ -14,6 +14,7 @@ const char *configContent=
   "  <general>"
   "    <url>http://test.url</url>"
   "    <cleanupInterval>42</cleanupInterval>"
+  "    <cleanupOlder>41</cleanupOlder>"
   "  </general>"
   ""
   "  <persistency>"

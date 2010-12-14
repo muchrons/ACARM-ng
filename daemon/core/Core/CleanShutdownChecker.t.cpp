@@ -111,6 +111,7 @@ const char *g_configContent=
   "  <general>"
   "    <url>http://test.url</url>"
   "    <cleanupInterval>42</cleanupInterval>"
+  "    <cleanupOlder>41</cleanupOlder>"
   "  </general>"
   ""
   "  <persistency>"

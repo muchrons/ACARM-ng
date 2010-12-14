@@ -13,6 +13,7 @@ const char *defaultConfigContent=
   "  <general>"
   "    <url>http://test.url</url>"
   "    <cleanupInterval>42</cleanupInterval>"
+  "    <cleanupOlder>41</cleanupOlder>"
   "  </general>"
   ""
   "  <persistency>"
