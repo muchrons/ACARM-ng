@@ -4,6 +4,7 @@
  */
 #include <cassert>
 
+#include "System/Timer.hpp"
 #include "ConfigIO/Singleton.hpp"
 #include "Logger/Logger.hpp"
 #include "Core/CleanupThread.hpp"
@@ -37,7 +38,12 @@ struct PeriodicalCleanup
         const unsigned int oneHour=60*60;                                       // length of one our in seconds
         boost::this_thread::sleep( boost::posix_time::seconds(hours*oneHour) ); // sleep until next cleanup
         LOGMSG_INFO(log_, "cleanup time has come");
+        System::Timer t;
         cleanup();
+        // add log if cleanup took over 25% of time between the calls
+        const double elapsed=t.elapsed();
+        if( elapsed*oneHour>(0.25*hours*oneHour) )
+          LOGMSG_WARN(log_, "cleanup took over 25\% of time between next calls - consider calling it more often");
       } // while(true)
     }
     catch(const boost::thread_interrupted &)
