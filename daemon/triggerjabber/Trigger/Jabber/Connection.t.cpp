@@ -14,9 +14,20 @@ using namespace TestHelpers::Persistency;
 namespace
 {
 
-// TODO: since persistency is niot used here, TestStubs canbe removed
-struct TestClass: private TestHelpers::Persistency::TestStubs
+struct TestClass
 {
+    void ensureThrow(const AccountConfig &ac)
+    {
+      try
+      {
+        Connection conn(ac);
+        tut::fail("connectiong to invalid account didn't failed");
+      }
+      catch(const ExceptionConnectionError &)
+      {
+        // this is expected
+      }
+    }
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -43,17 +54,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  // TODO: this try{}catch() is common of r3 test cases - make this method of TestClass
-  //       parametrized with AccountConfig.
-  try
-  {
-    Connection conn( AccountConfig("jabber.wrong", "acarm-ng1", "testaccount") );
-    fail("connectiong to invalid account didn't failed");
-  }
-  catch(const ExceptionConnectionError &)
-  {
-    // this is expected
-  }
+  ensureThrow( AccountConfig("jabber.wrong", "acarm-ng1", "testaccount") );
 }
 
 // test throw on invalid password
@@ -61,15 +62,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  try
-  {
-    Connection conn( AccountConfig("jabber.org", "acarm-ng1", "testaccoun") );
-    fail("connectiong to invalid account didn't failed");
-  }
-  catch(const ExceptionConnectionError &)
-  {
-    // this is expected
-  }
+  ensureThrow(AccountConfig("jabber.org", "acarm-ng1", "testaccoun") );
 }
 
 // test throw on invalid login
@@ -77,14 +70,6 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  try
-  {
-    Connection conn( AccountConfig("jabber.org", "acarm-wrong", "testaccount") );
-    fail("connectiong to invalid account didn't failed");
-  }
-  catch(const ExceptionConnectionError &)
-  {
-    // this is expected
-  }
+  ensureThrow(AccountConfig("jabber.org", "acarm-wrong", "testaccoun") );
 }
 } // namespace tut

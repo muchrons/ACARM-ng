@@ -2,6 +2,7 @@
  * Connection.cpp
  *
  */
+#include <cassert>
 #include <gloox/message.h>
 #include <gloox/client.h>
 #include <gloox/presence.h>
@@ -27,19 +28,16 @@ Connection::Connection(const AccountConfig &cfg):
   cfg_(cfg),
   sess_( connect() )
 {
-  // TODO: header not included for assert()
   assert( sess_.get()!=NULL );
 }
 
 Connection::~Connection(void)
 {
+  LOGMSG_INFO(log_, "disconnecting from Jabber server");
   // TODO: these calls could potentially throw - add proper protection.
   sess_.get()->recv(1000);
   // set status to unavailable
   sess_.get()->setPresence(gloox::Presence::Unavailable, 100 );
-  // TODO: this probaby should be the very first line in the d-tor, to see what happened
-  //       in case of error.
-  LOGMSG_INFO(log_, "disconnecting from Jabber server");
 }
 
 // connection to server

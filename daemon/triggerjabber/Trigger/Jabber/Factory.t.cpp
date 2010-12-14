@@ -28,6 +28,12 @@ struct TestClass
     }
   }
 
+  size_t createTriggers(const std::string &configFile)
+  {
+    ConfigIO::Singleton::get()->rereadConfig( configFile.c_str() );
+    const TriggersCollection fc=create(queue_);
+    return fc.size();
+  }
   Core::Types::SignedNodesFifo queue_;
 };
 
@@ -63,10 +69,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  // TODO: make this common code, with file name and output size a parameter.
-  ConfigIO::Singleton::get()->rereadConfig("testdata/valid_config.xml");
-  const TriggersCollection fc=create(queue_);
-  ensure_equals("no triggers created", fc.size(), 1u);
+  ensure_equals("no triggers created", createTriggers("testdata/valid_config.xml") , 1u);
 }
 
 // test creating trigger with minimal, valid configuration
@@ -74,9 +77,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ConfigIO::Singleton::get()->rereadConfig("testdata/minimal_valid_config.xml");
-  const TriggersCollection fc=create(queue_);
-  ensure_equals("no triggers created", fc.size(), 1u);
+  ensure_equals("no triggers created", createTriggers("testdata/minimal_valid_config.xml"), 1u);
 }
 
 // test creating two triggers with valid configuration
@@ -84,9 +85,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ConfigIO::Singleton::get()->rereadConfig("testdata/double_valid_config.xml");
-  const TriggersCollection fc=create(queue_);
-  ensure_equals("no triggers created", fc.size(), 2u);
+  ensure_equals("no triggers created", createTriggers("testdata/double_valid_config.xml"), 2u);
 }
 
 // test multiple receivers in config
@@ -94,8 +93,6 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ConfigIO::Singleton::get()->rereadConfig("testdata/multiple_receivers.xml");
-  const TriggersCollection fc=create(queue_);
-  ensure_equals("no triggers created", fc.size(), 1u);
+  ensure_equals("no triggers created", createTriggers("testdata/multiple_receivers.xml"), 1u);
 }
 } // namespace tut
