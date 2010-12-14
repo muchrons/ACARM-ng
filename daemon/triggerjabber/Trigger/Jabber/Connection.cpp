@@ -40,6 +40,26 @@ Connection::~Connection(void)
   sess_.get()->setPresence(gloox::Presence::Unavailable, 100 );
 }
 
+void Connection::login(gloox::Client *client) const
+{
+  bool quit=false;
+  // login
+  while(!quit)
+  {
+    gloox::ConnectionError ce = client->recv();
+    // todo: refactor to make code easier to read: if(error) throw; ...
+    if(ce == gloox::ConnNoError)
+    {
+      // check if user is authorized
+      if(client->authed())
+        quit=true;
+    }
+    else
+    {
+      throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "authentication error");
+    }
+  }
+}
 // connection to server
 AutoSession Connection::connect(void) const
 {
@@ -53,25 +73,8 @@ AutoSession Connection::connect(void) const
   // TODO: AutoSession has arrow operatordefined
   if(!sess.get()->connect(false))
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "not connected to server");
-  // TODO: this loop (and maby more?) should be separate method, since it is long and does
-  //       separate sub-functionality.
-  bool quit=false;
   // login
-  while(!quit)
-  {
-    gloox::ConnectionError ce = sess.get()->recv();
-    // TODO: refactor to make code easier to read: if(error) throw; ...
-    if(ce == gloox::ConnNoError)
-    {
-      // check if user is authorized
-      if(sess.get()->authed())
-        quit=true;
-    }
-    else
-    {
-      throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "authentication error");
-    }
-  }
+  login( sess.get() );
   if( sess.get()->recv() )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
   // set status to available

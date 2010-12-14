@@ -55,6 +55,7 @@ public:
   }
 
 private:
+  void login(gloox::Client *client) const;
   AutoSession connect(void) const;
   Logger::Node          log_;
   const AccountConfig   cfg_;
