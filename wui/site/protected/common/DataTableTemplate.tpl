@@ -1,7 +1,7 @@
 <div width=100%>
 <table border=0 width=100%>
-<!-- TODO: i think this header should not be the part of this control -->
-<tr><td><b><com:TLabel ID="TopCaption"/></b></td><td align=right>Per page:
+
+<tr><td><com:TLabel ID="TopCaption" ForeColor="White" Font.Size="14pt"/></td><td align=right><com:TLabel Text="Per page:" ForeColor="White" Font.Size="14pt"/>
 
 <com:TDropDownList
     AutoPostBack="true"
@@ -15,11 +15,12 @@
 
 </td></tr>
 <tr><td colspan=2>
-Page: <com:TPager ID="Pager"
+<com:TPager ID="Pager"
           ControlToPaginate="DataGrid"
-          PageButtonCount="10"
           Mode="Numeric"
-          OnPageIndexChanged="changePage" />
+          OnPageIndexChanged="changePage" 
+            ForeColor="White" 
+            BackColor="Grey"/>
 
 <com:TDataGrid
     ID="DataGrid"

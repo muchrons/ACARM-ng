@@ -1,11 +1,15 @@
 <com:TContent ID="content">
-
-<p><font color="white" size="+1"><b>Current state:</b></font></p>
-<table width=200>
-<tr><td>ACARM-ng</td><td>running</td>
-
-
+<com:TPanel GroupingText="<font size=6 color=white>System status</font>" Width="100%">
+<br/><br/>
+<table border="1" width="80%" align="center">
+<tr><td id="AlertTag">ACARM-ng</td><td id="AlertContent"><com:TLabel ID="AcarmIsRunning" Text="Running" ForeColor="Green"/></td>
+<tr><td colspan="2">&nbsp</td></tr>
+<tr><td id="AlertTag">Meta alerts in use</td><td id="AlertContent"><com:TLabel ID="MAinUse"/></td></tr>
+<tr><td id="AlertTag">Number of alerts in database</td><td id="AlertContent"><com:TLabel ID="Alerts"/></td></tr>
+<tr><td id="AlertTag">Number of meta alerts in database</td><td id="AlertContent"><com:TLabel ID="MetaAlerts"/></td></tr>
 </table>
+<br/><br/>
+</com:TPanel>
 
 
 <com:TClientScript PradoScripts="effects" />
