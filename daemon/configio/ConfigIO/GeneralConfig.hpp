@@ -23,14 +23,18 @@ class GeneralConfig
 public:
   /** \brief url representation. */
   typedef std::string  URL;
+  // TODO: consider making these two typedefs one
   /** \brief interval between two time periods. */
   typedef unsigned int Interval;
+  /** \brief represents osme time length. */
+  typedef unsigned int Timespan;
 
   /** \brief create object instance with given configuration.
    *  \param wuiUrl          address to WUI of ACARM-ng.
    *  \param cleanupInterval interval between persistency cleanups.
+   *  \param cleanupOlder    maximum age for alerts before removal (0 means never remove).
    */
-  GeneralConfig(const URL &wuiUrl, Interval cleanupInterval);
+  GeneralConfig(const URL &wuiUrl, Interval cleanupInterval, Timespan cleanupOlder);
 
   /** \brief gets WUI address.
    *  \return link to WUI.
@@ -46,10 +50,18 @@ public:
   {
     return cleanupInterval_;
   }
+  /** \brief gets  maximum age for alert before it is wiped out.
+   *  \return days to keep alerts in DB.
+   */
+  Timespan getCleanupOlder(void) const
+  {
+    return cleanupOlder_;
+  }
 
 private:
   URL      wuiUrl_;
   Interval cleanupInterval_;
+  Timespan cleanupOlder_;
 }; // class GeneralConfig
 
 } // namespace ConfigIO

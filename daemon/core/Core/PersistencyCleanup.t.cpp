@@ -31,7 +31,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  PersistencyCleanup pc;
+  PersistencyCleanup pc(111u);
 }
 
 // test manual call to cleanup
@@ -39,7 +39,16 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  PersistencyCleanup pc;
+  PersistencyCleanup pc(111u);
+  pc.cleanup();
+}
+
+// test cleanup when it should never happen
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  PersistencyCleanup pc(0u);
   pc.cleanup();
 }
 

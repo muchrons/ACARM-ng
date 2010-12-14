@@ -4,7 +4,7 @@
  */
 #include <tut.h>
 #include <string>
-#include <boost/mpl/equal.hpp>
+#include <boost/type_traits/is_same.hpp>
 
 #include "System/SharedPtrNotNULL.hpp"
 
@@ -270,7 +270,7 @@ template<>
 void testObj::test<26>(void)
 {
   ensure("invalid element's type declaration",
-         boost::mpl::equal<int, PtrNN::element_type>::type::value);
+         boost::is_same<int, PtrNN::element_type>::type::value);
 }
 
 // check value's type
@@ -279,7 +279,7 @@ template<>
 void testObj::test<27>(void)
 {
   ensure("invalid element's value type declaration",
-         boost::mpl::equal<int, PtrNN::value_type>::type::value);
+         boost::is_same<int, PtrNN::value_type>::type::value);
 }
 
 // check element's pionter type
@@ -288,7 +288,7 @@ template<>
 void testObj::test<28>(void)
 {
   ensure("invalid element's pointer type declaration",
-         boost::mpl::equal<int*, PtrNN::pointer>::type::value);
+         boost::is_same<int*, PtrNN::pointer>::type::value);
 }
 
 // check element's reference type
@@ -297,7 +297,7 @@ template<>
 void testObj::test<29>(void)
 {
   ensure("invalid element's reference type declaration",
-         boost::mpl::equal<int&, PtrNN::reference>::type::value);
+         boost::is_same<int&, PtrNN::reference>::type::value);
 }
 
 // test conversion operator for constness

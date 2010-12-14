@@ -4,7 +4,7 @@
  */
 #include <tut.h>
 #include <string>
-#include <boost/mpl/equal.hpp>
+#include <boost/type_traits/is_same.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "TestHelpers/TestBase.hpp"
@@ -271,7 +271,7 @@ template<>
 void testObj::test<26>(void)
 {
   ensure("invalid element's type declaration",
-         boost::mpl::equal<int, PtrNN::element_type>::type::value);
+         boost::is_same<int, PtrNN::element_type>::type::value);
 }
 
 // check value's type
@@ -280,7 +280,7 @@ template<>
 void testObj::test<27>(void)
 {
   ensure("invalid element's value type declaration",
-         boost::mpl::equal<int, PtrNN::value_type>::type::value);
+         boost::is_same<int, PtrNN::value_type>::type::value);
 }
 
 // check element's pionter type
@@ -289,7 +289,7 @@ template<>
 void testObj::test<28>(void)
 {
   ensure("invalid element's pointer type declaration",
-         boost::mpl::equal<int*, PtrNN::pointer>::type::value);
+         boost::is_same<int*, PtrNN::pointer>::type::value);
 }
 
 // check element's reference type
@@ -298,7 +298,7 @@ template<>
 void testObj::test<29>(void)
 {
   ensure("invalid element's reference type declaration",
-         boost::mpl::equal<int&, PtrNN::reference>::type::value);
+         boost::is_same<int&, PtrNN::reference>::type::value);
 }
 
 // test conversion operator for constness
@@ -471,6 +471,111 @@ void testObj::test<45>(void)
 {
   PtrNN a(new int(111));
   PtrNN b(a);
+}
+
+// test compariosn of const and non-const pointers (compile test)
+template<>
+template<>
+void testObj::test<46>(void)
+{
+  PtrNN a(new int(111));
+
+  ConstPtrNN b(a);
+  a< b;
+  a==b;
+  a!=b;
+
+  b< a;
+  b==a;
+  b!=a;
+
+  BoostPtr c( a.shared_ptr() );
+  a< c;
+  a==c;
+  a!=c;
+
+  c< a;
+  c==a;
+  c!=a;
+
+  ConstBoostPtr d( a.shared_ptr() );
+  a< d;
+  a==d;
+  a!=d;
+
+  d< a;
+  d==a;
+  d!=a;
+}
+
+// test compariosn of base-derived pointers (compile test)
+template<>
+template<>
+void testObj::test<47>(void)
+{
+  SharedPtrNotNULL<DerivedTest> a(new DerivedTest);
+
+  SharedPtrNotNULL<BaseTest> b(a);
+  a< b;
+  a==b;
+  a!=b;
+
+  b< a;
+  b==a;
+  b!=a;
+
+  boost::shared_ptr<BaseTest> c( a.shared_ptr() );
+  a< c;
+  a==c;
+  a!=c;
+
+  c< a;
+  c==a;
+  c!=a;
+
+  boost::shared_ptr<BaseTest> d( a.shared_ptr() );
+  a< d;
+  a==d;
+  a!=d;
+
+  d< a;
+  d==a;
+  d!=a;
+}
+
+// test compariosn of base-derived pointers with NULLs (compile test)
+template<>
+template<>
+void testObj::test<48>(void)
+{
+  SharedPtrNotNULL<DerivedTest> a(new DerivedTest);
+
+  SharedPtrNotNULL<const BaseTest> b(a);
+  a< b;
+  a==b;
+  a!=b;
+
+  b< a;
+  b==a;
+  b!=a;
+
+  boost::shared_ptr<const BaseTest> c( a.shared_ptr() );
+  a< c;
+  a==c;
+  a!=c;
+
+  c< a;
+  c==a;
+  c!=a;
+
+  boost::shared_ptr<const BaseTest> d( a.shared_ptr() );
+  a< d;
+  a==d;
+  a!=d;
+
+  d< a;
+  d==a;
+  d!=a;
 }
 
 } // namespace tut
