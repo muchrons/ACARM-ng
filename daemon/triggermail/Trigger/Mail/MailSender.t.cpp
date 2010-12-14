@@ -14,6 +14,14 @@ namespace
 
 struct TestClass
 {
+  TestClass(void):
+    c1_( getTestConfig1() ),
+    c2_( getTestConfig2() )
+  {
+  }
+
+  const Config c1_;
+  const Config c2_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -26,10 +34,18 @@ factory tf("Trigger/Mail/MailSender");
 namespace tut
 {
 
-// test by sending message
+// smoke test for c-tor/d-tor (should not connect)
 template<>
 template<>
 void testObj::test<1>(void)
+{
+  MailSender ms( getTestConfig1() );
+}
+
+// test by sending message
+template<>
+template<>
+void testObj::test<2>(void)
 {
   // wipe-out account's content
   removeMessagesFromAccount( getTestConfig2() );
@@ -44,17 +60,19 @@ void testObj::test<1>(void)
 // test if sending with invalid certificate fails
 template<>
 template<>
-void testObj::test<2>(void)
+void testObj::test<3>(void)
 {
-  const Config::Authorization auth(MAIL1_TEST_ACCOUNT_LOGIN,
-                                   MAIL1_TEST_ACCOUNT_PASS);
-  const Config::Server        srv(MAIL1_TEST_ACCOUNT_SERVER,
-                                  MAIL1_TEST_ACCOUNT_PORT,
-                                  Trigger::Mail::Config::Server::Protocol::MAIL1_TEST_ACCOUNT_PROTOCOL,
-                                  Trigger::Mail::Config::Server::Security::MAIL1_TEST_ACCOUNT_SECURITY,
-                                  "testdata/invalid_cert.pem");
-  const Trigger::Simple::ThresholdConfig th("0", "0");
-  const Config cfg(th, MAIL1_TEST_ACCOUNT_ADDRESS, Config::Recipients(MAIL2_TEST_ACCOUNT_ADDRESS), srv, auth);
+  const Config::Server srv( c1_.getServerConfig().server_,
+                            c1_.getServerConfig().port_,
+                            c1_.getServerConfig().proto_,
+                            c1_.getServerConfig().sec_,
+                            "testdata/invalid_cert.pem" );
+  ensure("NULL pointer", c1_.getAuthorizationConfig()!=NULL);
+  const Config cfg( c1_.getThresholdConfig(),
+                    c1_.getSenderAddress(),
+                    c1_.getRecipientsAddresses(),
+                    srv,
+                    *c1_.getAuthorizationConfig() );
 
   // send report
   MailSender ms(cfg);
@@ -66,6 +84,38 @@ void testObj::test<2>(void)
   catch(const ExceptionInvalidCertificate &)
   {
     // this is expected
+  }
+}
+
+// try sending mails to multiple recipients
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  // wipe-out account's content
+  removeMessagesFromAccount( getTestConfig1() );
+  removeMessagesFromAccount( getTestConfig2() );
+  // configure multiple recipients
+  Config::Recipients to(MAIL2_TEST_ACCOUNT_ADDRESS);
+  to.push_back(MAIL1_TEST_ACCOUNT_ADDRESS);
+  ensure("NULL pointer", c1_.getAuthorizationConfig()!=NULL);
+  const Config cfg( c1_.getThresholdConfig(),
+                    c1_.getSenderAddress(),
+                    to,
+                    c1_.getServerConfig(),
+                    *c1_.getAuthorizationConfig() );
+  // send report
+  MailSender ms(cfg);
+  ms.send("subject", "content");
+  // send to first account
+  {
+    const int count=removeMessagesFromAccount( getTestConfig1(), 1 );
+    ensure_equals("invalid number of messages removed / account 1", count, 1);
+  }
+  // send to second account
+  {
+    const int count=removeMessagesFromAccount( getTestConfig2(), 1 );
+    ensure_equals("invalid number of messages removed / account 2", count, 1);
   }
 }
 

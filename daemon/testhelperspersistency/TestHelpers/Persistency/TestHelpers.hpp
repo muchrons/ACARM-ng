@@ -38,12 +38,15 @@ namespace Persistency
 ::Persistency::AnalyzerPtrNN makeNewAnalyzer(const char *name="some analyzer");
 
 const ::Persistency::Host::Netmask_v4::bytes_type mask4_bytes={ {0xFF, 0xFF, 0x00, 0x00} };
-const ::Persistency::Host::Netmask_v6::bytes_type mask6_bytes={ {
-                                                  0xFF, 0xFF, 0xFF, 0xFF,
-                                                  0xFF, 0xFF, 0xFF, 0x00,
-                                                  0x00, 0x00, 0x00, 0x00,
-                                                  0x00, 0x00, 0x00, 0x00,
-                                                 } };
+const ::Persistency::Host::Netmask_v6::bytes_type mask6_bytes=
+                                                              {
+                                                                {
+                                                                  0xFF, 0xFF, 0xFF, 0xFF,
+                                                                  0xFF, 0xFF, 0xFF, 0x00,
+                                                                  0x00, 0x00, 0x00, 0x00,
+                                                                  0x00, 0x00, 0x00, 0x00,
+                                                                }
+                                                              };
 ::Persistency::HostPtrNN makeNewHost(const char *ip="1.2.3.4", const char *dns="dns.org");
 ::Persistency::HostPtrNN makeNewHost4(const char             *ip,
                                       const ::Persistency::Host::Netmask_v4 *mask,

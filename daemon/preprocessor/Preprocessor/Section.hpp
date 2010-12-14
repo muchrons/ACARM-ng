@@ -25,7 +25,8 @@ struct SectionDecision
     ACCEPT,     // accept alert
     DENY,       // deny alert (i.e. drop it)
     CONTINUE    // no match - check next section
-  } Type;
+  }
+  Type;
 }; // struct SectionDecision
 } // unnamed namespace
 

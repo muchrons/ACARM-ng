@@ -141,6 +141,7 @@ void MailSender::send(const std::string &subject, const std::string &content)
   vmime::ref<vmime::net::transport> transport;
 
   // connection part
+  LOGMSG_DEBUG(log_, "connecting to server...");
   try
   {
     // create session
@@ -156,7 +157,9 @@ void MailSender::send(const std::string &subject, const std::string &content)
     VerifierRef verifier=VerifierRef::fromPtr( new CertVerifier( cfg_.getServerConfig() ) );
     transport->setCertificateVerifier(verifier);
     // connect to server (certificate will be validated along)
+    LOGMSG_DEBUG_S(log_)<<"connecting to " << static_cast<std::string>(url);
     transport->connect();
+    LOGMSG_DEBUG(log_, "connected!");
   }
   catch(const vmime::exception &ex)
   {
@@ -167,14 +170,19 @@ void MailSender::send(const std::string &subject, const std::string &content)
   }
 
   // sending message part
+  LOGMSG_DEBUG(log_, "sending e-mail...");
   try
   {
+    LOGMSG_DEBUG_S(log_)<<"sending to: "<<toString( cfg_.getRecipientsAddresses() );
     MimeCreateHelper             mch( cfg_.getSenderAddress(), cfg_.getRecipientsAddresses(), subject, content );
     MimeCreateHelper::MessagePtr msg=mch.createMimeMessage();
     transport->send(msg);
+    LOGMSG_DEBUG(log_, "e-mail sent successfully");
   }
   catch(const vmime::exception &ex)
   {
+    LOGMSG_ERROR_S(log_)<<"error sending message (to: "<<toString( cfg_.getRecipientsAddresses() )
+                        <<"): "<<toString(ex);
     // translate vmime-specific exception to project-wide exception
     throw ExceptionSendingError( SYSTEM_SAVE_LOCATION,
                                  cfg_.getSenderAddress().c_str(),

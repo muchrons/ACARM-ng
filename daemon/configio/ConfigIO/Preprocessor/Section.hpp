@@ -25,7 +25,8 @@ struct SectionType
   {
     ACCEPT,
     DENY
-  } Type;
+  }
+  Type;
 };
 } // namespace detail
 

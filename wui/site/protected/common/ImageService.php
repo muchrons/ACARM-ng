@@ -8,16 +8,18 @@ class ImageService extends TService
     $this->Response->ContentType="image/png";
 
     $request = Prado::getApplication()->getRequest();
-    try {
+    try
+    {
       $this->width = TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'width',  'You must specify the width of the heatmap'));
       $this->height= TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'height', 'You must specify the height of the heatmap'));
       $this->from= TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'from','You must specify the data range.'));
       $this->to= TPropertyValue::ensureInteger($this->getRequestOrThrow($request, 'to','You must specify the data range.'));
-    } catch(Exception $e)
-        {
-          $this->printError($e->getMessage());
-          return;
-        }
+    }
+    catch(Exception $e)
+    {
+      $this->printError($e->getMessage());
+      return;
+    }
   }
 
   private function printError($message)
@@ -75,14 +77,16 @@ class ImageService extends TService
 
   public function run()
   {
-    try{
+    try
+    {
       $img = $this->createHeatMap();
       imagepng($img);
       imagedestroy($img);
-    }catch(Exception $e)
-       {
-         $this->printError($e->getMessage());
-       }
+    }
+    catch(Exception $e)
+    {
+      $this->printError($e->getMessage());
+    }
   }
 
   private function createHeatMap()

@@ -79,7 +79,7 @@ typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
 factory tf("Persistency/IO/Postgres/Alert");
-} //unnamned namespace
+} // unnamned namespace
 
 namespace tut
 {

@@ -7,6 +7,8 @@
 
 #include "Trigger/Jabber/Exception.hpp"
 
+// TODO: unused class
+
 namespace Trigger
 {
 namespace Jabber
