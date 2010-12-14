@@ -44,9 +44,10 @@ std::string fixURL(const std::string &url)
 } // fixURL()
 } // unnamed namespace
 
-GeneralConfig::GeneralConfig(const URL &wuiUrl, Interval cleanupInterval):
+GeneralConfig::GeneralConfig(const URL &wuiUrl, const Interval cleanupInterval, const Timespan cleanupOlder):
   wuiUrl_( fixURL(wuiUrl) ),
-  cleanupInterval_(cleanupInterval)
+  cleanupInterval_(cleanupInterval),
+  cleanupOlder_(cleanupOlder)
 {
   if(cleanupInterval_<1)
     throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "cleanup-interval", cleanupInterval, "interval is too small");

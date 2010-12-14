@@ -73,6 +73,7 @@ void testObj::test<1>(void)
     "  <general>"
     "    <url>http://go.to.hell</url>"
     "    <cleanupInterval>42</cleanupInterval>"
+    "    <cleanupOlder>997</cleanupOlder>"
     "  </general>"
     "</acarm_ng>"
     "";
@@ -80,6 +81,7 @@ void testObj::test<1>(void)
   const GeneralConfig      gc=pgc.getConfig();
   ensure_equals("invalid url", gc.getWUIUrl(), "http://go.to.hell");
   ensure_equals("invalid cleanup interval", gc.getCleanupInterval(), 42u);
+  ensure_equals("invalid cleanup older", gc.getCleanupOlder(), 997u);
 }
 
 // test exception when URL is missing
@@ -93,6 +95,7 @@ void testObj::test<2>(void)
     "  <general>"
 //    "    <url>http://go.to.hell</url>"
     "    <cleanupInterval>42</cleanupInterval>"
+    "    <cleanupOlder>997</cleanupOlder>"
     "  </general>"
     "</acarm_ng>"
     "";
@@ -110,6 +113,7 @@ void testObj::test<3>(void)
     "  <general>"
     "    <url>http://go.to.hell</url>"
 //    "    <cleanupInterval>42</cleanupInterval>"
+    "    <cleanupOlder>997</cleanupOlder>"
     "  </general>"
     "</acarm_ng>"
     "";
@@ -127,6 +131,7 @@ void testObj::test<4>(void)
     "  <general>"
     "    <url>XYZ://go.to.hell</url>"
     "    <cleanupInterval>42</cleanupInterval>"
+    "    <cleanupOlder>997</cleanupOlder>"
     "  </general>"
     "</acarm_ng>"
     "";
@@ -144,6 +149,25 @@ void testObj::test<5>(void)
     "  <general>"
     "    <url>http://go.to.hell</url>"
     "    <cleanupInterval>-42</cleanupInterval>"
+    "    <cleanupOlder>997</cleanupOlder>"
+    "  </general>"
+    "</acarm_ng>"
+    "";
+  testThrow(xml);
+}
+
+// test exception when cleanup older is missing
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const char *xml=
+    "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+    "<acarm_ng>"
+    "  <general>"
+    "    <url>http://go.to.hell</url>"
+    "    <cleanupInterval>42</cleanupInterval>"
+//    "    <cleanupOlder>997</cleanupOlder>"
     "  </general>"
     "</acarm_ng>"
     "";
