@@ -8,6 +8,7 @@
 /* public header */
 
 #include "Logger/Node.hpp"
+#include "ConfigIO/GeneralConfig.hpp"
 
 namespace Core
 {
@@ -19,13 +20,14 @@ class PersistencyCleanup
 public:
   /** \brief creates instance.
    */
-  PersistencyCleanup(void);
+  explicit PersistencyCleanup(ConfigIO::GeneralConfig::Timespan cleanupOlder);
   /** \brief run cleanup manually.
    */
   void cleanup(void);
 
 private:
-  Logger::Node log_;
+  Logger::Node                      log_;
+  ConfigIO::GeneralConfig::Timespan cleanupOlder_;
 }; // class PersistencyCleanup
 
 } // namespace Core

@@ -71,6 +71,7 @@ private:
 
 CleanupThread::CleanupThread(void):
   log_("core.cleanupthread"),
+  pc_( ConfigIO::Singleton::get()->generalConfig().getCleanupOlder() ),
   th_( PeriodicalCleanup(pc_) )
 {
   LOGMSG_INFO(log_, "cleanup thread has been started");
