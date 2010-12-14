@@ -18,8 +18,15 @@ class HeatmapIPs extends TTemplateControl
     $param->value=$this->date_to;
 
     $range=CSQLMap::get()->queryForObject("DMHeatMapHostcount",$param);
-    $this->minAlert=$range->key;
-    $this->maxAlert=$range->value;
+    if ($range->key!=null)
+      $this->minAlert=$range->key;
+    else
+      $this->minAlert=0;
+
+    if ($range->value!=null)
+      $this->maxAlert=$range->value;
+    else
+      $this->maxAlert=0;
 
     $data=new HeatmapGetter($this->minAlert, $this->maxAlert);
 
