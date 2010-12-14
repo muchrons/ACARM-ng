@@ -9,7 +9,6 @@
 
 #include <memory>
 #include <boost/shared_ptr.hpp>
-#include <boost/type_traits/add_const.hpp>
 #include <cassert>
 
 #include "System/ExceptionPointerIsNULL.hpp"
@@ -102,7 +101,7 @@ public:
    *  \return const-reference to this object.
    */
   template<typename U>
-  typename boost::add_const<this_type&>::type operator=(SharedPtrNotNULL<U> other)
+  const SharedPtrNotNULL<const element_type> operator=(SharedPtrNotNULL<U> other)
   {
     if( other.get()!=this->get() )
       ptr_=other.shared_ptr();
@@ -111,7 +110,7 @@ public:
   /** \brief arrow operator.
    *  \return const pointer to this.
    */
-  typename boost::add_const<pointer>::type operator->(void) const
+  const pointer operator->(void) const
   {
     return get();
   }
@@ -125,7 +124,7 @@ public:
   /** \brief dereference operator.
    *  \return const reference to this.
    */
-  typename boost::add_const<reference>::type operator*(void) const
+  const reference operator*(void) const
   {
     return *get();
   }
@@ -139,7 +138,7 @@ public:
   /** \brief test getter.
    *  \return direct pointer value.
    */
-  typename boost::add_const<pointer>::type get(void) const
+  const pointer get(void) const
   {
     assert( ptr_.get()!=NULL );
     return ptr_.get();
@@ -170,7 +169,7 @@ private:
   {
     ensure( ptr_.get() );
   }
-  void ensure(const typename boost::add_const<pointer>::type t) const
+  void ensure(const pointer t) const
   {
     if(t==NULL)
       throw ExceptionPointerIsNULL(SYSTEM_SAVE_LOCATION, "t");
