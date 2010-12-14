@@ -9,9 +9,7 @@
 * add automatic queue reduction to triggers - before sending check if some of the alerts are not part of others.
 * add handle for out-of-memory problem (i.e. using own wrapper for memory manager).
 * consider adding pre-requisites for triggers, i.e. to trigger only reports of some specific content (preprocessor-like style).
-* add possibility to turn-off persistency cleanup.
 * add information to logs, that if cleanup takes more than ??% of waiting time, interval should be decreased.
-* move maximum time to hold events in DB from code to config file (consider special section general/cleanup/...).
 * make filters, triggers, persistency and inputs plugins given as shared library in a given directory instead of registered in the code directly.
 * trigger reporting "the most important events" aiming to rise about N most important event in some ammount of time (thresholds are variable, depending on the input).
 * implement extra table for fast computing root meta-alerts.
