@@ -23,8 +23,10 @@ class GeneralConfig
 public:
   /** \brief url representation. */
   typedef std::string  URL;
+  // TODO: consider making these two typedefs one
   /** \brief interval between two time periods. */
   typedef unsigned int Interval;
+  /** \brief represents osme time length. */
   typedef unsigned int Timespan;
 
   /** \brief create object instance with given configuration.
