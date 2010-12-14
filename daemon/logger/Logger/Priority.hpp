@@ -27,7 +27,8 @@ struct PriorityEnum
     WARN,
     ERROR,
     FATAL
-  } Type;
+  }
+  Type;
   /** \brief first element.
    */
   enum { Min=DEBUG };

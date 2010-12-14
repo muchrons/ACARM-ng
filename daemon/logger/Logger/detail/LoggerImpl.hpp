@@ -53,7 +53,10 @@ namespace detail
 // note: do{}while(false) must stay here to prevent supprises in construcitons
 //       like if(...) LOG(); doSth();
 #define LOGMSG_PRI_INTERNAL_IMPLEMENTATION_DEBUG(where, msg) \
-            do { } while(false)
+            do \
+            { \
+            } \
+            while(false)
 
 // log message in stream-like manier - debug macro
 // note: while(false) at the begining of the strucutre gives good results giving

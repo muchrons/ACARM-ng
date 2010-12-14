@@ -14,18 +14,16 @@
 * move maximum time to hold events in DB from code to config file (consider special section general/cleanup/...).
 * make filters, triggers, persistency and inputs plugins given as shared library in a given directory instead of registered in the code directly.
 * trigger reporting "the most important events" aiming to rise about N most important event in some ammount of time (thresholds are variable, depending on the input).
-* add support for specifying multiple receivers in triggers (consider comma/semicolon separated entries).
 * implement extra table for fast computing root meta-alerts.
 * encrypted connecitons in Trigger::GG.
 * encrypted connecitons in Trigger::Mail.
-* consider splitig configuration into multiple files.
+* consider splitig configuration into multiple files (maybe directive like <include> would do the trick, preserving backward compatibility?).
 * consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
-* filter rising priority for binaries that have MD5 of an expliot?
 * conisder adding indexes to speed-up SQL queries like: select * from hosts where id_alert=42;
 * think about adding meta-alerts to correlation queue of a filters with reported-time, not current time as a base (to reduce overhead when system is started after some time).
 * consider appending description to correlation of meta-alerts.
-* persistency::postgres I/O has to be optimized - it takes 90% of wall time right now, thus is HUGE bottleneck of the whole system.
+* persistency::postgres I/O can be optimized - it takes 90% of wall time right now, thus is main bottleneck of the whole system.
 * implement filter that gathers stats of source/destination IPs and reports the most problematic noes with higher priority.
 * rework severity computing algorithm to make higher priority for alerts with high-priority alerts (now main part is average...).
-* add heartbeats for daemon, os that GUI will know when system is online and when it is not.
+* add heartbeats for daemon, so that GUI will know when system is online and when it is not.
 * implement filter monitoring events in the system and learning from it, and correlating events that are different from expected behaviour.

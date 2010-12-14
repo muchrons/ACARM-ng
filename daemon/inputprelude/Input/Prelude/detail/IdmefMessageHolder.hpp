@@ -69,8 +69,8 @@ private:
   TValue v_;
 };
 
-} //detail
-} //Prelude
-} //Input
+} // detail
+} // Prelude
+} // Input
 
 #endif //IDMEF_MESSAGE_HOLDER_HPP_FILE

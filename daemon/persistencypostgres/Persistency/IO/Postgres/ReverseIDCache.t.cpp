@@ -45,7 +45,7 @@ typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
 factory tf("Persistency/IO/Postgres/ReverseIDCache");
-} //unnamned namespace
+} // unnamned namespace
 
 namespace tut
 {

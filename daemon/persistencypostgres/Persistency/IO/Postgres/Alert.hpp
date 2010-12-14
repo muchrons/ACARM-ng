@@ -43,7 +43,7 @@ private:
 
   struct HostEnumType
   {
-    typedef enum{ SRC = 1, DST = 2 } Type;
+    typedef enum { SRC = 1, DST = 2 } Type;
   };
 
   typedef System::Enum<HostEnumType> HostType;

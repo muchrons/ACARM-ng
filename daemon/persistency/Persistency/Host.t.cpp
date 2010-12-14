@@ -15,12 +15,15 @@ namespace
 {
 
 const Host::Netmask_v4::bytes_type mask4_bytes={ { 0xFF, 0xFF, 0x00, 0x00 } };
-const Host::Netmask_v6::bytes_type mask6_bytes={ {
+const Host::Netmask_v6::bytes_type mask6_bytes=
+                                               {
+                                                 {
                                                    0xFF, 0xFF, 0xFF, 0xFF,
                                                    0xFF, 0xFF, 0xFF, 0x00,
                                                    0x00, 0x00, 0x00, 0x00,
                                                    0x00, 0x00, 0x00, 0x00,
-                                               } };
+                                                 }
+                                               };
 
 struct TestClass: private TestBase
 {

@@ -52,7 +52,7 @@ private:
   IP                      ip_;
   Persistency::ProcessPtr process_;
   Persistency::ServicePtr service_;
-};//class IDMEFParserSource
+}; // class IDMEFParserSource
 
 } // namespace Prelude
 } // namespace Input
