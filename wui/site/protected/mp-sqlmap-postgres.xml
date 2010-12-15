@@ -47,6 +47,10 @@
       WHERE h1.id_alert=h2.id_alert AND h1.id_alert=a.id AND h1.role='src' AND h2.role='dst' AND s.id=a.id_severity AND a.id=#VALUE#;
   </select>
 
+  <select id="SelectHost" resultClass="CReportedHostEntry" parameterClass="int">
+    SELECT h.id, h.role, h.ip, h.mask, h.os, h.name, r.name as ref_name, r.url as ref_url FROM hosts AS h LEFT JOIN reference_urls AS r ON h.id_ref=r.id WHERE h.id=#value#
+  </select>
+
   <select id="SelectMetaAlertID" resultClass="CMetaAlertEntry" parameterClass="int">
     SELECT ma.id AS id, ma.name AS name, ma.create_time AS create_time, ma.last_update_time AS last_update_time, ma.severity_delta AS severity_delta, ma.certainty_delta AS certainty_delta, m.id_alert AS id_alert 
       FROM meta_alerts AS ma LEFT JOIN alert_to_meta_alert_map AS m ON m.id_meta_alert=ma.id 
@@ -151,11 +155,19 @@
   </select>
 
   <select id="SelectAnalyzersForAlert" resultClass="CAnalyzerListEntry" parameterClass="int">
-    SELECT name, ip, version, os FROM alert_analyzers JOIN analyzers ON alert_analyzers.id_analyzer=analyzers.id WHERE alert_analyzers.id_alert=#VALUE#
+    SELECT id, name, ip, version, os FROM alert_analyzers JOIN analyzers ON alert_analyzers.id_analyzer=analyzers.id WHERE alert_analyzers.id_alert=#VALUE#
   </select>
 
   <select id="SelectHostsForAlert" resultClass="CReportedHostEntry" parameterClass="int">
     SELECT hosts.name,ip,role,os,hosts.id FROM alerts JOIN hosts ON hosts.id_alert=alerts.id WHERE alerts.id=#VALUE#
+  </select>
+
+  <select id="SelectServicesForHost" resultClass="CReportedServiceEntry" parameterClass="int">
+    SELECT name, port, protocol, id_ref as ref_name FROM services WHERE id_host=#VALUE#
+  </select>
+
+  <select id="SelectProcessesForHost" resultClass="CReportedProcessEntry" parameterClass="int">
+    select name, path, md5, pid, uid, username, arguments, id_ref as ref_name, arguments from procs where id_host=#VALUE#
   </select>
 
   <select id="SelectWUILogs" resultClass="CLogEntry" parameterClass="CParamLimitOffset">
