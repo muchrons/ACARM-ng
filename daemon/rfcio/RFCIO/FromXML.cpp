@@ -3,8 +3,10 @@
  *
  */
 #include <utility>
+#include <sstream>
 #include <iterator>
 #include <algorithm>
+#include <ctype.h>
 #include <boost/tokenizer.hpp>
 #include <cassert>
 
@@ -31,7 +33,7 @@ string parseString(const xmlpp::Element &node)
   if(txt==NULL)
     return "";  // this is a special case - don't ask me why XMLpp parses it this way...
   return txt->get_content();
-}
+} // parseString()
 
 NullValue<string> parseParameterIfHas(const xmlpp::Element &node, const char *name)
 {
@@ -40,7 +42,7 @@ NullValue<string> parseParameterIfHas(const xmlpp::Element &node, const char *na
   if(tmp==NULL)
     return NullValue<string>();
   return NullValue<string>( tmp->get_value() );
-}
+} // parseParameterIfHas()
 
 string parseParameter(const xmlpp::Element &node, const char *name)
 {
@@ -48,9 +50,27 @@ string parseParameter(const xmlpp::Element &node, const char *name)
   if( tmp.get()==NULL )
     throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, node.get_path(), name);
   return *tmp.get();
-}
+} // parseParameter()
 
-const xmlpp::Element *findOneChildIfHas(const xmlpp::Element &parent, const char *name)
+const xmlpp::Element* findAnyChildIfHas(const xmlpp::Element &parent, const char *name)
+{
+  assert(name!=NULL);
+  const xmlpp::Element::NodeList nl=parent.get_children(name);
+  // NOTE - multiple elements are allowed - random one is chosen
+  if( nl.size()<1 )
+    return NULL;
+  return dynamic_cast<const xmlpp::Element*>( *nl.begin() );
+} // findAnyChildIfHas
+
+const xmlpp::Element& findAnyChild(const xmlpp::Element &parent, const char *name)
+{
+  const xmlpp::Element *ptr=findAnyChildIfHas(parent, name);
+  if(ptr==NULL)
+    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, parent.get_path(), name);
+  return *ptr;
+} // findAnyChild()
+
+const xmlpp::Element* findOneChildIfHas(const xmlpp::Element &parent, const char *name)
 {
   assert(name!=NULL);
   const xmlpp::Element::NodeList nl=parent.get_children(name);
@@ -59,15 +79,15 @@ const xmlpp::Element *findOneChildIfHas(const xmlpp::Element &parent, const char
   if( nl.size()>1 )
     throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, parent.get_path(), "requested name is not unique: " + string(name) );
   return dynamic_cast<const xmlpp::Element*>( *nl.begin() );
-}
+} // findOneChildIfHas()
 
-const xmlpp::Element &findOneChild(const xmlpp::Element &parent, const char *name)
+const xmlpp::Element& findOneChild(const xmlpp::Element &parent, const char *name)
 {
   const xmlpp::Element *ptr=findOneChildIfHas(parent, name);
   if(ptr==NULL)
     throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, parent.get_path(), name);
   return *ptr;
-}
+} // findOneChild()
 
 template<typename T>
 NullValue<T> parseChildIfHasAs(const xmlpp::Element &node, const char *name)
@@ -76,8 +96,77 @@ NullValue<T> parseChildIfHasAs(const xmlpp::Element &node, const char *name)
   if(e==NULL)
     return NullValue<T>();
   return NullValue<T>( Commons::Convert::to<T>( parseString(*e) ) );
-}
+} // parseChildIfHasAs()
+
+char fromHexChar(const char in)
+{
+  const char c=tolower(in);
+  if('0'<=c && c<='9')
+    return c- '0';
+  if('a'<=c && c<='f')
+    return 10+c-'a';
+  throw Exception(SYSTEM_SAVE_LOCATION, "invalid char in hex");
+} // fromHexChar()
+
+string makeCannonicalIPv4(const string &in)
+{
+  assert( in.length()==2+8 );
+  // ok - we need to parse string...
+  stringstream           ss;
+  string::const_iterator it=in.begin();
+  it+=2;                            // skip leading '0x'
+  while( it!=in.end() )
+  {
+    int v=0;
+    v+=fromHexChar(*it)<<4;
+    ++it;
+    v+=fromHexChar(*it);
+    ++it;
+    ss<<v;
+    if( it!=in.end() )
+      ss<<".";
+  }
+  return ss.str();
+} // makeCannonicalIPv4()
+
+string makeCannonicalIPv6(const string &in)
+{
+  assert( in.length()==2+32 );
+  stringstream           ss;
+  string::const_iterator it=in.begin();
+  it+=2;                            // skip leading '0x'
+  while( it!=in.end() )
+  {
+    for(int i=0; i<4; ++i)
+    {
+      assert( it!=in.end() );
+      ss<< static_cast<char>( tolower(*it) );
+      ++it;
+    }
+
+    if( it!=in.end() )
+      ss<<":";
+  }
+  return ss.str();
+} // makeCannonicalIPv6()
+
+string makeCannonicalIP(const string &in)
+{
+  if( in.length()<3 )               // ?!
+    throw Exception(SYSTEM_SAVE_LOCATION, "given IP is too short: '"+in+"'");
+  if( in[0]!='0' || in[1]!='x' )    // this form is non-hex one
+    return in;
+  // parsing required...
+  if( in.length()==2+8 )            // IPv4: 0x01234567
+    return makeCannonicalIPv4(in);
+  if( in.length()==2+32 )           // IPv6: 0x01234567890123456789012345678901
+    return makeCannonicalIPv6(in);
+  // oops...
+  throw Exception(SYSTEM_SAVE_LOCATION, "unknown IP form: '"+in+"'");
+} // makeCannonicalIP()
 } // unnamed namespace
+
+
 
 FromXML::FromXML(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t):
   log_("rfcio.fromxml"),
@@ -136,18 +225,23 @@ Persistency::AlertPtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
 Persistency::AnalyzerPtrNN FromXML::parseAnalyzer(const xmlpp::Element &analyzer) const
 {
   ensureNode("Analyzer", analyzer);
-  const FromXML::NodeData  nodeData   =parseNode( findOneChild(analyzer, "Node") );
+  const FromXML::NodeData  nodeData   =parseNode( findOneChildIfHas(analyzer, "Node") );
   const char              *name       =(nodeData.first.get()==NULL)?NULL:nodeData.first->c_str();
   const NullValue<string>  versionData=parseParameterIfHas(analyzer, "version");
   const char              *version    =(versionData.get()==NULL)?NULL:versionData.get()->c_str();
   const NullValue<string>  osData     =parseParameterIfHas(analyzer, "ostype");
   const char              *os         =(osData.get()==NULL)?NULL:osData.get()->c_str();
-  Persistency::AnalyzerPtrNN out=analyzersCreator_.construct( conn_, t_, name, version, os, nodeData.second.get() );
   // check if ID is assigned the same way the one in file was. if not, report an error and proceed.
   const NullValue<string>  idData     =parseParameterIfHas(analyzer, "analyzerid");
   const char              *id         =(idData.get()==NULL)?NULL:idData.get()->c_str();
+  // if name is not set, use ID as name
+  if(name==NULL)
+    name=id;
+  // create analyzer to be returned
+  Persistency::AnalyzerPtrNN out=analyzersCreator_.construct( conn_, t_, name, version, os, nodeData.second.get() );
   if(id!=NULL)
   {
+    // if different ID is in input file, write infor about it in log
     if( Convert::to<string>( out->getID().get() )!=id )
       LOGMSG_WARN_S(log_) << "parsed analyzer has ID '" << id << "', but system assigned it ID "
                           << out->getID().get() << "; this can happen if alert comes from different "
@@ -246,7 +340,7 @@ FromXML::IP FromXML::parseAddress(const xmlpp::Element &address) const
 {
   ensureNode("Address", address);
   const string ip=parseString( findOneChild(address, "address") );
-  return FromXML::IP::from_string(ip);
+  return FromXML::IP::from_string( makeCannonicalIP(ip) );
 }
 
 
@@ -373,11 +467,15 @@ Persistency::ProcessPtrNN FromXML::parseProcessAndUser(const xmlpp::Element &pro
   const xmlpp::Element *userRootElem=findOneChildIfHas(process, "User");
   if(userRootElem!=NULL)
   {
-    const xmlpp::Element *userElem=findOneChildIfHas(*userRootElem, "UserId");
+    const xmlpp::Element *userElem=findAnyChildIfHas(*userRootElem, "UserId");
     if(userElem!=NULL)
     {
       uid     =parseChildIfHasAs<int>(*userElem, "number");
-      username=parseString( findOneChild(*userElem, "name") );
+      const xmlpp::Element *user=findOneChildIfHas(*userElem, "name");
+      if(user==NULL)
+        user=&findOneChild(*userElem, "number");
+      assert(user!=NULL);
+      username=parseString(*user);
     }
   }
 
@@ -420,6 +518,13 @@ FromXML::NodeData FromXML::parseNode(const xmlpp::Element &node) const
     ip=IPNull( parseAddress(*ipElem) );
 
   return NodeData(name, ip);
+}
+
+FromXML::NodeData FromXML::parseNode(const xmlpp::Element *node) const
+{
+  if(node==NULL)
+    return NodeData();
+  return parseNode(*node);
 }
 
 void FromXML::ensureNode(const char *name, const xmlpp::Element &node) const

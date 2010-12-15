@@ -121,6 +121,11 @@ public:
    *  \return parsed data.
    */
   NodeData parseNode(const xmlpp::Element &node) const;
+  /** \brief parse 'Node' node.
+   *  \param node node to be parsed (if pointer is NULL, NULL values are returned).
+   *  \return parsed data.
+   */
+  NodeData parseNode(const xmlpp::Element *node) const;
 
 private:
   void ensureNode(const char *name, const xmlpp::Element &node) const;

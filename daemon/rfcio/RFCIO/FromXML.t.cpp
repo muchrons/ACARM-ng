@@ -643,7 +643,7 @@ void testObj::test<35>(void)
   testInvalidXML<ExceptionMissingElement>(&FromXML::parseProcessAndUser, in);
 }
 
-// test throw when missing user name
+// test when user's name is missing
 template<>
 template<>
 void testObj::test<36>(void)
@@ -668,7 +668,9 @@ void testObj::test<36>(void)
         "</idmef:User>"
       "</idmef:SomeTestRoot>"
     "</idmef:IDMEF-Message>\n";
-  testInvalidXML<ExceptionMissingElement>(&FromXML::parseProcessAndUser, in);
+  const ProcessPtrNN out=fx_.parseProcessAndUser( parseXML(in) );
+  // fallback to UID
+  ensure_equals("invalid user name", out->getUsername().get(), string("666") );
 }
 
 // test throw when missing process name
@@ -1038,6 +1040,114 @@ void testObj::test<54>(void)
   const ProcessPtrNN out=fx_.parseProcessAndUser( parseXML(in) );
   // test if path ha sbeen sread correctly
   ensure_equals("invalid process path", out->getPath().get(), string("") );
+}
+
+// parse analyzer - the minimal version
+template<>
+template<>
+void testObj::test<55>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Analyzer analyzerid=\"12345678\">"
+                   "</idmef:Analyzer>"
+                 "</idmef:IDMEF-Message>\n";
+  const Persistency::AnalyzerPtrNN out=fx_.parseAnalyzer( parseXML(in) );
+  // NOTE: id MAY differ - it is set within the system
+  ensure_equals("invalid name", out->getName().get(), string("12345678") );
+  ensure("IP is set", out->getIP()==NULL );
+  ensure("version is set", out->getVersion().get()==NULL );
+  ensure("OS is set", out->getOperatingSystem().get()==NULL );
+}
+
+// test if aprsing does not fail when multiple users are specified
+template<>
+template<>
+void testObj::test<56>(void)
+{
+  const char *in=
+  "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+      "<idmef:SomeTestRoot>"
+        "<idmef:Process>"
+          "<idmef:name>binary</idmef:name>"
+        "</idmef:Process>"
+        "<idmef:User>"
+          "<idmef:UserId>"
+            "<idmef:name>alucard</idmef:name>"
+            "<idmef:number>666</idmef:number>"
+          "</idmef:UserId>"
+          "<idmef:UserId>"
+            "<idmef:name>dracula</idmef:name>"
+            "<idmef:number>999</idmef:number>"
+          "</idmef:UserId>"
+        "</idmef:User>"
+      "</idmef:SomeTestRoot>"
+    "</idmef:IDMEF-Message>\n";
+  const ProcessPtrNN out=fx_.parseProcessAndUser( parseXML(in) );
+  // test user
+  ensure("user name is NULL", out->getUsername().get()!=NULL );
+  ensure("UID is NULL", out->getUID()!=NULL );
+}
+
+// parse IPv4 as hex
+template<>
+template<>
+void testObj::test<57>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Address category=\"ipv4-addr-hex\">"
+                     "<idmef:address>0x2112131f</idmef:address>"
+                   "</idmef:Address>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::IP out=fx_.parseAddress( parseXML(in) );
+  ensure_equals("invalid IPv4 address", out.to_string(), "33.18.19.31");
+}
+
+// parse IPv4 as hex / upper case
+template<>
+template<>
+void testObj::test<58>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Address category=\"ipv4-addr-hex\">"
+                     "<idmef:address>0x2112131F</idmef:address>"
+                   "</idmef:Address>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::IP out=fx_.parseAddress( parseXML(in) );
+  ensure_equals("invalid IPv4 address", out.to_string(), "33.18.19.31");
+}
+
+// parse IPv6 as hex
+template<>
+template<>
+void testObj::test<59>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Address category=\"ipv6-addr-hex\">"
+                     "<idmef:address>0xa102a304a102a304a102a304a102a304</idmef:address>"
+                   "</idmef:Address>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::IP out=fx_.parseAddress( parseXML(in) );
+  ensure_equals("invalid IPv4 address", out.to_string(), "a102:a304:a102:a304:a102:a304:a102:a304");
+}
+
+// parse IPv6 as hex / upper case
+template<>
+template<>
+void testObj::test<60>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Address category=\"ipv6-addr-hex\">"
+                     "<idmef:address>0xA102A304A102A304A102A304A102A304</idmef:address>"
+                   "</idmef:Address>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::IP out=fx_.parseAddress( parseXML(in) );
+  ensure_equals("invalid IPv4 address", out.to_string(), "a102:a304:a102:a304:a102:a304:a102:a304");
 }
 
 } // namespace tut
