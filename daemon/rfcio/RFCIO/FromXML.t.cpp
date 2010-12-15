@@ -1151,4 +1151,25 @@ void testObj::test<60>(void)
   ensure_equals("invalid IPv4 address", out.to_string(), "a102:a304:a102:a304:a102:a304:a102:a304");
 }
 
+// parse classification with non-unique reference (smoke test: must not throw)
+template<>
+template<>
+void testObj::test<61>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Classification text=\"some alert\">"
+                     "<idmef:Reference origin=\"unknown\">"
+                       "<idmef:name>some name</idmef:name>"
+                       "<idmef:url>http://gnu.org</idmef:url>"
+                     "</idmef:Reference>"
+                     "<idmef:Reference origin=\"unknown\">"
+                       "<idmef:name>some other name</idmef:name>"
+                       "<idmef:url>http://kernel.org</idmef:url>"
+                     "</idmef:Reference>"
+                   "</idmef:Classification>"
+                 "</idmef:IDMEF-Message>\n";
+  fx_.parseClassification( parseXML(in) );
+}
+
 } // namespace tut

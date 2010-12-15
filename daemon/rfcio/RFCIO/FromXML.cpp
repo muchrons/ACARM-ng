@@ -325,7 +325,7 @@ FromXML::Classification FromXML::parseClassification(const xmlpp::Element &class
 {
   ensureNode("Classification", classification);
   const string          description=parseParameter(classification, "text");
-  const xmlpp::Element *reference  =findOneChildIfHas(classification, "Reference");
+  const xmlpp::Element *reference  =findAnyChildIfHas(classification, "Reference");
   ReferenceURLPtr       ref;
   if(reference!=NULL)
     ref=parseReferenceURL(*reference).shared_ptr();

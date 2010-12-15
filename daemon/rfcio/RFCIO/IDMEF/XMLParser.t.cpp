@@ -108,8 +108,6 @@ void testObj::test<3>(void)
   smokeTestParsing("testdata/official_examples/teardrop.xml");
 }
 
-// TODO: fix code to make these tests pass
-/*
 // smoke test reading IDMEF
 template<>
 template<>
@@ -118,6 +116,8 @@ void testObj::test<4>(void)
   smokeTestParsing("testdata/official_examples/connection_to_disallowed_service.xml");
 }
 
+// TODO: fix code to make these tests pass
+/*
 // smoke test reading IDMEF
 template<>
 template<>
