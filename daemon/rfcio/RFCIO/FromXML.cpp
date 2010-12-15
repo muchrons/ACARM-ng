@@ -213,7 +213,7 @@ Persistency::AlertPtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
   if(additionalData!=NULL)
     description=parseAdditionalData(*additionalData);
   // assessment -> {severity, certainty}
-  const Assessment assessment=parseAssessment( findOneChild(alert, "Assessment") );
+  const Assessment assessment=parseAssessment( findOneChildIfHas(alert, "Assessment") );
   const Severity   severity  =assessment.get<0>();
   const Certainty  certainty =assessment.get<1>();
 
@@ -281,30 +281,44 @@ SeverityLevel parseImpactValue(const string &imp)
 } // parseImpactValue()
 } // unnamed namespace
 
+
+namespace
+{
+const SeverityLevel g_defaultSeverity(SeverityLevel::INFO);
+const double        g_defaultCertainty(0.75);
+} // unnamed namespace
+
 FromXML::Assessment FromXML::parseAssessment(const xmlpp::Element &assessment) const
 {
   ensureNode("Assessment", assessment);
 
   // try parsing severity
   const xmlpp::Element *severityElem=findOneChildIfHas(assessment, "Impact");
-  SeverityLevel         sl(SeverityLevel::DEBUG);
+  SeverityLevel         sl=g_defaultSeverity;
   if(severityElem!=NULL)
     sl=parseImpactValue( parseParameter(*severityElem, "severity") );
   else
     LOGMSG_WARN(log_, "missing 'Impact' section, while severity is required in the system. "
-                      "leaving DEBUG severity as the default for this report.");
+                      "leaving INFO severity as the default for this report.");
 
   // try parsing certainty
   const xmlpp::Element *certaintyElem=findOneChildIfHas(assessment, "Confidence");
-  double                cert         =0.1;
+  double                cert         =g_defaultCertainty;
   if(certaintyElem!=NULL)
     cert=parseConfidenceValue( parseParameter(*certaintyElem, "rating"), *certaintyElem );
   else
     LOGMSG_WARN(log_, "missing 'Confidence' section, while certainty is required in the system. "
-                      "leaving 10% confidence as the default");
+                      "leaving default confidence level");
 
   // ok - return parsed value
   return Assessment( Severity(sl), Certainty(cert) );
+}
+
+FromXML::Assessment FromXML::parseAssessment(const xmlpp::Element *assessment) const
+{
+  if(assessment==NULL)
+    return Assessment( Severity(g_defaultSeverity), Certainty(g_defaultCertainty) );
+  return parseAssessment(*assessment);
 }
 
 FromXML::Classification FromXML::parseClassification(const xmlpp::Element &classification) const

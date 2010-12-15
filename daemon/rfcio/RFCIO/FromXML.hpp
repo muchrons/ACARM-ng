@@ -76,6 +76,11 @@ public:
    *  \return parsed data.
    */
   Assessment parseAssessment(const xmlpp::Element &assessment) const;
+  /** \brief parse assessment pieces of information node.
+   *  \param assessment node to be parsed (can be NULL).
+   *  \return parsed data.
+   */
+  Assessment parseAssessment(const xmlpp::Element *assessment) const;
   /** \brief parse classfication node.
    *  \param classification node to be parsed.
    *  \return parsed data.

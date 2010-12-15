@@ -417,7 +417,8 @@ void testObj::test<20>(void)
                    "<idmef:Assessment/>"
                  "</idmef:IDMEF-Message>\n";
   const FromXML::Assessment out=fx_.parseAssessment( parseXML(in) );
-  ensure_equals("invalid severity", out.get<0>().getName(), string("debug") );
+  ensure_equals("invalid severity", out.get<0>().getName(), string("info") );
+  ensure_equals("invalid severity", out.get<1>().get(), 0.75);
 }
 
 // test discrete certainty - low
