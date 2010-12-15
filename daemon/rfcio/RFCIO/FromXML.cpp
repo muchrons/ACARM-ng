@@ -613,10 +613,17 @@ FromXML::Hosts FromXML::parseHosts(const xmlpp::Element::NodeList &list) const
   out.reserve( list.size() );
   for(xmlpp::Element::NodeList::const_iterator it=list.begin(); it!=list.end(); ++it)
   {
-    const xmlpp::Element *ptr=dynamic_cast<const xmlpp::Element*>(*it);
-    assert(ptr!=NULL);
-    out.push_back( parseHost(*ptr) );
-  }
+    try
+    {
+      const xmlpp::Element *ptr=dynamic_cast<const xmlpp::Element*>(*it);
+      assert(ptr!=NULL);
+      out.push_back( parseHost(*ptr) );
+    }
+    catch(const std::exception &ex)
+    {
+      LOGMSG_WARN_S(log_)<<"error while parsing host: "<<ex.what()<<"; skipping this host and proceeding with parsing";
+    }
+  } // for(hosts)
   return out;
 }
 

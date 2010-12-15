@@ -195,24 +195,6 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
                   "<idmef:address>1.2.3.4</idmef:address>"
                 "</idmef:Address>"
               "</idmef:Node>"
-/*
-              "<idmef:Service>"
-                "<idmef:name>name</idmef:name>"
-                "<idmef:port>42</idmef:port>"
-              "</idmef:Service>"
-
-              "<idmef:User>"
-                "<idmef:UserId>"
-                  "<idmef:name>alucard</idmef:name>"
-                  "<idmef:number>666</idmef:number>"
-                "</idmef:UserId>"
-              "</idmef:User>"
-
-              "<idmef:Process>"
-                "<idmef:name>process name</idmef:name>"
-                "<idmef:path>/path/to/bin</idmef:path>"
-              "</idmef:Process>"
-*/
        <<   "</idmef:" << nodeName << ">"
 
        <<   "<idmef:" << nodeName << ">"
@@ -222,24 +204,6 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
                   "<idmef:address>1.2.3.5</idmef:address>"
                 "</idmef:Address>"
               "</idmef:Node>"
-/*
-              "<idmef:Service>"
-                "<idmef:name>name</idmef:name>"
-                "<idmef:port>42</idmef:port>"
-              "</idmef:Service>"
-
-              "<idmef:User>"
-                "<idmef:UserId>"
-                  "<idmef:name>alucard</idmef:name>"
-                  "<idmef:number>666</idmef:number>"
-                "</idmef:UserId>"
-              "</idmef:User>"
-
-              "<idmef:Process>"
-                "<idmef:name>process name</idmef:name>"
-                "<idmef:path>/path/to/bin</idmef:path>"
-              "</idmef:Process>"
-*/
        <<   "</idmef:" << nodeName << ">"
           "</idmef:Alert>"
           "</idmef:IDMEF-Message>\n";
@@ -1268,6 +1232,52 @@ template<>
 void testObj::test<63>(void)
 {
   testMultipleHostParsing(&FromXML::parseTarget, "Target");
+}
+
+// test recoevery from error during node parsing
+template<>
+template<>
+void testObj::test<64>(void)
+{
+    const char *xml=
+          "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+          "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+          "<idmef:Alert messageid=\"303\">"
+            "<idmef:Source>"
+              "<idmef:Node category=\"host\">"
+                "<idmef:name>a.b.c</idmef:name>"
+                "<idmef:Address category=\"ipv4-addr\">"
+                  "<idmef:address>1.2.3.4</idmef:address>"
+                "</idmef:Address>"
+              "</idmef:Node>"
+            "</idmef:Source>"
+
+            "<idmef:Source>"
+              "<idmef:Node category=\"host\">"
+                "<idmef:name>a.b.d</idmef:name>"
+                // this node will not parse becaouse of a missing IP adderess
+//                "<idmef:Address category=\"ipv4-addr\">"
+//                  "<idmef:address>1.2.3.3</idmef:address>"
+//                "</idmef:Address>"
+              "</idmef:Node>"
+            "</idmef:Source>"
+
+            "<idmef:Source>"
+              "<idmef:Node category=\"host\">"
+                "<idmef:name>a.b.d</idmef:name>"
+                "<idmef:Address category=\"ipv4-addr\">"
+                  "<idmef:address>1.2.3.5</idmef:address>"
+                "</idmef:Address>"
+              "</idmef:Node>"
+            "</idmef:Source>"
+          "</idmef:Alert>"
+          "</idmef:IDMEF-Message>\n";
+    // parse
+    const FromXML::Hosts         list=fx_.parseSource( parseXML(xml) );
+    tut::ensure_equals("invalid numebr of hosts", list.size(), 2u);
+    // test fileds
+    tut::ensure_equals("invalid IP / 1", list[0]->getIP().to_string(), "1.2.3.4");
+    tut::ensure_equals("invalid IP / 2", list[1]->getIP().to_string(), "1.2.3.5");
 }
 
 } // namespace tut
