@@ -115,7 +115,7 @@ public:
    */
   Persistency::ProcessPtrNN parseProcessAndUser(const xmlpp::Element &process) const;
   /** \brief parse soruce host node.
-   *  \param source node to be parsed.
+   *  \param alert node to be parsed.
    *  \return parsed data.
    */
   Hosts parseSource(const xmlpp::Element &alert) const;
@@ -125,7 +125,7 @@ public:
    */
   Hosts parseTarget(const xmlpp::Element &alert) const;
   /** \brief parse 'Node' node.
-   *  \param alert node to be parsed.
+   *  \param node node to be parsed.
    *  \return parsed data.
    */
   NodeData parseNode(const xmlpp::Element &node) const;
