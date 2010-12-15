@@ -204,14 +204,12 @@ Persistency::AlertPtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
   const string         name          =classification.get<0>();
   // note that ReferenceURL (aka: classification.get<1>()) is
   // additional data -> description
-  string                description;
-  const xmlpp::Element *additionalData=findOneChildIfHas(alert, "AdditionalData");
-  if(additionalData!=NULL)
-    description=parseAdditionalData(*additionalData);
+  const StringNull descriptionTmp=parseAdditionalData(alert);
+  const string     description=(descriptionTmp.get()==NULL)?"":*descriptionTmp.get();
   // assessment -> {severity, certainty}
-  const Assessment assessment=parseAssessment( findOneChildIfHas(alert, "Assessment") );
-  const Severity   severity  =assessment.get<0>();
-  const Certainty  certainty =assessment.get<1>();
+  const Assessment assessment =parseAssessment( findOneChildIfHas(alert, "Assessment") );
+  const Severity   severity   =assessment.get<0>();
+  const Certainty  certainty  =assessment.get<1>();
 
   // create alert
   return AlertPtrNN( new Alert(name, analyzers, detectTime, createTime, severity, certainty,
@@ -336,14 +334,37 @@ Persistency::ReferenceURLPtrNN FromXML::parseReferenceURL(const xmlpp::Element &
   return ReferenceURLPtrNN( new ReferenceURL(name, url) );
 }
 
-std::string FromXML::parseAdditionalData(const xmlpp::Element &data) const
+FromXML::StringNull FromXML::parseAdditionalData(const xmlpp::Element &data) const
 {
-  ensureNode("AdditionalData", data);
-  const string type =parseParameter(data, "type");
-  const string value=parseString( findOneChild(data, type.c_str() ) );
-  if(type!="string")
-    return type + ": " + value;
-  return value;
+  ensureNode("Alert", data);
+  stringstream                    ss;
+  int                             cnt =0;
+  const xmlpp::Element::NodeList &list=data.get_children("AdditionalData");
+  for(xmlpp::Element::NodeList::const_iterator it=list.begin(); it!=list.end(); ++it)
+  {
+    try
+    {
+      const xmlpp::Element *ptr=dynamic_cast<const xmlpp::Element*>(*it);
+      assert(ptr!=NULL);
+      const string type   =parseParameter(*ptr, "type");
+      const string meaning=parseParameter(*ptr, "meaning");
+      const string value  =parseString( findOneChild(*ptr, type.c_str() ) );
+      if(cnt>0)
+        ss<<endl;
+      ++cnt;
+      if(type!="string")
+        ss<<meaning<<"("<<type<<"): ";
+      ss<<value;
+    }
+    catch(const std::exception &ex)
+    {
+      LOGMSG_WARN_S(log_)<<"error while parsing host: "<<ex.what()<<"; skipping this host and proceeding with parsing";
+    }
+  } // for(hosts)
+  // return the result
+  if(cnt>0)
+    return StringNull( ss.str() );
+  return StringNull();
 }
 
 FromXML::IP FromXML::parseAddress(const xmlpp::Element &address) const

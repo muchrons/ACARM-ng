@@ -98,7 +98,7 @@ public:
    *  \param data node to be parsed.
    *  \return parsed data.
    */
-  std::string parseAdditionalData(const xmlpp::Element &data) const;
+  StringNull parseAdditionalData(const xmlpp::Element &data) const;
   /** \brief parse address node.
    *  \param address node to be parsed.
    *  \return parsed data.

@@ -29,7 +29,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   }
 
 
-  const xmlpp::Element &parseXML(const char *xml)
+  const xmlpp::Element &parseRoot(const char *xml)
   {
     assert(xml!=NULL);
     dp_.parse_memory(xml);
@@ -37,7 +37,13 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     assert(doc!=NULL);
     const xmlpp::Element *rootPtr=doc->get_root_node();
     assert(rootPtr!=NULL);
-    const xmlpp::Element::NodeList nl=rootPtr->get_children();
+    return *rootPtr;
+  }
+
+  const xmlpp::Element &parseXML(const char *xml)
+  {
+    const xmlpp::Element           &rootPtr=parseRoot(xml);
+    const xmlpp::Element::NodeList  nl     =rootPtr.get_children();
     assert( nl.size()==1 );
     assert( *nl.begin()!=NULL );
     return dynamic_cast<const xmlpp::Element&>( **nl.begin() );
@@ -238,12 +244,15 @@ void testObj::test<1>(void)
 {
   const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                  "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                 "<idmef:Alert messageid=\"303\">"
                    "<idmef:AdditionalData type=\"string\" meaning=\"description\">"
                      "<idmef:string>some test alert</idmef:string>"
                    "</idmef:AdditionalData>"
+                 "</idmef:Alert>"
                  "</idmef:IDMEF-Message>\n";
-  const string out=fx_.parseAdditionalData( parseXML(in) );
-  ensure_equals("invalid additional data", out, "some test alert");
+  const FromXML::StringNull out=fx_.parseAdditionalData( parseXML(in) );
+  ensure("string is NULL", out.get()!=NULL );
+  ensure_equals("invalid additional data", *out.get(), "some test alert");
 }
 
 // parse create time
@@ -1278,6 +1287,53 @@ void testObj::test<64>(void)
     // test fileds
     tut::ensure_equals("invalid IP / 1", list[0]->getIP().to_string(), "1.2.3.4");
     tut::ensure_equals("invalid IP / 2", list[1]->getIP().to_string(), "1.2.3.5");
+}
+
+// try parsing multiple additional data section
+template<>
+template<>
+void testObj::test<65>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                 "<idmef:Alert messageid=\"303\">"
+                   "<idmef:AdditionalData type=\"date-time\" meaning=\"start-time\">"
+                     "<idmef:date-time>2000-03-09T07:00:00-05:00</idmef:date-time>"
+                   "</idmef:AdditionalData>"
+                   "<idmef:AdditionalData type=\"date-time\" meaning=\"stop-time\">"
+                     "<idmef:date-time>2000-03-09T19:30:00-05:00</idmef:date-time>"
+                   "</idmef:AdditionalData>"
+                 "</idmef:Alert>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::StringNull out=fx_.parseAdditionalData( parseXML(in) );
+  ensure("stirng is NULL", out.get()!=NULL );
+  ensure_equals("invalid additional data", *out.get(),
+                "start-time(date-time): 2000-03-09T07:00:00-05:00\n"
+                "stop-time(date-time): 2000-03-09T19:30:00-05:00");
+}
+
+// try parsing multiple additional data section, with errors
+template<>
+template<>
+void testObj::test<66>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                 "<idmef:Alert messageid=\"303\">"
+                   "<idmef:AdditionalData type=\"date-time\" meaning=\"start-time\">"
+                     "<idmef:date-time>2000-03-09T07:00:00-05:00</idmef:date-time>"
+                   "</idmef:AdditionalData>"
+                   "<idmef:AdditionalData type=\"date-time\" meaning=\"start-time\"/>"
+                   "<idmef:AdditionalData type=\"date-time\" meaning=\"stop-time\">"
+                     "<idmef:date-time>2000-03-09T19:30:00-05:00</idmef:date-time>"
+                   "</idmef:AdditionalData>"
+                 "</idmef:Alert>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::StringNull out=fx_.parseAdditionalData( parseXML(in) );
+  ensure("stirng is NULL", out.get()!=NULL );
+  ensure_equals("invalid additional data", *out.get(),
+                "start-time(date-time): 2000-03-09T07:00:00-05:00\n"
+                "stop-time(date-time): 2000-03-09T19:30:00-05:00");
 }
 
 } // namespace tut

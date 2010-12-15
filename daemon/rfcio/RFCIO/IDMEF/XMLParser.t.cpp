@@ -183,8 +183,6 @@ void testObj::test<11>(void)
   smokeTestParsing("testdata/official_examples/ping_of_death.xml");
 }
 
-// TODO: fix code to make these tests pass
-/*
 // smoke test reading IDMEF
 template<>
 template<>
@@ -200,7 +198,6 @@ void testObj::test<13>(void)
 {
   smokeTestParsing("testdata/official_examples/system_policy_violation.xml");
 }
-*/
 
 // test parsing when thereis empty node, that has ne context (instead of not being present at all)
 template<>
