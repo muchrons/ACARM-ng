@@ -148,8 +148,6 @@ void testObj::test<7>(void)
   }
 }
 
-// TODO: fix code to make these tests pass
-/*
 // smoke test reading IDMEF
 template<>
 template<>
@@ -165,7 +163,6 @@ void testObj::test<9>(void)
 {
   smokeTestParsing("testdata/official_examples/loadmodule_2.xml");
 }
-*/
 
 // smoke test reading IDMEF
 template<>
