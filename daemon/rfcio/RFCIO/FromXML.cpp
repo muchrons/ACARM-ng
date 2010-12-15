@@ -21,6 +21,8 @@ using namespace Persistency;
 using Base::NullValue;
 using Commons::Convert;
 
+// TODO: this code is nasty - it should be reworked and split into smaller parts
+
 namespace RFCIO
 {
 
@@ -194,15 +196,9 @@ Persistency::AlertPtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
     detectTime     =&detectTimeValue;
   }
   // source host, if present
-  Alert::Hosts  sourceHosts;
-  const xmlpp::Element *sourceNode=findOneChildIfHas(alert, "Source");
-  if(sourceNode!=NULL)
-    sourceHosts.push_back( parseSource(*sourceNode) );
+  const Alert::Hosts sourceHosts=parseSource(alert);
   // destination host, if present
-  Alert::Hosts  targetHosts;
-  const xmlpp::Element *targetNode=findOneChildIfHas(alert, "Target");
-  if(targetNode!=NULL)
-    targetHosts.push_back( parseTarget(*targetNode) );
+  const Alert::Hosts targetHosts=parseTarget(alert);
   // classification -> alert's name
   const Classification classification=parseClassification( findOneChild(alert, "Classification") );
   const string         name          =classification.get<0>();
@@ -506,14 +502,16 @@ Persistency::ProcessPtrNN FromXML::parseProcessAndUser(const xmlpp::Element &pro
   return ProcessPtrNN( new Process(pathStr, name, NULL, pid.get(), uid.get(), username, argsStr, ref) );
 }
 
-Persistency::HostPtrNN FromXML::parseSource(const xmlpp::Element &source) const
+FromXML::Hosts FromXML::parseSource(const xmlpp::Element &alert) const
 {
-  return parseHost("Source", source);
+  ensureNode("Alert", alert);
+  return parseHosts( alert.get_children("Source") );
 }
 
-Persistency::HostPtrNN FromXML::parseTarget(const xmlpp::Element &target) const
+FromXML::Hosts FromXML::parseTarget(const xmlpp::Element &alert) const
 {
-  return parseHost("Target", target);
+  ensureNode("Alert", alert);
+  return parseHosts( alert.get_children("Target") );
 }
 
 FromXML::NodeData FromXML::parseNode(const xmlpp::Element &node) const
@@ -580,11 +578,8 @@ double FromXML::parseConfidenceValue(const std::string &rating, const xmlpp::Ele
                                 "invalid value: " + rating);
 }
 
-Persistency::HostPtrNN FromXML::parseHost(const char *type, const xmlpp::Element &host) const
+Persistency::HostPtrNN FromXML::parseHost(const xmlpp::Element &host) const
 {
-  assert(type!=NULL);
-  ensureNode(type, host);
-
   // get node data (ip/name)
   const NodeData  nodeData=parseNode( findOneChild(host, "Node") );
   const char     *name    =( nodeData.first.get()==NULL ) ? NULL : nodeData.first->c_str();
@@ -609,8 +604,20 @@ Persistency::HostPtrNN FromXML::parseHost(const char *type, const xmlpp::Element
 
   // return new object
   assert( nodeData.second.get()!=NULL );
-  return Persistency::HostPtrNN(
-      new Host( *nodeData.second.get(), NULL, NULL, ReferenceURLPtr(), rSrvs, rProcs, name ) );
+  return Persistency::HostPtrNN( new Host( *nodeData.second.get(), NULL, NULL, ReferenceURLPtr(), rSrvs, rProcs, name ) );
+}
+
+FromXML::Hosts FromXML::parseHosts(const xmlpp::Element::NodeList &list) const
+{
+  Hosts out;
+  out.reserve( list.size() );
+  for(xmlpp::Element::NodeList::const_iterator it=list.begin(); it!=list.end(); ++it)
+  {
+    const xmlpp::Element *ptr=dynamic_cast<const xmlpp::Element*>(*it);
+    assert(ptr!=NULL);
+    out.push_back( parseHost(*ptr) );
+  }
+  return out;
 }
 
 } // namespace RFCIO

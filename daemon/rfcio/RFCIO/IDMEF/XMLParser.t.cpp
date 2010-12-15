@@ -116,8 +116,6 @@ void testObj::test<4>(void)
   smokeTestParsing("testdata/official_examples/connection_to_disallowed_service.xml");
 }
 
-// TODO: fix code to make these tests pass
-/*
 // smoke test reading IDMEF
 template<>
 template<>
@@ -133,7 +131,6 @@ void testObj::test<6>(void)
 {
   smokeTestParsing("testdata/official_examples/file_modification.xml");
 }
-*/
 
 // test throw on reading heartbeat
 template<>
@@ -168,6 +165,7 @@ void testObj::test<9>(void)
 {
   smokeTestParsing("testdata/official_examples/loadmodule_2.xml");
 }
+*/
 
 // smoke test reading IDMEF
 template<>
@@ -185,6 +183,8 @@ void testObj::test<11>(void)
   smokeTestParsing("testdata/official_examples/ping_of_death.xml");
 }
 
+// TODO: fix code to make these tests pass
+/*
 // smoke test reading IDMEF
 template<>
 template<>

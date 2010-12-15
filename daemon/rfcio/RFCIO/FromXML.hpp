@@ -6,6 +6,7 @@
 #define INCLUDE_RFCIO_FROMXML_HPP_FILE
 
 #include <string>
+#include <vector>
 #include <boost/tuple/tuple.hpp>
 #include <boost/noncopyable.hpp>
 #include <libxml++/libxml++.h>
@@ -44,6 +45,8 @@ public:
   typedef Base::NullValue<std::string>                                StringNull;
   /** \brief result from parsing Node. */
   typedef std::pair<StringNull, IPNull>                               NodeData;
+  /** \brief collection of hosts nodes. */
+  typedef std::vector<Persistency::HostPtrNN>                         Hosts;
 
   /** \brief parser of XMLs.
    *  \param conn connection to use for creation certain Persistency elements.
@@ -115,14 +118,14 @@ public:
    *  \param source node to be parsed.
    *  \return parsed data.
    */
-  Persistency::HostPtrNN parseSource(const xmlpp::Element &source) const;
+  Hosts parseSource(const xmlpp::Element &alert) const;
   /** \brief parse target host node.
-   *  \param target node to be parsed.
+   *  \param alert node to be parsed.
    *  \return parsed data.
    */
-  Persistency::HostPtrNN parseTarget(const xmlpp::Element &target) const;
+  Hosts parseTarget(const xmlpp::Element &alert) const;
   /** \brief parse 'Node' node.
-   *  \param node node to be parsed.
+   *  \param alert node to be parsed.
    *  \return parsed data.
    */
   NodeData parseNode(const xmlpp::Element &node) const;
@@ -136,7 +139,8 @@ private:
   void ensureNode(const char *name, const xmlpp::Element &node) const;
   Persistency::Timestamp parseTimestamp(const char *name, const xmlpp::Element &ts) const;
   double parseConfidenceValue(const std::string &rating, const xmlpp::Element &node) const;
-  Persistency::HostPtrNN parseHost(const char *type, const xmlpp::Element &host) const;
+  Persistency::HostPtrNN parseHost(const xmlpp::Element &host) const;
+  Hosts parseHosts(const xmlpp::Element::NodeList &list) const;
 
   Logger::Node                                    log_;
   mutable Persistency::IO::ConnectionPtrNN        conn_;
