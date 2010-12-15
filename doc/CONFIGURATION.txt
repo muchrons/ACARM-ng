@@ -291,7 +291,7 @@ below are listed implemented triggers along with their implementation.
   <rootca>/my/root/ca.pem</rootca> <!-- certificate of root Certificate Authorith (PEM or DER format) of issuer for server's certificate -->
   <port>465</port>                 <!-- port server's listening on -->
   <protocol>smtp</protocol>        <!-- protocol type (smtp) -->
-  <security>ssl</security>         <!-- secure connection type (ssl/tls) -->
+  <security>ssl</security>         <!-- secure connection type (ssl/starttls) -->
   <user>robot</user>               <!-- username to authenticate with (optional) -->
   <password>topsi-kret</password>  <!-- password for username (required when 'user' is set) -->
 
