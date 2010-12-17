@@ -81,7 +81,7 @@
       </com:TView>
     </com:TMultiView> -->
 
-<table cellspacing=0 cellpadding=0 border=0>
+<table cellspacing="0" cellpadding="0" border="0">
   <tr>
     <td align="right">
       <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('Home') %>">

@@ -19,7 +19,7 @@
               <com:TListItem ID="CBproblem" Value="problem" Text="Problem" Selected="true" />
               <com:TListItem ID="CBwarning" Value="warning" Text="Warning" Selected="true" />
               <com:TListItem ID="CBdebug" Value="debug" Text="Debug" Selected="false" />
-              <com:TListItem ID="CBinfo" Value="info" Text="Info" Selected="false" />
+              <com:TListItem ID="CBinfo" Value="info" Text="Info" Selected="true" />
             </com:TCheckBoxList>
           </td>
           <td id="AlertTag">src IP:</td><td id="AlertContent"><com:TTextBox ID="srcip" Text="any" /></td>

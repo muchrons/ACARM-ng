@@ -55,52 +55,41 @@ class Alert extends TPage
           $this->AlertSeverity->Text=$text;
         }
 
+      //Get all analyzers for the alert
       $analyzers=CSQLMap::get()->queryForList('SelectAnalyzersForAlert', $this->alertID_);
 
       foreach ($analyzers as $a)
-        $data[]=array('name'=>$a->name,'IP'=>$a->ip,'ver'=>$a->version, 'OS'=>$a->os);
+        $data[]=array('link'=>$this->makeAnalyzerLink($a->id),'name'=>$a->name,'IP'=>$a->ip,'ver'=>$a->version, 'OS'=>$a->os);
 
       $this->AlertAnalyzers->DataSource=$data;
       $this->AlertAnalyzers->dataBind();
 
+      //Get all hosts for the alert
       $hosts=CSQLMap::get()->queryForList('SelectHostsForAlert', $this->alertID_);
 
       foreach ($hosts as $h)
         if ($h->role == "src")
-          $sources[]=array('name'=>$h->name,'IP'=>$h->ip);
+          $sources[]=array('link'=>$this->makeHostLink($h->id),'name'=>$h->name,'IP'=>$h->ip);
         else
-          $destinations[]=array('name'=>$h->name,'IP'=>$h->ip);
+          $destinations[]=array('link'=>$this->makeHostLink($h->id),'name'=>$h->name,'IP'=>$h->ip);
 
       $this->AlertSources->DataSource=$sources;
       $this->AlertSources->dataBind();
 
       $this->AlertDestinations->DataSource=$destinations;
       $this->AlertDestinations->dataBind();
-
-      $this->AlertDescription->Text=($this->alert_->description === null) ? "N/A" : $this->alert_->description;
       }
   }
 
-
-  private function makeAnalyzersLinkList($idAlert)
+  private function makeHostLink($id)
   {
-    $pairs=CSQLMap::get()->queryForList('SelectAlertAnalyzers', $idAlert);
-    $out  ="";
-    foreach($pairs as $e)
-    {
-      $out.=$this->makeLinkTo('Analyzer', $e->id, $e->name) . ' ';
-    }
+    $out=$this->makeLinkTo('Host', $id, '<img src="pics/dot.png" border="0">');
     return $out;
   }
 
-  private function makeHostsLinkList($idAlert, $query)
+  private function makeAnalyzerLink($id)
   {
-    $pairs=CSQLMap::get()->queryForList($query, $idAlert);
-    $out  ="";
-    foreach($pairs as $e)
-    {
-      $out.=$this->makeLinkTo('ReportedHost', $e->id, $e->name) . ' ';
-    }
+    $out=$this->makeLinkTo('Analyzer', $id, '<img src="pics/dot.png" border="0">');
     return $out;
   }
 
