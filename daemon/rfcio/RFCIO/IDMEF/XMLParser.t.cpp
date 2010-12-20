@@ -92,8 +92,6 @@ void testObj::test<1>(void)
   ensure_equals("invalid name", alert->getName().get(), string("i work fine") );
 }
 
-// TODO: fix code to make these tests pass
-/*
 // smoke test reading IDMEF
 template<>
 template<>
@@ -133,7 +131,6 @@ void testObj::test<6>(void)
 {
   smokeTestParsing("testdata/official_examples/file_modification.xml");
 }
-*/
 
 // test throw on reading heartbeat
 template<>
@@ -151,8 +148,6 @@ void testObj::test<7>(void)
   }
 }
 
-// TODO: fix code to make these tests pass
-/*
 // smoke test reading IDMEF
 template<>
 template<>
@@ -200,7 +195,6 @@ void testObj::test<13>(void)
 {
   smokeTestParsing("testdata/official_examples/system_policy_violation.xml");
 }
-*/
 
 // test parsing when thereis empty node, that has ne context (instead of not being present at all)
 template<>

@@ -13,6 +13,16 @@ using namespace RFCIO;
 namespace
 {
 
+template<template<bool> class T>
+struct TestCaseProxy
+{
+  static void run(void)
+  {
+    // this test is possible only on machines with time_t bigger than 32 bits
+    T<(sizeof(time_t)>32/8)>::run();
+  }
+};
+
 struct TestClass
 {
   TestClass(void):
@@ -79,24 +89,77 @@ void testObj::test<1>(void)
   ensure_equals("conver to ntpstamp failed", tc_.toNtpStamp( ts(952596085u) ), "0xBC71F4F5.0x00000000");
 }
 
+namespace
+{
+
+// 64-bit (and more) implementation
+template<bool>
+struct TestCase2Impl
+{
+  static void run(void)
+  {
+    const TimeConverter tc=TimeConverter();
+    const time_t                 the2040=2208985200u;   // date -d "1 Jan 2040" +%s # this date is out-of scoped for ntpdate
+    const Persistency::Timestamp ts(the2040);
+    ensure_equals("invalid convertion didn't failed", tc.toNtpStamp(ts), "0x00000000.0x00000000");
+  }
+};
+
+// 32-bit implementation
+template<>
+struct TestCase2Impl<false>
+{
+  static void run(void)
+  {
+    fail("cannot perform this test on 32-bit machines - sorry...");
+  }
+};
+
+} // unnamed namespace
+
 // test invalid convertion to ntpstamp when overflow occures
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  const time_t the2040=2208985200u;   // date -d "1 Jan 2040" +%s # this date is out-of scoped for ntpdate
-  ensure_equals("invalid convertion didn't failed", tc_.toNtpStamp( ts(the2040) ), "0x00000000.0x00000000");
+  TestCaseProxy<TestCase2Impl>::run();
 }
+
+namespace
+{
+
+// 64-bit (and more) implementation
+template<bool>
+struct TestCase3Impl
+{
+  static void run(void)
+  {
+    const TimeConverter tc=TimeConverter();
+    const int64_t                the1900=-2208993840ll;
+    const int64_t                past   =the1900-1000;  // move before the minimum, supported period
+    const Persistency::Timestamp ts(past);
+    ensure_equals("invalid convertion didn't failed", tc.toNtpStamp(ts), "0x00000000.0x00000000");
+  }
+};
+
+// 32-bit implementation
+template<>
+struct TestCase3Impl<false>
+{
+  static void run(void)
+  {
+    fail("cannot perform this test on 32-bit machines - sorry...");
+  }
+};
+
+} // unnamed namespace
 
 // test invalid convertion when ntpstamp would be too small
 template<>
 template<>
 void testObj::test<3>(void)
 {
-  const int64_t the1900=-2208993840ll;
-  const int64_t past   =the1900-1000;   // move before the minimum, supported period
-  // TODO: following line on 32-bit machine shows: warning: overflow in implicit constant conversion
-  ensure_equals("invalid convertion didn't failed", tc_.toNtpStamp( ts(past) ), "0x00000000.0x00000000");
+  TestCaseProxy<TestCase3Impl>::run();
 }
 
 // test converting to iso-like string

@@ -29,7 +29,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   }
 
 
-  const xmlpp::Element &parseXML(const char *xml)
+  const xmlpp::Element &parseRoot(const char *xml)
   {
     assert(xml!=NULL);
     dp_.parse_memory(xml);
@@ -37,7 +37,13 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     assert(doc!=NULL);
     const xmlpp::Element *rootPtr=doc->get_root_node();
     assert(rootPtr!=NULL);
-    const xmlpp::Element::NodeList nl=rootPtr->get_children();
+    return *rootPtr;
+  }
+
+  const xmlpp::Element &parseXML(const char *xml)
+  {
+    const xmlpp::Element           &rootPtr=parseRoot(xml);
+    const xmlpp::Element::NodeList  nl     =rootPtr.get_children();
     assert( nl.size()==1 );
     assert( *nl.begin()!=NULL );
     return dynamic_cast<const xmlpp::Element&>( **nl.begin() );
@@ -124,7 +130,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     }
   }
 
-  void testHostParsing(Persistency::HostPtrNN (FromXML::*method)(const xmlpp::Element &) const,
+  void testHostParsing(FromXML::Hosts (FromXML::*method)(const xmlpp::Element &) const,
                        const char *nodeName)
   {
     assert(method!=NULL);
@@ -133,6 +139,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     stringstream ss;
     ss << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
           "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+          "<idmef:Alert messageid=\"303\">"
        <<   "<idmef:" << nodeName << ">"
 
        <<     "<idmef:Node category=\"host\">"
@@ -160,8 +167,12 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
               "</idmef:Process>"
 
        <<   "</idmef:" << nodeName << ">"
+          "</idmef:Alert>"
           "</idmef:IDMEF-Message>\n";
-    const Persistency::HostPtrNN out=(fx_.*method)( parseXML( ss.str().c_str() ) );
+    // parse
+    const FromXML::Hosts         list=(fx_.*method)( parseXML( ss.str().c_str() ) );
+    tut::ensure_equals("invalid numebr of hosts", list.size(), 1u);
+    const Persistency::HostPtrNN out=list.at(0);
     // test fileds
     tut::ensure_equals("invalid IP", out->getIP().to_string(), "1.2.3.4");
     tut::ensure("netmask is set", out->getNetmask()==NULL );
@@ -171,6 +182,43 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     tut::ensure_equals("invalid number of processes", out->getProcesses().size(), 1u);
     tut::ensure("name is NULL", out->getName().get()!=NULL );
     tut::ensure_equals("invalid name", out->getName().get(), string("a.b.c") );
+  }
+
+  void testMultipleHostParsing(FromXML::Hosts (FromXML::*method)(const xmlpp::Element &) const,
+                               const char *nodeName)
+  {
+    assert(method!=NULL);
+    assert(nodeName!=NULL);
+
+    stringstream ss;
+    ss << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+          "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+          "<idmef:Alert messageid=\"303\">"
+       <<   "<idmef:" << nodeName << ">"
+       <<     "<idmef:Node category=\"host\">"
+                "<idmef:name>a.b.c</idmef:name>"
+                "<idmef:Address category=\"ipv4-addr\">"
+                  "<idmef:address>1.2.3.4</idmef:address>"
+                "</idmef:Address>"
+              "</idmef:Node>"
+       <<   "</idmef:" << nodeName << ">"
+
+       <<   "<idmef:" << nodeName << ">"
+       <<     "<idmef:Node category=\"host\">"
+                "<idmef:name>a.b.d</idmef:name>"
+                "<idmef:Address category=\"ipv4-addr\">"
+                  "<idmef:address>1.2.3.5</idmef:address>"
+                "</idmef:Address>"
+              "</idmef:Node>"
+       <<   "</idmef:" << nodeName << ">"
+          "</idmef:Alert>"
+          "</idmef:IDMEF-Message>\n";
+    // parse
+    const FromXML::Hosts         list=(fx_.*method)( parseXML( ss.str().c_str() ) );
+    tut::ensure_equals("invalid numebr of hosts", list.size(), 2u);
+    // test fileds
+    tut::ensure_equals("invalid IP / 1", list[0]->getIP().to_string(), "1.2.3.4");
+    tut::ensure_equals("invalid IP / 2", list[1]->getIP().to_string(), "1.2.3.5");
   }
 
   IO::ConnectionPtrNN conn_;
@@ -196,12 +244,15 @@ void testObj::test<1>(void)
 {
   const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                  "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                 "<idmef:Alert messageid=\"303\">"
                    "<idmef:AdditionalData type=\"string\" meaning=\"description\">"
                      "<idmef:string>some test alert</idmef:string>"
                    "</idmef:AdditionalData>"
+                 "</idmef:Alert>"
                  "</idmef:IDMEF-Message>\n";
-  const string out=fx_.parseAdditionalData( parseXML(in) );
-  ensure_equals("invalid additional data", out, "some test alert");
+  const FromXML::StringNull out=fx_.parseAdditionalData( parseXML(in) );
+  ensure("string is NULL", out.get()!=NULL );
+  ensure_equals("invalid additional data", *out.get(), "some test alert");
 }
 
 // parse create time
@@ -417,7 +468,8 @@ void testObj::test<20>(void)
                    "<idmef:Assessment/>"
                  "</idmef:IDMEF-Message>\n";
   const FromXML::Assessment out=fx_.parseAssessment( parseXML(in) );
-  ensure_equals("invalid severity", out.get<0>().getName(), string("debug") );
+  ensure_equals("invalid severity", out.get<0>().getName(), string("info") );
+  ensure_equals("invalid severity", out.get<1>().get(), 0.75);
 }
 
 // test discrete certainty - low
@@ -643,7 +695,7 @@ void testObj::test<35>(void)
   testInvalidXML<ExceptionMissingElement>(&FromXML::parseProcessAndUser, in);
 }
 
-// test throw when missing user name
+// test when user's name is missing
 template<>
 template<>
 void testObj::test<36>(void)
@@ -668,7 +720,9 @@ void testObj::test<36>(void)
         "</idmef:User>"
       "</idmef:SomeTestRoot>"
     "</idmef:IDMEF-Message>\n";
-  testInvalidXML<ExceptionMissingElement>(&FromXML::parseProcessAndUser, in);
+  const ProcessPtrNN out=fx_.parseProcessAndUser( parseXML(in) );
+  // fallback to UID
+  ensure_equals("invalid user name", out->getUsername().get(), string("666") );
 }
 
 // test throw when missing process name
@@ -817,6 +871,7 @@ void testObj::test<47>(void)
 {
   const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
                  "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Alert messageid=\"303\">"
                    "<idmef:Source>"
                      "<idmef:Node category=\"host\">"
                        "<idmef:Address category=\"ipv4-addr\">"
@@ -824,8 +879,11 @@ void testObj::test<47>(void)
                        "</idmef:Address>"
                      "</idmef:Node>"
                    "</idmef:Source>"
+                   "</idmef:Alert>"
                  "</idmef:IDMEF-Message>\n";
-  const Persistency::HostPtrNN out=fx_.parseSource( parseXML(in) );
+  const FromXML::Hosts         list=fx_.parseSource( parseXML(in) );
+  tut::ensure_equals("invalid number of elements", list.size(), 1u);
+  const Persistency::HostPtrNN out=list[0];
   // test fileds
   tut::ensure_equals("invalid IP", out->getIP().to_string(), "1.2.3.4");
   tut::ensure("netmask is set", out->getNetmask()==NULL );
@@ -1038,6 +1096,244 @@ void testObj::test<54>(void)
   const ProcessPtrNN out=fx_.parseProcessAndUser( parseXML(in) );
   // test if path ha sbeen sread correctly
   ensure_equals("invalid process path", out->getPath().get(), string("") );
+}
+
+// parse analyzer - the minimal version
+template<>
+template<>
+void testObj::test<55>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Analyzer analyzerid=\"12345678\">"
+                   "</idmef:Analyzer>"
+                 "</idmef:IDMEF-Message>\n";
+  const Persistency::AnalyzerPtrNN out=fx_.parseAnalyzer( parseXML(in) );
+  // NOTE: id MAY differ - it is set within the system
+  ensure_equals("invalid name", out->getName().get(), string("12345678") );
+  ensure("IP is set", out->getIP()==NULL );
+  ensure("version is set", out->getVersion().get()==NULL );
+  ensure("OS is set", out->getOperatingSystem().get()==NULL );
+}
+
+// test if aprsing does not fail when multiple users are specified
+template<>
+template<>
+void testObj::test<56>(void)
+{
+  const char *in=
+  "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+    "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+      "<idmef:SomeTestRoot>"
+        "<idmef:Process>"
+          "<idmef:name>binary</idmef:name>"
+        "</idmef:Process>"
+        "<idmef:User>"
+          "<idmef:UserId>"
+            "<idmef:name>alucard</idmef:name>"
+            "<idmef:number>666</idmef:number>"
+          "</idmef:UserId>"
+          "<idmef:UserId>"
+            "<idmef:name>dracula</idmef:name>"
+            "<idmef:number>999</idmef:number>"
+          "</idmef:UserId>"
+        "</idmef:User>"
+      "</idmef:SomeTestRoot>"
+    "</idmef:IDMEF-Message>\n";
+  const ProcessPtrNN out=fx_.parseProcessAndUser( parseXML(in) );
+  // test user
+  ensure("user name is NULL", out->getUsername().get()!=NULL );
+  ensure("UID is NULL", out->getUID()!=NULL );
+}
+
+// parse IPv4 as hex
+template<>
+template<>
+void testObj::test<57>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Address category=\"ipv4-addr-hex\">"
+                     "<idmef:address>0x2112131f</idmef:address>"
+                   "</idmef:Address>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::IP out=fx_.parseAddress( parseXML(in) );
+  ensure_equals("invalid IPv4 address", out.to_string(), "33.18.19.31");
+}
+
+// parse IPv4 as hex / upper case
+template<>
+template<>
+void testObj::test<58>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Address category=\"ipv4-addr-hex\">"
+                     "<idmef:address>0x2112131F</idmef:address>"
+                   "</idmef:Address>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::IP out=fx_.parseAddress( parseXML(in) );
+  ensure_equals("invalid IPv4 address", out.to_string(), "33.18.19.31");
+}
+
+// parse IPv6 as hex
+template<>
+template<>
+void testObj::test<59>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Address category=\"ipv6-addr-hex\">"
+                     "<idmef:address>0xa102a304a102a304a102a304a102a304</idmef:address>"
+                   "</idmef:Address>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::IP out=fx_.parseAddress( parseXML(in) );
+  ensure_equals("invalid IPv4 address", out.to_string(), "a102:a304:a102:a304:a102:a304:a102:a304");
+}
+
+// parse IPv6 as hex / upper case
+template<>
+template<>
+void testObj::test<60>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Address category=\"ipv6-addr-hex\">"
+                     "<idmef:address>0xA102A304A102A304A102A304A102A304</idmef:address>"
+                   "</idmef:Address>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::IP out=fx_.parseAddress( parseXML(in) );
+  ensure_equals("invalid IPv4 address", out.to_string(), "a102:a304:a102:a304:a102:a304:a102:a304");
+}
+
+// parse classification with non-unique reference (smoke test: must not throw)
+template<>
+template<>
+void testObj::test<61>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Classification text=\"some alert\">"
+                     "<idmef:Reference origin=\"unknown\">"
+                       "<idmef:name>some name</idmef:name>"
+                       "<idmef:url>http://gnu.org</idmef:url>"
+                     "</idmef:Reference>"
+                     "<idmef:Reference origin=\"unknown\">"
+                       "<idmef:name>some other name</idmef:name>"
+                       "<idmef:url>http://kernel.org</idmef:url>"
+                     "</idmef:Reference>"
+                   "</idmef:Classification>"
+                 "</idmef:IDMEF-Message>\n";
+  fx_.parseClassification( parseXML(in) );
+}
+
+// test parsing multiple source hosts
+template<>
+template<>
+void testObj::test<62>(void)
+{
+  testMultipleHostParsing(&FromXML::parseSource, "Source");
+}
+
+// test parsing multiple target hosts
+template<>
+template<>
+void testObj::test<63>(void)
+{
+  testMultipleHostParsing(&FromXML::parseTarget, "Target");
+}
+
+// test recoevery from error during node parsing
+template<>
+template<>
+void testObj::test<64>(void)
+{
+    const char *xml=
+          "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+          "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+          "<idmef:Alert messageid=\"303\">"
+            "<idmef:Source>"
+              "<idmef:Node category=\"host\">"
+                "<idmef:name>a.b.c</idmef:name>"
+                "<idmef:Address category=\"ipv4-addr\">"
+                  "<idmef:address>1.2.3.4</idmef:address>"
+                "</idmef:Address>"
+              "</idmef:Node>"
+            "</idmef:Source>"
+
+            "<idmef:Source>"
+              "<idmef:Node category=\"host\">"
+                "<idmef:name>a.b.d</idmef:name>"
+                // this node will not parse becaouse of a missing IP adderess
+//                "<idmef:Address category=\"ipv4-addr\">"
+//                  "<idmef:address>1.2.3.3</idmef:address>"
+//                "</idmef:Address>"
+              "</idmef:Node>"
+            "</idmef:Source>"
+
+            "<idmef:Source>"
+              "<idmef:Node category=\"host\">"
+                "<idmef:name>a.b.d</idmef:name>"
+                "<idmef:Address category=\"ipv4-addr\">"
+                  "<idmef:address>1.2.3.5</idmef:address>"
+                "</idmef:Address>"
+              "</idmef:Node>"
+            "</idmef:Source>"
+          "</idmef:Alert>"
+          "</idmef:IDMEF-Message>\n";
+    // parse
+    const FromXML::Hosts         list=fx_.parseSource( parseXML(xml) );
+    tut::ensure_equals("invalid numebr of hosts", list.size(), 2u);
+    // test fileds
+    tut::ensure_equals("invalid IP / 1", list[0]->getIP().to_string(), "1.2.3.4");
+    tut::ensure_equals("invalid IP / 2", list[1]->getIP().to_string(), "1.2.3.5");
+}
+
+// try parsing multiple additional data section
+template<>
+template<>
+void testObj::test<65>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                 "<idmef:Alert messageid=\"303\">"
+                   "<idmef:AdditionalData type=\"date-time\" meaning=\"start-time\">"
+                     "<idmef:date-time>2000-03-09T07:00:00-05:00</idmef:date-time>"
+                   "</idmef:AdditionalData>"
+                   "<idmef:AdditionalData type=\"date-time\" meaning=\"stop-time\">"
+                     "<idmef:date-time>2000-03-09T19:30:00-05:00</idmef:date-time>"
+                   "</idmef:AdditionalData>"
+                 "</idmef:Alert>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::StringNull out=fx_.parseAdditionalData( parseXML(in) );
+  ensure("stirng is NULL", out.get()!=NULL );
+  ensure_equals("invalid additional data", *out.get(),
+                "start-time(date-time): 2000-03-09T07:00:00-05:00\n"
+                "stop-time(date-time): 2000-03-09T19:30:00-05:00");
+}
+
+// try parsing multiple additional data section, with errors
+template<>
+template<>
+void testObj::test<66>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                 "<idmef:Alert messageid=\"303\">"
+                   "<idmef:AdditionalData type=\"date-time\" meaning=\"start-time\">"
+                     "<idmef:date-time>2000-03-09T07:00:00-05:00</idmef:date-time>"
+                   "</idmef:AdditionalData>"
+                   "<idmef:AdditionalData type=\"date-time\" meaning=\"start-time\"/>"
+                   "<idmef:AdditionalData type=\"date-time\" meaning=\"stop-time\">"
+                     "<idmef:date-time>2000-03-09T19:30:00-05:00</idmef:date-time>"
+                   "</idmef:AdditionalData>"
+                 "</idmef:Alert>"
+                 "</idmef:IDMEF-Message>\n";
+  const FromXML::StringNull out=fx_.parseAdditionalData( parseXML(in) );
+  ensure("stirng is NULL", out.get()!=NULL );
+  ensure_equals("invalid additional data", *out.get(),
+                "start-time(date-time): 2000-03-09T07:00:00-05:00\n"
+                "stop-time(date-time): 2000-03-09T19:30:00-05:00");
 }
 
 } // namespace tut
