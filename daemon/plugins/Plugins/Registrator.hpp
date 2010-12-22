@@ -14,6 +14,8 @@ namespace Plugins
 {
 
 /** \brief registrator class, that registers given builder in a given abstract factory.
+ *
+ *  this class is to be directly used by the plugins, in order to register.
  */
 template<typename TSingleton, typename TBuilder>
 class Registrator
