@@ -78,7 +78,7 @@ void Loader::loadAll(const boost::filesystem::path &dir)
   LOGMSG_INFO_S(log_)<<count_<<" plugins loaded";
 }
 
-void Loader::loadPlugin(const fs::path &plugin)
+void Loader::loadPlugin(const boost::filesystem::path &plugin)
 {
   // open this plugin
   LOGMSG_DEBUG_S(log_)<<"opening plugin '"<<plugin<<"'";

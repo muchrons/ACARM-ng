@@ -24,6 +24,22 @@ namespace Plugins
  *  registereing within ACARM-ng's environment. plugins will be automatically
  *  unregistered when they are no longer in use (this has nothing to do with
  *  life-time of this object).
+ *
+ *  in order to be valid plugin, one must provide following function:
+ *  <code>
+ *  const char *register_plugin(void *dynObj);
+ *  </code>
+ *  that registers plugin to a proper factory using Plugins::Registrator<>
+ *  helper template. pointer argument given to a call is valid pointer
+ *  to Plugins::DynamicObject instance, related with this plugin (converted
+ *  to void* because of the C language limitations). returned value is
+ *  either NULL (i.e. no error) or compile-time C-stype string with error
+ *  description. not that this string is returned by pointer, thus must always
+ *  be valid and accessible. best mean to ensure this is return explicit
+ *  compile-tile C-string liek this:
+ *  <code>
+ *  return "my error description";
+ *  </code>
  */
 class Loader
 {

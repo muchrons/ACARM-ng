@@ -22,7 +22,7 @@ class Registrator
 {
 public:
   /** \brief register builder in abstract factory, holding given handle.
-   *  \param handle handle to shared libary with a given plugin.
+   *  \param dynObj handle to shared libary with a given plugin.
    */
   explicit Registrator(const System::Plugins::DynamicObject &dynObj)
   {
