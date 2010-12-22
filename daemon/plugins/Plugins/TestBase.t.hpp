@@ -13,7 +13,7 @@ namespace
 struct TestBase
 {
   TestBase(void):
-    dynObj_( builder_.open("testdata/sharedobj.so") )
+    dynObj_( builder_.open("testdata/sharedobj.plugin") )
   {
   }
 
