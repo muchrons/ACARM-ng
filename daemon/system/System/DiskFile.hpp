@@ -5,8 +5,8 @@
  * (file is beeing opened during creation).
  *
  */
-#ifndef INCLUDE_SYSTEM_DISKFILE_HPP
-#define INCLUDE_SYSTEM_DISKFILE_HPP
+#ifndef INCLUDE_SYSTEM_DISKFILE_HPP_FILE
+#define INCLUDE_SYSTEM_DISKFILE_HPP_FILE
 
 /* public header */
 

@@ -7,8 +7,8 @@
  * creation.
  *
  */
-#ifndef INCLUDE_SYSTEM_TEMPFILE_HPP
-#define INCLUDE_SYSTEM_TEMPFILE_HPP
+#ifndef INCLUDE_SYSTEM_TEMPFILE_HPP_FILE
+#define INCLUDE_SYSTEM_TEMPFILE_HPP_FILE
 
 /* public header */
 
