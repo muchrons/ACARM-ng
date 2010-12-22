@@ -23,10 +23,7 @@ public:
    *  \param where place where exception has been thrown.
    *  \param dir   invalid directory path.
    */
-  ExceptionInvalidDirectory(const Location &where, const boost::filesystem::path &dir):
-    Exception(where, cc("invalid plugins' directory: '", dir, "'") )
-  {
-  }
+  ExceptionInvalidDirectory(const Location &where, const boost::filesystem::path &dir);
 }; // class ExceptionInvalidDirectory
 
 } // namespace Plugins

@@ -22,10 +22,7 @@ public:
    *  \param name  name of the factory that could not be registered.
    *  \param msg   message to represent.
    */
-  ExceptionRegistrationError(const Location &where, const std::string &name, const std::string &msg):
-    Exception(where, cc("unable to register factory '", name, "': ", msg) )
-  {
-  }
+  ExceptionRegistrationError(const Location &where, const std::string &name, const std::string &msg);
 }; // class ExceptionRegistrationError
 
 } // namespace Plugins

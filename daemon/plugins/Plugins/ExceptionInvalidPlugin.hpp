@@ -21,10 +21,7 @@ public:
    *  \param where place where exception has been thrown.
    *  \param msg   error message (details).
    */
-  ExceptionInvalidPlugin(const Location &where, const std::string &msg):
-    Exception(where, cc("invalid plugin; error is: ", msg) )
-  {
-  }
+  ExceptionInvalidPlugin(const Location &where, const std::string &msg);
 }; // class ExceptionInvalidPlugin
 
 } // namespace Plugins

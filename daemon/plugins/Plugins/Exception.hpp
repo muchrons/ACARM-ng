@@ -21,10 +21,7 @@ public:
    *  \param where place where exception has been thrown.
    *  \param msg   message to represent.
    */
-  Exception(const Location &where, const std::string &msg):
-    Commons::Exception(where, msg)
-  {
-  }
+  Exception(const Location &where, const std::string &msg);
 }; // class Exception
 
 } // namespace Plugins
