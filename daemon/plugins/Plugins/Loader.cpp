@@ -33,9 +33,9 @@ Loader::Loader(const boost::filesystem::path &dir):
       continue;
     }
     // extension check
-    if( fs::extension(*it)==".plugin" )
+    if( fs::extension(*it)==".acmp" )
     {
-      LOGMSG_DEBUG(log_, "file does not look like a plugin (required extension is '.plugin')");
+      LOGMSG_DEBUG(log_, "file does not look like a plugin (required extension is '.acmp')");
       continue;
     }
 
