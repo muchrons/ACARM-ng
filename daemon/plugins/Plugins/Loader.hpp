@@ -27,18 +27,18 @@ namespace Plugins
  *
  *  in order to be valid plugin, one must provide following function:
  *  <code>
- *  const char *register_plugin(void *dynObj);
+ *    char *register_plugin(void *dynObj);
  *  </code>
  *  that registers plugin to a proper factory using Plugins::Registrator<>
  *  helper template. pointer argument given to a call is valid pointer
  *  to Plugins::DynamicObject instance, related with this plugin (converted
  *  to void* because of the C language limitations). returned value is
- *  either NULL (i.e. no error) or compile-time C-stype string with error
+ *  either NULL (i.e. no error) or malloc-ed, C-stype string with error
  *  description. not that this string is returned by pointer, thus must always
- *  be valid and accessible. best mean to ensure this is return explicit
- *  compile-tile C-string liek this:
+ *  be valid and accessible. to achieve this use strdup(), like this:
  *  <code>
- *  return "my error description";
+ *    return strdup("my error description");  // 1
+ *    return strdup( someStdString.c_str() ); // 2
  *  </code>
  */
 class Loader

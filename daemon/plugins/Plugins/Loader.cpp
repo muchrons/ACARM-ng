@@ -2,6 +2,7 @@
  * Loader.cpp
  *
  */
+#include "System/AutoCptr.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/Filesystem/isFileSane.hpp"
 #include "Commons/Filesystem/isDirectorySane.hpp"
@@ -84,7 +85,7 @@ void Loader::loadPlugin(const boost::filesystem::path &plugin)
   LOGMSG_DEBUG_S(log_)<<"opening plugin '"<<plugin<<"'";
   DynamicObject dyn=builder_.open(plugin);
   // read symbol that registers plugin
-  typedef const char*(*Func)(void*);
+  typedef char*(*Func)(void*);
   const char *name="register_plugin";
   LOGMSG_DEBUG_S(log_)<<"trying to obtain symbol '"<<name<<"'";
   Symbol<Func> init=dyn.getSymbol<Func>(name);
@@ -94,11 +95,11 @@ void Loader::loadPlugin(const boost::filesystem::path &plugin)
 
   // ok - now try to register
   LOGMSG_DEBUG_S(log_)<<"registering plugin with provided function";
-  const char *error=(*init)(&dyn);
-  if(error!=NULL)
+  System::AutoCptr<char> error( (*init)(&dyn) );
+  if( error.get()!=NULL )
   {
-    LOGMSG_FATAL_S(log_)<<"unable to register plugin '"<<plugin<<"' - registration failed with message: "<<error;
-    throw ExceptionRegistrationError(SYSTEM_SAVE_LOCATION, plugin.string(), error);
+    LOGMSG_FATAL_S(log_)<<"unable to register plugin '"<<plugin<<"' - registration failed with message: "<<error.get();
+    throw ExceptionRegistrationError(SYSTEM_SAVE_LOCATION, plugin.string(), error.get() );
   }
   LOGMSG_DEBUG_S(log_)<<"registering call's done (no error)";
 }

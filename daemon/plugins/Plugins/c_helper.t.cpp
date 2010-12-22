@@ -1,10 +1,11 @@
 /*
- * RegistratorHelper.t.cpp
+ * c_helper.t.cpp
  *
  */
 #include <tut.h>
 
-#include "Plugins/Registrator.hpp"
+#include "System/AutoCptr.hpp"
+#include "Plugins/c_helper.hpp"
 #include "Plugins/TestBase.t.hpp"
 
 using namespace std;
@@ -60,7 +61,7 @@ struct TestClass: public TestBase
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Plugins/Registrator");
+factory tf("Plugins/c_helper");
 } // unnamed namespace
 
 
@@ -72,7 +73,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Registrator<TestSingleton, TestBuilder> reg(dynObj_);
+  System::AutoCptr<char> msg( c_helper<TestSingleton, TestBuilder>(&dynObj_) );
+  if( msg.get()!=NULL )
+    fail( msg.get() );
   ensure("registration failed", g_registered);
 }
 
@@ -82,25 +85,9 @@ template<>
 void testObj::test<2>(void)
 {
   g_builderCtorThrow=true;
-  try
-  {
-    Registrator<TestSingleton, TestBuilder> reg(dynObj_);
-    fail("c-tor didn't throw on error");
-  }
-  catch(const ExceptionRegistrationError &)
-  {
-    // this is expected
-  }
+  System::AutoCptr<char> msg( c_helper<TestSingleton, TestBuilder>(&dynObj_) );
+  ensure("registration didn't return an error", msg.get()!=NULL );
   ensure("builed registered", g_registered==false);
-}
-
-// smoke test for a bug - memory leak in the tests
-template<>
-template<>
-void testObj::test<3>(void)
-{
-  TestBase tb;
-  const Registrator<TestSingleton, TestBuilder> reg(tb.dynObj_);
 }
 
 } // namespace tut
