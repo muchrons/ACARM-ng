@@ -4,9 +4,9 @@
  */
 #include "Logger/Logger.hpp"
 #include "Commons/Filesystem/isFileSane.hpp"
+#include "Commons/Filesystem/isDirectorySane.hpp"
 #include "Plugins/Loader.hpp"
 #include "Plugins/Registrator.hpp"
-#include "Plugins/ExceptionRegistrationError.hpp"
 
 using namespace System::Plugins;
 using namespace Commons::Filesystem;
@@ -16,13 +16,42 @@ namespace Plugins
 {
 
 Loader::Loader(const boost::filesystem::path &dir):
-  log_("plugins.loader")
+  log_("plugins.loader"),
+  count_(0)
 {
+  try
+  {
+    loadAll(dir);
+  }
+  catch(const System::Plugins::ExceptionCannotOpenSharedObject &ex)
+  {
+    LOGMSG_FATAL_S(log_)<<"cannot open shared object: "<<ex.what();
+    throw ExceptionInvalidPlugin(SYSTEM_SAVE_LOCATION, ex.what() );
+  }
+  catch(const System::Plugins::ExceptionCannotReadSymbol &ex)
+  {
+    LOGMSG_FATAL_S(log_)<<"cannot read symbol: "<<ex.what();
+    throw ExceptionInvalidPlugin(SYSTEM_SAVE_LOCATION, ex.what() );
+  }
+  catch(const System::Exception &ex)
+  {
+    LOGMSG_FATAL_S(log_)<<"generic system error: "<<ex.what();
+    throw ExceptionInvalidPlugin(SYSTEM_SAVE_LOCATION, ex.what() );
+  }
+}
 
+void Loader::loadAll(const boost::filesystem::path &dir)
+{
   LOGMSG_INFO_S(log_)<<"loading plugins from directory '"<<dir<<"'";
+  // sanity check of directory
+  if( !isDirectorySane(dir) )
+  {
+    LOGMSG_FATAL_S(log_)<<"given directory is not sane: "<<dir;
+    throw ExceptionInvalidDirectory(SYSTEM_SAVE_LOCATION, dir);
+  }
+
   const fs::directory_iterator end=fs::directory_iterator();
   // loop thought all elements in the directory
-  int count=0;
   for(fs::directory_iterator it(dir); it!=end; ++it)
   {
     LOGMSG_DEBUG_S(log_)<<"checking file: '"<<*it<<"'";
@@ -33,7 +62,7 @@ Loader::Loader(const boost::filesystem::path &dir):
       continue;
     }
     // extension check
-    if( fs::extension(*it)==".acmp" )
+    if( fs::extension(*it)!=".acmp" )
     {
       LOGMSG_DEBUG(log_, "file does not look like a plugin (required extension is '.acmp')");
       continue;
@@ -42,11 +71,11 @@ Loader::Loader(const boost::filesystem::path &dir):
     // ok - if all the basic conditions are meet, load the plugin
     LOGMSG_DEBUG(log_, "file looks like a plugin - trying to use it as one");
     loadPlugin(*it);
-    ++count;
+    ++count_;
     LOGMSG_INFO_S(log_)<<"plugin '"<<*it<<"' loaeded";
   } // for(files)
 
-  LOGMSG_INFO_S(log_)<<count<<" plugins loaded";
+  LOGMSG_INFO_S(log_)<<count_<<" plugins loaded";
 }
 
 void Loader::loadPlugin(const fs::path &plugin)
@@ -61,7 +90,7 @@ void Loader::loadPlugin(const fs::path &plugin)
   Symbol<Func> init=dyn.getSymbol<Func>(name);
   // sanity check for a symbol
   if( init.get()==NULL )
-    throw ExceptionRegistrationError(SYSTEM_SAVE_LOCATION, plugin.string(), "symbol is NULL");
+    throw ExceptionInvalidPlugin(SYSTEM_SAVE_LOCATION, plugin.string() + ": symbol is NULL");
 
   // ok - now try to register
   LOGMSG_DEBUG_S(log_)<<"registering plugin with provided function";

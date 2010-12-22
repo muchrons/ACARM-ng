@@ -11,6 +11,9 @@
 
 #include "System/Plugins/Builder.hpp"
 #include "Logger/Node.hpp"
+#include "Plugins/ExceptionInvalidPlugin.hpp"
+#include "Plugins/ExceptionInvalidDirectory.hpp"
+#include "Plugins/ExceptionRegistrationError.hpp"
 
 namespace Plugins
 {
@@ -30,11 +33,21 @@ public:
    */
   explicit Loader(const boost::filesystem::path &dir);
 
+  /** \brief get loaded's plugins count.
+   *  \return count of plugins.
+   */
+  size_t loadedCount(void) const
+  {
+    return count_;
+  }
+
 private:
-  void loadPlugin(const boost::filesystem::path &dir);
+  void loadAll(const boost::filesystem::path &dir);
+  void loadPlugin(const boost::filesystem::path &plugin);
 
   Logger::Node             log_;
   System::Plugins::Builder builder_;
+  size_t                   count_;
 }; // class Loader
 
 } // namespace Plugins

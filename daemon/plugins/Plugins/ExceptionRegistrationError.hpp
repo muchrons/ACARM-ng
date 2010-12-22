@@ -12,7 +12,7 @@
 namespace Plugins
 {
 
-/** \brief base exception for plugins-related issues.
+/** \brief exception thrown on registration error.
  */
 class ExceptionRegistrationError: public Exception
 {
