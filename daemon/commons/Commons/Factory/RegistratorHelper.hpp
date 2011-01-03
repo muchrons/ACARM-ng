@@ -8,6 +8,7 @@
 /* public header */
 
 #include <sstream>
+#include <utility>
 #include <string>
 #include <iostream>
 
@@ -27,6 +28,9 @@ namespace Factory
 template<typename TSingleton, typename TBuilder>
 class RegistratorHelper
 {
+private:
+  typedef std::pair<bool, std::string> RegistrationMark;
+
 public:
   /** \brief register builder in singleton.
    *  \note this c-tor newer throws.
@@ -35,13 +39,21 @@ public:
     registered_( registerBuilder() )
   {
   }
+  /** \brief unregisters builder from singleton.
+   */
+  ~RegistratorHelper(void)
+  {
+    if( isRegistered() )
+      TSingleton::unregisterBuilder(registered_.second);
+    registered_.first=false;
+  }
 
   /** \brief checks if registration was successfull.
    *  \return true if registration succeeded, false otherwise.
    */
   bool isRegistered(void) const
   {
-    return registered_;
+    return registered_.first;
   }
 
 private:
@@ -49,7 +61,7 @@ private:
   // exception is thrown from it. on the other hand, if possible it
   // tries to put builder's beging registered in logs to make eventual
   // debugging easier.
-  bool registerBuilder(void) const
+  RegistrationMark registerBuilder(void) const
   {
     try
     {
@@ -62,10 +74,11 @@ private:
       try
       {
         typename TSingleton::FactoryBuilderBaseAutoPtr ptr(new TBuilder);
+        const std::string typeName=ptr->getTypeName();
         builderName=ptr->getTypeName() + " (" + builderName + ")";
         LOGMSG_INFO_S(node)<<"registering builder: "<<builderName;
         TSingleton::registerBuilder(ptr);
-        return true;        // everything's fine
+        return RegistrationMark(true, typeName);    // everything's fine
       }
       catch(const std::exception &ex)
       {
@@ -90,7 +103,7 @@ private:
                <<"unable to create logger node" << std::endl;
     } // try{}catch() before registration
 
-    return false;           // some error occured
+    return RegistrationMark(false, "");             // some error occured
   }
 
   // notice that making instance of this object a global object takes adventage
@@ -100,7 +113,8 @@ private:
   // though object has not been created yet. memory access is valid too, since
   // it uses part of memeory assigned by the compiler during build time, to
   // be exclusive for that particular instance.
-  bool registered_;
+  // this is a note for bool paramter - string will be filled, when needed.
+  RegistrationMark registered_;
 }; // class RegistratorHelper
 
 } // namespace Factory
