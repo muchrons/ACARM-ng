@@ -15,16 +15,15 @@ using namespace Commons::Factory;
 namespace
 {
 
-bool g_builderCtorThrow;
-bool g_singletonRegisterThrow;
-bool g_singletonRegisterSucceeded;
-bool g_singletonUnregisterSucceeded;
+bool builderCtorThrow;
+bool singletonRegisterThrow;
+bool singletonRegisterSucceeded;
 
 struct TestBuilder
 {
   TestBuilder(void)
   {
-    if(g_builderCtorThrow)
+    if(builderCtorThrow)
       throw int(42);            // something not derived from std::exception
   }
 
@@ -40,32 +39,26 @@ struct TestSingleton
   template<typename T>
   static void registerBuilder(const T&)
   {
-    if(g_singletonRegisterThrow)
+    if(singletonRegisterThrow)
       throw int(42);            // something not derived from std::exception
-    g_singletonRegisterSucceeded=true;
-  }
-  template<typename T>
-  static void unregisterBuilder(const T&)
-  {
-    tut::ensure("unregister without prior registration", g_singletonRegisterSucceeded);
-    g_singletonUnregisterSucceeded=true;
+    singletonRegisterSucceeded=true;
   }
 }; // struct TestSingleton
 
 
-struct TestClass: private TestHelpers::TestBase
+struct RegistratorHelperTestClass: private TestHelpers::TestBase
 {
-  TestClass(void)
+  RegistratorHelperTestClass(void)
   {
     // mark throw-flags as false
-    g_builderCtorThrow            =false;
-    g_singletonRegisterThrow      =false;
+    builderCtorThrow          =false;
+    singletonRegisterThrow    =false;
     // register has not been called yet
-    g_singletonRegisterSucceeded  =false;
-    g_singletonUnregisterSucceeded=false;
+    singletonRegisterSucceeded=false;
   }
 };
 
+typedef RegistratorHelperTestClass TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
@@ -83,7 +76,7 @@ void testObj::test<1>(void)
 {
   const RegistratorHelper<TestSingleton, TestBuilder> rh;
   ensure("registration marked as failure", rh.isRegistered() );
-  ensure("registration failed",            g_singletonRegisterSucceeded);
+  ensure("registration failed",            singletonRegisterSucceeded);
 }
 
 // test builder c-tor throwing
@@ -91,10 +84,10 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  g_builderCtorThrow=true;
+  builderCtorThrow=true;
   const RegistratorHelper<TestSingleton, TestBuilder> rh;
   ensure("registration marked as failure", !rh.isRegistered() );
-  ensure("registration failed",            !g_singletonRegisterSucceeded);
+  ensure("registration failed",            !singletonRegisterSucceeded);
 }
 
 // test registration thorw
@@ -102,21 +95,10 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  g_singletonRegisterThrow=true;
+  singletonRegisterThrow=true;
   const RegistratorHelper<TestSingleton, TestBuilder> rh;
   ensure("registration marked as failure", !rh.isRegistered() );
-  ensure("registration failed",            !g_singletonRegisterSucceeded);
-}
-
-// test unregistration when registrator class dies
-template<>
-template<>
-void testObj::test<4>(void)
-{
-  {
-    const RegistratorHelper<TestSingleton, TestBuilder> rh;
-  }
-  ensure("unregistration failed", g_singletonUnregisterSucceeded);
+  ensure("registration failed",            !singletonRegisterSucceeded);
 }
 
 } // namespace tut
