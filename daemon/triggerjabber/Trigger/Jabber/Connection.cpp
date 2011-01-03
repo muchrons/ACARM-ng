@@ -35,9 +35,9 @@ Connection::~Connection(void)
 {
   LOGMSG_INFO(log_, "disconnecting from Jabber server");
   // TODO: these calls could potentially throw - add proper protection.
-  sess_.get()->recv(1000);
+  sess_->recv(1000);
   // set status to unavailable
-  sess_.get()->setPresence(gloox::Presence::Unavailable, 100 );
+  sess_->setPresence(gloox::Presence::Unavailable, 100 );
 }
 
 void Connection::login(gloox::Client *client) const
@@ -70,15 +70,14 @@ AutoSession Connection::connect(void) const
   if( sess.get()==NULL )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "NULL structure received (login failed)");
   // check if connection was established
-  // TODO: AutoSession has arrow operatordefined
-  if(!sess.get()->connect(false))
+  if(!sess->connect(false))
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "not connected to server");
   // login
   login( sess.get() );
-  if( sess.get()->recv() )
+  if( sess->recv() )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
   // set status to available
-  sess.get()->setPresence(gloox::Presence::Available, 100 );
+  sess->setPresence(gloox::Presence::Available, 100 );
   return sess;
 }
 
