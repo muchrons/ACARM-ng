@@ -19,6 +19,7 @@ const char *someTestConfigContent=
       "    <url>http://test.url</url>"
       "    <cleanupInterval>42</cleanupInterval>"
       "    <cleanupOlder>41</cleanupOlder>"
+      "    <pluginsDir>/some/dir/name</pluginsDir>"
       "  </general>"
       ""
       "  <persistency>"
