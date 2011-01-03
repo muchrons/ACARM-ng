@@ -7,7 +7,6 @@
 
 #include "Core/Main.hpp"
 #include "TestHelpers/TestBase.hpp"
-#include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace Core;
 
