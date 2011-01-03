@@ -47,16 +47,15 @@ void Connection::login(gloox::Client *client) const
   while(!quit)
   {
     gloox::ConnectionError ce = client->recv();
-    // todo: refactor to make code easier to read: if(error) throw; ...
-    if(ce == gloox::ConnNoError)
+    if(ce != gloox::ConnNoError)
+    {
+      throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "authentication error");
+    }
+    else
     {
       // check if user is authorized
       if(client->authed())
         quit=true;
-    }
-    else
-    {
-      throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "authentication error");
     }
   }
 }
