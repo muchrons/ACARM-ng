@@ -31,8 +31,9 @@ GeneralConfig parseConfig(const XML::Node &node)
     const std::string  url            =node.getChild("url").getValuesString();
     const unsigned int cleanupInterval=toUnsignedInt( node.getChild("cleanupInterval") );
     const unsigned int cleanupOlder   =toUnsignedInt( node.getChild("cleanupOlder") );
+    const std::string  pluginsDir     =node.getChild("pluginsDir").getValuesString();
     // return final object
-    return GeneralConfig(url, cleanupInterval, cleanupOlder);
+    return GeneralConfig(url, cleanupInterval, cleanupOlder, pluginsDir);
   }
   catch(const std::exception &ex)
   {
