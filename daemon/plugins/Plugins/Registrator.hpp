@@ -7,6 +7,9 @@
 
 /* public header */
 
+#include <boost/static_assert.hpp>
+#include <boost/type_traits/is_polymorphic.hpp>
+
 #include "System/Plugins/DynamicObject.hpp"
 #include "Plugins/ExceptionRegistrationError.hpp"
 
@@ -40,6 +43,10 @@ private:
     explicit DerivedBuilder(const System::Plugins::DynamicObject &dynObj):
       dynObj_(dynObj)
     {
+      // in order to safely derive from TBuilder it has to be polymorphic already.
+      // it shuld be always true, since this should be interface derived object,
+      // though we'd better be safe than sorry.
+      BOOST_STATIC_ASSERT( boost::is_polymorphic<TBuilder>::type::value );
     }
 
   private:
