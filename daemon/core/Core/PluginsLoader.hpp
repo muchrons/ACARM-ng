@@ -10,6 +10,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "Logger/Node.hpp"
+#include "Plugins/Loader.hpp"
 
 namespace Core
 {
