@@ -15,6 +15,7 @@
 #include "Core/CleanupThread.hpp"
 #include "Core/HandleSignals.hpp"
 #include "Core/SanityCheck.hpp"
+#include "Core/PluginsLoader.hpp"
 #include "Core/CleanShutdownChecker.hpp"
 
 namespace Core
@@ -47,10 +48,11 @@ public:
   void stop(void);
 
 private:
-  CleanShutdownChecker         csc_;        // checks and reports problems with previous runs of acarm-ng
-  SanityCheck                  sanity_;     // checks if (basic) environment is sane
   Logger::Node                 log_;
   HandleSignals                nullSignals_;// ignore signals at this moment
+  PluginsLoader                plugins_;    // load all plugins into the system
+  CleanShutdownChecker         csc_;        // checks and reports problems with previous runs of acarm-ng
+  SanityCheck                  sanity_;     // checks if (basic) environment is sane
                                             // (will be overwritten later on)
   Core::Types::SignedNodesFifo queue_;      // main system graphnodes' queue (signed by modifiers)
   QueueRestorer                restorer_;   // reader for initial queue's state from Persistency.
