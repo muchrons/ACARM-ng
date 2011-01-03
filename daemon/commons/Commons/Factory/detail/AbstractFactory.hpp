@@ -86,6 +86,7 @@ public:
     assert( cit->second.get()!=NULL );
     FactoryPtr ptr=cit->second->build(options);
     assert( ptr.get()!=NULL );
+    LOGMSG_DEBUG_S(log_)<<"object created with factory '"<<name<<"'";
     return ptr;
   }
 
@@ -109,6 +110,7 @@ public:
 
     // ok - we can register it
     builders_[ptr->getTypeName()]=ptr;
+    LOGMSG_DEBUG_S(log_)<<"factory type '"<<name<<"' registered";
   }
 
   /** \brief unregisters given builder.
@@ -120,11 +122,15 @@ public:
     // check if it is registered - if not, we're done
     typename BuildersMap::iterator it=builders_.find(name);
     if( it==builders_.end() )
+    {
+      LOGMSG_DEBUG_S(log_)<<"factory type '"<<name<<"' is not registered";
       return;
+    }
 
     // unregister entry
     builders_.erase(it);
     assert( builders_.find(name)==builders_.end() );
+    LOGMSG_DEBUG_S(log_)<<"factory type '"<<name<<"' unregistered";
   }
 
 private:
