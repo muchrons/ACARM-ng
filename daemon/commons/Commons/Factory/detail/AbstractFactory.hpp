@@ -110,7 +110,7 @@ public:
 
     // ok - we can register it
     builders_[ptr->getTypeName()]=ptr;
-    LOGMSG_DEBUG_S(log_)<<"factory type '"<<name<<"' registered";
+    LOGMSG_DEBUG_S(log_)<<"factory type '"<<ptr->getTypeName()<<"' registered";
   }
 
   /** \brief unregisters given builder.
