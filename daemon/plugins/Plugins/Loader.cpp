@@ -73,7 +73,7 @@ void Loader::loadAll(const boost::filesystem::path &dir)
     LOGMSG_DEBUG(log_, "file looks like a plugin - trying to use it as one");
     loadPlugin(*it);
     ++count_;
-    LOGMSG_INFO_S(log_)<<"plugin '"<<*it<<"' loaeded";
+    LOGMSG_INFO_S(log_)<<"plugin '"<<*it<<"' loaded";
   } // for(files)
 
   LOGMSG_INFO_S(log_)<<count_<<" plugins loaded";
