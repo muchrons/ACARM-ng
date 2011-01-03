@@ -1,5 +1,5 @@
 /*
- * main.t.cpp
+ * Main.t.cpp
  *
  */
 #include <tut/tut.hpp>
