@@ -60,12 +60,7 @@ private:
   {
     try
     {
-      // create instance of required builder, that holds handle to shared object.
       typename TSingleton::FactoryBuilderBaseAutoPtr ptr( new DerivedBuilder(dynObj) );
-      // unregister effects of automatic registration (if needed). this call does nothing
-      // when builder is not yet registered.
-      TSingleton::unregisterBuilder( ptr->getTypeName() );
-      // now register new instance
       TSingleton::registerBuilder(ptr);
     }
     catch(const std::exception &ex)

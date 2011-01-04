@@ -2,8 +2,6 @@
  * Loader.cpp
  *
  */
-#include <cassert>
-
 #include "System/AutoCptr.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/Filesystem/isFileSane.hpp"
@@ -42,24 +40,6 @@ Loader::Loader(const boost::filesystem::path &dir):
     throw ExceptionInvalidPlugin(SYSTEM_SAVE_LOCATION, ex.what() );
   }
 }
-
-
-Loader::Deinitializer::Deinitializer(Symbol s):
-  log_("plugins.loader.deinitializer"),
-  s_(s)
-{
-  assert( s_.get()!=NULL );
-  LOGMSG_DEBUG_S(log_)<<"registered deinit call '"<<s_.name()<<"' @ "<<reinterpret_cast<void*>( s_.get() );
-}
-
-Loader::Deinitializer::~Deinitializer(void)
-{
-  assert( s_.get()!=NULL );
-  LOGMSG_DEBUG_S(log_)<<"calling deinit function '"<<s_.name()<<"' @ "<<reinterpret_cast<void*>( s_.get() );
-  (*s_)();
-  LOGMSG_INFO_S(log_)<<"deinit function '"<<s_.name()<<"' @ "<<reinterpret_cast<void*>( s_.get() )<<" finished";
-}
-
 
 void Loader::loadAll(const boost::filesystem::path &dir)
 {
@@ -105,11 +85,13 @@ void Loader::loadPlugin(const boost::filesystem::path &plugin)
   LOGMSG_DEBUG_S(log_)<<"opening plugin '"<<plugin<<"'";
   DynamicObject dyn=builder_.open(plugin);
   // read symbol that registers plugin
-  typedef char*(*InitFunc)(void*);
-  Symbol<InitFunc> init=getSymbol<InitFunc>(dyn, "register_plugin");
-  // read symbol that unregisters plugin
-  typedef void(*DeinitFunc)(void);
-  Symbol<DeinitFunc> deinit=getSymbol<DeinitFunc>(dyn, "unregister_plugin");
+  typedef char*(*Func)(void*);
+  const char *name="register_plugin";
+  LOGMSG_DEBUG_S(log_)<<"trying to obtain symbol '"<<name<<"'";
+  Symbol<Func> init=dyn.getSymbol<Func>(name);
+  // sanity check for a symbol
+  if( init.get()==NULL )
+    throw ExceptionInvalidPlugin(SYSTEM_SAVE_LOCATION, plugin.string() + ": symbol is NULL");
 
   // ok - now try to register
   LOGMSG_DEBUG_S(log_)<<"registering plugin with provided function";
@@ -120,11 +102,6 @@ void Loader::loadPlugin(const boost::filesystem::path &plugin)
     throw ExceptionRegistrationError(SYSTEM_SAVE_LOCATION, plugin.string(), error.get() );
   }
   LOGMSG_DEBUG_S(log_)<<"registering call's done (no error)";
-
-  // if register didn't failed, add unregistration call to the pool
-  DeinitializerPtrNN tmp( new Deinitializer(deinit) );
-  deinit_.push_back(tmp);
-  LOGMSG_DEBUG_S(log_)<<"unregistering call has been added to deallocation list";
 }
 
 } // namespace Plugins

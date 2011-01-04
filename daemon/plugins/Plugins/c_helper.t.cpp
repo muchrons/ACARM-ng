@@ -46,11 +46,6 @@ struct TestSingleton
   {
     g_registered=true;
   }
-  template<typename T>
-  static void unregisterBuilder(const T&)
-  {
-    // for API compatibility only
-  }
 }; // struct TestSingleton
 
 
