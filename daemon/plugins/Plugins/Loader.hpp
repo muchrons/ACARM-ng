@@ -7,10 +7,14 @@
 
 /* public header */
 
+#include <string>
+#include <vector>
 #include <boost/filesystem.hpp>
+#include <boost/noncopyable.hpp>
 
 #include "System/Plugins/Builder.hpp"
-#include "Logger/Node.hpp"
+#include "Logger/Logger.hpp"
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Plugins/ExceptionInvalidPlugin.hpp"
 #include "Plugins/ExceptionInvalidDirectory.hpp"
 #include "Plugins/ExceptionRegistrationError.hpp"
@@ -41,7 +45,7 @@ namespace Plugins
  *    return strdup( someStdString.c_str() ); // 2
  *  </code>
  */
-class Loader
+class Loader: private boost::noncopyable
 {
 public:
   /** \brief loads all plugins from a given directory.
@@ -58,12 +62,43 @@ public:
   }
 
 private:
+  // helper that calls deinitialization funciton for plugins, when destroyed
+  // (i.e. given symbol).
+  struct Deinitializer: private boost::noncopyable
+  {
+    typedef void(*DeinitFunc)(void);
+    typedef System::Plugins::Symbol<DeinitFunc> Symbol;
+
+    explicit Deinitializer(Symbol s);
+    ~Deinitializer(void);
+
+  private:
+    Logger::Node log_;
+    Symbol       s_;
+  }; // struct Deinitializer
+  // pointer to be held inside the collection
+  typedef Commons::SharedPtrNotNULL<Deinitializer> DeinitializerPtrNN;
+
   void loadAll(const boost::filesystem::path &dir);
   void loadPlugin(const boost::filesystem::path &plugin);
 
-  Logger::Node             log_;
-  System::Plugins::Builder builder_;
-  size_t                   count_;
+  template<typename Func>
+  System::Plugins::Symbol<Func> getSymbol(System::Plugins::DynamicObject dynObj, const char *name)
+  {
+    assert(name!=NULL);
+    LOGMSG_DEBUG_S(log_)<<"trying to obtain symbol '"<<name<<"'";
+    System::Plugins::Symbol<Func> s=dynObj.getSymbol<Func>(name);
+    // sanity check for a symbol
+    if( s.get()==NULL )
+      throw ExceptionInvalidPlugin(SYSTEM_SAVE_LOCATION, std::string("symbol not found: ")+name);
+    LOGMSG_DEBUG_S(log_)<<"symbol '"<<name<<"' looks sane";
+    return s;
+  }
+
+  Logger::Node                    log_;
+  std::vector<DeinitializerPtrNN> deinit_;
+  System::Plugins::Builder        builder_;
+  size_t                          count_;
 }; // class Loader
 
 } // namespace Plugins
