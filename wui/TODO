@@ -1,8 +1,8 @@
-* optimize getting roots query - perhaps adding redundant table that will be updated when something's changed, or via a specialized view?
+* add query for getting roots (when dedicated table will be available).
 * add view showing meta-alerts currently processed by the system (i.e. elements in use).
-* table of meta-alerts must be converted to new type.
-* when showing alert's count - conisder logarithmic scale.
-* add countsof meta alerts to pair with alerts count.
-* add processes and serices to alerts.
+* add view showing meta-alerts reported by the system (subset of elements in use).
 * remove data base IDs from all tables.
-* analyzers should use table of new type.
+* add login/logout functionality.
+* add logging of every action taken in the WUI.
+* add logs view table.
+* create meta-alert overview, that would show all the meta-alerts' content (i.e.: children nodes) on one page.
