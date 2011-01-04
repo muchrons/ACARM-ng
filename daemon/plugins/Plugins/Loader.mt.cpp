@@ -18,6 +18,6 @@ int main(int argc, char **argv)
   }
 
   Loader loader(argv[1]);
-  cout<<"loaded "<<loader.loadedCount()<<" plugins"<<endl;
+  cout<<"loaded "<<loader.loadedCount()<<" plugin(s)"<<endl;
   return 0;
 }
