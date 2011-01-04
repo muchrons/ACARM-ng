@@ -4,14 +4,15 @@
  */
 #include <cassert>
 
-#include "Commons/SharedPtrNotNULL.hpp"
+#include "System/AutoCptr.hpp"
+#include "Logger/Logger.hpp"
 #include "Commons/Filesystem/isFileSane.hpp"
 #include "Commons/Filesystem/isDirectorySane.hpp"
 #include "Plugins/Loader.hpp"
+#include "Plugins/Registrator.hpp"
 
 using namespace System::Plugins;
 using namespace Commons::Filesystem;
-
 namespace fs=boost::filesystem;
 
 namespace Plugins
@@ -42,6 +43,24 @@ Loader::Loader(const boost::filesystem::path &dir):
   }
 }
 
+
+Loader::Deinitializer::Deinitializer(Symbol s):
+  log_("plugins.loader.deinitializer"),
+  s_(s)
+{
+  assert( s_.get()!=NULL );
+  LOGMSG_DEBUG_S(log_)<<"registered deinit call '"<<s_.name()<<"' @ "<<reinterpret_cast<void*>( s_.get() );
+}
+
+Loader::Deinitializer::~Deinitializer(void)
+{
+  assert( s_.get()!=NULL );
+  LOGMSG_DEBUG_S(log_)<<"calling deinit function '"<<s_.name()<<"' @ "<<reinterpret_cast<void*>( s_.get() );
+  (*s_)();
+  LOGMSG_INFO_S(log_)<<"deinit function '"<<s_.name()<<"' @ "<<reinterpret_cast<void*>( s_.get() )<<" finished";
+}
+
+
 void Loader::loadAll(const boost::filesystem::path &dir)
 {
   LOGMSG_INFO_S(log_)<<"loading plugins from directory '"<<dir<<"'";
@@ -52,14 +71,8 @@ void Loader::loadAll(const boost::filesystem::path &dir)
     throw ExceptionInvalidDirectory(SYSTEM_SAVE_LOCATION, dir);
   }
 
-  // prepare deinit set that will be registred to be deallocated in AtExit
-  // **BEFORE** anything from plugins will be registered, to prevent problems
-  // with global data destruction, whose code has been already deallocated.
-  typedef Commons::SharedPtrNotNULL<DeinitSet> DeinitSetPtrNN;
-  DeinitSetPtrNN deinitSet(new DeinitSet);
-
-  // loop thought all elements in the directory
   const fs::directory_iterator end=fs::directory_iterator();
+  // loop thought all elements in the directory
   for(fs::directory_iterator it(dir); it!=end; ++it)
   {
     LOGMSG_DEBUG_S(log_)<<"checking file: '"<<*it<<"'";
@@ -78,7 +91,7 @@ void Loader::loadAll(const boost::filesystem::path &dir)
 
     // ok - if all the basic conditions are meet, load the plugin
     LOGMSG_DEBUG(log_, "file looks like a plugin - trying to use it as one");
-    loadPlugin(*it, *deinitSet);
+    loadPlugin(*it);
     ++count_;
     LOGMSG_INFO_S(log_)<<"plugin '"<<*it<<"' loaded";
   } // for(files)
@@ -86,12 +99,31 @@ void Loader::loadAll(const boost::filesystem::path &dir)
   LOGMSG_INFO_S(log_)<<count_<<" plugins loaded";
 }
 
-void Loader::loadPlugin(const boost::filesystem::path &plugin, DeinitSet &deinitSet)
+void Loader::loadPlugin(const boost::filesystem::path &plugin)
 {
   // open this plugin
   LOGMSG_DEBUG_S(log_)<<"opening plugin '"<<plugin<<"'";
   DynamicObject dyn=builder_.open(plugin);
-  deinitSet.push_back(dyn);
+  // read symbol that registers plugin
+  typedef char*(*InitFunc)(void*);
+  Symbol<InitFunc> init=getSymbol<InitFunc>(dyn, "register_plugin");
+  // read symbol that unregisters plugin
+  typedef void(*DeinitFunc)(void);
+  Symbol<DeinitFunc> deinit=getSymbol<DeinitFunc>(dyn, "unregister_plugin");
+
+  // ok - now try to register
+  LOGMSG_DEBUG_S(log_)<<"registering plugin with provided function";
+  System::AutoCptr<char> error( (*init)(&dyn) );
+  if( error.get()!=NULL )
+  {
+    LOGMSG_FATAL_S(log_)<<"unable to register plugin '"<<plugin<<"' - registration failed with message: "<<error.get();
+    throw ExceptionRegistrationError(SYSTEM_SAVE_LOCATION, plugin.string(), error.get() );
+  }
+  LOGMSG_DEBUG_S(log_)<<"registering call's done (no error)";
+
+  // if register didn't failed, add unregistration call to the pool
+  DeinitializerPtrNN tmp( new Deinitializer(deinit) );
+  deinit_.push_back(tmp);
   LOGMSG_DEBUG_S(log_)<<"unregistering call has been added to deallocation list";
 }
 

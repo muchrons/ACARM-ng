@@ -33,13 +33,35 @@ public:
   }
 
 private:
+  /** \brief builder that holds handle to opened shared library inside.
+   */
+  struct DerivedBuilder: TBuilder
+  {
+    /** \brief constructor saving handle.
+     *  \param handle handle to shared object required for given plugin.
+     */
+    explicit DerivedBuilder(const System::Plugins::DynamicObject &dynObj):
+      dynObj_(dynObj)
+    {
+      // in order to safely derive from TBuilder it has to be polymorphic already.
+      // it shuld be always true, since this should be interface derived object,
+      // though we'd better be safe than sorry.
+      BOOST_STATIC_ASSERT( boost::is_polymorphic<TBuilder>::type::value );
+    }
+
+  private:
+    // holding handle ensures that library is opened as long as factory exists.
+    // this is required to ensure that all symbols in use are there.
+    System::Plugins::DynamicObject dynObj_;
+  }; // struct DerivedBuilder
+
 
   void registerBuilder(const System::Plugins::DynamicObject &dynObj)
   {
     try
     {
       // create instance of required builder, that holds handle to shared object.
-      typename TSingleton::FactoryBuilderBaseAutoPtr ptr(new TBuilder);
+      typename TSingleton::FactoryBuilderBaseAutoPtr ptr( new DerivedBuilder(dynObj) );
       // unregister effects of automatic registration (if needed). this call does nothing
       // when builder is not yet registered.
       TSingleton::unregisterBuilder( ptr->getTypeName() );
