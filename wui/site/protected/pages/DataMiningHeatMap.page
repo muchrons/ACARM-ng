@@ -35,7 +35,7 @@
               lat=destinations[latval];
               Prado.Callback("<%= $this->bt->UniqueID %>", {'longitude': lon, 'latitude': lat, 'minAlert': minAlert, 'maxAlert': maxAlert});
              } else
-             {              
+             {
               //TODO set lon/lat fields to ""
              }
         }
