@@ -1,2 +1,2 @@
 #!/bin/sh
-exec echo "-lloudmouth-1 -lgloox"
+exec echo "-lgloox"

@@ -3,8 +3,10 @@
  *
  */
 #include <utility>
+#include <sstream>
 #include <iterator>
 #include <algorithm>
+#include <ctype.h>
 #include <boost/tokenizer.hpp>
 #include <cassert>
 
@@ -19,6 +21,8 @@ using namespace Persistency;
 using Base::NullValue;
 using Commons::Convert;
 
+// TODO: this code is nasty - it should be reworked and split into smaller parts
+
 namespace RFCIO
 {
 
@@ -31,7 +35,7 @@ string parseString(const xmlpp::Element &node)
   if(txt==NULL)
     return "";  // this is a special case - don't ask me why XMLpp parses it this way...
   return txt->get_content();
-}
+} // parseString()
 
 NullValue<string> parseParameterIfHas(const xmlpp::Element &node, const char *name)
 {
@@ -40,7 +44,7 @@ NullValue<string> parseParameterIfHas(const xmlpp::Element &node, const char *na
   if(tmp==NULL)
     return NullValue<string>();
   return NullValue<string>( tmp->get_value() );
-}
+} // parseParameterIfHas()
 
 string parseParameter(const xmlpp::Element &node, const char *name)
 {
@@ -48,9 +52,27 @@ string parseParameter(const xmlpp::Element &node, const char *name)
   if( tmp.get()==NULL )
     throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, node.get_path(), name);
   return *tmp.get();
-}
+} // parseParameter()
 
-const xmlpp::Element *findOneChildIfHas(const xmlpp::Element &parent, const char *name)
+const xmlpp::Element* findAnyChildIfHas(const xmlpp::Element &parent, const char *name)
+{
+  assert(name!=NULL);
+  const xmlpp::Element::NodeList nl=parent.get_children(name);
+  // NOTE - multiple elements are allowed - random one is chosen
+  if( nl.size()<1 )
+    return NULL;
+  return dynamic_cast<const xmlpp::Element*>( *nl.begin() );
+} // findAnyChildIfHas
+
+const xmlpp::Element& findAnyChild(const xmlpp::Element &parent, const char *name)
+{
+  const xmlpp::Element *ptr=findAnyChildIfHas(parent, name);
+  if(ptr==NULL)
+    throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, parent.get_path(), name);
+  return *ptr;
+} // findAnyChild()
+
+const xmlpp::Element* findOneChildIfHas(const xmlpp::Element &parent, const char *name)
 {
   assert(name!=NULL);
   const xmlpp::Element::NodeList nl=parent.get_children(name);
@@ -59,15 +81,15 @@ const xmlpp::Element *findOneChildIfHas(const xmlpp::Element &parent, const char
   if( nl.size()>1 )
     throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, parent.get_path(), "requested name is not unique: " + string(name) );
   return dynamic_cast<const xmlpp::Element*>( *nl.begin() );
-}
+} // findOneChildIfHas()
 
-const xmlpp::Element &findOneChild(const xmlpp::Element &parent, const char *name)
+const xmlpp::Element& findOneChild(const xmlpp::Element &parent, const char *name)
 {
   const xmlpp::Element *ptr=findOneChildIfHas(parent, name);
   if(ptr==NULL)
     throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, parent.get_path(), name);
   return *ptr;
-}
+} // findOneChild()
 
 template<typename T>
 NullValue<T> parseChildIfHasAs(const xmlpp::Element &node, const char *name)
@@ -76,8 +98,77 @@ NullValue<T> parseChildIfHasAs(const xmlpp::Element &node, const char *name)
   if(e==NULL)
     return NullValue<T>();
   return NullValue<T>( Commons::Convert::to<T>( parseString(*e) ) );
-}
+} // parseChildIfHasAs()
+
+char fromHexChar(const char in)
+{
+  const char c=tolower(in);
+  if('0'<=c && c<='9')
+    return c- '0';
+  if('a'<=c && c<='f')
+    return 10+c-'a';
+  throw Exception(SYSTEM_SAVE_LOCATION, "invalid char in hex");
+} // fromHexChar()
+
+string makeCannonicalIPv4(const string &in)
+{
+  assert( in.length()==2+8 );
+  // ok - we need to parse string...
+  stringstream           ss;
+  string::const_iterator it=in.begin();
+  it+=2;                            // skip leading '0x'
+  while( it!=in.end() )
+  {
+    int v=0;
+    v+=fromHexChar(*it)<<4;
+    ++it;
+    v+=fromHexChar(*it);
+    ++it;
+    ss<<v;
+    if( it!=in.end() )
+      ss<<".";
+  }
+  return ss.str();
+} // makeCannonicalIPv4()
+
+string makeCannonicalIPv6(const string &in)
+{
+  assert( in.length()==2+32 );
+  stringstream           ss;
+  string::const_iterator it=in.begin();
+  it+=2;                            // skip leading '0x'
+  while( it!=in.end() )
+  {
+    for(int i=0; i<4; ++i)
+    {
+      assert( it!=in.end() );
+      ss<< static_cast<char>( tolower(*it) );
+      ++it;
+    }
+
+    if( it!=in.end() )
+      ss<<":";
+  }
+  return ss.str();
+} // makeCannonicalIPv6()
+
+string makeCannonicalIP(const string &in)
+{
+  if( in.length()<3 )               // ?!
+    throw Exception(SYSTEM_SAVE_LOCATION, "given IP is too short: '"+in+"'");
+  if( in[0]!='0' || in[1]!='x' )    // this form is non-hex one
+    return in;
+  // parsing required...
+  if( in.length()==2+8 )            // IPv4: 0x01234567
+    return makeCannonicalIPv4(in);
+  if( in.length()==2+32 )           // IPv6: 0x01234567890123456789012345678901
+    return makeCannonicalIPv6(in);
+  // oops...
+  throw Exception(SYSTEM_SAVE_LOCATION, "unknown IP form: '"+in+"'");
+} // makeCannonicalIP()
 } // unnamed namespace
+
+
 
 FromXML::FromXML(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t):
   log_("rfcio.fromxml"),
@@ -105,28 +196,20 @@ Persistency::AlertPtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
     detectTime     =&detectTimeValue;
   }
   // source host, if present
-  Alert::Hosts  sourceHosts;
-  const xmlpp::Element *sourceNode=findOneChildIfHas(alert, "Source");
-  if(sourceNode!=NULL)
-    sourceHosts.push_back( parseSource(*sourceNode) );
+  const Alert::Hosts sourceHosts=parseSource(alert);
   // destination host, if present
-  Alert::Hosts  targetHosts;
-  const xmlpp::Element *targetNode=findOneChildIfHas(alert, "Target");
-  if(targetNode!=NULL)
-    targetHosts.push_back( parseTarget(*targetNode) );
+  const Alert::Hosts targetHosts=parseTarget(alert);
   // classification -> alert's name
   const Classification classification=parseClassification( findOneChild(alert, "Classification") );
   const string         name          =classification.get<0>();
   // note that ReferenceURL (aka: classification.get<1>()) is
   // additional data -> description
-  string                description;
-  const xmlpp::Element *additionalData=findOneChildIfHas(alert, "AdditionalData");
-  if(additionalData!=NULL)
-    description=parseAdditionalData(*additionalData);
+  const StringNull descriptionTmp=parseAdditionalData(alert);
+  const string     description=(descriptionTmp.get()==NULL)?"":*descriptionTmp.get();
   // assessment -> {severity, certainty}
-  const Assessment assessment=parseAssessment( findOneChild(alert, "Assessment") );
-  const Severity   severity  =assessment.get<0>();
-  const Certainty  certainty =assessment.get<1>();
+  const Assessment assessment =parseAssessment( findOneChildIfHas(alert, "Assessment") );
+  const Severity   severity   =assessment.get<0>();
+  const Certainty  certainty  =assessment.get<1>();
 
   // create alert
   return AlertPtrNN( new Alert(name, analyzers, detectTime, createTime, severity, certainty,
@@ -136,18 +219,23 @@ Persistency::AlertPtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
 Persistency::AnalyzerPtrNN FromXML::parseAnalyzer(const xmlpp::Element &analyzer) const
 {
   ensureNode("Analyzer", analyzer);
-  const FromXML::NodeData  nodeData   =parseNode( findOneChild(analyzer, "Node") );
+  const FromXML::NodeData  nodeData   =parseNode( findOneChildIfHas(analyzer, "Node") );
   const char              *name       =(nodeData.first.get()==NULL)?NULL:nodeData.first->c_str();
   const NullValue<string>  versionData=parseParameterIfHas(analyzer, "version");
   const char              *version    =(versionData.get()==NULL)?NULL:versionData.get()->c_str();
   const NullValue<string>  osData     =parseParameterIfHas(analyzer, "ostype");
   const char              *os         =(osData.get()==NULL)?NULL:osData.get()->c_str();
-  Persistency::AnalyzerPtrNN out=analyzersCreator_.construct( conn_, t_, name, version, os, nodeData.second.get() );
   // check if ID is assigned the same way the one in file was. if not, report an error and proceed.
   const NullValue<string>  idData     =parseParameterIfHas(analyzer, "analyzerid");
   const char              *id         =(idData.get()==NULL)?NULL:idData.get()->c_str();
+  // if name is not set, use ID as name
+  if(name==NULL)
+    name=id;
+  // create analyzer to be returned
+  Persistency::AnalyzerPtrNN out=analyzersCreator_.construct( conn_, t_, name, version, os, nodeData.second.get() );
   if(id!=NULL)
   {
+    // if different ID is in input file, write infor about it in log
     if( Convert::to<string>( out->getID().get() )!=id )
       LOGMSG_WARN_S(log_) << "parsed analyzer has ID '" << id << "', but system assigned it ID "
                           << out->getID().get() << "; this can happen if alert comes from different "
@@ -187,37 +275,51 @@ SeverityLevel parseImpactValue(const string &imp)
 } // parseImpactValue()
 } // unnamed namespace
 
+
+namespace
+{
+const SeverityLevel g_defaultSeverity(SeverityLevel::INFO);
+const double        g_defaultCertainty(0.75);
+} // unnamed namespace
+
 FromXML::Assessment FromXML::parseAssessment(const xmlpp::Element &assessment) const
 {
   ensureNode("Assessment", assessment);
 
   // try parsing severity
   const xmlpp::Element *severityElem=findOneChildIfHas(assessment, "Impact");
-  SeverityLevel         sl(SeverityLevel::DEBUG);
+  SeverityLevel         sl=g_defaultSeverity;
   if(severityElem!=NULL)
     sl=parseImpactValue( parseParameter(*severityElem, "severity") );
   else
     LOGMSG_WARN(log_, "missing 'Impact' section, while severity is required in the system. "
-                      "leaving DEBUG severity as the default for this report.");
+                      "leaving INFO severity as the default for this report.");
 
   // try parsing certainty
   const xmlpp::Element *certaintyElem=findOneChildIfHas(assessment, "Confidence");
-  double                cert         =0.1;
+  double                cert         =g_defaultCertainty;
   if(certaintyElem!=NULL)
     cert=parseConfidenceValue( parseParameter(*certaintyElem, "rating"), *certaintyElem );
   else
     LOGMSG_WARN(log_, "missing 'Confidence' section, while certainty is required in the system. "
-                      "leaving 10% confidence as the default");
+                      "leaving default confidence level");
 
   // ok - return parsed value
   return Assessment( Severity(sl), Certainty(cert) );
+}
+
+FromXML::Assessment FromXML::parseAssessment(const xmlpp::Element *assessment) const
+{
+  if(assessment==NULL)
+    return Assessment( Severity(g_defaultSeverity), Certainty(g_defaultCertainty) );
+  return parseAssessment(*assessment);
 }
 
 FromXML::Classification FromXML::parseClassification(const xmlpp::Element &classification) const
 {
   ensureNode("Classification", classification);
   const string          description=parseParameter(classification, "text");
-  const xmlpp::Element *reference  =findOneChildIfHas(classification, "Reference");
+  const xmlpp::Element *reference  =findAnyChildIfHas(classification, "Reference");
   ReferenceURLPtr       ref;
   if(reference!=NULL)
     ref=parseReferenceURL(*reference).shared_ptr();
@@ -232,21 +334,44 @@ Persistency::ReferenceURLPtrNN FromXML::parseReferenceURL(const xmlpp::Element &
   return ReferenceURLPtrNN( new ReferenceURL(name, url) );
 }
 
-std::string FromXML::parseAdditionalData(const xmlpp::Element &data) const
+FromXML::StringNull FromXML::parseAdditionalData(const xmlpp::Element &data) const
 {
-  ensureNode("AdditionalData", data);
-  const string type =parseParameter(data, "type");
-  const string value=parseString( findOneChild(data, type.c_str() ) );
-  if(type!="string")
-    return type + ": " + value;
-  return value;
+  ensureNode("Alert", data);
+  stringstream                    ss;
+  int                             cnt =0;
+  const xmlpp::Element::NodeList &list=data.get_children("AdditionalData");
+  for(xmlpp::Element::NodeList::const_iterator it=list.begin(); it!=list.end(); ++it)
+  {
+    try
+    {
+      const xmlpp::Element *ptr=dynamic_cast<const xmlpp::Element*>(*it);
+      assert(ptr!=NULL);
+      const string type   =parseParameter(*ptr, "type");
+      const string meaning=parseParameter(*ptr, "meaning");
+      const string value  =parseString( findOneChild(*ptr, type.c_str() ) );
+      if(cnt>0)
+        ss<<endl;
+      ++cnt;
+      if(type!="string")
+        ss<<meaning<<"("<<type<<"): ";
+      ss<<value;
+    }
+    catch(const std::exception &ex)
+    {
+      LOGMSG_WARN_S(log_)<<"error while parsing host: "<<ex.what()<<"; skipping this host and proceeding with parsing";
+    }
+  } // for(hosts)
+  // return the result
+  if(cnt>0)
+    return StringNull( ss.str() );
+  return StringNull();
 }
 
 FromXML::IP FromXML::parseAddress(const xmlpp::Element &address) const
 {
   ensureNode("Address", address);
   const string ip=parseString( findOneChild(address, "address") );
-  return FromXML::IP::from_string(ip);
+  return FromXML::IP::from_string( makeCannonicalIP(ip) );
 }
 
 
@@ -373,11 +498,15 @@ Persistency::ProcessPtrNN FromXML::parseProcessAndUser(const xmlpp::Element &pro
   const xmlpp::Element *userRootElem=findOneChildIfHas(process, "User");
   if(userRootElem!=NULL)
   {
-    const xmlpp::Element *userElem=findOneChildIfHas(*userRootElem, "UserId");
+    const xmlpp::Element *userElem=findAnyChildIfHas(*userRootElem, "UserId");
     if(userElem!=NULL)
     {
       uid     =parseChildIfHasAs<int>(*userElem, "number");
-      username=parseString( findOneChild(*userElem, "name") );
+      const xmlpp::Element *user=findOneChildIfHas(*userElem, "name");
+      if(user==NULL)
+        user=&findOneChild(*userElem, "number");
+      assert(user!=NULL);
+      username=parseString(*user);
     }
   }
 
@@ -394,14 +523,16 @@ Persistency::ProcessPtrNN FromXML::parseProcessAndUser(const xmlpp::Element &pro
   return ProcessPtrNN( new Process(pathStr, name, NULL, pid.get(), uid.get(), username, argsStr, ref) );
 }
 
-Persistency::HostPtrNN FromXML::parseSource(const xmlpp::Element &source) const
+FromXML::Hosts FromXML::parseSource(const xmlpp::Element &alert) const
 {
-  return parseHost("Source", source);
+  ensureNode("Alert", alert);
+  return parseHosts( alert.get_children("Source") );
 }
 
-Persistency::HostPtrNN FromXML::parseTarget(const xmlpp::Element &target) const
+FromXML::Hosts FromXML::parseTarget(const xmlpp::Element &alert) const
 {
-  return parseHost("Target", target);
+  ensureNode("Alert", alert);
+  return parseHosts( alert.get_children("Target") );
 }
 
 FromXML::NodeData FromXML::parseNode(const xmlpp::Element &node) const
@@ -420,6 +551,13 @@ FromXML::NodeData FromXML::parseNode(const xmlpp::Element &node) const
     ip=IPNull( parseAddress(*ipElem) );
 
   return NodeData(name, ip);
+}
+
+FromXML::NodeData FromXML::parseNode(const xmlpp::Element *node) const
+{
+  if(node==NULL)
+    return NodeData();
+  return parseNode(*node);
 }
 
 void FromXML::ensureNode(const char *name, const xmlpp::Element &node) const
@@ -461,11 +599,8 @@ double FromXML::parseConfidenceValue(const std::string &rating, const xmlpp::Ele
                                 "invalid value: " + rating);
 }
 
-Persistency::HostPtrNN FromXML::parseHost(const char *type, const xmlpp::Element &host) const
+Persistency::HostPtrNN FromXML::parseHost(const xmlpp::Element &host) const
 {
-  assert(type!=NULL);
-  ensureNode(type, host);
-
   // get node data (ip/name)
   const NodeData  nodeData=parseNode( findOneChild(host, "Node") );
   const char     *name    =( nodeData.first.get()==NULL ) ? NULL : nodeData.first->c_str();
@@ -490,8 +625,27 @@ Persistency::HostPtrNN FromXML::parseHost(const char *type, const xmlpp::Element
 
   // return new object
   assert( nodeData.second.get()!=NULL );
-  return Persistency::HostPtrNN(
-      new Host( *nodeData.second.get(), NULL, NULL, ReferenceURLPtr(), rSrvs, rProcs, name ) );
+  return Persistency::HostPtrNN( new Host( *nodeData.second.get(), NULL, NULL, ReferenceURLPtr(), rSrvs, rProcs, name ) );
+}
+
+FromXML::Hosts FromXML::parseHosts(const xmlpp::Element::NodeList &list) const
+{
+  Hosts out;
+  out.reserve( list.size() );
+  for(xmlpp::Element::NodeList::const_iterator it=list.begin(); it!=list.end(); ++it)
+  {
+    try
+    {
+      const xmlpp::Element *ptr=dynamic_cast<const xmlpp::Element*>(*it);
+      assert(ptr!=NULL);
+      out.push_back( parseHost(*ptr) );
+    }
+    catch(const std::exception &ex)
+    {
+      LOGMSG_WARN_S(log_)<<"error while parsing host: "<<ex.what()<<"; skipping this host and proceeding with parsing";
+    }
+  } // for(hosts)
+  return out;
 }
 
 } // namespace RFCIO

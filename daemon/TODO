@@ -5,7 +5,6 @@
 * ipblackfilter does not save paramters in data base - after restart the same alerts will get severity incremetned once more; soncider saving MetaAlertID->done/notdone as a config paramter.
 * implement common configuration module for compile-time constants used in code.
 * filter that increases priority for hosts that are out of defined set (i.e. from external network).
-* test if ACARM-ng deals fine with loosing connection to data base.
 * add automatic queue reduction to triggers - before sending check if some of the alerts are not part of others.
 * add handle for out-of-memory problem (i.e. using own wrapper for memory manager).
 * consider adding pre-requisites for triggers, i.e. to trigger only reports of some specific content (preprocessor-like style).
@@ -23,4 +22,3 @@
 * implement filter that gathers stats of source/destination IPs and reports the most problematic noes with higher priority.
 * rework severity computing algorithm to make higher priority for alerts with high-priority alerts (now main part is average...).
 * add heartbeats for daemon, so that GUI will know when system is online and when it is not.
-* implement filter monitoring events in the system and learning from it, and correlating events that are different from expected behaviour.
