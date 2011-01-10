@@ -840,6 +840,22 @@ void testObj::test<42>(void)
   ensure("IP is not NULL", out.second.get()==NULL );
 }
 
+// test parsing typical alert
+template<>
+template<>
+void testObj::test<43>(void)
+{
+  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
+                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
+                   "<idmef:Analyzer>"
+                     "<idmef:Node category=\"host\">"
+                       "<idmef:name>some name</idmef:name>"
+                     "</idmef:Node>"
+                   "</idmef:Analyzer>"
+                 "</idmef:IDMEF-Message>\n";
+  const Persistency::AnalyzerPtrNN out=fx_.parseAnalyzer( parseXML(in) );
+}
+
 // test throw when invalid node is given as node
 template<>
 template<>
@@ -946,22 +962,6 @@ template<>
 void testObj::test<50>(void)
 {
   testInvalidNodeName(&FromXML::parseAnalyzer);
-}
-
-// test parsing typical alert
-template<>
-template<>
-void testObj::test<43>(void)
-{
-  const char *in="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
-                 "<idmef:IDMEF-Message xmlns:idmef=\"http://iana.org/idmef\">"
-                   "<idmef:Analyzer>"
-                     "<idmef:Node category=\"host\">"
-                       "<idmef:name>some name</idmef:name>"
-                     "</idmef:Node>"
-                   "</idmef:Analyzer>"
-                 "</idmef:IDMEF-Message>\n";
-  const Persistency::AnalyzerPtrNN out=fx_.parseAnalyzer( parseXML(in) );
 }
 
 // parse full alert
