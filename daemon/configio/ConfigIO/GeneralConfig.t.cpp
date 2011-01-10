@@ -13,7 +13,7 @@ namespace
 struct TestClass
 {
   TestClass(void):
-    cfg_("http://my.web", 42u, 666u)
+    cfg_("http://my.web", 42u, 666u, "/a/b/c")
   {
   }
 
@@ -21,7 +21,7 @@ struct TestClass
   {
     try
     {
-      GeneralConfig tmp(url, 42u, 123u);
+      GeneralConfig tmp(url, 42u, 123u, "/a/b/c");
       tut::fail("c-tor didn't throw on invalid URL");
     }
     catch(const ExceptionInvalidValue &)
@@ -48,11 +48,12 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  GeneralConfig tmp("http://a.b.c", 666, 1u);
+  GeneralConfig tmp("http://a.b.c", 666, 1u, "/a/b/c");
   tmp=cfg_;
   ensure_equals("invalid URL", tmp.getWUIUrl(), cfg_.getWUIUrl() );
   ensure_equals("invalid cleanup interval", tmp.getCleanupInterval(), cfg_.getCleanupInterval() );
   ensure_equals("cleanup older value is invalid", tmp.getCleanupOlder(), cfg_.getCleanupOlder() );
+  ensure_equals("path to plugins is invalid", tmp.getPluginsDir(), cfg_.getPluginsDir() );
 }
 
 // test getting WUI address
@@ -76,7 +77,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const GeneralConfig c("http://url.org///", 123u, 456u);
+  const GeneralConfig c("http://url.org///", 123u, 456u, "/a/b/c");
   ensure_equals("invalid address", c.getWUIUrl(), "http://url.org");
 }
 
@@ -101,7 +102,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  GeneralConfig tmp("http://www.baszerr.org", 42u, 69u);
+  GeneralConfig tmp("http://www.baszerr.org", 42u, 69u, "/a/b/c");
 }
 
 // test i https:// is accepted
@@ -109,7 +110,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  GeneralConfig tmp("https://www.baszerr.org", 42u, 66u);
+  GeneralConfig tmp("https://www.baszerr.org", 42u, 66u, "/a/b/c");
 }
 
 // test cleanup older than interval
@@ -125,7 +126,15 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  GeneralConfig c("http://url.org///", 123u, 0u);
+  GeneralConfig c("http://url.org///", 123u, 0u, "/a/b/c");
+}
+
+// test getting plugins directory
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  ensure_equals("invalid plugins directory", cfg_.getPluginsDir(), "/a/b/c");
 }
 
 } // namespace tut

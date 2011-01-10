@@ -5,7 +5,7 @@
 #ifndef INCLUDE_SYSTEM_ATEXITIMPL_HPP_FILE
 #define INCLUDE_SYSTEM_ATEXITIMPL_HPP_FILE
 
-#include <deque>
+#include <stack>
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
@@ -40,10 +40,10 @@ public:
   void registerDeallocator(AtExit::TDeallocPtr ptr);
 
 private:
-  typedef boost::shared_ptr<AtExitResourceDeallocator> TElem;
-  typedef std::deque<TElem>                            TList;
+  typedef boost::shared_ptr<AtExitResourceDeallocator> Elem;
+  typedef std::stack<Elem>                             Stack;
 
-  TList deallocators_;
+  Stack deallocators_;
   bool  deallocationDone_;
 }; // class AtExitImpl
 

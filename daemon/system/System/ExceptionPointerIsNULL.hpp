@@ -22,7 +22,7 @@ public:
    *  \param name  name of variable that has been detected NULL.
    */
   ExceptionPointerIsNULL(const Location &where, const char *name):
-    Exception( where, cc("NULL pointere recieved: ", name) )
+    Exception( where, cc("NULL pointer recieved: ", name) )
   {
   }
 }; // class ExceptionPointerIsNULL

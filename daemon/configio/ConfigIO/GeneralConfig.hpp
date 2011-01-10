@@ -8,6 +8,7 @@
 /* public header */
 
 #include <string>
+#include <boost/filesystem.hpp>
 
 #include "ConfigIO/ExceptionInvalidValue.hpp"
 
@@ -33,8 +34,12 @@ public:
    *  \param wuiUrl          address to WUI of ACARM-ng.
    *  \param cleanupInterval interval between persistency cleanups.
    *  \param cleanupOlder    maximum age for alerts before removal (0 means never remove).
+   *  \param pluginsDir      directory with plugins.
    */
-  GeneralConfig(const URL &wuiUrl, Interval cleanupInterval, Timespan cleanupOlder);
+  GeneralConfig(const URL                     &wuiUrl,
+                Interval                       cleanupInterval,
+                Timespan                       cleanupOlder,
+                const boost::filesystem::path &pluginsDir);
 
   /** \brief gets WUI address.
    *  \return link to WUI.
@@ -50,18 +55,26 @@ public:
   {
     return cleanupInterval_;
   }
-  /** \brief gets  maximum age for alert before it is wiped out.
+  /** \brief gets maximum age for alert before it is wiped out.
    *  \return days to keep alerts in DB.
    */
   Timespan getCleanupOlder(void) const
   {
     return cleanupOlder_;
   }
+  /** \brief returns path to directory with plugins.
+   *  \return path to plugins' directory.
+   */
+  const boost::filesystem::path &getPluginsDir(void) const
+  {
+    return pluginsDir_;
+  }
 
 private:
-  URL      wuiUrl_;
-  Interval cleanupInterval_;
-  Timespan cleanupOlder_;
+  URL                     wuiUrl_;
+  Interval                cleanupInterval_;
+  Timespan                cleanupOlder_;
+  boost::filesystem::path pluginsDir_;
 }; // class GeneralConfig
 
 } // namespace ConfigIO

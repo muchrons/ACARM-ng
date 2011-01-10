@@ -1,5 +1,4 @@
 configio
 persistency
-persistencystubs
-persistencypostgres
 rfcio
+plugins

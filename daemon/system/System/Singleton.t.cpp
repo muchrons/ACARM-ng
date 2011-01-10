@@ -93,11 +93,8 @@ namespace
 
 // table of destroyed OrderSingleton marks. each destroyed
 // singleton wil mark its absence with flag here
-bool tab[6]=
-            {
-             false, false, false,
-             false, false, false
-            };
+bool tab[6]={false, false, false,
+             false, false, false};
 
 template<int N>
 struct OrderSingleton

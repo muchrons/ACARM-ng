@@ -83,8 +83,7 @@ private:
     STATE_UNINITIALIZED,    // not yet initialized
     STATE_INITIALIZED,      // init() called
     STATE_ATEXIT_END        // atexit() finished but was unable to uninit() (still in use)
-  }
-  State;
+  } State;
 
 public:
   /** \brief create handle object.
