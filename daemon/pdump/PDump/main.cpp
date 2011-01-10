@@ -45,6 +45,7 @@ int main(int argc, const char **argv)
     }
 
     // output some stats
+    cout<<"----- summary -----"<<endl;
     const int writes  =stats.getWrites();
     const int attempts=stats.getAttempts();
     if(writes==attempts)

@@ -9,6 +9,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/noncopyable.hpp>
 
+#include "Plugins/Loader.hpp"
 #include "Persistency/IO/Restorer.hpp"
 
 namespace PDump
@@ -76,8 +77,9 @@ public:
   Stats writeToDir(const NodesVector &nodes, const boost::filesystem::path &outDir);
 
 private:
-  std::ostream &out_;
-  std::ostream &errOut_;
+  std::ostream    &out_;
+  std::ostream    &errOut_;
+  Plugins::Loader  loader_;
 }; // class Dumper
 
 } // namespace PDump

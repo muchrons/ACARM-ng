@@ -6,6 +6,7 @@
 #include <cstdio>
 #include <cstring>
 
+#include "ConfigIO/Singleton.hpp"
 #include "Commons/Convert.hpp"
 #include "Commons/Filesystem/createFile.hpp"
 #include "Commons/Filesystem/isDirectorySane.hpp"
@@ -54,7 +55,8 @@ size_t Dumper::Stats::getAttempts(void) const
 
 Dumper::Dumper(std::ostream &out, std::ostream &errOut):
   out_(out),
-  errOut_(errOut)
+  errOut_(errOut),
+  loader_( ConfigIO::Singleton::get()->generalConfig().getPluginsDir() )
 {
 }
 
