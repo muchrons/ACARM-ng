@@ -8,6 +8,7 @@
 /* public header */
 
 #include <memory>
+#include <boost/scoped_ptr.hpp>
 #include <boost/noncopyable.hpp>
 #include <cassert>
 
@@ -56,7 +57,7 @@ public:
    *  \param ap auto pointer to object to be deleted.
    */
   explicit AtExitMemoryDeallocator(std::auto_ptr<T> ap):
-    t_(ap)
+    t_( ap.release() )
   {
   }
   /** \brief deletes object.
@@ -66,7 +67,7 @@ public:
     t_.reset();
   }
 private:
-  std::auto_ptr<T> t_;
+  boost::scoped_ptr<T> t_;
 }; // class AtExitMemoryDeallocator
 
 } // namespace System

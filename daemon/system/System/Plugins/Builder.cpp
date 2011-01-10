@@ -26,7 +26,7 @@ DynamicObject Builder::open(const boost::filesystem::path &so) const
   if(err!=NULL)                                     // check for error
     throw ExceptionCannotOpenSharedObject(SYSTEM_SAVE_LOCATION, so, err);
   HandlePtrNN handle( new Handle(h) );
-  return DynamicObject(handle);                     // return optained handle
+  return DynamicObject(handle);                     // return obtained handle
 }
 
 } // namespace Plugins

@@ -34,15 +34,16 @@ void AtExitImpl::deallocateAll(void)
   assert(!deallocationDone_ && "deallocateAll() called more than once");
   deallocationDone_=true;
 
-  // loop throught elements
-  for(TList::reverse_iterator it=deallocators_.rbegin();
-      it!=deallocators_.rend();
-      ++it)
+  // process each and every element on the stack
+  while( !deallocators_.empty() )
   {
     try
     {
+      assert( deallocators_.size()> 0u );
       // free one more resource :)
-      (*it)->deallocate();
+      assert( deallocators_.top().get()!=NULL );
+      deallocators_.top()->deallocate();    // deallocate
+      deallocators_.pop();                  // destroy an object
     }
     catch(const std::exception &ex)
     {
@@ -60,15 +61,15 @@ void AtExitImpl::deallocateAll(void)
     }
   }
   // ensure each dealocation will take place just once
-  deallocators_.clear();
+  assert( deallocators_.size()==0u );
 }
 
 void AtExitImpl::registerDeallocator(AtExit::TDeallocPtr ptr)
 {
   assert(!deallocationDone_ && "deallocateAll() already called");
 
-  TElem elem( ptr.release() );      // convert to container-safe ptr type
-  deallocators_.push_back(elem);    // add to container
+  Elem elem( ptr.release() );   // convert to container-safe ptr type
+  deallocators_.push(elem);     // add to container
 }
 
 } // namespace System

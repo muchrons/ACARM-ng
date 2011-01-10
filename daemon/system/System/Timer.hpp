@@ -8,7 +8,7 @@
 /* public header */
 
 #include <sys/time.h>
-#include <stdlib.h>
+#include <cstdlib>
 
 namespace System
 {

@@ -44,24 +44,31 @@ extern "C"
 {
 static void cStyleCallForAtExit(void)
 {
-  // swap this queue with new (NULL - will be allocated, if needed) so
-  // that it is possible to register new handles while processing
-  // other handles (deallocation).
-  System::AtExitImpl *tmp=NULL;
+  try
   {
-    SafeInitLock lock(g_mutex);
-    tmp       =atExitImpl;
-    atExitImpl=NULL;
+    // swap this queue with new (NULL - will be allocated, if needed) so
+    // that it is possible to register new handles while processing
+    // other handles (deallocation).
+    System::AtExitImpl *tmp=NULL;
+    {
+      SafeInitLock lock(g_mutex);
+      tmp       =atExitImpl;
+      atExitImpl=NULL;
+    }
+    // pointer can be null in case when this function has been already
+    // registered, but AtExitImpl's constructor thrown exception or when
+    // adding something to queue from queue itself (ex. Phoenix Singleton).
+    if(tmp!=NULL)
+    {
+      // run dealocation of registered elements
+      tmp->deallocateAll();
+      // free resource
+      boost::checked_delete(tmp);
+    }
   }
-  // pointer can be null in case when this function has been already
-  // registered, but AtExitImpl's constructor thrown exception or when
-  // adding something to queue from queue itself (ex. Phoenix Singleton).
-  if(tmp!=NULL)
+  catch(...)
   {
-    // run dealocation of registered elements
-    tmp->deallocateAll();
-    // free resource
-    boost::checked_delete(tmp);
+    assert(!"exception thrown from deallocators - something's wrong in the code");
   }
 } // cStyleCallForAtExit()
 } // extern "C"
@@ -85,12 +92,10 @@ void AtExit::init(void)
   // lock for this call is made in registerDeallocator()
   assert(atExitImpl==NULL);
 
-  // this call, if there is a problem, can be registered/called
-  // multiple times...
+  // this call, if there is a problem, can be registered/called multiple times...
+  // TODO: change this exception to something more specific
   if( atexit(cStyleCallForAtExit)!=0 )
-    throw Exception(SYSTEM_SAVE_LOCATION,
-                    "AtExit::AtExit(): "
-                    "unable to register handler in atexit() syscall");
+    throw Exception(SYSTEM_SAVE_LOCATION, "AtExit::AtExit(): unable to register handler in atexit() syscall");
 
   // sanity check
   assert(atExitImpl==NULL);
@@ -103,10 +108,9 @@ void AtExit::init(void)
 void AtExit::registerInternal(TDeallocPtr p)
 {
   // lock for this call is made in registerDeallocator()
+  // TODO: change this exception to something more specific
   if( p.get()==NULL )
-    throw Exception(SYSTEM_SAVE_LOCATION,
-                    "AtExit::registerInternal(): "
-                    "NULL pointer recieved for registration");
+    throw Exception(SYSTEM_SAVE_LOCATION, "AtExit::registerInternal(): NULL pointer recieved for registration");
 
   assert(atExitImpl!=NULL);
   atExitImpl->registerDeallocator(p);
