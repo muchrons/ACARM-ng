@@ -17,6 +17,13 @@ struct TestBase
   {
   }
 
+  boost::filesystem::path compile(const boost::filesystem::path &src)
+  {
+    tut::ensure_equals("compilation of helper module failed",
+                       system("gcc -g3 -Wall -shared -o sharedobj.so -fPIC testdata/sharedobj.c"),
+                       0);
+  }
+
   System::Plugins::Builder       builder_;
   System::Plugins::DynamicObject dynObj_;
 };

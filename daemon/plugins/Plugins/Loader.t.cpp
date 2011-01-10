@@ -17,6 +17,16 @@ namespace
 
 struct TestClass
 {
+  TestClass(void)
+  {
+    // compile test shared objects
+    tut::ensure_equals("compilation of helper module failed",
+                       system("gcc -g3 -Wall -shared "
+                              "-o    testdata/valid_plugin_dir/sharedobj.acmp "
+                              "-fPIC testdata/valid_plugin_dir/sharedobj.cpp"),
+                       0);
+  }
+
   template<typename T>
   void testThrow(const fs::path &p)
   {
