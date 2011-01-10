@@ -5,7 +5,7 @@
     <url>http://test.url</url>
     <cleanupInterval>42</cleanupInterval>
     <cleanupOlder>13</cleanupOlder>
-    <pluginsDir>/some/dir</pluginsDir>
+    <pluginsDir>testdata/plugins</pluginsDir>
   </general>
 
   <persistency>
