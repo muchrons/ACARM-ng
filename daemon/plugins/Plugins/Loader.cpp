@@ -20,6 +20,7 @@ namespace Plugins
 
 Loader::Loader(const boost::filesystem::path &dir):
   log_("plugins.loader"),
+  builder_(true, true),
   count_(0)
 {
   try
