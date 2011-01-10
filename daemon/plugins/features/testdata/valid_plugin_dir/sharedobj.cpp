@@ -1,5 +1,5 @@
 //
-// gcc -g3 -Wall -shared -o sharedobj.acmp -fPIC sharedobj.c
+// g++ -g3 -Wall -shared -o sharedobj.acmp -fPIC sharedobj.cpp
 //
 
 #include <stdlib.h>
@@ -10,9 +10,11 @@
 #include <stdio.h>
 #include <assert.h>
 
-const char *register_plugin(void *ptr)
+namespace
 {
-  assert(ptr!=NULL);
+
+const char *registerPlugin(void)
+{
   const int fd=creat("_plugin_has_been_initialized_", 0644);
   if(fd==-1)
   {
@@ -22,3 +24,7 @@ const char *register_plugin(void *ptr)
   close(fd);
   return NULL;
 }
+
+const char *g_init=registerPlugin();
+
+} // unnamed namespace
