@@ -176,5 +176,14 @@ void testObj::test<11>(void)
   ensureThrow(opts_);
 }
 
-// TODO: test sending message to multiple receivers
+// test creating sender to multiple recipients
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  setValid();
+  opts_["to"]="a@b.c d@e.f";
+  fb_.build(opts_);         // must not throw
+}
+
 } // namespace tut

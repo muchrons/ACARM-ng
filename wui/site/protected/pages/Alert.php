@@ -28,6 +28,9 @@ class Alert extends TPage
 
       $this->AlertCertainty->Text=($this->alert_->certainty === null) ? "N/A" : $this->alert_->certainty;
 
+      if($this->alert_->description!= null)
+        $this->AlertDescription->Text=$this->alert_->description;
+
       if($this->alert_->severity!= null)
         {
           $text="<font";
