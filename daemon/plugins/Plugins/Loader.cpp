@@ -2,12 +2,14 @@
  * Loader.cpp
  *
  */
-#include "System/AutoCptr.hpp"
+#include <memory>
+#include <boost/scoped_ptr.hpp>
+
+#include "System/AtExit.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/Filesystem/isFileSane.hpp"
 #include "Commons/Filesystem/isDirectorySane.hpp"
 #include "Plugins/Loader.hpp"
-#include "Plugins/Registrator.hpp"
 
 using namespace System::Plugins;
 using namespace Commons::Filesystem;
@@ -79,29 +81,49 @@ void Loader::loadAll(const boost::filesystem::path &dir)
   LOGMSG_INFO_S(log_)<<count_<<" plugins loaded";
 }
 
+
+namespace
+{
+
+// helper class delaying deallocation of given dynamic object until next deallocation round
+struct DelayedHandleDeallocation: public System::AtExitResourceDeallocator
+{
+  void setDynamicObject(std::auto_ptr<DynamicObject> dyn)
+  {
+    dyn_.reset( dyn.release() );
+    assert( dyn.get() ==NULL );
+    assert( dyn_.get()!=NULL );
+  }
+
+  virtual void deallocate(void)
+  {
+    dyn_.reset();   // deallocaiton itself
+  }
+
+private:
+  boost::scoped_ptr<DynamicObject> dyn_;
+}; // struct DelayedHandleDeallocation
+
+} // unnamed namespace
+
+
 void Loader::loadPlugin(const boost::filesystem::path &plugin)
 {
-  // open this plugin
-  LOGMSG_DEBUG_S(log_)<<"opening plugin '"<<plugin<<"'";
-  DynamicObject dyn=builder_.open(plugin);
-  // read symbol that registers plugin
-  typedef char*(*Func)(void*);
-  const char *name="register_plugin";
-  LOGMSG_DEBUG_S(log_)<<"trying to obtain symbol '"<<name<<"'";
-  Symbol<Func> init=dyn.getSymbol<Func>(name);
-  // sanity check for a symbol
-  if( init.get()==NULL )
-    throw ExceptionInvalidPlugin(SYSTEM_SAVE_LOCATION, plugin.string() + ": symbol is NULL");
+  // prepare (delayed) deallocation)
+  LOGMSG_DEBUG(log_, "registering delayed deallocator for handle");
+  DelayedHandleDeallocation   *ptr=new DelayedHandleDeallocation;
+  System::AtExit::TDeallocPtr  deallocator(ptr);
+  System::AtExit::registerDeallocator(deallocator);
+  LOGMSG_DEBUG(log_, "delayed deallocator registered");
 
-  // ok - now try to register
-  LOGMSG_DEBUG_S(log_)<<"registering plugin with provided function";
-  System::AutoCptr<char> error( (*init)(&dyn) );
-  if( error.get()!=NULL )
-  {
-    LOGMSG_FATAL_S(log_)<<"unable to register plugin '"<<plugin<<"' - registration failed with message: "<<error.get();
-    throw ExceptionRegistrationError(SYSTEM_SAVE_LOCATION, plugin.string(), error.get() );
-  }
-  LOGMSG_DEBUG_S(log_)<<"registering call's done (no error)";
+  // open this plugin (it will be registered automatically)
+  LOGMSG_DEBUG_S(log_)<<"opening plugin '"<<plugin<<"'";
+  std::auto_ptr<DynamicObject> dyn( new DynamicObject( builder_.open(plugin) ) );
+
+  // now attach dynamic object to the deallocator
+  LOGMSG_DEBUG(log_, "attaching delayed object deallocator");
+  assert(ptr!=NULL);
+  ptr->setDynamicObject(dyn);
 }
 
 } // namespace Plugins

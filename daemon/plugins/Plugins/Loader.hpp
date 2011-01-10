@@ -13,7 +13,6 @@
 #include "Logger/Node.hpp"
 #include "Plugins/ExceptionInvalidPlugin.hpp"
 #include "Plugins/ExceptionInvalidDirectory.hpp"
-#include "Plugins/ExceptionRegistrationError.hpp"
 
 namespace Plugins
 {
