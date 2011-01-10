@@ -20,8 +20,11 @@ Builder::Builder(const bool makeSymbolsVisible, const bool lazyResolving):
 
 DynamicObject Builder::open(const boost::filesystem::path &so) const
 {
+  // use complete path to open a file, since dlopen() handles simple file
+  // names in the funny way (i.e. "./my.so" works, but "my.so" doesn't).
+  const std::string p=boost::filesystem::system_complete(so).string();
   dlerror();                                        // remove last error
-  void *h=dlopen( so.string().c_str(), flags_ );    // open shared object
+  void *h=dlopen(p.c_str(), flags_ );               // open shared object
   const char *err=dlerror();                        // read error message
   if(err!=NULL)                                     // check for error
     throw ExceptionCannotOpenSharedObject(SYSTEM_SAVE_LOCATION, so, err);

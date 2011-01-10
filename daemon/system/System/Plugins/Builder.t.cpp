@@ -4,14 +4,17 @@
  */
 #include <tut/tut.hpp>
 #include <dlfcn.h>
+#include <boost/filesystem.hpp>
 
 #include "System/Plugins/Builder.hpp"
+#include "System/Plugins/TestBase.t.hpp"
 
 using namespace System::Plugins;
+namespace fs=boost::filesystem;
 
 namespace
 {
-struct TestClass
+struct TestClass: private TestBase
 {
   Builder b_;
 };
@@ -31,7 +34,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  DynamicObject h=b_.open("testdata/sharedobj.so");
+  DynamicObject h=b_.open("./sharedobj.so");
 }
 
 // test opening non-existing object
@@ -55,8 +58,25 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  Builder b(true, false);
-  DynamicObject h=b.open("testdata/sharedobj.so");
+  Builder       b(false, false);
+  DynamicObject h=b.open("./sharedobj.so");
+}
+
+// test if opening works when just file name is given
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  b_.open("sharedobj.so");  // should not throw
+}
+
+// test opening via full path
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const fs::path full=fs::system_complete("sharedobj.so");
+  b_.open(full);            // should not throw
 }
 
 } // namespace tut
