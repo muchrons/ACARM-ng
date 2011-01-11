@@ -12,41 +12,31 @@
 
 #include "System/AutoDescriptor.hpp"
 
-namespace System
-{
-
-struct AutoDescriptorTestData
-{
-  AutoDescriptorTestData(void):
-    _adW( open("/dev/null",    O_WRONLY) ),
-    _adR( open("/dev/urandom", O_RDONLY) ),
-    _size( sizeof(_buf) )
-  {
-  }
-
-  AutoDescriptor _adW;
-  AutoDescriptor _adR;
-  char           _buf[1024];
-  const int      _size;
-};
-
-} // namespace System
-
-
-namespace tut
-{
-typedef System::AutoDescriptorTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
+using namespace System;
 
 namespace
 {
-tut::factory tf("System/AutoDescriptor");
+
+struct TestClass
+{
+  TestClass(void):
+    adW_( open("/dev/null",    O_WRONLY) ),
+    adR_( open("/dev/urandom", O_RDONLY) ),
+    size_( sizeof(buf_) )
+  {
+  }
+
+  AutoDescriptor adW_;
+  AutoDescriptor adR_;
+  char           buf_[1024];
+  const int      size_;
+};
+
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/AutoDescriptor");
 }
 
-using namespace System;
 
 namespace tut
 {
@@ -56,8 +46,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure( read ( _adR.get(), _buf, _size)==_size );   // read is ok.
-  ensure( write( _adW.get(), _buf, _size)==_size );   // write is ok.
+  ensure( read ( adR_.get(), buf_, size_)==size_ );   // read is ok.
+  ensure( write( adW_.get(), buf_, size_)==size_ );   // write is ok.
 }
 
 // isInitialized() test
@@ -65,12 +55,12 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure( _adR.isInitialized() );
-  ensure( _adW.isInitialized() );
-  _adR.reset(-1);
-  _adW.reset(-1);
-  ensure( !_adR.isInitialized() );
-  ensure( !_adW.isInitialized() );
+  ensure( adR_.isInitialized() );
+  ensure( adW_.isInitialized() );
+  adR_.reset(-1);
+  adW_.reset(-1);
+  ensure( !adR_.isInitialized() );
+  ensure( !adW_.isInitialized() );
 }
 
 // comparison
@@ -78,11 +68,11 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensure( _adR.get()!=_adW.get() );
+  ensure( adR_.get()!=adW_.get() );
 
   // compare of 2 the same descriptors
-  int tmp=_adR.get();
-  AutoDescriptor c( _adR.release() );
+  int tmp=adR_.get();
+  AutoDescriptor c( adR_.release() );
   ensure( c.get()==tmp );
 }
 
@@ -92,9 +82,9 @@ template<>
 void testObj::test<4>(void)
 {
   AutoDescriptor a;
-  int tmp=_adR.get();
-  a      =_adR;     // ownership passing
-  ensure( _adR.get()<0 && a.get()==tmp );
+  int tmp=adR_.get();
+  a      =adR_;     // ownership passing
+  ensure( adR_.get()<0 && a.get()==tmp );
 }
 
 // reseting and releasing
@@ -103,9 +93,9 @@ template<>
 void testObj::test<5>(void)
 {
   AutoDescriptor a;
-  int tmp=_adR.get();
-  a.reset( _adR.release() );
-  ensure( !_adR.isInitialized() );
+  int tmp=adR_.get();
+  a.reset( adR_.release() );
+  ensure( !adR_.isInitialized() );
   ensure( a.get()==tmp );
 }
 
@@ -130,9 +120,9 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  AutoDescriptor a( _adR );
+  AutoDescriptor a( adR_ );
   ensure(     a.isInitialized() );
-  ensure( !_adR.isInitialized() );
+  ensure( !adR_.isInitialized() );
 }
 
 } // namespace tut

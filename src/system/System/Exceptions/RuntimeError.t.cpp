@@ -7,30 +7,16 @@
 
 #include "System/Exceptions/RuntimeError.hpp"
 
-namespace System
-{
-namespace Exceptions
+namespace
 {
 
-struct RuntimeErrorTestData
+struct TestClass
 {
 };
 
-} // namespace Exceptions
-} // namespace System
-
-
-namespace tut
-{
-typedef System::Exceptions::RuntimeErrorTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/Exceptions/RuntimeError");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/Exceptions/RuntimeError");
 }
 
 using namespace std;

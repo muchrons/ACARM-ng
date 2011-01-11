@@ -7,27 +7,15 @@
 
 #include "System/keepRange.hpp"
 
-namespace System
+namespace
 {
-
-struct KeepRangeTestClass
+struct TestClass
 {
 };
 
-} // namespace System
-
-
-namespace tut
-{
-typedef System::KeepRangeTestClass TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/keepRange");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/keepRange");
 }
 
 using namespace System;

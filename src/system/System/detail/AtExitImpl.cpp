@@ -6,7 +6,7 @@
 #include <cassert>
 #include <stdlib.h>
 
-#include "System/AtExitImpl.hpp"
+#include "System/detail/AtExitImpl.hpp"
 #include "System/FunctionName.hpp"
 
 using namespace std;
@@ -14,6 +14,8 @@ using namespace boost;
 
 
 namespace System
+{
+namespace detail
 {
 
 AtExitImpl::AtExitImpl(void):
@@ -72,4 +74,5 @@ void AtExitImpl::registerDeallocator(AtExit::TDeallocPtr ptr)
   deallocators_.push(elem);     // add to container
 }
 
+} // namespace detail
 } // namespace System

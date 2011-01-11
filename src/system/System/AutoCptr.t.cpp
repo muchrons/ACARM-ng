@@ -12,19 +12,21 @@
 
 #include "System/AutoCptr.hpp"
 
-namespace System
+using namespace System;
+
+namespace
 {
 
-struct AutoCptrTestData
+struct TestClass
 {
   typedef AutoCptr<void> ACP;
 
-  AutoCptrTestData(void):
-    _ap1( malloc(2*1024) ),
-    _ap2( malloc(4*1024) )
+  TestClass(void):
+    ap1_( malloc(2*1024) ),
+    ap2_( malloc(4*1024) )
   {
-    tut::ensure( _ap1.get()!=NULL );
-    tut::ensure( _ap2.get()!=NULL );
+    tut::ensure( ap1_.get()!=NULL );
+    tut::ensure( ap2_.get()!=NULL );
   }
 
   ACP mkNew(int size) const
@@ -33,27 +35,14 @@ struct AutoCptrTestData
     return a;
   }
 
-  ACP _ap1;
-  ACP _ap2;
+  ACP ap1_;
+  ACP ap2_;
 };
 
-} // namespace System
-
-
-namespace tut
-{
-typedef System::AutoCptrTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/AutoCptr");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/AutoCptr");
 }
-
-using namespace System;
 
 namespace tut
 {
@@ -63,7 +52,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  char *p1=static_cast<char*>( _ap1.get() );
+  char *p1=static_cast<char*>( ap1_.get() );
   for(int i=0; i<2; ++i)
   {
     *(p1+i)='x';            // write.
@@ -76,7 +65,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  char *p2=static_cast<char*>( _ap2.get() );
+  char *p2=static_cast<char*>( ap2_.get() );
   for(int i=0; i<4*1024; ++i)
   {
     *(p2+i)='x';            // write.

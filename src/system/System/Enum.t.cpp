@@ -8,10 +8,12 @@
 
 #include "System/Enum.hpp"
 
-namespace System
+using namespace System;
+
+namespace
 {
 
-struct EnumTestData
+struct TestClass
 {
   struct MyEnum
   {
@@ -27,28 +29,17 @@ struct EnumTestData
 
   typedef System::Enum<MyEnum> TestEnum;
 
-  EnumTestData(void):
-    _te( TestEnum::A )
+  TestClass(void):
+    te_( TestEnum::A )
   {
   }
 
-  TestEnum _te;
+  TestEnum te_;
 };
 
-} // namespace System
-
-
-namespace tut
-{
-typedef System::EnumTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/Enum");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/Enum");
 }
 
 
@@ -61,11 +52,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  _te = TestEnum::B;
-  ensure( "comparing (==) System::Enum with enum value failed",
-          _te==TestEnum::B );
-  ensure( "comparing (!=) System::Enum with enum value failed",
-          _te!=TestEnum::A );
+  te_=TestEnum::B;
+  ensure( "comparing (==) System::Enum with enum value failed", te_==TestEnum::B );
+  ensure( "comparing (!=) System::Enum with enum value failed", te_!=TestEnum::A );
 }
 
 
@@ -75,9 +64,8 @@ template<>
 void testObj::test<2>(void)
 {
   TestEnum other=TestEnum::C;
-  _te=TestEnum::C;
-  ensure( "comparison between two System::Enum failed",
-          _te==other );
+  te_=TestEnum::C;
+  ensure( "comparison between two System::Enum failed", te_==other );
 }
 
 
@@ -86,13 +74,12 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  TestEnum other1=_te;
+  TestEnum other1=te_;
   TestEnum other2=TestEnum::B;
 
   other1=TestEnum::A;
   other2=other1;
-  ensure( "assignment to System::Enum from System::Enum failed",
-          other1==other2 );
+  ensure( "assignment to System::Enum from System::Enum failed", other1==other2 );
 }
 
 // conversion to long
@@ -102,11 +89,11 @@ void testObj::test<4>(void)
 {
   int x;
 
-  x=_te.toInt();
+  x=te_.toInt();
   ensure(x==1);
 
-  _te=TestEnum::C;
-  x=_te.toInt();
+  te_=TestEnum::C;
+  x=te_.toInt();
   ensure(x==100);
 }
 
@@ -115,8 +102,8 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ensure(   _te==_te  );
-  ensure( !(_te!=_te) );
+  ensure(   te_==te_  );
+  ensure( !(te_!=te_) );
 }
 
 // conversion to int (old, depracticated call)
@@ -124,8 +111,8 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  _te=TestEnum::C;
-  int x=_te.toInt();
+  te_=TestEnum::C;
+  int x=te_.toInt();
   ensure(x==100);
 }
 

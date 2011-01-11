@@ -7,27 +7,15 @@
 
 #include "System/AtExit.hpp"
 
-namespace System
+namespace
 {
-
-struct AtExitTestData
+struct TestClass
 {
 };
 
-} // namespace System
-
-
-namespace tut
-{
-typedef System::AtExitTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/AtExit");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/AtExit");
 }
 
 using namespace System;

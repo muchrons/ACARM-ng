@@ -8,25 +8,13 @@
 
 namespace System
 {
-
-struct LikelyTestClass
+struct TestClass
 {
 };
 
-} // namespace System
-
-
-namespace tut
-{
-typedef System::LikelyTestClass TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/likely");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/likely");
 }
 
 using namespace System;

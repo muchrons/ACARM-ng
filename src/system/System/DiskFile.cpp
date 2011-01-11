@@ -17,21 +17,19 @@ namespace System
 {
 
 DiskFile::DiskFile(const std::string &fileName, int flags, mode_t mode):
-  _fileName(fileName),
-  _fd( open( _fileName.c_str(), flags, mode ) )
+  fileName_(fileName),
+  fd_( open( fileName_.c_str(), flags, mode ) )
 {
-  if( !_fd.isInitialized() )
+  if( !fd_.isInitialized() )
     throwFileErrorException("DiskFile::DiskFile()", "open");
 }
 
 DiskFile::DiskFile( std::pair<std::string, boost::shared_ptr<AutoDescriptor> > p ):
-  _fileName(p.first),
-  _fd( *p.second.get() )    // pass the ownership
+  fileName_(p.first),
+  fd_( *p.second.get() )    // pass the ownership
 {
-  if( !_fd.isInitialized() )
-    throw Exception(SYSTEM_SAVE_LOCATION,
-                    "DiskFile::DiskFile(): "
-                    "direct initializing from derived class failed");
+  if( !fd_.isInitialized() )
+    throw Exception(SYSTEM_SAVE_LOCATION, "DiskFile::DiskFile(): direct initializing from derived class failed");
 }
 
 

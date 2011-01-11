@@ -13,16 +13,18 @@
 
 #include "System/DiskFile.hpp"
 
-namespace System
+using namespace System;
+
+namespace
 {
 
-struct DiskFileTestData
+struct TestClass
 {
-  DiskFileTestData(void):
-    _dfW( std::string("/dev/null"),    O_WRONLY ),
-    _dfR( std::string("/dev/urandom"), O_RDONLY ),
-    _size( sizeof(_buf) ),
-    _testFileName("THISisVeryLongfileNAMEthatshould_NOT_EVER_EXIST.tmp")
+  TestClass(void):
+    dfW_( std::string("/dev/null"),    O_WRONLY ),
+    dfR_( std::string("/dev/urandom"), O_RDONLY ),
+    size_( sizeof(buf_) ),
+    testFileName_("THISisVeryLongfileNAMEthatshould_NOT_EVER_EXIST.tmp")
   {
     tut::ensure( testFileNameIsOk() );
   }
@@ -31,33 +33,21 @@ struct DiskFileTestData
   bool testFileNameIsOk(void) const
   {
     struct stat s;
-    return stat( _testFileName.c_str(), &s )==-1 && errno==ENOENT;
+    return stat( testFileName_.c_str(), &s )==-1 && errno==ENOENT;
   }
 
-  DiskFile  _dfW;
-  DiskFile  _dfR;
-  char      _buf[1024];
-  const int _size;
-  const std::string _testFileName;
+  DiskFile          dfW_;
+  DiskFile          dfR_;
+  char              buf_[1024];
+  const int         size_;
+  const std::string testFileName_;
 };
 
-} // namespace System
-
-
-namespace tut
-{
-typedef System::DiskFileTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/DiskFile");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/DiskFile");
 }
 
-using namespace System;
 
 namespace tut
 {
@@ -67,10 +57,10 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure( _dfR.get()>=0 && _dfW.get()>=0 );
+  ensure( dfR_.get()>=0 && dfW_.get()>=0 );
 
-  ensure( read ( _dfR.get(), _buf, _size)==_size );   // read is ok.
-  ensure( write( _dfW.get(), _buf, _size)==_size );   // write is ok.
+  ensure( read ( dfR_.get(), buf_, size_)==size_ );   // read is ok.
+  ensure( write( dfW_.get(), buf_, size_)==size_ );   // write is ok.
 }
 
 
@@ -95,7 +85,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  DiskFile  df( _testFileName );        // make some test file
+  DiskFile  df(testFileName_);          // make some test file
   const int desc=df.get();              // get descriptor
   ensure( testFileNameIsOk()==false );  // now it should exist
   df.unlink();                          // remove file

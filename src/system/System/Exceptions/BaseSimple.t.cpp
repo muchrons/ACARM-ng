@@ -12,30 +12,15 @@
 
 #include "System/Exceptions/BaseSimple.hpp"
 
-namespace System
+namespace
 {
-namespace Exceptions
-{
-
-struct BaseSimpleTestData
+struct TestClass
 {
 };
 
-} // namespace Exceptions
-} // namespace System
-
-
-namespace tut
-{
-typedef System::Exceptions::BaseSimpleTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/Exceptions/BaseSimple");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/Exceptions/BaseSimple");
 }
 
 using namespace std;
