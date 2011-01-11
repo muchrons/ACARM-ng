@@ -202,7 +202,7 @@ void testObj::test<10>(void)
   ensure("old node not used for correlation", node.get()==changed_[0].get() );
 }
 
-// test if correlating changes priotity delta
+// test if correlation changes priotity delta
 template<>
 template<>
 void testObj::test<11>(void)
@@ -216,6 +216,20 @@ void testObj::test<11>(void)
   ensure_equals("no nodes changed", changed_.size(), 1u);
 
   ensure("invalid priority delta", fabs(changed_[0]->getMetaAlert()->getSeverityDelta() - 0.42)<0.01 );
+}
+
+// test if correlation does not occure for entries that have the same source and IP addresses
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", NULL,
+                                                         "4.3.2.1", NULL ) ) );
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("correlated with alert with same src/dst address", changed_.size(), 0u);
 }
 
 } // namespace tut
