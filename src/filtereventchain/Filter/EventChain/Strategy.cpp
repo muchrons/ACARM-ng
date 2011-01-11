@@ -77,8 +77,19 @@ Data Strategy::makeThisEntryUserData(const Node n) const
 
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
 {
-  return thisEntry.t_.beginIPs_->size()>0u &&
-         thisEntry.t_.endIPs_->size()  >0u;
+  // if there is source/destination address(s) missing - skip entry
+  if( thisEntry.t_.beginIPs_->size()==0u ||
+      thisEntry.t_.endIPs_->size()  ==0u    )
+    return false;
+  // skip entries where source and destination IPs are the same
+  if( thisEntry.t_.beginIPs_->size()==1 &&
+      thisEntry.t_.endIPs_->size()  ==1     )
+  {
+    if( thisEntry.t_.beginIPs_->begin()->first==thisEntry.t_.endIPs_->begin()->first )
+      return false;
+  }
+  // accept this entry
+  return true;
 }
 
 Persistency::MetaAlert::Name Strategy::getMetaAlertName(
