@@ -13,15 +13,12 @@ struct TestClass
 {
   void someTestFunctionName(void) const
   {
-    tut::ensure("invalid name",
-                strstr(SYSTEM_FUNCTION_NAME, "someTestFunctionName")!=NULL );
+    tut::ensure("invalid name", strstr(SYSTEM_FUNCTION_NAME, "someTestFunctionName")!=NULL );
   }
 };
 
-typedef TestClass                  TestClass;
 typedef tut::test_group<TestClass> factory;
 typedef factory::object            testObj;
-
 factory tf("System/FunctionName");
 } // unnamed namespace
 

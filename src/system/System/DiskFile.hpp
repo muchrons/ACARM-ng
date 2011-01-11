@@ -21,6 +21,7 @@
 #include "System/AutoDescriptor.hpp"
 #include "System/Exception.hpp"
 
+// TODO: port it to use boost::fs::path
 
 namespace System
 {
@@ -44,15 +45,15 @@ public:
    */
   inline const std::string &getName(void) const
   {
-    return _fileName;
+    return fileName_;
   }
   /** \brief returns file descriptor for given file.
    *  \return file descriptor.
    */
   inline int get(void)
   {
-    assert( _fd.isInitialized() );
-    return _fd.get();
+    assert( fd_.isInitialized() );
+    return fd_.get();
   }
 
   /** \brief removes file from fielsystem.
@@ -80,8 +81,8 @@ protected:
                                const char *action);
 
 private:
-  const std::string _fileName;
-  AutoDescriptor    _fd;
+  const std::string fileName_;
+  AutoDescriptor    fd_;
 }; // class DiskFile
 
 } // namespace System

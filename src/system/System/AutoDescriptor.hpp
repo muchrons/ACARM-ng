@@ -33,7 +33,7 @@ public:
    *  \param v descriptor to be held.
    */
   explicit DescriptorHolder(TValue v=-1):
-    _v(v)
+    v_(v)
   {
   }
   /** \brief returns value of descriptor.
@@ -41,21 +41,21 @@ public:
    */
   inline TValue get(void) const
   {
-    return _v;
+    return v_;
   }
   /** \brief closes descriptor held inside.
    */
   void deallocate(void)
   {
-    if(_v!=-1)
+    if(v_!=-1)
     {
-      close(_v);
-      _v=-1;
+      close(v_);
+      v_=-1;
     }
   }
 
 private:
-  TValue _v;
+  TValue v_;
 }; // class DescriptorHolder
 
 } // namespace detail

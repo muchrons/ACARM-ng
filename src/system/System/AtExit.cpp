@@ -9,7 +9,7 @@
 #include <cassert>
 
 #include "System/AtExit.hpp"
-#include "System/AtExitImpl.hpp"
+#include "System/detail/AtExitImpl.hpp"
 #include "System/Threads/SafeInitLocking.hpp"
 
 using namespace std;
@@ -32,7 +32,7 @@ namespace
 // thread safe from the very begining (before any static constructors
 // are run), to the very end.
 //
-System::AtExitImpl *atExitImpl=NULL;
+System::detail::AtExitImpl *atExitImpl=NULL;
 SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_mutex);
 
 } // unnamed namespace
@@ -49,7 +49,7 @@ static void cStyleCallForAtExit(void)
     // swap this queue with new (NULL - will be allocated, if needed) so
     // that it is possible to register new handles while processing
     // other handles (deallocation).
-    System::AtExitImpl *tmp=NULL;
+    System::detail::AtExitImpl *tmp=NULL;
     {
       SafeInitLock lock(g_mutex);
       tmp       =atExitImpl;
@@ -100,7 +100,7 @@ void AtExit::init(void)
   // sanity check
   assert(atExitImpl==NULL);
   // init global pointer
-  atExitImpl=new AtExitImpl;
+  atExitImpl=new detail::AtExitImpl;
   // sanity check
   assert(atExitImpl!=NULL);
 }

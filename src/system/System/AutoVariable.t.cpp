@@ -7,53 +7,56 @@
 
 #include "System/AutoVariable.hpp"
 
-namespace System
+using namespace std;
+using namespace System;
+
+namespace
 {
 
-struct AutoVariableTestData
+struct TestClass
 {
   struct TestDataHolder
   {
     typedef int TValue;
     TestDataHolder(void):
-      _v(-1)
+      v_(-1)
     {
     }
     explicit TestDataHolder(TValue v):
-      _v(v)
+      v_(v)
     {
     }
     TValue  get(void) const
     {
-      return _v;
+      return v_;
     }
     void deallocate(void)
     {
-      if(_v==-1)
+      if(v_==-1)
         return;
 
       // ok - throwing strings is ugly, but this is out of the hierarchy
       // class that will not be caught by tut.
-      if(_check)
+      if(check_)
         throw std::string("dealocate(): "
                           "dealocating when not requested");
-      _v=-1;
+      v_=-1;
     }
 
     static void setCheck(bool check)
     {
-      _check=check;
+      check_=check;
     }
 
-    int         _v;     // -1 means: no-ownership
-    static bool _check; // if true then class throws on dealocate()
+    int         v_;     // -1 means: no-ownership
+    static bool check_; // if true then class throws on dealocate()
   }; // struct TestDataHolder
 
   typedef AutoVariable<TestDataHolder> TestAV;
 
-  AutoVariableTestData(void):
-    _av1(1),
-    _av2(2)
+  TestClass(void):
+    av1_(1),
+    av2_(2)
   {
     TestDataHolder::setCheck(false);    // do not check by default
   }
@@ -64,31 +67,17 @@ struct AutoVariableTestData
     return t;
   }
 
-  TestAV _av1;
-  TestAV _av2;
-}; // struct AutoVariableTestData
-
-} // namespace System
+  TestAV av1_;
+  TestAV av2_;
+}; // struct TestClass
 
 // static member of TestDataHolder declaration
-bool System::AutoVariableTestData::TestDataHolder::_check;
+bool TestClass::TestDataHolder::check_;
 
-
-namespace tut
-{
-typedef System::AutoVariableTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/AutoVariable");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/AutoVariable");
 }
-
-using namespace std;
-using namespace System;
 
 namespace tut
 {
@@ -98,8 +87,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure( _av1.get()==1 );
-  ensure( _av2.get()==2 );
+  ensure( av1_.get()==1 );
+  ensure( av2_.get()==2 );
 }
 
 
@@ -108,8 +97,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure( _av1.isInitialized() );
-  ensure( _av2.isInitialized() );
+  ensure( av1_.isInitialized() );
+  ensure( av2_.isInitialized() );
 
   TestAV notInit;
   ensure( !notInit.isInitialized() );
@@ -120,12 +109,12 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensure( _av1.isInitialized() );
-  ensure( _av2.isInitialized() );
-  _av1.reset(-1);
-  _av2.reset(-1);
-  ensure( !_av1.isInitialized() );
-  ensure( !_av2.isInitialized() );
+  ensure( av1_.isInitialized() );
+  ensure( av2_.isInitialized() );
+  av1_.reset(-1);
+  av2_.reset(-1);
+  ensure( !av1_.isInitialized() );
+  ensure( !av2_.isInitialized() );
 }
 
 // ownership passing
@@ -134,10 +123,10 @@ template<>
 void testObj::test<4>(void)
 {
   TestAV a;
-  int tmp=_av1.get();
-  a      =_av1;     // ownership passing
-  ensure( !_av1.isInitialized() );
-  ensure( _av1.get()!=a.get() );
+  int tmp=av1_.get();
+  a      =av1_;     // ownership passing
+  ensure( !av1_.isInitialized() );
+  ensure( av1_.get()!=a.get() );
   ensure( a.get()==tmp );
 }
 
@@ -147,9 +136,9 @@ template<>
 void testObj::test<5>(void)
 {
   TestAV a;
-  int    tmp=_av1.get();
-  a.reset( _av1.release() );
-  ensure( !_av1.isInitialized() );
+  int    tmp=av1_.get();
+  a.reset( av1_.release() );
+  ensure( !av1_.isInitialized() );
   ensure( a.get()==tmp );
 }
 
@@ -158,9 +147,9 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  TestAV a(_av1);
+  TestAV a(av1_);
   ensure(     a.isInitialized() );
-  ensure( !_av1.isInitialized() );
+  ensure( !av1_.isInitialized() );
 }
 
 // test default constructor
@@ -198,7 +187,7 @@ void testObj::test<9>(void)
   {
     TestDataHolder::setCheck(true);
     TestAV b;
-    b=_av1;
+    b=av1_;
     TestDataHolder::setCheck(false);
   }
   catch(const string &ex)
@@ -237,7 +226,7 @@ void testObj::test<11>(void)
   try
   {
     TestDataHolder::setCheck(true);
-    TestAV b( _av1.release() );
+    TestAV b( av1_.release() );
     TestDataHolder::setCheck(false);
   }
   catch(const string &ex)
@@ -256,7 +245,7 @@ void testObj::test<12>(void)
   try
   {
     TestDataHolder::setCheck(true);
-    TestAV b(_av1);
+    TestAV b(av1_);
     TestDataHolder::setCheck(false);
   }
   catch(const string &ex)
@@ -272,9 +261,9 @@ template<>
 void testObj::test<13>(void)
 {
   TestAV a;
-  a=_av1;
+  a=av1_;
   ensure(     a.isInitialized() );
-  ensure( !_av1.isInitialized() );
+  ensure( !av1_.isInitialized() );
 }
 
 // test assignment from call

@@ -86,15 +86,13 @@ public:
    *         (is number of added states matches).
    */
   StateMachine(const TEnum startState, const size_t statesCount):
-    _resetState  ( startState ),
-    _currentState( _resetState  ),
-    _states      ( statesCount )
+    resetState_  ( startState ),
+    currentState_( resetState_  ),
+    states_      ( statesCount )
   {
-    assert( _states.size()==statesCount );
+    assert( states_.size()==statesCount );
     // reset whole state machine
-    for(typename StateCollection::iterator it=_states.begin();
-        it!=_states.end();
-        ++it)
+    for(typename StateCollection::iterator it=states_.begin(); it!=states_.end(); ++it)
       *it=NULL;
   }
 
@@ -103,11 +101,9 @@ public:
   inline void reset(void)
   {
     // set start state.
-    _currentState=_resetState;
+    currentState_=resetState_;
     // reset internal states of each object.
-    for(typename StateCollection::iterator it=_states.begin();
-        it!=_states.end();
-        ++it)
+    for(typename StateCollection::iterator it=states_.begin(); it!=states_.end(); ++it)
     {
       assert((*it)!=NULL);
       (*it)->reset();
@@ -119,7 +115,7 @@ public:
    */
   inline TEnum currentState(void) const
   {
-    return _currentState;
+    return currentState_;
   }
 
   /** \brief perform single step of state machine.
@@ -128,13 +124,13 @@ public:
   inline TEnum step(void)
   {
     // get current state from map:
-    assert( _currentState.toInt()>=0 );
-    const unsigned long curSt=_currentState.toInt();
-    assert( /* 0<=curSt && */ curSt<_states.size() );
-    StateType *se=_states[curSt];
+    assert( currentState_.toInt()>=0 );
+    const unsigned long curSt=currentState_.toInt();
+    assert( /* 0<=curSt && */ curSt<states_.size() );
+    StateType *se=states_[curSt];
     assert( se!=NULL );
-    _currentState=se->doStep();     // perform step to next one
-    return _currentState;           // return state reached
+    currentState_=se->doStep();     // perform step to next one
+    return currentState_;           // return state reached
   }
 
 protected:
@@ -154,17 +150,17 @@ protected:
   {
     assert( state.toInt()>=0 );
     const unsigned long stateInt=state.toInt();
-    assert( /* 0<=stateInt && */ stateInt<_states.size() ||
+    assert( /* 0<=stateInt && */ stateInt<states_.size() ||
             !"index out of bounds - possibly number of enries is too small" );
-    assert( _states[stateInt]==NULL ||
+    assert( states_[stateInt]==NULL ||
             !"given state is already handled");     // no overwriting
-    _states[stateInt]=handle;
+    states_[stateInt]=handle;
   }
 
 private:
-  const TEnum     _resetState;
-  TEnum           _currentState;
-  StateCollection _states;
+  const TEnum     resetState_;
+  TEnum           currentState_;
+  StateCollection states_;
 }; // class StateMachine
 
 } // namespace System

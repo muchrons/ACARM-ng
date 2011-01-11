@@ -8,10 +8,12 @@
 
 #include "System/IterableEnum.hpp"
 
-namespace System
+using namespace System;
+
+namespace
 {
 
-struct IterableEnumTestData
+struct TestClass
 {
   struct MyEnum
   {
@@ -30,30 +32,18 @@ struct IterableEnumTestData
   typedef System::IterableEnum<MyEnum> TestEnum;
   typedef TestEnum::BType              TestEnumBase;
 
-  IterableEnumTestData(void):
-    _te( TestEnum::A )
+  TestClass(void):
+    te_( TestEnum::A )
   {
   }
 
-  TestEnum _te;
+  TestEnum te_;
 };
 
-} // namespace System
-
-
-namespace tut
-{
-typedef System::IterableEnumTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/IterableEnum");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/IterableEnum");
 }
-
 
 
 namespace tut
@@ -64,11 +54,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  _te = TestEnum::B;
-  ensure( "comparing (==) System::Enum with enum value failed",
-          _te==TestEnum::B );
-  ensure( "comparing (!=) System::Enum with enum value failed",
-          _te!=TestEnum::A );
+  te_ = TestEnum::B;
+  ensure( "comparing (==) System::Enum with enum value failed", te_==TestEnum::B );
+  ensure( "comparing (!=) System::Enum with enum value failed", te_!=TestEnum::A );
 }
 
 // Class<->Class comaprison
@@ -77,9 +65,8 @@ template<>
 void testObj::test<2>(void)
 {
   TestEnum other=TestEnum::C;
-  _te=TestEnum::C;
-  ensure( "comparison between two System::Enum failed",
-          _te==other );
+  te_=TestEnum::C;
+  ensure( "comparison between two System::Enum failed", te_==other );
 }
 
 
@@ -88,7 +75,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  TestEnum other1=_te;
+  TestEnum other1=te_;
   TestEnum other2=TestEnum::B;
 
   other1=TestEnum::A;
@@ -104,11 +91,11 @@ void testObj::test<4>(void)
 {
   int x;
 
-  x=_te.toInt();
+  x=te_.toInt();
   ensure(x==10);
 
-  _te=TestEnum::C;
-  x=_te.toInt();
+  te_=TestEnum::C;
+  x=te_.toInt();
   ensure(x==12);
 }
 
@@ -117,7 +104,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  TestEnumBase base   =_te;
+  TestEnumBase base   =te_;
   TestEnum     derived=base;
   ensure( derived.toInt()==base.toInt() );
 }
@@ -127,7 +114,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  TestEnum     derived=_te;
+  TestEnum     derived=te_;
   TestEnumBase base2  =TestEnumBase::D;
   derived=base2;
   ensure( derived.toInt()==base2.toInt() );
@@ -138,7 +125,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  TestEnum derived=_te;
+  TestEnum derived=te_;
   derived=TestEnum::D;
   ensure( derived.toInt()==TestEnum::D );
 }
@@ -148,8 +135,8 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  ensure(   _te==_te  );
-  ensure( !(_te!=_te) );
+  ensure(   te_==te_  );
+  ensure( !(te_!=te_) );
 }
 
 // test comparing to base
@@ -157,9 +144,9 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  TestEnumBase base=_te;
-  ensure(   _te==base  );
-  ensure( !(_te!=base) );
+  TestEnumBase base=te_;
+  ensure(   te_==base  );
+  ensure( !(te_!=base) );
 }
 
 // test begin iterator
@@ -185,8 +172,8 @@ template<>
 template<>
 void testObj::test<12>(void)
 {
-  ensure( _te.size()==5 );
-  ensure( _te.size()==TestEnum::Size );
+  ensure( te_.size()==5 );
+  ensure( te_.size()==TestEnum::Size );
 }
 
 // const_iterator construction (default)
@@ -279,9 +266,7 @@ template<>
 void testObj::test<21>(void)
 {
   long v=static_cast<int>(TestEnum::Min);
-  for(TestEnum::const_iterator it=_te.begin();
-      it!=_te.end();
-      ++it)
+  for(TestEnum::const_iterator it=te_.begin(); it!=te_.end(); ++it)
   {
     ensure(*it==v);
     ++v;
@@ -319,9 +304,9 @@ void testObj::test<23>(void)
 {
   // smoke test - checks backward compatibility of static calls.
   // it is enought if this test compiles.
-  ensure("begin() failed", _te.begin()==TestEnum::begin() );
-  ensure("end() failed",   _te.end()  ==TestEnum::end() );
-  ensure("size() failed",  _te.size() ==TestEnum::size() );
+  ensure("begin() failed", te_.begin()==TestEnum::begin() );
+  ensure("end() failed",   te_.end()  ==TestEnum::end() );
+  ensure("size() failed",  te_.size() ==TestEnum::size() );
 }
 
 template<>

@@ -7,30 +7,16 @@
 
 #include "System/Exceptions/LogicError.hpp"
 
-namespace System
-{
-namespace Exceptions
+namespace
 {
 
-struct LogicErrorTestData
+struct TestClass
 {
 };
 
-} // namespace Exceptions
-} // namespace System
-
-
-namespace tut
-{
-typedef System::Exceptions::LogicErrorTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/Exceptions/LogicError");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/Exceptions/LogicError");
 }
 
 using namespace std;
