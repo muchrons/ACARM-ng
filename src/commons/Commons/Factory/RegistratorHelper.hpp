@@ -14,6 +14,7 @@
 
 #include "BuildProcess/ForceLink.hpp"
 #include "Logger/Logger.hpp"
+#include "Commons/Factory/ExceptionBuilderAlreadyRegistered.hpp"
 
 namespace Commons
 {
@@ -79,6 +80,12 @@ private:
         LOGMSG_INFO_S(node)<<"registering builder: "<<builderName;
         TSingleton::registerBuilder(ptr);
         return RegistrationMark(true, typeName);    // everything's fine
+      }
+      catch(const ExceptionBuilderAlreadyRegistered &ex)
+      {
+        // NOTE: information that some module tries to re-register existing builder
+        //       is not critical, thus fatal priority is overkill.
+        LOGMSG_INFO_S(node) << ex.what() << " - continuing...";
       }
       catch(const std::exception &ex)
       {
