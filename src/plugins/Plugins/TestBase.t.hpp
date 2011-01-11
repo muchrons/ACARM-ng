@@ -5,6 +5,8 @@
 #ifndef INCLUDE_PLUGINS_TESTBASE_T_HPP_FILE
 #define INCLUDE_PLUGINS_TESTBASE_T_HPP_FILE
 
+#include <boost/filesystem.hpp>
+
 #include "System/Plugins/Builder.hpp"
 
 namespace
