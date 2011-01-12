@@ -22,3 +22,4 @@
 * rework severity computing algorithm to make higher priority for alerts with high-priority alerts (now main part is average...).
 * add heartbeats for daemon, so that GUI will know when system is online and when it is not.
 * fix chain-event filter - correlated elements must be in chronological time order!
+* fix one2one filter - it doesn't seem to work...
