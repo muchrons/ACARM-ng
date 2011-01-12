@@ -53,6 +53,7 @@ following options are supported:
     <cleanupInterval>24</cleanupInterval> <!-- clean-up procedure running interval
                                                measured in hours. note that clean-up
                                                is NOT run during program startup. -->
+    <pluginsDir>/my/path</pluginsDir>     <!-- path to directory with plugins -->
   </general>
 
 
