@@ -183,11 +183,6 @@ example configuration may look like this:
 
 following filters and parameters are available:
 
-  <!-- correlates attacks from one host to another -->
-  <onetoone name="o2o">
-    <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
-  </onetoone>
-
   <!-- correlates multiple attacks originated from single host -->
   <onetomany name="o2m">
     <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
@@ -221,12 +216,6 @@ following filters and parameters are available:
   <samename name="same_name">
     <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
   </samename>
-
-  <!-- finds chains of events and updates severity delta by a given ammount -->
-  <eventchain name="event_chain">
-    <timeout>42</timeout>              <!-- timeout for observing entry, in seconds -->
-    <priorityDelta>0.8</priorityDelta> <!-- amount to update priority by when correlating -->
-  </eventchain>
 
 
 triggers configuration
