@@ -1,12 +1,10 @@
 filterdnsresolver
 filteripblacklist
-filtereventchain
 filtermanytomany
 filterhostcommon
 filteronetomany
 filtermanytoone
 filtersamename
-filteronetoone
 filter
 
 triggerextapp
