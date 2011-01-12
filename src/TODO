@@ -21,3 +21,4 @@
 * implement filter that gathers stats of source/destination IPs and reports the most problematic noes with higher priority.
 * rework severity computing algorithm to make higher priority for alerts with high-priority alerts (now main part is average...).
 * add heartbeats for daemon, so that GUI will know when system is online and when it is not.
+* fix chain-event filter - correlated elements must be in chronological time order!
