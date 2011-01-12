@@ -49,7 +49,7 @@ expanded, step by step, to help find what your problem is. file's content:
        <general>
          <url>https://url.to.wui</url>
          <cleanupInterval>8</cleanupInterval>
-    	 <cleanupOlder>90</cleanupOlder>
+         <cleanupOlder>90</cleanupOlder>
          <pluginsDir>/my/path</pluginsDir>
        </general>
 
