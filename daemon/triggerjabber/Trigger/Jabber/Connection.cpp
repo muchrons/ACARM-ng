@@ -34,10 +34,12 @@ Connection::Connection(const AccountConfig &cfg):
 Connection::~Connection(void)
 {
   LOGMSG_INFO(log_, "disconnecting from Jabber server");
-  // TODO: these calls could potentially throw - add proper protection.
-  sess_->recv(1000);
+  if(sess_->recv(1000))
+    throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
   // set status to unavailable
   sess_->setPresence(gloox::Presence::Unavailable, 100 );
+  if(sess_->recv(1000))
+    throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
 }
 
 void Connection::login(gloox::Client *client) const
@@ -46,7 +48,7 @@ void Connection::login(gloox::Client *client) const
   // login
   while(!quit)
   {
-    gloox::ConnectionError ce = client->recv();
+    gloox::ConnectionError ce = client->recv(1000);
     if(ce != gloox::ConnNoError)
     {
       throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "authentication error");
@@ -64,10 +66,8 @@ AutoSession Connection::connect(void) const
 {
   gloox::JID jid(cfg_.getLogin() + "@" + cfg_.getServer() + "/acarm-ng");
   AutoSession sess(new gloox::Client(jid, cfg_.getPassword()));
-  // TODO: sess.get()!=NULL can be asserter. in case of error exception will be thrown.
   // sanity check
-  if( sess.get()==NULL )
-    throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "NULL structure received (login failed)");
+  assert( sess.get()!=NULL );
   // check if connection was established
   if(!sess->connect(false))
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "not connected to server");
