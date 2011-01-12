@@ -277,7 +277,7 @@ below are listed implemented triggers along with their implementation.
   <login>acarm-ng1</login>                            <!-- login for Jabber account-->
   <password>my$3cr337</password>                      <!-- password for this account-->
   <server>jabber.org</server>                         <!-- Jabber server-->
-  <receiver>me@jabber.org you@jabber.org</receiver>   <!-- list of Jabber accounts to notify -->
+  <receivers>me@jabber.org you@jabber.org</receivers> <!-- list of Jabber accounts to notify -->
 
   <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
   <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
