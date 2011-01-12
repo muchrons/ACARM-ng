@@ -12,7 +12,7 @@ after obtaining sources from http://www.acarm.wcss.wroc.pl extract them:
 $ tar xjvf aacrmng.tar.bz2
 
 enter sources directory:
-$ cd acarmng/daemon
+$ cd acarmng/src
 
 and run compilation:
 $ make PROFILE=release
@@ -133,8 +133,8 @@ files placement
 now /home/acarm-ng directory should exist. copy all required files there
 (assume /tmp/acarmng is your source directory, with compiled binaries):
 $ cd /home/acarm-ng
-$ cp -rL /tmp/acarmng/daemon/gen/release_local_normal_default/libs .
-$ cp /tmp/acarmng/daemon/gen/release_local_normal_default/acarmng/acarmng.out acarmng
+$ cp -rL /tmp/acarmng/src/gen/release_local_normal_default/libs .
+$ cp /tmp/acarmng/src/gen/release_local_normal_default/acarmng/acarmng.out acarmng
 
 now create configuration file, according to your needs and place in the same
 directory as a binary (in our example this is /home/acarm-ng), under the name

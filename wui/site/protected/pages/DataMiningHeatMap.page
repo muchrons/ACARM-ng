@@ -21,17 +21,18 @@
 
         onClick: function(evt)
         {
-          lonval=Math.floor(map.getLonLatFromViewPortPx(evt.xy).lon);
-          latval=Math.floor(map.getLonLatFromViewPortPx(evt.xy).lat);
-
           var basicMap = document.getElementById("basicMap");
           var divWidth = parseInt(basicMap.style.width);
           var divHeight = parseInt(basicMap.style.height);
 
+          lonval=Math.floor(map.getLonLatFromViewPortPx(evt.xy).lon);
+          latval=Math.floor(map.getLonLatFromViewPortPx(evt.xy).lat);
+          latval=divHeight-latval-1; //openlayers' line numbers start at the bottom of the picture
+
           if (lonval>=0 && lonval<sources.length && latval>=0 && latval<destinations.length)
              {
               lon=sources[lonval];
-              lat=destinations[divHeight-latval-1];
+              lat=destinations[latval];
               Prado.Callback("<%= $this->bt->UniqueID %>", {'longitude': lon, 'latitude': lat, 'minAlert': minAlert, 'maxAlert': maxAlert});
              } else
              {
