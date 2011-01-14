@@ -37,8 +37,8 @@ Connection::~Connection(void)
   if(sess_->recv(1000))
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
   // set status to unavailable
-  sess_->setPresence(gloox::Presence::Unavailable, 100 );
-  if(sess_->recv(1000))
+  sess_.get()->setPresence(gloox::Presence::Unavailable, 100 );
+  if(sess_.get()->recv(1000))
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
 }
 
