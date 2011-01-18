@@ -79,7 +79,7 @@ void testObj::test<5>(void)
     FileReader fr("/etc/shadow");
     fail("opening file without permissions didn't caused an error");
   }
-  catch(const System::Exception&)
+  catch(const System::DiskFile::ExceptionCannotOpenFile &)
   {
     // this is expected
   }
@@ -95,7 +95,7 @@ void testObj::test<6>(void)
     FileReader fr("/file/that/does/not/exist.txt");
     fail("opening non-exisitng file didn't caused an error");
   }
-  catch(const System::Exception&)
+  catch(const System::DiskFile::ExceptionCannotOpenFile &)
   {
     // this is expected
   }
@@ -113,7 +113,7 @@ void testObj::test<7>(void)
     FileReader  fr(path);
     fail("opening non-exisitng file didn't caused an error");
   }
-  catch(const System::Exception&)
+  catch(const System::DiskFile::ExceptionCannotOpenFile &)
   {
     // this is expected
   }

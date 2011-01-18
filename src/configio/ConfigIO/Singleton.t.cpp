@@ -164,7 +164,7 @@ void testObj::test<12>(void)
     Singleton::get()->rereadConfig("file/that/does/not/exist");
     fail("rereading non-exisitng file didn't failed");
   }
-  catch(const System::Exception &)
+  catch(const ExceptionFileAccessError &)
   {
     // this is expected
   }

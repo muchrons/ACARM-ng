@@ -10,7 +10,7 @@
 #include <boost/scoped_ptr.hpp>
 
 #include "XML/Tree.hpp"
-#include "System/Exception.hpp" // may be thrown by implementation
+#include "System/DiskFile.hpp"
 #include "ConfigIO/LoggerConfig.hpp"
 #include "ConfigIO/PersistencyConfig.hpp"
 #include "ConfigIO/ParseGeneralConfig.hpp"

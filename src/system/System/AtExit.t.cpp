@@ -66,4 +66,21 @@ void testObj::test<1>(void)
   ensure("ownership apssing failed", test.get()==NULL);
 }
 
+// test for exception when registering NULL pointer
+template<>
+template<>
+void testObj::test<2>(void)
+{
+  AtExit::TDeallocPtr test(NULL);
+  try
+  {
+    AtExit::registerDeallocator(test);
+    fail("registration didn't throw exception on NULL pointer");
+  }
+  catch(const ExceptionPointerIsNULL &)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut

@@ -9,7 +9,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/scoped_array.hpp>
 
-#include "System/Exception.hpp"
+#include "System/DiskFile.hpp"
 #include "ConfigIO/ExceptionFileAccessError.hpp"
 
 
