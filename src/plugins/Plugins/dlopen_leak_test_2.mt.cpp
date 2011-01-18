@@ -16,7 +16,8 @@ int main(void)
     char *error;
 
     handle = dlopen("libm.so", RTLD_LAZY);
-    if (!handle) {
+    if(!handle)
+    {
       fprintf(stderr, "%s\n", dlerror());
       return 1;
     }
@@ -32,7 +33,8 @@ int main(void)
 
     *(void **) (&cosine) = dlsym(handle, "cos");
 
-    if ((error = dlerror()) != NULL)  {
+    if( (error=dlerror())!=NULL)
+    {
       fprintf(stderr, "%s\n", error);
       return 2;
     }
