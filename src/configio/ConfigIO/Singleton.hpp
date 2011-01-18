@@ -18,6 +18,7 @@
 #include "ConfigIO/InputsConfigCollection.hpp"
 #include "ConfigIO/LoggerConfig.hpp"
 #include "ConfigIO/Preprocessor/Config.hpp"
+#include "ConfigIO/ExceptionFileAccessError.hpp"
 
 namespace ConfigIO
 {

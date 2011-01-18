@@ -16,13 +16,20 @@ SingletonImpl::~SingletonImpl(void)
 
 void SingletonImpl::rereadConfig(const char *path)
 {
-  // try reading config file - either default or the one passed
-  // as an argument.
-  boost::scoped_ptr<Parser> tmp( path?new Parser(path):new Parser );
-  // if reading succeded (i.e. no exception has been thrown make new
-  // configuration persistent.
-  p_.swap(tmp);
-  assert( p_.get()!=NULL );
+  try
+  {
+    // try reading config file - either default or the one passed
+    // as an argument.
+    boost::scoped_ptr<Parser> tmp( path?new Parser(path):new Parser );
+    // if reading succeded (i.e. no exception has been thrown make new
+    // configuration persistent.
+    p_.swap(tmp);
+    assert( p_.get()!=NULL );
+  }
+  catch(const std::exception &/*ex*/)
+  {
+    throw ExceptionFileAccessError(SYSTEM_SAVE_LOCATION, path);
+  }
 }
 
 const PersistencyConfig &SingletonImpl::persistencyConfig(void) const
