@@ -11,7 +11,8 @@
 #include <boost/noncopyable.hpp>
 
 #include "System/AtExitResourceDeallocator.hpp"
-#include "System/Exception.hpp"
+#include "System/ExceptionPointerIsNULL.hpp"
+#include "System/ExceptionSyscallFailed.hpp"
 
 
 namespace System

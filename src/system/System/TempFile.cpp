@@ -10,14 +10,15 @@
 using namespace std;
 using namespace boost;
 using namespace System;
+namespace fs=boost::filesystem;
 
 namespace
 {
-inline pair<string, shared_ptr<AutoDescriptor> > makeTempFilePair(void)
+inline pair<fs::path, shared_ptr<AutoDescriptor> > makeTempFilePair(void)
 {
   char                       buf[]="/tmp/.TempFile_XXXXXX";
   shared_ptr<AutoDescriptor> fd( new AutoDescriptor( mkstemp(buf) ) );
-  return pair<string, shared_ptr<AutoDescriptor> >( string(buf), fd );
+  return pair<fs::path, shared_ptr<AutoDescriptor> >(buf, fd);
 } // makeTempFilePair()
 } // unnamed namespace
 
