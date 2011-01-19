@@ -15,10 +15,12 @@
 * consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
 * conisder adding indexes to speed-up SQL queries like: select * from hosts where id_alert=42;
 * think about adding meta-alerts to correlation queue of a filters with reported-time, not current time as a base (to reduce overhead when system is started after some time).
-* consider appending description to correlation of meta-alerts.
+* consider appending description to correlation of meta-alerts (ex. in form of change history? maby automatically generated?).
 * persistency::postgres I/O can be optimized - it takes 90% of wall time right now, thus is main bottleneck of the whole system.
 * implement filter that gathers stats of source/destination IPs and reports the most problematic noes with higher priority.
 * rework severity computing algorithm to make higher priority for alerts with high-priority alerts (now main part is average...).
 * add heartbeats for daemon, so that GUI will know when system is online and when it is not.
 * expand API of the DynamicConfig adding deletion of entries.
 * expand API of the DynamicConfig adding iteration through entries (loaded dynamically, on demand).
+* implement filter monitoring users' activity (correlates alert's related to given user's activity).
+* implement filter (trigger?) monitoring new alert types, that have arrived.
