@@ -40,6 +40,14 @@ bool hasCommonIP(const Data::SharedIPSet &s1, const Data::SharedIPSet &s2)
   // ok - no common elements found
   return false;
 } // hasCommonIP()
+
+Timestamp getTs(const Strategy::Node &n)
+{
+  if( n->getAlert()->getDetectionTime()!=NULL )
+    return *n->getAlert()->getDetectionTime();
+  return n->getAlert()->getCreationTime();
+}
+
 } // unnamed namespace
 
 
@@ -65,12 +73,14 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 
 Data Strategy::makeThisEntryUserData(const Node n) const
 {
-  // single node does not represent chain
-  Data d;
+  const Timestamp ts( getTs(n) );
+  Data            d;
   Algo::GatherIPs ips(n);
   typedef Algo::GatherIPs::IPSet IPSet;
   d.beginIPs_=boost::shared_ptr<IPSet>( new IPSet( ips.getSourceIPs() ) );
+  d.beginTs_ =ts;
   d.endIPs_  =boost::shared_ptr<IPSet>( new IPSet( ips.getTargetIPs() ) );
+  d.endTs_   =ts;
   d.len_     =1;
   return d;
 }
@@ -109,10 +119,12 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
 
   // check for chain thisEntry->otherEntry
   if( hasCommonIP(thisEntry.t_.endIPs_, otherEntry.t_.beginIPs_) )
-    return true;
+    if( thisEntry.t_.endTs_<=otherEntry.t_.beginTs_ )
+      return true;
   // check for chain otherEntry->thisEntry
   if( hasCommonIP(otherEntry.t_.endIPs_, thisEntry.t_.beginIPs_) )
-    return true;
+    if( otherEntry.t_.endTs_<=thisEntry.t_.beginTs_ )
+      return true;
   // no correlation found - stop search
   return false;
 }
@@ -126,13 +138,15 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
   const NodeEntry *to  =NULL;
   if( hasCommonIP(thisEntry.t_.endIPs_, otherEntry.t_.beginIPs_) )
   {
+    assert( thisEntry.t_.endTs_<=otherEntry.t_.beginTs_ );
     from=&thisEntry;
     to  =&otherEntry;
   }
   else
   {
-    // this must be true - otherwise these hosts could not be correlated in a first place
+    // these must be true - otherwise these hosts could not be correlated in a first place
     assert( hasCommonIP(otherEntry.t_.endIPs_, thisEntry.t_.beginIPs_) );
+    assert( otherEntry.t_.endTs_<=thisEntry.t_.beginTs_ );
     from=&otherEntry;
     to  =&thisEntry;
   }
@@ -140,13 +154,17 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
   assert(from!=NULL);
   assert(to  !=NULL);
   assert( hasCommonIP(from->t_.endIPs_, to->t_.beginIPs_) );
+  assert( from->t_.endTs_<=to->t_.beginTs_ );
 
   // make output
   Data d;
   d.beginIPs_=from->t_.beginIPs_;
+  d.beginTs_ =from->t_.beginTs_;
   d.endIPs_  =to->t_.endIPs_;
+  d.endTs_   =to->t_.endTs_;
   d.len_     =from->t_.len_ + to->t_.len_;
   assert(d.len_>0u);
+  assert(d.beginTs_<=d.endTs_);
   return d;
 }
 
