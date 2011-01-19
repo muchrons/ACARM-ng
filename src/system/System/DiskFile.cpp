@@ -11,46 +11,31 @@
 
 using namespace std;
 using namespace boost;
+namespace fs=boost::filesystem;
 
 
 namespace System
 {
 
-DiskFile::DiskFile(const std::string &fileName, int flags, mode_t mode):
-  _fileName(fileName),
-  _fd( open( _fileName.c_str(), flags, mode ) )
+DiskFile::DiskFile(const boost::filesystem::path &fileName, int flags, mode_t mode):
+  fileName_(fileName),
+  fd_( open( getName().string().c_str(), flags, mode ) )
 {
-  if( !_fd.isInitialized() )
-    throwFileErrorException("DiskFile::DiskFile()", "open");
+  if( !fd_.isInitialized() )
+    throw ExceptionCannotOpenFile(SYSTEM_SAVE_LOCATION, getName() );
 }
 
-DiskFile::DiskFile( std::pair<std::string, boost::shared_ptr<AutoDescriptor> > p ):
-  _fileName(p.first),
-  _fd( *p.second.get() )    // pass the ownership
+DiskFile::DiskFile( std::pair<boost::filesystem::path, boost::shared_ptr<AutoDescriptor> > p ):
+  fileName_(p.first),
+  fd_( *p.second.get() )    // pass the ownership
 {
-  if( !_fd.isInitialized() )
-    throw Exception(SYSTEM_SAVE_LOCATION,
-                    "DiskFile::DiskFile(): "
-                    "direct initializing from derived class failed");
+  if( !fd_.isInitialized() )
+    throw Exception(SYSTEM_SAVE_LOCATION, "DiskFile::DiskFile(): direct initializing from derived class failed");
 }
-
-
-void DiskFile::throwFileErrorException(const char *methodName,
-                                       const char *action)
-{
-  stringstream ss;
-  ss<<methodName<<": unable to "<<action<<" '"
-    <<getName()<<"' file: "<< strerror(errno);
-  // TODO: make this separate exception type
-  throw Exception( SYSTEM_SAVE_LOCATION, ss.str() );
-}
-
 
 void DiskFile::unlink(void)
 {
-  if( ::unlink( getName().c_str() )!=0 )
-    if(errno!=ENOENT)   // if file was already removed - ok
-      throwFileErrorException("DiskFile::unlink()", "unlink");
+  fs::remove( getName() );
 }
 
 } // namespace System

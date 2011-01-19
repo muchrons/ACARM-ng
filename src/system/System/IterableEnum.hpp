@@ -137,6 +137,7 @@ public:
       // this supress warning in release mode
       ignoreParam(e);
     }
+
     EType e_;
   }; // class const_iterator
 

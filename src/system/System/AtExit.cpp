@@ -9,7 +9,7 @@
 #include <cassert>
 
 #include "System/AtExit.hpp"
-#include "System/AtExitImpl.hpp"
+#include "System/detail/AtExitImpl.hpp"
 #include "System/Threads/SafeInitLocking.hpp"
 
 using namespace std;
@@ -32,7 +32,7 @@ namespace
 // thread safe from the very begining (before any static constructors
 // are run), to the very end.
 //
-System::AtExitImpl *atExitImpl=NULL;
+System::detail::AtExitImpl *atExitImpl=NULL;
 SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_mutex);
 
 } // unnamed namespace
@@ -49,7 +49,7 @@ static void cStyleCallForAtExit(void)
     // swap this queue with new (NULL - will be allocated, if needed) so
     // that it is possible to register new handles while processing
     // other handles (deallocation).
-    System::AtExitImpl *tmp=NULL;
+    System::detail::AtExitImpl *tmp=NULL;
     {
       SafeInitLock lock(g_mutex);
       tmp       =atExitImpl;
@@ -93,14 +93,13 @@ void AtExit::init(void)
   assert(atExitImpl==NULL);
 
   // this call, if there is a problem, can be registered/called multiple times...
-  // TODO: change this exception to something more specific
   if( atexit(cStyleCallForAtExit)!=0 )
-    throw Exception(SYSTEM_SAVE_LOCATION, "AtExit::AtExit(): unable to register handler in atexit() syscall");
+    throw ExceptionSyscallFailed(SYSTEM_SAVE_LOCATION, "atexit", "unable to register handler");
 
   // sanity check
   assert(atExitImpl==NULL);
   // init global pointer
-  atExitImpl=new AtExitImpl;
+  atExitImpl=new detail::AtExitImpl;
   // sanity check
   assert(atExitImpl!=NULL);
 }
@@ -108,9 +107,8 @@ void AtExit::init(void)
 void AtExit::registerInternal(TDeallocPtr p)
 {
   // lock for this call is made in registerDeallocator()
-  // TODO: change this exception to something more specific
   if( p.get()==NULL )
-    throw Exception(SYSTEM_SAVE_LOCATION, "AtExit::registerInternal(): NULL pointer recieved for registration");
+    throw ExceptionPointerIsNULL(SYSTEM_SAVE_LOCATION, "p");
 
   assert(atExitImpl!=NULL);
   atExitImpl->registerDeallocator(p);

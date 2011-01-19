@@ -100,7 +100,7 @@ void testObj::test<4>(void)
     Parser p("some_nonexisting_file.xml");
     fail("Parser() didn't throw on nonexisting file");
   }
-  catch(const System::Exception&)
+  catch(const System::DiskFile::ExceptionCannotOpenFile &)
   {
     // this is not expected.
   }

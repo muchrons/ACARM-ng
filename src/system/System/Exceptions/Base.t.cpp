@@ -8,30 +8,16 @@
 
 #include "System/Exceptions/Base.hpp"
 
-namespace System
+namespace
 {
-namespace Exceptions
-{
-
-struct BaseTestData
+struct TestClass
 {
 };
 
-} // namespace Exceptions
-} // namespace System
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
 
-
-namespace tut
-{
-typedef System::Exceptions::BaseTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/Exceptions/Base");
+factory tf("System/Exceptions/Base");
 }
 
 using namespace std;

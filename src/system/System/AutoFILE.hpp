@@ -34,7 +34,7 @@ public:
    *  \param v FILE to be held.
    */
   explicit FILEHolder(TValue v=NULL):
-    _v(v)
+    v_(v)
   {
   }
   /** \brief returns value of descriptor.
@@ -42,21 +42,21 @@ public:
    */
   inline TValue get(void) const
   {
-    return _v;
+    return v_;
   }
   /** \brief closes descriptor held inside.
    */
   void deallocate(void)
   {
-    if(_v!=NULL)
+    if(v_!=NULL)
     {
-      fclose(_v);
-      _v=NULL;
+      fclose(v_);
+      v_=NULL;
     }
   }
 
 private:
-  TValue _v;
+  TValue v_;
 }; // class FILEHolder
 
 } // namespace detail

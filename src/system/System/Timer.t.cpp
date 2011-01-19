@@ -11,7 +11,6 @@ using namespace System;
 
 namespace
 {
-
 struct TestClass
 {
 };

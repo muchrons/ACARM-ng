@@ -89,10 +89,11 @@ const ::Persistency::Host::Netmask_v6::bytes_type mask6_bytes=
 //
 ::Persistency::GraphNodePtrNN makeNewTree2(void);
 
-::Persistency::AlertPtrNN makeNewAlertWithHosts(const char *hostSrc1,
-                                                const char *hostSrc2,
-                                                const char *hostDst1,
-                                                const char *hostDst2);
+::Persistency::AlertPtrNN makeNewAlertWithHosts( const char                     *hostSrc1,
+                                                 const char                     *hostSrc2,
+                                                 const char                     *hostDst1,
+                                                 const char                     *hostDst2,
+                                                 const ::Persistency::Timestamp &createTime=::Persistency::Timestamp() );
 
 ::Persistency::GraphNodePtrNN makeNewLeaf(::Persistency::AlertPtrNN alert, unsigned int id=303u);
 

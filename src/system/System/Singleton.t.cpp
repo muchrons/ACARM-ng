@@ -9,52 +9,38 @@
 
 namespace
 {
+
 struct MySingleType
 {
   void inc(void)
   {
-    ++_cnt;
+    ++cnt_;
   }
 
   int get(void) const
   {
-    return _cnt;
+    return cnt_;
   }
 
 private:
   friend class System::Singleton<MySingleType>;
 
   MySingleType(void):
-    _cnt(0)
+    cnt_(0)
   {
   }
 
-  int _cnt;
+  int cnt_;
 }; // struct MySingleType
-} // unnamed namespace
 
 
-namespace System
-{
-
-struct SingletonTestClass
+struct TestClass
 {
 };
 
-} // namespace System
-
-
-namespace tut
-{
-typedef System::SingletonTestClass TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/Singleton");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/Singleton");
 }
 
 typedef System::Singleton<MySingleType> TestSingleton;

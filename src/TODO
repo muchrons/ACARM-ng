@@ -9,7 +9,6 @@
 * add handle for out-of-memory problem (i.e. using own wrapper for memory manager).
 * consider adding pre-requisites for triggers, i.e. to trigger only reports of some specific content (preprocessor-like style).
 * trigger reporting "the most important events" aiming to rise about N most important event in some ammount of time (thresholds are variable, depending on the input).
-* implement extra table for fast computing root meta-alerts.
 * encrypted connecitons in Trigger::GG.
 * encrypted connecitons in Trigger::Mail.
 * consider splitig configuration into multiple files (maybe directive like <include> would do the trick, preserving backward compatibility?).

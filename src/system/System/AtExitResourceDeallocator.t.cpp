@@ -7,27 +7,15 @@
 
 #include "System/AtExitResourceDeallocator.hpp"
 
-namespace System
+namespace
 {
-
-struct AtExitResourceDeallocatorTestData
+struct TestClass
 {
 };
 
-} // namespace System
-
-
-namespace tut
-{
-typedef System::AtExitResourceDeallocatorTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/AtExitResourceDeallocator");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/AtExitResourceDeallocator");
 }
 
 using namespace std;

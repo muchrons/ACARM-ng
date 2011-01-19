@@ -7,27 +7,15 @@
 
 #include "System/AtExit.hpp"
 
-namespace System
+namespace
 {
-
-struct AtExitTestData
+struct TestClass
 {
 };
 
-} // namespace System
-
-
-namespace tut
-{
-typedef System::AtExitTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/AtExit");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/AtExit");
 }
 
 using namespace System;
@@ -76,6 +64,23 @@ void testObj::test<1>(void)
 
   AtExit::registerDeallocator(test);
   ensure("ownership apssing failed", test.get()==NULL);
+}
+
+// test for exception when registering NULL pointer
+template<>
+template<>
+void testObj::test<2>(void)
+{
+  AtExit::TDeallocPtr test(NULL);
+  try
+  {
+    AtExit::registerDeallocator(test);
+    fail("registration didn't throw exception on NULL pointer");
+  }
+  catch(const ExceptionPointerIsNULL &)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut

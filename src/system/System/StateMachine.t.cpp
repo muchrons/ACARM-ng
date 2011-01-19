@@ -8,11 +8,12 @@
 
 #include "System/StateMachine.hpp"
 
+using namespace System;
 
-namespace System
+namespace
 {
 
-struct StateMachineTestData
+struct TestClass
 {
   struct MyEnum
   {
@@ -83,31 +84,19 @@ struct StateMachineTestData
 
 
   // test data itself :)
-  StateMachineTestData(void)
+  TestClass(void):
+    vsm_(&sm_)
   {
-    _vsm=&_sm;
   }
 
-  TestStateMachine         _sm;
-  StateMachine<StateEnum> *_vsm;
+  TestStateMachine         sm_;
+  StateMachine<StateEnum> *vsm_;
 };
 
-} // namespace System
-
-
-namespace tut
-{
-typedef System::StateMachineTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/StateMachine");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/StateMachine");
 }
-
 
 
 namespace tut
@@ -118,7 +107,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure( _vsm->currentState()==StateEnum::STATE_A );
+  ensure( vsm_->currentState()==StateEnum::STATE_A );
 }
 
 // perform single stepping
@@ -126,9 +115,9 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure( _vsm->step()==StateEnum::STATE_B );
-  ensure( _vsm->step()==StateEnum::STATE_C );
-  ensure( _vsm->step()==StateEnum::STATE_C );
+  ensure( vsm_->step()==StateEnum::STATE_B );
+  ensure( vsm_->step()==StateEnum::STATE_C );
+  ensure( vsm_->step()==StateEnum::STATE_C );
 }
 
 // reset machine in work
@@ -136,9 +125,9 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensure( _vsm->step()==StateEnum::STATE_B );
-  _vsm->reset();
-  ensure( _vsm->step()==StateEnum::STATE_B );
+  ensure( vsm_->step()==StateEnum::STATE_B );
+  vsm_->reset();
+  ensure( vsm_->step()==StateEnum::STATE_B );
 }
 
 // check if reseting state-objects works
@@ -146,19 +135,19 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure( _sm.getStateBcnt()==0 );
+  ensure( sm_.getStateBcnt()==0 );
 
-  ensure( _vsm->step()==StateEnum::STATE_B );
-  ensure( _sm.getStateBcnt()==0 );
+  ensure( vsm_->step()==StateEnum::STATE_B );
+  ensure( sm_.getStateBcnt()==0 );
 
-  ensure( _vsm->step()==StateEnum::STATE_C );
-  ensure( _sm.getStateBcnt()==1 );
+  ensure( vsm_->step()==StateEnum::STATE_C );
+  ensure( sm_.getStateBcnt()==1 );
 
-  ensure( _vsm->step()==StateEnum::STATE_C );
-  ensure( _sm.getStateBcnt()==1 );
+  ensure( vsm_->step()==StateEnum::STATE_C );
+  ensure( sm_.getStateBcnt()==1 );
 
-  _vsm->reset();
-  ensure( _sm.getStateBcnt()==0 );
+  vsm_->reset();
+  ensure( sm_.getStateBcnt()==0 );
 }
 
 } // namespace tut

@@ -142,10 +142,11 @@ GraphNodePtrNN makeNewTree2(void)
                         makeNewNode( makeNewLeaf(), node1 ), node1 ) );
 }
 
-AlertPtrNN makeNewAlertWithHosts(const char *hostSrc1,
-                                 const char *hostSrc2,
-                                 const char *hostDst1,
-                                 const char *hostDst2)
+AlertPtrNN makeNewAlertWithHosts(const char      *hostSrc1,
+                                 const char      *hostSrc2,
+                                 const char      *hostDst1,
+                                 const char      *hostDst2,
+                                 const Timestamp &createTime)
 {
   const Alert::Analyzers sa( makeNewAnalyzer() );
   Alert::Hosts           hostsSrc;
@@ -164,10 +165,10 @@ AlertPtrNN makeNewAlertWithHosts(const char *hostSrc1,
   return AlertPtrNN( new Alert("alert 123",
                                sa,
                                NULL,
-                               Timestamp(),
+                               createTime,
                                Severity(SeverityLevel::INFO),
                                Certainty(0.42),
-                               "some test allert",
+                               "some test alert",
                                hostsSrc,
                                hostsDst) );
 }

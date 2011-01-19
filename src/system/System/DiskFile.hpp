@@ -15,12 +15,13 @@
 #include <fcntl.h>
 #include <string>
 #include <boost/shared_ptr.hpp>
+#include <boost/filesystem.hpp>
 #include <boost/noncopyable.hpp>
 #include <cassert>
 
 #include "System/AutoDescriptor.hpp"
 #include "System/Exception.hpp"
-
+#include "System/ExceptionSyscallFailed.hpp"
 
 namespace System
 {
@@ -30,29 +31,43 @@ namespace System
 class DiskFile: private boost::noncopyable
 {
 public:
+  /** \brief exception thrown when open() fails to opena file.
+   */
+  struct ExceptionCannotOpenFile: public ExceptionSyscallFailed
+  {
+    /** \brief create execption with given message.
+     *  \param where place where exception has been raisen.
+     *  \param path  file that couldn't be opened.
+     */
+    ExceptionCannotOpenFile(const Location &where, const boost::filesystem::path &path):
+      ExceptionSyscallFailed(where, "open", cc("unable to open file '", path, "'") )
+    {
+    }
+  }; // struct ExceptionCannotOpenFile
+
   /** \brief opens/creates file on disk.
    *  \param fileName name of disk file to be opened.
    *  \param flags    flags to be passed to open() system call.
    *  \param mode     mode to open file.
    */
-  DiskFile(const std::string &fileName,
-           int    flags=O_RDWR|O_CREAT|O_LARGEFILE|O_CLOEXEC,
-           mode_t mode =0644);
+  DiskFile(const boost::filesystem::path &fileName,
+           int                            flags=O_RDWR|O_CREAT|O_LARGEFILE|O_CLOEXEC,
+           mode_t                         mode =0644);
 
   /** \brief returns file name.
    *  \return file name.
    */
-  inline const std::string &getName(void) const
+  inline const boost::filesystem::path &getName(void) const
   {
-    return _fileName;
+    return fileName_;
   }
   /** \brief returns file descriptor for given file.
    *  \return file descriptor.
    */
   inline int get(void)
   {
-    assert( _fd.isInitialized() );
-    return _fd.get();
+    assert( fd_.isInitialized() );
+    return fd_.get();
   }
 
   /** \brief removes file from fielsystem.
@@ -71,17 +86,11 @@ protected:
    *
    *  \param p pair <string,descriptor> to be passed for constructor.
    */
-  DiskFile( std::pair<std::string, boost::shared_ptr<AutoDescriptor> > p );
-
-  /** \brief throws error message for given method, making error
-   *         information from errno variable.
-   */
-  void throwFileErrorException(const char *methodName,
-                               const char *action);
+  DiskFile( std::pair<boost::filesystem::path, boost::shared_ptr<AutoDescriptor> > p );
 
 private:
-  const std::string _fileName;
-  AutoDescriptor    _fd;
+  const boost::filesystem::path fileName_;
+  AutoDescriptor                fd_;
 }; // class DiskFile
 
 } // namespace System

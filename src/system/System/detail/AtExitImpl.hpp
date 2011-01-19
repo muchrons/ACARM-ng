@@ -2,8 +2,8 @@
  * AtExitImpl.hpp
  *
  */
-#ifndef INCLUDE_SYSTEM_ATEXITIMPL_HPP_FILE
-#define INCLUDE_SYSTEM_ATEXITIMPL_HPP_FILE
+#ifndef INCLUDE_SYSTEM_DETAIL_ATEXITIMPL_HPP_FILE
+#define INCLUDE_SYSTEM_DETAIL_ATEXITIMPL_HPP_FILE
 
 #include <stack>
 #include <boost/shared_ptr.hpp>
@@ -14,6 +14,8 @@
 
 
 namespace System
+{
+namespace detail
 {
 
 /** \brief implementation class of AtExit.
@@ -47,6 +49,7 @@ private:
   bool  deallocationDone_;
 }; // class AtExitImpl
 
+} // namespace detail
 } // namespace System
 
 #endif

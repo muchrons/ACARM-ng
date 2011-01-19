@@ -11,27 +11,15 @@
 
 #include "System/TempFile.hpp"
 
-namespace System
+namespace
 {
-
-struct TempFileTestData
+struct TestClass
 {
 };
 
-} // namespace System
-
-
-namespace tut
-{
-typedef System::TempFileTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/TempFile");
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/TempFile");
 }
 
 using namespace System;

@@ -5,38 +5,23 @@
 #include <tut.h>
 #include <vector>
 
-#include "System/AtExitImpl.hpp"
-
-namespace System
-{
-
-struct AtExitImplTestData
-{
-  AtExitImplTestData(void)
-  {
-  }
-
-  std::vector<int> out_;
-};
-
-} // namespace System
-
-
-namespace tut
-{
-typedef System::AtExitImplTestData TestClass;
-typedef test_group<TestClass> factory;
-typedef factory::object testObj;
-} // namespace tut
-
-
-namespace
-{
-tut::factory tf("System/AtExitImpl");
-}
+#include "System/detail/AtExitImpl.hpp"
 
 using namespace std;
 using namespace System;
+using namespace System::detail;
+
+namespace
+{
+struct TestClass
+{
+  std::vector<int> out_;
+};
+
+typedef tut::test_group<TestClass> factory;
+typedef factory::object            testObj;
+factory tf("System/detail/AtExitImpl");
+} // unnamed namespace
 
 // unnamed namespace for helper objects
 namespace
