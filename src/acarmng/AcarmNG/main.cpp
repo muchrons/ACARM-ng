@@ -13,6 +13,8 @@ using namespace std;
 void printBanner(const char *app)
 {
   assert(app!=NULL);
+  // TODO: rework this code to take version from the VCS
+  // TODO: rework this code to generate year automatically based on __DATE__ constant
   cout << app << ": ACARM-ng v0.0.0 (built on " << __DATE__ << ")" << endl;
   cout << app << ": copyright by WCSS (http://www.wcss.wroc.pl) 2009-2010" << endl;
   cout << app << ": created by (in alphabetical order):" << endl;
