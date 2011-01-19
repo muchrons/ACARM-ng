@@ -24,3 +24,4 @@
 * expand API of the DynamicConfig adding iteration through entries (loaded dynamically, on demand).
 * implement filter monitoring users' activity (correlates alert's related to given user's activity).
 * implement filter (trigger?) monitoring new alert types, that have arrived.
+* implement persistency::facade that will perform I/O on (meta?) alerts in a key->value form (string->string) to allow generic approach. note that code can be moved from prefilter.
