@@ -10,6 +10,10 @@
 
 /* public header */
 
+#include <string>
+#include <cerrno>
+#include <cstring>
+
 #include "System/Exceptions/RuntimeError.hpp"
 
 namespace System
@@ -17,18 +21,15 @@ namespace System
 
 /** \brief internal exception class.
  */
-class ExceptionSyscallFailed: public Exceptions::RuntimeError
+class ExceptionSyscallFailed: public Exceptions::RuntimeError<ExceptionSyscallFailed>
 {
 public:
   /** \brief create execption with given message.
    *  \param where place where exception has been raisen.
+   *  \param name  name of the system call that failed.
    *  \param msg   message to represent.
    */
-  template<typename T>
-  ExceptionSyscallFailed(const Location &where, const T &msg):
-    RuntimeError(where, msg)
-  {
-  }
+  ExceptionSyscallFailed(const Location &where, const char *name, const std::string &msg);
 }; // class ExceptionSyscallFailed
 
 } // namespace System

@@ -22,12 +22,14 @@ namespace
 struct TestClass: public TestStubs
 {
   TestClass(void):
+    ts_(12345),
     sampleLeaf_( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL,
-                                                    "4.3.2.1", NULL) ) ),
+                                                    "4.3.2.1", NULL, ts_) ) ),
     s_( "somename", Strategy::Params(997, 0.42) )
   {
   }
 
+  Timestamp              ts_;
   GraphNodePtrNN         sampleLeaf_;
   Strategy::ChangedNodes changed_;
   Strategy               s_;
@@ -49,7 +51,7 @@ template<>
 void testObj::test<1>(void)
 {
   GraphNodePtrNN sourceOnlyLeaf(
-        makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL, NULL, NULL) ) );
+        makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL, NULL, NULL, ts_) ) );
   s_.process(sourceOnlyLeaf, changed_);
   ensure_equals("some nodes have been changed / 1", changed_.size(), 0u);
 
@@ -63,7 +65,7 @@ template<>
 void testObj::test<2>(void)
 {
   GraphNodePtrNN targetOnlyLeaf(
-      makeNewLeaf( makeNewAlertWithHosts(NULL, NULL, "1.2.3.4", NULL) ) );
+      makeNewLeaf( makeNewAlertWithHosts(NULL, NULL, "1.2.3.4", NULL, ts_) ) );
   s_.process(targetOnlyLeaf, changed_);
   ensure_equals("some nodes have been changed / 1", changed_.size(), 0u);
 
@@ -77,7 +79,7 @@ template<>
 void testObj::test<3>(void)
 {
   GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", NULL,
-                                                         "6.6.3.4", NULL ) ) );
+                                                         "6.6.3.4", NULL, ts_) ) );
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed", changed_.size(), 0u);
 
@@ -91,7 +93,7 @@ template<>
 void testObj::test<4>(void)
 {
   GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.4", NULL,
-                                                         "6.6.3.4", NULL) ) );
+                                                         "6.6.3.4", NULL, ts_) ) );
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed / 1", changed_.size(), 0u);
 
@@ -105,7 +107,7 @@ template<>
 void testObj::test<5>(void)
 {
   GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", NULL,
-                                                         "6.6.3.4", NULL ) ) );
+                                                         "6.6.3.4", NULL, ts_) ) );
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed", changed_.size(), 0u);
 
@@ -142,7 +144,7 @@ template<>
 void testObj::test<8>(void)
 {
   GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.4", "4.3.2.1",
-                                                         "6.6.3.4", "9.8.7.6") ) );
+                                                         "6.6.3.4", "9.8.7.6", ts_) ) );
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed", changed_.size(), 0u);
 
@@ -157,14 +159,14 @@ void testObj::test<9>(void)
 {
   {
     GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.4", NULL,
-                                                           "6.6.3.5", NULL) ) );
+                                                           "6.6.3.5", NULL, ts_) ) );
     s_.process(tmp, changed_);
     ensure_equals("some nodes have been changed", changed_.size(), 0u);
   }
 
   {
     GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.5", NULL,
-                                                           "1.2.3.4", NULL ) ) );
+                                                           "1.2.3.4", NULL, ts_) ) );
     s_.process(tmp, changed_);
     ensure_equals("nothing has changed", changed_.size(), 1u);
   }
@@ -183,14 +185,14 @@ void testObj::test<10>(void)
 {
   {
     GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", NULL,
-                                                           "6.6.3.5", NULL) ) );
+                                                           "6.6.3.5", NULL, ts_) ) );
     s_.process(tmp, changed_);
     ensure_equals("some nodes have been changed", changed_.size(), 0u);
   }
 
   {
     GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.5", NULL,
-                                                           "6.6.3.6", NULL ) ) );
+                                                           "6.6.3.6", NULL, ts_) ) );
     s_.process(tmp, changed_);
     ensure_equals("nothing has changed", changed_.size(), 1u);
   }
@@ -208,7 +210,7 @@ template<>
 void testObj::test<11>(void)
 {
   GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", NULL,
-                                                         "6.6.3.4", NULL ) ) );
+                                                         "6.6.3.4", NULL, ts_) ) );
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed", changed_.size(), 0u);
 
@@ -224,12 +226,107 @@ template<>
 void testObj::test<12>(void)
 {
   GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", NULL,
-                                                         "4.3.2.1", NULL ) ) );
+                                                         "4.3.2.1", NULL, ts_) ) );
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed", changed_.size(), 0u);
 
   s_.process(sampleLeaf_, changed_);
   ensure_equals("correlated with alert with same src/dst address", changed_.size(), 0u);
+}
+
+// test if chronology is taken into account when correlating
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", NULL,
+                                                         "6.6.3.4", NULL,
+                                                         Timestamp(ts_.get()-1)) ) );
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("non-chronological events have been correlated", changed_.size(), 0u);
+}
+
+// test canCorrelate method - adding on the back
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.6.1", NULL,
+                                                         "1.2.3.4", NULL, ts_) ) );
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("no nodes changed", changed_.size(), 1u);
+}
+
+// test if back-correlation does not work wen chronology is invalid
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.6.1", NULL,
+                                                         "1.2.3.4", NULL,
+                                                         Timestamp(ts_.get()+1)) ) );
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("non-chronological events have been correlated", changed_.size(), 0u);
+}
+
+// test correlation chain of 3 alerts, when timestamp does not match - 3rd added in front
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  {
+    GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.4", NULL,
+                                                           "6.6.3.5", NULL, ts_) ) );
+    s_.process(tmp, changed_);
+    ensure_equals("some nodes have been changed", changed_.size(), 0u);
+  }
+
+  {
+    GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.5", NULL,
+                                                           "1.2.3.4", NULL,
+                                                           Timestamp(ts_.get()+1)) ) );
+    s_.process(tmp, changed_);
+    ensure_equals("nothing has changed", changed_.size(), 1u);
+  }
+  changed_.clear();
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("non-chronological events have been correlated", changed_.size(), 0u);
+}
+
+// test if correlation of chain consisting of 3 alerts - 3rd added on back
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  {
+    GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", NULL,
+                                                           "6.6.3.5", NULL,
+                                                           Timestamp(ts_.get()-1)) ) );
+    s_.process(tmp, changed_);
+    ensure_equals("some nodes have been changed", changed_.size(), 0u);
+  }
+
+  {
+    GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.5", NULL,
+                                                           "6.6.3.6", NULL, ts_) ) );
+    s_.process(tmp, changed_);
+    ensure_equals("nothing has changed", changed_.size(), 1u);
+  }
+  GraphNodePtrNN node=changed_[0];
+  changed_.clear();
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("non-chronological events have been correlated", changed_.size(), 0u);
 }
 
 } // namespace tut
