@@ -344,7 +344,6 @@ void EntrySaver::markMetaAlertAsUsed(DataBaseID malertID)
 
 void EntrySaver::markMetaAlertAsUnused(DataBaseID malertID)
 {
-  removeMetaAlertFromTriggered(malertID);
   stringstream ss;
   ss << "DELETE FROM meta_alerts_in_use WHERE id_meta_alert = " << malertID << ";";
   SQL( ss.str(), log_ ).exec(t_);
@@ -353,7 +352,7 @@ void EntrySaver::markMetaAlertAsUnused(DataBaseID malertID)
 void EntrySaver::markMetaAlertAsTriggered(DataBaseID malertID, const std::string &name)
 {
   stringstream ss;
-  ss << "INSERT INTO meta_alerts_already_triggered(id_meta_alert_in_use, trigger_name) VALUES(";
+  ss << "INSERT INTO meta_alerts_already_triggered(id_meta_alert_triggered, trigger_name) VALUES(";
   Appender::append(ss, malertID);
   ss << ",";
   Appender::append(ss, name);
@@ -364,7 +363,7 @@ void EntrySaver::markMetaAlertAsTriggered(DataBaseID malertID, const std::string
 void EntrySaver::removeMetaAlertFromTriggered(DataBaseID malertID)
 {
   stringstream ss;
-  ss << "DELETE FROM  meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
+  ss << "DELETE FROM  meta_alerts_already_triggered WHERE id_meta_alert_triggered = " << malertID << ";";
   SQL( ss.str(), log_ ).exec(t_);
 }
 
@@ -473,6 +472,21 @@ void EntrySaver::saveConfigParameter(const DynamicConfig::Owner &owner,
   LOGMSG_DEBUG(log_, "new entry has been added");
 }
 
+void EntrySaver::saveRootID(DataBaseID rootID)
+{
+  stringstream ss;
+  ss << "INSERT INTO meta_alerts_roots(id_root) VALUES(";
+  Appender::append(ss, rootID);
+  ss << ");";
+  SQL( ss.str(), log_ ).exec(t_);
+}
+
+void EntrySaver::deleteRootID(DataBaseID rootID)
+{
+  stringstream ss;
+  ss << "DELETE FROM  meta_alerts_roots WHERE id_root = " << rootID << ";";
+  SQL( ss.str(), log_ ).exec(t_);
+}
 } // namespace detail
 } // namespace Postgres
 } // namespace IO

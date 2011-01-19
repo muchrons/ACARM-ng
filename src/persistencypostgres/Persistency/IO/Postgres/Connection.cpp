@@ -176,6 +176,9 @@ void removeExtraMetaAlertsEntries(Transaction &t, const Logger::Node &log)
 
   // when no more IDs are to be removed from tree, remove meta-alerts them selfes
   execSQL(log, t, "DELETE FROM meta_alerts WHERE id IN (SELECT id FROM cleanup_meta_alerts_ids)");
+  // remove meta-alerts already triggered
+  execSQL(log, t, "DELETE FROM meta_alerts_already_triggered WHERE id_meta_alert_triggered IN"
+                  " (SELECT id FROM cleanup_meta_alerts_ids)");
 }
 
 } // unnamed namespace

@@ -81,7 +81,12 @@ CREATE TABLE meta_alerts_tree
 CREATE INDEX meta_alerts_tree_id_node_index  ON meta_alerts_tree(id_node);
 CREATE INDEX meta_alerts_tree_id_child_index ON meta_alerts_tree(id_child);
 
-
+-- meta alerts roots
+CREATE TABLE meta_alerts_roots
+(
+  id_root bigint NOT NULL UNIQUE,
+  UNIQUE(id_root)
+);
 
 --
 -- triggers and procedures to make entries in tables

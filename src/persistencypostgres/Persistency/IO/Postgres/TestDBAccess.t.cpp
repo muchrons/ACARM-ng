@@ -50,6 +50,7 @@ void TestDBAccess::removeAllData(void)
   t.exec("DELETE FROM meta_alerts_in_use");
   t.exec("DELETE FROM alert_to_meta_alert_map");
   t.exec("DELETE FROM meta_alerts_tree");
+  t.exec("DELETE FROM meta_alerts_roots");
   t.exec("DELETE FROM meta_alerts");
   t.exec("DELETE FROM procs");
   t.exec("DELETE FROM services");
