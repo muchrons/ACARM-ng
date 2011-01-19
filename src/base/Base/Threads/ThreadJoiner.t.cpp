@@ -37,6 +37,7 @@ namespace
 struct TestThread
 {
   explicit TestThread(volatile int *state):
+    isThread_(false),
     state_(state)
   {
     assert(state_!=NULL);
@@ -45,12 +46,17 @@ struct TestThread
 
   ~TestThread(void)
   {
+    if(!isThread_)
+      return;
+    // ok - we're thread this we can mark thread's end
     assert(state_!=NULL);
+    usleep(20*1000);        // this is a little helper that makes race detection easier
     *state_=2;
   }
 
   void operator()(void)
   {
+    isThread_=true;         // mark this instance as the one that thread runs for
     assert(state_!=NULL);
     *state_=1;
     while(true)
@@ -61,6 +67,7 @@ struct TestThread
   }
 
 private:
+  bool          isThread_;
   volatile int *state_;
 }; // struct TestThread
 

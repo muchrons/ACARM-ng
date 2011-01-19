@@ -75,7 +75,7 @@ AlertPtrNN makeNewAlert(const char *name, const Timestamp &t)
                              t,
                              Severity(SeverityLevel::INFO),
                              Certainty(0.42),
-                             "some test allert",
+                             "some test alert",
                              Persistency::Alert::Hosts(),
                              Persistency::Alert::Hosts() ) );
 }

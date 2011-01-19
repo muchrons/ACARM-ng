@@ -31,9 +31,11 @@ struct Data
   {
   }
 
-  size_t      len_;         ///< length of the chain
-  SharedIPSet beginIPs_;    ///< ips of the chain begin
-  SharedIPSet endIPs_;      ///< ips of the chain end
+  size_t                 len_;      ///< length of the chain
+  SharedIPSet            beginIPs_; ///< ips of the chain begin
+  Persistency::Timestamp beginTs_;  ///< creation time of the first alert
+  SharedIPSet            endIPs_;   ///< ips of the chain end
+  Persistency::Timestamp endTs_;    ///< creation time of the last alert
 }; // struct Data
 
 
