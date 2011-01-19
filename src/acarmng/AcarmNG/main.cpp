@@ -13,7 +13,7 @@ using namespace std;
 void printBanner(const char *app)
 {
   assert(app!=NULL);
-  cout << app << ": ACARM-ng v0.0.0 (built on " << __DATE__ << ")" << endl;
+  cout << app << ": ACARM-ng v0.1.0 (built on " << __DATE__ << ")" << endl;
   cout << app << ": copyright by WCSS (http://www.wcss.wroc.pl) 2009-2010" << endl;
   cout << app << ": created by (in alphabetical order):" << endl;
   cout << app << ":   Bartłomiej 'Bartol' Balcerek (bartlomiej.balcerek@pwr.wroc.pl)" << endl;
