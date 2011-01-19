@@ -57,7 +57,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
                                  Timestamp(),
                                  Severity(SeverityLevel::INFO),
                                  Certainty(0.42),
-                                 "some test allert",
+                                 "some test alert",
                                  hosts,
                                  Alert::Hosts() ) );
   }

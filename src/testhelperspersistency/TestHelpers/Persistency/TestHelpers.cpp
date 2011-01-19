@@ -167,7 +167,7 @@ AlertPtrNN makeNewAlertWithHosts(const char *hostSrc1,
                                Timestamp(),
                                Severity(SeverityLevel::INFO),
                                Certainty(0.42),
-                               "some test allert",
+                               "some test alert",
                                hostsSrc,
                                hostsDst) );
 }
