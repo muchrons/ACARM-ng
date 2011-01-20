@@ -617,7 +617,18 @@ void testObj::test<13>(void)
   ensure_equals("invalid number of meta alerts in use", getNoOfMetaAlertsInUse(), 10u);
 }
 
-// TODO: test restoring MetaAlert::ID() for leaf
-// TODO: test restoring MetaAlert::ID() for node
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  // TODO: test restoring MetaAlert::ID() for leaf
+}
 
+
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  // TODO: test restoring MetaAlert::ID() for node
+}
 } // namespace tut

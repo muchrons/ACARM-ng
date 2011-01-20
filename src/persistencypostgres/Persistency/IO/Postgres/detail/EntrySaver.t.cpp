@@ -130,6 +130,14 @@ struct TestClass
                 ") ON COMMIT DROP;" );
   }
 
+  void checkRoots(const unsigned int &roots)
+  {
+    stringstream ss;
+    ss << "SELECT * FROM meta_alerts_roots";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    tut::ensure_equals("entry not saved", r.size(), roots);
+  }
+
   DataCleaner         dc_;
 
   const Alert::Name   name_;
@@ -1141,15 +1149,10 @@ template<>
 template<>
 void testObj::test<33>(void)
 {
-  //save
+  // save
   es_.saveRootID(42);
-  // check
-  {
-    stringstream ss;
-    ss << "SELECT * FROM meta_alerts_roots";
-    const result r = t_.getAPI<TransactionAPI>().exec(ss);
-    ensure_equals("entry not saved", r.size(), 1u);
-  }
+  // check save
+  checkRoots(1u);
 }
 
 // test for deleting ID of root node
@@ -1157,24 +1160,40 @@ template<>
 template<>
 void testObj::test<34>(void)
 {
-  stringstream ss;
-  ss << "SELECT * FROM meta_alerts_roots";
-  //save
+  // save
   es_.saveRootID(42);
   // check save
-  {
-    const result r = t_.getAPI<TransactionAPI>().exec(ss);
-    ensure_equals("entry not saved", r.size(), 1u);
-  }
-  //delete
+  checkRoots(1u);
+  // delete
   es_.deleteRootID(42);
   // check delete
-  {
-    const result r = t_.getAPI<TransactionAPI>().exec(ss);
-    ensure_equals("entry not saved", r.size(), 0u);
-  }
+  checkRoots(0u);
 }
 
-//TODO: save some tree and check if there is proper data in meta_alerts_roots table
+// save tree with two roots
+template<>
+template<>
+void testObj::test<35>(void)
+{
+  makeNewTree6();
+  checkRoots(2u);
+}
+
+// save tree with one root
+template<>
+template<>
+void testObj::test<36>(void)
+{
+  makeNewTree7();
+  checkRoots(1u);
+}
+
+// no roots
+template<>
+template<>
+void testObj::test<37>(void)
+{
+  checkRoots(0u);
+}
 
 } // namespace tut
