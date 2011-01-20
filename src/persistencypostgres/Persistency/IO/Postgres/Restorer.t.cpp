@@ -617,18 +617,35 @@ void testObj::test<13>(void)
   ensure_equals("invalid number of meta alerts in use", getNoOfMetaAlertsInUse(), 10u);
 }
 
+//
+//        node1 (102)
+//  leaf1 (100)  leaf2 (101)
+//
+
+// test restoring MetaAlert::ID() for node/leaf
 template<>
 template<>
 void testObj::test<14>(void)
 {
-  // TODO: test restoring MetaAlert::ID() for leaf
+  const Restorer::NodesVector outVec = makeNewTree7();
+  check(outVec);
+  for(Restorer::NodesVector::const_iterator it = outVec.begin(); it != outVec.end(); ++it)
+  {
+    if( (*it)->isLeaf() )
+    {
+      // test restoring MetaAlert::ID() for leaf
+      const std::string name( (*it)->getMetaAlert()->getName().get() );
+      if(name == "leaf1")
+        ensure_equals("invalid leaf ID restored",(*it)->getMetaAlert()->getID().get() ,100u);
+      else
+        ensure_equals("invalid leaf ID restored",(*it)->getMetaAlert()->getID().get() ,101u);
+    }
+    else
+    {
+      // test restoring MetaAlert::ID() for node
+      ensure_equals("invalid node ID restored",(*it)->getMetaAlert()->getID().get() ,102u);
+    }
+  }
 }
 
-
-template<>
-template<>
-void testObj::test<15>(void)
-{
-  // TODO: test restoring MetaAlert::ID() for node
-}
 } // namespace tut
