@@ -15,12 +15,12 @@ namespace
 {
 /** \brief helper object computing severity.
  */
-class SeveritComput
+class SeveritCompute
 {
 public:
   /** \brief initialize object.
    */
-  SeveritComput(void):
+  SeveritCompute(void):
     delta_(0),
     leafsCount_(0),
     leafsSeveritySum_(0)
@@ -56,13 +56,13 @@ private:
   double delta_;
   int    leafsCount_;
   int    leafsSeveritySum_;
-}; // struct SeveritComput
+}; // struct SeveritCompute
 } // unnamed namespace
 
 
 double computeSeverity(Persistency::ConstGraphNodePtrNN root)
 {
-  return forEachUniqueInTree(root, SeveritComput() ).get();
+  return forEachUniqueInTree(root, SeveritCompute() ).get();
 } // computeSeverity()
 
 } // namespace Algo
