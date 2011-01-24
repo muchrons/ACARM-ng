@@ -28,7 +28,7 @@ private:
 public:
   /** \brief check if element with id is in cache
    *  \param id    id of checked element.
-   *  \return return true if element with given ID is in cache. // TODO: when returning true/false sentence must always end with 'false/true otherwise' to clear all doubts. for example consider bool has(...) { return true; } - it would be consistent with provided description.
+   *  \return return true if element with given ID is in cache, return false otherwise.
    */
   bool has(DataBaseID id) const
   {
