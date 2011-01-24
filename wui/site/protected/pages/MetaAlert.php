@@ -30,7 +30,10 @@ class MetaAlert extends TPage
         $this->MetaAlertUpdateTime->Text=$this->metaAlert_->last_update_time;
         $idAlert=$this->metaAlert_->id;
 
-        $alerts=CSQLMap::get()->queryForList('SelectMetaAlertsChildren', $idAlert);
+        $alerts=CSQLMap::get()->queryForList('SelectAlertForMetaAlert', $idAlert);
+
+        if (count($alerts) == 0)
+          $alerts=CSQLMap::get()->queryForList('SelectMetaAlertsChildren', $idAlert);
 
         foreach ($alerts as $a)
           if ($a->alertid === null)
@@ -50,17 +53,18 @@ class MetaAlert extends TPage
             if ($f=='[many2one]')
               $this->Correlated->Text.="<img src=\"pics/filters/MTO.png\" border=2>";
             else
-            if ($f=='[one2many]')
-              $this->Correlated->Text.="<img src=\"pics/filters/OTM.png\" border=2>";
-            else
-            if ($f=='[samename]')
-              $this->Correlated->Text.="<img src=\"pics/filters/name.png\" border=2>";
-            else
-            if ($f=='[many2many]')
-              $this->Correlated->Text.="<img src=\"pics/filters/MTM.png\" border=2>";
-            else
-              $this->MetaAlertName->Text.=$f." ";
+              if ($f=='[one2many]')
+                $this->Correlated->Text.="<img src=\"pics/filters/OTM.png\" border=2>";
+              else
+                if ($f=='[samename]')
+                  $this->Correlated->Text.="<img src=\"pics/filters/name.png\" border=2>";
+                else
+                  if ($f=='[many2many]')
+                    $this->Correlated->Text.="<img src=\"pics/filters/MTM.png\" border=2>";
+                  else
+                    $this->MetaAlertName->Text.=$f." ";
           }
+
 
       } // if(!post_back)
   }
