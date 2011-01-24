@@ -20,6 +20,7 @@
 
 using namespace gloox;
 using namespace System;
+
 namespace
 {
 
@@ -87,9 +88,11 @@ public:
     if(session)
       conn_.get()->disposeMessageSession( sess_ );
     sess_ = session;
+    // TODO: what is session is NULL? tut::ensure or at least assert is missing here
     sess_->registerMessageHandler( this );
   }
 
+// TODO: fix formatting of this code:
   private:
     Trigger::Jabber::Connection &conn_;
     bool msg_;
