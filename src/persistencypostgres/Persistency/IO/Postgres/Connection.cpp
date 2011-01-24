@@ -174,6 +174,8 @@ void removeExtraMetaAlertsEntries(Transaction &t, const Logger::Node &log)
   }
   while(affected>0);
 
+  // TODO: since meta_alerts_already_triggered should reference meta_alerts these queries
+  //       must be swapped (i.e. called in reverse order).
   // when no more IDs are to be removed from tree, remove meta-alerts them selfes
   execSQL(log, t, "DELETE FROM meta_alerts WHERE id IN (SELECT id FROM cleanup_meta_alerts_ids)");
   // remove meta-alerts already triggered

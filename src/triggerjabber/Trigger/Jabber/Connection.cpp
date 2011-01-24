@@ -33,21 +33,25 @@ Connection::Connection(const AccountConfig &cfg):
 
 Connection::~Connection(void)
 {
+  // TODO: throwing exceptions from d-tor is FORBIDDEN!
+  // TODO: wrap whole d-tor in trt-catch and log errors - it's the best we can do
   LOGMSG_INFO(log_, "disconnecting from Jabber server");
   if(sess_->recv(1000))
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
   // set status to unavailable
-  sess_.get()->setPresence(gloox::Presence::Unavailable, 100 );
+  sess_.get()->setPresence(gloox::Presence::Unavailable, 100);
   if(sess_.get()->recv(1000))
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
 }
 
 void Connection::login(gloox::Client *client) const
 {
+  // TODO: make this do-while() loop
   bool quit=false;
   // login
   while(!quit)
   {
+    // TODO: assertion on client should be added here
     gloox::ConnectionError ce = client->recv(1000);
     if(ce != gloox::ConnNoError)
     {
@@ -73,6 +77,7 @@ AutoSession Connection::connect(void) const
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "not connected to server");
   // login
   login( sess.get() );
+  // TODO: what it some data arrives just after the connection is estabilished? won't it cause race condition?
   if( sess->recv() )
     throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
   // set status to available
