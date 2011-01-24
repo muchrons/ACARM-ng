@@ -1,0 +1,8 @@
+System/*.?pp
+System/detail/*.?pp
+System/Math/*.?pp
+System/Math/detail/*.?pp
+System/Threads/*.?pp
+System/Plugins/*.?pp
+System/Exceptions/*.?pp
+System/Exceptions/detail/*.?pp

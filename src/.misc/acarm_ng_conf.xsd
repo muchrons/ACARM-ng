@@ -1,0 +1,235 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" >
+
+   <xsd:include schemaLocation="inputs.xsd"/>
+
+   <xsd:element name="acarm_ng" type="acarm_ngType"/>
+
+   <xsd:complexType name = "acarm_ngType">
+     <xsd:all>
+       <xsd:element name = "general"
+                    type = "generalType"/>
+       <xsd:element name = "persistency"
+                    type = "persistencyType"/>
+       <xsd:element name = "filters"
+                    type = "filtersType"/>
+       <xsd:element name = "triggers"
+                    type = "triggersType"/>
+       <xsd:element name = "inputs"
+                    type = "inputsType"/>
+     </xsd:all>
+   </xsd:complexType>
+
+  <!-- XML-schema for general -->
+
+  <xsd:complexType name="generalType">
+    <xsd:sequence>
+      <xsd:element name="url"              type="xsd:string"/>
+      <xsd:element name="cleanupInterval"  type="xsd:unsignedInt"/>
+      <xsd:element name="cleanupOlder"  type="xsd:unsignedInt"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <!-- XML-schema for persistency -->
+
+  <xsd:complexType name="persistencyType">
+    <xsd:all>
+      <xsd:element name="type"   type="xsd:string"/>
+      <xsd:element name="dbname" type="xsd:string"/>
+      <xsd:element name="user"   type="xsd:string"/>
+      <xsd:element name="pass"   type="xsd:string"/>
+      <xsd:element name="host"   type="xsd:string"/>
+      <xsd:element name="port"   type="xsd:unsignedInt"/>
+    </xsd:all>
+  </xsd:complexType>
+
+  <!-- XML-schema for filters -->
+
+  <xsd:complexType name="filterType">
+    <xsd:all>
+      <xsd:element name="timeout"   type="xsd:unsignedInt"/>
+    </xsd:all>
+    <xsd:attribute name="name" type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+  <xsd:simpleType name="similarityType">
+    <xsd:restriction base="xsd:decimal">
+      <xsd:minExclusive value="0.0"/>
+      <xsd:maxInclusive value="1.0"/>
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="manytomanyType">
+    <xsd:all>
+      <xsd:element name="timeout"    type="xsd:unsignedInt"/>
+      <xsd:element name="similarity" type="similarityType"/>
+   </xsd:all>
+   <xsd:attribute name="name" type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="ipblacklistType">
+      <xsd:all>
+        <xsd:element name="refresh"        type="xsd:unsignedInt"/>
+        <xsd:element name="limit"          type="xsd:unsignedInt"/>
+        <xsd:element name="priorityDelta"  type="xsd:decimal"/>
+      </xsd:all>
+    <xsd:attribute name="name" type="xsd:string"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="dnsresolverType">
+    <xsd:all>
+      <xsd:element name="cachetimeout"   type="xsd:unsignedInt"/>
+    </xsd:all>
+    <xsd:attribute name="name" type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="filtersType">
+    <xsd:all>
+      <xsd:element name="onetomany"
+                   type="filterType"
+                   minOccurs="0"/>
+      <xsd:element name="manytoone"
+                   type="filterType"
+                   minOccurs="0"/>
+      <xsd:element name="manytomany"
+                   type="manytomanyType"
+                   minOccurs="0"/>
+      <xsd:element name="ipblacklist"
+                   type="ipblacklistType"
+                   minOccurs="0"/>
+      <xsd:element name="samename"
+                   type="filterType"
+                   minOccurs="0"/>
+      <xsd:element name="dnsresolver"
+                   type="dnsresolverType"
+                   minOccurs="0"/>
+    </xsd:all>
+  </xsd:complexType>
+
+   <!-- XML-schema for triggers -->
+
+   <xsd:complexType name = "ggType">
+     <xsd:all>
+       <xsd:element name = "uin"
+                    type = "xsd:unsignedInt"/>
+       <xsd:element name = "password"
+                    type = "xsd:string"/>
+       <xsd:element name = "receiver_uin"
+                    type = "xsd:unsignedInt"/>
+       <xsd:element name = "severity_threshold"
+                    type = "xsd:decimal"
+                    minOccurs = "0"/>
+       <xsd:element name = "alerts_count_threshold"
+                    type = "xsd:unsignedInt"
+                    minOccurs = "0"/>
+     </xsd:all>
+     <xsd:attribute name = "name" type = "xsd:string" use="required"/>
+   </xsd:complexType>
+
+   <xsd:complexType name = "jabberType">
+     <xsd:all>
+       <xsd:element name = "login"
+                    type = "xsd:string"/>
+       <xsd:element name = "password"
+                    type = "xsd:string"/>
+       <xsd:element name = "server"
+                    type = "xsd:string"/>
+       <xsd:element name = "receiver"
+                    type = "xsd:string"/>
+       <xsd:element name = "severity_threshold"
+                    type = "xsd:decimal"
+                    minOccurs = "0"/>
+       <xsd:element name = "alerts_count_threshold"
+                    type = "xsd:unsignedInt"
+                    minOccurs = "0"/>
+     </xsd:all>
+     <xsd:attribute name = "name" type = "xsd:string" use="required"/>
+  </xsd:complexType>
+
+   <xsd:simpleType name = "sslType">
+     <xsd:restriction base = "xsd:token">
+       <xsd:enumeration value = "ssl"/>
+       <xsd:enumeration value = "starttls"/>
+     </xsd:restriction>
+   </xsd:simpleType>
+
+   <xsd:complexType name = "mailType">
+     <xsd:all>
+       <xsd:element name = "from"
+                    type = "xsd:string"/>
+       <xsd:element name = "to"
+                    type = "xsd:string"/>
+       <xsd:element name = "server"
+                    type = "xsd:string"/>
+       <xsd:element name = "port"
+                    type = "xsd:unsignedInt"/>
+       <xsd:element name = "security"
+                    type = "sslType"/>
+       <xsd:element name = "ssl"
+                    type = "xsd:boolean"/>
+       <xsd:element name = "user"
+                    type = "xsd:string"
+                    minOccurs = "0"/>
+       <xsd:element name = "password"
+                    type = "xsd:string"/>
+       <xsd:element name = "severity_threshold"
+                    type = "xsd:decimal"
+                    minOccurs = "0"/>
+       <xsd:element name = "alerts_count_threshold"
+                    type = "xsd:unsignedInt"
+                    minOccurs = "0"/>
+     </xsd:all>
+     <xsd:attribute name = "name" type = "xsd:string" use="required"/>
+   </xsd:complexType>
+
+   <xsd:complexType name = "fileType">
+     <xsd:all>
+       <xsd:element name = "outdir"
+                    type = "xsd:string"/>
+       <xsd:element name = "severity_threshold"
+                    type = "xsd:decimal"
+                    minOccurs = "0"/>
+       <xsd:element name = "alerts_count_threshold"
+                    type = "xsd:unsignedInt"
+                    minOccurs = "0"/>
+     </xsd:all>
+     <xsd:attribute name = "name" type = "xsd:string"/>
+   </xsd:complexType>
+
+  <xsd:complexType name="triggersType">
+    <xsd:all>
+      <xsd:element name="gg"
+                   type="ggType"
+                   minOccurs="0"/>
+      <xsd:element name="jabber"
+                   type="jabberType"
+                   minOccurs="0"/>
+      <xsd:element name="mail"
+                   type="mailType"
+                   minOccurs="0"/>
+      <xsd:element name="file"
+                   type="fileType"
+                   minOccurs="0"/>
+    </xsd:all>
+  </xsd:complexType>
+
+  <!-- XML-schema for inputs -->
+
+  <xsd:complexType name="preludeType">
+    <xsd:all>
+      <xsd:element name="profile"
+                   type="xsd:string"/>
+      <xsd:element name="config"
+                   type="xsd:string"/>
+    </xsd:all>
+    <xsd:attribute name="name" type="xsd:string" use="required"/>
+  </xsd:complexType>
+
+  <xsd:complexType name="inputsType">
+    <xsd:all>
+      <xsd:element name="prelude"
+                   type="preludeType"/>
+    </xsd:all>
+  </xsd:complexType>
+
+  <!-- TODS: XML-schema for preprocessor -->
+</xsd:schema>
