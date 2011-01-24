@@ -43,7 +43,7 @@ struct PeriodicalCleanup
         // add log if cleanup took over 25% of time between the calls
         const double elapsed=t.elapsed();
         if( elapsed*oneHour>(0.25*hours*oneHour) )
-          LOGMSG_WARN(log_, "cleanup took over 25\% of time between next calls - consider calling it more often");
+          LOGMSG_WARN(log_, "cleanup took over 25% of time between next calls - consider calling it more often");
       } // while(true)
     }
     catch(const boost::thread_interrupted &)
