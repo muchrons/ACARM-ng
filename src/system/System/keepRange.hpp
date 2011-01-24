@@ -34,8 +34,7 @@ inline T keepRange(const T in, const T min, const T max)
   return std::min( max, std::max(min, in) );
 }
 
-/** \brief returns converted value, that fits in
- *         destination's type value range.
+/** \brief returns converted value, that fits in destination's type value range.
  *  \param v input value
  *  \return value 'v' truncated to fit in output range.
  */

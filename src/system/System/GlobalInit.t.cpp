@@ -310,6 +310,7 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
+  ensure_equals("initialization failed", g_checkTestGlobalInit, true);
   ensure_equals("not initialized", g_stateGlobalInit, STATE_INITIALIZED);
 }
 
