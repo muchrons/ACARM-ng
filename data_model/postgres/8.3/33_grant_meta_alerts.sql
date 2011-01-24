@@ -6,6 +6,7 @@
 GRANT SELECT
   ON TABLE meta_alerts,
            meta_alerts_tree,
+           meta_alerts_roots,
            alert_to_meta_alert_map
   TO "acarm-ng-ui",
      "acarm-ng-daemon";
@@ -19,6 +20,7 @@ GRANT SELECT
 GRANT INSERT
   ON TABLE meta_alerts,
            meta_alerts_tree,
+           meta_alerts_roots,
            alert_to_meta_alert_map
   TO "acarm-ng-daemon";
 GRANT UPDATE
@@ -36,5 +38,6 @@ GRANT UPDATE
 GRANT DELETE
   ON TABLE meta_alerts,
            meta_alerts_tree,
+           meta_alerts_roots,
            alert_to_meta_alert_map
   TO "acarm-ng-daemon";

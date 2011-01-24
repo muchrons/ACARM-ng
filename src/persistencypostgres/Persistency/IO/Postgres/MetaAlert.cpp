@@ -30,6 +30,7 @@ void MetaAlert::saveImpl(Transaction &t)
     const Persistency::MetaAlert &ma = *get();
     const DataBaseID              maID = es.saveMetaAlert(ma);
     dbHandle_->getIDCache()->add(get() , maID);
+    es.saveRootID(maID);
   TRYCATCH_END
 }
 
@@ -94,6 +95,7 @@ void MetaAlert::addChildImpl(Transaction &t, Persistency::MetaAlertPtrNN child)
     const DataBaseID malertID = getID();
     LOGMSG_DEBUG_S(log_)<<"add child with db-ID: "<<childID<<" to Meta Alert with db-ID: "<<malertID;
     es.saveMetaAlertsTree(malertID, childID);
+    es.deleteRootID(childID);
   TRYCATCH_END
 }
 

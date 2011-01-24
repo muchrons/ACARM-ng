@@ -55,16 +55,12 @@ public:
   {
     conn_.get()->registerMessageSessionHandler( this );
   }
-  // TODO: do not write default c-tor if not needed
-  ~Handler()
-  {
-  }
 
   virtual void handleMessage(const Message &m, MessageSession *session)
   {
     msg_=true;
     message_=m.body();
-    //TODO: check if session is not null
+    assert(session != NULL);
     sender_ = session->target().username() + "@" + session->target().server();
   }
 
@@ -76,14 +72,12 @@ public:
     return false;
   }
 
-  // TODO: const-ref
-  const std::string getMessage()
+  const std::string &getMessage()
   {
     return message_;
   }
 
-  // TODO: const-ref
-  const std::string getSender()
+  const std::string &getSender()
   {
     return sender_;
   }

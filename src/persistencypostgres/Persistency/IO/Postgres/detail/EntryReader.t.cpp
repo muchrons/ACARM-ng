@@ -590,16 +590,6 @@ void testObj::test<19>(void)
 
   Persistency::AlertPtrNN a( er_.readAlert( alertID ) );
   TestHelpers::checkEquality(alertPtr, a);
-  // TODO: following checks are not needed - if above test passes, read didn't failed
-  ensure("invalid name", alertPtr->getName() == a->getName() );
-  ensure_equals("invalid description", a->getDescription() , description_ );
-  ensure_equals("invalid detected time", *a->getDetectionTime(), detected_);
-  ensure_equals("invalid create time", a->getCreationTime(), created_);
-  ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(),
-                                    severity_.getLevel().toInt());
-  ensure_equals("invalid caertainty", a->getCertainty().get(), certanity_.get());
-  ensure_equals("vectors are different", (a->getSourceHosts()).size(),
-                                         (alertPtr->getSourceHosts()).size() );
   t_.commit();
 }
 

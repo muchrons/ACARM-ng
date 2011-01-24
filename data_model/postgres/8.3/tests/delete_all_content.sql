@@ -10,6 +10,7 @@ TRUNCATE meta_alerts CASCADE;
 TRUNCATE meta_alerts_already_triggered CASCADE;
 TRUNCATE meta_alerts_in_use CASCADE;
 TRUNCATE meta_alerts_tree CASCADE;
+TRUNCATE meta_alerts_roots CASCADE;
 TRUNCATE procs CASCADE;
 TRUNCATE reference_urls CASCADE;
 TRUNCATE services CASCADE;

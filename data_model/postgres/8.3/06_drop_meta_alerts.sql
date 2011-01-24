@@ -6,6 +6,7 @@ DROP TABLE    alert_to_meta_alert_map;
 
 DROP TRIGGER  ensure_leafs_are_unique_trigger ON meta_alerts_tree;
 DROP TABLE    meta_alerts_tree;
+DROP TABLE    meta_alerts_roots;
 
 DROP FUNCTION ensure_leafs_are_unique();
 

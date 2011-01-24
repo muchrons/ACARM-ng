@@ -13,9 +13,12 @@ namespace
 
 struct TestClass
 {
+  TestClass(void):
+    ac_(AccountConfig("server.com", "JabberUser", "TheAnswer"))
+  {
+  }
+  AccountConfig ac_;
 };
-// TODO: const AccountConfig ac("server.com", "JabberUser", "TheAnswer");
-//       should ba TestClass' member, since it is used in every test case
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
@@ -32,8 +35,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const AccountConfig ac("server.com", "JabberUser", "TheAnswer");
-  ensure_equals("invalid user's login", ac.getLogin(), "JabberUser");
+  ensure_equals("invalid user's login", ac_.getLogin(), "JabberUser");
 }
 
 // test getting password
@@ -41,8 +43,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const AccountConfig ac("server.com", "JabberUser", "TheAnswer");
-  ensure_equals("invalid password", ac.getPassword(), "TheAnswer");
+  ensure_equals("invalid password", ac_.getPassword(), "TheAnswer");
 }
 
 // test getting server name
@@ -50,8 +51,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const AccountConfig ac("server.com", "JabberUser", "TheAnswer");
-  ensure_equals("invalid password", ac.getServer(), "server.com");
+  ensure_equals("invalid password", ac_.getServer(), "server.com");
 }
 
 // test copyability
@@ -59,11 +59,10 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const AccountConfig ac1("server.com", "JabberUser", "TheAnswer");
-  const AccountConfig ac2(ac1);
-  ensure_equals("server name does not match", ac2.getServer(), ac1.getServer() );
-  ensure_equals("login does not match", ac2.getLogin(), ac1.getLogin() );
-  ensure_equals("password does not match", ac2.getPassword(), ac1.getPassword() );
+  const AccountConfig ac(ac_);
+  ensure_equals("server name does not match", ac.getServer(), ac_.getServer() );
+  ensure_equals("login does not match", ac.getLogin(), ac_.getLogin() );
+  ensure_equals("password does not match", ac.getPassword(), ac_.getPassword() );
 }
 
 } // namespace tut
