@@ -46,12 +46,11 @@ Connection::~Connection(void)
 
 void Connection::login(gloox::Client *client) const
 {
-  // TODO: make this do-while() loop
   bool quit=false;
   // login
-  while(!quit)
+  do
   {
-    // TODO: assertion on client should be added here
+    assert( client!=NULL );
     gloox::ConnectionError ce = client->recv(1000);
     if(ce != gloox::ConnNoError)
     {
@@ -63,7 +62,7 @@ void Connection::login(gloox::Client *client) const
       if(client->authed())
         quit=true;
     }
-  }
+  }while(!quit)
 }
 // connection to server
 AutoSession Connection::connect(void) const

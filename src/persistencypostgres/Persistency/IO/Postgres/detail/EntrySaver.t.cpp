@@ -799,7 +799,7 @@ void testObj::test<20>(void)
   es_.markMetaAlertAsTriggered(malertID, TriggerName);
   ss.str("");
   {
-    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_triggered = " << malertID << ";";
+    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert = " << malertID << ";";
     result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
     ensure_equals("invalid trigger name", ReaderHelper<string>::readAsNotNull(r[0]["trigger_name"]), TriggerName);
@@ -951,7 +951,7 @@ void testObj::test<26>(void)
   es_.markMetaAlertAsTriggered(malertID, triggerName);
   ss.str("");
   {
-    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_triggered = " << malertID << ";";
+    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert = " << malertID << ";";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid number of trigered meta-alerts in data base", r.size(), 1u);
     ensure_equals("invalid trigger name", ReaderHelper<string>::readAsNotNull(r[0]["trigger_name"]), triggerName);

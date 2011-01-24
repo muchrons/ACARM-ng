@@ -92,13 +92,12 @@ public:
     sess_->registerMessageHandler( this );
   }
 
-// TODO: fix formatting of this code:
-  private:
-    Trigger::Jabber::Connection &conn_;
-    bool msg_;
-    std::string message_;
-    std::string sender_;
-    MessageSession *sess_;
+private:
+  Trigger::Jabber::Connection &conn_;
+  bool msg_;
+  std::string message_;
+  std::string sender_;
+  MessageSession *sess_;
 };
 
 std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account, const std::string &sender)
