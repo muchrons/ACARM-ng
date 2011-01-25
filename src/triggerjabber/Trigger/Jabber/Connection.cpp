@@ -62,7 +62,8 @@ void Connection::login(gloox::Client *client) const
       if(client->authed())
         quit=true;
     }
-  }while(!quit);
+  }
+  while(!quit);
 }
 // connection to server
 AutoSession Connection::connect(void) const
