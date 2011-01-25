@@ -72,8 +72,11 @@
   </select>
 
   <select id="SelectMetaAlertsChildren" resultClass="CLinkTriple" parameterClass="int">
-    <!--SELECT ma.id, ma.name FROM meta_alerts AS ma RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child WHERE t.id_node=#value#-->
     SELECT ma.id as metaalertid, ma.name as name, g.id_alert as alertid FROM meta_alerts AS ma RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child LEFT JOIN alert_to_meta_alert_map as g ON g.id_meta_alert=ma.id WHERE t.id_node=#value#
+  </select>
+
+  <select id="SelectAlertForMetaAlert" resultClass="CLinkTriple" parameterClass="int">
+    SELECT name as name,id as alertid FROM alert_to_meta_alert_map as map JOIN alerts as a ON a.id=map.id_alert WHERE map.id_meta_alert=#value#
   </select>
 
   <!-- Queries for tables' sizes -->

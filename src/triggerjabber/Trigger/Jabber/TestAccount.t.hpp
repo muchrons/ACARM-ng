@@ -20,6 +20,7 @@
 
 using namespace gloox;
 using namespace System;
+
 namespace
 {
 
@@ -55,16 +56,12 @@ public:
   {
     conn_.get()->registerMessageSessionHandler( this );
   }
-  // TODO: do not write default c-tor if not needed
-  ~Handler()
-  {
-  }
 
   virtual void handleMessage(const Message &m, MessageSession *session)
   {
     msg_=true;
     message_=m.body();
-    //TODO: check if session is not null
+    assert(session != NULL);
     sender_ = session->target().username() + "@" + session->target().server();
   }
 
@@ -76,14 +73,12 @@ public:
     return false;
   }
 
-  // TODO: const-ref
-  const std::string getMessage()
+  const std::string &getMessage()
   {
     return message_;
   }
 
-  // TODO: const-ref
-  const std::string getSender()
+  const std::string &getSender()
   {
     return sender_;
   }
@@ -93,9 +88,11 @@ public:
     if(session)
       conn_.get()->disposeMessageSession( sess_ );
     sess_ = session;
+    // TODO: what is session is NULL? tut::ensure or at least assert is missing here
     sess_->registerMessageHandler( this );
   }
 
+// TODO: fix formatting of this code:
   private:
     Trigger::Jabber::Connection &conn_;
     bool msg_;
