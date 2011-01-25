@@ -89,6 +89,7 @@ public:
       conn_.get()->disposeMessageSession( sess_ );
     sess_ = session;
     // TODO: what is session is NULL? tut::ensure or at least assert is missing here
+    tut::ensure( "session is NULL" , sess_ != NULL);
     sess_->registerMessageHandler( this );
   }
 
