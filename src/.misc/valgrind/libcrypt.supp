@@ -62,3 +62,10 @@
    fun:X509_PUBKEY_get
 }
 
+{
+   libcrypt_leak_gcry_pthread_mutex_init
+   Memcheck:Leak
+   fun:malloc
+   fun:gcry_pthread_mutex_init
+   ...
+}
