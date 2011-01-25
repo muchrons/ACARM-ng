@@ -7,10 +7,12 @@
 
 #include <tut.h>
 #include <boost/algorithm/string.hpp>
+#include <gloox/message.h>
+#include <gloox/messagehandler.h>
+#include <gloox/messagesessionhandler.h>
 
 #include "System/ScopedPtrCustom.hpp"
 #include "System/Timer.hpp"
-#include "Trigger/Jabber/Gloox.hpp"
 #include "Trigger/Jabber/AccountConfig.hpp"
 #include "Trigger/Jabber/Connection.hpp"
 #include "TestHelpers/Data/jabber1.hpp"

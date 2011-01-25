@@ -3,11 +3,11 @@
  *
  */
 #include <sys/select.h>
+#include <gloox/message.h>
 #include <cassert>
 
 #include "System/ScopedPtrCustom.hpp"
 #include "Logger/Logger.hpp"
-#include "Trigger/Jabber/Gloox.hpp"
 #include "Trigger/Jabber/MessageIO.hpp"
 
 namespace Trigger

@@ -6,11 +6,11 @@
 #define INCLUDE_TRIGGER_JABBER_CONNECTION_HPP_FILE
 
 #include <boost/noncopyable.hpp>
+#include <gloox/client.h>
 #include <cassert>
 
 #include "Logger/Node.hpp"
 #include "Commons/Threads/Thread.hpp"
-#include "Trigger/Jabber/Gloox.hpp"
 #include "Trigger/Jabber/AccountConfig.hpp"
 #include "Trigger/Jabber/AutoSession.hpp"
 #include "Trigger/Jabber/ExceptionConnectionError.hpp"
