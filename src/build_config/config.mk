@@ -54,9 +54,6 @@ TMP+=-wd814  # template nesting depth does not match the previous declaration of
 TMP+=-wd819  # template nesting depth does not match the previous declaration of class template "XYZ"
 TMP+=-wd981  # operands are evaluated in unspecified order
 TMP+=-wd1125 # function "XYZ" -- virtual function override intended?
-TMP+=-wd1292 # attribute "XYZ" ignored
-TMP+=-wd1418 # external function definition with no prior declaration
-TMP+=-wd1572 # floating-point equality and inequality comparisons are unreliable
 TMP+=-wd2165 # declaring a reference with "mutable" is nonstandard
 TMPLD+=-lstdc++
 else
