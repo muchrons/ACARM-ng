@@ -92,7 +92,9 @@ void testObj::test<1>(void)
 namespace
 {
 
+#ifdef __ICC
 #pragma warning disable 177
+#endif
 // 64-bit (and more) implementation
 template<bool>
 struct TestCase2Impl
@@ -129,6 +131,9 @@ void testObj::test<2>(void)
 namespace
 {
 
+#ifdef __ICC
+#pragma warning disable 177
+#endif
 // 64-bit (and more) implementation
 template<bool>
 struct TestCase3Impl
