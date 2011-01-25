@@ -92,6 +92,7 @@ void testObj::test<1>(void)
 namespace
 {
 
+#pragma warning disable 177
 // 64-bit (and more) implementation
 template<bool>
 struct TestCase2Impl
