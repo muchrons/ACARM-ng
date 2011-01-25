@@ -24,8 +24,8 @@ TMP:=
 TMP_OPT:=
 TMPLD:=
 
-# enable ccache, if not using intel's toolchain
-ifneq ($(TC),intel)
+# enable ccache by default, if present in the system
+ifneq (,$(shell which ccache))
 export WITH_CCACHE:=1
 endif
 
