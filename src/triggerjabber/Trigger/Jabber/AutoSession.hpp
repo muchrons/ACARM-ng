@@ -5,8 +5,9 @@
 #ifndef INCLUDE_TRIGGER_JABBER_AUTOSESSION_HPP_FILE
 #define INCLUDE_TRIGGER_JABBER_AUTOSESSION_HPP_FILE
 
-#include <gloox/client.h>
 #include <memory>
+
+#include "Trigger/Jabber/Gloox.hpp"
 
 namespace Trigger
 {

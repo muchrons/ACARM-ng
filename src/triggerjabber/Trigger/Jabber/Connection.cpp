@@ -3,12 +3,10 @@
  *
  */
 #include <cassert>
-#include <gloox/message.h>
-#include <gloox/client.h>
-#include <gloox/presence.h>
 
 #include "Logger/Logger.hpp"
 #include "System/ScopedPtrCustom.hpp"
+#include "Trigger/Jabber/Gloox.hpp"
 #include "Trigger/Jabber/Connection.hpp"
 
 

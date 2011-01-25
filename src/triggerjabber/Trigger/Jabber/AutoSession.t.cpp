@@ -3,8 +3,8 @@
  *
  */
 #include <tut.h>
-#include <gloox/client.h>
 
+#include "Trigger/Jabber/Gloox.hpp"
 #include "Trigger/Jabber/AutoSession.hpp"
 #include "Trigger/Jabber/TestAccount.t.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
