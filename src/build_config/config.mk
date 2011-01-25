@@ -29,9 +29,12 @@ ifneq (,$(shell which ccache))
 export WITH_CCACHE:=1
 endif
 
-# enable stack-protector, if not using intel's toolchain
-ifneq ($(TC),intel)
+# enable stack-protector
+ifeq ($(TC),local)
 TMP+=-fstack-protector-all
+endif
+ifeq ($(TC),local)
+TMP+=-fstack-security-check -fstack-protector
 endif
 
 # determine architecture to compile for
