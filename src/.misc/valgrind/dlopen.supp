@@ -3,6 +3,6 @@
    Memcheck:Leak
    ...
    fun:_dlerror_run
-   fun:dlopen@@GLIBC_2.2.5
+   fun:dlopen@@GLIBC*
    ...
 }
