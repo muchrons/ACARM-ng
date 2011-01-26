@@ -65,6 +65,16 @@ private:
     return dc_.readConst(key);
   }
 
+  virtual void removeImpl(Persistency::IO::Transaction &/*t*/, const Key &key)
+  {
+    dc_.remove(key);
+  }
+
+  virtual void iterateImpl(Persistency::IO::Transaction &/*t*/, IterationCallback &cb)
+  {
+    dc_.iterate(cb);
+  }
+
   DynamicConfig &dc_;
 }; // class DynamicConfig
 

@@ -9,6 +9,10 @@ namespace Persistency
 namespace IO
 {
 
+DynamicConfig::IterationCallback::~IterationCallback(void)
+{
+}
+
 DynamicConfig::DynamicConfig(const Owner &owner, Transaction &t):
   owner_(owner),
   t_(t)
@@ -32,6 +36,16 @@ DynamicConfig::ValueNULL DynamicConfig::read(const Key &key)
 DynamicConfig::Value DynamicConfig::readConst(const Key &key)
 {
   return readConstImpl(t_, key);
+}
+
+void DynamicConfig::remove(const Key &key)
+{
+  removeImpl(t_, key);
+}
+
+void DynamicConfig::iterate(IterationCallback &cb)
+{
+  iterateImpl(t_, cb);
 }
 
 const DynamicConfig::Owner &DynamicConfig::getOwner(void) const

@@ -48,6 +48,16 @@ struct DynamicConfigCounter: public ::Persistency::IO::DynamicConfig
     return counter_->readConst(key);
   }
 
+  virtual void removeImpl(::Persistency::IO::Transaction &/*t*/, const Key &key)
+  {
+    counter_->remove(key);
+  }
+
+  virtual void iterateImpl(::Persistency::IO::Transaction &/*t*/, IterationCallback &cb)
+  {
+    counter_->iterate(cb);
+  }
+
   IODynamicConfigCounterPtr counter_;
 }; // class DynamicConfigCounter
 
