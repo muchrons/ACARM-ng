@@ -1,6 +1,10 @@
 #!/bin/bash
-
-# use as much CPUs as possible
-CPUS_DIST="`{ echo -n "2 * "; distcc -j; } | bc -ql`"
-
-exec make WITH_DISTCC=1 WITH_CCACHE=1 "-j$CPUS_DIST" "$@"
+# TODO: until there are more ICC licenses, we must stick to local builds witn Intel's compiler...
+if grep -q "TC=intel" <<< "$@"
+then
+  CPUS_LOCAL="`cat /proc/cpuinfo  | grep processor | wc -l`"
+  exec make "-j$CPUS_LOCAL" "$@"
+else
+  CPUS_DIST="`distcc -j`"
+  exec make WITH_DISTCC=1 "-j$CPUS_DIST" "$@"
+fi
