@@ -2,6 +2,7 @@
 
 class GdChecker
 {
+  // TODO: i suggest making this static method instead
   function __construct()
   {
     if (!extension_loaded('gd') || !function_exists('gd_info'))
