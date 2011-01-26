@@ -1210,7 +1210,7 @@ void testObj::test<38>(void)
     stringstream ss;
     ss << "SELECT * FROM config WHERE owner='owner1' AND key='key1'";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
-    ensure_equals("entry not saved", r.size(), 0u);
+    ensure_equals("entry not removed", r.size(), 0u);
   }
 }
 
@@ -1228,7 +1228,7 @@ void testObj::test<39>(void)
     stringstream ss;
     ss << "SELECT * FROM config WHERE owner='owner2' AND key='key1' AND value='value1'";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
-    ensure_equals("entry not saved", r.size(), 1u);
+    ensure_equals("invalid entry removed", r.size(), 1u);
   }
 }
 
