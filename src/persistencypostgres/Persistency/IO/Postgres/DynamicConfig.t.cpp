@@ -144,4 +144,34 @@ void testObj::test<7>(void)
   ensure("non-NULL value read", v.get()==NULL );
 }
 
+
+namespace
+{
+struct IterationMemory: public Persistency::IO::DynamicConfig::IterationCallback
+{
+  virtual bool process(const Persistency::IO::DynamicConfig::Key   &k,
+                       const Persistency::IO::DynamicConfig::Value &v)
+  {
+    p_[k.get()]=v.get();
+    return true;
+  }
+
+  typedef map<string, string> Params;
+  Params p_;
+}; // struct IterationMemory
+} // unnamed namespace
+
+
+// test itearting over some elements
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  dc_->write("key1", "V1");
+  dc_->write("key2", "V2");
+  IterationMemory im;
+  dc_->iterate(im);
+  ensure_equals("invalid number of elements read", im.p_.size(), 2u);
+}
+
 } // namespace tut
