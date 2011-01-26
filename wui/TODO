@@ -7,3 +7,4 @@
 * add logs view table.
 * create meta-alert overview, that would show all the meta-alerts' content (i.e.: children nodes) on one page.
 * add icon for the 'eventchain' filter in GUI.
+* add icon for the 'one2one' filter in GUI.
