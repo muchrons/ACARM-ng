@@ -9,9 +9,9 @@
 #include <vector>
 #include <boost/tuple/tuple.hpp>
 #include <boost/noncopyable.hpp>
-#include <libxml++/libxml++.h>
 #include <cassert>
 
+#include "XML/XML++.hpp"
 #include "Base/NullValue.hpp"
 #include "Base/NonEmptyVector.hpp"
 #include "Logger/Node.hpp"

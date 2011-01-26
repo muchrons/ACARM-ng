@@ -7,9 +7,9 @@
 
 #include <string>
 #include <boost/noncopyable.hpp>
-#include <libxml++/libxml++.h>
 #include <cassert>
 
+#include "XML/XML++.hpp"
 #include "Commons/LimitedString.hpp"
 #include "Commons/LimitedNULLString.hpp"
 #include "Logger/Node.hpp"

@@ -7,8 +7,7 @@
 
 /* public header */
 
-#include <libxml++/libxml++.h>
-
+#include "XML/XML++.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "RFCIO/IDMEF/Exception.hpp"
 
