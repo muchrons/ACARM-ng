@@ -9,8 +9,8 @@
 
 #include <iosfwd>
 #include <boost/noncopyable.hpp>
-#include <libxml++/libxml++.h>
 
+#include "XML/XML++.hpp"
 #include "RFCIO/XML/Exception.hpp"
 
 namespace RFCIO

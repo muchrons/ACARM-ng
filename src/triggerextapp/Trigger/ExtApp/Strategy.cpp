@@ -38,10 +38,9 @@ Strategy::Strategy(const std::string &name, const Config &cfg):
 namespace
 {
 
-/** \brief holds ownership of given filesystem element.
+/** \brief holds ownership of given filesystem elements.
  *
- *  element is automatically removed removed in d-tor, unless released
- *  explicitly with release() call.
+ *  element is automatically removed removed in d-tor.
  */
 struct ElementHolder: private boost::noncopyable
 {
@@ -70,12 +69,6 @@ struct ElementHolder: private boost::noncopyable
   void push_back(const path &p)
   {
     paths_.push_back(p);
-  }
-
-  void release(void)
-  {
-    paths_.clear();
-    assert( paths_.empty() );
   }
 
 private:

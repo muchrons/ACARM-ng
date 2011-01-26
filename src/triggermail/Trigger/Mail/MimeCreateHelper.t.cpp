@@ -3,9 +3,9 @@
  *
  */
 #include <tut.h>
-#include <vmime/vmime.hpp>
 
 #include "System/ScopedPtrCustom.hpp"
+#include "Trigger/Mail/Vmime.hpp"
 #include "Trigger/Mail/MimeCreateHelper.hpp"
 
 using namespace System;

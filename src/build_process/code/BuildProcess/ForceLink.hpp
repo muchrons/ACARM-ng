@@ -1,3 +1,9 @@
+/*
+ * ForceLink.hpp
+ *
+ * helper macros for force-link functionlity.
+ *
+ */
 #ifndef INCLUDE_BUILD_PROCESS_FORCELINK_HPP_FILE
 #define INCLUDE_BUILD_PROCESS_FORCELINK_HPP_FILE
 

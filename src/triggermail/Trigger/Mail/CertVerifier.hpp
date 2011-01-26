@@ -5,9 +5,8 @@
 #ifndef INCLUDE_TRIGGER_MAIL_CERTVERIFIER_HPP_FILE
 #define INCLUDE_TRIGGER_MAIL_CERTVERIFIER_HPP_FILE
 
-#include <vmime/vmime.hpp>
-
 #include "Logger/Node.hpp"
+#include "Trigger/Mail/Vmime.hpp"
 #include "Trigger/Mail/Config.hpp"
 #include "Trigger/Mail/ExceptionInvalidCertificate.hpp"
 

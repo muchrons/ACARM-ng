@@ -24,7 +24,7 @@ struct ModeEnum
   {
     READ     =1,
     WRITE    =2,
-    READWRITE=3,
+    READWRITE=3
   }
   Type;
 }; // struct ModeEnum

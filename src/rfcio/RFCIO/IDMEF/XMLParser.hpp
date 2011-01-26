@@ -7,8 +7,7 @@
 
 /* public header */
 
-#include <libxml++/libxml++.h>
-
+#include "XML/XML++.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/IO/Transaction.hpp"
