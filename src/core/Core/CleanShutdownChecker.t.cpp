@@ -70,6 +70,11 @@ private:
     dc_.remove(key);
   }
 
+  virtual void iterateImpl(Persistency::IO::Transaction &/*t*/, IterationCallback &cb)
+  {
+    dc_.iterate(cb);
+  }
+
   DynamicConfig &dc_;
 }; // class DynamicConfig
 

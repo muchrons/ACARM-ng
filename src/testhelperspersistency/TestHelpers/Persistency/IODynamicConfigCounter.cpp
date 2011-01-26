@@ -52,5 +52,10 @@ void IODynamicConfigCounter::removeImpl(::Persistency::IO::Transaction &/*t*/, c
   tut::fail("remove() should NOT be called at all");
 }
 
+void IODynamicConfigCounter::iterateImpl(::Persistency::IO::Transaction &/*t*/, IterationCallback &/*cb*/)
+{
+  tut::fail("iterate() should NOT be called at all");
+}
+
 } // namespace Persistency
 } // namespace TestHelpers

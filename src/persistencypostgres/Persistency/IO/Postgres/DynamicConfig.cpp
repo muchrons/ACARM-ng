@@ -61,6 +61,14 @@ void DynamicConfig::removeImpl(Persistency::IO::Transaction &t, const Key &key)
   TRYCATCH_END
 }
 
+void DynamicConfig::iterateImpl(Persistency::IO::Transaction &t, IterationCallback &cb)
+{
+  TRYCATCH_BEGIN
+    // TODO
+    throw std::logic_error("NOT YET IMPLEMENTED - TODO");
+  TRYCATCH_END
+}
+
 } // namespace Postgres
 } // namespace IO
 } // namespace Persistency

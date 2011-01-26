@@ -53,6 +53,11 @@ struct DynamicConfigCounter: public ::Persistency::IO::DynamicConfig
     counter_->remove(key);
   }
 
+  virtual void iterateImpl(::Persistency::IO::Transaction &/*t*/, IterationCallback &cb)
+  {
+    counter_->iterate(cb);
+  }
+
   IODynamicConfigCounterPtr counter_;
 }; // class DynamicConfigCounter
 

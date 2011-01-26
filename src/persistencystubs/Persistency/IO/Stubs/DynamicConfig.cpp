@@ -42,7 +42,16 @@ DynamicConfig::Value DynamicConfig::readConstImpl(Persistency::IO::Transaction &
 
 void DynamicConfig::removeImpl(Persistency::IO::Transaction &/*t*/, const Key &key)
 {
-  owner_.erase( key.get() );
+  DataMap &data=owner_[ getOwner().get() ];
+  data.erase( key.get() );
+}
+
+void DynamicConfig::iterateImpl(Persistency::IO::Transaction &/*t*/, IterationCallback &cb)
+{
+  DataMap &data=owner_[ getOwner().get() ];
+  for(DataMap::const_iterator it=data.begin(); it!=data.end(); ++it)
+    if( cb.process(it->first, it->second)==false )
+      return;
 }
 
 } // namespace Stubs

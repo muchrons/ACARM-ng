@@ -31,6 +31,7 @@ public:
   virtual ValueNULL readImpl(::Persistency::IO::Transaction &t, const Key &key);
   virtual Value readConstImpl(::Persistency::IO::Transaction &t, const Key &key);
   virtual void removeImpl(::Persistency::IO::Transaction &t, const Key &key);
+  virtual void iterateImpl(::Persistency::IO::Transaction &t, IterationCallback &cb);
 
   Memory &mem_;
 }; // class IODynamicConfigMemory
