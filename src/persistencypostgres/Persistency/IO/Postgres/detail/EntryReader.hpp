@@ -143,6 +143,12 @@ public:
   DynamicConfig::Value readConstConfigParameter(const DynamicConfig::Owner &owner,
                                                 const DynamicConfig::Key   &key);
 
+  /** \brief iterates over given owner's configuration paramters.
+   *  \param owner owner of the entry.
+   *  \param cb    callback to be called for each iteration.
+   */
+  void iterateConfigParameters(const DynamicConfig::Owner &owner, DynamicConfig::IterationCallback &cb);
+
 private:
   DynamicConfig::ValueNULL readConfigParameterCommon(const char                 *table,
                                                      const DynamicConfig::Owner &owner,

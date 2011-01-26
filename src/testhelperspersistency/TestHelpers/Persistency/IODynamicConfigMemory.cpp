@@ -37,5 +37,17 @@ IODynamicConfigMemory::Value IODynamicConfigMemory::readConstImpl(::Persistency:
   return Value("???");
 }
 
+void IODynamicConfigMemory::removeImpl(::Persistency::IO::Transaction &/*t*/, const Key &key)
+{
+  mem_.erase( key.get() );
+}
+
+void IODynamicConfigMemory::iterateImpl(::Persistency::IO::Transaction &/*t*/, IterationCallback &cb)
+{
+  for(Memory::const_iterator it=mem_.begin(); it!=mem_.end(); ++it)
+    if( cb.process(it->first, it->second)==false )
+      return;
+}
+
 } // namespace Persistency
 } // namespace TestHelpers
