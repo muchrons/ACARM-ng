@@ -5,6 +5,9 @@ class DataMiningAlertTypes extends TPage
   public function onLoad($param)
   {
     parent::onLoad($param);
+
+    $g=new GdChecker(); //checks if GD is installed and available
+
     if ($this->AlertTypes->width == 0)
       $this->AlertTypes->width=700;
     if ($this->AlertTypes->height == 0)

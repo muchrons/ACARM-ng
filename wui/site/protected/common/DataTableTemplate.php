@@ -52,7 +52,7 @@ class DataTableTemplate extends TTemplateControl
     foreach($data as $e)
       $ret[]=$this->computation_->computeStructure($e);
 
-    return $ret;
+    return $ret; //ok to be null
   }
 
   public function selectionChanged($sender, $param)

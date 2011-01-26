@@ -5,6 +5,9 @@ class DataMiningMetaAlertTimeSeries extends TPage
   public function onLoad($param)
   {
     parent::onLoad($param);
+
+    $g=new GdChecker(); //checks if GD is installed and available
+
     if ($this->AlertTS->width == 0)
       $this->AlertTS->width=700;
     if ($this->AlertTS->height == 0)
