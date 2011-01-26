@@ -1149,8 +1149,12 @@ template<>
 template<>
 void testObj::test<33>(void)
 {
+  // save Meta-Alert
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL().shared_ptr(), created_, 42u);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
   // save
-  es_.saveRootID(42);
+  es_.saveRootID(malertID);
   // check save
   checkRoots(1u);
 }
@@ -1160,12 +1164,16 @@ template<>
 template<>
 void testObj::test<34>(void)
 {
+  // save Meta-Alert
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL().shared_ptr(), created_, 42u);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
   // save
-  es_.saveRootID(42);
+  es_.saveRootID(malertID);
   // check save
   checkRoots(1u);
   // delete
-  es_.deleteRootID(42);
+  es_.deleteRootID(malertID);
   // check delete
   checkRoots(0u);
 }
