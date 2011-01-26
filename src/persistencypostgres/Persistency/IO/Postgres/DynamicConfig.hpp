@@ -34,6 +34,7 @@ private:
   virtual void writeImpl(Persistency::IO::Transaction &t, const Key &key, const Value &value);
   virtual ValueNULL readImpl(Persistency::IO::Transaction &t, const Key &key);
   virtual Value readConstImpl(Persistency::IO::Transaction &t, const Key &key);
+  virtual void removeImpl(Persistency::IO::Transaction &t, const Key &key);
 
   Logger::Node  log_;
   DBHandlePtrNN dbHandle_;

@@ -40,6 +40,11 @@ DynamicConfig::Value DynamicConfig::readConstImpl(Persistency::IO::Transaction &
   return "i'm const";
 }
 
+void DynamicConfig::removeImpl(Persistency::IO::Transaction &/*t*/, const Key &key)
+{
+  owner_.erase( key.get() );
+}
+
 } // namespace Stubs
 } // namespace IO
 } // namespace Persistency

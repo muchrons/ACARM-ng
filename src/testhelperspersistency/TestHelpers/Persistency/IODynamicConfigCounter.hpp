@@ -28,6 +28,8 @@ struct IODynamicConfigCounter: public ::Persistency::IO::DynamicConfig
 
   virtual Value readConstImpl(::Persistency::IO::Transaction &t, const Key &key);
 
+  virtual void removeImpl(::Persistency::IO::Transaction &t, const Key &key);
+
   const std::string                     keyValue_;
   bool                                  isNull_;
   ::Persistency::MetaAlert::ID::Numeric id_;

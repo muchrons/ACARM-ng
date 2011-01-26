@@ -37,5 +37,10 @@ IODynamicConfigMemory::Value IODynamicConfigMemory::readConstImpl(::Persistency:
   return Value("???");
 }
 
+void IODynamicConfigMemory::removeImpl(::Persistency::IO::Transaction &/*t*/, const Key &key)
+{
+  mem_.erase( key.get() );
+}
+
 } // namespace Persistency
 } // namespace TestHelpers
