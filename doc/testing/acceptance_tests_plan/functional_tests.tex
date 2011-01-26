@@ -1,8 +1,8 @@
 \testCase
 {f-1}
 {IP correlation.}
-{Correlating alerts origin from and send to the same host (IP).}
-{System is configured wilt all the filters.}
+{Correlating alerts originating from or sent to a single host (single IP address).}
+{System is configured with all the filters.}
 {
 \begin{enumerate*}
 \item Generate 150 alerts with the same source IP.
@@ -11,30 +11,30 @@
 \item Send them to the system.
 \end{enumerate*}
 }
-{New meta-alert aggregating all the alerts from/to the same host is created for each unique host.}
-{Post condition can be easily checked with a trigger or data base content's inspection.}
+{300 meta-alerts are created one for each alert. Subsequently, additional meta-alert is added with 150 alerts from point 1 correlated on the same source host. The same thing happens with alerts from the point 3.}
+{Post condition can be easily checked with a trigger or data base content's inspection. In order to get alerts correlated you must fit in a time window of a proper filter.}
 
 
 \testCase
 {f-2}
-{Reading alerts from prelude-manager.}
+{Reading alerts from the Prelude-manager.}
 {Prelude-manager is one of the possible alert sources. Alerts gathered by it should be accessed by ACARM-ng as well.}
 {System is configured with prelude's input.}
 {
 \begin{enumerate*}
-\item Register new sensor for prelude-manager, to be used by ACARM-ng.
+\item Register new sensor for the Prelude-manager to be used by ACARM-ng.
 \item Configure prelude's input module of ACARM-ng to use newly registered profile.
-\item Run ACARM-ng and wait for data from prelude-manager.
+\item Run ACARM-ng and wait for data from the Prelude-manager.
 \end{enumerate*}
 }
-{New alerts are gathered by the system.}
+{New alerts were gathered by the system.}
 {Post condition can be easily checked with a trigger or data base content's inspection.}
 
 
 \testCase
 {f-3}
-{Reconnecting to prelude-manager.}
-{ACARM-ng must reconnect in case connection to prelude manager is lost.}
+{Reconnecting to the Prelude-manager.}
+{ACARM-ng must reconnect in case connection to the Prelude-manager is lost.}
 {System is configured with prelude's input.}
 {
 \begin{enumerate*}
@@ -42,22 +42,22 @@
 \item Run ACARM-ng
 \item Wait until they are connected.
 \item Turn off Prelude-Manager.
-\item Wait until ACARM-ng notices dead connection (see logs).
+\item Wait until ACARM-ng notices dead connection (check log files).
 \item Turn on Prelude-Manager.
 \end{enumerate*}
 }
-{ACARM-ng must reconnect to Prelude-Manager.}
-{See logs for details on what's going on.}
+{ACARM-ng should reconnect to the Prelude-Manager.}
+{Check logs for details on what is going on.}
 
 
 \testCase
 {f-4}
-{Connect to PotgreSQL.}
-{ACARM-ng supports writing data to PostgreSQL data base.}
+{Connect to the PotgreSQL.}
+{ACARM-ng supports writing data to the PostgreSQL data base.}
 {System is configured with postgres persistency module.}
 {
 \begin{enumerate*}
-\item Turn PostgreSQL server on.
+\item Turn the PostgreSQL server on.
 \item Run ACARM-ng.
 \item Generate some alerts and send it to ACARM-ng.
 \end{enumerate*}
@@ -82,7 +82,7 @@
 \end{enumerate*}
 }
 {ACARM-ng must reconnect to PostgreSQL.}
-{See logs for details on what's going on.}
+{See logs for details on what is going on.}
 
 
 \testCase
@@ -101,13 +101,13 @@
 \end{enumerate*}
 }
 {Ensure all buffered messages are being sent.}
-{See logs for details on what's going on. Notice that message buffer is of a finite length, thus when too many reports are to be sent oldes ones are truncated.}
+{See logs for details on what is going on. Notice that message buffer is of a finite length, thus when too many reports are to be sent oldest ones are truncated.}
 
 
 \testCase
 {f-7}
 {Configuration error handling.}
-{In case configuration is invalid error should be reported by application. Error must be readable enough for user to understand what is the problem.}
+{In case configuration is invalid error should be reported by application. Error must be readable enough for the user to understand what the problem is.}
 {System has proper configuration with all features enabled.}
 {
 For each feature (ex. each: trigger, filter, input, persistency) repeat test:
@@ -119,15 +119,15 @@ For each feature (ex. each: trigger, filter, input, persistency) repeat test:
 \item See if message gives the point on error situation.
 \end{enumerate*}
 }
-{All error conditions must be reported on the screen in the readable form.}
+{All error conditions must be reported on the screen in a readable form.}
 {}
 
 
 \testCase
 {f-8}
-{Logging to file.}
-{Logger is able to log to a disk file.}
-{Logger is configured to write logs to file.}
+{Logging to a file.}
+{Logger is capable of logging to a disk file.}
+{Logger is configured to write logs to a file.}
 {
 \begin{enumerate*}
 \item Run ACARM-ng.
@@ -164,7 +164,7 @@ Following signals must be ignored:
 \item PIPE
 \item HUP
 \end{enumerate*}
-Following signals must stop application (aka: normal shutdown):
+Following signals must stop the application (aka: normal shutdown):
 \begin{enumerate*}
 \item TERM
 \item INT

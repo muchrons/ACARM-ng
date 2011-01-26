@@ -104,7 +104,7 @@ Dumper::Stats Dumper::writeToDir(const NodesVector &nodes, const boost::filesyst
       char                         percent[3+1+2+1]; // NNN.MM\0
       sprintf(percent, "%3.2f", (100.0*count)/nodes.size() );
       assert( strlen(percent)<sizeof(percent) );
-      errOut_<<"\rwriting "<<percent<<"\% done (alert ID "<<id<<")";
+      errOut_<<"\rwriting "<<percent<<"% done (alert ID "<<id<<")";
       RFCIO::IDMEF::XMLCreator     x(**it);
       const path                   file ="idmef_" + Convert::to<string>(id) + ".xml";
       SharedPtrNotNULL<fstream>    fstrm=createFile(outDir/file);

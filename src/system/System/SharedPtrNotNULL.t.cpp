@@ -450,6 +450,7 @@ void testObj::test<43>(void)
 {
   const PtrNN   a(new int(111));
   ConstBoostPtr b=a.shared_ptr();
+  b.get();  // discard compiler's warning
 }
 
 // test assignment to shared_ptr - const version

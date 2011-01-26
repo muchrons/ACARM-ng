@@ -63,7 +63,7 @@ class Alert extends TPage
 
       foreach ($analyzers as $a)
         $data[]=array('link'=>$this->makeAnalyzerLink($a->id),'name'=>$a->name,'IP'=>$a->ip,'ver'=>$a->version, 'OS'=>$a->os);
-
+      //data can be null
       $this->AlertAnalyzers->DataSource=$data;
       $this->AlertAnalyzers->dataBind();
 
@@ -76,10 +76,10 @@ class Alert extends TPage
         else
           $destinations[]=array('link'=>$this->makeHostLink($h->id),'name'=>$h->name,'IP'=>$h->ip);
 
-      $this->AlertSources->DataSource=$sources;
+      $this->AlertSources->DataSource=$sources; //can be null
       $this->AlertSources->dataBind();
 
-      $this->AlertDestinations->DataSource=$destinations;
+      $this->AlertDestinations->DataSource=$destinations; //can be null
       $this->AlertDestinations->dataBind();
       }
   }

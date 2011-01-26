@@ -31,14 +31,6 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     assert(rootPtr_!=NULL);
   }
 
-  void check(const Persistency::Service &s, const char *expectedXML)
-  {
-    // add as a part of XML
-    ToXML toXML(*rootPtr_);
-    toXML.addService(s);
-    writeAndCompare(expectedXML);
-  }
-
   void checkAlert(const Persistency::GraphNode &leaf, const char *expectedXML)
   {
     // add as a part of XML

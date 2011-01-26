@@ -71,44 +71,21 @@ public:
   {
     return get()<other.get();
   }
-
   /** \brief arrow operator.
-   *  \return const pointer to this.
+   *  \return pointer to this.
    */
   pointer operator->(void) const
   {
     return get();
   }
-  /** \brief arrow operator.
-   *  \return pointer to this.
-   */
-  pointer operator->(void)
-  {
-    return get();
-  }
-
-  /** \brief dereference operator.
-   *  \return const reference to this.
-   */
-  const reference operator*(void) const
-  {
-    return *get();
-  }
   /** \brief dereference operator.
    *  \return reference to this.
    */
-  reference operator*(void)
+  reference operator*(void) const
   {
     return *get();
   }
 
-  /** \brief gets pointer held inside - non-const version.
-   *  \return owned pointer.
-   */
-  pointer get(void)
-  {
-    return t_;
-  }
   /** \brief gets pointer held inside - const version.
    *  \return owned pointer.
    */
@@ -116,7 +93,6 @@ public:
   {
     return t_;
   }
-
   /** \brief swap content of this and other pointers.
    *  \param other element to swap content with.
    */

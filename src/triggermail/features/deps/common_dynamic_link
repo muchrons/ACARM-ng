@@ -1,2 +1,2 @@
 #!/bin/sh
-exec echo "-lvmime"
+exec pkg-config vmime --libs

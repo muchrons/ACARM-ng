@@ -71,7 +71,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const LockingSession ls;
+  const LockingSession &ls=LockingSession();
   ensure("non exisiting entry found", ls.hasNode(*leaf_)==false );
 }
 

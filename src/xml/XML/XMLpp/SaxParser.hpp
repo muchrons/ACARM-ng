@@ -12,8 +12,8 @@
 #include <list>
 #include <stack>
 #include <string>
-#include <libxml++/libxml++.h>
 
+#include "XML/XML++.hpp"
 #include "XML/Tree.hpp"
 #include "XML/Exception.hpp"
 

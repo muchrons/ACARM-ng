@@ -21,21 +21,26 @@
    boost_thread_leak_tss_ptr_reset
    Memcheck:Leak
    ...
-   fun:_ZN5boost6detail16add_new_tss_nodeEPKvNS_10shared_ptrINS0_20tss_cleanup_functionEEEPv
-   fun:_ZN5boost6detail12set_tss_dataEPKvNS_10shared_ptrINS0_20tss_cleanup_functionEEEPvb
    fun:_ZN5boost19thread_specific_ptrIjE5resetEPj
    ...
 }
 
 {
-   boost_thread_leak_init_tss_ptr
+   boost_thread_leak_init_tss_ptrD
    Memcheck:Leak
    ...
-   fun:_ZN5boost6detail16add_new_tss_nodeEPKvNS_10shared_ptrINS0_20tss_cleanup_functionEEEPv
-   fun:_ZN5boost6detail12set_tss_dataEPKvNS_10shared_ptrINS0_20tss_cleanup_functionEEEPvb
-   fun:_ZN5boost19thread_specific_ptrIjED1Ev
+   fun:_ZN5boost19thread_specific_ptrIjED1Ev       
    ...
 }
+
+{
+   boost_thread_leak_init_tss_ptrC
+   Memcheck:Leak
+   ...
+   fun:_ZN5boost19thread_specific_ptrIjEC1Ev
+   ...
+}
+
 
 {
    boost_thread_leak_get_id

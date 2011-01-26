@@ -5,9 +5,8 @@
 #ifndef INCLUDE_TRIGGER_MAIL_VMIMEHANDLEINIT_HPP_FILE
 #define INCLUDE_TRIGGER_MAIL_VMIMEHANDLEINIT_HPP_FILE
 
-#include <vmime/platforms/posix/posixHandler.hpp>
-
 #include "System/GlobalInit.hpp"
+#include "Trigger/Mail/Vmime.hpp"
 
 namespace Trigger
 {
