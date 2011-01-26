@@ -133,4 +133,15 @@ void testObj::test<6>(void)
   }
 }
 
+// test removing some value
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  dc_->write("some key", "V2");
+  dc_->remove("some key");
+  IO::DynamicConfig::ValueNULL v=dc_->read("some key");
+  ensure("non-NULL value read", v.get()==NULL );
+}
+
 } // namespace tut
