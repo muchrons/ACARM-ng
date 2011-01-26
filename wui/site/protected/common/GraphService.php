@@ -158,6 +158,9 @@ class GraphService extends TService
       return;
     }
 
+    if (count($pairs) == 0)
+      return null;
+
     foreach( $pairs as $e )
     {
       $xdata[] = trim($e->key).$append;
@@ -179,10 +182,13 @@ class GraphService extends TService
       return;
     }
 
+    if (count($pairs) == 0)
+      return null;
+
     foreach( $pairs as $e )
     {
       $xdata[] = strtotime($e->key);
-      $ydata[] = ($e->value===null)?0:$e->value;
+      $ydata[] = ($e->value === null)?0:$e->value;
     }
 
     return array($xdata, $ydata, $param->qparam->severities);
@@ -214,7 +220,7 @@ class GraphService extends TService
   {
     $data=$this->issueQuery2d($this->params," (%d)");
 
-    if (count($data[0])==0)
+    if ($data === null)
       {
         $data[0]=array("");
         $data[1]=array(1);
@@ -282,7 +288,7 @@ class GraphService extends TService
 
     $data=$this->issueQuery2d($this->params,null);
 
-    if (count($data[0])==0)
+    if ($data === null)
       {
         $data[0]=array("No data for given query, or empty database.");
         $data[1]=array(1);
@@ -328,8 +334,12 @@ class GraphService extends TService
     foreach ($severities as $s)
       {
         $params->qparam->severities=$s;
-        $data[0][]=$this->issueQuery2dTime($params);
-        $data[1][]=$s;
+        $d=$this->issueQuery2dTime($params);
+        if ($d != null)
+          {
+            $data[0][]=$d;
+            $data[1][]=$s;
+          }
       }
 
     $count=count($data[0]);
@@ -340,6 +350,7 @@ class GraphService extends TService
         $data[0][0][1]=array(1);
         $data[0][0][0]=array(1);
         $data[1][0]="no data for given query";
+        $count=1;
       }
 
     $maxval=0;
