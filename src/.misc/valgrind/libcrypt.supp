@@ -8,3 +8,64 @@
    ...
 }
 
+{
+   libcrypto_leak_bio_new_file
+   Memcheck:Leak
+   fun:malloc
+   fun:CRYPTO_malloc
+   ...
+   fun:BIO_new_file
+   ...
+   fun:OPENSSL_config
+   ...
+}
+
+{
+   libcrypto_leak_get_server_cert
+   Memcheck:Leak
+   fun:malloc
+   fun:CRYPTO_malloc
+   ...
+   fun:ssl3_get_server_certificate
+   fun:ssl3_connect
+   ...
+}
+
+{
+   libcrypto_leak_rsa_new_method
+   Memcheck:Leak
+   fun:malloc
+   fun:CRYPTO_malloc
+   ...
+   fun:RSA_new_method
+   ...
+   fun:X509_get_pubkey_parameters
+}
+
+{
+   libcrypto_leak_gcry_control
+   Memcheck:Leak
+   fun:malloc
+   ...
+   fun:gcry_control
+   ...
+}
+
+{
+   libcrypto_leak_rsa_new_method_2
+   Memcheck:Leak
+   fun:malloc
+   fun:CRYPTO_malloc
+   ...
+   fun:RSA_new_method
+   ...
+   fun:X509_PUBKEY_get
+}
+
+{
+   libcrypt_leak_gcry_pthread_mutex_init
+   Memcheck:Leak
+   fun:malloc
+   fun:gcry_pthread_mutex_init
+   ...
+}
