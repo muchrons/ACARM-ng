@@ -33,7 +33,7 @@ endif
 ifeq ($(TC),local)
 TMP+=-fstack-protector-all
 endif
-ifeq ($(TC),local)
+ifeq ($(TC),intel)
 TMP+=-fstack-security-check -fstack-protector
 endif
 
