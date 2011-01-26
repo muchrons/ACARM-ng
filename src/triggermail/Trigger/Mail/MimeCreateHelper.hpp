@@ -4,8 +4,8 @@
  */
 #include <string>
 #include <boost/noncopyable.hpp>
-#include <vmime/vmime.hpp>
 
+#include "Trigger/Mail/Vmime.hpp"
 #include "Trigger/Mail/Config.hpp"
 #include "Trigger/Mail/VmimeHandleInit.hpp"
 #include "Trigger/Mail/ExceptionUnableToCreateMessage.hpp"
