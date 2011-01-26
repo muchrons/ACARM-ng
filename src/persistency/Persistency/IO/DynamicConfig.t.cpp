@@ -94,4 +94,13 @@ void testObj::test<5>(void)
   IODynamicConfig tdc("some owner", t_);
 }
 
+// test erasing parameter
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  tdc_.remove("whatever");
+  ensureCalls(3);
+}
+
 } // namespace tut

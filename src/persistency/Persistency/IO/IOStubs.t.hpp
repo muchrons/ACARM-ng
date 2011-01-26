@@ -140,7 +140,12 @@ public:
     return Value("i'm const");
   }
 
-  int calls_[3];
+  virtual void removeImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/)
+  {
+    ++calls_[3];
+  }
+
+  int calls_[4];
 }; // class IODynamicConfig
 
 
@@ -182,6 +187,11 @@ public:
     return Value("???");
   }
 
+  virtual void removeImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/)
+  {
+    tut::fail("remove() should not be called here");
+  }
+
   const std::string                   keyValue_;
   bool                                isNull_;
   Persistency::GraphNode::ID::Numeric id_;
@@ -215,6 +225,11 @@ public:
   {
     tut::fail("readConst() should NOT be called at all");
     return Value("???");
+  }
+
+  virtual void removeImpl(Persistency::IO::Transaction &/*t*/, const Key &key)
+  {
+    mem_.erase( key.get() );
   }
 
   Memory &mem_;

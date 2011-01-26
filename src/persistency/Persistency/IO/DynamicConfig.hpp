@@ -80,6 +80,11 @@ public:
    *  \note const-paramters are common for all owners (since noone can write them anyway).
    */
   Value readConst(const Key &key);
+  /** \brief remove given parameter from configuration.
+   *  \param key name of the parameter.
+   *  \note if given parameter does not exist, call does nothing.
+   */
+  void remove(const Key &key);
 
 protected:
   /** \brief gets owner's name.
@@ -91,6 +96,7 @@ private:
   virtual void writeImpl(Transaction &t, const Key &key, const Value &value) = 0;
   virtual ValueNULL readImpl(Transaction &t, const Key &key) = 0;
   virtual Value readConstImpl(Transaction &t, const Key &key) = 0;
+  virtual void removeImpl(Transaction &t, const Key &key) = 0;
 
   const Owner  owner_;
   Transaction &t_;

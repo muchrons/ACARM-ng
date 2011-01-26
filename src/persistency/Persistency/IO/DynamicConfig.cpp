@@ -34,6 +34,12 @@ DynamicConfig::Value DynamicConfig::readConst(const Key &key)
   return readConstImpl(t_, key);
 }
 
+void DynamicConfig::remove(const Key &key)
+{
+  removeImpl(t_, key);
+  // TODO
+}
+
 const DynamicConfig::Owner &DynamicConfig::getOwner(void) const
 {
   return owner_;
