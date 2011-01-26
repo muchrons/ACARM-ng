@@ -36,6 +36,22 @@ public:
   /** \brief string to be read - can be NULL. */
   typedef Base::NullValue<Value>          ValueNULL;
 
+  /** \brief base class for iteration over paramters.
+   */
+  struct IterationCallback: private boost::noncopyable
+  {
+    /** \brief ensures polymorphic destruciton.
+     */
+    virtual ~IterationCallback(void);
+
+    /** \brief user-defined callback method.
+     *  \param key   name of the parameter.
+     *  \param value parameter's value.
+     *  \return true, if iteration should proceed, false otherwise.
+     */
+    virtual bool process(const Key &key, const Value &value) = 0;
+  }; // struct IterationCallback
+
   /** \brief exception thrown when given paramter does not exist.
    */
   struct ExceptionNoSuchParameter: public Exception
@@ -85,6 +101,10 @@ public:
    *  \note if given parameter does not exist, call does nothing.
    */
   void remove(const Key &key);
+  /** \brief iterate over all paramters.
+   *  \param cb callback called for each element.
+   */
+  void iterate(IterationCallback &cb);
 
 protected:
   /** \brief gets owner's name.
@@ -97,6 +117,7 @@ private:
   virtual ValueNULL readImpl(Transaction &t, const Key &key) = 0;
   virtual Value readConstImpl(Transaction &t, const Key &key) = 0;
   virtual void removeImpl(Transaction &t, const Key &key) = 0;
+  virtual void iterateImpl(Transaction &t, IterationCallback &cb) = 0;
 
   const Owner  owner_;
   Transaction &t_;

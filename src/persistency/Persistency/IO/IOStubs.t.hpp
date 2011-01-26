@@ -145,7 +145,12 @@ public:
     ++calls_[3];
   }
 
-  int calls_[4];
+  virtual void iterateImpl(Persistency::IO::Transaction &/*t*/, IterationCallback &/*cb*/)
+  {
+    ++calls_[4];
+  }
+
+  int calls_[5];
 }; // class IODynamicConfig
 
 
@@ -192,6 +197,11 @@ public:
     tut::fail("remove() should not be called here");
   }
 
+  virtual void iterateImpl(Persistency::IO::Transaction &/*t*/, IterationCallback &/*cb*/)
+  {
+    tut::fail("iterate() should not be called here");
+  }
+
   const std::string                   keyValue_;
   bool                                isNull_;
   Persistency::GraphNode::ID::Numeric id_;
@@ -230,6 +240,13 @@ public:
   virtual void removeImpl(Persistency::IO::Transaction &/*t*/, const Key &key)
   {
     mem_.erase( key.get() );
+  }
+
+  virtual void iterateImpl(Persistency::IO::Transaction &/*t*/, IterationCallback &cb)
+  {
+    for(Memory::const_iterator it=mem_.begin(); it!=mem_.end(); ++it)
+      if( cb.process(it->first, it->second)==false )
+        break;
   }
 
   Memory &mem_;

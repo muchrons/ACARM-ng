@@ -103,4 +103,25 @@ void testObj::test<6>(void)
   ensureCalls(3);
 }
 
+namespace
+{
+struct MyCallback: public DynamicConfig::IterationCallback
+{
+  virtual bool process(const DynamicConfig::Key &, const DynamicConfig::Value &)
+  {
+    return false;
+  }
+}; // struct MyCallback
+} // unnamed namespace
+
+// test erasing parameter
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  MyCallback mc;
+  tdc_.iterate(mc);
+  ensureCalls(4);
+}
+
 } // namespace tut
