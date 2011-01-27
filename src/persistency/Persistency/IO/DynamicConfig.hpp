@@ -103,6 +103,7 @@ public:
   void remove(const Key &key);
   /** \brief iterate over all paramters.
    *  \param cb callback called for each element.
+   *  \note order in which parameters will be read is undefined.
    */
   void iterate(IterationCallback &cb);
 

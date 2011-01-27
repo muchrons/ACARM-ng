@@ -1204,4 +1204,40 @@ void testObj::test<37>(void)
   checkRoots(0u);
 }
 
+// try removing parameter
+template<>
+template<>
+void testObj::test<38>(void)
+{
+  // save something
+  es_.saveConfigParameter("owner1", "key1", "value1");
+  // remove it
+  es_.removeConfigParameter("owner1", "key1");
+  // check
+  {
+    stringstream ss;
+    ss << "SELECT * FROM config WHERE owner='owner1' AND key='key1'";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("entry not removed", r.size(), 0u);
+  }
+}
+
+// try removing unexisitng parameter
+template<>
+template<>
+void testObj::test<39>(void)
+{
+  // save something
+  es_.saveConfigParameter("owner2", "key1", "value1");
+  // remove something that does not exist
+  es_.removeConfigParameter("owner1", "key1");
+  // check
+  {
+    stringstream ss;
+    ss << "SELECT * FROM config WHERE owner='owner2' AND key='key1' AND value='value1'";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid entry removed", r.size(), 1u);
+  }
+}
+
 } // namespace tut

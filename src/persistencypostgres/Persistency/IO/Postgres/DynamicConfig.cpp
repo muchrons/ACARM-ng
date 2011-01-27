@@ -53,19 +53,19 @@ DynamicConfig::Value DynamicConfig::readConstImpl(Persistency::IO::Transaction &
   TRYCATCH_END
 }
 
-void DynamicConfig::removeImpl(Persistency::IO::Transaction &/*t*/, const Key &/*key*/)
+void DynamicConfig::removeImpl(Persistency::IO::Transaction &t, const Key &key)
 {
   TRYCATCH_BEGIN
-    // TODO
-    throw std::logic_error("NOT YET IMPLEMENTED - TODO");
+    detail::EntrySaver es(t, *dbHandle_);
+    es.removeConfigParameter( getOwner(), key );
   TRYCATCH_END
 }
 
-void DynamicConfig::iterateImpl(Persistency::IO::Transaction &/*t*/, IterationCallback &/*cb*/)
+void DynamicConfig::iterateImpl(Persistency::IO::Transaction &t, IterationCallback &cb)
 {
   TRYCATCH_BEGIN
-    // TODO
-    throw std::logic_error("NOT YET IMPLEMENTED - TODO");
+    detail::EntryReader er(t, *dbHandle_);
+  er.iterateConfigParameters( getOwner(), cb );
   TRYCATCH_END
 }
 

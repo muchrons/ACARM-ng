@@ -484,9 +484,21 @@ void EntrySaver::saveRootID(DataBaseID rootID)
 void EntrySaver::deleteRootID(DataBaseID rootID)
 {
   stringstream ss;
-  ss << "DELETE FROM  meta_alerts_roots WHERE id_root = " << rootID << ";";
+  ss << "DELETE FROM meta_alerts_roots WHERE id_root = " << rootID << ";";
   SQL( ss.str(), log_ ).exec(t_);
 }
+
+void EntrySaver::removeConfigParameter(const DynamicConfig::Owner &owner,
+                                       const DynamicConfig::Key   &key)
+{
+  stringstream ss;
+  ss << "DELETE FROM config WHERE owner = ";
+  Appender::append(ss, owner.get());
+  ss << " AND key = ";
+  Appender::append(ss, key.get());
+  SQL( ss.str(), log_ ).exec(t_);
+}
+
 } // namespace detail
 } // namespace Postgres
 } // namespace IO

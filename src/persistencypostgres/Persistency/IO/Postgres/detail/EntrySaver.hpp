@@ -151,6 +151,12 @@ public:
    *  \param rootID ID of root node to delete.
    */
   void deleteRootID(DataBaseID rootID);
+  /** \brief removes given config paramter entry.
+   *  \param owner owner name of given config.
+   *  \param key   paramter's name.
+   */
+  void removeConfigParameter(const DynamicConfig::Owner &owner,
+                             const DynamicConfig::Key   &key);
 
 private:
   DataBaseID getID(const std::string &seqName);
