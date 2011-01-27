@@ -1,6 +1,5 @@
 /*
- // TODO: this is DynamicConfig.hpp
- * DynamicConfig.t.cpp
+ * DynamicConfig.hpp
  *
  */
 #ifndef INCLUDE_PERSISTENCY_IO_POSTGRES_DYNAMICCONFIG_HPP_FILE
