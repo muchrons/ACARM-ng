@@ -3,8 +3,17 @@
  *
  */
 
+#include <tut.h>
+
+#include "Persistency/IO/BackendFactory.hpp"
+
 namespace
 {
+
+struct TestClass
+{
+};
+
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
