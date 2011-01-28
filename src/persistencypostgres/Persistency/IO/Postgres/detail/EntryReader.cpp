@@ -397,6 +397,26 @@ DynamicConfig::ValueNULL EntryReader::readConfigParameterCommon(const char      
   return DynamicConfig::ValueNULL(value);
 }
 
+void EntryReader::iterateConfigParameters(const DynamicConfig::Owner &owner, DynamicConfig::IterationCallback &cb)
+{
+  // perform query
+  stringstream ss;
+  ss << "SELECT key, value FROM config WHERE owner = ";
+  Appender::append(ss, owner.get());
+  const result r = SQL( ss.str(), log_ ).exec(t_);
+  // iterate through results
+  for(result::const_iterator it=r.begin(); it!=r.end(); ++it)
+  {
+    const string &key  =ReaderHelper<string>::readAsNotNull( (*it)["key"] );
+    const string &value=ReaderHelper<string>::readAsNotNull( (*it)["value"] );
+    if( cb.process(key, value)==false )
+    {
+      LOGMSG_DEBUG(log_, "terminating iteration over elements on callback's request");
+      return;
+    }
+  }
+}
+
 template<typename T>
 void EntryReader::addIfNew(T e, DataBaseID id)
 {

@@ -749,6 +749,107 @@ void testObj::test<27>(void)
   ensure("params is not NULL", proc.getParameters()==NULL );
 }
 
+
+namespace
+{
+struct IterationMemory: public Persistency::IO::DynamicConfig::IterationCallback
+{
+  virtual bool process(const Persistency::IO::DynamicConfig::Key   &k,
+                       const Persistency::IO::DynamicConfig::Value &v)
+  {
+    p_[k.get()]=v.get();
+    return true;
+  }
+
+  typedef map<string, string> Params;
+  Params p_;
+}; // struct IterationMemory
+} // unnamed namespace
+
+// test iterating over empty parameters set
+template<>
+template<>
+void testObj::test<28>(void)
+{
+  IterationMemory im;
+  er_.iterateConfigParameters("owner", im);
+  ensure_equals("something has been read", im.p_.size(), 0u);
+}
+
+// iterate over 2 parameters
+template<>
+template<>
+void testObj::test<29>(void)
+{
+  // insert some data
+  execSQL("INSERT INTO config VALUES ('owner', 'key1', 'val1')");
+  execSQL("INSERT INTO config VALUES ('owner', 'key2', 'val2')");
+  // test
+  IterationMemory im;
+  er_.iterateConfigParameters("owner", im);
+  // sanity checks
+  ensure_equals("something has been read", im.p_.size(), 2u);
+  IterationMemory::Params::const_iterator it=im.p_.begin();
+  // test 1st pair
+  ensure_equals("invalid key 1",   it->first,  "key1");
+  ensure_equals("invalid value 1", it->second, "val1");
+  ++it;
+  // test 2nd pair
+  ensure_equals("invalid key 2",   it->first,  "key2");
+  ensure_equals("invalid value 2", it->second, "val2");
+}
+
+// check if owner is respected
+template<>
+template<>
+void testObj::test<30>(void)
+{
+  // insert some data
+  execSQL("INSERT INTO config VALUES ('owner1', 'key1', 'val1')");
+  execSQL("INSERT INTO config VALUES ('owner1', 'key2', 'val2')");
+  execSQL("INSERT INTO config VALUES ('owner2', 'keyx', 'valy')");
+  // test
+  IterationMemory im;
+  er_.iterateConfigParameters("owner2", im);
+  ensure_equals("owner is not checked", im.p_.size(), 1u);
+}
+
+
+namespace
+{
+struct IterationSkip: public Persistency::IO::DynamicConfig::IterationCallback
+{
+  IterationSkip(void):
+    calls_(0)
+  {
+  }
+
+  virtual bool process(const Persistency::IO::DynamicConfig::Key   &/*k*/,
+                       const Persistency::IO::DynamicConfig::Value &/*v*/)
+  {
+    ++calls_;
+    return false;
+  }
+
+  size_t calls_;
+}; // struct IterationSkip
+} // unnamed namespace
+
+// test skipping iteration when false is returned from callback
+template<>
+template<>
+void testObj::test<31>(void)
+{
+  // insert some data
+  execSQL("INSERT INTO config VALUES ('owner', 'key1', 'val1')");
+  execSQL("INSERT INTO config VALUES ('owner', 'key2', 'val2')");
+  // test
+  IterationSkip is;
+  er_.iterateConfigParameters("owner", is);
+  // check
+  ensure_equals("invalid number of calls", is.calls_, 1u);
+}
+
 // TODO: test getSystemIDOfMetaAlert()
 
 } // namespace tut

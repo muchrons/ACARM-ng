@@ -12,6 +12,8 @@ class Alert extends TPage
 
   public function onLoad()
   {
+    // TODO: parent::onLoad() is missing
+
     if( $this->alert_===null )
       die("invalid alert / alert not set");
     // initialization of GridData
@@ -32,31 +34,31 @@ class Alert extends TPage
         $this->AlertDescription->Text=$this->alert_->description;
 
       if($this->alert_->severity!= null)
-        {
-          $text="<font";
-          $value=trim($this->alert_->severity);
+      {
+        $text="<font";
+        $value=trim($this->alert_->severity);
 
-          if ($value=="error")
+        if ($value=="error")
+          $text.=" color=\"red\"";
+        else
+          if ($value=="critical")
             $text.=" color=\"red\"";
           else
-            if ($value=="critical")
-              $text.=" color=\"red\"";
+            if ($value=="problem")
+              $text.=" color=\"#CC3300\"";
             else
-              if ($value=="problem")
-                $text.=" color=\"#CC3300\"";
+              if ($value=="warning")
+                $text.=" color=\"black\"";
               else
-                if ($value=="warning")
-                  $text.=" color=\"black\"";
+                if ($value=="info")
+                  $text.=" color=\"green\"";
                 else
-                  if ($value=="info")
-                    $text.=" color=\"green\"";
-                  else
-                    if ($value=="debug")
-                      $text.=" color=\"blue\"";
+                  if ($value=="debug")
+                    $text.=" color=\"blue\"";
 
-          $text.=">".$value."</font>";
-          $this->AlertSeverity->Text=$text;
-        }
+        $text.=">".$value."</font>";
+        $this->AlertSeverity->Text=$text;
+      }
 
       //Get all analyzers for the alert
       $analyzers=CSQLMap::get()->queryForList('SelectAnalyzersForAlert', $this->alertID_);
@@ -81,7 +83,7 @@ class Alert extends TPage
 
       $this->AlertDestinations->DataSource=$destinations; //can be null
       $this->AlertDestinations->dataBind();
-      }
+    }
   }
 
   private function makeHostLink($id)

@@ -37,6 +37,8 @@ private:
   virtual void writeImpl(Persistency::IO::Transaction &t, const Key &key, const Value &value);
   virtual ValueNULL readImpl(Persistency::IO::Transaction &t, const Key &key);
   virtual Value readConstImpl(Persistency::IO::Transaction &t, const Key &key);
+  virtual void removeImpl(Persistency::IO::Transaction &t, const Key &key);
+  virtual void iterateImpl(Persistency::IO::Transaction &t, IterationCallback &cb);
 
   typedef std::map<std::string, std::string> DataMap;
   typedef std::map<std::string, DataMap>     OwnerMap;

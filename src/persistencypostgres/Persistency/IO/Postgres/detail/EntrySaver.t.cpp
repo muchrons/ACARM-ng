@@ -799,7 +799,7 @@ void testObj::test<20>(void)
   es_.markMetaAlertAsTriggered(malertID, TriggerName);
   ss.str("");
   {
-    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_triggered = " << malertID << ";";
+    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert = " << malertID << ";";
     result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
     ensure_equals("invalid trigger name", ReaderHelper<string>::readAsNotNull(r[0]["trigger_name"]), TriggerName);
@@ -951,7 +951,7 @@ void testObj::test<26>(void)
   es_.markMetaAlertAsTriggered(malertID, triggerName);
   ss.str("");
   {
-    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_triggered = " << malertID << ";";
+    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert = " << malertID << ";";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid number of trigered meta-alerts in data base", r.size(), 1u);
     ensure_equals("invalid trigger name", ReaderHelper<string>::readAsNotNull(r[0]["trigger_name"]), triggerName);
@@ -1149,8 +1149,12 @@ template<>
 template<>
 void testObj::test<33>(void)
 {
+  // save Meta-Alert
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL().shared_ptr(), created_, 42u);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
   // save
-  es_.saveRootID(42);
+  es_.saveRootID(malertID);
   // check save
   checkRoots(1u);
 }
@@ -1160,12 +1164,16 @@ template<>
 template<>
 void testObj::test<34>(void)
 {
+  // save Meta-Alert
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL().shared_ptr(), created_, 42u);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
   // save
-  es_.saveRootID(42);
+  es_.saveRootID(malertID);
   // check save
   checkRoots(1u);
   // delete
-  es_.deleteRootID(42);
+  es_.deleteRootID(malertID);
   // check delete
   checkRoots(0u);
 }
@@ -1194,6 +1202,42 @@ template<>
 void testObj::test<37>(void)
 {
   checkRoots(0u);
+}
+
+// try removing parameter
+template<>
+template<>
+void testObj::test<38>(void)
+{
+  // save something
+  es_.saveConfigParameter("owner1", "key1", "value1");
+  // remove it
+  es_.removeConfigParameter("owner1", "key1");
+  // check
+  {
+    stringstream ss;
+    ss << "SELECT * FROM config WHERE owner='owner1' AND key='key1'";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("entry not removed", r.size(), 0u);
+  }
+}
+
+// try removing unexisitng parameter
+template<>
+template<>
+void testObj::test<39>(void)
+{
+  // save something
+  es_.saveConfigParameter("owner2", "key1", "value1");
+  // remove something that does not exist
+  es_.removeConfigParameter("owner1", "key1");
+  // check
+  {
+    stringstream ss;
+    ss << "SELECT * FROM config WHERE owner='owner2' AND key='key1' AND value='value1'";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid entry removed", r.size(), 1u);
+  }
 }
 
 } // namespace tut

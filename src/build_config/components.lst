@@ -5,6 +5,7 @@ filtermanytomany
 filterhostcommon
 filteronetomany
 filtermanytoone
+filternewevent
 filtersamename
 filteronetoone
 filter

@@ -94,4 +94,34 @@ void testObj::test<5>(void)
   IODynamicConfig tdc("some owner", t_);
 }
 
+// test erasing parameter
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  tdc_.remove("whatever");
+  ensureCalls(3);
+}
+
+namespace
+{
+struct MyCallback: public DynamicConfig::IterationCallback
+{
+  virtual bool process(const DynamicConfig::Key &, const DynamicConfig::Value &)
+  {
+    return false;
+  }
+}; // struct MyCallback
+} // unnamed namespace
+
+// test erasing parameter
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  MyCallback mc;
+  tdc_.iterate(mc);
+  ensureCalls(4);
+}
+
 } // namespace tut
