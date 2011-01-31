@@ -17,7 +17,7 @@ namespace Postgres
 TestDBAccess::TestDBAccess(void):
   conn_( DBConnection::Parameters("localhost",
                                   "5432",
-                                  "acarm_ng_test",
+                                  "acarm_ng_test_v0_1_0",
                                   "acarm-ng-tests",
                                   "test.password") )
 {
@@ -50,6 +50,7 @@ void TestDBAccess::removeAllData(void)
   t.exec("DELETE FROM meta_alerts_in_use");
   t.exec("DELETE FROM alert_to_meta_alert_map");
   t.exec("DELETE FROM meta_alerts_tree");
+  t.exec("DELETE FROM meta_alerts_roots");
   t.exec("DELETE FROM meta_alerts");
   t.exec("DELETE FROM procs");
   t.exec("DELETE FROM services");
@@ -67,7 +68,7 @@ void TestDBAccess::removeAllData(void)
 
 void TestDBAccess::fillWithContent1(void)
 {
-  const int  ret=system("psql -d acarm_ng_test -f testdata/test_data_001.sql "
+  const int  ret=system("psql -d acarm_ng_test_v0_1_0 -f testdata/test_data_001.sql "
                         "> /dev/null");
   assert(ret==0 && "ooops - filling data base with tst content failed");
 }

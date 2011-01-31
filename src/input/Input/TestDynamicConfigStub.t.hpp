@@ -66,6 +66,18 @@ private:
     throw std::runtime_error("TestDynamicConfigStub::readConstImpl() not implemented");
   }
 
+  virtual void removeImpl(Persistency::IO::Transaction &/*t*/, const Key &key)
+  {
+    getDataMap().erase( key.get() );
+  }
+
+  virtual void iterateImpl(Persistency::IO::Transaction &/*t*/, IterationCallback &cb)
+  {
+    for(Data::DataMap::const_iterator it=getDataMap().begin(); it!=getDataMap().end(); ++it)
+      if( cb.process(it->first, it->second)==false )
+        return;
+  }
+
   Data::DataMap &getDataMap(void)
   {
     return getDataPtr()->owner_[ getOwner().get() ];

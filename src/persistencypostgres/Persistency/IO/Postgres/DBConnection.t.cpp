@@ -32,7 +32,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const DBConnection::Parameters params("localhost", "5432", "acarm_ng_test", "acarm-ng-daemon", "test.daemon");
+  const DBConnection::Parameters params("localhost", "5432", "acarm_ng_test_v0_1_0", "acarm-ng-daemon", "test.daemon");
   DBConnection dbconn(params);
 }
 
@@ -41,7 +41,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  DBConnection::Parameters params("localhost", "543", "acarm_ng_test", "acarm-ng-daemon", "test.daemon");
+  DBConnection::Parameters params("localhost", "543", "acarm_ng_test_v0_1_0", "acarm-ng-daemon", "test.daemon");
   try
   {
     DBConnection dbconn(params);
@@ -58,7 +58,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  DBConnection::Parameters params("localhost", "5432", "acarm_ng_test", "acarm-ng-daemon", "wrong.password");
+  DBConnection::Parameters params("localhost", "5432", "acarm_ng_test_v0_1_0", "acarm-ng-daemon", "wrong.password");
   try
   {
     DBConnection dbconn(params);
@@ -75,7 +75,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  DBConnection::Parameters params("host", "5432", "acarm_ng_test", "acarm-ng-daemon", "test.daemon");
+  DBConnection::Parameters params("host", "5432", "acarm_ng_test_v0_1_0", "acarm-ng-daemon", "test.daemon");
   try
   {
     DBConnection dbconn(params);
@@ -109,7 +109,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  DBConnection::Parameters params("localhost", "5432", "acarm_ng_test", "acarm-ng", "test.daemon");
+  DBConnection::Parameters params("localhost", "5432", "acarm_ng_test_v0_1_0", "acarm-ng", "test.daemon");
   try
   {
     DBConnection dbconn(params);

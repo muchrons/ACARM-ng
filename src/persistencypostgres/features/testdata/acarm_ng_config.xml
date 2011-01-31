@@ -12,7 +12,7 @@
     <type>postgres</type>
     <host>localhost</host>
     <port>5432</port>
-    <dbname>acarm_ng_test</dbname>
+    <dbname>acarm_ng_test_v0_1_0</dbname>
     <user>acarm-ng-daemon</user>
     <pass>test.daemon</pass>
   </persistency>

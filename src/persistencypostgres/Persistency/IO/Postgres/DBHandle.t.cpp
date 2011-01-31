@@ -42,7 +42,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const DBConnection::Parameters params("localhost", "5432", "acarm_ng_test", "acarm-ng-daemon", "test.daemon");
+  const DBConnection::Parameters params("localhost", "5432", "acarm_ng_test_v0_1_0", "acarm-ng-daemon", "test.daemon");
   DBHandle dbh(params, idCache_);
 }
 

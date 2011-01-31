@@ -309,7 +309,8 @@ vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, con
 std::vector<DataBaseID> EntryReader::readRoots()
 {
   SQL("CREATE TEMP TABLE tmp ON COMMIT DROP AS SELECT id_node, id_child FROM meta_alerts_tree"
-      " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);", log_).exec(t_);
+      " INNER JOIN meta_alerts_in_use ON(meta_alerts_tree.id_node=meta_alerts_in_use.id_meta_alert);",
+      log_).exec(t_);
 
   const result r = SQL("SELECT DISTINCT T.id_node FROM tmp T WHERE NOT EXISTS( "
                        "SELECT id_node FROM tmp S WHERE T.id_node=S.id_child );", log_).exec(t_);
@@ -394,6 +395,26 @@ DynamicConfig::ValueNULL EntryReader::readConfigParameterCommon(const char      
   assert( r.size()==1 );
   const string &value=ReaderHelper<string>::readAsNotNull(r[0]["value"]);
   return DynamicConfig::ValueNULL(value);
+}
+
+void EntryReader::iterateConfigParameters(const DynamicConfig::Owner &owner, DynamicConfig::IterationCallback &cb)
+{
+  // perform query
+  stringstream ss;
+  ss << "SELECT key, value FROM config WHERE owner = ";
+  Appender::append(ss, owner.get());
+  const result r = SQL( ss.str(), log_ ).exec(t_);
+  // iterate through results
+  for(result::const_iterator it=r.begin(); it!=r.end(); ++it)
+  {
+    const string &key  =ReaderHelper<string>::readAsNotNull( (*it)["key"] );
+    const string &value=ReaderHelper<string>::readAsNotNull( (*it)["value"] );
+    if( cb.process(key, value)==false )
+    {
+      LOGMSG_DEBUG(log_, "terminating iteration over elements on callback's request");
+      return;
+    }
+  }
 }
 
 template<typename T>

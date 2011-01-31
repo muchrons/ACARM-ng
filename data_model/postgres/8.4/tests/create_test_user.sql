@@ -1,5 +1,5 @@
 CREATE USER "acarm-ng-tests" PASSWORD 'test.password';
-GRANT ALL ON DATABASE acarm_ng_test TO "acarm-ng-tests";
+GRANT ALL ON DATABASE acarm_ng_test_v0_1_0 TO "acarm-ng-tests";
 GRANT ALL ON TABLE
     config_rdonly,
     config,
@@ -16,6 +16,7 @@ GRANT ALL ON TABLE
     meta_alerts,
     alert_to_meta_alert_map,
     meta_alerts_tree,
+    meta_alerts_roots,
     meta_alerts_in_use,
     meta_alerts_already_triggered
     TO "acarm-ng-tests";

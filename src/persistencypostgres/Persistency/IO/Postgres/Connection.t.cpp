@@ -35,7 +35,7 @@ struct TestClass
     IO::BackendFactory::Options opts;
     opts["host"]  ="localhost";
     opts["port"]  ="5432";
-    opts["dbname"]="acarm_ng_test";
+    opts["dbname"]="acarm_ng_test_v0_1_0";
     opts["user"]  ="acarm-ng-daemon";
     opts["pass"]  ="test.daemon";
     return IO::ConnectionPtrNN(

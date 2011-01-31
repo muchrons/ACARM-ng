@@ -27,7 +27,7 @@ struct TestConnection
   {
     return DBConnection::Parameters("localhost",
                                     "5432",
-                                    "acarm_ng_test",
+                                    "acarm_ng_test_v0_1_0",
                                     "acarm-ng-daemon",
                                     "test.daemon");
   }

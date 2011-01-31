@@ -130,6 +130,14 @@ struct TestClass
                 ") ON COMMIT DROP;" );
   }
 
+  void checkRoots(const unsigned int &roots)
+  {
+    stringstream ss;
+    ss << "SELECT * FROM meta_alerts_roots";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    tut::ensure_equals("entry not saved", r.size(), roots);
+  }
+
   DataCleaner         dc_;
 
   const Alert::Name   name_;
@@ -791,7 +799,7 @@ void testObj::test<20>(void)
   es_.markMetaAlertAsTriggered(malertID, TriggerName);
   ss.str("");
   {
-    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
+    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert = " << malertID << ";";
     result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
     ensure_equals("invalid trigger name", ReaderHelper<string>::readAsNotNull(r[0]["trigger_name"]), TriggerName);
@@ -924,7 +932,7 @@ void testObj::test<25>(void)
   t_.commit();
 }
 
-// trying save MetaAlert as triggered and then remove saved Meta Alert from triggered
+// trying save MetaAlert as triggered
 template<>
 template<>
 void testObj::test<26>(void)
@@ -943,17 +951,10 @@ void testObj::test<26>(void)
   es_.markMetaAlertAsTriggered(malertID, triggerName);
   ss.str("");
   {
-    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
+    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert = " << malertID << ";";
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid number of trigered meta-alerts in data base", r.size(), 1u);
     ensure_equals("invalid trigger name", ReaderHelper<string>::readAsNotNull(r[0]["trigger_name"]), triggerName);
-  }
-  es_.markMetaAlertAsUnused(malertID);
-  ss.str("");
-  {
-    ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_in_use = " << malertID << ";";
-    const result r = t_.getAPI<TransactionAPI>().exec(ss);
-    ensure_equals("invalid number of trigered meta-alerts in data base", r.size(), 0u);
   }
 }
 
@@ -1142,4 +1143,101 @@ void testObj::test<32>(void)
   es_.saveTargetHost(alertID, *host);
   t_.commit();
 }
+
+// test for saving ID of root node
+template<>
+template<>
+void testObj::test<33>(void)
+{
+  // save Meta-Alert
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL().shared_ptr(), created_, 42u);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
+  // save
+  es_.saveRootID(malertID);
+  // check save
+  checkRoots(1u);
+}
+
+// test for deleting ID of root node
+template<>
+template<>
+void testObj::test<34>(void)
+{
+  // save Meta-Alert
+  const MetaAlert::Name name("meta alert");
+  MetaAlert ma(name, 0.22, 0.23, makeNewReferenceURL().shared_ptr(), created_, 42u);
+  const DataBaseID malertID = es_.saveMetaAlert(ma);
+  // save
+  es_.saveRootID(malertID);
+  // check save
+  checkRoots(1u);
+  // delete
+  es_.deleteRootID(malertID);
+  // check delete
+  checkRoots(0u);
+}
+
+// save tree with two roots
+template<>
+template<>
+void testObj::test<35>(void)
+{
+  makeNewTree6();
+  checkRoots(2u);
+}
+
+// save tree with one root
+template<>
+template<>
+void testObj::test<36>(void)
+{
+  makeNewTree7();
+  checkRoots(1u);
+}
+
+// no roots
+template<>
+template<>
+void testObj::test<37>(void)
+{
+  checkRoots(0u);
+}
+
+// try removing parameter
+template<>
+template<>
+void testObj::test<38>(void)
+{
+  // save something
+  es_.saveConfigParameter("owner1", "key1", "value1");
+  // remove it
+  es_.removeConfigParameter("owner1", "key1");
+  // check
+  {
+    stringstream ss;
+    ss << "SELECT * FROM config WHERE owner='owner1' AND key='key1'";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("entry not removed", r.size(), 0u);
+  }
+}
+
+// try removing unexisitng parameter
+template<>
+template<>
+void testObj::test<39>(void)
+{
+  // save something
+  es_.saveConfigParameter("owner2", "key1", "value1");
+  // remove something that does not exist
+  es_.removeConfigParameter("owner1", "key1");
+  // check
+  {
+    stringstream ss;
+    ss << "SELECT * FROM config WHERE owner='owner2' AND key='key1' AND value='value1'";
+    const result r = t_.getAPI<TransactionAPI>().exec(ss);
+    ensure_equals("invalid entry removed", r.size(), 1u);
+  }
+}
+
 } // namespace tut

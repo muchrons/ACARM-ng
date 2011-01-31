@@ -18,7 +18,7 @@ struct TestClass
 {
   ConnectionBuilder::FactoryPtr build(const char *host  ="localhost",
                                       const char *port  ="5432",
-                                      const char *dbname="acarm_ng_test",
+                                      const char *dbname="acarm_ng_test_v0_1_0",
                                       const char *user  ="acarm-ng-daemon",
                                       const char *pass  ="test.daemon") const
   {
@@ -123,7 +123,7 @@ void testObj::test<7>(void)
 {
     try
     {
-      build("localhost", "5432", "acarm_ng_test", "acarm-ng-daemon", "BAD_PASSWORD");
+      build("localhost", "5432", "acarm_ng_test_v0_1_0", "acarm-ng-daemon", "BAD_PASSWORD");
       tut::fail("build() didn't throw on invalid options");
     }
     catch(const std::runtime_error&)
