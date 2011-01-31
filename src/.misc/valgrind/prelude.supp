@@ -1,0 +1,17 @@
+{
+   libprelude_init
+   Memcheck:Leak
+
+   ...
+   fun:prelude_client_init
+   ...
+}
+
+{
+   libprelude_new
+   Memcheck:Leak
+
+   ...
+   fun:prelude_client_new
+   ...
+}
