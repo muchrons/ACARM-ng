@@ -1,5 +1,5 @@
 #!/bin/bash
-DB="acarm_ng"
+DB="acarm_ng_v0_1_0"
 
 # note: 'ls' is needed here to preserve proper order of execution
 for s in `ls *.sql`
