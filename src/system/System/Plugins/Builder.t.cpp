@@ -8,6 +8,7 @@
 
 #include "System/Plugins/Builder.hpp"
 #include "System/Plugins/TestBase.t.hpp"
+#include "System/ignore.hpp"
 
 using namespace System::Plugins;
 namespace fs=boost::filesystem;
@@ -35,6 +36,7 @@ template<>
 void testObj::test<1>(void)
 {
   DynamicObject h=b_.open("./sharedobj.so");
+  System::ignore(h);
 }
 
 // test opening non-existing object
@@ -60,6 +62,7 @@ void testObj::test<3>(void)
 {
   Builder       b(false, false);
   DynamicObject h=b.open("./sharedobj.so");
+  System::ignore(h);
 }
 
 // test if opening works when just file name is given

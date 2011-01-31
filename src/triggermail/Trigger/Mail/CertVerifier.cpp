@@ -2,10 +2,9 @@
  * CertVerifier.cpp
  *
  */
-#include <vmime/vmime.hpp>
-
 #include "Logger/Logger.hpp"
 #include "Commons/Filesystem/openFile.hpp"
+#include "Trigger/Mail/Vmime.hpp"
 #include "Trigger/Mail/CertVerifier.hpp"
 
 using namespace Commons;

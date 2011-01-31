@@ -9,6 +9,7 @@
 
 #include <memory>
 #include <boost/shared_ptr.hpp>
+#include <boost/type_traits/add_const.hpp>
 #include <cassert>
 
 #include "System/ExceptionPointerIsNULL.hpp"
@@ -107,46 +108,24 @@ public:
       ptr_=other.shared_ptr();
     return *this;
   }
-  /** \brief arrow operator.
-   *  \return const pointer to this.
-   */
-  const pointer operator->(void) const
-  {
-    return get();
-  }
   /** \brief arror operator.
    *  \return pointer to this.
    */
-  pointer operator->(void)
+  pointer operator->(void) const
   {
     return get();
   }
   /** \brief dereference operator.
-   *  \return const reference to this.
+   *  \return reference to helpd object.
    */
-  const reference operator*(void) const
+  reference operator*(void) const
   {
     return *get();
-  }
-  /** \brief dereference operator.
-   *  \return reference to this.
-   */
-  reference operator*(void)
-  {
-    return *get();
-  }
-  /** \brief test getter.
-   *  \return direct pointer value.
-   */
-  const pointer get(void) const
-  {
-    assert( ptr_.get()!=NULL );
-    return ptr_.get();
   }
   /** \brief test const getter.
    *  \return direct pointer value.
    */
-  pointer get(void)
+  pointer get(void) const
   {
     assert( ptr_.get()!=NULL );
     return ptr_.get();

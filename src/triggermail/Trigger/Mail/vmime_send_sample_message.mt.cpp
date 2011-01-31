@@ -4,10 +4,9 @@
  */
 #include <iostream>
 #include <boost/lexical_cast.hpp>
-#include <vmime/vmime.hpp>
-#include <vmime/platforms/posix/posixHandler.hpp>
 #include <cassert>
 
+#include "Trigger/Mail/Vmime.hpp"
 #include "Trigger/Mail/TestAccount.t.hpp"
 
 
