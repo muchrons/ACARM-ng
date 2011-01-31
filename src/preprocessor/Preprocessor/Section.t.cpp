@@ -35,16 +35,16 @@ factory tf("Preprocessor/Section");
 namespace tut
 {
 
-// test createing default drop-section
+// test createing default reject-section
 template<>
 template<>
 void testObj::test<1>(void)
 {
   const Rule                  r=Rule::makeTrue();
   const Expression            e=Expression::makeTerm(r);
-  const Section               s(Section::Type::DENY, e);
+  const Section               s(Section::Type::REJECT, e);
   const Preprocessor::Section ps(s);
-  ensure("drop section didn't worked", ps.process(alert_)==Preprocessor::Section::Decision::DENY );
+  ensure("reject section didn't worked", ps.process(alert_)==Preprocessor::Section::Decision::REJECT );
 }
 
 // test createing default accept-section
@@ -59,16 +59,16 @@ void testObj::test<2>(void)
   ensure("accept section didn't worked", ps.process(alert_)==Preprocessor::Section::Decision::ACCEPT );
 }
 
-// negative test for drop-section
+// negative test for reject-section
 template<>
 template<>
 void testObj::test<3>(void)
 {
   const Rule                  r=Rule::makeFalse();
   const Expression            e=Expression::makeTerm(r);
-  const Section               s(Section::Type::DENY, e);
+  const Section               s(Section::Type::REJECT, e);
   const Preprocessor::Section ps(s);
-  ensure("drop section didn't worked", ps.process(alert_)==Preprocessor::Section::Decision::CONTINUE );
+  ensure("reject section didn't worked", ps.process(alert_)==Preprocessor::Section::Decision::CONTINUE );
 }
 
 // negative test for accept-section

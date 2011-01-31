@@ -41,7 +41,7 @@ bool LogicImpl::checkAccept(const Persistency::Alert &alert) const
         LOGMSG_DEBUG_S(log_)<<"alert '"<<alert.getName().get()<<"' accepted by rule no. "<<i;
         return true;
 
-      case Section::Decision::DENY:
+      case Section::Decision::REJECT:
         LOGMSG_DEBUG_S(log_)<<"alert '"<<alert.getName().get()<<"' denied by rule no. "<<i;
         return false;
 

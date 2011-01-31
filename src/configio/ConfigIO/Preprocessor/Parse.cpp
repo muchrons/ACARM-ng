@@ -42,8 +42,7 @@ Rule parseComplexRule(const XML::Node &rule)
     // ensure only two attributes are present
     ++index;
     if(index>2)
-      throw ExceptionParseError(SYSTEM_SAVE_LOCATION,
-                                "invalid attributes count for term 'rule'");
+      throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "invalid attributes count for term 'rule'");
 
     // check by name
     if( it->getName()=="path" )
@@ -75,8 +74,7 @@ Rule parseRule(const XML::Node &rule)
 
   // sanity check
   if( rule.getChildrenList().size()!=0 )
-    throw ExceptionParseError(SYSTEM_SAVE_LOCATION,
-                              "term " + name + "cannot have children nodes");
+    throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "term " + name + "cannot have children nodes");
 
   // TRUE
   if(name=="true")
@@ -88,8 +86,7 @@ Rule parseRule(const XML::Node &rule)
 
   // sanity check
   if(name!="rule")
-    throw ExceptionParseError(SYSTEM_SAVE_LOCATION,
-                              "unknown term (node): " + name);
+    throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "unknown term (node): " + name);
   assert(name=="rule");
 
   // RULE
@@ -104,13 +101,11 @@ Expression::Expressions parseExpressionsSet(const XML::Node &parent)
 {
   // each expression must have at least two elements
   if( parent.getChildrenList().size()<2 )
-    throw ExceptionParseError(SYSTEM_SAVE_LOCATION,
-                              "not enought children for expression type: " + parent.getName() );
+    throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "not enought children for expression type: " + parent.getName() );
 
   // prase each element
   Expression::Expressions expressions;
-  for(XML::Node::TNodesList::const_iterator it=parent.getChildrenList().begin();
-      it!=parent.getChildrenList().end(); ++it)
+  for(XML::Node::TNodesList::const_iterator it=parent.getChildrenList().begin(); it!=parent.getChildrenList().end(); ++it)
     expressions.push_back( parseExpression(*it) );
   return expressions;
 }
@@ -135,8 +130,7 @@ Expression parseExpression(const XML::Node &expression)
   {
     // 'not' must have exactly one element
     if( children.size()!=1 )
-      throw ExceptionParseError(SYSTEM_SAVE_LOCATION,
-          "invalid children count for expression type: not");
+      throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "invalid children count for expression type: not");
     assert( children.size()==1 );
     return Expression::makeNot( parseExpression( *children.begin() ) );
   }
@@ -149,14 +143,13 @@ Expression parseExpression(const XML::Node &expression)
 Section::Type getSectionType(const XML::Node &section)
 {
   const std::string &name=section.getName();
-  if(name=="deny")
-    return Section::Type::DENY;
+  if(name=="reject")
+    return Section::Type::REJECT;
   if(name=="accept")
     return Section::Type::ACCEPT;
 
   // we shouldn't be here
-  throw ExceptionParseError(SYSTEM_SAVE_LOCATION,
-                            "unknown section type: '" + name + "'");
+  throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "unknown section type: '" + name + "'");
 } // getSectionType()
 
 
@@ -165,8 +158,7 @@ Section parseSection(const XML::Node &section)
   const Section::Type type=getSectionType(section);
 
   if( section.getChildrenList().size()!=1 )
-    throw ExceptionParseError(SYSTEM_SAVE_LOCATION,
-                              "invalid children count for given section");
+    throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "invalid children count for given section");
   assert( section.getChildrenList().begin()!=section.getChildrenList().end() );
   const Expression expression=parseExpression( *section.getChildrenList().begin() );
 

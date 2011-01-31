@@ -30,9 +30,9 @@ Section::Decision Section::process(const Persistency::Alert &alert) const
   if( isAcceptType_==true && result==true )
     return Decision::ACCEPT;
 
-  // deny-section returned true
+  // reject-section returned true
   if( isAcceptType_==false && result==true )
-    return Decision::DENY;
+    return Decision::REJECT;
 
   // if not, it means that result cannot be determined at this level
   return Decision::CONTINUE;
