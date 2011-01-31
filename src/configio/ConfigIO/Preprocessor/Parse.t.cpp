@@ -45,9 +45,9 @@ const char *xmlMultipleSections=
   "    <accept>"
   "      <true/>"
   "    </accept>"
-  "    <deny>"
+  "    <reject>"
   "      <false/>"
-  "    </deny>"
+  "    </reject>"
   "  </preprocessor>"
   "</acarm_ng>"
   "";
@@ -340,7 +340,7 @@ void testObj::test<4>(void)
   // test section 2
   {
     const Section    &s=c.getSections().at(1);
-    ensure("invalid section 2 type", s.getType()==Section::Type::DENY);
+    ensure("invalid section 2 type", s.getType()==Section::Type::REJECT);
     const Expression &e=s.getExpression();
     ensure("invalid expression 2 type", e.getType()==Expression::Type::TERM);
     const Rule       &r=e.getRules().at(0);

@@ -35,19 +35,19 @@ factory tf("Preprocessor/LogicImpl");
 namespace tut
 {
 
-// test dropping with single rule
+// test rejecting with single rule
 template<>
 template<>
 void testObj::test<1>(void)
 {
   const Rule                    r=Rule::makeTrue();
   const Expression              e=Expression::makeTerm(r);
-  const Section                 s(Section::Type::DENY, e);
+  const Section                 s(Section::Type::REJECT, e);
   Config::Sections              cs;
   cs.push_back(s);
   const Config                  cfg(cs);
   const Preprocessor::LogicImpl ps(cfg);
-  ensure("denying with single rule didn't worked", ps.checkAccept(alert_)==false );
+  ensure("rejecting with single rule didn't worked", ps.checkAccept(alert_)==false );
 }
 
 // test accepting with single rule
@@ -65,7 +65,7 @@ void testObj::test<2>(void)
   ensure("accepting with single rule didn't worked", ps.checkAccept(alert_)==true );
 }
 
-// test multiple rules - deny (on second)
+// test multiple rules - reject on second
 template<>
 template<>
 void testObj::test<3>(void)
@@ -75,17 +75,17 @@ void testObj::test<3>(void)
   const Expression              e1=Expression::makeTerm(r1);
   const Section                 s1(Section::Type::ACCEPT, e1);
 
-  // deny section
+  // reject section
   const Rule                    r2=Rule::makeTrue();
   const Expression              e2=Expression::makeTerm(r2);
-  const Section                 s2(Section::Type::DENY, e2);
+  const Section                 s2(Section::Type::REJECT, e2);
 
   Config::Sections              cs;
   cs.push_back(s1);
   cs.push_back(s2);
   const Config                  cfg(cs);
   const Preprocessor::LogicImpl ps(cfg);
-  ensure("denying on second rule didn't worked", ps.checkAccept(alert_)==false );
+  ensure("rejecting on second rule didn't worked", ps.checkAccept(alert_)==false );
 }
 
 // test multiple rules - accept (on second)
@@ -93,10 +93,10 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  // deny section
+  // reject section
   const Rule                    r1=Rule::makeFalse();
   const Expression              e1=Expression::makeTerm(r1);
-  const Section                 s1(Section::Type::DENY, e1);
+  const Section                 s1(Section::Type::REJECT, e1);
 
   // accept section
   const Rule                    r2=Rule::makeTrue();
