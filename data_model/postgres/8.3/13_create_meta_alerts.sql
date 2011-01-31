@@ -84,9 +84,7 @@ CREATE INDEX meta_alerts_tree_id_child_index ON meta_alerts_tree(id_child);
 -- meta alerts roots
 CREATE TABLE meta_alerts_roots
 (
-  -- TODO: foregin key constraint is missing
-  id_root bigint NOT NULL UNIQUE,
-  UNIQUE(id_root)
+  id_root bigint NOT NULL UNIQUE REFERENCES meta_alerts(id)
 );
 
 --
