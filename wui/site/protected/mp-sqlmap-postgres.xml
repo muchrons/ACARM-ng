@@ -42,9 +42,8 @@
   </select>
 
   <select id="SelectAlert" resultClass="CAlertEntry" parameterClass="int">
-    SELECT a.name, a.detect_time AS detect, a.create_time AS create, a.description as description, a.certanity AS certainty, s.name AS severity, h1.ip AS src_ip, h2.ip AS dst_ip 
-      FROM alerts AS a,hosts AS h1,hosts AS h2, severities AS s
-      WHERE h1.id_alert=h2.id_alert AND h1.id_alert=a.id AND h1.role='src' AND h2.role='dst' AND s.id=a.id_severity AND a.id=#VALUE#;
+    SELECT a.name, a.detect_time AS detect, a.create_time AS create, a.description as description, a.certanity AS certainty, s.name AS severity
+      FROM alerts AS a LEFT JOIN severities AS s ON s.id=a.id_severity WHERE a.id=#VALUE#;
   </select>
 
   <select id="SelectHost" resultClass="CReportedHostEntry" parameterClass="int">

@@ -5,7 +5,7 @@
 <com:DataTableTemplate
         ID="Alerts"
         text_="The most recent alerts:"
-        query_="SelectAlertsSummary"/>
+        query_="SelectAlertsSummary"/>     
 </div>
 
 <com:RangeSelector ID="Range" />
