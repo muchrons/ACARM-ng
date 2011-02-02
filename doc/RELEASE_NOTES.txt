@@ -13,4 +13,10 @@
   - samename
 * inputs:
   - prelude
-  - file
+  - file (IDMEF)
+* triggers:
+  - gadu-gadu
+  - e-mail
+  - jabber
+  - file output (IDMEF)
+  - external application
