@@ -1,0 +1,4 @@
+#!/bin/bash
+. ./bzr_build.conf || exit $?
+build_project_coding_convertion || exit $?
+exit $RET

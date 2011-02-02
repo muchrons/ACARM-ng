@@ -34,8 +34,6 @@ public:
   Persistency::GraphNodePtrNN read(void);
 
 private:
-  Persistency::AlertPtrNN readAlert(void);
-
   Logger::Node                     log_;
   Persistency::IO::ConnectionPtrNN conn_;
   Core::Types::AlertsFifo          queue_;
