@@ -11,3 +11,6 @@
   - DNS resolver
   - IP blacklist
   - samename
+* inputs:
+  - prelude
+  - file
