@@ -43,8 +43,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Section s(Section::Type::DENY, makeExpression() );
-  ensure("invalid type", s.getType()==Section::Type::DENY);
+  const Section s(Section::Type::REJECT, makeExpression() );
+  ensure("invalid type", s.getType()==Section::Type::REJECT);
 }
 
 // test getting expression
@@ -52,7 +52,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const Section s(Section::Type::DENY, makeExpression() );
+  const Section s(Section::Type::REJECT, makeExpression() );
   ensure("invalid expression type", s.getExpression().getType()==Expression::Type::TERM);
 }
 

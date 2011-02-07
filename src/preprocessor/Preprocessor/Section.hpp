@@ -23,7 +23,7 @@ struct SectionDecision
   typedef enum
   {
     ACCEPT,     // accept alert
-    DENY,       // deny alert (i.e. drop it)
+    REJECT,     // reject alert
     CONTINUE    // no match - check next section
   }
   Type;
@@ -47,7 +47,7 @@ public:
   /** \brief process given alert and return decision.
    *  \param alert alert to be checked.
    *  \return Decision::ACCEPT when this alert is to be acceopted,
-   *          Decision::DROP when this alert is to be droped or
+   *          Decision::REJECT when this alert is to be rejected or
    *          Decision::CONTINUE if this section cannot decide
    *          faith of this alert.
    */

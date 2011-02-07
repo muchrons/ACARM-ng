@@ -29,7 +29,7 @@
     AllowPaging="true"
     AllowCustomPaging="true"
     PageSize="20"
-    AutoGenerateColumns="true"
+    AutoGenerateColumns="false"
     CellPadding="2"
     CellSpacing="0"
     HeaderStyle.BackColor="black"

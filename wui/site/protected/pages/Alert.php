@@ -10,9 +10,9 @@ class Alert extends TPage
     $this->alert_=CSQLMap::get()->queryForObject('SelectAlert', $this->alertID_);
   }
 
-  public function onLoad()
+  public function onLoad($param)
   {
-    // TODO: parent::onLoad() is missing
+    parent::onLoad($param);
 
     if( $this->alert_===null )
       die("invalid alert / alert not set");
