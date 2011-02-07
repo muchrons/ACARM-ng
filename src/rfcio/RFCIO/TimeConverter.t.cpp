@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <cmath>
 
+#include "Logger/Logger.hpp"
 #include "RFCIO/TimeConverter.hpp"
 
 using namespace std;
@@ -114,7 +115,8 @@ struct TestCase2Impl<false>
 {
   static void run(void)
   {
-    fail("cannot perform this test on 32-bit machines - sorry...");
+    const Logger::Node log("rfcio.timeconverter.test");
+    LOGMSG_ERROR(log, "cannot perform this test on 32-bit machines - sorry...");
   }
 };
 
@@ -154,7 +156,8 @@ struct TestCase3Impl<false>
 {
   static void run(void)
   {
-    fail("cannot perform this test on 32-bit machines - sorry...");
+    const Logger::Node log("rfcio.timeconverter.test");
+    LOGMSG_ERROR(log, "cannot perform this test on 32-bit machines - sorry...");
   }
 };
 
