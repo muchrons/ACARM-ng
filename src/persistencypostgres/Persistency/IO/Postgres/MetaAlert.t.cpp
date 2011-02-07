@@ -122,7 +122,7 @@ void testObj::test<3>(void)
   checkIfMetaAlertIsUsed(malertID);
   string TriggerName("some trigger name");
   malert.markAsTriggered(TriggerName);
-  ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert_triggered = " << malertID << ";";
+  ss << "SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert = " << malertID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size",r.size(), 1u);
   ensure_equals("invalid trigger name", ReaderHelper<string>::readAsNotNull(r[0]["trigger_name"]), TriggerName);

@@ -24,7 +24,7 @@ struct SectionType
   typedef enum
   {
     ACCEPT,
-    DENY
+    REJECT
   }
   Type;
 };

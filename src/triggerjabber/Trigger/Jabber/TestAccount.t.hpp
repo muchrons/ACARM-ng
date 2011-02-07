@@ -89,16 +89,16 @@ public:
       conn_.get()->disposeMessageSession( sess_ );
     sess_ = session;
     // TODO: what is session is NULL? tut::ensure or at least assert is missing here
+    tut::ensure( "session is NULL" , sess_ != NULL);
     sess_->registerMessageHandler( this );
   }
 
-// TODO: fix formatting of this code:
-  private:
-    Trigger::Jabber::Connection &conn_;
-    bool msg_;
-    std::string message_;
-    std::string sender_;
-    MessageSession *sess_;
+private:
+  Trigger::Jabber::Connection &conn_;
+  bool msg_;
+  std::string message_;
+  std::string sender_;
+  MessageSession *sess_;
 };
 
 std::string getMessageFromAccount(const Trigger::Jabber::AccountConfig &account, const std::string &sender)

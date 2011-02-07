@@ -40,9 +40,7 @@ void testObj::test<2>(void)
 {
   Sources                     s;
   Persistency::GraphNodePtrNN leaf=s.read();
-  ensure_equals("invalid leaf returned",
-                leaf->getAlert()->getName().get(),
-                std::string("some alert") );
+  ensure_equals("invalid leaf returned", leaf->getAlert()->getName().get(), std::string("some alert") );
 }
 
 } // namespace tut

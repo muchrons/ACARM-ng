@@ -22,6 +22,23 @@ class DataTableTemplate extends TTemplateControl
         $this->DataGrid->DataSource=array(array('Info'=>'Your query returned no data. Take a deep breath and try again.'));
         $this->DataGrid->VirtualItemCount=1;
       }
+
+    $data=$this->DataGrid->DataSource[0]; //[0] is ok, count is >=1
+    foreach($data as $column_name=>$rows)
+      {
+        if ($column_name=="id")
+          continue; //skip columns entitled "id"
+
+        $header=new TTableHeaderCell();
+        $header->setData("dupka");
+
+        $column=new TBoundColumn();
+        $column->DataField=$column_name;
+        $column->HeaderText= str_replace("_"," ",$column_name);
+        $column->initializeCell($header,0,"Header");
+        $this->DataGrid->Columns->add($column);
+      }
+    //    die();
     $this->DataGrid->dataBind();
   }
 

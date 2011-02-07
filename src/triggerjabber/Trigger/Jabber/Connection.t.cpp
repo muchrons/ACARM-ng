@@ -62,8 +62,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  // TODO: consider "pasword-wrong" to keep the convention
-  ensureThrow(AccountConfig("jabber.org", "acarm-ng1", "testaccoun") );
+  ensureThrow(AccountConfig("jabber.org", "acarm-ng1", "password-wrond") );
 }
 
 // test throw on invalid login
@@ -71,7 +70,6 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  // TODO: password is wrong here too, thus test does not test what it says
-  ensureThrow(AccountConfig("jabber.org", "acarm-wrong", "testaccoun") );
+  ensureThrow(AccountConfig("jabber.org", "acarm-wrong", "testaccount") );
 }
 } // namespace tut
