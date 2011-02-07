@@ -1,4 +1,5 @@
 #!/bin/bash
 set -e
+export TO_PRIVATE="yes"
 . bzr_team.conf
 exec bzr push "$PARENT/../devel/$RU"
