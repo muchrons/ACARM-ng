@@ -1,8 +1,3 @@
-* add query for getting roots (when dedicated table will be available).
-* add view showing meta-alerts currently processed by the system (i.e. elements in use).
-* add view showing meta-alerts reported by the system (subset of elements in use).
 * remove data base IDs from all tables.
-* add login/logout functionality.
-* add logging of every action taken in the WUI.
-* add logs view table.
-* create meta-alert overview, that would show all the meta-alerts' content (i.e.: children nodes) on one page.
+* heatmap does not work.
+* graph servicezs does not work.
