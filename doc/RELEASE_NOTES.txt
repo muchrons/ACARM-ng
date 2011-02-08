@@ -30,7 +30,7 @@
   - event chain
   - DNS resolver
   - IP blacklist
-  - samename
+  - same name
 * inputs:
   - prelude
   - file (IDMEF)
@@ -40,15 +40,15 @@
   - jabber
   - file output (IDMEF)
   - external application
-* peristency modules:
+* persistency modules:
   - postgres
-  - stub (no persistenet storage)
+  - stub (no persistent storage)
 * application to dump alerts from persistent storage
 * WUI options:
   - access to alerts
   - access to correlated alerts (aka: meta-alerts)
   - access to analyzers
-  - heatmap
+  - heat map
   - alerts count in time plot
   - meta alerts count in time plot
   - alerts types plot
