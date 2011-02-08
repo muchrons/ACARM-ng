@@ -9,7 +9,7 @@
 * add handle for out-of-memory problem (i.e. using own wrapper for memory manager).
 * consider adding pre-requisites for triggers, i.e. to trigger only reports of some specific content (preprocessor-like style).
 * trigger reporting "the most important events" aiming to rise about N most important event in some ammount of time (thresholds are variable, depending on the input).
-* encrypted connecitons in Trigger::GG.
+* encrypted connecitons in Trigger::GG (NOTE: it appears that there are 2 standards now: GG-specific, and GNU).
 * encrypted connecitons in Trigger::Mail.
 * consider splitig configuration into multiple files (maybe directive like <include> would do the trick, preserving backward compatibility?).
 * consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
