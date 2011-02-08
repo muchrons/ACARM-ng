@@ -1,0 +1,49 @@
+-- v0.1.0 --
+* first version of framework (API)
+* WUI (Web User Interface) for data visualization
+* all elements loadable as plugins
+* preprocessor for rejecting unwanted alerts
+* gcc support
+* multi-threaded processing
+* common algorithms for (meta-)alerts processing
+* flexible notification with triggers
+* flexible correlation and processing with filters
+* flexible data collection with inputs
+* flexible data storage with persistency modules
+* logging to:
+  - file
+  - screen
+  - syslog
+  - null (discards logs)
+* removal of debug logs in release mode
+* filters:
+  - one to one
+  - many to one
+  - one to many
+  - many to many
+  - event chain
+  - DNS resolver
+  - IP blacklist
+  - samename
+* inputs:
+  - prelude
+  - file (IDMEF)
+* triggers:
+  - gadu-gadu
+  - e-mail
+  - jabber
+  - file output (IDMEF)
+  - external application
+* peristency modules:
+  - postgres
+  - stub (no persistenet storage)
+* application to dump alerts from persistent storage
+* WUI options:
+  - access to alerts
+  - access to correlated alerts (aka: meta-alerts)
+  - access to analyzers
+  - heatmap
+  - alerts count in time plot
+  - meta alerts count in time plot
+  - alerts types plot
+  - alerts severities plot
