@@ -143,4 +143,14 @@ void testObj::test<6>(void)
   ensure_equals("invalid element returned", *it, "dog");
 }
 
+// test creating data from single entry
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  Data d=Data::createFrom("abc");
+  ensure_equals("invalid elements count ", d.get().size(), 1u);
+  ensure_equals("invalid element returned", d.get()[0], "abc");
+}
+
 } // namespace tut

@@ -29,6 +29,13 @@ std::auto_ptr<Data> Data::createFrom(const Persistency::ConstAlertPtrNN &a)
   return out;
 }
 
+Data Data::createFrom(const Name &name)
+{
+  Data d;
+  d.names_.push_back(name);
+  return d;
+}
+
 const Data::Names &Data::get(void) const
 {
   assert( names_.size()>0u );

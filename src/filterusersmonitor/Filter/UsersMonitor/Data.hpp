@@ -29,6 +29,7 @@ public:
   typedef std::vector<Name> Names;
 
   static std::auto_ptr<Data> createFrom(const Persistency::ConstAlertPtrNN &a);
+  static Data createFrom(const Name &name);
 
   const Names &get(void) const;
 
