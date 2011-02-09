@@ -14,20 +14,20 @@ namespace
 
 struct TestBase: public TestHelpers::Persistency::TestStubs
 {
-  Persistency::ConstAlertPtrNN mkAlert(const char *src1=NULL, const char *src2=NULL,
-                                       const char *dst1=NULL, const char *dst2=NULL,
-                                       const bool  force=false) const
+  Persistency::AlertPtrNN mkAlert(const char *src1=NULL, const char *src2=NULL,
+                                  const char *dst1=NULL, const char *dst2=NULL,
+                                  const bool  force=false) const
   {
     Persistency::Alert::Hosts src;
     src.push_back( mkHost(src1, src2, force) );
     Persistency::Alert::Hosts tgt;
     tgt.push_back( mkHost(dst1, dst2, force) );
 
-    return Persistency::ConstAlertPtrNN( new Persistency::Alert("n",
-                                                                Persistency::Alert::Analyzers( TestHelpers::Persistency::makeNewAnalyzer() ),
-                                                                NULL, Persistency::Timestamp(),
-                                                                Persistency::Severity(Persistency::SeverityLevel::INFO),
-                                                                0.42, "d", src, tgt) );
+    return Persistency::AlertPtrNN( new Persistency::Alert("n",
+                                                           Persistency::Alert::Analyzers( TestHelpers::Persistency::makeNewAnalyzer() ),
+                                                           NULL, Persistency::Timestamp(),
+                                                           Persistency::Severity(Persistency::SeverityLevel::INFO),
+                                                           0.42, "d", src, tgt) );
   }
 
   Persistency::HostPtrNN mkHost(const char *user1, const char *user2, bool force) const

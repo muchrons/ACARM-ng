@@ -37,8 +37,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  auto_ptr<Data> d=Data::createFrom( mkAlert(NULL, NULL, NULL, NULL, true) );
-  ensure("processes w/o users generated non NULL output", d.get()==NULL );
+  const Data d( mkAlert(NULL, NULL, NULL, NULL, true) );
+  ensure_equals("processes w/o users generated some output", d.get().size(), 0u);
 }
 
 // test if creating from alert w/o processes is NULL.
@@ -46,8 +46,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  auto_ptr<Data> d=Data::createFrom( mkAlert(NULL, NULL, NULL, NULL, false) );
-  ensure("alert w/o processes generated non NULL output", d.get()==NULL );
+  const Data d( mkAlert(NULL, NULL, NULL, NULL, false) );
+  ensure_equals("alert w/o processes generated some output", d.get().size(), 0u);
 }
 
 // test if collected values are fine
@@ -55,9 +55,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  auto_ptr<Data> d=Data::createFrom( mkAlert("alice", "cat", "tom", "jerry") );
-  ensure("got NULL", d.get()!=NULL);
-  Data::Names    out=d->get();
+  const Data  d( mkAlert("alice", "cat", "tom", "jerry") );
+  Data::Names out=d.get();
   sort( out.begin(), out.end() );   // for sake of test's simplicity
   ensure_equals("invalid number of elements", out.size(), 4u);
   ensure_equals("invalid element 1", out[0], "alice");
@@ -71,16 +70,14 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  auto_ptr<Data> d1=Data::createFrom( mkAlert("alice") );
-  auto_ptr<Data> d2=Data::createFrom( mkAlert("cat")   );
-  ensure("d1 is NULL", d1.get()!=NULL );
-  ensure("d2 is NULL", d2.get()!=NULL );
-  d1->swap(*d2);
+  Data d1( mkAlert("alice") );
+  Data d2( mkAlert("cat")   );
+  d1.swap(d2);
   // check
-  ensure_equals("invalid size 1", d1->get().size(), 1u);
-  ensure_equals("invalid size 2", d2->get().size(), 1u);
-  ensure_equals("invalid value 1", d1->get()[0], "cat"  );
-  ensure_equals("invalid value 2", d2->get()[0], "alice");
+  ensure_equals("invalid size 1", d1.get().size(), 1u);
+  ensure_equals("invalid size 2", d2.get().size(), 1u);
+  ensure_equals("invalid value 1", d1.get()[0], "cat"  );
+  ensure_equals("invalid value 2", d2.get()[0], "alice");
 }
 
 // test intersection when there is none
@@ -88,12 +85,10 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  auto_ptr<Data> d1=Data::createFrom( mkAlert("alice") );
-  auto_ptr<Data> d2=Data::createFrom( mkAlert("cat")   );
-  ensure("d1 is NULL", d1.get()!=NULL );
-  ensure("d2 is NULL", d2.get()!=NULL );
-  Data::Names::const_iterator it=d1->commonWith(*d2);
-  ensure("something has been found", it==d1->get().end() );
+  const Data d1( mkAlert("alice") );
+  const Data d2( mkAlert("cat")   );
+  Data::Names::const_iterator it=d1.commonWith(d2);
+  ensure("something has been found", it==d1.get().end() );
 }
 
 // test intersection when there is common element
@@ -101,12 +96,10 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  auto_ptr<Data> d1=Data::createFrom( mkAlert("alice", "dog") );
-  auto_ptr<Data> d2=Data::createFrom( mkAlert("dog", "yeti")   );
-  ensure("d1 is NULL", d1.get()!=NULL );
-  ensure("d2 is NULL", d2.get()!=NULL );
-  Data::Names::const_iterator it=d1->commonWith(*d2);
-  ensure("nothing has been returned", it!=d1->get().end() );
+  const Data d1( mkAlert("alice", "dog") );
+  const Data d2( mkAlert("dog", "yeti")   );
+  Data::Names::const_iterator it=d1.commonWith(d2);
+  ensure("nothing has been returned", it!=d1.get().end() );
   ensure_equals("invalid element returned", *it, "dog");
 }
 
@@ -115,9 +108,18 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  Data d=Data::createFrom("abc");
-  ensure_equals("invalid elements count ", d.get().size(), 1u);
+  const Data d("abc");
+  ensure_equals("invalid elements count", d.get().size(), 1u);
   ensure_equals("invalid element returned", d.get()[0], "abc");
+}
+
+// test creating empty set
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  Data d;
+  ensure_equals("invalid elements count", d.get().size(), 0u);
 }
 
 } // namespace tut

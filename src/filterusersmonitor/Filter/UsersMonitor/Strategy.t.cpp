@@ -43,7 +43,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  fail("TODO");
+  GraphNodePtrNN leaf=makeNewLeaf( mkAlert() );
+  s_.process(leaf, changed_);
 }
 
 // test if entry is not interesting when no user is set

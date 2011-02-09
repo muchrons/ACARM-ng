@@ -9,7 +9,6 @@
 
 #include <string>
 #include <vector>
-#include <memory>
 
 #include "Persistency/Alert.hpp"
 
@@ -28,8 +27,9 @@ public:
   typedef std::string       Name;
   typedef std::vector<Name> Names;
 
-  static std::auto_ptr<Data> createFrom(const Persistency::ConstAlertPtrNN &a);
-  static Data createFrom(const Name &name);
+  Data(void);
+  explicit Data(const Persistency::ConstAlertPtrNN &a);
+  explicit Data(const Name &name);
 
   const Names &get(void) const;
 
@@ -38,9 +38,7 @@ public:
   void swap(Data &other);
 
 private:
-  Data(void);
-
-  static std::auto_ptr<Data> addFrom(std::auto_ptr<Data> out, const Persistency::Alert::Hosts &h);
+  void addFrom(const Persistency::Alert::Hosts &h);
 
   Names names_;
 }; // class Data

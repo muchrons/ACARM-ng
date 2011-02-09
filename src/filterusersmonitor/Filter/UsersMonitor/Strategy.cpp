@@ -31,19 +31,16 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 
 Data Strategy::makeThisEntryUserData(const Node n) const
 {
-  auto_ptr<Data> d=Data::createFrom( n->getAlert() );
-  assert( d.get()!=NULL );
-  assert( d->get().size()>0u );
-  return *d;
+  return Data( n->getAlert() );
 }
 
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
 {
   assert( thisEntry.node_->isLeaf() && "ECL accepted non-leaf" );
-  auto_ptr<Data> d=Data::createFrom( thisEntry.node_->getAlert() );
-  if(d.get()==NULL)
+  Data d( thisEntry.node_->getAlert() );
+  if(d.get().size()==0u)
     return false;
-  assert( d->get().size()>0u );
+  assert( d.get().size()>0u );
   return true;
 }
 
@@ -74,7 +71,7 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
 {
   Data::Names::const_iterator it=thisEntry.t_.commonWith(otherEntry.t_);
   assert( it!=thisEntry.t_.get().end() );
-  return Data::createFrom(*it);
+  return Data(*it);
 }
 
 void Strategy::postProcessNode(Node &/*n*/, Filter::BackendFacade &/*bf*/) const
