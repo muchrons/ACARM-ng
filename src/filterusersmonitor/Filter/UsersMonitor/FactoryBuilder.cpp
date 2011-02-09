@@ -3,6 +3,7 @@
  *
  */
 #include <cassert>
+#include <boost/tokenizer.hpp>
 
 #include "BuildProcess/ForceLink.hpp"
 #include "ConfigIO/FilterConfig.hpp"
@@ -36,6 +37,26 @@ FactoryBuilder::FactoryBuilder(void):
 {
 }
 
+namespace
+{
+inline Data::Names parseSkipNames(const Logger::Node &log, const std::string &in)
+{
+  LOGMSG_DEBUG_S(log)<<"parsing users to be skipped list: '"<<in<<"'";
+  typedef boost::char_separator<char> Separator;
+  typedef boost::tokenizer<Separator> Tokenizer;
+  const Separator    sep(" ");
+  const Tokenizer    tokens(in, sep);
+  Data::Names        skip;
+  // got through all tokens
+  for(Tokenizer::const_iterator it=tokens.begin(); it!=tokens.end(); ++it)
+  {
+    skip.push_back(*it);
+    LOGMSG_INFO_S(log)<<"user '"<<*it<<"' added to skip list";
+  } // for(tokens)
+  return skip;
+} // parseSkipNames()
+} // unnamed namespace
+
 FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) const
 {
   LOGMSG_INFO(log_, "building filter's instance");
@@ -43,14 +64,17 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   const FilterConfig fc(type_, options);
   // filter onetoone name
-  const std::string    &name=fc["name"];
+  const std::string &name=fc["name"];
   LOGMSG_INFO_S(log_)<<"setting filter \""<<getTypeName()<<"\" name to \""<<name<<"\"";
   const unsigned int timeout=Commons::Convert::to<unsigned int>(fc["timeout"]);
   LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";
+  const Data::Names &skip=parseSkipNames(log_,fc["skip"]);
+  LOGMSG_INFO_S(log_)<<"setting "<<skip.size()<<" user names to skip";
 
   // create and return new handle.
-  typedef InterfaceImpl<Strategy, unsigned int> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl(type_, name, timeout) );
+  const Strategy::Parameters params(timeout, skip);
+  typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;
+  return FactoryBuilder::FactoryPtr( new Impl(type_, name, params) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

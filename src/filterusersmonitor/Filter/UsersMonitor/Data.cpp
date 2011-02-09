@@ -19,17 +19,17 @@ Data::Data(void)
 {
 }
 
-Data::Data(const Persistency::ConstAlertPtrNN &a)
+Data::Data(const Name &name, const Names &skip)
 {
-  addFrom( a->getSourceHosts() );
-  addFrom( a->getTargetHosts() );
-  // elements are kept sorted to make 'common' comparison faster
-  sort( names_.begin(), names_.end() );
+  pushAllowed(name, skip);
 }
 
-Data::Data(const Name &name)
+Data::Data(const Persistency::ConstAlertPtrNN &a, const Names &skip)
 {
-  names_.push_back(name);
+  addFrom( a->getSourceHosts(), skip );
+  addFrom( a->getTargetHosts(), skip );
+  // elements are kept sorted to make 'common' comparison faster
+  sort( names_.begin(), names_.end() );
 }
 
 const Data::Names &Data::get(void) const
@@ -66,7 +66,7 @@ void Data::swap(Data &other)
   names_.swap(other.names_);
 }
 
-void Data::addFrom(const Persistency::Alert::Hosts &h)
+void Data::addFrom(const Persistency::Alert::Hosts &h, const Names &skip)
 {
   for(Alert::Hosts::const_iterator it=h.begin(); it!=h.end(); ++it)
   {
@@ -76,9 +76,18 @@ void Data::addFrom(const Persistency::Alert::Hosts &h)
       const Process::Username &u=(*it)->getUsername();
       if(u.get()==NULL)                 // no user name?
         continue;
-      names_.push_back( u.get() );      // add user to output collection
+      pushAllowed( u.get(), skip );     // add user to output collection
     } // for(processes)
   } // for(hosts)
+}
+
+void Data::pushAllowed(const Name &name, const Names &skip)
+{
+  // do NOT add elements that are on the skip-list
+  if( find(skip.begin(), skip.end(), name)!=skip.end() )
+    return;
+  // ok - element can be added
+  names_.push_back(name);
 }
 
 } // namespace UsersMonitor

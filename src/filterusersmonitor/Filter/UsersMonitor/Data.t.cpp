@@ -20,6 +20,7 @@ namespace
 
 struct TestClass: public TestBase
 {
+  Data::Names skip_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -37,7 +38,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Data d( mkAlert(NULL, NULL, NULL, NULL, true) );
+  const Data d( mkAlert(NULL, NULL, NULL, NULL, true), skip_ );
   ensure_equals("processes w/o users generated some output", d.get().size(), 0u);
 }
 
@@ -46,7 +47,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Data d( mkAlert(NULL, NULL, NULL, NULL, false) );
+  const Data d( mkAlert(NULL, NULL, NULL, NULL, false), skip_ );
   ensure_equals("alert w/o processes generated some output", d.get().size(), 0u);
 }
 
@@ -55,7 +56,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const Data  d( mkAlert("alice", "cat", "tom", "jerry") );
+  const Data  d( mkAlert("alice", "cat", "tom", "jerry"), skip_ );
   Data::Names out=d.get();
   sort( out.begin(), out.end() );   // for sake of test's simplicity
   ensure_equals("invalid number of elements", out.size(), 4u);
@@ -70,8 +71,8 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  Data d1( mkAlert("alice") );
-  Data d2( mkAlert("cat")   );
+  Data d1( mkAlert("alice"), skip_ );
+  Data d2( mkAlert("cat"), skip_   );
   d1.swap(d2);
   // check
   ensure_equals("invalid size 1", d1.get().size(), 1u);
@@ -85,8 +86,8 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const Data d1( mkAlert("alice") );
-  const Data d2( mkAlert("cat")   );
+  const Data d1( mkAlert("alice"), skip_ );
+  const Data d2( mkAlert("cat"), skip_   );
   Data::Names::const_iterator it=d1.commonWith(d2);
   ensure("something has been found", it==d1.get().end() );
 }
@@ -96,8 +97,8 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  const Data d1( mkAlert("alice", "dog") );
-  const Data d2( mkAlert("dog", "yeti")   );
+  const Data d1( mkAlert("alice", "dog"), skip_ );
+  const Data d2( mkAlert("dog", "yeti"), skip_   );
   Data::Names::const_iterator it=d1.commonWith(d2);
   ensure("nothing has been returned", it!=d1.get().end() );
   ensure_equals("invalid element returned", *it, "dog");
@@ -108,7 +109,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const Data d("abc");
+  const Data d("abc", skip_);
   ensure_equals("invalid elements count", d.get().size(), 1u);
   ensure_equals("invalid element returned", d.get()[0], "abc");
 }
@@ -120,6 +121,28 @@ void testObj::test<8>(void)
 {
   Data d;
   ensure_equals("invalid elements count", d.get().size(), 0u);
+}
+
+// test interesection of the name that is no skip list
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  skip_.push_back("alice");
+  const Data d1( mkAlert("alice"), skip_ );
+  const Data d2( mkAlert("alice"), skip_ );
+  Data::Names::const_iterator it=d1.commonWith(d2);
+  ensure("something has been found", it==d1.get().end() );
+}
+
+// test if skip list is checked on 1-arg c-tor as well.
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  skip_.push_back("abc");
+  const Data d("abc", skip_);
+  ensure_equals("skip-list not applied", d.get().size(), 0u);
 }
 
 } // namespace tut

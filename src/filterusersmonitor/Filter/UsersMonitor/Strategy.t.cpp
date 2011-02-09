@@ -20,7 +20,7 @@ namespace
 struct TestClass: public TestBase
 {
   TestClass(void):
-    s_("somename", 997)
+    s_( "somename", Strategy::Parameters(997, Data::Names() ) )
   {
   }
 
@@ -93,6 +93,40 @@ void testObj::test<4>(void)
   ensure_equals("correlation failed", changed_.size(), 1u);
 
   ensure_equals("invalid name", changed_[0]->getMetaAlert()->getName().get(), string("[usersmonitor] actions of user 'cat'") );
+}
+
+// test if skip-lists work properly
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  Data::Names skip;
+  skip.push_back("cat");
+  Strategy    s( "myname", Strategy::Parameters(123, skip) );
+  GraphNodePtrNN leaf1=makeNewLeaf( mkAlert("cat") );
+  s.process(leaf1, changed_);
+  ensure_equals("something has been changed", changed_.size(), 0u);
+
+  GraphNodePtrNN leaf2=makeNewLeaf( mkAlert("cat") );
+  s.process(leaf2, changed_);
+  ensure_equals("correlation doesn't check skip list", changed_.size(), 0u);
+}
+
+// test if correlation can proceed when skip-list matches only one pair
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  Data::Names skip;
+  skip.push_back("cat");
+  Strategy    s( "myname", Strategy::Parameters(123, skip) );
+  GraphNodePtrNN leaf1=makeNewLeaf( mkAlert("cat", "doom") );
+  s.process(leaf1, changed_);
+  ensure_equals("something has been changed", changed_.size(), 0u);
+
+  GraphNodePtrNN leaf2=makeNewLeaf( mkAlert("cat", "doom") );
+  s.process(leaf2, changed_);
+  ensure_equals("correlation failed after first skip-match", changed_.size(), 1u);
 }
 
 } // namespace tut

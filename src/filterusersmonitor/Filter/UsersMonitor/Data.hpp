@@ -28,8 +28,8 @@ public:
   typedef std::vector<Name> Names;
 
   Data(void);
-  explicit Data(const Persistency::ConstAlertPtrNN &a);
-  explicit Data(const Name &name);
+  Data(const Name &name, const Names &skip);
+  Data(const Persistency::ConstAlertPtrNN &a, const Names &skip);
 
   const Names &get(void) const;
 
@@ -38,7 +38,9 @@ public:
   void swap(Data &other);
 
 private:
-  void addFrom(const Persistency::Alert::Hosts &h);
+  void addFrom(const Persistency::Alert::Hosts &h, const Names &skip);
+
+  void pushAllowed(const Name &name, const Names &skip);
 
   Names names_;
 }; // class Data

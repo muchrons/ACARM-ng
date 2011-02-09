@@ -17,8 +17,9 @@ namespace Filter
 namespace UsersMonitor
 {
 
-Strategy::Strategy(const std::string &name, unsigned int timeout):
-  Filter::Simple::Strategy<Data>("usersmonitor", name, timeout)
+Strategy::Strategy(const std::string &name, const Parameters &params):
+  Filter::Simple::Strategy<Data>("usersmonitor", name, params.timeout_),
+  params_(params)
 {
 }
 
@@ -31,13 +32,13 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 
 Data Strategy::makeThisEntryUserData(const Node n) const
 {
-  return Data( n->getAlert() );
+  return Data( n->getAlert(), params_.skip_ );
 }
 
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
 {
   assert( thisEntry.node_->isLeaf() && "ECL accepted non-leaf" );
-  Data d( thisEntry.node_->getAlert() );
+  Data d( thisEntry.node_->getAlert(), params_.skip_ );
   if(d.get().size()==0u)
     return false;
   assert( d.get().size()>0u );
@@ -71,7 +72,9 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
 {
   Data::Names::const_iterator it=thisEntry.t_.commonWith(otherEntry.t_);
   assert( it!=thisEntry.t_.get().end() );
-  return Data(*it);
+  const Data d(*it, params_.skip_);
+  assert( d.get().size()==1u ); // skip list should not apply here
+  return d;
 }
 
 void Strategy::postProcessNode(Node &/*n*/, Filter::BackendFacade &/*bf*/) const

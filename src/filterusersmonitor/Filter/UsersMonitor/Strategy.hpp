@@ -24,11 +24,30 @@ namespace UsersMonitor
 class Strategy: public Filter::Simple::Strategy<Data>
 {
 public:
-  /** \brief create instance.
-   *  \name name name for strategy.
-   *  \param timeout time observed node should be in queue.
+  /** \brief paramters for strategy.
    */
-  Strategy(const std::string &name, unsigned int timeout);
+  struct Parameters
+  {
+    /** \brief create paramters object.
+     *  \param timeout ammount of time to keep nodes under observation.
+     *  \param skip    list of skip-accounts that correlation should not take place for.
+     */
+    Parameters(const unsigned int  timeout,
+               const Data::Names  &skip):
+      timeout_(timeout),
+      skip_(skip)
+    {
+    }
+
+    const unsigned int timeout_;        ///< time to keep alerts under observation
+    const Data::Names  skip_;           ///< list of accounts to skip correlation for
+  }; // struct Parameters
+
+  /** \brief create instance.
+   *  \param name   name fo the strategy.
+   *  \param params paramters for the strategy.
+   */
+  Strategy(const std::string &name, const Parameters &params);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.
@@ -51,6 +70,8 @@ private:
                                       const NodeEntry &otherEntry,
                                       const Node       newNode) const;
   virtual void postProcessNode(Node &n, Filter::BackendFacade &bf) const;
+
+  const Parameters params_;
 }; // class Strategy
 
 } // namespace UsersMonitor
