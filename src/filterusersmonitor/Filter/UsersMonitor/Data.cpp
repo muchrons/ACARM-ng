@@ -30,6 +30,8 @@ Data::Data(const Persistency::ConstAlertPtrNN &a, const Names &skip)
   addFrom( a->getTargetHosts(), skip );
   // elements are kept sorted to make 'common' comparison faster
   sort( names_.begin(), names_.end() );
+  // remove duplicates
+  names_.erase( unique(names_.begin(), names_.end()), names_.end() );
 }
 
 const Data::Names &Data::get(void) const

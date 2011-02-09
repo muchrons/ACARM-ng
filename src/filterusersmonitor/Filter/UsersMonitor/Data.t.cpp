@@ -145,4 +145,18 @@ void testObj::test<10>(void)
   ensure_equals("skip-list not applied", d.get().size(), 0u);
 }
 
+// check if duplicated names are remvoed
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  const Data d( mkAlert("alice", "cat", "doom", "alice"), skip_ );
+  Data::Names out=d.get();
+  sort( out.begin(), out.end() );   // for sake of test's simplicity
+  ensure_equals("invalid number of elements", out.size(), 3u);
+  ensure_equals("invalid element 1", out[0], "alice");
+  ensure_equals("invalid element 2", out[1], "cat"  );
+  ensure_equals("invalid element 3", out[2], "doom" );
+}
+
 } // namespace tut
