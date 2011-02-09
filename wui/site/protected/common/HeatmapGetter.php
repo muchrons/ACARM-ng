@@ -7,22 +7,25 @@ class HeatmapGetter
     $range=new CDMPair();
     $range->key=$from;
     $range->value=$to;
+    $data=array();
     $data=CSQLMap::get()->queryForList("DMHeatMapRange",$range);
 
     $this->src=0;
     $this->dst=0;
 
-    $this->empty=($data[0]===null);
+    $this->empty=!isset($data[0]);
 
     //get arrays of sources and destinations
+    $sources=array();
+    $destinations=array();
     foreach( $data as $e )
       {
-        if ($sources[$e->source] === null)
+        if (!isset($sources[$e->source]))
           {
             $this->sources[$this->src]=$e->source;
             $sources[$e->source]=$this->src++;
           }
-        if ($destinations[$e->destination] === null)
+        if (!isset($destinations[$e->destination]))
           {
             $this->destinations[$this->dst]=$e->destination;
             $destinations[$e->destination]=$this->dst++;
@@ -62,7 +65,12 @@ class HeatmapGetter
 
   public function getImgData($d,$s)
   {
-    return $this->img_data[$this->img_data_maxDst[$d]->first][$this->img_data_maxSrc[$s]->first];
+    $y=$this->img_data_maxDst[$d]->first;
+    $x=$this->img_data_maxSrc[$s]->first;
+    if (isset($this->img_data[$y][$x]))
+      return $this->img_data[$y][$x];
+
+    return 0;//no alerts for this field
   }
 
   public function getSortedSource($i)
