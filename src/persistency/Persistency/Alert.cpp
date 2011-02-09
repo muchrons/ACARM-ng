@@ -85,7 +85,7 @@ namespace
 {
 struct AnalyzerSWO
 {
-  bool operator()(const AnalyzerPtrNN &a1, const AnalyzerPtrNN &a2) const
+  bool operator()(const ConstAnalyzerPtrNN &a1, const ConstAnalyzerPtrNN &a2) const
   {
     return a1->getID() < a2->getID();
   }
