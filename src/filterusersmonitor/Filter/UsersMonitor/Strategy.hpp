@@ -11,17 +11,13 @@
 
 #include "Persistency/Host.hpp"
 #include "Filter/Simple/Strategy.hpp"
+#include "Filter/UsersMonitor/Data.hpp"
 
 
 namespace Filter
 {
 namespace UsersMonitor
 {
-
-/** \brief filter's data (i.e. user's name).
- */
-typedef std::string Data;
-
 
 /** \brief filter detecting multiple attacks from given hosts to another.
  */
