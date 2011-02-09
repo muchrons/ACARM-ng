@@ -1,4 +1,7 @@
 #!/bin/bash
+#
+# script for convinient checking of coding convention by hand
+#
 . ./bzr_build.conf || exit $?
 build_project_coding_convertion || exit $?
 exit $RET

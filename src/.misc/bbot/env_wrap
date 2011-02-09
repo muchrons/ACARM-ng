@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# script preparing environment for builds with build bot
+#
+if [ "$#" -lt 2 ]
+then
+  echo "$0 {intel64,ia32} <command> <arg1> ... <argN>" >&2
+  exit 1
+fi
+
+set -e
+
+ARCH="$1"
+shift
+source /opt/intel/bin/compilervars.sh "$ARCH"
+exec "$@"
