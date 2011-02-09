@@ -8,8 +8,7 @@
 #include <cassert>
 
 #include "Filter/UsersMonitor/Data.hpp"
-#include "TestHelpers/Persistency/TestStubs.hpp"
-#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "Filter/UsersMonitor/TestBase.t.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -19,40 +18,8 @@ using namespace TestHelpers::Persistency;
 namespace
 {
 
-struct TestClass: public TestStubs
+struct TestClass: public TestBase
 {
-  TestClass(void)
-  {
-  }
-
-  ConstAlertPtrNN mkAlert(const char *src1=NULL, const char *src2=NULL,
-                          const char *dst1=NULL, const char *dst2=NULL,
-                          const bool  force=false) const
-  {
-    Alert::Hosts src;
-    src.push_back( mkHost(src1, src2, force) );
-    Alert::Hosts tgt;
-    tgt.push_back( mkHost(dst1, dst2, force) );
-
-    return ConstAlertPtrNN( new Alert("n", Alert::Analyzers( makeNewAnalyzer() ),
-                                      NULL, Timestamp(), Severity(SeverityLevel::INFO), 0.42, "d", src, tgt) );
-  }
-
-  HostPtrNN mkHost(const char *user1, const char *user2, bool force) const
-  {
-    Host::Processes p;
-    if(user1!=NULL || force)
-      p.push_back( mkProc(user1) );
-    if(user2!=NULL || force)
-      p.push_back( mkProc(user2) );
-    return HostPtrNN( new Host(Host::IPv4::from_string("1.2.3.4"), NULL, "linux",
-                               ConstReferenceURLPtr(), Host::Services(), p, NULL) );
-  }
-
-  ConstProcessPtrNN mkProc(const char *user) const
-  {
-    return ProcessPtrNN( new Process("/a/b", "b", NULL, NULL, NULL, user, NULL, ConstReferenceURLPtr()) );
-  }
 };
 
 typedef tut::test_group<TestClass> factory;

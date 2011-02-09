@@ -7,8 +7,7 @@
 #include <cassert>
 
 #include "Filter/UsersMonitor/Strategy.hpp"
-#include "TestHelpers/Persistency/TestStubs.hpp"
-#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "Filter/UsersMonitor/TestBase.t.hpp"
 
 using namespace std;
 using namespace Persistency;
@@ -18,7 +17,7 @@ using namespace TestHelpers::Persistency;
 namespace
 {
 
-struct TestClass: public TestStubs
+struct TestClass: public TestBase
 {
   TestClass(void):
     s_("somename", 997)
