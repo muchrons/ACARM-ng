@@ -45,9 +45,9 @@ public:
   /** \brief host name (DNS entry). */
   typedef Commons::LimitedNULLString<64> Name;
   /** \brief services assigned to host. */
-  typedef std::vector<ServicePtrNN>      Services;
+  typedef std::vector<ConstServicePtrNN> Services;
   /** \brief processes assigned to host. */
-  typedef std::vector<ProcessPtrNN>      Processes;
+  typedef std::vector<ConstProcessPtrNN> Processes;
 
   /** \brief create host entry of IPv4 address.
    *  \param ip        ip address.

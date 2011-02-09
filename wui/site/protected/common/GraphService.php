@@ -325,11 +325,13 @@ class GraphService extends TService
     $graph = new Graph($this->params->width,$this->params->height);
     $graph->SetMargin(50,40,30,130);
     $graph->SetScale('datlin',0,100);
-    $graph->title->Set($params->title);
+    $graph->title->Set($this->params->title);
 
     $severities=explode(".",$this->params->qparam->severities);
 
     $params=$this->params;
+
+    $data=array();
 
     foreach ($severities as $s)
     {
@@ -342,7 +344,10 @@ class GraphService extends TService
       }
     }
 
-    $count=count($data[0]);
+    $count=0;
+
+    if (isset($data[0]))
+      $count=count($data[0]);
 
     //if there is no data series or x-axis is empty (wrong data range)
     if (($count==0) || ($count>0 && count($data[0][0][1])==0))
