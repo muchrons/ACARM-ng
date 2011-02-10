@@ -71,7 +71,8 @@ class Alert extends TPage
 
       //Get all hosts for the alert
       $hosts=CSQLMap::get()->queryForList('SelectHostsForAlert', $this->alertID_);
-
+      $sources=array();
+      $destinations=array();
       foreach ($hosts as $h)
         if ($h->role == "src")
           $sources[]=array('link'=>$this->makeHostLink($h->id),'name'=>$h->name,'IP'=>$h->ip);

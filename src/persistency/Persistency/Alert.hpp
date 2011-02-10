@@ -36,11 +36,11 @@ class Alert: private boost::noncopyable,
 {
 public:
   /** \brief name of the alert (aka: title). */
-  typedef Commons::LimitedString<256>         Name;
+  typedef Commons::LimitedString<256>              Name;
   /** \brief vector of reported hosts. */
-  typedef std::vector<HostPtrNN>              Hosts;
+  typedef std::vector<HostPtrNN>                   Hosts;
   /** \brief vector of analyzers assigned to this alert. */
-  typedef Base::NonEmptyVector<AnalyzerPtrNN> Analyzers;
+  typedef Base::NonEmptyVector<ConstAnalyzerPtrNN> Analyzers;
 
   /** \brief creates alert.
    *  \param name        name of an alert (~title).

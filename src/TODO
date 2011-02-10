@@ -7,9 +7,8 @@
 * filter that increases priority for hosts that are out of defined set (i.e. from external network).
 * add automatic queue reduction to triggers - before sending check if some of the alerts are not part of others.
 * add handle for out-of-memory problem (i.e. using own wrapper for memory manager).
-* consider adding pre-requisites for triggers, i.e. to trigger only reports of some specific content (preprocessor-like style).
 * trigger reporting "the most important events" aiming to rise about N most important event in some ammount of time (thresholds are variable, depending on the input).
-* encrypted connecitons in Trigger::GG.
+* encrypted connecitons in Trigger::GG (NOTE: it appears that there are 2 standards now: GG-specific, and GNU).
 * encrypted connecitons in Trigger::Mail.
 * consider splitig configuration into multiple files (maybe directive like <include> would do the trick, preserving backward compatibility?).
 * consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
@@ -20,5 +19,4 @@
 * implement filter that gathers stats of source/destination IPs and reports the most problematic noes with higher priority.
 * rework severity computing algorithm to make higher priority for meta-alerts with high-priority alerts (now main part is average...).
 * add heartbeats for daemon, so that GUI will know when system is online and when it is not.
-* implement filter monitoring users' activity (correlates alert's related to given user's activity).
 * implement persistency::facade that will perform I/O on (meta?) alerts in a key->value form (string->string) to allow generic approach. note that code can be moved from prefilter.
