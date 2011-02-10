@@ -12,6 +12,7 @@ namespace NewEvent
 
 Strategy::Strategy(const std::string &name, const Parameters &params):
   Filter::Strategy<Data>("newevent", name),
+  nextPrune_(0),
   params_(params)
 {
 }
@@ -28,7 +29,19 @@ void Strategy::processImpl(Node               n,
                            BackendFacade     &bf)
 {
   //TODO
+  const time_t now=time(NULL);
+  // ensure prunning once a while
+  if(nextPrune_<now)
+    pruneProcessedSet(now);
+  assert(nextPrune_>=now);
 }
 
+void Strategy::pruneProcessedSet(const time_t now)
+{
+  LOGMSG_DEBUG(log_, "prunning time has come");
+  processed_.prune();   // call prune method
+  nextPrune_=now+10;    // schedule prunning every 10[s]
+  LOGMSG_DEBUG_S(log_)<<"next prunning scheduled on/after "<<nextPrune_;
+}
 } // namespace NewEvent
 } // namespace Filter

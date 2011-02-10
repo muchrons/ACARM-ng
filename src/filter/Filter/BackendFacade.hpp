@@ -94,7 +94,11 @@ public:
    *  \return unique ID for the meta-alert.
    */
   Persistency::MetaAlert::ID getNextFreeID(void);
-
+  /** \brief 
+   *  \return
+   *  \param owner
+   */
+   Persistency::IO::DynamicConfigAutoPtr createDynamicConfig(Persistency::IO::DynamicConfig::Owner &owner);
 private:
   void markNodeAsChanged(Node node);
 

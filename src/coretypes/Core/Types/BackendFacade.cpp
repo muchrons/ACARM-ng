@@ -72,6 +72,10 @@ Persistency::IO::ConnectionPtrNN BackendFacade::getConnection(void)
   return conn_;
 }
 
+Persistency::IO::DynamicConfigAutoPtr BackendFacade::createDynamicConfig(Persistency::IO::DynamicConfig::Owner &owner)
+{
+  return conn_->dynamicConfig(owner, *transaction_);
+}
 const std::string &BackendFacade::getName(void) const
 {
   return name_;

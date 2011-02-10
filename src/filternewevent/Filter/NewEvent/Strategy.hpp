@@ -8,6 +8,7 @@
 /* public header */
 
 #include "Filter/Strategy.hpp"
+#include "Filter/NewEvent/ProcessedSet.hpp"
 
 namespace Filter
 {
@@ -61,7 +62,11 @@ private:
                            NodesTimeoutQueue &ntq,
                            BackendFacade     &bf);
 
+  void pruneProcessedSet(time_t now);
+
+  time_t           nextPrune_;
   const Parameters params_;
+  ProcessedSet     processed_;
 }; // class Strategy
 } // namespace NewEvent
 } // namespace Filter

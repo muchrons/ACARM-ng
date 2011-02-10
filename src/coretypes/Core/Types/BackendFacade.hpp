@@ -12,6 +12,7 @@
 #include <boost/scoped_ptr.hpp>
 
 #include "Persistency/IO/Connection.hpp"
+#include "Persistency/IO/DynamicConfig.hpp"
 
 
 namespace Core
@@ -84,6 +85,11 @@ protected:
    *  \return connection object.
    */
   Persistency::IO::ConnectionPtrNN getConnection(void);
+  /** \brief 
+   *  \return
+   *  \param owner
+   */
+  Persistency::IO::DynamicConfigAutoPtr createDynamicConfig(Persistency::IO::DynamicConfig::Owner &owner);
   /** \brief gets name of this element.
    *  \return elements name.
    */
