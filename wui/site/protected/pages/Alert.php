@@ -10,8 +10,10 @@ class Alert extends TPage
     $this->alert_=CSQLMap::get()->queryForObject('SelectAlert', $this->alertID_);
   }
 
-  public function onLoad()
+  public function onLoad($param)
   {
+    parent::onLoad($param);
+
     if( $this->alert_===null )
       die("invalid alert / alert not set");
     // initialization of GridData
@@ -32,56 +34,57 @@ class Alert extends TPage
         $this->AlertDescription->Text=$this->alert_->description;
 
       if($this->alert_->severity!= null)
-        {
-          $text="<font";
-          $value=trim($this->alert_->severity);
+      {
+        $text="<font";
+        $value=trim($this->alert_->severity);
 
-          if ($value=="error")
+        if ($value=="error")
+          $text.=" color=\"red\"";
+        else
+          if ($value=="critical")
             $text.=" color=\"red\"";
           else
-            if ($value=="critical")
-              $text.=" color=\"red\"";
+            if ($value=="problem")
+              $text.=" color=\"#CC3300\"";
             else
-              if ($value=="problem")
-                $text.=" color=\"#CC3300\"";
+              if ($value=="warning")
+                $text.=" color=\"black\"";
               else
-                if ($value=="warning")
-                  $text.=" color=\"black\"";
+                if ($value=="info")
+                  $text.=" color=\"green\"";
                 else
-                  if ($value=="info")
-                    $text.=" color=\"green\"";
-                  else
-                    if ($value=="debug")
-                      $text.=" color=\"blue\"";
+                  if ($value=="debug")
+                    $text.=" color=\"blue\"";
 
-          $text.=">".$value."</font>";
-          $this->AlertSeverity->Text=$text;
-        }
+        $text.=">".$value."</font>";
+        $this->AlertSeverity->Text=$text;
+      }
 
       //Get all analyzers for the alert
       $analyzers=CSQLMap::get()->queryForList('SelectAnalyzersForAlert', $this->alertID_);
 
       foreach ($analyzers as $a)
         $data[]=array('link'=>$this->makeAnalyzerLink($a->id),'name'=>$a->name,'IP'=>$a->ip,'ver'=>$a->version, 'OS'=>$a->os);
-
+      //data can be null
       $this->AlertAnalyzers->DataSource=$data;
       $this->AlertAnalyzers->dataBind();
 
       //Get all hosts for the alert
       $hosts=CSQLMap::get()->queryForList('SelectHostsForAlert', $this->alertID_);
-
+      $sources=array();
+      $destinations=array();
       foreach ($hosts as $h)
         if ($h->role == "src")
           $sources[]=array('link'=>$this->makeHostLink($h->id),'name'=>$h->name,'IP'=>$h->ip);
         else
           $destinations[]=array('link'=>$this->makeHostLink($h->id),'name'=>$h->name,'IP'=>$h->ip);
 
-      $this->AlertSources->DataSource=$sources;
+      $this->AlertSources->DataSource=$sources; //can be null
       $this->AlertSources->dataBind();
 
-      $this->AlertDestinations->DataSource=$destinations;
+      $this->AlertDestinations->DataSource=$destinations; //can be null
       $this->AlertDestinations->dataBind();
-      }
+    }
   }
 
   private function makeHostLink($id)

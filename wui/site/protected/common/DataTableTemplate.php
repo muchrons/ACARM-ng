@@ -16,12 +16,28 @@ class DataTableTemplate extends TTemplateControl
 
     $this->DataGrid->DataSource=$this->getDataRows($this->DataGrid->PageSize,$this->DataGrid->CurrentPageIndex);
     $this->DataGrid->VirtualItemCount=$this->getRowCount();
+
     if ($this->DataGrid->VirtualItemCount==0)
       {
         $this->DataGrid->reset();
-        $this->DataGrid->DataSource=array(array('Info'=>'Your query returned no data. Take a deep breath and try again.'));
+        $this->DataGrid->DataSource=array(array('id'=>'0', 'Info'=>'Your query returned no data. Take a deep breath and try again.'));
         $this->DataGrid->VirtualItemCount=1;
       }
+
+    $data=$this->DataGrid->DataSource[0]; //[0] is ok, count is >=1
+    foreach($data as $column_name=>$rows)
+      {
+        if ($column_name=="id")
+          continue; //skip columns entitled "id"
+
+        $header=new TTableHeaderCell();
+        $column=new TBoundColumn();
+        $column->DataField=$column_name;
+        $column->HeaderText= str_replace("_"," ",$column_name);
+        $column->initializeCell($header,0,"Header");
+        $this->DataGrid->Columns->add($column);
+      }
+
     $this->DataGrid->dataBind();
   }
 
@@ -48,11 +64,14 @@ class DataTableTemplate extends TTemplateControl
         $this->params_->offset=$perPage*$pageNumber;
         $data=CSQLMap::get()->queryForList($this->query_.'Range',$this->params_);
       }
-
+    $ret=array();
     foreach($data as $e)
       $ret[]=$this->computation_->computeStructure($e);
 
-    return $ret;
+    if (count($ret)==0)
+      return null;
+
+    return $ret; //ok to be null
   }
 
   public function selectionChanged($sender, $param)

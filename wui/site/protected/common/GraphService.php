@@ -137,10 +137,10 @@ class GraphService extends TService
 
     $hpos=imagefontwidth($fontnum)*4;
     foreach ($msg as $m)
-      {
-        imagestring ($img, $fontnum, 5, $hpos, $m, $yellow);
-        $hpos+=imagefontwidth($fontnum)*2;
-      }
+    {
+      imagestring ($img, $fontnum, 5, $hpos, $m, $yellow);
+      $hpos+=imagefontwidth($fontnum)*2;
+    }
 
     imagepng($img);
     imagedestroy($img);
@@ -157,6 +157,9 @@ class GraphService extends TService
       $this->printError($e->getMessage());
       return;
     }
+
+    if (count($pairs) == 0)
+      return null;
 
     foreach( $pairs as $e )
     {
@@ -179,10 +182,13 @@ class GraphService extends TService
       return;
     }
 
+    if (count($pairs) == 0)
+      return null;
+
     foreach( $pairs as $e )
     {
       $xdata[] = strtotime($e->key);
-      $ydata[] = ($e->value===null)?0:$e->value;
+      $ydata[] = ($e->value === null)?0:$e->value;
     }
 
     return array($xdata, $ydata, $param->qparam->severities);
@@ -193,7 +199,7 @@ class GraphService extends TService
     $name=substr($sev,0,4); //strip "(%d)"
 
     switch ($name)
-      {
+    {
       case 'prob':
         return "#ff8800";
       case 'warn':
@@ -206,7 +212,7 @@ class GraphService extends TService
         return "#00ff00";
       case 'debu':
         return "#2d88ff";
-      }
+    }
     return "#cccccc";
   }
 
@@ -214,12 +220,12 @@ class GraphService extends TService
   {
     $data=$this->issueQuery2d($this->params," (%d)");
 
-    if (count($data[0])==0)
-      {
-        $data[0]=array("");
-        $data[1]=array(1);
-        $empty=true;
-      }
+    if ($data === null)
+    {
+      $data[0]=array("");
+      $data[1]=array(1);
+      $empty=true;
+    }
     else
       $empty=false; //mark plot as empty for color proper color selection
 
@@ -282,11 +288,11 @@ class GraphService extends TService
 
     $data=$this->issueQuery2d($this->params,null);
 
-    if (count($data[0])==0)
-      {
-        $data[0]=array("No data for given query, or empty database.");
-        $data[1]=array(1);
-      }
+    if ($data === null)
+    {
+      $data[0]=array("No data for given query, or empty database.");
+      $data[1]=array(1);
+    }
 
     // Setup X-axis labels
     $graph->xaxis->SetTickLabels($data[0]);
@@ -319,28 +325,38 @@ class GraphService extends TService
     $graph = new Graph($this->params->width,$this->params->height);
     $graph->SetMargin(50,40,30,130);
     $graph->SetScale('datlin',0,100);
-    $graph->title->Set($params->title);
+    $graph->title->Set($this->params->title);
 
     $severities=explode(".",$this->params->qparam->severities);
 
     $params=$this->params;
 
+    $data=array();
+
     foreach ($severities as $s)
+    {
+      $params->qparam->severities=$s;
+      $d=$this->issueQuery2dTime($params);
+      if ($d != null)
       {
-        $params->qparam->severities=$s;
-        $data[0][]=$this->issueQuery2dTime($params);
+        $data[0][]=$d;
         $data[1][]=$s;
       }
+    }
 
-    $count=count($data[0]);
+    $count=0;
+
+    if (isset($data[0]))
+      $count=count($data[0]);
 
     //if there is no data series or x-axis is empty (wrong data range)
     if (($count==0) || ($count>0 && count($data[0][0][1])==0))
-      {
-        $data[0][0][1]=array(1);
-        $data[0][0][0]=array(1);
-        $data[1][0]="no data for given query";
-      }
+    {
+      $data[0][0][1]=array(1);
+      $data[0][0][0]=array(1);
+      $data[1][0]="no data for given query";
+      $count=1;
+    }
 
     $maxval=0;
     for ($i=0; $i<$count; $i++)
@@ -350,13 +366,13 @@ class GraphService extends TService
     $graph->xaxis->SetLabelAngle(90);
 
     for ($i=0; $i<$count; $i++)
-      {
-        if (count($data[0][$i][1])==0)
-          continue;
-        $line[] = new LinePlot($data[0][$i][1],$data[0][$i][0]);
-        end($line)->setLegend($data[1][$i]);
-        end($line)->SetFillColor($this->severityToColor($data[1][$i]));
-      }
+    {
+      if (count($data[0][$i][1])==0)
+        continue;
+      $line[] = new LinePlot($data[0][$i][1],$data[0][$i][0]);
+      end($line)->setLegend($data[1][$i]);
+      end($line)->SetFillColor($this->severityToColor($data[1][$i]));
+    }
 
     $accplot = new AccLinePlot($line);
 
