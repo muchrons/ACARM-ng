@@ -1,7 +1,6 @@
 * add query for getting roots (when dedicated table will be available).
 * add view showing meta-alerts currently processed by the system (i.e. elements in use).
 * add view showing meta-alerts reported by the system (subset of elements in use).
-* remove data base IDs from all tables.
 * add login/logout functionality (note: identification with apache may stay).
 * add logging of every action taken in the WUI.
 * add logs view table.
