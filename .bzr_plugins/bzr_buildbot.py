@@ -167,8 +167,7 @@ def generate_change(branch,
     new_rev = repository.get_revision(new_revid)
     if blame_merge_author:
         # this is a pqm commit or something like it
-        change['who'] = repository.get_revision(
-            new_rev.parent_ids[-1]).get_apparent_authors()[0]
+        change['who'] = repository.get_revision(new_rev.parent_ids[-1]).get_apparent_authors()[0]
     else:
         change['who'] = new_rev.get_apparent_authors()[0]
     # maybe useful to know:
