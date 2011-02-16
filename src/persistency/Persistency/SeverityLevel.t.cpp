@@ -43,11 +43,9 @@ void testObj::test<2>(void)
 {
   ensure_equals("debug has invalid value",    SeverityLevel::DEBUG,    0);
   ensure_equals("info has invalid value",     SeverityLevel::INFO,     1);
-  ensure_equals("notice has invalid value",   SeverityLevel::NOTICE,   2);
-  ensure_equals("warning has invalid value",  SeverityLevel::WARNING,  3);
-  ensure_equals("problem has invalid value",  SeverityLevel::PROBLEM,  4);
-  ensure_equals("error has invalid value",    SeverityLevel::ERROR,    5);
-  ensure_equals("critical has invalid value", SeverityLevel::CRITICAL, 6);
+  ensure_equals("low has invalid value",      SeverityLevel::LOW   ,   2);
+  ensure_equals("medium has invalid value",   SeverityLevel::MEDIUM ,  3);
+  ensure_equals("high has invalid value",     SeverityLevel::HIGH   ,  4);
 }
 
 } // namespace tut

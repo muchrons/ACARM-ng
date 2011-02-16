@@ -383,7 +383,7 @@ template<>
 void testObj::test<13>(void)
 {
   const Persistency::GraphNodePtrNN leaf=severityLeaf(2);
-  checkAssessment(*leaf, 0.42, "medium");
+  checkAssessment(*leaf, 0.42, "high");
 }
 
 // test severity<0
@@ -395,7 +395,7 @@ void testObj::test<14>(void)
   checkAssessment(*leaf, 0.42, "info");
 }
 
-// test deverity>1
+// test severity>1
 template<>
 template<>
 void testObj::test<15>(void)
@@ -766,7 +766,7 @@ void testObj::test<31>(void)
   const Alert::Analyzers srcAnalyzers( makeNewAnalyzer() );
   const Timestamp        createTime(12345u);
   const Timestamp        detectTime(12345u+1u);
-  const Severity         severity(SeverityLevel::PROBLEM);
+  const Severity         severity(SeverityLevel::MEDIUM);
   const Certainty        certainty(1);
   const Alert::Hosts     rHosts;
   const AlertPtrNN       alert( new Alert("NaMe", srcAnalyzers, &detectTime, createTime,
@@ -793,7 +793,7 @@ void testObj::test<31>(void)
                         "</idmef:AdditionalData>"
 
                         "<idmef:Assessment>"
-                          "<idmef:Impact severity=\"medium\"/>"
+                          "<idmef:Impact severity=\"high\"/>"
                           "<idmef:Confidence rating=\"numeric\">1</idmef:Confidence>"
                         "</idmef:Assessment>"
                       "</idmef:Alert>"

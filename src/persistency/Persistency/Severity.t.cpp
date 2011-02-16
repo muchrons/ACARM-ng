@@ -54,44 +54,28 @@ void testObj::test<2>(void)
   check(SeverityLevel::INFO, "info");
 }
 
-// check NOTICE
+// check low
 template<>
 template<>
 void testObj::test<3>(void)
 {
-  check(SeverityLevel::NOTICE, "notice");
+  check(SeverityLevel::LOW, "low");
 }
 
-// check warning
+// check medium
 template<>
 template<>
 void testObj::test<4>(void)
 {
-  check(SeverityLevel::WARNING, "warning");
+  check(SeverityLevel::MEDIUM, "medium");
 }
 
-// check problem
+// check high
 template<>
 template<>
 void testObj::test<5>(void)
 {
-  check(SeverityLevel::PROBLEM, "problem");
-}
-
-// check error
-template<>
-template<>
-void testObj::test<6>(void)
-{
-  check(SeverityLevel::ERROR, "error");
-}
-
-// check critical
-template<>
-template<>
-void testObj::test<7>(void)
-{
-  check(SeverityLevel::CRITICAL, "critical");
+  check(SeverityLevel::HIGH, "high");
 }
 
 // check comparison
@@ -121,7 +105,7 @@ template<>
 void testObj::test<10>(void)
 {
   const Severity s1(SeverityLevel::INFO);
-  const Severity s2(SeverityLevel::WARNING);
+  const Severity s2(SeverityLevel::LOW);
   TestHelpers::checkEquality(s1, s2);
 }
 

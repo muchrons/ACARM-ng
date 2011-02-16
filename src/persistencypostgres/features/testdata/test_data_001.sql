@@ -17,7 +17,6 @@ DELETE FROM procs;
 DELETE FROM hosts;
 DELETE FROM reference_urls;
 DELETE FROM alerts;
-DELETE FROM severities;
 DELETE FROM config;
 DELETE FROM config_rdonly;
 DELETE FROM logs;
@@ -44,22 +43,13 @@ INSERT INTO analyzers VALUES
   (3, 10, 'analyzer 3', '1.3.3', 'Linux', '127.0.0.2'),
   (4, 44, 'analyzer 4', '1.2.3', 'Linux', '127.0.0.1')
 ;
---SELECT setval('severities_id_seq', 10);
-INSERT INTO severities VALUES
-  (7, 0, 'level 1'),
-  (8, 1, 'level 2'),
-  (9, 2, 'level 3'),
-  (2, 3, 'level 4'),
-  (6, 4, 'level 5'),
-  (1, 5, 'level 6'),
-  (5, 6, 'level 7')
-;
+
 SELECT setval('alerts_id_seq', 5);
 INSERT INTO alerts VALUES
-  (1, 'some alert 1', '1990-01-02 12:13:14', '1990-01-02 13:00:00', 5, 0.42, 'some description a'),
-  (2, 'some alert 2', NULL,                  '2010-01-06 13:01:00', 6, 0.74, 'some description b'),
-  (3, 'some alert 3', '2010-01-04 11:16:10', '2010-01-04 13:02:00', 2, 1.00, 'some description c'),
-  (4, 'some alert 4', '2010-01-05 11:16:10', '2010-01-05 13:03:00', 9, 0.01, 'some description d')
+  (1, 'some alert 1', '1990-01-02 12:13:14', '1990-01-02 13:00:00', 4, 0.42, 'some description a'),
+  (2, 'some alert 2', NULL,                  '2010-01-06 13:01:00', 1, 0.74, 'some description b'),
+  (3, 'some alert 3', '2010-01-04 11:16:10', '2010-01-04 13:02:00', 3, 1.00, 'some description c'),
+  (4, 'some alert 4', '2010-01-05 11:16:10', '2010-01-05 13:03:00', 0, 0.01, 'some description d')
 ;
 INSERT INTO alert_analyzers VALUES
   (1, 3),

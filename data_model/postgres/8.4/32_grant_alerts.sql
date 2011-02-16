@@ -10,8 +10,7 @@ GRANT SELECT
            analyzers,
            alert_analyzers,
            reference_urls,
-           services,
-           severities
+           services
   TO "acarm-ng-ui",
      "acarm-ng-daemon";
 GRANT SELECT
