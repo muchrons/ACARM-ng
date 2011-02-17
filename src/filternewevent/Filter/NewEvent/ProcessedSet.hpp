@@ -33,7 +33,9 @@ public:
   void prune(void);
 private:
 
-  typedef Base::TimeoutQueue<std::string> Set;
+  typedef Base::TimeoutQueue<Entry::Name> Set;
+
+  void pruneTimeouted();
 
   Set set_;
 

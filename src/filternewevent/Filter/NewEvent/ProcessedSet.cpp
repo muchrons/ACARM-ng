@@ -12,6 +12,13 @@ namespace NewEvent
 
 bool ProcessedSet::isProcessed(Entry &entry) const
 {
+  const Entry::Name name(entry.getName());
+  for(Set::const_iterator it = set_.begin(); it != set_.end(); ++it)
+  {
+    if(*it==name)
+      return true;
+  }
+  // object not found
   return false;
 }
 

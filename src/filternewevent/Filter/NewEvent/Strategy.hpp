@@ -9,6 +9,7 @@
 
 #include "Filter/Strategy.hpp"
 #include "Filter/NewEvent/ProcessedSet.hpp"
+#include "Filter/NewEvent/TimeoutedSet.hpp"
 
 namespace Filter
 {
@@ -67,6 +68,7 @@ private:
   time_t           nextPrune_;
   const Parameters params_;
   ProcessedSet     processed_;
+  TimeoutedSet     timeouted_;
 }; // class Strategy
 } // namespace NewEvent
 } // namespace Filter

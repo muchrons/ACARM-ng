@@ -49,11 +49,14 @@ const unsigned char *ptrConv(const char *c)
 
 } // unnamed namespace
 
-Entry::Entry(Name name, BackendFacade *bf):
-  bf_(bf),
-  element_( std::make_pair(name, computeHash(name) ) )
+Entry::Entry(Name name, BackendFacade *bf, TimeoutedSet *ts):
+  owner_("Filter::NewEvent"),
+  dc_(bf->createDynamicConfig( owner_ )),
+  element_( std::make_pair(name, computeHash(name) ) ),
+  ts_(ts)
 {
   // TODO: save DynamicConfid data
+  dc_->write(getHash(), "true");
 }
 
 Entry::~Entry()
@@ -62,6 +65,7 @@ Entry::~Entry()
   // after prune() call for timeout collection, timeouted elements should be
   // deleted from data base, this approach prevents lose data stored in data base
   // after application exit
+  ts_->add(getHash());
 }
 
 const Entry::Name& Entry::getName() const
@@ -69,7 +73,7 @@ const Entry::Name& Entry::getName() const
   return element_.first;
 }
 
-const Entry::Hash& Entry::getHash() const
+Entry::Hash& Entry::getHash()
 {
   return element_.second;
 }

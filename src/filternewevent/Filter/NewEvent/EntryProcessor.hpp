@@ -8,6 +8,7 @@
 #include "Logger/Node.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Filter/BackendFacade.hpp"
+#include "Filter/NewEvent/Strategy.hpp"
 #include "Filter/NewEvent/ProcessedSet.hpp"
 
 namespace Filter
@@ -22,12 +23,12 @@ class EntryProcessor
 {
 public:
   /** \brief create instance.
-   *  \param bl       black list of hosts.
    *  \param bf       facade for writing new names of hosts to persistency.
    *  \param ps       set of already processed elements.
+   *  \param ts       set of already timeouted elements.
    *  \param priDelta change of priority when black-listed host is found.
    */
-  EntryProcessor(BackendFacade *bf, ProcessedSet *ps, double priDelta);
+  EntryProcessor(BackendFacade *bf, ProcessedSet *ps, TimeoutedSet *ts, const Strategy::Parameters params);
   /** \brief method responsible for doing all the job.
    *  \param leaf leaft to be processed.
    */
@@ -37,10 +38,11 @@ private:
   void processHosts(Persistency::GraphNodePtrNN      leaf,
                     const Persistency::Alert::Hosts &rh);
 
-  Logger::Node     log_;
-  BackendFacade   *bf_;
-  ProcessedSet    *ps_;
-  double           priDelta_;
+  Logger::Node               log_;
+  BackendFacade             *bf_;
+  ProcessedSet              *ps_;
+  TimeoutedSet              *ts_;
+  const Strategy::Parameters params_;
 }; // class EntryProcessor
 
 } // namespace IPBlackList

@@ -2,8 +2,10 @@
  * Strategy.cpp
  *
  */
-
+#include "Algo/forEachUniqueLeaf.hpp"
 #include "Filter/NewEvent/Strategy.hpp"
+#include "Filter/NewEvent/EntryProcessor.hpp"
+
 
 namespace Filter
 {
@@ -34,6 +36,10 @@ void Strategy::processImpl(Node               n,
   if(nextPrune_<now)
     pruneProcessedSet(now);
   assert(nextPrune_>=now);
+
+  const EntryProcessor ep(&bf, &processed_, &timeouted_, params_);
+  Algo::forEachUniqueLeaf(n, ep);
+
 }
 
 void Strategy::pruneProcessedSet(const time_t now)

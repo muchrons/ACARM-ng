@@ -8,6 +8,7 @@
 #include <openssl/sha.h>
 #include "Filter/BackendFacade.hpp"
 #include "Filter/Exception.hpp"
+#include "Filter/NewEvent/TimeoutedSet.hpp"
 
 namespace Filter
 {
@@ -20,24 +21,32 @@ namespace NewEvent
 class Entry
 {
 
-private:
+public:
 
   typedef std::string Name;
   typedef std::string Hash;
-  typedef std::pair<Name, Hash> Element;
-
-public:
-  Entry(Name name, BackendFacade *bf);
+  /** \brief
+   *
+   */
+  Entry(Name name, BackendFacade *bf, TimeoutedSet *ts);
+  /** \brief
+   *
+   */
   ~Entry();
-
-  const Name &getName() const;
-  const Hash &getHash() const;
-
+  const Entry::Name& getName() const;
+  /** \brief
+   *
+   */
+  Hash &getHash();
+private:
+  typedef std::pair<Name, Hash> Element;
   // computes (SHA1) hash of a given string
   std::string computeHash(const std::string &in);
 
-  BackendFacade *bf_;
-  Element        element_;
+  Persistency::IO::DynamicConfig::Owner  owner_;
+  Persistency::IO::DynamicConfigAutoPtr  dc_;
+  Element                                element_;
+  TimeoutedSet                          *ts_;
 
 }; // class ProcessedSet
 } // namespace Filter
