@@ -60,7 +60,7 @@ Data::Names::const_iterator Data::commonWith(const Data &other) const
   }
 
   //solution not found - return error
-  return get().end();
+  return end1;
 }
 
 void Data::swap(Data &other)
