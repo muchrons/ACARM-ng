@@ -37,7 +37,6 @@ Data Strategy::makeThisEntryUserData(const Node n) const
 
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
 {
-  assert( thisEntry.node_->isLeaf() && "ECL accepted non-leaf" );
   Data d( thisEntry.node_->getAlert(), params_.skip_ );
   if(d.get().size()==0u)
     return false;
