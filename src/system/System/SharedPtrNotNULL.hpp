@@ -9,7 +9,6 @@
 
 #include <memory>
 #include <boost/shared_ptr.hpp>
-#include <boost/type_traits/add_const.hpp>
 #include <cassert>
 
 #include "System/ExceptionPointerIsNULL.hpp"
