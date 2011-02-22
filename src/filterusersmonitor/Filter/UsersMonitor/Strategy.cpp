@@ -60,9 +60,6 @@ Persistency::MetaAlert::Name Strategy::getMetaAlertName(
 bool Strategy::canCorrelate(const NodeEntry thisEntry,
                             const NodeEntry otherEntry) const
 {
-  // sanityt check
-  assert( isEntryInteresting(thisEntry)  );
-  assert( isEntryInteresting(otherEntry) );
   return thisEntry.t_.commonWith(otherEntry.t_)!=thisEntry.t_.get().end();
 }
 
