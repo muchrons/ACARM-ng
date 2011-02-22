@@ -20,8 +20,7 @@ namespace Commons
 {
 
 /** \brief boost::shared_ptr-like class that does not permit NULLs.
- *  \note if NULL will be passed to this class it will throw
- *        ExceptionUnexpectedNULL.
+ *  \note if NULL will be passed to this class it will throw ExceptionUnexpectedNULL.
  */
 template<typename T>
 class SharedPtrNotNULL
