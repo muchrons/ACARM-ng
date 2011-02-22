@@ -35,8 +35,6 @@ public:
   void operator()(Persistency::GraphNodePtrNN leaf);
 
 private:
-  void processHosts(Persistency::GraphNodePtrNN      leaf,
-                    const Persistency::Alert::Hosts &rh);
 
   Logger::Node               log_;
   BackendFacade             *bf_;

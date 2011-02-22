@@ -49,5 +49,10 @@ void Strategy::pruneProcessedSet(const time_t now)
   nextPrune_=now+10;    // schedule prunning every 10[s]
   LOGMSG_DEBUG_S(log_)<<"next prunning scheduled on/after "<<nextPrune_;
 }
+
+void Strategy::pruneTimeoutedSet()
+{
+  // TODO
+}
 } // namespace NewEvent
 } // namespace Filter

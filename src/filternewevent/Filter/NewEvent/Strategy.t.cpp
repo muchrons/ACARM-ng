@@ -47,7 +47,7 @@ factory tf("Filter/NewEvent/Strategy");
 namespace tut
 {
 
-// TODO
+// test leaf
 template<>
 template<>
 void testObj::test<1>(void)
@@ -63,7 +63,7 @@ void testObj::test<1>(void)
   ensure_equals("something changed", changed_.size(), 1u);
 }
 
-// 
+// test node
 template<>
 template<>
 void testObj::test<2>(void)

@@ -26,7 +26,8 @@ public:
   typedef std::string Name;
   typedef std::string Hash;
   /** \brief
-   *
+   *  \param bf
+   *  \param ts
    */
   Entry(Name name, BackendFacade *bf, TimeoutedSet *ts);
   /** \brief

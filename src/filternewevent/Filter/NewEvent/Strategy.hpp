@@ -64,6 +64,7 @@ private:
                            BackendFacade     &bf);
 
   void pruneProcessedSet(time_t now);
+  void pruneTimeoutedSet();
 
   time_t           nextPrune_;
   const Parameters params_;

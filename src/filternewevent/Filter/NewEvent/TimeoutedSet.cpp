@@ -22,6 +22,7 @@ void TimeoutedSet::prune(BackendFacade *bf, Persistency::IO::DynamicConfig::Owne
   Persistency::IO::DynamicConfigAutoPtr dc = bf->createDynamicConfig(owner);
   for(Timeouted::iterator it = timeouted_.begin(); it != timeouted_.end(); ++it)
   {
+    // TODO: throw exception when there is no entry saved in dynamic config
     dc->remove(*it);
   }
   timeouted_.clear();

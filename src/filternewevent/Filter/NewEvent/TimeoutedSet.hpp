@@ -13,8 +13,7 @@ namespace Filter
 namespace NewEvent
 {
 
-class Entry;
-/** \brief
+/** \brief local cache to store timeouted elements.
  *
  */
 class TimeoutedSet
@@ -25,12 +24,13 @@ private:
   typedef std::vector<std::string> Timeouted;
 
 public:
-  /** \brief
-   *
+  /** \brief add timeoted key to the collection.
+   *  \param key key to be added.
    */
   void add(std::string &key);
-  /** \brief
-   *
+  /** \brief remove timeouted element from collection and from persistency.
+   *  \param bf    facade for removing timeouting elements from persistency.
+   *  \param owner owner's name.
    */
   void prune(BackendFacade *bf, Persistency::IO::DynamicConfig::Owner &owner);
 

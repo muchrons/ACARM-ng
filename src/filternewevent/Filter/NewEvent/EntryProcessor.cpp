@@ -27,20 +27,21 @@ EntryProcessor::EntryProcessor(BackendFacade             *bf,
 void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
 {
   assert( leaf->isLeaf() && "wrong graph-passing algorithm choosen" );
+  const std::string name(leaf->getMetaAlert()->getName().get());
   // create helper object
-  Entry e(leaf->getMetaAlert()->getName().get(), bf_, ts_);
+  Entry e(name, bf_, ts_);
   assert(ps_!=NULL);
 
   if(ps_->isProcessed(e))
   {
-    LOGMSG_DEBUG_S(log_)<<"(meta-)alert with name "<<leaf->getMetaAlert()->getName().get()
+    LOGMSG_DEBUG_S(log_)<<"(meta-)alert with name "<< name
                         <<" has been already processed - skipping";
     return;
   }
 
   // new host from black list - increase priority of the (meta-)alert
   assert(bf_!=NULL);
-  LOGMSG_INFO_S(log_)<<"(meta-)alert with name "<<leaf->getMetaAlert()->getName().get()
+  LOGMSG_INFO_S(log_)<<"(meta-)alert with name "<< name
                      <<" is new - adding "<<params_.priDelta_<<" to priority";
   bf_->updateSeverityDelta(leaf, params_.priDelta_);
   ps_->markAsProcessed(e, params_.timeout_);     // mark change in cache to avoid doing it again.
