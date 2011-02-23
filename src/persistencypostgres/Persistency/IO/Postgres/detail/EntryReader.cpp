@@ -38,7 +38,7 @@ namespace detail
 namespace
 {
 
-SeverityLevel severityFromInt(Transaction &t, const DataBaseID id)
+SeverityLevel severityFromInt(const DataBaseID id)
 {
   // translate to enum
   switch(id)
@@ -75,7 +75,7 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
                               getAnalyzers( alertID ),
                               ReaderHelper< Base::NullValue<Timestamp> >::readAs(r[0]["detect_time"]).get(),
                               timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["create_time"]) ),
-                              Severity( severityFromInt(t_, ReaderHelper<DataBaseID>::readAsNotNull(r[0]["severity"]) ) ),
+                              Severity( severityFromInt(ReaderHelper<DataBaseID>::readAsNotNull(r[0]["severity"]) ) ),
                               Certainty( ReaderHelper<double>::readAsNotNull(r[0]["certanity"]) ),
                               ReaderHelper<string>::readAsNotNull(r[0]["description"]),
                               getSourceHosts(alertID),
