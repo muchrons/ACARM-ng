@@ -229,6 +229,12 @@ following filters and parameters are available:
     <priorityDelta>0.8</priorityDelta> <!-- amount to update priority by when correlating -->
   </eventchain>
 
+  <!-- filter correlating actions of each user -->
+  <usersmonitor name="usrmon">
+    <timeout>42</timeout>      <!-- timeout for observing entry, in seconds -->
+    <skip>root www-data</skip> <!-- space-separated list of users not to correlate for -->
+  </usersmonitor>
+
 
 triggers configuration
 ======================

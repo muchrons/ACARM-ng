@@ -99,7 +99,7 @@ int removeMessagesFromAccountImpl(const Trigger::Mail::Config &cfg)
 // returns number of removed messages.
 int removeMessagesFromAccount(const Trigger::Mail::Config &cfg, int minCount=0)
 {
-  const time_t deadline=time(NULL)+45;                  // give it 45[s] timeout
+  const time_t deadline=time(NULL)+2*60;                // give it 2[min] timeout
   int          count   =0;                              // no elements removed yet
   // check until timeout's reached, or minimal value is reached
   for(;;)
