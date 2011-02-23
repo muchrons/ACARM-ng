@@ -10,6 +10,67 @@ require_once('lib/jpgraph/jpgraph_pie3d.php');
 require_once('lib/jpgraph/jpgraph_line.php');
 require_once('lib/jpgraph/jpgraph_date.php');
 
+function severityToName($sev)
+{
+  //$name=substr($sev,0,4); //strip "(%d)"
+
+  switch ($sev)
+    {
+    case 4:
+      return "high";
+    case 3:
+      return "medium";
+    case 2:
+      return "low";
+    case 1:
+      return "info";
+    case 0:
+      return "debug";
+    }
+  return "unknown";
+}
+
+function nameToSeverity($sev)
+{
+  $name=substr($sev,0,4); //strip "(%d)"
+
+  switch ($name)
+    {
+    case "high":
+      return 4;
+    case "medi":
+      return 3;
+    case 'low':
+      return 2;
+    case 'info':
+      return 1;
+    case 'debu':
+      return 0;
+    }
+  return -1;
+}
+
+function severityToColor($sev)
+{
+  //$name=substr($sev,0,4); //strip "(%d)"
+
+  switch ($sev)
+    {
+    case 4:
+      return "#ff0000";
+    case 3:
+      return "#ff8800";
+    case 2:
+      return "#ffee00";
+    case 1:
+      return "#00ff00";
+    case 0:
+      return "#2d88ff";
+    }
+  return "#cccccc";
+}
+
+
 class GraphParams
 {
   function __construct($request)
@@ -146,7 +207,7 @@ class GraphService extends TService
     imagedestroy($img);
   }
 
-  private function issueQuery2d($param,$append="")
+  private function issueQuery2d($param)
   {
     try
     {
@@ -163,7 +224,7 @@ class GraphService extends TService
 
     foreach( $pairs as $e )
     {
-      $xdata[] = trim($e->key).$append;
+      $xdata[] = trim($e->key);
       $ydata[] = $e->value;
     }
 
@@ -194,53 +255,13 @@ class GraphService extends TService
     return array($xdata, $ydata, $param->qparam->severities);
   }
 
-  private function severityToColor($sev)
-  {
-    $name=substr($sev,0,4); //strip "(%d)"
-
-    switch ($name)
-    {
-      case 4:
-        return "#ff0000";
-      case 3:
-        return "#ff8800";
-      case 2:
-        return "#ffee00";
-      case 1:
-        return "#00ff00";
-      case 0:
-        return "#2d88ff";
-    }
-    return "#cccccc";
-  }
-
-  function severityToName($sev)
-  {
-    $name=substr($sev,0,4); //strip "(%d)"
-
-    switch ($name)
-    {
-      case 4:
-        return "high";
-      case 3:
-        return "medium";
-      case 2:
-        return "low";
-      case 1:
-        return "info";
-      case 0:
-        return "debug";
-    }
-    return "unknown";
-  }
-
   private function createSeverityChart()
   {
-    $data=$this->issueQuery2d($this->params," (%d)");
+    $data=$this->issueQuery2d($this->params);
 
     if ($data === null)
     {
-      $data[0]=array("");
+      $data[0]=array(0);
       $data[1]=array(1);
       $empty=true;
     }
@@ -249,21 +270,24 @@ class GraphService extends TService
 
     // Create Plot
     $p1 = new PiePlot3D($data[1]);
-    $p1->SetLabels(array_map("$this->severityToName",$data[0]));
+    $severities=array_map("severityToName",$data[0]);
+    $p1->SetLabels(array_map(function($i) {return $i." (%d)";}, $severities));
     $p1->SetLabelPos(1);
     $p1->SetLabelType(PIE_VALUE_PER);
     $p1->value->SetFont(FF_ARIAL,FS_NORMAL,12);
+    $p1->value->SetFormat("%d");
+    $p1->SetLabelType(1);
 
-    foreach ($data[0] as $d)
-      $colors[]=$this->severityToColor($d);
+    $colors=array_map("severityToColor",$data[0]);
 
     if ($empty)
-      $colors=array('#aaaaaa');
+      {
+        $colors=array('#aaaaaa');
+        $p1->value->Show(false);
+      }
 
     $p1->SetSliceColors($colors);
-    $p1->SetLabelType(1);
     $p1->SetSize(0.50);
-    $p1->value->SetFormat("%d");
 
     // Create the Pie Graph.
     $graph = new PieGraph($this->params->width,$this->params->height,'auto');
@@ -304,7 +328,7 @@ class GraphService extends TService
     // Show 0 label on Y-axis (default is not to show)
     $graph->yscale->ticks->SupressZeroLabel(false);
 
-    $data=$this->issueQuery2d($this->params,null);
+    $data=$this->issueQuery2d($this->params);
 
     if ($data === null)
     {
@@ -389,7 +413,7 @@ class GraphService extends TService
         continue;
       $line[] = new LinePlot($data[0][$i][1],$data[0][$i][0]);
       end($line)->setLegend($data[1][$i]);
-      end($line)->SetFillColor($this->severityToColor($data[1][$i]));
+      end($line)->SetFillColor(severityToColor(nameToSeverity($data[1][$i])));
     }
 
     $accplot = new AccLinePlot($line);

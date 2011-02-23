@@ -37,7 +37,6 @@ class DataTableTemplate extends TTemplateControl
         $column->initializeCell($header,0,"Header");
         $this->DataGrid->Columns->add($column);
       }
-
     $this->DataGrid->dataBind();
   }
 
