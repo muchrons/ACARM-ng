@@ -22,5 +22,3 @@ DROP SEQUENCE alerts_id_seq;
 DROP TABLE    reference_urls;
 DROP SEQUENCE reference_urls_id_seq;
 
-DROP TABLE    severities;
--- DROP SEQUENCE severities_id_seq;

@@ -14,12 +14,11 @@
           <td id="AlertTag" rowspan="2">Severity:</td>
           <td id="AlertContent" rowspan="2">
             <com:TCheckBoxList ID="CB" RepeatColumns="3">
-              <com:TListItem ID="CBcritical" Value="critical" Text="Critical" Selected="true" />
-              <com:TListItem ID="CBerror" Value="error" Text="Error" Selected="true" />
-              <com:TListItem ID="CBproblem" Value="problem" Text="Problem" Selected="true" />
-              <com:TListItem ID="CBwarning" Value="warning" Text="Warning" Selected="true" />
+              <com:TListItem ID="CBcritical" Value="high" Text="High" Selected="true" />
+              <com:TListItem ID="CBerror" Value="medium" Text="Medium" Selected="true" />
+              <com:TListItem ID="CBproblem" Value="low" Text="Low" Selected="true" />
+              <com:TListItem ID="CBwarning" Value="info" Text="Info" Selected="true" />
               <com:TListItem ID="CBdebug" Value="debug" Text="Debug" Selected="false" />
-              <com:TListItem ID="CBinfo" Value="info" Text="Info" Selected="true" />
             </com:TCheckBoxList>
           </td>
           <td id="AlertTag">src IP:</td><td id="AlertContent"><com:TTextBox ID="srcip" Text="any" /></td>

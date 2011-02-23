@@ -9,6 +9,7 @@
 #include "IDMEFParserSource.hpp"
 #include "IDMEFParserTarget.hpp"
 #include "IDMEFParser.hpp"
+#include "Logger/Logger.hpp"
 
 namespace Input
 {
@@ -169,32 +170,49 @@ Persistency::Alert::Analyzers IDMEFParser::parseAnalyzers(idmef_alert_t *alert) 
 Persistency::SeverityLevel IDMEFParser::parseSeverity(idmef_alert_t *alert) const
 {
   idmef_assessment_t * idmef_ass=idmef_alert_get_assessment(alert);
-
+  Logger::Node log_( Logger::NodeName( "input.prelude.idmefparser") );
   if (idmef_ass==NULL)
-    return Persistency::SeverityLevel::DEBUG;
+    {
+      LOGMSG_DEBUG_S(log_)<<"Severity is debug since no assessment is present";
+      return Persistency::SeverityLevel::DEBUG;
+    }
 
   idmef_impact_t * idmef_imp=idmef_assessment_get_impact(idmef_ass);
 
   if (idmef_imp==NULL)
-    return Persistency::SeverityLevel::DEBUG;
+    {
+      LOGMSG_DEBUG_S(log_)<<"Severity is debug since no impact is present";
+      return Persistency::SeverityLevel::DEBUG;
+    }
 
   idmef_impact_severity_t * idmef_sev=idmef_impact_get_severity(idmef_imp);
 
   if (idmef_sev==NULL)
-    return Persistency::SeverityLevel::DEBUG;
+    {
+      LOGMSG_DEBUG_S(log_)<<"Severity is debug since no severity is present";
+      return Persistency::SeverityLevel::DEBUG;
+    }
 
   switch (*idmef_sev)
     {
     case IDMEF_IMPACT_SEVERITY_INFO:
+      LOGMSG_DEBUG_S(log_)<<"Severity is INFO";
       return Persistency::SeverityLevel::INFO;
     case IDMEF_IMPACT_SEVERITY_LOW:
-      return Persistency::SeverityLevel::WARNING;
+      LOGMSG_DEBUG_S(log_)<<"Severity is LOW";
+      return Persistency::SeverityLevel::LOW;
     case IDMEF_IMPACT_SEVERITY_MEDIUM:
-      return Persistency::SeverityLevel::PROBLEM;
+      LOGMSG_DEBUG_S(log_)<<"Severity is MEDIUM";
+      return Persistency::SeverityLevel::MEDIUM;
     case IDMEF_IMPACT_SEVERITY_HIGH:
-      return Persistency::SeverityLevel::CRITICAL;
+      LOGMSG_DEBUG_S(log_)<<"Severity is HIGH";
+      return Persistency::SeverityLevel::HIGH;
+    case IDMEF_IMPACT_SEVERITY_ERROR:
+      LOGMSG_DEBUG_S(log_)<<"Severity ERROR mapped to DEBUG";
+      return Persistency::SeverityLevel::DEBUG;
     default:
-      return Persistency::SeverityLevel::NOTICE;
+      LOGMSG_DEBUG_S(log_)<<"Severity UNKNOWN mapped to DEBUG";
+      return Persistency::SeverityLevel::DEBUG;
     }
 }
 

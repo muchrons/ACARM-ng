@@ -168,7 +168,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  const Severity tmp(SeverityLevel::ERROR);
+  const Severity tmp(SeverityLevel::HIGH);
   const Alert    a(name_, analyzers_, &detected_, created_, tmp,
                    certanity_, description_, sourceHosts_, targetHosts_);
   TestHelpers::checkEquality(custom_, a);

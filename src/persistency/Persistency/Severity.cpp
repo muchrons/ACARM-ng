@@ -20,11 +20,9 @@ const char *Severity::getName(void) const
   {
     case SeverityLevel::DEBUG:    return "debug";
     case SeverityLevel::INFO:     return "info";
-    case SeverityLevel::NOTICE:   return "notice";
-    case SeverityLevel::WARNING:  return "warning";
-    case SeverityLevel::PROBLEM:  return "problem";
-    case SeverityLevel::ERROR:    return "error";
-    case SeverityLevel::CRITICAL: return "critical";
+    case SeverityLevel::LOW:      return "low";
+    case SeverityLevel::MEDIUM:   return "medium";
+    case SeverityLevel::HIGH:     return "high";
   } // switch(SeverityLevel)
 
   // we should never reach here
