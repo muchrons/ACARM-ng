@@ -27,7 +27,7 @@ public:
   typedef std::string Hash;
   /** \brief
    *  \param bf
-   *  \param ts
+   *  \param ts cache for storing timeouted elements.
    */
   Entry(Name name, BackendFacade *bf, TimeoutedSet *ts);
   /** \brief
