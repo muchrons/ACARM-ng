@@ -3,6 +3,9 @@
  *
  */
 #include <tut/tut.hpp>
+#include <sys/types.h>
+#include <signal.h>
+#include <unistd.h>
 #include <boost/thread.hpp>
 
 #include "Core/Main.hpp"
@@ -41,6 +44,16 @@ void testObj::test<2>(void)
 {
   Main m;
   m.stop();
+  m.waitUntilDone();
+}
+
+// test stopping request from other thread
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  Main m;
+  ensure_equals("kill() failed", kill( getpid(), SIGINT), 0);
   m.waitUntilDone();
 }
 

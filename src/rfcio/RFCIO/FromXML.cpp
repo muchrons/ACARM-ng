@@ -262,13 +262,13 @@ namespace
 SeverityLevel parseImpactValue(const string &imp)
 {
   if(imp=="info")
-    return SeverityLevel::NOTICE;
-  if(imp=="low")
     return SeverityLevel::INFO;
+  if(imp=="low")
+    return SeverityLevel::LOW;
   if(imp=="medium")
-    return SeverityLevel::PROBLEM;
+    return SeverityLevel::MEDIUM;
   if(imp=="high")
-    return SeverityLevel::CRITICAL;
+    return SeverityLevel::HIGH;
   // by default report parse error
   throw ExceptionInvalidElement(SYSTEM_SAVE_LOCATION, "Classification.Impact(severity)",
                                 "invalid imput value: " + imp);

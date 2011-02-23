@@ -106,14 +106,11 @@ struct TestClass
     return ReaderHelper<Host::Name>::readAs(r[0]["name"]);
   }
 
-  DataBaseID getID(const Severity s)
+  int getID(const Severity s)
   {
-    stringstream ss;
-    ss<<"SELECT id FROM severities WHERE level="<<s.getLevel().toInt();
-    const result r=t_.getAPI<TransactionAPI>().exec(ss);
-    tut::ensure_equals("invalid size", r.size(), 1u);
-    return ReaderHelper<DataBaseID>::readAs(r[0]["id"]);
+    return s.getLevel().toInt();
   }
+
   std::string createString(const int &size)
   {
     std::string s;
@@ -121,6 +118,7 @@ struct TestClass
       s.push_back('a');
     return s;
   }
+
   void CreateTempTable()
   {
     execSQL(t_, "CREATE TEMP TABLE tmp"
@@ -279,8 +277,8 @@ void testObj::test<4>(void)
                 created_
                 );
 
-  ensure_equals("invalid severity ID",
-                ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_severity"]),
+  ensure_equals("invalid severity level",
+                ReaderHelper<int>::readAsNotNull(r[0]["severity"]),
                 getID( a.getSeverity() ) );
 
   ensure_equals("invalid certanity",
@@ -497,7 +495,7 @@ void testObj::test<11>(void)
   es_.saveAlertToAnalyzers(alrtID, anlzID);
   stringstream ss;
   string name, time, description;
-  DataBaseID id;
+  int id;
   double certanity;
 
   ss << "SELECT * FROM alerts WHERE id = " << alrtID << ";";
@@ -514,8 +512,8 @@ void testObj::test<11>(void)
   r[0]["create_time"].to(time);
   ensure_equals("invalid create time", created_, timestampFromString(time) );
 
-  r[0]["id_severity"].to(id);
-  ensure_equals("invalid severity ID", id, getID( a.getSeverity() ) );
+  r[0]["severity"].to(id);
+  ensure_equals("invalid severity level", id, getID( a.getSeverity() ) );
 
   r[0]["certanity"].to(certanity);
   ensure_equals("invalid certanity",certanity_.get(),certanity);

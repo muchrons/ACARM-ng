@@ -119,18 +119,10 @@ DataBaseID EntrySaver::getID(const std::string &seqName)
 
 DataBaseID EntrySaver::getSeverityID(const Alert &a)
 {
-  // get direct mapping form enum to 'level' column.
   const int level=a.getSeverity().getLevel().toInt();
-  assert(level >= 0 && level <= 6);
-  // prepare SQL query
-  stringstream ss;
-  ss<<"SELECT id FROM severities WHERE level="<<level;
-  // execute it
-  const result r=SQL( ss.str(), log_ ).exec(t_);
-  if( r.size()!=1 )
-    throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str() );
-  // return read value as a number
-  return ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id"]);
+  assert(level >= 0);
+  assert(level <= 4);
+  return level;
 }
 
 void EntrySaver::addReferenceURL(std::stringstream &ss, ConstReferenceURLPtr url)
@@ -226,7 +218,6 @@ DataBaseID EntrySaver::saveSourceHost(DataBaseID alertID, const Persistency::Hos
 DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 {
   stringstream ss;
-  Appender     ap(t_);
   ss << "INSERT INTO alerts(name, detect_time, create_time, id_severity, certanity, description) VALUES (";
   ap.append(ss, a.getName().get() );
   ss << ",";

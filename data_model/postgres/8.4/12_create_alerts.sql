@@ -2,18 +2,6 @@
 -- create_alerts.sql
 --
 
--- severities
--- CREATE SEQUENCE severities_id_seq;
-CREATE TABLE    severities
-(
-  id    int      PRIMARY KEY,
-  level int      NOT NULL UNIQUE,
-  name  char(16) NOT NULL UNIQUE,
-
-  CONSTRAINT level_check CHECK ( 0<=level AND level<=6 )
-);
-
-
 -- alerts
 CREATE SEQUENCE alerts_id_seq;
 CREATE TABLE    alerts
@@ -22,7 +10,7 @@ CREATE TABLE    alerts
   name        varchar(256) NOT NULL,
   detect_time timestamp    NULL,
   create_time timestamp    NOT NULL DEFAULT now(),
-  id_severity int          NOT NULL REFERENCES severities(id),
+  severity    int          NOT NULL,
   -- TODO: typo in name
   certanity   real         NOT NULL DEFAULT 1.0,
   description text         NOT NULL,

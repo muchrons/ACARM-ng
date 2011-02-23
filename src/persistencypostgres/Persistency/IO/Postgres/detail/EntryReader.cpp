@@ -38,32 +38,20 @@ namespace detail
 namespace
 {
 
-SeverityLevel severityFromInt(Transaction &t, const DataBaseID id)
+SeverityLevel severityFromInt(const DataBaseID id)
 {
-  // prepare SQL query
-  stringstream ss;
-  ss<<"SELECT level FROM severities WHERE id="<<id;
-  // execute it
-  const result r=t.getAPI<Postgres::TransactionAPI>().exec(ss);
-  if( r.size()!=1 )
-    throw ExceptionNoEntries(SYSTEM_SAVE_LOCATION, ss.str() );
-  // return read value as a number
-  const int level=ReaderHelper<int>::readAsNotNull(r[0]["level"]);
-
   // translate to enum
-  switch(level)
+  switch(id)
   {
     case 0: return SeverityLevel::DEBUG;
     case 1: return SeverityLevel::INFO;
-    case 2: return SeverityLevel::NOTICE;
-    case 3: return SeverityLevel::WARNING;
-    case 4: return SeverityLevel::PROBLEM;
-    case 5: return SeverityLevel::ERROR;
-    case 6: return SeverityLevel::CRITICAL;
+    case 2: return SeverityLevel::LOW;
+    case 3: return SeverityLevel::MEDIUM;
+    case 4: return SeverityLevel::HIGH;
   }
   // when we reach here, there is wrong severity level in data base
   assert(!"invalid severity level");
-  return SeverityLevel::CRITICAL;
+  return SeverityLevel::HIGH;
 }
 
 } // unnamed namespace
@@ -87,7 +75,7 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
                               getAnalyzers( alertID ),
                               ReaderHelper< Base::NullValue<Timestamp> >::readAs(r[0]["detect_time"]).get(),
                               timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["create_time"]) ),
-                              Severity( severityFromInt(t_, ReaderHelper<DataBaseID>::readAsNotNull(r[0]["id_severity"]) ) ),
+                              Severity( severityFromInt(ReaderHelper<DataBaseID>::readAsNotNull(r[0]["severity"]) ) ),
                               Certainty( ReaderHelper<double>::readAsNotNull(r[0]["certanity"]) ),
                               ReaderHelper<string>::readAsNotNull(r[0]["description"]),
                               getSourceHosts(alertID),

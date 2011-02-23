@@ -1,7 +1,9 @@
 -- dev --
+* added dedicated thread for signals handling (ensures no dead locks are possible when sending signals).
 * main branch is now publicly available
 * filters:
   - new event
+  - users monitor
 * icc support (intel toolchain)
 
 -- v0.1.0 --

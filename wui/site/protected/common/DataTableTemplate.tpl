@@ -1,13 +1,13 @@
-<div width=100%>
-<table border=0 width=100%>
+<div width="100%">
+<table border="0" width="100%">
 
-<tr><td><com:TLabel ID="TopCaption" ForeColor="White" Font.Size="14pt"/></td><td align=right><com:TLabel Text="Per page:" ForeColor="White" Font.Size="14pt"/>
+<tr><td><com:TLabel ID="TopCaption" ForeColor="White" Font.Size="14pt"/></td><td align="right"><com:TLabel Text="Per page:" ForeColor="White" Font.Size="14pt"/>
 
 <com:TDropDownList
     AutoPostBack="true"
     OnSelectedIndexChanged="selectionChanged">
     <com:TListItem Value="10" Text="10" />
-    <com:TListItem Value="20" Text="20"Selected="true" />
+    <com:TListItem Value="20" Text="20" Selected="true" />
     <com:TListItem Value="50" Text="50" />
     <com:TListItem Value="100" Text="100" />
     <com:TListItem Value="1000" Text="Jillion" />
