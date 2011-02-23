@@ -8,6 +8,7 @@
 #include <sstream>
 #include <string>
 #include <pqxx/pqxx>
+#include <boost/noncopyable.hpp>
 
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/Timestamp.hpp"
@@ -25,14 +26,17 @@ namespace detail
 
 /** \brief class with string-stream appenders.
  */
-class Appender
+class Appender: private boost::noncopyable
 {
 public:
 
   /** \brief
    *  \param tr
    */
-  Appender(Transaction &tr);
+  explicit Appender(Transaction &tr):
+    tr_(tr)
+  {
+  }
 
   /** \brief appends given pointer's data to statement.
    *  \param ss output stream.
