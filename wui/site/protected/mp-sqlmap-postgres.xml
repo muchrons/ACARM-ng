@@ -245,18 +245,13 @@
 <!-- The same query but with removed two joins for the sake of performance -->
   <select id="DMSeverities" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
-    SELECT alerts.name as key,count(*) as value FROM
-      (SELECT a.id,name FROM
-         (select id,id_severity FROM alerts WHERE create_time<=#date_to# AND create_time>=#date_from#) AS a
-      JOIN severities ON a.id_severity=severities.id
-      WHERE (severities.name='critical' AND #severities# LIKE '%critical%')
-         OR (severities.name='error' AND #severities# LIKE '%error%')
-         OR (severities.name='problem' AND #severities# LIKE '%problem%')
-         OR (severities.name='warning' AND #severities# LIKE '%warning%')
-         OR (severities.name='debug' AND #severities# LIKE '%debug%')
-         OR (severities.name='info' AND #severities# LIKE '%info%')
-      )AS alerts
-    GROUP BY (key);
+    SELECT severity as key,count(*) as value FROM alerts
+      WHERE (severity=4 AND #severities# LIKE '%high%')
+         OR (severity=3 AND #severities# LIKE '%medium%')
+         OR (severity=2 AND #severities# LIKE '%low%')
+         OR (severity=1 AND #severities# LIKE '%info%')
+         OR (severity=0 AND #severities# LIKE '%debug%')
+    GROUP BY (severity);
     ]]>
   </select>
 

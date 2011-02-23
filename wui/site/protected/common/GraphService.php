@@ -200,20 +200,38 @@ class GraphService extends TService
 
     switch ($name)
     {
-      case 'prob':
-        return "#ff8800";
-      case 'warn':
-        return "#ffee00";
-      case 'erro':
-        return "#ff5500";
-      case 'crit':
+      case 4:
         return "#ff0000";
-      case 'info':
+      case 3:
+        return "#ff8800";
+      case 2:
+        return "#ffee00";
+      case 1:
         return "#00ff00";
-      case 'debu':
+      case 0:
         return "#2d88ff";
     }
     return "#cccccc";
+  }
+
+  function severityToName($sev)
+  {
+    $name=substr($sev,0,4); //strip "(%d)"
+
+    switch ($name)
+    {
+      case 4:
+        return "high";
+      case 3:
+        return "medium";
+      case 2:
+        return "low";
+      case 1:
+        return "info";
+      case 0:
+        return "debug";
+    }
+    return "unknown";
   }
 
   private function createSeverityChart()
@@ -231,7 +249,7 @@ class GraphService extends TService
 
     // Create Plot
     $p1 = new PiePlot3D($data[1]);
-    $p1->SetLabels($data[0]);
+    $p1->SetLabels(array_map("$this->severityToName",$data[0]));
     $p1->SetLabelPos(1);
     $p1->SetLabelType(PIE_VALUE_PER);
     $p1->value->SetFont(FF_ARIAL,FS_NORMAL,12);
