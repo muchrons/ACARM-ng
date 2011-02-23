@@ -10,6 +10,7 @@ CREATE TABLE    alerts
   name        varchar(256) NOT NULL,
   detect_time timestamp    NULL,
   create_time timestamp    NOT NULL DEFAULT now(),
+  -- TODO: constraint on range of this variable is missing
   severity    int          NOT NULL,
   -- TODO: typo in name
   certanity   real         NOT NULL DEFAULT 1.0,
@@ -17,8 +18,7 @@ CREATE TABLE    alerts
 
   -- TODO: typo in name
   CONSTRAINT certanity_check      CHECK ( 0<=certanity AND certanity<=1 ),
-  CONSTRAINT dates_relation_check CHECK ( detect_time IS NULL OR
-                                          detect_time<=create_time )
+  CONSTRAINT dates_relation_check CHECK ( detect_time IS NULL OR detect_time<=create_time )
 );
 
 

@@ -4,12 +4,13 @@
  */
 #include <cassert>
 
+#include "Logger/Logger.hpp"
+// TODO: never include files withoutfull path (here: Input/Prelude)
 #include "ExceptionParse.hpp"
 #include "IDMEFParserAnalyzer.hpp"
 #include "IDMEFParserSource.hpp"
 #include "IDMEFParserTarget.hpp"
 #include "IDMEFParser.hpp"
-#include "Logger/Logger.hpp"
 
 namespace Input
 {
@@ -44,16 +45,16 @@ Persistency::Alert::Name IDMEFParser::parseName(idmef_alert_t *alert) const
   assert(alert!=NULL);
   idmef_classification_t * classification = idmef_alert_get_classification(alert);
 
-  if (classification == NULL)
+  if(classification == NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Mandatory IDMEF field \"Classification\" is missing.");
 
   const prelude_string_t *idmef_name = idmef_classification_get_text(classification);
-  if (idmef_name == NULL)
+  if(idmef_name == NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Mandatory IDMEF field \"Classification\" is present but unreadable.");
 
   const char * workaround=prelude_string_get_string(idmef_name);
 
-  if (workaround==NULL)
+  if(workaround==NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Mandatory IDMEF field \"Classification\" is present but unreadable.");
 
   return workaround;
@@ -63,17 +64,17 @@ std::string IDMEFParser::parseDescription(idmef_alert_t *alert) const
 {
   idmef_assessment_t * idmef_ass=idmef_alert_get_assessment(alert);
 
-  if (idmef_ass==NULL)
+  if(idmef_ass==NULL)
     return "";
 
   idmef_impact_t * idmef_imp=idmef_assessment_get_impact(idmef_ass);
 
-  if (idmef_imp==NULL)
+  if(idmef_imp==NULL)
     return "";
 
   prelude_string_t * idmef_desc=idmef_impact_get_description(idmef_imp);
 
-  if (idmef_desc==NULL)
+  if(idmef_desc==NULL)
     return "";
 
   return prelude_string_get_string(idmef_desc);
@@ -145,10 +146,7 @@ Persistency::AnalyzerPtrNN makeAnalyzer(idmef_analyzer_t *elem, BackendFacade &b
   ss << an.getName().get();
   if( an.getPreludeID()!="" )
     ss << " (" << an.getPreludeID() << ")";
-  return bf.getAnalyzer( ss.str(),
-                         an.getVersion(),
-                         an.getOS(),
-                         an.getIP() );
+  return bf.getAnalyzer( ss.str(), an.getVersion(), an.getOS(), an.getIP() );
 } // makeAnalyzer()
 } // unnamed namespace
 
@@ -171,30 +169,30 @@ Persistency::SeverityLevel IDMEFParser::parseSeverity(idmef_alert_t *alert) cons
 {
   idmef_assessment_t * idmef_ass=idmef_alert_get_assessment(alert);
   Logger::Node log_( Logger::NodeName( "input.prelude.idmefparser") );
-  if (idmef_ass==NULL)
-    {
-      LOGMSG_DEBUG_S(log_)<<"Severity is debug since no assessment is present";
-      return Persistency::SeverityLevel::DEBUG;
-    }
+  if(idmef_ass==NULL)
+  {
+    LOGMSG_DEBUG_S(log_)<<"Severity is debug since no assessment is present";
+    return Persistency::SeverityLevel::DEBUG;
+  }
 
   idmef_impact_t * idmef_imp=idmef_assessment_get_impact(idmef_ass);
 
-  if (idmef_imp==NULL)
-    {
-      LOGMSG_DEBUG_S(log_)<<"Severity is debug since no impact is present";
-      return Persistency::SeverityLevel::DEBUG;
-    }
+  if(idmef_imp==NULL)
+  {
+    LOGMSG_DEBUG_S(log_)<<"Severity is debug since no impact is present";
+    return Persistency::SeverityLevel::DEBUG;
+  }
 
   idmef_impact_severity_t * idmef_sev=idmef_impact_get_severity(idmef_imp);
 
-  if (idmef_sev==NULL)
-    {
-      LOGMSG_DEBUG_S(log_)<<"Severity is debug since no severity is present";
-      return Persistency::SeverityLevel::DEBUG;
-    }
+  if(idmef_sev==NULL)
+  {
+    LOGMSG_DEBUG_S(log_)<<"Severity is debug since no severity is present";
+    return Persistency::SeverityLevel::DEBUG;
+  }
 
-  switch (*idmef_sev)
-    {
+  switch(*idmef_sev)
+  {
     case IDMEF_IMPACT_SEVERITY_INFO:
       LOGMSG_DEBUG_S(log_)<<"Severity is INFO";
       return Persistency::SeverityLevel::INFO;
@@ -208,12 +206,13 @@ Persistency::SeverityLevel IDMEFParser::parseSeverity(idmef_alert_t *alert) cons
       LOGMSG_DEBUG_S(log_)<<"Severity is HIGH";
       return Persistency::SeverityLevel::HIGH;
     case IDMEF_IMPACT_SEVERITY_ERROR:
+      // TODO: this should be HIGH (i.e. acording to prelude it is "more than high")
       LOGMSG_DEBUG_S(log_)<<"Severity ERROR mapped to DEBUG";
       return Persistency::SeverityLevel::DEBUG;
     default:
       LOGMSG_DEBUG_S(log_)<<"Severity UNKNOWN mapped to DEBUG";
       return Persistency::SeverityLevel::DEBUG;
-    }
+  }
 }
 
 const Persistency::Alert::Name& IDMEFParser::getName() const
