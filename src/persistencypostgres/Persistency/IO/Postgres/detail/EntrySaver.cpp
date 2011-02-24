@@ -218,7 +218,8 @@ DataBaseID EntrySaver::saveSourceHost(DataBaseID alertID, const Persistency::Hos
 DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 {
   stringstream ss;
-  ss << "INSERT INTO alerts(name, detect_time, create_time, id_severity, certanity, description) VALUES (";
+  Appender     ap(t_);
+  ss << "INSERT INTO alerts(name, detect_time, create_time, severity, certanity, description) VALUES (";
   ap.append(ss, a.getName().get() );
   ss << ",";
   ap.append(ss, a.getDetectionTime()?a.getDetectionTime():NULL);
