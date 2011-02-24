@@ -30,8 +30,8 @@ class Appender: private boost::noncopyable
 {
 public:
 
-  /** \brief
-   *  \param tr
+  /** \brief create appender.
+   *  \param tr transaction to be used for escaping.
    */
   explicit Appender(Transaction &tr):
     tr_(tr)
