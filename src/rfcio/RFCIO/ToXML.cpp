@@ -87,13 +87,16 @@ xmlpp::Element &ToXML::addAssessment(const Persistency::GraphNode &leaf)
   ToXML assessment( addChild( getParent(), "Assessment" ) );
   // add impact to XML
   {
-    const int     sevEn=leaf.getAlert()->getSeverity().getLevel().toInt();
+    const int sevEn=leaf.getAlert()->getSeverity().getLevel().toInt();
+    // TODO: debug is allowed, since it may be created by the system.
     assert( sevEn>=1 ); //no debug is allowed in IDMEF
     assert( sevEn<=4 );
-    const char   *str  =NULL;
+    const char *str=NULL;
     switch (sevEn)
-      {
+    {
       case 0:
+        // TODO: debug is allowed - accertion is invalid here. use logging message with
+        //       warning and simply convert it to 'info'
         assert(!"debug severity not allowed in output IDMEF");
       case 1:
         str="info";
@@ -107,7 +110,8 @@ xmlpp::Element &ToXML::addAssessment(const Persistency::GraphNode &leaf)
       case 4:
         str="high";
         break;
-      }
+      // TODO: default is missing (asserting this is fine :))
+    }
     assert(str!=NULL);
     ToXML impact( assessment.addChild( assessment.getParent(), "Impact" ) );
     impact.addParameter("severity", str);
