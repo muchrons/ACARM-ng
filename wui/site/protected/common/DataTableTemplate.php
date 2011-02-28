@@ -19,10 +19,13 @@ class DataTableTemplate extends TTemplateControl
 
     if ($this->DataGrid->VirtualItemCount==0)
       {
-        $this->DataGrid->reset();
-        $this->DataGrid->DataSource=array(array('id'=>'0', 'Info'=>'Your query returned no data. Take a deep breath and try again.'));
-        $this->DataGrid->VirtualItemCount=1;
+        $this->Labelka->setVisible(true);
+        $this->Pager->setVisible(false);
+        return;
       }
+
+    $this->Labelka->setVisible(false);
+    $this->Pager->setVisible(true);
 
     $data=$this->DataGrid->DataSource[0]; //[0] is ok, count is >=1
     foreach($data as $column_name=>$rows)

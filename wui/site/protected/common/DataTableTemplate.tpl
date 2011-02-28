@@ -39,6 +39,17 @@
     AlternatingItemStyle.BackColor="#b2b2d0" >
 </com:TDataGrid>
 
+<center>
+<com:TLabel
+   ID="Labelka"
+   Text="Your query returned no data."
+   ForeColor="white"
+   BackColor="black"
+   Visible="false"
+   Font.Name="Arial"
+   Font.Size="14pt"
+   />
+</center>
 </td></tr>
 </table>
 
