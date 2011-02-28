@@ -3,10 +3,13 @@
  *
  */
 #include <iostream>
+#include <cstring>
 #include <cassert>
+#include <signal.h>
 
 #include "Commons/Exception.hpp"
 #include "Core/Main.hpp"
+#include "AcarmNG/blockAllSignals.hpp"
 #include "AcarmNG/printBanner.hpp"
 
 using namespace std;
@@ -17,8 +20,8 @@ int main(int /*argc*/, const char **argv)
 
   try
   {
-    // fancy init ;)
-    printBanner(argv[0]);
+    AcarmNG::blockAllSignals();     // permanently disable all signals
+    AcarmNG::printBanner(argv[0]);  // fancy init :)
     Logger::Node log("main");
 
     try

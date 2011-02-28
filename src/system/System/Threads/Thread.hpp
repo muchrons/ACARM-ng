@@ -22,6 +22,9 @@ namespace Threads
 class Thread: private boost::noncopyable
 {
 public:
+  /** \brief thread's ID type. */
+  typedef boost::thread::id ID;
+
   /** \brief create thread form a given function object.
    *  \param t user's function object.
    */
@@ -42,6 +45,9 @@ public:
   /** \brief interrput thread.
    */
   void interrupt(void);
+  /** \brief gets thread id.
+   */
+  ID id(void) const;
 
 private:
   template<typename T>
