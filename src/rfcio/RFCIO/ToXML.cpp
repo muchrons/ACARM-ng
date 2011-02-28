@@ -87,27 +87,28 @@ xmlpp::Element &ToXML::addAssessment(const Persistency::GraphNode &leaf)
   ToXML assessment( addChild( getParent(), "Assessment" ) );
   // add impact to XML
   {
-    const int     sevEn=leaf.getAlert()->getSeverity().getLevel().toInt();
-    assert( sevEn>=1 ); //no debug is allowed in IDMEF
-    assert( sevEn<=4 );
-    const char   *str  =NULL;
-    switch (sevEn)
-      {
-      case 0:
-        assert(!"debug severity not allowed in output IDMEF");
-      case 1:
-        str="info";
-        break;
-      case 2:
+    const int     minV =Persistency::SeverityLevel::Min;
+    const int     sevEn=leaf.getAlert()->getSeverity().getLevel().toInt() - minV;   // ensure range starts with 0
+    const int     range=leaf.getAlert()->getSeverity().getLevel().size()  - 1;      // range is now max value
+    assert(range!=0);
+    assert( (1.0*sevEn)/range>=0 );
+    assert( (1.0*sevEn)/range<=1 );
+    const double  sevSm=sevEn + leaf.getMetaAlert()->getSeverityDelta();
+    const double  sevFl=sevSm/range;
+    const double  sev  =min(1.0, max(0.0, sevFl));  // normalize severity to [0;1] range
+    assert(sev>=0);
+    assert(sev<=1);
+    const char   *str  =NULL;;
+    if(sev<0.1)
+      str="info";
+    else
+      if(sev<0.3)
         str="low";
-        break;
-      case 3:
-        str="medium";
-        break;
-      case 4:
-        str="high";
-        break;
-      }
+      else
+        if(sev<0.8)
+          str="medium";
+        else
+          str="high";
     assert(str!=NULL);
     ToXML impact( assessment.addChild( assessment.getParent(), "Impact" ) );
     impact.addParameter("severity", str);
