@@ -10,8 +10,7 @@ GRANT SELECT
            analyzers,
            alert_analyzers,
            reference_urls,
-           services,
-           severities
+           services
   TO "acarm-ng-ui",
      "acarm-ng-daemon";
 GRANT SELECT
@@ -48,7 +47,7 @@ GRANT UPDATE
 
 
 -- daemon may update pieces of information gathered by sensors
-GRANT UPDATE
+GRANT UPDATE(name)
   ON TABLE hosts
   TO "acarm-ng-daemon";
 
