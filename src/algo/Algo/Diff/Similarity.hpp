@@ -1,0 +1,78 @@
+/*
+ * Similarity.hpp
+ *
+ */
+#ifndef INCLUDE_ALGO_DIFF_SIMILARITY_HPP_FILE
+#define INCLUDE_ALGO_DIFF_SIMILARITY_HPP_FILE
+
+/* public header */
+
+#include <cassert>
+
+#include "Algo/Exception.hpp"
+
+namespace Algo
+{
+namespace Diff
+{
+
+/** \brief similarity representation (value from [0;1]).
+ */
+class Similarity
+{
+public:
+  /** \brief exception thrown when similarity value is invalid.
+   */
+  struct ExceptionInvalidValue: public Exception
+  {
+    /** \brief create error report.
+     *  \param where place where exception has been reasen.
+     *  \param msg   error message.
+     *  \param value value tat was invalid.
+     */
+    ExceptionInvalidValue(const Location &where, const char *msg, double value);
+  }; // struct ExceptionInvalidValue
+
+
+  /** \brief create object with rage-check.
+   *  \param v value to represent.
+   */
+  Similarity(const double v):
+    v_(v)
+  {
+    if(v_<0)
+      throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "value too small", v_);
+    if(1<v_)
+      throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "value too big", v_);
+  }
+
+  /** \brief named c-tor normalizing given value to [0;1] range.
+   *  \param v value to normalize.
+   *  \return valid object representing similarity.
+   */
+  static const Similarity normalize(const double v)
+  {
+    if(v<0)
+      return Similarity(0);
+    if(1<v)
+      return Similarity(1);
+    return Similarity(v);
+  }
+
+  /** \brief gets saved value.
+   */
+  double get(void) const
+  {
+    assert(0<=v_);
+    assert(v_<=1);
+    return v_;
+  }
+
+private:
+  double v_;
+}; // class Similarity
+
+} // namespace Diff
+} // namespace Algo
+
+#endif
