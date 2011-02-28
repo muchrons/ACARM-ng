@@ -23,19 +23,17 @@ struct SeverityLevelEnum
   {
     DEBUG   =0,
     INFO    =1,
-    NOTICE  =2,
-    WARNING =3,
-    PROBLEM =4,
-    ERROR   =5,
-    CRITICAL=6
+    LOW     =2,
+    MEDIUM  =3,
+    HIGH    =4
   }
   Type;
   /** \brief minimum value.
    */
-  enum { Min=DEBUG    };
+  enum { Min=DEBUG };
   /** \brief maximum value.
    */
-  enum { Max=CRITICAL };
+  enum { Max=HIGH };
 }; // struct SeverityLevelEnum
 } // namespace detail
 

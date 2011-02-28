@@ -42,8 +42,7 @@
   </select>
 
   <select id="SelectAlert" resultClass="CAlertEntry" parameterClass="int">
-    SELECT a.name, a.detect_time AS detect, a.create_time AS create, a.description as description, a.certanity AS certainty, s.name AS severity
-      FROM alerts AS a LEFT JOIN severities AS s ON s.id=a.id_severity WHERE a.id=#VALUE#;
+    SELECT name, detect_time AS detect, create_time AS create, description, certanity as certainty, severity FROM alerts WHERE id=#VALUE#;
   </select>
 
   <select id="SelectHost" resultClass="CReportedHostEntry" parameterClass="int">
@@ -98,30 +97,17 @@
 
   <select id="SelectAlertsSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
     <![CDATA[
-      select count(*) from
-      (
-          select ad.id AS id, ad.name AS name, ad.create_time AS create_time, s.name AS severity from  
-          (
-              (select * from alerts WHERE create_time<=#date_to# AND create_time>=#date_from#) AS ad
-              LEFT JOIN
-              severities AS s
-              ON s.id=ad.id_severity
-          )  WHERE
-            (s.name='critical' AND #severities# LIKE '%critical%')
-         OR (s.name='error' AND #severities# LIKE '%error%')
-         OR (s.name='problem' AND #severities# LIKE '%problem%')
-         OR (s.name='warning' AND #severities# LIKE '%warning%')
-         OR (s.name='debug' AND #severities# LIKE '%debug%')
-         OR (s.name='info' AND #severities# LIKE '%info%')
-     ) AS x
-     JOIN
-     (SELECT h1.id_alert AS id_alert FROM
-         (select * FROM hosts WHERE (hosts.ip=#src# OR 1=#ignoresrc#) AND role='src') AS h1
-         JOIN
-         (select * FROM hosts WHERE (hosts.ip=#dst# OR 1=#ignoredst#) AND role='dst') AS h2
-         ON h1.id_alert=h2.id_alert
-     ) AS h
-     ON h.id_alert=x.id
+         SELECT count(*) FROM alerts
+            JOIN hosts as h1 on h1.id_alert=alerts.id
+            JOIN hosts as h2 on h2.id_alert=alerts.id
+          WHERE create_time<=#date_to#  AND create_time>=#date_from#
+            AND (h1.ip=#src# OR 1=#ignoresrc#) AND h1.role='src'
+            AND (h2.ip=#dst# OR 1=#ignoredst#) AND h2.role='dst'
+            AND ((severity='4' AND #severities# LIKE '%high%')
+              OR (severity='3' AND #severities# LIKE '%medium%')         
+              OR (severity='2' AND #severities# LIKE '%low%')
+              OR (severity='1' AND #severities# LIKE '%debug%')
+              OR (severity='0' AND #severities# LIKE '%info%'));
     ]]>
   </select>
 
@@ -176,39 +162,22 @@
     SELECT u.id AS id, u.login AS login, l.ctime AS ctime, l.msg AS msg FROM logs AS l LEFT JOIN wui_users AS u ON l.id_wui_user=u.id ORDER BY ctime DESC limit #limit# offset #offset#
   </select>
 
-  <select id="SelectAlertsSummary" resultClass="CAlertListEntry" parameterClass="CParamLimitOffset">
-    SELECT a.id AS id, a.name AS name, a.create_time AS create_time, s.name || ' (' || s.level || ')' AS severity FROM alerts AS a LEFT JOIN severities AS s ON a.id_severity=s.id ORDER BY create_time DESC limit #limit# offset #offset#
-  </select>
-
   <select id="SelectAlertsSummaryRange" resultClass="CAlertListEntry" parameterClass="CParamRange">
     <![CDATA[
-      select id, name, create_time, severity from
-      (
-          select ad.id AS id, ad.name AS name, ad.create_time AS create_time, s.name AS severity from  
-          (
-              (select * from alerts WHERE create_time<=#date_to#  AND create_time>=#date_from#) AS ad
-              LEFT JOIN
-              severities AS s
-              ON s.id=ad.id_severity
-          )  WHERE
-            (s.name='critical' AND #severities# LIKE '%critical%')
-         OR (s.name='error' AND #severities# LIKE '%error%')
-         OR (s.name='problem' AND #severities# LIKE '%problem%')
-         OR (s.name='warning' AND #severities# LIKE '%warning%')
-         OR (s.name='debug' AND #severities# LIKE '%debug%')
-         OR (s.name='info' AND #severities# LIKE '%info%')
-     ) AS x
-     JOIN
-     (SELECT h1.id_alert AS id_alert FROM
-         (select * FROM hosts WHERE (hosts.ip=#src# OR 1=#ignoresrc#) AND role='src') AS h1
-         JOIN
-         (select * FROM hosts WHERE (hosts.ip=#dst# OR 1=#ignoredst#) AND role='dst') AS h2
-         ON h1.id_alert=h2.id_alert
-     ) AS h
-     ON h.id_alert=x.id
-     ORDER BY x.create_time DESC
-     LIMIT #limit#
-     OFFSET #offset#
+         SELECT alerts.id, alerts.name, create_time, severity FROM alerts
+            JOIN hosts as h1 on h1.id_alert=alerts.id
+            JOIN hosts as h2 on h2.id_alert=alerts.id
+          WHERE create_time<=#date_to#  AND create_time>=#date_from#
+            AND (h1.ip=#src# OR 1=#ignoresrc#) AND h1.role='src'
+            AND (h2.ip=#dst# OR 1=#ignoredst#) AND h2.role='dst'
+            AND ((severity='4' AND #severities# LIKE '%high%')
+              OR (severity='3' AND #severities# LIKE '%medium%')
+              OR (severity='2' AND #severities# LIKE '%low%')
+              OR (severity='1' AND #severities# LIKE '%debug%')
+              OR (severity='0' AND #severities# LIKE '%info%'))
+            ORDER BY alerts.create_time DESC
+            LIMIT #limit#
+            OFFSET #offset#
     ]]>
   </select>
 
@@ -224,39 +193,29 @@
 
   <select id="DMSeveritiesIP" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
-    SELECT alerts.name as key,count(*) as value FROM
-      (SELECT a.id,name FROM
-         (select id,id_severity FROM alerts WHERE create_time<=#date_to# AND create_time>=#date_from#) AS a
-      JOIN severities ON a.id_severity=severities.id
-      WHERE (severities.name='critical' AND #severities# LIKE '%critical%')
-         OR (severities.name='error' AND #severities# LIKE '%error%')
-         OR (severities.name='problem' AND #severities# LIKE '%problem%')
-         OR (severities.name='warning' AND #severities# LIKE '%warning%')
-         OR (severities.name='debug' AND #severities# LIKE '%debug%')
-         OR (severities.name='info' AND #severities# LIKE '%info%')
-      )AS alerts
-    JOIN hosts as h1 ON alerts.id=h1.id_alert AND h1.role='src'
-    JOIN hosts as h2 ON alerts.id=h2.id_alert AND h2.role='dst'
-    WHERE (h1.ip=#src# OR 1=#ignoresrc#) AND (h2.ip=#dst# OR 1=#ignoredst#)
-   GROUP BY (key);
+    SELECT severity as key,count(*) as value FROM alerts
+         JOIN hosts as h1 ON alerts.id=h1.id_alert AND h1.role='src'
+         JOIN hosts as h2 ON alerts.id=h2.id_alert AND h2.role='dst'
+         WHERE (h1.ip=#src# OR 1=#ignoresrc#) AND (h2.ip=#dst# OR 1=#ignoredst#)
+           AND create_time<=#date_to# AND create_time>=#date_from#
+           AND ((severity=4 AND #severities# LIKE '%high%')
+             OR (severity=3 AND #severities# LIKE '%medium%')
+             OR (severity=2 AND #severities# LIKE '%low%') 
+             OR (severity=1 AND #severities# LIKE '%info%')  
+             OR (severity=0 AND #severities# LIKE '%debug%')) GROUP BY (severity);
     ]]>
   </select>
 
 <!-- The same query but with removed two joins for the sake of performance -->
   <select id="DMSeverities" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
-    SELECT alerts.name as key,count(*) as value FROM
-      (SELECT a.id,name FROM
-         (select id,id_severity FROM alerts WHERE create_time<=#date_to# AND create_time>=#date_from#) AS a
-      JOIN severities ON a.id_severity=severities.id
-      WHERE (severities.name='critical' AND #severities# LIKE '%critical%')
-         OR (severities.name='error' AND #severities# LIKE '%error%')
-         OR (severities.name='problem' AND #severities# LIKE '%problem%')
-         OR (severities.name='warning' AND #severities# LIKE '%warning%')
-         OR (severities.name='debug' AND #severities# LIKE '%debug%')
-         OR (severities.name='info' AND #severities# LIKE '%info%')
-      )AS alerts
-    GROUP BY (key);
+    SELECT severity as key,count(*) as value FROM alerts WHERE create_time<=#date_to# AND create_time>=#date_from#
+        AND ((severity=4 AND #severities# LIKE '%high%')
+         OR (severity=3 AND #severities# LIKE '%medium%')
+         OR (severity=2 AND #severities# LIKE '%low%')
+         OR (severity=1 AND #severities# LIKE '%info%')
+         OR (severity=0 AND #severities# LIKE '%debug%'))
+    GROUP BY (severity);
     ]]>
   </select>
 
@@ -267,7 +226,11 @@
       (SELECT date_trunc('day', create_time) AS key FROM
         alerts WHERE create_time>=#date_from# AND create_time<=#date_to# GROUP BY key) AS a
         LEFT JOIN (SELECT date_trunc('day', create_time) AS date2, count(*) AS value FROM
-        alerts LEFT JOIN severities AS s ON alerts.id_severity=s.id WHERE s.name=#severities# GROUP BY date2) AS b ON a.key=b.date2 ORDER BY key;
+        alerts WHERE (severity=4 AND #severities#='high')
+                  OR (severity=3 AND #severities#='medium')
+                  OR (severity=2 AND #severities#='low')
+                  OR (severity=1 AND #severities#='info')
+                  OR (severity=0 AND #severities#='debug') GROUP BY date2) AS b ON a.key=b.date2 ORDER BY key;
     ]]>
   </select>
 

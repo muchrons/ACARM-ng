@@ -9,6 +9,9 @@
 
 using namespace std;
 
+namespace AcarmNG
+{
+
 void printBanner(const char *app)
 {
   assert(app!=NULL);
@@ -24,3 +27,5 @@ void printBanner(const char *app)
   cout << app << ":" << endl;
   cout << app << ": (see logs for details on application's current status/run)" << endl;
 } // printBanner()
+
+} // namespace AcarmNG

@@ -368,7 +368,7 @@ void testObj::test<9>(void)
 {
   const string              in =assessmentXML("0.666", "info");
   const FromXML::Assessment out=fx_.parseAssessment( parseXML( in.c_str() ) );
-  ensure_equals("invalid severity", out.get<0>().getName(), string("notice") );
+  ensure_equals("invalid severity", out.get<0>().getName(), string("info") );
   ensure_equals("invalid certainty", out.get<1>().get(), 0.666);
 }
 
@@ -379,7 +379,7 @@ void testObj::test<10>(void)
 {
   const string              in =assessmentXML("0.666", "low");
   const FromXML::Assessment out=fx_.parseAssessment( parseXML( in.c_str() ) );
-  ensure_equals("invalid severity", out.get<0>().getName(), string("info") );
+  ensure_equals("invalid severity", out.get<0>().getName(), string("low") );
 }
 
 // test medium severity
@@ -389,7 +389,7 @@ void testObj::test<11>(void)
 {
   const string              in =assessmentXML("0.666", "medium");
   const FromXML::Assessment out=fx_.parseAssessment( parseXML( in.c_str() ) );
-  ensure_equals("invalid severity", out.get<0>().getName(), string("problem") );
+  ensure_equals("invalid severity", out.get<0>().getName(), string("medium") );
 }
 
 // test high severity
@@ -399,7 +399,7 @@ void testObj::test<12>(void)
 {
   const string              in =assessmentXML("0.666", "high");
   const FromXML::Assessment out=fx_.parseAssessment( parseXML( in.c_str() ) );
-  ensure_equals("invalid severity", out.get<0>().getName(), string("critical") );
+  ensure_equals("invalid severity", out.get<0>().getName(), string("high") );
 }
 
 // test throw when additional data hets invalid node
@@ -1026,7 +1026,7 @@ void testObj::test<51>(void)
   ensure_equals("invalid IP of target host", (*alert.getTargetHosts().begin())->getIP().to_string(), "9.9.7.0");
   ensure_equals("invalid name", alert.getName().get(), string("some alert") );
   ensure_equals("invalid description", alert.getDescription(), "some test alert");
-  ensure("invalid severity", alert.getSeverity().getLevel()==SeverityLevel::INFO);
+  ensure("invalid severity", alert.getSeverity().getLevel()==SeverityLevel::LOW);
   ensure_equals("invalid certainty", alert.getCertainty().get(), 1);
 }
 
@@ -1073,7 +1073,7 @@ void testObj::test<53>(void)
   ensure_equals("invalid number of target hosts", alert.getTargetHosts().size(), 0u);
   ensure_equals("invalid name", alert.getName().get(), string("some alert") );
   ensure_equals("invalid description", alert.getDescription(), "");
-  ensure("invalid severity", alert.getSeverity().getLevel()==SeverityLevel::INFO);
+  ensure("invalid severity", alert.getSeverity().getLevel()==SeverityLevel::LOW);
   ensure_equals("invalid certainty", alert.getCertainty().get(), 1);
 }
 

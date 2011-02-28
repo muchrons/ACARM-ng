@@ -11,6 +11,8 @@
 #include <boost/noncopyable.hpp>
 #include <cassert>
 
+#include "System/SignalMasker.hpp"
+
 namespace Base
 {
 namespace Threads
@@ -21,6 +23,9 @@ namespace Threads
  *
  *  thanks to this class threads are known to be interrupted and joined even
  *  when normal flow (i.e. non-exception one) would not allow this.
+ *
+ *  \note this class blocks signals handling in thread it represents. use
+ *        System::SignalUnmasker to allow signals in given thread.
  */
 class ThreadJoiner: private boost::noncopyable
 {
@@ -31,7 +36,7 @@ public:
    */
   template<typename T>
   explicit ThreadJoiner(const T &t):
-    th_(t)
+    th_( (SignalMaskingOperator<T>(t)) )
   {
   }
   /** \brief interrupr and join thread.
@@ -57,6 +62,23 @@ public:
   }
 
 private:
+  template<typename T>
+  struct SignalMaskingOperator
+  {
+    explicit SignalMaskingOperator(const T &t):
+      t_(t)
+    {
+    }
+    void operator()(void)
+    {
+      // block sinals for this thread
+      System::SignalMasker msk;
+      // run user's code.
+      t_();
+    }
+    T t_;
+  };
+
   boost::thread th_;
 }; // class ThreadJoiner
 

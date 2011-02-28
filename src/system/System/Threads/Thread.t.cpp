@@ -106,7 +106,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  bool   interrupted=false;
+  bool interrupted=false;
   {
     Thread th( (NeverStop(interrupted)) );
     usleep(100*1000);
@@ -119,8 +119,40 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  bool   interrupted=false;
+  bool        interrupted=false;
   ThreadPtrNN th( new Thread( (NeverStop(interrupted)) ) );
+}
+
+
+namespace
+{
+struct GetterID
+{
+  explicit GetterID(Thread::ID &id):
+    id_(&id)
+  {
+  }
+
+  void operator()(void)
+  {
+    assert(id_!=NULL);
+    *id_=boost::this_thread::get_id();
+  }
+
+  Thread::ID *id_;
+}; // struct GetterID
+} // unnamed namespace
+
+// test getting thread's ID
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  Thread::ID thID;
+  Thread     th( (GetterID(thID)) );
+  Thread::ID readID=th.id();
+  th.join();
+  ensure("invalid id", readID==thID);
 }
 
 } // namespace tut

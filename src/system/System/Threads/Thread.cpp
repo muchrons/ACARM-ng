@@ -32,5 +32,10 @@ void Thread::interrupt(void)
   th_.interrupt();
 }
 
+Thread::ID Thread::id(void) const
+{
+  return th_.get_id();
+}
+
 } // namespace Threads
 } // namespace System
