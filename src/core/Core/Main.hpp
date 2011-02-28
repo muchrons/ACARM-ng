@@ -51,7 +51,7 @@ public:
 
 private:
   Logger::Node                 log_;            // logger for this class
-  System::SignalMasker         blockMask_;      // maks for blocking all signals for this and derived threads
+  System::SignalMasker         blockMask_;      // mask for blocking all signals for this and derived threads
   Commons::Threads::Thread     signalThread_;   // thread dedicated to handling signals
   HandleSignals                nullSignals_;    // ignore signals at this moment
   PluginsLoader                plugins_;        // load all plugins into the system
