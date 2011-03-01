@@ -12,12 +12,14 @@
 #include <cstring>
 
 #include "Algo/Diff/Similarity.hpp"
-#include "Algo/Diff/string.hpp"
 
 namespace Algo
 {
 namespace Diff
 {
+
+// forward declaration required for dependency
+Similarity compare(const std::string &e1, const std::string &e2);
 
 namespace detail
 {
@@ -41,7 +43,7 @@ Similarity comparePtrValues(const T *p1, const T *p2)
  *  \return result of the comparison.
  *  \note pointers are assumed to be non-NULLs.
  */
-Similarity comparePtrValues(const char *p1, const char *p2)
+inline Similarity comparePtrValues(const char *p1, const char *p2)
 {
   assert(p1!=NULL);
   assert(p2!=NULL);
