@@ -25,7 +25,7 @@ namespace Diff
 template<typename T>
 Similarity compare(const Base::ObjectID<T> e1, const Base::ObjectID<T> e2)
 {
-  return e1.get()==e2.get();
+  return ( e1.get()==e2.get() )?1.0:0.0;
 }
 
 } // namespace Diff
