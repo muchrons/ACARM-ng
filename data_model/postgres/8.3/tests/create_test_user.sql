@@ -10,7 +10,6 @@ GRANT ALL ON TABLE
     reference_urls,
     hosts,
     analyzers,
-    severities,
     alerts,
     alert_analyzers,
     meta_alerts,
@@ -28,7 +27,6 @@ GRANT ALL ON SEQUENCE
     reference_urls_id_seq,
     hosts_id_seq,
     analyzers_id_seq,
---    severities_id_seq,
     alerts_id_seq,
     meta_alerts_id_seq
     TO "acarm-ng-tests";

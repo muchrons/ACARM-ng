@@ -30,7 +30,7 @@ struct SeverityLevelEnum
   Type;
   /** \brief minimum value.
    */
-  enum { Min=DEBUG    };
+  enum { Min=DEBUG };
   /** \brief maximum value.
    */
   enum { Max=HIGH };

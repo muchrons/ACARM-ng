@@ -383,7 +383,7 @@ template<>
 void testObj::test<13>(void)
 {
   const Persistency::GraphNodePtrNN leaf=severityLeaf(2);
-  checkAssessment(*leaf, 0.42, "high");
+  checkAssessment(*leaf, 0.42, "medium");
 }
 
 // test severity<0
@@ -793,7 +793,7 @@ void testObj::test<31>(void)
                         "</idmef:AdditionalData>"
 
                         "<idmef:Assessment>"
-                          "<idmef:Impact severity=\"high\"/>"
+                          "<idmef:Impact severity=\"medium\"/>"
                           "<idmef:Confidence rating=\"numeric\">1</idmef:Confidence>"
                         "</idmef:Assessment>"
                       "</idmef:Alert>"
