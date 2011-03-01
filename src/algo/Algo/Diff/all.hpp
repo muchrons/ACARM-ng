@@ -11,6 +11,8 @@
 #include "Algo/Diff/ip.hpp"
 #include "Algo/Diff/objectID.hpp"
 #include "Algo/Diff/string.hpp"
+#include "Algo/Diff/timestamp.hpp"
 #include "Algo/Diff/viaPointer.hpp"
+#include "Algo/Diff/viaCollection.hpp"
 
 #endif
