@@ -98,4 +98,26 @@ void testObj::test<8>(void)
   ensure("similarity is not symetric", s1.get()==s2.get() );
 }
 
+// test comparing LimitedString<N> objects
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  typedef Commons::LimitedString<42> Str;
+  const Similarity s=compare( Str("ABC"), Str("ABc") );
+  ensure("value is too small", s.get()>0.5);
+  ensure("value is too big", s.get()<0.9);
+}
+
+// test comparing LimitedNULLString<N> objects
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  typedef Commons::LimitedNULLString<42> Str;
+  const Similarity s=compare( Str("ABC"), Str("ABc") );
+  ensure("value is too small", s.get()>0.5);
+  ensure("value is too big", s.get()<0.9);
+}
+
 } // namespace tut
