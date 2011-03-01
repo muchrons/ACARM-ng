@@ -48,6 +48,9 @@ unsigned int longestCommonSubsequenceLength(const std::string &e1, const std::st
 
 Similarity compare(const std::string &e1, const std::string &e2)
 {
+  if(&e1==&e2)
+    return 1;
+
   // ensure signle order, that ensurtes best performance
   if( e1.length()>e2.length() )
     return compare(e2, e1);

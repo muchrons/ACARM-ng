@@ -42,6 +42,9 @@ uint32_t getFirstBytes(const boost::asio::ip::address &ip)
 
 Similarity compare(const boost::asio::ip::address &e1, const boost::asio::ip::address &e2)
 {
+  if(&e1==&e2)
+    return 1;
+
   // if different types, return no similarity at all.
   if( e1.is_v4()!=e2.is_v4() || e1.is_v6()!=e2.is_v6() )
     return 0;

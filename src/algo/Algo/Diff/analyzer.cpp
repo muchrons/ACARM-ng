@@ -12,6 +12,9 @@ namespace Diff
 
 Similarity compare(const Persistency::Analyzer &e1, const Persistency::Analyzer &e2)
 {
+  if(&e1==&e2)
+    return 1;
+
   const Similarity name=compare( e1.getName(), e2.getName() );
   const Similarity ver =compare( e1.getVersion(), e2.getVersion() );
   const Similarity os  =compare( e1.getOperatingSystem(), e2.getOperatingSystem() );
