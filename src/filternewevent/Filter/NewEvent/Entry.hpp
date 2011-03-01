@@ -29,7 +29,7 @@ public:
    *  \param bf
    *  \param ts cache for storing timeouted elements.
    */
-  Entry(Name name, BackendFacade *bf, TimeoutedSet *ts);
+  Entry(Name name, Filter::BackendFacade *bf, TimeoutedSet *ts);
   /** \brief
    *
    */
@@ -39,6 +39,8 @@ public:
    *
    */
   Hash &getHash();
+  Persistency::IO::DynamicConfigAutoPtr getDynamicConfig();
+
 private:
   typedef std::pair<Name, Hash> Element;
   // computes (SHA1) hash of a given string

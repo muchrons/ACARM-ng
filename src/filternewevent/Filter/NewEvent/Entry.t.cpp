@@ -9,6 +9,7 @@
 #include "Filter/NewEvent/TimeoutedSet.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
+#include "Filter/NewEvent/TestConnection.t.hpp"
 
 using namespace std;
 using namespace Filter;
@@ -21,10 +22,9 @@ struct TestClass
 {
 
   TestClass(void):
-    conn_( Persistency::IO::create() ),
+    conn_( createUserStub() ),
     bf_(conn_, changed_, "testnewevent"),
-    owner_("Filter::NewEvent"),
-    dc_(bf_.createDynamicConfig( owner_ ))
+    owner_("Filter::NewEvent")
   {
   }
 
@@ -33,7 +33,6 @@ struct TestClass
   BackendFacade                         bf_;
   TimeoutedSet                          ts_;
   Persistency::IO::DynamicConfig::Owner owner_;
-  Persistency::IO::DynamicConfigAutoPtr dc_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -51,7 +50,8 @@ template<>
 void testObj::test<1>(void)
 {
   Entry e("key", &bf_, &ts_);
-  Persistency::IO::DynamicConfig::ValueNULL v=dc_->read("key");
+  Persistency::IO::DynamicConfigAutoPtr dc(e.getDynamicConfig());
+  Persistency::IO::DynamicConfig::ValueNULL v=dc->read( e.getHash() );
   ensure("NULL value read", v.get()!=NULL );
   ensure_equals("invalid value", v.get()->get(), string("true") );
 }

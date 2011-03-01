@@ -49,7 +49,7 @@ const unsigned char *ptrConv(const char *c)
 
 } // unnamed namespace
 
-Entry::Entry(Name name, BackendFacade *bf, TimeoutedSet *ts):
+Entry::Entry(Name name, Filter::BackendFacade *bf, TimeoutedSet *ts):
   owner_("Filter::NewEvent"),
   dc_(bf->createDynamicConfig( owner_ )),
   element_( std::make_pair(name, computeHash(name) ) ),
@@ -78,6 +78,11 @@ Entry::Hash& Entry::getHash()
   return element_.second;
 }
 
+Persistency::IO::DynamicConfigAutoPtr Entry::getDynamicConfig()
+{
+  assert(dc_.get() != NULL);
+  return dc_;
+}
 // computes (SHA1) hash of a given string
 std::string Entry::computeHash(const std::string &in)
 {
