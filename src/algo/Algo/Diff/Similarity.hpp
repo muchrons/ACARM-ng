@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include <cmath>
 #include <cassert>
 
 #include "Algo/Exception.hpp"
@@ -40,6 +41,8 @@ public:
   Similarity(const double v):
     v_(v)
   {
+    if( !std::isfinite(v_) )
+      throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "value is not finite (inf/nan)", v_);
     if(v_<0)
       throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "value too small", v_);
     if(1<v_)

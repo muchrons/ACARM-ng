@@ -3,6 +3,7 @@
  *
  */
 #include <tut.h>
+#include <limits>
 
 #include "Algo/Diff/Similarity.hpp"
 
@@ -30,7 +31,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Algo/Similarity");
+factory tf("Algo/Diff/Similarity");
 } // unnamed namespace
 
 
@@ -105,6 +106,24 @@ void testObj::test<8>(void)
 {
   const Similarity s=Similarity::normalize(1.1);
   ensure_equals("invalid value", s.get(), 1);
+}
+
+// test passing infinity
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  testThrow( std::numeric_limits<double>::infinity() );
+}
+
+// test passing NaN
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  if( !std::numeric_limits<double>::has_quiet_NaN )
+    fail("no quiet NaN support - test will not run");
+  testThrow( std::numeric_limits<double>::quiet_NaN() );
 }
 
 } // namespace tut
