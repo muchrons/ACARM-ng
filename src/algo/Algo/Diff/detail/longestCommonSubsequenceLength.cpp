@@ -2,14 +2,13 @@
  * longestCommonSubsequenceLength.cpp
  *
  */
+#include <vector>
 #include <algorithm>
 #include <cassert>
-#include <boost/numeric/ublas/matrix.hpp>
 
 #include "Algo/Diff/detail/longestCommonSubsequenceLength.hpp"
 
 using namespace std;
-using namespace boost::numeric::ublas;
 
 namespace Algo
 {
@@ -24,25 +23,34 @@ unsigned int longestCommonSubsequenceLength(const std::string &e1, const std::st
   // http://en.wikipedia.org/wiki/Longest_common_subsequence_problem
   //
 
-  matrix<unsigned int> m( e1.length()+1, e2.length()+1 );
+  const size_t maxR=e1.length()+1;
+  const size_t maxC=e2.length()+1;
 
-  // fill initial elements
-  for(unsigned int r=0; r<m.size1(); ++r)
-    m(r,0)=0;
-  for(unsigned int c=0; c<m.size2(); ++c)
-    m(0,c)=0;
+  //matrix<unsigned int> m( e1.length()+1, e2.length()+1 );
+  std::vector<unsigned int> prev(maxC, 0u);
+  std::vector<unsigned int> now (maxC, 0u);
+  assert(prev.size()==maxC);
+  assert(now.size() ==maxC);
 
-  // fill all other elements
-  for(unsigned int r=1; r<m.size1(); ++r)
-    for(unsigned int c=1; c<m.size2(); ++c)
+  // fill all elements, using two vectors and swapping
+  for(unsigned int r=1; r<maxR; ++r)
+    for(unsigned int c=1; c<maxC; ++c)
+    {
+      assert(prev[0]==0);
+      assert(now [0]==0);
+      now.swap(prev);
+
       if(e1[r-1]==e2[c-1])
-        m(r,c)=m(r-1,c-1)+1;
+        now[c]=prev[c-1]+1;
+        //m(r,c)=m(r-1,c-1)+1;
       else
-        m(r,c)=std::max( m(r,c-1), m(r-1,c) );
+        now[c]=std::max(now[c-1], prev[c]);
+        //m(r,c)=std::max( m(r,c-1), m(r-1,c) );
+    }
 
-  assert( m.size1()>0 );
-  assert( m.size2()>0 );
-  return m( m.size1()-1, m.size2()-1 );
+  assert( now.size()>0 );
+  return *now.rbegin();
+  //return m( m.size1()-1, m.size2()-1 );
 } // longestCommonSubsequenceLength()
 
 } // namespace detail
