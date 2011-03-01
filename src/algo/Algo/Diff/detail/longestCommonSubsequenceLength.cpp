@@ -26,7 +26,6 @@ unsigned int longestCommonSubsequenceLength(const std::string &e1, const std::st
   const size_t maxR=e1.length()+1;
   const size_t maxC=e2.length()+1;
 
-  //matrix<unsigned int> m( e1.length()+1, e2.length()+1 );
   std::vector<unsigned int> prev(maxC, 0u);
   std::vector<unsigned int> now (maxC, 0u);
   assert(prev.size()==maxC);
@@ -34,23 +33,22 @@ unsigned int longestCommonSubsequenceLength(const std::string &e1, const std::st
 
   // fill all elements, using two vectors and swapping
   for(unsigned int r=1; r<maxR; ++r)
+  {
+    now.swap(prev);
     for(unsigned int c=1; c<maxC; ++c)
     {
       assert(prev[0]==0);
       assert(now [0]==0);
-      now.swap(prev);
 
       if(e1[r-1]==e2[c-1])
         now[c]=prev[c-1]+1;
-        //m(r,c)=m(r-1,c-1)+1;
       else
         now[c]=std::max(now[c-1], prev[c]);
-        //m(r,c)=std::max( m(r,c-1), m(r-1,c) );
     }
+  }
 
   assert( now.size()>0 );
   return *now.rbegin();
-  //return m( m.size1()-1, m.size2()-1 );
 } // longestCommonSubsequenceLength()
 
 } // namespace detail
