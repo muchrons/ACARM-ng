@@ -85,9 +85,9 @@ protected:
    *  \return connection object.
    */
   Persistency::IO::ConnectionPtrNN getConnection(void);
-  /** \brief 
-   *  \return
-   *  \param owner
+  /** \brief create persistency proxy.
+   *  \param owner owner's name of a configuration to work on (NULL means common config).
+   *  \return return non-NULL dynamic configuration proxy.
    */
   Persistency::IO::DynamicConfigAutoPtr createDynamicConfig(Persistency::IO::DynamicConfig::Owner &owner);
   /** \brief gets name of this element.
