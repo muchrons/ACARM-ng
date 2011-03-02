@@ -26,7 +26,7 @@ public:
    *  \param bf       facade for writing new names of hosts to persistency.
    *  \param ps       set of already processed elements.
    *  \param ts       set of already timeouted elements.
-   *  \param priDelta change of priority when black-listed host is found.
+   *  \param params   parameters (timeout and priority delta).
    */
   EntryProcessor(BackendFacade *bf, ProcessedSet *ps, TimeoutedSet *ts, const Strategy::Parameters params);
   /** \brief method responsible for doing all the job.

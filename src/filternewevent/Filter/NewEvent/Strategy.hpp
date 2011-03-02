@@ -32,8 +32,8 @@ public:
   struct Parameters
   {
     /** \brief create paramters object.
-     *  \param timeout   (in seconds). //TODO add description
-     *  \param priDelta increment of priority when host is found.
+     *  \param timeout  new event time life (in seconds).
+     *  \param priDelta increment of priority when new event is found.
      */
     Parameters(const unsigned int timeout,
                const double       priDelta):
@@ -47,7 +47,7 @@ public:
   }; // struct Parameters
 
   /** \brief create instance.
-   *  \param name  name for dns resolver.
+   *  \param name  name for new event.
    *  \param params paramters for dns resolver.
    */
   Strategy(const std::string &name, const Parameters &params);

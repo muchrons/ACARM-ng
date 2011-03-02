@@ -16,33 +16,35 @@ namespace NewEvent
 {
 
 /** \brief
- *
+ *  save elements in the persistency dynamic config,
+ *  save timeouted elements in dedicated collection.
  */
 class Entry
 {
 
 public:
 
+  /** \brief entry name type.*/
   typedef std::string Name;
+  /** \brief (SHA1) hash of entry name type.*/
   typedef std::string Hash;
   /** \brief create instance.
-   *  \param bf facade for saving elements in the persistency.
-   *  \param ts cache for storing timeouted elements.
+   *  \param name name of processes (meta-)alert.
+   *  \param bf   facade for saving elements in the persistency.
+   *  \param ts   cache for storing timeouted elements.
    */
   Entry(Name name, Filter::BackendFacade *bf, TimeoutedSet *ts);
-  /** \brief
-   *
+  /** \brief delete instance and add hash of timeouted element to the cache.
    */
   ~Entry();
-  /** \brief 
-   *  \return
+  /** \brief  get entry name.
+   *  \return entry name.
    */
   const Entry::Name& getName() const;
-  /** \brief
-   *  \return
+  /** \brief return hash of entry name.
+   *  \return (SHA1) hash of entry name.
    */
   Hash &getHash();
-  Persistency::IO::DynamicConfig::ValueNULL read();
 
 private:
   typedef std::pair<Name, Hash> Element;
