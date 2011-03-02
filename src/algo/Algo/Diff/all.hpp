@@ -11,6 +11,7 @@
 #include "Algo/Diff/certainty.hpp"
 #include "Algo/Diff/ip.hpp"
 #include "Algo/Diff/objectID.hpp"
+#include "Algo/Diff/referenceURL.hpp"
 #include "Algo/Diff/severity.hpp"
 #include "Algo/Diff/string.hpp"
 #include "Algo/Diff/timestamp.hpp"
