@@ -10,7 +10,9 @@
 #include <string>
 #include <cstdlib>
 #include <cstring>
+#include <boost/shared_ptr.hpp>
 
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Algo/Diff/Similarity.hpp"
 
 namespace Algo
@@ -66,6 +68,30 @@ Similarity compare(const T *p1, const T *p2)
     return 0;
 
   return detail::comparePtrValues(p1, p2);
+} // compare()
+
+
+/** \brief compares two elements.
+ *  \param p1 first element to compare.
+ *  \param p2 second element to compare.
+ *  \return result of the comparison.
+ */
+template<typename T>
+Similarity compare(const boost::shared_ptr<T> &p1, const boost::shared_ptr<T> &p2)
+{
+  return compare( p1.get(), p2.get() );
+} // compare()
+
+
+/** \brief compares two elements.
+ *  \param p1 first element to compare.
+ *  \param p2 second element to compare.
+ *  \return result of the comparison.
+ */
+template<typename T>
+Similarity compare(const Commons::SharedPtrNotNULL<T> &p1, const Commons::SharedPtrNotNULL<T> &p2)
+{
+  return compare( p1.get(), p2.get() );
 } // compare()
 
 } // namespace Diff

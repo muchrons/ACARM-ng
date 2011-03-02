@@ -28,6 +28,13 @@ struct TestClass
     const Similarity s=Algo::Diff::compare(p1, p2);
     tut::ensure_equals("invalid similarity", s.get(), expected);
   }
+
+  template<typename T>
+  void testSmartPtr(const T &p1, const T &p2, double expected) const
+  {
+    const Similarity s=Algo::Diff::compare(p1, p2);
+    tut::ensure_equals("invalid similarity", s.get(), expected);
+  }
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -93,6 +100,28 @@ void testObj::test<6>(void)
   const char s1[]="Alice";
   const char s2[]="Alice";
   testPtr<char>(s1, s2, 1);
+}
+
+// test comaprison via boost::shared_ptr<>
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  typedef boost::shared_ptr<TestType> Ptr;
+  const Ptr p1(new TestType);
+  const Ptr p2(new TestType);
+  testSmartPtr<Ptr>(p1, p2, 0.424242);
+}
+
+// test comaprison via Commons::SharedPtrNotNULL<>
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  typedef Commons::SharedPtrNotNULL<TestType> Ptr;
+  const Ptr p1(new TestType);
+  const Ptr p2(new TestType);
+  testSmartPtr<Ptr>(p1, p2, 0.424242);
 }
 
 } // namespace tut
