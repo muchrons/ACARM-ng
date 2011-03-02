@@ -42,7 +42,7 @@
   </select>
 
   <select id="SelectAlert" resultClass="CAlertEntry" parameterClass="int">
-    SELECT name, detect_time AS detect, create_time AS create, description, certanity as certainty, severity FROM alerts WHERE id=#VALUE#;
+    SELECT name, detect_time AS detect, create_time AS create, description, certainty, severity FROM alerts WHERE id=#VALUE#;
   </select>
 
   <select id="SelectHost" resultClass="CReportedHostEntry" parameterClass="int">

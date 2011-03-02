@@ -156,7 +156,7 @@ void testObj::test<5>(void)
   ensureCalls(3);
 }
 
-// test certanity delta
+// test certainty delta
 template<>
 template<>
 void testObj::test<6>(void)
@@ -268,7 +268,7 @@ void testObj::test<13>(void)
   }
 }
 
-// test if updating certanity throws on inactive transaction
+// test if updating certainty throws on inactive transaction
 template<>
 template<>
 void testObj::test<14>(void)
@@ -334,18 +334,18 @@ void testObj::test<17>(void)
   ensure_equals("severity update 2 failed", ma_->getSeverityDelta(), v);
 }
 
-// test if updating certanity updates (not overwrites) value
+// test if updating certainty updates (not overwrites) value
 template<>
 template<>
 void testObj::test<18>(void)
 {
   double v=4;
   ioma_.updateCertaintyDelta(v);
-  ensure_equals("certanity update 1 failed", ma_->getCertaintyDelta(), v);
+  ensure_equals("certainty update 1 failed", ma_->getCertaintyDelta(), v);
 
   v+=0.2;
   ioma_.updateCertaintyDelta(0.2);
-  ensure_equals("certanity update 2 failed", ma_->getCertaintyDelta(), v);
+  ensure_equals("certainty update 2 failed", ma_->getCertaintyDelta(), v);
 }
 
 // test marking as triggered

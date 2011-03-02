@@ -76,7 +76,7 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
                               ReaderHelper< Base::NullValue<Timestamp> >::readAs(r[0]["detect_time"]).get(),
                               timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["create_time"]) ),
                               Severity( severityFromInt(ReaderHelper<DataBaseID>::readAsNotNull(r[0]["severity"]) ) ),
-                              Certainty( ReaderHelper<double>::readAsNotNull(r[0]["certanity"]) ),
+                              Certainty( ReaderHelper<double>::readAsNotNull(r[0]["certainty"]) ),
                               ReaderHelper<string>::readAsNotNull(r[0]["description"]),
                               getSourceHosts(alertID),
                               getTargetHosts(alertID) ) );

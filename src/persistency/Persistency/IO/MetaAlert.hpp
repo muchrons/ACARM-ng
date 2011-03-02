@@ -55,8 +55,8 @@ public:
    *  \param delta how much update seveirty's value.
    */
   void updateSeverityDelta(double delta);
-  /** \brief update certanity delta.
-   *  \param delta how much update certanity's value.
+  /** \brief update certainty delta.
+   *  \param delta how much update certainty's value.
    */
   void updateCertaintyDelta(double delta);
   /** \brief save information that this meta-alert has another child.

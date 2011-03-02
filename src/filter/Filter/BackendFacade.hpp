@@ -73,9 +73,9 @@ public:
    *  \param delta severity change to be applied.
    */
   void updateSeverityDelta(Node node, double delta);
-  /** \brief updates certanity of a given meta-alert.
-   *  \param node  meta alert to update certanity on.
-   *  \param delta certanity change to be applied.
+  /** \brief updates certainty of a given meta-alert.
+   *  \param node  meta alert to update certainty on.
+   *  \param delta certainty change to be applied.
    */
   void updateCertaintyDelta(Node node, double delta);
   /** \brief adds given node as a child for other node.

@@ -157,13 +157,13 @@ void testObj::test<6>(void)
   ensure("invalid creation time", r.compute(alert_)==true );
 }
 
-// test certanity
+// test certainty
 template<>
 template<>
 void testObj::test<7>(void)
 {
   const Rule r( Path("alert.certainty"), Rule::Mode::CONTAINS, "0.4" );
-  ensure("invalid certanity", r.compute(alert_)==true );
+  ensure("invalid certainty", r.compute(alert_)==true );
 }
 
 // test severity
