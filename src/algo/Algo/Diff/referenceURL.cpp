@@ -19,6 +19,9 @@ const double b=1.0-10.0/7.0;
 
 Similarity compare(const Persistency::ReferenceURL &e1, const Persistency::ReferenceURL &e2)
 {
+  if(&e1==&e2)
+    return 1;
+
   const double url  =compare( e1.getURL(),  e2.getURL()  ).get();
   const double name =compare( e1.getName(), e2.getName() ).get();
   const double avg  =(url+name)/2;

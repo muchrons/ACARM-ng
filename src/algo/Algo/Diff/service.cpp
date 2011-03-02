@@ -12,6 +12,9 @@ namespace Diff
 
 Similarity compare(const Persistency::Service &e1, const Persistency::Service &e2)
 {
+  if(&e1==&e2)
+    return 1;
+
   const double name =compare( e1.getName(), e2.getName() ).get();
   const double port =compare( e1.getPort(), e2.getPort() ).get();
   const double proto=( e1.getProtocol()==e2.getProtocol() )?1:0;

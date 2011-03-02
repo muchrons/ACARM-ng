@@ -12,8 +12,10 @@ namespace Algo
 namespace Diff
 {
 
-Similarity compare(const Persistency::MD5Sum e1, const Persistency::MD5Sum e2)
+Similarity compare(const Persistency::MD5Sum &e1, const Persistency::MD5Sum &e2)
 {
+  if(&e1==&e2)
+    return 1;
   if( e1.get()==e2.get() )
     return 1;
   if( e1.get()==NULL || e2.get()==NULL )

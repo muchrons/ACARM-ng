@@ -12,6 +12,9 @@ namespace Diff
 
 Similarity compare(const Persistency::Process &e1, const Persistency::Process &e2)
 {
+  if(&e1==&e2)
+    return 1;
+
   const double path  =compare( e1.getPath(), e2.getPath() ).get();
   const double name  =compare( e1.getName(), e2.getName() ).get();
   const double md5   =compare( e1.getMD5(), e2.getMD5() ).get();

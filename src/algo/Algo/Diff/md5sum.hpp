@@ -20,7 +20,7 @@ namespace Diff
  *  \param e2 second element to compare.
  *  \return result of the comparison.
  */
-Similarity compare(Persistency::MD5Sum e1, Persistency::MD5Sum e2);
+Similarity compare(const Persistency::MD5Sum &e1, const Persistency::MD5Sum &e2);
 
 } // namespace Diff
 } // namespace Algo
