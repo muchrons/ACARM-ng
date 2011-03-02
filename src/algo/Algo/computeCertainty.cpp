@@ -48,7 +48,7 @@ public:
    */
   double get(void) const
   {
-    // arithmetic average of all certanities modified by delta.
+    // arithmetic average of all certainties modified by delta.
     return (0.0+leafsCertaintySum_)/leafsCount_ + delta_;
   }
 
