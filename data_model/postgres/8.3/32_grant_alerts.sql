@@ -47,7 +47,7 @@ GRANT UPDATE
 
 
 -- daemon may update pieces of information gathered by sensors
-GRANT UPDATE(name)
+GRANT UPDATE
   ON TABLE hosts
   TO "acarm-ng-daemon";
 

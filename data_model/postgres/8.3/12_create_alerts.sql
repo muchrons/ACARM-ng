@@ -15,9 +15,8 @@ CREATE TABLE    alerts
   description text         NOT NULL,
 
   CONSTRAINT certainty_check      CHECK ( 0<=certainty AND certainty<=1 ),
-  CONSTRAINT severity_check      CHECK ( 0<=severity AND severity<=4 ),
-  CONSTRAINT dates_relation_check CHECK ( detect_time IS NULL OR
-                                          detect_time<=create_time )
+  CONSTRAINT severity_check       CHECK ( 0<=severity AND severity<=4 ),
+  CONSTRAINT dates_relation_check CHECK ( detect_time IS NULL OR detect_time<=create_time )
 );
 
 
