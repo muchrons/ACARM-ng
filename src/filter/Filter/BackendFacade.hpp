@@ -94,11 +94,11 @@ public:
    *  \return unique ID for the meta-alert.
    */
   Persistency::MetaAlert::ID getNextFreeID(void);
-  /** \brief 
-   *  \return
-   *  \param owner
+  /** \brief create persistency proxy.
+   *  \param owner owner's name of a configuration to work on (NULL means common config).
+   *  \return return non-NULL dynamic configuration proxy.
    */
-   Persistency::IO::DynamicConfigAutoPtr createDynamicConfig(Persistency::IO::DynamicConfig::Owner &owner);
+  Persistency::IO::DynamicConfigAutoPtr createDynamicConfig(Persistency::IO::DynamicConfig::Owner &owner);
 private:
   void markNodeAsChanged(Node node);
 
