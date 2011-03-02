@@ -9,6 +9,7 @@
 
 #include "Algo/Diff/analyzer.hpp"
 #include "Algo/Diff/certainty.hpp"
+#include "Algo/Diff/host.hpp"
 #include "Algo/Diff/ip.hpp"
 #include "Algo/Diff/md5sum.hpp"
 #include "Algo/Diff/numeric.hpp"
