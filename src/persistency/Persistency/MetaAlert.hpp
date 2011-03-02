@@ -42,7 +42,7 @@ public:
   typedef Commons::LimitedString<256> Name;
   /** \brief severity difference type. */
   typedef double                      SeverityDelta;
-  /** \brief certanity difference type. */
+  /** \brief certainty difference type. */
   typedef double                      CertaintyDelta;
 
   /** \brief creates meta alert based on exisitng alert.
@@ -54,14 +54,14 @@ public:
   /** \brief create new meta-alert.
    *  \param name           name for meta alert.
    *  \param severityDelta  initial severity difference.
-   *  \param certanityDelta initial certanity difference.
+   *  \param certaintyDelta initial certainty difference.
    *  \param url            reference URL, if present.
    *  \param created        creation time.
    *  \param id             ID for this object.
    */
   MetaAlert(const Name      &name,
             SeverityDelta    severityDelta,
-            CertaintyDelta   certanityDelta,
+            CertaintyDelta   certaintyDelta,
             ReferenceURLPtr  url,
             Timestamp        created,
             ID               id);
@@ -79,8 +79,8 @@ public:
    *  \return severity delta.
    */
   SeverityDelta getSeverityDelta(void) const;
-  /** \brief gets certanity delta.
-   *  \return certanity delta.
+  /** \brief gets certainty delta.
+   *  \return certainty delta.
    */
   CertaintyDelta getCertaintyDelta(void) const;
   /** \brief gets reference url.
@@ -106,7 +106,7 @@ private:
   const ID                              id_;
   const Name                            name_;
   SeverityDelta                         severityDelta_;
-  CertaintyDelta                        certanityDelta_;
+  CertaintyDelta                        certaintyDelta_;
   const ReferenceURLPtr                 url_;
   const Timestamp                       created_;
 }; // class MetaAlert

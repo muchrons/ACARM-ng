@@ -45,7 +45,7 @@ factory tf("Algo/computeCertainty");
 namespace tut
 {
 
-// compute certanity of a leaf
+// compute certainty of a leaf
 template<>
 template<>
 void testObj::test<1>(void)
@@ -53,7 +53,7 @@ void testObj::test<1>(void)
   checkMatch( computeCertainty( makeNewLeaf() ), alertCertainty_);
 }
 
-// compute certanity of a node with 2 leafs
+// compute certainty of a node with 2 leafs
 template<>
 template<>
 void testObj::test<2>(void)
@@ -62,7 +62,7 @@ void testObj::test<2>(void)
               2*alertCertainty_/2.0 + 1*0.2);
 }
 
-// compute certanity on non-unique tree
+// compute certainty on non-unique tree
 template<>
 template<>
 void testObj::test<3>(void)
