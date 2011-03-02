@@ -84,6 +84,7 @@ void testObj::test<6>(void)
   ensure("value is too small", s.get()>0);
   ensure("IPs reported identical", s.get()<1);
 }
+
 // test comaprison of verying addresses
 template<>
 template<>
@@ -92,6 +93,24 @@ void testObj::test<7>(void)
   const Similarity s1=compare( ip("10.11.12.13"), ip("10.11.12.12") );
   const Similarity s2=compare( ip("10.11.12.13"), ip("10.11.12.32") );
   ensure("invalid order", s1.get()>s2.get() );
+}
+
+// test if difference is only on high bits / IPv6
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const Similarity s=compare( ip("1234::1020:3040"), ip("ABCD::1020:3040") );
+  ensure("similarity too high", s.get()<0.01);
+}
+
+// test if difference is only on high bits / IPv4
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const Similarity s=compare( ip("10.11.12.13"), ip("66.11.12.13") );
+  ensure("similarity too high", s.get()<0.01);
 }
 
 } // namespace tut
