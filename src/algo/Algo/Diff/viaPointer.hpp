@@ -14,12 +14,14 @@
 
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Algo/Diff/Similarity.hpp"
-#include "Algo/Diff/all.hpp"
 
 namespace Algo
 {
 namespace Diff
 {
+
+// forward declaration required for dependency
+Similarity compare(const std::string &e1, const std::string &e2);
 
 namespace detail
 {
@@ -49,34 +51,7 @@ inline Similarity comparePtrValues(const char *p1, const char *p2)
   assert(p2!=NULL);
   return compare( std::string(p1), std::string(p2) );
 } // comparePtrValues()
-
-/** \brief compares two elements.
- *  \param p1 first element to compare.
- *  \param p2 second element to compare.
- *  \return result of the comparison.
- */
-template<typename T>
-Similarity comparePtrCommonImpl(const T *p1, const T *p2)
-{
-  if(p1==p2)
-    return 1;
-  if(p1==NULL || p2==NULL)
-    return 0;
-
-  return detail::comparePtrValues(p1, p2);
-} // comparePtrCommonImpl()
 } // namesace detail
-
-
-/** \brief compares two elements.
- *  \param p1 first element to compare.
- *  \param p2 second element to compare.
- *  \return result of the comparison.
- */
-Similarity compare(const char *p1, const char *p2)
-{
-  return detail::comparePtrCommonImpl(p1, p2);
-} // compare()
 
 
 /** \brief compares two elements.
@@ -87,7 +62,12 @@ Similarity compare(const char *p1, const char *p2)
 template<typename T>
 Similarity compare(const T *p1, const T *p2)
 {
-  return detail::comparePtrCommonImpl(p1, p2);
+  if(p1==p2)
+    return 1;
+  if(p1==NULL || p2==NULL)
+    return 0;
+
+  return detail::comparePtrValues(p1, p2);
 } // compare()
 
 
