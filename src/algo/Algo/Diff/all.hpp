@@ -14,6 +14,7 @@
 #include "Algo/Diff/numeric.hpp"
 #include "Algo/Diff/objectID.hpp"
 #include "Algo/Diff/portNumber.hpp"
+#include "Algo/Diff/process.hpp"
 #include "Algo/Diff/referenceURL.hpp"
 #include "Algo/Diff/service.hpp"
 #include "Algo/Diff/severity.hpp"
