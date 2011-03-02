@@ -10,6 +10,7 @@
 #include "Algo/Diff/analyzer.hpp"
 #include "Algo/Diff/ip.hpp"
 #include "Algo/Diff/objectID.hpp"
+#include "Algo/Diff/severity.hpp"
 #include "Algo/Diff/string.hpp"
 #include "Algo/Diff/timestamp.hpp"
 #include "Algo/Diff/viaPointer.hpp"
