@@ -117,4 +117,36 @@ void testObj::test<5>(void)
   testCmp(v1, v2, 2.0/5);
 }
 
+// test comapring empty collections
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  Vec v1;
+  Vec v2;
+  testCmp(v1, v2, 1);
+}
+
+// test comapring when first collection is non-empty collections
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  Vec v1;
+  v1.push_back(5);
+  Vec v2;
+  testCmp(v1, v2, 0);
+}
+
+// test comapring when second collection is non-empty collections
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  Vec v1;
+  Vec v2;
+  v2.push_back(5);
+  testCmp(v1, v2, 0);
+}
+
 } // namespace tut

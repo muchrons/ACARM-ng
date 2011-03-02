@@ -55,6 +55,8 @@ Similarity compareViaCollectionImpl(const T &e1, const T &e2)
   // some optimizations
   if(&e1==&e2)
     return 1;
+  if( e1.size()>e2.size() )
+    return compareViaCollectionImpl<T>(e2, e1);
   if( e1.size()==0u )
   {
     if( e2.size()==0u )
