@@ -28,5 +28,16 @@ void TimeoutedSet::prune(BackendFacade *bf, Persistency::IO::DynamicConfig::Owne
   timeouted_.clear();
 }
 
+bool TimeoutedSet::isTimeouted(std::string &key) const
+{
+  for(Timeouted::const_iterator it = timeouted_.begin(); it != timeouted_.end(); ++it)
+  {
+    if(*it==key)
+      return true;
+  }
+  // object not found
+  return false;
+}
+
 } // namespace Filter
 } // namespace NewEvent

@@ -33,6 +33,11 @@ public:
    *  \param owner owner's name.
    */
   void prune(BackendFacade *bf, Persistency::IO::DynamicConfig::Owner &owner);
+  /** \brief checks if given key has been alrady timeouted or not.
+   *  \param key key from which ...
+   *  \return true if key has been already timeouted, false otherwise.
+   */
+  bool isTimeouted(std::string &key) const;
 
 private:
 

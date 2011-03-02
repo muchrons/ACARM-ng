@@ -22,12 +22,20 @@ struct TestClass
 {
 
   TestClass(void):
-    conn_( createUserStub() ),
+    tconn_(new TestConnection),
+    conn_( tconn_ ),
     bf_(conn_, changed_, "testnewevent"),
     owner_("Filter::NewEvent")
   {
   }
 
+  void testData(std::string key, std::string value)
+  {
+    TestDynamicConfigStub::Data::DataMap data = tconn_->data_->owner_["Filter::NewEvent"];
+    tut::ensure_equals("invalid value", data[key], value );
+  }
+
+  TestConnection                        *tconn_;
   Persistency::IO::ConnectionPtrNN      conn_;
   BackendFacade::ChangedNodes           changed_;
   BackendFacade                         bf_;
@@ -50,10 +58,18 @@ template<>
 void testObj::test<1>(void)
 {
   Entry e("key", &bf_, &ts_);
-  Persistency::IO::DynamicConfigAutoPtr dc(e.getDynamicConfig());
-  Persistency::IO::DynamicConfig::ValueNULL v=dc->read( e.getHash() );
-  ensure("NULL value read", v.get()!=NULL );
-  ensure_equals("invalid value", v.get()->get(), string("true") );
+  testData(e.getHash(), string("true") );
+}
+
+// TODO
+template<>
+template<>
+void testObj::test<2>(void)
+{
+  Entry e("key", &bf_, &ts_);
+  testData(e.getHash(), string("true") );
+  ts_.prune(&bf_, owner_);
+  testData(e.getHash(), string("") );
 }
 
 } // namespace tut

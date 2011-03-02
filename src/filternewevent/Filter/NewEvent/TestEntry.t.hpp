@@ -19,11 +19,6 @@ public:
     Entry(name, bf, ts)
   {
   }
-  Persistency::IO::DynamicConfigAutoPtr getDynamicConfig()
-  {
-    assert(dc_.get() != NULL);
-    return dc_;
-  }
 };
 
 } // namespace Filter

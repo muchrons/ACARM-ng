@@ -78,11 +78,11 @@ Entry::Hash& Entry::getHash()
   return element_.second;
 }
 
-Persistency::IO::DynamicConfigAutoPtr Entry::getDynamicConfig()
+Persistency::IO::DynamicConfig::ValueNULL Entry::read()
 {
-  assert(dc_.get() != NULL);
-  return dc_;
+  return dc_->read(element_.second);
 }
+
 // computes (SHA1) hash of a given string
 std::string Entry::computeHash(const std::string &in)
 {

@@ -25,8 +25,8 @@ public:
 
   typedef std::string Name;
   typedef std::string Hash;
-  /** \brief
-   *  \param bf
+  /** \brief create instance.
+   *  \param bf facade for saving elements in the persistency.
    *  \param ts cache for storing timeouted elements.
    */
   Entry(Name name, Filter::BackendFacade *bf, TimeoutedSet *ts);
@@ -34,12 +34,15 @@ public:
    *
    */
   ~Entry();
+  /** \brief 
+   *  \return
+   */
   const Entry::Name& getName() const;
   /** \brief
-   *
+   *  \return
    */
   Hash &getHash();
-  Persistency::IO::DynamicConfigAutoPtr getDynamicConfig();
+  Persistency::IO::DynamicConfig::ValueNULL read();
 
 private:
   typedef std::pair<Name, Hash> Element;

@@ -33,11 +33,6 @@ private:
 }; // class TestConnection
 
 
-inline Persistency::IO::ConnectionPtrNN createUserStub(void)
-{
-  return Persistency::IO::ConnectionPtrNN(new TestConnection);
-} // createUserStub()
-
 } // namespace Filter
 } // namespace NewEvent
 
