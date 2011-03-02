@@ -218,6 +218,7 @@ DataBaseID EntrySaver::saveSourceHost(DataBaseID alertID, const Persistency::Hos
 DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO alerts(name, detect_time, create_time, severity, certainty, description) VALUES (";
   ap.append(ss, a.getName().get() );
   ss << ",";
@@ -388,7 +389,7 @@ void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certaintyDelta
   stringstream ss;
   Appender     ap(t_);
   ss << "UPDATE meta_alerts SET certainty_delta = certainty_delta + ";
-  ap.append(ss, certanityDelta);
+  ap.append(ss, certaintyDelta);
   ss << ", last_update_time = now() ";
   ss << " WHERE id = " << malertID << ";";
   SQL( ss.str(), log_ ).exec(t_);
