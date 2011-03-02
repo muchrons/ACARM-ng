@@ -41,7 +41,7 @@ template<>
 void testObj::test<2>(void)
 {
   const Similarity s=compare( Severity( SeverityLevel(SeverityLevel::LOW) ), Severity( SeverityLevel(SeverityLevel::MEDIUM) ) );
-  ensure("elements differ too much", s.get()>0.3);
+  ensure("elements differ too little", s.get()>0.3);
   ensure("elements marked identical", s.get()<1);
 }
 
@@ -51,7 +51,7 @@ template<>
 void testObj::test<3>(void)
 {
   const Similarity s=compare( Severity( SeverityLevel(SeverityLevel::DEBUG) ), Severity( SeverityLevel(SeverityLevel::HIGH) ) );
-  ensure("elements differ too little", s.get()<0.01);
+  ensure("elements differ too much", s.get()<0.01);
 }
 
 } // namespace tut

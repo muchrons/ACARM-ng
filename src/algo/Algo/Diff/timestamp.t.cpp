@@ -41,7 +41,7 @@ template<>
 void testObj::test<2>(void)
 {
   const Similarity s=compare( Timestamp(40), Timestamp(50) );
-  ensure("elements differ too much", s.get()>0.75);
+  ensure("elements differ too little", s.get()>0.75);
   ensure("elements marked identical", s.get()<1);
 }
 
@@ -51,7 +51,7 @@ template<>
 void testObj::test<3>(void)
 {
   const Similarity s=compare( Timestamp(1234567), Timestamp(50) );
-  ensure("elements differ too little", s.get()<0.01);
+  ensure("elements differ too much", s.get()<0.01);
 }
 
 } // namespace tut
