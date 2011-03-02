@@ -20,7 +20,10 @@ namespace Diff
  *  \param e2 second element to compare.
  *  \return result of the comparison.
  */
-Similarity compare(Persistency::PortNumber e1, Persistency::PortNumber e2);
+inline Similarity compare(const Persistency::PortNumber e1, const Persistency::PortNumber e2)
+{
+  return ( e1.get()==e2.get() )?1:0;
+} // compare()
 
 } // namespace Diff
 } // namespace Algo

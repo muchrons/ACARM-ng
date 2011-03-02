@@ -19,21 +19,30 @@ namespace Diff
  *  \param e2 second element to compare.
  *  \return result of the comparison.
  */
-Similarity compare(unsigned long e1, unsigned long e2);
+inline Similarity compare(unsigned long e1, unsigned long e2)
+{
+  return (e1==e2)?1:0;
+} // compare()
 
 /** \brief compares two elements.
  *  \param e1 first element to compare.
  *  \param e2 second element to compare.
  *  \return result of the comparison.
  */
-Similarity compare(long e1, long e2);
+inline Similarity compare(long e1, long e2)
+{
+  return (e1==e2)?1:0;
+} // compare()
 
 /** \brief compares two elements.
  *  \param e1 first element to compare.
  *  \param e2 second element to compare.
  *  \return result of the comparison.
  */
-Similarity compare(pid_t e1, pid_t e2);
+inline Similarity compare(pid_t e1, pid_t e2)
+{
+  return (e1==e2)?1:0;
+} // compare()
 
 } // namespace Diff
 } // namespace Algo
