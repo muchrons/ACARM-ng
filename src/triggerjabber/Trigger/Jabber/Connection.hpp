@@ -15,7 +15,6 @@
 #include "Trigger/Jabber/AutoSession.hpp"
 #include "Trigger/Jabber/ExceptionConnectionError.hpp"
 #include "Trigger/Jabber/ExceptionCreatingError.hpp"
-#include "Trigger/Jabber/ExceptionSendingError.hpp"
 
 namespace Trigger
 {
