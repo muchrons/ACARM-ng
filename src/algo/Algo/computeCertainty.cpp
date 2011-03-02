@@ -13,7 +13,7 @@ namespace Algo
 
 namespace
 {
-/** \brief helper object computing certanity.
+/** \brief helper object computing certainty.
  */
 class CertComput
 {
@@ -44,7 +44,7 @@ public:
     }
   }
   /** \brief gets the computed value.
-   *  \return total (sub)tree certanity.
+   *  \return total (sub)tree certainty.
    */
   double get(void) const
   {

@@ -10,12 +10,12 @@ CREATE TABLE    alerts
   name        varchar(256) NOT NULL,
   detect_time timestamp    NULL,
   create_time timestamp    NOT NULL DEFAULT now(),
-  -- TODO: constraint on range of this variable is missing
   severity    int          NOT NULL,
   certainty   real         NOT NULL DEFAULT 1.0,
   description text         NOT NULL,
 
   CONSTRAINT certainty_check      CHECK ( 0<=certainty AND certainty<=1 ),
+  CONSTRAINT severity_check      CHECK ( 0<=severity AND severity<=4 ),
   CONSTRAINT dates_relation_check CHECK ( detect_time IS NULL OR detect_time<=create_time )
 );
 

@@ -212,7 +212,7 @@ DataBaseID EntrySaver::saveSourceHost(DataBaseID alertID, const Persistency::Hos
 DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 {
   stringstream ss;
-  ss << "INSERT INTO alerts(name, detect_time, create_time, severity, certanity, description) VALUES (";
+  ss << "INSERT INTO alerts(name, detect_time, create_time, severity, certainty, description) VALUES (";
   Appender::append(ss, a.getName().get() );
   ss << ",";
   Appender::append(ss, a.getDetectionTime()?a.getDetectionTime():NULL);
@@ -369,11 +369,11 @@ void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
   SQL( ss.str(), log_ ).exec(t_);
 }
 
-void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta)
+void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certaintyDelta)
 {
   stringstream ss;
   ss << "UPDATE meta_alerts SET certainty_delta = certainty_delta + ";
-  Appender::append(ss, certanityDelta);
+  Appender::append(ss, certaintyDelta);
   ss << ", last_update_time = now() ";
   ss << " WHERE id = " << malertID << ";";
   SQL( ss.str(), log_ ).exec(t_);

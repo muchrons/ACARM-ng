@@ -49,7 +49,7 @@ void testObj::test<1>(void)
   ensure_equals("invalid name", string( ma.getName().get() ),
                                 alert->getName().get() );
   ensure_equals("invalid severity delta", ma.getSeverityDelta(), 0);
-  ensure_equals("invalid certanity delta", ma.getCertaintyDelta(), 0);
+  ensure_equals("invalid certainty delta", ma.getCertaintyDelta(), 0);
   ensure("invalid reference URL", ma.getReferenceURL()==NULL );
   ensure("invalid creation time",
          ma.getCreateTime()==alert->getCreationTime() );
@@ -76,7 +76,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure_equals("invalid certanity delta", ma_.getCertaintyDelta(), 4.2);
+  ensure_equals("invalid certainty delta", ma_.getCertaintyDelta(), 4.2);
 }
 
 // test reference url getting
@@ -113,7 +113,7 @@ void testObj::test<8>(void)
   TestHelpers::checkEquality(ma, ma_);
 }
 
-// test equality with different certanity
+// test equality with different certainty
 template<>
 template<>
 void testObj::test<9>(void)

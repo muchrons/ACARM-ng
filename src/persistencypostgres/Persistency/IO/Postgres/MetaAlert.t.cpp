@@ -81,7 +81,7 @@ void testObj::test<1>(void)
   ensure_equals("invalid size",r.size(), 1u);
   ensure_equals("invalid name", ReaderHelper<string>::readAsNotNull(r[0]["name"]), name_);
   ensure_equals("invalid severity delta", ReaderHelper<double>::readAsNotNull(r[0]["severity_delta"]), 0.1);
-  ensure_equals("invalid certanity delta", ReaderHelper<double>::readAsNotNull(r[0]["certainty_delta"]), 0.2);
+  ensure_equals("invalid certainty delta", ReaderHelper<double>::readAsNotNull(r[0]["certainty_delta"]), 0.2);
   ensure_equals("invalid system-ID", ReaderHelper<Persistency::MetaAlert::ID::Numeric>::readAsNotNull(r[0]["sys_id"]), 666u);
   t_.commit();
 }
@@ -180,7 +180,7 @@ void testObj::test<5>(void)
   t_.commit();
 }
 
-// trying update Certanity delta
+// trying update Certainty delta
 template<>
 template<>
 void testObj::test<6>(void)
@@ -199,13 +199,13 @@ void testObj::test<6>(void)
   {
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
-    ensure_equals("invalid certanity delta", ReaderHelper<double>::readAsNotNull(r[0]["certainty_delta"]), 0.2);
+    ensure_equals("invalid certainty delta", ReaderHelper<double>::readAsNotNull(r[0]["certainty_delta"]), 0.2);
   }
   malert.updateCertaintyDelta(delta);
   {
     const result r = t_.getAPI<TransactionAPI>().exec(ss);
     ensure_equals("invalid size",r.size(), 1u);
-    ensure("invalid certanity delta",
+    ensure("invalid certainty delta",
            ( ReaderHelper<double>::readAsNotNull(r[0]["certainty_delta"]) - (0.2+delta) ) < 0.01 );
   }
   t_.commit();

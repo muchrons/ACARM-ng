@@ -16,7 +16,7 @@
 namespace Persistency
 {
 
-/** \brief exception on invalid certanity level.
+/** \brief exception on invalid certainty level.
  */
 struct ExceptionInvalidCertainty: public Exception
 {
@@ -30,13 +30,13 @@ struct ExceptionInvalidCertainty: public Exception
 }; // struct ExceptionInvalidCertainty
 
 
-/** \brief certanity level representation.
+/** \brief certainty level representation.
  */
 class Certainty: public boost::equality_comparable<Certainty>
 {
 public:
-  /** \brief create certanity representation [0;1].
-   *  \param c certanity value.
+  /** \brief create certainty representation [0;1].
+   *  \param c certainty value.
    *  \note c-tor is not explicit to make usage simpler.
    */
   Certainty(const double c=1):
@@ -45,8 +45,8 @@ public:
     if(c_<0 || 1<c_)
       throw ExceptionInvalidCertainty(SYSTEM_SAVE_LOCATION);
   }
-  /** \brief gets certanity level.
-   *  \return certanity saved in class.
+  /** \brief gets certainty level.
+   *  \return certainty saved in class.
    */
   double get(void) const
   {
