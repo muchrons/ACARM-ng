@@ -10,6 +10,7 @@
 #include "Algo/Diff/analyzer.hpp"
 #include "Algo/Diff/certainty.hpp"
 #include "Algo/Diff/ip.hpp"
+#include "Algo/Diff/md5sum.hpp"
 #include "Algo/Diff/objectID.hpp"
 #include "Algo/Diff/portNumber.hpp"
 #include "Algo/Diff/referenceURL.hpp"
