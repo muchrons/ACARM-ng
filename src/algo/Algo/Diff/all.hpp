@@ -13,6 +13,7 @@
 #include "Algo/Diff/objectID.hpp"
 #include "Algo/Diff/portNumber.hpp"
 #include "Algo/Diff/referenceURL.hpp"
+#include "Algo/Diff/service.hpp"
 #include "Algo/Diff/severity.hpp"
 #include "Algo/Diff/string.hpp"
 #include "Algo/Diff/timestamp.hpp"
