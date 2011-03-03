@@ -27,7 +27,7 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 }
 
 void Strategy::processImpl(Node               n,
-                           NodesTimeoutQueue &ntq,
+                           NodesTimeoutQueue &/*ntq*/,
                            BackendFacade     &bf)
 {
   //TODO
