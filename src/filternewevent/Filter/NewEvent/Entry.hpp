@@ -46,7 +46,7 @@ public:
   /** \brief return hash of entry name.
    *  \return (SHA1) hash of entry name.
    */
-  Hash &getHash();
+  const Entry::Hash &getHash() const;
 
 private:
   typedef std::pair<Name, Hash> Element;

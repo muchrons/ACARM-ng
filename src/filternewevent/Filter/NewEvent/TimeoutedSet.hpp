@@ -28,7 +28,7 @@ public:
   /** \brief add timeoted key to the collection.
    *  \param key key to be added.
    */
-  void add(Entry::Hash &key);
+  void add(const Entry::Hash &key);
   /** \brief remove timeouted element from collection and from persistency.
    *  \param bf    facade for removing timeouting elements from persistency.
    *  \param owner owner's name.
@@ -38,7 +38,7 @@ public:
    *  \param key key from which ...
    *  \return true if key has been already timeouted, false otherwise.
    */
-  bool isTimeouted(Entry::Hash &key) const;
+  bool isTimeouted(const Entry::Hash &key) const;
 
 private:
 

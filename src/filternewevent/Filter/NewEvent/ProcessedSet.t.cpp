@@ -71,11 +71,11 @@ void testObj::test<2>(void)
   ensure("non-timeouted element has been pruned", ps_.isProcessed(e2) );
   sleep(2);
   ps_.prune();
-  ensure("non-timeouted element has been pruned", ps_.isProcessed(e1)==false );
+  ensure("timeouted element has been pruned", ps_.isProcessed(e1)==false );
   ensure("non-timeouted element has been pruned", ps_.isProcessed(e2) );
   sleep(1);
   ps_.prune();
-  ensure("non-timeouted element has been pruned", ps_.isProcessed(e1)==false );
+  ensure("timeouted element has been pruned", ps_.isProcessed(e1)==false );
   ensure("non-timeouted element has been pruned", ps_.isProcessed(e2)==false );
 }
 
@@ -93,11 +93,17 @@ void testObj::test<3>(void)
   ensure("element 2 not present", ps_.isProcessed(e2) );
 }
 
-// test if reporting the same element multiple times works
+// test if after prune proper element is present in timeouted set
+// TODO: this test fails
 template<>
 template<>
 void testObj::test<4>(void)
 {
+  ps_.markAsProcessed(e_, 1.0);
+  sleep(2);
+  ensure("element timeouted after prune", ts_.isTimeouted(e_.getHash()) == false );
+  ps_.prune();
+  ensure("element not-timeouted after prune", ts_.isTimeouted(e_.getHash()));
 }
 
 } // namespace tut

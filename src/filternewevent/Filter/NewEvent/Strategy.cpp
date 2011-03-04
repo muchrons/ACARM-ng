@@ -33,6 +33,7 @@ void Strategy::processImpl(Node               n,
   //TODO
   const time_t now=time(NULL);
   // ensure prunning once a while
+  // TODO: prune timeouted elements from persistency
   if(nextPrune_<now)
     pruneProcessedSet(now);
   assert(nextPrune_>=now);

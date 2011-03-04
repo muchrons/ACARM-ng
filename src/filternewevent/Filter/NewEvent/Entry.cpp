@@ -74,7 +74,7 @@ const Entry::Name& Entry::getName() const
   return element_.first;
 }
 
-Entry::Hash& Entry::getHash()
+const Entry::Hash& Entry::getHash() const
 {
   return element_.second;
 }
