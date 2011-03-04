@@ -52,7 +52,7 @@ factory tf("Filter/NewEvent/Entry");
 namespace tut
 {
 
-// TODO
+// test valid data saving to the Dynamic Config
 template<>
 template<>
 void testObj::test<1>(void)
@@ -61,7 +61,7 @@ void testObj::test<1>(void)
   testData(e.getHash(), string("true") );
 }
 
-// TODO
+// test if element is not present in Dynamic Config after TimeoutedSet prune
 template<>
 template<>
 void testObj::test<2>(void)
@@ -72,4 +72,33 @@ void testObj::test<2>(void)
   testData(e.getHash(), string("") );
 }
 
+// test getName() method
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  Entry e("key", &bf_, &ts_);
+  ensure_equals("invalid name", e.getName(), "key");
+}
+
+// TODO: test getHash() method
+template<>
+template<>
+void testObj::test<4>(void)
+{
+}
+
+// chaeck if hash name is present in the Timeouted Set after destroying Entry object
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  Entry::Hash hash;
+  {
+    Entry e("key", &bf_, &ts_);
+    hash = e.getHash();
+  }
+  testData(hash, "true");
+  ensure("Element not present in collection", ts_.isTimeouted(hash));
+}
 } // namespace tut

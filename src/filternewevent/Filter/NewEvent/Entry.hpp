@@ -8,13 +8,15 @@
 #include <openssl/sha.h>
 #include "Filter/BackendFacade.hpp"
 #include "Filter/Exception.hpp"
-#include "Filter/NewEvent/TimeoutedSet.hpp"
 
 namespace Filter
 {
 namespace NewEvent
 {
 
+/** \brief forward declaration of TimeoutedSet class.
+ */
+class TimeoutedSet;
 /** \brief
  *  save elements in the persistency dynamic config,
  *  save timeouted elements in dedicated collection.

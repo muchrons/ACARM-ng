@@ -7,6 +7,7 @@
 
 #include "Filter/BackendFacade.hpp"
 #include "Filter/Exception.hpp"
+#include "Filter/NewEvent/Entry.hpp"
 
 namespace Filter
 {
@@ -21,13 +22,13 @@ class TimeoutedSet
 
 private:
 
-  typedef std::vector<std::string> Timeouted;
+  typedef std::vector<Entry::Hash> Timeouted;
 
 public:
   /** \brief add timeoted key to the collection.
    *  \param key key to be added.
    */
-  void add(std::string &key);
+  void add(Entry::Hash &key);
   /** \brief remove timeouted element from collection and from persistency.
    *  \param bf    facade for removing timeouting elements from persistency.
    *  \param owner owner's name.
@@ -37,7 +38,7 @@ public:
    *  \param key key from which ...
    *  \return true if key has been already timeouted, false otherwise.
    */
-  bool isTimeouted(std::string &key) const;
+  bool isTimeouted(Entry::Hash &key) const;
 
 private:
 

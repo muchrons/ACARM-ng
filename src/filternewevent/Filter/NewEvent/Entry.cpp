@@ -4,6 +4,7 @@
  */
 
 #include "Filter/NewEvent/Entry.hpp"
+#include "Filter/NewEvent/TimeoutedSet.hpp"
 
 namespace Filter
 {

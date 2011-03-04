@@ -10,7 +10,7 @@ namespace Filter
 namespace NewEvent
 {
 
-void TimeoutedSet::add(std::string &key)
+void TimeoutedSet::add(Entry::Hash &key)
 {
   // TODO
   timeouted_.push_back(key);
@@ -28,7 +28,7 @@ void TimeoutedSet::prune(BackendFacade *bf, Persistency::IO::DynamicConfig::Owne
   timeouted_.clear();
 }
 
-bool TimeoutedSet::isTimeouted(std::string &key) const
+bool TimeoutedSet::isTimeouted(Entry::Hash &key) const
 {
   for(Timeouted::const_iterator it = timeouted_.begin(); it != timeouted_.end(); ++it)
   {
