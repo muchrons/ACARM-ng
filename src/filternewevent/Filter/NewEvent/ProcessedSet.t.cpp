@@ -21,7 +21,6 @@ namespace
 
 struct TestClass: private TestStubs
 {
-
   TestClass(void):
     conn_( Persistency::IO::create() ),
     bf_(conn_, changed_, "testnewevent"),
@@ -29,6 +28,7 @@ struct TestClass: private TestStubs
     e_(name_, &bf_, &ts_)
   {
   }
+
   Persistency::IO::ConnectionPtrNN conn_;
   BackendFacade::ChangedNodes      changed_;
   BackendFacade                    bf_;
@@ -62,11 +62,13 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  // TODO: e1, e2 should be const
   Entry e1("some entry", &bf_, &ts_);
   Entry e2("some other entry", &bf_, &ts_);
   ps_.markAsProcessed(e1, 1.0);
   ps_.markAsProcessed(e2, 2.0);
   ps_.prune();
+  // TODO: add some distinguishement between error messages to make line easy identificable in case of an error
   ensure("non-timeouted element has been pruned", ps_.isProcessed(e1) );
   ensure("non-timeouted element has been pruned", ps_.isProcessed(e2) );
   sleep(2);
@@ -85,6 +87,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
+  // TODO: e1, e2 should be const
   Entry e1("some entry", &bf_, &ts_);
   Entry e2("some other entry", &bf_, &ts_);
   ps_.markAsProcessed(e1, 1.0);
@@ -98,6 +101,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
+  // TODO: implementation's missing.
 }
 
 } // namespace tut

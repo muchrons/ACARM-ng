@@ -85,7 +85,9 @@ protected:
    *  \return connection object.
    */
   Persistency::IO::ConnectionPtrNN getConnection(void);
-  /** \brief create persistency proxy.
+  // TODO: 'owner' should be const
+  // TODO: consider renaming this method so that it will not be named like public method in derived class
+  /** \brief create persistent configuration access object.
    *  \param owner owner's name of a configuration to work on (NULL means common config).
    *  \return return non-NULL dynamic configuration proxy.
    */

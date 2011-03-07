@@ -31,6 +31,7 @@ public:
    */
   struct Parameters
   {
+    // TODO: describe new filter in doc/CONFIGURATION.txt
     /** \brief create paramters object.
      *  \param timeout  new event time life (in seconds).
      *  \param priDelta increment of priority when new event is found.
@@ -64,6 +65,7 @@ private:
                            BackendFacade     &bf);
 
   void pruneProcessedSet(time_t now);
+  // TODO: unused code
   void pruneTimeoutedSet();
 
   time_t           nextPrune_;
@@ -71,6 +73,7 @@ private:
   ProcessedSet     processed_;
   TimeoutedSet     timeouted_;
 }; // class Strategy
+
 } // namespace NewEvent
 } // namespace Filter
 

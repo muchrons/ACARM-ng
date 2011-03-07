@@ -15,6 +15,7 @@ namespace NewEvent
 class TestEntry: private Entry
 {
 public:
+  // TODO: 'name' should be const-ref.
   TestEntry(Name name, Filter::BackendFacade *bf, TimeoutedSet *ts):
     Entry(name, bf, ts)
   {

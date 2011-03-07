@@ -73,4 +73,9 @@ void testObj::test<2>(void)
   ensure_equals("something changed", changed_.size(), 2u);
 }
 
+// TODO: test adding the same name after timeout has been reached for it.
+
+// TODO: test adding the same name multiple times, in some time span and checking if it
+//       has NOT been marked as unused after first entry has timeouted, but next ones are still present.
+
 } // namespace tut

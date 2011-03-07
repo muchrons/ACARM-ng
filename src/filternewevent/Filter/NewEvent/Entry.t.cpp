@@ -29,18 +29,19 @@ struct TestClass
   {
   }
 
+  // TODO: parameters should be const-refs.
   void testData(std::string key, std::string value)
   {
-    TestDynamicConfigStub::Data::DataMap data = tconn_->data_->owner_["Filter::NewEvent"];
+    TestDynamicConfigStub::Data::DataMap data = tconn_->data_->owner_["Filter::NewEvent"];  // TODO: separate this string to a constant
     tut::ensure_equals("invalid value", data[key], value );
   }
 
   TestConnection                        *tconn_;
-  Persistency::IO::ConnectionPtrNN      conn_;
-  BackendFacade::ChangedNodes           changed_;
-  BackendFacade                         bf_;
-  TimeoutedSet                          ts_;
-  Persistency::IO::DynamicConfig::Owner owner_;
+  Persistency::IO::ConnectionPtrNN       conn_;
+  BackendFacade::ChangedNodes            changed_;
+  BackendFacade                          bf_;
+  TimeoutedSet                           ts_;
+  Persistency::IO::DynamicConfig::Owner  owner_;
 };
 
 typedef tut::test_group<TestClass> factory;

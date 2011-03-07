@@ -180,4 +180,6 @@ void testObj::test<8>(void)
   ensure("d-tor not run", isRun);
 }
 
+// TODO: test createDynamicConfig method
+
 } // namespace tut

@@ -22,6 +22,8 @@ namespace NewEvent
 class EntryProcessor
 {
 public:
+  // TODO: take refs as arguments and silently convert them to pointers in the implementation.
+  // TODO: 'params' should be const-ref.
   /** \brief create instance.
    *  \param bf       facade for writing new names of hosts to persistency.
    *  \param ps       set of already processed elements.
@@ -35,7 +37,6 @@ public:
   void operator()(Persistency::GraphNodePtrNN leaf);
 
 private:
-
   Logger::Node               log_;
   BackendFacade             *bf_;
   ProcessedSet              *ps_;
