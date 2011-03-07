@@ -29,10 +29,10 @@ void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
   assert( leaf->isLeaf() && "wrong graph-passing algorithm choosen" );
   const std::string name(leaf->getMetaAlert()->getName().get());
   // create helper object
-  Entry e(name, bf_, ts_);
+  EntrySharedPtr e(new Entry(name, bf_, ts_));
   assert(ps_!=NULL);
 
-  if(ps_->isProcessed(e))
+  if(ps_->isProcessed(*e.get()))
   {
     LOGMSG_DEBUG_S(log_)<<"(meta-)alert with name "<< name
                         <<" has been already processed - skipping";

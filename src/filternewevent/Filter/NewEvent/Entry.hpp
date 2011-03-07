@@ -47,7 +47,7 @@ public:
    *  \return (SHA1) hash of entry name.
    */
   const Entry::Hash &getHash() const;
-
+  bool operator==(const Entry &other) const;
 private:
   typedef std::pair<Name, Hash> Element;
   // computes (SHA1) hash of a given string
@@ -58,7 +58,8 @@ private:
   Element                                element_;
   TimeoutedSet                          *ts_;
 
-}; // class ProcessedSet
+}; // class Entry
+typedef boost::shared_ptr<Entry> EntrySharedPtr;
 } // namespace Filter
 } // namespace NewEvent
 #endif

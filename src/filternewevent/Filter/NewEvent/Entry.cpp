@@ -78,6 +78,10 @@ const Entry::Hash& Entry::getHash() const
 {
   return element_.second;
 }
+bool Entry::operator==(const Entry &other) const
+{
+  return true;
+}
 
 // computes (SHA1) hash of a given string
 std::string Entry::computeHash(const std::string &in)

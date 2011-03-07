@@ -12,19 +12,19 @@ namespace NewEvent
 
 bool ProcessedSet::isProcessed(Entry &entry) const
 {
-  const Entry::Name name(entry.getName());
+  //const Entry::Name name(entry.getName());
   for(Set::const_iterator it = set_.begin(); it != set_.end(); ++it)
   {
-    if(*it==name)
+    if(*it->get()==entry)
       return true;
   }
   // object not found
   return false;
 }
 
-void ProcessedSet::markAsProcessed(Entry &entry, unsigned int timeout)
+void ProcessedSet::markAsProcessed(EntrySharedPtr entry, unsigned int timeout)
 {
-  set_.update(entry.getName(), timeout);
+  set_.update(entry, timeout);
 }
 
 void ProcessedSet::prune(void)

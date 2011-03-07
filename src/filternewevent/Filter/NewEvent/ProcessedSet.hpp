@@ -28,7 +28,7 @@ public:
    *  \param entry   entry connected with processed leaf.
    *  \param timeout time life (in seconds) of stored (meta-)alert name.
    */
-  void markAsProcessed(Entry &entry, unsigned int timeout);
+  void markAsProcessed(EntrySharedPtr entry, unsigned int timeout);
   /** \brief removes entries corresponding to graph nodes not held in memory any more.
    */
   void prune(void);
@@ -37,7 +37,7 @@ private:
   // TODO: replace with boost::ptr_map in order to provide memory free when element is deleted
   //       from collection. This will be usefull for deleting elements stored in persistency.
   //       Functionality for deleting timeouted elemnts should be provided.
-  typedef Base::TimeoutQueue<Entry::Name> Set;
+  typedef Base::TimeoutQueue<EntrySharedPtr> Set;
 
   void pruneTimeouted();
 
