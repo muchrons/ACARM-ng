@@ -65,6 +65,13 @@ class MetaAlert extends TPage
                     $this->MetaAlertName->Text.=$f." ";
           }
 
+        $inUse=CSQLMap::get()->queryForObject('CheckInUse', $idAlert);
+        if ($inUse!=0)
+          $this->MetaAlertTags->Text.="<font color=\"yellow\"><b>In use</b></font></br>";
+
+        $isRoot=CSQLMap::get()->queryForObject('CheckRoot', $idAlert);
+        if ($isRoot!=0)
+          $this->MetaAlertTags->Text.="<font color=\"red\"><b>Root</b></font> ";
 
       } // if(!post_back)
   }

@@ -14,14 +14,22 @@ namespace Core
 
 namespace
 {
+
+/** \brief thread-implementation for periodic cleanup mechanism.
+ */
 struct PeriodicalCleanup
 {
+  /** \brief create object.
+   *  \param pc cleanup to be used.
+   */
   explicit PeriodicalCleanup(PersistencyCleanup &pc):
     log_("core.periodicalcleanup"),
     pc_(&pc)
   {
   }
 
+  /** \brief thread implementation.
+   */
   void operator()(void)
   {
     LOGMSG_DEBUG(log_, "thread is up");

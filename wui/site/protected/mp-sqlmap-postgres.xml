@@ -77,6 +77,14 @@
     SELECT name as name,id as alertid FROM alert_to_meta_alert_map as map JOIN alerts as a ON a.id=map.id_alert WHERE map.id_meta_alert=#value#
   </select>
 
+  <select id="CheckInUse" resultClass="int" parameterClass="int">
+    select count(*) from meta_alerts_in_use where id_meta_alert=#value#;
+  </select>
+
+  <select id="CheckRoot" resultClass="int" parameterClass="int">
+    select count(*) from meta_alerts_roots where id_root=#value#;
+  </select>
+
   <!-- Queries for tables' sizes -->
 
   <select id="SelectUsersCount" resultClass="int">
@@ -106,8 +114,8 @@
             AND ((severity='4' AND #severities# LIKE '%high%')
               OR (severity='3' AND #severities# LIKE '%medium%')         
               OR (severity='2' AND #severities# LIKE '%low%')
-              OR (severity='1' AND #severities# LIKE '%debug%')
-              OR (severity='0' AND #severities# LIKE '%info%'));
+              OR (severity='1' AND #severities# LIKE '%info%')
+              OR (severity='0' AND #severities# LIKE '%debug%'));
     ]]>
   </select>
 
@@ -115,8 +123,8 @@
     SELECT count(*) FROM meta_alerts
   </select>
 
-  <select id="SelectMetaAlertsRootsCount" resultClass="int">
-    SELECT count(*) FROM meta_alerts WHERE id NOT IN ( SELECT id_child FROM meta_alerts_tree ) ORDER BY create_time DESC limit #limit# offset #offset# <!--unsure-->
+  <select id="SelectMetaAlertsRootSummaryCount" resultClass="int">
+    SELECT count(*) FROM meta_alerts_roots;
   </select>
 
   <!-- Queries for statistics -->
@@ -173,8 +181,8 @@
             AND ((severity='4' AND #severities# LIKE '%high%')
               OR (severity='3' AND #severities# LIKE '%medium%')
               OR (severity='2' AND #severities# LIKE '%low%')
-              OR (severity='1' AND #severities# LIKE '%debug%')
-              OR (severity='0' AND #severities# LIKE '%info%'))
+              OR (severity='1' AND #severities# LIKE '%info%')
+              OR (severity='0' AND #severities# LIKE '%debug%'))
             ORDER BY alerts.create_time DESC
             LIMIT #limit#
             OFFSET #offset#
@@ -185,8 +193,8 @@
     SELECT id, name, create_time FROM meta_alerts ORDER BY create_time DESC limit #limit# offset #offset#
   </select>
 
-  <select id="SelectMetaAlertRoots" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
-    SELECT id, name, create_time FROM meta_alerts WHERE id NOT IN ( SELECT id_child FROM meta_alerts_tree ) ORDER BY create_time DESC limit #limit# offset #offset#
+  <select id="SelectMetaAlertsRootSummary" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
+    SELECT id, name, create_time FROM meta_alerts WHERE id in (SELECT id FROM meta_alerts_roots) ORDER BY create_time DESC limit #limit# offset #offset#
   </select>
 
 <!-- Queries for Data Mining -->
