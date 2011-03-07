@@ -21,7 +21,6 @@ namespace
 
 struct TestClass: private TestStubs
 {
-
   TestClass(void):
     conn_( Persistency::IO::create() ),
     bf_(conn_, changed_, "testnewevent"),
@@ -29,6 +28,7 @@ struct TestClass: private TestStubs
     ePtr_(new Entry(name_, &bf_, &ts_))
   {
   }
+
   Persistency::IO::ConnectionPtrNN conn_;
   BackendFacade::ChangedNodes      changed_;
   BackendFacade                    bf_;
@@ -68,6 +68,7 @@ void testObj::test<2>(void)
   ps_.markAsProcessed(e1, 1.0);
   ps_.markAsProcessed(e2, 2.0);
   ps_.prune();
+  // TODO: add some distinguishement between error messages to make line easy identificable in case of an error
   ensure("non-timeouted element has been pruned", ps_.isProcessed(e1) );
   ensure("non-timeouted element has been pruned", ps_.isProcessed(e2) );
   sleep(2);

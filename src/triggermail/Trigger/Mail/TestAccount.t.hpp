@@ -107,7 +107,7 @@ int removeMessagesFromAccount(const Trigger::Mail::Config &cfg, int minCount=0)
     count+=removeMessagesFromAccountImpl(cfg);          // test account's content
     if( deadline<time(NULL) || count>=minCount )        // timeout or got expected count?
       break;
-    usleep(500*1000);                                   // wait 0.5[s] not to make heavy-busy-loop
+    usleep(1500*1000);                                  // wait 1.5[s] not to make heavy-busy-loop
                                                         // on fast connections
   }
 

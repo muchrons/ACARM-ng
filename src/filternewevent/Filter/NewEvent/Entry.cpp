@@ -11,6 +11,10 @@ namespace Filter
 namespace NewEvent
 {
 
+// TODO: this code is mostly c&p from Persistency::Facades::detail::LocalAnalyzersCache
+//       make this a common code in Common component. ensure that proper library and include
+//       dependencies are moved along with the implementation.
+
 namespace
 {
 // converts half-byte to char
@@ -56,16 +60,22 @@ Entry::Entry(Name name, Filter::BackendFacade *bf, TimeoutedSet *ts):
   element_( std::make_pair(name, computeHash(name) ) ),
   ts_(ts)
 {
+  // TODO: bf is not checked to be NULL - since this is implementation specific simple assert is just fine.
+  // TODO: ts is not chekced to be NULL - since this is implementation specific simple assert is just fine.
   // TODO: save DynamicConfid data
   dc_->write(getHash(), "true");
+  // TODO: notice that this object will be copyied multiple times during life cycle, thus multiple instances
+  //       will be present at one time. this makes it impossible to simply add in c-tor and del in d-tor.
+  //       reference counting mechanism has to be introduced for this mechanism to work.
 }
 
 Entry::~Entry()
 {
   // TODO: mark timeouted elements (meta alerts names) in some colection
-  // after prune() call for timeout collection, timeouted elements should be
-  // deleted from data base, this approach prevents lose data stored in data base
-  // after application exit
+  //       after prune() call for timeout collection, timeouted elements should be
+  //       deleted from data base, this approach prevents lose data stored in data base
+  //       after application exit
+  // TODO: this call may throw - add try{}catch(...), with proper comment on this event.
   ts_->add(getHash());
 }
 

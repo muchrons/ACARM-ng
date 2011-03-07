@@ -57,6 +57,7 @@ void testObj::test<1>(void)
   const double   pri1=leaf->getMetaAlert()->getSeverityDelta();
   ep_(leaf);
   const double   pri2=leaf->getMetaAlert()->getSeverityDelta();
+  // TODO: avoid direct comparisons of doubles - use System::Math::compareFP instead
   ensure_equals("priority not changed", pri1 + 0.3, pri2);
   ensure_equals("some node market as changed", changed_.size(), 1u);
 }
@@ -70,7 +71,9 @@ void testObj::test<2>(void)
   ep_(leaf);
   ep_(leaf);
   const double   pri2=leaf->getMetaAlert()->getSeverityDelta();
+  // TODO: avoid direct comparisons of doubles - use System::Math::compareFP instead
   ensure_equals("priority not changed", pri1 + 0.3, pri2);
   ensure_equals("some node market as changed", changed_.size(), 1u);
 }
+
 } // namespace tut

@@ -12,6 +12,10 @@
 
 #include "Persistency/IO/DynamicConfig.hpp"
 
+// TODO: this code is common - move this implementation to TestHelpers::Persistency; it should be
+//       checked, but i'd expect this could replace exisitng TestHelpers::Persistency::IODynamicConfigMemory
+//       implementation, since it's more robust.
+
 namespace Filter
 {
 namespace NewEvent
@@ -28,6 +32,8 @@ public:
 
     OwnerMap owner_;
   }; // struct Data
+
+  // TODO: makr shit SharedPtrNotNULL<>
   typedef boost::shared_ptr<Data> DataPtr;
 
   TestDynamicConfigStub(const Owner &owner, Persistency::IO::Transaction &t):

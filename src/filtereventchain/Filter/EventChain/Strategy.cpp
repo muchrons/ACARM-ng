@@ -4,6 +4,7 @@
  */
 #include <cassert>
 
+#include "System/ignore.hpp"
 #include "Filter/EventChain/Strategy.hpp"
 
 using namespace std;
@@ -131,7 +132,7 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
 
 Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
                                       const NodeEntry &otherEntry,
-                                      const Node       /*newNode*/) const
+                                      const Node       newNode) const
 {
   // find from/to chains
   const NodeEntry *from=NULL;
@@ -155,6 +156,13 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
   assert(to  !=NULL);
   assert( hasCommonIP(from->t_.endIPs_, to->t_.beginIPs_) );
   assert( from->t_.endTs_<=to->t_.beginTs_ );
+  // sanity check
+  assert( isEntryInteresting(*from) );
+  assert( isEntryInteresting(*to)   );
+  // log some info
+  LOGMSG_DEBUG_S(log_)<<"connecting from: '"<<from->node_->getMetaAlert()->getName().get()<<"' to: '"
+                      <<to->node_->getMetaAlert()->getName().get()<<"' as: '"
+                      <<newNode->getMetaAlert()->getName().get();
 
   // make output
   Data d;
@@ -163,8 +171,11 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
   d.endIPs_  =to->t_.endIPs_;
   d.endTs_   =to->t_.endTs_;
   d.len_     =from->t_.len_ + to->t_.len_;
-  assert(d.len_>0u);
+  assert(d.len_!=0u);
+  assert(d.len_>=2u);
   assert(d.beginTs_<=d.endTs_);
+  assert( isEntryInteresting( NodeEntry(newNode, d) ) );
+  System::ignore(newNode);
   return d;
 }
 

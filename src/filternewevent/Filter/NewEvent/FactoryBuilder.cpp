@@ -45,7 +45,9 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   // filter newevent name
   const std::string    &name=fc["name"];
   LOGMSG_INFO_S(log_)<<"setting filter \""<<getTypeName()<<"\" name to \""<<name<<"\"";
-  const unsigned int timeout=Commons::Convert::to<unsigned int>(fc["timeout"]);
+  // TODO: change this sequence to read, log, read, log - when reading of the paramters will throw,
+  //       last option will still be logged making it simpler to locate place where error has been risen
+  const unsigned int timeout =Commons::Convert::to<unsigned int>(fc["timeout"]);
   const double       priDelta=Commons::Convert::to<double>( fc["priorityDelta"] );
   LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";
   LOGMSG_INFO_S(log_)<<"setting priority delta to "<<priDelta;

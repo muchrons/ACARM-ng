@@ -21,9 +21,9 @@ Strategy::Strategy(const std::string &name, const Parameters &params):
 
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
-    Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
-      ecl.add("*input*");   // TODO: magic value
-        return ecl;
+  Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
+  ecl.add("*input*");   // TODO: magic value
+  return ecl;
 }
 
 void Strategy::processImpl(Node               n,
@@ -40,7 +40,7 @@ void Strategy::processImpl(Node               n,
 
   const EntryProcessor ep(&bf, &processed_, &timeouted_, params_);
   Algo::forEachUniqueLeaf(n, ep);
-
+  // TODO: prunning of timeouted_ elements must be called here
 }
 
 void Strategy::pruneProcessedSet(const time_t now)
@@ -55,5 +55,6 @@ void Strategy::pruneTimeoutedSet()
 {
   // TODO
 }
+
 } // namespace NewEvent
 } // namespace Filter

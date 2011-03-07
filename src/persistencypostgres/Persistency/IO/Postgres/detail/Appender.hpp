@@ -42,7 +42,6 @@ public:
    *  \param ss output stream.
    *  \param t  pointer to element to be added.
    */
-
   template<typename T>
   void append(std::stringstream &ss, const T *t);
   /** \brief appends given data to statement.
@@ -60,7 +59,6 @@ private:
     else
       ss << "E'" << tr_.getAPI<Postgres::TransactionAPI>().esc(t) << "'";
   }
-
   template<typename T>
   inline void appendNoEscape(std::stringstream &ss, const T *t)
   {
