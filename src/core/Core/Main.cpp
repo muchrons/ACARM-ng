@@ -21,13 +21,18 @@ namespace
 inline Persistency::IO::ConnectionPtrNN makeConnection(void)
 {
   Persistency::IO::BackendFactory::FactoryPtr tmp=Persistency::IO::create();
+  assert( tmp.get()!=NULL );
   return tmp;
 } // makeConnection()
 
 
+/** \brief implementation of the thread that waits forever for a signal(s).
+ */
 struct SignalHandlingCallable
 {
-  // NOTE: this thread may NOT create any locks!!
+  /** \brief thread's code.
+   *  \note this thread may NOT create any locks!!
+   */
   void operator()(void)
   {
     // unmasks all signals for this thread.
