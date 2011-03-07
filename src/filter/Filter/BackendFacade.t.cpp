@@ -247,4 +247,5 @@ void testObj::test<12>(void)
   ensure_equals("invalid number of changed nodes", changed_.size(), 1u);
 }
 
+// TODO: add test for createDynamicConfig function
 } // namespace tut

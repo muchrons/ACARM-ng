@@ -10,7 +10,6 @@
 
 #include "Logger/Node.hpp"
 #include "Trigger/Jabber/Connection.hpp"
-#include "Trigger/Jabber/ExceptionSendingError.hpp"
 #include "Trigger/Jabber/ExceptionCreatingError.hpp"
 
 namespace Trigger
