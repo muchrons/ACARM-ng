@@ -38,8 +38,9 @@ DataBaseID getID(IO::Transaction &t, const std::string &name)
   DataBaseID id;
   const Persistency::MetaAlert::Name node(name);
   stringstream ss;
+  Appender     ap(t);
   ss << "SELECT * FROM meta_alerts WHERE name = ";
-  Appender::append(ss, node.get());
+  ap.append(ss, node.get());
   ss << ";";
   const result r = t.getAPI<TransactionAPI>().exec(ss);
   if(r.size() != 1)
