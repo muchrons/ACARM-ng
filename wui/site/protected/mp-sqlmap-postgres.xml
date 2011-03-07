@@ -106,8 +106,8 @@
             AND ((severity='4' AND #severities# LIKE '%high%')
               OR (severity='3' AND #severities# LIKE '%medium%')         
               OR (severity='2' AND #severities# LIKE '%low%')
-              OR (severity='1' AND #severities# LIKE '%debug%')
-              OR (severity='0' AND #severities# LIKE '%info%'));
+              OR (severity='1' AND #severities# LIKE '%info%')
+              OR (severity='0' AND #severities# LIKE '%debug%'));
     ]]>
   </select>
 
@@ -173,8 +173,8 @@
             AND ((severity='4' AND #severities# LIKE '%high%')
               OR (severity='3' AND #severities# LIKE '%medium%')
               OR (severity='2' AND #severities# LIKE '%low%')
-              OR (severity='1' AND #severities# LIKE '%debug%')
-              OR (severity='0' AND #severities# LIKE '%info%'))
+              OR (severity='1' AND #severities# LIKE '%info%')
+              OR (severity='0' AND #severities# LIKE '%debug%'))
             ORDER BY alerts.create_time DESC
             LIMIT #limit#
             OFFSET #offset#
