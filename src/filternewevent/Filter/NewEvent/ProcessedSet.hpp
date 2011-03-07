@@ -34,6 +34,9 @@ public:
   void prune(void);
 private:
 
+  // TODO: replace with boost::ptr_map in order to provide memory free when element is deleted
+  //       from collection. This will be usefull for deleting elements stored in persistency.
+  //       Functionality for deleting timeouted elemnts should be provided.
   typedef Base::TimeoutQueue<Entry::Name> Set;
 
   void pruneTimeouted();
