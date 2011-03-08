@@ -13,6 +13,8 @@
 
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Algo/Diff/detail/Comparer.hpp"
+#include "Algo/Diff/detail/pointerImpl.hpp"
+#include "Algo/Diff/compare.hpp"
 
 namespace Algo
 {
@@ -31,7 +33,10 @@ struct Comparer<const T*>
    *  \param p2 second element to compare.
    *  \return result of the comparison.
    */
-  static Similarity cmp(const T *p1, const T *p2);
+  static Similarity cmp(const T * const p1, const T * const p2)
+  {
+    return comparePtrImpl(p1, p2);
+  }
 }; // struct Comparer<const T*>
 
 
@@ -45,7 +50,10 @@ struct Comparer<const boost::shared_ptr<T> >
    *  \param p2 second element to compare.
    *  \return result of the comparison.
    */
-  static Similarity cmp(const boost::shared_ptr<T> &p1, const boost::shared_ptr<T> &p2);
+  static Similarity cmp(const boost::shared_ptr<T> &p1, const boost::shared_ptr<T> &p2)
+  {
+    return comparePtrImpl( p1.get(), p2.get() );
+  }
 }; // struct Comparer<const boost::shared_ptr<T> >
 
 
@@ -59,7 +67,10 @@ struct Comparer<const Commons::SharedPtrNotNULL<T> >
    *  \param p2 second element to compare.
    *  \return result of the comparison.
    */
-  static Similarity cmp(const Commons::SharedPtrNotNULL<T> &p1, const Commons::SharedPtrNotNULL<T> &p2);
+  static Similarity cmp(const Commons::SharedPtrNotNULL<T> &p1, const Commons::SharedPtrNotNULL<T> &p2)
+  {
+    return comparePtrImpl( p1.get(), p2.get() );
+  }
 }; // struct Comparer<const Commons::SharedPtrNotNULL<T> >
 
 } // namespace detail
