@@ -12,6 +12,7 @@
 #include <cassert>
 
 #include "System/Enum.hpp"
+#include "System/ignore.hpp"
 
 
 namespace System
@@ -135,7 +136,7 @@ public:
       assert( static_cast<int>(e)     -(static_cast<int>(E::Max)+1)<=0 );
 
       // this supress warning in release mode
-      ignoreParam(e);
+      ignore(e);
     }
 
     EType e_;
@@ -201,12 +202,7 @@ private:
     assert( E::Min<=l );
     assert( l<=E::Max );
     // this supresses warning in release mode
-    ignoreParam(l);
-  }
-  // this call supresses warrning from compiler abiut unused
-  // variable from argument list, in release mode.
-  static inline void ignoreParam(const long)
-  {
+    ignore(l);
   }
 }; // class IterableEnum
 

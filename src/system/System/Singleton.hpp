@@ -17,6 +17,7 @@
 #include <cassert>
 
 #include "System/AtExit.hpp"
+#include "System/NoInstance.hpp"
 #include "System/Threads/SafeInitLocking.hpp"
 
 namespace System
@@ -106,7 +107,8 @@ private:
  *
  */
 template<typename T>
-class Singleton: private boost::noncopyable
+class Singleton: private boost::noncopyable,
+                 private NoInstance
 {
 private:
   typedef detail::SingletonData<T>   TSingletonData;
@@ -262,8 +264,6 @@ private:
     SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(mutex);
     return mutex;
   }
-
-  Singleton(void);  // no instances allowed
 }; // class Singleton
 
 } // namespace System
