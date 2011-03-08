@@ -12,6 +12,8 @@ using namespace Algo::Diff;
 namespace
 {
 
+typedef Algo::Diff::detail::Comparer<const Persistency::Certainty> Cmp;
+
 struct TestClass
 {
 };
@@ -31,7 +33,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Similarity s=compare( Certainty(0.5), Certainty(0.5) );
+  const Similarity s=Cmp::cmp( Certainty(0.5), Certainty(0.5) );
   ensure("identical elements differ", s.get()>0.99);
 }
 
@@ -40,7 +42,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Similarity s=compare( Certainty(0.5), Certainty(0.4) );
+  const Similarity s=Cmp::cmp( Certainty(0.5), Certainty(0.4) );
   ensure("elements differ too little", s.get()>0.75);
   ensure("elements marked identical", s.get()<1);
 }
@@ -50,7 +52,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const Similarity s=compare( Certainty(0.4), Certainty(0.9) );
+  const Similarity s=Cmp::cmp( Certainty(0.4), Certainty(0.9) );
   ensure("elements differ too much", s.get()<0.01);
 }
 

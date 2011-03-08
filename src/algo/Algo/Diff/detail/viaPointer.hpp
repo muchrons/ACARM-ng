@@ -23,9 +23,6 @@ namespace Diff
 namespace detail
 {
 
-// forward declaration required for dependency
-Similarity compare(const std::string &e1, const std::string &e2);
-
 namespace detail
 {
 /** \brief compares two strings - implementation detail.

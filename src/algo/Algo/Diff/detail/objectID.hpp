@@ -21,7 +21,7 @@ namespace detail
 
 /** \brief specialization for ObjectID.
  */
-template<>
+template<typename T>
 struct Comparer<const Base::ObjectID<T> >
 {
   /** \brief compares two elements.

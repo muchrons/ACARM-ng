@@ -12,6 +12,8 @@ using namespace Algo::Diff;
 namespace
 {
 
+typedef Algo::Diff::detail::Comparer<const Persistency::MD5Sum> Cmp;
+
 struct TestClass
 {
 };
@@ -31,8 +33,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Similarity s=compare( MD5Sum::createFromString("01234567890123456789012345678901"),
-                              MD5Sum::createFromString("01234567890123456789012345678901") );
+  const Similarity s=Cmp::cmp( MD5Sum::createFromString("01234567890123456789012345678901"),
+                               MD5Sum::createFromString("01234567890123456789012345678901") );
   ensure_equals("identical elements differ", s.get(), 1);
 }
 
@@ -41,8 +43,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Similarity s=compare( MD5Sum::createFromString("01234567890123456789012345678aaa"),
-                              MD5Sum::createFromString("01234567890123456789012345678901") );
+  const Similarity s=Cmp::cmp( MD5Sum::createFromString("01234567890123456789012345678aaa"),
+                               MD5Sum::createFromString("01234567890123456789012345678901") );
   ensure_equals("different elements do not differ", s.get(), 0);
 }
 

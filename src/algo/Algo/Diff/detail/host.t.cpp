@@ -16,6 +16,8 @@ using namespace TestHelpers::Persistency;
 namespace
 {
 
+typedef Algo::Diff::detail::Comparer<const Persistency::Host> Cmp;
+
 struct TestClass
 {
 };
@@ -44,7 +46,7 @@ void testObj::test<1>(void)
 
   const Host            h1(ip, &mask, "Linux", ReferenceURLPtr(), srvs, procs, "myname");
   const Host            h2(ip, &mask, "Linux", ReferenceURLPtr(), srvs, procs, "myname");
-  const Similarity      s=compare(h1, h2);
+  const Similarity      s=Cmp::cmp(h1, h2);
   ensure("identical elements differ", s.get()>0.99);
 }
 
@@ -56,7 +58,7 @@ void testObj::test<2>(void)
   const Host::IP   ip  =Host::IP::from_string("10.20.30.40");
   const Host       h1(ip, NULL, "Linux 2", ReferenceURLPtr(), Host::Services(), Host::Processes(), "myname");
   const Host       h2(ip, NULL, "Linux 1", ReferenceURLPtr(), Host::Services(), Host::Processes(), "myname2");
-  const Similarity s=compare(h1, h2);
+  const Similarity s=Cmp::cmp(h1, h2);
   ensure("elements differ too much", s.get()>0.75);
   ensure("elements does not differ", s.get()<1);
 }
@@ -77,7 +79,7 @@ void testObj::test<3>(void)
 
   const Host            h1(ip1, &mask, "Linux",    ReferenceURLPtr(), srvs,             Host::Processes(), "myname");
   const Host            h2(ip2, NULL,  "Winblows", url,               Host::Services(), procs,             "other one");
-  const Similarity      s=compare(h1, h2);
+  const Similarity      s=Cmp::cmp(h1, h2);
   ensure("elements differ too much", s.get()<0.1);
 }
 

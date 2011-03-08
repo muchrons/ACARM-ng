@@ -11,9 +11,14 @@ using namespace Algo::Diff;
 namespace
 {
 
+struct SomeTestClass
+{
+};
+typedef Base::ObjectID<SomeTestClass> ID;
+typedef Algo::Diff::detail::Comparer<const ID> Cmp;
+
 struct TestClass
 {
-  typedef Base::ObjectID<TestClass> ID;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -31,7 +36,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("identical IDs have non-one similairty", compare( ID(2), ID(2) ).get(), 1);
+  ensure_equals("identical IDs have non-one similairty", Cmp::cmp( ID(2), ID(2) ).get(), 1);
 }
 
 // test comapring different IDs
@@ -39,7 +44,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("different IDs have non-zero similairty", compare( ID(1), ID(2) ).get(), 0);
+  ensure_equals("different IDs have non-zero similairty", Cmp::cmp( ID(1), ID(2) ).get(), 0);
 }
 
 } // namespace tut

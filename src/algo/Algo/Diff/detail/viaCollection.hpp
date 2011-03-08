@@ -13,6 +13,7 @@
 
 #include "Base/NonEmptyVector.hpp"
 #include "Algo/Diff/detail/Comparer.hpp"
+#include "Algo/Diff/compare.hpp"
 
 namespace Algo
 {

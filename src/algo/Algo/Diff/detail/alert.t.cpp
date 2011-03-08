@@ -11,6 +11,7 @@ using namespace Algo::Diff;
 
 namespace
 {
+typedef Algo::Diff::detail::Comparer<const Persistency::Analyzer> Cmp;
 
 struct TestClass
 {

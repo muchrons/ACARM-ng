@@ -32,8 +32,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const string str1("abc");
-  const string str2("abc");
+  const string s1("abc");
+  const string s2("abc");
   ensure_equals("invalid similarity", compare(s1, s2).get(), 1);
 }
 
@@ -42,8 +42,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  string str1("abc");
-  string str2("abc");
+  string s1("abc");
+  string s2("abc");
   ensure_equals("invalid similarity", compare(s1, s2).get(), 1);
 }
 

@@ -8,31 +8,48 @@
 
 using namespace Algo::Diff;
 
+
 namespace
 {
-
-struct TestType
+struct TestTypeForPointer
 {
-}; // struct TestType
+}; // struct TestTypeForPointer
+} // unnamed namespace
 
-Similarity compare(const TestType &/*t1*/, const TestType &/*t2*/)
+namespace Algo
 {
-  return 0.424242;
-} // compare()
+namespace Diff
+{
+namespace detail
+{
+template<>
+struct Comparer<const TestTypeForPointer>
+{
+  static Similarity cmp(const TestTypeForPointer &/*t1*/, const TestTypeForPointer &/*t2*/)
+  {
+    return 0.424242;
+  }
+}; // struct Comparer<const TestTypeForPointer>
 
+} // namespace detail
+} // namespace Diff
+} // namespace Algo
+
+namespace
+{
 struct TestClass
 {
   template<typename T>
   void testPtr(const T *p1, const T *p2, double expected) const
   {
-    const Similarity s=Algo::Diff::compare(p1, p2);
+    const Similarity s=Algo::Diff::detail::Comparer<const T*>::cmp(p1, p2);
     tut::ensure_equals("invalid similarity", s.get(), expected);
   }
 
   template<typename T>
   void testSmartPtr(const T &p1, const T &p2, double expected) const
   {
-    const Similarity s=Algo::Diff::compare(p1, p2);
+    const Similarity s=Algo::Diff::detail::Comparer<const T>::cmp(p1, p2);
     tut::ensure_equals("invalid similarity", s.get(), expected);
   }
 };
@@ -52,7 +69,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  testPtr<TestType>(NULL, NULL, 1);
+  testPtr<TestTypeForPointer>(NULL, NULL, 1);
 }
 
 // test first NULL
@@ -60,8 +77,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const TestType t=TestType();
-  testPtr<TestType>(NULL, &t, 0);
+  const TestTypeForPointer t=TestTypeForPointer();
+  testPtr<TestTypeForPointer>(NULL, &t, 0);
 }
 
 // test second NULL
@@ -69,8 +86,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const TestType t=TestType();
-  testPtr<TestType>(&t, NULL, 0);
+  const TestTypeForPointer t=TestTypeForPointer();
+  testPtr<TestTypeForPointer>(&t, NULL, 0);
 }
 
 // test two non-NULLs (identical pointer)
@@ -78,8 +95,8 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const TestType t=TestType();
-  testPtr<TestType>(&t, &t, 1);
+  const TestTypeForPointer t=TestTypeForPointer();
+  testPtr<TestTypeForPointer>(&t, &t, 1);
 }
 
 // test two non-NULLs (different pointer)
@@ -87,9 +104,9 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const TestType t1=TestType();
-  const TestType t2=TestType();
-  testPtr<TestType>(&t1, &t2, 0.424242);
+  const TestTypeForPointer t1=TestTypeForPointer();
+  const TestTypeForPointer t2=TestTypeForPointer();
+  testPtr<TestTypeForPointer>(&t1, &t2, 0.424242);
 }
 
 // test const char *
@@ -107,9 +124,9 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  typedef boost::shared_ptr<TestType> Ptr;
-  const Ptr p1(new TestType);
-  const Ptr p2(new TestType);
+  typedef boost::shared_ptr<TestTypeForPointer> Ptr;
+  const Ptr p1(new TestTypeForPointer);
+  const Ptr p2(new TestTypeForPointer);
   testSmartPtr<Ptr>(p1, p2, 0.424242);
 }
 
@@ -118,9 +135,9 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  typedef Commons::SharedPtrNotNULL<TestType> Ptr;
-  const Ptr p1(new TestType);
-  const Ptr p2(new TestType);
+  typedef Commons::SharedPtrNotNULL<TestTypeForPointer> Ptr;
+  const Ptr p1(new TestTypeForPointer);
+  const Ptr p2(new TestTypeForPointer);
   testSmartPtr<Ptr>(p1, p2, 0.424242);
 }
 
