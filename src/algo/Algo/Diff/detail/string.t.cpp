@@ -5,6 +5,7 @@
 #include <tut.h>
 
 #include "Algo/Diff/detail/string.hpp"
+#include "Algo/Diff/detail/stringImpl.hpp"
 
 using namespace std;
 using namespace Algo::Diff;

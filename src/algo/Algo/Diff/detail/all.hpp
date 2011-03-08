@@ -7,7 +7,9 @@
 
 /* public header */
 
-#include "Algo/Diff/detail/Comparer.hpp"
+//
+// declarations
+//
 #include "Algo/Diff/detail/alert.hpp"
 #include "Algo/Diff/detail/analyzer.hpp"
 #include "Algo/Diff/detail/certainty.hpp"
@@ -25,5 +27,11 @@
 #include "Algo/Diff/detail/timestamp.hpp"
 #include "Algo/Diff/detail/viaPointer.hpp"
 #include "Algo/Diff/detail/viaCollection.hpp"
+
+//
+// implementations
+//
+#include "Algo/Diff/detail/stringImpl.hpp"
+#include "Algo/Diff/detail/viaPointerImpl.hpp"
 
 #endif

@@ -13,7 +13,6 @@
 
 #include "Base/NonEmptyVector.hpp"
 #include "Algo/Diff/detail/Comparer.hpp"
-#include "Algo/Diff/compare.hpp"
 
 namespace Algo
 {
@@ -39,7 +38,7 @@ Similarity compareViaIteratorsImpl(const T begin1, const T end1, const T begin2,
   //  sum similarities between two elements
   double sum=0;
   for(T it1=begin1, it2=begin2; it1!=end1 && it2!=end2; ++it1, ++it2)
-    sum+=compare(*it1, *it2).get();
+    sum+=Comparer<const typename T::value_type>::cmp(*it1, *it2).get();
   // return final similarity measure
   const size_t s1=end1-begin1;
   const size_t s2=end2-begin2;

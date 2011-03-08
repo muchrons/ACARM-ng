@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <boost/static_assert.hpp>
+
 #include "Algo/Diff/Similarity.hpp"
 
 namespace Algo
@@ -26,9 +28,14 @@ struct Comparer
    *  \param e2 second element to compare.
    *  \return result of the comparison.
    *  \warning generic implementation does not make sens, so it should never be used
-   *           thus have no implementation to warn user about problems in compile time.
+   *           thus have invalid implementation to warn user about problems in compile time.
    */
-  static Similarity cmp(const T &/*e1*/, const T &/*e2*/);
+  static Similarity cmp(const T &/*e1*/, const T &/*e2*/)
+  {
+    // this does not make sense
+    BOOST_STATIC_ASSERT( sizeof(T) && false );
+    return Similarity(42);  // code never reaches here
+  }
 }; // struct Comparer
 
 } // namespace detail

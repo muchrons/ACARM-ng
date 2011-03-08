@@ -8,7 +8,7 @@
 /* public header */
 
 #include "Algo/Diff/Similarity.hpp"
-#include "Algo/Diff/detail/Comparer.hpp"
+#include "Algo/Diff/detail/all.hpp"
 
 namespace Algo
 {

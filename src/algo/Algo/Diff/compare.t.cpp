@@ -27,7 +27,7 @@ factory tf("Algo/Diff/compare");
 namespace tut
 {
 
-// test string comparison
+// test sample comparison
 template<>
 template<>
 void testObj::test<1>(void)
