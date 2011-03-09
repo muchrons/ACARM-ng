@@ -7,11 +7,11 @@
 #include "Algo/Diff/detail/alert.hpp"
 
 using namespace Persistency;
-using namespace Algo::Diff;
+using namespace Algo::Diff::detail;
+using Algo::Diff::Similarity;
 
 namespace
 {
-typedef Algo::Diff::detail::Comparer<const Persistency::Analyzer> Cmp;
 
 struct TestClass
 {

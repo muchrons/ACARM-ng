@@ -7,13 +7,11 @@
 #include "Algo/Diff/detail/severity.hpp"
 
 using namespace Persistency;
-using namespace Algo::Diff;
+using namespace Algo::Diff::detail;
+using Algo::Diff::Similarity;
 
 namespace
 {
-
-typedef Algo::Diff::detail::Comparer<const Persistency::Severity>      Cmp;
-typedef Algo::Diff::detail::Comparer<const Persistency::SeverityLevel> CmpLvl;
 
 struct TestClass
 {
@@ -34,7 +32,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Similarity s=Cmp::cmp( Severity( SeverityLevel(SeverityLevel::MEDIUM) ), Severity( SeverityLevel(SeverityLevel::MEDIUM) ) );
+  const Similarity s=compare( Severity( SeverityLevel(SeverityLevel::MEDIUM) ), Severity( SeverityLevel(SeverityLevel::MEDIUM) ) );
   ensure("identical elements differ", s.get()>0.99);
 }
 
@@ -43,7 +41,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Similarity s=Cmp::cmp( Severity( SeverityLevel(SeverityLevel::LOW) ), Severity( SeverityLevel(SeverityLevel::MEDIUM) ) );
+  const Similarity s=compare( Severity( SeverityLevel(SeverityLevel::LOW) ), Severity( SeverityLevel(SeverityLevel::MEDIUM) ) );
   ensure("elements differ too little", s.get()>0.3);
   ensure("elements marked identical", s.get()<1);
 }
@@ -53,18 +51,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const Similarity s=Cmp::cmp( Severity( SeverityLevel(SeverityLevel::DEBUG) ), Severity( SeverityLevel(SeverityLevel::HIGH) ) );
+  const Similarity s=compare( Severity( SeverityLevel(SeverityLevel::DEBUG) ), Severity( SeverityLevel(SeverityLevel::HIGH) ) );
   ensure("elements differ too much", s.get()<0.01);
-}
-
-// test comparing severity levels
-template<>
-template<>
-void testObj::test<4>(void)
-{
-  const Similarity s=CmpLvl::cmp( SeverityLevel(SeverityLevel::LOW), SeverityLevel(SeverityLevel::MEDIUM) );
-  ensure("elements differ too little", s.get()>0.3);
-  ensure("elements marked identical", s.get()<1);
 }
 
 } // namespace tut

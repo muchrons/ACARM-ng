@@ -3,7 +3,7 @@
  *
  */
 #include "Algo/Diff/detail/service.hpp"
-#include "Algo/Diff/compare.hpp"
+#include "Algo/Diff/detail/all.hpp"
 
 namespace Algo
 {
@@ -12,7 +12,7 @@ namespace Diff
 namespace detail
 {
 
-Similarity Comparer<const Persistency::Service>::cmp(const Persistency::Service &e1, const Persistency::Service &e2)
+Similarity compare(const Persistency::Service &e1, const Persistency::Service &e2)
 {
   if(&e1==&e2)
     return 1;
@@ -22,7 +22,7 @@ Similarity Comparer<const Persistency::Service>::cmp(const Persistency::Service 
   const double proto=( e1.getProtocol()==e2.getProtocol() )?1:0;
   const double ref  =compare( e1.getReferenceURL().get(), e2.getReferenceURL().get() ).get();
   return (name+port+proto+ref)/4;
-}
+} // compare()
 
 } // namespace detail
 } // namespace Diff

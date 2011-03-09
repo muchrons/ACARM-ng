@@ -11,7 +11,8 @@
 
 #include "Commons/LimitedString.hpp"
 #include "Commons/LimitedNULLString.hpp"
-#include "Algo/Diff/detail/Comparer.hpp"
+#include "Algo/Diff/Similarity.hpp"
+#include "Algo/Diff/detail/viaPointer.hpp"
 
 namespace Algo
 {
@@ -20,44 +21,34 @@ namespace Diff
 namespace detail
 {
 
-/** \brief specialization for string.
+/** \brief compares two elements.
+ *  \param e1 first element to compare.
+ *  \param e2 second element to compare.
+ *  \return result of the comparison.
  */
-template<>
-struct Comparer<const std::string>
-{
-  /** \brief compares two elements.
-   *  \param e1 first element to compare.
-   *  \param e2 second element to compare.
-   *  \return result of the comparison.
-   */
-  static Similarity cmp(const std::string &e1, const std::string &e2);
-}; // struct Comparer<const std::string>
+Similarity compare(const std::string &e1, const std::string &e2);
 
-/** \brief specialization for LimitedString<>.
+/** \brief compares two elements.
+ *  \param e1 first element to compare.
+ *  \param e2 second element to compare.
+ *  \return result of the comparison.
  */
 template<uint16_t N>
-struct Comparer<const Commons::LimitedString<N> >
+Similarity compare(const Commons::LimitedString<N> &e1, const Commons::LimitedString<N> &e2)
 {
-  /** \brief compares two elements.
-   *  \param e1 first element to compare.
-   *  \param e2 second element to compare.
-   *  \return result of the comparison.
-   */
-  static Similarity cmp(const Commons::LimitedString<N> &e1, const Commons::LimitedString<N> &e2);
-}; // struct Comparer<const Commons::LimitedString<N> >
+  return compare( e1.get(), e2.get() );
+}
 
-/** \brief specialization for LimitedNULLString<>.
+/** \brief compares two elements.
+ *  \param e1 first element to compare.
+ *  \param e2 second element to compare.
+ *  \return result of the comparison.
  */
 template<uint16_t N>
-struct Comparer<const Commons::LimitedNULLString<N> >
+Similarity compare(const Commons::LimitedNULLString<N> &e1, const Commons::LimitedNULLString<N> &e2)
 {
-  /** \brief compares two elements.
-   *  \param e1 first element to compare.
-   *  \param e2 second element to compare.
-   *  \return result of the comparison.
-   */
-  static Similarity cmp(const Commons::LimitedNULLString<N> &e1, const Commons::LimitedNULLString<N> &e2);
-}; // struct Comparer<const Commons::LimitedNULLString<N> >
+  return compare( e1.get(), e2.get() );
+}
 
 } // namespace detail
 } // namespace Diff

@@ -14,7 +14,7 @@ namespace Diff
 namespace detail
 {
 
-Similarity Comparer<const Persistency::MD5Sum>::cmp(const Persistency::MD5Sum &e1, const Persistency::MD5Sum &e2)
+Similarity compare(const Persistency::MD5Sum &e1, const Persistency::MD5Sum &e2)
 {
   if(&e1==&e2)
     return 1;

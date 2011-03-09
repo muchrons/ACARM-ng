@@ -7,12 +7,11 @@
 #include "Algo/Diff/detail/referenceURL.hpp"
 
 using namespace Persistency;
-using namespace Algo::Diff;
+using namespace Algo::Diff::detail;
+using Algo::Diff::Similarity;
 
 namespace
 {
-
-typedef Algo::Diff::detail::Comparer<const Persistency::ReferenceURL> Cmp;
 
 struct TestClass
 {
@@ -33,7 +32,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Similarity s=Cmp::cmp( ReferenceURL("name", "http://et.home"), ReferenceURL("name", "http://et.home") );
+  const Similarity s=compare( ReferenceURL("name", "http://et.home"), ReferenceURL("name", "http://et.home") );
   ensure("identical elements differ", s.get()>0.99);
 }
 
@@ -42,7 +41,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Similarity s=Cmp::cmp( ReferenceURL("other name", "http://et.home"), ReferenceURL("name", "http://eat.home") );
+  const Similarity s=compare( ReferenceURL("other name", "http://et.home"), ReferenceURL("name", "http://eat.home") );
   ensure("elements differ too little", s.get()>0.5);
   ensure("elements marked identical", s.get()<1);
 }
@@ -52,7 +51,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const Similarity s=Cmp::cmp( ReferenceURL("other stuff", "http://baszerr.org"), ReferenceURL("name", "ftp://eat.home") );
+  const Similarity s=compare( ReferenceURL("other stuff", "http://baszerr.org"), ReferenceURL("name", "ftp://eat.home") );
   ensure("elements differ too much", s.get()<0.1);
 }
 

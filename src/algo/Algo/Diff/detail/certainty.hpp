@@ -8,7 +8,7 @@
 /* public header */
 
 #include "Persistency/Certainty.hpp"
-#include "Algo/Diff/detail/Comparer.hpp"
+#include "Algo/Diff/Similarity.hpp"
 
 namespace Algo
 {
@@ -17,18 +17,12 @@ namespace Diff
 namespace detail
 {
 
-/** \brief specialization for analyzer.
+/** \brief compares two elements.
+ *  \param e1 first element to compare.
+ *  \param e2 second element to compare.
+ *  \return result of the comparison.
  */
-template<>
-struct Comparer<const Persistency::Certainty>
-{
-  /** \brief compares two elements.
-   *  \param e1 first element to compare.
-   *  \param e2 second element to compare.
-   *  \return result of the comparison.
-   */
-  static Similarity cmp(Persistency::Certainty e1, Persistency::Certainty e2);
-}; // struct Comparer<const Persistency::Certainty>
+Similarity compare(Persistency::Certainty e1, Persistency::Certainty e2);
 
 } // namespace detail
 } // namespace Diff

@@ -3,7 +3,7 @@
  *
  */
 #include "Algo/Diff/detail/analyzer.hpp"
-#include "Algo/Diff/compare.hpp"
+#include "Algo/Diff/detail/all.hpp"
 
 namespace Algo
 {
@@ -12,7 +12,7 @@ namespace Diff
 namespace detail
 {
 
-Similarity Comparer<const Persistency::Analyzer>::cmp(const Persistency::Analyzer &e1, const Persistency::Analyzer &e2)
+Similarity compare(const Persistency::Analyzer &e1, const Persistency::Analyzer &e2)
 {
   if(&e1==&e2)
     return 1;

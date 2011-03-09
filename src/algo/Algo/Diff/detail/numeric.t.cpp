@@ -6,18 +6,14 @@
 
 #include "Algo/Diff/detail/numeric.hpp"
 
-using namespace Algo::Diff;
+using namespace Algo::Diff::detail;
+using Algo::Diff::Similarity;
 
 namespace
 {
 
 struct TestClass
 {
-  template<typename T>
-  Similarity cmp(const T e1, const T e2) const
-  {
-    return Algo::Diff::detail::Comparer<const T>::cmp(e1, e2);
-  }
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -35,7 +31,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Similarity s=cmp<int>(10, 10);
+  const int        v1=10;
+  const int        v2=10;
+  const Similarity s =compare(v1, v2);
   ensure_equals("identical elements differ", s.get(), 1);
 }
 
@@ -44,7 +42,9 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Similarity s=cmp(10, 20);
+  const int        v1=10;
+  const int        v2=20;
+  const Similarity s =compare(v1, v2);
   ensure_equals("different elements reported non-different", s.get(), 0);
 }
 
@@ -53,7 +53,9 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const Similarity s=cmp<long>(10, 10);
+  const long       v1=10;
+  const long       v2=10;
+  const Similarity s =compare(v1, v2);
   ensure_equals("identical elements differ", s.get(), 1);
 }
 
@@ -62,7 +64,9 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const Similarity s=cmp<long>(10, 20);
+  const long       v1=10;
+  const long       v2=20;
+  const Similarity s =compare(v1, v2);
   ensure_equals("different elements reported non-different", s.get(), 0);
 }
 
@@ -71,7 +75,9 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const Similarity s=cmp<unsigned long>(10, 10);
+  const unsigned long v1=10;
+  const unsigned long v2=10;
+  const Similarity    s =compare(v1, v2);
   ensure_equals("identical elements differ", s.get(), 1);
 }
 
@@ -80,7 +86,9 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  const Similarity s=cmp<unsigned long>(10, 20);
+  const unsigned long v1=10;
+  const unsigned long v2=20;
+  const Similarity    s =compare(v1, v2);
   ensure_equals("different elements reported non-different", s.get(), 0);
 }
 
@@ -89,7 +97,9 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const Similarity s=cmp<pid_t>(10, 10);
+  const pid_t      v1=10;
+  const pid_t      v2=10;
+  const Similarity s=compare(v1, v2);
   ensure_equals("identical elements differ", s.get(), 1);
 }
 
@@ -98,7 +108,9 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  const Similarity s=cmp<pid_t>(10, 20);
+  const pid_t      v1=10;
+  const pid_t      v2=20;
+  const Similarity s=compare(v1, v2);
   ensure_equals("different elements reported non-different", s.get(), 0);
 }
 

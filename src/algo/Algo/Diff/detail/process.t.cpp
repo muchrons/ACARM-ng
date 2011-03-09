@@ -10,13 +10,12 @@
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace ::Persistency;
-using namespace Algo::Diff;
+using namespace Algo::Diff::detail;
+using Algo::Diff::Similarity;
 using namespace TestHelpers::Persistency;
 
 namespace
 {
-
-typedef Algo::Diff::detail::Comparer<const Persistency::Process> Cmp;
 
 struct TestClass
 {
@@ -43,7 +42,7 @@ void testObj::test<1>(void)
   const int             uid=50;
   const Process p1("/a/b/c", "c", &md5, &pid, &uid, "kiler", "abc", url);
   const Process p2("/a/b/c", "c", &md5, &pid, &uid, "kiler", "abc", url);
-  const Similarity s=Cmp::cmp(p1, p2);
+  const Similarity s=compare(p1, p2);
   ensure("identical elements differ", s.get()>0.99);
 }
 
@@ -54,7 +53,7 @@ void testObj::test<2>(void)
 {
   const Process p1("/a/b/c", "c", NULL, NULL, NULL, "kiler", "abc",  ReferenceURLPtr() );
   const Process p2("/a/c/z", "D", NULL, NULL, NULL, "kiler", "QWER", ReferenceURLPtr() );
-  const Similarity s=Cmp::cmp(p1, p2);
+  const Similarity s=compare(p1, p2);
   ensure("elements differ too little", s.get()>0.5);
   ensure("elements marked identical", s.get()<1);
 }
@@ -70,7 +69,7 @@ void testObj::test<3>(void)
   const int             uid=50;
   const Process p1("/some/path", "c", &md5, &pid, &uid, "kiler",  "abc", url);
   const Process p2("/other/dir", "x", NULL, NULL, NULL, "stefan", "xyz", ReferenceURLPtr() );
-  const Similarity s=Cmp::cmp(p1, p2);
+  const Similarity s=compare(p1, p2);
   ensure("elements differ too little", s.get()<0.1);
 }
 

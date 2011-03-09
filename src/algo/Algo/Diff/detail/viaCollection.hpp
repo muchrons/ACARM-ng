@@ -12,7 +12,7 @@
 #include <cassert>
 
 #include "Base/NonEmptyVector.hpp"
-#include "Algo/Diff/detail/Comparer.hpp"
+#include "Algo/Diff/Similarity.hpp"
 
 namespace Algo
 {
@@ -38,7 +38,7 @@ Similarity compareViaIteratorsImpl(const T begin1, const T end1, const T begin2,
   //  sum similarities between two elements
   double sum=0;
   for(T it1=begin1, it2=begin2; it1!=end1 && it2!=end2; ++it1, ++it2)
-    sum+=Comparer<const typename T::value_type>::cmp(*it1, *it2).get();
+    sum+=compare(*it1, *it2).get();
   // return final similarity measure
   const size_t s1=end1-begin1;
   const size_t s2=end2-begin2;
@@ -70,37 +70,27 @@ Similarity compareViaCollectionImpl(const T &e1, const T &e2)
 } // namespace detail
 
 
-/** \brief specialization for vector.
+/** \brief compares two elements.
+ *  \param e1 first element to compare.
+ *  \param e2 second element to compare.
+ *  \return result of the comparison.
  */
 template<typename T>
-struct Comparer<const std::vector<T> >
+Similarity compare(const std::vector<T> &e1, const std::vector<T> &e2)
 {
-  /** \brief compares two elements.
-   *  \param e1 first element to compare.
-   *  \param e2 second element to compare.
-   *  \return result of the comparison.
-   */
-  static Similarity cmp(const std::vector<T> &e1, const std::vector<T> &e2)
-  {
-    return detail::compareViaCollectionImpl(e1, e2);
-  }
-}; // struct Comparer<const std::vector<T> >
+  return detail::compareViaCollectionImpl(e1, e2);
+} // compare()
 
-/** \brief specialization for vector.
+/** \brief compares two elements.
+ *  \param e1 first element to compare.
+ *  \param e2 second element to compare.
+ *  \return result of the comparison.
  */
 template<typename T>
-struct Comparer<const Base::NonEmptyVector<T> >
+Similarity compare(const Base::NonEmptyVector<T> &e1, const Base::NonEmptyVector<T> &e2)
 {
-  /** \brief compares two elements.
-   *  \param e1 first element to compare.
-   *  \param e2 second element to compare.
-   *  \return result of the comparison.
-   */
-  static Similarity cmp(const Base::NonEmptyVector<T> &e1, const Base::NonEmptyVector<T> &e2)
-  {
-    return detail::compareViaCollectionImpl(e1, e2);
-  }
-}; // struct Comparer<const Base::NonEmptyVector<T> >
+  return detail::compareViaCollectionImpl(e1, e2);
+} // compare()
 
 } // namespace detail
 } // namespace Diff

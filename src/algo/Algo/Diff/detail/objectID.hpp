@@ -10,7 +10,7 @@
 #include <string>
 
 #include "Base/ObjectID.hpp"
-#include "Algo/Diff/detail/Comparer.hpp"
+#include "Algo/Diff/Similarity.hpp"
 
 namespace Algo
 {
@@ -19,21 +19,16 @@ namespace Diff
 namespace detail
 {
 
-/** \brief specialization for ObjectID.
+/** \brief compares two elements.
+ *  \param e1 first element to compare.
+ *  \param e2 second element to compare.
+ *  \return result of the comparison.
  */
 template<typename T>
-struct Comparer<const Base::ObjectID<T> >
+Similarity compare(const Base::ObjectID<T> e1, const Base::ObjectID<T> e2)
 {
-  /** \brief compares two elements.
-   *  \param e1 first element to compare.
-   *  \param e2 second element to compare.
-   *  \return result of the comparison.
-   */
-  static Similarity cmp(const Base::ObjectID<T> e1, const Base::ObjectID<T> e2)
-  {
-    return ( e1.get()==e2.get() )?1.0:0.0;
-  }
-}; // struct Comparer<const Base::ObjectID<T> >
+  return ( e1.get()==e2.get() )?1.0:0.0;
+}
 
 } // namespace detail
 } // namespace Diff

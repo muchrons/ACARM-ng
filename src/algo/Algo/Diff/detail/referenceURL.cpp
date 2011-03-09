@@ -3,7 +3,7 @@
  *
  */
 #include "Algo/Diff/detail/referenceURL.hpp"
-#include "Algo/Diff/compare.hpp"
+#include "Algo/Diff/detail/all.hpp"
 
 namespace Algo
 {
@@ -19,7 +19,7 @@ const double a=10.0/7.0;
 const double b=1.0-10.0/7.0;
 } // unnamed namespace
 
-Similarity Comparer<const Persistency::ReferenceURL>::cmp(const Persistency::ReferenceURL &e1, const Persistency::ReferenceURL &e2)
+Similarity compare(const Persistency::ReferenceURL &e1, const Persistency::ReferenceURL &e2)
 {
   if(&e1==&e2)
     return 1;
@@ -29,7 +29,7 @@ Similarity Comparer<const Persistency::ReferenceURL>::cmp(const Persistency::Ref
   const double avg  =(url+name)/2;
   const double scale=a*avg+b;           // y=a*x+b
   return Similarity::normalize(scale);
-}
+} // compare()
 
 } // namespace detail
 } // namespace Diff

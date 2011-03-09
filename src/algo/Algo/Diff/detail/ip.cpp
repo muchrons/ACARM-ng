@@ -83,7 +83,7 @@ Similarity computeSimilarity(const boost::asio::ip::address &ip1, const boost::a
 } // unnamed namespace
 
 
-Similarity Comparer<const boost::asio::ip::address>::cmp(const boost::asio::ip::address &e1, const boost::asio::ip::address &e2)
+Similarity compare(const boost::asio::ip::address &e1, const boost::asio::ip::address &e2)
 {
   // speed up computations in optimistic case
   if(&e1==&e2)
@@ -93,7 +93,7 @@ Similarity Comparer<const boost::asio::ip::address>::cmp(const boost::asio::ip::
     return 0;
   // perform full check
   return computeSimilarity(e1, e2);
-}
+} // compare()
 
 } // namespace detail
 } // namespace Diff

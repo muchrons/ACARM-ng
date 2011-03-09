@@ -10,14 +10,13 @@
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
-using namespace Algo::Diff;
+using namespace Algo::Diff::detail;
+using Algo::Diff::Similarity;
 using namespace ::Persistency;
 using namespace TestHelpers::Persistency;
 
 namespace
 {
-
-typedef Algo::Diff::detail::Comparer<const Persistency::Analyzer> Cmp;
 
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
@@ -26,7 +25,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Algo/Diff/analyzer");
+factory tf("Algo/Diff/detail/analyzer");
 } // unnamed namespace
 
 
@@ -38,7 +37,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Similarity s=Cmp::cmp( *makeNewAnalyzer(), *makeNewAnalyzer() );
+  const Similarity s=compare( *makeNewAnalyzer(), *makeNewAnalyzer() );
   ensure("value too small", System::Math::compareFP<double>(s.get(), 1, 3) );
 }
 
@@ -47,7 +46,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Similarity s=Cmp::cmp( *makeNewAnalyzer("abc"), *makeNewAnalyzer("def") );
+  const Similarity s=compare( *makeNewAnalyzer("abc"), *makeNewAnalyzer("def") );
   ensure("invalid value", System::Math::compareFP<double>(s.get(), 4/5.0, 3) );
 }
 

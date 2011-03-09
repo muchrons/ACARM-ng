@@ -5,7 +5,7 @@
 #include <cmath>
 
 #include "Algo/Diff/detail/alert.hpp"
-#include "Algo/Diff/compare.hpp"
+#include "Algo/Diff/detail/all.hpp"
 
 using namespace Persistency;
 
@@ -16,9 +16,8 @@ namespace Diff
 namespace detail
 {
 
-Similarity Comparer<const Persistency::Alert>::cmp(const Persistency::Alert &e1, const Persistency::Alert &e2)
+Similarity compare(const Persistency::Alert &e1, const Persistency::Alert &e2)
 {
-#warning TODO
   /*            
   const double name =compare( e1.getName(), e2.getName() ).get();
   const double anlzs=compare( e1.getAnalyzers(), e2.getAnalyzers() ).get();

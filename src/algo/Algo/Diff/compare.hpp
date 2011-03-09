@@ -7,7 +7,6 @@
 
 /* public header */
 
-#include "Algo/Diff/Similarity.hpp"
 #include "Algo/Diff/detail/all.hpp"
 
 namespace Algo
@@ -23,7 +22,7 @@ namespace Diff
 template<typename T>
 Similarity compare(const T &e1, const T &e2)
 {
-  return detail::proxy(e1, e2);
+  return detail::compare(e1, e2);
 }
 
 } // namespace Diff

@@ -18,14 +18,14 @@ namespace Diff
 namespace detail
 {
 
-Similarity Comparer<const std::string>::cmp(const std::string &e1, const std::string &e2)
+Similarity compare(const std::string &e1, const std::string &e2)
 {
   if(&e1==&e2)
     return 1;
 
   // ensure signle order, that ensurtes best performance
   if( e1.length()<e2.length() )
-    return cmp(e2, e1);
+    return compare(e2, e1);
   assert( e1.length()>=e2.length() );
 
   // check for the special cases (speed up)

@@ -9,7 +9,7 @@
 
 #include <boost/asio/ip/address.hpp>
 
-#include "Algo/Diff/detail/Comparer.hpp"
+#include "Algo/Diff/Similarity.hpp"
 
 namespace Algo
 {
@@ -18,18 +18,12 @@ namespace Diff
 namespace detail
 {
 
-/** \brief specialization for IP.
+/** \brief compares two elements.
+ *  \param e1 first element to compare.
+ *  \param e2 second element to compare.
+ *  \return result of the comparison.
  */
-template<>
-struct Comparer<const boost::asio::ip::address>
-{
-  /** \brief compares two elements.
-   *  \param e1 first element to compare.
-   *  \param e2 second element to compare.
-   *  \return result of the comparison.
-   */
-  static Similarity cmp(const boost::asio::ip::address &e1, const boost::asio::ip::address &e2);
-}; // struct Comparer<const boost::asio::ip::address>
+Similarity compare(const boost::asio::ip::address &e1, const boost::asio::ip::address &e2);
 
 } // namespace detail
 } // namespace Diff

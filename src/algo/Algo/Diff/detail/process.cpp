@@ -3,7 +3,7 @@
  *
  */
 #include "Algo/Diff/detail/process.hpp"
-#include "Algo/Diff/compare.hpp"
+#include "Algo/Diff/detail/all.hpp"
 
 namespace Algo
 {
@@ -12,7 +12,7 @@ namespace Diff
 namespace detail
 {
 
-Similarity Comparer<const Persistency::Process>::cmp(const Persistency::Process &e1, const Persistency::Process &e2)
+Similarity compare(const Persistency::Process &e1, const Persistency::Process &e2)
 {
   if(&e1==&e2)
     return 1;
@@ -26,7 +26,7 @@ Similarity Comparer<const Persistency::Process>::cmp(const Persistency::Process 
   const double params=compare( e1.getParameters(), e2.getParameters() ).get();
   const double url   =compare( e1.getReferenceURL().get(), e2.getReferenceURL().get() ).get();
   return (path+name+md5+pid+uid+user+params+url)/8;
-}
+} // compare()
 
 } // namespace detail
 } // namespace Diff

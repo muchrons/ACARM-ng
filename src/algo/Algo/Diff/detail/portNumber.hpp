@@ -8,7 +8,7 @@
 /* public header */
 
 #include "Persistency/PortNumber.hpp"
-#include "Algo/Diff/detail/Comparer.hpp"
+#include "Algo/Diff/Similarity.hpp"
 
 namespace Algo
 {
@@ -17,21 +17,15 @@ namespace Diff
 namespace detail
 {
 
-/** \brief specialization for PortNumber.
+/** \brief compares two elements.
+ *  \param e1 first element to compare.
+ *  \param e2 second element to compare.
+ *  \return result of the comparison.
  */
-template<>
-struct Comparer<const Persistency::PortNumber>
+inline Similarity compare(const Persistency::PortNumber e1, const Persistency::PortNumber e2)
 {
-  /** \brief compares two elements.
-   *  \param e1 first element to compare.
-   *  \param e2 second element to compare.
-   *  \return result of the comparison.
-   */
-  static Similarity cmp(const Persistency::PortNumber e1, const Persistency::PortNumber e2)
-  {
-    return ( e1.get()==e2.get() )?1:0;
-  }
-}; // struct Comparer<const Persistency::PortNumber>
+  return ( e1.get()==e2.get() )?1:0;
+} // compare()
 
 } // namespace detail
 } // namespace Diff

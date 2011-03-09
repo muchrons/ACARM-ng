@@ -7,12 +7,11 @@
 #include "Algo/Diff/detail/timestamp.hpp"
 
 using namespace Persistency;
-using namespace Algo::Diff;
+using namespace Algo::Diff::detail;
+using Algo::Diff::Similarity;
 
 namespace
 {
-
-typedef Algo::Diff::detail::Comparer<const Timestamp> Cmp;
 
 struct TestClass
 {
@@ -33,7 +32,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Similarity s=Cmp::cmp( Timestamp(42), Timestamp(42) );
+  const Similarity s=compare( Timestamp(42), Timestamp(42) );
   ensure("identical elements differ", s.get()>0.99);
 }
 
@@ -42,7 +41,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Similarity s=Cmp::cmp( Timestamp(40), Timestamp(50) );
+  const Similarity s=compare( Timestamp(40), Timestamp(50) );
   ensure("elements differ too little", s.get()>0.75);
   ensure("elements marked identical", s.get()<1);
 }
@@ -52,7 +51,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const Similarity s=Cmp::cmp( Timestamp(1234567), Timestamp(50) );
+  const Similarity s=compare( Timestamp(1234567), Timestamp(50) );
   ensure("elements differ too much", s.get()<0.01);
 }
 

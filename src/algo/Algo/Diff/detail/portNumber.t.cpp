@@ -7,12 +7,11 @@
 #include "Algo/Diff/detail/portNumber.hpp"
 
 using namespace Persistency;
-using namespace Algo::Diff;
+using namespace Algo::Diff::detail;
+using Algo::Diff::Similarity;
 
 namespace
 {
-
-typedef Algo::Diff::detail::Comparer<const Persistency::PortNumber> Cmp;
 
 struct TestClass
 {
@@ -33,7 +32,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Similarity s=Cmp::cmp( PortNumber(42), PortNumber(42) );
+  const Similarity s=compare( PortNumber(42), PortNumber(42) );
   ensure_equals("identical elements differ", s.get(), 1);
 }
 
@@ -42,7 +41,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Similarity s=Cmp::cmp( PortNumber(42), PortNumber(43) );
+  const Similarity s=compare( PortNumber(42), PortNumber(43) );
   ensure_equals("different elements do not differ", s.get(), 0);
 }
 

@@ -13,11 +13,11 @@ namespace Diff
 namespace detail
 {
 
-Similarity Comparer<const Persistency::Timestamp>::cmp(const Persistency::Timestamp e1, const Persistency::Timestamp e2)
+Similarity compare(const Persistency::Timestamp e1, const Persistency::Timestamp e2)
 {
   const double diff=std::abs( e1.get()-e2.get() );
   return 1/(1+diff/100);
-}
+} // compare()
 
 } // namespace detail
 } // namespace Diff

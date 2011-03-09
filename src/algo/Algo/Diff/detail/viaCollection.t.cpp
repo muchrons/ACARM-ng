@@ -8,14 +8,15 @@
 #include "System/Math/compareFP.hpp"
 #include "Algo/Diff/detail/viaCollection.hpp"
 
-using namespace Algo::Diff;
 using namespace Algo::Diff::detail;
+using Algo::Diff::Similarity;
 
 namespace
 {
-struct TestTypeForCollection
+
+struct TestType
 {
-  TestTypeForCollection(int v):
+  TestType(int v):
     v_(v)
   {
     assert(v_>=0);
@@ -23,40 +24,22 @@ struct TestTypeForCollection
   }
 
   int v_;
-}; // struct TestTypeForCollection
-} // unnamed namespace
+}; // struct TestType
 
-namespace Algo
+Similarity compare(const TestType &t1, const TestType &t2)
 {
-namespace Diff
-{
-namespace detail
-{
-template<>
-struct Comparer<const TestTypeForCollection>
-{
-  static Similarity cmp(const TestTypeForCollection &t1, const TestTypeForCollection &t2)
-  {
-    return 1-std::fabs(t1.v_-t2.v_)/9;
-  }
-}; // struct Comparer<const TestTypeForCollection>
+  return 1-std::fabs(t1.v_-t2.v_)/9;
+} // compare()
 
-} // namespace detail
-} // namespace Diff
-} // namespace Algo
-
-
-namespace
-{
 struct TestClass
 {
-  typedef std::vector<TestTypeForCollection>          Vec;
-  typedef Base::NonEmptyVector<TestTypeForCollection> NEVec;
+  typedef std::vector<TestType>          Vec;
+  typedef Base::NonEmptyVector<TestType> NEVec;
 
   template<typename T>
   void testCmp(const T &c1, const T &c2, double expected) const
   {
-    const Similarity s=Algo::Diff::detail::Comparer<const T>::cmp(c1, c2);
+    const Similarity s=Algo::Diff::detail::compare(c1, c2);
     if( !System::Math::compareFP<double>(s.get(), expected, 3) )
       tut::ensure_equals("invalid similarity", s.get(), expected);
   }
@@ -77,7 +60,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Similarity s  =Comparer<const TestTypeForCollection>::cmp( TestTypeForCollection(3), TestTypeForCollection(4) );
+  const Similarity s  =compare( TestType(3), TestType(4) );
   const double     exp=1-1.0/9;
   if( !System::Math::compareFP<double>(s.get(), exp, 3) )
     tut::ensure_equals("invalid similarity - self test failed", s.get(), exp);
