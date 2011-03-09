@@ -11,9 +11,9 @@
 
 namespace Algo
 {
-/** \brief returns certanity of a given subtree.
+/** \brief returns certainty of a given subtree.
  *  \param root root node of the computation.
- *  \return computed certanity.
+ *  \return computed certainty.
  */
 double computeCertainty(Persistency::ConstGraphNodePtrNN root);
 

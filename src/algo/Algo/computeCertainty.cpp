@@ -13,7 +13,7 @@ namespace Algo
 
 namespace
 {
-/** \brief helper object computing certanity.
+/** \brief helper object computing certainty.
  */
 class CertComput
 {
@@ -44,11 +44,11 @@ public:
     }
   }
   /** \brief gets the computed value.
-   *  \return total (sub)tree certanity.
+   *  \return total (sub)tree certainty.
    */
   double get(void) const
   {
-    // arithmetic average of all certanities modified by delta.
+    // arithmetic average of all certainties modified by delta.
     return (0.0+leafsCertaintySum_)/leafsCount_ + delta_;
   }
 

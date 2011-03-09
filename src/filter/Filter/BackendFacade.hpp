@@ -73,9 +73,9 @@ public:
    *  \param delta severity change to be applied.
    */
   void updateSeverityDelta(Node node, double delta);
-  /** \brief updates certanity of a given meta-alert.
-   *  \param node  meta alert to update certanity on.
-   *  \param delta certanity change to be applied.
+  /** \brief updates certainty of a given meta-alert.
+   *  \param node  meta alert to update certainty on.
+   *  \param delta certainty change to be applied.
    */
   void updateCertaintyDelta(Node node, double delta);
   /** \brief adds given node as a child for other node.
@@ -94,7 +94,11 @@ public:
    *  \return unique ID for the meta-alert.
    */
   Persistency::MetaAlert::ID getNextFreeID(void);
-
+  /** \brief create persistency proxy.
+   *  \param owner owner's name of a configuration to work on (NULL means common config).
+   *  \return return non-NULL dynamic configuration proxy.
+   */
+  Persistency::IO::DynamicConfigAutoPtr createDynamicConfig(Persistency::IO::DynamicConfig::Owner &owner);
 private:
   void markNodeAsChanged(Node node);
 

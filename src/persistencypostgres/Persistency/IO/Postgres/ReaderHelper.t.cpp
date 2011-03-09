@@ -95,8 +95,9 @@ void testObj::test<2>(void)
   const int    val1 = 2;
   const double val2 = 1.4;
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO tmp(val1, val2, val4) VALUES(" << val1 <<", " << val2 << ", ";
-  Appender::append(ss, name_.get() );
+  ap.append(ss, name_.get() );
   ss << ");";
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
@@ -115,8 +116,9 @@ void testObj::test<3>(void)
   string time("1970-01-15 07:56:07");
   const Timestamp ts=timestampFromString( time );
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO tmp(val3) VALUES(";
-  Appender::append(ss, time);
+  ap.append(ss, time);
   ss << ");";
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
@@ -132,8 +134,9 @@ void testObj::test<4>(void)
   string adr("1.2.3.4");
   boost::asio::ip::address ip(boost::asio::ip::address::from_string ( adr ) );
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO tmp(val5) VALUES(";
-  Appender::append(ss, ip.to_string());
+  ap.append(ss, ip.to_string());
   ss << ");";
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
@@ -151,8 +154,9 @@ void testObj::test<5>(void)
   // create LimitedNULLString
   Name s("some string");
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO tmp(val4) VALUES(";
-  Appender::append(ss, s.get() );
+  ap.append(ss, s.get() );
   ss << ");";
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");
@@ -169,8 +173,9 @@ void testObj::test<6>(void)
   // create LimitedNULLString
   Name s(NULL);
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO tmp(val4) VALUES(";
-  Appender::append(ss, s.get() );
+  ap.append(ss, s.get() );
   ss << ");";
   execSQL(t_, ss);
   const pqxx::result r = execSQL(t_, "SELECT * FROM tmp;");

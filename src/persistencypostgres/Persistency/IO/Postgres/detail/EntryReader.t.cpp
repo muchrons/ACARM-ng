@@ -41,7 +41,7 @@ struct TestClass
     detected_(1000),
     created_(1010),
     severity_(SeverityLevel::INFO),
-    certanity_(0.42),
+    certainty_(0.42),
     description_("alert's description"),
     sourceHosts_( generateHosts(2) ),
     targetHosts_( generateHosts(5) ),
@@ -84,7 +84,7 @@ struct TestClass
   const Timestamp                 detected_;
   const Timestamp                 created_;
   const Severity                  severity_;
-  const Certainty                 certanity_;
+  const Certainty                 certainty_;
   const std::string               description_;
   const Persistency::Alert::Hosts sourceHosts_;
   const Persistency::Alert::Hosts targetHosts_;
@@ -149,7 +149,7 @@ void testObj::test<3>(void)
   Persistency::AlertPtrNN alertPtr (
         new Persistency::Alert(name_, analyzers_, &detected_,
                                created_,
-                               severity_, certanity_,description_,
+                               severity_, certainty_,description_,
                                sourceHosts_, targetHosts_) );
   // save alert
   Persistency::IO::Postgres::Alert alert(alertPtr, t_, dbh_ );
@@ -164,7 +164,7 @@ void testObj::test<3>(void)
   ensure_equals("invalid create time", a->getCreationTime(), created_);
   ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(),
                                     severity_.getLevel().toInt());
-  ensure_equals("invalid caertainty", a->getCertainty().get(), certanity_.get());
+  ensure_equals("invalid caertainty", a->getCertainty().get(), certainty_.get());
   ensure_equals("vectors are different", (a->getSourceHosts()).size(),
                                          (alertPtr->getSourceHosts()).size() );
   t_.commit();
@@ -177,7 +177,7 @@ void testObj::test<4>(void)
 {
   Persistency::AlertPtrNN alertPtr( new Persistency::Alert(name_, analyzers_, NULL,
                                                            created_,
-                                                           severity_, certanity_,description_,
+                                                           severity_, certainty_,description_,
                                                            sourceHosts_, targetHosts_) );
   // save alert
   Persistency::IO::Postgres::Alert alert(alertPtr, t_, dbh_ );
@@ -191,7 +191,7 @@ void testObj::test<4>(void)
   ensure_equals("invalid create time", a->getCreationTime(), created_);
   ensure_equals("invalid severity", a->getSeverity().getLevel().toInt(),
                                     severity_.getLevel().toInt());
-  ensure_equals("invalid caertainty", a->getCertainty().get(), certanity_.get());
+  ensure_equals("invalid caertainty", a->getCertainty().get(), certainty_.get());
   t_.commit();
 }
 
@@ -581,7 +581,7 @@ void testObj::test<19>(void)
   Persistency::AlertPtrNN alertPtr (
         new Persistency::Alert(name_, analyzers_, &detected_,
                                created_,
-                               severity_, certanity_,description_,
+                               severity_, certainty_,description_,
                                generateNULLHosts(2), generateHosts(3)) );
   // save alert
   Persistency::IO::Postgres::Alert alert(alertPtr, t_, dbh_ );

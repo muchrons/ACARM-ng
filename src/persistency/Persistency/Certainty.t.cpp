@@ -41,7 +41,7 @@ factory tf("Persistency/Certainty");
 namespace tut
 {
 
-// create example certanity value
+// create example certainty value
 template<>
 template<>
 void testObj::test<1>(void)

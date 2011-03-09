@@ -134,7 +134,7 @@ void testObj::test<3>(void)
   ensure_equals("change not marked", changed_.size(), 1u);
 }
 
-// test updating certanity
+// test updating certainty
 template<>
 template<>
 void testObj::test<4>(void)
@@ -143,7 +143,7 @@ void testObj::test<4>(void)
   MetaAlertPtrNN ma  =node->getMetaAlert();
   const double c=ma->getCertaintyDelta();
   bf_->updateCertaintyDelta(node, 1.3);
-  ensure_equals("invalid certanity", ma->getCertaintyDelta(), c+1.3);
+  ensure_equals("invalid certainty", ma->getCertaintyDelta(), c+1.3);
   ensure_equals("change not marked", changed_.size(), 1u);
 }
 
@@ -247,4 +247,5 @@ void testObj::test<12>(void)
   ensure_equals("invalid number of changed nodes", changed_.size(), 1u);
 }
 
+// TODO: add test for createDynamicConfig function
 } // namespace tut

@@ -17,7 +17,7 @@ MetaAlert::MetaAlert(AlertPtrNN alert, const ID id):
   id_(id),
   name_( alert->getName() ),
   severityDelta_(0),
-  certanityDelta_(0),
+  certaintyDelta_(0),
   url_(),
   created_( alert->getCreationTime() )
 {
@@ -25,14 +25,14 @@ MetaAlert::MetaAlert(AlertPtrNN alert, const ID id):
 
 MetaAlert::MetaAlert(const Name            &name,
                      const SeverityDelta    severityDelta,
-                     const CertaintyDelta   certanityDelta,
+                     const CertaintyDelta   certaintyDelta,
                      const ReferenceURLPtr  url,
                      const Timestamp        created,
                      const ID               id):
   id_(id),
   name_(name),
   severityDelta_(severityDelta),
-  certanityDelta_(certanityDelta),
+  certaintyDelta_(certaintyDelta),
   url_(url),
   created_(created)
 {
@@ -59,7 +59,7 @@ MetaAlert::SeverityDelta MetaAlert::getSeverityDelta(void) const
 MetaAlert::CertaintyDelta MetaAlert::getCertaintyDelta(void) const
 {
   ReadLock lock(mutex_);
-  return certanityDelta_;
+  return certaintyDelta_;
 }
 
 ConstReferenceURLPtr MetaAlert::getReferenceURL(void) const
@@ -81,7 +81,7 @@ void MetaAlert::updateSeverityDelta(double delta)
 void MetaAlert::updateCertaintyDelta(double delta)
 {
   WriteLock lock(mutex_);
-  certanityDelta_+=delta;
+  certaintyDelta_+=delta;
 }
 
 bool MetaAlert::operator==(const MetaAlert &other) const

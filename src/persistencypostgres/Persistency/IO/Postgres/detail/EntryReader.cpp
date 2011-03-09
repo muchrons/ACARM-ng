@@ -76,7 +76,7 @@ Persistency::AlertPtrNN EntryReader::readAlert(DataBaseID alertID)
                               ReaderHelper< Base::NullValue<Timestamp> >::readAs(r[0]["detect_time"]).get(),
                               timestampFromString( ReaderHelper<string>::readAsNotNull(r[0]["create_time"]) ),
                               Severity( severityFromInt(ReaderHelper<DataBaseID>::readAsNotNull(r[0]["severity"]) ) ),
-                              Certainty( ReaderHelper<double>::readAsNotNull(r[0]["certanity"]) ),
+                              Certainty( ReaderHelper<double>::readAsNotNull(r[0]["certainty"]) ),
                               ReaderHelper<string>::readAsNotNull(r[0]["description"]),
                               getSourceHosts(alertID),
                               getTargetHosts(alertID) ) );
@@ -132,8 +132,9 @@ Alert::Analyzers EntryReader::getAnalyzers(DataBaseID alertID)
 Alert::Hosts EntryReader::getReporteHosts(DataBaseID alertID, std::string hostType)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "SELECT * FROM hosts WHERE id_alert = "<< alertID <<" AND role = ";
-  Appender::append(ss, hostType);
+  ap.append(ss, hostType);
   const result r = SQL( ss.str(), log_ ).exec(t_);
   Alert::Hosts hosts;
   for(size_t i=0; i<r.size(); ++i)
@@ -281,11 +282,12 @@ vector<DataBaseID> EntryReader::readIDsMalertsInUse()
 vector<DataBaseID> EntryReader::readIDsMalertsBetween(const Timestamp &from, const Timestamp &to)
 {
   vector<DataBaseID> malertsBetween;
+  Appender           ap(t_);
   stringstream       ss;
   ss << "SELECT id FROM meta_alerts WHERE ";
-  Appender::append(ss, from);
+  ap.append(ss, from);
   ss << " <= create_time AND create_time <=";
-  Appender::append(ss, to);
+  ap.append(ss, to);
   ss << ";";
   const result r = SQL( ss.str(), log_ ).exec(t_);
   malertsBetween.reserve( r.size() );
@@ -309,11 +311,12 @@ std::vector<DataBaseID> EntryReader::readRoots()
 std::vector<DataBaseID> EntryReader::readRoots(const Timestamp &from, const Timestamp &to)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "CREATE TEMP TABLE tmp ON COMMIT DROP AS SELECT id_node, id_child FROM meta_alerts_tree"
         " INNER JOIN meta_alerts ON(meta_alerts_tree.id_node=meta_alerts.id) WHERE ";
-  Appender::append(ss, from);
+  ap.append(ss, from);
   ss << " <= create_time AND create_time <=";
-  Appender::append(ss, to);
+  ap.append(ss, to);
   ss << ";";
   SQL( ss.str(), log_ ).exec(t_);
 
@@ -366,10 +369,11 @@ DynamicConfig::ValueNULL EntryReader::readConfigParameterCommon(const char      
 {
   assert(table!=NULL);
   stringstream ss;
+  Appender     ap(t_);
   ss << "SELECT value FROM "<<table<<" WHERE owner=";
-  Appender::append(ss, owner.get() );
+  ap.append(ss, owner.get() );
   ss << " AND key=";
-  Appender::append(ss, key.get() );
+  ap.append(ss, key.get() );
   const result r = SQL( ss.str(), log_ ).exec(t_);
   // no entry? return NULL.
   if( r.size()!=1 )
@@ -389,8 +393,9 @@ void EntryReader::iterateConfigParameters(const DynamicConfig::Owner &owner, Dyn
 {
   // perform query
   stringstream ss;
+  Appender     ap(t_);
   ss << "SELECT key, value FROM config WHERE owner = ";
-  Appender::append(ss, owner.get());
+  ap.append(ss, owner.get());
   const result r = SQL( ss.str(), log_ ).exec(t_);
   // iterate through results
   for(result::const_iterator it=r.begin(); it!=r.end(); ++it)

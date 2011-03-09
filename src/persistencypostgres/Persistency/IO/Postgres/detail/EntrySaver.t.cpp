@@ -54,7 +54,7 @@ struct TestClass
     detected_(1500),
     created_(2900),
     severity_(SeverityLevel::INFO),
-    certanity_(0.42),
+    certainty_(0.42),
     description_("alert's description"),
     sourceHosts_( generateHosts(2) ),
     targetHosts_( generateHosts(5) ),
@@ -144,7 +144,7 @@ struct TestClass
   const Timestamp     detected_;
   const Timestamp     created_;
   const Severity      severity_;
-  const Certainty     certanity_;
+  const Certainty     certainty_;
   const std::string   description_;
   const Alert::Hosts  sourceHosts_;
   const Alert::Hosts  targetHosts_;
@@ -183,7 +183,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   HostPtrNN host=makeNewHost();
   const Analyzer anlz(112u, "analyzer1", NULL, NULL, NULL);
@@ -216,7 +216,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   HostPtrNN host=makeNewHost();
   const Analyzer anlz(303u, "analyzer1", NULL, NULL, NULL);
@@ -251,7 +251,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
 
   const Analyzer anlz(102u, "analyzer1", NULL, NULL, NULL);
@@ -281,9 +281,9 @@ void testObj::test<4>(void)
                 ReaderHelper<int>::readAsNotNull(r[0]["severity"]),
                 getID( a.getSeverity() ) );
 
-  ensure_equals("invalid certanity",
-                ReaderHelper<double>::readAsNotNull(r[0]["certanity"]),
-                certanity_.get());
+  ensure_equals("invalid certainty",
+                ReaderHelper<double>::readAsNotNull(r[0]["certainty"]),
+                certainty_.get());
 
   ensure_equals("invalid description",
                 ReaderHelper<string>::readAsNotNull(r[0]["description"]),
@@ -298,7 +298,7 @@ template<>
 void testObj::test<5>(void)
 {
   const Service ti("mail daemon", 25, "smtp", makeNewReferenceURL().shared_ptr() );
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   HostPtrNN host=makeNewHost();
   const Analyzer anlz(101u, "analyzer1", NULL, NULL, NULL);
@@ -396,7 +396,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   HostPtrNN host=makeNewHost();
   const Analyzer anlz(22u, "analyzer1", NULL, NULL, NULL);
@@ -422,7 +422,7 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   HostPtrNN host=makeNewHost();
   const Analyzer anlz(88u, "analyzer1", NULL, NULL, NULL);
@@ -469,7 +469,7 @@ void testObj::test<10>(void)
   ensure_equals("invalid severity delta", delta, 0.22);
 
   r[0]["certainty_delta"].to(delta);
-  ensure_equals("invalid certanity delta", delta, 0.23);
+  ensure_equals("invalid certainty delta", delta, 0.23);
 
   r[0]["name"].to(mAlertName);
   ensure_equals("invalid name", mAlertName, "meta alert");
@@ -485,7 +485,7 @@ template<>
 template<>
 void testObj::test<11>(void)
 {
-  const Alert a(name_, analyzers_, NULL, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, NULL, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
 
   const Analyzer anlz(123u, "analyzer1", NULL, NULL, NULL);
@@ -496,7 +496,7 @@ void testObj::test<11>(void)
   stringstream ss;
   string name, time, description;
   int id;
-  double certanity;
+  double certainty;
 
   ss << "SELECT * FROM alerts WHERE id = " << alrtID << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
@@ -515,8 +515,8 @@ void testObj::test<11>(void)
   r[0]["severity"].to(id);
   ensure_equals("invalid severity level", id, getID( a.getSeverity() ) );
 
-  r[0]["certanity"].to(certanity);
-  ensure_equals("invalid certanity",certanity_.get(),certanity);
+  r[0]["certainty"].to(certainty);
+  ensure_equals("invalid certainty",certainty_.get(),certainty);
 
   r[0]["description"].to(description);
   ensure_equals("invalid description",description_,description);
@@ -529,7 +529,7 @@ template<>
 template<>
 void testObj::test<12>(void)
 {
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   HostPtrNN host=makeNewHost();
   const Analyzer anlz(123u, "analyzer1", NULL, NULL, NULL);
@@ -564,7 +564,7 @@ template<>
 template<>
 void testObj::test<13>(void)
 {
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   HostPtrNN host=makeNewHost();
   ReferenceURLPtr url;
@@ -607,7 +607,7 @@ template<>
 template<>
 void testObj::test<14>(void)
 {
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   HostPtrNN host=makeNewHost();
   const Process proc("/a/b/c/d", "some.proc", &md5_, &pid_, &uid_, "johndoe", "-a -b -c", url_.shared_ptr() );
@@ -649,7 +649,7 @@ template<>
 template<>
 void testObj::test<15>(void)
 {
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   const Host  h(  Host::IPv4::from_string("1.2.3.4"),
                  &mask4_,
@@ -681,10 +681,11 @@ void testObj::test<16>(void)
   CreateTempTable();
   stringstream ss;
   string       s;
+  Appender     ap(t_);
   ss << "INSERT INTO tmp(s3, s16) VALUES(";
-  Appender::append(ss, createString(3) );
+  ap.append(ss, createString(3) );
   ss << ", ";
-  Appender::append(ss, createString(16) );
+  ap.append(ss, createString(16) );
   ss << ")";
   t_.getAPI<TransactionAPI>().exec(ss);
   ss.str("");
@@ -705,7 +706,7 @@ void testObj::test<17>(void)
 {
   ReferenceURLPtr url;
   const Service ti("mail daemon", 25, "smtp", url );
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   HostPtrNN host=makeNewHost();
   const Analyzer anlz(123u, "analyzer1", NULL, NULL, NULL);
@@ -762,16 +763,17 @@ void testObj::test<19>(void)
   es_.saveAnalyzer(a2);
 
   stringstream ss;
+  Appender     ap(t_);
   ss << "SELECT * FROM analyzers WHERE name = ";
-  Appender::append(ss, anlzName );
+  ap.append(ss, anlzName );
   ss << "AND sys_id = ";
-  Appender::append(ss, id.get() );
+  ap.append(ss, id.get() );
   ss << "AND version = ";
-  Appender::append(ss, ver.get() );
+  ap.append(ss, ver.get() );
   ss << " AND os = ";
-  Appender::append(ss, os.get() );
+  ap.append(ss, os.get() );
   ss << "AND ip = ";
-  Appender::append(ss, ip.to_string() );
+  ap.append(ss, ip.to_string() );
   ss << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
@@ -859,7 +861,7 @@ void testObj::test<23>(void)
                       Host::Services(),
                       Host::Processes(),
                       NULL );
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   const DataBaseID alertID = es_.saveAlert(a);
   const DataBaseID hostID  = es_.saveSourceHost(alertID, h);
@@ -884,7 +886,7 @@ void testObj::test<24>(void)
                  Host::Services(),
                  Host::Processes(),
                  NULL );
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   const DataBaseID alertID = es_.saveAlert(a);
   const DataBaseID hostID  = es_.saveSourceHost(alertID, h);
@@ -914,7 +916,7 @@ void testObj::test<25>(void)
   Alert::Hosts sh;
   sh.push_back(h);
   // save some alert
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sh, targetHosts_);
   const DataBaseID alertID = es_.saveAlert(a);
   // save data in table alert_analyzers
@@ -1001,10 +1003,11 @@ void testObj::test<29>(void)
   es_.saveAnalyzer(a2);
 
   stringstream ss;
+  Appender     ap(t_);
   ss << "SELECT * FROM analyzers WHERE name = ";
-  Appender::append(ss, anlzName );
+  ap.append(ss, anlzName );
   ss << "AND sys_id = ";
-  Appender::append(ss, id.get() );
+  ap.append(ss, id.get() );
   ss << "AND version IS NULL ";
   ss << "AND os IS NULL ";
   ss << "AND ip IS NULL";
@@ -1125,7 +1128,7 @@ template<>
 void testObj::test<32>(void)
 {
   ReferenceURLPtr url( new ReferenceURL("url1", "http://www.lmg'tfy.com\\") );
-  const Alert a(name_, analyzers_, &detected_, created_, severity_, certanity_,
+  const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   HostPtrNN host( new Host( Host::IPv4::from_string("1.2.3.4"),
                          NULL,

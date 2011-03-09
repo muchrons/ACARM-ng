@@ -124,11 +124,11 @@ public:
    */
   void updateSeverityDelta(DataBaseID malertID, double severityDelta);
 
-  /** \brief update Meta Alert certanity delta
+  /** \brief update Meta Alert certainty delta
    *  \param malertID ID    of Meta Alert to update
-   *  \param certanityDelta value of certanity delta to write in data base
+   *  \param certaintyDelta value of certainty delta to write in data base
    */
-  void updateCertaintyDelta(DataBaseID malertID, double certanityDelta);
+  void updateCertaintyDelta(DataBaseID malertID, double certaintyDelta);
 
   /** \brief set Host name in the data base
    *  \param hostID ID of Host to set name

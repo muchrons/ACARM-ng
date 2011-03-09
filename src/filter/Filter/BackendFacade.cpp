@@ -117,4 +117,9 @@ void BackendFacade::markNodeAsChanged(Node node)
     changed_.push_back(node);
 }
 
+Persistency::IO::DynamicConfigAutoPtr BackendFacade::createDynamicConfig(Persistency::IO::DynamicConfig::Owner &owner)
+{
+  return Core::Types::BackendFacade::createDynamicConfig( owner );
+}
+
 } // namespace Filter

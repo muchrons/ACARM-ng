@@ -106,11 +106,7 @@ private:
   {
     // wait for data, if not present
     while( q_.size()<1 )
-    {
-      // interruption point is already in condition variable
       cond_.wait(lock);
-    }
-
     // take one element and return it
     assert( q_.size()>0 );
     return q_.front();

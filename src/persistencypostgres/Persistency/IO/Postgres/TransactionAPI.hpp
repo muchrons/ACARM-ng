@@ -43,6 +43,17 @@ public:
     return t_.exec(sql);
   }
 
+  // TODO: return std::string, if possible.
+  // TODO: consider renaming this method to 'escape'.
+  /** \brief escape sql query.
+   *  \param str string to be escaped.
+   *  \return escaped string.
+   */
+   PGSTD::string esc(const char *str)
+   {
+     return t_.esc(str);
+   }
+
 private:
   /** \brief transaction acceptance opration's interface.
    */

@@ -33,15 +33,12 @@ Connection::Connection(const AccountConfig &cfg):
 
 Connection::~Connection(void)
 {
-  // TODO: throwing exceptions from d-tor is FORBIDDEN!
   // TODO: wrap whole d-tor in trt-catch and log errors - it's the best we can do
   LOGMSG_INFO(log_, "disconnecting from Jabber server");
-  if(sess_->recv(1000))
-    throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
+  sess_->recv(1000);
   // set status to unavailable
   sess_.get()->setPresence(gloox::Presence::Unavailable, 100);
-  if(sess_.get()->recv(1000))
-    throw ExceptionConnectionError(SYSTEM_SAVE_LOCATION, "connection error");
+  sess_.get()->recv(1000);
 }
 
 void Connection::login(gloox::Client *client) const
