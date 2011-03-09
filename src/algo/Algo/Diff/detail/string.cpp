@@ -25,7 +25,7 @@ Similarity Comparer<const std::string>::cmp(const std::string &e1, const std::st
 
   // ensure signle order, that ensurtes best performance
   if( e1.length()<e2.length() )
-    return compare(e2, e1);
+    return cmp(e2, e1);
   assert( e1.length()>=e2.length() );
 
   // check for the special cases (speed up)
