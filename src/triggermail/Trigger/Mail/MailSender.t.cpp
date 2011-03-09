@@ -95,24 +95,28 @@ void testObj::test<4>(void)
   // wipe-out account's content
   removeMessagesFromAccount( getTestConfig1() );
   removeMessagesFromAccount( getTestConfig2() );
-  // configure multiple recipients
-  Config::Recipients to(MAIL2_TEST_ACCOUNT_ADDRESS);
-  to.push_back(MAIL1_TEST_ACCOUNT_ADDRESS);
-  ensure("NULL pointer", c1_.getAuthorizationConfig()!=NULL);
-  const Config cfg( c1_.getThresholdConfig(),
-                    c1_.getSenderAddress(),
-                    to,
-                    c1_.getServerConfig(),
-                    *c1_.getAuthorizationConfig() );
-  // send report
-  MailSender ms(cfg);
-  ms.send("subject", "content");
-  // send to first account
+
+  {
+    // configure multiple recipients
+    Config::Recipients to(MAIL1_TEST_ACCOUNT_ADDRESS);
+    to.push_back(MAIL2_TEST_ACCOUNT_ADDRESS);
+    ensure("NULL pointer", c1_.getAuthorizationConfig()!=NULL);
+    const Config cfg( c1_.getThresholdConfig(),
+                      c1_.getSenderAddress(),
+                      to,
+                      c1_.getServerConfig(),
+                      *c1_.getAuthorizationConfig() );
+    // send report
+    MailSender ms(cfg);
+    ms.send("subject", "content");
+  }
+
+  // check first account
   {
     const int count=removeMessagesFromAccount( getTestConfig1(), 1 );
     ensure_equals("invalid number of messages removed / account 1", count, 1);
   }
-  // send to second account
+  // check second account
   {
     const int count=removeMessagesFromAccount( getTestConfig2(), 1 );
     ensure_equals("invalid number of messages removed / account 2", count, 1);
