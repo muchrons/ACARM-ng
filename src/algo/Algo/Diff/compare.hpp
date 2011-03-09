@@ -23,7 +23,7 @@ namespace Diff
 template<typename T>
 Similarity compare(const T &e1, const T &e2)
 {
-  return detail::Comparer<const T>::cmp(e1, e2);
+  return detail::proxy(e1, e2);
 }
 
 } // namespace Diff
