@@ -5,6 +5,7 @@
 #include <tut.h>
 
 #include "Algo/Diff/detail/string.hpp"
+#include "Algo/Diff/detail/all.hpp"
 
 using namespace Algo::Diff::detail;
 using Algo::Diff::Similarity;

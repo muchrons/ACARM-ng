@@ -7,6 +7,7 @@
 
 #include "System/Math/compareFP.hpp"
 #include "Algo/Diff/detail/viaCollection.hpp"
+#include "Algo/Diff/detail/all.hpp"
 
 using namespace Algo::Diff::detail;
 using Algo::Diff::Similarity;

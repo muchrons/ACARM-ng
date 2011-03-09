@@ -34,10 +34,7 @@ Similarity compare(const std::string &e1, const std::string &e2);
  *  \return result of the comparison.
  */
 template<uint16_t N>
-Similarity compare(const Commons::LimitedString<N> &e1, const Commons::LimitedString<N> &e2)
-{
-  return compare( e1.get(), e2.get() );
-}
+Similarity compare(const Commons::LimitedString<N> &e1, const Commons::LimitedString<N> &e2);
 
 /** \brief compares two elements.
  *  \param e1 first element to compare.
@@ -45,10 +42,7 @@ Similarity compare(const Commons::LimitedString<N> &e1, const Commons::LimitedSt
  *  \return result of the comparison.
  */
 template<uint16_t N>
-Similarity compare(const Commons::LimitedNULLString<N> &e1, const Commons::LimitedNULLString<N> &e2)
-{
-  return compare( e1.get(), e2.get() );
-}
+Similarity compare(const Commons::LimitedNULLString<N> &e1, const Commons::LimitedNULLString<N> &e2);
 
 } // namespace detail
 } // namespace Diff
