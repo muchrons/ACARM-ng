@@ -10,6 +10,7 @@
 #include <memory>
 #include <boost/noncopyable.hpp>
 
+#include "System/NoInstance.hpp"
 #include "System/AtExitResourceDeallocator.hpp"
 #include "System/ExceptionPointerIsNULL.hpp"
 #include "System/ExceptionSyscallFailed.hpp"
@@ -39,7 +40,8 @@ namespace System
  * and is thread-safe through whole program life-time.
  *
  */
-class AtExit: private boost::noncopyable
+class AtExit: private boost::noncopyable,
+              private NoInstance
 {
 public:
   /** \brief pointer to be passed to register call.
@@ -54,8 +56,6 @@ public:
   static void registerDeallocator(TDeallocPtr p);
 
 private:
-  AtExit(void);
-
   static void init(void);
   static void registerInternal(TDeallocPtr p);
 }; // class AtExit

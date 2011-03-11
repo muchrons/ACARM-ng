@@ -1,2 +1,4 @@
 Algo/*.?pp
 Algo/MPL/*.?pp
+Algo/Diff/*.?pp
+Algo/Diff/detail/*.?pp
