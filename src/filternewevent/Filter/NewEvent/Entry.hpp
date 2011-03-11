@@ -30,9 +30,9 @@ class Entry
 public:
 
   /** \brief create instance.
-   *  \param name name of processes (meta-)alert.
-   *  \param bf   facade for saving elements in the persistency.
-   *  \param ts   cache for storing timeouted elements.
+   *  \param hashPtr SHA1 hash of processes (meta-)alert name.
+   *  \param bf      facade for saving elements in the persistency.
+   *  \param ts      cache for storing timeouted elements.
    */
   Entry(const HashSharedPtr &hashPtr, Filter::BackendFacade &bf, TimeoutedSet &ts);
   /** \brief delete instance and add hash of timeouted element to the cache.
