@@ -43,7 +43,9 @@ public:
    *  \return (SHA1) hash of entry name.
    */
   const Hash::HashData &getHash() const;
-  const Persistency::IO::DynamicConfig::Owner &getOwner() const;
+  /** \brief
+   *  \return
+   */
   bool operator==(const Entry &other) const;
 private:
 

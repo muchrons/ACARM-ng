@@ -13,10 +13,6 @@ namespace Filter
 namespace NewEvent
 {
 
-// TODO: this code is mostly c&p from Persistency::Facades::detail::LocalAnalyzersCache
-//       make this a common code in Common component. ensure that proper library and include
-//       dependencies are moved along with the implementation.
-
 
 Entry::Entry(const HashSharedPtr &hashPtr, Filter::BackendFacade &bf, TimeoutedSet &ts):
   owner_("Filter::NewEvent"),
@@ -39,11 +35,6 @@ Entry::~Entry()
 const Hash::HashData &Entry::getHash() const
 {
   return hashPtr_.get()->getHash();
-}
-
-const Persistency::IO::DynamicConfig::Owner &Entry::getOwner() const
-{
-  return owner_;
 }
 
 bool Entry::operator==(const Entry &other) const

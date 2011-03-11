@@ -85,26 +85,19 @@ void testObj::test<2>(void)
   testData( hash, string("") );
 }
 
-// test getName() method
+// test getHash() method
 template<>
 template<>
 void testObj::test<3>(void)
 {
-  //Entry e("key", bf_, ts_);
-  //ensure_equals("invalid name", string( e.getName().get()) , "key");
-}
-
-// TODO: test getHash() method
-template<>
-template<>
-void testObj::test<4>(void)
-{
+  const string sha1("a62f2225bf70bfaccbc7f1ef2a397836717377de");
+  ensure_equals("invalid hash", hash_, sha1);
 }
 
 // chaeck if hash name is present in the Timeouted Set after destroying Entry object
 template<>
 template<>
-void testObj::test<5>(void)
+void testObj::test<4>(void)
 {
   {
     //EntrySharedPtr ePtr(new Entry("key", bf_, ts_));

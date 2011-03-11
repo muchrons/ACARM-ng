@@ -12,6 +12,7 @@ namespace Filter
 {
 namespace NewEvent
 {
+
 class Hash
 {
 public:
@@ -23,7 +24,6 @@ public:
 private:
   // computes (SHA1) hash of a given string
   std::string computeHash(const std::string &in) const;
-
 
   HashData hash_;
 }; // class Hash
