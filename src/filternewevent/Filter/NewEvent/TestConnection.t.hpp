@@ -9,7 +9,6 @@
 
 #include "TestHelpers/Persistency/ConnectionUserStubBase.hpp"
 #include "TestHelpers/Persistency/IODynamicConfigMemory.hpp"
-#include "Filter/NewEvent/TestDynamicConfigStub.t.hpp"
 
 namespace Filter
 {
