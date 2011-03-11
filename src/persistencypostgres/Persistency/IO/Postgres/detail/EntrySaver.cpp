@@ -106,7 +106,7 @@ DataBaseID EntrySaver::saveProcess(DataBaseID hostID, const Process &p)
 
 DataBaseID EntrySaver::getID(const std::string &seqName)
 {
-  assert( seqName==t_.getAPI<Postgres::TransactionAPI>().esc(seqName.c_str()) && "invalid sequence name" );
+  assert( seqName==t_.getAPI<Postgres::TransactionAPI>().escape(seqName.c_str()) && "invalid sequence name" );
 
   const std::string sql="SELECT currval('" + seqName + "') as id;";
   const result r=SQL(sql, log_).exec(t_);

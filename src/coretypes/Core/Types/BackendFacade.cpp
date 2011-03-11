@@ -72,7 +72,7 @@ Persistency::IO::ConnectionPtrNN BackendFacade::getConnection(void)
   return conn_;
 }
 
-Persistency::IO::DynamicConfigAutoPtr BackendFacade::createDynamicConfig(Persistency::IO::DynamicConfig::Owner &owner)
+Persistency::IO::DynamicConfigAutoPtr BackendFacade::createDynamicConfig(const Persistency::IO::DynamicConfig::Owner &owner)
 {
   beginTransaction();
   assert( transaction_.get()!=NULL );

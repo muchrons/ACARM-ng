@@ -30,17 +30,15 @@ void Strategy::processImpl(Node               n,
                            NodesTimeoutQueue &/*ntq*/,
                            BackendFacade     &bf)
 {
-  //TODO
   const time_t now=time(NULL);
   // ensure prunning once a while
-  // TODO: prune timeouted elements from persistency
   if(nextPrune_<now)
     pruneProcessedSet(now);
   assert(nextPrune_>=now);
 
-  const EntryProcessor ep(&bf, &processed_, &timeouted_, params_);
+  const EntryProcessor ep(bf, processed_, timeouted_, params_);
   Algo::forEachUniqueLeaf(n, ep);
-  // TODO: prunning of timeouted_ elements must be called here
+  pruneTimeoutedSet(bf);
 }
 
 void Strategy::pruneProcessedSet(const time_t now)
@@ -51,9 +49,10 @@ void Strategy::pruneProcessedSet(const time_t now)
   LOGMSG_DEBUG_S(log_)<<"next prunning scheduled on/after "<<nextPrune_;
 }
 
-void Strategy::pruneTimeoutedSet()
+void Strategy::pruneTimeoutedSet(BackendFacade &bf)
 {
-  // TODO
+  const Persistency::IO::DynamicConfig::Owner owner("Filter::NewEvent");
+  timeouted_.markRemoved(bf, owner);
 }
 
 } // namespace NewEvent

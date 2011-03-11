@@ -10,6 +10,7 @@
 #include <map>
 #include <cassert>
 
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
 
 // TODO: this code is common - move this implementation to TestHelpers::Persistency; it should be
@@ -34,7 +35,7 @@ public:
   }; // struct Data
 
   // TODO: makr shit SharedPtrNotNULL<>
-  typedef boost::shared_ptr<Data> DataPtr;
+  typedef Commons::SharedPtrNotNULL<Data> DataPtr;
 
   TestDynamicConfigStub(const Owner &owner, Persistency::IO::Transaction &t):
     Persistency::IO::DynamicConfig(owner, t),

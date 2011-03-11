@@ -2,7 +2,6 @@
  * ProcessedSet.cpp
  *
  */
-
 #include "Filter/NewEvent/ProcessedSet.hpp"
 
 namespace Filter
@@ -10,9 +9,8 @@ namespace Filter
 namespace NewEvent
 {
 
-bool ProcessedSet::isProcessed(Entry &entry) const
+bool ProcessedSet::isProcessed(const Entry &entry) const
 {
-  //const Entry::Name name(entry.getName());
   for(Set::const_iterator it = set_.begin(); it != set_.end(); ++it)
   {
     if(*it->get()==entry)
@@ -22,7 +20,7 @@ bool ProcessedSet::isProcessed(Entry &entry) const
   return false;
 }
 
-void ProcessedSet::markAsProcessed(EntrySharedPtr entry, unsigned int timeout)
+void ProcessedSet::markAsProcessed(const EntrySharedPtr &entry, unsigned int timeout)
 {
   set_.update(entry, timeout);
 }

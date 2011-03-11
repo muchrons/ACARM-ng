@@ -22,15 +22,13 @@ namespace NewEvent
 class EntryProcessor
 {
 public:
-  // TODO: take refs as arguments and silently convert them to pointers in the implementation.
-  // TODO: 'params' should be const-ref.
   /** \brief create instance.
    *  \param bf       facade for writing new names of hosts to persistency.
    *  \param ps       set of already processed elements.
    *  \param ts       set of already timeouted elements.
    *  \param params   parameters (timeout and priority delta).
    */
-  EntryProcessor(BackendFacade *bf, ProcessedSet *ps, TimeoutedSet *ts, const Strategy::Parameters params);
+  EntryProcessor(BackendFacade &bf, ProcessedSet &ps, TimeoutedSet &ts, const Strategy::Parameters &params);
   /** \brief method responsible for doing all the job.
    *  \param leaf leaft to be processed.
    */
@@ -38,9 +36,9 @@ public:
 
 private:
   Logger::Node               log_;
-  BackendFacade             *bf_;
-  ProcessedSet              *ps_;
-  TimeoutedSet              *ts_;
+  BackendFacade              &bf_;
+  ProcessedSet               &ps_;
+  TimeoutedSet               &ts_;
   const Strategy::Parameters params_;
 }; // class EntryProcessor
 
