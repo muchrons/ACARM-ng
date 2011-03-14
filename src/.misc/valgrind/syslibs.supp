@@ -7,3 +7,18 @@
    fun:backtrace
    ...
 }
+
+# on some ia32 following leak is detected.
+{
+   system_lib_is3_pthread_once_leak_suppress
+   Memcheck:Leak
+   fun:malloc
+   ...
+   fun:dl_open_worker
+   ...
+   fun:do_dlopen
+   ...
+   fun:init
+   fun:pthread_once
+   ...
+}
