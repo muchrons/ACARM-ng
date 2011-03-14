@@ -98,7 +98,7 @@ public:
    *  \param owner owner's name of a configuration to work on (NULL means common config).
    *  \return return non-NULL dynamic configuration proxy.
    */
-  Persistency::IO::DynamicConfigAutoPtr createDynamicConfig(Persistency::IO::DynamicConfig::Owner &owner);
+  Persistency::IO::DynamicConfigAutoPtr createDynamicConfig(const Persistency::IO::DynamicConfig::Owner &owner);
 private:
   void markNodeAsChanged(Node node);
 

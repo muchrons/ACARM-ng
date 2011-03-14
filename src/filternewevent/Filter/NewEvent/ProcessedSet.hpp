@@ -19,25 +19,23 @@ namespace NewEvent
 class ProcessedSet
 {
 public:
-  // TODO: 'entry' should be const-ref.
   /** \brief checks if given entry has been alrady processed or not.
    *  \param entry entry connected with processed leaf.
    *  \return true if entry (leaf) has been already reported, false otherwise.
    */
-  bool isProcessed(Entry &entry) const;
-  // TODO: 'entry' should be const-ref.
+  bool isProcessed(const Entry &entry) const;
   /** \brief marks given leaf as already processed.
    *  \param entry   entry connected with processed leaf.
    *  \param timeout time life (in seconds) of stored (meta-)alert name.
    */
-  void markAsProcessed(Entry &entry, unsigned int timeout);
+  void markAsProcessed(const EntrySharedPtr &entry, unsigned int timeout);
   // TODO: comment not matching implementaiton
   /** \brief removes entries corresponding to graph nodes not held in memory any more.
    */
   void prune(void);
 
 private:
-  typedef Base::TimeoutQueue<Entry::Name> Set;
+  typedef Base::TimeoutQueue<EntrySharedPtr> Set;
 
   void pruneTimeouted();
 
