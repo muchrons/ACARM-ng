@@ -28,7 +28,8 @@ void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
   const std::string name(leaf->getMetaAlert()->getName().get());
   // create helper object
   HashSharedPtr  hash(new Hash(name));
-
+  // check if entry with name hash is present in the prosessed set,
+  // if is present update entry timeout and return
   if(ps_.update(*hash.get(), params_.timeout_))
   {
     LOGMSG_DEBUG_S(log_)<<"(meta-)alert with name '"<<name<<"' has been already processed - skipping";
