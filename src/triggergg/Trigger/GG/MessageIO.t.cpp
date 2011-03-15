@@ -17,16 +17,18 @@ namespace
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    conn3_( getTestConfig3() )
+    conn3_( getTestConfig3() ),
+    conn4_( getTestConfig4() )
   {
   }
 
-  std::string getMessageFromAccount4(void) const
+  std::string getMessageFromAccount4(void)
   {
-    return getMessageFromAccount( getTestConfig4(), getTestConfig3().getUserID() );
+    return getMessageFromAccount(conn4_, getTestConfig3().getUserID() );
   }
 
   Connection conn3_;
+  Connection conn4_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -52,6 +54,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  cleanUpMessagesFromAccount(conn4_);
   MessageIO         ms(conn3_);
   const std::string msg("alice has a cat");
   ms.send( getTestConfig4().getUserID(), msg );
@@ -64,6 +67,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
+  cleanUpMessagesFromAccount(conn4_);
   MessageIO         ms(conn3_);
   const std::string msg("łączność UTF-8");
   ms.send( getTestConfig4().getUserID(), msg );
