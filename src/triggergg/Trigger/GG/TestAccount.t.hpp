@@ -106,10 +106,48 @@ std::string getMessageFromAccount(Trigger::GG::Connection &conn, const Trigger::
   } // for(events)
 } // getMessageFromAccount()
 
-std::string getMessageFromAccount(const Trigger::GG::AccountConfig &account, const Trigger::GG::UserID sender, const std::string &opID="")
+unsigned int cleanUpMessagesFromAccount(Trigger::GG::Connection &conn)
 {
-  Trigger::GG::Connection conn(account);
-  return getMessageFromAccount(conn, sender, opID);
+  unsigned int count=0;
+  // wait for mesages
+  for(;;)
+  {
+    // wait for something
+    fd_set desc;
+    FD_ZERO(&desc);
+    FD_SET(conn.get()->fd, &desc);
+
+    // note that we assume running on linux here - other implementations
+    // can do random changes to timeout
+    timeval timeout={0, 100*1000};  // wait 0.1[s] for messages
+    switch( select(conn.get()->fd+1, &desc, NULL, NULL, &timeout) )
+    {
+      case 0:   // timeout
+        return count;
+
+      case -1:  // error
+        throw std::runtime_error("select() returned error");
+
+      default:  // OK
+        if( !FD_ISSET(conn.get()->fd, &desc) )
+          throw std::runtime_error("descriptor is not set - something's wrong");
+        break;
+    } // switch( select() )
+
+    // ok - we have some data to be read
+
+    // read data
+    EventWrapper e( gg_watch_fd( conn.get() ) );    // read event
+    // skip errors
+    if( e.get()==NULL )
+      continue;
+    // we wait for message
+    if( e.get()->type!=GG_EVENT_MSG )
+      continue;
+    // mark arrival of the message
+    ++count;
+  } // for(events)
+  assert(!"code never reaches here");
 } // getMessageFromAccount()
 
 } // unnamed namespace
