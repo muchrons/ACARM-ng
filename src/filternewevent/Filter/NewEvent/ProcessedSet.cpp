@@ -9,12 +9,16 @@ namespace Filter
 namespace NewEvent
 {
 
-bool ProcessedSet::isProcessed(const Entry &entry) const
+bool ProcessedSet::update(const Hash &hash, unsigned int timeout)
 {
-  for(Set::const_iterator it = set_.begin(); it != set_.end(); ++it)
+  for(Set::iterator it = set_.begin(); it != set_.end(); ++it)
   {
-    if(*it->get()==entry)
+    const Hash::HashData hashData = (*it).get()->getHash();
+    if(hashData==hash.getHash())
+    {
+      markAsProcessed(*it, timeout);
       return true;
+    }
   }
   // object not found
   return false;

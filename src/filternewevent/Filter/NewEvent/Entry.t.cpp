@@ -99,14 +99,13 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
+  std::string   hash;
+  HashSharedPtr hashPtr(new Hash("some key"));
   {
-    //EntrySharedPtr ePtr(new Entry("key", bf_, ts_));
+    EntrySharedPtr  entryPtr(new Entry(hashPtr, bf_, ts_));
+    hash = string(entryPtr.get()->getHash().get());
   }
-
-  {
-    //EntrySharedPtr ePtr(new Entry("other key", bf_, ts_));
-  }
-  //testData(string( hash.get() ), "true");
-  //ensure("Element not present in collection", ts_.isTimeouted(hash));
+  testData(string( hash ), "true");
+  ensure("Element not present in collection", ts_.isTimeouted(hashPtr));
 }
 } // namespace tut

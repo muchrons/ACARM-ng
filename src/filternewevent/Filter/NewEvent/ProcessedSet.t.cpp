@@ -54,7 +54,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure("non-existing entry is reported as present", ps_.isProcessed( *ePtr_.get() )==false );
+  //ensure("non-existing entry is reported as present", ps_.isProcessed( *ePtr_.get() )==false );
 }
 
 // check pruning
@@ -62,24 +62,23 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-/*
-  Entry e1("some entry", &bf_, &ts_);
-  Entry e2("some other entry", &bf_, &ts_);
-  ps_.markAsProcessed(e1, 1.0);
-  ps_.markAsProcessed(e2, 2.0);
+  HashSharedPtr  h1(new Hash("some entry"));
+  EntrySharedPtr e1(new Entry(h1, bf_, ts_));
+  HashSharedPtr  h2(new Hash("some other entry"));
+  EntrySharedPtr e2(new Entry(h2, bf_, ts_));
+  ps_.markAsProcessed(e1, 1);
+  ps_.markAsProcessed(e2, 2);
   ps_.prune();
-  // TODO: add some distinguishement between error messages to make line easy identificable in case of an error
-  ensure("non-timeouted element has been pruned", ps_.isProcessed(e1) );
-  ensure("non-timeouted element has been pruned", ps_.isProcessed(e2) );
+  ensure("element with timeout 1 s has been pruned before timeout", ps_.update(*h1.get(), 1) );
+  ensure("element with timeout 2 s has been pruned before timeout", ps_.update(*h2.get(), 2) );
   sleep(2);
   ps_.prune();
-  ensure("timeouted element has been pruned", ps_.isProcessed(e1)==false );
-  ensure("non-timeouted element has been pruned", ps_.isProcessed(e2) );
-  sleep(1);
+  ensure("element with timeout 1 s has not been pruned after 2 seconds", ps_.update(*h1.get(), 1)==false );
+  ensure("element with timeout 2 s has been pruned after 2 seconds", ps_.update(*h2.get(), 2) );
+  sleep(3);
   ps_.prune();
-  ensure("timeouted element has been pruned", ps_.isProcessed(e1)==false );
-  ensure("non-timeouted element has been pruned", ps_.isProcessed(e2)==false );
-  */
+  ensure("element with timeout 1 s has not been pruned", ps_.update(*h1.get(), 1)==false );
+  ensure("element with timeout 2 s has not been pruned", ps_.update(*h2.get(), 2)==false );
 }
 
 
@@ -88,14 +87,14 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-/*
-  Entry e1("some entry", &bf_, &ts_);
-  Entry e2("some other entry", &bf_, &ts_);
-  ps_.markAsProcessed(e1, 1.0);
-  ps_.markAsProcessed(e2, 2.0);
-  ensure("element 1 not present", ps_.isProcessed(e1) );
-  ensure("element 2 not present", ps_.isProcessed(e2) );
-  */
+  HashSharedPtr  h1(new Hash("some entry"));
+  EntrySharedPtr e1(new Entry(h1, bf_, ts_));
+  HashSharedPtr  h2(new Hash("some other entry"));
+  EntrySharedPtr e2(new Entry(h2, bf_, ts_));
+  ps_.markAsProcessed(e1, 1);
+  ps_.markAsProcessed(e2, 2);
+  ensure("element 1 not present", ps_.update(*h1.get(), 1) );
+  ensure("element 2 not present", ps_.update(*h2.get(), 2) );
 }
 
 // test if after prune proper element is present in timeouted set
@@ -103,18 +102,15 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  /*
-  Entry::Hash hash;
+  HashSharedPtr hash(new Hash("some name"));
   {
-    EntrySharedPtr e(new Entry("some entry", bf_, ts_));
-    ps_.markAsProcessed(e, 1.0);
-    hash = e.get()->getHash();
+    EntrySharedPtr e(new Entry(hash, bf_, ts_));
+    ps_.markAsProcessed(e, 1);
   }
   sleep(2);
-  ensure("element timeouted after prune", ts_.isTimeouted(hash) == false );
+  ensure("element timeouted before prune", ts_.isTimeouted(hash) == false );
   ps_.prune();
   ensure("element not-timeouted after prune", ts_.isTimeouted(hash));
-  */
 }
 
 } // namespace tut

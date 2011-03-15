@@ -49,7 +49,6 @@ factory tf("Filter/NewEvent/TimeoutedSet");
 
 namespace tut
 {
-
 // check adding simple element
 template<>
 template<>
@@ -89,26 +88,12 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  /*
-  Entry::Hash hash;
-  {
-    Entry e("key", bf_, ts_);
-    hash = e.getHash();
-  }
-  //testData(hash, "true");
-  //ensure("Element not present in collection", ts_.isTimeouted(hash));
-  ts_.prune(&bf_, owner_);
-  //testData(hash, "");
-  //ensure("Element present in collection after prune", ts_.isTimeouted(hash) == false);
-  */
 }
 
 template<>
 template<>
 void testObj::test<5>(void)
 {
-  HashSharedPtr  hPtr(new Hash("key"));
-  EntrySharedPtr ePtr(new Entry(hPtr, bf_, ts_));
 }
 
 } // namespace tut

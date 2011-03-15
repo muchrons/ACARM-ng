@@ -5,6 +5,7 @@
 #ifndef INCLUDE_FILTER_NEWEVENT_TIMEOUTEDSET_HPP_FILE
 #define INCLUDE_FILTER_NEWEVENT_TIMEOUTEDSET_HPP_FILE
 
+#include "Logger/Node.hpp"
 #include "Filter/BackendFacade.hpp"
 #include "Filter/Exception.hpp"
 #include "Filter/NewEvent/Hash.hpp"
@@ -23,6 +24,8 @@ class TimeoutedSet
   typedef std::vector<HashSharedPtr> Timeouted;
 
 public:
+  /** \brief create cache to store timeouted elements.*/
+  TimeoutedSet();
   /** \brief add timeouted key to the collection.
    *  \param key key to be added.
    */
@@ -32,7 +35,6 @@ public:
    *  \param owner owner's name.
    */
   void markRemoved(BackendFacade &bf, const Persistency::IO::DynamicConfig::Owner &owner);
-  // TODO: 'key' must be NULL.
   // TODO: this method is never used and should be removed
   /** \brief checks if given key has been alrady timeouted or not.
    *  \param key key from which ...
@@ -41,7 +43,8 @@ public:
   bool isTimeouted(const HashSharedPtr &key) const;
 
 private:
-  Timeouted timeouted_;
+  Logger::Node log_;
+  Timeouted    timeouted_;
 }; // class TimeoutedSet
 
 } // namespace Filter

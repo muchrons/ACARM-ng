@@ -36,14 +36,6 @@ const Hash::HashData &Entry::getHash() const
 {
   return hashPtr_.get()->getHash();
 }
-
-bool Entry::operator==(const Entry &other) const
-{
-  if(getHash() != other.getHash())
-    return false;
-  return true;
-}
-
 } // namespace NewEvent
 } // namespace Filter
 

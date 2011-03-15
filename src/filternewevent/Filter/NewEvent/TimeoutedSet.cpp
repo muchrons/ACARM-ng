@@ -3,11 +3,17 @@
  *
  */
 #include "Filter/NewEvent/TimeoutedSet.hpp"
+#include "Persistency/IO/Exception.hpp"
 
 namespace Filter
 {
 namespace NewEvent
 {
+
+TimeoutedSet::TimeoutedSet():
+  log_("filter.newevent")
+{
+}
 
 void TimeoutedSet::add(const HashSharedPtr &key)
 {
@@ -21,9 +27,19 @@ void TimeoutedSet::markRemoved(BackendFacade &bf, const Persistency::IO::Dynamic
   Persistency::IO::DynamicConfigAutoPtr dc = bf.createDynamicConfig(owner);
   for(Timeouted::iterator it = timeouted_.begin(); it != timeouted_.end(); ++it)
   {
-    // TODO: add try{}catch(...) around loop's body to ensure single exception for one entry
-    //       will not block removing others from DC.
-    dc->remove( it->get()->getHash().get() );
+    // single exception for one entry will not block removing others from DC.
+    try
+    {
+      dc->remove( it->get()->getHash().get() );
+    }
+    catch(const Persistency::IO::Exception &ex)
+    {
+      LOGMSG_ERROR_S(log_)<<"exception caught: '"<<ex.what()<<"' - ignoring";
+    }
+    catch(const std::exception &ex)
+    {
+      LOGMSG_ERROR_S(log_)<<"exception caught: '"<<ex.what()<<"' - ignoring";
+    }
   }
   timeouted_.clear();
 }
