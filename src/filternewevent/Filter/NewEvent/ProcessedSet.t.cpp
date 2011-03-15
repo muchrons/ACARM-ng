@@ -75,6 +75,9 @@ void testObj::test<2>(void)
   ps_.prune();
   ensure("element with timeout 1 s has not been pruned after 2 seconds", ps_.update(*h1.get(), 1)==false );
   ensure("element with timeout 2 s has been pruned after 2 seconds", ps_.update(*h2.get(), 2) );
+  sleep(1);
+  ps_.prune();
+  ensure("element with timeout 2 s has been pruned after timeout update", ps_.update(*h2.get(), 2) );
   sleep(3);
   ps_.prune();
   ensure("element with timeout 1 s has not been pruned", ps_.update(*h1.get(), 1)==false );
