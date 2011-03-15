@@ -62,6 +62,8 @@ void testObj::test<2>(void)
     UserID       contacts[]={receiver};
     ensure_equals("sending receivers list faild", gg_notify( conn2.get(), contacts, 1 ), 0);
   }
+  // cleanup any messages if present
+  cleanUpMessagesFromAccount(conn2);
   // regular test flow goes here:
   Strategy               s("mygginformer", cfg_);
   Strategy::ChangedNodes nc;

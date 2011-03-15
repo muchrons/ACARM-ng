@@ -65,13 +65,12 @@ private:
                            BackendFacade     &bf);
 
   void pruneProcessedSet(time_t now);
-  // TODO: unused code
-  void pruneTimeoutedSet();
+  void pruneTimeoutedSet(BackendFacade &bf);
 
   time_t           nextPrune_;
   const Parameters params_;
-  ProcessedSet     processed_;
   TimeoutedSet     timeouted_;
+  ProcessedSet     processed_;
 }; // class Strategy
 
 } // namespace NewEvent

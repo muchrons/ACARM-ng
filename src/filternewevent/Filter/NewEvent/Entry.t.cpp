@@ -14,6 +14,7 @@
 using namespace std;
 using namespace Filter;
 using namespace Filter::NewEvent;
+using namespace TestHelpers::Persistency;
 
 namespace
 {
@@ -25,14 +26,16 @@ struct TestClass
     tconn_(new TestConnection),
     conn_( tconn_ ),
     bf_(conn_, changed_, "testnewevent"),
-    owner_("Filter::NewEvent")
+    owner_("Filter::NewEvent"),
+    hashPtr_(new Hash("key")),
+    entryPtr_(new Entry(hashPtr_, bf_, ts_)),
+    hash_(entryPtr_.get()->getHash().get())
   {
   }
 
-  // TODO: parameters should be const-refs.
-  void testData(std::string key, std::string value)
+  void testData(const std::string &key, const std::string &value)
   {
-    TestDynamicConfigStub::Data::DataMap data = tconn_->data_->owner_["Filter::NewEvent"];  // TODO: separate this string to a constant
+    IODynamicConfigMemory::Memory data = tconn_->data_;  // TODO: separate this string to a constant
     tut::ensure_equals("invalid value", data[key], value );
   }
 
@@ -42,6 +45,9 @@ struct TestClass
   BackendFacade                          bf_;
   TimeoutedSet                           ts_;
   Persistency::IO::DynamicConfig::Owner  owner_;
+  HashSharedPtr                          hashPtr_;
+  EntrySharedPtr                         entryPtr_;
+  std::string                            hash_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -53,24 +59,54 @@ factory tf("Filter/NewEvent/Entry");
 namespace tut
 {
 
-// TODO
+// test valid data saving to the Dynamic Config
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  Entry e("key", &bf_, &ts_);
-  testData(e.getHash(), string("true") );
+  testData( hash_, string("true") );
 }
 
-// TODO
+// test if element is not present in Dynamic Config after TimeoutedSet prune
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  Entry e("key", &bf_, &ts_);
-  testData(e.getHash(), string("true") );
-  ts_.prune(&bf_, owner_);
-  testData(e.getHash(), string("") );
+  std::string   hash;
+  HashSharedPtr hashPtr(new Hash("some key"));
+  {
+    EntrySharedPtr  entryPtr(new Entry(hashPtr, bf_, ts_));
+    hash = string(entryPtr.get()->getHash().get());
+  }
+  // test if hash is in the TimeoutedSet
+  testData( hash, string("true") );
+  // clear timeouted set
+  ts_.markRemoved(bf_, owner_);
+  testData( hash, string("") );
 }
 
+// test getHash() method
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  const string sha1("a62f2225bf70bfaccbc7f1ef2a397836717377de");
+  ensure_equals("invalid hash", hash_, sha1);
+}
+
+// chaeck if hash name is present in the Timeouted Set after destroying Entry object
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  {
+    //EntrySharedPtr ePtr(new Entry("key", bf_, ts_));
+  }
+
+  {
+    //EntrySharedPtr ePtr(new Entry("other key", bf_, ts_));
+  }
+  //testData(string( hash.get() ), "true");
+  //ensure("Element not present in collection", ts_.isTimeouted(hash));
+}
 } // namespace tut
