@@ -29,6 +29,7 @@ int main(int argc, char **argv)
     return 1;
   }
 
-  cout << getMessageFromAccount( getCfg( atoi(argv[1]) ), atoi(argv[2]) ) << endl;
+  Connection conn( getCfg( atoi(argv[1]) ) );
+  cout << getMessageFromAccount( conn, atoi(argv[2]) ) << endl;
   return 0;
 }
