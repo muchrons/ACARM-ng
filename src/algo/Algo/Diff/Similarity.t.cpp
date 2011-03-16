@@ -5,6 +5,7 @@
 #include <tut.h>
 #include <limits>
 
+#include "System/Math/compareFP.hpp"
 #include "Algo/Diff/Similarity.hpp"
 
 using namespace Algo::Diff;
@@ -124,6 +125,30 @@ void testObj::test<10>(void)
   if( !std::numeric_limits<double>::has_quiet_NaN )
     fail("no quiet NaN support - test will not run");
   testThrow( std::numeric_limits<double>::quiet_NaN() );
+}
+
+// test merging
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  Similarity       s1(1);
+  const Similarity s2(0);
+  s1.merge(s2);
+  ensure("invalid value", System::Math::compareFP<double>(s1.get(), 1.0/2, 2) );
+}
+
+// test merging multiple values
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  Similarity       s1(0.3);
+  const Similarity s2(0.5);
+  const Similarity s3(0.1);
+  s1.merge(s2);
+  s1.merge(s3);
+  ensure("invalid value", System::Math::compareFP<double>(s1.get(), 0.9/3, 2) );
 }
 
 } // namespace tut
