@@ -27,7 +27,7 @@ Similarity compare(const Persistency::Alert &e1, const Persistency::Alert &e2)
   s.merge( compare( e1.getDescription(), e2.getDescription() ) );
   s.merge( compare( e1.getSourceHosts(), e2.getSourceHosts() ) );
   s.merge( compare( e1.getTargetHosts(), e2.getTargetHosts() ) );
-  return s.get();
+  return pow(s.get(), 3);
 } // compare()
 
 } // namespace detail
