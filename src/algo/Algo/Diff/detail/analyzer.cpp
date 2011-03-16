@@ -17,13 +17,13 @@ Similarity compare(const Persistency::Analyzer &e1, const Persistency::Analyzer 
   if(&e1==&e2)
     return 1;
 
-  const Similarity name=compare( e1.getName(), e2.getName() );
-  const Similarity ver =compare( e1.getVersion(), e2.getVersion() );
-  const Similarity os  =compare( e1.getOperatingSystem(), e2.getOperatingSystem() );
-  const Similarity ip  =compare( e1.getIP(), e2.getIP() );
-  const Similarity id  =compare( e1.getID(), e2.getID() );
+  Similarity s=compare( e1.getName(), e2.getName() );
+  s.merge( compare( e1.getVersion(), e2.getVersion() ) );
+  s.merge( compare( e1.getOperatingSystem(), e2.getOperatingSystem() ) );
+  s.merge( compare( e1.getIP(), e2.getIP() ) );
+  s.merge( compare( e1.getID(), e2.getID() ) );
 
-  return ( name.get()+ver.get()+os.get()+ip.get()+id.get() )/5;
+  return s.get();
 }
 
 } // namespace detail
