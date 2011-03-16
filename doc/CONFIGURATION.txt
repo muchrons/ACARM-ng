@@ -235,6 +235,12 @@ following filters and parameters are available:
     <skip>root www-data</skip> <!-- space-separated list of users not to correlate for -->
   </usersmonitor>
 
+  <!-- correlates attacks that are similar (text differences, IPs similarity, etc...) -->
+  <similarity name="sim">
+    <timeout>42</timeout>          <!-- timeout for observing entry, in seconds -->
+    <similarity>0.80</similarity>  <!-- similarity threshold to correlate with -->
+  </similarity>
+
 
 triggers configuration
 ======================
