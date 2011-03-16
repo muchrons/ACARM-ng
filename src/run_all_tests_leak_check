@@ -12,9 +12,13 @@ do
   echo "----------------------------"
   echo "testing $d:"
   SUPPS="`( for f in .misc/valgrind/*.supp ; do readlink -f "$f" | sed 's:^ *:--suppressions=:' ; done )`"
-  ( ulimit -c unlimited && \
-    cd gen/test_local_normal_default/$d && \
-    LD_LIBRARY_PATH="$LD_LIBRARY_PATH:../libs/" valgrind --gen-suppressions=all --leak-check=full --show-reachable=yes $SUPPS ./$d.t 2>&1 | tee valgrind.log ) || RET=1
+  if ! ( ulimit -c unlimited && \
+         cd gen/test_local_normal_default/$d && \
+         LD_LIBRARY_PATH="$LD_LIBRARY_PATH:../libs/" valgrind --gen-suppressions=all --leak-check=full --show-reachable=yes $SUPPS ./$d.t 2>&1 | tee valgrind.log )
+  then
+    RET=1
+    echo "$d group FAILED"
+  fi
 done
 
 echo
