@@ -35,6 +35,27 @@ struct TestClass: public TestStubs
     return makeNewLeaf( makeNewAlert(name, sip, tip, dns, certainty) );
   }
 
+  GraphNodePtrNN mkDifferentLeaf(void) const
+  {
+    ::Persistency::Alert::Analyzers sa( makeNewAnalyzer("xyz") );
+    sa.push_back( makeNewAnalyzer("abc") );
+    sa.push_back( makeNewAnalyzer("defg") );
+    Alert::Hosts srcHosts;
+    Alert::Hosts tgtHosts;
+
+    AlertPtrNN alert( new Alert("other name",
+                                sa,
+                                NULL,
+                                Timestamp(666),
+                                Severity(SeverityLevel::INFO),
+                                Certainty(0.42),
+                                "other test alert",
+                                srcHosts,
+                                tgtHosts) );
+
+    return makeNewLeaf(alert);
+  }
+
   GraphNodePtrNN         sampleLeaf_;
   Strategy::ChangedNodes changed_;
   Strategy               s_;
@@ -68,7 +89,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  GraphNodePtrNN tmp=mkLeaf("other", "4.5.6.7", "9.8.7.6", "wcss.pl", 0.98);
+  GraphNodePtrNN tmp=mkDifferentLeaf();
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed / 1", changed_.size(), 0u);
 
@@ -87,7 +108,7 @@ void testObj::test<3>(void)
 
   s_.process(sampleLeaf_, changed_);
   ensure_equals("no nodes changed", changed_.size(), 1u);
-  const string resp("[similarity] TODO");
+  const string resp("[similarity] 'name 1' and 'abC'");
   ensure_equals("invalid name", changed_[0]->getMetaAlert()->getName().get(), resp);
 }
 
@@ -96,17 +117,35 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  /*
-  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlert("some alert") ) );
+  GraphNodePtrNN tmp=mkLeaf("other name");
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed", changed_.size(), 0u);
 
   s_.process(sampleLeaf_, changed_);
   ensure_equals("no nodes changed", changed_.size(), 1u);
-  const string resp("[similarity] some alert");
-  ensure_equals("invalid name",
-                changed_[0]->getMetaAlert()->getName().get(), resp);
-  */
+  GraphNodePtrNN correlated=changed_[0];
+  changed_.clear();
+
+  s_.process( mkLeaf("simillar alert"), changed_);
+  ensure_equals("no nodes changed", changed_.size(), 1u);
+  ensure("new node created instead of correlating to already existing one", correlated.get()==changed_[0].get() );
+}
+
+// test if correlating fails when new alert is not simillar to any already correlated
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  GraphNodePtrNN tmp=mkLeaf("other name");
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("no nodes changed", changed_.size(), 1u);
+  changed_.clear();
+
+  s_.process( mkDifferentLeaf(), changed_);
+  ensure_equals("node has been corrlated", changed_.size(), 0u);
 }
 
 } // namespace tut
