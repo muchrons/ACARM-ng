@@ -35,6 +35,7 @@ Similarity comparePtrValues(const T *p1, const T *p2)
   return compare(*p1, *p2);
 } // comparePtrValues()
 
+
 /** \brief compares two strings - implementation detail.
  *  \param p1 first element to compare.
  *  \param p2 second element to compare.

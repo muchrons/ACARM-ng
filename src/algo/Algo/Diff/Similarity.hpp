@@ -39,14 +39,15 @@ public:
    *  \param v value to represent.
    */
   Similarity(const double v):
-    v_(v)
+    sum_(v),
+    count_(1)
   {
-    if( !std::isfinite(v_) )
-      throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "value is not finite (inf/nan)", v_);
-    if(v_<0)
-      throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "value too small", v_);
-    if(1<v_)
-      throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "value too big", v_);
+    if( !std::isfinite(v) )
+      throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "value is not finite (inf/nan)", v);
+    if(v<0)
+      throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "value too small", v);
+    if(1<v)
+      throw ExceptionInvalidValue(SYSTEM_SAVE_LOCATION, "value too big", v);
   }
 
   /** \brief named c-tor normalizing given value to [0;1] range.
@@ -66,13 +67,25 @@ public:
    */
   double get(void) const
   {
-    assert(0<=v_);
-    assert(v_<=1);
-    return v_;
+    const double v=sum_/count_;
+    assert(0<=v);
+    assert(v<=1);
+    return v;
+  }
+
+  /** \brief merges two similarities.
+   *  \param s similarity to merge with.
+   */
+  void merge(const Similarity s)
+  {
+    sum_  +=s.sum_;
+    count_+=s.count_;
+    get();  // just in case
   }
 
 private:
-  double v_;
+  double sum_;
+  size_t count_;
 }; // class Similarity
 
 } // namespace Diff

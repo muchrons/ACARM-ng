@@ -1,6 +1,7 @@
 filterusersmonitor
 filterdnsresolver
 filteripblacklist
+filtersimilarity
 filtereventchain
 filtermanytomany
 filterhostcommon
