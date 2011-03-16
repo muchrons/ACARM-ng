@@ -21,37 +21,51 @@ namespace Similarity
  */
 struct Data
 {
+  /** \brief create data for leaf.
+   *  \param first alert to store.
+   */
   explicit Data(Persistency::ConstAlertPtrNN first):
     first_(first)
   {
   }
-
+  /** \brief create data from leaf.
+   *  \param first  first alert to create from.
+   *  \param second second alert to create from.
+   */
   Data(Persistency::ConstAlertPtrNN first, Persistency::ConstAlertPtrNN second):
     first_(first),
     second_( second.shared_ptr() )
   {
   }
 
-  Persistency::ConstAlertPtrNN first_;
-  Persistency::ConstAlertPtr   second_;
+  Persistency::ConstAlertPtrNN first_;  ///< first alert
+  Persistency::ConstAlertPtr   second_; ///< second alert (can be NULL)
 }; // struct Data
 
 
-// TODO: doxygen to be fixed.
-/** \brief filter detecting multiple attacks from multiple hosts implementation.
+/** \brief filter correlating similar alerts together.
  */
 class Strategy: public Filter::Simple::Strategy<Data>
 {
 public:
+  /** \brief configuration parameters for strategy.
+   */
   struct Params
   {
+    /** \brief create from given paramters.
+     *  \param timeout    maximum time to hold alert for.
+     *  \param similarity similarity threshold.
+     */
     Params(const unsigned int timeout, const double similarity);
 
+    /** \brief gets timeout value.
+     */
     unsigned int timeout(void) const
     {
       return timeout_;
     }
-
+    /** \brief gets similarity threshold.
+     */
     double similarity(void) const
     {
       return similarity_;
@@ -63,10 +77,10 @@ public:
   }; // struct Params
 
   /** \brief create instance.
-   *  \param name name for strategy.
-   *  \param timeout time observed node should be in queue.
+   *  \param name   name for strategy.
+   *  \param params configuration to use.
    */
-  Strategy(const std::string &name, Params p);
+  Strategy(const std::string &name, Params params);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.
