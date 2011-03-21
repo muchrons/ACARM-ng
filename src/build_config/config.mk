@@ -29,6 +29,20 @@ ifneq (,$(shell which ccache))
 export WITH_CCACHE:=1
 endif
 
+# use C++0x for inter (required when GCC>=4.5 is present
+ifeq ($(TC),intel)
+GCC_VER:=$(shell g++ --version | head -1 | sed 's: .*::' | sed 's:^\([0-9]\+\.[0-9]\+\).*:\1:')
+ifeq ($(GCC_VER),4.5)
+ifeq ($(shell test -e /usr/include/c++/4.4 && echo OK),OK)
+TMP+=-I /usr/include/c++/4.4
+else
+$(warning GCC 4.5 IS (AS FOR NOW) INCOMPATIBLE WITH ICC, SINCE IT USES IMPLICIT C++0x IN)
+$(warning HEADER FILES (INTEL DOES NOT MAKE SUCH AN ASSUMPTION). PROGRAM PROBABLY WILL NOT COMPILE.)
+$(warning TO FIX THIS ISSUE TRY INSTALLING GCC 4.4)
+endif # has gcc 4.4 libs
+endif # gcc 4.5
+endif # intel
+
 # enable stack-protector
 ifeq ($(TC),local)
 TMP+=-fstack-protector-all
