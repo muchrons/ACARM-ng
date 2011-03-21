@@ -42,8 +42,8 @@ template<>
 void testObj::test<2>(void)
 {
   const Similarity s=compare( ReferenceURL("other name", "http://et.home"), ReferenceURL("name", "http://eat.home") );
-  ensure("elements differ too little", s.get()>0.5);
-  ensure("elements marked identical", s.get()<1);
+  ensure("elements differ too little", s.get()>0.4);
+  ensure("elements marked (almost) identical", s.get()<1);
 }
 
 // test totally different referenceURLs

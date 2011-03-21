@@ -1,8 +1,5 @@
 #!/bin/bash
 DB="acarm_ng_test"
-
-# note: 'ls' is needed here to preserve proper order of execution
-for s in `ls *.sql` tests/create_test_user.sql
-do
-  psql -d "$DB" -f $s || exit $?
-done
+./init_db "$DB" "tests/daemon_pass" "tests/ui_pass" || exit $?
+psql -d "$DB" -f tests/create_test_user.sql || exit $?
+exit 0
