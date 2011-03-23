@@ -19,3 +19,4 @@
 * rework severity computing algorithm to make higher priority for meta-alerts with high-priority alerts (now main part is average...).
 * add heartbeats for daemon, so that GUI will know when system is online and when it is not.
 * implement persistency::sqlite
+* remove extra checks/triggers in data base, when they are not needed.
