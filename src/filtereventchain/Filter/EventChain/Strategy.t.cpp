@@ -29,6 +29,8 @@ struct TestClass: public TestStubs
   {
   }
 
+
+
   Timestamp              ts_;
   GraphNodePtrNN         sampleLeaf_;
   Strategy::ChangedNodes changed_;
@@ -220,7 +222,7 @@ void testObj::test<11>(void)
   ensure("invalid priority delta", fabs(changed_[0]->getMetaAlert()->getSeverityDelta() - 0.42)<0.01 );
 }
 
-// test if correlation does not occure for entries that have the same source and IP addresses
+// test if correlation occures for entries that have the same source and IP addresses
 template<>
 template<>
 void testObj::test<12>(void)
@@ -231,7 +233,7 @@ void testObj::test<12>(void)
   ensure_equals("some nodes have been changed", changed_.size(), 0u);
 
   s_.process(sampleLeaf_, changed_);
-  ensure_equals("correlated with alert with same src/dst address", changed_.size(), 0u);
+  ensure_equals("not correlated with alert with same src/dst address", changed_.size(), 1u);
 }
 
 // test if chronology is taken into account when correlating
@@ -327,6 +329,36 @@ void testObj::test<17>(void)
 
   s_.process(sampleLeaf_, changed_);
   ensure_equals("non-chronological events have been correlated", changed_.size(), 0u);
+}
+
+// test for bug - correlating when hosts can be correlated both ways and timestamps are not equal
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  const Timestamp ts( ts_.get()-10 );
+  GraphNodePtrNN  tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", NULL,
+                                                          "1.2.3.4", NULL, ts) ) );
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("correlation failed for multiple hosts", changed_.size(), 1u);
+}
+
+// test for bug - correlating when hosts can be correlated both ways and timestamps are not equal
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  const Timestamp ts( ts_.get()+10 );
+  GraphNodePtrNN  tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", NULL,
+                                                          "1.2.3.4", NULL, ts) ) );
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("correlation failed for multiple hosts", changed_.size(), 1u);
 }
 
 } // namespace tut

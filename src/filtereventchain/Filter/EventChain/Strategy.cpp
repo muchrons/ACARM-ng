@@ -89,16 +89,8 @@ Data Strategy::makeThisEntryUserData(const Node n) const
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
 {
   // if there is source/destination address(s) missing - skip entry
-  if( thisEntry.t_.beginIPs_->size()==0u ||
-      thisEntry.t_.endIPs_->size()  ==0u    )
+  if( thisEntry.t_.beginIPs_->size()==0u || thisEntry.t_.endIPs_->size()  ==0u )
     return false;
-  // skip entries where source and destination IPs are the same
-  if( thisEntry.t_.beginIPs_->size()==1 &&
-      thisEntry.t_.endIPs_->size()  ==1     )
-  {
-    if( thisEntry.t_.beginIPs_->begin()->first==thisEntry.t_.endIPs_->begin()->first )
-      return false;
-  }
   // accept this entry
   return true;
 }
@@ -137,20 +129,23 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
   // find from/to chains
   const NodeEntry *from=NULL;
   const NodeEntry *to  =NULL;
+
+  // check for chain thisEntry->otherEntry
   if( hasCommonIP(thisEntry.t_.endIPs_, otherEntry.t_.beginIPs_) )
-  {
-    assert( thisEntry.t_.endTs_<=otherEntry.t_.beginTs_ );
-    from=&thisEntry;
-    to  =&otherEntry;
-  }
-  else
-  {
-    // these must be true - otherwise these hosts could not be correlated in a first place
-    assert( hasCommonIP(otherEntry.t_.endIPs_, thisEntry.t_.beginIPs_) );
-    assert( otherEntry.t_.endTs_<=thisEntry.t_.beginTs_ );
-    from=&otherEntry;
-    to  =&thisEntry;
-  }
+    if( thisEntry.t_.endTs_<=otherEntry.t_.beginTs_ )
+    {
+      from=&thisEntry;
+      to  =&otherEntry;
+    }
+
+  // check for chain otherEntry->thisEntry
+  if( hasCommonIP(otherEntry.t_.endIPs_, thisEntry.t_.beginIPs_) )
+    if( otherEntry.t_.endTs_<=thisEntry.t_.beginTs_ )
+    {
+      from=&otherEntry;
+      to  =&thisEntry;
+    }
+
   // ensure assignments were valid
   assert(from!=NULL);
   assert(to  !=NULL);
