@@ -177,7 +177,7 @@ private:
 
     // if element cannot be correlated at the moment, add it to queue - maybe
     // we'll have better luck next time...
-    ntq.update(thisEntry, getTimeout() );
+    ntq.update(thisEntry, getTimeoutForNotCorrelatedEntry(thisEntry) );
     return -2;
   }
 
@@ -242,6 +242,22 @@ private:
   unsigned int getTimeout(void) const
   {
     return timeout_;
+  }
+
+  unsigned int getTimeoutForNotCorrelatedEntry(const NodeEntry &ne) const
+  {
+    const time_t       ct  =ne.node_->getMetaAlert()->getCreateTime().get();
+    const time_t       now =time(NULL);
+    const unsigned int minTimeout=6;        // TODO: hardcoded value
+    // time is not properly synchronized?
+    if(now<ct)
+      return minTimeout;
+    const unsigned int diff=now-ct;
+    // return minimal timeout, if would be too short.
+    if( diff>=getTimeout() )
+      return minTimeout;
+    // compute time in queue
+    return getTimeout()-diff;
   }
 
   const unsigned int timeout_;
