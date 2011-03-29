@@ -401,4 +401,44 @@ void testObj::test<20>(void)
   }
 }
 
+// test if during backward correlation of chain data part is updated
+template<>
+template<>
+void testObj::test<21>(void)
+{
+  // add first element: <from;to>={4.3.2.1;6.6.3.5}
+  {
+    GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", NULL,
+                                                           "6.6.3.5", NULL, ts_) ) );
+    s_.process(tmp, changed_);
+    ensure_equals("some nodes have been changed", changed_.size(), 0u);
+  }
+
+  // correlate with first: <from;to>={4.3.2.2;6.6.3.5}
+  {
+    GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.2", NULL,
+                                                           "4.3.2.1", NULL, ts_) ) );
+    s_.process(tmp, changed_);
+    ensure_equals("second correlation failed", changed_.size(), 1u);
+    changed_.clear();
+  }
+
+  // correlate the second time: <from;to>={4.3.2.3;6.6.3.5}
+  {
+    GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.3", NULL,
+                                                           "4.3.2.2", NULL, ts_) ) );
+    s_.process(tmp, changed_);
+    ensure_equals("third correlation failed", changed_.size(), 1u);
+    changed_.clear();
+  }
+
+  // correlate the third time: <from;to>={4.3.2.4;6.6.3.5}
+  {
+    GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.4", NULL,
+                                                           "4.3.2.3", NULL, ts_) ) );
+    s_.process(tmp, changed_);
+    ensure_equals("backward correlation failed (from/to data not updated?)", changed_.size(), 1u);
+  }
+}
+
 } // namespace tut
