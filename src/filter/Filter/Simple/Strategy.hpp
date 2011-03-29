@@ -246,16 +246,18 @@ private:
 
   unsigned int getTimeoutForNotCorrelatedEntry(const NodeEntry &ne) const
   {
-    const time_t       ct  =ne.node_->getMetaAlert()->getCreateTime().get();
-    const time_t       now =time(NULL);
-    const unsigned int minTimeout=6;        // TODO: hardcoded value
+    const time_t ct =ne.node_->getMetaAlert()->getCreateTime().get();
+    const time_t now=time(NULL);
     // time is not properly synchronized?
     if(now<ct)
-      return minTimeout;
-    const unsigned int diff=now-ct;
+      return getTimeout();
+
+    const unsigned int diff      =now-ct;
+    const unsigned int minTimeout=6;        // TODO: hardcoded value
     // return minimal timeout, if would be too short.
     if( diff>=getTimeout() )
       return minTimeout;
+
     // compute time in queue
     return getTimeout()-diff;
   }
