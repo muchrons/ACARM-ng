@@ -45,6 +45,7 @@ CREATE TABLE    hosts
 
   CONSTRAINT role_check CHECK (role IN ('src', 'dst'))
 );
+CREATE INDEX hosts_id_alert_index ON hosts(id_alert);
 
 
 -- processes
@@ -78,6 +79,7 @@ CREATE TABLE    services
 
   CONSTRAINT port_check CHECK ( 0<port AND port<65536 )
 );
+CREATE INDEX services_id_host_index ON services(id_host);
 
 
 -- analyzers
@@ -104,3 +106,5 @@ CREATE TABLE alert_analyzers
 
   UNIQUE(id_alert, id_analyzer)
 );
+CREATE INDEX alert_analyzers_id_alert_index    ON alert_analyzers(id_alert);
+CREATE INDEX alert_analyzers_id_analyzer_index ON alert_analyzers(id_analyzer);
