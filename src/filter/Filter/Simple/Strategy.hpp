@@ -92,11 +92,17 @@ private:
   virtual TUserData makeUserDataForNewNode(const NodeEntry &thisEntry,
                                            const NodeEntry &otherEntry,
                                            const Node       newNode) const = 0;
-  /** \brief gives user a handle to postprocess node (new, or re-correlated).
+  /** \brief gives user a handle to postprocess new node.
    *  \param n  node to be post processed.
    *  \param bf backend facade to use during postprocessing.
    */
   virtual void postProcessNode(Node &n, BackendFacade &bf) const = 0;
+  /** \brief gives user a handle to postprocess node (added after corraltion).
+   *  \param entry node entry to be post processed.
+   *  \param added newly added entry (i.e. added to 'entry' element).
+   *  \param bf    backend facade to use during postprocessing.
+   */
+  virtual void postProcessNode(NodeEntry &entry, const NodeEntry &added, BackendFacade &bf) const = 0;
 
 
   // this is the core - do NOT overwrite this method
@@ -229,7 +235,7 @@ private:
                                << it->node_->getMetaAlert()->getID().get() << " ('"
                                << it->node_->getMetaAlert()->getName().get() << "')";
       bf.addChild(it->node_, thisEntry.node_);      // add new alert to already correlated in one set
-      postProcessNode(it->node_, bf);
+      postProcessNode(*it, thisEntry, bf);          // post-process node, after adding to correlation
     }
 
     // if we're here, it means that we were able to correlate and may exit
