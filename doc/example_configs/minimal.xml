@@ -4,6 +4,8 @@
   <general>
     <url>http://test.url</url>
     <cleanupInterval>42</cleanupInterval>
+    <cleanupOlder>360</cleanupOlder>
+    <pluginsDir>/home/acarm-ng/plugins/</pluginsDir>
   </general>
 
   <persistency>
