@@ -361,4 +361,44 @@ void testObj::test<19>(void)
   ensure_equals("correlation failed for multiple hosts", changed_.size(), 1u);
 }
 
+// test if during correlation of chain data part is updated
+template<>
+template<>
+void testObj::test<20>(void)
+{
+  // add first element: <from;to>={4.3.2.1;6.6.3.5}
+  {
+    GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", NULL,
+                                                           "6.6.3.5", NULL, ts_) ) );
+    s_.process(tmp, changed_);
+    ensure_equals("some nodes have been changed", changed_.size(), 0u);
+  }
+
+  // correlate with first: <from;to>={4.3.2.1;6.6.3.6}
+  {
+    GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.5", NULL,
+                                                           "6.6.3.6", NULL, ts_) ) );
+    s_.process(tmp, changed_);
+    ensure_equals("second correlation failed", changed_.size(), 1u);
+    changed_.clear();
+  }
+
+  // correlate the second time: <from;to>={4.3.2.1;6.6.3.7}
+  {
+    GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.6", NULL,
+                                                           "6.6.3.7", NULL, ts_) ) );
+    s_.process(tmp, changed_);
+    ensure_equals("third correlation failed", changed_.size(), 1u);
+    changed_.clear();
+  }
+
+  // correlate the third time: <from;to>={4.3.2.1;6.6.3.8}
+  {
+    GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("6.6.3.7", NULL,
+                                                           "6.6.3.8", NULL, ts_) ) );
+    s_.process(tmp, changed_);
+    ensure_equals("correlation failed (from/to data not updated?)", changed_.size(), 1u);
+  }
+}
+
 } // namespace tut

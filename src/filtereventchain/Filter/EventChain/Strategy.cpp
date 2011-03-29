@@ -42,12 +42,48 @@ bool hasCommonIP(const Data::SharedIPSet &s1, const Data::SharedIPSet &s2)
   return false;
 } // hasCommonIP()
 
+
 Timestamp getTs(const Strategy::Node &n)
 {
   if( n->getAlert()->getDetectionTime()!=NULL )
     return *n->getAlert()->getDetectionTime();
   return n->getAlert()->getCreationTime();
-}
+} // getTs()
+
+
+typedef const Strategy::NodeEntry*                 ConstNodeEntryPtr;
+typedef pair<ConstNodeEntryPtr, ConstNodeEntryPtr> ConstNodeEntryPtrPair;
+
+ConstNodeEntryPtrPair fromToOrder(const Strategy::NodeEntry &entry1, const Strategy::NodeEntry &entry2)
+{
+  // find from/to chains
+  ConstNodeEntryPtr from=NULL;
+  ConstNodeEntryPtr to  =NULL;
+
+  // check for chain entry1->entry2
+  if( hasCommonIP(entry1.t_.endIPs_, entry2.t_.beginIPs_) )
+    if( entry1.t_.endTs_<=entry2.t_.beginTs_ )
+    {
+      from=&entry1;
+      to  =&entry2;
+    }
+
+  // check for chain entry2->entry1
+  if( hasCommonIP(entry2.t_.endIPs_, entry1.t_.beginIPs_) )
+    if( entry2.t_.endTs_<=entry1.t_.beginTs_ )
+    {
+      from=&entry2;
+      to  =&entry1;
+    }
+
+  // ensure assignments were valid
+  assert(from!=NULL);
+  assert(to  !=NULL);
+  assert( hasCommonIP(from->t_.endIPs_, to->t_.beginIPs_) );
+  assert( from->t_.endTs_<=to->t_.beginTs_ );
+
+  return ConstNodeEntryPtrPair(from, to);
+} // fromToOrder()
 
 } // unnamed namespace
 
@@ -144,33 +180,13 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
   assert( isEntryInteresting(thisEntry)  );
   assert( isEntryInteresting(otherEntry) );
   // find from/to chains
-  const NodeEntry *from=NULL;
-  const NodeEntry *to  =NULL;
-
-  // check for chain thisEntry->otherEntry
-  if( hasCommonIP(thisEntry.t_.endIPs_, otherEntry.t_.beginIPs_) )
-    if( thisEntry.t_.endTs_<=otherEntry.t_.beginTs_ )
-    {
-      from=&thisEntry;
-      to  =&otherEntry;
-    }
-
-  // check for chain otherEntry->thisEntry
-  if( hasCommonIP(otherEntry.t_.endIPs_, thisEntry.t_.beginIPs_) )
-    if( otherEntry.t_.endTs_<=thisEntry.t_.beginTs_ )
-    {
-      from=&otherEntry;
-      to  =&thisEntry;
-    }
-
-  // ensure assignments were valid
-  assert(from!=NULL);
-  assert(to  !=NULL);
-  assert( hasCommonIP(from->t_.endIPs_, to->t_.beginIPs_) );
-  assert( from->t_.endTs_<=to->t_.beginTs_ );
+  ConstNodeEntryPtrPair p   =fromToOrder(thisEntry, otherEntry);
+  const NodeEntry      *from=p.first;
+  const NodeEntry      *to  =p.second;
   // sanity check
   assert( isEntryInteresting(*from) );
   assert( isEntryInteresting(*to)   );
+
   // log some info
   LOGMSG_DEBUG_S(log_)<<"connecting from: '"<<from->node_->getMetaAlert()->getName().get()<<"' to: '"
                       <<to->node_->getMetaAlert()->getName().get()<<"' as: '"
@@ -195,6 +211,28 @@ void Strategy::postProcessNode(Node &n, Filter::BackendFacade &bf) const
 {
   // update severity delta by a given ammount
   bf.updateSeverityDelta(n, params_.priDelta_);
+}
+
+void Strategy::postProcessNode(NodeEntry &entry, const NodeEntry &added, BackendFacade &/*bf*/) const
+{
+  assert( isEntryInteresting(entry) );
+  assert( isEntryInteresting(added) );
+  // find from/to chains
+  ConstNodeEntryPtrPair p   =fromToOrder(entry, added);
+  const NodeEntry      *from=p.first;
+  const NodeEntry      *to  =p.second;
+  // sanity check
+  assert( isEntryInteresting(*from) );
+  assert( isEntryInteresting(*to)   );
+
+  entry.t_.beginIPs_=from->t_.beginIPs_;
+  entry.t_.beginTs_ =from->t_.beginTs_;
+  entry.t_.endIPs_  =to->t_.endIPs_;
+  entry.t_.endTs_   =to->t_.endTs_;
+  entry.t_.len_     =from->t_.len_ + to->t_.len_;
+  assert(entry.t_.len_!=0u);
+  assert(entry.t_.len_>=2u);
+  assert(entry.t_.beginTs_<=entry.t_.endTs_);
 }
 
 } // namespace EventChain
