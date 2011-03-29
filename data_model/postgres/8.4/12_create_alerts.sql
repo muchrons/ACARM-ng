@@ -106,5 +106,4 @@ CREATE TABLE alert_analyzers
 
   UNIQUE(id_alert, id_analyzer)
 );
-CREATE INDEX alert_analyzers_id_alert_index    ON alert_analyzers(id_alert);
-CREATE INDEX alert_analyzers_id_analyzer_index ON alert_analyzers(id_analyzer);
+CREATE INDEX alert_analyzers_id_alert_index ON alert_analyzers(id_alert);
