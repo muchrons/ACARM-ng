@@ -70,6 +70,8 @@ private:
                                       const NodeEntry &otherEntry,
                                       const Node       newNode) const;
   virtual void postProcessNode(Node &n, Filter::BackendFacade &bf) const;
+  virtual void postProcessNode(NodeEntry &entry, const NodeEntry &added, BackendFacade &bf) const;
+
 
   const Parameters params_;
 }; // class Strategy
