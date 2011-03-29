@@ -89,10 +89,23 @@ Data Strategy::makeThisEntryUserData(const Node n) const
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
 {
   // if there is source/destination address(s) missing - skip entry
-  if( thisEntry.t_.beginIPs_->size()==0u || thisEntry.t_.endIPs_->size()  ==0u )
+  if( thisEntry.t_.beginIPs_->size()==0u || thisEntry.t_.endIPs_->size()==0u )
     return false;
+  // skip entries entries where source and destination IPs are the same
+  if( thisEntry.t_.beginIPs_->size()==thisEntry.t_.endIPs_->size() )
+  {
+    // check if all elements are identical
+    for(Algo::GatherIPs::IPSet::const_iterator it1=thisEntry.t_.beginIPs_->begin(), it2=thisEntry.t_.endIPs_->begin();
+        it1!=thisEntry.t_.beginIPs_->end(); ++it1, ++it2)
+    {
+      if(it1->first!=it2->first)
+        return true;
+    }
+    // alle elements identical - not an interesting entry
+    return false;
+  } // if(equal_sizes)
   // accept this entry
-  return true;
+  return false;
 }
 
 Persistency::MetaAlert::Name Strategy::getMetaAlertName(
@@ -107,8 +120,10 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
                             const NodeEntry otherEntry) const
 {
   // sanity check
-  assert( isEntryInteresting(thisEntry)  );
-  assert( isEntryInteresting(otherEntry) );
+  if( !isEntryInteresting(thisEntry)  )
+    return false;
+  if( !isEntryInteresting(otherEntry) )
+    return false;
 
   // check for chain thisEntry->otherEntry
   if( hasCommonIP(thisEntry.t_.endIPs_, otherEntry.t_.beginIPs_) )
@@ -126,6 +141,8 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
                                       const NodeEntry &otherEntry,
                                       const Node       newNode) const
 {
+  assert( isEntryInteresting(thisEntry)  );
+  assert( isEntryInteresting(otherEntry) );
   // find from/to chains
   const NodeEntry *from=NULL;
   const NodeEntry *to  =NULL;
@@ -169,8 +186,8 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
   assert(d.len_!=0u);
   assert(d.len_>=2u);
   assert(d.beginTs_<=d.endTs_);
-  assert( isEntryInteresting( NodeEntry(newNode, d) ) );
   System::ignore(newNode);
+  // NOTE: newly correlated entry (i.e. data) may NOT be interesting!
   return d;
 }
 

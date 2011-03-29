@@ -222,18 +222,18 @@ void testObj::test<11>(void)
   ensure("invalid priority delta", fabs(changed_[0]->getMetaAlert()->getSeverityDelta() - 0.42)<0.01 );
 }
 
-// test if correlation occures for entries that have the same source and IP addresses
+// test if correlation does not occure for entries that have the same source and destnation IP addresses
 template<>
 template<>
 void testObj::test<12>(void)
 {
-  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", NULL,
-                                                         "4.3.2.1", NULL, ts_) ) );
+  GraphNodePtrNN tmp( makeNewLeaf( makeNewAlertWithHosts("4.3.2.1", "1.2.3.4",
+                                                         "4.3.2.1", "1.2.3.4", ts_) ) );
   s_.process(tmp, changed_);
   ensure_equals("some nodes have been changed", changed_.size(), 0u);
 
   s_.process(sampleLeaf_, changed_);
-  ensure_equals("not correlated with alert with same src/dst address", changed_.size(), 1u);
+  ensure_equals("correlated alert with same src/dst addresses", changed_.size(), 0u);
 }
 
 // test if chronology is taken into account when correlating
