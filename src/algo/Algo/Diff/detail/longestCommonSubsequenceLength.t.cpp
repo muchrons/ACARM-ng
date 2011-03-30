@@ -78,5 +78,5 @@ void testObj::test<6>(void)
   const unsigned int len=longestCommonSubsequenceLength("", "");
   ensure_equals("non-zero length for 0-length strings", len, 0);
 }
-
+//TODO: consider addidng test for sequences: AbC and aBc
 } // namespace tut

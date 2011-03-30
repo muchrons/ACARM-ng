@@ -18,7 +18,7 @@ Entry::Entry(const HashSharedPtr &hashPtr, Filter::BackendFacade &bf, TimeoutedS
   owner_("Filter::NewEvent"),
   dc_(bf.createDynamicConfig( owner_ )),
   hashPtr_( hashPtr ),
-  ts_(ts)
+  ts_(&ts)
 {
   dc_->write( hashPtr_.get()->getHash(), "true");
   // TODO: notice that this object will be copyied multiple times during life cycle, thus multiple instances
@@ -29,12 +29,18 @@ Entry::Entry(const HashSharedPtr &hashPtr, Filter::BackendFacade &bf, TimeoutedS
 Entry::~Entry()
 {
   // TODO: this call may throw - add try{}catch(...), with proper comment on this event.
-  ts_.add( hashPtr_ );
+  ts_->add( hashPtr_ );
 }
 
 const Hash::HashData &Entry::getHash() const
 {
   return hashPtr_.get()->getHash();
+}
+bool Entry::operator==(const Entry &other) const
+{
+  if(getHash() != other.getHash())
+    return false;
+  return true;
 }
 } // namespace NewEvent
 } // namespace Filter

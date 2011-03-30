@@ -48,7 +48,6 @@ factory tf("Filter/NewEvent/ProcessedSet");
 
 namespace tut
 {
-
 // check if non-existing entry is reported as such
 template<>
 template<>
@@ -62,10 +61,10 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  HashSharedPtr  h1(new Hash("some entry"));
-  EntrySharedPtr e1(new Entry(h1, bf_, ts_));
-  HashSharedPtr  h2(new Hash("some other entry"));
-  EntrySharedPtr e2(new Entry(h2, bf_, ts_));
+  HashSharedPtr h1(new Hash("some entry"));
+  Entry         e1(h1, bf_, ts_);
+  HashSharedPtr h2(new Hash("some other entry"));
+  Entry         e2(h2, bf_, ts_);
   ps_.markAsProcessed(e1, 1);
   ps_.markAsProcessed(e2, 2);
   ps_.prune();
@@ -90,10 +89,10 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  HashSharedPtr  h1(new Hash("some entry"));
-  EntrySharedPtr e1(new Entry(h1, bf_, ts_));
-  HashSharedPtr  h2(new Hash("some other entry"));
-  EntrySharedPtr e2(new Entry(h2, bf_, ts_));
+  HashSharedPtr h1(new Hash("some entry"));
+  Entry         e1(h1, bf_, ts_);
+  HashSharedPtr h2(new Hash("some other entry"));
+  Entry         e2(h2, bf_, ts_);
   ps_.markAsProcessed(e1, 1);
   ps_.markAsProcessed(e2, 2);
   ensure("element 1 not present", ps_.update(*h1.get(), 1) );
@@ -107,7 +106,7 @@ void testObj::test<4>(void)
 {
   HashSharedPtr hash(new Hash("some name"));
   {
-    EntrySharedPtr e(new Entry(hash, bf_, ts_));
+    Entry e(hash, bf_, ts_);
     ps_.markAsProcessed(e, 1);
   }
   sleep(2);
@@ -115,5 +114,4 @@ void testObj::test<4>(void)
   ps_.prune();
   ensure("element not-timeouted after prune", ts_.isTimeouted(hash));
 }
-
 } // namespace tut

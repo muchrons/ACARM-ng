@@ -43,14 +43,13 @@ public:
    *  \return (SHA1) hash of entry name.
    */
   const Hash::HashData &getHash() const;
-
+  bool operator==(const Entry &other) const;
 private:
 
-  Persistency::IO::DynamicConfig::Owner  owner_;
-  Persistency::IO::DynamicConfigAutoPtr  dc_;       // TODO: auto_ptr<> is invalid here - Entry is copyied to the collection
-                                                    //       and generally expected to behave like a value. make this SharedPtrNotNULL or simillar.
-  HashSharedPtr                        hashPtr_;
-  TimeoutedSet                         &ts_;
+  Persistency::IO::DynamicConfig::Owner                      owner_;
+  Commons::SharedPtrNotNULL<Persistency::IO::DynamicConfig>  dc_;
+  HashSharedPtr                                              hashPtr_;
+  TimeoutedSet                                              *ts_;
 }; // class Entry
 
 typedef Commons::SharedPtrNotNULL<Entry> EntrySharedPtr;

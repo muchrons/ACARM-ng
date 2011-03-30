@@ -29,13 +29,13 @@ public:
    *  \param entry   entry connected with processed leaf.
    *  \param timeout time life (in seconds) of stored (meta-)alert name.
    */
-  void markAsProcessed(const EntrySharedPtr &entry, unsigned int timeout);
+  void markAsProcessed(const Entry &entry, unsigned int timeout);
   /** \brief removes timeouted entries from cache.
    */
   void prune(void);
 
 private:
-  typedef Base::TimeoutQueue<EntrySharedPtr> Set;
+  typedef Base::TimeoutQueue<Entry> Set;
 
   Set set_;
 }; // class ProcessedSet

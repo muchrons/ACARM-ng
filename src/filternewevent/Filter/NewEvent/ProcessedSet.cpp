@@ -13,7 +13,7 @@ bool ProcessedSet::update(const Hash &hash, unsigned int timeout)
 {
   for(Set::iterator it = set_.begin(); it != set_.end(); ++it)
   {
-    const Hash::HashData hashData = (*it).get()->getHash();
+    const Hash::HashData hashData = (*it).getHash();
     if(hashData==hash.getHash())
     {
       markAsProcessed(*it, timeout);
@@ -24,7 +24,7 @@ bool ProcessedSet::update(const Hash &hash, unsigned int timeout)
   return false;
 }
 
-void ProcessedSet::markAsProcessed(const EntrySharedPtr &entry, unsigned int timeout)
+void ProcessedSet::markAsProcessed(const Entry &entry, unsigned int timeout)
 {
   set_.update(entry, timeout);
 }

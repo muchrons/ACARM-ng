@@ -108,4 +108,5 @@ void testObj::test<4>(void)
   testData(string( hash ), "true");
   ensure("Element not present in collection", ts_.isTimeouted(hashPtr));
 }
+//TODO: add test for "==" operator
 } // namespace tut
