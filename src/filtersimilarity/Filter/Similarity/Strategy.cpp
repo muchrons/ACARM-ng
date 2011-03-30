@@ -121,5 +121,10 @@ void Strategy::postProcessNode(Node &/*n*/, Filter::BackendFacade &/*bf*/) const
   // nothing to be done here
 }
 
+void Strategy::postProcessNode(NodeEntry &/*entry*/, const NodeEntry &/*added*/, BackendFacade &/*bf*/) const
+{
+  // nothing to be done here
+}
+
 } // namespace Similarity
 } // namespace Filter

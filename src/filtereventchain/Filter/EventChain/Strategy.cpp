@@ -42,12 +42,48 @@ bool hasCommonIP(const Data::SharedIPSet &s1, const Data::SharedIPSet &s2)
   return false;
 } // hasCommonIP()
 
+
 Timestamp getTs(const Strategy::Node &n)
 {
   if( n->getAlert()->getDetectionTime()!=NULL )
     return *n->getAlert()->getDetectionTime();
   return n->getAlert()->getCreationTime();
-}
+} // getTs()
+
+
+typedef const Strategy::NodeEntry*                 ConstNodeEntryPtr;
+typedef pair<ConstNodeEntryPtr, ConstNodeEntryPtr> ConstNodeEntryPtrPair;
+
+ConstNodeEntryPtrPair fromToOrder(const Strategy::NodeEntry &entry1, const Strategy::NodeEntry &entry2)
+{
+  // find from/to chains
+  ConstNodeEntryPtr from=NULL;
+  ConstNodeEntryPtr to  =NULL;
+
+  // check for chain entry1->entry2
+  if( hasCommonIP(entry1.t_.endIPs_, entry2.t_.beginIPs_) )
+    if( entry1.t_.endTs_<=entry2.t_.beginTs_ )
+    {
+      from=&entry1;
+      to  =&entry2;
+    }
+
+  // check for chain entry2->entry1
+  if( hasCommonIP(entry2.t_.endIPs_, entry1.t_.beginIPs_) )
+    if( entry2.t_.endTs_<=entry1.t_.beginTs_ )
+    {
+      from=&entry2;
+      to  =&entry1;
+    }
+
+  // ensure assignments were valid
+  assert(from!=NULL);
+  assert(to  !=NULL);
+  assert( hasCommonIP(from->t_.endIPs_, to->t_.beginIPs_) );
+  assert( from->t_.endTs_<=to->t_.beginTs_ );
+
+  return ConstNodeEntryPtrPair(from, to);
+} // fromToOrder()
 
 } // unnamed namespace
 
@@ -89,18 +125,23 @@ Data Strategy::makeThisEntryUserData(const Node n) const
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
 {
   // if there is source/destination address(s) missing - skip entry
-  if( thisEntry.t_.beginIPs_->size()==0u ||
-      thisEntry.t_.endIPs_->size()  ==0u    )
+  if( thisEntry.t_.beginIPs_->size()==0u || thisEntry.t_.endIPs_->size()==0u )
     return false;
-  // skip entries where source and destination IPs are the same
-  if( thisEntry.t_.beginIPs_->size()==1 &&
-      thisEntry.t_.endIPs_->size()  ==1     )
+  // skip entries entries where source and destination IPs are the same
+  if( thisEntry.t_.beginIPs_->size()==thisEntry.t_.endIPs_->size() )
   {
-    if( thisEntry.t_.beginIPs_->begin()->first==thisEntry.t_.endIPs_->begin()->first )
-      return false;
-  }
+    // check if all elements are identical
+    for(Algo::GatherIPs::IPSet::const_iterator it1=thisEntry.t_.beginIPs_->begin(), it2=thisEntry.t_.endIPs_->begin();
+        it1!=thisEntry.t_.beginIPs_->end(); ++it1, ++it2)
+    {
+      if(it1->first!=it2->first)
+        return true;
+    }
+    // alle elements identical - not an interesting entry
+    return false;
+  } // if(equal_sizes)
   // accept this entry
-  return true;
+  return false;
 }
 
 Persistency::MetaAlert::Name Strategy::getMetaAlertName(
@@ -115,8 +156,10 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
                             const NodeEntry otherEntry) const
 {
   // sanity check
-  assert( isEntryInteresting(thisEntry)  );
-  assert( isEntryInteresting(otherEntry) );
+  if( !isEntryInteresting(thisEntry)  )
+    return false;
+  if( !isEntryInteresting(otherEntry) )
+    return false;
 
   // check for chain thisEntry->otherEntry
   if( hasCommonIP(thisEntry.t_.endIPs_, otherEntry.t_.beginIPs_) )
@@ -134,31 +177,16 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
                                       const NodeEntry &otherEntry,
                                       const Node       newNode) const
 {
+  assert( isEntryInteresting(thisEntry)  );
+  assert( isEntryInteresting(otherEntry) );
   // find from/to chains
-  const NodeEntry *from=NULL;
-  const NodeEntry *to  =NULL;
-  if( hasCommonIP(thisEntry.t_.endIPs_, otherEntry.t_.beginIPs_) )
-  {
-    assert( thisEntry.t_.endTs_<=otherEntry.t_.beginTs_ );
-    from=&thisEntry;
-    to  =&otherEntry;
-  }
-  else
-  {
-    // these must be true - otherwise these hosts could not be correlated in a first place
-    assert( hasCommonIP(otherEntry.t_.endIPs_, thisEntry.t_.beginIPs_) );
-    assert( otherEntry.t_.endTs_<=thisEntry.t_.beginTs_ );
-    from=&otherEntry;
-    to  =&thisEntry;
-  }
-  // ensure assignments were valid
-  assert(from!=NULL);
-  assert(to  !=NULL);
-  assert( hasCommonIP(from->t_.endIPs_, to->t_.beginIPs_) );
-  assert( from->t_.endTs_<=to->t_.beginTs_ );
+  ConstNodeEntryPtrPair p   =fromToOrder(thisEntry, otherEntry);
+  const NodeEntry      *from=p.first;
+  const NodeEntry      *to  =p.second;
   // sanity check
   assert( isEntryInteresting(*from) );
   assert( isEntryInteresting(*to)   );
+
   // log some info
   LOGMSG_DEBUG_S(log_)<<"connecting from: '"<<from->node_->getMetaAlert()->getName().get()<<"' to: '"
                       <<to->node_->getMetaAlert()->getName().get()<<"' as: '"
@@ -174,8 +202,8 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
   assert(d.len_!=0u);
   assert(d.len_>=2u);
   assert(d.beginTs_<=d.endTs_);
-  assert( isEntryInteresting( NodeEntry(newNode, d) ) );
   System::ignore(newNode);
+  // NOTE: newly correlated entry (i.e. data) may NOT be interesting!
   return d;
 }
 
@@ -183,6 +211,28 @@ void Strategy::postProcessNode(Node &n, Filter::BackendFacade &bf) const
 {
   // update severity delta by a given ammount
   bf.updateSeverityDelta(n, params_.priDelta_);
+}
+
+void Strategy::postProcessNode(NodeEntry &entry, const NodeEntry &added, BackendFacade &/*bf*/) const
+{
+  assert( isEntryInteresting(entry) );
+  assert( isEntryInteresting(added) );
+  // find from/to chains
+  ConstNodeEntryPtrPair p   =fromToOrder(entry, added);
+  const NodeEntry      *from=p.first;
+  const NodeEntry      *to  =p.second;
+  // sanity check
+  assert( isEntryInteresting(*from) );
+  assert( isEntryInteresting(*to)   );
+
+  entry.t_.beginIPs_=from->t_.beginIPs_;
+  entry.t_.beginTs_ =from->t_.beginTs_;
+  entry.t_.endIPs_  =to->t_.endIPs_;
+  entry.t_.endTs_   =to->t_.endTs_;
+  entry.t_.len_     =from->t_.len_ + to->t_.len_;
+  assert(entry.t_.len_!=0u);
+  assert(entry.t_.len_>=2u);
+  assert(entry.t_.beginTs_<=entry.t_.endTs_);
 }
 
 } // namespace EventChain

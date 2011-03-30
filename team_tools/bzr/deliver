@@ -59,9 +59,7 @@ if build_project
 then
   # do final commit/revert
   echo "$SCRIPT_NAME: delivering"
-  bzr push "$PARENT" 2>&1 | \
-    grep -v -e 'This transport does not update the working tree of' \
-            -e 'Using saved location' || exit $?
+  bzr push "$PARENT"
   RET=0
 else
   echo "$SCRIPT_NAME: build failed - leaving changes for further inspections" >&2

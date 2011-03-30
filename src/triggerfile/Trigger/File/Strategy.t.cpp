@@ -32,45 +32,42 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 
   ~TestClass(void)
   {
-    try
+    while( !rmThis_.empty() )
     {
-      while( rmThis_.size()!=0 )
+      try
       {
         unlink( rmThis_.top().c_str() );
         rmdir ( rmThis_.top().c_str() );
         rmThis_.pop();
       }
-    }
-    catch(...)
-    {
-      assert(!"exception in d-tor");
-    }
+      catch(...)
+      {
+        assert(!"exception in d-tor");
+      }
+    } // while(!empty)
   }
 
   void testFileInRange(const char *root, const time_t from, const time_t to)
   {
-    const char *error="no elements in range";
     for(time_t t=from; t<=to; ++t)
     {
       // in-test quick-hack
       switch( testFile(root, t, 0) )
       {
         case 0:
-          error=NULL;
-          break;
+          return;
         case 1:
-          error="no such file";
+          // no such file - check for next one
           break;
         case 2:
-          error="file's size is invalid (empty?)";
+          tut::fail("file's size is invalid (empty?)");
           break;
         default:
           assert(!"unhandled return code");
       } // switch(file_existance)
     } // for(timestamp-range)
 
-    if(error!=NULL)
-      tut::fail(error);
+    tut::fail("no elements in range");
   }
 
   int testFile(const char *root, const time_t ts, unsigned int index)
