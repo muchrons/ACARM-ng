@@ -48,7 +48,7 @@ int main(void)
     std::cout<<"connecting..."<<std::endl;
 
     vmime::utility::url             url("smtp://" MAIL1_TEST_ACCOUNT_SERVER);  // quick hack...
-    vmime::ref<vmime::net::session> session  =vmime::create<vmime::net::session>();
+    vmime::ref<vmime::net::session> session=vmime::create<vmime::net::session>();
     session->getProperties()["transport.smtp.connection.tls"         ]="true";
     session->getProperties()["transport.smtp.connection.tls.required"]="true";
     session->getProperties()["transport.smtp.options.need-authentication"]="true";
