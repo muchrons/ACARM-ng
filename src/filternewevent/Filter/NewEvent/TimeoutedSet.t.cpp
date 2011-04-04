@@ -28,11 +28,6 @@ namespace
     {
     }
 
-    void testData(const std::string &key, const std::string &value)
-    {
-      IODynamicConfigMemory::Memory data = tconn_->data_;
-      tut::ensure_equals("invalid value", data[key], value );
-    }
     TestConnection                        *tconn_;
     Persistency::IO::ConnectionPtrNN      conn_;
     BackendFacade::ChangedNodes           changed_;
@@ -83,13 +78,14 @@ void testObj::test<3>(void)
   ensure("Element present in collection after prune", ts_.isTimeouted(hashPtr) == false);
 }
 
-// check pruning element saved in Dynamic Config
+//TODO: check pruning element saved in Dynamic Config
 template<>
 template<>
 void testObj::test<4>(void)
 {
 }
 
+//TODO
 template<>
 template<>
 void testObj::test<5>(void)
