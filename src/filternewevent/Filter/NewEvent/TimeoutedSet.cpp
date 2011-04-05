@@ -17,6 +17,7 @@ TimeoutedSet::TimeoutedSet():
 
 void TimeoutedSet::add(const HashSharedPtr &key)
 {
+  //TODO: prevent storing element with the same names
   timeouted_.push_back( key );
 }
 

@@ -114,4 +114,24 @@ void testObj::test<4>(void)
   ps_.prune();
   ensure("element not-timeouted after prune", ts_.isTimeouted(hash));
 }
+
+// test if update works
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  HashSharedPtr hash(new Hash("some name"));
+  Entry e(hash, bf_, ts_);
+  ensure("element present in processed set", ps_.update(*hash.get(), 1) == false);
+  // add element to the processed set
+  ps_.markAsProcessed(e, 1);
+  // update added element with timeout 3[s]
+  ps_.update(*hash.get(), 3);
+  // wait two seconds
+  sleep(2);
+  ps_.prune();
+  // check if element is present after prune
+  ensure("element is not timeouted", ps_.update(*hash.get(), 1));
+  //TODO
+}
 } // namespace tut
