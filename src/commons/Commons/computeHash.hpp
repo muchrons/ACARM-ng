@@ -11,6 +11,7 @@
 
 namespace Commons
 {
+// TODO: fix indentation
   /** \brief computes (SHA1) hash of a given string.
    *  \param in input string.
    */

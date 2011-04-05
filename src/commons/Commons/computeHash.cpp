@@ -7,6 +7,8 @@
 #include <openssl/sha.h>
 
 #include "Commons/computeHash.hpp"
+// TODO: exceptions includes are the only exception, that should be added to headers, even if
+//       they are not used there - this gives users ability to catch exceptions from implementation.
 #include "Commons/Exception.hpp"
 
 namespace
@@ -45,11 +47,11 @@ const unsigned char *ptrConv(const char *c)
   // convert via 'void*'...
   return static_cast<const unsigned char*>( static_cast<const void*>(c) );
 }
-
 } // unnamed namespace
 
 namespace Commons
 {
+// TODO: fix indentation
   std::string computeHash(const std::string &in)
   {
     // compute hash
