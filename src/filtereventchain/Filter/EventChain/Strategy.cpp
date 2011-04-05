@@ -210,7 +210,6 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
 void Strategy::postProcessNode(Node &n, Filter::BackendFacade &bf) const
 {
   // update severity delta by a given ammount
-  // TODO: consider adding test for checking severity delta after post-processing
   bf.updateSeverityDelta(n, params_.priDelta_);
 }
 
