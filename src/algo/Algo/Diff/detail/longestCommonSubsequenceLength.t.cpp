@@ -78,5 +78,14 @@ void testObj::test<6>(void)
   const unsigned int len=longestCommonSubsequenceLength("", "");
   ensure_equals("non-zero length for 0-length strings", len, 0);
 }
-//TODO: consider addidng test for sequences: AbC and aBc
+
+// test when strins overlap on no chars, but differ only in case
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const unsigned int len=longestCommonSubsequenceLength("aBc", "AbC");
+  ensure_equals("invalid length", len, 0);
+}
+
 } // namespace tut
