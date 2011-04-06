@@ -259,10 +259,10 @@ private:
       return getTimeout();
 
     const unsigned int diff      =now-ct;
-    const unsigned int minTimeout=6;        // TODO: hardcoded value
-    // return minimal timeout, if would be too short.
+    const unsigned int minTimeout=60;       // TODO: hardcoded value
+    // return some reasonable timeout, if normal would be too short.
     if( diff>=getTimeout() )
-      return minTimeout;
+      return std::min( getTimeout(), minTimeout );
 
     // compute time in queue
     return getTimeout()-diff;
