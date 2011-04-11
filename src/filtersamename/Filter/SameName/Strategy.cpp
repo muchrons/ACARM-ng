@@ -16,12 +16,25 @@ using namespace Persistency;
 
 namespace
 {
-template<typename T>
-void ignoreVariable(const T&)
+const char g_filterPrefix[]="[samename] ";
+
+const char *skipFilterPrefix(const char *in)
 {
+  assert(in!=NULL);
+  assert(g_filterPrefix!=NULL);
+  // skip prefix, if present
+  if( strstr(in, g_filterPrefix)==in )
+  {
+    const size_t prefixLen=sizeof(g_filterPrefix)-1;
+    return in+prefixLen;
+  }
+  // return raw string, if no prefix
+  return in;
+}
 
 }
-}
+
+
 namespace Filter
 {
 namespace SameName
@@ -56,9 +69,9 @@ Persistency::MetaAlert::Name Strategy::getMetaAlertName(
 {
   // thisEntry and otherEntry must containt the same meta-alert name
   assert( canCorrelate(thisEntry, otherEntry) );
-  ignoreVariable(otherEntry);
+  System::ignore(otherEntry);
   stringstream ss;
-  ss << "[samename] " << thisEntry.node_->getMetaAlert()->getName().get();
+  ss << g_filterPrefix << thisEntry.node_->getMetaAlert()->getName().get();
   return ss.str();
 }
 
@@ -68,8 +81,14 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   // sanityt check
   assert( isEntryInteresting(thisEntry)  );
   assert( isEntryInteresting(otherEntry) );
+  // get start pointers
+  const char *str1=thisEntry.node_->getMetaAlert()->getName().get();
+  const char *str2=otherEntry.node_->getMetaAlert()->getName().get();
+  // skip leading correlation marker, if present
+  str1=skipFilterPrefix(str1);
+  str2=skipFilterPrefix(str2);
   // ok - both names are the same
-  if( thisEntry.node_->getMetaAlert()->getName() == otherEntry.node_->getMetaAlert()->getName() )
+  if( strcmp(str1, str2)==0 )
     return true;
   return false;
 }
