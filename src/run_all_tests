@@ -5,7 +5,7 @@ RET=0
 MEM_MODE="normal"
 [ "$#" -gt 0 ] && MEM_MODE="$1"
 
-TC="local"
+TC="gcc"
 [ "$#" -gt 1 ] && TC="$2"
 
 # iterata through all build components
