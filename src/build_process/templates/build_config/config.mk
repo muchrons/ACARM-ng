@@ -10,7 +10,7 @@ export MODE:=default
 export PROFILE:=test
 
 # set default toolchain
-export TC:=local
+export TC:=gcc
 
 # enable distcc
 #export WITH_DISTCC:=1
