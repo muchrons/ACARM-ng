@@ -8,8 +8,8 @@ then
 fi
 
 DB="$1"
-PASSF_UI="$2"
-PASSF_DMN="$3"
+PASSF_DMN="$2"
+PASSF_UI="$3"
 
 # ensure porper user
 if ! psql -d "$DB" -w -c '\q' > /dev/null 2>&1
