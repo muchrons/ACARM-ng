@@ -13,4 +13,5 @@
 * consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
 * consider appending description to correlation of meta-alerts (ex. in form of change history? maybe automatically generated?).
 * implement filter that gathers stats of source/destination IPs and reports the most problematic ones with higher priority.
-* implement persistency::sqlite
+* implement persistency::sqlite.
+* optimize postgres data restoration using roots meta alerts table.
