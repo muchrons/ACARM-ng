@@ -18,16 +18,31 @@ then
   exit 2
 fi
 
+#
 # drop current content
+#
+
+MKUSERS="`mktemp`"
+# script revoking permissions of connecting for a given users
+echo "REVOKE CONNECT ON DATABASE \"$DB\" FROM \"acarm-ng-daemon\";" >> "$MKUSERS"
+echo "REVOKE CONNECT ON DATABASE \"$DB\" FROM \"acarm-ng-ui\";"     >> "$MKUSERS"
+psql -w -d "$DB" -f $MKUSERS > /dev/null 2>&1 || exit $?
+rm "$MKUSERS"
+
+# run remaining clean-up scripts
 # note: 'ls' is needed here to preserve proper order of execution
 for s in `ls 0*.sql`
 do
   psql -w -d "$DB" -f $s > /dev/null 2>&1
 done
 
+#
+# fill with new data
+#
+
 # create users
 MKUSERS="`mktemp`"
-# create accounts creation script
+# script creating accounts, giving them ability to connect
 echo "CREATE USER \"acarm-ng-daemon\" PASSWORD '$(cat "$PASSF_DMN")';" >> "$MKUSERS"
 echo "CREATE USER \"acarm-ng-ui\"     PASSWORD '$(cat "$PASSF_UI")';"  >> "$MKUSERS"
 echo "GRANT CONNECT ON DATABASE \"$DB\" to \"acarm-ng-daemon\";"       >> "$MKUSERS"
