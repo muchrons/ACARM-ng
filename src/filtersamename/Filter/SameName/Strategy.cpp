@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cassert>
 
+#include "System/ignore.hpp"
 #include "Filter/SameName/Strategy.hpp"
 #include "Algo/forEachUniqueLeaf.hpp"
 #include "Algo/GatherHosts.hpp"
