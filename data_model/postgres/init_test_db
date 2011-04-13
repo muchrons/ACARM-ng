@@ -1,5 +1,8 @@
 #!/bin/bash
 DB="acarm_ng_test"
 ./init_db "$DB" "tests/daemon_pass" "tests/ui_pass" || exit $?
-psql -d "$DB" -f tests/create_test_user.sql || exit $?
+MKSCRIPT="`mktemp`"
+sed "s:_USER_:$USER:g" tests/create_test_user.sql >> "$MKSCRIPT" || exit $?
+psql -d "$DB" -f "$MKSCRIPT" || exit $?
+rm "$MKSCRIPT" || exit $?
 exit 0
