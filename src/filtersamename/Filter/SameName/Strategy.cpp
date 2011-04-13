@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
+#include <cstring>
 #include <cassert>
 
 #include "System/ignore.hpp"
@@ -27,6 +28,7 @@ const char *skipFilterPrefix(const char *in)
   if( strstr(in, g_filterPrefix)==in )
   {
     const size_t prefixLen=sizeof(g_filterPrefix)-1;
+    assert( strlen(in)>=prefixLen );
     return in+prefixLen;
   }
   // return raw string, if no prefix
