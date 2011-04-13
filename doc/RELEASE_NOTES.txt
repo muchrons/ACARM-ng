@@ -4,7 +4,11 @@
 * filters:
   - new event
   - users monitor
+  - content similarity
 * icc support (intel toolchain)
+
+-- v0.1.1 --
+* fixed issue with same-name filter not appending to correlated entry.
 
 -- v0.1.0 --
 * first version of framework (API)
