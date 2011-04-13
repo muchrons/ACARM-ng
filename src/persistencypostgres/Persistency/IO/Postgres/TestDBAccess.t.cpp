@@ -28,7 +28,7 @@ void TestDBAccess::removeAllData(void)
   pqxx::work t(conn_.get(), "remove_all_data");
   /*
   // TRUNCATE is MUCH faster than DELETE, but pqxx displays some messages on the screen
-  // when doing it making tests unreadable... :(
+  // when calling it, making tests unreadable... :(
   t.exec("TRUNCATE meta_alerts_already_triggered CASCADE");
   t.exec("TRUNCATE meta_alerts_in_use CASCADE");
   t.exec("TRUNCATE alert_to_meta_alert_map CASCADE");
@@ -68,9 +68,8 @@ void TestDBAccess::removeAllData(void)
 
 void TestDBAccess::fillWithContent1(void)
 {
-  const int  ret=system("psql -d acarm_ng_test -f testdata/test_data_001.sql "
-                        "> /dev/null");
-  assert(ret==0 && "ooops - filling data base with tst content failed");
+  const int  ret=system("psql -d acarm_ng_test -f testdata/test_data_001.sql > /dev/null");
+  assert(ret==0 && "ooops - filling data base with test content failed");
 }
 
 void TestDBAccess::execSQL(const char *sql)
