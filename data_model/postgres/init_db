@@ -8,8 +8,8 @@ then
 fi
 
 DB="$1"
-PASSF_UI="$2"
-PASSF_DMN="$3"
+PASSF_DMN="$2"
+PASSF_UI="$3"
 
 # ensure porper user
 if ! psql -d "$DB" -w -c '\q' > /dev/null 2>&1
@@ -29,7 +29,9 @@ done
 MKUSERS="`mktemp`"
 # create accounts creation script
 echo "CREATE USER \"acarm-ng-daemon\" PASSWORD '$(cat "$PASSF_DMN")';" >> "$MKUSERS"
-echo "CREATE USER \"acarm-ng-ui\"     PASSWORD '$(cat "$PASSF_UI")' ;" >> "$MKUSERS"
+echo "CREATE USER \"acarm-ng-ui\"     PASSWORD '$(cat "$PASSF_UI")';"  >> "$MKUSERS"
+echo "GRANT CONNECT ON DATABASE \"$DB\" to \"acarm-ng-daemon\";"       >> "$MKUSERS"
+echo "GRANT CONNECT ON DATABASE \"$DB\" to \"acarm-ng-ui\";"           >> "$MKUSERS"
 psql -w -d "$DB" -f $MKUSERS || exit $?
 rm "$MKUSERS"
 
