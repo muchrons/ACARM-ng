@@ -93,6 +93,8 @@ CREATE TABLE meta_alerts_roots
 -- alerts/meta_alerts/alert_to_meta_alert_map/meta_alert_tree properly alligned
 --
 
+CREATE LANGUAGE plpgsql;
+
 -- get_parents_impl()
 CREATE FUNCTION get_parents_impl(id bigint) RETURNS SETOF bigint AS
 $$
