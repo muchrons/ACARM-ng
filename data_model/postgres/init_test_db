@@ -1,5 +1,6 @@
 #!/bin/bash
 DB="acarm_ng_test"
+NO_PASS="`psql --help | grep -q -- -w && echo -w`"
 ./init_db "$DB" "tests/daemon_pass" "tests/ui_pass" || exit $?
-psql -d "$DB" -f tests/create_test_user.sql || exit $?
+psql -d "$DB" $NO_PASS -f tests/create_test_user.sql || exit $?
 exit 0

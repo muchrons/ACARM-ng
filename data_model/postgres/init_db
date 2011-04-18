@@ -11,8 +11,10 @@ DB="$1"
 PASSF_DMN="$2"
 PASSF_UI="$3"
 
+NO_PASS="`psql --help | grep -q -- -w && echo -w`"
+
 # ensure porper user
-if ! psql -d "$DB" -w -c '\q' > /dev/null 2>&1
+if ! psql -d "$DB" $NO_PASS -c '\q' > /dev/null 2>&1
 then
   echo "$0: cannot access data base $DB as $USER" >&2
   exit 2
@@ -26,14 +28,14 @@ MKUSERS="`mktemp`"
 # script revoking permissions of connecting for a given users
 echo "REVOKE CONNECT ON DATABASE \"$DB\" FROM \"acarm-ng-daemon\";" >> "$MKUSERS"
 echo "REVOKE CONNECT ON DATABASE \"$DB\" FROM \"acarm-ng-ui\";"     >> "$MKUSERS"
-psql -w -d "$DB" -f $MKUSERS > /dev/null 2>&1 || exit $?
+psql $NO_PASS -d "$DB" -f $MKUSERS > /dev/null 2>&1 || exit $?
 rm "$MKUSERS"
 
 # run remaining clean-up scripts
 # note: 'ls' is needed here to preserve proper order of execution
 for s in `ls 0*.sql`
 do
-  psql -w -d "$DB" -f $s > /dev/null 2>&1
+  psql $NO_PASS -d "$DB" -f $s > /dev/null 2>&1
 done
 
 #
@@ -47,14 +49,14 @@ echo "CREATE USER \"acarm-ng-daemon\" PASSWORD '$(cat "$PASSF_DMN")';" >> "$MKUS
 echo "CREATE USER \"acarm-ng-ui\"     PASSWORD '$(cat "$PASSF_UI")';"  >> "$MKUSERS"
 echo "GRANT CONNECT ON DATABASE \"$DB\" to \"acarm-ng-daemon\";"       >> "$MKUSERS"
 echo "GRANT CONNECT ON DATABASE \"$DB\" to \"acarm-ng-ui\";"           >> "$MKUSERS"
-psql -w -d "$DB" -f $MKUSERS || exit $?
+psql $NO_PASS -d "$DB" -f $MKUSERS || exit $?
 rm "$MKUSERS"
 
 # create new content
 # note: 'ls' is needed here to preserve proper order of execution
 for s in `ls [^0]*.sql`
 do
-  psql -w -d "$DB" -f $s || exit $?
+  psql $NO_PASS -d "$DB" -f $s || exit $?
 done
 
 exit 0
