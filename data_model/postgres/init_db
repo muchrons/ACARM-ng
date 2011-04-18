@@ -13,6 +13,9 @@ PASSF_UI="$3"
 
 NO_PASS="`psql --help | grep -q -- -w && echo -w`"
 
+# create data base, if it does not exist yet
+psql $NO_PASS -c "CREATE DATABASE \"$DB\""
+
 # ensure porper user
 if ! psql -d "$DB" $NO_PASS -c '\q' > /dev/null 2>&1
 then
