@@ -63,5 +63,10 @@ size_t ConnectionUserStubBase::removeEntriesOlderThanImpl(size_t days, Transacti
   return getStub()->removeEntriesOlderThan(days,t );
 }
 
+HeartbeatsAutoPtr ConnectionUserStubBase::heartbeatsImpl(const Heartbeats::Owner &owner, Transaction &t)
+{
+  return getStub()->heartbeats(owner, t);
+}
+
 } // namespace Persistency
 } // namespace TestHelpers
