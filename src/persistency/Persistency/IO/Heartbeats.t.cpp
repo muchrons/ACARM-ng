@@ -100,4 +100,20 @@ void testObj::test<2>(void)
   ensure_equals("invalid timestamp passed", ioh_.paramTimeout_, 42u);
 }
 
+// test exception on too small timeout
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  try
+  {
+    ioh_.report("my module", 0u);
+    fail("too invalid timeout has been accepted");
+  }
+  catch(const IO::Exception &)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut

@@ -22,6 +22,8 @@ Heartbeats::~Heartbeats(void)
 
 void Heartbeats::report(const Module &m, const time_t timeout)
 {
+  if(timeout<1u)
+    throw Exception(SYSTEM_SAVE_LOCATION, "timeout less than 1[s] does not make sense");
   t_.ensureIsActive();
   reportImpl(t_, owner_, m, Timestamp(), timeout);
 }
