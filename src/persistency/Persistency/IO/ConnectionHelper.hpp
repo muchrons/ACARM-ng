@@ -21,8 +21,9 @@ template<typename TPersistencyHandle,
          typename TAlertIO,
          typename THostIO,
          typename TMetaAlertIO,
-         typename TDynamicConfig,
-         typename TRestorerIO>
+         typename TDynamicConfigIO,
+         typename TRestorerIO,
+         typename THeartbeatsIO>
 class ConnectionHelper: public Connection
 {
 public:
@@ -62,7 +63,7 @@ private:
 
   virtual DynamicConfigAutoPtr dynamicConfigImpl(const DynamicConfig::Owner &owner, Transaction &t)
   {
-    return DynamicConfigAutoPtr( new TDynamicConfig(owner, t, ph_) );
+    return DynamicConfigAutoPtr( new TDynamicConfigIO(owner, t, ph_) );
   }
 
   virtual RestorerAutoPtr restorerImpl(Transaction &t)
@@ -73,6 +74,11 @@ private:
   // there is no generic implementation for this call - it has to be
   // implemented separately for each backend.
   virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t) = 0;
+
+  virtual HeartbeatsAutoPtr heartbeatsImpl(const Heartbeats::Owner &owner, Transaction &t)
+  {
+    return HeartbeatsAutoPtr( new THeartbeatsIO(owner, t, ph_) );
+  }
 
   TPersistencyHandle ph_;
 }; // class ConnectionHelper
