@@ -65,6 +65,12 @@ size_t Connection::removeEntriesOlderThanImpl(size_t days, Transaction &t)
   return impl_.removeEntriesOlderThan(days, t);
 }
 
+HeartbeatsAutoPtr Connection::heartbeatsImpl(const Heartbeats::Owner &owner, Transaction &t)
+{
+  ++heartbeatsCalls_;
+  return impl_.heartbeats(owner, t);
+}
+
 } // namespace Stubs
 } // namespace IO
 } // namespace Persistency

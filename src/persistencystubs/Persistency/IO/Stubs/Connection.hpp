@@ -12,6 +12,7 @@
 #include "Persistency/IO/Stubs/MetaAlert.hpp"
 #include "Persistency/IO/Stubs/DynamicConfig.hpp"
 #include "Persistency/IO/Stubs/Restorer.hpp"
+#include "Persistency/IO/Stubs/Heartbeats.hpp"
 
 namespace Persistency
 {
@@ -21,25 +22,25 @@ namespace Stubs
 {
 namespace detail
 {
+
+/** \brief helper declaration of base for connection implementation base. */
+typedef IO::ConnectionHelper<int,   // connection handle - can be anything here...
+                             Stubs::TransactionAPI,
+                             Stubs::Alert,
+                             Stubs::Host,
+                             Stubs::MetaAlert,
+                             Stubs::DynamicConfig,
+                             Stubs::Restorer,
+                             Stubs::Heartbeats>
+                    ConnectionImplBase;
+
 /** \brief helper typedef to make names shorter.
  */
-class ConnectionImpl: public IO::ConnectionHelper<int,   // connection handle - anything...
-                                                  Stubs::TransactionAPI,
-                                                  Stubs::Alert,
-                                                  Stubs::Host,
-                                                  Stubs::MetaAlert,
-                                                  Stubs::DynamicConfig,
-                                                  Stubs::Restorer>
+class ConnectionImpl: public ConnectionImplBase
 {
 public:
   ConnectionImpl(void):
-    IO::ConnectionHelper<int,
-                         Stubs::TransactionAPI,
-                         Stubs::Alert,
-                         Stubs::Host,
-                         Stubs::MetaAlert,
-                         Stubs::DynamicConfig,
-                         Stubs::Restorer>(42)
+    ConnectionImplBase(42)
   {
   }
 private:
@@ -47,8 +48,9 @@ private:
   {
     return 0;
   }
-};
+}; // class ConnectionImpl
 } // namespace detail
+
 
 /** \brief stub of connection element
  */
@@ -66,6 +68,7 @@ public:
   size_t dynamicConfigCalls_;       ///< number of calls to create dynamicConfig
   size_t restorerCalls_;            ///< number of calls to create restorers.
   size_t removeOldCalls_;           ///< number of calls to removing old entries.
+  size_t heartbeatsCalls_;          ///< number of calls to heartbeats.
 
 private:
   virtual TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
@@ -76,6 +79,7 @@ private:
   virtual DynamicConfigAutoPtr dynamicConfigImpl(const DynamicConfig::Owner &owner, Transaction &t);
   virtual RestorerAutoPtr restorerImpl(Transaction &t);
   virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t);
+  virtual HeartbeatsAutoPtr heartbeatsImpl(const Heartbeats::Owner &owner, Transaction &t);
 
   detail::ConnectionImpl impl_;
 }; // class Connection
