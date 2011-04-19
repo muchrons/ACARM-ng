@@ -15,3 +15,4 @@
 * implement filter that gathers stats of source/destination IPs and reports the most problematic ones with higher priority.
 * implement persistency::sqlite.
 * optimize postgres data restoration using roots meta alerts table.
+* editable filters' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
