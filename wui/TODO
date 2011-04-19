@@ -2,3 +2,4 @@
 * add icon for the 'eventchain' filter in GUI.
 * add icon for the 'one2one' filter in GUI.
 * implement information if daemon is running or not (currently hardcoded to 'yes').
+* add support for heartbeats (i.e. list of elements on the main screen).
