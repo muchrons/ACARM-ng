@@ -33,8 +33,11 @@ namespace IO
 class Heartbeats: private boost::noncopyable
 {
 public:
+  /** \brief type representing owner's name. */
   typedef Commons::LimitedString<64>  Owner;
+  /** \brief type representing module's name. */
   typedef Commons::LimitedString<128> Module;
+
   /** \brief create heartbeats generator.
    *  \param owner system that will report heartbeats (i.e. ACARM-ng element).
    *  \param t     active transaction.
