@@ -187,4 +187,12 @@ void testObj::test<5>(void)
   ensure_equals("invalid number of calls to trigger", tt_.callsTrigger_, 1);
 }
 
+// smoke test for sending heartbeat
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  tt_.heartbeat(42u);
+}
+
 } // namespace tut

@@ -86,6 +86,10 @@ struct TestInterface: public Interface
   virtual void process(Node /*node*/, ChangedNodes &/*changedNodes*/)
   {
   }
+
+  virtual void heartbeat(unsigned int /*deadline*/)
+  {
+  }
 }; // struct TestInterface
 
 class SomeBuilder: public Factory::TFactoryBuilderBase

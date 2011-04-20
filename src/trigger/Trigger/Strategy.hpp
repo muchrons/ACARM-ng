@@ -41,6 +41,10 @@ public:
    *  \param n       node to be processed.
    */
   void process(Node n, ChangedNodes &/*changed*/);
+  /** \brief send heartbeat for this module.
+   *  \param deadline maximum ammount of time for heartbeat to arrive
+   */
+  void heartbeat(unsigned int deadline);
   /** \brief gets filter name.
    *  \return name of implemented filter.
    */
@@ -100,6 +104,7 @@ private:
   typedef ConstNode::element_type NodeElementType;
 
   const std::string                   type_;
+  const std::string                   name_;
   Base::ObservingSet<NodeElementType> nos_;
   Persistency::IO::ConnectionPtrNN    conn_;
 }; // class Strategy
