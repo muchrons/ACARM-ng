@@ -10,7 +10,7 @@ namespace Input
 {
 
 BackendFacadeStub::BackendFacadeStub(::Persistency::IO::ConnectionPtrNN  conn):
-  ::Input::BackendFacade(conn, "testbackendfacade", ac_)
+  ::Input::BackendFacade(conn, "testbackendfacade", ac_, "HeartbeatOwnerTestFacade")
 {
 }
 

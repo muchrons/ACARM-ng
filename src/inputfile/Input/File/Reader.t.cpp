@@ -27,7 +27,7 @@ struct TestClass: public TestStubs
     fifo_("some_test_fifo"),
     r_("mynameisifileinput", fifo_),
     conn_( IO::create() ),
-    bf_(conn_, "my_backend_facade", ac_)
+    bf_(conn_, "my_backend_facade", ac_, "oWNEr")
   {
   }
 
