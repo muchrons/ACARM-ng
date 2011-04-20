@@ -79,7 +79,7 @@ void testObj::test<2>(void)
   Persistency::IO::ConnectionPtrNN        conn( createUserStub() );
   Persistency::IO::Transaction            t( conn->createNewTransaction("test_reader") );
   Persistency::Facades::AnalyzersCreator  ac;
-  BackendFacade                           bf(conn, "testemall", ac);
+  BackendFacade                           bf(conn, "testemall", ac, "El'Ownerro");
   Reader::DataPtr                         tmp  =r_->read(bf);
   Persistency::Alert                     *alert=tmp.get();
   ensure("NULL pointer returned", alert!=NULL);

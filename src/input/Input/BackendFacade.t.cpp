@@ -21,7 +21,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     name_("testinputbftest"),
     conn_( createUserStub() ),
     t_( new Persistency::IO::Transaction( conn_->createNewTransaction("backend_facade_trans") ) ),
-    bf_(conn_, name_, ac_)
+    bf_(conn_, name_, ac_, "OwneR")
   {
     t_->commit();
     t_.reset();     // disgard transaction
@@ -72,7 +72,7 @@ void testObj::test<3>(void)
   Persistency::AnalyzerPtrNN ptr1=bf_.getAnalyzer("name", "1.2", "Linux", NULL);
   bf_.commitChanges();
 
-  BackendFacade              bfNew(conn_, name_, ac_);
+  BackendFacade              bfNew(conn_, name_, ac_, "OwneR");
   Persistency::AnalyzerPtrNN ptr2=bfNew.getAnalyzer("name", "1.2", "Linux", NULL);
   bfNew.commitChanges();
 
@@ -84,6 +84,25 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
+  bf_.commitChanges();
+}
+
+// test sending heartbeat and commiting changed (smoke-test)
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  bf_.heartbeat("HellFire", 42u);
+  bf_.commitChanges();
+}
+
+// test if sending heartbeat does not colide with getting analizer (i.e. is one transaction)
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  bf_.getAnalyzer("name", "1.2", "Linux", NULL);
+  bf_.heartbeat("ModulE", 42u);
   bf_.commitChanges();
 }
 

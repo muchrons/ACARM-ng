@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include "Logger/Node.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/Facades/AnalyzersCreator.hpp"
 #include "Core/Types/BackendFacade.hpp"
@@ -29,9 +30,10 @@ public:
    *  \param name    name of input this object is created for.
    *  \param creator creator of analyzers.
    */
-  BackendFacade(Persistency::IO::ConnectionPtrNN        conn,
-                const std::string                      &name,
-                Persistency::Facades::AnalyzersCreator &creator);
+  BackendFacade(Persistency::IO::ConnectionPtrNN          conn,
+                const std::string                        &name,
+                Persistency::Facades::AnalyzersCreator   &creator,
+                const Persistency::IO::Heartbeats::Owner &heartbeatOwner);
 
   /** \brief gets mapping from given originalID to analyzer. if ID's not mapped,
    *         new entry's created and returned.
@@ -46,8 +48,16 @@ public:
                                          const Persistency::Analyzer::OperatingSystem &os,
                                          const Persistency::Analyzer::IP              *ip);
 
+  /** \brief send heartbeat, that arrived from an external source (module).
+   *  \param m        module's name.
+   *  \param deadline maximum ammount of time to wait for next heartbeat.
+   */
+  void heartbeat(const Persistency::IO::Heartbeats::Module &m, unsigned int deadline);
+
 private:
-  Persistency::Facades::AnalyzersCreator &creator_;
+  Logger::Node                              log_;
+  Persistency::Facades::AnalyzersCreator   &creator_;
+  const Persistency::IO::Heartbeats::Owner  heartbeatOwner_;
 }; // class BackendFacade
 
 } // namespace Input

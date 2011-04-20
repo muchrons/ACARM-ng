@@ -13,6 +13,18 @@
 namespace Input
 {
 
+
+namespace
+{
+std::string makeOwnerName(const std::string &type, const std::string &name)
+{
+  std::stringstream ss;
+  ss<<"input::"<<type<<"/"<<name;
+  return ss.str();
+} // makeOwnerName()
+} // unnamed namespace
+
+
 Thread::Thread(ReaderPtrNN                       reader,
                Persistency::IO::ConnectionPtrNN  conn,
                Core::Types::AlertsFifo          &output):
@@ -20,9 +32,11 @@ Thread::Thread(ReaderPtrNN                       reader,
   log_( Logger::NodeName( "input.thread", Logger::NodeName::removeInvalidChars( reader->getType() ).c_str() ) ),
   conn_(conn),
   output_(&output),
-  lastHeartbeat_(0u)
+  lastHeartbeat_(0u),
+  owner_( makeOwnerName( reader_->getType(), reader_->getName() ) )
 {
 }
+
 
 void Thread::operator()(void)
 {
@@ -39,12 +53,12 @@ void Thread::operator()(void)
 
     try
     {
-      boost::this_thread::interruption_point();                 // check for interruption
-      sendHeartbeat(timeout, deadline);                         // send heartbeat, if needed
-      BackendFacade   bf(conn_, reader_->getType(), creator);   // create backedn facade for this run
-      Reader::DataPtr ptr=reader_->read(bf, timeout);           // read with timeout
-      bf.commitChanges();                                       // accept changes introduced by facede
-      if( ptr.get()!=NULL )                                     // if data is valid, forward it
+      boost::this_thread::interruption_point();                         // check for interruption
+      sendHeartbeat(timeout, deadline);                                 // send heartbeat, if needed
+      BackendFacade   bf(conn_, reader_->getType(), creator, owner_);   // create backedn facade for this run
+      Reader::DataPtr ptr=reader_->read(bf, timeout);                   // read with timeout
+      bf.commitChanges();                                               // accept changes introduced by facede
+      if( ptr.get()!=NULL )                                             // if data is valid, forward it
       {
         LOGMSG_DEBUG(log_, "got new alert");
         output_->push(ptr);
@@ -81,10 +95,8 @@ void Thread::sendHeartbeat(const unsigned int timeout, const unsigned int deadli
   {
     // timeout has been reached - send heartbeat
     LOGMSG_DEBUG(log_, "sending heartbeat from input's thread");
-    std::stringstream owner;
-    owner<<"input::"<<reader_->getType()<<"/"<<reader_->getName();
     Persistency::IO::Transaction       t( conn_->createNewTransaction("heartbeat_sending") );
-    Persistency::IO::HeartbeatsAutoPtr hb=conn_->heartbeats( owner.str(), t );
+    Persistency::IO::HeartbeatsAutoPtr hb=conn_->heartbeats(owner_, t);
     assert( hb.get()!=NULL );
     hb->report("thread", deadline);
     t.commit();
