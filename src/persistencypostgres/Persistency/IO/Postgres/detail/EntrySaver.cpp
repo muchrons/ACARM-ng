@@ -512,6 +512,37 @@ void EntrySaver::removeConfigParameter(const DynamicConfig::Owner &owner,
   SQL( ss.str(), log_ ).exec(t_);
 }
 
+void EntrySaver::deleteHeartbeat(const Persistency::IO::Heartbeats::Owner  &owner,
+                                 const Persistency::IO::Heartbeats::Module &module)
+{
+  stringstream ss;
+  Appender     ap(t_);
+  ss << "DELETE FROM heartbeats WHERE owner = ";
+  ap.append(ss, owner.get() );
+  ss << " AND module = ";
+  ap.append(ss, module.get() );
+  SQL( ss.str(), log_ ).exec(t_);
+}
+
+void EntrySaver::saveHeartbeat(const Persistency::IO::Heartbeats::Owner  &owner,
+                               const Persistency::IO::Heartbeats::Module &module,
+                               Persistency::Timestamp                     reported,
+                               time_t                                     timeout)
+{
+  stringstream ss;
+  Appender     ap(t_);
+  ss << "INSERT INTO heartbeats(owner, module, timestamp, timeout) VALUES(";
+  ap.append(ss, owner.get() );
+  ss << ",";
+  ap.append(ss, module.get() );
+  ss << ",";
+  ap.append(ss, reported);
+  ss << ",";
+  ap.append(ss, timeout);
+  ss << ");";
+  SQL( ss.str(), log_ ).exec(t_);
+}
+
 } // namespace detail
 } // namespace Postgres
 } // namespace IO
