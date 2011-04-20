@@ -2,8 +2,9 @@
  * Thread.cpp
  *
  */
-#include <boost/thread.hpp>
+#include <sstream>
 #include <cassert>
+#include <boost/thread.hpp>
 
 #include "Persistency/Facades/AnalyzersCreator.hpp"
 #include "Input/Thread.hpp"
@@ -18,7 +19,8 @@ Thread::Thread(ReaderPtrNN                       reader,
   reader_(reader),
   log_( Logger::NodeName( "input.thread", Logger::NodeName::removeInvalidChars( reader->getType() ).c_str() ) ),
   conn_(conn),
-  output_(&output)
+  output_(&output),
+  lastHeartbeat_(0u)
 {
 }
 
@@ -27,17 +29,20 @@ void Thread::operator()(void)
   // cache to be used internaly (that's why i does not need to be class' field)
   Persistency::Facades::AnalyzersCreator creator;
 
-  while(true)
+  bool quit=false;
+  while(!quit)
   {
     assert( output_!=NULL );
     assert( reader_.get()!=NULL );
+    const unsigned int timeout =25;                             // TODO: hardcoded value
+    const unsigned int deadline=3*timeout;                      // TODO: hardcoded value
 
     try
     {
       boost::this_thread::interruption_point();                 // check for interruption
+      sendHeartbeat(timeout, deadline);                         // send heartbeat, if needed
       BackendFacade   bf(conn_, reader_->getType(), creator);   // create backedn facade for this run
-      // TODO: this value should be moved to const-config module.
-      Reader::DataPtr ptr=reader_->read(bf, 45);                // timeout every 45[s]
+      Reader::DataPtr ptr=reader_->read(bf, timeout);           // read with timeout
       bf.commitChanges();                                       // accept changes introduced by facede
       if( ptr.get()!=NULL )                                     // if data is valid, forward it
       {
@@ -50,7 +55,7 @@ void Thread::operator()(void)
       // this means we're interrupted.
       LOGMSG_INFO_S(log_)<<"thread has been interrupted - exiting";
       output_->signalAll();     // signal all listeners - just in case...
-      return;
+      quit=true;
     }
     catch(const Commons::Exception &ex)
     {
@@ -62,8 +67,33 @@ void Thread::operator()(void)
       LOGMSG_ERROR_S(log_)<<"exception caught: '"<<ex.what()
                           <<"' - proceeding with work";
     }
+  } // while(!quit)
+}
 
-  } // while(!stop)
+
+void Thread::sendHeartbeat(const unsigned int timeout, const unsigned int deadline)
+{
+  const Persistency::Timestamp now=Persistency::Timestamp();    // get current timestamp
+  if( now.get() < lastHeartbeat_.get()+timeout )                // not time for heartbeat yet?
+    return;
+
+  try
+  {
+    // timeout has been reached - send heartbeat
+    LOGMSG_DEBUG(log_, "sending heartbeat from input's thread");
+    std::stringstream owner;
+    owner<<"input::"<<reader_->getType()<<"/"<<reader_->getName();
+    Persistency::IO::Transaction       t( conn_->createNewTransaction("heartbeat_sending") );
+    Persistency::IO::HeartbeatsAutoPtr hb=conn_->heartbeats( owner.str(), t );
+    assert( hb.get()!=NULL );
+    hb->report("thread", deadline);
+    t.commit();
+    lastHeartbeat_=now;                     // save last call time, for ruther usage
+  }
+  catch(const std::exception &ex)
+  {
+    LOGMSG_WARN_S(log_)<<"error while sending heartbeat: "<<ex.what()<<" - ignoring it";
+  }
 }
 
 } // namespace Input

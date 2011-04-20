@@ -37,6 +37,13 @@ public:
   {
     return type_;
   }
+  /** \brief gets name of this reader.
+   *  \return reader's name.
+   */
+  const std::string &getName(void) const
+  {
+    return name_;
+  }
 
   /** \brief reads data from input or returns if timeouted.
    *  \param bf      backend faced to be used.
@@ -59,6 +66,7 @@ protected:
 
 private:
   const std::string type_;
+  const std::string name_;
 }; // class Reader
 
 

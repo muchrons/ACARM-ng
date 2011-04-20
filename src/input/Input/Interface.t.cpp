@@ -35,8 +35,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   TestClass(void):
     tr_(new TestReader),
     r_(tr_),
-    conn_( createUserStub() ),
-    t_( conn_->createNewTransaction("test_interface") )
+    conn_( createUserStub() )
   {
   }
 
@@ -44,7 +43,6 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   ReaderPtrNN                       r_;
   Core::Types::AlertsFifo           output_;
   Persistency::IO::ConnectionPtrNN  conn_;
-  Persistency::IO::Transaction      t_;
 };
 
 typedef tut::test_group<TestClass> factory;

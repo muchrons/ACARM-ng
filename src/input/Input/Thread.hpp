@@ -31,10 +31,13 @@ public:
   void operator()(void);
 
 private:
+  void sendHeartbeat(unsigned int timeout, unsigned int deadline);
+
   ReaderPtrNN                       reader_;
   Logger::Node                      log_;
   Persistency::IO::ConnectionPtrNN  conn_;
   Core::Types::AlertsFifo          *output_;
+  Persistency::Timestamp            lastHeartbeat_;
 }; // class Thread
 
 } // namespace Input
