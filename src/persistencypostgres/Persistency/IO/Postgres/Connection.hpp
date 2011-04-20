@@ -13,6 +13,7 @@
 #include "Persistency/IO/Postgres/Host.hpp"
 #include "Persistency/IO/Postgres/DynamicConfig.hpp"
 #include "Persistency/IO/Postgres/Restorer.hpp"
+#include "Persistency/IO/Postgres/Heartbeats.hpp"
 #include "Persistency/IO/Postgres/DBHandle.hpp"
 
 namespace Persistency
@@ -30,7 +31,9 @@ typedef IO::ConnectionHelper<DBHandlePtrNN,
                              Host,
                              MetaAlert,
                              DynamicConfig,
-                             Restorer>      ConnectionBase;
+                             Restorer,
+                             Heartbeats>
+                        ConnectionBase;
 } // namespace Base
 
 
