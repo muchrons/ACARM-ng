@@ -62,6 +62,10 @@ struct TestFilterInterface: public Core::Types::Proc::Interface
   {
     ++filterCalls_;
   }
+
+  virtual void heartbeat(unsigned int /*deadline*/)
+  {
+  }
 }; // struct TestFilterInterface
 
 class SomeTestFilterBuilder: public Filter::Factory::TFactoryBuilderBase
@@ -104,6 +108,10 @@ struct TestTriggerInterface: public Core::Types::Proc::Interface
   virtual void process(Node /*node*/, ChangedNodes &/*changedNodes*/)
   {
     ++triggerCalls_;
+  }
+
+  virtual void heartbeat(unsigned int /*deadline*/)
+  {
   }
 }; // struct TestInterface
 
