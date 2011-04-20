@@ -249,4 +249,31 @@ void testObj::test<8>(void)
   ensure_equals("invalid stirng", v, "str1");
 }
 
+// test waiting for element for a given ammount of time
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  ensure("something found in empty queue", !q_.waitForElement(1) );
+}
+
+// test waiting for element if it's already there
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  q_.push("hello queue");
+  ensure("element not found", q_.waitForElement(1) );
+}
+
+// test waiting for element, while it is being added in another thread
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  Base::Threads::ThreadJoiner th( (Inserter(&q_)) );
+  ensure("element not found", q_.waitForElement(4) );
+  q_.pop(); // should not block now
+}
+
 } // namespace tut
