@@ -22,6 +22,7 @@ struct TestInterface: public Interface
   explicit TestInterface(bool *dtor):
     Interface("testinterfacetype", "testinterfacename", EntryControlList::createDefaultAccept() ),
     calls_(0),
+    heartbeats_(0),
     dtor_(dtor)
   {
     assert(dtor_!=NULL);
@@ -37,7 +38,14 @@ struct TestInterface: public Interface
     ++calls_;
   }
 
+  virtual void heartbeat(unsigned int)
+  {
+    ++heartbeats_;
+  }
+
+
   int   calls_;
+  int   heartbeats_;
   bool *dtor_;
 };
 
@@ -100,6 +108,16 @@ void testObj::test<4>(void)
   Interface::ChangedNodes changed;
   ti_->process( makeNewLeaf(), changed );
   ensure_equals("process() is not virtual", ptr_->calls_, 1);
+}
+
+// test if heartbeat() is virtual call
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ensure_equals("pre-condition failed", ptr_->heartbeats_, 0);
+  ti_->heartbeat(42);
+  ensure_equals("heartbeat not send", ptr_->heartbeats_, 1);
 }
 
 } // namespace tut

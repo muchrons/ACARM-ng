@@ -37,7 +37,8 @@ public:
     log_( makeNodeName("core.types.proc.processor.threadimpl.", interface) ),
     outputQueue_(&outputQueue),
     inputQueue_(&inputQueue),
-    interface_(interface)
+    interface_(interface),
+    lastHeartbeat_(0u)
   {
     if(interface_==NULL)
       throw ExceptionInvalidInterface(SYSTEM_SAVE_LOCATION, "NULL");
@@ -58,14 +59,14 @@ public:
       try
       {
         // get new data
-        boost::this_thread::interruption_point();               // allow interrupts
+        boost::this_thread::interruption_point();           // allow interrupts
         LOGMSG_DEBUG_S(log_)<<"waiting for data (current queue size is: "<<inputQueue_->size()<<" element(s))";
-        Persistency::GraphNodePtrNN node=inputQueue_->pop();    // wait for data
+        Persistency::GraphNodePtrNN node=getNextElement();  // wait for element from the queue
 
         // process new data
         LOGMSG_DEBUG_S(log_)<<"data recieved - processing node " << node->getMetaAlert()->getID().get();
-        Interface::ChangedNodes changed;                        // output collection
-        processNode(node, changed);                             // process node, ignoring errors
+        Interface::ChangedNodes changed;                    // output collection
+        processNode(node, changed);                         // process node, ignoring errors
         LOGMSG_DEBUG_S(log_)<<"total of "<<changed.size()<<" nods were changed";
 
         LOGMSG_DEBUG(log_, "notifing others about changed nodes");
@@ -97,6 +98,46 @@ public:
   }
 
 private:
+  // waits for the element, sending heartbeats in a mean time
+  Persistency::GraphNodePtrNN getNextElement(void)
+  {
+    const unsigned int timeout=20;      // TODO: hardcoded value
+    do
+    {
+      sendHeartbeat(timeout);
+      LOGMSG_DEBUG(log_, "waiting for something to appear in the queue");
+    }
+    while( !inputQueue_->waitForElement(timeout) );
+    // ok - something is in the queue
+    LOGMSG_DEBUG(log_, "got something");
+    return inputQueue_->pop();          // get data (should not block now)
+  }
+
+  // send heartbeats, if given ammount of time has elapsed
+  void sendHeartbeat(const unsigned int timeout)
+  {
+    try
+    {
+      const Persistency::Timestamp now=Persistency::Timestamp();
+      if( now.get()<lastHeartbeat_.get()+timeout )  // nothing has to be done
+        return;
+      // ok - it's time to send heartbeat
+      LOGMSG_DEBUG(log_, "time to send heartbeat");
+      const unsigned int deadline=3*timeout;        // TODO: hardcoded value
+      interface_->heartbeat(deadline);
+      // mark this moment
+      lastHeartbeat_=now;
+    }
+    catch(const std::exception &ex)
+    {
+      // unable to send heartbeat is not critical, though it is worth mentioning
+      LOGMSG_WARN_S(log_)<<"exception ("<<typeid(ex).name()
+                         <<") caught while sending heartbeat; "
+                         <<"exception was: "<<ex.what();
+    }
+  }
+
+  // executes processing of an element
   void processNode(Persistency::GraphNodePtrNN &node, Interface::ChangedNodes &changed)
   {
     try
@@ -119,6 +160,7 @@ private:
   Core::Types::SignedNodesFifo *outputQueue_;
   Core::Types::UniqueNodesFifo *inputQueue_;
   Interface                    *interface_;
+  Persistency::Timestamp        lastHeartbeat_;
 }; // class ThreadImpl
 } // unnamed namespace
 

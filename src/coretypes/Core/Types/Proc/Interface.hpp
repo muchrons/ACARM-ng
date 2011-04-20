@@ -36,12 +36,18 @@ public:
   /** \brief dealocates resources in polymorphic way.
    */
   virtual ~Interface(void);
+
   /** \brief call to process data in derived class.
    *  \param node         node to process.
    *  \param changedNodes output list of nodes that were chenged/created
    *                      during this call. initially list is empty.
    */
   virtual void process(Node node, ChangedNodes &changedNodes) = 0;
+  /** \brief send heartbeat for this module.
+   *  \param deadline maximum ammount of time for next heartbeat to arrive.
+   */
+  virtual void heartbeat(unsigned int deadline) = 0;
+
   /** \brief gets type of this processing unit.
    *  \return returns processing unit's type.
    */

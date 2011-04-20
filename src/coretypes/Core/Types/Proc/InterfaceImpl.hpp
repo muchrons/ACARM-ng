@@ -55,6 +55,13 @@ public:
   {
     strategy_.process(node, changedNodes);
   }
+  /** \brief send heartbeat for this module.
+   *  \param deadline maximum ammount of time for heartbeat to arrive
+   */
+  virtual void heartbeat(unsigned int deadline)
+  {
+    strategy_.heartbeat(deadline);
+  }
 
 private:
   TStrategy strategy_;

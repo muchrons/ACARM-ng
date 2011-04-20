@@ -18,6 +18,7 @@ namespace
 struct TestStrategyParams
 {
   mutable int calls_;
+  mutable int heartbeats_;
 }; // struct TestStrategyParams
 
 struct TestStrategy
@@ -33,6 +34,11 @@ struct TestStrategy
     ++p_.calls_;
   }
 
+  void heartbeat(unsigned int)
+  {
+    ++p_.heartbeats_;
+  }
+
   static EntryControlList createEntryControlList(void)
   {
     return EntryControlList::createDefaultAccept();
@@ -44,19 +50,26 @@ struct TestStrategy
 
 namespace
 {
-int testStrategyNoParmCalls=0;
+int testStrategyNoParmCalls     =0;
+int testStrategyNoParmHeartbeats=0;
 } // unnamed namespace
 
 struct TestStrategyNoParm
 {
   TestStrategyNoParm(void)
   {
-    testStrategyNoParmCalls=0;
+    testStrategyNoParmCalls     =0;
+    testStrategyNoParmHeartbeats=0;
   }
 
   void process(GraphNodePtrNN, Interface::ChangedNodes&)
   {
     ++testStrategyNoParmCalls;
+  }
+
+  void heartbeat(unsigned int)
+  {
+    ++testStrategyNoParmHeartbeats;
   }
 
   static EntryControlList createEntryControlList(void)
@@ -110,7 +123,7 @@ void testObj::test<3>(void)
   ensure_equals("pre-condition failed", params_.calls_, 0);
   Interface::ChangedNodes changed;
   impl_.process( makeNewLeaf(), changed );
-  ensure_equals("process() is not virtual", params_.calls_, 1);
+  ensure_equals("process() not forwarded", params_.calls_, 1);
 }
 
 // test test 2-arg c-tor (should compile)
@@ -130,7 +143,28 @@ void testObj::test<5>(void)
   ensure_equals("pre-condition failed", testStrategyNoParmCalls, 0);
   Interface::ChangedNodes changed;
   tmp.process( makeNewLeaf(), changed );
-  ensure_equals("process() is not virtual", testStrategyNoParmCalls, 1);
+  ensure_equals("process() not forwarded", testStrategyNoParmCalls, 1);
+}
+
+// test passing heartbeats to strategy
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  ensure_equals("pre-condition failed", params_.heartbeats_, 0);
+  impl_.heartbeat(42u);
+  ensure_equals("call not passed", params_.heartbeats_, 1);
+}
+
+// test heartbeats on non-param strategy object
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  InterfaceImpl<TestStrategyNoParm> tmp("sometype", "somename");
+  ensure_equals("pre-condition failed", testStrategyNoParmHeartbeats, 0);
+  tmp.heartbeat(42u);
+  ensure_equals("process() is not virtual", testStrategyNoParmHeartbeats, 1);
 }
 
 } // namespace tut

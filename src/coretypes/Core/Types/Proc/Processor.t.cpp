@@ -22,6 +22,7 @@ struct TestInterface: public Interface
   explicit TestInterface(const EntryControlList &ecl=EntryControlList::createDefaultAccept() ):
     Interface("testinterfacetype", "testinterfacename", ecl),
     calls_(0),
+    heartbeats_(0),
     node_( makeNewLeaf() ),
     node2_( makeNewLeaf() )
   {
@@ -41,7 +42,14 @@ struct TestInterface: public Interface
     changedNodes.push_back(node);
   }
 
+  virtual void heartbeat(const unsigned int deadline)
+  {
+    ++heartbeats_;
+    tut::ensure_equals("invalid timeout", deadline, 60u);
+  }
+
   int  calls_;
+  int  heartbeats_;
   Node node_;
   Node node2_;
 };
@@ -50,7 +58,8 @@ struct TestInterface: public Interface
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    interface_(new TestInterface)
+    ti_(new TestInterface),
+    interface_(ti_)
   {
   }
 
@@ -79,8 +88,9 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     tut::ensure_equals("invalid collection size", mainQueue_.size(), shouldPass?1u:0u);
   }
 
-  Core::Types::SignedNodesFifo mainQueue_;
-  Processor::InterfaceAutoPtr  interface_;
+  Core::Types::SignedNodesFifo  mainQueue_;
+  TestInterface                *ti_;
+  Processor::InterfaceAutoPtr   interface_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -128,18 +138,17 @@ void testObj::test<3>(void)
 {
   ensure_equals("pre-condition failed", mainQueue_.size(), 0u);
   // process data
-  TestInterface &ti=dynamic_cast<TestInterface&>(*interface_);
-  Processor      p(mainQueue_, interface_);
-  p.process( SignedNode(ti.node_, "me") ); // this call should add 1 element to 'changed'
-                                           // elements set, and processor should forward it
-                                           // to the main queue.
+  Processor p(mainQueue_, interface_);
+  p.process( SignedNode(ti_->node_, "me") );// this call should add 1 element to 'changed'
+                                            // elements set, and processor should forward it
+                                            // to the main queue.
   // wait for the results
   waitForResponse();
   // check results
   ensure_equals("invalid number of elements", mainQueue_.size(), 1u);
   Core::Types::SignedNode sn=mainQueue_.pop();
-  ensure("requested element not found", sn.getNode().get()==ti.node_.get() );
-  ensure("invalid sign in entry", sn.getReporterName()==ti.getName() );
+  ensure("requested element not found", sn.getNode().get()==ti_->node_.get() );
+  ensure("invalid sign in entry", sn.getReporterName()==ti_->getName() );
 }
 
 // test if multiple calls to process() does not break anything
@@ -150,11 +159,10 @@ void testObj::test<4>(void)
 {
   ensure_equals("pre-condition failed", mainQueue_.size(), 0u);
   // process data
-  TestInterface &ti=dynamic_cast<TestInterface&>(*interface_);
-  Processor      p(mainQueue_, interface_);
-  p.process( SignedNode(ti.node_,  "me") ); // this call should add 2 elements to 'changed'
-  p.process( SignedNode(ti.node2_, "me") ); // elements set, and processor should forward it
-                                            // to the main queue.
+  Processor p(mainQueue_, interface_);
+  p.process( SignedNode(ti_->node_,  "me") );   // this call should add 2 elements to 'changed'
+  p.process( SignedNode(ti_->node2_, "me") );   // elements set, and processor should forward it
+                                                // to the main queue.
   // wait for the results
   for(int i=0; i<10; ++i)
     if( mainQueue_.size()==2 )
@@ -201,6 +209,66 @@ void testObj::test<8>(void)
 {
   EntryControlList ecl=EntryControlList::createDefaultAccept();
   checkECL(ecl, "testinterfacename", false);
+}
+
+// test heartbeat() call
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  // test environment
+  Processor p(mainQueue_, interface_);
+  ensure_equals("pre-condition failed", ti_->heartbeats_, 0u);
+  p.process( SignedNode(ti_->node_, "me") );    // should send heartbeat
+  waitForResponse();
+  // check
+  ensure_equals("heartbeat not sent", ti_->heartbeats_, 1u);
+}
+
+// test if heartbeat() calls are not sent constantly
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  // test environment
+  Processor p(mainQueue_, interface_);
+  ensure_equals("pre-condition failed", ti_->heartbeats_, 0u);
+  // first action
+  p.process( SignedNode(ti_->node_, "me") );    // should send heartbeat
+  waitForResponse();
+  ensure_equals("heartbeat not sent", ti_->heartbeats_, 1u);
+  // second action
+  p.process( SignedNode(ti_->node_, "me") );    // should NOT heartbeat for some time now
+  waitForResponse();
+  ensure_equals("heartbeat sent again", ti_->heartbeats_, 1u);
+}
+
+
+namespace
+{
+struct TestInterfaceThrowHeartbeat: public TestInterface
+{
+  virtual void heartbeat(const unsigned int /*deadline*/)
+  {
+    throw std::runtime_error("test exception in heartbeat");
+  }
+};
+} // unnamed namespace
+
+// test if exception in heartbeat() does not block processing
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  // test environment
+  ti_=new TestInterfaceThrowHeartbeat();
+  interface_.reset(ti_);
+  Processor p(mainQueue_, interface_);
+  ensure_equals("pre-condition failed", ti_->calls_, 0u);
+  // first action
+  p.process( SignedNode(ti_->node_, "me") );    // should discard exception from heartbeat
+  waitForResponse();
+  ensure_equals("exception in heartbeat stopped processing", ti_->calls_, 1u);
 }
 
 } // namespace tut
