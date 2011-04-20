@@ -26,9 +26,10 @@ class BackendFacade: public Core::Types::BackendFacade
 {
 public:
   /** \brief create object's instance.
-   *  \param conn    connection object to use.
-   *  \param name    name of input this object is created for.
-   *  \param creator creator of analyzers.
+   *  \param conn           connection object to use.
+   *  \param name           name of input this object is created for.
+   *  \param creator        creator of analyzers.
+   *  \param heartbeatOwner owner name to be used for heartbeats.
    */
   BackendFacade(Persistency::IO::ConnectionPtrNN          conn,
                 const std::string                        &name,
@@ -51,6 +52,9 @@ public:
   /** \brief send heartbeat, that arrived from an external source (module).
    *  \param m        module's name.
    *  \param deadline maximum ammount of time to wait for next heartbeat.
+   *
+   *  \note this facility should be used for incomming heartbeats onyl, since heartbeating
+   *        for user's implementation (i.e. The Input) is done automatically.
    */
   void heartbeat(const Persistency::IO::Heartbeats::Module &m, unsigned int deadline);
 
