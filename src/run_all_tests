@@ -15,7 +15,7 @@ do
   echo "testing $d:"
   if ! ( ulimit -c unlimited && cd gen/test_${TC}_${MEM_MODE}_default/$d && LD_LIBRARY_PATH="$LD_LIBRARY_PATH:../libs/" ./$d.t )
   then
-    RET=1
+    ((++RET))
     echo "$d group FAILED"
   fi
 done
