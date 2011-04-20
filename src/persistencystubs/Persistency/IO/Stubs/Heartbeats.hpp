@@ -28,7 +28,7 @@ public:
    */
   Heartbeats(const Owner &owner, Transaction &t, int h);
 
-  size_t reportCalls_;
+  size_t reportCalls_;  ///< counter incremented on each call to implementation.
 
 private:
   virtual void reportImpl(Transaction &t, const Owner &o, const Module &m, Timestamp reported, time_t timeout);

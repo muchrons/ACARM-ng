@@ -170,7 +170,7 @@ public:
    *  \param owner    owner of the heartbeat.
    *  \param module   module that reported heartbeat to the owner.
    *  \param reported timestamp, when heartbeat has been reported.
-   *  \param timout   validity period for a given heartbeat.
+   *  \param timeout  validity period for a given heartbeat.
    */
   void saveHeartbeat(const Persistency::IO::Heartbeats::Owner  &owner,
                      const Persistency::IO::Heartbeats::Module &module,
