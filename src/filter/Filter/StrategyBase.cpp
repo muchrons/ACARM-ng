@@ -32,7 +32,8 @@ inline Logger::NodeName makeNodeName(const string &type, const string &name)
 StrategyBase::StrategyBase(const std::string &type, const std::string &name):
   log_( makeNodeName(type, name) ),
   conn_( Persistency::IO::create() ),
-  type_(type)
+  type_(type),
+  name_(name)
 {
   LOGMSG_INFO(log_, "creating filter");
 }

@@ -229,4 +229,12 @@ void testObj::test<11>(void)
   ensure("node has not been removed - queue's not cleared", weakNode.lock().get()==NULL );
 }
 
+// sending heartbeat smoke test
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  tf_.heartbeat(42u);
+}
+
 } // namespace tut

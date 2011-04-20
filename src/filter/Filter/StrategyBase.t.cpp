@@ -104,4 +104,12 @@ void testObj::test<4>(void)
   tf_.testConnection();
 }
 
+// check if name has been saved correctly
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ensure_equals("invalid name", tf_.getFilterName(), "testfiltername");
+}
+
 } // namespace tut

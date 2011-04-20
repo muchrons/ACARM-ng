@@ -36,6 +36,13 @@ public:
   {
     return type_;
   }
+  /** \brief gets filter name.
+   *  \return name of this filter.
+   */
+  const std::string &getFilterName(void) const
+  {
+    return name_;
+  }
 
 protected:
   /** \brief create instance.
@@ -54,6 +61,7 @@ protected:
 
 private:
   const std::string                type_;
+  const std::string                name_;
 }; // class StrategyBase
 
 } // namespace Filter
