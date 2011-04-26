@@ -1261,8 +1261,8 @@ void testObj::test<40>(void)
     ensure_equals("invalid owner", tmp, "moduleY");
   }
   {
-    const unsigned int tmp=ReaderHelper<unsigned int>::readAsNotNull(r[0]["timestamp"]);
-    ensure_equals("invalid timestamp", tmp, 666u);
+    const Timestamp tmp=ReaderHelper<Timestamp>::readAsNotNull(r[0]["timestamp"]);
+    ensure_equals("invalid timestamp", tmp.get(), static_cast<time_t>(666) );
   }
   {
     const unsigned int tmp=ReaderHelper<unsigned int>::readAsNotNull(r[0]["timeout"]);
