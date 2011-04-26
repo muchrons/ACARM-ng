@@ -70,7 +70,6 @@ factory tf("Filter/Similarity/Strategy");
 namespace tut
 {
 
-
 // test correlating of very simillar leafs
 template<>
 template<>
@@ -146,6 +145,36 @@ void testObj::test<5>(void)
 
   s_.process( mkDifferentLeaf(), changed_);
   ensure_equals("node has been corrlated", changed_.size(), 0u);
+}
+
+// test correlating of very simillar leafs
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  GraphNodePtrNN tmp=mkLeaf("other name");
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("no nodes changed", changed_.size(), 1u);
+  ensure_equals("invalid name", changed_[0]->getMetaAlert()->getName().get(),
+                                string("[similarity] 'name 1' and 'other name'") );
+}
+
+// test correlating of very simillar leafs with the same names
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  GraphNodePtrNN tmp=mkLeaf("name 1");
+  s_.process(tmp, changed_);
+  ensure_equals("some nodes have been changed", changed_.size(), 0u);
+
+  s_.process(sampleLeaf_, changed_);
+  ensure_equals("no nodes changed", changed_.size(), 1u);
+  ensure_equals("invalid name", changed_[0]->getMetaAlert()->getName().get(),
+                                string("[similarity] 'name 1'") );
 }
 
 } // namespace tut

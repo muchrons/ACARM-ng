@@ -55,8 +55,12 @@ Persistency::MetaAlert::Name Strategy::getMetaAlertName(const NodeEntry thisEntr
                                                         const NodeEntry otherEntry) const
 {
   stringstream ss;
-  ss << "[similarity] '" << thisEntry.node_->getMetaAlert()->getName().get()  << "' and '"
-                         << otherEntry.node_->getMetaAlert()->getName().get() << "'";
+  const std::string thisName( thisEntry.node_->getMetaAlert()->getName().get() );
+  const std::string otherName( otherEntry.node_->getMetaAlert()->getName().get() );
+  ss << "[similarity] '" << thisName;
+  if(thisName!=otherName)
+    ss << "' and '" << otherName;
+  ss << "'";
   return ss.str();
 }
 
