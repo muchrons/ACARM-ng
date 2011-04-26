@@ -1,16 +1,10 @@
 #!/bin/bash
-# TODO: until there are more ICC licenses, we must stick to local builds witn Intel's compiler...
-if grep -q "TC=intel" <<< "$@"
+if which distcc > /dev/null 2>&1
 then
-  #CPUS_LOCAL="`cat /proc/cpuinfo  | grep processor | wc -l`"
-  exec make "-j1" "$@"
+  DISTCC="WITH_DISTCC=1"
+  CPUS="`distcc -j`"
 else
-  if which distcc > /dev/null 2>&1
-  then
-    DISTCC="WITH_DISTCC=1"
-    CPUS_LOCAL="`distcc -j`"
-  else
-    CPUS_LOCAL="`cat /proc/cpuinfo  | grep processor | wc -l`"
-  fi
-  exec make $DISTCC "-j$CPUS_LOCAL" "$@"
+  DISTCC=""
+  CPUS="`cat /proc/cpuinfo  | grep processor | wc -l`"
 fi
+exec make $DISTCC "-j$CPUS" "$@"
