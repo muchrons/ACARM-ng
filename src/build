@@ -1,10 +1,21 @@
 #!/bin/bash
+# local CPUs
+CPUS_LOCAL="`cat /proc/cpuinfo  | grep processor | wc -l`"
+# use distcc?
 if which distcc > /dev/null 2>&1
 then
   DISTCC="WITH_DISTCC=1"
   CPUS="`distcc -j`"
 else
   DISTCC=""
-  CPUS="`cat /proc/cpuinfo  | grep processor | wc -l`"
+  CPUS="$CPUS_LOCAL"
 fi
+
+# disable distcc when building with intel
+if grep -q "TC=intel" <<< "$@"
+then
+  DISTCC=""
+  CPUS="$CPUS_LOCAL"
+fi
+
 exec make $DISTCC "-j$CPUS" "$@"
