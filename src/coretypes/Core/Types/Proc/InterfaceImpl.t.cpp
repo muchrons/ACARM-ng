@@ -17,6 +17,12 @@ namespace
 
 struct TestStrategyParams
 {
+  TestStrategyParams(void):
+    calls_(0),
+    heartbeats_(0)
+  {
+  }
+
   mutable int calls_;
   mutable int heartbeats_;
 }; // struct TestStrategyParams
@@ -50,8 +56,8 @@ struct TestStrategy
 
 namespace
 {
-int testStrategyNoParmCalls     =0;
-int testStrategyNoParmHeartbeats=0;
+int testStrategyNoParmCalls;
+int testStrategyNoParmHeartbeats;
 } // unnamed namespace
 
 struct TestStrategyNoParm
