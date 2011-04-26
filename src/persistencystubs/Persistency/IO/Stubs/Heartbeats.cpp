@@ -18,7 +18,7 @@ Heartbeats::Heartbeats(const Owner &owner, Transaction &t, int /*h*/):
 {
 }
 
-void Heartbeats::reportImpl(Transaction &, const Owner &, const Module &, Timestamp, time_t)
+void Heartbeats::reportImpl(Transaction &, const Owner &, const Module &, Timestamp, unsigned int)
 {
   ++reportCalls_;
 }

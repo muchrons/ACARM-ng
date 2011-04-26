@@ -20,7 +20,7 @@ Heartbeats::~Heartbeats(void)
 {
 }
 
-void Heartbeats::report(const Module &m, const time_t timeout)
+void Heartbeats::report(const Module &m, const unsigned int timeout)
 {
   if(timeout<1u)
     throw Exception(SYSTEM_SAVE_LOCATION, "timeout less than 1[s] does not make sense");

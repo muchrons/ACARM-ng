@@ -31,7 +31,7 @@ public:
   size_t reportCalls_;  ///< counter incremented on each call to implementation.
 
 private:
-  virtual void reportImpl(Transaction &t, const Owner &o, const Module &m, Timestamp reported, time_t timeout);
+  virtual void reportImpl(Transaction &t, const Owner &o, const Module &m, Timestamp reported, unsigned int timeout);
 }; // class Heartbeats
 
 } // namespace Stubs

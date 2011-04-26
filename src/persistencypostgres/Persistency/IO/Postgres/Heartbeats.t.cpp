@@ -64,7 +64,7 @@ template<>
 void testObj::test<1>(void)
 {
   // write heartbeat
-  hb_->report("EvilModule", 404);
+  hb_->report("EvilModule", 404u);
 
   // check if it was written
   const pqxx::result r=execSQL(t_, "SELECT * FROM heartbeats;");
@@ -85,8 +85,8 @@ void testObj::test<1>(void)
     ensure("invalid timestamp", tmp.get()<=now.get() );
   }
   {
-    const time_t tmp=ReaderHelper<time_t>::readAsNotNull(r[0]["timeout"]);
-    ensure_equals("invalid timeout", tmp, 404);
+    const unsigned int tmp=ReaderHelper<unsigned int>::readAsNotNull(r[0]["timeout"]);
+    ensure_equals("invalid timeout", tmp, 404u);
   }
 }
 
@@ -96,8 +96,8 @@ template<>
 void testObj::test<2>(void)
 {
   // write two heartbeat
-  hb_->report("EvilModule", 404);
-  hb_->report("EvilModule", 303);
+  hb_->report("EvilModule", 404u);
+  hb_->report("EvilModule", 303u);
 
   // check if it was written
   const pqxx::result r=execSQL(t_, "SELECT * FROM heartbeats;");
@@ -105,8 +105,8 @@ void testObj::test<2>(void)
 
   // check some random field's value
   {
-    const time_t tmp=ReaderHelper<time_t>::readAsNotNull(r[0]["timeout"]);
-    ensure_equals("invalid timeout", tmp, 303); // last one should be present
+    const unsigned int tmp=ReaderHelper<unsigned int>::readAsNotNull(r[0]["timeout"]);
+    ensure_equals("invalid timeout", tmp, 303u);    // last one should be present
   }
 }
 

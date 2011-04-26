@@ -31,7 +31,7 @@ public:
   Heartbeats(const Owner &owner, Transaction &t, DBHandlePtrNN dbHandle);
 
 private:
-  virtual void reportImpl(Transaction &t, const Owner &o, const Module &m, Timestamp reported, time_t timeout);
+  virtual void reportImpl(Transaction &t, const Owner &o, const Module &m, Timestamp reported, unsigned int timeout);
 
   Logger::Node  log_;
   DBHandlePtrNN dbHandle_;

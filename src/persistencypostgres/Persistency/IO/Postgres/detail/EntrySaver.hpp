@@ -175,7 +175,7 @@ public:
   void saveHeartbeat(const Persistency::IO::Heartbeats::Owner  &owner,
                      const Persistency::IO::Heartbeats::Module &module,
                      Persistency::Timestamp                     reported,
-                     time_t                                     timeout);
+                     unsigned int                               timeout);
 
 private:
   DataBaseID getID(const std::string &seqName);

@@ -1261,11 +1261,11 @@ void testObj::test<40>(void)
     ensure_equals("invalid owner", tmp, "moduleY");
   }
   {
-    const Timestamp tmp=ReaderHelper<Timestamp>::readAsNotNull(r[0]["timestamp"]);
-    ensure_equals("invalid timestamp", tmp.get(), 666u);
+    const unsigned int tmp=ReaderHelper<unsigned int>::readAsNotNull(r[0]["timestamp"]);
+    ensure_equals("invalid timestamp", tmp, 666u);
   }
   {
-    const time_t tmp=ReaderHelper<time_t>::readAsNotNull(r[0]["timeout"]);
+    const unsigned int tmp=ReaderHelper<unsigned int>::readAsNotNull(r[0]["timeout"]);
     ensure_equals("invalid timeout", tmp, 42u);
   }
 }

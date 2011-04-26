@@ -24,7 +24,7 @@ public:
   {
   }
 
-  virtual void reportImpl(Transaction &/*t*/, const Owner &o, const Module &m, Timestamp reported, time_t timeout)
+  virtual void reportImpl(Transaction &/*t*/, const Owner &o, const Module &m, Timestamp reported, unsigned int timeout)
   {
     ++reportedCalls_;
     paramOwner_   =o;
@@ -33,11 +33,11 @@ public:
     paramTimeout_ =timeout;
   }
 
-  Owner     paramOwner_;
-  Module    paramModule_;
-  Timestamp paramReported_;
-  time_t    paramTimeout_;
-  size_t    reportedCalls_;
+  Owner        paramOwner_;
+  Module       paramModule_;
+  Timestamp    paramReported_;
+  unsigned int paramTimeout_;
+  size_t       reportedCalls_;
 }; // class Heartbeats
 
 

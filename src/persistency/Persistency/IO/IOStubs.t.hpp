@@ -294,7 +294,7 @@ public:
                           const Owner &,
                           const Module &,
                           Persistency::Timestamp,
-                          time_t)
+                          unsigned int)
   {
     ++report_;
   }

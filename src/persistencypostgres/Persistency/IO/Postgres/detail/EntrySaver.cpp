@@ -527,7 +527,7 @@ void EntrySaver::deleteHeartbeat(const Persistency::IO::Heartbeats::Owner  &owne
 void EntrySaver::saveHeartbeat(const Persistency::IO::Heartbeats::Owner  &owner,
                                const Persistency::IO::Heartbeats::Module &module,
                                Persistency::Timestamp                     reported,
-                               time_t                                     timeout)
+                               const unsigned int                         timeout)
 {
   stringstream ss;
   Appender     ap(t_);

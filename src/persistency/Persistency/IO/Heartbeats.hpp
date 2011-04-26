@@ -52,10 +52,10 @@ public:
    *  \param timeout number of seconds this entry is valid. if no heartbeat arrives within
    *                 this time module is considered dead.
    */
-  void report(const Module &m, time_t timeout);
+  void report(const Module &m, unsigned int timeout);
 
 private:
-  virtual void reportImpl(Transaction &t, const Owner &o, const Module &m, Timestamp reported, time_t timeout) = 0;
+  virtual void reportImpl(Transaction &t, const Owner &o, const Module &m, Timestamp reported, unsigned int timeout) = 0;
 
   const Owner  owner_;
   Transaction &t_;

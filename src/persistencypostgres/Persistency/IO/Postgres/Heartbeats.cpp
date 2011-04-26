@@ -23,7 +23,7 @@ Heartbeats::Heartbeats(const Owner &owner, Transaction &t, DBHandlePtrNN dbHandl
 {
 }
 
-void Heartbeats::reportImpl(Transaction &t, const Owner &o, const Module &m, Timestamp reported, time_t timeout)
+void Heartbeats::reportImpl(Transaction &t, const Owner &o, const Module &m, const Timestamp reported, const unsigned int timeout)
 {
   TRYCATCH_BEGIN
     EntrySaver       es(t, *dbHandle_);
