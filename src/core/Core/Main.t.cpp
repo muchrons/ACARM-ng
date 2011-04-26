@@ -6,12 +6,13 @@
 #include <sys/types.h>
 #include <signal.h>
 #include <unistd.h>
-#include <boost/thread.hpp>
 
+#include "Base/Threads/ThreadJoiner.hpp"
 #include "Core/Main.hpp"
 #include "TestHelpers/TestBase.hpp"
 
 using namespace Core;
+using Base::Threads::ThreadJoiner;
 
 namespace
 {
@@ -47,13 +48,28 @@ void testObj::test<2>(void)
   m.waitUntilDone();
 }
 
+namespace
+{
+struct SignalSender
+{
+  void operator()(void)
+  {
+    while(true)
+    {
+      ensure_equals("kill() failed", kill( getpid(), SIGINT), 0);
+      boost::this_thread::sleep( boost::posix_time::seconds(1) );
+    }
+  }
+}; // struct SignalSender
+} // unnamed namespace
+
 // test stopping request from other thread
 template<>
 template<>
 void testObj::test<3>(void)
 {
-  Main m;
-  ensure_equals("kill() failed", kill( getpid(), SIGINT), 0);
+  Main         m;
+  ThreadJoiner th( (SignalSender()) );
   m.waitUntilDone();
 }
 
