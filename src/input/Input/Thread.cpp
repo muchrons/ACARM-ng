@@ -6,6 +6,7 @@
 #include <cassert>
 #include <boost/thread.hpp>
 
+#include "Commons/Convert.hpp"
 #include "Persistency/Facades/AnalyzersCreator.hpp"
 #include "Input/Thread.hpp"
 #include "Input/BackendFacade.hpp"
@@ -87,8 +88,9 @@ void Thread::operator()(void)
 
 void Thread::sendHeartbeat(const unsigned int timeout, const unsigned int deadline)
 {
-  const Persistency::Timestamp now=Persistency::Timestamp();    // get current timestamp
-  if( now.get() < lastHeartbeat_.get()+timeout )                // not time for heartbeat yet?
+  const Persistency::Timestamp now=Persistency::Timestamp();                // get current timestamp
+  const time_t                 off=Commons::Convert::to<time_t>(timeout);   // convert signedness on some compilers
+  if( now.get() < lastHeartbeat_.get()+off )                                // not time for heartbeat yet?
     return;
 
   try
