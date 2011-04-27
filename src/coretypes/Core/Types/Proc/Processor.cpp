@@ -3,6 +3,7 @@
  *
  */
 #include "Logger/Logger.hpp"
+#include "Commons/Convert.hpp"
 #include "Core/Types/Proc/Processor.hpp"
 
 using namespace std;
@@ -119,7 +120,9 @@ private:
     try
     {
       const Persistency::Timestamp now=Persistency::Timestamp();
-      if( now.get()<lastHeartbeat_.get()+timeout )  // nothing has to be done
+      time_t                       end=lastHeartbeat_.get();
+      end+=Commons::Convert::to<time_t>(timeout);               // note that this cast may change signdness on some compilers
+      if( now.get()<end )                                       // nothing has to be done
         return;
       // ok - it's time to send heartbeat
       LOGMSG_DEBUG(log_, "time to send heartbeat");
