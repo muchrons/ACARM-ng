@@ -32,6 +32,6 @@ do
 done
 
 # display some progress-libe bar
-echo -n .
+#echo -n .
 
 exit 0
