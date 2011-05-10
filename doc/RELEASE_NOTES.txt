@@ -1,5 +1,6 @@
 -- dev --
-* added dedicated thread for signals handling (ensures no dead locks are possible when sending signals).
+* new version of build process
+* added dedicated thread for signals handling (ensures no dead locks are possible when sending signals)
 * main branch is now publicly available
 * filters:
   - new event
@@ -8,7 +9,7 @@
 * icc support (intel toolchain)
 
 -- v0.1.1 --
-* fixed issue with same-name filter not appending to correlated entry.
+* fixed issue with same-name filter not appending to correlated entry
 
 -- v0.1.0 --
 * first version of framework (API)
