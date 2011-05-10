@@ -1,5 +1,5 @@
 # include proper toolchain
-include $(MAKEFILES_TOOLCHAINS_BASE_DIR)/$(TC).mk
+include $(MAKEFILES_TOOLCHAINS_BASE_DIR)/$(TC)/tools.mk
 
 # distcc support, if requested
 ifneq (,$(WITH_DISTCC))

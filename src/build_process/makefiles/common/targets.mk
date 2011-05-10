@@ -29,7 +29,7 @@ all:
 	@exit 1
 
 # include toolchain-specific flags
-include $(MAKEFILES_TOOLCHAINS_BASE_DIR)/$(TC)-flags.mk
+include $(MAKEFILES_TOOLCHAINS_BASE_DIR)/$(TC)/flags.mk
 # add project-specific flags
 OPT_FLAGS+=$(USER_OPT_FLAGS)
 DBG_FLAGS+=$(USER_DBG_FLAGS)

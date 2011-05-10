@@ -4,19 +4,19 @@
 #
 
 # set default mode
-export MODE=default
+export MODE:=default
 
 # set default profile
-export PROFILE=test
+export PROFILE:=test
 
 # set default toolchain
-export TC=gcc
+export TC:=gcc
 
 # enable distcc
 #export WITH_DISTCC:=1
 
 # features to build with
-export FEATURES= \
+export FEATURES:= \
                  lock_on_write_graph_add \
                  use_new_boost_filesystem
 

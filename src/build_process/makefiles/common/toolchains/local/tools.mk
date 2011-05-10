@@ -1,2 +1,2 @@
 $(warning 'local' toolchain name is depracted - use 'gcc' instead)
-include $(MAKEFILES_TOOLCHAINS_BASE_DIR)/gcc.mk
+include $(MAKEFILES_TOOLCHAINS_BASE_DIR)/gcc/tools.mk
