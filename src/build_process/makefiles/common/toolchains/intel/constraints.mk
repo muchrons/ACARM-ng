@@ -26,14 +26,12 @@ BR:=)
 GCC_VER:=$(shell g++ --version | head -1 | sed "s:^[^$(BR)]\+$(BR) *::" | sed 's: .*::' | sed 's:^\([0-9]\+\.[0-9]\+\).*:\1:')
 BR:=
 ifeq ($(GCC_VER),4.5)
-$(warning WARNING: compiling with ICC, using GCC 4.5 libs - this may lead to problems)
-ifeq ($(shell test -e /usr/include/c++/4.4 && echo OK),OK)
-$(warning WARNING: detected libs for GCC 4.4 - using these ones instead)
-TMP+=-I /usr/include/c++/4.4
-else
-$(warning GCC 4.5 IS (AS FOR NOW) INCOMPATIBLE WITH ICC, SINCE IT USES IMPLICIT C++0x IN)
-$(warning HEADER FILES (INTEL DOES NOT MAKE SUCH AN ASSUMPTION). PROGRAM PROBABLY WILL NOT COMPILE.)
-$(warning TO FIX THIS ISSUE TRY INSTALLING GCC 4.4 OR NEWER ICC.)
-endif # has gcc 4.4 libs
+$(shell echo "--------------------------------------------------------------------------------------------------" >&2)
+$(shell echo "           COMPILING WITH ICC, USING GCC 4.5 LIBS - THIS MAY LEAD TO PROBLEMS"                      >&2)
+$(shell echo "WARNING: gcc 4.5 is (as for now) incompatible with icc, since it uses implicit c++0x in"            >&2)
+$(shell echo "WARNING: header files (intel does not make such an assumption). program probably will not compile." >&2)
+$(shell echo "WARNING: to fix this issue try installing gcc 4.4 or newer icc."                                    >&2)
+$(shell echo "WARNING: you may want to use gcc 4.4 libs instead (via -I in config.mk)"                            >&2)
+$(shell echo "--------------------------------------------------------------------------------------------------" >&2)
 endif # gcc 4.5
 endif # intel
