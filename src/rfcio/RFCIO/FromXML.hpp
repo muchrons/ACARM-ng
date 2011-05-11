@@ -58,94 +58,94 @@ public:
    *  \param alert node to be parsed.
    *  \return parsed data.
    */
-  Persistency::AlertPtrNN parseAlert(const xmlpp::Element &alert) const;
+  Persistency::AlertPtrNN parseAlert(const xmlpp::Element &alert);
   /** \brief parse analyzer node.
    *  \param analyzer node to be parsed.
    *  \return parsed data.
    */
-  Persistency::AnalyzerPtrNN parseAnalyzer(const xmlpp::Element &analyzer) const;
+  Persistency::AnalyzerPtrNN parseAnalyzer(const xmlpp::Element &analyzer);
   /** \brief parse creation time node.
    *  \param createTime node to be parsed.
    *  \return parsed data.
    */
-  Persistency::Timestamp parseCreateTime(const xmlpp::Element &createTime) const;
+  Persistency::Timestamp parseCreateTime(const xmlpp::Element &createTime);
   /** \brief parse detection time node.
    *  \param detectTime node to be parsed.
    *  \return parsed data.
    */
-  Persistency::Timestamp parseDetectTime(const xmlpp::Element &detectTime) const;
+  Persistency::Timestamp parseDetectTime(const xmlpp::Element &detectTime);
   /** \brief parse assessment pieces of information node.
    *  \param assessment node to be parsed.
    *  \return parsed data.
    */
-  Assessment parseAssessment(const xmlpp::Element &assessment) const;
+  Assessment parseAssessment(const xmlpp::Element &assessment);
   /** \brief parse assessment pieces of information node.
    *  \param assessment node to be parsed (can be NULL).
    *  \return parsed data.
    */
-  Assessment parseAssessment(const xmlpp::Element *assessment) const;
+  Assessment parseAssessment(const xmlpp::Element *assessment);
   /** \brief parse classfication node.
    *  \param classification node to be parsed.
    *  \return parsed data.
    */
-  Classification parseClassification(const xmlpp::Element &classification) const;
+  Classification parseClassification(const xmlpp::Element &classification);
   /** \brief parse reference url node.
    *  \param ref node to be parsed.
    *  \return parsed data.
    */
-  Persistency::ReferenceURLPtrNN parseReferenceURL(const xmlpp::Element &ref) const;
+  Persistency::ReferenceURLPtrNN parseReferenceURL(const xmlpp::Element &ref);
   /** \brief parse additional data  node.
    *  \param data node to be parsed.
    *  \return parsed data.
    */
-  StringNull parseAdditionalData(const xmlpp::Element &data) const;
+  StringNull parseAdditionalData(const xmlpp::Element &data);
   /** \brief parse address node.
    *  \param address node to be parsed.
    *  \return parsed data.
    */
-  IP parseAddress(const xmlpp::Element &address) const;
+  IP parseAddress(const xmlpp::Element &address);
   /** \brief parse service node.
    *  \param service node to be parsed.
    *  \return parsed data.
    */
-  ServiceVector parseService(const xmlpp::Element &service) const;
+  ServiceVector parseService(const xmlpp::Element &service);
   /** \brief parse process and user nodes.
    *  \param process node to be parsed.
    *  \return parsed data.
    */
-  Persistency::ProcessPtrNN parseProcessAndUser(const xmlpp::Element &process) const;
+  Persistency::ProcessPtrNN parseProcessAndUser(const xmlpp::Element &process);
   /** \brief parse soruce host node.
    *  \param alert node to be parsed.
    *  \return parsed data.
    */
-  Hosts parseSource(const xmlpp::Element &alert) const;
+  Hosts parseSource(const xmlpp::Element &alert);
   /** \brief parse target host node.
    *  \param alert node to be parsed.
    *  \return parsed data.
    */
-  Hosts parseTarget(const xmlpp::Element &alert) const;
+  Hosts parseTarget(const xmlpp::Element &alert);
   /** \brief parse 'Node' node.
    *  \param node node to be parsed.
    *  \return parsed data.
    */
-  NodeData parseNode(const xmlpp::Element &node) const;
+  NodeData parseNode(const xmlpp::Element &node);
   /** \brief parse 'Node' node.
    *  \param node node to be parsed (if pointer is NULL, NULL values are returned).
    *  \return parsed data.
    */
-  NodeData parseNode(const xmlpp::Element *node) const;
+  NodeData parseNode(const xmlpp::Element *node);
 
 private:
-  void ensureNode(const char *name, const xmlpp::Element &node) const;
-  Persistency::Timestamp parseTimestamp(const char *name, const xmlpp::Element &ts) const;
-  double parseConfidenceValue(const std::string &rating, const xmlpp::Element &node) const;
-  Persistency::HostPtrNN parseHost(const xmlpp::Element &host) const;
-  Hosts parseHosts(const xmlpp::Element::NodeList &list) const;
+  void ensureNode(const char *name, const xmlpp::Element &node);
+  Persistency::Timestamp parseTimestamp(const char *name, const xmlpp::Element &ts);
+  double parseConfidenceValue(const std::string &rating, const xmlpp::Element &node);
+  Persistency::HostPtrNN parseHost(const xmlpp::Element &host);
+  Hosts parseHosts(const xmlpp::Element::NodeList &list);
 
-  Logger::Node                                    log_;
-  mutable Persistency::IO::ConnectionPtrNN        conn_;
-  mutable Persistency::IO::Transaction           &t_;
-  mutable Persistency::Facades::AnalyzersCreator  analyzersCreator_;
+  Logger::Node                            log_;
+  Persistency::IO::ConnectionPtrNN        conn_;
+  Persistency::IO::Transaction           &t_;
+  Persistency::Facades::AnalyzersCreator  analyzersCreator_;
 }; // class FromXML
 
 } // namespace RFCIO
