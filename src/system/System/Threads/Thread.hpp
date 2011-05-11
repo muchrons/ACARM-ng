@@ -69,7 +69,7 @@ private:
       {
         // thread interruption requested - exiting thread
       }
-      catch(const std::exception &ex)
+      catch(const std::exception &)
       {
         // unhandled error...
       }

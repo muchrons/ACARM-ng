@@ -33,14 +33,13 @@ boost::filesystem::path createTempDirectory(const boost::filesystem::path &root)
     // return new directory
     return path( tmplStr.get() );
   }
-  catch(const ExceptionFilesystemIO &ex)
+  catch(const ExceptionFilesystemIO &)
   {
-    throw ex;
+    throw;
   }
   catch(const std::exception &ex)
   {
-    throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, root, "createTempDirectory",
-                                "problem while creating temporary directory");
+    throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, root, "createTempDirectory", ex.what() );
   }
 }
 

@@ -27,13 +27,13 @@ void createDirectory(const boost::filesystem::path &p)
     if( !create_directory(p) )
       throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "create_directory", "unable to create directory");
   }
-  catch(const ExceptionFilesystemIO &ex)
+  catch(const ExceptionFilesystemIO &)
   {
-    throw ex;
+    throw;
   }
   catch(const std::exception &ex)
   {
-    throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "createDirectory", "problem while creating directory");
+    throw ExceptionFilesystemIO(SYSTEM_SAVE_LOCATION, p, "createDirectory", ex.what() );
   }
 }
 

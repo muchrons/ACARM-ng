@@ -100,8 +100,9 @@ private:
 
 /** \brief helper structure that agrtegates all the helpers.
  */
-struct IDAssigner::IDAssignerPimpl
+class IDAssigner::IDAssignerPimpl
 {
+public:
   /** \brief create object.
    *  \param conn connection to be used.
    *  \param t    transaction for initialization operations.
