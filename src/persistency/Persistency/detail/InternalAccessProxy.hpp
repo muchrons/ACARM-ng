@@ -20,8 +20,9 @@ namespace detail
 /** \brief helper object that allows GraphNode to grant certain extra privilages
  *         to external classes.
  */
-struct InternalAccessProxy: private boost::noncopyable
+class InternalAccessProxy: private boost::noncopyable
 {
+public:
   /** \brief adds new child to parent.
    *  \param parent parent to add child to.
    *  \param child  child to be added.
