@@ -64,6 +64,7 @@ const xmlpp::Element* findAnyChildIfHas(const xmlpp::Element &parent, const char
   return dynamic_cast<const xmlpp::Element*>( *nl.begin() );
 } // findAnyChildIfHas
 
+/*
 const xmlpp::Element& findAnyChild(const xmlpp::Element &parent, const char *name)
 {
   const xmlpp::Element *ptr=findAnyChildIfHas(parent, name);
@@ -71,6 +72,7 @@ const xmlpp::Element& findAnyChild(const xmlpp::Element &parent, const char *nam
     throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, parent.get_path(), name);
   return *ptr;
 } // findAnyChild()
+*/
 
 const xmlpp::Element* findOneChildIfHas(const xmlpp::Element &parent, const char *name)
 {
