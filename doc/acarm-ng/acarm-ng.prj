@@ -1,20 +1,20 @@
-format 66
+format 74
 "acarm-ng"
-  revision 2
-  modified_by 66 "wojek"
+  revision 3
+  modified_by 42 "basz"
 
 
   
   // class settings
   default_attribute_visibility private default_relation_visibility private default_operation_visibility public
   //class diagram settings
-  draw_all_relations yes hide_attributes no hide_operations no show_members_full_definition no show_members_visibility no show_members_stereotype no show_members_multiplicity no show_members_initialization no show_attribute_modifiers no member_max_width 127 show_parameter_dir yes show_parameter_name yes package_name_in_tab no class_drawing_mode natural drawing_language uml show_context_mode no auto_label_position yes show_relation_modifiers no show_infonote no shadow yes show_stereotype_properties no
+  draw_all_relations yes hide_attributes no hide_operations no hide_getset_operations no show_members_full_definition no show_members_visibility no show_members_stereotype no show_members_context no show_members_multiplicity no show_members_initialization no show_attribute_modifiers no member_max_width 127 show_parameter_dir yes show_parameter_name yes package_name_in_tab no class_drawing_mode natural drawing_language uml show_context_mode no auto_label_position yes show_relation_modifiers no show_relation_visibility no show_infonote no shadow yes show_stereotype_properties no
   //use case diagram settings
   package_name_in_tab no show_context no auto_label_position yes draw_all_relations yes class_drawing_mode actor shadow yes show_stereotype_properties no
   //sequence diagram settings
-  show_full_operations_definition no write_horizontally yes class_drawing_mode natural drawing_language uml draw_all_relations yes shadow yes show_stereotype_properties no
+  show_full_operations_definition no write_horizontally yes class_drawing_mode natural drawing_language uml draw_all_relations yes shadow yes show_stereotype_properties no show_class_context_mode no show_msg_context_mode no
   //collaboration diagram settings
-  show_full_operations_definition no show_hierarchical_rank no write_horizontally yes drawing_language uml package_name_in_tab no show_context no draw_all_relations yes shadow yes show_stereotype_properties no
+  show_full_operations_definition no show_hierarchical_rank no write_horizontally yes drawing_language uml package_name_in_tab no show_context no show_msg_context no draw_all_relations yes shadow yes show_stereotype_properties no
   //object diagram settings
    write_horizontally yes package_name_in_tab no show_context no auto_label_position yes draw_all_relations yes shadow yes show_stereotype_properties no
   //component diagram settings
@@ -78,7 +78,6 @@ format 66
 	  on component_ref 128938 // Trigger
       end
     end
-
   end
 
   componentview 128170 "IO"
@@ -105,23 +104,10 @@ In general each operation must happen in data base to ensure fail-safe and recov
 
     component 128938 "Trigger"
       comment "Interface for defining triggers when given action occures (ex. some threshold is reached)."
-      simplerelation 129450
-	-_->
-	  on component_ref 129322 // FiniteStateMachine
-      end
-
-      simplerelation 129578
-	-_->
-	  on component_ref 129194 // AlertFormatter
-      end
     end
 
     component 128810 "Filter"
       comment "Interface for defining filter plugins for system. Each operation state transition of filter must be done with FSM to ensure secure recovery after fail-over."
-      simplerelation 129322
-	-_->
-	  on component_ref 129322 // FiniteStateMachine
-      end
     end
   end
 
@@ -133,12 +119,168 @@ In general each operation must happen in data base to ensure fail-safe and recov
       comment "System logging module. Common entry point for all logs."
     end
 
-    component 129194 "AlertFormatter"
-      comment "Interface for defining output alert formatters. This allows usage of common formatters in different triggers."
+  end
+
+  classview 128042 "PluginInterfaces"
+    //class diagram settings
+    draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+    //collaboration diagram settings
+    show_full_operations_definition default show_hierarchical_rank default write_horizontally default drawing_language default package_name_in_tab default show_context default show_msg_context default draw_all_relations default shadow default show_stereotype_properties default
+    //object diagram settings
+     write_horizontally default package_name_in_tab default show_context default auto_label_position default draw_all_relations default shadow default show_stereotype_properties default
+    //sequence diagram settings
+    show_full_operations_definition default write_horizontally default class_drawing_mode default drawing_language default draw_all_relations default shadow default show_stereotype_properties default show_class_context_mode default show_msg_context_mode default
+    //state diagram settings
+    package_name_in_tab default show_context default auto_label_position default write_trans_label_horizontally default show_trans_definition default draw_all_relations default shadow default
+    show_activities default region_horizontally default drawing_language default show_stereotype_properties default
+    //class settings
+    //activity diagram settings
+    package_name_in_tab default show_context default show_opaque_action_definition default auto_label_position default write_flow_label_horizontally default draw_all_relations default shadow default
+    show_infonote default drawing_language default show_stereotype_properties default
+    classdiagram 134570 "Processors"
+      draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      size A4-Landscape
     end
 
-    component 129322 "FiniteStateMachine"
-      comment "FSM - Finite State Machine. Component for defining states and transitions between them and allows persistent state holding in case of system crash."
+    class 128042 "Processor"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
     end
+
+    class 128170 "Trigger"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 128042 // <generalisation>
+	relation 128042 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 128042 // <generalisation>
+	  b parent class_ref 128042 // Processor
+      end
+    end
+
+    class 128298 "Filter"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 128170 // <generalisation>
+	relation 128170 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 128170 // <generalisation>
+	  b parent class_ref 128042 // Processor
+      end
+    end
+
+    class 128426 "Trigger1"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 128298 // <generalisation>
+	relation 128298 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 128298 // <generalisation>
+	  b parent class_ref 128170 // Trigger
+      end
+    end
+
+    class 128554 "Trigger2"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 128426 // <generalisation>
+	relation 128426 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 128426 // <generalisation>
+	  b parent class_ref 128170 // Trigger
+      end
+    end
+
+    class 128682 "Filter1"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 128554 // <generalisation>
+	relation 128554 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 128554 // <generalisation>
+	  b parent class_ref 128298 // Filter
+      end
+    end
+
+    class 128810 "Filter2"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 128682 // <generalisation>
+	relation 128682 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 128682 // <generalisation>
+	  b parent class_ref 128298 // Filter
+      end
+    end
+
   end
 end

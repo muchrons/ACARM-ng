@@ -1,40 +1,32 @@
-format 66
+format 74
 
 componentcanvas 128042 component_ref 128042 // Core
   draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
-  xyzwh 321 138 2000 169 59
+  xyzwh 340.069 239.425 2000 267 93
 end
 componentcanvas 128426 component_ref 128554 // Persistency
   draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
-  xyzwh 321 34 2000 169 59
+  xyzwh 340.069 37.3146 2000 267 93
 end
 componentcanvas 128554 component_ref 128426 // ConfigIO
   draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
-  xyzwh 592 138 2000 169 59
+  xyzwh 686.397 238.425 2000 267 93
 end
 componentcanvas 128682 component_ref 129066 // Input
   draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
-  xyzwh 67 92 2000 169 59
+  xyzwh 3.15622 239.484 2000 267 93
 end
 componentcanvas 128810 component_ref 128938 // Trigger
   draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
-  xyzwh 411 249 2000 169 59
+  xyzwh 489.542 414.576 2000 267 93
 end
 componentcanvas 128938 component_ref 128810 // Filter
   draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
-  xyzwh 224 249 2005 169 59
+  xyzwh 157.415 412.576 2005 267 93
 end
 componentcanvas 129066 component_ref 128682 // Logger
   draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
-  xyzwh 592 33 2000 169 59
-end
-componentcanvas 129194 component_ref 129194 // AlertFormatter
-  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
-  xyzwh 411 379 2000 169 59
-end
-componentcanvas 129322 component_ref 129322 // FiniteStateMachine
-  draw_component_as_icon default show_component_req_prov default show_component_rea default show_stereotype_properties default
-  xyzwh 221 381 2000 169 59
+  xyzwh 688.397 37.1731 2000 267 93
 end
 simplerelationcanvas 129450 simplerelation_ref 128042
   from ref 128042 z 2001 to ref 128426
@@ -53,15 +45,6 @@ simplerelationcanvas 130730 simplerelation_ref 129066
 end
 simplerelationcanvas 130858 simplerelation_ref 129194
   from ref 128042 z 2001 to ref 128810
-end
-simplerelationcanvas 130986 simplerelation_ref 129322
-  from ref 128938 z 2006 to ref 129322
-end
-simplerelationcanvas 131114 simplerelation_ref 129450
-  from ref 128810 z 2001 to ref 129322
-end
-simplerelationcanvas 131242 simplerelation_ref 129578
-  from ref 128810 z 2001 to ref 129194
 end
 simplerelationcanvas 131370 simplerelation_ref 128810
   from ref 128682 z 2001 to ref 128042
