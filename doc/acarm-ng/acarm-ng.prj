@@ -1,6 +1,6 @@
 format 74
 "acarm-ng"
-  revision 5
+  revision 6
   modified_by 42 "basz"
 
 
@@ -475,22 +475,6 @@ ${inlines}
       idl_decl ""
       explicit_switch_type ""
       
-      classrelation 136874 // <generalisation>
-	relation 136234 ---|>
-	  a public
-	    cpp default "${type}"
-	    classrelation_ref 136874 // <generalisation>
-	  b parent class_ref 135722 // MetaAlertIO
-      end
-
-      classrelation 137386 // <generalisation>
-	relation 136746 ---|>
-	  a public
-	    cpp default "${type}"
-	    classrelation_ref 137386 // <generalisation>
-	  b parent class_ref 135338 // Connection
-      end
-
       classrelation 137770 // <dependency>
 	relation 137130 -_->
 	  a default
@@ -505,6 +489,22 @@ ${inlines}
 	    cpp default "#include in source"
 	    classrelation_ref 137898 // <dependency>
 	  b parent class_ref 136362 // Transaction2
+      end
+
+      classrelation 150954 // <generalisation>
+	relation 150314 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 150954 // <generalisation>
+	  b parent class_ref 135338 // Connection
+      end
+
+      classrelation 151210 // <dependency>
+	relation 150570 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 151210 // <dependency>
+	  b parent class_ref 142890 // MetaAlertIO2
       end
     end
 
@@ -584,6 +584,27 @@ ${inlines}
 	    cpp default "${type}"
 	    classrelation_ref 137130 // <generalisation>
 	  b parent class_ref 135594 // TransactionAPI
+      end
+    end
+
+    class 142890 "MetaAlertIO2"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 151082 // <generalisation>
+	relation 150442 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 151082 // <generalisation>
+	  b parent class_ref 135722 // MetaAlertIO
       end
     end
   end
