@@ -1,6 +1,6 @@
 format 74
 "acarm-ng"
-  revision 4
+  revision 5
   modified_by 42 "basz"
 
 
@@ -433,6 +433,13 @@ ${inlines}
       idl_decl ""
       explicit_switch_type ""
       
+      classrelation 144426 // <dependency>
+	relation 143786 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 144426 // <dependency>
+	  b parent class_ref 135466 // Transaction
+      end
     end
 
     class 135850 "MetaAlertIO1"
