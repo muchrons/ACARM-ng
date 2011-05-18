@@ -18,9 +18,10 @@ class Home extends TPage
 
   public function onLoad()
   {
-    $mainuse=CSQLMap::get()->queryForObject('SMetaAlertsInUse');
-    $alerts=CSQLMap::get()->queryForObject('SAlertCount');
-    $meta_alerts=CSQLMap::get()->queryForObject('SMetaAlertCount');
+    //$mainuse=SQLWrapper::queryForObject('SMetaAlertsInUse');
+    $mainuse=SQLWrapper::queryForObject('SMetaAlertsInUse');
+    $alerts=SQLWrapper::queryForObject('SAlertCount');
+    $meta_alerts=SQLWrapper::queryForObject('SMetaAlertCount');
 
     $this->MAinUse->Text=$this->format($mainuse);
     $this->Alerts->Text=$this->format($alerts);

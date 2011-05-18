@@ -38,11 +38,12 @@
     <module id="request" class="THttpRequest" UrlFormat="Path" />
     -->
 
-    <!-- Remove this comment mark to enable logging
+
     <module id="log" class="System.Util.TLogRouter">
-      <route class="TBrowserLogRoute" Categories="System" />
+      <!--<route class="TBrowserLogRoute" Categories="System.Web" />-->
+      <route class="TDbLogRoute" ConnectionID="db_conn" LogTableName="pradolog" AutoCreateLogTable="false" Categories="WUI" />
     </module>
-    -->
+
   </modules>
 
   <!-- configuration for available services -->

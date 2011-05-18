@@ -5,7 +5,7 @@ class WebLogs extends TPage
   public function __construct()
   {
     parent::__construct();
-    $this->data_=CSQLMap::get()->queryForList('SelectWUILogs');
+    $this->data_=SQLWrapper::queryForList('SelectWUILogs');
   }
 
   public function onLoad()

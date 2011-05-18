@@ -7,7 +7,7 @@ class Host extends TPage
     parent::__construct();
     $this->hostID_=$this->Request->itemAt('id');
     assert( $this->hostID_!==null );
-    $this->host_=CSQLMap::get()->queryForObject('SelectHost', $this->hostID_);
+    $this->host_=SQLWrapper::queryForObject('SelectHost', $this->hostID_);
   }
 
   public function onLoad()
@@ -28,7 +28,7 @@ class Host extends TPage
       $this->HostRefURL->Text=($this->host_->ref_url === null)?"N/A":$this->host_->ref_url;
 
       //Get all services for the host
-      $services=CSQLMap::get()->queryForList('SelectServicesForHost', $this->hostID_);
+      $services=SQLWrapper::queryForList('SelectServicesForHost', $this->hostID_);
       $data=array();
       foreach ($services as $s)
         $data[]=array('id'=>$s->id,'name'=>$s->name,'port'=>$s->port, 'protocol'=>$s->protocol,
@@ -39,7 +39,7 @@ class Host extends TPage
 
 
       //Get all processes for the host
-      $processes=CSQLMap::get()->queryForList('SelectProcessesForHost', $this->hostID_);
+      $processes=SQLWrapper::queryForList('SelectProcessesForHost', $this->hostID_);
       $data=array();
       foreach ($processes as $p)
         $data[]=array('id'=>$p->id,'name'=>$p->name,'port'=>$p->path, 'MD5'=>$p->md5, 'PID'=>$p->pid,

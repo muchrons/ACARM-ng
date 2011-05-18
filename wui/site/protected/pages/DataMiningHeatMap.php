@@ -46,7 +46,7 @@ class DataMiningHeatMap extends TPage
     $query_param->value3=$param->CallbackParameter->longitude;
     $query_param->value4=$param->CallbackParameter->latitude;
 
-    $data=CSQLMap::get()->queryForList("DMHeatMapNumAlerts",$query_param);
+    $data=SQLWrapper::queryForList("DMHeatMapNumAlerts",$query_param);
 
     $this->NoAlerts->Text=$data;
 

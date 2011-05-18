@@ -82,5 +82,12 @@
       </com:THyperLink>
     </td>
   </tr>
+  <tr>
+    <td>
+      <com:THyperLink  NavigateUrl="<%=$this->Service->constructUrl('WUILogs') %>">
+        <com:TImageButton ImageUrl="pics/buttons/buttWUILogsD.png" Attributes.onMouseOver="$(this).src='pics/buttons/buttWUILogsU.png'"  Attributes.onMouseOut="$(this).src='pics/buttons/buttWUILogsD.png'"/>
+      </com:THyperLink>                
+    </td>
+  </tr> 
 </table>
 </div>

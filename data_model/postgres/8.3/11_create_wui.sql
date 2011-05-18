@@ -2,19 +2,13 @@
 -- create_logs.sql
 --
 
--- create users
-CREATE SEQUENCE wui_users_id_seq;
-CREATE TABLE    wui_users
+CREATE SEQUENCE pradolog_id_seq;
+-- Prado logger
+CREATE TABLE    pradolog
 (
-  id      bigint   PRIMARY KEY DEFAULT nextval('wui_users_id_seq'),
-  login   char(32) NOT NULL,
-  pwdhash char(32) NOT NULL
-);
-
--- logger_logs
-CREATE TABLE    logs
-(
-  id_wui_user bigint       NULL REFERENCES wui_users(id),
-  ctime       timestamp    NOT NULL DEFAULT now(),
-  msg         varchar(128) NOT NULL
+  log_id        int PRIMARY KEY DEFAULT nextval('pradolog_id_seq'),
+  level         int,
+  category      varchar(128),
+  logtime       varchar(20),
+  message       varchar(255)
 );

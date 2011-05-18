@@ -7,7 +7,7 @@ class Analyzer extends TPage
     parent::__construct();
     $analyzerID=$this->Request->itemAt('id');
     assert( $analyzerID!==null );
-    $this->analyzer_=CSQLMap::get()->queryForObject('SelectAnalyzer', $analyzerID);
+    $this->analyzer_=SQLWrapper::queryForObject('SelectAnalyzer', $analyzerID);
   }
 
   public function onLoad()

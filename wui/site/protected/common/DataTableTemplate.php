@@ -17,7 +17,7 @@ class DataTableTemplate extends TTemplateControl
     $this->DataGrid->DataSource=$this->getDataRows($this->DataGrid->PageSize,$this->DataGrid->CurrentPageIndex);
     $this->DataGrid->VirtualItemCount=$this->getRowCount();
 
-    if ($this->DataGrid->VirtualItemCount==0)
+    if (count($this->DataGrid->DataSource)==0)
       {
         $this->Labelka->setVisible(true);
         $this->Pager->setVisible(false);
@@ -28,6 +28,9 @@ class DataTableTemplate extends TTemplateControl
     $this->Pager->setVisible(true);
 
     $data=$this->DataGrid->DataSource[0]; //[0] is ok, count is >=1
+
+    assert(count($data)!=0);
+
     foreach($data as $column_name=>$rows)
       {
         if ($column_name=="id")
@@ -46,9 +49,9 @@ class DataTableTemplate extends TTemplateControl
   private function getRowCount()
   {
     if ($this->params_===null)
-      return CSQLMap::get()->queryForObject($this->query_.'Count');
+      return SQLWrapper::queryForObject($this->query_.'Count');
     else
-      return CSQLMap::get()->queryForObject($this->query_.'RangeCount',$this->params_);
+      return SQLWrapper::queryForObject($this->query_.'RangeCount',$this->params_);
   }
 
   private function getDataRows($perPage, $pageNumber)
@@ -58,13 +61,13 @@ class DataTableTemplate extends TTemplateControl
         $sqlmap_param=new CParamLimitOffset;
         $sqlmap_param->limit=$perPage;
         $sqlmap_param->offset=$perPage*$pageNumber;
-        $data=CSQLMap::get()->queryForList($this->query_,$sqlmap_param);
+        $data=SQLWrapper::queryForList($this->query_,$sqlmap_param);
       }
     else
       {
         $this->params_->limit=$perPage;
         $this->params_->offset=$perPage*$pageNumber;
-        $data=CSQLMap::get()->queryForList($this->query_.'Range',$this->params_);
+        $data=SQLWrapper::queryForList($this->query_.'Range',$this->params_);
       }
     $ret=array();
     foreach($data as $e)

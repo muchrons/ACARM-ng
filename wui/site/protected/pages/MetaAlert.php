@@ -2,27 +2,32 @@
 
 class MetaAlert extends TPage
 {
+  private $per_page=100; //number of alerts displayed per page
+
   public function __construct()
   {
     parent::__construct();
     $id=$this->Request->itemAt('id');
-    $sysid=$this->Request->itemAt('sys_id');
 
-    assert($id!=null || $sysid!=null);
+    //in case there is no id try to get sys_id and convert to id
+    if ($id===null)
+      {
+        $sysid=$this->Request->itemAt('sys_id');
+        $id=SQLWrapper::queryForObject('MetaAlert_SysID_ID', $sysid);
+      }
 
-    if ($id!=null)
-      $this->metaAlert_=CSQLMap::get()->queryForObject('SelectMetaAlertID', $id);
-    else
-      if ($sysid!=null)
-        $this->metaAlert_=CSQLMap::get()->queryForObject('SelectMetaAlertSysID', $sysid);
-      else
-        throw new TConfigurationException("SysID and ID are both null");
+    //neither id nor sys_id specified
+    if ($id===null)
+      throw new TConfigurationException("No valis SysID or ID specified");
+
+    $this->metaAlert_=SQLWrapper::queryForObject('SelectMetaAlertID', $id);
   }
 
   public function onLoad()
   {
     if( $this->metaAlert_===null )
       die("invalid meta-alert / meta-alert not set");
+    $this->RelatedAlerts->PageSize=$this->per_page;
     // initialization of GridData
     if(!$this->IsPostBack)
       {
@@ -30,10 +35,22 @@ class MetaAlert extends TPage
         $this->MetaAlertUpdateTime->Text=$this->metaAlert_->last_update_time;
         $idAlert=$this->metaAlert_->id;
 
-        $alerts=CSQLMap::get()->queryForList('SelectAlertForMetaAlert', $idAlert);
+        //get out alert in case we are a leaf
+        $alerts=SQLWrapper::queryForList('SelectAlertForMetaAlert', $idAlert);
 
         if (count($alerts) == 0)
-          $alerts=CSQLMap::get()->queryForList('SelectMetaAlertsChildren', $idAlert);
+          {//we are a node not a leaf
+            $params=new CDMQuad();
+            $params->value1=$idAlert;
+            $params->value2=$this->per_page; //limit
+            $params->value3=0; //offset
+            $alerts=SQLWrapper::queryForList('SelectMetaAlertsChildren', $params);
+          }
+
+        //get number of child alerts to show
+        $children_count=SQLWrapper::queryForObject('SelectMetaAlertsChildrenCount', $idAlert);
+
+        $data=array();
 
         foreach ($alerts as $a)
           if ($a->alertid === null)
@@ -41,8 +58,15 @@ class MetaAlert extends TPage
           else
             $data[]=array('name'=>$this->makeLinkTo('Alert', $a->alertid, $a->name));
 
+        if (count($data)==0)
+          $data[]=array('name'=>'This shouldn\'t be null. Your database seems to be corrupted.');
+
         $this->RelatedAlerts->DataSource=$data;
+        $this->RelatedAlerts->VirtualItemCount=$children_count;
+        $this->RelatedAlerts->CurrentPageIndex=0;
         $this->RelatedAlerts->dataBind();
+
+
 
         $filters=preg_split('/\s+/', $this->metaAlert_->name);
 
@@ -65,15 +89,42 @@ class MetaAlert extends TPage
                     $this->MetaAlertName->Text.=$f." ";
           }
 
-        $inUse=CSQLMap::get()->queryForObject('CheckInUse', $idAlert);
+        $inUse=SQLWrapper::queryForObject('CheckInUse', $idAlert);
         if ($inUse!=0)
           $this->MetaAlertTags->Text.="<font color=\"yellow\"><b>In use</b></font></br>";
 
-        $isRoot=CSQLMap::get()->queryForObject('CheckRoot', $idAlert);
+        $isRoot=SQLWrapper::queryForObject('CheckRoot', $idAlert);
         if ($isRoot!=0)
           $this->MetaAlertTags->Text.="<font color=\"red\"><b>Root</b></font> ";
 
       } // if(!post_back)
+  }
+
+  public function changePage($sender,$param)
+  {
+    $this->RelatedAlerts->CurrentPageIndex=$param->NewPageIndex;
+
+    $idAlert=$this->metaAlert_->id;
+
+    $params=new CDMQuad();
+    $params->value1=$idAlert;
+    $params->value2=$this->per_page; //limit
+    $params->value3=$this->RelatedAlerts->CurrentPageIndex*$params->value2; //offset
+    $alerts=SQLWrapper::queryForList('SelectMetaAlertsChildren', $params);
+
+    $data=array();
+
+    foreach ($alerts as $a)
+      if ($a->alertid === null)
+        $data[]=array('name'=>$this->makeLinkTo('MetaAlert', $a->metaalertid, $a->name));
+      else
+        $data[]=array('name'=>$this->makeLinkTo('Alert', $a->alertid, $a->name));
+
+    if (count($data)==0)
+      $data[]=array('name'=>'This shouldn\'t be null. Your database seems to be corrupted.');
+
+    $this->RelatedAlerts->DataSource=$data;
+    $this->RelatedAlerts->dataBind();
   }
 
 

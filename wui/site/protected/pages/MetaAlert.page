@@ -7,8 +7,12 @@
     <td id="AlertContent" colspan="3"><b><com:TLiteral ID="MetaAlertName" Text="&nbsp" Encode="true"/></b></td>
   </tr>
   <tr>
-    <td id="AlertTag" width="10%">Correlated by:</td>
+    <td id="AlertTag" width="10%">Correlated&nbsp;by:</td>
     <th id="AlertContent" colspan="3"><com:TLiteral ID="Correlated" Text="" Encode="false"/></th>
+  </tr>
+  <tr>
+    <td id="AlertTag" width="10%">Triggered&nbsp;by:</td>
+    <th id="AlertContent" colspan="3">To be implemented<com:TLiteral ID="Triggered" Text="" Encode="false"/></th>
   </tr>
   <tr>
     <td id="AlertTag" width="10%">Created:</td>
@@ -17,22 +21,28 @@
     <td id="AlertContent" width="40%"><com:TLiteral ID="MetaAlertUpdateTime" Text="&nbsp" Encode="true"/></td>
   </tr>
   <tr>
+    <td id="AlertTag" width="10%">Tags:</td>
+    <td id="AlertContent" width="40%" colspan="3"><com:TLiteral ID="MetaAlertTags" Text="" Encode="false"/></td>
+  </tr>
+  <tr>
     <td id="AlertTag" width="10%">Related alerts:</td>
-    <td id="AlertContent" colspan="1">
+    <td id="AlertContent" colspan="3">
       <com:TDataGrid
          ID="RelatedAlerts"
          WIDTH="100%"
-         EnableViewState="false"
+         AllowPaging="true"
+         AllowCustomPaging="true"
+         PageSize="2"
+         AutoGenerateColumns="true"
          CellPadding="2"
          ShowHeader="false"
-         HeaderStyle.BackColor="black"
-         HeaderStyle.ForeColor="white"
          ItemStyle.BackColor="#8989a2"
          AlternatingItemStyle.BackColor="#b9b9d2"
-         />
+         PagerStyle.Mode="Numeric"
+         PagerStyle.HorizontalAlign="Left"
+         OnPageIndexChanged="changePage"
+         /><br/>
     </td>
-    <td id="AlertTag" width="10%">Tags:</td>
-    <td id="AlertContent" width="40%"><com:TLiteral ID="MetaAlertTags" Text="" Encode="false"/></td>
   </tr>
 </table>
 </com:TPanel>

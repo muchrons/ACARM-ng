@@ -2,7 +2,6 @@
 -- drop_logs.sql
 --
 
-DROP TABLE    logs;
+DROP TABLE      pradolog;
 
-DROP TABLE    wui_users;
-DROP SEQUENCE wui_users_id_seq;
+DROP SEQUENCE   pradolog_id_seq;

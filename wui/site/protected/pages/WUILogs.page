@@ -1,0 +1,13 @@
+<com:TContent ID="content">
+
+<div width="800px">
+
+<com:DataTableTemplate
+        ID="WUILogs"
+        text_="The most WUI logs:"
+        query_="SelectLog"/>
+</div>
+
+<com:RangeSelector ID="Range" view="0"/>
+
+</com:TContent>

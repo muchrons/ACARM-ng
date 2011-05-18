@@ -830,7 +830,7 @@ class TDbLogRoute extends TLogRoute
 		$db=$this->getDbConnection();
 		$db->setActive(true);
 
-		$sql='SELECT * FROM '.$this->_logTable.' WHERE 0';
+		$sql='SELECT * FROM '.$this->_logTable.' WHERE FALSE';
 		try
 		{
 			$db->createCommand($sql)->query()->close();
@@ -838,10 +838,12 @@ class TDbLogRoute extends TLogRoute
 		catch(Exception $e)
 		{
 			// DB table not exists
+
 			if($this->_autoCreate)
 				$this->createDbTable();
 			else
-				throw new TConfigurationException('db_logtable_inexistent',$this->_logTable);
+                          //throw new TConfigurationException('db_logtable_inexistent',$this->_logTable);
+                          throw $e;
 		}
 
 		parent::init($config);

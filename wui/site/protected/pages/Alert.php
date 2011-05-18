@@ -7,7 +7,7 @@ class Alert extends TPage
     parent::__construct();
     $this->alertID_=$this->Request->itemAt('id');
     assert( $this->alertID_!==null );
-    $this->alert_=CSQLMap::get()->queryForObject('SelectAlert', $this->alertID_);
+    $this->alert_=SQLWrapper::queryForObject('SelectAlert', $this->alertID_);
   }
 
   public function onLoad($param)
@@ -61,7 +61,7 @@ class Alert extends TPage
       }
 
       //Get all analyzers for the alert
-      $analyzers=CSQLMap::get()->queryForList('SelectAnalyzersForAlert', $this->alertID_);
+      $analyzers=SQLWrapper::queryForList('SelectAnalyzersForAlert', $this->alertID_);
 
       foreach ($analyzers as $a)
         $data[]=array('link'=>$this->makeAnalyzerLink($a->id),'name'=>$a->name,'IP'=>$a->ip,'ver'=>$a->version, 'OS'=>$a->os);
@@ -70,7 +70,7 @@ class Alert extends TPage
       $this->AlertAnalyzers->dataBind();
 
       //Get all hosts for the alert
-      $hosts=CSQLMap::get()->queryForList('SelectHostsForAlert', $this->alertID_);
+      $hosts=SQLWrapper::queryForList('SelectHostsForAlert', $this->alertID_);
       $sources=array();
       $destinations=array();
       foreach ($hosts as $h)

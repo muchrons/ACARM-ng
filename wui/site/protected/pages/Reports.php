@@ -5,7 +5,7 @@ class Reports extends TPage
   public function __construct()
   {
     parent::__construct();
-    $this->data_=CSQLMap::get()->queryForList('SelectMetaAlertRoots');
+    $this->data_=SQLWrapper::queryForList('SelectMetaAlertRoots');
     // add link field
     foreach($this->data_ as $e)
     {

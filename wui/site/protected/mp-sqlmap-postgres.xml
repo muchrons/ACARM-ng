@@ -8,6 +8,9 @@
 
 
   <!-- Queries for single items -->
+  <select id="MetaAlert_SysID_ID" resultClass="int" parameterClass="int">
+    SELECT id FROM meta_alerts WHERE sys_id=#value#;
+  </select>
 
   <select id="SelectReportedHost" resultClass="CReportedHostEntry" parameterClass="int">
     SELECT r.id AS id, r.role AS role, h.ip AS ip, h.mask AS mask, h.os AS os, h.name AS name, u.name as ref_name, u.url AS ref_url FROM ( reported_hosts as r LEFT JOIN hosts as h ON r.id_host=h.id ) LEFT JOIN reference_urls as u ON r.id_ref=u.id WHERE r.id=#value#
@@ -55,12 +58,6 @@
       WHERE id=#value#
   </select>
 
-  <select id="SelectMetaAlertSysID" resultClass="CMetaAlertEntry" parameterClass="int">
-    SELECT ma.id AS id, ma.name AS name, ma.create_time AS create_time, ma.last_update_time AS last_update_time, ma.severity_delta AS severity_delta, ma.certainty_delta AS certainty_delta, m.id_alert AS id_alert 
-      FROM meta_alerts AS ma LEFT JOIN alert_to_meta_alert_map AS m ON m.id_meta_alert=ma.id 
-      WHERE ma.sys_id=#value#
-  </select>
-
   <select id="SelectAnalyzer" resultClass="CAnalyzerListEntry" parameterClass="int">
     SELECT * FROM analyzers WHERE id=#value#
   </select>
@@ -69,8 +66,8 @@
     SELECT id FROM meta_alerts WHERE sys_id=#value#
   </select>
 
-  <select id="SelectMetaAlertsChildren" resultClass="CLinkTriple" parameterClass="int">
-    SELECT ma.id as metaalertid, ma.name as name, g.id_alert as alertid FROM meta_alerts AS ma RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child LEFT JOIN alert_to_meta_alert_map as g ON g.id_meta_alert=ma.id WHERE t.id_node=#value#
+  <select id="SelectMetaAlertsChildren" resultClass="CLinkTriple" parameterClass="CDMQuad">
+    SELECT ma.id as metaalertid, ma.name as name, g.id_alert as alertid FROM meta_alerts AS ma RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child LEFT JOIN alert_to_meta_alert_map as g ON g.id_meta_alert=ma.id WHERE t.id_node=#value1# limit #value2# offset #value3#
   </select>
 
   <select id="SelectAlertForMetaAlert" resultClass="CLinkTriple" parameterClass="int">
@@ -93,10 +90,6 @@
 
   <select id="SelectAnalyzersCount" resultClass="int">
     SELECT count(*) FROM analyzers
-  </select>
-
-  <select id="SelectWUILogsCount" resultClass="int">
-    SELECT count(*) FROM logs
   </select>
 
   <select id="SelectAlertsSummaryCount" resultClass="int">
@@ -125,6 +118,14 @@
 
   <select id="SelectMetaAlertsRootSummaryCount" resultClass="int">
     SELECT count(*) FROM meta_alerts_roots;
+  </select>
+
+  <select id="SelectMetaAlertsChildrenCount" resultClass="int" parameterClass="int">
+    SELECT count(*) FROM meta_alerts AS ma RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child LEFT JOIN alert_to_meta_alert_map as g ON g.id_meta_alert=ma.id WHERE t.id_node=#value#
+  </select>
+
+  <select id="SelectLogRangeCount" resultClass="int">
+    SELECT count(*) FROM pradolog;
   </select>
 
   <!-- Queries for statistics -->
@@ -166,10 +167,6 @@
     select name, path, md5, pid, uid, username, arguments, id_ref as ref_name, arguments from procs where id_host=#VALUE#
   </select>
 
-  <select id="SelectWUILogs" resultClass="CLogEntry" parameterClass="CParamLimitOffset">
-    SELECT u.id AS id, u.login AS login, l.ctime AS ctime, l.msg AS msg FROM logs AS l LEFT JOIN wui_users AS u ON l.id_wui_user=u.id ORDER BY ctime DESC limit #limit# offset #offset#
-  </select>
-
   <select id="SelectAlertsSummaryRange" resultClass="CAlertListEntry" parameterClass="CParamRange">
     <![CDATA[
          SELECT alerts.id, alerts.name, create_time, severity FROM alerts
@@ -195,6 +192,13 @@
 
   <select id="SelectMetaAlertsRootSummary" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
     SELECT id, name, create_time FROM meta_alerts WHERE id in (SELECT id FROM meta_alerts_roots) ORDER BY create_time DESC limit #limit# offset #offset#
+  </select>
+
+  <select id="SelectLogRange" resultClass="CLogRecord" parameterClass="CParamRange">
+    <![CDATA[
+    SELECT log_id AS id, level, category AS node, logtime, message FROM pradolog WHERE logtime<=date_part('epoch',timestamp #date_to#)::varchar AND logtime>=date_part('epoch',timestamp #date_from#)::varchar
+      ORDER BY logtime DESC limit #limit# offset #offset#
+    ]]>
   </select>
 
 <!-- Queries for Data Mining -->
