@@ -8,7 +8,7 @@ class HeatmapGetter
     $range->key=$from;
     $range->value=$to;
     $data=array();
-    $data=CSQLMap::get()->queryForList("DMHeatMapRange",$range);
+    $data=SQLWrapper::queryForList("DMHeatMapRange",$range);
 
     $this->src=0;
     $this->dst=0;

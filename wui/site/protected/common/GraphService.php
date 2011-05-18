@@ -211,7 +211,7 @@ class GraphService extends TService
   {
     try
     {
-      $pairs=CSQLMap::get()->queryForList($param->query,$param->qparam);
+      $pairs=SQLWrapper::queryForList($param->query,$param->qparam);
     }
     catch(Exception $e)
     {
@@ -235,7 +235,7 @@ class GraphService extends TService
   {
     try
     {
-      $pairs=CSQLMap::get()->queryForList($param->query,$param->qparam);
+      $pairs=SQLWrapper::queryForList($param->query,$param->qparam);
     }
     catch(Exception $e)
     {
