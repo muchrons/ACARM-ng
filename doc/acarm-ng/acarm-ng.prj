@@ -1,6 +1,6 @@
 format 74
 "acarm-ng"
-  revision 3
+  revision 4
   modified_by 42 "basz"
 
 
@@ -118,7 +118,6 @@ In general each operation must happen in data base to ensure fail-safe and recov
     component 128682 "Logger"
       comment "System logging module. Common entry point for all logs."
     end
-
   end
 
   classview 128042 "PluginInterfaces"
@@ -282,5 +281,303 @@ ${inlines}
       end
     end
 
+    classdiagram 141098 "Persistency"
+      draw_all_relations default hide_attributes default hide_operations default hide_getset_operations default show_members_full_definition default show_members_visibility default show_members_stereotype default show_members_context default show_members_multiplicity default show_members_initialization default show_attribute_modifiers default member_max_width 0 show_parameter_dir default show_parameter_name default package_name_in_tab default class_drawing_mode default drawing_language default show_context_mode default auto_label_position default show_relation_modifiers default show_relation_visibility default show_infonote default shadow default show_stereotype_properties default
+      size A4-Landscape
+    end
+
+    class 135338 "Connection"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 136490 // <dependency>
+	relation 135850 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 136490 // <dependency>
+	  b parent class_ref 135722 // MetaAlertIO
+      end
+
+      classrelation 136618 // <dependency>
+	relation 135978 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 136618 // <dependency>
+	  b parent class_ref 135594 // TransactionAPI
+      end
+    end
+
+    class 135466 "Transaction"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 135210 // <composition>
+	relation 135210 *---
+	  a role_name "" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	    classrelation_ref 135210 // <composition>
+	  b role_name "" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	    classrelation_ref 135338 // <composition>
+      end
+
+      classrelation 135594 // <composition>
+	relation_ref 135338 // <composition>
+      end
+
+      classrelation 135850 // <composition>
+	relation_ref 135466 // <composition>
+      end
+
+      classrelation 135978 // <composition>
+	relation 135594 *---
+	  a role_name "" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	    classrelation_ref 135978 // <composition>
+	  b role_name "" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	    classrelation_ref 136106 // <composition>
+      end
+
+      classrelation 136234 // <composition>
+	relation 135722 *---
+	  a role_name "" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	    classrelation_ref 136234 // <composition>
+	  b role_name "" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	    classrelation_ref 136362 // <composition>
+      end
+    end
+
+    class 135594 "TransactionAPI"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 135338 // <composition>
+	relation_ref 135210 // <composition>
+      end
+
+      classrelation 135466 // <composition>
+	relation 135338 *---
+	  a role_name "" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	    classrelation_ref 135466 // <composition>
+	  b role_name "" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	    classrelation_ref 135594 // <composition>
+      end
+
+      classrelation 135722 // <composition>
+	relation 135466 *---
+	  a role_name "" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	    classrelation_ref 135722 // <composition>
+	  b role_name "" private
+	    cpp default "    ${comment}${static}${mutable}${volatile}${const}${type} ${name}${value};
+"
+	    classrelation_ref 135850 // <composition>
+      end
+
+      classrelation 136106 // <composition>
+	relation_ref 135594 // <composition>
+      end
+
+      classrelation 136362 // <composition>
+	relation_ref 135722 // <composition>
+      end
+    end
+
+    class 135722 "MetaAlertIO"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+    end
+
+    class 135850 "MetaAlertIO1"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 136746 // <generalisation>
+	relation 136106 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 136746 // <generalisation>
+	  b parent class_ref 135722 // MetaAlertIO
+      end
+    end
+
+    class 135978 "DataBase2"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 136874 // <generalisation>
+	relation 136234 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 136874 // <generalisation>
+	  b parent class_ref 135722 // MetaAlertIO
+      end
+
+      classrelation 137386 // <generalisation>
+	relation 136746 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 137386 // <generalisation>
+	  b parent class_ref 135338 // Connection
+      end
+
+      classrelation 137770 // <dependency>
+	relation 137130 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 137770 // <dependency>
+	  b parent class_ref 135978 // DataBase2
+      end
+
+      classrelation 137898 // <dependency>
+	relation 137258 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 137898 // <dependency>
+	  b parent class_ref 136362 // Transaction2
+      end
+    end
+
+    class 136106 "DataBase1"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 137258 // <generalisation>
+	relation 136618 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 137258 // <generalisation>
+	  b parent class_ref 135338 // Connection
+      end
+
+      classrelation 137514 // <dependency>
+	relation 136874 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 137514 // <dependency>
+	  b parent class_ref 135850 // MetaAlertIO1
+      end
+
+      classrelation 137642 // <dependency>
+	relation 137002 -_->
+	  a default
+	    cpp default "#include in source"
+	    classrelation_ref 137642 // <dependency>
+	  b parent class_ref 136234 // Transaction1
+      end
+    end
+
+    class 136234 "Transaction1"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 137002 // <generalisation>
+	relation 136362 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 137002 // <generalisation>
+	  b parent class_ref 135594 // TransactionAPI
+      end
+    end
+
+    class 136362 "Transaction2"
+      visibility package 
+      cpp_decl "${comment}${template}class ${name}${inherit} {
+${members}};
+${inlines}
+"
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl ""
+      explicit_switch_type ""
+      
+      classrelation 137130 // <generalisation>
+	relation 136490 ---|>
+	  a public
+	    cpp default "${type}"
+	    classrelation_ref 137130 // <generalisation>
+	  b parent class_ref 135594 // TransactionAPI
+      end
+    end
   end
 end
