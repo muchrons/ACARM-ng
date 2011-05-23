@@ -64,7 +64,7 @@ case "$#" in
     done
 
     [ ! -z "$PORT" ] && PORT=":$PORT"
-    URL="$PROTO://$ADDRESS$PORT/$DIR/index.php?page=NagiosPlugin"
+    URL="$PROTO://$ADDRESS$PORT/$DIR"
 
     # check if all required parametrs are given
     if [ -z "$ADDRESS" ] || [ -z "$TIME_OUT" ]
@@ -74,7 +74,7 @@ case "$#" in
     fi
   ;;
 esac
-
+URL="$URL/index.php?page=NagiosPlugin"
 
 #
 # processing it self
