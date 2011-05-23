@@ -1,0 +1,24 @@
+#!/bin/bash
+
+if [ "$#" -ne 1 ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]
+then
+  echo "$0 <wui_url>" >&2
+  exit 3
+fi
+
+URL="$1/index.php?page=NagiosPlugin"
+TMP="`mktemp`"
+(
+  wget -q -O "$TMP" "$URL" > /dev/null || exit 3
+  cat "$TMP"
+  CNT="`grep ' | DEAD$' "$TMP" | wc -l`"
+  if [ "$CNT" -eq 0 ] || [ "$CNT" -eq 1 ]
+  then
+    exit "$CNT"
+  else
+    exit 2
+  fi
+)
+RET="$?"
+rm -f "$TMP"
+exit "$RET"
