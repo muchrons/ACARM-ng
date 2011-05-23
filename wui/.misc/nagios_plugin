@@ -7,55 +7,78 @@
 # helper outputing syntax and exiting
 function print_help()
 {
-  echo "$0 -H <wui_url> -t <timeout> [-s] [-p <port>] [-d <directory>]" >&2
+  echo "$0 <wui_url> [<timeout>]" >&2
+  echo "$0 -H <wui_host> -t <timeout> [-s] [-p <port>] [-d <directory>]" >&2
   exit 3
 }
 
 # process command line paramters
-PROTO="http"
-while [ "$#" -gt 0 ]
-do
-  case "$1" in
-    "-h")
+case "$#" in
+  #
+  # first syntax
+  #
+  "1")
+    URL="$1"
+    TIME_OUT="30"
+  ;;
+  "2")
+    URL="$1"
+    TIME_OUT="$2"
+  ;;
+
+  #
+  # second syntax
+  #
+  *)
+    PROTO="http"
+    while [ "$#" -gt 0 ]
+    do
+      case "$1" in
+        "-h")
+          print_help
+        ;;
+        "-H")
+          ADDRESS="$2"
+          shift
+        ;;
+        "-t")
+          TIME_OUT="$2"
+          shift
+        ;;
+        "-p")
+          PORT="$2"
+          shift
+        ;;
+        "-d")
+          DIR="$2"
+          shift
+        ;;
+        "-s")
+          PROTO="https"
+        ;;
+        *)
+          print_help
+        ;;
+      esac
+      shift
+    done
+
+    [ ! -z "$PORT" ] && PORT=":$PORT"
+    URL="$PROTO://$ADDRESS$PORT/$DIR/index.php?page=NagiosPlugin"
+
+    # check if all required parametrs are given
+    if [ -z "$ADDRESS" ] || [ -z "$TIME_OUT" ]
+    then
       print_help
-    ;;
-    "-H")
-      ADDRESS="$2"
-      shift
-    ;;
-    "-t")
-      TIME_OUT="$2"
-      shift
-    ;;
-    "-p")
-      PORT="$2"
-      shift
-    ;;
-    "-d")
-      DIR="$2"
-      shift
-    ;;
-    "-s")
-      PROTO="https"
-    ;;
-    *)
-      print_help
-    ;;
-  esac
-  shift
-done
+      # exit is called from the function
+    fi
+  ;;
+esac
 
-# check if all required parametrs are given
-if [ -z "$ADDRESS" ] || [ -z "$TIME_OUT" ]
-then
-  print_help
-  # exit is called from the function
-fi
 
-[ ! -z "$PORT" ] && PORT=":$PORT"
-URL="$PROTO://$ADDRESS$PORT/$DIR/index.php?page=NagiosPlugin"
-
+#
 # processing it self
+#
 TMP="`mktemp`"
 (
   # download list of heartbeats
@@ -72,7 +95,9 @@ TMP="`mktemp`"
   fi
 )
 
+#
 # output data on the screen
+#
 RET="$?"
 if [ "$RET" -eq 0 ]
 then
@@ -82,6 +107,8 @@ else
 fi
 cat "$TMP"
 
+#
 # clean up
+#
 rm -f "$TMP"
 exit "$RET"
