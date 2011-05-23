@@ -10,7 +10,7 @@ class NagiosPlugin extends TPage
     // print status of each enrty
     foreach($heartbeats as $h)
     {
-      echo "{$h->owner} | {$h->module} | ";
+      echo "{$h->owner} # {$h->module} # ";
       if($h->alive)
         echo "alive";
       else

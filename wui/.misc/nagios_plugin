@@ -12,11 +12,11 @@ TMP="`mktemp`"
   # download list of heartbeats
   wget -q -O "$TMP" "$URL" > /dev/null || exit 3
   # senity check - when page could not be rendered (DB error, etc...)
-  grep -v ' | ' "$TMP" > /dev/null && exit 3
+  grep -v ' # ' "$TMP" > /dev/null && exit 3
   # output list on the screen
   cat "$TMP"
   # return proper exit code
-  CNT="`grep ' | DEAD$' "$TMP" | wc -l`"
+  CNT="`grep ' # DEAD$' "$TMP" | wc -l`"
   if [ "$CNT" -eq 0 ] || [ "$CNT" -eq 1 ]
   then
     exit "$CNT"
