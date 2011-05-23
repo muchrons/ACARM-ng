@@ -9,8 +9,13 @@ fi
 URL="$1/index.php?page=NagiosPlugin"
 TMP="`mktemp`"
 (
+  # download list of heartbeats
   wget -q -O "$TMP" "$URL" > /dev/null || exit 3
+  # senity check - when page could not be rendered (DB error, etc...)
+  grep -v ' | ' "$TMP" > /dev/null && exit 3
+  # output list on the screen
   cat "$TMP"
+  # return proper exit code
   CNT="`grep ' | DEAD$' "$TMP" | wc -l`"
   if [ "$CNT" -eq 0 ] || [ "$CNT" -eq 1 ]
   then
@@ -19,6 +24,7 @@ TMP="`mktemp`"
     exit 2
   fi
 )
+# clean up
 RET="$?"
 rm -f "$TMP"
 exit "$RET"
