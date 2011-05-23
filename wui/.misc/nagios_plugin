@@ -1,16 +1,65 @@
 #!/bin/bash
+#
+# ACARM-ng nagios plugin prepared as described in PL-Grid requirements:
+# https://wiki.plgrid.pl/doku.php?id=pakiet3:dokumenty:monitorowanie
+#
 
-if [ "$#" -ne 1 ] || [ "$1" = "--help" ] || [ "$1" = "-h" ]
-then
-  echo "$0 <wui_url>" >&2
+# helper outputing syntax and exiting
+function print_help()
+{
+  echo "$0 -H <wui_url> -t <timeout> [-s] [-p <port>] [-d <directory>]" >&2
   exit 3
+}
+
+# process command line paramters
+PROTO="http"
+while [ "$#" -gt 0 ]
+do
+  case "$1" in
+    "-h")
+      print_help
+    ;;
+    "-H")
+      ADDRESS="$2"
+      shift
+    ;;
+    "-t")
+      TIME_OUT="$2"
+      shift
+    ;;
+    "-p")
+      PORT="$2"
+      shift
+    ;;
+    "-d")
+      DIR="$2"
+      shift
+    ;;
+    "-s")
+      PROTO="https"
+    ;;
+    *)
+      print_help
+    ;;
+  esac
+  shift
+done
+
+# check if all required parametrs are given
+if [ -z "$ADDRESS" ] || [ -z "$TIME_OUT" ]
+then
+  print_help
+  # exit is called from the function
 fi
 
-URL="$1/index.php?page=NagiosPlugin"
+[ ! -z "$PORT" ] && PORT=":$PORT"
+URL="$PROTO://$ADDRESS$PORT/$DIR/index.php?page=NagiosPlugin"
+
+# processing it self
 TMP="`mktemp`"
 (
   # download list of heartbeats
-  wget -q -O "$TMP" "$URL" > /dev/null || exit 3
+  wget -T "$TIME_OUT" -q -O "$TMP" "$URL" > /dev/null || exit 3
   # senity check - when page could not be rendered (DB error, etc...)
   grep -v ' # ' "$TMP" > /dev/null && exit 3
   # return proper exit code
@@ -22,6 +71,7 @@ TMP="`mktemp`"
     exit 2
   fi
 )
+
 # output data on the screen
 RET="$?"
 if [ "$RET" -eq 0 ]
@@ -31,6 +81,7 @@ else
   echo "DEAD"
 fi
 cat "$TMP"
+
 # clean up
 rm -f "$TMP"
 exit "$RET"
