@@ -13,8 +13,6 @@ TMP="`mktemp`"
   wget -q -O "$TMP" "$URL" > /dev/null || exit 3
   # senity check - when page could not be rendered (DB error, etc...)
   grep -v ' # ' "$TMP" > /dev/null && exit 3
-  # output list on the screen
-  cat "$TMP"
   # return proper exit code
   CNT="`grep ' # DEAD$' "$TMP" | wc -l`"
   if [ "$CNT" -eq 0 ] || [ "$CNT" -eq 1 ]
@@ -24,7 +22,15 @@ TMP="`mktemp`"
     exit 2
   fi
 )
-# clean up
+# output data on the screen
 RET="$?"
+if [ "$RET" -eq 0 ]
+then
+  echo "RUNNING"
+else
+  echo "DEAD"
+fi
+cat "$TMP"
+# clean up
 rm -f "$TMP"
 exit "$RET"
