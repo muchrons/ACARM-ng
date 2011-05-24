@@ -158,7 +158,7 @@ build-plugins: configure
 	done
 
 .PHONY: install
-install: install-plugins install-libs install-bin install-includes install-config install-doc
+install: install-plugins install-libs install-bin install-includes install-config install-doc install-wui
 
 .PHONY: install-libs
 install-libs:
@@ -204,6 +204,11 @@ install-plugins: install-libs
 	do \
 	  cp "\$\$f" "$PREFIX/libs/acarm-ng/plugins/\`echo "\$\$(basename "\$\$f")" | sed 's:\.so\$\$:.acmp:'\`" ; \
 	done
+
+.PHONY: install-wui
+install-wui:
+	mkdir -p '$PREFIX/var/www'
+	cp -r 'wui/site' '$PREFIX/var/www/acarm-ng'
 EOF
 
 
