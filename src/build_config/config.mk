@@ -91,6 +91,11 @@ ifeq ($(TC),intel)
 TMP_OPT+=
 endif
 
+# these options can be given as a command line argument to make
+# (feature used by ./configure script for extra libs places)
+TMP+=$(EXTRA_COMPILE_FLAGS)
+TMPLD+=$(EXTRA_LINK_FLAGS)
+
 export USER_OPT_FLAGS:=$(TMP) $(TMP_OPT)
 export USER_DBG_FLAGS:=$(TMP)
 export USER_PRF_FLAGS:=$(USER_OPT_FLAGS)
