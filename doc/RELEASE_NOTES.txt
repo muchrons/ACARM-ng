@@ -1,4 +1,5 @@
 -- dev --
+* documentation updates.
 * simplified autotools-like compile and installation wrapper.
 * new version of build process.
 * added dedicated thread for signals handling (ensures no dead locks are possible when sending signals).
