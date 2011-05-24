@@ -11,4 +11,4 @@ configure-output.mk:
 .PHONY: clean
 clean:
 	rm -fv configure-output.mk
-	#rm -fv src/gen
+	rm -fv src/gen
