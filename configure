@@ -64,33 +64,30 @@ done
 #
 # select features to build with
 #
-TMP="`mktemp`"
-{
-  # TEST: boost::filesystem version
-  echo -n "checking for new boost::filesystem version... "
-  echo -e "#include <boost/filesystem.hpp>\nusing boost::filesystem::is_regular_file;" > "$TMP"
-  if gcc -c "$TMP" > /dev/null 2>&1
+TMP="`mktemp --suffix=.cpp`"
+
+# TEST: boost::filesystem version
+echo -n "checking for new boost::filesystem version... "
+echo -e "#include <boost/filesystem.hpp>\nusing boost::filesystem::is_regular_file;" > "$TMP"
+if gcc -c "$TMP" -o /dev/null > /dev/null 2>&1
+then
+  echo "got new boost"
+  FEATURES="$FEATURES use_new_boost_filesystem"
+else
+  echo "N/A"
+  echo -n "checking for old boost::filesystem version... "
+  echo -e "#include <boost/filesystem.hpp>\nusing boost::filesystem::is_regular;" > "$TMP"
+  if gcc -c "$TMP" -o /dev/null > /dev/null 2>&1
   then
-    echo "got new boost"
-    FEATURES="$FEATURES use_new_boost_filesystem"
+    echo "got old boost"
+    FEATURES="$FEATURES use_old_boost_filesystem"
   else
     echo "N/A"
-    echo -n "checking for old boost::filesystem version... "
-    echo -e "#include <boost/filesystem.hpp>\nusing boost::filesystem::is_regular;" > "$TMP"
-    if gcc -c "$TMP" > /dev/null 2>&1
-    then
-      echo "got old boost"
-      FEATURES="$FEATURES use_old_boost_filesystem"
-    else
-      echo "N/A"
-      echo "boost filesystem is missing"
-      return 2
-    fi
+    echo "boost filesystem is missing"
+    rm -f "$TMP"
+    exit 2
   fi
-}
-RET=$?
-rm -f "$TMP"
-[ "$RET" -ne 0 ] && exit "$RET"
+fi
 
 
 #
@@ -167,6 +164,7 @@ EOF
 # display summary
 #
 echo "SUMMARY:"
-echo "  prefix:  $PREFIX"
-echo "  profile: $PROFILE"
-echo "  plugins: `echo "$PLUGINS" | xargs -r echo -n`"
+echo "  prefix:   $PREFIX"
+echo "  profile:  $PROFILE"
+echo "  plugins:  `echo "$PLUGINS" | xargs -r echo -n`"
+echo "  features: $FEATURES"
