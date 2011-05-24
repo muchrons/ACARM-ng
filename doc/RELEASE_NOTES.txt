@@ -1,34 +1,34 @@
 -- dev --
-* new version of build process
-* added dedicated thread for signals handling (ensures no dead locks are possible when sending signals)
-* main branch is now publicly available
+* new version of build process.
+* added dedicated thread for signals handling (ensures no dead locks are possible when sending signals).
+* main branch is now publicly available.
 * filters:
   - new event
   - users monitor
   - content similarity
-* icc support (intel toolchain)
+* icc support (intel toolchain).
 
 -- v0.1.1 --
-* fixed issue with same-name filter not appending to correlated entry
+* fixed issue with same-name filter not appending to correlated entry.
 
 -- v0.1.0 --
-* first version of framework (API)
-* WUI (Web User Interface) for data visualization
-* all elements loadable as plugins
-* preprocessor for rejecting unwanted alerts
-* gcc support
-* multi-threaded processing
-* common algorithms for (meta-)alerts processing
-* flexible notification with triggers
-* flexible correlation and processing with filters
-* flexible data collection with inputs
-* flexible data storage with persistency modules
+* first version of framework (API).
+* WUI (Web User Interface) for data visualization.
+* all elements loadable as plugins.
+* preprocessor for rejecting unwanted alerts.
+* gcc support.
+* multi-threaded processing.
+* common algorithms for (meta-)alerts processing.
+* flexible notification with triggers.
+* flexible correlation and processing with filters.
+* flexible data collection with inputs.
+* flexible data storage with persistency modules.
 * logging to:
   - file
   - screen
   - syslog
   - null (discards logs)
-* removal of debug logs in release mode
+* removal of debug logs in release mode.
 * filters:
   - one to one
   - many to one
@@ -50,7 +50,7 @@
 * persistency modules:
   - postgres
   - stub (no persistent storage)
-* application to dump alerts from persistent storage
+* application to dump alerts from persistent storage.
 * WUI options:
   - access to alerts
   - access to correlated alerts (aka: meta-alerts)
