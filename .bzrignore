@@ -15,3 +15,4 @@ wui/tests/protected/db/*.db
 acceptance_tests_plan.pdf
 *.orig
 .*.kwrite
+configure-output.mk

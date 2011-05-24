@@ -1,0 +1,131 @@
+#!/bin/bash
+#
+# autotools-like script for creating configuration
+#
+
+#
+# default values
+#
+PREFIX="/opt"
+PLUGINS="`(cd src ; ls -d persistency?* input?* trigger?* filter?*)`"
+PROFILE="release"
+
+#
+# helper functions
+#
+function print_help()
+{
+  echo "$0 [--prefix <path>] [--disable <plugin>] [--list-plugins] [--help] [--debug]" >&2
+  exit 1
+}
+
+# process command line options
+while [ "$#" -gt 0 ]
+do
+  case "$1" in
+    "--prefix")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: prefix must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      PREFIX="$2"
+      shift
+    ;;
+
+    "--disable")
+      PLUGINS="`echo "$PLUGINS" | xargs -n 1 -r echo | grep -v "^$2$"`"
+      shift
+    ;;
+
+    "--debug")
+      PROFILE="debug"
+    ;;
+
+    "--list-plugins")
+      echo "available plugins:"
+      echo
+      echo "$PLUGINS" | sort
+      exit 0
+    ;;
+
+    "--help")
+      print_help
+    ;;
+
+    *)
+      print_help
+    ;;
+  esac
+  shift
+done
+
+#
+# prepare proper make entries
+#
+cat<<EOF > configure-output.mk
+NCPUS:=\$(shell cat /proc/cpuinfo | grep 'processor.*:' | wc -l)
+
+.PHONY: build-system
+build-system: build-core build-plugins
+
+LOCAL_MAKE_FLAGS:=-C src --no-print-directory PROFILE=release TC=gcc -j '\$(NCPUS)'
+
+.PHONY: build-core
+build-core: configure
+	echo "BUILDING ACARM-ng"
+	\$(MAKE) \$(LOCAL_MAKE_FLAGS) acarmng
+
+.PHONY: build-plugins
+build-plugins: configure
+	for pl in `echo "$PLUGINS" | xargs -r echo -n` ; \
+	do \
+	  echo "BUILDING PLUGIN \$\$pl" ; \
+	  \$(MAKE) \$(LOCAL_MAKE_FLAGS) "\$\$pl" || exit \$\$? ; \
+	done
+
+.PHONY: install
+install: install-plugins install-libs install-bin install-includes install-config install-doc
+
+.PHONY: install-libs
+install-libs:
+	mkdir -p '$PREFIX/libs/acarm-ng'
+	cp -rL 'src/gen/${PROFILE}_gcc_normal_default/libs'/*.so '$PREFIX/libs/acarm-ng/'
+
+.PHONY: install-bin
+install-bin:
+	mkdir -p '$PREFIX/bin'
+	echo '#!/bin/sh\ncd "$PREFIX/etc/acarm-ng/"\nexport LD_LIBRARY_PATH="$PREFIX/libs/acarm-ng"\nexec "$PREFIX/bin/acarm-ng.bin"' > \
+		'$PREFIX/bin/acarm-ng'
+	chmod 755 '$PREFIX/bin/acarm-ng'
+	cp -L 'src/gen/${PROFILE}_gcc_normal_default/acarmng/acarmng.out' '$PREFIX/bin/acarm-ng.bin'
+
+.PHONY: install-includes
+install-includes:
+	mkdir -p '$PREFIX/include'
+	cp -rL 'src/gen/${PROFILE}_gcc_normal_default/includes' '$PREFIX/include/acarm-ng'
+
+.PHONY: install-config
+install-config:
+	mkdir -p '$PREFIX/etc/acarm-ng'
+	mkdir -p '$PREFIX/var/log/acarm-ng'
+	cp -L 'doc/example_configs/minimal.xml' '$PREFIX/etc/acarm-ng/acarm_ng_config.xml'
+	sed -i 's:\(<pluginsDir>\).*\(</pluginsDir>\):\1$PREFIX/libs/acarm-ng/plugins\2:g' '$PREFIX/etc/acarm-ng/acarm_ng_config.xml'
+	sed -i 's:\(<output>\).*\(</output>\):\1$PREFIX/var/log/acarm-ng/daemon.log\2:g' '$PREFIX/etc/acarm-ng/acarm_ng_config.xml'
+
+.PHONY: install-doc
+install-doc:
+	mkdir -p '$PREFIX/share/doc'
+	cp -rL 'doc' '$PREFIX/share/'
+
+.PHONY: install-plugins
+install-plugins: install-libs
+	mkdir -p '$PREFIX/libs/acarm-ng/plugins'
+	for f in '$PREFIX/libs/acarm-ng/'libinput?*.so \
+	         '$PREFIX/libs/acarm-ng/'libfilter?*.so \
+	         '$PREFIX/libs/acarm-ng/'libtrigger?*.so \
+	         '$PREFIX/libs/acarm-ng/'libpersistency?*.so ; \
+	do \
+	  cp "\$\$f" "$PREFIX/libs/acarm-ng/plugins/\`echo "\$\$(basename "\$\$f")" | sed 's:\.so\$\$:.acmp:'\`" ; \
+	done
+EOF
