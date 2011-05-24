@@ -43,8 +43,6 @@ do
     ;;
 
     "--list-plugins")
-      echo "available plugins:"
-      echo
       echo "$PLUGINS" | sort
       exit 0
     ;;
@@ -66,10 +64,10 @@ done
 cat<<EOF > configure-output.mk
 NCPUS:=\$(shell cat /proc/cpuinfo | grep 'processor.*:' | wc -l)
 
-.PHONY: build-system
-build-system: build-core build-plugins
+.PHONY: build
+build: build-core build-plugins
 
-LOCAL_MAKE_FLAGS:=-C src --no-print-directory PROFILE=release TC=gcc -j '\$(NCPUS)'
+LOCAL_MAKE_FLAGS:=-C src --no-print-directory PROFILE=$PROFILE TC=gcc -j '\$(NCPUS)'
 
 .PHONY: build-core
 build-core: configure
@@ -129,3 +127,11 @@ install-plugins: install-libs
 	  cp "\$\$f" "$PREFIX/libs/acarm-ng/plugins/\`echo "\$\$(basename "\$\$f")" | sed 's:\.so\$\$:.acmp:'\`" ; \
 	done
 EOF
+
+#
+# display summary
+#
+echo "SUMMARY:"
+echo "  prefix:  $PREFIX"
+echo "  profile: $PROFILE"
+echo "  plugins: `echo "$PLUGINS" | xargs -r echo -n`"

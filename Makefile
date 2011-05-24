@@ -1,5 +1,5 @@
 .PHONY: all
-all: build-system
+all: build
 
 -include configure-output.mk
 
