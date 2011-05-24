@@ -178,7 +178,11 @@ install-includes:
 	cp -rL 'src/gen/${PROFILE}_gcc_normal_default/includes' '$PREFIX/include/acarm-ng'
 
 .PHONY: install-config
-install-config:
+install-config: $PREFIX/etc/acarm-ng/acarm_ng_config.xml
+	mkdir -p '$PREFIX/etc/acarm-ng'
+
+
+$PREFIX/etc/acarm-ng/acarm_ng_config.xml:
 	mkdir -p '$PREFIX/etc/acarm-ng'
 	mkdir -p '$PREFIX/var/log/acarm-ng'
 	cp -L 'doc/example_configs/minimal.xml' '$PREFIX/etc/acarm-ng/acarm_ng_config.xml'
