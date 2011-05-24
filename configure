@@ -138,8 +138,8 @@ NCPUS:=\$(shell cat /proc/cpuinfo | grep 'processor.*:' | wc -l)
 .PHONY: build
 build: build-core build-plugins
 
-LOCAL_MAKE_FLAGS:=-C src --no-print-directory -j '\$(NCPUS)'
-LOCAL_MAKE_FLAGS+=PROFILE=$PROFILE "FEATURES=$FEATURES" TC=gcc
+LOCAL_MAKE_FLAGS:=-C src --no-print-directory -j "\$(NCPUS)"
+LOCAL_MAKE_FLAGS+="PROFILE=$PROFILE" "FEATURES=$FEATURES" "TC=gcc"
 LOCAL_MAKE_FLAGS+="EXTRA_COMPILE_FLAGS=$EXTRA_COMPILE_FLAGS" "EXTRA_LINK_FLAGS=$EXTRA_LINK_FLAGS"
 
 .PHONY: build-core
