@@ -74,12 +74,13 @@ do
     ;;
 
     "-I")
-      EXTRA_COMPILE_FLAGS="$EXTRA_COMPILE_FLAGS -I $2"
+      EXTRA_COMPILE_FLAGS="$EXTRA_COMPILE_FLAGS -I$2"
       shift
     ;;
 
     "-L")
-      EXTRA_LINK_FLAGS="$EXTRA_LINK_FLAGS -L $2"
+      EXTRA_LINK_FLAGS="$EXTRA_LINK_FLAGS -L$2"
+      EXTRA_LIB_DIRS="$EXTRA_LIB_DIRS:$2"
       shift
     ;;
 
@@ -93,6 +94,7 @@ do
   esac
   shift
 done
+EXTRA_LIB_DIRS="$PREFIX/libs/acarm-ng:$EXTRA_LIB_DIRS"
 
 
 #
@@ -166,8 +168,7 @@ install-libs:
 .PHONY: install-bin
 install-bin:
 	mkdir -p '$PREFIX/bin'
-	echo '#!/bin/sh\ncd "$PREFIX/etc/acarm-ng/"\nexport LD_LIBRARY_PATH="$PREFIX/libs/acarm-ng"\nexec "$PREFIX/bin/acarm-ng.bin"' > \
-		'$PREFIX/bin/acarm-ng'
+	echo '#!/bin/sh\ncd "$PREFIX/etc/acarm-ng/"\nexport LD_LIBRARY_PATH="\$\$LD_LIBRARY_PATH:$EXTRA_LIB_DIRS"\nexec "$PREFIX/bin/acarm-ng.bin"' > '$PREFIX/bin/acarm-ng'
 	chmod 755 '$PREFIX/bin/acarm-ng'
 	cp -L 'src/gen/${PROFILE}_gcc_normal_default/acarmng/acarmng.out' '$PREFIX/bin/acarm-ng.bin'
 
@@ -207,9 +208,12 @@ EOF
 #
 echo
 echo "SUMMARY:"
-echo "  prefix:   $PREFIX"
-echo "  profile:  $PROFILE"
+echo "  prefix:     $PREFIX"
+echo "  profile:    $PROFILE"
 echo "  plugins:"
-echo "$PLUGINS" | sort | sed 's:^ *:            :'
-echo "  features: $FEATURES"
+echo "$PLUGINS" | sort | sed 's:^ *:              :'
+echo "  features:   $FEATURES"
+echo "  comp flags: $EXTRA_COMPILE_FLAGS"
+echo "  link flags: $EXTRA_LINK_FLAGS"
+echo "  lib  dirs:  $EXTRA_LIB_DIRS"
 echo
