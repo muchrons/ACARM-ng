@@ -15,6 +15,5 @@
 * implement persistency::sqlite.
 * optimize postgres data restoration using roots meta alerts table.
 * editable filters' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
-* update doc/INSTALL - plugins are not described.
 * add more info on development (doc/dev?).
 * add regex comaprisons to preprocessor.
