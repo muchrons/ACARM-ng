@@ -9,6 +9,7 @@
 PREFIX="/opt"
 PLUGINS="`(cd src ; ls -d persistency?* input?* trigger?* filter?*)`"
 PROFILE="release"
+FEATURES="lock_on_write_graph_add"
 
 #
 # helper functions
@@ -19,7 +20,9 @@ function print_help()
   exit 1
 }
 
+#
 # process command line options
+#
 while [ "$#" -gt 0 ]
 do
   case "$1" in
@@ -59,6 +62,38 @@ do
 done
 
 #
+# select features to build with
+#
+TMP="`mktemp`"
+{
+  # TEST: boost::filesystem version
+  echo -n "checking for new boost::filesystem version... "
+  echo -e "#include <boost/filesystem.hpp>\nusing boost::filesystem::is_regular_file;" > "$TMP"
+  if gcc -c "$TMP" > /dev/null 2>&1
+  then
+    echo "got new boost"
+    FEATURES="$FEATURES use_new_boost_filesystem"
+  else
+    echo "N/A"
+    echo -n "checking for old boost::filesystem version... "
+    echo -e "#include <boost/filesystem.hpp>\nusing boost::filesystem::is_regular;" > "$TMP"
+    if gcc -c "$TMP" > /dev/null 2>&1
+    then
+      echo "got old boost"
+      FEATURES="$FEATURES use_old_boost_filesystem"
+    else
+      echo "N/A"
+      echo "boost filesystem is missing"
+      return 2
+    fi
+  fi
+}
+RET=$?
+rm -f "$TMP"
+[ "$RET" -ne 0 ] && exit "$RET"
+
+
+#
 # prepare proper make entries
 #
 cat<<EOF > configure-output.mk
@@ -67,7 +102,7 @@ NCPUS:=\$(shell cat /proc/cpuinfo | grep 'processor.*:' | wc -l)
 .PHONY: build
 build: build-core build-plugins
 
-LOCAL_MAKE_FLAGS:=-C src --no-print-directory PROFILE=$PROFILE TC=gcc -j '\$(NCPUS)'
+LOCAL_MAKE_FLAGS:=-C src --no-print-directory PROFILE=$PROFILE "FEATURES=$FEATURES" TC=gcc -j '\$(NCPUS)'
 
 .PHONY: build-core
 build-core: configure
