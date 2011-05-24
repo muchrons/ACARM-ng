@@ -38,7 +38,7 @@ struct SourcesThread
         // forward all read data to main queue.
         // TODO: this is hardcoded string representing generic input - it  should
         //       be refactored in order to remove hardcoded value.
-        queue_->push( Types::SignedNode(srcs_->read(), "*input*") );
+        queue_->push( Types::SignedNode(srcs_->read(), "*input*", "*unknown*") );
       }
       catch(const boost::thread_interrupted &)
       {

@@ -157,7 +157,7 @@ void testObj::test<2>(void)
   ensure_equals("trigger has been called too fast", triggerCalls_, 0);
 
   // test example call
-  queue_.push( Core::Types::SignedNode( TestHelpers::Persistency::makeNewNode(), "me" ) );
+  queue_.push( Core::Types::SignedNode(TestHelpers::Persistency::makeNewNode(), "myT", "myN") );
   p.process();  // this enqueues node in every filters
 
   // wait until everything's processed

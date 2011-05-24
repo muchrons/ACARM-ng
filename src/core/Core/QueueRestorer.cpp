@@ -33,7 +33,7 @@ QueueRestorer::QueueRestorer(Persistency::IO::ConnectionPtrNN conn, Core::Types:
     LOGMSG_DEBUG_S(log)<<tmp.size()<<" meta-alerts read from persistency; appending to queue";
     for(Restorer::NodesVector::const_iterator it=tmp.begin(); it!=tmp.end(); ++it)
       // TODO: this is hardcoded value of unknown origin of the alert - it should be rethought...
-      queue.push( Types::SignedNode(*it, "*unknown*") );
+      queue.push( Types::SignedNode(*it, "*unknown*", "*unknown*") );
 
     LOGMSG_INFO_S(log)<<"restoring "<<tmp.size()<<" elements successful";
   }
