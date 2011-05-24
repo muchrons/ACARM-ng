@@ -75,7 +75,7 @@ public:
         for(Interface::ChangedNodes::iterator it=changed.begin(); it!=changed.end(); ++it)
         {
           LOGMSG_DEBUG_S(log_)<<"node " << (*it)->getMetaAlert()->getID().get() << " has been changed";
-          outputQueue_->push( SignedNode(*it, interface_->getName()) );
+          outputQueue_->push( SignedNode(*it, interface_->getType(), interface_->getName()) );
         }
       }
       catch(const boost::thread_interrupted &)
@@ -206,7 +206,7 @@ void Processor::process(const Core::Types::SignedNode &node)
     return;
   }
   // if entry from given processor is not allowed for this one, skip this call
-  if( !interface_->getECL().isAcceptable( node.getReporterName() ) )
+  if( !interface_->getECL().isAcceptable( node.getReporterType() ) )
   {
     LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName()<<"' has been rejected by ECL...";
     return;

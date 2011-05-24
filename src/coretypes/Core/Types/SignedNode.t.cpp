@@ -34,7 +34,7 @@ template<>
 void testObj::test<1>(void)
 {
   Persistency::GraphNodePtrNN node=makeNewLeaf();
-  SignedNode sn(node, "abc");
+  SignedNode sn(node, "abc", "def");
   ensure("invalid node returned", node.get()==sn.getNode().get() );
 }
 
@@ -44,8 +44,18 @@ template<>
 void testObj::test<2>(void)
 {
   const SignedNode::ReporterName name("abc");
-  SignedNode sn( makeNewLeaf(), name );
+  SignedNode sn( makeNewLeaf(), "type", name );
   ensure_equals("invalid name returned", sn.getReporterName(), name);
+}
+
+// test getting signer's type
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  const SignedNode::ReporterType type("type");
+  SignedNode sn( makeNewLeaf(), type , "name" );
+  ensure_equals("invalid type returned", sn.getReporterType(), type);
 }
 
 } // namespace tut

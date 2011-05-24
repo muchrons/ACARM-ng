@@ -21,6 +21,8 @@ namespace Types
 class SignedNode
 {
 public:
+  /** \brief class representing reporter's type. */
+  typedef std::string ReporterType;
   /** \brief class representing reporter's name. */
   typedef std::string ReporterName;
 
@@ -29,9 +31,11 @@ public:
    *  \param reporter creator's/last modifier's (component) name.
    */
   SignedNode(Persistency::GraphNodePtrNN  node,
-             const ReporterName          &reporter):
+             const ReporterName          &type,
+             const ReporterName          &name):
     node_(node),
-    reporter_(reporter)
+    type_(type),
+    name_(name)
   {
   }
 
@@ -47,12 +51,20 @@ public:
    */
   const ReporterName &getReporterName(void) const
   {
-    return reporter_;
+    return name_;
+  }
+  /** \brief gets reporter's type.
+   *  \return type of the reporter.
+   */
+  const ReporterType &getReporterType(void) const
+  {
+    return type_;
   }
 
 private:
   Persistency::GraphNodePtrNN node_;
-  ReporterName                reporter_;
+  ReporterType                type_;
+  ReporterName                name_;
 }; // class SignedNode
 
 } // namespace Types
