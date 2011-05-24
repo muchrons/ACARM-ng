@@ -9,7 +9,7 @@ compilation from sources
 ========================
 
 after obtaining sources from http://www.acarm.wcss.wroc.pl extract them:
-$ tar xjvf aacrmng.tar.bz2
+$ tar xjvf acarmng.tar.bz2
 
 enter sources directory:
 $ cd acarmng/src
@@ -107,8 +107,8 @@ this means following steps:
  4. access via http://localhost/acarm-ng (move around a little to see if
     data base connections works fine)
  5. configure web server to obey .htaccess confiuration - this is
-    CRUTIAL FOR SECUITY! on Apache 'AllowOverride all' has to be added to
-    server config. in order to verify it works fine try accessing for example
+    CRUCIAL FOR SECURITY! on Apache 'AllowOverride all' has to be added to
+    server's config. in order to verify it works fine try accessing
     http://localhost/acarm-ng/protected - you should get error 403 (access
     forbidden) from the server.
 
