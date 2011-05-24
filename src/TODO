@@ -18,3 +18,4 @@
 * add more info on development (doc/dev?).
 * add regex comaprisons to preprocessor.
 * implement filter changing priority when s/d IP is from defined set (i.e.: internal network, extrnal network, critical resource, etc...).
+* make two separate string types for processor type and name, so they could not be used interchangebly.
