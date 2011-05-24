@@ -17,3 +17,4 @@
 * editable filters' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
 * add more info on development (doc/dev?).
 * add regex comaprisons to preprocessor.
+* implement filter changing priority when s/d IP is from defined set (i.e.: internal network, extrnal network, critical resource, etc...).
