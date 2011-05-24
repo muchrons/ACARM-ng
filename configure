@@ -209,6 +209,7 @@ echo
 echo "SUMMARY:"
 echo "  prefix:   $PREFIX"
 echo "  profile:  $PROFILE"
-echo "  plugins:  `echo "$PLUGINS" | xargs -r echo -n`"
+echo "  plugins:"
+echo "$PLUGINS" | sort | sed 's:^ *:            :'
 echo "  features: $FEATURES"
 echo
