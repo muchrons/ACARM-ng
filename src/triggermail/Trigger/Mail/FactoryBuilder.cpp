@@ -109,7 +109,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO(log_, "building trigger's instance");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  const TriggerConfig fc(type_, options);
+  const TriggerConfig fc(type_.str(), options);
 
   // gather required config
   const std::string              &server=fc["server"];
@@ -156,7 +156,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
     const Config::Authorization  auth(user, pass);
     // create and return new handle, with configured authorization
     LOGMSG_INFO(log_, "account configured with authorization required");
-    return OutPtr( new Impl( type_, name, Mail::Config(thCfg, from, to, serverCfg, auth) ) );
+    return OutPtr( new Impl( type_, InstanceName(name), Mail::Config(thCfg, from, to, serverCfg, auth) ) );
   } // if(use_auth)
   else
     if( fc.get("password")!=NULL )
@@ -164,12 +164,12 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // create and return new handle, with config without authorization
   LOGMSG_INFO(log_, "account configured without authorization required");
-  return OutPtr( new Impl( type_, name, Mail::Config(thCfg, from, to, serverCfg) ) );
+  return OutPtr( new Impl( type_, InstanceName(name), Mail::Config(thCfg, from, to, serverCfg) ) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const
 {
-  return type_;
+  return type_.str();
 }
 
 } // namespace Mail

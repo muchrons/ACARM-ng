@@ -12,6 +12,7 @@
 using namespace Trigger::Mail;
 using namespace Persistency;
 using namespace TestHelpers::Persistency;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -35,8 +36,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Strategy s("mymailtrigger", getTestConfig1() );
-  ensure_equals("invalid trigger type", s.getTriggerType(), "mail");
+  Strategy s(InstanceName("mymailtrigger"), getTestConfig1() );
+  ensure_equals("invalid trigger type", s.getTriggerType().str(), "mail");
 }
 
 // test sending report
@@ -47,7 +48,7 @@ void testObj::test<2>(void)
   // wipe-out account's content
   removeMessagesFromAccount( getTestConfig2() );
   // send report
-  Strategy               s( "mymailtrigger", getTestConfig1() );
+  Strategy               s( InstanceName("mymailtrigger"), getTestConfig1() );
   Strategy::ChangedNodes nc;
   s.process( makeNewNode(), nc );
   // check results

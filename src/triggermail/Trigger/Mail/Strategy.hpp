@@ -22,7 +22,7 @@ public:
    *  \param name name to be applied.
    *  \param cfg configuration to be applied.
    */
-  Strategy(const std::string &name, const Config &cfg);
+  Strategy(const Core::Types::Proc::InstanceName &name, const Config &cfg);
 
 private:
   virtual void triggerImpl(const ConstNode &n);
