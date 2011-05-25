@@ -13,6 +13,7 @@
 
 using namespace std;
 using namespace Input;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -20,7 +21,7 @@ namespace
 struct TestReader: public Reader
 {
   TestReader(void):
-    Reader("testreader", "testreadername"),
+    Reader( TypeName("testreader"), InstanceName("testreadername") ),
     count_(0),
     justThrow_(false)
   {
@@ -121,7 +122,7 @@ namespace
 struct TestWaitingReader: public Reader
 {
   TestWaitingReader(void):
-    Reader("testwaitingreader", "testwaitingreadername")
+    Reader( TypeName("testwaitingreader"), InstanceName("testwaitingreadername") )
   {
   }
 

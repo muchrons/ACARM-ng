@@ -13,10 +13,11 @@ namespace Input
 {
 
 BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN         conn,
-                             const std::string                       &name,
-                             Persistency::Facades::AnalyzersCreator  &creator,
+                             const Core::Types::Proc::TypeName        &type,
+                             const Core::Types::Proc::InstanceName    &name,
+                             Persistency::Facades::AnalyzersCreator   &creator,
                              const Persistency::IO::Heartbeats::Owner &heartbeatOwner):
-  Core::Types::BackendFacade(conn, name),
+  Core::Types::BackendFacade(conn, type, name),
   log_("input.backendfacade"),
   creator_(creator),
   heartbeatOwner_(heartbeatOwner)

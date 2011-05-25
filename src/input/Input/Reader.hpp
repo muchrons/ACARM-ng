@@ -33,14 +33,14 @@ public:
   /** \brief gets type of this reader.
    *  \return reader's type.
    */
-  const std::string &getType(void) const
+  const Core::Types::Proc::TypeName &getType(void) const
   {
     return type_;
   }
   /** \brief gets name of this reader.
    *  \return reader's name.
    */
-  const std::string &getName(void) const
+  const Core::Types::Proc::InstanceName &getName(void) const
   {
     return name_;
   }
@@ -60,13 +60,13 @@ protected:
    *  \param type type of this reader.
    *  \param name name of this reader.
    */
-  Reader(const std::string &type, const std::string &name);
+  Reader(const Core::Types::Proc::TypeName &type, const Core::Types::Proc::InstanceName &name);
 
   const Logger::Node log_;  ///< logger node to log messages to.
 
 private:
-  const std::string type_;
-  const std::string name_;
+  const Core::Types::Proc::TypeName     type_;
+  const Core::Types::Proc::InstanceName name_;
 }; // class Reader
 
 

@@ -11,6 +11,7 @@
 
 using namespace std;
 using namespace Input;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -18,16 +19,18 @@ namespace
 struct TestClass: public TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
+    type_("testinputbf"),
     name_("testinputbftest"),
     conn_( createUserStub() ),
     t_( new Persistency::IO::Transaction( conn_->createNewTransaction("backend_facade_trans") ) ),
-    bf_(conn_, name_, ac_, "OwneR")
+    bf_(conn_, type_, name_, ac_, "OwneR")
   {
     t_->commit();
     t_.reset();     // disgard transaction
   }
 
-  const std::string                               name_;
+  const TypeName                                  type_;
+  const InstanceName                              name_;
   Persistency::IO::ConnectionPtrNN                conn_;
   boost::scoped_ptr<Persistency::IO::Transaction> t_;
   Persistency::Facades::AnalyzersCreator          ac_;
@@ -72,7 +75,7 @@ void testObj::test<3>(void)
   Persistency::AnalyzerPtrNN ptr1=bf_.getAnalyzer("name", "1.2", "Linux", NULL);
   bf_.commitChanges();
 
-  BackendFacade              bfNew(conn_, name_, ac_, "OwneR");
+  BackendFacade              bfNew(conn_, type_, name_, ac_, "OwneR");
   Persistency::AnalyzerPtrNN ptr2=bfNew.getAnalyzer("name", "1.2", "Linux", NULL);
   bfNew.commitChanges();
 

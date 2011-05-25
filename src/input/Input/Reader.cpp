@@ -12,8 +12,8 @@ Reader::~Reader(void)
   LOGMSG_INFO(log_, "quiting");
 }
 
-Reader::Reader(const std::string &type, const std::string &name):
-  log_( Logger::NodeName( "input.reader", Logger::NodeName::removeInvalidChars(type + "." + name).c_str() ) ),
+Reader::Reader(const Core::Types::Proc::TypeName &type, const Core::Types::Proc::InstanceName &name):
+  log_( Logger::NodeName( "input.reader", Logger::NodeName::removeInvalidChars(type.str() + "." + name.str()).c_str() ) ),
   type_(type),
   name_(name)
 {

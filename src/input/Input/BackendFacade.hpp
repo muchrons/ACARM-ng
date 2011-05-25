@@ -27,12 +27,14 @@ class BackendFacade: public Core::Types::BackendFacade
 public:
   /** \brief create object's instance.
    *  \param conn           connection object to use.
+   *  \param type           type of input this object is created for.
    *  \param name           name of input this object is created for.
    *  \param creator        creator of analyzers.
    *  \param heartbeatOwner owner name to be used for heartbeats.
    */
   BackendFacade(Persistency::IO::ConnectionPtrNN          conn,
-                const std::string                        &name,
+                const Core::Types::Proc::TypeName        &type,
+                const Core::Types::Proc::InstanceName    &name,
                 Persistency::Facades::AnalyzersCreator   &creator,
                 const Persistency::IO::Heartbeats::Owner &heartbeatOwner);
 

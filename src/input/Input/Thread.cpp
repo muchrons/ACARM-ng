@@ -11,16 +11,17 @@
 #include "Input/Thread.hpp"
 #include "Input/BackendFacade.hpp"
 
+using namespace Core::Types::Proc;
+
 namespace Input
 {
 
-
 namespace
 {
-std::string makeOwnerName(const std::string &type, const std::string &name)
+std::string makeOwnerName(const TypeName &type, const InstanceName &name)
 {
   std::stringstream ss;
-  ss<<"input::"<<type<<"/"<<name;
+  ss<<"input::"<<type.str()<<"/"<<name.str();
   return ss.str();
 } // makeOwnerName()
 } // unnamed namespace
@@ -30,7 +31,7 @@ Thread::Thread(ReaderPtrNN                       reader,
                Persistency::IO::ConnectionPtrNN  conn,
                Core::Types::AlertsFifo          &output):
   reader_(reader),
-  log_( Logger::NodeName( "input.thread", Logger::NodeName::removeInvalidChars( reader->getType() ).c_str() ) ),
+  log_( Logger::NodeName( "input.thread", Logger::NodeName::removeInvalidChars( reader->getType().str() ).c_str() ) ),
   conn_(conn),
   output_(&output),
   lastHeartbeat_(0u),
@@ -54,12 +55,12 @@ void Thread::operator()(void)
 
     try
     {
-      boost::this_thread::interruption_point();                         // check for interruption
-      sendHeartbeat(timeout, deadline);                                 // send heartbeat, if needed
-      BackendFacade   bf(conn_, reader_->getType(), creator, owner_);   // create backedn facade for this run
-      Reader::DataPtr ptr=reader_->read(bf, timeout);                   // read with timeout
-      bf.commitChanges();                                               // accept changes introduced by facede
-      if( ptr.get()!=NULL )                                             // if data is valid, forward it
+      boost::this_thread::interruption_point();                                             // check for interruption
+      sendHeartbeat(timeout, deadline);                                                     // send heartbeat, if needed
+      BackendFacade   bf(conn_, reader_->getType(), reader_->getName(), creator, owner_);   // create backedn facade for this run
+      Reader::DataPtr ptr=reader_->read(bf, timeout);                                       // read with timeout
+      bf.commitChanges();                                                                   // accept changes introduced by facede
+      if( ptr.get()!=NULL )                                                                 // if data is valid, forward it
       {
         LOGMSG_DEBUG(log_, "got new alert");
         output_->push(ptr);
