@@ -12,6 +12,7 @@
 
 using namespace Trigger;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace TestHelpers::Persistency;
 
 namespace
@@ -20,7 +21,7 @@ namespace
 struct TestTrigger: public Strategy
 {
   TestTrigger(void):
-    Strategy("testtrigger", "triggername"),
+    Strategy( TypeName("testtrigger"), InstanceName("triggername") ),
     callsCriteria_(0),
     callsTrigger_(0),
     criteria_(false),
@@ -74,7 +75,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid type", tt_.getTriggerType(), "testtrigger");
+  ensure_equals("invalid type", tt_.getTriggerType().str(), "testtrigger");
 }
 
 // check if process skips trigger() when criteria is not met
@@ -98,7 +99,7 @@ namespace
 struct TestLoopTrigger: public Strategy
 {
   TestLoopTrigger(void):
-    Strategy("testlooptrigger", "triggername")
+    Strategy( TypeName("testlooptrigger"), InstanceName("triggername") )
   {
   }
 

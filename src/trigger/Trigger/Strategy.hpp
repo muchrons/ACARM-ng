@@ -48,7 +48,7 @@ public:
   /** \brief gets filter name.
    *  \return name of implemented filter.
    */
-  const std::string &getTriggerType(void) const
+  const Core::Types::Proc::TypeName &getTriggerType(void) const
   {
     return type_;
   }
@@ -66,7 +66,7 @@ protected:
    *  \param type type of given trigger.
    *  \param name name of given trigger.
    */
-  Strategy(const std::string &type, const std::string &name);
+  Strategy(const Core::Types::Proc::TypeName &type, const Core::Types::Proc::InstanceName &name);
 
   /** \brief call allows interruption of call sequence.
    *
@@ -103,10 +103,10 @@ private:
 
   typedef ConstNode::element_type NodeElementType;
 
-  const std::string                   type_;
-  const std::string                   name_;
-  Base::ObservingSet<NodeElementType> nos_;
-  Persistency::IO::ConnectionPtrNN    conn_;
+  const Core::Types::Proc::TypeName     type_;
+  const Core::Types::Proc::InstanceName name_;
+  Base::ObservingSet<NodeElementType>   nos_;
+  Persistency::IO::ConnectionPtrNN      conn_;
 }; // class Strategy
 
 } // namespace Trigger
