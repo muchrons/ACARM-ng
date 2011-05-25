@@ -15,6 +15,7 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -43,15 +44,15 @@ namespace Filter
 namespace SameName
 {
 
-Strategy::Strategy(const std::string &name, unsigned int timeout):
-  Filter::Simple::Strategy<Data>("samename", name, timeout)
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, unsigned int timeout):
+  Filter::Simple::Strategy<Data>( TypeName("samename"), name, timeout)
 {
 }
 
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
-  ecl.add("*input*");   // TODO: magic value
+  ecl.add( TypeName("*input*") );   // TODO: magic value
   return ecl;
 }
 

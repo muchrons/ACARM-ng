@@ -12,6 +12,7 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace Filter::SameName;
 using namespace TestHelpers::Persistency;
 
@@ -22,7 +23,7 @@ struct TestClass: public TestStubs
 {
   TestClass(void):
     sampleLeaf_( makeNewLeaf( makeNewAlert("some alert") ) ),
-    s_("somename", 997)
+    s_(InstanceName("somename"), 997)
   {
   }
   GraphNodePtrNN         sampleLeaf_;
