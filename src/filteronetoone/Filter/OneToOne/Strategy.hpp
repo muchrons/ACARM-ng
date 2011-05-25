@@ -53,7 +53,7 @@ public:
    *  \name name name for strategy.
    *  \param timeout time observed node should be in queue.
    */
-  Strategy(const std::string &name, unsigned int timeout);
+  Strategy(const Core::Types::Proc::InstanceName &name, unsigned int timeout);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.
