@@ -25,8 +25,10 @@ class Reader: public Input::Reader
 {
 public:
   /** \brief create file reader.
+   *  \param name     name of the instance.
+   *  \param fifoPath path to fifo used fore reading names.
    */
-  Reader(const std::string &name, const boost::filesystem::path &fifoPath);
+  Reader(const Core::Types::Proc::InstanceName &name, const boost::filesystem::path &fifoPath);
 
   /** \brief reads data from files.
    *  \param bf      backend facade to use for processing.

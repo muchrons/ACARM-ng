@@ -13,6 +13,7 @@
 #include "Input/File/ParserCallback.hpp"
 
 using namespace std;
+using namespace Core::Types::Proc;
 using namespace boost::filesystem;
 using namespace Commons;
 using namespace Commons::Filesystem;
@@ -35,8 +36,8 @@ SharedPtrNotNULL<fstream> createOrOpenFifo(const path &fifoPath)
 } // unnamed namespace
 
 
-Reader::Reader(const std::string &name, const boost::filesystem::path &fifoPath):
-  Input::Reader("file", name),
+Reader::Reader(const Core::Types::Proc::InstanceName &name, const boost::filesystem::path &fifoPath):
+  Input::Reader( TypeName("file"), name),
   fifoPath_(fifoPath),
   fifo_( createOrOpenFifo(fifoPath_) ),
   strmReader_(*fifo_)

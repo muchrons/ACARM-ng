@@ -13,7 +13,7 @@
 #include "Input/Factory.hpp"
 
 using namespace std;
-
+using namespace Core::Types::Proc;
 
 namespace Input
 {
@@ -41,16 +41,16 @@ ReaderBuilder::FactoryPtr ReaderBuilder::buildImpl(const Options &opt) const
   LOGMSG_INFO(log_, "building Input::Reader");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  const ConfigIO::InputConfig   ic(type_, opt);
+  const ConfigIO::InputConfig   ic(type_.str(), opt);
   const string                  name    =ic["name"];
   const boost::filesystem::path fifoPath=ic["fifo"];
 
-  return ReaderBuilder::FactoryPtr( new Reader(name, fifoPath) );
+  return ReaderBuilder::FactoryPtr( new Reader(InstanceName(name), fifoPath) );
 }
 
 const ReaderBuilder::FactoryTypeName &ReaderBuilder::getTypeNameImpl(void) const
 {
-  return type_;
+  return type_.str();
 }
 
 } // namespace File
