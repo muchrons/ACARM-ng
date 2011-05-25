@@ -7,6 +7,7 @@
 #include "Input/Prelude/Reader.hpp"
 
 using namespace std;
+using namespace Core::Types::Proc;
 using namespace Input::Prelude;
 
 namespace
@@ -15,7 +16,7 @@ namespace
 struct TestClass
 {
   TestClass():
-    r_("profile", "somename", "/etc/prelude/default/client.conf")
+    r_("profile", InstanceName("somename"), "/etc/prelude/default/client.conf")
   {
   }
 
@@ -37,7 +38,15 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid type", r_.getType(), "prelude");
+  ensure_equals("invalid type", r_.getType().str(), "prelude");
+}
+
+// test if name is valid
+template<>
+template<>
+void testObj::test<2>(void)
+{
+  ensure_equals("invalid name", r_.getName().str(), "somename");
 }
 
 } // namespace tut

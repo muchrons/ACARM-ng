@@ -15,7 +15,7 @@
 #include "Input/Factory.hpp"
 
 using namespace std;
-
+using namespace Core::Types::Proc;
 
 namespace Input
 {
@@ -43,18 +43,18 @@ ReaderBuilder::FactoryPtr ReaderBuilder::buildImpl(const Options &opt) const
   LOGMSG_INFO(log_, "building Input::Reader");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  const ConfigIO::InputConfig ic(type_, opt);
+  const ConfigIO::InputConfig ic(type_.str(), opt);
 
   const std::string &pname=ic["name"];
   const std::string &pprofile=ic["profile"];
   const std::string &pconfig=ic["config"];
 
-  return ReaderBuilder::FactoryPtr( new Reader(pprofile, pname, pconfig) );
+  return ReaderBuilder::FactoryPtr( new Reader(pprofile, InstanceName(pname), pconfig) );
 }
 
 const ReaderBuilder::FactoryTypeName &ReaderBuilder::getTypeNameImpl(void) const
 {
-  return type_;
+  return type_.str();
 }
 
 } // namespace Prelude
