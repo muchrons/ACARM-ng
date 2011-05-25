@@ -16,6 +16,7 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace Filter::IPBlackList;
 using namespace TestHelpers::Persistency;
 
@@ -53,7 +54,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Strategy s("somename", params_);
+  Strategy s( InstanceName("somename"), params_);
   s.process( makeNewLeaf("127.0.0.2"), changed_ );
   ensure_equals("something changed", changed_.size(), 0u);
 }
@@ -63,7 +64,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Strategy s("somename", params_);
+  Strategy s( InstanceName("somename"), params_ );
   s.process( makeNode(), changed_ );
   ensure_equals("something changed", changed_.size(), 0u);
 }
@@ -76,11 +77,11 @@ void testObj::test<3>(void)
   // note that there is race condition in next two lines - it may happen that between
   // download of blacklisted IPs by strategy and download by donwloader it may change
   // thus there is some (small) probablilty that this test will randomly fail.
-  const Downloader    dwnl(1);                                              // just one entry to download
-  const DShieldParser dsp( dwnl.download() );                               // parse it
-  Strategy            s( "x", Strategy::Parameters(1, 10, 0.5) );           // initiliaze strategy to use
+  const Downloader    dwnl(1);                                                  // just one entry to download
+  const DShieldParser dsp( dwnl.download() );                                   // parse it
+  Strategy            s( InstanceName("x"), Strategy::Parameters(1, 10, 0.5) ); // initiliaze strategy to use
   ensure("no entries parsed", dsp.begin()!=dsp.end() );
-  GraphNodePtrNN leaf=makeNewLeaf( (*dsp.begin()).to_string().c_str() );    // make leaf that is blacklisted
+  GraphNodePtrNN leaf=makeNewLeaf( (*dsp.begin()).to_string().c_str() );        // make leaf that is blacklisted
   // this host should be blacklisted
   s.process(leaf, changed_);
   ensure_equals("nothing changed", changed_.size(), 1u);

@@ -14,6 +14,7 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace Filter;
 using namespace Filter::IPBlackList;
 using namespace TestHelpers::Persistency;
@@ -27,7 +28,7 @@ struct TestClass: private TestStubs
     conn_( Persistency::IO::create() ),
     dsp_("084.109.175.233 687     352     2009-12-31      2010-03-12"),
     bl_( dsp_.begin(), dsp_.end() ),
-    bf_(conn_, changed_, "testdipblacklist"),
+    bf_(conn_, changed_, TypeName("testdipblacklist"), InstanceName("myiplist") ),
     ep_(&bl_, &bf_, &ps_, 0.3)
   {
     assert( changed_.size()==0 );
