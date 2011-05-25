@@ -10,6 +10,7 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 
 namespace Filter
 {
@@ -28,8 +29,8 @@ Strategy::Params::Params(unsigned int timeout, double similarity):
                                     "values above 100% (i.e. 1) are invalid");
 }
 
-Strategy::Strategy(const std::string &name, const Params &params):
-  Filter::Simple::Strategy<Data>("manytomany", name, params.timeout_),
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Params &params):
+  Filter::Simple::Strategy<Data>( TypeName("manytomany"), name, params.timeout_),
   params_(params)
 {
 }
@@ -37,9 +38,9 @@ Strategy::Strategy(const std::string &name, const Params &params):
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
-  ecl.add("onetoone");      // TODO: magic value
-  ecl.add("onetomany");     // TODO: magic value
-  ecl.add("manytoone");     // TODO: magic value
+  ecl.add( TypeName("onetoone")  );     // TODO: magic value
+  ecl.add( TypeName("onetomany") );     // TODO: magic value
+  ecl.add( TypeName("manytoone") );     // TODO: magic value
   return ecl;
 }
 
