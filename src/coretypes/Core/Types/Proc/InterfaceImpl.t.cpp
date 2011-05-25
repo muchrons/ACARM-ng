@@ -29,7 +29,7 @@ struct TestStrategyParams
 
 struct TestStrategy
 {
-  TestStrategy(const std::string &/*name*/, const TestStrategyParams &p):
+  TestStrategy(const InstanceName &/*name*/, const TestStrategyParams &p):
     p_(p)
   {
     p_.calls_=0;
@@ -88,7 +88,7 @@ struct TestStrategyNoParm
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    impl_("sometype", "somename", params_)
+    impl_( TypeName("sometype"), InstanceName("somename"), params_)
   {
   }
 
@@ -111,14 +111,14 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid type set", impl_.getType(), "sometype");
+  ensure_equals("invalid type set", impl_.getType().str(), "sometype");
 }
 // test getting name
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("invalid name set", impl_.getName(), "somename");
+  ensure_equals("invalid name set", impl_.getName().str(), "somename");
 }
 
 // test passing call to process
@@ -137,7 +137,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  InterfaceImpl<TestStrategyNoParm> tmp("sometype", "somename");
+  InterfaceImpl<TestStrategyNoParm> tmp( TypeName("sometype") , InstanceName("somename") );
 }
 
 // test process() on non-param strategy object
@@ -145,7 +145,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  InterfaceImpl<TestStrategyNoParm> tmp("sometype", "somename");
+  InterfaceImpl<TestStrategyNoParm> tmp( TypeName("sometype") , InstanceName("somename") );
   ensure_equals("pre-condition failed", testStrategyNoParmCalls, 0);
   Interface::ChangedNodes changed;
   tmp.process( makeNewLeaf(), changed );
@@ -167,7 +167,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  InterfaceImpl<TestStrategyNoParm> tmp("sometype", "somename");
+  InterfaceImpl<TestStrategyNoParm> tmp( TypeName("sometype") , InstanceName("somename") );
   ensure_equals("pre-condition failed", testStrategyNoParmHeartbeats, 0);
   tmp.heartbeat(42u);
   ensure_equals("process() is not virtual", testStrategyNoParmHeartbeats, 1);

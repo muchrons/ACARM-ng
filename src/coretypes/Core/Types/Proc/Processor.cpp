@@ -24,7 +24,7 @@ Logger::Node makeNodeName(const char *prefix, const Interface *interface)
   if(interface==NULL)
     throw ExceptionInvalidInterface(SYSTEM_SAVE_LOCATION, "NULL");
 
-  const string str=prefix + Logger::NodeName::removeInvalidChars( interface->getName() );
+  const string str=prefix + Logger::NodeName::removeInvalidChars( interface->getName().str() );
   return Logger::Node( str.c_str() );
 } // makeNodeName()
 
@@ -198,22 +198,23 @@ Processor::~Processor(void)
 void Processor::process(const Core::Types::SignedNode &node)
 {
   LOGMSG_DEBUG_S(log_)<<"processing node "<< node.getNode()->getMetaAlert()->getID().get()
-                      <<" from filter '"<<node.getReporterName()<<"'";
+                      <<" from filter '"<<node.getReporterName().str()<<"' of type '"
+                      <<node.getReporterType().str()<<"'";
   // skip if we were the ones that reported this
-  if( interface_->getName()==node.getReporterName() )
+  if( interface_->getName()==node.getReporterName() && interface_->getType()==node.getReporterType() )
   {
-    LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName()<<"' has been rejected since it comes out from this processor";
+    LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName().str()<<"' has been rejected since it comes out from this processor";
     return;
   }
   // if entry from given processor is not allowed for this one, skip this call
   if( !interface_->getECL().isAcceptable( node.getReporterType() ) )
   {
-    LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName()<<"' has been rejected by ECL...";
+    LOGMSG_DEBUG_S(log_)<<"node from filter '"<<node.getReporterName().str()<<"' has been rejected by ECL...";
     return;
   }
   // if everything's fine - accept this.
   LOGMSG_DEBUG_S(log_)<<"node "<< node.getNode()->getMetaAlert()->getID().get()
-                      <<" from filter '"<<node.getReporterName()<<"' has been accepted - adding to queue";
+                      <<" from filter '"<<node.getReporterName().str()<<"' has been accepted - adding to queue";
   inputQueue_.push( node.getNode() );
 }
 

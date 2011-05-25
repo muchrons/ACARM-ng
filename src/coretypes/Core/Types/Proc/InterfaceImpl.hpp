@@ -29,7 +29,7 @@ public:
    *  \param type type for this processing unit.
    *  \param name name for this processing unit.
    */
-  explicit InterfaceImpl(const std::string &type, const std::string &name):
+  InterfaceImpl(const TypeName &type, const InstanceName &name):
     Interface( type, name, TStrategy::createEntryControlList() )
   {
   }
@@ -38,9 +38,9 @@ public:
    *  \param name  name for this processing unit.
    *  \param param paramter to eb given when constructing strategy.
    */
-  InterfaceImpl(const std::string &type,
-                const std::string &name,
-                const TParam      &param):
+  InterfaceImpl(const TypeName     &type,
+                const InstanceName &name,
+                const TParam       &param):
     Interface( type, name, TStrategy::createEntryControlList() ),
     strategy_(name, param)
   {

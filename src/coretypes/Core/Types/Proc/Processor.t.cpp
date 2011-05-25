@@ -20,7 +20,7 @@ namespace
 struct TestInterface: public Interface
 {
   explicit TestInterface(const EntryControlList &ecl=EntryControlList::createDefaultAccept() ):
-    Interface("testinterfacetype", "testinterfacename", ecl),
+    Interface( TypeName("testinterfacetype"), InstanceName("testinterfacename"), ecl),
     calls_(0),
     heartbeats_(0),
     node_( makeNewLeaf() ),
@@ -59,7 +59,9 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     ti_(new TestInterface),
-    interface_(ti_)
+    interface_(ti_),
+    type_("myT"),
+    name_("myN")
   {
   }
 
@@ -74,8 +76,10 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     tut::fail("timed out while waiting for response from processor");
   }
 
-  void checkECL(const EntryControlList &ecl, const std::string &callerType, const std::string &callerName, bool shouldPass)
+  void checkECL(const EntryControlList &ecl, const std::string &callerTypeStr, const std::string &callerNameStr, bool shouldPass)
   {
+    const TypeName     callerType(callerTypeStr);
+    const InstanceName callerName(callerNameStr);
     TestInterface *ti=new TestInterface(ecl);
     interface_.reset(ti);
     ProcessorPtrNN p( new Processor(mainQueue_, interface_) );
@@ -91,6 +95,8 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   Core::Types::SignedNodesFifo  mainQueue_;
   TestInterface                *ti_;
   Processor::InterfaceAutoPtr   interface_;
+  const TypeName                type_;
+  const InstanceName            name_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -139,7 +145,7 @@ void testObj::test<3>(void)
   ensure_equals("pre-condition failed", mainQueue_.size(), 0u);
   // process data
   Processor p(mainQueue_, interface_);
-  p.process( SignedNode(ti_->node_, "myT", "myN") );    // this call should add 1 element to 'changed'
+  p.process( SignedNode(ti_->node_, type_, name_) );    // this call should add 1 element to 'changed'
                                                         // elements set, and processor should forward it
                                                         // to the main queue.
   // wait for the results
@@ -160,8 +166,8 @@ void testObj::test<4>(void)
   ensure_equals("pre-condition failed", mainQueue_.size(), 0u);
   // process data
   Processor p(mainQueue_, interface_);
-  p.process( SignedNode(ti_->node_,  "myT", "myN") );   // this call should add 2 elements to 'changed'
-  p.process( SignedNode(ti_->node2_, "myT", "myN") );   // elements set, and processor should forward it
+  p.process( SignedNode(ti_->node_,  type_, name_) );   // this call should add 2 elements to 'changed'
+  p.process( SignedNode(ti_->node2_, type_, name_) );   // elements set, and processor should forward it
                                                         // to the main queue.
   // wait for the results
   for(int i=0; i<10; ++i)
@@ -188,7 +194,7 @@ template<>
 void testObj::test<6>(void)
 {
   EntryControlList ecl=EntryControlList::createDefaultAccept();
-  ecl.add("myexception");
+  ecl.add( TypeName("myexception") );
   checkECL(ecl, "myexception", "any_name", false);
 }
 
@@ -198,7 +204,7 @@ template<>
 void testObj::test<7>(void)
 {
   EntryControlList ecl=EntryControlList::createDefaultReject();
-  ecl.add("myexception");
+  ecl.add( TypeName("myexception") );
   checkECL(ecl, "myexception", "any_name", true);
 }
 
@@ -219,7 +225,7 @@ void testObj::test<9>(void)
   // test environment
   Processor p(mainQueue_, interface_);
   ensure_equals("pre-condition failed", ti_->heartbeats_, 0u);
-  p.process( SignedNode(ti_->node_, "myT", "myN") );    // should send heartbeat
+  p.process( SignedNode(ti_->node_, type_, name_) );    // should send heartbeat
   waitForResponse();
   // check
   ensure_equals("heartbeat not sent", ti_->heartbeats_, 1u);
@@ -234,11 +240,11 @@ void testObj::test<10>(void)
   Processor p(mainQueue_, interface_);
   ensure_equals("pre-condition failed", ti_->heartbeats_, 0u);
   // first action
-  p.process( SignedNode(ti_->node_, "myT", "myN") );    // should send heartbeat
+  p.process( SignedNode(ti_->node_, type_, name_) );    // should send heartbeat
   waitForResponse();
   ensure_equals("heartbeat not sent", ti_->heartbeats_, 1u);
   // second action
-  p.process( SignedNode(ti_->node_, "myT", "myN") );    // should NOT send heartbeat for some time now
+  p.process( SignedNode(ti_->node_, type_, name_) );    // should NOT send heartbeat for some time now
   waitForResponse();
   ensure_equals("heartbeat sent again", ti_->heartbeats_, 1u);
 }
@@ -266,7 +272,7 @@ void testObj::test<11>(void)
   Processor p(mainQueue_, interface_);
   ensure_equals("pre-condition failed", ti_->calls_, 0u);
   // first action
-  p.process( SignedNode(ti_->node_, "myT", "myN") );    // should discard exception from heartbeat
+  p.process( SignedNode(ti_->node_, type_, name_) );    // should discard exception from heartbeat
   waitForResponse();
   ensure_equals("exception in heartbeat stopped processing", ti_->calls_, 1u);
 }

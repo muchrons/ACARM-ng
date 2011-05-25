@@ -20,7 +20,7 @@ namespace
 struct TestInterface: public Interface
 {
   explicit TestInterface(bool *dtor):
-    Interface("testinterfacetype", "testinterfacename", EntryControlList::createDefaultAccept() ),
+    Interface( TypeName("testinterfacetype"), InstanceName("testinterfacename"), EntryControlList::createDefaultAccept() ),
     calls_(0),
     heartbeats_(0),
     dtor_(dtor)
@@ -79,7 +79,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid name set", ti_->getName(), "testinterfacename");
+  ensure_equals("invalid name set", ti_->getName().str(), "testinterfacename");
 }
 
 // test getting type
@@ -87,7 +87,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("invalid type set", ti_->getType(), "testinterfacetype");
+  ensure_equals("invalid type set", ti_->getType().str(), "testinterfacetype");
 }
 // test if d-tor is virtual
 template<>
