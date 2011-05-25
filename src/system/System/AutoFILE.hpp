@@ -12,7 +12,6 @@
 
 #include <stdio.h>
 #include <unistd.h>
-#include <boost/operators.hpp>
 
 #include "System/AutoVariable.hpp"
 
