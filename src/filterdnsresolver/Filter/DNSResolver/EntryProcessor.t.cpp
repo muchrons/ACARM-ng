@@ -14,6 +14,7 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace Filter;
 using namespace Filter::DNSResolver;
 using namespace TestHelpers::Persistency;
@@ -26,7 +27,7 @@ struct TestClass: private TestStubs
   TestClass(void):
     conn_( Persistency::IO::create() ),
     cache_(42),
-    bf_(conn_, changed_, "testdnsresolver"),
+    bf_(conn_, changed_, TypeName("testdnsresolver"), InstanceName("mydns") ),
     ep_(&cache_, &bf_)
   {
     assert( changed_.size()==0 );

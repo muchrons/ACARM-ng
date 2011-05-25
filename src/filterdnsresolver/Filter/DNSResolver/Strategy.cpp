@@ -15,8 +15,8 @@ namespace Filter
 namespace DNSResolver
 {
 
-Strategy::Strategy(const std::string &name, const Parameters &params):
-  Filter::Strategy<Data>("dnsresolver", name),
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Parameters &params):
+  Filter::Strategy<Data>(Core::Types::Proc::TypeName("dnsresolver"), name),
   cache_(params.cacheTimeout_)
 {
 }
@@ -24,7 +24,7 @@ Strategy::Strategy(const std::string &name, const Parameters &params):
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
-  ecl.add("*input*");   // TODO: magic value
+  ecl.add( Core::Types::Proc::TypeName("*input*") );    // TODO: magic value
   return ecl;
 }
 

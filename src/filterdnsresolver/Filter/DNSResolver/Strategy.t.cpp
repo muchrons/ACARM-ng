@@ -13,6 +13,7 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace Filter::DNSResolver;
 using namespace TestHelpers::Persistency;
 
@@ -22,7 +23,7 @@ namespace
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    s_( "strategyname", Strategy::Parameters(42) )
+    s_( InstanceName("strategyname"), Strategy::Parameters(42) )
   {
   }
 
