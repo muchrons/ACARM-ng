@@ -53,11 +53,12 @@ public:
   /** \brief create object's instance.
    *  \param conn       connection object to use.
    *  \param changed    list of changed nodes to update.
-   *  \param filterName name of filter this object is created for.
+   *  \param filterType name of filter this object is created for.
    */
-  BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-                ChangedNodes                     &changed,
-                const std::string                &filterName);
+  BackendFacade(Persistency::IO::ConnectionPtrNN       conn,
+                ChangedNodes                          &changed,
+                const Core::Types::Proc::TypeName     &filterType,
+                const Core::Types::Proc::InstanceName &filterName);
 
   /** \brief set name of a given host.
    *  \param node node given host name is part of.

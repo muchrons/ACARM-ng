@@ -14,14 +14,15 @@ using namespace Persistency;
 namespace Filter
 {
 
-BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-                           ChangedNodes                     &changed,
-                           const std::string                &filterName):
-  Core::Types::BackendFacade(conn, filterName),
+BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN     conn,
+                           ChangedNodes                          &changed,
+                           const Core::Types::Proc::TypeName     &filterType,
+                           const Core::Types::Proc::InstanceName &filterName):
+  Core::Types::BackendFacade(conn, filterType, filterName),
   changed_(changed)
 {
   if( changed_.size()!=0 )
-    throw ExceptionChangedNodesNotEmpty(SYSTEM_SAVE_LOCATION, filterName.c_str() );
+    throw ExceptionChangedNodesNotEmpty(SYSTEM_SAVE_LOCATION, filterName.str().c_str() );
 }
 
 namespace

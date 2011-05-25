@@ -12,6 +12,7 @@
 
 using namespace Filter;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace TestHelpers::Persistency;
 
 namespace
@@ -20,7 +21,7 @@ namespace
 struct TestFilter: public Strategy<int>
 {
   TestFilter(void):
-    Strategy<int>("testfilter", "testfiltername"),
+    Strategy<int>( TypeName("testfilter"), InstanceName("testfiltername") ),
     calls_(0),
     node_( makeGraphLeaf() )
   {
@@ -76,7 +77,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid name", tf_.getFilterType(), "testfilter");
+  ensure_equals("invalid name", tf_.getFilterType().str(), "testfilter");
 }
 
 // check if process() calls implementation (with valid arguments)
@@ -95,7 +96,7 @@ namespace
 struct TestLoopFilter: public Strategy<char>
 {
   TestLoopFilter(void):
-    Strategy<char>("testloopfilter", "testloopfiltername")
+    Strategy<char>( TypeName("testloopfilter"), InstanceName("testloopfiltername") )
   {
   }
 

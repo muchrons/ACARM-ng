@@ -48,7 +48,7 @@ public:
     LOGMSG_DEBUG_S(log_)<<"processing node "<< n->getMetaAlert()->getID().get();
     assert( changed.size()==0 && "non-empty output collection received");
     pruneNTQ();                 // clean queue's content.
-    BackendFacade bf( conn_, changed, getFilterType() );
+    BackendFacade bf( conn_, changed, getFilterType(), getFilterName() );
     processImpl(n, ntq_, bf);
     bf.commitChanges();         // if there was no exception, commit changes made (if any)
     LOGMSG_DEBUG_S(log_)<<"nodes timeout queue size is "<<ntq_.size()<<" elements";
@@ -59,7 +59,7 @@ public:
   void heartbeat(unsigned int deadline)
   {
     std::stringstream owner;
-    owner<<"filter::"<<getFilterType()<<"/"<<getFilterName();
+    owner<<"filter::"<<getFilterType().str()<<"/"<<getFilterName().str();
     Persistency::IO::Transaction       t( conn_->createNewTransaction("heartbeat_sending") );
     Persistency::IO::HeartbeatsAutoPtr hb=conn_->heartbeats( owner.str(), t );
     assert( hb.get()!=NULL );
@@ -121,7 +121,7 @@ public:
 protected:
   /** \brief create instance.
    */
-  Strategy(const std::string &type, const std::string &name):
+  Strategy(const Core::Types::Proc::TypeName &type, const Core::Types::Proc::InstanceName &name):
     StrategyBase(type, name),
     nextPrune_(0)
   {

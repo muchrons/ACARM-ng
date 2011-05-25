@@ -15,6 +15,7 @@
 
 using namespace Filter;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace TestHelpers::Persistency;
 
 namespace
@@ -24,7 +25,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     conn_(new ConnectionIOMemory),
-    bf_( new BackendFacade(conn_, changed_, "sometest") )
+    bf_( new BackendFacade(conn_, changed_, TypeName("testtype"), InstanceName("sometest")) )
   {
     assert( bf_.get()!=NULL );
     assert( conn_.get()!=NULL );
@@ -218,7 +219,7 @@ void testObj::test<10>(void)
   try
   {
     changed_.push_back( makeGraphNode() );  // colleciton shall be non-empty
-    BackendFacade tmp(conn_, changed_, "myunatedstatesofwhatever");
+    BackendFacade tmp(conn_, changed_, TypeName("myunatedstates"), InstanceName("ofwhatever"));
     fail("c-tor didn't throw on non-empty changed nodes' collection");
   }
   catch(const BackendFacade::ExceptionChangedNodesNotEmpty&)

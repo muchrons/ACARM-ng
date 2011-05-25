@@ -12,6 +12,8 @@
 
 #include "Logger/Node.hpp"
 #include "Persistency/GraphNode.hpp"
+#include "Core/Types/Proc/TypeName.hpp"
+#include "Core/Types/Proc/InstanceName.hpp"
 // this header is not used directly, but it is required for the derived
 // classes to implement special, satic method.
 #include "Core/Types/Proc/EntryControlList.hpp"
@@ -32,14 +34,14 @@ public:
   /** \brief gets filter type.
    *  \return type of implemented filter.
    */
-  const std::string &getFilterType(void) const
+  const Core::Types::Proc::TypeName &getFilterType(void) const
   {
     return type_;
   }
   /** \brief gets filter name.
    *  \return name of this filter.
    */
-  const std::string &getFilterName(void) const
+  const Core::Types::Proc::InstanceName &getFilterName(void) const
   {
     return name_;
   }
@@ -47,7 +49,7 @@ public:
 protected:
   /** \brief create instance.
    */
-  explicit StrategyBase(const std::string &type, const std::string &name);
+  explicit StrategyBase(const Core::Types::Proc::TypeName &type, const Core::Types::Proc::InstanceName &name);
 
   /** \brief call allows interruption of call sequence.
    *
@@ -60,8 +62,8 @@ protected:
   Persistency::IO::ConnectionPtrNN conn_;   ///< connection to persistency
 
 private:
-  const std::string                type_;
-  const std::string                name_;
+  const Core::Types::Proc::TypeName     type_;
+  const Core::Types::Proc::InstanceName name_;
 }; // class StrategyBase
 
 } // namespace Filter

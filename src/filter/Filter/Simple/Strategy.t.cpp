@@ -14,6 +14,7 @@
 using namespace std;
 using namespace Persistency;
 using namespace Filter::Simple;
+using namespace Core::Types::Proc;
 using namespace TestHelpers::Persistency;
 
 namespace
@@ -28,7 +29,7 @@ struct TestStrategy: public Strategy<TestData>
   TestStrategy(bool isInteresting=true,
                bool canCorrelate =true,
                int  skipCorrelations=0):
-    Strategy<TestData>("teststrategy", "teststrategyname", 42),
+    Strategy<TestData>( TypeName("teststrategy"), InstanceName("teststrategyname"), 42),
     isInteresting_(isInteresting),
     canCorrelate_(canCorrelate),
     skipCorrelations_(skipCorrelations),
