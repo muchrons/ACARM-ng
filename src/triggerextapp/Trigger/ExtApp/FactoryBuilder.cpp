@@ -42,7 +42,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO(log_, "building trigger's instance");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  const TriggerConfig  fc(type_, options);
+  const TriggerConfig  fc(type_.str(), options);
   // path to executable
   const Config::Path  &path=fc["executable"];
   LOGMSG_INFO_S(log_)<<"setting application to run to: "<<path;
@@ -60,12 +60,12 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // create and return new handle.
   typedef InterfaceImpl<ExtApp::Strategy, ExtApp::Config> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl( type_, name, ExtApp::Config(path, thCfg) ) );
+  return FactoryBuilder::FactoryPtr( new Impl( type_, InstanceName(name), ExtApp::Config(path, thCfg) ) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const
 {
-  return type_;
+  return type_.str();
 }
 
 } // namespace ExtApp
