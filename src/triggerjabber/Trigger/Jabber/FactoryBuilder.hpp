@@ -31,8 +31,8 @@ private:
   virtual FactoryPtr buildImpl(const Options &options) const;
   virtual const FactoryTypeName &getTypeNameImpl(void) const;
 
-  const std::string  type_;
-  const Logger::Node log_;
+  const Core::Types::Proc::TypeName type_;
+  const Logger::Node                log_;
 }; // class FactoryBuilder
 
 } // namespace Jabber
