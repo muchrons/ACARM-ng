@@ -12,6 +12,7 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace Filter::Similarity;
 using namespace TestHelpers::Persistency;
 
@@ -22,7 +23,7 @@ struct TestClass: public TestStubs
 {
   TestClass(void):
     sampleLeaf_( mkLeaf("name 1") ),
-    s_( "somename", Strategy::Params(123, 0.5) )
+    s_( InstanceName("somename"), Strategy::Params(123, 0.5) )
   {
   }
 

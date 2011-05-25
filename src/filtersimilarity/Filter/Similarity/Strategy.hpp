@@ -80,7 +80,7 @@ public:
    *  \param name   name for strategy.
    *  \param params configuration to use.
    */
-  Strategy(const std::string &name, Params params);
+  Strategy(const Core::Types::Proc::InstanceName &name, Params params);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.

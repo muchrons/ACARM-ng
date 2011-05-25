@@ -12,6 +12,7 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 
 namespace Filter
 {
@@ -28,8 +29,8 @@ Strategy::Params::Params(const unsigned int timeout, const double similarity):
     throw ExceptionInvalidParameter(SYSTEM_SAVE_LOCATION, "similairty", "value must be less than or equal to 1");
 }
 
-Strategy::Strategy(const std::string &name, const Params params):
-  Filter::Simple::Strategy<Data>("similarity", name, params.timeout()),
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Params params):
+  Filter::Simple::Strategy<Data>( TypeName("similarity"), name, params.timeout()),
   params_(params)
 {
 }
@@ -37,7 +38,7 @@ Strategy::Strategy(const std::string &name, const Params params):
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
-  ecl.add("*input*");   // TODO: magic value
+  ecl.add( TypeName("*input*") );   // TODO: magic value
   return ecl;
 }
 
