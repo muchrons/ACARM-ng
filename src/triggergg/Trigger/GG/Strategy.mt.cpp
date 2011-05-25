@@ -10,6 +10,7 @@
 
 using namespace std;
 using namespace Trigger::GG;
+using namespace Core::Types::Proc;
 
 int main(int argc, char **argv)
 {
@@ -23,7 +24,7 @@ int main(int argc, char **argv)
   const Config           cfg( getTestConfig1(),
                               Config::Receivers(receiver),
                               Trigger::Simple::ThresholdConfig("0.0", "0") );
-  Strategy               s("ggmtest", cfg);
+  Strategy               s(InstanceName("ggmtest"), cfg);
   Strategy::ChangedNodes nc;
   s.process( TestHelpers::Persistency::makeNewNode(), nc ); // trigger and send
   return 0;

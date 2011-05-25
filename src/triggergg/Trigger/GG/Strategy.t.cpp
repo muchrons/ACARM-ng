@@ -13,6 +13,7 @@
 using namespace Trigger::GG;
 using namespace Persistency;
 using namespace TestHelpers::Persistency;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -44,8 +45,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Strategy s("mygginformer", cfg_);
-  ensure_equals("invalid type", s.getTriggerType(), "gg");
+  Strategy s(InstanceName("mygginformer"), cfg_);
+  ensure_equals("invalid type", s.getTriggerType().str(), "gg");
 }
 
 // test sending report
@@ -65,7 +66,7 @@ void testObj::test<2>(void)
   // cleanup any messages if present
   cleanUpMessagesFromAccount(conn2);
   // regular test flow goes here:
-  Strategy               s("mygginformer", cfg_);
+  Strategy               s(InstanceName("mygginformer"), cfg_);
   Strategy::ChangedNodes nc;
   s.process( makeNewNode(), nc );
   ensure_equals("some nodes have been changed", nc.size(), 0u);
@@ -82,7 +83,7 @@ void testObj::test<3>(void)
 {
   time_t start, stop;
   {
-    const Strategy s("mygginformer", cfg_);
+    const Strategy s(InstanceName("mygginformer"), cfg_);
     start=time(NULL);
     usleep(100*1000);                 // give time for backend thread to start
   } // thread interruption and joining goes here
