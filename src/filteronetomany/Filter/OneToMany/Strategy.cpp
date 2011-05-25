@@ -5,13 +5,15 @@
 #include "Filter/OneToMany/Strategy.hpp"
 #include "Filter/OneToMany/Operations.hpp"
 
+using namespace Core::Types::Proc;
+
 namespace Filter
 {
 namespace OneToMany
 {
 
-Strategy::Strategy(const std::string &name, unsigned int timeout):
-  Filter::HostCommon::Strategy("onetomany", name, timeout)
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, unsigned int timeout):
+  Filter::HostCommon::Strategy( TypeName("onetomany"), name, timeout)
 {
 }
 
