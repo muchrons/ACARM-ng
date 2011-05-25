@@ -53,7 +53,8 @@ public:
   /** \brief create object's instance.
    *  \param conn       connection object to use.
    *  \param changed    list of changed nodes to update.
-   *  \param filterType name of filter this object is created for.
+   *  \param filterType type of filter this object is created for.
+   *  \param filterName name of filter this object is created for.
    */
   BackendFacade(Persistency::IO::ConnectionPtrNN       conn,
                 ChangedNodes                          &changed,
