@@ -9,6 +9,7 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 
 namespace Filter
 {
@@ -94,8 +95,8 @@ Strategy::Params::Params(unsigned int timeout, double priDelta_):
 {
 }
 
-Strategy::Strategy(const std::string &name, const Params &params):
-  Filter::Simple::Strategy<Data>("eventchain", name, params.timeout_),
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Params &params):
+  Filter::Simple::Strategy<Data>( TypeName("eventchain"), name, params.timeout_),
   params_(params)
 {
 }
@@ -104,7 +105,7 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
   // accept events only from input
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
-  ecl.add("*input*");       // TODO: magic value
+  ecl.add( TypeName("*input*") );   // TODO: magic value
   return ecl;
 }
 

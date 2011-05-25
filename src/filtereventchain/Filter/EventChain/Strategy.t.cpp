@@ -13,6 +13,7 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace Filter::EventChain;
 using namespace TestHelpers::Persistency;
 
@@ -25,7 +26,7 @@ struct TestClass: public TestStubs
     ts_(12345),
     sampleLeaf_( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL,
                                                     "4.3.2.1", NULL, ts_) ) ),
-    s_( "somename", Strategy::Params(997, 0.42) )
+    s_( InstanceName("somename"), Strategy::Params(997, 0.42) )
   {
   }
 
