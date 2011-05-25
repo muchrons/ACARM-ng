@@ -13,6 +13,8 @@
 
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
+#include "Core/Types/Proc/TypeName.hpp"
+#include "Core/Types/Proc/InstanceName.hpp"
 
 
 namespace Core
@@ -68,10 +70,12 @@ public:
 protected:
   /** \brief create object's instance.
    *  \param conn connection object to use.
+   *  \param type type of element this object is created for (i.e.: filter/trigger/input name).
    *  \param name name of element this object is created for (i.e.: filter/trigger/input name).
    */
   BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-                const std::string                &name);
+                const Proc::TypeName             &type,
+                const Proc::InstanceName         &name);
   /** \brief ensure transaction is in progress (by running new, if needed).
    *  \note if transaciton is started, call does nothing. otherwise starts
    *        new one.
@@ -91,15 +95,26 @@ protected:
    *  \return return non-NULL dynamic configuration proxy.
    */
   Persistency::IO::DynamicConfigAutoPtr createDynamicConfig(const Persistency::IO::DynamicConfig::Owner &owner);
+  /** \brief gets type of this element.
+   *  \return elements type.
+   */
+  const Proc::TypeName &getType(void) const
+  {
+    return type_;
+  }
   /** \brief gets name of this element.
    *  \return elements name.
    */
-  const std::string &getName(void) const;
+  const Proc::InstanceName &getName(void) const
+  {
+    return name_;
+  }
 
 private:
   typedef boost::scoped_ptr<Persistency::IO::Transaction> TransactionScPtr;
 
-  std::string                      name_;
+  const Proc::TypeName             type_;
+  const Proc::InstanceName         name_;
   Persistency::IO::ConnectionPtrNN conn_;
   TransactionScPtr                 transaction_;
 }; // class BackendFacade

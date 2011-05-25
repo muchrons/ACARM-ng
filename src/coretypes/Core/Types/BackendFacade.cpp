@@ -21,7 +21,9 @@ BackendFacade::CustomIOInterface::~CustomIOInterface(void)
 }
 
 BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-                             const std::string                &name):
+                             const Proc::TypeName             &type,
+                             const Proc::InstanceName         &name):
+  type_(type),
   name_(name),
   conn_(conn)
 {
@@ -54,7 +56,7 @@ void BackendFacade::beginTransaction(void)
 {
   if( transaction_.get()==NULL )    // new transaction
   {
-    TransactionAPIAutoPtr api=conn_->createNewTransaction( "transaction_for_" + getName() );
+    TransactionAPIAutoPtr api=conn_->createNewTransaction( "transaction_for_" + getName().str() );
     transaction_.reset( new Transaction(api) );
   }
   // if begin has been requested, transaction must always be valid
@@ -77,10 +79,6 @@ Persistency::IO::DynamicConfigAutoPtr BackendFacade::createDynamicConfig(const P
   beginTransaction();
   assert( transaction_.get()!=NULL );
   return conn_->dynamicConfig(owner, *transaction_);
-}
-const std::string &BackendFacade::getName(void) const
-{
-  return name_;
 }
 
 } // namespace Types
