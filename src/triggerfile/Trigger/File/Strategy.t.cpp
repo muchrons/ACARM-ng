@@ -16,6 +16,7 @@
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace std;
+using namespace Core::Types::Proc;
 using namespace Trigger::File;
 using namespace Persistency;
 using namespace TestHelpers::Persistency;
@@ -105,8 +106,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Strategy s("mytrigger", cfg_);
-  ensure_equals("invalid trigger type", s.getTriggerType(), "file");
+  const Strategy s(InstanceName("mytrigger"), cfg_);
+  ensure_equals("invalid trigger type", s.getTriggerType().str(), "file");
 }
 
 // test saving report in current directory
@@ -114,7 +115,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Strategy               s("myfiletrigger", cfg_);
+  Strategy               s(InstanceName("myfiletrigger"), cfg_);
   Strategy::ChangedNodes nc;
   const time_t           start=time(NULL);
   s.process( makeNewNode(), nc );
@@ -131,7 +132,7 @@ void testObj::test<3>(void)
   if( mkdir(out, 0755)!=0 )
     ensure("unable to create output dir", errno==EEXIST);
   const Config           cfg(out, cfg_.getThresholdConfig() );
-  Strategy               s("myfiletrigger", cfg);
+  Strategy               s(InstanceName("myfiletrigger"), cfg);
   Strategy::ChangedNodes nc;
   const time_t           start=time(NULL);
   s.process( makeNewNode(), nc );
@@ -148,7 +149,7 @@ void testObj::test<4>(void)
   // if it does not happen
   for(int i=0; i<5; ++i)
   {
-    Strategy               s("myfiletrigger", cfg_);
+    Strategy               s(InstanceName("myfiletrigger"), cfg_);
     Strategy::ChangedNodes nc;
 
     // wait until seconds just changed - to make event as probable as possible
