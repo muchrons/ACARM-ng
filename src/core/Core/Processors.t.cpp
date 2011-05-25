@@ -14,6 +14,7 @@
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace Core;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -53,8 +54,7 @@ int filterCalls_=0;
 struct TestFilterInterface: public Core::Types::Proc::Interface
 {
   TestFilterInterface(void):
-    Core::Types::Proc::Interface( "somefiltertype", "somefiltername",
-                                  Types::Proc::EntryControlList::createDefaultAccept() )
+    Core::Types::Proc::Interface( TypeName("somefiltertype"), InstanceName("somefiltername"), EntryControlList::createDefaultAccept() )
   {
   }
 
@@ -100,8 +100,7 @@ int triggerCalls_=0;
 struct TestTriggerInterface: public Core::Types::Proc::Interface
 {
   TestTriggerInterface(void):
-    Core::Types::Proc::Interface( "sometriggertype", "sometriggername",
-                                  Types::Proc::EntryControlList::createDefaultAccept() )
+    Core::Types::Proc::Interface( TypeName("sometriggertype"), InstanceName("sometriggername"), EntryControlList::createDefaultAccept() )
   {
   }
 
@@ -157,7 +156,7 @@ void testObj::test<2>(void)
   ensure_equals("trigger has been called too fast", triggerCalls_, 0);
 
   // test example call
-  queue_.push( Core::Types::SignedNode(TestHelpers::Persistency::makeNewNode(), "myT", "myN") );
+  queue_.push( Core::Types::SignedNode(TestHelpers::Persistency::makeNewNode(), TypeName("myT"), InstanceName("myN")) );
   p.process();  // this enqueues node in every filters
 
   // wait until everything's processed
