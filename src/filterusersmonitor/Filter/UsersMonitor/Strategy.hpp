@@ -47,7 +47,7 @@ public:
    *  \param name   name fo the strategy.
    *  \param params paramters for the strategy.
    */
-  Strategy(const std::string &name, const Parameters &params);
+  Strategy(const Core::Types::Proc::InstanceName &name, const Parameters &params);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.
