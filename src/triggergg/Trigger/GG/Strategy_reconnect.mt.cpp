@@ -9,6 +9,7 @@
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace std;
+using namespace Core::Types::Proc;
 using namespace Trigger::GG;
 
 int main(int argc, char **argv)
@@ -25,11 +26,11 @@ int main(int argc, char **argv)
                     Trigger::Simple::ThresholdConfig("0.0", "0") );
 
   cout<<"connecting..."<<endl;
-  Strategy     s("ggmtestreconnect", cfg);
+  Strategy s(InstanceName("ggmtestreconnect"), cfg);
 
   {
     cout<<"connecting other (first should be disconnected now)..."<<endl;
-    Strategy tmp("ggmtestreconnecttmp", cfg);  // creatig this will disconnect previous instance
+    Strategy tmp(InstanceName("ggmtestreconnecttmp"), cfg); // creatig this will disconnect previous instance
     cout<<"disconnecting other..."<<endl;
   }
 
