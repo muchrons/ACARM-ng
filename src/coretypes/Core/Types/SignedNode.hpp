@@ -27,8 +27,9 @@ public:
   typedef std::string ReporterName;
 
   /** \brief create instance.
-   *  \param node     node to be signed.
-   *  \param reporter creator's/last modifier's (component) name.
+   *  \param node node to be signed.
+   *  \param type creator's/last modifier's (component) type.
+   *  \param name creator's/last modifier's (component) name.
    */
   SignedNode(Persistency::GraphNodePtrNN  node,
              const ReporterName          &type,
