@@ -1,4 +1,5 @@
 -- dev --
+* fixed invalid handling of ECL in processors (aka: many-to-many ECL bug).
 * documentation updates.
 * simplified autotools-like compile and installation wrapper.
 * new version of build process.
