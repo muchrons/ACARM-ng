@@ -9,6 +9,7 @@
 #include "TestHelpers/Persistency/TestStubs.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
+using namespace Core::Types::Proc;
 using namespace Filter::NewEvent;
 using namespace TestHelpers::Persistency;
 
@@ -19,7 +20,7 @@ struct TestClass: private TestStubs
 {
   TestClass(void):
     params_(2, 0.3),
-    s_("strategyname", params_)
+    s_( InstanceName("strategyname"), params_)
   {
   }
 
@@ -89,10 +90,5 @@ void testObj::test<3>(void)
 
 // TODO: test adding the same name multiple times, in some time span and checking if it
 //       has NOT been marked as unused after first entry has timeouted, but next ones are still present.
-template<>
-template<>
-void testObj::test<4>(void)
-{
-}
 
 } // namespace tut

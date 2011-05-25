@@ -13,6 +13,7 @@
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace Filter;
 using namespace Filter::NewEvent;
 using namespace TestHelpers::Persistency;
@@ -24,7 +25,7 @@ struct TestClass: private TestStubs
 {
   TestClass(void):
     conn_( Persistency::IO::create() ),
-    bf_(conn_, changed_, "testnewevent"),
+    bf_(conn_, changed_, TypeName("testnewevent"), InstanceName("myname")),
     params_(2, 0.3),
     ep_(bf_, ps_, ts_, params_)
   {

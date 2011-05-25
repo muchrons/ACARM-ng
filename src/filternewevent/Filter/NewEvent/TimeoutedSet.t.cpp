@@ -11,6 +11,7 @@
 #include "Filter/NewEvent/TestConnection.t.hpp"
 
 using namespace std;
+using namespace Core::Types::Proc;
 using namespace Filter;
 using namespace Filter::NewEvent;
 using namespace TestHelpers::Persistency;
@@ -23,7 +24,7 @@ namespace
     TestClass(void):
       tconn_(new TestConnection),
       conn_( tconn_ ),
-      bf_(conn_, changed_, "testnewevent"),
+      bf_(conn_, changed_, TypeName("testnewevent"), InstanceName("myname")),
       owner_("Filter::NewEvent")
     {
     }
@@ -79,17 +80,5 @@ void testObj::test<3>(void)
 }
 
 //TODO: check pruning element saved in Dynamic Config
-template<>
-template<>
-void testObj::test<4>(void)
-{
-}
-
-//TODO
-template<>
-template<>
-void testObj::test<5>(void)
-{
-}
 
 } // namespace tut

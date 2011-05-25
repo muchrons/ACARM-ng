@@ -41,7 +41,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO(log_, "building filter's instance");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  const FilterConfig fc(type_, options);
+  const FilterConfig fc(type_.str(), options);
   // filter newevent name
   const std::string    &name=fc["name"];
   LOGMSG_INFO_S(log_)<<"setting filter \""<<getTypeName()<<"\" name to \""<<name<<"\"";
@@ -52,12 +52,12 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   Strategy::Parameters params(timeout, priDelta);
   // create and return new handle.
   typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl(type_, name, params) );
+  return FactoryBuilder::FactoryPtr( new Impl(type_, InstanceName(name), params) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const
 {
-  return type_;
+  return type_.str();
 }
 
 } // namespace NewEvent

@@ -51,7 +51,7 @@ public:
    *  \param name  name for new event.
    *  \param params paramters for dns resolver.
    */
-  Strategy(const std::string &name, const Parameters &params);
+  Strategy(const Core::Types::Proc::InstanceName &name, const Parameters &params);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.

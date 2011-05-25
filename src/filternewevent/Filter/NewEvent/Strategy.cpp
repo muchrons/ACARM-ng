@@ -6,14 +6,15 @@
 #include "Filter/NewEvent/Strategy.hpp"
 #include "Filter/NewEvent/EntryProcessor.hpp"
 
+using namespace Core::Types::Proc;
 
 namespace Filter
 {
 namespace NewEvent
 {
 
-Strategy::Strategy(const std::string &name, const Parameters &params):
-  Filter::Strategy<Data>("newevent", name),
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Parameters &params):
+  Filter::Strategy<Data>( TypeName("newevent"), name),
   nextPrune_(0),
   params_(params)
 {
@@ -22,7 +23,7 @@ Strategy::Strategy(const std::string &name, const Parameters &params):
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
-  ecl.add("*input*");   // TODO: magic value
+  ecl.add( TypeName("*input*") );   // TODO: magic value
   return ecl;
 }
 
