@@ -57,7 +57,7 @@ protected:
    *  \param name    name to assign.
    *  \param timeout maximum time for node to be in timeout queue.
    */
-  Strategy(const std::string &type, const std::string &name, unsigned int timeout);
+  Strategy(const Core::Types::Proc::TypeName &type, const Core::Types::Proc::InstanceName &name, unsigned int timeout);
 
 private:
   /** \brief call gets name for correlated meta-alert for a given host.
