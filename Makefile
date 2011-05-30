@@ -18,7 +18,7 @@ build-core: ensure-configure
 .PHONY: build-plugins
 build-plugins: ensure-configure
 	@for pl in $(PLUGINS_LIST) ; \
-	do
+	do \
 	  echo "BUILDING PLUGIN $$pl" ; \
 	  $(MAKE) $(LOCAL_MAKE_FLAGS) "$$pl" || exit $$? ;\
 	done
