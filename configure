@@ -135,83 +135,12 @@ rm -f "$TMP"
 
 # prepare main makefile elements
 cat<<EOF > configure-output.mk
-NCPUS:=\$(shell cat /proc/cpuinfo | grep 'processor.*:' | wc -l)
-
-.PHONY: build
-build: build-core build-plugins
-
-LOCAL_MAKE_FLAGS:=-C src --no-print-directory -j "\$(NCPUS)"
 LOCAL_MAKE_FLAGS+="PROFILE=$PROFILE" "FEATURES=$FEATURES" "TC=gcc"
 LOCAL_MAKE_FLAGS+="EXTRA_COMPILE_FLAGS=$EXTRA_COMPILE_FLAGS" "EXTRA_LINK_FLAGS=$EXTRA_LINK_FLAGS"
 
-.PHONY: build-core
-build-core: configure
-	@echo "BUILDING ACARM-ng"
-	@\$(MAKE) \$(LOCAL_MAKE_FLAGS) acarmng
-
-.PHONY: build-plugins
-build-plugins: configure
-	@for pl in `echo "$PLUGINS" | xargs -r echo -n` ; \
-	do \
-	  echo "BUILDING PLUGIN \$\$pl" ; \
-	  \$(MAKE) \$(LOCAL_MAKE_FLAGS) "\$\$pl" || exit \$\$? ; \
-	done
-
-.PHONY: install
-install: install-plugins install-libs install-bin install-includes install-config install-doc install-wui
-
-.PHONY: install-libs
-install-libs:
-	@install -v -d '$PREFIX/lib/acarm-ng'
-	@install -v -m 755 'src/gen/${PROFILE}_gcc_normal_default/libs'/*.so '$PREFIX/lib/acarm-ng/'
-
-.PHONY: install-bin
-install-bin:
-	@install -v -d '$PREFIX/bin'
-	@echo '#!/bin/sh' > '$PREFIX/bin/acarm-ng'
-	@echo 'cd "$PREFIX/etc/acarm-ng/"' >> '$PREFIX/bin/acarm-ng'
-	@echo 'export LD_LIBRARY_PATH="\$\$LD_LIBRARY_PATH:$EXTRA_LIB_DIRS"' >> '$PREFIX/bin/acarm-ng'
-	@echo 'exec "$PREFIX/bin/acarm-ng.bin"' >> '$PREFIX/bin/acarm-ng'
-	@chmod 755 '$PREFIX/bin/acarm-ng'
-	@install -v -m 755 'src/gen/${PROFILE}_gcc_normal_default/acarmng/acarmng.out' '$PREFIX/bin/acarm-ng.bin'
-
-.PHONY: install-includes
-install-includes:
-	@install -v -d '$PREFIX/include'
-	@cp -rL 'src/gen/${PROFILE}_gcc_normal_default/includes' '$PREFIX/include/acarm-ng'
-
-.PHONY: install-config
-install-config: $PREFIX/etc/acarm-ng/acarm_ng_config.xml
-	@install -v -d '$PREFIX/etc/acarm-ng'
-
-
-$PREFIX/etc/acarm-ng/acarm_ng_config.xml:
-	@install -v -d '$PREFIX/etc/acarm-ng'
-	@install -v -d '$PREFIX/var/log/acarm-ng'
-	@install -v -m 600 'doc/example_configs/minimal.xml' '$PREFIX/etc/acarm-ng/acarm_ng_config.xml'
-	@sed -i 's:\(<pluginsDir>\).*\(</pluginsDir>\):\1$PREFIX/lib/acarm-ng/plugins\2:g' '$PREFIX/etc/acarm-ng/acarm_ng_config.xml'
-	@sed -i 's:\(<output>\).*\(</output>\):\1$PREFIX/var/log/acarm-ng/daemon.log\2:g' '$PREFIX/etc/acarm-ng/acarm_ng_config.xml'
-
-.PHONY: install-doc
-install-doc:
-	@install -v -d '$PREFIX/share/doc'
-	@cp -rL 'doc' '$PREFIX/share/'
-
-.PHONY: install-plugins
-install-plugins: install-libs
-	@install -v -d '$PREFIX/lib/acarm-ng/plugins'
-	@for f in '$PREFIX/lib/acarm-ng/'libinput?*.so \
-	          '$PREFIX/lib/acarm-ng/'libfilter?*.so \
-	          '$PREFIX/lib/acarm-ng/'libtrigger?*.so \
-	          '$PREFIX/lib/acarm-ng/'libpersistency?*.so ; \
-	do \
-	  install -v -m 755 "\$\$f" "$PREFIX/lib/acarm-ng/plugins/\`basename "\$\$f" | sed 's:\.so\$\$:.acmp:'\`" ; \
-	done
-
-.PHONY: install-wui
-install-wui:
-	@install -v -d '$PREFIX/var/www'
-	@cp -r 'wui/site' '$PREFIX/var/www/acarm-ng'
+PLUGINS_LIST:=`echo "$PLUGINS" | xargs -n 1 echo -n ' ' `
+INSTALL_DIR:=$PREFIX
+BUILD_DIR:=src/gen/${PROFILE}_gcc_normal_default
 EOF
 
 
