@@ -1,4 +1,7 @@
 -- dev --
+
+
+-- v0.2.0 --
 * separation of types representing processors' name and type (API update).
 * fixed invalid handling of ECL in processors (aka: many-to-many ECL bug).
 * documentation updates.
@@ -12,8 +15,10 @@
   - content similarity
 * icc support (intel toolchain).
 
+
 -- v0.1.1 --
 * fixed issue with same-name filter not appending to correlated entry.
+
 
 -- v0.1.0 --
 * first version of framework (API).
