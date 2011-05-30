@@ -1,4 +1,4 @@
--- dev --
+-- v0.2.0 --
 * separation of types representing processors' name and type (API update).
 * fixed invalid handling of ECL in processors (aka: many-to-many ECL bug).
 * documentation updates.
