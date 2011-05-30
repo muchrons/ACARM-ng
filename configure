@@ -168,7 +168,10 @@ install-libs:
 .PHONY: install-bin
 install-bin:
 	mkdir -p '$PREFIX/bin'
-	echo '#!/bin/sh\ncd "$PREFIX/etc/acarm-ng/"\nexport LD_LIBRARY_PATH="\$\$LD_LIBRARY_PATH:$EXTRA_LIB_DIRS"\nexec "$PREFIX/bin/acarm-ng.bin"' > '$PREFIX/bin/acarm-ng'
+	echo '#!/bin/sh' > '$PREFIX/bin/acarm-ng'
+	echo 'cd "$PREFIX/etc/acarm-ng/"' >> '$PREFIX/bin/acarm-ng'
+	echo 'export LD_LIBRARY_PATH="\$\$LD_LIBRARY_PATH:$EXTRA_LIB_DIRS"' >> '$PREFIX/bin/acarm-ng'
+	echo 'exec "$PREFIX/bin/acarm-ng.bin"' >> '$PREFIX/bin/acarm-ng'
 	chmod 755 '$PREFIX/bin/acarm-ng'
 	cp -L 'src/gen/${PROFILE}_gcc_normal_default/acarmng/acarmng.out' '$PREFIX/bin/acarm-ng.bin'
 
