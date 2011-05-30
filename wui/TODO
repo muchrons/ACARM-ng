@@ -1,7 +1,0 @@
-* create meta-alert overview, that would show all the meta-alerts' content (i.e.: children nodes) on one page.
-* add icon for the 'eventchain' filter in GUI.
-* add icon for the 'one2one' filter in GUI.
-* implement information if daemon is running or not (currently hardcoded to 'yes') - use heatbeats for that.
-* add support for heartbeats (i.e. list of elements on the main screen).
-* add "remove entry" button for heartbeats, so that user could remove elements that no longer exist in the system).
-* correlation count for each filter type.
