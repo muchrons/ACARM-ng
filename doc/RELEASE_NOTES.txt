@@ -1,11 +1,14 @@
 -- ?? --
 * minor compilation warning fixes.
 
+
 -- v0.1.2 --
 * fixed build for new version of libpqxx.
 
+
 -- v0.1.1 --
 * fixed issue with same-name filter not appending to correlated entry.
+
 
 -- v0.1.0 --
 * first version of framework (API)
