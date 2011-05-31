@@ -4,5 +4,5 @@ DB="acarm_ng_test_v0_1_0"
 # note: 'ls' is needed here to preserve proper order of execution
 for s in `ls *.sql` tests/create_test_user.sql
 do
-  psql -d "$DB" -f $s $1 || exit $?
+  psql -d "$DB" -f $s || exit $?
 done

@@ -30,35 +30,37 @@ namespace detail
 namespace
 {
 template <typename T>
-void addEqualityComparison(std::stringstream &ss, const T *ptr)
+void addEqualityComparison(std::stringstream &ss, Appender &ap, const T *ptr)
 {
   if(ptr!=NULL)
   {
     ss << " = ";
-    Appender::append(ss, ptr );
+    ap.append(ss, ptr );
   }
   else
     ss << " IS NULL";
 }
 
 template <typename T>
-void addEqualityComparison(std::stringstream &ss, const T &ptr)
+void addEqualityComparison(std::stringstream &ss, Appender &ap, const T &ptr)
 {
   if(ptr.get()!=NULL)
   {
     ss << " = ";
-    Appender::append(ss, ptr.get() );
+    ap.append(ss, ptr.get() );
   }
   else
     ss << " IS NULL";
 }
 template <>
-void addEqualityComparison<Persistency::Analyzer::IP>(std::stringstream &ss, const Persistency::Analyzer::IP *ptr)
+void addEqualityComparison<Persistency::Analyzer::IP>(std::stringstream               &ss,
+                                                      Appender                        &ap,
+                                                      const Persistency::Analyzer::IP *ptr)
 {
   if(ptr!=NULL)
   {
     ss << " = ";
-    Appender::append(ss, ptr->to_string().c_str() );
+    ap.append(ss, ptr->to_string().c_str() );
   }
   else
     ss << " IS NULL";
@@ -75,25 +77,26 @@ EntrySaver::EntrySaver(Transaction &t, DBHandle &dbh):
 DataBaseID EntrySaver::saveProcess(DataBaseID hostID, const Process &p)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO procs("
         "id_host, id_ref, path, name, md5, pid, uid, username, arguments"
         ") VALUES (";
   ss << hostID << ",";
   addReferenceURL(ss, p.getReferenceURL() );
   ss << ",";
-  Appender::append(ss, p.getPath().get() );
+  ap.append(ss, p.getPath().get() );
   ss << ",";
-  Appender::append(ss, p.getName().get() );
+  ap.append(ss, p.getName().get() );
   ss << ",";
-  Appender::append(ss, (p.getMD5())?p.getMD5()->get():NULL);
+  ap.append(ss, (p.getMD5())?p.getMD5()->get():NULL);
   ss << ",";
-  Appender::append(ss, p.getPID() );
+  ap.append(ss, p.getPID() );
   ss << ",";
-  Appender::append(ss, p.getUID() );
+  ap.append(ss, p.getUID() );
   ss << ",";
-  Appender::append(ss, p.getUsername().get() );
+  ap.append(ss, p.getUsername().get() );
   ss << ",";
-  Appender::append(ss, p.getParameters() );
+  ap.append(ss, p.getParameters() );
   ss << ");";
   // insert object to data base.
   SQL( ss.str(), log_ ).exec(t_);
@@ -103,7 +106,7 @@ DataBaseID EntrySaver::saveProcess(DataBaseID hostID, const Process &p)
 
 DataBaseID EntrySaver::getID(const std::string &seqName)
 {
-  assert( seqName==pqxx::sqlesc(seqName) && "invalid sequence name" );
+  assert( seqName==t_.getAPI<Postgres::TransactionAPI>().esc(seqName.c_str()) && "invalid sequence name" );
 
   const std::string sql="SELECT currval('" + seqName + "') as id;";
   const result r=SQL(sql, log_).exec(t_);
@@ -145,16 +148,17 @@ Base::NullValue<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
 {
   DataBaseID id;
   stringstream ss;
+  Appender     ap(t_);
   ss << "SELECT * FROM analyzers WHERE name = ";
-  Appender::append(ss, a.getName().get() );
+  ap.append(ss, a.getName().get() );
   ss << " AND version ";
-  addEqualityComparison(ss, a.getVersion() );
+  addEqualityComparison(ss, ap, a.getVersion() );
   ss << " AND os";
-  addEqualityComparison(ss, a.getOperatingSystem() );
+  addEqualityComparison(ss, ap, a.getOperatingSystem() );
   ss << " AND ip";
-  addEqualityComparison(ss, a.getIP() );
+  addEqualityComparison(ss, ap, a.getIP() );
   ss << " AND sys_id=";
-  Appender::append(ss, a.getID().get() );
+  ap.append(ss, a.getID().get() );
   ss << ";";
   const result r=SQL( ss.str(), log_ ).exec(t_);
   if( r.empty() )
@@ -172,10 +176,11 @@ Base::NullValue<DataBaseID> EntrySaver::isAnalyzerInDataBase(const Analyzer &a)
 DataBaseID EntrySaver::saveReferenceURL(const ReferenceURL &url)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO reference_urls(name, url) VALUES (";
-  Appender::append(ss, url.getName().get() );
+  ap.append(ss, url.getName().get() );
   ss << ",";
-  Appender::append(ss, url.getURL().get() );
+  ap.append(ss, url.getURL().get() );
   ss << ");";
   // insert object to data base.
   SQL( ss.str(), log_ ).exec(t_);
@@ -189,19 +194,20 @@ DataBaseID EntrySaver::saveHostGeneric(DataBaseID alertID, const Persistency::Ho
   assert(strcmp(role, "src") == 0 || strcmp(role, "dst") == 0);
 
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO hosts(id_alert, id_ref, role, ip, mask, os, name) VALUES (";
   ss << alertID << ",";
   addReferenceURL(ss, h.getReferenceURL() );
   ss << ",";
-  Appender::append(ss, role);
+  ap.append(ss, role);
   ss << ",";
-  Appender::append(ss, h.getIP().to_string() );
+  ap.append(ss, h.getIP().to_string() );
   ss << ",";
-  Appender::append(ss, h.getNetmask()?h.getNetmask()->to_string().c_str():NULL );
+  ap.append(ss, h.getNetmask()?h.getNetmask()->to_string().c_str():NULL );
   ss << ",";
-  Appender::append(ss, h.getOperatingSystem().get() );
+  ap.append(ss, h.getOperatingSystem().get() );
   ss << ",";
-  Appender::append(ss, h.getName().get() );
+  ap.append(ss, h.getName().get() );
   ss << ");";
   SQL( ss.str(), log_ ).exec(t_);
   return getID("hosts_id_seq");
@@ -220,19 +226,20 @@ DataBaseID EntrySaver::saveSourceHost(DataBaseID alertID, const Persistency::Hos
 DataBaseID EntrySaver::saveAlert(const Persistency::Alert &a)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO alerts(name, detect_time, create_time, id_severity, certanity, description) VALUES (";
-  Appender::append(ss, a.getName().get() );
+  ap.append(ss, a.getName().get() );
   ss << ",";
-  Appender::append(ss, a.getDetectionTime()?a.getDetectionTime():NULL);
+  ap.append(ss, a.getDetectionTime()?a.getDetectionTime():NULL);
   ss << ",";
-  Appender::append(ss, a.getCreationTime() );
+  ap.append(ss, a.getCreationTime() );
   ss << ",";
   const DataBaseID sevID = getSeverityID(a);
-  Appender::append(ss, sevID);
+  ap.append(ss, sevID);
   ss << ",";
-  Appender::append(ss, a.getCertainty().get() );
+  ap.append(ss, a.getCertainty().get() );
   ss << ",";
-  Appender::append(ss, a.getDescription() );
+  ap.append(ss, a.getDescription() );
   ss << ");";
   SQL( ss.str(), log_ ).exec(t_);
   return getID("alerts_id_seq");
@@ -245,16 +252,17 @@ DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
     return *id.get();
   // if not present, add it
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO analyzers(sys_id, name, version, os, ip) VALUES (";
-  Appender::append(ss, a.getID().get() );
+  ap.append(ss, a.getID().get() );
   ss << ",";
-  Appender::append(ss, a.getName().get() );
+  ap.append(ss, a.getName().get() );
   ss << ",";
-  Appender::append(ss, a.getVersion().get() );
+  ap.append(ss, a.getVersion().get() );
   ss << ",";
-  Appender::append(ss, a.getOperatingSystem().get() );
+  ap.append(ss, a.getOperatingSystem().get() );
   ss << ",";
-  Appender::append(ss, a.getIP()?( a.getIP()->to_string().c_str() ):NULL);
+  ap.append(ss, a.getIP()?( a.getIP()->to_string().c_str() ):NULL);
   ss << ");";
   SQL( ss.str(), log_ ).exec(t_);
   return getID("analyzers_id_seq");
@@ -263,15 +271,16 @@ DataBaseID EntrySaver::saveAnalyzer(const Analyzer &a)
 DataBaseID EntrySaver::saveService(DataBaseID hostID, const Service &s)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO services(id_host, id_ref, name, port, protocol) VALUES (";
   ss << hostID << ",";
   addReferenceURL(ss, s.getReferenceURL() );
   ss << ",";
-  Appender::append(ss, s.getName().get() );
+  ap.append(ss, s.getName().get() );
   ss << ",";
-  Appender::append(ss, s.getPort().get() );
+  ap.append(ss, s.getPort().get() );
   ss <<",";
-  Appender::append(ss, s.getProtocol().get() );
+  ap.append(ss, s.getProtocol().get() );
   ss << ");";
   SQL( ss.str(), log_ ).exec(t_);
 
@@ -281,20 +290,21 @@ DataBaseID EntrySaver::saveService(DataBaseID hostID, const Service &s)
 DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO meta_alerts(sys_id, id_ref, name, severity_delta, certainty_delta, create_time, last_update_time) VALUES (";
-  Appender::append(ss, ma.getID().get() );
+  ap.append(ss, ma.getID().get() );
   ss << ",";
   addReferenceURL(ss, ma.getReferenceURL() );
   ss << ",";
-  Appender::append(ss, ma.getName().get() );
+  ap.append(ss, ma.getName().get() );
   ss << ",";
-  Appender::append(ss, ma.getSeverityDelta() );
+  ap.append(ss, ma.getSeverityDelta() );
   ss << ",";
-  Appender::append(ss, ma.getCertaintyDelta() );
+  ap.append(ss, ma.getCertaintyDelta() );
   ss << ",";
-  Appender::append(ss, ma.getCreateTime() );
+  ap.append(ss, ma.getCreateTime() );
   ss << ",";
-  Appender::append(ss, "now()");
+  ap.append(ss, "now()");
   ss << ");";
   SQL( ss.str(), log_ ).exec(t_);
 
@@ -304,10 +314,11 @@ DataBaseID EntrySaver::saveMetaAlert(const Persistency::MetaAlert &ma)
 void EntrySaver::saveAlertToMetaAlertMap(DataBaseID alertID, DataBaseID malertID)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO alert_to_meta_alert_map(id_alert, id_meta_alert) VALUES(";
-  Appender::append(ss, alertID);
+  ap.append(ss, alertID);
   ss << ",";
-  Appender::append(ss, malertID);
+  ap.append(ss, malertID);
   ss << ");";
   SQL( ss.str(), log_ ).exec(t_);
 }
@@ -315,10 +326,11 @@ void EntrySaver::saveAlertToMetaAlertMap(DataBaseID alertID, DataBaseID malertID
 void EntrySaver::saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO alert_analyzers(id_alert, id_analyzer) VALUES (";
-  Appender::append(ss, alertID);
+  ap.append(ss, alertID);
   ss << ",";
-  Appender::append(ss, anlzID);
+  ap.append(ss, anlzID);
   ss << ");";
   SQL( ss.str(), log_ ).exec(t_);
 }
@@ -327,10 +339,11 @@ void EntrySaver::saveAlertToAnalyzers(DataBaseID alertID, DataBaseID anlzID)
 void EntrySaver::saveMetaAlertsTree(DataBaseID nodeID, DataBaseID childID)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO meta_alerts_tree(id_node, id_child) VALUES (";
-  Appender::append(ss, nodeID);
+  ap.append(ss, nodeID);
   ss << ",";
-  Appender::append(ss, childID);
+  ap.append(ss, childID);
   ss << ");";
   SQL( ss.str(), log_ ).exec(t_);
 }
@@ -352,10 +365,11 @@ void EntrySaver::markMetaAlertAsUnused(DataBaseID malertID)
 void EntrySaver::markMetaAlertAsTriggered(DataBaseID malertID, const std::string &name)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO meta_alerts_already_triggered(id_meta_alert, trigger_name) VALUES(";
-  Appender::append(ss, malertID);
+  ap.append(ss, malertID);
   ss << ",";
-  Appender::append(ss, name);
+  ap.append(ss, name);
   ss << ");";
   SQL( ss.str(), log_ ).exec(t_);
 }
@@ -370,8 +384,9 @@ void EntrySaver::removeMetaAlertFromTriggered(DataBaseID malertID)
 void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "UPDATE meta_alerts SET severity_delta = severity_delta + ";
-  Appender::append(ss, severityDelta);
+  ap.append(ss, severityDelta);
   ss << ", last_update_time = now() ";
   ss << " WHERE id = " << malertID << ";";
   SQL( ss.str(), log_ ).exec(t_);
@@ -380,8 +395,9 @@ void EntrySaver::updateSeverityDelta(DataBaseID malertID, double severityDelta)
 void EntrySaver::updateCertaintyDelta(DataBaseID malertID, double certanityDelta)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "UPDATE meta_alerts SET certainty_delta = certainty_delta + ";
-  Appender::append(ss, certanityDelta);
+  ap.append(ss, certanityDelta);
   ss << ", last_update_time = now() ";
   ss << " WHERE id = " << malertID << ";";
   SQL( ss.str(), log_ ).exec(t_);
@@ -402,8 +418,9 @@ void EntrySaver::setHostName(DataBaseID hostID, const Persistency::Host::Name &n
   if(isHostNameNull(hostID) == false)
     throw ExceptionHostNameAlreadySaved(SYSTEM_SAVE_LOCATION);
   stringstream ss;
+  Appender     ap(t_);
   ss << "UPDATE hosts SET name = ";
-  Appender::append(ss, name.get());
+  ap.append(ss, name.get());
   ss << " WHERE id = " << hostID << ";";
   SQL( ss.str(), log_ ).exec(t_);
 }
@@ -419,12 +436,13 @@ int updateConfigValue(const DynamicConfig::Owner &owner,
                       Transaction                &t)
 {
   stringstream ss;
+  Appender     ap(t);
   ss << "UPDATE config SET value = ";
-  Appender::append(ss, value.get());
+  ap.append(ss, value.get());
   ss << " WHERE owner";
-  addEqualityComparison( ss, owner.get() );
+  addEqualityComparison( ss, ap, owner.get() );
   ss << " AND key = ";
-  Appender::append(ss, key.get());
+  ap.append(ss, key.get());
   // update entry and return number of affected rows
   return SQL( ss.str().c_str(), log ).exec(t).affected_rows();
 } // updateConfigValue()
@@ -461,12 +479,13 @@ void EntrySaver::saveConfigParameter(const DynamicConfig::Owner &owner,
   // it means that we're the very first thread to add this to the data base.
   LOGMSG_DEBUG(log_, "second call to update didn't changed any entry - new one must be added instead");
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO config (owner, key, value) VALUES (";
-  Appender::append(ss, owner.get());
+  ap.append(ss, owner.get());
   ss << ",";
-  Appender::append(ss, key.get());
+  ap.append(ss, key.get());
   ss << ",";
-  Appender::append(ss, value.get());
+  ap.append(ss, value.get());
   ss << ")";
   SQL( ss.str().c_str(), log_ ).exec(t_);
   LOGMSG_DEBUG(log_, "new entry has been added");
@@ -475,8 +494,9 @@ void EntrySaver::saveConfigParameter(const DynamicConfig::Owner &owner,
 void EntrySaver::saveRootID(DataBaseID rootID)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "INSERT INTO meta_alerts_roots(id_root) VALUES(";
-  Appender::append(ss, rootID);
+  ap.append(ss, rootID);
   ss << ");";
   SQL( ss.str(), log_ ).exec(t_);
 }
@@ -492,10 +512,11 @@ void EntrySaver::removeConfigParameter(const DynamicConfig::Owner &owner,
                                        const DynamicConfig::Key   &key)
 {
   stringstream ss;
+  Appender     ap(t_);
   ss << "DELETE FROM config WHERE owner = ";
-  Appender::append(ss, owner.get());
+  ap.append(ss, owner.get());
   ss << " AND key = ";
-  Appender::append(ss, key.get());
+  ap.append(ss, key.get());
   SQL( ss.str(), log_ ).exec(t_);
 }
 

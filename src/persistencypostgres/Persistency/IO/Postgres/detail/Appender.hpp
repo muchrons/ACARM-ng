@@ -11,6 +11,8 @@
 
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/Timestamp.hpp"
+#include "Persistency/IO/Transaction.hpp"
+#include "Persistency/IO/Postgres/TransactionAPI.hpp"
 
 namespace Persistency
 {
@@ -26,45 +28,47 @@ namespace detail
 class Appender
 {
 public:
+
+  /** \brief
+   *  \param tr
+   */
+  Appender(Transaction &tr);
+
   /** \brief appends given pointer's data to statement.
    *  \param ss output stream.
    *  \param t  pointer to element to be added.
    */
-  template<typename T>
-  static void append(std::stringstream &ss, const T *t);
 
+  template<typename T>
+  void append(std::stringstream &ss, const T *t);
   /** \brief appends given data to statement.
    *  \param ss output stream.
    *  \param t  element to be added.
    */
   template<typename T>
-  static void append(std::stringstream &ss, const T &t);
+  void append(std::stringstream &ss, const T &t);
+
 private:
-  inline static void appendEscape(std::stringstream &ss, const char *t)
+  inline void appendEscape(std::stringstream &ss, const char *t)
   {
     if(t==NULL)
       ss << "NULL";
     else
-      ss << "E'" << pqxx::sqlesc(t) << "'";
+      ss << "E'" << tr_.getAPI<Postgres::TransactionAPI>().esc(t) << "'";
   }
 
   template<typename T>
-  inline static void appendNoEscape(std::stringstream &ss, const T *t)
+  inline void appendNoEscape(std::stringstream &ss, const T *t)
   {
     if(t==NULL)
       ss << "NULL";
     else
       ss << *t;
   }
+
+  Transaction &tr_;
 }; // struct Appender
 
-
-
-template<typename T>
-inline void Appender::append(std::stringstream &ss, const T *t)
-{
-  appendNoEscape(ss, t);
-}
 
 /** \brief appends given pointer's data to statement.
  *  \param ss output stream.
@@ -79,7 +83,7 @@ inline void Appender::append<char>(std::stringstream &ss, const char *t)
 template<>
 inline void Appender::append<std::string>(std::stringstream &ss, const std::string *t)
 {
-  appendEscape(ss, (t?t->c_str():NULL) );
+  appendEscape(ss, (t?t->c_str():NULL));
 }
 
 template<>
@@ -100,17 +104,26 @@ inline void Appender::append<Persistency::Timestamp>(std::stringstream          
     append(ss, *t);
 }
 
+template<>
+inline void Appender::append<std::string>(std::stringstream &ss, const std::string &t)
+{
+  appendEscape(ss, t.c_str());
+}
+
+template<typename T>
+inline void Appender::append(std::stringstream &ss, const T *t)
+{
+  appendNoEscape(ss, t);
+}
+
+
 template<typename T>
 inline void Appender::append(std::stringstream &ss, const T &t)
 {
   appendNoEscape(ss, &t);
 }
 
-template<>
-inline void Appender::append<std::string>(std::stringstream &ss, const std::string &t)
-{
-  appendEscape(ss, t.c_str() );
-}
+
 
 } // namespace detail
 } // namespace Postgres

@@ -683,10 +683,11 @@ void testObj::test<16>(void)
   CreateTempTable();
   stringstream ss;
   string       s;
+  Appender     ap(t_);
   ss << "INSERT INTO tmp(s3, s16) VALUES(";
-  Appender::append(ss, createString(3) );
+  ap.append(ss, createString(3) );
   ss << ", ";
-  Appender::append(ss, createString(16) );
+  ap.append(ss, createString(16) );
   ss << ")";
   t_.getAPI<TransactionAPI>().exec(ss);
   ss.str("");
@@ -764,16 +765,17 @@ void testObj::test<19>(void)
   es_.saveAnalyzer(a2);
 
   stringstream ss;
+  Appender     ap(t_);
   ss << "SELECT * FROM analyzers WHERE name = ";
-  Appender::append(ss, anlzName );
+  ap.append(ss, anlzName );
   ss << "AND sys_id = ";
-  Appender::append(ss, id.get() );
+  ap.append(ss, id.get() );
   ss << "AND version = ";
-  Appender::append(ss, ver.get() );
+  ap.append(ss, ver.get() );
   ss << " AND os = ";
-  Appender::append(ss, os.get() );
+  ap.append(ss, os.get() );
   ss << "AND ip = ";
-  Appender::append(ss, ip.to_string() );
+  ap.append(ss, ip.to_string() );
   ss << ";";
   result r = t_.getAPI<TransactionAPI>().exec(ss);
   ensure_equals("invalid size", r.size(), 1u);
@@ -1003,10 +1005,11 @@ void testObj::test<29>(void)
   es_.saveAnalyzer(a2);
 
   stringstream ss;
+  Appender     ap(t_);
   ss << "SELECT * FROM analyzers WHERE name = ";
-  Appender::append(ss, anlzName );
+  ap.append(ss, anlzName );
   ss << "AND sys_id = ";
-  Appender::append(ss, id.get() );
+  ap.append(ss, id.get() );
   ss << "AND version IS NULL ";
   ss << "AND os IS NULL ";
   ss << "AND ip IS NULL";

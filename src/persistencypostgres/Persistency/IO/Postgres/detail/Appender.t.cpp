@@ -6,9 +6,14 @@
 #include <string>
 #include <sstream>
 
+#include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/Postgres/detail/Appender.hpp"
+#include "Persistency/IO/Postgres/TestConnection.t.hpp"
+#include "Persistency/IO/Postgres/TestHelpers.t.hpp"
 
 using namespace std;
+using namespace Persistency;
+using namespace Persistency::IO::Postgres;
 using namespace Persistency::IO::Postgres::detail;
 
 namespace
@@ -16,19 +21,29 @@ namespace
 
 struct TestClass
 {
-  template<typename T>
-  void check(const T *in, const string &out) const
+  TestClass(void):
+    conn_( makeConnection() ),
+    t_( conn_->createNewTransaction("appender_tests") )
   {
+  }
+  IO::ConnectionPtrNN     conn_;
+  IO::Transaction         t_;
+
+  template<typename T>
+  void check(const T *in, const string &out)
+  {
+    Appender     ap(t_);
     stringstream ss;
-    Appender::append(ss, in);
+    ap.append(ss, in);
     tut::ensure_equals("invalid string appended", ss.str(), out);
   }
 
   template<typename T>
-  void checkRef(const T &in, const string &out) const
+  void checkRef(const T &in, const string &out)
   {
     stringstream ss;
-    Appender::append(ss, in);
+    Appender     ap(t_);
+    ap.append(ss, in);
     tut::ensure_equals("invalid string appended", ss.str(), out);
   }
 };
@@ -42,7 +57,6 @@ factory tf("Persistency/IO/Postgres/detail/Appender");
 
 namespace tut
 {
-
 // test appending NULL in char*
 template<>
 template<>
@@ -173,5 +187,4 @@ void testObj::test<15>(void)
   const Persistency::Timestamp *tmp=NULL;
   check(tmp, "NULL");
 }
-
 } // namespace tut
