@@ -16,6 +16,10 @@
 * icc support (intel toolchain).
 
 
+-- v0.1.2 --
+* fixed build for new version of libpqxx.
+
+
 -- v0.1.1 --
 * fixed issue with same-name filter not appending to correlated entry.
 
