@@ -1,3 +1,6 @@
+-- ?? --
+* minor compilation warning fixes.
+
 -- v0.1.2 --
 * fixed build for new version of libpqxx.
 

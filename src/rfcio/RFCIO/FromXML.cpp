@@ -394,7 +394,7 @@ void parsePortRange(PortList &out, const string &in)
   const Tokenizer tokens(in, sep);
 
   // parse tokens
-  PortNumber::Numeric nums[2];
+  PortNumber::Numeric nums[2]={0,0};
   int                 i=0;
   for(Tokenizer::const_iterator it=tokens.begin(); it!=tokens.end(); ++it, ++i)
   {
