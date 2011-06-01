@@ -1,4 +1,4 @@
 <com:TContent ID="content">
 <com:TImage ID="AlertTypes"/>
-<com:RangeSelector ID="Range" view="0"/>
+<com:RangeSelector ID="Range" View="0"/>
 </com:TContent>

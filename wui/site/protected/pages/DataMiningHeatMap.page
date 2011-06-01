@@ -96,7 +96,7 @@
 <com:TActiveHiddenField ID="bt" OnCallback="clicked"/>
 
 <br/>
-<com:RangeSelector ID="Range" view="0"/>
+<com:RangeSelector ID="Range" View="0"/>
 <com:TPanel GroupingText="<font size=5 color=white>Details</font>" Width="100%">
 <table border="1" width="100%" cellpadding="5">
   <tr>

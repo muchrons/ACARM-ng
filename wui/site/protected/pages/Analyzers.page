@@ -4,8 +4,8 @@
 
 <com:DataTableTemplate
         ID="Analyzers"
-        text_="The most recent analyzers:"
-        query_="SelectAnalyzers"/>
+        Text="The most recent analyzers:"
+        Query="SelectAnalyzers"/>
 
 </div>
 

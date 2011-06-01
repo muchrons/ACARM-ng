@@ -4,8 +4,8 @@
 
 <com:DataTableTemplate
         ID="MetaAlerts"
-        text_="The most recent root meta-alerts:"
-        query_="SelectMetaAlertsRootSummary"/>
+        Text="The most recent root meta-alerts:"
+        Query="SelectMetaAlertsRootSummary"/>
 
 </div>
 

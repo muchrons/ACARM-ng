@@ -4,10 +4,11 @@
 
 <com:DataTableTemplate
         ID="WUILogs"
-        text_="The most WUI logs:"
-        query_="SelectLog"/>
+        Text="The most WUI logs:"
+        Query="SelectLog"
+        Log="0" />
 </div>
 
-<com:RangeSelector ID="Range" view="0"/>
+<com:RangeSelector ID="Range" View="0"/>
 
 </com:TContent>

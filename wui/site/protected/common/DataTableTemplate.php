@@ -5,6 +5,7 @@ class DataTableTemplate extends TTemplateControl
   function __construct()
   {
     parent::__construct();
+    $this->log_=true;
   }
 
   public function onLoad($param)
@@ -49,9 +50,9 @@ class DataTableTemplate extends TTemplateControl
   private function getRowCount()
   {
     if ($this->params_===null)
-      return SQLWrapper::queryForObject($this->query_.'Count');
+      return ($this->log_)?SQLWrapper::queryForObject($this->query_.'Count'):CSQLMap::get()->queryForObject($this->query_.'Count');
     else
-      return SQLWrapper::queryForObject($this->query_.'RangeCount',$this->params_);
+      return ($this->log_)?SQLWrapper::queryForObject($this->query_.'RangeCount',$this->params_):CSQLMap::get()->queryForObject($this->query_.'RangeCount',$this->params_);
   }
 
   private function getDataRows($perPage, $pageNumber)
@@ -61,13 +62,13 @@ class DataTableTemplate extends TTemplateControl
         $sqlmap_param=new CParamLimitOffset;
         $sqlmap_param->limit=$perPage;
         $sqlmap_param->offset=$perPage*$pageNumber;
-        $data=SQLWrapper::queryForList($this->query_,$sqlmap_param);
+        $data=($this->log_)?SQLWrapper::queryForList($this->query_,$sqlmap_param):CSQLMap::get()->queryForList($this->query_,$sqlmap_para);
       }
     else
       {
         $this->params_->limit=$perPage;
         $this->params_->offset=$perPage*$pageNumber;
-        $data=SQLWrapper::queryForList($this->query_.'Range',$this->params_);
+        $data=($this->log_)?SQLWrapper::queryForList($this->query_.'Range',$this->params_):CSQLMap::get()->queryForList($this->query_.'Range',$this->params_);
       }
     $ret=array();
     foreach($data as $e)
@@ -116,12 +117,17 @@ class DataTableTemplate extends TTemplateControl
     $this->computation_=$param;
   }
 
-  public function setquery_($param)
+  public function setquery($param)
   {
     $this->query_=$param;
   }
 
-  public function settext_($param)
+  public function setlog($param)
+  {
+    $this->log_=$param;
+  }
+
+  public function settext($param)
   {
     $this->TopCaption->text=$param;
   }
@@ -130,6 +136,7 @@ class DataTableTemplate extends TTemplateControl
   public $computation_;
   public $query_;
   public $params_;
+  public $log_;
 }
 
 ?>
