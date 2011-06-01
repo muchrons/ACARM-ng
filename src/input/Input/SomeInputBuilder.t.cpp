@@ -14,6 +14,7 @@
 
 using namespace std;
 using namespace Input;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -21,7 +22,7 @@ namespace
 struct SomeInput: public Reader
 {
   SomeInput(void):
-    Reader("someinput", "someinputname")
+    Reader( TypeName("someinput"), InstanceName("someinputname") )
   {
   }
 

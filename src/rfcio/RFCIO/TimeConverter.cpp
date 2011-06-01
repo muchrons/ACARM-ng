@@ -148,18 +148,16 @@ TimeConverter::ExactTimestamp TimeConverter::fromString(const std::string &str) 
   bt.tm_year -=1900;
   bt.tm_mon  -=1;
   bt.tm_isdst =-1;      // auto-detect day-light-saving
-  // save copy of the original structure
-  const struct tm btBck=bt;;
   // convert to time_t
-  const time_t    tsLocal=mktime(&bt);
+  const time_t tsLocal=mktime(&bt);
   // test if mktime() explicitly (?!) returned an error
   if( tsLocal==static_cast<time_t>(-1) )
     throw ExceptionInvalidTime(SYSTEM_SAVE_LOCATION, str, "mktime() returned error");
   // fix to skip local timezone
-  const time_t  tsRead=tsLocal+bt.tm_gmtoff;
+  const time_t    tsRead=tsLocal+bt.tm_gmtoff;
   // check timezone offset
-  const char      *tzPart =str.c_str()+(4+1 + 2+1 + 2 + 1 +2+1 + 2+1 +2);
-  ParsedFraction  fracTmp =parseFraction(str, tzPart);
+  const char     *tzPart =str.c_str()+(4+1 + 2+1 + 2 + 1 +2+1 + 2+1 +2);
+  ParsedFraction  fracTmp=parseFraction(str, tzPart);
   assert(fracTmp.first>=0);
   assert(fracTmp.first< 1);
   const int       tzOffset=parseTimezoneOffset(str, fracTmp.second);

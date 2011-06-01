@@ -11,6 +11,7 @@
 
 using namespace std;
 using namespace Base::Threads;
+using namespace Core::Types::Proc;
 
 namespace Trigger
 {
@@ -65,8 +66,8 @@ private:
 }; // struct PingThread
 } // unnamed namespace
 
-Strategy::Strategy(const std::string &name, const Config &cfg):
-  Trigger::Simple::Strategy("jabber", name, cfg.getThresholdConfig() ),
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Config &cfg):
+  Trigger::Simple::Strategy(TypeName("jabber"), name, cfg.getThresholdConfig() ),
   io_(cfg),
   pingThread_( PingThread(io_) )
 {

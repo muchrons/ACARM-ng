@@ -17,8 +17,9 @@ namespace detail
 
 /** \brief helper data structure's implemenation
  */
-struct NonCyclicAdder::InternalImplementation
+class NonCyclicAdder::InternalImplementation
 {
+public:
   /** \brief add new child ot given parent.
    *  \param iap    helper object to get acces to some of GraphNode's internals
    *  \param parent parent node to add child to.

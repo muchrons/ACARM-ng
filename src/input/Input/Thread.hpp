@@ -31,10 +31,14 @@ public:
   void operator()(void);
 
 private:
-  ReaderPtrNN                       reader_;
-  Logger::Node                      log_;
-  Persistency::IO::ConnectionPtrNN  conn_;
-  Core::Types::AlertsFifo          *output_;
+  void sendHeartbeat(unsigned int timeout, unsigned int deadline);
+
+  ReaderPtrNN                         reader_;
+  Logger::Node                        log_;
+  Persistency::IO::ConnectionPtrNN    conn_;
+  Core::Types::AlertsFifo            *output_;
+  Persistency::Timestamp              lastHeartbeat_;
+  Persistency::IO::Heartbeats::Owner  owner_;
 }; // class Thread
 
 } // namespace Input

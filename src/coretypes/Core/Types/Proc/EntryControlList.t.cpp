@@ -31,7 +31,7 @@ template<>
 void testObj::test<1>(void)
 {
   EntryControlList ecl=EntryControlList::createDefaultAccept();
-  ecl.add("fran");
+  ecl.add( TypeName("fran") );
 }
 
 // test adding new entry to default-reject object - somoke test
@@ -40,7 +40,7 @@ template<>
 void testObj::test<2>(void)
 {
   EntryControlList ecl=EntryControlList::createDefaultReject();
-  ecl.add("narf");
+  ecl.add( TypeName("narf") );
 }
 
 // test default accepting - positive test
@@ -49,9 +49,9 @@ template<>
 void testObj::test<3>(void)
 {
   EntryControlList ecl=EntryControlList::createDefaultAccept();
-  ecl.add("fran");
-  ecl.add("42");
-  ensure("entry dropped but not listed", ecl.isAcceptable("DooM") );
+  ecl.add( TypeName("fran") );
+  ecl.add( TypeName("42") );
+  ensure("entry dropped but not listed", ecl.isAcceptable( TypeName("DooM") ) );
 }
 
 // test default accepting - negative test
@@ -60,9 +60,9 @@ template<>
 void testObj::test<4>(void)
 {
   EntryControlList ecl=EntryControlList::createDefaultAccept();
-  ecl.add("fran");
-  ecl.add("42");
-  ensure("entry not dropped but listed", ecl.isAcceptable("42")==false );
+  ecl.add( TypeName("fran") );
+  ecl.add( TypeName("42") );
+  ensure("entry not dropped but listed", ecl.isAcceptable( TypeName("42") )==false );
 }
 
 // test default rejecting - positive test
@@ -71,9 +71,9 @@ template<>
 void testObj::test<5>(void)
 {
   EntryControlList ecl=EntryControlList::createDefaultReject();
-  ecl.add("fran");
-  ecl.add("42");
-  ensure("entry not dropped but not listed", ecl.isAcceptable("DooM")==false );
+  ecl.add( TypeName("fran") );
+  ecl.add( TypeName("42") );
+  ensure("entry not dropped but not listed", ecl.isAcceptable( TypeName("DooM") )==false );
 }
 
 // test default rejecting - negative test
@@ -82,9 +82,9 @@ template<>
 void testObj::test<6>(void)
 {
   EntryControlList ecl=EntryControlList::createDefaultReject();
-  ecl.add("fran");
-  ecl.add("42");
-  ensure("entry dropped but not listed", ecl.isAcceptable("42") );
+  ecl.add( TypeName("fran") );
+  ecl.add( TypeName("42") );
+  ensure("entry dropped but not listed", ecl.isAcceptable( TypeName("42") ) );
 }
 
 // test copyablility

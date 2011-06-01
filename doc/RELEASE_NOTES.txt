@@ -1,29 +1,47 @@
 -- dev --
+
+
+-- v0.2.0 --
+* separation of types representing processors' name and type (API update).
+* fixed invalid handling of ECL in processors (aka: many-to-many ECL bug).
+* documentation updates.
+* simplified autotools-like compile and installation wrapper.
+* new version of build process.
 * added dedicated thread for signals handling (ensures no dead locks are possible when sending signals).
-* main branch is now publicly available
+* main branch is now publicly available.
 * filters:
   - new event
   - users monitor
-* icc support (intel toolchain)
+  - content similarity
+* icc support (intel toolchain).
+
+
+-- v0.1.2 --
+* fixed build for new version of libpqxx.
+
+
+-- v0.1.1 --
+* fixed issue with same-name filter not appending to correlated entry.
+
 
 -- v0.1.0 --
-* first version of framework (API)
-* WUI (Web User Interface) for data visualization
-* all elements loadable as plugins
-* preprocessor for rejecting unwanted alerts
-* gcc support
-* multi-threaded processing
-* common algorithms for (meta-)alerts processing
-* flexible notification with triggers
-* flexible correlation and processing with filters
-* flexible data collection with inputs
-* flexible data storage with persistency modules
+* first version of framework (API).
+* WUI (Web User Interface) for data visualization.
+* all elements loadable as plugins.
+* preprocessor for rejecting unwanted alerts.
+* gcc support.
+* multi-threaded processing.
+* common algorithms for (meta-)alerts processing.
+* flexible notification with triggers.
+* flexible correlation and processing with filters.
+* flexible data collection with inputs.
+* flexible data storage with persistency modules.
 * logging to:
   - file
   - screen
   - syslog
   - null (discards logs)
-* removal of debug logs in release mode
+* removal of debug logs in release mode.
 * filters:
   - one to one
   - many to one
@@ -45,7 +63,7 @@
 * persistency modules:
   - postgres
   - stub (no persistent storage)
-* application to dump alerts from persistent storage
+* application to dump alerts from persistent storage.
 * WUI options:
   - access to alerts
   - access to correlated alerts (aka: meta-alerts)

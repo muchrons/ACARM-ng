@@ -10,18 +10,16 @@ namespace Filter
 namespace NewEvent
 {
 
-EntryProcessor::EntryProcessor(BackendFacade             *bf,
-                               ProcessedSet              *ps,
-                               TimeoutedSet              *ts,
-                               const Strategy::Parameters params):
+EntryProcessor::EntryProcessor(BackendFacade              &bf,
+                               ProcessedSet               &ps,
+                               TimeoutedSet               &ts,
+                               const Strategy::Parameters &params):
  log_("filter.newevent"),
  bf_(bf),
  ps_(ps),
  ts_(ts),
  params_(params)
 {
-  assert(bf_!=NULL);
-  assert(ps_!=NULL);
 }
 
 void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
@@ -29,23 +27,21 @@ void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
   assert( leaf->isLeaf() && "wrong graph-passing algorithm choosen" );
   const std::string name(leaf->getMetaAlert()->getName().get());
   // create helper object
-  Entry e(name, bf_, ts_);
-  assert(ps_!=NULL);
-
-  if(ps_->isProcessed(e))
+  HashSharedPtr  hash(new Hash(name));
+  // check if entry with name hash is present in the prosessed set,
+  // if is present update entry timeout and return
+  if(ps_.update(*hash.get(), params_.timeout_))
   {
-    LOGMSG_DEBUG_S(log_)<<"(meta-)alert with name "<< name
-                        <<" has been already processed - skipping";
+    LOGMSG_DEBUG_S(log_)<<"(meta-)alert with name '"<<name<<"' has been already processed - skipping";
     return;
   }
 
-  // new host from black list - increase priority of the (meta-)alert
-  assert(bf_!=NULL);
+  const Entry e(hash, bf_, ts_);
+  // new (meta-)alert name - increase priority of the (meta-)alert
   LOGMSG_INFO_S(log_)<<"(meta-)alert with name "<< name
                      <<" is new - adding "<<params_.priDelta_<<" to priority";
-  bf_->updateSeverityDelta(leaf, params_.priDelta_);
-  ps_->markAsProcessed(e, params_.timeout_);     // mark change in cache to avoid doing it again.
-
+  bf_.updateSeverityDelta(leaf, params_.priDelta_);
+  ps_.markAsProcessed(e, params_.timeout_);     // mark change in cache to avoid doing it again.
 }
 } // namespace NewEvent
 } // namespace Filter

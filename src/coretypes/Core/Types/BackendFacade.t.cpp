@@ -13,6 +13,7 @@
 
 using namespace Persistency;
 using namespace Core::Types;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -20,7 +21,7 @@ namespace
 struct TestProxy: public BackendFacade
 {
   TestProxy(void):
-    BackendFacade( IO::ConnectionPtrNN( IO::create() ), "sometest")
+    BackendFacade( IO::ConnectionPtrNN( IO::create() ), TypeName("sometest"), InstanceName("myinstance") )
   {
   }
 
@@ -29,7 +30,12 @@ struct TestProxy: public BackendFacade
     return getConnection();
   }
 
-  const std::string &getNamePublic(void) const
+  const TypeName &getTypePublic(void) const
+  {
+    return getType();
+  }
+
+  const InstanceName &getNamePublic(void) const
   {
     return getName();
   }
@@ -101,7 +107,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ensure_equals("invalid name", bf_->getNamePublic(), "sometest");
+  ensure_equals("invalid name", bf_->getNamePublic().str(), "myinstance");
 }
 
 // test if it is possible to reopn new transaction after commiting changes
@@ -179,5 +185,15 @@ void testObj::test<8>(void)
   }
   ensure("d-tor not run", isRun);
 }
+
+// test getting proxy's processor type
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  ensure_equals("invalid type", bf_->getTypePublic().str(), "sometest");
+}
+
+// TODO: test createDynamicConfig method
 
 } // namespace tut

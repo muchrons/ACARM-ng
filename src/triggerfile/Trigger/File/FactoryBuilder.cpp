@@ -45,7 +45,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO(log_, "building trigger's instance");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  const TriggerConfig   fc(type_, options);
+  const TriggerConfig fc(type_.str(), options);
   // output direcotry
   const path &outdir=fc["outdir"];
   if( Commons::Filesystem::isDirectorySane(outdir)==false )
@@ -67,12 +67,12 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // create and return new handle.
   typedef InterfaceImpl<File::Strategy, File::Config> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl( type_, name, File::Config(outdir, thCfg) ) );
+  return FactoryBuilder::FactoryPtr( new Impl( type_, InstanceName(name), File::Config(outdir, thCfg) ) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const
 {
-  return type_;
+  return type_.str();
 }
 
 } // namespace File

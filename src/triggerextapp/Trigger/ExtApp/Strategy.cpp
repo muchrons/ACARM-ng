@@ -22,14 +22,15 @@ using namespace boost::filesystem;
 using namespace Base::Threads;
 using namespace Commons;
 using namespace Commons::Filesystem;
+using namespace Core::Types::Proc;
 
 namespace Trigger
 {
 namespace ExtApp
 {
 
-Strategy::Strategy(const std::string &name, const Config &cfg):
-  Trigger::Simple::Strategy("extapp", name, cfg.getThresholdConfig() ),
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Config &cfg):
+  Trigger::Simple::Strategy( TypeName("extapp"), name, cfg.getThresholdConfig() ),
   cfg_(cfg)
 {
 }

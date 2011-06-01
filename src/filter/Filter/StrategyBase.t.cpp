@@ -11,6 +11,7 @@
 
 using namespace Filter;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -18,7 +19,7 @@ namespace
 struct TestFilter: public StrategyBase
 {
   TestFilter(void):
-    StrategyBase("testfilter", "testfiltername")
+    StrategyBase( TypeName("testfilter"), InstanceName("testfiltername") )
   {
   }
 
@@ -59,7 +60,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid type", tf_.getFilterType(), "testfilter");
+  ensure_equals("invalid type", tf_.getFilterType().str(), "testfilter");
 }
 
 // test logging (smoke test)
@@ -102,6 +103,14 @@ template<>
 void testObj::test<4>(void)
 {
   tf_.testConnection();
+}
+
+// check if name has been saved correctly
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ensure_equals("invalid name", tf_.getFilterName().str(), "testfiltername");
 }
 
 } // namespace tut

@@ -201,6 +201,12 @@
     ]]>
   </select>
 
+  <select id="SelectHeartbeats" resultClass="CHeartbeat">
+    <![CDATA[
+      SELECT owner, module, timestamp + cast(timeout || 'sec' AS INTERVAL) >= now() AS alive FROM heartbeats ORDER BY owner, module;
+    ]]>
+  </select>
+
 <!-- Queries for Data Mining -->
 
   <select id="DMSeveritiesIP" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">

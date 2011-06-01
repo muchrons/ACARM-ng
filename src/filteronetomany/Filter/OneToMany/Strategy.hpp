@@ -22,7 +22,7 @@ public:
    *  \param name name for strategy.
    *  \param timeout timeout value for observed nod to be in queue.
    */
-  Strategy(const std::string &name, unsigned int timeout);
+  Strategy(const Core::Types::Proc::InstanceName &name, unsigned int timeout);
 
 private:
   virtual const Persistency::Alert::Hosts &getHostsArray(ConstNode node) const;

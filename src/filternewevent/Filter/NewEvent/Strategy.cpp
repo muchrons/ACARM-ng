@@ -6,14 +6,15 @@
 #include "Filter/NewEvent/Strategy.hpp"
 #include "Filter/NewEvent/EntryProcessor.hpp"
 
+using namespace Core::Types::Proc;
 
 namespace Filter
 {
 namespace NewEvent
 {
 
-Strategy::Strategy(const std::string &name, const Parameters &params):
-  Filter::Strategy<Data>("newevent", name),
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Parameters &params):
+  Filter::Strategy<Data>( TypeName("newevent"), name),
   nextPrune_(0),
   params_(params)
 {
@@ -21,25 +22,24 @@ Strategy::Strategy(const std::string &name, const Parameters &params):
 
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
-    Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
-      ecl.add("*input*");   // TODO: magic value
-        return ecl;
+  Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
+  ecl.add( TypeName("*input*") );   // TODO: magic value
+  return ecl;
 }
 
 void Strategy::processImpl(Node               n,
                            NodesTimeoutQueue &/*ntq*/,
                            BackendFacade     &bf)
 {
-  //TODO
   const time_t now=time(NULL);
   // ensure prunning once a while
   if(nextPrune_<now)
     pruneProcessedSet(now);
   assert(nextPrune_>=now);
 
-  const EntryProcessor ep(&bf, &processed_, &timeouted_, params_);
+  const EntryProcessor ep(bf, processed_, timeouted_, params_);
   Algo::forEachUniqueLeaf(n, ep);
-
+  pruneTimeoutedSet(bf);
 }
 
 void Strategy::pruneProcessedSet(const time_t now)
@@ -50,9 +50,11 @@ void Strategy::pruneProcessedSet(const time_t now)
   LOGMSG_DEBUG_S(log_)<<"next prunning scheduled on/after "<<nextPrune_;
 }
 
-void Strategy::pruneTimeoutedSet()
+void Strategy::pruneTimeoutedSet(BackendFacade &bf)
 {
-  // TODO
+  const Persistency::IO::DynamicConfig::Owner owner("Filter::NewEvent");
+  timeouted_.markRemoved(bf, owner);
 }
+
 } // namespace NewEvent
 } // namespace Filter

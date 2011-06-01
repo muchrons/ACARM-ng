@@ -8,13 +8,14 @@
 #include "Filter/HostCommon/CheckHosts.hpp"
 
 using namespace Persistency;
+using namespace Core::Types::Proc;
 
 namespace Filter
 {
 namespace HostCommon
 {
 
-Strategy::Strategy(const std::string &type, const std::string &name, unsigned int timeout):
+Strategy::Strategy(const Core::Types::Proc::TypeName &type, const Core::Types::Proc::InstanceName &name, unsigned int timeout):
   Filter::Simple::Strategy<Data>(type, name, timeout)
 {
 }
@@ -22,7 +23,7 @@ Strategy::Strategy(const std::string &type, const std::string &name, unsigned in
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
-  ecl.add("*input*");   // TODO: magic value
+  ecl.add( TypeName("*input*") );   // TODO: magic value
   return ecl;
 }
 
@@ -70,6 +71,11 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
 }
 
 void Strategy::postProcessNode(Node &/*n*/, Filter::BackendFacade &/*bf*/) const
+{
+  // nothing to be done here
+}
+
+void Strategy::postProcessNode(NodeEntry &/*entry*/, const NodeEntry &/*added*/, BackendFacade &/*bf*/) const
 {
   // nothing to be done here
 }

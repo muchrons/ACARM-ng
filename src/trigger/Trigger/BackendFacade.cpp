@@ -15,9 +15,10 @@ using namespace Persistency::IO;
 namespace Trigger
 {
 
-BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-                             const std::string                &triggerName):
-  Core::Types::BackendFacade(conn, triggerName)
+BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN       conn,
+                             const Core::Types::Proc::TypeName     &triggerType,
+                             const Core::Types::Proc::InstanceName &triggerName):
+  Core::Types::BackendFacade(conn, triggerType, triggerName)
 {
 }
 
@@ -25,7 +26,7 @@ void BackendFacade::markAsTriggered(Persistency::MetaAlertPtrNN ma)
 {
   beginTransaction();
   IO::MetaAlertAutoPtr io=getConnection()->metaAlert(ma, getTransaction() );
-  io->markAsTriggered( getName() );
+  io->markAsTriggered( getName().str() );
 }
 
 } // namespace Trigger

@@ -33,7 +33,7 @@ protected:
    *  \param name name of given trigger.
    *  \param cfg  config to be used for this trigger.
    */
-  Strategy(const std::string &type, const std::string &name, const ThresholdConfig &cfg);
+  Strategy(const Core::Types::Proc::TypeName &type, const Core::Types::Proc::InstanceName &name, const ThresholdConfig &cfg);
   /** \brief deallocate object and log it's state uppon exit.
    */
   ~Strategy(void);

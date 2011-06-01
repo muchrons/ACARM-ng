@@ -1241,4 +1241,91 @@ void testObj::test<39>(void)
   }
 }
 
+// try saving heartbeat
+template<>
+template<>
+void testObj::test<40>(void)
+{
+  // save something
+  es_.saveHeartbeat("ownerX", "moduleY", Timestamp(666u), 42u);
+  // check
+  const result r = t_.getAPI<TransactionAPI>().exec("SELECT * FROM heartbeats");
+  ensure_equals("invalid entries count", r.size(), 1u);
+  // check exact values
+  {
+    const string tmp=ReaderHelper<string>::readAsNotNull(r[0]["owner"]);
+    ensure_equals("invalid owner", tmp, "ownerX");
+  }
+  {
+    const string tmp=ReaderHelper<string>::readAsNotNull(r[0]["module"]);
+    ensure_equals("invalid owner", tmp, "moduleY");
+  }
+  {
+    const Timestamp tmp=ReaderHelper<Timestamp>::readAsNotNull(r[0]["timestamp"]);
+    ensure_equals("invalid timestamp", tmp.get(), static_cast<time_t>(666) );
+  }
+  {
+    const unsigned int tmp=ReaderHelper<unsigned int>::readAsNotNull(r[0]["timeout"]);
+    ensure_equals("invalid timeout", tmp, 42u);
+  }
+}
+
+// try removing saved heartbeat
+template<>
+template<>
+void testObj::test<41>(void)
+{
+  es_.saveHeartbeat("ownerX", "moduleY", Timestamp(666u), 42u);
+  es_.deleteHeartbeat("ownerX", "moduleY");
+  // check
+  const result r = t_.getAPI<TransactionAPI>().exec("SELECT * FROM heartbeats");
+  ensure_equals("entry not deleted", r.size(), 0u);
+}
+
+// try removing one of saved saved heartbeats
+template<>
+template<>
+void testObj::test<42>(void)
+{
+  es_.saveHeartbeat("ownerA", "moduleB", Timestamp(666u), 44u);
+  es_.saveHeartbeat("ownerX", "moduleY", Timestamp(668u), 43u);
+  es_.saveHeartbeat("ownerQ", "moduleW", Timestamp(667u), 42u);
+  es_.deleteHeartbeat("ownerX", "moduleY");
+  // check count
+  {
+    const result r = t_.getAPI<TransactionAPI>().exec("SELECT * FROM heartbeats");
+    ensure_equals("entry not deleted", r.size(), 2u);
+  }
+  // check if specific entry is NOT there
+  {
+    const result r = t_.getAPI<TransactionAPI>().exec("SELECT * FROM heartbeats WHERE owner='ownerX'");
+    ensure_equals("invalid entry deleted", r.size(), 0u);
+  }
+}
+
+// try removing non-existing heartbeat
+template<>
+template<>
+void testObj::test<43>(void)
+{
+  es_.saveHeartbeat("ownerA", "moduleB", Timestamp(666u), 42u);
+  es_.deleteHeartbeat("ownerX", "moduleY");
+  // check
+  const result r = t_.getAPI<TransactionAPI>().exec("SELECT * FROM heartbeats");
+  ensure_equals("non-exisitng entry deleted", r.size(), 1u);
+}
+
+// try removing non-existing heartbeat, that differ ony in owner/module
+template<>
+template<>
+void testObj::test<44>(void)
+{
+  es_.saveHeartbeat("ownerA", "moduleY", Timestamp(666u), 42u);
+  es_.saveHeartbeat("ownerX", "moduleB", Timestamp(666u), 42u);
+  es_.deleteHeartbeat("ownerX", "moduleY");
+  // check
+  const result r = t_.getAPI<TransactionAPI>().exec("SELECT * FROM heartbeats");
+  ensure_equals("non-exisitng entry deleted", r.size(), 2u);
+}
+
 } // namespace tut

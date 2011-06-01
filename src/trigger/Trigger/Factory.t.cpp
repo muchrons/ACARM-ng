@@ -79,11 +79,15 @@ namespace
 struct TestInterface: public Interface
 {
   TestInterface(void):
-    Interface( "narf", "narf", EntryControlList::createDefaultAccept() )
+    Interface( TypeName("narf"), InstanceName("narf"), EntryControlList::createDefaultAccept() )
   {
   }
 
   virtual void process(Node /*node*/, ChangedNodes &/*changedNodes*/)
+  {
+  }
+
+  virtual void heartbeat(unsigned int /*deadline*/)
   {
   }
 }; // struct TestInterface

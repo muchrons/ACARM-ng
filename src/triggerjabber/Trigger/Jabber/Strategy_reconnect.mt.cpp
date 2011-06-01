@@ -9,6 +9,7 @@
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace std;
+using namespace Core::Types::Proc;
 using namespace Trigger::Jabber;
 
 int main(int argc, char **argv)
@@ -25,17 +26,17 @@ int main(int argc, char **argv)
                          Trigger::Simple::ThresholdConfig("0.0", "0") );
 
   cout<<"connecting..."<<endl;
-  Strategy     s("jabbermtestreconnect", cfg);
+  Strategy     s(InstanceName("jabbermtestreconnect"), cfg);
 
   {
     cout<<"connecting other (first should be disconnected now)..."<<endl;
-    Strategy tmp("jabbermtestreconnecttmp", cfg);  // creatig this will disconnect previous instance
+    Strategy tmp(InstanceName("jabbermtestreconnecttmp"), cfg); // creatig this will disconnect previous instance
     cout<<"disconnecting other..."<<endl;
   }
 
   // 's' should re-connect now.
   cout<<"sending message - first should reconnect now..."<<endl;
   Strategy::ChangedNodes nc;
-  s.process( TestHelpers::Persistency::makeNewNode(), nc ); // trigger and send
+  s.process( TestHelpers::Persistency::makeNewNode(), nc );     // trigger and send
   return 0;
 }

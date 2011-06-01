@@ -5,8 +5,10 @@
 #ifndef INCLUDE_FILTER_NEWEVENT_TIMEOUTEDSET_HPP_FILE
 #define INCLUDE_FILTER_NEWEVENT_TIMEOUTEDSET_HPP_FILE
 
+#include "Logger/Node.hpp"
 #include "Filter/BackendFacade.hpp"
 #include "Filter/Exception.hpp"
+#include "Filter/NewEvent/Hash.hpp"
 
 namespace Filter
 {
@@ -19,31 +21,33 @@ namespace NewEvent
 class TimeoutedSet
 {
 
-private:
-
-  typedef std::vector<std::string> Timeouted;
+  typedef std::vector<HashSharedPtr> Timeouted;
 
 public:
-  /** \brief add timeoted key to the collection.
+  /** \brief create cache to store timeouted elements.*/
+  TimeoutedSet();
+  /** \brief add timeouted key to the collection.
    *  \param key key to be added.
    */
-  void add(std::string &key);
+  void add(const HashSharedPtr &key);
   /** \brief remove timeouted element from collection and from persistency.
    *  \param bf    facade for removing timeouting elements from persistency.
    *  \param owner owner's name.
    */
-  void prune(BackendFacade *bf, Persistency::IO::DynamicConfig::Owner &owner);
+  void markRemoved(BackendFacade &bf, const Persistency::IO::DynamicConfig::Owner &owner);
+  // TODO: this method is never used and should be removed
   /** \brief checks if given key has been alrady timeouted or not.
    *  \param key key from which ...
    *  \return true if key has been already timeouted, false otherwise.
    */
-  bool isTimeouted(std::string &key) const;
+  bool isTimeouted(const HashSharedPtr &key) const;
 
 private:
-
-  Timeouted timeouted_;
-
+  Logger::Node log_;
+  Timeouted    timeouted_;
 }; // class TimeoutedSet
+
 } // namespace Filter
 } // namespace NewEvent
+
 #endif

@@ -9,14 +9,15 @@
 #include "Trigger/Mail/MailSender.hpp"
 
 using namespace std;
+using namespace Core::Types::Proc;
 
 namespace Trigger
 {
 namespace Mail
 {
 
-Strategy::Strategy(const std::string &name, const Config &cfg):
-  Trigger::Simple::Strategy("mail", name, cfg.getThresholdConfig() ),
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Config &cfg):
+  Trigger::Simple::Strategy(TypeName("mail"), name, cfg.getThresholdConfig() ),
   cfg_(cfg)
 {
 }

@@ -7,9 +7,11 @@
 
 /* public header */
 
+#include <sstream>
 #include <ctime>
 #include <boost/operators.hpp>
 
+#include "System/ignore.hpp"
 #include "Base/TimeoutQueue.hpp"
 #include "Logger/Logger.hpp"
 #include "Persistency/GraphNode.hpp"
@@ -46,10 +48,23 @@ public:
     LOGMSG_DEBUG_S(log_)<<"processing node "<< n->getMetaAlert()->getID().get();
     assert( changed.size()==0 && "non-empty output collection received");
     pruneNTQ();                 // clean queue's content.
-    BackendFacade bf( conn_, changed, getFilterType() );
+    BackendFacade bf( conn_, changed, getFilterType(), getFilterName() );
     processImpl(n, ntq_, bf);
     bf.commitChanges();         // if there was no exception, commit changes made (if any)
     LOGMSG_DEBUG_S(log_)<<"nodes timeout queue size is "<<ntq_.size()<<" elements";
+  }
+  /** \brief send heartbeat for this module.
+   *  \param deadline maximum ammount of time for heartbeat to arrive
+   */
+  void heartbeat(unsigned int deadline)
+  {
+    std::stringstream owner;
+    owner<<"filter::"<<getFilterType().str()<<"/"<<getFilterName().str();
+    Persistency::IO::Transaction       t( conn_->createNewTransaction("heartbeat_sending") );
+    Persistency::IO::HeartbeatsAutoPtr hb=conn_->heartbeats( owner.str(), t );
+    assert( hb.get()!=NULL );
+    hb->report("thread", deadline);
+    t.commit();
   }
 
   /** \brief helper structure with user-provided data associated with node's entry.
@@ -106,7 +121,7 @@ public:
 protected:
   /** \brief create instance.
    */
-  Strategy(const std::string &type, const std::string &name):
+  Strategy(const Core::Types::Proc::TypeName &type, const Core::Types::Proc::InstanceName &name):
     StrategyBase(type, name),
     nextPrune_(0)
   {
@@ -137,15 +152,10 @@ private:
       return;
     LOGMSG_DEBUG(log_, "prunning time has come");
     const size_t pruned=ntq_.prune();   // do periodical queue's clean-up
-    ignore(pruned);
+    System::ignore(pruned);
     LOGMSG_DEBUG_S(log_)<<"pruned "<<pruned<<" elements";
     nextPrune_=now+1;                   // it does not make sense to make it more often than once per 1[s]
     LOGMSG_DEBUG_S(log_)<<"next prunning on "<<nextPrune_;
-  }
-
-  template<typename TIgnored>
-  inline void ignore(const TIgnored &) const
-  {
   }
 
   NodesTimeoutQueue ntq_;

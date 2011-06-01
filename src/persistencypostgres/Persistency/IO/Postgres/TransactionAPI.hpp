@@ -47,10 +47,11 @@ public:
    *  \param str string to be escaped.
    *  \return escaped string.
    */
-   PGSTD::string esc(const char *str)
+   std::string escape(const char *str)
    {
      return t_.esc(str);
    }
+
 private:
   /** \brief transaction acceptance opration's interface.
    */

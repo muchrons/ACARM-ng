@@ -1,0 +1,160 @@
+#!/bin/bash
+#
+# autotools-like script for creating configuration
+#
+
+#
+# default values
+#
+PREFIX="/opt"
+PLUGINS="`(cd src ; ls -d persistency?* input?* trigger?* filter?*)`"
+PROFILE="release"
+FEATURES="lock_on_write_graph_add"
+
+#
+# helper functions
+#
+
+# print help screen
+function print_help()
+{
+  cat<<EOF >&2
+$0 options are:
+  [--prefix <path>]    prefix for the installation directory (1)
+  [--debug]            build in debug mode (2)
+  [--list-plugins]     list all available plugin
+  [--disable <plugin>] do not compile given plugin (3)
+  [-I <includes_dir>]  add extra include directory to compilation (3)
+  [-L <libs_dir>]      add extra library directory to linking (3)
+  [--help]             show this helpful text
+
+(1) does not require recompilation
+(2) make binary slower and much larger (~30 times)
+(3) can be specified multiple times
+EOF
+  exit 1
+}
+
+# compile (but do not link)
+function compile()
+{
+  gcc -c -o /dev/null "$1" $EXTRA_COMPILE_FLAGS > /dev/null 2>&1
+  return "$?"
+}
+
+
+#
+# process command line options
+#
+while [ "$#" -gt 0 ]
+do
+  case "$1" in
+    "--prefix")
+      if ! grep -q '^/' <<< "$2"
+      then
+        echo "$0: prefix must be an absolute path, got '$2' instead" >&2
+        exit 2
+      fi
+      PREFIX="$2"
+      shift
+    ;;
+
+    "--disable")
+      PLUGINS="`echo "$PLUGINS" | xargs -n 1 -r echo | grep -v "^$2$"`"
+      shift
+    ;;
+
+    "--debug")
+      PROFILE="debug"
+    ;;
+
+    "--list-plugins")
+      echo "$PLUGINS" | sort
+      exit 0
+    ;;
+
+    "-I")
+      EXTRA_COMPILE_FLAGS="$EXTRA_COMPILE_FLAGS -I$2"
+      shift
+    ;;
+
+    "-L")
+      EXTRA_LINK_FLAGS="$EXTRA_LINK_FLAGS -L$2"
+      EXTRA_LIB_DIRS="$EXTRA_LIB_DIRS:$2"
+      shift
+    ;;
+
+    "--help")
+      print_help
+    ;;
+
+    *)
+      print_help
+    ;;
+  esac
+  shift
+done
+EXTRA_LIB_DIRS="$PREFIX/lib/acarm-ng:$EXTRA_LIB_DIRS"
+
+
+#
+# select features to build with
+#
+TMP="`mktemp --suffix=.cpp`"
+
+# TEST: boost::filesystem version
+echo -n "checking for new boost::filesystem version... "
+echo -e "#include <boost/filesystem.hpp>\nusing boost::filesystem::is_regular_file;" > "$TMP"
+if compile "$TMP"
+then
+  echo "got new boost"
+  FEATURES="$FEATURES use_new_boost_filesystem"
+else
+  echo "N/A"
+  echo -n "checking for old boost::filesystem version... "
+  echo -e "#include <boost/filesystem.hpp>\nusing boost::filesystem::is_regular;" > "$TMP"
+  if compile "$TMP"
+  then
+    echo "got old boost"
+    FEATURES="$FEATURES use_old_boost_filesystem"
+  else
+    echo "N/A"
+    echo "boost filesystem is missing"
+    rm -f "$TMP"
+    exit 2
+  fi
+fi
+
+# cleanup
+rm -f "$TMP"
+
+
+#
+# prepare proper make entries
+#
+
+# prepare main makefile elements
+cat<<EOF > configure-output.mk
+LOCAL_MAKE_FLAGS+="PROFILE=$PROFILE" "FEATURES=$FEATURES" "TC=gcc"
+LOCAL_MAKE_FLAGS+="EXTRA_COMPILE_FLAGS=$EXTRA_COMPILE_FLAGS" "EXTRA_LINK_FLAGS=$EXTRA_LINK_FLAGS"
+
+PLUGINS_LIST:=`echo "$PLUGINS" | xargs -n 1 echo -n ' ' `
+INSTALL_DIR:=$PREFIX
+BUILD_DIR:=src/gen/${PROFILE}_gcc_normal_default
+EOF
+
+
+#
+# display summary
+#
+echo
+echo "SUMMARY:"
+echo "  prefix:     $PREFIX"
+echo "  profile:    $PROFILE"
+echo "  plugins:"
+echo "$PLUGINS" | sort | sed 's:^ *:              :'
+echo "  features:   $FEATURES"
+echo "  comp flags: $EXTRA_COMPILE_FLAGS"
+echo "  link flags: $EXTRA_LINK_FLAGS"
+echo "  lib  dirs:  $EXTRA_LIB_DIRS"
+echo

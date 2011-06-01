@@ -1,3 +1,6 @@
+-- v1.0.0 --
+* rebase pulls when no merge is required.
+
 -- v0.4.0 --
 * build now by default runs count(CPU)+1 threads in make.
 * deliver now fails if there are not-versioned files - this prevents situation when not-complete code is delivered.

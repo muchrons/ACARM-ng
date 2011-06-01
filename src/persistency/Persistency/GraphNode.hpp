@@ -27,7 +27,7 @@ namespace detail
 {
 /** \brief forward declaration for friend declaration.
  */
-struct InternalAccessProxy;
+class InternalAccessProxy;
 } // namespace detail
 
 /** \brief graph node's representation.
@@ -126,7 +126,7 @@ public:
   bool operator==(const GraphNode &other) const;
 
 private:
-  friend struct detail::InternalAccessProxy;
+  friend class detail::InternalAccessProxy;
 
   void ensureIsNode(void) const;
 

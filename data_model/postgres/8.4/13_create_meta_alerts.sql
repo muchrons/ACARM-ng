@@ -15,7 +15,6 @@ CREATE TABLE    meta_alerts
   create_time      timestamp    NOT NULL,
   last_update_time timestamp    NOT NULL DEFAULT now()
 );
-CREATE INDEX meta_alerts_sys_id_index ON meta_alerts(sys_id);
 
 
 -- alert to meta-alert mapping table
@@ -26,6 +25,8 @@ CREATE TABLE alert_to_meta_alert_map
 
   UNIQUE(id_alert, id_meta_alert)
 );
+CREATE INDEX alert_to_meta_alert_map_id_alert_index      ON alert_to_meta_alert_map(id_alert);
+CREATE INDEX alert_to_meta_alert_map_id_meta_alert_index ON alert_to_meta_alert_map(id_meta_alert);
 
 
 --
@@ -91,6 +92,8 @@ CREATE TABLE meta_alerts_roots
 -- triggers and procedures to make entries in tables
 -- alerts/meta_alerts/alert_to_meta_alert_map/meta_alert_tree properly alligned
 --
+
+CREATE LANGUAGE plpgsql;
 
 -- get_parents_impl()
 CREATE FUNCTION get_parents_impl(id bigint) RETURNS SETOF bigint AS

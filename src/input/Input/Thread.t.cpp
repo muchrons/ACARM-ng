@@ -13,6 +13,7 @@
 
 using namespace std;
 using namespace Input;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -20,7 +21,7 @@ namespace
 struct TestReader: public Reader
 {
   TestReader(void):
-    Reader("testreader", "testreadername"),
+    Reader( TypeName("testreader"), InstanceName("testreadername") ),
     count_(0),
     justThrow_(false)
   {
@@ -44,8 +45,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   TestClass(void):
     tr_(new TestReader),
     r_(tr_),
-    conn_( createUserStub() ),
-    t_( conn_->createNewTransaction("test_thread") )
+    conn_( createUserStub() )
   {
   }
 
@@ -53,7 +53,6 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   ReaderPtrNN                       r_;
   Core::Types::AlertsFifo           output_;
   Persistency::IO::ConnectionPtrNN  conn_;
-  Persistency::IO::Transaction      t_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -123,7 +122,7 @@ namespace
 struct TestWaitingReader: public Reader
 {
   TestWaitingReader(void):
-    Reader("testwaitingreader", "testwaitingreadername")
+    Reader( TypeName("testwaitingreader"), InstanceName("testwaitingreadername") )
   {
   }
 

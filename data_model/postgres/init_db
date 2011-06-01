@@ -1,8 +1,65 @@
 #!/bin/bash
-DB="acarm_ng"
 
+# check syntax
+if [ "$#" -ne "3" ]
+then
+  echo "$0 <dbname> <daemon_passwd_file> <ui_passwd_file>" >&2
+  exit 1
+fi
+
+DB="$1"
+PASSF_DMN="$2"
+PASSF_UI="$3"
+
+NO_PASS="`psql --help | grep -q -- -w && echo -w`"
+
+# create data base, if it does not exist yet
+psql $NO_PASS -c "CREATE DATABASE \"$DB\""
+
+# ensure porper user
+if ! psql -d "$DB" $NO_PASS -c '\q' > /dev/null 2>&1
+then
+  echo "$0: cannot access data base $DB as $USER" >&2
+  exit 2
+fi
+
+#
+# drop current content
+#
+
+MKUSERS="`mktemp`"
+# script revoking permissions of connecting for a given users
+echo "REVOKE CONNECT ON DATABASE \"$DB\" FROM \"acarm-ng-daemon\";" >> "$MKUSERS"
+echo "REVOKE CONNECT ON DATABASE \"$DB\" FROM \"acarm-ng-ui\";"     >> "$MKUSERS"
+psql $NO_PASS -d "$DB" -f $MKUSERS > /dev/null 2>&1 || exit $?
+rm "$MKUSERS"
+
+# run remaining clean-up scripts
 # note: 'ls' is needed here to preserve proper order of execution
-for s in `ls *.sql`
+for s in `ls 0*.sql`
 do
-  psql -d "$DB" -f $s || exit $?
+  psql $NO_PASS -d "$DB" -f $s > /dev/null 2>&1
 done
+
+#
+# fill with new data
+#
+
+# create users
+MKUSERS="`mktemp`"
+# script creating accounts, giving them ability to connect
+echo "CREATE USER \"acarm-ng-daemon\" PASSWORD '$(cat "$PASSF_DMN")';" >> "$MKUSERS"
+echo "CREATE USER \"acarm-ng-ui\"     PASSWORD '$(cat "$PASSF_UI")';"  >> "$MKUSERS"
+echo "GRANT CONNECT ON DATABASE \"$DB\" to \"acarm-ng-daemon\";"       >> "$MKUSERS"
+echo "GRANT CONNECT ON DATABASE \"$DB\" to \"acarm-ng-ui\";"           >> "$MKUSERS"
+psql $NO_PASS -d "$DB" -f $MKUSERS || exit $?
+rm "$MKUSERS"
+
+# create new content
+# note: 'ls' is needed here to preserve proper order of execution
+for s in `ls [^0]*.sql`
+do
+  psql $NO_PASS -d "$DB" -f $s || exit $?
+done
+
+exit 0

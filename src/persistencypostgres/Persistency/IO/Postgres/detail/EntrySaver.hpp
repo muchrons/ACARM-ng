@@ -16,8 +16,10 @@
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/Alert.hpp"
 #include "Persistency/MetaAlert.hpp"
+#include "Persistency/Timestamp.hpp"
 #include "Persistency/IO/Transaction.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
+#include "Persistency/IO/Heartbeats.hpp"
 #include "Persistency/IO/Postgres/DataBaseID.hpp"
 #include "Persistency/IO/Postgres/DBHandle.hpp"
 #include "Persistency/IO/Postgres/ExceptionNoEntries.hpp"
@@ -157,6 +159,23 @@ public:
    */
   void removeConfigParameter(const DynamicConfig::Owner &owner,
                              const DynamicConfig::Key   &key);
+
+  /** \brief deletes heartbeat(s) of given <owner;module> pair, if it exists.
+   *  \param owner  owner of the heartbeat.
+   *  \param module module that reported heartbeat to the owner.
+   */
+  void deleteHeartbeat(const Persistency::IO::Heartbeats::Owner  &owner,
+                       const Persistency::IO::Heartbeats::Module &module);
+  /** \brief deletes heartbeat(s) of given <owner;module> pair, if it exists.
+   *  \param owner    owner of the heartbeat.
+   *  \param module   module that reported heartbeat to the owner.
+   *  \param reported timestamp, when heartbeat has been reported.
+   *  \param timeout  validity period for a given heartbeat.
+   */
+  void saveHeartbeat(const Persistency::IO::Heartbeats::Owner  &owner,
+                     const Persistency::IO::Heartbeats::Module &module,
+                     Persistency::Timestamp                     reported,
+                     unsigned int                               timeout);
 
 private:
   DataBaseID getID(const std::string &seqName);

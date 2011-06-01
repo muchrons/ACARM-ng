@@ -13,6 +13,8 @@
 
 #include "Persistency/GraphNode.hpp"
 #include "Core/Types/Proc/EntryControlList.hpp"
+#include "Core/Types/Proc/TypeName.hpp"
+#include "Core/Types/Proc/InstanceName.hpp"
 
 
 namespace Core
@@ -36,20 +38,26 @@ public:
   /** \brief dealocates resources in polymorphic way.
    */
   virtual ~Interface(void);
+
   /** \brief call to process data in derived class.
    *  \param node         node to process.
    *  \param changedNodes output list of nodes that were chenged/created
    *                      during this call. initially list is empty.
    */
   virtual void process(Node node, ChangedNodes &changedNodes) = 0;
+  /** \brief send heartbeat for this module.
+   *  \param deadline maximum ammount of time for next heartbeat to arrive.
+   */
+  virtual void heartbeat(unsigned int deadline) = 0;
+
   /** \brief gets type of this processing unit.
    *  \return returns processing unit's type.
    */
-  const std::string &getType(void) const;
+  const TypeName &getType(void) const;
   /** \brief gets name of this processing unit.
    *  \return returns processing unit's name.
    */
-  const std::string &getName(void) const;
+  const InstanceName &getName(void) const;
   /** \brief gets entry control list object.
    *  \return reference to object.
    */
@@ -61,11 +69,11 @@ protected:
    *  \param name name for this processing unit.
    *  \param ecl  control list that determines what source of alerts are (dis)allowed.
    */
-  Interface(const std::string &type, const std::string &name, const EntryControlList &ecl);
+  Interface(const TypeName &type, const InstanceName &name, const EntryControlList &ecl);
 
 private:
-  const std::string      type_;
-  const std::string      name_;
+  const TypeName         type_;
+  const InstanceName     name_;
   const EntryControlList ecl_;
 }; // class Interface
 

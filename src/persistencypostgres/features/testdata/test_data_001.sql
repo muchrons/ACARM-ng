@@ -21,6 +21,7 @@ DELETE FROM config;
 DELETE FROM config_rdonly;
 DELETE FROM logs;
 DELETE FROM wui_users;
+DELETE FROM heartbeats;
 
 
 -- config

@@ -26,10 +26,12 @@ class BackendFacade: public Core::Types::BackendFacade
 public:
   /** \brief create object's instance.
    *  \param conn        connection object to use.
+   *  \param triggerType type of trigger this object is created for.
    *  \param triggerName name of trigger this object is created for.
    */
-  BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-                const std::string                &triggerName);
+  BackendFacade(Persistency::IO::ConnectionPtrNN       conn,
+                const Core::Types::Proc::TypeName     &triggerType,
+                const Core::Types::Proc::InstanceName &triggerName);
 
   /** \brief saves information that given meta-alert has been already
    *         triggered by this trigger.

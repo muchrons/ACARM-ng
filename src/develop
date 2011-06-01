@@ -10,4 +10,4 @@ C="$1"
 shift
 
 clear
-time make "$C" PROFILE=test WITHOUT_DEPS=1 && ( cd gen/test_local_normal_default/$C/ && LD_LIBRARY_PATH="$LD_LIBRARY_PATH:../libs" time ./$C.t "$@" )
+time make "$C" PROFILE=test WITHOUT_DEPS=1 && ( cd gen/test_gcc_normal_default/$C/ && LD_LIBRARY_PATH="$LD_LIBRARY_PATH:../libs" time ./$C.t "$@" )

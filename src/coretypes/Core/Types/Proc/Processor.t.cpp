@@ -20,8 +20,9 @@ namespace
 struct TestInterface: public Interface
 {
   explicit TestInterface(const EntryControlList &ecl=EntryControlList::createDefaultAccept() ):
-    Interface("testinterfacetype", "testinterfacename", ecl),
+    Interface( TypeName("testinterfacetype"), InstanceName("testinterfacename"), ecl),
     calls_(0),
+    heartbeats_(0),
     node_( makeNewLeaf() ),
     node2_( makeNewLeaf() )
   {
@@ -41,7 +42,14 @@ struct TestInterface: public Interface
     changedNodes.push_back(node);
   }
 
+  virtual void heartbeat(const unsigned int deadline)
+  {
+    ++heartbeats_;
+    tut::ensure_equals("invalid timeout", deadline, 60u);
+  }
+
   int  calls_;
+  int  heartbeats_;
   Node node_;
   Node node2_;
 };
@@ -50,7 +58,10 @@ struct TestInterface: public Interface
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    interface_(new TestInterface)
+    ti_(new TestInterface),
+    interface_(ti_),
+    type_("myT"),
+    name_("myN")
   {
   }
 
@@ -65,22 +76,27 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     tut::fail("timed out while waiting for response from processor");
   }
 
-  void checkECL(const EntryControlList &ecl, const std::string &caller, bool shouldPass)
+  void checkECL(const EntryControlList &ecl, const std::string &callerTypeStr, const std::string &callerNameStr, bool shouldPass)
   {
+    const TypeName     callerType(callerTypeStr);
+    const InstanceName callerName(callerNameStr);
     TestInterface *ti=new TestInterface(ecl);
     interface_.reset(ti);
     ProcessorPtrNN p( new Processor(mainQueue_, interface_) );
-    p->process( SignedNode(ti->node_, caller) );    // this call should add 1 element to 'changed'
-    if(shouldPass)                                  // should we wait for entry?
-      waitForResponse();                            // wait for other thread
+    p->process( SignedNode(ti->node_, callerType, callerName) );    // this call should add 1 element to 'changed'
+    if(shouldPass)                                                  // should we wait for entry?
+      waitForResponse();                                            // wait for other thread
     else
-      usleep(150*1000);                             // do not wait too long if entry is NOT to come
+      usleep(150*1000);                                             // do not wait too long if entry is NOT to come
     // check response:
     tut::ensure_equals("invalid collection size", mainQueue_.size(), shouldPass?1u:0u);
   }
 
-  Core::Types::SignedNodesFifo mainQueue_;
-  Processor::InterfaceAutoPtr  interface_;
+  Core::Types::SignedNodesFifo  mainQueue_;
+  TestInterface                *ti_;
+  Processor::InterfaceAutoPtr   interface_;
+  const TypeName                type_;
+  const InstanceName            name_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -128,18 +144,17 @@ void testObj::test<3>(void)
 {
   ensure_equals("pre-condition failed", mainQueue_.size(), 0u);
   // process data
-  TestInterface &ti=dynamic_cast<TestInterface&>(*interface_);
-  Processor      p(mainQueue_, interface_);
-  p.process( SignedNode(ti.node_, "me") ); // this call should add 1 element to 'changed'
-                                           // elements set, and processor should forward it
-                                           // to the main queue.
+  Processor p(mainQueue_, interface_);
+  p.process( SignedNode(ti_->node_, type_, name_) );    // this call should add 1 element to 'changed'
+                                                        // elements set, and processor should forward it
+                                                        // to the main queue.
   // wait for the results
   waitForResponse();
   // check results
   ensure_equals("invalid number of elements", mainQueue_.size(), 1u);
   Core::Types::SignedNode sn=mainQueue_.pop();
-  ensure("requested element not found", sn.getNode().get()==ti.node_.get() );
-  ensure("invalid sign in entry", sn.getReporterName()==ti.getName() );
+  ensure("requested element not found", sn.getNode().get()==ti_->node_.get() );
+  ensure("invalid sign in entry", sn.getReporterName()==ti_->getName() );
 }
 
 // test if multiple calls to process() does not break anything
@@ -150,11 +165,10 @@ void testObj::test<4>(void)
 {
   ensure_equals("pre-condition failed", mainQueue_.size(), 0u);
   // process data
-  TestInterface &ti=dynamic_cast<TestInterface&>(*interface_);
-  Processor      p(mainQueue_, interface_);
-  p.process( SignedNode(ti.node_,  "me") ); // this call should add 2 elements to 'changed'
-  p.process( SignedNode(ti.node2_, "me") ); // elements set, and processor should forward it
-                                            // to the main queue.
+  Processor p(mainQueue_, interface_);
+  p.process( SignedNode(ti_->node_,  type_, name_) );   // this call should add 2 elements to 'changed'
+  p.process( SignedNode(ti_->node2_, type_, name_) );   // elements set, and processor should forward it
+                                                        // to the main queue.
   // wait for the results
   for(int i=0; i<10; ++i)
     if( mainQueue_.size()==2 )
@@ -180,8 +194,8 @@ template<>
 void testObj::test<6>(void)
 {
   EntryControlList ecl=EntryControlList::createDefaultAccept();
-  ecl.add("myexception");
-  checkECL(ecl, "myexception", false);
+  ecl.add( TypeName("myexception") );
+  checkECL(ecl, "myexception", "any_name", false);
 }
 
 // test if ECL works - accept test
@@ -190,8 +204,8 @@ template<>
 void testObj::test<7>(void)
 {
   EntryControlList ecl=EntryControlList::createDefaultReject();
-  ecl.add("myexception");
-  checkECL(ecl, "myexception", true);
+  ecl.add( TypeName("myexception") );
+  checkECL(ecl, "myexception", "any_name", true);
 }
 
 // test if ECL works - reject self test
@@ -200,7 +214,67 @@ template<>
 void testObj::test<8>(void)
 {
   EntryControlList ecl=EntryControlList::createDefaultAccept();
-  checkECL(ecl, "testinterfacename", false);
+  checkECL(ecl, "testinterfacetype", "testinterfacename", false);
+}
+
+// test heartbeat() call
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  // test environment
+  Processor p(mainQueue_, interface_);
+  ensure_equals("pre-condition failed", ti_->heartbeats_, 0u);
+  p.process( SignedNode(ti_->node_, type_, name_) );    // should send heartbeat
+  waitForResponse();
+  // check
+  ensure_equals("heartbeat not sent", ti_->heartbeats_, 1u);
+}
+
+// test if heartbeat() calls are not sent constantly
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  // test environment
+  Processor p(mainQueue_, interface_);
+  ensure_equals("pre-condition failed", ti_->heartbeats_, 0u);
+  // first action
+  p.process( SignedNode(ti_->node_, type_, name_) );    // should send heartbeat
+  waitForResponse();
+  ensure_equals("heartbeat not sent", ti_->heartbeats_, 1u);
+  // second action
+  p.process( SignedNode(ti_->node_, type_, name_) );    // should NOT send heartbeat for some time now
+  waitForResponse();
+  ensure_equals("heartbeat sent again", ti_->heartbeats_, 1u);
+}
+
+
+namespace
+{
+struct TestInterfaceThrowHeartbeat: public TestInterface
+{
+  virtual void heartbeat(const unsigned int /*deadline*/)
+  {
+    throw std::runtime_error("test exception in heartbeat");
+  }
+};
+} // unnamed namespace
+
+// test if exception in heartbeat() does not block processing
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  // test environment
+  ti_=new TestInterfaceThrowHeartbeat();
+  interface_.reset(ti_);
+  Processor p(mainQueue_, interface_);
+  ensure_equals("pre-condition failed", ti_->calls_, 0u);
+  // first action
+  p.process( SignedNode(ti_->node_, type_, name_) );    // should discard exception from heartbeat
+  waitForResponse();
+  ensure_equals("exception in heartbeat stopped processing", ti_->calls_, 1u);
 }
 
 } // namespace tut

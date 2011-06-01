@@ -11,6 +11,7 @@
 
 using namespace Trigger;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -18,7 +19,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
     conn_( IO::create() ),
-    bf_( new BackendFacade(conn_, "sometest") )
+    bf_( new BackendFacade(conn_, TypeName("sometest"), InstanceName("myname")) )
   {
     assert( bf_.get()!=NULL );
     assert( conn_.get()!=NULL );

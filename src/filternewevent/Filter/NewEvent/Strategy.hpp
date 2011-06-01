@@ -31,6 +31,7 @@ public:
    */
   struct Parameters
   {
+    // TODO: describe new filter in doc/CONFIGURATION.txt
     /** \brief create paramters object.
      *  \param timeout  new event time life (in seconds).
      *  \param priDelta increment of priority when new event is found.
@@ -50,7 +51,7 @@ public:
    *  \param name  name for new event.
    *  \param params paramters for dns resolver.
    */
-  Strategy(const std::string &name, const Parameters &params);
+  Strategy(const Core::Types::Proc::InstanceName &name, const Parameters &params);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.
@@ -64,13 +65,14 @@ private:
                            BackendFacade     &bf);
 
   void pruneProcessedSet(time_t now);
-  void pruneTimeoutedSet();
+  void pruneTimeoutedSet(BackendFacade &bf);
 
   time_t           nextPrune_;
   const Parameters params_;
-  ProcessedSet     processed_;
   TimeoutedSet     timeouted_;
+  ProcessedSet     processed_;
 }; // class Strategy
+
 } // namespace NewEvent
 } // namespace Filter
 

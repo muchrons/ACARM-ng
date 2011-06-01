@@ -21,6 +21,7 @@
 
 using namespace std;
 using namespace boost::filesystem;
+using namespace Core::Types::Proc;
 using namespace Trigger::ExtApp;
 using namespace Persistency;
 using namespace TestHelpers::Persistency;
@@ -54,7 +55,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   template<typename T>
   void ensureThrows(const Config &c) const
   {
-    Strategy               s("throwrunner", c);
+    Strategy               s(InstanceName("throwrunner"), c);
     Strategy::ChangedNodes nc;
     try
     {
@@ -71,7 +72,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   {
     tut::ensure("no files expected?! error in test!", expectedFiles.size()>0u );
     // run application saving parameters
-    Strategy               s("apprunner", cfg_);
+    Strategy               s(InstanceName("apprunner"), cfg_);
     Strategy::ChangedNodes nc;
     remove("ext.log");          // ensure file is not present from previous runs
     s.process(node, nc);
@@ -128,8 +129,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Strategy s("myscriptrunner", cfg_);
-  ensure_equals("invalid type", s.getTriggerType(), "extapp");
+  Strategy s(InstanceName("myscriptrunner"), cfg_);
+  ensure_equals("invalid type", s.getTriggerType().str(), "extapp");
 }
 
 // test exception on application call fail
@@ -169,7 +170,7 @@ template<>
 void testObj::test<5>(void)
 {
   GraphNodePtrNN         node=makeNewLeaf();
-  Strategy               s("apprunner", Config(cfg_.getPath(), Trigger::Simple::ThresholdConfig("99", "9") ) );
+  Strategy               s(InstanceName("apprunner"), Config(cfg_.getPath(), Trigger::Simple::ThresholdConfig("99", "9") ) );
   Strategy::ChangedNodes nc;
   remove("ext.log");          // ensure file is not present from previous runs
   s.process(node, nc);

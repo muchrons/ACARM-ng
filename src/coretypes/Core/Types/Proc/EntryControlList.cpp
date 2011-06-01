@@ -21,16 +21,16 @@ EntryControlList EntryControlList::createDefaultReject(void)
   return EntryControlList(false);
 }
 
-void EntryControlList::add(const FilterName &filterName)
+void EntryControlList::add(const TypeName &type)
 {
-  filterNames_.push_back(filterName);
+  types_.push_back(type);
 }
 
-bool EntryControlList::isAcceptable(const FilterName &filterName) const
+bool EntryControlList::isAcceptable(const TypeName &type) const
 {
   // check if given filter is no our list - if it is, return oposite-to-default value
-  for(FilterNamesVector::const_iterator it=filterNames_.begin(); it!=filterNames_.end(); ++it)
-    if(*it==filterName)
+  for(TypeNamesVector::const_iterator it=types_.begin(); it!=types_.end(); ++it)
+    if(*it==type)
       return !defaultPolicy_;
   // if entry is not on the list, just give the default value
   return defaultPolicy_;

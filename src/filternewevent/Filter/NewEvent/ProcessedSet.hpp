@@ -19,27 +19,25 @@ namespace NewEvent
 class ProcessedSet
 {
 public:
-  /** \brief checks if given entry has been alrady processed or not.
-   *  \param entry entry connected with processed leaf.
+  /** \brief checks if given entry has been alrady processed or not, if true update entry timeout.
+   *  \param hash hash connected with processed leaf name.
+   *  \param timeout time life (in seconds) of stored (meta-)alert name.
    *  \return true if entry (leaf) has been already reported, false otherwise.
    */
-  bool isProcessed(Entry &entry) const;
+  bool update(const Hash &hash, unsigned int timeout);
   /** \brief marks given leaf as already processed.
    *  \param entry   entry connected with processed leaf.
    *  \param timeout time life (in seconds) of stored (meta-)alert name.
    */
-  void markAsProcessed(Entry &entry, unsigned int timeout);
-  /** \brief removes entries corresponding to graph nodes not held in memory any more.
+  void markAsProcessed(const Entry &entry, unsigned int timeout);
+  /** \brief removes timeouted entries from cache.
    */
   void prune(void);
+
 private:
-
-  typedef Base::TimeoutQueue<Entry::Name> Set;
-
-  void pruneTimeouted();
+  typedef Base::TimeoutQueue<Entry> Set;
 
   Set set_;
-
 }; // class ProcessedSet
 } // namespace Filter
 } // namespace NewEvent

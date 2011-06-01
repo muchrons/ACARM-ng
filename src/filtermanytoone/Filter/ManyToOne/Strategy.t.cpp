@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 
+#include "System/ignore.hpp"
 #include "Filter/ManyToOne/Strategy.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -15,10 +16,6 @@ namespace
 
 struct TestClass
 {
-  template<typename T>
-  void ignore(const T &)
-  {
-  }
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -36,8 +33,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Strategy s("somename", 13);
-  ignore(s);
+  const Strategy s(Core::Types::Proc::InstanceName("somename"), 13);
+  System::ignore(s);
 }
 
 } // namespace tut

@@ -46,7 +46,7 @@ public:
    *  \param name name for the strategy.
    *  \param params paramters for the strategy.
    */
-  Strategy(const std::string &name, const Params &params);
+  Strategy(const Core::Types::Proc::InstanceName &name, const Params &params);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.
@@ -69,6 +69,7 @@ private:
                                       const NodeEntry &otherEntry,
                                       const Node       newNode) const;
   virtual void postProcessNode(Node &n, Filter::BackendFacade &bf) const;
+  virtual void postProcessNode(NodeEntry &entry, const NodeEntry &added, BackendFacade &bf) const;
 
   const Params params_;
 }; // class Strategy

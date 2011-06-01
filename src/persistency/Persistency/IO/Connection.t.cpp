@@ -115,7 +115,7 @@ void testObj::test<6>(void)
   ensureCalls(5);
 }
 
-// test creating dyncami config
+// test creating dynamic config
 template<>
 template<>
 void testObj::test<7>(void)
@@ -124,6 +124,17 @@ void testObj::test<7>(void)
   DynamicConfigAutoPtr ptr=c_.dynamicConfig("me & i", t);
   ensure("NULL pointer received", ptr.get()!=NULL );
   ensureCalls(6);
+}
+
+// test creating heartbeats
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  Transaction       t( c_.createNewTransaction("abc") );
+  HeartbeatsAutoPtr ptr=c_.heartbeats("evil pinger", t);
+  ensure("NULL pointer received", ptr.get()!=NULL );
+  ensureCalls(7);
 }
 
 } // namespace tut

@@ -41,10 +41,14 @@ public:
    *  \param n       node to be processed.
    */
   void process(Node n, ChangedNodes &/*changed*/);
+  /** \brief send heartbeat for this module.
+   *  \param deadline maximum ammount of time for heartbeat to arrive
+   */
+  void heartbeat(unsigned int deadline);
   /** \brief gets filter name.
    *  \return name of implemented filter.
    */
-  const std::string &getTriggerType(void) const
+  const Core::Types::Proc::TypeName &getTriggerType(void) const
   {
     return type_;
   }
@@ -62,7 +66,7 @@ protected:
    *  \param type type of given trigger.
    *  \param name name of given trigger.
    */
-  Strategy(const std::string &type, const std::string &name);
+  Strategy(const Core::Types::Proc::TypeName &type, const Core::Types::Proc::InstanceName &name);
 
   /** \brief call allows interruption of call sequence.
    *
@@ -99,9 +103,10 @@ private:
 
   typedef ConstNode::element_type NodeElementType;
 
-  const std::string                   type_;
-  Base::ObservingSet<NodeElementType> nos_;
-  Persistency::IO::ConnectionPtrNN    conn_;
+  const Core::Types::Proc::TypeName     type_;
+  const Core::Types::Proc::InstanceName name_;
+  Base::ObservingSet<NodeElementType>   nos_;
+  Persistency::IO::ConnectionPtrNN      conn_;
 }; // class Strategy
 
 } // namespace Trigger

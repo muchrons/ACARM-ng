@@ -12,6 +12,7 @@
 
 using namespace std;
 using namespace Input;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -21,7 +22,7 @@ struct TestReader: public Reader
   typedef Reader::DataPtr DataPtr;
 
   explicit TestReader(bool &i):
-    Reader("testreader", "testreadername"),
+    Reader( TypeName("testreader"), InstanceName("testreadername") ),
     i_(i)
   {
   }
@@ -79,7 +80,7 @@ void testObj::test<2>(void)
   Persistency::IO::ConnectionPtrNN        conn( createUserStub() );
   Persistency::IO::Transaction            t( conn->createNewTransaction("test_reader") );
   Persistency::Facades::AnalyzersCreator  ac;
-  BackendFacade                           bf(conn, "testemall", ac);
+  BackendFacade                           bf(conn, TypeName("testemall"), InstanceName("myname"), ac, "El'Ownerro");
   Reader::DataPtr                         tmp  =r_->read(bf);
   Persistency::Alert                     *alert=tmp.get();
   ensure("NULL pointer returned", alert!=NULL);
@@ -100,7 +101,7 @@ namespace
 struct TestReaderName: public Reader
 {
   TestReaderName(void):
-    Reader("INVALID-chars-42","readername")
+    Reader( TypeName("INVALID-chars-42"), InstanceName("readername") )
   {
   }
   virtual DataPtr read(BackendFacade &, unsigned int)

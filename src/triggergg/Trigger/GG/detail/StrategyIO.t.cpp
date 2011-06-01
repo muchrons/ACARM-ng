@@ -52,8 +52,12 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  // cleanup
+  Connection conn4( getTestConfig4() );
+  cleanUpMessagesFromAccount(conn4);
+  // I/O
   io_.send("hello world");
-  const std::string str=getMessageFromAccount( getTestConfig4(), cfg_.getAccountConfig().getUserID() );
+  const std::string str=getMessageFromAccount( conn4, cfg_.getAccountConfig().getUserID() );
   ensure_equals("invalid repot generated", str, "hello world");
 }
 
@@ -70,6 +74,11 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
+  // cleanup
+  Connection conn2( getTestConfig2() );
+  cleanUpMessagesFromAccount(conn2);
+  Connection conn4( getTestConfig4() );
+  cleanUpMessagesFromAccount(conn4);
   // sending the message
   Config::Receivers r( getTestConfig4().getUserID() );
   r.push_back( getTestConfig2().getUserID() );
@@ -79,12 +88,12 @@ void testObj::test<4>(void)
 
   // get from account 4
   {
-    const std::string str=getMessageFromAccount( getTestConfig4(), cfg.getAccountConfig().getUserID(), "OP 2" );
+    const std::string str=getMessageFromAccount( conn4, cfg.getAccountConfig().getUserID(), "OP 2" );
     ensure_equals("invalid repot generated on account 4", str, "hello world");
   }
   // get from account 2
   {
-    const std::string str=getMessageFromAccount( getTestConfig2(), cfg.getAccountConfig().getUserID(), "OP 1" );
+    const std::string str=getMessageFromAccount( conn2, cfg.getAccountConfig().getUserID(), "OP 1" );
     ensure_equals("invalid repot generated on account 2", str, "hello world");
   }
 }

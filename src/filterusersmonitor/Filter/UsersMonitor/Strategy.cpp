@@ -11,14 +11,15 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 
 namespace Filter
 {
 namespace UsersMonitor
 {
 
-Strategy::Strategy(const std::string &name, const Parameters &params):
-  Filter::Simple::Strategy<Data>("usersmonitor", name, params.timeout_),
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Parameters &params):
+  Filter::Simple::Strategy<Data>( TypeName("usersmonitor"), name, params.timeout_),
   params_(params)
 {
 }
@@ -26,7 +27,7 @@ Strategy::Strategy(const std::string &name, const Parameters &params):
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
-  ecl.add("*input*");   // TODO: magic value
+  ecl.add( TypeName("*input*") );   // TODO: magic value
   return ecl;
 }
 
@@ -75,6 +76,11 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
 }
 
 void Strategy::postProcessNode(Node &/*n*/, Filter::BackendFacade &/*bf*/) const
+{
+  // nothing to be done here
+}
+
+void Strategy::postProcessNode(NodeEntry &/*entry*/, const NodeEntry &/*added*/, BackendFacade &/*bf*/) const
 {
   // nothing to be done here
 }

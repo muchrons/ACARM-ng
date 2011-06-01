@@ -35,22 +35,6 @@ idmef_analyzer_t * IDMEFParserAnalyzer::getNonNull(idmef_analyzer_t *ptr) const
   return ptr;
 }
 
-namespace
-{
-const char *nonNULL(const char *str)
-{
-  if(str==NULL)
-    return "NULLSTR";
-  return str;
-} // nonNULL()
-string nonNULL(const Persistency::Analyzer::IP *ip)
-{
-  if(ip==NULL)
-    return "NULLIP";
-  return ip->to_string();
-} // nonNULL()
-} // unnamed namespace
-
 std::string IDMEFParserAnalyzer::parsePreludeID(idmef_analyzer_t *ptr) const
 {
   const prelude_string_t *idmef_id = idmef_analyzer_get_analyzerid(ptr);

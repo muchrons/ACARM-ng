@@ -9,17 +9,32 @@ compilation from sources
 ========================
 
 after obtaining sources from http://www.acarm.wcss.wroc.pl extract them:
-$ tar xjvf aacrmng.tar.bz2
+$ tar xjvf acarmng.tar.bz2
 
-enter sources directory:
-$ cd acarmng/src
+enter extracted directory:
+$ cd acarmng
 
-and run compilation:
-$ make PROFILE=release
+configure installation:
+$ ./configure
+if you're using development version of ACARM-ng you may consider building in
+debug mode (./configure --debug). you can also specify destination root path
+with ./configure --prefix /my/path (default is /opt). at this stage you can
+also disable plug-ins you're not willing to use/build.
+if you have additional libraries installed, or have non-default paths use
+-I <path> and -L <path> options.
+note: ./configure --help gives you more info on usage.
 
-if make exited with no errors system compiler successfully.  note that
-build process used to build ACARM-ng ensures valid dependencies and so
-'make' can be run in parallel (-jN where N is number of CPUs in the system).
+run compilation:
+$ make
+note that make uses parallel build by default, depending on number of cores
+your machine have.
+
+and install to destination directories:
+$ make install
+
+although ACARM-ng can be installed anywhere, it defaults to /opt.
+for simplicity of this work we'll assume however that we have installed
+it to / (root) directory - this will make paths shorter and more readable.
 
 
 external packages remarks
@@ -34,15 +49,6 @@ for a given issue. all of them can be found in 'ext_patches' directory,
 separated by the external components with directories.
 
 
-compiling without some features
-===============================
-
-there is an option of compilation without certain features, like some of the
-triggers, inputs, filters or persistency types.
-
-TODO: describe how to do this (note: script making this easier would be nice)
-
-
 running automatic tests
 =======================
 
@@ -50,9 +56,12 @@ this step is optional, but strongly recommended. by running automated tests
 you can quickly check if there are any problems with system-environment
 cooperation.
 
-extract and enter sources directory (see 'compilation from sources' section
-for details) and build tests:
-$ make PROFILE=test
+enter sources directory:
+$ cd acarmng/src
+
+and build tests:
+$ make PROFILE=test -j N
+where N is number of parallel jobs to execute.
 
 run all tests with following script:
 $ ./run_all_tests
@@ -77,7 +86,11 @@ PostgreSQL
  1. create 'acarm_ng' data base on the server.
  2. create valid data base schema for this data base:
     $ cd acarmng/data_model/<database>/<version>
-    $ ./init_db
+    $ ./init_db <dbname> <dpf> <upf>
+    where:
+      dbname - data base name to be used (data base must already exists).
+      dpf    - file with password for daemon.
+      upf    - file with password for WUI user.
 
 note: if you want to run tests create 'acarm_ng_test' data base and use
       'init_test_db' script to fill it with data.
@@ -97,18 +110,16 @@ NOTE: though ACARM-ng does not require any data base to be configured for
 in order to be able to access processed data via web server it has to be
 configured to show directory containing required files. usually the default
 configuration is just fine, as long as you provided WUI files in default
-directory. assuming default directory to be (/var/www/default), in most cases
-this means following steps:
- 0. cd <...>/acarm_sources_dir/
- 1. cp -Lrv wui/site /var/www/default/acarm-ng/
- 2. $EDITOR /var/www/default/acarm-ng/protected/application.xml
- 3. find this line and replace uppercase values with your own:
+directory. since ACARM-ng automatically installs WUI to /var/www/acarm-ng,
+in most cases installation means following steps:
+ 1. $EDITOR /var/www/default/acarm-ng/protected/application.xml
+ 2. find this line and replace uppercase values with your own:
     <database ConnectionString="pgsql:host=localhost;dbname=DATABASENAME" Username="acarm-ng-ui" Password="PASSWORD" />
- 4. access via http://localhost/acarm-ng (move around a little to see if
+ 3. access via http://localhost/acarm-ng (move around a little to see if
     data base connections works fine)
- 5. configure web server to obey .htaccess confiuration - this is
-    CRUTIAL FOR SECUITY! on Apache 'AllowOverride all' has to be added to
-    server config. in order to verify it works fine try accessing for example
+ 4. configure web server to obey .htaccess confiuration - this is
+    CRUCIAL FOR SECURITY! on Apache 'AllowOverride all' has to be added to
+    server's config. in order to verify it works fine try accessing
     http://localhost/acarm-ng/protected - you should get error 403 (access
     forbidden) from the server.
 
@@ -126,28 +137,18 @@ must create dedicated user to run system as. let us assume user's name is
 $ groupadd acarm-ng
 $ useradd -g acarm-ng -m acarm-ng
 
-
-files placement
-===============
-
-now /home/acarm-ng directory should exist. copy all required files there
-(assume /tmp/acarmng is your source directory, with compiled binaries):
-$ cd /home/acarm-ng
-$ cp -rL /tmp/acarmng/src/gen/release_local_normal_default/libs .
-$ cp /tmp/acarmng/src/gen/release_local_normal_default/acarmng/acarmng.out acarmng
-
-now create configuration file, according to your needs and place in the same
-directory as a binary (in our example this is /home/acarm-ng), under the name
-'acarm_ng_config.xml'. see CONFIGURATION.txt for details on syntax and possible
-options.
+now it's a good time to configure ACARM-ng daemon. file
+/etc/acarm-ng/acarm_ng_config.xml contains all of the configuration. since
+it consists of many sections and features, it has been described in a separate
+document, namely CONFIGURATION.txt.
 
 
 running
 =======
 
 assuming you have everything configured as described above, switch to
-'acarm-ng' user and in the home directory run:
-$ LD_LIBRARY_PATH="$HOME/libs" ./acarmng
+'acarm-ng' user and run daemon:
+$ /bin/acarm-ng
 
 system is now up and running! depending no how you configred logger, you can
 search in proper outputs (ex. file) logged messages to see what's up at the

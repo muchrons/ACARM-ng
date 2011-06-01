@@ -14,14 +14,15 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 
 namespace Filter
 {
 namespace IPBlackList
 {
 
-Strategy::Strategy(const std::string &name, const Parameters &params):
-  Filter::Strategy<Data>("ipblacklist", name),
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Parameters &params):
+  Filter::Strategy<Data>( TypeName("ipblacklist"), name ),
   params_(params),
   nextPrune_(0),
   deadline_(0),
@@ -32,7 +33,7 @@ Strategy::Strategy(const std::string &name, const Parameters &params):
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
-  ecl.add("*input*");   // TODO: magic value
+  ecl.add( TypeName("*input*") );   // TODO: magic value
   return ecl;
 }
 

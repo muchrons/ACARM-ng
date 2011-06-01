@@ -5,12 +5,11 @@
 #include <cassert>
 
 #include "Logger/Logger.hpp"
-// TODO: never include files withoutfull path (here: Input/Prelude)
-#include "ExceptionParse.hpp"
-#include "IDMEFParserAnalyzer.hpp"
-#include "IDMEFParserSource.hpp"
-#include "IDMEFParserTarget.hpp"
-#include "IDMEFParser.hpp"
+#include "Input/Prelude/ExceptionParse.hpp"
+#include "Input/Prelude/IDMEFParserAnalyzer.hpp"
+#include "Input/Prelude/IDMEFParserSource.hpp"
+#include "Input/Prelude/IDMEFParserTarget.hpp"
+#include "Input/Prelude/IDMEFParser.hpp"
 
 namespace Input
 {
@@ -35,6 +34,7 @@ idmef_alert_t* IDMEFParser::extractAlert(idmef_message_t *msg) const
 {
   if(msg==NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Message is null");
+  // TODO: heartbeats now ARE supported (Input::BackendFacade::heartbeat() method)
   if( idmef_message_get_type(msg)!=IDMEF_MESSAGE_TYPE_ALERT )
     throw ExceptionUnsupportedFeature(SYSTEM_SAVE_LOCATION, "heartbeats are not supported");
   return idmef_message_get_alert(msg);
@@ -206,9 +206,8 @@ Persistency::SeverityLevel IDMEFParser::parseSeverity(idmef_alert_t *alert) cons
       LOGMSG_DEBUG_S(log_)<<"Severity is HIGH";
       return Persistency::SeverityLevel::HIGH;
     case IDMEF_IMPACT_SEVERITY_ERROR:
-      // TODO: this should be HIGH (i.e. acording to prelude it is "more than high")
-      LOGMSG_DEBUG_S(log_)<<"Severity ERROR mapped to DEBUG";
-      return Persistency::SeverityLevel::DEBUG;
+      LOGMSG_DEBUG_S(log_)<<"Severity ERROR mapped to HIGH";
+      return Persistency::SeverityLevel::HIGH;
     default:
       LOGMSG_DEBUG_S(log_)<<"Severity UNKNOWN mapped to DEBUG";
       return Persistency::SeverityLevel::DEBUG;

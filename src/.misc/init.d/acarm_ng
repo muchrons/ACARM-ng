@@ -1,0 +1,69 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          acarm_ng
+# Required-Start:    $network postgresql
+# Required-Stop:     $network postgresql
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: ACARM-ng startup script
+# Description:       Runs/stops ACARM-ng system
+#                    placed in /etc/init.d.
+### END INIT INFO
+
+# Author: Bartosz Szurgot <bartosz.szurgot@pwr.wroc.pl>
+
+# Do NOT "set -e"
+
+# PATH should only include /usr/* if it runs after the mountnfs.sh script
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DESC="ACARM-ng daemon"
+NAME=acarm_ng
+DAEMON=/home/acarm-ng/run
+DAEMON_ARGS=""
+PIDFILE=/var/run/$NAME.pid
+RUNLOG=/var/log/acarm-ng/run.log
+SCRIPTNAME=/etc/init.d/$NAME
+
+# Exit if the package is not installed
+[ -x "$DAEMON" ] || exit 0
+
+case "$1" in
+  start)
+    echo -n "starting $NAME (run log in $RUNLOG): "
+    if [ -f "$PIDFILE" ] && [ -d "/proc/`cat "$PIDFILE"`" ] && grep -qi 'acarm' "/proc/`cat "$PIDFILE"`"/cmdline
+    then
+      echo "according to $PIDFILE deamon is already running" >&2
+      exit 1
+    fi
+    "$DAEMON" >> "$RUNLOG" 2>&1 &
+    while ! pidof acarmng > /dev/null 2>&1 && test -f /proc/$!/cmdline
+    do
+      echo -n '.'
+      sleep 1
+    done
+    echo
+    pidof acarmng > "$PIDFILE"
+  ;;
+  stop)
+    # not running?
+    [ -f "$PIDFILE" ] || exit 0
+    PID="`cat "$PIDFILE"`"
+    echo -n "stopping $NAME/$PID (may take some time): "
+    # wait until process exits
+    while [ "`ps ax | grep "^ *$PID " | grep -v grep | wc -l`" -ne 0 ]
+    do
+      kill "$PID"
+      echo -n '.'
+      sleep 1
+    done
+    echo
+    # remove pid file
+    rm -f "$PIDFILE"
+  ;;
+  *)
+    echo "Usage: $SCRIPTNAME {start|stop}" >&2
+    exit 3
+  ;;
+esac
+
+exit 0

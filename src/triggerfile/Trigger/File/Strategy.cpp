@@ -10,6 +10,7 @@
 #include "Trigger/File/Strategy.hpp"
 
 using namespace std;
+using namespace Core::Types::Proc;
 using Commons::SharedPtrNotNULL;
 using Commons::Filesystem::createFile;
 
@@ -18,8 +19,8 @@ namespace Trigger
 namespace File
 {
 
-Strategy::Strategy(const std::string &name, const Config &cfg):
-  Trigger::Simple::Strategy("file", name, cfg.getThresholdConfig() ),
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Config &cfg):
+  Trigger::Simple::Strategy(TypeName("file"), name, cfg.getThresholdConfig() ),
   outdir_( cfg.getOutputDirectory() ),
   lastWrite_(0),
   lastIndex_(0)

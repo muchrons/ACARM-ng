@@ -28,18 +28,17 @@ public:
    *  \param ts       set of already timeouted elements.
    *  \param params   parameters (timeout and priority delta).
    */
-  EntryProcessor(BackendFacade *bf, ProcessedSet *ps, TimeoutedSet *ts, const Strategy::Parameters params);
+  EntryProcessor(BackendFacade &bf, ProcessedSet &ps, TimeoutedSet &ts, const Strategy::Parameters &params);
   /** \brief method responsible for doing all the job.
    *  \param leaf leaft to be processed.
    */
   void operator()(Persistency::GraphNodePtrNN leaf);
 
 private:
-
   Logger::Node               log_;
-  BackendFacade             *bf_;
-  ProcessedSet              *ps_;
-  TimeoutedSet              *ts_;
+  BackendFacade              &bf_;
+  ProcessedSet               &ps_;
+  TimeoutedSet               &ts_;
   const Strategy::Parameters params_;
 }; // class EntryProcessor
 

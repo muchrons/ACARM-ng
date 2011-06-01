@@ -2,6 +2,7 @@
  * Strategy.cpp
  *
  */
+#include <sstream>
 #include <algorithm>
 #include <boost/thread.hpp>
 #include <cassert>
@@ -70,7 +71,7 @@ void Strategy::process(Node n, ChangedNodes &/*changed*/)
   // if it succeeded, mark it as triggered
   nos_.add( n.shared_ptr() );
   // and save it to persistency storage
-  BackendFacade bf(conn_, type_);
+  BackendFacade bf(conn_, type_, name_);
   bf.markAsTriggered( n->getMetaAlert() );
   bf.commitChanges();
 
@@ -78,19 +79,32 @@ void Strategy::process(Node n, ChangedNodes &/*changed*/)
 }
 
 
+void Strategy::heartbeat(unsigned int deadline)
+{
+  stringstream owner;
+  owner<<"trigger::"<<type_.str()<<"/"<<name_.str();
+  Persistency::IO::Transaction       t( conn_->createNewTransaction("heartbeat_sending") );
+  Persistency::IO::HeartbeatsAutoPtr hb=conn_->heartbeats( owner.str(), t );
+  assert( hb.get()!=NULL );
+  hb->report("thread", deadline);
+  t.commit();
+}
+
+
 namespace
 {
-inline Logger::NodeName makeNodeName(const string &type, const string &name)
+inline Logger::NodeName makeNodeName(const Core::Types::Proc::TypeName &type, const Core::Types::Proc::InstanceName &name)
 {
-  const string &out="trigger." + Logger::NodeName::removeInvalidChars(type)
-                               + "." + Logger::NodeName::removeInvalidChars(name);
+  const string &out="trigger." + Logger::NodeName::removeInvalidChars(type.str())
+                               + "." + Logger::NodeName::removeInvalidChars(name.str());
   return Logger::NodeName( out.c_str() );
 } // makeNodeName()
 } // unnamed namespace
 
-Strategy::Strategy(const std::string &type, const std::string &name):
+Strategy::Strategy(const Core::Types::Proc::TypeName &type, const Core::Types::Proc::InstanceName &name):
   log_( makeNodeName(type, name) ),
   type_(type),
+  name_(name),
   conn_( Persistency::IO::create() )
 {
   LOGMSG_INFO(log_, "trigger created");

@@ -11,6 +11,7 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace Filter::UsersMonitor;
 using namespace TestHelpers::Persistency;
 
@@ -20,7 +21,7 @@ namespace
 struct TestClass: public TestBase
 {
   TestClass(void):
-    s_( "somename", Strategy::Parameters(997, Data::Names() ) )
+    s_( InstanceName("somename"), Strategy::Parameters(997, Data::Names() ) )
   {
   }
 
@@ -102,7 +103,7 @@ void testObj::test<5>(void)
 {
   Data::Names skip;
   skip.push_back("cat");
-  Strategy    s( "myname", Strategy::Parameters(123, skip) );
+  Strategy    s( InstanceName("myname"), Strategy::Parameters(123, skip) );
   GraphNodePtrNN leaf1=makeNewLeaf( mkAlert("cat") );
   s.process(leaf1, changed_);
   ensure_equals("something has been changed", changed_.size(), 0u);
@@ -119,7 +120,7 @@ void testObj::test<6>(void)
 {
   Data::Names skip;
   skip.push_back("cat");
-  Strategy    s( "myname", Strategy::Parameters(123, skip) );
+  Strategy    s( InstanceName("myname"), Strategy::Parameters(123, skip) );
   GraphNodePtrNN leaf1=makeNewLeaf( mkAlert("cat", "doom") );
   s.process(leaf1, changed_);
   ensure_equals("something has been changed", changed_.size(), 0u);

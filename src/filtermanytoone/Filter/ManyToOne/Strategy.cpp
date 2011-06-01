@@ -10,8 +10,8 @@ namespace Filter
 namespace ManyToOne
 {
 
-Strategy::Strategy(const std::string &name, unsigned int timeout):
-  Filter::HostCommon::Strategy("manytoone", name, timeout)
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, unsigned int timeout):
+  Filter::HostCommon::Strategy( Core::Types::Proc::TypeName("manytoone"), name, timeout)
 {
 }
 

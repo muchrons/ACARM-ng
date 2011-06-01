@@ -64,6 +64,7 @@ const xmlpp::Element* findAnyChildIfHas(const xmlpp::Element &parent, const char
   return dynamic_cast<const xmlpp::Element*>( *nl.begin() );
 } // findAnyChildIfHas
 
+/*
 const xmlpp::Element& findAnyChild(const xmlpp::Element &parent, const char *name)
 {
   const xmlpp::Element *ptr=findAnyChildIfHas(parent, name);
@@ -71,6 +72,7 @@ const xmlpp::Element& findAnyChild(const xmlpp::Element &parent, const char *nam
     throw ExceptionMissingElement(SYSTEM_SAVE_LOCATION, parent.get_path(), name);
   return *ptr;
 } // findAnyChild()
+*/
 
 const xmlpp::Element* findOneChildIfHas(const xmlpp::Element &parent, const char *name)
 {
@@ -177,7 +179,7 @@ FromXML::FromXML(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transac
 {
 }
 
-Persistency::AlertPtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
+Persistency::AlertPtrNN FromXML::parseAlert(const xmlpp::Element &alert)
 {
   // sanity check
   ensureNode("Alert", alert);
@@ -216,7 +218,7 @@ Persistency::AlertPtrNN FromXML::parseAlert(const xmlpp::Element &alert) const
                                description, sourceHosts, targetHosts) );
 }
 
-Persistency::AnalyzerPtrNN FromXML::parseAnalyzer(const xmlpp::Element &analyzer) const
+Persistency::AnalyzerPtrNN FromXML::parseAnalyzer(const xmlpp::Element &analyzer)
 {
   ensureNode("Analyzer", analyzer);
   const FromXML::NodeData  nodeData   =parseNode( findOneChildIfHas(analyzer, "Node") );
@@ -246,12 +248,12 @@ Persistency::AnalyzerPtrNN FromXML::parseAnalyzer(const xmlpp::Element &analyzer
   return out;
 }
 
-Persistency::Timestamp FromXML::parseCreateTime(const xmlpp::Element &createTime) const
+Persistency::Timestamp FromXML::parseCreateTime(const xmlpp::Element &createTime)
 {
   return parseTimestamp("CreateTime", createTime);
 }
 
-Persistency::Timestamp FromXML::parseDetectTime(const xmlpp::Element &detectTime) const
+Persistency::Timestamp FromXML::parseDetectTime(const xmlpp::Element &detectTime)
 {
   return parseTimestamp("DetectTime", detectTime);
 }
@@ -282,7 +284,7 @@ const SeverityLevel g_defaultSeverity(SeverityLevel::INFO);
 const double        g_defaultCertainty(0.75);
 } // unnamed namespace
 
-FromXML::Assessment FromXML::parseAssessment(const xmlpp::Element &assessment) const
+FromXML::Assessment FromXML::parseAssessment(const xmlpp::Element &assessment)
 {
   ensureNode("Assessment", assessment);
 
@@ -308,14 +310,14 @@ FromXML::Assessment FromXML::parseAssessment(const xmlpp::Element &assessment) c
   return Assessment( Severity(sl), Certainty(cert) );
 }
 
-FromXML::Assessment FromXML::parseAssessment(const xmlpp::Element *assessment) const
+FromXML::Assessment FromXML::parseAssessment(const xmlpp::Element *assessment)
 {
   if(assessment==NULL)
     return Assessment( Severity(g_defaultSeverity), Certainty(g_defaultCertainty) );
   return parseAssessment(*assessment);
 }
 
-FromXML::Classification FromXML::parseClassification(const xmlpp::Element &classification) const
+FromXML::Classification FromXML::parseClassification(const xmlpp::Element &classification)
 {
   ensureNode("Classification", classification);
   const string          description=parseParameter(classification, "text");
@@ -326,7 +328,7 @@ FromXML::Classification FromXML::parseClassification(const xmlpp::Element &class
   return FromXML::Classification(description, ref);
 }
 
-Persistency::ReferenceURLPtrNN FromXML::parseReferenceURL(const xmlpp::Element &ref) const
+Persistency::ReferenceURLPtrNN FromXML::parseReferenceURL(const xmlpp::Element &ref)
 {
   ensureNode("Reference", ref);
   const string name=parseString( findOneChild(ref, "name") );
@@ -334,7 +336,7 @@ Persistency::ReferenceURLPtrNN FromXML::parseReferenceURL(const xmlpp::Element &
   return ReferenceURLPtrNN( new ReferenceURL(name, url) );
 }
 
-FromXML::StringNull FromXML::parseAdditionalData(const xmlpp::Element &data) const
+FromXML::StringNull FromXML::parseAdditionalData(const xmlpp::Element &data)
 {
   ensureNode("Alert", data);
   stringstream                    ss;
@@ -367,7 +369,7 @@ FromXML::StringNull FromXML::parseAdditionalData(const xmlpp::Element &data) con
   return StringNull();
 }
 
-FromXML::IP FromXML::parseAddress(const xmlpp::Element &address) const
+FromXML::IP FromXML::parseAddress(const xmlpp::Element &address)
 {
   ensureNode("Address", address);
   const string ip=parseString( findOneChild(address, "address") );
@@ -394,7 +396,7 @@ void parsePortRange(PortList &out, const string &in)
   const Tokenizer tokens(in, sep);
 
   // parse tokens
-  PortNumber::Numeric nums[2];
+  PortNumber::Numeric nums[2]={0, 0};
   int                 i=0;
   for(Tokenizer::const_iterator it=tokens.begin(); it!=tokens.end(); ++it, ++i)
   {
@@ -430,7 +432,7 @@ void parsePortList(PortList &out, const string &in)
 } // parsePortList()
 } // unnamed namespace
 
-FromXML::ServiceVector FromXML::parseService(const xmlpp::Element &service) const
+FromXML::ServiceVector FromXML::parseService(const xmlpp::Element &service)
 {
   ensureNode("Service", service);
 
@@ -485,7 +487,7 @@ NullValue<string> parseAndMergeArguments(const xmlpp::Element &parent)
 }
 } // unnamed namespace
 
-Persistency::ProcessPtrNN FromXML::parseProcessAndUser(const xmlpp::Element &process) const
+Persistency::ProcessPtrNN FromXML::parseProcessAndUser(const xmlpp::Element &process)
 {
   // check for process
   const xmlpp::Element *procElem=findOneChildIfHas(process, "Process");
@@ -523,19 +525,19 @@ Persistency::ProcessPtrNN FromXML::parseProcessAndUser(const xmlpp::Element &pro
   return ProcessPtrNN( new Process(pathStr, name, NULL, pid.get(), uid.get(), username, argsStr, ref) );
 }
 
-FromXML::Hosts FromXML::parseSource(const xmlpp::Element &alert) const
+FromXML::Hosts FromXML::parseSource(const xmlpp::Element &alert)
 {
   ensureNode("Alert", alert);
   return parseHosts( alert.get_children("Source") );
 }
 
-FromXML::Hosts FromXML::parseTarget(const xmlpp::Element &alert) const
+FromXML::Hosts FromXML::parseTarget(const xmlpp::Element &alert)
 {
   ensureNode("Alert", alert);
   return parseHosts( alert.get_children("Target") );
 }
 
-FromXML::NodeData FromXML::parseNode(const xmlpp::Element &node) const
+FromXML::NodeData FromXML::parseNode(const xmlpp::Element &node)
 {
   ensureNode("Node", node);
 
@@ -553,14 +555,14 @@ FromXML::NodeData FromXML::parseNode(const xmlpp::Element &node) const
   return NodeData(name, ip);
 }
 
-FromXML::NodeData FromXML::parseNode(const xmlpp::Element *node) const
+FromXML::NodeData FromXML::parseNode(const xmlpp::Element *node)
 {
   if(node==NULL)
     return NodeData();
   return parseNode(*node);
 }
 
-void FromXML::ensureNode(const char *name, const xmlpp::Element &node) const
+void FromXML::ensureNode(const char *name, const xmlpp::Element &node)
 {
   assert(name!=NULL);
   LOGMSG_DEBUG_S(log_)<<"processing node '"<<name<<"'";
@@ -570,7 +572,7 @@ void FromXML::ensureNode(const char *name, const xmlpp::Element &node) const
   LOGMSG_DEBUG_S(log_)<<"node '"<<name<<"' is valid as a given parser element";
 }
 
-Persistency::Timestamp FromXML::parseTimestamp(const char *name, const xmlpp::Element &ts) const
+Persistency::Timestamp FromXML::parseTimestamp(const char *name, const xmlpp::Element &ts)
 {
   ensureNode(name, ts);
   assert(name!=NULL);
@@ -583,7 +585,7 @@ Persistency::Timestamp FromXML::parseTimestamp(const char *name, const xmlpp::El
   return tc.fromString( txt->get_content() ).first;
 }
 
-double FromXML::parseConfidenceValue(const std::string &rating, const xmlpp::Element &node) const
+double FromXML::parseConfidenceValue(const std::string &rating, const xmlpp::Element &node)
 {
   // floating-point value?
   if(rating=="numeric")
@@ -599,7 +601,7 @@ double FromXML::parseConfidenceValue(const std::string &rating, const xmlpp::Ele
                                 "invalid value: " + rating);
 }
 
-Persistency::HostPtrNN FromXML::parseHost(const xmlpp::Element &host) const
+Persistency::HostPtrNN FromXML::parseHost(const xmlpp::Element &host)
 {
   // get node data (ip/name)
   const NodeData  nodeData=parseNode( findOneChild(host, "Node") );
@@ -628,7 +630,7 @@ Persistency::HostPtrNN FromXML::parseHost(const xmlpp::Element &host) const
   return Persistency::HostPtrNN( new Host( *nodeData.second.get(), NULL, NULL, ReferenceURLPtr(), rSrvs, rProcs, name ) );
 }
 
-FromXML::Hosts FromXML::parseHosts(const xmlpp::Element::NodeList &list) const
+FromXML::Hosts FromXML::parseHosts(const xmlpp::Element::NodeList &list)
 {
   Hosts out;
   out.reserve( list.size() );

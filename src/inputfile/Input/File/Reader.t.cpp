@@ -14,6 +14,7 @@
 using namespace std;
 using namespace boost::filesystem;
 using namespace Commons::Filesystem;
+using namespace Core::Types::Proc;
 using namespace Input::File;
 using namespace Persistency;
 using namespace TestHelpers::Persistency;
@@ -25,9 +26,9 @@ struct TestClass: public TestStubs
 {
   TestClass(void):
     fifo_("some_test_fifo"),
-    r_("mynameisifileinput", fifo_),
+    r_(InstanceName("mynameisifileinput"), fifo_),
     conn_( IO::create() ),
-    bf_(conn_, "my_backend_facade", ac_)
+    bf_(conn_, TypeName("my_backend_facade"), InstanceName("myname"), ac_, "oWNEr")
   {
   }
 
@@ -58,7 +59,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid type", r_.getType(), "file");
+  ensure_equals("invalid type", r_.getType().str(), "file");
 }
 
 // test test timeout
@@ -121,7 +122,7 @@ template<>
 void testObj::test<6>(void)
 {
   remove(fifo_);
-  Reader tmp("somename", fifo_);
+  Reader tmp(InstanceName("somename"), fifo_);
   ensure("not created", isFifoSane(fifo_) );
 }
 
@@ -135,11 +136,19 @@ void testObj::test<7>(void)
   fstream queue( fifo_.string().c_str(), fstream::in|fstream::out );
   ensure("queue not opened", queue.is_open() );
   // create new reader - it should open old queue, not overwirte it
-  Reader tmp("somename", fifo_);
+  Reader tmp(InstanceName("somename"), fifo_);
   // write open command
   queue<<"testdata/test_short_alert.xml"<<endl;
   // test if file has been parsed and alert has been created
   ensure("queue has been overwritten instaed of opened", tmp.read(bf_, 1).get()!=NULL );
+}
+
+// test if name is valid
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  ensure_equals("invalid name", r_.getName().str(), "mynameisifileinput");
 }
 
 } // namespace tut

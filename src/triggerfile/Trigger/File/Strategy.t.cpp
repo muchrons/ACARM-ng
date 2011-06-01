@@ -16,6 +16,7 @@
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace std;
+using namespace Core::Types::Proc;
 using namespace Trigger::File;
 using namespace Persistency;
 using namespace TestHelpers::Persistency;
@@ -32,45 +33,42 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 
   ~TestClass(void)
   {
-    try
+    while( !rmThis_.empty() )
     {
-      while( rmThis_.size()!=0 )
+      try
       {
         unlink( rmThis_.top().c_str() );
         rmdir ( rmThis_.top().c_str() );
         rmThis_.pop();
       }
-    }
-    catch(...)
-    {
-      assert(!"exception in d-tor");
-    }
+      catch(...)
+      {
+        assert(!"exception in d-tor");
+      }
+    } // while(!empty)
   }
 
   void testFileInRange(const char *root, const time_t from, const time_t to)
   {
-    const char *error="no elements in range";
     for(time_t t=from; t<=to; ++t)
     {
       // in-test quick-hack
       switch( testFile(root, t, 0) )
       {
         case 0:
-          error=NULL;
-          break;
+          return;
         case 1:
-          error="no such file";
+          // no such file - check for next one
           break;
         case 2:
-          error="file's size is invalid (empty?)";
+          tut::fail("file's size is invalid (empty?)");
           break;
         default:
           assert(!"unhandled return code");
       } // switch(file_existance)
     } // for(timestamp-range)
 
-    if(error!=NULL)
-      tut::fail(error);
+    tut::fail("no elements in range");
   }
 
   int testFile(const char *root, const time_t ts, unsigned int index)
@@ -108,8 +106,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Strategy s("mytrigger", cfg_);
-  ensure_equals("invalid trigger type", s.getTriggerType(), "file");
+  const Strategy s(InstanceName("mytrigger"), cfg_);
+  ensure_equals("invalid trigger type", s.getTriggerType().str(), "file");
 }
 
 // test saving report in current directory
@@ -117,7 +115,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Strategy               s("myfiletrigger", cfg_);
+  Strategy               s(InstanceName("myfiletrigger"), cfg_);
   Strategy::ChangedNodes nc;
   const time_t           start=time(NULL);
   s.process( makeNewNode(), nc );
@@ -134,7 +132,7 @@ void testObj::test<3>(void)
   if( mkdir(out, 0755)!=0 )
     ensure("unable to create output dir", errno==EEXIST);
   const Config           cfg(out, cfg_.getThresholdConfig() );
-  Strategy               s("myfiletrigger", cfg);
+  Strategy               s(InstanceName("myfiletrigger"), cfg);
   Strategy::ChangedNodes nc;
   const time_t           start=time(NULL);
   s.process( makeNewNode(), nc );
@@ -151,7 +149,7 @@ void testObj::test<4>(void)
   // if it does not happen
   for(int i=0; i<5; ++i)
   {
-    Strategy               s("myfiletrigger", cfg_);
+    Strategy               s(InstanceName("myfiletrigger"), cfg_);
     Strategy::ChangedNodes nc;
 
     // wait until seconds just changed - to make event as probable as possible

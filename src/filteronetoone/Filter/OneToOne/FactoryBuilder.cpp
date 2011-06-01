@@ -41,7 +41,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO(log_, "building filter's instance");
   assert(g_rh.isRegistered() && "oops - registration failed");
 
-  const FilterConfig fc(type_, options);
+  const FilterConfig fc(type_.str(), options);
   // filter onetoone name
   const std::string    &name=fc["name"];
   LOGMSG_INFO_S(log_)<<"setting filter \""<<getTypeName()<<"\" name to \""<<name<<"\"";
@@ -50,12 +50,12 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // create and return new handle.
   typedef InterfaceImpl<Strategy, unsigned int> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl(type_, name, timeout) );
+  return FactoryBuilder::FactoryPtr( new Impl(type_, InstanceName(name), timeout) );
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const
 {
-  return type_;
+  return type_.str();
 }
 
 } // namespace OneToOne

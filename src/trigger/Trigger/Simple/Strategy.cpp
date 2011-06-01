@@ -15,7 +15,7 @@ namespace Trigger
 namespace Simple
 {
 
-Strategy::Strategy(const std::string &type, const std::string &name, const ThresholdConfig &cfg):
+Strategy::Strategy(const Core::Types::Proc::TypeName &type, const Core::Types::Proc::InstanceName &name, const ThresholdConfig &cfg):
   Trigger::Strategy(type, name),
   cfg_(cfg)
 {

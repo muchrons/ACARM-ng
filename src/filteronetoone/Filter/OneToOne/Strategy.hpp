@@ -53,7 +53,7 @@ public:
    *  \name name name for strategy.
    *  \param timeout time observed node should be in queue.
    */
-  Strategy(const std::string &name, unsigned int timeout);
+  Strategy(const Core::Types::Proc::InstanceName &name, unsigned int timeout);
 
   /** \brief create ECL for this filter.
    *  \return ECL for filter.
@@ -76,6 +76,7 @@ private:
                                       const NodeEntry &otherEntry,
                                       const Node       newNode) const;
   virtual void postProcessNode(Node &n, Filter::BackendFacade &bf) const;
+  virtual void postProcessNode(NodeEntry &entry, const NodeEntry &added, BackendFacade &bf) const;
 }; // class Strategy
 
 } // namespace OneToOne

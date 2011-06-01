@@ -88,7 +88,7 @@ public:
     if(session)
       conn_.get()->disposeMessageSession( sess_ );
     sess_ = session;
-    tut::ensure( "session is NULL" , sess_ != NULL);
+    tut::ensure("session is NULL", sess_!=NULL);
     sess_->registerMessageHandler( this );
   }
 

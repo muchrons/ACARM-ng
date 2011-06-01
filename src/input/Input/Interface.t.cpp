@@ -12,6 +12,7 @@
 
 using namespace std;
 using namespace Input;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -19,7 +20,7 @@ namespace
 struct TestReader: public Reader
 {
   TestReader(void):
-    Reader("testreader", "testreadername")
+    Reader( TypeName("testreader"), InstanceName("testreadername") )
   {
   }
 
@@ -35,8 +36,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   TestClass(void):
     tr_(new TestReader),
     r_(tr_),
-    conn_( createUserStub() ),
-    t_( conn_->createNewTransaction("test_interface") )
+    conn_( createUserStub() )
   {
   }
 
@@ -44,7 +44,6 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   ReaderPtrNN                       r_;
   Core::Types::AlertsFifo           output_;
   Persistency::IO::ConnectionPtrNN  conn_;
-  Persistency::IO::Transaction      t_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -101,7 +100,7 @@ namespace
 struct TestReaderName: public Reader
 {
   TestReaderName(void):
-    Reader("INVALID-42-chars_NARF", "somename")
+    Reader( TypeName("INVALID-42-chars_NARF"), InstanceName("somename") )
   {
   }
 

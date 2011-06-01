@@ -4,19 +4,19 @@
 #
 
 # set default mode
-export MODE=default
+export MODE:=default
 
 # set default profile
-export PROFILE=test
+export PROFILE:=test
 
 # set default toolchain
-export TC=local
+export TC:=gcc
 
 # enable distcc
 #export WITH_DISTCC:=1
 
 # features to build with
-export FEATURES= \
+export FEATURES:= \
                  lock_on_write_graph_add \
                  use_new_boost_filesystem
 
@@ -28,6 +28,25 @@ TMPLD:=
 ifneq (,$(shell which ccache))
 export WITH_CCACHE:=1
 endif
+
+# work around for GCC 4.5/C++0x libs for intel (required when GCC>=4.5 is default one)
+ifeq ($(TC),intel)
+# BR-hack is required, since inserting brackets directly inside $(shell ) breaks syntax...
+BR:=)
+GCC_VER:=$(shell g++ --version | head -1 | sed "s:^[^$(BR)]\+$(BR) *::" | sed 's: .*::' | sed 's:^\([0-9]\+\.[0-9]\+\).*:\1:')
+BR:=
+ifeq ($(GCC_VER),4.5)
+$(warning WARNING: compiling with ICC, using GCC 4.5 libs - this may lead to problems)
+ifeq ($(shell test -e /usr/include/c++/4.4 && echo OK),OK)
+$(warning WARNING: detected libs for GCC 4.4 - using these ones instead)
+TMP+=-I /usr/include/c++/4.4
+else
+$(warning GCC 4.5 IS (AS FOR NOW) INCOMPATIBLE WITH ICC, SINCE IT USES IMPLICIT C++0x IN)
+$(warning HEADER FILES (INTEL DOES NOT MAKE SUCH AN ASSUMPTION). PROGRAM PROBABLY WILL NOT COMPILE.)
+$(warning TO FIX THIS ISSUE TRY INSTALLING GCC 4.4 OR NEWER ICC.)
+endif # has gcc 4.4 libs
+endif # gcc 4.5
+endif # intel
 
 # enable stack-protector
 ifeq ($(TC),local)
@@ -71,6 +90,11 @@ endif
 ifeq ($(TC),intel)
 TMP_OPT+=
 endif
+
+# these options can be given as a command line argument to make
+# (feature used by ./configure script for extra libs places)
+TMP+=$(EXTRA_COMPILE_FLAGS)
+TMPLD+=$(EXTRA_LINK_FLAGS)
 
 export USER_OPT_FLAGS:=$(TMP) $(TMP_OPT)
 export USER_DBG_FLAGS:=$(TMP)

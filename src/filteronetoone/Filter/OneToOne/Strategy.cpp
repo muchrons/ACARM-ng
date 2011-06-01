@@ -11,21 +11,22 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 
 namespace Filter
 {
 namespace OneToOne
 {
 
-Strategy::Strategy(const std::string &name, unsigned int timeout):
-  Filter::Simple::Strategy<Data>("onetoone", name, timeout)
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, unsigned int timeout):
+  Filter::Simple::Strategy<Data>( TypeName("onetoone"), name, timeout)
 {
 }
 
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
 {
   Core::Types::Proc::EntryControlList ecl=Core::Types::Proc::EntryControlList::createDefaultReject();
-  ecl.add("*input*");   // TODO: magic value
+  ecl.add( TypeName("*input*") );   // TODO: magic value
   return ecl;
 }
 
@@ -90,6 +91,11 @@ Data Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
 }
 
 void Strategy::postProcessNode(Node &/*n*/, Filter::BackendFacade &/*bf*/) const
+{
+  // nothing to be done here
+}
+
+void Strategy::postProcessNode(NodeEntry &/*entry*/, const NodeEntry &/*added*/, BackendFacade &/*bf*/) const
 {
   // nothing to be done here
 }

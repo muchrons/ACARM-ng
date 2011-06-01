@@ -51,7 +51,7 @@ protected:
    *  \param name    name to assign.
    *  \param timeout maximum time for node to be in timeout queue.
    */
-  Strategy(const std::string &type, const std::string &name, unsigned int timeout):
+  Strategy(const Core::Types::Proc::TypeName &type, const Core::Types::Proc::InstanceName &name, unsigned int timeout):
     Base(type, name),
     timeout_(timeout)
   {
@@ -92,11 +92,17 @@ private:
   virtual TUserData makeUserDataForNewNode(const NodeEntry &thisEntry,
                                            const NodeEntry &otherEntry,
                                            const Node       newNode) const = 0;
-  /** \brief gives user a handle to postprocess node (new, or re-correlated).
+  /** \brief gives user a handle to postprocess new node.
    *  \param n  node to be post processed.
    *  \param bf backend facade to use during postprocessing.
    */
   virtual void postProcessNode(Node &n, BackendFacade &bf) const = 0;
+  /** \brief gives user a handle to postprocess node (added after corraltion).
+   *  \param entry node entry to be post processed.
+   *  \param added newly added entry (i.e. added to 'entry' element).
+   *  \param bf    backend facade to use during postprocessing.
+   */
+  virtual void postProcessNode(NodeEntry &entry, const NodeEntry &added, BackendFacade &bf) const = 0;
 
 
   // this is the core - do NOT overwrite this method
@@ -177,7 +183,7 @@ private:
 
     // if element cannot be correlated at the moment, add it to queue - maybe
     // we'll have better luck next time...
-    ntq.update(thisEntry, getTimeout() );
+    ntq.update(thisEntry, getTimeoutForNotCorrelatedEntry(thisEntry) );
     return -2;
   }
 
@@ -229,7 +235,7 @@ private:
                                << it->node_->getMetaAlert()->getID().get() << " ('"
                                << it->node_->getMetaAlert()->getName().get() << "')";
       bf.addChild(it->node_, thisEntry.node_);      // add new alert to already correlated in one set
-      postProcessNode(it->node_, bf);
+      postProcessNode(*it, thisEntry, bf);          // post-process node, after adding to correlation
     }
 
     // if we're here, it means that we were able to correlate and may exit
@@ -242,6 +248,24 @@ private:
   unsigned int getTimeout(void) const
   {
     return timeout_;
+  }
+
+  unsigned int getTimeoutForNotCorrelatedEntry(const NodeEntry &ne) const
+  {
+    const time_t ct =ne.node_->getMetaAlert()->getCreateTime().get();
+    const time_t now=time(NULL);
+    // time is not properly synchronized?
+    if(now<ct)
+      return getTimeout();
+
+    const unsigned int diff      =now-ct;
+    const unsigned int minTimeout=60;       // TODO: hardcoded value
+    // return some reasonable timeout, if normal would be too short.
+    if( diff>=getTimeout() )
+      return std::min( getTimeout(), minTimeout );
+
+    // compute time in queue
+    return getTimeout()-diff;
   }
 
   const unsigned int timeout_;

@@ -9,6 +9,7 @@
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace Trigger::Simple;
 using namespace TestHelpers::Persistency;
 
@@ -18,7 +19,7 @@ namespace
 struct TestTrigger: public Strategy
 {
   TestTrigger(const char *severity, const char *count):
-    Strategy("testtrigger", "testtriggername", ThresholdConfig(severity, count) ),
+    Strategy( TypeName("testtrigger"), InstanceName("testtriggername"), ThresholdConfig(severity, count) ),
     callsTrigger_(0)
   {
   }
@@ -60,7 +61,7 @@ template<>
 void testObj::test<1>(void)
 {
   TestTrigger tt(NULL, NULL);
-  ensure_equals("invalid trigger type", tt.getTriggerType(), "testtrigger");
+  ensure_equals("invalid trigger type", tt.getTriggerType().str(), "testtrigger");
 }
 
 // test trigger when alerts count is above threshold
@@ -122,7 +123,7 @@ namespace
 struct TestBufferTrigger: public Strategy
 {
   explicit TestBufferTrigger(int skip):
-    Strategy("testbuffertrigger", "testbuffertriggername", ThresholdConfig("0", "0") ),
+    Strategy( TypeName("testbuffertrigger"), InstanceName("testbuffertriggername"), ThresholdConfig("0", "0") ),
     skip_(skip),
     callsTrigger_(0),
     counter_(0)

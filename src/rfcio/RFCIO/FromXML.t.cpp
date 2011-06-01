@@ -80,7 +80,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   }
 
   template<typename T>
-  void testInvalidNodeName(T (FromXML::*method)(const xmlpp::Element &) const)
+  void testInvalidNodeName(T (FromXML::*method)(const xmlpp::Element &))
   {
     assert(method!=NULL);
     const char *invaldNodeNameXML="<?xml version=\"1.0\" encoding=\"utf-8\"?>\n"
@@ -91,7 +91,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
   }
 
   template<typename TExc, typename T>
-  void testInvalidXML(T (FromXML::*method)(const xmlpp::Element &) const, const char *xml)
+  void testInvalidXML(T (FromXML::*method)(const xmlpp::Element &), const char *xml)
   {
     assert(method!=NULL);
     try
@@ -130,8 +130,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     }
   }
 
-  void testHostParsing(FromXML::Hosts (FromXML::*method)(const xmlpp::Element &) const,
-                       const char *nodeName)
+  void testHostParsing(FromXML::Hosts (FromXML::*method)(const xmlpp::Element &), const char *nodeName)
   {
     assert(method!=NULL);
     assert(nodeName!=NULL);
@@ -184,8 +183,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     tut::ensure_equals("invalid name", out->getName().get(), string("a.b.c") );
   }
 
-  void testMultipleHostParsing(FromXML::Hosts (FromXML::*method)(const xmlpp::Element &) const,
-                               const char *nodeName)
+  void testMultipleHostParsing(FromXML::Hosts (FromXML::*method)(const xmlpp::Element &), const char *nodeName)
   {
     assert(method!=NULL);
     assert(nodeName!=NULL);

@@ -53,11 +53,13 @@ public:
   /** \brief create object's instance.
    *  \param conn       connection object to use.
    *  \param changed    list of changed nodes to update.
+   *  \param filterType type of filter this object is created for.
    *  \param filterName name of filter this object is created for.
    */
-  BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
-                ChangedNodes                     &changed,
-                const std::string                &filterName);
+  BackendFacade(Persistency::IO::ConnectionPtrNN       conn,
+                ChangedNodes                          &changed,
+                const Core::Types::Proc::TypeName     &filterType,
+                const Core::Types::Proc::InstanceName &filterName);
 
   /** \brief set name of a given host.
    *  \param node node given host name is part of.
@@ -98,7 +100,7 @@ public:
    *  \param owner owner's name of a configuration to work on (NULL means common config).
    *  \return return non-NULL dynamic configuration proxy.
    */
-  Persistency::IO::DynamicConfigAutoPtr createDynamicConfig(Persistency::IO::DynamicConfig::Owner &owner);
+  Persistency::IO::DynamicConfigAutoPtr createDynamicConfig(const Persistency::IO::DynamicConfig::Owner &owner);
 private:
   void markNodeAsChanged(Node node);
 

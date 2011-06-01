@@ -2,7 +2,6 @@
  * ProcessedSet.cpp
  *
  */
-
 #include "Filter/NewEvent/ProcessedSet.hpp"
 
 namespace Filter
@@ -10,21 +9,24 @@ namespace Filter
 namespace NewEvent
 {
 
-bool ProcessedSet::isProcessed(Entry &entry) const
+bool ProcessedSet::update(const Hash &hash, unsigned int timeout)
 {
-  const Entry::Name name(entry.getName());
-  for(Set::const_iterator it = set_.begin(); it != set_.end(); ++it)
+  for(Set::iterator it = set_.begin(); it != set_.end(); ++it)
   {
-    if(*it==name)
+    const Hash::HashData hashData = (*it).getHash();
+    if(hashData==hash.getHash())
+    {
+      markAsProcessed(*it, timeout);
       return true;
+    }
   }
   // object not found
   return false;
 }
 
-void ProcessedSet::markAsProcessed(Entry &entry, unsigned int timeout)
+void ProcessedSet::markAsProcessed(const Entry &entry, unsigned int timeout)
 {
-  set_.update(entry.getName(), timeout);
+  set_.update(entry, timeout);
 }
 
 void ProcessedSet::prune(void)

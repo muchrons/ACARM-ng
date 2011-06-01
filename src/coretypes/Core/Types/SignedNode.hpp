@@ -10,6 +10,8 @@
 #include <string>
 
 #include "Persistency/GraphNode.hpp"
+#include "Core/Types/Proc/TypeName.hpp"
+#include "Core/Types/Proc/InstanceName.hpp"
 
 namespace Core
 {
@@ -21,17 +23,17 @@ namespace Types
 class SignedNode
 {
 public:
-  /** \brief class representing reporter's name. */
-  typedef std::string ReporterName;
-
   /** \brief create instance.
-   *  \param node     node to be signed.
-   *  \param reporter creator's/last modifier's (component) name.
+   *  \param node node to be signed.
+   *  \param type creator's/last modifier's (component) type.
+   *  \param name creator's/last modifier's (component) name.
    */
   SignedNode(Persistency::GraphNodePtrNN  node,
-             const ReporterName          &reporter):
+             const Proc::TypeName        &type,
+             const Proc::InstanceName    &name):
     node_(node),
-    reporter_(reporter)
+    type_(type),
+    name_(name)
   {
   }
 
@@ -42,17 +44,25 @@ public:
   {
     return node_;
   }
+  /** \brief gets reporter's type.
+   *  \return type of the reporter.
+   */
+  const Proc::TypeName &getReporterType(void) const
+  {
+    return type_;
+  }
   /** \brief gets reporter's name.
    *  \return name of the reporter.
    */
-  const ReporterName &getReporterName(void) const
+  const Proc::InstanceName &getReporterName(void) const
   {
-    return reporter_;
+    return name_;
   }
 
 private:
   Persistency::GraphNodePtrNN node_;
-  ReporterName                reporter_;
+  Proc::TypeName              type_;
+  Proc::InstanceName          name_;
 }; // class SignedNode
 
 } // namespace Types

@@ -19,6 +19,7 @@
 #include "Persistency/IO/TransactionAPI.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
 #include "Persistency/IO/Restorer.hpp"
+#include "Persistency/IO/Heartbeats.hpp"
 #include "Persistency/IO/Exception.hpp"
 
 namespace Persistency
@@ -80,6 +81,12 @@ public:
    *        event if they are aready too old.
    */
   size_t removeEntriesOlderThan(size_t days, Transaction &t);
+  /** \brief create heartbeats reporting object.
+   *  \param owner subsystem, that will send heartbeats.
+   *  \param t     transaction to be used for reporting data.
+   *  \return non-NULL heartbeats reporting proxy.
+   */
+  HeartbeatsAutoPtr heartbeats(const Heartbeats::Owner &owner, Transaction &t);
 
 private:
   virtual TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
@@ -91,6 +98,7 @@ private:
                                                  Transaction                &t) = 0;
   virtual RestorerAutoPtr restorerImpl(Transaction &t) = 0;
   virtual size_t removeEntriesOlderThanImpl(size_t days, Transaction &t) = 0;
+  virtual HeartbeatsAutoPtr heartbeatsImpl(const Heartbeats::Owner &owner, Transaction &t) = 0;
 
   // mutex is used to ensure only one transaction can be created at a time.
   Base::Threads::Mutex mutex_;

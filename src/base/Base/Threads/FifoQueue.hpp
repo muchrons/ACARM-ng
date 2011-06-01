@@ -88,6 +88,29 @@ public:
     cond_.notify_one();     // signal presence of new entry
   }
 
+  /** \brief blocks until queue is non-empty.
+   *  \param timeout maximum ammount of time to wait.
+   *  \return true, if queue is non-empty, false on timeout.
+   *  \note since this class is used with threads, just after
+   *        this call exits, information provided by it may already by
+   *        outdated. this call has rather log/information status than any
+   *        precise information.
+   *  \note it can be used safely only if there is at most one thread taking
+   *        elements from the queue.
+   */
+  bool waitForElement(const unsigned int timeout) const
+  {
+    Lock lock(mutex_);
+    // wait for data, if not present
+    const boost::system_time deadline=boost::get_system_time()+boost::posix_time::seconds(timeout);
+    while( q_.size()<1 )
+      if( !cond_.timed_wait(lock, deadline) )
+        return false;
+    // ok - predicate is true and lock didn't time out.
+    assert( q_.size()>0u );
+    return true;
+  }
+
   /** \brief returns size of queue.
    *  \return queue size in terms of elements count.
    *  \note since this class is used with threads, just after
@@ -106,11 +129,7 @@ private:
   {
     // wait for data, if not present
     while( q_.size()<1 )
-    {
-      // interruption point is already in condition variable
       cond_.wait(lock);
-    }
-
     // take one element and return it
     assert( q_.size()>0 );
     return q_.front();

@@ -9,6 +9,7 @@
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace std;
+using namespace Core::Types::Proc;
 using namespace Trigger::GG;
 
 int main(int argc, char **argv)
@@ -25,7 +26,7 @@ int main(int argc, char **argv)
     const Config cfg( getTestConfig1(),
                       Config::Receivers(receiver),
                       Trigger::Simple::ThresholdConfig("0.0", "0") );
-    Strategy     s("ggmtesttimeout", cfg);
+    Strategy     s(InstanceName("ggmtesttimeout"), cfg);
 
     const int init=5*60;
     cerr<<"waiting some time ("<<init/60<<"[m]) - if pings does not work, it will timeout..."<<endl;

@@ -14,6 +14,7 @@
 using namespace Trigger::Jabber;
 using namespace Persistency;
 using namespace TestHelpers::Persistency;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -45,8 +46,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Strategy s("myjabberinformer", cfg_);
-  ensure_equals("invalid type", s.getTriggerType(), "jabber");
+  Strategy s(InstanceName("myjabberinformer"), cfg_);
+  ensure_equals("invalid type", s.getTriggerType().str(), "jabber");
 }
 
 // test sending report
@@ -54,7 +55,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  Strategy               s("myjabberinformer", cfg_);
+  Strategy               s(InstanceName("myjabberinformer"), cfg_);
   Strategy::ChangedNodes nc;
   s.process( makeNewNode(), nc );
   const std::string      str=getMessageFromAccount( getTestConfig2(),
@@ -70,7 +71,7 @@ void testObj::test<3>(void)
 {
   System::Timer t;
   {
-    const Strategy s("myjabberinformer", cfg_);
+    const Strategy s(InstanceName("myjabberinformer"), cfg_);
     t.restart();
     usleep(100*1000);                 // give time for backend thread to start
   } // thread interruption and joining goes here

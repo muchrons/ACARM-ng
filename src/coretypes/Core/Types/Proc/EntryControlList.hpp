@@ -7,8 +7,9 @@
 
 /* public header */
 
-#include <string>
 #include <vector>
+
+#include "Core/Types/Proc/TypeName.hpp"
 
 namespace Core
 {
@@ -28,9 +29,6 @@ namespace Proc
 class EntryControlList
 {
 public:
-  /** \brief type representing filter's to operate on. */
-  typedef std::string FilterName;
-
   /** \brief create object in mode 'accept by default', with rejecting only explicitly
    *         added entries.
    *  \return ECL's class object.
@@ -43,24 +41,24 @@ public:
   static EntryControlList createDefaultReject(void);
 
   /** \brief add new entry to check-list.
-   *  \param filterName name of the filter to be added to access list.
+   *  \param type name of the processor's type to be added to access list.
    */
-  void add(const FilterName &filterName);
+  void add(const TypeName &type);
   /** \brief test if given entry should be accepted or rejected.
-   *  \param filterName filter name to be tested.
+   *  \param type name of processor's type.
    *  \return true if entry is to be accepted, false otherwise.
    */
-  bool isAcceptable(const FilterName &filterName) const;
+  bool isAcceptable(const TypeName &type) const;
 
 private:
   // this class uses 'named c-tor' design pattern, thus 'real' c-tor
   // is private here.
   explicit EntryControlList(bool acceptByDefault);
 
-  typedef std::vector<FilterName> FilterNamesVector;
+  typedef std::vector<TypeName> TypeNamesVector;
 
-  FilterNamesVector filterNames_;
-  bool              defaultPolicy_;
+  TypeNamesVector types_;
+  bool            defaultPolicy_;
 }; // class EntryControlList
 
 } // namespace Proc

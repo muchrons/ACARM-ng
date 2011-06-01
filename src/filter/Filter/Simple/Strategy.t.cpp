@@ -14,6 +14,7 @@
 using namespace std;
 using namespace Persistency;
 using namespace Filter::Simple;
+using namespace Core::Types::Proc;
 using namespace TestHelpers::Persistency;
 
 namespace
@@ -28,11 +29,12 @@ struct TestStrategy: public Strategy<TestData>
   TestStrategy(bool isInteresting=true,
                bool canCorrelate =true,
                int  skipCorrelations=0):
-    Strategy<TestData>("teststrategy", "teststrategyname", 42),
+    Strategy<TestData>( TypeName("teststrategy"), InstanceName("teststrategyname"), 42),
     isInteresting_(isInteresting),
     canCorrelate_(canCorrelate),
     skipCorrelations_(skipCorrelations),
-    postProcessCalled_(0)
+    postProcessCalled_(0),
+    postProcessCorrelatedCalled_(0)
   {
   }
 
@@ -73,10 +75,17 @@ struct TestStrategy: public Strategy<TestData>
     ++postProcessCalled_;
   }
 
+  virtual void postProcessNode(NodeEntry &/*entry*/, const NodeEntry &/*added*/, Filter::BackendFacade &/*bf*/) const
+  {
+    ++postProcessCorrelatedCalled_;
+  }
+
+
   bool        isInteresting_;
   bool        canCorrelate_;
   mutable int skipCorrelations_;
   mutable int postProcessCalled_;
+  mutable int postProcessCorrelatedCalled_;
 }; // struct TestStrategy
 
 
@@ -303,7 +312,7 @@ void testObj::test<9>(void)
   ensure_equals("node postprocessing not called", ts.postProcessCalled_, 1);
 }
 
-// test if post-process is called for a already correlated node
+// test if post-process is called for an already correlated node
 template<>
 template<>
 void testObj::test<10>(void)
@@ -318,6 +327,8 @@ void testObj::test<10>(void)
 
   ts.process(n2, changed_);
   ensure_equals("correlation new node failed", changed_.size(), 1u);
+  ensure_equals("node postprocessing not called", ts.postProcessCalled_, 1);
+  ensure_equals("re-correlated node postprocessing called", ts.postProcessCorrelatedCalled_, 0);
   TestStrategy::Node node=changed_[0];
   changed_.clear();
 
@@ -325,8 +336,9 @@ void testObj::test<10>(void)
   ensure_equals("correlation failed", changed_.size(), 1u);
   ensure("correlation to existing node failed", node.get()==changed_[0].get() );
 
-  // first call to postprocessing has been done during previous correlation
-  ensure_equals("node postprocessing not called", ts.postProcessCalled_, 2);
+  // check if proper calles were made
+  ensure_equals("node postprocessing called more than once", ts.postProcessCalled_, 1);
+  ensure_equals("re-correlated node postprocessing not called", ts.postProcessCorrelatedCalled_, 1);
 }
 
 // test if post-processing is not called when no corelation happens

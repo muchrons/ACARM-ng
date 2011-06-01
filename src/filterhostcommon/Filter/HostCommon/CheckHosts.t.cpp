@@ -13,6 +13,7 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace Filter::HostCommon;
 using namespace TestHelpers::Persistency;
 
@@ -22,7 +23,7 @@ namespace
 struct TestStrategy: public Strategy
 {
   TestStrategy(void):
-    Strategy("teststrategy", "teststrategyname", 42)
+    Strategy( TypeName("teststrategy"), InstanceName("teststrategyname"), 42)
   {
   }
 

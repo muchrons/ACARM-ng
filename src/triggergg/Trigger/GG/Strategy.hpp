@@ -24,7 +24,7 @@ public:
    *  \param name name of trigger.
    *  \param cfg configuration to be applied.
    */
-  Strategy(const std::string &name, const Config &cfg);
+  Strategy(const Core::Types::Proc::InstanceName &name, const Config &cfg);
 
 private:
   virtual void triggerImpl(const ConstNode &n);

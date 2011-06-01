@@ -11,13 +11,15 @@
 #include "System/AutoVariable.hpp"
 #include "Input/Prelude/detail/IdmefMessageHolder.hpp"
 
+using namespace Core::Types::Proc;
+
 namespace Input
 {
 namespace Prelude
 {
 
-Reader::Reader(const std::string& profile, const std::string &name, const std::string& config):
-  Input::Reader("prelude", name),
+Reader::Reader(const std::string &profile, const Core::Types::Proc::InstanceName &name, const std::string &config):
+  Input::Reader(TypeName("prelude"), name),
   client_( new Client(profile, config, PRELUDE_CONNECTION_PERMISSION_IDMEF_READ) )
 {
   assert( client_.get()!=NULL );

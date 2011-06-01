@@ -14,6 +14,7 @@
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace Core;
+using namespace Core::Types::Proc;
 
 namespace
 {
@@ -53,14 +54,17 @@ int filterCalls_=0;
 struct TestFilterInterface: public Core::Types::Proc::Interface
 {
   TestFilterInterface(void):
-    Core::Types::Proc::Interface( "somefiltertype", "somefiltername",
-                                  Types::Proc::EntryControlList::createDefaultAccept() )
+    Core::Types::Proc::Interface( TypeName("somefiltertype"), InstanceName("somefiltername"), EntryControlList::createDefaultAccept() )
   {
   }
 
   virtual void process(Node /*node*/, ChangedNodes &/*changedNodes*/)
   {
     ++filterCalls_;
+  }
+
+  virtual void heartbeat(unsigned int /*deadline*/)
+  {
   }
 }; // struct TestFilterInterface
 
@@ -96,14 +100,17 @@ int triggerCalls_=0;
 struct TestTriggerInterface: public Core::Types::Proc::Interface
 {
   TestTriggerInterface(void):
-    Core::Types::Proc::Interface( "sometriggertype", "sometriggername",
-                                  Types::Proc::EntryControlList::createDefaultAccept() )
+    Core::Types::Proc::Interface( TypeName("sometriggertype"), InstanceName("sometriggername"), EntryControlList::createDefaultAccept() )
   {
   }
 
   virtual void process(Node /*node*/, ChangedNodes &/*changedNodes*/)
   {
     ++triggerCalls_;
+  }
+
+  virtual void heartbeat(unsigned int /*deadline*/)
+  {
   }
 }; // struct TestInterface
 
@@ -149,7 +156,7 @@ void testObj::test<2>(void)
   ensure_equals("trigger has been called too fast", triggerCalls_, 0);
 
   // test example call
-  queue_.push( Core::Types::SignedNode( TestHelpers::Persistency::makeNewNode(), "me" ) );
+  queue_.push( Core::Types::SignedNode(TestHelpers::Persistency::makeNewNode(), TypeName("myT"), InstanceName("myN")) );
   p.process();  // this enqueues node in every filters
 
   // wait until everything's processed

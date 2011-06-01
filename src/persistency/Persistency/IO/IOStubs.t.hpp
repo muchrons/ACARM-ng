@@ -281,6 +281,29 @@ public:
 }; // class IORestorer
 
 
+class IOHeartbeats: public Persistency::IO::Heartbeats
+{
+public:
+  IOHeartbeats(const Owner &owner, Persistency::IO::Transaction &t):
+    Persistency::IO::Heartbeats(owner, t),
+    report_(0)
+  {
+  }
+
+  virtual void reportImpl(Persistency::IO::Transaction &,
+                          const Owner &,
+                          const Module &,
+                          Persistency::Timestamp,
+                          unsigned int)
+  {
+    ++report_;
+  }
+
+  int report_;
+}; // class IOHeartbeats
+
+
+
 struct TestIOConnection: public Persistency::IO::Connection
 {
   TestIOConnection(void)
@@ -289,30 +312,26 @@ struct TestIOConnection: public Persistency::IO::Connection
       called_[i]=0;
   }
 
-  virtual Persistency::IO::TransactionAPIAutoPtr createNewTransactionImpl(
-                                        Base::Threads::Mutex &mutex,
-                                        const std::string    &name)
+  virtual Persistency::IO::TransactionAPIAutoPtr createNewTransactionImpl(Base::Threads::Mutex &mutex,
+                                                                          const std::string    &name)
   {
     ++called_[0];
     return Persistency::IO::TransactionAPIAutoPtr( new TestTransactionAPI(mutex, name) );
   }
-  virtual Persistency::IO::AlertAutoPtr alertImpl(
-                                        Persistency::AlertPtrNN       alert,
-                                        Persistency::IO::Transaction &t)
+  virtual Persistency::IO::AlertAutoPtr alertImpl(Persistency::AlertPtrNN       alert,
+                                                  Persistency::IO::Transaction &t)
   {
     ++called_[1];
     return Persistency::IO::AlertAutoPtr( new IOAlert(alert, t) );
   }
-  virtual Persistency::IO::HostAutoPtr hostImpl(
-                                        Persistency::HostPtrNN        host,
-                                        Persistency::IO::Transaction &t)
+  virtual Persistency::IO::HostAutoPtr hostImpl(Persistency::HostPtrNN        host,
+                                                Persistency::IO::Transaction &t)
   {
     ++called_[2];
     return Persistency::IO::HostAutoPtr( new IOHost(host, t) );
   }
-  virtual Persistency::IO::MetaAlertAutoPtr metaAlertImpl(
-                                        Persistency::MetaAlertPtrNN   ma,
-                                        Persistency::IO::Transaction &t)
+  virtual Persistency::IO::MetaAlertAutoPtr metaAlertImpl(Persistency::MetaAlertPtrNN   ma,
+                                                          Persistency::IO::Transaction &t)
   {
     ++called_[3];
     return Persistency::IO::MetaAlertAutoPtr( new IOMetaAlert(ma, t) );
@@ -325,21 +344,27 @@ struct TestIOConnection: public Persistency::IO::Connection
     return Persistency::IO::DynamicConfigAutoPtr( new IODynamicConfig(owner, t) );
   }
 
-  virtual Persistency::IO::RestorerAutoPtr restorerImpl(
-                                        Persistency::IO::Transaction &t)
+  virtual Persistency::IO::RestorerAutoPtr restorerImpl(Persistency::IO::Transaction &t)
   {
     ++called_[4];
     return Persistency::IO::RestorerAutoPtr( new IORestorer(t) );
   }
 
-  virtual size_t removeEntriesOlderThanImpl(size_t                        /*days*/,
-                                            Persistency::IO::Transaction &/*t*/)
+  virtual size_t removeEntriesOlderThanImpl(size_t /*days*/, Persistency::IO::Transaction &/*t*/)
   {
     ++called_[5];
     return 42;
   }
 
-  int called_[7];
+  virtual Persistency::IO::HeartbeatsAutoPtr heartbeatsImpl(const Persistency::IO::Heartbeats::Owner &owner,
+                                                            Persistency::IO::Transaction             &t)
+  {
+    ++called_[7];
+    return Persistency::IO::HeartbeatsAutoPtr( new IOHeartbeats(owner, t) );
+  }
+
+
+  int called_[8];
 }; // struct TestIOConnection
 
 } // unnamed namespace

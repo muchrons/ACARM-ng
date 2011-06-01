@@ -1,2 +1,2 @@
 #!/bin/sh
-exec echo "-lboost_filesystem-mt"
+exec echo "-lboost_filesystem-mt -lssl"

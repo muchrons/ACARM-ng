@@ -85,7 +85,7 @@ private:
       exists=false;
     }
   }
-}; // class TempFile
+}; // class OneInstanceAtOnce
 
 } // namespace System
 

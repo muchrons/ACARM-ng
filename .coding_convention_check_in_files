@@ -31,4 +31,7 @@ do
     error 11 "bracekts must start/end in new line"
 done
 
+# display some progress-libe bar
+echo -n .
+
 exit 0

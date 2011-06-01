@@ -5,58 +5,60 @@
 #ifndef INCLUDE_FILTER_NEWEVENT_ENTRY_HPP_FILE
 #define INCLUDE_FILTER_NEWEVENT_ENTRY_HPP_FILE
 
-#include <openssl/sha.h>
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Filter/BackendFacade.hpp"
+// TODO: according to convention Filter::NewEvent must have its own exception type, derived
+//       from Filter::Exception, but cannot throw Filter::Exception directly in own code.
 #include "Filter/Exception.hpp"
-#include "Filter/NewEvent/TimeoutedSet.hpp"
+
+#include "Filter/NewEvent/Hash.hpp"
 
 namespace Filter
 {
 namespace NewEvent
 {
 
+/** \brief forward declaration of TimeoutedSet class.
+ */
+class TimeoutedSet;
 /** \brief
  *  save elements in the persistency dynamic config,
  *  save timeouted elements in dedicated collection.
  */
 class Entry
 {
-
 public:
 
-  /** \brief entry name type.*/
-  typedef std::string Name;
-  /** \brief (SHA1) hash of entry name type.*/
-  typedef std::string Hash;
   /** \brief create instance.
-   *  \param name name of processes (meta-)alert.
-   *  \param bf   facade for saving elements in the persistency.
-   *  \param ts   cache for storing timeouted elements.
+   *  \param hashPtr SHA1 hash of processes (meta-)alert name.
+   *  \param bf      facade for saving elements in the persistency.
+   *  \param ts      cache for storing timeouted elements.
    */
-  Entry(Name name, Filter::BackendFacade *bf, TimeoutedSet *ts);
+  Entry(const HashSharedPtr &hashPtr, Filter::BackendFacade &bf, TimeoutedSet &ts);
   /** \brief delete instance and add hash of timeouted element to the cache.
    */
   ~Entry();
-  /** \brief  get entry name.
-   *  \return entry name.
-   */
-  const Entry::Name& getName() const;
+
   /** \brief return hash of entry name.
    *  \return (SHA1) hash of entry name.
    */
-  Hash &getHash();
-
+  const Hash::HashData &getHash() const;
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const Entry &other) const;
 private:
-  typedef std::pair<Name, Hash> Element;
-  // computes (SHA1) hash of a given string
-  std::string computeHash(const std::string &in);
 
-  Persistency::IO::DynamicConfig::Owner  owner_;
-  Persistency::IO::DynamicConfigAutoPtr  dc_;
-  Element                                element_;
-  TimeoutedSet                          *ts_;
+  Persistency::IO::DynamicConfig::Owner                      owner_;
+  Commons::SharedPtrNotNULL<Persistency::IO::DynamicConfig>  dc_;
+  HashSharedPtr                                              hashPtr_;
+  TimeoutedSet                                              *ts_;
+}; // class Entry
 
-}; // class ProcessedSet
+typedef Commons::SharedPtrNotNULL<Entry> EntrySharedPtr;
+
 } // namespace Filter
 } // namespace NewEvent
+
 #endif

@@ -106,7 +106,7 @@ DataBaseID EntrySaver::saveProcess(DataBaseID hostID, const Process &p)
 
 DataBaseID EntrySaver::getID(const std::string &seqName)
 {
-  assert( seqName==t_.getAPI<Postgres::TransactionAPI>().esc(seqName.c_str()) && "invalid sequence name" );
+  assert( seqName==t_.getAPI<Postgres::TransactionAPI>().escape(seqName.c_str()) && "invalid sequence name" );
 
   const std::string sql="SELECT currval('" + seqName + "') as id;";
   const result r=SQL(sql, log_).exec(t_);
@@ -509,6 +509,37 @@ void EntrySaver::removeConfigParameter(const DynamicConfig::Owner &owner,
   ap.append(ss, owner.get());
   ss << " AND key = ";
   ap.append(ss, key.get());
+  SQL( ss.str(), log_ ).exec(t_);
+}
+
+void EntrySaver::deleteHeartbeat(const Persistency::IO::Heartbeats::Owner  &owner,
+                                 const Persistency::IO::Heartbeats::Module &module)
+{
+  stringstream ss;
+  Appender     ap(t_);
+  ss << "DELETE FROM heartbeats WHERE owner = ";
+  ap.append(ss, owner.get() );
+  ss << " AND module = ";
+  ap.append(ss, module.get() );
+  SQL( ss.str(), log_ ).exec(t_);
+}
+
+void EntrySaver::saveHeartbeat(const Persistency::IO::Heartbeats::Owner  &owner,
+                               const Persistency::IO::Heartbeats::Module &module,
+                               Persistency::Timestamp                     reported,
+                               const unsigned int                         timeout)
+{
+  stringstream ss;
+  Appender     ap(t_);
+  ss << "INSERT INTO heartbeats(owner, module, timestamp, timeout) VALUES(";
+  ap.append(ss, owner.get() );
+  ss << ",";
+  ap.append(ss, module.get() );
+  ss << ",";
+  ap.append(ss, reported);
+  ss << ",";
+  ap.append(ss, timeout);
+  ss << ");";
   SQL( ss.str(), log_ ).exec(t_);
 }
 

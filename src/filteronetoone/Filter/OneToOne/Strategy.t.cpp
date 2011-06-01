@@ -12,6 +12,7 @@
 
 using namespace std;
 using namespace Persistency;
+using namespace Core::Types::Proc;
 using namespace Filter::OneToOne;
 using namespace TestHelpers::Persistency;
 
@@ -23,7 +24,7 @@ struct TestClass: public TestStubs
   TestClass(void):
     sampleLeaf_( makeNewLeaf( makeNewAlertWithHosts("1.2.3.4", NULL,
                                                     "2.3.4.5", NULL) ) ),
-    s_("somename", 997)
+    s_(InstanceName("somename"), 997)
   {
   }
 
