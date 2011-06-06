@@ -19,3 +19,4 @@
 * add regex comaprisons to preprocessor.
 * implement filter changing priority when s/d IP is from defined set (i.e.: internal network, extrnal network, critical resource, etc...).
 * add trigger sending reports on problematic machines to admins found via WHOIS.
+* add python trigger interface.

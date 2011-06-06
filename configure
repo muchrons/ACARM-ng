@@ -31,6 +31,10 @@ $0 options are:
 (1) does not require recompilation
 (2) make binary slower and much larger (~30 times)
 (3) can be specified multiple times
+
+note that you may have to set PKG_CONFIG_PATH in order to make pkg-config
+work correctly, before running configure/make:
+export PKG_CONFIG_PATH="\$PKG_CONFIG_PATH:/path/1:/other/path"
 EOF
   exit 1
 }
@@ -135,8 +139,11 @@ rm -f "$TMP"
 
 # prepare main makefile elements
 cat<<EOF > configure-output.mk
-LOCAL_MAKE_FLAGS+="PROFILE=$PROFILE" "FEATURES=$FEATURES" "TC=gcc"
-LOCAL_MAKE_FLAGS+="EXTRA_COMPILE_FLAGS=$EXTRA_COMPILE_FLAGS" "EXTRA_LINK_FLAGS=$EXTRA_LINK_FLAGS"
+LOCAL_MAKE_FLAGS+="TC=gcc"
+LOCAL_MAKE_FLAGS+="PROFILE=$PROFILE"
+LOCAL_MAKE_FLAGS+="FEATURES=$FEATURES"
+LOCAL_MAKE_FLAGS+="EXTRA_COMPILE_FLAGS=$EXTRA_COMPILE_FLAGS"
+LOCAL_MAKE_FLAGS+="EXTRA_LINK_FLAGS=$EXTRA_LINK_FLAGS"
 
 PLUGINS_LIST:=`echo "$PLUGINS" | xargs -n 1 echo -n ' ' `
 INSTALL_DIR:=$PREFIX
