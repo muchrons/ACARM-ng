@@ -23,6 +23,7 @@ also disable plug-ins you're not willing to use/build.
 if you have additional libraries installed, or have non-default paths use
 -I <path> and -L <path> options.
 note: ./configure --help gives you more info on usage.
+note: oyu may need to set PKG_CONFIG_PATH as well (for pkg-config-aware libs).
 
 run compilation:
 $ make

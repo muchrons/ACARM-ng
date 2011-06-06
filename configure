@@ -31,6 +31,10 @@ $0 options are:
 (1) does not require recompilation
 (2) make binary slower and much larger (~30 times)
 (3) can be specified multiple times
+
+note that you may have to set PKG_CONFIG_PATH in order to make pkg-config
+work correctly, before running configure/make:
+export PKG_CONFIG_PATH="\$PKG_CONFIG_PATH:/path/1:/other/path"
 EOF
   exit 1
 }
