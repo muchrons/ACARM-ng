@@ -47,25 +47,26 @@
    OnDeleteCommand="deleteItem"
    >
 
- <com:TBoundColumn
-    ID="Owner"
-    HeaderText="Owner"
-    DataField="owner"
-    />
+  <com:TTemplateColumn>
+    <prop:HeaderTemplate>Owner</prop:HeaderTemplate>
+    <prop:ItemTemplate>
+      <com:TLabel Text="<%#$this->Parent->Data->owner%>" ForeColor="<%# $this->Parent->Data->alive=='false' ? 'Green' : 'Red' %>" />
+    </prop:ItemTemplate>
+  </com:TTemplateColumn>
 
- <com:TBoundColumn
-    ID="Module"
-    HeaderText="Module"
-    ItemStyle.HorizontalAlign="Center"
-    DataField="module"
-    />
+  <com:TTemplateColumn>
+    <prop:HeaderTemplate>Module</prop:HeaderTemplate>
+    <prop:ItemTemplate>
+      <com:TLabel Text="<%#$this->Parent->Data->module%>" ForeColor="<%# $this->Parent->Data->alive ? 'Green' : 'Red' %>" />
+    </prop:ItemTemplate>
+  </com:TTemplateColumn>
 
- <com:TBoundColumn
-    ID="Alive"
-    HeaderText="Alive"
-    ItemStyle.HorizontalAlign="Center"
-    DataField="alive"
-    />
+  <com:TTemplateColumn>
+    <prop:HeaderTemplate>Module</prop:HeaderTemplate>
+    <prop:ItemTemplate>
+      <com:TLabel Text="<%# $this->Parent->Data->alive?'alive':'dead' %>" ForeColor="<%# $this->Parent->Data->alive ? 'Green' : 'Red' %>" />
+    </prop:ItemTemplate>
+  </com:TTemplateColumn>
 
 <com:TButtonColumn
    ID="Delete"
