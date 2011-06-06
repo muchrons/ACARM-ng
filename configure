@@ -22,10 +22,11 @@ function print_help()
 $0 options are:
   [--prefix <path>]    prefix for the installation directory (1)
   [--debug]            build in debug mode (2)
-  [--list-plugins]     list all available plugin
+  [--list-plugins]     list all available plugins
   [--disable <plugin>] do not compile given plugin (3)
   [-I <includes_dir>]  add extra include directory to compilation (3)
   [-L <libs_dir>]      add extra library directory to linking (3)
+  [-P <pcs_dir>]       add extra directory to search for pkg-config files (*.pc) (3)
   [--help]             show this helpful text
 
 (1) does not require recompilation
@@ -84,6 +85,11 @@ do
       shift
     ;;
 
+    "-P")
+      PKG_PATH_CANDIDATES="$PKG_PATH_CANDIDATES $2"
+      shift
+    ;;
+
     "--help")
       print_help
     ;;
@@ -95,7 +101,8 @@ do
   shift
 done
 EXTRA_LIB_DIRS="$PREFIX/lib/acarm-ng:$EXTRA_LIB_DIRS"
-
+PKG_PATH_CANDIDATES="$PKG_PATH_CANDIDATES /usr/lib/pkgconfig/"
+PKGCFG_ENV="PKG_CONFIG_PATH=\"\$\$PKG_CONFIG_PATH:`find $PKG_PATH_CANDIDATES -name '*.pc' | xargs -r -n 1 dirname | sort | uniq | xargs echo | sed 's#  *#:#g'`\""
 
 #
 # select features to build with
@@ -141,6 +148,7 @@ LOCAL_MAKE_FLAGS+="FEATURES=$FEATURES"
 LOCAL_MAKE_FLAGS+="EXTRA_COMPILE_FLAGS=$EXTRA_COMPILE_FLAGS"
 LOCAL_MAKE_FLAGS+="EXTRA_LINK_FLAGS=$EXTRA_LINK_FLAGS"
 
+PKGCFG_ENV:=$PKGCFG_ENV
 PLUGINS_LIST:=`echo "$PLUGINS" | xargs -n 1 echo -n ' ' `
 INSTALL_DIR:=$PREFIX
 BUILD_DIR:=src/gen/${PROFILE}_gcc_normal_default
@@ -160,4 +168,5 @@ echo "  features:   $FEATURES"
 echo "  comp flags: $EXTRA_COMPILE_FLAGS"
 echo "  link flags: $EXTRA_LINK_FLAGS"
 echo "  lib  dirs:  $EXTRA_LIB_DIRS"
+echo "  pkgcfg env: $PKGCFG_ENV"
 echo
