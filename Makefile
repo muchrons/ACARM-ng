@@ -13,14 +13,14 @@ build: build-core build-plugins
 .PHONY: build-core
 build-core: ensure-configure
 	@echo "BUILDING ACARM-ng"
-	@$(PKGCFG_ENV) $(MAKE) $(LOCAL_MAKE_FLAGS) acarmng
+	@$(MAKE) $(LOCAL_MAKE_FLAGS) acarmng
 
 .PHONY: build-plugins
 build-plugins: ensure-configure
 	@for pl in $(PLUGINS_LIST) ; \
 	do \
 	  echo "BUILDING PLUGIN $$pl" ; \
-	  $(PKGCFG_ENV) $(MAKE) $(LOCAL_MAKE_FLAGS) "$$pl" || exit $$? ;\
+	  $(MAKE) $(LOCAL_MAKE_FLAGS) "$$pl" || exit $$? ;\
 	done
 
 .PHONY: install
