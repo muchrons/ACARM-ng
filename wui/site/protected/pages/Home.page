@@ -1,13 +1,81 @@
 <com:TContent ID="content">
 <com:TPanel GroupingText="<font size=6 color=white>System status</font>" Width="100%">
+<br/>
+
+<center>
+<h2 style="color:white;">Counters</h2>
+<com:TDataGrid
+   CellPadding="4"
+   Width="600px"
+   ID="StatusGrid"
+   HorizontalAlign="Left"
+   AutoGenerateColumns="false"
+   HeaderStyle.BackColor="black"
+   HeaderStyle.ForeColor="white"
+   ItemStyle.BackColor="#c6c6d2"
+   ItemStyle.Font.Size="18"
+   AlternatingItemStyle.BackColor="#b2b2d0"
+   ShowHeader="false"
+   >
+
+ <com:TBoundColumn
+    ID="Text"
+    HeaderText="Text"
+    DataField="text"
+    />
+
+ <com:TBoundColumn
+    ID="Value"
+    HeaderText="Value"
+    ItemStyle.HorizontalAlign="Right"
+    DataField="value"
+    />
+</com:TDataGrid>
+
 <br/><br/>
-<table border="1" width="80%" align="center">
-<tr><td id="AlertTag">ACARM-ng</td><td id="AlertContent"><com:TLabel ID="AcarmIsRunning" Text="Running" ForeColor="Green"/></td>
-<tr><td colspan="2">&nbsp</td></tr>
-<tr><td id="AlertTag">Meta alerts in use</td><td id="AlertContent"><com:TLabel ID="MAinUse"/></td></tr>
-<tr><td id="AlertTag">Number of alerts in database</td><td id="AlertContent"><com:TLabel ID="Alerts"/></td></tr>
-<tr><td id="AlertTag">Number of meta alerts in database</td><td id="AlertContent"><com:TLabel ID="MetaAlerts"/></td></tr>
-</table>
+<h2 style="color:white;">Heartbeats</h2>
+<com:TDataGrid
+   CellPadding="4"
+   Width="600px"
+   ID="Heartbeats"
+   AutoGenerateColumns="false"
+   HeaderStyle.BackColor="black"
+   HeaderStyle.ForeColor="white"
+   ItemStyle.BackColor="#c6c6d2"
+   ItemStyle.Font.Size="18"
+   AlternatingItemStyle.BackColor="#b2b2d0"
+   OnDeleteCommand="deleteItem"
+   >
+
+ <com:TBoundColumn
+    ID="Owner"
+    HeaderText="Owner"
+    DataField="owner"
+    />
+
+ <com:TBoundColumn
+    ID="Module"
+    HeaderText="Module"
+    ItemStyle.HorizontalAlign="Center"
+    DataField="module"
+    />
+
+ <com:TBoundColumn
+    ID="Alive"
+    HeaderText="Alive"
+    ItemStyle.HorizontalAlign="Center"
+    DataField="alive"
+    />
+
+<com:TButtonColumn
+   ID="Delete"
+   HeaderText="Delete"
+   ItemStyle.HorizontalAlign="Center"
+   Text="delete"
+   CommandName="delete"
+   />
+</com:TDataGrid>
+</center>
 <br/><br/>
 </com:TPanel>
 

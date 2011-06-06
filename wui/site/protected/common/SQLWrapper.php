@@ -28,6 +28,17 @@ class SQLWrapper
     Prado::log("SQL query executed: $param. Returned $records records in $timec seconds.", TLogger::INFO, 'WUI.DB');
     return $ret;
   }
+
+  public function delete($param,$value)
+  {
+    $start=microtime_float();
+    $ret=CSQLMap::get()->delete($param,$value);
+    $time=microtime_float()-$start;
+    $timec=number_format($time,2,'.','');
+    $records=count($ret);
+    Prado::log("SQL delete executed: $param. $records records deleted in $timec seconds.", TLogger::INFO, 'WUI.DB');
+    return $ret;
+  }
 };
 
 ?>

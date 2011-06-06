@@ -203,7 +203,7 @@
 
   <select id="SelectHeartbeats" resultClass="CHeartbeat">
     <![CDATA[
-      SELECT owner, module, timestamp + cast(timeout || 'sec' AS INTERVAL) >= now() AS alive FROM heartbeats ORDER BY owner, module;
+      SELECT owner, module, timestamp + cast(timeout || ' seconds' AS INTERVAL) >= now() AS alive FROM heartbeats ORDER BY alive, owner, module;
     ]]>
   </select>
 
@@ -282,5 +282,12 @@
        select count(*) as count from hosts as a JOIN hosts as b ON a.id_alert=b.id_alert where a.role='src' AND b.role='dst' AND a.id_alert>#value1# AND a.id_alert<#value2# AND a.ip=#value3# AND b.ip=#value4#;
      ]]>
   </select>
+
+  <!-- Non-select Queries -->
+
+  <delete id="DeleteHeartbeat" parameterClass="CDMPair">
+    delete FROM heartbeats WHERE owner=#key# AND module=#value#;
+  </delete>
+
 
 </sqlMapConfig>

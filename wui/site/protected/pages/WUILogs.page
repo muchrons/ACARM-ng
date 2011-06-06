@@ -4,7 +4,7 @@
 
 <com:DataTableTemplate
         ID="WUILogs"
-        Text="The most WUI logs:"
+        Text="The most recent WUI logs:"
         Query="SelectLog"
         Log="0" />
 </div>
