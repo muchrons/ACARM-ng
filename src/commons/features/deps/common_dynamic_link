@@ -1,2 +1,2 @@
 #!/bin/sh
-exec echo "-lboost_filesystem-mt -lssl"
+exec echo "-lboost_filesystem-mt `pkg-config openssl --libs`"
