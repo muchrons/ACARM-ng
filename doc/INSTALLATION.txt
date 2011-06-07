@@ -151,6 +151,6 @@ assuming you have everything configured as described above, switch to
 'acarm-ng' user and run daemon:
 $ /bin/acarm-ng
 
-system is now up and running! depending no how you configred logger, you can
+system is now up and running! depending no how you configured logger, you can
 search in proper outputs (ex. file) logged messages to see what's up at the
 moment. feel free to run acarm-ng in background with nohup/screen/etc...

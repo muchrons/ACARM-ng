@@ -70,7 +70,7 @@ following persistencies are supported:
   <type>postgres</type>
   <dbname>acarm_ng</dbname>
   <user>john</user>
-  <pass>$3cr3t</pass>
+  <pass>s3cr3t</pass>
   <host>db.server.my.domain.org</host>
   <port>5432</port>
 </persistency>
@@ -87,7 +87,7 @@ logger configuration
 
 logger's configuration consists of two parts: appenders configuration and
 logger nodes configuration. at first appenders are created and configured,
-then they are assigned to nodes. along with appenders threshold vaues can
+then they are assigned to nodes. along with appenders threshold values can
 be assigned, i.e. given node can log when message priority is no less than
 a given value.
 
@@ -161,7 +161,7 @@ and corresponding XML structure:
     </node3>
   </node1>
 
-notice that appenders and threshold are derived from parents to childrent,
+notice that appenders and threshold are derived from parents to children,
 unless explicitly overwritten. thus the minimal, valid configuration for the
 whole free has form:
   <nodes appender="..." threshold="..."/>
@@ -223,7 +223,7 @@ following filters and parameters are available:
     <timeout>42</timeout> <!-- timeout for observing entry, in seconds -->
   </samename>
 
-  <!-- finds chains of events and updates severity delta by a given ammount -->
+  <!-- finds chains of events and updates severity delta by a given amount -->
   <eventchain name="event_chain">
     <timeout>42</timeout>              <!-- timeout for observing entry, in seconds -->
     <priorityDelta>0.8</priorityDelta> <!-- amount to update priority by when correlating -->
@@ -278,7 +278,7 @@ below are listed implemented triggers along with their implementation.
 -->
 <gg name="msg2bob">
   <uin>12345</uin>                   <!-- GG account number -->
-  <password>my$3cr337</password>     <!-- password for this account-->
+  <password>myS3cr337</password>     <!-- password for this account-->
   <receivers>12345 2334</receivers>  <!-- list of GG accounts to notify -->
 
   <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
@@ -288,7 +288,7 @@ below are listed implemented triggers along with their implementation.
 <!-- Jabber instant messenger notification -->
 <jabber name="msg2bob">
   <login>acarm-ng1</login>                            <!-- login for Jabber account-->
-  <password>my$3cr337</password>                      <!-- password for this account-->
+  <password>myS3cr337</password>                      <!-- password for this account-->
   <server>jabber.org</server>                         <!-- Jabber server-->
   <receivers>me@jabber.org you@jabber.org</receivers> <!-- list of Jabber accounts to notify -->
 
@@ -305,8 +305,8 @@ below are listed implemented triggers along with their implementation.
   <port>465</port>                 <!-- port server's listening on -->
   <protocol>smtp</protocol>        <!-- protocol type (smtp) -->
   <security>ssl</security>         <!-- secure connection type (ssl/starttls) -->
-  <user>robot</user>               <!-- username to authenticate with (optional) -->
-  <password>topsi-kret</password>  <!-- password for username (required when 'user' is set) -->
+  <user>robot</user>               <!-- user name to authenticate with (optional) -->
+  <password>topsi-kret</password>  <!-- password for user name (required when 'user' is set) -->
 
   <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
   <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
@@ -350,7 +350,7 @@ inputs configuration
 ====================
 
 inputs are alerts-gathering mechanisms in ACARM-ng. each of them reads alerts
-and passess them to system for correlation and processing.
+and passes them to system for correlation and processing.
 
 following inputs are available:
 
