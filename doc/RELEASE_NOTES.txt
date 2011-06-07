@@ -1,4 +1,6 @@
 -- dev --
+* added heartbeats visualization to WUI.
+* added logs of all actions in WUI (browsable via WUI).
 
 
 -- v0.2.0 --

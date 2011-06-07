@@ -54,7 +54,7 @@ install-config: $(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml ensure-configure
 $(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml: ensure-configure
 	@install -v -d '$(INSTALL_DIR)/etc/acarm-ng'
 	@install -v -d '$(INSTALL_DIR)/var/log/acarm-ng'
-	@install -v -m 600 'doc/example_configs/minimal.xml' '$(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml'
+	@install -v -m 600 -b 'doc/example_configs/minimal.xml' '$(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml'
 	@sed -i 's:\(<pluginsDir>\).*\(</pluginsDir>\):\1$(INSTALL_DIR)/lib/acarm-ng/plugins\2:g' '$(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml'
 	@sed -i 's:\(<output>\).*\(</output>\):\1$(INSTALL_DIR)/var/log/acarm-ng/daemon.log\2:g' '$(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml'
 
