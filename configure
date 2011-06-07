@@ -45,7 +45,7 @@ EOF
 # compile (but do not link)
 function compile()
 {
-  gcc -c -o /dev/null "$1" $EXTRA_COMPILE_FLAGS > /dev/null 2>&1
+  g++ -o /dev/null "$@" $EXTRA_COMPILE_FLAGS #> /dev/null 2>&1
   return "$?"
 }
 
