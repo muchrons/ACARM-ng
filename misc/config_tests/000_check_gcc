@@ -1,0 +1,16 @@
+#!/bin/bash
+#
+# test for gcc presence
+#
+
+echo -n "checking for working g++... "
+echo -e "#include <iostream>\nint main(void){return 0;}" > "$TMP"
+if compile "$TMP"
+then
+  echo "ok"
+else
+  echo "N/A"
+  echo "no working ompiler found"
+  rm -f "$TMP"
+  exit 2
+fi
