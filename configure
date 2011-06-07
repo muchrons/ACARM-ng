@@ -41,11 +41,16 @@ EOF
   exit 1
 }
 
+LOG="configure.log"
+
 
 # compile (but do not link)
 function compile()
 {
-  g++ -o /dev/null "$@" $EXTRA_COMPILE_FLAGS > /dev/null 2>&1
+  date >> "$LOG"
+  cat "$1" >> "$LOG"
+  echo g++ -o /dev/null "$@" $EXTRA_COMPILE_FLAGS >> "$LOG"
+  g++ -o /dev/null "$@" $EXTRA_COMPILE_FLAGS >> "$LOG" 2>&1
   return "$?"
 }
 
@@ -53,7 +58,10 @@ function compile()
 #
 # process command line options
 #
+
 ONLY_TESTS_RUN="false"
+rm -f "$LOG"
+
 while [ "$#" -gt 0 ]
 do
   case "$1" in
@@ -64,16 +72,19 @@ do
         exit 2
       fi
       PREFIX="$2"
+      echo "setting prefix to '$PREFIX'" >> "$LOG"
       shift
     ;;
 
     "--disable")
       PLUGINS="`echo "$PLUGINS" | xargs -n 1 -r echo | grep -v "^$2$"`"
+      echo "disabling plugin '$2'" >> "$LOG"
       shift
     ;;
 
     "--debug")
       PROFILE="debug"
+      echo "enabling debug mode" >> "$LOG"
     ;;
 
     "--list-plugins")
@@ -89,17 +100,20 @@ do
     "--test")
       TESTS_TO_RUN="$TESTS_TO_RUN $2"
       ONLY_TESTS_RUN="true"
+      echo "running test only mode for: $TESTS_TO_RUN" >> "$LOG"
       shift
     ;;
 
     "-I")
       EXTRA_COMPILE_FLAGS="$EXTRA_COMPILE_FLAGS -I$2"
+      echo "extending compilation flags: $EXTRA_COMPILE_FLAGS" >> "$LOG"
       shift
     ;;
 
     "-L")
       EXTRA_LINK_FLAGS="$EXTRA_LINK_FLAGS -L$2"
       EXTRA_LIB_DIRS="$EXTRA_LIB_DIRS:$2"
+      echo "extending linkage flags: $EXTRA_LINK_FLAGS" >> "$LOG"
       shift
     ;;
 
@@ -119,6 +133,7 @@ EXTRA_LIB_DIRS="$PREFIX/lib/acarm-ng:$EXTRA_LIB_DIRS"
 if [ -z "$TESTS_TO_RUN" ]
 then
   TESTS_TO_RUN="`"$0" --list-tests | xargs -r echo -n`"
+  echo "running all tests" >> "$LOG"
 fi
 # prepare single temporary file to work on
 TMP="`mktemp --suffix=.cpp`"
@@ -128,8 +143,11 @@ TMP="`mktemp --suffix=.cpp`"
 #
 for t in $TESTS_TO_RUN
 do
+  echo "BEGIN: running test $1" >> "$LOG"
   . "./misc/config_tests/$t"
+  echo "END: done running test $1" >> "$LOG"
 done
+echo "ALL TESTS ARE DONE" >> "$LOG"
 
 #
 # cleanup
