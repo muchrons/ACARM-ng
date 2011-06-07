@@ -1,4 +1,3 @@
-#!/bin/bash
 echo -n "checking for openssl... "
 echo -e "#include <openssl/sha.h>\nint main(void){int x=SHA_DIGEST_LENGTH;return 0;}" > "$TMP"
 if compile "$TMP" `$SRCS/commons/features/deps/common_dynamic_compile` `$SRCS/commons/features/deps/common_dynamic_link`

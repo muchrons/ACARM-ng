@@ -1,4 +1,3 @@
-#!/bin/bash
 echo -n "checking for boost::thread... "
 echo -e "#include <boost/thread.hpp>\nint main(void){boost::thread th;return 0;}" > "$TMP"
 if compile "$TMP" `$SRCS/base/features/deps/common_dynamic_link`

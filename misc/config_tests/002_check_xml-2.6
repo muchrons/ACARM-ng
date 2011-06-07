@@ -1,4 +1,3 @@
-#!/bin/bash
 echo -n "checking for XML++ 2.6... "
 echo -e "#include <libxml++/libxml++.h>\nint main(void){return 0;}" > "$TMP"
 if compile "$TMP" `$SRCS/xml/features/deps/common_dynamic_compile` `$SRCS/xml/features/deps/common_dynamic_link`
