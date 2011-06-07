@@ -3,3 +3,4 @@
 * add icon for the 'one2one' filter in GUI.
 * add icon for the 'similarity' filter in GUI.
 * correlation count for each filter type.
+* add checking of data model version in WUI with proper warning displaying, if needed.
