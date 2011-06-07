@@ -1,7 +1,6 @@
 src/gen
 doc/acarm-ng/*.session
 .~lock.*
-bzr_team.conf
 wui/site/assets/*
 wui/site/protected/runtime/*
 wui/site/protected/db/*.db
