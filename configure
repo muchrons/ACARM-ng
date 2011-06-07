@@ -42,6 +42,8 @@ EOF
 }
 
 LOG="configure.log"
+ROOT="`bzr root`"
+SRCS="$ROOT/src"
 
 
 # compile (but do not link)

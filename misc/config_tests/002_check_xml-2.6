@@ -1,7 +1,7 @@
 #!/bin/bash
-echo -n "checking for working XML++ 2.6... "
+echo -n "checking for XML++ 2.6... "
 echo -e "#include <libxml++/libxml++.h>\nint main(void){return 0;}" > "$TMP"
-if compile "$TMP" `pkg-config libxml++-2.6 --cflags --libs`
+if compile "$TMP" `$SRCS/xml/features/deps/common_dynamic_compile` `$SRCS/xml/features/deps/common_dynamic_link`
 then
   echo "ok"
 else
