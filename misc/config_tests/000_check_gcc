@@ -1,8 +1,4 @@
 #!/bin/bash
-#
-# test for gcc presence
-#
-
 echo -n "checking for working g++... "
 echo -e "#include <iostream>\nint main(void){return 0;}" > "$TMP"
 if compile "$TMP"

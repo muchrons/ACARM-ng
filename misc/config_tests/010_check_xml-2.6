@@ -1,0 +1,12 @@
+#!/bin/bash
+echo -n "checking for working XML++ 2.6... "
+echo -e "#include <libxml++/libxml++.h>\nint main(void){return 0;}" > "$TMP"
+if compile "$TMP" `pkg-config libxml++-2.6 --cflags --libs`
+then
+  echo "ok"
+else
+  echo "N/A"
+  echo "no working ompiler found"
+  rm -f "$TMP"
+  exit 2
+fi
