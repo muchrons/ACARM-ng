@@ -1,4 +1,5 @@
 #!/bin/bash
 set -e
+cd "`bzr root`"
 . bzr_team.conf
 exec bzr push "$PARENT/../devel/$RU"
