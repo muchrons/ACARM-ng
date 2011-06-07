@@ -84,8 +84,9 @@ ACARM-ng.
 
 PostgreSQL
 ----------
- 1. create 'acarm_ng' data base on the server.
- 2. create valid data base schema for this data base:
+ 1. create file with password for UI user.
+ 2. create file with password for daemon user.
+ 3. create valid data base schema:
     $ cd acarmng/data_model/<database>/<version>
     $ ./init_db <dbname> <dpf> <upf>
     where:
@@ -93,8 +94,8 @@ PostgreSQL
       dpf    - file with password for daemon.
       upf    - file with password for WUI user.
 
-note: if you want to run tests create 'acarm_ng_test' data base and use
-      'init_test_db' script to fill it with data.
+note: if you want to run tests create 'acarm_ng_test' data base with
+      'init_test_db' script (no parameters are required).
 
 Stubs:
 ------
