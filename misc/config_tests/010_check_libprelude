@@ -13,19 +13,17 @@ then
     exit 2
   fi
 
-  # check library version
-  echo -n "checking libprelude version... "
-  echo -e "#include <prelude.h>\n#include <iostream>\nint main(void){ std::cout<<LIBPRELUDE_VERSION<<std::endl; return 0;}" > "$TMP"
-  VER="$(compile_and_run "$TMP" `$SRCS/inputprelude/features/deps/common_dynamic_compile` `$SRCS/inputprelude/features/deps/common_dynamic_link`)"
-  VER_N="`sed -e 's:\.:*10000+:' -e 's:\.:*100+:' <<< "$VER" | sed 's/[^0-9+*].*$//' | bc -q`"
-
-  if [ "$VER_N" -ge "10000" ]
+  # test for library presence
+  echo -n "checking for libprelude version... "
+  echo -e "#include <prelude.h>\nint main(void){ prelude_client_recv_idmef(0,0,0); return 0;}" > "$TMP"
+  if compile "$TMP" `$SRCS/inputprelude/features/deps/common_dynamic_compile` `$SRCS/inputprelude/features/deps/common_dynamic_link`
   then
     echo "ok"
   else
-    echo "too old"
-    echo "minimal version is 1.0.0"
+    echo "N/A"
+    echo "install missing library or withdraw usage of plugins: inputprelude"
     rm -f "$TMP"
     exit 2
   fi
+
 fi
