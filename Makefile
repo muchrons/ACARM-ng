@@ -88,5 +88,5 @@ configure-output.mk:
 
 .PHONY: clean
 clean:
-	rm -fv  configure-output.mk
-	rm -fvr src/gen
+	@rm -fvr src/gen
+	@rm -fv  configure-output.mk
