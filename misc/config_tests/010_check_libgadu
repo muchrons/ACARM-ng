@@ -7,7 +7,7 @@ then
     echo "ok"
   else
     echo "N/A"
-    echo "install missing library or withdraw usage of plugins: triggergg"
+    echo "ERROR: install missing library or withdraw usage of plugins: triggergg"
     rm -f "$TMP"
     exit 2
   fi

@@ -14,7 +14,7 @@ else
     FEATURES="$FEATURES use_old_boost_filesystem"
   else
     echo "N/A"
-    echo "boost filesystem is missing"
+    echo "ERROR: boost filesystem is missing"
     rm -f "$TMP"
     exit 2
   fi

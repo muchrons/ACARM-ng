@@ -5,7 +5,7 @@ then
   echo "ok"
 else
   echo "N/A"
-  echo "boost thread not present"
+  echo "ERROR: boost thread not present"
   rm -f "$TMP"
   exit 2
 fi
