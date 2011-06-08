@@ -70,13 +70,13 @@ function compile()
 # compile+run user call
 function compile_and_run()
 {
-  local BIN="`mktemp`"
+  local BIN="`mktemp tmp.confgure.bin.XXXXXXXX`"
   compile_impl "$BIN" "$@"
   local RET="$?"
   if [ "$RET" -eq 0 ]
   then
     echo "running $BIN..." >> "$LOG"
-    "$BIN"
+    ./"$BIN"
     RET="$?"
   fi
   rm -f "$BIN"
@@ -171,7 +171,7 @@ then
   echo "running all tests" >> "$LOG"
 fi
 # prepare single temporary file to work on
-TMP="`mktemp`"
+TMP="`mktemp tmp.confgure.XXXXXXXX`"
 
 #
 # run all tests
