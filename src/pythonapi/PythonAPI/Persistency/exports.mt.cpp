@@ -2,11 +2,9 @@
  * exports.mt.cpp
  *
  */
-#include <vector>
 #include <iostream>
 #include <stdexcept>
 #include <boost/python.hpp>
-#include <boost/scoped_ptr.hpp>
 
 #include "PythonAPI/Persistency/exports.hpp"
 

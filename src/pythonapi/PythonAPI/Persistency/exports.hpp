@@ -7,12 +7,11 @@
 
 #include <boost/python/module.hpp>
 
-//#include "PythonAPI/Persistency/.hpp"
+#include "PythonAPI/Persistency/exportCertainty.hpp"
 
 BOOST_PYTHON_MODULE(persistency)
 {
-  //initMyModMyClassPython();
-  //initMyModHelloGoodbye();
+  PythonAPI::Persistency::exportCertainty();
 }
 
 #endif
