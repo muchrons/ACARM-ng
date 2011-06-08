@@ -41,6 +41,7 @@ EOF
   exit 1
 }
 
+CFG_OUT="configure-output.mk"
 LOG="configure.log"
 ROOT="`bzr root`"
 SRCS="$ROOT/src"
@@ -88,7 +89,7 @@ function compile_and_run()
 #
 
 ONLY_TESTS_RUN="false"
-rm -f "$LOG"
+rm -f "$LOG" "$CFG_OUT"
 
 while [ "$#" -gt 0 ]
 do
@@ -190,7 +191,7 @@ rm -f "$TMP"
 #
 
 # prepare main makefile elements
-cat<<EOF > configure-output.mk
+cat > "$CFG_OUT" <<EOF
 LOCAL_MAKE_FLAGS+="TC=gcc"
 LOCAL_MAKE_FLAGS+="PROFILE=$PROFILE"
 LOCAL_MAKE_FLAGS+="FEATURES=$FEATURES"
