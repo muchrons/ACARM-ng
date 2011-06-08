@@ -54,7 +54,7 @@ function compile_impl()
   shift
   date >> "$LOG"
   cat "$1" >> "$LOG"
-  local CMD="g++ -o "$OUT" $@ $EXTRA_COMPILE_FLAGS"
+  local CMD="g++ -x c++ -o "$OUT" $@ $EXTRA_COMPILE_FLAGS"
   echo "$CMD" >> "$LOG"
   $CMD >> "$LOG" 2>&1
   return "$?"
@@ -165,7 +165,7 @@ then
   echo "running all tests" >> "$LOG"
 fi
 # prepare single temporary file to work on
-TMP="`mktemp --suffix=.cpp`"
+TMP="`mktemp`"
 
 #
 # run all tests
@@ -173,7 +173,7 @@ TMP="`mktemp --suffix=.cpp`"
 for t in $TESTS_TO_RUN
 do
   echo "BEGIN: running test $1" >> "$LOG"
-  . "./misc/config_tests/$t"
+  source "./misc/config_tests/$t"
   echo "END: done running test $1" >> "$LOG"
   echo >> "$LOG"
 done
