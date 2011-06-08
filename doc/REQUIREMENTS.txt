@@ -6,7 +6,7 @@ marked with [o].
 
 [br-] boost libraries >= 1.35
 [br-] libxml++ >= 2.6
-[br-] openssl >= 4.0
+[br-] openssl >= 1.0.0
 [-ro] apache2-server          (used by: Web User Interface)
 [-ro] postgresql-server       (used by: persistencypostgres)
 [bro] libpqxx                 (used by: persistencypostgres)

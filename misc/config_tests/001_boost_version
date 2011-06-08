@@ -14,7 +14,7 @@ then
   echo "ok"
 else
   echo "too old"
-  echo "minimal required version is boost 1.35"
+  echo "minimal required version is 1.35"
   rm -f "$TMP"
   exit 2
 fi
