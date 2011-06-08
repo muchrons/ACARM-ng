@@ -43,7 +43,7 @@ EOF
 
 CFG_OUT="configure-output.mk"
 LOG="configure.log"
-ROOT="`bzr root`"
+ROOT="`readlink -f "$0" | xargs dirname`"
 SRCS="$ROOT/src"
 
 
