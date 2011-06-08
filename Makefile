@@ -51,7 +51,7 @@ install-config: $(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml ensure-configure
 	@install -v -d '$(INSTALL_DIR)/etc/acarm-ng'
 
 
-$(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml: ensure-configure
+$(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml: configure-output.mk doc/example_configs/minimal.xml
 	@install -v -d '$(INSTALL_DIR)/etc/acarm-ng'
 	@install -v -d '$(INSTALL_DIR)/var/log/acarm-ng'
 	@install -v -m 600 -b 'doc/example_configs/minimal.xml' '$(INSTALL_DIR)/etc/acarm-ng/acarm_ng_config.xml'
@@ -82,7 +82,7 @@ install-wui: ensure-configure
 
 .PHONY: enusre-configure
 ensure-configure: configure-output.mk
-configure-output.mk:
+configure-output.mk: configure Makefile
 	@echo "run ./confiugure first" >&2
 	@false
 
