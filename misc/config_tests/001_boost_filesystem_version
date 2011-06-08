@@ -10,7 +10,7 @@ else
   echo -e "#include <boost/filesystem.hpp>\nusing boost::filesystem::is_regular;\nint main(void){return 0;}" > "$TMP"
   if compile "$TMP" -lboost_filesystem -lboost_system
   then
-    echo "boost filesystems too old"
+    echo "ok (got old boost)"
     FEATURES="$FEATURES use_old_boost_filesystem"
   else
     echo "N/A"
