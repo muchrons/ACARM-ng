@@ -46,15 +46,40 @@ ROOT="`bzr root`"
 SRCS="$ROOT/src"
 
 
-# compile (but do not link)
-function compile()
+# compile implementation function
+function compile_impl()
 {
+  local OUT="$1"
+  shift
   date >> "$LOG"
   cat "$1" >> "$LOG"
-  local CMD="g++ -o /dev/null $@ $EXTRA_COMPILE_FLAGS"
+  local CMD="g++ -o "$OUT" $@ $EXTRA_COMPILE_FLAGS"
   echo "$CMD" >> "$LOG"
   $CMD >> "$LOG" 2>&1
   return "$?"
+}
+
+# compile user call
+function compile()
+{
+  compile_impl "/dev/null" "$@"
+  return "$?"
+}
+
+# compile+run user call
+function compile_and_run()
+{
+  local BIN="`mktemp`"
+  compile_impl "$BIN" "$@"
+  local RET="$?"
+  if [ "$RET" -eq 0 ]
+  then
+    echo "running $BIN..." >> "$LOG"
+    "$BIN"
+    RET="$?"
+  fi
+  rm -f "$BIN"
+  return "$RET"
 }
 
 
