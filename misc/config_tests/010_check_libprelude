@@ -25,5 +25,4 @@ then
     rm -f "$TMP"
     exit 2
   fi
-
 fi
