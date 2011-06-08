@@ -1,6 +1,5 @@
 if grep -q '^triggergg$' <<< "$PLUGINS"
 then
-  # test for library presence
   echo -n "checking for libgadu... "
   echo -e "#include <libgadu.h>\nint main(void){ gg_login_params p; return 0; }" > "$TMP"
   if compile "$TMP" `$SRCS/triggergg/features/deps/common_dynamic_link`
@@ -9,21 +8,6 @@ then
   else
     echo "N/A"
     echo "install missing library or withdraw usage of plugins: triggergg"
-    rm -f "$TMP"
-    exit 2
-  fi
-
-  # check library version
-  echo -n "checking libgadu version... "
-  echo -e "#include <libgadu.h>\n#include <iostream>\nint main(void){ std::cout<<GG_LIBGADU_VERSION<<std::endl; return 0;}" > "$TMP"
-  VER="$(compile_and_run "$TMP" `$SRCS/triggergg/features/deps/common_dynamic_link`)"
-  VER_N="`sed -e 's:\.:*10000+:' -e 's:\.:*100+:' <<< "$VER" | bc -q`"
-  if [ "$VER_N" -ge "10800" ]
-  then
-    echo "ok"
-  else
-    echo "too old"
-    echo "minimal version is 1.8"
     rm -f "$TMP"
     exit 2
   fi

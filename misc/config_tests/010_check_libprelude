@@ -17,7 +17,8 @@ then
   echo -n "checking libprelude version... "
   echo -e "#include <prelude.h>\n#include <iostream>\nint main(void){ std::cout<<LIBPRELUDE_VERSION<<std::endl; return 0;}" > "$TMP"
   VER="$(compile_and_run "$TMP" `$SRCS/inputprelude/features/deps/common_dynamic_compile` `$SRCS/inputprelude/features/deps/common_dynamic_link`)"
-  VER_N="`sed -e 's:\.:*10000+:' -e 's:\.:*100+:' <<< "$VER" | bc -q`"
+  VER_N="`sed -e 's:\.:*10000+:' -e 's:\.:*100+:' <<< "$VER" | sed 's/[^0-9+*].*$//' | bc -q`"
+
   if [ "$VER_N" -ge "10000" ]
   then
     echo "ok"

@@ -2,7 +2,7 @@ echo -n "checking for new boost::filesystem version... "
 echo -e "#include <boost/filesystem.hpp>\nusing boost::filesystem::is_regular_file;\nint main(void){return 0;}" > "$TMP"
 if compile "$TMP" -lboost_filesystem -lboost_system
 then
-  echo "got new boost"
+  echo "ok"
   FEATURES="$FEATURES use_new_boost_filesystem"
 else
   echo "N/A"
@@ -10,7 +10,7 @@ else
   echo -e "#include <boost/filesystem.hpp>\nusing boost::filesystem::is_regular;\nint main(void){return 0;}" > "$TMP"
   if compile "$TMP" -lboost_filesystem -lboost_system
   then
-    echo "got old boost"
+    echo "boost filesystems too old"
     FEATURES="$FEATURES use_old_boost_filesystem"
   else
     echo "N/A"
