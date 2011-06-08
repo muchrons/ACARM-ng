@@ -1,5 +1,5 @@
 -- dev --
-* added more tests to configure script.
+* added tests to configure script - now each requirement is tested, before delivery.
 * clean-up in project's root directory.
 * added heartbeats visualization to WUI.
 * added logs of all actions in WUI (browsable via WUI).
