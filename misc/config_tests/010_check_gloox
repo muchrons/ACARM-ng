@@ -1,0 +1,14 @@
+if grep -q '^triggerjabber$' <<< "$PLUGINS"
+then
+  echo -n "checking for libgloox... "
+  echo -e "#include <gloox/client.h>\nint main(void){ gloox::JID id(""); return 0; }" > "$TMP"
+  if compile "$TMP" `$SRCS/triggerjabber/features/deps/common_dynamic_compile` `$SRCS/triggerjabber/features/deps/common_dynamic_link`
+  then
+    echo "ok"
+  else
+    echo "N/A"
+    echo "install missing library or withdraw usage of plugins: triggerjabber"
+    rm -f "$TMP"
+    exit 2
+  fi
+fi
