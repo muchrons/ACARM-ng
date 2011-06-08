@@ -1,0 +1,14 @@
+if grep -q '^inputprelude$' <<< "$PLUGINS"
+then
+  echo -n "checking for libprelude... "
+  echo -e "#include <prelude.h>\nint main(void){ prelude_check_version(0); return 0;}" > "$TMP"
+  if compile "$TMP" `$SRCS/inputprelude/features/deps/common_dynamic_compile` `$SRCS/inputprelude/features/deps/common_dynamic_link`
+  then
+    echo "ok"
+  else
+    echo "N/A"
+    echo "install missing library or withdraw usage of plugins: inputprelude"
+    rm -f "$TMP"
+    exit 2
+  fi
+fi
