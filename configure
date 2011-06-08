@@ -83,6 +83,12 @@ function compile_and_run()
   return "$RET"
 }
 
+# parse version string in form of X.Y.Z to a number
+function parse_version3()
+{
+  sed -e 's:[^0-9\.]: :g' -e 's:.*\([0-9]\+\.[0-9]\+\.[0-9]\+\).*:\1:' -e 's:\.:*10000+:' -e 's:\.:*100+:' | bc -q
+}
+
 
 #
 # process command line options

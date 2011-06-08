@@ -17,7 +17,7 @@ then
   echo -n "checking libvmime version... "
   echo -e "#include <vmime/vmime.hpp>\n#include <iostream>\nint main(void){ std::cout<<VMIME_VERSION<<std::endl; return 0;}" > "$TMP"
   VER="$(compile_and_run "$TMP" `$SRCS/triggermail/features/deps/common_dynamic_compile` `$SRCS/triggermail/features/deps/common_dynamic_link`)"
-  VER_N="`sed -e 's:\.:*10000+:' -e 's:\.:*100+:' <<< "$VER" | bc -q`"
+  VER_N="`parse_version3 <<< "$VER"| bc -q`"
   if [ "$VER_N" -ge "901" ]
   then
     echo "ok"
