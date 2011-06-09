@@ -20,14 +20,14 @@ class PersistencyCleanup
 public:
   /** \brief creates instance.
    */
-  explicit PersistencyCleanup(ConfigIO::GeneralConfig::Timespan cleanupOlder);
+  explicit PersistencyCleanup(ConfigIO::GeneralConfig::Interval cleanupOlder);
   /** \brief run cleanup manually.
    */
   void cleanup(void);
 
 private:
   Logger::Node                      log_;
-  ConfigIO::GeneralConfig::Timespan cleanupOlder_;
+  ConfigIO::GeneralConfig::Interval cleanupOlder_;
 }; // class PersistencyCleanup
 
 } // namespace Core

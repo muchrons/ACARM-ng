@@ -11,7 +11,7 @@ using namespace Persistency::IO;
 namespace Core
 {
 
-PersistencyCleanup::PersistencyCleanup(ConfigIO::GeneralConfig::Timespan cleanupOlder):
+PersistencyCleanup::PersistencyCleanup(ConfigIO::GeneralConfig::Interval cleanupOlder):
   log_("core.persistencycleanup"),
   cleanupOlder_(cleanupOlder)
 {
