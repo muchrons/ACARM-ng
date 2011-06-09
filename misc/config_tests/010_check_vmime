@@ -8,7 +8,7 @@ then
     echo "ok"
   else
     echo "N/A"
-    echo "install missing library or withdraw usage of plugins: triggermail"
+    echo "ERROR: install missing library or withdraw usage of plugins: triggermail"
     rm -f "$TMP"
     exit 2
   fi
@@ -23,7 +23,7 @@ then
     echo "ok"
   else
     echo "too old"
-    echo "minimal version is 0.9.1"
+    echo "ERROR: minimal version is 0.9.1"
     rm -f "$TMP"
     exit 2
   fi

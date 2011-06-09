@@ -5,7 +5,7 @@ then
   echo "ok"
 else
   echo "N/A"
-  echo "no openssl detected"
+  echo "ERROR: no openssl detected"
   rm -f "$TMP"
   exit 2
 fi

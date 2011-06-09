@@ -36,7 +36,7 @@ install-bin: ensure-configure
 	@install -v -d '$(INSTALL_DIR)/bin'
 	@echo '#!/bin/sh' > '$(INSTALL_DIR)/bin/acarm-ng'
 	@echo 'cd "$(INSTALL_DIR)/etc/acarm-ng/"' >> '$(INSTALL_DIR)/bin/acarm-ng'
-	@echo 'export LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:$(INSTALL_DIR)/lib/acarm-ng:"' >> '$(INSTALL_DIR)/bin/acarm-ng'
+	@echo 'export LD_LIBRARY_PATH="$$LD_LIBRARY_PATH:$(EXTRA_LIB_DIRS)"' >> '$(INSTALL_DIR)/bin/acarm-ng'
 	@echo 'exec "$(INSTALL_DIR)/bin/acarm-ng.bin"' >> '$(INSTALL_DIR)/bin/acarm-ng'
 	@chmod 755 '$(INSTALL_DIR)/bin/acarm-ng'
 	@install -v -m 755 '$(BUILD_DIR)/acarmng/acarmng.out' '$(INSTALL_DIR)/bin/acarm-ng.bin'

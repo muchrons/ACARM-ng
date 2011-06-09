@@ -8,7 +8,7 @@ then
     echo "ok"
   else
     echo "N/A"
-    echo "install missing library or withdraw usage of plugins: inputprelude"
+    echo "ERROR: install missing library or withdraw usage of plugins: inputprelude"
     rm -f "$TMP"
     exit 2
   fi
@@ -21,7 +21,7 @@ then
     echo "ok"
   else
     echo "too old"
-    echo "minimal version is 1.0.0"
+    echo "ERROR: minimal version is 1.0.0"
     rm -f "$TMP"
     exit 2
   fi

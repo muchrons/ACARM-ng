@@ -5,7 +5,7 @@ then
   echo "ok"
 else
   echo "N/A"
-  echo "no working compiler found"
+  echo "ERROR: no working compiler found"
   rm -f "$TMP"
   exit 2
 fi
