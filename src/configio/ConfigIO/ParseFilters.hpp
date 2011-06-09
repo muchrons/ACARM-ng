@@ -9,7 +9,7 @@
 #include "ConfigIO/FilterConfig.hpp"
 #include "ConfigIO/FiltersConfigCollection.hpp"
 #include "ConfigIO/FiltersConfigCollection.hpp"
-#include "ConfigIO/Generic/NamedParse.hpp"
+#include "ConfigIO/Generic/Parse.hpp"
 
 
 namespace ConfigIO
@@ -17,7 +17,7 @@ namespace ConfigIO
 
 /** \brief parser for filters' configuration.
  */
-class ParseFilters: public Generic::NamedParse<FilterConfig, FiltersConfigCollection>
+class ParseFilters: public Generic::Parse<FilterConfig, FiltersConfigCollection, true>
 {
 public:
   /** \brief parses configuration and saves it internally.

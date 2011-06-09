@@ -10,7 +10,7 @@ namespace ConfigIO
 {
 
 ParseFilters::ParseFilters(const XML::Node &node):
-  Generic::NamedParse<FilterConfig, FiltersConfigCollection>(node)
+  Generic::Parse<FilterConfig, FiltersConfigCollection, true>(node)
 {
   assert( node.getName()=="filters" );
 }

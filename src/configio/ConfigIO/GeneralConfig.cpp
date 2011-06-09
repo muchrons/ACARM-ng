@@ -46,7 +46,7 @@ std::string fixURL(const std::string &url)
 
 GeneralConfig::GeneralConfig(const URL                     &wuiUrl,
                              const Interval                 cleanupInterval,
-                             const Timespan                 cleanupOlder,
+                             const Interval                 cleanupOlder,
                              const boost::filesystem::path &pluginsDir):
   wuiUrl_( fixURL(wuiUrl) ),
   cleanupInterval_(cleanupInterval),

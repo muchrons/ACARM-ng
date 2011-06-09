@@ -29,6 +29,7 @@ struct TestConfig: public Config<TestConfig>
 
 typedef std::vector<TestConfig>                 TestConfigCollection;
 typedef Parse<TestConfig, TestConfigCollection> TestParse;
+typedef Parse<TestConfig, TestConfigCollection, true> TestParseNamed;
 
 struct TestClass
 {
