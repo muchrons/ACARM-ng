@@ -7,10 +7,7 @@
 
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Filter/BackendFacade.hpp"
-// TODO: according to convention Filter::NewEvent must have its own exception type, derived
-//       from Filter::Exception, but cannot throw Filter::Exception directly in own code.
-#include "Filter/Exception.hpp"
-
+#include "Filter/NewEvent/Exception.hpp"
 #include "Filter/NewEvent/Hash.hpp"
 
 namespace Filter
