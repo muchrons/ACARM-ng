@@ -38,25 +38,22 @@ class Alert extends TPage
         $text="<font";
         $value=trim($this->alert_->severity);
 
-        if ($value=="error")
+        if ($value=="4")
           $text.=" color=\"red\"";
         else
-          if ($value=="critical")
-            $text.=" color=\"red\"";
+          if ($value=="3")
+            $text.=" color=\"#CC3300\"";
           else
-            if ($value=="problem")
-              $text.=" color=\"#CC3300\"";
+            if ($value=="2")
+              $text.=" color=\"black\"";
             else
-              if ($value=="warning")
-                $text.=" color=\"black\"";
+              if ($value=="1")
+                $text.=" color=\"green\"";
               else
-                if ($value=="info")
-                  $text.=" color=\"green\"";
-                else
-                  if ($value=="debug")
-                    $text.=" color=\"blue\"";
+                if ($value=="0")
+                  $text.=" color=\"blue\"";
 
-        $text.=">".$value."</font>";
+        $text.=">".$this->severityToName($value)."</font>";
         $this->AlertSeverity->Text=$text;
       }
 
@@ -104,6 +101,21 @@ class Alert extends TPage
     $url =$this->Service->constructUrl( $page, array('id' => $id) );
     $href="<a href=\"$url\">$name</a>";
     return $href;
+  }
+
+  private function severityToName($n)
+  {
+    if ($n=="0")
+      return "debug";
+    if ($n=="1")
+      return "info";
+    if ($n=="2")
+      return "low";
+    if ($n=="3")
+      return "medium";
+    if ($n=="4")
+      return "high";
+    return "unknown";
   }
 
   private $alert_;

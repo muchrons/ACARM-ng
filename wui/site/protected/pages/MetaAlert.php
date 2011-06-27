@@ -97,6 +97,12 @@ class MetaAlert extends TPage
         if ($isRoot!=0)
           $this->MetaAlertTags->Text.="<font color=\"red\"><b>Root</b></font> ";
 
+        $triggers_tab=SQLWrapper::queryForList('SelectTriggered', $idAlert);
+
+        $triggers=implode(",",$triggers_tab);
+
+        $this->Triggered->Text=$triggers;
+
       } // if(!post_back)
   }
 
