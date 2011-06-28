@@ -31,7 +31,7 @@ public:
    *  \param bf      facade for saving elements in the persistency.
    *  \param ts      cache for storing timeouted elements.
    */
-  Entry(const HashSharedPtr &hashPtr, Filter::BackendFacade &bf, TimeoutedSet &ts);
+  Entry(const Hash &hash, Filter::BackendFacade &bf, TimeoutedSet &ts);
   /** \brief delete instance and add hash of timeouted element to the cache.
    */
   ~Entry();
@@ -49,7 +49,7 @@ private:
 
   Persistency::IO::DynamicConfig::Owner                      owner_;
   Commons::SharedPtrNotNULL<Persistency::IO::DynamicConfig>  dc_;
-  HashSharedPtr                                              hashPtr_;
+  Hash                                                       hash_;
   TimeoutedSet                                              *ts_;
 }; // class Entry
 

@@ -49,7 +49,7 @@ factory tf("Filter/NewEvent/EntryProcessor");
 
 namespace tut
 {
-
+/*
 // test name that is not on the list
 template<>
 template<>
@@ -78,5 +78,5 @@ void testObj::test<2>(void)
   ensure("priority changed", System::Math::compareFP(pri2, pri3) );
   ensure_equals("some node market as changed", changed_.size(), 1u);
 }
-
+*/
 } // namespace tut

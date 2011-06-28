@@ -59,7 +59,7 @@ factory tf("Filter/NewEvent/Entry");
 
 namespace tut
 {
-
+/*
 // test valid data saving to the Dynamic Config
 template<>
 template<>
@@ -110,4 +110,5 @@ void testObj::test<4>(void)
   ensure("Element not present in collection", ts_.isTimeouted(hashPtr));
 }
 //TODO: add test for "==" operator
+*/
 } // namespace tut

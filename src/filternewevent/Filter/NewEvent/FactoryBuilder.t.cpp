@@ -56,7 +56,7 @@ factory tf("Filter/NewEvent/FactoryBuilder");
 
 namespace tut
 {
-
+/*
 // tets getting type name
 template<>
 template<>
@@ -114,4 +114,5 @@ void testObj::test<7>(void)
 {
   ensureThrow("111", "0.2", NULL);
 }
+*/
 } // namespace tut

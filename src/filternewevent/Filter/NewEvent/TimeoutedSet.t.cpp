@@ -45,6 +45,7 @@ factory tf("Filter/NewEvent/TimeoutedSet");
 
 namespace tut
 {
+/*
 // check adding simple element
 template<>
 template<>
@@ -80,5 +81,5 @@ void testObj::test<3>(void)
 }
 
 //TODO: check pruning element saved in Dynamic Config
-
+*/
 } // namespace tut

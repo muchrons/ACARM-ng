@@ -21,7 +21,7 @@ namespace NewEvent
 class TimeoutedSet
 {
 
-  typedef std::vector<HashSharedPtr> Timeouted;
+  typedef std::vector<Hash> Timeouted;
 
 public:
   /** \brief create cache to store timeouted elements.*/
@@ -29,7 +29,7 @@ public:
   /** \brief add timeouted key to the collection.
    *  \param key key to be added.
    */
-  void add(const HashSharedPtr &key);
+  void add(const Hash &key);
   /** \brief remove timeouted element from collection and from persistency.
    *  \param bf    facade for removing timeouting elements from persistency.
    *  \param owner owner's name.
