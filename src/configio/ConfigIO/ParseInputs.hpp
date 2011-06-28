@@ -8,7 +8,7 @@
 #include "XML/Node.hpp"
 #include "ConfigIO/InputConfig.hpp"
 #include "ConfigIO/InputsConfigCollection.hpp"
-#include "ConfigIO/Generic/NamedParse.hpp"
+#include "ConfigIO/Generic/Parse.hpp"
 
 
 namespace ConfigIO
@@ -16,7 +16,7 @@ namespace ConfigIO
 
 /** \brief parser for inputs' configuration.
  */
-class ParseInputs: public Generic::NamedParse<InputConfig, InputsConfigCollection>
+class ParseInputs: public Generic::Parse<InputConfig, InputsConfigCollection, true>
 {
 public:
   /** \brief parses configuration and saves it internally.

@@ -8,7 +8,7 @@
 #include "XML/Node.hpp"
 #include "ConfigIO/TriggerConfig.hpp"
 #include "ConfigIO/TriggersConfigCollection.hpp"
-#include "ConfigIO/Generic/NamedParse.hpp"
+#include "ConfigIO/Generic/Parse.hpp"
 
 
 namespace ConfigIO
@@ -16,7 +16,7 @@ namespace ConfigIO
 
 /** \brief parser for triggers' configuration.
  */
-class ParseTriggers: public Generic::NamedParse<TriggerConfig, TriggersConfigCollection>
+class ParseTriggers: public Generic::Parse<TriggerConfig, TriggersConfigCollection, true>
 {
 public:
   /** \brief parses configuration and saves it internally.

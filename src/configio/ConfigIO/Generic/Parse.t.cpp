@@ -29,6 +29,7 @@ struct TestConfig: public Config<TestConfig>
 
 typedef std::vector<TestConfig>                 TestConfigCollection;
 typedef Parse<TestConfig, TestConfigCollection> TestParse;
+typedef Parse<TestConfig, TestConfigCollection, true> TestParseNamed;
 
 struct TestClass
 {
@@ -48,6 +49,16 @@ struct TestClass
     ConfigIO::FileReader fr(xml);
     const Node           n=get( fr.getString() );
     const TestParse      pp(n);
+    return pp;
+  }
+
+  // return copyied persistency config - named
+  TestParseNamed getConfNamed(const char *xml="testdata/generic_named_parse_data.xml") const
+  {
+    assert(xml!=NULL);
+    ConfigIO::FileReader  fr(xml);
+    const Node            n=get( fr.getString() );
+    const TestParseNamed  pp(n);
     return pp;
   }
 };
@@ -104,6 +115,52 @@ void testObj::test<4>(void)
   ensure_equals("invalid number of options", cfg.at(1).getOptions().size(), 2u);
   ensure_equals("invalid option's 1 value", cfg.at(1)["opt4"], "alice");
   ensure_equals("invalid option's 2 value", cfg.at(1)["opt7"], "cat");
+}
+
+// smke test for reading valid "named" configuration
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  getConfNamed();
+}
+
+// test if all config sets are there - "named"
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const TestParseNamed       pp =getConfNamed();
+  const TestConfigCollection &cfg=pp.getConfig();
+  ensure_equals("invalid number of entries", cfg.size(), 2u);
+}
+
+// check set with no options - "named"
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const TestParseNamed       pp =getConfNamed();
+  const TestConfigCollection &cfg=pp.getConfig();
+  ensure_equals("invalid number of entries", cfg.size(), 2u);
+  ensure_equals("invalid type", cfg.at(0).getType(), "noopts");
+  ensure_equals("invalid number of options", cfg.at(0).getOptions().size(), 1u);
+  ensure_equals("invalid option's 1 value", cfg.at(0)["name"], "noopts");
+}
+
+// check set with options - "named"
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const TestParseNamed       pp =getConfNamed();
+  const TestConfigCollection &cfg=pp.getConfig();
+  ensure_equals("invalid number of entries", cfg.size(), 2u);
+  ensure_equals("invalid type", cfg.at(1).getType(), "something");
+  ensure_equals("invalid number of options", cfg.at(1).getOptions().size(), 3u);
+  ensure_equals("invalid option's 1 value", cfg.at(1)["opt4"], "alice");
+  ensure_equals("invalid option's 2 value", cfg.at(1)["opt7"], "cat");
+  ensure_equals("invalid option's 3 value", cfg.at(1)["name"], "other name");
 }
 
 } // namespace tut

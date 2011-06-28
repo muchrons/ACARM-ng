@@ -12,7 +12,7 @@
   </tr>
   <tr>
     <td id="AlertTag" width="10%">Triggered&nbsp;by:</td>
-    <th id="AlertContent" colspan="3">To be implemented<com:TLiteral ID="Triggered" Text="" Encode="false"/></th>
+    <th id="AlertContent" colspan="3"><com:TLiteral ID="Triggered" Text="" Encode="false"/></th>
   </tr>
   <tr>
     <td id="AlertTag" width="10%">Created:</td>

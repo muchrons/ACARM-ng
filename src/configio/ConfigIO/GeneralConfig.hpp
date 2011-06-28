@@ -24,11 +24,8 @@ class GeneralConfig
 public:
   /** \brief url representation. */
   typedef std::string  URL;
-  // TODO: consider making these two typedefs one
   /** \brief interval between two time periods. */
   typedef unsigned int Interval;
-  /** \brief represents osme time length. */
-  typedef unsigned int Timespan;
 
   /** \brief create object instance with given configuration.
    *  \param wuiUrl          address to WUI of ACARM-ng.
@@ -38,7 +35,7 @@ public:
    */
   GeneralConfig(const URL                     &wuiUrl,
                 Interval                       cleanupInterval,
-                Timespan                       cleanupOlder,
+                Interval                       cleanupOlder,
                 const boost::filesystem::path &pluginsDir);
 
   /** \brief gets WUI address.
@@ -58,7 +55,7 @@ public:
   /** \brief gets maximum age for alert before it is wiped out.
    *  \return days to keep alerts in DB.
    */
-  Timespan getCleanupOlder(void) const
+  Interval getCleanupOlder(void) const
   {
     return cleanupOlder_;
   }
@@ -73,7 +70,7 @@ public:
 private:
   URL                     wuiUrl_;
   Interval                cleanupInterval_;
-  Timespan                cleanupOlder_;
+  Interval                cleanupOlder_;
   boost::filesystem::path pluginsDir_;
 }; // class GeneralConfig
 
