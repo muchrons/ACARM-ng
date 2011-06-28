@@ -207,6 +207,11 @@
     ]]>
   </select>
 
+  <select id="SelectTriggered" resultClass="CTriggered" parameterClass="int">
+    SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert=#VALUE#
+  </select>
+
+
 <!-- Queries for Data Mining -->
 
   <select id="DMSeveritiesIP" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
