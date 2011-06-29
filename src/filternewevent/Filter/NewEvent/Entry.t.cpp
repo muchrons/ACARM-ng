@@ -22,13 +22,13 @@ namespace
 
 struct TestClass
 {
-
+/*
   TestClass(void):
     tconn_(new TestConnection),
     conn_( tconn_ ),
     bf_(conn_, changed_, TypeName("testnewevent"), InstanceName("myname")),
     owner_("Filter::NewEvent"),
-    hashPtr_(new Hash("key")),
+    hash_("key"),
     entryPtr_(new Entry(hashPtr_, bf_, ts_)),
     hash_(entryPtr_.get()->getHash().get())
   {
@@ -46,9 +46,10 @@ struct TestClass
   BackendFacade                          bf_;
   TimeoutedSet                           ts_;
   Persistency::IO::DynamicConfig::Owner  owner_;
-  HashSharedPtr                          hashPtr_;
+  Hash                                   hash_;
   EntrySharedPtr                         entryPtr_;
   std::string                            hash_;
+*/
 };
 
 typedef tut::test_group<TestClass> factory;

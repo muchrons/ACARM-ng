@@ -30,6 +30,7 @@ public:
    *  \return SHA1 hash.
    */
   const HashData &getHash() const;
+  bool operator==(const Hash &other) const;
 private:
 
   HashData hash_;

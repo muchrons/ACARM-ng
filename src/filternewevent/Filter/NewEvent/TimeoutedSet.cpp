@@ -15,7 +15,7 @@ TimeoutedSet::TimeoutedSet():
 {
 }
 
-void TimeoutedSet::add(const HashSharedPtr &key)
+void TimeoutedSet::add(const Hash &key)
 {
   // prevent storing element with the same names
   if(isTimeouted(key))
@@ -33,7 +33,7 @@ void TimeoutedSet::markRemoved(BackendFacade &bf, const Persistency::IO::Dynamic
     // single exception for one entry will not block removing others from DC.
     try
     {
-      dc->remove( it->get()->getHash().get() );
+      dc->remove( it->getHash().get() );
     }
     catch(const Persistency::IO::Exception &ex)
     {
@@ -47,7 +47,7 @@ void TimeoutedSet::markRemoved(BackendFacade &bf, const Persistency::IO::Dynamic
   timeouted_.clear();
 }
 
-bool TimeoutedSet::isTimeouted(const HashSharedPtr &key) const
+bool TimeoutedSet::isTimeouted(const Hash &key) const
 {
   for(Timeouted::const_iterator it = timeouted_.begin(); it != timeouted_.end(); ++it)
   {

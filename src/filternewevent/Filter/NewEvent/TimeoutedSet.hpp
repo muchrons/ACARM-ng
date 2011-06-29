@@ -40,7 +40,7 @@ public:
    *  \param key key from which ...
    *  \return true if key has been already timeouted, false otherwise.
    */
-  bool isTimeouted(const HashSharedPtr &key) const;
+  bool isTimeouted(const Hash &key) const;
 
 private:
   Logger::Node log_;

@@ -36,7 +36,7 @@ void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
     return;
   }
 
-  const Entry e(hash, bf_, ts_);
+  EntrySharedPtr e(new Entry(hash, bf_, ts_));
   // new (meta-)alert name - increase priority of the (meta-)alert
   LOGMSG_INFO_S(log_)<<"(meta-)alert with name "<< name
                      <<" is new - adding "<<params_.priDelta_<<" to priority";

@@ -22,10 +22,11 @@ namespace
 
 struct TestClass: private TestStubs
 {
+/*
   TestClass(void):
     conn_( Persistency::IO::create() ),
     bf_(conn_, changed_, TypeName("testnewevent"), InstanceName("myname")),
-    hPtr_(new Hash("entryname")),
+    h_("entryname"),
     ePtr_(new Entry(hPtr_, bf_, ts_))
   {
   }
@@ -35,8 +36,9 @@ struct TestClass: private TestStubs
   BackendFacade                    bf_;
   TimeoutedSet                     ts_;
   ProcessedSet                     ps_;
-  HashSharedPtr                    hPtr_;
+  Hash                             h_;
   EntrySharedPtr                   ePtr_;
+*/
 };
 
 typedef tut::test_group<TestClass> factory;

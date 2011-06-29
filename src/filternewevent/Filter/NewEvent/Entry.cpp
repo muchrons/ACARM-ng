@@ -35,7 +35,7 @@ Entry::~Entry()
 
 const Hash::HashData &Entry::getHash() const
 {
-  return hashPtr_.get()->getHash();
+  return hash_.getHash();
 }
 bool Entry::operator==(const Entry &other) const
 {
