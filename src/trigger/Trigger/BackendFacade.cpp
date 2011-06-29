@@ -26,7 +26,7 @@ void BackendFacade::markAsTriggered(Persistency::MetaAlertPtrNN ma)
 {
   beginTransaction();
   IO::MetaAlertAutoPtr io=getConnection()->metaAlert(ma, getTransaction() );
-  io->markAsTriggered( getName().str() );
+  io->markAsTriggered( getType().str() + "_" + getName().str() );   // use "type_name" as an identifier
 }
 
 } // namespace Trigger
