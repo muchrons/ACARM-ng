@@ -80,7 +80,7 @@ public:
   {
     ++called_[0];
   }
-  virtual void markAsTriggeredImpl(Persistency::IO::Transaction &, const std::string &, const std::string &)
+  virtual void markAsTriggeredImpl(Persistency::IO::Transaction &, const std::string &)
   {
     ++called_[7];
   }

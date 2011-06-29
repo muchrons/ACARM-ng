@@ -30,10 +30,10 @@ void MetaAlert::save()
   saveImpl(t_);
 }
 
-void MetaAlert::markAsTriggered(const std::string &type, const std::string &name)
+void MetaAlert::markAsTriggered(const std::string &name)
 {
   t_.ensureIsActive();
-  markAsTriggeredImpl(t_, type, name);
+  markAsTriggeredImpl(t_, name);
 }
 
 void MetaAlert::markAsUsed()

@@ -33,7 +33,7 @@ public:
   {
     ++calls_[0];
   }
-  virtual void markAsTriggeredImpl(Transaction &, const std::string &, const std::string &)
+  virtual void markAsTriggeredImpl(Transaction &, const std::string &)
   {
     ++calls_[7];
   }
@@ -353,7 +353,7 @@ template<>
 template<>
 void testObj::test<19>(void)
 {
-  ioma_.markAsTriggered("test type", "test name");
+  ioma_.markAsTriggered("test");
   ensureCalls(7);
 }
 
