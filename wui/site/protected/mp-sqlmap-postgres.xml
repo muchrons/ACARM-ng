@@ -208,7 +208,7 @@
   </select>
 
   <select id="SelectTriggered" resultClass="CTriggered" parameterClass="int">
-    SELECT * FROM meta_alerts_already_triggered WHERE id_meta_alert=#VALUE#
+    SELECT trigger_name as trigger FROM meta_alerts_already_triggered WHERE id_meta_alert=#VALUE#
   </select>
 
 
