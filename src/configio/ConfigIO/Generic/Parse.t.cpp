@@ -73,7 +73,7 @@ factory tf("ConfigIO/Generic/Parse");
 namespace tut
 {
 
-// smke test for reading valid configuration
+// smoke test for reading valid configuration
 template<>
 template<>
 void testObj::test<1>(void)
@@ -117,7 +117,7 @@ void testObj::test<4>(void)
   ensure_equals("invalid option's 2 value", cfg.at(1)["opt7"], "cat");
 }
 
-// smke test for reading valid "named" configuration
+// smoke test for reading valid "named" configuration
 template<>
 template<>
 void testObj::test<5>(void)

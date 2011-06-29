@@ -1,6 +1,10 @@
 /*
  * Parse.hpp
  *
+ * Note: this code is a merge of Parse.hpp and NamedParse.hpp (now removed).
+ *       in case more general solution would be required, it must be split back
+ *       into two classes and common code separeted and reused, possibly via
+ *       CRTP callbacks.
  */
 #ifndef INCLUDE_CONFIGIO_GENERIC_PARSE_HPP_FILE
 #define INCLUDE_CONFIGIO_GENERIC_PARSE_HPP_FILE

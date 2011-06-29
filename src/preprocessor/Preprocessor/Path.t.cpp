@@ -71,8 +71,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Path           path("1.2.3.4.5.6.7");
-  Path::const_iterator it=path.begin();
+  const Path path("1.2.3.4.5.6.7");
   ensure_equals("invalid count", count(path), 7u);
 }
 
