@@ -4,6 +4,7 @@
  */
 #include <cassert>
 
+#include "System/ignore.hpp"
 #include "Persistency/IO/Stubs/TransactionAPI.hpp"
 
 
@@ -22,6 +23,7 @@ TransactionAPI::TransactionAPI(Base::Threads::Mutex &mutex,
   rollbackCalls_(0)
 {
   assert(persistencyHandle==42 && "invalid handle value received");
+  System::ignore(persistencyHandle);    // this prevents warning nin release mode
   persistencyHandle=0;
 }
 
