@@ -1011,7 +1011,6 @@ void testObj::test<51>(void)
                      "</idmef:Assessment>"
                    "</idmef:Alert>"
                  "</idmef:IDMEF-Message>\n";
-  const MetaAlert::ID  prevID=Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
   const AlertPtrNN     out   =fx_.parseAlert( parseXML(in) );
   const Alert         &alert =*out;
   ensure_equals("invalid number of analyzers", alert.getAnalyzers().size(), 1u);
@@ -1061,7 +1060,6 @@ void testObj::test<53>(void)
                      "</idmef:Assessment>"
                    "</idmef:Alert>"
                  "</idmef:IDMEF-Message>\n";
-  const MetaAlert::ID  prevID=Facades::IDAssigner::get()->assignMetaAlertID(conn_, t_);
   const AlertPtrNN     out   =fx_.parseAlert( parseXML(in) );
   const Alert         &alert =*out;
   ensure_equals("invalid number of analyzers", alert.getAnalyzers().size(), 1u);

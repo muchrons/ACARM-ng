@@ -52,24 +52,43 @@ namespace
 {
 struct SignalSender
 {
+  explicit SignalSender(int sig):
+    sig_(sig)
+  {
+  }
+
   void operator()(void)
   {
     while(true)
     {
-      ensure_equals("kill() failed", kill( getpid(), SIGINT), 0);
+      ensure_equals("kill() failed", kill( getpid(), sig_), 0);
       boost::this_thread::sleep( boost::posix_time::seconds(1) );
     }
   }
+
+private:
+  int sig_;
 }; // struct SignalSender
 } // unnamed namespace
 
-// test stopping request from other thread
+
+// test stopping request from other thread - interrupt
 template<>
 template<>
 void testObj::test<3>(void)
 {
   Main         m;
-  ThreadJoiner th( (SignalSender()) );
+  ThreadJoiner th( (SignalSender(SIGINT)) );
+  m.waitUntilDone();
+}
+
+// test stopping request from other thread - terminate.
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  Main         m;
+  ThreadJoiner th( (SignalSender(SIGTERM)) );
   m.waitUntilDone();
 }
 
