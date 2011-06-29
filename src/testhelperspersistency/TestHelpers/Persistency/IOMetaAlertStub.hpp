@@ -5,6 +5,8 @@
 #ifndef INCLUDE_TESTHELPERS_PERSISTENCY_IOMETAALERTSTUB_HPP_FILE
 #define INCLUDE_TESTHELPERS_PERSISTENCY_IOMETAALERTSTUB_HPP_FILE
 
+/* public header */
+
 #include "Persistency/IO/MetaAlert.hpp"
 
 namespace TestHelpers
