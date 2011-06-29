@@ -40,11 +40,6 @@ public:
    *  \return (SHA1) hash of entry name.
    */
   const Hash::HashData &getHash() const;
-  /** \brief check if classes are equal.
-   *  \param other element to compare with.
-   *  \return true if elements are equal, false otherwise.
-   */
-  bool operator==(const Entry &other) const;
 private:
 
   Persistency::IO::DynamicConfig::Owner                      owner_;

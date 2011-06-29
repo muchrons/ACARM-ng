@@ -29,7 +29,6 @@ Entry::Entry(const Hash &hash, Filter::BackendFacade &bf, TimeoutedSet &ts):
 Entry::~Entry()
 {
   // TODO: this call may throw - add try{}catch(...), with proper comment on this event.
-  std::cout << "add entry" << std::endl;
   ts_->add( hash_ );
 }
 
@@ -37,12 +36,7 @@ const Hash::HashData &Entry::getHash() const
 {
   return hash_.getHash();
 }
-bool Entry::operator==(const Entry &other) const
-{
-  if(getHash() != other.getHash())
-    return false;
-  return true;
-}
+
 } // namespace NewEvent
 } // namespace Filter
 
