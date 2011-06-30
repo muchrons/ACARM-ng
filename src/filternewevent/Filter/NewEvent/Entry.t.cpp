@@ -29,8 +29,6 @@ struct TestClass
     bf_(conn_, changed_, TypeName("testnewevent"), InstanceName("myname")),
     owner_("Filter::NewEvent"),
     hash_("key")
-    //entryPtr_(new Entry(hash_, bf_, ts_))
-    //hashStr_(entryPtr_.get()->getHash().get())
   {
   }
 
@@ -47,8 +45,6 @@ struct TestClass
   TimeoutedSet                           ts_;
   Persistency::IO::DynamicConfig::Owner  owner_;
   Hash                                   hash_;
-  //EntrySharedPtr                         entryPtr_;
-  //std::string                            hashStr_;
 
 };
 
