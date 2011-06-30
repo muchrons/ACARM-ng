@@ -21,9 +21,9 @@ namespace NewEvent
 class TimeoutedSet
 {
 
-  typedef std::vector<Hash> Timeouted;
 
 public:
+  typedef std::vector<Hash> Timeouted;
   /** \brief create cache to store timeouted elements.*/
   TimeoutedSet();
   /** \brief add timeouted key to the collection.
@@ -35,9 +35,8 @@ public:
    *  \param owner owner's name.
    */
   void markRemoved(BackendFacade &bf, const Persistency::IO::DynamicConfig::Owner &owner);
-  // TODO: this method is never used and should be removed
   /** \brief checks if given key has been alrady timeouted or not.
-   *  \param key key from which ...
+   *  \param key key which is checked.
    *  \return true if key has been already timeouted, false otherwise.
    */
   bool isTimeouted(const Hash &key) const;
