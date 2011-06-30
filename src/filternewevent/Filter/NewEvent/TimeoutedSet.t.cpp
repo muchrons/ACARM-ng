@@ -45,13 +45,13 @@ factory tf("Filter/NewEvent/TimeoutedSet");
 
 namespace tut
 {
-/*
+
 // check adding simple element
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  HashSharedPtr hash(new Hash("key"));
+  Hash hash("key");
   ts_.add(hash);
   ensure("Element not present in collection", ts_.isTimeouted(hash));
 }
@@ -61,7 +61,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  HashSharedPtr  hash(new Hash("key"));
+  Hash  hash("key");
   {
     EntrySharedPtr entry(new Entry(hash, bf_, ts_));
   }
@@ -73,13 +73,13 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  HashSharedPtr hashPtr(new Hash("hash"));
-  ts_.add(hashPtr);
-  ensure("Element not present in collection", ts_.isTimeouted(hashPtr));
+  Hash hash("hash");
+  ts_.add(hash);
+  ensure("Element not present in collection", ts_.isTimeouted(hash));
   ts_.markRemoved(bf_, owner_);
-  ensure("Element present in collection after prune", ts_.isTimeouted(hashPtr) == false);
+  ensure("Element present in collection after prune", ts_.isTimeouted(hash) == false);
 }
 
 //TODO: check pruning element saved in Dynamic Config
-*/
+
 } // namespace tut
