@@ -137,5 +137,4 @@ void testObj::test<5>(void)
   // check if element is present after prune
   ensure("element is not timeouted", ps_.update(hash, 1));
 }
-
 } // namespace tut

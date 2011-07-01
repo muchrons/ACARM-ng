@@ -21,9 +21,9 @@ namespace NewEvent
 class TimeoutedSet
 {
 
+  typedef std::vector<Hash> Timeouted;
 
 public:
-  typedef std::vector<Hash> Timeouted;
   /** \brief create cache to store timeouted elements.*/
   TimeoutedSet();
   /** \brief add timeouted key to the collection.

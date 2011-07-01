@@ -15,6 +15,7 @@ namespace NewEvent
 
 
 Entry::Entry(const Hash &hash, Filter::BackendFacade &bf, TimeoutedSet &ts):
+  log_("filter.newevent"),
   owner_("Filter::NewEvent"),
   dc_(bf.createDynamicConfig( owner_ )),
   hash_( hash ),
@@ -28,8 +29,14 @@ Entry::Entry(const Hash &hash, Filter::BackendFacade &bf, TimeoutedSet &ts):
 
 Entry::~Entry()
 {
-  // TODO: this call may throw - add try{}catch(...), with proper comment on this event.
-  ts_->add( hash_ );
+  try
+  {
+    ts_->add( hash_ );
+  }
+  catch(const std::exception &ex)
+  {
+    LOGMSG_ERROR_S(log_)<<"exception caught while adding element to the TimeoutedSet: '"<<ex.what();
+  }
 }
 
 const Hash::HashData &Entry::getHash() const

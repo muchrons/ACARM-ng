@@ -26,7 +26,7 @@ public:
    */
   bool update(const Hash &hash, unsigned int timeout);
   /** \brief marks given leaf as already processed.
-   *  \param entry   entry connected with processed leaf.
+   *  \param entryPtr entry connected with processed leaf.
    *  \param timeout time life (in seconds) of stored (meta-)alert name.
    */
   void markAsProcessed(const EntrySharedPtr &entryPtr, unsigned int timeout);
