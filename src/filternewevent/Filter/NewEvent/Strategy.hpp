@@ -31,7 +31,6 @@ public:
    */
   struct Parameters
   {
-    // TODO: describe new filter in doc/CONFIGURATION.txt
     /** \brief create paramters object.
      *  \param timeout  new event time life (in seconds).
      *  \param priDelta increment of priority when new event is found.
