@@ -20,10 +20,10 @@ Entry::Entry(const Hash &hash, Filter::BackendFacade &bf, TimeoutedSet &ts):
   hash_( hash ),
   ts_(&ts)
 {
-  dc_->write( hash_.getHash(), "true");
-  // TODO: notice that this object will be copyied multiple times during life cycle, thus multiple instances
+  // NOTE: this object will be copyied multiple times during life cycle, thus multiple instances
   //       will be present at one time. this makes it impossible to simply add in c-tor and del in d-tor.
-  //       reference counting mechanism has to be introduced for this mechanism to work.
+  //       reference counting mechanism has been introduced for this mechanism to work.
+  dc_->write( hash_.getHash(), "true");
 }
 
 Entry::~Entry()

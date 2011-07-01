@@ -34,7 +34,7 @@ struct TestClass
 
   void testData(const std::string &key, const std::string &value)
   {
-    IODynamicConfigMemory::Memory data = tconn_->data_;  // TODO: separate this string to a constant
+    IODynamicConfigMemory::Memory data = tconn_->data_;
     tut::ensure_equals("invalid value", data[key], value );
   }
 

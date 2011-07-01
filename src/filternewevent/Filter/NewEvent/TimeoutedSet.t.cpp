@@ -29,6 +29,12 @@ namespace
     {
     }
 
+    void testData(const std::string &key, const std::string &value)
+    {
+      IODynamicConfigMemory::Memory data = tconn_->data_;
+      tut::ensure_equals("invalid value", data[key], value );
+    }
+
     TestConnection                        *tconn_;
     Persistency::IO::ConnectionPtrNN      conn_;
     BackendFacade::ChangedNodes           changed_;
@@ -80,6 +86,22 @@ void testObj::test<3>(void)
   ensure("Element present in collection after prune", ts_.isTimeouted(hash) == false);
 }
 
-//TODO: check pruning element saved in Dynamic Config
+// check pruning element saved in Dynamic Config
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  std::string   hashStr;
+  Hash          hash("some key");
+  {
+    EntrySharedPtr  entryPtr(new Entry(hash, bf_, ts_));
+    hashStr = string(entryPtr.get()->getHash().get());
+  }
+  // test if hash is in the TimeoutedSet
+  testData( hashStr, string("true") );
+  // clear timeouted set
+  ts_.markRemoved(bf_, owner_);
+  testData( hashStr, string("") );
+}
 
 } // namespace tut
