@@ -12,6 +12,15 @@ shift
 OUTDIR="$1"
 shift
 
+# process each line, saving it to proper log file
+pv "$LOG" | while read line
+do
+  id="`sed -e 's:^..........[^ ]* \[::' -e 's:\].*::' <<< "$line"`"
+  echo "$line" >> "$OUTDIR/thread_$id.log" || exit $?
+done
+
+exit 0
+
 echo "checking for threads' marks in log..."
 IDs="`pv "$LOG" | cut -b20- | sed -e 's:^[^ ]* \[::' -e 's:\].*::' | uniq | sort -n | uniq`"
 echo "threads found: `xargs echo -n <<< "$IDs"`"
