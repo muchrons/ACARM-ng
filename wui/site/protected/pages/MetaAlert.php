@@ -75,18 +75,33 @@ class MetaAlert extends TPage
         foreach($filters as $f)
           {
             if ($f=='[many2one]')
-              $this->Correlated->Text.="<img src=\"pics/filters/MTO.png\" border=2>";
+              $this->Correlated->Text.="<img src=\"pics/filters/mto.png\" border=0> ";
             else
               if ($f=='[one2many]')
-                $this->Correlated->Text.="<img src=\"pics/filters/OTM.png\" border=2>";
+                $this->Correlated->Text.="<img src=\"pics/filters/otm.png\" border=0> ";
               else
                 if ($f=='[samename]')
-                  $this->Correlated->Text.="<img src=\"pics/filters/name.png\" border=2>";
+                  $this->Correlated->Text.="<img src=\"pics/filters/name.png\" border=0> ";
                 else
                   if ($f=='[many2many]')
-                    $this->Correlated->Text.="<img src=\"pics/filters/MTM.png\" border=2>";
+                    $this->Correlated->Text.="<img src=\"pics/filters/mtm.png\" border=0> ";
                   else
-                    $this->MetaAlertName->Text.=$f." ";
+                    if ($f=='[similarity]')
+                      $this->Correlated->Text.="<img src=\"pics/filters/similarity.png\" border=0> ";
+                    else
+                      if ($f=='[usersmonitor]')
+                        $this->Correlated->Text.="<img src=\"pics/filters/sameuser.png\" border=0> ";
+                      else
+                        if ($f=='[eventchain]')
+                          $this->Correlated->Text.="<img src=\"pics/filters/eventchain.png\" border=0> ";
+                        else
+                          if ($f=='[ipblacklist]')
+                            $this->Correlated->Text.="<img src=\"pics/filters/ipblacklist.png\" border=0> ";
+                          else
+                            if ($f=='[newevent]')
+                              $this->Correlated->Text.="<img src=\"pics/filters/newevent.png\" border=0> ";
+                            else
+                              $this->MetaAlertName->Text.=$f." ";
           }
 
         $inUse=SQLWrapper::queryForObject('CheckInUse', $idAlert);
