@@ -25,11 +25,12 @@ int main(void)
       if(!cin)
         break;
       // parse thread number
-      const Parser parse(line);
+      const Parser parser(line);
       // append to the proper file
-      // TODO
+      NumberedFilesSet::FileStreamPtr out=files.get( parser.get() );
+      assert( out.get()!=NULL );
+      (*out)<<line<<endl;
     }
-    // TODO
   }
   catch(const std::exception &ex)
   {

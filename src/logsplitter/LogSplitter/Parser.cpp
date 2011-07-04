@@ -80,9 +80,4 @@ Parser::Parser(const std::string &str):
 {
 }
 
-unsigned int Parser::get(void) const
-{
-  return num_;
-}
-
 } // namespace LogSplitter

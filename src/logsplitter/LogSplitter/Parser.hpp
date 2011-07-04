@@ -20,7 +20,10 @@ class Parser: private boost::noncopyable
 public:
   explicit Parser(const std::string &str);
 
-  unsigned int get(void) const;
+  unsigned int get(void) const
+  {
+    return num_;
+  }
 
 private:
   const unsigned int num_;
