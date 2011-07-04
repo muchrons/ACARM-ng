@@ -30,6 +30,11 @@ public:
    *  \return SHA1 hash.
    */
   const HashData &getHash() const;
+  /** \brief check if classes are equal.
+   *  \param other element to compare with.
+   *  \return true if elements are equal, false otherwise.
+   */
+  bool operator==(const Hash &other) const;
 private:
 
   HashData hash_;

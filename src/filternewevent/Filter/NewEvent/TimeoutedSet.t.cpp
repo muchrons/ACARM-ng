@@ -29,6 +29,12 @@ namespace
     {
     }
 
+    void testData(const std::string &key, const std::string &value)
+    {
+      IODynamicConfigMemory::Memory data = tconn_->data_;
+      tut::ensure_equals("invalid value", data[key], value );
+    }
+
     TestConnection                        *tconn_;
     Persistency::IO::ConnectionPtrNN      conn_;
     BackendFacade::ChangedNodes           changed_;
@@ -45,12 +51,13 @@ factory tf("Filter/NewEvent/TimeoutedSet");
 
 namespace tut
 {
+
 // check adding simple element
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  HashSharedPtr hash(new Hash("key"));
+  Hash hash("key");
   ts_.add(hash);
   ensure("Element not present in collection", ts_.isTimeouted(hash));
 }
@@ -60,7 +67,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  HashSharedPtr  hash(new Hash("key"));
+  Hash  hash("key");
   {
     EntrySharedPtr entry(new Entry(hash, bf_, ts_));
   }
@@ -72,13 +79,29 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  HashSharedPtr hashPtr(new Hash("hash"));
-  ts_.add(hashPtr);
-  ensure("Element not present in collection", ts_.isTimeouted(hashPtr));
+  Hash hash("hash");
+  ts_.add(hash);
+  ensure("Element not present in collection", ts_.isTimeouted(hash));
   ts_.markRemoved(bf_, owner_);
-  ensure("Element present in collection after prune", ts_.isTimeouted(hashPtr) == false);
+  ensure("Element present in collection after prune", ts_.isTimeouted(hash) == false);
 }
 
-//TODO: check pruning element saved in Dynamic Config
+// check pruning element saved in Dynamic Config
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  std::string   hashStr;
+  Hash          hash("some key");
+  {
+    EntrySharedPtr  entryPtr(new Entry(hash, bf_, ts_));
+    hashStr = string(entryPtr.get()->getHash().get());
+  }
+  // test if hash is in the TimeoutedSet
+  testData( hashStr, string("true") );
+  // clear timeouted set
+  ts_.markRemoved(bf_, owner_);
+  testData( hashStr, string("") );
+}
 
 } // namespace tut
