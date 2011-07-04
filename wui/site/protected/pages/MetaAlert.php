@@ -99,9 +99,16 @@ class MetaAlert extends TPage
 
         $triggers_tab=SQLWrapper::queryForList('SelectTriggered', $idAlert);
 
-        $triggers=implode(",",$triggers_tab);
+        $content="";
 
-        $this->Triggered->Text=$triggers;
+        foreach ($triggers_tab as $t)
+          {
+            $temp=explode("_",$t->trigger."_");
+            $content.="<table border=\"0\" cellpadding=\"2\"><td align=\"center\"><img height=\"32\" width=\"32\" src=\"pics/triggers/$temp[0].png\" alt=\"$temp[0]\"></td>";
+            $content.="<td>$temp[1]</td></table>";
+          }
+
+        $this->Triggered->Text=$content;
 
       } // if(!post_back)
   }

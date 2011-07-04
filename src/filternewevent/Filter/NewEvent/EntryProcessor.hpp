@@ -42,6 +42,6 @@ private:
   const Strategy::Parameters params_;
 }; // class EntryProcessor
 
-} // namespace IPBlackList
+} // namespace NewEvent
 } // namespace Filter
 #endif
