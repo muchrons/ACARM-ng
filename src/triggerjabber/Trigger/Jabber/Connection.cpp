@@ -33,12 +33,22 @@ Connection::Connection(const AccountConfig &cfg):
 
 Connection::~Connection(void)
 {
-  // TODO: wrap whole d-tor in trt-catch and log errors - it's the best we can do
   LOGMSG_INFO(log_, "disconnecting from Jabber server");
-  sess_->recv(1000);
-  // set status to unavailable
-  sess_.get()->setPresence(gloox::Presence::Unavailable, 100);
-  sess_.get()->recv(1000);
+  try
+  {
+    sess_->recv(1000);
+    // set status to unavailable
+    sess_.get()->setPresence(gloox::Presence::Unavailable, 100);
+    sess_.get()->recv(1000);
+  }
+  catch(const std::exception &ex)
+  {
+    LOGMSG_WARN_S(log_)<<"exception caught: "<<ex.what();
+  }
+  catch(...)
+  {
+    LOGMSG_WARN_S(log_)<<"??? unknown exception ???";
+  }
 }
 
 void Connection::login(gloox::Client *client) const
