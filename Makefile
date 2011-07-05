@@ -13,7 +13,7 @@ build: build-core build-plugins
 .PHONY: build-core
 build-core: ensure-configure
 	@echo "BUILDING ACARM-ng"
-	@$(MAKE) $(LOCAL_MAKE_FLAGS) acarmng
+	@$(MAKE) $(LOCAL_MAKE_FLAGS) acarmng logsplitter
 
 .PHONY: build-plugins
 build-plugins: ensure-configure
@@ -40,6 +40,7 @@ install-bin: ensure-configure
 	@echo 'exec "$(INSTALL_DIR)/bin/acarm-ng.bin"' >> '$(INSTALL_DIR)/bin/acarm-ng'
 	@chmod 755 '$(INSTALL_DIR)/bin/acarm-ng'
 	@install -v -m 755 '$(BUILD_DIR)/acarmng/acarmng.out' '$(INSTALL_DIR)/bin/acarm-ng.bin'
+	@install -v -m 755 '$(BUILD_DIR)/logsplitter/logsplitter.out' '$(INSTALL_DIR)/bin/acarm-logsplitter'
 
 .PHONY: install-includes
 install-includes: ensure-configure
@@ -88,5 +89,5 @@ configure-output.mk: configure Makefile
 
 .PHONY: clean
 clean:
-	@rm -fvr src/gen
 	@rm -fv  configure-output.mk
+	@rm -fvr src/gen
