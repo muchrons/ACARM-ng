@@ -16,7 +16,7 @@ namespace LogSplitter
 namespace
 {
 // look for sequence " [<digits>] " and return it
-string parseSequence(const string &str)
+inline string parseSequence(const string &str)
 {
   for(string::const_iterator it=str.begin(); it!=str.end(); ++it)
   {
@@ -68,7 +68,7 @@ string parseSequence(const string &str)
   throw runtime_error("unable to parse input line: " + str);
 } // parseSequence()
 
-unsigned int toNumber(const string &num)
+inline unsigned int toNumber(const string &num)
 {
   return boost::lexical_cast<unsigned int>(num);
 } // toNumber()
