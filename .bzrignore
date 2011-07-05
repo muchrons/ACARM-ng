@@ -13,6 +13,5 @@ wui/tests/protected/db/*.db
 *.toc
 acceptance_tests_plan.pdf
 *.orig
-.*.kwrite
 configure-output.mk
 misc/bzr_plugins/bzr_buildbot.pyc
