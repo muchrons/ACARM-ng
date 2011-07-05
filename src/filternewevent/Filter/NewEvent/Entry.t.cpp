@@ -25,7 +25,7 @@ struct TestClass
 
   TestClass(void):
     tconn_(new TestConnection),
-    conn_( tconn_ ),
+    conn_(tconn_),
     bf_(conn_, changed_, TypeName("testnewevent"), InstanceName("myname")),
     owner_("Filter::NewEvent"),
     hash_("key")
@@ -71,17 +71,18 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  std::string   hashStr;
-  Hash          hash("some key");
+  std::string hashStr;
+  // TODO: why not use hash_?
+  Hash        hash("some key");   // TODO: add const
   {
-    EntrySharedPtr  entryPtr(new Entry(hash, bf_, ts_));
-    hashStr = string(entryPtr.get()->getHash().get());
+    EntrySharedPtr entryPtr(new Entry(hash, bf_, ts_));
+    hashStr=string(entryPtr.get()->getHash().get());
   }
   // test if hash is in the TimeoutedSet
-  testData( hashStr, string("true") );
+  testData( hashStr, string("true") );  // TODO: "true"
   // clear timeouted set
   ts_.markRemoved(bf_, owner_);
-  testData( hashStr, string("") );
+  testData( hashStr, string("") );      // TODO: ""
 }
 
 // test getHash() method
@@ -98,11 +99,12 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  std::string  hashStr;
-  Hash         hash("some key");
+  std::string hashStr;
+  // TODO: why not use hash_?
+  Hash        hash("some key"); // TODO: add const
   {
     EntrySharedPtr  entryPtr(new Entry(hash, bf_, ts_));
-    hashStr = string(entryPtr.get()->getHash().get());
+    hashStr=string(entryPtr.get()->getHash().get());
   }
   testData( hashStr, "true");
   ensure("Element not present in collection", ts_.isTimeouted(hash));

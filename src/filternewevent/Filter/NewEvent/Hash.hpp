@@ -15,13 +15,14 @@ namespace NewEvent
 
 /** \brief holds hash of processed (meta-)alert name.
  */
-
 class Hash
 {
 public:
-
+  // TODO: why 64? Commons::computeHash() does not specify which hash function is used
   /** \brief hash type. */
   typedef Commons::LimitedString<64> HashData;
+
+  // TODO: this c-tor should be made 'explicit', to avoid mistakes.
   /** \brief create instance.
    *  \param name name for which SHA1 hash will be computed.
    */
@@ -35,11 +36,13 @@ public:
    *  \return true if elements are equal, false otherwise.
    */
   bool operator==(const Hash &other) const;
-private:
 
+private:
   HashData hash_;
 }; // class Hash
 
+
+// TODO: doxygen is missing
 typedef Commons::SharedPtrNotNULL<Hash> HashSharedPtr;
 
 } // namespace NewEvent

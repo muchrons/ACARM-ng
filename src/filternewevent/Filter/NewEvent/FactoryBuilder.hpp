@@ -20,7 +20,7 @@ namespace NewEvent
 class FactoryBuilder: public Factory::TFactoryBuilderBase
 {
 public:
-  /** \brief creates builder's instance.
+  /** \brief creates builder instance.
    */
   FactoryBuilder(void);
 

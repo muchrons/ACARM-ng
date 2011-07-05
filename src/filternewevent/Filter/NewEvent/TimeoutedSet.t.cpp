@@ -18,30 +18,30 @@ using namespace TestHelpers::Persistency;
 
 namespace
 {
-  struct TestClass
+struct TestClass
+{
+  TestClass(void):
+    tconn_(new TestConnection),
+    conn_( tconn_ ),
+    bf_(conn_, changed_, TypeName("testnewevent"), InstanceName("myname")),
+    owner_("Filter::NewEvent")
   {
+  }
 
-    TestClass(void):
-      tconn_(new TestConnection),
-      conn_( tconn_ ),
-      bf_(conn_, changed_, TypeName("testnewevent"), InstanceName("myname")),
-      owner_("Filter::NewEvent")
-    {
-    }
+  // TODO: this function is trivial - 1 line in code: e_q("...", tconn_->data_[key], value);
+  void testData(const std::string &key, const std::string &value)
+  {
+    IODynamicConfigMemory::Memory data=tconn_->data_;
+    tut::ensure_equals("invalid value", data[key], value );
+  }
 
-    void testData(const std::string &key, const std::string &value)
-    {
-      IODynamicConfigMemory::Memory data = tconn_->data_;
-      tut::ensure_equals("invalid value", data[key], value );
-    }
-
-    TestConnection                        *tconn_;
-    Persistency::IO::ConnectionPtrNN      conn_;
-    BackendFacade::ChangedNodes           changed_;
-    BackendFacade                         bf_;
-    TimeoutedSet                          ts_;
-    Persistency::IO::DynamicConfig::Owner owner_;
-  };
+  TestConnection                        *tconn_;    // TODO: memory leak - use scoped_ptr<> for this
+  Persistency::IO::ConnectionPtrNN       conn_;
+  BackendFacade::ChangedNodes            changed_;
+  BackendFacade                          bf_;
+  TimeoutedSet                           ts_;
+  Persistency::IO::DynamicConfig::Owner  owner_;
+};
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
@@ -57,12 +57,12 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Hash hash("key");
+  Hash hash("key"); // TODO: add const
   ts_.add(hash);
   ensure("Element not present in collection", ts_.isTimeouted(hash));
 }
 
-// check adding by Entry destructor
+// check addition from Entry's destructor
 template<>
 template<>
 void testObj::test<2>(void)
@@ -91,8 +91,8 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  std::string   hashStr;
-  Hash          hash("some key");
+  std::string hashStr;              // TODO: add const
+  Hash        hash("some key");     // TODO: add const
   {
     EntrySharedPtr  entryPtr(new Entry(hash, bf_, ts_));
     hashStr = string(entryPtr.get()->getHash().get());

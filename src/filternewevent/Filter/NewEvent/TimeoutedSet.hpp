@@ -16,13 +16,9 @@ namespace NewEvent
 {
 
 /** \brief local cache to store timeouted elements.
- *
  */
 class TimeoutedSet
 {
-
-  typedef std::vector<Hash> Timeouted;
-
 public:
   /** \brief create cache to store timeouted elements.*/
   TimeoutedSet();
@@ -42,6 +38,8 @@ public:
   bool isTimeouted(const Hash &key) const;
 
 private:
+  typedef std::vector<Hash> Timeouted;
+
   Logger::Node log_;
   Timeouted    timeouted_;
 }; // class TimeoutedSet

@@ -17,10 +17,12 @@ namespace NewEvent
 Entry::Entry(const Hash &hash, Filter::BackendFacade &bf, TimeoutedSet &ts):
   log_("filter.newevent"),
   owner_("Filter::NewEvent"),
-  dc_(bf.createDynamicConfig( owner_ )),
-  hash_( hash ),
+  dc_( bf.createDynamicConfig(owner_) ),
+  hash_(hash),
   ts_(&ts)
 {
+  // TODO: this comment conflicts with this code (no refernece counting is done here).
+
   // NOTE: this object will be copyied multiple times during life cycle, thus multiple instances
   //       will be present at one time. this makes it impossible to simply add in c-tor and del in d-tor.
   //       reference counting mechanism has been introduced for this mechanism to work.
@@ -31,7 +33,7 @@ Entry::~Entry()
 {
   try
   {
-    ts_->add( hash_ );
+    ts_->add(hash_);
   }
   catch(const std::exception &ex)
   {
