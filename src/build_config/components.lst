@@ -43,5 +43,6 @@ pythonapi
 
 curlpp
 
-pdump
 acarmng
+pdump
+logsplitter
