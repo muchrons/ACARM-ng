@@ -25,8 +25,9 @@ public:
 
   /** \brief dynamic set of numeberd files, named with a given prefix.
    *  \param prefix prefix for each file name.
+   *  \param bytes  buffer's minimal size before flushing.
    */
-  explicit NumberedFilesSet(const std::string &prefix);
+  NumberedFilesSet(const std::string &prefix, unsigned int bytes);
 
   /** \brief get stream for a given file number. is it is not present, it is created.
    *  \param n number for a given file.
@@ -34,13 +35,18 @@ public:
    */
   FileStreamPtr get(unsigned int n);
 
+  /** \brief flush all buffers.
+   */
+  void flush(void);
+
 private:
   typedef std::vector<FileStreamPtr> Outputs;
 
   std::string makeFileName(unsigned int n);
 
-  const std::string prefix_;
-  Outputs           out_;
+  const std::string  prefix_;
+  const unsigned int bytes_;
+  Outputs            out_;
 }; // class NumberedFilesSet
 
 } // namespace LogSplitter

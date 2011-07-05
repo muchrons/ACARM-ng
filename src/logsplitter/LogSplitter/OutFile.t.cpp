@@ -17,7 +17,7 @@ struct TestClass
 {
   TestClass(void):
     tmpFile_("test_outfile.txt"),
-    of_(tmpFile_)
+    of_(tmpFile_, 0)
   {
   }
 
@@ -65,7 +65,7 @@ void testObj::test<3>(void)
 {
   try
   {
-    OutFile of("/i/do/not/exist.tmp");
+    OutFile of("/i/do/not/exist.tmp", 42);
     fail("c-tor didn't throw on unknown file");
   }
   catch(const runtime_error &)

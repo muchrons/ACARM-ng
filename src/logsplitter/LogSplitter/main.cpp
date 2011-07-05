@@ -15,8 +15,10 @@ int main(void)
   int ret=0;
   try
   {
-    NumberedFilesSet files("thread_");
+    // create output buffers collection
+    NumberedFilesSet files("thread_", 32*1024*1024);
 
+    // process each and every line
     while(true)
     {
       string line;
@@ -31,6 +33,9 @@ int main(void)
       assert( out.get()!=NULL );
       (*out)<<line<<endl;
     }
+
+    // write remaining data from buffers
+    files.flush();
   }
   catch(const std::exception &ex)
   {

@@ -5,11 +5,15 @@
 #ifndef INCLUDE_LOGSPLITTER_OUTFILE_HPP_FILE
 #define INCLUDE_LOGSPLITTER_OUTFILE_HPP_FILE
 
+#include <iostream>             
 #include <string>
 #include <fstream>
+#include <sstream>
 #include <stdexcept>
+#include <cassert>
 
 #include <boost/noncopyable.hpp>
+#include <boost/scoped_ptr.hpp>
 
 
 namespace LogSplitter
@@ -38,9 +42,10 @@ class OutFile: private boost::noncopyable
 {
 public:
   /** \brief save to a given file.
-   *  \param file file name to write to.
+   *  \param file  file name to write to.
+   *  \param bytes minimal size of buffer, before automatic flushing (in bytes).
    */
-  explicit OutFile(const std::string &file);
+  OutFile(const std::string &file, unsigned int bytes);
 
   /** \brief append data to stream.
    *  \param t data to be added to stream.
@@ -49,7 +54,8 @@ public:
   template<typename T>
   OutFile &operator<<(const T &t)
   {
-    file_<<t;
+    assert(buf_.get()!=NULL);
+    (*buf_)<<t;
     return *this;
   }
 
@@ -73,7 +79,17 @@ public:
 private:
   friend OutFile &std::endl(OutFile &strm);
 
-  std::ofstream file_;
+  // cals flush, when bufers are filled enough
+  void rareFlush(void)
+  {
+    assert(buf_.get()!=NULL);
+    if(buf_->tellp()>=bytes_)
+      flush();
+  }
+
+  std::ofstream                        file_;
+  boost::scoped_ptr<std::stringstream> buf_;
+  const unsigned int                   bytes_;
 }; // class Parser
 
 } // namespace LogSplitter
@@ -85,9 +101,11 @@ namespace std
 // implementation of endl manipulator
 inline LogSplitter::OutFile &endl(LogSplitter::OutFile &strm)
 {
-  strm.file_<<std::endl;
+  assert(strm.buf_.get()!=NULL);
+  (*strm.buf_)<<std::endl;
+  strm.rareFlush();
   return strm;
-}
+} // endl()
 } // namespace std
 
 #endif
