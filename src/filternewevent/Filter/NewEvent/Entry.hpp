@@ -16,9 +16,12 @@ namespace Filter
 namespace NewEvent
 {
 
+// TODO: do not add doxygen for forward declarations.
 /** \brief forward declaration of TimeoutedSet class.
  */
 class TimeoutedSet;
+
+// TODO: this class must be non-copyable.
 /** \brief
  *  save elements in the persistency dynamic config,
  *  save timeouted elements in dedicated collection.
@@ -47,9 +50,10 @@ private:
   Persistency::IO::DynamicConfig::Owner                      owner_;
   Commons::SharedPtrNotNULL<Persistency::IO::DynamicConfig>  dc_;
   Hash                                                       hash_;
-  TimeoutedSet                                              *ts_;
+  TimeoutedSet                                              *ts_;   // TODO: since class is non-copyable use ref instead of ptr (not !NULL check required)
 }; // class Entry
 
+// TODO: doxygen is missing
 typedef Commons::SharedPtrNotNULL<Entry> EntrySharedPtr;
 
 } // namespace Filter

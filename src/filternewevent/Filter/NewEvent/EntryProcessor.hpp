@@ -16,8 +16,8 @@ namespace Filter
 namespace NewEvent
 {
 
+// TODO: this class must be non-copyable since it holds references inside.
 /** \brief helper object for processing given leaf.
- *
  */
 class EntryProcessor
 {
@@ -35,11 +35,11 @@ public:
   void operator()(Persistency::GraphNodePtrNN leaf);
 
 private:
-  Logger::Node               log_;
+  Logger::Node                log_;
   BackendFacade              &bf_;
   ProcessedSet               &ps_;
   TimeoutedSet               &ts_;
-  const Strategy::Parameters params_;
+  const Strategy::Parameters  params_;
 }; // class EntryProcessor
 
 } // namespace NewEvent

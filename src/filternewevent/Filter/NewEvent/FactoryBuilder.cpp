@@ -49,7 +49,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";
   const double       priDelta=Commons::Convert::to<double>( fc["priorityDelta"] );
   LOGMSG_INFO_S(log_)<<"setting priority delta to "<<priDelta;
-  Strategy::Parameters params(timeout, priDelta);
+  Strategy::Parameters params(timeout, priDelta);   // TODO: this should be const
   // create and return new handle.
   typedef InterfaceImpl<Strategy, Strategy::Parameters> Impl;
   return FactoryBuilder::FactoryPtr( new Impl(type_, InstanceName(name), params) );
