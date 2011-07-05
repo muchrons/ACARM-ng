@@ -31,7 +31,7 @@ NumberedFilesSet::FileStreamPtr NumberedFilesSet::get(unsigned int n)
     ptr->open(name.c_str(), ios_base::binary|ios_base::trunc|ios_base::out);
     if( !ptr->is_open() )
       throw runtime_error("unable to open file: "+name);
-    out_[n]=ptr;
+    out_[n].swap(ptr);
   }
 
   assert(out_.at(n).get()!=NULL);
