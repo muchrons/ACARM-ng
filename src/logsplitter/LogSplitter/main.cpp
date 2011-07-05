@@ -15,10 +15,8 @@ int main(void)
   int ret=0;
   try
   {
-    // create output buffers collection
-    NumberedFilesSet files("thread_", 32*1024*1024);
+    NumberedFilesSet files("thread_");
 
-    // process each and every line
     while(true)
     {
       string line;
@@ -31,11 +29,9 @@ int main(void)
       // append to the proper file
       NumberedFilesSet::FileStreamPtr out=files.get( parser.get() );
       assert( out.get()!=NULL );
-      (*out)<<line<<endl;
+      (*out)<<line<<"\n";   // NOTE: is is important to use "\n" instead of endl here
+                            //       since endl flushes buffers afterwards.
     }
-
-    // write remaining data from buffers
-    files.flush();
   }
   catch(const std::exception &ex)
   {

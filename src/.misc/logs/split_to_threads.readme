@@ -1,8 +1,6 @@
-Script for parsing logs is called 'split_to_threads'. It is not efficient
-enough for huge files with many threads, though. Therefore it has been
-replaced with 'logsplitter' application written in C++. It is automatically
-build as a separate application. It reads data from stdin and writes logs,
-split to threads to files 'thread_N.log', in current directory.
-
-Note that script has been left out for backward compatibility, though it is
-not recommended to be used. It may be removed in the future.
+There used to be script for parsing logs called 'split_to_threads', but
+it was not efficient enough for huge files with many threads. Therefore
+it has been replaced with 'logsplitter' application written in C++.
+It is automatically build as a separate application. It reads data from
+stdin and writes logs, split to threads to files 'thread_N.log', in current
+directory.

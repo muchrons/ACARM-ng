@@ -14,9 +14,8 @@ using namespace std;
 namespace LogSplitter
 {
 
-NumberedFilesSet::NumberedFilesSet(const std::string &prefix, const unsigned int bytes):
-  prefix_(prefix),
-  bytes_(bytes)
+NumberedFilesSet::NumberedFilesSet(const std::string &prefix):
+  prefix_(prefix)
 {
 }
 
@@ -25,22 +24,18 @@ NumberedFilesSet::FileStreamPtr NumberedFilesSet::get(unsigned int n)
   if(out_.size()<n+1)
     out_.resize(n+1);
 
-  if(out_[n].get()==NULL)
+  if( out_[n].get()==NULL )
   {
-    const string  name=makeFileName(n);
-    FileStreamPtr ptr(new OutFile(name, bytes_));
+    FileStreamPtr ptr(new std::ofstream);
+    const string name=makeFileName(n);
+    ptr->open(name.c_str(), ios_base::binary|ios_base::trunc|ios_base::out);
+    if( !ptr->is_open() )
+      throw runtime_error("unable to open file: "+name);
     out_[n].swap(ptr);
   }
 
   assert(out_.at(n).get()!=NULL);
   return out_[n];
-}
-
-void NumberedFilesSet::flush(void)
-{
-  for(Outputs::iterator it=out_.begin(); it!=out_.end(); ++it)
-    if(it->get()!=NULL)
-      (*it)->flush();
 }
 
 std::string NumberedFilesSet::makeFileName(unsigned int n)
