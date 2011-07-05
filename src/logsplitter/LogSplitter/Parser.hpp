@@ -18,8 +18,14 @@ namespace LogSplitter
 class Parser: private boost::noncopyable
 {
 public:
+  /** \brief parse given string, looking for a thread number.
+   *  \param str string to be parsed.
+   */
   explicit Parser(const std::string &str);
 
+  /** \brief get parsed line number.
+   *  \return line number parsed from string.
+   */
   unsigned int get(void) const
   {
     return num_;
