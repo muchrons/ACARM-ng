@@ -7,9 +7,10 @@
 
 #include <string>
 #include <vector>
-#include <fstream>
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
+
+#include "LogSplitter/OutFile.hpp"
 
 namespace LogSplitter
 {
@@ -20,7 +21,7 @@ class NumberedFilesSet: private boost::noncopyable
 {
 public:
   /** \brief output stream pointer. */
-  typedef boost::shared_ptr<std::ofstream> FileStreamPtr;
+  typedef boost::shared_ptr<OutFile> FileStreamPtr;
 
   /** \brief dynamic set of numeberd files, named with a given prefix.
    *  \param prefix prefix for each file name.
