@@ -88,7 +88,40 @@ void testObj::test<3>(void)
   ensure_equals("something changed", changed_.size(), 1u);
 }
 
-// TODO: test adding the same name multiple times, in some time span and checking if it
-//       has NOT been marked as unused after first entry has timeouted, but next ones are still present.
+// test adding the same name multiple times, in some time span and checking if it
+// has NOT been marked as unused after first entry has timeouted, but next ones are still present.
 
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  s_.process( makeLeaf("some name"), changed_ );
+  ensure_equals("something changed", changed_.size(), 1u);
+  changed_.clear();
+  sleep(2);
+  s_.process( makeLeaf("some name"), changed_ );
+  ensure_equals("something changed", changed_.size(), 0u);
+  changed_.clear();
+  sleep(2);
+  s_.process( makeLeaf("some name"), changed_ );
+  ensure_equals("something changed", changed_.size(), 0u);
+  changed_.clear();
+  sleep(2);
+  s_.process( makeLeaf("some name"), changed_ );
+  ensure_equals("something changed", changed_.size(), 0u);
+  changed_.clear();
+  sleep(2);
+  s_.process( makeLeaf("some name"), changed_ );
+  ensure_equals("something changed", changed_.size(), 0u);
+  changed_.clear();
+  sleep(2);
+  s_.process( makeLeaf("some name"), changed_ );
+  ensure_equals("something changed", changed_.size(), 0u);
+  changed_.clear();
+  // processed set is prunned every 10 seconds
+  sleep(1);
+  s_.process( makeLeaf("some name"), changed_ );
+  ensure_equals("something changed", changed_.size(), 0u);
+
+}
 } // namespace tut

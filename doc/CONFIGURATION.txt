@@ -241,6 +241,11 @@ following filters and parameters are available:
     <similarity>0.80</similarity>  <!-- similarity threshold to correlate with -->
   </similarity>
 
+  <!-- increases meta-alert's priority by a given amount when it has name not found before -->
+  <newevent name="new_event">
+    <timeout>42</timeout>              <!-- timeout for observing entry, in seconds -->
+    <priorityDelta>0.8</priorityDelta> <!-- amount to update priority by when correlating -->
+  </newevent>
 
 triggers configuration
 ======================

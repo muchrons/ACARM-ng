@@ -4,7 +4,7 @@
  */
 
 #include <openssl/sha.h>
-
+#include <iostream>
 #include "Filter/NewEvent/Entry.hpp"
 #include "Filter/NewEvent/TimeoutedSet.hpp"
 
@@ -14,34 +14,36 @@ namespace NewEvent
 {
 
 
-Entry::Entry(const HashSharedPtr &hashPtr, Filter::BackendFacade &bf, TimeoutedSet &ts):
+Entry::Entry(const Hash &hash, Filter::BackendFacade &bf, TimeoutedSet &ts):
+  log_("filter.newevent"),
   owner_("Filter::NewEvent"),
   dc_(bf.createDynamicConfig( owner_ )),
-  hashPtr_( hashPtr ),
+  hash_( hash ),
   ts_(&ts)
 {
-  dc_->write( hashPtr_.get()->getHash(), "true");
-  // TODO: notice that this object will be copyied multiple times during life cycle, thus multiple instances
+  // NOTE: this object will be copyied multiple times during life cycle, thus multiple instances
   //       will be present at one time. this makes it impossible to simply add in c-tor and del in d-tor.
-  //       reference counting mechanism has to be introduced for this mechanism to work.
+  //       reference counting mechanism has been introduced for this mechanism to work.
+  dc_->write( hash_.getHash(), "true");
 }
 
 Entry::~Entry()
 {
-  // TODO: this call may throw - add try{}catch(...), with proper comment on this event.
-  ts_->add( hashPtr_ );
+  try
+  {
+    ts_->add( hash_ );
+  }
+  catch(const std::exception &ex)
+  {
+    LOGMSG_ERROR_S(log_)<<"exception caught while adding element to the TimeoutedSet: '"<<ex.what();
+  }
 }
 
 const Hash::HashData &Entry::getHash() const
 {
-  return hashPtr_.get()->getHash();
+  return hash_.getHash();
 }
-bool Entry::operator==(const Entry &other) const
-{
-  if(getHash() != other.getHash())
-    return false;
-  return true;
-}
+
 } // namespace NewEvent
 } // namespace Filter
 

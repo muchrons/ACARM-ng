@@ -15,23 +15,26 @@ TimeoutedSet::TimeoutedSet():
 {
 }
 
-void TimeoutedSet::add(const HashSharedPtr &key)
+void TimeoutedSet::add(const Hash &key)
 {
-  //TODO: prevent storing element with the same names
+  // prevent storing elements with the same names
+  if(isTimeouted(key))
+    return;
   timeouted_.push_back( key );
 }
 
 void TimeoutedSet::markRemoved(BackendFacade &bf, const Persistency::IO::DynamicConfig::Owner &owner)
 {
-  // TODO: notice that only elements that are NOT is processedset at the moment should be removed here.
-  //       this is required since Entry() elements withe a given name can repeat.
+  // NOTE: only elements that are NOT is processedset at the moment should be removed here.
+  //       Entry() elements withe a given name can't repeat, EntryProcessor implementation
+  //       prevents adding Entry elements with the same names to the ProcessedSet collection.
   Persistency::IO::DynamicConfigAutoPtr dc = bf.createDynamicConfig(owner);
   for(Timeouted::iterator it = timeouted_.begin(); it != timeouted_.end(); ++it)
   {
     // single exception for one entry will not block removing others from DC.
     try
     {
-      dc->remove( it->get()->getHash().get() );
+      dc->remove( it->getHash().get() );
     }
     catch(const Persistency::IO::Exception &ex)
     {
@@ -45,7 +48,7 @@ void TimeoutedSet::markRemoved(BackendFacade &bf, const Persistency::IO::Dynamic
   timeouted_.clear();
 }
 
-bool TimeoutedSet::isTimeouted(const HashSharedPtr &key) const
+bool TimeoutedSet::isTimeouted(const Hash &key) const
 {
   for(Timeouted::const_iterator it = timeouted_.begin(); it != timeouted_.end(); ++it)
   {
