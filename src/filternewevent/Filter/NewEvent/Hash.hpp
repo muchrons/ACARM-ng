@@ -13,6 +13,7 @@ namespace Filter
 namespace NewEvent
 {
 
+// TODO: implement '!=' using boost::operators
 /** \brief holds hash of processed (meta-)alert name.
  */
 class Hash

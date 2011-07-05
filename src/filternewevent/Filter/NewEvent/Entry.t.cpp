@@ -32,13 +32,14 @@ struct TestClass
   {
   }
 
+  // TODO: unneeded call; can be replaced with one line: e_q("...", tconn_->data_[key], value);
   void testData(const std::string &key, const std::string &value)
   {
     IODynamicConfigMemory::Memory data = tconn_->data_;
     tut::ensure_equals("invalid value", data[key], value );
   }
 
-  TestConnection                        *tconn_;
+  TestConnection                        *tconn_;    // TODO: memory leak here - use scoped_ptr<>
   Persistency::IO::ConnectionPtrNN       conn_;
   BackendFacade::ChangedNodes            changed_;
   BackendFacade                          bf_;
@@ -63,7 +64,7 @@ template<>
 void testObj::test<1>(void)
 {
   EntrySharedPtr entryPtr(new Entry(hash_, bf_, ts_));
-  testData( entryPtr.get()->getHash().get(), string("true") );
+  testData( entryPtr.get()->getHash().get(), string("true") );  // TODO: "true"
 }
 
 // test if element is not present in Dynamic Config after TimeoutedSet prune

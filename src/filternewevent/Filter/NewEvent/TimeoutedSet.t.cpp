@@ -104,4 +104,6 @@ void testObj::test<4>(void)
   testData( hashStr, string("") );
 }
 
+// TODO: test if no exceptions are thrown from inside the 'makrRemoved()' call.
+
 } // namespace tut
