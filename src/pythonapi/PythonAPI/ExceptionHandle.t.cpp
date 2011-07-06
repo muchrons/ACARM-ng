@@ -7,6 +7,7 @@
 #include <boost/python.hpp>
 
 #include "PythonAPI/ExceptionHandle.hpp"
+#include "PythonAPI/Environment.hpp"
 
 using namespace std;
 using namespace boost::python;
@@ -24,8 +25,9 @@ struct TestClass
     mainNamespace_=mainModule_.attr("__dict__");
   }
 
-  object mainModule_;
-  object mainNamespace_;
+  Environment env_;     // required to import all required modules
+  object      mainModule_;
+  object      mainNamespace_;
 };
 
 typedef tut::test_group<TestClass> factory;
