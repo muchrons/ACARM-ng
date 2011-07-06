@@ -18,6 +18,12 @@ PythonAPI::Environment::StaticImporter g_import("persistency", PyInit_persistenc
 
 struct TestClass
 {
+  TestClass(void)
+  {
+    env_.importModule("persistency");
+    //env_.run("from persistency import *");
+  }
+
   PythonAPI::Environment env_;
 };
 

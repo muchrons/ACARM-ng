@@ -4,24 +4,33 @@
  */
 #include <tut.h>
 #include <string>
+#include <boost/python/module.hpp>
 
 #include "PythonAPI/Environment.hpp"
 
 using namespace PythonAPI;
-
-
-extern "C"
-{
-static PyObject* dummyModuleInit(void)
-{
-  return NULL;
-} // dummyModuleInit
-} // extern "C"
+namespace py=boost::python;
 
 namespace
 {
-// following line is smoke-test
-PythonAPI::Environment::StaticImporter g_importDummy("myDummyModule", dummyModuleInit);
+// define some test class
+struct TestStruct
+{
+  int getAnswer(void) const
+  {
+    return 42;
+  }
+}; // struct TestStruct
+// make it python-visible
+BOOST_PYTHON_MODULE(environment_test_module)
+{
+  py::class_<TestStruct>("TestStruct")
+    .def("getAnswer", &TestStruct::getAnswer)
+  ;
+}
+// import this module to the python
+PythonAPI::Environment::StaticImporter g_importDummy("environment_test_module", PyInit_environment_test_module);
+
 
 struct TestClass
 {
@@ -92,6 +101,20 @@ void testObj::test<5>(void)
   ensure("string too short", std::string(str).length()>5 );
 }
 
-// NOTE: initializing of module seems to always succeed... :/
+// test importing own module
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  e_.importModule("environment_test_module");
+return ;                  
+  e_.run("tmp=environment_test_module.TestStruct()");
+  e_.run("tmp=tmp.getAnswer()");
+  // check
+  const int answer=e_.var<int>("tmp");
+  ensure_equals("invalid answer set", answer, 42);
+}
+
+// NOTE: initializing of module seems to always succeed, but sometime has "funny" sideeffects... :/
 
 } // namespace tut
