@@ -7,9 +7,11 @@
 #include <boost/python.hpp>
 
 #include "PythonAPI/Persistency/exports.hpp"
+#include "PythonAPI/ExceptionHandle.hpp"
 
 using namespace std;
 using namespace boost::python;
+namespace py = boost::python;
 
 namespace
 {
@@ -39,11 +41,8 @@ struct TestClass
     }
     catch(const boost::python::error_already_set &)
     {
-      // TODO: think of some way to translate this to a string, that is NOT
-      //       print on the screen straight away...
-      PyErr_Print();
-      std::string err_msg;
-      StderrCatcher catcher (err_msg);
+      PythonAPI::ExceptionHandle ex;
+      ex.rethrow();
     }
   }
 
