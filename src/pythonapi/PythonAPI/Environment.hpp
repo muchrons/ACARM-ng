@@ -107,6 +107,7 @@ public:
 private:
   static void importModule(const std::string &module, ModuleInitFunc init);
 
+  // TODO: refactor this code so that no friend declaration is needed.
   // implementation that wraps importModule(mod, init) calls.
   class ImportedModules;
   friend class ImportedModules;

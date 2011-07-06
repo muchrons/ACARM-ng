@@ -9,7 +9,7 @@
 #include "PythonAPI/Environment.hpp"
 
 using namespace std;
-using namespace boost::python;
+using namespace PythonAPI::Persistency;
 
 namespace
 {
@@ -41,7 +41,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.run("c=persistency.Certainty(0.42)\n");  // smoke test - in case of error call will throw
+  env_.run("c=persistency.Certainty(0.42)");    // smoke test - in case of error call will throw
 }
 
 } // namespace tut
