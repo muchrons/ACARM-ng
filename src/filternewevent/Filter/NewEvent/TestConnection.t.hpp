@@ -15,6 +15,7 @@ namespace Filter
 namespace NewEvent
 {
 
+// TODO: TestHelpers::Persistency::IODynamicConfigMemory should be used instead.
 class TestConnection: public TestHelpers::Persistency::ConnectionUserStubBase
 {
 public:

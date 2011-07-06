@@ -36,6 +36,7 @@ struct TestClass: private TestStubs
   BackendFacade                    bf_;
   TimeoutedSet                     ts_;
   ProcessedSet                     ps_;
+  // TODO: following variables are not used at all:
   Hash                             h_;
   EntrySharedPtr                   ePtr_;
 
@@ -57,6 +58,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
+  // TODO: test's code is missing
   //ensure("non-existing entry is reported as present", ps_.isProcessed( *ePtr_.get() )==false );
 }
 
@@ -65,6 +67,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  // TODO: h[12] and e[12] is common for most test cases - move it to c-tor
+  // TODO: add missing consts
   Hash           h1("some entry");
   EntrySharedPtr e1(new Entry(h1, bf_, ts_));
   Hash           h2("some other entry");
@@ -73,15 +77,15 @@ void testObj::test<2>(void)
   ps_.markAsProcessed(e2, 2);
   ps_.prune();
   ensure("element with timeout 1 s has been pruned before timeout", ps_.update(h1, 1) );
-  ensure("element with timeout 2 s has been pruned before timeout", ps_.update(h2, 2) );
+  ensure("element with timeout 2 s has been pruned before timeout", ps_.update(h2, 2) );    // TODO: 3? 2 may lead to race condition; 3 should minimize the risk
   sleep(2);
   ps_.prune();
   ensure("element with timeout 1 s has not been pruned after 2 seconds", ps_.update(h1, 1)==false );
   ensure("element with timeout 2 s has been pruned after 2 seconds", ps_.update(h2, 2) );
   sleep(1);
   ps_.prune();
-  ensure("element with timeout 2 s has been pruned after timeout update", ps_.update(h2, 2) );
-  sleep(3);
+  ensure("element with timeout 2 s has been pruned after timeout update", ps_.update(h2, 2) );  // TODO: 1 here...
+  sleep(3);                                                                                     // TODO: and 2 here?
   ps_.prune();
   ensure("element with timeout 1 s has not been pruned", ps_.update(h1, 1)==false );
   ensure("element with timeout 2 s has not been pruned", ps_.update(h2, 2)==false );
@@ -93,6 +97,8 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
+  // TODO: h[12] and e[12] is common for most test cases - move it to c-tor
+  // TODO: add missing consts
   Hash            h1("some entry");
   EntrySharedPtr  e1(new Entry(h1, bf_, ts_));
   Hash            h2("some other entry");
@@ -108,9 +114,9 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  Hash hash("some name");
+  Hash hash("some name");   // TODO: const is missing; use some hash from test object
   {
-    EntrySharedPtr e(new Entry(hash, bf_, ts_));
+    EntrySharedPtr e(new Entry(hash, bf_, ts_));    // TODO: use some values from test object
     ps_.markAsProcessed(e, 1);
   }
   sleep(2);
@@ -132,9 +138,10 @@ void testObj::test<5>(void)
   // update added element with timeout 3[s]
   ps_.update(hash, 3);
   // wait two seconds
-  sleep(2);
+  sleep(2);             // TODO: 1? 0?
   ps_.prune();
   // check if element is present after prune
   ensure("element is not timeouted", ps_.update(hash, 1));
 }
+
 } // namespace tut

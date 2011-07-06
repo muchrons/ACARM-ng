@@ -25,6 +25,8 @@ factory tf("Filter/NewEvent/Hash");
 
 namespace tut
 {
+
+// TODO: tests are missing
 /*
 // test c-tor, smoke test
 template<>

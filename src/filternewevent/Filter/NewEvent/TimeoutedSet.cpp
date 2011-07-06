@@ -17,19 +17,22 @@ TimeoutedSet::TimeoutedSet():
 
 void TimeoutedSet::add(const Hash &key)
 {
+  // TODO: if(!timeouted)
+  //         push_back()
+
   // prevent storing elements with the same names
-  if(isTimeouted(key))
+  if( isTimeouted(key) )
     return;
-  timeouted_.push_back( key );
+  timeouted_.push_back(key);
 }
 
 void TimeoutedSet::markRemoved(BackendFacade &bf, const Persistency::IO::DynamicConfig::Owner &owner)
 {
-  // NOTE: only elements that are NOT is processedset at the moment should be removed here.
-  //       Entry() elements withe a given name can't repeat, EntryProcessor implementation
+  // NOTE: only elements that are NOT in processed set at the moment should be removed here.
+  //       Entry() elements with a given name can't repeat, EntryProcessor implementation
   //       prevents adding Entry elements with the same names to the ProcessedSet collection.
-  Persistency::IO::DynamicConfigAutoPtr dc = bf.createDynamicConfig(owner);
-  for(Timeouted::iterator it = timeouted_.begin(); it != timeouted_.end(); ++it)
+  Persistency::IO::DynamicConfigAutoPtr dc=bf.createDynamicConfig(owner);
+  for(Timeouted::iterator it=timeouted_.begin(); it!=timeouted_.end(); ++it)
   {
     // single exception for one entry will not block removing others from DC.
     try
@@ -38,6 +41,7 @@ void TimeoutedSet::markRemoved(BackendFacade &bf, const Persistency::IO::Dynamic
     }
     catch(const Persistency::IO::Exception &ex)
     {
+      // TODO: action is the same for both exception types, thus this code is redundant.
       LOGMSG_ERROR_S(log_)<<"exception caught: '"<<ex.what()<<"' - ignoring";
     }
     catch(const std::exception &ex)
@@ -50,7 +54,8 @@ void TimeoutedSet::markRemoved(BackendFacade &bf, const Persistency::IO::Dynamic
 
 bool TimeoutedSet::isTimeouted(const Hash &key) const
 {
-  for(Timeouted::const_iterator it = timeouted_.begin(); it != timeouted_.end(); ++it)
+  // TODO: use std::find for that, from <algorithm> header.
+  for(Timeouted::const_iterator it=timeouted_.begin(); it!=timeouted_.end(); ++it)
   {
     if(*it==key)
       return true;
