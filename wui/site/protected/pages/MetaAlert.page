@@ -30,7 +30,7 @@
       <com:TDataGrid
          ID="RelatedAlerts"
          WIDTH="100%"
-         AllowPaging="true"
+         AllowPaging="false"
          AllowCustomPaging="true"
          PageSize="2"
          AutoGenerateColumns="true"
