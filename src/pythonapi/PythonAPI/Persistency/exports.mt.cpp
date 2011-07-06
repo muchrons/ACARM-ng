@@ -11,6 +11,11 @@
 using namespace std;
 using namespace boost::python;
 
+namespace
+{
+static PythonAPI::Environment::StaticImporter g_importPersistency("persistency", PyInit_persistency);
+} // unnamed namespace
+
 int main(int argc, const char * const *argv)
 {
   if(argc!=2)
@@ -21,17 +26,9 @@ int main(int argc, const char * const *argv)
 
   try
   {
-    if( PyImport_AppendInittab("persistency", PyInit_persistency)!=0 )
-      throw std::runtime_error("unable to load 'persistency' module");
-
-    cout<<"init..."<<endl;
-    Py_Initialize();
-    cout<<"import main..."<<endl;
-    object mainModule=import("__main__");
-    cout<<"import namespace..."<<endl;
-    object mainNamespace=mainModule.attr("__dict__");
+    PythonAPI::Environment env;
     cout<<"running user's code..."<<endl;
-    exec_file(argv[1], mainNamespace);
+    env.runFile(argv[1]);
     cout<<"done!"<<endl;
   }
   catch(const boost::python::error_already_set &)
