@@ -27,7 +27,7 @@ bool g_alreadyInitialized=false;
 class Environment::ImportedModules
 {
 private:
-  typedef boost::tuple<std::string, Environment::ModuleInitFunc> ModuleInitSpec;
+  typedef boost::tuple<const char*, Environment::ModuleInitFunc> ModuleInitSpec;
   typedef std::vector<ModuleInitSpec>                            ImportedModulesList;
 
 public:
@@ -128,7 +128,7 @@ void Environment::run(const std::string &script)
   }
 }
 
-void Environment::importModule(const std::string &module, ModuleInitFunc init)
+void Environment::importModule(const char *module, ModuleInitFunc init)
 {
   assert(!g_alreadyInitialized && "trying to import module when environment has been already initialized");
 
@@ -138,8 +138,8 @@ void Environment::importModule(const std::string &module, ModuleInitFunc init)
   if(init==NULL)
     throw Exception(SYSTEM_SAVE_LOCATION, "init function cannot be NULL");
 
-  if( PyImport_AppendInittab(module.c_str(), init)!=0 )
-    throw Exception(SYSTEM_SAVE_LOCATION, "PyImport_AppendInittab() failed; unable to init module "+module);
+  if( PyImport_AppendInittab(module, init)!=0 )
+    throw Exception(SYSTEM_SAVE_LOCATION, std::string("PyImport_AppendInittab() failed; unable to init module: ")+module);
 
   LOGMSG_INFO_S(log)<<"module '"<<module<<"' imported successfuly";
 }

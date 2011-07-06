@@ -48,7 +48,7 @@ public:
   {
   public:
     /** \brief schedules given module to importing.
-     *  \param module module's name (must be non-NULL).
+     *  \param module module's name (must be non-NULL, compile-time constant).
      *  \param init   initialization callback (must be non-NULL).
      *
      *  \note all instance of this class must be instanciated BEFORE first
@@ -105,7 +105,8 @@ public:
   void importModule(const std::string &module);
 
 private:
-  static void importModule(const std::string &module, ModuleInitFunc init);
+  // NOTE: 'module' must be a compile-time constant. otherwise SEGV will rule thy world...
+  static void importModule(const char *module, ModuleInitFunc init);
 
   // TODO: refactor this code so that no friend declaration is needed.
   // implementation that wraps importModule(mod, init) calls.
