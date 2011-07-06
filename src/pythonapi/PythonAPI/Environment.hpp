@@ -8,11 +8,11 @@
 /* public header */
 
 #include <string>
-
 #include <boost/python.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
+#include "Logger/Node.hpp"
 #include "PythonAPI/Exception.hpp"
 #include "PythonAPI/ExceptionFromScript.hpp"
 
@@ -24,6 +24,17 @@ class Environment: private boost::noncopyable
 {
 public:
   typedef PyObject* (*ModuleInitFunc)(void);
+
+  class StaticImporter
+  {
+  public:
+    StaticImporter(const char *module, ModuleInitFunc init);
+    ~StaticImporter(void);
+
+  private:
+    bool imported_;     // will be 0 (false) when declared static
+  }; // struct StaticImporter
+
 
   Environment(void);
 
@@ -50,6 +61,7 @@ public:
   static void importModule(const std::string &module, ModuleInitFunc init);
 
 private:
+  Logger::Node          log_;
   boost::python::object mainModule_;
   boost::python::object mainNamespace_;
 }; // class ExceptionHandle

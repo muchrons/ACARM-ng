@@ -9,8 +9,20 @@
 
 using namespace PythonAPI;
 
+
+extern "C"
+{
+static PyObject* dummyModuleInit(void)
+{
+  return NULL;
+} // dummyModuleInit
+} // extern "C"
+
 namespace
 {
+// following line is smoke-test
+PythonAPI::Environment::StaticImporter g_importDummy("myDummyModule", dummyModuleInit);
+
 struct TestClass
 {
   Environment e_;
@@ -33,42 +45,10 @@ void testObj::test<1>(void)
   Environment e;
 }
 
-// test importing module with NULL initalizer
-template<>
-template<>
-void testObj::test<2>(void)
-{
-  try
-  {
-    Environment::importModule("abc", NULL);
-    fail("module importing didn't failed with NULL initializer");
-  }
-  catch(const Exception &)
-  {
-    // this is expected
-  }
-}
-
-
-extern "C"
-{
-static PyObject* dummyModuleInit(void)
-{
-  return NULL;
-} // dummyModuleInit
-} // extern "C"
-// test importing some module (may not exist)
-template<>
-template<>
-void testObj::test<3>(void)
-{
-  Environment::importModule("abc", dummyModuleInit);
-}
-
 // test running some script
 template<>
 template<>
-void testObj::test<4>(void)
+void testObj::test<2>(void)
 {
   e_.run("c=1+2");
 }
@@ -76,7 +56,7 @@ void testObj::test<4>(void)
 // test running some script that throws exception
 template<>
 template<>
-void testObj::test<5>(void)
+void testObj::test<3>(void)
 {
   try
   {
@@ -92,7 +72,7 @@ void testObj::test<5>(void)
 // test getting some variable as a copy
 template<>
 template<>
-void testObj::test<6>(void)
+void testObj::test<4>(void)
 {
   e_.run("a=42");
   const int a=e_.var<int>("a");
