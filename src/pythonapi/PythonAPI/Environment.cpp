@@ -20,9 +20,11 @@ namespace PythonAPI
 namespace
 {
 bool g_alreadyInitialized=false;
+} // unnamed namespace
+
 
 // this is a work-around for a global initialization issue in Python's C interface
-class ImportedModules
+class Environment::ImportedModules
 {
 private:
   typedef boost::tuple<std::string, Environment::ModuleInitFunc> ModuleInitSpec;
@@ -61,7 +63,7 @@ private:
     return mods;
   }
 }; // class ImportedModules
-} // unnamed namespace
+
 
 
 Environment::StaticImporter::StaticImporter(const char *module, ModuleInitFunc init)
@@ -144,8 +146,8 @@ void Environment::importModule(const std::string &module, ModuleInitFunc init)
 
 void Environment::importModule(const std::string &module)
 {
-  assert(g_isInitialized);
-  py::import( module.c_str() );
+  assert(g_alreadyInitialized);
+  run("import "+module);
 }
 
 } // namespace PythonAPI

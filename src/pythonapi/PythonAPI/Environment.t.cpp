@@ -79,6 +79,19 @@ void testObj::test<4>(void)
   ensure_equals("invalid value", a, 42);
 }
 
+// test importing standard module
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  e_.importModule("sys");
+  e_.run("tmp=sys.version");
+  // check
+  const char *str=e_.var<const char*>("tmp");
+  ensure("got NULL pointer", str!=NULL);
+  ensure("string too short", std::string(str).length()>5 );
+}
+
 // NOTE: initializing of module seems to always succeed... :/
 
 } // namespace tut
