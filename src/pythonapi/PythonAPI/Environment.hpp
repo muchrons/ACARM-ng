@@ -60,6 +60,8 @@ public:
 
   static void importModule(const std::string &module, ModuleInitFunc init);
 
+  void importModule(const std::string &module);
+
 private:
   Logger::Node          log_;
   boost::python::object mainModule_;

@@ -4,7 +4,7 @@
  */
 #include <vector>
 #include <cassert>
-#include <boost/tuple.hpp>
+#include <boost/tuple/tuple.hpp>
 
 #include "Logger/Logger.hpp"
 #include "Commons/computeHash.hpp"
@@ -26,10 +26,10 @@ class ImportedModules
 {
 private:
   typedef boost::tuple<std::string, Environment::ModuleInitFunc> ModuleInitSpec;
-  typedef std::vector<ModuleInitSpec>                            ImportedModules;
+  typedef std::vector<ModuleInitSpec>                            ImportedModulesList;
 
 public:
-  static void scheduleImport(const char *module, ModuleInitFunc init)
+  static void scheduleImport(const char *module, Environment::ModuleInitFunc init)
   {
     assert(!g_alreadyInitialized && "trying to import after initialization");
     get().push_back( ModuleInitSpec(module, init) );
@@ -39,10 +39,10 @@ public:
   {
     assert(!g_alreadyInitialized && "trying to init/import all modules after initialization");
     // import all modules
-    for(ImportedModules::const_iterator it=get().begin(); it!=get().end(); ++it)
+    for(ImportedModulesList::const_iterator it=get().begin(); it!=get().end(); ++it)
       Environment::importModule( it->get<0>(), it->get<1>() );
     // all modeules imported - remove them from the collection
-    ImportedModules tmp;
+    ImportedModulesList tmp;
     get().swap(tmp);
   }
 
@@ -55,9 +55,9 @@ private:
   ImportedModules(void);    // no instances allowed
 
   // global collection, initialized uppon first usage
-  static ImportedModules &get(void)
+  static ImportedModulesList &get(void)
   {
-    static ImportedModules mods;
+    static ImportedModulesList mods;
     return mods;
   }
 }; // class ImportedModules
@@ -87,23 +87,25 @@ Environment::StaticImporter::~StaticImporter(void)
 Environment::Environment(void):
   log_("pythonapi.environment")
 {
-  LOGMSG_INFO_S(log_)<<"initializing Python's envioronment with "<<g_importsCount<<" imported modules";
+  LOGMSG_DEBUG(log_, "initializing Python's environment object");
   // if called for the first time import all modules
   if(!g_alreadyInitialized)
   {
     // modules importing
-    LOGMSG_INFO_S(log_)<<"importing all of the "<<ImportedModules::count()<<" registered modules";
+    const size_t count=ImportedModules::count();
+    LOGMSG_INFO_S(log_)<<"importing all of the "<<count<<" registered modules";
     ImportedModules::importAllModules();
-    LOGMSG_INFO_S(log_)<<"all of the "<<ImportedModules::count()<<" registered modules imported";
+    LOGMSG_INFO_S(log_)<<"all of the "<<count<<" registered modules imported";
     // python's init
     Py_Initialize();
     // done
     g_alreadyInitialized=true;
+    LOGMSG_INFO(log_, "initializing Python's envioronment succeeded");
   }
   // casual stuff
   mainModule_   =py::import("__main__");
   mainNamespace_=mainModule_.attr("__dict__");
-  LOGMSG_INFO(log_, "initializing Python's envioronment succeeded");
+  LOGMSG_DEBUG(log_, "initializing Python's envioronment object succeeded");
 }
 
 void Environment::run(const std::string &script)
@@ -137,8 +139,13 @@ void Environment::importModule(const std::string &module, ModuleInitFunc init)
   if( PyImport_AppendInittab(module.c_str(), init)!=0 )
     throw Exception(SYSTEM_SAVE_LOCATION, "PyImport_AppendInittab() failed; unable to init module "+module);
 
-  ++g_importsCount;
   LOGMSG_INFO_S(log)<<"module '"<<module<<"' imported successfuly";
+}
+
+void Environment::importModule(const std::string &module)
+{
+  assert(g_isInitialized);
+  py::import( module.c_str() );
 }
 
 } // namespace PythonAPI
