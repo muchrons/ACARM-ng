@@ -74,7 +74,7 @@ public:
 
   /** \brief run given python code directly.
    *
-   *  this call forward error rised in python scripts and throws them as
+   *  this call forwards errors rised in python scripts and throws them as
    *  ExceptionFromScript instances. more details can be obtained from it.
    *
    *  \param script script to be run (i.e. python code).
