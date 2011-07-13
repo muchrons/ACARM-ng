@@ -33,6 +33,7 @@ public:
   {
     /** \brief create paramters object.
      *  \param timeout  new event time life (in seconds).
+     *  \param pruneTimeout  new event prune interval (in seconds).
      *  \param priDelta increment of priority when new event is found.
      */
     Parameters(const unsigned int timeout,
