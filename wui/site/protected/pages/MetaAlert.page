@@ -21,6 +21,12 @@
     <td id="AlertContent" width="40%"><com:TLiteral ID="MetaAlertUpdateTime" Text="&nbsp" Encode="true"/></td>
   </tr>
   <tr>
+    <td id="AlertTag" width="10%">Severity&nbsp;&Delta;:</td>
+    <td id="AlertContent" width="40%"><com:TLiteral ID="SeverityDelta" Text="&nbsp" Encode="true"/></td>
+    <td id="AlertTag" width="10%">Certainty&nbsp;&Delta;:</td>
+    <td id="AlertContent" width="40%"><com:TLiteral ID="CertaintyDelta" Text="&nbsp" Encode="true"/></td>
+  </tr>
+  <tr>
     <td id="AlertTag" width="10%">Tags:</td>
     <td id="AlertContent" width="40%" colspan="3"><com:TLiteral ID="MetaAlertTags" Text="" Encode="false"/></td>
   </tr>
