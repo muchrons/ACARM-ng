@@ -17,9 +17,8 @@ namespace NewEvent
 {
 
 /** \brief helper object for processing given leaf.
- *
  */
-class EntryProcessor
+class EntryProcessor: private boost::noncopyable
 {
 public:
   /** \brief create instance.
@@ -35,11 +34,11 @@ public:
   void operator()(Persistency::GraphNodePtrNN leaf);
 
 private:
-  Logger::Node               log_;
+  Logger::Node                log_;
   BackendFacade              &bf_;
   ProcessedSet               &ps_;
   TimeoutedSet               &ts_;
-  const Strategy::Parameters params_;
+  const Strategy::Parameters  params_;
 }; // class EntryProcessor
 
 } // namespace NewEvent

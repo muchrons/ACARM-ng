@@ -16,16 +16,17 @@ namespace Filter
 namespace NewEvent
 {
 
-/** \brief forward declaration of TimeoutedSet class.
- */
 class TimeoutedSet;
+
 /** \brief
  *  save elements in the persistency dynamic config,
  *  save timeouted elements in dedicated collection.
  */
-class Entry
+class Entry: private boost::noncopyable
 {
 public:
+  // TODO: do not refer to the specific hash algorithm - it is not given explicitly
+  //       by design, so that it could be easily changed any time, when needed.
 
   /** \brief create instance.
    *  \param hash SHA1 hash of processes (meta-)alert name.
@@ -37,19 +38,24 @@ public:
    */
   ~Entry();
 
+  /** \brief return hash string of entry name.
+   *  \return (SHA1) hash string of entry name.
+   */
+  const Hash::HashData &getHashString() const;
   /** \brief return hash of entry name.
    *  \return (SHA1) hash of entry name.
    */
-  const Hash::HashData &getHash() const;
+  const Hash &getHash() const;
 private:
 
   Logger::Node                                               log_;
   Persistency::IO::DynamicConfig::Owner                      owner_;
   Commons::SharedPtrNotNULL<Persistency::IO::DynamicConfig>  dc_;
   Hash                                                       hash_;
-  TimeoutedSet                                              *ts_;
+  TimeoutedSet                                               &ts_;
 }; // class Entry
 
+/** \brief smart pointer to Entry type, that is sure not to be NULL. */
 typedef Commons::SharedPtrNotNULL<Entry> EntrySharedPtr;
 
 } // namespace Filter

@@ -19,7 +19,7 @@ namespace
 struct TestClass: private TestStubs
 {
   TestClass(void):
-    params_(2, 0.3),
+    params_(2, 4, 0.3),
     s_( InstanceName("strategyname"), params_)
   {
   }
@@ -27,11 +27,6 @@ struct TestClass: private TestStubs
   Persistency::GraphNodePtrNN makeLeaf(const char *name) const
   {
     return makeNewLeaf( makeNewAlert(name) );
-  }
-
-  Persistency::GraphNodePtrNN makeNode(void) const
-  {
-    return makeNewNode( makeLeaf("some alert"), makeLeaf("some other alert") );
   }
 
   Strategy::Parameters   params_;
@@ -65,36 +60,29 @@ void testObj::test<1>(void)
   ensure_equals("something changed", changed_.size(), 1u);
 }
 
-// test node
+// test adding the same name after timeout has been reached for it.
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  s_.process( makeNode(), changed_ );
-  ensure_equals("something changed", changed_.size(), 2u);
-}
-
-// test adding the same name after timeout has been reached for it.
-template<>
-template<>
-void testObj::test<3>(void)
-{
+  // TODO: make explicit Strategy's instance here and pass 1 as prune
+  //       timeout - this will save 4[s] during tests exceution
   s_.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 1u);
   changed_.clear();
-  // processed set is prunned every 10 seconds
-  sleep(11);
+  // processed set is prunned every 4 seconds
+  sleep(5);
   s_.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 1u);
 }
 
 // test adding the same name multiple times, in some time span and checking if it
 // has NOT been marked as unused after first entry has timeouted, but next ones are still present.
-
 template<>
 template<>
-void testObj::test<4>(void)
+void testObj::test<3>(void)
 {
+  // TODO: make trune time to be 2[s] and all these sleeps for 1[s] - extra 2[s] for tests execution.
   s_.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 1u);
   changed_.clear();
@@ -102,23 +90,12 @@ void testObj::test<4>(void)
   s_.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 0u);
   changed_.clear();
+  // TODO: this repetition can be removed - it does not test anything new and costs 2[s] of test exec time
   sleep(2);
   s_.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 0u);
   changed_.clear();
-  sleep(2);
-  s_.process( makeLeaf("some name"), changed_ );
-  ensure_equals("something changed", changed_.size(), 0u);
-  changed_.clear();
-  sleep(2);
-  s_.process( makeLeaf("some name"), changed_ );
-  ensure_equals("something changed", changed_.size(), 0u);
-  changed_.clear();
-  sleep(2);
-  s_.process( makeLeaf("some name"), changed_ );
-  ensure_equals("something changed", changed_.size(), 0u);
-  changed_.clear();
-  // processed set is prunned every 10 seconds
+  // processed set is prunned every 5 seconds
   sleep(1);
   s_.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 0u);

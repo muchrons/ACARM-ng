@@ -2,6 +2,8 @@
  * TimeoutedSet.cpp
  *
  */
+#include <algorithm>
+
 #include "Filter/NewEvent/TimeoutedSet.hpp"
 #include "Persistency/IO/Exception.hpp"
 
@@ -18,27 +20,22 @@ TimeoutedSet::TimeoutedSet():
 void TimeoutedSet::add(const Hash &key)
 {
   // prevent storing elements with the same names
-  if(isTimeouted(key))
-    return;
-  timeouted_.push_back( key );
+  if( !isTimeouted(key) )
+    timeouted_.push_back(key);
 }
 
 void TimeoutedSet::markRemoved(BackendFacade &bf, const Persistency::IO::DynamicConfig::Owner &owner)
 {
-  // NOTE: only elements that are NOT is processedset at the moment should be removed here.
-  //       Entry() elements withe a given name can't repeat, EntryProcessor implementation
+  // NOTE: only elements that are NOT in processed set at the moment should be removed here.
+  //       Entry() elements with a given name can't repeat, EntryProcessor implementation
   //       prevents adding Entry elements with the same names to the ProcessedSet collection.
-  Persistency::IO::DynamicConfigAutoPtr dc = bf.createDynamicConfig(owner);
-  for(Timeouted::iterator it = timeouted_.begin(); it != timeouted_.end(); ++it)
+  Persistency::IO::DynamicConfigAutoPtr dc=bf.createDynamicConfig(owner);
+  for(Timeouted::iterator it=timeouted_.begin(); it!=timeouted_.end(); ++it)
   {
     // single exception for one entry will not block removing others from DC.
     try
     {
       dc->remove( it->getHash().get() );
-    }
-    catch(const Persistency::IO::Exception &ex)
-    {
-      LOGMSG_ERROR_S(log_)<<"exception caught: '"<<ex.what()<<"' - ignoring";
     }
     catch(const std::exception &ex)
     {
@@ -50,13 +47,7 @@ void TimeoutedSet::markRemoved(BackendFacade &bf, const Persistency::IO::Dynamic
 
 bool TimeoutedSet::isTimeouted(const Hash &key) const
 {
-  for(Timeouted::const_iterator it = timeouted_.begin(); it != timeouted_.end(); ++it)
-  {
-    if(*it==key)
-      return true;
-  }
-  // object not found
-  return false;
+  return std::find(timeouted_.begin(), timeouted_.end(), key) != timeouted_.end();
 }
 
 } // namespace Filter

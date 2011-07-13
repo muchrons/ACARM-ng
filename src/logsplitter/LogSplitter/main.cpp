@@ -16,10 +16,10 @@ int main(void)
   try
   {
     NumberedFilesSet files("thread_");
+    string           line;
 
     while(true)
     {
-      string line;
       // read single line
       getline(cin, line);
       if(!cin)

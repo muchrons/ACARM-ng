@@ -9,12 +9,11 @@ namespace Filter
 namespace NewEvent
 {
 
-bool ProcessedSet::update(const Hash &hash, unsigned int timeout)
+bool ProcessedSet::update(const Hash &hash, const unsigned int timeout)
 {
-  for(Set::iterator it = set_.begin(); it != set_.end(); ++it)
+  for(Set::iterator it=set_.begin(); it!=set_.end(); ++it)
   {
-    const Hash::HashData hashData = (*it).get()->getHash();
-    if(hashData==hash.getHash())
+    if((*it).get()->getHash() == hash)
     {
       markAsProcessed(*it, timeout);
       return true;
@@ -24,7 +23,7 @@ bool ProcessedSet::update(const Hash &hash, unsigned int timeout)
   return false;
 }
 
-void ProcessedSet::markAsProcessed(const EntrySharedPtr &entryPtr, unsigned int timeout)
+void ProcessedSet::markAsProcessed(const EntrySharedPtr &entryPtr, const unsigned int timeout)
 {
   set_.update(entryPtr, timeout);
 }

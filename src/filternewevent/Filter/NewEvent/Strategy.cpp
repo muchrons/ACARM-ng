@@ -37,8 +37,8 @@ void Strategy::processImpl(Node               n,
     pruneProcessedSet(now);
   assert(nextPrune_>=now);
 
-  const EntryProcessor ep(bf, processed_, timeouted_, params_);
-  Algo::forEachUniqueLeaf(n, ep);
+  EntryProcessor ep(bf, processed_, timeouted_, params_);
+  ep(n);
   pruneTimeoutedSet(bf);
 }
 
@@ -46,7 +46,7 @@ void Strategy::pruneProcessedSet(const time_t now)
 {
   LOGMSG_DEBUG(log_, "prunning time has come");
   processed_.prune();   // call prune method
-  nextPrune_=now+10;    // schedule prunning every 10[s]
+  nextPrune_=now + params_.pruneTimeout_;    // schedule next prune
   LOGMSG_DEBUG_S(log_)<<"next prunning scheduled on/after "<<nextPrune_;
 }
 
