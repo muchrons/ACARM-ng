@@ -104,7 +104,10 @@ void testObj::test<5>(void)
   ensure("Element not present in collection", ts_.isTimeouted(hash_));
   try
   {
-    ts_.markRemoved(bf_, owner_);
+    // TODO: this will never throw this way. in order to simulate this behaviour create special
+    //       Connection, that creates DynamicConfig that throws some test-exception when
+    //       "remove" is invoked.
+    ts_.markRemoved(bf_, owner_);   // should NOT throw
   }
   catch(...)
   {

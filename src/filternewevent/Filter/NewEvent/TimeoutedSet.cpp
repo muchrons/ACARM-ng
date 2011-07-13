@@ -2,6 +2,8 @@
  * TimeoutedSet.cpp
  *
  */
+#include <algorithm>
+
 #include "Filter/NewEvent/TimeoutedSet.hpp"
 #include "Persistency/IO/Exception.hpp"
 
@@ -19,7 +21,7 @@ void TimeoutedSet::add(const Hash &key)
 {
   // prevent storing elements with the same names
   if( !isTimeouted(key) )
-  timeouted_.push_back(key);
+    timeouted_.push_back(key);
 }
 
 void TimeoutedSet::markRemoved(BackendFacade &bf, const Persistency::IO::DynamicConfig::Owner &owner)

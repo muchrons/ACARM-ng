@@ -25,6 +25,8 @@ class TimeoutedSet;
 class Entry: private boost::noncopyable
 {
 public:
+  // TODO: do not refer to the specific hash algorithm - it is not given explicitly
+  //       by design, so that it could be easily changed any time, when needed.
 
   /** \brief create instance.
    *  \param hash SHA1 hash of processes (meta-)alert name.

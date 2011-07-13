@@ -62,7 +62,7 @@ template<>
 void testObj::test<1>(void)
 {
   ensure("non-existing entry is reported as present", ps_.update( h1_, 1 ) == false );
-  ensure("non-existing entry is reported as present", ps_.update( h2_, 1 ) == false );
+  ensure("non-existing entry is reported as present", ps_.update( h2_, 1 ) == false );  // TODO: this is redundant
 }
 
 // check pruning

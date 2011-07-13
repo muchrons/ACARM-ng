@@ -47,6 +47,10 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   LOGMSG_INFO_S(log_)<<"setting filter \""<<getTypeName()<<"\" name to \""<<name<<"\"";
   const unsigned int timeout =Commons::Convert::to<unsigned int>(fc["timeout"]);
   LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";
+  // TODO: i suggest making pruningTimeout paramter predefined in compile-time - it is not
+  //       that important to be moved to config files. just leave TODO about hardcoded
+  //       paramter here, so that it could later on use static-configuration to retrive
+  //       it whenever needed.
   const unsigned int pruneTimeout =Commons::Convert::to<unsigned int>(fc["pruneTimeout"]);
   LOGMSG_INFO_S(log_)<<"setting prune timeout to "<<pruneTimeout<<"[s]";
   const double       priDelta=Commons::Convert::to<double>( fc["priorityDelta"] );

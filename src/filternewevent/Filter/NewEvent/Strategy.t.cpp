@@ -65,6 +65,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
+  // TODO: make explicit Strategy's instance here and pass 1 as prune
+  //       timeout - this will save 4[s] during tests exceution
   s_.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 1u);
   changed_.clear();
@@ -80,6 +82,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
+  // TODO: make trune time to be 2[s] and all these sleeps for 1[s] - extra 2[s] for tests execution.
   s_.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 1u);
   changed_.clear();
@@ -87,6 +90,7 @@ void testObj::test<3>(void)
   s_.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 0u);
   changed_.clear();
+  // TODO: this repetition can be removed - it does not test anything new and costs 2[s] of test exec time
   sleep(2);
   s_.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 0u);
