@@ -26,7 +26,7 @@ struct TestClass: private TestStubs
   TestClass(void):
     conn_( Persistency::IO::create() ),
     bf_(conn_, changed_, TypeName("testnewevent"), InstanceName("myname")),
-    params_(2, 0.3),
+    params_(2, 10, 0.3),
     ep_(bf_, ps_, ts_, params_)
   {
   }
@@ -74,7 +74,6 @@ void testObj::test<2>(void)
   ep_(leaf);
   const double   pri2=leaf->getMetaAlert()->getSeverityDelta();
   ensure("priority not changed", System::Math::compareFP(pri1 + 0.3, pri2) );
-  // TODO: reset changed_'s content
   ep_(leaf);
   const double   pri3=leaf->getMetaAlert()->getSeverityDelta();
   ensure("priority changed", System::Math::compareFP(pri2, pri3) );

@@ -17,12 +17,8 @@ TimeoutedSet::TimeoutedSet():
 
 void TimeoutedSet::add(const Hash &key)
 {
-  // TODO: if(!timeouted)
-  //         push_back()
-
   // prevent storing elements with the same names
-  if( isTimeouted(key) )
-    return;
+  if( !isTimeouted(key) )
   timeouted_.push_back(key);
 }
 
@@ -39,11 +35,6 @@ void TimeoutedSet::markRemoved(BackendFacade &bf, const Persistency::IO::Dynamic
     {
       dc->remove( it->getHash().get() );
     }
-    catch(const Persistency::IO::Exception &ex)
-    {
-      // TODO: action is the same for both exception types, thus this code is redundant.
-      LOGMSG_ERROR_S(log_)<<"exception caught: '"<<ex.what()<<"' - ignoring";
-    }
     catch(const std::exception &ex)
     {
       LOGMSG_ERROR_S(log_)<<"exception caught: '"<<ex.what()<<"' - ignoring";
@@ -54,14 +45,7 @@ void TimeoutedSet::markRemoved(BackendFacade &bf, const Persistency::IO::Dynamic
 
 bool TimeoutedSet::isTimeouted(const Hash &key) const
 {
-  // TODO: use std::find for that, from <algorithm> header.
-  for(Timeouted::const_iterator it=timeouted_.begin(); it!=timeouted_.end(); ++it)
-  {
-    if(*it==key)
-      return true;
-  }
-  // object not found
-  return false;
+  return std::find(timeouted_.begin(), timeouted_.end(), key) != timeouted_.end();
 }
 
 } // namespace Filter

@@ -36,13 +36,16 @@ public:
      *  \param priDelta increment of priority when new event is found.
      */
     Parameters(const unsigned int timeout,
+               const unsigned int pruneTimeout,
                const double       priDelta):
       timeout_(timeout),
+      pruneTimeout_(pruneTimeout),
       priDelta_(priDelta)
     {
     }
 
     const unsigned int timeout_;        ///< timeout
+    const unsigned int pruneTimeout_;   ///< prune timeout
     const double       priDelta_;       ///< priority increase
   }; // struct Parameters
 

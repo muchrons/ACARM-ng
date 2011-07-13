@@ -7,43 +7,48 @@
 
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Commons/LimitedString.hpp"
+#include "Persistency/IO/DynamicConfig.hpp"
+
+#include <boost/operators.hpp>
 
 namespace Filter
 {
 namespace NewEvent
 {
 
-// TODO: implement '!=' using boost::operators
 /** \brief holds hash of processed (meta-)alert name.
  */
-class Hash
+class Hash: boost::equality_comparable<Hash>
 {
 public:
-  // TODO: why 64? Commons::computeHash() does not specify which hash function is used
   /** \brief hash type. */
-  typedef Commons::LimitedString<64> HashData;
+  typedef Persistency::IO::DynamicConfig::Key HashData;
 
-  // TODO: this c-tor should be made 'explicit', to avoid mistakes.
   /** \brief create instance.
    *  \param name name for which SHA1 hash will be computed.
    */
-  Hash(const std::string &name);
+  explicit Hash(const std::string &name);
   /** \brief return stored SHA1 hash.
    *  \return SHA1 hash.
    */
-  const HashData &getHash() const;
+  const HashData &getHash() const
+  {
+    return hash_;
+  }
   /** \brief check if classes are equal.
    *  \param other element to compare with.
    *  \return true if elements are equal, false otherwise.
    */
-  bool operator==(const Hash &other) const;
+  bool operator==(const Hash &other) const
+  {
+    return getHash()==other.getHash();
+  }
 
 private:
   HashData hash_;
 }; // class Hash
 
-
-// TODO: doxygen is missing
+/** \brief smart pointer to Hash type, that is sure not to be NULL. */
 typedef Commons::SharedPtrNotNULL<Hash> HashSharedPtr;
 
 } // namespace NewEvent

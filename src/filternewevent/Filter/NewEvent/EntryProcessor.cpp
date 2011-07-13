@@ -27,7 +27,7 @@ void EntryProcessor::operator()(Persistency::GraphNodePtrNN leaf)
   assert( leaf->isLeaf() && "wrong graph-passing algorithm choosen" );
   const std::string name(leaf->getMetaAlert()->getName().get());
   // create helper object
-  Hash hash(name);  // TODO: add const
+  const Hash hash(name);
   // check if entry with name hash is present in the prosessed set,
   // if is present update entry timeout and return
   if( ps_.update(hash, params_.timeout_) )

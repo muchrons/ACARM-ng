@@ -11,13 +11,9 @@ namespace NewEvent
 
 bool ProcessedSet::update(const Hash &hash, const unsigned int timeout)
 {
-  // TODO: use const_iterator
   for(Set::iterator it=set_.begin(); it!=set_.end(); ++it)
   {
-    // TODO: copy is not needed here; use const-ref instead
-    const Hash::HashData hashData = (*it).get()->getHash();
-    // TODO: 'Hash' has '==' defined as well
-    if(hashData==hash.getHash())
+    if((*it).get()->getHash() == hash)
     {
       markAsProcessed(*it, timeout);
       return true;
