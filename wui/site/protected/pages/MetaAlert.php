@@ -33,6 +33,9 @@ class MetaAlert extends TPage
       {
         $this->MetaAlertCreateTime->Text=$this->metaAlert_->create_time;
         $this->MetaAlertUpdateTime->Text=$this->metaAlert_->last_update_time;
+        $this->SeverityDelta->Text=$this->metaAlert_->severity_delta;
+        $this->CertaintyDelta->Text=$this->metaAlert_->certainty_delta;
+
         $idAlert=$this->metaAlert_->id;
 
         //get out alert in case we are a leaf
@@ -49,6 +52,9 @@ class MetaAlert extends TPage
 
         //get number of child alerts to show
         $children_count=SQLWrapper::queryForObject('SelectMetaAlertsChildrenCount', $idAlert);
+
+        if ($children_count>$this->per_page)
+          $this->RelatedAlerts->AllowPaging=true;
 
         $data=array();
 
@@ -75,33 +81,36 @@ class MetaAlert extends TPage
         foreach($filters as $f)
           {
             if ($f=='[many2one]')
-              $this->Correlated->Text.="<img src=\"pics/filters/mto.png\" border=0> ";
+              $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/mto.png\" border=0> ";
             else
               if ($f=='[one2many]')
-                $this->Correlated->Text.="<img src=\"pics/filters/otm.png\" border=0> ";
+                $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/otm.png\" border=0> ";
               else
-                if ($f=='[samename]')
-                  $this->Correlated->Text.="<img src=\"pics/filters/name.png\" border=0> ";
+                if ($f=='[one2one]')
+                  $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/oto.png\" border=0> ";
                 else
-                  if ($f=='[many2many]')
-                    $this->Correlated->Text.="<img src=\"pics/filters/mtm.png\" border=0> ";
+                  if ($f=='[samename]')
+                    $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/name.png\" border=0> ";
                   else
-                    if ($f=='[similarity]')
-                      $this->Correlated->Text.="<img src=\"pics/filters/similarity.png\" border=0> ";
+                    if ($f=='[many2many]')
+                      $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/mtm.png\" border=0> ";
                     else
-                      if ($f=='[usersmonitor]')
-                        $this->Correlated->Text.="<img src=\"pics/filters/sameuser.png\" border=0> ";
+                      if ($f=='[similarity]')
+                        $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/similarity.png\" border=0> ";
                       else
-                        if ($f=='[eventchain]')
-                          $this->Correlated->Text.="<img src=\"pics/filters/eventchain.png\" border=0> ";
+                        if ($f=='[usersmonitor]')
+                          $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/sameuser.png\" border=0> ";
                         else
-                          if ($f=='[ipblacklist]')
-                            $this->Correlated->Text.="<img src=\"pics/filters/ipblacklist.png\" border=0> ";
+                          if ($f=='[eventchain]')
+                            $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/eventchain.png\" border=0> ";
                           else
-                            if ($f=='[newevent]')
-                              $this->Correlated->Text.="<img src=\"pics/filters/newevent.png\" border=0> ";
+                            if ($f=='[ipblacklist]')
+                              $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/ipblacklist.png\" border=0> ";
                             else
-                              $this->MetaAlertName->Text.=$f." ";
+                              if ($f=='[newevent]')
+                                $this->Correlated->Text.="<img height=\"48\" width=\"48\" src=\"pics/filters/newevent.png\" border=0> ";
+                              else
+                                $this->MetaAlertName->Text.=$f." ";
           }
 
         $inUse=SQLWrapper::queryForObject('CheckInUse', $idAlert);
@@ -118,9 +127,9 @@ class MetaAlert extends TPage
 
         foreach ($triggers_tab as $t)
           {
-            $temp=explode("_",$t->trigger."_");
-            $content.="<table border=\"0\" cellpadding=\"2\"><td align=\"center\"><img height=\"32\" width=\"32\" src=\"pics/triggers/$temp[0].png\" alt=\"$temp[0]\"></td>";
-            $content.="<td>$temp[1]</td></table>";
+            $temp=explode("_",$t->trigger."_",2);
+            $content.="<table border=\"0\" cellpadding=\"2\"><td align=\"center\"><img height=\"48\" width=\"48\" src=\"pics/triggers/$temp[0].png\" alt=\"$temp[0]\"></td>";
+            $content.="<td>".substr($temp[1],0,-1)."</td></table>";
           }
 
         $this->Triggered->Text=$content;
