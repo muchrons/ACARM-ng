@@ -19,7 +19,7 @@ namespace
 struct TestClass: private TestStubs
 {
   TestClass(void):
-    params_(2, 4, 0.3),
+    params_(2, 2, 0.3),
     s_( InstanceName("strategyname"), params_)
   {
   }
@@ -65,14 +65,14 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  // TODO: make explicit Strategy's instance here and pass 1 as prune
-  //       timeout - this will save 4[s] during tests exceution
-  s_.process( makeLeaf("some name"), changed_ );
+
+  Strategy s( InstanceName("strategyname"), Strategy::Parameters(1, 1, 0.3) );
+  s.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 1u);
   changed_.clear();
   // processed set is prunned every 4 seconds
-  sleep(5);
-  s_.process( makeLeaf("some name"), changed_ );
+  sleep(2);
+  s.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 1u);
 }
 
@@ -82,15 +82,9 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  // TODO: make trune time to be 2[s] and all these sleeps for 1[s] - extra 2[s] for tests execution.
   s_.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 1u);
   changed_.clear();
-  sleep(2);
-  s_.process( makeLeaf("some name"), changed_ );
-  ensure_equals("something changed", changed_.size(), 0u);
-  changed_.clear();
-  // TODO: this repetition can be removed - it does not test anything new and costs 2[s] of test exec time
   sleep(2);
   s_.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 0u);

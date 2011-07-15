@@ -16,11 +16,13 @@ namespace
 struct TestClass
 {
   TestClass(void):
-    hash_("key")
+    h1_("key"),
+    h2_("other key")
   {
   }
 
-  Hash hash_;
+  Hash h1_;
+  Hash h2_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -46,19 +48,23 @@ template<>
 void testObj::test<2>(void)
 {
   const string sha1("a62f2225bf70bfaccbc7f1ef2a397836717377de");
-  // TODO: it is just enought when one of the paramters is std::string
-  ensure_equals("invalid hash", string(hash_.getHash().get()), sha1);
+  ensure_equals("invalid hash", h1_.getHash().get(), sha1);
 
 }
-// test '==' and '!=' operators
+// test '==' operator
 template<>
 template<>
 void testObj::test<3>(void)
 {
-  Hash h("other key");  // TODO: should be const
-  // TODO: these should be 2 separte test cases
-  ensure_equals("", h == hash_, false); // TODO: comment is missing
-  ensure_equals("", h != hash_, true);  // TODO: comment is missing
+  ensure_equals("", h1_ == h2_, false);
+}
+
+// test '!=' operator
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  ensure_equals("", h1_ != h2_, true);
 }
 
 } // namespace tut
