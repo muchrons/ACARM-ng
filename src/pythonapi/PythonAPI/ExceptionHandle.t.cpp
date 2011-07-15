@@ -4,8 +4,8 @@
  */
 #include <tut.h>
 #include <stdexcept>
-#include <boost/python.hpp>
 
+#include "PythonAPI/Python.hpp"
 #include "PythonAPI/ExceptionHandle.hpp"
 #include "PythonAPI/Environment.hpp"
 

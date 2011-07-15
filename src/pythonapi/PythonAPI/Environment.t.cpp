@@ -4,8 +4,8 @@
  */
 #include <tut.h>
 #include <string>
-#include <boost/python/module.hpp>
 
+#include "PythonAPI/Python.hpp"
 #include "PythonAPI/Environment.hpp"
 
 using namespace PythonAPI;
@@ -107,7 +107,6 @@ template<>
 void testObj::test<6>(void)
 {
   e_.importModule("environment_test_module");
-return ;                  
   e_.run("tmp=environment_test_module.TestStruct()");
   e_.run("tmp=tmp.getAnswer()");
   // check

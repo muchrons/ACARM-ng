@@ -2,9 +2,8 @@
  * exportCertainty.cpp
  *
  */
-#include <boost/python.hpp>
-
 #include "Persistency/Certainty.hpp"
+#include "PythonAPI/Python.hpp"
 #include "PythonAPI/Persistency/exportCertainty.hpp"
 
 using namespace boost::python;

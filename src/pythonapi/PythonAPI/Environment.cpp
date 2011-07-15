@@ -19,11 +19,13 @@ namespace PythonAPI
 
 namespace
 {
+/** \brief global flag for ensuring that environment has been initialized. */
 bool g_alreadyInitialized=false;
 } // unnamed namespace
 
 
-// this is a work-around for a global initialization issue in Python's C interface
+/** \brief this is a work-around for a global initialization issue in Python's C interface.
+ */
 class Environment::ImportedModules
 {
 private:
@@ -31,12 +33,18 @@ private:
   typedef std::vector<ModuleInitSpec>                            ImportedModulesList;
 
 public:
+  /** \brief static call to schedule given module for importing.
+   *  \param module module name (must be a compile-time string constant).
+   *  \param init   init funtion (as defined by boost::python's macros).
+   */
   static void scheduleImport(const char *module, Environment::ModuleInitFunc init)
   {
     assert(!g_alreadyInitialized && "trying to import after initialization");
     get().push_back( ModuleInitSpec(module, init) );
   }
 
+  /** \brief called after all registrations are done and registers all scheduled modules.
+   */
   static void importAllModules(void)
   {
     assert(!g_alreadyInitialized && "trying to init/import all modules after initialization");
@@ -48,6 +56,8 @@ public:
     get().swap(tmp);
   }
 
+  /** \brief gets the number of schedules modules.
+   */
   static size_t count(void)
   {
     return get().size();

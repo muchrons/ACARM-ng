@@ -5,8 +5,8 @@
  */
 #include <iostream>
 #include <stdexcept>
-#include <boost/python.hpp>
 
+#include "PythonAPI/Python.hpp"
 #include "PythonAPI/Persistency/exports.hpp"
 
 using namespace std;

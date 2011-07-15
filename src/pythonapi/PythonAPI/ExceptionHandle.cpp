@@ -8,8 +8,8 @@
  */
 #include <sstream>
 #include <cstdlib>
-#include <boost/python.hpp>
 
+#include "PythonAPI/Python.hpp"
 #include "PythonAPI/ExceptionHandle.hpp"
 
 

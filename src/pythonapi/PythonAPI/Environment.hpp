@@ -8,11 +8,11 @@
 /* public header */
 
 #include <string>
-#include <boost/python.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
 #include "Logger/Node.hpp"
+#include "PythonAPI/Python.hpp"
 #include "PythonAPI/Exception.hpp"
 #include "PythonAPI/ExceptionFromScript.hpp"
 
