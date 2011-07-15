@@ -39,6 +39,7 @@ system
 base
 algo
 preprocessor
+pythonapi
 
 curlpp
 

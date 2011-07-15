@@ -20,4 +20,5 @@
 * implement filter changing priority when s/d IP is from defined set (i.e.: internal network, extrnal network, critical resource, etc...).
 * add trigger sending reports on problematic machines to admins found via WHOIS.
 * optimize log-spliting script - it runs far too long for huge log files. using 'while read line' may help, since disk I/O is bottleneck here.
+* consider adding preprocessor to triggers - only events matching given expressions would be taken into account.
 * consider supporting addition of an alert to the middle of the chain of events (currently only the beginning and the end is supported).
