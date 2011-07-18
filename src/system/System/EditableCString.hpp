@@ -2,15 +2,16 @@
  * EditableCString.hpp
  *
  */
-#ifndef INCLUDE_BASE_EDITABLECSTRING_HPP_FILE
-#define INCLUDE_BASE_EDITABLECSTRING_HPP_FILE
+#ifndef INCLUDE_SYSTEM_EDITABLECSTRING_HPP_FILE
+#define INCLUDE_SYSTEM_EDITABLECSTRING_HPP_FILE
 
 /* public header */
 
 #include <string>
+#include <cstring>
 #include <boost/scoped_array.hpp>
 
-namespace Base
+namespace System
 {
 
 /** \brief holder that makes a copy of input string in local buffer.
@@ -18,7 +19,8 @@ namespace Base
  *  saved string can be edited by other calls. note that size of internal
  *  buffer never grows. use with care.
  *  this can be used to fix const-INcorrect code without const-casts or
- *  to cooperate with some C libraries that changes their paramter.
+ *  to cooperate with some C libraries that changes their paramters unexpectedly.
+ *  consider this as a helper-code, that good design should probably never use.
  */
 class EditableCString
 {
@@ -35,18 +37,41 @@ public:
   EditableCString(const std::string &str);
 
   /** \brief gets internal data (via pointer) - const version.
-   *  \return pointer to string.
+   *  \return pointer to string - may be NULL.
    */
   const char *get(void) const
   {
     return str_.get();
   }
   /** \brief gets internal data (via pointer) - non-const version.
-   *  \return pointer to string.
+   *  \return pointer to string - may be NULL.
    */
   char *get(void)
   {
     return str_.get();
+  }
+
+  /** \brief gives access to a specific char in a string.
+   *  \param pos position to read char from
+   *  \return reference to the char (can be changed).
+   *  \note range checks are NOT performed by this call.
+   */
+  char &operator[](const size_t pos)
+  {
+    assert(get()!=NULL && "NULL pointer dereference");
+    assert(pos<length() && "index out of bound");
+    return str_[pos];
+  }
+  /** \brief gives read-only access to a specific char in a string.
+   *  \param pos position to read char from
+   *  \return char's value.
+   *  \note range checks are NOT performed by this call.
+   */
+  char operator[](const size_t pos) const
+  {
+    assert(get()!=NULL && "NULL pointer dereference");
+    assert(pos<length() && "index out of bound");
+    return str_[pos];
   }
 
   /** \brief swap contents of two strings.
@@ -59,11 +84,12 @@ public:
 
 private:
   void makeFrom(const char *str);
+  size_t length(void) const;
 
   boost::scoped_array<char> str_;
-}; // class LoginParameters
+}; // class EditableCString
 
-} // namespace Base
+} // namespace System
 
 
 namespace std
@@ -72,7 +98,7 @@ namespace std
  *  \param str1 first elemtns of the operation.
  *  \param str2 second element of the operation.
  */
-inline void swap(Base::EditableCString &str1, Base::EditableCString &str2)
+inline void swap(System::EditableCString &str1, System::EditableCString &str2)
 {
   str1.swap(str2);
 } // swap()
