@@ -14,8 +14,6 @@ namespace Filter
 {
 namespace NewEvent
 {
-namespace
-{
 
 struct TestConnection: public TestHelpers::Persistency::ConnectionIOMemory
 {
@@ -27,7 +25,6 @@ struct TestConnection: public TestHelpers::Persistency::ConnectionIOMemory
   }
 }; // struct TestConnection
 
-} // unnamed namespace
 } // namespace Filter
 } // namespace NewEvent
 
