@@ -14,9 +14,8 @@ namespace Filter
 {
 namespace NewEvent
 {
-
-// TODO: it is good this functionality is separated, though it has to be placed in unnaed namespace
-//       otherwise linkage error will appear when included from multiple source files.
+namespace
+{
 
 struct TestMemory: public TestHelpers::Persistency::IODynamicConfigMemory
 {
@@ -34,6 +33,7 @@ struct TestMemory: public TestHelpers::Persistency::IODynamicConfigMemory
   }
 }; // struct TestMemory
 
+} // unnamed namespace
 } // namespace Filter
 } // namespace NewEvent
 

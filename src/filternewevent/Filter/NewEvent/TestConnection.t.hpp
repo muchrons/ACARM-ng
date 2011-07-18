@@ -14,9 +14,8 @@ namespace Filter
 {
 namespace NewEvent
 {
-
-// TODO: it is good this functionality is separated, though it has to be placed in unnaed namespace
-//       otherwise linkage error will appear when included from multiple source files.
+namespace
+{
 
 struct TestConnection: public TestHelpers::Persistency::ConnectionIOMemory
 {
@@ -28,6 +27,7 @@ struct TestConnection: public TestHelpers::Persistency::ConnectionIOMemory
   }
 }; // struct TestConnection
 
+} // unnamed namespace
 } // namespace Filter
 } // namespace NewEvent
 
