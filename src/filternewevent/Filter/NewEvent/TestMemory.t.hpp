@@ -27,8 +27,9 @@ struct TestMemory: public TestHelpers::Persistency::IODynamicConfigMemory
   {
   }
 
-  virtual void removeImpl(::Persistency::IO::Transaction &/*t*/, const Key &/*key*/)
+  virtual void removeImpl(::Persistency::IO::Transaction &/*t*/, const Key &key)
   {
+    mem_.erase( key.get() );
     throw Exception(SYSTEM_SAVE_LOCATION, "test exception");
   }
 }; // struct TestMemory
