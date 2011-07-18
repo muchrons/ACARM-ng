@@ -25,11 +25,9 @@ class TimeoutedSet;
 class Entry: private boost::noncopyable
 {
 public:
-  // TODO: do not refer to the specific hash algorithm - it is not given explicitly
-  //       by design, so that it could be easily changed any time, when needed.
 
   /** \brief create instance.
-   *  \param hash SHA1 hash of processes (meta-)alert name.
+   *  \param hash hash of processes (meta-)alert name.
    *  \param bf   facade for saving elements in the persistency.
    *  \param ts   cache for storing timeouted elements.
    */
@@ -39,11 +37,11 @@ public:
   ~Entry();
 
   /** \brief return hash string of entry name.
-   *  \return (SHA1) hash string of entry name.
+   *  \return hash string of entry name.
    */
   const Hash::HashData &getHashString() const;
   /** \brief return hash of entry name.
-   *  \return (SHA1) hash of entry name.
+   *  \return hash of entry name.
    */
   const Hash &getHash() const;
 private:

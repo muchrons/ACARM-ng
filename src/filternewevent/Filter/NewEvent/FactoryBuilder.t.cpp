@@ -15,15 +15,12 @@ namespace
 struct TestClass
 {
   FactoryBuilder::FactoryPtr build(const char *timeout="666",
-                                   const char *pruneTimeout="777",
                                    const char *priDelta="0.1",
                                    const char *name="somename") const
   {
     FactoryBuilder::Options opts;
     if(timeout!=NULL)
       opts["timeout"]=timeout;
-    if(pruneTimeout!=NULL)
-      opts["pruneTimeout"]=pruneTimeout;
     if(priDelta!=NULL)
       opts["priorityDelta"]=priDelta;
     if(name!=NULL)
@@ -33,13 +30,12 @@ struct TestClass
   }
 
   void ensureThrow(const char *timeout="666",
-                   const char *pruneTimeout="777",
                    const char *priDelta="0.1",
                    const char *name="somename") const
   {
     try
     {
-      build(timeout, pruneTimeout, priDelta, name);
+      build(timeout, priDelta, name);
       tut::fail("build() didn't throw on missing paramter");
     }
     catch(const std::runtime_error&)

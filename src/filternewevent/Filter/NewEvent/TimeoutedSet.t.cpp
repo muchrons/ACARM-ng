@@ -8,7 +8,7 @@
 #include "Filter/NewEvent/TimeoutedSet.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
-#include "TestHelpers/Persistency/ConnectionIOMemory.hpp"
+#include "Filter/NewEvent/TestConnection.t.hpp"
 
 using namespace std;
 using namespace Core::Types::Proc;
@@ -21,7 +21,7 @@ namespace
 struct TestClass
 {
   TestClass(void):
-    conn_( new ConnectionIOMemory ),
+    conn_( new TestConnection ),
     bf_(conn_, changed_, TypeName("testnewevent"), InstanceName("myname")),
     owner_("Filter::NewEvent"),
     dc_(bf_.createDynamicConfig(owner_)),
@@ -104,9 +104,6 @@ void testObj::test<5>(void)
   ensure("Element not present in collection", ts_.isTimeouted(hash_));
   try
   {
-    // TODO: this will never throw this way. in order to simulate this behaviour create special
-    //       Connection, that creates DynamicConfig that throws some test-exception when
-    //       "remove" is invoked.
     ts_.markRemoved(bf_, owner_);   // should NOT throw
   }
   catch(...)
