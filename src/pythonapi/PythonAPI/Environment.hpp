@@ -13,6 +13,7 @@
 
 #include "Logger/Node.hpp"
 #include "PythonAPI/Python.hpp"
+#include "PythonAPI/ModuleInitFunction.hpp"
 #include "PythonAPI/Exception.hpp"
 #include "PythonAPI/ExceptionFromScript.hpp"
 
@@ -31,9 +32,6 @@ namespace PythonAPI
 class Environment: private boost::noncopyable
 {
 public:
-  /** \brief helper typedef for initialization function. */
-  typedef PyObject* (*ModuleInitFunc)(void);
-
   /** \brief helper object for scheduing modulesinitialization.
    *
    *  when user's module is to be initializaed gobal instance of this object
@@ -55,7 +53,7 @@ public:
      *        Environment's instance is created.
      *  \warning scheduling is NOT THREAD SAFE.
      */
-    StaticImporter(const char *module, ModuleInitFunc init);
+    StaticImporter(const char *module, ModuleInitFunction init);
     /** \brief destroys given object.
      */
     ~StaticImporter(void);
@@ -106,12 +104,9 @@ public:
 
 private:
   // NOTE: 'module' must be a compile-time constant. otherwise SEGV will rule thy world...
-  static void importModule(const char *module, ModuleInitFunc init);
-
-  // TODO: refactor this code so that no friend declaration is needed.
-  // implementation that wraps importModule(mod, init) calls.
-  class ImportedModules;
-  friend class ImportedModules;
+  void importModule(const char *module, ModuleInitFunction init);
+  // helper call that imports all modules, previously scheduled for importing
+  void importAllModules(void);
 
   Logger::Node          log_;
   boost::python::object mainModule_;

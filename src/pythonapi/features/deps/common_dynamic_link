@@ -1,4 +1,2 @@
-#!/bin/bash
-PKG="`pkg-config python3 --libs`"
-BOOST="-lboost_python-py`sed -e 's:.* -lpython\([0-9\.]\+\).*:\1:' -e 's:\.::' -e 's:\..*::' <<< " $PKG "`"
-exec echo "$BOOST $PKG"
+#!/bin/sh
+exec echo "-lboost_python -lpython2.6"

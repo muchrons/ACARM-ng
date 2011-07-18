@@ -29,7 +29,8 @@ BOOST_PYTHON_MODULE(environment_test_module)
   ;
 }
 // import this module to the python
-PythonAPI::Environment::StaticImporter g_importDummy("environment_test_module", PyInit_environment_test_module);
+PythonAPI::Environment::StaticImporter g_importDummy("environment_test_module", initenvironment_test_module);
+//PythonAPI::Environment::StaticImporter g_importDummy("environment_test_module", PyInit_environment_test_module);
 
 
 struct TestClass
