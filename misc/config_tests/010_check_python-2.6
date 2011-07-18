@@ -1,0 +1,25 @@
+if grep -q '^triggerpython$' <<< "$PLUGINS" || grep -q '^filterpython$' <<< "$PLUGINS"
+then
+  echo -n "checking for boost::python and python-2.6... "
+  cat > "$TMP" <<EOF
+#include <boost/python.hpp>
+
+#if PY_MAJOR_VERSION!=2 || PY_MINOR_VERSION!=6
+#error invalid version of Python - 2.6 is required
+#endif
+
+int main(void)
+{
+  return 0;
+}
+EOF
+  if compile "$TMP" `$SRCS/pythonapi/features/deps/common_dynamic_compile` `$SRCS/pythonapi/features/deps/common_dynamic_link`
+  then
+    echo "ok"
+  else
+    echo "N/A"
+    echo "ERROR: install missing library or withdraw usage of plugins: tripggerpython filterpython"
+    rm -f "$TMP"
+    exit 2
+  fi
+fi
