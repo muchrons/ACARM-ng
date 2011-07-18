@@ -37,12 +37,15 @@ factory tf("PythonAPI/Persistency/exports");
 namespace tut
 {
 
-// test for Certainty class' presence
+// test for Certainty class' API
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.run("c=persistency.Certainty(0.42)");    // smoke test - in case of error call will throw
+  env_.run("c=persistency.Certainty(0.42)");
+  env_.run("ret=c.get()");
+  const double ret=env_.var<double>("ret");
+  ensure_equals("invalid value returned", ret, 0.42);
 }
 
 } // namespace tut
