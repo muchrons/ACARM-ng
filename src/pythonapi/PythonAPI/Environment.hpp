@@ -12,7 +12,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "Logger/Node.hpp"
-#include "PythonAPI/Python.hpp"
+#include "PythonAPI/Python.hpp"     // TODO: move this to impl file
 #include "PythonAPI/Exception.hpp"
 #include "PythonAPI/ExceptionFromScript.hpp"
 
@@ -32,7 +32,8 @@ class Environment: private boost::noncopyable
 {
 public:
   /** \brief helper typedef for initialization function. */
-  typedef PyObject* (*ModuleInitFunc)(void);
+  typedef void (*ModuleInitFunc)(void);
+  //typedef PyObject* (*ModuleInitFunc)(void);
 
   /** \brief helper object for scheduing modulesinitialization.
    *

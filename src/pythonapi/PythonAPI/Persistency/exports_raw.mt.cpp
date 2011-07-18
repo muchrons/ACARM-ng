@@ -22,8 +22,11 @@ int main(int argc, const char * const *argv)
 
   try
   {
-    if( PyImport_AppendInittab("persistency", PyInit_persistency)!=0 )
+    char modName[]="persistency";
+    if( PyImport_AppendInittab(modName, initpersistency)!=0 )
       throw std::runtime_error("unable to load 'persistency' module");
+    //if( PyImport_AppendInittab("persistency", PyInit_persistency)!=0 )
+    //  throw std::runtime_error("unable to load 'persistency' module");
 
     cout<<"init..."<<endl;
     Py_Initialize();

@@ -1,2 +1,2 @@
-#!/bin/bash
-exec pkg-config python3 --cflags
+#!/bin/sh
+exec echo "-I/usr/include/python2.6"

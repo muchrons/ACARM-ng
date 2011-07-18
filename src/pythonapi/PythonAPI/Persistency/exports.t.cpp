@@ -14,7 +14,8 @@ using namespace PythonAPI::Persistency;
 namespace
 {
 // it needs to be imported before initializing environment
-PythonAPI::Environment::StaticImporter g_import("persistency", PyInit_persistency);
+PythonAPI::Environment::StaticImporter g_import("persistency", initpersistency);
+//PythonAPI::Environment::StaticImporter g_import("persistency", PyInit_persistency);
 
 struct TestClass
 {

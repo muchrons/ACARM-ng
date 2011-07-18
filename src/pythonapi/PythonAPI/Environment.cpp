@@ -6,6 +6,8 @@
 #include <cassert>
 #include <boost/tuple/tuple.hpp>
 
+#include "System/AtExit.hpp"
+#include "Base/EditableCString.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/computeHash.hpp"
 #include "PythonAPI/Environment.hpp"
@@ -138,6 +140,34 @@ void Environment::run(const std::string &script)
   }
 }
 
+
+namespace
+{
+class StringHolder: public System::AtExitResourceDeallocator
+{
+public:
+  explicit StringHolder(const char *str):
+    str_(str)
+  {
+  }
+
+  virtual void deallocate(void)
+  {
+    Base::EditableCString tmp("");
+    str_.swap(tmp);
+  }
+
+  char *get(void)
+  {
+    return str_.get();
+  }
+
+private:
+  Base::EditableCString str_;
+}; // class StringHolder
+} // unnamed namespace
+
+
 void Environment::importModule(const char *module, ModuleInitFunc init)
 {
   assert(!g_alreadyInitialized && "trying to import module when environment has been already initialized");
@@ -145,10 +175,17 @@ void Environment::importModule(const char *module, ModuleInitFunc init)
   const Logger::Node log("pythonapi.environment");
   LOGMSG_INFO_S(log)<<"importing module '"<<module<<"' with init function at: "<<std::hex<<reinterpret_cast<void*>(init);
 
+  if(module==NULL)
+    throw Exception(SYSTEM_SAVE_LOCATION, "module name pointer cannot be NULL");
   if(init==NULL)
     throw Exception(SYSTEM_SAVE_LOCATION, "init function cannot be NULL");
 
-  if( PyImport_AppendInittab(module, init)!=0 )
+  // this voodoo ensures that string will be valid as long as main() doesn't exit
+  StringHolder                *str=new StringHolder(module);
+  System::AtExit::TDeallocPtr  ptr(str);
+  System::AtExit::registerDeallocator(ptr);
+  assert(str!=NULL);
+  if( PyImport_AppendInittab(str->get(), init)!=0 )
     throw Exception(SYSTEM_SAVE_LOCATION, std::string("PyImport_AppendInittab() failed; unable to init module: ")+module);
 
   LOGMSG_INFO_S(log)<<"module '"<<module<<"' imported successfuly";

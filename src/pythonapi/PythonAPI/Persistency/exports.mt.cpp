@@ -13,7 +13,8 @@ using namespace PythonAPI;
 
 namespace
 {
-static Environment::StaticImporter g_importPersistency("persistency", PyInit_persistency);
+//static Environment::StaticImporter g_importPersistency("persistency", PyInit_persistency);
+static Environment::StaticImporter g_importPersistency("persistency", initpersistency);
 } // unnamed namespace
 
 int main(int argc, const char * const *argv)
