@@ -14,18 +14,20 @@ namespace Filter
 {
 namespace NewEvent
 {
+namespace
+{
 
 struct TestConnection: public TestHelpers::Persistency::ConnectionIOMemory
 {
   virtual ::Persistency::IO::DynamicConfigAutoPtr dynamicConfigImpl(const ::Persistency::IO::DynamicConfig::Owner &owner,
-      ::Persistency::IO::Transaction                &t)
+                                                                    ::Persistency::IO::Transaction                &t)
   {
     assert( owner.get()!=NULL );
     return ::Persistency::IO::DynamicConfigAutoPtr( new TestMemory(owner, t, otm_[ owner.get() ]) );
   }
-
 }; // struct TestConnection
 
+} // unnamed namespace
 } // namespace Filter
 } // namespace NewEvent
 

@@ -92,7 +92,7 @@ void testObj::test<4>(void)
   ensure_equals("invalid value", string( dc_->read(hashStr)->get() ), "true");
   // clear timeouted set
   ts_.markRemoved(bf_, owner_);
-  ensure("invalid value", dc_->read(hashStr).get() == NULL);
+  ensure("invalid value after removal", dc_->read(hashStr).get() == NULL);
 }
 
 // test if no exceptions are thrown from inside the 'makrRemoved()' call.

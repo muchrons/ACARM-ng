@@ -70,14 +70,14 @@ void testObj::test<2>(void)
   s.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 1u);
   changed_.clear();
-  // processed set is prunned every 4 seconds
+  // processed set is prunned every second
   sleep(2);
   s.process( makeLeaf("some name"), changed_ );
   ensure_equals("something changed", changed_.size(), 1u);
 }
 
 // test adding the same name multiple times, in some time span and checking if it
-// has NOT been marked as unused after first entry has timeouted, but next ones are still present.
+// has NOT been marked as unuset after first entry has timeouted, but next ones are still present.
 template<>
 template<>
 void testObj::test<3>(void)
