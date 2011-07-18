@@ -14,8 +14,6 @@ namespace Filter
 {
 namespace NewEvent
 {
-namespace
-{
 
 struct TestMemory: public TestHelpers::Persistency::IODynamicConfigMemory
 {
@@ -33,7 +31,6 @@ struct TestMemory: public TestHelpers::Persistency::IODynamicConfigMemory
   }
 }; // struct TestMemory
 
-} // unnamed namespace
 } // namespace Filter
 } // namespace NewEvent
 
