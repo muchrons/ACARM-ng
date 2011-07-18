@@ -15,6 +15,9 @@ namespace Filter
 namespace NewEvent
 {
 
+// TODO: it is good this functionality is separated, though it has to be placed in unnaed namespace
+//       otherwise linkage error will appear when included from multiple source files.
+
 struct TestMemory: public TestHelpers::Persistency::IODynamicConfigMemory
 {
   TestMemory(const ::Persistency::IO::DynamicConfig::Owner &owner,

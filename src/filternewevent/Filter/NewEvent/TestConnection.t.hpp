@@ -15,15 +15,17 @@ namespace Filter
 namespace NewEvent
 {
 
+// TODO: it is good this functionality is separated, though it has to be placed in unnaed namespace
+//       otherwise linkage error will appear when included from multiple source files.
+
 struct TestConnection: public TestHelpers::Persistency::ConnectionIOMemory
 {
   virtual ::Persistency::IO::DynamicConfigAutoPtr dynamicConfigImpl(const ::Persistency::IO::DynamicConfig::Owner &owner,
-      ::Persistency::IO::Transaction                &t)
+                                                                    ::Persistency::IO::Transaction                &t)
   {
     assert( owner.get()!=NULL );
     return ::Persistency::IO::DynamicConfigAutoPtr( new TestMemory(owner, t, otm_[ owner.get() ]) );
   }
-
 }; // struct TestConnection
 
 } // namespace Filter
