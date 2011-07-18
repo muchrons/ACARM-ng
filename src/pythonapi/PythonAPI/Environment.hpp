@@ -12,7 +12,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "Logger/Node.hpp"
-#include "PythonAPI/Python.hpp"     // TODO: move this to impl file
+#include "PythonAPI/Python.hpp"
 #include "PythonAPI/ModuleInitFunction.hpp"
 #include "PythonAPI/Exception.hpp"
 #include "PythonAPI/ExceptionFromScript.hpp"

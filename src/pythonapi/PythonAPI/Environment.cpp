@@ -10,8 +10,8 @@
 #include "Base/EditableCString.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/computeHash.hpp"
-#include "PythonAPI/ModulesInitList.hpp"
 #include "PythonAPI/Environment.hpp"
+#include "PythonAPI/ModulesInitList.hpp"
 #include "PythonAPI/ExceptionHandle.hpp"
 
 namespace py=boost::python;
