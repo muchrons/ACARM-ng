@@ -72,7 +72,7 @@ namespace std
  *  \param str1 first elemtns of the operation.
  *  \param str2 second element of the operation.
  */
-void swap(Base::EditableCString &str1, Base::EditableCString &str2)
+inline void swap(Base::EditableCString &str1, Base::EditableCString &str2)
 {
   str1.swap(str2);
 } // swap()
