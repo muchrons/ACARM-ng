@@ -49,6 +49,14 @@ public:
     return str_.get();
   }
 
+  /** \brief swap contents of two strings.
+   *  \param other object ot swap content with.
+   */
+  void swap(EditableCString &other)
+  {
+    str_.swap(other.str_);
+  }
+
 private:
   void makeFrom(const char *str);
 
@@ -56,5 +64,18 @@ private:
 }; // class LoginParameters
 
 } // namespace Base
+
+
+namespace std
+{
+/** \brief common call for swapping content of two elements of EditableCString type.
+ *  \param str1 first elemtns of the operation.
+ *  \param str2 second element of the operation.
+ */
+void swap(Base::EditableCString &str1, Base::EditableCString &str2)
+{
+  str1.swap(str2);
+} // swap()
+} // namespace std
 
 #endif

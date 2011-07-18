@@ -61,4 +61,28 @@ void testObj::test<4>(void)
   ensure_equals("invalid string", ecs.get(), std::string("abc") );
 }
 
+// test content swapping method
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  EditableCString cs1("alice");
+  EditableCString cs2("cat");
+  cs1.swap(cs2);
+  ensure_equals("invalid str 1 content", cs1.get(), std::string("cat") );
+  ensure_equals("invalid str 2 content", cs2.get(), std::string("alice") );
+}
+
+// test content swapping std::swap call
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  EditableCString cs1("alice");
+  EditableCString cs2("cat");
+  std::swap(cs1, cs2);
+  ensure_equals("invalid str 1 content", cs1.get(), std::string("cat") );
+  ensure_equals("invalid str 2 content", cs2.get(), std::string("alice") );
+}
+
 } // namespace tut
