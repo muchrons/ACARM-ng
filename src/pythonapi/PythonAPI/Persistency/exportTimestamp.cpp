@@ -17,7 +17,8 @@ namespace Persistency
 void exportTimestamp(void)
 {
   class_<Timestamp>("Timestamp", init<time_t>())
-//    .def("get", &Certainty::get)
+    .def("get", &Timestamp::get)
+    .def("str", &Timestamp::str)
   ;
 }
 

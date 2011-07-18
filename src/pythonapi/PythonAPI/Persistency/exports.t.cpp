@@ -1,18 +1,13 @@
 /*
  * exports.t.cpp
  *
- * note - these test cases are not typical unit tests. due to the nature of the
- * python it has to be handled 
+ * NOTE: this is NOT test suit but import scheduler for classes used in tests.
  *
  */
 #include <tut.h>
-#include <boost/scoped_ptr.hpp>
 
 #include "PythonAPI/Persistency/exports.hpp"
 #include "PythonAPI/Environment.hpp"
-
-using namespace std;
-using namespace PythonAPI::Persistency;
 
 namespace
 {
@@ -22,12 +17,6 @@ PythonAPI::Environment::StaticImporter g_import("persistency", initpersistency);
 
 struct TestClass
 {
-  TestClass(void)
-  {
-    env_.importModule("persistency");
-    //env_.run("from persistency import *");
-  }
-
   PythonAPI::Environment env_;
 };
 
@@ -40,26 +29,13 @@ factory tf("PythonAPI/Persistency/exports");
 namespace tut
 {
 
-// test for Certainty class' API
+// tets if namespace is present
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.run("c=persistency.Certainty(0.42)");
-  env_.run("ret=c.get()");
-  const double ret=env_.var<double>("ret");
-  ensure_equals("invalid value returned", ret, 0.42);
-}
-
-// test for Timestamp class' API
-template<>
-template<>
-void testObj::test<2>(void)
-{
-  env_.run("t=persistency.Timestamp(1234)");
-  env_.run("ret=t.get()");
-  const size_t ret=env_.var<size_t>("ret");
-  ensure_equals("invalid value returned", ret, 1234);
+  env_.importModule("persistency");
+  //env_.run("from persistency import *");
 }
 
 } // namespace tut
