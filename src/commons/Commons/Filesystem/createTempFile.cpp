@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <unistd.h>
 
-#include "Base/EditableCString.hpp"
+#include "System/EditableCString.hpp"
 #include "Commons/Filesystem/createTempFile.hpp"
 #include "Commons/Filesystem/openFile.hpp"
 #include "Commons/Filesystem/isDirectorySane.hpp"
@@ -29,8 +29,8 @@ TempFile createTempFile(const boost::filesystem::path &root)
                                 "path looks suspicious - refusing to create file");
 
   // prepare template
-  const path            tmpl=root / ".fs_tmp_file_XXXXXX";
-  Base::EditableCString tmplStr( tmpl.string() );
+  const path              tmpl=root / ".fs_tmp_file_XXXXXX";
+  System::EditableCString tmplStr( tmpl.string() );
   // create file
   const int fd=mkstemp( tmplStr.get() );
   if(fd==-1)

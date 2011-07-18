@@ -7,7 +7,7 @@
 #include <boost/tuple/tuple.hpp>
 
 #include "System/AtExit.hpp"
-#include "Base/EditableCString.hpp"
+#include "System/EditableCString.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/computeHash.hpp"
 #include "PythonAPI/Environment.hpp"
@@ -111,7 +111,7 @@ public:
 
   virtual void deallocate(void)
   {
-    Base::EditableCString tmp("");
+    System::EditableCString tmp("");
     str_.swap(tmp);
   }
 
@@ -121,7 +121,7 @@ public:
   }
 
 private:
-  Base::EditableCString str_;
+  System::EditableCString str_;
 }; // class StringHolder
 } // unnamed namespace
 
