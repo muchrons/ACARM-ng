@@ -10,6 +10,7 @@
 #include "Base/EditableCString.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/computeHash.hpp"
+#include "PythonAPI/ModulesInitList.hpp"
 #include "PythonAPI/Environment.hpp"
 #include "PythonAPI/ExceptionHandle.hpp"
 
@@ -23,62 +24,19 @@ namespace
 {
 /** \brief global flag for ensuring that environment has been initialized. */
 bool g_alreadyInitialized=false;
+
+/** \brief helper call returning global list of modules scheduled for initalization
+ */
+ModulesInitList &getModInitLst(void)
+{
+  static ModulesInitList mods;
+  return mods;
+} // getModInitLst()
 } // unnamed namespace
 
 
-/** \brief this is a work-around for a global initialization issue in Python's C interface.
- */
-class Environment::ImportedModules
-{
-private:
-  typedef boost::tuple<const char*, Environment::ModuleInitFunc> ModuleInitSpec;
-  typedef std::vector<ModuleInitSpec>                            ImportedModulesList;
 
-public:
-  /** \brief static call to schedule given module for importing.
-   *  \param module module name (must be a compile-time string constant).
-   *  \param init   init funtion (as defined by boost::python's macros).
-   */
-  static void scheduleImport(const char *module, Environment::ModuleInitFunc init)
-  {
-    assert(!g_alreadyInitialized && "trying to import after initialization");
-    get().push_back( ModuleInitSpec(module, init) );
-  }
-
-  /** \brief called after all registrations are done and registers all scheduled modules.
-   */
-  static void importAllModules(void)
-  {
-    assert(!g_alreadyInitialized && "trying to init/import all modules after initialization");
-    // import all modules
-    for(ImportedModulesList::const_iterator it=get().begin(); it!=get().end(); ++it)
-      Environment::importModule( it->get<0>(), it->get<1>() );
-    // all modeules imported - remove them from the collection
-    ImportedModulesList tmp;
-    get().swap(tmp);
-  }
-
-  /** \brief gets the number of schedules modules.
-   */
-  static size_t count(void)
-  {
-    return get().size();
-  }
-
-private:
-  ImportedModules(void);    // no instances allowed
-
-  // global collection, initialized uppon first usage
-  static ImportedModulesList &get(void)
-  {
-    static ImportedModulesList mods;
-    return mods;
-  }
-}; // class ImportedModules
-
-
-
-Environment::StaticImporter::StaticImporter(const char *module, ModuleInitFunc init)
+Environment::StaticImporter::StaticImporter(const char *module, ModuleInitFunction init)
 {
   // sanity check
   assert(module!=NULL);
@@ -87,7 +45,7 @@ Environment::StaticImporter::StaticImporter(const char *module, ModuleInitFunc i
   // schedule import
   const Logger::Node log("pythonapi.environment.staticimporter");
   LOGMSG_INFO_S(log)<<"scheduling module '"<<module<<"' for importing";
-  ImportedModules::scheduleImport(module, init);
+  getModInitLst().scheduleImport(module, init);
   imported_=true;
 }
 
@@ -106,9 +64,9 @@ Environment::Environment(void):
   if(!g_alreadyInitialized)
   {
     // modules importing
-    const size_t count=ImportedModules::count();
+    const size_t count=getModInitLst().count();
     LOGMSG_INFO_S(log_)<<"importing all of the "<<count<<" registered modules";
-    ImportedModules::importAllModules();
+    importAllModules();
     LOGMSG_INFO_S(log_)<<"all of the "<<count<<" registered modules imported";
     // python's init
     Py_Initialize();
@@ -168,7 +126,13 @@ private:
 } // unnamed namespace
 
 
-void Environment::importModule(const char *module, ModuleInitFunc init)
+void Environment::importModule(const std::string &module)
+{
+  assert(g_alreadyInitialized);
+  run("import "+module);
+}
+
+void Environment::importModule(const char *module, ModuleInitFunction init)
 {
   assert(!g_alreadyInitialized && "trying to import module when environment has been already initialized");
 
@@ -191,10 +155,16 @@ void Environment::importModule(const char *module, ModuleInitFunc init)
   LOGMSG_INFO_S(log)<<"module '"<<module<<"' imported successfuly";
 }
 
-void Environment::importModule(const std::string &module)
+void Environment::importAllModules(void)
 {
-  assert(g_alreadyInitialized);
-  run("import "+module);
+  ModulesInitList &mods=getModInitLst();
+  assert(!g_alreadyInitialized && "trying to init/import all modules after initialization");
+  // import all modules
+  for(ModulesInitList::const_iterator it=mods.begin(); it!=mods.end(); ++it)
+    importModule( it->get<0>(), it->get<1>() );
+  // all modeules imported - remove them from the collection
+  mods.clear();
+  assert( getModInitLst().count()==0 );
 }
 
 } // namespace PythonAPI
