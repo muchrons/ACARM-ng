@@ -16,22 +16,18 @@ namespace Filter
 namespace NewEvent
 {
 
-// TODO: do not add doxygen for forward declarations.
-/** \brief forward declaration of TimeoutedSet class.
- */
 class TimeoutedSet;
 
-// TODO: this class must be non-copyable.
 /** \brief
  *  save elements in the persistency dynamic config,
  *  save timeouted elements in dedicated collection.
  */
-class Entry
+class Entry: private boost::noncopyable
 {
 public:
 
   /** \brief create instance.
-   *  \param hash SHA1 hash of processes (meta-)alert name.
+   *  \param hash hash of processes (meta-)alert name.
    *  \param bf   facade for saving elements in the persistency.
    *  \param ts   cache for storing timeouted elements.
    */
@@ -40,20 +36,24 @@ public:
    */
   ~Entry();
 
-  /** \brief return hash of entry name.
-   *  \return (SHA1) hash of entry name.
+  /** \brief return hash string of entry name.
+   *  \return hash string of entry name.
    */
-  const Hash::HashData &getHash() const;
+  const Hash::HashData &getHashString() const;
+  /** \brief return hash of entry name.
+   *  \return hash of entry name.
+   */
+  const Hash &getHash() const;
 private:
 
   Logger::Node                                               log_;
   Persistency::IO::DynamicConfig::Owner                      owner_;
   Commons::SharedPtrNotNULL<Persistency::IO::DynamicConfig>  dc_;
   Hash                                                       hash_;
-  TimeoutedSet                                              *ts_;   // TODO: since class is non-copyable use ref instead of ptr (not !NULL check required)
+  TimeoutedSet                                               &ts_;
 }; // class Entry
 
-// TODO: doxygen is missing
+/** \brief smart pointer to Entry type, that is sure not to be NULL. */
 typedef Commons::SharedPtrNotNULL<Entry> EntrySharedPtr;
 
 } // namespace Filter

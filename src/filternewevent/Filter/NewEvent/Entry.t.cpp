@@ -9,7 +9,7 @@
 #include "Filter/NewEvent/TimeoutedSet.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
-#include "Filter/NewEvent/TestConnection.t.hpp"
+#include "TestHelpers/Persistency/ConnectionIOMemory.hpp"
 
 using namespace std;
 using namespace Core::Types::Proc;
@@ -24,29 +24,21 @@ struct TestClass
 {
 
   TestClass(void):
-    tconn_(new TestConnection),
-    conn_(tconn_),
+    conn_( new ConnectionIOMemory ),
     bf_(conn_, changed_, TypeName("testnewevent"), InstanceName("myname")),
     owner_("Filter::NewEvent"),
+    dc_(bf_.createDynamicConfig(owner_)),
     hash_("key")
   {
   }
 
-  // TODO: unneeded call; can be replaced with one line: e_q("...", tconn_->data_[key], value);
-  void testData(const std::string &key, const std::string &value)
-  {
-    IODynamicConfigMemory::Memory data = tconn_->data_;
-    tut::ensure_equals("invalid value", data[key], value );
-  }
-
-  TestConnection                        *tconn_;    // TODO: memory leak here - use scoped_ptr<>
   Persistency::IO::ConnectionPtrNN       conn_;
   BackendFacade::ChangedNodes            changed_;
   BackendFacade                          bf_;
   TimeoutedSet                           ts_;
   Persistency::IO::DynamicConfig::Owner  owner_;
+  Persistency::IO::DynamicConfigAutoPtr  dc_;
   Hash                                   hash_;
-
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -64,7 +56,7 @@ template<>
 void testObj::test<1>(void)
 {
   EntrySharedPtr entryPtr(new Entry(hash_, bf_, ts_));
-  testData( entryPtr.get()->getHash().get(), string("true") );  // TODO: "true"
+  ensure_equals("invalid value", string( dc_->read(entryPtr->getHashString().get())->get() ), "true");
 }
 
 // test if element is not present in Dynamic Config after TimeoutedSet prune
@@ -73,20 +65,18 @@ template<>
 void testObj::test<2>(void)
 {
   std::string hashStr;
-  // TODO: why not use hash_?
-  Hash        hash("some key");   // TODO: add const
   {
-    EntrySharedPtr entryPtr(new Entry(hash, bf_, ts_));
-    hashStr=string(entryPtr.get()->getHash().get());
+    EntrySharedPtr entryPtr(new Entry(hash_, bf_, ts_));
+    hashStr=string(entryPtr.get()->getHashString().get());
   }
   // test if hash is in the TimeoutedSet
-  testData( hashStr, string("true") );  // TODO: "true"
+  ensure_equals("invalid value", string( dc_->read(hashStr)->get() ), "true");
   // clear timeouted set
   ts_.markRemoved(bf_, owner_);
-  testData( hashStr, string("") );      // TODO: ""
+  ensure("invalid value", dc_->read(hashStr).get() == NULL);
 }
 
-// test getHash() method
+// test getHashString() method
 template<>
 template<>
 void testObj::test<3>(void)
@@ -101,14 +91,21 @@ template<>
 void testObj::test<4>(void)
 {
   std::string hashStr;
-  // TODO: why not use hash_?
-  Hash        hash("some key"); // TODO: add const
   {
-    EntrySharedPtr  entryPtr(new Entry(hash, bf_, ts_));
-    hashStr=string(entryPtr.get()->getHash().get());
+    EntrySharedPtr  entryPtr(new Entry(hash_, bf_, ts_));
+    hashStr=string(entryPtr->getHashString().get());
   }
-  testData( hashStr, "true");
-  ensure("Element not present in collection", ts_.isTimeouted(hash));
+  ensure_equals("invalid value", string( dc_->read(hashStr)->get() ), "true");
+  ensure("Element not present in collection", ts_.isTimeouted(hash_));
+}
+
+// test getHash() method
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  EntrySharedPtr  entryPtr(new Entry(hash_, bf_, ts_));
+  ensure("invalid hash", entryPtr->getHash() == hash_);
 }
 
 } // namespace tut

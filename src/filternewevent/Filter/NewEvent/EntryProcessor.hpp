@@ -16,10 +16,9 @@ namespace Filter
 namespace NewEvent
 {
 
-// TODO: this class must be non-copyable since it holds references inside.
 /** \brief helper object for processing given leaf.
  */
-class EntryProcessor
+class EntryProcessor: private boost::noncopyable
 {
 public:
   /** \brief create instance.

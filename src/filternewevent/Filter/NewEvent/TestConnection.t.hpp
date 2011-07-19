@@ -7,32 +7,23 @@
 
 #include <cassert>
 
-#include "TestHelpers/Persistency/ConnectionUserStubBase.hpp"
-#include "TestHelpers/Persistency/IODynamicConfigMemory.hpp"
+#include "TestHelpers/Persistency/ConnectionIOMemory.hpp"
+#include "Filter/NewEvent/TestMemory.t.hpp"
 
 namespace Filter
 {
 namespace NewEvent
 {
 
-// TODO: TestHelpers::Persistency::IODynamicConfigMemory should be used instead.
-class TestConnection: public TestHelpers::Persistency::ConnectionUserStubBase
+struct TestConnection: public TestHelpers::Persistency::ConnectionIOMemory
 {
-public:
-  TestHelpers::Persistency::IODynamicConfigMemory::Memory data_; // storage of lastly created DC-Stub
-
-private:
   virtual ::Persistency::IO::DynamicConfigAutoPtr dynamicConfigImpl(const ::Persistency::IO::DynamicConfig::Owner &owner,
                                                                     ::Persistency::IO::Transaction                &t)
   {
-    TestHelpers::Persistency::IODynamicConfigMemory *tmp=new TestHelpers::Persistency::IODynamicConfigMemory(owner, t, data_);
-    ::Persistency::IO::DynamicConfigAutoPtr  ptr(tmp);
-    assert(tmp!=NULL);
-    //data_=tmp->mem_;
-    return ptr;
+    assert( owner.get()!=NULL );
+    return ::Persistency::IO::DynamicConfigAutoPtr( new TestMemory(owner, t, otm_[ owner.get() ]) );
   }
-}; // class TestConnection
-
+}; // struct TestConnection
 
 } // namespace Filter
 } // namespace NewEvent

@@ -5,9 +5,9 @@
 #include <cstring>
 #include <cassert>
 
-#include "Base/EditableCString.hpp"
+#include "System/EditableCString.hpp"
 
-namespace Base
+namespace System
 {
 
 EditableCString::EditableCString(const char *str)
@@ -37,4 +37,10 @@ void EditableCString::makeFrom(const char *str)
   assert( std::string(str)==str_.get() );   // ensure identical content
 }
 
-} // namespace Base
+size_t EditableCString::length(void) const
+{
+  assert( str_.get()!=NULL );
+  return strlen( str_.get() );
+}
+
+} // namespace System
