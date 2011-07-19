@@ -17,7 +17,7 @@ struct TestClass
     env_.importModule("persistency");
     //env_.run("from persistency import *");
 
-    env_.run("pn=persistency.PortNumber(42)");
+    env_.run("tmp=persistency.PortNumber(42)");
   }
 
   PythonAPI::Environment env_;
@@ -37,7 +37,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.run("ret=pn.get()");
+  env_.run("ret=tmp.get()");
   const unsigned int ret=env_.var<unsigned int>("ret");
   ensure_equals("invalid value returned", ret, 42);
 }

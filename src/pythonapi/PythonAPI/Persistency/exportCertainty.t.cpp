@@ -17,7 +17,7 @@ struct TestClass
     env_.importModule("persistency");
     //env_.run("from persistency import *");
 
-    env_.run("c=persistency.Certainty(0.42)");
+    env_.run("tmp=persistency.Certainty(0.42)");
   }
 
   PythonAPI::Environment env_;
@@ -37,7 +37,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.run("ret=c.get()");
+  env_.run("ret=tmp.get()");
   const double ret=env_.var<double>("ret");
   ensure_equals("invalid value returned", ret, 0.42);
 }

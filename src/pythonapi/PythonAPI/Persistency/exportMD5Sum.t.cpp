@@ -17,7 +17,7 @@ struct TestClass
     env_.importModule("persistency");
     //env_.run("from persistency import *");
 
-    //env_.run("c=persistency.Timestamp(1234)");
+    //env_.run("tmp=persistency.Timestamp(1234)");
   }
 
   PythonAPI::Environment env_;
@@ -39,7 +39,7 @@ void testObj::test<1>(void)
 {
   // TODO
   /*
-  env_.run("ret=c.get()");
+  env_.run("ret=tmp.get()");
   const size_t ret=env_.var<size_t>("ret");
   ensure_equals("invalid value returned", ret, 1234);
   */
