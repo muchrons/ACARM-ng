@@ -13,7 +13,6 @@
 #include "PythonAPI/Persistency/exportSeverityLevel.hpp"
 #include "PythonAPI/Persistency/exportSeverity.hpp"
 #include "PythonAPI/Persistency/exportReferenceURL.hpp"
-#include "PythonAPI/Persistency/exportService.hpp"
 
 BOOST_PYTHON_MODULE(persistency)
 {
@@ -24,7 +23,6 @@ BOOST_PYTHON_MODULE(persistency)
   PythonAPI::Persistency::exportSeverityLevel();
   PythonAPI::Persistency::exportSeverity();
   PythonAPI::Persistency::exportReferenceURL();
-  PythonAPI::Persistency::exportService();
 }
 
 #endif
