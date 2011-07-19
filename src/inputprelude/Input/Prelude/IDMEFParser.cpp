@@ -11,14 +11,14 @@
 #include "Input/Prelude/IDMEFParserTarget.hpp"
 #include "Input/Prelude/IDMEFParser.hpp"
 
+using namespace Persistency;
+
 namespace Input
 {
 namespace Prelude
 {
 
-using namespace Persistency;
-
-  IDMEFParser::IDMEFParser(idmef_message_t * msg, BackendFacade &bf, unsigned int timeout):
+IDMEFParser::IDMEFParser(idmef_message_t *msg, BackendFacade &bf, unsigned int timeout):
   bf_(bf),
   name_( parseName( extractAlert(msg) ) ),
   ctime_( parseCtime( extractAlert(msg) ) ),
@@ -35,7 +35,7 @@ idmef_alert_t* IDMEFParser::extractAlert(idmef_message_t *msg) const
 {
   if(msg==NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Message is null");
-  // TODO: heartbeats now ARE supported (Input::BackendFacade::heartbeat() method)
+  // TODO: reorganize this part of code so that it is in the if(cond1){sth1;ret1;}if(cond2){sth2;ret2;} form
   if( idmef_message_get_type(msg)!=IDMEF_MESSAGE_TYPE_ALERT )
     {
       if( idmef_message_get_type(msg)!=IDMEF_MESSAGE_TYPE_HEARTBEAT)
