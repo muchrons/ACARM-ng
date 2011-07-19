@@ -18,7 +18,7 @@ namespace Prelude
 
 using namespace Persistency;
 
-IDMEFParser::IDMEFParser(idmef_message_t * msg, BackendFacade &bf):
+  IDMEFParser::IDMEFParser(idmef_message_t * msg, BackendFacade &bf, unsigned int timeout):
   bf_(bf),
   name_( parseName( extractAlert(msg) ) ),
   ctime_( parseCtime( extractAlert(msg) ) ),
@@ -26,7 +26,8 @@ IDMEFParser::IDMEFParser(idmef_message_t * msg, BackendFacade &bf):
   sourceHosts_( parseSources( extractAlert(msg) ) ),
   targetHosts_( parseTargets( extractAlert(msg) ) ),
   description_( parseDescription( extractAlert(msg) ) ),
-  severity_( parseSeverity( extractAlert(msg) ) )
+  severity_( parseSeverity( extractAlert(msg) ) ),
+  timeout_(timeout)
 {
 }
 
@@ -36,7 +37,14 @@ idmef_alert_t* IDMEFParser::extractAlert(idmef_message_t *msg) const
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Message is null");
   // TODO: heartbeats now ARE supported (Input::BackendFacade::heartbeat() method)
   if( idmef_message_get_type(msg)!=IDMEF_MESSAGE_TYPE_ALERT )
-    throw ExceptionUnsupportedFeature(SYSTEM_SAVE_LOCATION, "heartbeats are not supported");
+    {
+      if( idmef_message_get_type(msg)!=IDMEF_MESSAGE_TYPE_HEARTBEAT)
+        {
+          bf_.heartbeat("Prelude",timeout_);
+        }
+      else
+        throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Prelude sent an error message.");
+    }
   return idmef_message_get_alert(msg);
 }
 

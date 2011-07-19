@@ -44,7 +44,7 @@ void testObj::test<1>(void)
   td_.addClassificationToAlert("some classification");
   td_.addAnalyzerToAlert();
 
-  const IDMEFParser ip(td_.message_.get(), bf_);
+  const IDMEFParser ip(td_.message_.get(), bf_, 0);
   ensure_equals("invalid IP", ip.getName().get(), string("some classification") );
 }
 
@@ -61,7 +61,7 @@ void testObj::test<2>(void)
   td_.addAnalyzerToAlert();
   td_.addTimeToAlert(tt);
 
-  const IDMEFParser ip(td_.message_.get(), bf_);
+  const IDMEFParser ip(td_.message_.get(), bf_, 0);
   ensure_equals("Something broken with time", ip.getCreateTime(), time);
 }
 
@@ -73,7 +73,7 @@ void testObj::test<3>(void)
   td_.makeHeartbeat();
   try
   {
-    const IDMEFParser ip(td_.message_.get(), bf_);
+    const IDMEFParser ip(td_.message_.get(), bf_,0);
     fail("parser didn't throw on unexpected message type - heartbeat");
   }
   catch(const ExceptionUnsupportedFeature &)
@@ -92,7 +92,7 @@ void testObj::test<4>(void)
 
   try
   {
-    const IDMEFParser ip(td_.message_.get(), bf_);
+    const IDMEFParser ip(td_.message_.get(), bf_, 0);
     tut::fail("No analyzer. Shouldn't parse.");
   }
   catch(const ExceptionParse &)
@@ -111,7 +111,7 @@ void testObj::test<5>(void)
 
   try
   {
-    const IDMEFParser ip(td_.message_.get(), bf_);
+    const IDMEFParser ip(td_.message_.get(), bf_, 0);
     tut::fail("No mandatory field classification. Shouldn't parse.");
   }
   catch(const ExceptionParse &)
@@ -136,7 +136,7 @@ void testObj::test<6>(void)
     idmef_source_t * src=td_.addSourceToAlert();
     td_.addAddressToSource(src,"::1",true);
   }
-  const IDMEFParser ip(td_.message_.get(), bf_);
+  const IDMEFParser ip(td_.message_.get(), bf_, 0);
 
   Persistency::Alert::Hosts src=ip.getSources();
   ensure_equals("invalid Source 1", src.at(0)->getIP(), boost::asio::ip::address_v4::from_string("192.168.1.1"));
@@ -159,7 +159,7 @@ void testObj::test<7>(void)
     idmef_target_t * src=td_.addTargetToAlert();
     td_.addAddressToTarget(src,"::1",true);
   }
-  const IDMEFParser ip(td_.message_.get(), bf_);
+  const IDMEFParser ip(td_.message_.get(), bf_, 0);
 
   Persistency::Alert::Hosts src=ip.getTargets();
   ensure_equals("invalid Source 1", src.at(0)->getIP(), boost::asio::ip::address_v4::from_string("192.168.1.1"));
@@ -176,7 +176,7 @@ void testObj::test<8>(void)
   td_.addAnalyzeridToAnalyzer(analyzer, "1234567890");
   td_.addClassificationToAlert("some classification");
 
-  const IDMEFParser ip(td_.message_.get(), bf_);
+  const IDMEFParser ip(td_.message_.get(), bf_, 0);
   ensure_equals("invalid number of analyzers", ip.getAnalyzers().size(), 1u);
   ensure_equals("invalid name with ID", (*ip.getAnalyzers().begin())->getName().get(), string("Unknown (1234567890)") );
 }
@@ -190,7 +190,7 @@ void testObj::test<9>(void)
   td_.addAnalyzerToAlert();
   td_.addClassificationToAlert("some classification");
 
-  const IDMEFParser ip(td_.message_.get(), bf_);
+  const IDMEFParser ip(td_.message_.get(), bf_, 0);
   ensure_equals("invalid number of analyzers", ip.getAnalyzers().size(), 1u);
   ensure_equals("invalid name without ID", (*ip.getAnalyzers().begin())->getName().get(), string("Unknown") );
 }
