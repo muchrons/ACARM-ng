@@ -65,6 +65,8 @@ void testObj::test<2>(void)
   ensure_equals("Something broken with time", ip.getCreateTime(), time);
 }
 
+// TODO: this test is invalid now
+// TODO: test for heartbeats support (i.e.: if they are forwarded to backend facade as they should
 // test parsing when heart beat is passed
 template<>
 template<>
