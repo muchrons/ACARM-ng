@@ -23,8 +23,8 @@ void exportService(void)
 //      .def("getURL",  &ReferenceURL::getURL,  return_value_policy<copy_const_reference>())
     ;
 
-//  exportLimitedString<Service::Name::size>("Name");
-//  exportLimitedString<Service::Protocol::size>("URL");
+  exportLimitedString<Service::Name::size>("Name");
+  exportLimitedString<Service::Protocol::size>("Protocol");
 }
 
 } // namespace Persistency

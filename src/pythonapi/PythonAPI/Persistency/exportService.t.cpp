@@ -20,11 +20,13 @@ struct TestClass
     env_.importModule("persistency");
     //env_.run("from persistency import *");
 
+    env_.run("tmp=persistency.ReferenceURL( persistency.ReferenceURL.Name(\"un\"),"
+                                           "persistency.ReferenceURL.URL(\"link\") ) ");
     env_.run("tmp=persistency.Service( "
                     "persistency.Service.Name(\"secure shell\"),"
                     "persistency.PortNumber(22),"
                     "persistency.Service.Protocol(\"ssh\"),"
-                    "persistency.ReferenceURL.URL(\"http://url\") )");
+                    "tmp)");
   }
 
   PythonAPI::Environment env_;
