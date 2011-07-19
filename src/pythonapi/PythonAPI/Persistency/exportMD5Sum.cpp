@@ -16,14 +16,11 @@ namespace Persistency
 
 void exportMD5Sum(void)
 {
-  // TODO: this does not work since MD5Sum uses named c-tor.
-  //       further reading needs to be done for this.
-  // TODO: boost::python::no_init? http://stackoverflow.com/questions/5299179/boost-python-export-singleton
-  /*
-  class_<MD5Sum>("MD5Sum", init<const char*>())
+  class_<MD5Sum>("MD5Sum", no_init)
+    .def("createFromString", &MD5Sum::createFromString)
+    .staticmethod("createFromString")
     .def("get", &MD5Sum::get)
   ;
-  */
 }
 
 } // namespace Persistency

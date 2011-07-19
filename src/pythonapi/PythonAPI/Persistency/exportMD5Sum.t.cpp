@@ -17,7 +17,7 @@ struct TestClass
     env_.importModule("persistency");
     //env_.run("from persistency import *");
 
-    //env_.run("tmp=persistency.Timestamp(1234)");
+    env_.run("tmp=persistency.MD5Sum.createFromString(\"78b9861f74e15d7d0f077ba22421b8e4\")");
   }
 
   PythonAPI::Environment env_;
@@ -37,12 +37,10 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  // TODO
-  /*
+  const string evil("78b9861f74e15d7d0f077ba22421b8e4");
   env_.run("ret=tmp.get()");
-  const size_t ret=env_.var<size_t>("ret");
-  ensure_equals("invalid value returned", ret, 1234);
-  */
+  const char *ret=env_.var<const char*>("ret");
+  ensure_equals("invalid value returned", ret, evil);
 }
 
 } // namespace tut
