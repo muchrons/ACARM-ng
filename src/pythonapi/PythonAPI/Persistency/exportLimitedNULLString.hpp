@@ -15,6 +15,7 @@ namespace Persistency
 {
 
 /** \brief exports LimitedNULLString class.
+ *  \param name name of the module to be exported.
  */
 template<uint16_t N>
 void exportLimitedNULLString(const char *name)

@@ -23,8 +23,8 @@ void exportReferenceURL(void)
       .def("getURL",  &ReferenceURL::getURL,  return_value_policy<copy_const_reference>())
     ;
 
-  exportLimitedString<128>("Name");
-  exportLimitedString<256>("URL");
+  exportLimitedString<ReferenceURL::Name::size>("Name");
+  exportLimitedString<ReferenceURL::URL::size >("URL");
 }
 
 } // namespace Persistency
