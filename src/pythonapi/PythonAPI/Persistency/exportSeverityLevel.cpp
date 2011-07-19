@@ -17,9 +17,9 @@ namespace Persistency
 void exportSeverityLevel(void)
 {
   scope inSeverityLevel=
-  class_<SeverityLevel>("SeverityLevel", init<SeverityLevel::EType>())
-    .def("toInt", &SeverityLevel::toInt)
-  ;
+    class_<SeverityLevel>("SeverityLevel", init<SeverityLevel::EType>())
+      .def("toInt", &SeverityLevel::toInt)
+    ;
 
   // accessible from python as <module>.SeverityLevel.EType.<level>
   enum_<SeverityLevel::EType>("EType")
