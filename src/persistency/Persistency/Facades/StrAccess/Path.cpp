@@ -2,12 +2,15 @@
  * Path.cpp
  *
  */
-#include <vector>
 #include <boost/tokenizer.hpp>
 
-#include "Preprocessor/Path.hpp"
+#include "Persistency/Facades/StrAccess/Path.hpp"
 
-namespace Preprocessor
+namespace Persistency
+{
+namespace Facades
+{
+namespace StrAccess
 {
 
 Path::Path(const std::string &path):
@@ -40,4 +43,6 @@ void Path::tokenizePath(void)
     e_.push_back(*it);
 }
 
-} // namespace Preprocessor
+} // namespace StrAccess
+} // namespace Facades
+} // namespace Persistency

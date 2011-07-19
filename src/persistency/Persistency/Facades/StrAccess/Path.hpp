@@ -2,15 +2,19 @@
  * Path.hpp
  *
  */
-#ifndef INCLUDE_PREPROCESSOR_PATH_HPP_FILE
-#define INCLUDE_PREPROCESSOR_PATH_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_PATH_HPP_FILE
+#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_PATH_HPP_FILE
 
 #include <string>
 #include <vector>
 
-#include "Preprocessor/ExceptionInvalidPath.hpp"
+#include "Persistency/Facades/StrAccess/ExceptionInvalidPath.hpp"
 
-namespace Preprocessor
+namespace Persistency
+{
+namespace Facades
+{
+namespace StrAccess
 {
 
 /** \brief class representing path as sequence of tokens.
@@ -58,6 +62,8 @@ private:
   Elements    e_;
 }; // class Path
 
-} // namespace Preprocessor
+} // namespace StrAccess
+} // namespace Facades
+} // namespace Persistency
 
 #endif

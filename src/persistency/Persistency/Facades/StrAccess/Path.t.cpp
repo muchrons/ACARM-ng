@@ -4,9 +4,9 @@
  */
 #include <tut.h>
 
-#include "Preprocessor/Path.hpp"
+#include "Persistency/Facades/StrAccess/Path.hpp"
 
-using namespace Preprocessor;
+using namespace Persistency::Facades::StrAccess;
 
 namespace
 {
@@ -38,7 +38,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Preprocessor/Path");
+factory tf("Persistency/Facades/StrAccess/Path");
 } // unnamed namespace
 
 
