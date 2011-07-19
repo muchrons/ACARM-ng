@@ -10,7 +10,7 @@ namespace PythonAPI
 namespace Persistency
 {
 
-/** \brief exports PortNumber rclass.
+/** \brief exports PortNumber class.
  */
 void exportPortNumber(void);
 
