@@ -22,6 +22,9 @@ template<uint16_t N>
 class LimitedNULLString: public boost::operators< LimitedNULLString<N> >
 {
 public:
+  /** \brief export size to be later referencable. */
+  enum { size=N };
+
   /** \brief creates empty object string.
    */
   LimitedNULLString(void):

@@ -118,4 +118,12 @@ void testObj::test<8>(void)
   ensure_equals("invalid value after default c-tor", tmp.get(), string("") );
 }
 
+// test size export
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  ensure_equals("invalid size", LimitedString<42>::size, 42);
+}
+
 } // namespace tut
