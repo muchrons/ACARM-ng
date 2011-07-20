@@ -23,6 +23,7 @@ namespace StrAccess
 {
 
 //struct OnCollection: private System::NoInstance {};
+//struct OnPointer: private System::NoInstance {};
 struct OnTerm: private System::NoInstance {};
 struct ErrorTests: private System::NoInstance {};
 

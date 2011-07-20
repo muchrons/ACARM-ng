@@ -11,6 +11,7 @@
 
 #include "System/NoInstance.hpp"
 #include "Commons/Convert.hpp"
+#include "Persistency/Facades/StrAccess/detail/null.hpp"
 
 namespace Persistency
 {
@@ -38,7 +39,7 @@ struct TermCast: private System::NoInstance
 private:
   static const char *null(void)
   {
-    return "<NULL>";
+    return detail::null();
   }
 }; // struct TermCast
 

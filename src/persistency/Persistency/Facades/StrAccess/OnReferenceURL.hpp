@@ -38,7 +38,7 @@ struct ReferenceURLHandle: private System::NoInstance
     ErrH::throwInvalid(SYSTEM_SAVE_LOCATION, t);
     return false;         // we never reach here
   }
-}; // struct TermCast
+}; // struct OnReferenceURL
 
 } // namespace StrAccess
 } // namespace Facades
