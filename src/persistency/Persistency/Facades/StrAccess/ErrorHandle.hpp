@@ -36,8 +36,7 @@ struct ErrorHandle: private System::NoInstance
 
   static void throwOnInvalidPath(const Params &p)
   {
-    if(!p.isEnd())
-      throw ExceptionInvalidPath(SYSTEM_SAVE_LOCATION, p.path().get(), p.get(), "unexpected token in path");
+    throw ExceptionInvalidPath(SYSTEM_SAVE_LOCATION, p.path().get(), p.get(), "unexpected token in path");
   }
 }; // struct ErrorHandle
 

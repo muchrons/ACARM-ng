@@ -5,6 +5,7 @@
 #include <tut.h>
 
 #include "Persistency/Facades/StrAccess/DefaultHandleMap.hpp"
+#include "Persistency/Facades/StrAccess/TestCallback.t.hpp"
 
 using namespace std;
 using namespace boost::mpl;
@@ -15,6 +16,13 @@ namespace
 
 struct TestClass
 {
+  TestClass(void):
+    p_(Path("a.b"), cb_)
+  {
+  }
+
+  TestCallback cb_;
+  const Params p_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -36,11 +44,12 @@ void testObj::test<1>(void)
   ensure_equals("invalid term handle", str, "test");
 }
 
-// 
+// test handling of sample path on error
 template<>
 template<>
 void testObj::test<2>(void)
 {
+  at<DefaultHandleMap, ErrorTests>::type::throwIfEnd(p_);   // thould not throw
 }
 
 // 
