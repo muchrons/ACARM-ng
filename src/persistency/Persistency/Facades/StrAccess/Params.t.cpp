@@ -7,14 +7,13 @@
 
 #include "System/ignore.hpp"
 #include "Persistency/Facades/StrAccess/Params.hpp"
-#include "Persistency/Facades/StrAccess/TestCallback.t.hpp"
+#include "Persistency/Facades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
 using namespace Persistency::Facades::StrAccess;
 
 namespace
 {
-
 struct TestClass
 {
   TestClass(void):
@@ -23,9 +22,9 @@ struct TestClass
   {
   }
 
-  const Path   path_;
-  TestCallback cb_;
-  Params       p_;
+  const Path                 path_;
+  TestParams::ResultCallback cb_;
+  TestParams                 p_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -73,7 +72,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ResultCallback &tmp=p_.callback();
+  TestCallback &tmp=p_.callback();
   System::ignore(tmp);
 }
 

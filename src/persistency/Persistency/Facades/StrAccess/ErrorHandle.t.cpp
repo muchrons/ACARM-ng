@@ -5,13 +5,13 @@
 #include <tut.h>
 
 #include "Persistency/Facades/StrAccess/ErrorHandle.hpp"
-#include "Persistency/Facades/StrAccess/TestCallback.t.hpp"
+#include "Persistency/Facades/StrAccess/DefaultHandleMap.hpp"
+#include "Persistency/Facades/StrAccess/TestParams.t.hpp"
 
 using namespace Persistency::Facades::StrAccess;
 
 namespace
 {
-
 struct TestClass
 {
   TestClass(void):
@@ -22,9 +22,9 @@ struct TestClass
       ++pEnd_;
   }
 
-  TestCallback cb_;
-  Params       pEnd_;
-  Params       p_;
+  TestParams::ResultCallback cb_;
+  TestParams                 pEnd_;
+  TestParams                 p_;
 };
 
 typedef tut::test_group<TestClass> factory;

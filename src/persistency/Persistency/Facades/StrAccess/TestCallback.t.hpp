@@ -2,12 +2,16 @@
  * TestCallback.t.hpp
  *
  */
-#include "Persistency/Facades/StrAccess/ResultCallback.hpp"
+#ifndef INCLUDE_PERSISTENCY_FACADES_SACCESS_TESTCALLBACK_T_HPP_FILE
+#define INCLUDE_PERSISTENCY_FACADES_SACCESS_TESTCALLBACK_T_HPP_FILE
+
+#include <string>
+#include <inttypes.h>
 
 namespace
 {
 
-struct TestCallback: public Persistency::Facades::StrAccess::ResultCallback
+struct TestCallback
 {
   TestCallback(void):
     lastValue_("NOTHING's SET YET"),
@@ -30,3 +34,5 @@ struct TestCallback: public Persistency::Facades::StrAccess::ResultCallback
 }; // strict TestCallback
 
 } // unnamed namespace
+
+#endif

@@ -22,19 +22,22 @@ namespace StrAccess
 
 struct ErrorHandle: private System::NoInstance
 {
-  static void throwIfEnd(const ExceptionInvalidPath::Location &where, const Params &p)
+  template<typename TParams>
+  static void throwIfEnd(const ExceptionInvalidPath::Location &where, const TParams &p)
   {
     if(p.isEnd())
       throw ExceptionInvalidPath(where, p.path().get(), "<END>", "unexpected end of path");
   }
 
-  static void throwIfNotEnd(const ExceptionInvalidPath::Location &where, const Params &p)
+  template<typename TParams>
+  static void throwIfNotEnd(const ExceptionInvalidPath::Location &where, const TParams &p)
   {
     if(!p.isEnd())
       throw ExceptionInvalidPath(where, p.path().get(), p.get(), "unexpected tokens after full path");
   }
 
-  static void throwOnInvalidPath(const ExceptionInvalidPath::Location &where, const Params &p)
+  template<typename TParams>
+  static void throwOnInvalidPath(const ExceptionInvalidPath::Location &where, const TParams &p)
   {
     throw ExceptionInvalidPath(where, p.path().get(), p.get(), "unexpected token in path");
   }
