@@ -5,6 +5,8 @@
 #ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_PATH_HPP_FILE
 #define INCLUDE_PERSISTENCY_FACADES_STRACCESS_PATH_HPP_FILE
 
+/* public header */
+
 #include <string>
 #include <vector>
 
