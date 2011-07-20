@@ -1,11 +1,11 @@
 /*
- * process.t.cpp
+ * processNonTerm.t.cpp
  *
  */
 #include <tut.h>
 #include <string>
 
-#include "Persistency/Facades/StrAccess/process.hpp"
+#include "Persistency/Facades/StrAccess/processNonTerm.hpp"
 
 using namespace Persistency::Facades::StrAccess::detail;
 
@@ -18,7 +18,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/process");
+factory tf("Persistency/Facades/StrAccess/processNonTerm");
 } // unnamed namespace
 
 

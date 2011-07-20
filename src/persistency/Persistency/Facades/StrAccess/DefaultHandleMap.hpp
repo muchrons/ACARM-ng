@@ -12,7 +12,6 @@
 
 #include "System/NoInstance.hpp"
 #include "Persistency/MetaAlert.hpp"
-#include "Persistency/Facades/StrAccess/TermCast.hpp"
 #include "Persistency/Facades/StrAccess/ErrorHandle.hpp"
 
 namespace Persistency
@@ -27,8 +26,11 @@ namespace StrAccess
 struct OnTerm: private System::NoInstance {};
 struct ErrorTests: private System::NoInstance {};
 
+
+// each value of the map must have:
+//   bool T::process(const T &e, TParams &p)
+// static method
 typedef boost::mpl::map<
-    boost::mpl::pair<OnTerm, TermCast>,
     boost::mpl::pair<ErrorTests, ErrorHandle>
   > DefaultHandleMap;
 

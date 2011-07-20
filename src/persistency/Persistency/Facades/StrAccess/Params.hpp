@@ -8,7 +8,6 @@
 /* public header */
 
 #include <cassert>
-#include <boost/noncopyable.hpp>
 #include <boost/mpl/at.hpp>
 
 #include "Persistency/Facades/StrAccess/Path.hpp"
@@ -21,7 +20,7 @@ namespace StrAccess
 {
 
 template<typename THandleMap, typename TResultCallback>
-struct Params: private boost::noncopyable
+struct Params
 {
   typedef THandleMap           HandleMap;
   typedef TResultCallback      ResultCallback;
@@ -30,8 +29,9 @@ struct Params: private boost::noncopyable
   Params(const Path &path, ResultCallback &callback):
     path_(path),
     now_(path_.begin()),
-    callback_(callback)
+    callback_(&callback)
   {
+    assert(callback_!=NULL);
   }
 
   template<typename T>
@@ -65,13 +65,14 @@ struct Params: private boost::noncopyable
 
   ResultCallback &callback(void)
   {
-    return callback_;
+    assert(callback_!=NULL);
+    return *callback_;
   }
 
 private:
   const Path      path_;
   PathCIT         now_;
-  ResultCallback &callback_;
+  ResultCallback *callback_;
 }; // struct Params
 
 } // namespace StrAccess

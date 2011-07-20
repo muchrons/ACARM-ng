@@ -1,14 +1,15 @@
 /*
- * ReferenceURLHandle.hpp
+ * OnReferenceURL.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_REFERENCEURLHANDLE_HPP_FILE
-#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_REFERENCEURLHANDLE_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_ONREFERENCEURL_HPP_FILE
+#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_ONREFERENCEURL_HPP_FILE
 
 /* public header */
 
 #include "System/NoInstance.hpp"
 #include "Persistency/ReferenceURL.hpp"
+#include "Persistency/Facades/StrAccess/Params.hpp"
 
 namespace Persistency
 {
@@ -17,26 +18,21 @@ namespace Facades
 namespace StrAccess
 {
 
-struct ReferenceURLHandle: private System::NoInstance
+struct OnReferenceURL: private System::NoInstance
 {
-  template<typename THandleMap>
-  static std::string get(const ReferenceURL &e, Params &p)
+  template<typename TParams>
+  static void get(const ReferenceURL &e, TParams &p)
   {
-    typedef boost::mpl::at<THandleMap, ErrorTests>::type ErrH;
-    typedef boost::mpl::at<THandleMap, OnTerm>::type TermH;
+    typedef TParams<ErrorTests>::type ErrH;
 
-    ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, t);
+    ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
 
-    if(*t=="name")
-    {
-      p.callback().value( TermH::get( e.getName().get() ) )
-    }
-      return check( cast( e.getName().get() ), t+1 );
-    if(*t=="url")
-      return check( cast( e.getURL().get() ), t+1 );
+    if(p.get()=="name")
+      return process( e.getName().get() );
+    if(p.get()=="url")
+      return process( e.getURL().get() );
 
-    ErrH::throwInvalid(SYSTEM_SAVE_LOCATION, t);
-    return false;         // we never reach here
+    ErrH::throwInvalid(SYSTEM_SAVE_LOCATION, p);
   }
 }; // struct OnReferenceURL
 

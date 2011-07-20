@@ -38,9 +38,11 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
+  /*
   //const string str=at<DefaultHandleMap,OnTerm>::type::get("test");
   const string str=TestParams::handle<OnTerm>::type::get("test");
   ensure_equals("invalid term handle", str, "test");
+  */
 }
 
 // test handling of sample path on error
