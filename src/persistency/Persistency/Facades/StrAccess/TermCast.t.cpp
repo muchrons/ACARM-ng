@@ -31,7 +31,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invalid convertion", TermCast::cast( string("abc") ), "abc");
+  ensure_equals("invalid convertion", TermCast::get( string("abc") ), "abc");
 }
 
 // test casting const char *
@@ -39,7 +39,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("invalid convertion", TermCast::cast("abc"), string("abc") );
+  ensure_equals("invalid convertion", TermCast::get("abc"), string("abc") );
 }
 
 // test casting from type*
@@ -48,7 +48,7 @@ template<>
 void testObj::test<3>(void)
 {
   const string str("abc");
-  ensure_equals("invalid convertion", TermCast::cast(&str), str);
+  ensure_equals("invalid convertion", TermCast::get(&str), str);
 }
 
 // test casting from const char *=NULL
@@ -57,7 +57,7 @@ template<>
 void testObj::test<4>(void)
 {
   const char *str=NULL;
-  ensure_equals("invalid convertion", TermCast::cast(str), string("<NULL>") );
+  ensure_equals("invalid convertion", TermCast::get(str), string("<NULL>") );
 }
 
 // test casting from const string *=NULL
@@ -66,7 +66,7 @@ template<>
 void testObj::test<5>(void)
 {
   const string *str=NULL;
-  ensure_equals("invalid convertion", TermCast::cast(str), string("<NULL>") );
+  ensure_equals("invalid convertion", TermCast::get(str), string("<NULL>") );
 }
 
 } // namespace tut

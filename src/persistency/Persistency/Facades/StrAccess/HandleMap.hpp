@@ -20,8 +20,11 @@ namespace Facades
 namespace StrAccess
 {
 
+struct OnCollection {};
+struct OnTerm {};
+
 typedef boost::mpl::map<
-    boost::mpl::pair<std::string, TermCast>
+    boost::mpl::pair<OnTerm, TermCast>
   > HandleMap;
 
 } // namespace StrAccess

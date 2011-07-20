@@ -22,17 +22,17 @@ namespace StrAccess
 struct TermCast: private System::NoInstance
 {
   template<typename T>
-  static std::string cast(const T &t)
+  static std::string get(const T &t)
   {
     return Commons::Convert::to<std::string>(t);
   }
 
   template<typename T>
-  static std::string cast(const T *t)
+  static std::string get(const T *t)
   {
     if(t==NULL)
       return null();
-    return cast(*t);
+    return get(*t);
   }
 
 private:
@@ -44,7 +44,7 @@ private:
 
 
 template<>
-inline std::string TermCast::cast<char>(const char *t)
+inline std::string TermCast::get<char>(const char *t)
 {
   if(t==NULL)
     return null();
