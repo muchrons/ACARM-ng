@@ -44,7 +44,7 @@ void testObj::test<1>(void)
 {
   try
   {
-    ErrorHandle::throwIfEnd(pEnd_);
+    ErrorHandle::throwIfEnd(SYSTEM_SAVE_LOCATION, pEnd_);
     fail("throwIfEnd() didn't throw on end");
   }
   catch(const ExceptionInvalidPath &)
@@ -58,7 +58,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ErrorHandle::throwIfEnd(p_);
+  ErrorHandle::throwIfEnd(SYSTEM_SAVE_LOCATION, p_);
 }
 
 // test throwing on non-end
@@ -68,7 +68,7 @@ void testObj::test<3>(void)
 {
   try
   {
-    ErrorHandle::throwIfNotEnd(p_);
+    ErrorHandle::throwIfNotEnd(SYSTEM_SAVE_LOCATION, p_);
     fail("throwIfNotEnd() didn't throw on non-end path");
   }
   catch(const ExceptionInvalidPath &)
@@ -82,7 +82,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ErrorHandle::throwIfNotEnd(pEnd_);
+  ErrorHandle::throwIfNotEnd(SYSTEM_SAVE_LOCATION, pEnd_);
 }
 
 // test thwoing on unexpected path token
@@ -92,7 +92,7 @@ void testObj::test<5>(void)
 {
   try
   {
-    ErrorHandle::throwOnInvalidPath(p_);
+    ErrorHandle::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p_);
     fail("throwOnInvalidPath() didn't throw");
   }
   catch(const ExceptionInvalidPath &)
