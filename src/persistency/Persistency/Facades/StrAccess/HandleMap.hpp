@@ -8,6 +8,7 @@
 /* public header */
 
 #include <boost/mpl/map.hpp>
+#include <boost/mpl/at.hpp>
 
 #include "System/NoInstance.hpp"
 #include "Persistency/MetaAlert.hpp"
@@ -20,8 +21,8 @@ namespace Facades
 namespace StrAccess
 {
 
-struct OnCollection {};
-struct OnTerm {};
+struct OnCollection: private System::NoInstance {};
+struct OnTerm: private System::NoInstance {};
 
 typedef boost::mpl::map<
     boost::mpl::pair<OnTerm, TermCast>

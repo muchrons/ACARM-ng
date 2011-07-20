@@ -6,6 +6,8 @@
 
 #include "Persistency/Facades/StrAccess/HandleMap.hpp"
 
+using namespace std;
+using namespace boost::mpl;
 using namespace Persistency::Facades::StrAccess;
 
 namespace
@@ -25,11 +27,13 @@ factory tf("Persistency/Facades/StrAccess/HandleMap");
 namespace tut
 {
 
-// 
+// test term
 template<>
 template<>
 void testObj::test<1>(void)
 {
+  const string str=at<HandleMap,OnTerm>::type::get("test");
+  ensure_equals("invalid term handle", str, "test");
 }
 
 // 

@@ -10,7 +10,6 @@
 #include "System/NoInstance.hpp"
 #include "Persistency/Facades/StrAccess/Path.hpp"
 #include "Persistency/Facades/StrAccess/HandleMap.hpp"
-#include "Persistency/Facades/StrAccess/ResultCallback.hpp"
 
 namespace Persistency
 {
