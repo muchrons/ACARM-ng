@@ -21,12 +21,12 @@ Path::Path(const std::string &path):
 
   // not enought elements?
   if( e_.size()<2u )
-    throw ExceptionInvalidPath(SYSTEM_SAVE_LOCATION, path_, path_);
+    throw ExceptionInvalidPath(SYSTEM_SAVE_LOCATION, path_, path_, "path too short");
 
   // too many elements?
   assert( e_.size()>=2u );
   if( e_.size()>7u )
-    throw ExceptionInvalidPath(SYSTEM_SAVE_LOCATION, path_, e_.back() );
+    throw ExceptionInvalidPath(SYSTEM_SAVE_LOCATION, path_, e_.back(), "path too long");
 
   assert(path_==path);  // sanity check
 }

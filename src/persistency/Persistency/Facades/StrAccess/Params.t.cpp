@@ -7,17 +7,13 @@
 
 #include "System/ignore.hpp"
 #include "Persistency/Facades/StrAccess/Params.hpp"
+#include "Persistency/Facades/StrAccess/TestCallback.t.hpp"
 
 using namespace std;
 using namespace Persistency::Facades::StrAccess;
 
 namespace
 {
-
-struct TestHandleMap {};
-struct TestCallbacks {};
-
-typedef Params<TestHandleMap, TestCallbacks> TestParams;
 
 struct TestClass
 {
@@ -27,9 +23,9 @@ struct TestClass
   {
   }
 
-  const Path    path_;
-  TestCallbacks cb_;
-  TestParams    p_;
+  const Path   path_;
+  TestCallback cb_;
+  Params       p_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -52,13 +48,14 @@ void testObj::test<1>(void)
   ensure("end after first element", !p_.isEnd() );
 }
 
-// test creating from begin/end directly
+// test for end element, when on the end
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  const TestParams p(path_.begin(), path_.end(), cb_);
-  ensure_equals("invalid element", p.get(), "one");
+  ++p_;
+  ++p_;
+  ensure("end not found", p_.isEnd() );
 }
 
 // test each element's value
@@ -71,31 +68,21 @@ void testObj::test<3>(void)
   ensure_equals("invalid element 2", p_.get(), "two");
 }
 
-// test for validity of handle map declaration
+// test for callbacks declaration
 template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure("invalid handle map forward declaration", boost::is_same<TestParams::HandleMap, TestHandleMap>::value);
+  ResultCallback &tmp=p_.callback();
+  System::ignore(tmp);
 }
 
-// test for callbacks declaration
+// test getting full path
 template<>
 template<>
 void testObj::test<5>(void)
 {
-  TestCallbacks &tmp=p_.callback();
-  System::ignore(tmp);
-}
-
-// test for end element, when on the end
-template<>
-template<>
-void testObj::test<6>(void)
-{
-  ++p_;
-  ++p_;
-  ensure("end not found", p_.isEnd() );
+  ensure_equals("invalid path", p_.path().get(), path_.get());
 }
 
 } // namespace tut

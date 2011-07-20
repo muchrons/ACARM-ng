@@ -11,6 +11,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "Persistency/Facades/StrAccess/Path.hpp"
+#include "Persistency/Facades/StrAccess/ResultCallback.hpp"
 
 namespace Persistency
 {
@@ -19,30 +20,27 @@ namespace Facades
 namespace StrAccess
 {
 
-template<typename THandleMap, typename TResultCallback>
 struct Params: private boost::noncopyable
 {
-  typedef THandleMap           HandleMap;
   typedef Path::const_iterator PathCIT;
 
-  Params(const Path &path, TResultCallback &callback):
-    now_(path.begin()),
-    end_(path.end()),
-    callback_(callback)
-  {
-  }
-
-  Params(PathCIT now, PathCIT end, TResultCallback &callback):
-    now_(now),
-    end_(end),
+  Params(const Path &path, ResultCallback &callback):
+    path_(path),
+    now_(path_.begin()),
     callback_(callback)
   {
   }
 
   const Params &operator++(void)
   {
+    assert(!isEnd());
     ++now_;
     return *this;
+  }
+
+  const Path &path(void) const
+  {
+    return path_;
   }
 
   const std::string &get(void) const
@@ -53,18 +51,18 @@ struct Params: private boost::noncopyable
 
   bool isEnd(void) const
   {
-    return now_==end_;
+    return now_==path_.end();
   }
 
-  TResultCallback &callback(void)
+  ResultCallback &callback(void)
   {
     return callback_;
   }
 
 private:
-  PathCIT          now_;
-  const PathCIT    end_;
-  TResultCallback &callback_;
+  const Path      path_;
+  PathCIT         now_;
+  ResultCallback &callback_;
 }; // struct Params
 
 } // namespace StrAccess

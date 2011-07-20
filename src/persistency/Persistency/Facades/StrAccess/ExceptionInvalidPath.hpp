@@ -7,6 +7,7 @@
 
 /* public header */
 
+#include "Persistency/Facades/StrAccess/Path.hpp"
 #include "Persistency/Facades/StrAccess/Exception.hpp"
 
 namespace Persistency
@@ -22,11 +23,15 @@ class ExceptionInvalidPath: public Exception
 {
 public:
   /** \brief create execption with given message.
-   *  \param where place where exception has been thrown.
-   *  \param path  full path that has been found invalid.
-   *  \param near  place that couldn't be parsed correctly.
+   *  \param where   place where exception has been thrown.
+   *  \param path    full path that has been found invalid.
+   *  \param near    place that couldn't be parsed correctly.
+   *  \param details more details on error situation.
    */
-  ExceptionInvalidPath(const Location &where, const std::string &path, const std::string &near);
+  ExceptionInvalidPath(const Location    &where,
+                       const std::string &path,
+                       const std::string &near,
+                       const std::string &details);
 }; // class ExceptionInvalidPath
 
 } // namespace StrAccess
