@@ -1,9 +1,9 @@
 /*
- * HandleMap.hpp
+ * DefaultHandleMap.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_HANDLEMAP_HPP_FILE
-#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_HANDLEMAP_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_DEFAULTHANDLEMAP_HPP_FILE
+#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_DEFAULTHANDLEMAP_HPP_FILE
 
 /* public header */
 
@@ -26,7 +26,7 @@ struct OnTerm: private System::NoInstance {};
 
 typedef boost::mpl::map<
     boost::mpl::pair<OnTerm, TermCast>
-  > HandleMap;
+  > DefaultHandleMap;
 
 } // namespace StrAccess
 } // namespace Facades
