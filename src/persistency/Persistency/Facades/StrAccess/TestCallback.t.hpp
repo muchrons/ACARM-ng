@@ -15,22 +15,32 @@ struct TestCallback
 {
   TestCallback(void):
     lastValue_("NOTHING's SET YET"),
-    lastSize_(69696969)
+    lastSize_(69696969),
+    lastNullFound_("NO NULLs FOUND YET")
   {
   }
 
-  virtual void collectionSize(size_t size)
+  bool collectionSize(size_t size)
   {
     lastSize_=size;
+    return true;
   }
 
-  virtual void value(const std::string &v)
+  bool value(const std::string &v)
   {
     lastValue_=v;
+    return true;
+  }
+
+  bool nullOnPath(const std::string &where)
+  {
+    lastNullFound_=where;
+    return true;
   }
 
   std::string lastValue_;
   size_t      lastSize_;
+  std::string lastNullFound_;
 }; // strict TestCallback
 
 } // unnamed namespace

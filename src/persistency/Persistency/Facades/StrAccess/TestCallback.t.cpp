@@ -42,4 +42,13 @@ void testObj::test<2>(void)
   ensure_equals("invalid value", callback_.lastValue_, "narf");
 }
 
+// test callback on null
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  callback_.nullOnPath("xyz");
+  ensure_equals("invalid value", callback_.lastNullFound_, "xyz");
+}
+
 } // namespace tut
