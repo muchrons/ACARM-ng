@@ -31,7 +31,7 @@ struct Params: private boost::noncopyable
   {
   }
 
-  const Params &operator++(void)
+  Params &operator++(void)
   {
     assert(!isEnd());
     ++now_;
