@@ -88,10 +88,9 @@ struct HandleIndirectionImpl: private System::NoInstance
 } // namespace detail
 
 
-template<typename TFuncObj>
 struct HandleIndirection: private System::NoInstance
 {
-  template<typename T, typename TParams>
+  template<typename TFuncObj, typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
     return detail::HandleIndirectionImpl<TFuncObj>::process(e,p);

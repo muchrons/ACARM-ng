@@ -57,7 +57,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  HandleIndirection<MyTestProcessFuncObj>::process(v_, p_);
+  HandleIndirection::process<MyTestProcessFuncObj>(v_, p_);
   ensure_equals("invalid run count", g_MyTestProcessFuncObj_runCnt, 1);
 }
 
@@ -67,7 +67,7 @@ template<>
 void testObj::test<2>(void)
 {
   const int *ptr=&v_;
-  HandleIndirection<MyTestProcessFuncObj>::process(ptr, p_);
+  HandleIndirection::process<MyTestProcessFuncObj>(ptr, p_);
   ensure_equals("invalid run count", g_MyTestProcessFuncObj_runCnt, 1);
 }
 
@@ -77,7 +77,7 @@ template<>
 void testObj::test<3>(void)
 {
   boost::shared_ptr<int> ptr(new int(v_));
-  HandleIndirection<MyTestProcessFuncObj>::process(ptr, p_);
+  HandleIndirection::process<MyTestProcessFuncObj>(ptr, p_);
   ensure_equals("invalid run count", g_MyTestProcessFuncObj_runCnt, 1);
 }
 
@@ -88,7 +88,7 @@ void testObj::test<4>(void)
 {
   const int  *ptr =&v_;
   const int **ptr2=&ptr;
-  HandleIndirection<MyTestProcessFuncObj>::process(ptr2, p_);
+  HandleIndirection::process<MyTestProcessFuncObj>(ptr2, p_);
   ensure_equals("invalid run count", g_MyTestProcessFuncObj_runCnt, 1);
 }
 
@@ -99,7 +99,7 @@ void testObj::test<5>(void)
 {
   boost::shared_ptr<const int*>  ptr(new const int*(&v_));
   boost::shared_ptr<const int*> *ptr2=&ptr;
-  HandleIndirection<MyTestProcessFuncObj>::process(ptr2, p_);
+  HandleIndirection::process<MyTestProcessFuncObj>(ptr2, p_);
   ensure_equals("invalid run count", g_MyTestProcessFuncObj_runCnt, 1);
 }
 
@@ -109,7 +109,7 @@ template<>
 void testObj::test<6>(void)
 {
   const int *ptr=NULL;
-  HandleIndirection<MyTestProcessFuncObj>::process(ptr, p_);
+  HandleIndirection::process<MyTestProcessFuncObj>(ptr, p_);
   ensure_equals("invalid run count", g_MyTestProcessFuncObj_runCnt, 0);
   ensure_equals("null callback not called", cb_.lastNullFound_, "a");
 }
@@ -120,7 +120,7 @@ template<>
 void testObj::test<7>(void)
 {
   boost::shared_ptr<int>  ptr;
-  HandleIndirection<MyTestProcessFuncObj>::process(ptr, p_);
+  HandleIndirection::process<MyTestProcessFuncObj>(ptr, p_);
   ensure_equals("invalid run count", g_MyTestProcessFuncObj_runCnt, 0);
   ensure_equals("null callback not called", cb_.lastNullFound_, "a");
 }
