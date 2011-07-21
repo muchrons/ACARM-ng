@@ -125,14 +125,14 @@ void testObj::test<7>(void)
   ensure_equals("null callback not called", cb_.lastNullFound_, "a");
 }
 
-// test exception when requested indirection translation on end()
+// test exception when requested indirection translation on last element
 template<>
 template<>
 void testObj::test<8>(void)
 {
-  while(!p_.isEnd())
+  while(p_.hasNext())
     ++p_;
-  assert(p_.isEnd());
+  assert(!p_.hasNext());
   try
   {
     HandleIndirection::process<MyTestProcessFuncObj>(&v_, p_);

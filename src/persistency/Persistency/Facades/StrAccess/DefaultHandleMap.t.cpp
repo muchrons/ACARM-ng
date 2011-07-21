@@ -50,8 +50,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  //at<DefaultHandleMap, ErrorTests>::type::throwIfEnd(SYSTEM_SAVE_LOCATION, p_); // thould not throw
-  TestParams::handle<ErrorTests>::type::throwIfEnd(SYSTEM_SAVE_LOCATION, p_); // thould not throw
+  //at<DefaultHandleMap, ErrorTests>::type::throwIfLast(SYSTEM_SAVE_LOCATION, p_); // thould not throw
+  TestParams::handle<ErrorTests>::type::throwIfLast(SYSTEM_SAVE_LOCATION, p_); // thould not throw
 }
 
 // 

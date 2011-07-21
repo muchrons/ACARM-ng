@@ -84,4 +84,22 @@ void testObj::test<5>(void)
   ensure_equals("invalid path", p_.path().get(), path_.get());
 }
 
+// test for having next element when there is one
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  ensure("no next element reported", p_.hasNext());
+}
+
+// test for having next element when there is no
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  ++p_;
+  ensure("end came too soon", p_.isEnd()==false);
+  ensure("no next element reported", p_.hasNext()==false);
+}
+
 } // namespace tut

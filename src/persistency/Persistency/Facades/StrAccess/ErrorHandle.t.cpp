@@ -15,15 +15,15 @@ namespace
 struct TestClass
 {
   TestClass(void):
-    pEnd_(Path("a.b"), cb_),
+    pLast_(Path("a.b"), cb_),
     p_(Path("a.b"), cb_)
   {
-    while(!pEnd_.isEnd())
-      ++pEnd_;
+    while(pLast_.hasNext())
+      ++pLast_;
   }
 
   TestParams::ResultCallback cb_;
-  TestParams                 pEnd_;
+  TestParams                 pLast_;
   TestParams                 p_;
 };
 
@@ -44,8 +44,8 @@ void testObj::test<1>(void)
 {
   try
   {
-    ErrorHandle::throwIfEnd(SYSTEM_SAVE_LOCATION, pEnd_);
-    fail("throwIfEnd() didn't throw on end");
+    ErrorHandle::throwIfLast(SYSTEM_SAVE_LOCATION, pLast_);
+    fail("throwIfLast() didn't throw on end");
   }
   catch(const ExceptionInvalidPath &)
   {
@@ -58,7 +58,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ErrorHandle::throwIfEnd(SYSTEM_SAVE_LOCATION, p_);
+  ErrorHandle::throwIfLast(SYSTEM_SAVE_LOCATION, p_);
 }
 
 // test throwing on non-end
@@ -68,8 +68,8 @@ void testObj::test<3>(void)
 {
   try
   {
-    ErrorHandle::throwIfNotEnd(SYSTEM_SAVE_LOCATION, p_);
-    fail("throwIfNotEnd() didn't throw on non-end path");
+    ErrorHandle::throwIfNotLast(SYSTEM_SAVE_LOCATION, p_);
+    fail("throwIfNotLast() didn't throw on non-end path");
   }
   catch(const ExceptionInvalidPath &)
   {
@@ -82,7 +82,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ErrorHandle::throwIfNotEnd(SYSTEM_SAVE_LOCATION, pEnd_);
+  ErrorHandle::throwIfNotLast(SYSTEM_SAVE_LOCATION, pLast_);
 }
 
 // test thwoing on unexpected path token

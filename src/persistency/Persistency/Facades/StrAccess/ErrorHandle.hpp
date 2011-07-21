@@ -23,16 +23,16 @@ namespace StrAccess
 struct ErrorHandle: private System::NoInstance
 {
   template<typename TParams>
-  static void throwIfEnd(const ExceptionInvalidPath::Location &where, const TParams &p)
+  static void throwIfLast(const ExceptionInvalidPath::Location &where, const TParams &p)
   {
-    if(p.isEnd())
+    if(!p.hasNext())
       throw ExceptionInvalidPath(where, p.path().get(), "<END>", "unexpected end of path");
   }
 
   template<typename TParams>
-  static void throwIfNotEnd(const ExceptionInvalidPath::Location &where, const TParams &p)
+  static void throwIfNotLast(const ExceptionInvalidPath::Location &where, const TParams &p)
   {
-    if(!p.isEnd())
+    if(p.hasNext())
       throw ExceptionInvalidPath(where, p.path().get(), p.get(), "unexpected tokens after full path");
   }
 

@@ -25,7 +25,7 @@ struct OnReferenceURL: private System::NoInstance
   {
     typedef TParams<ErrorTests>::type ErrH;
 
-    ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
 
     if(p.get()=="name")
       return process( e.getName().get() );

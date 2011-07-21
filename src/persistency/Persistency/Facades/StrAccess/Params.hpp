@@ -63,6 +63,14 @@ struct Params
     return now_==path_.end();
   }
 
+  bool hasNext(void) const
+  {
+    assert(!isEnd());
+    PathCIT tmp=now_;
+    ++tmp;
+    return tmp!=path_.end();
+  }
+
   ResultCallback &callback(void)
   {
     assert(callback_!=NULL);

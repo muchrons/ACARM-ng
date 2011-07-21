@@ -1,18 +1,19 @@
 /*
- * HandleIndirection.hpp
+ * CollectionAccess.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_HANDLEINDIRECTION_HPP_FILE
-#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_HANDLEINDIRECTION_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_COLLECTIONACCESS_HPP_FILE
+#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_COLLECTIONACCESS_HPP_FILE
 
 /* public header */
 
-#include <boost/mpl/if.hpp>
+#include <boost/static_assert.hpp>
 
 #include "System/NoInstance.hpp"
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
-#include "Persistency/Facades/StrAccess/IsPointer.hpp"
-#include "Persistency/Facades/StrAccess/IsSmartPointer.hpp"
+#include "Persistency/Facades/StrAccess/IsCollection.hpp"
+#include "Persistency/Facades/StrAccess/detail/Term.hpp"
+#include "Persistency/Facades/StrAccess/detail/NonTerm.hpp"
 
 namespace Persistency
 {
@@ -20,7 +21,7 @@ namespace Facades
 {
 namespace StrAccess
 {
-
+/*
 namespace detail
 {
 
@@ -87,16 +88,18 @@ struct HandleIndirectionImpl: private System::NoInstance
 }; // struct HandleIndirectionImpl
 
 } // namespace detail
+*/
 
 
-struct HandleIndirection: private System::NoInstance
+struct CollectionAccess: private System::NoInstance
 {
-  template<typename TFuncObj, typename T, typename TParams>
+  template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
+    BOOST_STATIC_ASSERT( IsCollection<T>::value );
     typedef typename TParams::template handle<ErrorTests>::type ErrH;
     ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
-    return detail::HandleIndirectionImpl<TFuncObj>::process(e,p);
+    // TODO             
   }
 }; // struct HandleIndirection
 

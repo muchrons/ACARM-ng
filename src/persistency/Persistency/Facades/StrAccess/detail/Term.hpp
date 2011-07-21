@@ -69,7 +69,7 @@ struct Term: private System::NoInstance
   bool process(const T &e, TParams &p)
   {
     typedef typename TParams::template handle<ErrorTests>::type ErrH;
-    ErrH::throwIfNotEnd(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwIfNotLast(SYSTEM_SAVE_LOCATION, p);
     // TODO: this is broken - we need to dereference all and THEN check if this is collection
     // process returning size for collection and value for non-collection
     typedef ProcessTermCollectionImpl<IsCollection<T>::value> Action;
