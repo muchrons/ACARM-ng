@@ -98,8 +98,11 @@ struct CollectionAccess: private System::NoInstance
   {
     BOOST_STATIC_ASSERT( IsCollection<T>::value );
     typedef typename TParams::template handle<ErrorTests>::type ErrH;
-    ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
-    // TODO             
+    ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
+    if(p.isLast())
+      return detail::Term::process(e, p);
+    else
+      return detail::NonTerm::process(e, p);
   }
 }; // struct HandleIndirection
 
