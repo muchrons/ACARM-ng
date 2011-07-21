@@ -18,6 +18,8 @@ namespace Facades
 namespace StrAccess
 {
 
+// TODO
+
 /** \brief getter for a values specified by a given path.
  */
 struct Getter: private System::NoInstance
