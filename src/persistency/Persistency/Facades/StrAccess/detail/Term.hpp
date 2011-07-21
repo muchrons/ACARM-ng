@@ -62,19 +62,29 @@ struct ProcessTermCollectionImpl<false>: private System::NoInstance
 }; // struct ProcessCollectionImpl
 
 
+struct TermImpl: private System::NoInstance
+{
+  template<typename T, typename TParams>
+  static bool process(const T &e, TParams &p)
+  {
+    // process returning size for collection and value for non-collection
+    typedef ProcessTermCollectionImpl<IsCollection<T>::value> Action;
+    // process (smart) pointers before doing anything
+    return Action::process(e, p);
+  }
+}; // struct Term
+
+
 
 struct Term: private System::NoInstance
 {
   template<typename T, typename TParams>
-  bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams &p)
   {
     typedef typename TParams::template handle<ErrorTests>::type ErrH;
     ErrH::throwIfNotLast(SYSTEM_SAVE_LOCATION, p);
-    // TODO: this is broken - we need to dereference all and THEN check if this is collection
-    // process returning size for collection and value for non-collection
-    typedef ProcessTermCollectionImpl<IsCollection<T>::value> Action;
     // process (smart) pointers before doing anything
-    return HandleIndirection::process<Action>(e, p);
+    return HandleIndirection::process<TermImpl>(e, p);
   }
 }; // struct Term
 
