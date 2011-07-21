@@ -1,0 +1,12 @@
+# patch for file framework/site/prado/Util/TLogRouter.php
+833c833
+< 		$sql='SELECT * FROM '.$this->_logTable.' WHERE 0';
+---
+> 		$sql='SELECT * FROM '.$this->_logTable.' WHERE FALSE';
+840a841
+> 
+844c845,846
+< 				throw new TConfigurationException('db_logtable_inexistent',$this->_logTable);
+---
+>                           //throw new TConfigurationException('db_logtable_inexistent',$this->_logTable);
+>                           throw $e;
