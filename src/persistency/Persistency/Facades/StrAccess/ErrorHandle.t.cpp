@@ -101,4 +101,29 @@ void testObj::test<5>(void)
   }
 }
 
+// test if end does not throw when not reached
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  ErrorHandle::throwIfEnd(SYSTEM_SAVE_LOCATION, pLast_);
+}
+
+// test thwoing on end()
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  ++pLast_;
+  try
+  {
+    ErrorHandle::throwIfEnd(SYSTEM_SAVE_LOCATION, pLast_);
+    fail("throwIfEnd() didn't throw on end");
+  }
+  catch(const ExceptionInvalidPath &)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut

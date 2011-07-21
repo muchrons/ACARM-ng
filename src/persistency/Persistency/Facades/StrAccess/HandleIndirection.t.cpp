@@ -125,7 +125,7 @@ void testObj::test<7>(void)
   ensure_equals("null callback not called", cb_.lastNullFound_, "a");
 }
 
-// test exception when requested indirection translation on last element
+// test no exception when requested indirection translation on last element
 template<>
 template<>
 void testObj::test<8>(void)
@@ -133,6 +133,18 @@ void testObj::test<8>(void)
   while(p_.hasNext())
     ++p_;
   assert(!p_.hasNext());
+  HandleIndirection::process<MyTestProcessFuncObj>(&v_, p_);    // must not throw
+  ensure_equals("invalid run count", g_MyTestProcessFuncObj_runCnt, 1);
+}
+
+// test exception when requested indirection translation on end()
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  while(!p_.isEnd())
+    ++p_;
+  assert(p_.isEnd());
   try
   {
     HandleIndirection::process<MyTestProcessFuncObj>(&v_, p_);
@@ -142,6 +154,7 @@ void testObj::test<8>(void)
   {
     // this is expected
   }
+  ensure_equals("invalid run count", g_MyTestProcessFuncObj_runCnt, 0);
 }
 
 } // namespace tut

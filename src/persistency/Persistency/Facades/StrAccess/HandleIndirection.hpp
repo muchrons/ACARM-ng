@@ -95,7 +95,7 @@ struct HandleIndirection: private System::NoInstance
   static bool process(const T &e, TParams &p)
   {
     typedef typename TParams::template handle<ErrorTests>::type ErrH;
-    ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     return detail::HandleIndirectionImpl<TFuncObj>::process(e,p);
   }
 }; // struct HandleIndirection

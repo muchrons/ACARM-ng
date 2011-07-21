@@ -26,7 +26,7 @@ struct ErrorHandle: private System::NoInstance
   static void throwIfLast(const ExceptionInvalidPath::Location &where, const TParams &p)
   {
     if(!p.hasNext())
-      throw ExceptionInvalidPath(where, p.path().get(), "<END>", "unexpected end of path");
+      throw ExceptionInvalidPath(where, p.path().get(), p.get(), "unexpected end of path");
   }
 
   template<typename TParams>
@@ -40,6 +40,13 @@ struct ErrorHandle: private System::NoInstance
   static void throwOnInvalidPath(const ExceptionInvalidPath::Location &where, const TParams &p)
   {
     throw ExceptionInvalidPath(where, p.path().get(), p.get(), "unexpected token in path");
+  }
+
+  template<typename TParams>
+  static void throwIfEnd(const ExceptionInvalidPath::Location &where, const TParams &p)
+  {
+    if(p.isEnd())
+      throw ExceptionInvalidPath(where, p.path().get(), "<END>", "invalid request");
   }
 }; // struct ErrorHandle
 
