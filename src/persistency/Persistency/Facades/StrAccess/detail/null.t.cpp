@@ -5,7 +5,7 @@
 #include <tut.h>
 #include <string>
 
-#include "Persistency/Facades/StrAccess/null.hpp"
+#include "Persistency/Facades/StrAccess/detail/null.hpp"
 
 using namespace Persistency::Facades::StrAccess::detail;
 
@@ -18,7 +18,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/null");
+factory tf("Persistency/Facades/StrAccess/detail/null");
 } // unnamed namespace
 
 

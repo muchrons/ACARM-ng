@@ -5,7 +5,7 @@
 #include <tut.h>
 #include <string>
 
-#include "Persistency/Facades/StrAccess/NonTerm.hpp"
+#include "Persistency/Facades/StrAccess/detail/NonTerm.hpp"
 
 using namespace Persistency::Facades::StrAccess::detail;
 
@@ -18,7 +18,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/NonTerm");
+factory tf("Persistency/Facades/StrAccess/detail/NonTerm");
 } // unnamed namespace
 
 
