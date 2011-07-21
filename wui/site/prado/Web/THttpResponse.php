@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: THttpResponse.php 2740 2009-11-08 09:46:55Z godzilla80@gmx.net $
+ * @version $Id: THttpResponse.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web
  */
 
@@ -60,7 +60,7 @@ Prado::using('System.Web.THttpResponseAdapter');
  * will force the browser to ask for a username and a password.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: THttpResponse.php 2740 2009-11-08 09:46:55Z godzilla80@gmx.net $
+ * @version $Id: THttpResponse.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web
  * @since 3.0
  */
@@ -543,10 +543,27 @@ class THttpResponse extends TModule implements ITextWriter
 		if($request->getEnableCookieValidation())
 		{
 			$value=$this->getApplication()->getSecurityManager()->hashData($cookie->getValue());
-			setcookie($cookie->getName(),$value,$cookie->getExpire(),$cookie->getPath(),$cookie->getDomain(),$cookie->getSecure());
+			setcookie(
+				$cookie->getName(),
+				$value,
+				$cookie->getExpire(),
+				$cookie->getPath(),
+				$cookie->getDomain(),
+				$cookie->getSecure(),
+				$cookie->getHttpOnly()
+			);
 		}
-		else
-			setcookie($cookie->getName(),$cookie->getValue(),$cookie->getExpire(),$cookie->getPath(),$cookie->getDomain(),$cookie->getSecure());
+		else {
+			setcookie(
+				$cookie->getName(),
+				$cookie->getValue(),
+				$cookie->getExpire(),
+				$cookie->getPath(),
+				$cookie->getDomain(),
+				$cookie->getSecure(),
+				$cookie->getHttpOnly()
+			);
+		}
 	}
 
 	/**
@@ -556,7 +573,15 @@ class THttpResponse extends TModule implements ITextWriter
 	 */
 	public function removeCookie($cookie)
 	{
-		setcookie($cookie->getName(),null,0,$cookie->getPath(),$cookie->getDomain(),$cookie->getSecure());
+		setcookie(
+			$cookie->getName(),
+			null,
+			0,
+			$cookie->getPath(),
+			$cookie->getDomain(),
+			$cookie->getSecure(),
+			$cookie->getHttpOnly()
+		);
 	}
 
 	/**

@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TCallbackClientScript.php 2773 2010-02-17 13:55:18Z Christophe.Boulain $
+ * @version $Id: TCallbackClientScript.php 2918 2011-05-21 17:10:29Z ctrlaltca@gmail.com $
  * @package System.Web.UI.ActiveControls
  */
 
@@ -28,7 +28,7 @@
  * </code>
  *
  * @author Wei Zhuo <weizhuo[at]gamil[dot]com>
- * @version $Id: TCallbackClientScript.php 2773 2010-02-17 13:55:18Z Christophe.Boulain $
+ * @version $Id: TCallbackClientScript.php 2918 2011-05-21 17:10:29Z ctrlaltca@gmail.com $
  * @package System.Web.UI.ActiveControls
  * @since 3.1
  */
@@ -164,7 +164,8 @@ class TCallbackClientScript extends TApplicationComponent
 	 */
 	public function setAttribute($control, $name, $value)
 	{
-        if ($control instanceof ISurroundable) 
+        // Attributes should be applied on Surrounding tag, except for 'disabled' attribute
+		if ($control instanceof ISurroundable && strtolower($name)!=='disabled')
             $control=$control->getSurroundingTagID();
 		$this->callClientFunction('Prado.Element.setAttribute',array($control, $name, $value));
 	}

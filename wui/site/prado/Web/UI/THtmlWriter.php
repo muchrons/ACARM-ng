@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: THtmlWriter.php 2625 2009-03-19 22:07:39Z godzilla80@gmx.net $
+ * @version $Id: THtmlWriter.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI
  */
 
@@ -32,7 +32,7 @@
  * tags in HTML and XHTML.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: THtmlWriter.php 2625 2009-03-19 22:07:39Z godzilla80@gmx.net $
+ * @version $Id: THtmlWriter.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI
  * @since 3.0
  */
@@ -184,7 +184,7 @@ class THtmlWriter extends TApplicationComponent implements ITextWriter
 	 */
 	public function flush()
 	{
-		$this->_writer->flush();
+		return $this->_writer->flush();
 	}
 
 	/**

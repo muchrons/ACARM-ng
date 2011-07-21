@@ -6,17 +6,34 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TColorPicker.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TColorPicker.php 2942 2011-06-01 19:49:56Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  */
 
 /**
  * TColorPicker class.
  *
- * Be aware, this control is EXPERIMENTAL and is not stablized yet.
+ * TColorPicker displays a text box for color input purpose.
+ * Next to the textbox there's a button filled with the current chosen color.
+ * Users can write a color name directly in the text box as an hex triplet (also known as HTML notation, eg: #FF00FF).
+ * Alternatively, if the <b>ShowColorPicker</b> property is enabled (it is by default), users can click the button
+ * to have a color picker UI appear. A color chan be chosen directly by clicking on the color picker.
  *
+ * TColorPicker has three different color picker UI <b>Mode</b>s:
+ *  # <b>Simple</b> - Grid with 12 simple colors.
+ *  # <b>Basic</b> - Grid with the most common 70 colors. This is the default mode.
+ *  # <b>Full</b> - Full-featured color picker.
+ * 
+ * The <b>CssClass</b> property can be used to override the CSS class name
+ * for the color picker panel. The <b>ColorStyle</b> property sets the packages
+ * styles available. E.g. <b>default</b>.
+ * 
+ * If the <b>Mode</b> property is set to <b>Full</b>, the color picker panel will
+ * display an "Ok" and "Cancel" buttons. You can customize the button labels setting the <b>OKButtonText</b>
+ * and <b>CancelButtonText</b> properties.
+ * 
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TColorPicker.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TColorPicker.php 2942 2011-06-01 19:49:56Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0
  */
@@ -226,12 +243,12 @@ class TColorPicker extends TTextBox
  * that a {@link TColorPicker} control can take.
  *
  * The following enumerable values are defined:
- * - Simple
- * - Basic
- * - Full
+ * # Simple - Grid with 12 simple colors.
+ * # Basic - Grid with the most common 70 colors. This is the default mode.
+ * # Full - Full-featured color picker.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TColorPicker.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TColorPicker.php 2942 2011-06-01 19:49:56Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0.4
  */
@@ -248,7 +265,7 @@ class TColorPickerMode extends TEnumerable
  * Client-side javascript code options.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TColorPicker.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TColorPicker.php 2942 2011-06-01 19:49:56Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.1
  */

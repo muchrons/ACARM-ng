@@ -5,9 +5,9 @@
  *
  * @author Marcos Nobre <marconobre[at]gmail[dot]com>
  * @link http://www.pradosoft.com/
- * @copyright Copyright &copy; 2005-2008 PradoSoft
+ * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TOracleTableInfo.php 2482 2008-07-30 02:07:13Z knut $
+ * @version $Id: TOracleTableInfo.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.Common
  */
 
@@ -15,7 +15,7 @@
  * TDbTableInfo class describes the meta data of a database table.
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TOracleTableInfo.php 2482 2008-07-30 02:07:13Z knut $
+ * @version $Id: TOracleTableInfo.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.Common
  * @since 3.1
  */

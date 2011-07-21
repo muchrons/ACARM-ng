@@ -4,9 +4,9 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.pradosoft.com/
- * @copyright Copyright &copy; 2005-2008 PradoSoft
+ * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TDbTransaction.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TDbTransaction.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data
  */
 
@@ -35,7 +35,7 @@ Prado::using('System.Data.TDbDataReader');
  * </code>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TDbTransaction.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TDbTransaction.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data
  * @since 3.0
  */

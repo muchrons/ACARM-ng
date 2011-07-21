@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TBoundColumn.php 2705 2009-09-15 08:28:02Z Christophe.Boulain $
+ * @version $Id: TBoundColumn.php 2918 2011-05-21 17:10:29Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  */
 
@@ -42,7 +42,7 @@ Prado::using('System.Web.UI.WebControls.TDataGridColumn');
  * For more details, see {@link TRepeater} and {@link TDataList}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TBoundColumn.php 2705 2009-09-15 08:28:02Z Christophe.Boulain $
+ * @version $Id: TBoundColumn.php 2918 2011-05-21 17:10:29Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0
  */
@@ -197,6 +197,7 @@ class TBoundColumn extends TDataGridColumn
 							$control->setItemType($item->getItemType());
 						}
 						$cell->getControls()->add($control);
+						$cell->registerObject('EditControl',$control);
 					}
 					else
 					{
@@ -206,7 +207,20 @@ class TBoundColumn extends TDataGridColumn
 					}
 				}
 				else
-					$control=$cell;
+				{
+					if(($classPath=$this->getItemRenderer())!=='')
+					{
+						$control=Prado::createComponent($classPath);
+						if($control instanceof IItemDataRenderer)
+						{
+							$control->setItemIndex($item->getItemIndex());
+							$control->setItemType($item->getItemType());
+						}
+						$cell->getControls()->add($control);
+					}
+					else
+						$control=$cell;
+				}
 				$control->attachEventHandler('OnDataBinding',array($this,'dataBindColumn'));
 				break;
 			default:

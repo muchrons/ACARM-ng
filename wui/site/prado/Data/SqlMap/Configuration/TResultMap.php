@@ -4,9 +4,9 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @link http://www.pradosoft.com/
- * @copyright Copyright &copy; 2005-2008 PradoSoft
+ * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TResultMap.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TResultMap.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap.Configuration
  */
 
@@ -32,7 +32,7 @@
  * from the "parent" <resultMap> are set before any values specified by this <resultMap>.
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TResultMap.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TResultMap.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap.Configuration
  * @since 3.1
  */

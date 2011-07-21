@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TScaffoldBase.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TScaffoldBase.php 2880 2011-01-19 14:56:01Z christophe.boulain $
  * @package System.Data.ActiveRecord.Scaffold
  */
 
@@ -26,7 +26,7 @@ Prado::using('System.Data.ActiveRecord.TActiveRecord');
  * file explicitly.
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TScaffoldBase.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TScaffoldBase.php 2880 2011-01-19 14:56:01Z christophe.boulain $
  * @package System.Data.ActiveRecord.Scaffold
  * @since 3.1
  */
@@ -65,6 +65,7 @@ abstract class TScaffoldBase extends TTemplateControl
 	 */
 	protected function getRecordPkValues($record)
 	{
+		$data=array();
 		foreach($this->getTableInfo()->getColumns() as $name=>$column)
 		{
 			if($column->getIsPrimaryKey())

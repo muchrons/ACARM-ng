@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TDataList.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TDataList.php 2939 2011-06-01 08:32:47Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  */
 
@@ -146,7 +146,7 @@ Prado::using('System.Web.UI.WebControls.TRepeatInfo');
  * complex data may also have serializing problem if saved in viewstate.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TDataList.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TDataList.php 2939 2011-06-01 08:32:47Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0
  */
@@ -1321,7 +1321,7 @@ class TDataList extends TBaseDataList implements INamingContainer, IRepeatInfoUs
 		if($this->_footer!==null && $this->_footer instanceof IStyleable)
 		{
 			if($footerStyle=$this->getViewState('FooterStyle',null))
-				$this->_footer->getStyle()->mergeWith($headerStyle);
+				$this->_footer->getStyle()->mergeWith($footerStyle);
 		}
 
 		$selectedIndex=$this->getSelectedItemIndex();
@@ -1499,7 +1499,7 @@ class TDataList extends TBaseDataList implements INamingContainer, IRepeatInfoUs
  * The {@link getItem Item} property indicates the DataList item related with the event.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TDataList.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TDataList.php 2939 2011-06-01 08:32:47Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0
  */
@@ -1540,7 +1540,7 @@ class TDataListItemEventParameter extends TEventParameter
  * raises the Command event.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TDataList.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TDataList.php 2939 2011-06-01 08:32:47Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0
  */
@@ -1595,7 +1595,7 @@ class TDataListCommandEventParameter extends TCommandEventParameter
  * is given by {@link getItemType ItemType} property.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TDataList.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TDataList.php 2939 2011-06-01 08:32:47Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0
  */
@@ -1742,7 +1742,7 @@ class TDataListItem extends TWebControl implements INamingContainer, IItemDataRe
  * TDataListItemCollection represents a collection of data list items.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TDataList.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TDataList.php 2939 2011-06-01 08:32:47Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0
  */

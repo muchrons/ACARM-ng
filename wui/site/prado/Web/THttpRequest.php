@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: THttpRequest.php 2781 2010-02-22 08:56:54Z godzilla80@gmx.net $
+ * @version $Id: THttpRequest.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web
  */
 
@@ -64,7 +64,7 @@ Prado::using('System.Web.TUrlManager');
  * request module. It can be accessed via {@link TApplication::getRequest()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: THttpRequest.php 2781 2010-02-22 08:56:54Z godzilla80@gmx.net $
+ * @version $Id: THttpRequest.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web
  * @since 3.0
  */
@@ -846,7 +846,7 @@ class THttpRequest extends TApplicationComponent implements IteratorAggregate,Ar
  * </code>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: THttpRequest.php 2781 2010-02-22 08:56:54Z godzilla80@gmx.net $
+ * @version $Id: THttpRequest.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web
  * @since 3.0
  */
@@ -934,7 +934,7 @@ class THttpCookieCollection extends TList
  * domain, path, expire, and secure.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: THttpRequest.php 2781 2010-02-22 08:56:54Z godzilla80@gmx.net $
+ * @version $Id: THttpRequest.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web
  * @since 3.0
  */
@@ -964,6 +964,10 @@ class THttpCookie extends TComponent
 	 * @var boolean whether cookie should be sent via secure connection
 	 */
 	private $_secure=false;
+	/**
+	 * @var boolean if true the cookie value will be unavailable to JavaScript
+	 */
+	private $_httpOnly=false;
 
 	/**
 	 * Constructor.
@@ -1006,6 +1010,22 @@ class THttpCookie extends TComponent
 	public function setExpire($value)
 	{
 		$this->_expire=TPropertyValue::ensureInteger($value);
+	}
+
+	/**
+	 * @return boolean if true the cookie value will be unavailable to JavaScript
+	 */
+	public function getHttpOnly()
+	{
+		return $this->_httpOnly;
+	}
+
+	/**
+	 * @param boolean $value if true the cookie value will be unavailable to JavaScript
+	 */
+	public function setHttpOnly($value)
+	{
+		$this->_httpOnly = TPropertyValue::ensureBoolean($value);
 	}
 
 	/**
@@ -1089,7 +1109,7 @@ class THttpCookie extends TComponent
  * - fragment: anchor
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: THttpRequest.php 2781 2010-02-22 08:56:54Z godzilla80@gmx.net $
+ * @version $Id: THttpRequest.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web
  * @since 3.0
  */
@@ -1255,7 +1275,7 @@ class TUri extends TComponent
  * - Path: the URL format is like /path/to/index.php/name1,value1/name2,value2...
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: THttpRequest.php 2781 2010-02-22 08:56:54Z godzilla80@gmx.net $
+ * @version $Id: THttpRequest.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web
  * @since 3.0.4
  */

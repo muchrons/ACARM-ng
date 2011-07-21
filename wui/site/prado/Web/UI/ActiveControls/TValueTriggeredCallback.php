@@ -6,9 +6,11 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TValueTriggeredCallback.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TValueTriggeredCallback.php 2960 2011-06-02 17:44:51Z ctrlaltca@gmail.com $
  * @package System.Web.UI.ActiveControls
  */
+
+Prado::using('System.Web.UI.ActiveControls.TTriggeredCallback');
 
 /**
  * TValueTriggeredCallback Class
@@ -20,10 +22,10 @@
  *
  * A {@link setDecayRate DecayRate} can be set to increase the polling
  * interval linearly if no changes are observed. Once a change is
- * observe, the polling interval is reset to the original value.
+ * observed, the polling interval is reset to the original value.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TValueTriggeredCallback.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TValueTriggeredCallback.php 2960 2011-06-02 17:44:51Z ctrlaltca@gmail.com $
  * @package System.Web.UI.ActiveControls
  * @since 3.1
  */

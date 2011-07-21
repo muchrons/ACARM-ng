@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TActiveLabel.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TActiveLabel.php 2941 2011-06-01 09:39:26Z ctrlaltca@gmail.com $
  * @package System.Web.UI.ActiveControls
  */
 
@@ -26,7 +26,7 @@ Prado::using('System.Web.UI.ActiveControls.TActiveControlAdapter');
  * the client-side "for" attribute on the label.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TActiveLabel.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TActiveLabel.php 2941 2011-06-01 09:39:26Z ctrlaltca@gmail.com $
  * @package System.Web.UI.ActiveControls
  * @since 3.1
  */

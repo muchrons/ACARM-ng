@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TTabPanel.php 2773 2010-02-17 13:55:18Z Christophe.Boulain $
+ * @version $Id: TTabPanel.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.1.1
  */
@@ -51,7 +51,7 @@
  * </code>
  *
  * @author Tomasz Wolny <tomasz.wolny@polecam.to.pl> and Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TTabPanel.php 2773 2010-02-17 13:55:18Z Christophe.Boulain $
+ * @version $Id: TTabPanel.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.1.1
  */
@@ -412,7 +412,11 @@ class TTabPanel extends TWebControl implements IPostBackDataHandler
 		$cs->registerPradoScript('tabpanel');
 		$code="new $className($options);";
 		$cs->registerEndScript("prado:$id", $code);
-		$cs->registerHiddenField($id.'_1',$this->getActiveViewIndex());
+		// ensure an item is always active and visible
+		$index = $this->getActiveViewIndex();
+		if(!$this->getViews()->itemAt($index)->Visible)
+			$index=0;
+		$cs->registerHiddenField($id.'_1', $index);
 		$page->registerRequiresPostData($this);
 		$page->registerRequiresPostData($id."_1");
 	}
@@ -435,13 +439,16 @@ class TTabPanel extends TWebControl implements IPostBackDataHandler
 		$options['ID']=$this->getClientID();
 		$options['ActiveCssClass']=$this->getActiveTabCssClass();
 		$options['NormalCssClass']=$this->getTabCssClass();
-		$viewIDs=array();
+		$views='';
 		foreach($this->getViews() as $view)
 		{
-			if($view->getVisible())
-				$viewIDs[]=$view->getClientID();
+			if($views!='') 
+				$views.=', ';
+			$views.= '"'.$view->getClientID().'":'.($view->getVisible() ? '1': '0' );
 		}
-		$options['Views']='[\''.implode('\',\'',$viewIDs).'\']';
+
+		$options['Views']='{'.$views.='}';
+		$viewIDs=array();
 
 		return $options;
 	}
@@ -507,7 +514,7 @@ class TTabPanel extends TWebControl implements IPostBackDataHandler
  * setting the {@link setActive Active} property.
  *
  * @author Tomasz Wolny <tomasz.wolny@polecam.to.pl> and Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TTabPanel.php 2773 2010-02-17 13:55:18Z Christophe.Boulain $
+ * @version $Id: TTabPanel.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.1.1
  */
@@ -661,7 +668,7 @@ class TTabView extends TWebControl
  * TTabViewCollection is used to maintain a list of views belong to a {@link TTabPanel}.
  *
  * @author Tomasz Wolny <tomasz.wolny@polecam.to.pl> and Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TTabPanel.php 2773 2010-02-17 13:55:18Z Christophe.Boulain $
+ * @version $Id: TTabPanel.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.1.1
  */

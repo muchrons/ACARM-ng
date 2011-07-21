@@ -6,14 +6,14 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TActiveImageButton.php 2773 2010-02-17 13:55:18Z Christophe.Boulain $
+ * @version $Id: TActiveImageButton.php 2945 2011-06-01 20:48:19Z ctrlaltca@gmail.com $
  * @package System.Web.UI.ActiveControls
  */
 
 /**
  * TActiveImageButton class.
  *
- * TActiveImageButton is the active control counter part to TLinkButton.
+ * TActiveImageButton is the active control counter part to TImageButton.
  * When a TActiveImageButton is clicked, rather than a normal post back request a
  * callback request is initiated.
  *
@@ -21,7 +21,7 @@
  * and it is raise <b>after</b> the {@link onClick OnClick} event.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TActiveImageButton.php 2773 2010-02-17 13:55:18Z Christophe.Boulain $
+ * @version $Id: TActiveImageButton.php 2945 2011-06-01 20:48:19Z ctrlaltca@gmail.com $
  * @package System.Web.UI.ActiveControls
  * @since 3.1
  */

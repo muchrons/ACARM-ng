@@ -9,7 +9,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: PradoBase.php 2782 2010-02-22 12:03:50Z Christophe.Boulain $
+ * @version $Id: PradoBase.php 2969 2011-06-03 13:18:04Z rojaro $
  * @package System
  */
 
@@ -34,7 +34,7 @@ if(!defined('PRADO_CHMOD'))
  * rewritten for customization.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: PradoBase.php 2782 2010-02-22 12:03:50Z Christophe.Boulain $
+ * @version $Id: PradoBase.php 2969 2011-06-03 13:18:04Z rojaro $
  * @package System
  * @since 3.0
  */
@@ -71,7 +71,7 @@ class PradoBase
 	 */
 	public static function getVersion()
 	{
-		return '3.1.7';
+		return '3.1.9';
 	}
 
 	/**
@@ -341,21 +341,24 @@ class PradoBase
 	 * @param string extension to be appended if the namespace refers to a file
 	 * @return string file path corresponding to the namespace, null if namespace is invalid
 	 */
-	public static function getPathOfNamespace($namespace,$ext='')
+	public static function getPathOfNamespace($namespace, $ext='')
 	{
-		if(isset(self::$_usings[$namespace]))
-			return self::$_usings[$namespace];
-		else if(isset(self::$_aliases[$namespace]))
-			return self::$_aliases[$namespace];
-		else
+		if(self::CLASS_FILE_EXT === $ext || empty($ext))
 		{
-			$segs=explode('.',$namespace);
-			$alias=array_shift($segs);
-			if(($file=array_pop($segs))!==null && ($root=self::getPathOfAlias($alias))!==null)
-				return rtrim($root.DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR ,$segs),'/\\').(($file==='*')?'':DIRECTORY_SEPARATOR.$file.$ext);
-			else
-				return null;
+			if(isset(self::$_usings[$namespace]))
+				return self::$_usings[$namespace];
+
+			if(isset(self::$_aliases[$namespace]))
+				return self::$_aliases[$namespace];
 		}
+
+		$segs = explode('.',$namespace);
+		$alias = array_shift($segs);
+
+		if(null !== ($file = array_pop($segs)) && null !== ($root = self::getPathOfAlias($alias)))
+			return rtrim($root.DIRECTORY_SEPARATOR.implode(DIRECTORY_SEPARATOR ,$segs),'/\\').(($file === '*') ? '' : DIRECTORY_SEPARATOR.$file.$ext);
+
+		return null;
 	}
 
 	/**
@@ -625,7 +628,7 @@ class PradoBase
  * This class was originally written to cope with the incompatibility between different PHP versions.
  * It is equivalent to ReflectionClass for PHP version >= 5.1.0
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: PradoBase.php 2782 2010-02-22 12:03:50Z Christophe.Boulain $
+ * @version $Id: PradoBase.php 2969 2011-06-03 13:18:04Z rojaro $
  * @package System
  * @since 3.0
  */

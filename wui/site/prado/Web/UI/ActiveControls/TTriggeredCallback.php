@@ -6,9 +6,11 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TTriggeredCallback.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TTriggeredCallback.php 2927 2011-05-28 11:43:46Z ctrlaltca@gmail.com $
  * @package System.Web.UI.ActiveControls
  */
+
+Prado::using('System.Web.UI.ActiveControls.TCallback');
 
 /**
  * TTriggeredCallback abstract Class
@@ -17,7 +19,7 @@
  * property sets the control ID to observe the trigger.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TTriggeredCallback.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TTriggeredCallback.php 2927 2011-05-28 11:43:46Z ctrlaltca@gmail.com $
  * @package System.Web.UI.ActiveControls
  * @since 3.1
  */

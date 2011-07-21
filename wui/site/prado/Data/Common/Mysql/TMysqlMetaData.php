@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TMysqlMetaData.php 2750 2010-01-12 11:18:57Z Christophe.Boulain $
+ * @version $Id: TMysqlMetaData.php 2880 2011-01-19 14:56:01Z christophe.boulain $
  * @package System.Data.Common.Mysql
  */
 
@@ -23,7 +23,7 @@ Prado::using('System.Data.Common.Mysql.TMysqlTableInfo');
  * See http://netevil.org/node.php?nid=795&SC=1
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TMysqlMetaData.php 2750 2010-01-12 11:18:57Z Christophe.Boulain $
+ * @version $Id: TMysqlMetaData.php 2880 2011-01-19 14:56:01Z christophe.boulain $
  * @package System.Data.Commom.Sqlite
  * @since 3.1
  */
@@ -263,7 +263,7 @@ class TMysqlMetaData extends TDbMetaData
 	 */
 	protected function getForeignConstraints($schemaName, $tableName)
 	{
-		$andSchema = $schemaName !== null ? 'AND TABLE_SCHEMA = :schema' : '';
+		$andSchema = $schemaName !== null ? 'AND TABLE_SCHEMA LIKE :schema' : '';
 		$sql = <<<EOD
 			SELECT
 				CONSTRAINT_NAME as con,
@@ -275,7 +275,7 @@ class TMysqlMetaData extends TDbMetaData
 				 `INFORMATION_SCHEMA`.`KEY_COLUMN_USAGE`
 			WHERE
 				REFERENCED_TABLE_NAME IS NOT NULL
-				AND TABLE_NAME = :table
+				AND TABLE_NAME LIKE :table
 				$andSchema
 EOD;
 		$command = $this->getDbConnection()->createCommand($sql);

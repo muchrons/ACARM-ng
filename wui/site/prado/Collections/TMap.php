@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TMap.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TMap.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Collections
  */
 
@@ -28,7 +28,7 @@
  * </code>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TMap.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TMap.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Collections
  * @since 3.0
  */
@@ -80,7 +80,7 @@ class TMap extends TComponent implements IteratorAggregate,ArrayAccess,Countable
 	 */
 	public function getIterator()
 	{
-		return new TMapIterator($this->_d);
+		return new ArrayIterator( $this->_d );
 	}
 
 	/**
@@ -272,8 +272,9 @@ class TMap extends TComponent implements IteratorAggregate,ArrayAccess,Countable
  * TMapIterator is used by TMap. It allows TMap to return a new iterator
  * for traversing the items in the map.
  *
+ * @deprecated Issue 264 : ArrayIterator should be used instead 
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TMap.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TMap.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Collections
  * @since 3.0
  */

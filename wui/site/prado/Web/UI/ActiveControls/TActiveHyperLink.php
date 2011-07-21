@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TActiveHyperLink.php 2482 2008-07-30 02:07:13Z knut $
+ * @version $Id: TActiveHyperLink.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.ActiveControls
  */
 
@@ -21,7 +21,7 @@
  * {@link setNavigateUrl NavigateUrl} and {@link setTarget Target}.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TActiveHyperLink.php 2482 2008-07-30 02:07:13Z knut $
+ * @version $Id: TActiveHyperLink.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.ActiveControls
  * @since 3.1
  */
@@ -66,8 +66,8 @@ class TActiveHyperLink extends THyperLink implements IActiveControl
 		parent::setImageUrl($value);
 		if($this->getActiveControl()->canUpdateClientSide() && $value !== '')
 		{
-			$textWriter = new TTextWriter();
-			$renderer = new THtmlWriter($textWriter);
+			$textWriter = new TTextWriter;
+			$renderer = Prado::createComponent($this->GetResponse()->getHtmlWriterType(), $textWriter);
 			$this->createImage($value)->renderControl($renderer);
 			$this->getPage()->getCallbackClient()->update($this, $textWriter->flush());
 		}
