@@ -10,6 +10,7 @@
 #include <boost/mpl/if.hpp>
 
 #include "System/NoInstance.hpp"
+#include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
 #include "Persistency/Facades/StrAccess/IsPointer.hpp"
 #include "Persistency/Facades/StrAccess/IsSmartPointer.hpp"
 
@@ -93,6 +94,8 @@ struct HandleIndirection: private System::NoInstance
   template<typename TFuncObj, typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
+    typedef typename TParams::template handle<ErrorTests>::type ErrH;
+    ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     return detail::HandleIndirectionImpl<TFuncObj>::process(e,p);
   }
 }; // struct HandleIndirection

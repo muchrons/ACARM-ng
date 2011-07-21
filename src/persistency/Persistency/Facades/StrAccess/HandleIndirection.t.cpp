@@ -125,4 +125,23 @@ void testObj::test<7>(void)
   ensure_equals("null callback not called", cb_.lastNullFound_, "a");
 }
 
+// test exception when requested indirection translation on end()
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  while(!p_.isEnd())
+    ++p_;
+  assert(p_.isEnd());
+  try
+  {
+    HandleIndirection::process<MyTestProcessFuncObj>(&v_, p_);
+    fail("call didn't throw on end of path");
+  }
+  catch(const ExceptionInvalidPath &)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut

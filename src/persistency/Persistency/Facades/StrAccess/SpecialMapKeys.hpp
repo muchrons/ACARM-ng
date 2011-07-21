@@ -20,6 +20,7 @@ namespace StrAccess
 //struct PointerTests: private System::NoInstance {};
 //struct NonTerms: private System::NoInstance {};
 //struct Terms: private System::NoInstance {};
+struct CollectionAccess: private System::NoInstance {};
 struct ErrorTests: private System::NoInstance {};
 
 } // namespace StrAccess
