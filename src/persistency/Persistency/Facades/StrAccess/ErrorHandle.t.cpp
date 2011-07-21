@@ -126,4 +126,20 @@ void testObj::test<7>(void)
   }
 }
 
+// test throwing on invalid index
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  try
+  {
+    ErrorHandle::throwOnInvalidIndex(SYSTEM_SAVE_LOCATION, pLast_);
+    fail("throwOnInvalidIndex() didn't throw");
+  }
+  catch(const ExceptionInvalidPath &)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut

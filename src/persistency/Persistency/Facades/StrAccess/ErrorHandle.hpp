@@ -43,6 +43,12 @@ struct ErrorHandle: private System::NoInstance
   }
 
   template<typename TParams>
+  static void throwOnInvalidIndex(const ExceptionInvalidPath::Location &where, const TParams &p)
+  {
+    throw ExceptionInvalidPath(where, p.path().get(), p.get(), "index out of bound");
+  }
+
+  template<typename TParams>
   static void throwIfEnd(const ExceptionInvalidPath::Location &where, const TParams &p)
   {
     if(p.isEnd())

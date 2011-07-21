@@ -14,7 +14,7 @@
 #include "Persistency/MetaAlert.hpp"
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
 #include "Persistency/Facades/StrAccess/ErrorHandle.hpp"
-#include "Persistency/Facades/StrAccess/HandleIndirection.hpp"
+#include "Persistency/Facades/StrAccess/CollectionIndexHandle.hpp"
 
 namespace Persistency
 {
@@ -27,6 +27,7 @@ namespace StrAccess
 //   bool T::process(const T &e, TParams &p)
 // static method
 typedef boost::mpl::map<
+    boost::mpl::pair<OnCollectionIndex, CollectionIndexHandle>,
     boost::mpl::pair<ErrorTests, ErrorHandle>
   > DefaultHandleMap;
 
