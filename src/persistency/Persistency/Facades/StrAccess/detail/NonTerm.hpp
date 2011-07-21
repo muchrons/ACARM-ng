@@ -33,10 +33,8 @@ struct ProcessNonTermCollectionImpl: private System::NoInstance
   static bool process(const T &e, TParams &p)
   {
     // TODO
-    const size_t pos=Commons::Convert::to<size_t>(p.get()); // get position in sequence
-
-    return false;           
-    //return p.callback().collectionSize(size);
+    typedef typename TParams::template handle<T>::type Action;
+    return Action::process(e, p);
   }
 }; // struct ProcessNonTermCollectionImpl
 

@@ -68,13 +68,13 @@ struct Term: private System::NoInstance
   template<typename T, typename TParams>
   bool process(const T &e, TParams &p)
   {
-    typedef TParams<ErrorTests>::type ErrH;
+    typedef typename TParams::template handle<ErrorTests>::type ErrH;
     ErrH::throwIfNotEnd(SYSTEM_SAVE_LOCATION, p);
     // TODO: this is broken - we need to dereference all and THEN check if this is collection
     // process returning size for collection and value for non-collection
     typedef ProcessTermCollectionImpl<IsCollection<T>::value> Action;
     // process (smart) pointers before doing anything
-    return HandleIndirection<Action>::process(e, p);
+    return HandleIndirection::process<Action>(e, p);
   }
 }; // struct Term
 
