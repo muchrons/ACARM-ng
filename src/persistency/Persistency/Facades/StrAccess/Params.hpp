@@ -65,7 +65,8 @@ struct Params
 
   bool hasNext(void) const
   {
-    assert(!isEnd());
+    if(isEnd())
+      return false;
     PathCIT tmp=now_;
     ++tmp;
     return tmp!=path_.end();

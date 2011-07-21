@@ -102,4 +102,14 @@ void testObj::test<7>(void)
   ensure("no next element reported", p_.hasNext()==false);
 }
 
+// test if hasNext() returns false when end() is reached.
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  while(!p_.isEnd())
+    ++p_;
+  ensure("hasNext() does not repotr false for end()", p_.hasNext()==false);
+}
+
 } // namespace tut
