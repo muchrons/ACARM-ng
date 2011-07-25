@@ -9,8 +9,14 @@
 
 #include <cassert>
 #include <boost/mpl/at.hpp>
+#include <boost/mpl/if.hpp>
+#include <boost/mpl/has_key.hpp>
 
 #include "Persistency/Facades/StrAccess/Path.hpp"
+#include "Persistency/Facades/StrAccess/IsTerm.hpp"
+#include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
+#include "Persistency/Facades/StrAccess/detail/Term.hpp"
+#include "Persistency/Facades/StrAccess/detail/NonTerm.hpp"
 
 namespace Persistency
 {
@@ -26,6 +32,16 @@ struct Params
   typedef TResultCallback      ResultCallback;
   typedef Path::const_iterator PathCIT;
 
+  struct OnUnknownType
+  {
+    template<typename T>
+    static bool process(const T &/*e*/, Params<THandleMap,TResultCallback> &p)
+    {
+      handle<ErrorTests>::type::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
+      return false; // code never reaches here
+    }
+  }; // struct OnUnknownType
+
   Params(const Path &path, ResultCallback &callback):
     path_(path),
     now_(path_.begin()),
@@ -37,7 +53,24 @@ struct Params
   template<typename T>
   struct handle
   {
-    typedef typename boost::mpl::at<HandleMap,T>::type type;
+  private:
+    typedef typename boost::mpl::if_c< boost::mpl::has_key<HandleMap,T>::value,
+                                     // then
+                                       typename boost::mpl::at<HandleMap,T>::type,
+                                     // else
+                                       OnUnknownType
+                                     >::type OnNonTerm;
+
+    typedef typename boost::mpl::if_c< IsTerm<T>::value,
+                                     // then
+                                       detail::Term,
+                                     // else
+                                       OnNonTerm
+                                     >::type IfTerm;
+
+  public:
+    // response
+    typedef IfTerm type;
   }; // struct handle
 
   Params &operator++(void)

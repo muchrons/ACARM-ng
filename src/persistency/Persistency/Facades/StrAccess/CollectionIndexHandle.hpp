@@ -35,9 +35,13 @@ struct CollectionIndexHandle: private System::NoInstance
     size_t       cur=0;
     for(typename T::const_iterator cit=e.begin(); cit!=e.end(); ++cit, ++cur)
     {
-      if(cur==pos)
+      if(cur==pos)  // found element with a given index? process it!
       {
-        // found element with a given index - process it
+        // collection index is a term
+        if(!p.hasNext())
+          return detail::Term::process(*cit, p);
+
+        // collection index is NOT a term, but subsequent element can be term
         ++p;
         if(p.hasNext())
           return detail::NonTerm::process(*cit, p);

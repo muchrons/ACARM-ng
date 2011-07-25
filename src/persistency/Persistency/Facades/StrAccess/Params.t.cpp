@@ -112,4 +112,59 @@ void testObj::test<8>(void)
   ensure("hasNext() does not repotr false for end()", p_.hasNext()==false);
 }
 
+
+namespace
+{
+struct OnStringStub: private System::NoInstance
+{
+  template<typename T, typename TParams>
+  static bool process(const T &e, TParams &/*p*/)
+  {
+    ensure_equals("invalid string passed", e, "narf");
+    return true;
+  }
+}; // struct OnString
+
+typedef boost::mpl::map<
+      boost::mpl::pair<string, OnStringStub>,
+      boost::mpl::pair<ErrorTests, ErrorHandle>
+          > TestHandleMap;
+
+typedef Params<TestHandleMap, TestParams::ResultCallback> HandleTestParams;
+} // unnamed namespace
+
+// test handle<> when handle exists
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  HandleTestParams htp(path_, cb_);
+  typedef HandleTestParams::handle<string>::type Handle;
+  ensure("invalid return value from handle", Handle::process(string("narf"), htp)==true );
+}
+
+
+namespace
+{
+struct UnknownKey {};
+} // unnamed namespace
+
+// test if code with invalid (unhandled) element in path compiles and throws in runtime
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  HandleTestParams htp(path_, cb_);
+  typedef HandleTestParams::handle<UnknownKey>::type Handle;
+  try
+  {
+    Handle::process("abc", htp);
+    fail("handle for unknown type didn't throw when called");
+  }
+  catch(const ExceptionInvalidPath &)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut
