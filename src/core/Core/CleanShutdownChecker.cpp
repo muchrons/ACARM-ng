@@ -84,7 +84,7 @@ CleanShutdownChecker::CleanShutdownChecker(void):
     }
     else
     {
-      LOGMSG_ERROR_S(log_)<<"last run did NOT finished successfully - last satatus was: '"<<prev.get()->get()<<
+      LOGMSG_ERROR_S(log_)<<"last run did NOT finished successfully - last status was: '"<<prev.get()->get()<<
                             "' - if this is not due to power/hardware failure you should report this problem";
       lastRunSuccessful_=false;
     }
