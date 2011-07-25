@@ -115,18 +115,29 @@ void testObj::test<8>(void)
 
 namespace
 {
-struct OnStringStub: private System::NoInstance
+struct TestString
+{
+  TestString(const std::string &str):
+    str_(str)
+  {
+  }
+
+  std::string str_;
+};
+
+struct OnString: private System::NoInstance
 {
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &/*p*/)
+  static bool process(const T &e, TParams &p)
   {
-    ensure_equals("invalid string passed", e, "narf");
-    return true;
+    ensure("term is too soon", p.hasNext());
+    typedef typename TParams::template handle<string>::type Handle;
+    return Handle::process(e.str_, ++p);
   }
 }; // struct OnString
 
 typedef boost::mpl::map<
-      boost::mpl::pair<string, OnStringStub>,
+      boost::mpl::pair<TestString, OnString>,
       boost::mpl::pair<ErrorTests, ErrorHandle>
           > TestHandleMap;
 
@@ -139,8 +150,9 @@ template<>
 void testObj::test<9>(void)
 {
   HandleTestParams htp(path_, cb_);
-  typedef HandleTestParams::handle<string>::type Handle;
-  ensure("invalid return value from handle", Handle::process(string("narf"), htp)==true );
+  typedef HandleTestParams::handle<TestString>::type Handle;
+  ensure("invalid return value from handle", Handle::process(TestString("narf"), htp)==true );
+  ensure_equals("invalid string passed", cb_.lastValue_, "narf");
 }
 
 
@@ -154,11 +166,10 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  HandleTestParams htp(path_, cb_);
-  typedef HandleTestParams::handle<UnknownKey>::type Handle;
+  typedef TestParams::handle<UnknownKey>::type Handle;
   try
   {
-    Handle::process("abc", htp);
+    Handle::process("abc", p_);
     fail("handle for unknown type didn't throw when called");
   }
   catch(const ExceptionInvalidPath &)
