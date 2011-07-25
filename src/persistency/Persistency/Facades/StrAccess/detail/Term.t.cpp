@@ -11,6 +11,7 @@
 using namespace std;
 using namespace Persistency::Facades::StrAccess;
 using namespace Persistency::Facades::StrAccess::detail;
+#if 0                       /// TODO                
 
 namespace
 {
@@ -107,3 +108,4 @@ void testObj::test<5>(void)
 }
 
 } // namespace tut
+#endif                      
