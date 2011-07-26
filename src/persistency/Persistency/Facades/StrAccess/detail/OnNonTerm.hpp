@@ -1,9 +1,9 @@
 /*
- * NonTerm.hpp
+ * OnNonTerm.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_DETAIL_NONTERM_HPP_FILE
-#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_DETAIL_NONTERM_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_DETAIL_ONNONTERM_HPP_FILE
+#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_DETAIL_ONNONTERM_HPP_FILE
 
 /* public header */
 
@@ -26,19 +26,19 @@ namespace detail
 {
 
 template<bool isCollection>
-struct ProcessNonTermCollectionImpl: private System::NoInstance
+struct ProcessOnNonTermCollectionImpl: private System::NoInstance
 {
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
     assert(p.hasNext());
-    typedef typename TParams::template GetHandle<OnCollectionIndex>::type Action;
+    typedef typename TParams::template GetHandle<CollectionIndexHandle>::type Action;
     return Action::process(e, ++p);
   }
-}; // struct ProcessNonTermCollectionImpl
+}; // struct ProcessOnNonTermCollectionImpl
 
 template<>
-struct ProcessNonTermCollectionImpl<false>: private System::NoInstance
+struct ProcessOnNonTermCollectionImpl<false>: private System::NoInstance
 {
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
@@ -46,24 +46,24 @@ struct ProcessNonTermCollectionImpl<false>: private System::NoInstance
     typedef typename TParams::template GetHandle<T>::type Action;
     return Action::process(e, p);
   }
-}; // struct ProcessNonTermCollectionImpl
+}; // struct ProcessOnNonTermCollectionImpl
 
 
-struct NonTerm: private System::NoInstance
+struct OnNonTerm: private System::NoInstance
 {
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
     // sanity check
-    typedef typename TParams::template GetHandle<OnError>::type ErrH;
+    typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
     ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
-    assert(IsTerm<T>::value==false && "invalid call to NonTerm");
+    assert(IsTerm<T>::value==false && "invalid call to OnNonTerm");
     // processing
-    typedef ProcessNonTermCollectionImpl<IsCollection<T>::value> Action;
+    typedef ProcessOnNonTermCollectionImpl<IsCollection<T>::value> Action;
     return Action::process(e,p);
   }
-}; // struct NonTerm
+}; // struct OnNonTerm
 
 } // namespace detail
 } // namespace StrAccess

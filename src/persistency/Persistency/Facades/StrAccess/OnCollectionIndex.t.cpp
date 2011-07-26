@@ -1,5 +1,5 @@
 /*
- * CollectionIndexHandle.t.cpp
+ * OnCollectionIndex.t.cpp
  *
  */
 #include <tut.h>
@@ -7,7 +7,7 @@
 #include <string>
 #include <boost/mpl/insert.hpp>
 
-#include "Persistency/Facades/StrAccess/CollectionIndexHandle.hpp"
+#include "Persistency/Facades/StrAccess/OnCollectionIndex.hpp"
 #include "Persistency/Facades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
@@ -31,7 +31,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/CollectionIndexHandle");
+factory tf("Persistency/Facades/StrAccess/OnCollectionIndex");
 } // unnamed namespace
 
 
@@ -46,7 +46,7 @@ void testObj::test<1>(void)
   TestParams p(Path("v.0"), cb_);
   ++p;
   assert(p.get()=="0");
-  CollectionIndexHandle::process(v_, p);
+  OnCollectionIndex::process(v_, p);
   ensure_equals("invalid result", cb_.lastValue_, "one");
 }
 
@@ -58,7 +58,7 @@ void testObj::test<2>(void)
   TestParams p(Path("v.2"), cb_);
   ++p;
   assert(p.get()=="2");
-  CollectionIndexHandle::process(v_, p);
+  OnCollectionIndex::process(v_, p);
   ensure_equals("invalid result", cb_.lastValue_, "trzy");
 }
 
@@ -72,7 +72,7 @@ void testObj::test<3>(void)
   assert(p.get()=="3");
   try
   {
-    CollectionIndexHandle::process(v_, p);
+    OnCollectionIndex::process(v_, p);
     fail("processing didn't throw on invalid index");
   }
   catch(const ExceptionInvalidPath &)
@@ -91,7 +91,7 @@ void testObj::test<4>(void)
   assert(p.get()=="narf");
   try
   {
-    CollectionIndexHandle::process(v_, p);
+    OnCollectionIndex::process(v_, p);
     fail("processing didn't throw on non-numeric index");
   }
   catch(const Commons::Convert::ExceptionConversionError &)
@@ -108,7 +108,7 @@ void testObj::test<5>(void)
   TestParams p(Path("v.1"), cb_);
   ++p;
   assert(p.get()=="1");
-  CollectionIndexHandle::process(v_, p);
+  OnCollectionIndex::process(v_, p);
   ensure_equals("invalid result", cb_.lastValue_, "zwei");
 }
 
@@ -150,7 +150,7 @@ void testObj::test<6>(void)
   vector<TestForwardElement> v;
   v.push_back( TestForwardElement("hello evil") );
   TestForwardParams p(Path("0.str"), cb_);
-  CollectionIndexHandle::process(v, p);
+  OnCollectionIndex::process(v, p);
   ensure_equals("invalid result", cb_.lastValue_, "hello evil");
 }
 
@@ -192,7 +192,7 @@ void testObj::test<7>(void)
   vector<TestForwardElement2> v;
   v.push_back( TestForwardElement2( TestForwardElement("hello evil") ) );
   TestForwardParams2 p(Path("0.tfe.str"), cb_);
-  CollectionIndexHandle::process(v, p);
+  OnCollectionIndex::process(v, p);
   ensure_equals("invalid result", cb_.lastValue_, "hello evil");
 }
 
@@ -207,7 +207,7 @@ void testObj::test<8>(void)
   v.push_back( TestForwardElement("hello evil") );
   vv.push_back(v);
   TestForwardParams p(Path("1.0.str"), cb_);
-  CollectionIndexHandle::process(vv, p);
+  OnCollectionIndex::process(vv, p);
   ensure_equals("invalid result", cb_.lastValue_, "hello evil");
 }
 
@@ -222,7 +222,7 @@ void testObj::test<9>(void)
   ++p;
   try
   {
-    CollectionIndexHandle::process(v, p);
+    OnCollectionIndex::process(v, p);
     fail("index out of bound has not been signalled");
   }
   catch(const ExceptionInvalidPath &)

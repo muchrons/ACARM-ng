@@ -16,12 +16,10 @@ namespace Facades
 namespace StrAccess
 {
 
-//struct CollectionTests: private System::NoInstance {};
-//struct PointerTests: private System::NoInstance {};
-struct OnNonTerm: private System::NoInstance {};
-struct OnTerm: private System::NoInstance {};
-struct OnCollectionIndex: private System::NoInstance {};
-struct OnError: private System::NoInstance {};
+struct NonTermHandle: private System::NoInstance {};
+struct TermHandle: private System::NoInstance {};
+struct CollectionIndexHandle: private System::NoInstance {};
+struct ErrorHandle: private System::NoInstance {};
 
 } // namespace StrAccess
 } // namespace Facades

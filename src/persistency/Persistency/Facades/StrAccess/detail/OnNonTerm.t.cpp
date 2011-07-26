@@ -1,5 +1,5 @@
 /*
- * NonTerm.t.cpp
+ * OnNonTerm.t.cpp
  *
  */
 #include <tut.h>
@@ -7,7 +7,7 @@
 #include <vector>
 #include <boost/mpl/insert.hpp>
 
-#include "Persistency/Facades/StrAccess/detail/NonTerm.hpp"
+#include "Persistency/Facades/StrAccess/detail/OnNonTerm.hpp"
 #include "Persistency/Facades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
@@ -46,9 +46,9 @@ struct OnTestCollectionIndex
 
 // add std::string support
 typedef boost::mpl::map<
-                  boost::mpl::pair<OnCollectionIndex, OnTestCollectionIndex>,
+                  boost::mpl::pair<CollectionIndexHandle, OnTestCollectionIndex>,
                   boost::mpl::pair<TestString, OnTestString>,
-                  boost::mpl::pair<OnError, ErrorHandle>
+                  boost::mpl::pair<ErrorHandle, ErrorThrower>
                 >::type LocalHandleMap;
 // add this to paramter
 typedef Params<LocalHandleMap, TestParams::ResultCallback> LocalTestParams;
@@ -71,7 +71,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/detail/NonTerm");
+factory tf("Persistency/Facades/StrAccess/detail/OnNonTerm");
 } // unnamed namespace
 
 
@@ -88,7 +88,7 @@ void testObj::test<1>(void)
   assert(p_.isEnd()==false);
   try
   {
-    NonTerm::process(TestString(), p_);
+    OnNonTerm::process(TestString(), p_);
     fail("call didn't throw for last element");
   }
   catch(const ExceptionInvalidPath &)
@@ -106,7 +106,7 @@ void testObj::test<2>(void)
   vector<string> vec;
   vec.push_back("kszy");
   LocalTestParams p(Path("array.666"), cb_);
-  NonTerm::process(vec, p);
+  OnNonTerm::process(vec, p);
 }
 
 // test collection that does not end on an index
@@ -118,7 +118,7 @@ void testObj::test<3>(void)
   vector<TestString> vec;
   vec.push_back(e_);
   LocalTestParams p(Path("array.666.sth"), cb_);
-  NonTerm::process(vec, p);
+  OnNonTerm::process(vec, p);
 }
 
 } // namespace tut

@@ -30,8 +30,8 @@ struct ProcessMainDispatcherCollectionImpl: private System::NoInstance
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
-    typedef typename TParams::template GetHandle<OnTerm>::type    TermHandle;
-    typedef typename TParams::template GetHandle<OnNonTerm>::type NonTermHandle;
+    typedef typename TParams::template GetHandle<TermHandle>::type    TermHandle;
+    typedef typename TParams::template GetHandle<NonTermHandle>::type NonTermHandle;
     if(p.hasNext())
       return NonTermHandle::process(e, p);
     else
@@ -45,8 +45,8 @@ struct ProcessMainDispatcherCollectionImpl<false>: private System::NoInstance
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
-    typedef typename TParams::template GetHandle<OnTerm>::type    TermHandle;
-    typedef typename TParams::template GetHandle<OnNonTerm>::type NonTermHandle;
+    typedef typename TParams::template GetHandle<TermHandle>::type    TermHandle;
+    typedef typename TParams::template GetHandle<NonTermHandle>::type NonTermHandle;
     typedef typename boost::mpl::if_c< IsTerm<T>::value,
                                      // then
                                        TermHandle,

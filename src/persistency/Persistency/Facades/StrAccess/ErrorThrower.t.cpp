@@ -1,10 +1,10 @@
 /*
- * ErrorHandle.t.cpp
+ * ErrorThrower.t.cpp
  *
  */
 #include <tut.h>
 
-#include "Persistency/Facades/StrAccess/ErrorHandle.hpp"
+#include "Persistency/Facades/StrAccess/ErrorThrower.hpp"
 #include "Persistency/Facades/StrAccess/DefaultHandleMap.hpp"
 #include "Persistency/Facades/StrAccess/TestParams.t.hpp"
 
@@ -30,7 +30,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/ErrorHandle");
+factory tf("Persistency/Facades/StrAccess/ErrorThrower");
 } // unnamed namespace
 
 
@@ -44,7 +44,7 @@ void testObj::test<1>(void)
 {
   try
   {
-    ErrorHandle::throwIfLast(SYSTEM_SAVE_LOCATION, pLast_);
+    ErrorThrower::throwIfLast(SYSTEM_SAVE_LOCATION, pLast_);
     fail("throwIfLast() didn't throw on end");
   }
   catch(const ExceptionInvalidPath &)
@@ -58,7 +58,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ErrorHandle::throwIfLast(SYSTEM_SAVE_LOCATION, p_);
+  ErrorThrower::throwIfLast(SYSTEM_SAVE_LOCATION, p_);
 }
 
 // test throwing on non-end
@@ -68,7 +68,7 @@ void testObj::test<3>(void)
 {
   try
   {
-    ErrorHandle::throwIfNotLast(SYSTEM_SAVE_LOCATION, p_);
+    ErrorThrower::throwIfNotLast(SYSTEM_SAVE_LOCATION, p_);
     fail("throwIfNotLast() didn't throw on non-end path");
   }
   catch(const ExceptionInvalidPath &)
@@ -82,7 +82,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ErrorHandle::throwIfNotLast(SYSTEM_SAVE_LOCATION, pLast_);
+  ErrorThrower::throwIfNotLast(SYSTEM_SAVE_LOCATION, pLast_);
 }
 
 // test thwoing on unexpected path token
@@ -92,7 +92,7 @@ void testObj::test<5>(void)
 {
   try
   {
-    ErrorHandle::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p_);
+    ErrorThrower::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p_);
     fail("throwOnInvalidPath() didn't throw");
   }
   catch(const ExceptionInvalidPath &)
@@ -106,7 +106,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  ErrorHandle::throwIfEnd(SYSTEM_SAVE_LOCATION, pLast_);
+  ErrorThrower::throwIfEnd(SYSTEM_SAVE_LOCATION, pLast_);
 }
 
 // test thwoing on end()
@@ -117,7 +117,7 @@ void testObj::test<7>(void)
   ++pLast_;
   try
   {
-    ErrorHandle::throwIfEnd(SYSTEM_SAVE_LOCATION, pLast_);
+    ErrorThrower::throwIfEnd(SYSTEM_SAVE_LOCATION, pLast_);
     fail("throwIfEnd() didn't throw on end");
   }
   catch(const ExceptionInvalidPath &)
@@ -133,7 +133,7 @@ void testObj::test<8>(void)
 {
   try
   {
-    ErrorHandle::throwOnInvalidIndex(SYSTEM_SAVE_LOCATION, pLast_);
+    ErrorThrower::throwOnInvalidIndex(SYSTEM_SAVE_LOCATION, pLast_);
     fail("throwOnInvalidIndex() didn't throw");
   }
   catch(const ExceptionInvalidPath &)

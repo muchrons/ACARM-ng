@@ -1,11 +1,11 @@
 /*
- * Term.t.cpp
+ * OnTerm.t.cpp
  *
  */
 #include <tut.h>
 #include <vector>
 
-#include "Persistency/Facades/StrAccess/detail/Term.hpp"
+#include "Persistency/Facades/StrAccess/detail/OnTerm.hpp"
 #include "Persistency/Facades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
@@ -29,7 +29,7 @@ struct TestClass
   {
     try
     {
-      Term::process(string("aaa"), p);              // should throw
+      OnTerm::process(string("aaa"), p);        // should throw
       tut::fail("process() didn't failed");
     }
     catch(const ExceptionInvalidPath &)
@@ -46,7 +46,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/detail/Term");
+factory tf("Persistency/Facades/StrAccess/detail/OnTerm");
 } // unnamed namespace
 
 
@@ -78,7 +78,7 @@ void testObj::test<3>(void)
 {
   vector<int> v(10, 42);
   assert(v.size()==10);
-  Term::process(v, pLast_);
+  OnTerm::process(v, pLast_);
   ensure_equals("invalid value returned", cb_.lastSize_, 10);
 }
 

@@ -1,9 +1,9 @@
 /*
- * CollectionIndexHandle.hpp
+ * OnCollectionIndex.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_COLLECTIONINDEXHANDLE_HPP_FILE
-#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_COLLECTIONINDEXHANDLE_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_ONCOLLECTIONINDEX_HPP_FILE
+#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_ONCOLLECTIONINDEX_HPP_FILE
 
 /* public header */
 
@@ -22,14 +22,14 @@ namespace Facades
 namespace StrAccess
 {
 
-struct CollectionIndexHandle: private System::NoInstance
+struct OnCollectionIndex: private System::NoInstance
 {
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
     BOOST_STATIC_ASSERT( IsCollection<T>::value );
     assert(!p.isEnd());
-    typedef typename TParams::template GetHandle<OnError>::type ErrH;
+    typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
     const size_t pos=Commons::Convert::to<size_t>(p.get());
     size_t       cur=0;
@@ -42,7 +42,7 @@ struct CollectionIndexHandle: private System::NoInstance
     ErrH::throwOnInvalidIndex(SYSTEM_SAVE_LOCATION, p);
     return false;   // this code is never reached
   }
-}; // struct CollectionIndexHandle
+}; // struct OnCollectionIndex
 
 } // namespace StrAccess
 } // namespace Facades

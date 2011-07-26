@@ -24,7 +24,7 @@ struct OnReferenceURL: private System::NoInstance
   template<typename TParams>
   static void get(const ReferenceURL &e, TParams &p)
   {
-    typedef TParams<OnError>::type ErrH;
+    typedef TParams<ErrorHandle>::type ErrH;
 
     ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
 

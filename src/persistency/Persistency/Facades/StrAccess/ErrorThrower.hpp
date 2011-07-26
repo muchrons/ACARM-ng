@@ -1,9 +1,9 @@
 /*
- * ErrorHandle.hpp
+ * ErrorThrower.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_ERRORHANDLE_HPP_FILE
-#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_ERRORHANDLE_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_ERRORTHROWER_HPP_FILE
+#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_ERRORTHROWER_HPP_FILE
 
 /* public header */
 
@@ -20,7 +20,7 @@ namespace Facades
 namespace StrAccess
 {
 
-struct ErrorHandle: private System::NoInstance
+struct ErrorThrower: private System::NoInstance
 {
   template<typename TParams>
   static void throwIfLast(const ExceptionInvalidPath::Location &where, const TParams &p)
@@ -54,7 +54,7 @@ struct ErrorHandle: private System::NoInstance
     if(p.isEnd())
       throw ExceptionInvalidPath(where, p.path().get(), "<END>", "invalid request");
   }
-}; // struct ErrorHandle
+}; // struct ErrorThrower
 
 } // namespace StrAccess
 } // namespace Facades

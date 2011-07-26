@@ -40,7 +40,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  checkType<OnTerm, Term>("term handle is not valid");
+  checkType<TermHandle, OnTerm>("term handle is not valid");
 }
 
 // test error handle
@@ -48,7 +48,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  checkType<OnError, ErrorHandle>("error handle is not valid");
+  checkType<ErrorHandle, ErrorThrower>("error handle is not valid");
 }
 
 // test non-term
@@ -56,7 +56,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  checkType<OnNonTerm, NonTerm>("non-term handle is not valid");
+  checkType<NonTermHandle, OnNonTerm>("non-term handle is not valid");
 }
 
 // test presence of collection index
@@ -64,7 +64,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  checkType<OnCollectionIndex, CollectionIndexHandle>("colleciton index handle is not valid");
+  checkType<CollectionIndexHandle, OnCollectionIndex>("colleciton index handle is not valid");
 }
 
 } // namespace tut
