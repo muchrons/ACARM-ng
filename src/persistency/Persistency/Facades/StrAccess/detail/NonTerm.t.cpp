@@ -13,50 +13,58 @@
 using namespace std;
 using namespace Persistency::Facades::StrAccess;
 using namespace Persistency::Facades::StrAccess::detail;
-#if 0           // TODO                             
 
 namespace
 {
+string g_toBeCalled;
 
 struct TestString
 {
-  TestString(const std::string &str):
-    str_(str)
-  {
-  }
-
-  std::string str_;
 }; // struct TestString
 
-struct OnStringTest
+struct OnTestString
 {
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &/*e*/, TParams &p)
   {
+    tut::ensure_equals("unexpected call", "OnTestString", g_toBeCalled);
     tut::ensure("terminal element found too soon", p.hasNext());
-    typedef typename TParams::template handle<string>::type Handle;
-    return Handle::process(e.str_, ++p);
+    return false;
   }
-}; // struct OnStringTest
+}; // struct OnTestString
+
+struct OnTestCollectionIndex
+{
+  template<typename T, typename TParams>
+  static bool process(const T &/*e*/, TParams &p)
+  {
+    tut::ensure_equals("unexpected call", "OnTestCollectionIndex", g_toBeCalled);
+    tut::ensure_equals("invalid index", p.get(), "666");
+    return false;
+  }
+}; // struct OnTestString
 
 // add std::string support
-typedef boost::mpl::insert<DefaultHandleMap, boost::mpl::pair<TestString, OnStringTest>::type >::type StringHandleMap;
+typedef boost::mpl::map<
+                  boost::mpl::pair<OnCollectionIndex, OnTestCollectionIndex>,
+                  boost::mpl::pair<TestString, OnTestString>,
+                  boost::mpl::pair<ErrorTests, ErrorHandle>
+                >::type LocalHandleMap;
 // add this to paramter
-typedef Params<StringHandleMap,TestParams::ResultCallback> LocalTestParams;
+typedef Params<LocalHandleMap, TestParams::ResultCallback> LocalTestParams;
 
 
 struct TestClass
 {
   TestClass(void):
     p_(Path("a.b"), cb_),
-    str_("narf"),
-    e_(str_)
+    e_()
   {
+    g_toBeCalled="?? not set yet ??";
   }
 
   LocalTestParams::ResultCallback cb_;
   LocalTestParams                 p_;
-  const string                    str_;
   const TestString                e_;
 };
 
@@ -80,7 +88,7 @@ void testObj::test<1>(void)
   assert(p_.isEnd()==false);
   try
   {
-    NonTerm::process(str_, p_);
+    NonTerm::process(TestString(), p_);
     fail("call didn't throw for last element");
   }
   catch(const ExceptionInvalidPath &)
@@ -89,51 +97,28 @@ void testObj::test<1>(void)
   }
 }
 
-// test indirect call
+// test collection that ends on some index
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  NonTerm::process(&e_, p_);
-  ensure_equals("invalid response", cb_.lastValue_, str_);
+  g_toBeCalled="OnTestCollectionIndex";
+  vector<string> vec;
+  vec.push_back("kszy");
+  LocalTestParams p(Path("array.666"), cb_);
+  NonTerm::process(vec, p);
 }
 
-// test collection
+// test collection that does not end on an index
 template<>
 template<>
 void testObj::test<3>(void)
 {
+  g_toBeCalled="OnTestCollectionIndex";
   vector<TestString> vec;
-  vec.push_back( TestString("first") );
   vec.push_back(e_);
-  vec.push_back( TestString("third") );
-  LocalTestParams p(Path("array.1.sth"), cb_);
+  LocalTestParams p(Path("array.666.sth"), cb_);
   NonTerm::process(vec, p);
-  ensure_equals("invalid response", cb_.lastValue_, str_);
-}
-
-// test collection indirect call
-template<>
-template<>
-void testObj::test<4>(void)
-{
-  vector<TestString> vec;
-  vec.push_back( TestString("first") );
-  vec.push_back(e_);
-  vec.push_back( TestString("third") );
-  LocalTestParams p(Path("array.1.sth"), cb_);
-  NonTerm::process(&vec, p);
-  ensure_equals("invalid response", cb_.lastValue_, str_);
-}
-
-// test if required code is run
-template<>
-template<>
-void testObj::test<5>(void)
-{
-  NonTerm::process(e_, p_);
-  ensure_equals("invalid response", cb_.lastValue_, str_);
 }
 
 } // namespace tut
-#endif                      
