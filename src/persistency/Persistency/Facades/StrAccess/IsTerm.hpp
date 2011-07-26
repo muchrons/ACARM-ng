@@ -26,7 +26,7 @@ struct IsTerm: private System::NoInstance
   static const bool value=boost::is_arithmetic<T>::value;
 }; // struct IsTerm
 
-// std::string
+// std::string is term
 template<>
 struct IsTerm<std::string>: private System::NoInstance
 {
@@ -47,11 +47,25 @@ struct IsTerm<const T*>: private System::NoInstance
   static const bool value=false;
 }; // struct IsTerm
 
-// const char * is term (exception)
+// const char * is a term (exception)
 template<>
 struct IsTerm<const char*>: private System::NoInstance
 {
   static const bool value=true;
+}; // struct IsTerm
+
+// char[] is a term (exception)
+template<unsigned int N>
+struct IsTerm<char[N]>: private System::NoInstance
+{
+  static const bool value=IsTerm<char*>::value;
+}; // struct IsTerm
+
+// const char[] is a term (exception)
+template<unsigned int N>
+struct IsTerm<const char[N]>: private System::NoInstance
+{
+  static const bool value=IsTerm<const char*>::value;
 }; // struct IsTerm
 
 } // namespace StrAccess

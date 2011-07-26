@@ -9,7 +9,6 @@
 #include "Persistency/Facades/StrAccess/IsTerm.hpp"
 
 using namespace Persistency::Facades::StrAccess;
-#if 0               // TODO                 
 
 namespace
 {
@@ -97,5 +96,38 @@ void testObj::test<8>(void)
   ensure("int* reported as term", IsTerm<int*>::value==false);
 }
 
+namespace
+{
+template<typename T>
+void testCallViaTemplate(const T &/*t*/)
+{
+  ensure("<const T&> with T=char* found as non-term", IsTerm<T>::value);
+} // testCallViaTemplate()
+} // unnamed namespace
+
+// test calling IsTerm via template function with const T& arg
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  testCallViaTemplate("abc");
+}
+
+namespace
+{
+template<typename T>
+void testCallViaTemplateNonConst(T &/*t*/)
+{
+  ensure("<T&> with T=const char* found as non-term", IsTerm<T>::value);
+} // testCallViaTemplateNonConst()
+} // unnamed namespace
+
+// test calling IsTerm via template function with const T& arg
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  testCallViaTemplateNonConst("abc");
+}
+
 } // namespace tut
-#endif                  
