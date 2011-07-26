@@ -55,7 +55,7 @@ struct NonTerm: private System::NoInstance
   static bool process(const T &e, TParams &p)
   {
     // sanity check
-    typedef typename TParams::template GetHandle<ErrorTests>::type ErrH;
+    typedef typename TParams::template GetHandle<OnError>::type ErrH;
     ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
     assert(IsTerm<T>::value==false && "invalid call to NonTerm");

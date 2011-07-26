@@ -35,7 +35,7 @@ typedef boost::mpl::map<
     boost::mpl::pair<OnTerm, detail::Term>,
     boost::mpl::pair<OnNonTerm, detail::NonTerm>,
     boost::mpl::pair<OnCollectionIndex, CollectionIndexHandle>,
-    boost::mpl::pair<ErrorTests, ErrorHandle>
+    boost::mpl::pair<OnError, ErrorHandle>
     //
     //  special types handles
     //

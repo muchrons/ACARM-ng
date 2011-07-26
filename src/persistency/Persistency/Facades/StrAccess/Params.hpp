@@ -35,7 +35,7 @@ private:
     template<typename T>
     static bool process(const T &/*e*/, Params<THandleMap,TResultCallback> &p)
     {
-      GetHandle<ErrorTests>::type::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
+      GetHandle<OnError>::type::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
       return false; // code never reaches here
     }
   }; // struct OnUnknownType

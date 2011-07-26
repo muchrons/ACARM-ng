@@ -42,9 +42,9 @@ struct OnTestNonTerm
 
 // test map for handling different situations
 typedef boost::mpl::map<
-              boost::mpl::pair<ErrorTests, ErrorHandle>::type,
-              boost::mpl::pair<OnTerm,     OnTestTerm>::type,
-              boost::mpl::pair<OnNonTerm,  OnTestNonTerm>::type
+              boost::mpl::pair<OnError,   ErrorHandle>::type,
+              boost::mpl::pair<OnTerm,    OnTestTerm>::type,
+              boost::mpl::pair<OnNonTerm, OnTestNonTerm>::type
             >::type StringHandleMap;
 
 // add this to paramter

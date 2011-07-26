@@ -21,7 +21,7 @@ namespace StrAccess
 struct OnNonTerm: private System::NoInstance {};
 struct OnTerm: private System::NoInstance {};
 struct OnCollectionIndex: private System::NoInstance {};
-struct ErrorTests: private System::NoInstance {};
+struct OnError: private System::NoInstance {};
 
 } // namespace StrAccess
 } // namespace Facades

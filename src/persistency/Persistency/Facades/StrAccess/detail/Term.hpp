@@ -68,7 +68,7 @@ struct Term: private System::NoInstance
   static bool process(const T &e, TParams &p)
   {
     // sanity check
-    typedef typename TParams::template GetHandle<ErrorTests>::type ErrH;
+    typedef typename TParams::template GetHandle<OnError>::type ErrH;
     ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwIfNotLast(SYSTEM_SAVE_LOCATION, p);
     assert( IsCollection<T>::value || IsTerm<T>::value || !"unknown term accepted" );

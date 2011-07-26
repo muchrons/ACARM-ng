@@ -29,7 +29,7 @@ struct CollectionIndexHandle: private System::NoInstance
   {
     BOOST_STATIC_ASSERT( IsCollection<T>::value );
     assert(!p.isEnd());
-    typedef typename TParams::template GetHandle<ErrorTests>::type ErrH;
+    typedef typename TParams::template GetHandle<OnError>::type ErrH;
 
     const size_t pos=Commons::Convert::to<size_t>(p.get());
     size_t       cur=0;

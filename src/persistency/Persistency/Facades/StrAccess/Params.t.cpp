@@ -137,7 +137,7 @@ struct OnString: private System::NoInstance
 
 typedef boost::mpl::map<
       boost::mpl::pair<TestString, OnString>,
-      boost::mpl::pair<ErrorTests, ErrorHandle>
+      boost::mpl::pair<OnError, ErrorHandle>
           > TestHandleMap;
 
 typedef Params<TestHandleMap, TestParams::ResultCallback> HandleTestParams;

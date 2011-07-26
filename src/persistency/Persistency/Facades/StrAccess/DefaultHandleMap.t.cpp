@@ -48,7 +48,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  checkType<ErrorTests, ErrorHandle>("error handle is not valid");
+  checkType<OnError, ErrorHandle>("error handle is not valid");
 }
 
 // test non-term
