@@ -99,7 +99,7 @@ void testObj::test<5>(void)
   bf_.commitChanges();
 }
 
-// test if sending heartbeat does not colide with getting analizer (i.e. is one transaction)
+// test if sending heartbeat does not colide with getting analyser (i.e. is one transaction)
 template<>
 template<>
 void testObj::test<6>(void)

@@ -159,7 +159,7 @@ DDIFF="$MT_ROOT/default_diff"
 DMERGE="$MT_ROOT/default_merge"
 
 # do all necessair merges
-if ! bzr merge --pull "$PARENT"
+if ! bzr merge "$PARENT"
 then
   # in case textual merges were not enought, include some more merge cases
   (

@@ -5,8 +5,6 @@ class DataMiningHeatMap extends TPage
   public function onLoad($param)
   {
     parent::onLoad($param);
-    if($this->IsPostBack)
-      return;
     $g=new GdChecker(); //checks if GD is installed and available
     $this->IPs->date_from=$this->Range->getFrom()->Text;
     $this->IPs->date_to=$this->Range->getTo()->Text;

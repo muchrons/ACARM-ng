@@ -4,9 +4,9 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @link http://www.pradosoft.com/
- * @copyright Copyright &copy; 2005-2008 PradoSoft
+ * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TActiveRecordGateway.php 2618 2009-03-16 10:41:42Z Christophe.Boulain $
+ * @version $Id: TActiveRecordGateway.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.ActiveRecord
  */
 
@@ -15,7 +15,7 @@
  * record as arrays (for most finder methods).
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TActiveRecordGateway.php 2618 2009-03-16 10:41:42Z Christophe.Boulain $
+ * @version $Id: TActiveRecordGateway.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.ActiveRecord
  * @since 3.1
  */
@@ -306,7 +306,7 @@ class TActiveRecordGateway extends TComponent
 			if($column->getIsExcluded())
 				continue;
 			$value = $record->getColumnValue($name);
-			if(!$column->getAllowNull() && $value===null && !$column->hasSequence() && !$column->getDefaultValue())
+			if(!$column->getAllowNull() && $value===null && !$column->hasSequence() && ($column->getDefaultValue() === TDbTableColumn::UNDEFINED_VALUE))
 			{
 				throw new TActiveRecordException(
 					'ar_value_must_not_be_null', get_class($record),
@@ -342,7 +342,7 @@ class TActiveRecordGateway extends TComponent
 			if($column->getIsExcluded())
 				continue;
 			$value = $record->getColumnValue($name);
-			if(!$column->getAllowNull() && $value===null)
+			if(!$column->getAllowNull() && $value===null && ($column->getDefaultValue() === TDbTableColumn::UNDEFINED_VALUE))
 			{
 				throw new TActiveRecordException(
 					'ar_value_must_not_be_null', get_class($record),

@@ -23,3 +23,4 @@
 * consider adding preprocessor to triggers - only events matching given expressions would be taken into account.
 * consider supporting addition of an alert to the middle of the chain of events (currently only the beginning and the end is supported).
 * add heartbeats for dshield, when host is unreachable.
+* add extra checks to test applications to ensure tests are NOT run as root (for example: commons::filesystem::createTempDirectory).

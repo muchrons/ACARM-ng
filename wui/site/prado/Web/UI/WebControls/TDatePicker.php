@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TDatePicker.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TDatePicker.php 2942 2011-06-01 19:49:56Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  */
 
@@ -56,7 +56,7 @@ Prado::using('System.Web.UI.WebControls.TTextBox');
  *
  * The <b>InputMode</b> property can be set to "TextBox" or "DropDownList" with
  * default as "TextBox".
- * In <tt>DropDownList</tt> mode, in addition to the popup date picker, three
+ * In <b>DropDownList</b> mode, in addition to the popup date picker, three
  * drop down list (day, month and year) are presented to select the date .
  *
  * The <b>PositionMode</b> property can be set to "Top" or "Bottom" with default
@@ -65,7 +65,7 @@ Prado::using('System.Web.UI.WebControls.TTextBox');
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @author Carl G. Mathisen <carlgmathisen@gmail.com>
- * @version $Id: TDatePicker.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TDatePicker.php 2942 2011-06-01 19:49:56Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0
  */
@@ -487,7 +487,7 @@ class TDatePicker extends TTextBox
 		if(isset($values[$key.'$day']))
 			$day = intval($values[$key.'$day']);
 		else
-			$day = 1;
+			$day = $date['mday'];
 
 		if(isset($values[$key.'$month']))
 			$month = intval($values[$key.'$month']) + 1;
@@ -803,7 +803,9 @@ class TDatePicker extends TTextBox
 		$writer->addAttribute('class', $this->getCssClass().' TDatePickerImageButton');
 		if(!$this->getEnabled(true))
 			$writer->addAttribute('disabled', 'disabled');
-		$writer->renderBeginTag('img');
+		$writer->addAttribute('type', 'image');
+		$writer->addAttribute('onclick', 'return false;');
+		$writer->renderBeginTag('input');
 		$writer->renderEndTag();
 	}
 
@@ -879,7 +881,7 @@ class TDatePicker extends TTextBox
  * as parameter to this event
  * 
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TDatePicker.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TDatePicker.php 2942 2011-06-01 19:49:56Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0.4
  */
@@ -913,7 +915,7 @@ class TDatePickerClientScript extends TClientSideOptions
  * - DropDownList: dropdown lists are used to pick up date values
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TDatePicker.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TDatePicker.php 2942 2011-06-01 19:49:56Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0.4
  */
@@ -934,7 +936,7 @@ class TDatePickerInputMode extends TEnumerable
  * - ImageButton: Shows an image next to the text input, clicking on the image shows the date picker,
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TDatePicker.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TDatePicker.php 2942 2011-06-01 19:49:56Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0.4
  */

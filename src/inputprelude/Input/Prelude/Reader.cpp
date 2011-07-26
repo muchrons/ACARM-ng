@@ -38,7 +38,7 @@ Reader::DataPtr Reader::read(BackendFacade &bf, const unsigned int timeout)
 
   try
   {
-    const IDMEFParser ip( message.get(), bf );
+    const IDMEFParser ip( message.get(), bf, timeout );
     tmp.reset(new Persistency::Alert(ip.getName(),
                                      ip.getAnalyzers(),
                                      NULL,

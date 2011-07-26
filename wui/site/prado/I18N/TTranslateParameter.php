@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TTranslateParameter.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TTranslateParameter.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.I18N
  */
 
@@ -110,10 +110,10 @@ class TTranslateParameter extends TControl
 		$value = $this->getValue();
 		if(strlen($value) > 0)
 			return $value;
-		$textWriter = new TTextWriter;
-		$this->renderControl(new THtmlWriter($textWriter));
+		$htmlWriter = Prado::createComponent($this->GetResponse()->getHtmlWriterType(), new TTextWriter());
+		$this->renderControl($htmlWriter);
 		return $this->getTrim() ?
-			trim($textWriter->flush()) : $textWriter->flush();
+			trim($htmlWriter->flush()) : $htmlWriter->flush();
 	}
 }
 

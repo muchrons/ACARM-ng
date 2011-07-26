@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TCachePageStatePersister.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TCachePageStatePersister.php 2926 2011-05-25 09:34:54Z ctrlaltca@gmail.com $
  * @package System.Web.UI
  */
 
@@ -54,7 +54,7 @@
  * </code>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TCachePageStatePersister.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TCachePageStatePersister.php 2926 2011-05-25 09:34:54Z ctrlaltca@gmail.com $
  * @package System.Web.UI
  * @since 3.1.1
  */
@@ -111,7 +111,7 @@ class TCachePageStatePersister extends TComponent implements IPageStatePersister
 				$cache=Prado::getApplication()->getCache();
 			if($cache===null || !($cache instanceof ICache))
 			{
-				if($this->_cacheModule!=='')
+				if($this->_cacheModuleID!=='')
 					throw new TConfigurationException('cachepagestatepersister_cachemoduleid_invalid',$this->_cacheModuleID);
 				else
 					throw new TConfigurationException('cachepagestatepersister_cache_required');

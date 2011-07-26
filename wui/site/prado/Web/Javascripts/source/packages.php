@@ -1,10 +1,10 @@
 <?php
 
-//$Id: packages.php 2611 2009-02-23 13:40:30Z Christophe.Boulain $
+//$Id: packages.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
 
 // To make future upgrades easier
-if (!defined('PROTOTYPE_DIR')) define ('PROTOTYPE_DIR', 'prototype-1.6.0.3');
-if (!defined('SCRIPTACULOUS_DIR')) define ('SCRIPTACULOUS_DIR', 'scriptaculous-1.8.2');
+if (!defined('PROTOTYPE_DIR')) define ('PROTOTYPE_DIR', 'prototype-1.7');
+if (!defined('SCRIPTACULOUS_DIR')) define ('SCRIPTACULOUS_DIR', 'scriptaculous-1.9.0');
 
 //package names and its contents (files relative to the current directory)
 $packages = array(
@@ -39,7 +39,7 @@ $packages = array(
 
 	'ajax' => array(
 		SCRIPTACULOUS_DIR.'/controls.js',
-		'prado/activecontrols/json.js',
+		'prado/activecontrols/json2.js',
 		'prado/activecontrols/ajax3.js',
 		'prado/activecontrols/activecontrols3.js',
 		'prado/activecontrols/inlineeditor.js'

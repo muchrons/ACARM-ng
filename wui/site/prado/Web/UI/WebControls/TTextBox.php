@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TTextBox.php 2744 2009-11-08 11:47:56Z godzilla80@gmx.net $
+ * @version $Id: TTextBox.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  */
 
@@ -44,7 +44,7 @@
  * Currently, no alternatives are available.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TTextBox.php 2744 2009-11-08 11:47:56Z godzilla80@gmx.net $
+ * @version $Id: TTextBox.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0
  */
@@ -122,25 +122,6 @@ class TTextBox extends TWebControl implements IPostBackDataHandler, IValidatable
 				$writer->addAttribute('type','text');
 				if(($text=$this->getText())!=='')
 					$writer->addAttribute('value',$text);
-				if(($act=$this->getAutoCompleteType())!=='None')
-				{
-					if($act==='Disabled')
-						$writer->addAttribute('autocomplete','off');
-					else if($act==='Search')
-						$writer->addAttribute('vcard_name','search');
-					else if($act==='HomeCountryRegion')
-						$writer->addAttribute('vcard_name','HomeCountry');
-					else if($act==='BusinessCountryRegion')
-						$writer->addAttribute('vcard_name','BusinessCountry');
-					else
-					{
-						if(strpos($act,'Business')===0)
-							$act='Business'.'.'.substr($act,8);
-						else if(strpos($act,'Home')===0)
-							$act='Home'.'.'.substr($act,4);
-						$writer->addAttribute('vcard_name','vCard.'.$act);
-					}
-				}
 			}
 			else
 			{
@@ -148,6 +129,27 @@ class TTextBox extends TWebControl implements IPostBackDataHandler, IValidatable
 					$writer->addAttribute('value',$text);
 				$writer->addAttribute('type','password');
 			}
+
+			if(($act=$this->getAutoCompleteType())!=='None')
+			{
+				if($act==='Disabled')
+					$writer->addAttribute('autocomplete','off');
+				else if($act==='Search')
+					$writer->addAttribute('vcard_name','search');
+				else if($act==='HomeCountryRegion')
+					$writer->addAttribute('vcard_name','HomeCountry');
+				else if($act==='BusinessCountryRegion')
+					$writer->addAttribute('vcard_name','BusinessCountry');
+				else
+				{
+					if(strpos($act,'Business')===0)
+						$act='Business'.'.'.substr($act,8);
+					else if(strpos($act,'Home')===0)
+						$act='Home'.'.'.substr($act,4);
+					$writer->addAttribute('vcard_name','vCard.'.$act);
+				}
+			}
+
 			if(($cols=$this->getColumns())>0)
 				$writer->addAttribute('size',"$cols");
 			if(($maxLength=$this->getMaxLength())>0)
@@ -591,7 +593,7 @@ class TTextBox extends TWebControl implements IPostBackDataHandler, IValidatable
  * - Password: the textbox will hide user input like a password input box
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TTextBox.php 2744 2009-11-08 11:47:56Z godzilla80@gmx.net $
+ * @version $Id: TTextBox.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0.4
  */
@@ -608,7 +610,7 @@ class TTextBoxMode extends TEnumerable
  * by a {@link TTextBox} control.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TTextBox.php 2744 2009-11-08 11:47:56Z godzilla80@gmx.net $
+ * @version $Id: TTextBox.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0.4
  */

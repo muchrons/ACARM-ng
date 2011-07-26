@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TDataSourceConfig.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TDataSourceConfig.php 2880 2011-01-19 14:56:01Z christophe.boulain $
  * @package System.Data
  */
 
@@ -42,7 +42,7 @@ Prado::using('System.Data.TDbConnection');
  * that extends the TDbConnection class.
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TDataSourceConfig.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TDataSourceConfig.php 2880 2011-01-19 14:56:01Z christophe.boulain $
  * @package System.Data
  * @since 3.1
  */
@@ -58,13 +58,13 @@ class TDataSourceConfig extends TModule
 	 */
 	public function init($xml)
 	{
-		if($prop=$xml->getElementByTagName('database'))
-		{
-			$db=$this->getDbConnection();
-			foreach($prop->getAttributes() as $name=>$value)
-				$db->setSubproperty($name,$value);
+			if($prop=$xml->getElementByTagName('database'))
+			{
+				$db=$this->getDbConnection();
+				foreach($prop->getAttributes() as $name=>$value)
+					$db->setSubproperty($name,$value);
+			}
 		}
-	}
 
 	/**
 	 * The module ID of another TDataSourceConfig. The {@link getDbConnection DbConnection}
@@ -153,4 +153,3 @@ class TDataSourceConfig extends TModule
 			throw new TConfigurationException('datasource_dbconnection_invalid',$id);
 	}
 }
-

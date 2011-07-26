@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TUrlMapping.php 2604 2009-01-21 08:49:21Z haertl.mike $
+ * @version $Id: TUrlMapping.php 2918 2011-05-21 17:10:29Z ctrlaltca@gmail.com $
  * @package System.Web
  */
 
@@ -63,7 +63,7 @@ Prado::using('System.Collections.TAttributeCollection');
  * in the GET variables.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TUrlMapping.php 2604 2009-01-21 08:49:21Z haertl.mike $
+ * @version $Id: TUrlMapping.php 2918 2011-05-21 17:10:29Z ctrlaltca@gmail.com $
  * @package System.Web
  * @since 3.0.5
  */
@@ -417,7 +417,7 @@ class TUrlMapping extends TUrlManager
  * <tt>.../index.php/admin/listuser/param1-value1/param2-value2</tt>.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TUrlMapping.php 2604 2009-01-21 08:49:21Z haertl.mike $
+ * @version $Id: TUrlMapping.php 2918 2011-05-21 17:10:29Z ctrlaltca@gmail.com $
  * @package System.Web
  * @since 3.0.5
  */
@@ -639,7 +639,7 @@ class TUrlMappingPattern extends TComponent
 			if ($this->_separator==='/') 
 			{
 				while($key=array_shift($params))
-					$matches2[$key]=($value=array_shift($params)) ? $value : '';
+					$matches[$key]=($value=array_shift($params)) ? $value : '';
 			} 
 			else 
 			{

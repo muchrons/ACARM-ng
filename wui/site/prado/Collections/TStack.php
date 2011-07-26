@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TStack.php 2625 2009-03-19 22:07:39Z godzilla80@gmx.net $
+ * @version $Id: TStack.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Collections
  */
 
@@ -27,7 +27,7 @@
  * </code>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TStack.php 2625 2009-03-19 22:07:39Z godzilla80@gmx.net $
+ * @version $Id: TStack.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Collections
  * @since 3.0
  */
@@ -150,7 +150,7 @@ class TStack extends TComponent implements IteratorAggregate,Countable
 	 */
 	public function getIterator()
 	{
-		return new TStackIterator($this->_d);
+		return new ArrayIterator( $this->_d );
 	}
 
 	/**
@@ -180,8 +180,9 @@ class TStack extends TComponent implements IteratorAggregate,Countable
  * TStackIterator is used by TStack. It allows TStack to return a new iterator
  * for traversing the items in the list.
  *
+ * @deprecated Issue 264 : ArrayIterator should be used instead 
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TStack.php 2625 2009-03-19 22:07:39Z godzilla80@gmx.net $
+ * @version $Id: TStack.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Collections
  * @since 3.0
  */

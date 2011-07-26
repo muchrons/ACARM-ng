@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TLogRouter.php 2694 2009-07-20 11:53:36Z carlgmathisen $
+ * @version $Id: TLogRouter.php 2938 2011-06-01 07:46:44Z ctrlaltca@gmail.com $
  * @package System.Util
  */
 
@@ -31,7 +31,7 @@ Prado::using('System.Data.TDbConnection');
  * targets, even if the routes are of the same type.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TLogRouter.php 2694 2009-07-20 11:53:36Z carlgmathisen $
+ * @version $Id: TLogRouter.php 2938 2011-06-01 07:46:44Z ctrlaltca@gmail.com $
  * @package System.Util
  * @since 3.0
  */
@@ -159,7 +159,7 @@ class TLogRouter extends TModule
  * satisfying both filter conditions will they be returned.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TLogRouter.php 2694 2009-07-20 11:53:36Z carlgmathisen $
+ * @version $Id: TLogRouter.php 2938 2011-06-01 07:46:44Z ctrlaltca@gmail.com $
  * @package System.Util
  * @since 3.0
  */
@@ -332,7 +332,7 @@ abstract class TLogRoute extends TApplicationComponent
  * specifies how many files to be kept.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TLogRouter.php 2694 2009-07-20 11:53:36Z carlgmathisen $
+ * @version $Id: TLogRouter.php 2938 2011-06-01 07:46:44Z ctrlaltca@gmail.com $
  * @package System.Util
  * @since 3.0
  */
@@ -472,7 +472,7 @@ class TFileLogRoute extends TLogRoute
  * {@link setSentFrom SentFrom} address.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TLogRouter.php 2694 2009-07-20 11:53:36Z carlgmathisen $
+ * @version $Id: TLogRouter.php 2938 2011-06-01 07:46:44Z ctrlaltca@gmail.com $
  * @package System.Util
  * @since 3.0
  */
@@ -598,7 +598,7 @@ class TEmailLogRoute extends TLogRoute
  * TBrowserLogRoute prints selected log messages in the response.
  *
  * @author Xiang Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TLogRouter.php 2694 2009-07-20 11:53:36Z carlgmathisen $
+ * @version $Id: TLogRouter.php 2938 2011-06-01 07:46:44Z ctrlaltca@gmail.com $
  * @package System.Util
  * @since 3.0
  */
@@ -785,7 +785,7 @@ EOD;
  * </code>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TLogRouter.php 2694 2009-07-20 11:53:36Z carlgmathisen $
+ * @version $Id: TLogRouter.php 2938 2011-06-01 07:46:44Z ctrlaltca@gmail.com $
  * @package System.Util
  * @since 3.1.2
  */
@@ -830,7 +830,7 @@ class TDbLogRoute extends TLogRoute
 		$db=$this->getDbConnection();
 		$db->setActive(true);
 
-		$sql='SELECT * FROM '.$this->_logTable.' WHERE FALSE';
+		$sql='SELECT * FROM '.$this->_logTable.' WHERE 0=1';
 		try
 		{
 			$db->createCommand($sql)->query()->close();
@@ -838,12 +838,10 @@ class TDbLogRoute extends TLogRoute
 		catch(Exception $e)
 		{
 			// DB table not exists
-
 			if($this->_autoCreate)
 				$this->createDbTable();
 			else
-                          //throw new TConfigurationException('db_logtable_inexistent',$this->_logTable);
-                          throw $e;
+				throw new TConfigurationException('db_logtable_inexistent',$this->_logTable);
 		}
 
 		parent::init($config);
@@ -993,7 +991,7 @@ class TDbLogRoute extends TLogRoute
  * {@link http://www.getfirebug.com/ FireBug Website}
  *
  * @author Enrico Stahn <mail@enricostahn.com>, Christophe Boulain <Christophe.Boulain@gmail.com>
- * @version $Id: TLogRouter.php 2694 2009-07-20 11:53:36Z carlgmathisen $
+ * @version $Id: TLogRouter.php 2938 2011-06-01 07:46:44Z ctrlaltca@gmail.com $
  * @package System.Util
  * @since 3.1.2
  */
@@ -1069,7 +1067,7 @@ EOD;
  * {@link http://www.firephp.org/ FirePHP Website}
  *
  * @author Yves Berkholz <godzilla80[at]gmx[dot]net>
- * @version $Id: TLogRouter.php 2694 2009-07-20 11:53:36Z carlgmathisen $
+ * @version $Id: TLogRouter.php 2938 2011-06-01 07:46:44Z ctrlaltca@gmail.com $
  * @package System.Util
  * @since 3.1.5
  */

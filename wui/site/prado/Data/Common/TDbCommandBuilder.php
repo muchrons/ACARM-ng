@@ -4,9 +4,9 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @link http://www.pradosoft.com/
- * @copyright Copyright &copy; 2005-2008 PradoSoft
+ * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TDbCommandBuilder.php 2762 2010-02-13 15:37:13Z godzilla80@gmx.net $
+ * @version $Id: TDbCommandBuilder.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.Common
  */
 
@@ -15,7 +15,7 @@
  * giving by {@link setTableInfo TableInfo} the property.
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TDbCommandBuilder.php 2762 2010-02-13 15:37:13Z godzilla80@gmx.net $
+ * @version $Id: TDbCommandBuilder.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.Common
  * @since 3.1
  */
@@ -108,7 +108,7 @@ class TDbCommandBuilder extends TComponent
 		foreach($ordering as $name => $direction)
 		{
 			$direction = strtolower($direction) == 'desc' ? 'DESC' : 'ASC';
-			if(strpos($name, '(') && strpos($name, ')')) {
+			if(false !== strpos($name, '(') && false !== strpos($name, ')')) {
 				// key is a function (bad practice, but we need to handle it)
 				$key = $name;
 			} else {
@@ -505,5 +505,3 @@ class TDbCommandBuilder extends TComponent
 		return false;
 	}
 }
-
-?>

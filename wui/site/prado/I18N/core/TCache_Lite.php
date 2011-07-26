@@ -38,7 +38,7 @@
 * Mike BENOIT <ipso@snappymail.ca>
 *
 * @package System.I18N.core
-* @version $Id: TCache_Lite.php 1398 2006-09-08 19:31:03Z xue $
+* @version $Id: TCache_Lite.php 2838 2010-05-07 08:34:40Z rojaro $
 * @author Fabien MARTY <fab@php.net>
 * @copyright  1997-2005 The PHP Group
 * @license    http://www.gnu.org/copyleft/lesser.html GNU LGPL
@@ -534,14 +534,18 @@ class TCache_Lite
         	// because the filesize can be cached by PHP itself...
             clearstatcache();
             $length = @filesize($this->_file);
-            $mqr = get_magic_quotes_runtime();
-            set_magic_quotes_runtime(0);
+			if(version_compare(PHP_VERSION, '5.3.0', 'lt'))
+			{
+	            $mqr = get_magic_quotes_runtime();
+    	        set_magic_quotes_runtime(0);
+			}
             if ($this->_readControl) {
                 $hashControl = @fread($fp, 32);
                 $length = $length - 32;
             }
             $data = @fread($fp, $length);
-            set_magic_quotes_runtime($mqr);
+			if(isset($mqr))
+	            set_magic_quotes_runtime($mqr);
             if ($this->_fileLocking) @flock($fp, LOCK_UN);
             @fclose($fp);
             if ($this->_readControl) {

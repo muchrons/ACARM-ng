@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TOutputCache.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TOutputCache.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  */
 
@@ -63,7 +63,7 @@
  * to determine whether the content is cached or not.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TOutputCache.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TOutputCache.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.1
  */
@@ -478,14 +478,14 @@ class TOutputCache extends TControl implements INamingContainer
 			$writer->write($this->_contents);
 		else if($this->_cacheAvailable)
 		{
-			$textWriter=new TTextWriter;
-
+			$htmlWriter = Prado::createComponent($this->GetResponse()->getHtmlWriterType(), new TTextWriter());
+			
 			$stack=$this->getPage()->getCachingStack();
 			$stack->push($this);
-			parent::render(new THtmlWriter($textWriter));
+			parent::render($htmlWriter);
 			$stack->pop();
 
-			$content=$textWriter->flush();
+			$content=$htmlWriter->flush();
 			$data=array($content,$this->_state,$this->_actions,time());
 			$this->_cache->set($this->getCacheKey(),$data,$this->getDuration(),$this->getCacheDependency());
 			$writer->write($content);
@@ -502,7 +502,7 @@ class TOutputCache extends TControl implements INamingContainer
  * <b>OnCheckDependency</b> event of {@link TOutputCache} control.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TOutputCache.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TOutputCache.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0
  */
@@ -554,7 +554,7 @@ class TOutputCacheCheckDependencyEventParameter extends TEventParameter
  * <b>OnCalculateKey</b> event of {@link TOutputCache} control.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TOutputCache.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TOutputCache.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0
  */
