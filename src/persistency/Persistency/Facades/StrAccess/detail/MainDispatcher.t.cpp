@@ -121,4 +121,28 @@ void testObj::test<4>(void)
   }
 }
 
+// test collection that is a term
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  while(p_.hasNext())
+    ++p_;
+  g_toBeCalled="OnTestTerm";
+  vector<string> v;
+  v.push_back("abc");
+  MainDispatcher::process(v, p_);
+}
+
+// test collection that is a non-term
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  g_toBeCalled="OnTestNonTerm";
+  vector<string> v;
+  v.push_back("abc");
+  MainDispatcher::process(v, p_);
+}
+
 } // namespace tut
