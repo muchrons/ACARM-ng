@@ -25,7 +25,11 @@ struct OnReferenceURL: private System::NoInstance
   {
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
+    ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
+    if(p.get()!="referenceurl")
+      ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
+
     ++p;
 
     if(p.get()=="name")
