@@ -27,6 +27,11 @@ namespace StrAccess
 namespace detail
 {
 
+/** \brief helper function counting elements in a given iterators range.
+ *  \param begin iterator to start processing with.
+ *  \param end   iterator indicating end of elements.
+ *  \return count of elements in rage [begin;end).
+ */
 template<typename CIter>
 inline size_t collectionSize(CIter begin, const CIter end)
 {
@@ -40,9 +45,16 @@ inline size_t collectionSize(CIter begin, const CIter end)
 } // collectionSize()
 
 
+/** \brief implementation of term element for collections.
+ */
 template<bool isCollection>
 struct ProcessOnTermCollectionImpl: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
@@ -51,9 +63,16 @@ struct ProcessOnTermCollectionImpl: private System::NoInstance
   }
 }; // struct ProcessOnTermCollectionImpl
 
+/** \brief implementation of term element for non-collections.
+ */
 template<>
 struct ProcessOnTermCollectionImpl<false>: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
@@ -62,8 +81,15 @@ struct ProcessOnTermCollectionImpl<false>: private System::NoInstance
 }; // struct ProcessOnTermCollectionImpl
 
 
+/** \brief warpper used for handling term elements.
+ */
 struct OnTerm: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {

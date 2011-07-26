@@ -18,8 +18,15 @@ namespace Facades
 namespace StrAccess
 {
 
+/** \brief handle processing reference url objects.
+ */
 struct OnReferenceURL: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename TParams>
   static bool process(const ReferenceURL &e, TParams &p)
   {

@@ -18,10 +18,12 @@ namespace Facades
 namespace StrAccess
 {
 
+/** \brief helper that informs if a given type is a pointer type.
+ */
 template<typename T>
 struct IsPointer: private System::NoInstance
 {
-  static const bool value=boost::is_pointer<T>::value;
+  static const bool value=boost::is_pointer<T>::value;  ///< meta-program result
 }; // struct IsPointer
 
 } // namespace StrAccess

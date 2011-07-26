@@ -67,4 +67,12 @@ void testObj::test<4>(void)
   checkType<CollectionIndexHandle, OnCollectionIndex>("colleciton index handle is not valid");
 }
 
+// test presence of reference url handle
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  checkType<ReferenceURL, OnReferenceURL>("ReferenceURL handle is not valid");
+}
+
 } // namespace tut

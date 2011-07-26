@@ -24,9 +24,19 @@ namespace Facades
 namespace StrAccess
 {
 
+namespace detail
+{
+
+/** \brief helper implementing dispatching when given element is a collection.
+ */
 template<bool isCollection>
 struct ProcessMainDispatcherCollectionImpl: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
@@ -39,9 +49,16 @@ struct ProcessMainDispatcherCollectionImpl: private System::NoInstance
   }
 }; // struct ProcessMainDispatcherCollectionImpl
 
+/** \brief helper implementing dispatching when given element is not a collection.
+ */
 template<>
 struct ProcessMainDispatcherCollectionImpl<false>: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
@@ -58,8 +75,15 @@ struct ProcessMainDispatcherCollectionImpl<false>: private System::NoInstance
 }; // struct ProcessMainDispatcherCollectionImpl
 
 
+/** \brief implementation of main dispatcher.
+ */
 struct MainDispatcherImpl: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
@@ -68,13 +92,31 @@ struct MainDispatcherImpl: private System::NoInstance
   }
 }; // struct MainDispatcherImpl
 
+} // namespace detail
 
+
+/** \brief dispatcher meta-program for running whole the machinery.
+ *
+ *  given an element this meta program processes it accoring to the
+ *  rules specified in TParams::HandleMap. to modify those proper
+ *  map should be prepared, by altering entries in the original one.
+ *
+ *  wrapper handles indrections, collections and terms automatically.
+ *
+ *  this meta-program should be an entry point when calling subsequent
+ *  processing of elements.
+ */
 struct MainDispatcher: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
-    return HandleIndirection::process<MainDispatcherImpl>(e, p);
+    return HandleIndirection::process<detail::MainDispatcherImpl>(e, p);
   }
 }; // struct MainDispatcher
 

@@ -25,9 +25,16 @@ namespace StrAccess
 namespace detail
 {
 
+/** \brief implements non-term logic for collections.
+ */
 template<bool isCollection>
 struct ProcessOnNonTermCollectionImpl: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
@@ -37,9 +44,16 @@ struct ProcessOnNonTermCollectionImpl: private System::NoInstance
   }
 }; // struct ProcessOnNonTermCollectionImpl
 
+/** \brief implements non-term logic for non-collections.
+ */
 template<>
 struct ProcessOnNonTermCollectionImpl<false>: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
@@ -49,8 +63,15 @@ struct ProcessOnNonTermCollectionImpl<false>: private System::NoInstance
 }; // struct ProcessOnNonTermCollectionImpl
 
 
+/** \brief warpper used for handling non-term elements.
+ */
 struct OnNonTerm: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {

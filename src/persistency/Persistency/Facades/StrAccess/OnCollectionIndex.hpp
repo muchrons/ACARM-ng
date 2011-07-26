@@ -22,8 +22,15 @@ namespace Facades
 namespace StrAccess
 {
 
+/** \brief processing facility handling collection indexes.
+ */
 struct OnCollectionIndex: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {

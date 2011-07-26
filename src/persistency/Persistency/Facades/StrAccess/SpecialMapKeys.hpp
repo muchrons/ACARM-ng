@@ -16,9 +16,13 @@ namespace Facades
 namespace StrAccess
 {
 
+/** \brief type indicating handle of non-terms in handle map. */
 struct NonTermHandle: private System::NoInstance {};
+/** \brief type indicating handle of terms in handle map. */
 struct TermHandle: private System::NoInstance {};
+/** \brief type indicating handle of collection indexes in handle map. */
 struct CollectionIndexHandle: private System::NoInstance {};
+/** \brief type indicating handle of error conditions in handle map. */
 struct ErrorHandle: private System::NoInstance {};
 
 } // namespace StrAccess

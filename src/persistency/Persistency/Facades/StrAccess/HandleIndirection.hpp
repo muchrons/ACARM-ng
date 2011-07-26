@@ -8,6 +8,7 @@
 /* public header */
 
 #include <string>
+#include <cassert>
 #include <boost/mpl/if.hpp>
 
 #include "System/NoInstance.hpp"
@@ -26,9 +27,17 @@ namespace StrAccess
 namespace detail
 {
 
+/** \brief helper processing const char* -> std::string.
+ */
 template<bool TIsTerm, typename TFuncObj>
 struct ProcessPointerNotNULL: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   *  \warning this is internal - e must NOT be NULL!
+   */
   template<typename TParams>
   static bool process(const char *e, TParams &p)
   {
@@ -38,9 +47,17 @@ struct ProcessPointerNotNULL: private System::NoInstance
   }
 };
 
+/** \brief helper dereferencing pointer.
+ */
 template<typename TFuncObj>
 struct ProcessPointerNotNULL<false, TFuncObj>: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   *  \warning this is internal - e must NOT be NULL!
+   */
   template<typename T, typename TParams>
   static bool process(const T *e, TParams &p)
   {
@@ -50,9 +67,16 @@ struct ProcessPointerNotNULL<false, TFuncObj>: private System::NoInstance
 };
 
 
+/** \brief raw pointer extracting facility.
+ */
 template<typename TFuncObj>
 struct StripPointer: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T *e, TParams &p)
   {
@@ -65,9 +89,16 @@ struct StripPointer: private System::NoInstance
 };
 
 
+/** \brief smart pointer extracting facility.
+ */
 template<typename TFuncObj>
 struct StripSmartPointer: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
@@ -77,9 +108,16 @@ struct StripSmartPointer: private System::NoInstance
 };
 
 
+/** \brief facility that does nothing except of direct forwarding of a given result.
+ */
 template<typename TFuncObj>
 struct NothingToStrip: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
@@ -88,10 +126,16 @@ struct NothingToStrip: private System::NoInstance
 };
 
 
-
+/** \brief implementation class for indirection handling.
+ */
 template<typename TFuncObj>
 struct HandleIndirectionImpl: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
@@ -118,8 +162,23 @@ struct HandleIndirectionImpl: private System::NoInstance
 } // namespace detail
 
 
+/** \brief class handling indirection (pointers and smart pointers) in calls.
+ *
+ *  by using this facility it is ensured that element will be passed to the
+ *  next processing stage (represented by TFuncObj template paramter to
+ *  process() call) as dereferenced pointer (i.e. value), disregarding how
+ *  many levels of nesting of pointers and smart pointer are introduced.
+ *
+ *  this wrapper is also smart enough to process terms (like const char *)
+ *  in the secure whay, by translatinv them to std::string, if needed.
+ */
 struct HandleIndirection: private System::NoInstance
 {
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
   template<typename TFuncObj, typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {

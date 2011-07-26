@@ -19,53 +19,64 @@ namespace Facades
 namespace StrAccess
 {
 
-// by default only arithmetic types match
+/** \brief defines what types are terms.
+ *
+ *  by default only arithmetic types match.
+ *
+ *  indirection is not handeled by this meta-program.
+ */
 template<typename T>
 struct IsTerm: private System::NoInstance
 {
-  static const bool value=boost::is_arithmetic<T>::value;
+  static const bool value=boost::is_arithmetic<T>::value;   ///< meta-program result
 }; // struct IsTerm
 
-// std::string is term
+/** \brief makes std::string a term.
+ */
 template<>
 struct IsTerm<std::string>: private System::NoInstance
 {
-  static const bool value=true;
+  static const bool value=true;     ///< meta-program result
 }; // struct IsTerm
 
-// convert pointer->const pointer
+/** \brief threads pointers the same way as const pointers.
+ */
 template<typename T>
 struct IsTerm<T*>: private System::NoInstance
 {
-  static const bool value=IsTerm<const T*>::value;
+  static const bool value=IsTerm<const T*>::value;      ///< meta-program result
 }; // struct IsTerm
 
-// pointers are not terms
+/** \brief random pointers are not terms.
+ */
 template<typename T>
 struct IsTerm<const T*>: private System::NoInstance
 {
-  static const bool value=false;
+  static const bool value=false;    ///< meta-program result
 }; // struct IsTerm
 
-// const char * is a term (exception)
+/** \brief const char * is a term (exception).
+ */
 template<>
 struct IsTerm<const char*>: private System::NoInstance
 {
-  static const bool value=true;
+  static const bool value=true;     ///< meta-program result
 }; // struct IsTerm
 
-// char[] is a term (exception)
+/** \brief char[] is a term (exception).
+ */
 template<unsigned int N>
 struct IsTerm<char[N]>: private System::NoInstance
 {
-  static const bool value=IsTerm<char*>::value;
+  static const bool value=IsTerm<char*>::value;         ///< meta-program result
 }; // struct IsTerm
 
-// const char[] is a term (exception)
+/** \brief const char[] is a term (exception).
+ */
 template<unsigned int N>
 struct IsTerm<const char[N]>: private System::NoInstance
 {
-  static const bool value=IsTerm<const char*>::value;
+  static const bool value=IsTerm<const char*>::value;   ///< meta-program result
 }; // struct IsTerm
 
 } // namespace StrAccess
