@@ -9,13 +9,14 @@
 
 #include <string>
 #include <cstdlib>
+#include <cassert>
 #include <boost/mpl/at.hpp>
 
 #include "System/NoInstance.hpp"
 #include "Commons/Convert.hpp"
-#include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
+#include "Persistency/Facades/StrAccess/IsTerm.hpp"
 #include "Persistency/Facades/StrAccess/IsCollection.hpp"
-#include "Persistency/Facades/StrAccess/HandleIndirection.hpp"
+#include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
 
 namespace Persistency
 {
@@ -61,29 +62,20 @@ struct ProcessTermCollectionImpl<false>: private System::NoInstance
 }; // struct ProcessCollectionImpl
 
 
-struct TermImpl: private System::NoInstance
-{
-  template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
-  {
-    // process returning size for collection and value for non-collection
-    typedef ProcessTermCollectionImpl<IsCollection<T>::value> Action;
-    // process (smart) pointers before doing anything
-    return Action::process(e, p);
-  }
-}; // struct Term
-
-
-
 struct Term: private System::NoInstance
 {
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
-    typedef typename TParams::template handle<ErrorTests>::type ErrH;
+    // sanity check
+    typedef typename TParams::template GetHandle<ErrorTests>::type ErrH;
+    ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwIfNotLast(SYSTEM_SAVE_LOCATION, p);
+    assert( IsCollection<T>::value || IsTerm<T>::value || !"unknown term accepted" );
+    // process returning size for collection and value for non-collection
+    typedef ProcessTermCollectionImpl<IsCollection<T>::value> Action;
     // process (smart) pointers before doing anything
-    return HandleIndirection::process<TermImpl>(e, p);
+    return Action::process(e, p);
   }
 }; // struct Term
 

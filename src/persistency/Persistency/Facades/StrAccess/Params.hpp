@@ -37,7 +37,7 @@ struct Params
     template<typename T>
     static bool process(const T &/*e*/, Params<THandleMap,TResultCallback> &p)
     {
-      handle<ErrorTests>::type::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
+      GetHandle<ErrorTests>::type::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
       return false; // code never reaches here
     }
   }; // struct OnUnknownType
@@ -51,27 +51,15 @@ struct Params
   }
 
   template<typename T>
-  struct handle
+  struct GetHandle
   {
-  private:
     typedef typename boost::mpl::if_c< boost::mpl::has_key<HandleMap,T>::value,
                                      // then
                                        typename boost::mpl::at<HandleMap,T>::type,
                                      // else
                                        OnUnknownType
-                                     >::type OnNonTerm;
-
-    typedef typename boost::mpl::if_c< IsTerm<T>::value,
-                                     // then
-                                       detail::Term,
-                                     // else
-                                       OnNonTerm
-                                     >::type IfTerm;
-
-  public:
-    // response
-    typedef IfTerm type;
-  }; // struct handle
+                                     >::type type;
+  }; // struct GetHandle
 
   Params &operator++(void)
   {

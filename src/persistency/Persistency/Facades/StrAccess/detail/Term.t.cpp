@@ -11,15 +11,14 @@
 using namespace std;
 using namespace Persistency::Facades::StrAccess;
 using namespace Persistency::Facades::StrAccess::detail;
-#if 0                       /// TODO                
 
 namespace
 {
 struct TestClass
 {
   TestClass(void):
-    p_( Path("a.b"), cb_),
-    pLast_( Path("a.b"), cb_)
+    p_(Path("a.b"), cb_),
+    pLast_(Path("a.b"), cb_)
   {
     ++pLast_;
     assert(pLast_.isEnd()==false);
@@ -30,8 +29,8 @@ struct TestClass
   {
     try
     {
-      Term::process( string("aaa"), p);             // should throw
-      tut::fail("Term::process() didn't failed");
+      Term::process(string("aaa"), p);              // should throw
+      tut::fail("process() didn't failed");
     }
     catch(const ExceptionInvalidPath &)
     {
@@ -59,9 +58,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  while(!p_.isEnd())
-    ++p_;
-  testThrow(p_);
+  ++pLast_;
+  assert(pLast_.isEnd());
+  testThrow(pLast_);
 }
 
 // test exception when not-last element is set
@@ -69,25 +68,13 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ++pLast_;
-  testThrow(pLast_);
-}
-
-// test indirection resolving
-template<>
-template<>
-void testObj::test<3>(void)
-{
-  int  x =666;
-  int *px=&x;
-  Term::process(px, pLast_);
-  ensure_equals("invalid value returned", cb_.lastValue_, "666");
+  testThrow(p_);
 }
 
 // test collection
 template<>
 template<>
-void testObj::test<4>(void)
+void testObj::test<3>(void)
 {
   vector<int> v(10, 42);
   assert(v.size()==10);
@@ -95,17 +82,4 @@ void testObj::test<4>(void)
   ensure_equals("invalid value returned", cb_.lastSize_, 10);
 }
 
-// test indirect collection
-template<>
-template<>
-void testObj::test<5>(void)
-{
-  vector<int>  v(10, 42);
-  assert(v.size()==10);
-  vector<int> *pv=&v;
-  Term::process(pv, pLast_);
-  ensure_equals("invalid value returned", cb_.lastSize_, 10);
-}
-
 } // namespace tut
-#endif                      

@@ -15,6 +15,8 @@
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
 #include "Persistency/Facades/StrAccess/ErrorHandle.hpp"
 #include "Persistency/Facades/StrAccess/CollectionIndexHandle.hpp"
+#include "Persistency/Facades/StrAccess/detail/Term.hpp"
+#include "Persistency/Facades/StrAccess/detail/NonTerm.hpp"
 
 namespace Persistency
 {
@@ -27,6 +29,8 @@ namespace StrAccess
 //   bool T::process(const T &e, TParams &p)
 // static method
 typedef boost::mpl::map<
+    boost::mpl::pair<OnTerm, detail::Term>,
+    boost::mpl::pair<OnNonTerm, detail::NonTerm>,
     boost::mpl::pair<OnCollectionIndex, CollectionIndexHandle>,
     boost::mpl::pair<ErrorTests, ErrorHandle>
   > DefaultHandleMap;

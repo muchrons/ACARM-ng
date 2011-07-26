@@ -18,8 +18,8 @@ namespace StrAccess
 
 //struct CollectionTests: private System::NoInstance {};
 //struct PointerTests: private System::NoInstance {};
-//struct NonTerms: private System::NoInstance {};
-//struct Terms: private System::NoInstance {};
+struct OnNonTerm: private System::NoInstance {};
+struct OnTerm: private System::NoInstance {};
 struct OnCollectionIndex: private System::NoInstance {};
 struct ErrorTests: private System::NoInstance {};
 
