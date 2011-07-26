@@ -207,7 +207,8 @@ template<>
 template<>
 void testObj::test<17>(void)
 {
-  ensure_equals("invalid size", LimitedNULLString<42>::size, 42);
+  // NOTE: static cast is required for Intel - dunno why...
+  ensure_equals("invalid size", static_cast<int>(LimitedNULLString<42>::size), 42);
 }
 
 } // namespace tut
