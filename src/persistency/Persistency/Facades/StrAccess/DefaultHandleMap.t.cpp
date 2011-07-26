@@ -3,24 +3,26 @@
  *
  */
 #include <tut.h>
+#include <boost/mpl/at.hpp>
+#include <boost/type_traits/is_same.hpp>
 
-#include "Persistency/Facades/StrAccess/TestParams.t.hpp"
+#include "Persistency/Facades/StrAccess/DefaultHandleMap.hpp"
 
-using namespace std;
+using namespace boost;
 using namespace boost::mpl;
 using namespace Persistency::Facades::StrAccess;
+using namespace Persistency::Facades::StrAccess::detail;
 
 namespace
 {
 struct TestClass
 {
-  TestClass(void):
-    p_(Path("a.b"), cb_)
+  template<typename TQuery, typename TExpected>
+  void checkType(const char *errMsg) const
   {
+    typedef typename at<DefaultHandleMap, TQuery>::type Has;
+    tut::ensure(errMsg, is_same<Has, TExpected>::value);
   }
-
-  TestParams::ResultCallback cb_;
-  const TestParams           p_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -33,49 +35,36 @@ factory tf("Persistency/Facades/StrAccess/DefaultHandleMap");
 namespace tut
 {
 
-// TODO
-
 // test term
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  /*
-  //const string str=at<DefaultHandleMap,OnTerm>::type::get("test");
-  const string str=TestParams::handle<OnTerm>::type::get("test");
-  ensure_equals("invalid term handle", str, "test");
-  */
+  checkType<OnTerm, Term>("term handle is not valid");
 }
 
-// test handling of sample path on error
+// test error handle
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  // TODO
-  //at<DefaultHandleMap, ErrorTests>::type::throwIfLast(SYSTEM_SAVE_LOCATION, p_); // thould not throw
-  //TestParams::handle<ErrorTests>::type::throwIfLast(SYSTEM_SAVE_LOCATION, p_); // thould not throw
+  checkType<ErrorTests, ErrorHandle>("error handle is not valid");
 }
 
-// 
+// test non-term
 template<>
 template<>
 void testObj::test<3>(void)
 {
+  checkType<OnNonTerm, NonTerm>("non-term handle is not valid");
 }
 
-// 
+// test presence of collection index
 template<>
 template<>
 void testObj::test<4>(void)
 {
-}
-
-// 
-template<>
-template<>
-void testObj::test<5>(void)
-{
+  checkType<OnCollectionIndex, CollectionIndexHandle>("colleciton index handle is not valid");
 }
 
 } // namespace tut
