@@ -3,12 +3,14 @@
  *
  */
 #include <tut.h>
+#include <string>
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_same.hpp>
 
 #include "Persistency/Facades/StrAccess/HandleIndirection.hpp"
 #include "Persistency/Facades/StrAccess/TestParams.t.hpp"
 
+using namespace std;
 using namespace Persistency::Facades::StrAccess;
 
 namespace
@@ -155,6 +157,55 @@ void testObj::test<9>(void)
     // this is expected
   }
   ensure_equals("invalid run count", g_MyTestProcessFuncObj_runCnt, 0);
+}
+
+
+namespace
+{
+struct TestStringObjectStub
+{
+  template<typename T, typename TParams>
+  static bool process(const T &e, TParams &p)
+  {
+    tut::ensure_equals("invalid path", p.path().get(), "a.b");
+    tut::ensure_equals("invalid value", e, string("some string"));
+    return true;
+  }
+}; // struct TestStringObjectStub
+} // unnamed namespace
+
+// test if indirection handle does NOT break const char*
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  while(p_.hasNext())
+    ++p_;
+  HandleIndirection::process<TestStringObjectStub>("some string", p_);
+}
+
+
+namespace
+{
+struct TestNULLStub
+{
+  template<typename T, typename TParams>
+  static bool process(const T &/*e*/, TParams &/*p*/)
+  {
+    fail("call with NULL paramter has been forwarded");
+    return false;
+  }
+}; // struct TestStringObjectStub
+} // unnamed namespace
+
+// test if indirection handles NULLs correctly
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  const char *ptr=NULL;
+  HandleIndirection::process<TestNULLStub>(ptr, p_);
+  ensure_equals("invalid NULL location set", cb_.lastNullFound_, "a");
 }
 
 } // namespace tut

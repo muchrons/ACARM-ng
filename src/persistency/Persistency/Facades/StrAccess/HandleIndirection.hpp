@@ -43,7 +43,7 @@ struct StripSmartPointer: private System::NoInstance
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
-    return TFuncObj::process(e.get(), p);
+    return StripPointer<TFuncObj>::process(e.get(), p);
   }
 };
 
