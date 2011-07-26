@@ -94,7 +94,7 @@ struct HandleIndirection: private System::NoInstance
   template<typename TFuncObj, typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
-    typedef typename TParams::template handle<ErrorTests>::type ErrH;
+    typedef typename TParams::template GetHandle<ErrorTests>::type ErrH;
     ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     return detail::HandleIndirectionImpl<TFuncObj>::process(e,p);
   }

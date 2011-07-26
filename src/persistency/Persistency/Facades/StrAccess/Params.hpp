@@ -13,10 +13,7 @@
 #include <boost/mpl/has_key.hpp>
 
 #include "Persistency/Facades/StrAccess/Path.hpp"
-#include "Persistency/Facades/StrAccess/IsTerm.hpp"
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
-#include "Persistency/Facades/StrAccess/detail/Term.hpp"
-#include "Persistency/Facades/StrAccess/detail/NonTerm.hpp"
 
 namespace Persistency
 {
@@ -32,6 +29,7 @@ struct Params
   typedef TResultCallback      ResultCallback;
   typedef Path::const_iterator PathCIT;
 
+private:
   struct OnUnknownType
   {
     template<typename T>
@@ -42,6 +40,7 @@ struct Params
     }
   }; // struct OnUnknownType
 
+public:
   Params(const Path &path, ResultCallback &callback):
     path_(path),
     now_(path_.begin()),

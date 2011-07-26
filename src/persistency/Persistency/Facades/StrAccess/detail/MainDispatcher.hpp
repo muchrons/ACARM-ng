@@ -14,6 +14,7 @@
 #include "System/NoInstance.hpp"
 #include "Persistency/Facades/StrAccess/IsTerm.hpp"
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
+#include "Persistency/Facades/StrAccess/HandleIndirection.hpp"
 
 namespace Persistency
 {
@@ -24,7 +25,7 @@ namespace StrAccess
 namespace detail
 {
 
-struct MainDispatcher: private System::NoInstance
+struct MainDispatcherImpl: private System::NoInstance
 {
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
@@ -35,8 +36,17 @@ struct MainDispatcher: private System::NoInstance
                                      // else
                                        typename TParams::template GetHandle<OnNonTerm>::type
                                      >::type IfTerm;
-    // response
     return IfTerm::process(e, p);
+  }
+}; // struct MainDispatcherImpl
+
+
+struct MainDispatcher: private System::NoInstance
+{
+  template<typename T, typename TParams>
+  static bool process(const T &e, TParams &p)
+  {
+    return HandleIndirection::process<MainDispatcherImpl>(e, p);
   }
 }; // struct MainDispatcher
 

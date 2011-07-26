@@ -80,7 +80,7 @@ template<>
 void testObj::test<1>(void)
 {
   g_toBeCalled="OnTestNonTerm";
-  MainDispatcher::process(SomeTestNonTerm(),p_);
+  MainDispatcher::process(SomeTestNonTerm(), p_);
 }
 
 // test term
@@ -89,7 +89,36 @@ template<>
 void testObj::test<2>(void)
 {
   g_toBeCalled="OnTestTerm";
-  MainDispatcher::process( string("abc"),p_);
+  MainDispatcher::process(string("abc"), p_);
+}
+
+// test indirection handling
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  g_toBeCalled="OnTestTerm";
+  const string str("abc");
+  MainDispatcher::process(&str, p_);
+}
+
+// test exception when path ends to soon
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  g_toBeCalled="OnTestTerm";
+  while(!p_.isEnd())
+    ++p_;
+  try
+  {
+    MainDispatcher::process("xyz", p_);
+    fail("process() didn't throw on end of path");
+  }
+  catch(const ExceptionInvalidPath &)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut
