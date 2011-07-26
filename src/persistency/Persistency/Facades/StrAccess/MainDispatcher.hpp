@@ -2,8 +2,8 @@
  * MainDispatcher.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_DETAIL_MAINDISPATCHER_HPP_FILE
-#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_DETAIL_MAINDISPATCHER_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_MAINDISPATCHER_HPP_FILE
+#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_MAINDISPATCHER_HPP_FILE
 
 /* public header */
 
@@ -22,8 +22,6 @@ namespace Persistency
 namespace Facades
 {
 namespace StrAccess
-{
-namespace detail
 {
 
 template<bool isCollection>
@@ -80,7 +78,6 @@ struct MainDispatcher: private System::NoInstance
   }
 }; // struct MainDispatcher
 
-} // namespace detail
 } // namespace StrAccess
 } // namespace Facades
 } // namespace Persistency

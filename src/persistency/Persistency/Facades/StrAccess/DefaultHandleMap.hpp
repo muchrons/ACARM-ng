@@ -29,10 +29,16 @@ namespace StrAccess
 //   bool T::process(const T &e, TParams &p)
 // static method
 typedef boost::mpl::map<
+    //
+    // generic situations
+    //
     boost::mpl::pair<OnTerm, detail::Term>,
     boost::mpl::pair<OnNonTerm, detail::NonTerm>,
     boost::mpl::pair<OnCollectionIndex, CollectionIndexHandle>,
     boost::mpl::pair<ErrorTests, ErrorHandle>
+    //
+    //  special types handles
+    //
   > DefaultHandleMap;
 
 } // namespace StrAccess

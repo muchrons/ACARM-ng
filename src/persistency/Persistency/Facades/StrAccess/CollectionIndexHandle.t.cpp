@@ -131,7 +131,7 @@ struct OnTestForwardElement
   static bool process(const TestForwardElement &e, TParams &p)
   {
     ensure("end has come too soon", p.hasNext());
-    return detail::MainDispatcher::process(e.str_, ++p);
+    return MainDispatcher::process(e.str_, ++p);
   }
 }; // struct OnTestForwardElement
 
@@ -173,7 +173,7 @@ struct OnTestForwardElement2
   static bool process(const TestForwardElement2 &e, TParams &p)
   {
     ensure("end has come too soon", p.hasNext());
-    return detail::MainDispatcher::process(e.tfe_, ++p);
+    return MainDispatcher::process(e.tfe_, ++p);
   }
 }; // struct OnTestForwardElement2
 

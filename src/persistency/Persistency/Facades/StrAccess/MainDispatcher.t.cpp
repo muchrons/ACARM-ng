@@ -7,12 +7,11 @@
 #include <vector>
 #include <boost/mpl/insert.hpp>
 
-#include "Persistency/Facades/StrAccess/detail/MainDispatcher.hpp"
+#include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
 #include "Persistency/Facades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
 using namespace Persistency::Facades::StrAccess;
-using namespace Persistency::Facades::StrAccess::detail;
 
 namespace
 {
@@ -67,7 +66,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/detail/MainDispatcher");
+factory tf("Persistency/Facades/StrAccess/MainDispatcher");
 } // unnamed namespace
 
 

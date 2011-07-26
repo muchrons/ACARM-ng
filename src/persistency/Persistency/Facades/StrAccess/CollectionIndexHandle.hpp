@@ -13,7 +13,7 @@
 #include "System/NoInstance.hpp"
 #include "Commons/Convert.hpp"
 #include "Persistency/Facades/StrAccess/IsCollection.hpp"
-#include "Persistency/Facades/StrAccess/detail/MainDispatcher.hpp"
+#include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
 
 namespace Persistency
 {
@@ -36,7 +36,7 @@ struct CollectionIndexHandle: private System::NoInstance
     for(typename T::const_iterator cit=e.begin(); cit!=e.end(); ++cit, ++cur)
     {
       if(cur==pos)  // found element with a given index? process it!
-        return detail::MainDispatcher::process(*cit, p);
+        return MainDispatcher::process(*cit, p);
     }
 
     ErrH::throwOnInvalidIndex(SYSTEM_SAVE_LOCATION, p);
