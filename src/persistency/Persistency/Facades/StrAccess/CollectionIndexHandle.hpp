@@ -11,9 +11,9 @@
 #include <boost/static_assert.hpp>
 
 #include "System/NoInstance.hpp"
+#include "Commons/Convert.hpp"
 #include "Persistency/Facades/StrAccess/IsCollection.hpp"
-#include "Persistency/Facades/StrAccess/detail/Term.hpp"
-#include "Persistency/Facades/StrAccess/detail/NonTerm.hpp"
+#include "Persistency/Facades/StrAccess/detail/MainDispatcher.hpp"
 
 namespace Persistency
 {
@@ -29,25 +29,14 @@ struct CollectionIndexHandle: private System::NoInstance
   {
     BOOST_STATIC_ASSERT( IsCollection<T>::value );
     assert(!p.isEnd());
-    typedef typename TParams::template handle<ErrorTests>::type ErrH;
+    typedef typename TParams::template GetHandle<ErrorTests>::type ErrH;
 
     const size_t pos=Commons::Convert::to<size_t>(p.get());
     size_t       cur=0;
     for(typename T::const_iterator cit=e.begin(); cit!=e.end(); ++cit, ++cur)
     {
       if(cur==pos)  // found element with a given index? process it!
-      {
-        // collection index is a term
-        if(!p.hasNext())
-          return detail::Term::process(*cit, p);
-
-        // collection index is NOT a term, but subsequent element can be term
-        ++p;
-        if(p.hasNext())
-          return detail::NonTerm::process(*cit, p);
-        else
-          return detail::Term::process(*cit, p);
-      }
+        return detail::MainDispatcher::process(*cit, p);
     }
 
     ErrH::throwOnInvalidIndex(SYSTEM_SAVE_LOCATION, p);

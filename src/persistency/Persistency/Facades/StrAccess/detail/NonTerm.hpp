@@ -15,6 +15,7 @@
 #include "Persistency/Facades/StrAccess/IsTerm.hpp"
 #include "Persistency/Facades/StrAccess/IsCollection.hpp"
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
+#include "Persistency/Facades/StrAccess/detail/MainDispatcher.hpp"
 
 namespace Persistency
 {
@@ -55,7 +56,7 @@ struct NonTerm: private System::NoInstance
   static bool process(const T &e, TParams &p)
   {
     // sanity check
-    typedef typename TParams::template handle<ErrorTests>::type ErrH;
+    typedef typename TParams::template GetHandle<ErrorTests>::type ErrH;
     ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
     assert(IsTerm<T>::value==false && "invalid call to NonTerm");

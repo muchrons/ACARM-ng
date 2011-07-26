@@ -12,7 +12,6 @@
 
 using namespace std;
 using namespace Persistency::Facades::StrAccess;
-#if 0           // TODO                 
 
 namespace
 {
@@ -124,7 +123,7 @@ struct TestForwardElement
   }
 
   string str_;
-};
+}; // struct TestForwardElement
 
 struct OnTestForwardElement
 {
@@ -132,9 +131,9 @@ struct OnTestForwardElement
   static bool process(const TestForwardElement &e, TParams &p)
   {
     ensure("end has come too soon", p.hasNext());
-    return detail::Term::process(e.str_, ++p);
+    return detail::MainDispatcher::process(e.str_, ++p);
   }
-}; // struct TestForwardElement
+}; // struct OnTestForwardElement
 
 typedef boost::mpl::insert<TestParams::HandleMap,
                             boost::mpl::pair<TestForwardElement,OnTestForwardElement>::type
@@ -143,34 +142,58 @@ typedef boost::mpl::insert<TestParams::HandleMap,
 typedef Params<TestForwardHandleMap, TestParams::ResultCallback> TestForwardParams;
 } // unnamed namespace
 
-// test when index is non-terminal and the next element is not as well
+// test when index is non-terminal but the other element is
 template<>
 template<>
 void testObj::test<6>(void)
 {
-  /*
   vector<TestForwardElement> v;
   v.push_back( TestForwardElement("hello evil") );
-  TestParams p(Path("0.tfe.str"), cb_);
+  TestForwardParams p(Path("0.str"), cb_);
   CollectionIndexHandle::process(v, p);
   ensure_equals("invalid result", cb_.lastValue_, "hello evil");
-  */
-  // TODO
 }
 
-// test when index is non-terminal but the other element is
+
+namespace
+{
+struct TestForwardElement2
+{
+  TestForwardElement2(const TestForwardElement &tfe):
+    tfe_(tfe)
+  {
+  }
+
+  TestForwardElement tfe_;
+}; // struct TestForwardElement2
+
+struct OnTestForwardElement2
+{
+  template<typename TParams>
+  static bool process(const TestForwardElement2 &e, TParams &p)
+  {
+    ensure("end has come too soon", p.hasNext());
+    return detail::MainDispatcher::process(e.tfe_, ++p);
+  }
+}; // struct OnTestForwardElement2
+
+typedef boost::mpl::insert<TestForwardHandleMap,
+                            boost::mpl::pair<TestForwardElement2,OnTestForwardElement2>::type
+                          >::type TestForwardHandleMap2;
+
+typedef Params<TestForwardHandleMap2, TestParams::ResultCallback> TestForwardParams2;
+} // unnamed namespace
+
+// test when index is non-terminal and the next element is not as well
 template<>
 template<>
 void testObj::test<7>(void)
 {
-  /*
-  TestParams p(Path("v.1"), cb_);
-  ++p;
-  assert(p.get()=="1");
-  CollectionIndexHandle::process(v_, p);
-  ensure_equals("invalid result", cb_.lastValue_, "zwei");
-  */
-// TODO
+  vector<TestForwardElement2> v;
+  v.push_back( TestForwardElement2( TestForwardElement("hello evil") ) );
+  TestForwardParams2 p(Path("0.tfe.str"), cb_);
+  CollectionIndexHandle::process(v, p);
+  ensure_equals("invalid result", cb_.lastValue_, "hello evil");
 }
 
 // test colleciton of collections
@@ -178,7 +201,14 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-// TODO
+  vector<TestForwardElement>           v;
+  vector< vector<TestForwardElement> > vv;
+  vv.push_back(v);
+  v.push_back( TestForwardElement("hello evil") );
+  vv.push_back(v);
+  TestForwardParams p(Path("1.0.str"), cb_);
+  CollectionIndexHandle::process(vv, p);
+  ensure_equals("invalid result", cb_.lastValue_, "hello evil");
 }
 
 // test index out of bound
@@ -186,8 +216,19 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-// TODO
+  vector<string> v;
+  v.push_back("hello evil");
+  TestForwardParams p(Path("x.1"), cb_);
+  ++p;
+  try
+  {
+    CollectionIndexHandle::process(v, p);
+    fail("index out of bound has not been signalled");
+  }
+  catch(const ExceptionInvalidPath &)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut
-#endif                          
