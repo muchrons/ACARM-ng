@@ -159,7 +159,6 @@ void testObj::test<9>(void)
   ensure_equals("invalid run count", g_MyTestProcessFuncObj_runCnt, 0);
 }
 
-
 namespace
 {
 struct TestStringObjectStub
@@ -169,7 +168,7 @@ struct TestStringObjectStub
   {
     tut::ensure_equals("invalid path", p.path().get(), "a.b");
     tut::ensure_equals("invalid value", e, string("some string"));
-    return true;
+    return p.callback().value(e);
   }
 }; // struct TestStringObjectStub
 } // unnamed namespace
@@ -181,7 +180,9 @@ void testObj::test<10>(void)
 {
   while(p_.hasNext())
     ++p_;
-  HandleIndirection::process<TestStringObjectStub>("some string", p_);
+  const char *ptr="some string";
+  HandleIndirection::process<TestStringObjectStub>(ptr, p_);
+  ensure_equals("invalid value read", cb_.lastValue_, ptr);
 }
 
 
@@ -206,6 +207,17 @@ void testObj::test<11>(void)
   const char *ptr=NULL;
   HandleIndirection::process<TestNULLStub>(ptr, p_);
   ensure_equals("invalid NULL location set", cb_.lastNullFound_, "a");
+}
+
+// test if indirection handle does NOT break char[]
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  while(p_.hasNext())
+    ++p_;
+  char tab[]="some string";
+  HandleIndirection::process<TestStringObjectStub>(tab, p_);
 }
 
 } // namespace tut
