@@ -10,6 +10,7 @@
 
 using namespace boost;
 using namespace boost::mpl;
+using namespace Persistency;
 using namespace Persistency::Facades::StrAccess;
 using namespace Persistency::Facades::StrAccess::detail;
 
