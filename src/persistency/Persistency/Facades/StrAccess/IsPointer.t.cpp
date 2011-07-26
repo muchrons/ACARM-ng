@@ -7,7 +7,6 @@
 #include "Persistency/Facades/StrAccess/IsPointer.hpp"
 
 using namespace Persistency::Facades::StrAccess;
-#if 0               // TODO                         
 
 namespace
 {
@@ -67,4 +66,3 @@ void testObj::test<5>(void)
 }
 
 } // namespace tut
-#endif                      

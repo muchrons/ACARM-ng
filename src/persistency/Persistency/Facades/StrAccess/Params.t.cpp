@@ -11,7 +11,6 @@
 
 using namespace std;
 using namespace Persistency::Facades::StrAccess;
-#if 0           // TODO             
 
 namespace
 {
@@ -129,11 +128,10 @@ struct TestString
 struct OnString: private System::NoInstance
 {
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &/*e*/, TParams &p)
   {
     ensure("term is too soon", p.hasNext());
-    typedef typename TParams::template handle<string>::type Handle;
-    return Handle::process(e.str_, ++p);
+    return true;
   }
 }; // struct OnString
 
@@ -151,9 +149,8 @@ template<>
 void testObj::test<9>(void)
 {
   HandleTestParams htp(path_, cb_);
-  typedef HandleTestParams::handle<TestString>::type Handle;
+  typedef HandleTestParams::GetHandle<TestString>::type Handle;
   ensure("invalid return value from handle", Handle::process(TestString("narf"), htp)==true );
-  ensure_equals("invalid string passed", cb_.lastValue_, "narf");
 }
 
 
@@ -167,7 +164,7 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  typedef TestParams::handle<UnknownKey>::type Handle;
+  typedef TestParams::GetHandle<UnknownKey>::type Handle;
   try
   {
     Handle::process("abc", p_);
@@ -180,4 +177,3 @@ void testObj::test<10>(void)
 }
 
 } // namespace tut
-#endif              
