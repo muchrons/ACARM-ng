@@ -9,7 +9,7 @@
 
 #include "System/NoInstance.hpp"
 #include "Persistency/ReferenceURL.hpp"
-#include "Persistency/Facades/StrAccess/Params.hpp"
+#include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
 
 namespace Persistency
 {
@@ -17,23 +17,24 @@ namespace Facades
 {
 namespace StrAccess
 {
-// TODO
 
 struct OnReferenceURL: private System::NoInstance
 {
   template<typename TParams>
-  static void get(const ReferenceURL &e, TParams &p)
+  static bool process(const ReferenceURL &e, TParams &p)
   {
-    typedef TParams<ErrorHandle>::type ErrH;
+    typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
     ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
+    ++p;
 
     if(p.get()=="name")
-      return process( e.getName().get() );
+      return MainDispatcher::process(e.getName().get(), p);
     if(p.get()=="url")
-      return process( e.getURL().get() );
+      return MainDispatcher::process(e.getURL().get(), p);
 
-    ErrH::throwInvalid(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
+    return false;
   }
 }; // struct OnReferenceURL
 
