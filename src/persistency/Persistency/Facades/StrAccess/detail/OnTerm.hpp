@@ -17,6 +17,7 @@
 #include "Persistency/Facades/StrAccess/IsTerm.hpp"
 #include "Persistency/Facades/StrAccess/IsCollection.hpp"
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
+#include "Persistency/Facades/StrAccess/collectionSize.hpp"
 
 namespace Persistency
 {
@@ -26,24 +27,6 @@ namespace StrAccess
 {
 namespace detail
 {
-
-/** \brief helper function counting elements in a given iterators range.
- *  \param begin iterator to start processing with.
- *  \param end   iterator indicating end of elements.
- *  \return count of elements in rage [begin;end).
- */
-template<typename CIter>
-inline size_t collectionSize(CIter begin, const CIter end)
-{
-  size_t size=0;
-  while(begin!=end)
-  {
-    ++begin;
-    ++size;
-  }
-  return size;
-} // collectionSize()
-
 
 /** \brief implementation of term element for collections.
  */
