@@ -21,7 +21,6 @@ class ExceptionHeartbeat: public Exception
 public:
   /** \brief create execption with given message.
    *  \param where place where exception has been thrown.
-   *  \param msg   message to represent.
    */
   ExceptionHeartbeat(const Location &where):
     Exception(where, "Heartbeat received")
