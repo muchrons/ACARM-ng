@@ -36,13 +36,14 @@ struct ProcessOnTermCollectionImpl: private System::NoInstance
   /** \brief processing method.
    *  \param e element to be processed.
    *  \param p params to be used when processing.
-   *  \return value farwarded from further user's calls.
+   *  \return call never returns.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &/*e*/, TParams &p)
   {
-    const size_t size=collectionSize(e.begin(), e.end());
-    return p.callback().collectionSize(size);
+    typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
+    ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
+    return false;   // code never reaches here
   }
 }; // struct ProcessOnTermCollectionImpl
 

@@ -231,4 +231,37 @@ void testObj::test<9>(void)
   }
 }
 
+// test query for collection's size
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  vector<TestForwardElement> v;
+  v.push_back( TestForwardElement("hello evil 3") );
+  v.push_back( TestForwardElement("hello evil 2") );
+  v.push_back( TestForwardElement("hello evil 1") );
+  TestForwardParams p(Path("coll.size"), cb_);
+  ++p;
+  OnCollectionIndex::process(v, p);
+  ensure_equals("invalid result", cb_.lastSize_, 3);
+}
+
+// test if path after 'size' does not exist
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  vector<TestForwardElement> v;
+  TestForwardParams p(Path("size.error"), cb_);
+  try
+  {
+    OnCollectionIndex::process(v, p);
+    fail("processing didn't throw on extra tokens");
+  }
+  catch(const ExceptionInvalidPath &)
+  {
+    // this is expected
+  }
+}
+
 } // namespace tut
