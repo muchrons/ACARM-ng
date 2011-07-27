@@ -81,6 +81,15 @@ class GraphParams
     $this->title = TPropertyValue::ensureString($this->getRequestOrDefault($request, 'title', 'No title'));
     $this->query = TPropertyValue::ensureString($this->getRequestOrDefault($request, 'query', null));
 
+    if ($this->height>1200)
+      $this->height=1200;
+    if($this->width>1920)
+      $this->width=1920;
+    if ($this->height<0)
+      $this->height=0;
+    if($this->width<0)
+      $this->width=0;
+
     $qparam=new CParamRange();
 
     $this->qparam->src=$this->getRequestOrDefault($request, 'src', null);
