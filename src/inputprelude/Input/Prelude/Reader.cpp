@@ -51,9 +51,13 @@ Reader::DataPtr Reader::read(BackendFacade &bf, const unsigned int timeout)
   }
   catch(const ExceptionUnsupportedFeature &ex)
   {
-    LOGMSG_DEBUG_S(log_)<<"exception uppon unsupported feature request: "<<ex.what();
-    // we can ignore this and return NULL
-    assert( tmp.get()==NULL );
+    LOGMSG_DEBUG_S(log_)<<"Exception upon unsupported feature request: "<<ex.what();
+    return tmp;
+  }
+  catch(const ExceptionHeartbeat &)
+  {
+    //no alert is returned in case of a heartbeat
+    return tmp;
   }
 
   return tmp;

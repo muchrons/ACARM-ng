@@ -10,6 +10,7 @@
 #include "Input/Prelude/IDMEFParserSource.hpp"
 #include "Input/Prelude/IDMEFParserTarget.hpp"
 #include "Input/Prelude/IDMEFParser.hpp"
+#include <iostream>
 
 using namespace Persistency;
 
@@ -20,14 +21,14 @@ namespace Prelude
 
 IDMEFParser::IDMEFParser(idmef_message_t *msg, BackendFacade &bf, unsigned int timeout):
   bf_(bf),
+  timeout_(timeout),
   name_( parseName( extractAlert(msg) ) ),
   ctime_( parseCtime( extractAlert(msg) ) ),
   analyzers_( parseAnalyzers( extractAlert(msg) ) ),
   sourceHosts_( parseSources( extractAlert(msg) ) ),
   targetHosts_( parseTargets( extractAlert(msg) ) ),
   description_( parseDescription( extractAlert(msg) ) ),
-  severity_( parseSeverity( extractAlert(msg) ) ),
-  timeout_(timeout)
+  severity_( parseSeverity( extractAlert(msg) ) )
 {
 }
 
@@ -35,17 +36,17 @@ idmef_alert_t* IDMEFParser::extractAlert(idmef_message_t *msg) const
 {
   if(msg==NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Message is null");
-  // TODO: reorganize this part of code so that it is in the if(cond1){sth1;ret1;}if(cond2){sth2;ret2;} form
-  if( idmef_message_get_type(msg)!=IDMEF_MESSAGE_TYPE_ALERT )
+
+  if( idmef_message_get_type(msg)==IDMEF_MESSAGE_TYPE_HEARTBEAT)
     {
-      if( idmef_message_get_type(msg)!=IDMEF_MESSAGE_TYPE_HEARTBEAT)
-        {
-          bf_.heartbeat("Prelude",timeout_);
-        }
-      else
-        throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Prelude sent an error message.");
+      bf_.heartbeat("Prelude",timeout_);
+      throw ExceptionHeartbeat(SYSTEM_SAVE_LOCATION);
     }
-  return idmef_message_get_alert(msg);
+
+  if( idmef_message_get_type(msg)==IDMEF_MESSAGE_TYPE_ALERT )
+    return idmef_message_get_alert(msg);
+
+  throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Prelude sent an error message.");
 }
 
 Persistency::Alert::Name IDMEFParser::parseName(idmef_alert_t *alert) const

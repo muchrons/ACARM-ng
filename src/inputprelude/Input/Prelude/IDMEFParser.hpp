@@ -12,6 +12,7 @@
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/Host.hpp"
 #include "Input/BackendFacade.hpp"
+#include "Input/Prelude/ExceptionHeartbeat.hpp"
 #include "Input/Prelude/ExceptionUnsupportedFeature.hpp"
 
 namespace Input
@@ -28,7 +29,7 @@ public:
    * @brief c-tor creates parser object from idmef_message_t
    * \param msg     idmef_message_t object to parse
    * \param bf      backend facade to be used for when parsing.
-   * \param timeout timeout to set for heartbeats
+   * \param timeout timeout to set for heartbeats in seconds
    */
   IDMEFParser(idmef_message_t *msg, BackendFacade &bf, unsigned int timeout);
 
@@ -78,6 +79,7 @@ private:
   Persistency::SeverityLevel parseSeverity(idmef_alert_t *alert) const;
 
   BackendFacade                 &bf_;
+  unsigned int                   timeout_;
   Persistency::Alert::Name       name_;
   Persistency::Timestamp         ctime_;
   Persistency::Alert::Analyzers  analyzers_;
@@ -85,7 +87,6 @@ private:
   Persistency::Alert::Hosts      targetHosts_;
   std::string                    description_;
   Persistency::SeverityLevel     severity_;
-  unsigned int                   timeout_;
 }; // class IDMEFParser
 
 } // namespace Prelude

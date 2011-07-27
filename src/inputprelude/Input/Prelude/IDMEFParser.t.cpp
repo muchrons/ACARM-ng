@@ -61,12 +61,10 @@ void testObj::test<2>(void)
   td_.addAnalyzerToAlert();
   td_.addTimeToAlert(tt);
 
-  const IDMEFParser ip(td_.message_.get(), bf_, 0);
+  const IDMEFParser ip(td_.message_.get(), bf_, 42);
   ensure_equals("Something broken with time", ip.getCreateTime(), time);
 }
 
-// TODO: this test is invalid now
-// TODO: test for heartbeats support (i.e.: if they are forwarded to backend facade as they should
 // test parsing when heart beat is passed
 template<>
 template<>
@@ -75,10 +73,10 @@ void testObj::test<3>(void)
   td_.makeHeartbeat();
   try
   {
-    const IDMEFParser ip(td_.message_.get(), bf_,0);
+    const IDMEFParser ip(td_.message_.get(), bf_, 10);
     fail("parser didn't throw on unexpected message type - heartbeat");
   }
-  catch(const ExceptionUnsupportedFeature &)
+  catch(const ExceptionHeartbeat &)
   {
     //expected
   }
