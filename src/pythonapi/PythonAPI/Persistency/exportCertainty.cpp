@@ -7,7 +7,7 @@
 #include "PythonAPI/Persistency/exportCertainty.hpp"
 
 using namespace boost::python;
-using ::Persistency::Certainty;
+using namespace ::Persistency;
 
 namespace PythonAPI
 {

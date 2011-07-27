@@ -56,7 +56,7 @@ public:
   /** \brief protocol used for communication.
    *  \return prorocol name.
    */
-  const Protocol getProtocol(void) const;
+  const Protocol &getProtocol(void) const;
   /** \brief gets reference url, if present.
    *  \return reference url to given service.
    */

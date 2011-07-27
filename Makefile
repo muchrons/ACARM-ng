@@ -89,5 +89,5 @@ configure-output.mk: configure Makefile
 
 .PHONY: clean
 clean:
-	@rm -fv  configure-output.mk
+	@rm -fv  configure-output.mk configure.log
 	@rm -fvr src/gen

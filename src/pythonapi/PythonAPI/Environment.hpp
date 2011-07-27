@@ -8,6 +8,8 @@
 /* public header */
 
 #include <string>
+#include <cassert>
+#include <stdexcept>
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
 
@@ -86,6 +88,9 @@ public:
    *  salvaged by python's garbage collector. to get these the safe way use
    *  boost::shared_ptr<MyClass> as a destination type for MyClass pointers.
    *
+   *  this call may re-throw errors from Python as well (for example: invalid
+   *  convertion request) - ExceptionFromScript is throw then.
+   *
    *  \note use boost::shared_ptr<MyClass> to take object with ownership.
    *
    *  \param name name of the variable to get.
@@ -94,7 +99,17 @@ public:
   template<typename T>
   T var(const std::string &name)
   {
-    return boost::python::extract<T>( (mainNamespace_[name]) );
+    try
+    {
+      return boost::python::extract<T>( (mainNamespace_[name]) );
+    }
+    catch(const boost::python::error_already_set &)
+    {
+      LOGMSG_ERROR_S(log_)<<"exception while getting '"<<name<<"' variable as '"<<typeid(T).name()<<"' type";
+      handlePythonError();                                          // rethrows error
+      assert(!"code never reaches here");                           // in debug this is more proper
+      throw std::logic_error("this code should never be reached");  // compilers cry when this is missing :)
+    }
   }
 
   /** \brief import regular, python's modules (i.e. not user defined ones).
@@ -107,6 +122,8 @@ private:
   void importModule(const char *module, ModuleInitFunction init);
   // helper call that imports all modules, previously scheduled for importing
   void importAllModules(void);
+  // exception handling mechanism - rethrows Python error as C++ exception
+  void handlePythonError(void) const;
 
   Logger::Node          log_;
   boost::python::object mainModule_;
