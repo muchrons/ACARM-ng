@@ -76,4 +76,12 @@ void testObj::test<5>(void)
   checkType<ReferenceURL, OnReferenceURL>("ReferenceURL handle is not valid");
 }
 
+// test presence of service handle
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  checkType<Service, OnService>("Service handle is not valid");
+}
+
 } // namespace tut
