@@ -11,10 +11,10 @@
 #include <boost/mpl/at.hpp>
 
 #include "System/NoInstance.hpp"
-#include "Persistency/MetaAlert.hpp"
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
 #include "Persistency/Facades/StrAccess/ErrorThrower.hpp"
 #include "Persistency/Facades/StrAccess/OnCollectionIndex.hpp"
+#include "Persistency/Facades/StrAccess/OnService.hpp"
 #include "Persistency/Facades/StrAccess/OnReferenceURL.hpp"
 #include "Persistency/Facades/StrAccess/detail/OnTerm.hpp"
 #include "Persistency/Facades/StrAccess/detail/OnNonTerm.hpp"
@@ -46,6 +46,7 @@ typedef boost::mpl::map<
     //
     //  special types handles
     //
+    boost::mpl::pair<Service, OnService>,
     boost::mpl::pair<ReferenceURL, OnReferenceURL>
   > DefaultHandleMap;
 

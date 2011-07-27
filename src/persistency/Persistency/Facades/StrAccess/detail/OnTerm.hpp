@@ -17,6 +17,7 @@
 #include "Persistency/Facades/StrAccess/IsTerm.hpp"
 #include "Persistency/Facades/StrAccess/IsCollection.hpp"
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
+#include "Persistency/Facades/StrAccess/collectionSize.hpp"
 
 namespace Persistency
 {
@@ -27,39 +28,21 @@ namespace StrAccess
 namespace detail
 {
 
-/** \brief helper function counting elements in a given iterators range.
- *  \param begin iterator to start processing with.
- *  \param end   iterator indicating end of elements.
- *  \return count of elements in rage [begin;end).
- */
-template<typename CIter>
-inline size_t collectionSize(CIter begin, const CIter end)
-{
-  size_t size=0;
-  while(begin!=end)
-  {
-    ++begin;
-    ++size;
-  }
-  return size;
-} // collectionSize()
-
-
 /** \brief implementation of term element for collections.
  */
 template<bool isCollection>
 struct ProcessOnTermCollectionImpl: private System::NoInstance
 {
   /** \brief processing method.
-   *  \param e element to be processed.
    *  \param p params to be used when processing.
-   *  \return value farwarded from further user's calls.
+   *  \return call never returns.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &/*e*/, TParams &p)
   {
-    const size_t size=collectionSize(e.begin(), e.end());
-    return p.callback().collectionSize(size);
+    typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
+    ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
+    return false;   // code never reaches here
   }
 }; // struct ProcessOnTermCollectionImpl
 

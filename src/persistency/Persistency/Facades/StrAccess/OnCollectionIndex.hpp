@@ -14,6 +14,7 @@
 #include "Commons/Convert.hpp"
 #include "Persistency/Facades/StrAccess/IsCollection.hpp"
 #include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
+#include "Persistency/Facades/StrAccess/collectionSize.hpp"
 
 namespace Persistency
 {
@@ -38,6 +39,15 @@ struct OnCollectionIndex: private System::NoInstance
     assert(!p.isEnd());
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
+    // query for collection's size
+    if(p.get()=="size")
+    {
+      ErrH::throwIfNotLast(SYSTEM_SAVE_LOCATION, p);
+      const size_t size=collectionSize(e.begin(), e.end());
+      return p.callback().collectionSize(size);
+    }
+
+    // query for a given collection's element
     const size_t pos=Commons::Convert::to<size_t>(p.get());
     size_t       cur=0;
     for(typename T::const_iterator cit=e.begin(); cit!=e.end(); ++cit, ++cur)
@@ -46,6 +56,7 @@ struct OnCollectionIndex: private System::NoInstance
         return MainDispatcher::process(*cit, p);
     }
 
+    // element of a given index not found
     ErrH::throwOnInvalidIndex(SYSTEM_SAVE_LOCATION, p);
     return false;   // this code is never reached
   }

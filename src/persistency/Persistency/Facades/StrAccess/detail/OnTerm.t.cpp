@@ -25,11 +25,12 @@ struct TestClass
     assert(pLast_.hasNext()==false);
   }
 
-  void testThrow(TestParams &p) const
+  template<typename T>
+  void testThrow(const T &e, TestParams &p) const
   {
     try
     {
-      OnTerm::process(string("aaa"), p);        // should throw
+      OnTerm::process(e, p);                // should throw
       tut::fail("process() didn't failed");
     }
     catch(const ExceptionInvalidPath &)
@@ -60,7 +61,7 @@ void testObj::test<1>(void)
 {
   ++pLast_;
   assert(pLast_.isEnd());
-  testThrow(pLast_);
+  testThrow(string("aaa"), pLast_);
 }
 
 // test exception when not-last element is set
@@ -68,7 +69,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  testThrow(p_);
+  testThrow(string("aaa"), p_);
 }
 
 // test collection
@@ -77,9 +78,16 @@ template<>
 void testObj::test<3>(void)
 {
   vector<int> v(10, 42);
-  assert(v.size()==10);
-  OnTerm::process(v, pLast_);
-  ensure_equals("invalid value returned", cb_.lastSize_, 10);
+  testThrow(v, pLast_);
+}
+
+// test some term value
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  OnTerm::process(string("yellow"), pLast_);
+  ensure_equals("invalid value returned", cb_.lastValue_, "yellow");
 }
 
 } // namespace tut
