@@ -8,6 +8,8 @@
 #include "Persistency/Alert.hpp"
 #include "Input/Prelude/Reader.hpp"
 #include "Input/Prelude/IDMEFParser.hpp"
+#include "Input/Prelude/IDMEFParserAlert.hpp"
+#include "Input/Prelude/IDMEFParserHeartbeat.hpp"
 #include "System/AutoVariable.hpp"
 #include "Input/Prelude/detail/IdmefMessageHolder.hpp"
 
@@ -36,18 +38,29 @@ Reader::DataPtr Reader::read(BackendFacade &bf, const unsigned int timeout)
   if (!message.get())
     return tmp;
 
+  const unsigned int heartbeat_timeout=10; //todo: remove
   try
   {
-    const IDMEFParser ip( message.get(), bf, timeout );
-    tmp.reset(new Persistency::Alert(ip.getName(),
-                                     ip.getAnalyzers(),
-                                     NULL,
-                                     ip.getCreateTime(),
-                                     ip.getSeverity(),
-                                     Persistency::Certainty(1.0),
-                                     ip.getDescription(),
-                                     ip.getSources(),
-                                     ip.getTargets()));
+    if( IDMEFParser::isAlert( message.get()) )
+      {
+        const IDMEFParserAlert ipa( message.get(), bf );
+        tmp.reset(new Persistency::Alert(ipa.getName(),
+                                         ipa.getAnalyzers(),
+                                         NULL,
+                                         ipa.getCreateTime(),
+                                         ipa.getSeverity(),
+                                         Persistency::Certainty(1.0),
+                                         ipa.getDescription(),
+                                         ipa.getSources(),
+                                         ipa.getTargets()));
+      }
+    else
+      {
+        if ( IDMEFParser::isHeartbeat( message.get()) )
+          IDMEFParserHeartbeat( message.get(), bf, heartbeat_timeout );
+        else
+          throw ExceptionUnsupportedFeature(SYSTEM_SAVE_LOCATION,"Unknown message type received.");
+      }
   }
   catch(const ExceptionUnsupportedFeature &ex)
   {
