@@ -7,6 +7,8 @@
 
 #include "Preprocessor/Path.hpp"
 
+// TODO: to be removed and replaced with Persistency::Facades::StrAccess
+
 namespace Preprocessor
 {
 

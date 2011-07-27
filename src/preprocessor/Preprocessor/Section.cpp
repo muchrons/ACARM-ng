@@ -45,11 +45,8 @@ Expressions::Set Section::create(const ConfigIO::Preprocessor::Expression::Expre
   Expressions::Set out;
   out.reserve( cfg.size() );
   // loop throught each element
-  for(ConfigIO::Preprocessor::Expression::Expressions::const_iterator it=cfg.begin();
-      it!=cfg.end(); ++it)
-  {
+  for(ConfigIO::Preprocessor::Expression::Expressions::const_iterator it=cfg.begin(); it!=cfg.end(); ++it)
     out.push_back( create(*it) );
-  }
 
   assert( out.size()>0 );
   return out;

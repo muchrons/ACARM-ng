@@ -116,5 +116,23 @@ void testObj::test<6>(void)
 }
 
 // NOTE: initializing of module seems to always succeed, but sometime has "funny" sideeffects... :/
+//       due to this issues it won't be tested here.
+
+// test requesting export as invalid value
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  e_.run("fp=4.2");
+  try
+  {
+    e_.var<int>("fp");  // should throw, since convertion is not possible
+    fail("no exception risen by invalid convertion");
+  }
+  catch(const ExceptionFromScript &)
+  {
+    // this is expected
+  }
+}
 
 } // namespace tut

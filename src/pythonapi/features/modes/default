@@ -1,2 +1,3 @@
 PythonAPI/*.?pp
 PythonAPI/Persistency/*.?pp
+PythonAPI/Persistency/detail/*.?pp

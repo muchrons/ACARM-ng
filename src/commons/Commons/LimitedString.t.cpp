@@ -118,4 +118,13 @@ void testObj::test<8>(void)
   ensure_equals("invalid value after default c-tor", tmp.get(), string("") );
 }
 
+// test size export
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  // NOTE: static cast is required for Intel - dunno why...
+  ensure_equals("invalid size", static_cast<int>(LimitedString<42>::size), 42);
+}
+
 } // namespace tut
