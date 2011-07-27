@@ -34,7 +34,6 @@ template<bool isCollection>
 struct ProcessOnTermCollectionImpl: private System::NoInstance
 {
   /** \brief processing method.
-   *  \param e element to be processed.
    *  \param p params to be used when processing.
    *  \return call never returns.
    */
