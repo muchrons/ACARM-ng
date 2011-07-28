@@ -9,6 +9,8 @@
 
 #include "Preprocessor/Exception.hpp"
 
+// TODO: to be removed and replaced with Persistency::Facades::StrAccess
+
 namespace Preprocessor
 {
 /** \brief exception throw when incorrect path has been detected.

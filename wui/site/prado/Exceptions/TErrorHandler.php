@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TErrorHandler.php 2778 2010-02-20 18:56:09Z godzilla80@gmx.net $
+ * @version $Id: TErrorHandler.php 2880 2011-01-19 14:56:01Z christophe.boulain $
  * @package System.Exceptions
  */
 
@@ -45,7 +45,7 @@
  * <module id="error" class="TErrorHandler" ErrorTemplatePath="System.Exceptions" />
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TErrorHandler.php 2778 2010-02-20 18:56:09Z godzilla80@gmx.net $
+ * @version $Id: TErrorHandler.php 2880 2011-01-19 14:56:01Z christophe.boulain $
  * @package System.Exceptions
  * @since 3.0
  */
@@ -202,9 +202,9 @@ class TErrorHandler extends TModule
 		);
 
 		if($isDebug)
-			header("HTTP/1.0 $statusCode ".$exception->getMessage(), true, $statusCode);
+			header("HTTP/1.0 $statusCode ".$exception->getMessage(), true, TPropertyValue::ensureInteger($statusCode));
 		else
-			header("HTTP/1.0 $statusCode", true, $statusCode);
+			header("HTTP/1.0 $statusCode", true, TPropertyValue::ensureInteger($statusCode));
 
 		echo strtr($content,$tokens);
 	}

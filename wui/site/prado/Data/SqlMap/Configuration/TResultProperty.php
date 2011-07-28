@@ -4,9 +4,9 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @link http://www.pradosoft.com/
- * @copyright Copyright &copy; 2005-2008 PradoSoft
+ * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TResultProperty.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TResultProperty.php 2926 2011-05-25 09:34:54Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap.Configuration
  */
 
@@ -29,7 +29,7 @@
  * with the {@link Select setSelect()} .
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TResultProperty.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TResultProperty.php 2926 2011-05-25 09:34:54Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap.Configuration
  * @since 3.1
  */
@@ -138,7 +138,7 @@ class TResultProperty extends TComponent
 	}
 
 	/**
-	 * @parma string ID of another <resultMap> used to fill the property.
+	 * @param string ID of another <resultMap> used to fill the property.
 	 */
 	public function setResultMapping($value)
 	{

@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TGlobalization.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TGlobalization.php 2936 2011-06-01 07:20:38Z ctrlaltca@gmail.com $
  * @package System.I18N
  */
 
@@ -56,6 +56,10 @@ class TGlobalization extends TModule
 	 */
 	private $_translation;
 
+	/**
+	 * @var boolean whether we should translate the default culture
+	 */
+	private $_translateDefaultCulture=true;
 
 	/**
 	 * Initialize the Culture and Charset for this application.
@@ -78,6 +82,22 @@ class TGlobalization extends TModule
 				$this->setTranslationConfiguration($translation->getAttributes());
 		}
 		$this->getApplication()->setGlobalization($this);
+	}
+
+	/**
+	 * @return string default culture
+	 */
+	public function getTranslateDefaultCulture()
+	{
+		return $this->_translateDefaultCulture;
+	}
+
+	/**
+	 * @param bool default culture, e.g. <tt>en_US</tt> for American English
+	 */
+	public function setTranslateDefaultCulture($value)
+	{
+		$this->_translateDefaultCulture = TPropertyValue::ensureBoolean($value);
 	}
 
 	/**
@@ -149,7 +169,9 @@ class TGlobalization extends TModule
 	 */
 	public function getTranslationConfiguration()
 	{
-		return $this->_translation;
+		return (!$this->_translateDefaultCulture && ($this->getDefaultCulture() == $this->getCulture()))
+			? null
+			: $this->_translation;
 	}
 
 	/**

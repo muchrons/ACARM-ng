@@ -4,9 +4,9 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @link http://www.pradosoft.com/
- * @copyright Copyright &copy; 2005-2008 PradoSoft
+ * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TActiveRecord.php 2649 2009-05-11 07:44:55Z godzilla80@gmx.net $
+ * @version $Id: TActiveRecord.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.ActiveRecord
  */
 
@@ -142,7 +142,7 @@ Prado::using('System.Data.ActiveRecord.Relations.TActiveRecordRelationContext');
  * </code>
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TActiveRecord.php 2649 2009-05-11 07:44:55Z godzilla80@gmx.net $
+ * @version $Id: TActiveRecord.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.ActiveRecord
  * @since 3.1
  */
@@ -1038,7 +1038,7 @@ abstract class TActiveRecord extends TComponent
  * be set to false to prevent the requested change event to be performed.
  *
  * @author Wei Zhuo<weizhuo@gmail.com>
- * @version $Id: TActiveRecord.php 2649 2009-05-11 07:44:55Z godzilla80@gmx.net $
+ * @version $Id: TActiveRecord.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.ActiveRecord
  * @since 3.1.2
  */
@@ -1073,7 +1073,7 @@ class TActiveRecordChangeEventParameter extends TEventParameter
  * - Exception: throws a TActiveRecordException
  *
  * @author Yves Berkholz <godzilla80@gmx.net>
- * @version $Id: TActiveRecord.php 2649 2009-05-11 07:44:55Z godzilla80@gmx.net $
+ * @version $Id: TActiveRecord.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.ActiveRecord
  * @see TActiveRecordManager::setInvalidFinderResult
  * @see TActiveRecordConfig::setInvalidFinderResult

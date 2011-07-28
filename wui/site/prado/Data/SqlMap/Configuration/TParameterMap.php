@@ -4,9 +4,9 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @link http://www.pradosoft.com/
- * @copyright Copyright &copy; 2005-2008 PradoSoft
+ * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TParameterMap.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TParameterMap.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap.Configuration
  */
 
@@ -26,7 +26,7 @@
  * The <parameterMap> element accepts two attributes: id (required) and extends (optional).
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TParameterMap.php 2624 2009-03-19 21:20:47Z godzilla80@gmx.net $
+ * @version $Id: TParameterMap.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap.Configuration
  * @since 3.1
  */
@@ -184,7 +184,10 @@ class TParameterMap extends TComponent
 		{
 			throw new TSqlMapException(
 				'sqlmap_unable_to_get_property_for_parameter',
-					$this->getID(), $property->getProperty(), get_class($object));
+				$this->getID(),
+				$property->getProperty(),
+				(is_object($object) ? get_class($object) : gettype($object))
+			);
 		}
 	}
 

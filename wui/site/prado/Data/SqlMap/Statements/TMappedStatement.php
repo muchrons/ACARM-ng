@@ -4,9 +4,9 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @link http://www.pradosoft.com/
- * @copyright Copyright &copy; 2005-2008 PradoSoft
+ * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TMappedStatement.php 2625 2009-03-19 22:07:39Z godzilla80@gmx.net $
+ * @version $Id: TMappedStatement.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap.Statements
  */
 
@@ -17,7 +17,7 @@
  * This class is usualy instantiated during SQLMap configuration by TSqlDomBuilder.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TMappedStatement.php 2625 2009-03-19 22:07:39Z godzilla80@gmx.net $
+ * @version $Id: TMappedStatement.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap.Statements
  * @since 3.0
  */
@@ -924,7 +924,7 @@ class TMappedStatement extends TComponent implements IMappedStatement
  * TPostSelectBinding class.
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TMappedStatement.php 2625 2009-03-19 22:07:39Z godzilla80@gmx.net $
+ * @version $Id: TMappedStatement.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap.Statements
  * @since 3.1
  */
@@ -960,7 +960,7 @@ class TPostSelectBinding
  * build using the {@link collect} method.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TMappedStatement.php 2625 2009-03-19 22:07:39Z godzilla80@gmx.net $
+ * @version $Id: TMappedStatement.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap.Statements
  * @since 3.1
  */
@@ -1139,7 +1139,7 @@ class TSqlMapObjectCollectionTree
  * TResultSetListItemParameter class
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TMappedStatement.php 2625 2009-03-19 22:07:39Z godzilla80@gmx.net $
+ * @version $Id: TMappedStatement.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap.Statements
  * @since 3.1
  */
@@ -1176,7 +1176,7 @@ class TResultSetListItemParameter extends TComponent
  * TResultSetMapItemParameter class.
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TMappedStatement.php 2625 2009-03-19 22:07:39Z godzilla80@gmx.net $
+ * @version $Id: TMappedStatement.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap.Statements
  * @since 3.1
  */

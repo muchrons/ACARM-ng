@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TTextProcessor.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TTextProcessor.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  */
 
@@ -23,7 +23,7 @@
  * Note, all child classes must implement {@link processText} method.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TTextProcessor.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TTextProcessor.php 2919 2011-05-21 18:14:36Z ctrlaltca@gmail.com $
  * @package System.Web.UI
  * @since 3.0.1
  */
@@ -75,9 +75,9 @@ abstract class TTextProcessor extends TWebControl
 	{
 		if(($text=$this->getText())==='' && $this->getHasControls())
 		{
-			$textWriter=new TTextWriter;
-			parent::renderContents(new THtmlWriter($textWriter));
-			$text=$textWriter->flush();
+			$htmlWriter = Prado::createComponent($this->GetResponse()->getHtmlWriterType(), new TTextWriter());
+			parent::renderContents($htmlWriter);
+			$text=$htmlWriter->flush();
 		}
 		if($text!=='')
 			$writer->write($this->processText($text));

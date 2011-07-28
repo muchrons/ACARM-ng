@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: THead.php 2590 2008-12-10 11:34:24Z carlgmathisen $
+ * @version $Id: THead.php 2943 2011-06-01 20:01:35Z ctrlaltca@gmail.com $
  * @package System.Web.UI
  */
 
@@ -31,13 +31,13 @@
  * </code>
  *
  * Note, {@link TPage} has a property {@link TPage::getHead Head} that refers to
- * the THead control currently on the page. A page can have at most once THead
+ * the THead control currently on the page. A page can have at most one THead
  * control. Although not required, it is recommended to place a THead on your page.
  * Without a THead on the page, stylesheets and javascripts in the current page
  * theme will not be rendered.
  *
  * @author Marcus Nyeholt <tanus@users.sourceforge.net> and Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: THead.php 2590 2008-12-10 11:34:24Z carlgmathisen $
+ * @version $Id: THead.php 2943 2011-06-01 20:01:35Z ctrlaltca@gmail.com $
  * @package System.Web.UI
  * @since 3.0
  */
@@ -186,7 +186,7 @@ class THead extends TControl
  * attributes for a meta tag, respectively.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: THead.php 2590 2008-12-10 11:34:24Z carlgmathisen $
+ * @version $Id: THead.php 2943 2011-06-01 20:01:35Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0
  */
@@ -321,7 +321,7 @@ class TMetaTag extends TComponent
  * contained in a {@link THead} control.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: THead.php 2590 2008-12-10 11:34:24Z carlgmathisen $
+ * @version $Id: THead.php 2943 2011-06-01 20:01:35Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0
  */

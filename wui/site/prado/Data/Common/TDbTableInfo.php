@@ -4,9 +4,9 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @link http://www.pradosoft.com/
- * @copyright Copyright &copy; 2005-2008 PradoSoft
+ * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TDbTableInfo.php 2761 2010-02-08 08:44:21Z godzilla80@gmx.net $
+ * @version $Id: TDbTableInfo.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.Common
  */
 
@@ -14,7 +14,7 @@
  * TDbTableInfo class describes the meta data of a database table.
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TDbTableInfo.php 2761 2010-02-08 08:44:21Z godzilla80@gmx.net $
+ * @version $Id: TDbTableInfo.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.Common
  * @since 3.1
  */

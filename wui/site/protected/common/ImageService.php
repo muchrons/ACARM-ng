@@ -20,6 +20,15 @@ class ImageService extends TService
       $this->printError($e->getMessage());
       return;
     }
+
+    if ($this->height>1200)
+      $this->height=1200;
+    if($this->width>1920)
+      $this->width=1920;
+    if ($this->height<0)
+      $this->height=0;
+    if($this->width<0)
+      $this->width=0;
   }
 
   private function printError($message)
@@ -27,6 +36,12 @@ class ImageService extends TService
     $fontnum=2;
     $width=($this->width===null)?600:$this->width;
     $height=($this->height===null)?600:$this->height;
+
+    if ($this->height>1200)
+      $this->height=1200;
+    if($this->width>1920)
+      $this->width=1920;
+
     $img = imagecreatetruecolor($width,$height);
     $yellow = imagecolorallocate ($img, 0xFF, 0xFF, 0x00);
     $red = imagecolorallocate ($img, 0xFF, 0x00, 0x00);

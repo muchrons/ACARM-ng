@@ -8,6 +8,8 @@
 
 using namespace Preprocessor;
 
+// TODO: to be removed and replaced with Persistency::Facades::StrAccess
+
 namespace
 {
 

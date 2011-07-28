@@ -29,7 +29,7 @@ PortNumber Service::getPort(void) const
   return port_;
 }
 
-const Service::Protocol Service::getProtocol(void) const
+const Service::Protocol &Service::getProtocol(void) const
 {
   return protocol_;
 }

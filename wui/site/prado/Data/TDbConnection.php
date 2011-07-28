@@ -4,9 +4,9 @@
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
  * @link http://www.pradosoft.com/
- * @copyright Copyright &copy; 2005-2008 PradoSoft
+ * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TDbConnection.php 2760 2010-02-08 07:19:50Z godzilla80@gmx.net $
+ * @version $Id: TDbConnection.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data
  */
 
@@ -77,7 +77,7 @@ Prado::using('System.Data.TDbCommand');
  * of certain DBMS attributes, such as {@link getNullConversion NullConversion}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TDbConnection.php 2760 2010-02-08 07:19:50Z godzilla80@gmx.net $
+ * @version $Id: TDbConnection.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data
  * @since 3.0
  */
@@ -216,11 +216,14 @@ class TDbConnection extends TComponent
 		switch ($this->_pdo->getAttribute(PDO::ATTR_DRIVER_NAME))
 		{
 			case 'mysql':
+			case 'sqlite':
 				$stmt = $this->_pdo->prepare('SET NAMES ?');
 			break;
 			case 'pgsql':
 				$stmt = $this->_pdo->prepare('SET client_encoding TO ?');
 			break;
+			default:
+				throw new TDbException('dbconnection_unsupported_driver_charset', $driver);
 		}
 		$stmt->execute(array($this->_charset));
 	}
@@ -587,7 +590,7 @@ class TDbConnection extends TComponent
  * TDbColumnCaseMode
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TDbConnection.php 2760 2010-02-08 07:19:50Z godzilla80@gmx.net $
+ * @version $Id: TDbConnection.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data
  * @since 3.0
  */
@@ -611,7 +614,7 @@ class TDbColumnCaseMode extends TEnumerable
  * TDbNullConversionMode
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TDbConnection.php 2760 2010-02-08 07:19:50Z godzilla80@gmx.net $
+ * @version $Id: TDbConnection.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data
  * @since 3.0
  */

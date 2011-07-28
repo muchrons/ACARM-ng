@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TDbCache.php 2741 2009-11-08 09:59:34Z godzilla80@gmx.net $
+ * @version $Id: TDbCache.php 2938 2011-06-01 07:46:44Z ctrlaltca@gmail.com $
  * @package System.Caching
  */
 
@@ -82,7 +82,7 @@ Prado::using('System.Data.TDbConnection');
  * </code>
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TDbCache.php 2741 2009-11-08 09:59:34Z godzilla80@gmx.net $
+ * @version $Id: TDbCache.php 2938 2011-06-01 07:46:44Z ctrlaltca@gmail.com $
  * @package System.Caching
  * @since 3.1.0
  */
@@ -195,7 +195,7 @@ class TDbCache extends TCache
 
 				Prado::trace(($force ? 'Force initializing: ' : 'Initializing: ') . $this -> id . ', ' . $this->_cacheTable, 'System.Caching.TDbCache');
 
-				$sql='SELECT 1 FROM '.$this->_cacheTable.' WHERE 0';
+				$sql='SELECT 1 FROM '.$this->_cacheTable.' WHERE 0=1';
 				$db->createCommand($sql)->queryScalar();
 
 				$this -> _createCheck = true;

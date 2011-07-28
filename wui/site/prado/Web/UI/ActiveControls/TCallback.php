@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TCallback.php 2773 2010-02-17 13:55:18Z Christophe.Boulain $
+ * @version $Id: TCallback.php 2960 2011-06-02 17:44:51Z ctrlaltca@gmail.com $
  * @package System.Web.UI.ActiveControls
  */
 
@@ -18,10 +18,10 @@ Prado::using('System.Web.UI.ActiveControls.TActiveControlAdapter');
 /**
  * TCallback component class.
  *
- * The TCallback provides a basic callback handler that can be invoke from the
+ * The TCallback provides a basic callback handler that can be invoked from the
  * client side by running the javascript code obtained from the
  * {@link TBaseActiveCallbackControl::getJavascript ActiveControl.Javascript} property.
- * The event {@link onCallback OnCallback} is raise when a callback is requested made.
+ * The event {@link onCallback OnCallback} is raised when a callback is requested made.
  *
  * Example usage:
  * <code>
@@ -37,7 +37,7 @@ Prado::using('System.Web.UI.ActiveControls.TActiveControlAdapter');
  * </code>
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TCallback.php 2773 2010-02-17 13:55:18Z Christophe.Boulain $
+ * @version $Id: TCallback.php 2960 2011-06-02 17:44:51Z ctrlaltca@gmail.com $
  * @package System.Web.UI.ActiveControls
  * @since 3.1
  */

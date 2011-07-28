@@ -43,6 +43,9 @@ template<uint16_t N>
 class LimitedString: public boost::equality_comparable< LimitedString<N> >
 {
 public:
+  /** \brief export size to be later referencable. */
+  static const uint16_t size=N;
+
   /** \brief creates empty string.
    */
   LimitedString(void)

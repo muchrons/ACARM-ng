@@ -4,9 +4,9 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @link http://www.pradosoft.com/
- * @copyright Copyright &copy; 2005-2008 PradoSoft
+ * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TSqlMapGateway.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TSqlMapGateway.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap
  */
 
@@ -23,7 +23,7 @@ Prado::using('System.Data.SqlMap.TSqlMapManager');
  * This class should be instantiated from a TSqlMapManager instance.
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TSqlMapGateway.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TSqlMapGateway.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap
  * @since 3.1
  */

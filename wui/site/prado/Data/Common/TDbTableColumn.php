@@ -4,9 +4,9 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @link http://www.pradosoft.com/
- * @copyright Copyright &copy; 2005-2008 PradoSoft
+ * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TDbTableColumn.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TDbTableColumn.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.Common
  */
 
@@ -14,7 +14,7 @@
  * TDbTableColumn class describes the column meta data of the schema for a database table.
  *
  * @author Wei Zhuo <weizho[at]gmail[dot]com>
- * @version $Id: TDbTableColumn.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TDbTableColumn.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.Common
  * @since 3.1
  */

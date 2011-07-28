@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TTemplateManager.php 2625 2009-03-19 22:07:39Z godzilla80@gmx.net $
+ * @version $Id: TTemplateManager.php 2918 2011-05-21 17:10:29Z ctrlaltca@gmail.com $
  * @package System.Web.UI
  */
 
@@ -32,7 +32,7 @@ Prado::using('System.Web.UI.WebControls.TOutputCache');
  * template manager module that can be accessed via {@link TPageService::getTemplateManager()}.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TTemplateManager.php 2625 2009-03-19 22:07:39Z godzilla80@gmx.net $
+ * @version $Id: TTemplateManager.php 2918 2011-05-21 17:10:29Z ctrlaltca@gmail.com $
  * @package System.Web.UI
  * @since 3.0
  */
@@ -162,7 +162,7 @@ class TTemplateManager extends TModule
  * set their parent as $control.
  *
  * @author Qiang Xue <qiang.xue@gmail.com>
- * @version $Id: TTemplateManager.php 2625 2009-03-19 22:07:39Z godzilla80@gmx.net $
+ * @version $Id: TTemplateManager.php 2918 2011-05-21 17:10:29Z ctrlaltca@gmail.com $
  * @package System.Web.UI
  * @since 3.0
  */
@@ -890,15 +890,19 @@ class TTemplate extends TApplicationComponent implements ITemplate
 			else
 				return array(self::CONFIG_EXPRESSION,ltrim($expr,'.'));
 		}
-		else if(preg_match('/\\s*(<%~.*?%>|<%\\$.*?%>|<%\\[.*?\\]%>)\\s*/msS',$value,$matches) && $matches[0]===$value)
+		else if(preg_match('/\\s*(<%~.*?%>|<%\\$.*?%>|<%\\[.*?\\]%>|<%\/.*?%>)\\s*/msS',$value,$matches) && $matches[0]===$value)
 		{
 			$value=$matches[1];
-			if($value[2]==='~') // a URL
+			if($value[2]==='~')
 				return array(self::CONFIG_ASSET,trim(substr($value,3,strlen($value)-5)));
-			else if($value[2]==='[')
+			elseif($value[2]==='[')
 				return array(self::CONFIG_LOCALIZATION,trim(substr($value,3,strlen($value)-6)));
-			else if($value[2]==='$')
+			elseif($value[2]==='$')
 				return array(self::CONFIG_PARAMETER,trim(substr($value,3,strlen($value)-5)));
+			elseif($value[2]==='/') {
+				$literal = trim(substr($value,3,strlen($value)-5));
+				return array(self::CONFIG_EXPRESSION,"dirname(\$this->getApplication()->getRequest()->getApplicationUrl()).'/$literal'");
+			}
 		}
 		else
 			return $value;

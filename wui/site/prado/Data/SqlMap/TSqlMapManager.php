@@ -4,9 +4,9 @@
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
  * @link http://www.pradosoft.com/
- * @copyright Copyright &copy; 2005-2008 PradoSoft
+ * @copyright Copyright &copy; 2005-2010 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TSqlMapManager.php 2659 2009-05-23 07:52:15Z godzilla80@gmx.net $
+ * @version $Id: TSqlMapManager.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap
  */
 
@@ -37,7 +37,7 @@ Prado::using('System.Caching.TCache');
  * </code>
  *
  * @author Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version $Id: TSqlMapManager.php 2659 2009-05-23 07:52:15Z godzilla80@gmx.net $
+ * @version $Id: TSqlMapManager.php 2920 2011-05-21 19:29:39Z ctrlaltca@gmail.com $
  * @package System.Data.SqlMap
  * @since 3.1
  */

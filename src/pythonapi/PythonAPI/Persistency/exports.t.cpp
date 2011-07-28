@@ -1,15 +1,13 @@
 /*
  * exports.t.cpp
  *
+ * NOTE: this is NOT test suit but import scheduler for classes used in tests.
+ *
  */
 #include <tut.h>
-#include <boost/scoped_ptr.hpp>
 
 #include "PythonAPI/Persistency/exports.hpp"
 #include "PythonAPI/Environment.hpp"
-
-using namespace std;
-using namespace PythonAPI::Persistency;
 
 namespace
 {
@@ -19,12 +17,6 @@ PythonAPI::Environment::StaticImporter g_import("persistency", initpersistency);
 
 struct TestClass
 {
-  TestClass(void)
-  {
-    env_.importModule("persistency");
-    //env_.run("from persistency import *");
-  }
-
   PythonAPI::Environment env_;
 };
 
@@ -37,12 +29,13 @@ factory tf("PythonAPI/Persistency/exports");
 namespace tut
 {
 
-// test for Certainty class' presence
+// tets if namespace is present
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.run("c=persistency.Certainty(0.42)");    // smoke test - in case of error call will throw
+  env_.importModule("persistency");
+  //env_.run("from persistency import *");
 }
 
 } // namespace tut

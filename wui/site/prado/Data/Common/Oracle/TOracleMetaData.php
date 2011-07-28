@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TOracleMetaData.php 2653 2009-05-13 06:59:31Z Christophe.Boulain $
+ * @version $Id: TOracleMetaData.php 2880 2011-01-19 14:56:01Z christophe.boulain $
  * @package System.Data.Common.Oracle
  */
 
@@ -21,7 +21,7 @@ Prado::using('System.Data.Common.Oracle.TOracleTableColumn');
  * TOracleMetaData loads Oracle database table and column information.
  *
  * @author Marcos Nobre <marconobre[at]gmail[dot]com>
- * @version $Id: TOracleMetaData.php 2653 2009-05-13 06:59:31Z Christophe.Boulain $
+ * @version $Id: TOracleMetaData.php 2880 2011-01-19 14:56:01Z christophe.boulain $
  * @package System.Data.Common.Oracle
  * @since 3.1
  */
@@ -163,7 +163,7 @@ EOD;
 		$command = $this->getDbConnection()->createCommand($sql);
 		//$command->bindValue(':schema',$schemaName);
 		//$command->bindValue(':table', $tableName);
-		return intval($command->queryScalar()) === 'VIEW';
+		return intval($command->queryScalar() === 'VIEW');
 	}
 
 	/**

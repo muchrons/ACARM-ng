@@ -59,25 +59,33 @@ Environment::StaticImporter::~StaticImporter(void)
 Environment::Environment(void):
   log_("pythonapi.environment")
 {
-  LOGMSG_DEBUG(log_, "initializing Python's environment object");
-  // if called for the first time import all modules
-  if(!g_alreadyInitialized)
+  try
   {
-    // modules importing
-    const size_t count=getModInitLst().count();
-    LOGMSG_INFO_S(log_)<<"importing all of the "<<count<<" registered modules";
-    importAllModules();
-    LOGMSG_INFO_S(log_)<<"all of the "<<count<<" registered modules imported";
-    // python's init
-    Py_Initialize();
-    // done
-    g_alreadyInitialized=true;
-    LOGMSG_INFO(log_, "initializing Python's envioronment succeeded");
+    LOGMSG_DEBUG(log_, "initializing Python's environment object");
+    // if called for the first time import all modules
+    if(!g_alreadyInitialized)
+    {
+      // modules importing
+      const size_t count=getModInitLst().count();
+      LOGMSG_INFO_S(log_)<<"importing all of the "<<count<<" registered modules";
+      importAllModules();
+      LOGMSG_INFO_S(log_)<<"all of the "<<count<<" registered modules imported";
+      // python's init
+      Py_Initialize();
+      // done
+      g_alreadyInitialized=true;
+      LOGMSG_INFO(log_, "initializing Python's envioronment succeeded");
+    }
+    // casual stuff
+    mainModule_   =py::import("__main__");
+    mainNamespace_=mainModule_.attr("__dict__");
+    LOGMSG_DEBUG(log_, "initializing Python's envioronment object succeeded");
   }
-  // casual stuff
-  mainModule_   =py::import("__main__");
-  mainNamespace_=mainModule_.attr("__dict__");
-  LOGMSG_DEBUG(log_, "initializing Python's envioronment object succeeded");
+  catch(const boost::python::error_already_set &)
+  {
+    LOGMSG_ERROR(log_, "exception during initialization of environment");
+    handlePythonError();
+  }
 }
 
 void Environment::run(const std::string &script)
@@ -92,9 +100,7 @@ void Environment::run(const std::string &script)
   catch(const boost::python::error_already_set &)
   {
     LOGMSG_ERROR_S(log_)<<"exception from script (script's hash is "<<Commons::computeHash(script)<<")";
-    ExceptionHandle ex;
-    LOGMSG_ERROR_S(log_)<<"exception is: "<<ex.str();
-    ex.rethrow();
+    handlePythonError();
   }
 }
 
@@ -165,6 +171,13 @@ void Environment::importAllModules(void)
   // all modeules imported - remove them from the collection
   mods.clear();
   assert( getModInitLst().count()==0 );
+}
+
+void Environment::handlePythonError(void) const
+{
+  ExceptionHandle ex;
+  LOGMSG_ERROR_S(log_)<<"exception is: "<<ex.str();
+  ex.rethrow();
 }
 
 } // namespace PythonAPI

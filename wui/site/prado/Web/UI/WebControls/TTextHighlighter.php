@@ -6,7 +6,7 @@
  * @link http://www.pradosoft.com/
  * @copyright Copyright &copy; 2005-2008 PradoSoft
  * @license http://www.pradosoft.com/license/
- * @version $Id: TTextHighlighter.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TTextHighlighter.php 2926 2011-05-25 09:34:54Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  */
 
@@ -31,7 +31,7 @@ Prado::using('System.Web.UI.WebControls.TTextProcessor');
  * because it needs to insert some CSS styles.
  *
  * @author Wei Zhuo<weizhuo[at]gmail[dot]com>
- * @version $Id: TTextHighlighter.php 2541 2008-10-21 15:05:13Z qiang.xue $
+ * @version $Id: TTextHighlighter.php 2926 2011-05-25 09:34:54Z ctrlaltca@gmail.com $
  * @package System.Web.UI.WebControls
  * @since 3.0
  */
@@ -193,6 +193,12 @@ class TTextHighlighter extends TTextProcessor
 	}
 }
 
+/**
+ * @author Wei Zhuo<weizhuo[at]gmail[dot]com>
+ * @version $Id: TTextHighlighter.php 2926 2011-05-25 09:34:54Z ctrlaltca@gmail.com $
+ * @package System.Web.UI.WebControls
+ * @since 3.0
+ */
 class TTextHighlighterLineNumberStyle extends TEnumerable
 {
 	const Li='Li';
