@@ -114,7 +114,7 @@ public:
     {
       if( it->second.ptr_.lock().get()!=NULL )
         throw ExceptionEntryAlreadyExist(SYSTEM_SAVE_LOCATION);
-      // if we're here it means we have dead entrym with dongling pointer
+      // if we're here it means we have dead entrym with dangling pointer
       // to re-allocated place in memory
       it->second=tmp;
     }
@@ -123,7 +123,7 @@ public:
       // insert new entry to collection
       oidm_.insert( typename ObjectIDMapping::value_type( ptr.get(), tmp ) );
     }
-    // however we got here (overwriting dongling pointer, or inserting totaly
+    // however we got here (overwriting dangling pointer, or inserting totaly
     // new entry) following conditions must hold (note: since we're still in
     // critical section there is no possibility of race conditions):
     assert( oidm_.find( ptr.get() )!=oidm_.end() );
