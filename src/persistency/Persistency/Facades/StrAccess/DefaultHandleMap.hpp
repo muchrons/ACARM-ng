@@ -14,6 +14,7 @@
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
 #include "Persistency/Facades/StrAccess/ErrorThrower.hpp"
 #include "Persistency/Facades/StrAccess/OnCollectionIndex.hpp"
+#include "Persistency/Facades/StrAccess/OnMD5Sum.hpp"
 #include "Persistency/Facades/StrAccess/OnService.hpp"
 #include "Persistency/Facades/StrAccess/OnReferenceURL.hpp"
 #include "Persistency/Facades/StrAccess/detail/OnTerm.hpp"
@@ -44,8 +45,9 @@ typedef boost::mpl::map<
     boost::mpl::pair<CollectionIndexHandle, OnCollectionIndex>,
     boost::mpl::pair<ErrorHandle, ErrorThrower>,
     //
-    //  special types handles
+    // types handles
     //
+    boost::mpl::pair<MD5Sum, OnMD5Sum>,
     boost::mpl::pair<Service, OnService>,
     boost::mpl::pair<ReferenceURL, OnReferenceURL>
   > DefaultHandleMap;

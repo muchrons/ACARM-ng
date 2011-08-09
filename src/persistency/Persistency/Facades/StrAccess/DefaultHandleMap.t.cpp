@@ -84,4 +84,12 @@ void testObj::test<6>(void)
   checkType<Service, OnService>("Service handle is not valid");
 }
 
+// test presence of md5sum handle
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  checkType<MD5Sum, OnMD5Sum>("MD5Sum handle is not valid");
+}
+
 } // namespace tut
