@@ -13,7 +13,6 @@
 
 #include "System/NoInstance.hpp"
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
-#include "Persistency/Facades/StrAccess/IsTerm.hpp"
 #include "Persistency/Facades/StrAccess/IsPointer.hpp"
 #include "Persistency/Facades/StrAccess/IsSmartPointer.hpp"
 
@@ -27,30 +26,10 @@ namespace StrAccess
 namespace detail
 {
 
-/** \brief helper processing const char* -> std::string.
- */
-template<bool TIsTerm, typename TFuncObj>
-struct ProcessPointerNotNULL: private System::NoInstance
-{
-  /** \brief processing method.
-   *  \param e element to be processed.
-   *  \param p params to be used when processing.
-   *  \return value farwarded from further user's calls.
-   *  \warning this is internal - e must NOT be NULL!
-   */
-  template<typename TParams>
-  static bool process(const char *e, TParams &p)
-  {
-    assert(e!=NULL);
-    // by making string() out of const char * we nesure no more pointer processing will be done
-    return TFuncObj::process(std::string(e), p);
-  }
-};
-
-/** \brief helper dereferencing pointer.
+/** \brief pointer dereferencing facility
  */
 template<typename TFuncObj>
-struct ProcessPointerNotNULL<false, TFuncObj>: private System::NoInstance
+struct ProcessPointerNotNULL: private System::NoInstance
 {
   /** \brief processing method.
    *  \param e element to be processed.
@@ -63,6 +42,20 @@ struct ProcessPointerNotNULL<false, TFuncObj>: private System::NoInstance
   {
     assert(e!=NULL);
     return TFuncObj::process(*e, p);
+  }
+
+  /** \brief processing method for const char*.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   *  \warning this is internal - e must NOT be NULL!
+   */
+  template<typename TParams>
+  static bool process(const char *e, TParams &p)
+  {
+    assert(e!=NULL);
+    // by making string() out of const char * we nesure no more pointer processing will be done
+    return TFuncObj::process(std::string(e), p);
   }
 };
 
@@ -83,8 +76,7 @@ struct StripPointer: private System::NoInstance
     if(e==NULL)
       return p.callback().nullOnPath(p.get());
     // process pointer further, ensuring that terms will be treated specially
-    typedef ProcessPointerNotNULL<IsTerm<const T*>::value, TFuncObj> Action;
-    return Action::process(e, p);
+    return ProcessPointerNotNULL<TFuncObj>::process(e, p);
   }
 };
 
