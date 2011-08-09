@@ -14,6 +14,7 @@
 
 #include "System/NoInstance.hpp"
 #include "Commons/Convert.hpp"
+#include "Persistency/MD5Sum.hpp"
 #include "Persistency/Facades/StrAccess/IsTerm.hpp"
 #include "Persistency/Facades/StrAccess/IsCollection.hpp"
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
@@ -62,6 +63,18 @@ struct ProcessOnTermCollectionImpl<false>: private System::NoInstance
   static bool process(const T &e, TParams &p)
   {
     return p.callback().value( Commons::Convert::to<std::string>(e) );
+  }
+
+  /** \brief special method for handling MD5Sum as a term.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
+  template<typename TParams>
+  static bool process(const MD5Sum &e, TParams &p)
+  {
+    assert(e.get()!=NULL);
+    return process(std::string(e.get()), p);
   }
 }; // struct ProcessOnTermCollectionImpl
 

@@ -90,4 +90,15 @@ void testObj::test<4>(void)
   ensure_equals("invalid value returned", cb_.lastValue_, "yellow");
 }
 
+// test processing MD5Sum
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const std::string         md5Str("d0295a7f36fa2d19d4ce40382c8d139f");
+  const Persistency::MD5Sum md5( Persistency::MD5Sum::createFromString(md5Str.c_str()) );
+  OnTerm::process(md5, pLast_);
+  ensure_equals("invalid value returned", cb_.lastValue_, md5Str);
+}
+
 } // namespace tut

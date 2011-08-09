@@ -11,6 +11,7 @@
 #include <boost/type_traits/is_arithmetic.hpp>
 
 #include "System/NoInstance.hpp"
+#include "Persistency/MD5Sum.hpp"
 
 namespace Persistency
 {
@@ -77,6 +78,14 @@ template<unsigned int N>
 struct IsTerm<const char[N]>: private System::NoInstance
 {
   static const bool value=IsTerm<const char*>::value;   ///< meta-program result
+}; // struct IsTerm
+
+/** \brief makes Persistency::MD5Sum a term.
+ */
+template<>
+struct IsTerm<Persistency::MD5Sum>: private System::NoInstance
+{
+  static const bool value=true;     ///< meta-program result
 }; // struct IsTerm
 
 } // namespace StrAccess

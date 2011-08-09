@@ -130,4 +130,20 @@ void testObj::test<10>(void)
   testCallViaTemplateNonConst("abc");
 }
 
+// test if MD5Sum is a term
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  ensure("MD5Sum is not a term", IsTerm<Persistency::MD5Sum>::value);
+}
+
+// test if MD5Sum* is NOT a term
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  ensure("MD5Sum* is a term", IsTerm<Persistency::MD5Sum*>::value==false);
+}
+
 } // namespace tut
