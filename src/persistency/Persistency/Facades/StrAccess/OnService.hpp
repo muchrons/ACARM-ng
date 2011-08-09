@@ -51,7 +51,7 @@ struct OnService: private System::NoInstance
     ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
     return false;
   }
-}; // struct OnReferenceURL
+}; // struct OnService
 
 } // namespace StrAccess
 } // namespace Facades
