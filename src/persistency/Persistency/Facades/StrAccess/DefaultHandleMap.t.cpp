@@ -92,4 +92,12 @@ void testObj::test<7>(void)
   checkType<MD5Sum, OnMD5Sum>("MD5Sum handle is not valid");
 }
 
+// test presence of process handle
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  checkType<Process, OnProcess>("Process handle is not valid");
+}
+
 } // namespace tut
