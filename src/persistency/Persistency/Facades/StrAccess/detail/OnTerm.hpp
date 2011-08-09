@@ -28,6 +28,8 @@ namespace StrAccess
 namespace detail
 {
 
+// TODO: refactor this code - colection never-ever should be term! (colleciton.size is now used to check size)
+
 /** \brief implementation of term element for collections.
  */
 template<bool isCollection>
