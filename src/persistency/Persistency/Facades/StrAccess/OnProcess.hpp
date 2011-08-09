@@ -1,0 +1,78 @@
+/*
+ * OnProcess.hpp
+ *
+ */
+#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_ONPROCESS_HPP_FILE
+#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_ONPROCESS_HPP_FILE
+
+/* public header */
+
+#include "System/NoInstance.hpp"
+#include "Persistency/Process.hpp"
+#include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
+
+namespace Persistency
+{
+namespace Facades
+{
+namespace StrAccess
+{
+
+/** \brief handle processing of process objects.
+ */
+struct OnProcess: private System::NoInstance
+{
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
+  template<typename TParams>
+  static bool process(const Process &e, TParams &p)
+  {
+    typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
+
+    ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
+    if(p.get()!="process")
+      ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
+
+    ++p;
+
+    if(p.get()=="path")
+      return MainDispatcher::process(e.getPath().get(), p);
+    if(p.get()=="name")
+      return MainDispatcher::process(e.getName().get(), p);
+    if(p.get()=="pid")
+      return MainDispatcher::process(e.getPID(), p);
+    if(p.get()=="uid")
+      return MainDispatcher::process(e.getUID(), p);
+    if(p.get()=="username")
+      return MainDispatcher::process(e.getUsername().get(), p);
+    if(p.get()=="parameters")
+      return MainDispatcher::process(e.getParameters(), p);
+    if(p.get()=="referenceurl")
+      return MainDispatcher::process(e.getReferenceURL(), p);
+    // MD5Sum is a bit special case here...
+    if(p.get()=="md5sum")
+    {
+      // NOTE: this voodoo is reauired, since MD5Sum is special in terms that it is special
+      //       type that is recognized as a non-term, but for sake of simplicity of final
+      //       usage is threated as one.
+      const MD5Sum *md5=e.getMD5();
+      if(md5!=NULL)
+        return TParams::template GetHandle<MD5Sum>::type::process(*md5, p);
+      else
+        return MainDispatcher::process(md5, p);
+    }
+
+    ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
+    return false;
+  }
+}; // struct OnProcess
+
+} // namespace StrAccess
+} // namespace Facades
+} // namespace Persistency
+
+#endif
