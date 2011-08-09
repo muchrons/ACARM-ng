@@ -15,6 +15,7 @@
 #include "System/NoInstance.hpp"
 #include "Commons/Convert.hpp"
 #include "Persistency/MD5Sum.hpp"
+#include "Persistency/IPTypes.hpp"
 #include "Persistency/Facades/StrAccess/IsTerm.hpp"
 #include "Persistency/Facades/StrAccess/IsCollection.hpp"
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
@@ -75,6 +76,37 @@ struct ProcessOnTermCollectionImpl<false>: private System::NoInstance
   {
     assert(e.get()!=NULL);
     return process(std::string(e.get()), p);
+  }
+
+  /** \brief special method for handling boost::asio::ip::address as a term.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
+  template<typename TParams>
+  static bool process(const boost::asio::ip::address &e, TParams &p)
+  {
+    return process(e.to_string(), p);
+  }
+  /** \brief special method for handling boost::asio::ip::address_v4 as a term.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
+  template<typename TParams>
+  static bool process(const boost::asio::ip::address_v4 &e, TParams &p)
+  {
+    return process(e.to_string(), p);
+  }
+  /** \brief special method for handling boost::asio::ip::address_v6 as a term.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
+  template<typename TParams>
+  static bool process(const boost::asio::ip::address_v6 &e, TParams &p)
+  {
+    return process(e.to_string(), p);
   }
 }; // struct ProcessOnTermCollectionImpl
 

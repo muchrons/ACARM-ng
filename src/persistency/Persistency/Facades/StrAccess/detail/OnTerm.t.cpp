@@ -11,6 +11,7 @@
 using namespace std;
 using namespace Persistency::Facades::StrAccess;
 using namespace Persistency::Facades::StrAccess::detail;
+namespace net=boost::asio::ip;
 
 namespace
 {
@@ -99,6 +100,36 @@ void testObj::test<5>(void)
   const Persistency::MD5Sum md5( Persistency::MD5Sum::createFromString(md5Str.c_str()) );
   OnTerm::process(md5, pLast_);
   ensure_equals("invalid value returned", cb_.lastValue_, md5Str);
+}
+
+// test IP address
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  net::address ip=net::address::from_string("1.2.3.4");
+  OnTerm::process(ip, pLast_);
+  ensure_equals("invalid value returned", cb_.lastValue_, "1.2.3.4");
+}
+
+// test IPv4 address
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  net::address_v4 ip=net::address_v4::from_string("1.2.3.4");
+  OnTerm::process(ip, pLast_);
+  ensure_equals("invalid value returned", cb_.lastValue_, "1.2.3.4");
+}
+
+// test IPv6 address
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  net::address_v6 ip=net::address_v6::from_string("::1");
+  OnTerm::process(ip, pLast_);
+  ensure_equals("invalid value returned", cb_.lastValue_, "::1");
 }
 
 } // namespace tut
