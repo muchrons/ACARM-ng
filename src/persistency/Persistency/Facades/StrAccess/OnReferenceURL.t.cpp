@@ -5,35 +5,15 @@
 #include <tut.h>
 
 #include "Persistency/Facades/StrAccess/OnReferenceURL.hpp"
-#include "Persistency/Facades/StrAccess/TestParams.t.hpp"
+#include "Persistency/Facades/StrAccess/TestBaseData.t.hpp"
 
 using namespace Persistency;
 using namespace Persistency::Facades::StrAccess;
 
 namespace
 {
-struct TestClass
+struct TestClass: public TestBaseData<OnReferenceURL>
 {
-  TestClass(void):
-    r_("somename", "http://evil.one")
-  {
-  }
-
-  void ensureThrow(TestParams &p)
-  {
-    try
-    {
-      OnReferenceURL::process(r_, p);
-      tut::fail("call didn't throw on invalid path");
-    }
-    catch(const ExceptionInvalidPath &)
-    {
-      // this is expected
-    }
-  }
-
-  TestParams::ResultCallback cb_;
-  ReferenceURL               r_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -51,9 +31,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  TestParams p(Path("referenceurl.name"), cb_);
-  OnReferenceURL::process(r_, p);
-  ensure_equals("invalid name", cb_.lastValue_, "somename");
+  ensureProc("invalid name", *url_, "referenceurl.name", "evil site");
 }
 
 // test getting URL
@@ -61,9 +39,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  TestParams p(Path("referenceurl.url"), cb_);
-  OnReferenceURL::process(r_, p);
-  ensure_equals("invalid url", cb_.lastValue_, "http://evil.one");
+  ensureProc("invalid url", *url_, "referenceurl.url", "http://evil.one");
 }
 
 // test processing for last element
@@ -73,7 +49,7 @@ void testObj::test<3>(void)
 {
   TestParams p(Path("referenceurl.url"), cb_);
   ++p;
-  ensureThrow(p);
+  ensureThrow(*url_, p);
 }
 
 // test processing for end element
@@ -84,7 +60,7 @@ void testObj::test<4>(void)
   TestParams p(Path("referenceurl.url"), cb_);
   ++p;
   ++p;
-  ensureThrow(p);
+  ensureThrow(*url_, p);
 }
 
 // test processing for unknown name
@@ -93,7 +69,7 @@ template<>
 void testObj::test<5>(void)
 {
   TestParams p(Path("referenceurl.enemyunknown"), cb_);
-  ensureThrow(p);
+  ensureThrow(*url_, p);
 }
 
 // test error when invalid root is requested
@@ -102,7 +78,7 @@ template<>
 void testObj::test<6>(void)
 {
   TestParams p(Path("whatisthat.url"), cb_);
-  ensureThrow(p);
+  ensureThrow(*url_, p);
 }
 
 // test error when path is too long
@@ -111,7 +87,7 @@ template<>
 void testObj::test<7>(void)
 {
   TestParams p(Path("referenceurl.url.TOOLONG"), cb_);
-  ensureThrow(p);
+  ensureThrow(*url_, p);
 }
 
 } // namespace tut
