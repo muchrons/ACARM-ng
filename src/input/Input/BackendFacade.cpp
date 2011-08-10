@@ -33,13 +33,13 @@ Persistency::AnalyzerPtrNN BackendFacade::getAnalyzer(const Persistency::Analyze
   return creator_.construct( getConnection(), getTransaction(), name, version, os, ip );
 }
 
-void BackendFacade::heartbeat(const Persistency::IO::Heartbeats::Module &m, unsigned int deadline)
+void BackendFacade::heartbeat(const Persistency::IO::Heartbeats::Module &m, unsigned int validFor)
 {
-  LOGMSG_DEBUG_S(log_)<<"sending heartbeat from external module '"<<m.get()<<"' with deadline "<<deadline<<"[s]";
+  LOGMSG_DEBUG_S(log_)<<"sending heartbeat from external module '"<<m.get()<<"' with validity of "<<validFor<<"[s]";
   beginTransaction();
   Persistency::IO::HeartbeatsAutoPtr hb=getConnection()->heartbeats( heartbeatOwner_, getTransaction() );
   assert( hb.get()!=NULL );
-  hb->report(m, deadline);
+  hb->report(m, validFor);
   // transaction will be commited after everything's done
 }
 

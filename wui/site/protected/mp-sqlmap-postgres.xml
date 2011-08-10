@@ -82,6 +82,10 @@
     select count(*) from meta_alerts_roots where id_root=#value#;
   </select>
 
+  <select id="DBversion" resultClass="string">
+    SELECT value FROM config_rdonly WHERE owner='acarm-ng' AND key='db-version';
+  </select>    
+
   <!-- Queries for tables' sizes -->
 
   <select id="SelectUsersCount" resultClass="int">

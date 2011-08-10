@@ -25,13 +25,13 @@ public:
    * @brief c-tor creates parser object from idmef_message_t
    * \param msg     idmef_message_t object to parse
    * \param bf      backend facade to be used for when parsing.
-   * \param timeout timeout in seconds for heartbeats
+   * \param validFor timeout in seconds for heartbeats
    */
-  IDMEFParserHeartbeat(idmef_message_t *msg, BackendFacade &bf, unsigned int timeout);
+  IDMEFParserHeartbeat(idmef_message_t *msg, BackendFacade &bf, unsigned int validFor);
 
 private:
   BackendFacade                 &bf_;
-  unsigned int                   timeout_;
+  unsigned int                   valid_for_;
 }; // class IDMEFParserHeartbeat
 
 } // namespace Prelude
