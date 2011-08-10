@@ -57,13 +57,12 @@ void testObj::test<3>(void)
   ensureThrow(*process_, p);
 }
 
-// test error when invalid root is requested
+// test accessing via collection index
 template<>
 template<>
 void testObj::test<4>(void)
 {
-  TestParams p(Path("whatisthat.name"), cb_);
-  ensureThrow(*process_, p);
+  ensureProc("failed for colleciton index", *process_, "42.name", "somename");
 }
 
 // test getting path

@@ -34,10 +34,8 @@ struct OnService: private System::NoInstance
 
     ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
-    if(p.get()!="service")
-      ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
 
-    ++p;
+    ++p;    // can be "host" or colleciton index
 
     if(p.get()=="name")
       return MainDispatcher::process(e.getName().get(), p);

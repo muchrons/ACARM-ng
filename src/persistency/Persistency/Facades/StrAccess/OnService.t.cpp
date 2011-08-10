@@ -72,13 +72,12 @@ void testObj::test<5>(void)
   ensureThrow(*service_, p);
 }
 
-// test error when invalid root is requested
+// test accessing via colleciton index
 template<>
 template<>
 void testObj::test<6>(void)
 {
-  TestParams p(Path("whatisthat.name"), cb_);
-  ensureThrow(*service_, p);
+  ensureProc("error on colleciton index", *service_, "42.name", "servicename");
 }
 
 // test getting protocol

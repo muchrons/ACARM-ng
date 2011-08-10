@@ -72,13 +72,12 @@ void testObj::test<5>(void)
   ensureThrow(*url_, p);
 }
 
-// test error when invalid root is requested
+// test accessing via collection index
 template<>
 template<>
 void testObj::test<6>(void)
 {
-  TestParams p(Path("whatisthat.url"), cb_);
-  ensureThrow(*url_, p);
+  ensureProc("failed for colleciton index", *url_, "42.url", "http://evil.one");
 }
 
 // test error when path is too long
