@@ -53,13 +53,14 @@ ReaderBuilder::FactoryPtr ReaderBuilder::buildImpl(const Options &opt) const
 
   unsigned int heartbeat_timeout=0;
 
-  try{
+  try
+  {
     heartbeat_timeout=Commons::Convert::to<unsigned int>(ic["heartbeat"]);
   }
   catch(const ConfigIO::ExceptionNoSuchParameter &)
-    {
-      heartbeat_timeout=300;
-    }
+  {
+    heartbeat_timeout=300;
+  }
 
   return ReaderBuilder::FactoryPtr( new Reader(pprofile, InstanceName(pname), pconfig, heartbeat_timeout) );
 }
