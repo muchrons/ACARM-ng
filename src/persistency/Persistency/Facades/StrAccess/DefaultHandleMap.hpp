@@ -14,6 +14,7 @@
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
 #include "Persistency/Facades/StrAccess/ErrorThrower.hpp"
 #include "Persistency/Facades/StrAccess/OnCollectionIndex.hpp"
+#include "Persistency/Facades/StrAccess/OnHost.hpp"
 #include "Persistency/Facades/StrAccess/OnProcess.hpp"
 #include "Persistency/Facades/StrAccess/OnService.hpp"
 #include "Persistency/Facades/StrAccess/OnReferenceURL.hpp"
@@ -47,6 +48,7 @@ typedef boost::mpl::map<
     //
     // types handles
     //
+    boost::mpl::pair<Host, OnHost>,
     boost::mpl::pair<Service, OnService>,
     boost::mpl::pair<Process, OnProcess>,
     boost::mpl::pair<ReferenceURL, OnReferenceURL>

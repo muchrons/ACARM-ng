@@ -92,4 +92,12 @@ void testObj::test<7>(void)
   checkType<Process, OnProcess>("Process handle is not valid");
 }
 
+// test presence of host handle
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  checkType<Host, OnHost>("Host handle is not valid");
+}
+
 } // namespace tut
