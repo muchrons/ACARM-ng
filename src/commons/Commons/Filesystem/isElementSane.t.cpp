@@ -53,12 +53,12 @@ void testObj::test<3>(void)
   ensure("link dir marked sane", isElementSane("testdata/dirSymlink")==false );
 }
 
-// test if dongling symlink throws
+// test if dangling symlink throws
 template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure("dongling symlink marked sane", isElementSane("testdata/donglingSymlink")==false );
+  ensure("dangling symlink marked sane", isElementSane("testdata/danglingSymlink")==false );
 }
 
 // cur-dir test
