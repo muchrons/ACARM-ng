@@ -36,20 +36,23 @@ struct TestBaseData: private TestBase
     service_(new Service("servicename", 42, "serviceproto", url_)),
     serviceNull_(new Service("otherservice", 42, Service::Protocol(NULL), ReferenceURLPtr())),
     netmask_( Host::Netmask::from_string("255.255.0.0") ),
-    host_( new Host( Host::IP::from_string("1.2.3.4"),
-                    &netmask_,
-                     "Linux",
-                     url_,
-                     initCollection<Host::Services>(service_, serviceNull_),
-                     initCollection<Host::Processes>(process_),
-                     "my.dns.name") ),
-    hostNull_( new Host(Host::IP::from_string("1.2.3.4"),
-                        NULL,
-                        NULL,
-                        ReferenceURLPtr(),
-                        Host::Services(),
-                        Host::Processes(),
-                        NULL) )
+    ip_( Host::IP::from_string("1.2.3.4") ),
+    host_(new Host( ip_,
+                   &netmask_,
+                    "Linux",
+                    url_,
+                    initCollection<Host::Services>(service_, serviceNull_),
+                    initCollection<Host::Processes>(process_),
+                    "my.dns.name") ),
+    hostNull_(new Host(ip_,
+                       NULL,
+                       NULL,
+                       ReferenceURLPtr(),
+                       Host::Services(),
+                       Host::Processes(),
+                       NULL) ),
+    analyzer_(new Analyzer(666, "analyzer1", "4.2", "Linux/Debian", &ip_)),
+    analyzerNull_(new Analyzer(666, "analyzer2", NULL, NULL, NULL))
   {
   }
 
@@ -87,7 +90,7 @@ struct TestBaseData: private TestBase
   void ensureProc(const char *errMsg, const TData &data, const char *path, const TExp &exp)
   {
     TestParams p(Path(path), cb_);
-    TTested::process(data, p);
+    tut::ensure("error response returned", TTested::process(data, p) );
     // check
     const std::string expStr=Commons::Convert::to<std::string>(exp);
     tut::ensure_equals(errMsg, cb_.lastValue_, expStr);
@@ -97,7 +100,7 @@ struct TestBaseData: private TestBase
   void ensureProcNull(const char *errMsg, const TData &data, const char *path, const std::string &exp)
   {
     TestParams p(Path(path), cb_);
-    TTested::process(data, p);
+    tut::ensure("non-error response returned", TTested::process(data, p));
     // check
     tut::ensure_equals(errMsg, cb_.lastNullFound_, exp);
   }
@@ -106,7 +109,7 @@ struct TestBaseData: private TestBase
   void ensureProcSize(const char *errMsg, const TData &data, const char *path, const size_t exp)
   {
     TestParams p(Path(path), cb_);
-    TTested::process(data, p);
+    tut::ensure("error response returned", TTested::process(data, p) );
     // check
     tut::ensure_equals(errMsg, cb_.lastSize_, exp);
   }
@@ -121,8 +124,11 @@ struct TestBaseData: private TestBase
   ServicePtrNN               service_;
   ServicePtrNN               serviceNull_;
   Host::Netmask              netmask_;
+  Host::IP                   ip_;
   HostPtrNN                  host_;
   HostPtrNN                  hostNull_;
+  AnalyzerPtrNN              analyzer_;
+  AnalyzerPtrNN              analyzerNull_;
 };
 
 } // namespace StrAccess
