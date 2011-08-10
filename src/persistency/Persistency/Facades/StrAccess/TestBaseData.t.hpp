@@ -34,7 +34,7 @@ struct TestBaseData: private TestBase
     process_(new Process("/a/b/c", "somename", &md5_, &pid_, &uid_, "satan", "-v", url_)),
     processNull_(new Process(NULL, "othername", NULL, NULL, NULL, NULL, NULL, (ReferenceURLPtr()) )),
     service_(new Service("servicename", 42, "serviceproto", url_)),
-    serviceNull_(new Service("servicename", 42, Service::Protocol(NULL), ReferenceURLPtr())),
+    serviceNull_(new Service("otherservice", 42, Service::Protocol(NULL), ReferenceURLPtr())),
     netmask_( Host::Netmask::from_string("255.255.0.0") ),
     host_( new Host( Host::IP::from_string("1.2.3.4"),
                     &netmask_,
@@ -100,6 +100,15 @@ struct TestBaseData: private TestBase
     TTested::process(data, p);
     // check
     tut::ensure_equals(errMsg, cb_.lastNullFound_, exp);
+  }
+
+  template<typename TData>
+  void ensureProcSize(const char *errMsg, const TData &data, const char *path, const size_t exp)
+  {
+    TestParams p(Path(path), cb_);
+    TTested::process(data, p);
+    // check
+    tut::ensure_equals(errMsg, cb_.lastSize_, exp);
   }
 
   TestParams::ResultCallback cb_;
