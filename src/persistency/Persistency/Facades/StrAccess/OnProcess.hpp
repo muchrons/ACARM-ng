@@ -35,7 +35,7 @@ struct OnProcess: private System::NoInstance
     ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
 
-    ++p;    // can be "host" or colleciton index
+    ++p;    // can be "process" or colleciton index
 
     if(p.get()=="path")
       return MainDispatcher::process(e.getPath().get(), p);

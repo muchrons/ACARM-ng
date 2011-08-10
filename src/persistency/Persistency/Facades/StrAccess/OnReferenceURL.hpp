@@ -35,7 +35,7 @@ struct OnReferenceURL: private System::NoInstance
     ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
 
-    ++p;    // can be "host" or colleciton index
+    ++p;    // can be "referenceurl" or colleciton index
 
     if(p.get()=="name")
       return MainDispatcher::process(e.getName().get(), p);

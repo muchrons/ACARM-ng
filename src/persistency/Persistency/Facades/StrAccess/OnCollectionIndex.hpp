@@ -7,7 +7,6 @@
 
 /* public header */
 
-#include <cassert>
 #include <boost/static_assert.hpp>
 
 #include "System/NoInstance.hpp"
