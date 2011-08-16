@@ -52,7 +52,27 @@ struct TestBaseData: private TestBase
                        Host::Processes(),
                        NULL) ),
     analyzer_(new Analyzer(666, "analyzer1", "4.2", "Linux/Debian", &ip_)),
-    analyzerNull_(new Analyzer(666, "analyzer2", NULL, NULL, NULL))
+    analyzerNull_(new Analyzer(666, "analyzer2", NULL, NULL, NULL)),
+    detectTime_(112233),
+    createTime_(556677),
+    alert_(new Alert( "alertname",
+                      Alert::Analyzers(analyzer_),
+                     &detectTime_,
+                      createTime_,
+                      Severity(SeverityLevel::INFO),
+                      0.5,
+                      "some text info",
+                      initCollection<Alert::Hosts>(host_, hostNull_),
+                      initCollection<Alert::Hosts>(host_) )),
+    alertNull_(new Alert("alertname",
+                         Alert::Analyzers(analyzer_),
+                         NULL,
+                         createTime_,
+                         Severity(SeverityLevel::INFO),
+                         0.666,
+                         "some text info",
+                         Alert::Hosts(),
+                         Alert::Hosts() ))
   {
   }
 
@@ -129,6 +149,10 @@ struct TestBaseData: private TestBase
   HostPtrNN                  hostNull_;
   AnalyzerPtrNN              analyzer_;
   AnalyzerPtrNN              analyzerNull_;
+  Timestamp                  detectTime_;
+  Timestamp                  createTime_;
+  AlertPtrNN                 alert_;
+  AlertPtrNN                 alertNull_;
 };
 
 } // namespace StrAccess
