@@ -30,8 +30,8 @@ public:
   IDMEFParserHeartbeat(idmef_message_t *msg, BackendFacade &bf, unsigned int validFor);
 
 private:
-  BackendFacade                 &bf_;
-  unsigned int                   valid_for_;
+  BackendFacade &bf_;
+  unsigned int   validFor_;
 }; // class IDMEFParserHeartbeat
 
 } // namespace Prelude

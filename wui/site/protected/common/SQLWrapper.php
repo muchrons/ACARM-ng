@@ -10,7 +10,7 @@ class SQLWrapper
 {
   public function queryForObject($param,$value=null)
   {
-    SQLWrapper::check_dbversion();
+    SQLWrapper::check_dbversion();  // TODO: check db version only on page load (i.e. in page template)
     $start=microtime_float();
     $ret=CSQLMap::get()->queryForObject($param,$value);
     $time=microtime_float()-$start;
@@ -21,7 +21,7 @@ class SQLWrapper
 
   public function queryForList($param,$value=null)
   {
-    SQLWrapper::check_dbversion();
+    SQLWrapper::check_dbversion();  // TODO: check db version only on page load (i.e. in page template)
     $start=microtime_float();
     $ret=CSQLMap::get()->queryForList($param,$value);
     $time=microtime_float()-$start;
