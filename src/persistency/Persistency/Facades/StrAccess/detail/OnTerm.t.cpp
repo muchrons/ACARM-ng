@@ -73,19 +73,10 @@ void testObj::test<2>(void)
   testThrow(string("aaa"), p_);
 }
 
-// test collection
-template<>
-template<>
-void testObj::test<3>(void)
-{
-  vector<int> v(10, 42);
-  testThrow(v, pLast_);
-}
-
 // test some term value
 template<>
 template<>
-void testObj::test<4>(void)
+void testObj::test<3>(void)
 {
   OnTerm::process(string("yellow"), pLast_);
   ensure_equals("invalid value returned", cb_.lastValue_, "yellow");
@@ -94,7 +85,7 @@ void testObj::test<4>(void)
 // test processing MD5Sum
 template<>
 template<>
-void testObj::test<5>(void)
+void testObj::test<4>(void)
 {
   const std::string         md5Str("d0295a7f36fa2d19d4ce40382c8d139f");
   const Persistency::MD5Sum md5( Persistency::MD5Sum::createFromString(md5Str.c_str()) );
@@ -105,7 +96,7 @@ void testObj::test<5>(void)
 // test IP address
 template<>
 template<>
-void testObj::test<6>(void)
+void testObj::test<5>(void)
 {
   net::address ip=net::address::from_string("1.2.3.4");
   OnTerm::process(ip, pLast_);
@@ -115,7 +106,7 @@ void testObj::test<6>(void)
 // test IPv4 address
 template<>
 template<>
-void testObj::test<7>(void)
+void testObj::test<6>(void)
 {
   net::address_v4 ip=net::address_v4::from_string("1.2.3.4");
   OnTerm::process(ip, pLast_);
@@ -125,7 +116,7 @@ void testObj::test<7>(void)
 // test IPv6 address
 template<>
 template<>
-void testObj::test<8>(void)
+void testObj::test<7>(void)
 {
   net::address_v6 ip=net::address_v6::from_string("::1");
   OnTerm::process(ip, pLast_);
@@ -135,7 +126,7 @@ void testObj::test<8>(void)
 // test bool(true) value
 template<>
 template<>
-void testObj::test<9>(void)
+void testObj::test<8>(void)
 {
   const bool b=true;
   OnTerm::process(b, pLast_);
@@ -145,7 +136,7 @@ void testObj::test<9>(void)
 // test bool(false) value
 template<>
 template<>
-void testObj::test<10>(void)
+void testObj::test<9>(void)
 {
   const bool b=false;
   OnTerm::process(b, pLast_);

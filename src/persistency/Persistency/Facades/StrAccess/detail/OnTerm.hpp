@@ -9,15 +9,14 @@
 
 #include <string>
 #include <cstdlib>
-#include <cassert>
-#include <boost/mpl/at.hpp>
+#include <boost/static_assert.hpp>
+#include <boost/type_traits/is_same.hpp>
 
 #include "System/NoInstance.hpp"
 #include "Commons/Convert.hpp"
 #include "Persistency/MD5Sum.hpp"
 #include "Persistency/IPTypes.hpp"
 #include "Persistency/Facades/StrAccess/IsTerm.hpp"
-#include "Persistency/Facades/StrAccess/IsCollection.hpp"
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
 #include "Persistency/Facades/StrAccess/collectionSize.hpp"
 
@@ -30,30 +29,10 @@ namespace StrAccess
 namespace detail
 {
 
-// TODO: refactor this code - colection never-ever should be term! (colleciton.size is now used to check size)
-
-/** \brief implementation of term element for collections.
+/** \brief implementation of term element.
  */
-template<bool isCollection>
-struct ProcessOnTermCollectionImpl: private System::NoInstance
-{
-  /** \brief processing method.
-   *  \param p params to be used when processing.
-   *  \return call never returns.
-   */
-  template<typename T, typename TParams>
-  static bool process(const T &/*e*/, TParams &p)
-  {
-    typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
-    ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
-    return false;   // code never reaches here
-  }
-}; // struct ProcessOnTermCollectionImpl
-
-/** \brief implementation of term element for non-collections.
- */
-template<>
-struct ProcessOnTermCollectionImpl<false>: private System::NoInstance
+struct OnTermImpl: private System::NoInstance,
+                   public  IPTypes<OnTermImpl>
 {
   /** \brief processing method.
    *  \param e element to be processed.
@@ -84,8 +63,9 @@ struct ProcessOnTermCollectionImpl<false>: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const boost::asio::ip::address &e, TParams &p)
+  static bool process(const IP &e, TParams &p)
   {
+    BOOST_STATIC_ASSERT( (boost::is_same<IP,Netmask>::value) );
     return process(e.to_string(), p);
   }
   /** \brief special method for handling boost::asio::ip::address_v4 as a term.
@@ -94,8 +74,9 @@ struct ProcessOnTermCollectionImpl<false>: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const boost::asio::ip::address_v4 &e, TParams &p)
+  static bool process(const IPv4 &e, TParams &p)
   {
+    BOOST_STATIC_ASSERT( (boost::is_same<IPv4,Netmask_v4>::value) );
     return process(e.to_string(), p);
   }
   /** \brief special method for handling boost::asio::ip::address_v6 as a term.
@@ -104,8 +85,9 @@ struct ProcessOnTermCollectionImpl<false>: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const boost::asio::ip::address_v6 &e, TParams &p)
+  static bool process(const IPv6 &e, TParams &p)
   {
+    BOOST_STATIC_ASSERT( (boost::is_same<IPv6,Netmask_v6>::value) );
     return process(e.to_string(), p);
   }
   /** \brief special method for handling boolean values as a term.
@@ -118,7 +100,7 @@ struct ProcessOnTermCollectionImpl<false>: private System::NoInstance
   {
     return process(std::string(e?"true":"false"), p);
   }
-}; // struct ProcessOnTermCollectionImpl
+}; // struct OnTermImpl
 
 
 /** \brief warpper used for handling term elements.
@@ -137,11 +119,9 @@ struct OnTerm: private System::NoInstance
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
     ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwIfNotLast(SYSTEM_SAVE_LOCATION, p);
-    assert( IsCollection<T>::value || IsTerm<T>::value || !"unknown term accepted" );
-    // process returning size for collection and value for non-collection
-    typedef ProcessOnTermCollectionImpl<IsCollection<T>::value> Action;
-    // process (smart) pointers before doing anything
-    return Action::process(e, p);
+    BOOST_STATIC_ASSERT(IsTerm<T>::value);
+    // process final type (term)
+    return OnTermImpl::process(e, p);
   }
 }; // struct OnTerm
 
