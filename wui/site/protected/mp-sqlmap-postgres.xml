@@ -82,6 +82,10 @@
     select count(*) from meta_alerts_roots where id_root=#value#;
   </select>
 
+  <select id="DBversion" resultClass="string">
+    SELECT value FROM config_rdonly WHERE owner='acarm-ng' AND key='db-version';
+  </select>    
+
   <!-- Queries for tables' sizes -->
 
   <select id="SelectUsersCount" resultClass="int">
@@ -257,15 +261,21 @@
     ]]>
   </select>
 
-  <select id="DMAlertTypes" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
+  <select id="DMAlertTypes" resultClass="CDMPair" cacheModel="querycache">
     <![CDATA[
-    SELECT name AS key,count(name) AS value FROM Alerts WHERE create_time<=#date_to# AND create_time>=#date_from# GROUP BY name ORDER BY count(name) DESC;
+    SELECT name AS key,count(name) AS value FROM Alerts GROUP BY name ORDER BY count(name) DESC;
     ]]>
   </select>
 
   <select id="DMMetaAlertCountTimeSeries" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
     SELECT date_trunc('day', create_time) AS key ,count(*) AS value FROM meta_alerts WHERE create_time<=#date_to# AND create_time>=#date_from# AND severity_delta>=0 GROUP BY key ORDER BY key;
+    ]]>
+  </select>
+
+  <select id="DMAlertTypesRange" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
+    <![CDATA[
+    SELECT name AS key,count(name) AS value FROM Alerts WHERE create_time<=#date_to# AND create_time>=#date_from# GROUP BY name ORDER BY count(name) DESC;
     ]]>
   </select>
 

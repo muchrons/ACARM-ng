@@ -8,6 +8,8 @@
 #include "Persistency/Alert.hpp"
 #include "Input/Prelude/Reader.hpp"
 #include "Input/Prelude/IDMEFParser.hpp"
+#include "Input/Prelude/IDMEFParserAlert.hpp"
+#include "Input/Prelude/IDMEFParserHeartbeat.hpp"
 #include "System/AutoVariable.hpp"
 #include "Input/Prelude/detail/IdmefMessageHolder.hpp"
 
@@ -18,9 +20,11 @@ namespace Input
 namespace Prelude
 {
 
-Reader::Reader(const std::string &profile, const Core::Types::Proc::InstanceName &name, const std::string &config):
+Reader::Reader(const std::string &profile, const Core::Types::Proc::InstanceName &name,
+               const std::string &config, unsigned int heartbeatTimeout):
   Input::Reader(TypeName("prelude"), name),
-  client_( new Client(profile, config, PRELUDE_CONNECTION_PERMISSION_IDMEF_READ) )
+  client_( new Client(profile, config, PRELUDE_CONNECTION_PERMISSION_IDMEF_READ) ),
+  heartbeatTimeout_(heartbeatTimeout)
 {
   assert( client_.get()!=NULL );
 }
@@ -38,22 +42,36 @@ Reader::DataPtr Reader::read(BackendFacade &bf, const unsigned int timeout)
 
   try
   {
-    const IDMEFParser ip( message.get(), bf, timeout );
-    tmp.reset(new Persistency::Alert(ip.getName(),
-                                     ip.getAnalyzers(),
-                                     NULL,
-                                     ip.getCreateTime(),
-                                     ip.getSeverity(),
-                                     Persistency::Certainty(1.0),
-                                     ip.getDescription(),
-                                     ip.getSources(),
-                                     ip.getTargets()));
+    if( IDMEFParser::isAlert( message.get()) )
+      {
+        const IDMEFParserAlert ipa( message.get(), bf );
+        tmp.reset(new Persistency::Alert(ipa.getName(),
+                                         ipa.getAnalyzers(),
+                                         NULL,
+                                         ipa.getCreateTime(),
+                                         ipa.getSeverity(),
+                                         Persistency::Certainty(1.0),
+                                         ipa.getDescription(),
+                                         ipa.getSources(),
+                                         ipa.getTargets()));
+      }
+    else
+      {
+        if ( IDMEFParser::isHeartbeat( message.get()) )
+          IDMEFParserHeartbeat( message.get(), bf, heartbeatTimeout_ );
+        else
+          throw ExceptionUnsupportedFeature(SYSTEM_SAVE_LOCATION,"Unknown message type received.");
+      }
   }
   catch(const ExceptionUnsupportedFeature &ex)
   {
-    LOGMSG_DEBUG_S(log_)<<"exception uppon unsupported feature request: "<<ex.what();
-    // we can ignore this and return NULL
-    assert( tmp.get()==NULL );
+    LOGMSG_DEBUG_S(log_)<<"Exception upon unsupported feature request: "<<ex.what();
+    return tmp;
+  }
+  catch(const ExceptionHeartbeat &)
+  {
+    //no alert is returned in case of a heartbeat
+    return tmp;
   }
 
   return tmp;

@@ -51,12 +51,12 @@ void testObj::test<3>(void)
   ensure("link dir marked sane", isDirectorySane("testdata/dirSymlink")==false );
 }
 
-// test if dongling symlink not not sane
+// test if dangling symlink not not sane
 template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure("dongling symlink marked sane", isDirectorySane("testdata/donglingSymlink")==false );
+  ensure("dangling symlink marked sane", isDirectorySane("testdata/danglingSymlink")==false );
 }
 
 // test if throws on file

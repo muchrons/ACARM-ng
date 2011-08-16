@@ -69,12 +69,12 @@ void testObj::test<3>(void)
   ensure("link marked sane", isFifoSane("testdata/fifoSymlink")==false );
 }
 
-// test if dongling symlink throws
+// test if dangling symlink throws
 template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure("dongling symlink marked sane", isFifoSane("testdata/donglingSymlink")==false );
+  ensure("dangling symlink marked sane", isFifoSane("testdata/danglingSymlink")==false );
 }
 
 // test if throws on dir
