@@ -52,7 +52,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  TestParams p(Path("service.enemyunknown"), cb_);
+  TestParams p(Path("host.enemyunknown"), cb_);
   ensureThrow(*host_, p);
 }
 

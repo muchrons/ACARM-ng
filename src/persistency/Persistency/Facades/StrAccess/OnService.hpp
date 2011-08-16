@@ -7,9 +7,12 @@
 
 /* public header */
 
+#include <cassert>
+
 #include "System/NoInstance.hpp"
 #include "Persistency/Service.hpp"
 #include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
+#include "Persistency/Facades/StrAccess/detail/isIndex.hpp"
 
 namespace Persistency
 {
@@ -35,7 +38,8 @@ struct OnService: private System::NoInstance
     ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
 
-    ++p;    // can be "service" or colleciton index
+    assert( p.get()=="service" || detail::isIndex(p.get()) );
+    ++p;
 
     if(p.get()=="name")
       return MainDispatcher::process(e.getName().get(), p);

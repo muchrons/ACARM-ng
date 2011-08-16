@@ -7,9 +7,12 @@
 
 /* public header */
 
+#include <cassert>
+
 #include "System/NoInstance.hpp"
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
+#include "Persistency/Facades/StrAccess/detail/isIndex.hpp"
 
 namespace Persistency
 {
@@ -35,7 +38,8 @@ struct OnAnalyzer: private System::NoInstance
     ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
 
-    ++p;    // can be "analyzer" or colleciton index
+    assert( p.get()=="analyzer" || detail::isIndex(p.get()) );
+    ++p;
 
     if(p.get()=="id")
       return MainDispatcher::process(e.getID().get(), p);
@@ -43,10 +47,10 @@ struct OnAnalyzer: private System::NoInstance
       return MainDispatcher::process(e.getName().get(), p);
     if(p.get()=="version")
       return MainDispatcher::process(e.getVersion().get(), p);
-    /*
-    if(p.get()=="referenceurl")
-      return MainDispatcher::process(e.getReferenceURL(), p);
-      */
+    if(p.get()=="operatingsystem")
+      return MainDispatcher::process(e.getOperatingSystem().get(), p);
+    if(p.get()=="ip")
+      return MainDispatcher::process(e.getIP(), p);
 
     ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
     return false;
