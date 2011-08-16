@@ -29,10 +29,47 @@ class ComputeLinkForAlerts
     $ret->id=$data_row->id;
     $ret->Link=$this->computeLink($data_row->id);
     $ret->Name=$data_row->name;
-    $ret->Severity=$data_row->severity;
+
+    $ret->Severity="<font";
+    $value=trim($data_row->severity);
+
+    if ($value=="4")
+      $ret->Severity.=" color=\"red\"";
+    else
+      if ($value=="3")
+        $ret->Severity.=" color=\"orange\"";
+      else
+          $ret->Severity.=" color=\"yellow\"";
+        if ($value=="2")
+        else
+          if ($value=="1")
+            $ret->Severity.=" color=\"green\"";
+          else
+            if ($value=="0")
+              $ret->Severity.=" color=\"blue\"";
+
+    $ret->Severity.="><b>".$this->severityToName($value)."</b></font>";
+
+    $data_row->severity;
     $ret->Created=$data_row->create_time;
     return $ret;
   }
+
+  private function severityToName($n)
+  {
+    if ($n=="0")
+      return "debug";
+    if ($n=="1")
+      return "info";
+    if ($n=="2")
+      return "low";
+    if ($n=="3")
+      return "medium";
+    if ($n=="4")
+      return "high";
+    return "unknown";
+  }
+
 
   private $service_;
 };

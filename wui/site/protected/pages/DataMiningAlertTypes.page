@@ -1,4 +1,12 @@
 <com:TContent ID="content">
-<com:TImage ID="AlertTypes"/>
-<com:RangeSelector ID="Range" View="0"/>
+<!--<com:TImage ID="AlertTypesIMG"/>-->
+<div width="800px">
+
+<com:AlertTypes
+        ID="Alerts"
+        Text="Most common alert types:"
+        Query="DMAlertTypes"/>
+</div>
+
+<com:RangeSelector ID="Range" View="1"/>
 </com:TContent>

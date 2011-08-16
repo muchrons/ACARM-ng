@@ -1,20 +1,44 @@
 <?php
 
+class TypeRecord
+{
+  public $id;
+  public $Count;
+  public $Name;
+};
+
+
+class ComputeLinkForAlerts
+{
+  function __construct($service)
+  {
+    $this->service_=$service;
+  }
+
+  private function computeLink($id)
+  {
+    $url=$this->service_->constructUrl( 'Alert', array('id' => $id) );
+    return "<a href=\"$url\">details</a>";
+  }
+
+  public function computeStructure($data_row)
+  {
+    $ret=new TypeRecord();
+    $ret->Count=$data_row->value."&nbsp";
+    $ret->Name="&nbsp".$data_row->key;
+    return $ret;
+  }
+
+  private $service_;
+};
+
+
 class DataMiningAlertTypes extends TPage
 {
   public function onLoad($param)
   {
     parent::onLoad($param);
 
-    $g=new GdChecker(); //checks if GD is installed and available
-
-    if ($this->AlertTypes->width == 0)
-      $this->AlertTypes->width=700;
-    if ($this->AlertTypes->height == 0)
-      $this->AlertTypes->height=700;
-
-    $this->Range->srcip->setEnabled(false);
-    $this->Range->dstip->setEnabled(false);
     $this->Range->CB->setEnabled(false);
 
     $from=$this->Range->From->Date;
@@ -22,24 +46,20 @@ class DataMiningAlertTypes extends TPage
     $src=$this->Range->srcip->Text;
     $dst=$this->Range->dstip->Text;
 
-    $width=$this->AlertTypes->width;
-    $height=$this->AlertTypes->height;
-
-    $this->generateGraph($width,$height,$from,$to,$src,$dst);
+    $this->Alerts->computation_=new ComputeLinkForAlerts($this->Service);
+    $this->Alerts->params_=$this->Range->getRangeData();
   }
 
-  private function constructUrl($width,$height,$from,$to,$src,$dst)
+  private function constructUrl($type,$severities,$from,$to,$src,$dst)
   {
-    $linkdata=array( 'title' => 'Alert Types',
-                     'width' => $width,
-                     'height' => $height,
-                     'query' => 'DMAlertTypes',
+    $linkdata=array( 'srcip' => $src,
+                     'dstip' => $dst,
                      'from' => $from,
                      'to' => $to,
-                     'src' => $src,
-                     'dst' => $dst);
+                     'severities' => $severities,
+                     'type' => $type);
 
-    return $this->getRequest()->constructUrl('graph', "AlertTypes", $linkdata, false);
+    return $this->getRequest()->constructUrl('page', "Alerts", $linkdata);
   }
 
   private function generateGraph($width,$height,$from,$to,$src,$dst)
