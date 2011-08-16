@@ -10,6 +10,7 @@
 #include "Commons/Convert.hpp"
 #include "Persistency/TestBase.t.hpp"
 #include "Persistency/TestHelpers.t.hpp"
+#include "Persistency/IO/IOStubs.t.hpp"
 #include "Persistency/Facades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
@@ -72,7 +73,16 @@ struct TestBaseData: private TestBase
                          0.666,
                          "some text info",
                          Alert::Hosts(),
-                         Alert::Hosts() ))
+                         Alert::Hosts() )),
+    conn_(new TestIOConnection),
+    t_( conn_->createNewTransaction("str_facade_test") ),
+    maData_(new MetaAlert("meta alert name", 0.5, -0.5, url_, createTime_, 303)),
+    children_( GraphNodePtrNN(new GraphNode(makeNewAlert(), 101, conn_, t_)),
+               GraphNodePtrNN(new GraphNode(makeNewAlert(), 102, conn_, t_)) ),
+    metaalert_(new GraphNode(maData_, conn_, t_, children_)),
+    metaalertLeaf_(new GraphNode( makeNewAlert(), 665, conn_, t_)),
+    metaalertNull_(metaalertLeaf_),
+    metaalertNode_(metaalert_)
   {
   }
 
@@ -95,12 +105,18 @@ struct TestBaseData: private TestBase
   template<typename TData>
   void ensureThrow(const TData &data, TestParams &p) const
   {
+    ensureThrowEx<ExceptionInvalidPath>("call didn't throw on invalid path", data, p);
+  }
+
+  template<typename TEx, typename TData>
+  void ensureThrowEx(const char *msg, const TData &data, TestParams &p) const
+  {
     try
     {
       TTested::process(data, p);
-      tut::fail("call didn't throw on invalid path");
+      tut::fail(msg);
     }
-    catch(const ExceptionInvalidPath &)
+    catch(const TEx &)
     {
       // this is expected
     }
@@ -134,25 +150,41 @@ struct TestBaseData: private TestBase
     tut::ensure_equals(errMsg, cb_.lastSize_, exp);
   }
 
+
   TestParams::ResultCallback cb_;
+
   MD5Sum                     md5_;
+
   pid_t                      pid_;
   int                        uid_;
   ReferenceURLPtr            url_;
   ProcessPtrNN               process_;
   ProcessPtrNN               processNull_;
+
   ServicePtrNN               service_;
   ServicePtrNN               serviceNull_;
+
   Host::Netmask              netmask_;
   Host::IP                   ip_;
   HostPtrNN                  host_;
   HostPtrNN                  hostNull_;
+
   AnalyzerPtrNN              analyzer_;
   AnalyzerPtrNN              analyzerNull_;
+
   Timestamp                  detectTime_;
   Timestamp                  createTime_;
   AlertPtrNN                 alert_;
   AlertPtrNN                 alertNull_;
+
+  IO::ConnectionPtrNN        conn_;
+  IO::Transaction            t_;
+  MetaAlertPtrNN             maData_;
+  NodeChildrenVector         children_;
+  GraphNodePtrNN             metaalert_;
+  GraphNodePtrNN             metaalertLeaf_;
+  GraphNodePtrNN             metaalertNull_;
+  GraphNodePtrNN             metaalertNode_;
 };
 
 } // namespace StrAccess
