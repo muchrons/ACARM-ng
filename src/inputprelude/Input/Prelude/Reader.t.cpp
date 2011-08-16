@@ -16,7 +16,7 @@ namespace
 struct TestClass
 {
   TestClass():
-    r_("profile", InstanceName("somename"), "/etc/prelude/default/client.conf")
+    r_("profile", InstanceName("somename"), "/etc/prelude/default/client.conf",0)
   {
   }
 

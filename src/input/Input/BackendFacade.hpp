@@ -53,12 +53,12 @@ public:
 
   /** \brief send heartbeat, that arrived from an external source (module).
    *  \param m        module's name.
-   *  \param deadline maximum ammount of time to wait for next heartbeat.
+   *  \param validFor maximum ammount of time to wait for next heartbeat.
    *
    *  \note this facility should be used for incomming heartbeats onyl, since heartbeating
    *        for user's implementation (i.e. The Input) is done automatically.
    */
-  void heartbeat(const Persistency::IO::Heartbeats::Module &m, unsigned int deadline);
+  void heartbeat(const Persistency::IO::Heartbeats::Module &m, unsigned int validFor);
 
 private:
   Logger::Node                              log_;

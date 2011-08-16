@@ -20,9 +20,11 @@ namespace Input
 namespace Prelude
 {
 
-Reader::Reader(const std::string &profile, const Core::Types::Proc::InstanceName &name, const std::string &config):
+Reader::Reader(const std::string &profile, const Core::Types::Proc::InstanceName &name,
+               const std::string &config, unsigned int heartbeatTimeout):
   Input::Reader(TypeName("prelude"), name),
-  client_( new Client(profile, config, PRELUDE_CONNECTION_PERMISSION_IDMEF_READ) )
+  client_( new Client(profile, config, PRELUDE_CONNECTION_PERMISSION_IDMEF_READ) ),
+  heartbeat_timeout_(heartbeatTimeout)
 {
   assert( client_.get()!=NULL );
 }
@@ -38,7 +40,6 @@ Reader::DataPtr Reader::read(BackendFacade &bf, const unsigned int timeout)
   if (!message.get())
     return tmp;
 
-  const unsigned int heartbeat_timeout=10; //todo: remove
   try
   {
     if( IDMEFParser::isAlert( message.get()) )
@@ -57,7 +58,7 @@ Reader::DataPtr Reader::read(BackendFacade &bf, const unsigned int timeout)
     else
       {
         if ( IDMEFParser::isHeartbeat( message.get()) )
-          IDMEFParserHeartbeat( message.get(), bf, heartbeat_timeout );
+          IDMEFParserHeartbeat( message.get(), bf, heartbeat_timeout_ );
         else
           throw ExceptionUnsupportedFeature(SYSTEM_SAVE_LOCATION,"Unknown message type received.");
       }

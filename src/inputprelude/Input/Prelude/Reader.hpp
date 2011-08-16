@@ -21,10 +21,15 @@ class Reader: public Input::Reader
 {
 public:
   /** \brief create prelude reader.
+   * \param profile A "profile" for prelude library
+   * \param name Name of the instance
+   * \param config A path to a prelude config
+   * \param heartbeatTimeout timeout for prelude heartbeats
    */
   Reader(const std::string                     &profile,
          const Core::Types::Proc::InstanceName &name,
-         const std::string                     &config="/etc/prelude/default/client.conf");
+         const std::string                     &config,
+         unsigned int                           heartbeatTimeout);
 
   /** \brief reads data from input from prelude-manager.
    *  \param bf      backend facade to use for processing.
@@ -35,6 +40,7 @@ public:
 
 private:
   boost::scoped_ptr<Client> client_;
+  const unsigned int heartbeat_timeout_;
 }; // class Reader
 
 } // namespace Prelude
