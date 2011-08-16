@@ -14,6 +14,8 @@ namespace Input
 namespace Prelude
 {
 
+// TODO: remove this class since it is not used anymore
+
 /** \brief exception thrown when non-supported feature is requested.
  */
 class ExceptionHeartbeat: public Exception
