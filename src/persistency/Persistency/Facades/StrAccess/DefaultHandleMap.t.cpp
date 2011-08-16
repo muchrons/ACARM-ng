@@ -108,4 +108,12 @@ void testObj::test<9>(void)
   checkType<Analyzer, OnAnalyzer>("Analyzer handle is not valid");
 }
 
+// test presence of alert handle
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  checkType<Alert, OnAlert>("Alert handle is not valid");
+}
+
 } // namespace tut
