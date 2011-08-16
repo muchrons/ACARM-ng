@@ -100,4 +100,12 @@ void testObj::test<8>(void)
   checkType<Host, OnHost>("Host handle is not valid");
 }
 
+// test presence of analyzer handle
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  checkType<Analyzer, OnAnalyzer>("Analyzer handle is not valid");
+}
+
 } // namespace tut

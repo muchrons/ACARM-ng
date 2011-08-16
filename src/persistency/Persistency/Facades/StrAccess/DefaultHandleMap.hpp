@@ -17,6 +17,7 @@
 #include "Persistency/Facades/StrAccess/OnHost.hpp"
 #include "Persistency/Facades/StrAccess/OnProcess.hpp"
 #include "Persistency/Facades/StrAccess/OnService.hpp"
+#include "Persistency/Facades/StrAccess/OnAnalyzer.hpp"
 #include "Persistency/Facades/StrAccess/OnReferenceURL.hpp"
 #include "Persistency/Facades/StrAccess/detail/OnTerm.hpp"
 #include "Persistency/Facades/StrAccess/detail/OnNonTerm.hpp"
@@ -51,6 +52,7 @@ typedef boost::mpl::map<
     boost::mpl::pair<Host, OnHost>,
     boost::mpl::pair<Service, OnService>,
     boost::mpl::pair<Process, OnProcess>,
+    boost::mpl::pair<Analyzer, OnAnalyzer>,
     boost::mpl::pair<ReferenceURL, OnReferenceURL>
   > DefaultHandleMap;
 
