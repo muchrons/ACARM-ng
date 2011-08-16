@@ -132,4 +132,24 @@ void testObj::test<8>(void)
   ensure_equals("invalid value returned", cb_.lastValue_, "::1");
 }
 
+// test bool(true) value
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const bool b=true;
+  OnTerm::process(b, pLast_);
+  ensure_equals("invalid value returned", cb_.lastValue_, "true");
+}
+
+// test bool(false) value
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  const bool b=false;
+  OnTerm::process(b, pLast_);
+  ensure_equals("invalid value returned", cb_.lastValue_, "false");
+}
+
 } // namespace tut

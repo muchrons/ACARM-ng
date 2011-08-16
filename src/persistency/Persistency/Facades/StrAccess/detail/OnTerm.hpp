@@ -108,6 +108,16 @@ struct ProcessOnTermCollectionImpl<false>: private System::NoInstance
   {
     return process(e.to_string(), p);
   }
+  /** \brief special method for handling boolean values as a term.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
+  template<typename TParams>
+  static bool process(const bool e, TParams &p)
+  {
+    return process(std::string(e?"true":"false"), p);
+  }
 }; // struct ProcessOnTermCollectionImpl
 
 
