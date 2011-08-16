@@ -51,18 +51,18 @@ ReaderBuilder::FactoryPtr ReaderBuilder::buildImpl(const Options &opt) const
   const std::string &pprofile=ic["profile"];
   const std::string &pconfig=ic["config"];
 
-  unsigned int heartbeat_timeout=0;
-
+  unsigned int heartbeatTimeout=0;
   try
   {
-    heartbeat_timeout=Commons::Convert::to<unsigned int>(ic["heartbeat"]);
+    // TODO: rework this - use get() instead of [] to avoid exception handling.
+    heartbeatTimeout=Commons::Convert::to<unsigned int>(ic["heartbeat"]);
   }
   catch(const ConfigIO::ExceptionNoSuchParameter &)
   {
-    heartbeat_timeout=300;
+    heartbeatTimeout=300;
   }
 
-  return ReaderBuilder::FactoryPtr( new Reader(pprofile, InstanceName(pname), pconfig, heartbeat_timeout) );
+  return ReaderBuilder::FactoryPtr( new Reader(pprofile, InstanceName(pname), pconfig, heartbeatTimeout) );
 }
 
 const ReaderBuilder::FactoryTypeName &ReaderBuilder::getTypeNameImpl(void) const

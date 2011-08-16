@@ -40,7 +40,7 @@ public:
 
 private:
   boost::scoped_ptr<Client> client_;
-  const unsigned int heartbeat_timeout_;
+  const unsigned int        heartbeatTimeout_;
 }; // class Reader
 
 } // namespace Prelude
