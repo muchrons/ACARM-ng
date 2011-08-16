@@ -9,7 +9,9 @@
 #include "Logger/Logger.hpp"
 
 #include "ConfigIO/InputConfig.hpp"
+#include "ConfigIO/ExceptionNoSuchParameter.hpp"
 #include "Commons/Factory/RegistratorHelper.hpp"
+#include "Commons/Convert.hpp"
 #include "Input/Prelude/ReaderBuilder.hpp"
 #include "Input/Prelude/Reader.hpp"
 #include "Input/Factory.hpp"
@@ -49,7 +51,18 @@ ReaderBuilder::FactoryPtr ReaderBuilder::buildImpl(const Options &opt) const
   const std::string &pprofile=ic["profile"];
   const std::string &pconfig=ic["config"];
 
-  return ReaderBuilder::FactoryPtr( new Reader(pprofile, InstanceName(pname), pconfig) );
+  unsigned int heartbeatTimeout=0;
+  try
+  {
+    // TODO: rework this - use get() instead of [] to avoid exception handling.
+    heartbeatTimeout=Commons::Convert::to<unsigned int>(ic["heartbeat"]);
+  }
+  catch(const ConfigIO::ExceptionNoSuchParameter &)
+  {
+    heartbeatTimeout=300;
+  }
+
+  return ReaderBuilder::FactoryPtr( new Reader(pprofile, InstanceName(pname), pconfig, heartbeatTimeout) );
 }
 
 const ReaderBuilder::FactoryTypeName &ReaderBuilder::getTypeNameImpl(void) const

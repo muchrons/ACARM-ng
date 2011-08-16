@@ -51,6 +51,8 @@ void testObj::test<2>(void)
   ensure("NULL pointere returned", ptr.get()!=NULL );
 }
 
+// TODO: test default value when timeout forheatbeat is not set
+
 // TODO: test different options
 
 } // namespace tut

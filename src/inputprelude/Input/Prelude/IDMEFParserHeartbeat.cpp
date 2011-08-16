@@ -12,9 +12,9 @@ namespace Input
 namespace Prelude
 {
 
-IDMEFParserHeartbeat::IDMEFParserHeartbeat(idmef_message_t *msg, BackendFacade &bf, unsigned int timeout):
+IDMEFParserHeartbeat::IDMEFParserHeartbeat(idmef_message_t *msg, BackendFacade &bf, unsigned int validFor):
   bf_(bf),
-  timeout_(timeout)
+  validFor_(validFor)
 {
   if(msg==NULL)
     throw ExceptionParse(SYSTEM_SAVE_LOCATION, "Message is null");
@@ -22,7 +22,7 @@ IDMEFParserHeartbeat::IDMEFParserHeartbeat(idmef_message_t *msg, BackendFacade &
   if( idmef_message_get_type(msg)!=IDMEF_MESSAGE_TYPE_HEARTBEAT)
     throw ExceptionUnsupportedFeature(SYSTEM_SAVE_LOCATION,"Non-heartbeat received.");
 
-  bf_.heartbeat("Prelude",timeout_);
+  bf_.heartbeat("Prelude",validFor_);
 }
 
 } // namespace Prelude

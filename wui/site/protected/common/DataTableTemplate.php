@@ -40,6 +40,8 @@ class DataTableTemplate extends TTemplateControl
         $header=new TTableHeaderCell();
         $column=new TBoundColumn();
         $column->DataField=$column_name;
+        if ($column_name=="Created" || $column_name=="Severity")
+          $column->getItemStyle()->setHorizontalAlign('Center');
         $column->HeaderText= str_replace("_"," ",$column_name);
         $column->initializeCell($header,0,"Header");
         $this->DataGrid->Columns->add($column);
