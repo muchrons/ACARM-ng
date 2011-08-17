@@ -185,4 +185,13 @@ void testObj::test<19>(void)
   ensureProcNull("invalid ref url name", *processNull_, "process.referenceurl.name", "referenceurl");
 }
 
+// test exception on invalid root name
+template<>
+template<>
+void testObj::test<20>(void)
+{
+  TestParams p(Path("invalidprocessname.name"), cb_);
+  ensureThrow(*process_, p);
+}
+
 } // namespace tut

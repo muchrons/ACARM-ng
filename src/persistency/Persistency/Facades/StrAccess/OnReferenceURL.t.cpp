@@ -89,4 +89,13 @@ void testObj::test<7>(void)
   ensureThrow(*url_, p);
 }
 
+// test exception on invalid root name
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  TestParams p(Path("invalidreferenceurlname.url"), cb_);
+  ensureThrow(*url_, p);
+}
+
 } // namespace tut

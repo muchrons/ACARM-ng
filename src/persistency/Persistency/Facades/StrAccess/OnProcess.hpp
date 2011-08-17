@@ -12,7 +12,6 @@
 #include "System/NoInstance.hpp"
 #include "Persistency/Process.hpp"
 #include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
-#include "Persistency/Facades/StrAccess/detail/isIndex.hpp"
 
 namespace Persistency
 {
@@ -37,8 +36,8 @@ struct OnProcess: private System::NoInstance
 
     ErrH::throwOnEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwOnLast(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwOnInvalidName(SYSTEM_SAVE_LOCATION, p, "process");
 
-    assert( p.get()=="process" || detail::isIndex(p.get()) );
     ++p;
 
     if(p.get()=="path")

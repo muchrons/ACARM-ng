@@ -112,4 +112,13 @@ void testObj::test<10>(void)
   ensureProcNull("invalid protocol", *serviceNull_, "service.protocol", "protocol");
 }
 
+// test exception on invalid root name
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  TestParams p(Path("invalidservicename.name"), cb_);
+  ensureThrow(*service_, p);
+}
+
 } // namespace tut

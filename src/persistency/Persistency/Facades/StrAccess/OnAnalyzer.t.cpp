@@ -120,4 +120,13 @@ void testObj::test<11>(void)
   ensureProcNull("no NULL on NULL IP", *analyzerNull_, "analyzer.ip", "ip");
 }
 
+// test exception on invalid root name
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  TestParams p(Path("invalidanalyzername.name"), cb_);
+  ensureThrow(*analyzer_, p);
+}
+
 } // namespace tut

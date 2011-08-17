@@ -177,4 +177,13 @@ void testObj::test<18>(void)
   ensureProcNull("no NULL on NULL dns name", *hostNull_, "host.name", "name");
 }
 
+// test exception on invalid root name
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  TestParams p(Path("invalidhostname.name"), cb_);
+  ensureThrow(*host_, p);
+}
+
 } // namespace tut

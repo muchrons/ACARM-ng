@@ -160,4 +160,13 @@ void testObj::test<16>(void)
   ensureProc("invalid hosts's OS", *alert_, "alert.source.0.operatingsystem", "Linux");
 }
 
+// test exception on unknown root name
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  TestParams p(Path("invalidalertname.name"), cb_);
+  ensureThrow(*alert_, p);
+}
+
 } // namespace tut

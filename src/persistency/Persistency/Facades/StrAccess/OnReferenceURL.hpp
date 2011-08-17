@@ -12,7 +12,6 @@
 #include "System/NoInstance.hpp"
 #include "Persistency/ReferenceURL.hpp"
 #include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
-#include "Persistency/Facades/StrAccess/detail/isIndex.hpp"
 
 namespace Persistency
 {
@@ -37,8 +36,8 @@ struct OnReferenceURL: private System::NoInstance
 
     ErrH::throwOnEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwOnLast(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwOnInvalidName(SYSTEM_SAVE_LOCATION, p, "referenceurl");
 
-    assert( p.get()=="referenceurl" || detail::isIndex(p.get()) );
     ++p;
 
     if(p.get()=="name")
