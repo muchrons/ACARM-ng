@@ -41,7 +41,7 @@ struct OnCollectionIndex: private System::NoInstance
     // query for collection's size
     if(p.get()=="size")
     {
-      ErrH::throwIfNotLast(SYSTEM_SAVE_LOCATION, p);
+      ErrH::throwOnNotLast(SYSTEM_SAVE_LOCATION, p);
       const size_t size=collectionSize(e.begin(), e.end());
       return p.callback().collectionSize(size);
     }

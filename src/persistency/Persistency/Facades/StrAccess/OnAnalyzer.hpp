@@ -35,8 +35,8 @@ struct OnAnalyzer: private System::NoInstance
   {
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
-    ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
-    ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwOnEnd(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwOnLast(SYSTEM_SAVE_LOCATION, p);
 
     assert( p.get()=="analyzer" || detail::isIndex(p.get()) );
     ++p;

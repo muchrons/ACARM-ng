@@ -42,7 +42,7 @@ struct ProcessMainDispatcherCollectionImpl: private System::NoInstance
   {
     // collection can never be a term!
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
-    ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwOnLast(SYSTEM_SAVE_LOCATION, p);
     // regular processing
     typedef typename TParams::template GetHandle<NonTermHandle>::type NonTermHandle;
     return NonTermHandle::process(e, p);

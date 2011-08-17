@@ -117,8 +117,8 @@ struct OnTerm: private System::NoInstance
   {
     // sanity check
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
-    ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
-    ErrH::throwIfNotLast(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwOnEnd(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwOnNotLast(SYSTEM_SAVE_LOCATION, p);
     BOOST_STATIC_ASSERT(IsTerm<T>::value);
     // process final type (term)
     return OnTermImpl::process(e, p);

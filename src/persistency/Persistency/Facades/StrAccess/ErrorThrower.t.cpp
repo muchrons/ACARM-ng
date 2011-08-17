@@ -44,8 +44,8 @@ void testObj::test<1>(void)
 {
   try
   {
-    ErrorThrower::throwIfLast(SYSTEM_SAVE_LOCATION, pLast_);
-    fail("throwIfLast() didn't throw on end");
+    ErrorThrower::throwOnLast(SYSTEM_SAVE_LOCATION, pLast_);
+    fail("throwOnLast() didn't throw on end");
   }
   catch(const ExceptionInvalidPath &)
   {
@@ -58,7 +58,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  ErrorThrower::throwIfLast(SYSTEM_SAVE_LOCATION, p_);
+  ErrorThrower::throwOnLast(SYSTEM_SAVE_LOCATION, p_);
 }
 
 // test throwing on non-end
@@ -68,8 +68,8 @@ void testObj::test<3>(void)
 {
   try
   {
-    ErrorThrower::throwIfNotLast(SYSTEM_SAVE_LOCATION, p_);
-    fail("throwIfNotLast() didn't throw on non-end path");
+    ErrorThrower::throwOnNotLast(SYSTEM_SAVE_LOCATION, p_);
+    fail("throwOnNotLast() didn't throw on non-end path");
   }
   catch(const ExceptionInvalidPath &)
   {
@@ -82,7 +82,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ErrorThrower::throwIfNotLast(SYSTEM_SAVE_LOCATION, pLast_);
+  ErrorThrower::throwOnNotLast(SYSTEM_SAVE_LOCATION, pLast_);
 }
 
 // test thwoing on unexpected path token
@@ -106,7 +106,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  ErrorThrower::throwIfEnd(SYSTEM_SAVE_LOCATION, pLast_);
+  ErrorThrower::throwOnEnd(SYSTEM_SAVE_LOCATION, pLast_);
 }
 
 // test thwoing on end()
@@ -117,8 +117,8 @@ void testObj::test<7>(void)
   ++pLast_;
   try
   {
-    ErrorThrower::throwIfEnd(SYSTEM_SAVE_LOCATION, pLast_);
-    fail("throwIfEnd() didn't throw on end");
+    ErrorThrower::throwOnEnd(SYSTEM_SAVE_LOCATION, pLast_);
+    fail("throwOnEnd() didn't throw on end");
   }
   catch(const ExceptionInvalidPath &)
   {
@@ -149,8 +149,8 @@ void testObj::test<9>(void)
 {
   try
   {
-    ErrorThrower::throwIfInvalidName(SYSTEM_SAVE_LOCATION, p_, "invalidname");
-    fail("throwIfInvalidName() didn't throw");
+    ErrorThrower::throwOnInvalidName(SYSTEM_SAVE_LOCATION, p_, "invalidname");
+    fail("throwOnInvalidName() didn't throw");
   }
   catch(const ExceptionInvalidPath &)
   {
@@ -163,7 +163,7 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  ErrorThrower::throwIfInvalidName(SYSTEM_SAVE_LOCATION, p_, "a");
+  ErrorThrower::throwOnInvalidName(SYSTEM_SAVE_LOCATION, p_, "a");
 }
 
 // test no-throwing on index
@@ -172,7 +172,7 @@ template<>
 void testObj::test<11>(void)
 {
   TestParams p(Path("42.xyz"), cb_);
-  ErrorThrower::throwIfInvalidName(SYSTEM_SAVE_LOCATION, p, "thething");
+  ErrorThrower::throwOnInvalidName(SYSTEM_SAVE_LOCATION, p, "thething");
 }
 
 } // namespace tut

@@ -28,7 +28,7 @@ struct ErrorThrower: private System::NoInstance
    *  \param p     current params value.
    */
   template<typename TParams>
-  static void throwIfInvalidName(const ExceptionInvalidPath::Location &where, const TParams &p, const std::string &name)
+  static void throwOnInvalidName(const ExceptionInvalidPath::Location &where, const TParams &p, const std::string &name)
   {
     if( p.get()!=name && !detail::isIndex(p.get()) )
       throw ExceptionInvalidPath(where, p.path().get(), p.get(), "invalid name/index in path");
@@ -39,7 +39,7 @@ struct ErrorThrower: private System::NoInstance
    *  \param p     current params value.
    */
   template<typename TParams>
-  static void throwIfLast(const ExceptionInvalidPath::Location &where, const TParams &p)
+  static void throwOnLast(const ExceptionInvalidPath::Location &where, const TParams &p)
   {
     if(!p.hasNext())
       throw ExceptionInvalidPath(where, p.path().get(), p.get(), "unexpected end of path");
@@ -50,7 +50,7 @@ struct ErrorThrower: private System::NoInstance
    *  \param p     current params value.
    */
   template<typename TParams>
-  static void throwIfNotLast(const ExceptionInvalidPath::Location &where, const TParams &p)
+  static void throwOnNotLast(const ExceptionInvalidPath::Location &where, const TParams &p)
   {
     if(p.hasNext())
       throw ExceptionInvalidPath(where, p.path().get(), p.get(), "unexpected tokens after full path");
@@ -81,7 +81,7 @@ struct ErrorThrower: private System::NoInstance
    *  \param p     current params value.
    */
   template<typename TParams>
-  static void throwIfEnd(const ExceptionInvalidPath::Location &where, const TParams &p)
+  static void throwOnEnd(const ExceptionInvalidPath::Location &where, const TParams &p)
   {
     if(p.isEnd())
       throw ExceptionInvalidPath(where, p.path().get(), "<END>", "invalid request");
