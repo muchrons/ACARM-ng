@@ -43,8 +43,8 @@ struct OnMetaAlert: private System::NoInstance
 
     ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwIfInvalidName(SYSTEM_SAVE_LOCATION, p, "metaalert");
 
-    assert( p.get()=="metaalert" || detail::isIndex(p.get()) );
     ++p;
 
     if(p.get()=="name")

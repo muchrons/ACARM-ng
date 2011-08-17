@@ -178,4 +178,21 @@ void testObj::test<18>(void)
   ensureProc("cannot access as a coleciton element", *metaalert_, "42.name", "meta alert name");
 }
 
+// test acess via invalid root name
+template<>
+template<>
+void testObj::test<19>(void)
+{
+  TestParams p(Path("invalidroot.name"), cb_);
+  ensureThrow(*metaalert_, p);
+}
+
+// test accessing some element down below
+template<>
+template<>
+void testObj::test<20>(void)
+{
+  ensureProc("cannot access bottom element", *metaalertNode_, "metaalert.children.1.alert.analyzers.0.name", "some analyzer");
+}
+
 } // namespace tut
