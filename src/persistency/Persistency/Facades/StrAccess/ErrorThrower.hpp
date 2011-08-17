@@ -7,11 +7,9 @@
 
 /* public header */
 
-#include <cassert>
-
 #include "System/NoInstance.hpp"
-#include "Persistency/Facades/StrAccess/Params.hpp"
 #include "Persistency/Facades/StrAccess/ExceptionInvalidPath.hpp"
+#include "Persistency/Facades/StrAccess/detail/isIndex.hpp"
 
 namespace Persistency
 {
@@ -24,6 +22,18 @@ namespace StrAccess
  */
 struct ErrorThrower: private System::NoInstance
 {
+  /** \brief throws exception if element's name is invalid and is not and index.
+   *  \param where location where condition is checked.
+   *  \param name  expected name in the path.
+   *  \param p     current params value.
+   */
+  template<typename TParams>
+  static void throwIfInvalidName(const ExceptionInvalidPath::Location &where, const TParams &p, const std::string &name)
+  {
+    if( p.get()!=name && !detail::isIndex(p.get()) )
+      throw ExceptionInvalidPath(where, p.path().get(), p.get(), "invalid name/index in path");
+  }
+
   /** \brief throws exception if there is no next element.
    *  \param where location where condition is checked.
    *  \param p     current params value.

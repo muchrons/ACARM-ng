@@ -142,4 +142,37 @@ void testObj::test<8>(void)
   }
 }
 
+// test throwing on invalid name
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  try
+  {
+    ErrorThrower::throwIfInvalidName(SYSTEM_SAVE_LOCATION, p_, "invalidname");
+    fail("throwIfInvalidName() didn't throw");
+  }
+  catch(const ExceptionInvalidPath &)
+  {
+    // this is expected
+  }
+}
+
+// test no-throwing on valid name
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  ErrorThrower::throwIfInvalidName(SYSTEM_SAVE_LOCATION, p_, "a");
+}
+
+// test no-throwing on index
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  TestParams p(Path("42.xyz"), cb_);
+  ErrorThrower::throwIfInvalidName(SYSTEM_SAVE_LOCATION, p, "thething");
+}
+
 } // namespace tut
