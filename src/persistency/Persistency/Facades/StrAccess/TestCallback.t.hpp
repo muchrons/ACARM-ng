@@ -6,9 +6,12 @@
 #define INCLUDE_PERSISTENCY_FACADES_SACCESS_TESTCALLBACK_T_HPP_FILE
 
 #include <string>
-#include <inttypes.h>
 
-namespace
+namespace Persistency
+{
+namespace Facades
+{
+namespace StrAccess
 {
 
 struct TestCallback
@@ -43,6 +46,8 @@ struct TestCallback
   std::string lastNullFound_;
 }; // strict TestCallback
 
-} // unnamed namespace
+} // namespace StrAccess
+} // namespace Facades
+} // namespace Persistency
 
 #endif

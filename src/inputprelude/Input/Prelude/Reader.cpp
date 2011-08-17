@@ -43,34 +43,29 @@ Reader::DataPtr Reader::read(BackendFacade &bf, const unsigned int timeout)
   try
   {
     if( IDMEFParser::isAlert( message.get()) )
-      {
-        const IDMEFParserAlert ipa( message.get(), bf );
-        tmp.reset(new Persistency::Alert(ipa.getName(),
-                                         ipa.getAnalyzers(),
-                                         NULL,
-                                         ipa.getCreateTime(),
-                                         ipa.getSeverity(),
-                                         Persistency::Certainty(1.0),
-                                         ipa.getDescription(),
-                                         ipa.getSources(),
-                                         ipa.getTargets()));
-      }
+    {
+      const IDMEFParserAlert ipa( message.get(), bf );
+      tmp.reset(new Persistency::Alert(ipa.getName(),
+                                       ipa.getAnalyzers(),
+                                       NULL,
+                                       ipa.getCreateTime(),
+                                       ipa.getSeverity(),
+                                       Persistency::Certainty(1.0),
+                                       ipa.getDescription(),
+                                       ipa.getSources(),
+                                       ipa.getTargets()));
+    }
     else
-      {
-        if ( IDMEFParser::isHeartbeat( message.get()) )
-          IDMEFParserHeartbeat( message.get(), bf, heartbeatTimeout_ );
-        else
-          throw ExceptionUnsupportedFeature(SYSTEM_SAVE_LOCATION,"Unknown message type received.");
-      }
+    {
+      if( IDMEFParser::isHeartbeat(message.get()) )
+        IDMEFParserHeartbeat( message.get(), bf, heartbeatTimeout_ );
+      else
+        throw ExceptionUnsupportedFeature(SYSTEM_SAVE_LOCATION, "Unknown message type received.");
+    }
   }
   catch(const ExceptionUnsupportedFeature &ex)
   {
     LOGMSG_DEBUG_S(log_)<<"Exception upon unsupported feature request: "<<ex.what();
-    return tmp;
-  }
-  catch(const ExceptionHeartbeat &)
-  {
-    //no alert is returned in case of a heartbeat
     return tmp;
   }
 

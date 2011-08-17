@@ -31,7 +31,7 @@
     PageSize="20"
     AutoGenerateColumns="false"
     CellPadding="2"
-    CellSpacing="0"
+    CellSpacing="1"
     HeaderStyle.BackColor="black"
     HeaderStyle.ForeColor="white"
     ItemStyle.BackColor="#c6c6d2"

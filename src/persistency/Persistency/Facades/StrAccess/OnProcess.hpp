@@ -1,16 +1,16 @@
 /*
- * OnService.hpp
+ * OnProcess.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_ONSERVICE_HPP_FILE
-#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_ONSERVICE_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_ONPROCESS_HPP_FILE
+#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_ONPROCESS_HPP_FILE
 
 /* public header */
 
 #include <cassert>
 
 #include "System/NoInstance.hpp"
-#include "Persistency/Service.hpp"
+#include "Persistency/Process.hpp"
 #include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
 
 namespace Persistency
@@ -20,9 +20,9 @@ namespace Facades
 namespace StrAccess
 {
 
-/** \brief handle processing service objects.
+/** \brief handle processing of process objects.
  */
-struct OnService: private System::NoInstance
+struct OnProcess: private System::NoInstance
 {
   /** \brief processing method.
    *  \param e element to be processed.
@@ -30,29 +30,37 @@ struct OnService: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const Service &e, TParams &p)
+  static bool process(const Process &e, TParams &p)
   {
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
     ErrH::throwOnEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwOnLast(SYSTEM_SAVE_LOCATION, p);
-    ErrH::throwOnInvalidName(SYSTEM_SAVE_LOCATION, p, "service");
+    ErrH::throwOnInvalidName(SYSTEM_SAVE_LOCATION, p, "process");
 
     ++p;
 
+    if(p.get()=="path")
+      return MainDispatcher::process(e.getPath().get(), p);
     if(p.get()=="name")
       return MainDispatcher::process(e.getName().get(), p);
-    if(p.get()=="port")
-      return MainDispatcher::process(e.getPort().get(), p);
-    if(p.get()=="protocol")
-      return MainDispatcher::process(e.getProtocol().get(), p);
+    if(p.get()=="md5sum")
+      return MainDispatcher::process(e.getMD5(), p);
+    if(p.get()=="pid")
+      return MainDispatcher::process(e.getPID(), p);
+    if(p.get()=="uid")
+      return MainDispatcher::process(e.getUID(), p);
+    if(p.get()=="username")
+      return MainDispatcher::process(e.getUsername().get(), p);
+    if(p.get()=="parameters")
+      return MainDispatcher::process(e.getParameters(), p);
     if(p.get()=="referenceurl")
       return MainDispatcher::process(e.getReferenceURL(), p);
 
     ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
     return false;
   }
-}; // struct OnService
+}; // struct OnProcess
 
 } // namespace StrAccess
 } // namespace Facades

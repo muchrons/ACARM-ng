@@ -14,7 +14,12 @@
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
 #include "Persistency/Facades/StrAccess/ErrorThrower.hpp"
 #include "Persistency/Facades/StrAccess/OnCollectionIndex.hpp"
+#include "Persistency/Facades/StrAccess/OnHost.hpp"
+#include "Persistency/Facades/StrAccess/OnAlert.hpp"
+#include "Persistency/Facades/StrAccess/OnProcess.hpp"
 #include "Persistency/Facades/StrAccess/OnService.hpp"
+#include "Persistency/Facades/StrAccess/OnAnalyzer.hpp"
+#include "Persistency/Facades/StrAccess/OnMetaAlert.hpp"
 #include "Persistency/Facades/StrAccess/OnReferenceURL.hpp"
 #include "Persistency/Facades/StrAccess/detail/OnTerm.hpp"
 #include "Persistency/Facades/StrAccess/detail/OnNonTerm.hpp"
@@ -44,9 +49,14 @@ typedef boost::mpl::map<
     boost::mpl::pair<CollectionIndexHandle, OnCollectionIndex>,
     boost::mpl::pair<ErrorHandle, ErrorThrower>,
     //
-    //  special types handles
+    // types handles
     //
+    boost::mpl::pair<Host, OnHost>,
+    boost::mpl::pair<Alert, OnAlert>,
     boost::mpl::pair<Service, OnService>,
+    boost::mpl::pair<Process, OnProcess>,
+    boost::mpl::pair<Analyzer, OnAnalyzer>,
+    boost::mpl::pair<GraphNode, OnMetaAlert>,
     boost::mpl::pair<ReferenceURL, OnReferenceURL>
   > DefaultHandleMap;
 
