@@ -9,6 +9,8 @@
 
 #include <ctime>
 
+#include "System/ExceptionSyscallFailed.hpp"
+
 namespace System
 {
 namespace detail
@@ -40,6 +42,22 @@ template<clockid_t TClock>
 class ClockTimer
 {
 public:
+  /** \brief exception thrown on timer error.
+   */
+  struct ExceptionTimerError: public ExceptionSyscallFailed
+  {
+    /** \brief create execption with given message.
+     *  \param where place where exception has been raisen.
+     *  \param name  name of the system call that failed.
+     *  \param msg   message to represent.
+     */
+    explicit ExceptionTimerError(const Location &where, const char *name, const char *msg):
+      ExceptionSyscallFailed(where, name, msg)
+    {
+    }
+  }; // struct ExceptionTimerError
+
+
   /** \brief start timer.
    */
   ClockTimer(void)
@@ -51,7 +69,8 @@ public:
    */
   void restart(void)
   {
-    clock_gettime(TClock, &start_);
+    if( clock_gettime(TClock, &start_)!=0 )
+      throw ExceptionTimerError(SYSTEM_SAVE_LOCATION, "clock_gettime", "cannot read timer");
   }
 
   /** \brief returns time elapsed since timer's start.
@@ -60,7 +79,8 @@ public:
   double elapsed(void) const
   {
     struct timespec now;
-    clock_gettime(TClock, &now);
+    if( clock_gettime(TClock, &now)!=0 )
+      throw ExceptionTimerError(SYSTEM_SAVE_LOCATION, "clock_gettime", "cannot read timer");
 
     const double sec =now.tv_sec -start_.tv_sec;
     const double nsec=now.tv_nsec-start_.tv_nsec;
@@ -74,7 +94,8 @@ public:
   static double resolution(void)
   {
     struct timespec res;
-    clock_getres(TClock, &res);
+    if( clock_getres(TClock, &res)!=0 )
+      throw ExceptionTimerError(SYSTEM_SAVE_LOCATION, "clock_getres", "cannot get timer's resolution");
     return res.tv_sec+static_cast<double>(res.tv_nsec)/(1000*1000*1000);
   }
 
