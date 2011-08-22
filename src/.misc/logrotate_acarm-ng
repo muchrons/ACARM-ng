@@ -1,0 +1,12 @@
+/var/log/acarm-ng/daemon.log {
+    daily
+    missingok
+    rotate 23
+    compress
+    delaycompress
+    notifempty
+    sharedscripts
+    postrotate
+        kill -HUP `pidof acarm-ng.bin` > /dev/null 2>&1
+    endscript
+}
