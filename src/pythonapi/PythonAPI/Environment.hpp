@@ -128,7 +128,7 @@ private:
   Logger::Node          log_;
   boost::python::object mainModule_;
   boost::python::object mainNamespace_;
-}; // class ExceptionHandle
+}; // class Environment
 
 } // namespace PythonAPI
 
