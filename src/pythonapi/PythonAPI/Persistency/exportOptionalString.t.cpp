@@ -4,18 +4,22 @@
  */
 #include <tut.h>
 
-#include "PythonAPI/Python.hpp"
 #include "PythonAPI/Environment.hpp"
 #include "PythonAPI/Persistency/OptionalString.hpp"
 
 using namespace std;
-using namespace boost::python;
 using namespace PythonAPI::Persistency;
 
 namespace
 {
 struct TestClass
 {
+  TestClass(void)
+  {
+    env_.importModule("persistency");
+    //env_.run("from persistency import *");
+  }
+
   PythonAPI::Environment env_;
 };
 
@@ -28,25 +32,22 @@ factory tf("PythonAPI/Persistency/exportOptionalString");
 namespace tut
 {
 
-// test getting some random value
+// test creating some instance
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.run("ret=tmp.get(\"metaalert.alert.name\")");
-  const OptionalString ret( env_.var<OptionalString>("ret") );
-  ensure("got NULL value", ret.get()!=NULL);
-  ensure_equals("invalid value returned", ret.get(), string("some alert"));
+  env_.run("tmp=persistency.OptionalString(\"test string\")");
+  ensure_equals("invalid value", env_.var<OptionalString>("tmp").get(), string("test string"));
 }
 
-// test getting some NULL value
+// test creating from None
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  env_.run("ret=tmp.get(\"metaalert.alert.source.0.name\")");
-  const OptionalString ret( env_.var<OptionalString>("ret") );
-  ensure("got non-NULL value", ret.get()==NULL);
+  env_.run("tmp=persistency.OptionalString(None)");
+  ensure("string not NULL", env_.var<OptionalString>("tmp").get()==NULL);
 }
 
 } // namespace tut
