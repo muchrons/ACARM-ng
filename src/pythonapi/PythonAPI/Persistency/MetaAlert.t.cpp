@@ -31,7 +31,7 @@ struct TestClass: private TestStubs
       if(out.get()==NULL)
         tut::fail("unexpected NULL reponse");
       else
-        tut::ensure_equals("invalid response", *out.get(), exp);
+        tut::ensure_equals("invalid response", *out, exp);
   }
 
   ::Persistency::ConstGraphNodePtrNN node_;

@@ -7,9 +7,10 @@
 
 /* public header */
 
+#include <string>
 #include <boost/noncopyable.hpp>
+#include <boost/shared_ptr.hpp>
 
-#include "Base/NullValue.hpp"
 #include "Logger/Node.hpp"
 #include "Persistency/GraphNodePtr.hpp"
 #include "PythonAPI/Exception.hpp"
@@ -28,7 +29,7 @@ class MetaAlert: private boost::noncopyable
 {
 public:
   /** \brief pointer to the string, that may not be set at all. */
-  typedef Base::NullValue<std::string> OptionalString;
+  typedef boost::shared_ptr<std::string> OptionalString;
 
   /** \brief create facade object for a given node.
    *  \param gn graph node to be accessed via string facade.
