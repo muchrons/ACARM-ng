@@ -6,6 +6,8 @@ class DataTableTemplate extends TTemplateControl
   {
     parent::__construct();
     $this->log_=true;
+    $this->sortup="sort-up.png";
+    $this->sortdown="sort-down.png";
   }
 
   public function onLoad($param)
@@ -32,20 +34,21 @@ class DataTableTemplate extends TTemplateControl
 
     assert(count($data)!=0);
 
+    $last_column_name;
     foreach($data as $column_name=>$rows)
       {
         if ($column_name=="id")
           continue; //skip columns entitled "id"
-
-        $header=new TTableHeaderCell();
         $column=new TBoundColumn();
         $column->DataField=$column_name;
+        $last_column_name=$column_name;
+        $column->setSortExpression($column_name);
         if ($column_name=="Created" || $column_name=="Severity")
           $column->getItemStyle()->setHorizontalAlign('Center');
-        $column->HeaderText= str_replace("_"," ",$column_name);
-        $column->initializeCell($header,0,"Header");
+        $column->HeaderText="<font color=\"white\">".str_replace("_"," ",$column_name)."</font>";
         $this->DataGrid->Columns->add($column);
       }
+    //$column->HeaderText.=$last_column_name;
     $this->DataGrid->dataBind();
   }
 
@@ -139,6 +142,8 @@ class DataTableTemplate extends TTemplateControl
   public $query_;
   public $params_;
   public $log_;
+  private $sortup;
+  private $sortdown;
 }
 
 ?>

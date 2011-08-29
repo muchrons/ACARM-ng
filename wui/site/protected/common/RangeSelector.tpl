@@ -29,7 +29,8 @@
       </com:TView>
     </com:TMultiView>
   </table>
-  <com:TButton ID="Submit" Text="show" />
+  <com:TTextBox ID="Type" Text="any" Visible="no"/>
+  <com:TButton ID="Submit" Text="update" />
 </com:TPanel>
 <br/>
 

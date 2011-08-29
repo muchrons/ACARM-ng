@@ -108,11 +108,19 @@
           WHERE create_time<=#date_to#  AND create_time>=#date_from#
             AND (h1.ip=#src# OR 1=#ignoresrc#) AND h1.role='src'
             AND (h2.ip=#dst# OR 1=#ignoredst#) AND h2.role='dst'
+            AND (alerts.name ~ #type# OR 1=#ignoretype#)
             AND ((severity='4' AND #severities# LIKE '%high%')
               OR (severity='3' AND #severities# LIKE '%medium%')         
               OR (severity='2' AND #severities# LIKE '%low%')
               OR (severity='1' AND #severities# LIKE '%info%')
               OR (severity='0' AND #severities# LIKE '%debug%'));
+    ]]>
+  </select>
+
+  <select id="SelectMetaAlertsSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
+    <![CDATA[
+    SELECT count(*) FROM meta_alerts
+      WHERE  create_time<=#date_to# AND create_time>=#date_from#;
     ]]>
   </select>
 
@@ -122,6 +130,14 @@
 
   <select id="SelectMetaAlertsRootSummaryCount" resultClass="int">
     SELECT count(*) FROM meta_alerts_roots;
+  </select>
+
+  <select id="SelectMetaAlertsRootSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
+    <![CDATA[
+       SELECT count(id) FROM meta_alerts
+         WHERE id in (SELECT id FROM meta_alerts_roots)
+           AND create_time<=#date_to# AND create_time>=#date_from#;
+    ]]>
   </select>
 
   <select id="SelectMetaAlertsChildrenCount" resultClass="int" parameterClass="int">
@@ -179,12 +195,13 @@
           WHERE create_time<=#date_to#  AND create_time>=#date_from#
             AND (h1.ip=#src# OR 1=#ignoresrc#) AND h1.role='src'
             AND (h2.ip=#dst# OR 1=#ignoredst#) AND h2.role='dst'
+            AND (alerts.name ~ #type# OR 1=#ignoretype#)
             AND ((severity='4' AND #severities# LIKE '%high%')
               OR (severity='3' AND #severities# LIKE '%medium%')
               OR (severity='2' AND #severities# LIKE '%low%')
               OR (severity='1' AND #severities# LIKE '%info%')
               OR (severity='0' AND #severities# LIKE '%debug%'))
-            ORDER BY alerts.create_time DESC
+            ORDER BY $ordercol$ $orderdir$
             LIMIT #limit#
             OFFSET #offset#
     ]]>
@@ -194,8 +211,30 @@
     SELECT id, name, create_time FROM meta_alerts ORDER BY create_time DESC limit #limit# offset #offset#
   </select>
 
+  <select id="SelectMetaAlertsSummaryRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
+    <![CDATA[
+         SELECT id, name, create_time FROM meta_alerts
+          WHERE  create_time<=#date_to# AND create_time>=#date_from#
+          ORDER BY create_time DESC
+          LIMIT #limit# OFFSET #offset#;
+    ]]>
+  </select>
+
   <select id="SelectMetaAlertsRootSummary" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
-    SELECT id, name, create_time FROM meta_alerts WHERE id in (SELECT id FROM meta_alerts_roots) ORDER BY create_time DESC limit #limit# offset #offset#
+    SELECT id, name, create_time FROM meta_alerts
+     WHERE id in (SELECT id FROM meta_alerts_roots)
+     ORDER BY create_time DESC
+     limit #limit# offset #offset#
+  </select>
+
+  <select id="SelectMetaAlertsRootSummaryRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
+    <![CDATA[
+       SELECT id, name, create_time FROM meta_alerts
+         WHERE id in (SELECT id FROM meta_alerts_roots)
+           AND create_time<=#date_to# AND create_time>=#date_from#
+         ORDER BY create_time DESC
+         limit #limit# offset #offset#
+    ]]>
   </select>
 
   <select id="SelectLogRange" resultClass="CLogRecord" parameterClass="CParamRange">
@@ -253,29 +292,44 @@
       (SELECT date_trunc('day', create_time) AS key FROM
         alerts WHERE create_time>=#date_from# AND create_time<=#date_to# GROUP BY key) AS a
         LEFT JOIN (SELECT date_trunc('day', create_time) AS date2, count(*) AS value FROM
-        alerts WHERE (severity=4 AND #severities#='high')
-                  OR (severity=3 AND #severities#='medium')
-                  OR (severity=2 AND #severities#='low')
-                  OR (severity=1 AND #severities#='info')
-                  OR (severity=0 AND #severities#='debug') GROUP BY date2) AS b ON a.key=b.date2 ORDER BY key;
+        alerts WHERE (severity=4 AND #severities# LIKE 'high')
+                  OR (severity=3 AND #severities# LIKE 'medium')
+                  OR (severity=2 AND #severities# LIKE 'low')
+                  OR (severity=1 AND #severities# LIKE 'info')
+                  OR (severity=0 AND #severities# LIKE 'debug') GROUP BY date2) AS b ON a.key=b.date2 ORDER BY key;
     ]]>
   </select>
 
   <select id="DMAlertTypes" resultClass="CDMPair" cacheModel="querycache">
     <![CDATA[
-    SELECT name AS key,count(name) AS value FROM Alerts GROUP BY name ORDER BY count(name) DESC;
+    SELECT name AS key,count(name) AS value FROM Alerts
+       WHERE ((severity='4' AND #severities# LIKE '%high%')
+           OR (severity='3' AND #severities# LIKE '%medium%')         
+           OR (severity='2' AND #severities# LIKE '%low%')
+           OR (severity='1' AND #severities# LIKE '%info%')
+           OR (severity='0' AND #severities# LIKE '%debug%'))
+       GROUP BY name
+       ORDER BY count(name) DESC;
+    ]]>
+  </select>
+
+  <select id="DMAlertTypesRange" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
+    <![CDATA[
+    SELECT name AS key,count(name) AS value FROM Alerts
+       WHERE create_time<=#date_to# AND create_time>=#date_from#
+         AND ((severity='4' AND #severities# LIKE '%high%')
+           OR (severity='3' AND #severities# LIKE '%medium%')         
+           OR (severity='2' AND #severities# LIKE '%low%')
+           OR (severity='1' AND #severities# LIKE '%info%')
+           OR (severity='0' AND #severities# LIKE '%debug%'))
+       GROUP BY name
+       ORDER BY count(name) DESC;
     ]]>
   </select>
 
   <select id="DMMetaAlertCountTimeSeries" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
     <![CDATA[
     SELECT date_trunc('day', create_time) AS key ,count(*) AS value FROM meta_alerts WHERE create_time<=#date_to# AND create_time>=#date_from# AND severity_delta>=0 GROUP BY key ORDER BY key;
-    ]]>
-  </select>
-
-  <select id="DMAlertTypesRange" resultClass="CDMPair" parameterClass="CParamRange"  cacheModel="querycache">
-    <![CDATA[
-    SELECT name AS key,count(name) AS value FROM Alerts WHERE create_time<=#date_to# AND create_time>=#date_from# GROUP BY name ORDER BY count(name) DESC;
     ]]>
   </select>
 

@@ -6,7 +6,8 @@
         ID="MetaAlerts"
         Text="The most recent root meta-alerts:"
         Query="SelectMetaAlertsRootSummary"/>
-
 </div>
+
+<com:RangeSelector ID="Range" View="0"/>
 
 </com:TContent>
