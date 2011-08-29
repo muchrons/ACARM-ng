@@ -84,4 +84,44 @@ void testObj::test<6>(void)
   checkType<Service, OnService>("Service handle is not valid");
 }
 
+// test presence of process handle
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  checkType<Process, OnProcess>("Process handle is not valid");
+}
+
+// test presence of host handle
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  checkType<Host, OnHost>("Host handle is not valid");
+}
+
+// test presence of analyzer handle
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  checkType<Analyzer, OnAnalyzer>("Analyzer handle is not valid");
+}
+
+// test presence of alert handle
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  checkType<Alert, OnAlert>("Alert handle is not valid");
+}
+
+// test presence of meta alert handle
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  checkType<GraphNode, OnMetaAlert>("MetaAlert handle is not valid");
+}
+
 } // namespace tut

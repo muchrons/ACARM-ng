@@ -1,16 +1,16 @@
 /*
- * OnService.hpp
+ * OnAnalyzer.hpp
  *
  */
-#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_ONSERVICE_HPP_FILE
-#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_ONSERVICE_HPP_FILE
+#ifndef INCLUDE_PERSISTENCY_FACADES_STRACCESS_ONANALYZER_HPP_FILE
+#define INCLUDE_PERSISTENCY_FACADES_STRACCESS_ONANALYZER_HPP_FILE
 
 /* public header */
 
 #include <cassert>
 
 #include "System/NoInstance.hpp"
-#include "Persistency/Service.hpp"
+#include "Persistency/Analyzer.hpp"
 #include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
 
 namespace Persistency
@@ -20,9 +20,9 @@ namespace Facades
 namespace StrAccess
 {
 
-/** \brief handle processing service objects.
+/** \brief handle processing analyzer objects.
  */
-struct OnService: private System::NoInstance
+struct OnAnalyzer: private System::NoInstance
 {
   /** \brief processing method.
    *  \param e element to be processed.
@@ -30,29 +30,31 @@ struct OnService: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const Service &e, TParams &p)
+  static bool process(const Analyzer &e, TParams &p)
   {
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
     ErrH::throwOnEnd(SYSTEM_SAVE_LOCATION, p);
     ErrH::throwOnLast(SYSTEM_SAVE_LOCATION, p);
-    ErrH::throwOnInvalidName(SYSTEM_SAVE_LOCATION, p, "service");
+    ErrH::throwOnInvalidName(SYSTEM_SAVE_LOCATION, p, "analyzer");
 
     ++p;
 
+    if(p.get()=="id")
+      return MainDispatcher::process(e.getID().get(), p);
     if(p.get()=="name")
       return MainDispatcher::process(e.getName().get(), p);
-    if(p.get()=="port")
-      return MainDispatcher::process(e.getPort().get(), p);
-    if(p.get()=="protocol")
-      return MainDispatcher::process(e.getProtocol().get(), p);
-    if(p.get()=="referenceurl")
-      return MainDispatcher::process(e.getReferenceURL(), p);
+    if(p.get()=="version")
+      return MainDispatcher::process(e.getVersion().get(), p);
+    if(p.get()=="operatingsystem")
+      return MainDispatcher::process(e.getOperatingSystem().get(), p);
+    if(p.get()=="ip")
+      return MainDispatcher::process(e.getIP(), p);
 
     ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
     return false;
   }
-}; // struct OnService
+}; // struct OnAnalyzer
 
 } // namespace StrAccess
 } // namespace Facades

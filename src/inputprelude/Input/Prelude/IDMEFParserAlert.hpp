@@ -12,7 +12,6 @@
 #include "Persistency/Timestamp.hpp"
 #include "Persistency/Host.hpp"
 #include "Input/BackendFacade.hpp"
-#include "Input/Prelude/ExceptionHeartbeat.hpp"
 #include "Input/Prelude/ExceptionUnsupportedFeature.hpp"
 
 namespace Input

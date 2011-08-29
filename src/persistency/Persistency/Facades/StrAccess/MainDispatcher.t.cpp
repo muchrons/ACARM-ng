@@ -120,28 +120,33 @@ void testObj::test<4>(void)
   }
 }
 
-// test collection that is a term
-template<>
-template<>
-void testObj::test<5>(void)
-{
-  while(p_.hasNext())
-    ++p_;
-  g_toBeCalled="OnTestTerm";
-  vector<string> v;
-  v.push_back("abc");
-  MainDispatcher::process(v, p_);
-}
-
 // test collection that is a non-term
 template<>
 template<>
-void testObj::test<6>(void)
+void testObj::test<5>(void)
 {
   g_toBeCalled="OnTestNonTerm";
   vector<string> v;
   v.push_back("abc");
   MainDispatcher::process(v, p_);
+}
+
+// test error when colleciton tries to be a term
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  vector<string> v;
+  ++p_;
+  try
+  {
+    MainDispatcher::process(v, p_);
+    fail("processing collection as a term didn't throw");
+  }
+  catch(const ExceptionInvalidPath &)
+  {
+    // this is expected
+  }
 }
 
 } // namespace tut

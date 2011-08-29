@@ -5,39 +5,15 @@
 #include <tut.h>
 
 #include "Persistency/Facades/StrAccess/OnService.hpp"
-#include "Persistency/Facades/StrAccess/TestParams.t.hpp"
+#include "Persistency/Facades/StrAccess/TestBaseData.t.hpp"
 
 using namespace Persistency;
 using namespace Persistency::Facades::StrAccess;
 
 namespace
 {
-struct TestClass
+struct TestClass: public TestBaseData<OnService>
 {
-  TestClass(void):
-    r_( new ReferenceURL("somename", "http://evil.one") ),
-    s_("servicename", 42, "serviceproto", r_),
-    sn_("servicename", 42, Service::Protocol(NULL), ReferenceURLPtr() )
-  {
-  }
-
-  void ensureThrow(TestParams &p)
-  {
-    try
-    {
-      OnService::process(s_, p);
-      tut::fail("call didn't throw on invalid path");
-    }
-    catch(const ExceptionInvalidPath &)
-    {
-      // this is expected
-    }
-  }
-
-  TestParams::ResultCallback cb_;
-  ReferenceURLPtr            r_;
-  Service                    s_;
-  Service                    sn_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -55,9 +31,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  TestParams p(Path("service.name"), cb_);
-  OnService::process(s_, p);
-  ensure_equals("invalid name", cb_.lastValue_, "servicename");
+  ensureProc("invalid name", *service_, "service.name", "servicename");
 }
 
 // test getting port number
@@ -65,9 +39,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  TestParams p(Path("service.port"), cb_);
-  OnService::process(s_, p);
-  ensure_equals("invalid port", cb_.lastValue_, "42");
+  ensureProc("invalid port", *service_, "service.port", "42");
 }
 
 // test processing last element
@@ -77,7 +49,7 @@ void testObj::test<3>(void)
 {
   TestParams p(Path("service.name"), cb_);
   ++p;
-  ensureThrow(p);
+  ensureThrow(*service_, p);
 }
 
 // test processing for end element
@@ -88,7 +60,7 @@ void testObj::test<4>(void)
   TestParams p(Path("service.name"), cb_);
   ++p;
   ++p;
-  ensureThrow(p);
+  ensureThrow(*service_, p);
 }
 
 // test processing for unknown name
@@ -97,16 +69,15 @@ template<>
 void testObj::test<5>(void)
 {
   TestParams p(Path("service.enemyunknown"), cb_);
-  ensureThrow(p);
+  ensureThrow(*service_, p);
 }
 
-// test error when invalid root is requested
+// test accessing via colleciton index
 template<>
 template<>
 void testObj::test<6>(void)
 {
-  TestParams p(Path("whatisthat.name"), cb_);
-  ensureThrow(p);
+  ensureProc("error on colleciton index", *service_, "42.name", "servicename");
 }
 
 // test getting protocol
@@ -114,9 +85,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  TestParams p(Path("service.protocol"), cb_);
-  OnService::process(s_, p);
-  ensure_equals("invalid protocol", cb_.lastValue_, "serviceproto");
+  ensureProc("invalid protocol", *service_, "service.protocol", "serviceproto");
 }
 
 // test getting reference url
@@ -124,9 +93,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  TestParams p(Path("service.referenceurl.name"), cb_);
-  OnService::process(s_, p);
-  ensure_equals("invalid referenceurl/name", cb_.lastValue_, "somename");
+  ensureProc("invalid referenceurl->name", *service_, "service.referenceurl.name", "evil site");
 }
 
 // test when reference url is NULL
@@ -134,9 +101,7 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  TestParams p(Path("service.referenceurl.name"), cb_);
-  OnService::process(sn_, p);
-  ensure_equals("invalid null handle on reference url", cb_.lastNullFound_, "referenceurl");
+  ensureProcNull("invalid null handle on reference url", *serviceNull_, "service.referenceurl.name", "referenceurl");
 }
 
 // test when protocol is NULL
@@ -144,9 +109,16 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  TestParams p(Path("service.protocol"), cb_);
-  OnService::process(sn_, p);
-  ensure_equals("invalid null handle for protocol", cb_.lastNullFound_, "protocol");
+  ensureProcNull("invalid protocol", *serviceNull_, "service.protocol", "protocol");
+}
+
+// test exception on invalid root name
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  TestParams p(Path("invalidservicename.name"), cb_);
+  ensureThrow(*service_, p);
 }
 
 } // namespace tut
