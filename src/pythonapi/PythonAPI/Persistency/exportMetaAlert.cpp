@@ -15,10 +15,9 @@ namespace Persistency
 
 void exportMetaAlert(void)
 {
-  scope inMetaAlert=
-    class_<MetaAlert>("MetaAlert", no_init)
-      .def("get", &MetaAlert::get)
-    ;
+  class_<MetaAlert>("MetaAlert", no_init)
+    .def("get", &MetaAlert::get)
+  ;
 }
 
 } // namespace Persistency

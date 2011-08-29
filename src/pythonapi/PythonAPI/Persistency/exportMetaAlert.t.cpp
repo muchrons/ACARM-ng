@@ -23,22 +23,23 @@ MetaAlert getTestData(void)
   return MetaAlert( makeNewLeaf("1.2.3.4", NULL, false) );
 }
 
-BOOST_PYTHON_MODULE(testpersistency)
+BOOST_PYTHON_MODULE(testpersistencyMA)
 {
   def("getTestData", getTestData);
 }
 
 // this needs to be executed before creating first environment
-PythonAPI::Environment::StaticImporter g_import("testpersistency", inittestpersistency);
+PythonAPI::Environment::StaticImporter g_import("testpersistencyMA", inittestpersistencyMA);
 
 struct TestClass
 {
   TestClass(void)
   {
-    env_.importModule("testpersistency");
+    env_.importModule("persistency");
+    env_.importModule("testpersistencyMA");
     //env_.run("from persistency import *");
 
-    env_.run("tmp=testpersistency.getTestData()");
+    env_.run("tmp=testpersistencyMA.getTestData()");
   }
 
   PythonAPI::Environment env_;
