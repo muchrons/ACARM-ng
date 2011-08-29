@@ -91,12 +91,8 @@ class Alerts extends TPage
           $this->Range->dstip->Text=$dstip;
 
         $date_from=$this->Request->itemAt('from');
-        if( $date_from!==null )
-          $this->Range->From->Text=$date_from;
-
         $date_to=$this->Request->itemAt('to');
-        if( $date_to!==null )
-          $this->Range->To->Text=$date_to;
+        $this->Range->setDates($date_from,$date_to);
 
         $type=$this->Request->itemAt('type');
         if( $type!==null )

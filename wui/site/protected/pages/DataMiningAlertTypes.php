@@ -37,7 +37,6 @@ class DataMiningAlertTypes extends TPage
 
     $this->Alerts->computation_=new ComputeLinkForAlerts($this->Service);
     $this->Alerts->params_=$this->Range->getRangeData();
-echo $this->Alerts->params_->
   }
 
   private function constructUrl($from,$to,$src,$dst,$severities,$type)
