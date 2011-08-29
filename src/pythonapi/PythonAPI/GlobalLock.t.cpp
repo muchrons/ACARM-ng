@@ -55,7 +55,7 @@ struct RWThread
     for(size_t i=0; i<loops_; ++i)
     {
       {
-        //GlobalLock lock;
+        GlobalLock lock;
         (*ss_)<<(i%10);
       }
       boost::thread::yield();
