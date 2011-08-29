@@ -14,6 +14,9 @@
 #include "PythonAPI/Persistency/exportSeverity.hpp"
 #include "PythonAPI/Persistency/exportReferenceURL.hpp"
 
+#include "PythonAPI/Persistency/exportOptionalString.hpp"
+#include "PythonAPI/Persistency/exportMetaAlert.hpp"
+
 BOOST_PYTHON_MODULE(persistency)
 {
   PythonAPI::Persistency::exportCertainty();
@@ -23,6 +26,9 @@ BOOST_PYTHON_MODULE(persistency)
   PythonAPI::Persistency::exportSeverityLevel();
   PythonAPI::Persistency::exportSeverity();
   PythonAPI::Persistency::exportReferenceURL();
+
+  PythonAPI::Persistency::exportOptionalString();
+  PythonAPI::Persistency::exportMetaAlert();
 }
 
 #endif
