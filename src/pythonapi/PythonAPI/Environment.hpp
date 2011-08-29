@@ -87,6 +87,8 @@ public:
    *  it is not valid for classes, returned by pointers, since they may be
    *  salvaged by python's garbage collector. to get these the safe way use
    *  boost::shared_ptr<MyClass> as a destination type for MyClass pointers.
+   *  it is important to remember that this mechanism may NOT work for some comon
+   *  types like std::string or int.
    *
    *  this call may re-throw errors from Python as well (for example: invalid
    *  convertion request) - ExceptionFromScript is throw then.
@@ -128,7 +130,7 @@ private:
   Logger::Node          log_;
   boost::python::object mainModule_;
   boost::python::object mainNamespace_;
-}; // class ExceptionHandle
+}; // class Environment
 
 } // namespace PythonAPI
 

@@ -39,8 +39,8 @@ class ComputeLinkForAlerts
       if ($value=="3")
         $ret->Severity.=" color=\"orange\"";
       else
-          $ret->Severity.=" color=\"yellow\"";
         if ($value=="2")
+          $ret->Severity.=" color=\"yellow\"";
         else
           if ($value=="1")
             $ret->Severity.=" color=\"green\"";
@@ -83,20 +83,15 @@ class Alerts extends TPage
     if (!$this->isPostBack)
       {
         $srcip=$this->Request->itemAt('srcip');
-        if( $srcip!==null )
-          $this->Range->srcip->Text=$srcip;
-
         $dstip=$this->Request->itemAt('dstip');
-        if( $dstip!==null )
-          $this->Range->dstip->Text=$dstip;
+        $this->Range->setSrcDst($srcip,$dstip);
 
         $date_from=$this->Request->itemAt('from');
-        if( $date_from!==null )
-          $this->Range->From->Text=$date_from;
-
         $date_to=$this->Request->itemAt('to');
-        if( $date_to!==null )
-          $this->Range->To->Text=$date_to;
+        $this->Range->setDates($date_from,$date_to);
+
+        $type=$this->Request->itemAt('type');
+        $this->Range->setType($type);
 
         $severities=$this->Request->itemAt('severities');
         if( $severities!==null )

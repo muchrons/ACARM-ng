@@ -6,7 +6,8 @@ class Layout extends TTemplateControl
   {
     parent::onLoad($param);
     $response=$this->getResponse()->Request;
-    Prado::log("$response->UserHostAddress GET $response->RequestUri", TLogger::INFO, 'WUI.Sites');
+    $text="$response->UserHostAddress GET $response->RequestUri";
+    Prado::log(substr($text,0,255), TLogger::INFO, 'WUI.Sites');
   }
 }
 

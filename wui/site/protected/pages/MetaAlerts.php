@@ -41,7 +41,16 @@ class MetaAlerts extends TPage
   public function onLoad($param)
   {
     parent::onLoad($param);
+
+    if (!$this->isPostBack)
+      {
+        $srcip=$this->Request->itemAt('srcip');
+        $dstip=$this->Request->itemAt('dstip');
+        $this->Range->setSrcDst($srcip,$dstip);
+      }
+
     $this->MetaAlerts->computation_=new ComputeLinkForMetaAlerts($this->Service);
+    $this->MetaAlerts->params_=$this->Range->getRangeData();
   }
 };
 
