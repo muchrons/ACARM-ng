@@ -18,6 +18,9 @@ namespace Persistency
 {
 
 /** \brief string that can be NULL implementation
+ *
+ *  there is a need for some sort of copyable implementaiton that can
+ *  handle NULLs so that talking with Python's interpretter cen be acchieved.
  */
 class OptionalString
 {
