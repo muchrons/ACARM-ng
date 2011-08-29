@@ -10,8 +10,8 @@
     <com:RangeSelector ID="Range" View="1"/>
   </div>
 
-  <com:TImageButton 
-     ID="AlertsLinkss"
+  <com:TImageButton
+     ID="AlertsLinks"
      Attributes.onclick="return getChecked();"
      ImageUrl="pics/buttons/buttDBSourcreAlertsD.png"
      OnCommand="getSelectedRows"
