@@ -30,7 +30,7 @@
     </com:TMultiView>
   </table>
   <com:TTextBox ID="Type" Text="any" Visible="no"/>
-  <com:TButton ID="Submit" Text="show" />
+  <com:TButton ID="Submit" Text="update" />
 </com:TPanel>
 <br/>
 

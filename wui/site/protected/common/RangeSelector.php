@@ -82,6 +82,20 @@ class RangeSelector extends TTemplateControl
       $this->To->Text=date("Y-m-d",strtotime($to));
   }
 
+  public function setSrcDst($src, $dst)
+  {
+    if( $src!==null )
+      $this->srcip->Text=$src;
+
+    if( $dst!==null )
+      $this->dstip->Text=$dst;
+  }
+
+  public function setType($type)
+  {
+    $this->Type->Text=$type;
+  }
+
   public $view;
 }
 

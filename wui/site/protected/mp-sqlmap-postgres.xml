@@ -117,12 +117,27 @@
     ]]>
   </select>
 
+  <select id="SelectMetaAlertsSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
+    <![CDATA[
+    SELECT count(*) FROM meta_alerts
+      WHERE  create_time<=#date_to# AND create_time>=#date_from#;
+    ]]>
+  </select>
+
   <select id="SelectMetaAlertsSummaryCount" resultClass="int">
     SELECT count(*) FROM meta_alerts
   </select>
 
   <select id="SelectMetaAlertsRootSummaryCount" resultClass="int">
     SELECT count(*) FROM meta_alerts_roots;
+  </select>
+
+  <select id="SelectMetaAlertsRootSummaryRangeCount" resultClass="int" parameterClass="CParamRange">
+    <![CDATA[
+       SELECT count(id) FROM meta_alerts
+         WHERE id in (SELECT id FROM meta_alerts_roots)
+           AND create_time<=#date_to# AND create_time>=#date_from#;
+    ]]>
   </select>
 
   <select id="SelectMetaAlertsChildrenCount" resultClass="int" parameterClass="int">
@@ -196,8 +211,30 @@
     SELECT id, name, create_time FROM meta_alerts ORDER BY create_time DESC limit #limit# offset #offset#
   </select>
 
+  <select id="SelectMetaAlertsSummaryRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
+    <![CDATA[
+         SELECT id, name, create_time FROM meta_alerts
+          WHERE  create_time<=#date_to# AND create_time>=#date_from#
+          ORDER BY create_time DESC
+          LIMIT #limit# OFFSET #offset#;
+    ]]>
+  </select>
+
   <select id="SelectMetaAlertsRootSummary" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamLimitOffset">
-    SELECT id, name, create_time FROM meta_alerts WHERE id in (SELECT id FROM meta_alerts_roots) ORDER BY create_time DESC limit #limit# offset #offset#
+    SELECT id, name, create_time FROM meta_alerts
+     WHERE id in (SELECT id FROM meta_alerts_roots)
+     ORDER BY create_time DESC
+     limit #limit# offset #offset#
+  </select>
+
+  <select id="SelectMetaAlertsRootSummaryRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
+    <![CDATA[
+       SELECT id, name, create_time FROM meta_alerts
+         WHERE id in (SELECT id FROM meta_alerts_roots)
+           AND create_time<=#date_to# AND create_time>=#date_from#
+         ORDER BY create_time DESC
+         limit #limit# offset #offset#
+    ]]>
   </select>
 
   <select id="SelectLogRange" resultClass="CLogRecord" parameterClass="CParamRange">

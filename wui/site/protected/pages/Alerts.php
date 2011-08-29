@@ -83,20 +83,15 @@ class Alerts extends TPage
     if (!$this->isPostBack)
       {
         $srcip=$this->Request->itemAt('srcip');
-        if( $srcip!==null )
-          $this->Range->srcip->Text=$srcip;
-
         $dstip=$this->Request->itemAt('dstip');
-        if( $dstip!==null )
-          $this->Range->dstip->Text=$dstip;
+        $this->Range->setSrcDst($srcip,$dstip);
 
         $date_from=$this->Request->itemAt('from');
         $date_to=$this->Request->itemAt('to');
         $this->Range->setDates($date_from,$date_to);
 
         $type=$this->Request->itemAt('type');
-        if( $type!==null )
-          $this->Range->Type->Text=$type;
+        $this->Range->setType($type);
 
         $severities=$this->Request->itemAt('severities');
         if( $severities!==null )
