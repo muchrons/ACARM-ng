@@ -15,43 +15,30 @@ class AlertTypes extends TTemplateControl
     if ($this->DataGrid === null)
      return;
 
-    $this->DataGrid->DataSource=$this->getDataRows();
+    $this->data_=$this->getDataRows();
+    $this->DataGrid->DataSource=$this->data_;
 
     if (count($this->DataGrid->DataSource)==0)
       {
         $this->Labelka->setVisible(true);
+        $this->DataGrid->setVisible(false);
         return;
       }
 
     $this->Labelka->setVisible(false);
+    $this->DataGrid->setVisible(true);
 
-    $data=$this->DataGrid->DataSource[0]; //[0] is ok, count is >=1
-
-    assert(count($data)!=0);
-
-    foreach($data as $column_name=>$rows)
-      {
-        if ($column_name=="id")
-          continue; //skip columns entitled "id"
-
-        $header=new TTableHeaderCell();
-        $column=new TBoundColumn();
-        $column->DataField=$column_name;
-        if ($column_name=="Count")
-          $column->getItemStyle()->setHorizontalAlign('Right');
-        $column->HeaderText= str_replace("_"," ",$column_name);
-        $column->initializeCell($header,0,"Header");
-        $this->DataGrid->Columns->add($column);
-        }
     $this->DataGrid->dataBind();
   }
 
   private function getDataRows()
   {
     if ($this->params_===null)
-      $data=($this->log_)?SQLWrapper::queryForList($this->query_):CSQLMap::get()->queryForList($this->query_);
+      $data=($this->log_)?SQLWrapper::queryForList($this->query_):
+        CSQLMap::get()->queryForList($this->query_);
     else
-      $data=($this->log_)?SQLWrapper::queryForList($this->query_.'Range',$this->params_):CSQLMap::get()->queryForList($this->query_.'Range',$this->params_);
+      $data=($this->log_)?SQLWrapper::queryForList($this->query_.'Range',$this->params_):
+        CSQLMap::get()->queryForList($this->query_.'Range',$this->params_);
 
     $ret=array();
 
@@ -96,11 +83,35 @@ class AlertTypes extends TTemplateControl
     $this->TopCaption->text=$param;
   }
 
+  public function getSelection()
+  {
+    $selectedRows=explode(',',$this->CheckedRows->Value);
+    return $selectedRows;
+  }
+
+  public function getSelectedTypes()
+  {
+    $selectedRows=$this->getSelection();
+    $names="(^";
+    $first=false;
+    foreach($selectedRows as $row)
+      {
+        if ($first==false)
+          $first=true;
+        else
+          $names.="|";
+        $names.=$this->data_[$row]->Name;
+      }
+    $names.="$)";
+    return $names;
+  }
+
   // TODO: check if these can be private
   public $computation_;
   public $query_;
   public $params_;
-  public $log_;
+  private $log_;
+  private $data_;
 }
 
 ?>

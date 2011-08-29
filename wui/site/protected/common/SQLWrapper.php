@@ -15,7 +15,7 @@ class SQLWrapper
     $ret=CSQLMap::get()->queryForObject($param,$value);
     $time=microtime_float()-$start;
     $timec=number_format($time,2,'.','');
-    Prado::log("SQL query executed: $param in $timec seconds.", TLogger::INFO, 'WUI.DB');
+    Prado::log(substr("SQL query executed: $param in $timec seconds.",0,255), TLogger::INFO, 'WUI.DB');
     return $ret;
   }
 
@@ -27,7 +27,7 @@ class SQLWrapper
     $time=microtime_float()-$start;
     $timec=number_format($time,2,'.','');
     $records=count($ret);
-    Prado::log("SQL query executed: $param. Returned $records records in $timec seconds.", TLogger::INFO, 'WUI.DB');
+    Prado::log(substr("SQL query executed: $param. Returned $records records in $timec seconds.",0,255), TLogger::INFO, 'WUI.DB');
     return $ret;
   }
 
@@ -38,7 +38,7 @@ class SQLWrapper
     $time=microtime_float()-$start;
     $timec=number_format($time,2,'.','');
     $records=count($ret);
-    Prado::log("SQL delete executed: $param. $records records deleted in $timec seconds.", TLogger::INFO, 'WUI.DB');
+    Prado::log(substr("SQL delete executed: $param. $records records deleted in $timec seconds.",0,255), TLogger::INFO, 'WUI.DB');
     return $ret;
   }
 
@@ -50,7 +50,7 @@ class SQLWrapper
     $ret=CSQLMap::get()->queryForObject("DBversion");
     if($ret< $min_db_version || $ret> $max_db_version)
       {
-        echo "Your ACARM-ng database is version $ret but this WUI works with database versions from $min_db_version to $max_db_version.";
+        echo "Your ACARM-ng database is in version $ret but this WUI works with database versions from $min_db_version to $max_db_version.";
         die();
       }
   }

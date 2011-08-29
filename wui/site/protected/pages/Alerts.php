@@ -39,8 +39,8 @@ class ComputeLinkForAlerts
       if ($value=="3")
         $ret->Severity.=" color=\"orange\"";
       else
-          $ret->Severity.=" color=\"yellow\"";
         if ($value=="2")
+          $ret->Severity.=" color=\"yellow\"";
         else
           if ($value=="1")
             $ret->Severity.=" color=\"green\"";
@@ -97,6 +97,10 @@ class Alerts extends TPage
         $date_to=$this->Request->itemAt('to');
         if( $date_to!==null )
           $this->Range->To->Text=$date_to;
+
+        $type=$this->Request->itemAt('type');
+        if( $type!==null )
+          $this->Range->Type->Text=$type;
 
         $severities=$this->Request->itemAt('severities');
         if( $severities!==null )

@@ -15,24 +15,36 @@ class RangeSelector extends TTemplateControl
     $range->date_from=date("Y-m-d 00:00:00",strtotime($this->From->Date));
     $range->date_to=date("Y-m-d 23:59:59",strtotime($this->To->Date));
     $range->severities=implode('.',$this->CB->SelectedValues);
-    $range->src=$this->srcip->Text;
-    $range->dst=$this->dstip->Text;
+    $range->srct=$this->srcip->Text;
+    $range->dstt=$this->dstip->Text;
+    $range->type=$this->Type->Text;
 
-    if ($range->dst=='any')
+    if ($range->dstt=='any')
     {
       $range->dst='0.0.0.0';
       $range->ignoredst=1;
     }
     else
+    {
+      $range->dst=$range->dstt;
       $range->ignoredst=0;
+    }
 
-    if ($range->src=='any')
+    if ($range->srct=='any')
     {
       $range->src='0.0.0.0';
       $range->ignoresrc=1;
     }
     else
+    {
+      $range->src=$range->srct;
       $range->ignoresrc=0;
+    }
+
+    if ($range->type=='any')
+      $range->ignoretype=1;
+    else
+      $range->ignoretype=0;
 
     return $range;
   }
