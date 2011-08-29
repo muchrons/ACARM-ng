@@ -8,11 +8,10 @@
 /* public header */
 
 #include <string>
-#include <boost/noncopyable.hpp>
-#include <boost/shared_ptr.hpp>
 
 #include "Logger/Node.hpp"
 #include "Persistency/GraphNodePtr.hpp"
+#include "PythonAPI/Persistency/OptionalString.hpp"
 #include "PythonAPI/Exception.hpp"
 
 
@@ -25,12 +24,9 @@ namespace Persistency
  *
  *  this is wrapper code to be exported to python.
  */
-class MetaAlert: private boost::noncopyable
+class MetaAlert
 {
 public:
-  /** \brief pointer to the string, that may not be set at all. */
-  typedef boost::shared_ptr<std::string> OptionalString;
-
   /** \brief create facade object for a given node.
    *  \param gn graph node to be accessed via string facade.
    */

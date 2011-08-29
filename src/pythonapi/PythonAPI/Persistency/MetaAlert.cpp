@@ -30,17 +30,6 @@ MetaAlert::MetaAlert(::Persistency::ConstGraphNodePtrNN gn):
 
 namespace
 {
-/** \brief helper to create OptionaStrign class instances quickly.
- *  \param t source data to create string from.
- *  \return newly created string.
- */
-template<typename T>
-inline MetaAlert::OptionalString mkOptStr(const T &t)
-{
-  return MetaAlert::OptionalString(new std::string(t));
-}
-
-
 /** \brief helper callback handle - saves results returned by dispatcher.
  */
 struct CallbackHandle
@@ -48,13 +37,13 @@ struct CallbackHandle
   bool collectionSize(size_t size)
   {
     assert(out_.get()==NULL);
-    out_=mkOptStr(Commons::Convert::to<std::string>(size));
+    out_=OptionalString(Commons::Convert::to<std::string>(size));
     return true;
   }
 
   bool value(const std::string &v)
   {
-    out_=mkOptStr(v);
+    out_=OptionalString(v);
     return true;
   }
 
@@ -64,12 +53,12 @@ struct CallbackHandle
     return true;
   }
 
-  MetaAlert::OptionalString out_;
+  OptionalString out_;
 }; // strict CallbackHandle
 } // unnamed namespace
 
 
-MetaAlert::OptionalString MetaAlert::get(const std::string &path) const
+OptionalString MetaAlert::get(const std::string &path) const
 {
   try
   {
@@ -81,7 +70,7 @@ MetaAlert::OptionalString MetaAlert::get(const std::string &path) const
     // return computed value, if set
     if(cb.out_.get()!=NULL)
     {
-      LOGMSG_DEBUG_S(log_)<<"element '"<<path<<"' of node "<<node_->getMetaAlert()->getID().get()<<" is "<<*cb.out_;
+      LOGMSG_DEBUG_S(log_)<<"element '"<<path<<"' of node "<<node_->getMetaAlert()->getID().get()<<" is "<<cb.out_.get();
       return cb.out_;
     }
     // by default return NULL

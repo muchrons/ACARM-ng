@@ -24,14 +24,14 @@ struct TestClass: private TestStubs
 
   void testEqual(const char *path, const char *exp) const
   {
-    MetaAlert::OptionalString out=ma_.get(string(path));
+    OptionalString out=ma_.get(string(path));
     if(exp==NULL)
       tut::ensure("output string is not NULL", out.get()==NULL);
     else
       if(out.get()==NULL)
         tut::fail("unexpected NULL reponse");
       else
-        tut::ensure_equals("invalid response", *out, exp);
+        tut::ensure_equals("invalid response", out.get(), string(exp));
   }
 
   ::Persistency::ConstGraphNodePtrNN node_;
