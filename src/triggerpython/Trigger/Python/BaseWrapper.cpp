@@ -10,6 +10,17 @@ namespace Trigger
 namespace Python
 {
 
+BaseWrapper::BaseWrapper(void)
+{
+}
+
+/*
+BaseWrapper::BaseWrapper(const boost::reference_wrapper<const Trigger::Python::BaseWrapper>::type &other):
+  Base(other)
+{
+}
+*/
+
 void BaseWrapper::triggerImpl(PythonAPI::Persistency::MetaAlert ma)
 {
   PythonAPI::GlobalLock lock;

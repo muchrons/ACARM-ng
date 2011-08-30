@@ -19,6 +19,12 @@ namespace Python
 class BaseWrapper: public Base,
                    public boost::python::wrapper<Base>
 {
+public:
+  BaseWrapper(void);
+  /*
+  explicit BaseWrapper(const boost::reference_wrapper<const Trigger::Python::BaseWrapper>::type &other);
+  */
+
 private:
   virtual void triggerImpl(PythonAPI::Persistency::MetaAlert ma);
 }; // class BaseWrapper
