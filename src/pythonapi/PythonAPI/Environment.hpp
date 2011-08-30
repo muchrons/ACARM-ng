@@ -15,6 +15,7 @@
 
 #include "Logger/Node.hpp"
 #include "PythonAPI/Python.hpp"
+#include "PythonAPI/GlobalLock.hpp"
 #include "PythonAPI/ModuleInitFunction.hpp"
 #include "PythonAPI/Exception.hpp"
 #include "PythonAPI/ExceptionFromScript.hpp"
@@ -103,6 +104,7 @@ public:
   {
     try
     {
+      GlobalLock lock;
       return boost::python::extract<T>( (mainNamespace_[name]) );
     }
     catch(const boost::python::error_already_set &)

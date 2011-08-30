@@ -9,6 +9,7 @@
 
 #include <string>
 
+#include "PythonAPI/GlobalLock.hpp"
 #include "PythonAPI/Exception.hpp"
 #include "PythonAPI/ExceptionFromScript.hpp"
 

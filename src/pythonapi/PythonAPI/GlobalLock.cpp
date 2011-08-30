@@ -2,7 +2,7 @@
  * GlobalLock.cpp
  *
  */
-#include "Base/Threads/Mutex.hpp"
+#include "Base/Threads/RecursiveMutex.hpp"
 #include "Logger/Logger.hpp"
 #include "PythonAPI/GlobalLock.hpp"
 
@@ -12,7 +12,7 @@ namespace PythonAPI
 namespace
 {
 // global python mutex
-Base::Threads::Mutex g_mutex;
+Base::Threads::RecursiveMutex g_mutex;
 } // unnamed namespace
 
 

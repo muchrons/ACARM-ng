@@ -7,7 +7,7 @@
 
 /* public header */
 
-#include "Base/Threads/Lock.hpp"
+#include "Base/Threads/RecursiveLock.hpp"
 #include "Logger/Node.hpp"
 
 namespace PythonAPI
@@ -22,6 +22,9 @@ namespace PythonAPI
  *
  *  this lock is used by PythonAPI wrapper and must be used by PythonAPI's
  *  users to ensure thread safety.
+ *
+ *  \note lock is recursive, meaning it can be locked multiple times from
+ *        the same thread.
  */
 class GlobalLock
 {
@@ -34,8 +37,8 @@ public:
   ~GlobalLock(void);
 
 private:
-  Logger::Node        log_;
-  Base::Threads::Lock lock_;
+  Logger::Node                 log_;
+  Base::Threads::RecursiveLock lock_;
 }; // class GlobalLock
 
 } // namespace PythonAPI

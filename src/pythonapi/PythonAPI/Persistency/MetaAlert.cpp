@@ -9,6 +9,7 @@
 #include "Persistency/Facades/StrAccess/Params.hpp"
 #include "Persistency/Facades/StrAccess/DefaultHandleMap.hpp"
 #include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
+#include "PythonAPI/GlobalLock.hpp"
 #include "PythonAPI/Persistency/MetaAlert.hpp"
 
 
@@ -60,6 +61,7 @@ struct CallbackHandle
 
 OptionalString MetaAlert::get(const std::string &path) const
 {
+  GlobalLock lock;
   try
   {
     typedef StrFc::Params<StrFc::DefaultHandleMap, CallbackHandle> Params;
