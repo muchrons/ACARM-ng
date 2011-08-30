@@ -3,6 +3,7 @@
  *
  */
 #include <tut.h>
+#include <typeinfo>       
 
 #include "Trigger/Python/Strategy.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
