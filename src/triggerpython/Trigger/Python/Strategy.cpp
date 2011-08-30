@@ -24,7 +24,9 @@ BasePtrNN derivedFromScript(const Config::Path &path)
   boost::shared_array<char> script=Commons::Filesystem::readTextFile(path);
   assert(script.get()!=NULL);
   // run this script
-  PythonAPI::Environment  env;
+  PythonAPI::Environment env;
+  env.importModule("persistency");
+  env.importModule("trigger");
   env.run(script.get());
   // get the result
   boost::shared_ptr<Base> ptr=env.var< boost::shared_ptr<Base> >("derived");

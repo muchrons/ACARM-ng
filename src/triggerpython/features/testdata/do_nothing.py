@@ -1,10 +1,7 @@
-print("PYTHON: BEGIN")
-from trigger import *
-
-class PythonTrigger(BaseWrapper):
+# class definition
+class TestPythonTrigger(trigger.BaseWrapper):
   def triggerImpl(self, ma):
     print("id is: "+ma.get("metaalert.id"))
 
-derived=PythonTrigger()
-
-print("PYTHON: END")
+# return instance to the C++ code
+derived=TestPythonTrigger()
