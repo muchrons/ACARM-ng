@@ -1,20 +1,13 @@
 /*
  * exports.t.cpp
  *
- * NOTE: this is NOT test suit but import scheduler for classes used in tests.
- *
  */
 #include <tut.h>
 
 #include "PythonAPI/Environment.hpp"
-#include "Trigger/Python/exports.hpp"
 
 namespace
 {
-// it needs to be imported before initializing environment
-PythonAPI::Environment::StaticImporter g_import("trigger", inittrigger);
-//Trigger::Environment::StaticImporter g_import("trigger", PyInit_trigger);
-
 struct TestClass
 {
   PythonAPI::Environment env_;
