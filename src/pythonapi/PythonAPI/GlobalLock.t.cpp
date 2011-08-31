@@ -6,6 +6,7 @@
 #include <vector>
 #include <sstream>
 #include <boost/thread.hpp>
+#include <boost/scoped_ptr.hpp>
 #include <boost/shared_ptr.hpp>
 
 #include "Commons/Threads/Thread.hpp"
@@ -15,10 +16,20 @@ using namespace std;
 using namespace PythonAPI;
 using namespace Commons::Threads;
 
+// smoke test - if global init is a faluer this MAY hung
+namespace
+{
+boost::scoped_ptr<GlobalLock> g_lock(new GlobalLock);
+} // unnamed namespace
+
 namespace
 {
 struct TestClass
 {
+  TestClass(void)
+  {
+    g_lock.reset();
+  }
 };
 
 typedef tut::test_group<TestClass> factory;
