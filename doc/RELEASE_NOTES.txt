@@ -1,4 +1,6 @@
 -- dev --
+* Python interface for writing triggers has been created.
+* added support for Python scripts (via Persistency::Facades::StrAccess and PythonAPI interfaces).
 * Prado 3.1.9 introduced for WUI.
 * added tests to configure script - now each requirement is tested, before delivery.
 * clean-up in project's root directory.
