@@ -24,9 +24,7 @@ public:
 
   /** \brief create configration description, without authorization.
    *  \param th   threshold configuration - informs when run trigger.
-   *  \param from sender's e-mail address.
-   *  \param to   recipient address.
-   *  \param srv  server to connect to.
+   *  \param path path to script defining derived class.
    */
   Config(const Simple::ThresholdConfig &th,
          const Path                    &path):

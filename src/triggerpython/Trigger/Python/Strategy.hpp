@@ -14,7 +14,7 @@ namespace Trigger
 namespace Python
 {
 
-/** \brief mail triggering strategy
+/** \brief python script triggering strategy
  */
 class Strategy: public Trigger::Simple::Strategy
 {
