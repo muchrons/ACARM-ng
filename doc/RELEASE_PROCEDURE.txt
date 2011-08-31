@@ -1,4 +1,5 @@
 1. mark new data base version in data_model/*/*/21_fill_config.sql files.
 2. update data model version in data_model/*/*/21_fill_config.sql files.
 3. update doc/RELEASE_NOTES.txt file.
-4. tag new version.
+4. branch new version.
+5. tag new version.
