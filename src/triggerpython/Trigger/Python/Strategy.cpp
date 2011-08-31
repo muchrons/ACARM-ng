@@ -27,6 +27,7 @@ BasePtrNN derivedFromScript(const Config::Path &path)
   // run this script
   try
   {
+    // build derived object's instance
     PythonAPI::Environment env;
     env.importModule("persistency");
     env.importModule("trigger");
@@ -49,7 +50,7 @@ BasePtrNN derivedFromScript(const Config::Path &path)
 
 
 Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Config &cfg):
-  Trigger::Simple::Strategy(TypeName("python"), name, cfg.getThresholdConfig() ),
+  Trigger::Simple::Strategy(TypeName("python"), name, cfg.getThresholdConfig()),
   impl_( derivedFromScript(cfg.getScriptPath()) )
 {
 }
