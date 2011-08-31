@@ -1,4 +1,5 @@
 -- dev --
+* fixed compilation with icc (intel toolchain) on hosts with machine-dependent includes in /usr/include/<machine> implicit directory.
 
 
 -- v0.3.x --
