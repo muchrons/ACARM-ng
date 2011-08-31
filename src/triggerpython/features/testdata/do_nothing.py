@@ -1,8 +1,10 @@
-# class definition
+##
+# class that does nothing
 class EmptyPythonTrigger(trigger.BaseWrapper):
+  ##
+  # implementation of virtual call
   def triggerImpl(self, ma):
     pass # means empty method
-    #print("id is: "+ma.get("metaalert.id").get())
 
 # return instance to the C++ code
 derived=EmptyPythonTrigger()

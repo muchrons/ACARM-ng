@@ -1,5 +1,8 @@
-# class definition
+##
+# exception raising implementation
 class RaiserPythonTrigger(trigger.BaseWrapper):
+  ##
+  # virtual call implementation - throws when called
   def triggerImpl(self, ma):
     raise Exception("some error risen in the script for tests")
 
