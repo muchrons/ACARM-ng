@@ -30,9 +30,11 @@ int main(int argc, const char * const *argv)
     cout<<"running user's code..."<<endl;
     Strategy s(name, cfg);
 
-    cout<<"processing sample meta-alert..."<<endl;
     Trigger::Strategy::ChangedNodes cn;
+    cout<<"processing sample meta-alert (node)..."<<endl;
     s.process(TestHelpers::Persistency::makeNewTree1(), cn);
+    cout<<"processing sample meta-alert (leaf)..."<<endl;
+    s.process(TestHelpers::Persistency::makeNewLeaf(), cn);
     cout<<"done!"<<endl;
   }
   catch(const boost::python::error_already_set &)
