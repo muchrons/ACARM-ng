@@ -3,4 +3,7 @@
 3. update doc/RELEASE_NOTES.txt file.
 4. branch new version.
 5. update version in src/acarmng/AcarmNG/printBanner.cpp.
-6. tag new version.
+6. remove TODO files - they reflect future features, not relevant for release.
+7. remove misc/bzr_plugins and remove loading them from pre-delivery build.
+8. remove TODO documents from doc/.
+9. tag new version.
