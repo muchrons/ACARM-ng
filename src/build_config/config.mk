@@ -72,6 +72,12 @@ ifeq ($(TC),intel)
 TMP_OPT+=
 endif
 
+# this is required since some distros have now machine-dependent headers in the
+# other directory, not searched by default by non-gcc compilers
+ifneq ($(TC),gcc)
+TMP+=-I/usr/include/$(shell gcc -dumpmachine)
+endif
+
 # these options can be given as a command line argument to make
 # (feature used by ./configure script for extra libs places)
 TMP+=$(EXTRA_COMPILE_FLAGS)
