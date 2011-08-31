@@ -4,9 +4,19 @@
  */
 #include <tut.h>
 
+#include "PythonAPI/Python.hpp"
 #include "PythonAPI/Environment.hpp"
-#include "PythonAPI/Persistency/exports.hpp"
+#include "PythonAPI/Persistency/exportOptionalString.hpp"
+#include "PythonAPI/Persistency/exportMetaAlert.hpp"
 
+// export
+BOOST_PYTHON_MODULE(persistency)
+{
+  PythonAPI::Persistency::exportOptionalString();
+  PythonAPI::Persistency::exportMetaAlert();
+}
+
+// register
 namespace
 {
 // it needs to be imported before initializing environment
