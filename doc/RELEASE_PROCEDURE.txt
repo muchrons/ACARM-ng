@@ -6,4 +6,5 @@
 6. remove TODO files - they reflect future features, not relevant for release.
 7. remove misc/bzr_plugins and remove loading them from pre-delivery build.
 8. remove TODO documents from doc/.
-9. tag new version.
+9. change WUI mode in application.xml from "Debug" to "Performance".
+10. tag new version.
