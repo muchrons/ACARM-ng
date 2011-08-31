@@ -11,10 +11,6 @@ namespace Trigger
 namespace Python
 {
 
-BaseWrapper::BaseWrapper(void)
-{
-}
-
 void BaseWrapper::triggerImpl(PythonAPI::Persistency::MetaAlert ma)
 {
   PythonAPI::GlobalLock lock;

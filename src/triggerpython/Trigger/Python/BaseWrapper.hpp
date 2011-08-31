@@ -19,9 +19,6 @@ namespace Python
 class BaseWrapper: public Base,
                    public boost::python::wrapper<Base>
 {
-public:
-  BaseWrapper(void);
-
 private:
   virtual void triggerImpl(PythonAPI::Persistency::MetaAlert ma);
 }; // class BaseWrapper

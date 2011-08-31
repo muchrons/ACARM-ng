@@ -19,19 +19,29 @@ namespace Trigger
 namespace Python
 {
 
-/** \brief base interface
+/** \brief base interface for strategy to operate on.
  */
 class Base: private boost::noncopyable
 {
 public:
+  /** \brief creates instance.
+   */
   Base(void);
+  /** \brief ensure secure, polymorphic destruction.
+   */
   virtual ~Base(void);
+  /** \brief forward call to the implementaiton.
+   *  \param n node to process (trigger).
+   */
   void trigger(const Simple::Strategy::ConstNode &n);
 
 protected:
-  const Logger::Node log_;
+  const Logger::Node log_;  ///< logger to use
 
 private:
+  /** \brief interface to be implemented by derived class.
+   *  \param ma proxy object to access node.
+   */
   virtual void triggerImpl(PythonAPI::Persistency::MetaAlert ma) = 0;
 }; // class Base
 
