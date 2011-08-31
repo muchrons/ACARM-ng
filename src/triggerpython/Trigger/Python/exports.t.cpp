@@ -16,7 +16,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("PythonAPI/Persistency/exports");
+factory tf("Trigger/Python/exports");
 } // unnamed namespace
 
 namespace tut
@@ -27,8 +27,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.importModule("persistency");
-  //env_.run("from persistency import *");
+  env_.importModule("trigger");
+  //env_.run("from trigger import *");
 }
 
 } // namespace tut

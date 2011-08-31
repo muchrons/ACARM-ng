@@ -24,3 +24,4 @@
 * consider supporting addition of an alert to the middle of the chain of events (currently only the beginning and the end is supported).
 * add heartbeats for dshield, when host is unreachable.
 * add extra checks to test applications to ensure tests are NOT run as root (for example: commons::filesystem::createTempDirectory).
+* add (estimated) total priority of a given meta alert; it is required for the WUI to be usefull; it can be implemented by saving priority of the metal alerts when changed by filters - this would give more-less accurate results; exact result can be than saved when meta-alert is destroyed.

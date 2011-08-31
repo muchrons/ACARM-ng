@@ -343,6 +343,43 @@ below are listed implemented triggers along with their implementation.
   <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
 </extapp>
 
+<!-- trigger runngin implementation defined in python code.
+
+     python code defined in the script file ust have defined form. it implements class derived from
+     trigger.BaseWrapper and implement triggerImpl(self,ma) method. then an instance of this class
+     must be created and saved as a variable 'derived'.
+
+     when meta alert is triggered, triggerImpl() method is called so that implementation can
+     do whatever it wants and save data inside object, if it likes (the same object will be used
+     for all of the calls).
+
+     to access meta-alert's content use get() method of 'ma' object. it takes a string that
+     specifies field to take and return OptionalString as a response. to get python string from
+     it use 'get()' method of OptionalStirng. notice that value returned from ma.get(...) can be None.
+
+     specification of element to get is simillar to the one used by prefilter, except that collections
+     are not handle by wildcards '*' and '$' but have 'size' attribute to check their size.
+     they can be accessed later on with indexes, starting with zero. for example: if colleciton.size is
+     2 then 0 and 1 are valid indexes, so 'sth' field of colleciton element can be accessed with
+     collection.0.sth and collection.1.sth.
+
+     example imeplementation can look as follows:
+
+# definition of implementation
+class EmptyPythonTrigger(trigger.BaseWrapper):
+  def triggerImpl(self, ma):
+    print("hello world! meta alert's ID is " + ma.get("metaalert.id").get())
+
+# return instance to the C++ code
+derived=EmptyPythonTrigger()
+-->
+<python name="">
+  <script>/some/python/script.py</script>             <!-- script with trigger implementation -->
+
+  <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
+  <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
+</python>
+
 note that severity_threshold and alerts_count_threshold are OR'ed, i.e. if
 any one of them is reached, meta-alert is reported. they are both optional
 parameters as well, i.e. they may be skipped in configuration, that will

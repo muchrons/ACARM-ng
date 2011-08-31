@@ -1,34 +1,35 @@
 /*
- * exports.t.cpp
+ * RecursiveMutex.t.cpp
  *
  */
 #include <tut.h>
 
-#include "PythonAPI/Environment.hpp"
+#include "Base/Threads/RecursiveMutex.hpp"
+
+using namespace Base::Threads;
 
 namespace
 {
 struct TestClass
 {
-  PythonAPI::Environment env_;
 };
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("PythonAPI/Persistency/exports");
+factory tf("Base/Threads/RecursiveMutex");
 } // unnamed namespace
+
 
 namespace tut
 {
 
-// tets if namespace is present
+// creating mutex type
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.importModule("persistency");
-  //env_.run("from persistency import *");
+  RecursiveMutex m;
 }
 
 } // namespace tut

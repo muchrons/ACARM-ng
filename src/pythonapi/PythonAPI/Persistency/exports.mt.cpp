@@ -5,17 +5,10 @@
 #include <iostream>
 
 #include "Commons/Filesystem/readTextFile.hpp"
-#include "PythonAPI/Persistency/exports.hpp"
 #include "PythonAPI/Environment.hpp"
 
 using namespace std;
 using namespace PythonAPI;
-
-namespace
-{
-//static Environment::StaticImporter g_importPersistency("persistency", PyInit_persistency);
-static Environment::StaticImporter g_importPersistency("persistency", initpersistency);
-} // unnamed namespace
 
 int main(int argc, const char * const *argv)
 {
