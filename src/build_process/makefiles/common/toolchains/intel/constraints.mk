@@ -4,10 +4,7 @@ include $(MAKEFILES_TOOLCHAINS_BASE_DIR)/$(TC)/tools.mk
 INTEL_VERSION:=$(shell $(CC) -dumpversion | sed -e 's:\.: * 10000 + 100 * :' -e 's:\.: + :' | xargs expr)
 
 # check gcc version (icc uses its libs)
-# BR-hack is required, since inserting brackets directly inside $(shell ) breaks syntax...
-BR:=)
-GCC_VER:=$(shell g++ --version | head -1 | sed -e "s:^[^$(BR)]\+$(BR) *::" -e 's: .*::' -e 's:^\([0-9]\+\.[0-9]\+\).*:\1:')
-BR:=
+GCC_VER:=$(shell g++ -dumpversion)
 
 #
 # show warning when using ccache with old intel compiler
