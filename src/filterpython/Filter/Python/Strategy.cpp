@@ -71,31 +71,31 @@ DataPtr Strategy::makeThisEntryUserData(const Node /*n*/) const
   return DataPtr();
 }
 
-bool Strategy::isEntryInteresting(const NodeEntry /*thisEntry*/) const
+bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const
 {
-  // TODO
-  return true;
+  assert(base_.get()!=NULL);
+  return base_->isEntryInteresting(thisEntry.node_, thisEntry.t_);
 }
 
 Persistency::MetaAlert::Name Strategy::getMetaAlertName(const NodeEntry thisEntry,
                                                         const NodeEntry otherEntry) const
 {
-  // TODO
-  // thisEntry and otherEntry must containt the same meta-alert name
+  // sanity check
   assert( canCorrelate(thisEntry, otherEntry) );
-  stringstream ss;
-  ss << "[python]";
-  return ss.str();
+  // processing
+  assert(base_.get()!=NULL);
+  return base_->getMetaAlertName(thisEntry.node_, thisEntry.t_, otherEntry.node_, otherEntry.t_);
 }
 
 bool Strategy::canCorrelate(const NodeEntry thisEntry,
                             const NodeEntry otherEntry) const
 {
-  // TODO
   // sanityt check
   assert( isEntryInteresting(thisEntry)  );
   assert( isEntryInteresting(otherEntry) );
-  return false;
+  // processing
+  assert(base_.get()!=NULL);
+  return base_->canCorrelate(thisEntry.node_, thisEntry.t_, otherEntry.node_, otherEntry.t_);
 }
 
 DataPtr Strategy::makeUserDataForNewNode(const NodeEntry &/*thisEntry*/,
