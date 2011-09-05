@@ -6,6 +6,7 @@ class SomeTestDataImpl(filter.DataWrapper):
   # create object
   def __init__(self, id):
     filter.DataWrapper.__init__(self)
+    ## id to save
     self.id=id
 
   ##
