@@ -40,12 +40,12 @@ struct ProcessMainDispatcherCollectionImpl: private System::NoInstance
   template<typename T, typename TParams>
   static bool process(const T &e, TParams &p)
   {
-    typedef typename TParams::template GetHandle<TermHandle>::type    TermHandle;
+    // collection can never be a term!
+    typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
+    ErrH::throwOnLast(SYSTEM_SAVE_LOCATION, p);
+    // regular processing
     typedef typename TParams::template GetHandle<NonTermHandle>::type NonTermHandle;
-    if(p.hasNext())
-      return NonTermHandle::process(e, p);
-    else
-      return TermHandle::process(e, p);
+    return NonTermHandle::process(e, p);
   }
 }; // struct ProcessMainDispatcherCollectionImpl
 

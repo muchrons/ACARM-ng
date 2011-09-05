@@ -11,7 +11,7 @@ namespace
 
 struct TestClass
 {
-  TestCallback callback_;
+  Persistency::Facades::StrAccess::TestCallback callback_;
 };
 
 typedef tut::test_group<TestClass> factory;

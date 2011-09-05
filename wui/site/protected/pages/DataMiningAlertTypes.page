@@ -1,12 +1,21 @@
 <com:TContent ID="content">
-<!--<com:TImage ID="AlertTypesIMG"/>-->
-<div width="800px">
 
-<com:AlertTypes
-        ID="Alerts"
-        Text="Most common alert types:"
-        Query="DMAlertTypes"/>
-</div>
+  <div width="800px">
 
-<com:RangeSelector ID="Range" View="1"/>
+    <com:AlertTypes
+       ID="Alerts"
+       Text="Most common alert types:"
+       Query="DMAlertTypes"/>
+
+    <com:RangeSelector ID="Range" View="1"/>
+  </div>
+
+  <com:TImageButton
+     ID="AlertsLinks"
+     Attributes.onclick="return getChecked();"
+     ImageUrl="pics/buttons/buttDBSourcreAlertsD.png"
+     OnCommand="getSelectedRows"
+  />
+  <com:TClientScript PradoScripts="effects" />
+
 </com:TContent>

@@ -7,6 +7,8 @@
 
 /* public header */
 
+#include <cassert>
+
 #include "System/NoInstance.hpp"
 #include "Persistency/Service.hpp"
 #include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
@@ -32,10 +34,9 @@ struct OnService: private System::NoInstance
   {
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
-    ErrH::throwIfEnd(SYSTEM_SAVE_LOCATION, p);
-    ErrH::throwIfLast(SYSTEM_SAVE_LOCATION, p);
-    if(p.get()!="service")
-      ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwOnEnd(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwOnLast(SYSTEM_SAVE_LOCATION, p);
+    ErrH::throwOnInvalidName(SYSTEM_SAVE_LOCATION, p, "service");
 
     ++p;
 
@@ -51,7 +52,7 @@ struct OnService: private System::NoInstance
     ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
     return false;
   }
-}; // struct OnReferenceURL
+}; // struct OnService
 
 } // namespace StrAccess
 } // namespace Facades

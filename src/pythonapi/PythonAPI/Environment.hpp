@@ -15,6 +15,7 @@
 
 #include "Logger/Node.hpp"
 #include "PythonAPI/Python.hpp"
+#include "PythonAPI/GlobalLock.hpp"
 #include "PythonAPI/ModuleInitFunction.hpp"
 #include "PythonAPI/Exception.hpp"
 #include "PythonAPI/ExceptionFromScript.hpp"
@@ -87,6 +88,8 @@ public:
    *  it is not valid for classes, returned by pointers, since they may be
    *  salvaged by python's garbage collector. to get these the safe way use
    *  boost::shared_ptr<MyClass> as a destination type for MyClass pointers.
+   *  it is important to remember that this mechanism may NOT work for some comon
+   *  types like std::string or int.
    *
    *  this call may re-throw errors from Python as well (for example: invalid
    *  convertion request) - ExceptionFromScript is throw then.
@@ -101,6 +104,7 @@ public:
   {
     try
     {
+      GlobalLock lock;
       return boost::python::extract<T>( (mainNamespace_[name]) );
     }
     catch(const boost::python::error_already_set &)
@@ -128,7 +132,7 @@ private:
   Logger::Node          log_;
   boost::python::object mainModule_;
   boost::python::object mainNamespace_;
-}; // class ExceptionHandle
+}; // class Environment
 
 } // namespace PythonAPI
 

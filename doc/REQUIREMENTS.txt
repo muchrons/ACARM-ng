@@ -15,3 +15,4 @@ marked with [o].
 [bro] libgadu >= 1.8          (used by: triggergg)
 [bro] libgloox >= 1.0         (used by: triggerjabber)
 [bro] libvmime >= 0.9.1       (used by: triggermail)
+[bro] libpython ==2.6         (used by: pythonapi, triggerpython)

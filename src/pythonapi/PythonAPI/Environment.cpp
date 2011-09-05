@@ -29,6 +29,7 @@ bool g_alreadyInitialized=false;
  */
 ModulesInitList &getModInitLst(void)
 {
+  GlobalLock lock;
   static ModulesInitList mods;
   return mods;
 } // getModInitLst()
@@ -45,6 +46,7 @@ Environment::StaticImporter::StaticImporter(const char *module, ModuleInitFuncti
   // schedule import
   const Logger::Node log("pythonapi.environment.staticimporter");
   LOGMSG_INFO_S(log)<<"scheduling module '"<<module<<"' for importing";
+  GlobalLock lock;
   getModInitLst().scheduleImport(module, init);
   imported_=true;
 }
@@ -62,6 +64,7 @@ Environment::Environment(void):
   try
   {
     LOGMSG_DEBUG(log_, "initializing Python's environment object");
+    GlobalLock lock;
     // if called for the first time import all modules
     if(!g_alreadyInitialized)
     {
@@ -94,6 +97,7 @@ void Environment::run(const std::string &script)
   LOGMSG_DEBUG_S(log_)<<"running script; script's hash is: "<<Commons::computeHash(script);
   try
   {
+    GlobalLock lock;
     ExceptionHandle::clearState();
     py::exec(script.c_str(), mainNamespace_);
   }
@@ -121,6 +125,7 @@ public:
     str_.swap(tmp);
   }
 
+  // NOTE: this call cannot be/return const, since non-const string is required for PyImport_AppendInittab()
   char *get(void)
   {
     return str_.get();
@@ -155,14 +160,18 @@ void Environment::importModule(const char *module, ModuleInitFunction init)
   System::AtExit::TDeallocPtr  ptr(str);
   System::AtExit::registerDeallocator(ptr);
   assert(str!=NULL);
-  if( PyImport_AppendInittab(str->get(), init)!=0 )
-    throw Exception(SYSTEM_SAVE_LOCATION, std::string("PyImport_AppendInittab() failed; unable to init module: ")+module);
+  {
+    GlobalLock lock;
+    if( PyImport_AppendInittab(str->get(), init)!=0 )
+      throw Exception(SYSTEM_SAVE_LOCATION, std::string("PyImport_AppendInittab() failed; unable to init module: ")+module);
+  }
 
   LOGMSG_INFO_S(log)<<"module '"<<module<<"' imported successfuly";
 }
 
 void Environment::importAllModules(void)
 {
+  GlobalLock lock;
   ModulesInitList &mods=getModInitLst();
   assert(!g_alreadyInitialized && "trying to init/import all modules after initialization");
   // import all modules

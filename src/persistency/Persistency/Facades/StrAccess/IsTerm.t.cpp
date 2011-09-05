@@ -9,6 +9,7 @@
 #include "Persistency/Facades/StrAccess/IsTerm.hpp"
 
 using namespace Persistency::Facades::StrAccess;
+namespace net=boost::asio::ip;
 
 namespace
 {
@@ -128,6 +129,46 @@ template<>
 void testObj::test<10>(void)
 {
   testCallViaTemplateNonConst("abc");
+}
+
+// test if MD5Sum is a term
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  ensure("MD5Sum is not a term", IsTerm<Persistency::MD5Sum>::value);
+}
+
+// test if MD5Sum* is NOT a term
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  ensure("MD5Sum* is a term", IsTerm<Persistency::MD5Sum*>::value==false);
+}
+
+// test if net::address is a term
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  ensure("address is not a term", IsTerm<net::address>::value);
+}
+
+// test if net::address_v4 is a term
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  ensure("address_v4 is not a term", IsTerm<net::address_v4>::value);
+}
+
+// test if net::address_v6 is a term
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  ensure("address_v6 is not a term", IsTerm<net::address_v6>::value);
 }
 
 } // namespace tut

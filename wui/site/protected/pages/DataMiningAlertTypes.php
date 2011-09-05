@@ -15,17 +15,11 @@ class ComputeLinkForAlerts
     $this->service_=$service;
   }
 
-  private function computeLink($id)
-  {
-    $url=$this->service_->constructUrl( 'Alert', array('id' => $id) );
-    return "<a href=\"$url\">details</a>";
-  }
-
   public function computeStructure($data_row)
   {
     $ret=new TypeRecord();
-    $ret->Count=$data_row->value."&nbsp";
-    $ret->Name="&nbsp".$data_row->key;
+    $ret->Count=$data_row->value."&nbsp;";
+    $ret->Name=trim($data_row->key);
     return $ret;
   }
 
@@ -39,18 +33,13 @@ class DataMiningAlertTypes extends TPage
   {
     parent::onLoad($param);
 
-    $this->Range->CB->setEnabled(false);
-
-    $from=$this->Range->From->Date;
-    $to=$this->Range->To->Date;
-    $src=$this->Range->srcip->Text;
-    $dst=$this->Range->dstip->Text;
+    //$this->Range->CB->setEnabled(false);
 
     $this->Alerts->computation_=new ComputeLinkForAlerts($this->Service);
     $this->Alerts->params_=$this->Range->getRangeData();
   }
 
-  private function constructUrl($type,$severities,$from,$to,$src,$dst)
+  private function constructUrl($from,$to,$src,$dst,$severities,$type)
   {
     $linkdata=array( 'srcip' => $src,
                      'dstip' => $dst,
@@ -62,11 +51,13 @@ class DataMiningAlertTypes extends TPage
     return $this->getRequest()->constructUrl('page', "Alerts", $linkdata);
   }
 
-  private function generateGraph($width,$height,$from,$to,$src,$dst)
+  function getSelectedRows()
   {
-    $this->AlertTypes->ImageUrl = $this->constructUrl($width,$height,$from,$to,$src,$dst);
+    $selection=$this->Alerts->getSelectedTypes();
+    $range=$this->Range->getRangeData();
+    $link=$this->constructUrl($range->date_from,$range->date_to,$range->srct,$range->dstt,$range->severities,$selection);
+    $this->Response->redirect($link);
   }
 }
-
 
 ?>

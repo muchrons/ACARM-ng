@@ -6,7 +6,7 @@
 #
 
 # compiler flags
-CMN_FLAGS:=-Wall -Wextra -pipe -Qunused-arguments
+CMN_FLAGS:=-Wall -Wextra -pipe -Qunused-arguments -I/usr/include/$(shell gcc -dumpmachine)
 #OPT_FLAGS:=-O3 -DNDEBUG -Werror -march=native
 OPT_FLAGS:=-O3 -DNDEBUG -march=native
 DBG_FLAGS:=-g3
