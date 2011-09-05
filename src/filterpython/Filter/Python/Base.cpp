@@ -63,5 +63,21 @@ DataPtr Base::makeThisEntryUserData(Persistency::ConstGraphNodePtrNN n) const
   return makeThisEntryUserDataImpl(ma);
 }
 
+DataPtr Base::makeUserDataForNewNode(Persistency::ConstGraphNodePtrNN thisEntry,
+                                     DataPtr                          thisEntryData,
+                                     Persistency::ConstGraphNodePtrNN otherEntry,
+                                     DataPtr                          otherEntryData,
+                                     Persistency::ConstGraphNodePtrNN newNode) const
+{
+  const PyMetaAlert maThis(thisEntry);
+  LOGMSG_DEBUG_S(log_)<<"node "<<thisEntry->getMetaAlert()->getID().get()<<" wrapped as string facade";
+  const PyMetaAlert maOther(otherEntry);
+  LOGMSG_DEBUG_S(log_)<<"node "<<otherEntry->getMetaAlert()->getID().get()<<" wrapped as string facade";
+  const PyMetaAlert maNewNode(newNode);
+  LOGMSG_DEBUG_S(log_)<<"node "<<newNode->getMetaAlert()->getID().get()<<" wrapped as string facade";
+
+  return makeUserDataForNewNodeImpl(maThis, thisEntryData, maOther, otherEntryData, maNewNode);
+}
+
 } // namespace Python
 } // namespace Filter

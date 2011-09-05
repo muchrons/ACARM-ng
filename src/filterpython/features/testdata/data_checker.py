@@ -50,6 +50,11 @@ class DataCheckerPythonFilter(filter.BaseWrapper):
     id=ma.get("metaalert.id").get()
     return SomeTestDataImpl(id)
 
+  ##
+  # return some data for new node
+  def makeUserDataForNewNodeImpl(self, maThis, thisData, maOther, otherData, maNewNode):
+    return None
+
 
 # return instance to the C++ code
 derived=DataCheckerPythonFilter()

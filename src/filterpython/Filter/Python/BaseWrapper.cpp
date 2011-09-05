@@ -137,5 +137,39 @@ DataPtr BaseWrapper::makeThisEntryUserDataImpl(PyMetaAlert n) const
   throw std::logic_error("code should never reach here");
 }
 
+DataPtr BaseWrapper::makeUserDataForNewNodeImpl(PyMetaAlert thisEntry,
+                                                DataPtr     thisEntryData,
+                                                PyMetaAlert otherEntry,
+                                                DataPtr     otherEntryData,
+                                                PyMetaAlert newNode) const
+{
+  PythonAPI::GlobalLock lock;
+  try
+  {
+    // get derived virtual call
+    boost::python::override f=this->get_override("makeUserDataForNewNodeImpl");
+    if(!f)
+    {
+      LOGMSG_ERROR(log_, "no virtual override for method makeUserDataForNewNodeImpl()");
+      throw ExceptionNoImplementation(SYSTEM_SAVE_LOCATION, "makeUserDataForNewNodeImpl()");
+    }
+
+    // run implementation
+    LOGMSG_DEBUG_S(log_)<<"passing node "<<thisEntry.get("metaalert.id").get()<<" to python implementation";
+    LOGMSG_DEBUG_S(log_)<<"passing node "<<otherEntry.get("metaalert.id").get()<<" to python implementation";
+    LOGMSG_DEBUG_S(log_)<<"passing node "<<newNode.get("metaalert.id").get()<<" to python implementation";
+    const DataPtr ret=f(thisEntry, thisEntryData, otherEntry, otherEntryData, newNode);
+    LOGMSG_DEBUG_S(log_)<<"back from python processing of node "<<newNode.get("metaalert.id").get();
+    return ret;
+  }
+  catch(const boost::python::error_already_set&)
+  {
+    PythonAPI::ExceptionHandle eh;
+    eh.rethrow();
+  }
+  assert(!"code never reaches here");
+  throw std::logic_error("code should never reach here");
+}
+
 } // namespace Python
 } // namespace Filter

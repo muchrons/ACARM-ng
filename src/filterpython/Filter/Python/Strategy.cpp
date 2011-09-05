@@ -98,12 +98,12 @@ bool Strategy::canCorrelate(const NodeEntry thisEntry,
   return base_->canCorrelate(thisEntry.node_, thisEntry.t_, otherEntry.node_, otherEntry.t_);
 }
 
-DataPtr Strategy::makeUserDataForNewNode(const NodeEntry &/*thisEntry*/,
-                                         const NodeEntry &/*otherEntry*/,
-                                         const Node       /*newNode*/) const
+DataPtr Strategy::makeUserDataForNewNode(const NodeEntry &thisEntry,
+                                         const NodeEntry &otherEntry,
+                                         const Node       newNode) const
 {
-  // TODO
-  return DataPtr();
+  assert(base_.get()!=NULL);
+  return base_->makeUserDataForNewNode(thisEntry.node_, thisEntry.t_, otherEntry.node_, otherEntry.t_, newNode);
 }
 
 void Strategy::postProcessNode(Node &/*n*/, Filter::BackendFacade &/*bf*/) const

@@ -30,6 +30,11 @@ private:
                                 PyMetaAlert otherEntry,
                                 DataPtr     otherEntryData) const;
   virtual DataPtr makeThisEntryUserDataImpl(PyMetaAlert n) const;
+  virtual DataPtr makeUserDataForNewNodeImpl(PyMetaAlert thisEntry,
+                                             DataPtr     thisEntryData,
+                                             PyMetaAlert otherEntry,
+                                             DataPtr     otherEntryData,
+                                             PyMetaAlert newNode) const;
 }; // class BaseWrapper
 
 } // namespace Python

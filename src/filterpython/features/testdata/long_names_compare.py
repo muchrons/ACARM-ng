@@ -36,6 +36,11 @@ class LongNamesComparePythonFilter(filter.BaseWrapper):
   def makeThisEntryUserDataImpl(self, ma):
     return None
 
+  ##
+  # return some data for new node
+  def makeUserDataForNewNodeImpl(self, maThis, thisData, maOther, otherData, maNewNode):
+    return None
+
 
 # return instance to the C++ code
 derived=LongNamesComparePythonFilter()

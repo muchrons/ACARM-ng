@@ -22,6 +22,11 @@ class MoreExceptionalPythonFilter(filter.BaseWrapper):
   def makeThisEntryUserDataImpl(self, ma):
     return None
 
+  ##
+  # return some data for new node
+  def makeUserDataForNewNodeImpl(self, maThis, thisData, maOther, otherData, maNewNode):
+    raise Exception("3: now let's see what happens next...")
+
 
 # return instance to the C++ code
 derived=MoreExceptionalPythonFilter()
