@@ -123,11 +123,11 @@ struct LoopThread
   {
     const GraphNodePtrNN            node=makeNewTree1();
     Trigger::Strategy::ChangedNodes cn;
-    boost::shared_ptr<Strategy>     s(new Strategy(InstanceName("loopthread"), cfg_));
+    Strategy                        s(InstanceName("loopthread"), cfg_);
     for(size_t i=0; i<loops_; ++i)
     {
       cn.clear();
-      s->process(node, cn);
+      s.process(node, cn);
     }
   }
 

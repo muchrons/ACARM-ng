@@ -119,4 +119,49 @@ void testObj::test<5>(void)
   ensure("correlation not added to existing node", correlated.get()==changed_.at(0).get() );
 }
 
+// test exception when python's c-tor throws
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const Config c(11, "testdata/throw_in_ctor.py");
+  try
+  {
+    Strategy s(n_, c);
+    fail("exception not re-thrown from python");
+  }
+  catch(const PythonAPI::Exception&)
+  {
+    // this is expected
+  }
+}
+
+// test exception when script does not exist
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const Config c(11, "testdata/script_that_does_not_exist.py");
+  try
+  {
+    Strategy s(n_, c);
+    fail("no exception thrown when file does not exist");
+  }
+  catch(const Commons::Exception&)
+  {
+    // this is expected
+  }
+}
+
+// test if exception is NOT propagated when error is risen in python script's methods
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const Config c(11, "testdata/throw_in_method.py");
+  Strategy     s(n_, c);
+  s.process(mkLeaf("whatever1"), changed_); // must not throw
+  s.process(mkLeaf("whatever2"), changed_); // must not throw
+}
+
 } // namespace tut

@@ -5,7 +5,7 @@ class EmptyPythonFilter(filter.BaseWrapper):
   ##
   # check for given entry
   def isEntryInterestingImpl(self, ma, data):
-    return true
+    return True
 
   ##
   # get name for new meta-alert
@@ -15,7 +15,7 @@ class EmptyPythonFilter(filter.BaseWrapper):
   ##
   # test for correlation possibility
   def canCorrelateImpl(self, maThis, thisData, maOther, otherData):
-    return false
+    return False
 
 
 # return instance to the C++ code
