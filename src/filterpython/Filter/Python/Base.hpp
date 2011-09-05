@@ -47,6 +47,8 @@ public:
                     Persistency::ConstGraphNodePtrNN otherEntry,
                     DataPtr                          otherEntryData) const;
 
+  DataPtr makeThisEntryUserData(Persistency::ConstGraphNodePtrNN n) const;
+
 protected:
   typedef PythonAPI::Persistency::MetaAlert PyMetaAlert;
 
@@ -66,6 +68,7 @@ private:
                                 DataPtr     thisEntryData,
                                 PyMetaAlert otherEntry,
                                 DataPtr     otherEntryData) const = 0;
+  virtual DataPtr makeThisEntryUserDataImpl(PyMetaAlert n) const = 0;
 }; // class Base
 
 

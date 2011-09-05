@@ -65,10 +65,10 @@ Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
   return ecl;
 }
 
-DataPtr Strategy::makeThisEntryUserData(const Node /*n*/) const
+DataPtr Strategy::makeThisEntryUserData(const Node n) const
 {
-  // TODO
-  return DataPtr();
+  assert(base_.get()!=NULL);
+  return base_->makeThisEntryUserData(n);
 }
 
 bool Strategy::isEntryInteresting(const NodeEntry thisEntry) const

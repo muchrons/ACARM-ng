@@ -56,5 +56,12 @@ bool Base::canCorrelate(Persistency::ConstGraphNodePtrNN thisEntry,
   return canCorrelateImpl(maThis, thisEntryData, maOther, otherEntryData);
 }
 
+DataPtr Base::makeThisEntryUserData(Persistency::ConstGraphNodePtrNN n) const
+{
+  const PyMetaAlert ma(n);
+  LOGMSG_DEBUG_S(log_)<<"node "<<n->getMetaAlert()->getID().get()<<" wrapped as string facade";
+  return makeThisEntryUserDataImpl(ma);
+}
+
 } // namespace Python
 } // namespace Filter

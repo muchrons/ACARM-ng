@@ -10,12 +10,17 @@ class MoreExceptionalPythonFilter(filter.BaseWrapper):
   ##
   # get name for new meta-alert
   def getMetaAlertNameImpl(self, maThis, thisData, maOther, otherData):
-    raise Exception("2: now let's see what happens next...")
+    raise Exception("1: now let's see what happens next...")
 
   ##
   # test for correlation possibility
   def canCorrelateImpl(self, maThis, thisData, maOther, otherData):
-    raise Exception("3: now let's see what happens next...")
+    raise Exception("2: now let's see what happens next...")
+
+  ##
+  # return some data for a given node
+  def makeThisEntryUserDataImpl(self, ma):
+    return None
 
 
 # return instance to the C++ code

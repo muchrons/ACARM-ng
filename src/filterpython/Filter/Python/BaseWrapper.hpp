@@ -29,6 +29,7 @@ private:
                                 DataPtr     thisEntryData,
                                 PyMetaAlert otherEntry,
                                 DataPtr     otherEntryData) const;
+  virtual DataPtr makeThisEntryUserDataImpl(PyMetaAlert n) const;
 }; // class BaseWrapper
 
 } // namespace Python

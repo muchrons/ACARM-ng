@@ -164,4 +164,25 @@ void testObj::test<8>(void)
   s.process(mkLeaf("whatever2"), changed_); // must not throw
 }
 
+// test setting data in python
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  const Config c(11, "testdata/data_checker.py");
+  Strategy     s(n_, c);
+  s.process(mkLeaf("whatever1"), changed_); // must not throw
+}
+
+// test reading previously set data (in python)
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  const Config c(11, "testdata/data_checker.py");
+  Strategy     s(n_, c);
+  s.process(mkLeaf("whatever1"), changed_); // must not throw
+  s.process(mkLeaf("whatever1"), changed_); // must not throw
+}
+
 } // namespace tut

@@ -31,6 +31,11 @@ class LongNamesComparePythonFilter(filter.BaseWrapper):
     st2=re.sub(reg, "", s2)
     return st1==st2
 
+  ##
+  # return some data for a given node
+  def makeThisEntryUserDataImpl(self, ma):
+    return None
+
 
 # return instance to the C++ code
 derived=LongNamesComparePythonFilter()

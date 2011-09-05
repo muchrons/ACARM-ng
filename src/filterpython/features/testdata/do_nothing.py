@@ -17,6 +17,11 @@ class EmptyPythonFilter(filter.BaseWrapper):
   def canCorrelateImpl(self, maThis, thisData, maOther, otherData):
     return False
 
+  ##
+  # return some data for a given node
+  def makeThisEntryUserDataImpl(self, ma):
+    return None
+
 
 # return instance to the C++ code
 derived=EmptyPythonFilter()

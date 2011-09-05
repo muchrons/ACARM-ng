@@ -108,5 +108,34 @@ bool BaseWrapper::canCorrelateImpl(PyMetaAlert thisEntry,
   throw std::logic_error("code should never reach here");
 }
 
+
+DataPtr BaseWrapper::makeThisEntryUserDataImpl(PyMetaAlert n) const
+{
+  PythonAPI::GlobalLock lock;
+  try
+  {
+    // get derived virtual call
+    boost::python::override f=this->get_override("makeThisEntryUserDataImpl");
+    if(!f)
+    {
+      LOGMSG_ERROR(log_, "no virtual override for method makeThisEntryUserDataImpl()");
+      throw ExceptionNoImplementation(SYSTEM_SAVE_LOCATION, "makeThisEntryUserDataImpl()");
+    }
+
+    // run implementation
+    LOGMSG_DEBUG_S(log_)<<"passing node "<<n.get("metaalert.id").get()<<" to python implementation";
+    const DataPtr ret=f(n);
+    LOGMSG_DEBUG_S(log_)<<"back from python processing of node "<<n.get("metaalert.id").get();
+    return ret;
+  }
+  catch(const boost::python::error_already_set&)
+  {
+    PythonAPI::ExceptionHandle eh;
+    eh.rethrow();
+  }
+  assert(!"code never reaches here");
+  throw std::logic_error("code should never reach here");
+}
+
 } // namespace Python
 } // namespace Filter
