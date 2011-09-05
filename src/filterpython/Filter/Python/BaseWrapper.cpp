@@ -2,41 +2,111 @@
  * BaseWrapper.cpp
  *
  */
+#include "Logger/Logger.hpp"
 #include "PythonAPI/GlobalLock.hpp"
 #include "PythonAPI/ExceptionHandle.hpp"
 #include "Filter/Python/BaseWrapper.hpp"
+
+// TODO: think about some meanof reducing c&p code (limitation is number of arguments to f()).
 
 namespace Filter
 {
 namespace Python
 {
 
-  /*
-void BaseWrapper::filterImpl(PythonAPI::Persistency::MetaAlert ma)
+bool BaseWrapper::isEntryInterestingImpl(PyMetaAlert thisEntry, DataPtr data) const
 {
   PythonAPI::GlobalLock lock;
   try
   {
     // get derived virtual call
-    boost::python::override f=this->get_override("filterImpl");
+    boost::python::override f=this->get_override("isEntryInterestingImpl");
     if(!f)
     {
-      LOGMSG_ERROR(log_, "no virtual override for method filterImpl()");
-      throw ExceptionNoImplementation(SYSTEM_SAVE_LOCATION, "filterImpl()");
+      LOGMSG_ERROR(log_, "no virtual override for method isEntryInterestingImpl()");
+      throw ExceptionNoImplementation(SYSTEM_SAVE_LOCATION, "isEntryInterestingImpl()");
     }
 
     // run implementation
-    LOGMSG_DEBUG_S(log_)<<"passing node "<<ma.get("metaalert.id").get()<<" to python implementation";
-    f(ma);
-    LOGMSG_DEBUG_S(log_)<<"back from python processing of node "<<ma.get("metaalert.id").get();
+    LOGMSG_DEBUG_S(log_)<<"passing node "<<thisEntry.get("metaalert.id").get()<<" to python implementation";
+    const bool ret=f(thisEntry, data);
+    LOGMSG_DEBUG_S(log_)<<"back from python processing of node "<<thisEntry.get("metaalert.id").get();
+    return ret;
   }
   catch(const boost::python::error_already_set&)
   {
     PythonAPI::ExceptionHandle eh;
     eh.rethrow();
   }
+  assert(!"code never reaches here");
+  throw std::logic_error("code should never reach here");
 }
-*/
+
+
+std::string BaseWrapper::getMetaAlertNameImpl(PyMetaAlert thisEntry,
+                                              DataPtr     thisEntryData,
+                                              PyMetaAlert otherEntry,
+                                              DataPtr     otherEntryData) const
+{
+  PythonAPI::GlobalLock lock;
+  try
+  {
+    // get derived virtual call
+    boost::python::override f=this->get_override("getMetaAlertNameImpl");
+    if(!f)
+    {
+      LOGMSG_ERROR(log_, "no virtual override for method getMetaAlertNameImpl()");
+      throw ExceptionNoImplementation(SYSTEM_SAVE_LOCATION, "getMetaAlertNameImpl()");
+    }
+
+    // run implementation
+    LOGMSG_DEBUG_S(log_)<<"passing node "<<thisEntry.get("metaalert.id").get()<<" to python implementation";
+    LOGMSG_DEBUG_S(log_)<<"passing node "<<otherEntry.get("metaalert.id").get()<<" to python implementation";
+    const std::string ret=f(thisEntry, thisEntryData, otherEntry, otherEntryData);
+    LOGMSG_DEBUG_S(log_)<<"back from python processing of node "<<thisEntry.get("metaalert.id").get();
+    return ret;
+  }
+  catch(const boost::python::error_already_set&)
+  {
+    PythonAPI::ExceptionHandle eh;
+    eh.rethrow();
+  }
+  assert(!"code never reaches here");
+  throw std::logic_error("code should never reach here");
+}
+
+
+bool BaseWrapper::canCorrelateImpl(PyMetaAlert thisEntry,
+                                   DataPtr     thisEntryData,
+                                   PyMetaAlert otherEntry,
+                                   DataPtr     otherEntryData) const
+{
+  PythonAPI::GlobalLock lock;
+  try
+  {
+    // get derived virtual call
+    boost::python::override f=this->get_override("canCorrelateImpl");
+    if(!f)
+    {
+      LOGMSG_ERROR(log_, "no virtual override for method canCorrelateImpl()");
+      throw ExceptionNoImplementation(SYSTEM_SAVE_LOCATION, "canCorrelateImpl()");
+    }
+
+    // run implementation
+    LOGMSG_DEBUG_S(log_)<<"passing node "<<thisEntry.get("metaalert.id").get()<<" to python implementation";
+    LOGMSG_DEBUG_S(log_)<<"passing node "<<otherEntry.get("metaalert.id").get()<<" to python implementation";
+    const bool ret=f(thisEntry, thisEntryData, otherEntry, otherEntryData);
+    LOGMSG_DEBUG_S(log_)<<"back from python processing of node "<<thisEntry.get("metaalert.id").get();
+    return ret;
+  }
+  catch(const boost::python::error_already_set&)
+  {
+    PythonAPI::ExceptionHandle eh;
+    eh.rethrow();
+  }
+  assert(!"code never reaches here");
+  throw std::logic_error("code should never reach here");
+}
 
 } // namespace Python
 } // namespace Filter

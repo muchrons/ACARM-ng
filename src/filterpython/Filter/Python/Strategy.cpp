@@ -4,21 +4,58 @@
  */
 #include <cassert>
 
+#include "Commons/Filesystem/readTextFile.hpp"
+#include "PythonAPI/Environment.hpp"
+#include "PythonAPI/ExceptionHandle.hpp"
 #include "Filter/Python/Strategy.hpp"
 
 using namespace std;
 using namespace Persistency;
 using namespace Core::Types::Proc;
 
-
 namespace Filter
 {
 namespace Python
 {
 
-Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Config &cfg):
-  Filter::Simple::Strategy<DataPtr>( TypeName("python"), name, cfg.getTimeout())
+namespace
 {
+BasePtrNN derivedFromScript(const Config::Path &path)
+{
+  // read script from file
+  boost::shared_array<char> script=Commons::Filesystem::readTextFile(path);
+  assert(script.get()!=NULL);
+  // run this script
+  try
+  {
+    // build derived object's instance
+    PythonAPI::Environment env;
+    env.importModule("persistency");
+    env.importModule("filter");
+    env.run(script.get());
+    // get the result
+    BasePtr ptr=env.var<BasePtr>("derived");
+    env.run("derived=None");
+    return BasePtrNN(ptr);
+  }
+  catch(const boost::python::error_already_set&)
+  {
+    PythonAPI::ExceptionHandle eh;
+    eh.rethrow();
+  }
+  // -----
+  assert(!"code should never reach here");
+  throw std::logic_error("code should never reach here");
+} // derivedFromScript()
+} // unnamed namespace
+
+
+
+Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Config &cfg):
+  Filter::Simple::Strategy<DataPtr>( TypeName("python"), name, cfg.getTimeout()),
+  base_( derivedFromScript(cfg.getScriptPath()) )
+{
+  assert(base_.get()!=NULL);
 }
 
 Core::Types::Proc::EntryControlList Strategy::createEntryControlList(void)
@@ -37,13 +74,11 @@ DataPtr Strategy::makeThisEntryUserData(const Node /*n*/) const
 bool Strategy::isEntryInteresting(const NodeEntry /*thisEntry*/) const
 {
   // TODO
-  // return true beacause meta-alert name is always not null
   return true;
 }
 
-Persistency::MetaAlert::Name Strategy::getMetaAlertName(
-                                              const NodeEntry thisEntry,
-                                              const NodeEntry otherEntry) const
+Persistency::MetaAlert::Name Strategy::getMetaAlertName(const NodeEntry thisEntry,
+                                                        const NodeEntry otherEntry) const
 {
   // TODO
   // thisEntry and otherEntry must containt the same meta-alert name
@@ -73,13 +108,11 @@ DataPtr Strategy::makeUserDataForNewNode(const NodeEntry &/*thisEntry*/,
 
 void Strategy::postProcessNode(Node &/*n*/, Filter::BackendFacade &/*bf*/) const
 {
-  // TODO
   // nothing to be done here
 }
 
 void Strategy::postProcessNode(NodeEntry &/*entry*/, const NodeEntry &/*added*/, BackendFacade &/*bf*/) const
 {
-  // TODO
   // nothing to be done here
 }
 

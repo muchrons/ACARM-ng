@@ -11,6 +11,7 @@
 #include "Filter/Simple/Strategy.hpp"
 #include "Filter/Python/Data.hpp"
 #include "Filter/Python/Config.hpp"
+#include "Filter/Python/Base.hpp"
 
 
 namespace Filter
@@ -51,6 +52,8 @@ private:
                                       const Node       newNode) const;
   virtual void postProcessNode(Node &n, Filter::BackendFacade &bf) const;
   virtual void postProcessNode(NodeEntry &entry, const NodeEntry &added, BackendFacade &bf) const;
+
+  BasePtrNN base_;
 }; // class Strategy
 
 } // namespace Python

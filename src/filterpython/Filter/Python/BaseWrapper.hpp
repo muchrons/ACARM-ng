@@ -20,7 +20,15 @@ class BaseWrapper: public Base,
                    public boost::python::wrapper<Base>
 {
 private:
-  //virtual void filterImpl(PythonAPI::Persistency::MetaAlert ma);
+  virtual bool isEntryInterestingImpl(PyMetaAlert thisEntry, DataPtr data) const;
+  virtual std::string getMetaAlertNameImpl(PyMetaAlert thisEntry,
+                                           DataPtr     thisEntryData,
+                                           PyMetaAlert otherEntry,
+                                           DataPtr     otherEntryData) const;
+  virtual bool canCorrelateImpl(PyMetaAlert thisEntry,
+                                DataPtr     thisEntryData,
+                                PyMetaAlert otherEntry,
+                                DataPtr     otherEntryData) const;
 }; // class BaseWrapper
 
 } // namespace Python

@@ -23,12 +23,14 @@ struct TestClass: public TestStubs
 {
   TestClass(void):
     sampleLeaf_( makeNewLeaf( makeNewAlert("some alert") ) ),
-    s_(InstanceName("somename"), Config(123, "testdata/do_nothing.py"))
+    n_("somename"),
+    s_(n_, Config(123, "testdata/do_nothing.py"))
   {
   }
 
   GraphNodePtrNN         sampleLeaf_;
   Strategy::ChangedNodes changed_;
+  const InstanceName     n_;
   Strategy               s_;
 };
 
@@ -41,6 +43,22 @@ factory tf("Filter/Python/Strategy");
 namespace tut
 {
 
+// test error when sript does not declare revied object
+template<>
+template<>
+void testObj::test<1>(void)
+{
+  const Config c(11, "testdata/null_ptr.py");
+  try
+  {
+    Strategy s(n_, c);
+    fail("no exception throw when unable to build derived class");
+  }
+  catch(const Commons::ExceptionUnexpectedNULL&)
+  {
+    // this is expected
+  }
+}
 
 /*
 // test correlation of two alerts
