@@ -133,9 +133,9 @@ following appenders are available:
 
   * multiappender - writes to given appenders (facade)
 <multiappender name="writetothem">
-  <appender>filelog</appender>
+  <forward>filelog</forward>
   <!-- ... -->
-  <appender>stdout</appender>
+  <forward>stdout</forward>
 </multiappender>
 
   * null - discards all logs, regardless of their priority
@@ -363,6 +363,7 @@ following inputs are available:
               regarding Prelude-Manager configuration and sensors registration
               refer Prelude-Manager's manual.
 <prelude name="myprelude1">
+  <heartbeat>400</heartbeat>                        <!-- timeout for prelude heartbeats, in seconds -->
   <profile>acarm-ng_profile</profile>               <!-- profile created for prelude "reading-sensor": ACARM-ng -->
   <config>/etc/prelude/default/client.conf</config> <!-- client config for prelude -->
 </prelude>
