@@ -2,8 +2,8 @@
  * Base.hpp
  *
  */
-#ifndef INCLUDE_TRIGGER_BASE_HPP_FILE
-#define INCLUDE_TRIGGER_BASE_HPP_FILE
+#ifndef INCLUDE_TRIGGER_PYTHON_BASE_HPP_FILE
+#define INCLUDE_TRIGGER_PYTHON_BASE_HPP_FILE
 
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
