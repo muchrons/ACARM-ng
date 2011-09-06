@@ -21,7 +21,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void)
   {
-    env_.importModule("filter");
+    env_.importModule("filterapi");
     //env_.run("from persistency import *");
   }
 
@@ -42,7 +42,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.run("from filter import DataWrapper");
+  env_.run("from filterapi import DataWrapper");
 }
 
 // try making an instance

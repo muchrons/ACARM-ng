@@ -31,7 +31,7 @@ BasePtrNN derivedFromScript(const Config::Path &path)
     // build derived object's instance
     PythonAPI::Environment env;
     env.importModule("persistency");
-    env.importModule("filter");
+    env.importModule("filterapi");
     env.run(script.get());
     // get the result
     BasePtr ptr=env.var<BasePtr>("derived");

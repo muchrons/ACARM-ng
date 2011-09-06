@@ -27,8 +27,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.importModule("filter");
-  //env_.run("from filter import *");
+  env_.importModule("filterapi");
+  //env_.run("from filterapi import *");
 }
 
 } // namespace tut

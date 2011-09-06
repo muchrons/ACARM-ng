@@ -1,6 +1,6 @@
 ##
 # class that does nothing
-class InvalidPythonFilter(filter.BaseWrapper):
+class InvalidPythonFilter(filterapi.BaseWrapper):
   ##
   # method that is never called
   def noUsed(self):
