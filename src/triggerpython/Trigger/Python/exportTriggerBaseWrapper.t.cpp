@@ -1,5 +1,5 @@
 /*
- * exportBaseWrapper.t.cpp
+ * exportTriggerBaseWrapper.t.cpp
  *
  */
 #include <tut.h>
@@ -7,11 +7,11 @@
 
 #include "PythonAPI/Python.hpp"
 #include "PythonAPI/Environment.hpp"
-#include "Filter/Python/BaseWrapper.hpp"
+#include "Trigger/Python/TriggerBaseWrapper.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
-using namespace Filter::Python;
+using namespace Trigger::Python;
 using namespace TestHelpers::Persistency;
 
 
@@ -21,7 +21,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void)
   {
-    env_.importModule("filterapi");
+    env_.importModule("triggerapi");
     //env_.run("from persistency import *");
   }
 
@@ -31,7 +31,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Filter/Python/exportBaseWrapper");
+factory tf("Trigger/Python/exportTriggerBaseWrapper");
 } // unnamed namespace
 
 namespace tut
@@ -42,21 +42,20 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.run("from filterapi import BaseWrapper");
+  env_.run("from triggerapi import TriggerBaseWrapper");
 }
 
-/*
 // try making an instance
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  env_.run("tmp=BaseWrapper()");
-  BasePtr ptr=env_.var<BasePtr>("tmp");
+  env_.run("tmp=TriggerBaseWrapper()");
+  TriggerBasePtr ptr=env_.var<TriggerBasePtr>("tmp");
   ensure("pointer is NULL", ptr.get()!=NULL);
   try
   {
-    ptr->filter(makeNewLeaf());
+    ptr->trigger(makeNewLeaf());
     fail("call didn't throw on non-existing override method");
   }
   catch(const ExceptionNoImplementation&)
@@ -64,6 +63,5 @@ void testObj::test<2>(void)
     // this is expected
   }
 }
-*/
 
 } // namespace tut

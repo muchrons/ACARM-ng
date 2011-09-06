@@ -1,9 +1,9 @@
 /*
- * Base.hpp
+ * TriggerBase.hpp
  *
  */
-#ifndef INCLUDE_TRIGGER_PYTHON_BASE_HPP_FILE
-#define INCLUDE_TRIGGER_PYTHON_BASE_HPP_FILE
+#ifndef INCLUDE_TRIGGER_PYTHON_TRIGGERBASE_HPP_FILE
+#define INCLUDE_TRIGGER_PYTHON_TRIGGERBASE_HPP_FILE
 
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
@@ -21,12 +21,12 @@ namespace Python
 
 /** \brief base interface for strategy to operate on.
  */
-class Base: private boost::noncopyable
+class TriggerBase: private boost::noncopyable
 {
 public:
   /** \brief ensure secure, polymorphic destruction.
    */
-  virtual ~Base(void);
+  virtual ~TriggerBase(void);
   /** \brief forward call to the implementaiton.
    *  \param n node to process (trigger).
    */
@@ -35,7 +35,7 @@ public:
 protected:
   /** \brief creates instance.
    */
-  Base(void);
+  TriggerBase(void);
 
   const Logger::Node log_;  ///< logger to use
 
@@ -44,11 +44,11 @@ private:
    *  \param ma proxy object to access node.
    */
   virtual void triggerImpl(PythonAPI::Persistency::MetaAlert ma) = 0;
-}; // class Base
+}; // class TriggerBase
 
 
-typedef boost::shared_ptr<Base>         BasePtr;
-typedef Commons::SharedPtrNotNULL<Base> BasePtrNN;
+typedef boost::shared_ptr<TriggerBase>         TriggerBasePtr;
+typedef Commons::SharedPtrNotNULL<TriggerBase> TriggerBasePtrNN;
 
 } // namespace Python
 } // namespace Trigger

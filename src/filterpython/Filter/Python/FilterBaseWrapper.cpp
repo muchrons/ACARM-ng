@@ -1,11 +1,11 @@
 /*
- * BaseWrapper.cpp
+ * FilterBaseWrapper.cpp
  *
  */
 #include "Logger/Logger.hpp"
 #include "PythonAPI/GlobalLock.hpp"
 #include "PythonAPI/ExceptionHandle.hpp"
-#include "Filter/Python/BaseWrapper.hpp"
+#include "Filter/Python/FilterBaseWrapper.hpp"
 
 // TODO: think about some meanof reducing c&p code (limitation is number of arguments to f()).
 
@@ -14,7 +14,7 @@ namespace Filter
 namespace Python
 {
 
-bool BaseWrapper::isEntryInterestingImpl(PyMetaAlert thisEntry, DataPtr data) const
+bool FilterBaseWrapper::isEntryInterestingImpl(PyMetaAlert thisEntry, DataPtr data) const
 {
   PythonAPI::GlobalLock lock;
   try
@@ -43,10 +43,10 @@ bool BaseWrapper::isEntryInterestingImpl(PyMetaAlert thisEntry, DataPtr data) co
 }
 
 
-std::string BaseWrapper::getMetaAlertNameImpl(PyMetaAlert thisEntry,
-                                              DataPtr     thisEntryData,
-                                              PyMetaAlert otherEntry,
-                                              DataPtr     otherEntryData) const
+std::string FilterBaseWrapper::getMetaAlertNameImpl(PyMetaAlert thisEntry,
+                                                    DataPtr     thisEntryData,
+                                                    PyMetaAlert otherEntry,
+                                                    DataPtr     otherEntryData) const
 {
   PythonAPI::GlobalLock lock;
   try
@@ -76,10 +76,10 @@ std::string BaseWrapper::getMetaAlertNameImpl(PyMetaAlert thisEntry,
 }
 
 
-bool BaseWrapper::canCorrelateImpl(PyMetaAlert thisEntry,
-                                   DataPtr     thisEntryData,
-                                   PyMetaAlert otherEntry,
-                                   DataPtr     otherEntryData) const
+bool FilterBaseWrapper::canCorrelateImpl(PyMetaAlert thisEntry,
+                                         DataPtr     thisEntryData,
+                                         PyMetaAlert otherEntry,
+                                         DataPtr     otherEntryData) const
 {
   PythonAPI::GlobalLock lock;
   try
@@ -109,7 +109,7 @@ bool BaseWrapper::canCorrelateImpl(PyMetaAlert thisEntry,
 }
 
 
-DataPtr BaseWrapper::makeThisEntryUserDataImpl(PyMetaAlert n) const
+DataPtr FilterBaseWrapper::makeThisEntryUserDataImpl(PyMetaAlert n) const
 {
   PythonAPI::GlobalLock lock;
   try
@@ -137,11 +137,11 @@ DataPtr BaseWrapper::makeThisEntryUserDataImpl(PyMetaAlert n) const
   throw std::logic_error("code should never reach here");
 }
 
-DataPtr BaseWrapper::makeUserDataForNewNodeImpl(PyMetaAlert thisEntry,
-                                                DataPtr     thisEntryData,
-                                                PyMetaAlert otherEntry,
-                                                DataPtr     otherEntryData,
-                                                PyMetaAlert newNode) const
+DataPtr FilterBaseWrapper::makeUserDataForNewNodeImpl(PyMetaAlert thisEntry,
+                                                      DataPtr     thisEntryData,
+                                                      PyMetaAlert otherEntry,
+                                                      DataPtr     otherEntryData,
+                                                      PyMetaAlert newNode) const
 {
   PythonAPI::GlobalLock lock;
   try

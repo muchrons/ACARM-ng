@@ -1,9 +1,9 @@
 /*
- * Base.hpp
+ * FilterBase.hpp
  *
  */
-#ifndef INCLUDE_FILTER_PYTHON_BASE_HPP_FILE
-#define INCLUDE_FILTER_PYTHON_BASE_HPP_FILE
+#ifndef INCLUDE_FILTER_PYTHON_FILTERBASE_HPP_FILE
+#define INCLUDE_FILTER_PYTHON_FILTERBASE_HPP_FILE
 
 #include <string>
 #include <boost/shared_ptr.hpp>
@@ -23,12 +23,12 @@ namespace Python
 
 /** \brief base interface for strategy to operate on.
  */
-class Base: private boost::noncopyable
+class FilterBase: private boost::noncopyable
 {
 public:
   /** \brief ensure secure, polymorphic destruction.
    */
-  virtual ~Base(void);
+  virtual ~FilterBase(void);
 
   /** \brief call checking if given entry is interesting.
    *  \param thisEntry entry to be checked.
@@ -87,7 +87,7 @@ protected:
 
   /** \brief creates instance.
    */
-  Base(void);
+  FilterBase(void);
 
   const Logger::Node log_;  ///< logger to use
 
@@ -107,11 +107,11 @@ private:
                                              PyMetaAlert otherEntry,
                                              DataPtr     otherEntryData,
                                              PyMetaAlert newNode) const = 0;
-}; // class Base
+}; // class FilterBase
 
 
-typedef boost::shared_ptr<Base>         BasePtr;
-typedef Commons::SharedPtrNotNULL<Base> BasePtrNN;
+typedef boost::shared_ptr<FilterBase>         FilterBasePtr;
+typedef Commons::SharedPtrNotNULL<FilterBase> FilterBasePtrNN;
 
 } // namespace Python
 } // namespace Filter

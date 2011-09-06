@@ -1,6 +1,6 @@
 ##
 # class that does nothing
-class EmptyPythonTrigger(trigger.BaseWrapper):
+class EmptyPythonTrigger(triggerapi.TriggerBaseWrapper):
   ##
   # implementation of virtual call
   def triggerImpl(self, ma):

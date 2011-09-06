@@ -1,6 +1,6 @@
 ##
 # class that does nothing
-class EmptyPythonFilter(filterapi.BaseWrapper):
+class EmptyPythonFilter(filterapi.FilterBaseWrapper):
 
   ##
   # check for given entry

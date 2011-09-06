@@ -1,12 +1,12 @@
 /*
- * BaseWrapper.hpp
+ * FilterBaseWrapper.hpp
  *
  */
-#ifndef INCLUDE_FILTER_PYTHON_BASEWRAPPER_HPP_FILE
-#define INCLUDE_FILTER_PYTHON_BASEWRAPPER_HPP_FILE
+#ifndef INCLUDE_FILTER_PYTHON_FILTERBASEWRAPPER_HPP_FILE
+#define INCLUDE_FILTER_PYTHON_FILTERBASEWRAPPER_HPP_FILE
 
 #include "PythonAPI/Python.hpp"
-#include "Filter/Python/Base.hpp"
+#include "Filter/Python/FilterBase.hpp"
 #include "Filter/Python/ExceptionNoImplementation.hpp"
 
 namespace Filter
@@ -16,8 +16,8 @@ namespace Python
 
 /** \brief wrapper for python code.
  */
-class BaseWrapper: public Base,
-                   public boost::python::wrapper<Base>
+class FilterBaseWrapper: public FilterBase,
+                         public boost::python::wrapper<FilterBase>
 {
 private:
   virtual bool isEntryInterestingImpl(PyMetaAlert thisEntry, DataPtr data) const;
@@ -35,7 +35,7 @@ private:
                                              PyMetaAlert otherEntry,
                                              DataPtr     otherEntryData,
                                              PyMetaAlert newNode) const;
-}; // class BaseWrapper
+}; // class FilterBaseWrapper
 
 } // namespace Python
 } // namespace Filter

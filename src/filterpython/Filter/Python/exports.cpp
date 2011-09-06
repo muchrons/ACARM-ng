@@ -4,13 +4,13 @@
  */
 #include "PythonAPI/Python.hpp"
 #include "PythonAPI/Environment.hpp"
-#include "Filter/Python/exportBaseWrapper.hpp"
+#include "Filter/Python/exportFilterBaseWrapper.hpp"
 #include "Filter/Python/exportDataWrapper.hpp"
 
 // export
 BOOST_PYTHON_MODULE(filterapi)
 {
-  Filter::Python::exportBaseWrapper();
+  Filter::Python::exportFilterBaseWrapper();
   Filter::Python::exportDataWrapper();
 }
 

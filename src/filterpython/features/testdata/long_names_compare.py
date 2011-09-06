@@ -2,12 +2,12 @@ import re
 
 ##
 # class that does nothing
-class LongNamesComparePythonFilter(filterapi.BaseWrapper):
+class LongNamesComparePythonFilter(filterapi.FilterBaseWrapper):
 
   ##
   # create object
   def __init__(self):
-    filterapi.BaseWrapper.__init__(self)
+    filterapi.FilterBaseWrapper.__init__(self)
     ## prefix for meta-alerts' names
     self.prefix="[python] /script/ "
 

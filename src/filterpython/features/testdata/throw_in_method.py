@@ -1,6 +1,6 @@
 ##
 # class that rises execption in all methods
-class MoreExceptionalPythonFilter(filterapi.BaseWrapper):
+class MoreExceptionalPythonFilter(filterapi.FilterBaseWrapper):
 
   ##
   # check for given entry

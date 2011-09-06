@@ -1,10 +1,10 @@
 ##
 # test class that performs counting of calls
-class CounterPythonTrigger(trigger.BaseWrapper):
+class CounterPythonTrigger(triggerapi.TriggerBaseWrapper):
   ##
   # c-tor setting default values for start
   def __init__(self):
-    trigger.BaseWrapper.__init__(self)
+    triggerapi.TriggerBaseWrapper.__init__(self)
     ## calls counter
     self.counter=0
   ##

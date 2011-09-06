@@ -61,7 +61,7 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   const ThresholdConfig thCfg(sevTh, cntTh);
 
   // trigger name
-  const std::string &name    =fc["name"];
+  const std::string &name=fc["name"];
   LOGMSG_INFO_S(log_)<<"setting trigger \""<<getTypeName()<<"\" name to \""<<name<<"\"";
 
   // defile output type

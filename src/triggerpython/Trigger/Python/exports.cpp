@@ -4,18 +4,18 @@
  */
 #include "PythonAPI/Python.hpp"
 #include "PythonAPI/Environment.hpp"
-#include "Trigger/Python/exportBaseWrapper.hpp"
+#include "Trigger/Python/exportTriggerBaseWrapper.hpp"
 
 // export
-BOOST_PYTHON_MODULE(trigger)
+BOOST_PYTHON_MODULE(triggerapi)
 {
-  Trigger::Python::exportBaseWrapper();
+  Trigger::Python::exportTriggerBaseWrapper();
 }
 
 // register
 namespace
 {
 // it needs to be imported before initializing environment
-PythonAPI::Environment::StaticImporter g_import("trigger", inittrigger);
-//Trigger::Environment::StaticImporter g_import("trigger", PyInit_trigger);
+PythonAPI::Environment::StaticImporter g_import("triggerapi", inittriggerapi);
+//Trigger::Environment::StaticImporter g_import("triggerapi", PyInit_triggerapi);
 } // unnamed namespace

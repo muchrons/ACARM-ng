@@ -1,17 +1,17 @@
 /*
- * BaseWrapper.cpp
+ * TriggerBaseWrapper.cpp
  *
  */
 #include "PythonAPI/GlobalLock.hpp"
 #include "PythonAPI/ExceptionHandle.hpp"
-#include "Trigger/Python/BaseWrapper.hpp"
+#include "Trigger/Python/TriggerBaseWrapper.hpp"
 
 namespace Trigger
 {
 namespace Python
 {
 
-void BaseWrapper::triggerImpl(PythonAPI::Persistency::MetaAlert ma)
+void TriggerBaseWrapper::triggerImpl(PythonAPI::Persistency::MetaAlert ma)
 {
   PythonAPI::GlobalLock lock;
   try
