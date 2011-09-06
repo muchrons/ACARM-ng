@@ -10,7 +10,6 @@
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace std;
-using namespace PythonAPI;
 using namespace Filter::Python;
 
 int main(int argc, const char * const *argv)
@@ -24,21 +23,21 @@ int main(int argc, const char * const *argv)
   try
   {
     cout<<"initializing..."<<endl;
-    const Config                           cfg( Config::Path(argv[1]) );
+    const Config                           cfg(120, argv[1]);
     const Core::Types::Proc::InstanceName  name("mtest python script");
     cout<<"running user's code..."<<endl;
     Strategy s(name, cfg);
 
     {
       cout<<"processing sample meta-alert (node)..."<<endl;
-      Filter::Strategy::ChangedNodes cn;
+      Strategy::ChangedNodes cn;
       s.process(TestHelpers::Persistency::makeNewTree1(), cn);
       cout<<"changed nodes: "<<cn.size()<<endl;
     }
 
     {
       cout<<"processing sample meta-alert (leaf)..."<<endl;
-      Filter::Strategy::ChangedNodes cn;
+      Strategy::ChangedNodes cn;
       s.process(TestHelpers::Persistency::makeNewLeaf(), cn);
       cout<<"changed nodes: "<<cn.size()<<endl;
     }
