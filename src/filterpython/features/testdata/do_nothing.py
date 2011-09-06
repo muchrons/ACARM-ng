@@ -9,7 +9,7 @@ class EmptyPythonFilter(filter.BaseWrapper):
 
   ##
   # get name for new meta-alert
-  def canCorrelateImpl(self, maThis, thisData, maOther, otherData):
+  def getMetaAlertNameImpl(self, maThis, thisData, maOther, otherData):
     return "hitchhiker's guide to the galaxy"
 
   ##
