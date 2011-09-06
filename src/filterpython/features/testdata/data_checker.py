@@ -17,7 +17,7 @@ class SomeTestDataImpl(filterapi.DataWrapper):
 
 ##
 # class that does nothing
-class DataCheckerPythonFilter(filterapi.FilterBaseWrapper):
+class DataCheckerPythonFilter(filterapi.BaseWrapper):
 
   ##
   # check for given entry

@@ -20,7 +20,7 @@ namespace Python
 
 namespace
 {
-FilterBasePtrNN derivedFromScript(const Config::Path &path)
+BasePtrNN derivedFromScript(const Config::Path &path)
 {
   // read script from file
   boost::shared_array<char> script=Commons::Filesystem::readTextFile(path);
@@ -34,9 +34,9 @@ FilterBasePtrNN derivedFromScript(const Config::Path &path)
     env.importModule("filterapi");
     env.run(script.get());
     // get the result
-    FilterBasePtr ptr=env.var<FilterBasePtr>("derived");
+    BasePtr ptr=env.var<BasePtr>("derived");
     env.run("derived=None");
-    return FilterBasePtrNN(ptr);
+    return BasePtrNN(ptr);
   }
   catch(const boost::python::error_already_set&)
   {

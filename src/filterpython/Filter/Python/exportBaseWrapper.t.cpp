@@ -1,5 +1,5 @@
 /*
- * exportFilterBaseWrapper.t.cpp
+ * exportBaseWrapper.t.cpp
  *
  */
 #include <tut.h>
@@ -7,7 +7,7 @@
 
 #include "PythonAPI/Python.hpp"
 #include "PythonAPI/Environment.hpp"
-#include "Filter/Python/FilterBaseWrapper.hpp"
+#include "Filter/Python/BaseWrapper.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -31,7 +31,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Filter/Python/exportFilterBaseWrapper");
+factory tf("Filter/Python/exportBaseWrapper");
 } // unnamed namespace
 
 namespace tut
@@ -42,7 +42,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.run("from filterapi import FilterBaseWrapper");
+  env_.run("from filterapi import BaseWrapper");
 }
 
 /*
@@ -51,8 +51,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  env_.run("tmp=FilterBaseWrapper()");
-  FilterBasePtr ptr=env_.var<FilterBasePtr>("tmp");
+  env_.run("tmp=BaseWrapper()");
+  BasePtr ptr=env_.var<BasePtr>("tmp");
   ensure("pointer is NULL", ptr.get()!=NULL);
   try
   {

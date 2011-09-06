@@ -1,24 +1,24 @@
 /*
- * TriggerBase.cpp
+ * Base.cpp
  *
  */
-#include "Trigger/Python/TriggerBase.hpp"
+#include "Trigger/Python/Base.hpp"
 
 namespace Trigger
 {
 namespace Python
 {
 
-TriggerBase::TriggerBase(void):
+Base::Base(void):
   log_("trigger.python.base")
 {
 }
 
-TriggerBase::~TriggerBase(void)
+Base::~Base(void)
 {
 }
 
-void TriggerBase::trigger(const Simple::Strategy::ConstNode &n)
+void Base::trigger(const Simple::Strategy::ConstNode &n)
 {
   const PythonAPI::Persistency::MetaAlert ma(n);
   LOGMSG_DEBUG_S(log_)<<"node "<<n->getMetaAlert()->getID().get()<<" wrapped as string facade";

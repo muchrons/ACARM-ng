@@ -1,26 +1,26 @@
 /*
- * FilterBase.cpp
+ * Base.cpp
  *
  */
 #include "Logger/Logger.hpp"
-#include "Filter/Python/FilterBase.hpp"
+#include "Filter/Python/Base.hpp"
 
 namespace Filter
 {
 namespace Python
 {
 
-FilterBase::FilterBase(void):
-  log_("filter.python.filterbase")
+Base::Base(void):
+  log_("filter.python.base")
 {
 }
 
-FilterBase::~FilterBase(void)
+Base::~Base(void)
 {
 }
 
 
-bool FilterBase::isEntryInteresting(Persistency::ConstGraphNodePtrNN thisEntry, DataPtr data) const
+bool Base::isEntryInteresting(Persistency::ConstGraphNodePtrNN thisEntry, DataPtr data) const
 {
   const PyMetaAlert ma(thisEntry);
   LOGMSG_DEBUG_S(log_)<<"node "<<thisEntry->getMetaAlert()->getID().get()<<" wrapped as string facade";
@@ -28,10 +28,10 @@ bool FilterBase::isEntryInteresting(Persistency::ConstGraphNodePtrNN thisEntry, 
 }
 
 
-Persistency::MetaAlert::Name FilterBase::getMetaAlertName(Persistency::ConstGraphNodePtrNN thisEntry,
-                                                          DataPtr                          thisEntryData,
-                                                          Persistency::ConstGraphNodePtrNN otherEntry,
-                                                          DataPtr                          otherEntryData) const
+Persistency::MetaAlert::Name Base::getMetaAlertName(Persistency::ConstGraphNodePtrNN thisEntry,
+                                                    DataPtr                          thisEntryData,
+                                                    Persistency::ConstGraphNodePtrNN otherEntry,
+                                                    DataPtr                          otherEntryData) const
 {
   const PyMetaAlert maThis(thisEntry);
   LOGMSG_DEBUG_S(log_)<<"node "<<thisEntry->getMetaAlert()->getID().get()<<" wrapped as string facade";
@@ -43,10 +43,10 @@ Persistency::MetaAlert::Name FilterBase::getMetaAlertName(Persistency::ConstGrap
 }
 
 
-bool FilterBase::canCorrelate(Persistency::ConstGraphNodePtrNN thisEntry,
-                              DataPtr                          thisEntryData,
-                              Persistency::ConstGraphNodePtrNN otherEntry,
-                              DataPtr                          otherEntryData) const
+bool Base::canCorrelate(Persistency::ConstGraphNodePtrNN thisEntry,
+                        DataPtr                          thisEntryData,
+                        Persistency::ConstGraphNodePtrNN otherEntry,
+                        DataPtr                          otherEntryData) const
 {
   const PyMetaAlert maThis(thisEntry);
   LOGMSG_DEBUG_S(log_)<<"node "<<thisEntry->getMetaAlert()->getID().get()<<" wrapped as string facade";
@@ -56,18 +56,18 @@ bool FilterBase::canCorrelate(Persistency::ConstGraphNodePtrNN thisEntry,
   return canCorrelateImpl(maThis, thisEntryData, maOther, otherEntryData);
 }
 
-DataPtr FilterBase::makeThisEntryUserData(Persistency::ConstGraphNodePtrNN n) const
+DataPtr Base::makeThisEntryUserData(Persistency::ConstGraphNodePtrNN n) const
 {
   const PyMetaAlert ma(n);
   LOGMSG_DEBUG_S(log_)<<"node "<<n->getMetaAlert()->getID().get()<<" wrapped as string facade";
   return makeThisEntryUserDataImpl(ma);
 }
 
-DataPtr FilterBase::makeUserDataForNewNode(Persistency::ConstGraphNodePtrNN thisEntry,
-                                           DataPtr                          thisEntryData,
-                                           Persistency::ConstGraphNodePtrNN otherEntry,
-                                           DataPtr                          otherEntryData,
-                                           Persistency::ConstGraphNodePtrNN newNode) const
+DataPtr Base::makeUserDataForNewNode(Persistency::ConstGraphNodePtrNN thisEntry,
+                                     DataPtr                          thisEntryData,
+                                     Persistency::ConstGraphNodePtrNN otherEntry,
+                                     DataPtr                          otherEntryData,
+                                     Persistency::ConstGraphNodePtrNN newNode) const
 {
   const PyMetaAlert maThis(thisEntry);
   LOGMSG_DEBUG_S(log_)<<"node "<<thisEntry->getMetaAlert()->getID().get()<<" wrapped as string facade";

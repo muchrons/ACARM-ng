@@ -19,7 +19,7 @@ namespace Python
 
 namespace
 {
-TriggerBasePtrNN derivedFromScript(const Config::Path &path)
+BasePtrNN derivedFromScript(const Config::Path &path)
 {
   // read script from file
   boost::shared_array<char> script=Commons::Filesystem::readTextFile(path);
@@ -33,9 +33,9 @@ TriggerBasePtrNN derivedFromScript(const Config::Path &path)
     env.importModule("triggerapi");
     env.run(script.get());
     // get the result
-    boost::shared_ptr<TriggerBase> ptr=env.var< boost::shared_ptr<TriggerBase> >("derived");
+    boost::shared_ptr<Base> ptr=env.var< boost::shared_ptr<Base> >("derived");
     env.run("derived=None");
-    return TriggerBasePtrNN(ptr);
+    return BasePtrNN(ptr);
   }
   catch(const boost::python::error_already_set&)
   {

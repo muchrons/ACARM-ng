@@ -1,6 +1,6 @@
 ##
 # class that prints some of the meta alerts content
-class EmptyPythonTrigger(triggerapi.TriggerBaseWrapper):
+class EmptyPythonTrigger(triggerapi.BaseWrapper):
   ##
   # implementation of virtual call
   def triggerImpl(self, ma):

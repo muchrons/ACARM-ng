@@ -7,7 +7,7 @@
 
 #include "Trigger/Simple/Strategy.hpp"
 #include "Trigger/Python/Config.hpp"
-#include "Trigger/Python/TriggerBase.hpp"
+#include "Trigger/Python/Base.hpp"
 
 namespace Trigger
 {
@@ -28,7 +28,7 @@ public:
 private:
   virtual void triggerImpl(const ConstNode &n);
 
-  TriggerBasePtrNN impl_;
+  BasePtrNN impl_;
 }; // class Strategy
 
 } // namespace Python

@@ -1,11 +1,11 @@
 ##
 # class that rises execption in c-tor
-class ExceptionalPythonFilter(filterapi.FilterBaseWrapper):
+class ExceptionalPythonFilter(filterapi.BaseWrapper):
 
   ##
   # create object
   def __init__(self):
-    filterapi.FilterBaseWrapper.__init__(self)
+    filterapi.BaseWrapper.__init__(self)
     raise Exception("now let's see what happens next...")
 
   ##

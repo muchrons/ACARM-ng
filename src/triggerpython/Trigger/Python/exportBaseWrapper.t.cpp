@@ -1,5 +1,5 @@
 /*
- * exportTriggerBaseWrapper.t.cpp
+ * exportBaseWrapper.t.cpp
  *
  */
 #include <tut.h>
@@ -7,7 +7,7 @@
 
 #include "PythonAPI/Python.hpp"
 #include "PythonAPI/Environment.hpp"
-#include "Trigger/Python/TriggerBaseWrapper.hpp"
+#include "Trigger/Python/BaseWrapper.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
 
@@ -31,7 +31,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Trigger/Python/exportTriggerBaseWrapper");
+factory tf("Trigger/Python/exportBaseWrapper");
 } // unnamed namespace
 
 namespace tut
@@ -42,7 +42,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.run("from triggerapi import TriggerBaseWrapper");
+  env_.run("from triggerapi import BaseWrapper");
 }
 
 // try making an instance
@@ -50,8 +50,8 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  env_.run("tmp=TriggerBaseWrapper()");
-  TriggerBasePtr ptr=env_.var<TriggerBasePtr>("tmp");
+  env_.run("tmp=BaseWrapper()");
+  BasePtr ptr=env_.var<BasePtr>("tmp");
   ensure("pointer is NULL", ptr.get()!=NULL);
   try
   {
