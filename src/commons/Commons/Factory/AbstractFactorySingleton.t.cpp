@@ -68,8 +68,7 @@ struct AbstractFactorySingletonTestClass
   {
     assert(auto1_.get()!=NULL);
     assert(auto2_.get()!=NULL);
-    tut::ensure("invalid names assigned",
-                auto1_->getTypeName()!=auto2_->getTypeName() );
+    tut::ensure("invalid names assigned", auto1_->getTypeName()!=auto2_->getTypeName() );
   }
 
   ~AbstractFactorySingletonTestClass(void)
@@ -100,7 +99,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  TAFS::unregisterBuilder("narf");   // should nto do anything
+  TAFS::unregisterBuilder("narf");   // should not do anything
 }
 
 // test registering two builders and building something

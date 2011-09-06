@@ -101,7 +101,8 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // create and return new handle.
   typedef InterfaceImpl<GG::Strategy, GG::Config> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl( type_, InstanceName(name), GG::Config(account, receivers, thCfg) ) );
+  InterfaceWrapper::InterfaceAutoPtr ptr( new Impl( type_, InstanceName(name), GG::Config(account, receivers, thCfg) ) );
+  return FactoryBuilder::FactoryPtr(new InterfaceWrapper(ptr));
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

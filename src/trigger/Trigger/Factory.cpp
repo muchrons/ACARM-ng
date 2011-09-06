@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "Trigger/Factory.hpp"
 #include "ConfigIO/Singleton.hpp"
 
@@ -14,8 +16,9 @@ TriggersCollection create(Core::Types::SignedNodesFifo &outputQueue)
 
   for(TriggersConfigCollection::const_iterator it=c.begin(); it!=c.end(); ++it)
   {
-    Processor::InterfaceAutoPtr iface( Factory::create( it->getType(), it->getOptions() ) );
-    ProcessorPtrNN trigger( new Processor(outputQueue, iface) );
+    Factory::FactoryPtr wrapper( Factory::create( it->getType(), it->getOptions() ) );
+    assert(wrapper.get()!=NULL);
+    ProcessorPtrNN      trigger( new Processor(outputQueue, wrapper->ptr_) );
     out.push_back(trigger);
   }
 

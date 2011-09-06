@@ -27,8 +27,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.importModule("trigger");
-  //env_.run("from trigger import *");
+  env_.importModule("triggerapi");
+  //env_.run("from triggerapi import *");
 }
 
 } // namespace tut

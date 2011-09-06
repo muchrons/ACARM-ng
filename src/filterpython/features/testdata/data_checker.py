@@ -1,11 +1,11 @@
 ##
 # data class holding one field with ID
-class SomeTestDataImpl(filter.DataWrapper):
+class SomeTestDataImpl(filterapi.DataWrapper):
 
   ##
   # create object
   def __init__(self, id):
-    filter.DataWrapper.__init__(self)
+    filterapi.DataWrapper.__init__(self)
     ## id to save
     self.id=id
 
@@ -17,7 +17,7 @@ class SomeTestDataImpl(filter.DataWrapper):
 
 ##
 # class that does nothing
-class DataCheckerPythonFilter(filter.BaseWrapper):
+class DataCheckerPythonFilter(filterapi.BaseWrapper):
 
   ##
   # check for given entry

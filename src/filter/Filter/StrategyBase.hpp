@@ -15,9 +15,8 @@
 #include "Core/Types/Proc/TypeName.hpp"
 #include "Core/Types/Proc/InstanceName.hpp"
 // this header is not used directly, but it is required for the derived
-// classes to implement special, satic method.
+// classes to implement special, static method.
 #include "Core/Types/Proc/EntryControlList.hpp"
-
 
 namespace Filter
 {

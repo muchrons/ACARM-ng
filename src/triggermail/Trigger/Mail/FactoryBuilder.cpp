@@ -156,7 +156,8 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
     const Config::Authorization  auth(user, pass);
     // create and return new handle, with configured authorization
     LOGMSG_INFO(log_, "account configured with authorization required");
-    return OutPtr( new Impl( type_, InstanceName(name), Mail::Config(thCfg, from, to, serverCfg, auth) ) );
+    InterfaceWrapper::InterfaceAutoPtr ptr( new Impl( type_, InstanceName(name), Mail::Config(thCfg, from, to, serverCfg, auth) ) );
+    return OutPtr(new InterfaceWrapper(ptr));
   } // if(use_auth)
   else
     if( fc.get("password")!=NULL )
@@ -164,7 +165,8 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // create and return new handle, with config without authorization
   LOGMSG_INFO(log_, "account configured without authorization required");
-  return OutPtr( new Impl( type_, InstanceName(name), Mail::Config(thCfg, from, to, serverCfg) ) );
+  InterfaceWrapper::InterfaceAutoPtr ptr( new Impl( type_, InstanceName(name), Mail::Config(thCfg, from, to, serverCfg) ) );
+  return OutPtr(new InterfaceWrapper(ptr));
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

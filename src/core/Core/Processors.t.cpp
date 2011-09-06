@@ -79,7 +79,8 @@ public:
 private:
   virtual FactoryPtr buildImpl(const Options &/*options*/) const
   {
-    return Core::Types::Proc::Processor::InterfaceAutoPtr(new TestFilterInterface);
+    Core::Types::Proc::Processor::InterfaceAutoPtr ptr(new TestFilterInterface);
+    return FactoryPtr(new Filter::InterfaceWrapper(ptr));
   }
 
   virtual const FactoryTypeName &getTypeNameImpl(void) const
@@ -125,7 +126,8 @@ class SomeTriggerBuilder: public Trigger::Factory::TFactoryBuilderBase
   private:
     virtual FactoryPtr buildImpl(const Options &/*options*/) const
     {
-      return Core::Types::Proc::Processor::InterfaceAutoPtr(new TestTriggerInterface);
+      Core::Types::Proc::Processor::InterfaceAutoPtr ptr(new TestTriggerInterface);
+      return FactoryPtr(new Trigger::InterfaceWrapper(ptr));
     }
 
     virtual const FactoryTypeName &getTypeNameImpl(void) const

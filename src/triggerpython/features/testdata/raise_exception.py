@@ -1,6 +1,6 @@
 ##
 # exception raising implementation
-class RaiserPythonTrigger(trigger.BaseWrapper):
+class RaiserPythonTrigger(triggerapi.BaseWrapper):
   ##
   # virtual call implementation - throws when called
   def triggerImpl(self, ma):

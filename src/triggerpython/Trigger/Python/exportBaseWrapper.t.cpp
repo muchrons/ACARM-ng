@@ -21,7 +21,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void)
   {
-    env_.importModule("trigger");
+    env_.importModule("triggerapi");
     //env_.run("from persistency import *");
   }
 
@@ -42,7 +42,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.run("from trigger import BaseWrapper");
+  env_.run("from triggerapi import BaseWrapper");
 }
 
 // try making an instance

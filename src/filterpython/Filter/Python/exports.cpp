@@ -8,7 +8,7 @@
 #include "Filter/Python/exportDataWrapper.hpp"
 
 // export
-BOOST_PYTHON_MODULE(filter)
+BOOST_PYTHON_MODULE(filterapi)
 {
   Filter::Python::exportBaseWrapper();
   Filter::Python::exportDataWrapper();
@@ -18,6 +18,6 @@ BOOST_PYTHON_MODULE(filter)
 namespace
 {
 // it needs to be imported before initializing environment
-PythonAPI::Environment::StaticImporter g_import("filter", initfilter);
-//Filter::Environment::StaticImporter g_import("filter", PyInit_filter);
+PythonAPI::Environment::StaticImporter g_import("filterapi", initfilterapi);
+//Filter::Environment::StaticImporter g_import("filterapi", PyInit_filterapi);
 } // unnamed namespace
