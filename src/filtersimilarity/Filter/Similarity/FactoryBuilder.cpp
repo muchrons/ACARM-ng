@@ -53,7 +53,8 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   // create and return new handle.
   const Strategy::Params params(timeout, similarity);
   typedef InterfaceImpl<Strategy, Strategy::Params> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl(type_, InstanceName(name), params) );
+  InterfaceWrapper::InterfaceAutoPtr ptr( new Impl(type_, InstanceName(name), params) );
+  return FactoryBuilder::FactoryPtr(new InterfaceWrapper(ptr));
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

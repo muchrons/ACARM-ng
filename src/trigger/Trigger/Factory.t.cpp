@@ -122,7 +122,8 @@ private:
 
     ensure("too many elements in collection", it==options.end() );
 
-    return Processor::InterfaceAutoPtr(new TestInterface);
+    InterfaceWrapper::InterfaceAutoPtr ptr(new TestInterface);
+    return FactoryPtr(new InterfaceWrapper(ptr));
   }
 
   virtual const FactoryTypeName &getTypeNameImpl(void) const
@@ -142,7 +143,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  assert( g_rh.isRegistered() && "oops - registration failed" );
+  ensure("oops - registration failed", g_rh.isRegistered());
   ConfigIO::Singleton::get()->rereadConfig("testdata/some_trigger.xml");
   const TriggersCollection fc=create(queue_);
   ensure_equals("no triggers created", fc.size(), 1u);

@@ -2,6 +2,8 @@
  * Factory.cpp
  *
  */
+#include <cassert>
+
 #include "Filter/Factory.hpp"
 #include "ConfigIO/Singleton.hpp"
 
@@ -18,8 +20,9 @@ FiltersCollection create(Core::Types::SignedNodesFifo &outputQueue)
 
   for(FiltersConfigCollection::const_iterator it=c.begin(); it!=c.end(); ++it)
   {
-    Processor::InterfaceAutoPtr iface( Factory::create( it->getType(), it->getOptions() ) );
-    ProcessorPtrNN              filter( new Processor(outputQueue, iface) );
+    Factory::FactoryPtr wrapper( Factory::create( it->getType(), it->getOptions() ) );
+    assert(wrapper.get()!=NULL);
+    ProcessorPtrNN      filter( new Processor(outputQueue, wrapper->ptr_) );
     out.push_back(filter);
   }
 

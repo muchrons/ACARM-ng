@@ -60,7 +60,8 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   // create and return new handle.
   typedef InterfaceImpl<ExtApp::Strategy, ExtApp::Config> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl( type_, InstanceName(name), ExtApp::Config(path, thCfg) ) );
+  InterfaceWrapper::InterfaceAutoPtr impl(new Impl(type_, InstanceName(name), ExtApp::Config(path, thCfg)));
+  return FactoryBuilder::FactoryPtr(new InterfaceWrapper(impl));
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const
