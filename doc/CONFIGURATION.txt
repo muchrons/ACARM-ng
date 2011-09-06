@@ -247,6 +247,75 @@ following filters and parameters are available:
     <priorityDelta>0.8</priorityDelta> <!-- amount to update priority by when correlating -->
   </newevent>
 
+  <!-- calls Python code to perform correlation
+
+       python script defines derived class, that implements required correlation feature
+       and create its instance under 'derived' variable name. ACARM-ng runs this script once
+       in order to obtain inherited class and then uses it from C++ code.
+
+       inherited class must be of a following form:
+
+       ## class implements given interface and runs python code on request.
+       #  structure is done like this: each meta-alert arriving has associated data
+       #  (optional parameter - can be None). this data is filter-specific, not shared
+       #  between other calls.
+       #  for each incoming meta-alert it is checked against every saved one to
+       #  see if they can correlate. if yes, then it is either correlated to create new
+       #  entry (i.e. correlating two leafs) or add correlated meta-alert to already
+       #  correlated entry (i.e. correlating node with leaf/node).
+       class EmptyPythonFilter(filter.BaseWrapper):
+         ## returns True/False when given meta-alert (ma) is interesting and can
+         #  be processed further. if this call returns False given meta-alert will not
+         #  be saved for further correlations.
+         def isEntryInterestingImpl(self, ma, data):
+           return True
+         ## returns name for newly correlated meta-alert. both entries, used for correlation,
+         #  and their data, can be used to generate proper name.
+         def getMetaAlertNameImpl(self, maThis, thisData, maOther, otherData):
+           return "hitchhiker's guide to the galaxy"
+         ## returns True/False when element can be correlated with other one.
+         #  each entry has already computed 'data' elements, that can make check much faster.
+         def canCorrelateImpl(self, maThis, thisData, maOther, otherData):
+           return False
+         ## makes 'data' entry for an incoming meta-alert. this data is then associated with
+         #  it and used for checking if it "interesting" for further processing.
+         def makeThisEntryUserDataImpl(self, ma):
+           return None
+         ## make 'data' entry for a newly correlated node. source nodes, used for correlation,
+         #  are given as a parameters, along with newly correlated entry.
+         def makeUserDataForNewNodeImpl(self, maThis, thisData, maOther, otherData, maNewNode):
+           return None
+
+       it 'data' element is not needed returning 'None' is fine. if some data is to be
+       stored however, it must have proper form:
+
+       ## example data class implementation. it has to be derived from filter.DataWrapper in
+       #  order to be manageable from C++ native code.
+       class SomeTestDataImpl(filter.DataWrapper):
+         ## explicit constructor for this object is optional, though it is reasonable
+         #  to have one. when it is implemented it has to call base-implementation on
+         #  (the Python style), or else strange errors will arose, about Python interpreter
+         #  wrapper being unable to perform some convertions.
+         def __init__(self, something):
+           filter.DataWrapper.__init__(self)
+           ## filed to be saved
+           self.sth=something
+
+       so the final structure of the plugin should look like this:
+       ## optional data implementation class
+       class SomeTestDataImpl(filter.DataWrapper):
+         # implementation goes here...
+       ## correlation engine implementation.
+       class SomePythonFilter(filter.BaseWrapper):
+         # implementation, as described above, goes here...
+       # creating instance of a correlation object
+       derived=SomePythonFilter()
+  -->
+  <python name="snake_correlator">
+    <timeout>42</timeout>               <!-- timeout for observing entry, in seconds -->
+    <script>/path/to/script.py</script> <!-- python script initializing implementation -->
+  </python>
+
 triggers configuration
 ======================
 

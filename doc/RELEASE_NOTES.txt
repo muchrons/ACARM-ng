@@ -1,4 +1,9 @@
 -- dev --
+* Python interface for writing filters has been created.
+* fixed compilation with icc (intel toolchain) on hosts with machine-dependent includes in /usr/include/<machine> implicit directory.
+
+
+-- v0.3.x --
 * Python interface for writing triggers has been created.
 * added support for Python scripts (via Persistency::Facades::StrAccess and PythonAPI interfaces).
 * Prado 3.1.9 introduced for WUI.
