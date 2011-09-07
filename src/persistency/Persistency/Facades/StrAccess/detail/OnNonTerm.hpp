@@ -36,7 +36,7 @@ struct ProcessOnNonTermCollectionImpl: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     assert(p.hasNext());
     typedef typename TParams::template GetHandle<CollectionIndexHandle>::type Action;
@@ -55,7 +55,7 @@ struct ProcessOnNonTermCollectionImpl<false>: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     typedef typename TParams::template GetHandle<T>::type Action;
     return Action::process(e, p);
@@ -73,7 +73,7 @@ struct OnNonTerm: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     // sanity check
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;

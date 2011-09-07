@@ -24,7 +24,7 @@ done
 echo
 if [ "$RET" -ne "0" ]
 then
-  echo "$0: some of the tests FAILED... ($RET groups)"
+  echo "$0: some of the tests FAILED... ($RET group(s))"
 fi
 
 exit $RET

@@ -9,7 +9,6 @@
 
 #include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Alert.hpp"
-#include "Preprocessor/Path.hpp"
 #include "Preprocessor/ExceptionInvalidExpression.hpp"
 
 namespace Preprocessor

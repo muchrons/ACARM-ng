@@ -37,7 +37,7 @@ struct OnMetaAlert: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const GraphNode &e, TParams &p)
+  static bool process(const GraphNode &e, TParams p)
   {
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 

@@ -6,9 +6,7 @@
 
 #include "Commons/Convert.hpp"
 #include "Persistency/GraphNode.hpp"
-#include "Persistency/Facades/StrAccess/Params.hpp"
-#include "Persistency/Facades/StrAccess/DefaultHandleMap.hpp"
-#include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
+#include "Persistency/Facades/StrAccess/StrAccess.hpp"
 #include "PythonAPI/GlobalLock.hpp"
 #include "PythonAPI/Persistency/MetaAlert.hpp"
 
