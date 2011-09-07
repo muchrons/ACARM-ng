@@ -219,7 +219,7 @@ bool Rule::check(const Persistency::Host &e, PathCit t) const
     return check( cast( (e.getNetmask()==NULL)?NULL:e.getNetmask() ), t+1 );
   if(*t=="os")
     return check( cast( e.getOperatingSystem().get() ), t+1 );
-  if(*t=="url")
+  if(*t=="referenceurl")
     return check( e.getReferenceURL(), t+1 );
   if(*t=="name")
     return check( cast( e.getName().get() ), t+1 );
@@ -248,7 +248,7 @@ bool Rule::check(const Persistency::Service &e, PathCit t) const
     return check( cast( e.getPort().get() ), t+1 );
   if(*t=="protocol")
     return check( cast( e.getProtocol().get() ), t+1 );
-  if(*t=="url")
+  if(*t=="referenceurl")
     return check( e.getReferenceURL(), t+1 );
 
   throwInvalid(SYSTEM_SAVE_LOCATION, t);
@@ -279,7 +279,7 @@ bool Rule::check(const Persistency::Process &e, PathCit t) const
     return check( cast( e.getUsername().get() ), t+1 );
   if(*t=="arguments")
     return check( cast( e.getParameters() ), t+1 );
-  if(*t=="url")
+  if(*t=="referenceurl")
     return check( e.getReferenceURL(), t+1 );
 
   throwInvalid(SYSTEM_SAVE_LOCATION, t);

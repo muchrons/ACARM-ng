@@ -261,7 +261,7 @@ template<>
 template<>
 void testObj::test<18>(void)
 {
-  const Rule r( Path("alert.sources.*.url.name"), Rule::Mode::EQUALS, "some name" );
+  const Rule r( Path("alert.sources.*.referenceurl.name"), Rule::Mode::EQUALS, "some name" );
   ensure("invalid url's name", r.compute(alert_)==true );
 }
 
@@ -270,7 +270,7 @@ template<>
 template<>
 void testObj::test<19>(void)
 {
-  const Rule r( Path("alert.sources.*.url.url"), Rule::Mode::EQUALS, "http://gnu.org" );
+  const Rule r( Path("alert.sources.*.referenceurl.url"), Rule::Mode::EQUALS, "http://gnu.org" );
   ensure("invalid url's adderss", r.compute(alert_)==true );
 }
 
@@ -315,7 +315,7 @@ template<>
 template<>
 void testObj::test<24>(void)
 {
-  const Rule r( Path("alert.sources.*.services.*.url.name"), Rule::Mode::EQUALS, "some name" );
+  const Rule r( Path("alert.sources.*.services.*.referenceurl.name"), Rule::Mode::EQUALS, "some name" );
   ensure("invalid service's url name", r.compute(alert_)==true );
 }
 
@@ -324,7 +324,7 @@ template<>
 template<>
 void testObj::test<25>(void)
 {
-  const Rule r( Path("alert.sources.*.processes.*.url.name"), Rule::Mode::EQUALS, "some name" );
+  const Rule r( Path("alert.sources.*.processes.*.referenceurl.name"), Rule::Mode::EQUALS, "some name" );
   ensure("invalid process' url name", r.compute(alert_)==true );
 }
 
