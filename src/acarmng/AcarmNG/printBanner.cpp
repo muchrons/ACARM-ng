@@ -41,7 +41,7 @@ void printBanner(const char *app)
   assert(app!=NULL);
   // TODO: rework this code to take version from the VCS
   // TODO: rework this code to generate year automatically based on __DATE__ constant
-  cout << app << ": ACARM-ng v0.3.0 (built on " << __DATE__ << " " << __TIME__ << ")" << endl;
+  cout << app << ": ACARM-ng v0.3.1 (built on " << __DATE__ << " " << __TIME__ << ")" << endl;
   cout << app << ": copyright by WCSS (http://www.wcss.wroc.pl) 2009-" << getCurrentYear() << endl;
   cout << app << ": contact us: acarm@kdm.wcss.wroc.pl" << endl;
   cout << app << ":" << endl;
