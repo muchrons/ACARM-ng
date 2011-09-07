@@ -22,7 +22,7 @@ struct SomeTestNonTerm {};
 struct OnTestTerm
 {
   template<typename T, typename TParams>
-  static bool process(const T &/*e*/, TParams &/*p*/)
+  static bool process(const T &/*e*/, TParams /*p*/)
   {
     tut::ensure_equals("invalid handle for test term called", "OnTestTerm", g_toBeCalled);
     return false;
@@ -32,7 +32,7 @@ struct OnTestTerm
 struct OnTestNonTerm
 {
   template<typename T, typename TParams>
-  static bool process(const T &/*e*/, TParams &/*p*/)
+  static bool process(const T &/*e*/, TParams /*p*/)
   {
     tut::ensure_equals("invalid handle for test non-term called", "OnTestNonTerm", g_toBeCalled);
     return false;

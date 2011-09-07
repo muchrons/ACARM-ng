@@ -25,7 +25,7 @@ struct TestString
 struct OnTestString
 {
   template<typename T, typename TParams>
-  static bool process(const T &/*e*/, TParams &p)
+  static bool process(const T &/*e*/, TParams p)
   {
     tut::ensure_equals("unexpected call", "OnTestString", g_toBeCalled);
     tut::ensure("terminal element found too soon", p.hasNext());
@@ -36,7 +36,7 @@ struct OnTestString
 struct OnTestCollectionIndex
 {
   template<typename T, typename TParams>
-  static bool process(const T &/*e*/, TParams &p)
+  static bool process(const T &/*e*/, TParams p)
   {
     tut::ensure_equals("unexpected call", "OnTestCollectionIndex", g_toBeCalled);
     tut::ensure_equals("invalid index", p.get(), "666");

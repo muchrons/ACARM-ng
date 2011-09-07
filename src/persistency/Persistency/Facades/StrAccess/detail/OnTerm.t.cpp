@@ -27,7 +27,7 @@ struct TestClass
   }
 
   template<typename T>
-  void testThrow(const T &e, TestParams &p) const
+  void testThrow(const T &e, const TestParams &p) const
   {
     try
     {

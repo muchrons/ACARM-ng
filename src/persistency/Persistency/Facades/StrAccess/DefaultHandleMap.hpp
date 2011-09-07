@@ -38,7 +38,7 @@ namespace StrAccess
  *
  *   each value of the map must have static, template method:
  *     template<typename T, typename TParams>
- *     bool T::process(const T &e, TParams &p)
+ *     bool T::process(const T &e, TParams p)
  */
 typedef boost::mpl::map<
     //

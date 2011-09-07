@@ -38,7 +38,7 @@ struct ProcessMainDispatcherCollectionImpl: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     // collection can never be a term!
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
@@ -60,7 +60,7 @@ struct ProcessMainDispatcherCollectionImpl<false>: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     typedef typename TParams::template GetHandle<TermHandle>::type    TermHandle;
     typedef typename TParams::template GetHandle<NonTermHandle>::type NonTermHandle;
@@ -85,7 +85,7 @@ struct MainDispatcherImpl: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     typedef ProcessMainDispatcherCollectionImpl< IsCollection<T>::value > ProcCollection;
     return ProcCollection::process(e, p);
@@ -114,7 +114,7 @@ struct MainDispatcher: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     return HandleIndirection::process<detail::MainDispatcherImpl>(e, p);
   }
