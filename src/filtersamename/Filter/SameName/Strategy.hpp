@@ -23,8 +23,7 @@ struct Data
 }; // struct Data
 
 
-// TODO: doxygen to be fixed.
-/** \brief filter detecting multiple attacks from multiple hosts implementation.
+/** \brief filter correlating together alerts with the same names.
  */
 class Strategy: public Filter::Simple::Strategy<Data>
 {

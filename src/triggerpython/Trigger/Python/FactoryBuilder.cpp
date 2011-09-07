@@ -68,7 +68,8 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
   typedef InterfaceImpl<Python::Strategy, Python::Config> Impl;
   typedef FactoryBuilder::FactoryPtr                      OutPtr;
   // create and return new element
-  return OutPtr( new Impl(type_, InstanceName(name), Python::Config(thCfg, path) ) );
+  InterfaceWrapper::InterfaceAutoPtr ptr( new Impl(type_, InstanceName(name), Python::Config(thCfg, path) ) );
+  return OutPtr(new InterfaceWrapper(ptr));
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

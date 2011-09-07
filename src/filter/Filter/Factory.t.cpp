@@ -121,7 +121,8 @@ private:
 
     ensure("too many elements in collection", it==options.end() );
 
-    return Processor::InterfaceAutoPtr(new TestInterface);
+    Processor::InterfaceAutoPtr ptr(new TestInterface);
+    return FactoryPtr(new InterfaceWrapper(ptr));
   }
 
   virtual const FactoryTypeName &getTypeNameImpl(void) const

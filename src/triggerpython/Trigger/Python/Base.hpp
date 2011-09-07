@@ -2,8 +2,8 @@
  * Base.hpp
  *
  */
-#ifndef INCLUDE_TRIGGER_BASE_HPP_FILE
-#define INCLUDE_TRIGGER_BASE_HPP_FILE
+#ifndef INCLUDE_TRIGGER_PYTHON_BASE_HPP_FILE
+#define INCLUDE_TRIGGER_PYTHON_BASE_HPP_FILE
 
 #include <boost/shared_ptr.hpp>
 #include <boost/noncopyable.hpp>
@@ -24,9 +24,6 @@ namespace Python
 class Base: private boost::noncopyable
 {
 public:
-  /** \brief creates instance.
-   */
-  Base(void);
   /** \brief ensure secure, polymorphic destruction.
    */
   virtual ~Base(void);
@@ -36,6 +33,10 @@ public:
   void trigger(const Simple::Strategy::ConstNode &n);
 
 protected:
+  /** \brief creates instance.
+   */
+  Base(void);
+
   const Logger::Node log_;  ///< logger to use
 
 private:

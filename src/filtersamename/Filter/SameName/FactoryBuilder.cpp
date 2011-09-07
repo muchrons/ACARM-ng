@@ -43,14 +43,15 @@ FactoryBuilder::FactoryPtr FactoryBuilder::buildImpl(const Options &options) con
 
   const FilterConfig fc(type_.str(), options);
   // filter samename name
-  const std::string    &name=fc["name"];
+  const std::string &name=fc["name"];
   LOGMSG_INFO_S(log_)<<"setting filter \""<<getTypeName()<<"\" name to \""<<name<<"\"";
   const unsigned int timeout=Commons::Convert::to<unsigned int>(fc["timeout"]);
   LOGMSG_INFO_S(log_)<<"setting timeout to "<<timeout<<"[s]";
 
   // create and return new handle.
   typedef InterfaceImpl<Strategy, unsigned int> Impl;
-  return FactoryBuilder::FactoryPtr( new Impl(type_, InstanceName(name), timeout) );
+  InterfaceWrapper::InterfaceAutoPtr ptr( new Impl(type_, InstanceName(name), timeout) );
+  return FactoryBuilder::FactoryPtr(new InterfaceWrapper(ptr));
 }
 
 const FactoryBuilder::FactoryTypeName &FactoryBuilder::getTypeNameImpl(void) const

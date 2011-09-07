@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <acarm_ng>
 
+  <!-- NOTE: this is only a sample configuration file. please refer to the CONFIGURATION.txt
+             to get full description of all options and plugins. -->
+
   <general>
     <url>http://test.url</url>
     <cleanupInterval>42</cleanupInterval>

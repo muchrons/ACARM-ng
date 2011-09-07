@@ -142,7 +142,7 @@ private:
    */
   virtual void processImpl(Node               n,
                            NodesTimeoutQueue &ntq,
-                           BackendFacade      &bf) = 0;
+                           BackendFacade     &bf) = 0;
 
   void pruneNTQ(void)
   {

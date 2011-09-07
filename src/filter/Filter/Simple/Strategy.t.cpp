@@ -355,4 +355,166 @@ void testObj::test<11>(void)
   }
 }
 
+
+namespace
+{
+struct ManyThrowStrategy: public Strategy<TestData>
+{
+  ManyThrowStrategy(int elemToThrow, bool addCorrelate):
+    Strategy<TestData>( TypeName("throwstrategy"), InstanceName("throwstrategyname"), 42),
+    addCorrelate_(addCorrelate),
+    elemToThrow_(elemToThrow)
+  {
+  }
+
+  virtual TestData makeThisEntryUserData(const Node /*n*/) const
+  {
+    if(elemToThrow_==1)
+      throw std::runtime_error("exception from 1");
+    return TestData();
+  }
+
+  virtual bool isEntryInteresting(const NodeEntry /*thisEntry*/) const
+  {
+    if(elemToThrow_==2)
+      throw std::runtime_error("exception from 2");
+    return true;
+  }
+
+  virtual Persistency::MetaAlert::Name getMetaAlertName(const NodeEntry /*thisEntry*/,
+                                                        const NodeEntry /*otherEntry*/) const
+  {
+    if(elemToThrow_==3)
+      throw std::runtime_error("exception from 3");
+    return Persistency::MetaAlert::Name("hakuna matata");
+  }
+
+  virtual bool canCorrelate(const NodeEntry thisEntry,
+                            const NodeEntry otherEntry) const
+  {
+    if(elemToThrow_==4)
+      throw std::runtime_error("exception from 4");
+
+    // if one of the elements is non-leaf, check if they should be correlated (i.e. added)
+    if( !thisEntry.node_->isLeaf() || !otherEntry.node_->isLeaf() )
+      return addCorrelate_;
+    return true;
+  }
+
+  virtual TestData makeUserDataForNewNode(const NodeEntry &/*thisEntry*/,
+                                          const NodeEntry &/*otherEntry*/,
+                                          const Node       /*newNode*/) const
+  {
+    if(elemToThrow_==5)
+      throw std::runtime_error("exception from 5");
+    return TestData();
+  }
+
+  virtual void postProcessNode(Node &/*n*/, Filter::BackendFacade &/*bf*/) const
+  {
+    if(elemToThrow_==6)
+      throw std::runtime_error("exception from 6");
+  }
+
+  virtual void postProcessNode(NodeEntry &/*entry*/, const NodeEntry &/*added*/, Filter::BackendFacade &/*bf*/) const
+  {
+    if(elemToThrow_==7)
+      throw std::runtime_error("exception from 7");
+  }
+
+  bool      addCorrelate_;
+  const int elemToThrow_;
+}; // struct ManyThrowStrategy
+} // unnamed namespace
+
+
+// test if exception while checking if entry is interesting is forwarded
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  ManyThrowStrategy mts(2, false);
+  try
+  {
+    mts.process( makeNewLeaf(), changed_ );
+    fail("exception not forwarded");
+  }
+  catch(const std::runtime_error &)
+  {
+    // this is expected
+  }
+}
+
+// test if exception while creating user's data for new element is forwarded
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  ManyThrowStrategy mts(1, false);
+  try
+  {
+    mts.process( makeNewLeaf(), changed_ );
+    fail("exception not forwarded");
+  }
+  catch(const std::runtime_error &)
+  {
+    // this is expected
+  }
+}
+
+// test if exception while making meta-alert's name is NOT forwarded
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  ManyThrowStrategy mts(3, false);
+  mts.process( makeNewLeaf(), changed_ );
+  changed_.clear();
+  mts.process( makeNewLeaf(), changed_ );   // must not throw
+}
+
+// test if exception while checking if correlation is possible is NOT forwarded
+template<>
+template<>
+void testObj::test<15>(void)
+{
+  ManyThrowStrategy mts(4, false);
+  mts.process( makeNewLeaf(), changed_ );   // must not throw
+}
+
+// test if exception while making data for new node is NOT forwarded
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  ManyThrowStrategy mts(5, false);
+  mts.process( makeNewLeaf(), changed_ );
+  changed_.clear();
+  mts.process( makeNewLeaf(), changed_ );   // must not throw
+}
+
+// test if exception while postprocessing new node is NOT forwarded
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  ManyThrowStrategy mts(6, false);
+  mts.process( makeNewLeaf(), changed_ );
+  changed_.clear();
+  mts.process( makeNewLeaf(), changed_ );   // must not throw
+}
+
+// test if exception while postprocessing already-existing node is NOT forwarded
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  ManyThrowStrategy mts(7, true);
+  mts.process( makeNewLeaf(), changed_ );
+  changed_.clear();
+  mts.process( makeNewLeaf(), changed_ );
+  changed_.clear();
+  mts.process( makeNewLeaf(), changed_ );   // must not throw
+}
+
 } // namespace tut

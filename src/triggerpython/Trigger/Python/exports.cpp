@@ -7,7 +7,7 @@
 #include "Trigger/Python/exportBaseWrapper.hpp"
 
 // export
-BOOST_PYTHON_MODULE(trigger)
+BOOST_PYTHON_MODULE(triggerapi)
 {
   Trigger::Python::exportBaseWrapper();
 }
@@ -16,7 +16,7 @@ BOOST_PYTHON_MODULE(trigger)
 namespace
 {
 // it needs to be imported before initializing environment
-PythonAPI::Environment::StaticImporter g_import("trigger", inittrigger);
+PythonAPI::Environment::StaticImporter g_import("triggerapi", inittriggerapi);
 // TODO: dead code
 //Trigger::Environment::StaticImporter g_import("trigger", PyInit_trigger);
 } // unnamed namespace
