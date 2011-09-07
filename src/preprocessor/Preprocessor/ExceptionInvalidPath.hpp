@@ -9,8 +9,6 @@
 
 #include "Preprocessor/Exception.hpp"
 
-// TODO: to be removed and replaced with Persistency::Facades::StrAccess
-
 namespace Preprocessor
 {
 /** \brief exception throw when incorrect path has been detected.
@@ -19,14 +17,16 @@ class ExceptionInvalidPath: public Exception
 {
 public:
   /** \brief create execption with given message.
-   *  \param where place where exception has been thrown.
-   *  \param path  full path that has been found invalid.
-   *  \param near  place that couldn't be parsed correctly.
+   *  \param where   place where exception has been thrown.
+   *  \param path    full path that has been found invalid.
+   *  \param near    place that couldn't be parsed correctly.
+   *  \param details details of the event.
    */
   ExceptionInvalidPath(const Location    &where,
                        const std::string &path,
-                       const std::string &near):
-    Exception(where, cc("invalid path '", path, "' near '", near, "' token") )
+                       const std::string &near,
+                       const std::string &details):
+    Exception(where, cc("invalid path '", path, "' near '", near, "' token: ", details) )
   {
   }
 }; // class ExceptionInvalidPath

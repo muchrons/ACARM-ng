@@ -3,15 +3,16 @@
  *
  */
 #include <cassert>
+#include <boost/mpl/insert.hpp>
 
 #include "Commons/Convert.hpp"
+#include "Persistency/Facades/StrAccess/StrAccess.hpp"
 #include "Preprocessor/Checkers/Equals.hpp"
 #include "Preprocessor/Checkers/Contains.hpp"
 #include "Preprocessor/Expressions/Rule.hpp"
 
 using namespace std;
-
-// TODO: to be reimplemented with Persistency::Facades::StrAccess
+using namespace Persistency::Facades::StrAccess;
 
 
 namespace Preprocessor
@@ -22,29 +23,115 @@ namespace Expressions
 namespace
 {
 
-template<typename T>
-string cast(const T &t)
+struct CallbackHandle
 {
-  return Commons::Convert::to<string>(t);
-} // cast()
+  explicit CallbackHandle(Checkers::Mode *checker):
+    checker_(checker)
+  {
+    assert(checker_!=NULL);
+  }
 
-template<typename T>
-string cast(const T *t)
-{
-  if(t==NULL)
-    return "<NULL>";
-  return cast(*t);
-} // cast()
+  /*
+  NOTE: this call is never used by the implementation!
+  bool collectionSize(size_t size)
+  {
+    return false;
+  }
+  */
 
-template<>
-string cast<char>(const char *t)
+  bool value(const std::string &v)
+  {
+    assert(checker_!=NULL);
+    return checker_->check(v);
+  }
+
+  bool nullOnPath(const std::string &/*where*/)
+  {
+    assert(checker_!=NULL);
+    return checker_->check("<NULL>");
+  }
+
+private:
+  Checkers::Mode *checker_;
+}; // struct CallbackHandle
+
+
+/** \brief processing facility handling collection indexes.
+ */
+struct OnCollectionStrategy: private System::NoInstance
 {
-  if(t==NULL)
-    return "<NULL>";
-  return string(t);
-} // cast()
+  /** \brief processing method.
+   *  \param e element to be processed.
+   *  \param p params to be used when processing.
+   *  \return value farwarded from further user's calls.
+   */
+  template<typename T, typename TParams>
+  static bool process(const T &e, TParams p)
+  {
+    BOOST_STATIC_ASSERT( IsCollection<T>::value );
+    assert(!p.isEnd());
+    typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
+
+    if(p.get()=="$")
+      return matchAny(e, p);
+    if(p.get()=="*")
+      return matchAll(e, p);
+
+    // invalid element type
+    ErrH::throwOnInvalidIndex(SYSTEM_SAVE_LOCATION, p);
+    return false;   // this code is never reached
+  }
+
+private:
+  template<typename T, typename TParams>
+  static bool matchAll(const T &e, TParams p)
+  {
+    return matchImpl(e, p, false);
+  }
+
+  template<typename T, typename TParams>
+  static bool matchAny(const T &e, TParams p)
+  {
+    return matchImpl(e, p, true);
+  }
+
+  // common implementation for matchAll/matchAny
+  template<typename T, typename TParams>
+  static bool matchImpl(const T &e, TParams p, const bool exp)
+  {
+    if(e.begin()==e.end())
+      return false;
+    for(typename T::const_iterator cit=e.begin(); cit!=e.end(); ++cit)
+      if( MainDispatcher::process(*cit, p)==exp )
+        return exp;
+    return !exp;
+  }
+}; // struct OnCollectionStrategy
+
+
+/** \brief helper class that overwrites default error handling for collection indexes.
+ *
+ *  default collection can have number as an accessing token. here only '$' and '*'
+ *  are allowed. everything else is forbidden.
+ */
+struct ErrorThrowerMod: public ErrorThrower
+{
+  /** \brief throws exception if element's name is invalid and is not and collection-part token.
+   *  \param where location where condition is checked.
+   *  \param name  expected name in the path.
+   *  \param p     current params value.
+   */
+  template<typename TParams>
+  static void throwOnInvalidName(const ExceptionInvalidPath::Location &where, const TParams &p, const std::string &name)
+  {
+    typedef typename boost::mpl::at<typename TParams::HandleMap, InvalidPathExceptionType>::type ExceptionType;
+    if( p.get()!=name && p.get()!="$" && p.get()!="*" )
+      throw ExceptionType(where, p.path().get(), p.get(), "invalid name/collection-part-token ($/*) in path");
+  }
+}; // struct ErrorThrowerMod
 
 } // unnamed namespace
+
 
 
 Rule::Rule(const Path &path, Mode mode, const Value &value):
@@ -69,250 +156,29 @@ Rule::Rule(const Path &path, Mode mode, const Value &value):
   assert( checker_.get()!=NULL );
 }
 
+
 bool Rule::compute(const Persistency::Alert &alert) const
 {
-  assert( checker_.get()!=NULL );
-  PathCit it=path_.begin();
-  if(*it!="alert")
-    throwInvalid(SYSTEM_SAVE_LOCATION, it);
-  return check( alert, it+1);
-}
+  // for preprocessor we use standard handle map, except for changed collection
+  // handle to the one supporting wildcards.
+  typedef boost::mpl::insert<DefaultHandleMap,
+                             boost::mpl::pair<CollectionIndexHandle,OnCollectionStrategy>::type
+                            >::type CollectionStrategyHandleMap;
+  // use standard map, with overwritten some of the error handling mechanisms
+  typedef boost::mpl::insert<CollectionStrategyHandleMap,
+                             boost::mpl::pair<ErrorHandle,ErrorThrowerMod>::type
+                            >::type ErrorModHandleMap;
+  // use local exception to throw errors
+  typedef boost::mpl::insert<ErrorModHandleMap,
+                             boost::mpl::pair<InvalidPathExceptionType,Preprocessor::ExceptionInvalidPath>::type
+                            >::type ExceptionTypeHandleMap;
+  // define final handle map
+  typedef ExceptionTypeHandleMap PreprocHandleMap;
 
-template<typename T>
-bool Rule::processCollection(PathCit t, const T &col) const
-{
-  if(*t=="*")
-    return matchEach( t+1, col.begin(), col.end() );
-  if(*t=="$")
-    return matchAny( t+1, col.begin(), col.end() );
-
-  throwInvalid(SYSTEM_SAVE_LOCATION, t);
-  return false; // code never reaches here
-}
-
-template<typename Tit>
-bool Rule::matchEach(PathCit t, const Tit begin, const Tit end) const
-{
-  // for empty set answer is false
-  if(begin==end)
-    return false;
-  // ensure each element is checked
-  for(Tit it=begin; it!=end; ++it)
-  {
-    assert( it->get()!=NULL );
-    if( check(*(*it), t)==false )
-      return false;
-  }
-  // if all elements match, result is match as well
-  return true;
-}
-
-template<typename Tit>
-bool Rule::matchAny(PathCit t, const Tit begin, const Tit end) const
-{
-  // check if any element does match
-  for(Tit it=begin; it!=end; ++it)
-  {
-    assert( it->get()!=NULL );
-    if( check(*(*it), t)==true )
-      return true;
-  }
-  // if no elements match, result is no-match as well
-  return false;
-}
-
-template<typename T>
-bool Rule::check(const T *e, PathCit t) const
-{
-  // NULL object-pointer means that elements does not exist, thus comparison fails
-  if(e==NULL)
-    return false;
-  // for non-NULL perform proper check
-  return check(*e, t);
-}
-
-template<typename T>
-bool Rule::check(const boost::shared_ptr<T> e, PathCit t) const
-{
-  // check the pointer beneath
-  return check(e.get(), t);
-}
-
-bool Rule::check(const Persistency::Alert &e, const PathCit t) const
-{
-  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
-
-  // direct elements
-  if(*t=="name")
-    return check( cast( e.getName().get() ), t+1);
-  if(*t=="detected")
-    return check( cast( e.getDetectionTime() ), t+1);
-  if(*t=="created")
-    return check( cast( e.getCreationTime() ), t+1);
-  if(*t=="certainty")
-    return check( cast( e.getCertainty().get() ), t+1);
-  if(*t=="severity")
-    return check( cast( e.getSeverity().getName() ), t+1);
-  if(*t=="description")
-    return check( cast( e.getDescription() ), t+1);
-  // collections
-  if(*t=="analyzers")
-    return check( e.getAnalyzers(), t+1);
-  if(*t=="sources")
-    return check( e.getSourceHosts(), t+1);
-  if(*t=="targets")
-    return check( e.getTargetHosts(), t+1);
-
-  throwInvalid(SYSTEM_SAVE_LOCATION, t);
-  return false;         // we never reach here
-}
-
-bool Rule::check(const Persistency::Alert::Analyzers &e, PathCit t) const
-{
-  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
-  return processCollection(t, e);
-}
-
-bool Rule::check(const Persistency::Analyzer &e, PathCit t) const
-{
-  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
-
-  if(*t=="name")
-    return check( cast( e.getName().get() ), t+1 );
-  if(*t=="version")
-    return check( cast( e.getVersion().get() ), t+1 );
-  if(*t=="os")
-    return check( cast( e.getOperatingSystem().get() ), t+1 );
-  if(*t=="ip")
-    return check( cast( (e.getIP()==NULL)?NULL:e.getIP() ), t+1 );
-
-  throwInvalid(SYSTEM_SAVE_LOCATION, t);
-  return false;         // we never reach here
-}
-
-bool Rule::check(const Persistency::Alert::Hosts &e, PathCit t) const
-{
-  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
-  return processCollection(t, e);
-}
-
-bool Rule::check(const Persistency::ReferenceURL &e, PathCit t) const
-{
-  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
-
-  if(*t=="name")
-    return check( cast( e.getName().get() ), t+1 );
-  if(*t=="url")
-    return check( cast( e.getURL().get() ), t+1 );
-
-  throwInvalid(SYSTEM_SAVE_LOCATION, t);
-  return false;         // we never reach here
-}
-
-bool Rule::check(const Persistency::Host &e, PathCit t) const
-{
-  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
-
-  if(*t=="ip")
-    return check( cast( e.getIP() ), t+1 );
-  if(*t=="mask")
-    return check( cast( (e.getNetmask()==NULL)?NULL:e.getNetmask() ), t+1 );
-  if(*t=="os")
-    return check( cast( e.getOperatingSystem().get() ), t+1 );
-  if(*t=="referenceurl")
-    return check( e.getReferenceURL(), t+1 );
-  if(*t=="name")
-    return check( cast( e.getName().get() ), t+1 );
-  if(*t=="services")
-    return check( e.getServices(), t+1 );
-  if(*t=="processes")
-    return check( e.getProcesses(), t+1 );
-
-  throwInvalid(SYSTEM_SAVE_LOCATION, t);
-  return false;         // we never reach here
-}
-
-bool Rule::check(const Persistency::Host::Services &e, PathCit t) const
-{
-  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
-  return processCollection(t, e);
-}
-
-bool Rule::check(const Persistency::Service &e, PathCit t) const
-{
-  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
-
-  if(*t=="name")
-    return check( cast( e.getName().get() ), t+1 );
-  if(*t=="port")
-    return check( cast( e.getPort().get() ), t+1 );
-  if(*t=="protocol")
-    return check( cast( e.getProtocol().get() ), t+1 );
-  if(*t=="referenceurl")
-    return check( e.getReferenceURL(), t+1 );
-
-  throwInvalid(SYSTEM_SAVE_LOCATION, t);
-  return false;         // we never reach here
-}
-
-bool Rule::check(const Persistency::Host::Processes &e, PathCit t) const
-{
-  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
-  return processCollection(t, e);
-}
-
-bool Rule::check(const Persistency::Process &e, PathCit t) const
-{
-  throwIfEnd(SYSTEM_SAVE_LOCATION, t);
-
-  if(*t=="path")
-    return check( cast( e.getPath().get() ), t+1 );
-  if(*t=="name")
-    return check( cast( e.getName().get() ), t+1 );
-  if(*t=="md5")
-    return check( e.getMD5(), t+1 );
-  if(*t=="pid")
-    return check( cast( e.getPID() ), t+1 );
-  if(*t=="uid")
-    return check( cast( e.getUID() ), t+1 );
-  if(*t=="username")
-    return check( cast( e.getUsername().get() ), t+1 );
-  if(*t=="arguments")
-    return check( cast( e.getParameters() ), t+1 );
-  if(*t=="referenceurl")
-    return check( e.getReferenceURL(), t+1 );
-
-  throwInvalid(SYSTEM_SAVE_LOCATION, t);
-  return false;         // we never reach here
-}
-
-bool Rule::check(const Persistency::MD5Sum &e, PathCit t) const
-{
-  return check( cast( e.get() ), t );
-}
-
-bool Rule::check(const std::string &e, PathCit t) const
-{
-  throwIfNotEnd(SYSTEM_SAVE_LOCATION, t);
-  assert( checker_.get()!=NULL );
-  return checker_->check(e);
-}
-
-void Rule::throwIfEnd(const Exception::Location &where, PathCit t) const
-{
-  if( t==path_.end() )
-    throw ExceptionInvalidPath(where, path_.get(), *t);
-}
-
-void Rule::throwIfNotEnd(const Exception::Location &where, PathCit t) const
-{
-  if( t!=path_.end() )
-    throw ExceptionInvalidPath(where, path_.get(), *t);
-}
-
-void Rule::throwInvalid(const Exception::Location &where, PathCit t) const
-{
-  throw ExceptionInvalidPath(where, path_.get(), *t);
+  typedef Params<PreprocHandleMap, CallbackHandle> ParamsImpl;
+  CallbackHandle cb(checker_.get());
+  ParamsImpl     p(path_, cb);
+  return MainDispatcher::process(alert, p);
 }
 
 } // namespace Expressions

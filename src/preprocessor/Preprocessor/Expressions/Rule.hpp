@@ -9,6 +9,7 @@
 #include <boost/shared_ptr.hpp>
 
 #include "ConfigIO/Preprocessor/Rule.hpp"
+#include "Persistency/Facades/StrAccess/StrAccess.hpp"
 #include "Preprocessor/Checkers/Mode.hpp"
 #include "Preprocessor/Expressions/Base.hpp"
 #include "Preprocessor/ExceptionInvalidPath.hpp"
@@ -26,9 +27,11 @@ class Rule: public Base
 {
 public:
   /** \brief forward definition of rule's mode. */
-  typedef ConfigIO::Preprocessor::Rule::Mode  Mode;
+  typedef ConfigIO::Preprocessor::Rule::Mode    Mode;
   /** \brief forward definition of rule's value to operate on. */
-  typedef ConfigIO::Preprocessor::Rule::Value Value;
+  typedef ConfigIO::Preprocessor::Rule::Value   Value;
+  /** \brief short name for Path. */
+  typedef Persistency::Facades::StrAccess::Path Path;
 
   /** \brief create complex rule.
    *  \param path  path to alert's element
@@ -44,6 +47,7 @@ public:
   virtual bool compute(const Persistency::Alert &alert) const;
 
 private:
+#if 0
   typedef Path::const_iterator PathCit;
 
   template<typename T>
@@ -77,6 +81,7 @@ private:
   void throwIfEnd(const Exception::Location &where, PathCit t) const;
   void throwIfNotEnd(const Exception::Location &where, PathCit t) const;
   void throwInvalid(const Exception::Location &where, PathCit t) const;
+#endif
 
   const Path                        path_;
   boost::scoped_ptr<Checkers::Mode> checker_;
