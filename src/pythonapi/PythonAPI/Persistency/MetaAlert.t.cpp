@@ -1,5 +1,5 @@
 /*
- * MetaAlert.t.cpp
+* MetaAlert.t.cpp
  *
  */
 #include <tut.h>
@@ -60,7 +60,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  testEqual("metaalert.alert.source.0.name", NULL);
+  testEqual("metaalert.alert.sources.0.name", NULL);
 }
 
 // test getting colleciton size
@@ -68,7 +68,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  testEqual("metaalert.alert.source.size", "1");
+  testEqual("metaalert.alert.sources.size", "1");
 }
 
 // test getting colleciton size, when not a colleciton item
@@ -84,7 +84,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  testEqual("metaalert.alert.source.0.ip", "1.2.3.4");
+  testEqual("metaalert.alert.sources.0.ip", "1.2.3.4");
 }
 
 // test getting colleciton element out of range
@@ -92,7 +92,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  testEqual("metaalert.alert.source.2.ip", NULL);
+  testEqual("metaalert.alert.sources.2.ip", NULL);
 }
 
 } // namespace tut

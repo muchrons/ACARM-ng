@@ -70,7 +70,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  env_.run("ret=tmp.get(\"metaalert.alert.source.0.name\")");
+  env_.run("ret=tmp.get(\"metaalert.alert.sources.0.name\")");
   const OptionalString ret=env_.var<OptionalString>("ret");
   ensure("got non-NULL value", ret.get()==NULL);
 }
