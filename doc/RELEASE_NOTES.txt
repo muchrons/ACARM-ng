@@ -1,5 +1,9 @@
 -- dev --
 * Python interface for writing filters has been created.
+
+
+-- v0.3.1 --
+* fixed dependency issue - release code does not include test headers.
 * fixed compilation with icc (intel toolchain) on hosts with machine-dependent includes in /usr/include/<machine> implicit directory.
 
 
