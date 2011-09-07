@@ -558,7 +558,7 @@ alert.analyzers.[].version
 alert.analyzers.[].os
 alert.analyzers.[].ip
 alert.sources.[].ip
-alert.sources.[].mask
+alert.sources.[].netmask
 alert.sources.[].os
 alert.sources.[].referenceurl.name
 alert.sources.[].referenceurl.url
@@ -578,7 +578,7 @@ alert.sources.[].processes.[].parameters
 alert.sources.[].processes.[].referenceurl.name
 alert.sources.[].processes.[].referenceurl.url
 alert.targets.[].ip
-alert.targets.[].mask
+alert.targets.[].netmask
 alert.targets.[].os
 alert.targets.[].referenceurl.name
 alert.targets.[].referenceurl.url
