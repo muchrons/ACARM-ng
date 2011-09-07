@@ -1,3 +1,8 @@
+-- v0.3.1 --
+* fixed dependency issue - release code does not include test headers.
+* fixed compilation with icc (intel toolchain) on hosts with machine-dependent includes in /usr/include/<machine> implicit directory.
+
+
 -- v0.3.0 --
 * Python interface for writing triggers has been created.
 * added support for Python scripts (via Persistency::Facades::StrAccess and PythonAPI interfaces).
