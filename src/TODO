@@ -24,10 +24,14 @@ triggers:
 filters:
 --------
 * filter that increases priority for hosts that are out of defined set (i.e. from external network).
-* editable filters' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
 * implement filter changing priority when s/d IP is from defined set (i.e.: internal network, extrnal network, critical resource, etc...).
+* editable filters' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
 * consider supporting addition of an alert to the middle of the chain of events (currently only the beginning and the end is supported).
 * add heartbeats for dshield, when host is unreachable.
+
+docs:
+-----
+* add more info on development (doc/dev?).
 
 misc:
 -----
@@ -36,7 +40,4 @@ misc:
 * add regex comaprisons to preprocessor.
 * add extra checks to test applications to ensure tests are NOT run as root (for example: commons::filesystem::createTempDirectory).
 * add (estimated) total priority of a given meta alert; it is required for the WUI to be usefull; it can be implemented by saving priority of the metal alerts when changed by filters - this would give more-less accurate results; exact result can be than saved when meta-alert is destroyed.
-
-docs:
------
-* add more info on development (doc/dev?).
+* consider removing restoration of meta alerts from persistency - it causes many problems, is time-consumming, but rarely useful.
