@@ -44,7 +44,8 @@ struct OnTestNonTerm
 typedef boost::mpl::map<
               boost::mpl::pair<ErrorHandle, ErrorThrower>::type,
               boost::mpl::pair<NonTermHandle, OnTestNonTerm>::type,
-              boost::mpl::pair<TermHandle, OnTestTerm>::type
+              boost::mpl::pair<TermHandle, OnTestTerm>::type,
+              boost::mpl::pair<InvalidPathExceptionType, ExceptionInvalidPath>::type
             >::type StringHandleMap;
 
 // add this to paramter

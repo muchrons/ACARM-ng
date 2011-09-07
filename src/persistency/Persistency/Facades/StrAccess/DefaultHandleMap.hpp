@@ -21,6 +21,7 @@
 #include "Persistency/Facades/StrAccess/OnAnalyzer.hpp"
 #include "Persistency/Facades/StrAccess/OnMetaAlert.hpp"
 #include "Persistency/Facades/StrAccess/OnReferenceURL.hpp"
+#include "Persistency/Facades/StrAccess/ExceptionInvalidPath.hpp"
 #include "Persistency/Facades/StrAccess/detail/OnTerm.hpp"
 #include "Persistency/Facades/StrAccess/detail/OnNonTerm.hpp"
 
@@ -48,6 +49,7 @@ typedef boost::mpl::map<
     boost::mpl::pair<NonTermHandle, detail::OnNonTerm>,
     boost::mpl::pair<CollectionIndexHandle, OnCollectionIndex>,
     boost::mpl::pair<ErrorHandle, ErrorThrower>,
+    boost::mpl::pair<InvalidPathExceptionType, ExceptionInvalidPath>,
     //
     // types handles
     //

@@ -48,7 +48,8 @@ struct OnTestCollectionIndex
 typedef boost::mpl::map<
                   boost::mpl::pair<CollectionIndexHandle, OnTestCollectionIndex>,
                   boost::mpl::pair<TestString, OnTestString>,
-                  boost::mpl::pair<ErrorHandle, ErrorThrower>
+                  boost::mpl::pair<ErrorHandle, ErrorThrower>,
+                  boost::mpl::pair<InvalidPathExceptionType, ExceptionInvalidPath>
                 >::type LocalHandleMap;
 // add this to paramter
 typedef Params<LocalHandleMap, TestParams::ResultCallback> LocalTestParams;
