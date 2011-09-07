@@ -23,8 +23,13 @@ namespace Expressions
 namespace
 {
 
+/** \brief callback mechanism for StrAccess.
+ */
 struct CallbackHandle
 {
+  /** \brief construyct instance with a given checker.
+   *  \param checker checker to be run for each callback.
+   */
   explicit CallbackHandle(Checkers::Mode *checker):
     checker_(checker)
   {
@@ -39,12 +44,17 @@ struct CallbackHandle
   }
   */
 
+  /** \brief callback of specific value.
+   *  \param v value received.
+   */
   bool value(const std::string &v)
   {
     assert(checker_!=NULL);
     return checker_->check(v);
   }
 
+  /** \brief callback called on NULL pointer in the path.
+   */
   bool nullOnPath(const std::string &/*where*/)
   {
     assert(checker_!=NULL);
