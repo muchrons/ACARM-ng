@@ -2,8 +2,6 @@
  * exports.cpp
  *
  */
-#include <tut.h>
-
 #include "PythonAPI/Python.hpp"
 #include "PythonAPI/Environment.hpp"
 #include "PythonAPI/Persistency/exportOptionalString.hpp"
