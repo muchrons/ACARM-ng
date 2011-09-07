@@ -60,9 +60,9 @@ struct OnAlert: private System::NoInstance
       return MainDispatcher::process(e.getCertainty().get(), p);
     if(p.get()=="description")
       return MainDispatcher::process(e.getDescription(), p);
-    if(p.get()=="source")
+    if(p.get()=="sources")
       return MainDispatcher::process(e.getSourceHosts(), p);
-    if(p.get()=="target")
+    if(p.get()=="targets")
       return MainDispatcher::process(e.getTargetHosts(), p);
 
     ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);

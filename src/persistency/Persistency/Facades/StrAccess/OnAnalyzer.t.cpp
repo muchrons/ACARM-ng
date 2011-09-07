@@ -93,7 +93,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  ensureProc("invalid OS", *analyzer_, "analyzer.operatingsystem", "Linux/Debian");
+  ensureProc("invalid OS", *analyzer_, "analyzer.os", "Linux/Debian");
 }
 
 // test getting OS when NULL
@@ -101,7 +101,7 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  ensureProcNull("no NULL on NULL OS", *analyzerNull_, "analyzer.operatingsystem", "operatingsystem");
+  ensureProcNull("no NULL on NULL OS", *analyzerNull_, "analyzer.os", "os");
 }
 
 // test getting IP

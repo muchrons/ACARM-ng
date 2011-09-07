@@ -44,7 +44,7 @@ struct OnHost: private System::NoInstance
       return MainDispatcher::process(e.getIP(), p);
     if(p.get()=="netmask")
       return MainDispatcher::process(e.getNetmask(), p);
-    if(p.get()=="operatingsystem")
+    if(p.get()=="os")
       return MainDispatcher::process(e.getOperatingSystem().get(), p);
     if(p.get()=="referenceurl")
       return MainDispatcher::process(e.getReferenceURL(), p);

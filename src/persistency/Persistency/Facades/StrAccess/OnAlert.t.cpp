@@ -133,7 +133,7 @@ template<>
 template<>
 void testObj::test<13>(void)
 {
-  ensureProcSize("invalid source hosts count", *alert_, "alert.source.size", 2);
+  ensureProcSize("invalid source hosts count", *alert_, "alert.sources.size", 2);
 }
 
 // test getting destination hosts size
@@ -141,7 +141,7 @@ template<>
 template<>
 void testObj::test<14>(void)
 {
-  ensureProcSize("invalid target hosts count", *alert_, "alert.target.size", 1);
+  ensureProcSize("invalid target hosts count", *alert_, "alert.targets.size", 1);
 }
 
 // test getting random analyzer's random element
@@ -157,7 +157,7 @@ template<>
 template<>
 void testObj::test<16>(void)
 {
-  ensureProc("invalid hosts's OS", *alert_, "alert.source.0.operatingsystem", "Linux");
+  ensureProc("invalid hosts's OS", *alert_, "alert.sources.0.os", "Linux");
 }
 
 // test exception on unknown root name

@@ -46,7 +46,7 @@ struct OnAnalyzer: private System::NoInstance
       return MainDispatcher::process(e.getName().get(), p);
     if(p.get()=="version")
       return MainDispatcher::process(e.getVersion().get(), p);
-    if(p.get()=="operatingsystem")
+    if(p.get()=="os")
       return MainDispatcher::process(e.getOperatingSystem().get(), p);
     if(p.get()=="ip")
       return MainDispatcher::process(e.getIP(), p);
