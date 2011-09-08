@@ -85,7 +85,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  ensureProc("invalid os name", *host_, "host.operatingsystem", "Linux");
+  ensureProc("invalid os name", *host_, "host.os", "Linux");
 }
 
 // test getting os name when NULL
@@ -93,7 +93,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  ensureProcNull("no NULL on NULL os name", *hostNull_, "host.operatingsystem", "operatingsystem");
+  ensureProcNull("no NULL on NULL os name", *hostNull_, "host.os", "os");
 }
 
 // test getting reference url

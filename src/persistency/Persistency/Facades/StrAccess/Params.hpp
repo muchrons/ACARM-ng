@@ -43,7 +43,7 @@ private:
   struct OnUnknownType
   {
     template<typename T>
-    static bool process(const T &/*e*/, Params<THandleMap,TResultCallback> &p)
+    static bool process(const T &/*e*/, const Params<THandleMap,TResultCallback> &p)
     {
       GetHandle<ErrorHandle>::type::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
       return false; // code never reaches here

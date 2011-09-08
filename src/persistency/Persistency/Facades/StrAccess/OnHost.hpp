@@ -30,7 +30,7 @@ struct OnHost: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const Host &e, TParams &p)
+  static bool process(const Host &e, TParams p)
   {
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
@@ -44,7 +44,7 @@ struct OnHost: private System::NoInstance
       return MainDispatcher::process(e.getIP(), p);
     if(p.get()=="netmask")
       return MainDispatcher::process(e.getNetmask(), p);
-    if(p.get()=="operatingsystem")
+    if(p.get()=="os")
       return MainDispatcher::process(e.getOperatingSystem().get(), p);
     if(p.get()=="referenceurl")
       return MainDispatcher::process(e.getReferenceURL(), p);

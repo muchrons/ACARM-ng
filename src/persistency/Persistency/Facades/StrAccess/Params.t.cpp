@@ -129,7 +129,7 @@ struct TestString
 struct OnString: private System::NoInstance
 {
   template<typename T, typename TParams>
-  static bool process(const T &/*e*/, TParams &p)
+  static bool process(const T &/*e*/, TParams p)
   {
     ensure("term is too soon", p.hasNext());
     return true;

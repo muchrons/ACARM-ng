@@ -4,6 +4,7 @@
  */
 #include <cassert>
 
+#include "Persistency/Facades/StrAccess/StrAccess.hpp"
 #include "Preprocessor/Section.hpp"
 #include "Preprocessor/Expressions/And.hpp"
 #include "Preprocessor/Expressions/Or.hpp"
@@ -103,7 +104,8 @@ Expressions::BasePtrNN Section::create(const ConfigIO::Preprocessor::Rule &cfg) 
       return Expressions::BasePtrNN( new Expressions::False() );
 
     case ConfigIO::Preprocessor::Rule::Type::RULE:
-      return Expressions::BasePtrNN( new Expressions::Rule( Path( cfg.getPath() ),
+      typedef Persistency::Facades::StrAccess::Path Path;
+      return Expressions::BasePtrNN( new Expressions::Rule( Path(cfg.getPath()),
                                                             cfg.getMode(),
                                                             cfg.getValue() ) );
 

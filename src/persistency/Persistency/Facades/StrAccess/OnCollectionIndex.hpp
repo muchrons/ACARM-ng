@@ -32,7 +32,7 @@ struct OnCollectionIndex: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     BOOST_STATIC_ASSERT( IsCollection<T>::value );
     assert(!p.isEnd());

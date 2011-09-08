@@ -20,7 +20,7 @@ unsigned int g_MyTestProcessFuncObj_runCnt;
 struct MyTestProcessFuncObj
 {
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     ++g_MyTestProcessFuncObj_runCnt;
     BOOST_STATIC_ASSERT( (boost::is_same<T, int>::value) );
@@ -164,7 +164,7 @@ namespace
 struct TestStringObjectStub
 {
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     tut::ensure_equals("invalid path", p.path().get(), "a.b");
     tut::ensure_equals("invalid value", e, string("some string"));
@@ -191,7 +191,7 @@ namespace
 struct TestNULLStub
 {
   template<typename T, typename TParams>
-  static bool process(const T &/*e*/, TParams &/*p*/)
+  static bool process(const T &/*e*/, TParams /*p*/)
   {
     fail("call with NULL paramter has been forwarded");
     return false;
