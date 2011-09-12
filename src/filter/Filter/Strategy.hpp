@@ -9,6 +9,7 @@
 
 #include <sstream>
 #include <ctime>
+#include <cassert>
 #include <boost/operators.hpp>
 
 #include "System/ignore.hpp"
@@ -56,15 +57,13 @@ public:
   /** \brief send heartbeat for this module.
    *  \param deadline maximum ammount of time for heartbeat to arrive
    */
-  void heartbeat(unsigned int deadline)
+  void heartbeat(const unsigned int deadline)
   {
-    std::stringstream owner;
-    owner<<"filter::"<<getFilterType().str()<<"/"<<getFilterName().str();
-    Persistency::IO::Transaction       t( conn_->createNewTransaction("heartbeat_sending") );
-    Persistency::IO::HeartbeatsAutoPtr hb=conn_->heartbeats( owner.str(), t );
-    assert( hb.get()!=NULL );
-    hb->report("thread", deadline);
-    t.commit();
+    ChangedNodes  changed;
+    BackendFacade bf( conn_, changed, getFilterType(), getFilterName() );
+    bf.heartbeat(deadline);
+    bf.commitChanges();         // if there was no exception, commit changes made (if any)
+    assert(changed.size()==0u);
   }
 
   /** \brief helper structure with user-provided data associated with node's entry.
