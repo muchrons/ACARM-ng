@@ -103,7 +103,7 @@ void Thread::sendHeartbeat(const unsigned int timeout, const unsigned int deadli
     assert( hb.get()!=NULL );
     hb->report("thread", deadline);
     t.commit();
-    lastHeartbeat_=now;                     // save last call time, for ruther usage
+    lastHeartbeat_=now;                     // save last call time, for further usage
   }
   catch(const std::exception &ex)
   {
