@@ -17,6 +17,4 @@ namespace
 {
 // it needs to be imported before initializing environment
 PythonAPI::Environment::StaticImporter g_import("triggerapi", inittriggerapi);
-// TODO: dead code
-//Trigger::Environment::StaticImporter g_import("trigger", PyInit_trigger);
 } // unnamed namespace
