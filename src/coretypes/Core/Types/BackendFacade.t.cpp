@@ -3,14 +3,19 @@
  *
  */
 #include <tut.h>
-#include <cstring>
 #include <memory>
+#include <vector>
+#include <string>
+#include <cstring>
 #include <cassert>
+#include <boost/tuple/tuple.hpp>
 
 #include "Core/Types/BackendFacade.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "TestHelpers/Persistency/TestStubs.hpp"
+#include "TestHelpers/Persistency/ConnectionUserStubBase.hpp"
 
+using namespace std;
 using namespace Persistency;
 using namespace Core::Types;
 using namespace Core::Types::Proc;
@@ -20,8 +25,8 @@ namespace
 
 struct TestProxy: public BackendFacade
 {
-  TestProxy(void):
-    BackendFacade( IO::ConnectionPtrNN( IO::create() ), TypeName("sometest"), InstanceName("myinstance") )
+  explicit TestProxy(IO::ConnectionPtrNN conn):
+    BackendFacade(conn, CategoryName("evilinput"), TypeName("sometest"), InstanceName("myinstance") )
   {
   }
 
@@ -47,16 +52,61 @@ struct TestProxy: public BackendFacade
 }; // struct TestProxy
 
 
-struct TestClass
+typedef boost::tuple<IO::Heartbeats::Owner, IO::Heartbeats::Module, unsigned int> HbEntry;
+typedef std::vector<HbEntry>                                                      HbLog;
+
+struct TestHeartbeats: public IO::Heartbeats
+{
+  TestHeartbeats(const Owner &o, IO::Transaction &t, HbLog &log):
+    IO::Heartbeats(o, t),
+    log_(&log)
+  {
+  }
+
+private:
+  virtual void reportImpl(IO::Transaction &/*t*/, const Owner &o, const Module &m, Timestamp /*reported*/, unsigned int timeout)
+  {
+    const HbEntry e(o, m, timeout);
+    assert(log_!=NULL);
+    log_->push_back(e);
+  }
+
+  HbLog *log_;
+}; // struct TestHeartbeats
+
+
+struct ConnHeartbeatHolder: public TestHelpers::Persistency::ConnectionUserStubBase
+{
+  explicit ConnHeartbeatHolder(HbLog &log):
+    log_(&log)
+  {
+  }
+
+  virtual IO::HeartbeatsAutoPtr heartbeatsImpl(const IO::Heartbeats::Owner &owner,
+                                                     IO::Transaction       &t)
+  {
+    assert(log_!=NULL);
+    IO::HeartbeatsAutoPtr ptr(new TestHeartbeats(owner, t, *log_));
+    return ptr;
+  }
+
+  HbLog *log_;
+}; // struct ConnHeartbeatHolder
+
+
+struct TestClass: private TestHelpers::Persistency::TestStubs
 {
   TestClass(void):
-    bf_(new TestProxy)
+    bf_( new TestProxy( IO::ConnectionPtrNN(IO::create()) ) ),
+    bfHb_( IO::ConnectionPtrNN(new ConnHeartbeatHolder(hbLog_)) )
   {
     assert( bf_.get()!=NULL );
   }
 
   TestHelpers::Persistency::TestStubs cfg_;
   boost::scoped_ptr<TestProxy>        bf_;
+  HbLog                               hbLog_;
+  TestProxy                           bfHb_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -192,6 +242,30 @@ template<>
 void testObj::test<9>(void)
 {
   ensure_equals("invalid type", bf_->getTypePublic().str(), "sometest");
+}
+
+// test sending heartbeat for the component
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  bfHb_.heartbeat(42);
+  ensure_equals("invalid number of entries", hbLog_.size(), 1u);
+  ensure_equals("invalid owner", hbLog_[0].get<0>().get(), string("evilinput::sometest/myinstance"));
+  ensure_equals("invalid module", hbLog_[0].get<1>().get(), string("self"));
+  ensure_equals("invalid timeout", hbLog_[0].get<2>(), 42u);
+}
+
+// test sending heartbeat for the module of the component
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  bfHb_.heartbeat("blackbetty", 42);
+  ensure_equals("invalid number of entries", hbLog_.size(), 1u);
+  ensure_equals("invalid owner", hbLog_[0].get<0>().get(), string("evilinput::sometest/myinstance"));
+  ensure_equals("invalid module", hbLog_[0].get<1>().get(), string("blackbetty"));
+  ensure_equals("invalid timeout", hbLog_[0].get<2>(), 42u);
 }
 
 // TODO: test createDynamicConfig method
