@@ -1,5 +1,5 @@
 /*
- * exportBaseWrapper.t.cpp
+ * BaseWrapper.t.cpp
  *
  */
 #include <tut.h>
@@ -19,45 +19,39 @@ namespace
 {
 struct TestClass: private TestHelpers::Persistency::TestStubs
 {
-  TestClass(void)
+  TestClass(void):
+    base_(new BaseWrapper)
   {
-    env_.importModule("triggerapi");
   }
 
   PythonAPI::Environment env_;
+  BasePtrNN              base_;
 };
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Trigger/Python/exportBaseWrapper");
+factory tf("Trigger/Python/BaseWrapper");
 } // unnamed namespace
 
 namespace tut
 {
 
-// smoke test
+// try calling unimplemented call tigger()
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  env_.run("from triggerapi import BaseWrapper");
-}
-
-// try making an instance
-template<>
-template<>
-void testObj::test<2>(void)
-{
-  env_.run("tmp=BaseWrapper()");
-  BasePtr ptr=env_.var<BasePtr>("tmp");
-  ensure("pointer is NULL", ptr.get()!=NULL);
   try
   {
-    ptr->trigger(makeNewLeaf());
-    fail("call didn't throw on non-existing override method");
+    base_->trigger( makeNewLeaf() );
+    fail("call didn't throw on non-existing override method trigger()");
   }
   catch(const ExceptionNoImplementation&)
+  {
+    // this is expected
+  }
+  catch(const PythonAPI::Exception&)
   {
     // this is expected
   }
