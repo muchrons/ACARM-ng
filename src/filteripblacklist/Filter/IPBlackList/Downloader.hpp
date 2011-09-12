@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "Logger/Node.hpp"
 #include "Filter/IPBlackList/CUrlInit.hpp"
 #include "Filter/IPBlackList/ExceptionDownloadFailed.hpp"
 
@@ -30,8 +31,9 @@ public:
   std::string download(void) const;
 
 private:
-  const CUrlInit    curlInit_;
-  const std::string url_;
+  const Logger::Node log_;
+  const CUrlInit     curlInit_;
+  const std::string  url_;
 }; // class Downloader
 
 } // namespace IPBlackList
