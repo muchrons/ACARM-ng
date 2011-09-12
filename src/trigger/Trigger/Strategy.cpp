@@ -79,15 +79,12 @@ void Strategy::process(Node n, ChangedNodes &/*changed*/)
 }
 
 
-void Strategy::heartbeat(unsigned int deadline)
+void Strategy::heartbeat(const unsigned int deadline)
 {
-  stringstream owner;
-  owner<<"trigger::"<<type_.str()<<"/"<<name_.str();
-  Persistency::IO::Transaction       t( conn_->createNewTransaction("heartbeat_sending") );
-  Persistency::IO::HeartbeatsAutoPtr hb=conn_->heartbeats( owner.str(), t );
-  assert( hb.get()!=NULL );
-  hb->report("thread", deadline);
-  t.commit();
+  // notice that this is Trigger::BackednFacade, and so why this code is valid.
+  BackendFacade bf(conn_, type_, name_);
+  bf.heartbeat(deadline);
+  bf.commitChanges();
 }
 
 
