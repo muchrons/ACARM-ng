@@ -6,6 +6,8 @@
 #define INCLUDE_INPUT_THREAD_HPP_FILE
 
 #include "Logger/Logger.hpp"
+#include "Commons/SharedPtrNotNULL.hpp"
+#include "Persistency/Facades/AnalyzersCreator.hpp"
 #include "Core/Types/AlertsFifo.hpp"
 #include "Input/Reader.hpp"
 
@@ -33,12 +35,15 @@ public:
 private:
   void sendHeartbeat(unsigned int timeout, unsigned int deadline);
 
-  ReaderPtrNN                         reader_;
-  Logger::Node                        log_;
-  Persistency::IO::ConnectionPtrNN    conn_;
-  Core::Types::AlertsFifo            *output_;
-  Persistency::Timestamp              lastHeartbeat_;
-  Persistency::IO::Heartbeats::Owner  owner_;
+  typedef Commons::SharedPtrNotNULL<Persistency::Facades::AnalyzersCreator> AnalyzersCreatorPtrNN;
+
+  ReaderPtrNN                             reader_;
+  Logger::Node                            log_;
+  Persistency::IO::ConnectionPtrNN        conn_;
+  Core::Types::AlertsFifo                *output_;
+  Persistency::Timestamp                  lastHeartbeat_;
+  Persistency::IO::Heartbeats::Owner      owner_;
+  AnalyzersCreatorPtrNN                   creator_;
 }; // class Thread
 
 } // namespace Input

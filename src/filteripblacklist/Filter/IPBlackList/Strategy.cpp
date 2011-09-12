@@ -56,7 +56,7 @@ void Strategy::processImpl(Node               n,
 
   // refresh list if timeout already passed
   if(deadline_<now)
-    updateBlackList(now);
+    updateBlackList(now, bf);
   assert(deadline_>=now);
 
   // if there is no list read, we can only skip this call...
@@ -81,17 +81,25 @@ void Strategy::pruneProcessedSet(const time_t now)
   LOGMSG_DEBUG_S(log_)<<"next prunning scheduled on/after "<<nextPrune_;
 }
 
-void Strategy::updateBlackList(time_t now)
+void Strategy::updateBlackList(time_t now, BackendFacade &bf)
 {
   LOGMSG_INFO(log_, "updating IPs black list");
   deadline_=now+params_.refresh_;
   try
   {
+    LOGMSG_DEBUG(log_, "downloading IP black list");
     const DShieldParser dsp( dwnl_.download() );
+    LOGMSG_DEBUG(log_, "parsing IP black list");
     BlackListPtr        ptr( new BlackList( dsp.begin(), dsp.end() ) );
+
     // if new list is available - save it!
+    LOGMSG_DEBUG(log_, "applying new IP black list");
     bl_.swap(ptr);
     LOGMSG_INFO_S(log_)<<"update's done - next one on/after "<<deadline_;
+
+    // if all's done, send heartbeat to signal dshield is alive
+    bf.heartbeat("dshield.org", params_.refresh_);
+    bf.commitChanges();
   }
   catch(const Filter::Exception &ex)
   {
@@ -107,7 +115,7 @@ void Strategy::handleNoBlackList(time_t now, Node n)
   LOGMSG_WARN_S(log_)<<"no blacklist is present - skipping scan for node "
                      <<n->getMetaAlert()->getID().get();
   // check if rescheduling download to be sooner is a good idea
-  const time_t waitTime=123;
+  const time_t waitTime=123;    // TODO: hardcoded value
   if(deadline_>now+waitTime)
   {
     deadline_=now+waitTime;

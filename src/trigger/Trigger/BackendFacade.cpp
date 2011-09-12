@@ -18,7 +18,7 @@ namespace Trigger
 BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN       conn,
                              const Core::Types::Proc::TypeName     &triggerType,
                              const Core::Types::Proc::InstanceName &triggerName):
-  Core::Types::BackendFacade(conn, triggerType, triggerName)
+  Core::Types::BackendFacade(conn, Core::Types::Proc::CategoryName("trigger"), triggerType, triggerName)
 {
 }
 
