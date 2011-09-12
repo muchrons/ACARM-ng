@@ -12,15 +12,13 @@ using namespace Persistency;
 namespace Input
 {
 
-BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN         conn,
-                             const Core::Types::Proc::TypeName        &type,
-                             const Core::Types::Proc::InstanceName    &name,
-                             Persistency::Facades::AnalyzersCreator   &creator,
-                             const Persistency::IO::Heartbeats::Owner &heartbeatOwner):
-  Core::Types::BackendFacade(conn, type, name),
+BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN        conn,
+                             const Core::Types::Proc::TypeName      &type,
+                             const Core::Types::Proc::InstanceName  &name,
+                             Persistency::Facades::AnalyzersCreator &creator):
+  Core::Types::BackendFacade(conn, Core::Types::Proc::CategoryName("input"), type, name),
   log_("input.backendfacade"),
-  creator_(creator),
-  heartbeatOwner_(heartbeatOwner)
+  creator_(creator)
 {
 }
 
@@ -31,16 +29,6 @@ Persistency::AnalyzerPtrNN BackendFacade::getAnalyzer(const Persistency::Analyze
 {
   beginTransaction();
   return creator_.construct( getConnection(), getTransaction(), name, version, os, ip );
-}
-
-void BackendFacade::heartbeat(const Persistency::IO::Heartbeats::Module &m, unsigned int validFor)
-{
-  LOGMSG_DEBUG_S(log_)<<"sending heartbeat from external module '"<<m.get()<<"' with validity of "<<validFor<<"[s]";
-  beginTransaction();
-  Persistency::IO::HeartbeatsAutoPtr hb=getConnection()->heartbeats( heartbeatOwner_, getTransaction() );
-  assert( hb.get()!=NULL );
-  hb->report(m, validFor);
-  // transaction will be commited after everything's done
 }
 
 } // namespace Input

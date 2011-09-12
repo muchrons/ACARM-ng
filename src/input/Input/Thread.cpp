@@ -7,7 +7,6 @@
 #include <boost/thread.hpp>
 
 #include "Commons/Convert.hpp"
-#include "Persistency/Facades/AnalyzersCreator.hpp"
 #include "Input/Thread.hpp"
 #include "Input/BackendFacade.hpp"
 
@@ -15,17 +14,6 @@ using namespace Core::Types::Proc;
 
 namespace Input
 {
-
-namespace
-{
-std::string makeOwnerName(const TypeName &type, const InstanceName &name)
-{
-  std::stringstream ss;
-  ss<<"input::"<<type.str()<<"/"<<name.str();
-  return ss.str();
-} // makeOwnerName()
-} // unnamed namespace
-
 
 Thread::Thread(ReaderPtrNN                       reader,
                Persistency::IO::ConnectionPtrNN  conn,
@@ -35,16 +23,13 @@ Thread::Thread(ReaderPtrNN                       reader,
   conn_(conn),
   output_(&output),
   lastHeartbeat_(0u),
-  owner_( makeOwnerName( reader_->getType(), reader_->getName() ) )
+  creator_(new Persistency::Facades::AnalyzersCreator)          // local cache
 {
 }
 
 
 void Thread::operator()(void)
 {
-  // cache to be used internaly (that's why i does not need to be class' field)
-  Persistency::Facades::AnalyzersCreator creator;
-
   bool quit=false;
   while(!quit)
   {
@@ -55,12 +40,12 @@ void Thread::operator()(void)
 
     try
     {
-      boost::this_thread::interruption_point();                                             // check for interruption
-      sendHeartbeat(timeout, deadline);                                                     // send heartbeat, if needed
-      BackendFacade   bf(conn_, reader_->getType(), reader_->getName(), creator, owner_);   // create backedn facade for this run
-      Reader::DataPtr ptr=reader_->read(bf, timeout);                                       // read with timeout
-      bf.commitChanges();                                                                   // accept changes introduced by facede
-      if( ptr.get()!=NULL )                                                                 // if data is valid, forward it
+      boost::this_thread::interruption_point();                                     // check for interruption
+      sendHeartbeat(timeout, deadline);                                             // send heartbeat, if needed
+      BackendFacade   bf(conn_, reader_->getType(), reader_->getName(), *creator_); // create backedn facade for this run
+      Reader::DataPtr ptr=reader_->read(bf, timeout);                               // read with timeout
+      bf.commitChanges();                                                           // accept changes introduced by facede
+      if( ptr.get()!=NULL )                                                         // if data is valid, forward it
       {
         LOGMSG_DEBUG(log_, "got new alert");
         output_->push(ptr);
@@ -98,12 +83,10 @@ void Thread::sendHeartbeat(const unsigned int timeout, const unsigned int deadli
   {
     // timeout has been reached - send heartbeat
     LOGMSG_DEBUG(log_, "sending heartbeat from input's thread");
-    Persistency::IO::Transaction       t( conn_->createNewTransaction("heartbeat_sending") );
-    Persistency::IO::HeartbeatsAutoPtr hb=conn_->heartbeats(owner_, t);
-    assert( hb.get()!=NULL );
-    hb->report("thread", deadline);
-    t.commit();
-    lastHeartbeat_=now;                     // save last call time, for further usage
+    BackendFacade bf(conn_, reader_->getType(), reader_->getName(), *creator_);
+    bf.heartbeat(deadline);
+    bf.commitChanges();
+    lastHeartbeat_=now;     // save last call time, for further usage
   }
   catch(const std::exception &ex)
   {
