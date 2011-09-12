@@ -38,10 +38,7 @@ struct CallbackHandle
 
   /*
   NOTE: this call is never used by the implementation!
-  bool collectionSize(size_t size)
-  {
-    return false;
-  }
+  bool collectionSize(size_t size);
   */
 
   /** \brief callback of specific value.

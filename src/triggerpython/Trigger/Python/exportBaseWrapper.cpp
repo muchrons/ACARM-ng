@@ -16,8 +16,6 @@ namespace Python
 void exportBaseWrapper(void)
 {
   class_<BaseWrapper, boost::noncopyable, boost::shared_ptr<BaseWrapper> >("BaseWrapper", init<>())
-    //.def("trigger", &BaseWrapper::trigger)
-    //.def("triggerImpl", &BaseWrapper::triggerImpl, (arg("ma")))
   ;
 }
 

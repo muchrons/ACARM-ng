@@ -28,7 +28,6 @@ template<>
 void testObj::test<1>(void)
 {
   env_.importModule("filterapi");
-  //env_.run("from filterapi import *");
 }
 
 } // namespace tut
