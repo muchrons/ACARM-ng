@@ -72,7 +72,7 @@ private:
                            BackendFacade     &bf);
 
   void pruneProcessedSet(time_t now);
-  void updateBlackList(time_t now);
+  void updateBlackList(time_t now, BackendFacade &bf);
   void handleNoBlackList(time_t now, Node n);
 
   const Parameters params_;

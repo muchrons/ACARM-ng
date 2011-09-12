@@ -23,7 +23,7 @@ struct TestClass: public TestHelpers::Persistency::TestStubs
     name_("testinputbftest"),
     conn_( createUserStub() ),
     t_( new Persistency::IO::Transaction( conn_->createNewTransaction("backend_facade_trans") ) ),
-    bf_(conn_, type_, name_, ac_, "OwneR")
+    bf_(conn_, type_, name_, ac_)
   {
     t_->commit();
     t_.reset();     // disgard transaction
@@ -75,7 +75,7 @@ void testObj::test<3>(void)
   Persistency::AnalyzerPtrNN ptr1=bf_.getAnalyzer("name", "1.2", "Linux", NULL);
   bf_.commitChanges();
 
-  BackendFacade              bfNew(conn_, type_, name_, ac_, "OwneR");
+  BackendFacade              bfNew(conn_, type_, name_, ac_);
   Persistency::AnalyzerPtrNN ptr2=bfNew.getAnalyzer("name", "1.2", "Linux", NULL);
   bfNew.commitChanges();
 

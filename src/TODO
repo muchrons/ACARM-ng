@@ -27,7 +27,6 @@ filters:
 * implement filter changing priority when s/d IP is from defined set (i.e.: internal network, extrnal network, critical resource, etc...).
 * editable filters' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
 * consider supporting addition of an alert to the middle of the chain of events (currently only the beginning and the end is supported).
-* add heartbeats for dshield, when host is unreachable.
 
 docs:
 -----

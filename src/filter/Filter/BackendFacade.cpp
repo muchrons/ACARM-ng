@@ -18,7 +18,7 @@ BackendFacade::BackendFacade(Persistency::IO::ConnectionPtrNN     conn,
                            ChangedNodes                          &changed,
                            const Core::Types::Proc::TypeName     &filterType,
                            const Core::Types::Proc::InstanceName &filterName):
-  Core::Types::BackendFacade(conn, filterType, filterName),
+  Core::Types::BackendFacade(conn, Core::Types::Proc::CategoryName("filter"), filterType, filterName),
   changed_(changed)
 {
   if( changed_.size()!=0 )
