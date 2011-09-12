@@ -98,7 +98,7 @@ void Strategy::updateBlackList(time_t now, BackendFacade &bf)
     LOGMSG_INFO_S(log_)<<"update's done - next one on/after "<<deadline_;
 
     // if all's done, send heartbeat to signal dshield is alive
-    bf.heartbeat("dshiled server", params_.refresh_);
+    bf.heartbeat("dshield.org", params_.refresh_);
     bf.commitChanges();
   }
   catch(const Filter::Exception &ex)
