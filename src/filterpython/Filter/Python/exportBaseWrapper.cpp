@@ -16,6 +16,7 @@ namespace Python
 void exportBaseWrapper(void)
 {
   class_<BaseWrapper, boost::noncopyable, boost::shared_ptr<BaseWrapper> >("BaseWrapper", init<>())
+    //TODO: dead code
     //.def("filter", &BaseWrapper::filter)
     //.def("filterImpl", &BaseWrapper::filterImpl, (arg("ma")))
   ;

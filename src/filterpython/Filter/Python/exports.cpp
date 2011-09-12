@@ -19,5 +19,6 @@ namespace
 {
 // it needs to be imported before initializing environment
 PythonAPI::Environment::StaticImporter g_import("filterapi", initfilterapi);
+// TODO: dead code
 //Filter::Environment::StaticImporter g_import("filterapi", PyInit_filterapi);
 } // unnamed namespace

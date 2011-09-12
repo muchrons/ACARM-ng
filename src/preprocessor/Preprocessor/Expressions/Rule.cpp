@@ -36,6 +36,7 @@ struct CallbackHandle
     assert(checker_!=NULL);
   }
 
+  // TODO: dead code
   /*
   NOTE: this call is never used by the implementation!
   bool collectionSize(size_t size)

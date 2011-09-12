@@ -22,6 +22,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   TestClass(void)
   {
     env_.importModule("triggerapi");
+    // TODO: dead code
     //env_.run("from persistency import *");
   }
 

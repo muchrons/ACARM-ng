@@ -22,6 +22,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
   TestClass(void)
   {
     env_.importModule("filterapi");
+    // TODO: dead code
     //env_.run("from persistency import *");
   }
 
@@ -44,6 +45,8 @@ void testObj::test<1>(void)
 {
   env_.run("from filterapi import BaseWrapper");
 }
+
+// TODO: dead code
 
 /*
 // try making an instance
