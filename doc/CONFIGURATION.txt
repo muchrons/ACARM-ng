@@ -133,9 +133,9 @@ following appenders are available:
 
   * multiappender - writes to given appenders (facade)
 <multiappender name="writetothem">
-  <appender>filelog</appender>
+  <forward>filelog</forward>
   <!-- ... -->
-  <appender>stdout</appender>
+  <forward>stdout</forward>
 </multiappender>
 
   * null - discards all logs, regardless of their priority
@@ -246,6 +246,7 @@ following filters and parameters are available:
     <timeout>42</timeout>              <!-- timeout for observing entry, in seconds -->
     <priorityDelta>0.8</priorityDelta> <!-- amount to update priority by when correlating -->
   </newevent>
+
 
 triggers configuration
 ======================
@@ -400,6 +401,7 @@ following inputs are available:
               regarding Prelude-Manager configuration and sensors registration
               refer Prelude-Manager's manual.
 <prelude name="myprelude1">
+  <heartbeat>400</heartbeat>                        <!-- timeout for prelude heartbeats, in seconds -->
   <profile>acarm-ng_profile</profile>               <!-- profile created for prelude "reading-sensor": ACARM-ng -->
   <config>/etc/prelude/default/client.conf</config> <!-- client config for prelude -->
 </prelude>
@@ -478,56 +480,56 @@ example rules can look like this:
 that all collection types are marked as '[]' in place of element's index the full
 tree looks like this:
 -------------
-alert.name
-alert.detected
-alert.created
-alert.certainty
-alert.severity
-alert.description
-alert.analyzers.[].name
-alert.analyzers.[].version
-alert.analyzers.[].os
-alert.analyzers.[].ip
-alert.sources.[].ip
-alert.sources.[].mask
-alert.sources.[].os
-alert.sources.[].url.name
-alert.sources.[].url.url
-alert.sources.[].name
-alert.sources.[].services.[].name
-alert.sources.[].services.[].port
-alert.sources.[].services.[].protocol
-alert.sources.[].services.[].url.name
-alert.sources.[].services.[].url.url
-alert.sources.[].processes.[].path
-alert.sources.[].processes.[].name
-alert.sources.[].processes.[].md5
-alert.sources.[].processes.[].pid
-alert.sources.[].processes.[].uid
-alert.sources.[].processes.[].username
-alert.sources.[].processes.[].arguments
-alert.sources.[].processes.[].url.name
-alert.sources.[].processes.[].url.url
-alert.targets.[].ip
-alert.targets.[].mask
-alert.targets.[].os
-alert.targets.[].url.name
-alert.targets.[].url.url
-alert.targets.[].name
-alert.targets.[].services.[].name
-alert.targets.[].services.[].port
-alert.targets.[].services.[].protocol
-alert.targets.[].services.[].url.name
-alert.targets.[].services.[].url.url
-alert.targets.[].processes.[].path
-alert.targets.[].processes.[].name
-alert.targets.[].processes.[].md5
-alert.targets.[].processes.[].pid
-alert.targets.[].processes.[].uid
-alert.targets.[].processes.[].username
-alert.targets.[].processes.[].arguments
-alert.targets.[].processes.[].url.name
-alert.targets.[].processes.[].url.url
+metaalert.alert.name
+metaalert.alert.detected
+metaalert.alert.created
+metaalert.alert.certainty
+metaalert.alert.severity
+metaalert.alert.description
+metaalert.alert.analyzers.[].name
+metaalert.alert.analyzers.[].version
+metaalert.alert.analyzers.[].os
+metaalert.alert.analyzers.[].ip
+metaalert.alert.sources.[].ip
+metaalert.alert.sources.[].netmask
+metaalert.alert.sources.[].os
+metaalert.alert.sources.[].referenceurl.name
+metaalert.alert.sources.[].referenceurl.url
+metaalert.alert.sources.[].name
+metaalert.alert.sources.[].services.[].name
+metaalert.alert.sources.[].services.[].port
+metaalert.alert.sources.[].services.[].protocol
+metaalert.alert.sources.[].services.[].referenceurl.name
+metaalert.alert.sources.[].services.[].referenceurl.url
+metaalert.alert.sources.[].processes.[].path
+metaalert.alert.sources.[].processes.[].name
+metaalert.alert.sources.[].processes.[].md5
+metaalert.alert.sources.[].processes.[].pid
+metaalert.alert.sources.[].processes.[].uid
+metaalert.alert.sources.[].processes.[].username
+metaalert.alert.sources.[].processes.[].parameters
+metaalert.alert.sources.[].processes.[].referenceurl.name
+metaalert.alert.sources.[].processes.[].referenceurl.url
+metaalert.alert.targets.[].ip
+metaalert.alert.targets.[].netmask
+metaalert.alert.targets.[].os
+metaalert.alert.targets.[].referenceurl.name
+metaalert.alert.targets.[].referenceurl.url
+metaalert.alert.targets.[].name
+metaalert.alert.targets.[].services.[].name
+metaalert.alert.targets.[].services.[].port
+metaalert.alert.targets.[].services.[].protocol
+metaalert.alert.targets.[].services.[].referenceurl.name
+metaalert.alert.targets.[].services.[].referenceurl.url
+metaalert.alert.targets.[].processes.[].path
+metaalert.alert.targets.[].processes.[].name
+metaalert.alert.targets.[].processes.[].md5
+metaalert.alert.targets.[].processes.[].pid
+metaalert.alert.targets.[].processes.[].uid
+metaalert.alert.targets.[].processes.[].username
+metaalert.alert.targets.[].processes.[].parameters
+metaalert.alert.targets.[].processes.[].referenceurl.name
+metaalert.alert.targets.[].processes.[].referenceurl.url
 -------------
 notice that since elements in collections are in undefined order there are no
 indexes available. instead two markers are present: '*' and '$'. putting '*' in
@@ -540,8 +542,8 @@ example configs along with description goes here:
 <preprocessor>
   <accept>
     <and>
-      <rule path="alert.name"        contains="ssh"/>
-      <rule path="alert.target.$.ip" equals="1.2.3.4"/>
+      <rule path="metaalert.alert.name"        contains="ssh"/>
+      <rule path="metaalert.alert.target.$.ip" equals="1.2.3.4"/>
     </and>
   </accept>
   <reject>
@@ -553,7 +555,7 @@ is '1.2.3.4'. all other alerts will be rejected.
 
 <preprocessor>
   <reject>
-    <rule path="alert.source.*.name" equals="my.security.scanner.org"/>
+    <rule path="metaalert.alert.source.*.name" equals="my.security.scanner.org"/>
   </reject>
 </preprocessor>
 rejects all alerts that were generated by source host whose name's
