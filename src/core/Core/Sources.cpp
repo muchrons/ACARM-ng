@@ -47,7 +47,7 @@ Persistency::GraphNodePtrNN Sources::read(void)
 
     // check if the pre-processor accepts given alert
     LOGMSG_DEBUG(log_, "checking if alert is accepted by the preprocessor");
-    if( preproc_.checkAccept(*alert) )
+    if( preproc_.checkAccept(leaf) )
     {
       LOGMSG_DEBUG(log_, "alert accepted by the preprocessor");
       return leaf;
