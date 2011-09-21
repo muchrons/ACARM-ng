@@ -22,11 +22,9 @@ Path::Path(const std::string &path):
   // not enought elements?
   if( e_.size()<2u )
     throw ExceptionInvalidPath(SYSTEM_SAVE_LOCATION, path_, path_, "path too short");
-
-  // too many elements?
-  assert( e_.size()>=2u );
-  if( e_.size()>7u )
-    throw ExceptionInvalidPath(SYSTEM_SAVE_LOCATION, path_, e_.back(), "path too long");
+  // NOTE: since meta-alerts can be processed as well as alerts there is not such thing as too long
+  //       path, since there can be a sequence like metaalert.children.0.metalert...(and so on)
+  //       many times. thus only minimal length will be checked.
 
   assert(path_==path);  // sanity check
 }
