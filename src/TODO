@@ -19,7 +19,6 @@ triggers:
 * encrypted connections in Trigger::Mail.
 * editable triggers' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
 * add trigger sending reports on problematic machines to admins found via WHOIS.
-* consider adding preprocessor to triggers - only events matching given expressions would be taken into account.
 
 filters:
 --------
