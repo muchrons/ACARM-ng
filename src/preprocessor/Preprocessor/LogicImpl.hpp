@@ -22,7 +22,7 @@ class LogicImpl
 public:
   /** \brief create object instance from given configuration.
    */
-  LogicImpl(const ConfigIO::Preprocessor::Config &cfg);
+  explicit LogicImpl(const ConfigIO::Preprocessor::Config &cfg);
 
   /** \brief checks if given alert is to be accepted according to defined rules.
    *  \param alert alert to be checked.
