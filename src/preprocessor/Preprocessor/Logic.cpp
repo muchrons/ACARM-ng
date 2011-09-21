@@ -19,9 +19,9 @@ Logic::~Logic(void)
   // this code ensures proper destruction of pimpl.
 }
 
-bool Logic::checkAccept(const Persistency::Alert &alert) const
+bool Logic::checkAccept(const Persistency::ConstGraphNodePtrNN &node) const
 {
-  return pimpl_->checkAccept(alert);
+  return pimpl_->checkAccept(node);
 }
 
 } // namespace Preprocessor

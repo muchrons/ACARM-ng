@@ -14,7 +14,7 @@ Constant::Constant(bool value):
 {
 }
 
-bool Constant::compute(const Persistency::Alert &/*alert*/) const
+bool Constant::compute(const Persistency::ConstGraphNodePtrNN &/*node*/) const
 {
   return v_;
 }

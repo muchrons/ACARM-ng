@@ -26,23 +26,23 @@ LogicImpl::LogicImpl(const ConfigIO::Preprocessor::Config &cfg):
   LOGMSG_INFO_S(log_)<<"created logic with "<<ss_.size()<<" sections";
 }
 
-bool LogicImpl::checkAccept(const Persistency::Alert &alert) const
+bool LogicImpl::checkAccept(const Persistency::ConstGraphNodePtrNN &node) const
 {
-  LOGMSG_DEBUG_S(log_)<<"new alert to check: "<<alert.getName().get();
+  LOGMSG_DEBUG_S(log_)<<"new (meta-)alert to check: "<<node->getMetaAlert()->getName().get();
 
   // process all section until some match is done
   int i=0;
   for(SectionSet::const_iterator it=ss_.begin(); it!=ss_.end(); ++it)
   {
     ++i;
-    switch( it->process(alert).toInt() )
+    switch( it->process(node).toInt() )
     {
       case Section::Decision::ACCEPT:
-        LOGMSG_DEBUG_S(log_)<<"alert '"<<alert.getName().get()<<"' accepted by rule no. "<<i;
+        LOGMSG_DEBUG_S(log_)<<"(meta-)alert '"<<node->getMetaAlert()->getName().get()<<"' accepted by rule no. "<<i;
         return true;
 
       case Section::Decision::REJECT:
-        LOGMSG_DEBUG_S(log_)<<"alert '"<<alert.getName().get()<<"' denied by rule no. "<<i;
+        LOGMSG_DEBUG_S(log_)<<"(meta-)alert '"<<node->getMetaAlert()->getName().get()<<"' denied by rule no. "<<i;
         return false;
 
       case Section::Decision::CONTINUE:
@@ -55,7 +55,7 @@ bool LogicImpl::checkAccept(const Persistency::Alert &alert) const
   } // for(sections)
 
   // if no section has been matched, by default accept alert
-  LOGMSG_DEBUG_S(log_)<<"alert '"<<alert.getName().get()<<"' accepted (default rule)";
+  LOGMSG_DEBUG_S(log_)<<"(meta-)alert '"<<node->getMetaAlert()->getName().get()<<"' accepted (default rule)";
   return true;
 }
 

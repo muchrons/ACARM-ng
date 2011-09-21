@@ -22,10 +22,10 @@ Section::Section(const ConfigIO::Preprocessor::Section &cfg):
   assert( expr_.get()!=NULL );
 }
 
-Section::Decision Section::process(const Persistency::Alert &alert) const
+Section::Decision Section::process(const Persistency::ConstGraphNodePtrNN &node) const
 {
   assert( expr_.get()!=NULL );
-  const bool result=expr_->compute(alert);
+  const bool result=expr_->compute(node);
 
   // accept-section returned true
   if( isAcceptType_==true && result==true )
