@@ -1,3 +1,7 @@
+-- v0.3.2 --
+* fixed "path too long" bug in string-access facade.
+
+
 -- v0.3.1 --
 * fixed dependency issue - release code does not include test headers.
 * fixed compilation with icc (intel toolchain) on hosts with machine-dependent includes in /usr/include/<machine> implicit directory.
