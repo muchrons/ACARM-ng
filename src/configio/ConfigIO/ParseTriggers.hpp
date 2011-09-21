@@ -16,7 +16,7 @@ namespace ConfigIO
 
 /** \brief parser for triggers' configuration.
  */
-class ParseTriggers: public Generic::Parse<TriggerConfig, TriggersConfigCollection, true>
+class ParseTriggers: public Generic::Parse<TriggerConfig, TriggersConfigCollection>
 {
 public:
   /** \brief parses configuration and saves it internally.

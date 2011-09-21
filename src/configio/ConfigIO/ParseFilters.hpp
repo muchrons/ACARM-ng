@@ -17,7 +17,7 @@ namespace ConfigIO
 
 /** \brief parser for filters' configuration.
  */
-class ParseFilters: public Generic::Parse<FilterConfig, FiltersConfigCollection, true>
+class ParseFilters: public Generic::Parse<FilterConfig, FiltersConfigCollection>
 {
 public:
   /** \brief parses configuration and saves it internally.

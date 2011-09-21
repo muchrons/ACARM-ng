@@ -19,7 +19,7 @@ namespace Generic
 
 /** \brief parser for inputs' configuration.
  */
-template<typename TConfig, typename TConfigCollection, bool isNamed = true>
+template<typename TConfig, typename TConfigCollection>
 class Parse
 {
 public:
@@ -28,10 +28,7 @@ public:
    */
   explicit Parse(const XML::Node &node)
   {
-    if(isNamed)
-      parseNamed(node);
-    else
-      parse(node);
+    parseNamed(node);
   }
 
   /** \brief gets configuration collection.
@@ -43,26 +40,6 @@ public:
   }
 
 private:
-  void parse(const XML::Node &node)
-  {
-    // iterate through all of the definitions
-    const XML::Node::TNodesList &elements=node.getChildrenList();
-    for(XML::Node::TNodesList::const_iterator eit=elements.begin();
-        eit!=elements.end(); ++eit)
-    {
-      const typename TConfig::TypeName &type=eit->getName();
-      typename TConfig::Options         options;
-
-      // get all options to a single collection
-      const XML::Node::TNodesList &children=eit->getChildrenList();
-      for(XML::Node::TNodesList::const_iterator it=children.begin();
-          it!=children.end(); ++it)
-        options[ it->getName() ] = it->getValuesString();
-      // add new entry
-      cc_.push_back( TConfig(type, options) );
-    }
-  }
-
   void parseNamed(const XML::Node &node)
   {
     // iterate through all of the definitions
