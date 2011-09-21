@@ -19,7 +19,7 @@ namespace Generic
 
 /** \brief parser for inputs' configuration.
  */
-template<typename TConfig, typename TConfigCollection, bool isNamed = false>
+template<typename TConfig, typename TConfigCollection, bool isNamed = true>
 class Parse
 {
 public:
@@ -72,15 +72,17 @@ private:
     {
       const typename TConfig::TypeName &type=eit->getName();
       const typename TConfig::TypeName &name=eit->getAttributesList().getAttribute("name").getValue();
+
       if(isNameUnique(elements, name) != true)
         throw ExceptionParseError(SYSTEM_SAVE_LOCATION, "name: " + name + " is not unique");
-      typename TConfig::Options         options;
+
+      typename TConfig::Options options;
       // get all options to a single collection
       const XML::Node::TNodesList &children=eit->getChildrenList();
-      for(XML::Node::TNodesList::const_iterator it=children.begin();
-          it!=children.end(); ++it)
+      for(XML::Node::TNodesList::const_iterator it=children.begin(); it!=children.end(); ++it)
         options[ it->getName() ] = it->getValuesString();
-      options[ "name" ] = name;
+
+      options["name"]=name;
       // add new entry
       cc_.push_back( TConfig(type, options) );
     }
@@ -100,6 +102,7 @@ private:
     }
     return true;
   }
+
   TConfigCollection cc_;
 }; // class Parase
 

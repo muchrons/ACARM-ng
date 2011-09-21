@@ -26,11 +26,40 @@ struct Cfg: public Config<Cfg>
     opts["narf"]="fran";
     return opts;
   }
-};
+}; // struct Cfg
+
+struct CfgPP: public Config<Cfg>
+{
+  CfgPP(void):
+    Config<Cfg>( "type1", makeOptions(), makeSections() )
+  {
+  }
+
+  Options makeOptions(void) const
+  {
+    Options opts;
+    opts["abc"] ="def";
+    opts["narf"]="fran";
+    return opts;
+  }
+
+  ConfigIO::Preprocessor::Config makeSections(void) const
+  {
+    typedef ConfigIO::Preprocessor::Config     PPCfg;
+    typedef ConfigIO::Preprocessor::Section    PPSec;
+    typedef ConfigIO::Preprocessor::Expression PPExpr;
+    typedef ConfigIO::Preprocessor::Rule       PPRule;
+    PPCfg::Sections secs;
+    secs.push_back( PPSec(PPSec::Type::ACCEPT, PPExpr::makeTerm( PPRule::makeTrue()  ) ) );
+    secs.push_back( PPSec(PPSec::Type::ACCEPT, PPExpr::makeTerm( PPRule::makeFalse() ) ) );
+    return ConfigIO::Preprocessor::Config(secs);
+  }
+}; // struct CfgPP
 
 struct TestClass
 {
-  Cfg cfg_;
+  Cfg   cfg_;
+  CfgPP cfgPP_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -99,6 +128,24 @@ template<>
 void testObj::test<6>(void)
 {
   ensure("non-NULL value returned for nonexisitng element", cfg_.get("idontexist")==NULL );
+}
+
+// test getting preprocessor's config, when not set
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  ensure("non-NULL preprocessor's confi returned, when not set", cfg_.getPreprocessorConfig()==NULL);
+}
+
+// test getting preprocessor's config, when set
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const ConfigIO::Preprocessor::Config *ptr=cfgPP_.getPreprocessorConfig();
+  ensure("NULL preprocessor's confi returned, when set", ptr!=NULL);
+  ensure_equals("invalid number of sections", ptr->getSections().size(), 2u);
 }
 
 } // namespace tut

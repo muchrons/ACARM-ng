@@ -10,7 +10,7 @@ namespace ConfigIO
 {
 
 ParseTriggers::ParseTriggers(const XML::Node &node):
-  Generic::Parse<TriggerConfig, TriggersConfigCollection, true>(node)
+  Generic::Parse<TriggerConfig, TriggersConfigCollection>(node)
 {
   assert( node.getName()=="triggers" );
 }

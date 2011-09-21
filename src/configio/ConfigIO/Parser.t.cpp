@@ -183,4 +183,17 @@ void testObj::test<11>(void)
   }
 }
 
+// test getting preprocessor's configuration in trigger
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  copyAsDefaultConfig("testdata/trigger_preproc.xml");
+  const Parser                p;
+  const TriggerConfig         cfg  =p.getTriggersConfig().at(0);
+  const Preprocessor::Config *ppcfg=cfg.getPreprocessorConfig();
+  ensure("pointer is NULL", ppcfg!=NULL);
+  ensure_equals("invalid number of rules", ppcfg->getSections().size(), 2u);
+}
+
 } // namespace tut
