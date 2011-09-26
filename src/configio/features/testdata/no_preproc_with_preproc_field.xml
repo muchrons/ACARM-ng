@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+  <whatever>
+
+    <something name="other name">
+      <preprocessor>works fine!</preprocessor>
+    </something>
+
+  </whatever>
+</acarm_ng>

@@ -138,4 +138,15 @@ void testObj::test<6>(void)
   ensure_equals("invalid number of sections", cfg.at(0).getPreprocessorConfig()->getSections().size(), 1u);
 }
 
+// test if config that does not use preprocessor can have option names 'preprocessor'
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const TestParse             pp =getConf<TestParse>("testdata/no_preproc_with_preproc_field.xml");
+  const TestConfigCollection &cfg=pp.getConfig();
+  ensure("preprocessor is set", cfg.at(0).getPreprocessorConfig()==NULL);
+  ensure_equals("option 'preprocessor' not set", cfg.at(0)["preprocessor"], "works fine!");
+}
+
 } // namespace tut
