@@ -99,6 +99,7 @@ protected:
   /** \brief creates configuration instance, with preprocessor.
    *  \param type    plugin-instance type.
    *  \param options options for plugin.
+   *  \param preproc preprocessor's configuration.
    */
   Config(const TypeName             &type,
          const Options              &options,
