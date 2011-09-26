@@ -18,7 +18,9 @@ TriggersCollection create(Core::Types::SignedNodesFifo &outputQueue)
   {
     Factory::FactoryPtr wrapper( Factory::create( it->getType(), it->getOptions() ) );
     assert(wrapper.get()!=NULL);
-    ProcessorPtrNN      trigger( new Processor(outputQueue, wrapper->ptr_) );
+    const ConfigIO::Preprocessor::Config *tmp  =it->getPreprocessorConfig();
+    const ConfigIO::Preprocessor::Config &ppCfg=(tmp!=NULL)?*tmp:ConfigIO::Preprocessor::Config();
+    ProcessorPtrNN      trigger( new Processor(outputQueue, wrapper->ptr_, ppCfg) );
     out.push_back(trigger);
   }
 
