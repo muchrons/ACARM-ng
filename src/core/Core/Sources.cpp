@@ -2,6 +2,7 @@
  * Sources.cpp
  *
  */
+#include "ConfigIO/Singleton.hpp"
 #include "Logger/Logger.hpp"
 #include "Persistency/Facades/IDAssigner.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
@@ -15,7 +16,8 @@ namespace Core
 Sources::Sources(void):
   log_("core.sources"),
   conn_( IO::create() ),
-  inputs_( Input::create(queue_) )
+  inputs_( Input::create(queue_) ),
+  preproc_( ConfigIO::Singleton::get()->preprocessorConfig() )
 {
   LOGMSG_INFO(log_, "created");
 }
