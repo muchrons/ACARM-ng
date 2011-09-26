@@ -1131,12 +1131,12 @@ void testObj::test<32>(void)
   const Alert a(name_, analyzers_, &detected_, created_, severity_, certainty_,
                 description_, sourceHosts_, targetHosts_);
   HostPtrNN host( new Host( Host::IPv4::from_string("1.2.3.4"),
-                         NULL,
-                         "myos",
-                         url,
-                         Host::Services(),
-                         Host::Processes(),
-                         NULL ) );
+                            NULL,
+                            "myos",
+                            url,
+                            Host::Services(),
+                            Host::Processes(),
+                            NULL ) );
   const DataBaseID alertID = es_.saveAlert(a);
   const DataBaseID anlzID  = es_.saveAnalyzer(*analyzer_.get());
   // save data in table alert_analyzers
