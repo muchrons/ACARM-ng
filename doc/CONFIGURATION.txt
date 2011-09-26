@@ -491,6 +491,8 @@ are not to be correlated. rejected alert are only saved in system's data base (o
 log is generated about this event - they are not processed any further).
 default behavior is to accept alert (ex.: when this section is empty).
 
+the same syntax is used everywhere where 'preprocessor' is in use.
+
 top level structure looks like this:
 <preprocessor>
   <!-- ... -->
@@ -548,56 +550,56 @@ example rules can look like this:
 that all collection types are marked as '[]' in place of element's index the full
 tree looks like this:
 -------------
-alert.name
-alert.detected
-alert.created
-alert.certainty
-alert.severity
-alert.description
-alert.analyzers.[].name
-alert.analyzers.[].version
-alert.analyzers.[].os
-alert.analyzers.[].ip
-alert.sources.[].ip
-alert.sources.[].netmask
-alert.sources.[].os
-alert.sources.[].referenceurl.name
-alert.sources.[].referenceurl.url
-alert.sources.[].name
-alert.sources.[].services.[].name
-alert.sources.[].services.[].port
-alert.sources.[].services.[].protocol
-alert.sources.[].services.[].referenceurl.name
-alert.sources.[].services.[].referenceurl.url
-alert.sources.[].processes.[].path
-alert.sources.[].processes.[].name
-alert.sources.[].processes.[].md5
-alert.sources.[].processes.[].pid
-alert.sources.[].processes.[].uid
-alert.sources.[].processes.[].username
-alert.sources.[].processes.[].parameters
-alert.sources.[].processes.[].referenceurl.name
-alert.sources.[].processes.[].referenceurl.url
-alert.targets.[].ip
-alert.targets.[].netmask
-alert.targets.[].os
-alert.targets.[].referenceurl.name
-alert.targets.[].referenceurl.url
-alert.targets.[].name
-alert.targets.[].services.[].name
-alert.targets.[].services.[].port
-alert.targets.[].services.[].protocol
-alert.targets.[].services.[].referenceurl.name
-alert.targets.[].services.[].referenceurl.url
-alert.targets.[].processes.[].path
-alert.targets.[].processes.[].name
-alert.targets.[].processes.[].md5
-alert.targets.[].processes.[].pid
-alert.targets.[].processes.[].uid
-alert.targets.[].processes.[].username
-alert.targets.[].processes.[].parameters
-alert.targets.[].processes.[].referenceurl.name
-alert.targets.[].processes.[].referenceurl.url
+metaalert.alert.name
+metaalert.alert.detected
+metaalert.alert.created
+metaalert.alert.certainty
+metaalert.alert.severity
+metaalert.alert.description
+metaalert.alert.analyzers.[].name
+metaalert.alert.analyzers.[].version
+metaalert.alert.analyzers.[].os
+metaalert.alert.analyzers.[].ip
+metaalert.alert.sources.[].ip
+metaalert.alert.sources.[].netmask
+metaalert.alert.sources.[].os
+metaalert.alert.sources.[].referenceurl.name
+metaalert.alert.sources.[].referenceurl.url
+metaalert.alert.sources.[].name
+metaalert.alert.sources.[].services.[].name
+metaalert.alert.sources.[].services.[].port
+metaalert.alert.sources.[].services.[].protocol
+metaalert.alert.sources.[].services.[].referenceurl.name
+metaalert.alert.sources.[].services.[].referenceurl.url
+metaalert.alert.sources.[].processes.[].path
+metaalert.alert.sources.[].processes.[].name
+metaalert.alert.sources.[].processes.[].md5
+metaalert.alert.sources.[].processes.[].pid
+metaalert.alert.sources.[].processes.[].uid
+metaalert.alert.sources.[].processes.[].username
+metaalert.alert.sources.[].processes.[].parameters
+metaalert.alert.sources.[].processes.[].referenceurl.name
+metaalert.alert.sources.[].processes.[].referenceurl.url
+metaalert.alert.targets.[].ip
+metaalert.alert.targets.[].netmask
+metaalert.alert.targets.[].os
+metaalert.alert.targets.[].referenceurl.name
+metaalert.alert.targets.[].referenceurl.url
+metaalert.alert.targets.[].name
+metaalert.alert.targets.[].services.[].name
+metaalert.alert.targets.[].services.[].port
+metaalert.alert.targets.[].services.[].protocol
+metaalert.alert.targets.[].services.[].referenceurl.name
+metaalert.alert.targets.[].services.[].referenceurl.url
+metaalert.alert.targets.[].processes.[].path
+metaalert.alert.targets.[].processes.[].name
+metaalert.alert.targets.[].processes.[].md5
+metaalert.alert.targets.[].processes.[].pid
+metaalert.alert.targets.[].processes.[].uid
+metaalert.alert.targets.[].processes.[].username
+metaalert.alert.targets.[].processes.[].parameters
+metaalert.alert.targets.[].processes.[].referenceurl.name
+metaalert.alert.targets.[].processes.[].referenceurl.url
 -------------
 notice that since elements in collections are in undefined order there are no
 indexes available. instead two markers are present: '*' and '$'. putting '*' in
@@ -610,8 +612,8 @@ example configs along with description goes here:
 <preprocessor>
   <accept>
     <and>
-      <rule path="alert.name"        contains="ssh"/>
-      <rule path="alert.target.$.ip" equals="1.2.3.4"/>
+      <rule path="metaalert.alert.name"        contains="ssh"/>
+      <rule path="metaalert.alert.target.$.ip" equals="1.2.3.4"/>
     </and>
   </accept>
   <reject>
@@ -623,7 +625,7 @@ is '1.2.3.4'. all other alerts will be rejected.
 
 <preprocessor>
   <reject>
-    <rule path="alert.source.*.name" equals="my.security.scanner.org"/>
+    <rule path="metaalert.alert.source.*.name" equals="my.security.scanner.org"/>
   </reject>
 </preprocessor>
 rejects all alerts that were generated by source host whose name's
@@ -631,3 +633,10 @@ rejects all alerts that were generated by source host whose name's
 that we use '*' here, so if alert will consist of reports generated
 by multiple hosts (including 'my.security.scanner.org') alert may still
 be accepted. this is safe approach in this context.
+
+preprocessor is now available after reading alerts from inputs. this is 'preprocessor'
+section under main config file's root node. they are also used in triggers, to add more
+robust configuration capabilities for selecting reacting on certain events.
+
+almost identical syntax to preprocessor is also used by Python interfaces. minor
+differences are described in sections dedicated to these configurations.

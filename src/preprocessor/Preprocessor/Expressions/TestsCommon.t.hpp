@@ -19,7 +19,7 @@ struct TestExpression: public Preprocessor::Expressions::Base
   {
   }
 
-  virtual bool compute(const Persistency::Alert &/*alert*/) const
+  virtual bool compute(const Persistency::ConstGraphNodePtrNN &/*node*/) const
   {
     ++calls_;
     return ret_;
@@ -30,9 +30,9 @@ struct TestExpression: public Preprocessor::Expressions::Base
 };
 
 
-Persistency::AlertPtrNN makeAlert(void)
+Persistency::ConstGraphNodePtrNN makeAlert(void)
 {
-  return TestHelpers::Persistency::makeNewAlert();
+  return TestHelpers::Persistency::makeNewLeaf();
 }
 
 } // unnamed namespace

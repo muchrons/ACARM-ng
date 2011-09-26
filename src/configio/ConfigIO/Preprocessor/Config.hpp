@@ -24,6 +24,11 @@ public:
   /** \brief type representing collection of sections. */
   typedef std::vector<Section> Sections;
 
+  /** \brief create configuration object without any sections.
+   */
+  Config(void)
+  {
+  }
   /** \brief create configuration object.
    *  \param sections sections present in configuration.
    */

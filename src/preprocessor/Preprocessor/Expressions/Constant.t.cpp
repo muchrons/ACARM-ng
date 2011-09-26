@@ -31,7 +31,7 @@ template<>
 void testObj::test<1>(void)
 {
   True t;
-  ensure("invalid value", t.compute( *makeAlert() )==true );
+  ensure("invalid value", t.compute( makeAlert() )==true );
 }
 
 // test False
@@ -40,7 +40,7 @@ template<>
 void testObj::test<2>(void)
 {
   False f;
-  ensure("invalid value", f.compute( *makeAlert() )==false );
+  ensure("invalid value", f.compute( makeAlert() )==false );
 }
 
 // test parametrized c-tor
@@ -49,7 +49,7 @@ template<>
 void testObj::test<3>(void)
 {
   Constant c(false);
-  ensure("invalid value", c.compute( *makeAlert() )==false );
+  ensure("invalid value", c.compute( makeAlert() )==false );
 }
 
 } // namespace tut

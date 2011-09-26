@@ -16,13 +16,11 @@ namespace
 struct TestClass
 {
   TestClass(void):
-    alertPtr_( makeNewAlert() ),
-    alert_(*alertPtr_)
+    alert_( makeNewLeaf() )
   {
   }
 
-  Persistency::AlertPtrNN   alertPtr_;
-  const Persistency::Alert &alert_;
+  const Persistency::ConstGraphNodePtrNN alert_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -88,7 +86,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const Rule                  r=Rule::makeRule("alert.name", Rule::Mode::EQUALS, "some alert");
+  const Rule                  r=Rule::makeRule("metaalert.alert.name", Rule::Mode::EQUALS, "some alert");
   const Expression            e=Expression::makeTerm(r);
   const Section               s(Section::Type::ACCEPT, e);
   const Preprocessor::Section ps(s);

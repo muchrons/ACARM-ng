@@ -25,11 +25,18 @@ struct TestConfig: public Config<TestConfig>
     Config<TestConfig>(type, options)
   {
   }
+
+  TestConfig(const TypeName                       &type,
+             const Options                        &options,
+             const ConfigIO::Preprocessor::Config &ppCfg):
+    Config<TestConfig>(type, options, ppCfg)
+  {
+  }
 };
 
-typedef std::vector<TestConfig>                 TestConfigCollection;
-typedef Parse<TestConfig, TestConfigCollection> TestParse;
-typedef Parse<TestConfig, TestConfigCollection, true> TestParseNamed;
+typedef std::vector<TestConfig>                        TestConfigCollection;
+typedef Parse<TestConfig, TestConfigCollection, false> TestParse;
+typedef Parse<TestConfig, TestConfigCollection, true>  TestParsePP;
 
 struct TestClass
 {
@@ -42,23 +49,14 @@ struct TestClass
     return tree.getRoot().getChild("whatever");
   }
 
-  // return copyied persistency config
-  TestParse getConf(const char *xml="testdata/generic_parse_data.xml") const
+  // return copyied persistency config - named
+  template<typename TTestParse>
+  TTestParse getConf(const char *xml="testdata/generic_named_parse_data.xml") const
   {
     assert(xml!=NULL);
     ConfigIO::FileReader fr(xml);
     const Node           n=get( fr.getString() );
-    const TestParse      pp(n);
-    return pp;
-  }
-
-  // return copyied persistency config - named
-  TestParseNamed getConfNamed(const char *xml="testdata/generic_named_parse_data.xml") const
-  {
-    assert(xml!=NULL);
-    ConfigIO::FileReader  fr(xml);
-    const Node            n=get( fr.getString() );
-    const TestParseNamed  pp(n);
+    const TTestParse     pp(n);
     return pp;
   }
 };
@@ -73,64 +71,20 @@ factory tf("ConfigIO/Generic/Parse");
 namespace tut
 {
 
-// smoke test for reading valid configuration
+// smoke test for reading valid "named" configuration
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  getConf();
-}
-
-// test if all config sets are there
-template<>
-template<>
-void testObj::test<2>(void)
-{
-  const TestParse             pp =getConf();
-  const TestConfigCollection &cfg=pp.getConfig();
-  ensure_equals("invalid number of entries", cfg.size(), 2u);
-}
-
-// check set with no options
-template<>
-template<>
-void testObj::test<3>(void)
-{
-  const TestParse             pp =getConf();
-  const TestConfigCollection &cfg=pp.getConfig();
-  ensure_equals("invalid number of entries", cfg.size(), 2u);
-  ensure_equals("invalid type", cfg.at(0).getType(), "noopts");
-  ensure_equals("invalid number of options", cfg.at(0).getOptions().size(), 0u);
-}
-
-// check set with options
-template<>
-template<>
-void testObj::test<4>(void)
-{
-  const TestParse             pp =getConf();
-  const TestConfigCollection &cfg=pp.getConfig();
-  ensure_equals("invalid number of entries", cfg.size(), 2u);
-  ensure_equals("invalid type", cfg.at(1).getType(), "something");
-  ensure_equals("invalid number of options", cfg.at(1).getOptions().size(), 2u);
-  ensure_equals("invalid option's 1 value", cfg.at(1)["opt4"], "alice");
-  ensure_equals("invalid option's 2 value", cfg.at(1)["opt7"], "cat");
-}
-
-// smoke test for reading valid "named" configuration
-template<>
-template<>
-void testObj::test<5>(void)
-{
-  getConfNamed();
+  getConf<TestParse>();
 }
 
 // test if all config sets are there - "named"
 template<>
 template<>
-void testObj::test<6>(void)
+void testObj::test<2>(void)
 {
-  const TestParseNamed       pp =getConfNamed();
+  const TestParse             pp =getConf<TestParse>();
   const TestConfigCollection &cfg=pp.getConfig();
   ensure_equals("invalid number of entries", cfg.size(), 2u);
 }
@@ -138,9 +92,9 @@ void testObj::test<6>(void)
 // check set with no options - "named"
 template<>
 template<>
-void testObj::test<7>(void)
+void testObj::test<3>(void)
 {
-  const TestParseNamed       pp =getConfNamed();
+  const TestParse             pp =getConf<TestParse>();
   const TestConfigCollection &cfg=pp.getConfig();
   ensure_equals("invalid number of entries", cfg.size(), 2u);
   ensure_equals("invalid type", cfg.at(0).getType(), "noopts");
@@ -151,9 +105,9 @@ void testObj::test<7>(void)
 // check set with options - "named"
 template<>
 template<>
-void testObj::test<8>(void)
+void testObj::test<4>(void)
 {
-  const TestParseNamed       pp =getConfNamed();
+  const TestParse             pp =getConf<TestParse>();
   const TestConfigCollection &cfg=pp.getConfig();
   ensure_equals("invalid number of entries", cfg.size(), 2u);
   ensure_equals("invalid type", cfg.at(1).getType(), "something");
@@ -161,6 +115,38 @@ void testObj::test<8>(void)
   ensure_equals("invalid option's 1 value", cfg.at(1)["opt4"], "alice");
   ensure_equals("invalid option's 2 value", cfg.at(1)["opt7"], "cat");
   ensure_equals("invalid option's 3 value", cfg.at(1)["name"], "other name");
+}
+
+// check sample configuration w-out preprocessor
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  const TestParsePP           pp =getConf<TestParsePP>("testdata/generic_named_parse_data_no_preproc.xml");
+  const TestConfigCollection &cfg=pp.getConfig();
+  ensure("preprocessor is set", cfg.at(0).getPreprocessorConfig()==NULL);
+}
+
+// check sample configuration with preprocessor
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const TestParsePP           pp =getConf<TestParsePP>("testdata/generic_named_parse_data_with_preproc.xml");
+  const TestConfigCollection &cfg=pp.getConfig();
+  ensure("preprocessor is not set", cfg.at(0).getPreprocessorConfig()!=NULL);
+  ensure_equals("invalid number of sections", cfg.at(0).getPreprocessorConfig()->getSections().size(), 1u);
+}
+
+// test if config that does not use preprocessor can have option names 'preprocessor'
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const TestParse             pp =getConf<TestParse>("testdata/no_preproc_with_preproc_field.xml");
+  const TestConfigCollection &cfg=pp.getConfig();
+  ensure("preprocessor is set", cfg.at(0).getPreprocessorConfig()==NULL);
+  ensure_equals("option 'preprocessor' not set", cfg.at(0)["preprocessor"], "works fine!");
 }
 
 } // namespace tut

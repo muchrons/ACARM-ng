@@ -42,7 +42,7 @@ void testObj::test<1>(void)
 
   ensure_equals("compute()/1 called in c-tor", te1->calls_, 0u);
   ensure_equals("compute()/2 called in c-tor", te1->calls_, 0u);
-  ensure("invalid value", a.compute( *makeAlert() )==true );
+  ensure("invalid value", a.compute( makeAlert() )==true );
   ensure_equals("compute()/1 not called", te1->calls_, 1u);
   ensure_equals("compute()/2 not called", te2->calls_, 1u);
 }
@@ -64,7 +64,7 @@ void testObj::test<2>(void)
 
   ensure_equals("compute()/1 called in c-tor", te1->calls_, 0u);
   ensure_equals("compute()/2 called in c-tor", te1->calls_, 0u);
-  ensure("invalid value", a.compute( *makeAlert() )==false );
+  ensure("invalid value", a.compute( makeAlert() )==false );
   ensure_equals("compute()/1 not called", te1->calls_, 1u);
   ensure_equals("compute()/2 not called", te2->calls_, 1u);
 }

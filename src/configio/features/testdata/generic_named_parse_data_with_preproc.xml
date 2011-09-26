@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acarm_ng>
+  <whatever>
+
+    <something name="myname">
+      <opt7>cat</opt7>
+      <opt4>alice</opt4>
+      <preprocessor>
+        <reject>
+          <true/>
+        </reject>
+      </preprocessor>
+    </something>
+
+  </whatever>
+</acarm_ng>

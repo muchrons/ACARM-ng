@@ -1,5 +1,5 @@
 /*
- * LogicImpl.hpp
+ * Logic.hpp
  *
  */
 #ifndef INCLUDE_PREPROCESSOR_LOGIC_HPP_FILE
@@ -9,7 +9,8 @@
 
 #include <boost/scoped_ptr.hpp>
 
-#include "Persistency/Alert.hpp"
+#include "ConfigIO/Preprocessor/Config.hpp"
+#include "Persistency/GraphNode.hpp"
 
 namespace Preprocessor
 {
@@ -22,18 +23,19 @@ class LogicImpl;
 class Logic
 {
 public:
-  /** \brief create object instance with configuration taken from ConfigIO.
+  /** \brief create object instance with explicitly specified configuration.
+   *  \param cfg configuration to be used for creating preprocessor's logic.
    */
-  Logic(void);
+  explicit Logic(const ConfigIO::Preprocessor::Config &cfg);
   /** \brief ensure proper destruction of object.
    */
   ~Logic(void);
 
   /** \brief checks if given alert is to be accepted according to defined rules.
-   *  \param alert alert to be checked.
+   *  \param node (meta-)alert to be checked.
    *  \return true, if alert is to be accepted, false otherwise.
    */
-  bool checkAccept(const Persistency::Alert &alert) const;
+  bool checkAccept(const Persistency::ConstGraphNodePtrNN &node) const;
 
 private:
   boost::scoped_ptr<LogicImpl> pimpl_;

@@ -16,13 +16,11 @@ namespace
 struct TestClass
 {
   TestClass(void):
-    alertPtr_( makeNewAlert() ),
-    alert_(*alertPtr_)
+    alert_( makeNewLeaf() )
   {
   }
 
-  Persistency::AlertPtrNN   alertPtr_;
-  const Persistency::Alert &alert_;
+  const Persistency::ConstGraphNodePtrNN alert_;
 };
 
 typedef tut::test_group<TestClass> factory;

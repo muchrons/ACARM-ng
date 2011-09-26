@@ -23,10 +23,10 @@ public:
   explicit Constant(bool value);
 
   /** \brief computes answer for given alert.
-   *  \param alert alert to be chekced/computed.
+   *  \param node (meta-)alert to be chekced/computed.
    *  \return true if alert matches given criteria, false otherwise.
    */
-  virtual bool compute(const Persistency::Alert &alert) const;
+  virtual bool compute(const Persistency::ConstGraphNodePtrNN &node) const;
 
 private:
   bool v_;
