@@ -77,7 +77,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  check("abc", "E'abc'");
+  check("abc", "'abc'");
 }
 
 // test non-null std::string
@@ -86,7 +86,7 @@ template<>
 void testObj::test<5>(void)
 {
   const string tmp="abc";
-  check(&tmp, "E'abc'");
+  check(&tmp, "'abc'");
 }
 
 // test integer
@@ -122,7 +122,7 @@ template<>
 void testObj::test<9>(void)
 {
   const string tmp="abc";
-  check(tmp, "E'abc'");
+  check(tmp, "'abc'");
 }
 
 // test integer
@@ -178,4 +178,29 @@ void testObj::test<15>(void)
   const Persistency::Timestamp *tmp=NULL;
   check(tmp, "NULL");
 }
+
+// test terminaing "'" cahracter
+template<>
+template<>
+void testObj::test<16>(void)
+{
+  check("a'c", "'a''c'");
+}
+
+// test terminaing "\" cahracter
+template<>
+template<>
+void testObj::test<17>(void)
+{
+  check("a\\c", "'a\\c'");
+}
+
+// test terminaing "\'" sequence, that would normaly break statement
+template<>
+template<>
+void testObj::test<18>(void)
+{
+  check("ac\\", "'ac\\'");
+}
+
 } // namespace tut
