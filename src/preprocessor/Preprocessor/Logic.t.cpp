@@ -27,21 +27,14 @@ factory tf("Preprocessor/Logic");
 namespace tut
 {
 
-// test creating instance
+// test default configuration (from file)
 template<>
 template<>
 void testObj::test<1>(void)
 {
-  Logic l;
-}
-
-// test default configuration (from file)
-template<>
-template<>
-void testObj::test<2>(void)
-{
-  const Logic l;
-  ensure("some alert has not been accepted", l.checkAccept( makeNewLeaf() ) );
+  const ConfigIO::Preprocessor::Config cfg_;
+  const Logic                          l_(cfg_);
+  ensure("some alert has not been accepted", l_.checkAccept( makeNewLeaf() ) );
 }
 
 } // namespace tut

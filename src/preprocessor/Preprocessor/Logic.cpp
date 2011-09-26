@@ -2,15 +2,14 @@
  * Logic.cpp
  *
  */
-#include "ConfigIO/Singleton.hpp"
 #include "Preprocessor/Logic.hpp"
 #include "Preprocessor/LogicImpl.hpp"
 
 namespace Preprocessor
 {
 
-Logic::Logic(void):
-  pimpl_( new LogicImpl( ConfigIO::Singleton::get()->preprocessorConfig() ) )
+Logic::Logic(const ConfigIO::Preprocessor::Config &cfg):
+  pimpl_( new LogicImpl(cfg) )
 {
 }
 

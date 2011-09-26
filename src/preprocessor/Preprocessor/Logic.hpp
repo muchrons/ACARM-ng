@@ -9,6 +9,7 @@
 
 #include <boost/scoped_ptr.hpp>
 
+#include "ConfigIO/Preprocessor/Config.hpp"
 #include "Persistency/GraphNode.hpp"
 
 namespace Preprocessor
@@ -22,9 +23,10 @@ class LogicImpl;
 class Logic
 {
 public:
-  /** \brief create object instance with configuration taken from ConfigIO.
+  /** \brief create object instance with explicitly specified configuration.
+   *  \param cfg configuration to be used for creating preprocessor's logic.
    */
-  Logic(void);
+  explicit Logic(const ConfigIO::Preprocessor::Config &cfg);
   /** \brief ensure proper destruction of object.
    */
   ~Logic(void);
