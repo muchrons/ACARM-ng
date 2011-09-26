@@ -1116,12 +1116,16 @@ void testObj::test<31>(void)
   ensure_equals("thread 6 failed", out[5], "");
 }
 
-// test for proper istring escaping
+// test for proper in/string escaping
 // INSERT INTO reference_urls VALUES(default, 'abc', 'a\'bc');
 // WARNING:  nonstandard use of \' in a string literal
 // LINE 1: INSERT INTO reference_urls VALUES(default, 'abc', 'a\'bc');
 //                                                           ^
 // HINT:  Use '' to write quotes in strings, or use the escape string syntax (E'...').
+//
+// this means using: INSERT INTO reference_urls VALUES(default, 'abc', E'a\'bc\\');
+// or
+// this means using: INSERT INTO reference_urls VALUES(default, 'abc', 'a''bc\');
 //
 template<>
 template<>
