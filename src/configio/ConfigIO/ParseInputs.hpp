@@ -16,7 +16,7 @@ namespace ConfigIO
 
 /** \brief parser for inputs' configuration.
  */
-class ParseInputs: public Generic::Parse<InputConfig, InputsConfigCollection>
+class ParseInputs: public Generic::Parse<InputConfig, InputsConfigCollection, false>
 {
 public:
   /** \brief parses configuration and saves it internally.

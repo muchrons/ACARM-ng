@@ -29,7 +29,7 @@
   </filters>
 
   <triggers>
-    <something name="nonuniquename">
+    <trig_with_pp name="t_with_pp_name">
       <preprocessor>
         <reject>
           <true/>
@@ -38,7 +38,7 @@
           <false/>
         </reject>
       </preprocessor>
-    </something>
+    </trig_with_pp>
   </triggers>
 
   <inputs>

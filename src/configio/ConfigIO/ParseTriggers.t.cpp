@@ -64,6 +64,8 @@ void testObj::test<2>(void)
   const ParseTriggers             pp  =getConf();
   const TriggersConfigCollection &cfg =pp.getConfig();
   ensure_equals("invalid number of entries", cfg.size(), 2u);
+  ensure("preprocessor is set", cfg.at(0).getPreprocessorConfig()==NULL);
+  ensure("preprocessor is set", cfg.at(1).getPreprocessorConfig()==NULL);
 }
 
 // check filter with no options
@@ -108,6 +110,16 @@ void testObj::test<5>(void)
   {
     // this is expected
   }
+}
+
+// test gettting trigger with preprocessor config
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const ParseTriggers             pp =getConf("testdata/trigger_preproc.xml");
+  const TriggersConfigCollection &cfg=pp.getConfig();
+  ensure("preprocessor is not set", cfg.at(0).getPreprocessorConfig()!=NULL);
 }
 
 } // namespace tut
