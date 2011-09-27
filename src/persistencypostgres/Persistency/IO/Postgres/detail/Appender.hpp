@@ -125,8 +125,6 @@ inline void Appender::append(std::stringstream &ss, const T &t)
   appendNoEscape(ss, &t);
 }
 
-
-
 } // namespace detail
 } // namespace Postgres
 } // namespace IO
