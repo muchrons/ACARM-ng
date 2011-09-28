@@ -37,7 +37,7 @@ typedef System::Enum<detail::WhoEnum> Who;
  *  \param r rigth side of the operator.
  *  \return value of the ored types.
  */
-Who operator|(const Who l, const Who r)
+inline Who operator|(const Who l, const Who r)
 {
   return static_cast<Who::Type>( l.toInt() | r.toInt() );
 } // operator|()

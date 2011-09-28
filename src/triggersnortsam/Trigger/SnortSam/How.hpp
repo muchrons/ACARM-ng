@@ -37,7 +37,7 @@ typedef System::Enum<detail::HowEnum> How;
  *  \param r rigth side of the operator.
  *  \return value of the ored types.
  */
-How operator|(const How l, const How r)
+inline How operator|(const How l, const How r)
 {
   return static_cast<How::Type>( l.toInt() | r.toInt() );
 } // operator|()
