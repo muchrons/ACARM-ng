@@ -1,10 +1,10 @@
 /*
- * Who.t.cpp
+ * How.t.cpp
  *
  */
 #include <tut.h>
 
-#include "Trigger/SnortSam/Who.hpp"
+#include "Trigger/SnortSam/How.hpp"
 
 using namespace Trigger::SnortSam;
 
@@ -18,7 +18,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Trigger/SnortSam/Who");
+factory tf("Trigger/SnortSam/How");
 } // unnamed namespace
 
 
@@ -30,23 +30,23 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  ensure_equals("invelid NONE value", Who::NONE, 0);
+  ensure_equals("invelid NONE value", How::NONE, 0);
 }
 
-// test SRC
+// test IN
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  ensure_equals("invelid SRC value", Who::SRC, 1);
+  ensure_equals("invelid IN value", How::IN, 1);
 }
 
-// test DST
+// test OUT
 template<>
 template<>
 void testObj::test<3>(void)
 {
-  ensure_equals("invelid DST value", Who::DST, 2);
+  ensure_equals("invelid OUT value", How::OUT, 2);
 }
 
 // test BOTH
@@ -54,7 +54,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure_equals("invelid BOTH value", Who::BOTH, 3);
+  ensure_equals("invelid BOTH value", How::BOTH, 3);
 }
 
 // test or value
@@ -62,15 +62,15 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ensure_equals("invalid or'ed value", Who::SRC|Who::DST, Who::BOTH);
+  ensure_equals("invalid or'ed value", How::IN|How::OUT, How::BOTH);
 }
 
-// test or value of the same types
+// test or value for the same elements
 template<>
 template<>
 void testObj::test<6>(void)
 {
-  ensure_equals("invalid or'ed value", Who::DST|Who::DST, Who::DST);
+  ensure_equals("invalid or'ed value", How::IN|How::IN, How::IN);
 }
 
 } // namespace tut

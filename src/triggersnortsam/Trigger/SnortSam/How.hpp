@@ -1,9 +1,9 @@
 /*
- * Who.hpp
+ * How.hpp
  *
  */
-#ifndef INCLUDE_TRIGGER_SNORTSAM_WHO_HPP_FILE
-#define INCLUDE_TRIGGER_SNORTSAM_WHO_HPP_FILE
+#ifndef INCLUDE_TRIGGER_SNORTSAM_HOW_HPP_FILE
+#define INCLUDE_TRIGGER_SNORTSAM_HOW_HPP_FILE
 
 #include "System/Enum.hpp"
 
@@ -15,31 +15,31 @@ namespace detail
 {
 /** \brief implementation detail for enum.
  */
-struct WhoEnum
+struct HowEnum
 {
   /** \brief enum value to be used. */
   typedef enum
   {
     NONE = 0,
-    SRC  = 1,
-    DST  = 2,
-    BOTH = SRC|DST
+    IN   = 1,
+    OUT  = 2,
+    BOTH = IN|OUT
   } Type;
-}; // struct WhoEnum
+}; // struct HowEnum
 } // namespace detail
 
 
-/** \brief sepresentation of 'who' paramter. */
-typedef System::Enum<detail::WhoEnum> Who;
+/** \brief sepresentation of 'how' paramter. */
+typedef System::Enum<detail::HowEnum> How;
 
 /** \brief gets logical or value on two enum elements.
  *  \param l left side of the operator.
  *  \param r rigth side of the operator.
  *  \return value of the ored types.
  */
-Who operator|(const Who l, const Who r)
+How operator|(const How l, const How r)
 {
-  return static_cast<Who::Type>( l.toInt() | r.toInt() );
+  return static_cast<How::Type>( l.toInt() | r.toInt() );
 } // operator|()
 
 } // namespace SnortSam
