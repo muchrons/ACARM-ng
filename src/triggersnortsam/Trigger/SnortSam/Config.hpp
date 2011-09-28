@@ -8,13 +8,14 @@
 #include "Persistency/IPTypes.hpp"
 #include "Persistency/PortNumber.hpp"
 #include "Trigger/Simple/ThresholdConfig.hpp"
+#include "Trigger/SnortSam/Who.hpp"
+#include "Trigger/SnortSam/How.hpp"
 
 namespace Trigger
 {
 namespace SnortSam
 {
 
-#if 0
 /** \brief module's configuration representation.
  */
 class Config: public Persistency::IPTypes<Config>
@@ -25,20 +26,58 @@ public:
    */
   Config(const std::string             &host,
          const Persistency::PortNumber  port,
-         const std::string             &key
+         const std::string             &key,
+         const Who                      who,
+         const How                      how,
+         const unsigned int             duration,
          const Simple::ThresholdConfig &th):
+    host_(host),
+    port_(port),
+    key_(key),
+    who_(who),
+    how_(how),
+    duration_(duration),
+    th_(th)
   {
   }
 
-  /** \brief get destination direcotry to write reports to.
-   *  \return path to output direcotry.
+  /** \brief get host name/ip.
    */
-  const boost::filesystem::path &getOutputDirectory(void) const
+  const std::string &getHost(void) const
   {
-    return outdir_;
+    return host_;
+  }
+  /** \brief get port on the agent (host).
+   */
+  Persistency::PortNumber getPort(void) const
+  {
+    return port_;
+  }
+  /** \brief gets secrete key, usd for cryptography.
+   */
+  const std::string &getKey(void) const
+  {
+    return key_;
+  }
+  /** \brief gets src/dst setting.
+   */
+  Who getWho(void) const
+  {
+    return who_;
+  }
+  /** \brief gets in/out (direction) setting.
+   */
+  How getHow(void) const
+  {
+    return how_;
+  }
+  /** \brief gets duration of given ban.
+   */
+  unsigned int getDuration(void) const
+  {
+    return duration_;
   }
   /** \brief get thresholds configuration.
-   *  \return threshold's config.
    */
   const Simple::ThresholdConfig &getThresholdConfig(void) const
   {
@@ -46,10 +85,14 @@ public:
   }
 
 private:
-  boost::filesystem::path outdir_;
+  std::string             host_;
+  Persistency::PortNumber port_;
+  std::string             key_;
+  Who                     who_;
+  How                     how_;
+  unsigned int            duration_;
   Simple::ThresholdConfig th_;
 }; // class Config
-#endif
 
 } // namespace SnortSam
 } // namespace Trigger
