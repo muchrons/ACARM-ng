@@ -22,8 +22,7 @@ struct HowEnum
   {
     NONE = 0,
     IN   = 1,
-    OUT  = 2,
-    BOTH = IN|OUT
+    OUT  = 2
   } Type;
 }; // struct HowEnum
 } // namespace detail
@@ -40,6 +39,16 @@ typedef System::Enum<detail::HowEnum> How;
 inline How operator|(const How l, const How r)
 {
   return static_cast<How::Type>( l.toInt() | r.toInt() );
+} // operator|()
+
+/** \brief gets logical or value on two enum elements.
+ *  \param l left side of the operator.
+ *  \param r rigth side of the operator.
+ *  \return value of the ored types.
+ */
+inline How operator|(const How::Type l, const How::Type r)
+{
+  return How(l)|How(r);
 } // operator|()
 
 } // namespace SnortSam

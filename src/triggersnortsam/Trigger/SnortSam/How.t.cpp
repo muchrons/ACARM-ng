@@ -13,6 +13,9 @@ namespace
 
 struct TestClass
 {
+  void foo(const How) const
+  {
+  }
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -49,28 +52,28 @@ void testObj::test<3>(void)
   ensure_equals("invelid OUT value", How::OUT, 2);
 }
 
-// test BOTH
+// test or value
 template<>
 template<>
 void testObj::test<4>(void)
 {
-  ensure_equals("invelid BOTH value", How::BOTH, 3);
-}
-
-// test or value
-template<>
-template<>
-void testObj::test<5>(void)
-{
-  ensure_equals("invalid or'ed value", How::IN|How::OUT, How::BOTH);
+  ensure_equals("invalid or'ed value", (How::IN|How::OUT).toInt(), 3);
 }
 
 // test or value for the same elements
 template<>
 template<>
+void testObj::test<5>(void)
+{
+  ensure_equals("invalid or'ed value", (How::IN|How::IN).toInt(), How::IN);
+}
+
+// test passing to a function
+template<>
+template<>
 void testObj::test<6>(void)
 {
-  ensure_equals("invalid or'ed value", How::IN|How::IN, How::IN);
+  foo(How::IN|How::OUT);
 }
 
 } // namespace tut
