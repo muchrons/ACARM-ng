@@ -22,7 +22,13 @@ class Config: public Persistency::IPTypes<Config>
 {
 public:
   /** \brief create configration description.
-   *  \param th     threshold configuration - informs when run trigger.
+   *  \param host     hostname to connect to.
+   *  \param port     port to use.
+   *  \param key      key for the encryption.
+   *  \param who      who should be blocked.
+   *  \param how      how host(s) should be blocked.
+   *  \param duration length of block (in seconds).
+   *  \param th       threshold configuration - informs when run trigger.
    */
   Config(const std::string             &host,
          const Persistency::PortNumber  port,
