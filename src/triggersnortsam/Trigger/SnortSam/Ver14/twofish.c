@@ -69,7 +69,7 @@ typedef unsigned char u_int8_t;
 #include "twofish.h"
 
 
-bool TwoFish_srand=TRUE;				/* if TRUE, first call of TwoFishInit will seed rand(); */
+int TwoFish_srand=TRUE;				/* if TRUE, first call of TwoFishInit will seed rand(); */
 										/* of TwoFishInit */
 
 /* Fixed 8x8 permutation S-boxes */
@@ -125,7 +125,7 @@ static const u_int8_t TwoFish_P[2][256] =
     }
 };
 
-static bool TwoFish_MDSready=FALSE;
+static int TwoFish_MDSready=FALSE;
 static u_int32_t TwoFish_MDS[4][256]; /* TwoFish_MDS matrix */
 
 
@@ -205,7 +205,7 @@ void TwoFishDestroy(TWOFISH *tfdata)
 
 
 /* en/decryption with CBC mode */
-unsigned long _TwoFish_CryptRawCBC(char *in,char *out,unsigned long len,bool decrypt,TWOFISH *tfdata)
+unsigned long _TwoFish_CryptRawCBC(char *in,char *out,unsigned long len,int decrypt,TWOFISH *tfdata)
 {	unsigned long rl;
 
 	rl=len;											/* remember how much data to crypt. */
@@ -224,7 +224,7 @@ unsigned long _TwoFish_CryptRawCBC(char *in,char *out,unsigned long len,bool dec
 }
 
 /* en/decryption on one block only */
-unsigned long _TwoFish_CryptRaw16(char *in,char *out,unsigned long len,bool decrypt,TWOFISH *tfdata)
+unsigned long _TwoFish_CryptRaw16(char *in,char *out,unsigned long len,int decrypt,TWOFISH *tfdata)
 {	/* qBlockPlain already zero'ed through ResetCBC  */
 	memcpy(tfdata->qBlockPlain,in,len);					/* toss the data into it. */
 	_TwoFish_BlockCrypt16(tfdata->qBlockPlain,tfdata->qBlockCrypt,decrypt,tfdata); /* encrypt just that block without CBC. */
@@ -233,7 +233,7 @@ unsigned long _TwoFish_CryptRaw16(char *in,char *out,unsigned long len,bool decr
 }
 
 /* en/decryption without reset of CBC and output assignment */
-unsigned long _TwoFish_CryptRaw(char *in,char *out,unsigned long len,bool decrypt,TWOFISH *tfdata)
+unsigned long _TwoFish_CryptRaw(char *in,char *out,unsigned long len,int decrypt,TWOFISH *tfdata)
 {
 	if(in!=NULL && out!=NULL && len>0 && tfdata!=NULL)		/* if we have valid data, then... */
 	{	if(len>TwoFish_BLOCK_SIZE)							/* ...check if we have more than one block. */
@@ -329,7 +329,7 @@ void TwoFishSetOutput(char *outp,TWOFISH *tfdata)
  *	Output:	Returns a pointer to the memory allocated.
  */
 
-void *TwoFishAlloc(unsigned long len,bool binhex,bool decrypt,TWOFISH *tfdata)
+void *TwoFishAlloc(unsigned long len,int binhex,int decrypt,TWOFISH *tfdata)
 {
 /*	TwoFishFree(tfdata);	*/			/* (don't for now) discard whatever was allocated earlier. */
 	if(decrypt)							/* if decrypting... */
@@ -348,7 +348,7 @@ void *TwoFishAlloc(unsigned long len,bool binhex,bool decrypt,TWOFISH *tfdata)
 }
 
 /* bin2hex and hex2bin conversion */
-void _TwoFish_BinHex(u_int8_t *buf,unsigned long len,bool bintohex)
+void _TwoFish_BinHex(u_int8_t *buf,unsigned long len,int bintohex)
 {	u_int8_t *pi,*po,c;
 
 	if(bintohex)
@@ -408,7 +408,7 @@ void _TwoFish_BinHex(u_int8_t *buf,unsigned long len,bool bintohex)
 unsigned long TwoFishEncrypt(char *in,
 							 char **out,
 							 signed long len,
-							 bool binhex,
+							 int binhex,
 							 TWOFISH *tfdata)
 {	unsigned long ilen,olen;
 
@@ -467,7 +467,7 @@ unsigned long TwoFishEncrypt(char *in,
 unsigned long TwoFishDecrypt(char *in,
 							 char **out,
 							 signed long len,
-							 bool binhex,
+							 int binhex,
 							 TWOFISH *tfdata)
 {	unsigned long ilen,elen,olen;
 	const u_int8_t cmagic[TwoFish_MAGIC_LEN]=TwoFish_MAGIC;
@@ -785,7 +785,7 @@ void _TwoFish_FlushOutput(u_int8_t *b,unsigned long len,TWOFISH *tfdata)
 	tfdata->dontflush=FALSE;
 }
 
-void _TwoFish_BlockCrypt16(u_int8_t *in,u_int8_t *out,bool decrypt,TWOFISH *tfdata)
+void _TwoFish_BlockCrypt16(u_int8_t *in,u_int8_t *out,int decrypt,TWOFISH *tfdata)
 {	u_int32_t x0,x1,x2,x3;
     u_int32_t k,t0,t1,R;
 
