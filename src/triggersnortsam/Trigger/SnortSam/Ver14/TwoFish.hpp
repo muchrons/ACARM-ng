@@ -31,10 +31,11 @@ private:
   // must decrypt given data to the internal buffer
   virtual void decryptImpl(const uint8_t *data, size_t len);
   // must return reference (w/o ownership!) to the internal buffer
-  virtual DataRef getDataImpl(void);
+  virtual DataRef getDataImpl(void) const;
+
+  void resize(size_t len, bool decrypt);
 
   struct PImpl;
-
   boost::scoped_ptr<PImpl> impl_;
 }; // class TwoFish
 
