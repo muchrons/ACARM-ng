@@ -208,13 +208,13 @@ unsigned long _TwoFish_CryptRawCBC(char *in,char *out,unsigned long len,bool dec
 
 	rl=len;											/* remember how much data to crypt. */
 	while(len>TwoFish_BLOCK_SIZE)					/* and now we process block by block. */
-	{	_TwoFish_BlockCrypt(in,out,TwoFish_BLOCK_SIZE,decrypt,tfdata); /* de/encrypt it. */
+	{	_TwoFish_BlockCrypt((uint8_t*)in,(uint8_t*)out,TwoFish_BLOCK_SIZE,decrypt,tfdata); /* de/encrypt it. */
 		in+=TwoFish_BLOCK_SIZE;						/* adjust pointers. */
 		out+=TwoFish_BLOCK_SIZE;
 		len-=TwoFish_BLOCK_SIZE;
 	}
 	if(len>0)										/* if we have less than a block left... */
-		_TwoFish_BlockCrypt(in,out,len,decrypt,tfdata);	/* ...then we de/encrypt that too. */
+		_TwoFish_BlockCrypt((uint8_t*)in,(uint8_t*)out,len,decrypt,tfdata);	/* ...then we de/encrypt that too. */
 	if(tfdata->qBlockDefined && !tfdata->dontflush)						/* in case len was exactly one block... */
 		_TwoFish_FlushOutput(tfdata->qBlockCrypt,TwoFish_BLOCK_SIZE,tfdata); /* ...we need to write the...  */
 																		/* ...remaining bytes of the buffer */
@@ -260,7 +260,7 @@ unsigned long TwoFishEncryptRaw(char *in,
 								unsigned long len,
 								TWOFISH *tfdata)
 {	_TwoFish_ResetCBC(tfdata);							/* reset CBC flag. */
-	tfdata->output=out;							/* output straight into output buffer. */
+	tfdata->output=(unsigned char*)out;							/* output straight into output buffer. */
 	return _TwoFish_CryptRaw(in,out,len,FALSE,tfdata);	/* and go for it. */
 }
 
@@ -281,7 +281,7 @@ unsigned long TwoFishDecryptRaw(char *in,
 								unsigned long len,
 								TWOFISH *tfdata)
 {	_TwoFish_ResetCBC(tfdata);							/* reset CBC flag. */
-	tfdata->output=out;							/* output straight into output buffer. */
+	tfdata->output=(unsigned char*)out;							/* output straight into output buffer. */
 	return _TwoFish_CryptRaw(in,out,len,TRUE,tfdata);	/* and go for it. */
 }
 
@@ -313,7 +313,7 @@ void TwoFishFree(TWOFISH *tfdata)
  */
 
 void TwoFishSetOutput(char *outp,TWOFISH *tfdata)
-{	tfdata->output=outp;				/* (do we really need a function for this?) */
+{	tfdata->output=(unsigned char*)outp;				/* (do we really need a function for this?) */
 }
 
 /*	TwoFish Alloc
@@ -420,7 +420,7 @@ unsigned long TwoFishEncrypt(char *in,
 	{	if(*out==NULL)									/* if OUT points to a NULL pointer... */
 			*out=TwoFishAlloc(ilen,binhex,FALSE,tfdata);  /* ...we'll (re-)allocate buffer space. */
 		if(*out!=NULL)
-		{	tfdata->output=*out;							/* set output buffer. */
+		{	tfdata->output=(unsigned char*)*out;							/* set output buffer. */
 			tfdata->header.salt=rand()*65536+rand();		/* toss in some salt. */
 			tfdata->header.length[0]= (u_int8_t)(ilen);
 			tfdata->header.length[1]= (u_int8_t)(ilen>>8);
@@ -429,13 +429,13 @@ unsigned long TwoFishEncrypt(char *in,
 			memcpy(tfdata->header.magic,TwoFish_MAGIC,TwoFish_MAGIC_LEN); /* set the magic. */
 			olen=TwoFish_BLOCK_SIZE;						/* set output counter. */
 			_TwoFish_ResetCBC(tfdata);						/* reset the CBC flag */
-			_TwoFish_BlockCrypt((u_int8_t *)&(tfdata->header),*out,olen,FALSE,tfdata); /* encrypt first block (without flush on 16 byte boundary). */
+			_TwoFish_BlockCrypt((u_int8_t *)&(tfdata->header),(unsigned char*)*out,olen,FALSE,tfdata); /* encrypt first block (without flush on 16 byte boundary). */
 			olen+=_TwoFish_CryptRawCBC(in,*out+TwoFish_BLOCK_SIZE,ilen,FALSE,tfdata);	/* and encrypt the rest (we do not reset the CBC flag). */
 			if(binhex)									/* if binhex... */
-			{	_TwoFish_BinHex(*out,olen,TRUE);		/* ...convert output to binhex... */
+			{	_TwoFish_BinHex((unsigned char*)*out,olen,TRUE);		/* ...convert output to binhex... */
 				olen*=2;								/* ...and size twice as large. */
 			}
-			tfdata->output=*out;
+			tfdata->output=(unsigned char*)*out;
 			return olen;
 		}
 	}
@@ -483,7 +483,7 @@ unsigned long TwoFishDecrypt(char *in,
 			*out=TwoFishAlloc(ilen,binhex,TRUE,tfdata); /* ...we'll (re-)allocate buffer space. */
 		if(*out!=NULL)
 		{	if(binhex)									/* if binhex... */
-			{	_TwoFish_BinHex(in,ilen,FALSE);		/* ...convert input to values... */
+			{	_TwoFish_BinHex((unsigned char*)in,ilen,FALSE);		/* ...convert input to values... */
 				ilen/=2;								/* ...and size half as much. */
 			}
 			_TwoFish_ResetCBC(tfdata);						/* reset the CBC flag. */
@@ -493,9 +493,9 @@ unsigned long TwoFishDecrypt(char *in,
 				return 0;
 			tfdata->output=tbuf;					/* set output to temp buffer. */
 
-			olen=_TwoFish_CryptRawCBC(in,tbuf,ilen,TRUE,tfdata)-TwoFish_BLOCK_SIZE; /* decrypt the whole thing. */
+			olen=_TwoFish_CryptRawCBC(in,(char*)tbuf,ilen,TRUE,tfdata)-TwoFish_BLOCK_SIZE; /* decrypt the whole thing. */
 			memcpy(&(tfdata->header),tbuf,TwoFish_BLOCK_SIZE); /* copy first block into header. */
-			tfdata->output=*out;
+			tfdata->output=(unsigned char*)*out;
 			for(elen=0;elen<TwoFish_MAGIC_LEN;elen++)	/* compare magic. */
 				if(tfdata->header.magic[elen]!=cmagic[elen])
 					break;
