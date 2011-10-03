@@ -1,3 +1,5 @@
+// TODO: check if this code can be replaced with som standard library routine (maybe Crypto++ ?)
+
 /* $Id: twofish.c,v 2.1 2008/12/15 20:36:05 fknobbe Exp $
  *
  *
