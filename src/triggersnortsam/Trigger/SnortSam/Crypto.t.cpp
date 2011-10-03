@@ -38,6 +38,11 @@ private:
 
   virtual void decryptImpl(const uint8_t *data, size_t len)
   {
+    if(len==0)
+    {
+      resize(0);
+      return;
+    }
     resize(len-1);
     for(size_t i=0; i<len-1; ++i)
       buf_[i]=(data[i]-key_)%256;
@@ -145,6 +150,29 @@ void testObj::test<5>(void)
   ensure("ogt empty buffer", tmp.data_!=NULL);
   ensure_equals("invalid byte 0", tmp.data_[0], 23u);
   ensure_equals("invalid byte 1", tmp.data_[1], 53u);
+}
+
+// try encrypting 0 bytes
+template<>
+template<>
+void testObj::test<6>(void)
+{
+  const uint8_t         buf[]={0};
+  const Crypto::DataRef tmp  =tc_.encrypt(buf, 0);
+  ensure_equals("invalid size", tmp.len_, 1);
+  ensure("ogt empty buffer", tmp.data_!=NULL);
+  ensure_equals("invalid byte 0", tmp.data_[0], 42u);
+}
+
+// try decrypting zero bytes
+template<>
+template<>
+void testObj::test<7>(void)
+{
+  const uint8_t         buf[]={0};
+  const Crypto::DataRef tmp  =tc_.decrypt(buf, 0);
+  ensure_equals("invalid size", tmp.len_, 0);
+  ensure("ogt empty buffer", tmp.data_!=NULL);
 }
 
 } // namespace tut
