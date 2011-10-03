@@ -37,6 +37,11 @@
 
 #include <inttypes.h>
 
+#ifdef __cplusplus
+extern "C"
+{
+#endif
+
 #ifndef FALSE
 #define FALSE	0
 #endif
@@ -274,5 +279,9 @@ uint32_t _TwoFish_Fe320(uint32_t *lsBox,uint32_t x);
 uint32_t _TwoFish_Fe323(uint32_t *lsBox,uint32_t x);
 uint32_t _TwoFish_Fe32(uint32_t *lsBox,uint32_t x,uint32_t R);
 
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif
