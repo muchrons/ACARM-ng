@@ -1,4 +1,6 @@
 -- dev --
+* fixed compatibility issue with postgres 9.1 and previous releases.
+* fixed condition for warning on data abse cleanup taking too long.
 * added preprocessors for triggers.
 * added heartbeats for external service (dshiled), when using ipblacklist filter.
 * unified string-access between preprocessor and Python API - the same syntax is used now (except for the collections).
