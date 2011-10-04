@@ -22,14 +22,23 @@ int main(int argc, char **argv)
   const uint16_t     port   =Commons::Convert::to<uint16_t>(argv[2]);
   const unsigned int timeout=Commons::Convert::to<unsigned int>(argv[3]);
 
-  cout<<argv[0]<<": connecting..."<<endl;
-  NetTCP        n(host, port, timeout);
+  cout<<argv[0]<<": creating element..."<<endl;
+  NetTCP n(host, port, timeout);
 
-  cout<<argv[0]<<": sending..."<<endl;
-  const uint8_t buf[]={'e','v','i','l','\n'};
-  n.send(buf, sizeof(buf));
+  cout<<argv[0]<<": connectiong and sending..."<<endl;
+  {
+    const uint8_t buf[]={'e','v','i','l','\n'};
+    n.send(buf, sizeof(buf));
+  }
+
+  cout<<argv[0]<<": sending again..."<<endl;
+  {
+    const uint8_t buf[]={'d','u','d','e','\n'};
+    n.send(buf, sizeof(buf));
+  }
 
   cout<<argv[0]<<": receiving..."<<endl;
+  uint8_t buf[12];
   DataRef r=n.receive(sizeof(buf));
 
   cout<<argv[0]<<": got "<<r.size()<<" bytes: |";
