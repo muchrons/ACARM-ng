@@ -100,6 +100,8 @@ void NetIO::reconnect(void)
   if(begin==end)
     throw ExceptionNetworkError(SYSTEM_SAVE_LOCATION, host_, "unable to resolve host");
 
+  // keep first addres as a special case - if no address could be connected to,
+  // then last operation cannot be resumed - exception must be thrown out of this call
   tcp::resolver::iterator it=begin;
   ++it;
   // try to connect to any of the resolved addresses
@@ -122,14 +124,6 @@ void NetIO::reconnect(void)
   assert(begin!=end);
   tryConnectingTo(*begin);
 }
-
-/*
-  virtual bool isConnected(void) = 0;
-  virtual void connect(const IPv4 &ip, port) = 0;
-  virtual void disconnect(void) = 0;
-  virtual void send(const uint8_t *data, size_t len, time_t deadline) = 0;
-  virtual DataRef receive(const uint8_t *data, size_t len, time_t deadline) = 0;
-  */
 
 } // namespace SnortSam
 } // namespace Trigger
