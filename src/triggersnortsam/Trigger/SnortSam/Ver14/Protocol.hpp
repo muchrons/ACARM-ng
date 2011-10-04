@@ -5,6 +5,8 @@
 #ifndef INCLUDE_TRIGGER_SNORTSAM_VER14_PROTOCOL_HPP_FILE
 #define INCLUDE_TRIGGER_SNORTSAM_VER14_PROTOCOL_HPP_FILE
 
+#include <inttypes.h>
+
 #include "Trigger/SnortSam/Protocol.hpp"
 
 
@@ -30,7 +32,8 @@ private:
   virtual void blockImpl(const Config::IP &from, const Config::IP &to);
 
   const Config      cfg_;
-  const std::string ver_;
+  const uint16_t    ver_;
+  const std::string verStr_;
 }; // class Protocol
 
 } // namespace Ver14

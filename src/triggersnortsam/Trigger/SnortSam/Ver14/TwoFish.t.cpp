@@ -7,6 +7,7 @@
 
 #include "Trigger/SnortSam/Ver14/TwoFish.hpp"
 
+using Trigger::SnortSam::DataRef;
 using namespace Trigger::SnortSam::Ver14;
 
 namespace
@@ -39,9 +40,9 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const uint8_t    buf[]={1,2,3,4,5,6};
-  TwoFish::DataRef out  =e_.encrypt(buf, sizeof(buf));
-  ensure("output buffer is too small", out.len_>=sizeof(buf));
+  const uint8_t buf[]={1,2,3,4,5,6};
+  DataRef       out  =e_.encrypt(buf, sizeof(buf));
+  ensure("output buffer is too small", out.size()>=sizeof(buf));
 }
 
 // try encrypting and decrypting some portion of data and see if it gives the same result
@@ -49,17 +50,17 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const uint8_t    buf[]={1,2,3,4,5,6};
+  const uint8_t buf[]={1,2,3,4,5,6};
   // encryption
-  TwoFish::DataRef enc=e_.encrypt(buf, sizeof(buf));
-  ensure("output buffer is too small", enc.len_>=sizeof(buf));
+  DataRef enc=e_.encrypt(buf, sizeof(buf));
+  ensure("output buffer is too small", enc.size()>=sizeof(buf));
   // decryption
-  TwoFish::DataRef dec=d_.decrypt(enc.data_, enc.len_);
+  DataRef dec=d_.decrypt(enc.data(), enc.size());
   // check
-  ensure_equals("invalid data length", dec.len_, sizeof(buf));
-  ensure("got NULL pointer", dec.data_!=NULL);
-  for(size_t i=0; i<dec.len_; ++i)
-    ensure_equals("invalid byte decoded", dec.data_[i], buf[i]);
+  ensure_equals("invalid data length", dec.size(), sizeof(buf));
+  ensure("got NULL pointer", dec.data()!=NULL);
+  for(size_t i=0; i<dec.size(); ++i)
+    ensure_equals("invalid byte decoded", dec[i], buf[i]);
 }
 
 // test decrypting some random data (w/o prior encryption)
@@ -93,15 +94,15 @@ void testObj::test<4>(void)
     buf[4]=42-i;
     buf[2]=42+i;
     // encryption
-    TwoFish::DataRef enc=e_.encrypt(buf, sizeof(buf));
-    ensure("output buffer is too small", enc.len_>=sizeof(buf));
+    DataRef enc=e_.encrypt(buf, sizeof(buf));
+    ensure("output buffer is too small", enc.size()>=sizeof(buf));
     // decryption
-    TwoFish::DataRef dec=d_.decrypt(enc.data_, enc.len_);
+    DataRef dec=d_.decrypt(enc.data(), enc.size());
     // check
-    ensure_equals("invalid data length", dec.len_, sizeof(buf));
-    ensure("got NULL pointer", dec.data_!=NULL);
-    for(size_t i=0; i<dec.len_; ++i)
-      ensure_equals("invalid byte decoded", dec.data_[i], buf[i]);
+    ensure_equals("invalid data length", dec.size(), sizeof(buf));
+    ensure("got NULL pointer", dec.data()!=NULL);
+    for(size_t i=0; i<dec.size(); ++i)
+      ensure_equals("invalid byte decoded", dec[i], buf[i]);
     // use encryption part for decryption and vice versa
     std::swap(a, b);
   }

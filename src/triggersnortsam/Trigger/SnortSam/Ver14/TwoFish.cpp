@@ -105,7 +105,7 @@ void TwoFish::decryptImpl(const uint8_t *data, const size_t len)
   impl_->len_=ret;
 }
 
-TwoFish::DataRef TwoFish::getDataImpl(void) const
+DataRef TwoFish::getDataImpl(void) const
 {
   const uint8_t *ptr=convPtrToConst<uint8_t>( impl_->buf_.get() );
   return DataRef(ptr, impl_->len_);

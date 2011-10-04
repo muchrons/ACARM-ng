@@ -130,13 +130,13 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const uint8_t         buf[]={10, 42};
-  const Crypto::DataRef tmp  =tc_.encrypt(buf, sizeof(buf));
-  ensure_equals("invalid size", tmp.len_, 3);
-  ensure("ogt empty buffer", tmp.data_!=NULL);
-  ensure_equals("invalid byte 0", tmp.data_[0], 23u);
-  ensure_equals("invalid byte 1", tmp.data_[1], 55u);
-  ensure_equals("invalid byte 2", tmp.data_[2], 42u);
+  const uint8_t buf[]={10, 42};
+  const DataRef tmp  =tc_.encrypt(buf, sizeof(buf));
+  ensure_equals("invalid size", tmp.size(), 3);
+  ensure("ogt empty buffer", tmp.data()!=NULL);
+  ensure_equals("invalid byte 0", tmp[0], 23u);
+  ensure_equals("invalid byte 1", tmp[1], 55u);
+  ensure_equals("invalid byte 2", tmp[2], 42u);
 }
 
 // try decrypting some data
@@ -144,12 +144,12 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const uint8_t         buf[]={36, 66, 42};
-  const Crypto::DataRef tmp  =tc_.decrypt(buf, sizeof(buf));
-  ensure_equals("invalid size", tmp.len_, 2);
-  ensure("ogt empty buffer", tmp.data_!=NULL);
-  ensure_equals("invalid byte 0", tmp.data_[0], 23u);
-  ensure_equals("invalid byte 1", tmp.data_[1], 53u);
+  const uint8_t buf[]={36, 66, 42};
+  const DataRef tmp  =tc_.decrypt(buf, sizeof(buf));
+  ensure_equals("invalid size", tmp.size(), 2);
+  ensure("ogt empty buffer", tmp.data()!=NULL);
+  ensure_equals("invalid byte 0", tmp[0], 23u);
+  ensure_equals("invalid byte 1", tmp[1], 53u);
 }
 
 // try encrypting 0 bytes
@@ -157,11 +157,11 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  const uint8_t         buf[]={0};
-  const Crypto::DataRef tmp  =tc_.encrypt(buf, 0);
-  ensure_equals("invalid size", tmp.len_, 1);
-  ensure("ogt empty buffer", tmp.data_!=NULL);
-  ensure_equals("invalid byte 0", tmp.data_[0], 42u);
+  const uint8_t buf[]={0};
+  const DataRef tmp  =tc_.encrypt(buf, 0);
+  ensure_equals("invalid size", tmp.size(), 1);
+  ensure("ogt empty buffer", tmp.data()!=NULL);
+  ensure_equals("invalid byte 0", tmp[0], 42u);
 }
 
 // try decrypting zero bytes
@@ -169,10 +169,10 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const uint8_t         buf[]={0};
-  const Crypto::DataRef tmp  =tc_.decrypt(buf, 0);
-  ensure_equals("invalid size", tmp.len_, 0);
-  ensure("ogt empty buffer", tmp.data_!=NULL);
+  const uint8_t buf[]={0};
+  const DataRef tmp  =tc_.decrypt(buf, 0);
+  ensure_equals("invalid size", tmp.size(), 0);
+  ensure("ogt empty buffer", tmp.data()!=NULL);
 }
 
 } // namespace tut

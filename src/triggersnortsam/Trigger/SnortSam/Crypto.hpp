@@ -9,6 +9,7 @@
 #include <inttypes.h>
 #include <boost/noncopyable.hpp>
 
+#include "Trigger/SnortSam/DataRef.hpp"
 #include "Trigger/SnortSam/ExceptionCryptoFailed.hpp"
 
 namespace Trigger
@@ -24,20 +25,6 @@ namespace SnortSam
 class Crypto: private boost::noncopyable
 {
 public:
-  /** \brief gives read-only access to the internal buffer.
-   */
-  struct DataRef
-  {
-    DataRef(const uint8_t *data, const size_t len):
-      data_(data),
-      len_(len)
-    {
-    }
-
-    const uint8_t *data_;
-    size_t         len_;
-  }; // struct DataRef
-
   /** \brief ensures polymorphic destruction.
    */
   virtual ~Crypto(void);

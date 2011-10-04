@@ -33,7 +33,7 @@ void NoCrypto::decryptImpl(const uint8_t *data, size_t len)
   memcpy(buf_.get(), data, len);
 }
 
-NoCrypto::DataRef NoCrypto::getDataImpl(void) const
+DataRef NoCrypto::getDataImpl(void) const
 {
   return DataRef(buf_.get(), used_);
 }

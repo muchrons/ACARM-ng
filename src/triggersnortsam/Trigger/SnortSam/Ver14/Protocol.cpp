@@ -2,6 +2,7 @@
  * Protocol.cpp
  *
  */
+#include "Commons/Convert.hpp"
 #include "Trigger/SnortSam/Ver14/Protocol.hpp"
 
 
@@ -14,13 +15,14 @@ namespace Ver14
 
 Protocol::Protocol(const Config &cfg):
   cfg_(cfg),
-  ver_("14")
+  ver_(14),
+  verStr_( Commons::Convert::to<std::string>(ver_) )
 {
 }
 
 const std::string &Protocol::getProtocolVersionImpl(void)
 {
-  return ver_;
+  return verStr_;
 }
 
 bool Protocol::isConnectedImpl(void)

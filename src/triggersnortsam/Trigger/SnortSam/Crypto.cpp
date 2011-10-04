@@ -15,7 +15,7 @@ Crypto::~Crypto(void)
 {
 }
 
-Crypto::DataRef Crypto::encrypt(const uint8_t *data, size_t len)
+DataRef Crypto::encrypt(const uint8_t *data, size_t len)
 {
   if(data==NULL)
     throw ExceptionCryptoFailed(SYSTEM_SAVE_LOCATION, "NULL data buffer given");
@@ -23,7 +23,7 @@ Crypto::DataRef Crypto::encrypt(const uint8_t *data, size_t len)
   return getData();
 }
 
-Crypto::DataRef Crypto::decrypt(const uint8_t *data, size_t len)
+DataRef Crypto::decrypt(const uint8_t *data, size_t len)
 {
   if(data==NULL)
     throw ExceptionCryptoFailed(SYSTEM_SAVE_LOCATION, "NULL data buffer given");
@@ -31,11 +31,9 @@ Crypto::DataRef Crypto::decrypt(const uint8_t *data, size_t len)
   return getData();
 }
 
-Crypto::DataRef Crypto::getData(void) const
+DataRef Crypto::getData(void) const
 {
-  const DataRef tmp=getDataImpl();
-  assert(tmp.data_!=NULL);
-  return tmp;
+  return getDataImpl();
 }
 
 } // namespace SnortSam
