@@ -62,7 +62,7 @@ private:
   const std::string             host_;
   const Persistency::PortNumber port_;
   const unsigned int            timeout_;
-}; // class Crypto
+}; // class NetIO
 
 } // namespace SnortSam
 } // namespace Trigger
