@@ -205,7 +205,7 @@ void TwoFishDestroy(TWOFISH *tfdata)
 
 
 /* en/decryption with CBC mode */
-unsigned long _TwoFish_CryptRawCBC(char *in,char *out,unsigned long len,int decrypt,TWOFISH *tfdata)
+unsigned long _TwoFish_CryptRawCBC(const char *in,char *out,unsigned long len,int decrypt,TWOFISH *tfdata)
 {	unsigned long rl;
 
 	rl=len;											/* remember how much data to crypt. */
@@ -224,7 +224,7 @@ unsigned long _TwoFish_CryptRawCBC(char *in,char *out,unsigned long len,int decr
 }
 
 /* en/decryption on one block only */
-unsigned long _TwoFish_CryptRaw16(char *in,char *out,unsigned long len,int decrypt,TWOFISH *tfdata)
+unsigned long _TwoFish_CryptRaw16(const char *in,char *out,unsigned long len,int decrypt,TWOFISH *tfdata)
 {	/* qBlockPlain already zero'ed through ResetCBC  */
 	memcpy(tfdata->qBlockPlain,in,len);					/* toss the data into it. */
 	_TwoFish_BlockCrypt16(tfdata->qBlockPlain,tfdata->qBlockCrypt,decrypt,tfdata); /* encrypt just that block without CBC. */
@@ -233,7 +233,7 @@ unsigned long _TwoFish_CryptRaw16(char *in,char *out,unsigned long len,int decry
 }
 
 /* en/decryption without reset of CBC and output assignment */
-unsigned long _TwoFish_CryptRaw(char *in,char *out,unsigned long len,int decrypt,TWOFISH *tfdata)
+unsigned long _TwoFish_CryptRaw(const char *in,char *out,unsigned long len,int decrypt,TWOFISH *tfdata)
 {
 	if(in!=NULL && out!=NULL && len>0 && tfdata!=NULL)		/* if we have valid data, then... */
 	{	if(len>TwoFish_BLOCK_SIZE)							/* ...check if we have more than one block. */
@@ -257,7 +257,7 @@ unsigned long _TwoFish_CryptRaw(char *in,char *out,unsigned long len,int decrypt
  *	Output:	The amount of bytes encrypted if successful, otherwise 0.
  */
 
-unsigned long TwoFishEncryptRaw(char *in,
+unsigned long TwoFishEncryptRaw(const char *in,
 								char *out,
 								unsigned long len,
 								TWOFISH *tfdata)
@@ -278,7 +278,7 @@ unsigned long TwoFishEncryptRaw(char *in,
  *	Output:	The amount of bytes decrypted if successful, otherwise 0.
  */
 
-unsigned long TwoFishDecryptRaw(char *in,
+unsigned long TwoFishDecryptRaw(const char *in,
 								char *out,
 								unsigned long len,
 								TWOFISH *tfdata)
@@ -405,7 +405,7 @@ void _TwoFish_BinHex(u_int8_t *buf,unsigned long len,int bintohex)
  *	Output:	The amount of bytes encrypted if successful, otherwise 0.
  */
 
-unsigned long TwoFishEncrypt(char *in,
+unsigned long TwoFishEncrypt(const char *in,
 							 char **out,
 							 signed long len,
 							 int binhex,
@@ -464,7 +464,7 @@ unsigned long TwoFishEncrypt(char *in,
  *	Output:	The amount of bytes decrypted if successful, otherwise 0.
  */
 
-unsigned long TwoFishDecrypt(char *in,
+unsigned long TwoFishDecrypt(const char *in,
 							 char **out,
 							 signed long len,
 							 int binhex,
@@ -671,12 +671,13 @@ void _TwoFish_MakeSubKeys(TWOFISH *tfdata)	/* Expand a user-supplied key materia
  * @param tfdata: Pointer to the global data structure containing session keys.
  * @return none
  */
-void _TwoFish_BlockCrypt(u_int8_t *in,u_int8_t *out,unsigned long size,int decrypt,TWOFISH *tfdata)
+void _TwoFish_BlockCrypt(const u_int8_t *in,u_int8_t *out,unsigned long size,int decrypt,TWOFISH *tfdata)
 {	u_int8_t PnMinusOne[TwoFish_BLOCK_SIZE];
 	u_int8_t CnMinusOne[TwoFish_BLOCK_SIZE];
 	u_int8_t CBCplusCprime[TwoFish_BLOCK_SIZE];
 	u_int8_t Pn[TwoFish_BLOCK_SIZE];
-	u_int8_t *p,*pout;
+	const u_int8_t *p;
+	u_int8_t *pout;
 	unsigned long i;
 
     /* here is where we implement CBC mode and cipher block stealing */
@@ -696,8 +697,8 @@ void _TwoFish_BlockCrypt(u_int8_t *in,u_int8_t *out,unsigned long size,int decry
         /* if we are decrypting, CBC means we XOR the result of the decryption */
         /* with the previous cipher text block to get the resulting plain text */
         if(decrypt && tfdata->qBlockDefined)
-        {	for (p=out,i=0;i<TwoFish_BLOCK_SIZE;i++,p++)
-				*p^=tfdata->qBlockPlain[i];
+        {	for (pout=out,i=0; i<TwoFish_BLOCK_SIZE; i++,pout++)
+				*pout^=tfdata->qBlockPlain[i];
         }
 
         /* save the input and output blocks, since CBC needs these for XOR */
@@ -785,7 +786,7 @@ void _TwoFish_FlushOutput(u_int8_t *b,unsigned long len,TWOFISH *tfdata)
 	tfdata->dontflush=FALSE;
 }
 
-void _TwoFish_BlockCrypt16(u_int8_t *in,u_int8_t *out,int decrypt,TWOFISH *tfdata)
+void _TwoFish_BlockCrypt16(const u_int8_t *in,u_int8_t *out,int decrypt,TWOFISH *tfdata)
 {	u_int32_t x0,x1,x2,x3;
     u_int32_t k,t0,t1,R;
 
