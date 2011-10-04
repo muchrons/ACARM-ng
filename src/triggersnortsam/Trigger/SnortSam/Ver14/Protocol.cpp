@@ -13,11 +13,24 @@ namespace SnortSam
 namespace Ver14
 {
 
-Protocol::Protocol(const Config &cfg):
-  cfg_(cfg),
+Protocol::Protocol(const Who             who,
+                   const How             how,
+                   const unsigned int    duration,
+                   std::auto_ptr<NetIO>  netIO,
+                   std::auto_ptr<Crypto> crypto):
+  who_(who),
+  how_(how),
+  duration_(duration),
   ver_(14),
-  verStr_( Commons::Convert::to<std::string>(ver_) )
+  verStr_( Commons::Convert::to<std::string>(ver_) ),
+  connected_(false),
+  netIO_( netIO.release() ),
+  crypto_( crypto.release() )
 {
+  if(netIO_.get()==NULL)
+    throw Exception(SYSTEM_SAVE_LOCATION, "network IO must be set");
+  if(crypto_.get()==NULL)
+    throw Exception(SYSTEM_SAVE_LOCATION, "cryptographical API must be set");
 }
 
 const std::string &Protocol::getProtocolVersionImpl(void)
@@ -27,8 +40,7 @@ const std::string &Protocol::getProtocolVersionImpl(void)
 
 bool Protocol::isConnectedImpl(void)
 {
-  // TODO
-  return false;
+  return connected_;
 }
 
 void Protocol::initImpl(void)
