@@ -51,9 +51,5 @@ void NoCrypto::resize(const size_t len)
   used_=len;
 }
 
-  boost::scoped_array<uint8_t> buf_;
-  size_t                       size_;
-  size_t                       used_;
-
 } // namespace SnortSam
 } // namespace Trigger
