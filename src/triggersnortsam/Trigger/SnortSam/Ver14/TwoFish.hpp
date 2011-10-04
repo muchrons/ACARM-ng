@@ -33,7 +33,10 @@ private:
   // must return reference (w/o ownership!) to the internal buffer
   virtual DataRef getDataImpl(void) const;
 
-  void resize(size_t len, bool decrypt);
+  // yes - this is shitty, but excellent C implementation of twofish has problem when
+  // using common allocation method for both encryption and decryption.
+  void resizeEnc(size_t len);
+  void resizeDec(size_t len);
 
   struct PImpl;
   boost::scoped_ptr<PImpl> impl_;
