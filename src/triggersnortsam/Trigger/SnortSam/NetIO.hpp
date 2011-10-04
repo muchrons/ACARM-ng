@@ -54,7 +54,7 @@ private:
   void tryConnectingTo(const boost::asio::ip::tcp::endpoint &ep);
 
   virtual bool isConnectedImpl(void) = 0;
-  virtual void connectImpl(const IP &ip, uint16_t port) = 0;
+  virtual void connectImpl(const IP &ip, uint16_t port, time_t timeout) = 0;
   virtual void disconnectImpl(void) = 0;
   virtual void sendImpl(const uint8_t *data, size_t len, time_t deadline) = 0;
   virtual DataRef receiveImpl(size_t len, time_t deadline) = 0;

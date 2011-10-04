@@ -30,11 +30,12 @@ struct NetIOMock: public NetIO
     return connected_;
   }
 
-  virtual void connectImpl(const IP &ip, uint16_t port)
+  virtual void connectImpl(const IP &ip, uint16_t port, time_t deadline)
   {
     c_.push_back("connectImpl()");
-    ip_  =ip;
-    port_=port;
+    ip_       =ip;
+    port_     =port;
+    deadline_ =deadline;
     connected_=true;
   }
 

@@ -75,7 +75,7 @@ void NetIO::disconnect(void)
 void NetIO::tryConnectingTo(const boost::asio::ip::tcp::endpoint &ep)
 {
   LOGMSG_DEBUG_S(log_)<<"trying to connect to "<<ep.address()<<":"<<ep.port();
-  connectImpl(ep.address(), ep.port());
+  connectImpl(ep.address(), ep.port(), time(NULL)+timeout_);
   LOGMSG_INFO_S(log_)<<"connected to "<<ep.address()<<":"<<ep.port();
 }
 

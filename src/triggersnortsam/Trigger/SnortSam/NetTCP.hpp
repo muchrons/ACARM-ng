@@ -20,14 +20,18 @@ class NetTCP: public NetIO
 {
 public:
   NetTCP(const std::string &host, Persistency::PortNumber port,  unsigned int timeout);
+
 private:
   virtual bool isConnectedImpl(void);
-  virtual void connectImpl(const IP &ip, uint16_t port);
+  virtual void connectImpl(const IP &ip, uint16_t port, time_t deadline);
   virtual void disconnectImpl(void);
   virtual void sendImpl(const uint8_t *data, size_t len, time_t deadline);
   virtual DataRef receiveImpl(size_t len, time_t deadline);
 
-  boost::asio::io_service io_;
+  boost::asio::io_service      io_;
+  boost::asio::ip::tcp::socket sock_;
+  boost::asio::deadline_timer  deadline_;
+  boost::asio::streambuf       inBuf_;;
 }; // class NetTCP
 
 } // namespace SnortSam
