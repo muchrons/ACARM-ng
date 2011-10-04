@@ -7,10 +7,14 @@
 
 #include <cstdlib>
 #include <inttypes.h>
+#include <boost/asio/ip/tcp.hpp>
 #include <boost/noncopyable.hpp>
 
+#include "Logger/Logger.hpp"
 #include "Persistency/IPTypes.hpp"
-#include "Trigger/SnortSam/ExceptionCryptoFailed.hpp"
+#include "Persistency/PortNumber.hpp"
+#include "Trigger/SnortSam/DataRef.hpp"
+#include "Trigger/SnortSam/ExceptionNetworkError.hpp"
 
 namespace Trigger
 {
@@ -23,34 +27,41 @@ class NetIO: private boost::noncopyable,
              public  Persistency::IPTypes<NetIO>
 {
 public:
-  explicit NetIO(const std::string &host);
+  class ConnectionGuard: private boost::noncopyable
+  {
+  public:
+    explicit ConnectionGuard(NetIO &nio);
+    ~ConnectionGuard(void);
+  private:
+    NetIO &nio_;
+  }; // class ConnectionGuard
+
+  NetIO(const std::string &host, Persistency::PortNumber port,  unsigned int timeout);
 
   /** \brief ensures polymorphic destruction.
    */
   virtual ~NetIO(void);
 
-  /** \brief creates connection to a given host.
-   *  \param data data to be encrypted.
-   *  \param len  length of the data buffer to be encrypted.
-   *  \return read-only reference to the internal buffer.
-   */
-  DataRef encrypt(const uint8_t *data, size_t len);
-  /** \brief decrypts given data and stores result in the internal buffer.
-   *  \param data data to be decrypted.
-   *  \param len  length of the data buffer to be decrypted.
-   *  \return read-only reference to the internal buffer.
-   */
-  DataRef decrypt(const uint8_t *data, size_t len);
+  void send(const uint8_t *data, size_t len);
+  DataRef receive(size_t len);
+  void disconnect(void);
+
+protected:
+  const Logger::Node log_;
 
 private:
-  DataRef getData(void) const;
+  void reconnect(void);
+  void tryConnectingTo(const boost::asio::ip::tcp::endpoint &ep);
 
-  // must encrypt given data to the internal buffer
-  virtual void encryptImpl(const uint8_t *data, size_t len) = 0;
-  // must decrypt given data to the internal buffer
-  virtual void decryptImpl(const uint8_t *data, size_t len) = 0;
-  // must return reference (w/o ownership!) to the internal buffer
-  virtual DataRef getDataImpl(void) const = 0;
+  virtual bool isConnectedImpl(void) = 0;
+  virtual void connectImpl(const IP &ip, uint16_t port) = 0;
+  virtual void disconnectImpl(void) = 0;
+  virtual void sendImpl(const uint8_t *data, size_t len, time_t deadline) = 0;
+  virtual DataRef receiveImpl(size_t len, time_t deadline) = 0;
+
+  const std::string             host_;
+  const Persistency::PortNumber port_;
+  const unsigned int            timeout_;
 }; // class Crypto
 
 } // namespace SnortSam
