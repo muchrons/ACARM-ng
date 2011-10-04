@@ -1,0 +1,42 @@
+/*
+ * Protocol.mt.cpp
+ *
+ */
+#include <string>
+#include <iostream>
+
+#include "Commons/Convert.hpp"
+#include "Trigger/SnortSam/NetTCP.hpp"
+#include "Trigger/SnortSam/Ver14/TwoFish.hpp"
+#include "Trigger/SnortSam/Ver14/Protocol.hpp"
+
+using namespace std;
+using namespace Trigger::SnortSam;
+using namespace Trigger::SnortSam::Ver14;
+
+
+int main(int argc, char **argv)
+{
+  if(argc!=1+5)
+  {
+    cerr<<argv[0]<<" <host> <port> <key> <from> <to>"<<endl;
+    return 1;
+  }
+  const string    host=argv[1];
+  const uint16_t  port=Commons::Convert::to<uint16_t>(argv[2]);
+  const string    key =argv[3];
+  const NetIO::IP from=NetIO::IP::from_string(argv[4]);
+  const NetIO::IP to  =NetIO::IP::from_string(argv[5]);
+
+  std::auto_ptr<NetIO>  netIO(new NetTCP(host, port, 10));
+  std::auto_ptr<Crypto> crypto(new TwoFish(key));
+  cout<<argv[0]<<": initializing protocol..."<<endl;
+  Ver14::Protocol       proto(Who::SRC|Who::DST, How::IN|How::OUT, 20, netIO, crypto);
+  cout<<argv[0]<<": blocking traffic from "<<from<<" to "<<to<<endl;
+  proto.block(from, to);
+  cout<<argv[0]<<": deinitializing protocol"<<endl;
+  proto.deinit();
+  cout<<argv[0]<<": all done"<<endl;
+
+  return 0;
+} // main()
