@@ -164,7 +164,7 @@ u_int8_t TwoFish__b(u_int32_t x,int n)
  *			This pointer is used with all other crypt functions.
  */
 
-TWOFISH *TwoFishInit(char *userkey)
+TWOFISH *TwoFishInit(const char *userkey)
 {   TWOFISH *tfdata;
 	int i,x,m;
 	char tkey[TwoFish_KEY_LENGTH+40];

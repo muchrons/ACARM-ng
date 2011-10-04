@@ -141,7 +141,7 @@ extern int TwoFish_srand;					/* if set to TRUE (default), first call of TwoFish
  *  Output:	Pointer to TWOFISH structure. This data structure contains key dependent data.
  *			This pointer is used with all other crypt functions.
  */
-TWOFISH *TwoFishInit(char *userkey);
+TWOFISH *TwoFishInit(const char *userkey);
 
 
 /*	TwoFish Destroy

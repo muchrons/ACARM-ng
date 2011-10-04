@@ -38,7 +38,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  char       key[]="$3<r37";
+  const char key[]="$3<r37";
   TWOFISHPtr fish( TwoFishInit(key) );
   ensure("initialization failed", fish.get()!=NULL );
   // encrypt
