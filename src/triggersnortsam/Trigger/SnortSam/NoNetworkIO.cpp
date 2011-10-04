@@ -19,7 +19,7 @@ bool NoNetworkIO::isConnectedImpl(void)
   return true;
 }
 
-void NoNetworkIO::connectImpl(const IP &/*ip*/, uint16_t /*port*/)
+void NoNetworkIO::connectImpl(const IP &/*ip*/, uint16_t /*port*/, time_t /*deadline*/)
 {
 }
 

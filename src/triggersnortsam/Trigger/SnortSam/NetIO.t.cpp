@@ -87,14 +87,17 @@ struct NetIOThrowMock: public NetIOMock
   {
   }
 
-  virtual void connectImpl(const IP &ip, uint16_t port)
+  virtual void connectImpl(const IP &ip, uint16_t port, time_t deadline)
   {
     c_.push_back("connectImpl()");
-    ip_  =ip;
-    port_=port;
+    ip_      =ip;
+    port_    =port;
+    deadline_=deadline;
+
     --throws_;
     if(throws_>=0)
       throw std::runtime_error("throwing during connection on user's request");
+
     connected_=true;
   }
 

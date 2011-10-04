@@ -23,7 +23,7 @@ public:
 
 private:
   virtual bool isConnectedImpl(void);
-  virtual void connectImpl(const IP &ip, uint16_t port);
+  virtual void connectImpl(const IP &ip, uint16_t port, time_t deadline);
   virtual void disconnectImpl(void);
   virtual void sendImpl(const uint8_t *data, size_t len, time_t deadline);
   virtual DataRef receiveImpl(size_t len, time_t deadline);
