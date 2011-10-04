@@ -31,7 +31,8 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  for(const uint8_t *b=m_.begin()+sizeof(m_.p_.endianCheck_); b!=m_.end(); ++b)
+  const uint8_t sizeOfEndianCheck=2;
+  for(const uint8_t *b=m_.begin()+sizeOfEndianCheck; b!=m_.end(); ++b)
     ensure_equals("byte not zeroed", *b, 0);
 }
 

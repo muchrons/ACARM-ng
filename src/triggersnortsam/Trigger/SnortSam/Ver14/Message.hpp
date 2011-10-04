@@ -79,7 +79,7 @@ struct Message: public Persistency::IPTypes<Message>
     return sizeof(p_);
   }
 
-  SamPacket p_;
+  SamPacket p_;     ///< package is avaiable directly, since it is easier to manipulate on it
 }; // struct Message
 
 } // namespace Ver14
