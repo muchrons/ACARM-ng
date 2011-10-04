@@ -42,18 +42,18 @@ void testObj::test<1>(void)
   TWOFISHPtr fish( TwoFishInit(key) );
   ensure("initialization failed", fish.get()!=NULL );
   // encrypt
-  const char  buf[] ="Cypher";
-  char       *encBuf=(char*)TwoFishAlloc(sizeof(buf), false, false, fish.get());
-  size_t      lenEnc=TwoFishEncrypt(buf, &encBuf, sizeof(buf), false, fish.get());
+  const char  bufEnc[]="Cypher";
+  char       *encBuf  =(char*)TwoFishAlloc(sizeof(bufEnc), false, false, fish.get());
+  size_t      lenEnc  =TwoFishEncrypt(bufEnc, &encBuf, sizeof(bufEnc), false, fish.get());
   ensure("encryption failed", lenEnc!=0);
   // decrypt
-  char        decBuf[sizeof(buf)];
+  char        decBuf[sizeof(bufEnc)];
   char       *decBufPtr=decBuf;
-  size_t      lenDec=TwoFishDecrypt(encBuf, &decBufPtr, sizeof(decBuf)+TwoFish_BLOCK_SIZE, false, fish.get());
+  size_t      lenDec   =TwoFishDecrypt(encBuf, &decBufPtr, sizeof(decBuf)+TwoFish_BLOCK_SIZE, false, fish.get());
   ensure("decryption failed", lenDec!=0);
-  ensure_equals("invalid size after decryption", lenDec, sizeof(buf));
-  for(size_t i=0; i<sizeof(buf); ++i)
-    ensure_equals("invalid char decoded", decBuf[i], buf[i]);
+  ensure_equals("invalid size after decryption", lenDec, sizeof(bufEnc));
+  for(size_t i=0; i<sizeof(bufEnc); ++i)
+    ensure_equals("invalid char decoded", decBuf[i], bufEnc[i]);
 }
 
 } // namespace tut
