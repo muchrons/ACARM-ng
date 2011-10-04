@@ -9,6 +9,7 @@
 #include <inttypes.h>
 #include <boost/noncopyable.hpp>
 
+#include "Logger/Node.hpp"
 #include "Trigger/SnortSam/DataRef.hpp"
 #include "Trigger/SnortSam/ExceptionCryptoFailed.hpp"
 
@@ -25,6 +26,10 @@ namespace SnortSam
 class Crypto: private boost::noncopyable
 {
 public:
+  /** \brief initialize base elements.
+   */
+  Crypto(void);
+
   /** \brief ensures polymorphic destruction.
    */
   virtual ~Crypto(void);
@@ -51,6 +56,8 @@ private:
   virtual void decryptImpl(const uint8_t *data, size_t len) = 0;
   // must return reference (w/o ownership!) to the internal buffer
   virtual DataRef getDataImpl(void) const = 0;
+
+  const Logger::Node log_;
 }; // class Crypto
 
 } // namespace SnortSam
