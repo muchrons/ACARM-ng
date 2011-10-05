@@ -37,8 +37,8 @@ protected:
   const Logger::Node log_;
 
 private:
-  virtual const std::string &getProtocolVersionImpl(void) = 0;
-  virtual bool isConnectedImpl(void) = 0;
+  virtual const std::string &getProtocolVersionImpl(void) const = 0;
+  virtual bool isConnectedImpl(void) const = 0;
   virtual void initImpl(void) = 0;
   virtual void deinitImpl(void) = 0;
   virtual void blockImpl(const Config::IP &from, const Config::IP &to) = 0;

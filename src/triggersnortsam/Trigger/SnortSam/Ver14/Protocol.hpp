@@ -14,6 +14,7 @@
 #include "Trigger/SnortSam/NetIO.hpp"
 #include "Trigger/SnortSam/Crypto.hpp"
 #include "Trigger/SnortSam/Protocol.hpp"
+#include "Trigger/SnortSam/Ver14/Message.hpp"
 
 
 namespace Trigger
@@ -28,23 +29,45 @@ namespace Ver14
 class Protocol: public Trigger::SnortSam::Protocol
 {
 public:
-  Protocol(Who who, How how, unsigned int duration, std::auto_ptr<NetIO> netIO, std::auto_ptr<Crypto> crypto);
+  Protocol(Who who, How how, unsigned int duration, const std::string &key, std::auto_ptr<NetIO> netIO);
 
 private:
-  virtual const std::string &getProtocolVersionImpl(void);
-  virtual bool isConnectedImpl(void);
+  typedef boost::scoped_ptr<Crypto> CryptoPtr;
+
+  // derived from base
+  virtual const std::string &getProtocolVersionImpl(void) const;
+  virtual bool isConnectedImpl(void) const;
   virtual void initImpl(void);
   virtual void deinitImpl(void);
   virtual void blockImpl(const Config::IP &from, const Config::IP &to);
 
+  // self-required
+  virtual std::auto_ptr<Crypto> makeCrypto(const std::string &key) const;
+  Crypto &getCrypto(void);
+
+  // low-level transmition
+  void send(const SamPacket &p);
+  SamPacket receive(void);
+
+  // protocol-related
+
+  // configuration
   const Who                 who_;
   const How                 how_;
   const unsigned int        duration_;
+  const std::string         key_;
+  // version representation
   const uint16_t            ver_;
   const std::string         verStr_;
-  bool                      connected_;
+  // implementation services
   boost::scoped_ptr<NetIO>  netIO_;
-  boost::scoped_ptr<Crypto> crypto_;
+  bool                      connected_;
+  CryptoPtr                 cryptoDefault_;
+  CryptoPtr                 cryptoStation_;
+  // communication-related fields
+  uint16_t                  localSeqNo_;
+  uint16_t                  remoteSeqNo_;
+  time_t                    lastContact_;
 }; // class Protocol
 
 } // namespace Ver14

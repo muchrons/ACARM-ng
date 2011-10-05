@@ -28,10 +28,9 @@ int main(int argc, char **argv)
   const NetIO::IP from=NetIO::IP::from_string(argv[4]);
   const NetIO::IP to  =NetIO::IP::from_string(argv[5]);
 
-  std::auto_ptr<NetIO>  netIO(new NetTCP(host, port, 10));
-  std::auto_ptr<Crypto> crypto(new TwoFish(key));
+  std::auto_ptr<NetIO> netIO(new NetTCP(host, port, 10));
   cout<<argv[0]<<": initializing protocol..."<<endl;
-  Ver14::Protocol       proto(Who::SRC|Who::DST, How::IN|How::OUT, 20, netIO, crypto);
+  Ver14::Protocol       proto(Who::SRC|Who::DST, How::IN|How::OUT, 20, key, netIO);
   cout<<argv[0]<<": blocking traffic from "<<from<<" to "<<to<<endl;
   proto.block(from, to);
   cout<<argv[0]<<": deinitializing protocol"<<endl;
