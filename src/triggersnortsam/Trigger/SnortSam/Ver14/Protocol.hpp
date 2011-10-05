@@ -44,7 +44,8 @@ private:
 
   // self-required
   virtual std::auto_ptr<Crypto> makeCrypto(const std::string &key) const;
-  Crypto &getCrypto(void);
+  DataRef encrypt(const uint8_t *data, size_t size);
+  DataRef decrypt(const uint8_t *data, size_t size);
 
   // low-level transmition
   void send(const SamPacket &p);
@@ -54,30 +55,34 @@ private:
   void checkIn(void);
   void sendCheckIn(void);
   void handleCheckInResponse(void);
+  // protocol-related: checkout
+  void checkOut(void);
+  void sendCheckOut(void);
+  void handleCheckOutResponse(void);
 
   // protocol-helpers
   void makeNewSessionKey(const Message &m);
 
   // configuration
-  const Who                 who_;
-  const How                 how_;
-  const unsigned int        duration_;
-  const std::string         key_;
+  const Who                who_;
+  const How                how_;
+  const unsigned int       duration_;
+  const std::string        key_;
   // version representation
-  const std::string         verStr_;
+  const std::string        verStr_;
   // implementation services
-  boost::scoped_ptr<NetIO>  netIO_;
-  bool                      connected_;
-  CryptoPtr                 cryptoDefault_;
-  CryptoPtr                 cryptoStation_;
+  boost::scoped_ptr<NetIO> netIO_;
+  bool                     connected_;
+  CryptoPtr                cryptoDefault_;
+  CryptoPtr                cryptoStation_;
   // communication-related fields
-  uint16_t                  localSeqNo_;
-  uint16_t                  remoteSeqNo_;
-  time_t                    lastContact_;
-  uint8_t                   localKeyMod_[4];
-  uint8_t                   remoteKeyMod_[4];
-  std::string               lastSessionKey_;
-  size_t                    encPacketSize_;
+  uint16_t                 localSeqNo_;
+  uint16_t                 remoteSeqNo_;
+  time_t                   lastContact_;
+  uint8_t                  localKeyMod_[4];
+  uint8_t                  remoteKeyMod_[4];
+  std::string              lastSessionKey_;
+  size_t                   encPacketSize_;
 }; // class Protocol
 
 } // namespace Ver14

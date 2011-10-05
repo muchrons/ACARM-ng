@@ -88,31 +88,39 @@ bool Protocol::isConnectedImpl(void) const
 
 void Protocol::initImpl(void)
 {
+  // (re)init create required cryptography entries
   connected_=false;
-  // create required cryptography entries
   cryptoDefault_.reset( makeCrypto(key_).release() );
   cryptoStation_.reset();
+
   // randomize some sequence number
   do
   {
     localSeqNo_=rand();
   }
   while(localSeqNo_<20 || localSeqNo_>65500);
+
   // create some random key modifier
   for(size_t i=0; i<sizeof(localKeyMod_); ++i)
     localKeyMod_[i]=rand();
 
   // checkin to the remote agent
   checkIn();
+
+  // we're connected now!
+  connected_=true;
 }
 
 
 void Protocol::deinitImpl(void)
 {
+  // perform checkout protocol
+  checkOut();
+
+  // mark required fields
   connected_  =false;
   lastContact_=0;
   cryptoStation_.reset();
-  // TODO
 }
 
 
@@ -128,24 +136,54 @@ std::auto_ptr<Crypto> Protocol::makeCrypto(const std::string &key) const
   return ptr;
 }
 
-
-Crypto &Protocol::getCrypto(void)
+DataRef Protocol::encrypt(const uint8_t *data, size_t size)
 {
   // use station entry
   if(cryptoStation_.get()!=NULL)
-    return *cryptoStation_;
+  {
+    LOGMSG_DEBUG(log_, "encrypting using station key");
+    return cryptoStation_->encrypt(data, size);
+  }
   // fallback to deafult
   if(cryptoDefault_.get()!=NULL)
-    return *cryptoDefault_;
+  {
+    LOGMSG_DEBUG(log_, "encrypting using default key");
+    return cryptoDefault_->encrypt(data, size);
+  }
   // oops - error...
-  throw Exception(SYSTEM_SAVE_LOCATION, "cryptography not set");
+  throw Exception(SYSTEM_SAVE_LOCATION, "cryptography not set - cannot encrypt");
+}
+
+
+DataRef Protocol::decrypt(const uint8_t *data, size_t size)
+{
+  // use station entry
+  if(cryptoStation_.get()!=NULL)
+  {
+    LOGMSG_DEBUG(log_, "trying decrypt using station key");
+    DataRef tmp=cryptoStation_->decrypt(data, size);
+    if(tmp.size()==sizeof(SamPacket))
+      return tmp;
+    LOGMSG_DEBUG(log_, "decrypting using station key failed");
+  }
+  // fallback to deafult
+  if(cryptoDefault_.get()!=NULL)
+  {
+    LOGMSG_DEBUG(log_, "trying decrypt using default key");
+    DataRef tmp=cryptoDefault_->decrypt(data, size);
+    if(tmp.size()!=sizeof(SamPacket))
+      throw Exception(SYSTEM_SAVE_LOCATION, "decryption failed");
+    return tmp;
+  }
+  // oops - error...
+  throw Exception(SYSTEM_SAVE_LOCATION, "cryptography not set - cannot decrypt");
 }
 
 
 void Protocol::send(const SamPacket &p)
 {
   // encrypt data
-  DataRef d=getCrypto().encrypt( toBytes(&p), sizeof(p) );
+  DataRef d=encrypt( toBytes(&p), sizeof(p) );
   encPacketSize_=d.size();
   // send it over a network channel
   assert(netIO_.get()!=NULL);
@@ -161,9 +199,7 @@ SamPacket Protocol::receive(void)
   assert(netIO_.get()!=NULL);
   DataRef d=netIO_->receive(encPacketSize_);
   // decrypt data
-  DataRef p=getCrypto().decrypt( d.data(), d.size() );
-  if(p.size()!=sizeof(SamPacket))
-    throw Exception(SYSTEM_SAVE_LOCATION, "unknown packet has been received - size does not match (this should never happen!)");
+  DataRef p=decrypt( d.data(), d.size() );
   // move to final destination
   SamPacket out;
   assert(p.size()==sizeof(out));
@@ -220,6 +256,55 @@ void Protocol::handleCheckInResponse(void)
   for(size_t i=0; i<sizeof(remoteKeyMod_); ++i) // copy remote key modifiers
     remoteKeyMod_[i]=m.p_.duration_[i];
   makeNewSessionKey(m);                         // initialize new session key
+}
+
+
+void Protocol::checkOut(void)
+{
+  NetIO::ConnectionGuard cg(*netIO_);   // ensures disconnection, whatever the result will be
+  sendCheckOut();                       // send message
+  handleCheckOutResponse();             // process result
+}
+
+
+void Protocol::sendCheckOut(void)
+{
+  LOGMSG_DEBUG(log_, "preparing checkout message");
+  localSeqNo_+=remoteSeqNo_;
+  Message m;
+  m.p_.version_=PROTO_VERSION;
+  m.p_.status_ =STATUS_CHECKOUT;
+  m.setNum(m.p_.snortSeqNo_, localSeqNo_ );
+  m.setNum(m.p_.fwSeqNo_,    remoteSeqNo_);
+  // send the message
+  LOGMSG_DEBUG(log_, "sending checkout message");
+  send(m.p_);
+  LOGMSG_DEBUG(log_, "checkout message send - waiting for response");
+
+#if 0
+  station->myseqno+=station->stationseqno; /* increase my seqno */
+  sampacket.endiancheck=1;
+  sampacket.snortseqno[0]=(char)station->myseqno;
+  sampacket.snortseqno[1]=(char)(station->myseqno>>8);
+  sampacket.fwseqno[0]=(char)station->stationseqno; /* fill station seqno */
+  sampacket.fwseqno[1]=(char)(station->stationseqno>>8);
+  sampacket.status=FWSAM_STATUS_CHECKOUT;  /* checking out... */
+  sampacket.version=FWSAM_PACKETVERSION;
+#endif
+}
+
+
+void Protocol::handleCheckOutResponse(void)
+{
+  const Message m( receive() );
+  LOGMSG_DEBUG_S(log_)<<"got response; protocol version: "<<static_cast<int>(m.p_.version_)
+                      <<" message type: "<<static_cast<int>(m.p_.status_);
+  // basic checks
+  if(m.p_.version_!=PROTO_VERSION)
+    throw Exception(SYSTEM_SAVE_LOCATION, "unsupported protocol version detected");
+  if(m.p_.status_!=STATUS_OK)
+    throw Exception(SYSTEM_SAVE_LOCATION, "unexpected message received");
+  LOGMSG_DEBUG(log_, "checkout confirmation received");
 }
 
 
