@@ -22,13 +22,15 @@ namespace Ver14
 namespace
 {
 // version of this communuication protocol
-static const int PROTO_VERSION  =14;
+static const int          PROTO_VERSION=14;
+static const unsigned int HOLD_TIME    =60; // [s]
+
 
 // trigger -> snort sam
 static const int STATUS_CHECKIN =1;
 static const int STATUS_CHECKOUT=2;
 static const int STATUS_BLOCK   =3;
-//static const int STATUS_UNBLOCK =9;
+static const int STATUS_UNBLOCK =9;
 
 // snort sam -> trigger
 static const int STATUS_OK      =4;
@@ -37,13 +39,22 @@ static const int STATUS_NEWKEY  =6;
 static const int STATUS_RESYNC  =7;
 static const int STATUS_HOLD    =8;
 
+
+// log levels
+static const int LOGLEVEL_NONE      =  0;
+static const int LOGLEVEL_SHORTLOG  =  1;
+static const int LOGLEVEL_SHORTALERT=  2;
+static const int LOGLEVEL_LONGLOG   =  3;
+static const int LOGLEVEL_LONGALERT =  4;
+
 // 'who' flags
-static const int WHO_DESTINATION= 8;
-static const int WHO_SOURCE     =16;
+static const int WHO_DST            =  8;
+static const int WHO_SRC            = 16;
 
 // 'how' flags
-static const int HOW_IN         =32;
-static const int HOW_OUT        =64;
+static const int HOW_IN             = 32;
+static const int HOW_OUT            = 64;
+static const int HOW_THIS           =128;
 
 
 const uint8_t *toBytes(const SamPacket *p)
@@ -58,11 +69,18 @@ const SamPacket *toPacket(const uint8_t *b)
 } // unnamed namespace
 
 
+
+Protocol::Callbacks::~Callbacks(void)
+{
+  // just ot have base d-tor in one place...
+}
+
 Protocol::Protocol(const Who             who,
                    const How             how,
                    const unsigned int    duration,
                    const std::string    &key,
-                   std::auto_ptr<NetIO>  netIO):
+                   std::auto_ptr<NetIO>  netIO,
+                   Callbacks            &callbacks):
   who_(who),
   how_(how),
   duration_(duration),
@@ -70,6 +88,7 @@ Protocol::Protocol(const Who             who,
   verStr_( Commons::Convert::to<std::string>(PROTO_VERSION) ),
   netIO_( netIO.release() ),
   connected_(false),
+  callbacks_(callbacks),
   localSeqNo_(0),
   remoteSeqNo_(0),
   lastContact_(0),
@@ -132,9 +151,11 @@ void Protocol::deinitImpl(void)
 }
 
 
-void Protocol::blockImpl(const Config::IP &/*from*/, const Config::IP &/*to*/)
+void Protocol::blockImpl(const Config::IP &from, const Config::IP &to)
 {
-  // TODO
+  if( !from.is_v4() || !to.is_v4() )
+    throw Exception(SYSTEM_SAVE_LOCATION, "only IPv4 is supported by SnortSam in this version");
+  blockEntry( from.to_v4(), to.to_v4() );
 }
 
 
@@ -241,7 +262,7 @@ void Protocol::sendCheckIn(void)
   // send the message
   LOGMSG_DEBUG(log_, "sending checkin message");
   send(m.p_);
-  LOGMSG_DEBUG(log_, "checkin send - waiting for response");
+  LOGMSG_DEBUG(log_, "checkin sent - waiting for response");
 }
 
 
@@ -253,27 +274,70 @@ void Protocol::handleCheckInResponse(void)
   // basic checks
   if(m.p_.version_!=PROTO_VERSION)
     throw Exception(SYSTEM_SAVE_LOCATION, "unsupported protocol version detected");
-  if(m.p_.status_!=STATUS_OK && m.p_.status_!=STATUS_NEWKEY && m.p_.status_!=STATUS_RESYNC)
-    throw Exception(SYSTEM_SAVE_LOCATION, "unexpected message received");
+  // handle response
   handleDirectResponse(m);
 }
 
 
-void Protocol::blockEntry(void)
+void Protocol::blockEntry(const Config::IPv4 &from, const Config::IPv4 &to)
 {
-  // TODO
+  NetIO::ConnectionGuard cg(*netIO_);   // ensures disconnection, whatever the result will be
+  sendBlockEntry(from, to);             // send message
+  handleBlockEntryResponse();           // process result
 }
 
 
-void Protocol::sendBlockEntry(void)
+void Protocol::sendBlockEntry(const Config::IPv4 &from, const Config::IPv4 &to)
 {
-  // TODO
+  const uint32_t id=callbacks_.assignID();
+  LOGMSG_DEBUG_S(log_)<<"assgning ID "<<id<<" to new block entry";
+  localSeqNo_+=remoteSeqNo_;
+
+  // compose message
+  Message m;
+  m.p_.version_=PROTO_VERSION;              // protocol version
+  m.p_.status_ =STATUS_BLOCK;               // message type
+  m.setNum(m.p_.snortSeqNo_, localSeqNo_);  // local sequence number
+  m.setNum(m.p_.fwSeqNo_, remoteSeqNo_);    // remote sequence number
+  m.setNum(m.p_.duration_, duration_);      // duration of ban
+  m.p_.fwMode_|=LOGLEVEL_LONGALERT;
+  m.p_.fwMode_|=(how_.toInt()&How::IN )?HOW_IN :0;
+  m.p_.fwMode_|=(how_.toInt()&How::OUT)?HOW_OUT:0;
+  m.p_.fwMode_|=(who_.toInt()&Who::SRC)?WHO_SRC:0;
+  m.p_.fwMode_|=(who_.toInt()&Who::DST)?WHO_DST:0;
+  m.setIP(m.p_.srcIP_, to);
+  m.setIP(m.p_.dstIP_, from);
+  m.setNum(m.p_.sigID_, id);
+  // protocol, srcPort, dstPort - not set on purpose - we want to block all traffic
+
+  // send the message
+  LOGMSG_DEBUG(log_, "sending block-request message");
+  send(m.p_);
+  LOGMSG_DEBUG(log_, "block-request sent - waiting for response");
 }
 
 
 void Protocol::handleBlockEntryResponse(void)
 {
-  // TODO
+  Message m( receive() );
+  LOGMSG_DEBUG_S(log_)<<"got response; protocol version: "<<static_cast<int>(m.p_.version_)
+                      <<" message type: "<<static_cast<int>(m.p_.status_);
+  // sanity check
+  if(m.p_.version_!=PROTO_VERSION)
+    throw Exception(SYSTEM_SAVE_LOCATION, "unsupported protocol version detected");
+  // need to wait some more for data?
+  if(m.p_.status_==STATUS_HOLD)
+  {
+    LOGMSG_DEBUG(log_, "requested to hold on a while for the reponse...");
+    // TODO: this should be HOLD_TIME, not pre-defined number of seconds from NetIO
+    m=Message( receive() );
+    LOGMSG_DEBUG_S(log_)<<"got (next) response; protocol version: "<<static_cast<int>(m.p_.version_)
+                        <<" message type: "<<static_cast<int>(m.p_.status_);
+    if(m.p_.version_!=PROTO_VERSION)
+      throw Exception(SYSTEM_SAVE_LOCATION, "unsupported protocol version detected");
+  } // if(HOLD)
+  // handle all of the other reponses
+  handleDirectResponse(m);
 }
 
 
@@ -297,7 +361,7 @@ void Protocol::sendCheckOut(void)
   // send the message
   LOGMSG_DEBUG(log_, "sending checkout message");
   send(m.p_);
-  LOGMSG_DEBUG(log_, "checkout message send - waiting for response");
+  LOGMSG_DEBUG(log_, "checkout message sent - waiting for response");
 }
 
 

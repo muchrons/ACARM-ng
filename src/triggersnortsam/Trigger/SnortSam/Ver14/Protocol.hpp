@@ -30,7 +30,13 @@ namespace Ver14
 class Protocol: public Trigger::SnortSam::Protocol
 {
 public:
-  Protocol(Who who, How how, unsigned int duration, const std::string &key, std::auto_ptr<NetIO> netIO);
+  struct Callbacks
+  {
+    virtual ~Callbacks(void);
+    virtual uint32_t assignID(void) =0;
+  }; // struct Listener
+
+  Protocol(Who who, How how, unsigned int duration, const std::string &key, std::auto_ptr<NetIO> netIO, Callbacks &callbacks);
 
 private:
   typedef boost::scoped_ptr<Crypto> CryptoPtr;
@@ -56,8 +62,8 @@ private:
   void sendCheckIn(void);
   void handleCheckInResponse(void);
   // protocol-related: block
-  void blockEntry(void);
-  void sendBlockEntry(void);
+  void blockEntry(const Config::IPv4 &from, const Config::IPv4 &to);
+  void sendBlockEntry(const Config::IPv4 &from, const Config::IPv4 &to);
   void handleBlockEntryResponse(void);
   // protocol-related: checkout
   void checkOut(void);
@@ -71,25 +77,26 @@ private:
   void makeNewSessionKey(const Message &m);
 
   // configuration
-  const Who                who_;
-  const How                how_;
-  const unsigned int       duration_;
-  const std::string        key_;
+  const Who                 who_;
+  const How                 how_;
+  const uint32_t            duration_;
+  const std::string         key_;
   // version representation
-  const std::string        verStr_;
+  const std::string         verStr_;
   // implementation services
-  boost::scoped_ptr<NetIO> netIO_;
-  bool                     connected_;
-  CryptoPtr                cryptoDefault_;
-  CryptoPtr                cryptoStation_;
+  boost::scoped_ptr<NetIO>  netIO_;
+  bool                      connected_;
+  CryptoPtr                 cryptoDefault_;
+  CryptoPtr                 cryptoStation_;
+  Callbacks                &callbacks_;
   // communication-related fields
-  uint16_t                 localSeqNo_;
-  uint16_t                 remoteSeqNo_;
-  time_t                   lastContact_;
-  uint8_t                  localKeyMod_[4];
-  uint8_t                  remoteKeyMod_[4];
-  std::string              lastSessionKey_;
-  size_t                   encPacketSize_;
+  uint16_t                  localSeqNo_;
+  uint16_t                  remoteSeqNo_;
+  time_t                    lastContact_;
+  uint8_t                   localKeyMod_[4];
+  uint8_t                   remoteKeyMod_[4];
+  std::string               lastSessionKey_;
+  size_t                    encPacketSize_;
 }; // class Protocol
 
 } // namespace Ver14
