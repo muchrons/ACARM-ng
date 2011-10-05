@@ -5,6 +5,7 @@
 #ifndef INCLUDE_TRIGGER_SNORTSAM_VER14_PROTOCOL_HPP_FILE
 #define INCLUDE_TRIGGER_SNORTSAM_VER14_PROTOCOL_HPP_FILE
 
+#include <string>
 #include <memory>
 #include <inttypes.h>
 #include <boost/scoped_ptr.hpp>
@@ -49,7 +50,13 @@ private:
   void send(const SamPacket &p);
   SamPacket receive(void);
 
-  // protocol-related
+  // protocol-related: checkin
+  void checkIn(void);
+  void sendCheckIn(void);
+  void handleCheckInResponse(void);
+
+  // protocol-helpers
+  void makeNewSessionKey(const Message &m);
 
   // configuration
   const Who                 who_;
@@ -57,7 +64,6 @@ private:
   const unsigned int        duration_;
   const std::string         key_;
   // version representation
-  const uint16_t            ver_;
   const std::string         verStr_;
   // implementation services
   boost::scoped_ptr<NetIO>  netIO_;
@@ -68,6 +74,10 @@ private:
   uint16_t                  localSeqNo_;
   uint16_t                  remoteSeqNo_;
   time_t                    lastContact_;
+  uint8_t                   localKeyMod_[4];
+  uint8_t                   remoteKeyMod_[4];
+  std::string               lastSessionKey_;
+  size_t                    encPacketSize_;
 }; // class Protocol
 
 } // namespace Ver14
