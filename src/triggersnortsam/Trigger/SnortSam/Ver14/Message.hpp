@@ -52,14 +52,14 @@ struct Message: public Persistency::IPTypes<Message>
   Message(void);
   explicit Message(const SamPacket &p);
 
-  void setIP(uint8_t (&out)[4], const IPv4 &ip);
-  IPv4 getIP(const uint8_t (&in)[4]);
+  static void setIP(uint8_t (&out)[4], const IPv4 &ip);
+  static IPv4 getIP(const uint8_t (&in)[4]);
 
-  void setNum(uint8_t (&out)[2], uint16_t in);
-  uint16_t getNum(const uint8_t (&in)[2]);
+  static void setNum(uint8_t (&out)[2], uint16_t in);
+  static uint16_t getNum(const uint8_t (&in)[2]);
 
-  void setNum(uint8_t (&out)[4], uint32_t in);
-  uint32_t getNum(const uint8_t (&in)[4]);
+  static void setNum(uint8_t (&out)[4], uint32_t in);
+  static uint32_t getNum(const uint8_t (&in)[4]);
 
   uint8_t *begin(void)
   {
