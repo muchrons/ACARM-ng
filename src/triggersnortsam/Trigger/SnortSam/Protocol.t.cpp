@@ -21,14 +21,14 @@ struct ProtoMock: public Protocol
   {
   }
 
-  virtual const std::string &getProtocolVersionImpl(void)
+  virtual const std::string &getProtocolVersionImpl(void) const
   {
     // this call is not logged, since it has informational-only purpose
     //c_.push_back("getProtocolVersionImpl");
     return ver_;
   }
 
-  virtual bool isConnectedImpl(void)
+  virtual bool isConnectedImpl(void) const
   {
     c_.push_back("isConnectedImpl");
     return connected_;
@@ -52,9 +52,9 @@ struct ProtoMock: public Protocol
   }
 
   typedef std::vector<std::string> Calls;
-  Calls       c_;
-  std::string ver_;
-  bool        connected_;
+  mutable Calls c_;
+  std::string   ver_;
+  bool          connected_;
 }; // struct ProtoMock
 
 struct TestClass
