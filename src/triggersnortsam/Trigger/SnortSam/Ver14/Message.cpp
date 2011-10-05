@@ -32,10 +32,21 @@ void Message::setIP(uint8_t (&out)[4], const IPv4 &ip)
     out[i]=b[i];
 }
 
+Message::IPv4 Message::getIP(const uint8_t (&in)[4])
+{
+  const IPv4::bytes_type tmp={{in[0], in[1], in[2], in[3]}};
+  return IPv4(tmp);
+}
+
 void Message::setNum(uint8_t (&out)[2], const uint16_t in)
 {
   out[0]=(in>>0)&0x00FF;
   out[1]=(in>>8)&0x00FF;
+}
+
+uint16_t Message::getNum(const uint8_t (&in)[2])
+{
+  return (in[1]<<8)|(in[0]<<0);
 }
 
 void Message::setNum(uint8_t (&out)[4], const uint32_t in)
@@ -44,6 +55,11 @@ void Message::setNum(uint8_t (&out)[4], const uint32_t in)
   out[1]=(in>> 8)&0x000000FF;
   out[2]=(in>>16)&0x000000FF;
   out[3]=(in>>24)&0x000000FF;
+}
+
+uint32_t Message::getNum(const uint8_t (&in)[4])
+{
+  return (in[3]<<24)|(in[2]<<16)|(in[1]<< 8)|(in[0]<< 0);
 }
 
 } // namespace Ver14

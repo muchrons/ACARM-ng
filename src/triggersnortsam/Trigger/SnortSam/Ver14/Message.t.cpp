@@ -105,4 +105,70 @@ void testObj::test<8>(void)
   ensure_equals("invalid value", m.p_.endianCheck_, 42);
 }
 
+// test getting IP from field
+template<>
+template<>
+void testObj::test<9>(void)
+{
+  uint8_t             ip[4]={1,2,3,4};
+  const Message::IPv4 out  =m_.getIP(ip);
+  ensure_equals("invalid IP", out.to_string(), "1.2.3.4");
+}
+
+// test getting 16-bit int from fields
+template<>
+template<>
+void testObj::test<10>(void)
+{
+  uint8_t        num[2]={0x01, 0x02};
+  const uint16_t out   =m_.getNum(num);
+  ensure_equals("invalid 16-bit number", out, 0x0201);
+}
+
+// test getting 32-bit int from fields
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  uint8_t        num[4]={0x01, 0x02, 0x03, 0x04};
+  const uint32_t out   =m_.getNum(num);
+  ensure_equals("invalid 32-bit number", out, 0x04030201);
+}
+
+// test setting and getting 16-bit int
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const uint16_t in=0x1234;
+  uint8_t        buf[2];
+  m_.setNum(buf, in);
+  const uint16_t out=m_.getNum(buf);
+  ensure_equals("invalid 16-bit number", out, in);
+}
+
+// test setting and getting 32-bit int
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  const uint32_t in=0x12345678;
+  uint8_t        buf[4];
+  m_.setNum(buf, in);
+  const uint32_t out=m_.getNum(buf);
+  ensure_equals("invalid 32-bit number", out, in);
+}
+
+// test getting and setting IP
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  const Message::IPv4 in=Message::IPv4::from_string("2.3.4.5");
+  uint8_t             buf[4];
+  m_.setIP(buf, in);
+  const Message::IPv4 out=m_.getIP(buf);
+  ensure_equals("invalid IP", out.to_string(), in.to_string());
+}
+
 } // namespace tut
