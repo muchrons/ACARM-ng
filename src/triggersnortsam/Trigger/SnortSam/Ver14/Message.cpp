@@ -20,6 +20,11 @@ Message::Message(void)
   p_.endianCheck_=1;        // will be 0x0001 (big endian) or 0x0100 (little endian)
 }
 
+Message::Message(const SamPacket &p):
+  p_(p)
+{
+}
+
 void Message::setIP(uint8_t (&out)[4], const IPv4 &ip)
 {
   const IPv4::bytes_type &b=ip.to_bytes();

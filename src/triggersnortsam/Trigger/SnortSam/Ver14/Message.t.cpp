@@ -95,4 +95,14 @@ void testObj::test<7>(void)
   ensure_equals("invalid elements count", m_.end()-m_.begin(), m_.size());
 }
 
+// try building from packet
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  const SamPacket p={42, {0,0,0,0}, {0,0,0,0}, {0,0,0,0}, {0,0}, {0,0}, {0,0}, {0,0}, {0,0}, 0,0,0, {0,0,0,0}, 0};
+  const Message   m(p);
+  ensure_equals("invalid value", m.p_.endianCheck_, 42);
+}
+
 } // namespace tut

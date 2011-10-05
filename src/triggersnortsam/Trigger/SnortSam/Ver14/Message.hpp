@@ -50,6 +50,7 @@ struct SamPacket
 struct Message: public Persistency::IPTypes<Message>
 {
   Message(void);
+  explicit Message(const SamPacket &p);
 
   void setIP(uint8_t (&out)[4], const IPv4 &ip);
 
