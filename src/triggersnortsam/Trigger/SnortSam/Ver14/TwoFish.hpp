@@ -22,6 +22,8 @@ namespace Ver14
 class TwoFish: public Crypto
 {
 public:
+  static const size_t KEY_LENGTH;
+
   explicit TwoFish(const std::string &key);
   virtual ~TwoFish(void);
 

@@ -16,6 +16,9 @@ namespace SnortSam
 {
 namespace Ver14
 {
+// constant as a public member
+const size_t TwoFish::KEY_LENGTH=TwoFish_KEY_LENGTH;
+
 
 // unnamed namespace
 namespace

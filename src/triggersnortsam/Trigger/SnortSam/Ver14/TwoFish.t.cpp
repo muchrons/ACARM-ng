@@ -108,4 +108,12 @@ void testObj::test<4>(void)
   }
 }
 
+// test size of the key
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ensure_equals("invalid cypher size", TwoFish::KEY_LENGTH, 256/8);
+}
+
 } // namespace tut
