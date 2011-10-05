@@ -37,6 +37,14 @@ static const int STATUS_NEWKEY  =6;
 static const int STATUS_RESYNC  =7;
 static const int STATUS_HOLD    =8;
 
+// 'who' flags
+static const int WHO_DESTINATION= 8;
+static const int WHO_SOURCE     =16;
+
+// 'how' flags
+static const int HOW_IN         =32;
+static const int HOW_OUT        =64;
+
 
 const uint8_t *toBytes(const SamPacket *p)
 {
@@ -280,17 +288,6 @@ void Protocol::sendCheckOut(void)
   LOGMSG_DEBUG(log_, "sending checkout message");
   send(m.p_);
   LOGMSG_DEBUG(log_, "checkout message send - waiting for response");
-
-#if 0
-  station->myseqno+=station->stationseqno; /* increase my seqno */
-  sampacket.endiancheck=1;
-  sampacket.snortseqno[0]=(char)station->myseqno;
-  sampacket.snortseqno[1]=(char)(station->myseqno>>8);
-  sampacket.fwseqno[0]=(char)station->stationseqno; /* fill station seqno */
-  sampacket.fwseqno[1]=(char)(station->stationseqno>>8);
-  sampacket.status=FWSAM_STATUS_CHECKOUT;  /* checking out... */
-  sampacket.version=FWSAM_PACKETVERSION;
-#endif
 }
 
 
