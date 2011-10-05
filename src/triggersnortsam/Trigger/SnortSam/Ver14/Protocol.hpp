@@ -55,10 +55,17 @@ private:
   void checkIn(void);
   void sendCheckIn(void);
   void handleCheckInResponse(void);
+  // protocol-related: block
+  void blockEntry(void);
+  void sendBlockEntry(void);
+  void handleBlockEntryResponse(void);
   // protocol-related: checkout
   void checkOut(void);
   void sendCheckOut(void);
   void handleCheckOutResponse(void);
+  // protocol-related: common stuff
+  void handleDirectResponse(const Message &m);
+  void resync(const Message &m);
 
   // protocol-helpers
   void makeNewSessionKey(const Message &m);

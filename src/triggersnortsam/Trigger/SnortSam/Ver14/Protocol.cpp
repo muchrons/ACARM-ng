@@ -255,15 +255,25 @@ void Protocol::handleCheckInResponse(void)
     throw Exception(SYSTEM_SAVE_LOCATION, "unsupported protocol version detected");
   if(m.p_.status_!=STATUS_OK && m.p_.status_!=STATUS_NEWKEY && m.p_.status_!=STATUS_RESYNC)
     throw Exception(SYSTEM_SAVE_LOCATION, "unexpected message received");
-  remoteSeqNo_=m.getNum(m.p_.fwSeqNo_);         // save remote sequence number
-  // just OK?
-  if(m.p_.status_==STATUS_OK)
-    return;
-  // parse further elements
-  assert(m.p_.status_==STATUS_NEWKEY || m.p_.status_==STATUS_RESYNC);
-  for(size_t i=0; i<sizeof(remoteKeyMod_); ++i) // copy remote key modifiers
-    remoteKeyMod_[i]=m.p_.duration_[i];
-  makeNewSessionKey(m);                         // initialize new session key
+  handleDirectResponse(m);
+}
+
+
+void Protocol::blockEntry(void)
+{
+  // TODO
+}
+
+
+void Protocol::sendBlockEntry(void)
+{
+  // TODO
+}
+
+
+void Protocol::handleBlockEntryResponse(void)
+{
+  // TODO
 }
 
 
@@ -299,9 +309,54 @@ void Protocol::handleCheckOutResponse(void)
   // basic checks
   if(m.p_.version_!=PROTO_VERSION)
     throw Exception(SYSTEM_SAVE_LOCATION, "unsupported protocol version detected");
-  if(m.p_.status_!=STATUS_OK)
-    throw Exception(SYSTEM_SAVE_LOCATION, "unexpected message received");
+  // handle response
+  handleDirectResponse(m);
   LOGMSG_DEBUG(log_, "checkout confirmation received");
+}
+
+
+void Protocol::handleDirectResponse(const Message &m)
+{
+  // remember remote sequence number
+  remoteSeqNo_=m.getNum(m.p_.fwSeqNo_);
+
+  // handle known types of response packages
+  switch(m.p_.status_)
+  {
+    case STATUS_OK:
+      LOGMSG_DEBUG(log_, "got valid confirmation");
+      break;
+
+    case STATUS_ERROR:
+      LOGMSG_ERROR(log_, "got error message from the agent");
+      throw Exception(SYSTEM_SAVE_LOCATION, "error response erceived from the agent");
+      break;
+
+    case STATUS_RESYNC:
+      resync(m);
+      break;
+
+    case STATUS_NEWKEY:
+      resync(m);
+      makeNewSessionKey(m);
+      LOGMSG_DEBUG(log_, "new key created");
+      break;
+
+    default:
+      LOGMSG_ERROR_S(log_)<<"got invalid direct response: "<<m.p_.status_;
+      throw Exception(SYSTEM_SAVE_LOCATION, "invalid direct response received");
+      break;
+  } // switch(packet_type)
+
+  LOGMSG_DEBUG(log_, "handling direct response finished");
+}
+
+
+void Protocol::resync(const Message &m)
+{
+  for(size_t i=0; i<sizeof(remoteKeyMod_); ++i)         // copy remote key modifiers
+    remoteKeyMod_[i]=m.p_.duration_[i];
+  LOGMSG_DEBUG(log_, "resunchronization compleated");
 }
 
 
