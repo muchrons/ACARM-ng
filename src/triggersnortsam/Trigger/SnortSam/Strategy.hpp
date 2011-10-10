@@ -32,7 +32,7 @@ public:
   Strategy(const Core::Types::Proc::InstanceName &name, const Config &cfg, ProtocolAutoPtr proto);
 
 private:
-  virtual void triggerImpl(const ConstNode &n);
+  virtual void triggerImpl(BackendFacade &bf, const ConstNode &n);
 
   boost::scoped_ptr<Protocol> proto_;
 }; // class Strategy

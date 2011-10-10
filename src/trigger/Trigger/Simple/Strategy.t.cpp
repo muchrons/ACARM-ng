@@ -24,7 +24,7 @@ struct TestTrigger: public Strategy
   {
   }
 
-  virtual void triggerImpl(const ConstNode &/*n*/)
+  virtual void triggerImpl(Trigger::BackendFacade &/*bf*/, const ConstNode &/*n*/)
   {
     ++callsTrigger_;
   }
@@ -130,7 +130,7 @@ struct TestBufferTrigger: public Strategy
   {
   }
 
-  virtual void triggerImpl(const ConstNode &/*n*/)
+  virtual void triggerImpl(Trigger::BackendFacade &/*bf*/, const ConstNode &/*n*/)
   {
     ++counter_;
     if(counter_<=skip_)

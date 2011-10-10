@@ -55,7 +55,7 @@ Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Config &cf
 {
 }
 
-void Strategy::triggerImpl(const ConstNode &n)
+void Strategy::triggerImpl(BackendFacade &/*bf*/, const ConstNode &n)
 {
   // forward this to python's implementation
   assert(impl_.get()!=NULL);

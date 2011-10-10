@@ -22,7 +22,7 @@ Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Config &cf
     throw Exception(SYSTEM_SAVE_LOCATION, "protocol cannot be NULL");
 }
 
-void Strategy::triggerImpl(const ConstNode &n)
+void Strategy::triggerImpl(BackendFacade &bf, const ConstNode &n)
 {
   // collect all required elements
   const Algo::GatherIPs         ips(n);

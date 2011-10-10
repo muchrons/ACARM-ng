@@ -10,7 +10,6 @@
 #include "Logger/Logger.hpp"
 #include "Persistency/IO/BackendFactory.hpp"
 #include "Trigger/Strategy.hpp"
-#include "Trigger/BackendFacade.hpp"
 
 using namespace std;
 
@@ -57,21 +56,24 @@ void Strategy::process(Node n, ChangedNodes &/*changed*/)
     return;
   }
 
+  BackendFacade bf(conn_, type_, name_);
+
   // check if node should be processed at all
-  if( !matchesCriteria(n) )
+  if( !matchesCriteria(bf, n) )
   {
     LOGMSG_DEBUG_S(log_)<<"node "<<n->getMetaAlert()->getID().get()<<" does not match criteria";
+    bf.commitChanges();
     return;
   }
 
   // process node
   LOGMSG_INFO_S(log_)<<"calling trigger for node "<<n->getMetaAlert()->getID().get();
-  trigger(n);
+  trigger(bf, n);
+  bf.commitChanges();
 
   // if it succeeded, mark it as triggered
   nos_.add( n.shared_ptr() );
   // and save it to persistency storage
-  BackendFacade bf(conn_, type_, name_);
   bf.markAsTriggered( n->getMetaAlert() );
   bf.commitChanges();
 

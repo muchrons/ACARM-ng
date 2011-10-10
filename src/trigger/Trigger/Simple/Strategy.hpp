@@ -39,10 +39,10 @@ protected:
   ~Strategy(void);
 
 private:
-  virtual bool matchesCriteria(const ConstNode &n) const;
-  virtual void trigger(const ConstNode &n);
+  virtual bool matchesCriteria(BackendFacade &bf, const ConstNode &n) const;
+  virtual void trigger(BackendFacade &bf, const ConstNode &n);
 
-  virtual void triggerImpl(const ConstNode &n) = 0;
+  virtual void triggerImpl(BackendFacade &bf, const ConstNode &n) = 0;
 
   typedef Base::Threads::UniqueFifoQueue<ConstNode>   UniqueFifoType;
   typedef Base::TruncatingQueue<UniqueFifoType, 1024> NodesWaitingRoom; // TODO: value should be moved to compile-time config
