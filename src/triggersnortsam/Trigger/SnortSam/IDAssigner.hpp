@@ -5,7 +5,8 @@
 #ifndef INCLUDE_TRIGGER_SNORTSAM_IDASSIGNER_HPP_FILE
 #define INCLUDE_TRIGGER_SNORTSAM_IDASSIGNER_HPP_FILE
 
-#include "System/OneInstanceAtOnce.hpp"
+#include <boost/noncopyable.hpp>
+
 #include "Base/Threads/Mutex.hpp"
 #include "Logger/Node.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
@@ -23,7 +24,7 @@ namespace SnortSam
  *  \warning only one instance of this class may exist at a time. this prevents
  *           errors related to assigning multiple IDs to different events.
  */
-class IDAssigner: private System::OneInstanceAtOnce<IDAssigner>
+class IDAssigner: private boost::noncopyable
 {
 public:
   IDAssigner(void);
