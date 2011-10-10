@@ -16,14 +16,24 @@ namespace SnortSam
 
 Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Config &cfg, ProtocolAutoPtr proto):
   Trigger::Simple::Strategy(TypeName("snortsam"), name, cfg.getThresholdConfig() ),
-  proto_( proto.release() )
+  proto_( proto.release() ),
+  bf_(NULL)
 {
   if(proto_.get()==NULL)
     throw Exception(SYSTEM_SAVE_LOCATION, "protocol cannot be NULL");
 }
 
+BackendFacade &Strategy::getBackendFacade(void)
+{
+  assert(bf_!=NULL);
+  return *bf_;
+}
+
 void Strategy::triggerImpl(BackendFacade &bf, const ConstNode &n)
 {
+  bf_=&bf;
+  assert( &getBackendFacade()==&bf && "helper not saved for further usage" );
+
   // collect all required elements
   const Algo::GatherIPs         ips(n);
   const Algo::GatherIPs::IPSet &from=ips.getSourceIPs();

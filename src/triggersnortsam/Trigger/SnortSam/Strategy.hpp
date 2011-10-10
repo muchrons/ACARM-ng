@@ -24,6 +24,7 @@ class Strategy: public Trigger::Simple::Strategy
 {
 public:
   typedef std::auto_ptr<Protocol> ProtocolAutoPtr;
+
   /** \brief create strategy instance.
    *  \param name  name to be applied.
    *  \param cfg   configuration to be applied.
@@ -31,10 +32,14 @@ public:
    */
   Strategy(const Core::Types::Proc::InstanceName &name, const Config &cfg, ProtocolAutoPtr proto);
 
+protected:
+  BackendFacade &getBackendFacade(void);
+
 private:
   virtual void triggerImpl(BackendFacade &bf, const ConstNode &n);
 
-  boost::scoped_ptr<Protocol> proto_;
+  boost::scoped_ptr<Protocol>  proto_;
+  BackendFacade               *bf_;
 }; // class Strategy
 
 } // namespace SnortSam

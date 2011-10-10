@@ -4,6 +4,7 @@
  */
 #include <tut.h>
 #include <utility>
+#include <vector>
 
 #include "Trigger/SnortSam/Strategy.hpp"
 #include "TestHelpers/Persistency/TestHelpers.hpp"
