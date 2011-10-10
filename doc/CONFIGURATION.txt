@@ -133,9 +133,9 @@ following appenders are available:
 
   * multiappender - writes to given appenders (facade)
 <multiappender name="writetothem">
-  <appender>filelog</appender>
+  <forward>filelog</forward>
   <!-- ... -->
-  <appender>stdout</appender>
+  <forward>stdout</forward>
 </multiappender>
 
   * null - discards all logs, regardless of their priority
@@ -247,6 +247,75 @@ following filters and parameters are available:
     <priorityDelta>0.8</priorityDelta> <!-- amount to update priority by when correlating -->
   </newevent>
 
+  <!-- calls Python code to perform correlation
+
+       python script defines derived class, that implements required correlation feature
+       and create its instance under 'derived' variable name. ACARM-ng runs this script once
+       in order to obtain inherited class and then uses it from C++ code.
+
+       inherited class must be of a following form:
+
+       ## class implements given interface and runs python code on request.
+       #  structure is done like this: each meta-alert arriving has associated data
+       #  (optional parameter - can be None). this data is filter-specific, not shared
+       #  between other calls.
+       #  for each incoming meta-alert it is checked against every saved one to
+       #  see if they can correlate. if yes, then it is either correlated to create new
+       #  entry (i.e. correlating two leafs) or add correlated meta-alert to already
+       #  correlated entry (i.e. correlating node with leaf/node).
+       class EmptyPythonFilter(filter.BaseWrapper):
+         ## returns True/False when given meta-alert (ma) is interesting and can
+         #  be processed further. if this call returns False given meta-alert will not
+         #  be saved for further correlations.
+         def isEntryInterestingImpl(self, ma, data):
+           return True
+         ## returns name for newly correlated meta-alert. both entries, used for correlation,
+         #  and their data, can be used to generate proper name.
+         def getMetaAlertNameImpl(self, maThis, thisData, maOther, otherData):
+           return "hitchhiker's guide to the galaxy"
+         ## returns True/False when element can be correlated with other one.
+         #  each entry has already computed 'data' elements, that can make check much faster.
+         def canCorrelateImpl(self, maThis, thisData, maOther, otherData):
+           return False
+         ## makes 'data' entry for an incoming meta-alert. this data is then associated with
+         #  it and used for checking if it "interesting" for further processing.
+         def makeThisEntryUserDataImpl(self, ma):
+           return None
+         ## make 'data' entry for a newly correlated node. source nodes, used for correlation,
+         #  are given as a parameters, along with newly correlated entry.
+         def makeUserDataForNewNodeImpl(self, maThis, thisData, maOther, otherData, maNewNode):
+           return None
+
+       it 'data' element is not needed returning 'None' is fine. if some data is to be
+       stored however, it must have proper form:
+
+       ## example data class implementation. it has to be derived from filter.DataWrapper in
+       #  order to be manageable from C++ native code.
+       class SomeTestDataImpl(filter.DataWrapper):
+         ## explicit constructor for this object is optional, though it is reasonable
+         #  to have one. when it is implemented it has to call base-implementation on
+         #  (the Python style), or else strange errors will arose, about Python interpreter
+         #  wrapper being unable to perform some convertions.
+         def __init__(self, something):
+           filter.DataWrapper.__init__(self)
+           ## filed to be saved
+           self.sth=something
+
+       so the final structure of the plugin should look like this:
+       ## optional data implementation class
+       class SomeTestDataImpl(filter.DataWrapper):
+         # implementation goes here...
+       ## correlation engine implementation.
+       class SomePythonFilter(filter.BaseWrapper):
+         # implementation, as described above, goes here...
+       # creating instance of a correlation object
+       derived=SomePythonFilter()
+  -->
+  <python name="snake_correlator">
+    <timeout>42</timeout>               <!-- timeout for observing entry, in seconds -->
+    <script>/path/to/script.py</script> <!-- python script initializing implementation -->
+  </python>
+
 triggers configuration
 ======================
 
@@ -343,6 +412,43 @@ below are listed implemented triggers along with their implementation.
   <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
 </extapp>
 
+<!-- trigger runngin implementation defined in python code.
+
+     python code defined in the script file ust have defined form. it implements class derived from
+     trigger.BaseWrapper and implement triggerImpl(self,ma) method. then an instance of this class
+     must be created and saved as a variable 'derived'.
+
+     when meta alert is triggered, triggerImpl() method is called so that implementation can
+     do whatever it wants and save data inside object, if it likes (the same object will be used
+     for all of the calls).
+
+     to access meta-alert's content use get() method of 'ma' object. it takes a string that
+     specifies field to take and return OptionalString as a response. to get python string from
+     it use 'get()' method of OptionalStirng. notice that value returned from ma.get(...) can be None.
+
+     specification of element to get is simillar to the one used by prefilter, except that collections
+     are not handle by wildcards '*' and '$' but have 'size' attribute to check their size.
+     they can be accessed later on with indexes, starting with zero. for example: if colleciton.size is
+     2 then 0 and 1 are valid indexes, so 'sth' field of colleciton element can be accessed with
+     collection.0.sth and collection.1.sth.
+
+     example imeplementation can look as follows:
+
+# definition of implementation
+class EmptyPythonTrigger(trigger.BaseWrapper):
+  def triggerImpl(self, ma):
+    print("hello world! meta alert's ID is " + ma.get("metaalert.id").get())
+
+# return instance to the C++ code
+derived=EmptyPythonTrigger()
+-->
+<python name="">
+  <script>/some/python/script.py</script>             <!-- script with trigger implementation -->
+
+  <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
+  <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
+</python>
+
 note that severity_threshold and alerts_count_threshold are OR'ed, i.e. if
 any one of them is reached, meta-alert is reported. they are both optional
 parameters as well, i.e. they may be skipped in configuration, that will
@@ -363,6 +469,7 @@ following inputs are available:
               regarding Prelude-Manager configuration and sensors registration
               refer Prelude-Manager's manual.
 <prelude name="myprelude1">
+  <heartbeat>400</heartbeat>                        <!-- timeout for prelude heartbeats, in seconds -->
   <profile>acarm-ng_profile</profile>               <!-- profile created for prelude "reading-sensor": ACARM-ng -->
   <config>/etc/prelude/default/client.conf</config> <!-- client config for prelude -->
 </prelude>
@@ -383,6 +490,8 @@ this is useful when there are known facilities that generates useless alerts tha
 are not to be correlated. rejected alert are only saved in system's data base (only
 log is generated about this event - they are not processed any further).
 default behavior is to accept alert (ex.: when this section is empty).
+
+the same syntax is used everywhere where 'preprocessor' is in use.
 
 top level structure looks like this:
 <preprocessor>
@@ -441,56 +550,56 @@ example rules can look like this:
 that all collection types are marked as '[]' in place of element's index the full
 tree looks like this:
 -------------
-alert.name
-alert.detected
-alert.created
-alert.certainty
-alert.severity
-alert.description
-alert.analyzers.[].name
-alert.analyzers.[].version
-alert.analyzers.[].os
-alert.analyzers.[].ip
-alert.sources.[].ip
-alert.sources.[].mask
-alert.sources.[].os
-alert.sources.[].url.name
-alert.sources.[].url.url
-alert.sources.[].name
-alert.sources.[].services.[].name
-alert.sources.[].services.[].port
-alert.sources.[].services.[].protocol
-alert.sources.[].services.[].url.name
-alert.sources.[].services.[].url.url
-alert.sources.[].processes.[].path
-alert.sources.[].processes.[].name
-alert.sources.[].processes.[].md5
-alert.sources.[].processes.[].pid
-alert.sources.[].processes.[].uid
-alert.sources.[].processes.[].username
-alert.sources.[].processes.[].arguments
-alert.sources.[].processes.[].url.name
-alert.sources.[].processes.[].url.url
-alert.targets.[].ip
-alert.targets.[].mask
-alert.targets.[].os
-alert.targets.[].url.name
-alert.targets.[].url.url
-alert.targets.[].name
-alert.targets.[].services.[].name
-alert.targets.[].services.[].port
-alert.targets.[].services.[].protocol
-alert.targets.[].services.[].url.name
-alert.targets.[].services.[].url.url
-alert.targets.[].processes.[].path
-alert.targets.[].processes.[].name
-alert.targets.[].processes.[].md5
-alert.targets.[].processes.[].pid
-alert.targets.[].processes.[].uid
-alert.targets.[].processes.[].username
-alert.targets.[].processes.[].arguments
-alert.targets.[].processes.[].url.name
-alert.targets.[].processes.[].url.url
+metaalert.alert.name
+metaalert.alert.detected
+metaalert.alert.created
+metaalert.alert.certainty
+metaalert.alert.severity
+metaalert.alert.description
+metaalert.alert.analyzers.[].name
+metaalert.alert.analyzers.[].version
+metaalert.alert.analyzers.[].os
+metaalert.alert.analyzers.[].ip
+metaalert.alert.sources.[].ip
+metaalert.alert.sources.[].netmask
+metaalert.alert.sources.[].os
+metaalert.alert.sources.[].referenceurl.name
+metaalert.alert.sources.[].referenceurl.url
+metaalert.alert.sources.[].name
+metaalert.alert.sources.[].services.[].name
+metaalert.alert.sources.[].services.[].port
+metaalert.alert.sources.[].services.[].protocol
+metaalert.alert.sources.[].services.[].referenceurl.name
+metaalert.alert.sources.[].services.[].referenceurl.url
+metaalert.alert.sources.[].processes.[].path
+metaalert.alert.sources.[].processes.[].name
+metaalert.alert.sources.[].processes.[].md5
+metaalert.alert.sources.[].processes.[].pid
+metaalert.alert.sources.[].processes.[].uid
+metaalert.alert.sources.[].processes.[].username
+metaalert.alert.sources.[].processes.[].parameters
+metaalert.alert.sources.[].processes.[].referenceurl.name
+metaalert.alert.sources.[].processes.[].referenceurl.url
+metaalert.alert.targets.[].ip
+metaalert.alert.targets.[].netmask
+metaalert.alert.targets.[].os
+metaalert.alert.targets.[].referenceurl.name
+metaalert.alert.targets.[].referenceurl.url
+metaalert.alert.targets.[].name
+metaalert.alert.targets.[].services.[].name
+metaalert.alert.targets.[].services.[].port
+metaalert.alert.targets.[].services.[].protocol
+metaalert.alert.targets.[].services.[].referenceurl.name
+metaalert.alert.targets.[].services.[].referenceurl.url
+metaalert.alert.targets.[].processes.[].path
+metaalert.alert.targets.[].processes.[].name
+metaalert.alert.targets.[].processes.[].md5
+metaalert.alert.targets.[].processes.[].pid
+metaalert.alert.targets.[].processes.[].uid
+metaalert.alert.targets.[].processes.[].username
+metaalert.alert.targets.[].processes.[].parameters
+metaalert.alert.targets.[].processes.[].referenceurl.name
+metaalert.alert.targets.[].processes.[].referenceurl.url
 -------------
 notice that since elements in collections are in undefined order there are no
 indexes available. instead two markers are present: '*' and '$'. putting '*' in
@@ -503,8 +612,8 @@ example configs along with description goes here:
 <preprocessor>
   <accept>
     <and>
-      <rule path="alert.name"        contains="ssh"/>
-      <rule path="alert.target.$.ip" equals="1.2.3.4"/>
+      <rule path="metaalert.alert.name"        contains="ssh"/>
+      <rule path="metaalert.alert.target.$.ip" equals="1.2.3.4"/>
     </and>
   </accept>
   <reject>
@@ -516,7 +625,7 @@ is '1.2.3.4'. all other alerts will be rejected.
 
 <preprocessor>
   <reject>
-    <rule path="alert.source.*.name" equals="my.security.scanner.org"/>
+    <rule path="metaalert.alert.source.*.name" equals="my.security.scanner.org"/>
   </reject>
 </preprocessor>
 rejects all alerts that were generated by source host whose name's
@@ -524,3 +633,10 @@ rejects all alerts that were generated by source host whose name's
 that we use '*' here, so if alert will consist of reports generated
 by multiple hosts (including 'my.security.scanner.org') alert may still
 be accepted. this is safe approach in this context.
+
+preprocessor is now available after reading alerts from inputs. this is 'preprocessor'
+section under main config file's root node. they are also used in triggers, to add more
+robust configuration capabilities for selecting reacting on certain events.
+
+almost identical syntax to preprocessor is also used by Python interfaces. minor
+differences are described in sections dedicated to these configurations.

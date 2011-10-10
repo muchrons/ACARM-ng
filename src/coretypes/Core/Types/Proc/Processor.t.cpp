@@ -82,7 +82,7 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     const InstanceName callerName(callerNameStr);
     TestInterface *ti=new TestInterface(ecl);
     interface_.reset(ti);
-    ProcessorPtrNN p( new Processor(mainQueue_, interface_) );
+    ProcessorPtrNN p( new Processor(mainQueue_, interface_, ppCfg_) );
     p->process( SignedNode(ti->node_, callerType, callerName) );    // this call should add 1 element to 'changed'
     if(shouldPass)                                                  // should we wait for entry?
       waitForResponse();                                            // wait for other thread
@@ -92,11 +92,12 @@ struct TestClass: private TestHelpers::Persistency::TestStubs
     tut::ensure_equals("invalid collection size", mainQueue_.size(), shouldPass?1u:0u);
   }
 
-  Core::Types::SignedNodesFifo  mainQueue_;
-  TestInterface                *ti_;
-  Processor::InterfaceAutoPtr   interface_;
-  const TypeName                type_;
-  const InstanceName            name_;
+  Core::Types::SignedNodesFifo          mainQueue_;
+  TestInterface                        *ti_;
+  Processor::InterfaceAutoPtr           interface_;
+  const TypeName                        type_;
+  const InstanceName                    name_;
+  const ConfigIO::Preprocessor::Config  ppCfg_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -114,7 +115,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  Processor p(mainQueue_, interface_);
+  Processor p(mainQueue_, interface_, ppCfg_);
   usleep(30*1000);                      // wait a while to ensure thread is running
   // when exiting this should not block
 }
@@ -128,7 +129,7 @@ void testObj::test<2>(void)
   ensure("pre-condition failed", tmp.get()==NULL );
   try
   {
-    Processor p(mainQueue_, tmp);
+    Processor p(mainQueue_, tmp, ppCfg_);
     fail("processor's c-tor didn't throw on NULL interface");
   }
   catch(const ExceptionInvalidInterface&)
@@ -144,7 +145,7 @@ void testObj::test<3>(void)
 {
   ensure_equals("pre-condition failed", mainQueue_.size(), 0u);
   // process data
-  Processor p(mainQueue_, interface_);
+  Processor p(mainQueue_, interface_, ppCfg_);
   p.process( SignedNode(ti_->node_, type_, name_) );    // this call should add 1 element to 'changed'
                                                         // elements set, and processor should forward it
                                                         // to the main queue.
@@ -165,7 +166,7 @@ void testObj::test<4>(void)
 {
   ensure_equals("pre-condition failed", mainQueue_.size(), 0u);
   // process data
-  Processor p(mainQueue_, interface_);
+  Processor p(mainQueue_, interface_, ppCfg_);
   p.process( SignedNode(ti_->node_,  type_, name_) );   // this call should add 2 elements to 'changed'
   p.process( SignedNode(ti_->node2_, type_, name_) );   // elements set, and processor should forward it
                                                         // to the main queue.
@@ -184,7 +185,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  ProcessorPtrNN p( new Processor(mainQueue_, interface_) );
+  ProcessorPtrNN p( new Processor(mainQueue_, interface_, ppCfg_) );
   ensure("NULL pointer received", p.get()!=NULL );  // could be assert as well
 }
 
@@ -223,7 +224,7 @@ template<>
 void testObj::test<9>(void)
 {
   // test environment
-  Processor p(mainQueue_, interface_);
+  Processor p(mainQueue_, interface_, ppCfg_);
   ensure_equals("pre-condition failed", ti_->heartbeats_, 0u);
   p.process( SignedNode(ti_->node_, type_, name_) );    // should send heartbeat
   waitForResponse();
@@ -237,7 +238,7 @@ template<>
 void testObj::test<10>(void)
 {
   // test environment
-  Processor p(mainQueue_, interface_);
+  Processor p(mainQueue_, interface_, ppCfg_);
   ensure_equals("pre-condition failed", ti_->heartbeats_, 0u);
   // first action
   p.process( SignedNode(ti_->node_, type_, name_) );    // should send heartbeat
@@ -269,7 +270,7 @@ void testObj::test<11>(void)
   // test environment
   ti_=new TestInterfaceThrowHeartbeat();
   interface_.reset(ti_);
-  Processor p(mainQueue_, interface_);
+  Processor p(mainQueue_, interface_, ppCfg_);
   ensure_equals("pre-condition failed", ti_->calls_, 0u);
   // first action
   p.process( SignedNode(ti_->node_, type_, name_) );    // should discard exception from heartbeat

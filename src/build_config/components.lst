@@ -10,10 +10,12 @@ filtermanytoone
 filternewevent
 filtersamename
 filteronetoone
+filterpython
 filter
 
 triggerextapp
 triggerjabber
+triggerpython
 triggerfile
 triggermail
 triggergg

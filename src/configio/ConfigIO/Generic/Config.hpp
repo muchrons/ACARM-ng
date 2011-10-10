@@ -11,6 +11,8 @@
 #include <map>
 
 #include "XML/Node.hpp"
+#include "Base/NullValue.hpp"
+#include "ConfigIO/Preprocessor/Config.hpp"
 #include "ConfigIO/ExceptionNoSuchParameter.hpp"
 
 
@@ -19,7 +21,7 @@ namespace ConfigIO
 namespace Generic
 {
 
-/** \brief class representing configuration of persistency storage.
+/** \brief class representing configuration of given plugin.
  *
  *  class is CRTP to prevent different class from being casted down
  *  to single base.
@@ -28,28 +30,24 @@ template<typename CRTP>
 class Config
 {
 public:
-  /** \brief name of the persistency type.
-   */
-  typedef std::string                 TypeName;
-  /** \brief type representing parameter name.
-   */
-  typedef std::string                 Parameter;
-  /** \brief type representing string value.
-   */
-  typedef std::string                 Value;
-  /** \brief options map (paramter=>value).
-   */
-  typedef std::map<Parameter, Value>  Options;
+  /** \brief name of the plugin-instance type used. */
+  typedef std::string                           TypeName;
+  /** \brief type representing parameter name. */
+  typedef std::string                           Parameter;
+  /** \brief type representing string value. */
+  typedef std::string                           Value;
+  /** \brief options map (paramter=>value). */
+  typedef std::map<Parameter, Value>            Options;
 
-  /** \brief gets persistency storage type.
-   *  \return persitency type name.
+  /** \brief gets type of the plugin-instance.
+   *  \return type name.
    */
   const TypeName &getType(void) const
   {
     return type_;
   }
 
-  /** \brief gets options for persistency.
+  /** \brief gets options for plugin.
    *  \return options map.
    */
   const Options &getOptions(void) const
@@ -78,16 +76,37 @@ public:
       return NULL;
     return it->second.c_str();
   }
+  /** \brief get preprocessors configuration.
+   *  \return poitner to preprocessors configuration. NULL if preprocessor is not set.
+   */
+  const Preprocessor::Config *getPreprocessorConfig(void) const
+  {
+    return preproc_.get();
+  }
 
 protected:
-  /** \brief creates persistency configuration.
-   *  \param type    persistency type.
-   *  \param options options for persistency.
+  /** \brief creates configuration instance.
+   *  \param type    plugin-instance type.
+   *  \param options options for plugin.
    */
   Config(const TypeName &type,
          const Options  &options):
     type_(type),
     options_(options)
+  {
+  }
+
+  /** \brief creates configuration instance, with preprocessor.
+   *  \param type    plugin-instance type.
+   *  \param options options for plugin.
+   *  \param preproc preprocessor's configuration.
+   */
+  Config(const TypeName             &type,
+         const Options              &options,
+         const Preprocessor::Config &preproc):
+    type_(type),
+    options_(options),
+    preproc_(preproc)
   {
   }
 
@@ -100,8 +119,11 @@ protected:
   }
 
 private:
-  TypeName type_;
-  Options  options_;
+  typedef Base::NullValue<Preprocessor::Config> PreprocCfg;
+
+  TypeName   type_;
+  Options    options_;
+  PreprocCfg preproc_;
 }; // class Config
 
 } // namespace Generic

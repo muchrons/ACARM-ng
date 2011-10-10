@@ -51,4 +51,13 @@ void testObj::test<2>(void)
   ensure_equals("invalid elements count", c.getSections().size(), 42u);
 }
 
+// test existance of default c-tor
+template<>
+template<>
+void testObj::test<3>(void)
+{
+  Config c;
+  ensure_equals("invalid elements count", c.getSections().size(), 0u);
+}
+
 } // namespace tut

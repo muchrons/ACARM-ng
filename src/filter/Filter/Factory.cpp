@@ -2,6 +2,8 @@
  * Factory.cpp
  *
  */
+#include <cassert>
+
 #include "Filter/Factory.hpp"
 #include "ConfigIO/Singleton.hpp"
 
@@ -13,13 +15,16 @@ namespace Filter
 
 FiltersCollection create(Core::Types::SignedNodesFifo &outputQueue)
 {
-  const FiltersConfigCollection &c=Singleton::get()->filtersConfig();
-  FiltersCollection              out;
+  const FiltersConfigCollection        &c=Singleton::get()->filtersConfig();
+  FiltersCollection                     out;
+  const ConfigIO::Preprocessor::Config  ppCfg;
 
   for(FiltersConfigCollection::const_iterator it=c.begin(); it!=c.end(); ++it)
   {
-    Processor::InterfaceAutoPtr iface( Factory::create( it->getType(), it->getOptions() ) );
-    ProcessorPtrNN              filter( new Processor(outputQueue, iface) );
+    Factory::FactoryPtr wrapper( Factory::create( it->getType(), it->getOptions() ) );
+    assert(wrapper.get()!=NULL);
+    assert(it->getPreprocessorConfig()==NULL && "preprocessor for filters is NOT implemented");
+    ProcessorPtrNN      filter( new Processor(outputQueue, wrapper->ptr_, ppCfg) );
     out.push_back(filter);
   }
 

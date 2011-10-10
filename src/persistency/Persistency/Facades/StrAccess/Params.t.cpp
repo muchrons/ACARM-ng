@@ -3,6 +3,7 @@
  *
  */
 #include <tut.h>
+#include <boost/scoped_ptr.hpp>
 #include <boost/type_traits/is_same.hpp>
 
 #include "System/ignore.hpp"
@@ -128,7 +129,7 @@ struct TestString
 struct OnString: private System::NoInstance
 {
   template<typename T, typename TParams>
-  static bool process(const T &/*e*/, TParams &p)
+  static bool process(const T &/*e*/, TParams p)
   {
     ensure("term is too soon", p.hasNext());
     return true;
@@ -174,6 +175,46 @@ void testObj::test<10>(void)
   {
     // this is expected
   }
+}
+
+// test if Path has a copy c-tor
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  TestParams tp1(Path("a.b"), cb_);
+  TestParams tp2(tp1);
+}
+
+// test if object copyed with c-tor does not crash anything
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  boost::scoped_ptr<TestParams> tp1(new TestParams(Path("some.path"), cb_));
+  TestParams                    tp2(*tp1);
+  tp1.reset();
+  ensure_equals("invalid path element", tp2.get(), "some");
+}
+
+// test if Path has a assignment operator
+template<>
+template<>
+void testObj::test<13>(void)
+{
+  TestParams tp(Path("a.b"), cb_);
+  p_=tp;
+}
+
+// test if object copyed with assignment operator does not crash anything
+template<>
+template<>
+void testObj::test<14>(void)
+{
+  boost::scoped_ptr<TestParams> tp(new TestParams(Path("some.path"), cb_));
+  p_=*tp;
+  tp.reset();
+  ensure_equals("invalid path element", p_.get(), "some");
 }
 
 } // namespace tut

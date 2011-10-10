@@ -34,7 +34,7 @@ void testObj::test<1>(void)
   BasePtrNN       b(te);
   Not             n(b);
   ensure_equals("compute() called in c-tor", te->calls_, 0u);
-  ensure("invalid value", n.compute( *makeAlert() )==false );
+  ensure("invalid value", n.compute( makeAlert() )==false );
   ensure_equals("compute() not called", te->calls_, 1u);
 }
 
@@ -47,7 +47,7 @@ void testObj::test<2>(void)
   BasePtrNN       b(te);
   Not             n(b);
   ensure_equals("compute() called in c-tor", te->calls_, 0u);
-  ensure("invalid value", n.compute( *makeAlert() )==true );
+  ensure("invalid value", n.compute( makeAlert() )==true );
   ensure_equals("compute() not called", te->calls_, 1u);
 }
 

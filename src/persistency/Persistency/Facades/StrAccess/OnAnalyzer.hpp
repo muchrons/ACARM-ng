@@ -30,7 +30,7 @@ struct OnAnalyzer: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const Analyzer &e, TParams &p)
+  static bool process(const Analyzer &e, TParams p)
   {
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
@@ -46,7 +46,7 @@ struct OnAnalyzer: private System::NoInstance
       return MainDispatcher::process(e.getName().get(), p);
     if(p.get()=="version")
       return MainDispatcher::process(e.getVersion().get(), p);
-    if(p.get()=="operatingsystem")
+    if(p.get()=="os")
       return MainDispatcher::process(e.getOperatingSystem().get(), p);
     if(p.get()=="ip")
       return MainDispatcher::process(e.getIP(), p);

@@ -4,6 +4,7 @@
  */
 #include <cassert>
 
+#include "Persistency/Facades/StrAccess/StrAccess.hpp"
 #include "Preprocessor/Section.hpp"
 #include "Preprocessor/Expressions/And.hpp"
 #include "Preprocessor/Expressions/Or.hpp"
@@ -21,10 +22,10 @@ Section::Section(const ConfigIO::Preprocessor::Section &cfg):
   assert( expr_.get()!=NULL );
 }
 
-Section::Decision Section::process(const Persistency::Alert &alert) const
+Section::Decision Section::process(const Persistency::ConstGraphNodePtrNN &node) const
 {
   assert( expr_.get()!=NULL );
-  const bool result=expr_->compute(alert);
+  const bool result=expr_->compute(node);
 
   // accept-section returned true
   if( isAcceptType_==true && result==true )
@@ -103,7 +104,8 @@ Expressions::BasePtrNN Section::create(const ConfigIO::Preprocessor::Rule &cfg) 
       return Expressions::BasePtrNN( new Expressions::False() );
 
     case ConfigIO::Preprocessor::Rule::Type::RULE:
-      return Expressions::BasePtrNN( new Expressions::Rule( Path( cfg.getPath() ),
+      typedef Persistency::Facades::StrAccess::Path Path;
+      return Expressions::BasePtrNN( new Expressions::Rule( Path(cfg.getPath()),
                                                             cfg.getMode(),
                                                             cfg.getValue() ) );
 

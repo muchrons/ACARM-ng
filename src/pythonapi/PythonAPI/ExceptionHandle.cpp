@@ -30,6 +30,7 @@ ExceptionHandle::ExceptionHandle(void):
   msg_("???"),
   backtrace_("???")
 {
+  GlobalLock lock;
   // maby there was no exception at all?
   if( PyErr_Occurred()==NULL )
     throw NoException(SYSTEM_SAVE_LOCATION);
@@ -88,6 +89,7 @@ std::string ExceptionHandle::str(void) const
 
 void ExceptionHandle::clearState(void)
 {
+  GlobalLock lock;
   PyErr_Clear();
 }
 

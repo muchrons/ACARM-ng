@@ -128,7 +128,7 @@ struct TestForwardElement
 struct OnTestForwardElement
 {
   template<typename TParams>
-  static bool process(const TestForwardElement &e, TParams &p)
+  static bool process(const TestForwardElement &e, TParams p)
   {
     ensure("end has come too soon", p.hasNext());
     return MainDispatcher::process(e.str_, ++p);
@@ -170,7 +170,7 @@ struct TestForwardElement2
 struct OnTestForwardElement2
 {
   template<typename TParams>
-  static bool process(const TestForwardElement2 &e, TParams &p)
+  static bool process(const TestForwardElement2 &e, TParams p)
   {
     ensure("end has come too soon", p.hasNext());
     return MainDispatcher::process(e.tfe_, ++p);

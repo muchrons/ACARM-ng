@@ -1,20 +1,13 @@
 /*
  * exports.t.cpp
  *
- * NOTE: this is NOT test suit but import scheduler for classes used in tests.
- *
  */
 #include <tut.h>
 
-#include "PythonAPI/Persistency/exports.hpp"
 #include "PythonAPI/Environment.hpp"
 
 namespace
 {
-// it needs to be imported before initializing environment
-PythonAPI::Environment::StaticImporter g_import("persistency", initpersistency);
-//PythonAPI::Environment::StaticImporter g_import("persistency", PyInit_persistency);
-
 struct TestClass
 {
   PythonAPI::Environment env_;

@@ -22,9 +22,9 @@ public:
    */
   explicit Equals(const std::string &str);
 
-  /** \brief check if given string contains string given in c-tor.
+  /** \brief check if given string equals string given in c-tor.
    *  \param str string to check.
-   *  \return true if string is part of given on, false otherwise.
+   *  \return true if string equals given one, false otherwise.
    */
   virtual bool check(const std::string &str) const;
 

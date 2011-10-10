@@ -21,14 +21,20 @@ function error
 # check for tabulators and trailing spaces
 $GREP -e $'\t' -e ' \+$' "$@" && error 10 "trailing spaces / tabulators found"
 
-# check for brackets in non-new lines
 for f in "$@"
 do
+  # check for brackets in non-new lines
   grep -q "\.page$" <<< "$f" && continue
   $GREP -e '^ *\([^ ]\+ *\)\+{' -e '}.' "$f" | \
     grep -v -e '};$' -e '^[^"]*//' -e '"[^"]*[{}]' -e '\*.*[{}]' -e '\\$' -e ' enum ' | \
     grep --color ': *\([^ ]\+ *\)\+[{}]' && \
     error 11 "bracekts must start/end in new line"
+
+  # check for testing includes in production code
+  grep -q "\.[ch]pp$" <<< "$f" || continue
+  grep -q -v -e '\.mt\.' -e '\.t\.' -e '/testhelpers' <<< "$f" || continue
+  $GREP -e '#include \+.tut.$' -e '#include \+.tut' -e '#include \+..*TestHelpers' "$f" && \
+    error 12 "production code must not include test headers"
 done
 
 # display some progress-libe bar

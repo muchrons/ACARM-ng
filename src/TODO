@@ -1,26 +1,41 @@
+Persistency::Postgres:
+----------------------
+* update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
+* consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
+* optimize postgres data restoration using roots meta alerts table.
+
+configuration:
+--------------
 * re-reading configuration from file (note: not all configuration may change at runtime).
 * refactor ConfigIO - it should read configuration file and keep it in memory. proper handles for specific parts of configuration file should be implemented by interested components.
-* update Persistency::Postgres::Restorer to use set<> internally instead of vector and so remove duplicates on-the-fly, then copy response to output vector.
 * add parse-at-read feature to configio - config should be accepted or rejected when running application, not delayed until acctuall usage (note: this task is connected with config's refactoring to register parsers).
-* ipblackfilter does not save parameters in data base - after restart the same alerts will get severity incremented once more; consider saving MetaAlertID->done/not-done as a config parameter.
 * implement common configuration module for compile-time constants used in code.
-* filter that increases priority for hosts that are out of defined set (i.e. from external network).
-* add handle for out-of-memory problem (i.e. using own wrapper for memory manager).
+* consider splitting configuration into multiple files (maybe directive like <include> would do the trick, preserving backward compatibility?).
+
+triggers:
+---------
 * trigger reporting "the most important events" aiming to rise about N most important event in some amount of time (thresholds are variable, depending on the input).
 * encrypted connections in Trigger::GG (NOTE: it appears that there are 2 standards now: GG-specific, and GNU).
 * encrypted connections in Trigger::Mail.
-* consider splitting configuration into multiple files (maybe directive like <include> would do the trick, preserving backward compatibility?).
-* consider adding interface to Persistency::IO::Restorer that will read entry one-by-one and call some functor for each read element.
+* editable triggers' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
+* add trigger sending reports on problematic machines to admins found via WHOIS.
+
+filters:
+--------
+* filter that increases priority for hosts that are out of defined set (i.e. from external network).
+* implement filter changing priority when s/d IP is from defined set (i.e.: internal network, extrnal network, critical resource, etc...).
+* editable filters' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
+* consider supporting addition of an alert to the middle of the chain of events (currently only the beginning and the end is supported).
+
+docs:
+-----
+* add more info on development (doc/dev?).
+
+misc:
+-----
 * consider appending description to correlation of meta-alerts (ex. in form of change history? maybe automatically generated?).
 * implement persistency::sqlite.
-* optimize postgres data restoration using roots meta alerts table.
-* editable filters' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
-* add more info on development (doc/dev?).
 * add regex comaprisons to preprocessor.
-* implement filter changing priority when s/d IP is from defined set (i.e.: internal network, extrnal network, critical resource, etc...).
-* add trigger sending reports on problematic machines to admins found via WHOIS.
-* optimize log-spliting script - it runs far too long for huge log files. using 'while read line' may help, since disk I/O is bottleneck here.
-* consider adding preprocessor to triggers - only events matching given expressions would be taken into account.
-* consider supporting addition of an alert to the middle of the chain of events (currently only the beginning and the end is supported).
-* add heartbeats for dshield, when host is unreachable.
 * add extra checks to test applications to ensure tests are NOT run as root (for example: commons::filesystem::createTempDirectory).
+* add (estimated) total priority of a given meta alert; it is required for the WUI to be usefull; it can be implemented by saving priority of the metal alerts when changed by filters - this would give more-less accurate results; exact result can be than saved when meta-alert is destroyed.
+* consider removing restoration of meta alerts from persistency - it causes many problems, is time-consumming, but rarely useful.

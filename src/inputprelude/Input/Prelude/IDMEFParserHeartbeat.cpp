@@ -22,7 +22,7 @@ IDMEFParserHeartbeat::IDMEFParserHeartbeat(idmef_message_t *msg, BackendFacade &
   if( idmef_message_get_type(msg)!=IDMEF_MESSAGE_TYPE_HEARTBEAT)
     throw ExceptionUnsupportedFeature(SYSTEM_SAVE_LOCATION,"Non-heartbeat received.");
 
-  bf_.heartbeat("Prelude",validFor_);
+  bf_.heartbeat("Prelude Manager",validFor_);
 }
 
 } // namespace Prelude

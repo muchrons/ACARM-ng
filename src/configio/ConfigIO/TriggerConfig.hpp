@@ -28,6 +28,17 @@ public:
     Generic::Config<TriggerConfig>(type, options)
   {
   }
+  /** \brief creates trigger's configuration with preprocessor.
+   *  \param type    trigger's type.
+   *  \param options options for given trigger.
+   *  \param ppCfg   preprocessor's configuration.
+   */
+  TriggerConfig(const TypeName             &type,
+                const Options              &options,
+                const Preprocessor::Config &ppCfg):
+    Generic::Config<TriggerConfig>(type, options, ppCfg)
+  {
+  }
 
   /** \brief gets trigger's name.
    *  \return trigger's name.

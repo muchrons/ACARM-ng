@@ -16,7 +16,7 @@ namespace Persistency
 
 /** \brief base class for tests - creates config file for persistency stubs.
  */
-class TestStubs: private TestBase
+class TestStubs: public TestBase
 {
 public:
   TestStubs(void);

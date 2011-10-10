@@ -61,8 +61,7 @@ void TestDBAccess::removeAllData(void)
   t.exec("DELETE FROM reference_urls");
   t.exec("DELETE FROM config");
   t.exec("DELETE FROM config_rdonly");
-  t.exec("DELETE FROM logs");
-  t.exec("DELETE FROM wui_users");
+  t.exec("DELETE FROM pradolog");
   t.exec("DELETE FROM heartbeats");
   t.commit();
 }

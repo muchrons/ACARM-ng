@@ -4,6 +4,9 @@
  */
 #include <sstream>
 
+#include "System/TimerThreadCPU.hpp"
+#include "System/TimerRT.hpp"
+#include "System/ignore.hpp"
 #include "Logger/Logger.hpp"
 #include "Persistency/IO/Postgres/Connection.hpp"
 #include "Persistency/IO/Postgres/TryCatchInAPI.hpp"
@@ -22,16 +25,10 @@ namespace Postgres
 namespace
 {
 
-// passing anything to this call ignores argument
-template<typename T>
-inline void ignore(const T &)
-{
-} // ignore()
-
 inline pqxx::result execSQL(const Logger::Node &log, Transaction &t, const char *sql)
 {
   LOGMSG_DEBUG_S(log)<<"calling SQL statement: "<<sql;
-  ignore(log);      // this suppresses warning in release mode about unsued parameter
+  System::ignore(log);      // this suppresses warning in release mode about unsued parameter
   const pqxx::result r=t.getAPI<TransactionAPI>().exec(sql);
   LOGMSG_DEBUG_S(log)<<"affected rows: "<<r.affected_rows();
   return r;
@@ -189,11 +186,19 @@ Connection::Connection(DBHandlePtrNN handle):
   detail::ConnectionBase(handle),
   log_("persistency.io.postgres.connection")
 {
+  // in order for the string escaping mechanism to work as it should, strings must be set to
+  // work in a SQL's standard-conformant way. otherwise bad things may happen.
+  // this had to be added, since PostgreSQL 9.1 changed the default behaviour and, by default,
+  // turned away from non-standard strings. and since escaping functions does not check this
+  // setting, it has to be enforced manually...
+  handle->getConnection().get().set_variable("standard_conforming_strings", "on");
 }
 
 size_t Connection::removeEntriesOlderThanImpl(size_t days, Transaction &t)
 {
   TRYCATCH_BEGIN
+    System::TimerThreadCPU tcpu;
+    System::TimerRT        trt;
     createTemporaryTables(days, t, log_);
     removeServices(t, log_);
     removeProcs(t, log_);
@@ -201,6 +206,8 @@ size_t Connection::removeEntriesOlderThanImpl(size_t days, Transaction &t)
     removeAnalyzers(t, log_);
     const size_t removed=removeAlerts(t, log_);
     removeExtraMetaAlertsEntries(t, log_);
+    LOGMSG_INFO_S(log_)<<"data base cleanup took total time of "<<trt.elapsed()
+                       <<"[s] (thread-CPU "<<tcpu.elapsed()<<"[s]); removed total of "<<removed<<" entries";
     return removed;
   TRYCATCH_END
 }

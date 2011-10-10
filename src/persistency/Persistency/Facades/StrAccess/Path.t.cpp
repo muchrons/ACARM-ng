@@ -3,6 +3,7 @@
  *
  */
 #include <tut.h>
+#include <sstream>
 
 #include "Persistency/Facades/StrAccess/Path.hpp"
 
@@ -50,7 +51,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const Path           path("abc.*");
+  const Path           path("abc.xyz");
   Path::const_iterator it=path.begin();
   ensure_equals("invalid count", count(path), 2u);
 
@@ -60,22 +61,26 @@ void testObj::test<1>(void)
   ++it;
   // 2
   ensure("not enought elements in collection /2", it!=path.end() );
-  ensure_equals("invalid second token", *it, "*");
+  ensure_equals("invalid second token", *it, "xyz");
   ++it;
   // end
   ensure("too many tokens", it==path.end() );
 }
 
-// test tokeninzing maximal path
+// test tokeninzing very long path
 template<>
 template<>
 void testObj::test<2>(void)
 {
-  const Path path("1.2.3.4.5.6.7");
-  ensure_equals("invalid count", count(path), 7u);
+  std::stringstream ss;
+  for(int i=0; i<100; ++i)
+    ss<<i<<".";
+  ss<<"term";
+  const Path path(ss.str());
+  ensure_equals("invalid count", count(path), 100+1);
 }
 
-// test too long path
+// test too short path
 template<>
 template<>
 void testObj::test<3>(void)
@@ -83,21 +88,22 @@ void testObj::test<3>(void)
   testThrow("short");
 }
 
-// test too long path
+// test getting path from object
 template<>
 template<>
 void testObj::test<4>(void)
 {
-  testThrow("1.2.3.4.5.6.7.toolong");
+  const Path p("1.2.3");
+  ensure_equals("invalid path", p.get(), "1.2.3");
 }
 
-// test getting path from object
+// test random path (bug from previous versions)
 template<>
 template<>
 void testObj::test<5>(void)
 {
-  const Path p("1.2.3");
-  ensure_equals("invalid path", p.get(), "1.2.3");
+  const Path path("metaalert.alert.sources.*.services.*.referenceurl.name");    // should not throw
+  ensure_equals("invalid elements count", count(path), 8u);
 }
 
 } // namespace tut

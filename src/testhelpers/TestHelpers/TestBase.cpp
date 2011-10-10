@@ -26,8 +26,7 @@ TestBase::TestBase(const char *xml):
   {
     const int        size=strlen(xml);
     System::DiskFile df(defaultFile_);
-    tut::ensure_equals("unable to write to default config file",
-                       write(df.get(), xml, size), size);
+    tut::ensure_equals("unable to write to default config file", write(df.get(), xml, size), size);
     // force rereading newly set configuration
     ConfigIO::Singleton::get()->rereadConfig(defaultFile_);
   }

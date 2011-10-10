@@ -94,7 +94,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  ensureProc("invalid md5", *process_, "process.md5sum", md5_.get());
+  ensureProc("invalid md5", *process_, "process.md5", md5_.get());
 }
 
 // test getting md5 when NULL
@@ -102,7 +102,7 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  ensureProcNull("invalid md5", *processNull_, "process.md5sum", "md5sum");
+  ensureProcNull("invalid md5", *processNull_, "process.md5", "md5");
 }
 
 // test getting pid

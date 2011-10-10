@@ -11,10 +11,12 @@
 #include <boost/noncopyable.hpp>
 #include <boost/scoped_ptr.hpp>
 
+#include "Logger/Node.hpp"
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
 #include "Core/Types/Proc/TypeName.hpp"
 #include "Core/Types/Proc/InstanceName.hpp"
+#include "Core/Types/Proc/CategoryName.hpp"
 
 
 namespace Core
@@ -66,14 +68,31 @@ public:
    *  BackendFacade's derives does not handle, since they are specific per-instance.
    */
   void performCustomIO(CustomIOInterface &ci);
+  /** \brief send heartbeat, that arrived from an external source (module).
+   *  \param m        module's name.
+   *  \param validFor maximum ammount of time to wait for next heartbeat.
+   *
+   *  \note this facility should be used for incomming heartbeats onyl, since heartbeating
+   *        for user's implementation is done with other means.
+   */
+  void heartbeat(const Persistency::IO::Heartbeats::Module &m, unsigned int validFor);
+  /** \brief send heartbeat for a given component itself.
+   *  \param validFor maximum ammount of time to wait for next heartbeat.
+   *
+   *  \note some of the elements' implementation send this by default every time. check
+   *        the default behavior before sending these heartbeats on own hand.
+   */
+  void heartbeat(unsigned int validFor);
 
 protected:
   /** \brief create object's instance.
-   *  \param conn connection object to use.
-   *  \param type type of element this object is created for (i.e.: filter/trigger/input name).
-   *  \param name name of element this object is created for (i.e.: filter/trigger/input name).
+   *  \param conn      connection object to use.
+   *  \param category category of element this object is created for (i.e.: filter/trigger/input).
+   *  \param type     type of element this object is created for (i.e.: filter/trigger/input name).
+   *  \param name     name of element this object is created for (i.e.: filter/trigger/input name).
    */
   BackendFacade(Persistency::IO::ConnectionPtrNN  conn,
+                const Proc::CategoryName         &category,
                 const Proc::TypeName             &type,
                 const Proc::InstanceName         &name);
   /** \brief ensure transaction is in progress (by running new, if needed).
@@ -113,10 +132,16 @@ protected:
 private:
   typedef boost::scoped_ptr<Persistency::IO::Transaction> TransactionScPtr;
 
-  const Proc::TypeName             type_;
-  const Proc::InstanceName         name_;
-  Persistency::IO::ConnectionPtrNN conn_;
-  TransactionScPtr                 transaction_;
+  std::string getHeartbeatOwnerName(void) const;
+  void heartbeatImpl(const char *mod, unsigned int validFor);
+
+  const Logger::Node                       log_;
+  const Proc::CategoryName                 category_;
+  const Proc::TypeName                     type_;
+  const Proc::InstanceName                 name_;
+  const Persistency::IO::Heartbeats::Owner hbOwner_;
+  Persistency::IO::ConnectionPtrNN         conn_;
+  TransactionScPtr                         transaction_;
 }; // class BackendFacade
 
 } // namespace Types

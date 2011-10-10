@@ -38,7 +38,7 @@ struct ProcessPointerNotNULL: private System::NoInstance
    *  \warning this is internal - e must NOT be NULL!
    */
   template<typename T, typename TParams>
-  static bool process(const T *e, TParams &p)
+  static bool process(const T *e, TParams p)
   {
     assert(e!=NULL);
     return TFuncObj::process(*e, p);
@@ -51,7 +51,7 @@ struct ProcessPointerNotNULL: private System::NoInstance
    *  \warning this is internal - e must NOT be NULL!
    */
   template<typename TParams>
-  static bool process(const char *e, TParams &p)
+  static bool process(const char *e, TParams p)
   {
     assert(e!=NULL);
     // by making string() out of const char * we nesure no more pointer processing will be done
@@ -71,7 +71,7 @@ struct StripPointer: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename T, typename TParams>
-  static bool process(const T *e, TParams &p)
+  static bool process(const T *e, TParams p)
   {
     if(e==NULL)
       return p.callback().nullOnPath(p.get());
@@ -92,7 +92,7 @@ struct StripSmartPointer: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     // NOTE: TFuncObj is HandleIndirectionImpl<>, so pointer will be processed again
     return TFuncObj::process(e.get(), p);
@@ -111,7 +111,7 @@ struct NothingToStrip: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     return TFuncObj::process(e, p);
   }
@@ -129,7 +129,7 @@ struct HandleIndirectionImpl: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     typedef typename boost::mpl::if_c<IsPointer<T>::value,
                                  // then
@@ -172,7 +172,7 @@ struct HandleIndirection: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename TFuncObj, typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
     ErrH::throwOnEnd(SYSTEM_SAVE_LOCATION, p);

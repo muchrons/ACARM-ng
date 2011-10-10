@@ -57,7 +57,7 @@ private:
     if(t==NULL)
       ss << "NULL";
     else
-      ss << "E'" << tr_.getAPI<Postgres::TransactionAPI>().escape(t) << "'";
+      ss << "'" << tr_.getAPI<Postgres::TransactionAPI>().escape(t) << "'";
   }
   template<typename T>
   inline void appendNoEscape(std::stringstream &ss, const T *t)
@@ -124,8 +124,6 @@ inline void Appender::append(std::stringstream &ss, const T &t)
 {
   appendNoEscape(ss, &t);
 }
-
-
 
 } // namespace detail
 } // namespace Postgres

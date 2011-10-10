@@ -3,13 +3,16 @@
  *
  */
 #include <tut.h>
-#include <cstring>
 #include <memory>
+#include <cstring>
+#include <unistd.h>
 #include <cassert>
 
 #include "Trigger/Factory.hpp"
 #include "ConfigIO/Singleton.hpp"
 #include "Commons/Factory/RegistratorHelper.hpp"
+#include "TestHelpers/TestBase.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
 
 using namespace std;
 using namespace Trigger;
@@ -18,8 +21,13 @@ using namespace Core::Types::Proc;
 namespace
 {
 
-struct TestClass
+struct TestClass: public TestHelpers::TestBase
 {
+  TestClass(void):
+    sn_( TestHelpers::Persistency::makeNewLeaf(), TypeName("mytesttype"), InstanceName("mytestinstance") )
+  {
+  }
+
   ~TestClass(void)
   {
     try
@@ -34,6 +42,7 @@ struct TestClass
   }
 
   Core::Types::SignedNodesFifo queue_;
+  Core::Types::SignedNode      sn_;
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -122,7 +131,8 @@ private:
 
     ensure("too many elements in collection", it==options.end() );
 
-    return Processor::InterfaceAutoPtr(new TestInterface);
+    InterfaceWrapper::InterfaceAutoPtr ptr(new TestInterface);
+    return FactoryPtr(new InterfaceWrapper(ptr));
   }
 
   virtual const FactoryTypeName &getTypeNameImpl(void) const
@@ -142,10 +152,92 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  assert( g_rh.isRegistered() && "oops - registration failed" );
+  ensure("oops - registration failed", g_rh.isRegistered());
   ConfigIO::Singleton::get()->rereadConfig("testdata/some_trigger.xml");
   const TriggersCollection fc=create(queue_);
   ensure_equals("no triggers created", fc.size(), 1u);
+}
+
+
+namespace
+{
+// global counter to make things easier for testing
+int g_testInterfaceCalled=-1;
+
+// test interface to be returned
+struct PPTestInterface: public Interface
+{
+  PPTestInterface(void):
+    Interface( TypeName("preproc_test_trigger"), InstanceName("narf"), EntryControlList::createDefaultAccept() )
+  {
+    g_testInterfaceCalled=0;
+  }
+  virtual void process(Node /*node*/, ChangedNodes &/*changedNodes*/)
+  {
+    ++g_testInterfaceCalled;
+  }
+  virtual void heartbeat(unsigned int /*deadline*/)
+  {
+  }
+}; // struct PPTestInterface
+
+// test builder for given interface
+class SomePPBuilder: public Factory::TFactoryBuilderBase
+{
+public:
+  SomePPBuilder(void):
+    name_("preproc_test_trigger")
+  {
+  }
+
+private:
+  virtual FactoryPtr buildImpl(const Options &/*options*/) const
+  {
+    InterfaceWrapper::InterfaceAutoPtr ptr(new PPTestInterface);
+    return FactoryPtr(new InterfaceWrapper(ptr));
+  }
+  virtual const FactoryTypeName &getTypeNameImpl(void) const
+  {
+    return name_;
+  }
+
+  const FactoryTypeName name_;
+}; // class SomePPBuilder
+
+const Commons::Factory::RegistratorHelper<Factory, SomePPBuilder> g_rhPP;
+} // unnamed namespace
+
+// check if trigger will not be called when preprocessor will not accept it
+template<>
+template<>
+void testObj::test<4>(void)
+{
+  ensure("oops - registration failed", g_rhPP.isRegistered());
+  readConfigFile("testdata/preproc_test_trigger_reject_all.xml");
+  TriggersCollection fc=create(queue_);
+  ensure_equals("no triggers created", fc.size(), 1u);
+  ensure_equals("interface already called", g_testInterfaceCalled, 0);
+  fc.at(0)->process(sn_);
+  usleep(500*1000);         // wait a while, until data is processed...
+  ensure_equals("call not blocked by preprocessor", g_testInterfaceCalled, 0);
+}
+
+// check if trigger will be called when preprocessor will accept it
+template<>
+template<>
+void testObj::test<5>(void)
+{
+  ensure("oops - registration failed", g_rhPP.isRegistered());
+  readConfigFile("testdata/preproc_test_trigger_accept_all.xml");
+  TriggersCollection fc=create(queue_);
+  ensure_equals("no triggers created", fc.size(), 1u);
+  ensure_equals("interface already called", g_testInterfaceCalled, 0);
+  fc.at(0)->process(sn_);
+  // wait a while, until data is processed...
+  for(int i=0; i<30 && g_testInterfaceCalled!=1; ++i)
+    usleep(50*1000);
+  usleep(20*1000);
+  ensure_equals("call blocked by preprocessor", g_testInterfaceCalled, 1);
 }
 
 } // namespace tut

@@ -40,7 +40,7 @@ struct OnTermImpl: private System::NoInstance,
    *  \return value farwarded from further user's calls.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     return p.callback().value( Commons::Convert::to<std::string>(e) );
   }
@@ -51,7 +51,7 @@ struct OnTermImpl: private System::NoInstance,
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const MD5Sum &e, TParams &p)
+  static bool process(const MD5Sum &e, TParams p)
   {
     assert(e.get()!=NULL);
     return process(std::string(e.get()), p);
@@ -63,7 +63,7 @@ struct OnTermImpl: private System::NoInstance,
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const IP &e, TParams &p)
+  static bool process(const IP &e, TParams p)
   {
     BOOST_STATIC_ASSERT( (boost::is_same<IP,Netmask>::value) );
     return process(e.to_string(), p);
@@ -74,7 +74,7 @@ struct OnTermImpl: private System::NoInstance,
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const IPv4 &e, TParams &p)
+  static bool process(const IPv4 &e, TParams p)
   {
     BOOST_STATIC_ASSERT( (boost::is_same<IPv4,Netmask_v4>::value) );
     return process(e.to_string(), p);
@@ -85,7 +85,7 @@ struct OnTermImpl: private System::NoInstance,
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const IPv6 &e, TParams &p)
+  static bool process(const IPv6 &e, TParams p)
   {
     BOOST_STATIC_ASSERT( (boost::is_same<IPv6,Netmask_v6>::value) );
     return process(e.to_string(), p);
@@ -96,7 +96,7 @@ struct OnTermImpl: private System::NoInstance,
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const bool e, TParams &p)
+  static bool process(const bool e, TParams p)
   {
     return process(std::string(e?"true":"false"), p);
   }
@@ -113,7 +113,7 @@ struct OnTerm: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename T, typename TParams>
-  static bool process(const T &e, TParams &p)
+  static bool process(const T &e, TParams p)
   {
     // sanity check
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;

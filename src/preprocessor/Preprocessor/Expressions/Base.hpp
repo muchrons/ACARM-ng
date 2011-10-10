@@ -8,8 +8,7 @@
 #include <boost/noncopyable.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
-#include "Persistency/Alert.hpp"
-#include "Preprocessor/Path.hpp"
+#include "Persistency/GraphNode.hpp"
 #include "Preprocessor/ExceptionInvalidExpression.hpp"
 
 namespace Preprocessor
@@ -27,10 +26,10 @@ public:
   virtual ~Base(void);
 
   /** \brief computes answer for given alert.
-   *  \param alert alert to be chekced/computed.
+   *  \param node (meta-)alert to be chekced/computed.
    *  \return true if alert matches given criteria, false otherwise.
    */
-  virtual bool compute(const Persistency::Alert &alert) const = 0;
+  virtual bool compute(const Persistency::ConstGraphNodePtrNN &node) const = 0;
 }; // class Base
 
 

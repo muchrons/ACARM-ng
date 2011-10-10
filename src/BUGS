@@ -1,0 +1,3 @@
+* ipblackfilter does not save parameters in data base - after restart the same alerts will get severity incremented once more; consider saving MetaAlertID->done/not-done as a config parameter.
+* add handle for out-of-memory problem (i.e. using own wrapper for memory manager).
+* ipblacklist filter only send dshield.org-heartbeats when alert arrives.

@@ -30,7 +30,7 @@ struct OnProcess: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const Process &e, TParams &p)
+  static bool process(const Process &e, TParams p)
   {
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
@@ -44,7 +44,7 @@ struct OnProcess: private System::NoInstance
       return MainDispatcher::process(e.getPath().get(), p);
     if(p.get()=="name")
       return MainDispatcher::process(e.getName().get(), p);
-    if(p.get()=="md5sum")
+    if(p.get()=="md5")
       return MainDispatcher::process(e.getMD5(), p);
     if(p.get()=="pid")
       return MainDispatcher::process(e.getPID(), p);

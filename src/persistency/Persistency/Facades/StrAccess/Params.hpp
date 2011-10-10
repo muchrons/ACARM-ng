@@ -12,6 +12,7 @@
 #include <boost/mpl/if.hpp>
 #include <boost/mpl/has_key.hpp>
 
+#include "Commons/SharedPtrNotNULL.hpp"
 #include "Persistency/Facades/StrAccess/Path.hpp"
 #include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
 
@@ -42,7 +43,7 @@ private:
   struct OnUnknownType
   {
     template<typename T>
-    static bool process(const T &/*e*/, Params<THandleMap,TResultCallback> &p)
+    static bool process(const T &/*e*/, const Params<THandleMap,TResultCallback> &p)
     {
       GetHandle<ErrorHandle>::type::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
       return false; // code never reaches here
@@ -55,10 +56,11 @@ public:
    *  \param callback callback instance reference.
    */
   Params(const Path &path, ResultCallback &callback):
-    path_(path),
-    now_(path_.begin()),
+    path_(new Path(path)),
+    now_(path_->begin()),
     callback_(&callback)
   {
+    assert(path_.get()!=NULL);
     assert(callback_!=NULL);
   }
 
@@ -91,7 +93,7 @@ public:
    */
   const Path &path(void) const
   {
-    return path_;
+    return *path_;
   }
 
   /** \brief gets current position in path.
@@ -108,7 +110,7 @@ public:
    */
   bool isEnd(void) const
   {
-    return now_==path_.end();
+    return now_==path_->end();
   }
 
   /** \brief checks for existance of the next element in path.
@@ -121,7 +123,7 @@ public:
       return false;
     PathCIT tmp=now_;
     ++tmp;
-    return tmp!=path_.end();
+    return tmp!=path_->end();
   }
 
   /** \brief gets access to result callback object.
@@ -134,7 +136,13 @@ public:
   }
 
 private:
-  const Path      path_;
+  typedef Commons::SharedPtrNotNULL<const Path> PathPtr;
+
+  // NOTE: using smart pointer instead of value is of a great importance here, since
+  //       it does not require to trace iterators to a copyied value of path_.
+  //       one value is just enough.
+  //       another denefit is getting lightweight copy (pointer instead of the value).
+  PathPtr         path_;
   PathCIT         now_;
   ResultCallback *callback_;
 }; // struct Params

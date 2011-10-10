@@ -103,13 +103,13 @@ struct TestBaseData: private TestBase
   }
 
   template<typename TData>
-  void ensureThrow(const TData &data, TestParams &p) const
+  void ensureThrow(const TData &data, const TestParams &p) const
   {
     ensureThrowEx<ExceptionInvalidPath>("call didn't throw on invalid path", data, p);
   }
 
   template<typename TEx, typename TData>
-  void ensureThrowEx(const char *msg, const TData &data, TestParams &p) const
+  void ensureThrowEx(const char *msg, const TData &data, const TestParams &p) const
   {
     try
     {

@@ -8,6 +8,7 @@
 #include "PythonAPI/Python.hpp"
 #include "PythonAPI/Environment.hpp"
 
+using namespace std;
 using namespace PythonAPI;
 namespace py=boost::python;
 
@@ -133,6 +134,17 @@ void testObj::test<7>(void)
   {
     // this is expected
   }
+}
+
+// test returning string
+template<>
+template<>
+void testObj::test<8>(void)
+{
+  e_.run("tmp=\"alice has aids\"");
+  // check
+  const string answer=e_.var<string>("tmp");
+  ensure_equals("invalid answer set", answer, "alice has aids");
 }
 
 } // namespace tut

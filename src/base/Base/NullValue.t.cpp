@@ -5,7 +5,6 @@
 #include <tut.h>
 
 #include "Base/NullValue.hpp"
-#include "TestHelpers/checkEquality.hpp"
 
 using namespace std;
 using namespace Base;
@@ -15,6 +14,27 @@ namespace
 
 struct TestClass
 {
+  // NOTE: this code is identical to the one in TestHelpers/checkEquality.hpp
+  //       but it cannot be included, since it would create dependency cycle. :/
+  template<typename T>
+  void checkEquality(const T &t1, const T &t1o, const T &t2)
+  {
+    // test equality
+    tut::ensure("comparing identical elements with == failed",          t1==t1o  );
+    // test if equality fails for different eleemnts
+    tut::ensure("comparing different elements with == didn't failed", !(t1==t2)  );
+
+    // test inequality
+    tut::ensure("comparing identical elements with != didn't failed", !(t1!=t1o) );
+    // test if equality fails for different eleemnts
+    tut::ensure("comparing different elements with != failed",          t1!=t2   );
+  }
+
+  template<typename T>
+  void checkEquality(const T &t1, const T &t2)
+  {
+    checkEquality(t1, t1, t2);
+  }
 };
 
 typedef tut::test_group<TestClass> factory;
@@ -86,7 +106,7 @@ void testObj::test<6>(void)
   NullValue<double> nv1 (1.2);
   NullValue<double> nv1o(1.2);
   NullValue<double> nv2 (1.4);
-  TestHelpers::checkEquality(nv1, nv1o, nv2);
+  checkEquality(nv1, nv1o, nv2);
 }
 
 // test comparing values with NULLs.
@@ -96,7 +116,7 @@ void testObj::test<7>(void)
 {
   NullValue<double> nv1(1.2);
   NullValue<double> nv2;
-  TestHelpers::checkEquality(nv1, nv2);
+  checkEquality(nv1, nv2);
 }
 
 // test for warning when no value is set.

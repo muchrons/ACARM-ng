@@ -16,12 +16,21 @@ namespace Types
 namespace Proc
 {
 
+namespace detail
+{
+/** \brief dummy interface param, signalling there is no 'real' param.
+ */
+struct NoInterfaceParam
+{
+}; // struct NoInterfaceParam
+} // namespace detail
+
 /** \brief template-based implementation of interface for different strategies.
  *
  *  this class is to be parametrized with proper strategy and passed as an
  *  interface to be used by Processor.
  */
-template<typename TStrategy, typename TParam=int>
+template<typename TStrategy, typename TParam=detail::NoInterfaceParam>
 class InterfaceImpl: public Interface
 {
 public:
