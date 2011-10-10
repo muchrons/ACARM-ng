@@ -18,7 +18,7 @@ class ComputeLinkForMetaAlerts
 
   private function computeLink($id)
   {
-    $url=$this->service_->constructUrl( 'MetaAlert', array('id' => $id) );
+    $url=$this->service_->constructUrl( 'MetaAlert', array('mid' => $id) );
     return "<a href=\"$url\">details</a>";
   }
 
@@ -36,7 +36,7 @@ class ComputeLinkForMetaAlerts
 };
 
 
-class MetaAlerts extends TPage
+class MetaAlerts2 extends TPage
 {
   public function onLoad($param)
   {
@@ -50,6 +50,10 @@ class MetaAlerts extends TPage
       }
 
     $this->MetaAlerts->computation_=new ComputeLinkForMetaAlerts($this->Service);
+
+    if($this->Range->Srcip->Text!='any' or $this->Range->Dstip->Text!='any')
+      $this->MetaAlerts->Query="MetaAlertsSumaryByIP";
+
     $this->MetaAlerts->params_=$this->Range->getRangeData();
   }
 };

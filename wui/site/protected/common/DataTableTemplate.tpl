@@ -37,6 +37,8 @@
    ItemStyle.BackColor="#c6c6d2"
    ItemStyle.Font.Italic="true"
    AllowSorting="false"
+   EnableViewState="false"
+   OnSortCommand="sortDataGrid"
    AlternatingItemStyle.BackColor="#b2b2d0" >
 </com:TDataGrid>
 
@@ -53,6 +55,6 @@
 </center>
 </td></tr>
 </table>
-
+<com:THiddenField ID="sorting" Value="Created_up"/>
 </div>
 

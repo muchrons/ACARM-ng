@@ -100,14 +100,14 @@
 <com:TPanel GroupingText="<font size=5 color=white>Details</font>" Width="100%">
 <table border="1" width="100%" cellpadding="5">
   <tr>
-    <td id="AlertTag">Source:</td>
-    <td width="30%" id="AlertContent"><com:TActiveLabel ID="SrcIP" Text="&nbsp"/></td>
-    <td id="AlertTag">Destination:</td>
-    <td width="30%" id="AlertContent"><com:TActiveLabel ID="DstIP" Text="&nbsp"/></td>
+    <td class="AlertTag">Source:</td>
+    <td width="30%" class="AlertContent"><com:TActiveLabel ID="SrcIP" Text="&nbsp"/></td>
+    <td class="AlertTag">Destination:</td>
+    <td width="30%" class="AlertContent"><com:TActiveLabel ID="DstIP" Text="&nbsp"/></td>
   </tr>
   <tr>
-    <td id="AlertTag">Number of alerts:</td>
-    <td id="AlertContent" colspan="3"><com:TActiveLabel ID="NoAlerts" Text="&nbsp"/></td>
+    <td class="AlertTag">Number of alerts:</td>
+    <td class="AlertContent" colspan="3"><com:TActiveLabel ID="NoAlerts" Text="&nbsp"/></td>
   </tr>
   <tr>
     <td align="center" colspan="4">

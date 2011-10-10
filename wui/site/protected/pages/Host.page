@@ -3,27 +3,27 @@
 <br/>
 <table border="1" width="100%" cellpadding="5">
   <tr>
-    <td id="AlertTag" width="10%">Name:</td>
-    <td id="AlertContent" width="40%"><b><com:TLiteral ID="HostName" Text="&nbsp" Encode="true"/></b></td>
-    <td id="AlertTag" width="10%">IP:</td>
-    <td id="AlertContent" width="40%"><com:TLiteral ID="HostIP" Text="&nbsp" Encode="true"/></td>
+    <td class="AlertTag" width="10%">Name:</td>
+    <td class="AlertContent" width="40%"><b><com:TLiteral ID="HostName" Text="&nbsp" Encode="true"/></b></td>
+    <td class="AlertTag" width="10%">IP:</td>
+    <td class="AlertContent" width="40%"><com:TLiteral ID="HostIP" Text="&nbsp" Encode="true"/></td>
   </tr>
   <tr>
-    <td id="AlertTag" width="10%">Role:</td>
-    <td id="AlertContent" width="40%"><com:TLiteral ID="HostRole" Text="&nbsp" Encode="true"/></td>
-    <td id="AlertTag" width="10%">Mask:</td>
-    <td id="AlertContent" width="40%"><com:TLiteral ID="HostMask" Text="&nbsp" Encode="true"/></td>
+    <td class="AlertTag" width="10%">Role:</td>
+    <td class="AlertContent" width="40%"><com:TLiteral ID="HostRole" Text="&nbsp" Encode="true"/></td>
+    <td class="AlertTag" width="10%">Mask:</td>
+    <td class="AlertContent" width="40%"><com:TLiteral ID="HostMask" Text="&nbsp" Encode="true"/></td>
   </tr>
   <tr>
-    <td id="AlertTag" width="10%">Reference name:</td>
-    <td id="AlertContent" width="40%"><com:TLiteral ID="HostRefName" Text="&nbsp" Encode="true"/></td>
-    <td id="AlertTag" width="10%">Reference URL:</td>
-    <td id="AlertContent" width="40%"><com:TLiteral ID="HostRefURL" Text="&nbsp" Encode="true"/></td>
+    <td class="AlertTag" width="10%">Reference name:</td>
+    <td class="AlertContent" width="40%"><com:TLiteral ID="HostRefName" Text="&nbsp" Encode="true"/></td>
+    <td class="AlertTag" width="10%">Reference URL:</td>
+    <td class="AlertContent" width="40%"><com:TLiteral ID="HostRefURL" Text="&nbsp" Encode="true"/></td>
   </tr>
 
   <tr>
-    <td id="AlertTag" width="10%">Service:</td>
-    <td id="AlertContent" colspan="3">
+    <td class="AlertTag" width="10%">Service:</td>
+    <td class="AlertContent" colspan="3">
       <com:TDataGrid
          ID="AlertServices"
          WIDTH="100%"
@@ -37,8 +37,8 @@
          />
   </tr>
   <tr>
-    <td id="AlertTag" width="10%">Process:</td>
-    <td id="AlertContent" colspan="3">
+    <td class="AlertTag" width="10%">Process:</td>
+    <td class="AlertContent" colspan="3">
       <com:TDataGrid
          ID="AlertProcesses"
          WIDTH="100%"

@@ -34,30 +34,46 @@ class DataTableTemplate extends TTemplateControl
 
     assert(count($data)!=0);
 
-    $last_column_name;
+    $this->createDataGrid($data);
+    $this->DataGrid->dataBind();
+  }
+
+  private function createDataGrid($data)
+  {
+    $last_column_name="";
     foreach($data as $column_name=>$rows)
       {
         if ($column_name=="id")
           continue; //skip columns entitled "id"
+
         $column=new TBoundColumn();
         $column->DataField=$column_name;
         $last_column_name=$column_name;
         $column->setSortExpression($column_name);
+
         if ($column_name=="Created" || $column_name=="Severity")
           $column->getItemStyle()->setHorizontalAlign('Center');
+
         $column->HeaderText="<font color=\"white\">".str_replace("_"," ",$column_name)."</font>";
+
+        if ($column_name."_up"==$this->sorting->Value)
+          $column->HeaderText.="<img src=\"pics/sort-up.png\">";
+        else
+          if ($column_name."_down"==$this->sorting->Value)
+            $column->HeaderText.="<img src=\"pics/sort-down.png\">";
+
         $this->DataGrid->Columns->add($column);
       }
-    //$column->HeaderText.=$last_column_name;
-    $this->DataGrid->dataBind();
   }
 
   private function getRowCount()
   {
     if ($this->params_===null)
-      return ($this->log_)?SQLWrapper::queryForObject($this->query_.'Count'):CSQLMap::get()->queryForObject($this->query_.'Count');
+      return ($this->log_)?SQLWrapper::queryForObject($this->query_.'Count'):
+        CSQLMap::get()->queryForObject($this->query_.'Count');
     else
-      return ($this->log_)?SQLWrapper::queryForObject($this->query_.'RangeCount',$this->params_):CSQLMap::get()->queryForObject($this->query_.'RangeCount',$this->params_);
+      return ($this->log_)?SQLWrapper::queryForObject($this->query_.'RangeCount',$this->params_):
+        CSQLMap::get()->queryForObject($this->query_.'RangeCount',$this->params_);
   }
 
   private function getDataRows($perPage, $pageNumber)
@@ -137,6 +153,28 @@ class DataTableTemplate extends TTemplateControl
     $this->TopCaption->text=$param;
   }
 
+  public function sortDataGrid($sender, $param)
+  {
+    $sorting=$this->getOrder();
+
+    if ($this->sorting==$param->SortExpression."_up")
+      $sorting=$param->SortExpression."_down";
+    else
+      $sorting=$param->SortExpression."_up";
+    $this->setOrder($sorting);
+
+    $this->DataGrid->dataBind();
+  }
+
+  public function getOrder()
+  {
+    return $this->getViewState('Order','ASC');
+  }
+
+  public function setOrder($value)
+  {
+    $this->setViewState('Order',TPropertyValue::ensureString($value),'ASC');
+  }
   // TODO: check if these can be private
   public $computation_;
   public $query_;
@@ -144,6 +182,7 @@ class DataTableTemplate extends TTemplateControl
   public $log_;
   private $sortup;
   private $sortdown;
+  //  private $sorting;
 }
 
 ?>
