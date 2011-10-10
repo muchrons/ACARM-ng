@@ -1,4 +1,4 @@
-// TODO: check if this code can be replaced with som standard library routine (maybe Crypto++ ?)
+// NOTE: looks like this TwoFish implementation is "slightly tunned" for SnortSam, so it will stay as is (at least for now).
 
 /* $Id: twofish.h,v 2.1 2008/12/15 20:36:05 fknobbe Exp $
  *
@@ -102,23 +102,22 @@ enum
 };
 
 
-/* Global data structure for callers */
-
+/** \brief Global data structure for callers */
 typedef struct
-{	uint32_t sBox[4 * 256];					/* Key dependent S-box */
-	uint32_t subKeys[TwoFish_TOTAL_SUBKEYS];	/* Subkeys  */
-	uint8_t key[TwoFish_KEY_LENGTH];			/* Encryption Key */
-	uint8_t *output;							/* Pointer to output buffer */
-	uint8_t qBlockPlain[TwoFish_BLOCK_SIZE];	/* Used by CBC */
-	uint8_t qBlockCrypt[TwoFish_BLOCK_SIZE];
-	uint8_t prevCipher[TwoFish_BLOCK_SIZE];
+{	uint32_t sBox[4 * 256];					    ///< Key dependent S-box
+	uint32_t subKeys[TwoFish_TOTAL_SUBKEYS];	///< Subkeys
+	uint8_t key[TwoFish_KEY_LENGTH];			///< Encryption Key
+	uint8_t *output;							///< Pointer to output buffer
+	uint8_t qBlockPlain[TwoFish_BLOCK_SIZE];	///< Used by CBC
+	uint8_t qBlockCrypt[TwoFish_BLOCK_SIZE];    ///< ?
+	uint8_t prevCipher[TwoFish_BLOCK_SIZE];     ///< ?
 	struct 				/* Header for crypt functions. Has to be at least one block long. */
-	{	uint32_t salt;							/* Random salt in first block (will salt the rest through CBC) */
-		uint8_t length[4];					/* The amount of data following the header */
-		uint8_t magic[TwoFish_MAGIC_LEN];		/* Magic to identify successful decryption  */
-	}	header;
-	int  qBlockDefined;
-	int  dontflush;
+	{	uint32_t salt;							///< Random salt in first block (will salt the rest through CBC)
+		uint8_t length[4];					    ///< The amount of data following the header
+		uint8_t magic[TwoFish_MAGIC_LEN];		///< Magic to identify successful decryption
+	}	header;                                 ///< ?
+	int  qBlockDefined;                         ///< ?
+	int  dontflush;                             ///< ?
 }	TWOFISH;
 
 #ifndef __TWOFISH_LIBRARY_SOURCE__
