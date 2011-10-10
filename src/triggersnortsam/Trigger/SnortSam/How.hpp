@@ -23,7 +23,8 @@ struct HowEnum
     NONE = 0,
     IN   = 1,
     OUT  = 2
-  } Type;
+  }
+  Type;
 }; // struct HowEnum
 } // namespace detail
 

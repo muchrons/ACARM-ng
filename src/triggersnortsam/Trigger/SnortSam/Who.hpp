@@ -23,7 +23,8 @@ struct WhoEnum
     NONE = 0,
     SRC  = 1,
     DST  = 2
-  } Type;
+  }
+  Type;
 }; // struct WhoEnum
 } // namespace detail
 
