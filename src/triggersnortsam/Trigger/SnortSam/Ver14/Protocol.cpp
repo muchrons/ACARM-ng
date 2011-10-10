@@ -66,6 +66,31 @@ const SamPacket *toPacket(const uint8_t *b)
 {
   return static_cast<const SamPacket*>( static_cast<const void*>(b) );
 } // toPacket()
+
+
+struct DisconnectOnErrorGuard: private boost::noncopyable
+{
+  explicit DisconnectOnErrorGuard(bool &out):
+    out_(out),
+    confirmed_(false)
+  {
+  }
+
+  ~DisconnectOnErrorGuard(void)
+  {
+    if(!confirmed_)
+      out_=false;
+  }
+
+  void confirm(void)
+  {
+    confirmed_=true;
+  }
+
+private:
+  bool &out_;
+  bool  confirmed_;
+}; // struct DisconnectOnErrorGuard
 } // unnamed namespace
 
 
@@ -141,6 +166,7 @@ void Protocol::initImpl(void)
 
 void Protocol::deinitImpl(void)
 {
+  connected_ =false;
   // perform checkout protocol
   checkOut();
 
@@ -155,7 +181,13 @@ void Protocol::blockImpl(const Config::IP &from, const Config::IP &to)
 {
   if( !from.is_v4() || !to.is_v4() )
     throw Exception(SYSTEM_SAVE_LOCATION, "only IPv4 is supported by SnortSam in this version");
-  blockEntry( from.to_v4(), to.to_v4() );
+  // ok - run the protocol
+  {
+    DisconnectOnErrorGuard doe(connected_);   // marks connection as disconnected, when not confirmed
+    blockEntry( from.to_v4(), to.to_v4() );   // protocol actions
+    doe.confirm();                            // confirm that communication ended w/out error
+  }
+  assert(connected_);
 }
 
 

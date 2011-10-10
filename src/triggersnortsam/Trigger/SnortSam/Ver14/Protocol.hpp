@@ -18,6 +18,8 @@
 #include "Trigger/SnortSam/Ver14/Message.hpp"
 
 
+// TODO: this class is too big - it should be refactored (probably with state-machine template).
+
 namespace Trigger
 {
 namespace SnortSam
