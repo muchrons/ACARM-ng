@@ -305,8 +305,8 @@ void Protocol::sendBlockEntry(const Config::IPv4 &from, const Config::IPv4 &to)
   m.p_.fwMode_|=(how_.toInt()&How::OUT)?HOW_OUT:0;
   m.p_.fwMode_|=(who_.toInt()&Who::SRC)?WHO_SRC:0;
   m.p_.fwMode_|=(who_.toInt()&Who::DST)?WHO_DST:0;
-  m.setIP(m.p_.srcIP_, to);
-  m.setIP(m.p_.dstIP_, from);
+  m.setIP(m.p_.srcIP_, from);
+  m.setIP(m.p_.dstIP_, to);
   m.setNum(m.p_.sigID_, id);
   // protocol, srcPort, dstPort - not set on purpose - we want to block all traffic
 
