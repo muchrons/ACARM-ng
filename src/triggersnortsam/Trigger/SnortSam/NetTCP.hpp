@@ -20,6 +20,11 @@ namespace SnortSam
 class NetTCP: public NetIO
 {
 public:
+  /** \brief create connection mechanism.
+   *  \param host    host to connect to, when requested.
+   *  \param port    port to connect on, on a host.
+   *  \param timeout timeout for I/O operations (in seconds).
+   */
   NetTCP(const std::string &host, Persistency::PortNumber port,  unsigned int timeout);
 
 private:

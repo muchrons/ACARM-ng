@@ -23,6 +23,7 @@ namespace SnortSam
 class Strategy: public Trigger::Simple::Strategy
 {
 public:
+  /** \brief protocol auto-pointer short name. */
   typedef std::auto_ptr<Protocol> ProtocolAutoPtr;
 
   /** \brief create strategy instance.
@@ -33,6 +34,11 @@ public:
   Strategy(const Core::Types::Proc::InstanceName &name, const Config &cfg, ProtocolAutoPtr proto);
 
 protected:
+  /** \brief gives derived class access to BackendFacade in callbacks.
+   *  \warning this call can be called ONLY from callbacks, when this class
+   *           is executing triggerImpl(). at any other moemnt it will cause segv!
+   *  \return reference to backend facade object, currently in use.
+   */
   BackendFacade &getBackendFacade(void);
 
 private:

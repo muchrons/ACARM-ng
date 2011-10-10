@@ -27,27 +27,51 @@ class NetIO: private boost::noncopyable,
              public  Persistency::IPTypes<NetIO>
 {
 public:
+  /** \brief helper class for disconnecting connection uppon error.
+   *
+   *  class operates on a given NetIO object, autoamtically calling "disconnect" when destroyed.
+   */
   class ConnectionGuard: private boost::noncopyable
   {
   public:
+    /** \brief create guard for a given I/O.
+     *  param nio network I/O to use.
+     */
     explicit ConnectionGuard(NetIO &nio);
+    /** \brief disconnects given I/O.
+     */
     ~ConnectionGuard(void);
   private:
     NetIO &nio_;
   }; // class ConnectionGuard
 
+  /** \brief configures network I/O mechanism.
+   *  \param host    host to conect to, when needed.
+   *  \param port    port to connect to, on host.
+   *  \param timeout I/O operation tomeout.
+   */
   NetIO(const std::string &host, Persistency::PortNumber port,  unsigned int timeout);
 
   /** \brief ensures polymorphic destruction.
    */
   virtual ~NetIO(void);
 
+  /** \brief sends given ammount of adata to destination host.
+   *  \param data data to be sent.
+   *  \param len  number of bytes.
+   */
   void send(const uint8_t *data, size_t len);
+  /** \brief receives exactly given ammount of data.
+   *  \param len number of bytes to receive.
+   *  \return data reference to recieved data (valid until next call on object).
+   */
   DataRef receive(size_t len);
+  /** \brief explicitly disconnects from remote host.
+   */
   void disconnect(void);
 
 protected:
-  const Logger::Node log_;
+  const Logger::Node log_;      ///< logger node to be used for logging.
 
 private:
   void reconnect(void);

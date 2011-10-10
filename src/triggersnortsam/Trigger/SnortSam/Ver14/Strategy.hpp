@@ -26,16 +26,22 @@ class Strategy: public  SnortSam::Strategy,
                 private Ver14::Protocol::Callbacks
 {
 public:
+  /** \brief configuration wrapper, to make class factory-compliant.
+   */
   struct Parameters
   {
+    /** \brief helper to make storing elements easier.
+     *  \param cfg        generic configuration.
+     *  \param idAssigner pointer to ID-assigning facility.
+     */
     Parameters(const Config &cfg, IDAssignerPtrNN idAssigner):
       cfg_(cfg),
       idAssigner_(idAssigner)
     {
     }
 
-    Config          cfg_;
-    IDAssignerPtrNN idAssigner_;
+    Config          cfg_;           ///< configuration of the module.
+    IDAssignerPtrNN idAssigner_;    ///< ID-assigner's instance.
   }; // struct Parameters
 
   /** \brief create strategy instance.

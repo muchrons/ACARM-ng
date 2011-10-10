@@ -44,6 +44,8 @@ void Strategy::triggerImpl(BackendFacade &bf, const ConstNode &n)
   for(Algo::GatherIPs::IPSet::const_iterator itF=from.begin(); itF!=from.end(); ++itF)
     for(Algo::GatherIPs::IPSet::const_iterator itT=to.begin(); itT!=to.end(); ++itT)
       proto_->block(itF->first, itT->first);
+
+  bf_=NULL;
 }
 
 } // namespace SnortSam

@@ -32,12 +32,27 @@ namespace Ver14
 class Protocol: public Trigger::SnortSam::Protocol
 {
 public:
-  struct Callbacks
+  /** \brief callbacks API to be used for external calls, when needed.
+   */
+  struct Callbacks: private boost::noncopyable
   {
+    /** \brief polymorphic destruction.
+     */
     virtual ~Callbacks(void);
-    virtual uint32_t assignID(void) =0;
+    /** \brief assigns new ID each time called.
+     *  \return newly assigned ID.
+     */
+    virtual uint32_t assignID(void) = 0;
   }; // struct Listener
 
+  /** \brief creates communication protocol v.14.
+   *  \param who       sets who's to ban.
+   *  \param how       sets how to ban.
+   *  \param duration  duration of the ban.
+   *  \param key       key used for cryptography.
+   *  \param netIO     network I/O facility.
+   *  \param callbacks implementation of API for external calls.
+   */
   Protocol(Who who, How how, unsigned int duration, const std::string &key, std::auto_ptr<NetIO> netIO, Callbacks &callbacks);
 
 private:

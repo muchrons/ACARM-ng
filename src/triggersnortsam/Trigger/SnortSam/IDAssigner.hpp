@@ -27,8 +27,14 @@ namespace SnortSam
 class IDAssigner: private boost::noncopyable
 {
 public:
+  /** \brief create class's instance.
+   */
   IDAssigner(void);
 
+  /** \brief assigns new ID, using given BackendFacade.
+   *  \param bf backedn facade to use for assigning ID(s).
+   *  \return newly assigne,d unique ID.
+   */
   unsigned int assign(BackendFacade &bf);
 
 private:

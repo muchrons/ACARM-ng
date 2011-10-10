@@ -23,18 +23,36 @@ namespace SnortSam
 class Protocol: private boost::noncopyable
 {
 public:
+  /** \brief creates base object.
+   */
   Protocol(void);
+  /** \brief ensures polymorphic destruction.
+   */
   virtual ~Protocol(void);
 
+  /** \brief blocks given host->host communication.
+   *  \param from source host.
+   *  \param to   destination host.
+   */
   void block(const Config::IP &from, const Config::IP &to);
+  /** \brief deinitializes protocol.
+   */
   void deinit(void);
 
 protected:
+  /** \brief gets protocol version.
+   *  \return string with version information.
+   */
   const std::string &getProtocolVersion(void);
+  /** \brief returns connection status.
+   *  \return true if protocl is (logically) connected with remote host, false otherwise.
+   */
   bool isConnected(void);
+  /** \brief establishes (logical) connection to remote host.
+   */
   void init(void);
 
-  const Logger::Node log_;
+  const Logger::Node log_;      ///< logger node to use for loggin messages
 
 private:
   virtual const std::string &getProtocolVersionImpl(void) const = 0;

@@ -43,13 +43,20 @@ void freeCharBuffer(char *ptr)
     free(ptr);
 } // freeCharBuffer()
 
+/** \brief secure deallocation of C-resource. */
 typedef System::ScopedPtrCustom<TWOFISH, TwoFishDestroy> TWOFISHPtr;
+/** \brief secure C-pointer deallocation. */
 typedef System::ScopedPtrCustom<char, freeCharBuffer>    MemoryPtr;
 } // unnamed namespace
 
 
+/** \brief data class for TwoFish (it hides implementation data with PImpl).
+ */
 struct TwoFish::PImpl
 {
+  /** \brief initialize with a given key.
+   *  \param key key to initialize cryptography with.
+   */
   explicit PImpl(const std::string &key):
     tfPtr_( TwoFishInit(key.c_str()) ),
     len_(0)
@@ -58,19 +65,9 @@ struct TwoFish::PImpl
       throw ExceptionCryptoFailed(SYSTEM_SAVE_LOCATION, "TwoFishInit(): unable to initialize crypto library");
   }
 
-  ~PImpl(void)
-  {
-    /* // TODO: required when TwoFishFree is used instead of TwoFishDestroy - check under valgrind and removed this code if not needed.
-    // this is required, since library "generiously" deallocates
-    // this memory for us, from time to time...
-    if( static_cast<void*>(buf_.get())==static_cast<void*>(tfPtr_->output) )
-      tfPtr_->output=NULL;
-     */
-  }
-
-  TWOFISHPtr tfPtr_;
-  MemoryPtr  buf_;
-  size_t     len_;
+  TWOFISHPtr tfPtr_;    ///< pointer to cryptographic state
+  MemoryPtr  buf_;      ///< memory pointer
+  size_t     len_;      ///< size of the memory buffer
 };
 
 

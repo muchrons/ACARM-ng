@@ -22,9 +22,15 @@ namespace Ver14
 class TwoFish: public Crypto
 {
 public:
+  /** \brief length of the KEY. */
   static const size_t KEY_LENGTH;
 
+  /** \brief create encryption mechanism.
+   *  \param key key to use for (de|en)cryption.
+   */
   explicit TwoFish(const std::string &key);
+  /** \brief deinit protocol.
+   */
   virtual ~TwoFish(void);
 
 private:
