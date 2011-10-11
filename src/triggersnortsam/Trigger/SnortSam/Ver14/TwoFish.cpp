@@ -6,6 +6,7 @@
 #include <cassert>
 
 #include "System/ScopedPtrCustom.hpp"
+#include "System/Threads/SafeInitLocking.hpp"
 #include "Trigger/SnortSam/Ver14/TwoFish.hpp"
 #include "Trigger/SnortSam/Ver14/twofish.h"
 
@@ -47,6 +48,32 @@ void freeCharBuffer(char *ptr)
 typedef System::ScopedPtrCustom<TWOFISH, TwoFishDestroy> TWOFISHPtr;
 /** \brief secure C-pointer deallocation. */
 typedef System::ScopedPtrCustom<char, freeCharBuffer>    MemoryPtr;
+
+
+/** \brief global mutex ensuring single, thread-safe initialization of C-style, twofish library. */
+SYSTEM_MAKE_STATIC_SAFEINIT_MUTEX(g_twofishCInitLock);
+bool                              g_twofishInitialized=false;   ///< C-lib-initialized flag
+
+TWOFISH *initTwoFishC(const char *key)
+{
+  assert(key!=NULL);
+
+  {
+    // library has to be initialized in a thread-safe maner
+    System::Threads::SafeInitLock lock(g_twofishCInitLock);
+    if(!g_twofishInitialized)
+    {
+      TWOFISHPtr tmp( TwoFishInit("libinit") ); // initialization only - object to be disposed after that
+      if(tmp.get()==NULL)
+        throw ExceptionCryptoFailed(SYSTEM_SAVE_LOCATION, "TwoFishInit(): unable to initialize crypto library");
+      g_twofishInitialized=true;
+    } // if(!initialized)
+  } // init-check block
+
+  assert(g_twofishInitialized);
+  // return output
+  return TwoFishInit(key);
+} // initTwoFishC()
 } // unnamed namespace
 
 
@@ -58,11 +85,11 @@ struct TwoFish::PImpl
    *  \param key key to initialize cryptography with.
    */
   explicit PImpl(const std::string &key):
-    tfPtr_( TwoFishInit(key.c_str()) ),
+    tfPtr_( initTwoFishC(key.c_str()) ),
     len_(0)
   {
     if(tfPtr_.get()==NULL)
-      throw ExceptionCryptoFailed(SYSTEM_SAVE_LOCATION, "TwoFishInit(): unable to initialize crypto library");
+      throw ExceptionCryptoFailed(SYSTEM_SAVE_LOCATION, "TwoFishInit(): unable to create crypto implementation object");
   }
 
   TWOFISHPtr tfPtr_;    ///< pointer to cryptographic state
