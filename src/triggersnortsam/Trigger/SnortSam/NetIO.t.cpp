@@ -81,7 +81,7 @@ struct NetIOMock: public NetIO
 
 struct NetIOThrowMock: public NetIOMock
 {
-  explicit NetIOThrowMock(const int throws, const std::string &host=boost::asio::ip::host_name()):
+  explicit NetIOThrowMock(const int throws, const std::string &host="127.0.0.1"):
     NetIOMock(host),
     throws_(throws)
   {
