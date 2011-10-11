@@ -11,9 +11,9 @@ namespace Preprocessor
 namespace Checkers
 {
 
-RegExp::RegExp(const std::string &expr):
+RegExp::RegExp(const std::string &expr, const bool caseSensitive):
   Mode("regexp"),
-  re_(expr, boost::regex::extended)
+  re_(expr, boost::regex::extended | (caseSensitive?(0):(boost::regex::icase)) )
 {
   LOGMSG_INFO_S(log_)<<"created comparer for regular expression: '"<<expr<<"'";
 }

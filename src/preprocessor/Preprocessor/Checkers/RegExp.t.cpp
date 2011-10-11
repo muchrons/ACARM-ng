@@ -30,7 +30,7 @@ template<>
 template<>
 void testObj::test<1>(void)
 {
-  const RegExp re("");
+  const RegExp re("", true);
   ensure("string does not match empty regexp", re.check("abc") );
 }
 
@@ -39,7 +39,7 @@ template<>
 template<>
 void testObj::test<2>(void)
 {
-  const RegExp re("x");
+  const RegExp re("x", true);
   ensure("string does not match valid regexp", re.check("axc") );
 }
 
@@ -48,7 +48,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const RegExp re("^full$");
+  const RegExp re("^full$", true);
   ensure("exact regexp does not match", re.check("full") );
 }
 
@@ -57,7 +57,7 @@ template<>
 template<>
 void testObj::test<4>(void)
 {
-  const RegExp re("^full$");
+  const RegExp re("^full$", true);
   ensure("exact regexp matches different string", re.check("not full")==false );
 }
 
@@ -66,7 +66,7 @@ template<>
 template<>
 void testObj::test<5>(void)
 {
-  const RegExp re("ABC");
+  const RegExp re("ABC", true);
   ensure("exact regexp does not match", re.check("xx abc yy")==false );
 }
 
@@ -75,7 +75,7 @@ template<>
 template<>
 void testObj::test<6>(void)
 {
-  const RegExp re("a\\d{2}[bc]");
+  const RegExp re("a\\d{2}[bc]", true);
   ensure("regexp does not match matching string", re.check("a12c") );
 }
 
@@ -84,7 +84,7 @@ template<>
 template<>
 void testObj::test<7>(void)
 {
-  const RegExp re("a\\d{2}[bc]");
+  const RegExp re("a\\d{2}[bc]", true);
   ensure("regexp matches invalid string", re.check("a2c")==false );
 }
 
@@ -93,7 +93,7 @@ template<>
 template<>
 void testObj::test<8>(void)
 {
-  const RegExp re("ab*");
+  const RegExp re("ab*", true);
   ensure("regexp does not match valid string", re.check("a") );
 }
 
@@ -102,7 +102,7 @@ template<>
 template<>
 void testObj::test<9>(void)
 {
-  const RegExp re("ab*");
+  const RegExp re("ab*", true);
   ensure("regexp does not match valid string", re.check("ab") );
 }
 
@@ -111,8 +111,26 @@ template<>
 template<>
 void testObj::test<10>(void)
 {
-  const RegExp re("ab+");
+  const RegExp re("ab+", true);
   ensure("regexp does not match valid string", re.check("ab") );
+}
+
+// test case-insensitive comaprison
+template<>
+template<>
+void testObj::test<11>(void)
+{
+  const RegExp re("ab+", false);
+  ensure("case-insensitive regexp does not match valid string", re.check("AB") );
+}
+
+// test case-insensitive comaprison, when no match
+template<>
+template<>
+void testObj::test<12>(void)
+{
+  const RegExp re("ab+", false);
+  ensure("case-insensitive regexp matches invalid string", re.check("A") );
 }
 
 } // namespace tut

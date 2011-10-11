@@ -20,9 +20,10 @@ class RegExp: public Mode
 {
 public:
   /** \brief create instance.
-   *  \param expr regular expression to check against.
+   *  \param expr          regular expression to check against.
+   *  \param caseSensitive true if compare should be case-sensitive, false otherwise.
    */
-  explicit RegExp(const std::string &expr);
+  explicit RegExp(const std::string &expr, bool caseSensitive);
 
   /** \brief check if given string matches defined regular expression.
    *  \param str string to check.
