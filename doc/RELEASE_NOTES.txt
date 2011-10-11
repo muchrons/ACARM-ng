@@ -1,4 +1,5 @@
 -- dev --
+* comparisons with regular expressions in preprocessor rules.
 * support for SnortSam firewall reconfiguration tool (as a trigger).
 * fixed compatibility issue with postgres 9.1 and previous releases.
 * fixed condition for warning on data abse cleanup taking too long.
