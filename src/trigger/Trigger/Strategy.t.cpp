@@ -31,14 +31,14 @@ struct TestTrigger: public Strategy
   {
   }
 
-  virtual bool matchesCriteria(const Persistency::ConstGraphNodePtrNN &n) const
+  virtual bool matchesCriteria(BackendFacade &, const Persistency::ConstGraphNodePtrNN &n) const
   {
     ++callsCriteria_;
     checkNode(n);
     return criteria_;
   }
 
-  virtual void trigger(const Persistency::ConstGraphNodePtrNN &n)
+  virtual void trigger(BackendFacade &, const Persistency::ConstGraphNodePtrNN &n)
   {
     ++callsTrigger_;
     checkNode(n);
@@ -105,12 +105,12 @@ struct TestLoopTrigger: public Strategy
   {
   }
 
-  virtual bool matchesCriteria(const Persistency::ConstGraphNodePtrNN &) const
+  virtual bool matchesCriteria(BackendFacade &, const Persistency::ConstGraphNodePtrNN &) const
   {
     return true;
   }
 
-  virtual void trigger(const Persistency::ConstGraphNodePtrNN &)
+  virtual void trigger(BackendFacade &, const Persistency::ConstGraphNodePtrNN &)
   {
     for(;;)
     {

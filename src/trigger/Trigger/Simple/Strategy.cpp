@@ -29,7 +29,7 @@ Strategy::~Strategy(void)
                        <<" alerts in sending queue - discarding them permanently";
 }
 
-bool Strategy::matchesCriteria(const ConstNode &n) const
+bool Strategy::matchesCriteria(BackendFacade &/*bf*/, const ConstNode &n) const
 {
   // check severity
   if( cfg_.getSeverityThreshold().get()!=NULL )
@@ -45,7 +45,7 @@ bool Strategy::matchesCriteria(const ConstNode &n) const
   return false;
 }
 
-void Strategy::trigger(const ConstNode &n)
+void Strategy::trigger(BackendFacade &bf, const ConstNode &n)
 {
   // add new element to queue
   if( fifo_.maxSize()==fifo_.size() )
@@ -58,8 +58,9 @@ void Strategy::trigger(const ConstNode &n)
   {
     LOGMSG_DEBUG(log_, "sending next message...");
     // sending itself
-    triggerImpl( fifo_.top() );     // process
+    triggerImpl(bf, fifo_.top());   // process
     fifo_.pop();                    // if no problems were reported, remove it from queue
+    bf.commitChanges();             // process each element separately
     LOGMSG_DEBUG(log_, "message send successfuly - removed from queue");
   }
   while( fifo_.size()>0 );

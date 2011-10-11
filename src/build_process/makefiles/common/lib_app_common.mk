@@ -59,6 +59,7 @@ $(LIBRARY_NAME):: $(LIBRARY_DEPS)
 	$(AR) -r $@ $(LIBRARY_OBJ_DEPS)
 endif
 ifeq (dynamic,$(LIBRARY_TYPE))
+CFLAGS  +=-fPIC
 CXXFLAGS+=-fPIC
 LDFLAGS +=-fPIC
 $(LIBRARY_NAME):: LDFLAGS+=-shared

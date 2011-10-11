@@ -449,12 +449,34 @@ derived=EmptyPythonTrigger()
   <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
 </python>
 
+<!-- trigger setting firewalls with SnortSam (see http://www.snortsam.net)
+
+     snortsam is a Snort (http://www.snort.org) plugin for handling firewall actions
+     like setting/removing firewall rules to block defined 
+-->
+<snortsam name="local_fw_ips_sys">
+  <host>127.0.0.1</host>                              <!-- IP/name of host agent is installed on -->
+  <port>898</port>                                    <!-- port agent is listening on -->
+  <key>sharedpassword</key>                           <!-- secret key to use for encryption -->
+  <who>src</who>                                      <!-- "src", "dst" or both -->
+  <how>in out</how>                                   <!-- "in", "out" or both -->
+  <duration>42</duration>                             <!-- number of seconds to block traffic for -->
+
+  <severity_threshold>3.14</severity_threshold>       <!-- minimal severity (optional) -->
+  <alerts_count_threshold>42</alerts_count_threshold> <!-- minimal correlated alerts count (optional)-->
+</snortsam>
+
 note that severity_threshold and alerts_count_threshold are OR'ed, i.e. if
 any one of them is reached, meta-alert is reported. they are both optional
 parameters as well, i.e. they may be skipped in configuration, that will
 result in not checking given criteria. so if user would like to be informed
 about all meta-alerts that correlate at least N alerts, (s)he should set
 alerts_count_threshold to N and skip severity_threshold parameter at all.
+
+since v0.4.0 is is also possible to specify preprocessor rules for limiting trigger
+usage even more. it allows easy writing rules that operate on narrowed alerts.
+example usage is limiting firewall reconfiguration to hosts from external network,
+to limit false-positives to a minimum.
 
 
 inputs configuration
@@ -550,6 +572,15 @@ example rules can look like this:
 that all collection types are marked as '[]' in place of element's index the full
 tree looks like this:
 -------------
+metaalert.id
+metaalert.name
+metaalert.severitydelta
+metaalert.certaintydelta
+metaalert.referenceurl.name
+metaalert.referenceurl.url
+metaalert.created
+metaalert.isleaf      # "true"->alert / "false"->children
+metaalert.children.[] # each child is meta-alert as well
 metaalert.alert.name
 metaalert.alert.detected
 metaalert.alert.created

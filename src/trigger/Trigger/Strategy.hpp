@@ -16,6 +16,7 @@
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/IO/Connection.hpp"
 #include "Core/Types/Proc/Interface.hpp"
+#include "Trigger/BackendFacade.hpp"
 
 
 namespace Trigger
@@ -79,17 +80,19 @@ protected:
 
 private:
   /** \brief user-provided implementation of trigger condition.
-   *  \param n added/changed node to be checked.
+   *  \param bf backend facade to use for wiriting/reading persistenc data.
+   *  \param n  added/changed node to be checked.
    *  \return true if node matches criteria, false otherwise.
    *  \note call is called only ig given nod was not previously reported.
    *
    *  if given node meets trigger's criteria, method returns true
    *  and interface runs trigger() procedure.
    */
-  virtual bool matchesCriteria(const ConstNode &n) const = 0;
+  virtual bool matchesCriteria(BackendFacade &bf, const ConstNode &n) const = 0;
 
   /** \brief user-provided implementation of node trigger.
-   *  \param n added/changed node to be processed by trigger.
+   *  \param bf backend facade to use for wiriting/reading persistenc data.
+   *  \param n  added/changed node to be processed by trigger.
    *  \note method is called only when matchCriteria() returns true.
    *
    *  method can do it's stuff with this node (ex.: report, trigger counter
@@ -99,7 +102,7 @@ private:
    *  for each node that matches criteria of trigger (matchCriteria()==true for
    *  this node).
    */
-  virtual void trigger(const ConstNode &n) = 0;
+  virtual void trigger(BackendFacade &bf, const ConstNode &n) = 0;
 
   typedef ConstNode::element_type NodeElementType;
 

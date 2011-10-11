@@ -83,6 +83,11 @@ public:
    *        the default behavior before sending these heartbeats on own hand.
    */
   void heartbeat(unsigned int validFor);
+  /** \brief create persistent configuration access object.
+   *  \param owner owner's name of a configuration to work on (NULL means common config).
+   *  \return return non-NULL dynamic configuration proxy.
+   */
+  Persistency::IO::DynamicConfigAutoPtr createDynamicConfig(const Persistency::IO::DynamicConfig::Owner &owner);
 
 protected:
   /** \brief create object's instance.
@@ -108,12 +113,6 @@ protected:
    *  \return connection object.
    */
   Persistency::IO::ConnectionPtrNN getConnection(void);
-  // TODO: consider renaming this method so that it will not be named like public method in derived class
-  /** \brief create persistent configuration access object.
-   *  \param owner owner's name of a configuration to work on (NULL means common config).
-   *  \return return non-NULL dynamic configuration proxy.
-   */
-  Persistency::IO::DynamicConfigAutoPtr createDynamicConfig(const Persistency::IO::DynamicConfig::Owner &owner);
   /** \brief gets type of this element.
    *  \return elements type.
    */
