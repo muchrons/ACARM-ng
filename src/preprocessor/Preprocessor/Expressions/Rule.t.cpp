@@ -432,4 +432,40 @@ void testObj::test<36>(void)
   ensure("for-any failed on existing entry", r.compute(leaf_)==true );
 }
 
+// test Mode::REGEXP - positive case
+template<>
+template<>
+void testObj::test<37>(void)
+{
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::REGEXP, "^a.*e$" );
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test Mode::REGEXP - negative case
+template<>
+template<>
+void testObj::test<38>(void)
+{
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::REGEXP, "^A.*E$" );
+  ensure("equals failed", r.compute(leaf_)==false );
+}
+
+// test Mode::REGEXPCI - positive case
+template<>
+template<>
+void testObj::test<39>(void)
+{
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::REGEXPCI, "^A.*E$" );
+  ensure("equals failed", r.compute(leaf_)==true );
+}
+
+// test Mode::REGEXPCI - negative case
+template<>
+template<>
+void testObj::test<40>(void)
+{
+  const Rule r( Rule::Path("metaalert.alert.name"), Rule::Mode::REGEXPCI, "^x.*E$" );
+  ensure("equals failed", r.compute(leaf_)==false );
+}
+
 } // namespace tut
