@@ -145,7 +145,6 @@ class MetaAlert extends TPage
         return $tree;
       }
 
-
     $added=array();
     foreach($children as $child)
       if ($children_groupped[$child->name]<$this->group_count_)
@@ -221,6 +220,7 @@ class MetaAlert extends TPage
     $tree=new MyTreeList();
     $tree->setTitle($name." x ".$count." ");
     $tree->setNodeType(MyTreeList::NODE_TYPE_LINK);
+    $tree->setCanDeploy(false);
     $tree->setToPage("MetaAlerts");
     if ($includetype)
       $tree->setGetVariables(array("parent"=>"$mid","type"=>"$name"));

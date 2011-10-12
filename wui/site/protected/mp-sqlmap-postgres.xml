@@ -86,6 +86,7 @@
         RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child
         LEFT JOIN alert_to_meta_alert_map as g ON g.id_meta_alert=ma.id
           WHERE t.id_node=#value#
+        ORDER BY name
   </select>
 
   <select id="SelectMetaAlertsChildrenFullGroup" resultClass="CLinkPair" parameterClass="int">
@@ -94,7 +95,7 @@
         RIGHT JOIN meta_alerts_tree AS t ON ma.id=t.id_child
         LEFT JOIN alert_to_meta_alert_map as g ON g.id_meta_alert=ma.id
           WHERE t.id_node=#value#
-          GROUP BY ma.name;
+          GROUP BY ma.name
   </select>
 
 
