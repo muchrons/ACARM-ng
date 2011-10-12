@@ -1,6 +1,6 @@
-* create meta-alert overview, that would show all the meta-alerts' content (i.e.: children nodes) on one page.
 * correlation count for each filter type.
 * add checking of data model version in WUI with proper warning displaying, if needed.
 * add session mechanism to prevent CSRF in WUI.
 * implement more filtering power to alerts - dynamic query mechnism (trac-like) would be nice.
 * add "show meta-alerts with given alerts" button to alerts menu.
+* fix (meta-)alert count statistics on the main screen - rounding is too rough so 1000000 and 1999999 are mapped to "1M".
