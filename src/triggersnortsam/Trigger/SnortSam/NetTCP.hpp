@@ -38,7 +38,6 @@ private:
   boost::asio::ip::tcp::socket sock_;
   boost::asio::deadline_timer  deadline_;
   boost::scoped_array<uint8_t> buf_;
-  boost::system::error_code    ec_;
 }; // class NetTCP
 
 } // namespace SnortSam

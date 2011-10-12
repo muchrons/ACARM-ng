@@ -37,16 +37,16 @@ void NetTCP::connectImpl(const IP &ip, const uint16_t port, const time_t deadlin
   const boost::asio::ip::tcp::endpoint remote(ip, port);            // endpoint
   sock_.close();                                                    // in case it was already open
   deadline_.expires_at( boost::posix_time::from_time_t(deadline) ); // set deadline timer
-  ec_=boost::asio::error::would_block;                              // initial value
-  sock_.async_connect(remote, (ErrorCodeSetter(ec_)) );             // connection
+  boost::system::error_code ec=boost::asio::error::would_block;     // initial value
+  sock_.async_connect(remote, (ErrorCodeSetter(ec)) );              // connection
   // wait until connection is estabilished or timeout is reached
   do
   {
     io_.run_one();
   }
-  while(ec_==boost::asio::error::would_block);
+  while(ec==boost::asio::error::would_block);
   // check for errors
-  if( ec_ || !sock_.is_open() )
+  if( ec || !sock_.is_open() )
     throw ExceptionNetworkError(SYSTEM_SAVE_LOCATION, ip.to_string(), "couldn't connect to host");
 }
 
@@ -59,17 +59,17 @@ void NetTCP::disconnectImpl(void)
 void NetTCP::sendImpl(const uint8_t *data, const size_t len, const time_t deadline)
 {
   deadline_.expires_at( boost::posix_time::from_time_t(deadline) );             // set deadline timer
-  ec_=boost::asio::error::would_block;                                          // deafult value for the beginig
+  boost::system::error_code ec=boost::asio::error::would_block;                 // deafult value for the beginig
   size_t tmp;
-  sock_.async_send( buffer(data, len), (ErrorCodeWithSizeSetter(ec_, tmp)) );   // initialize transmition
+  sock_.async_send( buffer(data, len), (ErrorCodeWithSizeSetter(ec, tmp)) );    // initialize transmition
   // wait until everything is sent
   do
   {
     io_.run_one();
   }
-  while(ec_==boost::asio::error::would_block);
+  while(ec==boost::asio::error::would_block);
   // check for errors
-  if(ec_)
+  if(ec)
     throw ExceptionNetworkError(SYSTEM_SAVE_LOCATION, sock_.remote_endpoint().address().to_string(), "unable to send (all) data");
 }
 
@@ -81,8 +81,8 @@ DataRef NetTCP::receiveImpl(const size_t len, const time_t deadline)
     boost::scoped_array<uint8_t> tmp(new uint8_t[len]);
     buf_.swap(tmp);
   }
-  deadline_.expires_at( boost::posix_time::from_time_t(deadline) );             // set deadline timer
-  ec_       =boost::asio::error::would_block;                                   // initil value of error code
+  deadline_.expires_at( boost::posix_time::from_time_t(deadline) );     // set deadline timer
+  boost::system::error_code ec=boost::asio::error::would_block;         // initil value of error code
   size_t bytesLeft=len;
 
   // loop until whole message is gathered
@@ -91,17 +91,17 @@ DataRef NetTCP::receiveImpl(const size_t len, const time_t deadline)
     const size_t got=len-bytesLeft;
     size_t       bytesTransferred=0;
     assert(got+bytesLeft==len);
-    ErrorCodeWithSizeSetter ecsh(ec_, bytesTransferred);                        // helper for callbacks
-    sock_.async_receive(buffer(buf_.get()+got, bytesLeft), ecsh);               // read given ammount of data
+    ErrorCodeWithSizeSetter ecsh(ec, bytesTransferred);                 // helper for callbacks
+    sock_.async_receive(buffer(buf_.get()+got, bytesLeft), ecsh);       // read given ammount of data
 
     // wait for operation to complete
     do
     {
       io_.run_one();
     }
-    while(ec_==boost::asio::error::would_block);
+    while(ec==boost::asio::error::would_block);
     // check for errors
-    if(ec_)
+    if(ec)
       throw ExceptionNetworkError(SYSTEM_SAVE_LOCATION, sock_.remote_endpoint().address().to_string(), "unable to read (all) data");
 
     // ok - mark that sone data has been trasnfered
