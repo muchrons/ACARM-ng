@@ -12,7 +12,7 @@
 
 #include "Persistency/Analyzer.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace detail
 {
@@ -38,6 +38,6 @@ struct LocalAnalyzersCache: public std::map<std::string, Persistency::AnalyzerPt
 }; // struct LocalAnalyzersCache
 
 } // namespace detail
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

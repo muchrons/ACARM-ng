@@ -12,7 +12,7 @@
 
 using namespace std;
 using namespace Persistency;
-using namespace Facades::detail;
+using namespace DataFacades::detail;
 
 namespace
 {
@@ -22,7 +22,7 @@ struct TestClass
   TestClass(void):
     conn_(new TestIOConnectionParamMap),
     t_( conn_->createNewTransaction("test_analyzers_creator_impl") ),
-    nextID_( Facades::IDAssigner::get()->assignAnalyzerID(conn_, t_).get() ),
+    nextID_( DataFacades::IDAssigner::get()->assignAnalyzerID(conn_, t_).get() ),
     aci_(conn_, t_)
   {
   }

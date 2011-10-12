@@ -13,7 +13,7 @@
 #include "Persistency/ReferenceURL.hpp"
 #include "DataFacades/StrAccess/MainDispatcher.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -49,6 +49,6 @@ struct OnReferenceURL: private System::NoInstance
 }; // struct OnReferenceURL
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

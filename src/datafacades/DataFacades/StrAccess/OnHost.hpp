@@ -13,7 +13,7 @@
 #include "Persistency/Host.hpp"
 #include "DataFacades/StrAccess/MainDispatcher.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -59,6 +59,6 @@ struct OnHost: private System::NoInstance
 }; // struct OnHost
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

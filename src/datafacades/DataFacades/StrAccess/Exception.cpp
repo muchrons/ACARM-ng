@@ -4,7 +4,7 @@
  */
 #include "DataFacades/StrAccess/Exception.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -15,4 +15,4 @@ Exception::Exception(const Location &where, const std::string &details):
 }
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades

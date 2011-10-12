@@ -12,7 +12,7 @@
 
 using namespace std;
 using namespace Persistency;
-using namespace Facades;
+using namespace DataFacades;
 
 namespace
 {
@@ -70,7 +70,7 @@ template<>
 template<>
 void testObj::test<3>(void)
 {
-  const Analyzer::ID::Numeric nextID=Facades::IDAssigner::get()->assignAnalyzerID(conn_, t_).get();
+  const Analyzer::ID::Numeric nextID=DataFacades::IDAssigner::get()->assignAnalyzerID(conn_, t_).get();
   const AnalyzerPtrNN         a1    =ac_.construct(conn_, t_, "Disturbed/1", "6.66", "mpg123", NULL);
   const AnalyzerPtrNN         a2    =ac_.construct(conn_, t_, "Disturbed/2", "6.66", "mpg123", NULL);
   ensure_equals("invalid ID 1", a1->getID().get(), nextID+1u);

@@ -14,7 +14,7 @@
 #include "System/SharedPtrNotNULL.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -64,6 +64,6 @@ struct IsSmartPointer< boost::scoped_ptr<T> >: private System::NoInstance
 }; // struct IsSmartPointer
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

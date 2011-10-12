@@ -6,7 +6,7 @@
 
 #include "DataFacades/StrAccess/IsCollection.hpp"
 
-using namespace Facades::StrAccess;
+using namespace DataFacades::StrAccess;
 
 namespace
 {

@@ -6,7 +6,7 @@
 
 #include "DataFacades/StrAccess/IsPointer.hpp"
 
-using namespace Facades::StrAccess;
+using namespace DataFacades::StrAccess;
 
 namespace
 {

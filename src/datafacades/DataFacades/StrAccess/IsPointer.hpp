@@ -11,7 +11,7 @@
 
 #include "System/NoInstance.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -25,6 +25,6 @@ struct IsPointer: private System::NoInstance
 }; // struct IsPointer
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

@@ -15,10 +15,10 @@
 
 using namespace std;
 using namespace Persistency;
-using namespace Facades::StrAccess;
+using namespace DataFacades::StrAccess;
 using namespace TestHelpers::Persistency;
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -195,6 +195,6 @@ struct TestBaseData: private TestStubs
 };
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

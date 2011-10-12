@@ -5,7 +5,7 @@
 #include "DataFacades/AnalyzersCreator.hpp"
 #include "DataFacades/detail/AnalyzersCreatorImpl.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 
 Persistency::AnalyzerPtrNN AnalyzersCreator::construct(Persistency::IO::ConnectionPtrNN              conn,
@@ -30,4 +30,4 @@ Persistency::AnalyzerPtrNN AnalyzersCreator::construct(Persistency::IO::Connecti
   return analyzer;
 }
 
-} // namespace Facades
+} // namespace DataFacades

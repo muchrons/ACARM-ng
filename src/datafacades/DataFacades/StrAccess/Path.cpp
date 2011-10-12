@@ -6,7 +6,7 @@
 
 #include "DataFacades/StrAccess/Path.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -40,4 +40,4 @@ void Path::tokenizePath(void)
 }
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades

@@ -13,7 +13,7 @@
 #include "Persistency/Analyzer.hpp"
 #include "DataFacades/StrAccess/MainDispatcher.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -55,6 +55,6 @@ struct OnAnalyzer: private System::NoInstance
 }; // struct OnAnalyzer
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

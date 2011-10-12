@@ -9,7 +9,7 @@
 
 using namespace std;
 
-namespace Facades
+namespace DataFacades
 {
 namespace detail
 {
@@ -48,4 +48,4 @@ LocalAnalyzersCache::Hash LocalAnalyzersCache::makeHash(const Persistency::Analy
 }
 
 } // namespace detail
-} // namespace Facades
+} // namespace DataFacades

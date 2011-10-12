@@ -7,7 +7,7 @@
 
 #include "DataFacades/StrAccess/detail/isIndex.hpp"
 
-using namespace Facades::StrAccess::detail;
+using namespace DataFacades::StrAccess::detail;
 
 namespace
 {

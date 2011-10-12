@@ -9,7 +9,7 @@
 #include "Algo/forEachUniqueLeaf.hpp"
 #include "DataFacades/StrAccess/OnMetaAlert.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -77,4 +77,4 @@ OnMetaAlert::Nodes OnMetaAlert::getAllLeafs(const Persistency::GraphNode &root)
 }
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades

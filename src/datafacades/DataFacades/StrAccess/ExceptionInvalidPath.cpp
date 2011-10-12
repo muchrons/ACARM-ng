@@ -4,7 +4,7 @@
  */
 #include "DataFacades/StrAccess/ExceptionInvalidPath.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -18,4 +18,4 @@ ExceptionInvalidPath::ExceptionInvalidPath(const Location    &where,
 }
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades

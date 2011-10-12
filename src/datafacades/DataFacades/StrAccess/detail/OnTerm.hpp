@@ -20,7 +20,7 @@
 #include "DataFacades/StrAccess/SpecialMapKeys.hpp"
 #include "DataFacades/StrAccess/collectionSize.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -125,6 +125,6 @@ struct OnTerm: private System::NoInstance
 
 } // namespace detail
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

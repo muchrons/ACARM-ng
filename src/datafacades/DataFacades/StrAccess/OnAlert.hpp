@@ -13,7 +13,7 @@
 #include "Persistency/Alert.hpp"
 #include "DataFacades/StrAccess/MainDispatcher.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -69,6 +69,6 @@ struct OnAlert: private System::NoInstance
 }; // struct OnAlert
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

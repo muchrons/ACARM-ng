@@ -18,7 +18,7 @@
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/IO/Transaction.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace detail
 {
@@ -67,6 +67,6 @@ private:
  */
 typedef System::Singleton<detail::IDAssigner> IDAssigner;
 
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

@@ -7,7 +7,7 @@
 
 #include "DataFacades/StrAccess/collectionSize.hpp"
 
-using namespace Facades::StrAccess;
+using namespace DataFacades::StrAccess;
 
 namespace
 {

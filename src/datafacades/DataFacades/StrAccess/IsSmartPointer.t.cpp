@@ -6,7 +6,7 @@
 
 #include "DataFacades/StrAccess/IsSmartPointer.hpp"
 
-using namespace Facades::StrAccess;
+using namespace DataFacades::StrAccess;
 
 namespace
 {

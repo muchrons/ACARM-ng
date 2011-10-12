@@ -7,7 +7,7 @@
 
 /* public header */
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -30,6 +30,6 @@ inline size_t collectionSize(CIter begin, const CIter end)
 } // collectionSize()
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

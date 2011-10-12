@@ -7,7 +7,7 @@
 #include "DataFacades/StrAccess/OnHost.hpp"
 #include "DataFacades/StrAccess/TestBaseData.t.hpp"
 
-using namespace Facades::StrAccess;
+using namespace DataFacades::StrAccess;
 
 namespace
 {

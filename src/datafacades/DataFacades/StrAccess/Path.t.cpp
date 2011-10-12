@@ -7,7 +7,7 @@
 
 #include "DataFacades/StrAccess/Path.hpp"
 
-using namespace Facades::StrAccess;
+using namespace DataFacades::StrAccess;
 
 namespace
 {

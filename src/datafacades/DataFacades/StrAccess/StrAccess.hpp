@@ -31,7 +31,7 @@
  * dispatcher to process given path, using user-provided callbacks. in a simples form it may
  * look like this:
  *
- * namespace StrFc=Persnstency::Facades::StrAccess;
+ * namespace StrFc=DataFacades::StrAccess;
  * typedef StrFc::Params<StrFc::DefaultHandleMap, MyCallbackHandle> Params;
  * MyCallbackHandle mcb;
  * Params           p(StrFc::Path("metaalert.id"), mcb);

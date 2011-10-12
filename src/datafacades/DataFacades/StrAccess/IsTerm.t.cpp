@@ -8,7 +8,7 @@
 
 #include "DataFacades/StrAccess/IsTerm.hpp"
 
-using namespace Facades::StrAccess;
+using namespace DataFacades::StrAccess;
 namespace net=boost::asio::ip;
 
 namespace

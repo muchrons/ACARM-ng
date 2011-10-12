@@ -9,8 +9,8 @@
 #include "DataFacades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
-using namespace Facades::StrAccess;
-using namespace Facades::StrAccess::detail;
+using namespace DataFacades::StrAccess;
+using namespace DataFacades::StrAccess::detail;
 namespace net=boost::asio::ip;
 
 namespace

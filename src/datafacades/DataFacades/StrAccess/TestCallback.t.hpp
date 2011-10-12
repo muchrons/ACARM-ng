@@ -7,7 +7,7 @@
 
 #include <string>
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -45,6 +45,6 @@ struct TestCallback
 }; // strict TestCallback
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

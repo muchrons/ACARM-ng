@@ -14,7 +14,7 @@
 #include "Base/Threads/GrowingVector.hpp"
 #include "Persistency/NodeChildrenVector.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -64,6 +64,6 @@ struct IsCollection<Persistency::NodeChildrenVector>: private System::NoInstance
 }; // struct IsCollection
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

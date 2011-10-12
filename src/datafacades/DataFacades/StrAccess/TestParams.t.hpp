@@ -12,8 +12,8 @@
 namespace
 {
 
-typedef Facades::StrAccess::Params<Facades::StrAccess::DefaultHandleMap,
-                                   Facades::StrAccess::TestCallback>     TestParams;
+typedef DataFacades::StrAccess::Params<DataFacades::StrAccess::DefaultHandleMap,
+                                       DataFacades::StrAccess::TestCallback>     TestParams;
 
 } // unnamed namespace
 

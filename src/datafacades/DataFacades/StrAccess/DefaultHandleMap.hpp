@@ -25,7 +25,7 @@
 #include "DataFacades/StrAccess/detail/OnTerm.hpp"
 #include "DataFacades/StrAccess/detail/OnNonTerm.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -61,6 +61,6 @@ typedef boost::mpl::map<
   > DefaultHandleMap;
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

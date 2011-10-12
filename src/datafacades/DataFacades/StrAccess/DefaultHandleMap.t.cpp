@@ -11,8 +11,8 @@
 using namespace boost;
 using namespace boost::mpl;
 using namespace Persistency;
-using namespace Facades::StrAccess;
-using namespace Facades::StrAccess::detail;
+using namespace DataFacades::StrAccess;
+using namespace DataFacades::StrAccess::detail;
 
 namespace
 {

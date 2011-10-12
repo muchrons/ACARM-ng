@@ -10,7 +10,7 @@
 #include "DataFacades/StrAccess/Path.hpp"
 #include "DataFacades/StrAccess/Exception.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -33,6 +33,6 @@ public:
 }; // class ExceptionInvalidPath
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

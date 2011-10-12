@@ -7,7 +7,7 @@
 #include "DataFacades/detail/LocalAnalyzersCache.hpp"
 
 using namespace Persistency;
-using namespace Facades::detail;
+using namespace DataFacades::detail;
 
 namespace
 {

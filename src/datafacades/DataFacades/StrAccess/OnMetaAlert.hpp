@@ -13,7 +13,7 @@
 #include "Persistency/GraphNode.hpp"
 #include "DataFacades/StrAccess/MainDispatcher.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -76,6 +76,6 @@ private:
 }; // struct OnMetaAlert
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

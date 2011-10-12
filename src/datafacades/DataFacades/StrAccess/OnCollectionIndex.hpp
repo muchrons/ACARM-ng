@@ -15,7 +15,7 @@
 #include "DataFacades/StrAccess/MainDispatcher.hpp"
 #include "DataFacades/StrAccess/collectionSize.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -60,6 +60,6 @@ struct OnCollectionIndex: private System::NoInstance
 }; // struct OnCollectionIndex
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

@@ -7,7 +7,7 @@
 #include "DataFacades/StrAccess/detail/isIndex.hpp"
 
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -26,4 +26,4 @@ bool isIndex(const std::string &str)
 
 } // namespace detail
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades

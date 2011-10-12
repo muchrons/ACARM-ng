@@ -12,7 +12,7 @@
 #include "Persistency/IO/Connection.hpp"
 #include "DataFacades/detail/LocalAnalyzersCache.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace detail
 {
@@ -52,6 +52,6 @@ private:
 }; // class AnalyzersCreatorImpl
 
 } // namespace detail
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

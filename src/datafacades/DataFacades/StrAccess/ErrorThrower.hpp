@@ -13,7 +13,7 @@
 #include "DataFacades/StrAccess/SpecialMapKeys.hpp"
 #include "DataFacades/StrAccess/detail/isIndex.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -95,6 +95,6 @@ struct ErrorThrower: private System::NoInstance
 }; // struct ErrorThrower
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

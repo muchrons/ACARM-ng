@@ -10,7 +10,7 @@
 
 using namespace Persistency;
 
-namespace Facades
+namespace DataFacades
 {
 namespace detail
 {
@@ -41,10 +41,10 @@ Persistency::AnalyzerPtrNN AnalyzersCreatorImpl::construct(const LocalAnalyzersC
   }
 
   // if ID is not assigned to this object yet, assign one as save it
-  const Analyzer::ID id( Facades::IDAssigner::get()->assignAnalyzerID(conn_, t_) ); // assign
-  dc_->write( hash, Commons::Convert::to<std::string>( id.get() ) );                // save mapping
-  return AnalyzerPtrNN( new Analyzer(id, name, version, os, ip) );                  // return object
+  const Analyzer::ID id( DataFacades::IDAssigner::get()->assignAnalyzerID(conn_, t_) ); // assign
+  dc_->write( hash, Commons::Convert::to<std::string>( id.get() ) );                    // save mapping
+  return AnalyzerPtrNN( new Analyzer(id, name, version, os, ip) );                      // return object
 }
 
 } // namespace detail
-} // namespace Facades
+} // namespace DataFacades

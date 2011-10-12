@@ -12,7 +12,7 @@
 #include "DataFacades/TestIOConnectionParamMap.t.hpp"
 
 using namespace Persistency;
-using namespace Facades;
+using namespace DataFacades;
 
 namespace
 {

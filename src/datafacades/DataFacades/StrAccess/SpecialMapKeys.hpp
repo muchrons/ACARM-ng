@@ -9,7 +9,7 @@
 
 #include "System/NoInstance.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -30,6 +30,6 @@ struct ErrorHandle: private System::NoInstance {};
 struct InvalidPathExceptionType: private System::NoInstance {};
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

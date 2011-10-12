@@ -11,7 +11,7 @@ namespace
 
 struct TestClass
 {
-  Facades::StrAccess::TestCallback callback_;
+  DataFacades::StrAccess::TestCallback callback_;
 };
 
 typedef tut::test_group<TestClass> factory;

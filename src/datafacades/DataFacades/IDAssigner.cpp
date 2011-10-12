@@ -15,7 +15,7 @@
 using namespace Persistency;
 using Persistency::IO::DynamicConfig;
 
-namespace Facades
+namespace DataFacades
 {
 namespace detail
 {
@@ -168,4 +168,4 @@ typename T::ID IDAssigner::assign(Persistency::IO::ConnectionPtrNN conn, Persist
 }
 
 } // namespace detail
-} // namespace Facades
+} // namespace DataFacades

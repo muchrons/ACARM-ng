@@ -13,7 +13,7 @@
 #include "Persistency/IO/Connection.hpp"
 #include "DataFacades/detail/LocalAnalyzersCache.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 
 /** \brief faced for creating analyzers functionality.
@@ -49,6 +49,6 @@ private:
   detail::LocalAnalyzersCache cache_;
 }; // class AnalyzersCreator
 
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

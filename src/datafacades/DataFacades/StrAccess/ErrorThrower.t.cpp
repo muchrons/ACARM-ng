@@ -8,7 +8,7 @@
 #include "DataFacades/StrAccess/DefaultHandleMap.hpp"
 #include "DataFacades/StrAccess/TestParams.t.hpp"
 
-using namespace Facades::StrAccess;
+using namespace DataFacades::StrAccess;
 
 namespace
 {

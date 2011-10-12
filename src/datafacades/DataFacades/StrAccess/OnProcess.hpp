@@ -13,7 +13,7 @@
 #include "Persistency/Process.hpp"
 #include "DataFacades/StrAccess/MainDispatcher.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -61,6 +61,6 @@ struct OnProcess: private System::NoInstance
 }; // struct OnProcess
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

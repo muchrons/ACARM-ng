@@ -16,7 +16,7 @@
 #include "DataFacades/StrAccess/Path.hpp"
 #include "DataFacades/StrAccess/SpecialMapKeys.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -146,6 +146,6 @@ private:
 }; // struct Params
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

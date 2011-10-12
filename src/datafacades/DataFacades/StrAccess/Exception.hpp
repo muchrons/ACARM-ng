@@ -9,7 +9,7 @@
 
 #include "DataFacades/Exception.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -27,6 +27,6 @@ public:
 }; // class ExceptionConversionError
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

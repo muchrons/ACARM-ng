@@ -11,7 +11,7 @@
 #include "DataFacades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
-using namespace Facades::StrAccess;
+using namespace DataFacades::StrAccess;
 
 namespace
 {

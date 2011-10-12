@@ -16,7 +16,7 @@
 #include "DataFacades/StrAccess/IsCollection.hpp"
 #include "DataFacades/StrAccess/SpecialMapKeys.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -86,6 +86,6 @@ struct OnNonTerm: private System::NoInstance
 
 } // namespace detail
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif

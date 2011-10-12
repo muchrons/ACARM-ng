@@ -16,7 +16,7 @@
 #include "DataFacades/StrAccess/IsPointer.hpp"
 #include "DataFacades/StrAccess/IsSmartPointer.hpp"
 
-namespace Facades
+namespace DataFacades
 {
 namespace StrAccess
 {
@@ -179,6 +179,6 @@ struct HandleIndirection: private System::NoInstance
 }; // struct HandleIndirection
 
 } // namespace StrAccess
-} // namespace Facades
+} // namespace DataFacades
 
 #endif
