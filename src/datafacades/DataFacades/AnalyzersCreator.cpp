@@ -2,8 +2,8 @@
  * AnalyzersCreator.cpp
  *
  */
-#include "Persistency/Facades/AnalyzersCreator.hpp"
-#include "Persistency/Facades/detail/AnalyzersCreatorImpl.hpp"
+#include "DataFacades/AnalyzersCreator.hpp"
+#include "DataFacades/detail/AnalyzersCreatorImpl.hpp"
 
 namespace Persistency
 {

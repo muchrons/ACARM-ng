@@ -48,8 +48,8 @@
 
 /* public header */
 
-#include "Persistency/Facades/StrAccess/Params.hpp"
-#include "Persistency/Facades/StrAccess/DefaultHandleMap.hpp"
-#include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
+#include "DataFacades/StrAccess/Params.hpp"
+#include "DataFacades/StrAccess/DefaultHandleMap.hpp"
+#include "DataFacades/StrAccess/MainDispatcher.hpp"
 
 #endif

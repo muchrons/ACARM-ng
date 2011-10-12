@@ -8,8 +8,8 @@
 #include <cassert>
 
 #include "Commons/Convert.hpp"
-#include "Persistency/Facades/IDAssigner.hpp"
-#include "Persistency/Facades/TestIOConnectionParamMap.t.hpp"
+#include "DataFacades/IDAssigner.hpp"
+#include "DataFacades/TestIOConnectionParamMap.t.hpp"
 
 using namespace Persistency;
 using namespace Persistency::Facades;

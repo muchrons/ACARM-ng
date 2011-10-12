@@ -7,8 +7,8 @@
 #include <boost/static_assert.hpp>
 #include <boost/type_traits/is_same.hpp>
 
-#include "Persistency/Facades/StrAccess/HandleIndirection.hpp"
-#include "Persistency/Facades/StrAccess/TestParams.t.hpp"
+#include "DataFacades/StrAccess/HandleIndirection.hpp"
+#include "DataFacades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
 using namespace Persistency::Facades::StrAccess;

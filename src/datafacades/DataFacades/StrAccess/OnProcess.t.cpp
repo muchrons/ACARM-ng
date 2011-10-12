@@ -5,8 +5,8 @@
 #include <tut.h>
 #include <boost/lexical_cast.hpp>
 
-#include "Persistency/Facades/StrAccess/OnProcess.hpp"
-#include "Persistency/Facades/StrAccess/TestBaseData.t.hpp"
+#include "DataFacades/StrAccess/OnProcess.hpp"
+#include "DataFacades/StrAccess/TestBaseData.t.hpp"
 
 using namespace Persistency;
 using namespace Persistency::Facades::StrAccess;

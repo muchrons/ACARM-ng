@@ -6,7 +6,7 @@
 
 #include "Commons/computeHash.hpp"
 #include "Persistency/Exception.hpp"
-#include "Persistency/Facades/detail/LocalAnalyzersCache.hpp"
+#include "DataFacades/detail/LocalAnalyzersCache.hpp"
 
 using namespace std;
 

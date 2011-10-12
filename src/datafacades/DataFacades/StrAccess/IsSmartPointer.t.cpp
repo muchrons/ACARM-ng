@@ -4,7 +4,7 @@
  */
 #include <tut.h>
 
-#include "Persistency/Facades/StrAccess/IsSmartPointer.hpp"
+#include "DataFacades/StrAccess/IsSmartPointer.hpp"
 
 using namespace Persistency::Facades::StrAccess;
 

@@ -4,7 +4,7 @@
  */
 #include <ctype.h>
 
-#include "Persistency/Facades/StrAccess/detail/isIndex.hpp"
+#include "DataFacades/StrAccess/detail/isIndex.hpp"
 
 
 namespace Persistency

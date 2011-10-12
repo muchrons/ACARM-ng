@@ -4,7 +4,7 @@
  */
 #include <boost/tokenizer.hpp>
 
-#include "Persistency/Facades/StrAccess/Path.hpp"
+#include "DataFacades/StrAccess/Path.hpp"
 
 namespace Persistency
 {

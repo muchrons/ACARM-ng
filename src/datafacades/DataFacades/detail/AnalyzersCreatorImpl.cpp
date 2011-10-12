@@ -4,9 +4,9 @@
  */
 #include <cassert>
 
-#include "Persistency/Facades/detail/AnalyzersCreatorImpl.hpp"
+#include "DataFacades/detail/AnalyzersCreatorImpl.hpp"
 #include "Commons/Convert.hpp"
-#include "Persistency/Facades/IDAssigner.hpp"
+#include "DataFacades/IDAssigner.hpp"
 
 namespace Persistency
 {

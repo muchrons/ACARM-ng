@@ -4,7 +4,7 @@
  */
 #include <tut.h>
 
-#include "Persistency/Facades/StrAccess/IsPointer.hpp"
+#include "DataFacades/StrAccess/IsPointer.hpp"
 
 using namespace Persistency::Facades::StrAccess;
 

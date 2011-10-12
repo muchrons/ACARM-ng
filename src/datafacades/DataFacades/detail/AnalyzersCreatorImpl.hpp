@@ -10,7 +10,7 @@
 
 #include "Persistency/Analyzer.hpp"
 #include "Persistency/IO/Connection.hpp"
-#include "Persistency/Facades/detail/LocalAnalyzersCache.hpp"
+#include "DataFacades/detail/LocalAnalyzersCache.hpp"
 
 namespace Persistency
 {

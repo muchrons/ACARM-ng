@@ -2,7 +2,7 @@
  * Exception.cpp
  *
  */
-#include "Persistency/Facades/StrAccess/Exception.hpp"
+#include "DataFacades/StrAccess/Exception.hpp"
 
 namespace Persistency
 {

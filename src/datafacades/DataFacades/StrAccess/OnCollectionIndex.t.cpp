@@ -7,8 +7,8 @@
 #include <string>
 #include <boost/mpl/insert.hpp>
 
-#include "Persistency/Facades/StrAccess/OnCollectionIndex.hpp"
-#include "Persistency/Facades/StrAccess/TestParams.t.hpp"
+#include "DataFacades/StrAccess/OnCollectionIndex.hpp"
+#include "DataFacades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
 using namespace Persistency::Facades::StrAccess;

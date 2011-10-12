@@ -5,7 +5,7 @@
 #include <tut.h>
 #include <sstream>
 
-#include "Persistency/Facades/StrAccess/Path.hpp"
+#include "DataFacades/StrAccess/Path.hpp"
 
 using namespace Persistency::Facades::StrAccess;
 

@@ -7,8 +7,8 @@
 
 /* public header */
 
-#include "Persistency/Facades/StrAccess/Path.hpp"
-#include "Persistency/Facades/StrAccess/Exception.hpp"
+#include "DataFacades/StrAccess/Path.hpp"
+#include "DataFacades/StrAccess/Exception.hpp"
 
 namespace Persistency
 {

@@ -12,9 +12,9 @@
 
 #include "System/NoInstance.hpp"
 #include "Commons/Convert.hpp"
-#include "Persistency/Facades/StrAccess/IsTerm.hpp"
-#include "Persistency/Facades/StrAccess/IsCollection.hpp"
-#include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
+#include "DataFacades/StrAccess/IsTerm.hpp"
+#include "DataFacades/StrAccess/IsCollection.hpp"
+#include "DataFacades/StrAccess/SpecialMapKeys.hpp"
 
 namespace Persistency
 {

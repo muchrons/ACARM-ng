@@ -5,9 +5,9 @@
 #ifndef INCLUDE_PERSISTENCY_FACADES_SACCESS_TESTPARAMS_T_HPP_FILE
 #define INCLUDE_PERSISTENCY_FACADES_SACCESS_TESTPARAMS_T_HPP_FILE
 
-#include "Persistency/Facades/StrAccess/Params.hpp"
-#include "Persistency/Facades/StrAccess/DefaultHandleMap.hpp"
-#include "Persistency/Facades/StrAccess/TestCallback.t.hpp"
+#include "DataFacades/StrAccess/Params.hpp"
+#include "DataFacades/StrAccess/DefaultHandleMap.hpp"
+#include "DataFacades/StrAccess/TestCallback.t.hpp"
 
 namespace
 {

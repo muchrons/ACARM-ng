@@ -9,7 +9,7 @@
 #include "Base/Threads/Lock.hpp"
 #include "Logger/Logger.hpp"
 #include "Commons/Convert.hpp"
-#include "Persistency/Facades/IDAssigner.hpp"
+#include "DataFacades/IDAssigner.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
 
 using Persistency::IO::DynamicConfig;

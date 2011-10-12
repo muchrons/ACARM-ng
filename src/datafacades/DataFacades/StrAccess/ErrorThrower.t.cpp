@@ -4,9 +4,9 @@
  */
 #include <tut.h>
 
-#include "Persistency/Facades/StrAccess/ErrorThrower.hpp"
-#include "Persistency/Facades/StrAccess/DefaultHandleMap.hpp"
-#include "Persistency/Facades/StrAccess/TestParams.t.hpp"
+#include "DataFacades/StrAccess/ErrorThrower.hpp"
+#include "DataFacades/StrAccess/DefaultHandleMap.hpp"
+#include "DataFacades/StrAccess/TestParams.t.hpp"
 
 using namespace Persistency::Facades::StrAccess;
 

@@ -12,10 +12,10 @@
 #include <boost/mpl/has_key.hpp>
 
 #include "System/NoInstance.hpp"
-#include "Persistency/Facades/StrAccess/IsTerm.hpp"
-#include "Persistency/Facades/StrAccess/IsCollection.hpp"
-#include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
-#include "Persistency/Facades/StrAccess/HandleIndirection.hpp"
+#include "DataFacades/StrAccess/IsTerm.hpp"
+#include "DataFacades/StrAccess/IsCollection.hpp"
+#include "DataFacades/StrAccess/SpecialMapKeys.hpp"
+#include "DataFacades/StrAccess/HandleIndirection.hpp"
 
 namespace Persistency
 {

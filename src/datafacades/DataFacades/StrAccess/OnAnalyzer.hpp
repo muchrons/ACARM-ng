@@ -11,7 +11,7 @@
 
 #include "System/NoInstance.hpp"
 #include "Persistency/Analyzer.hpp"
-#include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
+#include "DataFacades/StrAccess/MainDispatcher.hpp"
 
 namespace Persistency
 {

@@ -12,9 +12,9 @@
 #include <boost/mpl/if.hpp>
 
 #include "System/NoInstance.hpp"
-#include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
-#include "Persistency/Facades/StrAccess/IsPointer.hpp"
-#include "Persistency/Facades/StrAccess/IsSmartPointer.hpp"
+#include "DataFacades/StrAccess/SpecialMapKeys.hpp"
+#include "DataFacades/StrAccess/IsPointer.hpp"
+#include "DataFacades/StrAccess/IsSmartPointer.hpp"
 
 namespace Persistency
 {

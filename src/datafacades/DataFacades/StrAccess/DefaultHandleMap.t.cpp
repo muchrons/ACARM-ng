@@ -6,7 +6,7 @@
 #include <boost/mpl/at.hpp>
 #include <boost/type_traits/is_same.hpp>
 
-#include "Persistency/Facades/StrAccess/DefaultHandleMap.hpp"
+#include "DataFacades/StrAccess/DefaultHandleMap.hpp"
 
 using namespace boost;
 using namespace boost::mpl;

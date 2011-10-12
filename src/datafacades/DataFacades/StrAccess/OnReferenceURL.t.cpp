@@ -4,8 +4,8 @@
  */
 #include <tut.h>
 
-#include "Persistency/Facades/StrAccess/OnReferenceURL.hpp"
-#include "Persistency/Facades/StrAccess/TestBaseData.t.hpp"
+#include "DataFacades/StrAccess/OnReferenceURL.hpp"
+#include "DataFacades/StrAccess/TestBaseData.t.hpp"
 
 using namespace Persistency;
 using namespace Persistency::Facades::StrAccess;

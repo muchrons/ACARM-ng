@@ -11,7 +11,7 @@
 #include "Persistency/TestBase.t.hpp"
 #include "Persistency/TestHelpers.t.hpp"
 #include "Persistency/IO/IOStubs.t.hpp"
-#include "Persistency/Facades/StrAccess/TestParams.t.hpp"
+#include "DataFacades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
 using namespace Persistency;

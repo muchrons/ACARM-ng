@@ -7,8 +7,8 @@
 #include <boost/type_traits/is_same.hpp>
 
 #include "System/ignore.hpp"
-#include "Persistency/Facades/StrAccess/Params.hpp"
-#include "Persistency/Facades/StrAccess/TestParams.t.hpp"
+#include "DataFacades/StrAccess/Params.hpp"
+#include "DataFacades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
 using namespace Persistency::Facades::StrAccess;

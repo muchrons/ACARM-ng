@@ -10,8 +10,8 @@
 #include <boost/mpl/at.hpp>
 
 #include "System/NoInstance.hpp"
-#include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
-#include "Persistency/Facades/StrAccess/detail/isIndex.hpp"
+#include "DataFacades/StrAccess/SpecialMapKeys.hpp"
+#include "DataFacades/StrAccess/detail/isIndex.hpp"
 
 namespace Persistency
 {

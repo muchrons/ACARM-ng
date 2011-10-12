@@ -4,7 +4,7 @@
  */
 #include <tut.h>
 
-#include "Persistency/Facades/detail/LocalAnalyzersCache.hpp"
+#include "DataFacades/detail/LocalAnalyzersCache.hpp"
 
 using namespace Persistency;
 using namespace Persistency::Facades::detail;

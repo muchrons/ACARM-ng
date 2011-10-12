@@ -4,7 +4,7 @@
  */
 #include <tut.h>
 
-#include "Persistency/Facades/StrAccess/TestCallback.t.hpp"
+#include "DataFacades/StrAccess/TestCallback.t.hpp"
 
 namespace
 {

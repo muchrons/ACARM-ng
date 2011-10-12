@@ -16,9 +16,9 @@
 #include "Commons/Convert.hpp"
 #include "Persistency/MD5Sum.hpp"
 #include "Persistency/IPTypes.hpp"
-#include "Persistency/Facades/StrAccess/IsTerm.hpp"
-#include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
-#include "Persistency/Facades/StrAccess/collectionSize.hpp"
+#include "DataFacades/StrAccess/IsTerm.hpp"
+#include "DataFacades/StrAccess/SpecialMapKeys.hpp"
+#include "DataFacades/StrAccess/collectionSize.hpp"
 
 namespace Persistency
 {

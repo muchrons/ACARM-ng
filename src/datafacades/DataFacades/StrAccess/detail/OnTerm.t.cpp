@@ -5,8 +5,8 @@
 #include <tut.h>
 #include <vector>
 
-#include "Persistency/Facades/StrAccess/detail/OnTerm.hpp"
-#include "Persistency/Facades/StrAccess/TestParams.t.hpp"
+#include "DataFacades/StrAccess/detail/OnTerm.hpp"
+#include "DataFacades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
 using namespace Persistency::Facades::StrAccess;

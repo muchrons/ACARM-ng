@@ -11,9 +11,9 @@
 
 #include "System/NoInstance.hpp"
 #include "Commons/Convert.hpp"
-#include "Persistency/Facades/StrAccess/IsCollection.hpp"
-#include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
-#include "Persistency/Facades/StrAccess/collectionSize.hpp"
+#include "DataFacades/StrAccess/IsCollection.hpp"
+#include "DataFacades/StrAccess/MainDispatcher.hpp"
+#include "DataFacades/StrAccess/collectionSize.hpp"
 
 namespace Persistency
 {

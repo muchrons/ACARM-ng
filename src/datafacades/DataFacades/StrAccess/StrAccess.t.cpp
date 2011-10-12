@@ -4,8 +4,8 @@
  */
 #include <tut.h>
 
-#include "Persistency/Facades/StrAccess/StrAccess.hpp"
-#include "Persistency/Facades/StrAccess/TestBaseData.t.hpp"
+#include "DataFacades/StrAccess/StrAccess.hpp"
+#include "DataFacades/StrAccess/TestBaseData.t.hpp"
 
 using namespace Persistency::Facades::StrAccess;
 

@@ -7,8 +7,8 @@
 #include <vector>
 #include <boost/mpl/insert.hpp>
 
-#include "Persistency/Facades/StrAccess/detail/OnNonTerm.hpp"
-#include "Persistency/Facades/StrAccess/TestParams.t.hpp"
+#include "DataFacades/StrAccess/detail/OnNonTerm.hpp"
+#include "DataFacades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
 using namespace Persistency::Facades::StrAccess;

@@ -11,19 +11,19 @@
 #include <boost/mpl/at.hpp>
 
 #include "System/NoInstance.hpp"
-#include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
-#include "Persistency/Facades/StrAccess/ErrorThrower.hpp"
-#include "Persistency/Facades/StrAccess/OnCollectionIndex.hpp"
-#include "Persistency/Facades/StrAccess/OnHost.hpp"
-#include "Persistency/Facades/StrAccess/OnAlert.hpp"
-#include "Persistency/Facades/StrAccess/OnProcess.hpp"
-#include "Persistency/Facades/StrAccess/OnService.hpp"
-#include "Persistency/Facades/StrAccess/OnAnalyzer.hpp"
-#include "Persistency/Facades/StrAccess/OnMetaAlert.hpp"
-#include "Persistency/Facades/StrAccess/OnReferenceURL.hpp"
-#include "Persistency/Facades/StrAccess/ExceptionInvalidPath.hpp"
-#include "Persistency/Facades/StrAccess/detail/OnTerm.hpp"
-#include "Persistency/Facades/StrAccess/detail/OnNonTerm.hpp"
+#include "DataFacades/StrAccess/SpecialMapKeys.hpp"
+#include "DataFacades/StrAccess/ErrorThrower.hpp"
+#include "DataFacades/StrAccess/OnCollectionIndex.hpp"
+#include "DataFacades/StrAccess/OnHost.hpp"
+#include "DataFacades/StrAccess/OnAlert.hpp"
+#include "DataFacades/StrAccess/OnProcess.hpp"
+#include "DataFacades/StrAccess/OnService.hpp"
+#include "DataFacades/StrAccess/OnAnalyzer.hpp"
+#include "DataFacades/StrAccess/OnMetaAlert.hpp"
+#include "DataFacades/StrAccess/OnReferenceURL.hpp"
+#include "DataFacades/StrAccess/ExceptionInvalidPath.hpp"
+#include "DataFacades/StrAccess/detail/OnTerm.hpp"
+#include "DataFacades/StrAccess/detail/OnNonTerm.hpp"
 
 namespace Persistency
 {

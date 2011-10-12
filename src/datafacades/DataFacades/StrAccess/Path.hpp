@@ -10,7 +10,7 @@
 #include <string>
 #include <vector>
 
-#include "Persistency/Facades/StrAccess/ExceptionInvalidPath.hpp"
+#include "DataFacades/StrAccess/ExceptionInvalidPath.hpp"
 
 namespace Persistency
 {

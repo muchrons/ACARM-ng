@@ -5,7 +5,7 @@
 #include <tut.h>
 #include <vector>
 
-#include "Persistency/Facades/StrAccess/detail/isIndex.hpp"
+#include "DataFacades/StrAccess/detail/isIndex.hpp"
 
 using namespace Persistency::Facades::StrAccess::detail;
 

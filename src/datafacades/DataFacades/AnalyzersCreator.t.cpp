@@ -6,9 +6,9 @@
 #include <string>
 #include <cassert>
 
-#include "Persistency/Facades/AnalyzersCreator.hpp"
-#include "Persistency/Facades/TestIOConnectionParamMap.t.hpp"
-#include "Persistency/Facades/IDAssigner.hpp"
+#include "DataFacades/AnalyzersCreator.hpp"
+#include "DataFacades/TestIOConnectionParamMap.t.hpp"
+#include "DataFacades/IDAssigner.hpp"
 
 using namespace std;
 using namespace Persistency;

@@ -4,7 +4,7 @@
  */
 #include <tut.h>
 
-#include "Persistency/Facades/StrAccess/IsCollection.hpp"
+#include "DataFacades/StrAccess/IsCollection.hpp"
 
 using namespace Persistency::Facades::StrAccess;
 

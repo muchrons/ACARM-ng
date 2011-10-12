@@ -5,7 +5,7 @@
 #include <tut.h>
 #include <list>
 
-#include "Persistency/Facades/StrAccess/collectionSize.hpp"
+#include "DataFacades/StrAccess/collectionSize.hpp"
 
 using namespace Persistency::Facades::StrAccess;
 

@@ -13,8 +13,8 @@
 #include <boost/mpl/has_key.hpp>
 
 #include "Commons/SharedPtrNotNULL.hpp"
-#include "Persistency/Facades/StrAccess/Path.hpp"
-#include "Persistency/Facades/StrAccess/SpecialMapKeys.hpp"
+#include "DataFacades/StrAccess/Path.hpp"
+#include "DataFacades/StrAccess/SpecialMapKeys.hpp"
 
 namespace Persistency
 {

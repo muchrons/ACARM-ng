@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "Persistency/Facades/StrAccess/IsTerm.hpp"
+#include "DataFacades/StrAccess/IsTerm.hpp"
 
 using namespace Persistency::Facades::StrAccess;
 namespace net=boost::asio::ip;
