@@ -170,7 +170,7 @@
     ]]>
   </select>
 
-  <select id="SleectMetaAlertsSummaryByIPRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
+  <select id="SelectMetaAlertsSummaryByIPRange" resultClass="CMetaAlertSummaryEntry" parameterClass="CParamRange">
     <![CDATA[
     SELECT id,name,create_time from meta_alerts WHERE id in
     (

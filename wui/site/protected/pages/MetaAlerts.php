@@ -55,12 +55,12 @@ class MetaAlerts extends TPage
         $type=$this->Request->itemAt('type');
         $this->Range->setType($type);
 
-        $parentid=$this->Request->itemAt('parent');
-
         $severities=$this->Request->itemAt('severities');
         if( $severities!==null )
           $this->Range->CB->setSelectedValues(explode('.',$severities));
       }
+
+    $parentid=$this->Request->itemAt('parent');
 
     $this->MetaAlerts->computation_=new ComputeLinkForMetaAlerts($this->Service);
 

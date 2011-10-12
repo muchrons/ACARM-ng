@@ -10,6 +10,11 @@ class MetaAlert extends TPage
     $mid=$this->Request->itemAt('mid');
     $aid=$this->Request->itemAt('aid');
 
+    $msysid=$this->Request->itemAt('sys_id');
+
+    if ($msysid!=null)
+      $mid=CSQLMap::get()->queryForObject('MetaAlert_SysID_ID', $msysid);
+
     $this->group_count_=10;
     $this->max_children_=50;
 
