@@ -239,6 +239,27 @@ const char *xmlExpressionAndWithOver2Children=
   "</acarm_ng>"
   "";
 
+const char *xmlTermRuleRegExp=
+  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+  "<acarm_ng>"
+  "  <preprocessor>"
+  "    <accept>"
+  "      <rule path=\"a.b.c\" regexp=\"gr+y\"/>"
+  "    </accept>"
+  "  </preprocessor>"
+  "</acarm_ng>"
+  "";
+
+const char *xmlTermRuleRegExpCI=
+  "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
+  "<acarm_ng>"
+  "  <preprocessor>"
+  "    <accept>"
+  "      <rule path=\"a.b.c\" regexpci=\"Gr+Y\"/>"
+  "    </accept>"
+  "  </preprocessor>"
+  "</acarm_ng>"
+  "";
 
 
 
@@ -589,6 +610,42 @@ void testObj::test<19>(void)
     const Expression &tmp=e.getExpressions().at(2);
     ensure("invalid expression 3 type", tmp.getType()==Expression::Type::TERM);
   }
+}
+
+// test term-rule-regexp
+template<>
+template<>
+void testObj::test<20>(void)
+{
+  const Config      c=getConfig(xmlTermRuleRegExp);
+  ensure_equals("invalid number of sections", c.getSections().size(), 1u);
+  const Section    &s=c.getSections().at(0);
+  ensure("invalid section type", s.getType()==Section::Type::ACCEPT);
+  const Expression &e=s.getExpression();
+  ensure("invalid expression type", e.getType()==Expression::Type::TERM);
+  const Rule       &r=e.getRules().at(0);
+  ensure("invalid rule type", r.getType()==Rule::Type::RULE);
+  ensure("invalid rule mode", r.getMode()==Rule::Mode::REGEXP);
+  ensure_equals("invalid path", r.getPath(), "a.b.c");
+  ensure_equals("invalid value", r.getValue(), "gr+y");
+}
+
+// test term-rule-regexp-case-insensitive
+template<>
+template<>
+void testObj::test<21>(void)
+{
+  const Config      c=getConfig(xmlTermRuleRegExpCI);
+  ensure_equals("invalid number of sections", c.getSections().size(), 1u);
+  const Section    &s=c.getSections().at(0);
+  ensure("invalid section type", s.getType()==Section::Type::ACCEPT);
+  const Expression &e=s.getExpression();
+  ensure("invalid expression type", e.getType()==Expression::Type::TERM);
+  const Rule       &r=e.getRules().at(0);
+  ensure("invalid rule type", r.getType()==Rule::Type::RULE);
+  ensure("invalid rule mode", r.getMode()==Rule::Mode::REGEXPCI);
+  ensure_equals("invalid path", r.getPath(), "a.b.c");
+  ensure_equals("invalid value", r.getValue(), "Gr+Y");
 }
 
 } // namespace tut

@@ -73,7 +73,7 @@ Strategy::Strategy(const Core::Types::Proc::InstanceName &name, const Config &cf
 {
 }
 
-void Strategy::triggerImpl(const ConstNode &n)
+void Strategy::triggerImpl(BackendFacade &/*bf*/, const ConstNode &n)
 {
   // prepare data
   stringstream  ss;
