@@ -6,14 +6,13 @@
 #include <boost/mpl/insert.hpp>
 
 #include "Commons/Convert.hpp"
-#include "Persistency/Facades/StrAccess/StrAccess.hpp"
 #include "Preprocessor/Checkers/Equals.hpp"
 #include "Preprocessor/Checkers/Contains.hpp"
 #include "Preprocessor/Checkers/RegExp.hpp"
 #include "Preprocessor/Expressions/Rule.hpp"
 
 using namespace std;
-using namespace Persistency::Facades::StrAccess;
+using namespace DataFacades::StrAccess;
 
 
 namespace Preprocessor
