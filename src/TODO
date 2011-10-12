@@ -10,7 +10,6 @@ configuration:
 * refactor ConfigIO - it should read configuration file and keep it in memory. proper handles for specific parts of configuration file should be implemented by interested components.
 * add parse-at-read feature to configio - config should be accepted or rejected when running application, not delayed until acctuall usage (note: this task is connected with config's refactoring to register parsers).
 * implement common configuration module for compile-time constants used in code.
-* consider splitting configuration into multiple files (maybe directive like <include> would do the trick, preserving backward compatibility?).
 
 triggers:
 ---------
@@ -23,7 +22,6 @@ triggers:
 
 filters:
 --------
-* filter that increases priority for hosts that are out of defined set (i.e. from external network).
 * implement filter changing priority when s/d IP is from defined set (i.e.: internal network, extrnal network, critical resource, etc...).
 * editable filters' parameters (i.e. ones that can be changed from WUI, if needed) - they'll allow dynamic configuration changes and interaction with admin.
 * consider supporting addition of an alert to the middle of the chain of events (currently only the beginning and the end is supported).
@@ -40,5 +38,3 @@ misc:
 * add extra checks to test applications to ensure tests are NOT run as root (for example: commons::filesystem::createTempDirectory).
 * add (estimated) total priority of a given meta alert; it is required for the WUI to be usefull; it can be implemented by saving priority of the metal alerts when changed by filters - this would give more-less accurate results; exact result can be than saved when meta-alert is destroyed.
 * consider removing restoration of meta alerts from persistency - it causes many problems, is time-consumming, but rarely useful.
-* Persistency::Facades::StrAccess::OnMetaAlert should handle "metaalert.leafs" collection, giving direct access to all leafs of the tree.
-* Persistency::Facades::StrAccess::OnMetaAlert should handle "metaalert.severity", as a mean for getting total severity level.
