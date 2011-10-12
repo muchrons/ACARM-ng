@@ -13,8 +13,6 @@
 #include "Persistency/IO/Connection.hpp"
 #include "DataFacades/detail/LocalAnalyzersCache.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 
@@ -40,18 +38,17 @@ public:
    *  \param ip      analyzer's IP.
    *  \return analyzer's object instance.
    */
-  AnalyzerPtrNN construct(IO::ConnectionPtrNN              conn,
-                          IO::Transaction                 &t,
-                          const Analyzer::Name            &name,
-                          const Analyzer::Version         &version,
-                          const Analyzer::OperatingSystem &os,
-                          const Analyzer::IP              *ip);
+  Persistency::AnalyzerPtrNN construct(Persistency::IO::ConnectionPtrNN              conn,
+                                       Persistency::IO::Transaction                 &t,
+                                       const Persistency::Analyzer::Name            &name,
+                                       const Persistency::Analyzer::Version         &version,
+                                       const Persistency::Analyzer::OperatingSystem &os,
+                                       const Persistency::Analyzer::IP              *ip);
 
 private:
   detail::LocalAnalyzersCache cache_;
 }; // class AnalyzersCreator
 
 } // namespace Facades
-} // namespace Persistency
 
 #endif

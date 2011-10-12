@@ -7,7 +7,7 @@
 
 #include "DataFacades/StrAccess/Path.hpp"
 
-using namespace Persistency::Facades::StrAccess;
+using namespace Facades::StrAccess;
 
 namespace
 {
@@ -39,7 +39,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/Path");
+factory tf("DataFacades/StrAccess/Path");
 } // unnamed namespace
 
 

@@ -11,13 +11,13 @@ namespace
 
 struct TestClass
 {
-  Persistency::Facades::StrAccess::TestCallback callback_;
+  Facades::StrAccess::TestCallback callback_;
 };
 
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/TestCallback");
+factory tf("DataFacades/StrAccess/TestCallback");
 } // unnamed namespace
 
 

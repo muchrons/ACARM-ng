@@ -14,8 +14,6 @@
 #include "Base/Threads/GrowingVector.hpp"
 #include "Persistency/NodeChildrenVector.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -60,13 +58,12 @@ struct IsCollection< Base::NonEmptyVector<T> >: private System::NoInstance
 /** \brief makes Persistency::NodeChildrenVector<> a colection.
  */
 template<>
-struct IsCollection<NodeChildrenVector>: private System::NoInstance
+struct IsCollection<Persistency::NodeChildrenVector>: private System::NoInstance
 {
   static const bool value=true;     ///< meta-program result
 }; // struct IsCollection
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

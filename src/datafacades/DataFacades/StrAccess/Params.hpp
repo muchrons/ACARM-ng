@@ -16,8 +16,6 @@
 #include "DataFacades/StrAccess/Path.hpp"
 #include "DataFacades/StrAccess/SpecialMapKeys.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -149,6 +147,5 @@ private:
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

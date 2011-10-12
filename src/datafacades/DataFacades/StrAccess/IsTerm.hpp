@@ -14,8 +14,6 @@
 #include "System/NoInstance.hpp"
 #include "Persistency/MD5Sum.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -115,6 +113,5 @@ struct IsTerm<boost::asio::ip::address_v6>: private System::NoInstance
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

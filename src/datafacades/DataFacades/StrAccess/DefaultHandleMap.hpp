@@ -25,8 +25,6 @@
 #include "DataFacades/StrAccess/detail/OnTerm.hpp"
 #include "DataFacades/StrAccess/detail/OnNonTerm.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -53,17 +51,16 @@ typedef boost::mpl::map<
     //
     // types handles
     //
-    boost::mpl::pair<Host, OnHost>,
-    boost::mpl::pair<Alert, OnAlert>,
-    boost::mpl::pair<Service, OnService>,
-    boost::mpl::pair<Process, OnProcess>,
-    boost::mpl::pair<Analyzer, OnAnalyzer>,
-    boost::mpl::pair<GraphNode, OnMetaAlert>,
-    boost::mpl::pair<ReferenceURL, OnReferenceURL>
+    boost::mpl::pair<Persistency::Host, OnHost>,
+    boost::mpl::pair<Persistency::Alert, OnAlert>,
+    boost::mpl::pair<Persistency::Service, OnService>,
+    boost::mpl::pair<Persistency::Process, OnProcess>,
+    boost::mpl::pair<Persistency::Analyzer, OnAnalyzer>,
+    boost::mpl::pair<Persistency::GraphNode, OnMetaAlert>,
+    boost::mpl::pair<Persistency::ReferenceURL, OnReferenceURL>
   > DefaultHandleMap;
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

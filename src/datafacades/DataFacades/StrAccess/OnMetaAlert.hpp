@@ -13,8 +13,6 @@
 #include "Persistency/GraphNode.hpp"
 #include "DataFacades/StrAccess/MainDispatcher.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -35,7 +33,7 @@ struct OnMetaAlert: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const GraphNode &e, TParams p)
+  static bool process(const Persistency::GraphNode &e, TParams p)
   {
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
@@ -71,14 +69,13 @@ struct OnMetaAlert: private System::NoInstance
   }
 
 private:
-  typedef std::vector<GraphNodePtrNN> Nodes;
+  typedef std::vector<Persistency::GraphNodePtrNN> Nodes;
 
-  static Nodes getAllChildren(const GraphNode &root);
-  static Nodes getAllLeafs(const GraphNode &root);
+  static Nodes getAllChildren(const Persistency::GraphNode &root);
+  static Nodes getAllLeafs(const Persistency::GraphNode &root);
 }; // struct OnMetaAlert
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

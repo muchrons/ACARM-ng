@@ -12,8 +12,6 @@
 
 #include "Persistency/Analyzer.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace detail
@@ -21,7 +19,7 @@ namespace detail
 
 /** \brief cache for analyzers, kept in memory.
  */
-struct LocalAnalyzersCache: public std::map<std::string, AnalyzerPtrNN>
+struct LocalAnalyzersCache: public std::map<std::string, Persistency::AnalyzerPtrNN>
 {
   /** \brief hash value. */
   typedef std::string Hash;
@@ -33,14 +31,13 @@ struct LocalAnalyzersCache: public std::map<std::string, AnalyzerPtrNN>
    *  \param ip      analyzer's IP.
    *  \return hash of a given paramters.
    */
-  Hash makeHash(const Analyzer::Name            &name,
-                const Analyzer::Version         &version,
-                const Analyzer::OperatingSystem &os,
-                const Analyzer::IP              *ip) const;
+  Hash makeHash(const Persistency::Analyzer::Name            &name,
+                const Persistency::Analyzer::Version         &version,
+                const Persistency::Analyzer::OperatingSystem &os,
+                const Persistency::Analyzer::IP              *ip) const;
 }; // struct LocalAnalyzersCache
 
 } // namespace detail
 } // namespace Facades
-} // namespace Persistency
 
 #endif

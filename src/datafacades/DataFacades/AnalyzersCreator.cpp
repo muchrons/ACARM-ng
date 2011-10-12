@@ -5,17 +5,15 @@
 #include "DataFacades/AnalyzersCreator.hpp"
 #include "DataFacades/detail/AnalyzersCreatorImpl.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 
-AnalyzerPtrNN AnalyzersCreator::construct(IO::ConnectionPtrNN              conn,
-                                          IO::Transaction                 &t,
-                                          const Analyzer::Name            &name,
-                                          const Analyzer::Version         &version,
-                                          const Analyzer::OperatingSystem &os,
-                                          const Analyzer::IP              *ip)
+Persistency::AnalyzerPtrNN AnalyzersCreator::construct(Persistency::IO::ConnectionPtrNN              conn,
+                                                       Persistency::IO::Transaction                 &t,
+                                                       const Persistency::Analyzer::Name            &name,
+                                                       const Persistency::Analyzer::Version         &version,
+                                                       const Persistency::Analyzer::OperatingSystem &os,
+                                                       const Persistency::Analyzer::IP              *ip)
 {
   // compute hash
   const detail::LocalAnalyzersCache::Hash     hash=cache_.makeHash(name, version, os, ip);
@@ -27,10 +25,9 @@ AnalyzerPtrNN AnalyzersCreator::construct(IO::ConnectionPtrNN              conn,
 
   // if it's not prensent in local cache, create new object's instance
   detail::AnalyzersCreatorImpl impl(conn, t);                                       // make helper object
-  AnalyzerPtrNN                analyzer=impl.construct(hash, name, version, os, ip);// create analyzer
+  Persistency::AnalyzerPtrNN   analyzer=impl.construct(hash, name, version, os, ip);// create analyzer
   cache_.insert( detail::LocalAnalyzersCache::value_type(hash, analyzer) );         // add entry to cache
   return analyzer;
 }
 
 } // namespace Facades
-} // namespace Persistency

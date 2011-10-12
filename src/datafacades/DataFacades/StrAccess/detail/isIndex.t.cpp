@@ -7,7 +7,7 @@
 
 #include "DataFacades/StrAccess/detail/isIndex.hpp"
 
-using namespace Persistency::Facades::StrAccess::detail;
+using namespace Facades::StrAccess::detail;
 
 namespace
 {
@@ -18,7 +18,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/detail/isIndex");
+factory tf("DataFacades/StrAccess/detail/isIndex");
 } // unnamed namespace
 
 

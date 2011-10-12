@@ -9,8 +9,6 @@
 
 #include "System/NoInstance.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -33,6 +31,5 @@ struct InvalidPathExceptionType: private System::NoInstance {};
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

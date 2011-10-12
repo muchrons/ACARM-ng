@@ -20,8 +20,6 @@
 #include "DataFacades/StrAccess/SpecialMapKeys.hpp"
 #include "DataFacades/StrAccess/collectionSize.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -32,7 +30,7 @@ namespace detail
 /** \brief implementation of term element.
  */
 struct OnTermImpl: private System::NoInstance,
-                   public  IPTypes<OnTermImpl>
+                   public  Persistency::IPTypes<OnTermImpl>
 {
   /** \brief processing method.
    *  \param e element to be processed.
@@ -51,7 +49,7 @@ struct OnTermImpl: private System::NoInstance,
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const MD5Sum &e, TParams p)
+  static bool process(const Persistency::MD5Sum &e, TParams p)
   {
     assert(e.get()!=NULL);
     return process(std::string(e.get()), p);
@@ -128,6 +126,5 @@ struct OnTerm: private System::NoInstance
 } // namespace detail
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

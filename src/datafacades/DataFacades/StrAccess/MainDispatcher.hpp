@@ -17,8 +17,6 @@
 #include "DataFacades/StrAccess/SpecialMapKeys.hpp"
 #include "DataFacades/StrAccess/HandleIndirection.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -122,6 +120,5 @@ struct MainDispatcher: private System::NoInstance
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

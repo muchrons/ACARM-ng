@@ -7,7 +7,7 @@
 #include "DataFacades/StrAccess/StrAccess.hpp"
 #include "DataFacades/StrAccess/TestBaseData.t.hpp"
 
-using namespace Persistency::Facades::StrAccess;
+using namespace Facades::StrAccess;
 
 namespace
 {
@@ -46,7 +46,7 @@ struct TestClass: public TestBaseData<OnMetaAlert>
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/StrAccess");
+factory tf("DataFacades/StrAccess/StrAccess");
 } // unnamed namespace
 
 

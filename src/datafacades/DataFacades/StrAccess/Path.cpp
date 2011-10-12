@@ -6,8 +6,6 @@
 
 #include "DataFacades/StrAccess/Path.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -43,4 +41,3 @@ void Path::tokenizePath(void)
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency

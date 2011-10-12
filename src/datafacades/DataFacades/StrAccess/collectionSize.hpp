@@ -7,8 +7,6 @@
 
 /* public header */
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -33,6 +31,5 @@ inline size_t collectionSize(CIter begin, const CIter end)
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

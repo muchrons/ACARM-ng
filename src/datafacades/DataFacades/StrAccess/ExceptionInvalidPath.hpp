@@ -10,8 +10,6 @@
 #include "DataFacades/StrAccess/Path.hpp"
 #include "DataFacades/StrAccess/Exception.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -36,6 +34,5 @@ public:
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

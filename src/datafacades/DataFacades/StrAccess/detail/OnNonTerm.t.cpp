@@ -11,8 +11,8 @@
 #include "DataFacades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
-using namespace Persistency::Facades::StrAccess;
-using namespace Persistency::Facades::StrAccess::detail;
+using namespace Facades::StrAccess;
+using namespace Facades::StrAccess::detail;
 
 namespace
 {
@@ -72,7 +72,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/detail/OnNonTerm");
+factory tf("DataFacades/StrAccess/detail/OnNonTerm");
 } // unnamed namespace
 
 

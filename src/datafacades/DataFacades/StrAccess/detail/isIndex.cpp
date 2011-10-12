@@ -7,8 +7,6 @@
 #include "DataFacades/StrAccess/detail/isIndex.hpp"
 
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -29,4 +27,3 @@ bool isIndex(const std::string &str)
 } // namespace detail
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency

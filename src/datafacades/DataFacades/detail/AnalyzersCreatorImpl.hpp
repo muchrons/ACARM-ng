@@ -12,8 +12,6 @@
 #include "Persistency/IO/Connection.hpp"
 #include "DataFacades/detail/LocalAnalyzersCache.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace detail
@@ -28,7 +26,7 @@ public:
    *  \param conn connection use for I/O operations, if needed.
    *  \param t    transaction to oeprate on.
    */
-  AnalyzersCreatorImpl(IO::ConnectionPtrNN conn, IO::Transaction &t);
+  AnalyzersCreatorImpl(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t);
 
   /** \brief creates analyzer object, based on provided data, or creates new, if it did not exist yet.
    *  \param hash    hash of a given values.
@@ -41,20 +39,19 @@ public:
    *  'hash' paramter is passed only as an optimization, since it can be computed from a given
    *  parameters as well, but since our caller have already done this, we can use it here as well.
    */
-  AnalyzerPtrNN construct(const LocalAnalyzersCache::Hash &hash,
-                          const Analyzer::Name            &name,
-                          const Analyzer::Version         &version,
-                          const Analyzer::OperatingSystem &os,
-                          const Analyzer::IP              *ip);
+  Persistency::AnalyzerPtrNN construct(const LocalAnalyzersCache::Hash              &hash,
+                                       const Persistency::Analyzer::Name            &name,
+                                       const Persistency::Analyzer::Version         &version,
+                                       const Persistency::Analyzer::OperatingSystem &os,
+                                       const Persistency::Analyzer::IP              *ip);
 
 private:
-  IO::ConnectionPtrNN       conn_;
-  IO::Transaction          &t_;
-  IO::DynamicConfigAutoPtr  dc_;
+  Persistency::IO::ConnectionPtrNN       conn_;
+  Persistency::IO::Transaction          &t_;
+  Persistency::IO::DynamicConfigAutoPtr  dc_;
 }; // class AnalyzersCreatorImpl
 
 } // namespace detail
 } // namespace Facades
-} // namespace Persistency
 
 #endif

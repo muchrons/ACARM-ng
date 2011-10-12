@@ -7,8 +7,6 @@
 
 #include <string>
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -48,6 +46,5 @@ struct TestCallback
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

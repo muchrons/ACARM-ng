@@ -7,10 +7,8 @@
 
 /* public header */
 
-#include "Persistency/Exception.hpp"
+#include "DataFacades/Exception.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -18,7 +16,7 @@ namespace StrAccess
 
 /** \brief base exception for string-access facade.
  */
-class Exception: public Persistency::Exception
+class Exception: public DataFacades::Exception
 {
 public:
   /** \brief create execption with given message.
@@ -30,6 +28,5 @@ public:
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

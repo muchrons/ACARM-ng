@@ -15,8 +15,6 @@
 #include "DataFacades/StrAccess/MainDispatcher.hpp"
 #include "DataFacades/StrAccess/collectionSize.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -63,6 +61,5 @@ struct OnCollectionIndex: private System::NoInstance
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

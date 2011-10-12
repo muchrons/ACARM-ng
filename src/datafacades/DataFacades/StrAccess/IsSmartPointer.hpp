@@ -14,8 +14,6 @@
 #include "System/SharedPtrNotNULL.hpp"
 #include "Commons/SharedPtrNotNULL.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -67,6 +65,5 @@ struct IsSmartPointer< boost::scoped_ptr<T> >: private System::NoInstance
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

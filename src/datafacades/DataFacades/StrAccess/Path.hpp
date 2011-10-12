@@ -12,8 +12,6 @@
 
 #include "DataFacades/StrAccess/ExceptionInvalidPath.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -66,6 +64,5 @@ private:
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

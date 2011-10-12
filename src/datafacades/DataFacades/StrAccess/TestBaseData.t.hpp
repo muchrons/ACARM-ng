@@ -15,11 +15,9 @@
 
 using namespace std;
 using namespace Persistency;
-using namespace Persistency::Facades::StrAccess;
+using namespace Facades::StrAccess;
 using namespace TestHelpers::Persistency;
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -198,6 +196,5 @@ struct TestBaseData: private TestStubs
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

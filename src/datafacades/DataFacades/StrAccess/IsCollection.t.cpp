@@ -6,7 +6,7 @@
 
 #include "DataFacades/StrAccess/IsCollection.hpp"
 
-using namespace Persistency::Facades::StrAccess;
+using namespace Facades::StrAccess;
 
 namespace
 {
@@ -17,7 +17,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/IsCollection");
+factory tf("DataFacades/StrAccess/IsCollection");
 } // unnamed namespace
 
 

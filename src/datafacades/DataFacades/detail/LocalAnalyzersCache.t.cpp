@@ -7,7 +7,7 @@
 #include "DataFacades/detail/LocalAnalyzersCache.hpp"
 
 using namespace Persistency;
-using namespace Persistency::Facades::detail;
+using namespace Facades::detail;
 
 namespace
 {
@@ -20,7 +20,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/detail/LocalAnalyzersCache");
+factory tf("DataFacades/detail/LocalAnalyzersCache");
 } // unnamed namespace
 
 

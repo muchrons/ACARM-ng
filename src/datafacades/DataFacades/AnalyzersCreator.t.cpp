@@ -12,7 +12,7 @@
 
 using namespace std;
 using namespace Persistency;
-using namespace Persistency::Facades;
+using namespace Facades;
 
 namespace
 {
@@ -33,7 +33,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/AnalyzersCreator");
+factory tf("DataFacades/AnalyzersCreator");
 } // unnamed namespace
 
 

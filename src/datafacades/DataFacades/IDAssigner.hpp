@@ -18,8 +18,6 @@
 #include "Persistency/IO/Connection.hpp"
 #include "Persistency/IO/Transaction.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace detail
@@ -44,17 +42,17 @@ public:
    *  \param t    transaction to use.
    *  \return free ID value, that can be used for new MetaAlert.
    */
-  MetaAlert::ID assignMetaAlertID(IO::ConnectionPtrNN conn, IO::Transaction &t);
+  Persistency::MetaAlert::ID assignMetaAlertID(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t);
   /** \brief get next ID value to be used
    *  \param conn connection to persistent storage with counter.
    *  \param t    transaction to use.
    *  \return free ID value, that can be used for new Analyzer.
    */
-  Analyzer::ID assignAnalyzerID(IO::ConnectionPtrNN conn, IO::Transaction &t);
+  Persistency::Analyzer::ID assignAnalyzerID(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t);
 
 private:
   template<typename T>
-  typename T::ID assign(IO::ConnectionPtrNN conn, IO::Transaction &t);
+  typename T::ID assign(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t);
 
   class IDAssignerPimpl;
 
@@ -70,6 +68,5 @@ private:
 typedef System::Singleton<detail::IDAssigner> IDAssigner;
 
 } // namespace Facades
-} // namespace Persistency
 
 #endif

@@ -5,13 +5,10 @@
 #include <sstream>
 
 #include "Commons/computeHash.hpp"
-#include "Persistency/Exception.hpp"
 #include "DataFacades/detail/LocalAnalyzersCache.hpp"
 
 using namespace std;
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace detail
@@ -29,10 +26,10 @@ const char *fixNulls(const char *in)
 } // unnamed namespace
 
 
-LocalAnalyzersCache::Hash LocalAnalyzersCache::makeHash(const Analyzer::Name            &name,
-                                                        const Analyzer::Version         &version,
-                                                        const Analyzer::OperatingSystem &os,
-                                                        const Analyzer::IP              *ip) const
+LocalAnalyzersCache::Hash LocalAnalyzersCache::makeHash(const Persistency::Analyzer::Name            &name,
+                                                        const Persistency::Analyzer::Version         &version,
+                                                        const Persistency::Analyzer::OperatingSystem &os,
+                                                        const Persistency::Analyzer::IP              *ip) const
 {
   std::stringstream ss;
   ss << "Anlzr:HASH#";
@@ -52,4 +49,3 @@ LocalAnalyzersCache::Hash LocalAnalyzersCache::makeHash(const Analyzer::Name    
 
 } // namespace detail
 } // namespace Facades
-} // namespace Persistency

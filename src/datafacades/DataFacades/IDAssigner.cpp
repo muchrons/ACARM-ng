@@ -12,10 +12,9 @@
 #include "DataFacades/IDAssigner.hpp"
 #include "Persistency/IO/DynamicConfig.hpp"
 
+using namespace Persistency;
 using Persistency::IO::DynamicConfig;
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace detail
@@ -23,7 +22,7 @@ namespace detail
 
 namespace
 {
-const char *g_owner       ="Persistency::IDAssigner";
+const char *g_owner       ="DataFacades::IDAssigner";
 const char *g_keyMetaAlert="next free MetaAlert's ID";
 const char *g_keyAnalyzer ="next free Analyzer's ID";
 } // unnamed namespace
@@ -142,12 +141,12 @@ IDAssigner::~IDAssigner(void)
   // NOTE: this generates code for deallocating PIMPL in proper way.
 }
 
-MetaAlert::ID IDAssigner::assignMetaAlertID(IO::ConnectionPtrNN conn, IO::Transaction &t)
+Persistency::MetaAlert::ID IDAssigner::assignMetaAlertID(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t)
 {
   return assign<MetaAlert>(conn, t);
 }
 
-Analyzer::ID IDAssigner::assignAnalyzerID(IO::ConnectionPtrNN conn, IO::Transaction &t)
+Persistency::Analyzer::ID IDAssigner::assignAnalyzerID(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t)
 {
   return assign<Analyzer>(conn, t);
 }
@@ -159,7 +158,7 @@ IDAssigner::IDAssigner(void):
 }
 
 template<typename T>
-typename T::ID IDAssigner::assign(IO::ConnectionPtrNN conn, IO::Transaction &t)
+typename T::ID IDAssigner::assign(Persistency::IO::ConnectionPtrNN conn, Persistency::IO::Transaction &t)
 {
   Base::Threads::Lock lock(mutex_);
   if( pimpl_.get()==NULL )
@@ -170,4 +169,3 @@ typename T::ID IDAssigner::assign(IO::ConnectionPtrNN conn, IO::Transaction &t)
 
 } // namespace detail
 } // namespace Facades
-} // namespace Persistency

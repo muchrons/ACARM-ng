@@ -13,8 +13,6 @@
 #include "Persistency/Service.hpp"
 #include "DataFacades/StrAccess/MainDispatcher.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -30,7 +28,7 @@ struct OnService: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const Service &e, TParams p)
+  static bool process(const Persistency::Service &e, TParams p)
   {
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
@@ -56,6 +54,5 @@ struct OnService: private System::NoInstance
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

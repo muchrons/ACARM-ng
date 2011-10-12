@@ -9,14 +9,12 @@
 #include "Algo/forEachUniqueLeaf.hpp"
 #include "DataFacades/StrAccess/OnMetaAlert.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
 {
 
-OnMetaAlert::Nodes OnMetaAlert::getAllChildren(const GraphNode &root)
+OnMetaAlert::Nodes OnMetaAlert::getAllChildren(const Persistency::GraphNode &root)
 {
   Nodes out;
   std::copy( root.begin(), root.end(), std::back_insert_iterator<Nodes>(out) );
@@ -34,7 +32,7 @@ struct LeafsGatherer
   {
   }
 
-  void operator()(const GraphNodePtrNN &leaf)
+  void operator()(const Persistency::GraphNodePtrNN &leaf)
   {
     assert( leaf->isLeaf() );
     assert(out_!=NULL);
@@ -54,7 +52,7 @@ struct FuncObj
   {
   }
 
-  void operator()(const GraphNodePtrNN &node)
+  void operator()(const Persistency::GraphNodePtrNN &node)
   {
     Algo::forEachUniqueLeaf(node, lg_);
   }
@@ -65,7 +63,7 @@ private:
 } // unnamed namespace
 
 
-OnMetaAlert::Nodes OnMetaAlert::getAllLeafs(const GraphNode &root)
+OnMetaAlert::Nodes OnMetaAlert::getAllLeafs(const Persistency::GraphNode &root)
 {
   Nodes out;
   // if there is no leafs of this node, just return empty set
@@ -80,4 +78,3 @@ OnMetaAlert::Nodes OnMetaAlert::getAllLeafs(const GraphNode &root)
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency

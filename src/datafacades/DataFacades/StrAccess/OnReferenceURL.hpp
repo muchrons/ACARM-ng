@@ -13,8 +13,6 @@
 #include "Persistency/ReferenceURL.hpp"
 #include "DataFacades/StrAccess/MainDispatcher.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -30,7 +28,7 @@ struct OnReferenceURL: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const ReferenceURL &e, TParams p)
+  static bool process(const Persistency::ReferenceURL &e, TParams p)
   {
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
@@ -52,6 +50,5 @@ struct OnReferenceURL: private System::NoInstance
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

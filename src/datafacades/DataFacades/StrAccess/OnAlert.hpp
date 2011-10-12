@@ -13,8 +13,6 @@
 #include "Persistency/Alert.hpp"
 #include "DataFacades/StrAccess/MainDispatcher.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -30,7 +28,7 @@ struct OnAlert: private System::NoInstance
    *  \return value farwarded from further user's calls.
    */
   template<typename TParams>
-  static bool process(const Alert &e, TParams p)
+  static bool process(const Persistency::Alert &e, TParams p)
   {
     typedef typename TParams::template GetHandle<ErrorHandle>::type ErrH;
 
@@ -46,7 +44,7 @@ struct OnAlert: private System::NoInstance
       return MainDispatcher::process(e.getAnalyzers(), p);
     if(p.get()=="detected")
     {
-      const Timestamp *ptr=e.getDetectionTime();
+      const Persistency::Timestamp *ptr=e.getDetectionTime();
       if(ptr!=NULL)
         return MainDispatcher::process(ptr->get(), p);
       else
@@ -72,6 +70,5 @@ struct OnAlert: private System::NoInstance
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

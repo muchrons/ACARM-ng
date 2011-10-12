@@ -12,7 +12,7 @@
 #include "DataFacades/TestIOConnectionParamMap.t.hpp"
 
 using namespace Persistency;
-using namespace Persistency::Facades;
+using namespace Facades;
 
 namespace
 {
@@ -36,7 +36,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/IDAssigner");
+factory tf("DataFacades/IDAssigner");
 } // unnamed namespace
 
 

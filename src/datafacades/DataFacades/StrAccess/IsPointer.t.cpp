@@ -6,7 +6,7 @@
 
 #include "DataFacades/StrAccess/IsPointer.hpp"
 
-using namespace Persistency::Facades::StrAccess;
+using namespace Facades::StrAccess;
 
 namespace
 {
@@ -18,7 +18,7 @@ struct TestClass
 typedef tut::test_group<TestClass> factory;
 typedef factory::object testObj;
 
-factory tf("Persistency/Facades/StrAccess/IsPointer");
+factory tf("DataFacades/StrAccess/IsPointer");
 } // unnamed namespace
 
 

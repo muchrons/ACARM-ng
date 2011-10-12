@@ -16,8 +16,6 @@
 #include "DataFacades/StrAccess/IsPointer.hpp"
 #include "DataFacades/StrAccess/IsSmartPointer.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -182,6 +180,5 @@ struct HandleIndirection: private System::NoInstance
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

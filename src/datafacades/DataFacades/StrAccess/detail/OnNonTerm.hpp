@@ -16,8 +16,6 @@
 #include "DataFacades/StrAccess/IsCollection.hpp"
 #include "DataFacades/StrAccess/SpecialMapKeys.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -89,6 +87,5 @@ struct OnNonTerm: private System::NoInstance
 } // namespace detail
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif

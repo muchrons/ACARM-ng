@@ -12,8 +12,8 @@
 namespace
 {
 
-typedef Persistency::Facades::StrAccess::Params<Persistency::Facades::StrAccess::DefaultHandleMap,
-                                                Persistency::Facades::StrAccess::TestCallback>     TestParams;
+typedef Facades::StrAccess::Params<Facades::StrAccess::DefaultHandleMap,
+                                   Facades::StrAccess::TestCallback>     TestParams;
 
 } // unnamed namespace
 

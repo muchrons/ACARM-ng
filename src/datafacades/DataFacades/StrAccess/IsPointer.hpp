@@ -11,8 +11,6 @@
 
 #include "System/NoInstance.hpp"
 
-namespace Persistency
-{
 namespace Facades
 {
 namespace StrAccess
@@ -28,6 +26,5 @@ struct IsPointer: private System::NoInstance
 
 } // namespace StrAccess
 } // namespace Facades
-} // namespace Persistency
 
 #endif
