@@ -8,14 +8,15 @@
 #include <tut.h>
 
 #include "Commons/Convert.hpp"
-#include "Persistency/TestBase.t.hpp"
-#include "Persistency/TestHelpers.t.hpp"
-#include "Persistency/IO/IOStubs.t.hpp"
+#include "TestHelpers/Persistency/TestStubs.hpp"
+#include "TestHelpers/Persistency/TestHelpers.hpp"
+#include "TestHelpers/Persistency/ConnectionIOMemory.hpp"
 #include "DataFacades/StrAccess/TestParams.t.hpp"
 
 using namespace std;
 using namespace Persistency;
 using namespace Persistency::Facades::StrAccess;
+using namespace TestHelpers::Persistency;
 
 namespace Persistency
 {
@@ -25,7 +26,7 @@ namespace StrAccess
 {
 
 template<typename TTested>
-struct TestBaseData: private TestBase
+struct TestBaseData: private TestStubs
 {
   TestBaseData(void):
     md5_( MD5Sum::createFromString("78b9861f74e15d7d0f077ba22421b8e4") ),
@@ -74,7 +75,7 @@ struct TestBaseData: private TestBase
                          "some text info",
                          Alert::Hosts(),
                          Alert::Hosts() )),
-    conn_(new TestIOConnection),
+    conn_(new ConnectionIOMemory),
     t_( conn_->createNewTransaction("str_facade_test") ),
     maData_(new MetaAlert("meta alert name", 0.5, -0.5, url_, createTime_, 303)),
     children_( GraphNodePtrNN(new GraphNode(makeNewAlert(), 101, conn_, t_)),
