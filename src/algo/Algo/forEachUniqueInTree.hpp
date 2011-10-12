@@ -20,7 +20,6 @@ namespace Algo
 
 namespace detail
 {
-
 /** \brief helper saving unique nodes.
  */
 template<typename NodePtrType>
@@ -50,34 +49,21 @@ public:
 private:
   NodesSet *ns_;
 }; // struct TreeFuncObj
-
-/** \brief finds unique nodes in given tree.
- *  \param root root node to start from.
- *  \param ns   output set.
- */
-template<typename NodePtrType>
-void findUniqueNodes(NodePtrType root, typename SaveUnique<NodePtrType>::NodesSet &ns)
-{
-  assert( ns.size()==0 );
-  forEachInTree(root, SaveUnique<NodePtrType>(&ns) );
-} // findUniqueNodes()
 } // namespace detail
 
 
 /** \brief traverses all elements in a given (sub)tree.
- *  \note order of traversal is NOT guaranteed anyhow and should be assumed
- *        to be random.
  *  \param root root node of the search.
  *  \param f    function object to apply.
  *  \return copy of input function object, that traversed through all elements.
+ *  \note order of traversal is NOT guaranteed anyhow and should be assumed to be random.
  */
 template<typename FuncObj, typename NodePtrType>
 FuncObj forEachUniqueInTree(NodePtrType root, FuncObj f)
 {
-  // TODO: optimize to use only forEachInTree<>
   typedef typename MPL::EnsureNodePtrNotNULL<NodePtrType>::type Node;
   typename detail::SaveUnique<Node>::NodesSet ns;
-  detail::findUniqueNodes<Node>(root, ns);
+  forEachInTree(root, (detail::SaveUnique<NodePtrType>(&ns)) );
   return forEach(ns.begin(), ns.end(), f);
 } // forEachUniqueInTree()
 
