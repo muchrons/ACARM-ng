@@ -15,7 +15,7 @@ int main(int argc, char **argv)
 {
   if(argc!=1+3)
   {
-    cerr<<argv[0]<<" <host> <ip> <timeout>"<<endl;
+    cerr<<argv[0]<<" <host> <port> <timeout>"<<endl;
     return 1;
   }
   const std::string  host   =argv[1];
