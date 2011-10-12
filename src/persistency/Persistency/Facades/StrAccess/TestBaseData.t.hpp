@@ -122,6 +122,14 @@ struct TestBaseData: private TestBase
     }
   }
 
+  template<typename TData>
+  std::string getProcValue(const TData &data, const char *path)
+  {
+    TestParams p(Path(path), cb_);
+    tut::ensure("error response returned", TTested::process(data, p) );
+    return cb_.lastValue_;
+  }
+
   template<typename TData, typename TExp>
   void ensureProc(const char *errMsg, const TData &data, const char *path, const TExp &exp)
   {

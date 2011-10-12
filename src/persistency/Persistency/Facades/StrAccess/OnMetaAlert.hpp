@@ -7,13 +7,11 @@
 
 /* public header */
 
-#include <iterator>
-#include <cassert>
+#include <vector>
 
 #include "System/NoInstance.hpp"
 #include "Persistency/GraphNode.hpp"
 #include "Persistency/Facades/StrAccess/MainDispatcher.hpp"
-#include "Persistency/Facades/StrAccess/detail/isIndex.hpp"
 
 namespace Persistency
 {
@@ -64,18 +62,19 @@ struct OnMetaAlert: private System::NoInstance
     if(p.get()=="alert")
       return MainDispatcher::process(e.getAlert(), p);
     if(p.get()=="children")
-    {
-      // copy has to be made, since user has no direct access to the children colleciton
-      typedef std::vector<GraphNode::const_iterator::value_type> TmpCol;
-      TmpCol children;
-      std::copy(e.begin(), e.end(), std::back_insert_iterator<TmpCol>(children));
-      // now run processing on the temporary object
-      return MainDispatcher::process(children, p);
-    }
+      return MainDispatcher::process( getAllChildren(e), p);
+    if(p.get()=="leafs")
+      return MainDispatcher::process( getAllLeafs(e), p);
 
     ErrH::throwOnInvalidPath(SYSTEM_SAVE_LOCATION, p);
     return false;
   }
+
+private:
+  typedef std::vector<GraphNodePtrNN> Nodes;
+
+  static Nodes getAllChildren(const GraphNode &root);
+  static Nodes getAllLeafs(const GraphNode &root);
 }; // struct OnMetaAlert
 
 } // namespace StrAccess

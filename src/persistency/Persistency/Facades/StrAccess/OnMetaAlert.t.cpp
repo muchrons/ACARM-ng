@@ -195,4 +195,49 @@ void testObj::test<20>(void)
   ensureProc("cannot access bottom element", *metaalertNode_, "metaalert.children.1.alert.analyzers.0.name", "some analyzer");
 }
 
+// test accessing leafs of a given meta-alert
+template<>
+template<>
+void testObj::test<21>(void)
+{
+  NodeChildrenVector children(metaalert_, metaalertLeaf_);
+  children.push_back(metaalertLeaf_);   // make some entries repeat
+  GraphNodePtrNN     ma(new GraphNode(maData_, conn_, t_, children));
+  ensureProcSize("invalid leafs count", *ma, "metaalert.leafs.size", 3);
+}
+
+// test accessing chosen leaf
+template<>
+template<>
+void testObj::test<22>(void)
+{
+  NodeChildrenVector children(metaalert_, metaalertLeaf_);
+  children.push_back(metaalertLeaf_);   // make some entries repeat
+  GraphNodePtrNN     ma(new GraphNode(maData_, conn_, t_, children));
+  const std::string  ret=getProcValue(*ma, "metaalert.leafs.0.id");
+  if(ret!="101" && ret!="102" && ret!="303")
+    ensure_equals("unexpected value returned", ret, "101, 102 or 303");
+}
+
+// test accessing leafs of a leaf
+template<>
+template<>
+void testObj::test<23>(void)
+{
+  ensureProcSize("invalid leafs count for leaf element", *metaalertLeaf_, "metaalert.leafs.size", 0);
+}
+
+// ensure all returned values are leafs
+template<>
+template<>
+void testObj::test<24>(void)
+{
+  NodeChildrenVector children(metaalert_, metaalertLeaf_);
+  GraphNodePtrNN     ma(new GraphNode(maData_, conn_, t_, children));
+  const std::string  ret=getProcValue(*ma, "metaalert.leafs.0.id");
+  ensureProc("non-leaf element 0", *ma, "metaalert.leafs.0.isleaf", "true");
+  ensureProc("non-leaf element 1", *ma, "metaalert.leafs.1.isleaf", "true");
+  ensureProc("non-leaf element 2", *ma, "metaalert.leafs.2.isleaf", "true");
+}
+
 } // namespace tut

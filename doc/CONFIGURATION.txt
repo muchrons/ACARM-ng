@@ -583,6 +583,7 @@ metaalert.certaintydelta
 metaalert.referenceurl.name
 metaalert.referenceurl.url
 metaalert.created
+metaalert.leafs.[]    # pseudo-collection of all leafs of this node (also non-direct)
 metaalert.isleaf      # "true"->alert / "false"->children
 metaalert.children.[] # each child is meta-alert as well
 metaalert.alert.name
